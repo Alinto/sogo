@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0
+ * v1.0.1-master-8ef798f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -10,7 +10,7 @@
 (function(){
 "use strict";
 
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.layout","material.core.theming.palette","material.core.theming","material.core.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.fabTrigger","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.progressCircular","material.components.radioButton","material.components.progressLinear","material.components.showHide","material.components.select","material.components.slider","material.components.sidenav","material.components.sticky","material.components.subheader","material.components.switch","material.components.swipe","material.components.tabs","material.components.toast","material.components.toolbar","material.components.virtualRepeat","material.components.tooltip","material.components.whiteframe"]);
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.layout","material.core.theming.palette","material.core.theming","material.core.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.fabTrigger","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.showHide","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.virtualRepeat","material.components.whiteframe"]);
 })();
 (function(){
 "use strict";
@@ -12854,6 +12854,198 @@ MdProgressCircularDirective.$inject = ["$mdTheming", "$mdUtil", "$log"];
 
 /**
  * @ngdoc module
+ * @name material.components.progressLinear
+ * @description Linear Progress module!
+ */
+angular.module('material.components.progressLinear', [
+  'material.core'
+])
+  .directive('mdProgressLinear', MdProgressLinearDirective);
+
+/**
+ * @ngdoc directive
+ * @name mdProgressLinear
+ * @module material.components.progressLinear
+ * @restrict E
+ *
+ * @description
+ * The linear progress directive is used to make loading content
+ * in your app as delightful and painless as possible by minimizing
+ * the amount of visual change a user sees before they can view
+ * and interact with content.
+ *
+ * Each operation should only be represented by one activity indicator
+ * For example: one refresh operation should not display both a
+ * refresh bar and an activity circle.
+ *
+ * For operations where the percentage of the operation completed
+ * can be determined, use a determinate indicator. They give users
+ * a quick sense of how long an operation will take.
+ *
+ * For operations where the user is asked to wait a moment while
+ * something finishes up, and it’s not necessary to expose what's
+ * happening behind the scenes and how long it will take, use an
+ * indeterminate indicator.
+ *
+ * @param {string} md-mode Select from one of four modes: determinate, indeterminate, buffer or query.
+ *
+ * Note: if the `md-mode` value is set as undefined or specified as 1 of the four (4) valid modes, then `.ng-hide`
+ * will be auto-applied as a style to the component.
+ *
+ * Note: if not configured, the `md-mode="indeterminate"` will be auto injected as an attribute. If `value=""` is also specified, however,
+ * then `md-mode="determinate"` would be auto-injected instead.
+ * @param {number=} value In determinate and buffer modes, this number represents the percentage of the primary progress bar. Default: 0
+ * @param {number=} md-buffer-value In the buffer mode, this number represents the percentage of the secondary progress bar. Default: 0
+ *
+ * @usage
+ * <hljs lang="html">
+ * <md-progress-linear md-mode="determinate" value="..."></md-progress-linear>
+ *
+ * <md-progress-linear md-mode="determinate" ng-value="..."></md-progress-linear>
+ *
+ * <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+ *
+ * <md-progress-linear md-mode="buffer" value="..." md-buffer-value="..."></md-progress-linear>
+ *
+ * <md-progress-linear md-mode="query"></md-progress-linear>
+ * </hljs>
+ */
+function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
+  var MODE_DETERMINATE = "determinate",
+      MODE_INDETERMINATE = "indeterminate",
+      MODE_BUFFER = "buffer",
+      MODE_QUERY = "query";
+
+  return {
+    restrict: 'E',
+    template: '<div class="md-container">' +
+      '<div class="md-dashed"></div>' +
+      '<div class="md-bar md-bar1"></div>' +
+      '<div class="md-bar md-bar2"></div>' +
+      '</div>',
+    compile: compile
+  };
+  
+  function compile(tElement, tAttrs, transclude) {
+    tElement.attr('aria-valuemin', 0);
+    tElement.attr('aria-valuemax', 100);
+    tElement.attr('role', 'progressbar');
+
+    return postLink;
+  }
+  function postLink(scope, element, attr) {
+    $mdTheming(element);
+
+    var lastMode, toVendorCSS = $mdUtil.dom.animator.toCss;
+    var bar1 = angular.element(element[0].querySelector('.md-bar1')),
+        bar2 = angular.element(element[0].querySelector('.md-bar2')),
+        container = angular.element(element[0].querySelector('.md-container'));
+
+    element.attr('md-mode', mode());
+
+    validateMode();
+    watchAttributes();
+
+    /**
+     * Watch the value, md-buffer-value, and md-mode attributes
+     */
+    function watchAttributes() {
+      attr.$observe('value', function(value) {
+        var percentValue = clamp(value);
+        element.attr('aria-valuenow', percentValue);
+
+        if (mode() != MODE_QUERY) animateIndicator(bar2, percentValue);
+      });
+
+      attr.$observe('mdBufferValue', function(value) {
+        animateIndicator(bar1, clamp(value));
+      });
+
+      attr.$observe('mdMode',function(mode){
+        switch( mode ) {
+          case MODE_QUERY:
+          case MODE_BUFFER:
+          case MODE_DETERMINATE:
+          case MODE_INDETERMINATE:
+            container.removeClass( 'ng-hide' + ' ' + lastMode );
+            container.addClass( lastMode = "md-mode-" + mode );
+            break;
+          default:
+            if (lastMode) container.removeClass( lastMode );
+            container.addClass('ng-hide');
+            lastMode = undefined;
+            break;
+        }
+      });
+    }
+
+    /**
+     * Auto-defaults the mode to either `determinate` or `indeterminate` mode; if not specified
+     */
+    function validateMode() {
+      if ( angular.isUndefined(attr.mdMode) ) {
+        var hasValue = angular.isDefined(attr.value);
+        var mode = hasValue ? MODE_DETERMINATE : MODE_INDETERMINATE;
+        var info = "Auto-adding the missing md-mode='{0}' to the ProgressLinear element";
+
+        $log.debug( $mdUtil.supplant(info, [mode]) );
+
+        element.attr("md-mode",mode);
+        attr['mdMode'] = mode;
+      }
+    }
+
+    /**
+     * Is the md-mode a valid option?
+     */
+    function mode() {
+      var value = (attr.mdMode || "").trim();
+      if ( value ) {
+        switch(value) {
+          case MODE_DETERMINATE:
+          case MODE_INDETERMINATE:
+          case MODE_BUFFER:
+          case MODE_QUERY:
+            break;
+          default:
+            value = undefined;
+            break;
+        }
+      }
+      return value;
+    }
+
+    /**
+     * Manually set CSS to animate the Determinate indicator based on the specified
+     * percentage value (0-100).
+     */
+    function animateIndicator(target, value) {
+      if ( !mode() ) return;
+
+      var to = $mdUtil.supplant("translateX({0}%) scale({1},1)", [ (value-100)/2, value/100 ]);
+      var styles = toVendorCSS({ transform : to });
+      angular.element(target).css( styles );
+    }
+  }
+
+  /**
+   * Clamps the value to be between 0 and 100.
+   * @param {number} value The value to clamp.
+   * @returns {number}
+   */
+  function clamp(value) {
+    return Math.max(0, Math.min(value || 0, 100));
+  }
+}
+MdProgressLinearDirective.$inject = ["$mdTheming", "$mdUtil", "$log"];
+
+
+})();
+(function(){
+"use strict";
+
+/**
+ * @ngdoc module
  * @name material.components.radioButton
  * @description radioButton module!
  */
@@ -13209,241 +13401,6 @@ function mdRadioButtonDirective($mdAria, $mdUtil, $mdTheming) {
 }
 mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
 
-})();
-(function(){
-"use strict";
-
-/**
- * @ngdoc module
- * @name material.components.progressLinear
- * @description Linear Progress module!
- */
-angular.module('material.components.progressLinear', [
-  'material.core'
-])
-  .directive('mdProgressLinear', MdProgressLinearDirective);
-
-/**
- * @ngdoc directive
- * @name mdProgressLinear
- * @module material.components.progressLinear
- * @restrict E
- *
- * @description
- * The linear progress directive is used to make loading content
- * in your app as delightful and painless as possible by minimizing
- * the amount of visual change a user sees before they can view
- * and interact with content.
- *
- * Each operation should only be represented by one activity indicator
- * For example: one refresh operation should not display both a
- * refresh bar and an activity circle.
- *
- * For operations where the percentage of the operation completed
- * can be determined, use a determinate indicator. They give users
- * a quick sense of how long an operation will take.
- *
- * For operations where the user is asked to wait a moment while
- * something finishes up, and it’s not necessary to expose what's
- * happening behind the scenes and how long it will take, use an
- * indeterminate indicator.
- *
- * @param {string} md-mode Select from one of four modes: determinate, indeterminate, buffer or query.
- *
- * Note: if the `md-mode` value is set as undefined or specified as 1 of the four (4) valid modes, then `.ng-hide`
- * will be auto-applied as a style to the component.
- *
- * Note: if not configured, the `md-mode="indeterminate"` will be auto injected as an attribute. If `value=""` is also specified, however,
- * then `md-mode="determinate"` would be auto-injected instead.
- * @param {number=} value In determinate and buffer modes, this number represents the percentage of the primary progress bar. Default: 0
- * @param {number=} md-buffer-value In the buffer mode, this number represents the percentage of the secondary progress bar. Default: 0
- *
- * @usage
- * <hljs lang="html">
- * <md-progress-linear md-mode="determinate" value="..."></md-progress-linear>
- *
- * <md-progress-linear md-mode="determinate" ng-value="..."></md-progress-linear>
- *
- * <md-progress-linear md-mode="indeterminate"></md-progress-linear>
- *
- * <md-progress-linear md-mode="buffer" value="..." md-buffer-value="..."></md-progress-linear>
- *
- * <md-progress-linear md-mode="query"></md-progress-linear>
- * </hljs>
- */
-function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
-  var MODE_DETERMINATE = "determinate",
-      MODE_INDETERMINATE = "indeterminate",
-      MODE_BUFFER = "buffer",
-      MODE_QUERY = "query";
-
-  return {
-    restrict: 'E',
-    template: '<div class="md-container">' +
-      '<div class="md-dashed"></div>' +
-      '<div class="md-bar md-bar1"></div>' +
-      '<div class="md-bar md-bar2"></div>' +
-      '</div>',
-    compile: compile
-  };
-  
-  function compile(tElement, tAttrs, transclude) {
-    tElement.attr('aria-valuemin', 0);
-    tElement.attr('aria-valuemax', 100);
-    tElement.attr('role', 'progressbar');
-
-    return postLink;
-  }
-  function postLink(scope, element, attr) {
-    $mdTheming(element);
-
-    var lastMode, toVendorCSS = $mdUtil.dom.animator.toCss;
-    var bar1 = angular.element(element[0].querySelector('.md-bar1')),
-        bar2 = angular.element(element[0].querySelector('.md-bar2')),
-        container = angular.element(element[0].querySelector('.md-container'));
-
-    element.attr('md-mode', mode());
-
-    validateMode();
-    watchAttributes();
-
-    /**
-     * Watch the value, md-buffer-value, and md-mode attributes
-     */
-    function watchAttributes() {
-      attr.$observe('value', function(value) {
-        var percentValue = clamp(value);
-        element.attr('aria-valuenow', percentValue);
-
-        if (mode() != MODE_QUERY) animateIndicator(bar2, percentValue);
-      });
-
-      attr.$observe('mdBufferValue', function(value) {
-        animateIndicator(bar1, clamp(value));
-      });
-
-      attr.$observe('mdMode',function(mode){
-        switch( mode ) {
-          case MODE_QUERY:
-          case MODE_BUFFER:
-          case MODE_DETERMINATE:
-          case MODE_INDETERMINATE:
-            container.removeClass( 'ng-hide' + ' ' + lastMode );
-            container.addClass( lastMode = "md-mode-" + mode );
-            break;
-          default:
-            if (lastMode) container.removeClass( lastMode );
-            container.addClass('ng-hide');
-            lastMode = undefined;
-            break;
-        }
-      });
-    }
-
-    /**
-     * Auto-defaults the mode to either `determinate` or `indeterminate` mode; if not specified
-     */
-    function validateMode() {
-      if ( angular.isUndefined(attr.mdMode) ) {
-        var hasValue = angular.isDefined(attr.value);
-        var mode = hasValue ? MODE_DETERMINATE : MODE_INDETERMINATE;
-        var info = "Auto-adding the missing md-mode='{0}' to the ProgressLinear element";
-
-        $log.debug( $mdUtil.supplant(info, [mode]) );
-
-        element.attr("md-mode",mode);
-        attr['mdMode'] = mode;
-      }
-    }
-
-    /**
-     * Is the md-mode a valid option?
-     */
-    function mode() {
-      var value = (attr.mdMode || "").trim();
-      if ( value ) {
-        switch(value) {
-          case MODE_DETERMINATE:
-          case MODE_INDETERMINATE:
-          case MODE_BUFFER:
-          case MODE_QUERY:
-            break;
-          default:
-            value = undefined;
-            break;
-        }
-      }
-      return value;
-    }
-
-    /**
-     * Manually set CSS to animate the Determinate indicator based on the specified
-     * percentage value (0-100).
-     */
-    function animateIndicator(target, value) {
-      if ( !mode() ) return;
-
-      var to = $mdUtil.supplant("translateX({0}%) scale({1},1)", [ (value-100)/2, value/100 ]);
-      var styles = toVendorCSS({ transform : to });
-      angular.element(target).css( styles );
-    }
-  }
-
-  /**
-   * Clamps the value to be between 0 and 100.
-   * @param {number} value The value to clamp.
-   * @returns {number}
-   */
-  function clamp(value) {
-    return Math.max(0, Math.min(value || 0, 100));
-  }
-}
-MdProgressLinearDirective.$inject = ["$mdTheming", "$mdUtil", "$log"];
-
-
-})();
-(function(){
-"use strict";
-
-/**
- * @ngdoc module
- * @name material.components.showHide
- */
-
-// Add additional handlers to ng-show and ng-hide that notify directives
-// contained within that they should recompute their size.
-// These run in addition to Angular's built-in ng-hide and ng-show directives.
-angular.module('material.components.showHide', [
-  'material.core'
-])
-  .directive('ngShow', createDirective('ngShow', true))
-  .directive('ngHide', createDirective('ngHide', false));
-
-
-function createDirective(name, targetValue) {
-  return ['$mdUtil', function($mdUtil) {
-    return {
-      restrict: 'A',
-      multiElement: true,
-      link: function($scope, $element, $attr) {
-        var unregister = $scope.$on('$md-resize-enable', function() {
-          unregister();
-
-          $scope.$watch($attr[name], function(value) {
-            if (!!value === targetValue) {
-              $mdUtil.nextTick(function() {
-                $scope.$broadcast('$md-resize');
-              });
-              $mdUtil.dom.animator.waitTransitionEnd($element).then(function() {
-                $scope.$broadcast('$md-resize');
-              });
-            }
-          });
-        });
-      }
-    };
-  }];
-}
 })();
 (function(){
 "use strict";
@@ -14732,7 +14689,7 @@ function SelectProvider($$interimElementProvider) {
      * Calculate the
      */
     function calculateMenuPositions(scope, element, opts) {
-      var 
+      var
         containerNode = element[0],
         targetNode = opts.target[0].children[0], // target the label
         parentNode = $document[0].body,
@@ -14754,13 +14711,13 @@ function SelectProvider($$interimElementProvider) {
           bottom: bounds.bottom - (targetRect.top + targetRect.height)
         },
         maxWidth = parentRect.width - SELECT_EDGE_MARGIN * 2,
-        isScrollable = contentNode.scrollHeight > contentNode.offsetHeight,
         selectedNode = selectNode.querySelector('md-option[selected]'),
         optionNodes = selectNode.getElementsByTagName('md-option'),
-        optgroupNodes = selectNode.getElementsByTagName('md-optgroup');
+        optgroupNodes = selectNode.getElementsByTagName('md-optgroup'),
+        isScrollable = calculateScrollable(element, contentNode),
+        centeredNode;
 
       var loading = isPromiseLike(opts.loadingAsync);
-      var centeredNode;
       if (!loading) {
         // If a selected node, center around that
         if (selectedNode) {
@@ -14842,7 +14799,7 @@ function SelectProvider($$interimElementProvider) {
       } else {
         left = (targetRect.left + centeredRect.left - centeredRect.paddingLeft) + 2;
         top = Math.floor(targetRect.top + targetRect.height / 2 - centeredRect.height / 2 -
-            centeredRect.top + contentNode.scrollTop) + 4;
+            centeredRect.top + contentNode.scrollTop) + 2;
 
         transformOrigin = (centeredRect.left + targetRect.width / 2) + 'px ' +
           (centeredRect.top + centeredRect.height / 2 - contentNode.scrollTop) + 'px 0px';
@@ -14893,6 +14850,25 @@ function SelectProvider($$interimElementProvider) {
       height: node.offsetHeight
     } : {left: 0, top: 0, width: 0, height: 0};
   }
+
+  function calculateScrollable(element, contentNode) {
+    var isScrollable = false;
+
+    try {
+      var oldDisplay = element[0].style.display;
+
+      // Set the element's display to block so that this calculation is correct
+      element[0].style.display = 'block';
+
+      isScrollable = contentNode.scrollHeight > contentNode.offsetHeight;
+
+      // Reset it back afterwards
+      element[0].style.display = oldDisplay;
+    } finally {
+      // Nothing to do
+    }
+    return isScrollable;
+  }
 }
 SelectProvider.$inject = ["$$interimElementProvider"];
 
@@ -14901,413 +14877,45 @@ SelectProvider.$inject = ["$$interimElementProvider"];
 (function(){
 "use strict";
 
-  /**
-   * @ngdoc module
-   * @name material.components.slider
-   */
-  angular.module('material.components.slider', [
-    'material.core'
-  ])
-  .directive('mdSlider', SliderDirective);
-
 /**
- * @ngdoc directive
- * @name mdSlider
- * @module material.components.slider
- * @restrict E
- * @description
- * The `<md-slider>` component allows the user to choose from a range of
- * values.
- *
- * As per the [material design spec](http://www.google.com/design/spec/style/color.html#color-ui-color-application)
- * the slider is in the accent color by default. The primary color palette may be used with
- * the `md-primary` class.
- *
- * It has two modes: 'normal' mode, where the user slides between a wide range
- * of values, and 'discrete' mode, where the user slides between only a few
- * select values.
- *
- * To enable discrete mode, add the `md-discrete` attribute to a slider,
- * and use the `step` attribute to change the distance between
- * values the user is allowed to pick.
- *
- * @usage
- * <h4>Normal Mode</h4>
- * <hljs lang="html">
- * <md-slider ng-model="myValue" min="5" max="500">
- * </md-slider>
- * </hljs>
- * <h4>Discrete Mode</h4>
- * <hljs lang="html">
- * <md-slider md-discrete ng-model="myDiscreteValue" step="10" min="10" max="130">
- * </md-slider>
- * </hljs>
- *
- * @param {boolean=} md-discrete Whether to enable discrete mode.
- * @param {number=} step The distance between values the user is allowed to pick. Default 1.
- * @param {number=} min The minimum value the user is allowed to pick. Default 0.
- * @param {number=} max The maximum value the user is allowed to pick. Default 100.
+ * @ngdoc module
+ * @name material.components.showHide
  */
-function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdTheming, $mdGesture, $parse, $log) {
-  return {
-    scope: {},
-    require: '?ngModel',
-    template:
-      '<div class="md-slider-wrapper">' +
-        '<div class="md-track-container">' +
-          '<div class="md-track"></div>' +
-          '<div class="md-track md-track-fill"></div>' +
-          '<div class="md-track-ticks"></div>' +
-        '</div>' +
-        '<div class="md-thumb-container">' +
-          '<div class="md-thumb"></div>' +
-          '<div class="md-focus-thumb"></div>' +
-          '<div class="md-focus-ring"></div>' +
-          '<div class="md-sign">' +
-            '<span class="md-thumb-text"></span>' +
-          '</div>' +
-          '<div class="md-disabled-thumb"></div>' +
-        '</div>' +
-      '</div>',
-    compile: compile
-  };
 
-  // **********************************************************
-  // Private Methods
-  // **********************************************************
-
-  function compile (tElement, tAttrs) {
-    tElement.attr({
-      tabIndex: 0,
-      role: 'slider'
-    });
-
-    $mdAria.expect(tElement, 'aria-label');
-
-    return postLink;
-  }
-
-  function postLink(scope, element, attr, ngModelCtrl) {
-    $mdTheming(element);
-    ngModelCtrl = ngModelCtrl || {
-      // Mock ngModelController if it doesn't exist to give us
-      // the minimum functionality needed
-      $setViewValue: function(val) {
-        this.$viewValue = val;
-        this.$viewChangeListeners.forEach(function(cb) { cb(); });
-      },
-      $parsers: [],
-      $formatters: [],
-      $viewChangeListeners: []
-    };
-
-    var isDisabledGetter = angular.noop;
-    if (attr.disabled != null) {
-      isDisabledGetter = function() { return true; };
-    } else if (attr.ngDisabled) {
-      isDisabledGetter = angular.bind(null, $parse(attr.ngDisabled), scope.$parent);
-    }
-
-    var thumb = angular.element(element[0].querySelector('.md-thumb'));
-    var thumbText = angular.element(element[0].querySelector('.md-thumb-text'));
-    var thumbContainer = thumb.parent();
-    var trackContainer = angular.element(element[0].querySelector('.md-track-container'));
-    var activeTrack = angular.element(element[0].querySelector('.md-track-fill'));
-    var tickContainer = angular.element(element[0].querySelector('.md-track-ticks'));
-    var throttledRefreshDimensions = $mdUtil.throttle(refreshSliderDimensions, 5000);
-
-    // Default values, overridable by attrs
-    angular.isDefined(attr.min) ? attr.$observe('min', updateMin) : updateMin(0);
-    angular.isDefined(attr.max) ? attr.$observe('max', updateMax) : updateMax(100);
-    angular.isDefined(attr.step)? attr.$observe('step', updateStep) : updateStep(1);
-
-    // We have to manually stop the $watch on ngDisabled because it exists
-    // on the parent scope, and won't be automatically destroyed when
-    // the component is destroyed.
-    var stopDisabledWatch = angular.noop;
-    if (attr.ngDisabled) {
-      stopDisabledWatch = scope.$parent.$watch(attr.ngDisabled, updateAriaDisabled);
-    }
-
-    $mdGesture.register(element, 'drag');
-
-    element
-      .on('keydown', keydownListener)
-      .on('$md.pressdown', onPressDown)
-      .on('$md.pressup', onPressUp)
-      .on('$md.dragstart', onDragStart)
-      .on('$md.drag', onDrag)
-      .on('$md.dragend', onDragEnd);
-
-    // On resize, recalculate the slider's dimensions and re-render
-    function updateAll() {
-      refreshSliderDimensions();
-      ngModelRender();
-      redrawTicks();
-    }
-    setTimeout(updateAll, 0);
-
-    var debouncedUpdateAll = $$rAF.throttle(updateAll);
-    angular.element($window).on('resize', debouncedUpdateAll);
-
-    scope.$on('$destroy', function() {
-      angular.element($window).off('resize', debouncedUpdateAll);
-      stopDisabledWatch();
-    });
-
-    ngModelCtrl.$render = ngModelRender;
-    ngModelCtrl.$viewChangeListeners.push(ngModelRender);
-    ngModelCtrl.$formatters.push(minMaxValidator);
-    ngModelCtrl.$formatters.push(stepValidator);
-
-    /**
-     * Attributes
-     */
-    var min;
-    var max;
-    var step;
-    function updateMin(value) {
-      min = parseFloat(value);
-      element.attr('aria-valuemin', value);
-      updateAll();
-    }
-    function updateMax(value) {
-      max = parseFloat(value);
-      element.attr('aria-valuemax', value);
-      updateAll();
-    }
-    function updateStep(value) {
-      step = parseFloat(value);
-      redrawTicks();
-    }
-    function updateAriaDisabled(isDisabled) {
-      element.attr('aria-disabled', !!isDisabled);
-    }
-
-    // Draw the ticks with canvas.
-    // The alternative to drawing ticks with canvas is to draw one element for each tick,
-    // which could quickly become a performance bottleneck.
-    var tickCanvas, tickCtx;
-    function redrawTicks() {
-      if (!angular.isDefined(attr.mdDiscrete)) return;
-      if ( angular.isUndefined(step) )         return;
-
-      if ( step <= 0 ) {
-        var msg = 'Slider step value must be greater than zero when in discrete mode';
-        $log.error(msg);
-        throw new Error(msg);
-      }
-
-      var numSteps = Math.floor( (max - min) / step );
-      if (!tickCanvas) {
-        tickCanvas = angular.element('<canvas style="position:absolute;">');
-        tickContainer.append(tickCanvas);
-
-        var trackTicksStyle = $window.getComputedStyle(tickContainer[0]);
-        tickCtx = tickCanvas[0].getContext('2d');
-        tickCtx.fillStyle = trackTicksStyle.backgroundColor || 'black';
-      }
-
-      var dimensions = getSliderDimensions();
-      tickCanvas[0].width = dimensions.width;
-      tickCanvas[0].height = dimensions.height;
-
-      var distance;
-      for (var i = 0; i <= numSteps; i++) {
-        distance = Math.floor(dimensions.width * (i / numSteps));
-        tickCtx.fillRect(distance - 1, 0, 2, dimensions.height);
-      }
-    }
+// Add additional handlers to ng-show and ng-hide that notify directives
+// contained within that they should recompute their size.
+// These run in addition to Angular's built-in ng-hide and ng-show directives.
+angular.module('material.components.showHide', [
+  'material.core'
+])
+  .directive('ngShow', createDirective('ngShow', true))
+  .directive('ngHide', createDirective('ngHide', false));
 
 
-    /**
-     * Refreshing Dimensions
-     */
-    var sliderDimensions = {};
-    refreshSliderDimensions();
-    function refreshSliderDimensions() {
-      sliderDimensions = trackContainer[0].getBoundingClientRect();
-    }
-    function getSliderDimensions() {
-      throttledRefreshDimensions();
-      return sliderDimensions;
-    }
+function createDirective(name, targetValue) {
+  return ['$mdUtil', function($mdUtil) {
+    return {
+      restrict: 'A',
+      multiElement: true,
+      link: function($scope, $element, $attr) {
+        var unregister = $scope.$on('$md-resize-enable', function() {
+          unregister();
 
-    /**
-     * left/right arrow listener
-     */
-    function keydownListener(ev) {
-      if(element[0].hasAttribute('disabled')) {
-        return;
-      }
-
-      var changeAmount;
-      if (ev.keyCode === $mdConstant.KEY_CODE.LEFT_ARROW) {
-        changeAmount = -step;
-      } else if (ev.keyCode === $mdConstant.KEY_CODE.RIGHT_ARROW) {
-        changeAmount = step;
-      }
-      if (changeAmount) {
-        if (ev.metaKey || ev.ctrlKey || ev.altKey) {
-          changeAmount *= 4;
-        }
-        ev.preventDefault();
-        ev.stopPropagation();
-        scope.$evalAsync(function() {
-          setModelValue(ngModelCtrl.$viewValue + changeAmount);
+          $scope.$watch($attr[name], function(value) {
+            if (!!value === targetValue) {
+              $mdUtil.nextTick(function() {
+                $scope.$broadcast('$md-resize');
+              });
+              $mdUtil.dom.animator.waitTransitionEnd($element).then(function() {
+                $scope.$broadcast('$md-resize');
+              });
+            }
+          });
         });
       }
-    }
-
-    /**
-     * ngModel setters and validators
-     */
-    function setModelValue(value) {
-      ngModelCtrl.$setViewValue( minMaxValidator(stepValidator(value)) );
-    }
-    function ngModelRender() {
-      if (isNaN(ngModelCtrl.$viewValue)) {
-        ngModelCtrl.$viewValue = ngModelCtrl.$modelValue;
-      }
-
-      var percent = (ngModelCtrl.$viewValue - min) / (max - min);
-      scope.modelValue = ngModelCtrl.$viewValue;
-      element.attr('aria-valuenow', ngModelCtrl.$viewValue);
-      setSliderPercent(percent);
-      thumbText.text( ngModelCtrl.$viewValue );
-    }
-
-    function minMaxValidator(value) {
-      if (angular.isNumber(value)) {
-        return Math.max(min, Math.min(max, value));
-      }
-    }
-    function stepValidator(value) {
-      if (angular.isNumber(value)) {
-        var formattedValue = (Math.round((value - min) / step) * step + min);
-        // Format to 3 digits after the decimal point - fixes #2015.
-        return (Math.round(formattedValue * 1000) / 1000);
-      }
-    }
-
-    /**
-     * @param percent 0-1
-     */
-    function setSliderPercent(percent) {
-        var percentStr = (percent * 100) + '%';
-
-        activeTrack.css('width', percentStr);
-        thumbContainer.css('left',percentStr);
-
-        element.toggleClass('md-min', percent === 0);
-        element.toggleClass('md-max', percent === 1);
-    }
-
-
-    /**
-     * Slide listeners
-     */
-    var isDragging = false;
-    var isDiscrete = angular.isDefined(attr.mdDiscrete);
-
-    function onPressDown(ev) {
-      if (isDisabledGetter()) return;
-
-      element.addClass('md-active');
-      element[0].focus();
-      refreshSliderDimensions();
-
-      var exactVal = percentToValue( positionToPercent( ev.pointer.x ));
-      var closestVal = minMaxValidator( stepValidator(exactVal) );
-      scope.$apply(function() {
-        setModelValue( closestVal );
-        setSliderPercent( valueToPercent(closestVal));
-      });
-    }
-    function onPressUp(ev) {
-      if (isDisabledGetter()) return;
-
-      element.removeClass('md-dragging md-active');
-
-      var exactVal = percentToValue( positionToPercent( ev.pointer.x ));
-      var closestVal = minMaxValidator( stepValidator(exactVal) );
-      scope.$apply(function() {
-        setModelValue(closestVal);
-        ngModelRender();
-      });
-    }
-    function onDragStart(ev) {
-      if (isDisabledGetter()) return;
-      isDragging = true;
-      ev.stopPropagation();
-
-      element.addClass('md-dragging');
-      setSliderFromEvent(ev);
-    }
-    function onDrag(ev) {
-      if (!isDragging) return;
-      ev.stopPropagation();
-      setSliderFromEvent(ev);
-    }
-    function onDragEnd(ev) {
-      if (!isDragging) return;
-      ev.stopPropagation();
-      isDragging = false;
-    }
-
-    function setSliderFromEvent(ev) {
-      // While panning discrete, update only the
-      // visual positioning but not the model value.
-      if ( isDiscrete ) adjustThumbPosition( ev.pointer.x );
-      else              doSlide( ev.pointer.x );
-    }
-
-    /**
-     * Slide the UI by changing the model value
-     * @param x
-     */
-    function doSlide( x ) {
-      scope.$evalAsync( function() {
-        setModelValue( percentToValue( positionToPercent(x) ));
-      });
-    }
-
-    /**
-     * Slide the UI without changing the model (while dragging/panning)
-     * @param x
-     */
-    function adjustThumbPosition( x ) {
-      var exactVal = percentToValue( positionToPercent( x ));
-      var closestVal = minMaxValidator( stepValidator(exactVal) );
-      setSliderPercent( positionToPercent(x) );
-      thumbText.text( closestVal );
-    }
-
-    /**
-     * Convert horizontal position on slider to percentage value of offset from beginning...
-     * @param x
-     * @returns {number}
-     */
-    function positionToPercent( x ) {
-      return Math.max(0, Math.min(1, (x - sliderDimensions.left) / (sliderDimensions.width)));
-    }
-
-    /**
-     * Convert percentage offset on slide to equivalent model value
-     * @param percent
-     * @returns {*}
-     */
-    function percentToValue( percent ) {
-      return (min + percent * (max - min));
-    }
-
-    function valueToPercent( val ) {
-      return (val - min)/(max - min);
-    }
-  }
+    };
+  }];
 }
-SliderDirective.$inject = ["$$rAF", "$window", "$mdAria", "$mdUtil", "$mdConstant", "$mdTheming", "$mdGesture", "$parse", "$log"];
-
 })();
 (function(){
 "use strict";
@@ -15724,6 +15332,417 @@ function SidenavController($scope, $element, $attrs, $mdComponentRegistry, $q) {
   self.destroy = $mdComponentRegistry.register(self, $attrs.mdComponentId);
 }
 SidenavController.$inject = ["$scope", "$element", "$attrs", "$mdComponentRegistry", "$q"];
+
+})();
+(function(){
+"use strict";
+
+  /**
+   * @ngdoc module
+   * @name material.components.slider
+   */
+  angular.module('material.components.slider', [
+    'material.core'
+  ])
+  .directive('mdSlider', SliderDirective);
+
+/**
+ * @ngdoc directive
+ * @name mdSlider
+ * @module material.components.slider
+ * @restrict E
+ * @description
+ * The `<md-slider>` component allows the user to choose from a range of
+ * values.
+ *
+ * As per the [material design spec](http://www.google.com/design/spec/style/color.html#color-ui-color-application)
+ * the slider is in the accent color by default. The primary color palette may be used with
+ * the `md-primary` class.
+ *
+ * It has two modes: 'normal' mode, where the user slides between a wide range
+ * of values, and 'discrete' mode, where the user slides between only a few
+ * select values.
+ *
+ * To enable discrete mode, add the `md-discrete` attribute to a slider,
+ * and use the `step` attribute to change the distance between
+ * values the user is allowed to pick.
+ *
+ * @usage
+ * <h4>Normal Mode</h4>
+ * <hljs lang="html">
+ * <md-slider ng-model="myValue" min="5" max="500">
+ * </md-slider>
+ * </hljs>
+ * <h4>Discrete Mode</h4>
+ * <hljs lang="html">
+ * <md-slider md-discrete ng-model="myDiscreteValue" step="10" min="10" max="130">
+ * </md-slider>
+ * </hljs>
+ *
+ * @param {boolean=} md-discrete Whether to enable discrete mode.
+ * @param {number=} step The distance between values the user is allowed to pick. Default 1.
+ * @param {number=} min The minimum value the user is allowed to pick. Default 0.
+ * @param {number=} max The maximum value the user is allowed to pick. Default 100.
+ */
+function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdTheming, $mdGesture, $parse, $log) {
+  return {
+    scope: {},
+    require: '?ngModel',
+    template:
+      '<div class="md-slider-wrapper">' +
+        '<div class="md-track-container">' +
+          '<div class="md-track"></div>' +
+          '<div class="md-track md-track-fill"></div>' +
+          '<div class="md-track-ticks"></div>' +
+        '</div>' +
+        '<div class="md-thumb-container">' +
+          '<div class="md-thumb"></div>' +
+          '<div class="md-focus-thumb"></div>' +
+          '<div class="md-focus-ring"></div>' +
+          '<div class="md-sign">' +
+            '<span class="md-thumb-text"></span>' +
+          '</div>' +
+          '<div class="md-disabled-thumb"></div>' +
+        '</div>' +
+      '</div>',
+    compile: compile
+  };
+
+  // **********************************************************
+  // Private Methods
+  // **********************************************************
+
+  function compile (tElement, tAttrs) {
+    tElement.attr({
+      tabIndex: 0,
+      role: 'slider'
+    });
+
+    $mdAria.expect(tElement, 'aria-label');
+
+    return postLink;
+  }
+
+  function postLink(scope, element, attr, ngModelCtrl) {
+    $mdTheming(element);
+    ngModelCtrl = ngModelCtrl || {
+      // Mock ngModelController if it doesn't exist to give us
+      // the minimum functionality needed
+      $setViewValue: function(val) {
+        this.$viewValue = val;
+        this.$viewChangeListeners.forEach(function(cb) { cb(); });
+      },
+      $parsers: [],
+      $formatters: [],
+      $viewChangeListeners: []
+    };
+
+    var isDisabledGetter = angular.noop;
+    if (attr.disabled != null) {
+      isDisabledGetter = function() { return true; };
+    } else if (attr.ngDisabled) {
+      isDisabledGetter = angular.bind(null, $parse(attr.ngDisabled), scope.$parent);
+    }
+
+    var thumb = angular.element(element[0].querySelector('.md-thumb'));
+    var thumbText = angular.element(element[0].querySelector('.md-thumb-text'));
+    var thumbContainer = thumb.parent();
+    var trackContainer = angular.element(element[0].querySelector('.md-track-container'));
+    var activeTrack = angular.element(element[0].querySelector('.md-track-fill'));
+    var tickContainer = angular.element(element[0].querySelector('.md-track-ticks'));
+    var throttledRefreshDimensions = $mdUtil.throttle(refreshSliderDimensions, 5000);
+
+    // Default values, overridable by attrs
+    angular.isDefined(attr.min) ? attr.$observe('min', updateMin) : updateMin(0);
+    angular.isDefined(attr.max) ? attr.$observe('max', updateMax) : updateMax(100);
+    angular.isDefined(attr.step)? attr.$observe('step', updateStep) : updateStep(1);
+
+    // We have to manually stop the $watch on ngDisabled because it exists
+    // on the parent scope, and won't be automatically destroyed when
+    // the component is destroyed.
+    var stopDisabledWatch = angular.noop;
+    if (attr.ngDisabled) {
+      stopDisabledWatch = scope.$parent.$watch(attr.ngDisabled, updateAriaDisabled);
+    }
+
+    $mdGesture.register(element, 'drag');
+
+    element
+      .on('keydown', keydownListener)
+      .on('$md.pressdown', onPressDown)
+      .on('$md.pressup', onPressUp)
+      .on('$md.dragstart', onDragStart)
+      .on('$md.drag', onDrag)
+      .on('$md.dragend', onDragEnd);
+
+    // On resize, recalculate the slider's dimensions and re-render
+    function updateAll() {
+      refreshSliderDimensions();
+      ngModelRender();
+      redrawTicks();
+    }
+    setTimeout(updateAll, 0);
+
+    var debouncedUpdateAll = $$rAF.throttle(updateAll);
+    angular.element($window).on('resize', debouncedUpdateAll);
+
+    scope.$on('$destroy', function() {
+      angular.element($window).off('resize', debouncedUpdateAll);
+      stopDisabledWatch();
+    });
+
+    ngModelCtrl.$render = ngModelRender;
+    ngModelCtrl.$viewChangeListeners.push(ngModelRender);
+    ngModelCtrl.$formatters.push(minMaxValidator);
+    ngModelCtrl.$formatters.push(stepValidator);
+
+    /**
+     * Attributes
+     */
+    var min;
+    var max;
+    var step;
+    function updateMin(value) {
+      min = parseFloat(value);
+      element.attr('aria-valuemin', value);
+      updateAll();
+    }
+    function updateMax(value) {
+      max = parseFloat(value);
+      element.attr('aria-valuemax', value);
+      updateAll();
+    }
+    function updateStep(value) {
+      step = parseFloat(value);
+      redrawTicks();
+    }
+    function updateAriaDisabled(isDisabled) {
+      element.attr('aria-disabled', !!isDisabled);
+    }
+
+    // Draw the ticks with canvas.
+    // The alternative to drawing ticks with canvas is to draw one element for each tick,
+    // which could quickly become a performance bottleneck.
+    var tickCanvas, tickCtx;
+    function redrawTicks() {
+      if (!angular.isDefined(attr.mdDiscrete)) return;
+      if ( angular.isUndefined(step) )         return;
+
+      if ( step <= 0 ) {
+        var msg = 'Slider step value must be greater than zero when in discrete mode';
+        $log.error(msg);
+        throw new Error(msg);
+      }
+
+      var numSteps = Math.floor( (max - min) / step );
+      if (!tickCanvas) {
+        tickCanvas = angular.element('<canvas style="position:absolute;">');
+        tickContainer.append(tickCanvas);
+
+        var trackTicksStyle = $window.getComputedStyle(tickContainer[0]);
+        tickCtx = tickCanvas[0].getContext('2d');
+        tickCtx.fillStyle = trackTicksStyle.backgroundColor || 'black';
+      }
+
+      var dimensions = getSliderDimensions();
+      tickCanvas[0].width = dimensions.width;
+      tickCanvas[0].height = dimensions.height;
+
+      var distance;
+      for (var i = 0; i <= numSteps; i++) {
+        distance = Math.floor(dimensions.width * (i / numSteps));
+        tickCtx.fillRect(distance - 1, 0, 2, dimensions.height);
+      }
+    }
+
+
+    /**
+     * Refreshing Dimensions
+     */
+    var sliderDimensions = {};
+    refreshSliderDimensions();
+    function refreshSliderDimensions() {
+      sliderDimensions = trackContainer[0].getBoundingClientRect();
+    }
+    function getSliderDimensions() {
+      throttledRefreshDimensions();
+      return sliderDimensions;
+    }
+
+    /**
+     * left/right arrow listener
+     */
+    function keydownListener(ev) {
+      if(element[0].hasAttribute('disabled')) {
+        return;
+      }
+
+      var changeAmount;
+      if (ev.keyCode === $mdConstant.KEY_CODE.LEFT_ARROW) {
+        changeAmount = -step;
+      } else if (ev.keyCode === $mdConstant.KEY_CODE.RIGHT_ARROW) {
+        changeAmount = step;
+      }
+      if (changeAmount) {
+        if (ev.metaKey || ev.ctrlKey || ev.altKey) {
+          changeAmount *= 4;
+        }
+        ev.preventDefault();
+        ev.stopPropagation();
+        scope.$evalAsync(function() {
+          setModelValue(ngModelCtrl.$viewValue + changeAmount);
+        });
+      }
+    }
+
+    /**
+     * ngModel setters and validators
+     */
+    function setModelValue(value) {
+      ngModelCtrl.$setViewValue( minMaxValidator(stepValidator(value)) );
+    }
+    function ngModelRender() {
+      if (isNaN(ngModelCtrl.$viewValue)) {
+        ngModelCtrl.$viewValue = ngModelCtrl.$modelValue;
+      }
+
+      var percent = (ngModelCtrl.$viewValue - min) / (max - min);
+      scope.modelValue = ngModelCtrl.$viewValue;
+      element.attr('aria-valuenow', ngModelCtrl.$viewValue);
+      setSliderPercent(percent);
+      thumbText.text( ngModelCtrl.$viewValue );
+    }
+
+    function minMaxValidator(value) {
+      if (angular.isNumber(value)) {
+        return Math.max(min, Math.min(max, value));
+      }
+    }
+    function stepValidator(value) {
+      if (angular.isNumber(value)) {
+        var formattedValue = (Math.round((value - min) / step) * step + min);
+        // Format to 3 digits after the decimal point - fixes #2015.
+        return (Math.round(formattedValue * 1000) / 1000);
+      }
+    }
+
+    /**
+     * @param percent 0-1
+     */
+    function setSliderPercent(percent) {
+        var percentStr = (percent * 100) + '%';
+
+        activeTrack.css('width', percentStr);
+        thumbContainer.css('left',percentStr);
+
+        element.toggleClass('md-min', percent === 0);
+        element.toggleClass('md-max', percent === 1);
+    }
+
+
+    /**
+     * Slide listeners
+     */
+    var isDragging = false;
+    var isDiscrete = angular.isDefined(attr.mdDiscrete);
+
+    function onPressDown(ev) {
+      if (isDisabledGetter()) return;
+
+      element.addClass('md-active');
+      element[0].focus();
+      refreshSliderDimensions();
+
+      var exactVal = percentToValue( positionToPercent( ev.pointer.x ));
+      var closestVal = minMaxValidator( stepValidator(exactVal) );
+      scope.$apply(function() {
+        setModelValue( closestVal );
+        setSliderPercent( valueToPercent(closestVal));
+      });
+    }
+    function onPressUp(ev) {
+      if (isDisabledGetter()) return;
+
+      element.removeClass('md-dragging md-active');
+
+      var exactVal = percentToValue( positionToPercent( ev.pointer.x ));
+      var closestVal = minMaxValidator( stepValidator(exactVal) );
+      scope.$apply(function() {
+        setModelValue(closestVal);
+        ngModelRender();
+      });
+    }
+    function onDragStart(ev) {
+      if (isDisabledGetter()) return;
+      isDragging = true;
+      ev.stopPropagation();
+
+      element.addClass('md-dragging');
+      setSliderFromEvent(ev);
+    }
+    function onDrag(ev) {
+      if (!isDragging) return;
+      ev.stopPropagation();
+      setSliderFromEvent(ev);
+    }
+    function onDragEnd(ev) {
+      if (!isDragging) return;
+      ev.stopPropagation();
+      isDragging = false;
+    }
+
+    function setSliderFromEvent(ev) {
+      // While panning discrete, update only the
+      // visual positioning but not the model value.
+      if ( isDiscrete ) adjustThumbPosition( ev.pointer.x );
+      else              doSlide( ev.pointer.x );
+    }
+
+    /**
+     * Slide the UI by changing the model value
+     * @param x
+     */
+    function doSlide( x ) {
+      scope.$evalAsync( function() {
+        setModelValue( percentToValue( positionToPercent(x) ));
+      });
+    }
+
+    /**
+     * Slide the UI without changing the model (while dragging/panning)
+     * @param x
+     */
+    function adjustThumbPosition( x ) {
+      var exactVal = percentToValue( positionToPercent( x ));
+      var closestVal = minMaxValidator( stepValidator(exactVal) );
+      setSliderPercent( positionToPercent(x) );
+      thumbText.text( closestVal );
+    }
+
+    /**
+     * Convert horizontal position on slider to percentage value of offset from beginning...
+     * @param x
+     * @returns {number}
+     */
+    function positionToPercent( x ) {
+      return Math.max(0, Math.min(1, (x - sliderDimensions.left) / (sliderDimensions.width)));
+    }
+
+    /**
+     * Convert percentage offset on slide to equivalent model value
+     * @param percent
+     * @returns {*}
+     */
+    function percentToValue( percent ) {
+      return (min + percent * (max - min));
+    }
+
+    function valueToPercent( val ) {
+      return (val - min)/(max - min);
+    }
+  }
+}
+SliderDirective.$inject = ["$$rAF", "$window", "$mdAria", "$mdUtil", "$mdConstant", "$mdTheming", "$mdGesture", "$parse", "$log"];
 
 })();
 (function(){
@@ -16152,6 +16171,107 @@ MdSubheaderDirective.$inject = ["$mdSticky", "$compile", "$mdTheming", "$mdUtil"
 "use strict";
 
 /**
+ * @ngdoc module
+ * @name material.components.swipe
+ * @description Swipe module!
+ */
+/**
+ * @ngdoc directive
+ * @module material.components.swipe
+ * @name mdSwipeLeft
+ *
+ * @restrict A
+ *
+ * @description
+ * The md-swipe-left directive allows you to specify custom behavior when an element is swiped
+ * left.
+ *
+ * @usage
+ * <hljs lang="html">
+ * <div md-swipe-left="onSwipeLeft()">Swipe me left!</div>
+ * </hljs>
+ */
+/**
+ * @ngdoc directive
+ * @module material.components.swipe
+ * @name mdSwipeRight
+ *
+ * @restrict A
+ *
+ * @description
+ * The md-swipe-right directive allows you to specify custom behavior when an element is swiped
+ * right.
+ *
+ * @usage
+ * <hljs lang="html">
+ * <div md-swipe-right="onSwipeRight()">Swipe me right!</div>
+ * </hljs>
+ */
+/**
+ * @ngdoc directive
+ * @module material.components.swipe
+ * @name mdSwipeUp
+ *
+ * @restrict A
+ *
+ * @description
+ * The md-swipe-up directive allows you to specify custom behavior when an element is swiped
+ * up.
+ *
+ * @usage
+ * <hljs lang="html">
+ * <div md-swipe-up="onSwipeUp()">Swipe me up!</div>
+ * </hljs>
+ */
+/**
+ * @ngdoc directive
+ * @module material.components.swipe
+ * @name mdSwipeDown
+ *
+ * @restrict A
+ *
+ * @description
+ * The md-swipe-down directive allows you to specify custom behavior when an element is swiped
+ * down.
+ *
+ * @usage
+ * <hljs lang="html">
+ * <div md-swipe-down="onSwipDown()">Swipe me down!</div>
+ * </hljs>
+ */
+
+angular.module('material.components.swipe', ['material.core'])
+    .directive('mdSwipeLeft', getDirective('SwipeLeft'))
+    .directive('mdSwipeRight', getDirective('SwipeRight'))
+    .directive('mdSwipeUp', getDirective('SwipeUp'))
+    .directive('mdSwipeDown', getDirective('SwipeDown'));
+
+function getDirective(name) {
+  var directiveName = 'md' + name;
+  var eventName = '$md.' + name.toLowerCase();
+
+    DirectiveFactory.$inject = ["$parse"];
+  return DirectiveFactory;
+
+  /* @ngInject */
+  function DirectiveFactory($parse) {
+      return { restrict: 'A', link: postLink };
+      function postLink(scope, element, attr) {
+        var fn = $parse(attr[directiveName]);
+        element.on(eventName, function(ev) {
+          scope.$apply(function() { fn(scope, { $event: ev }); });
+        });
+      }
+    }
+}
+
+
+
+})();
+(function(){
+"use strict";
+
+/**
  * @private
  * @ngdoc module
  * @name material.components.switch
@@ -16314,107 +16434,6 @@ function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdG
 
 }
 MdSwitch.$inject = ["mdCheckboxDirective", "$mdUtil", "$mdConstant", "$parse", "$$rAF", "$mdGesture"];
-
-})();
-(function(){
-"use strict";
-
-/**
- * @ngdoc module
- * @name material.components.swipe
- * @description Swipe module!
- */
-/**
- * @ngdoc directive
- * @module material.components.swipe
- * @name mdSwipeLeft
- *
- * @restrict A
- *
- * @description
- * The md-swipe-left directive allows you to specify custom behavior when an element is swiped
- * left.
- *
- * @usage
- * <hljs lang="html">
- * <div md-swipe-left="onSwipeLeft()">Swipe me left!</div>
- * </hljs>
- */
-/**
- * @ngdoc directive
- * @module material.components.swipe
- * @name mdSwipeRight
- *
- * @restrict A
- *
- * @description
- * The md-swipe-right directive allows you to specify custom behavior when an element is swiped
- * right.
- *
- * @usage
- * <hljs lang="html">
- * <div md-swipe-right="onSwipeRight()">Swipe me right!</div>
- * </hljs>
- */
-/**
- * @ngdoc directive
- * @module material.components.swipe
- * @name mdSwipeUp
- *
- * @restrict A
- *
- * @description
- * The md-swipe-up directive allows you to specify custom behavior when an element is swiped
- * up.
- *
- * @usage
- * <hljs lang="html">
- * <div md-swipe-up="onSwipeUp()">Swipe me up!</div>
- * </hljs>
- */
-/**
- * @ngdoc directive
- * @module material.components.swipe
- * @name mdSwipeDown
- *
- * @restrict A
- *
- * @description
- * The md-swipe-down directive allows you to specify custom behavior when an element is swiped
- * down.
- *
- * @usage
- * <hljs lang="html">
- * <div md-swipe-down="onSwipDown()">Swipe me down!</div>
- * </hljs>
- */
-
-angular.module('material.components.swipe', ['material.core'])
-    .directive('mdSwipeLeft', getDirective('SwipeLeft'))
-    .directive('mdSwipeRight', getDirective('SwipeRight'))
-    .directive('mdSwipeUp', getDirective('SwipeUp'))
-    .directive('mdSwipeDown', getDirective('SwipeDown'));
-
-function getDirective(name) {
-  var directiveName = 'md' + name;
-  var eventName = '$md.' + name.toLowerCase();
-
-    DirectiveFactory.$inject = ["$parse"];
-  return DirectiveFactory;
-
-  /* @ngInject */
-  function DirectiveFactory($parse) {
-      return { restrict: 'A', link: postLink };
-      function postLink(scope, element, attr) {
-        var fn = $parse(attr[directiveName]);
-        element.on(eventName, function(ev) {
-          scope.$apply(function() { fn(scope, { $event: ev }); });
-        });
-      }
-    }
-}
-
-
 
 })();
 (function(){
@@ -17078,6 +17097,302 @@ mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming", "
 
 /**
  * @ngdoc module
+ * @name material.components.tooltip
+ */
+angular
+    .module('material.components.tooltip', [ 'material.core' ])
+    .directive('mdTooltip', MdTooltipDirective);
+
+/**
+ * @ngdoc directive
+ * @name mdTooltip
+ * @module material.components.tooltip
+ * @description
+ * Tooltips are used to describe elements that are interactive and primarily graphical (not textual).
+ *
+ * Place a `<md-tooltip>` as a child of the element it describes.
+ *
+ * A tooltip will activate when the user focuses, hovers over, or touches the parent.
+ *
+ * @usage
+ * <hljs lang="html">
+ * <md-button class="md-fab md-accent" aria-label="Play">
+ *   <md-tooltip>
+ *     Play Music
+ *   </md-tooltip>
+ *   <md-icon icon="img/icons/ic_play_arrow_24px.svg"></md-icon>
+ * </md-button>
+ * </hljs>
+ *
+ * @param {expression=} md-visible Boolean bound to whether the tooltip is currently visible.
+ * @param {number=} md-delay How many milliseconds to wait to show the tooltip after the user focuses, hovers, or touches the parent. Defaults to 300ms.
+ * @param {boolean=} md-autohide If present or provided with a boolean value, the tooltip will hide on mouse leave, regardless of focus
+ * @param {string=} md-direction Which direction would you like the tooltip to go?  Supports left, right, top, and bottom.  Defaults to bottom.
+ */
+function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdTheming, $rootElement,
+                            $animate, $q) {
+
+  var TOOLTIP_SHOW_DELAY = 0;
+  var TOOLTIP_WINDOW_EDGE_SPACE = 8;
+
+  return {
+    restrict: 'E',
+    transclude: true,
+    priority:210, // Before ngAria
+    template: '<div class="md-content" ng-transclude></div>',
+    scope: {
+      delay: '=?mdDelay',
+      visible: '=?mdVisible',
+      autohide: '=?mdAutohide',
+      direction: '@?mdDirection'    // only expect raw or interpolated string value; not expression
+    },
+    link: postLink
+  };
+
+  function postLink(scope, element, attr) {
+
+    $mdTheming(element);
+
+    var parent        = $mdUtil.getParentWithPointerEvents(element),
+        content       = angular.element(element[0].getElementsByClassName('md-content')[0]),
+        tooltipParent = angular.element(document.body),
+        debouncedOnResize = $$rAF.throttle(function () { updatePosition(); });
+
+    if ($animate.pin) $animate.pin(element, parent);
+
+    // Initialize element
+
+    setDefaults();
+    manipulateElement();
+    bindEvents();
+
+    // Default origin transform point is 'center top'
+    // positionTooltip() is always relative to center top
+    updateContentOrigin();
+
+    configureWatchers();
+    addAriaLabel();
+
+
+    function setDefaults () {
+      if (!angular.isDefined(attr.mdDelay)) scope.delay = TOOLTIP_SHOW_DELAY;
+    }
+
+    function updateContentOrigin() {
+      var origin = 'center top';
+      switch (scope.direction) {
+        case 'left'  : origin =  'right center';  break;
+        case 'right' : origin =  'left center';   break;
+        case 'top'   : origin =  'center bottom'; break;
+        case 'bottom': origin =  'center top';    break;
+      }
+      content.css('transform-origin', origin);
+    }
+
+    function configureWatchers () {
+      scope.$on('$destroy', function() {
+        scope.visible = false;
+        element.remove();
+        angular.element($window).off('resize', debouncedOnResize);
+      });
+
+      scope.$watch('visible', function (isVisible) {
+        if (isVisible) showTooltip();
+        else hideTooltip();
+      });
+
+      scope.$watch('direction', updatePosition );
+    }
+
+    function addAriaLabel () {
+      if (!parent.attr('aria-label') && !parent.text().trim()) {
+        parent.attr('aria-label', element.text().trim());
+      }
+    }
+
+    function manipulateElement () {
+      element.detach();
+      element.attr('role', 'tooltip');
+    }
+
+    function bindEvents () {
+      var mouseActive = false;
+
+      var ngWindow = angular.element($window);
+
+      // add an mutationObserver when there is support for it
+      // and the need for it in the form of viable host(parent[0])
+      if (parent[0] && 'MutationObserver' in $window) {
+        // use an mutationObserver to tackle #2602
+        var attributeObserver = new MutationObserver(function(mutations) {
+          mutations
+            .forEach(function (mutation) {
+              if (mutation.attributeName === 'disabled' && parent[0].disabled) {
+                setVisible(false);
+                scope.$digest(); // make sure the elements gets updated
+              }
+            });
+        });
+
+        attributeObserver.observe(parent[0], { attributes: true});
+      }
+
+      // Store whether the element was focused when the window loses focus.
+      var windowBlurHandler = function() {
+        elementFocusedOnWindowBlur = document.activeElement === parent[0];
+      };
+      var elementFocusedOnWindowBlur = false;
+
+      function windowScrollHandler() {
+        setVisible(false);
+      }
+      
+      ngWindow.on('blur', windowBlurHandler);
+      ngWindow.on('resize', debouncedOnResize);
+      document.addEventListener('scroll', windowScrollHandler, true);
+      scope.$on('$destroy', function() {
+        ngWindow.off('blur', windowBlurHandler);
+        ngWindow.off('resize', debouncedOnResize);
+        document.removeEventListener('scroll', windowScrollHandler, true);
+        attributeObserver && attributeObserver.disconnect();
+      });
+
+      var enterHandler = function(e) {
+        // Prevent the tooltip from showing when the window is receiving focus.
+        if (e.type === 'focus' && elementFocusedOnWindowBlur) {
+          elementFocusedOnWindowBlur = false;
+          return;
+        }
+        parent.on('blur mouseleave touchend touchcancel', leaveHandler );
+        setVisible(true);
+      };
+      var leaveHandler = function () {
+        var autohide = scope.hasOwnProperty('autohide') ? scope.autohide : attr.hasOwnProperty('mdAutohide');
+        if (autohide || mouseActive || ($document[0].activeElement !== parent[0]) ) {
+          parent.off('blur mouseleave touchend touchcancel', leaveHandler );
+          parent.triggerHandler("blur");
+          setVisible(false);
+        }
+        mouseActive = false;
+      };
+
+      // to avoid `synthetic clicks` we listen to mousedown instead of `click`
+      parent.on('mousedown', function() { mouseActive = true; });
+      parent.on('focus mouseenter touchstart', enterHandler );
+
+
+    }
+
+    function setVisible (value) {
+      setVisible.value = !!value;
+      if (!setVisible.queued) {
+        if (value) {
+          setVisible.queued = true;
+          $timeout(function() {
+            scope.visible = setVisible.value;
+            setVisible.queued = false;
+          }, scope.delay);
+        } else {
+          $mdUtil.nextTick(function() { scope.visible = false; });
+        }
+      }
+    }
+
+    function showTooltip() {
+      // Insert the element before positioning it, so we can get the position
+      // and check if we should display it
+      tooltipParent.append(element);
+
+      // Check if we should display it or not.
+      // This handles hide-* and show-* along with any user defined css
+      if ( $mdUtil.hasComputedStyle(element, 'display', 'none')) {
+        scope.visible = false;
+        element.detach();
+        return;
+      }
+
+      updatePosition();
+
+      angular.forEach([element, content], function (element) {
+        $animate.addClass(element, 'md-show');
+      });
+    }
+
+    function hideTooltip() {
+        var promises = [];
+        angular.forEach([element, content], function (it) {
+          if (it.parent() && it.hasClass('md-show')) {
+            promises.push($animate.removeClass(it, 'md-show'));
+          }
+        });
+
+        $q.all(promises)
+          .then(function () {
+            if (!scope.visible) element.detach();
+          });
+    }
+
+    function updatePosition() {
+      if ( !scope.visible ) return;
+
+      updateContentOrigin();
+      positionTooltip();
+    }
+
+    function positionTooltip() {
+      var tipRect = $mdUtil.offsetRect(element, tooltipParent);
+      var parentRect = $mdUtil.offsetRect(parent, tooltipParent);
+      var newPosition = getPosition(scope.direction);
+      var offsetParent = element.prop('offsetParent');
+
+      // If the user provided a direction, just nudge the tooltip onto the screen
+      // Otherwise, recalculate based on 'top' since default is 'bottom'
+      if (scope.direction) {
+        newPosition = fitInParent(newPosition);
+      } else if (offsetParent && newPosition.top > offsetParent.scrollHeight - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE) {
+        newPosition = fitInParent(getPosition('top'));
+      }
+
+      element.css({
+        left: newPosition.left + 'px',
+        top: newPosition.top + 'px'
+      });
+
+      function fitInParent (pos) {
+        var newPosition = { left: pos.left, top: pos.top };
+        newPosition.left = Math.min( newPosition.left, tooltipParent.prop('scrollWidth') - tipRect.width - TOOLTIP_WINDOW_EDGE_SPACE );
+        newPosition.left = Math.max( newPosition.left, TOOLTIP_WINDOW_EDGE_SPACE );
+        newPosition.top  = Math.min( newPosition.top,  tooltipParent.prop('scrollHeight') - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE );
+        newPosition.top  = Math.max( newPosition.top,  TOOLTIP_WINDOW_EDGE_SPACE );
+        return newPosition;
+      }
+
+      function getPosition (dir) {
+        return dir === 'left'
+          ? { left: parentRect.left - tipRect.width - TOOLTIP_WINDOW_EDGE_SPACE,
+              top: parentRect.top + parentRect.height / 2 - tipRect.height / 2 }
+          : dir === 'right'
+          ? { left: parentRect.left + parentRect.width + TOOLTIP_WINDOW_EDGE_SPACE,
+              top: parentRect.top + parentRect.height / 2 - tipRect.height / 2 }
+          : dir === 'top'
+          ? { left: parentRect.left + parentRect.width / 2 - tipRect.width / 2,
+              top: parentRect.top - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE }
+          : { left: parentRect.left + parentRect.width / 2 - tipRect.width / 2,
+              top: parentRect.top + parentRect.height + TOOLTIP_WINDOW_EDGE_SPACE };
+      }
+    }
+
+  }
+
+}
+MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdUtil", "$mdTheming", "$rootElement", "$animate", "$q"];
+
+})();
+(function(){
+"use strict";
+
+/**
+ * @ngdoc module
  * @name material.components.virtualRepeat
  */
 angular.module('material.components.virtualRepeat', [
@@ -17182,6 +17497,8 @@ function VirtualRepeatContainerController(
   this.originalSize = null;
   /** @type {number} Amount to offset the total scroll size by. */
   this.offsetSize = parseInt(this.$attrs.mdOffsetSize, 10) || 0;
+  /** @type {?string} height or width element style on the container prior to auto-shrinking. */
+  this.oldElementSize = null;
 
   if (this.$attrs.mdTopIndex) {
     /** @type {function(angular.Scope): number} Binds to topIndex on Angular scope */
@@ -17263,8 +17580,16 @@ VirtualRepeatContainerController.prototype.getSize = function() {
  * @param {number} The new size to set.
  */
 VirtualRepeatContainerController.prototype.setSize_ = function(size) {
+  var dimension = this.getDimensionName_();
+
   this.size = size;
-  this.$element[0].style[this.isHorizontal() ? 'width' : 'height'] = size + 'px';
+  this.$element[0].style[dimension] = size + 'px';
+};
+
+
+VirtualRepeatContainerController.prototype.unsetSize_ = function() {
+  this.$element[0].style[this.getDimensionName_()] = this.oldElementSize;
+  this.oldElementSize = null;
 };
 
 
@@ -17276,6 +17601,11 @@ VirtualRepeatContainerController.prototype.updateSize = function() {
       ? this.$element[0].clientWidth
       : this.$element[0].clientHeight;
 
+  // Recheck the scroll position after updating the size. This resolves
+  // problems that can result if the scroll position was measured while the
+  // element was display: none or detached from the document.
+  this.handleScroll_();
+
   this.repeater && this.repeater.containerUpdated();
 };
 
@@ -17286,13 +17616,18 @@ VirtualRepeatContainerController.prototype.getScrollSize = function() {
 };
 
 
+VirtualRepeatContainerController.prototype.getDimensionName_ = function() {
+  return this.isHorizontal() ? 'width' : 'height';
+};
+
+
 /**
  * Sets the scroller element to the specified size.
  * @private
  * @param {number} size The new size.
  */
 VirtualRepeatContainerController.prototype.sizeScroller_ = function(size) {
-  var dimension =  this.isHorizontal() ? 'width' : 'height';
+  var dimension =  this.getDimensionName_();
   var crossDimension = this.isHorizontal() ? 'height' : 'width';
 
   // Clear any existing dimensions.
@@ -17334,6 +17669,10 @@ VirtualRepeatContainerController.prototype.sizeScroller_ = function(size) {
 VirtualRepeatContainerController.prototype.autoShrink_ = function(size) {
   var shrinkSize = Math.max(size, this.autoShrinkMin * this.repeater.getItemSize());
   if (this.autoShrink && shrinkSize !== this.size) {
+    if (this.oldElementSize === null) {
+      this.oldElementSize = this.$element[0].style[this.getDimensionName_()];
+    }
+
     var currentSize = this.originalSize || this.size;
     if (!currentSize || shrinkSize < currentSize) {
       if (!this.originalSize) {
@@ -17341,9 +17680,10 @@ VirtualRepeatContainerController.prototype.autoShrink_ = function(size) {
       }
 
       this.setSize_(shrinkSize);
-    } else if (this.originalSize) {
-      this.setSize_(this.originalSize);
+    } else if (this.originalSize !== null) {
+      this.unsetSize_();
       this.originalSize = null;
+      this.updateSize();
     }
 
     this.repeater.containerUpdated();
@@ -17944,302 +18284,6 @@ VirtualRepeatModelArrayLike.prototype.$$includeIndexes = function(start, end) {
 function abstractMethod() {
   throw Error('Non-overridden abstract method called.');
 }
-
-})();
-(function(){
-"use strict";
-
-/**
- * @ngdoc module
- * @name material.components.tooltip
- */
-angular
-    .module('material.components.tooltip', [ 'material.core' ])
-    .directive('mdTooltip', MdTooltipDirective);
-
-/**
- * @ngdoc directive
- * @name mdTooltip
- * @module material.components.tooltip
- * @description
- * Tooltips are used to describe elements that are interactive and primarily graphical (not textual).
- *
- * Place a `<md-tooltip>` as a child of the element it describes.
- *
- * A tooltip will activate when the user focuses, hovers over, or touches the parent.
- *
- * @usage
- * <hljs lang="html">
- * <md-button class="md-fab md-accent" aria-label="Play">
- *   <md-tooltip>
- *     Play Music
- *   </md-tooltip>
- *   <md-icon icon="img/icons/ic_play_arrow_24px.svg"></md-icon>
- * </md-button>
- * </hljs>
- *
- * @param {expression=} md-visible Boolean bound to whether the tooltip is currently visible.
- * @param {number=} md-delay How many milliseconds to wait to show the tooltip after the user focuses, hovers, or touches the parent. Defaults to 300ms.
- * @param {boolean=} md-autohide If present or provided with a boolean value, the tooltip will hide on mouse leave, regardless of focus
- * @param {string=} md-direction Which direction would you like the tooltip to go?  Supports left, right, top, and bottom.  Defaults to bottom.
- */
-function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdTheming, $rootElement,
-                            $animate, $q) {
-
-  var TOOLTIP_SHOW_DELAY = 0;
-  var TOOLTIP_WINDOW_EDGE_SPACE = 8;
-
-  return {
-    restrict: 'E',
-    transclude: true,
-    priority:210, // Before ngAria
-    template: '<div class="md-content" ng-transclude></div>',
-    scope: {
-      delay: '=?mdDelay',
-      visible: '=?mdVisible',
-      autohide: '=?mdAutohide',
-      direction: '@?mdDirection'    // only expect raw or interpolated string value; not expression
-    },
-    link: postLink
-  };
-
-  function postLink(scope, element, attr) {
-
-    $mdTheming(element);
-
-    var parent        = $mdUtil.getParentWithPointerEvents(element),
-        content       = angular.element(element[0].getElementsByClassName('md-content')[0]),
-        tooltipParent = angular.element(document.body),
-        debouncedOnResize = $$rAF.throttle(function () { updatePosition(); });
-
-    if ($animate.pin) $animate.pin(element, parent);
-
-    // Initialize element
-
-    setDefaults();
-    manipulateElement();
-    bindEvents();
-
-    // Default origin transform point is 'center top'
-    // positionTooltip() is always relative to center top
-    updateContentOrigin();
-
-    configureWatchers();
-    addAriaLabel();
-
-
-    function setDefaults () {
-      if (!angular.isDefined(attr.mdDelay)) scope.delay = TOOLTIP_SHOW_DELAY;
-    }
-
-    function updateContentOrigin() {
-      var origin = 'center top';
-      switch (scope.direction) {
-        case 'left'  : origin =  'right center';  break;
-        case 'right' : origin =  'left center';   break;
-        case 'top'   : origin =  'center bottom'; break;
-        case 'bottom': origin =  'center top';    break;
-      }
-      content.css('transform-origin', origin);
-    }
-
-    function configureWatchers () {
-      scope.$on('$destroy', function() {
-        scope.visible = false;
-        element.remove();
-        angular.element($window).off('resize', debouncedOnResize);
-      });
-
-      scope.$watch('visible', function (isVisible) {
-        if (isVisible) showTooltip();
-        else hideTooltip();
-      });
-
-      scope.$watch('direction', updatePosition );
-    }
-
-    function addAriaLabel () {
-      if (!parent.attr('aria-label') && !parent.text().trim()) {
-        parent.attr('aria-label', element.text().trim());
-      }
-    }
-
-    function manipulateElement () {
-      element.detach();
-      element.attr('role', 'tooltip');
-    }
-
-    function bindEvents () {
-      var mouseActive = false;
-
-      var ngWindow = angular.element($window);
-
-      // add an mutationObserver when there is support for it
-      // and the need for it in the form of viable host(parent[0])
-      if (parent[0] && 'MutationObserver' in $window) {
-        // use an mutationObserver to tackle #2602
-        var attributeObserver = new MutationObserver(function(mutations) {
-          mutations
-            .forEach(function (mutation) {
-              if (mutation.attributeName === 'disabled' && parent[0].disabled) {
-                setVisible(false);
-                scope.$digest(); // make sure the elements gets updated
-              }
-            });
-        });
-
-        attributeObserver.observe(parent[0], { attributes: true});
-      }
-
-      // Store whether the element was focused when the window loses focus.
-      var windowBlurHandler = function() {
-        elementFocusedOnWindowBlur = document.activeElement === parent[0];
-      };
-      var elementFocusedOnWindowBlur = false;
-
-      function windowScrollHandler() {
-        setVisible(false);
-      }
-      
-      ngWindow.on('blur', windowBlurHandler);
-      ngWindow.on('resize', debouncedOnResize);
-      document.addEventListener('scroll', windowScrollHandler, true);
-      scope.$on('$destroy', function() {
-        ngWindow.off('blur', windowBlurHandler);
-        ngWindow.off('resize', debouncedOnResize);
-        document.removeEventListener('scroll', windowScrollHandler, true);
-        attributeObserver && attributeObserver.disconnect();
-      });
-
-      var enterHandler = function(e) {
-        // Prevent the tooltip from showing when the window is receiving focus.
-        if (e.type === 'focus' && elementFocusedOnWindowBlur) {
-          elementFocusedOnWindowBlur = false;
-          return;
-        }
-        parent.on('blur mouseleave touchend touchcancel', leaveHandler );
-        setVisible(true);
-      };
-      var leaveHandler = function () {
-        var autohide = scope.hasOwnProperty('autohide') ? scope.autohide : attr.hasOwnProperty('mdAutohide');
-        if (autohide || mouseActive || ($document[0].activeElement !== parent[0]) ) {
-          parent.off('blur mouseleave touchend touchcancel', leaveHandler );
-          parent.triggerHandler("blur");
-          setVisible(false);
-        }
-        mouseActive = false;
-      };
-
-      // to avoid `synthetic clicks` we listen to mousedown instead of `click`
-      parent.on('mousedown', function() { mouseActive = true; });
-      parent.on('focus mouseenter touchstart', enterHandler );
-
-
-    }
-
-    function setVisible (value) {
-      setVisible.value = !!value;
-      if (!setVisible.queued) {
-        if (value) {
-          setVisible.queued = true;
-          $timeout(function() {
-            scope.visible = setVisible.value;
-            setVisible.queued = false;
-          }, scope.delay);
-        } else {
-          $mdUtil.nextTick(function() { scope.visible = false; });
-        }
-      }
-    }
-
-    function showTooltip() {
-      // Insert the element before positioning it, so we can get the position
-      // and check if we should display it
-      tooltipParent.append(element);
-
-      // Check if we should display it or not.
-      // This handles hide-* and show-* along with any user defined css
-      if ( $mdUtil.hasComputedStyle(element, 'display', 'none')) {
-        scope.visible = false;
-        element.detach();
-        return;
-      }
-
-      updatePosition();
-
-      angular.forEach([element, content], function (element) {
-        $animate.addClass(element, 'md-show');
-      });
-    }
-
-    function hideTooltip() {
-        var promises = [];
-        angular.forEach([element, content], function (it) {
-          if (it.parent() && it.hasClass('md-show')) {
-            promises.push($animate.removeClass(it, 'md-show'));
-          }
-        });
-
-        $q.all(promises)
-          .then(function () {
-            if (!scope.visible) element.detach();
-          });
-    }
-
-    function updatePosition() {
-      if ( !scope.visible ) return;
-
-      updateContentOrigin();
-      positionTooltip();
-    }
-
-    function positionTooltip() {
-      var tipRect = $mdUtil.offsetRect(element, tooltipParent);
-      var parentRect = $mdUtil.offsetRect(parent, tooltipParent);
-      var newPosition = getPosition(scope.direction);
-      var offsetParent = element.prop('offsetParent');
-
-      // If the user provided a direction, just nudge the tooltip onto the screen
-      // Otherwise, recalculate based on 'top' since default is 'bottom'
-      if (scope.direction) {
-        newPosition = fitInParent(newPosition);
-      } else if (offsetParent && newPosition.top > offsetParent.scrollHeight - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE) {
-        newPosition = fitInParent(getPosition('top'));
-      }
-
-      element.css({
-        left: newPosition.left + 'px',
-        top: newPosition.top + 'px'
-      });
-
-      function fitInParent (pos) {
-        var newPosition = { left: pos.left, top: pos.top };
-        newPosition.left = Math.min( newPosition.left, tooltipParent.prop('scrollWidth') - tipRect.width - TOOLTIP_WINDOW_EDGE_SPACE );
-        newPosition.left = Math.max( newPosition.left, TOOLTIP_WINDOW_EDGE_SPACE );
-        newPosition.top  = Math.min( newPosition.top,  tooltipParent.prop('scrollHeight') - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE );
-        newPosition.top  = Math.max( newPosition.top,  TOOLTIP_WINDOW_EDGE_SPACE );
-        return newPosition;
-      }
-
-      function getPosition (dir) {
-        return dir === 'left'
-          ? { left: parentRect.left - tipRect.width - TOOLTIP_WINDOW_EDGE_SPACE,
-              top: parentRect.top + parentRect.height / 2 - tipRect.height / 2 }
-          : dir === 'right'
-          ? { left: parentRect.left + parentRect.width + TOOLTIP_WINDOW_EDGE_SPACE,
-              top: parentRect.top + parentRect.height / 2 - tipRect.height / 2 }
-          : dir === 'top'
-          ? { left: parentRect.left + parentRect.width / 2 - tipRect.width / 2,
-              top: parentRect.top - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE }
-          : { left: parentRect.left + parentRect.width / 2 - tipRect.width / 2,
-              top: parentRect.top + parentRect.height + TOOLTIP_WINDOW_EDGE_SPACE };
-      }
-    }
-
-  }
-
-}
-MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdUtil", "$mdTheming", "$rootElement", "$animate", "$q"];
 
 })();
 (function(){
@@ -24195,8 +24239,8 @@ MdTabsTemplate.$inject = ["$compile", "$mdUtil"];
 
 })();
 (function(){ 
-angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-THEME_NAME-theme {  background: '{{background-50}}'; }  md-autocomplete.md-THEME_NAME-theme[disabled] {    background: '{{background-100}}'; }  md-autocomplete.md-THEME_NAME-theme button md-icon path {    fill: '{{background-600}}'; }  md-autocomplete.md-THEME_NAME-theme button:after {    background: '{{background-600-0.3}}'; }.md-autocomplete-suggestions-container.md-THEME_NAME-theme {  background: '{{background-50}}'; }  .md-autocomplete-suggestions-container.md-THEME_NAME-theme li {    color: '{{background-900}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li .highlight {      color: '{{background-600}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li:hover, .md-autocomplete-suggestions-container.md-THEME_NAME-theme li.selected {      background: '{{background-200}}'; }md-backdrop {  background-color: '{{background-900-0.0}}'; }  md-backdrop.md-opaque.md-THEME_NAME-theme {    background-color: '{{background-900-1.0}}'; }md-bottom-sheet.md-THEME_NAME-theme {  background-color: '{{background-50}}';  border-top-color: '{{background-300}}'; }  md-bottom-sheet.md-THEME_NAME-theme.md-list md-list-item {    color: '{{foreground-1}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    background-color: '{{background-50}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    color: '{{foreground-1}}'; }a.md-button.md-THEME_NAME-theme:not([disabled]):hover,.md-button.md-THEME_NAME-theme:not([disabled]):hover {  background-color: '{{background-500-0.2}}'; }a.md-button.md-THEME_NAME-theme:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme:not([disabled]).md-focused {  background-color: '{{background-500-0.2}}'; }a.md-button.md-THEME_NAME-theme:not([disabled]).md-icon-button:hover,.md-button.md-THEME_NAME-theme:not([disabled]).md-icon-button:hover {  background-color: transparent; }a.md-button.md-THEME_NAME-theme.md-fab,.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-fab md-icon,  .md-button.md-THEME_NAME-theme.md-fab md-icon {    color: '{{accent-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-color}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-A700}}'; }a.md-button.md-THEME_NAME-theme.md-primary,.md-button.md-THEME_NAME-theme.md-primary {  color: '{{primary-color}}'; }  a.md-button.md-THEME_NAME-theme.md-primary.md-raised, a.md-button.md-THEME_NAME-theme.md-primary.md-fab,  .md-button.md-THEME_NAME-theme.md-primary.md-raised,  .md-button.md-THEME_NAME-theme.md-primary.md-fab {    color: '{{primary-contrast}}';    background-color: '{{primary-color}}'; }    a.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]) md-icon, a.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]) md-icon {      color: '{{primary-contrast}}'; }    a.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover, a.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover {      background-color: '{{primary-color}}'; }    a.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]).md-focused, a.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]).md-focused {      background-color: '{{primary-600}}'; }  a.md-button.md-THEME_NAME-theme.md-primary:not([disabled]) md-icon,  .md-button.md-THEME_NAME-theme.md-primary:not([disabled]) md-icon {    color: '{{primary-color}}'; }a.md-button.md-THEME_NAME-theme.md-fab,.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]) .md-icon,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]) .md-icon {    color: '{{accent-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-color}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-A700}}'; }a.md-button.md-THEME_NAME-theme.md-raised,.md-button.md-THEME_NAME-theme.md-raised {  color: '{{background-900}}';  background-color: '{{background-50}}'; }  a.md-button.md-THEME_NAME-theme.md-raised:not([disabled]) .md-icon,  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]) .md-icon {    color: '{{background-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover,  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover {    background-color: '{{background-50}}'; }  a.md-button.md-THEME_NAME-theme.md-raised:not([disabled]).md-focused,  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]).md-focused {    background-color: '{{background-200}}'; }a.md-button.md-THEME_NAME-theme.md-warn,.md-button.md-THEME_NAME-theme.md-warn {  color: '{{warn-color}}'; }  a.md-button.md-THEME_NAME-theme.md-warn.md-raised, a.md-button.md-THEME_NAME-theme.md-warn.md-fab,  .md-button.md-THEME_NAME-theme.md-warn.md-raised,  .md-button.md-THEME_NAME-theme.md-warn.md-fab {    color: '{{warn-contrast}}';    background-color: '{{warn-color}}'; }    a.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]) md-icon, a.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]) md-icon {      color: '{{warn-contrast}}'; }    a.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover, a.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover {      background-color: '{{warn-color}}'; }    a.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]).md-focused, a.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]).md-focused {      background-color: '{{warn-700}}'; }  a.md-button.md-THEME_NAME-theme.md-warn:not([disabled]) md-icon,  .md-button.md-THEME_NAME-theme.md-warn:not([disabled]) md-icon {    color: '{{warn-color}}'; }a.md-button.md-THEME_NAME-theme.md-accent,.md-button.md-THEME_NAME-theme.md-accent {  color: '{{accent-color}}'; }  a.md-button.md-THEME_NAME-theme.md-accent.md-raised, a.md-button.md-THEME_NAME-theme.md-accent.md-fab,  .md-button.md-THEME_NAME-theme.md-accent.md-raised,  .md-button.md-THEME_NAME-theme.md-accent.md-fab {    color: '{{accent-contrast}}';    background-color: '{{accent-color}}'; }    a.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]) md-icon, a.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]) md-icon {      color: '{{accent-contrast}}'; }    a.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover, a.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover {      background-color: '{{accent-color}}'; }    a.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]).md-focused, a.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]).md-focused {      background-color: '{{accent-700}}'; }  a.md-button.md-THEME_NAME-theme.md-accent:not([disabled]) md-icon,  .md-button.md-THEME_NAME-theme.md-accent:not([disabled]) md-icon {    color: '{{accent-color}}'; }a.md-button.md-THEME_NAME-theme[disabled], a.md-button.md-THEME_NAME-theme.md-raised[disabled], a.md-button.md-THEME_NAME-theme.md-fab[disabled], a.md-button.md-THEME_NAME-theme.md-accent[disabled], a.md-button.md-THEME_NAME-theme.md-warn[disabled],.md-button.md-THEME_NAME-theme[disabled],.md-button.md-THEME_NAME-theme.md-raised[disabled],.md-button.md-THEME_NAME-theme.md-fab[disabled],.md-button.md-THEME_NAME-theme.md-accent[disabled],.md-button.md-THEME_NAME-theme.md-warn[disabled] {  color: '{{foreground-3}}' !important;  cursor: default; }  a.md-button.md-THEME_NAME-theme[disabled] md-icon, a.md-button.md-THEME_NAME-theme.md-raised[disabled] md-icon, a.md-button.md-THEME_NAME-theme.md-fab[disabled] md-icon, a.md-button.md-THEME_NAME-theme.md-accent[disabled] md-icon, a.md-button.md-THEME_NAME-theme.md-warn[disabled] md-icon,  .md-button.md-THEME_NAME-theme[disabled] md-icon,  .md-button.md-THEME_NAME-theme.md-raised[disabled] md-icon,  .md-button.md-THEME_NAME-theme.md-fab[disabled] md-icon,  .md-button.md-THEME_NAME-theme.md-accent[disabled] md-icon,  .md-button.md-THEME_NAME-theme.md-warn[disabled] md-icon {    color: '{{foreground-3}}'; }a.md-button.md-THEME_NAME-theme.md-raised[disabled], a.md-button.md-THEME_NAME-theme.md-fab[disabled],.md-button.md-THEME_NAME-theme.md-raised[disabled],.md-button.md-THEME_NAME-theme.md-fab[disabled] {  background-color: '{{foreground-4}}'; }a.md-button.md-THEME_NAME-theme[disabled],.md-button.md-THEME_NAME-theme[disabled] {  background-color: transparent; }md-card.md-THEME_NAME-theme {  background-color: '{{background-color}}';  border-radius: 2px; }  md-card.md-THEME_NAME-theme .md-card-image {    border-radius: 2px 2px 0 0; }  md-card.md-THEME_NAME-theme md-card-header md-card-avatar md-icon {    color: '{{background-color}}';    background-color: '{{foreground-3}}'; }  md-card.md-THEME_NAME-theme md-card-header md-card-header-text .md-subhead {    color: '{{foreground-2}}'; }  md-card.md-THEME_NAME-theme md-card-title md-card-title-text:not(:only-child) .md-subhead {    color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme .md-ripple {  color: '{{accent-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked.md-focused .md-container:before {  background-color: '{{accent-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon {  background-color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon:after {  border-color: '{{accent-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ripple {  color: '{{primary-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon {  background-color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked.md-focused .md-container:before {  background-color: '{{primary-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon:after {  border-color: '{{primary-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ripple {  color: '{{warn-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon {  background-color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked.md-focused:not([disabled]) .md-container:before {  background-color: '{{warn-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] .md-icon {  border-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon {  background-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] .md-label {  color: '{{foreground-3}}'; }md-chips.md-THEME_NAME-theme .md-chips {  box-shadow: 0 1px '{{background-300}}'; }  md-chips.md-THEME_NAME-theme .md-chips.md-focused {    box-shadow: 0 2px '{{primary-color}}'; }md-chips.md-THEME_NAME-theme .md-chip {  background: '{{background-300}}';  color: '{{background-800}}'; }  md-chips.md-THEME_NAME-theme .md-chip.md-focused {    background: '{{primary-color}}';    color: '{{primary-contrast}}'; }    md-chips.md-THEME_NAME-theme .md-chip.md-focused md-icon {      color: '{{primary-contrast}}'; }md-chips.md-THEME_NAME-theme md-chip-remove .md-button md-icon path {  fill: '{{background-500}}'; }.md-contact-suggestion span.md-contact-email {  color: '{{background-400}}'; }md-content.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-color}}'; }/** Theme styles for mdCalendar. */.md-calendar.md-THEME_NAME-theme {  color: '{{foreground-1}}'; }  .md-calendar.md-THEME_NAME-theme tr:last-child td {    border-bottom-color: '{{background-200}}'; }.md-THEME_NAME-theme .md-calendar-day-header {  background: '{{background-hue-1}}';  color: '{{foreground-1}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator {  border: 1px solid '{{primary-500}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today.md-calendar-date-disabled {  color: '{{primary-500-0.6}}'; }.md-THEME_NAME-theme .md-calendar-date.md-focus .md-calendar-date-selection-indicator {  background: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-calendar-date-selection-indicator:hover {  background: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator,.md-THEME_NAME-theme .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator {  background: '{{primary-500}}';  color: '{{primary-500-contrast}}';  border-color: transparent; }.md-THEME_NAME-theme .md-calendar-date-disabled,.md-THEME_NAME-theme .md-calendar-month-label-disabled {  color: '{{foreground-3}}'; }/** Theme styles for mdDatepicker. */md-datepicker.md-THEME_NAME-theme {  background: '{{background-color}}'; }.md-THEME_NAME-theme .md-datepicker-input {  color: '{{background-contrast}}';  background: '{{background-color}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-webkit-input-placeholder, .md-THEME_NAME-theme .md-datepicker-input::-moz-placeholder, .md-THEME_NAME-theme .md-datepicker-input:-moz-placeholder, .md-THEME_NAME-theme .md-datepicker-input:-ms-input-placeholder {    color: \"{{foreground-3}}\"; }.md-THEME_NAME-theme .md-datepicker-input-container {  border-bottom-color: '{{background-300}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-focused {    border-bottom-color: '{{primary-500}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-invalid {    border-bottom-color: '{{warn-A700}}'; }.md-THEME_NAME-theme .md-datepicker-calendar-pane {  border-color: '{{background-300}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button .md-datepicker-expand-triangle {  border-top-color: '{{foreground-3}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button:hover .md-datepicker-expand-triangle {  border-top-color: '{{foreground-2}}'; }.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon {  fill: '{{primary-500}}'; }.md-THEME_NAME-theme .md-datepicker-calendar,.md-THEME_NAME-theme .md-datepicker-input-mask-opaque {  background: '{{background-color}}'; }md-dialog.md-THEME_NAME-theme {  border-radius: 4px;  background-color: '{{background-color}}'; }  md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions, md-dialog.md-THEME_NAME-theme.md-content-overflow md-dialog-actions {    border-top-color: '{{foreground-4}}'; }md-divider.md-THEME_NAME-theme {  border-top-color: '{{foreground-4}}'; }.layout-row > md-divider.md-THEME_NAME-theme {  border-right-color: '{{foreground-4}}'; }md-icon.md-THEME_NAME-theme {  color: '{{foreground-2}}'; }  md-icon.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  md-icon.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  md-icon.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-input-container.md-THEME_NAME-theme .md-input {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}';  text-shadow: '{{foreground-shadow}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder, md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder {    color: \"{{foreground-3}}\"; }md-input-container.md-THEME_NAME-theme > md-icon {  color: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme label,md-input-container.md-THEME_NAME-theme .md-placeholder {  text-shadow: '{{foreground-shadow}}';  color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme ng-messages :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [ng-messages] :not(.md-char-counter),md-input-container.md-THEME_NAME-theme ng-message :not(.md-char-counter), md-input-container.md-THEME_NAME-theme data-ng-message :not(.md-char-counter), md-input-container.md-THEME_NAME-theme x-ng-message :not(.md-char-counter),md-input-container.md-THEME_NAME-theme [ng-message] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [data-ng-message] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [x-ng-message] :not(.md-char-counter),md-input-container.md-THEME_NAME-theme [ng-message-exp] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [data-ng-message-exp] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [x-ng-message-exp] :not(.md-char-counter) {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-has-value label {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused .md-input {  border-color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused label {  color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused md-icon {  color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent .md-input {  border-color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent label {  color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn .md-input {  border-color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn label {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input {  border-color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid.md-input-focused label {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid data-ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid x-ng-message,md-input-container.md-THEME_NAME-theme.md-input-invalid [ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [data-ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [x-ng-message],md-input-container.md-THEME_NAME-theme.md-input-invalid [ng-message-exp], md-input-container.md-THEME_NAME-theme.md-input-invalid [data-ng-message-exp], md-input-container.md-THEME_NAME-theme.md-input-invalid [x-ng-message-exp],md-input-container.md-THEME_NAME-theme.md-input-invalid .md-char-counter {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme .md-input[disabled],md-input-container.md-THEME_NAME-theme .md-input [disabled] {  border-bottom-color: transparent;  color: '{{foreground-3}}';  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h3, md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h4,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h3,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h4 {  color: '{{foreground-1}}'; }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text p,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text p {  color: '{{foreground-2}}'; }md-list.md-THEME_NAME-theme .md-proxy-focus.md-focused div.md-no-style {  background-color: '{{background-100}}'; }md-list.md-THEME_NAME-theme md-list-item > .md-avatar-icon {  background-color: '{{foreground-3}}';  color: '{{background-color}}'; }md-list.md-THEME_NAME-theme md-list-item > md-icon {  color: '{{foreground-2}}'; }  md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight {    color: '{{primary-color}}'; }    md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight.md-accent {      color: '{{accent-color}}'; }md-menu-content.md-THEME_NAME-theme {  background-color: '{{background-color}}'; }  md-menu-content.md-THEME_NAME-theme md-menu-divider {    background-color: '{{foreground-4}}'; }md-menu-bar.md-THEME_NAME-theme > button.md-button {  color: '{{foreground-2}}';  border-radius: 2px; }md-menu-bar.md-THEME_NAME-theme md-menu.md-open > button, md-menu-bar.md-THEME_NAME-theme md-menu > button:focus {  outline: none;  background: '{{background-200}}'; }md-menu-bar.md-THEME_NAME-theme.md-open:not(.md-keyboard-mode) md-menu:hover > button {  background-color: '{{ background-500-0.2}}'; }md-menu-bar.md-THEME_NAME-theme:not(.md-keyboard-mode):not(.md-open) md-menu button:hover,md-menu-bar.md-THEME_NAME-theme:not(.md-keyboard-mode):not(.md-open) md-menu button:focus {  background: transparent; }md-menu-content.md-THEME_NAME-theme .md-menu > .md-button:after {  color: '{{foreground-2}}'; }md-menu-content.md-THEME_NAME-theme .md-menu.md-open > .md-button {  background-color: '{{ background-500-0.2}}'; }md-toolbar.md-THEME_NAME-theme.md-menu-toolbar {  background-color: '{{background-color}}';  color: '{{foreground-1}}'; }  md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler {    background-color: '{{primary-color}}';    color: '{{primary-contrast}}'; }    md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler md-icon {      color: '{{primary-contrast}}'; }md-progress-circular.md-THEME_NAME-theme {  background-color: transparent; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-gap {    border-top-color: '{{primary-color}}';    border-bottom-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-top-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-right-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle {    border-left-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-gap {    border-top-color: '{{warn-color}}';    border-bottom-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-top-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-right-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle {    border-left-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-gap {    border-top-color: '{{accent-color}}';    border-bottom-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-top-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-right-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle {    border-left-color: '{{accent-color}}'; }md-radio-button.md-THEME_NAME-theme .md-off {  border-color: '{{foreground-2}}'; }md-radio-button.md-THEME_NAME-theme .md-on {  background-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-off {  border-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme .md-container .md-ripple {  color: '{{accent-600}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-on {  background-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off {  border-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple {  color: '{{primary-600}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-on {  background-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off {  border-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple {  color: '{{warn-600}}'; }md-radio-group.md-THEME_NAME-theme[disabled],md-radio-button.md-THEME_NAME-theme[disabled] {  color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-off,  md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-off {    border-color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-on,  md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-on {    border-color: '{{foreground-3}}'; }md-radio-group.md-THEME_NAME-theme .md-checked .md-ink-ripple {  color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-primary .md-checked:not([disabled]) .md-ink-ripple, md-radio-group.md-THEME_NAME-theme .md-checked:not([disabled]).md-primary .md-ink-ripple {  color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme .md-checked.md-primary .md-ink-ripple {  color: '{{warn-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked .md-container:before {  background-color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-primary .md-checked .md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-primary .md-container:before {  background-color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-warn .md-checked .md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-warn .md-container:before {  background-color: '{{warn-color-0.26}}'; }md-progress-linear.md-THEME_NAME-theme .md-container {  background-color: '{{primary-100}}'; }md-progress-linear.md-THEME_NAME-theme .md-bar {  background-color: '{{primary-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-container {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-bar {  background-color: '{{warn-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-container {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-bar {  background-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-bar1 {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-dashed:before {  background: radial-gradient(\"{{warn-100}}\" 0%, \"{{warn-100}}\" 16%, transparent 42%); }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-bar1 {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-dashed:before {  background: radial-gradient(\"{{accent-100}}\" 0%, \"{{accent-100}}\" 16%, transparent 42%); }md-select.md-THEME_NAME-theme[disabled] .md-select-value {  border-bottom-color: transparent;  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-select.md-THEME_NAME-theme .md-select-value {  border-bottom-color: '{{foreground-4}}'; }  md-select.md-THEME_NAME-theme .md-select-value.md-select-placeholder {    color: '{{foreground-3}}'; }md-select.md-THEME_NAME-theme.ng-invalid.ng-dirty .md-select-value {  color: '{{warn-A700}}' !important;  border-bottom-color: '{{warn-A700}}' !important; }md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-value {  border-bottom-color: '{{primary-color}}';  color: '{{ foreground-1 }}'; }  md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-value.md-select-placeholder {    color: '{{ foreground-1 }}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-accent .md-select-value {  border-bottom-color: '{{accent-color}}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-warn .md-select-value {  border-bottom-color: '{{warn-color}}'; }md-select.md-THEME_NAME-theme[disabled] .md-select-value {  color: '{{foreground-3}}'; }  md-select.md-THEME_NAME-theme[disabled] .md-select-value.md-select-placeholder {    color: '{{foreground-3}}'; }md-select-menu.md-THEME_NAME-theme md-option[disabled] {  color: '{{foreground-3}}'; }md-select-menu.md-THEME_NAME-theme md-optgroup {  color: '{{foreground-2}}'; }  md-select-menu.md-THEME_NAME-theme md-optgroup md-option {    color: '{{foreground-1}}'; }md-select-menu.md-THEME_NAME-theme md-option[selected] {  color: '{{primary-500}}'; }  md-select-menu.md-THEME_NAME-theme md-option[selected]:focus {    color: '{{primary-600}}'; }  md-select-menu.md-THEME_NAME-theme md-option[selected].md-accent {    color: '{{accent-500}}'; }    md-select-menu.md-THEME_NAME-theme md-option[selected].md-accent:focus {      color: '{{accent-600}}'; }md-select-menu.md-THEME_NAME-theme md-option:focus:not([disabled]):not([selected]) {  background: '{{background-200}}'; }md-slider.md-THEME_NAME-theme .md-track {  background-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme .md-track-ticks {  background-color: '{{foreground-4}}'; }md-slider.md-THEME_NAME-theme .md-focus-thumb {  background-color: '{{foreground-2}}'; }md-slider.md-THEME_NAME-theme .md-focus-ring {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-disabled-thumb {  border-color: '{{background-color}}'; }md-slider.md-THEME_NAME-theme.md-min .md-thumb:after {  background-color: '{{background-color}}'; }md-slider.md-THEME_NAME-theme .md-track.md-track-fill {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb:after {  border-color: '{{accent-color}}';  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-sign {  background-color: '{{accent-color}}'; }  md-slider.md-THEME_NAME-theme .md-sign:after {    border-top-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb-text {  color: '{{accent-contrast}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-focus-ring {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-track.md-track-fill {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb:after {  border-color: '{{warn-color}}';  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-sign {  background-color: '{{warn-color}}'; }  md-slider.md-THEME_NAME-theme.md-warn .md-sign:after {    border-top-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb-text {  color: '{{warn-contrast}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-focus-ring {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-track.md-track-fill {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb:after {  border-color: '{{primary-color}}';  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-sign {  background-color: '{{primary-color}}'; }  md-slider.md-THEME_NAME-theme.md-primary .md-sign:after {    border-top-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb-text {  color: '{{primary-contrast}}'; }md-slider.md-THEME_NAME-theme[disabled] .md-thumb:after {  border-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme[disabled]:not(.md-min) .md-thumb:after {  background-color: '{{foreground-3}}'; }md-sidenav.md-THEME_NAME-theme {  background-color: '{{background-color}}'; }.md-subheader.md-THEME_NAME-theme {  color: '{{ foreground-2-0.23 }}';  background-color: '{{background-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme .md-ink-ripple {  color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme .md-thumb {  background-color: '{{background-50}}'; }md-switch.md-THEME_NAME-theme .md-bar {  background-color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-thumb {  background-color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-bar {  background-color: '{{accent-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-focused .md-thumb:before {  background-color: '{{accent-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-ink-ripple {  color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-thumb {  background-color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-bar {  background-color: '{{primary-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary.md-focused .md-thumb:before {  background-color: '{{primary-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-ink-ripple {  color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-thumb {  background-color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-bar {  background-color: '{{warn-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn.md-focused .md-thumb:before {  background-color: '{{warn-color-0.26}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-thumb {  background-color: '{{background-400}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-bar {  background-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme md-tabs-wrapper {  background-color: transparent;  border-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme .md-paginator md-icon {  color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme md-ink-bar {  color: '{{accent-color}}';  background: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme .md-tab {  color: '{{foreground-2}}'; }  md-tabs.md-THEME_NAME-theme .md-tab[disabled], md-tabs.md-THEME_NAME-theme .md-tab[disabled] md-icon {    color: '{{foreground-3}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-active, md-tabs.md-THEME_NAME-theme .md-tab.md-active md-icon, md-tabs.md-THEME_NAME-theme .md-tab.md-focused, md-tabs.md-THEME_NAME-theme .md-tab.md-focused md-icon {    color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-focused {    background: '{{primary-color-0.1}}'; }  md-tabs.md-THEME_NAME-theme .md-tab .md-ripple-container {    color: '{{accent-100}}'; }md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-100}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-100}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toast.md-THEME_NAME-theme .md-toast-content {  background-color: #323232;  color: '{{background-50}}'; }  md-toast.md-THEME_NAME-theme .md-toast-content .md-button {    color: '{{background-50}}'; }    md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight {      color: '{{primary-A200}}'; }      md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-accent {        color: '{{accent-A200}}'; }      md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-warn {        color: '{{warn-A200}}'; }md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {  background-color: '{{primary-color}}';  color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-icon {    color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) .md-button:not(.md-raised) {    color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent {    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn {    background-color: '{{warn-color}}';    color: '{{warn-contrast}}'; }md-tooltip.md-THEME_NAME-theme {  color: '{{background-A100}}'; }  md-tooltip.md-THEME_NAME-theme .md-content {    background-color: '{{foreground-2}}'; }"); 
+angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-THEME_NAME-theme {  background: '{{background-50}}'; }  md-autocomplete.md-THEME_NAME-theme[disabled] {    background: '{{background-100}}'; }  md-autocomplete.md-THEME_NAME-theme button md-icon path {    fill: '{{background-600}}'; }  md-autocomplete.md-THEME_NAME-theme button:after {    background: '{{background-600-0.3}}'; }.md-autocomplete-suggestions-container.md-THEME_NAME-theme {  background: '{{background-50}}'; }  .md-autocomplete-suggestions-container.md-THEME_NAME-theme li {    color: '{{background-900}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li .highlight {      color: '{{background-600}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li:hover, .md-autocomplete-suggestions-container.md-THEME_NAME-theme li.selected {      background: '{{background-200}}'; }md-backdrop {  background-color: '{{background-900-0.0}}'; }  md-backdrop.md-opaque.md-THEME_NAME-theme {    background-color: '{{background-900-1.0}}'; }md-bottom-sheet.md-THEME_NAME-theme {  background-color: '{{background-50}}';  border-top-color: '{{background-300}}'; }  md-bottom-sheet.md-THEME_NAME-theme.md-list md-list-item {    color: '{{foreground-1}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    background-color: '{{background-50}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    color: '{{foreground-1}}'; }a.md-button.md-THEME_NAME-theme:not([disabled]):hover,.md-button.md-THEME_NAME-theme:not([disabled]):hover {  background-color: '{{background-500-0.2}}'; }a.md-button.md-THEME_NAME-theme:not([disabled]).md-focused,.md-button.md-THEME_NAME-theme:not([disabled]).md-focused {  background-color: '{{background-500-0.2}}'; }a.md-button.md-THEME_NAME-theme:not([disabled]).md-icon-button:hover,.md-button.md-THEME_NAME-theme:not([disabled]).md-icon-button:hover {  background-color: transparent; }a.md-button.md-THEME_NAME-theme.md-fab,.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-fab md-icon,  .md-button.md-THEME_NAME-theme.md-fab md-icon {    color: '{{accent-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-color}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-A700}}'; }a.md-button.md-THEME_NAME-theme.md-primary,.md-button.md-THEME_NAME-theme.md-primary {  color: '{{primary-color}}'; }  a.md-button.md-THEME_NAME-theme.md-primary.md-raised, a.md-button.md-THEME_NAME-theme.md-primary.md-fab,  .md-button.md-THEME_NAME-theme.md-primary.md-raised,  .md-button.md-THEME_NAME-theme.md-primary.md-fab {    color: '{{primary-contrast}}';    background-color: '{{primary-color}}'; }    a.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]) md-icon, a.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]) md-icon {      color: '{{primary-contrast}}'; }    a.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover, a.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover {      background-color: '{{primary-color}}'; }    a.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]).md-focused, a.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]).md-focused {      background-color: '{{primary-600}}'; }  a.md-button.md-THEME_NAME-theme.md-primary:not([disabled]) md-icon,  .md-button.md-THEME_NAME-theme.md-primary:not([disabled]) md-icon {    color: '{{primary-color}}'; }a.md-button.md-THEME_NAME-theme.md-fab,.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]) .md-icon,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]) .md-icon {    color: '{{accent-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-color}}'; }  a.md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused,  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-A700}}'; }a.md-button.md-THEME_NAME-theme.md-raised,.md-button.md-THEME_NAME-theme.md-raised {  color: '{{background-900}}';  background-color: '{{background-50}}'; }  a.md-button.md-THEME_NAME-theme.md-raised:not([disabled]) .md-icon,  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]) .md-icon {    color: '{{background-contrast}}'; }  a.md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover,  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover {    background-color: '{{background-50}}'; }  a.md-button.md-THEME_NAME-theme.md-raised:not([disabled]).md-focused,  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]).md-focused {    background-color: '{{background-200}}'; }a.md-button.md-THEME_NAME-theme.md-warn,.md-button.md-THEME_NAME-theme.md-warn {  color: '{{warn-color}}'; }  a.md-button.md-THEME_NAME-theme.md-warn.md-raised, a.md-button.md-THEME_NAME-theme.md-warn.md-fab,  .md-button.md-THEME_NAME-theme.md-warn.md-raised,  .md-button.md-THEME_NAME-theme.md-warn.md-fab {    color: '{{warn-contrast}}';    background-color: '{{warn-color}}'; }    a.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]) md-icon, a.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]) md-icon {      color: '{{warn-contrast}}'; }    a.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover, a.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover {      background-color: '{{warn-color}}'; }    a.md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]).md-focused, a.md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]).md-focused {      background-color: '{{warn-700}}'; }  a.md-button.md-THEME_NAME-theme.md-warn:not([disabled]) md-icon,  .md-button.md-THEME_NAME-theme.md-warn:not([disabled]) md-icon {    color: '{{warn-color}}'; }a.md-button.md-THEME_NAME-theme.md-accent,.md-button.md-THEME_NAME-theme.md-accent {  color: '{{accent-color}}'; }  a.md-button.md-THEME_NAME-theme.md-accent.md-raised, a.md-button.md-THEME_NAME-theme.md-accent.md-fab,  .md-button.md-THEME_NAME-theme.md-accent.md-raised,  .md-button.md-THEME_NAME-theme.md-accent.md-fab {    color: '{{accent-contrast}}';    background-color: '{{accent-color}}'; }    a.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]) md-icon, a.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]) md-icon,    .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]) md-icon {      color: '{{accent-contrast}}'; }    a.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover, a.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover,    .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover {      background-color: '{{accent-color}}'; }    a.md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]).md-focused, a.md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]).md-focused,    .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]).md-focused {      background-color: '{{accent-700}}'; }  a.md-button.md-THEME_NAME-theme.md-accent:not([disabled]) md-icon,  .md-button.md-THEME_NAME-theme.md-accent:not([disabled]) md-icon {    color: '{{accent-color}}'; }a.md-button.md-THEME_NAME-theme[disabled], a.md-button.md-THEME_NAME-theme.md-raised[disabled], a.md-button.md-THEME_NAME-theme.md-fab[disabled], a.md-button.md-THEME_NAME-theme.md-accent[disabled], a.md-button.md-THEME_NAME-theme.md-warn[disabled],.md-button.md-THEME_NAME-theme[disabled],.md-button.md-THEME_NAME-theme.md-raised[disabled],.md-button.md-THEME_NAME-theme.md-fab[disabled],.md-button.md-THEME_NAME-theme.md-accent[disabled],.md-button.md-THEME_NAME-theme.md-warn[disabled] {  color: '{{foreground-3}}' !important;  cursor: default; }  a.md-button.md-THEME_NAME-theme[disabled] md-icon, a.md-button.md-THEME_NAME-theme.md-raised[disabled] md-icon, a.md-button.md-THEME_NAME-theme.md-fab[disabled] md-icon, a.md-button.md-THEME_NAME-theme.md-accent[disabled] md-icon, a.md-button.md-THEME_NAME-theme.md-warn[disabled] md-icon,  .md-button.md-THEME_NAME-theme[disabled] md-icon,  .md-button.md-THEME_NAME-theme.md-raised[disabled] md-icon,  .md-button.md-THEME_NAME-theme.md-fab[disabled] md-icon,  .md-button.md-THEME_NAME-theme.md-accent[disabled] md-icon,  .md-button.md-THEME_NAME-theme.md-warn[disabled] md-icon {    color: '{{foreground-3}}'; }a.md-button.md-THEME_NAME-theme.md-raised[disabled], a.md-button.md-THEME_NAME-theme.md-fab[disabled],.md-button.md-THEME_NAME-theme.md-raised[disabled],.md-button.md-THEME_NAME-theme.md-fab[disabled] {  background-color: '{{foreground-4}}'; }a.md-button.md-THEME_NAME-theme[disabled],.md-button.md-THEME_NAME-theme[disabled] {  background-color: transparent; }md-card.md-THEME_NAME-theme {  background-color: '{{background-color}}';  border-radius: 2px; }  md-card.md-THEME_NAME-theme .md-card-image {    border-radius: 2px 2px 0 0; }  md-card.md-THEME_NAME-theme md-card-header md-card-avatar md-icon {    color: '{{background-color}}';    background-color: '{{foreground-3}}'; }  md-card.md-THEME_NAME-theme md-card-header md-card-header-text .md-subhead {    color: '{{foreground-2}}'; }  md-card.md-THEME_NAME-theme md-card-title md-card-title-text:not(:only-child) .md-subhead {    color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme .md-ripple {  color: '{{accent-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked.md-focused .md-container:before {  background-color: '{{accent-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon {  background-color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon:after {  border-color: '{{accent-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ripple {  color: '{{primary-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon {  background-color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked.md-focused .md-container:before {  background-color: '{{primary-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon:after {  border-color: '{{primary-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ripple {  color: '{{warn-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon {  background-color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked.md-focused:not([disabled]) .md-container:before {  background-color: '{{warn-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] .md-icon {  border-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon {  background-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] .md-label {  color: '{{foreground-3}}'; }md-chips.md-THEME_NAME-theme .md-chips {  box-shadow: 0 1px '{{background-300}}'; }  md-chips.md-THEME_NAME-theme .md-chips.md-focused {    box-shadow: 0 2px '{{primary-color}}'; }md-chips.md-THEME_NAME-theme .md-chip {  background: '{{background-300}}';  color: '{{background-800}}'; }  md-chips.md-THEME_NAME-theme .md-chip.md-focused {    background: '{{primary-color}}';    color: '{{primary-contrast}}'; }    md-chips.md-THEME_NAME-theme .md-chip.md-focused md-icon {      color: '{{primary-contrast}}'; }md-chips.md-THEME_NAME-theme md-chip-remove .md-button md-icon path {  fill: '{{background-500}}'; }.md-contact-suggestion span.md-contact-email {  color: '{{background-400}}'; }md-content.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-color}}'; }/** Theme styles for mdCalendar. */.md-calendar.md-THEME_NAME-theme {  color: '{{foreground-1}}'; }  .md-calendar.md-THEME_NAME-theme tr:last-child td {    border-bottom-color: '{{background-200}}'; }.md-THEME_NAME-theme .md-calendar-day-header {  background: '{{background-hue-1}}';  color: '{{foreground-1}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator {  border: 1px solid '{{primary-500}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today.md-calendar-date-disabled {  color: '{{primary-500-0.6}}'; }.md-THEME_NAME-theme .md-calendar-date.md-focus .md-calendar-date-selection-indicator {  background: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-calendar-date-selection-indicator:hover {  background: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator,.md-THEME_NAME-theme .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator {  background: '{{primary-500}}';  color: '{{primary-500-contrast}}';  border-color: transparent; }.md-THEME_NAME-theme .md-calendar-date-disabled,.md-THEME_NAME-theme .md-calendar-month-label-disabled {  color: '{{foreground-3}}'; }/** Theme styles for mdDatepicker. */md-datepicker.md-THEME_NAME-theme {  background: '{{background-color}}'; }.md-THEME_NAME-theme .md-datepicker-input {  color: '{{background-contrast}}';  background: '{{background-color}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-webkit-input-placeholder, .md-THEME_NAME-theme .md-datepicker-input::-moz-placeholder, .md-THEME_NAME-theme .md-datepicker-input:-moz-placeholder, .md-THEME_NAME-theme .md-datepicker-input:-ms-input-placeholder {    color: \"{{foreground-3}}\"; }.md-THEME_NAME-theme .md-datepicker-input-container {  border-bottom-color: '{{background-300}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-focused {    border-bottom-color: '{{primary-500}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-invalid {    border-bottom-color: '{{warn-A700}}'; }.md-THEME_NAME-theme .md-datepicker-calendar-pane {  border-color: '{{background-300}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button .md-datepicker-expand-triangle {  border-top-color: '{{foreground-3}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button:hover .md-datepicker-expand-triangle {  border-top-color: '{{foreground-2}}'; }.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon {  fill: '{{primary-500}}'; }.md-THEME_NAME-theme .md-datepicker-calendar,.md-THEME_NAME-theme .md-datepicker-input-mask-opaque {  background: '{{background-color}}'; }md-dialog.md-THEME_NAME-theme {  border-radius: 4px;  background-color: '{{background-color}}'; }  md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions, md-dialog.md-THEME_NAME-theme.md-content-overflow md-dialog-actions {    border-top-color: '{{foreground-4}}'; }md-divider.md-THEME_NAME-theme {  border-top-color: '{{foreground-4}}'; }.layout-row > md-divider.md-THEME_NAME-theme {  border-right-color: '{{foreground-4}}'; }md-icon.md-THEME_NAME-theme {  color: '{{foreground-2}}'; }  md-icon.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  md-icon.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  md-icon.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-input-container.md-THEME_NAME-theme .md-input {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}';  text-shadow: '{{foreground-shadow}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder, md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder {    color: \"{{foreground-3}}\"; }md-input-container.md-THEME_NAME-theme > md-icon {  color: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme label,md-input-container.md-THEME_NAME-theme .md-placeholder {  text-shadow: '{{foreground-shadow}}';  color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme ng-messages :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [ng-messages] :not(.md-char-counter),md-input-container.md-THEME_NAME-theme ng-message :not(.md-char-counter), md-input-container.md-THEME_NAME-theme data-ng-message :not(.md-char-counter), md-input-container.md-THEME_NAME-theme x-ng-message :not(.md-char-counter),md-input-container.md-THEME_NAME-theme [ng-message] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [data-ng-message] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [x-ng-message] :not(.md-char-counter),md-input-container.md-THEME_NAME-theme [ng-message-exp] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [data-ng-message-exp] :not(.md-char-counter), md-input-container.md-THEME_NAME-theme [x-ng-message-exp] :not(.md-char-counter) {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-has-value label {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused .md-input {  border-color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused label {  color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused md-icon {  color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent .md-input {  border-color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent label {  color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn .md-input {  border-color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn label {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input {  border-color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid.md-input-focused label {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid data-ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid x-ng-message,md-input-container.md-THEME_NAME-theme.md-input-invalid [ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [data-ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [x-ng-message],md-input-container.md-THEME_NAME-theme.md-input-invalid [ng-message-exp], md-input-container.md-THEME_NAME-theme.md-input-invalid [data-ng-message-exp], md-input-container.md-THEME_NAME-theme.md-input-invalid [x-ng-message-exp],md-input-container.md-THEME_NAME-theme.md-input-invalid .md-char-counter {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme .md-input[disabled],md-input-container.md-THEME_NAME-theme .md-input [disabled] {  border-bottom-color: transparent;  color: '{{foreground-3}}';  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h3, md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h4,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h3,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h4 {  color: '{{foreground-1}}'; }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text p,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text p {  color: '{{foreground-2}}'; }md-list.md-THEME_NAME-theme .md-proxy-focus.md-focused div.md-no-style {  background-color: '{{background-100}}'; }md-list.md-THEME_NAME-theme md-list-item > .md-avatar-icon {  background-color: '{{foreground-3}}';  color: '{{background-color}}'; }md-list.md-THEME_NAME-theme md-list-item > md-icon {  color: '{{foreground-2}}'; }  md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight {    color: '{{primary-color}}'; }    md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight.md-accent {      color: '{{accent-color}}'; }md-menu-content.md-THEME_NAME-theme {  background-color: '{{background-color}}'; }  md-menu-content.md-THEME_NAME-theme md-menu-divider {    background-color: '{{foreground-4}}'; }md-menu-bar.md-THEME_NAME-theme > button.md-button {  color: '{{foreground-2}}';  border-radius: 2px; }md-menu-bar.md-THEME_NAME-theme md-menu.md-open > button, md-menu-bar.md-THEME_NAME-theme md-menu > button:focus {  outline: none;  background: '{{background-200}}'; }md-menu-bar.md-THEME_NAME-theme.md-open:not(.md-keyboard-mode) md-menu:hover > button {  background-color: '{{ background-500-0.2}}'; }md-menu-bar.md-THEME_NAME-theme:not(.md-keyboard-mode):not(.md-open) md-menu button:hover,md-menu-bar.md-THEME_NAME-theme:not(.md-keyboard-mode):not(.md-open) md-menu button:focus {  background: transparent; }md-menu-content.md-THEME_NAME-theme .md-menu > .md-button:after {  color: '{{foreground-2}}'; }md-menu-content.md-THEME_NAME-theme .md-menu.md-open > .md-button {  background-color: '{{ background-500-0.2}}'; }md-toolbar.md-THEME_NAME-theme.md-menu-toolbar {  background-color: '{{background-color}}';  color: '{{foreground-1}}'; }  md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler {    background-color: '{{primary-color}}';    color: '{{primary-contrast}}'; }    md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler md-icon {      color: '{{primary-contrast}}'; }md-progress-circular.md-THEME_NAME-theme {  background-color: transparent; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-gap {    border-top-color: '{{primary-color}}';    border-bottom-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-top-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-right-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle {    border-left-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-gap {    border-top-color: '{{warn-color}}';    border-bottom-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-top-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-right-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle {    border-left-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-gap {    border-top-color: '{{accent-color}}';    border-bottom-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-top-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-right-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle {    border-left-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme .md-container {  background-color: '{{primary-100}}'; }md-progress-linear.md-THEME_NAME-theme .md-bar {  background-color: '{{primary-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-container {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-bar {  background-color: '{{warn-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-container {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-bar {  background-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-bar1 {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-dashed:before {  background: radial-gradient(\"{{warn-100}}\" 0%, \"{{warn-100}}\" 16%, transparent 42%); }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-bar1 {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-dashed:before {  background: radial-gradient(\"{{accent-100}}\" 0%, \"{{accent-100}}\" 16%, transparent 42%); }md-radio-button.md-THEME_NAME-theme .md-off {  border-color: '{{foreground-2}}'; }md-radio-button.md-THEME_NAME-theme .md-on {  background-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-off {  border-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme .md-container .md-ripple {  color: '{{accent-600}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-on {  background-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off {  border-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple {  color: '{{primary-600}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-on {  background-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off {  border-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple {  color: '{{warn-600}}'; }md-radio-group.md-THEME_NAME-theme[disabled],md-radio-button.md-THEME_NAME-theme[disabled] {  color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-off,  md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-off {    border-color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-on,  md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-on {    border-color: '{{foreground-3}}'; }md-radio-group.md-THEME_NAME-theme .md-checked .md-ink-ripple {  color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-primary .md-checked:not([disabled]) .md-ink-ripple, md-radio-group.md-THEME_NAME-theme .md-checked:not([disabled]).md-primary .md-ink-ripple {  color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme .md-checked.md-primary .md-ink-ripple {  color: '{{warn-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked .md-container:before {  background-color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-primary .md-checked .md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-primary .md-container:before {  background-color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-warn .md-checked .md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-warn .md-container:before {  background-color: '{{warn-color-0.26}}'; }md-select.md-THEME_NAME-theme[disabled] .md-select-value {  border-bottom-color: transparent;  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-select.md-THEME_NAME-theme .md-select-value {  border-bottom-color: '{{foreground-4}}'; }  md-select.md-THEME_NAME-theme .md-select-value.md-select-placeholder {    color: '{{foreground-3}}'; }md-select.md-THEME_NAME-theme.ng-invalid.ng-dirty .md-select-value {  color: '{{warn-A700}}' !important;  border-bottom-color: '{{warn-A700}}' !important; }md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-value {  border-bottom-color: '{{primary-color}}';  color: '{{ foreground-1 }}'; }  md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-value.md-select-placeholder {    color: '{{ foreground-1 }}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-accent .md-select-value {  border-bottom-color: '{{accent-color}}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-warn .md-select-value {  border-bottom-color: '{{warn-color}}'; }md-select.md-THEME_NAME-theme[disabled] .md-select-value {  color: '{{foreground-3}}'; }  md-select.md-THEME_NAME-theme[disabled] .md-select-value.md-select-placeholder {    color: '{{foreground-3}}'; }md-select-menu.md-THEME_NAME-theme md-option[disabled] {  color: '{{foreground-3}}'; }md-select-menu.md-THEME_NAME-theme md-optgroup {  color: '{{foreground-2}}'; }  md-select-menu.md-THEME_NAME-theme md-optgroup md-option {    color: '{{foreground-1}}'; }md-select-menu.md-THEME_NAME-theme md-option[selected] {  color: '{{primary-500}}'; }  md-select-menu.md-THEME_NAME-theme md-option[selected]:focus {    color: '{{primary-600}}'; }  md-select-menu.md-THEME_NAME-theme md-option[selected].md-accent {    color: '{{accent-500}}'; }    md-select-menu.md-THEME_NAME-theme md-option[selected].md-accent:focus {      color: '{{accent-600}}'; }md-select-menu.md-THEME_NAME-theme md-option:focus:not([disabled]):not([selected]) {  background: '{{background-200}}'; }md-sidenav.md-THEME_NAME-theme {  background-color: '{{background-color}}'; }md-slider.md-THEME_NAME-theme .md-track {  background-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme .md-track-ticks {  background-color: '{{foreground-4}}'; }md-slider.md-THEME_NAME-theme .md-focus-thumb {  background-color: '{{foreground-2}}'; }md-slider.md-THEME_NAME-theme .md-focus-ring {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-disabled-thumb {  border-color: '{{background-color}}'; }md-slider.md-THEME_NAME-theme.md-min .md-thumb:after {  background-color: '{{background-color}}'; }md-slider.md-THEME_NAME-theme .md-track.md-track-fill {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb:after {  border-color: '{{accent-color}}';  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-sign {  background-color: '{{accent-color}}'; }  md-slider.md-THEME_NAME-theme .md-sign:after {    border-top-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb-text {  color: '{{accent-contrast}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-focus-ring {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-track.md-track-fill {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb:after {  border-color: '{{warn-color}}';  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-sign {  background-color: '{{warn-color}}'; }  md-slider.md-THEME_NAME-theme.md-warn .md-sign:after {    border-top-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb-text {  color: '{{warn-contrast}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-focus-ring {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-track.md-track-fill {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb:after {  border-color: '{{primary-color}}';  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-sign {  background-color: '{{primary-color}}'; }  md-slider.md-THEME_NAME-theme.md-primary .md-sign:after {    border-top-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb-text {  color: '{{primary-contrast}}'; }md-slider.md-THEME_NAME-theme[disabled] .md-thumb:after {  border-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme[disabled]:not(.md-min) .md-thumb:after {  background-color: '{{foreground-3}}'; }.md-subheader.md-THEME_NAME-theme {  color: '{{ foreground-2-0.23 }}';  background-color: '{{background-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme .md-ink-ripple {  color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme .md-thumb {  background-color: '{{background-50}}'; }md-switch.md-THEME_NAME-theme .md-bar {  background-color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-thumb {  background-color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-bar {  background-color: '{{accent-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-focused .md-thumb:before {  background-color: '{{accent-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-ink-ripple {  color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-thumb {  background-color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-bar {  background-color: '{{primary-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary.md-focused .md-thumb:before {  background-color: '{{primary-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-ink-ripple {  color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-thumb {  background-color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-bar {  background-color: '{{warn-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn.md-focused .md-thumb:before {  background-color: '{{warn-color-0.26}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-thumb {  background-color: '{{background-400}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-bar {  background-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme md-tabs-wrapper {  background-color: transparent;  border-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme .md-paginator md-icon {  color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme md-ink-bar {  color: '{{accent-color}}';  background: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme .md-tab {  color: '{{foreground-2}}'; }  md-tabs.md-THEME_NAME-theme .md-tab[disabled], md-tabs.md-THEME_NAME-theme .md-tab[disabled] md-icon {    color: '{{foreground-3}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-active, md-tabs.md-THEME_NAME-theme .md-tab.md-active md-icon, md-tabs.md-THEME_NAME-theme .md-tab.md-focused, md-tabs.md-THEME_NAME-theme .md-tab.md-focused md-icon {    color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-focused {    background: '{{primary-color-0.1}}'; }  md-tabs.md-THEME_NAME-theme .md-tab .md-ripple-container {    color: '{{accent-100}}'; }md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-100}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-100}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toast.md-THEME_NAME-theme .md-toast-content {  background-color: #323232;  color: '{{background-50}}'; }  md-toast.md-THEME_NAME-theme .md-toast-content .md-button {    color: '{{background-50}}'; }    md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight {      color: '{{primary-A200}}'; }      md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-accent {        color: '{{accent-A200}}'; }      md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-warn {        color: '{{warn-A200}}'; }md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {  background-color: '{{primary-color}}';  color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-icon {    color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) .md-button:not(.md-raised) {    color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent {    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn {    background-color: '{{warn-color}}';    color: '{{warn-contrast}}'; }md-tooltip.md-THEME_NAME-theme {  color: '{{background-A100}}'; }  md-tooltip.md-THEME_NAME-theme .md-content {    background-color: '{{foreground-2}}'; }"); 
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.0"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.1-master-8ef798f"}};
