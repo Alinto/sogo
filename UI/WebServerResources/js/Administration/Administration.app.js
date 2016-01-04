@@ -4,7 +4,7 @@
 (function() {
   'use strict';
 
-  angular.module('SOGo.AdministrationUI', ['ngSanitize', 'ui.router', 'SOGo.Common', 'SOGo.Authentication', 'SOGo.PreferencesUI', 'SOGo.ContactsUI', 'SOGo.SchedulerUI'])
+  angular.module('SOGo.AdministrationUI', ['ui.router', 'SOGo.Common', 'SOGo.Authentication', 'SOGo.PreferencesUI', 'SOGo.ContactsUI', 'SOGo.SchedulerUI'])
     .config(configure)
     .run(runBlock);
 
