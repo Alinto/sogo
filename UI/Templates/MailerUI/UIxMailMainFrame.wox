@@ -254,7 +254,8 @@
             <md-progress-linear md-mode="determinate"
                                 ng-class="{ 'md-warn': account.$quota.percent > 70 }"
                                 value="{{account.$quota.percent}}"><!-- quota --></md-progress-linear>
-            <div class="sg-md-caption">{{ account.$quota.description }}</div>
+            <div class="sg-md-caption md-default-theme md-fg md-primary"
+                 ng-class="{ 'md-warn': account.$quota.percent > 70 }">{{ account.$quota.description }}</div>
           </div>
           <md-virtual-repeat-container class="md-flex">
             <md-list>

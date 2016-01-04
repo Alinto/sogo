@@ -4,6 +4,9 @@
 .sg-quota {
   padding-bottom: $baseline-grid;
   text-align: center;
+  md-progress-linear > .md-container {
+    height: 2px;
+  }
 }
 
 // Message view header
