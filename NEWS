@@ -1,4 +1,4 @@
-2.3.5 (2016-01-DD)
+2.3.5 (2016-01-05)
 ------------------
 
 Enhancements
@@ -22,7 +22,6 @@ Bug fixes
  - accepted & updated event names are now shown correctly in Outlook
  - provide safe guards in mail and calendar to avoid exceptions while syncing
 
-
 2.3.4 (2015-12-15)
 ------------------
 
@@ -31,6 +30,7 @@ New features
 
 Enhancements
  - limit the maximum width of toolbar buttons (#3381)
+ - updated CKEditor to version 4.5.6
 
 Bug fixes
  - JavaScript exception when printing events from calendars with no assigned color (#3203)
