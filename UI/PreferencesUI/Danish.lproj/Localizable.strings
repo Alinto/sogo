@@ -161,7 +161,7 @@
 "PRIVATE_item" = "Privat";
 /* Event+task categories */
 "category_none" = "Ingen";
-"calendar_category_labels" = "Jubilæum, fødselsdag, forretning,kald, kunder, konkurrence, foretrukne, opfølgning, gaver, helligdage, idéer, møde, problemer, diverse, personlig, projekter, offentlige helligdage, status, leverandører, rejser, ferie";
+"calendar_category_labels" = "Jubilæum,fødselsdag,forretning,kald,kunder,konkurrence,Customer,foretrukne,opfølgning,gaver,helligdage,idéer,møde,problemer,diverse,personlig,projekter,offentlige helligdage,status,leverandører,rejser,ferie";
 /* Default module */
 "Calendar" = "Kalender";
 "Contacts" = "Adressebog";
