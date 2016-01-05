@@ -1,7 +1,7 @@
 
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2005-2012 Inverse inc.
+  Copyright (C) 2005-2015 Inverse inc.
 
   This file is part of SOGo.
 
@@ -90,7 +90,7 @@
       sd = [SOGoSystemDefaults sharedSystemDefaults];
       pageTitle = [sd pageTitle];
       if (pageTitle == nil || ![pageTitle length])
-	pageTitle = [self labelForKey: @"SOGo"];
+	pageTitle = (@"SOGo");
     }
 
   return pageTitle;
