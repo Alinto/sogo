@@ -6,6 +6,7 @@ Enhancements
  - return the requested elements on complex requests from Outlook when downloading changes
  - user sources can be loaded dynamically
  - unify user sources API
+ - updated Russian translation (#3383)
 
 Bug fixes
  - properly compute the last week number for the year (#1010)
