@@ -18,8 +18,10 @@
 "Color" = "Väri";
 "Add" = "Lisää";
 "Delete" = "Poista";
+
 /* contacts categories */
 "contacts_category_labels" = "Kollega, Kilpailija, Asiakas, Ystävä, Perhe, Liiketuttu, Toimittaja, Lehdistö, VIP";
+
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Laita automaattinen lomavastaaja päälle";
 "Auto reply message" = "Automaattivastaus";
@@ -34,6 +36,7 @@
 "Your vacation message must not end with a single dot on a line." = "Lomaviestisi ei saa päättyä yksittäiseen pisteeseen viimeisellä rivillä.";
 "End date of your auto reply must be in the future."
 = "Automaattivastauksen loppupäivä on oltava tulevaisuudessa.";
+
 /* forward messages */
 "Forward incoming messages" = "Edelleenlähetä saapuvat viestit";
 "Keep a copy" = "Pidä kopio";
@@ -41,6 +44,7 @@
 = "Ole hyvä ja määritä sähköpostiosoite johon haluat edelleenlähettää viestisi.";
 "You are not allowed to forward your messages to an external email address." = "Sinulla ei ole lupaa välittää viestejä ulkoiseen sähköpostiosoitteeseen.";
 "You are not allowed to forward your messages to an internal email address." = "Sinulla ei ole lupaa välittää viestejä sisäiseen sähköpostiosoitteeseen.";
+
 /* d & t */
 "Current Time Zone" = "Nykyinen aikavyöhyke";
 "Short Date Format" = "Lyhyt ajan esitysmuoto";
@@ -82,6 +86,7 @@
 "timeFmt_2" = "";
 "timeFmt_3" = "";
 "timeFmt_4" = "";
+
 /* calendar */
 "Week begins on" = "Viikon alkupäivä";
 "Day start time" = "Päivä alkaa klo";
@@ -98,6 +103,7 @@
 "Prevent from being invited to appointments" = "Estä tapaamiskutsut";
 "White list for appointment invitations" = "Valkoinen lista kalenterikutsuille";
 "Contacts Names" = "Yhteystietojen Nimet";
+
 /* Default Calendar */
 "Default calendar" = "Oletuskalenteri";
 "selectedCalendar" = "Valittu kalenteri";
@@ -116,6 +122,7 @@
 "reminder_1_DAY_BEFORE" = "1 päivä";
 "reminder_2_DAYS_BEFORE" = "2 päivää";
 "reminder_1_WEEK_BEFORE" = "Viikkoa ennen";
+
 /* Mailer */
 "Labels" = "Otsikot";
 "Label" = "Otsikoi";
@@ -140,9 +147,11 @@
 "displayremoteinlineimages_always" = "Aina";
 "Auto save every" = "Tallenna automaattisesti";
 "minutes" = "minuutin välein";
+
 /* Contact */
 "Personal Address Book" = "Henkilökohtainen osoitekirja";
 "Collected Address Book" = "Keratty osoitekirja";
+
 /* IMAP Accounts */
 "Mail Account" = "Sähköpostitili";
 "New Mail Account" = "Uusi sähköpostitili";
@@ -159,18 +168,22 @@
 "Please enter your signature below" = "Ole hyvä ja syötä allekirjoituksesi alle";
 "Please specify a valid sender address." = "Ole hyvä ja syötä kelvollinen lähettäjäosoite";
 "Please specify a valid reply-to address." = "Ole hyvä ja syötä kelvollinen vastausosoite";
+
 /* Additional Parameters */
 "Additional Parameters" = "Lisäparametrit";
+
 /* password */
 "New password" = "Uusi salasana";
 "Confirmation" = "Vahvistus";
 "Change" = "Vaihda";
+
 /* Event+task classifications */
 "Default events classification" = "Oletus tapahtumaluokittelu";
 "Default tasks classification" = "Oletus tehtäväluokittelu";
 "PUBLIC_item" = "Julkinen";
 "CONFIDENTIAL_item" = "Luottamuksellinen";
 "PRIVATE_item" = "Yksityinen";
+
 /* Event+task categories */
 "Calendar Category" = "Kalenteriryhmä";
 "Add Calendar Category" = "Lisää kalenteriryhmä";
@@ -180,6 +193,7 @@
 "Remove Contact Category" = "Poista yhteystietoryhmä";
 "category_none" = "Ei mitään";
 "calendar_category_labels" = "Vuosipäivä,Syntymäpäivä,Kaupankäynti,Puhelut,Toimeksiantajat,Kilpailu,Asiakas,Suosikit,Seuranta,Lahjat,Juhlapyhät,Ideat,Kokous,Asiat,Muut,Henkilökohtaiset,Projektit,Yleinen vapaapäivä,Tilanne,Tavarantoimittajat,Matkailu,Loma";
+
 /* Default module */
 "Calendar" = "Kalenteri";
 "Contacts" = "Osoitekirja";
@@ -187,6 +201,7 @@
 "Last" = "Viimeksi käytetty";
 "Default Module " = "Oletusmoduli";
 "SOGo Version" = "SOGo versio";
+
 /* Confirmation asked when changing the language */
 "Save preferences and reload page now?" = "Tallenna asetukset ja lataa sivu uudelleen nyt?";
 "Language" = "Kieli";
@@ -226,6 +241,7 @@
 "refreshview_every_20_minutes" = "20 minuutin välein";
 "refreshview_every_30_minutes" = "Puolen tunnin välein";
 "refreshview_once_per_hour" = "Kerran tunnissa";
+
 /* Return receipts */
 "When I receive a request for a return receipt" = "Kun saan kuittauspyynnön";
 "Never send a return receipt" = "Alä koskaan lähetä kuittausta";
@@ -236,6 +252,7 @@
 "Never send" = "Älä koskaan lähetä";
 "Always send" = "Lähetä aina";
 "Ask me" = "Kysy minulta";
+
 /* Filters - UIxPreferences */
 "Filters" = "Suodattimet";
 "Active" = "Aktiivinen";
@@ -243,8 +260,13 @@
 "Move Down" = "Siirry alas";
 "Connection error" = "Yhteysvirhe";
 "Service temporarily unavailable" = "Palvelu tilapäisesti pois käytöstä";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Suodattimen nimi";
+/* Button label */
+"Add a condition" = "Lisää ehto";
+/* Button label */
+"Add an action" = "Lisää toiminne";
 "For incoming messages that" = "Saapuville viesteille jotka";
 "match all of the following rules" = "täsmäävät kaikkiin seuraaviin sääntöihin";
 "match any of the following rules" = "täsmäävät johonkin seuraavista säännöistä";
@@ -285,6 +307,7 @@
 "Flagged" = "Merkitty";
 "Junk" = "Roskaa";
 "Not Junk" = "Ei roskaa";
+
 /* Password policy */
 "The password was changed successfully." = "Salasana vaihdettu onnistuneesti.";
 "Password must not be empty." = "Salasana ei saa olla tyhjä";
@@ -313,6 +336,7 @@
 "Account Name" = "Tilin nimi";
 "SSL" = "SSL";
 "TLS" = "TLS";
+
 /* Avatars */
 "Alternate Avatar" = "Vaihtoehtoinen Avatar";
 "none" =  "Ei mitään";

@@ -21,6 +21,7 @@
 "Options" = "Опции";
 "Close" = "Затвори";
 "Size" = "Големина";
+
 /* Tooltips */
 "Send this message now" = "Испрати ја пораката сега";
 "Select a recipient from an Address Book" = "Одбери примач од контактите";
@@ -40,6 +41,7 @@
 "Unread" = "Непрочитано";
 "Flagged" = "Означена";
 "Search multiple mailboxes" = "Пребарај повеќе поштенски сандачиња";
+
 /* Main Frame  */
 "Home"                 = "дома"; 
 "Calendar"             = "Календар";
@@ -47,6 +49,7 @@
 "Mail"                 = "Пошта";
 "Right Administration" = "Администрација на права";
 "Help" = "Помош";
+
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Добредојдовте на СОГо мејлерот. Користете го дрвото со папки на левата страна за да се движите низ вашите сметки за пошта!";
 "Read messages"       = "Читај пораки";
@@ -54,8 +57,16 @@
 "Share" = "Дели";
 "Account" = "Сметка";
 "Shared Account" = "Делени сметки";
+
 /* Empty right pane */
 "No message selected" = "Нема одбрана порака";
+
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Папката е компактирана";
+/* Empty Trash success message */
+"Trash emptied" = "Кантата за ѓубре е испразнета";
+
 /* acls */
 "Access rights to" = "Пристапни права за";
 "For user" = "За корисник";
@@ -75,6 +86,7 @@
 "Saved Messages.zip" = "Снимени Messages.zip";
 "Update" = "Освежи";
 "Cancel" = "Откажи";
+
 /* Mail edition */
 "From"          = "Од";
 "Subject"       = "Тема";
@@ -97,7 +109,7 @@
 "Edit Draft..." = "Уреди го драфтот";
 "Load Images" = "Вчитај слики";
 "Return Receipt" = "Препорачано";
-"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Испраќачот на пораката сака да биде известен кога ќе ја прочитате пораката. Дали сакате да го известам испраќачот?";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Испраќачот на пораката побара да биде известен дека сте ја прочитале неговата порака. Дали сакате да го известам испраќачот?";
 "Return Receipt (displayed) - %@"= "Повратен примач (прикажан) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Ова е повратница за пораката која ја испративте на %@.\n\nзабелешка: Оваа повратница само укажува дека пораката била прикажана на екранот на примателот. Нема никаква гаранција дека примачот ја прочитал пораката или пак разбрал содржината на истата.";
 "Priority" = "Приоритет";
@@ -109,12 +121,14 @@
 "This mail is being sent from an unsecure network!" = "Оваа порака е испратена од небезбедна мрежа!";
 "Address Book" = "Адресар";
 "Search For" = "Барај го";
+
 /* Popup "show" */
 "all"     = "сите";
 "read"    = "прочитани";
 "unread"  = "непрочитани";
 "deleted" = "избришани";
 "flagged" = "означени";
+
 /* MailListView */
 "Sender" = "Испраќач";
 "Subject or Sender" = "Тема или испраќач";
@@ -135,6 +149,7 @@
 "Mark Unread" = "Означи како непрочитана";
 "Mark Read"   = "Означи прочитана";
 "Untitled" = "Без наслов";
+
 /* Tree */
 "SentFolderName"   = "Испратени";
 "TrashFolderName"  = "Ѓубре";
@@ -142,15 +157,19 @@
 "DraftsFolderName" = "Драфтови";
 "SieveFolderName"  = "Филтри";
 "Folders"          = "Папки"; /* title line */
+
 /* MailMoveToPopUp */
 "MoveTo"        = "Префрли &hellip;";
+
 /* Address Popup menu */
 "Add to Address Book..." = "Додади во адресарот...";
 "Compose Mail To" = "Компонирај порака до";
 "Create Filter From Message..." = "Креирај филтер од пораката...";
+
 /* Image Popup menu */
 "Save Image" = "Сними слика";
 "Save Attachment" = "Сними прилог";
+
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Отвори во нов прозорец за пораки";
 "Copy Folder Location" = "Копирај ја локацијата на папката";
@@ -167,10 +186,12 @@
 "Get Messages for Account" = "Земи ги пораките за сметката";
 "Properties..." = "Особини...";
 "Delegation..." = "Делегација...";
+
 /* Use This Folder menu */
 "Sent Messages" = "Испрати пораки";
 "Drafts" = "Драфтови";
 "Deleted Messages" = "Избришани пораки";
+
 /* Message list popup menu */
 "Open Message In New Window" = "Отвори ја пораката во нов прозор";
 "Reply to Sender Only" = "Одговори му само на испраќачот";
@@ -186,11 +207,14 @@
 "Print..." = "Отпечати...";
 "Delete Message" = "Избриши порака";
 "Delete Selected Messages" = "Избриши ги означените пораки";
+
 /* Number of selected messages in list */
 "selected" = "одбрани";
 "This Folder" = "Оваа папка";
+
 /* Label popup menu */
 "None" = "Ниту една";
+
 /* Mark popup menu */
 "As Read" = "Како прочитана";
 "Thread As Read" = "Преписката како прочитана";
@@ -211,6 +235,7 @@
 "results found" = "пронајдени резултати";
 "result found" = "пронајден резултат";
 "Please specify at least one filter" = "Одберете барем еден филтер";
+
 /* Folder operations */
 "Name" = "Име";
 "Enter the new name of your folder"
@@ -239,9 +264,11 @@
 = "Префлањето на пораката во сопствената папка не е можно!";
 "Copying a message into its own folder is impossible!"
 = "Копирањето на пораката во сопствената папка не е можно!";
+
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "Пораките не можат да се префрлат во папката за ѓубре. Дали саката веднаш да ги избришам?";
+
 /* Message editing */
 "error_missingsubject" = "Пораката нема тема. Дали сте сигурни дека сакате да ја испратите?";
 "error_missingrecipients" = "Одберете барем еден примател.";
@@ -249,10 +276,12 @@
 "Error while saving the draft" = "Грешка при снимањето на привремениот документ";
 "Error while uploading the file \"%{0}\":" = "Грешка при прикажување на фајл \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Во тек е активно прикачување на фајл. Затварањето на прозорецот ќе го прекине прикачувањето.";
+
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Не моѓам да ја пратам пораката: сите приматели се невалидни.";
 "cannot send message (smtp) - recipients discarded" = "Не можам да ја испратам пораката. Следните адреси се невалидни";
 "cannot send message: (smtp) error when connecting" = "Не можам да ја испртам пораката: грешка при поврзувањето со SMPT серверот.";
+
 /* Contacts list in mail editor */
 "Email" = "Електронска порака";
 "More mail options" = "Повеќе опции за електронска пошта";

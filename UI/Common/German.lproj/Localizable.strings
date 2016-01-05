@@ -11,6 +11,7 @@
 "Preferences" = "Einstellungen";
 "Administration" = "Administration";
 "Disconnect" = "Beenden";
+"Toggle Menu" = "Menü umschalten";
 "Right Administration" = "Rechteadministration";
 "Log Console (dev.)" = "Journal (Entwickler)";
 "User" = "Benutzer";
@@ -98,3 +99,10 @@
 "a2_Thursday" = "Do";
 "a2_Friday" = "Fr";
 "a2_Saturday" = "Sa";
+"Access Rights" = "Zugriffsrechte";
+"Add User" = "Benutzer hinzufügen";
+"Loading" = "Lade";
+"No such user." = "Kein Benutzer gefunden";
+"You cannot (un)subscribe to a folder that you own!" = "Sie können keinen Ordner abonnieren/abbestellen, den Sie besitzen!";
+"SOGo" = "SOGo";
+"Modules" = "Module";

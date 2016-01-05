@@ -1634,7 +1634,7 @@ static NSArray *reminderValues = nil;
 
 - (NSString *) languageText
 {
-  return [self labelForKey: item];
+  return [NSString stringWithFormat: @"(%@) %@", item, [self labelForKey: item]];
 }
 
 - (BOOL) mailAuxiliaryUserAccountsEnabled

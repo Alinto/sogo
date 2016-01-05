@@ -21,6 +21,7 @@
 "Options" = "Опции";
 "Close" = "Закрыть";
 "Size" = "Размер";
+
 /* Tooltips */
 "Send this message now" = "Послать это сообщение сейчас";
 "Select a recipient from an Address Book" = "Выбрать получателей из адресной книги";
@@ -40,6 +41,7 @@
 "Unread" = "Непрочитанные";
 "Flagged" = "Помеченные флагом";
 "Search multiple mailboxes" = "Поиск в нескольких ящиках";
+
 /* Main Frame  */
 "Home"                 = "Начало"; 
 "Calendar"             = "Календарь";
@@ -47,6 +49,7 @@
 "Mail"                 = "Почта";
 "Right Administration" = "Права доступа";
 "Help" = "Помощь";
+
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Добро пожаловать в быстропочту! Для просмотра сообщений воспользуйтесь деревом папок слева.";
 "Read messages"       = "Читать сообщения";
@@ -54,8 +57,16 @@
 "Share" = "Совместное использование";
 "Account" = "Пользователь";
 "Shared Account" = "Общая учетная запись";
+
 /* Empty right pane */
 "No message selected" = "Сообщения не выбраны";
+
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Папка сжата";
+/* Empty Trash success message */
+"Trash emptied" = "Корзина очищена";
+
 /* acls */
 "Access rights to" = "Права доступа к";
 "For user" = "Для пользователя";
@@ -75,6 +86,7 @@
 "Saved Messages.zip" = "Saved Messages.zip";
 "Update" = "Обновить";
 "Cancel" = "Отмена";
+
 /* Mail edition */
 "From"          = "От";
 "Subject"       = "Тема";
@@ -97,7 +109,7 @@
 "Edit Draft..." = "Редактировать черновик...";
 "Load Images" = "Загрузить изображения";
 "Return Receipt" = "Уведомление о вручении";
-"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Отправитель этого сообщения запросил получать уведомления, когда вы читаете это сообщение. Вы хотите уведомить отправителя?";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Отправитель этого сообщения запросил уведомление о прочтении. Вы хотите отправить такое сообщение?";
 "Return Receipt (displayed) - %@"= "Уведомление о вручении (отображается на дисплее) -% @";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
 "Priority" = "Важность";
@@ -109,12 +121,14 @@
 "This mail is being sent from an unsecure network!" = "Это почта была послана с небезопасной сети!";
 "Address Book" = "Адресная книга";
 "Search For" = "Что искать";
+
 /* Popup "show" */
 "all"     = "все";
 "read"    = "прочитанные";
 "unread"  = "непрочитанные";
 "deleted" = "удаленные";
 "flagged" = "помеченные флагом";
+
 /* MailListView */
 "Sender" = "Отправитель";
 "Subject or Sender" = "Тема или Отправитель";
@@ -135,6 +149,7 @@
 "Mark Unread" = "Пометить как непрочитанное";
 "Mark Read"   = "Пометить как прочитанное";
 "Untitled" = "Без темы";
+
 /* Tree */
 "SentFolderName"   = "Отправленные";
 "TrashFolderName"  = "Корзина";
@@ -142,15 +157,19 @@
 "DraftsFolderName" = "Черновики";
 "SieveFolderName"  = "Папки";
 "Folders"          = "Папки"; /* title line */
+
 /* MailMoveToPopUp */
 "MoveTo"        = "Переместить в &hellip;";
+
 /* Address Popup menu */
 "Add to Address Book..." = "Добавиь в адресную книгу...";
 "Compose Mail To" = "Составить письмо для";
 "Create Filter From Message..." = "Создать фильтр из сообщения...";
+
 /* Image Popup menu */
 "Save Image" = "Сохранить изображение";
 "Save Attachment" = "Сохранить Приложения";
+
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Открыть в новом окне";
 "Copy Folder Location" = "Скопировать адрес папки";
@@ -167,10 +186,12 @@
 "Get Messages for Account" = "Получить новые сообщения";
 "Properties..." = "Свойства ...";
 "Delegation..." = "Делегирование ...";
+
 /* Use This Folder menu */
 "Sent Messages" = "Отправленные сообщения";
 "Drafts" = "Черновики";
 "Deleted Messages" = "Удаленные сообщения";
+
 /* Message list popup menu */
 "Open Message In New Window" = "Открыть сообщение в новом окне";
 "Reply to Sender Only" = "Ответить отправителю";
@@ -186,11 +207,14 @@
 "Print..." = "Отправить на печать";
 "Delete Message" = "Удалить сообщение";
 "Delete Selected Messages" = "Удалить выделенные сообщения";
+
 /* Number of selected messages in list */
 "selected" = "выбран";
 "This Folder" = "Текущая папка";
+
 /* Label popup menu */
 "None" = "Удалить все метки";
+
 /* Mark popup menu */
 "As Read" = "как прочтанное";
 "Thread As Read" = "ветку как прочитанную";
@@ -211,6 +235,7 @@
 "results found" = "результатов найдено";
 "result found" = "результат найден";
 "Please specify at least one filter" = "Укажите хотя бы один фильтр";
+
 /* Folder operations */
 "Name" = "Имя";
 "Enter the new name of your folder"
@@ -239,9 +264,11 @@
 = "Невозможно переместить сообщение туда, где оно уже находится!";
 "Copying a message into its own folder is impossible!"
 = "Невозможно скопировать сообщение туда, где оно уже находится!";
+
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "Сообщения не могут быть помещены в корзину. Хотите ли вы уничтожить их немедленно?";
+
 /* Message editing */
 "error_missingsubject" = "Тема сообщения не указана";
 "error_missingrecipients" = "Не указан адрес получателя";
@@ -249,10 +276,12 @@
 "Error while saving the draft" = "Ошибка при сохранении черновика";
 "Error while uploading the file \"%{0}\":" = "Ошибка при загрузке файла \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Сейчас выполняется загрузка файла. Закрытие окна прервет её.";
+
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Не удается отправить сообщение: всем получателям, все получатели являются недействительными.";
 "cannot send message (smtp) - recipients discarded" = "Не удается отправить сообщение. Следующие адреса неверны";
 "cannot send message: (smtp) error when connecting" = "Не удается отправить сообщение: ошибка при соединении с сервером SMTP.";
+
 /* Contacts list in mail editor */
 "Email" = "Email";
 "More mail options" = "Больше опций сообщений";

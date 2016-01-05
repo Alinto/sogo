@@ -18,8 +18,10 @@
 "Color" = "Цвет";
 "Add" = "Добавить";
 "Delete" = "Удалить";
+
 /* contacts categories */
 "contacts_category_labels" = "Коллега, Конкурент, Клиент, Друг, Член семьи, Партнер по бизнесу, Поставщик, Пресса, VIP";
+
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Включить автоматическую отправку сообщения об отпуске";
 "Auto reply message" = "Автоматически посылать этот текст каждому отправителю один раз";
@@ -34,6 +36,7 @@
 "Your vacation message must not end with a single dot on a line." = "Ваше сообщение о верменном отсутсвии не должно оканчиваться строкой с одиночной точкой.";
 "End date of your auto reply must be in the future."
 = "Дата завершения вашего автоответа должна быть в будущем.";
+
 /* forward messages */
 "Forward incoming messages" = "Пересылать входящие сообщения";
 "Keep a copy" = "Оставлять копию";
@@ -41,6 +44,7 @@
 = "Пожалуйста укажите адрес, на который вы хотите переадресовать ваши сообщения.";
 "You are not allowed to forward your messages to an external email address." = "Вы не можете пересылать свои сообщения на внешний адрес электронной почты.";
 "You are not allowed to forward your messages to an internal email address." = "Вы не можете пересылать свои сообщения на внутренний адрес электронной почты.";
+
 /* d & t */
 "Current Time Zone" = "Текущая временная зона";
 "Short Date Format" = "Короткий формат даты";
@@ -82,6 +86,7 @@
 "timeFmt_2" = "";
 "timeFmt_3" = "";
 "timeFmt_4" = "";
+
 /* calendar */
 "Week begins on" = "Неделя начинается с";
 "Day start time" = "Рабочий день начинается в";
@@ -98,6 +103,7 @@
 "Prevent from being invited to appointments" = "Не допускать приглашения на встречи";
 "White list for appointment invitations" = "Белый список для приглашений на встречи";
 "Contacts Names" = "Имена контактов";
+
 /* Default Calendar */
 "Default calendar" = "Календарь по-умолчанию";
 "selectedCalendar" = "Выбранный календарь";
@@ -116,6 +122,7 @@
 "reminder_1_DAY_BEFORE" = "1 день назад";
 "reminder_2_DAYS_BEFORE" = "2 дня назад";
 "reminder_1_WEEK_BEFORE" = "За 1 неделю";
+
 /* Mailer */
 "Labels" = "Метки";
 "Label" = "Метка";
@@ -140,9 +147,11 @@
 "displayremoteinlineimages_always" = "Всегда";
 "Auto save every" = "Автосохранение каждые";
 "minutes" = "минут";
+
 /* Contact */
 "Personal Address Book" = "Личная адресная книга";
 "Collected Address Book" = "Собранные адреса";
+
 /* IMAP Accounts */
 "Mail Account" = "Учетная запись почты";
 "New Mail Account" = "Новая учетная запись почты";
@@ -159,18 +168,22 @@
 "Please enter your signature below" = "Введите вашу подпись ниже";
 "Please specify a valid sender address." = "Пожалуйста укажите правильный адрес отправителя.";
 "Please specify a valid reply-to address." = "Пожалуйста укажите правильный адрес для ответа.";
+
 /* Additional Parameters */
 "Additional Parameters" = "Дополнительные параметры";
+
 /* password */
 "New password" = "Новый пароль";
 "Confirmation" = "Повтор нового пароля";
 "Change" = "Изменить";
+
 /* Event+task classifications */
 "Default events classification" = "Классификация событий по умолчанию";
 "Default tasks classification" = "Классификация заданий по умолчанию";
 "PUBLIC_item" = "Публичное";
 "CONFIDENTIAL_item" = "Конфиденциальное";
 "PRIVATE_item" = "Личное";
+
 /* Event+task categories */
 "Calendar Category" = "Категория календаря";
 "Add Calendar Category" = "Добавить категорию календаря";
@@ -180,6 +193,7 @@
 "Remove Contact Category" = "Удалить категорию контактов";
 "category_none" = "Нет";
 "calendar_category_labels" = "Годовщина,День рождения,Деловые,Звонки,Клиенты,Конкуренты,Потребители,Избранное,Вслед за,Подарки,Праздники,Идеи,Встречи,Проблемы,Разное,Персональное,Проекты,Государственный праздник,Статус,Поставщики,Путешествия,Отпуск";
+
 /* Default module */
 "Calendar" = "Календарь";
 "Contacts" = "Адресная книга";
@@ -187,6 +201,7 @@
 "Last" = "Последнее использование";
 "Default Module " = "Модуль по умолчанию";
 "SOGo Version" = "Версия SOGo";
+
 /* Confirmation asked when changing the language */
 "Save preferences and reload page now?" = "Сейчас сохранить настройки и перезагрузить страницу?";
 "Language" = "Язык";
@@ -226,6 +241,7 @@
 "refreshview_every_20_minutes" = "Каждые 20 минут";
 "refreshview_every_30_minutes" = "Каждые 30 минут";
 "refreshview_once_per_hour" = "Раз в час";
+
 /* Return receipts */
 "When I receive a request for a return receipt" = "Когда я получаю запрос об уведомлении о доставке";
 "Never send a return receipt" = "Никогда не посылать уведомления о доставке";
@@ -236,6 +252,7 @@
 "Never send" = "Никогда не посылать";
 "Always send" = "Всегда посылать";
 "Ask me" = "Спросить меня";
+
 /* Filters - UIxPreferences */
 "Filters" = "Фильтры";
 "Active" = "Активные";
@@ -243,8 +260,13 @@
 "Move Down" = "Передвинуть вниз";
 "Connection error" = "Ошибка соединения";
 "Service temporarily unavailable" = "Сервис временно недоступен";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Имя фильтра";
+/* Button label */
+"Add a condition" = "Добавить условие";
+/* Button label */
+"Add an action" = "Добавить действие";
 "For incoming messages that" = "Для входящих сообщений которые";
 "match all of the following rules" = "отвечают всем из следующих правил";
 "match any of the following rules" = "отвечают любому из следующих правил";
@@ -285,6 +307,7 @@
 "Flagged" = "Помечено флагом";
 "Junk" = "Спам";
 "Not Junk" = "Не спам";
+
 /* Password policy */
 "The password was changed successfully." = "Пароль был успешно изменен.";
 "Password must not be empty." = "Пароль не должен быть пустым";
@@ -313,6 +336,7 @@
 "Account Name" = "Имя учетной записи";
 "SSL" = "SSL";
 "TLS" = "TLS";
+
 /* Avatars */
 "Alternate Avatar" = "Альтернативный аватар";
 "none" =  "Ничего";

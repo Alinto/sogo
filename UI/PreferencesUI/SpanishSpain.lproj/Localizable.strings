@@ -18,8 +18,10 @@
 "Color" = "Color";
 "Add" = "Añadir";
 "Delete" = "Borrar";
+
 /* contacts categories */
 "contacts_category_labels" = "Colega, Competidor, Cliente, Amigo, Familia, Socio, Proveedor, Prensa, VIP";
+
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Activar respuesta automática para vacaciones";
 "Auto reply message" = "Mensaje de respuesta automática";
@@ -34,6 +36,7 @@
 "Your vacation message must not end with a single dot on a line." = "El mensaje de vacaciones no puede finalizarse con un único punto en una linea.";
 "End date of your auto reply must be in the future."
 = "La fecha de fin de respuesta automatica debe ser en el futuro.";
+
 /* forward messages */
 "Forward incoming messages" = "Desvío de mensajes recibidos";
 "Keep a copy" = "Guardar una copia";
@@ -41,6 +44,7 @@
 = "Por favor, especificar una dirección para aquellos mensajes que quiere desviar.";
 "You are not allowed to forward your messages to an external email address." = "No esta autorizado a reenviar sus mensajes a una dirección de correo externa.";
 "You are not allowed to forward your messages to an internal email address." = "No esta autorizado a reenviar sus mensajes a una dirección de correo interna.";
+
 /* d & t */
 "Current Time Zone" = "Zona horaria actual";
 "Short Date Format" = "Formato de fecha corto";
@@ -82,6 +86,7 @@
 "timeFmt_2" = "";
 "timeFmt_3" = "";
 "timeFmt_4" = "";
+
 /* calendar */
 "Week begins on" = "Semana empieza por";
 "Day start time" = "Hora inicio";
@@ -98,6 +103,7 @@
 "Prevent from being invited to appointments" = "Evitar invitaciones a eventos";
 "White list for appointment invitations" = "Lista blanca de invitaciones a eventos";
 "Contacts Names" = "Nombres de Contacto";
+
 /* Default Calendar */
 "Default calendar" = "Calendario por defecto";
 "selectedCalendar" = "Calendario seleccionado";
@@ -116,6 +122,7 @@
 "reminder_1_DAY_BEFORE" = "1 día";
 "reminder_2_DAYS_BEFORE" = "2 días";
 "reminder_1_WEEK_BEFORE" = "1 semana antes";
+
 /* Mailer */
 "Labels" = "Etiquetas";
 "Label" = "Etiquetar";
@@ -140,9 +147,11 @@
 "displayremoteinlineimages_always" = "Siempre";
 "Auto save every" = "Guardar automáticamente cada";
 "minutes" = "minutos";
+
 /* Contact */
 "Personal Address Book" = "Libreta de direcciones personal";
 "Collected Address Book" = "Libreta de direcciones recogidas";
+
 /* IMAP Accounts */
 "Mail Account" = "Cuenta de correo";
 "New Mail Account" = "Nueva Cuenta de Correo";
@@ -159,18 +168,22 @@
 "Please enter your signature below" = "Por favor, ponga su firma abajo";
 "Please specify a valid sender address." = "Por favor, especifica una dirección de correo electrónico valida para el remitente.";
 "Please specify a valid reply-to address." = "Por favor, especifica una dirección de correo electrónico valida para responder.";
+
 /* Additional Parameters */
 "Additional Parameters" = "Parámetros Adicionales";
+
 /* password */
 "New password" = "Nueva contraseña";
 "Confirmation" = "Confirmar nueva contraseña";
 "Change" = "Cambiar";
+
 /* Event+task classifications */
 "Default events classification" = "Clasificación de evento por defecto";
 "Default tasks classification" = "Clasificación de tarea por defecto";
 "PUBLIC_item" = "Publico";
 "CONFIDENTIAL_item" = "Confidencial";
 "PRIVATE_item" = "Privado";
+
 /* Event+task categories */
 "Calendar Category" = "Categoría de Calendarios";
 "Add Calendar Category" = "Añadir Categoría de Calendarios";
@@ -180,6 +193,7 @@
 "Remove Contact Category" = "Quitar Categoría de Contactos";
 "category_none" = "Ninguna";
 "calendar_category_labels" = "Aniversario,Cumpleaños,Negocios,Llamadas,Clientes,Competición,Trabajo,Favoritos,Seguimiento,Regalos,Fiestas,Ideas,Reunión,Asuntos,Varios,Personal,Proyectos,Vacaciones públicas,Estado,Proveedores,Viajes,Vacaciones";
+
 /* Default module */
 "Calendar" = "Calendario";
 "Contacts" = "Libreta de direcciones";
@@ -187,6 +201,7 @@
 "Last" = "Ultimo usado";
 "Default Module " = "Módulo por defecto";
 "SOGo Version" = "Versión de SOGo";
+
 /* Confirmation asked when changing the language */
 "Save preferences and reload page now?" = "Guardar preferencias y recargar pagina ahora?";
 "Language" = "Idioma";
@@ -226,6 +241,7 @@
 "refreshview_every_20_minutes" = "Cada 20 minutos";
 "refreshview_every_30_minutes" = "Cada 30 minutos";
 "refreshview_once_per_hour" = "Cada hora";
+
 /* Return receipts */
 "When I receive a request for a return receipt" = "Cuando reciba una petición de un acuse de recibo";
 "Never send a return receipt" = "Nunca enviar un acuse de recibo";
@@ -236,6 +252,7 @@
 "Never send" = "Nunca enviar";
 "Always send" = "Enviar siempre";
 "Ask me" = "Preguntarme";
+
 /* Filters - UIxPreferences */
 "Filters" = "Filtros";
 "Active" = "Activo";
@@ -243,8 +260,13 @@
 "Move Down" = "Bajar";
 "Connection error" = "Error al conectar";
 "Service temporarily unavailable" = "Servicio temporalmente no disponible";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Nombre del filtro";
+/* Button label */
+"Add a condition" = "Añadir una condición";
+/* Button label */
+"Add an action" = "Añadir una acción";
 "For incoming messages that" = "Para mensajes entrantes que";
 "match all of the following rules" = "cumplen todas las reglas siguientes";
 "match any of the following rules" = "cumplen algunas de las reglas siguientes";
@@ -285,6 +307,7 @@
 "Flagged" = "Marcado";
 "Junk" = "Spam";
 "Not Junk" = "No es Spam";
+
 /* Password policy */
 "The password was changed successfully." = "La contraseña se ha cambiado correctamente.";
 "Password must not be empty." = "La contraseña no puede estar vacía.";
@@ -313,6 +336,7 @@
 "Account Name" = "Nombre de la cuenta";
 "SSL" = "SSL";
 "TLS" = "TLS";
+
 /* Avatars */
 "Alternate Avatar" = "Avatar Alternativo";
 "none" =  "Ninguno";
