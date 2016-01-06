@@ -7,7 +7,7 @@
   <md-card>
     <md-card-content>
       <p class="md-caption" var:title="filenameForDisplay">
-        <span class="sg-label-outline"><var:string value="preferredPathExtension"/></span>
+        <var:if condition="preferredPathExtension.length"><span class="sg-label-outline"><var:string value="preferredPathExtension"/></span></var:if>
         <var:string value="filenameForDisplay"/>
       </p>
     </md-card-content>

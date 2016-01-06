@@ -21,7 +21,7 @@
       </div>
       <md-button class="sg-icon-button" var:href="pathForDownload">
         <md-tooltip md-direction="left"><var:string label:value="Save Attachment"/></md-tooltip>
-        <md-icon>save</md-icon>
+        <md-icon>file_download</md-icon>
       </md-button>
     </md-dialog-actions>
   </md-card>
