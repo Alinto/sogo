@@ -6,8 +6,8 @@
   xmlns:label="OGo:label">
   <md-card>
     <md-card-content>
-      <img var:src="mimeImageURL"/>
-      <p class="md-caption">
+      <p class="md-caption" var:title="filenameForDisplay">
+        <span class="sg-label-outline"><var:string value="preferredPathExtension"/></span>
         <var:string value="filenameForDisplay"/>
       </p>
     </md-card-content>
@@ -17,11 +17,11 @@
       </div>
       <md-button class="sg-icon-button" var:href="pathToAttachment" target="_blank">
         <md-tooltip md-direction="left"><var:string label:value="View Attachment"/></md-tooltip>
-        <md-icon>open_in_browser</md-icon>
+        <md-icon>open_in_new</md-icon>
       </md-button>
       <md-button class="sg-icon-button" var:href="pathForDownload">
         <md-tooltip md-direction="left"><var:string label:value="Save Attachment"/></md-tooltip>
-        <md-icon>save</md-icon>
+        <md-icon>file_download</md-icon>
       </md-button>
     </md-dialog-actions>
     
