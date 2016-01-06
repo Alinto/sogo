@@ -268,16 +268,18 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
 {
   NSMutableArray *filteredLoginDomains;
   NSArray *domains;
-  NSEnumerator *objects;
   id currentObject;
+  int count;
   
   if (self->loginDomains == nil)
     {
       filteredLoginDomains = [NSMutableArray arrayWithArray: [self stringArrayForKey: @"SOGoLoginDomains"]];
       domains = [self domainIds];
-      objects = [filteredLoginDomains objectEnumerator];
-      while ((currentObject = [objects nextObject]))
+      count = [filteredLoginDomains count];
+      while (count > 0)
         {
+          count--;
+          currentObject = [filteredLoginDomains objectAtIndex: count];
           if (![domains containsObject: currentObject])
             {
               [filteredLoginDomains removeObject: currentObject];
