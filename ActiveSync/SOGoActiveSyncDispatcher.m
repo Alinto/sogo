@@ -876,8 +876,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   for (i = 0; i < [allFoldersMetadata count]; i++)
    {
      folderMetadata = [allFoldersMetadata objectAtIndex: i];
-       
-     nameInCache = [NSString stringWithFormat: @"folder%@",  [[folderMetadata objectForKey: @"path"] substringFromIndex: 1]];
+
+     // In v3, the "path" value does not have a '/' at the beginning
+     nameInCache = [NSString stringWithFormat: @"folder%@",  [folderMetadata objectForKey: @"path"]];
 
      // we have no guid - ignore the folder
      if (![imapGUIDs objectForKey: nameInCache])
