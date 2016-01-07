@@ -23,6 +23,7 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserManager.h>
+#import <SOGo/SOGoSystemDefaults.h>
 
 #import "iCalPerson+SOGo.h"
 
@@ -64,6 +65,10 @@ static SOGoUserManager *um = nil;
   return [um getUIDForEmail: [self rfc822Email]];
 }
 
+/*
+ It returns the login if the email of the iCalPerson exists on the
+ domain of the current active user
+*/
 - (NSString *) uidInContext: (WOContext *) context
 {
   NSString *domain;
@@ -73,18 +78,29 @@ static SOGoUserManager *um = nil;
   return [self uidInDomain: domain];
 }
 
+/*
+ It returns the login if the email of the iCalPerson exists on the
+ given domain
+*/
 - (NSString *) uidInDomain: (NSString *) domain
 {
   NSDictionary *contact;
-  NSString *uid;
+  NSString *uid = nil;
 
   if (!um)
     um = [SOGoUserManager sharedUserManager];
 
-  uid = nil;
-  contact = [um contactInfosForUserWithUIDorEmail: [self rfc822Email] inDomain: domain];
-  if (contact)
-    uid = [contact valueForKey: @"c_uid"];
+  contact = [um contactInfosForUserWithUIDorEmail: [self rfc822Email]
+                                         inDomain: domain];
+  if (!contact) return nil;
+
+  uid = [contact valueForKey: @"c_uid"];
+
+  // On multidomain environment without DomainLessLogin enabled the login
+  // must have the @domain suffix
+  if ([[SOGoSystemDefaults sharedSystemDefaults] enableDomainBasedUID]
+      && ![[contact objectForKey: @"DomainLessLogin"] boolValue])
+    uid = [NSString stringWithFormat:@"%@@%@", uid, domain];
 
   return uid;
 }
