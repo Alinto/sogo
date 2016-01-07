@@ -127,6 +127,7 @@
 "Labels" = "Labels";
 "Label" = "Label";
 "Show subscribed mailboxes only" = "Show subscribed mailboxes only";
+"Synchronize only default mail folders (EAS)" = "Synchronize only default mail folders (EAS)";
 "Sort messages by threads" = "Sort messages by threads";
 "When sending mail, add unknown recipients to my" = "When sending mail, add unknown recipients to my";
 "Address Book" = "Address Book";
