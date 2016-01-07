@@ -387,7 +387,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             [[o properties ]  setObject: [[newFolder nameInContainer] substringFromIndex: 6] forKey: @"displayName"];
             [o save];
 
-            nameInContainer = [[NSString stringWithFormat: @"mail/%@", [nameInContainer  substringFromIndex: 6]] stringByEscapingURL];
+            nameInContainer = [NSString stringWithFormat: @"mail/%@", [nameInContainer  substringFromIndex: 6]];
           }
         else
           {
