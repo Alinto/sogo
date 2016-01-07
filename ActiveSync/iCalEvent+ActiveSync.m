@@ -234,7 +234,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   // UID -- http://msdn.microsoft.com/en-us/library/ee159919(v=exchg.80).aspx
   if (![self recurrenceId] && [[self uid] length])
-    [s appendFormat: @"<UID xmlns=\"Calendar:\">%@</UID>", [self uid]];
+    [s appendFormat: @"<UID xmlns=\"Calendar:\">%@</UID>", [[self uid] activeSyncRepresentationInContext: context]];
 
   // Sensitivity
   if ([[self accessClass] isEqualToString: @"PRIVATE"])
