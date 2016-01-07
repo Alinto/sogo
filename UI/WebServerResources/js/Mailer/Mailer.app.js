@@ -172,10 +172,13 @@
   /**
    * @ngInject
    */
-  stateMailbox.$inject = ['$stateParams', 'stateAccount', 'decodeUriFilter'];
-  function stateMailbox($stateParams, stateAccount, decodeUriFilter) {
+  stateMailbox.$inject = ['$stateParams', 'stateAccount', 'decodeUriFilter', 'Mailbox'];
+  function stateMailbox($stateParams, stateAccount, decodeUriFilter, Mailbox) {
     var mailboxId = decodeUriFilter($stateParams.mailboxId),
         _find;
+
+    if (Mailbox.selectedFolder)
+      Mailbox.selectedFolder.$isLoading = true;
 
     // Recursive find function
     _find = function(mailboxes) {
