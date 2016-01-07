@@ -77,6 +77,17 @@
 
 - (NSArray *) rolesForExchangeRights: (uint32_t) rights
 {
+  /* Limitations
+
+     Following rights are not supported by SOGo specifically:
+
+     - DeleteOwned : Delete only own objects
+     - EditOwned : Edit only own objects
+     - CreateSubfolders: No calendar subfolders
+     - FolderOwner: No sharing folder ownership?
+     - FolderContact: No support to store this information
+     - FolderVisible: It is inferred by other rights when extracting
+   */
   NSMutableArray *roles;
 
   roles = [NSMutableArray arrayWithCapacity: 6];
