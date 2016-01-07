@@ -121,7 +121,7 @@
   if ([roles containsObject: SOGoCalendarRole_PublicModifier]
       && [roles containsObject: SOGoCalendarRole_PrivateModifier]
       && [roles containsObject: SOGoCalendarRole_ConfidentialModifier])
-    rights |= RightsReadItems | RightsEditAll | RightsEditOwn;
+    rights |= RightsReadItems | RightsEditAll | RightsEditOwn | RightsFreeBusySimple | RightsFreeBusyDetailed;
   else if ([roles containsObject: SOGoCalendarRole_PublicViewer]
            && [roles containsObject: SOGoCalendarRole_PrivateViewer]
            && [roles containsObject: SOGoCalendarRole_ConfidentialViewer])
