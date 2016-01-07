@@ -762,20 +762,15 @@
   WOResponse *response;
 
   request = [context request];
-  response = [context response];
   requestContent = [[request contentAsString] objectFromJSONString];
-  
-  [response setHeader: @"application/json; charset=utf-8"
-               forKey: @"content-type"];
 
   folder = [self clientObject];
   
   noHeaders = [[[requestContent objectForKey: @"sortingAttributes"] objectForKey:@"noHeaders"] boolValue];
   data = [self getUIDsInFolder: folder
                    withHeaders: !noHeaders];
-  [response appendContentString: [data jsonRepresentation]];
 
-  return response;
+  return [self responseWithStatus: 200 andJSONRepresentation: data];
 }
 
 - (NSArray *) getHeadersForUIDs: (NSArray *) uids
