@@ -1,4 +1,10 @@
-2.3.5 (2016-01-DD)
+2.3.6 (2016-01-XX)
+------------------
+
+New features
+ - Now able to sync only default mail folders when using EAS
+
+2.3.5 (2016-01-05)
 ------------------
 
 Enhancements
