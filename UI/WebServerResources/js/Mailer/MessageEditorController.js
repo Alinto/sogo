@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$stateParams', '$mdConstant', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccounts', 'stateMessage', 'stateRecipients', '$timeout', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
-  function MessageEditorController($stateParams, $mdConstant, $mdDialog, $mdToast, FileUploader, stateAccounts, stateMessage, stateRecipients, $timeout, Dialog, AddressBook, Card, Preferences) {
+  MessageEditorController.$inject = ['$window', '$stateParams', '$mdConstant', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccounts', 'stateAccount', 'stateMessage', 'stateRecipients', 'encodeUriFilter', '$timeout', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
+  function MessageEditorController($window, $stateParams, $mdConstant, $mdDialog, $mdToast, FileUploader, stateAccounts, stateAccount, stateMessage, stateRecipients, encodeUriFilter, $timeout, Dialog, AddressBook, Card, Preferences) {
     var vm = this, semicolon = 186;
 
     vm.addRecipient = addRecipient;
@@ -77,6 +77,33 @@
       vm.message.editable.to = _.union(vm.message.editable.to, _.pluck(stateRecipients, 'full'));
     }
 
+    /**
+     * If this is a popup window, retrieve the mailbox controller of the parent window.
+     */
+    function $parentControllers() {
+      var originMessage, ctrls = {};
+      if ($window.opener) {
+        if ($window.opener.$mailboxController) {
+          if ($window.opener.$mailboxController.selectedFolder.type == 'draft') {
+            ctrls.draftMailboxCtrl = $window.opener.$mailboxController;
+            if ($window.opener.$messageController &&
+                $window.opener.$messageController.message.uid == stateMessage.uid) {
+              // The draft is opened in the parent window
+              ctrls.draftMessageCtrl = $window.opener.$messageController;
+            }
+          }
+          else if (stateMessage.origin) {
+            originMessage = stateMessage.origin.message;
+            if ($window.opener.$mailboxController.selectedFolder.$id() == originMessage.$mailbox.$id()) {
+              // The message mailbox is opened in the parent window
+              ctrls.originMailboxCtrl = $window.opener.$mailboxController;
+            }
+          }
+        }
+      }
+      return ctrls;
+    }
+
     function addAttachments() {
       // Add existing attached files to uploader
       var i, data, fileItem;
@@ -114,7 +141,18 @@
     }
 
     function save() {
+      var ctrls = $parentControllers();
       vm.message.$save().then(function(data) {
+        if (ctrls.draftMailboxCtrl) {
+          // We're saving a draft from a popup window.
+          // Reload draft mailbox
+          ctrls.draftMailboxCtrl.selectedFolder.$filter().then(function() {
+            if (ctrls.draftMessageCtrl) {
+              // Reload selected message
+              ctrls.draftMessageCtrl.$state.go('mail.account.mailbox.message', { messageId: vm.message.uid });
+            }
+          });
+        }
         $mdToast.show(
           $mdToast.simple()
             .content(l('Your email has been saved'))
@@ -124,10 +162,26 @@
     }
 
     function send() {
+      var ctrls = $parentControllers();
       if (vm.autosave)
         $timeout.cancel(vm.autosave);
 
       vm.message.$send().then(function(data) {
+        if (ctrls.draftMailboxCtrl) {
+          // We're sending a draft from a popup window and the draft mailbox is opened.
+          // Reload draft mailbox
+          ctrls.draftMailboxCtrl.selectedFolder.$filter().then(function() {
+            if (ctrls.draftMessageCtrl) {
+              // Close draft
+              ctrls.draftMessageCtrl.close();
+            }
+          });
+        }
+        if (ctrls.originMailboxCtrl) {
+          // We're sending a draft from a popup window and the original mailbox is opened.
+          // Reload mailbox
+          ctrls.originMailboxCtrl.selectedFolder.$filter();
+        }
         $mdToast.show(
           $mdToast.simple()
             .content(l('Your email has been sent'))

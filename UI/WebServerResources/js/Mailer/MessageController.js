@@ -10,6 +10,10 @@
   function MessageController($window, $scope, $state, $mdDialog, stateAccounts, stateAccount, stateMailbox, stateMessage, encodeUriFilter, sgSettings, focus, Dialog, Account, Mailbox, Message) {
     var vm = this, messageDialog = null, popupWindow = null;
 
+    // Expose controller
+    $window.$messageController = vm;
+
+    vm.$state = $state;
     vm.accounts = stateAccounts;
     vm.account = stateAccount;
     vm.mailbox = stateMailbox;
@@ -32,14 +36,54 @@
     vm.toggleRawSource = toggleRawSource;
     vm.showRawSource = false;
 
-    // Watch the message model "flags" attribute to remove on-the-fly a tag from the IMAP message
-    // when removed from the message viewer.
-    // TODO: this approach should be reviewed once md-chips supports ng-change.
-    $scope.$watchCollection('viewer.message.flags', function(oldTags, newTags) {
-      _.each(_.difference(newTags, oldTags), function(tag) {
-        vm.message.removeTag(tag);
+    // One-way refresh of the parent window when modifying the message from a popup window.
+    if ($window.opener) {
+      // Update the message flags. The message must be displayed in the parent window.
+      $scope.$watchCollection('viewer.message.flags', function(newTags, oldTags) {
+        var ctrls;
+        if (newTags || oldTags) {
+          ctrls = $parentControllers();
+          if (ctrls.messageCtrl) {
+            ctrls.messageCtrl.service.$timeout(function() {
+              ctrls.messageCtrl.message.flags = newTags;
+            });
+          }
+        }
       });
-    });
+      // Update the "isflagged" (star icon) of the message. The mailbox must be displayed in the parent window.
+      $scope.$watch('viewer.message.isflagged', function(isflagged, wasflagged) {
+        var ctrls = $parentControllers();
+        if (ctrls.mailboxCtrl) {
+          ctrls.mailboxCtrl.service.$timeout(function() {
+            var message = _.find(ctrls.mailboxCtrl.selectedFolder.$messages, { uid: vm.message.uid });
+            message.isflagged = isflagged;
+          });
+        }
+      });
+    }
+
+    /**
+     * If this is a popup window, retrieve the matching controllers (mailbox and message) of the parent window.
+     */
+    function $parentControllers() {
+      var message, mailbox, ctrls = {};
+      if ($window.opener) {
+        // Deleting the message from a popup window
+        if ($window.opener.$mailboxController &&
+            $window.opener.$mailboxController.selectedFolder.$id() == stateMailbox.$id()) {
+            // The message mailbox is opened in the parent window
+            mailbox = $window.opener.$mailboxController;
+            ctrls.mailboxCtrl = mailbox;
+            if ($window.opener.$messageController &&
+                $window.opener.$messageController.message.uid == stateMessage.uid) {
+              // The message is opened in the parent window
+              message = $window.opener.$messageController;
+              ctrls.messageCtrl = message;
+            }
+        }
+      }
+      return ctrls;
+    }
 
     function showDetailedRecipients($event) {
       vm.$showDetailedRecipients = true;
@@ -48,16 +92,36 @@
     }
 
     function doDelete() {
-      stateMailbox.$deleteMessages([stateMessage]).then(function() {
+      var parentCtrls = $parentControllers(), mailbox, message, state;
+
+      if (parentCtrls.messageCtrl) {
+        mailbox = parentCtrls.mailboxCtrl.selectedFolder;
+        message = parentCtrls.messageCtrl.message;
+        state = parentCtrls.messageCtrl.$state;
+      }
+      else {
+        mailbox = stateMailbox;
+        message = stateMessage;
+        state = $state;
+      }
+
+      mailbox.$deleteMessages([message]).then(function() {
         // Remove message from list of messages
-        var index = _.findIndex(stateMailbox.$messages, function(o) {
-          return o.uid == stateMessage.uid;
+        var index = _.findIndex(mailbox.$messages, function(o) {
+          return o.uid == message.uid;
         });
         if (index != -1)
-          stateMailbox.$messages.splice(index, 1);
+          mailbox.$messages.splice(index, 1);
         // Remove message object from scope
-        vm.message = null;
-        $state.go('mail.account.mailbox', { accountId: stateAccount.id, mailboxId: encodeUriFilter(stateMailbox.path) });
+        message = null;
+        // Navigate to mailbox if not in popup window
+        if (angular.isDefined(state)) {
+          try {
+            state.go('mail.account.mailbox', { mailboxId: encodeUriFilter(mailbox.path) });
+          }
+          catch (error) {}
+        }
+        closePopup();
       });
     }
 
@@ -77,18 +141,20 @@
             controllerAs: 'editor',
             locals: {
               stateAccounts: vm.accounts,
+              stateAccount: vm.account,
               stateMessage: message,
               stateRecipients: recipients
             }
           })
           .finally(function() {
             messageDialog = null;
+            closePopup();
           });
       }
     }
 
     function close() {
-      $state.go('mail.account.mailbox', { accountId: stateAccount.id, mailboxId: encodeUriFilter(stateMailbox.path) }).then(function() {
+      $state.go('mail.account.mailbox').then(function() {
         vm.message = null;
         delete stateMailbox.selectedMessage;
       });
@@ -139,7 +205,8 @@
     }
 
     function closePopup() {
-      $window.close();
+      if ($window.opener)
+        $window.close();
     }
 
     function newMessage($event, recipient) {

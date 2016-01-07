@@ -101,10 +101,18 @@
    */
   stateAccounts.$inject = ['$q', 'Account'];
   function stateAccounts($q, Account) {
-    var promise = Account.$findAll();
-    // Fetch list of mailboxes for each account
-    return promise.then(function(accounts) {
-      var promises = [];
+    var accounts, promises = [];
+
+    if (window &&
+        window.opener &&
+        window.opener.$mailboxController) {
+      // Mail accounts are available from the parent window
+      accounts = window.opener.$mailboxController.accounts;
+      return $q.when(accounts);
+    }
+    else {
+      accounts = Account.$findAll();
+      // Fetch list of mailboxes for each account
       angular.forEach(accounts, function(account, i) {
         var mailboxes = account.$getMailboxes();
         promises.push(mailboxes.then(function(objects) {
@@ -112,7 +120,7 @@
         }));
       });
       return $q.all(promises);
-    });
+    }
   }
 
   /**
@@ -160,12 +168,26 @@
   /**
    * @ngInject
    */
-  stateMessage.$inject = ['encodeUriFilter', '$stateParams', '$state', 'stateMailbox', 'Message'];
-  function stateMessage(encodeUriFilter, $stateParams, $state, stateMailbox, Message) {
-    var data = { uid: $stateParams.messageId.toString() },
-        message = new Message(stateMailbox.$account.id, stateMailbox, data);
+  stateMessage.$inject = ['encodeUriFilter', '$q', '$stateParams', '$state', 'stateMailbox', 'Message'];
+  function stateMessage(encodeUriFilter, $q, $stateParams, $state, stateMailbox, Message) {
+    var data, message;
 
-    return message.$reload();
+    if (window &&
+        window.opener &&
+        window.opener.$messageController &&
+        window.opener.$messageController.message.uid == parseInt($stateParams.messageId)) {
+      // Message is available from the parent window
+      message = new Message(stateMailbox.$account.id,
+                            stateMailbox,
+                            window.opener.$messageController.message.$omit());
+      return $q.when(message);
+    }
+    else {
+      // Message is not available; load it from the server
+      data = { uid: $stateParams.messageId.toString() };
+      message = new Message(stateMailbox.$account.id, stateMailbox, data);
+      return message.$reload();
+    }
   }
 
   /**
@@ -179,10 +201,14 @@
   /**
    * @ngInject
    */
-  runBlock.$inject = ['$rootScope'];
-  function runBlock($rootScope) {
+  runBlock.$inject = ['$window', '$rootScope', '$log'];
+  function runBlock($window, $rootScope, $log) {
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+      $log.error(error);
+      $window.close();
+    });
     $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
-      console.error(event, current, previous, rejection);
+      $log.error(event, current, previous, rejection);
     });
   }
 
@@ -207,8 +233,7 @@
         }
       })
       .finally(function() {
-        if ($window.opener)
-          $window.close();
+        $window.close();
       });
   }
   

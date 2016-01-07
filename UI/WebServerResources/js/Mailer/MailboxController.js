@@ -6,9 +6,12 @@
   /**
    * @ngInject
    */
-  MailboxController.$inject = ['$state', '$timeout', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'Dialog', 'Account', 'Mailbox'];
-  function MailboxController($state, $timeout, $mdDialog, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, Dialog, Account, Mailbox) {
+  MailboxController.$inject = ['$window', '$state', '$timeout', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'Dialog', 'Account', 'Mailbox'];
+  function MailboxController($window, $state, $timeout, $mdDialog, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, Dialog, Account, Mailbox) {
     var vm = this, messageDialog = null;
+
+    // Expose controller
+    $window.$mailboxController = vm;
 
     Mailbox.selectedFolder = stateMailbox;
 

@@ -22,13 +22,11 @@
     // Data is immediately available
     if (typeof futureMessageData.then !== 'function') {
       //console.debug(JSON.stringify(futureMessageData, undefined, 2));
-      if (angular.isDefined(lazy) && lazy) {
-        this.uid = futureMessageData.uid;
-      }
-      else {
+      if (angular.isUndefined(lazy) || !lazy) {
         angular.extend(this, futureMessageData);
         this.$formatFullAddresses();
       }
+      this.uid = parseInt(futureMessageData.uid);
     }
     else {
       // The promise will be unwrapped first
@@ -132,7 +130,7 @@
     var oldUID = (this.uid || -1);
 
     if (oldUID != parseInt(uid)) {
-      this.uid = uid;
+      this.uid = parseInt(uid);
       if (oldUID > -1) {
         oldUID = oldUID.toString();
         if (angular.isDefined(this.$mailbox.uidsMap[oldUID])) {
@@ -142,7 +140,8 @@
       }
       else {
         // Refresh selected folder if it's the drafts mailbox
-        if (this.$mailbox.constructor.selectedFolder.type == 'draft') {
+        if (this.$mailbox.constructor.selectedFolder &&
+            this.$mailbox.constructor.selectedFolder.type == 'draft') {
           this.$mailbox.constructor.selectedFolder.$filter();
         }
       }
@@ -646,13 +645,6 @@
       }
     });
 
-    // Format addresses as arrays
-    _.each(['from', 'to', 'cc', 'bcc', 'reply-to'], function(type) {
-      if (message[type])
-        message[type] = _.invoke(message[type].split(','), 'trim');
-    });
-
-    //Message.$log.debug(JSON.stringify(message, undefined, 2));
     return message;
   };
 
