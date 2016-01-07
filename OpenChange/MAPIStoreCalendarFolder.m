@@ -135,7 +135,7 @@
   if ([roles containsObject: SOGoCalendarRole_ConfidentialDAndTViewer])
       rights |= RightsFreeBusyDetailed;
 
-  if (rights != 0)
+  if ((rights & RightsReadItems) != 0 || (rights & RightsCreateItems) != 0 || (rights & RightsDeleteAll) != 0)
     rights |= RoleNone; /* actually "folder visible" */
 
   // [self logWithFormat: @"rights for roles (%@) = %.8x", roles, rights];
