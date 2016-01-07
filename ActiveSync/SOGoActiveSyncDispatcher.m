@@ -885,7 +885,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
        continue;
 
      serverId = [NSString stringWithFormat: @"mail/%@",  [[imapGUIDs objectForKey: nameInCache] substringFromIndex: 6]];
-     name = [folderMetadata objectForKey: @"displayName"];
+
+     // In v3, we use "name" while in v2, it was "displayName"
+     name = [folderMetadata objectForKey: @"name"];
 
      // avoid duplicate folders if folder is returned by different imap namespaces
      if ([processedFolders indexOfObject: serverId] == NSNotFound)
