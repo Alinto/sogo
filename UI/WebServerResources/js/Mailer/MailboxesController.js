@@ -215,7 +215,7 @@
       vm.editMode = false;
     }
 
-    function selectFolder(account, folder) {
+    function selectFolder($event, account, folder) {
       if (vm.editMode == folder.path)
         return;
       vm.editMode = false;
@@ -225,6 +225,8 @@
       if ($mdMedia('xs'))
         $mdSidenav('left').close();
       $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(folder.path) });
+      $event.stopPropagation();
+      $event.preventDefault();
     }
 
     function saveFolder(folder) {

@@ -255,14 +255,14 @@
                                 ng-class="{ 'md-warn': account.$quota.percent > 70 }"
                                 value="{{account.$quota.percent}}"><!-- quota --></md-progress-linear>
             <div class="sg-md-caption md-default-theme md-fg md-primary"
-                 ng-class="{ 'md-warn': account.$quota.percent > 70 }">{{ account.$quota.description }}</div>
+                 ng-class="{ 'md-warn': account.$quota.percent > 70 }">{{account.$quota.description}}</div>
           </div>
           <md-virtual-repeat-container class="md-flex">
             <md-list>
               <md-list-item md-virtual-repeat="folder in account.$flattenMailboxes()" md-item-size="48"
-                            ng-dblclick="app.editFolder(folder)"
-                            ui-sref="mail.account.mailbox({accountId: account.id, mailboxId: (folder.path | encodeUri)})"
-                            ui-sref-active="md-default-theme md-background md-bg md-hue-1">
+                            class="md-default-theme md-background md-hue-1"
+                            ng-class="{'md-bg': folder.path == app.service.selectedFolder.path}"
+                            ng-dblclick="app.editFolder(folder)">
                 <div ng-class="'sg-child-level-' + folder.level">
                   <md-icon ng-hide="folder.children.length">{{app.metadataForFolder(folder).icon}}</md-icon>
                   <md-checkbox class="sg-folder"
@@ -272,7 +272,7 @@
                                ng-change="account.$flattenMailboxes({ reload: true, saveState: true })"><!-- expanded --></md-checkbox>
                 </div>
                 <p class="sg-item-name"
-                   ng-click="app.selectFolder(account, folder)"
+                   ng-click="app.selectFolder($event, account, folder)"
                    ng-show="app.editMode != folder.path">
                   {{app.metadataForFolder(folder).name}}
                   <span class="sg-counter-badge" ng-show="folder.unseenCount">{{folder.unseenCount}}</span>
