@@ -4,6 +4,10 @@
 New features
  - Now able to sync only default mail folders when using EAS
 
+Bug fixes
+ - don't unescape twice mail folder names (#3423)
+ - don't consider mobile Outlook EAS clients as DAV ones (#3431)
+
 2.3.5 (2016-01-05)
 ------------------
 
