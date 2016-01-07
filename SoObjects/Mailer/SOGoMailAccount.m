@@ -668,6 +668,7 @@ static NSString *inboxFolderName = @"INBOX";
   NSDictionary *result, *nresult, *namespaceDict;
   NSMutableDictionary *folders;
   NGImap4Client *client;
+  SOGoUserDefaults *ud;
   NSArray *folderList;
   NSEnumerator *e;
   NSString *guid;
@@ -675,7 +676,17 @@ static NSString *inboxFolderName = @"INBOX";
   
   BOOL hasAnnotatemore;
 
-  folderList = [self allFolderPaths];
+  ud = [[context activeUser] userDefaults];
+
+  if ([ud synchronizeOnlyDefaultMailFolders])
+    folderList = [[NSArray arrayWithObjects:
+                             [self inboxFolderNameInContext: context],
+                           [self draftsFolderNameInContext: context],
+                           [self sentFolderNameInContext: context],
+                           [self trashFolderNameInContext: context],
+                     nil] stringsWithFormat: @"/%@"];
+  else
+    folderList = [self allFolderPaths];
 
   folders = [NSMutableDictionary dictionary];
 

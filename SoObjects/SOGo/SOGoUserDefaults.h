@@ -1,6 +1,6 @@
 /* SOGoUserDefaults.h - this file is part of SOGo
  *
- * Copyright (C) 2011-2014 Inverse inc.
+ * Copyright (C) 2011-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -92,6 +92,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 - (void) setMailShowSubscribedFoldersOnly: (BOOL) newValue;
 - (BOOL) mailShowSubscribedFoldersOnly;
+
+- (void) setSynchronizeOnlyDefaultMailFolders: (BOOL) newValue;
+- (BOOL) synchronizeOnlyDefaultMailFolders;
 
 - (void) setMailSortByThreads: (BOOL) newValue;
 - (BOOL) mailSortByThreads;
