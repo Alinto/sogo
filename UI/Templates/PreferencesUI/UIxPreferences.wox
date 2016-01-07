@@ -344,6 +344,12 @@
                 <var:string label:value="Show subscribed mailboxes only"/></dd>
               <dt></dt>
               <dd><input type="checkbox"
+                const:name="synchronizeOnlyDefaultFolders"
+                const:id="synchronizeOnlyDefaultFolders"
+                var:checked="synchronizeOnlyDefaultMailFolders" />
+                <var:string label:value="Synchronize only default mail folders (EAS)"/></dd>
+               <dt></dt>
+              <dd><input type="checkbox"
                 const:name="sortByThreads"
                 const:id="sortByThreads"
                 var:checked="sortByThreads" />

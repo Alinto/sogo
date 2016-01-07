@@ -738,6 +738,16 @@ static NSArray *reminderValues = nil;
   return [userDefaults mailShowSubscribedFoldersOnly];
 }
 
+- (void) setSynchronizeOnlyDefaultMailFolders: (BOOL) synchronizeOnlyDefaultMailFolders
+{
+  [userDefaults setSynchronizeOnlyDefaultMailFolders: synchronizeOnlyDefaultMailFolders];
+}
+
+- (BOOL) synchronizeOnlyDefaultMailFolders
+{
+  return [userDefaults synchronizeOnlyDefaultMailFolders];
+}
+
 - (void) setSortByThreads: (BOOL) sortByThreads
 {
   [userDefaults setMailSortByThreads: sortByThreads];
