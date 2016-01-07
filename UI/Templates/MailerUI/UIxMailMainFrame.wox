@@ -411,8 +411,8 @@
                  ng-disabled="app.currentSearchParam.length == 0"
                  sg-placeholder="app.search.options[app.currentSearchParam]"/>
           <md-chip-template>
-            <span class="md-caption" ng-show="$chip.negative == 0">(match</span>
-            <span class="md-caption" ng-show="$chip.negative == 1">(does not match</span>
+            <span class="md-caption" ng-show="$chip.negative == 0">(<var:string label:value="match"/></span>
+            <span class="md-caption" ng-show="$chip.negative == 1">(<var:string label:value="does not match"/></span>
             <span class="md-caption">{{$chip.searchBy}})</span>
             <span>{{$chip.searchInput}}</span>
           </md-chip-template>
