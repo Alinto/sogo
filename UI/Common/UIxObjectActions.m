@@ -1,8 +1,8 @@
 /* UIxObjectActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
+ * Copyright (C) 2007-2016 Inverse inc.
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Author: Inverse <info@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 
+#import <SoObjects/SOGo/SOGoContentObject.h>
 #import <SoObjects/SOGo/SOGoObject.h>
 #import <SoObjects/SOGo/SOGoPermissions.h>
 
@@ -99,13 +100,18 @@
 {
   WOResponse *response;
   NSDictionary *data;
+  SOGoContentObject *deleteObject;
 
-  response = (WOResponse *) [[self clientObject] delete];
+  deleteObject = [self clientObject];
+  if ([deleteObject respondsToSelector: @selector (prepareDelete)])
+    [deleteObject prepareDelete];
+  response = (WOResponse *) [deleteObject delete];
+
   if (response)
     {
       data = [NSDictionary dictionaryWithObjectsAndKeys: [(NSException *) response reason], @"error", nil];
       response = [self responseWithStatus: 403
-                                andString: [data jsonRepresentation]];
+                    andJSONRepresentation: data];
     }
   else
     {
