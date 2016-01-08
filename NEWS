@@ -7,6 +7,7 @@ New features
 Bug fixes
  - don't unescape twice mail folder names (#3423)
  - don't consider mobile Outlook EAS clients as DAV ones (#3431)
+ - we now follow 301 redirects when fetching ICS calendars
 
 2.3.5 (2016-01-05)
 ------------------
