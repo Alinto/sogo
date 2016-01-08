@@ -802,11 +802,15 @@ static Class NSNullK;
     [theCurrentUser setObject: [NSNumber numberWithBool: YES]
                        forKey: access_type];
 
+  // For DomainLessLogin, we MUST strip any trailing domain part before
+  // doing lookups in our source (LDAP for example) as the UIDFieldName
+  // or the BindFields/MailFieldNames don't necessarily contain the
+  // domain in the value pair.
   if ([[theCurrentUser objectForKey: @"DomainLessLogin"] boolValue])
     {
       NSRange r;
 
-      r = [theUID rangeOfString: [NSString stringWithFormat: @"@%@", theDomain]];
+      r = [theUID rangeOfString: @"@"];
 
       // We check if the range is ok here since we could be using DomainLessLogin
       if (r.location != NSNotFound)
