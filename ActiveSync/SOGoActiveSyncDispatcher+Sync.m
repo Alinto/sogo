@@ -573,6 +573,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               // FIXME: handle errors here
               if (deletesAsMoves && theFolderType == ActiveSyncMailFolder)
                 [(SOGoMailFolder *)[sogoObject container] deleteUIDs: [NSArray arrayWithObjects: serverId, nil] useTrashFolder: &useTrash inContext: context];
+              else if (theFolderType == ActiveSyncEventFolder)
+                [sogoObject prepareDelete];
               else
                 [sogoObject delete];
             }
