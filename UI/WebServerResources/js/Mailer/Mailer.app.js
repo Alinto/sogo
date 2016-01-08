@@ -177,9 +177,6 @@
     var mailboxId = decodeUriFilter($stateParams.mailboxId),
         _find;
 
-    if (Mailbox.selectedFolder)
-      Mailbox.selectedFolder.$isLoading = true;
-
     // Recursive find function
     _find = function(mailboxes) {
       var mailbox = _.find(mailboxes, function(o) {
@@ -194,6 +191,9 @@
       }
       return mailbox;
     };
+
+    if (Mailbox.selectedFolder)
+      Mailbox.selectedFolder.$isLoading = true;
 
     return _find(stateAccount.$mailboxes);
   }
@@ -255,11 +255,11 @@
     var message;
 
     message = _.find(stateMailbox.$messages, function(messageObject) {
-      return messageObject.uid == $stateParams.messageId;
+      return messageObject.uid == parseInt($stateParams.messageId);
     });
 
     if (message) {
-      stateMailbox.selectedMessage = $stateParams.messageId;
+      stateMailbox.selectedMessage = parseInt($stateParams.messageId);
       return message.$reload();
     }
     else {

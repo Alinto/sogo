@@ -212,7 +212,7 @@
           <span ng-switch-default="true">{{mailbox.service.selectedFolder.getLength()}} <var:string label:value="messages"/></span>
         </span>
       </md-subheader>
-      <md-virtual-repeat-container class="md-flex">
+      <md-virtual-repeat-container class="md-flex" md-top-index="mailbox.selectedFolder.$topIndex">
         <md-list class="sg-section-list">
           <md-list-item
               class="md-default-theme md-background md-hue-1"

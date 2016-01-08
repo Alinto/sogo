@@ -528,7 +528,7 @@
     uids = _.pluck(messages, 'uid');
     return Mailbox.$$resource.post(this.id, 'batchDelete', {uids: uids})
       .then(function(data) {
-        var selectedMessages, selectedUIDs, unseen;
+        var selectedMessages, selectedUIDs, unseen, firstIndex = _this.$messages.length;
         // Decrement the unseenCount accordingly
         unseen = _.filter(messages, function(message, i) { return !message.isread; });
         _this.unseenCount -= unseen.length;
@@ -543,6 +543,8 @@
             if (message.uid == _this.selectedMessage)
               delete _this.selectedMessage;
             _this.$messages.splice(index, 1);
+            if (index < firstIndex)
+              firstIndex = index;
           }
           else {
             _this.uidsMap[message.uid] -= uids.length;
@@ -551,6 +553,8 @@
         // Update inbox quota
         if (data.quotas)
           _this.$account.updateQuota(data.quotas);
+
+        return firstIndex;
       });
   };
 

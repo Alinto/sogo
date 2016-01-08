@@ -92,7 +92,8 @@
     }
 
     function doDelete() {
-      var parentCtrls = $parentControllers(), mailbox, message, state;
+      var mailbox, message, state, nextMessage, previousMessage,
+          parentCtrls = $parentControllers();
 
       if (parentCtrls.messageCtrl) {
         mailbox = parentCtrls.mailboxCtrl.selectedFolder;
@@ -105,19 +106,38 @@
         state = $state;
       }
 
-      mailbox.$deleteMessages([message]).then(function() {
-        // Remove message from list of messages
-        var index = _.findIndex(mailbox.$messages, function(o) {
-          return o.uid == message.uid;
-        });
-        if (index != -1)
-          mailbox.$messages.splice(index, 1);
+      mailbox.$deleteMessages([message]).then(function(index) {
+        var nextIndex = index;
         // Remove message object from scope
         message = null;
-        // Navigate to mailbox if not in popup window
         if (angular.isDefined(state)) {
+          // Select either the next or previous message
+          if (index > 0) {
+            nextIndex -= 1;
+            nextMessage = mailbox.$messages[nextIndex];
+          }
+          if (index < mailbox.$messages.length)
+            previousMessage = mailbox.$messages[index];
+
+          if (nextMessage) {
+            if (nextMessage.isread && previousMessage && !previousMessage.isread) {
+              nextIndex = index;
+              nextMessage = previousMessage;
+            }
+          }
+          else if (previousMessage) {
+            nextIndex = index;
+            nextMessage = previousMessage;
+          }
+
           try {
-            state.go('mail.account.mailbox', { mailboxId: encodeUriFilter(mailbox.path) });
+            if (nextMessage) {
+              state.go('mail.account.mailbox.message', { messageId: nextMessage.uid });
+              mailbox.$topIndex = nextIndex;
+            }
+            else {
+              state.go('mail.account.mailbox');
+            }
           }
           catch (error) {}
         }

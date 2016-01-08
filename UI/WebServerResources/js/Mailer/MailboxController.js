@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MailboxController.$inject = ['$window', '$state', '$timeout', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'Dialog', 'Account', 'Mailbox'];
-  function MailboxController($window, $state, $timeout, $mdDialog, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, Dialog, Account, Mailbox) {
+  MailboxController.$inject = ['$window', '$state', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'Dialog', 'Account', 'Mailbox'];
+  function MailboxController($window, $state, $mdDialog, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, Dialog, Account, Mailbox) {
     var vm = this, messageDialog = null;
 
     // Expose controller
@@ -59,24 +59,43 @@
           // User confirmed the deletion
           var unselectMessage = false;
           var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) {
-            if (message.uid == vm.selectedFolder.selectedMessage)
+            if (message.selected &&
+                message.uid == vm.selectedFolder.selectedMessage)
               unselectMessage = true;
             return message.selected;
           });
-          vm.selectedFolder.$deleteMessages(selectedMessages).then(function() {
+          vm.selectedFolder.$deleteMessages(selectedMessages).then(function(index) {
+            var nextMessage, previousMessage, nextIndex = index;
             if (unselectMessage) {
-              if (Mailbox.$virtualMode)
-                $state.go('mail.account.virtualMailbox',
-                          {
-                            accountId: stateAccount.id,
-                            mailboxId: encodeUriFilter(vm.selectedFolder.path)
-                          });
-              else
-                $state.go('mail.account.mailbox',
-                          {
-                            accountId: stateAccount.id,
-                            mailboxId: encodeUriFilter(vm.selectedFolder.path)
-                          });
+              if (Mailbox.$virtualMode) {
+                $state.go('mail.account.virtualMailbox');
+              }
+              else {
+                // Select either the next or previous message
+                if (index > 0) {
+                  nextIndex -= 1;
+                  nextMessage = vm.selectedFolder.$messages[nextIndex];
+                }
+                if (index < vm.selectedFolder.$messages.length)
+                  previousMessage = vm.selectedFolder.$messages[index];
+                if (nextMessage) {
+                  if (nextMessage.isread && previousMessage && !previousMessage.isread) {
+                    nextIndex = index;
+                    nextMessage = previousMessage;
+                  }
+                }
+                else if (previousMessage) {
+                  nextIndex = index;
+                  nextMessage = previousMessage;
+                }
+                if (nextMessage) {
+                  $state.go('mail.account.mailbox.message', { messageId: nextMessage.uid });
+                  vm.selectedFolder.$topIndex = nextIndex;
+                }
+                else {
+                  $state.go('mail.account.mailbox');
+                }
+              }
             }
           });
         });
@@ -172,6 +191,26 @@
           });
       }
     }
+  }
+
+  angular
+    .module('material.components.virtualRepeat')
+    .decorator('mdVirtualRepeatContainerDirective', mdVirtualRepeatContainerDirectiveDecorator);
+
+  /**
+   * @ngInject
+   */
+  mdVirtualRepeatContainerDirectiveDecorator.$inject = ['$delegate'];
+  function mdVirtualRepeatContainerDirectiveDecorator($delegate) {
+    $delegate[0].controller.prototype.resetScroll = function() {
+      // Don't scroll to top if current virtual repeater is the messages list
+      // but do update the container size
+      if (this.$element.parent().attr('id') == 'messagesList')
+        this.updateSize();
+      else
+        this.scrollTo(0);
+    };
+    return $delegate;
   }
 
   angular
