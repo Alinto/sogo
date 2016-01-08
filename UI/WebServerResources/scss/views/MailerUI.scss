@@ -3,6 +3,7 @@
 // Container for the linear progress bar of the quota
 .sg-quota {
   padding-bottom: $baseline-grid;
+  padding: 0 $baseline-grid*2 $baseline-grid $baseline-grid*2;
   text-align: center;
   md-progress-linear > .md-container {
     height: 2px;

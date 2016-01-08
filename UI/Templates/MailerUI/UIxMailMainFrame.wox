@@ -36,191 +36,12 @@
   </style>
 
   <!--
-  <div id="signatureFlagMessage" style="display: none" class="dialog right">
-  </div>
-
-  <div class="f-dropdown" id="accountIconMenu">
-    <ul>
-      <li><var:string label:value="Subscribe..." /></li>
-      <li><var:string label:value="Get Messages for Account" /></li>
-      <li><var:string label:value="New Folder..." /></li>
-      <li><var:string label:value="Search Messages..." /></li>
-      <li><var:string label:value="Properties..." /></li>
-      <li><var:string label:value="Delegation..." /></li>
-    </ul>
-  </div>
-
-  <div class="f-dropdown" id="inboxIconMenu">
-    <ul>
-      <li><var:string label:value="Open in New Mail Window" /></li>
-      <li><var:string label:value="Copy Folder Location" /></li>
-      <li><var:string label:value="Subscribe..." /></li>
-      <li> separator </li>
-      <li><var:string label:value="Mark Folder Read" /></li>
-      <li><var:string label:value="New Folder..." /></li>
-      <li><var:string label:value="Compact This Folder" /></li>
-      <li><var:string label:value="Export This Folder" /></li>
-      <li> separator </li>
-      <li><var:string label:value="Search Messages..." /></li>
-      <li><var:string label:value="Sharing..." /></li>
-    </ul>
-  </div>
-
-  <div class="f-dropdown" id="trashIconMenu">
-    <ul>
-      <li><var:string label:value="Open in New Mail Window" /></li>
-      <li><var:string label:value="Copy Folder Location" /></li>
-      <li><var:string label:value="Subscribe..." /></li>
-      <li> separator </li>
-      <li><var:string label:value="Mark Folder Read" /></li>
-      <li><var:string label:value="New Subfolder..." /></li>
-      <li><var:string label:value="Compact This Folder" /></li>
-      <li><var:string label:value="Export This Folder" /></li>
-      <li><var:string label:value="Empty Trash" /></li>
-      <li> separator </li>
-      <li><var:string label:value="Search Messages..." /></li>
-      <li><var:string label:value="Sharing..." /></li>
-    </ul>
-  </div>
-
-  <div class="f-dropdown" id="mailboxIconMenu">
-    <ul>
-      <li><var:string label:value="Open in New Mail Window" /></li>
-      <li><var:string label:value="Copy Folder Location" /></li>
-      <li><var:string label:value="Subscribe..." /></li>
-      <li> separator </li>
-      <li><var:string label:value="Mark Folder Read" /></li>
-      <li><var:string label:value="New Subfolder..." /></li>
-      <li><var:string label:value="Rename Folder..." /></li>
-      <li><var:string label:value="Compact This Folder" /></li>
-      <li><var:string label:value="Export This Folder" /></li>
-      <li><var:string label:value="Delete Folder" /></li>
-      <li><var:string label:value="Use This Folder For" /></li>
-      <li> separator </li>
-      <li><var:string label:value="Search Messages..." /></li>
-      <li><var:string label:value="Sharing..." /></li>
-    </ul>
-  </div>
-
-  <div class="f-dropdown" id="folderTypeMenu">
-    <ul>
-      <li><var:string label:value="Sent Messages" /></li>
-      <li><var:string label:value="Drafts" /></li>
-      <li><var:string label:value="Deleted Messages" /></li>
-    </ul>
-  </div>
-
-  <div class="f-dropdown" id="moveMailboxMenu">
-    <ul>
-      <var:foreach list="clientObject.mailAccounts" item="currentLabel">
-        <li><img rsrc:src="tbtv_account_17x17.png"/> <var:string value="currentLabel.name"/></li>
-      </var:foreach>
-    </ul>
-  </div>
-
-  <div class="f-dropdown" id="copyMailboxMenu">
-    <ul>
-      <var:foreach list="clientObject.mailAccounts" item="currentLabel">
-        <li><img rsrc:src="tbtv_account_17x17.png"/> <var:string value="currentLabel.name"/></li>
-      </var:foreach>
-    </ul>
-  </div>
-
-  <div class="f-dropdown" id="messageListMenu">
-    <ul>
-      <li><var:string label:value="Open Message In New Window"/></li>
-      <li> separator </li>
-      <li><var:string label:value="Reply to Sender Only"/></li>
-      <li><var:string label:value="Reply to All"/></li>
-      <li><var:string label:value="Forward"/></li>
-      <li><var:string label:value="Edit As New..."/></li>
-      <li> separator </li>
-      <li><var:string label:value="Move To"/></li>
-      <li><var:string label:value="Copy To"/></li>
-      <li><var:string label:value="Label"/></li>
-      <li><var:string label:value="Mark"/></li>
-      <li> separator </li>
-      <li><var:string label:value="Save As..."/></li>
-      <li><var:string label:value="View Message Source"/></li>
-      <li><var:string label:value="Print Preview"/></li>
-      <li><var:string label:value="Print..."/></li>
-      <li><var:string label:value="Delete Message"/></li>
-    </ul>
-  </div>
-
-  <div class="f-dropdown" id="messagesListMenu">
-    <ul>
-      <li><var:string label:value="Forward"/></li>
-      <li> separator </li>
-      <li><var:string label:value="Move To"/></li>
-      <li><var:string label:value="Copy To"/></li>
-      <li><var:string label:value="Label"/></li>
-      <li><var:string label:value="Mark"/></li>
-      <li> separator </li>
-      <li><var:string label:value="Save As..."/></li>
-      <li><var:string label:value="Print Preview"/></li>
-      <li><var:string label:value="Print..."/></li>
-      <li><var:string label:value="Delete Selected Messages"/></li>
-    </ul>
-  </div>
-
-  <div class="f-dropdown" id="messageContentMenu">
-    <ul>
-      <li><var:string label:value="Reply to Sender Only"/></li>
-      <li><var:string label:value="Reply to All"/></li>
-      <li><var:string label:value="Forward"/></li>
-      <li><var:string label:value="Edit As New..."/></li>
-      <li><var:string label:value="Move To"/></li>
-      <li><var:string label:value="Copy To"/></li>
-      <li> separator </li>
-      <li><var:string label:value="Label"/></li>
-      <li><var:string label:value="Mark"/></li>
-      <li> separator </li>
-      <li><var:string label:value="Save As..."/></li>
-      <li><var:string label:value="View Message Source"/></li>
-      <li><var:string label:value="Print Preview"/></li>
-      <li><var:string label:value="Print..."/></li>
-      <li><var:string label:value="Delete Message"/></li>
-    </ul>
-  </div>
-
-  <div class="f-dropdown" id="label-menu">
-    <ul id="" class="choiceMenu">
-      <li><var:string label:value="None" /></li>
-      <li> separator </li>
-      <var:foreach list="availableLabels" item="currentLabel">
-        <li var:class="currentLabel.name.asCSSIdentifier" var:name="currentLabel.name">  <var:string value="currentLabel.label"/></li>
-      </var:foreach>
-    </ul>
-  </div>
-
-  <div class="f-dropdown" id="mark-menu">
-    <ul id="" class="choiceMenu">
-      <li><var:string label:value="As Read" /></li>
-      <li><var:string label:value="Thread As Read" /></li>
-      <li><var:string label:value="As Read By Date..." /></li>
-      <li><var:string label:value="All Read" /></li>
-      <li> separator </li>
-      <li><var:string label:value="Flag" /></li>
-    </ul>
-  </div>
-
-  <div class="f-dropdown" id="addressMenu">
-    <ul>
-      <li id="add_to_addressbook"><var:string label:value="Add to Address Book..."/></li>
-      <li id="compose_mailto"><var:string label:value="Compose Mail To"/></li>
-    </ul>
-  </div>
-
+      MAIN CONTENT ROW
+      Content of the application view injected injected in the element below
+      MUST be the first html element after body
+      SHOULD be a main tag
+      Templates script tag wrappers go next
   -->
-<!--
-  MAIN CONTENT ROW
-  Content of the application view injected injected in the element below
-  MUST be the first html element after body
-  SHOULD  be a main tag (with role="main")
-
-  Templates script tag wrappers go next
--->
   <main class="view layout-fill" ui-view="mailboxes" layout="row" ng-controller="navController"><!-- mailboxes list --></main>
 
   <script type="text/ng-template" id="UIxMailMainFrame">
@@ -239,6 +60,7 @@
                          ng-show="account.id == 0"
                          label:aria-label="Delegation..."
                          ng-click="app.delegate(account)">
+                <md-tooltip md-delay="300"><var:string label:value="Delegation..."/></md-tooltip>
                 <md-icon>people</md-icon>
               </md-button>
               <div class="sg-no-wrap">{{account.name}}</div>
@@ -246,6 +68,7 @@
               <md-button class="sg-icon-button"
                          label:aria-label="New Folder..."
                          ng-click="app.newFolder(account)">
+                <md-tooltip md-delay="300"><var:string label:value="New Folder..."/></md-tooltip>
                 <md-icon>add_circle_outline</md-icon>
               </md-button>
             </div>
@@ -261,7 +84,7 @@
             <md-list>
               <md-list-item md-virtual-repeat="folder in account.$flattenMailboxes()" md-item-size="48"
                             class="md-default-theme md-background md-hue-1"
-                            ng-class="{'md-bg': folder.path == app.service.selectedFolder.path}"
+                            ng-class="{'md-bg': folder.id == app.service.selectedFolder.id}"
                             ng-dblclick="app.editFolder(folder)">
                 <div ng-class="'sg-child-level-' + folder.level">
                   <md-icon ng-hide="folder.children.length">{{app.metadataForFolder(folder).icon}}</md-icon>
@@ -360,6 +183,7 @@
               </md-list-item>
             </md-list>
           </md-virtual-repeat-container>
+          <md-divider><!-- divider --></md-divider>
         </section>
       </md-content>
     </md-sidenav>
