@@ -231,6 +231,9 @@
               <div class="md-avatar sg-avatar-selected"
                    ng-switch-when="true"><!-- selected avatar --></div>
             </div>
+            <div class="sg-category"
+                 ng-repeat="tag in currentMessage.flags | limitTo:5"
+                 ng-style="{ 'background-color': currentMessage.constructor.$tags[tag][1], left: ($index * 3) + 'px' }"><!-- calendar color --></div>
             <div class="sg-tile-content">
               <div class="sg-md-subhead">
                 <div>

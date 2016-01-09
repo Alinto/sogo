@@ -45,6 +45,12 @@ md-chips {
       width: 0;
     }
   }
+  .sg-chip-color {
+    @extend .sg-chip-progress;
+    span {
+      width: 100%;
+    }
+  }
 }
 
 // Enlarge the default autocompletion menu
