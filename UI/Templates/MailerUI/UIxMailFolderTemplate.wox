@@ -215,7 +215,7 @@
       <md-virtual-repeat-container class="md-flex" md-top-index="mailbox.selectedFolder.$topIndex">
         <md-list class="sg-section-list">
           <md-list-item
-              class="md-default-theme md-background md-hue-1"
+              class="md-default-theme md-accent md-hue-2"
               ng-class="{'md-bg': mailbox.selectedFolder.isSelectedMessage(currentMessage.uid, currentMessage.$mailbox.path),
                           unread: !currentMessage.isread}"
               md-virtual-repeat="currentMessage in mailbox.service.selectedFolder"

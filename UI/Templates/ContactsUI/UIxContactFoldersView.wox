@@ -377,7 +377,7 @@
           <md-virtual-repeat-container class="md-flex">
             <md-list class="sg-section-list">
               <md-list-item
-                  class="md-default-theme md-background md-hue-1"
+                  class="md-default-theme md-accent md-hue-2"
                   ng-class="{'md-bg': addressbook.selectedFolder.isSelectedCard(currentCard.id)}"
                   md-virtual-repeat="currentCard in addressbook.selectedFolder.cards" md-item-size="56"
                   ng-click="addressbook.selectCard(currentCard)">
