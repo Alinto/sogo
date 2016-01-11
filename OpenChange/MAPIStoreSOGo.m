@@ -64,11 +64,11 @@ static BOOL initialization_done = NO;
     } \
     OC_DEBUG(5, "[SOGo] --->");
 
-#define NS_CURRENT_THREAD_TRY_UNREGISTER() \
+#define NS_CURRENT_THREAD_TRY_UNREGISTER(rc) \
     if (__nsrct_thread_registered) { \
         GSUnregisterCurrentThread(); \
     } \
-    OC_DEBUG(6, "[SOGo] <---");
+    OC_DEBUG(6, "[SOGo] <--- [%s]", mapistore_errstr (rc));
 
 #define TRYCATCH_START @try {
 #define TRYCATCH_END(pool)  \
@@ -76,7 +76,7 @@ static BOOL initialization_done = NO;
             enum mapistore_error ret = sogo_backend_handle_objc_exception(e, __PRETTY_FUNCTION__, __LINE__); \
             mapiapp_cleanup(); \
             [pool release]; \
-            NS_CURRENT_THREAD_TRY_UNREGISTER(); \
+            NS_CURRENT_THREAD_TRY_UNREGISTER(ret); \
             return ret; \
           } \
         mapiapp_cleanup();
@@ -253,7 +253,7 @@ sogo_backend_create_context(TALLOC_CTX *mem_ctx,
     rc = MAPISTORE_ERROR;
 
   [pool release];
-  NS_CURRENT_THREAD_TRY_UNREGISTER();
+  NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
 
   return rc;
 }
@@ -291,7 +291,7 @@ sogo_backend_create_root_folder (const char *username,
     rc = MAPISTORE_ERROR;
 
   [pool release];
-  NS_CURRENT_THREAD_TRY_UNREGISTER();
+  NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
 
   return rc;
 }
@@ -322,7 +322,7 @@ sogo_backend_list_contexts(const char *username, struct indexing_context *indexi
     rc = MAPISTORE_ERROR;
 
   [pool release];
-  NS_CURRENT_THREAD_TRY_UNREGISTER();
+  NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
 
   return rc;
 }
@@ -363,7 +363,7 @@ sogo_context_get_path(void *backend_object, TALLOC_CTX *mem_ctx,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -397,7 +397,7 @@ sogo_context_get_root_folder(void *backend_object, TALLOC_CTX *mem_ctx,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -439,7 +439,7 @@ sogo_folder_open_folder(void *folder_object, TALLOC_CTX *mem_ctx, uint64_t fid, 
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -480,7 +480,7 @@ sogo_folder_create_folder(void *folder_object, TALLOC_CTX *mem_ctx,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -519,7 +519,7 @@ sogo_folder_delete(void *folder_object)
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -549,7 +549,7 @@ sogo_folder_get_child_count(void *folder_object, enum mapistore_table_type table
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -588,7 +588,7 @@ sogo_folder_open_message(void *folder_object,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -627,7 +627,7 @@ sogo_folder_create_message(void *folder_object,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -657,7 +657,7 @@ sogo_folder_delete_message(void *folder_object, uint64_t mid, uint8_t flags)
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -705,7 +705,7 @@ sogo_folder_move_copy_messages(void *folder_object,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -753,7 +753,7 @@ sogo_folder_move_folder(void *folder_object, void *target_folder_object,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -795,7 +795,7 @@ sogo_folder_copy_folder(void *folder_object, void *target_folder_object, TALLOC_
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -831,7 +831,7 @@ sogo_folder_get_deleted_fmids(void *folder_object, TALLOC_CTX *mem_ctx,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -869,7 +869,7 @@ sogo_folder_open_table(void *folder_object, TALLOC_CTX *mem_ctx,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -903,7 +903,7 @@ sogo_folder_modify_permissions(void *folder_object, uint8_t flags,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -934,7 +934,7 @@ sogo_folder_preload_message_bodies(void *folder_object, enum mapistore_table_typ
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -967,8 +967,8 @@ sogo_message_get_message_data(void *message_object,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
       rc = MAPISTORE_SUCCESS;
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1001,7 +1001,7 @@ sogo_message_create_attachment (void *message_object, TALLOC_CTX *mem_ctx, void 
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1035,7 +1035,7 @@ sogo_message_open_attachment (void *message_object, TALLOC_CTX *mem_ctx,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1069,7 +1069,7 @@ sogo_message_get_attachment_table (void *message_object, TALLOC_CTX *mem_ctx, vo
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1104,7 +1104,7 @@ sogo_message_modify_recipients (void *message_object,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1134,7 +1134,7 @@ sogo_message_set_read_flag (void *message_object, uint8_t flag)
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1164,7 +1164,7 @@ sogo_message_save (void *message_object, TALLOC_CTX *mem_ctx)
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1194,7 +1194,7 @@ sogo_message_submit (void *message_object, enum SubmitFlags flags)
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1234,7 +1234,7 @@ sogo_message_attachment_open_embedded_message (void *attachment_object,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1272,7 +1272,7 @@ sogo_message_attachment_create_embedded_message (void *attachment_object,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1302,7 +1302,7 @@ static enum mapistore_error sogo_table_get_available_properties(void *table_obje
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1333,7 +1333,7 @@ sogo_table_set_columns (void *table_object, uint16_t count, enum MAPITAGS *prope
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1366,7 +1366,7 @@ sogo_table_set_restrictions (void *table_object, struct mapi_SRestriction *restr
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1399,7 +1399,7 @@ sogo_table_set_sort_order (void *table_object, struct SSortOrderSet *sort_order,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1432,7 +1432,7 @@ sogo_table_get_row (void *table_object, TALLOC_CTX *mem_ctx,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1465,7 +1465,7 @@ sogo_table_get_row_count (void *table_object,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1495,8 +1495,8 @@ sogo_table_handle_destructor (void *table_object, uint32_t handle_id)
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
       rc = MAPISTORE_SUCCESS;
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1527,7 +1527,7 @@ static enum mapistore_error sogo_properties_get_available_properties(void *objec
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1562,7 +1562,7 @@ sogo_properties_get_properties (void *object,
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1592,7 +1592,7 @@ sogo_properties_set_properties (void *object, struct SRow *aRow)
       TRYCATCH_END(pool)
 
       [pool release];
-      NS_CURRENT_THREAD_TRY_UNREGISTER();
+      NS_CURRENT_THREAD_TRY_UNREGISTER(rc);
     }
   else
     {
@@ -1646,7 +1646,7 @@ sogo_manager_generate_uri (TALLOC_CTX *mem_ctx,
   TRYCATCH_END(pool)
 
   [pool release];
-  NS_CURRENT_THREAD_TRY_UNREGISTER();
+  NS_CURRENT_THREAD_TRY_UNREGISTER(MAPISTORE_SUCCESS);
 
   return MAPISTORE_SUCCESS;
 }
