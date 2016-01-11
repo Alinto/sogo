@@ -173,6 +173,75 @@ String.prototype.timeInterval = function () {
   return interval;
 };
 
+String.prototype.parseDate = function(localeProvider, format) {
+  var string, formattingTokens, tokens, token, now, date, regexes, i, parsedInput, matchesCount;
+
+  string = '' + this;
+  formattingTokens = /%[dembByY]/g;
+  now = new Date();
+  date = {
+    year: -1,
+    month: -1,
+    day: -1
+  };
+  regexes = {
+    '%d': [/\d\d/, function(input) {
+      date.day = parseInt(input);
+      return (date.day < 32);
+    }],
+    '%e': [/ ?\d?\d/, function(input) {
+      date.day = parseInt(input);
+      return (date.day < 32);
+    }],
+    '%m': [/\d\d/, function(input) {
+      date.month = parseInt(input) - 1;
+      return (date.month < 12);
+    }],
+    '%b': [/[^\d\s\.\/\-]{2,}/, function(input) {
+      var i = _.indexOf(localeProvider.shortMonths, input);
+      if (i >= 0)
+        date.month = i;
+      return (i >= 0);
+    }],
+    '%B': [/[^\d\s\.\/\-]{2,}/, function(input) {
+      var i = _.indexOf(localeProvider.months, input);
+      if (i >= 0)
+        date.month = i;
+      return (i >= 0);
+    }],
+    '%y': [/\d\d/, function(input) {
+      var nearFuture = parseInt(now.getFullYear().toString().substring(2)) + 5;
+      date.year = parseInt(input);
+      if (date.year < nearFuture) date.year += 2000;
+      else date.year += 1900;
+      return true;
+    }],
+    '%Y': [/[12]\d\d\d/, function(input) {
+      date.year = parseInt(input);
+      return true;
+    }]
+  };
+  tokens = format.match(formattingTokens) || [];
+  matchesCount = 0;
+
+  for (i = 0; i < tokens.length; i++) {
+    token = tokens[i];
+    parsedInput = (string.match(regexes[token][0]) || [])[0];
+    if (parsedInput) {
+      string = string.slice(string.indexOf(parsedInput) + parsedInput.length);
+      if (regexes[token][1](parsedInput))
+        matchesCount++;
+    }
+  }
+
+  if (tokens.length === matchesCount) {
+    // console.debug(this + ' + ' + format + ' = ' + JSON.stringify(date));
+    return new Date(date.year, date.month, date.day);
+  }
+  else
+    return new Date(NaN);
+};
+
 Date.prototype.daysUpTo = function(otherDate) {
     var days = [];
 
@@ -308,19 +377,83 @@ Date.prototype.getHourString = function() {
     return newString;
 };
 
+Date.prototype.format = function(localeProvider, format) {
+  var separators, parts, i, max,
+      date = [],
+      validParts = /%[daAmbByYHIM]/g,
+      val = {
+        '%d': this.getUTCDate(),                                  // day of month (e.g., 01)
+        '%e': this.getUTCDate(),                                  // day of month, space padded
+        '%a': localeProvider.shortDays[this.getUTCDay()],         // locale's abbreviated weekday name (e.g., Sun)
+        '%A': localeProvider.days[this.getUTCDay()],              // locale's full weekday name (e.g., Sunday)
+        '%m': this.getUTCMonth() + 1,                             // month (01..12)
+        '%b': localeProvider.shortMonths[this.getUTCMonth()],     // locale's abbreviated month name (e.g., Jan)
+        '%B': localeProvider.months[this.getUTCMonth()],          // locale's full month name (e.g., January)
+        '%y': this.getUTCFullYear().toString().substring(2),      // last two digits of year (00..99)
+        '%Y': this.getUTCFullYear(),                              // year
+        '%H': this.getHours(),                                    // hour (00..23)
+        '%M': this.getMinutes() };                                // minute (00..59)
+  val['%I'] = val['%H'] > 12 ? val['%H'] % 12 : val['%H'];        // hour (01..12)
+
+  val['%d'] = (val['%d'] < 10 ? '0' : '') + val['%d'];
+  val['%e'] = (val['%e'] < 10 ? ' ' : '') + val['%e'];
+  val['%m'] = (val['%m'] < 10 ? '0' : '') + val['%m'];
+  val['%H'] = (val['%H'] < 10 ? '0' : '') + val['%H'];
+  val['%I'] = (val['%I'] < 10 ? '0' : '') + val['%I'];
+  val['%M'] = (val['%M'] < 10 ? '0' : '') + val['%M'];
+
+  separators = format.replace(validParts, '\0').split('\0');
+  parts = format.match(validParts);
+  for (i = 0, max = parts.length; i <= max; i++){
+    if (separators.length)
+      date.push(separators.shift());
+    date.push(val[parts[i]]);
+  }
+
+  return date.join('');
+};
+
 /* Functions */
 
 function l() {
-  var key = arguments[0];
-  var value = key;
+  var key = arguments[0], value = key, args = arguments, i, j;
+
+  // Retrieve translation
   if (labels[key]) {
     value = labels[key];
   }
   else if (clabels[key]) {
     value = clabels[key];
   }
-  for (var i = 1, j = 0; i < arguments.length; i++, j++) {
-    value = value.replace('%{' + j + '}', arguments[i]);
+
+  // Format placeholders %{0}, %{1], %{2}, ...
+  for (i = 1, j = 0; i < args.length; i++, j++) {
+    value = value.replace('%{' + j + '}', args[i]);
+  }
+
+  // Format placeholders %d and %s
+  i = 1;
+  if (args.length > 1) {
+    value = value.replace(/%((%)|s|d)/g, function(m) {
+      // m is the matched format, e.g. %s, %d
+      var val = null;
+      if (m[2]) {
+        val = m[2];
+      }
+      else {
+        val = args[i];
+        // A switch statement so that the formatter can be extended. Default is %s
+        switch (m) {
+        case '%d':
+          val = parseFloat(val);
+          if (isNaN(val))
+            val = 0;
+          break;
+        }
+        i++;
+      }
+      return val;
+    });
   }
 
   return value;

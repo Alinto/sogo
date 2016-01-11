@@ -104,3 +104,5 @@
 "Loading" = "Loading";
 "No such user." = "No such user.";
 "You cannot (un)subscribe to a folder that you own!" = "You cannot (un)subscribe to a folder that you own!";
+/* Aria label for datepicker button */
+"Open Calendar" = "Open Calendar";

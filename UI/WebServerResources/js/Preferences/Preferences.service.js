@@ -65,11 +65,28 @@
 
       angular.extend(_this.defaults, data);
 
+      angular.extend(Preferences.$mdDateLocaleProvider, data.locale);
+      Preferences.$mdDateLocaleProvider.firstDayOfWeek = parseInt(data.SOGoFirstDayOfWeek);
+      Preferences.$mdDateLocaleProvider.weekNumberFormatter = function(weekNumber) {
+        return l('Week %d', weekNumber);
+      };
+      Preferences.$mdDateLocaleProvider.msgCalendar = l('Calender');
+      Preferences.$mdDateLocaleProvider.msgOpenCalendar = l('Open Calendar');
+      Preferences.$mdDateLocaleProvider.parseDate = function(dateString) {
+        return dateString? dateString.parseDate(Preferences.$mdDateLocaleProvider, data.SOGoShortDateFormat) : new Date(NaN);
+      };
+      Preferences.$mdDateLocaleProvider.formatDate = function(date) {
+        return date? date.format(Preferences.$mdDateLocaleProvider, data.SOGoShortDateFormat) : '';
+      };
+      Preferences.$mdDateLocaleProvider.formatTime = function(date) {
+        return date? date.format(Preferences.$mdDateLocaleProvider, data.SOGoTimeFormat) : '';
+      };
+
       return _this.defaults;
     });
 
     this.settingsPromise = Preferences.$$resource.fetch("jsonSettings").then(function(data) {
-        // We convert our PreventInvitationsWhitelist hash into a array of user
+      // We convert our PreventInvitationsWhitelist hash into a array of user
       if (data.Calendar) {
         if (data.Calendar.PreventInvitationsWhitelist)
           data.Calendar.PreventInvitationsWhitelist = _.map(data.Calendar.PreventInvitationsWhitelist, function(value, key) {
@@ -91,11 +108,12 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Preferences constructor
    */
-  Preferences.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'User', function($q, $timeout, $log, Settings, Resource, User) {
+  Preferences.$factory = ['$q', '$timeout', '$log', '$mdDateLocale', 'sgSettings', 'Resource', 'User', function($q, $timeout, $log, $mdDateLocaleProvider, Settings, Resource, User) {
     angular.extend(Preferences, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
+      $mdDateLocaleProvider: $mdDateLocaleProvider,
       $$resource: new Resource(Settings.activeUser('folderURL'), Settings.activeUser()),
       activeUser: Settings.activeUser(),
       $User: User

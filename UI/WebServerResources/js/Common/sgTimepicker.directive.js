@@ -436,13 +436,18 @@
    *
    * ngInject @constructor
    */
-  function TimePickerCtrl($scope, $element, $attrs, $compile, $timeout, $mdConstant, $mdMedia, $mdTheming,
-                          $mdUtil, $mdDateLocale, $$mdDateUtil, $$rAF) {
+  TimePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$compile", "$timeout", "$window",
+                            "$mdConstant", "$mdMedia", "$mdTheming", "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF"];
+  function TimePickerCtrl($scope, $element, $attrs, $compile, $timeout, $window,
+                          $mdConstant, $mdMedia, $mdTheming, $mdUtil, $mdDateLocale, $$mdDateUtil, $$rAF) {
     /** @final */
     this.$compile = $compile;
 
     /** @final */
     this.$timeout = $timeout;
+
+    /** @final */
+    this.$window = $window;
 
     /** @final */
     this.dateLocale = $mdDateLocale;
@@ -542,32 +547,29 @@
     });
   }
 
-  TimePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$compile", "$timeout", "$mdConstant", "$mdMedia", "$mdTheming",
-                            "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF"];
-
   /**
    * Sets up the controller's reference to ngModelController.
    * @param {!angular.NgModelController} ngModelCtrl
    */
   TimePickerCtrl.prototype.configureNgModel = function(ngModelCtrl) {
     this.ngModelCtrl = ngModelCtrl;
+
     var self = this;
     ngModelCtrl.$render = function() {
-      self.time = self.ngModelCtrl.$viewValue;
-      self.inputElement.value = self.formatTime(self.time);
+      var value = self.ngModelCtrl.$viewValue;
+
+      if (value && !(value instanceof Date)) {
+        throw Error('The ng-model for sg-timepicker must be a Date instance. ' +
+                    'Currently the model is a: ' + (typeof value));
+      }
+
+      self.time = value;
+      self.inputElement.value = self.dateLocale.formatTime(value);
       self.resizeInputElement();
+      self.updateErrorState();
     };
   };
 
-  TimePickerCtrl.prototype.formatTime = function(time) {
-    var t = new Date(time);
-    if (t) {
-      var h = t.getHours();
-      var m = t.getMinutes();
-      return (h < 10? ('0' + h) : h) + ':' + (m < 10? ('0' + m) : m);
-    }
-    else return '';
-  };
   /**
    * Attach event listeners for both the text input and the md-time.
    * Events are used instead of ng-model so that updates don't infinitely update the other
@@ -580,7 +582,7 @@
       var time = new Date(data.date);
       self.ngModelCtrl.$setViewValue(time);
       self.time = time;
-      self.inputElement.value = self.formatTime(self.time);
+      self.inputElement.value = self.dateLocale.formatTime(time);
       if (data.changed == 'minutes') {
         self.closeTimePane();
       }
@@ -647,6 +649,45 @@
   };
 
   /**
+   * Sets the custom ngModel.$error flags to be consumed by ngMessages. Flags are:
+   *   - mindate: whether the selected date is before the minimum date.
+   *   - maxdate: whether the selected flag is after the maximum date.
+   *   - filtered: whether the selected date is allowed by the custom filtering function.
+   *   - valid: whether the entered text input is a valid date
+   *
+   * The 'required' flag is handled automatically by ngModel.
+   *
+   * @param {Date=} opt_date Date to check. If not given, defaults to the datepicker's model value.
+   */
+  TimePickerCtrl.prototype.updateErrorState = function(opt_date) {
+    var date = opt_date || this.date;
+
+    // Clear any existing errors to get rid of anything that's no longer relevant.
+    this.clearErrorState();
+
+    if (!this.dateUtil.isValidDate(date)) {
+      // The date is seen as "not a valid date" if there is *something* set
+      // (i.e.., not null or undefined), but that something isn't a valid date.
+      this.ngModelCtrl.$setValidity('valid', date === null);
+    }
+
+    // TODO(jelbourn): Change this to classList.toggle when we stop using PhantomJS in unit tests
+    // because it doesn't conform to the DOMTokenList spec.
+    // See https://github.com/ariya/phantomjs/issues/12782.
+    if (!this.ngModelCtrl.$valid) {
+      this.inputContainer.classList.add(INVALID_CLASS);
+    }
+  };
+
+  /** Clears any error flags set by `updateErrorState`. */
+  TimePickerCtrl.prototype.clearErrorState = function() {
+    this.inputContainer.classList.remove(INVALID_CLASS);
+    ['valid'].forEach(function(field) {
+      this.ngModelCtrl.$setValidity(field, true);
+    }, this);
+  };
+
+  /**
    * Resizes the input element based on the size of its content.
    */
   TimePickerCtrl.prototype.resizeInputElement = function() {
@@ -659,7 +700,7 @@
    */
   TimePickerCtrl.prototype.handleInputEvent = function(self) {
     var inputString = this.inputElement.value;
-    var arr = inputString.split(':');
+    var arr = inputString.split(/[\.:]/);
 
     if (inputString === '') {
       this.ngModelCtrl.$setViewValue(null);
@@ -721,7 +762,7 @@
     }
 
     timePane.style.top = paneTop + 'px';
-    document.body.appendChild(this.timePane);
+    document.body.appendChild(timePane);
 
     // The top of the calendar pane is a transparent box that shows the text input underneath.
     // Since the pane is floating, though, the page underneath the pane *adjacent* to the input is
@@ -780,14 +821,16 @@
 
   /** Close the floating time pane. */
   TimePickerCtrl.prototype.closeTimePane = function() {
-    this.isTimeOpen = false;
-    this.detachTimePane();
-    this.timePaneOpenedFrom.focus();
-    this.timePaneOpenedFrom = null;
-    this.$mdUtil.enableScrolling();
+    if (this.isTimeOpen) {
+      this.isTimeOpen = false;
+      this.detachTimePane();
+      this.timePaneOpenedFrom.focus();
+      this.timePaneOpenedFrom = null;
+      this.$mdUtil.enableScrolling();
 
-    document.body.removeEventListener('click', this.bodyClickHandler);
-    window.removeEventListener('resize', this.windowResizeHandler);
+      document.body.removeEventListener('click', this.bodyClickHandler);
+      window.removeEventListener('resize', this.windowResizeHandler);
+    }
   };
 
   /** Gets the controller instance for the time in the floating pane. */

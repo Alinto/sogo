@@ -44,18 +44,6 @@ static SoProduct *preferencesProduct = nil;
 
 @implementation UIxJSONPreferences
 
-- (WOResponse *) _makeResponse: (NSDictionary *) values
-{
-  WOResponse *response;
-
-  response = [context response];
-  [response setHeader: @"text/plain; charset=utf-8"
-	    forKey: @"content-type"];
-  [response appendContentString: [values jsonRepresentation]];
-
-  return response;
-}
-
 - (WOResponse *) jsonDefaultsAction
 {
   NSMutableDictionary *values, *account;
@@ -134,6 +122,8 @@ static SoProduct *preferencesProduct = nil;
                          sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
 
       [defaults setCalendarCategories: categoryLabels];
+
+      // TODO: build categories colors dictionary with localized keys
     }
   if (![defaults calendarCategoriesColors])
     {
@@ -222,6 +212,12 @@ static SoProduct *preferencesProduct = nil;
   // Add locale code (used by CK Editor)
   locale = [[preferencesProduct resourceManager] localeForLanguageNamed: [defaults language]];
   [values setObject: [locale objectForKey: @"NSLocaleCode"] forKey: @"LocaleCode"];
+  [values setObject: [NSDictionary dictionaryWithObjectsAndKeys:
+                                           [locale objectForKey: @"NSMonthNameArray"], @"months",
+                                           [locale objectForKey: @"NSShortMonthNameArray"], @"shortMonths",
+                                           [locale objectForKey: @"NSWeekDayNameArray"], @"days",
+                                           [locale objectForKey: @"NSShortWeekDayNameArray"], @"shortDays",
+                                                    nil] forKey: @"locale"];
 
   accounts = [NSMutableArray arrayWithArray: [values objectForKey: @"AuxiliaryMailAccounts"]];
   account = [[[context activeUser] mailAccounts] objectAtIndex: 0];
@@ -238,7 +234,7 @@ static SoProduct *preferencesProduct = nil;
   [values setObject: accounts  forKey: @"AuxiliaryMailAccounts"];
 
 
-  return [self _makeResponse: values];
+  return [self responseWithStatus: 200 andJSONRepresentation: values];
 }
 
 - (WOResponse *) jsonSettingsAction
@@ -269,7 +265,7 @@ static SoProduct *preferencesProduct = nil;
   if (![settings objectForKey: @"Mail"])
     [settings setObject: [NSMutableDictionary dictionary]  forKey: @"Mail"];
 
-  return [self _makeResponse: [[settings source] values]];
+  return [self responseWithStatus: 200 andJSONRepresentation: [[settings source] values]];
 }
 
 @end
