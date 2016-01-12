@@ -13,12 +13,11 @@
                  label:aria-label="Previous Week"
                  var:date="prevWeekQueryParameters.day"
                  ng-click="calendar.changeDate($event)"><md-icon>chevron_left</md-icon></md-button>
-      <div><var:string value="currentWeekName" /></div>
       <md-button class="md-icon-button"
                  label:aria-label="Next Week"
                  var:date="nextWeekQueryParameters.day"
                  ng-click="calendar.changeDate($event)"><md-icon>chevron_right</md-icon></md-button>
-      <div class="md-flex"><!-- spacer --></div>
+      <div class="md-flex"><var:string value="currentWeekName" /></div>
       <md-button class="md-icon-button md-accent"
                  label:aria-label="Today"
                  ng-click="app.today()">
