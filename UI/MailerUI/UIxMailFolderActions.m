@@ -317,9 +317,7 @@
             {
               // When not using a trash folder, return the quota
               account = [co mailAccountFolder];
-              quota = [account getInboxQuota];
-
-              if (quota)
+              if ((quota = [account getInboxQuota]))
                 {
                   data = [NSDictionary dictionaryWithObjectsAndKeys: quota, @"quotas", nil];
                   response = [self responseWithStatus: 200
@@ -436,9 +434,7 @@
         {
           // We return the inbox quota
           account = [co mailAccountFolder];
-          quota = [account getInboxQuota];
-
-          if (quota)
+          if ((quota = [account getInboxQuota]))
             {
               data = [NSDictionary dictionaryWithObject: quota  forKey: @"quotas"];
               response = [self responseWithStatus: 200 andJSONRepresentation: data];
@@ -637,11 +633,13 @@
 
 - (WOResponse *) expungeAction 
 {
-  NSException *error;
-  SOGoTrashFolder *co;
   SOGoMailAccount *account;
-  NSDictionary *data;
   WOResponse *response;
+  SOGoTrashFolder *co;
+  NSException *error;
+  NSDictionary *data;
+
+  id quota;
 
   co = [self clientObject];
 
@@ -658,8 +656,13 @@
 
       // We return the inbox quota
       account = [co mailAccountFolder];
-      data = [NSDictionary dictionaryWithObject: [account getInboxQuota] forKey: @"quotas"];
-      response = [self responseWithStatus: 200 andJSONRepresentation: data];
+      if ((quota = [account getInboxQuota]))
+        {
+          data = [NSDictionary dictionaryWithObject: quota  forKey: @"quotas"];
+          response = [self responseWithStatus: 200 andJSONRepresentation: data];
+        }
+      else
+        response = [self responseWithStatus: 200];
     }
 
   return response;
