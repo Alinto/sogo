@@ -287,17 +287,19 @@
 
 - (WOResponse *) batchDeleteAction
 {
-  SOGoMailFolder *co;
-  SOGoMailAccount *account;
-  SOGoUserSettings *us;
-  WORequest *request;
-  WOResponse *response;
-  id uids;
-  NSDictionary *data;
-  BOOL withTrash;
   NSMutableDictionary *moduleSettings, *threadsCollapsed;
   NSString *currentMailbox, *currentAccount, *keyForMsgUIDs;
   NSMutableArray *mailboxThreadsCollapsed;
+  SOGoMailAccount *account;
+  SOGoUserSettings *us;
+  WOResponse *response;
+  SOGoMailFolder *co;
+  NSDictionary *data;
+  WORequest *request;
+
+  id uids, quota;
+
+  BOOL withTrash;
   int i;
 
   response = nil;
@@ -315,9 +317,16 @@
             {
               // When not using a trash folder, return the quota
               account = [co mailAccountFolder];
-              data = [NSDictionary dictionaryWithObjectsAndKeys: [account getInboxQuota], @"quotas", nil];
-              response = [self responseWithStatus: 200
-                                        andString: [data jsonRepresentation]];
+              quota = [account getInboxQuota];
+
+              if (quota)
+                {
+                  data = [NSDictionary dictionaryWithObjectsAndKeys: quota, @"quotas", nil];
+                  response = [self responseWithStatus: 200
+                                            andString: [data jsonRepresentation]];
+                }
+              else
+                response = [self responseWithStatus: 200];
             }
           else
             {
@@ -412,6 +421,8 @@
   NSDictionary *data;
   NSArray *uids;
 
+  id quota;
+
   co = [self clientObject];
   data = [[[context request] contentAsString] objectFromJSONString];
   uids = [data objectForKey: @"uids"];
@@ -425,8 +436,15 @@
         {
           // We return the inbox quota
           account = [co mailAccountFolder];
-          data = [NSDictionary dictionaryWithObject: [account getInboxQuota] forKey: @"quotas"];
-          response = [self responseWithStatus: 200 andJSONRepresentation: data];
+          quota = [account getInboxQuota];
+
+          if (quota)
+            {
+              data = [NSDictionary dictionaryWithObject: quota  forKey: @"quotas"];
+              response = [self responseWithStatus: 200 andJSONRepresentation: data];
+            }
+          else
+            response = [self responseWithStatus: 200];
         }
     }
   else
