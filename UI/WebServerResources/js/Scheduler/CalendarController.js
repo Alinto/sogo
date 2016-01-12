@@ -11,6 +11,7 @@
     var vm = this, deregisterCalendarsList;
 
     vm.views = stateEventsBlocks;
+    vm.changeDate = changeDate;
     vm.changeView = changeView;
 
     // Refresh current view when the list of calendars is modified
@@ -32,12 +33,17 @@
       });
     }
 
-    // Change calendar's view
-    function changeView($event) {
+    // Change calendar's date
+    function changeDate($event) {
       var date = angular.element($event.currentTarget).attr('date');
-      $state.go('calendars.view', { view: $stateParams.view, day: date });
+      $state.go('calendars.view', { day: date });
     }
-  }
+
+    // Change calendar's view
+    function changeView(view) {
+      $state.go('calendars.view', { view: view });
+    }
+}
 
   angular
     .module('SOGo.SchedulerUI')  

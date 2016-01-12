@@ -12,12 +12,12 @@
       <md-button class="md-icon-button"
                  label:aria-label="Previous Week"
                  var:date="prevWeekQueryParameters.day"
-                 ng-click="calendar.changeView($event)"><md-icon>chevron_left</md-icon></md-button>
+                 ng-click="calendar.changeDate($event)"><md-icon>chevron_left</md-icon></md-button>
       <div><var:string value="currentWeekName" /></div>
       <md-button class="md-icon-button"
                  label:aria-label="Next Week"
                  var:date="nextWeekQueryParameters.day"
-                 ng-click="calendar.changeView($event)"><md-icon>chevron_right</md-icon></md-button>
+                 ng-click="calendar.changeDate($event)"><md-icon>chevron_right</md-icon></md-button>
       <div class="md-flex"><!-- spacer --></div>
       <md-button class="md-icon-button md-accent"
                  label:aria-label="Today"
@@ -27,17 +27,17 @@
       </md-button>
       <a class="md-icon-button md-button"
          label:aria-label="Day"
-         href="#/calendar/day"><md-icon>view_day</md-icon></a>
+         ng-click="calendar.changeView('day')"><md-icon>view_day</md-icon></a>
       <a class="md-icon-button md-button"
          label:aria-label="Week"
          ng-disabled="true"
-         href="#/calendar/week"><md-icon>view_week</md-icon></a>
+         ng-click="calendar.changeView('week')"><md-icon>view_week</md-icon></a>
       <a class="md-icon-button md-button"
          label:aria-label="Month"
-         href="#/calendar/month"><md-icon>view_module</md-icon></a>
+         ng-click="calendar.changeView('month')"><md-icon>view_module</md-icon></a>
       <a class="md-icon-button md-button"
          label:aria-label="Multicolumn Day View"
-         href="#/calendar/multicolumnday"><md-icon>view_array</md-icon></a>
+         ng-click="calendar.changeView('multicolumnday')"><md-icon>view_array</md-icon></a>
     </md-card-actions>
   <var:component
       className="UIxCalDayTable"
