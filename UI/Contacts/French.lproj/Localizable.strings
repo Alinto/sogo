@@ -21,6 +21,7 @@
 "HomePhone" = "Domicile";
 "Lastname" = "Nom";
 "Location" = "Lieux";
+"Add a category" = "Ajouter une catégorie";
 "MobilePhone" = "Mobile";
 "Name" = "Identité";
 "OfficePhone" = "Bureau";
@@ -40,6 +41,20 @@
 "Move To" = "Déplacer vers";
 "Copy To" = "Copier vers";
 "Add to" = "Ajouter à";
+/* Subheader of empty addressbook */
+"No contact" = "Aucun contact";
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Effectuez une recherche pour naviguer dans ce carnet";
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "contacts";
+/* No contact matching search criteria */
+"No matching contact" = "Aucun contact retourné";
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "contacts retournés";
+/* Number of selected contacts in list */
+"selected" = "sélectionné(s)";
+/* Empty right pane */
+"No contact selected" = "Aucun contact sélectionné";
 /* Tooltips */
 "Create a new address book card" = "Créer une nouvelle fiche";
 "Create a new list" = "Créer une nouvelle liste de diffusion";
@@ -78,8 +93,6 @@
 "Nickname" = "Surnom ";
 "Telephone" = "Téléphone";
 "Work" = "Travail";
-"Home" = "Domicile";
-"Fax" = "Télécopieur";
 "Mobile" = "Portable";
 "Pager" = "Téléavertisseur";
 /* categories */
@@ -90,13 +103,11 @@
 "Service" = "Service";
 "Company" = "Company";
 "Department" = "Service";
-"Address" = "Adresse";
 "City" = "Ville/Localité ";
 "State_Province" = "État/Prov.";
 "ZIP_Postal Code" = "Code postal";
 "Country" = "Pays ";
 "Web Page" = "Page Web";
-"Work" = "Professionnelle";
 "Other Infos" = "Informations complémentaires";
 "Note" = "Remarques ";
 "Timezone" = "Fuseau horaire";
@@ -110,6 +121,8 @@
 "New Addressbook..." = "Nouveau carnet d'adresses...";
 "Subscribe to an Addressbook..." = "S'inscrire à un carnet d'adresses...";
 "Remove the selected Addressbook" = "Enlever le carnet d'adresses sélectionné";
+"Subscribe to a shared folder" = "S'abonner à un dossier partagé";
+"Search User" = "Recherche utilisateur";
 "Name of the Address Book" = "Nom du carnet d'adresses";
 "Are you sure you want to delete the selected address book?"
 = "Voulez-vous vraiment supprimer le carnet d'adresses sélectionné ?";
@@ -174,3 +187,42 @@
 "Links to this Address Book" = "Liens vers ce carnet";
 "Authenticated User Access" = "Accès aux utilisateurs authentifiés";
 "CardDAV URL" = "Accès en CardDAV";
+"Options" = "Options";
+"Rename" = "Renommer";
+"Subscriptions" = "Abonnements";
+"Global Addressbooks" = "Carnet d'adresses global";
+"Search" = "Recherche";
+"Sort" = "Trier";
+"Descending Order" = "Ordre descendant";
+"Back" = "Retour";
+"Select All" = "Tout sélectionner";
+"Copy contacts" = "Copier les contacts";
+"More messages options" = "Options des messages";
+"New Contact" = "Nouveau contact";
+"Close" = "Fermer";
+"More contact options" = "Options des contacts";
+"Organization Unit" = "Unité organisationnelle";
+"Add Organizational Unit" = "Ajouter une unité oranisationnelle";
+"Type" = "Type";
+"Email Address" = "Adresse courriel";
+"New Email Address" = "Ajouter une adresse courriel";
+"New Phone Number" = "Ajouter un numéro téléphone";
+"URL" = "URL";
+"New URL" = "Nouveau URL";
+"street" = "rue";
+"Postoffice" = "Bureau de poste";
+"Region" = "Région";
+"Postal Code" = "Code postal";
+"New Address" = "Nouvelle adresse";
+"Reset" = "Réinitialiser";
+"Description" = "Description";
+"Add Member" = "Ajouter un contact";
+"Subscribe" = "S'abonner";
+"Add Birthday" = "Ajouter date de fête";
+"Import" = "Importer";
+"More options" = "Options supplémentaires";
+"Role" = "Rôle";
+"Add Screen Name" = "Ajouter un surnom";
+"Synchronization" = "Synchronisation";
+"Synchronize" = "Synchroniser";
+"Successfully subscribed to address book" = "Abonnement au carnet d'adresses complété";
