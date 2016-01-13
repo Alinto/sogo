@@ -24,6 +24,7 @@
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSFileManager.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSURL.h>
@@ -1094,7 +1095,7 @@ static NSString    *userAgent      = nil;
 - (NSException *) saveAttachment: (NSData *) _attach
 		    withMetadata: (NSDictionary *) metadata
 {
-  NSString *p, *name, *mimeType;
+  NSString *p, *pmime, *name, *mimeType;
   NSRange r;
 
   if (![_attach isNotNull]) {
@@ -1126,14 +1127,13 @@ static NSString    *userAgent      = nil;
   mimeType = [metadata objectForKey: @"mimetype"];
   if ([mimeType length] > 0)
     {
-      p = [self pathToAttachmentWithName:
-		  [NSString stringWithFormat: @".%@.mime", name]];
-      if (![[mimeType dataUsingEncoding: NSUTF8StringEncoding]
-	     writeToFile: p atomically: YES])
-	{
-	  return [NSException exceptionWithHTTPStatus:500 /* Server Error */
-			      reason: @"Could not write attachment to draft!"];
-	}
+      pmime = [self pathToAttachmentWithName: [NSString stringWithFormat: @".%@.mime", name]];
+      if (![[mimeType dataUsingEncoding: NSUTF8StringEncoding] writeToFile: pmime atomically: YES])
+        {
+          [[NSFileManager defaultManager] removeItemAtPath: p error: nil];
+          return [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+                                               reason: @"Could not write attachment to draft!"];
+        }
     }
   
   return nil; /* everything OK */
