@@ -301,7 +301,7 @@
       AddressBook.$subscribe(addressbookData.owner, addressbookData.name).then(function(data) {
          $mdToast.show(
            $mdToast.simple()
-             .content(l('Sucessfully subscribed to address book'))
+             .content(l('Successfully subscribed to address book'))
              .position('top right')
              .hideDelay(3000));
       });

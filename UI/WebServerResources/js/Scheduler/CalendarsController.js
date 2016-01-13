@@ -316,7 +316,7 @@
       Calendar.$subscribe(calendarData.owner, calendarData.name).then(function(data) {
          $mdToast.show(
            $mdToast.simple()
-             .content(l('Sucessfully subscribed to calendar'))
+             .content(l('Successfully subscribed to calendar'))
              .position('top right')
              .hideDelay(3000));
       });
