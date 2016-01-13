@@ -103,6 +103,7 @@
             controllerAs: 'viewer'
           }
         },
+        onEnter: onEnterMessage,
         onExit: onExitMessage,
         resolve: {
           stateMessage: stateMessage
@@ -260,13 +261,20 @@
     });
 
     if (message) {
-      stateMailbox.selectedMessage = parseInt($stateParams.messageId);
       return message.$reload();
     }
     else {
       // Message not found
       $state.go('mail.account.mailbox', { accountId: stateMailbox.$account.id, mailboxId: encodeUriFilter(stateMailbox.path) });
     }
+  }
+
+  /**
+   * @ngInject
+   */
+  onEnterMessage.$inject = ['$stateParams', 'stateMailbox'];
+  function onEnterMessage($stateParams, stateMailbox) {
+    stateMailbox.selectedMessage = parseInt($stateParams.messageId);
   }
 
   /**
