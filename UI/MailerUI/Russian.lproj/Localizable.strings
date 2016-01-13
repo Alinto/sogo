@@ -2,7 +2,7 @@
 
 /* Icon's label */
 "Create"      = "Создать";
-"Empty Trash" = "Очистить 'Удаленные'";
+"Empty Trash" = "Очистить корзину";
 "Delete"      = "Удалить";
 "Expunge"     = "Очистить";
 "Forward"     = "Переслать";
@@ -40,7 +40,7 @@
 "Attachment" = "Вложения";
 "Unread" = "Непрочитанные";
 "Flagged" = "Помеченные флагом";
-"Search multiple mailboxes" = "Поиск в нескольких ящиках";
+"Search multiple mailboxes" = "Поиск в папках";
 
 /* Main Frame  */
 "Home"                 = "Начало"; 
@@ -73,17 +73,17 @@
 "Any Authenticated User" = "Любой аутентифицированный пользователь";
 "List and see this folder" = "Видеть папку и названия писем в ней";
 "Read mails from this folder" = "Читать письма в папке";
-"Mark mails read and unread" = "Ставить письмам метку о прочтении";
-"Modify the flags of the mails in this folder" = "Расставлять флаги сообщениям в папке";
-"Insert, copy and move mails into this folder" = "Добавлять, копироваьт и перемещать сообщения в эту папку";
-"Post mails" = "Отправлять сообщения";
+"Mark mails read and unread" = "Помечать письма как прочитанные/непрочитанные";
+"Modify the flags of the mails in this folder" = "Помечать флагами сообщения в папке";
+"Insert, copy and move mails into this folder" = "Добавлять, копировать и перемещать сообщения в эту папку";
+"Post mails" = "Создавать сообщения в папке";
 "Add subfolders to this folder" = "Создавать подпапки в этой папке";
 "Remove this folder" = "Удалять эту папку";
 "Erase mails from this folder" = "Удалять сообщения из этой папки";
-"Expunge this folder" = "Помечать письма как удаленные";
+"Expunge this folder" = "Сжимать эту папку";
 "Export This Folder" = "Экспортировать эту папку";
 "Modify the acl of this folder" = "Управлять правами доступа к этой папке";
-"Saved Messages.zip" = "Saved Messages.zip";
+"Saved Messages.zip" = "Сохраненные сообщения.zip";
 "Update" = "Обновить";
 "Cancel" = "Отмена";
 
@@ -174,7 +174,7 @@
 "Open in New Mail Window" = "Открыть в новом окне";
 "Copy Folder Location" = "Скопировать адрес папки";
 "Subscribe..." = "Подписаться...";
-"Mark Folder Read" = "Отметить все письма в папке как прочтенные...";
+"Mark Folder Read" = "Отметить письма в папке как прочтенные...";
 "New Folder..." = "Создать папку...";
 "Compact This Folder" = "Сжать эту папку";
 "Search Messages..." = "Поиск в сообщениях...";
@@ -184,8 +184,8 @@
 "Delete Folder" = "Удалить папку";
 "Use This Folder For" = "Использовать эту папку для";
 "Get Messages for Account" = "Получить новые сообщения";
-"Properties..." = "Свойства ...";
-"Delegation..." = "Делегирование ...";
+"Properties..." = "Свойства...";
+"Delegation..." = "Делегирование...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Отправленные сообщения";
@@ -195,7 +195,7 @@
 /* Message list popup menu */
 "Open Message In New Window" = "Открыть сообщение в новом окне";
 "Reply to Sender Only" = "Ответить отправителю";
-"Reply to All" = "Ответить всем упомянутым адресатам";
+"Reply to All" = "Ответить всем";
 "Edit As New..." = "Редактировать как новое...";
 "Move To" = "Переместить в";
 "Copy To" = "Скопировать в";
@@ -203,8 +203,8 @@
 "Mark" = "Отметить";
 "Save As..." = "Сохранить как...";
 "Print Preview" = "Печатать с предпросмотром";
-"View Message Source" = "Просмотр исходного текста сообщения";
-"Print..." = "Отправить на печать";
+"View Message Source" = "Просмотр исходного текста";
+"Print..." = "Печать...";
 "Delete Message" = "Удалить сообщение";
 "Delete Selected Messages" = "Удалить выделенные сообщения";
 
@@ -219,16 +219,16 @@
 "As Read" = "как прочтанное";
 "Thread As Read" = "ветку как прочитанную";
 "As Read By Date..." = "как прочитанные по дате...";
-"All Read" = "все прочитанные";
+"All Read" = "все как прочитанные";
 "Flag" = "Флаг";
 "As Junk" = "Спам";
 "As Not Junk" = "Не спам";
 "Run Junk Mail Controls" = "Запустить фильтр спама";
-"Search messages in" = "Искать сообщения в.";
+"Search messages in" = "Искать сообщения в";
 "Search" = "Поиск";
 "Search subfolders" = "Искать во вложенных папках";
-"Match any of the following" = "Отвечают любому из следующих";
-"Match all of the following" = "Отвечают всем из следующих";
+"Match any of the following" = "Выполнение любого из условий";
+"Match all of the following" = "Выполнение всех условий";
 "contains" = "содержит";
 "does not contain" = "не содержит";
 "No matches found" = "Не найдено совпадений";

@@ -12,16 +12,14 @@
 </var:if>
 
 <var:if condition="isBody">
-<var:string value="currentUserName" const:escapeHTML="NO"/> добавил Вас к списку доступа к своей папке <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/>.
+<var:string value="currentUserName" const:escapeHTML="NO"/> добавил Вас в список доступа к своей папке <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/>.
 <!--
-You can subscribe directly to that folder by following this link:
-Вы можете подписаться непосредственно к этой папке по указанной ссылке
+Вы можете подписаться к этой папке по ссылке:
     <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>subscribe?mail-invitation=YES
 
-	
-Otherwise, you will be able to subscribe later from the SOGo web interface.
-Также вы можете подписаться на эту папку через веб-интерфейс SOGo 
-You can also access this resource remotely using the following URL:
+Также, Вы можете подписаться на эту папку через веб-интерфейс SOGo.
+
+Данный ресурс доступен через URL:
 
 <var:string value="httpFolderURL" const:escapeHTML="NO"/>
 -->

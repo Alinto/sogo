@@ -9,11 +9,11 @@
 "Address Book"	= "Адресная книга";
 "Mail" = "Почта";
 "Preferences" = "Настройки";
-"Administration" = "Администрация";
+"Administration" = "Администрирование";
 "Disconnect" = "Выход";
 "Toggle Menu" = "Переключить меню";
 "Right Administration" = "Управление доступом";
-"Log Console (dev.)" = "Вход Console (dev.)";
+"Log Console (dev.)" = "Консоль (для разработчиков)";
 "User" = "Пользователь";
 "Vacation message is enabled" = "Сообщение об отпуске включено";
 "Help" = "Помощь";
@@ -103,6 +103,6 @@
 "Add User" = "Добавить пользователя";
 "Loading" = "Загружается";
 "No such user." = "Нет такого пользователя";
-"You cannot (un)subscribe to a folder that you own!" = "Вы не можете подписаться на или отписаться от папки, которой владеете.";
+"You cannot (un)subscribe to a folder that you own!" = "Вы не можете подписаться или отписаться от собственной папки.";
 "SOGo" = "SOGo";
 "Modules" = "Модули";

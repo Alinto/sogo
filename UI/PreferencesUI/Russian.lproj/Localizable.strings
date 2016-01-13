@@ -6,14 +6,14 @@
 /* tabs */
 "General" = "Общее";
 "Calendar Options" = "Календарь";
-"Contacts Options" = "Contacts Options";
+"Contacts Options" = "Контакты";
 "Mail Options" = "Почта";
-"IMAP Accounts" = "Учетные записи IMAP ";
+"IMAP Accounts" = "Учетные записи IMAP";
 "Vacation" = "Отпуск";
-"Forward" = "Переслать";
+"Forward" = "Пересылка";
 "Password" = "Пароль";
 "Categories" = "Категории";
-"Appointments invitations" = "Цель приглашения";
+"Appointments invitations" = "Приглашения";
 "Name" = "Имя";
 "Color" = "Цвет";
 "Add" = "Добавить";
@@ -24,12 +24,12 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Включить автоматическую отправку сообщения об отпуске";
-"Auto reply message" = "Автоматически посылать этот текст каждому отправителю один раз";
-"Email addresses (separated by commas)" = "Email адреса (разделенные запятыми)";
+"Auto reply message" = "Текст сообщения автоответа";
+"Email addresses (separated by commas)" = "E-mail адреса (разделенные запятыми)";
 "Add default email addresses" = "Добавить e-mail адреса по умолчанию";
-"Days between responses" = "Дни между ответами";
+"Days between responses" = "Дней между ответами";
 "Do not send responses to mailing lists" = "Не отправлять ответы на почтовые списки рассылки";
-"Disable auto reply on" = "Запрет автоответа включен";
+"Disable auto reply on" = "Отключить автоответ";
 "Always send vacation message response" = "Всегда отправлять ответное сообщение об отпуске";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Пожалуйста, укажите Ваше сообщение и адреса электронной почты для которых Вы хотите включить автоматический ответ.";
@@ -46,11 +46,11 @@
 "You are not allowed to forward your messages to an internal email address." = "Вы не можете пересылать свои сообщения на внутренний адрес электронной почты.";
 
 /* d & t */
-"Current Time Zone" = "Текущая временная зона";
+"Current Time Zone" = "Текущий часовой пояс";
 "Short Date Format" = "Короткий формат даты";
 "Long Date Format" = "Длинный формат даты";
 "Time Format" = "Формат времени";
-"default" = "Default";
+"default" = "По умолчанию";
 "Default Module" = "Модуль по умолчанию";
 "Save" = "Сохранить";
 "shortDateFmt_0" = "%d-%b-%y";
@@ -92,11 +92,11 @@
 "Day start time" = "Рабочий день начинается в";
 "Day end time" = "Рабочий день заканчивается в";
 "Day start time must be prior to day end time." = "Время начала дня должно быть перед временем его окончания.";
-"Show time as busy outside working hours" = "Показывать время, как занятое, если оно за границами рабочего времени.";
+"Show time as busy outside working hours" = "Показывать нерабочее время как занятое";
 "First week of year" = "Первая неделя года";
 "Enable reminders for Calendar items" = "Включить напоминания для событий календаря";
 "Play a sound when a reminder comes due" = "Проигрывать звук когда срабатывает оповещение";
-"Default reminder" = "Обычное оповещение";
+"Default reminder" = "Оповещение по умолчанию";
 "firstWeekOfYear_January1" = "Начинается 1 января";
 "firstWeekOfYear_First4DayWeek" = "Первая 4-х дневная неделя";
 "firstWeekOfYear_FirstFullWeek" = "Первая полная неделя";
@@ -105,20 +105,20 @@
 "Contacts Names" = "Имена контактов";
 
 /* Default Calendar */
-"Default calendar" = "Календарь по-умолчанию";
+"Default calendar" = "Календарь по умолчанию";
 "selectedCalendar" = "Выбранный календарь";
 "personalCalendar" = "Персональный календарь";
 "firstCalendar" = "Первый разрешенный календарь";
-"reminder_NONE" = "Нет напоминания";
-"reminder_5_MINUTES_BEFORE" = "5 минут";
-"reminder_10_MINUTES_BEFORE" = "10 минут";
-"reminder_15_MINUTES_BEFORE" = "15 минут";
-"reminder_30_MINUTES_BEFORE" = "30 минут";
-"reminder_45_MINUTES_BEFORE" = "За 45 минут";
-"reminder_1_HOUR_BEFORE" = "1 час";
-"reminder_2_HOURS_BEFORE" = "2 часа";
-"reminder_5_HOURS_BEFORE" = "5 часа";
-"reminder_15_HOURS_BEFORE" = "15 часов";
+"reminder_NONE" = "нет";
+"reminder_5_MINUTES_BEFORE" = "за 5 минут";
+"reminder_10_MINUTES_BEFORE" = "за 10 минут";
+"reminder_15_MINUTES_BEFORE" = "за 15 минут";
+"reminder_30_MINUTES_BEFORE" = "за 30 минут";
+"reminder_45_MINUTES_BEFORE" = "за 45 минут";
+"reminder_1_HOUR_BEFORE" = "за 1 час";
+"reminder_2_HOURS_BEFORE" = "за 2 часа";
+"reminder_5_HOURS_BEFORE" = "за 5 часа";
+"reminder_15_HOURS_BEFORE" = "за 15 часов";
 "reminder_1_DAY_BEFORE" = "1 день назад";
 "reminder_2_DAYS_BEFORE" = "2 дня назад";
 "reminder_1_WEEK_BEFORE" = "За 1 неделю";
@@ -127,22 +127,22 @@
 "Labels" = "Метки";
 "Label" = "Метка";
 "Show subscribed mailboxes only" = "Показывать только почтовые ящики, на которые подписан";
-"Sort messages by threads" = "Сортировать сообщения по нитям";
-"When sending mail, add unknown recipients to my" = "При отправке писем добавлять неизвестных получателей в мою";
+"Sort messages by threads" = "Группировать сообщения по обсуждениям";
+"When sending mail, add unknown recipients to my" = "При отправке добавлять неизвестных получателей в:";
 "Address Book" = "Адресная книга";
 "Forward messages" = "Пересылать сообщения";
 "messageforward_inline" = "В теле письма";
-"messageforward_attached" = "Приложенным файлом";
+"messageforward_attached" = "Во вложении";
 "When replying to a message" = "При ответе на сообщение";
 "replyplacement_above" = "Начинать мой ответ над цитируемым текстом";
 "replyplacement_below" = "Начинать мой ответ под цитируемым текстом";
-"And place my signature" = "И поместить мою подпись";
+"And place my signature" = "И поместить подпись";
 "signatureplacement_above" = "под ответом";
 "signatureplacement_below" = "под цитируемым текстом письма";
-"Compose messages in" = "Составлять сообщения в";
+"Compose messages in" = "Составлять сообщения как";
 "composemessagestype_html" = "HTML";
-"composemessagestype_text" = "Plain text";
-"Display remote inline images" = "Показать встроенные изображения из сети";
+"composemessagestype_text" = "Простой текст";
+"Display remote inline images" = "Показать изображения из сети";
 "displayremoteinlineimages_never" = "Никогда";
 "displayremoteinlineimages_always" = "Всегда";
 "Auto save every" = "Автосохранение каждые";
@@ -160,14 +160,14 @@
 "Encryption" = "Шифрование";
 "None" = "Нет";
 "User Name" = "Имя пользователя";
-"Full Name" = "ПолноеИмя";
-"Email" = "Email";
-"Reply To Email" = "Ответить на Email";
+"Full Name" = "Полное имя";
+"Email" = "E-mail";
+"Reply To Email" = "Ответить на e-mail";
 "Signature" = "Подпись";
-"(Click to create)" = "(Click to create)";
-"Please enter your signature below" = "Введите вашу подпись ниже";
-"Please specify a valid sender address." = "Пожалуйста укажите правильный адрес отправителя.";
-"Please specify a valid reply-to address." = "Пожалуйста укажите правильный адрес для ответа.";
+"(Click to create)" = "(Нажмите чтобы создать)";
+"Please enter your signature below" = "Введите Вашу подпись ниже";
+"Please specify a valid sender address." = "Пожалуйста, укажите правильный адрес отправителя.";
+"Please specify a valid reply-to address." = "Пожалуйста, укажите правильный адрес для ответа.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Дополнительные параметры";
@@ -178,8 +178,8 @@
 "Change" = "Изменить";
 
 /* Event+task classifications */
-"Default events classification" = "Классификация событий по умолчанию";
-"Default tasks classification" = "Классификация заданий по умолчанию";
+"Default events classification" = "Событие по умолчанию";
+"Default tasks classification" = "Задача по умолчанию";
 "PUBLIC_item" = "Публичное";
 "CONFIDENTIAL_item" = "Конфиденциальное";
 "PRIVATE_item" = "Личное";
@@ -198,7 +198,7 @@
 "Calendar" = "Календарь";
 "Contacts" = "Адресная книга";
 "Mail" = "Почта";
-"Last" = "Последнее использование";
+"Last" = "Последний использованный";
 "Default Module " = "Модуль по умолчанию";
 "SOGo Version" = "Версия SOGo";
 
@@ -232,7 +232,7 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
-"Refresh View" = "Обновить вид";
+"Refresh View" = "Обновлять вид";
 "refreshview_manually" = "Вручную";
 "refreshview_every_minute" = "Каждую минуту";
 "refreshview_every_2_minutes" = "Каждые 2 минуты";
@@ -268,27 +268,27 @@
 /* Button label */
 "Add an action" = "Добавить действие";
 "For incoming messages that" = "Для входящих сообщений которые";
-"match all of the following rules" = "отвечают всем из следующих правил";
-"match any of the following rules" = "отвечают любому из следующих правил";
+"match all of the following rules" = "отвечают всем указанным правилам";
+"match any of the following rules" = "отвечают любому из указанных правил";
 "match all messages" = "все сообщения";
-"Perform these actions" = "Произвести следующие действия";
+"Perform these actions" = "Выполнить следующие действия";
 "Untitled Filter" = "Фильтр без названия";
-"Subject" = "Subject";
+"Subject" = "Тема";
 "From" = "От";
-"To" = "To";
-"Cc" = "Cc";
-"To or Cc" = "To or Cc";
+"To" = "Кому";
+"Cc" = "Копия";
+"To or Cc" = "Кому или Копия";
 "Size (Kb)" = "Размер (кБ)";
 "Header" = "Заголовок";
 "Body" = "Тело письма";
-"Flag the message with" = "Пометить сообщение с";
-"Discard the message" = "Уничтожить сообщение";
-"File the message in" = "Сохранить сообщение в";
-"Keep the message" = "Сохранить сообщение";
-"Forward the message to" = "Переслать сообщение к";
+"Flag the message with" = "Пометить сообщение как";
+"Discard the message" = "Удалить сообщение";
+"File the message in" = "Переместить сообщение в";
+"Keep the message" = "Оставить сообщение";
+"Forward the message to" = "Перенаправить сообщение на";
 "Send a reject message" = "Послать сообщение об отказе";
 "Send a vacation message" = "Послать сообщение об отпуске";
-"Stop processing filter rules" = "Остановить правила фильтрации";
+"Stop processing filter rules" = "Остановить выполнение фильтров";
 "is under" = "менее";
 "is over" = "более";
 "is" = "равно";
@@ -297,13 +297,13 @@
 "does not contain" = "не содержит";
 "matches" = "совпадает";
 "does not match" = "не совпадает";
-"matches regex" = "сопоставимо по регулярному выражению";
-"does not match regex" = "не сопоставимо регулярному выражению";
+"matches regex" = "соответствует регулярному выражению";
+"does not match regex" = "не соответствует регулярному выражению";
 /* Placeholder for the value field of a condition */
 "Value" = "Значение";
 "Seen" = "Просмотрено";
 "Deleted" = "Удалено";
-"Answered" = "Отвечено";
+"Answered" = "С ответом";
 "Flagged" = "Помечено флагом";
 "Junk" = "Спам";
 "Not Junk" = "Не спам";
@@ -320,7 +320,7 @@
 "Password change failed - Password is in history" = "Изменение пароля не удалось - пароль есть в истории";
 "Unhandled policy error: %{0}" = "Unhandled policy error: %{0}";
 "Unhandled error response" = "Unhandled error response";
-"Password change is not supported." = "Изменение пароля не поддерживается";
+"Password change is not supported." = "Изменение пароля не поддерживается.";
 "Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
 "Cancel" = "Отмена";
 "Invitations" = "Приглашения";
