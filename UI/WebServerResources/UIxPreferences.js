@@ -686,7 +686,7 @@ function onMailIdentitySignatureClick(event) {
         var dialogId = "signatureDialog";
         var dialog = dialogs[dialogId];
         if (!dialog) {
-            var label = _("Please enter your signature below:");
+            var label = _("Please enter your signature below");
             var fields = createElement("p");
             fields.appendChild(createElement("textarea", "signature"));
             fields.appendChild(createButton("okBtn", _("OK"),

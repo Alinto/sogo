@@ -415,7 +415,7 @@ function newEventDIV(eventRep, event, offset) {
         var textDiv = inside.childNodesWithTag("div")[1];
         textDiv.appendChild(createElement("br"));
         var span = createElement("span", null, "location");
-        var text = _("Location:") + " " + event[7];
+        var text = _("Location") + " " + event[7];
         span.update(text);
         textDiv.appendChild(span);
     }
@@ -534,11 +534,11 @@ function appendStyleElement(folderPath, color) {
 
 function _parseEvent(event) {
     // Localized strings :
-    var start = _("Start:");
-    var end = _("End:");
-    var location = _("Location:");
-    var calendar = _("Calendar:");
-    var description = _("Description:");
+    var start = _("Start");
+    var end = _("End");
+    var location = _("Location");
+    var calendar = _("Calendar");
+    var description = _("Description");
     var newEvent = document.createElement("div");
     var table = document.createElement("table");
     Element.addClassName(newEvent, "divEventsPreview");
@@ -613,9 +613,9 @@ function _parseEvent(event) {
 
 function _parseTask(task) {
     // new code
-    var end = _("Due Date:");
-    var calendar = _("Calendar:");
-    var location = _("Location:");
+    var end = _("Due Date");
+    var calendar = _("Calendar");
+    var location = _("Location");
 
     var newTask = document.createElement("div");
     var table = document.createElement("table");
@@ -865,7 +865,7 @@ function adjustMultiColumnCalendarHeaderDIV() {
     else {
         $("calendarHeader").remove();
         $("daysView").remove();
-        var htmlText = "<div class='alert-box notice'><span>" + _("notice:") + "</span>"+_("Please go ahead and select calendars")+"</div>";
+        var htmlText = "<div class='alert-box notice'><span>" + _("notice") + "</span>"+_("Please go ahead and select calendars")+"</div>";
         $("calendarContent").innerHTML = htmlText;
     }
 }

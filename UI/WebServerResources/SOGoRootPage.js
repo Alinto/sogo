@@ -220,7 +220,7 @@ function createPasswordChangeDialog() {
     createElement("span", "passwordError", null, null, null, fields);
 
     var fieldNames = [ "newPassword", "newPassword2" ];
-    var fieldLabels = [ _("New password:"), _("Confirmation:") ];
+    var fieldLabels = [ _("New password"), _("Confirmation") ];
     for (var i = 0; i < fieldNames.length; i++) {
         var label = createElement("label", null, null, null, null, fields);
         label.appendChild(document.createTextNode(fieldLabels[i]));
@@ -240,7 +240,7 @@ function createPasswordChangeDialog() {
 
     var dialog = createDialog("passwordChangeDialog",
                               _("Change your Password"),
-                              _("Your password has expired, please enter a new one below:"),
+                              _("Your password has expired, please enter a new one below"),
                               fields,
                               "right");
 

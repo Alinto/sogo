@@ -2414,7 +2414,7 @@ function saveFoldersStateCallback(http) {
 }
 
 function onMenuCreateFolder(event) {
-    showPromptDialog(_("New Folder..."), _("Name :"), onMenuCreateFolderConfirm);
+    showPromptDialog(_("New Folder..."), _("Name"), onMenuCreateFolderConfirm);
 }
 
 function onMenuCreateFolderConfirm(event) {
@@ -2431,7 +2431,7 @@ function onMenuCreateFolderConfirm(event) {
 
 function onMenuRenameFolder(event) {
     var folderName = document.menuTarget.down('.nodeName').childNodes[0].nodeValue;
-    showPromptDialog(_("Rename Folder..."), _("Enter the new name of your folder :"), onMenuRenameFolderConfirm, folderName);
+    showPromptDialog(_("Rename Folder..."), _("Enter the new name of your folder"), onMenuRenameFolderConfirm, folderName);
 }
 
 function onMenuRenameFolderConfirm() {

@@ -1464,21 +1464,21 @@ function showAlarmCallback(http) {
         if (http.responseText.length) {
             var url = http.callbackData;
             var data = http.responseText.evalJSON(true);
-            var msg = _("Reminder:") + " " + data["summary"] + "\n";
+            var msg = _("Reminder") + " " + data["summary"] + "\n";
             if (data["startDate"]) {
-                msg += _("Start:") + " " + data["startDate"];
+                msg += _("Start") + " " + data["startDate"];
                 if (parseInt(data["isAllDay"]) == 0)
                     msg += " - " + data["startTime"];
                 msg += "\n";
             }
             if (data["dueDate"]) {
-                msg += _("Due Date:") + " " + data["dueDate"];
+                msg += _("Due Date") + " " + data["dueDate"];
                 if (data["dueTime"])
                     msg += " - " + data["dueTime"];
                 msg += "\n";
             }
             if (data["location"].length)
-                msg += "\n" + _("Location:") + " " + data["location"];
+                msg += "\n" + _("Location") + " " + data["location"];
             if (data["description"].length)
                 msg += "\n\n" + data["description"];
 

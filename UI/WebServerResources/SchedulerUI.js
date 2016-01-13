@@ -2166,7 +2166,7 @@ function newEventDIV(eventRep, event) {
         var textDiv = inside.childNodesWithTag("div")[1];
         textDiv.appendChild(createElement("br"));
         var span = createElement("span", null, "location");
-        var text = _("Location:") + " " + event[7];
+        var text = _("Location") + " " + event[7];
         span.update(text);
         textDiv.appendChild(span);
     }
