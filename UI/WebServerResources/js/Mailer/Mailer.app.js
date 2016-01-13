@@ -103,6 +103,7 @@
             controllerAs: 'viewer'
           }
         },
+        onExit: onExitMessage,
         resolve: {
           stateMessage: stateMessage
         }
@@ -266,6 +267,14 @@
       // Message not found
       $state.go('mail.account.mailbox', { accountId: stateMailbox.$account.id, mailboxId: encodeUriFilter(stateMailbox.path) });
     }
+  }
+
+  /**
+   * @ngInject
+   */
+  onExitMessage.$inject = ['stateMailbox'];
+  function onExitMessage(stateMailbox) {
+    stateMailbox.selectedMessage = -1;
   }
 
   /**
