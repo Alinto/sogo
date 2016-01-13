@@ -106,7 +106,7 @@ def main():
 
     #- Get only the label:value from all lines
     recomp = re.compile('.label:[^=]*="([^$].*?)"')
-    find_missing_translations('../UI', 'wox', recomp, greylist)
+    find_missing_translations('../UI', 'wox', recomp, ())
 
     #- [self labelForKey: @"Issuer"]
     recomp = re.compile('\[self labelForKey: @"(.*?)"\]')
