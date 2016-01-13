@@ -6,16 +6,24 @@ import re
 
 DEBUG=False
 
-dir_mappings = {"../UI/Templates":"../UI/Common",
-                "../UI/Templates/AdministrationUI":"../UI/AdministrationUI",
-                "../UI/Templates/Appointments":"../SoObjects/Appointments",
-                "../UI/Templates/ContactsUI":"../UI/Contacts",
-                "../UI/Templates/MailerUI":"../UI/MailerUI",
-                "../UI/Templates/MailPartViewers":"../UI/MailPartViewers",
-                "../UI/Templates/MainUI":"../UI/MainUI",
-                "../UI/Templates/PreferencesUI":"../UI/PreferencesUI",
-                "../UI/Templates/SchedulerUI":"../UI/Scheduler"
-               }
+dir_mappings = {
+    # .wox
+    "../UI/Templates":"../UI/Common",
+    "../UI/Templates/AdministrationUI":"../UI/AdministrationUI",
+    "../UI/Templates/Appointments":"../SoObjects/Appointments",
+    "../UI/Templates/ContactsUI":"../UI/Contacts",
+    "../UI/Templates/MailerUI":"../UI/MailerUI",
+    "../UI/Templates/MailPartViewers":"../UI/MailPartViewers",
+    "../UI/Templates/MainUI":"../UI/MainUI",
+    "../UI/Templates/PreferencesUI":"../UI/PreferencesUI",
+    "../UI/Templates/SchedulerUI":"../UI/Scheduler",
+    # .toolbars
+    "../UI/AdministrationUI/Toolbars":"../UI/AdministrationUI",
+    "../UI/Contacts/Toolbars":"../UI/Contacts",
+    "../UI/MailerUI/Toolbars":"../UI/MailerUI",
+    "../UI/PreferencesUI/Toolbars":"../UI/PreferencesUI",
+    "../UI/Scheduler/Toolbars":"../UI/Scheduler",
+}
 
 def get_translations(path):
     try:
@@ -53,7 +61,8 @@ def find_missing_translations(rootdir='.', extention='', recomp=None, greylist=(
                         if found:
                             if DEBUG: print "\t", '[%s] FOUND -- "%s"' % found.groups()
                         else:
-                            notfound.append("-->\t[%s] ==== Not Found ====" % value)
+                            #notfound.append("-->\t[%s] ==== Not Found ====" % value)
+                            notfound.append("""-->\t"%s" = "%s";""" % (value, value))
                     if notfound:
                         if not DEBUG:print pathname
                         print "\n".join(notfound)
@@ -69,14 +78,19 @@ def main():
             print 'Usage:', sys.argv[0], '[-g]\n\t\t-g: debug will show matching also'
             sys.exit(1)
 
-    greylist = ('UIxFilterEditor.wox')
+    #greylist = ('UIxFilterEditor.wox')
+    greylist = ()
 
     #- Get only the label:value from all lines
-    recomp = re.compile(' label:[^=]*="(.*?)"')
+    recomp = re.compile('.label:[^=]*="([^$].*?)"')
     find_missing_translations('../UI', 'wox', recomp, greylist)
 
     #- [self labelForKey: @"Issuer"]
     recomp = re.compile('\[self labelForKey: @"(.*?)"\]')
     find_missing_translations('../UI', 'm', recomp, ())
+
+    #- tooltip = "Switch to day view"
+    recomp = re.compile(' tooltip = "(.*?)";')
+    find_missing_translations('../UI', 'toolbar', recomp, ())
 
 main()
