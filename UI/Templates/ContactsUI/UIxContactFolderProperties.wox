@@ -27,7 +27,7 @@
         <fieldset>
           <legend><var:string label:value="Properties"/></legend>
           <div>
-            <var:string label:value="Address Book Name:" />
+            <var:string label:value="Address Book Name" />
             <input type="text" name="addressBookName" id="addressBookName" class="textField" var:value="addressBookName" />
           </div>
         </fieldset>
@@ -52,7 +52,7 @@
         <fieldset id="authenticatedLinks">
           <legend><var:string label:value="Authenticated User Access"/></legend>
           <div>
-            <var:string label:value="CardDAV URL: "/>
+            <var:string label:value="CardDAV URL"/>
             <var:string value="cardDavURL" />
           </div>
         </fieldset>
@@ -60,7 +60,7 @@
           <fieldset id="publicLinks">
             <legend><var:string label:value="Public Access"/></legend>
             <div>
-              <var:string label:value="CardDAV URL: "/>
+              <var:string label:value="CardDAV URL"/>
               <var:string value="publicCardDavURL" />
             </div>
           </fieldset>

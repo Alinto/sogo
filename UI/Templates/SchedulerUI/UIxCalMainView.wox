@@ -189,7 +189,7 @@
                      menuid="taskSearchMenu" />
             </span>
             <span>
-              <var:string label:value="View:" />
+              <var:string label:value="View" />
               <var:popup list="tasksFilters"
                 const:id="tasksFilterpopup"
                 item="taskFilter" string="tasksFilterLabel" value="taskFilter"

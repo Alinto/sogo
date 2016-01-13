@@ -102,13 +102,13 @@
           <!--<div id="propertiesView">-->
           <fieldset>
             <legend><var:string label:value="Properties"/></legend>
-            <div><span class="label"><var:string label:value="Name:"/></span
+            <div><span class="label"><var:string label:value="Name"/></span
             ><span class="content"><input type="text"
               name="calendarName" id="calendarName"
               class="textField"
               var:value="calendarName"
               /></span></div>
-            <div><span class="label"><var:string label:value="Color:"/></span
+            <div><span class="label"><var:string label:value="Color"/></span
             ><span class="content"
               ><div id="colorButton" class="colorBox" var:data-color="calendarColor"><!-- space --></div
               ><input type="hidden" name="calendarColor" id="calendarColor" var:value="calendarColor"
@@ -171,7 +171,7 @@
                 <div><label
                   ><input type="checkbox" const:class="checkBox"
                   id="notifyUserOnPersonalModifications" var:checked="notifyUserOnPersonalModifications"
-                  /><var:string label:value="When I modify my calendar, send a mail to:"
+                  /><var:string label:value="When I modify my calendar, send a mail to"
                   /></label></div>
                 <div><span class="label"
                   ><entity name="nbsp"/></span><span class="content">
@@ -187,7 +187,7 @@
         <div id="davLinksView" class="tab">
           <var:if condition="isWebCalendar">
             <fieldset id="webCalendarUrl">
-              <legend><var:string label:value="URL:"/></legend>
+              <legend><var:string label:value="URL"/></legend>
               <div><a const:class="clickableLink" var:href="webCalendarURL" var:title="webCalendarURL"
                 target="_new"><var:string var:value="webCalendarURL"/></a></div>
             </fieldset>
@@ -197,7 +197,7 @@
               <legend><var:string label:value="Authenticated User Access"/></legend>
               <div>
                 <span>
-                  <var:string label:value="CalDAV URL: "/>
+                  <var:string label:value="CalDAV URL"/>
                   <var:string value="calDavURL" />
                 </span><br/>
               <a const:class="clickableLink" var:href="webDavICSURL" var:title="webDavICSURL">
@@ -210,7 +210,7 @@
                 <legend><var:string label:value="Public Access"/></legend>
                 <div>
                   <span>
-                    <var:string label:value="CalDAV URL: "/>
+                    <var:string label:value="CalDAV URL"/>
                     <var:string value="publicCalDavURL"/>
                   </span><br/>
                 <a const:class="clickableLink" var:href="publicWebDavICSURL" var:title="publicWebDavICSURL">
