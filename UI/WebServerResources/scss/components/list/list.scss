@@ -215,7 +215,9 @@ sg-avatar-image {
 // Avatar placeholder
 // ------------------------------------
 .md-avatar:before,
-.md-avatar md-icon {
+.md-avatar md-icon,
+sg-avatar-image md-icon,
+.sg-avatar-list {
   font-family: 'Material Icons';
   font-size: $sg-avatar-width;
   color: rgba(0, 0, 0, 0.26);
