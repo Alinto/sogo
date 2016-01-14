@@ -21,7 +21,7 @@ vtodo_class2 = "(Конфиденциальная задача)";
 "due_label" = "Должно быть готово к:";
 "location_label" = "Местонахождение";
 "summary_label" = "Краткое содержание:";
-"comment_label" = "Комментарий:";
+"comment_label" = "Комментарий";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Приглашение на мероприятие: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(послал %{SentBy}) ";

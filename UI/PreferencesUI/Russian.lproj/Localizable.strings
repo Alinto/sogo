@@ -20,7 +20,7 @@
 "Delete" = "Удалить";
 
 /* contacts categories */
-"contacts_category_labels" = "Коллега, Конкурент, Клиент, Друг, Член семьи, Партнер по бизнесу, Поставщик, Пресса, VIP";
+"contacts_category_labels" = "Коллега, Конкурент, Клиент, Друг, Член семьи, Партнер, Поставщик, Пресса, VIP";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Включить автоматическую отправку сообщения об отпуске";
@@ -117,11 +117,11 @@
 "reminder_45_MINUTES_BEFORE" = "за 45 минут";
 "reminder_1_HOUR_BEFORE" = "за 1 час";
 "reminder_2_HOURS_BEFORE" = "за 2 часа";
-"reminder_5_HOURS_BEFORE" = "за 5 часа";
+"reminder_5_HOURS_BEFORE" = "за 5 часов";
 "reminder_15_HOURS_BEFORE" = "за 15 часов";
-"reminder_1_DAY_BEFORE" = "1 день назад";
-"reminder_2_DAYS_BEFORE" = "2 дня назад";
-"reminder_1_WEEK_BEFORE" = "За 1 неделю";
+"reminder_1_DAY_BEFORE" = "за 1 день";
+"reminder_2_DAYS_BEFORE" = "за 2 дня";
+"reminder_1_WEEK_BEFORE" = "за 1 неделю";
 
 /* Mailer */
 "Labels" = "Метки";

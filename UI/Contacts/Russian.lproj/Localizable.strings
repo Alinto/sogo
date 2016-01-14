@@ -212,7 +212,7 @@
 "street" = "улица";
 "Postoffice" = "почтовое отделение";
 "Region" = "Область";
-"Postal Code" = "Почтовый индекс или код";
+"Postal Code" = "Почтовый индекс";
 "New Address" = "Новый адрес";
 "Reset" = "Сбросить";
 "Description" = "Описание";
@@ -223,4 +223,6 @@
 "More options" = "Больше опций";
 "Role" = "Роль";
 "Add Screen Name" = "Добавить имя экрана";
+"Synchronization" = "Синхронизация";
 "Synchronize" = "Синхронизировать";
+"Successfully subscribed to address book" = "Успешная подписка на адресную книгу";

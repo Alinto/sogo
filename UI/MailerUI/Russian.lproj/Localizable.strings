@@ -51,7 +51,7 @@
 "Help" = "Помощь";
 
 /* Mail account main windows */
-"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Добро пожаловать в быстропочту! Для просмотра сообщений воспользуйтесь деревом папок слева.";
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Добро пожаловать в почту SOGo! Для просмотра сообщений воспользуйтесь деревом папок слева.";
 "Read messages"       = "Читать сообщения";
 "Write a new message" = "Составить новое сообщение";
 "Share" = "Совместное использование";
@@ -216,7 +216,7 @@
 "None" = "Удалить все метки";
 
 /* Mark popup menu */
-"As Read" = "как прочтанное";
+"As Read" = "как прочитанные";
 "Thread As Read" = "ветку как прочитанную";
 "As Read By Date..." = "как прочитанные по дате...";
 "All Read" = "все как прочитанные";
@@ -283,7 +283,7 @@
 "cannot send message: (smtp) error when connecting" = "Не удается отправить сообщение: ошибка при соединении с сервером SMTP.";
 
 /* Contacts list in mail editor */
-"Email" = "Email";
+"Email" = "E-mail";
 "More mail options" = "Больше опций сообщений";
 "Delegation" = "Делегировать";
 "Add User" = "Добавить пользователя";
@@ -312,3 +312,6 @@
 "Expanded" = "Раскрытое";
 "Add a Criteria" = "Добавить критерий";
 "More search options" = "Больше опций поиска";
+"Your email has been saved" = "Письмо сохранено";
+"Your email has been sent" = "Письмо отправлено";
+"Folder compacted" = "Папка сжата";

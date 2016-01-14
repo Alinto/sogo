@@ -11,29 +11,35 @@
 "Switch to week view" = "Перейти к обзору недели";
 "Switch to month view" = "Перейти к обзору месяца";
 "Reload all calendars" = "Перезагрузить все календари";
+
 /* Tabs */
 "Date" = "Дата";
 "Calendars" = "Календари";
 "No events for selected criteria" = "Нет событий для выбранного критерия";
 "No tasks for selected criteria" = "Нет заданий для выбранного критерия";
+
 /* Day */
-"DayOfTheMonth" = "DayOfTheMonth";
+"DayOfTheMonth" = "День месяца";
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "Сегодня";
 "Previous Day" = "Предыдущий день";
 "Next Day" = "Следующий день";
+
 /* Week */
 "Week" = "Неделя";
 "this week" = "эта неделя";
 "Week %d" = "Неделя %d";
 "Previous Week" = "Предыдущая неделя";
 "Next Week" = "Следующая неделя";
+
 /* Month */
 "this month" = "этот месяц";
 "Previous Month" = "Предыдущий месяц";
 "Next Month" = "Следующий месяц";
+
 /* Year */
 "this year" = "этот год";
+
 /* Menu */
 "Calendar" = "Календарь";
 "Contacts" = "Адресная книга";
@@ -56,11 +62,14 @@
 "A total of %{0} events were imported in the calendar." = " Всего %{0} событий было импортировано в календарь.";
 "Compose E-Mail to All Attendees" = "Составить сообщение ко всем приглашенным";
 "Compose E-Mail to Undecided Attendees" = "Составить сообщение ко всем не решившим приглашенным";
+
 /* Folders */
 "Personal calendar" = "Персональный календарь";
+
 /* Misc */
 "OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Запрешено";
+
 /* acls */
 "Access rights to" = "Права доступа к";
 "For user" = "Для пользователя";
@@ -83,6 +92,7 @@
 = "Этот участник может создавать записи в моем календаре.";
 "This person can erase objects from my calendar."
 = "Этот участник может удалять записи в моем календаре.";
+
 /* Button Titles */
 "Subscribe to a Calendar..." = "Подписаться на календарь...";
 "Remove the selected Calendar" = "Удалить выделенный календарь";
@@ -103,6 +113,7 @@
 "Save" = "Сохранить";
 "show_rejected_apts" = "Показать отклоненные встречи";
 "hide_rejected_apts" = "Спрятать отклоненные встречи";
+
 /* Schedule */
 "Schedule" = "Расписание";
 "No appointments found" = "Не найдено назначенных встреч";
@@ -115,6 +126,7 @@
 "more attendees" = "Пригласить еще";
 "Hide already accepted and rejected appointments" = "Скрыть согласившихся и отказавшихся.";
 "Show already accepted and rejected appointments" = "Показать согласившихся и отказавшихся.";
+
 /* Print view */
 "LIST" = "Список";
 "Print Settings" = "Настройки печати";
@@ -128,6 +140,7 @@
 "Display events and tasks colors" = "Показывать цвета событий и задач";
 "Borders" = "Границы";
 "Backgrounds" = "Условия";
+
 /* Appointments */
 "Appointment viewer" = "Просмотр встреч";
 "Appointment editor" = "Редактор встреч";
@@ -181,10 +194,12 @@
 "partStat_TENTATIVE" = "Я подтвержу позже";
 "partStat_DELEGATED" = "Я делегирую";
 "partStat_OTHER" = "Другое";
+
 /* Appointments (error messages) */
 "Conflicts found!" = "Выявлены конфликты!";
 "Invalid iCal data!" = "Неверные данные iCal !";
 "Could not create iCal data!" = "Не могу создать данные в формате iCal!";
+
 /* Searching */
 "view_all" = "Все";
 "view_today" = "Сегодня";
@@ -208,13 +223,15 @@
 "check for conflicts" = "Проверить на конфликты";
 "URL" = "URL";
 "newAttendee" = "Добавить участника";
+
 /* calendar modes */
 "Overview" = "Обзор";
 "Chart" = "Карта";
 "List" = "Список";
 "Columns" = "Колонки";
+
 /* Priorities */
-"prio_0" = "не указан";
+"prio_0" = "Не указан";
 "prio_1" = "Высший";
 "prio_2" = "Очень высокий";
 "prio_3" = "Высокий";
@@ -224,6 +241,7 @@
 "prio_7" = "Низкий";
 "prio_8" = "Очень низкий";
 "prio_9" = "Низший";
+
 /* access classes (privacy) */
 "PUBLIC_vevent" = "Публичное событие";
 "CONFIDENTIAL_vevent" = "Конфиденциальное событие";
@@ -231,6 +249,7 @@
 "PUBLIC_vtodo" = "Публичное задание";
 "CONFIDENTIAL_vtodo" = "Конфиденциальное задание";
 "PRIVATE_vtodo" = "Личное задание";
+
 /* status type */
 "status_" = "Не указано";
 "status_NOT-SPECIFIED" = "Не указано";
@@ -239,7 +258,8 @@
 "status_CANCELLED" = "Отменено";
 "status_NEEDS-ACTION" = "В ожидании";
 "status_IN-PROCESS" = "Выполняется";
-"status_COMPLETED" = "Завершено ";
+"status_COMPLETED" = "Выполнено";
+
 /* Cycles */
 "cycle_once" = "цикл_однажды";
 "cycle_daily" = "цикл_ежедневно";
@@ -284,9 +304,11 @@
 "Fourth" = "Четвертый";
 "Fift" = "Пятый";
 "Last" = "Последний";
+
 /* Appointment categories */
 "category_none" = "нет";
 "category_labels" = "Годовщина,День рождения,Дела,Звонки,Клиенты,Конкуренты,Потребители,Избранное,В след событию,Подарки,Праздники,Идеи,Встречи,Проблемы,Разное,Личное,Проекты,Государственный праздник,Статус,Поставщики,Путешествие,Каникулы";
+
 "repeat_NEVER" = "Не повторять";
 "repeat_DAILY" = "Ежедневно";
 "repeat_WEEKLY" = "Еженедельно";
@@ -295,6 +317,7 @@
 "repeat_MONTHLY" = "Ежемесячно";
 "repeat_YEARLY" = "Ежегодно";
 "repeat_CUSTOM" = "Настроить...";
+
 "reminder_NONE" = "Не напоминать";
 "reminder_5_MINUTES_BEFORE" = "за 5 минут";
 "reminder_10_MINUTES_BEFORE" = "за 10 минут";
@@ -323,29 +346,35 @@
 "Send an E-mail" = "Послать сообщение e-mail";
 "Email Organizer" = "Email организатору";
 "Email Attendees" = "Email участникам";
+
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
 "zoom_50" = "50%";
 "zoom_25" = "25%";
+
 /* transparency */
 "Show Time as Free" = "Отображать время как свободное";
+
 /* email notifications */
 "Send Appointment Notifications" = "Отправлять напоминания о встречах";
 "From" = "От";
 "To" = "Кому";
+
 /* validation errors */
 validate_notitle           = "Нет названия. Продолжить?";
-validate_invalid_startdate = "Неверное дата начала!";
+validate_invalid_startdate = "Неверная дата начала!";
 validate_invalid_enddate   = "Неверная дата конца!";
 validate_endbeforestart    = "Дата начала позже даты конца";
 "Events" = "События";
 "Tasks" = "Задачи";
 "Show completed tasks" = "Показать выполненные задачи";
+
 /* tabs */
 "Task" = "Задача";
 "Event" = "Событие";
 "Recurrence" = "Повторение";
+
 /* toolbar */
 "New Event" = "Новое событие";
 "New Task" = "Новая задача";
@@ -359,6 +388,7 @@ validate_endbeforestart    = "Дата начала позже даты конц
 /* Number of selected components in events or tasks list */
 "selected" = "выбран";
 "eventPartStatModificationError" = "Невозможно изменить статус Вашего участия.";
+
 /* menu */
 "New Event..." = "Новое событие...";
 "New Task..." = "Новое задание...";
@@ -368,12 +398,13 @@ validate_endbeforestart    = "Дата начала позже даты конц
 "Workweek days only" = "Только рабочие дни недели";
 "Tasks in View" = "Задания в виде";
 "eventDeleteConfirmation" = "Следующие события будут удалены:";
-"taskDeleteConfirmation" = "Событие будет удалено безвозвратно.";
+"taskDeleteConfirmation" = "Следующие задачи будут удалены:";
 "Would you like to continue?" = "Продолжить?";
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Вы не можете удалить персональный календарь, равно как и выключить подписку на него.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Вы уверены что хотите удалить календарь \"%{0}\"?";
+
 /* Legend */
 "Participant" = "Участник";
 "Optional Participant" = "Необязательный участник";
@@ -387,6 +418,7 @@ validate_endbeforestart    = "Дата начала позже даты конц
 "Busy" = "Занят";
 "Maybe busy" = "Возможно занят";
 "No free-busy information" = "Нет информации о занятости";
+
 /* FreeBusy panel buttons and labels */
 "Suggest time slot" = "Предложить интервал";
 "Zoom" = "Увеличить";
@@ -400,16 +432,18 @@ validate_endbeforestart    = "Дата начала позже даты конц
 "and" = "и";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "У одного или нескольких приглашенных есть конфликт по времени.\nВы хотите сохранить текущие настройки несмотря на конфликт?";
+
 /* events list */
 "Due" = "Срок";
-"(Private Event)" = "(Приватное событие)";
+"(Private Event)" = "(Личное событие)";
 vevent_class0 = "(Публичное событие)";
-vevent_class1 = "(Приватное событие)";
+vevent_class1 = "(Личное событие)";
 vevent_class2 = "(Конфиденциальное событие)";
+
 /* tasks list */
 "Descending Order" = "В убывающем порядке";
 vtodo_class0 = "(Публичное задание)";
-vtodo_class1 = "(Приватное задание)";
+vtodo_class1 = "(Личное задание)";
 vtodo_class2 = "(Конфиденциальное задание)";
 "closeThisWindowMessage" = "Спасибо! Вы можете закрыть это окно или посмотреть ";
 "Multicolumn Day View" = "День в несколько колонок";
@@ -421,6 +455,7 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Edit All Occurrences" = "Редактировать все появления";
 "Update This Occurrence" = "Обновить это появление";
 "Update All Occurrences" = "Обновить все появления";
+
 /* Properties dialog */
 "Color" = "Цвет";
 "Include in free-busy" = "Включить свободен-занят";
@@ -433,7 +468,7 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Notifications" = "Напоминания";
 "Receive a mail when I modify my calendar" = "Получать письмо, если я изменю свой календарь";
 "Receive a mail when someone else modifies my calendar" = "Получать письмо, если кто-то изменит мой календарь";
-"When I modify my calendar, send a mail to" = "Если я изменяю календарь, отправлять письмо на адрес:";
+"When I modify my calendar, send a mail to" = "Если я изменяю календарь, отправлять письмо на адрес";
 "Email Address" = "Адрес электронной почты";
 "Export" = "Экспорт";
 "Links to this Calendar" = "Ссылки на этот календарь";
@@ -441,15 +476,16 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "CalDAV URL" = "CalDAV URL ";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
+
 /* Error messages */
-"dayFieldInvalid" = "Пожалуйста, укажите числовое значение в поле дней, большее или равное 1.";
-"weekFieldInvalid" = "Пожалуйста, укажите число большее нуля в поле количества недель.";
-"monthFieldInvalid" = "Пожалуйста, укажите числовое значение в поле месяцев, большее или равное 1.";
-"monthDayFieldInvalid" = "Пожалуйста, укажите числовое значение в поле месяцев, большее или равное 1.";
-"yearFieldInvalid" = "Пожалуйста, укажите числовое значение в поле лет, большее или равное 1.";
-"appointmentFieldInvalid" = "Пожалуйста, укажите числовое значение в поле встреч, большее или равное 1.";
+"dayFieldInvalid" = "Пожалуйста, укажите число больше нуля в поле дней.";
+"weekFieldInvalid" = "Пожалуйста, укажите число больше нуля в поле недель.";
+"monthFieldInvalid" = "Пожалуйста, укажите число больше нуля в поле месяцев.";
+"monthDayFieldInvalid" = "Пожалуйста, укажите число больше нуля в поле день месяца.";
+"yearFieldInvalid" = "Пожалуйста, укажите число больше нуля в поле лет.";
+"appointmentFieldInvalid" = "Пожалуйста, укажите число больше нуля в поле оповещений.";
 "recurrenceUnsupported" = "Этот тип повторений пока не поддерживается.";
-"Please specify a calendar name." = "Пожалуйста, укажите имя календаря";
+"Please specify a calendar name." = "Пожалуйста, укажите имя календаря.";
 "tagNotDefined" = "Вы должны указать метку (tag) если хотите синхронизировать этот календарь.";
 "tagAlreadyExists" = "Указанная метка уже используется в другом календаре.";
 "tagHasChanged" = "Если Вы смените метку в этом календаре, то будет необходимо заново синхронизировать данные на Вашем мобильном устройстве. \nПродолжить?";
@@ -501,3 +537,4 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Rename" = "Переименовать";
 "Import Calendar" = "Импортировать календарь";
 "Select an ICS file." = "Выберите iCalendar файл (.ics).";
+"Successfully subscribed to calendar" = "Успешная подписка на календарь";

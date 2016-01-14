@@ -17,7 +17,7 @@
 "User" = "Пользователь";
 "Vacation message is enabled" = "Сообщение об отпуске включено";
 "Help" = "Помощь";
-"noJavascriptError" = "SOGo требует работы Javascript  Пожалуйста, включите его в опциях браузера.";
+"noJavascriptError" = "SOGo требует работы Javascript. Пожалуйста, включите его в опциях браузера.";
 "noJavascriptRetry" = "Повторить попытку";
 "Owner" = "Владелец";
 "Publish the Free/Busy information" = "Публиковать информацию о занятом/свободном времени";
