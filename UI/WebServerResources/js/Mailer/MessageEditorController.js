@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$window', '$stateParams', '$mdConstant', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccounts', 'stateAccount', 'stateMessage', 'stateRecipients', 'encodeUriFilter', '$timeout', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
-  function MessageEditorController($window, $stateParams, $mdConstant, $mdDialog, $mdToast, FileUploader, stateAccounts, stateAccount, stateMessage, stateRecipients, encodeUriFilter, $timeout, Dialog, AddressBook, Card, Preferences) {
+  MessageEditorController.$inject = ['$window', '$stateParams', '$mdConstant', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccounts', 'stateMessage', 'stateRecipients', 'encodeUriFilter', '$timeout', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
+  function MessageEditorController($window, $stateParams, $mdConstant, $mdDialog, $mdToast, FileUploader, stateAccounts, stateMessage, stateRecipients, encodeUriFilter, $timeout, Dialog, AddressBook, Card, Preferences) {
     var vm = this, semicolon = 186;
 
     vm.addRecipient = addRecipient;
@@ -204,7 +204,7 @@
 
       recipients = vm.message.editable[field];
 
-      if (contact.c_component == 'vlist') {
+      if (contact.$isList()) {
         // If the list's members were already fetch, use them
         if (angular.isDefined(contact.refs) && contact.refs.length) {
           _.each(contact.refs, function(ref) {
