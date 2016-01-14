@@ -16,9 +16,6 @@
       var newCalendarData = Calendar.$$resource.create('createFolder', this.name);
       this.$unwrap(newCalendarData);
     }
-    if (this.id) {
-      this.$acl = new Calendar.$$Acl('Calendar/' + this.id);
-    }
   }
 
   /**
@@ -268,6 +265,9 @@
   Calendar.prototype.init = function(data) {
     this.color = this.color || '#AAAAAA';
     angular.extend(this, data);
+    if (this.id) {
+      this.$acl = new Calendar.$$Acl('Calendar/' + this.id);
+    }
     // Add 'isOwned' and 'isSubscription' attributes based on active user (TODO: add it server-side?)
     this.isOwned = Calendar.activeUser.isSuperUser || this.owner == Calendar.activeUser.login;
     this.isSubscription = !this.isRemote && this.owner != Calendar.activeUser.login;
