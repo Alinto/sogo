@@ -21,7 +21,7 @@ $sg-color-chip-width: 16px;
 md-list-item {
   .md-list-item-inner {
     flex-grow: 1; // use all column space
-    //overflow: hidden;
+    overflow: hidden;
 
     // Gain some space since we want small list items
     & > md-checkbox {
