@@ -390,6 +390,7 @@
                   <sg-avatar-image class="md-avatar"
                                    ng-if="addressbook.notSelectedComponent(currentCard, 'vcard')"
                                    sg-email="currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)"
+                                   sg-src="currentCard.photoURL"
                                    size="40">
                     <!-- contact avatar -->
                   </sg-avatar-image>

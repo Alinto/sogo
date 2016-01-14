@@ -226,7 +226,7 @@
                  ng-switch="currentMessage.selected">
               <sg-avatar-image class="md-avatar"
                                ng-switch-when="false"
-                               sg-email="::currentMessage.from[0].email"
+                               sg-email="currentMessage.from[0].email"
                                size="40"><!-- avatar --></sg-avatar-image>
               <div class="md-avatar sg-avatar-selected"
                    ng-switch-when="true"><!-- selected avatar --></div>

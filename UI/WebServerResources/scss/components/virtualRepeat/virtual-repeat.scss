@@ -6,5 +6,6 @@ md-virtual-repeat-container {
     // Fix weird scroll behavior when reaching bottom of list
     // See https://github.com/angular/material/issues/4169
     padding-top: 0;
+    padding-bottom: 0;
   }
 }

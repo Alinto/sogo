@@ -230,7 +230,7 @@
     return {
       response: function(response) {
         // When expecting JSON but receiving HTML, assume session has expired and reload page
-        if (/^application\/json/.test(response.config.headers.Accept) &&
+        if (response && /^application\/json/.test(response.config.headers.Accept) &&
             /^<!DOCTYPE html>/.test(response.data)) {
           $window.location.reload(true);
           return $q.reject();
@@ -247,8 +247,10 @@
   function ErrorInterceptor($rootScope, $q) {
     return {
       responseError: function(rejection) {
-        // Broadcast the response error
-        $rootScope.$broadcast('http:Error', rejection);
+        if (/^application\/json/.test(rejection.config.headers.Accept)) {
+          // Broadcast the response error
+          $rootScope.$broadcast('http:Error', rejection);
+        }
         return $q.reject(rejection);
       }
     };

@@ -66,23 +66,26 @@
 
     function onHttpError(event, response) {
       var message;
-      if (response.data.message)
+      if (response.data && response.data.message)
         message = response.data.message;
-      else
+      else if (response.status)
         message = response.statusText;
 
-      $mdToast.show({
-        template: [
-          '<md-toast>',
-          '  <div class="md-toast-content">',
-          '    <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
-          '    <span flex>' + l(message) + '</span>',
-          '  </div>',
-          '</md-toast>'
-        ].join(''),
-        hideDelay: 5000,
-        position: 'top right'
-      });
+      if (message)
+        $mdToast.show({
+          template: [
+            '<md-toast>',
+            '  <div class="md-toast-content">',
+            '    <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
+            '    <span flex>' + l(message) + '</span>',
+            '  </div>',
+            '</md-toast>'
+          ].join(''),
+          hideDelay: 5000,
+          position: 'top right'
+        });
+      else
+        console.debug('untrap error');
     }
 
     // Listen to HTTP errors broadcasted from HTTP interceptor
