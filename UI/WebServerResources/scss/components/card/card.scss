@@ -25,6 +25,10 @@ md-card {
     }
   }
 
+  .md-secondary {
+    @extend .md-secondary;
+  }
+
   // Collapsed/expanded states for cards in ACL editor
   &.sg-collapsed, &.sg-expanded {
     transition: $swift-ease-in-out;
