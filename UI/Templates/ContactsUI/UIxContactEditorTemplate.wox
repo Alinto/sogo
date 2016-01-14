@@ -107,16 +107,16 @@
           </div>
 
           <!-- categories -->
-          <md-chips ng-model="editor.card.categories">
+          <md-chips ng-model="editor.card.categories"
+                    md-transform-chip="{ value: $chip }">
             <md-chip-template>{{$chip.value}}</md-chip-template>
             <md-autocomplete
                 md-selected-item="editor.categories.selected"
-                md-selected-item-change="editor.card.$addCategory(category)"
                 md-search-text="editor.categories.searchText"
                 md-items="category in editor.card.constructor.filterCategories(editor.categories.searchText)"
                 md-min-length="0"
                 label:placeholder="Add a category">
-              <span md-highlight-text="editor.categories.searchText">{{category}}</span>
+              <span md-highlight-text="editor.categories.searchText">{{category.value}}</span>
             </md-autocomplete>
           </md-chips>
 

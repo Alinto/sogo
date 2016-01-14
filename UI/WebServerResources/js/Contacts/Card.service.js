@@ -93,8 +93,10 @@
    */
   Card.filterCategories = function(query) {
     var re = new RegExp(query, 'i');
-    return _.filter(Card.$categories, function(category) {
+    return _.map(_.filter(Card.$categories, function(category) {
       return category.search(re) != -1;
+    }), function(category) {
+      return { value: category };
     });
   };
 
@@ -315,17 +317,19 @@
   };
 
   Card.prototype.$addCategory = function(category) {
-    if (angular.isUndefined(this.categories)) {
-      this.categories = [{value: category}];
-    }
-    else {
-      for (var i = 0; i < this.categories.length; i++) {
-        if (this.categories[i].value == category) {
-          break;
-        }
+    if (category) {
+      if (angular.isUndefined(this.categories)) {
+        this.categories = [{value: category}];
       }
-      if (i == this.categories.length)
-        this.categories.push({value: category});
+      else {
+        for (var i = 0; i < this.categories.length; i++) {
+          if (this.categories[i].value == category) {
+            break;
+          }
+        }
+        if (i == this.categories.length)
+          this.categories.push({value: category});
+      }
     }
   };
 
