@@ -610,11 +610,13 @@
             <div role="tabpanel" aria-labelledby="mailFiltersView"
                  id="mailFiltersView-content">
 
-              <md-list>
-                <md-list-item ng-repeat="item in
-                                         app.preferences.defaults.SOGoSieveFilters
-                                         track by $index">
+              <div class="md-padding">
+                <div layout="row" layout-align="start center"
+                     ng-repeat="item in
+                                app.preferences.defaults.SOGoSieveFilters
+                                track by $index">
                   <md-checkbox
+                      style="margin-bottom: 0;"
                       ng-model="app.preferences.defaults.SOGoSieveFilters[$index].active"
                       ng-true-value="1"
                       ng-false-value="0">
@@ -635,8 +637,8 @@
                              label:aria-label="Delete Filter">
                     <md-icon>remove_circle</md-icon>
                   </md-button>
-                </md-list-item>
-              </md-list>
+                </div>
+              </div>
 
               <!-- FIXME: move up/down to be replaced by DnD? -->
               <div layout="row" layout-align="end center">
