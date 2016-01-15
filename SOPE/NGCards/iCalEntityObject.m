@@ -440,7 +440,7 @@
       stringAttach = [[elements objectAtIndex: count] flattenedValuesForKey: @""];
       url = [NSURL URLWithString: stringAttach];
 
-      if (!url && [stringAttach length] > 0)
+      if (![url scheme] && [stringAttach length] > 0)
         url = [NSURL URLWithString: [NSString stringWithFormat: @"http://%@", stringAttach]];
 
       [attachUrls addObject: [url absoluteString]];
