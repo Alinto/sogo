@@ -103,6 +103,7 @@
           })
           .then(function() {
             vm.service.selectedFolder = null;
+            $state.go('app.addressbook', { addressbookId: 'personal' });
             return true;
           })
           .catch(function(response) {
