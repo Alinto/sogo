@@ -16,6 +16,7 @@
         // Create a new addressbook on the server
         var newAddressBookData = AddressBook.$$resource.create('createFolder', this.name);
         this.$unwrap(newAddressBookData);
+        this.acls = {'objectEditor': 1, 'objectCreator': 1, 'objectEraser': 1};
       }
       else if (this.id) {
         this.$acl = new AddressBook.$$Acl('Contacts/' + this.id);
