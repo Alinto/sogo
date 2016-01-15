@@ -499,7 +499,7 @@
               </md-checkbox>
             </div>
 
-            <div>
+            <div class="ng-hide">
               <md-checkbox
                   ng-model="app.preferences.defaults.SOGoMailSortByThreads"
                   ng-true-value="1"
