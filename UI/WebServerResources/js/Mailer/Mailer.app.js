@@ -16,6 +16,7 @@
     $stateProvider
       .state('mail', {
         url: '/Mail',
+        abstract: true,
         views: {
           mailboxes: {
             templateUrl: 'UIxMailMainFrame', // UI/Templates/MailerUI/UIxMailMainFrame.wox
@@ -65,6 +66,20 @@
           stateMailbox: stateVirtualMailboxOfMessage,
           stateMessages: stateMessages,
           stateMessage: stateMessage
+        }
+      })
+      .state('mail.account.inbox', {
+        url: '/inbox',
+        views: {
+          'mailbox@mail': {
+            templateUrl: 'UIxMailFolderTemplate', // UI/Templates/MailerUI/UIxMailFolderTemplate.wox
+            controller: 'MailboxController',
+            controllerAs: 'mailbox'
+          }
+        },
+        resolve: {
+          stateMailbox: stateInbox,
+          stateMessages: stateMessages
         }
       })
       .state('mail.account.mailbox', {
@@ -134,14 +149,7 @@
       // });
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/Mail');
-
-    // Set default configuration for tags input
-    // tagsInputConfigProvider.setDefaults('tagsInput', {
-    //   addOnComma: false,
-    //   replaceSpacesWithDashes: false,
-    //   allowedTagsPattern: /([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)/i
-    // });
+    $urlRouterProvider.otherwise('/Mail/0/inbox');
   }
 
   /**
@@ -149,7 +157,7 @@
    */
   stateAccounts.$inject = ['$q', 'Account'];
   function stateAccounts($q, Account) {
-    var accounts = Account.$findAll(mailAccounts),
+    var accounts = Account.$findAll(window.mailAccounts),
         promises = [];
     // Fetch list of mailboxes for each account
     angular.forEach(accounts, function(account, i) {
@@ -174,9 +182,10 @@
   /**
    * @ngInject
    */
-  stateMailbox.$inject = ['$stateParams', 'stateAccount', 'decodeUriFilter', 'Mailbox'];
-  function stateMailbox($stateParams, stateAccount, decodeUriFilter, Mailbox) {
-    var mailboxId = decodeUriFilter($stateParams.mailboxId),
+  stateMailbox.$inject = ['$q', '$state', '$stateParams', 'stateAccount', 'decodeUriFilter', 'Mailbox'];
+  function stateMailbox($q, $state, $stateParams, stateAccount, decodeUriFilter, Mailbox) {
+    var mailbox,
+        mailboxId = decodeUriFilter($stateParams.mailboxId),
         _find;
 
     // Recursive find function
@@ -197,7 +206,24 @@
     if (Mailbox.selectedFolder)
       Mailbox.selectedFolder.$isLoading = true;
 
-    return _find(stateAccount.$mailboxes);
+    mailbox = _find(stateAccount.$mailboxes);
+
+    if (mailbox)
+      return mailbox;
+    else
+      // Mailbox not found
+      return $state.go('mail.account.inbox');
+  }
+
+  /**
+   * @ngInject
+   */
+  stateInbox.$inject = ['stateAccount', 'Mailbox'];
+  function stateInbox(stateAccount, Mailbox) {
+    if (Mailbox.selectedFolder)
+      Mailbox.selectedFolder.$isLoading = true;
+
+    return stateAccount.$mailboxes[0];
   }
 
   /**

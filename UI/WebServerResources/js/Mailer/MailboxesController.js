@@ -52,13 +52,6 @@
       params: []
     };
 
-    if ($state.current.name == 'mail' && vm.accounts.length > 0 && vm.accounts[0].$mailboxes.length > 0) {
-      // Redirect to first mailbox of first account if no mailbox is selected
-      account = vm.accounts[0];
-      mailbox = account.$mailboxes[0];
-      $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(mailbox.path) });
-    }
-
     function showAdvancedSearch(path) {
       vm.showingAdvancedSearch = true;
       vm.search.mailbox = path;
@@ -265,7 +258,7 @@
         .then(function() {
           folder.$delete()
             .then(function() {
-              $state.go('mail');
+              $state.go('mail.account.inbox');
             }, function(data, status) {
               Dialog.alert(l('An error occured while deleting the mailbox "%{0}".', folder.name),
                            l(data.error));
