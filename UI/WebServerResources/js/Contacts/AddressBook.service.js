@@ -312,37 +312,38 @@
    * @memberof AddressBook.prototype
    * @desc Search for cards matching some criterias
    * @param {string} search - the search string to match
-   * @param {object} [options] - additional options to the query
+   * @param {object} [options] - additional options to the query (dry, excludeList)
    * @returns a collection of Cards instances
    */
   AddressBook.prototype.$filter = function(search, options, excludedCards) {
-    var _this = this;
+    var _this = this, query;
 
-    if (!options || !options.dry)
+    if (!options || !options.dry) {
       this.$isLoading = true;
+      query = AddressBook.$query;
+    }
+    else if (options.dry) {
+      // Don't keep a copy of the query in dry mode
+      query = angular.copy(AddressBook.$query);
+    }
 
     return AddressBook.$Preferences.ready().then(function() {
       if (options) {
-        angular.extend(AddressBook.$query, options);
-
+        angular.extend(query, options);
         if (options.dry) {
           if (!search) {
             // No query specified
             _this.$cards = [];
             return AddressBook.$q.when(_this.$cards);
           }
-          else if (AddressBook.$query.value == search) {
-            // Query hasn't changed
-            return AddressBook.$q.when(_this.$cards);
-          }
         }
       }
 
       if (angular.isDefined(search))
-        AddressBook.$query.value = search;
+        query.value = search;
 
       return _this.$id().then(function(addressbookId) {
-        return AddressBook.$$resource.fetch(addressbookId, 'view', AddressBook.$query);
+        return AddressBook.$$resource.fetch(addressbookId, 'view', query);
       }).then(function(response) {
         var results, cards, card, index,
             compareIds = function(data) {
