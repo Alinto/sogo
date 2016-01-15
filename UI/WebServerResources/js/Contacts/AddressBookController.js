@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  AddressBookController.$inject = ['$scope', '$q', '$state', '$timeout', '$mdDialog', 'Account', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook'];
-  function AddressBookController($scope, $q, $state, $timeout, $mdDialog, Account, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
+  AddressBookController.$inject = ['$scope', '$q', '$window', '$state', '$timeout', '$mdDialog', 'Account', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook'];
+  function AddressBookController($scope, $q, $window, $state, $timeout, $mdDialog, Account, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
     var vm = this;
 
     AddressBook.selectedFolder = stateAddressbook;
@@ -103,7 +103,7 @@
     function saveSelectedCards() {
       var selectedCards = _.filter(vm.selectedFolder.cards, function(card) { return card.selected; });
       var selectedUIDs = _.pluck(selectedCards, 'id');
-      window.location.href = ApplicationBaseURL + '/' + vm.selectedFolder.id + '/export?uid=' + selectedUIDs.join('&uid=');
+      $window.location.href = ApplicationBaseURL + '/' + vm.selectedFolder.id + '/export?uid=' + selectedUIDs.join('&uid=');
     }
 
     function copySelectedCards(folder) {
@@ -179,7 +179,7 @@
         if (card.c_component == 'vcard' && card.c_mail.length) {
           recipients.push({full: card.c_cn + ' <' + card.c_mail + '>'});
         }
-        else if (card.c_component == 'vlist') {
+        else if (card.$isList()) {
           // If the list's members were already fetch, use them
           if (angular.isDefined(card.refs) && card.refs.length) {
             _.each(card.refs, function(ref) {

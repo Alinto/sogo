@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  AddressBooksController.$inject = ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'FileUploader', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'User', 'stateAddressbooks'];
-  function AddressBooksController($state, $scope, $rootScope, $stateParams, $timeout, $mdDialog, $mdToast, $mdMedia, $mdSidenav, FileUploader, focus, Card, AddressBook, Dialog, Settings, User, stateAddressbooks) {
+  AddressBooksController.$inject = ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$window', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'FileUploader', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'User', 'stateAddressbooks'];
+  function AddressBooksController($state, $scope, $rootScope, $stateParams, $timeout, $window, $mdDialog, $mdToast, $mdMedia, $mdSidenav, FileUploader, focus, Card, AddressBook, Dialog, Settings, User, stateAddressbooks) {
     var vm = this;
 
     vm.activeUser = Settings.activeUser;
@@ -203,7 +203,7 @@
     }
 
     function exportCards() {
-      window.location.href = ApplicationBaseURL + '/' + vm.service.selectedFolder.id + '/exportFolder';
+      $window.location.href = ApplicationBaseURL + '/' + vm.service.selectedFolder.id + '/exportFolder';
     }
 
     function showLinks(addressbook) {

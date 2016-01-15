@@ -7,8 +7,8 @@
    * Controller to view and edit a card
    * @ngInject
    */
-  CardController.$inject = ['$scope', '$timeout', '$mdDialog', 'AddressBook', 'Card', 'Dialog', 'sgFocus', '$state', '$stateParams', 'stateCard'];
-  function CardController($scope, $timeout, $mdDialog, AddressBook, Card, Dialog, focus, $state, $stateParams, stateCard) {
+  CardController.$inject = ['$scope', '$timeout', '$window', '$mdDialog', 'AddressBook', 'Card', 'Dialog', 'sgFocus', '$state', '$stateParams', 'stateCard'];
+  function CardController($scope, $timeout, $window, $mdDialog, AddressBook, Card, Dialog, focus, $state, $stateParams, stateCard) {
     var vm = this;
 
     vm.card = stateCard;
@@ -86,9 +86,6 @@
               AddressBook.selectedFolder.cards[i] = angular.copy(vm.card);
             }
             $state.go('app.addressbook.card.view', { cardId: vm.card.id });
-          })
-          .catch(function(err) {
-            console.log(err);
           });
       }
     }
@@ -135,7 +132,7 @@
     }
 
     function exportCard() {
-      window.location.href = ApplicationBaseURL + '/' + vm.currentFolder.id + '/export?uid=' + vm.card.id;
+      $window.location.href = ApplicationBaseURL + '/' + vm.currentFolder.id + '/export?uid=' + vm.card.id;
     }
 
     function toggleRawSource($event) {
