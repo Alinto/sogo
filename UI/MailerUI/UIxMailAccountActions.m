@@ -119,7 +119,8 @@
     [newDraftMessage storeInfo];
 
   accountName = [[self clientObject] nameInContainer];
-  mailboxName = [drafts relativeImap4Name];
+  mailboxName = [drafts absoluteImap4Name]; // Ex: /INBOX/Drafts/
+  mailboxName = [mailboxName substringWithRange: NSMakeRange(1, [mailboxName length] -2)];
   messageName = [newDraftMessage nameInContainer];
   data = [NSDictionary dictionaryWithObjectsAndKeys:
                          accountName, @"accountId",
