@@ -137,14 +137,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if (!tz)
     tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
 
-  [s appendFormat: @"<TimeZone xmlns=\"Calendar:\">%@</TimeZone>", [tz activeSyncRepresentationInContext: context]];
+  if (![self recurrenceId])
+    [s appendFormat: @"<TimeZone xmlns=\"Calendar:\">%@</TimeZone>", [tz activeSyncRepresentationInContext: context]];
   
   // Organizer and other invitations related properties
   if ((organizer = [self organizer]))
     {
       meetingStatus = 1;  // meeting and the user is the meeting organizer.
       o = [organizer rfc822Email];
-      if ([o length])
+      if (![self recurrenceId] && [o length])
         {
           [s appendFormat: @"<Organizer_Email xmlns=\"Calendar:\">%@</Organizer_Email>", o];
           
@@ -349,7 +350,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       // otherwise it'll prevent WP8 phones from sync'ing. See #3028 for details.
       o = [o activeSyncRepresentationInContext: context];
 
-      if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"2.5"])
+      if ([self recurrenceId] || [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"2.5"])
         {
           [s appendFormat: @"<Body xmlns=\"Calendar:\">%@</Body>", o];
           [s appendString: @"<BodyTruncated xmlns=\"Calendar:\">0</BodyTruncated>"];
