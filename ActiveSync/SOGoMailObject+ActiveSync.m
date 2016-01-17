@@ -1126,9 +1126,9 @@ struct GlobalObjectId {
 
       if ([reference length] > 0)
         [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[reference dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];
-      else if ([self inReplyTo])
+      else if ([[self inReplyTo] length] > 0)
         [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[[self inReplyTo] dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];
-      else if ([self messageId])
+      else if ([[self messageId] length] > 0)
         [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[[self messageId] dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];
     }
 
