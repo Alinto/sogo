@@ -126,7 +126,8 @@
 
     // Reset input field when cancelling the search
     vm.cancelSearch = function() {
-      vm.searchText = "";
+      vm.previous = { searchText: '', searchField: '' };
+      vm.searchText = null;
     };
   }
 
