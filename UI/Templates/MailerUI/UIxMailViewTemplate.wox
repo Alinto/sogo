@@ -95,8 +95,7 @@
             <h5>{{viewer.message.subject}}</h5>
             <time class="msg-date" datetime="viewer.message.date" ng-bind="viewer.message.date"><!-- date --></time>
           </div>
-          <div class="sg-padded">
-
+          <div>
             <div layout="row" layout-wrap="layout-wrap">
               <div class="pseudo-input-container--compact" flex="50" flex-xs="100">
                 <div layout="row" layout-align="start center">
@@ -113,7 +112,7 @@
                   </div>
                 </div>
               </div>
-              <div layout="column" flex="50">
+              <div class="msg-recipients" layout="column" flex="50">
                 <div class="pseudo-input-container--compact">
                   <label class="pseudo-input-label">
                     <var:string label:value="To"/>
@@ -141,8 +140,9 @@
                 </div>
               </div>
             </div>
-            <md-chips class="sg-readonly hide-xs"
-                      ng-show="viewer.showFlags"
+          </div>
+          <div class="sg-padded hide-xs" ng-show="viewer.showFlags">
+            <md-chips class="sg-readonly"
                       ng-model="viewer.message.flags"
                       md-transform-chip="$chip.name"
                       md-on-remove="viewer.message.removeTag($chip)">

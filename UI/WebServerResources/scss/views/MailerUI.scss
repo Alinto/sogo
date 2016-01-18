@@ -44,6 +44,14 @@
   }
 }
 
+.msg-recipients {
+  margin-bottom: $mg;
+  @include to(xs) {
+    padding-left: $mg;
+    padding-right: $mg;
+  }
+}
+
 .msg-body {
   padding-top: $mg;
 }

@@ -19,7 +19,7 @@
                          size="32"><!-- avatar --></sg-avatar-image>
         <md-input-container flex="flex">
           <label><var:string label:value="From"/></label>
-          <md-select name="from"
+          <md-select class="sg-no-wrap" name="from"
                      ng-model="editor.message.editable.from">
             <md-option ng-value="identity" ng-repeat="identity in editor.identities">{{identity}}</md-option>
           </md-select>
@@ -219,7 +219,7 @@
       </div>
     </md-dialog-content>
 
-    <!-- TOOLBAR BUTTONS -->
+    <!-- ATTACHMENTS -->
     <md-dialog-actions>
       <div layout="row" layout-align="space-between center" layout-fill="layout-fill">
           <!-- Attachments -->
