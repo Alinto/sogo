@@ -75,7 +75,7 @@
 
     if(![[NSFileManager defaultManager] fileExistsAtPath: file_path]) {
         NSString *error = [NSString stringWithFormat: @"File %@ doesn't exist", file_path];
-        testWithMessage(false, error);
+        testWithMessage(NO, error);
     }
     return [NSData dataWithContentsOfFile: file_path];    
 }
