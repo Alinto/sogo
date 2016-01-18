@@ -86,8 +86,10 @@
     nil
   ];
   NSArray *caseData;
-  for (caseData in cases)
+  int i;
+  for (i = 0; i < [cases count]; i++)
     {
+      caseData = [cases objectAtIndex: i];
       NSString *input = [caseData objectAtIndex: 0];
       NSString *expected = [caseData objectAtIndex: 1];
       NSString *output = [NGMimeHeaderFieldGenerator encodeQuotedPrintableText: input];
