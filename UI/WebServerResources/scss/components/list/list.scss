@@ -48,6 +48,10 @@ md-list-item {
 }
 
 .md-sidenav-left {
+  md-list {
+    padding: 0;
+  }
+
   // Remove padding of input fields in the sidenav for better transitions between read and edit mode of a folder
   md-input-container {
     margin: 0;
