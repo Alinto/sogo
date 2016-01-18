@@ -86,8 +86,12 @@
   NGMimeMessageGenerator *generator = [[NGMimeMessageGenerator alloc] init];
   [generator autorelease];
 
-  for (NSArray *testCase in cases)
+  NSArray *testCase;
+  int i;
+
+  for (i = 0; i < [cases count]; i++)
     {
+      testCase = [cases objectAtIndex: i];
       NSString *header = [testCase objectAtIndex: 0];
       NSData *headerData =  [testCase objectAtIndex: 1];
       NSString *expected = [testCase objectAtIndex: 2];
