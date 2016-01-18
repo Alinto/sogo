@@ -5,7 +5,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
 
-  <div class="md-toolbar-tools sg-toolbar-group-1" layout="row">
+  <div class="sg-toolbar-group-1" layout="row">
     <md-button ng-click="toggleLeft()"
                class="md-icon-button"
                label:aria-label="Toggle Menu"

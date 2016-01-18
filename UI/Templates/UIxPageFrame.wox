@@ -20,7 +20,7 @@
         <meta name="author" content="Inverse inc." />
         <meta name="robots" content="stop" />
         <meta name="build" var:content="buildDate" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1" />
         <link href="mailto:support@inverse.ca" rev="made" />
         <link rel="shortcut icon" var:href="siteFavicon" type="image/x-icon" />
         <link type="text/css" rel="stylesheet" rsrc:href="css/styles.css" />
@@ -115,6 +115,7 @@
             <var:string value="productLocalizableStrings" const:escapeHTML="NO" />
           </script>
 
+          <!-- JAVASCRIPT IMPORTS -->
           <script type="text/javascript" rsrc:src="js/vendor/lodash.min.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular.min.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular-animate.min.js"><!-- space --></script>

@@ -12,28 +12,33 @@
   max-height: 100%;
 }
 
-body.popup {
-  .viewer {
-    width: 100%;
+body {
+  @include to(xs) {
+    overflow: hidden;
   }
-  .view-detail {
-    max-width: 100%;
-    @include from(sm) {
-      height: 100%;
-      position: absolute;
+
+  &.popup {
+    .viewer {
       width: 100%;
-      .sg-face, .sg-back {
-        > md-card {
-          height: 100%;
-          md-card-content {
+    }
+    .view-detail {
+      max-width: 100%;
+      @include from(sm) {
+        height: 100%;
+        position: absolute;
+        width: 100%;
+        .sg-face, .sg-back {
+          > md-card {
             height: 100%;
+            md-card-content {
+              height: 100%;
+            }
           }
         }
       }
     }
   }
 }
-
 // We make intensive use of the list/detail view pattern, here are some base
 // definitions for this
 // ----------------------------------------------------------------------------
@@ -76,16 +81,16 @@ $detailView-width: grid-step(8) !global;
     }
   }
 
+  @include to(xs) {
+    width: 100%;
+    min-width: 100%;
+  }
   @include at(sm){
     @include flex-col(sm, 6, 1, 1);
     min-width: ($pitch * 3);
   }
   @include from(md) {
     @include flex-col(md, 6, 1, 0);
-  }
-  @include to(xs) {
-    width: 100%;
-    min-width: 100%;
   }
 }
 
@@ -97,12 +102,63 @@ $detailView-width: grid-step(8) !global;
     overflow: hidden;
   }
 
+  // On small screens, the view slides from the right and takes all screen place.
+  // Expected Display Steps:
+  //  1. The class sg-close is used when there's no selection
+  //  2. An list item is selected (ui-router state changes):
+  //   a. sg-close is removed from view-detail
+  //   b. view-detail (transparent) slides over view-list
+  //   c. viewer is inserted into the DOM and slides inside view-detail
+  //  3. An list item is closed (ui-router state changes):
+  //   a. viewer slides out of view-detail and is removed from the DOM
+  //   b. view-detail (transparent) slides outside view-list
+  //   c. sg-close is added to view-detail
+  @include to(xs) {
+    background-color: transparent !important;
+    position: absolute;
+    //top: $toolbar-tall-height;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: ($z-index-toolbar + 1);
+    transform: translateX(0);
+    transition: $swift-ease-in-out;
+    //transition: transform $swift-ease-in-out-duration $swift-ease-in-out-timing-function;
+    &.sg-close {
+      display: none;
+      transform: translateX(100%);
+    }
+    &.ng-leave {
+      display: block;
+      transform: translateX(0);
+      &.ng-leave-active {
+        transform: translateX(100%);
+      }
+    }
+    &.ng-enter {
+      display: block;
+      transform: translateX(100%);
+      &.ng-enter-active {
+        transform: translateX(0);
+      }
+    }
+    .viewer {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      overflow-x: hidden;
+    }
+    md-card {
+      height: 100%;
+      margin: 0;
+    }
+  }
+
   @include at(sm) {
     @include flex-col(sm, 10);
-    margin: 0;
-  }
-  @include from(md) {
-    flex: 1 1 auto;
     margin: 0;
   }
 
@@ -141,53 +197,9 @@ $detailView-width: grid-step(8) !global;
     }
   }
 
-  // On small screens, the view slides from the right and takes all screen place.
-  // Expected Display Steps:
-  //  1. The class sg-close is used when there's no selection
-  //  2. An list item is selected (ui-router state changes):
-  //   a. sg-close is removed from view-detail
-  //   b. view-detail (transparent) slides over view-list
-  //   c. viewer is inserted into the DOM and slides inside view-detail
-  //  3. An list item is closed (ui-router state changes):
-  //   a. viewer slides out of view-detail and is removed from the DOM
-  //   b. view-detail (transparent) slides outside view-list
-  //   c. sg-close is added to view-detail
-  @include to(xs) {
-    display: block;
-    background-color: transparent !important;
-    position: absolute;
-    //top: $toolbar-tall-height;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: ($z-index-toolbar + 1);
-    transform: translateX(0);
-    transition: $swift-ease-in-out;
-    &.sg-close {
-      transform: translateX(100%);
-    }
-    &.ng-leave.ng-leave-active {
-      transform: translateX(100%);
-    }
-    &.ng-enter {
-      transform: translateX(100%);
-      &.ng-enter-active {
-        transform: translateX(0);
-      }
-    }
-    .viewer {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      overflow-x: hidden;
-    }
-    md-card {
-      height: 100%;
-      margin: 0;
-    }
+  @include from(md) {
+    flex: 1 1 auto;
+    margin: 0;
   }
 
   // Flippable view card, used to show raw source of cards and messages
