@@ -20,6 +20,7 @@
     vm.allAddressTypes = Card.$ADDRESS_TYPES;
     vm.categories = {};
     vm.userFilterResults = [];
+    vm.transformCategory = transformCategory;
     vm.addOrgUnit = addOrgUnit;
     vm.addBirthday = addBirthday;
     vm.addScreenName = addScreenName;
@@ -38,6 +39,12 @@
     vm.toggleRawSource = toggleRawSource;
     vm.showRawSource = false;
 
+    function transformCategory(input) {
+      if (angular.isString(input))
+        return { value: input };
+      else
+        return input;
+    }
     function addOrgUnit() {
       var i = vm.card.$addOrgUnit('');
       focus('orgUnit_' + i);

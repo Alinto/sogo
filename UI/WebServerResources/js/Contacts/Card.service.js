@@ -129,6 +129,7 @@
    */
   Card.prototype.init = function(data, partial) {
     this.refs = [];
+    this.categories = [];
     angular.extend(this, data);
     if (!this.$$fullname)
       this.$$fullname = this.$fullname();
@@ -316,22 +317,22 @@
     return this.orgUnits.length - 1;
   };
 
-  Card.prototype.$addCategory = function(category) {
-    if (category) {
-      if (angular.isUndefined(this.categories)) {
-        this.categories = [{value: category}];
-      }
-      else {
-        for (var i = 0; i < this.categories.length; i++) {
-          if (this.categories[i].value == category) {
-            break;
-          }
-        }
-        if (i == this.categories.length)
-          this.categories.push({value: category});
-      }
-    }
-  };
+  // Card.prototype.$addCategory = function(category) {
+  //   if (category) {
+  //     if (angular.isUndefined(this.categories)) {
+  //       this.categories = [{value: category}];
+  //     }
+  //     else {
+  //       for (var i = 0; i < this.categories.length; i++) {
+  //         if (this.categories[i].value == category) {
+  //           break;
+  //         }
+  //       }
+  //       if (i == this.categories.length)
+  //         this.categories.push({value: category});
+  //     }
+  //   }
+  // };
 
   Card.prototype.$addEmail = function(type) {
     if (angular.isUndefined(this.emails)) {

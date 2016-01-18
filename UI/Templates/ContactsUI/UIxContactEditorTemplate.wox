@@ -108,7 +108,7 @@
 
           <!-- categories -->
           <md-chips ng-model="editor.card.categories"
-                    md-transform-chip="{ value: $chip }">
+                    md-transform-chip="editor.transformCategory($chip)">
             <md-chip-template>{{$chip.value}}</md-chip-template>
             <md-autocomplete
                 md-selected-item="editor.categories.selected"
