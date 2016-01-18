@@ -77,6 +77,17 @@
 
 - (NSArray *) rolesForExchangeRights: (uint32_t) rights
 {
+  /* Limitations
+
+     Following rights are not supported by SOGo specifically:
+
+     - DeleteOwned : Delete only own objects
+     - EditOwned : Edit only own objects
+     - CreateSubfolders: No calendar subfolders
+     - FolderOwner: No sharing folder ownership?
+     - FolderContact: No support to store this information
+     - FolderVisible: It is inferred by other rights when extracting
+   */
   NSMutableArray *roles;
 
   roles = [NSMutableArray arrayWithCapacity: 6];
@@ -121,7 +132,7 @@
   if ([roles containsObject: SOGoCalendarRole_PublicModifier]
       && [roles containsObject: SOGoCalendarRole_PrivateModifier]
       && [roles containsObject: SOGoCalendarRole_ConfidentialModifier])
-    rights |= RightsReadItems | RightsEditAll | RightsEditOwn;
+    rights |= RightsReadItems | RightsEditAll | RightsEditOwn | RightsFreeBusySimple | RightsFreeBusyDetailed;
   else if ([roles containsObject: SOGoCalendarRole_PublicViewer]
            && [roles containsObject: SOGoCalendarRole_PrivateViewer]
            && [roles containsObject: SOGoCalendarRole_ConfidentialViewer])
@@ -135,7 +146,7 @@
   if ([roles containsObject: SOGoCalendarRole_ConfidentialDAndTViewer])
       rights |= RightsFreeBusyDetailed;
 
-  if (rights != 0)
+  if ((rights & RightsReadItems) != 0 || (rights & RightsCreateItems) != 0 || (rights & RightsDeleteAll) != 0)
     rights |= RoleNone; /* actually "folder visible" */
 
   // [self logWithFormat: @"rights for roles (%@) = %.8x", roles, rights];

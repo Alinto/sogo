@@ -2,13 +2,21 @@
 ------------------
 
 New features
- - Now able to sync only default mail folders when using EAS
+ - now able to sync only default mail folders when using EAS
+
+Enhancements
+ - Unit testing for RTFHandler
+ - JUnit output for sogo-tests
 
 Bug fixes
  - don't unescape twice mail folder names (#3423)
  - don't consider mobile Outlook EAS clients as DAV ones (#3431)
  - we now follow 301 redirects when fetching ICS calendars
  - when deleting an event using EAS, properly invoke the auto-scheduling code
+ - do not include failure attachments (really long filenames)
+ - fix encoding of email subjects with non-ASCII characters
+ - fix appointment notification mails using SOGoEnableDomainBasedUID configuration
+ - fix shifts in event times on Outlook
 
 2.3.5 (2016-01-05)
 ------------------
@@ -18,6 +26,7 @@ Enhancements
  - return the requested elements on complex requests from Outlook when downloading changes
  - user sources can be loaded dynamically
  - unify user sources API
+ - updated Russian translation (#3383)
 
 Bug fixes
  - properly compute the last week number for the year (#1010)
@@ -33,7 +42,6 @@ Bug fixes
  - accepted & updated event names are now shown correctly in Outlook
  - provide safe guards in mail and calendar to avoid exceptions while syncing
 
-
 2.3.4 (2015-12-15)
 ------------------
 
@@ -42,6 +50,7 @@ New features
 
 Enhancements
  - limit the maximum width of toolbar buttons (#3381)
+ - updated CKEditor to version 4.5.6
 
 Bug fixes
  - JavaScript exception when printing events from calendars with no assigned color (#3203)

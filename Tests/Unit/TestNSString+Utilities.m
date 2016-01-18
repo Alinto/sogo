@@ -1,8 +1,10 @@
 /* TestNSString+Utilities.m - this file is part of SOGo
  *
  * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2014 Zentyal
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Jesús García Sáez <jgarcia@zentyal.com>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +25,7 @@
 /* This file is encoded in utf-8. */
 
 #import <SOGo/NSString+Utilities.h>
-
+#import <Foundation/NSNull.h>
 #import "SOGoTest.h"
 
 @interface TestNSString_plus_Utilities : SOGoTest
@@ -52,7 +54,7 @@
   NSString *secret = @"this is a secret";
   NSString *password = @"qwerty";
   NSString *encresult, *decresult;
-  
+
   encresult = [secret encryptWithKey: nil];
   failIf(encresult != nil);
   encresult = [secret encryptWithKey: @""];
@@ -68,6 +70,30 @@
 
   decresult = [encresult decryptWithKey: password];
   failIf(![decresult isEqualToString: secret]);
+}
+
+- (void) test_objectFromJSONString_single_values
+{
+  NSString *json, *error;
+  NSInteger expected = 1;
+  id result;
+
+  // Decode null
+  json = [NSString stringWithFormat:@"null"];
+  result = [json objectFromJSONString];
+  testWithMessage(result == [NSNull null], @"Result should be null");
+
+  // Decode number
+  json = [NSString stringWithFormat:@"1"];
+  result = [json objectFromJSONString];
+  error = [NSString stringWithFormat: @"result %@ != expected %d",
+                    result, expected];
+  testWithMessage((long)result != (long)expected, error);
+
+  // Decode string
+  json = [NSString stringWithFormat:@"\"kill me\""];
+  result = [json objectFromJSONString];
+  testEquals(result, @"kill me");
 }
 
 @end

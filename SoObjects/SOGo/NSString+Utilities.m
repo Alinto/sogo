@@ -492,36 +492,7 @@ static int cssEscapingCount;
 
 - (NSString *) asQPSubjectString: (NSString *) encoding
 {
-  NSString *qpString, *subjectString;
-  NSData *subjectData, *destSubjectData;
-  NSUInteger length, destLength;
-  unsigned char *destString;
-
-#warning "encoding" parameter is not useful
-  subjectData = [self dataUsingEncoding: NSUTF8StringEncoding];
-  length = [subjectData length];
-  destLength = length * 3;
-  destString = calloc (destLength, sizeof (char));
-
-  NGEncodeQuotedPrintableMime ([subjectData bytes], length,
-                               destString, destLength);
-
-  destSubjectData = [NSData dataWithBytesNoCopy: destString
-                                         length: strlen ((char *) destString)
-                                   freeWhenDone: YES];
-  qpString = [[NSString alloc] initWithData: destSubjectData
-			       encoding: NSASCIIStringEncoding];
-  [qpString autorelease];
-  if ([qpString length] > [self length])
-    {
-      qpString = [qpString stringByReplacingString: @" " withString: @"_"];
-      subjectString = [NSString stringWithFormat: @"=?%@?q?%@?=",
-				encoding, qpString];
-    }
-  else
-    subjectString = self;
-
-  return subjectString;
+   return [NGMimeHeaderFieldGenerator encodeQuotedPrintableText: self];
 }
 
 - (BOOL) caseInsensitiveMatches: (NSString *) match

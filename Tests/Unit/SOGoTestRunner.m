@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSException.h>
@@ -31,15 +32,16 @@
 
 #import "SOGoTestRunner.h"
 
-#define EXPECTED_FAILURES 3
+#define EXPECTED_FAILURES 0
 
 @implementation SOGoTestRunner
 
-+ (SOGoTestRunner *) testRunner
++ (SOGoTestRunner *) testRunnerWithFormat: (SOGoTestOutputFormat) reportFormat
 {
   SOGoTestRunner *testRunner;
 
   testRunner = [self new];
+  [testRunner setReportFormat: reportFormat];
   [testRunner autorelease];
 
   return testRunner;
@@ -53,7 +55,8 @@
       failuresCount = 0;
       errorsCount = 0;
       hasFailed = NO;
-      messages = [NSMutableArray new];
+      performedTests = [NSMutableArray new];
+      reportFormat = SOGoTestTextOutputFormat;
     }
 
   return self;
@@ -61,8 +64,13 @@
 
 - (void) dealloc
 {
-  [messages release];
+  [performedTests release];
   [super dealloc];
+}
+
+- (void) setReportFormat: (SOGoTestOutputFormat) format
+{
+  reportFormat = format;
 }
 
 - (int) run
@@ -95,11 +103,16 @@
 }
 
 - (void) incrementTestCounter: (SOGoTestFailureCode) failureCode
+                  afterMethod: (NSString *) methodName
 {
   static char failureChars[] = { '.', 'F', 'E' };
 
   testCount++;
-  fprintf (stderr, "%c", failureChars[failureCode]);
+  if (reportFormat == SOGoTestTextOutputFormat)
+    fprintf (stderr, "%c", failureChars[failureCode]);
+  if (failureCode == SOGoTestFailureSuccess)
+    [performedTests addObject: [NSArray arrayWithObjects: methodName, @"", nil]];
+  /* else has been added by reportException method */
 }
 
 - (void) reportException: (NSException *) exception
@@ -134,13 +147,27 @@
       errorsCount++;
     }
   [message appendString: @"\n"];
-  [messages addObject: message];
+
+  [performedTests addObject:
+                    [NSArray arrayWithObjects: methodName, message, [NSNumber numberWithInt: failureCode], nil]];
 }
 
-- (void) displayReport
+- (void) displayTextReport
 {
   static NSString *separator = @"\n======================================================================\n";
+  NSArray *performedTest;
+  NSMutableArray *messages;
   NSString *reportMessage;
+  NSUInteger i, max;
+
+  messages = [NSMutableArray new];
+  max = [performedTests count];
+  for (i = 0; i < max; i++)
+    {
+      performedTest = [performedTests objectAtIndex: i];
+      if ([[performedTest objectAtIndex: 1] length] > 0)
+        [messages addObject: [performedTest objectAtIndex: 1]];
+    }
 
   if ([messages count])
     {
@@ -148,6 +175,9 @@
       reportMessage = [messages componentsJoinedByString: separator];
       fprintf (stderr, "%s", [reportMessage UTF8String]);
     }
+
+  [messages release];
+
   fprintf (stderr,
            "\n----------------------------------------------------------------------\n"
            "Ran %d tests\n\n", testCount);
@@ -156,6 +186,60 @@
              failuresCount, errorsCount);
   else
     fprintf (stderr, "OK\n");
+}
+
+- (void) displayJUnitReport
+{
+  /* Follow JUnit.xsd defined by Apache-Ant project */
+  NSArray *performedTest;
+  NSMutableString *reportMessage;
+  NSUInteger i, max;
+
+  /* Header */
+  reportMessage = [NSMutableString stringWithFormat: @"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                                   @"<testsuite "
+                                   @"name=\"%@\" id=\"0\" tests=\"%d\" errors=\"%d\" failures=\"%d\" "
+                                   @"timestamp=\"%@\">\n"
+                                   @"<desc>%@</desc>\n",
+                                   @"SOGoUnitTests", testCount, errorsCount, failuresCount,
+                                   [NSDate date],
+                                   @"SOGo and SOPE Unit tests"];
+
+  /* Test cases */
+  max = [performedTests count];
+  for (i = 0; i < max; i++)
+    {
+      performedTest = [performedTests objectAtIndex: i];
+      [reportMessage appendFormat: @"<testcase name=\"%@\">\n", [performedTest objectAtIndex: 0]];
+      if ([[performedTest objectAtIndex: 1] length] > 0)
+        {
+          if ([performedTest count] > 2 && [[performedTest objectAtIndex: 2] intValue] == SOGoTestFailureFailure)
+            [reportMessage appendFormat: @"<failure>%@</failure>\n", [performedTest objectAtIndex: 1]];
+          else
+            [reportMessage appendFormat: @"<error>%@</error>\n", [performedTest objectAtIndex: 1]];
+        }
+      [reportMessage appendString: @"</testcase>\n"];
+    }
+
+  /* End */
+  [reportMessage appendString: @"</testsuite>"];
+
+  fprintf (stdout, "%s", [reportMessage UTF8String]);
+}
+
+- (void) displayReport
+{
+  switch (reportFormat)
+    {
+    case SOGoTestTextOutputFormat:
+      [self displayTextReport];
+      break;
+      ;;
+    case SOGoTestJUnitOutputFormat:
+      [self displayJUnitReport];
+      break;
+      ;;
+    }
 }
 
 @end
