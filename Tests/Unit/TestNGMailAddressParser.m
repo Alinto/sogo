@@ -36,7 +36,7 @@
         @"johndown@test.com",    // email alone
         @"<johndown@test.com>",  // email between brackets
         @"\"<johndown@test.com>\" <johndown@test.com>", // doubled
-//        @"\"johndown@inverse.ca\" <johndown@test.com>", // with and without br.
+        @"\"johndown@inverse.ca\" <johndown@test.com>", // with and without br.
         @"=?utf-8?q?=C3=80=C3=B1in=C3=A9oblabla?= <johndown@test.com>", // accented full name
         @"=?utf-8?q?=C3=80=C3=B1in=C3=A9oblabla_Bla_Bl=C3=A9?= <johndown@test.com>", // accented and multiword
         @"John Down \"Bla Bla\" <johndown@test.com>", // partly quoted
@@ -45,14 +45,13 @@
         @"john", // name only, no domain
         nil ];
   NSArray *expectedAddresses = [NSArray arrayWithObjects:
-        @"johndown@test.com",    // email alone
-        @"johndown@test.com",    // email between brackets
+        @"johndown@test.com", // email alone
+        @"johndown@test.com", // email between brackets
         @"johndown@test.com", // doubled
-//        @"\"johndown@inverse.ca\" <johndown@test.com>", // with and without br.
+        @"johndown@test.com", // with and without br.
         @"johndown@test.com", // accented full name
         @"johndown@test.com", // accented
         // and multiword
-
         /* NOTE: the following are wrong but tolerated for now */
         @"johndown@test.com", // partly quoted
         @"johndown@test.com", // full name + email
@@ -72,8 +71,8 @@
       parsedRecipient = [parser parse];
       result = [parsedRecipient address];
       error = [NSString
-                stringWithFormat: @"received '%@' instead of '%@' for '%@'",
-                result, currentExp, rawAddress];
+                stringWithFormat: @"[%d] received '%@' instead of '%@' for '%@'",
+                count, result, currentExp, rawAddress];
       testWithMessage([result isEqualToString: currentExp], error);
     }
 }
