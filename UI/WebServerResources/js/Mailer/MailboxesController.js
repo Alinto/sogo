@@ -55,6 +55,9 @@
     function showAdvancedSearch(path) {
       vm.showingAdvancedSearch = true;
       vm.search.mailbox = path;
+      // Close sidenav on small devices
+      if ($mdMedia('xs'))
+        $mdSidenav('left').close();
     }
 
     function hideAdvancedSearch() {
