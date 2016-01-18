@@ -23,7 +23,7 @@
       <div layout="row">
         <md-icon>search</md-icon>
         <md-autocomplete
-            class="md-flex"
+            class="md-flex sg-input-no-message"
             md-input-name="addUser"
             md-search-text="acl.searchText"
             md-selected-item="acl.userToAdd"
