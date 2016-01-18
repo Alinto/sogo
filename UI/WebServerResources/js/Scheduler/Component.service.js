@@ -1032,17 +1032,18 @@
    * @desc Save the component to the server.
    */
   Component.prototype.$save = function() {
-    var _this = this, options, path, component, date;
+    var _this = this, options, path, component, date, dlp;
 
     component = this.$omit();
+    dlp = Component.$Preferences.constructor.$mdDateLocaleProvider;
 
     // Format dates and times
-    component.startDate = component.start ? formatDate(component.start) : '';
-    component.startTime = component.start ? formatTime(component.start) : '';
-    component.endDate = component.end ? formatDate(component.end) : '';
-    component.endTime = component.end ? formatTime(component.end) : '';
-    component.dueDate = component.due ? formatDate(component.due) : '';
-    component.dueTime = component.due ? formatTime(component.due) : '';
+    component.startDate = component.start ? component.start.format(dlp, '%Y-%m-%d') : '';
+    component.startTime = component.start ? component.start.format(dlp, '%H:%M') : '';
+    component.endDate = component.end ? component.end.format(dlp, '%Y-%m-%d') : '';
+    component.endTime = component.end ? component.end.format(dlp, '%H:%M') : '';
+    component.dueDate = component.due ? component.due.format(dlp, '%Y-%m-%d') : '';
+    component.dueTime = component.due ? component.due.format(dlp, '%H:%M') : '';
 
     // Update recurrence definition depending on selections
     if (this.$hasCustomRepeat) {
@@ -1101,30 +1102,6 @@
         _this.$shadowData = _this.$omit();
         return data;
       });
-
-    function formatTime(date) {
-      var hours = date.getHours();
-      if (hours < 10) hours = '0' + hours;
-
-      var minutes = date.getMinutes();
-      if (minutes < 10) minutes = '0' + minutes;
-      return hours + ':' + minutes;
-    }
-
-    function formatDate(date) {
-      var year = date.getYear();
-      if (year < 1000) year += 1900;
-
-      var month = '' + (date.getMonth() + 1);
-      if (month.length == 1)
-        month = '0' + month;
-
-      var day = '' + date.getDate();
-      if (day.length == 1)
-        day = '0' + day;
-
-      return year + '-' + month + '-' + day;
-    }
   };
 
   /**
