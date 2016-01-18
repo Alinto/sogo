@@ -61,7 +61,8 @@
   [newMail fetchMailForReplying: co toAll: toAll];
 
   accountName = [account nameInContainer];
-  mailboxName = [drafts relativeImap4Name];
+  mailboxName = [drafts absoluteImap4Name];
+  mailboxName = [mailboxName substringWithRange: NSMakeRange(1, [mailboxName length] -2)];
   messageName = [newMail nameInContainer];
 
   data = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -105,7 +106,8 @@
   [newMail fetchMailForForwarding: co];
 
   accountName = [account nameInContainer];
-  mailboxName = [drafts relativeImap4Name];
+  mailboxName = [drafts absoluteImap4Name];
+  mailboxName = [mailboxName substringWithRange: NSMakeRange(1, [mailboxName length] -2)];
   messageName = [newMail nameInContainer];
 
   data = [NSDictionary dictionaryWithObjectsAndKeys:
