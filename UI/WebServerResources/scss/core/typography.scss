@@ -150,11 +150,11 @@ $sg-typo-scale: (
 ) !global;
 
 // todo: fix that
-@function sg-font-sizes($size-List: $sg-typo-scale, $prefix: '$sg-font-size') {
-  @for $n from 1 to length($size-List) {
-    @return '#{$prefix}-#{$n}: sp-to-px( nth($size-List, $n) )';
-  }
-}
+//@function sg-font-sizes($size-List: $sg-typo-scale, $prefix: '$sg-font-size') {
+//  @for $n from 1 to length($size-List) {
+//    @return '#{$prefix}-#{$n}: sp-to-px( nth($size-List, $n) )';
+//  }
+//}
 
 // Basic typographic sizes
 // ----------------------------------------------------------------------------
