@@ -237,9 +237,10 @@
             <div class="sg-tile-content">
               <div class="sg-md-subhead">
                 <div>
-                  <span class="sg-label-outline"
-                           ng-show="mailbox.service.$virtualMode">{{currentMessage.$mailbox.name}}</span>
-                  <md-icon ng-show="currentMessage.priority.level == 1 ||
+                  <span class="sg-label-outline ng-hide"
+                        ng-show="mailbox.service.$virtualMode">{{currentMessage.$mailbox.name}}</span>
+                  <md-icon class="ng-hide"
+                           ng-show="currentMessage.priority.level == 1 ||
                                     currentMessage.priority.level == 2"
                            ng-class="{'md-warn': currentMessage.priority.level == 1}">error</md-icon>
                   {{currentMessage.$shortAddress('from')}}
@@ -251,10 +252,10 @@
               </div>
             </div>
             <div class="sg-tile-icons">
-              <md-icon ng-show="currentMessage.isflagged">star</md-icon>
-              <md-icon ng-show="currentMessage.isanswered">reply</md-icon>
-              <md-icon ng-show="currentMessage.isforwarded">forward</md-icon>
-              <md-icon ng-show="currentMessage.hasattachment">attach_file</md-icon>
+              <md-icon class="ng-hide" ng-show="currentMessage.isflagged">star</md-icon>
+              <md-icon class="ng-hide" ng-show="currentMessage.isanswered">reply</md-icon>
+              <md-icon class="ng-hide" ng-show="currentMessage.isforwarded">forward</md-icon>
+              <md-icon class="ng-hide" ng-show="currentMessage.hasattachment">attach_file</md-icon>
             </div>
           </md-list-item>
         </md-list>
