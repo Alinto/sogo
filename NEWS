@@ -2,13 +2,21 @@
 ------------------
 
 New features
- - Now able to sync only default mail folders when using EAS
+ - now able to sync only default mail folders when using EAS
+
+Enhancements
+ - Unit testing for RTFHandler
+ - JUnit output for sogo-tests
 
 Bug fixes
  - don't unescape twice mail folder names (#3423)
  - don't consider mobile Outlook EAS clients as DAV ones (#3431)
  - we now follow 301 redirects when fetching ICS calendars
  - when deleting an event using EAS, properly invoke the auto-scheduling code
+ - do not include failure attachments (really long filenames)
+ - fix encoding of email subjects with non-ASCII characters
+ - fix appointment notification mails using SOGoEnableDomainBasedUID configuration
+ - fix shifts in event times on Outlook
 
 2.3.5 (2016-01-05)
 ------------------
