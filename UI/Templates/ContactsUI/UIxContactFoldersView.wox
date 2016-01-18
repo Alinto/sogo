@@ -183,7 +183,7 @@
       </md-content>
     </md-sidenav>
 
-    <section layout="column" class="sg-app-content layout-fill" ui-view="addressbook"><!-- contacts list --></section>
+    <section layout="column" class="layout-fill" ui-view="addressbook"><!-- contacts list --></section>
   </script>
 
   <script type="text/ng-template" id="addressbook">

@@ -13,10 +13,6 @@
 }
 
 body {
-  @include to(xs) {
-    overflow: hidden;
-  }
-
   &.popup {
     .viewer {
       width: 100%;

@@ -347,7 +347,7 @@
     </md-sidenav>
 
     <!-- Main section -->
-    <section layout="column" class="sg-app-content layout-fill"
+    <section layout="column" class="layout-fill"
              ng-controller="CalendarListController as list">
       <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main" >
         <var:component className="UIxTopnavToolbarTemplate" />

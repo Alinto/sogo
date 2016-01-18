@@ -30,7 +30,7 @@
       </md-content>
     </md-sidenav>
 
-    <section layout="column" class="sg-app-content layout-fill" ui-view="module"><!-- admin module --></section>
+    <section layout="column" class="layout-fill" ui-view="module"><!-- admin module --></section>
 
   </script>
 

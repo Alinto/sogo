@@ -178,10 +178,9 @@
 //}
 
 // App container for responsive
-.sg-app-content {
+body {
   @include to(sm) {
-    width: 100%;
     overflow-x: hidden;
+    width: 100%;
   }
-
 }
