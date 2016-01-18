@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MailboxController.$inject = ['$window', '$state', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'Dialog', 'Account', 'Mailbox'];
-  function MailboxController($window, $state, $mdDialog, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, Dialog, Account, Mailbox) {
+  MailboxController.$inject = ['$window', '$timeout', '$state', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'Dialog', 'Account', 'Mailbox'];
+  function MailboxController($window, $timeout, $state, $mdDialog, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, Dialog, Account, Mailbox) {
     var vm = this, messageDialog = null;
 
     // Expose controller
@@ -163,7 +163,13 @@
 
     function cancelSearch() {
       vm.mode.search = false;
-      vm.selectedFolder.$filter();
+      vm.selectedFolder.$filter().then(function() {
+        if (vm.selectedFolder.selectedMessage) {
+          $timeout(function() {
+            vm.selectedFolder.$topIndex = vm.selectedFolder.uidsMap[vm.selectedFolder.selectedMessage];
+          });
+        }
+      });
     }
 
     function newMessage($event) {
