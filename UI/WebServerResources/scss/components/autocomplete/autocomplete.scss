@@ -6,3 +6,14 @@
     right: $baseline-grid*2;
   }
 }
+
+md-autocomplete {
+  &.sg-input-no-message {
+    &[md-floating-label] {
+      md-input-container {
+        // See .md-input-has-messages
+        padding-bottom: $input-container-padding;
+      }
+    }
+  }
+}
