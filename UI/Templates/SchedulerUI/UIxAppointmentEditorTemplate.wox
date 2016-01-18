@@ -15,12 +15,10 @@
             <label><var:string label:value="Title"/></label>
             <input type="text"
                    class="md-title"
+                   md-autofocus="true"
                    ng-model="editor.component.summary"
                    required="required"/>
           </md-input-container>
-          <md-button class="md-icon-button" ng-click="editor.cancel()">
-            <md-icon aria-label="Close dialog">close</md-icon>
-          </md-button>
         </div>
       </md-toolbar>
       <md-dialog-content class="sg-has-form-sections">
@@ -56,9 +54,9 @@
               <span md-highlight-text="editor.categories.searchText">{{category}}</span>
             </md-autocomplete>
           </md-chips>
-          <div layout="row" layout-align="space-between end" layout-wrap="layout-wrap">
+          <div layout="row" layout-align="space-between center" layout-wrap="layout-wrap">
             <!-- classification -->
-            <md-radio-group class="md-padding" layout="row"
+            <md-radio-group layout="row"
                             ng-model="editor.component.classification">
               <md-radio-button value="public">
                 <var:string label:value="label_Public"/>
