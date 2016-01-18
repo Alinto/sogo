@@ -74,6 +74,13 @@ sg-time-pane {
 sg-timepicker {
   // Don't let linebreaks happen between the open icon-button and the input.
   white-space: nowrap;
+  overflow: hidden;
+
+  // Leave room for the down-triangle button to "overflow" it's parent without modifying scrollLeft
+  padding-right: $md-datepicker-triangle-button-width / 2;
+  margin-right: -$md-datepicker-triangle-button-width / 2;
+
+  vertical-align: middle;
 }
 
 // The calendar icon button used to open the calendar pane.
