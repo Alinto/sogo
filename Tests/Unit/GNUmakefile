@@ -21,6 +21,7 @@ $(TEST_TOOL)_OBJC_FILES += \
 	\
 	TestSBJsonParser.m \
 	\
+	TestNGMimeAddressHeaderFieldGenerator.m \
 	TestNGMimeHeaderFieldGenerator.m \
 	TestNGMimeMessageGenerator.m \
 	\
