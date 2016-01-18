@@ -27,7 +27,7 @@
 "Any Authenticated User" = "Cualquier usuario autenticado";
 "Public Access" = "Acceso Público";
 "Any user not listed above" = "Cualquier usuario no listado arriba";
-"Anybody accessing this resource from the public area" = "Cualquier acceso a este recurso desde el área pública";
+"Anybody accessing this resource from the public area" = "Cualquier que acceda a este recurso desde el área pública";
 "Sorry, the user rights can not be configured for that object." = "Lo sentimos, los permisos de este usuario no pueden ser configurados para este objeto.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Cualquier usuario con una cuenta en el sistema tendrá acceso a su buzón de correo \"%{0}\".  ¿Está seguro de querer dar acceso a cualquier usuario en el sistema?";

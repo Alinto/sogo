@@ -6,6 +6,7 @@
 "Domain" = "Domaine";
 "Remember username" = "Se souvenir de moi";
 "Connect" = "Connexion";
+"Authentication Failed" = "L'authentification a échoué";
 "Wrong username or password." = "Mauvais nom d'utilisateur ou mot de passe.";
 "cookiesNotEnabled" = "Vous ne pouvez vous authentifier car les témoins (cookies) de votre navigateur Web sont désactivés. Activez les témoins dans votre navigateur Web et essayez de nouveau.";
 "browserNotCompatible" = "La version de votre navigateur Web n'est présentement pas supportée par ce site. Nous recommandons d'utiliser Firefox. Vous trouverez un lien vers la plus récente version de ce navigateur ci-dessous:";
@@ -28,11 +29,9 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
-"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "Polish" = "Polski";
-"Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
@@ -74,3 +73,7 @@
 "Confirmation" = "Confirmation";
 "Cancel" = "Annuler";
 "Please wait..." = "Veuillez patienter...";
+"AboutBox" = "Développé par la compagnie Inverse, SOGo est un collecticiel complet mettant l'emphase sur la simplicité et l'extensibilité.<br/><br/>\nSOGo propose une interface Web moderne basée sur AJAX ainsi qu'un accès par de nombreux clients natifs (comme Mozilla Thunderbird et Lightning et Apple iCal) par l'utilisation de protocoles standards tel que CalDAV et CardDAV.<br/><br/>\nCe programme est un logiciel libre ; vous pouvez le redistribuer et/ou le modifier conformément aux dispositions de la <a href=\"http://gnu.org/licenses/gpl.html\">Licence Publique Générale GNU</a>, telle que publiée par la Free Software Foundation ; version 2 de la licence, ou encore (à votre choix) toute version ultérieure. Ce programme est distribué dans l’espoir qu’il sera utile, mais SANS AUCUNE GARANTIE.<br/><br/>\nPlusieurs <a href=\"http://www.sogo.nu/en/support/community.html\">types de soutien</a> sont offerts.";
+"Close" = "Fermer";
+"Missing search parameter" = "Paramètre de recherche manquant";
+"Missing type parameter" = "Paramètre de type manquant";

@@ -27,7 +27,7 @@
 "Auto reply message" = "Mit folgender Nachricht auf jede eingehende E-Mail antworten";
 "Email addresses (separated by commas)" = "E-Mail-Adressen (getrennt durch Kommata)";
 "Add default email addresses" = "Standardadresse hinzufügen";
-"Days between responses" = "Tage zwischen automatischen Abwesenheitsnachrichten";
+"Days between responses" = "Tage zwischen automatischen Antworten";
 "Do not send responses to mailing lists" = "Keine automatischen Abwesenheitsnachrichten an Mailinglisten senden";
 "Disable auto reply on" = "Automatische Abwesenheitsnachricht abschalten am";
 "Always send vacation message response" = "Immer Abwesenheitsmeldung senden";

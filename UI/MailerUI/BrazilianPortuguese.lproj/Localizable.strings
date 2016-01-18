@@ -21,6 +21,7 @@
 "Options" = "Opções";
 "Close" = "Fechar";
 "Size" = "Tamanho";
+
 /* Tooltips */
 "Send this message now" = "Envia esta mensagem agora";
 "Select a recipient from an Address Book" = "Seleciona um destinatário de catálogo de endereços";
@@ -40,6 +41,7 @@
 "Unread" = "Não Lido";
 "Flagged" = "Sinalizado";
 "Search multiple mailboxes" = "Pesquisar múltiplas caixas de correio";
+
 /* Main Frame  */
 "Home"                 = "Início"; 
 "Calendar"             = "Calendário";
@@ -47,6 +49,7 @@
 "Mail"                 = "Correio";
 "Right Administration" = "Administração de Direitos";
 "Help" = "Ajuda";
+
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Bem-Vindo ao SOGo WebMail. Use as pastas a esquerda para exibir suas contas de email!";
 "Read messages"       = "Ler mensagens";
@@ -54,8 +57,16 @@
 "Share" = "Compartilhamento";
 "Account" = "Conta";
 "Shared Account" = "Conta Compartilhada";
+
 /* Empty right pane */
 "No message selected" = "Nenhuma mensagem selecionada";
+
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Pasta compactada";
+/* Empty Trash success message */
+"Trash emptied" = "Lixeira vazia";
+
 /* acls */
 "Access rights to" = "Direitos de acesso para";
 "For user" = "Para usuário";
@@ -75,6 +86,7 @@
 "Saved Messages.zip" = "Mensagens Salvas.zip";
 "Update" = "Atualizar";
 "Cancel" = "Cancelar";
+
 /* Mail edition */
 "From"          = "De";
 "Subject"       = "Assunto";
@@ -109,12 +121,14 @@
 "This mail is being sent from an unsecure network!" = "Este email está sendo enviado por uma rede não segura!";
 "Address Book" = "Catálogo";
 "Search For" = "Pesquisar Por";
+
 /* Popup "show" */
 "all"     = "todos";
 "read"    = "lido";
 "unread"  = "não lido";
 "deleted" = "apagados";
 "flagged" = "sinalizados";
+
 /* MailListView */
 "Sender" = "Remetente";
 "Subject or Sender" = "Assunto ou Remetente";
@@ -135,6 +149,7 @@
 "Mark Unread" = "Marcar como Não Lido";
 "Mark Read"   = "Marcar como Lido";
 "Untitled" = "Sem título";
+
 /* Tree */
 "SentFolderName"   = "Enviados";
 "TrashFolderName"  = "Lixeira";
@@ -142,15 +157,19 @@
 "DraftsFolderName" = "Rascunhos";
 "SieveFolderName"  = "Filtros";
 "Folders"          = "Pastas"; /* title line */
+
 /* MailMoveToPopUp */
 "MoveTo"        = "Mover &hellip;";
+
 /* Address Popup menu */
 "Add to Address Book..." = "Adicionar ao Catálogo...";
 "Compose Mail To" = "Escrever Mensagem Para";
 "Create Filter From Message..." = "Criar Filtro Da Mensagem...";
+
 /* Image Popup menu */
 "Save Image" = "Salvar Imagem";
 "Save Attachment" = "Salvar Anexo.";
+
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Abrir em uma Nova Janela";
 "Copy Folder Location" = "Copiar o Local da Pasta";
@@ -167,10 +186,12 @@
 "Get Messages for Account" = "Receber Mensagens por Conta";
 "Properties..." = "Propriedades...";
 "Delegation..." = "Delegação...";
+
 /* Use This Folder menu */
 "Sent Messages" = "Enviar Mensagens";
 "Drafts" = "Rascunhos";
 "Deleted Messages" = "Mensagens Apagadas";
+
 /* Message list popup menu */
 "Open Message In New Window" = "Abrir Mensagens em uma Nova Janela";
 "Reply to Sender Only" = "Responder Somente para o Remetente";
@@ -186,11 +207,14 @@
 "Print..." = "Imprimir...";
 "Delete Message" = "Apagar Mensagem";
 "Delete Selected Messages" = "Apagar Mensagens Selecionadas";
+
 /* Number of selected messages in list */
 "selected" = "selecionado";
 "This Folder" = "Esta Pasta";
+
 /* Label popup menu */
 "None" = "Nenhum";
+
 /* Mark popup menu */
 "As Read" = "Como Lido";
 "Thread As Read" = "Tarefa Como Lido";
@@ -211,6 +235,7 @@
 "results found" = "Resultados encontrados";
 "result found" = "Resultado encontrado";
 "Please specify at least one filter" = "Por favor, especifique pelo menos um filtro";
+
 /* Folder operations */
 "Name" = "Nome";
 "Enter the new name of your folder"
@@ -239,9 +264,11 @@
 = "Mover a mensagem em sua própria pasta é impossível!";
 "Copying a message into its own folder is impossible!"
 = "Copiar a mensagem em sua própria pasta é impossível!";
+
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "As mensagens não podem ser movidas para a lixeira. Gostaria de excluí-las imediatamente?";
+
 /* Message editing */
 "error_missingsubject" = "Está faltando o Assunto";
 "error_missingrecipients" = "Sem destinatários selecionados";
@@ -249,10 +276,12 @@
 "Error while saving the draft" = "Erro ao salvar o rascunho";
 "Error while uploading the file \"%{0}\":" = "Erro ao carregar o arquivo \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Este arquivo está sendo carregado. Fechando a janela irá interromper o processo.";
+
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Não é possível enviar a mensagem: todos os destinatários são inválidos.";
 "cannot send message (smtp) - recipients discarded" = "Não é possível enviar a mensagem. Os seguintes endereços estão inválidos";
 "cannot send message: (smtp) error when connecting" = "Não é possível enviar a mensagem: erro ao conectar ao servidor SMTP.";
+
 /* Contacts list in mail editor */
 "Email" = "Email";
 "More mail options" = "Mais opções da mensagem";
@@ -283,3 +312,6 @@
 "Expanded" = "Expandido";
 "Add a Criteria" = "Adicionar um Critério";
 "More search options" = "Mais opções de pesquisa";
+"Your email has been saved" = "Seu e-mail foi salvo";
+"Your email has been sent" = "Seu e-mail foi enviado";
+"Folder compacted" = "Pasta compactada";

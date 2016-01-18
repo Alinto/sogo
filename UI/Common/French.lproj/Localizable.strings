@@ -11,6 +11,7 @@
 "Preferences" = "Préférences";
 "Administration" = "Administration";
 "Disconnect" = "Quitter";
+"Toggle Menu" = "Menu bascule";
 "Right Administration" = "Partage";
 "Log Console (dev.)" = "Journal (dév.)";
 "User" = "Utilisateur";
@@ -98,3 +99,10 @@
 "a2_Thursday" = "Je";
 "a2_Friday" = "Ve";
 "a2_Saturday" = "Sa";
+"Access Rights" = "Droits d'accès";
+"Add User" = "Ajouter un utilisateur";
+"Loading" = "Chargement";
+"No such user." = "Aucun utilisateur.";
+"You cannot (un)subscribe to a folder that you own!" = "Vous ne pouvez pas vous (dés)abonner à vos propres dossiers!";
+"SOGo" = "SOGo";
+"Modules" = "Modules";

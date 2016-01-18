@@ -79,7 +79,7 @@
 "Instant Message" = "Mensaje instantáneo";
 "Add..." = "Añadir...";
 "Remove" = "Borrar";
-"Please wait..." = "Por Favor, Espere...";
+"Please wait..." = "Por Favor, espere...";
 "No possible subscription" = "No es posible la suscripción";
 "Preferred" = "Preferido";
 "Display" = "Mostrar como";
@@ -223,4 +223,6 @@
 "More options" = "Más opciones";
 "Role" = "Rol";
 "Add Screen Name" = "Agregar nombre a mostrar";
+"Synchronization" = "Sincronización";
 "Synchronize" = "Sincronizar";
+"Successfully subscribed to address book" = "Se suscribió con éxito a la libreta de direcciones";

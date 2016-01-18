@@ -10,7 +10,7 @@
 "Mail Options" = "Opciones de correo";
 "IMAP Accounts" = "Cuentas IMAP";
 "Vacation" = "Autorrespuesta";
-"Forward" = "Desvío";
+"Forward" = "Reenviar";
 "Password" = "Contraseña";
 "Categories" = "Categorías";
 "Appointments invitations" = "Invitaciones a eventos";
@@ -25,17 +25,17 @@
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Activar respuesta automática por vacaciones";
 "Auto reply message" = "Mensaje de respuesta automática";
-"Email addresses (separated by commas)" = "Dirección de correo (separado por comas)";
+"Email addresses (separated by commas)" = "Direcciones de correo (separadas por comas)";
 "Add default email addresses" = "Añadir dirección de correo por defecto";
 "Days between responses" = "Dias entre respuestas";
 "Do not send responses to mailing lists" = "No enviar respuestas a listas de correo";
 "Disable auto reply on" = "Deshabilitar la autorrespuesta en la siguiente fecha";
-"Always send vacation message response" = "Meandar siempre un mensaje de respuesta por vacaciones";
+"Always send vacation message response" = "Mandar siempre un mensaje de respuesta por vacaciones";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Por favor, especifique el mensaje y su dirección de correo para la respuesta automática.";
 "Your vacation message must not end with a single dot on a line." = "Su mensaje de autorrespuesta por vacaciones no debe terminar con un punto en una línea aparte.";
 "End date of your auto reply must be in the future."
-= "La fecha de finalización de la autorespuesta debe ser futura";
+= "La fecha de finalización de la autorespuesta debe estar en el futuro";
 
 /* forward messages */
 "Forward incoming messages" = "Reenviar los mensajes recibidos";

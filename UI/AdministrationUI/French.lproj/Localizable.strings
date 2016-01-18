@@ -9,3 +9,18 @@
 "ACLs_title" = "Gestion des droits d'accès pour les dossiers utilisateurs";
 /* Modules descriptions */
 "ACLs_description" = "<p>Le module de gestion des droits d'accès (ACL) vous permet de changer les ACL des calendriers et carnets d'adresses des utilisateurs.</p><p>Pour modifier les ACL sur un dossier, recherchez un utilisateur et double-clickez sur le dossier souhaité.</p>";
+"Name or Email" = "Nom ou adresse courriel";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Démarrer une recherche pour modifier les droits";
+/* Rights module: Empty search result */
+"No matching user" = "Aucun utilisateur trouvé";
+/* Rights module: no selection */
+"No resource selected" = "Aucune ressource sélectionnée";
+"Add User" = "Ajouter un utilisateur";
+"Subscribe User" = "Abonner l'utilisateur";
+"Rights" = "Droits";
+"Search Users" = "Recherche d'utilisateurs";
+"users found" = "utilisateurs trouvés";
+"No resource" = "Aucune ressource";
+"Any Authenticated User" = "Tout utilisateur authentifié";
+"Public Access" = "Accès public";

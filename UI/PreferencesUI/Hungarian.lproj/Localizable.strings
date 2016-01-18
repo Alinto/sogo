@@ -18,8 +18,10 @@
 "Color" = "Szín";
 "Add" = "Hozzáadás";
 "Delete" = "Törlés";
+
 /* contacts categories */
 "contacts_category_labels" = "Munkatárs, Versenytárs, Ügyfél, Barát, Család, Üzleti partner, Szolgáltató, Sajtó, VIP";
+
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Automatikus távollét üzenet engedélyezése";
 "Auto reply message" = "Automatikus válasz minden feladónak csak egy alkalommal";
@@ -34,6 +36,7 @@
 "Your vacation message must not end with a single dot on a line." = "A távollét üzenet utolsó sora nem tartalmazhat egy egyedülálló . karatert.";
 "End date of your auto reply must be in the future."
 = "Az automatikus válasz befejező dátuma jövőbeli időpont lehet.";
+
 /* forward messages */
 "Forward incoming messages" = "Beérkező levelek továbbítása";
 "Keep a copy" = "Másolat megtartása";
@@ -41,6 +44,7 @@
 = "Kérem adjon meg egy címet, amelyre a leveleit továbbítani kívánja.";
 "You are not allowed to forward your messages to an external email address." = "Ön számára nem endélyezett az üzenetek továbbítása külső email címre.";
 "You are not allowed to forward your messages to an internal email address." = "Ön számára nem endélyezett az üzenetek továbbítása belső email címre.";
+
 /* d & t */
 "Current Time Zone" = "Időzóna";
 "Short Date Format" = "Rövid dátumformátum";
@@ -82,6 +86,7 @@
 "timeFmt_2" = "";
 "timeFmt_3" = "";
 "timeFmt_4" = "";
+
 /* calendar */
 "Week begins on" = "Hét kezdőnapja";
 "Day start time" = "Nap kezdete";
@@ -98,6 +103,7 @@
 "Prevent from being invited to appointments" = "Megakadályozza a meghívást találkozókra";
 "White list for appointment invitations" = "Engedélyezési lista a találkozók meghívásaihoz";
 "Contacts Names" = "Kapcsolatok nevei";
+
 /* Default Calendar */
 "Default calendar" = "Alapértelmezett naptár";
 "selectedCalendar" = "Kiválasztott naptár";
@@ -116,10 +122,11 @@
 "reminder_1_DAY_BEFORE" = "1 nappal előtte";
 "reminder_2_DAYS_BEFORE" = "2 nappal előtte";
 "reminder_1_WEEK_BEFORE" = "1 héttel előtte";
+
 /* Mailer */
 "Labels" = "Címkék";
 "Label" = "Címke";
-"Show subscribed mailboxes only" = "Csak azok a fiókok mutatása, amelyre feliratkozott";
+"Show subscribed mailboxes only" = "Csak azon fiókok mutatása, amelyre feliratkozott";
 "Sort messages by threads" = "Üzenetek beszélgetések szerinti rendezése";
 "When sending mail, add unknown recipients to my" = "Levél küldésekor az ismeretlen címeket adja hozzá a következőhöz";
 "Address Book" = "Címjegyzék";
@@ -140,9 +147,11 @@
 "displayremoteinlineimages_always" = "Mindig";
 "Auto save every" = "Automatikus mentés gyakorisága";
 "minutes" = "perc";
+
 /* Contact */
 "Personal Address Book" = "Személyes címjegyzék";
 "Collected Address Book" = "Összegyűjtöt címek jegyzéke";
+
 /* IMAP Accounts */
 "Mail Account" = "Levelezési fiók";
 "New Mail Account" = "Új email fiók";
@@ -159,18 +168,22 @@
 "Please enter your signature below" = "Kérem itt adja meg az aláírását";
 "Please specify a valid sender address." = "Egy érvényes feladó címet adjon meg.";
 "Please specify a valid reply-to address." = "Egy érvényes válaszcímet adjon meg.";
+
 /* Additional Parameters */
 "Additional Parameters" = "További beállítások";
+
 /* password */
 "New password" = "Új jelszó";
 "Confirmation" = "Megerősítés";
 "Change" = "Megváltoztat";
+
 /* Event+task classifications */
 "Default events classification" = "Az események alapértelmezett besorolása";
 "Default tasks classification" = "Alapértelmezett feladat besorolás";
 "PUBLIC_item" = "Nyilvános";
 "CONFIDENTIAL_item" = "Bizalmas";
 "PRIVATE_item" = "Magán";
+
 /* Event+task categories */
 "Calendar Category" = "Naptár kategória";
 "Add Calendar Category" = "Naptár kategória hozzáadása";
@@ -180,6 +193,7 @@
 "Remove Contact Category" = "Kapcsolat kategória eltávolítása";
 "category_none" = "Nincs";
 "calendar_category_labels" = "Évforduló,Születésnap,Üzleti,Meghívás,Ügyfelek,Versenytársak,Vevő,Kedvencek,Nyomonkövetés,Ajándékozás,Szabadság,Ötletek,Megbeszélés,Ügyek,Egyéb,Személyes,Projektek,Állami ünnep,Állapot,Szállítók,Utazás,Szünidő";
+
 /* Default module */
 "Calendar" = "Naptár";
 "Contacts" = "Címjegyzék";
@@ -187,6 +201,7 @@
 "Last" = "Utoljára használt";
 "Default Module " = "Alapértelmezett modul";
 "SOGo Version" = "SOGo verzió";
+
 /* Confirmation asked when changing the language */
 "Save preferences and reload page now?" = "Beállítások mentése és az oldal frissítése most?";
 "Language" = "Nyelv";
@@ -226,6 +241,7 @@
 "refreshview_every_20_minutes" = "Húszpercenként";
 "refreshview_every_30_minutes" = "Harminc percenként";
 "refreshview_once_per_hour" = "Óránként";
+
 /* Return receipts */
 "When I receive a request for a return receipt" = "Visszaigazolási kérelem esetén";
 "Never send a return receipt" = "Soha ne küldjön visszaigazolást";
@@ -236,6 +252,7 @@
 "Never send" = "Küldés mellőzése mindig";
 "Always send" = "Küldés minden esetben";
 "Ask me" = "Rákérdezés";
+
 /* Filters - UIxPreferences */
 "Filters" = "Szűrők";
 "Active" = "Aktív";
@@ -243,8 +260,13 @@
 "Move Down" = "Mozgatás le";
 "Connection error" = "Kapcsolódási hiba";
 "Service temporarily unavailable" = "A szolgáltatás átmenetileg nem érhető el";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Szűrő neve";
+/* Button label */
+"Add a condition" = "Feltétel hozzáadása";
+/* Button label */
+"Add an action" = "Művelet hozzáadása";
 "For incoming messages that" = "Az alábbi beérkező levelekre, melyek";
 "match all of the following rules" = "az összes szabálynak megfelelnek";
 "match any of the following rules" = "legalább egy szabálynak megfelelnek";
@@ -285,6 +307,7 @@
 "Flagged" = "Megcímkézett";
 "Junk" = "Szemét";
 "Not Junk" = "Nem szemét";
+
 /* Password policy */
 "The password was changed successfully." = "A jelszó megváltoztatása sikeres.";
 "Password must not be empty." = "Jelszó nem lehet üres.";
@@ -313,6 +336,7 @@
 "Account Name" = "Fiók neve";
 "SSL" = "SSL";
 "TLS" = "TLS";
+
 /* Avatars */
 "Alternate Avatar" = "Másik logó";
 "none" =  "Nincs";
