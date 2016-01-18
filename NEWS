@@ -1,11 +1,11 @@
-2.3.6 (2016-01-XX)
+2.3.6 (2016-01-18)
 ------------------
 
 New features
  - now able to sync only default mail folders when using EAS
 
 Enhancements
- - Unit testing for RTFHandler
+ - unit testing for RTFHandler
  - JUnit output for sogo-tests
 
 Bug fixes
