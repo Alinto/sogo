@@ -46,17 +46,19 @@
     <div layout="row" class="md-flex">
 
       <div class="view-list" layout="column">
-        <md-toolbar>
+        <md-toolbar class="md-accent md-hue-1">
           <!-- search toolbar -->
-          <div class="md-toolbar-tools sg-toolbar-secondary"
+          <div class="md-toolbar-tools"
                sg-search="app.filter(searchText)">
             <md-icon>search</md-icon>
-            <md-input-container md-no-float="md-no-float">
+            <md-input-container class="md-block md-flex" md-no-float="md-no-float">
               <input name="folderSearch" type="search" ng-minlength="3"
                      label:placeholder="Search Users"/>
             </md-input-container>
           </div>
         </md-toolbar>
+
+        <md-divider><!-- divider --></md-divider>
 
         <md-content id="usersList" layout="column" class="md-flex">
           <md-subheader ng-show="app.service.$query">
@@ -71,7 +73,7 @@
           <md-list class="sg-section-list">
             <div ng-repeat="user in app.users">
               <md-list-item ng-class="{ 'sg-collapsed': user.uid != app.selectedUser.uid,
-                                        'sg-expanded': user.uid == app.selectedUser.uid }"
+                                      'sg-expanded': user.uid == app.selectedUser.uid }"
                             ng-click="app.selectUser($index)">
                 <sg-avatar-image class="md-avatar"
                                  ng-if="::user.isGroup === 0"
@@ -104,7 +106,7 @@
                              aria-label="{{::folder.displayName}}" title="{{::folder.displayName}}"
                              ng-click="app.selectFolder(folder)">
                     <md-icon ng-class="{ 'icon-contacts': folder.type == 'Contact',
-                                         'icon-event': folder.type == 'Appointment' }"><!--icon--></md-icon>
+                                       'icon-event': folder.type == 'Appointment' }"><!--icon--></md-icon>
                     {{::folder.displayName}}
                   </md-button>
                 </md-list-item>
@@ -115,17 +117,16 @@
         </md-content>
       </div>
 
-      <div id="detailView" class="view-detail" layout="column" layout-align="start center"
+      <div id="detailView" class="view-detail md-default-theme md-background md-bg md-hue-1"
+           layout="column" layout-align="start center"
            ng-class="{ 'sg-close': !app.selectedUser.selectedFolder }"
            ui-view="acl">
-        <md-toolbar class="md-whiteframe-z1 hide-sm"><!-- empty toolbar --></md-toolbar>
-        <md-content class="hide-sm md-flex layout-fill md-hue-1"
+        <md-content class="hide-xs md-flex layout-fill md-hue-1"
                     layout="column" layout-align="center center">
-          <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title">
-            <var:string label:value="No resource selected"/>
-          </div>
+          <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title"><var:string label:value="No resource selected"/></div>
         </md-content>
       </div>
+
     </div>
   </script>
 

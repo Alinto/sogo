@@ -7,47 +7,48 @@
     xmlns:label="OGo:label"
     >
   <div layout="column" class="layout-fill">
-    <md-toolbar class="hide show-sm">
-      <div class="md-toolbar-tools">
-        <md-button class="sg-icon-button"
-                   label:aria-label="Close"
-                   ng-click="acl.close()">
-          <md-icon>close</md-icon>
-        </md-button>
-        <div class="md-flex"><!-- spacer --></div>
-        <md-button class="md-icon-button"
+    <md-card>
+      <md-toolbar class="hide show-xs">
+        <div class="md-toolbar-tools">
+          <md-button class="sg-icon-button"
+                     label:aria-label="Close"
+                     ng-click="acl.close()">
+            <md-icon>close</md-icon>
+          </md-button>
+          <div class="md-flex"><!-- spacer --></div>
+          <md-button class="md-icon-button"
+                     ng-click="acl.save()">
+            <md-icon>save</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+      <md-toolbar>
+        <div layout="row">
+          <sg-avatar-image class="md-tile-left"
+                           ng-show="acl.user.isGroup === 0"
+                           sg-email="::acl.user.c_email"
+                           size="40"><!-- avatar --></sg-avatar-image>
+          <div class="sg-list-avatar" ng-show="acl.user.isGroup"><!--list avatar--></div>
+          <div class="msg-header-content">
+            <h1 ng-class="{ 'sg-md-display-2--thin': isGtMedium,
+                            'sg-md-title': !isGtMedium }">{{::acl.user.cn}}</h1>
+            <h6 class="sg-md-display-2-subheader"><md-icon ng-class="{ 'icon-contacts': acl.folderType == 'AddressBook',
+                                                                       'icon-event': acl.folderType == 'Calendar' }"><!--icon--></md-icon>
+            {{::acl.folder.name}}
+            </h6>
+          </div>
+        </div>
+        <!-- only show the fab button on large screens -->
+        <md-button type="button" class="hide-xs md-fab md-fab-bottom-right md-fab-overlap-bottom"
                    ng-click="acl.save()">
           <md-icon>save</md-icon>
         </md-button>
-      </div>
-    </md-toolbar>
-    <md-toolbar class="md-tall">
-      <div layout="row">
-        <sg-avatar-image class="md-tile-left"
-                         ng-show="acl.user.isGroup === 0"
-                         sg-email="::acl.user.c_email"
-                         size="40"><!-- avatar --></sg-avatar-image>
-        <div class="sg-list-avatar" ng-show="acl.user.isGroup"><!--list avatar--></div>
-        <div class="msg-header-content">
-          <h1 class="sg-md-display-2--thin">{{::acl.user.cn}}</h1>
-          <h6 class="sg-md-display-2-subheader"><md-icon ng-class="{ 'icon-contacts': acl.folderType == 'AddressBook',
-                                 'icon-event': acl.folderType == 'Calendar' }"><!--icon--></md-icon>
-            {{::acl.folder.name}}
-          </h6>
-        </div>
-      </div>
-      <!-- only show the fab button on large screens -->
-      <md-button type="button" class="hide-sm md-fab md-fab-bottom-right md-fab-overlap-bottom"
-                 ng-click="acl.save()">
-        <md-icon>save</md-icon>
-      </md-button>
-    </md-toolbar>
-    <md-content class="md-flex md-static">
-      <div class="viewer">
+      </md-toolbar>
+      <md-card-content class="md-flex md-static">
         <div layout="row">
           <md-icon>search</md-icon>
           <md-autocomplete
-              class="md-flex"
+              class="md-flex sg-input-no-message"
               md-input-name="addUser"
               md-search-text="acl.searchText"
               md-selected-item="acl.userToAdd"
@@ -73,8 +74,8 @@
         <md-card ng-repeat="user in acl.users | orderBy:['userClass', 'displayName']"
                  class="sg-collapsed"
                  ng-class="{ 'sg-expanded': user.uid == acl.selectedUid }">
-          <md-button ng-click="acl.selectUser(user)">
-            <div layout="row" layout-align="start center" class="md-flex">
+          <a class="md-flex md-button" ng-click="acl.selectUser(user)">
+            <div layout="row" layout-align="start center">
               <span class="card-picture" ng-switch="user.userClass">
                 <div ng-switch-when="normal-user">
                   <sg-avatar-image class="md-avatar"
@@ -94,7 +95,7 @@
                 <md-icon>delete</md-icon>
               </md-button>
             </div>
-          </md-button>
+          </a>
           <md-card-content id="AccessRightList" ng-show="user.uid == acl.selectedUid">
             <var:if condition="canSubscribeUsers">
               <md-checkbox ng-model="user.isSubscribed"
@@ -118,7 +119,7 @@
 
           </md-card-content>
         </md-card>
-      </div>
-    </md-content>
+      </md-card-content>
+    </md-card>
   </div>
 </container>

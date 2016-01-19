@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  AdministrationAclController.$inject = ['$animate', '$state', '$mdToast', 'stateUser', 'stateFolder', 'User'];
-  function AdministrationAclController($animate, $state, $mdToast, stateUser, stateFolder, User) {
+  AdministrationAclController.$inject = ['$animate', '$state', '$mdMedia', '$mdToast', 'stateUser', 'stateFolder', 'User'];
+  function AdministrationAclController($animate, $state, $mdMedia, $mdToast, stateUser, stateFolder, User) {
     var vm = this;
 
     vm.user = stateUser;
@@ -85,6 +85,9 @@
             .position('top right')
             .hideDelay(3000)
         );
+        // Close acls on small devices
+        if ($mdMedia('xs'))
+          close();
       }, function(data, status) {
         Dialog.alert(l('Warning'), l('An error occured please try again.'));
       });
