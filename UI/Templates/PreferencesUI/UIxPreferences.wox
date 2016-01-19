@@ -407,7 +407,7 @@
                     md-contact-name="cn"
                     md-contact-image="$$image"
                     md-contact-email="c_email"
-                    md-require-match="md-require-match"
+                    md-require-match="true"
                     filter-selected="false"
                     label:placeholder="Add"><!-- users --></md-contact-chips>
               </div>

@@ -375,7 +375,7 @@
                 md-contact-name="$$fullname"
                 md-contact-image="$$image"
                 md-contact-email="$$email"
-                md-require-match="md-require-match"
+                md-require-match="true"
                 filter-selected="false"
                 label:placeholder="Add Member"><!-- members --></md-contact-chips>
           </div>
