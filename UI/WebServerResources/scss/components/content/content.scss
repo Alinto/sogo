@@ -4,18 +4,17 @@
 // angular-material is mobile first (is it ?) SOGo is not. We're inversing
 // the media definitions and replacing magic numbers with variables
 // ----------------------------------------------------------------------------
-md-content {
-
-  &.md-padding {
-    padding: $mg;
-  }
-}
+//md-content {
+//  &.md-padding {
+//    padding: $mg;
+//  }
+//}
 // Overrides out of specs angular-material definition
-@include at(sm) {
-  md-content.md-padding {
-    padding: $mg;
-  }
-}
+//@include at(sm) {
+//  md-content.md-padding {
+//    padding: $mg;
+//  }
+//}
 
 .sg-subcontent {
   border-left: $baseline-grid solid sg-color($sogoGreen, 100);
