@@ -502,4 +502,5 @@ vtodo_class2 = "(Confidential task)";
 "Rename" = "Rename";
 "Import Calendar" = "Import Calendar";
 "Select an ICS file." = "Select an ICS file.";
-"Sucessfully subscribed to calendar" = "Sucessfully subscribed to calendar";
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "Successfully subscribed to calendar";
