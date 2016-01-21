@@ -11,9 +11,9 @@ vtodo_class2 = "(Доверлива задача)";
 "The event \"%{Summary}\" was created" = "Настанот \"%{Summary}\" беше креиран";
 "The event \"%{Summary}\" was deleted" = "Настанот \"%{Summary}\" беше избришан";
 "The event \"%{Summary}\" was updated" = "Настанот \"%{Summary}\" беше освежен";
-"The following attendees(s) were notified:" = "Следниот учесник(ци) се известени:";
-"The following attendees(s) were added:" = "Следните учесници беа додадени:";
-"The following attendees(s) were removed:" = "Следните учесници беа отстранети:";
+"The following attendees(s) were notified" = "Следните учесници беа известини";
+"The following attendees(s) were added" = "Следните учесници беа додадени";
+"The following attendees(s) were removed" = "Следните учесници беа отстранети";
 /* IMIP messages */
 "calendar_label" = "Календар:";
 "startDate_label" = "Почеток:";

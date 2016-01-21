@@ -14,7 +14,7 @@
 <var:if condition="isBody">
 Папка <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> была удалена.
 <!--
-The following URL is now no longer active:
+Следующий URL больше не активен:
 
 <var:string value="httpFolderURL" const:escapeHTML="NO"/>
 -->

@@ -11,6 +11,7 @@
 "Preferences" = "Beállítások";
 "Administration" = "Rendszerfelügyelet";
 "Disconnect" = "Kilépés";
+"Toggle Menu" = "Menüt összecsuk";
 "Right Administration" = "Jogosultság szerkesztése";
 "Log Console (dev.)" = "Napló konzol (fejl.)";
 "User" = "Felhasználó";
@@ -18,7 +19,7 @@
 "Help" = "Súgó";
 "noJavascriptError" = "A SOGo-nak Javascript futtatási környezetre van szüksége. Kérem győződjön meg, hogy böngészője támogatja-e, illetve be van-e kapcsolva ez az opció.";
 "noJavascriptRetry" = "Újra";
-"Owner:" = "Tulajdonos";
+"Owner" = "Tulajdonos";
 "Publish the Free/Busy information" = "Foglaltsági információ nyilvánossá tétele";
 "Add..." = "Hozzáadás...";
 "Remove" = "Törlés";
@@ -98,3 +99,10 @@
 "a2_Thursday" = "Cs";
 "a2_Friday" = "Pé";
 "a2_Saturday" = "Sz";
+"Access Rights" = "Hozzáférési jogok";
+"Add User" = "Felhasználó hozzáadása";
+"Loading" = "Betöltés";
+"No such user." = "Nincs ilyen felhasználó";
+"You cannot (un)subscribe to a folder that you own!" = "Saját tulajdonban lévő mappá(ra/ról) nem lehet feliratkozni, vagy leiratkozni.";
+"SOGo" = "SOGo";
+"Modules" = "Modulok";

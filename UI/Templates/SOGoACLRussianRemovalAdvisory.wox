@@ -8,18 +8,18 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    <var:string value="currentUserName" const:escapeHTML="NO"/> удалил вас
+    <var:string value="currentUserName" const:escapeHTML="NO"/> удалил Вас
 </var:if>
 
 <var:if condition="isBody">
-<var:string value="currentUserName" const:escapeHTML="NO"/> удалил вас из списка доступа к его папке <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/>.
+<var:string value="currentUserName" const:escapeHTML="NO"/> удалил(а) Вас из списка доступа к его/ee папке <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/>.
 <!--
-You can unsubscribe directly to that folder by following this link:
+Вы можете отписаться от этой папки по ссылке:
     <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES
 
-Otherwise, you will be able to unsubscribe later from the SOGo web interface.
+Также, Вы можете отписаться от этой папки через веб-интерфейс SOGo.
 
-You can also no longer access this resource using the following URL:
+Данный ресурс больше не доступен для Вас через URL:
 
 <var:string value="httpFolderURL" const:escapeHTML="NO"/>
 -->

@@ -21,6 +21,7 @@
 "HomePhone" = "Telèfon de casa";
 "Lastname" = "Cognoms";
 "Location" = "Adreça";
+"Add a category" = "Afegir una categoria";
 "MobilePhone" = "Telèfon mòbil";
 "Name" = "Nom";
 "OfficePhone" = "Telèfon oficina";
@@ -40,6 +41,20 @@
 "Move To" = "Moure a";
 "Copy To" = "Copiar a";
 "Add to" = "Afegir a";
+/* Subheader of empty addressbook */
+"No contact" = "Sense contactes";
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Començar una cerca per navegar per aquesta llibreta d'adreces";
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "contactes";
+/* No contact matching search criteria */
+"No matching contact" = "Cap contacte coincident";
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "contactes coincidents";
+/* Number of selected contacts in list */
+"selected" = "seleccionats";
+/* Empty right pane */
+"No contact selected" = "Sense contacte seleccionat";
 /* Tooltips */
 "Create a new address book card" = "Afegir un contacte nou";
 "Create a new list" = "Crear una llista nova";
@@ -67,12 +82,11 @@
 "Please wait..." = "Si us plau, espereu-vos...";
 "No possible subscription" = "La subscripció no és possible";
 "Preferred" = "Preferit";
-"Display" = "Nom mostrat";
-"Display Name" = "Nom";
+"Display" = "Mostrar";
+"Display Name" = "Mostrar Nom";
 "Additional Email" = "Un altre correu electrònic";
 "Phone Number" = "Número de telèfon";
 "Prefers to receive messages formatted as" = "Prefereix rebre missatges amb format";
-"Screen Name" = "Nom d'usuari";
 "Categories" = "Categories";
 "First" = "Nom";
 "Last" = "Cognoms";
@@ -89,13 +103,11 @@
 "Service" = "Servei";
 "Company" = "Companyia";
 "Department" = "Departament";
-"Address" = "Domicili";
 "City" = "Ciutat";
 "State_Province" = "Estat/província/comarca";
 "ZIP_Postal Code" = "Codi postal";
 "Country" = "País";
 "Web Page" = "Web";
-"Work" = "Treball";
 "Other Infos" = "Altres dades";
 "Note" = "Nota";
 "Timezone" = "Zona hor.";
@@ -109,6 +121,8 @@
 "New Addressbook..." = "Nova llibreta d'adreces";
 "Subscribe to an Addressbook..." = "Subscribiure's a una llibreta...";
 "Remove the selected Addressbook" = "Esborrar la llibreta seleccionada";
+"Subscribe to a shared folder" = "Subscriure's a una carpeta compartida";
+"Search User" = "Cerca usuari";
 "Name of the Address Book" = "Nom de la llibreta";
 "Are you sure you want to delete the selected address book?"
 = "Voleu esborrar la llibreta d'adreces seleccionada?";
@@ -169,7 +183,44 @@
 "A total of %{0} cards were imported in the addressbook." = "S'han importat a la llibreta %{0} contactes.";
 "Reload" = "Actualitzar";
 /* Properties window */
-"Address Book Name:" = "Nom de la llibreta d'adreces";
+"Address Book Name" = "Nom de la llibreta";
 "Links to this Address Book" = "Enllaços a aquesta llibreta d'adreces";
 "Authenticated User Access" = "Accés autenticat";
 "CardDAV URL" = "URL CardDAV";
+"Options" = "Opcions";
+"Rename" = "Canviar el nom";
+"Subscriptions" = "Subscripcions";
+"Global Addressbooks" = "Llibretes d'adreces global";
+"Search" = "Cercar";
+"Sort" = "Ordenar";
+"Descending Order" = "Ordre descendent";
+"Back" = "Enrere";
+"Select All" = "Seleccionar tots";
+"Copy contacts" = "Copiar contactes";
+"More messages options" = "Més opcions de missatges";
+"New Contact" = "Nou Contacte";
+"Close" = "Tancar";
+"More contact options" = "Més opcions de contactes";
+"Organization Unit" = "Unitat Organitzativa";
+"Add Organizational Unit" = "Afegir Unitat Organitzativa";
+"Type" = "Tipus";
+"Email Address" = "Adreça de correu electrònic";
+"New Email Address" = "Nova adreça de correu electrònic";
+"New Phone Number" = "Número de telèfon nou";
+"URL" = "URL";
+"New URL" = "Nou URL";
+"street" = "carrer";
+"Postoffice" = "Oficina de correus";
+"Region" = "Regió";
+"Postal Code" = "Codi postal";
+"New Address" = "Nova adreça";
+"Reset" = "Restablir";
+"Description" = "Descripció";
+"Add Member" = "Afegeix membre";
+"Subscribe" = "Subscriure";
+"Add Birthday" = "Afegir aniversari";
+"Import" = "Importar";
+"More options" = "Més opcions";
+"Role" = "Rol";
+"Add Screen Name" = "Afegir àlies";
+"Synchronize" = "Sincronitzar";

@@ -21,6 +21,7 @@
 "HomePhone" = "Домашен телефон";
 "Lastname" = "Презиме";
 "Location" = "Локација";
+"Add a category" = "Додади категорија";
 "MobilePhone" = "Мобилен телефон";
 "Name" = "Име";
 "OfficePhone" = "Службен телефон";
@@ -40,6 +41,20 @@
 "Move To" = "Префрли во ";
 "Copy To" = "Копирај во";
 "Add to" = "Додади во";
+/* Subheader of empty addressbook */
+"No contact" = "Нема контакт";
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Започни пребарување на овој адресар";
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "контакти";
+/* No contact matching search criteria */
+"No matching contact" = "Не е пронајден контакт кој се совпаѓа";
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "Контакти кои се совпаѓаат";
+/* Number of selected contacts in list */
+"selected" = "одбрани";
+/* Empty right pane */
+"No contact selected" = "Не е одбран контакт";
 /* Tooltips */
 "Create a new address book card" = "Креирај нова адесна картичка";
 "Create a new list" = "Креирај нова листа";
@@ -69,11 +84,9 @@
 "Preferred" = "Преферирана";
 "Display" = "Прикажи";
 "Display Name" = "Прикажи име";
-"Email" = "Електронска адреса";
 "Additional Email" = "Дополнителна електронска адреса";
 "Phone Number" = "Телефонски број";
 "Prefers to receive messages formatted as" = "Претпочита да прима пораки форматирани како";
-"Screen Name:" = "Прекар";
 "Categories" = "Категории";
 "First" = "Прв";
 "Last" = "Последен";
@@ -108,6 +121,8 @@
 "New Addressbook..." = "Нов адресар";
 "Subscribe to an Addressbook..." = "Прептлати се на адресарот...";
 "Remove the selected Addressbook" = "Избриши го избраниот адресар";
+"Subscribe to a shared folder" = "Претплати се на делената папка.";
+"Search User" = "Пребарај корисник";
 "Name of the Address Book" = "Име на адресарот";
 "Are you sure you want to delete the selected address book?"
 = "Дали сте сигурни дека сакате да го избришете адресарот?";
@@ -168,7 +183,44 @@
 "A total of %{0} cards were imported in the addressbook." = "Во адресарот се увезени вкупно %{0} картички.";
 "Reload" = "Обнови";
 /* Properties window */
-"Address Book Name:" = "Име на адресарот";
+"Address Book Name" = "Име на адресарот";
 "Links to this Address Book" = "Линк кон оваа адресна книга";
 "Authenticated User Access" = "Авторизиран кориснички пристап";
 "CardDAV URL" = "CalDAV URL";
+"Options" = "Опции";
+"Rename" = "Преименувај";
+"Subscriptions" = "Претплати";
+"Global Addressbooks" = "Глобални адресари";
+"Search" = "Барај";
+"Sort" = "Сортирај";
+"Descending Order" = "Опаѓачки редослед";
+"Back" = "Назад";
+"Select All" = "Одбери се";
+"Copy contacts" = "Копирај ги контактите";
+"More messages options" = "Повеќе опции за пораки";
+"New Contact" = "Нов контакт";
+"Close" = "Затвори";
+"More contact options" = "Повеќе опции за контакт";
+"Organization Unit" = "Организациона единица";
+"Add Organizational Unit" = "Додади организациона единица";
+"Type" = "Тип";
+"Email Address" = "Електронска пошта/адреса";
+"New Email Address" = "Нова електронска пошта/адреса";
+"New Phone Number" = "Нов телефонски број";
+"URL" = "URL";
+"New URL" = "Нов URL";
+"street" = "улица";
+"Postoffice" = "Пошта";
+"Region" = "Регион";
+"Postal Code" = "Поштенски број";
+"New Address" = "Нова адреса";
+"Reset" = "Поништи";
+"Description" = "Опис";
+"Add Member" = "Додади член";
+"Subscribe" = "Прептлати се";
+"Add Birthday" = "Додади роденден";
+"Import" = "Увези";
+"More options" = "Повеќе опции";
+"Role" = "Улога";
+"Add Screen Name" = "Додади прекар";
+"Synchronize" = "Синхронизирај";

@@ -41,3 +41,10 @@ reply_info = "Esta es la respuesta a una invitación a un evento que usted ha or
 "Date" = "Fecha";
 "To" = "Para";
 "Issuer" = "Remitente";
+/* Tooltips */
+"View Attachment" = "Ver adjunto";
+"Save Attachment" = "Guardar adjunto";
+"CC" = "CC";
+"Cancel" = "Cancelar";
+"OK" = "OK";
+"Comment" = "Comentario:";

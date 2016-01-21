@@ -13,6 +13,7 @@
 "Print"       = "Imprimir";
 "Stop"        = "Aturar";
 "Write"       = "Redactar";
+"Search"      = "Cercar";
 "Send" = "Enviar";
 "Contacts" = "Contactes";
 "Attach" = "Adjuntar";
@@ -38,6 +39,7 @@
 "Attachment" = "Adjunt";
 "Unread" = "No llegit";
 "Flagged" = "Marcat";
+"Search multiple mailboxes" = "Cerca a diverses bústies";
 /* Main Frame  */
 "Home"                 = "Inici"; 
 "Calendar"             = "Calendari";
@@ -52,6 +54,8 @@
 "Share" = "Compartir";
 "Account" = "Compte";
 "Shared Account" = "Compte compartit";
+/* Empty right pane */
+"No message selected" = "Cap missatge seleccionat";
 /* acls */
 "Access rights to" = "Drets d'accés a";
 "For user" = "Per a l'usuari";
@@ -77,8 +81,9 @@
 "To"            = "Per a";
 "Cc"            = "Cc";
 "Bcc"           = "C/o";
-"Reply-To"	= "Respondre a";
+"Reply-To"	    = "Respondre a";
 "Add address"   = "Afegir adreça";
+"Body"          = "Cos";
 "Open" = "Obrir";
 "Select All" = "Seleccionar tots";
 "Attach Web Page..." = "Adjuntar pàgina Web...";
@@ -88,6 +93,7 @@
 "to"            = "per a";
 "cc"            = "cc";
 "bcc"           = "c/o";
+"Add a recipient" = "Afegir un destinatari";
 "Edit Draft..." = "Modificar esborrany...";
 "Load Images" = "Carregar imatges";
 "Return Receipt" = "Justificant de recepció";
@@ -101,7 +107,7 @@
 "low" = "Baixa";
 "lowest" = "Mínima";
 "This mail is being sent from an unsecure network!" = "Aquest missatge s'envia des d'una xarxa no segura.";
-"Address Book:" = "Llibreta d'adreces";
+"Address Book" = "Llibreta d'adreces";
 "Search For" = "Cercar";
 /* Popup "show" */
 "all"     = "tot";
@@ -119,6 +125,7 @@
 "All"           = "Tot";
 "No message"    = "Sense missatges";
 "messages"      = "Missatges";
+"Yesterday"     = "Ahir";
 "first"         = "Primer";
 "previous"      = "Anterior";
 "next"          = "Següent";
@@ -179,6 +186,8 @@
 "Print..." = "Imprimir...";
 "Delete Message" = "Esborrar missatge";
 "Delete Selected Messages" = "Esborrar missatges seleccionats";
+/* Number of selected messages in list */
+"selected" = "seleccionats";
 "This Folder" = "Aquesta carpeta";
 /* Label popup menu */
 "None" = "Cap";
@@ -191,10 +200,21 @@
 "As Junk" = "Com a correu brossa";
 "As Not Junk" = "Com a correu normal";
 "Run Junk Mail Controls" = "Executar controls de correu brossa";
+"Search messages in" = "Cercar missatges en";
+"Search" = "Cercar";
+"Search subfolders" = "Cerca a subcarpetes";
+"Match any of the following" = "Coincideix amb qualsevol d'aquestes";
+"Match all of the following" = "Coincideixen tots els següents";
+"contains" = "conté";
+"does not contain" = "no conté";
+"No matches found" = "No hi ha coincidències";
+"results found" = "resultats trobats";
+"result found" = "resultat trobat";
+"Please specify at least one filter" = "Si us plau especifiqui com a mínim un filtre";
 /* Folder operations */
 "Name" = "Nom";
 "Enter the new name of your folder"
- = "Introduïu el nom nou per a la carpeta";
+ ="Introduïu el nom nou per a la carpeta";
 "Do you really want to move this folder into the trash ?"
  = "Voleu moure aquesta carpeta a la paperera?";
 "Operation failed" = "Operació no vàlida";
@@ -235,3 +255,31 @@
 "cannot send message: (smtp) error when connecting" = "No s'ha pogut enviar el missatge. Error al connectar amb el servidor SMTP.";
 /* Contacts list in mail editor */
 "Email" = "Correu electrònic";
+"More mail options" = "Més opcions de correu";
+"Delegation" = "Delegació";
+"Add User" = "Afegir usuari";
+"Add a tag" = "Afegir una etiqueta";
+"reply" = "Respondre";
+"Edit" = "Modificar";
+"Yes" = "Sí";
+"No" = "No";
+"Location" = "Lloc";
+"Rename" = "Canviar el nom";
+"Compact" = "Compactar";
+"Export" = "Exportar";
+"Set as Drafts" = "Establir com a Esborranys";
+"Set as Sent" = "Establir com a enviat";
+"Set as Trash" = "Establir com a Paperera";
+"Sort" = "Ordenar";
+"Descending Order" = "Ordre descendent";
+"Back" = "Enrere";
+"Copy messages" = "Copiar els missatges";
+"More messages options" = "Més opcions de missatges";
+"Mark as Unread" = "Marca com a no llegit";
+"Closing Window ..." = "Tancant la finestra ...";
+"Tried to send too many mails. Please wait." = "Intent d'enviar massa correus. Esperar, per favor.";
+"View Mail" = "Veure correu";
+"This message contains external images." = "Aquest missatge conté les imatges externes.";
+"Expanded" = "Expandit";
+"Add a Criteria" = "Afegeix un criteri";
+"More search options" = "Més opcions de cerca";

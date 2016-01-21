@@ -9,3 +9,18 @@
 "ACLs_title" = "Benutzerordner ACL-Management";
 /* Modules descriptions */
 "ACLs_description" = "<p>Dieses Modul ermöglicht die Verwaltung der Zugriffsrechte (ACLs) für die Kalender und Adressbücher jedes Benutzer.</p><p>Zum Ändern der Zugriffsrechte geben Sie den Namen des jeweiligen Benutzers in das Suchfeld ein. Wählen Sie den zu ändernden Ordner mit einem Doppelklick aus der Liste aus.</p>";
+"Name or Email" = "Name oder E-Mail";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Suche starten, um die Rechte zu ändern";
+/* Rights module: Empty search result */
+"No matching user" = "Kein passender Benutzer";
+/* Rights module: no selection */
+"No resource selected" = "Keine Ressource ausgewählt";
+"Add User" = "Benutzer hinzufügen";
+"Subscribe User" = "Benutzer abonnieren";
+"Rights" = "Rechte";
+"Search Users" = "Benutzer suchen";
+"users found" = "Benutzer gefunden";
+"No resource" = "Keine Ressource";
+"Any Authenticated User" = "Alle authentifizierten Benutzer";
+"Public Access" = "Öffentlicher Zugang";

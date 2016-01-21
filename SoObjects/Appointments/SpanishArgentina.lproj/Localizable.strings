@@ -54,7 +54,7 @@ vtodo_class2 = "(Tarea confidencial)";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
 = "%{Attendee} %{SentByText}ha delegado la invitación a %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
-= "%{Attendee} %{SentByText}no ha tomado tadavia una decision respecto a esta cita.";
+= "%{Attendee} %{SentByText}todavía no ha tomado una decisión respecto a esta cita.";
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "No se puede acceder a este recurso: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = " Número máximo de reservas simultáneas\n(%{NumberOfSimultaneousBookings}) reservas para el recurso \"%{Cn} %{SystemEmail}\". El evento que entra en conflicto es \"%{EventTitle}\", y comienza el %{StartDate}.";

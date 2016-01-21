@@ -41,3 +41,10 @@ reply_info = "Aquesta és la resposta a una invitació d'esdeveniment que heu fe
 "Date" = "Data";
 "To" = "Per a";
 "Issuer" = "Emissor";
+/* Tooltips */
+"View Attachment" = "Veure fitxer adjunt";
+"Save Attachment" = "Guardar l'adjunt";
+"CC" = "CC";
+"Cancel" = "Cancel·lar";
+"OK" = "D'acord";
+"Comment" = "Comentari:";

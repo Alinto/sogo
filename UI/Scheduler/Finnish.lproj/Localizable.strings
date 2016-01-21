@@ -9,12 +9,14 @@
 "Go to today" = "Siirry tähän päivään";
 "Switch to day view" = "Siirry päivänäkymään";
 "Switch to week view" = "Siirry viikkonäkymään";
-"Switch to multi-columns day view" = "Vaihda monisarakepäivänäkymään";
 "Switch to month view" = "Siirry kuukausinäkymään";
+"Switch to multi-columns day view" = "Vaihda monisarakepäivänäkymään";
 "Reload all calendars" = "Päivitä kaikki kalenterit";
 /* Tabs */
 "Date" = "Päivämäärä";
 "Calendars" = "Kalenterit";
+"No events for selected criteria" = "Ei tapahtumia valituilla kriteereillä";
+"No tasks for selected criteria" = "Ei tehtäviä valituiila kriteereillä";
 /* Day */
 "DayOfTheMonth" = "Kuukaudenpäivä";
 "dayLabelFormat" = "%m/%d/%Y";
@@ -85,6 +87,7 @@
 /* Button Titles */
 "Subscribe to a Calendar..." = "Tilaa kalenteri...";
 "Remove the selected Calendar" = "Poista valittu kalenteri";
+"New calendar" = "Uusi kalenteri";
 "Name of the Calendar" = "Kalenterin nimi";
 "new" = "Uusi";
 "Print view" = "Tulostusnäkymä";
@@ -97,6 +100,8 @@
 "Attach" = "Liitä";
 "Update" = "Päivitä";
 "Cancel" = "Peruuta";
+"Reset" = "Tyhjennä";
+"Save" = "Tallenna";
 "show_rejected_apts" = "Näytä hylätyt tapaamiset";
 "hide_rejected_apts" = "Piilota hylätyt tapaamiset";
 /* Schedule */
@@ -137,6 +142,7 @@
 "Status" = "Tila";
 "% complete" = "% valmiina";
 "Location" = "Paikka";
+"Add a category" = "Lisää ryhmä";
 "Priority" = "Prioriteetti";
 "Privacy" = "Yksityisyys";
 "Cycle" = "Kierto";
@@ -155,6 +161,7 @@
 "General" = "Yleinen";
 "Reply" = "Vastaus";
 "Created by" = "Luonut";
+"You are invited to participate" = "Olet kutsuttu osallistumaan";
 "Target" = "Kohde";
 "attributes" = "ominaisuudet";
 "attendees" = "osallistujat";
@@ -200,7 +207,7 @@
 "Search appointments" = "Etsi tapaamisia";
 "All day Event" = "Koko päivän tapahtuma";
 "check for conflicts" = "Tarkista ristiriitojen varalta";
-"Browse URL" = "Selaa linkkiä";
+"URL" = "URL";
 "newAttendee" = "Lisää osallistuja";
 /* calendar modes */
 "Overview" = "Yleiskatsaus";
@@ -248,6 +255,7 @@
 "Recurrence pattern" = "Toistuvuussääntö";
 "Range of recurrence" = "Toistuvuussalue";
 "Daily" = "Päivittäin";
+"Multi-Columns" = "Moni-sarakkeet";
 "Weekly" = "Viikoittain";
 "Monthly" = "Kuukausittain";
 "Yearly" = "Vuosittain";
@@ -266,6 +274,11 @@
 "Create" = "Luo";
 "appointment(s)" = "tapaaminen/tapaamiset";
 "Repeat until" = "Toista kunnes";
+"End Repeat" = "Lopeta toisto";
+"Never" = "Ei koskaan";
+"After" = "Jälkeen";
+"On Date" = "Päiväyksellä";
+"times" = "kertaa";
 "First" = "Ensimmäinen";
 "Second" = "Toinen";
 "Third" = "Kolmas";
@@ -300,6 +313,7 @@
 "reminder_MINUTES" = "minuuttia";
 "reminder_HOURS" = "tuntia";
 "reminder_DAYS" = "päivää";
+"reminder_WEEKS" = "viikkoa";
 "reminder_BEFORE" = "ennen";
 "reminder_AFTER" = "jälkeen";
 "reminder_START" = "tapahtuma alkaa";
@@ -319,6 +333,8 @@
 "Show Time as Free" = "Näytä aika vapaana";
 /* email notifications */
 "Send Appointment Notifications" = "Lähetä tapaamismuistutukset";
+"From" = "Keneltä";
+"To" = "Kenelle";
 /* validation errors */
 validate_notitle           = "Otsikkoa ei ole asetettu, jatka?";
 validate_invalid_startdate = "Virheellinen alkupäiväkenttä!";
@@ -341,6 +357,8 @@ validate_endbeforestart    = "Syöttämäsi loppupäivä on ennen alkupäivää.
 "Week View" = "Viikkonäkymä";
 "Month View" = "Kuukausinäkymä";
 "Reload" = "Päivitä";
+/* Number of selected components in events or tasks list */
+"selected" = "valittu";
 "eventPartStatModificationError" = "Osallistumistilaasi ei voitu muokata.";
 /* menu */
 "New Event..." = "Uusi tapahtuma...";
@@ -371,7 +389,7 @@ validate_endbeforestart    = "Syöttämäsi loppupäivä on ennen alkupäivää.
 "Maybe busy" = "Ehkä varattu";
 "No free-busy information" = "Ei vapaa-varattu tietoa";
 /* FreeBusy panel buttons and labels */
-"Suggest time slot:" = "Ehdota aikaväliä";
+"Suggest time slot" = "Ehdota aikaikkunaa";
 "Zoom" = "Lähennä";
 "Previous slot" = "Edellinen aikaväli";
 "Next slot" = "Seuraava aikaväli";
@@ -383,11 +401,14 @@ validate_endbeforestart    = "Syöttämäsi loppupäivä on ennen alkupäivää.
 "and" = "ja";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Aikaristiriita yhdentai useamman osallistujan kanssa.⏎ Haluatko silti säilyttää nykyiset asetukset?";
-/* apt list */
+/* events list */
+"Due" = "Määräaika";
 "(Private Event)" = "(Yksityinen tapahtuma)";
 vevent_class0 = "(Julkinen tapahtuma)";
 vevent_class1 = "(Yksityinen tapahtuma)";
 vevent_class2 = "(Luottamuksellinen tapahtuma)";
+/* tasks list */
+"Descending Order" = "Laskeva järjestys";
 vtodo_class0 = "(Julkinen tehtävä)";
 vtodo_class1 = "(Yksityinen tehtävä)";
 vtodo_class2 = "(Luottamuksellinen tehtävä)";
@@ -397,6 +418,10 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "editRepeatingItem" = "Merkintä jota olet muokkaamassa on toistuva merkintä. Haluatko muokata kaikkia esiintymiä vai ainoastaan tätä nimenomaista merkintää?";
 "button_thisOccurrenceOnly" = "Vain tätä merkintää";
 "button_allOccurrences" = "Kaikki esiintymät";
+"Edit This Occurrence" = "Muokkaa tapahtumaa";
+"Edit All Occurrences" = "Muokkaa kaikkia tapahtumia";
+"Update This Occurrence" = "Päivitä tapahtuma";
+"Update All Occurrences" = "Päivitä kaikki tapahtumat";
 /* Properties dialog */
 "Color" = "Väri";
 "Include in free-busy" = "Sisällytä vapaa-varattuun";
@@ -410,6 +435,8 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "Receive a mail when I modify my calendar" = "Vastaanota sähköposti kun muokkaan kalenteriani";
 "Receive a mail when someone else modifies my calendar" = "Vastaanota sähköposti kun joku muu muokkaa kalenteriani";
 "When I modify my calendar, send a mail to" = "Kun muokkaan kalenteriani lähetä viesti osoitteeseen";
+"Email Address" = "Sähköpostiosoite";
+"Export" = "Vie";
 "Links to this Calendar" = "Linkit tähän kalenteriin";
 "Authenticated User Access" = "Kirjautuneiden käyttäjien pääsy";
 "CalDAV URL" = "CalDAV URL ";
@@ -438,9 +465,42 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "Delete Event" = "Poista tapahtuma";
 "Copy event to my calendar" = "Kopioi tapahtumat kalenteriini";
 "View Raw Source" = "Näytä lähdekoodi";
+"Subscriptions" = "Tilaukset";
+"Subscribe to a shared folder" = "Tilaa jaettu hakemisto";
 "Subscribe to a web calendar..." = "Liity web-kalenteriin...";
 "URL of the Calendar" = "Kalenterin URL";
 "Web Calendar" = "Web kalenteri";
+"Web Calendars" = "Web kalenterit";
 "Reload on login" = "Päivitä kirjauduttaessa";
 "Invalid number." = "Virheellinen numero.";
 "Please identify yourself to %{0}" = "Ole hyvä ja tunnistaudu kohteeseen %{0}";
+"quantity" = "määrä";
+"Current view" = "Nykyinen näkymä";
+"Selected events and tasks" = "Valitut tapahtumat ja tehtävät";
+"Custom date range" = "Omavalintainen aikaväli";
+"Select starting date" = "Valitse alkamispäivä";
+"Select ending date" = "Valitse loppumispäivä";
+"Delegated to" = "Valtuutettu";
+"Keep sending me updates" = "Jatka päivitysten lähettämistä minulle";
+"OK" = "OK";
+"Confidential" = "Luottamuksellinen";
+"Enable" = "Ota käyttöön";
+"Filter" = "Suodatin";
+"Sort" = "Järjestä";
+"Back" = "Takaisin";
+"Day" = "Päivä";
+"Month" = "Kuukausi";
+"New Appointment" = "Uusi tapaaminen";
+"filters" = "suodattimia";
+"Today" = "Tänään";
+"More options" = "Lisää valintoja";
+"Delete This Occurrence" = "Poista tämä tapahtuma";
+"Delete All Occurrences" = "Poista kaikki tapahtumat";
+"Add From" = "Lisää lähettäjä";
+"Add Due" = "Lisää määräaika";
+"Import" = "Tuo";
+"Rename" = "Nimeä uudelleen";
+"Import Calendar" = "Tuo kalenteri";
+"Select an ICS file." = "Valitse ICS tiedosto";
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "Kalenterin tilaus onnistui";

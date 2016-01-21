@@ -12,9 +12,9 @@
 </var:if>
 
 <var:if condition="isBody">
-Папка <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> была создана. 
+Папка <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> была создана.
 <!--
-You can access this resource remotely by using the following URL:  
+Данный ресурс доступен через URL:
 
 <var:string value="httpFolderURL" const:escapeHTML="NO"/>
 -->

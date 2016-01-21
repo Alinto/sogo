@@ -10,7 +10,8 @@
 "Mail" = "Електронска пошта";
 "Preferences" = "Подесувања";
 "Administration" = "Администрација";
-"Disconnect" = "Откачи";
+"Disconnect" = "Излези";
+"Toggle Menu" = "Промени го менито";
 "Right Administration" = "Администрација на права";
 "Log Console (dev.)" = "Конзола на логови (развој)";
 "User" = "Корисник";
@@ -98,3 +99,10 @@
 "a2_Thursday" = "Чет";
 "a2_Friday" = "Пет";
 "a2_Saturday" = "Саб";
+"Access Rights" = "Пристапни права";
+"Add User" = "Додади корисник";
+"Loading" = "Вчитувам";
+"No such user." = "Нема таков корисник.";
+"You cannot (un)subscribe to a folder that you own!" = "Не е можно да се запишете/отпишете од папката која е ваша!";
+"SOGo" = "SOGo";
+"Modules" = "Модули";

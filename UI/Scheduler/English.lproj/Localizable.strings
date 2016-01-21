@@ -10,6 +10,7 @@
 "Switch to day view" = "Switch to day view";
 "Switch to week view" = "Switch to week view";
 "Switch to month view" = "Switch to month view";
+"Switch to multi-columns day view" = "Switch to multi-columns day view";
 "Reload all calendars" = "Reload all calendars";
 /* Tabs */
 "Date" = "Date";
@@ -501,4 +502,5 @@ vtodo_class2 = "(Confidential task)";
 "Rename" = "Rename";
 "Import Calendar" = "Import Calendar";
 "Select an ICS file." = "Select an ICS file.";
+/* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Successfully subscribed to calendar";

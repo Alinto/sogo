@@ -21,6 +21,7 @@
 "HomePhone" = "Kotipuhelin";
 "Lastname" = "Sukunimi";
 "Location" = "Sijainti";
+"Add a category" = "Lisää ryhmä";
 "MobilePhone" = "Matkapuhelin";
 "Name" = "Nimi";
 "OfficePhone" = "Toimistopuhelin";
@@ -39,7 +40,21 @@
 "Preferred Phone" = "Ensisijainen puhelin";
 "Move To" = "Siirrä";
 "Copy To" = "Kopioi";
-"Add to:" = "Lisää";
+"Add to" = "Lisää";
+/* Subheader of empty addressbook */
+"No contact" = "Ei yhteystietoa";
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Aloita haku tästä osoitekirjasta";
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "yhteystietoa";
+/* No contact matching search criteria */
+"No matching contact" = "Ei vastaavaa yhteystietoa";
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "vastaavaa yhteystietoa";
+/* Number of selected contacts in list */
+"selected" = "valittu";
+/* Empty right pane */
+"No contact selected" = "Ei valittua yhteystietoa";
 /* Tooltips */
 "Create a new address book card" = "Luo uusi osoitekirjakortti";
 "Create a new list" = "Luo uusi lista";
@@ -69,7 +84,6 @@
 "Preferred" = "Ensisijainen";
 "Display" = "Näyttö";
 "Display Name" = "Näyttönimi";
-"Email" = "Email";
 "Additional Email" = "Lisäsähköpostiosoite";
 "Phone Number" = "Puhelinnumero";
 "Prefers to receive messages formatted as" = "Vastaanottaa viestejä muotoiltuna ensisijaisesti";
@@ -107,6 +121,8 @@
 "New Addressbook..." = "Uusi osoitekirja...";
 "Subscribe to an Addressbook..." = "Tilaa osoitekirja...";
 "Remove the selected Addressbook" = "Poista valittu osoitekirja";
+"Subscribe to a shared folder" = "Tilaa jaettu hakemisto";
+"Search User" = "Etsi käyttäjää";
 "Name of the Address Book" = "Osoitekirjan nimi";
 "Are you sure you want to delete the selected address book?"
 = "Haluatko varmasti poistaa valitun osoitekirjan?";
@@ -171,3 +187,42 @@
 "Links to this Address Book" = "Linkit tähän osoitekirjaan";
 "Authenticated User Access" = "Kirjautuneiden käyttäjien pääsy";
 "CardDAV URL" = "CardDAV URL";
+"Options" = "Asetukset";
+"Rename" = "Nimeä uudelleen";
+"Subscriptions" = "Tilaukset";
+"Global Addressbooks" = "Julkiset osoitekirjat";
+"Search" = "Etsi";
+"Sort" = "Järjestä";
+"Descending Order" = "Laskeva järjestys";
+"Back" = "Takaisin";
+"Select All" = "Valitse kaikki";
+"Copy contacts" = "Kopioi yhteystiedot";
+"More messages options" = "Lisää viestiasetuksia";
+"New Contact" = "Uusi yhteystieto";
+"Close" = "Sulje";
+"More contact options" = "Lisää yhteystietoasetuksia";
+"Organization Unit" = "Osasto";
+"Add Organizational Unit" = "Lisää osasto";
+"Type" = "Tyyppi";
+"Email Address" = "Sähköpostiosoite";
+"New Email Address" = "Uusi sähköpostiosoite";
+"New Phone Number" = "Uusi puhelinnumero";
+"URL" = "URL";
+"New URL" = "Uusi URL";
+"street" = "katuosoite";
+"Postoffice" = "Postitoimisto";
+"Region" = "Alue";
+"Postal Code" = "Postinumero";
+"New Address" = "Uusi osoite";
+"Reset" = "Tyhjennä";
+"Description" = "Kuvaus";
+"Add Member" = "Lisää jäsen";
+"Subscribe" = "Tilaa";
+"Add Birthday" = "Lisää syntymäpäivä";
+"Import" = "Tuo";
+"More options" = "Lisää valintoja";
+"Role" = "Rooli";
+"Add Screen Name" = "Lisää näyttönimi";
+"Synchronization" = "Synkronointi";
+"Synchronize" = "Synkronoi";
+"Successfully subscribed to address book" = "Osoitekirjan tilaus onnistui";

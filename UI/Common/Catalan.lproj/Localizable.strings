@@ -11,6 +11,7 @@
 "Preferences" = "Preferències";
 "Administration" = "Administració";
 "Disconnect" = "Tancar sessió";
+"Toggle Menu" = "Canviar menú";
 "Right Administration" = "Administració de permisos";
 "Log Console (dev.)" = "Registre d'activitat";
 "User" = "Usuari";
@@ -74,6 +75,7 @@
 "30 minutes" = "30 minuts";
 "45 minutes" = "45 minuts";
 "1 hour" = "1 hora";
+"1 day" = "1 dia";
 /* common buttons */
 "OK" = "D'acord";
 "Cancel" = "Cancel·lar";
@@ -82,7 +84,7 @@
 /* alarms */
 "Reminder" = "Recordatori";
 "Start" = "Inici";
-"Due Date" = "Data límit";
+"Due Date" = "Data de venciment";
 "Location" = "Lloc";
 /* mail labels */
 "Important" = "Important";
@@ -97,3 +99,10 @@
 "a2_Thursday" = "dj";
 "a2_Friday" = "dv";
 "a2_Saturday" = "ds";
+"Access Rights" = "Drets d'accés";
+"Add User" = "Afegir usuari";
+"Loading" = "Carregant";
+"No such user." = "No existeix aquest usuari";
+"You cannot (un)subscribe to a folder that you own!" = "No es pot (des)subscriure a una carpeta pròpia!";
+"SOGo" = "SOGo";
+"Modules" = "Mòduls";

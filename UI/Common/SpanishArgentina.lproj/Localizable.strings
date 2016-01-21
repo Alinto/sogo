@@ -11,6 +11,7 @@
 "Preferences" = "Preferencias";
 "Administration" = "Administración";
 "Disconnect" = "Cerrar sesión";
+"Toggle Menu" = "Colapsar menú";
 "Right Administration" = "Administración de permisos";
 "Log Console (dev.)" = "Consola de registro de actividad (dev.)";
 "User" = "Usuario";
@@ -26,7 +27,7 @@
 "Any Authenticated User" = "Cualquier usuario autenticado";
 "Public Access" = "Acceso Público";
 "Any user not listed above" = "Cualquier usuario no listado arriba";
-"Anybody accessing this resource from the public area" = "Cualquier acceso a este recurso desde el área pública";
+"Anybody accessing this resource from the public area" = "Cualquier que acceda a este recurso desde el área pública";
 "Sorry, the user rights can not be configured for that object." = "Lo sentimos, los permisos de este usuario no pueden ser configurados para este objeto.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Cualquier usuario con una cuenta en el sistema tendrá acceso a su buzón de correo \"%{0}\".  ¿Está seguro de querer dar acceso a cualquier usuario en el sistema?";
@@ -98,3 +99,10 @@
 "a2_Thursday" = "Ju";
 "a2_Friday" = "Vi";
 "a2_Saturday" = "Sá";
+"Access Rights" = "Permisos de acceso";
+"Add User" = "Agregar usuario";
+"Loading" = "Cargando";
+"No such user." = "No existe el usuario";
+"You cannot (un)subscribe to a folder that you own!" = "¡No se puede suscribir o desuscribir a una carpeta que le pertenece!";
+"SOGo" = "SOGo";
+"Modules" = "Módulos";
