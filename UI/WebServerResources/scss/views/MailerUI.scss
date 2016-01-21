@@ -103,15 +103,17 @@ md-sidenav {
 .msg-attachment-image,
 .msg-attachment-link {
   flex: 0 0 100%;
-  @include from(md) {
+  @include from(sm) {
     flex: 0 0 50%;
   }
-  @include from(lg) {
+  @include from(md) {
     flex: 0 0 33%;
   }
-  > div {
+  .md-card-image {
+    // Make sure the image stays proportional
     max-width: 100%;
-    width: 100%;
+    min-height: 100%;
+    height: auto;
   }
 }
 .popup {

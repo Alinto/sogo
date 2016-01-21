@@ -94,8 +94,12 @@ $detailView-width: grid-step(8) !global;
   z-index: $z-index-view;
   overflow: hidden;
 
-  md-card {
-    overflow: hidden;
+  .sg-face, .sg-back {
+    > md-card {
+      overflow: hidden;
+      min-width: 100%;
+      min-height: 0;
+    }
   }
 
   // On small screens, the view slides from the right and takes all screen place.
