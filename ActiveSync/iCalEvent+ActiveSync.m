@@ -57,6 +57,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/iCalRepeatableEntityObject+SOGo.h>
+#import <Appointments/SOGoAppointmentObject.h>
 
 #include "iCalAlarm+ActiveSync.h"
 #include "iCalRecurrenceRule+ActiveSync.h"
@@ -810,7 +811,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       // Windows phones sens sometimes an empty Attendees tag.
       // We check it's an array before processing it.
-      if ((o = [theValues objectForKey: @"Attendees"])&& [o isKindOfClass: [NSArray class]])
+      if ((o = [theValues objectForKey: @"Attendees"]) && [o isKindOfClass: [NSArray class]])
         {
           NSMutableArray *attendees;
           NSDictionary *attendee;
@@ -856,6 +857,38 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           
           [self setAttendees: attendees];
         }
+    }
+}
+
+- (void) changeParticipationStatus: (NSDictionary *) theValues
+                         inContext: (WOContext *) context
+                         component: (id) component
+{
+  NSString *status;
+  id o;
+
+  // See: https://msdn.microsoft.com/en-us/library/ee202290(v=exchg.80).aspx
+  //
+  // 0 == Free
+  // 1 == Tentative
+  // 2 == Busy
+  // 3 == Out of Office
+  // 4 == Working elsehwere
+  //
+  if ((o = [theValues objectForKey: @"BusyStatus"]))
+    {
+      // We translate >= 2 into ACCEPTED
+      if ([o intValue] == 0)
+        status = @"NEEDS-ACTION";
+      else if ([o intValue] >= 2)
+        status = @"ACCEPTED";
+      else
+        status = @"TENTATIVE";
+
+      // There's no delegate in EAS
+      [(SOGoAppointmentObject *) component changeParticipationStatus: status
+                                                        withDelegate: nil
+                                                               alarm: nil];
     }
 }
 

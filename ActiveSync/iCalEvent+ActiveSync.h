@@ -41,7 +41,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) context;
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
                     inContext: (WOContext *) context;
-
+- (void) changeParticipationStatus: (NSDictionary *) theValues
+                         inContext: (WOContext *) context
+                         component: (id) component;
 @end
 
 #endif

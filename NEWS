@@ -1,4 +1,13 @@
-2.3.6 (2016-01-XX)
+2.3.7 (2016-01-XX)
+------------------
+
+New features
+ - new junk/not junk capability with generic SMTP integration
+
+Buf fixes
+ - now always generate invitation updates when using EAS
+
+2.3.6 (2016-01-18)
 ------------------
 
 New features
