@@ -361,4 +361,9 @@
   return [self boolForKey: @"SOGoNotifyOnExternalModifications"];
 }
 
+- (NSDictionary *) mailJunkSettings
+{
+  return [self objectForKey: @"SOGoMailJunkSettings"];
+}
+
 @end

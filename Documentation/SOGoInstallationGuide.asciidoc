@@ -1630,6 +1630,16 @@ Defaults to `Trash` when unset.
 Use a `/`  as a hierarchy separator if referring to an IMAP subfolder.
 For example: `INBOX/Trash`.
 
+|U |SOGoJunkFolderName
+|Parameter used to set the IMAP folder name used to store junk
+messages.
+
+Defaults to `Junk` when unset.
+
+Use a `/`  as a hierarchy separator if referring to an IMAP subfolder.
+For example: `INBOX/Junk`. Also see the SOGoMailJunkSettings for
+more options regarding junk/not-junk actions.
+
 |D |SOGoIMAPCASServiceName
 |Parameter used to set the CAS service name (URL) of the imap service.
 This is useful if SOGo is connecting to the IMAP service through a
@@ -2084,7 +2094,17 @@ Defaults to `%{FolderName} (%{UserName} <%{Email}>)` when unset.
 the template named `UIxAdditionalPreferences.wox`. This template should
 be put under `~sogo/GNUstep/Library/SOGo/Templates/PreferencesUI/`.
 
-Defaults to `NO` when unset.
+|D |SOGoMailJunkSettings
+|Parameter used to enable email junk settings. The value is a dictionary
+and the follow keys are supported: `vendor` (which must be set to "generic"
+for now), `junkEmailAddress` which sets the email address to whom SOGo will
+send junk mails to, `notJunkEmailAddress` which sets the email address to
+whome SOGo will send non-junk mails to and `limit`, which is an integer value
+and sets the maximum number of mails that will be attached to a
+junk/not junk report sent by SOGo. Example: `SOGoMailJunkSettings = {
+vendor = "generic"; junkEmailAddress = "spam@foo.com";
+notJunkEmailAddress = "ham@foo.com"; limit = 10;
+};`
 |=======================================================================
 
 SOGo Configuration Summary
@@ -2113,6 +2133,7 @@ like this:
     SOGoDraftsFolderName = Drafts;
     SOGoSentFolderName = Sent;
     SOGoTrashFolderName = Trash;
+    SOGoJunkFolderName = Junk;
     SOGoMailingMechanism = smtp;
     SOGoSMTPServer = 127.0.0.1;
     SOGoUserSources = (

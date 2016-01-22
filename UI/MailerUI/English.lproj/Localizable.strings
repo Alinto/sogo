@@ -140,6 +140,7 @@
 "TrashFolderName"  = "Trash";
 "InboxFolderName"  = "Inbox";
 "DraftsFolderName" = "Drafts";
+"JunkFolderName" = "Junk";
 "SieveFolderName"  = "Filters";
 "Folders"          = "Folders"; /* title line */
 /* MailMoveToPopUp */
@@ -171,6 +172,7 @@
 "Sent Messages" = "Sent Messages";
 "Drafts" = "Drafts";
 "Deleted Messages" = "Deleted Messages";
+"Junk Messages" = "Junk Messages";
 /* Message list popup menu */
 "Open Message In New Window" = "Open Message In New Window";
 "Reply to Sender Only" = "Reply to Sender Only";
@@ -186,6 +188,8 @@
 "Print..." = "Print...";
 "Delete Message" = "Delete Message";
 "Delete Selected Messages" = "Delete Selected Messages";
+"Mark the selected messages as junk" = "Mark the selected messages as junk";
+"Mark the selected messages as not junk" = "Mark the selected messages as not junk";
 /* Number of selected messages in list */
 "selected" = "selected";
 "This Folder" = "This Folder";

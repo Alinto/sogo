@@ -797,6 +797,8 @@
                 forKey: @"Sent"];
   [mailboxes setObject: [_defaults trashFolderName]
                 forKey: @"Trash"];
+  [mailboxes setObject: [_defaults junkFolderName]
+                forKey: @"Junk"];
   [mailAccount setObject: mailboxes forKey: @"mailboxes"];
   [mailboxes release];
 

@@ -35,6 +35,8 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSFileManager+Extensions.h>
+#import <NGExtensions/NGHashMap.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
 
 #import <DOM/DOMElement.h>
 #import <DOM/DOMProtocols.h>
@@ -42,12 +44,20 @@
 
 #import <EOControl/EOSortOrdering.h>
 
+#import <NGMime/NGMimeBodyPart.h>
+#import <NGMime/NGMimeFileData.h>
+#import <NGMime/NGMimeMultipartBody.h>
+#import <NGMail/NGMimeMessage.h>
+#import <NGMail/NGMimeMessageGenerator.h>
+
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NSString+Imap4.h>
 
 #import <SOGo/DOMNode+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSCalendarDate+SOGo.h>
+#import <SOGo/SOGoDAVAuthenticator.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/NSString+DAV.h>
@@ -60,6 +70,7 @@
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/WOResponse+SOGo.h>
+#import <SOGo/SOGoMailer.h>
 
 #import "EOQualifier+MailDAV.h"
 #import "SOGoMailObject.h"
@@ -67,6 +78,8 @@
 #import "SOGoMailManager.h"
 #import "SOGoMailFolder.h"
 #import "SOGoTrashFolder.h"
+#import "SOGoMailObject+Draft.h"
+
 
 #define XMLNS_INVERSEDAV @"urn:inverse:params:xml:ns:inverse-dav"
 
@@ -781,6 +794,115 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
                                    userInfo: nil];
 
   return result;
+}
+
+- (WOResponse *) markMessagesAsJunkOrNotJunk: (NSArray *) uids
+                                        junk: (BOOL) isJunk
+{
+  NSDictionary *junkSettings;
+  NSString *recipient;
+  NSException *error;
+  unsigned int limit;
+
+  junkSettings = [[[context activeUser] domainDefaults] mailJunkSettings];
+  error = nil;
+
+  if ([[junkSettings objectForKey: @"vendor"] caseInsensitiveCompare: @"generic"] == NSOrderedSame)
+    {
+      if (isJunk)
+        recipient = [junkSettings objectForKey: @"junkEmailAddress"];
+      else
+        recipient = [junkSettings objectForKey: @"notJunkEmailAddress"];
+
+      limit = [[junkSettings objectForKey: @"limit"] intValue];
+
+      // If no limit is set, we only attach one mail at the time
+      // to reports sent by SOGo.
+      if (!limit)
+        limit = 1;
+
+      if ([recipient length])
+        {
+          NGMimeMessage *messageToSend;
+          SOGoMailObject *mailObject;
+          NGMimeBodyPart *bodyPart;
+          NGMutableHashMap *map;
+          NGMimeFileData *fdata;
+          NSArray *identities;
+          NSData *data;
+          id body;
+
+          int i;
+
+          identities = [[self mailAccountFolder] identities];
+
+          for (i = 0; i < [uids count]; i++)
+            {
+              // If we are starting or reaching the limit, we create
+              // a new mail message
+              if ((i%limit) == 0)
+                {
+                  map = [NGMutableHashMap hashMapWithCapacity: 5];
+
+#warning SOPE is just plain stupid here - if you change the case of keys, it will break the encoding of fields
+                  [map setObject: @"multipart/mixed" forKey: @"content-type"];
+                  [map setObject: @"1.0" forKey: @"MIME-Version"];
+                  [map setObject: [[identities objectAtIndex: 0] objectForKey: @"email"] forKey: @"from"];
+                  [map setObject: recipient forKey: @"to"];
+                  [map setObject: [[NSCalendarDate date] rfc822DateString]  forKey: @"date"];
+
+                  messageToSend = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
+                  body = [[[NGMimeMultipartBody alloc] initWithPart: messageToSend] autorelease];
+                }
+
+              mailObject = [self lookupName: [uids objectAtIndex: i]  inContext: context  acquire: NO];
+
+              // We skip emails that might have disappeared before we were able
+              // to perform the action
+              if ([mailObject isKindOfClass: [NSException class]])
+                continue;
+
+              map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
+              [map setObject: @"message/rfc822" forKey: @"content-type"];
+              [map setObject: @"8bit" forKey: @"content-transfer-encoding"];
+              [map addObject: [NSString stringWithFormat: @"attachment; filename=\"%@\"", [mailObject filenameForForward]] forKey: @"content-disposition"];
+              bodyPart = [[[NGMimeBodyPart alloc] initWithHeader: map] autorelease];
+
+              data = [mailObject content];
+              fdata = [[NGMimeFileData alloc] initWithBytes: [data bytes]  length: [data length]];
+
+              [bodyPart setBody: fdata];
+              RELEASE(fdata);
+              [body addBodyPart: bodyPart];
+
+              // We reached the limit or the end of the array
+              if ((i%limit) == 0 || i == [uids count]-1)
+                {
+                  id <SOGoAuthenticator> authenticator;
+                  NGMimeMessageGenerator *generator;
+
+                  [messageToSend setBody: body];
+
+                  generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
+                  data = [generator generateMimeFromPart: messageToSend];
+
+                  authenticator = [SOGoDAVAuthenticator sharedSOGoDAVAuthenticator];
+
+                  error = [[SOGoMailer mailerWithDomainDefaults: [[context activeUser] domainDefaults]]
+                            sendMailData: data
+                            toRecipients: [NSArray arrayWithObject: recipient]
+                                  sender: [[identities objectAtIndex: 0] objectForKey: @"email"]
+                            withAuthenticator: authenticator
+                               inContext: context];
+
+                  if (error)
+                    break;
+                }
+            }
+        }
+    }
+
+  return error;
 }
 
 - (NSDictionary *) statusForFlags: (NSArray *) flags
@@ -1929,6 +2051,11 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
     }
 
   return response;
+}
+
+- (NSString *) className
+{
+  return NSStringFromClass([self class]);
 }
 
 - (id) PUTAction: (WOContext *) _ctx

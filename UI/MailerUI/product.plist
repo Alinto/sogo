@@ -167,6 +167,21 @@
           actionClass = "UIxMailFolderActions";
           actionName = "setAsTrashFolder";
         };
+        setAsJunkFolder = {
+          protectedBy = "View";
+          actionClass = "UIxMailFolderActions";
+          actionName = "setAsJunkFolder";
+        };
+        markMessagesAsJunk = {
+          protectedBy = "View";
+          actionClass = "UIxMailFolderActions";
+          actionName = "markMessagesAsJunk";
+        };
+        markMessagesAsNotJunk = {
+          protectedBy = "View";
+          actionClass = "UIxMailFolderActions";
+          actionName = "markMessagesAsNotJunk";
+        };
         userRights = {
           protectedBy = "ReadAcls";
           pageName    = "UIxMailUserRightsEditor";

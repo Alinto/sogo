@@ -67,6 +67,7 @@
     SOGoSentFolderName = "Sent";
     SOGoDraftsFolderName = "Drafts";
     SOGoTrashFolderName = "Trash";
+    SOGoJunkFolderName = "Junk";
 
     SOGoMailAutoSave = "5";
 

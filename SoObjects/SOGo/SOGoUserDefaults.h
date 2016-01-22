@@ -108,6 +108,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setTrashFolderName: (NSString *) newValue;
 - (NSString *) trashFolderName;
 
+- (void) setJunkFolderName: (NSString *) newValue;
+- (NSString *) junkFolderName;
+
 - (void) setFirstDayOfWeek: (int) newValue;
 - (int) firstDayOfWeek;
 

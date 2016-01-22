@@ -1,8 +1,7 @@
 /*
-  Copyright (C) 2005 SKYRIX Software AG
   Copyright (C) 2007-2016 Inverse inc.
 
-  This file is part of SOGo
+  This file is part of SOGo.
 
   SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -20,12 +19,8 @@
   02111-1307, USA.
 */
 
-#ifndef __Mailer_SOGoTrashFolder_H__
-#define __Mailer_SOGoTrashFolder_H__
+#import "SOGoJunkFolder.h"
 
-#import "SOGoMailFolder.h"
+@implementation SOGoJunkFolder
 
-@interface SOGoTrashFolder : SOGoSpecialMailFolder
-@end
-
-#endif /* __Mailer_SOGoTrashFolder_H__ */
+@end /* SOGoJunkFolder */

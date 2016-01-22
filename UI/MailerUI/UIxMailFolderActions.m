@@ -1,6 +1,6 @@
 /* UIxMailFolderActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2013 Inverse inc.
+ * Copyright (C) 2007-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -544,6 +544,11 @@
   return [self _setFolderPurpose: @"Trash"];
 }
 
+- (WOResponse *) setAsJunkFolderAction
+{
+  return [self _setFolderPurpose: @"Junk"];
+}
+
 - (WOResponse *) expungeAction 
 {
   NSException *error;
@@ -778,5 +783,36 @@
   return response;
 }
 
+- (WOResponse *) _markMessagesAsJunkOrNotJunk: (BOOL) isJunk
+{
+  NSDictionary *content;
+  WOResponse *response;
+  WORequest *request;
+  SOGoMailFolder *co;
+  NSArray *uids;
+
+  request = [context request];
+  content = [[request contentAsString] objectFromJSONString];
+  uids = [NSArray arrayWithArray: [content objectForKey:@"uids"]];
+
+  co = [self clientObject];
+
+  if ([co markMessagesAsJunkOrNotJunk: uids  junk: isJunk])
+    response = [self responseWithStatus: 500];
+  else
+    response = [self responseWith204];
+
+  return response;
+}
+
+- (WOResponse *) markMessagesAsJunkAction
+{
+  return [self _markMessagesAsJunkOrNotJunk: YES];
+}
+
+- (WOResponse *) markMessagesAsNotJunkAction
+{
+  return [self _markMessagesAsJunkOrNotJunk: NO];
+}
 
 @end

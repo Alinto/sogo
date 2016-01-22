@@ -77,6 +77,9 @@
 		 toFolder: (NSString *) destinationFolder
 		inContext: (id) localContext;
 
+- (WOResponse *) markMessagesAsJunkOrNotJunk: (NSArray *) uids
+                                        junk: (BOOL) isJunk;
+
 - (NSException *) postData: (NSData *) _data flags: (id) _flags;
 
 - (void) markForExpunge;
@@ -119,6 +122,8 @@
 
 - (id) appendMessage: (NSData *) message
              usingId: (int *) imap4id;
+
+- (NSString *) className;
 
 @end
 
