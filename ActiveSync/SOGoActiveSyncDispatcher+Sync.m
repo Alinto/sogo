@@ -78,6 +78,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoCacheGCSObject.h>
 
+#import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
@@ -473,8 +474,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             case ActiveSyncTaskFolder:
               {
                 o = [sogoObject component: NO  secure: NO];
-                [o takeActiveSyncValues: allChanges  inContext: context];
-                [sogoObject saveComponent: o];
+
+                if (theFolderType == ActiveSyncEventFolder &&
+                    [(iCalEvent *)o userIsAttendee: [context activeUser]])
+                  {
+                    [o changeParticipationStatus: allChanges  inContext: context  component: sogoObject];
+                  }
+                else
+                  {
+                    [o takeActiveSyncValues: allChanges  inContext: context];
+                    [sogoObject saveComponent: o];
+                  }
 
                 if ([syncCache objectForKey: serverId])
                   [syncCache setObject: [NSString stringWithFormat:@"%f", [[sogoObject lastModified] timeIntervalSince1970]] forKey: serverId];
@@ -911,35 +921,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 if (theFolderType == ActiveSyncContactFolder)
                   componentObject = [sogoObject vCard];
                 else
-                  componentObject = [sogoObject component: NO  secure: NO];                
-                
-                //
-                // We do NOT synchronize NEW events that are in fact, invitations
-                // to events. This is due to the fact that Outlook 2013 creates
-                // "phantom" events in the calendar that are mapped to invitations mails.
-                // If we synchronize these events too, it'll interfere with the whole thing
-                // and prevent Outlook from properly calling MeetingResponse.
-                //
-                if (!updated && theFolderType == ActiveSyncEventFolder)
-                  {
-                    iCalPersonPartStat partstat;
-                    iCalPerson *attendee;
-                    NSString *email;
-
-                    email = [[[context activeUser] allEmails] objectAtIndex: 0];
-                    attendee = [componentObject findAttendeeWithEmail: email];
-
-                    if (attendee)
-                      {
-                        partstat = [attendee participationStatus];
-                        
-                        if (partstat == iCalPersonPartStatNeedsAction)
-                          {
-                            DESTROY(pool);
-                            continue;
-                          }
-                      }
-                  }                
+                  componentObject = [sogoObject component: NO  secure: NO];
 
                 [syncCache setObject: [component objectForKey: @"c_lastmodified"] forKey: uid];
 
