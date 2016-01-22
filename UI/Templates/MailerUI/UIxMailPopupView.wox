@@ -12,6 +12,7 @@
     <script type="text/javascript">
       var messageName = '<var:string value="clientObject.relativeImap4Name"/>';
       var mailboxName = '/<var:string value="clientObject.container.container.nameInContainer"/>/<var:string value="clientObject.container.nameInContainer"/>';
+      var mailboxType = '<var:string value="clientObject.container.className"/>';
     </script>
     <var:component className="UIxMailView" />
     <div class="menu" id="addressMenu">

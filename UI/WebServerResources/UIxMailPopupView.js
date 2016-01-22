@@ -23,6 +23,20 @@ function initPopupMailer(event) {
     var td = $("subject");
     if (td)
         document.title = td.allTextContent();
+
+    var button = $$(".tbicon_junk").first();
+    button.stopObserving("click");
+
+    if (window.mailboxType == "SOGoJunkFolder") {
+        button.title = "Mark the selected messages as not junk";
+        button.select('span').first().childNodes[3].nodeValue = "Not junk";
+    }
+    else {
+        button.title = "Mark the selected messages as junk";
+        button.select('span').first().childNodes[3].nodeValue = "Junk";
+    }
+
+    button.on("click", window.opener.onMarkOrUnmarkMessagesAsJunk.bind(button, (window.mailboxType == "SOGoJunkFolder")));
 }
 
 function onICalendarButtonClick(event) {

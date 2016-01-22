@@ -4,11 +4,13 @@ var MailerUIdTreeExtension = {
                    inbox: "tbtv_inbox_17x17.png",
                    sent: "tbtv_sent_17x17.png",
                    draft: "tbtv_drafts_17x17.png",
-                   trash: "tbtv_trash_17x17.png" },
+                   trash: "tbtv_trash_17x17.png",
+                   junk: "tb-mail-junk-flat-17x17.png" },
     folderNames: { inbox: _("InboxFolderName"),
                    sent: _("SentFolderName"),
                    draft: _("DraftsFolderName"),
-                   trash: _("TrashFolderName") },
+                   trash: _("TrashFolderName"),
+                   junk: _("JunkFolderName") },
     _addFolderNode: function (parent, name, fullName, type, unseen) {
         var icon = this.folderIcons[type];
         if (icon)

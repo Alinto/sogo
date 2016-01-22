@@ -117,6 +117,7 @@
       <li><var:string label:value="Sent Messages" /></li>
       <li><var:string label:value="Drafts" /></li>
       <li><var:string label:value="Deleted Messages" /></li>
+      <li><var:string label:value="Junk Messages" /></li>
     </ul>
   </div>
   
