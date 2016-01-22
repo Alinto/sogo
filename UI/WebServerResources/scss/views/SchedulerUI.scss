@@ -366,13 +366,14 @@ $block_radius: 3px;
 
     .ghostStartHour,
     .ghostEndHour {
-      position: absolute;
-      width: 100%;
-      vertical-align: baseline;
+      color: $colorGrey900;
+      font-weight: $sg-font-light;
       height: 14px;
       left: 0px;
-      color: #222;
+      position: absolute;
       text-align: center;
+      vertical-align: baseline;
+      width: 100%;
     }
 
     .ghostStartHour {

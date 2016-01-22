@@ -133,7 +133,7 @@
           newData = {
             type: 'appointment',
             pid: calendarData? calendarData.pid : Calendar.$defaultCalendar(),
-            summary: l('New Event'),
+            //summary: l('New Event'),
             startDate: startDate,
             isAllDay: isHourCell? 0 : 1
           };

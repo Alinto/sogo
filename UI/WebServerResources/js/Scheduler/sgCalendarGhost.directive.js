@@ -103,9 +103,6 @@
           if (duration > maxDuration)
             duration = maxDuration;
 
-          delete scope.startHour;
-          delete scope.endHour;
-
           if (currentDay > -1 &&                                 // pointer is inside viewport
               ((calendarNumber < 0 &&                            // day is not associated to a calendar
                 currentDay == calendarDayCtrl.dayNumber) ||      // pointer is inside ghost's day
@@ -118,7 +115,7 @@
             showGhost = true;
             if (!isRelative)  {
               // Show start hour and set the vertical position
-              scope.startHour = getStartTime(start);
+              scope.block.startHour = getStartTime(start);
               wasOtherBlock = parseInt(iElement.css('top')) === 0;
               if (wasOtherBlock)
                 iElement.addClass('sg-event--notransition');
@@ -176,7 +173,7 @@
             }
             else {
               // Set the end date
-              scope.endHour = getEndTime(start, duration);
+              scope.block.endHour = getEndTime(start, duration);
             }
           }
         }

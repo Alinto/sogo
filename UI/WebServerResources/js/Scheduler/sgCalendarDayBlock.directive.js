@@ -55,6 +55,8 @@
         '      </div>',
         '    </div>',
         '  </div>',
+        '  <div class="ghostStartHour" ng-if="block.startHour">{{ block.startHour }}</div>',
+        '  <div class="ghostEndHour" ng-if="block.endHour">{{ block.endHour }}</div>',
         '</div>'
       ].join(''),
       link: link

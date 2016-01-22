@@ -86,7 +86,7 @@
   /**
    * @ngInject
    */
-  stateEventsBlocks.$inject = ['$stateParams', 'Component', 'Calendar', ];
+  stateEventsBlocks.$inject = ['$stateParams', 'Component', 'Calendar'];
   function stateEventsBlocks($stateParams, Component, Calendar) {
     // See CalendarController.js
     return Component.$eventsBlocksForView($stateParams.view, $stateParams.day.asDate())
