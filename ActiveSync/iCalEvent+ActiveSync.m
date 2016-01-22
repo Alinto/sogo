@@ -238,6 +238,34 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if (![self recurrenceId] && [[self uid] length])
     [s appendFormat: @"<UID xmlns=\"Calendar:\">%@</UID>", [[self uid] activeSyncRepresentationInContext: context]];
 
+  // Recurrence rules
+  if ([self isRecurrent])
+    [s appendString: [[[self recurrenceRules] lastObject] activeSyncRepresentationInContext: context]];
+
+  // Comment
+  o = [self comment];
+  //if (![self recurrenceId] && [o length])
+  if ([o length])
+    {
+      // It is very important here to NOT set <Truncated>0</Truncated> in the response,
+      // otherwise it'll prevent WP8 phones from sync'ing. See #3028 for details.
+      o = [o activeSyncRepresentationInContext: context];
+
+      if ([[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"2.5"])
+        {
+          [s appendFormat: @"<Body xmlns=\"Calendar:\">%@</Body>", o];
+          [s appendString: @"<BodyTruncated xmlns=\"Calendar:\">0</BodyTruncated>"];
+        }
+      else
+        {
+          [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
+          [s appendFormat: @"<Type>%d</Type>", 1];
+          [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>",  (int)[o length]];
+          [s appendFormat: @"<Data>%@</Data>", o];
+          [s appendString: @"</Body>"];
+       }
+    }
+
   // Sensitivity
   if ([[self accessClass] isEqualToString: @"PRIVATE"])
     v = 2;
@@ -270,7 +298,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [s appendString: [alarm activeSyncRepresentationInContext: context]];
     }
 
-  // Recurrence rules
+  // Exceptions
   if ([self isRecurrent])
     {
       NSMutableArray *components, *exdates;
@@ -278,8 +306,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       NSString *recurrence_id;
 
       unsigned int count, max, i;
-
-      [s appendString: [[[self recurrenceRules] lastObject] activeSyncRepresentationInContext: context]];
 
       components = [NSMutableArray arrayWithArray: [[self parent] events]];
       max = [components count];
@@ -341,29 +367,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
             [s appendString: @"</Exceptions>"];
         }
-    }
-
-  // Comment
-  o = [self comment];
-  if ([o length])
-    {
-      // It is very important here to NOT set <Truncated>0</Truncated> in the response,
-      // otherwise it'll prevent WP8 phones from sync'ing. See #3028 for details.
-      o = [o activeSyncRepresentationInContext: context];
-
-      if ([self recurrenceId] || [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"2.5"])
-        {
-          [s appendFormat: @"<Body xmlns=\"Calendar:\">%@</Body>", o];
-          [s appendString: @"<BodyTruncated xmlns=\"Calendar:\">0</BodyTruncated>"];
-        }
-      else
-        {
-          [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
-          [s appendFormat: @"<Type>%d</Type>", 1];
-          [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>",  (int)[o length]];
-          [s appendFormat: @"<Data>%@</Data>", o];
-          [s appendString: @"</Body>"];
-       }
     }
 
   if (![self recurrenceId])
