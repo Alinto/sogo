@@ -458,6 +458,17 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
              stringByEncodingImap4FolderName];
 }
 
+- (void) setJunkFolderName: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoJunkFolderName"];
+}
+
+- (NSString *) junkFolderName
+{
+  return [[self stringForKey: @"SOGoJunkFolderName"]
+             stringByEncodingImap4FolderName];
+}
+
 - (void) setFirstDayOfWeek: (int) newValue
 {
   [self setInteger: newValue forKey: @"SOGoFirstDayOfWeek"];
