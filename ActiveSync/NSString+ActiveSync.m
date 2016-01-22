@@ -75,7 +75,7 @@ static NSArray *easCommandParameters = nil;
         escapeCount++;
         break;
       default:
-        if (chars[i] > 127)
+        if (chars[i] < 0x20 || chars[i] > 127)
           escapeCount++;
         break;
     }
