@@ -291,34 +291,35 @@ static int cssEscapingCount;
 //
 - (NSString *) safeString
 {
+  NSData *data;
   NSString *s;
 
-  unichar *buf, *start, c;
+  const wchar_t *buf;
+  wchar_t *start, c;
   int len, i, j;
 
-  len = [self length];
-  start = buf = (unichar *)malloc(len*sizeof(unichar));
-  [self getCharacters: buf range: NSMakeRange(0, len)];
+  data = [self dataUsingEncoding: NSUTF32LittleEndianStringEncoding];
+  len = [data length];
+  buf = [data bytes];
+  start = (wchar_t *)calloc(len, sizeof(wchar_t));
 
-  for (i = 0, j = 0; i < len; i++)
+  for (i = 0, j = 0; i < len/4; i++)
     {
-      c = *buf;
+      c = buf[i];
 
       if (c == 0x9 ||
           c == 0xA ||
           c == 0xD ||
           (c >= 0x20 && c <= 0xD7FF) ||
           (c >= 0xE000 && c <= 0xFFFD) ||
-          (c >= (unichar)0x10000 && c <= (unichar)0x10FFFF))
+          (c >= (wchar_t)0x10000 && c <= (wchar_t)0x10FFFF))
         {
-          *(start+j) = c;
+          start[j] = c;
           j++;
         }
-
-      buf++;
     }
 
-  s = [[NSString alloc] initWithCharactersNoCopy: start  length: j  freeWhenDone: YES];
+  s = [[NSString alloc] initWithBytesNoCopy: start  length: j*sizeof(wchar_t)  encoding: NSUTF32LittleEndianStringEncoding  freeWhenDone: YES];
 
   return AUTORELEASE(s);
 }
