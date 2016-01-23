@@ -187,7 +187,10 @@
 
   // If no filters are provided, we return everything.
   if (![filters count])
-      [filters addObject: [NSDictionary dictionaryWithObject: @"."  forKey: @"mail"]];
+  {
+      [filters addObject: [NSDictionary dictionaryWithObject: @"." forKey: @"email"]];
+      [filters addObject: [NSDictionary dictionaryWithObject: @"%" forKey: @"name"]];
+  }
 
   return filters;
 }
