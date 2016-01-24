@@ -2026,7 +2026,7 @@ ReservedBlockEE2Size: 00 00 00 00
   /* [MS-OXOCAL] 3.1.5.5.1: This property is used in floating (all-day) events,
      specified in floating time, to convert the start date from UTC to the user's
      time zone */
-  if ([event isAllDay] | [event isRecurrent])
+  if ([event isAllDay] || [event isRecurrent])
     {
       /* [MS-OXOCAL] 2.2.1.42: This property can only have the E flag set in the
          TimeZoneDefinition struct */
