@@ -2105,6 +2105,10 @@ junk/not junk report sent by SOGo. Example: `SOGoMailJunkSettings = {
 vendor = "generic"; junkEmailAddress = "spam@foo.com";
 notJunkEmailAddress = "ham@foo.com"; limit = 10;
 };`
+
+|D |SOGoMailKeepDraftsAfterSend
+|Parameter used to keep mails in the drafts folder once they have been
+sent by SOGo. Defaults to `NO` when unset.
 |=======================================================================
 
 SOGo Configuration Summary
