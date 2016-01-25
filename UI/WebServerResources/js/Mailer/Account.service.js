@@ -269,7 +269,6 @@
     return Account.$$resource.fetch(this.id.toString(), 'compose').then(function(data) {
       Account.$log.debug('New message (compose): ' + JSON.stringify(data, undefined, 2));
       var message = new Account.$Message(data.accountId, _this.$getMailboxByPath(data.mailboxPath), data);
-      message.isNew = true;
       return message;
     }).then(function(message) {
       // Fetch draft initial data
