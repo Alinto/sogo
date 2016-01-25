@@ -6,6 +6,7 @@ New features
 
 Enhancements
  - newly created folders using EAS are always sync'ed by default (#3454)
+ - added Croatian (hr_HR) translation - thanks to Jens Riecken
 
 Bug fixes
  - now always generate invitation updates when using EAS
