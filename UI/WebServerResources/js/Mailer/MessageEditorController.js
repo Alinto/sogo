@@ -133,9 +133,11 @@
     }
 
     function cancel() {
-      // TODO: delete draft?
       if (vm.autosave)
         $timeout.cancel(vm.autosave);
+
+      if (vm.message.isNew && vm.message.attachmentAttrs)
+        vm.message.$mailbox.$deleteMessages([vm.message]);
 
       $mdDialog.cancel();
     }

@@ -566,6 +566,7 @@
       Message.$log.debug('save = ' + JSON.stringify(response, undefined, 2));
       _this.$setUID(response.uid);
       _this.$reload({asDraft: false}); // fetch a new viewable version of the message
+      _this.isNew = false;
     });
   };
 
