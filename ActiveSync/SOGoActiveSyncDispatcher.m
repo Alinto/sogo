@@ -403,17 +403,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         SOGoAppointmentFolders *appointmentFolders;
         SOGoCacheGCSObject *o;
         NSString *key;
+        id newFolder;
         
         nameInContainer = nil;
         
         appointmentFolders = [userFolder privateCalendars: @"Calendar" inContext: context];
         [appointmentFolders newFolderWithName: displayName
                               nameInContainer: &nameInContainer];
+
+        newFolder = [appointmentFolders lookupName: nameInContainer
+                                         inContext: context
+                                           acquire: NO];
+        [newFolder setSynchronize: YES];
+
         if (type == 13)
           nameInContainer = [NSString stringWithFormat: @"vevent/%@", nameInContainer];
         else
           nameInContainer = [NSString stringWithFormat: @"vtodo/%@", nameInContainer];
-        
+
         key = [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], nameInContainer ];
         o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
         [o setObjectType: ActiveSyncFolderCacheObject];
@@ -428,12 +435,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         SOGoContactFolders *contactFolders;
         SOGoCacheGCSObject *o;
         NSString *key;
+        id newFolder;
         
         nameInContainer = nil;
         
         contactFolders = [userFolder privateContacts: @"Contacts" inContext: context];
         [contactFolders newFolderWithName: displayName
                           nameInContainer: &nameInContainer];
+
+        newFolder = [contactFolders lookupName: nameInContainer
+                                     inContext: context
+                                       acquire: NO];
+        [newFolder setSynchronize: YES];
+
         nameInContainer = [NSString stringWithFormat: @"vcard/%@", nameInContainer];
         
         key = [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], nameInContainer ];
