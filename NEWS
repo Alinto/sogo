@@ -10,6 +10,7 @@ Enhancements
 Bug fixes
  - now always generate invitation updates when using EAS
  - rewrote the string sanitization to be 32-bit Unicode safe
+ - do not try to decode non-wbxml responses for debug output (#3444)
 
 2.3.6 (2016-01-18)
 ------------------
