@@ -509,36 +509,56 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   return mappingId;
 }
 
+/* Get new change number from openchange db interface using
+   resource's owner user */
 - (uint64_t) getNewChangeNumber
 {
+  const char *owner;
+  enum MAPISTATUS retval;
   uint64_t newVersionNumber;
 
-  if (openchangedb_get_new_changeNumber (connInfo->oc_ctx, connInfo->username, &newVersionNumber)
-      != MAPI_E_SUCCESS)
-    abort ();
+  owner = [[userContext username] UTF8String];
+  retval = openchangedb_get_new_changeNumber (connInfo->oc_ctx, owner, &newVersionNumber);
+  if (retval != MAPI_E_SUCCESS)
+    [NSException raise: @"MAPIStoreIOException"
+                format: @"Impossible to get new change number for %s: %s", owner,
+                 mapi_get_errstr (retval)];
 
   return newVersionNumber;
 }
 
+/* Get new change numbers from openchange db interface using
+   resource's owner user */
 - (NSArray *) getNewChangeNumbers: (uint64_t) max
 {
+  const char *owner;
+  enum MAPISTATUS retval;
   TALLOC_CTX *memCtx;
   NSMutableArray *newChangeNumbers;
   uint64_t count;
   struct UI8Array_r *numbers;
   NSString *newNumber;
 
-  memCtx = talloc_zero(NULL, TALLOC_CTX);
-  newChangeNumbers = [NSMutableArray arrayWithCapacity: max];
+  memCtx = talloc_new (NULL);
+  if (!memCtx)
+    [NSException raise: @"MAPIStoreIOException"
+                format: @"Not enough memory to allocate change numbers"];
 
-  if (openchangedb_get_new_changeNumbers (connInfo->oc_ctx,
-                                          memCtx, connInfo->username, max, &numbers)
-      != MAPI_E_SUCCESS || numbers->cValues != max)
-    abort ();
+  newChangeNumbers = [NSMutableArray arrayWithCapacity: max];
+  owner = [[userContext username] UTF8String];
+
+  retval = openchangedb_get_new_changeNumbers (connInfo->oc_ctx, memCtx, owner, max, &numbers);
+  if (retval != MAPI_E_SUCCESS || numbers->cValues != max)
+    {
+      talloc_free (memCtx);
+      [NSException raise: @"MAPIStoreIOException"
+                  format: @"Failing to get %d new change numbers: %s", max,
+                          mapi_get_errstr (retval)];
+    }
+
   for (count = 0; count < max; count++)
     {
-      newNumber
-        = [NSString stringWithUnsignedLongLong: numbers->lpui8[count]];
+      newNumber = [NSString stringWithUnsignedLongLong: numbers->lpui8[count]];
       [newChangeNumbers addObject: newNumber];
     }
 
