@@ -494,8 +494,11 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   mappingId = [mapping idFromURL: childURL];
   if (mappingId == NSNotFound)
     {
+      const char *owner;
+
       [self logWithFormat: @"No id exist yet for '%@', requesting one", childURL];
-      ret = mapistore_indexing_get_new_folderID (connInfo->mstore_ctx, &mappingId);
+      owner = [[userContext username] UTF8String];
+      ret = mapistore_indexing_get_new_folderID_as_user (connInfo->mstore_ctx, owner, &mappingId);
       if (ret == MAPISTORE_SUCCESS)
         [mapping registerURL: childURL withID: mappingId];
       else
@@ -544,28 +547,30 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   return newChangeNumbers;
 }
 
+/* Get new fmids from mapistore_indexing interface using resource's
+   owner user */
 - (NSArray *) getNewFMIDs: (uint64_t) max
 {
-  TALLOC_CTX *memCtx;
+  const char *owner;
+  enum mapistore_error ret;
   NSMutableArray *newFMIDs;
-  uint64_t count;
-  struct UI8Array_r *numbers;
   NSString *newNumber;
+  uint64_t count, newFID;
 
-  memCtx = talloc_zero(NULL, TALLOC_CTX);
   newFMIDs = [NSMutableArray arrayWithCapacity: max];
+  /* Get the resource's owner name */
+  owner = [[userContext username] UTF8String];
 
-  if (mapistore_indexing_get_new_folderIDs (connInfo->mstore_ctx,
-                                            memCtx, max, &numbers)
-      != MAPISTORE_SUCCESS || numbers->cValues != max)
-    abort ();
   for (count = 0; count < max; count++)
     {
-      newNumber = [NSString stringWithUnsignedLongLong: numbers->lpui8[count]];
+      ret = mapistore_indexing_get_new_folderID_as_user (connInfo->mstore_ctx, owner, &newFID);
+      if (ret != MAPISTORE_SUCCESS)
+          [NSException raise: @"MAPIStoreIOException"
+                      format: @"Impossible to get new fmid for %s", owner];
+
+      newNumber = [NSString stringWithUnsignedLongLong: newFID];
       [newFMIDs addObject: newNumber];
     }
-
-  talloc_free (memCtx);
 
   return newFMIDs;
 }
