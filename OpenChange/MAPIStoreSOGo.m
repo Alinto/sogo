@@ -146,6 +146,8 @@ sogo_backend_init (void)
   NSUserDefaults *ud;
   SoProductRegistry *registry;
   char *argv[] = { SAMBA_PREFIX "/sbin/samba", NULL };
+  NSString *debugLevel;
+  uint8_t parentLogLevel;
 
   GSRegisterCurrentThread();
 
@@ -177,6 +179,22 @@ sogo_backend_init (void)
       atexit (sogo_backend_atexit);
       leakDebugging = YES;
     }
+
+  /* Set debug level according to samba */
+  parentLogLevel = DEBUGLEVEL_CLASS[DBGC_ALL]; // FIXME: samba logger specific code
+  if (parentLogLevel >= 4)
+    debugLevel = @"DEBUG";
+  else if (parentLogLevel >= 3)
+    debugLevel = @"INFO";
+  else if (parentLogLevel >= 2)
+    debugLevel = @"WARN";
+  else if (parentLogLevel >= 1)
+    debugLevel = @"ERROR";
+  else
+    debugLevel = @"FATAL";
+  OC_DEBUG(3, "[SOGo] Setting log level to %s", [debugLevel UTF8String]);
+  [ud setObject: debugLevel forKey: @"NGLogDefaultLogLevel"];
+  [ud synchronize];
 
   registry = [SoProductRegistry sharedProductRegistry];
   [registry scanForProductsInDirectory: SOGO_BUNDLES_DIR];
