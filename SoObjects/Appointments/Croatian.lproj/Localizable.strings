@@ -1,0 +1,60 @@
+"Inviting the following persons is prohibited:" = "Pozivanje slijedeće osobe je zabranjeno:";
+"Personal Calendar" = "Osobni kalendar";
+vevent_class0 = "(Javni događaj)";
+vevent_class1 = "(Osobni događaj)";
+vevent_class2 = "(Povjerljivi događaj)";
+
+vtodo_class0 = "(Javni zadatak)";
+vtodo_class1 = "(Osobni zadatak)";
+vtodo_class2 = "(Povjerljivi zadatak)";
+/* Receipts */
+"The event \"%{Summary}\" was created" = "Događaj \"% {Summary}\" je stvoren";
+"The event \"%{Summary}\" was deleted" = "Događaj \"% {Summary}\" je izbrisan";
+"The event \"%{Summary}\" was updated" = "Događaj \"% {Summary}\" je ažuriran";
+"The following attendees(s) were notified" = "Sljedeći sudionici su obaviješteni";
+"The following attendees(s) were added" = "Sljedeći sudionici su dodani";
+"The following attendees(s) were removed" = "Sljedeći sudionici su uklonjeni";
+/* IMIP messages */
+"calendar_label" = "Kalendar";
+"startDate_label" = "Start";
+"endDate_label" = "Kraj";
+"due_label" = "Datum dospijeća";
+"location_label" = "Mjesto";
+"summary_label" = "Sažetak";
+"comment_label" = "Komentar";
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "Pozivnica: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(poslao %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}vas je pozvao na %{Summary}.\n\nPočetak: %{StartDate}\nKraj: %{EndDate}\nOpis: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}vas je pozvao na %{Summary}.\n\nPočetak: %{StartDate} at %{StartTime}\nKraj: %{EndDate} at %{EndTime}\nOpis: %{Description}";
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "Događaj otkazan: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}je otkazao ovaj događaj: %{Summary}.\n\nPočetak: %{StartDate}\nKraj: %{EndDate}\nOpis: %{Description}";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}je otkazao ovaj događaj: %{Summary}.\nPočetak: %{StartDate} at %{StartTime}\nKraj: %{EndDate} at %{EndTime}\nOpis: %{Description}";
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "Sastanak \"%{Summary}\" za %{OldStartDate} je promjenjen";
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "Sastanak \"%{Summary}\" iz %{OldStartDate} u %{OldStartTime} je promjenjen";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "Sljedeći parametri su se promijenili u \"%{Summary}\" sastanak:";
+"Please accept or decline those changes."
+= "Molim prihvatite ili odbacite promjene.";
+/* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Prihvaćen poziv:: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Odbijen poziv:: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Proslijediti poziv: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Još nije odlučeno o pozivu: \"%{Summary}\"";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "%{Attendee} %{SentByText}je prihvatio vaš poziv događaj.";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "%{Attendee} %{SentByText}je odbio pozivnicu za događaj.";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText}je proslijedio poziv za %{Delegate}.";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText}još nije odlučio o vašem pozivu za događaj.";
+/* Resources */
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Ne mogu pristupiti: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Maksimalni broj istovremenih rezervacija (%{NumberOfSimultaneousBookings}) dosegnut je za \"%{Cn} %{SystemEmail}\". Problematični događaj je \"%{EventTitle}\" i počinje %{StartDate}.";

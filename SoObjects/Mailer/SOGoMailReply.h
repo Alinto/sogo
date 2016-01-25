@@ -51,6 +51,9 @@
 @interface SOGoMailChineseTaiwanReply : SOGoMailReply
 @end
 
+@interface SOGoMailCroatianReply : SOGoMailReply
+@end
+
 @interface SOGoMailCzechReply : SOGoMailReply
 @end
 

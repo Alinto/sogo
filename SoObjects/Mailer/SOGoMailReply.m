@@ -101,6 +101,9 @@
 @implementation SOGoMailChineseTaiwanReply
 @end
 
+@implementation SOGoMailCroatianReply
+@end
+
 @implementation SOGoMailCzechReply
 @end
 
