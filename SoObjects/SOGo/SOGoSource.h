@@ -41,10 +41,6 @@
 
 - (NSString *) domain;
 
-/* requires a "." to obtain the full list of contacts */
-- (void) setListRequiresDot: (BOOL) aBool;
-- (BOOL) listRequiresDot;
-
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
 	       perr: (SOGoPasswordPolicyError *) _perr

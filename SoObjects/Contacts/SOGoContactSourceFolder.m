@@ -353,26 +353,15 @@
   NSArray *records, *result;
   EOSortOrdering *ordering;
 
-  result = nil;
-
-  if (([filter length] > 0 && [criteria isEqualToString: @"name_or_address"])
-      || ![source listRequiresDot])
-    {
-      records = [source fetchContactsMatching: filter
-                                     inDomain: domain];
-      [childRecords setObjects: records
-                       forKeys: [records objectsForKey: @"c_name"
-                                        notFoundMarker: nil]];
-      records = [self _flattenedRecords: records];
-      ordering
-        = [EOSortOrdering sortOrderingWithKey: sortKey
-                          selector: ((sortOrdering == NSOrderedDescending)
-                                     ? EOCompareCaseInsensitiveDescending
-                                     : EOCompareCaseInsensitiveAscending)];
-      result
-        = [records sortedArrayUsingKeyOrderArray:
-                     [NSArray arrayWithObject: ordering]];
-    }
+  records = [source fetchContactsMatching: filter inDomain: domain];
+  [childRecords setObjects: records forKeys: [records objectsForKey: @"c_name"
+                                                     notFoundMarker: nil]];
+  records = [self _flattenedRecords: records];
+  ordering = [EOSortOrdering sortOrderingWithKey: sortKey
+                             selector: ((sortOrdering == NSOrderedDescending)
+                                        ? EOCompareCaseInsensitiveDescending
+                                        : EOCompareCaseInsensitiveAscending)];
+  result = [records sortedArrayUsingKeyOrderArray: [NSArray arrayWithObject: ordering]];
 
   return result;
 }

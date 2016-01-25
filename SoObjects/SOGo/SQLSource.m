@@ -851,17 +851,6 @@
   return _sourceID;
 }
 
-- (void) setListRequiresDot: (BOOL) newListRequiresDot
-{
-}
-
-- (BOOL) listRequiresDot
-{
-  /* This method is not implemented for SQLSource. It must enable a mechanism
-     where using "." is not required to list the content of addressbooks. */
-  return YES;
-}
-
 /* card editing */
 - (void) setModifiers: (NSArray *) newModifiers
 {
