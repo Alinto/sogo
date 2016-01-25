@@ -22,6 +22,7 @@
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSSet.h>
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -92,10 +93,11 @@
 {
   unsigned int count,i , max;
   NSAutoreleasePool *pool;
-  NSDictionary *currentFilter, *contact;
-  NSEnumerator *contacts;
+  NSDictionary *currentFilter;
+  NSMutableSet *contacts;
   NSString *baseURL, *domain;
 
+  contacts = [NSMutableSet set];
   baseURL = [self baseURLInContext: localContext];
   domain = [[localContext activeUser] domain];
 
@@ -103,28 +105,29 @@
   for (count = 0; count < max; count++)
     {
       currentFilter = [filters objectAtIndex: count];
-      contacts =
-        [[(id<SOGoContactFolder>)self lookupContactsWithFilter: [[currentFilter allValues] lastObject]
+      [contacts addObjectsFromArray:
+        [(id<SOGoContactFolder>)self lookupContactsWithFilter: [[currentFilter allValues] lastObject]
                                                     onCriteria: @"name_or_address"
                                                         sortBy: @"c_givenname"
                                                       ordering: NSOrderedDescending
-                                                      inDomain: domain] objectEnumerator];
+                                                      inDomain: domain]];
 
-      pool = [[NSAutoreleasePool alloc] init];
-      i = 0;
-      while ((contact = [contacts nextObject]))
-        {
-          [self _appendObject: contact withBaseURL: baseURL
-            toREPORTResponse: response];
-          if (i % 10 == 0)
-            {
-              RELEASE(pool);
-              pool = [[NSAutoreleasePool alloc] init];
-            }
-          i++;
-        }
-      RELEASE(pool);
     }
+
+  pool = [[NSAutoreleasePool alloc] init];
+  i = 0;
+  for (NSDictionary *contact in contacts)
+    {
+      [self _appendObject: contact withBaseURL: baseURL
+        toREPORTResponse: response];
+      if (i % 10 == 0)
+        {
+          RELEASE(pool);
+          pool = [[NSAutoreleasePool alloc] init];
+        }
+      i++;
+    }
+  RELEASE(pool);
 }
 
 - (BOOL) _isValidFilter: (NSString *) theString
