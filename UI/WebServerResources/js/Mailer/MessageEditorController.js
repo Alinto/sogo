@@ -22,7 +22,7 @@
     vm.removeAttachment = removeAttachment;
     vm.contactFilter = contactFilter;
     vm.identities = _.pluck(_.flatten(_.pluck(stateAccounts, 'identities')), 'full');
-    vm.recipientSeparatorKeys = [$mdConstant.KEY_CODE.ENTER, $mdConstant.KEY_CODE.COMMA, semicolon];
+    vm.recipientSeparatorKeys = [$mdConstant.KEY_CODE.ENTER, $mdConstant.KEY_CODE.TAB, $mdConstant.KEY_CODE.COMMA, semicolon];
     vm.uploader = new FileUploader({
       url: stateMessage.$absolutePath({asDraft: true}) + '/save',
       autoUpload: true,
