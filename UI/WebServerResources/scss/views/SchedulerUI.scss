@@ -230,7 +230,7 @@ $block_radius: 3px;
     user-select: none;
     transition: $swift-linear;
     $i: 0;
-    @while $i < 96 { // number of 15-minutes blocks in a day
+    @while $i <= 96 { // number of 15-minutes blocks in a day
       &.starts#{$i} { top: 10px * $i; }
       &.lasts#{$i} { height: 10px * $i; }
       $i: $i + 1;
