@@ -65,6 +65,7 @@
 
       angular.extend(_this.defaults, data);
 
+      // Configure date locale
       angular.extend(Preferences.$mdDateLocaleProvider, data.locale);
       Preferences.$mdDateLocaleProvider.firstDayOfWeek = parseInt(data.SOGoFirstDayOfWeek);
       Preferences.$mdDateLocaleProvider.weekNumberFormatter = function(weekNumber) {

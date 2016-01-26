@@ -12,8 +12,8 @@
 
    <div class="sg-draggable-calendar-block"/>
   */
-  sgDraggableCalendarBlock.$inject = ['$rootScope', '$timeout', '$log', 'Calendar', 'CalendarSettings', 'Component'];
-  function sgDraggableCalendarBlock($rootScope, $timeout, $log, Calendar, CalendarSettings, Component) {
+  sgDraggableCalendarBlock.$inject = ['$rootScope', '$timeout', '$log', 'Preferences', 'Calendar', 'CalendarSettings', 'Component'];
+  function sgDraggableCalendarBlock($rootScope, $timeout, $log, Preferences, Calendar, CalendarSettings, Component) {
     return {
       restrict: 'CA',
       require: '^sgCalendarDay',
@@ -127,9 +127,7 @@
         }
         else {
           // Create new component from dragging
-          startDate = new Date(calendarDayCtrl.dayString.substring(0,10) +
-                               ' ' +
-                               calendarDayCtrl.dayString.substring(11,16));
+          startDate = calendarDayCtrl.dayString.parseDate(Preferences.$mdDateLocaleProvider, '%Y-%m-%e');
           newData = {
             type: 'appointment',
             pid: calendarData? calendarData.pid : Calendar.$defaultCalendar(),
