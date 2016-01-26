@@ -2,6 +2,7 @@
 $hours_margin: 50px;
 $block_margin: 2%; // See sgCalendarDayBlock.directive.js
 $block_radius: 3px;
+$quarter_height: 10px;
 
 /**
  * Affected templates:
@@ -85,11 +86,11 @@ $block_radius: 3px;
         }
       }
     }
-   &.monthView {
-     > div {
-       overflow-y: scroll;
-     }
-   }
+    &.monthView {
+      > div {
+        overflow-y: scroll;
+      }
+    }
   }
 
   // The all-day events appear in the shrinkable toolbar, bellow the days labels
@@ -161,7 +162,7 @@ $block_radius: 3px;
       flex-basis: 0;
       border-left: 1px solid sg-color($sogoPaper, 300);
       .clickableHourCell {
-        height: 40px;
+        height: $quarter_height * 4;
         border-bottom: 1px solid sg-color($sogoPaper, 300);
         user-select: none;
         &.outOfDay {
@@ -198,7 +199,7 @@ $block_radius: 3px;
     .hour {
       border-bottom: 1px solid sg-color($sogoPaper, 300);
       text-align: right;
-      height: 40px;
+      height: $quarter_height * 4;
       left: 0;
       padding: 2px;
       position: relative;
@@ -231,8 +232,8 @@ $block_radius: 3px;
     transition: $swift-linear;
     $i: 0;
     @while $i <= 96 { // number of 15-minutes blocks in a day
-      &.starts#{$i} { top: 10px * $i; }
-      &.lasts#{$i} { height: 10px * $i; }
+      &.starts#{$i} { top: $quarter_height * $i; }
+      &.lasts#{$i} { height: $quarter_height * $i; }
       $i: $i + 1;
     }
 
