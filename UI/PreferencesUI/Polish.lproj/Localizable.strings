@@ -307,8 +307,8 @@
 "Deleted" = "Usunięte";
 "Answered" = "Odpowiedziane";
 "Flagged" = "Oflagowane";
-"Junk" = "Śmieć";
-"Not Junk" = "Nie śmieć";
+"Junk" = "Spam";
+"Not Junk" = "Nie-spam";
 
 /* Password policy */
 "The password was changed successfully." = "Hasło zostało zmienione.";
