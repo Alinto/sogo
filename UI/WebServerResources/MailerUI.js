@@ -726,11 +726,11 @@ function toggleJunkAction(isJunk) {
   button.stopObserving("click");
 
   if (isJunk) {
-    button.title = "Mark the selected messages as not junk";
+    button.title = _("Mark the selected messages as not junk");
     button.select('span').first().childNodes[3].nodeValue = _("Not junk");
   }
   else {
-    button.title = "Mark the selected messages as junk";
+    button.title = _("Mark the selected messages as junk");
     button.select('span').first().childNodes[3].nodeValue = _("Junk");
   }
 
