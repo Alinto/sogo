@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.2-master-bf78b0c
+ * v1.0.3-master-3d6077b
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -10348,6 +10348,14 @@ MdDividerDirective.$inject = ["$mdTheming"];
    * space where the actions will appear, you must also add the `md-hover-full` class to the speed
    * dial element. Without this, the hover effect will only occur on top of the trigger.
    *
+   * See the demos for more information.
+   *
+   * ## Troubleshooting
+   *
+   * If your speed dial shows the closing animation upon launch, you may need to use `ng-cloak` on
+   * the parent container to ensure that it is only visible once ready. We have plans to remove this
+   * necessity in the future.
+   *
    * @usage
    * <hljs lang="html">
    * <md-fab-speed-dial md-direction="up" class="md-fling">
@@ -10507,7 +10515,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
           offsetDelay = index * delay;
 
         styles.opacity = ctrl.isOpen ? 1 : 0;
-        styles.transform = styles.webkitTransform = ctrl.isOpen ? 'scale(1)' : 'scale(0.1)';
+        styles.transform = styles.webkitTransform = ctrl.isOpen ? 'scale(1)' : 'scale(0)';
         styles.transitionDelay = (ctrl.isOpen ? offsetDelay : (items.length - offsetDelay)) + 'ms';
 
         // Make the items closest to the trigger have the highest z-index
@@ -11824,8 +11832,9 @@ function inputTextareaDirective($mdUtil, $window, $mdAria) {
 
     var isParentFormSubmitted = function () {
       var parent = $mdUtil.getClosest(element, 'form');
+      var form = parent ? angular.element(parent).controller('form') : null;
 
-      return parent ? angular.element(parent).controller('form').$submitted : false;
+      return form ? form.$submitted : false;
     };
 
     scope.$watch(isErrorGetter, containerCtrl.setInvalid);
@@ -24276,4 +24285,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.2-master-bf78b0c"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.3-master-3d6077b"}};
