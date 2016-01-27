@@ -1,27 +1,66 @@
 [![SOGo Logo](http://www.sogo.nu/fileadmin/sogo/logos/sogo.logo.png)](http://www.sogo.nu/)
 
-Share your calendars, address books and mails in your community with a completely free and open source solution.
+## Contribute
 
-Let your Mozilla Thunderbird/Lightning, Microsoft Outlook, Apple iCal/iPhone, Android and BlackBerry users collaborate using a modern platform.
+SOGo is a collaborative effort in order to create the best Free and Open Source groupware solution.
 
-## What is SOGo?
+There are multiple ways you can contribute to the project
 
-SOGo is [fully supported](http://www.sogo.nu/support/commercial_support.html) and [trusted](http://www.sogo.nu/tour/testimonials.html) groupware server with a focus on scalability and open standards. SOGo is released under the GNU GPL/LGPL v2 and above.
+* Documentation reviews, enhancements and translations
+* Feature requests or by sharing your ideas (see the roadmap)
+* Participate in the discussion on mailing lists
+* Patches for bugs or enhancements
+* Provide new translations
 
-SOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV, CardDAV and GroupDAV.
+## Source Code
 
-SOGo is the missing component of your infrastructure; it sits in the middle of your servers to offer your users an uniform and complete interface to access their information. It has been deployed in production environments where thousands of users are involved.
+You can browse the lastest version of the source code online from Inverse's github repository:
 
-[![Sogo diagram](http://www.sogo.nu/uploads/pics/sogo.png)](http://www.sogo.nu/)
+[https://github.com/inverse-inc](https://github.com/inverse-inc)
 
-[Learn more...](http://www.sogo.nu/about/overview.html)
+To compile SOGo, you first need to obtain the source code of both SOGo and SOPE. The source code of SOPE and SOGo can be obtained from Inverse's github repository:
 
-## Microsoft Outlook Compatible
+[https://github.com/inverse-inc/sope](https://github.com/inverse-inc/sope)
 
-SOGo offers native Microsoft Outlook compatibility using the [OpenChange](http://www.openchange.org/) backend developed by [Inverse](http://www.inverse.ca/). This means Microsoft Outlook 2003, 2007, 2010 and 2013 can talk directly to SOGo &ndash; just like if it was a Microsoft Exchange server. **No plugins are required in Outlook to make this work**.
+[https://github.com/inverse-inc/sogo](https://github.com/inverse-inc/sogo)
 
-The following screencast shows Outlook 2010 connected to SOGo as if it was an Exchange server, along the Web interface of SOGo.
+The source code of the SOGo Connector and SOGo Integrator extensions for Thunderbird 31+ can be obtained from Inverse's github repository:
 
-[![SOGo Screencast](http://img.youtube.com/vi/1hcBSB4Kxww/0.jpg)](http://www.youtube.com/watch?v=1hcBSB4Kxww)
+[https://github.com/inverse-inc/sogo-connector.tb31](https://github.com/inverse-inc/sogo-connector.tb31)
 
-[![SOGo on GitHub](http://www.sogo.nu/fileadmin/images/icon.github.png)](https://github.com/inverse-inc/sogo/) [![SOGo Ohloh](http://www.sogo.nu/fileadmin/images/icon.ohloh.png)](https://www.ohloh.net/p/sogo) [![SOGo on Twitter](http://www.sogo.nu/fileadmin/images/icon.twitter.png)](http://twitter.com/scalableogo) [![SOGo on SourceForge](http://www.sogo.nu/fileadmin/images/icon.sourceforge.png)](http://sourceforge.net/projects/sogo-zeg) [![SOGo on free code](http://www.sogo.nu/fileadmin/images/icon.freecode.png)](https://freecode.com/projects/sogo-inverse) [![SOGo on LinkedIn](http://www.sogo.nu/fileadmin/images/icon.linkedin.png)](http://www.linkedin.com/groups/SOGo-Groupware-4164805)
+[https://github.com/inverse-inc/sogo-integrator.tb31](https://github.com/inverse-inc/sogo-integrator.tb31)
+
+Please refer to the FAQ section of this Web site for compilation instructions.
+
+## Translations
+
+SOGo and its associated components are available in various languages. The following list describes the official translations alongside their maintainers :
+
+* English - [Inverse inc.](http://www.inverse.ca/)
+* Arabic - Anass Ahmed
+* Brazilian Portuguese - Alexandre Marcilio
+* Catalan - Hector M. Rulot Segovia
+* Croatian - Jens Riecken
+* Czech - 
+* Danish (Denmark) - 
+* Dutch - Roel van Os
+* French - [Inverse](http://www.inverse.ca/)
+* German - Alexander Greiner-Baer
+* Hungarian - 
+* Icelandic - 
+* Italian - Alessio Fattorini
+* Jan Ivar Karlsen
+* Polish - Paweł Bogusławski
+* Russian - Alex Kabakaev
+* Slovak - Martin Pastor
+* Spanish (Spain) - Dominique Couot, 
+* Spanish (Argentina) - Federico Alberto Sayd
+* Swedish - Peter Johansson
+* Ukrainian - Oleksa Stasevych
+* Welsh - Iona Bailey
+ 
+If you would like to translate the software in an other language, please consult the FAQ. You can also subscribe to the SOGo i18n mailing list to follow string additions or changes:
+
+To subscribe to i18n@sogo.nu, send an email to i18n-request@sogo.nu with SUBSCRIBE i18n as the subject.
+Online archives of the mailing list are available from :
+[https://inverse.ca/sogo/lists/arc/i18n](https://inverse.ca/sogo/lists/arc/i18n)
