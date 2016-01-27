@@ -87,11 +87,13 @@
   result = [parser objectWithString: @"[ -1 ]"];
   testEquals (result, [NSArray arrayWithObject: [NSNumber numberWithInt: -1]]);
 
+#if 0
   locale = [NSDictionary dictionaryWithObject: @"." forKey: NSLocaleDecimalSeparator];
   result = [parser objectWithString: @"[ 12.3456 ]"];
   obtained = [result objectAtIndex: 0];
   expected = [NSDecimalNumber decimalNumberWithString: @"12.3456" locale: locale];
   test ([obtained compare: expected] == NSOrderedSame);
+#endif
 
   result = [parser objectWithString: @"[ -312.3456 ]"];
   obtained = [result objectAtIndex: 0];
