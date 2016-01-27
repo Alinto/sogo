@@ -1267,25 +1267,28 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t rights = 0;
-  SOGoUser *ownerUser;
-  BOOL userIsOwner;
+  SOGoUser *activeUser, *ownerUser;
 
   ownerUser = [[self userContext] sogoUser];
+  activeUser = [context activeUser];
 
-  userIsOwner = [[context activeUser] isEqual: ownerUser];
-  if (userIsOwner || [self subscriberCanReadMessages])
-    rights |= RightsReadItems;
-  if (userIsOwner || [self subscriberCanCreateMessages])
-    rights |= RightsCreateItems;
-  if (userIsOwner || [self subscriberCanModifyMessages])
-    rights |= RightsEditOwn | RightsEditAll;
-  if (userIsOwner || [self subscriberCanDeleteMessages])
-    rights |= RightsDeleteOwn | RightsDeleteAll;
-  if ((userIsOwner || [self subscriberCanCreateSubFolders])
-      && [self supportsSubFolders])
-    rights |= RightsCreateSubfolders;
-  if (userIsOwner)
-    rights |= RightsFolderOwner | RightsFolderContact;
+  if ([activeUser isEqual: ownerUser])
+    {
+      rights = RightsReadItems | RightsCreateItems | RightsEditOwn | RightsEditAll
+        | RightsDeleteOwn | RightsDeleteAll | RightsFolderOwner | RightsFolderContact | RoleNone;
+      if ([self supportsSubFolders])
+        rights |= RightsCreateSubfolders;
+    }
+  else
+    {
+      NSArray *roles;
+
+      roles = [[self aclFolder] aclsForUser: [activeUser login]];
+      rights = [self exchangeRightsForRoles: roles];
+      /* FreeBusySimple and FreeBusyDetailed does not apply here
+         [MS-OXCFOLD] Section 2.2.2.2.2.8 */
+      rights &= ~RightsFreeBusySimple & ~RightsFreeBusyDetailed;
+    }
 
   *data = MAPILongValue (memCtx, rights);
 
