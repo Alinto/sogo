@@ -23,7 +23,8 @@ UI/WebServerResources/css/styles.css
 UI/WebServerResources/css/styles.css.map
 UI/WebServerResources/js/*.js
 UI/WebServerResources/js/*.js.map
-UI/WebServerResources/js/vendor/
+UI/WebServerResources/js/vendor/*.js
+UI/WebServerResources/js/vendor/*.js.map
 UI/WebServerResources/node_modules/
 UI/WebServerResources/scss/.sass-cache/
 config.make
