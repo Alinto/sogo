@@ -1,5 +1,3 @@
-[![SOGo Logo](http://www.sogo.nu/fileadmin/sogo/logos/sogo.logo.png)](http://www.sogo.nu/)
-
 ## Contribute
 
 SOGo is a collaborative effort in order to create the best Free and Open Source groupware solution.
