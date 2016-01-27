@@ -1,3 +1,16 @@
+3.0.0 (2016-01-27)
+------------------
+
+New features
+
+ - complete rewrite of the JavaScript frontend using Angular and AngularMaterial;
+ - responsive design and accessible options focused on mobile devices;
+ - horizontal 3-pane view for a better experience on large desktop screens;
+ - new color palette and better contrast ratio as recommended by the W3C;
+ - improved accessibility to persons with disabilities by enabling common ARIA attributes.
+
+and many more!
+
 2.3.7 (2016-01-XX)
 ------------------
 
