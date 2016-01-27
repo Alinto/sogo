@@ -43,23 +43,14 @@ GNUstep
 SOPE
 ~~~~
 
-AngularJS
-~~~~~~~~~
+JavaScript libraries
+~~~~~~~~~~~~~~~~~~~~
 
 * https://angularjs.org/
 * http://angular-ui.github.io/ui-router/
-* https://www.airpair.com/angularjs/posts/angularjs-tutorial
-
-Angular Material
-~~~~~~~~~~~~~~~~
-
 * https://material.angularjs.org/
-
-Lo-Dash
-~~~~~~~
-
 * http://lodash.com/
-* http://underscorejs.org/
+* https://github.com/nervgh/angular-file-upload
 
 Code Style
 ----------
@@ -70,6 +61,11 @@ Objective-C
 * To document the Web APIs, we follow the http://apidocjs.com/[APIDOC] standards.
 
     apidoc -f ".*\\.m" -i UI -o Documentation/JSON-API
+
+* When returning JSON from an object extending UIxComponent, use the following method:
+
+    - (WOResponse *) responseWithStatus: (unsigned int) status
+                  andJSONRepresentation: (NSObject *) contentObject;
 
 HTML
 ~~~~
@@ -90,6 +86,8 @@ JavaScript
 * http://eslint.org/
 * https://github.com/toddmotto/angularjs-styleguide
 * https://github.com/angular/material/blob/master/docs/guides/CODING.md
+* http://jshint.com/
+* https://github.com/angular/material/tree/master/docs/guides
 
 * We conform to https://github.com/airbnb/javascript[Airbnb coding standards]. Use https://github.com/jscs-dev/node-jscs[jscs] with the 'airbnb' preset to validate your code style:
 
@@ -97,7 +95,7 @@ JavaScript
 
 * For documentation, we follow the http://usejsdoc.org/[JSDoc3] standards:
 
-    jsdoc UI/WebServerResources/js/{Appointments,Common,Contacts,Mailer}/*.js -d Documentation/JavaScript-API
+    jsdoc UI/WebServerResources/js/{Common,Contacts,Mailer,Preferences,Scheduler}/*.js -d Documentation/JavaScript-API
 
 Models (facades)
 ^^^^^^^^^^^^^^^^
@@ -114,6 +112,12 @@ SASS/CSS
 * http://componentcss.com/
 * https://github.com/styleguide/css
 * https://smacss.com/
+* http://cssguidelin.es/
+* http://sixrevisions.com/css/css-methodologies/
+* https://css-tricks.com/what-a-css-code-review-might-look-like/
+* http://una.im/classy-css/
+
+A `@mixin` is like a stamp: it creates a duplicated version of the property block (optionally) with arguments provided. An `@extend` appends the element you are extending to the property block. It is your "yes, and ___" statement.
 
 * For documentation, we follow http://sassdoc.com/[SassDoc] annotations.
 * We need the SASS files of Angular Material to build our CSS. The git repository of Angular Material is included as a submodule of SOGo:
@@ -126,14 +130,14 @@ SASS/CSS
 Fonts
 ^^^^^
 
-* We build a custom icons font using the online app https://icomoon.io/app/#/select[icomoon].
-* http://www.carrois.com/fira-4-0/
-* Material Design Iconic Font http://zavoloklom.github.io/material-design-iconic-font/icons.html
+* [Mozilla Fira](http://mozilla.github.io/Fira/)
+* [Material icons](https://www.google.com/design/icons/)
 
 Version Control
 ---------------
 
 * https://devcharm.com/articles/46/improve-your-git-workflow/
+* https://github.com/angular/material/blob/master/docs/guides/CONTRIBUTING.md#-commit-message-format
 * Each commit should cover only one thing;
 * Begin the commit message with a single short (less than 50 characters) line summarizing the change, followed by a blank line and then a more thorough description;
 * When fixing a bug, commit to the devel branch as well as the maintenance branch of the latest release version (named maintenance/x.y). When a ticket is associated to the bug, add to the description a line saying *Fixes #1234*.
