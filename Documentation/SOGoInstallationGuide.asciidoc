@@ -1,5 +1,7 @@
 Installation and Configuration Guide
 ====================================
+:toc: left
+:icons: font
 
 ////
 
@@ -54,7 +56,7 @@ at http://www.sogo.nu/
 Architecture and Compatibility
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-image::images/architecture.png[System Architecture]
+image::images/architecture.png[System Architecture, 400, 964]
 
 Standard protocols such as CalDAV, CardDAV, GroupDAV, HTTP, IMAP and
 SMTP are used to communicate with the SOGo platform or its
@@ -179,7 +181,7 @@ standard distribution. For example, if you are using Red Hat Enterprise
 Linux 5, you have to be subscribed to the Red Hat Network before
 continuing with the SOGo software installation.
 
-This document covers the installation of SOGo under RHEL 6.
+NOTE: This document covers the installation of SOGo under RHEL 6.
 
 For installation instructions on Debian and Ubuntu, please refer
 directly to the SOGo website at http://www.sogo.nu/.
@@ -294,7 +296,7 @@ associated to a domain is limited to access only the users data from the
 same domain. Consequently, the configuration parameters of SOGo are
 defined on three levels:
 
-image::images/preferences-hierarchy.png[Preferences Hierarchy]
+image::images/preferences-hierarchy.png[Preferences Hierarchy, 400, 400]
 
 Each level inherits the preferences of the parent level. Therefore,
 domain preferences define the defaults values of the user preferences,
@@ -1125,7 +1127,7 @@ fax number, one could map it to the _facsimiletelephonenumber_ attribute
 like this:
 
 ----
-mapping = \{
+mapping = {
   facsimiletelephonenumber = ("fax", "facsimiletelephonenumber");
 };
 ----
