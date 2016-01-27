@@ -180,7 +180,7 @@
 
         <div class="sg-form-section">
           <!-- repeat -->
-          <div layout="row" layout-align="start end">
+          <div layout="row" layout-align="start center">
             <md-input-container class="md-block md-flex">
               <label><var:string label:value="Repeat"/></label>
               <md-select class="pseudo-input-field" ng-model="editor.component.repeat.frequency">
@@ -189,7 +189,6 @@
                 </var:foreach>
               </md-select>
             </md-input-container>
-            <div class="md-flex"><!-- spacer --></div>
             <md-button type="button" class="md-icon-button"
                        label:aria-label="repeat_CUSTOM"
                        ng-show="editor.component.repeat.frequency != 'never'"
