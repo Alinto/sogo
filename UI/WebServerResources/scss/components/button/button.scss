@@ -1,6 +1,10 @@
 /// button.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
+md-sidenav md-list .md-button {
+  font-weight: normal;
+}
+
 .md-button.md-fab-overlap-bottom {
   &.md-fab-bottom-right,
   &.md-fab-bottom-left {
@@ -8,8 +12,6 @@
   }
 }
 
-// Buttons for the sidenav folder tree
-// ------------------------------------
 .view-list md-list .md-button {
   // Gain some space in lists
   padding-right: 0;
