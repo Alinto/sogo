@@ -1,6 +1,8 @@
 {
   "name": "sogo-web",
-  "version": "0.0.1",
+  "version": "3.0.0",
+  "homepage": "http://sogo.nu",
+  "bugs": "http://sogo.nu/bugs",
   "devDependencies": {
     "autoprefixer": ">=6.0.3",
     "bower": ">=1.3.8",
