@@ -1021,9 +1021,10 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                         tableType: (enum mapistore_table_type) tableType
                       andHandleId: (uint32_t) handleId
 {
+  BOOL access;
   enum mapistore_error rc = MAPISTORE_SUCCESS;
   MAPIStoreTable *table;
-  SOGoUser *ownerUser;
+  SOGoUser *activeUser, *ownerUser;
 
   if (tableType == MAPISTORE_MESSAGE_TABLE)
     table = [self messageTable];
@@ -1034,8 +1035,19 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   else if (tableType == MAPISTORE_PERMISSIONS_TABLE)
     {
       ownerUser = [[self userContext] sogoUser];
-      if ([[context activeUser] isEqual: ownerUser])
-        table = [self permissionsTable];
+      activeUser = [context activeUser];
+      access = [activeUser isEqual: ownerUser];
+      if (!access)
+        {
+          NSArray *roles;
+
+          roles = [[self aclFolder] aclsForUser: [activeUser login]];
+          /* Check FolderVisible right to return the table */
+          access = ([self exchangeRightsForRoles: roles] & RoleNone) != 0;
+        }
+
+      if (access)
+          table = [self permissionsTable];
       else
         rc = MAPISTORE_ERR_DENIED;
     }
