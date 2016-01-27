@@ -32,7 +32,7 @@
 
 #define DEFAULT_CHARSET 1
 #define FONTNAME_LEN_MAX 100
-#define UTF8_FIRST_BYTE_LAST_CODEPOINT 0x7F
+
 //
 // Charset definitions. See http://msdn.microsoft.com/en-us/goglobal/bb964654 for all details.
 //
@@ -1215,7 +1215,6 @@ inline static void parseUl(RTFHandler *self, BOOL hasArg, int arg, RTFFormatting
   unsigned char c;
   NSData *d;
   NSString *s;
-  unichar uch;
 
   stack = [[RTFStack alloc] init];
   fontTable = nil;
@@ -1223,7 +1222,7 @@ inline static void parseUl(RTFHandler *self, BOOL hasArg, int arg, RTFFormatting
   defaultCharset = ansicpg1252;
   formattingOptions = nil;
 
-  _html = [[NSMutableData alloc] init];
+  _html = [[[NSMutableData alloc] init] autorelease];
   [_html appendBytes: "<html><meta charset='utf-8'><body>"  length: 34];
   
 
@@ -1254,7 +1253,6 @@ inline static void parseUl(RTFHandler *self, BOOL hasArg, int arg, RTFFormatting
               unsigned short index;
 
               const unsigned short * active_charset;
-
               if (formattingOptions && formattingOptions->charset)
                 active_charset = formattingOptions->charset;
               else
@@ -1439,18 +1437,15 @@ inline static void parseUl(RTFHandler *self, BOOL hasArg, int arg, RTFFormatting
           // We avoid appending NULL bytes or endlines
           if (c && (c != '\n')) 
             {
-              if (c <= UTF8_FIRST_BYTE_LAST_CODEPOINT) 
-                {
-                  // in this case utf8 and ascii encoding are the same
-                  [_html appendBytes: &c  length: 1];
-                }
-              else 
-                {
-                  uch = c;
-                  s = [NSString stringWithCharacters: &uch length: 1];
-                  d = [s dataUsingEncoding: NSUTF8StringEncoding];
-                  [_html appendData: d];
-                }
+              const unsigned short * active_charset;
+              if (formattingOptions && formattingOptions->charset)
+                active_charset = formattingOptions->charset;
+              else
+                active_charset = defaultCharset;
+              
+              s = [NSString stringWithCharacters: &(active_charset[c])  length: 1];
+              d = [s dataUsingEncoding: NSUTF8StringEncoding];
+              [_html appendData: d];
             }
           ADVANCE;
         }
@@ -1459,7 +1454,7 @@ inline static void parseUl(RTFHandler *self, BOOL hasArg, int arg, RTFFormatting
   [_html appendBytes: "</body></html>"  length: 14];
   
   [stack release];
-  return [_html autorelease];
+  return _html;
 }
 
 /* This method is for ease of testing and should not be used in normal operations */
