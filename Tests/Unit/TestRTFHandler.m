@@ -306,4 +306,13 @@
                  againstExpectedHTML: expected];  
 }
 
+- (void) test_bad_hex_and_cr
+{
+  NSString *file =@"bad_hex_and_cr.rtf";
+  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Calibri\"><font face=\"Calibri Cyr\"><font color=\"#000000\">Good hex:H Bad1Hex: Bad2Hex: Ignored Carriadge Return</font></font></font></body></html>";
+
+  [self checkHTMLConversionOfRTFFile: file
+                 againstExpectedHTML: expected];  
+}
+
 @end

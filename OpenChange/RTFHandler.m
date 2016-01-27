@@ -608,7 +608,6 @@ static void _init_fontCws_table()
      word and is not part of the control word. */
 
   end = _bytes;
-
   *len = end-start-1;
 
   return start+1;
@@ -1250,7 +1249,8 @@ inline static void parseUl(RTFHandler *self, BOOL hasArg, int arg, RTFFormatting
             {
               // A hexadecimal value, based on the specified character set (may be used to identify 8-bit values).
               const char *b1, *b2;
-              unsigned short index;
+              short index;
+              short tmp;
 
               const unsigned short * active_charset;
               if (formattingOptions && formattingOptions->charset)
@@ -1265,8 +1265,21 @@ inline static void parseUl(RTFHandler *self, BOOL hasArg, int arg, RTFFormatting
               b1 = ADVANCE;
               b2 = ADVANCE;
               
-              index = (isdigit(*b1) ? *b1 - 48 : toupper(*b1) - 55) * 16;
-              index += (isdigit(*b2) ? *b2 - 48 : toupper(*b2) - 55);
+              tmp = (isdigit(*b1) ? *b1 - 48 : toupper(*b1) - 55);
+              if (tmp < 0 || tmp > 16)
+                {
+                  // Incorrect first hexadecimal character. Skipping.
+                  continue;
+                }
+              index = tmp*16;
+
+              tmp = (isdigit(*b2) ? *b2 - 48 : toupper(*b2) - 55);
+              if (tmp < 0 || tmp > 16)
+                {
+                  // Incorrect second hexadecimal character. Skipping.
+                  continue;
+                }              
+              index += tmp;
               
               s = [NSString stringWithCharacters: &(active_charset[index])  length: 1];
               d = [s dataUsingEncoding: NSUTF8StringEncoding];
@@ -1435,7 +1448,7 @@ inline static void parseUl(RTFHandler *self, BOOL hasArg, int arg, RTFFormatting
         {
           c = *_bytes;
           // We avoid appending NULL bytes or endlines
-          if (c && (c != '\n')) 
+          if (c && (c != '\n') && (c != '\r'))
             {
               const unsigned short * active_charset;
               if (formattingOptions && formattingOptions->charset)
