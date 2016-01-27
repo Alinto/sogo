@@ -63,11 +63,12 @@ $quarter_height: 10px;
   md-toolbar {
     &.daysView, &.monthView {
       background-color: #fff;
-      overflow: hidden;
       z-index: $z-index-toolbar - 1;
       .days {
         margin-left: $hours_margin;
-        overflow-y: scroll;
+        &:not([sg-calendar-scroll-view$="allday"]) {
+          overflow-y: scroll;
+        }
         &.dayLabels {
           .day {
             padding-left: 1%;
@@ -78,7 +79,12 @@ $quarter_height: 10px;
         }
       }
     }
+    &.daysView {
+      // Toolbar of day/week views
+      min-height: inherit;
+    }
     &[sg-view$=dayview] {
+      // Toolbar of day view only
       .dayLabels {
         .day {
           display: flex;
@@ -87,6 +93,7 @@ $quarter_height: 10px;
       }
     }
     &.monthView {
+      // Toolbar of month view
       > div {
         overflow-y: scroll;
       }
@@ -97,6 +104,8 @@ $quarter_height: 10px;
   .allDaysView {
     border-bottom: 1px solid sg-color($sogoPaper, 300);
     max-height: $sg-font-size-4 * 6;
+    overflow: hidden;
+    overflow-y: scroll;
 
     .day {
       position: relative;
@@ -337,7 +346,7 @@ $quarter_height: 10px;
       }
 
       &-left {
-        left: -$block_margin;
+        left: -2px;
         .dragGrip {
           bottom: 0;
           left: -1px;
@@ -345,7 +354,7 @@ $quarter_height: 10px;
       }
 
       &-right {
-        right: -$block_margin;
+        right: -2px;
         .dragGrip {
           right: -1px;
         }

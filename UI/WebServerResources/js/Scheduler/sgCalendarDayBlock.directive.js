@@ -85,8 +85,10 @@
       // Set position
       iElement.css('left', left + '%');
       iElement.css('right', right + '%');
-      iElement.addClass('starts' + scope.block.start);
-      iElement.addClass('lasts' + scope.block.length);
+      if (!scope.block.component || !scope.block.component.c_isallday) {
+        iElement.addClass('starts' + scope.block.start);
+        iElement.addClass('lasts' + scope.block.length);
+      }
 
       // Set background color
       if (scope.block.component)
