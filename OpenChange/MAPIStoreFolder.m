@@ -1641,6 +1641,21 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSArray *permissionRoles;
   BOOL reset, isAdd = NO, isDelete = NO, isModify = NO;
   SOGoFolder *aclFolder;
+  SOGoUser *activeUser, *ownerUser;
+
+  /* Check if we have permissions to modify the permissions.
+   See [MS-OXCPERM] Section 3.2.5.2 for details */
+  ownerUser = [[self userContext] sogoUser];
+  activeUser = [context activeUser];
+  if (![activeUser isEqual: ownerUser])
+    {
+      /* Check if we have FolderOwner right */
+      NSArray *roles;
+
+      roles = [[self aclFolder] aclsForUser: [activeUser login]];
+      if (([self exchangeRightsForRoles: roles] & RightsFolderOwner) == 0)
+        return MAPISTORE_ERR_DENIED;
+    }
 
   aclFolder = [self aclFolder];
 
