@@ -8,6 +8,7 @@
 "Forward"     = "Forward";
 "Get Mail"    = "Get Mail";
 "Junk"        = "Junk";
+"Not junk"    = "Not junk";
 "Reply"       = "Reply";
 "Reply All"   = "Reply All";
 "Print"       = "Print";
@@ -33,7 +34,6 @@
 "Reply to sender and all recipients" = "Reply to sender and all recipients";
 "Forward selected message" = "Forward selected message";
 "Delete selected message or folder" = "Delete selected message or folder";
-"Mark the selected messages as junk" = "Mark the selected messages as junk";
 "Print this message" = "Print this message";
 "Stop the current transfer" = "Stop the current transfer";
 "Attachment" = "Attachment";
