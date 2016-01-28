@@ -547,7 +547,8 @@ rtf2html (NSData *compressedRTF)
           for (count = 0; count < max; count++)
             [[containerTables objectAtIndex: count] restrictedChildKeys];
         }
-  
+
+      /* TODO: Check the save process succeeded */
       [self save: memCtx];
       /* We make sure that any change-related properties are removed from the
          properties dictionary, to make sure that related methods will be
@@ -649,8 +650,7 @@ rtf2html (NSData *compressedRTF)
   if (userIsOwner
       || ([self isKindOfClass: MAPIStoreEmbeddedMessageK]
           && [mainMessage subscriberCanModifyMessage])
-      || [(MAPIStoreFolder *)
-           [mainMessage container] subscriberCanDeleteMessages])
+      || [mainMessage subscriberCanDeleteMessage])
     access |= 0x04;
   
   *data = MAPILongValue (memCtx, access);
@@ -987,12 +987,20 @@ rtf2html (NSData *compressedRTF)
   return activeUserRoles;
 }
 
+/* Can the current active user read the message? */
 - (BOOL) subscriberCanReadMessage
 {
   return NO;
 }
 
+/* Can the current active user modify the message? */
 - (BOOL) subscriberCanModifyMessage
+{
+  return NO;
+}
+
+/* Can the current active user delete the message? */
+- (BOOL) subscriberCanDeleteMessage
 {
   return NO;
 }

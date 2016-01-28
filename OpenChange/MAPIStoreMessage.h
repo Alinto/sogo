@@ -82,6 +82,7 @@
 
 - (BOOL) subscriberCanReadMessage;
 - (BOOL) subscriberCanModifyMessage;
+- (BOOL) subscriberCanDeleteMessage;
 
 @end
 

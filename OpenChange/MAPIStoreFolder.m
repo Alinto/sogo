@@ -597,7 +597,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
           if ([[context activeUser] isEqual: ownerUser]
               || (![message isKindOfClass: MAPIStoreFAIMessageK]
-                  && [self subscriberCanDeleteMessages]))
+                  && ([self subscriberCanDeleteMessages] || [message subscriberCanDeleteMessage])))
             {
               /* we ensure the table caches are loaded so that old and new state
                  can be compared */
