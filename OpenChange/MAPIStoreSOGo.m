@@ -172,6 +172,11 @@ sogo_backend_init (void)
 
   /* We force the plugin to base its configuration on the SOGo tree. */
   ud = [NSUserDefaults standardUserDefaults];
+
+  /* Ensure imap4Connection calls raise Exception if
+    IMAP connection is not established. See NGImap4Connection.m */
+  [ud setBool: YES forKey: @"SoIMAP4ExceptionsEnabled"];
+
   if (!leakDebugging && [ud boolForKey: @"SOGoDebugLeaks"])
     {
       NSLog (@"  leak debugging on");
