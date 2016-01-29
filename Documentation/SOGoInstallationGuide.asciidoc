@@ -209,7 +209,7 @@ content:
 ----
 [SOGo]
 name=Inverse SOGo Repository
-baseurl=http://inverse.ca/downloads/SOGo/RHEL6/$basearch
+baseurl=http://inverse.ca/rhel-v3/6/$basearch
 gpgcheck=0
 ----
 
