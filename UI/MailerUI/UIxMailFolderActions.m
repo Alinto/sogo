@@ -684,6 +684,8 @@
   NSURL *currentURL;
   NSDictionary *data;
 
+  id quota;
+
   co = [self clientObject];
 
   error = [co addFlagsToAllMessages: @"deleted"];
@@ -712,8 +714,14 @@
     {
       // We return the inbox quota
       account = [co mailAccountFolder];
-      data = [NSDictionary dictionaryWithObject: [account getInboxQuota] forKey: @"quotas"];
-      response = [self responseWithStatus: 200 andJSONRepresentation: data];
+      if ((quota = [account getInboxQuota]))
+        {
+          data = [NSDictionary dictionaryWithObjectsAndKeys: quota, @"quotas", nil];
+          response = [self responseWithStatus: 200
+                                    andString: [data jsonRepresentation]];
+        }
+      else
+        response = [self responseWithStatus: 200];
     }
 
   return response;
