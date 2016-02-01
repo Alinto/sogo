@@ -5,14 +5,14 @@
   xmlns:label="OGo:label"
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:rsrc="OGo:url">
-  
+
   <!-- PARSING ERROR -->
   <var:if condition="couldParseCalendar" const:negate="1">
     <div>
       <md-toolbar class="md-medium-tall md-warn md-hue-3">
         <div class="md-toolbar-tools">
           <h2>
-            SOGo could not parse the body of this calendar MIME part.
+            <var:string label:value="SOGo could not parse the body of this calendar MIME part."/>
           </h2>
           </div>
       </md-toolbar>
@@ -21,18 +21,16 @@
       </md-whiteframe>
     </div>
   </var:if> <!-- if condition="couldParseCalendar" const:negate="1" -->
-  
+
   <!-- EVENT PROPERLY PARSED -->
   <var:if condition="couldParseCalendar">
-    
-    <md-divider class="md-padding"/>
-    
-    <div sg-imip="message" var:sg-imip-path="pathToAttachmentFromMessage">
+
+    <md-card sg-imip="message" var:sg-imip-path="pathToAttachmentFromMessage">
       <!-- TODO - remove unused strings
            <legend>
 	   <var:string label:value="Appointment"/>:
-	   <strong><var:string value="inEvent.summary" /></strong> 
-           
+	   <strong><var:string value="inEvent.summary" /></strong>
+
 	   <var:if condition="isLoggedInUserTheOrganizer">
 	   (<var:string label:value="organized_by_you"/>)
 	   </var:if>
@@ -40,14 +38,14 @@
 	   (<var:string label:value="you_are_an_attendee"/>)
 	   </var:if>
            </legend> -->
-      
+
       <!-- IMIP REQUEST -->
-      <var:if condition="inCalendar.method.uppercaseString" const:value="REQUEST">
-	<!-- sent to attendees to propose or update a meeting -->
-	<var:if condition="isLoggedInUserAnAttendee">
-	  <var:if condition="hasCalendarAccess">
-	    <div>
-              <p>
+      <md-card-content>
+        <var:if condition="inCalendar.method.uppercaseString" const:value="REQUEST">
+	  <!-- sent to attendees to propose or update a meeting -->
+	  <var:if condition="isLoggedInUserAnAttendee">
+	    <var:if condition="hasCalendarAccess">
+	      <div layout="row" layout-align="start center">
                 <var:if condition="currentUserAttendee.rsvp" const:value="true">
 
 	          <var:if condition="currentUserAttendee.partStatWithDefault"
@@ -63,14 +61,14 @@
                       <var:string label:value="Decline" />
                     </md-button>
 	          </var:if>
-                  
+
 	          <var:if condition="currentUserAttendee.partStatWithDefault"
                           const:value="TENTATIVE" const:negate="YES">
                     <md-button type="button" ng-click="iCalendarAction('tentative')">
                       <var:string label:value="Tentative" />
                     </md-button>
 	          </var:if>
-                  
+
                   <var:if condition="currentUserAttendee.partStatWithDefault"
                           const:value="DELEGATED" const:negate="YES">
                     <md-button type="button"
@@ -78,11 +76,10 @@
                                ng-hide="delegateInvitation == true">
                       <var:string label:value="Delegate ..." />
                     </md-button>
-                    
-		    <md-dialog-actions layout="row"
+
+		    <div layout="row"
                          layout-align="start center"
                          ng-show="delegateInvitation == true">
-                      
                       <md-autocomplete
                           class="md-flex"
                           md-search-text="searchText"
@@ -92,192 +89,199 @@
                           md-no-cache="true"
                           md-item-text="user.$shortFormat()"
                           label:md-floating-label="Delegated to">
-                        <span class="md-contact-suggestion" layout="row" layout-align="space-between center">
-                          <span class="md-contact-name"
-                                md-highlight-text="searchText"
-                                md-highlight-flags="^i">{{user.cn}}</span> <span class="md-contact-email"
-                                md-highlight-text="searchText"
-                                md-highlight-flags="^i">{{user.c_email}}</span>
-                        </span>
+                        <md-item-template>
+                          <span class="md-contact-suggestion" layout="row" layout-align="space-between center">
+                            <span class="md-contact-name"
+                                  md-highlight-text="searchText"
+                                  md-highlight-flags="^i">{{user.cn}}</span> <span class="md-contact-email"
+                                  md-highlight-text="searchText"
+                                  md-highlight-flags="^i">{{user.c_email}}</span>
+                          </span>
+                        </md-item-template>
                       </md-autocomplete>
-                      <md-button ng-click="delegateInvitation = false"><var:string label:value="Cancel"/></md-button>
-                      <md-button class="md-primitive"
+                      <md-button class="md-icon-button" ng-click="delegateInvitation = false">
+                        <md-icon>close</md-icon>
+                      </md-button>
+                      <md-button class="md-icon-button md-primary"
                                  ng-click="iCalendarAction('delegate')"
-                                 ng-disabled="!delegatedTo || delegatedTo.length == 0"><var:string label:value="OK"/></md-button>
-                    </md-dialog-actions>
+                                 ng-disabled="!delegatedTo || delegatedTo.length == 0">
+                        <md-icon>check</md-icon>
+                      </md-button>
+                    </div>
 	          </var:if>
                   <!-- TODO - should we re-enable this? It never
                        worked in v2!
-	          <var:if condition="currentUserAttendee.partStatWithDefault"
-		          const:value="DELEGATED">
-		    <span id="delegateEditor">
-		      <span class="floatLeft"><var:string label:value="Delegated to" />
-		      <a var:href="currentUserAttendee.delegatedTo" name="delegatedToLink" id="delegatedToLink"><var:string value="currentUserAttendee.delegatedTo.rfc822Email" /></a></span>
-		      <input name="delegatedTo" id="delegatedTo" type="text" var:value="currentUserAttendee.delegatedTo.rfc822Email" var:uid="currentUserAttendee.delegatedTo.rfc822Email" style="display: none;" />
-                      <a href="#" class="button actionButton" id="iCalendarDelegate" style="display: none;">
-                      <span><var:string label:value="OK" /></span></a>
-		    </span>
-                  </var:if>
+	               <var:if condition="currentUserAttendee.partStatWithDefault"
+		       const:value="DELEGATED">
+		       <span id="delegateEditor">
+		       <span class="floatLeft"><var:string label:value="Delegated to" />
+		       <a var:href="currentUserAttendee.delegatedTo" name="delegatedToLink" id="delegatedToLink"><var:string value="currentUserAttendee.delegatedTo.rfc822Email" /></a></span>
+		       <input name="delegatedTo" id="delegatedTo" type="text" var:value="currentUserAttendee.delegatedTo.rfc822Email" var:uid="currentUserAttendee.delegatedTo.rfc822Email" style="display: none;" />
+                       <a href="#" class="button actionButton" id="iCalendarDelegate" style="display: none;">
+                       <span><var:string label:value="OK" /></span></a>
+		       </span>
+                       </var:if>
                   -->
                 </var:if> <!-- if condition="currentUserAttendee.rsvp" const:value="true" -->
-                
+
 	        <var:if condition="isEventStoredInCalendar" const:negate="YES">
                   <md-button type="button" ng-click="iCalendarAction('addToCalendar')">
                     <var:string label:value="Add to calendar" />
                   </md-button>
                 </var:if>
-              </p>
-            </div>
-            
-          </var:if> <!-- if condition="hasCalendarAccess" -->
-                    
-          <p>
-            <var:string label:value="Organizer" />
-            <a var:href="inEvent.organizer.email"
-	       ><var:string value="organizerDisplayName" /></a>
-            <var:string label:value="request_info" />
-          </p>
-          
-        </var:if> <!-- if condition="isLoggedInUserAnAttendee" -->
-        
-        <var:if condition="isLoggedInUserAnAttendee" const:negate="YES">
-          <p>
-            <var:string label:value="Organizer" />
-            <a var:href="inEvent.organizer.email">
-              <var:string value="organizerDisplayName" />
-            </a>
-            <var:string label:value="request_info_no_attendee" />
-          </p>
-        </var:if>
-        
-      </var:if> <!-- if condition="inCalendar.method.uppercaseString"
-                     const:value="REQUEST" -->
 
-      <!-- IMIP REPLY - sent to organizer to update the status of the
-           participant -->
-      <var:if condition="inCalendar.method.uppercaseString" const:value="REPLY">
-	<var:if condition="isReplySenderAnAttendee" const:negate="1">
-	  <p>
-            <var:string label:value="reply_info_no_attendee" />
-          </p>
-	</var:if>
-	<var:if condition="isReplySenderAnAttendee">
-	  <var:if condition="canOriginalEventBeUpdated">
-            <p>
-              <var:string label:value="Status Update" />:
-              <i><var:string label:value="$inReplyAttendee.partStatWithDefault" /></i>,
-	      <var:string label:value="was" />
-	      <i><var:string label:value="$storedReplyAttendee.partStatWithDefault"/></i>.
-            </p>
-            <br/>
-            <md-button type="button" ng-click="iCalendarAction('updateUserStatus')">
-              <var:string label:value="Update status" />
-            </md-button>
-          </var:if>
-	</var:if>
-      </var:if>
-
-      <!-- IMIP CANCEL - sent to attendees to notify of the attendee
-           being removed or the 
-	   event being deleted -->
-      <var:if condition="inCalendar.method.uppercaseString" const:value="CANCEL">
-        <p><var:string label:value="cancel_info_text" /></p>
-	<var:if condition="isEventStoredInCalendar">
-          <md-button type="button" ng-click="iCalendarAction('deleteFromCalendar')">
-            <var:string label:value="Delete from calendar" />
-          </md-button>
-	</var:if>
-      </var:if>
-
-      <!-- IMIP ADD - TODO -->
-      <var:if condition="inCalendar.method.uppercaseString" const:value="ADD">
-        <p><var:string label:value="add_info_text" /></p>
-      </var:if>
-
-      <!-- IMIP PUBLISH - none-scheduling event sent to someone for
-           adding to the calendar -->
-      <var:if condition="inCalendar.method.uppercaseString" const:value="PUBLISH">
-        <p><var:string label:value="publish_info_text" /></p>
-      </var:if>
-      
-      <var:if condition="isLoggedInUserTheOrganizer">
-	<!--
-	    Possible Status:
-	    REPLY    => check whether it matches, if not suggest change, show
-	    comment
-	    REFRESH  => add button to resent iCal
-	    COUNTER  => show panel to decide on counter
-	-->
-      </var:if>
-      <var:if condition="isLoggedInUserTheOrganizer" const:negate="1">
-	<!--
-	    Possible Status:
-	    REQUEST => ACCEPT, TENTATIVELY, DECLINE buttons with comment field
-	    - only show buttons for attendees
-	    PUBLISH => just the 'add to calendar' button, rewrite organizer?
-	    ADD / CANCEL
-	    DECLINE-COUNTER
-	-->
-      </var:if>
-
-      <!-- the user comment is used in replies -->
-      <var:if condition="inEvent.userComment.isNotEmpty">
-	<div class="linked_attachment_meta" style="background-color: white;">
-	  <var:string value="inEvent.userComment" const:insertBR="1" />
-	</div>
-	<br />
-      </var:if>
-
-
-      <!-- EVENT'S METADATA (time, organizer, attendees, etc.) -->
-      <div class="pseudo-input-container">
-        <label class="pseudo-input-label"><var:string label:value="Organizer"/></label>
-        <div>
-          <var:string value="organizerDisplayName"/>
-        </div>
-      </div>
-
-      <div class="pseudo-input-container">
-        <label class="pseudo-input-label"><var:string label:value="Time"/></label>
-        <div>
-          <var:string value="formattedDateTime"/>
-        </div>
-      </div>
-
-      <!-- ATTENDEES -->
-      <md-list>
-        <div class="pseudo-input-container">
-          <label class="pseudo-input-label"><var:string label:value="Attendees"/></label>
-          <!-- md-contact-chips don't support "readonly", so we build them using md-chips
-               in readonly mode and a template similar to the one of md-contact-chips -->
-          <md-chips class="md-contact-chips sg-readonly"
-                    ng-model="::part.participants"
-                    readonly="true">
-            <md-chip-template>
-              <div class="md-contact-avatar">
-                <sg-avatar-image sg-email="$chip.email" size="32"><!-- avatar --></sg-avatar-image>
+                <md-divider><!-- divider --></md-divider>
               </div>
-              <div class="md-contact-name">{{$chip.name}}</div>
-              <md-icon ng-class="'icon-' + $chip.status"><!-- partstat --></md-icon>
-            </md-chip-template>
-          </md-chips>
-        </div>
-      </md-list>
 
-      <var:if condition="authorativeEvent.comment.isNotEmpty">
-        <div class="pseudo-input-container">
-          <label class="pseudo-input-label">
-            <var:string label:value="Comment"/>
-          </label>
-          <div>
+            </var:if> <!-- if condition="hasCalendarAccess" -->
+
             <p>
-              <var:string value="authorativeEvent.comment" const:insertBR="1" />
+              <var:string label:value="Organizer" />
+              <a var:href="inEvent.organizer.email"
+	         ><var:string value="organizerDisplayName" /></a>
+              <var:string label:value="request_info" />
             </p>
+
+          </var:if> <!-- if condition="isLoggedInUserAnAttendee" -->
+
+          <var:if condition="isLoggedInUserAnAttendee" const:negate="YES">
+            <p>
+              <var:string label:value="Organizer" />
+              <a var:href="inEvent.organizer.email">
+                <var:string value="organizerDisplayName" />
+              </a>
+              <var:string label:value="request_info_no_attendee" />
+            </p>
+          </var:if>
+
+        </var:if> <!-- if condition="inCalendar.method.uppercaseString"
+                       const:value="REQUEST" -->
+
+        <!-- IMIP REPLY - sent to organizer to update the status of the
+             participant -->
+        <var:if condition="inCalendar.method.uppercaseString" const:value="REPLY">
+	  <var:if condition="isReplySenderAnAttendee" const:negate="1">
+	    <p>
+              <var:string label:value="reply_info_no_attendee" />
+            </p>
+	  </var:if>
+	  <var:if condition="isReplySenderAnAttendee">
+	    <var:if condition="canOriginalEventBeUpdated">
+              <p>
+                <var:string label:value="Status Update" />:
+                <i><var:string label:value="$inReplyAttendee.partStatWithDefault" /></i>,
+	        <var:string label:value="was" />
+	        <i><var:string label:value="$storedReplyAttendee.partStatWithDefault"/></i>.
+              </p>
+              <br/>
+              <md-button type="button" ng-click="iCalendarAction('updateUserStatus')">
+                <var:string label:value="Update status" />
+              </md-button>
+            </var:if>
+	  </var:if>
+        </var:if>
+
+        <!-- IMIP CANCEL - sent to attendees to notify of the attendee
+             being removed or the
+	     event being deleted -->
+        <var:if condition="inCalendar.method.uppercaseString" const:value="CANCEL">
+          <p><var:string label:value="cancel_info_text" /></p>
+	  <var:if condition="isEventStoredInCalendar">
+            <md-button type="button" ng-click="iCalendarAction('deleteFromCalendar')">
+              <var:string label:value="Delete from calendar" />
+            </md-button>
+	  </var:if>
+        </var:if>
+
+        <!-- IMIP ADD - TODO -->
+        <var:if condition="inCalendar.method.uppercaseString" const:value="ADD">
+          <p><var:string label:value="add_info_text" /></p>
+        </var:if>
+
+        <!-- IMIP PUBLISH - none-scheduling event sent to someone for
+             adding to the calendar -->
+        <var:if condition="inCalendar.method.uppercaseString" const:value="PUBLISH">
+          <p><var:string label:value="publish_info_text" /></p>
+        </var:if>
+
+        <var:if condition="isLoggedInUserTheOrganizer">
+	  <!--
+	      Possible Status:
+	      REPLY    => check whether it matches, if not suggest change, show comment
+	      REFRESH  => add button to resent iCal
+	      COUNTER  => show panel to decide on counter
+	  -->
+        </var:if>
+        <var:if condition="isLoggedInUserTheOrganizer" const:negate="1">
+	  <!--
+	      Possible Status:
+	      REQUEST => ACCEPT, TENTATIVELY, DECLINE buttons with comment field
+	      - only show buttons for attendees
+	      PUBLISH => just the 'add to calendar' button, rewrite organizer?
+	      ADD / CANCEL
+	      DECLINE-COUNTER
+	  -->
+        </var:if>
+
+        <!-- the user comment is used in replies -->
+        <var:if condition="inEvent.userComment.isNotEmpty">
+	  <div class="linked_attachment_meta" style="background-color: white;">
+	    <var:string value="inEvent.userComment" const:insertBR="1" />
+	  </div>
+	  <br />
+        </var:if>
+
+
+        <!-- EVENT'S METADATA (time, organizer, attendees, etc.) -->
+        <div class="pseudo-input-container">
+          <label class="pseudo-input-label"><var:string label:value="Organizer"/></label>
+          <div>
+            <var:string value="organizerDisplayName"/>
           </div>
         </div>
-      </var:if>
-    </div>
-      
+
+        <div class="pseudo-input-container">
+          <label class="pseudo-input-label"><var:string label:value="Time"/></label>
+          <div>
+            <var:string value="formattedDateTime"/>
+          </div>
+        </div>
+
+        <!-- ATTENDEES -->
+        <md-list>
+          <div class="pseudo-input-container">
+            <label class="pseudo-input-label"><var:string label:value="Attendees"/></label>
+            <!-- md-contact-chips don't support "readonly", so we build them using md-chips
+                 in readonly mode and a template similar to the one of md-contact-chips -->
+            <md-chips class="md-contact-chips sg-readonly"
+                      ng-model="::part.participants"
+                      readonly="true">
+              <md-chip-template>
+                <div class="md-contact-avatar">
+                  <sg-avatar-image sg-email="$chip.email" size="32"><!-- avatar --></sg-avatar-image>
+                </div>
+                <div class="md-contact-name">{{$chip.name}}</div>
+                <md-icon ng-class="'icon-' + $chip.status"><!-- partstat --></md-icon>
+              </md-chip-template>
+            </md-chips>
+          </div>
+        </md-list>
+
+        <var:if condition="authorativeEvent.comment.isNotEmpty">
+          <div class="pseudo-input-container">
+            <label class="pseudo-input-label">
+              <var:string label:value="Comment"/>
+            </label>
+            <div>
+              <md-content>
+                <var:string value="authorativeEvent.comment" const:insertBR="1" />
+              </md-content>
+            </div>
+          </div>
+        </var:if>
+      </md-card-content>
+    </md-card>
+
   </var:if><!--if condition="couldParseCalendar" -->
 
 </div>
