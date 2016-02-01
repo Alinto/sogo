@@ -1058,7 +1058,7 @@
         delete component.repeat.days;
       }
     }
-    else if (this.repeat.frequency) {
+    else if (this.repeat.frequency && this.repeat.frequency != 'never') {
       component.repeat = { frequency: this.repeat.frequency };
     }
     if (this.repeat.frequency) {
@@ -1075,6 +1075,11 @@
       delete component.repeat;
     }
 
+    // Check status
+    if (this.status == 'not-specified')
+      delete component.status;
+
+    // Verify alarm
     if (this.$hasAlarm) {
       if (this.alarm.action && this.alarm.action == 'email' &&
           !(this.attendees && this.attendees.length > 0)) {
