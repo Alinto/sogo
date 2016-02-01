@@ -1,3 +1,10 @@
+3.0.1 (2016-MM-DD)
+------------------
+
+Bug fixes
+- fixed blank calendar view when selecting "Descending Order" in the sort menu
+- show active user's default email address instead of system email address (#3473)
+
 3.0.0 (2016-01-27)
 ------------------
 
