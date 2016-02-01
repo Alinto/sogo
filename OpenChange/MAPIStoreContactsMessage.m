@@ -611,7 +611,7 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
     }
 
   if (!stringValue)
-    stringValue = @"";
+    return MAPISTORE_ERR_NOT_FOUND;
 
   *data = [stringValue asUnicodeInMemCtx: memCtx];
 
@@ -664,12 +664,17 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   uint32_t value = 0;
   NSArray *emailList = [self _buildAddressBookProviderEmailList];
 
-  for (NSNumber *maskValue in emailList)
-    value |= 1 << [maskValue intValue];
+  if ([emailList count] > 0)
+    {
+      for (NSNumber *maskValue in emailList)
+        value |= 1 << [maskValue intValue];
 
-  *data = MAPILongValue (memCtx, value);
+      *data = MAPILongValue (memCtx, value);
 
-  return MAPISTORE_SUCCESS;
+      return MAPISTORE_SUCCESS;
+    }
+  else
+    return MAPISTORE_ERR_NOT_FOUND;
 }
 
 - (int) getPidLidAddressBookProviderEmailList: (void **) data
@@ -677,9 +682,13 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 {
   NSArray *emailList = [self _buildAddressBookProviderEmailList];
 
-  *data = [emailList asMVLongInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
+  if ([emailList count] > 0)
+    {
+      *data = [emailList asMVLongInMemCtx: memCtx];
+      return MAPISTORE_SUCCESS;
+    }
+  else
+    return MAPISTORE_ERR_NOT_FOUND;
 }
 
 // ---------------------------------------------------------
