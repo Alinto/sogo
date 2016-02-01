@@ -470,7 +470,11 @@
 
 - (NSString *) userEmail
 {
-  return [[context activeUser] systemEmail];
+  NSDictionary *identity;
+
+  identity = [[context activeUser] defaultIdentity];
+
+  return [identity objectForKey: @"email"];
 }
 
 
