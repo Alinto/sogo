@@ -227,7 +227,7 @@
                      ng-repeat="part in viewer.message.$content()"
                      ng-class="part.msgclass">
                   <div ng-if="part.html" ng-bind-html="part.content | ensureTarget"><!-- msg --></div>
-                  <div ng-if="part.compile" sg-compile="part.content" sg-zoomable-image="sg-zoomable-image"><!-- msg --></div>
+                  <div ng-if="part.compile" class="md-flex" sg-compile="part.content" sg-zoomable-image="sg-zoomable-image"><!-- msg --></div>
                 </div>
               </div>
             </div>
