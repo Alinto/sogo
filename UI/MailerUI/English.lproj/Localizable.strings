@@ -54,8 +54,10 @@
 "Share" = "Share";
 "Account" = "Account";
 "Shared Account" = "Shared Account";
-/* Empty right pane */
+/* A mailbox is selected, but no message (only shown on large screens) */
 "No message selected" = "No message selected";
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "No mailbox selected";
 /* acls */
 "Access rights to" = "Access rights to";
 "For user" = "For user";

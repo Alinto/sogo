@@ -188,7 +188,17 @@
       </md-content>
     </md-sidenav>
 
-    <section layout="column" class="layout-fill" ui-view="mailbox"><!-- messages list --></section>
+    <section layout="column" class="layout-fill" ui-view="mailbox">
+      <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main">
+        <var:component className="UIxTopnavToolbarTemplate"/>
+      </md-toolbar>
+      <md-content class="md-flex layout-fill md-hue-1"
+                  layout="column" layout-align="center center">
+        <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title">
+          <var:string label:value="No mailbox selected"/>
+        </div>
+      </md-content>
+    </section>
   </script>
 
   <script type="text/ng-template" id="UIxMailFolderTemplate">

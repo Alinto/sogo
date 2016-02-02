@@ -16,7 +16,6 @@
     $stateProvider
       .state('mail', {
         url: '/Mail',
-        abstract: true,
         views: {
           mailboxes: {
             templateUrl: 'UIxMailMainFrame', // UI/Templates/MailerUI/UIxMailMainFrame.wox
@@ -326,7 +325,11 @@
   function runBlock($rootScope, $log, $state) {
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       $log.error(error);
-      $state.go('mail');
+      event.preventDefault();
+      if (toState.name != 'mail.account.inbox')
+        $state.go('mail.account.inbox');
+      else
+        $state.go('mail');
     });
     $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
       $log.error(event, current, previous, rejection);
