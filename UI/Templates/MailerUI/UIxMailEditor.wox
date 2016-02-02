@@ -45,7 +45,7 @@
     </div>
 
     <md-dialog-content>
-      <header class="md-padding">
+      <header class="sg-padded">
         <div class="msg-header-content">
 
           <!-- to -->

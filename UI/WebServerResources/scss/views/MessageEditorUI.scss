@@ -30,7 +30,7 @@ textarea.ck-editor {
 }
 // Plain text editor
 div.plain-text {
-  @extend .md-padding;
+  padding: 0 $mg $mg;
   textarea {
     width: 100%;
     min-height: grid-step(3);
