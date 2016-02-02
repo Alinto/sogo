@@ -64,6 +64,7 @@
 
 @implementation UIxComponent
 
+static NSMutableArray *amPmLabelKeys      = nil;
 static NSMutableArray *dayLabelKeys       = nil;
 static NSMutableArray *abbrDayLabelKeys   = nil;
 static NSMutableArray *monthLabelKeys     = nil;
@@ -72,6 +73,10 @@ static SoProduct      *commonProduct      = nil;
 
 + (void)initialize {
   if (dayLabelKeys == nil) {
+    amPmLabelKeys = [[NSMutableArray alloc] initWithCapacity:2];
+    [amPmLabelKeys addObject:@"AM"];
+    [amPmLabelKeys addObject:@"PM"];
+
     dayLabelKeys = [[NSMutableArray alloc] initWithCapacity:7];
     [dayLabelKeys addObject:@"Sunday"];
     [dayLabelKeys addObject:@"Monday"];
@@ -122,6 +127,11 @@ static SoProduct      *commonProduct      = nil;
     commonProduct = [[SoProduct alloc] initWithBundle:
                              [NSBundle bundleForClass: NSClassFromString(@"CommonUIProduct")]];
   }
+}
+
++ (NSArray *) amPmLabelKeys
+{
+  return (NSArray *) amPmLabelKeys;
 }
 
 + (NSArray *) abbrDayLabelKeys

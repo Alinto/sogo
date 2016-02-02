@@ -394,6 +394,7 @@ Date.prototype.format = function(localeProvider, format) {
         '%H': this.getHours(),                                    // hour (00..23)
         '%M': this.getMinutes() };                                // minute (00..59)
   val['%I'] = val['%H'] > 12 ? val['%H'] % 12 : val['%H'];        // hour (01..12)
+  val['%p'] = val['%H'] < 12 ? l('AM') : l('PM');                 // locale's equivalent of either AM or PM
 
   val['%d'] = (val['%d'] < 10 ? '0' : '') + val['%d'];
   val['%e'] = (val['%e'] < 10 ? ' ' : '') + val['%e'];
