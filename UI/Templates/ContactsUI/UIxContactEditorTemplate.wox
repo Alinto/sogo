@@ -7,7 +7,7 @@
 
   <div layout="column" class="layout-fill sg-reversible">
     <md-card style="overflow: hidden">
-      <md-card-actions layout="row" layout-align="end center">
+      <md-card-actions flex="none" layout="row" layout-align="end center">
         <md-button class="md-icon-button"
                    label:aria-label="Cancel"
                    ng-click="editor.cancel()">

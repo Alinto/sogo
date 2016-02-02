@@ -8,7 +8,7 @@
     xmlns:label="OGo:label">
 
   <md-card>
-    <md-card-actions layout="row" layout-align="start center">
+    <md-card-actions flex="none" layout="row" layout-align="start center">
       <md-button class="md-icon-button"
                  label:aria-label="Previous Day"
                  var:date="prevDayQueryParameters.day"

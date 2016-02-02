@@ -61,6 +61,7 @@ $quarter_height: 10px;
 
   // The days labels appear in the toolbar
   md-toolbar {
+    min-height: 0;
     &.daysView, &.monthView {
       background-color: #fff;
       z-index: $z-index-toolbar - 1;
@@ -70,6 +71,7 @@ $quarter_height: 10px;
           overflow-y: scroll;
         }
         &.dayLabels {
+          min-height: 0;
           .day {
             padding-left: 1%;
             div {
@@ -78,10 +80,6 @@ $quarter_height: 10px;
           }
         }
       }
-    }
-    &.daysView {
-      // Toolbar of day/week views
-      min-height: inherit;
     }
     &[sg-view$=dayview] {
       // Toolbar of day view only
@@ -104,6 +102,7 @@ $quarter_height: 10px;
   .allDaysView {
     border-bottom: 1px solid sg-color($sogoPaper, 300);
     max-height: $sg-font-size-4 * 6;
+    min-height: 0;
     overflow: hidden;
     overflow-y: scroll;
 
@@ -154,6 +153,9 @@ $quarter_height: 10px;
     right: 0;
     top: 0;
     bottom: 0;
+    md-card-actions {
+      min-height: 0;
+    }
   }
 
   md-content[sg-calendar-scroll-view] {

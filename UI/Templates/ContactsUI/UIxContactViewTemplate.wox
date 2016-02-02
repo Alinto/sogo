@@ -8,7 +8,7 @@
   <div class="sg-reversible" ng-class="{ 'sg-flip': editor.showRawSource }">
     <div layout="column" class="layout-fill sg-face">
       <md-card>
-        <md-card-actions layout="row" layout-align="end center">
+        <md-card-actions flex="none" layout="row" layout-align="end center">
           <md-button class="sg-icon-button hide show-xs"
                      label:aria-label="Close"
                      ng-click="editor.close()">
@@ -183,7 +183,7 @@
     </div>
     <div class="layout-fill sg-back" layout="column">
       <md-card>
-        <md-card-actions layout="row" layout-align="end center">
+        <md-card-actions flex="none" layout="row" layout-align="end center">
           <md-button class="md-icon-button"
                      label:aria-label="Close"
                      ng-click="editor.toggleRawSource()">

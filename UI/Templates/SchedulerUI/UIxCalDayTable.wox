@@ -40,7 +40,7 @@
 
     <var:if condition="isMultiColumnView">
       <!-- Calendars names in multicolumn day view -->
-      <div class="days">
+      <div class="days dayLabels">
         <div class="day multicolumnDay"
              ng-repeat="view in calendar.views"
              ng-class="view.calendar.getClassName('bdr')">
