@@ -81,8 +81,6 @@
           // User confirmed the deletion
           var components = _.filter(Component['$' + vm.componentType], function(component) { return component.selected; });
           Calendar.$deleteComponents(components);
-        },  function(data, status) {
-          // Delete failed
         });
     }
 

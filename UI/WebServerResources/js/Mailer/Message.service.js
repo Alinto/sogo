@@ -416,8 +416,6 @@
     Message.$$resource.post([this.$absolutePath(), path].join('/'), action, data).then(function(data) {
       Message.$timeout(function() {
         _this.$reload();
-      }, function() {
-        // TODO: show toast
       });
     });
   };
