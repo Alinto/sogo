@@ -1,6 +1,9 @@
 3.0.1 (2016-MM-DD)
 ------------------
 
+Enhancements
+- improved scrolling behavior when deleting a single message (#3489)
+
 Bug fixes
 - fixed blank calendar view when selecting "Descending Order" in the sort menu
 - show active user's default email address instead of system email address (#3473)

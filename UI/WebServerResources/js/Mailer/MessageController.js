@@ -133,7 +133,10 @@
           try {
             if (nextMessage) {
               state.go('mail.account.mailbox.message', { messageId: nextMessage.uid });
-              mailbox.$topIndex = nextIndex;
+              if (nextIndex < mailbox.$topIndex)
+                mailbox.$topIndex = nextIndex;
+              else if (nextIndex > mailbox.$lastVisibleIndex)
+                mailbox.$topIndex = nextIndex - (mailbox.$lastVisibleIndex - mailbox.$topIndex);
             }
             else {
               state.go('mail.account.mailbox');

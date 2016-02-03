@@ -192,6 +192,7 @@
 
     if (index >= 0 && index < this.$messages.length) {
       message = this.$messages[index];
+      this.$lastVisibleIndex = Math.max(0, index - 3); // Magic number is NUM_EXTRA from virtual-repeater.js
 
       if (this.$loadMessage(message.uid))
         return message;
