@@ -151,6 +151,7 @@
 
       if (component.isNew) {
         coordinates = pointerHandler.currentEventCoordinates;
+        component.summary = '';
         if (component.isAllDay)
           coordinates.duration -= 96;
         component.setDelta(coordinates.duration * 15);
