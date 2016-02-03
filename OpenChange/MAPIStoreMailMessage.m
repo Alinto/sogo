@@ -65,9 +65,13 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
+#define BODY_CONTENT_TEXT 0
+#define BODY_CONTENT_HTML 1
+
 @class iCalCalendar, iCalEvent;
 
 static Class NSExceptionK, MAPIStoreSharingMessageK;
+static NSArray *acceptedMimeTypes;
 
 @interface NSString (MAPIStoreMIME)
 
@@ -111,22 +115,33 @@ static Class NSExceptionK, MAPIStoreSharingMessageK;
 {
   NSExceptionK = [NSException class];
   MAPIStoreSharingMessageK = [MAPIStoreSharingMessage class];
+  acceptedMimeTypes = [[NSArray alloc] initWithObjects: @"text/calendar",
+                                                        @"application/ics",
+                                                        @"text/html",
+                                                        @"text/plain",
+                                                        nil];
 }
 
 - (id) init
 {
   if ((self = [super init]))
     {
-      mimeKey = nil;
+      bodyContentKeys = nil;
+      bodyPartsEncodings = nil;
+      bodyPartsCharsets = nil;
+      bodyPartsMimeTypes = nil;
+
+      headerSetup = NO;
+      bodySetup = NO;
+      bodyContent = nil;
+      multipartMixed = NO;
+      
       mailIsEvent = NO;
       mailIsMeetingRequest = NO;
       mailIsSharingObject = NO;
       headerCharset = nil;
-      headerEncoding = nil;
       headerMimeType = nil;
-      headerSetup = NO;
-      bodyContent = nil;
-      bodySetup = NO;
+
       appointmentWrapper = nil;
     }
 
@@ -135,11 +150,15 @@ static Class NSExceptionK, MAPIStoreSharingMessageK;
 
 - (void) dealloc
 {
-  [mimeKey release];
+  [bodyContentKeys release];
+  [bodyPartsEncodings release];
+  [bodyPartsCharsets release];
+  [bodyPartsMimeTypes release];
+  
   [bodyContent release];
+  
   [headerMimeType release];
   [headerCharset release];
-  [headerEncoding release];
   [appointmentWrapper release];
   [super dealloc];
 }
@@ -234,30 +253,82 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 {
   MAPIStoreSharingMessage *sharingMessage;
   NSMutableArray *keys;
-  NSArray *acceptedTypes;
-  NSDictionary *messageData, *partHeaderData, *parameters;
+  NSUInteger keysCount;
+  NSDictionary *partHeaderData, *parameters;
   NSString *sharingHeader;
 
-  acceptedTypes = [NSArray arrayWithObjects: @"text/calendar",
-                           @"application/ics",
-                           @"text/html",
-                           @"text/plain", nil];
   keys = [NSMutableArray array];
   [sogoObject addRequiredKeysOfStructure: [sogoObject bodyStructure]
                                     path: @"" toArray: keys
-                           acceptedTypes: acceptedTypes
+                           acceptedTypes: acceptedMimeTypes
                                 withPeek: YES];
-  [keys sortUsingFunction: _compareBodyKeysByPriority context: acceptedTypes];
-  if ([keys count] > 0)
+  [keys sortUsingFunction: _compareBodyKeysByPriority context: acceptedMimeTypes];
+  keysCount = [keys count];
+  if (keysCount > 0)
     {
-      messageData = [keys objectAtIndex: 0];
-      ASSIGN (mimeKey, [messageData objectForKey: @"key"]);
-      ASSIGN (headerMimeType, [messageData objectForKey: @"mimeType"]);
-      partHeaderData
-        = [sogoObject lookupInfoForBodyPart: [mimeKey _strippedBodyKey]];
-      ASSIGN (headerEncoding, [partHeaderData objectForKey: @"encoding"]);
-      parameters = [partHeaderData objectForKey: @"parameterList"];
-      ASSIGN (headerCharset, [parameters objectForKey: @"charset"]);
+      NSUInteger i;
+      id bodyStructure;
+
+      bodyStructure = [sogoObject bodyStructure];
+      /* multipart/mixed is the default type. 
+         multipart/alternative is the only other type of multipart supported here.
+      */
+      if ([[bodyStructure objectForKey: @"type"] isEqualToString: @"multipart"])
+        multipartMixed = ! [[bodyStructure objectForKey: @"subtype"] isEqualToString: @"alternative"];
+      else
+        multipartMixed = NO;
+      
+      bodyContentKeys = [[NSMutableArray alloc] initWithCapacity: keysCount];
+      bodyPartsEncodings = [[NSMutableDictionary alloc] initWithCapacity: keysCount];
+      bodyPartsCharsets = [[NSMutableDictionary alloc] initWithCapacity: keysCount];
+      bodyPartsMimeTypes = [[NSMutableDictionary alloc] initWithCapacity: keysCount];
+      
+      for (i = 0; i < keysCount; i++)
+        {
+          NSString *key;
+          NSString *mimeType;
+          NSString *strippedKey;
+          NSString *encoding;
+          NSString *charset;
+          NSDictionary *partParameters;
+
+          key = [[keys objectAtIndex: i] objectForKey: @"key"];
+          if (key == nil)
+            continue;
+          
+          [bodyContentKeys addObject: key];
+
+          strippedKey =  [key _strippedBodyKey];
+          partHeaderData = [sogoObject lookupInfoForBodyPart: strippedKey];
+
+          partParameters = [partHeaderData objectForKey: @"parameterList"];
+          encoding = [partHeaderData objectForKey: @"encoding"];
+          charset = [partParameters objectForKey: @"charset"];
+          mimeType = [[keys objectAtIndex: i] objectForKey: @"mimeType"];  
+
+          if (encoding)
+            [bodyPartsEncodings setObject: encoding forKey: key];
+          if (charset)
+            [bodyPartsCharsets setObject: charset forKey: key];
+          if (mimeType)
+            [bodyPartsMimeTypes setObject: mimeType forKey: key];
+
+          if (i == 0)
+             {
+               ASSIGN (headerMimeType, mimeType);
+               ASSIGN (headerCharset, charset);               
+               parameters = partParameters;
+             }
+          else
+            {
+              /* We can only put one header charset so we will use utf-8
+                 when we have different charsets in the parts */
+              if (headerCharset != charset)
+                ASSIGN (headerCharset, @"utf-8");
+            }
+        }
+      
+      
       if ([headerMimeType isEqualToString: @"text/calendar"]
           || [headerMimeType isEqualToString: @"application/ics"])
       {
@@ -288,31 +359,93 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 
 - (void) _fetchBodyData
 {
-  NSData *rawContent;
-  NSString *resultKey;
-  id result;
-
   if (!headerSetup)
     [self _fetchHeaderData];
 
-  if (!bodyContent && mimeKey)
+  if (!bodyContent && bodyContentKeys)
     {
-      result = [sogoObject fetchParts: [NSArray arrayWithObject: mimeKey]];
+      id result;      
+      NSString *key;
+      NSEnumerator *enumerator;
+      NSMutableData *htmlContent = nil;
+      NSMutableData *textContent = nil;
+      
+      result = [sogoObject fetchParts: bodyContentKeys];
       result = [[result valueForKey: @"RawResponse"] objectForKey: @"fetch"];
-      if ([mimeKey hasPrefix: @"body.peek"])
-        resultKey = [NSString stringWithFormat: @"body[%@]",
-                              [mimeKey _strippedBodyKey]];
+
+      htmlContent = [[NSMutableData alloc] initWithCapacity: 0];
+      if (multipartMixed || mailIsEvent)
+        textContent = htmlContent;
       else
-        resultKey = mimeKey;
-      rawContent = [[result objectForKey: resultKey] objectForKey: @"data"];
-      ASSIGN (bodyContent, [rawContent bodyDataFromEncoding: headerEncoding]);
+        textContent = [[NSMutableData alloc] initWithCapacity: 0];      
+      
+      enumerator = [bodyContentKeys objectEnumerator];
+      while ((key = [enumerator nextObject]))
+        {
+          NSString *noPeekKey = [key stringByReplacingOccurrencesOfString: @"body.peek"
+                                                               withString: @"body"];          
+          
+          NSData *content = [[result objectForKey: noPeekKey] objectForKey: @"data"];
+          if (content == nil)
+            continue;
+          NSString *mimeType = [bodyPartsMimeTypes objectForKey: key];
+          if (mimeType == nil)
+            continue;          
+          NSString *encoding = [bodyPartsEncodings objectForKey: key];
+          if (encoding == nil)
+            encoding = @"7-bit";
+
+          /* We should provide a case for each of the types in acceptedMimeTypes */
+          if ([mimeType isEqualToString: @"text/html"] && !mailIsEvent)
+            {
+              content = [content bodyDataFromEncoding: encoding];
+              [htmlContent appendData: content];
+            }
+          else if ([mimeType isEqualToString: @"text/plain"] && !mailIsEvent)
+            {
+              content = [content bodyDataFromEncoding: encoding];
+              NSString *charset = [bodyPartsCharsets objectForKey: key];
+              if (charset)
+                {
+                  NSString *stringValue = [content bodyStringFromCharset: charset];
+                  [textContent appendData: [stringValue dataUsingEncoding: NSUTF8StringEncoding]];
+                }
+              else
+                {
+                  [textContent appendData: content];
+                }
+            }
+          else if (mailIsEvent &&
+                   ([mimeType isEqualToString: @"text/calendar"] ||
+                    [mimeType isEqualToString: @"application/ics"]))
+            {
+              content = [content bodyDataFromEncoding: encoding];
+              [textContent appendData: content];
+            }
+          else
+            {
+              [self warnWithFormat: @"Unsupported combination for body part. MIME type: %@. Event: %i",
+                    mimeType, mailIsEvent];
+            }
+        }
+
+      NSArray *newBodyContent = [[NSArray alloc] initWithObjects: textContent, htmlContent, nil];
+      ASSIGN (bodyContent, newBodyContent);
     }
 
   bodySetup = YES;
 }
 
+- (NSArray*) getBodyContent
+{
+  if (!bodySetup)
+    [self _fetchBodyData];
+  return bodyContent;
+}
+
 - (MAPIStoreAppointmentWrapper *) _appointmentWrapper
 {
+  NSData *textContent;
   NSArray *events, *from;
   iCalCalendar *calendar;
   iCalEvent *event;
@@ -324,7 +457,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       if (!bodySetup)
         [self _fetchBodyData];
 
-      stringValue = [bodyContent bodyStringFromCharset: headerCharset];
+      textContent = [bodyContent objectAtIndex: BODY_CONTENT_TEXT];
+      stringValue = [textContent bodyStringFromCharset: headerCharset];
       calendar = [iCalCalendar parseSingleFromSource: stringValue];
       events = [calendar events];
       if ([events count] > 0)
@@ -1030,24 +1164,37 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 - (int) getPidTagBody: (void **) data
              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  NSString *stringValue;
-  int rc = MAPISTORE_SUCCESS;
+  NSData *textContent;
+  int rc;
 
   if (!bodySetup)
     [self _fetchBodyData];
 
-  if ([headerMimeType isEqualToString: @"text/plain"])
-    {
-      stringValue = [bodyContent bodyStringFromCharset: headerCharset];
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-    }
-  else if (mailIsEvent)
-    rc = [[self _appointmentWrapper] getPidTagBody: data
-                                          inMemCtx: memCtx];
-  else
+  if (!bodyContent)
     {
       *data = NULL;
-      rc = MAPISTORE_ERR_NOT_FOUND;
+      return MAPISTORE_ERR_NOT_FOUND;
+    }
+
+  if (mailIsEvent)
+    {
+      rc = [[self _appointmentWrapper] getPidTagBody: data
+                                            inMemCtx: memCtx];
+    }
+  else
+    {
+      textContent = [bodyContent objectAtIndex: BODY_CONTENT_TEXT];
+      if ([textContent length])
+        {
+          NSString *stringValue = [textContent bodyStringFromCharset: headerCharset];
+          *data = [stringValue asUnicodeInMemCtx: memCtx];
+          rc = MAPISTORE_SUCCESS;
+        }
+      else
+        {
+          *data = NULL;
+          rc = MAPISTORE_ERR_NOT_FOUND;
+        }
     }
 
   return rc;
@@ -1056,13 +1203,25 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 - (int) getPidTagHtml: (void **) data
              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  NSData *htmlContent;
+  int rc;
 
   if (!bodySetup)
     [self _fetchBodyData];
 
-  if ([headerMimeType isEqualToString: @"text/html"])
-    *data = [bodyContent asBinaryInMemCtx: memCtx];
+  if (!bodyContent || mailIsEvent)
+    {
+      *data = NULL;
+      return MAPISTORE_ERR_NOT_FOUND;
+    }
+
+  htmlContent = [bodyContent objectAtIndex: BODY_CONTENT_HTML] ;
+  
+  if ([htmlContent length])
+    {
+      *data = [htmlContent asBinaryInMemCtx: memCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
   else
     {
       *data = NULL;
@@ -1680,24 +1839,12 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return MAPISTORE_SUCCESS;
 }
 
-- (NSString *) bodyContentPartKey
-{
-  NSString *bodyPartKey;
-
-  if (!headerSetup)
-    [self _fetchHeaderData];
-
-  bodyPartKey = mimeKey;
-
-  return bodyPartKey;
-}
-
-- (void) setBodyContentFromRawData: (NSData *) rawContent
+- (void) setBodyContentFromRawData: (NSArray *) rawContent
 {
   if (!headerSetup)
     [self _fetchHeaderData];
 
-  ASSIGN (bodyContent, [rawContent bodyDataFromEncoding: headerEncoding]);
+  ASSIGN (bodyContent, rawContent);
   bodySetup = YES;
 }
 

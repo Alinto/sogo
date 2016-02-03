@@ -25,8 +25,10 @@
 
 #import "MAPIStoreMessage.h"
 
-@class NSData;
 @class NSString;
+@class NSArray;
+@class NSMutableArray;
+@class NSMutableDictionary;
 
 @class MAPIStoreAppointmentWrapper;
 @class MAPIStoreMailFolder;
@@ -37,12 +39,17 @@
   BOOL mailIsEvent;
   BOOL mailIsMeetingRequest;
   BOOL mailIsSharingObject;
-  NSString *mimeKey;
+
+  NSMutableArray *bodyContentKeys;
+  NSMutableDictionary *bodyPartsEncodings;
+  NSMutableDictionary *bodyPartsCharsets;
+  NSMutableDictionary *bodyPartsMimeTypes;
+  
   NSString *headerCharset;
-  NSString *headerEncoding;
   NSString *headerMimeType;
   BOOL bodySetup;
-  NSData *bodyContent;
+  BOOL multipartMixed;
+  NSArray *bodyContent;
   BOOL fetchedAttachments;
 
   MAPIStoreAppointmentWrapper *appointmentWrapper;
@@ -73,8 +80,8 @@
                inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* batch-mode helpers */
-- (NSString *) bodyContentPartKey;
-- (void) setBodyContentFromRawData: (NSData *) rawContent;
+- (void) setBodyContentFromRawData: (NSArray *) rawContent;
+- (NSArray *) getBodyContent;
 
 @end
 

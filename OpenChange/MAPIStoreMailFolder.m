@@ -1657,7 +1657,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 - (id) lookupMessage: (NSString *) messageKey
 {
   MAPIStoreMailMessage *message;
-  NSData *rawBodyData;
+  NSArray *rawBodyData;
 
   message = [super lookupMessage: messageKey];
   if (message)
@@ -1731,73 +1731,31 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 - (enum mapistore_error) preloadMessageBodiesWithKeys: (NSArray *) keys
                                           ofTableType: (enum mapistore_table_type) tableType
 {
+  NSEnumerator *enumerator;
+  NSUInteger max;
+  NSString *messageKey;
   MAPIStoreMailMessage *message;
-  NSMutableSet *bodyPartKeys;
-  NSMutableDictionary *keyAssoc;
-  NSDictionary *response;
-  NSUInteger count, max;
-  NSString *messageKey, *messageUid, *bodyPartKey;
-  NGImap4Client *client;
-  NSArray *fetch;
-  NSData *bodyContent;
+  NSArray* bodyContent;
 
-  if (tableType == MAPISTORE_MESSAGE_TABLE)
+  if (tableType != MAPISTORE_MESSAGE_TABLE)
+    return MAPISTORE_SUCCESS;
+
+  [bodyData removeAllObjects];
+
+  max = [keys count];
+  if (max == 0)
+    return MAPISTORE_SUCCESS;
+
+  enumerator = [keys objectEnumerator];
+  while ((messageKey = [enumerator nextObject]))
     {
-      [bodyData removeAllObjects];
-      max = [keys count];
-
-      if (max > 0)
+      message = [self lookupMessage: messageKey];
+      if (message)
         {
-          bodyPartKeys = [NSMutableSet setWithCapacity: max];
-
-          keyAssoc = [NSMutableDictionary dictionaryWithCapacity: max];
-          for (count = 0; count < max; count++)
+          bodyContent = [message getBodyContent];
+          if (bodyContent)
             {
-              messageKey = [keys objectAtIndex: count];
-              message = [self lookupMessage: messageKey];
-              if (message)
-                {
-                  bodyPartKey = [message bodyContentPartKey];
-                  if (bodyPartKey)
-                    {
-                      [bodyPartKeys addObject: bodyPartKey];
-                      messageUid = [self messageUIDFromMessageKey: messageKey];
-                      /* If the bodyPartKey include peek, remove it as it is not returned
-                         as key in the IMAP server response.
-
-                         IMAP conversation example:
-                         a4 UID FETCH 1 (UID BODY.PEEK[text])
-                         * 1 FETCH (UID 1 BODY[TEXT] {1677}
-                      */
-                      bodyPartKey = [bodyPartKey stringByReplacingOccurrencesOfString: @"body.peek"
-                                                                           withString: @"body"];
-                      [keyAssoc setObject: bodyPartKey forKey: messageUid];
-                    }
-                }
-            }
-
-          client = [[(SOGoMailFolder *) sogoObject imap4Connection] client];
-          [client select: [sogoObject absoluteImap4Name]];
-          response = [client fetchUids: [keyAssoc allKeys]
-                             parts: [bodyPartKeys allObjects]];
-          fetch = [response objectForKey: @"fetch"];
-          max = [fetch count];
-          for (count = 0; count < max; count++)
-            {
-              response = [fetch objectAtIndex: count];
-              messageUid = [[response objectForKey: @"uid"] stringValue];
-              bodyPartKey = [keyAssoc objectForKey: messageUid];
-              if (bodyPartKey)
-                {
-                  bodyContent = [[response objectForKey: bodyPartKey]
-                                  objectForKey: @"data"];
-                  if (bodyContent)
-                    {
-                      messageKey = [NSString stringWithFormat: @"%@.eml",
-                                             messageUid];
-                      [bodyData setObject: bodyContent forKey: messageKey];
-                    }
-                }
+              [bodyData setObject: bodyContent forKey: messageKey];
             }
         }
     }
