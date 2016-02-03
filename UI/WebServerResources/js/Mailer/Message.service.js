@@ -168,7 +168,7 @@
           if (data.name.split(' ').length)
             data.shortname = data.name.split(' ')[0].replace('\'','');
         }
-        else {
+        else if (data.email) {
           data.full = '<' + data.email + '>';
           data.shortname = data.email.split('@')[0];
         }
