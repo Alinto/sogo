@@ -156,28 +156,6 @@
           <md-icon>delete</md-icon>
         </md-button>
         <md-menu>
-          <md-button class="sg-icon-button" label:aria-label="Copy messages" ng-click="$mdOpenMenu()">
-            <md-tooltip md-direction="bottom"><var:string label:value="Copy To"/></md-tooltip>
-            <md-icon>content_copy</md-icon>
-          </md-button>
-          <md-menu-content width="4">
-            <div ng-repeat="account in mailbox.accounts track by account.id">
-              <md-menu-item>
-                <md-button class="md-primary" ng-disabled="true">{{account.name}}</md-button>
-              </md-menu-item>
-              <md-menu-divider><!-- divider --></md-menu-divider>
-              <md-menu-item ng-repeat="folder in
-                                       account.$flattenMailboxes({ all: true })
-                                       track by folder.path"
-                            ng-hide="mailbox.id == folder.id">
-                <md-button ng-click="mailbox.copySelectedMessages(folder.id)">
-                  <span ng-class="'sg-child-level-' + folder.level">{{folder.name}}</span>
-                </md-button>
-              </md-menu-item>
-            </div>
-          </md-menu-content>
-        </md-menu>
-        <md-menu>
           <md-button class="sg-icon-button" label:aria-label="More messages options" ng-click="$mdOpenMenu()">
             <md-icon>more_vert</md-icon>
           </md-button>
@@ -196,6 +174,52 @@
               <md-button ng-click="mailbox.saveSelectedMessages()">
                 <var:string label:value="Save As..."/>
               </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-menu>
+                <md-button label:aria-label="Copy To" ng-click="$mdOpenMenu($event)">
+                  <var:string label:value="Copy To"/>
+                </md-button>
+                <md-menu-content width="4">
+                  <div ng-repeat="account in mailbox.accounts track by account.id">
+                    <md-menu-item>
+                      <md-button class="md-primary" ng-disabled="true">{{account.name}}</md-button>
+                    </md-menu-item>
+                    <md-menu-divider><!-- divider --></md-menu-divider>
+                    <md-menu-item ng-repeat="folder in
+                                             account.$flattenMailboxes({ all: true })
+                                             track by folder.path"
+                                  ng-hide="mailbox.id == folder.id">
+                      <md-button ng-click="mailbox.copySelectedMessages(folder.id)">
+                        <span ng-class="'sg-child-level-' + folder.level">{{folder.name}}</span>
+                      </md-button>
+                    </md-menu-item>
+                  </div>
+                </md-menu-content>
+              </md-menu>
+            </md-menu-item>
+            <md-menu-item>
+              <md-menu>
+                <md-button label:aria-label="Move To" ng-click="$mdOpenMenu($event)">
+                  <var:string label:value="Move To"/>
+                </md-button>
+                <md-menu-content width="4">
+                  <div ng-repeat="account in mailbox.accounts track by account.id">
+                    <md-menu-item>
+                      <md-button class="md-primary" ng-disabled="true">{{account.name}}</md-button>
+                    </md-menu-item>
+                    <md-menu-divider><!-- divider --></md-menu-divider>
+                    <md-menu-item ng-repeat="folder in
+                                             account.$flattenMailboxes({ all: true })
+                                             track by folder.path"
+                                  ng-hide="mailbox.id == folder.id">
+                      <md-button ng-click="mailbox.moveSelectedMessages(folder.id)">
+                        <span ng-class="'sg-child-level-' + folder.level">{{folder.name}}</span>
+                      </md-button>
+                    </md-menu-item>
+                  </div>
+                </md-menu-content>
+              </md-menu>
             </md-menu-item>
           </md-menu-content>
         </md-menu>

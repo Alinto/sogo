@@ -3,6 +3,7 @@
 
 Enhancements
 - improved scrolling behavior when deleting a single message (#3489)
+- added "Move To" option for selected messages (#3477)
 
 Bug fixes
 - fixed blank calendar view when selecting "Descending Order" in the sort menu

@@ -478,7 +478,7 @@
       response = [co moveUIDs: uids  toFolder: destinationFolder inContext: context];
       if (!response)
         {
-          // Verify if the message beeing delete is saved as the root of a collapsed thread
+          // Verify if the message being deleted is saved as the root of a collapsed thread
           us = [[context activeUser] userSettings];
           moduleSettings = [us objectForKey: @"Mail"];
           threadsCollapsed = [moduleSettings objectForKey: @"threadsCollapsed"];
@@ -501,7 +501,7 @@
   else
     {
       data = [NSDictionary dictionaryWithObject: [self labelForKey: @"Error moving messages." inContext: context]
-                                         forKey: @"error"];
+                                         forKey: @"message"];
       response = [self responseWithStatus: 500 andJSONRepresentation: data];
     }
 

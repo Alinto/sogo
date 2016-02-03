@@ -24,7 +24,7 @@
     vm.unselectMessages = unselectMessages;
     vm.confirmDeleteSelectedMessages = confirmDeleteSelectedMessages;
     vm.copySelectedMessages = copySelectedMessages;
-    // vm.moveSelectedMessages = moveSelectedMessages;
+    vm.moveSelectedMessages = moveSelectedMessages;
     vm.saveSelectedMessages = saveSelectedMessages;
     vm.markSelectedMessagesAsFlagged = markSelectedMessagesAsFlagged;
     vm.markSelectedMessagesAsUnread = markSelectedMessagesAsUnread;
@@ -56,49 +56,53 @@
       Dialog.confirm(l('Warning'),
                      l('Are you sure you want to delete the selected messages?'))
         .then(function() {
-          // User confirmed the deletion
-          var unselectMessage = false;
+          var deleteSelectedMessage = false;
           var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) {
             if (message.selected &&
                 message.uid == vm.selectedFolder.selectedMessage)
-              unselectMessage = true;
+              deleteSelectedMessage = true;
             return message.selected;
           });
           vm.selectedFolder.$deleteMessages(selectedMessages).then(function(index) {
-            var nextMessage, previousMessage, nextIndex = index;
-            if (unselectMessage) {
-              if (Mailbox.$virtualMode) {
-                $state.go('mail.account.virtualMailbox');
-              }
-              else {
-                // Select either the next or previous message
-                if (index > 0) {
-                  nextIndex -= 1;
-                  nextMessage = vm.selectedFolder.$messages[nextIndex];
-                }
-                if (index < vm.selectedFolder.$messages.length)
-                  previousMessage = vm.selectedFolder.$messages[index];
-                if (nextMessage) {
-                  if (nextMessage.isread && previousMessage && !previousMessage.isread) {
-                    nextIndex = index;
-                    nextMessage = previousMessage;
-                  }
-                }
-                else if (previousMessage) {
-                  nextIndex = index;
-                  nextMessage = previousMessage;
-                }
-                if (nextMessage) {
-                  $state.go('mail.account.mailbox.message', { messageId: nextMessage.uid });
-                  vm.selectedFolder.$topIndex = nextIndex;
-                }
-                else {
-                  $state.go('mail.account.mailbox');
-                }
-              }
-            }
+            unselectMessage(deleteSelectedMessage, index);
           });
         });
+    }
+
+    function unselectMessage(message, index) {
+      // Unselect current message and cleverly load the next message
+      var nextMessage, previousMessage, nextIndex = index;
+      if (message) {
+        if (Mailbox.$virtualMode) {
+          $state.go('mail.account.virtualMailbox');
+        }
+        else {
+          // Select either the next or previous message
+          if (index > 0) {
+            nextIndex -= 1;
+            nextMessage = vm.selectedFolder.$messages[nextIndex];
+          }
+          if (index < vm.selectedFolder.$messages.length)
+            previousMessage = vm.selectedFolder.$messages[index];
+          if (nextMessage) {
+            if (nextMessage.isread && previousMessage && !previousMessage.isread) {
+              nextIndex = index;
+              nextMessage = previousMessage;
+            }
+          }
+          else if (previousMessage) {
+            nextIndex = index;
+            nextMessage = previousMessage;
+          }
+          if (nextMessage) {
+            $state.go('mail.account.mailbox.message', { messageId: nextMessage.uid });
+            vm.selectedFolder.$topIndex = nextIndex;
+          }
+          else {
+            $state.go('mail.account.mailbox');
+          }
+        }
+      }
     }
 
     function copySelectedMessages(folder) {
@@ -107,14 +111,18 @@
       vm.selectedFolder.$copyMessages(selectedUIDs, '/' + folder);
     }
 
-    // function moveSelectedMessages(folder) {
-    //   var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) { return message.selected });
-    //   var selectedUIDs = _.pluck(selectedMessages, 'uid');
-    //   vm.selectedFolder.$moveMessages(selectedUIDs, '/' + folder).then(function() {
-    //     // TODO: refresh target mailbox?
-    //     vm.selectedFolder.$messages = _.difference(vm.selectedFolder.$messages, selectedMessages);
-    //   });
-    // }
+    function moveSelectedMessages(folder) {
+      var moveSelectedMessage = false;
+      var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) {
+        if (message.selected &&
+            message.uid == vm.selectedFolder.selectedMessage)
+          moveSelectedMessage = true;
+        return message.selected;
+      });
+      vm.selectedFolder.$moveMessages(selectedMessages, '/' + folder).then(function(index) {
+        unselectMessage(moveSelectedMessage, index);
+      });
+    }
 
     function saveSelectedMessages() {
       var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) { return message.selected; });

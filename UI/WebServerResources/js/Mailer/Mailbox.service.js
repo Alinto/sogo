@@ -518,6 +518,44 @@
   };
 
   /**
+   * @function $_deleteMessages
+   * @memberof Mailbox.prototype
+   * @desc Delete multiple messages from Mailbox object.
+   * @param {string[]} uids - the messages uids
+   * @param {object[]} messages - the Message instances
+   * @return the index of the first deleted message
+   */
+  Mailbox.prototype.$_deleteMessages = function(uids, messages) {
+    var _this = this, selectedMessages, selectedUIDs, unseen, firstIndex = this.$messages.length;
+
+    // Decrement the unseen count
+    unseen = _.filter(messages, function(message, i) { return !message.isread; });
+    this.unseenCount -= unseen.length;
+
+    // Remove messages from $messages and uidsMap
+    _.forEachRight(this.$messages, function(message, index) {
+      var selectedIndex = _.findIndex(uids, function(uid) {
+        return message.uid == uid;
+      });
+      if (selectedIndex > -1) {
+        uids.splice(selectedIndex, 1);
+        delete _this.uidsMap[message.uid];
+        if (message.uid == _this.selectedMessage)
+          delete _this.selectedMessage;
+        _this.$messages.splice(index, 1);
+        if (index < firstIndex)
+          firstIndex = index;
+      }
+      else {
+        _this.uidsMap[message.uid] -= uids.length;
+      }
+    });
+
+    // Return the index of the first deleted message
+    return firstIndex;
+  };
+
+  /**
    * @function $deleteMessages
    * @memberof Mailbox.prototype
    * @desc Delete multiple messages from mailbox.
@@ -529,33 +567,11 @@
     uids = _.pluck(messages, 'uid');
     return Mailbox.$$resource.post(this.id, 'batchDelete', {uids: uids})
       .then(function(data) {
-        var selectedMessages, selectedUIDs, unseen, firstIndex = _this.$messages.length;
-        // Decrement the unseenCount accordingly
-        unseen = _.filter(messages, function(message, i) { return !message.isread; });
-        _this.unseenCount -= unseen.length;
-        // Remove messages from $messages and uidsMap
-        _.forEachRight(_this.$messages, function(message, index) {
-          var selectedIndex = _.findIndex(uids, function(uid) {
-            return message.uid == uid;
-          });
-          if (selectedIndex > -1) {
-            uids.splice(selectedIndex, 1);
-            delete _this.uidsMap[message.uid];
-            if (message.uid == _this.selectedMessage)
-              delete _this.selectedMessage;
-            _this.$messages.splice(index, 1);
-            if (index < firstIndex)
-              firstIndex = index;
-          }
-          else {
-            _this.uidsMap[message.uid] -= uids.length;
-          }
-        });
         // Update inbox quota
         if (data.quotas)
           _this.$account.updateQuota(data.quotas);
 
-        return firstIndex;
+        return _this.$_deleteMessages(uids, messages);
       });
   };
 
@@ -566,6 +582,8 @@
    * @return a promise of the HTTP operation
    */
   Mailbox.prototype.$copyMessages = function(uids, folder) {
+    var _this = this;
+
     return Mailbox.$$resource.post(this.id, 'copyMessages', {uids: uids, folder: folder})
       .then(function(data) {
         // Update inbox quota
@@ -580,8 +598,14 @@
    * @desc Move multiple messages from the current mailbox to a target one
    * @return a promise of the HTTP operation
    */
-  Mailbox.prototype.$moveMessages = function(uids, folder) {
-    return Mailbox.$$resource.post(this.id, 'moveMessages', {uids: uids, folder: folder});
+  Mailbox.prototype.$moveMessages = function(messages, folder) {
+    var _this = this, uids;
+
+    uids = _.pluck(messages, 'uid');
+    return Mailbox.$$resource.post(this.id, 'moveMessages', {uids: uids, folder: folder})
+      .then(function() {
+        return _this.$_deleteMessages(uids, messages);
+      });
   };
   
   /**
