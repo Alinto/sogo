@@ -111,6 +111,7 @@
 
   if ([rules count] > 0)
     {
+      // Consider first rule only
       rule = [rules objectAtIndex: 0];
       frequency = [rule frequencyForValue: [rule frequency]];
 
@@ -163,12 +164,12 @@
       rule = [iCalRecurrenceRule new];
       [rule setInterval: @"1"];
 
-      frequency = (int)NSNotFound;
+      frequency = (int) NSNotFound;
       o = [repeat objectForKey: @"frequency"];
       if ([o isKindOfClass: [NSString class]])
         {
           frequency = [rule valueForFrequency: o];
-          if ((NSUInteger) frequency == NSNotFound)
+          if ((int) frequency == NSNotFound)
             {
               if ([o caseInsensitiveCompare: @"BI-WEEKLY"] == NSOrderedSame)
                 {
@@ -222,7 +223,7 @@
                 [rule setValues: o atIndex: 0 forKey: @"bymonth"];
             }
 
-          if ((NSUInteger) frequency != NSNotFound)
+          if ((int) frequency != NSNotFound)
             {
               [rule setFrequency: frequency];
               [self setRecurrenceRules: [NSArray arrayWithObject: rule]];
