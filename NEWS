@@ -8,6 +8,7 @@ Bug fixes
 - fixed blank calendar view when selecting "Descending Order" in the sort menu
 - show active user's default email address instead of system email address (#3473)
 - fixed display of HTML tags when viewing a message raw source (#3490)
+- fixed IMIP accept/decline when there is only one MIME part
 
 3.0.0 (2016-01-27)
 ------------------

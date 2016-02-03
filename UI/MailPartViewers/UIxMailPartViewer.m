@@ -334,7 +334,10 @@
 
   bodyPart = [self clientPart];
 
-  return [NSString stringWithFormat: @"%@/%@", [bodyPart nameInContainer], [self _filenameForAttachment: bodyPart]];
+  if ([bodyPart isKindOfClass: [SOGoMailBodyPart class]])
+    return [NSString stringWithFormat: @"%@/%@", [bodyPart nameInContainer], [self _filenameForAttachment: bodyPart]];
+
+  return @"0";
 }
 
 - (NSString *) pathToAttachment
