@@ -438,8 +438,16 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
                      mapiStoreObjectWithSOGoObject: currentFolder
                                        inContainer: nil];
       [baseFolder setContext: self];
-      *folderPtr = baseFolder;
-      rc = MAPISTORE_SUCCESS;
+
+      if ([[userContext sogoUser] isEqual: activeUser]
+          || [baseFolder subscriberCanReadMessages])
+        {
+          *folderPtr = baseFolder;
+          rc = MAPISTORE_SUCCESS;
+        }
+      else
+        rc = MAPISTORE_ERR_DENIED;
+
     }
   else if ([[userContext sogoUser] isEqual: activeUser])
     rc = MAPISTORE_ERR_NOT_FOUND;

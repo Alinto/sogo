@@ -244,8 +244,13 @@ static void mapiapp_cleanup(void)
    \details Create a connection context to the sogo backend
 
    \param mem_ctx pointer to the memory context
+   \param conn_info pointer to the connection information available for this context
+                    (database connection, connected user, replica server info)
+   \param indexing pointer to the indexing database connection
    \param uri pointer to the sogo path
    \param private_data pointer to the private backend context
+
+   \note the developer must free allocated private_data
 */
 
 static enum mapistore_error
