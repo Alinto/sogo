@@ -22,6 +22,7 @@
 #define MAPISTOREFOLDER_H
 
 #import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
 
 @class NSArray;
 @class NSMutableArray;
@@ -40,6 +41,12 @@
 @class SOGoMAPIDBMessage;
 
 #import "MAPIStoreSOGoObject.h"
+
+/* Custom MAPI Permissions */
+extern NSString *SOGoOpenChangeRole_EditOwned;
+extern NSString *SOGoOpenChangeRole_DeleteOwned;
+extern NSString *SOGoOpenChangeRole_FolderContact;
+extern NSString *SOGoOpenChangeRole_FolderOwner;
 
 @interface MAPIStoreFolder : MAPIStoreSOGoObject
 {

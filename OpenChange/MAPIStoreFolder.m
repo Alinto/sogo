@@ -65,6 +65,15 @@
 
 Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStoreFolderTableK;
 
+/* Custom MAPI Permissions:
+
+   This set have sogo-openchange library scope
+*/
+NSString *SOGoOpenChangeRole_EditOwned = @"EditOwned";
+NSString *SOGoOpenChangeRole_DeleteOwned = @"DeleteOwned";
+NSString *SOGoOpenChangeRole_FolderContact = @"FolderContact";
+NSString *SOGoOpenChangeRole_FolderOwner = @"FolderOwner";
+
 @implementation MAPIStoreFolder
 
 + (void) initialize
