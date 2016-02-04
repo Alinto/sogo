@@ -3,6 +3,7 @@
 
 Bug fixes
  - correctly encode filename of attachments over EAS (#3491)
+ - correctly encode square brackets for IMAP folder names (#3321)
 
 2.3.7 (2016-01-25)
 ------------------
