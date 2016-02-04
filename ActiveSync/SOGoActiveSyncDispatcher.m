@@ -1414,7 +1414,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   
                   [s appendString: @"<Fetch>"];
                   [s appendString: @"<Status>1</Status>"];
-                  [s appendFormat: @"<FileReference xmlns=\"AirSyncBase:\">%@</FileReference>", [fileReference stringByEscapingURL]];
+                  [s appendFormat: @"<FileReference xmlns=\"AirSyncBase:\">%@</FileReference>", fileReference];
                   [s appendString: @"<Properties>"];
 
                   [s appendFormat: @"<ContentType xmlns=\"AirSyncBase:\">%@/%@</ContentType>", [[currentBodyPart partInfo] objectForKey: @"type"], [[currentBodyPart partInfo] objectForKey: @"subtype"]];
