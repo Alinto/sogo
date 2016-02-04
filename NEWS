@@ -1,3 +1,9 @@
+2.3.8 (2016-02-XX)
+------------------
+
+Bug fixes
+ - correctly encode filename of attachments over EAS (#3491)
+
 2.3.7 (2016-01-25)
 ------------------
 
