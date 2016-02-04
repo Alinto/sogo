@@ -23,13 +23,11 @@ dev:
 	grunt --stack build
 
 prod:
-	git stash
 	grunt --stack build
 	git update-index --no-assume-unchanged $(CSS_FILES) $(JS_FILES) $(JS_LIB_FILES)
 	git add -f $(CSS_FILES) $(JS_FILES) $(JS_LIB_FILES)
 	git commit -m "(js/css) Update generated files"
 	git update-index --assume-unchanged $(CSS_FILES) $(JS_FILES) $(JS_LIB_FILES)
-	git stash pop
 
 all:
 	@echo "The 'all' target does nothing. Use 'make dev' to generate static files and 'make install' to install them."
