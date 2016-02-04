@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.4-master-ad9ba52
+ * v1.0.4-master-9179c61
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -6384,6 +6384,7 @@ angular
  * the `md-primary` class.
  *
  * @param {boolean=} md-no-ink If present, disable ripple ink effects.
+ * @param {boolean=} md-no-focus-style If present, disable focus style on button
  * @param {expression=} ng-disabled En/Disable based on the expression
  * @param {string=} md-ripple-size Overrides the default ripple size logic. Options: `full`, `partial`, `auto`
  * @param {string=} aria-label Adds alternative text to button for accessibility, useful for icon buttons.
@@ -6467,9 +6468,10 @@ function MdButtonDirective($mdButtonInkRipple, $mdTheming, $mdAria, $timeout) {
       }
     });
 
-    // restrict focus styles to the keyboard
-    scope.mouseActive = false;
-    element.on('mousedown', function() {
+    if (!angular.isDefined(attr.mdNoFocusStyle)) {
+      // restrict focus styles to the keyboard
+      scope.mouseActive = false;
+      element.on('mousedown', function() {
         scope.mouseActive = true;
         $timeout(function(){
           scope.mouseActive = false;
@@ -6483,6 +6485,7 @@ function MdButtonDirective($mdButtonInkRipple, $mdTheming, $mdAria, $timeout) {
       .on('blur', function(ev) {
         element.removeClass('md-focused');
       });
+    }
   }
 
 }
@@ -11677,7 +11680,7 @@ angular.module('material.components.input', [
  *
  * @param md-is-error {expression=} When the given expression evaluates to true, the input container
  *   will go into error state. Defaults to erroring if the input has been touched and is invalid.
- * @param md-no-float {boolean=} When present, placeholders will not be converted to floating
+ * @param md-no-float {boolean=} When present, `placeholder` attributes on the input will not be converted to floating
  *   labels.
  *
  * @usage
@@ -11691,6 +11694,15 @@ angular.module('material.components.input', [
  * <md-input-container>
  *   <label>Description</label>
  *   <textarea ng-model="user.description"></textarea>
+ * </md-input-container>
+ *
+ * </hljs>
+ *
+ * <h3>When disabling floating labels</h3>
+ * <hljs lang="html">
+ *
+ * <md-input-container md-no-float>
+ *   <input type="text" placeholder="Non-Floating Label">
  * </md-input-container>
  *
  * </hljs>
@@ -12543,9 +12555,19 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
           container.append(tEl.contents());
           tEl.addClass('md-proxy-focus');
         } else {
-          container = angular.element('<md-button class="md-no-style"><div class="md-list-item-inner"></div></md-button>');
-          copyAttributes(tEl[0], container[0]);
-          container.children().eq(0).append(tEl.contents());
+          // Element which holds the default list-item content.
+          container = angular.element('<div class="md-button md-no-style"><div class="md-list-item-inner"></div></div>');
+
+          // Button which shows ripple and executes primary action.
+          var buttonWrap = angular.element('<md-button class="md-no-style" md-no-focus-style></md-button>');
+          buttonWrap[0].setAttribute('aria-label', tEl[0].textContent);
+          copyAttributes(tEl[0], buttonWrap[0]);
+
+          // Append the button wrap before our list-item content, because it will overlay in relative.
+          container.prepend(buttonWrap);
+          container.children().eq(1).append(tEl.contents());
+          
+          tEl.addClass('md-button-wrap');
         }
 
         tEl[0].setAttribute('tabindex', '-1');
@@ -12586,7 +12608,11 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
                 ( tAttrs.ngClick &&
                 isProxiedElement(secondaryItem) )
             )) {
-          secondaryItem.classList.remove('md-secondary');
+          // When using multiple secondary items we need to remove their secondary class to be
+          // orderd correctly in the list-item
+          if (hasSecondaryItemsWrapper) {
+            secondaryItem.classList.remove('md-secondary');
+          }
           tEl.addClass('md-with-secondary');
           container.append(secondaryItem);
         }
@@ -14008,8 +14034,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
           element[0].querySelector('.md-select-menu-container')
         );
         selectScope = scope;
-        if (element.attr('md-container-class')) {
-          var value = selectContainer[0].getAttribute('class') + ' ' + element.attr('md-container-class');
+        if (attr.mdContainerClass) {
+          var value = selectContainer[0].getAttribute('class') + ' ' + attr.mdContainerClass;
           selectContainer[0].setAttribute('class', value);
         }
         selectMenuCtrl = selectContainer.find('md-select-menu').controller('mdSelectMenu');
@@ -17935,15 +17961,15 @@ VirtualRepeatContainerController.prototype.resetScroll = function() {
 
 VirtualRepeatContainerController.prototype.handleScroll_ = function() {
   var offset = this.isHorizontal() ? this.scroller.scrollLeft : this.scroller.scrollTop;
-  if (offset === this.scrollOffset) return;
+  if (offset === this.scrollOffset || offset > this.scrollSize - this.size) return;
 
   var itemSize = this.repeater.getItemSize();
   if (!itemSize) return;
 
   var numItems = Math.max(0, Math.floor(offset / itemSize) - NUM_EXTRA);
 
-  var transform = this.isHorizontal() ? 'translateX(' : 'translateY(';
-      transform +=  (numItems * itemSize) + 'px)';
+  var transform = (this.isHorizontal() ? 'translateX(' : 'translateY(') +
+                  (numItems * itemSize) + 'px)';
 
   this.scrollOffset = offset;
   this.offsetter.style.webkitTransform = transform;
@@ -17951,7 +17977,7 @@ VirtualRepeatContainerController.prototype.handleScroll_ = function() {
 
   if (this.bindTopIndex) {
     var topIndex = Math.floor(offset / itemSize);
-    if (topIndex !== this.topIndex && topIndex < this.repeater.itemsLength) {
+    if (topIndex !== this.topIndex && topIndex < this.repeater.getItemCount()) {
       this.topIndex = topIndex;
       this.bindTopIndex.assign(this.$scope, topIndex);
       if (!this.$rootScope.$$phase) this.$scope.$digest();
@@ -18215,6 +18241,15 @@ VirtualRepeatController.prototype.containerUpdated = function() {
  */
 VirtualRepeatController.prototype.getItemSize = function() {
   return this.itemSize;
+};
+
+
+/**
+ * Called by the container. Returns the size of a single repeated item.
+ * @return {?number} Size of a repeated item.
+ */
+VirtualRepeatController.prototype.getItemCount = function() {
+  return this.itemsLength;
 };
 
 
@@ -19455,7 +19490,9 @@ function MdAutocomplete () {
       // Set our variable for the link function above which runs later
       element.hasNotFoundTemplate = !!noItemsTemplate;
 
-      if (!attr.hasOwnProperty('tabindex')) element.attr('tabindex', '-1');
+      // Always set our tabindex of the autocomplete directive to -1, because our input
+      // will hold the actual tabindex.
+      element.attr('tabindex', '-1');
 
       return '\
         <md-autocomplete-wrap\
@@ -20053,6 +20090,10 @@ MdChipsCtrl.prototype.inputKeydown = function(event) {
   if (this.separatorKeys.indexOf(event.keyCode) !== -1) {
     if ((this.hasAutocomplete && this.requireMatch) || !chipBuffer) return;
     event.preventDefault();
+
+    // Only append the chip and reset the chip buffer if the max chips limit isn't reached.
+    if (this.items.length >= this.maxChips) return;
+
     this.appendChip(chipBuffer);
     this.resetChipBuffer();
   }
@@ -20158,7 +20199,7 @@ MdChipsCtrl.prototype.appendChip = function(newChip) {
     var identical = this.items.some(function(item){
       return angular.equals(newChip, item);
     });
-    if(identical) return;
+    if (identical) return;
   }
 
   // Check for a null (but not undefined), or existing chip and cancel appending
@@ -20166,6 +20207,10 @@ MdChipsCtrl.prototype.appendChip = function(newChip) {
 
   // Append the new chip onto our list
   var index = this.items.push(newChip);
+
+  // Update model validation
+  this.ngModelCtrl.$setDirty();
+  this.validateModel();
 
   // If they provide the md-on-add attribute, notify them of the chip addition
   if (this.useOnAdd && this.onAdd) {
@@ -20266,12 +20311,29 @@ MdChipsCtrl.prototype.resetChipBuffer = function() {
   }
 };
 
+MdChipsCtrl.prototype.hasMaxChips = function() {
+  if (angular.isString(this.maxChips)) this.maxChips = parseInt(this.maxChips, 10) || 0;
+
+  return this.maxChips > 0 && this.items.length >= this.maxChips;
+};
+
+/**
+ * Updates the validity properties for the ngModel.
+ */
+MdChipsCtrl.prototype.validateModel = function() {
+  this.ngModelCtrl.$setValidity('md-max-chips', !this.hasMaxChips());
+};
+
 /**
  * Removes the chip at the given index.
  * @param index
  */
 MdChipsCtrl.prototype.removeChip = function(index) {
   var removed = this.items.splice(index, 1);
+
+  // Update model validation
+  this.ngModelCtrl.$setDirty();
+  this.validateModel();
 
   if (removed && removed.length && this.useOnRemove && this.onRemove) {
     this.onRemove({ '$chip': removed[0], '$index': index });
@@ -20487,6 +20549,9 @@ MdChipsCtrl.prototype.hasFocus = function () {
    *    displayed when there is at least on item in the list
    * @param {boolean=} readonly Disables list manipulation (deleting or adding list items), hiding
    *    the input and delete buttons
+   * @param {number=} md-max-chips The maximum number of chips allowed to add through user input.
+   *    <br/><br/>The validation property `md-max-chips` can be used when the max chips
+   *    amount is reached.
    * @param {expression} md-transform-chip An expression of form `myFunction($chip)` that when called
    *    expects one of the following return values:
    *    - an object representing the `$chip` input string
@@ -20512,6 +20577,23 @@ MdChipsCtrl.prototype.hasFocus = function () {
    *       placeholder="Add an item"
    *       readonly="isReadOnly">
    *   </md-chips>
+   * </hljs>
+   *
+   * <h3>Validation</h3>
+   * When using [ngMessages](https://docs.angularjs.org/api/ngMessages), you can show errors based
+   * on our custom validators.
+   * <hljs lang="html">
+   *   <form name="userForm">
+   *     <md-chips
+   *       name="fruits"
+   *       ng-model="myItems"
+   *       placeholder="Add an item"
+   *       md-max-chips="5">
+   *     </md-chips>
+   *     <div ng-messages="userForm.fruits.$error" ng-if="userForm.$dirty">
+   *       <div ng-message="md-max-chips">You reached the maximum amount of chips</div>
+   *    </div>
+   *   </form>
    * </hljs>
    *
    */
@@ -20595,6 +20677,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
         readonly: '=readonly',
         placeholder: '@',
         secondaryPlaceholder: '@',
+        maxChips: '@mdMaxChips',
         transformChip: '&mdTransformChip',
         onAppend: '&mdOnAppend',
         onAdd: '&mdOnAdd',
@@ -24017,7 +24100,9 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   function updatePagingWidth() {
     var width = 1;
     angular.forEach(getElements().dummies, function (element) {
-      width += Math.ceil(element.offsetWidth);
+      // uses `getBoundingClientRect().width` rather than `offsetWidth` to include decimal values
+      // when calculating the total width
+      width += Math.ceil(element.getBoundingClientRect().width);
     });
     angular.element(elements.paging).css('width', width + 'px');
   }
@@ -24493,4 +24578,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.4-master-ad9ba52"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.4-master-9179c61"}};
