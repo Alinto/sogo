@@ -380,7 +380,7 @@ Date.prototype.getHourString = function() {
 Date.prototype.format = function(localeProvider, format) {
   var separators, parts, i, max,
       date = [],
-      validParts = /%[daAmbByYHIM]/g,
+      validParts = /%[daAmbByYHIMp]/g,
       val = {
         '%d': this.getUTCDate(),                                  // day of month (e.g., 01)
         '%e': this.getUTCDate(),                                  // day of month, space padded
