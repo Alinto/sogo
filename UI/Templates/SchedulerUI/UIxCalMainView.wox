@@ -551,7 +551,7 @@
               <input name="folderSearch" type="search" label:placeholder="Search"/>
             </md-input-container>
             <md-input-container flex="25">
-              <md-select>
+              <md-select label:aria-label="Search scope">
                 <md-option value="title_Category_Location" selected="selected"><var:string label:value="Title, category or location"/></md-option>
                 <md-option value="entireContent"><var:string label:value="Entire content"/></md-option>
               </md-select>
@@ -590,8 +590,10 @@
               </md-subheader>
               <md-list class="sg-section-list">
                 <md-list-item ng-repeat="event in list.component.$events"
+                              aria-label="{{event.c_title}}"
                               ng-click="list.openEvent($event, event)">
                   <div class="md-secondary"
+                       label:aria-label="Toggle item"
                        ng-click="list.toggleComponentSelection($event, event)"
                        ng-switch="event.selected">
                     <div class="md-avatar sg-avatar-selected"
@@ -633,6 +635,7 @@
                 <md-list-item ng-repeat="task in list.component.$tasks"
                               ng-click="list.openTask($event, task)">
                   <div class="md-secondary"
+                       label:aria-label="Toggle item"
                        ng-click="list.toggleComponentSelection($event, task)"
                        ng-switch="task.selected">
                     <div class="md-avatar sg-avatar-selected"

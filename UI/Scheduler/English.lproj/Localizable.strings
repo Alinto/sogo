@@ -502,5 +502,12 @@ vtodo_class2 = "(Confidential task)";
 "Rename" = "Rename";
 "Import Calendar" = "Import Calendar";
 "Select an ICS file." = "Select an ICS file.";
+
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Successfully subscribed to calendar";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Toggle item";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Search scope";

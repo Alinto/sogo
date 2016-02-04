@@ -244,7 +244,8 @@
                           unread: !currentMessage.isread}"
               md-virtual-repeat="currentMessage in mailbox.service.selectedFolder"
               md-on-demand="md-on-demand" md-item-size="56"
-              ng-click="mailbox.selectMessage(currentMessage)">
+              ng-click="mailbox.selectMessage(currentMessage)"
+              aria-label="{{currentMessage.subject}}">
             <div class="md-secondary"
                  ng-click="mailbox.toggleMessageSelection($event, currentMessage)"
                  ng-switch="currentMessage.selected">

@@ -380,6 +380,7 @@
                   class="md-default-theme md-accent md-hue-2"
                   ng-class="{'md-bg': addressbook.selectedFolder.isSelectedCard(currentCard.id)}"
                   md-virtual-repeat="currentCard in addressbook.selectedFolder.cards" md-item-size="56"
+                  aria-label="{{currentCard.$fullname()}}"
                   ng-click="addressbook.selectCard(currentCard)">
                 <div class="md-secondary"
                      ng-click="addressbook.toggleCardSelection($event, currentCard)">
