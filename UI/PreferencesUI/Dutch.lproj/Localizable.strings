@@ -1,6 +1,7 @@
 /* toolbar */
 "Save and Close" = "Opslaan en sluiten";
 "Close" = "Sluiten";
+"Preferences saved" = "Voorkeuren opgeslagen";
 
 /* tabs */
 "General" = "Algemeen";
@@ -17,14 +18,16 @@
 "Color" = "Kleur";
 "Add" = "Toevoegen";
 "Delete" = "Verwijderen";
+
 /* contacts categories */
 "contacts_category_labels" = "Collega, Concurrent, Klant, Vriend, Familie, Zakenrelatie, Leverancier, Pers, VIP";
+
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Automatisch bericht bij afwezigheid inschakelen";
-"Auto reply message" ="Automatisch eenmalig met het volgende bericht beantwoorden";
-"Email addresses (separated by commas)" ="E-mailaddressen (gescheiden door komma's)";
+"Auto reply message" = "Automatisch eenmalig met het volgende bericht beantwoorden";
+"Email addresses (separated by commas)" = "E-mailaddressen (gescheiden door komma's)";
 "Add default email addresses" = "Standaard e-mailadres toevoegen";
-"Days between responses" ="Dagen tussen reacties";
+"Days between responses" = "Dagen tussen reacties";
 "Do not send responses to mailing lists" = "Geen reacties naar maillinglijsten sturen";
 "Disable auto reply on" = "Automatisch bericht bij afwezigheid uitschakelen op";
 "Always send vacation message response" = "Afwezigheidsbericht altijd versturen";
@@ -33,6 +36,7 @@
 "Your vacation message must not end with a single dot on a line." = "Uw automatisch bericht bij afwezigheid mag niet eindigen met een enkele punt op een regel.";
 "End date of your auto reply must be in the future."
 = "Einddatum van uw automatische antwoord moet in de toekomst liggen.";
+
 /* forward messages */
 "Forward incoming messages" = "Inkomende berichten doorsturen";
 "Keep a copy" = "Kopie bewaren";
@@ -40,12 +44,15 @@
 = "Alstublieft het e-mailadres waarnaar u de berichten wilt laten doorsturen aangeven.";
 "You are not allowed to forward your messages to an external email address." = "Email naar een extern emailadres doorsturen is niet toegestaan";
 "You are not allowed to forward your messages to an internal email address." = "Email naar een intern emailadres doorsturen is niet toegestaan";
+
 /* d & t */
-"Current Time Zone" ="Huidige tijdzone";
-"Short Date Format" ="Kort datumformaat";
-"Long Date Format" ="Lang datumformaat";
-"Time Format" ="Tijdformaat";
+"Current Time Zone" = "Huidige tijdzone";
+"Short Date Format" = "Kort datumformaat";
+"Long Date Format" = "Lang datumformaat";
+"Time Format" = "Tijdformaat";
 "default" = "Default";
+"Default Module" = "Standaardmodule";
+"Save" = "Opslaan";
 "shortDateFmt_0" = "%d-%b-%y";
 "shortDateFmt_1" = "%d-%m-%y";
 "shortDateFmt_2" = "%d/%m/%y";
@@ -79,24 +86,26 @@
 "timeFmt_2" = "";
 "timeFmt_3" = "";
 "timeFmt_4" = "";
+
 /* calendar */
-"Week begins on" ="Week begint op";
-"Day start time" ="Dag begint om";
-"Day end time" ="Dag eindigt om";
+"Week begins on" = "Week begint op";
+"Day start time" = "Dag begint om";
+"Day end time" = "Dag eindigt om";
 "Day start time must be prior to day end time." = "Het begin van de dag moet voor het einde liggen.";
 "Show time as busy outside working hours" = "Tijd buiten werkdag weergeven als bezet";
-"First week of year" ="Eerste week van het jaar";
+"First week of year" = "Eerste week van het jaar";
 "Enable reminders for Calendar items" = "Herinneringen inschakelen voor afspraken";
 "Play a sound when a reminder comes due" = "Geluid afspelen bij herinnering";
-"Default reminder" ="Standaardherinnering";
+"Default reminder" = "Standaardherinnering";
 "firstWeekOfYear_January1" = "Begint op 1 januari";
 "firstWeekOfYear_First4DayWeek" = "Eerste week met 4 dagen";
 "firstWeekOfYear_FirstFullWeek" = "Eerste volledige week";
-"Prevent from being invited to appointments" = "Voorkom uitgenodigingen voor gebeurtenissen";
+"Prevent from being invited to appointments" = "Voorkom uitnodigingen voor gebeurtenissen";
 "White list for appointment invitations" = "Whitelist voor uitnodigingen";
 "Contacts Names" = "Contactnamen";
+
 /* Default Calendar */
-"Default calendar" ="Standaardagenda";
+"Default calendar" = "Standaardagenda";
 "selectedCalendar" = "Geselecteerde agenda";
 "personalCalendar" = "Persoonlijke agenda";
 "firstCalendar" = "Eerste ingeschakelde agenda";
@@ -113,12 +122,14 @@
 "reminder_1_DAY_BEFORE" = "1 dag";
 "reminder_2_DAYS_BEFORE" = "2 dagen";
 "reminder_1_WEEK_BEFORE" = "1 week van tevoren";
+
 /* Mailer */
 "Labels" = "Labels";
 "Label" = "Labelen";
 "Show subscribed mailboxes only" = "Toon alleen geabonneerde postvakken";
 "Sort messages by threads" = "Berichten sorteren op threads";
 "When sending mail, add unknown recipients to my" = "Bij het versturen van mail, voeg onbekende ontvangers toe aan mijn";
+"Address Book" = "Adresboek";
 "Forward messages" = "Berichten doorsturen";
 "messageforward_inline" = "In het bericht";
 "messageforward_attached" = "Als bijlage";
@@ -136,10 +147,13 @@
 "displayremoteinlineimages_always" = "Altijd";
 "Auto save every" = "Automatisch opslaan elke";
 "minutes" = "minuten";
+
 /* Contact */
 "Personal Address Book" = "Persoonlijk adresboek";
 "Collected Address Book" = "Verzameld adresboek";
+
 /* IMAP Accounts */
+"Mail Account" = "Mailaccount";
 "New Mail Account" = "Nieuw mailaccount";
 "Server Name" = "Servernaam";
 "Port" = "Poort";
@@ -154,35 +168,48 @@
 "Please enter your signature below" = "Stel de ondertekening hieronder op";
 "Please specify a valid sender address." = "Geef alstublieft een geldig afzendadres aan.";
 "Please specify a valid reply-to address." = "Geef alstublieft een geldig antwoordadres aan.";
+
 /* Additional Parameters */
 "Additional Parameters" = "Extra Parameters";
+
 /* password */
 "New password" = "Nieuw wachtwoord";
 "Confirmation" = "Bevestig wachtwoord";
 "Change" = "Veranderen";
+
 /* Event+task classifications */
-"Default events classification" ="Standaardclassificatie afspraken";
-"Default tasks classification" ="Standaardclassificatie taken";
+"Default events classification" = "Standaardclassificatie afspraken";
+"Default tasks classification" = "Standaardclassificatie taken";
 "PUBLIC_item" = "Publiek";
 "CONFIDENTIAL_item" = "Vertrouwelijk";
 "PRIVATE_item" = "Privé";
+
 /* Event+task categories */
+"Calendar Category" = "Agendacategorie";
+"Add Calendar Category" = "Agendacategorie toevoegen";
+"Remove Calendar Category" = "Agendacategorie verwijderen";
+"Contact Category" = "Contactcategorie";
+"Add Contact Category" = "Contactcategorie toevoegen";
+"Remove Contact Category" = "Contactcategorie verwijderen";
 "category_none" = "Geen categorie";
 "calendar_category_labels" = "Cliënten,Concurrentie,Diversen,Favorieten,Giften,Ideeën,Klant,Kwesties,Leveranciers,Nationale feestdag,Persoonlijk,Projecten,Meeting,Reizen,Status,Telefoongesprekken,Trouwdag,Vakantie,Verjaardag,Vervolggesprek,Vrije dagen,Zaken";
+
 /* Default module */
 "Calendar" = "Agenda";
 "Contacts" = "Adresboek";
 "Mail" = "Mail";
 "Last" = "Laatst gebruikt";
 "Default Module " = "Standaardmodule";
-"SOGo Version" ="SOGo versie";
-"Language" ="Taal";
+"SOGo Version" = "SOGo versie";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Voorkeuren opslaan en nu pagina herladen?";
+"Language" = "Taal";
 "choose" = "Kies...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseTaiwan" = "Chinese (Taiwan)";
-"Croatian" = "Hrvatski";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -208,7 +235,7 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
-"Refresh View" ="Overzicht verversen";
+"Refresh View" = "Overzicht verversen";
 "refreshview_manually" = "Handmatig";
 "refreshview_every_minute" = "Iedere minuut";
 "refreshview_every_2_minutes" = "Iedere 2 minuten";
@@ -217,6 +244,7 @@
 "refreshview_every_20_minutes" = "Iedere 20 minuten";
 "refreshview_every_30_minutes" = "Iedere 30 minuten";
 "refreshview_once_per_hour" = "Ieder uur";
+
 /* Return receipts */
 "When I receive a request for a return receipt" = "Bij aanvraag van een ontvangstbevestiging";
 "Never send a return receipt" = "Ontvangstbevestiging nooit sturen";
@@ -227,6 +255,7 @@
 "Never send" = "Nooit sturen";
 "Always send" = "Altijd sturen";
 "Ask me" = "Vragen";
+
 /* Filters - UIxPreferences */
 "Filters" = "Filters";
 "Active" = "Actief";
@@ -234,8 +263,13 @@
 "Move Down" = "Omlaag";
 "Connection error" = "Verbindingsfout";
 "Service temporarily unavailable" = "Dienst tijdelijk niet beschikbaar";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Filternaam";
+/* Button label */
+"Add a condition" = "Voorwaarde toevoegen";
+/* Button label */
+"Add an action" = "Actie toevoegen";
 "For incoming messages that" = "Voor inkomende berichten die";
 "match all of the following rules" = "met alle volgende regels overeenkomen";
 "match any of the following rules" = "met een van de volgende regels overeenkomen";
@@ -243,7 +277,7 @@
 "Perform these actions" = "Doe de volgende bewerkingen";
 "Untitled Filter" = "Naamloos filter";
 "Subject" = "Onderwerp";
-"From" = "van";
+"From" = "Van";
 "To" = "aan";
 "Cc" = "cc";
 "To or Cc" = "aan of cc";
@@ -268,12 +302,15 @@
 "does not match" = "komt niet overeen met";
 "matches regex" = "past bij regex";
 "does not match regex" = "past niet bij regex";
+/* Placeholder for the value field of a condition */
+"Value" = "Waarde";
 "Seen" = "Gelezen";
 "Deleted" = "Verwijderd";
 "Answered" = "Beantwoord";
 "Flagged" = "Gemarkeerd";
 "Junk" = "Junk";
 "Not Junk" = "Geen junk";
+
 /* Password policy */
 "The password was changed successfully." = "Het wachtwoord is met succes veranderd.";
 "Password must not be empty." = "Wachtwoord mag niet leeg zijn.";
@@ -288,3 +325,25 @@
 "Unhandled error response" = "Onverwerkte foutmelding";
 "Password change is not supported." = "Wachtwoordwijziging wordt niet ondersteund.";
 "Unhandled HTTP error code: %{0}" = "Onverwerkte HTTP-foutcode: %{0}";
+"Cancel" = "Annuleren";
+"Invitations" = "Uitnodigingen";
+"Edit Filter" = "Filter aanpassen";
+"Delete Filter" = "Filter verwijderen";
+"Create Filter" = "Filter aanmaken";
+"Delete Label" = "Label verwijderen";
+"Create Label" = "Label aanmaken";
+"Accounts" = "Accounts";
+"Edit Account" = "Account aanpassen";
+"Delete Account" = "Account verwijderen";
+"Create Account" = "Account aanmaken";
+"Account Name" = "Accountnaam";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Alternate Avatar" = "Alternatieve avatar";
+"none" =  "Geen";
+"identicon" = "Identicoon";
+"monsterid" = "Monster";
+"wavatar" = "Wavatar";
+"retro" = "Retro";

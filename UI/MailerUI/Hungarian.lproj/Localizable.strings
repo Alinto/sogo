@@ -8,6 +8,7 @@
 "Forward"     = "Továbbítás";
 "Get Mail"    = "Letöltés";
 "Junk"        = "Szemét";
+"Not junk"    = "Nem levélszemét";
 "Reply"       = "Válasz";
 "Reply All"   = "Válasz mindenkinek";
 "Print"       = "Nyomtatás";
@@ -21,7 +22,6 @@
 "Options" = "Beállítások";
 "Close" = "Bezárás";
 "Size" = "Méret";
-
 /* Tooltips */
 "Send this message now" = "Üzenet azonnali küldése";
 "Select a recipient from an Address Book" = "Címzett kiválasztása egy címjegyzékből";
@@ -34,14 +34,12 @@
 "Reply to sender and all recipients" = "Válasz a feladónak és az összes címzettnek";
 "Forward selected message" = "A kijelölt üzenet továbbítása";
 "Delete selected message or folder" = "A kijelölt üzenet vagy mappa törlése";
-"Mark the selected messages as junk" = "Kijelölt üzenetek megjelölése, mint szemét";
 "Print this message" = "Üzenet nyomtatása";
 "Stop the current transfer" = "Küldés megszakítása";
 "Attachment" = "Melléklet";
 "Unread" = "Olvasatlan";
 "Flagged" = "Csillagozott";
 "Search multiple mailboxes" = "Keresés több postafiókban";
-
 /* Main Frame  */
 "Home"                 = "Kezdőlap"; 
 "Calendar"             = "Naptár";
@@ -49,7 +47,6 @@
 "Mail"                 = "Üzenetek";
 "Right Administration" = "Jogosultságok kezelése";
 "Help" = "Súgó";
-
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Üdvözöljük a SOGo levelező rendszerben. A baloldali fában tallózhat a levelező fiókjai között.";
 "Read messages"       = "Üzenetek olvasása";
@@ -57,16 +54,8 @@
 "Share" = "Megosztás";
 "Account" = "Fiók";
 "Shared Account" = "Megosztott fiók";
-
 /* Empty right pane */
 "No message selected" = "Nincs kijelölt üzenet";
-
-/* Mailbox actions */
-/* Compact Folder success message */
-"Folder compacted" = "Mappa tömörítve";
-/* Empty Trash success message */
-"Trash emptied" = "Lomtár kiürítve";
-
 /* acls */
 "Access rights to" = "Hozzáférés az alábbiaknak:";
 "For user" = "Felhasználónak";
@@ -86,7 +75,6 @@
 "Saved Messages.zip" = "Messages.zip elmentve";
 "Update" = "Mentés";
 "Cancel" = "Mégsem";
-
 /* Mail edition */
 "From"          = "Feladó";
 "Subject"       = "Tárgy";
@@ -109,7 +97,7 @@
 "Edit Draft..." = "Piszkozat szerkesztése...";
 "Load Images" = "Képek betöltése";
 "Return Receipt" = "Visszaigazolás";
-"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Az üzenet feladója arra kéri, hogy erősítse meg a levél elolvasását. Szeretné értesíteni a feladót?";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Az üzenet feladója arra kéri , hogy erősítse meg a levél elolvasását. Értesíti a feladót?";
 "Return Receipt (displayed) - %@"= "Visszaigazolás (megjelenítés) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Ez egy %@ címre küldött levél visszaigazolása.\n\nMegjegyzés: A visszaigazolás csak azt igazolja, hogy a levél a címzett számítógépén meg lett jelenítve. Nincs garancia arra, hogy a címzett el is olvasta, illetve megértette a levél tartalmát.";
 "Priority" = "Sürgősség";
@@ -121,14 +109,12 @@
 "This mail is being sent from an unsecure network!" = "A levelet nem biztonságos hálózatból készül elküldeni!";
 "Address Book" = "Címjegyzék";
 "Search For" = "Keresés";
-
 /* Popup "show" */
 "all"     = "összes";
 "read"    = "olvasott";
 "unread"  = "olvasatlan";
 "deleted" = "törölt";
 "flagged" = "csillagozott";
-
 /* MailListView */
 "Sender" = "Feladó";
 "Subject or Sender" = "Tárgy vagy feladó";
@@ -149,27 +135,23 @@
 "Mark Unread" = "Megjelölés olvasatlanként";
 "Mark Read"   = "Megjelölés olvasottként";
 "Untitled" = "Névtelen";
-
 /* Tree */
 "SentFolderName"   = "Elküldött üzenetek";
 "TrashFolderName"  = "Lomtár";
 "InboxFolderName"  = "Beérkezett üzenetek";
 "DraftsFolderName" = "Piszkozatok";
+"JunkFolderName" = "Levélszemét";
 "SieveFolderName"  = "Szűrők";
 "Folders"          = "Mappák"; /* title line */
-
 /* MailMoveToPopUp */
 "MoveTo"        = "Áthelyezés ide: &hellip;";
-
 /* Address Popup menu */
 "Add to Address Book..." = "Hozzáadás a címjegyzékhez...";
 "Compose Mail To" = "Üzenet írása";
 "Create Filter From Message..." = "Szűrő létrehozása az üzenet alapján...";
-
 /* Image Popup menu */
 "Save Image" = "Kép mentése";
 "Save Attachment" = "Melléklet mentése";
-
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Megnyitás új üzenet ablakban";
 "Copy Folder Location" = "Mappa helyének másolása";
@@ -186,12 +168,11 @@
 "Get Messages for Account" = "Fiók üzeneteinek letöltése";
 "Properties..." = "Tulajdonságok...";
 "Delegation..." = "Jogok átadása...";
-
 /* Use This Folder menu */
 "Sent Messages" = "Elküldött üzenetek";
 "Drafts" = "Piszkozatok";
 "Deleted Messages" = "Törölt üzenetek";
-
+"Junk Messages" = "Levélszemét üzenetek";
 /* Message list popup menu */
 "Open Message In New Window" = "Üzenet megnyitása új ablakban";
 "Reply to Sender Only" = "Válasz csak a feladónak";
@@ -207,14 +188,13 @@
 "Print..." = "Nyomtatás...";
 "Delete Message" = "Üzenet törlése";
 "Delete Selected Messages" = "Kiválasztott üzenetek törlése";
-
+"Mark the selected messages as junk" = "Kijelölt üzenetek megjelölése, mint szemét";
+"Mark the selected messages as not junk" = "Jelölje meg a kiválasztott üzeneteket nem levélszemétként";
 /* Number of selected messages in list */
 "selected" = "kijelölt";
 "This Folder" = "Aktulis mappa";
-
 /* Label popup menu */
 "None" = "Nincs cimke";
-
 /* Mark popup menu */
 "As Read" = "Olvasottként";
 "Thread As Read" = "Olvasott témacsoportonként";
@@ -235,7 +215,6 @@
 "results found" = "találat";
 "result found" = "találat";
 "Please specify at least one filter" = "Legalább egy feltételt adjon meg";
-
 /* Folder operations */
 "Name" = "Név";
 "Enter the new name of your folder"
@@ -264,11 +243,9 @@
 = "Egy üzenet nem helyezhető át a saját mappájába!";
 "Copying a message into its own folder is impossible!"
 = "Egy üzenet nem másolható át a saját mappájába!";
-
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "Az üzeneteket nem lehetett a szemétkosárba helyezni. Kívánja őket közvetlenül törölni?";
-
 /* Message editing */
 "error_missingsubject" = "Az üzenet tárgya hiányzik";
 "error_missingrecipients" = "Nincsenek címzettek megadva";
@@ -276,12 +253,10 @@
 "Error while saving the draft" = "Hiba történt a piszkozat mentésekor";
 "Error while uploading the file \"%{0}\":" = "Hiba történt a \"%{0}\" állomány feltöltésekor:";
 "There is an active file upload. Closing the window will interrupt it." = "Állomány feltöltés folyamatban. Az ablak bezárása megszakítja ezt a folyamatot.";
-
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Az üzenetet nem lehetett elküldeni: az összes címzett érvénytelen.";
 "cannot send message (smtp) - recipients discarded" = "Az üzenetet nem lehetett elküldeni: az alábbi címzettek érvénytelenek";
 "cannot send message: (smtp) error when connecting" = "Az üzenetet nem lehetett elküldeni: hiba az SMTP kiszolgálóhoz történő csatlakozáskor.";
-
 /* Contacts list in mail editor */
 "Email" = "Email";
 "More mail options" = "További levelezési tulajdonságok";

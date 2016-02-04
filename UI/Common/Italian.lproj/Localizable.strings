@@ -11,9 +11,11 @@
 "Preferences" = "Preferenze";
 "Administration" = "Amministrazione";
 "Disconnect" = "Disconnetti";
+"Toggle Menu" = "Menu azioni";
 "Right Administration" = "Amministrazione permessi";
 "Log Console (dev.)" = "Log Console (dev.)";
 "User" = "Utente";
+"Vacation message is enabled" = "Messaggio risposta automatica attivo";
 "Help" = "Aiuto";
 "noJavascriptError" = "SOGo ha bisogno di Javascript per essere eseguito. Verifica che questo elemento sia presente ed attivato nelle preferenze del browser";
 "noJavascriptRetry" = "Riprova";
@@ -57,6 +59,7 @@
 "You cannot create a list in a shared address book." 
         = "Non puoi creare una lista in una rubrica in sola lettura.";
 "Warning" = "Attenzione";
+"Can't contact server" = "Si è verificato un errore contattando il server. Prego riprovare.";
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Non sei abilitato ad accedere a questo modulo. Contatta il tuo amministratore di sistema.";
 "You don't have the required privileges to perform the operation."
@@ -72,6 +75,7 @@
 "30 minutes" = "30 minuti";
 "45 minutes" = "45 minuti";
 "1 hour" = "1 ora";
+"1 day" = "1 giorno";
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Annulla";
@@ -82,7 +86,7 @@
 "Start" = "Inizio";
 "Due Date" = "Scadenza";
 "Location" = "Luogo";
-/* Mail labels */
+/* mail labels */
 "Important" = "Importante";
 "Work" = "Lavoro";
 "Personal" = "Personale";
@@ -95,3 +99,10 @@
 "a2_Thursday" = "Gi";
 "a2_Friday" = "Ve";
 "a2_Saturday" = "Sab";
+"Access Rights" = "Permessi di accesso";
+"Add User" = "Aggiungi utente";
+"Loading" = "Caricamento";
+"No such user." = "Nessun utente.";
+"You cannot (un)subscribe to a folder that you own!" = "Non puoi (dis)iscriverti ad una cartella di cui sei proprietario!";
+"SOGo" = "SOGo";
+"Modules" = "Moduli";

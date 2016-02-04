@@ -11,6 +11,7 @@
 "Preferences" = "Instellingen";
 "Administration" = "Beheer";
 "Disconnect" = "Uitloggen";
+"Toggle Menu" = "Menu in-/uitschakelen";
 "Right Administration" = "Machtigingen beheren";
 "Log Console (dev.)" = "Log Console (dev.)";
 "User" = "Gebruiker";
@@ -98,3 +99,10 @@
 "a2_Thursday" = "Do";
 "a2_Friday" = "Vr";
 "a2_Saturday" = "Za";
+"Access Rights" = "Toegangsrechten";
+"Add User" = "Gebruiker toevoegen";
+"Loading" = "Laden";
+"No such user." = "Geen dergelijke gebruiker";
+"You cannot (un)subscribe to a folder that you own!" = "Kan niet aan- of afmelden van eigen map!";
+"SOGo" = "SOGo";
+"Modules" = "Modules";

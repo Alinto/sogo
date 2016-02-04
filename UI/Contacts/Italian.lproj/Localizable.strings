@@ -21,6 +21,7 @@
 "HomePhone" = "Telefono casa";
 "Lastname" = "Cognome";
 "Location" = "Località";
+"Add a category" = "Aggiungi una categoria";
 "MobilePhone" = "Cellulare";
 "Name" = "Nome";
 "OfficePhone" = "Telefono ufficio";
@@ -35,12 +36,25 @@
 "delete" = "cancella";
 "edit" = "modifica";
 "invalidemailwarn" = "L'indirizzo email specificato non è valido";
-"invaliddatewarn" = "La data specificata non è valida.";
 "new" = "nuovo";
 "Preferred Phone" = "Telefono lavoro";
 "Move To" = "Sposta in ";
 "Copy To" = "Copia in ";
 "Add to" = "Aggiungi a";
+/* Subheader of empty addressbook */
+"No contact" = "Nessun contatto";
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Inizia una ricerca per sfogliare questa rubrica";
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "contatti";
+/* No contact matching search criteria */
+"No matching contact" = "Nessun contatto corrispondente";
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "contatti corrispondenti";
+/* Number of selected contacts in list */
+"selected" = "selezionato";
+/* Empty right pane */
+"No contact selected" = "Nessun contatto selezionato";
 /* Tooltips */
 "Create a new address book card" = "Crea un nuovo contatto";
 "Create a new list" = "Crea una nuova lista";
@@ -57,6 +71,7 @@
 "Search in Addressbook" = "Cerca nella rubrica";
 "New Card" = "Nuovo contatto";
 "New List" = "Nuova lista";
+"Edit" = "Modifica";
 "Properties" = "Modifica";
 "Sharing..." = "Condividi...";
 "Write" = "Scrivi";
@@ -72,10 +87,9 @@
 "Additional Email" = "Email aggiuntiva";
 "Phone Number" = "Numero di telefono";
 "Prefers to receive messages formatted as" = "Formato preferito per i messaggi di posta";
-"Screen Name" = "Nome Instant Messenger";
 "Categories" = "Categorie";
 "First" = "Nome";
-"Last:" = "Cognome";
+"Last" = "Ultimo";
 "Nickname" = "Soprannome";
 "Telephone" = "Telefono";
 "Work" = "Lavoro";
@@ -107,6 +121,8 @@
 "New Addressbook..." = "Nuova rubrica...";
 "Subscribe to an Addressbook..." = "Sottoscrivi una rubrica...";
 "Remove the selected Addressbook" = "Rimuovi la rubrica selezionata";
+"Subscribe to a shared folder" = "Sottoscrivi una cartella condivisa";
+"Search User" = "Cerca utente";
 "Name of the Address Book" = "Nome della rubrica";
 "Are you sure you want to delete the selected address book?"
 = "Sei sicuro di voler cancellare la rubrica selezionata?";
@@ -118,7 +134,6 @@
 = "Sei sicuro di voler eliminare i contatti selezionati?";
 "You cannot delete the card of \"%{0}\"."
 = "Non è possibile eliminare il contatto di \"%{0}\".";
-"Address Book Name" = "Nome della Rubrica";
 "You cannot subscribe to a folder that you own!"
 = "Non puoi sottoscrivere una cartella di cui sei proprietario!";
 "Unable to subscribe to that folder!"
@@ -167,3 +182,47 @@
 "No card was imported." = "Nessun contatto importato.";
 "A total of %{0} cards were imported in the addressbook." = "Sono stati importati %{0} contatti nella rubrica.";
 "Reload" = "Ricarica";
+/* Properties window */
+"Address Book Name" = "Nome della Rubrica";
+"Links to this Address Book" = "Link a questa rubrica";
+"Authenticated User Access" = "Tutti gli utenti autenticati";
+"CardDAV URL" = "CardDAV URL";
+"Options" = "Opzion";
+"Rename" = "Rinomina";
+"Subscriptions" = "Sottosrizioni";
+"Global Addressbooks" = "Rubrica globale";
+"Search" = "Cerca";
+"Sort" = "Ordinare";
+"Descending Order" = "Ordine discendente";
+"Back" = "Indietro";
+"Select All" = "Seleziona tutti";
+"Copy contacts" = "Copia contatti";
+"More messages options" = "Altre opzioni messaggi";
+"New Contact" = "Nuovo contatto";
+"Close" = "Chiudi";
+"More contact options" = "Altre opzioni contatto";
+"Organization Unit" = "Unità societarie";
+"Add Organizational Unit" = "Aggiungi unità societaria";
+"Type" = "Tipo";
+"Email Address" = "Indirizzo email";
+"New Email Address" = "Nuovo indirizzo email";
+"New Phone Number" = "Nuovo numero di telefono";
+"URL" = "URL";
+"New URL" = "Nuovo URL";
+"street" = "strada";
+"Postoffice" = "Ufficio postale";
+"Region" = "Regione";
+"Postal Code" = "Codice postale";
+"New Address" = "Nuovo indirizzo";
+"Reset" = "Azzerare";
+"Description" = "Descrizione";
+"Add Member" = "Aggiungi membro";
+"Subscribe" = "Sottoscrivi";
+"Add Birthday" = "Aggiungi data di nascita";
+"Import" = "Importa";
+"More options" = "Altre opzioni";
+"Role" = "Ruolo";
+"Add Screen Name" = "Aggiungi Instant Messanger";
+"Synchronization" = "Sincronizzazione";
+"Synchronize" = "Sincronizza";
+"Successfully subscribed to address book" = "Sottoscrizione ad una rubrica effettuata correttamente";
