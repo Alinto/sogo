@@ -289,12 +289,13 @@ static NSString *mailETag = nil;
     }
 
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                       [self formattedDate], @"date",
                        [self attachmentAttrs], @"attachmentAttrs",
                        [self shouldAskReceipt], @"shouldAskReceipt",
                        [NSNumber numberWithBool: [self mailIsDraft]], @"isDraft",
                        [[self contentViewerComponent] renderedPart], @"parts",
                        nil];
+  if ([self formattedDate])
+    [data setObject: [self formattedDate] forKey: @"date"];
   if ([self messageSubject])
     [data setObject: [self messageSubject] forKey: @"subject"];
   if ((addresses = [addressFormatter dictionariesForArray: [co fromEnvelopeAddresses]]))
