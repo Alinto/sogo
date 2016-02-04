@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2006-2010 Inverse inc.
+  Copyright (C) 2006-2016 Inverse inc.
 
   This file is part of SOPE.
 
@@ -291,6 +291,8 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
   NSString *frequency;
   iCalRecurrenceFrequency freq;
 
+  freq = 0;
+
   if ([value length] > 0)
     {
       frequency = [value uppercaseString];
@@ -308,11 +310,7 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
 	freq = iCalRecurrenceFrequenceMinutely;
       else if ([frequency isEqualToString:@"SECONDLY"])
 	freq = iCalRecurrenceFrequenceSecondly;
-      else
-	freq = (iCalRecurrenceFrequency) NSNotFound;
     }
-  else
-    freq = (iCalRecurrenceFrequency) NSNotFound;
 
   return freq;
 }
