@@ -106,7 +106,7 @@ var css_invalid_characters = [ '_'  ,  '.',  '#'  ,  '@'  ,  '*',  ':'  , ';'   
                                '(',    ')',    '[',    ']',    '{',    '}',
                                "'",  '"',    '&',    '+' ];
 var css_escape_characters = [ '_U_',  '_D_',  '_H_',  '_A_',  '_S_',  '_C_', '_SC_', '_CO_', '_SP_',
-                              '_LP_', '_RP_', '_LS_', '_RQ_', '_LC_', '_RC_',
+                              '_LP_', '_RP_', '_LS_', '_RS_', '_LC_', '_RC_',
                               '_SQ_', '_DQ_', '_AM_', '_P_' ];
 
 String.prototype.asCSSIdentifier = function() {
