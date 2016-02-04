@@ -407,6 +407,7 @@
                     <div>{{currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)}}</div>
                   </div>
                 </div>
+                <div class="sg-tile-icons"><!-- spacer --></div>
               </md-list-item>
             </md-list>
           </md-virtual-repeat-container>

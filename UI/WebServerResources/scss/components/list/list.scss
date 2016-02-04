@@ -17,8 +17,17 @@ $sg-avatar-width: 40px;
 // Circle diamter of color chips
 $sg-color-chip-width: 16px;
 
-// List item label
 md-list-item {
+  &.md-with-secondary {
+    &.md-accent.md-bg {
+      .md-button {
+        // List items with a secondary button must have a transparent background when highlighted
+        // in order to honor the contrast color
+        background-color: transparent;
+      }
+    }
+  }
+
   .md-list-item-inner {
     flex-grow: 1; // use all column space
     overflow: hidden;
@@ -114,10 +123,12 @@ div.md-tile-left {
 
 .sg-section-list {
   md-list-item {
-    .md-list-item-inner {
-      .md-secondary {
-        // Expect the container to include a sg-tile-icons
-        right: 0px;
+    &.md-button-wrap {
+      > .md-button:first-child {
+        .md-list-item-inner {
+          // Expect the container to include a sg-tile-icons
+          padding-right: 0px;
+        }
       }
     }
   }
@@ -137,6 +148,7 @@ div.md-tile-left {
   &-tile-content {
     flex: 1;
     overflow: hidden; // required in Firefox
+    margin-left: $list-item-primary-avatar-width + (2 * $baseline-grid); // Leave space for an avatar
     .sg-tile-date {
       font-size: sg-size(body);
       font-weight: $sg-font-light;
@@ -169,7 +181,7 @@ div.md-tile-left {
     align-items: center;
     justify-content: start;
     width: (2 * $mg);
-    height:(2 + $sg-font-size-1) * 4; // (vertical padding + icon size) * max number of icons
+    height: (2 + $sg-font-size-1) * 4; // (vertical padding + icon size) * max number of icons
   }
 
   &-counter-badge {
