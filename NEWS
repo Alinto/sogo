@@ -2,15 +2,21 @@
 ------------------
 
 Enhancements
-- improved scrolling behavior when deleting a single message (#3489)
-- added "Move To" option for selected messages (#3477)
+- [web] improved scrolling behavior when deleting a single message (#3489)
+- [web] added "Move To" option for selected messages (#3477)
 
 Bug fixes
-- fixed blank calendar view when selecting "Descending Order" in the sort menu
-- show active user's default email address instead of system email address (#3473)
-- fixed display of HTML tags when viewing a message raw source (#3490)
-- fixed IMIP accept/decline when there is only one MIME part
-- correctly encode filename of attachments over EAS (#3491)
+- [web] safeguard against mailboxes with no quota (#3468)
+- [web] fixed blank calendar view when selecting "Descending Order" in the sort menu
+- [web] show active user's default email address instead of system email address (#3473)
+- [web] fixed display of HTML tags when viewing a message raw source (#3490)
+- [web] fixed IMIP accept/decline when there is only one MIME part
+- [web] improved handling of IMAP connection problem in Web interface
+- [web] fixed frequency parsing of recurrence rule when saving new appointment (#3472)
+- [web] added support for %p in date formatting (#3480)
+- [web] make sure an email is defined before trying to use it (#3488)
+- [web] handle broken messages that have no date (#3498)
+- [eas] correctly encode filename of attachments over EAS (#3491)
 
 3.0.0 (2016-01-27)
 ------------------
