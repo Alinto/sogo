@@ -4,6 +4,7 @@
 Bug fixes
  - correctly encode filename of attachments over EAS (#3491)
  - correctly encode square brackets for IMAP folder names (#3321)
+ - add shared/public namespaces in the list or returned folders
 
 2.3.7 (2016-01-25)
 ------------------
