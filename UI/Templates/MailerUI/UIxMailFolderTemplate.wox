@@ -119,7 +119,7 @@
       <div class="md-toolbar-tools sg-toolbar-secondary"
            layout="row"
            ng-show="mailbox.mode.search"
-           sg-search="mailbox.selectedFolder.$filter({ sort: 'date', asc: false }, [{ searchBy: searchField, searchInput: searchText }])">
+           sg-search="mailbox.selectedFolder.$filter(null, [{ searchBy: searchField, searchInput: searchText }])">
         <md-button class="sg-icon-button"
                    sg-search-cancel="mailbox.cancelSearch()"
                    label:aria-label="Back">
