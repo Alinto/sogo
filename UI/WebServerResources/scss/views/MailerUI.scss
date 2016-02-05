@@ -103,11 +103,15 @@ md-sidenav {
 .msg-attachment-image,
 .msg-attachment-link {
   flex: 0 0 100%;
+  min-width: 0;
   @include from(sm) {
     flex: 0 0 50%;
   }
   @include from(md) {
     flex: 0 0 33%;
+  }
+  [sg-zoomable-image] {
+    width: 100%;
   }
   .md-card-image {
     // Make sure the image stays proportional
