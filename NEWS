@@ -5,6 +5,7 @@ Enhancements
  - [web] improved scrolling behavior when deleting a single message (#3489)
  - [web] added "Move To" option for selected messages (#3477)
  - [web] updated CKEditor to version 4.5.7
+ - [web/eas] add shared/public namespaces in the list or returned folders
 
 Bug fixes
  - [web] safeguard against mailboxes with no quota (#3468)
