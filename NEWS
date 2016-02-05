@@ -20,6 +20,7 @@ Bug fixes
  - [web] make sure an email is defined before trying to use it (#3488)
  - [web] handle broken messages that have no date (#3498)
  - [web] fixed virtual-repeater display in Webmail when a search is performed (#3500)
+ - [web] fixed drag'n'drop of all-day events in multicolumn view
  - [eas] correctly encode filename of attachments over EAS (#3491)
 
 3.0.0 (2016-01-27)

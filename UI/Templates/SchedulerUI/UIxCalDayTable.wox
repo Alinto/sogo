@@ -60,6 +60,7 @@
                var:sg-day-number="currentDayNumber"
                var:sg-day="currentTableDay.shortDateString"
                var:sg-day-string="currentTableDay.iso8601DateString"
+               sg-calendar="{{view.id}}"
                ng-repeat="view in calendar.views">
             <sg-calendar-day-table
                 sg-blocks="view.allDayBlocks"
@@ -74,7 +75,7 @@
     </div>
   </md-toolbar>
 
-  <md-content class="md-flex" sg-calendar-scroll-view="multiday">
+  <md-content class="md-flex" sg-calendar-scroll-view="multiday" var:sg-view="currentView">
     <div class="calendarView">
 
       <!-- The hours -->
