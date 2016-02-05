@@ -1322,16 +1322,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   id <DOMElement> aCommand, element;
   NSArray *allCommands;
   int i, j;
+  int commandCount, detailCount;
+  NSAutoreleasePool *pool;
 
   allCommands = (id)[theDocumentElement getElementsByTagName: @"Commands"];
-  
-  for (i = 0; i < [allCommands count]; i++)
+
+  commandCount = [allCommands count];
+
+  for (i = 0; i < commandCount; i++)
     {
       aCommand = [allCommands objectAtIndex: i];
       aCommandDetails = [aCommand childNodes];
 
-      for (j = 0; j < [(id)aCommandDetails count]; j++)
+      detailCount = [(id)aCommandDetails count];
+
+      for (j = 0; j < detailCount; j++)
         {
+          pool = [[NSAutoreleasePool alloc] init];
+
           element = [aCommandDetails objectAtIndex: j];
 
           if ([element nodeType] == DOM_ELEMENT_NODE)
@@ -1373,7 +1381,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   *processed = YES;
                 }
             }
-        }
+          DESTROY(pool);
+       }
     }
 }
 
