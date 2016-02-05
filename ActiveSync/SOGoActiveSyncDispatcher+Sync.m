@@ -1318,8 +1318,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     inBuffer: (NSMutableString *) theBuffer
                    processed: (BOOL *) processed
 {
-  id <DOMNodeList> aCommandDetails;
   id <DOMElement> aCommand, element;
+  id <DOMNodeList> aCommandDetails;
+  NSAutoreleasePool *pool;
   NSArray *allCommands;
   int i, j;
 
@@ -1332,6 +1333,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       for (j = 0; j < [(id)aCommandDetails count]; j++)
         {
+          pool = [[NSAutoreleasePool alloc] init];
           element = [aCommandDetails objectAtIndex: j];
 
           if ([element nodeType] == DOM_ELEMENT_NODE)
@@ -1373,6 +1375,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   *processed = YES;
                 }
             }
+          DESTROY(pool);
         }
     }
 }
