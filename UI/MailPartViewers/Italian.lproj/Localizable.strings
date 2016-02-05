@@ -12,6 +12,8 @@ publish_info_text = "Il mittente ti invia in allegato informazioni sull'evento."
 cancel_info_text = "Il tuo invito o l'intero evento sono stati cancellati.";
 request_info_no_attendee = "sta proponento un incontro agli invitati. Ricevi questa email come notifica, non sei incluso come partecipante.";
 Appointment = "Appuntamento";
+"Status Update" = "Stato aggiornato.";
+was = "era";
 
 Organizer = "Organizzatore";
 Time = "Ora";
@@ -39,3 +41,10 @@ reply_info = "Questa è una risposta ad un invito ad un evento organizzato da te
 "Date" = "Data";
 "To" = "A";
 "Issuer" = "Emittente";
+/* Tooltips */
+"View Attachment" = "Vedi allegato";
+"Save Attachment" = "Salva allegato";
+"CC" = "CC";
+"Cancel" = "Cancella";
+"OK" = "OK";
+"Comment" = "Commento:";

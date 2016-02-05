@@ -10,36 +10,31 @@
 "Switch to day view" = "Napi nézetre váltás";
 "Switch to week view" = "Heti nézetre váltás";
 "Switch to month view" = "Havi nézetre váltás";
+"Switch to multi-columns day view" = "Váltás több oszlopos napi nézetre";
 "Reload all calendars" = "Az összes naptár frissítése";
-
 /* Tabs */
 "Date" = "Dátum";
 "Calendars" = "Naptárak";
 "No events for selected criteria" = "Nincs a kijelölt feltételeknek megfelelő esemény";
 "No tasks for selected criteria" = "Nincs a kijelölt feltételeknek megfelelő feladat ";
-
 /* Day */
 "DayOfTheMonth" = "A hónap napja";
 "dayLabelFormat" = "%Y.%m.%d";
 "today" = "Ma";
 "Previous Day" = "Előző nap";
 "Next Day" = "Következő nap";
-
 /* Week */
 "Week" = "Hét";
 "this week" = "aktuális hét";
 "Week %d" = "%d. hét";
 "Previous Week" = "Előző hét";
 "Next Week" = "Következő hét";
-
 /* Month */
 "this month" = "aktuális hónap";
 "Previous Month" = "Előző hónap";
 "Next Month" = "Következő hónap";
-
 /* Year */
 "this year" = "aktuális év";
-
 /* Menu */
 "Calendar" = "Naptár";
 "Contacts" = "Kapcsolatok";
@@ -62,14 +57,11 @@
 "A total of %{0} events were imported in the calendar." = "Összesen %{0} esemény lett importálva a naptárba.";
 "Compose E-Mail to All Attendees" = "Üzenet küldése az összes résztvevőnek";
 "Compose E-Mail to Undecided Attendees" = "Üzenet küldése az bizonytalan résztvevőnek";
-
 /* Folders */
 "Personal calendar" = "Személyes naptár";
-
 /* Misc */
 "OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Tiltott";
-
 /* acls */
 "Access rights to" = "Hozzáférés az alábbiaknak:";
 "For user" = "Felhasználónak";
@@ -92,7 +84,6 @@
 = "Ez a személy új naptárbejegyzéseket hozhat létre.";
 "This person can erase objects from my calendar."
 = "Ez a személy naptárbejegyzéseket törölhet.";
-
 /* Button Titles */
 "Subscribe to a Calendar..." = "Feliratkozás naptárra...";
 "Remove the selected Calendar" = "Kijelölt naptár törlése";
@@ -113,7 +104,6 @@
 "Save" = "Mentés";
 "show_rejected_apts" = "Visszautasított találkozók mutatása";
 "hide_rejected_apts" = "Visszautasított találkozók elrejtése";
-
 /* Schedule */
 "Schedule" = "Ütemezés";
 "No appointments found" = "Nincs találkozó";
@@ -126,7 +116,6 @@
 "more attendees" = "További résztvevők";
 "Hide already accepted and rejected appointments" = "Már elfogadott, valamint visszautasított találkozók elrejtése.";
 "Show already accepted and rejected appointments" = "Már elfogadott, valamint visszautasított találkozók megmutatása";
-
 /* Print view */
 "LIST" = "Lista";
 "Print Settings" = "Nyomtatási beállítások";
@@ -140,7 +129,6 @@
 "Display events and tasks colors" = "Események és feladatok színes megjelenítése";
 "Borders" = "Keretek";
 "Backgrounds" = "Hátterek";
-
 /* Appointments */
 "Appointment viewer" = "Találkozó betekintő";
 "Appointment editor" = "Találkozó szerkesztő";
@@ -194,12 +182,10 @@
 "partStat_TENTATIVE" = "Később döntök";
 "partStat_DELEGATED" = "Átadott";
 "partStat_OTHER" = "Egyéb";
-
 /* Appointments (error messages) */
 "Conflicts found!" = "Ütközés van!";
 "Invalid iCal data!" = "Érvénytelen iCal adat!";
 "Could not create iCal data!" = "Nem lehet iCal adatot létrehozni!";
-
 /* Searching */
 "view_all" = "Összes";
 "view_today" = "Mai";
@@ -223,13 +209,11 @@
 "check for conflicts" = "Ütközés ellenőrzése";
 "URL" = "URL";
 "newAttendee" = "Résztvevő hozzáadása";
-
 /* calendar modes */
 "Overview" = "Áttekintés";
 "Chart" = "Diagram";
 "List" = "Lista";
 "Columns" = "Oszlopok";
-
 /* Priorities */
 "prio_0" = "Nincs megadva";
 "prio_1" = "Magas";
@@ -241,7 +225,6 @@
 "prio_7" = "Alacsony";
 "prio_8" = "Alacsony";
 "prio_9" = "Alacsony";
-
 /* access classes (privacy) */
 "PUBLIC_vevent" = "Nyilvános esemény";
 "CONFIDENTIAL_vevent" = "Bizalmas esemény";
@@ -249,7 +232,6 @@
 "PUBLIC_vtodo" = "Nyilvános feladat";
 "CONFIDENTIAL_vtodo" = "Bizalmas feladat";
 "PRIVATE_vtodo" = "Magán feladat";
-
 /* status type */
 "status_" = "Nincs megadva";
 "status_NOT-SPECIFIED" = "Nincs megadva";
@@ -259,7 +241,6 @@
 "status_NEEDS-ACTION" = "Foglalkozni kell vele";
 "status_IN-PROCESS" = "Folyamatban";
 "status_COMPLETED" = "Kész van ";
-
 /* Cycles */
 "cycle_once" = "egyszer";
 "cycle_daily" = "naponta";
@@ -304,11 +285,9 @@
 "Fourth" = "Negyedik";
 "Fift" = "Ötödik";
 "Last" = "Utolsó";
-
 /* Appointment categories */
 "category_none" = "Nincs";
 "category_labels" = "Évforduló,Születésnap,Üzleti,Meghívás,Ügyfelek,Versenytársak,Vevő,Kedvencek,Nyomonkövetés,Ajándékozás,Szabadság,Ötletek,Megbeszélés,Ügyek,Egyéb,Személyes,Projektek,Állami ünnep,Állapot,Szállítók,Utazás,Szünidő";
-
 "repeat_NEVER" = "Nem ismétlődik";
 "repeat_DAILY" = "Naponta";
 "repeat_WEEKLY" = "Hetente";
@@ -317,7 +296,6 @@
 "repeat_MONTHLY" = "Havonta";
 "repeat_YEARLY" = "Évente";
 "repeat_CUSTOM" = "Egyéni...";
-
 "reminder_NONE" = "Nincs emlékeztető";
 "reminder_5_MINUTES_BEFORE" = "5 perccel előtte";
 "reminder_10_MINUTES_BEFORE" = "10 perccel előtte";
@@ -346,21 +324,17 @@
 "Send an E-mail" = "Email küldése";
 "Email Organizer" = "Email szervező";
 "Email Attendees" = "Email résztvevő";
-
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
 "zoom_50" = "50%";
 "zoom_25" = "25%";
-
 /* transparency */
 "Show Time as Free" = "Ne jelezzen foglaltságot";
-
 /* email notifications */
 "Send Appointment Notifications" = "Találkozó értesítések küldése";
 "From" = "Feladó";
 "To" = "Címzett";
-
 /* validation errors */
 validate_notitle           = "A cím nincs megadva, folytatja?";
 validate_invalid_startdate = "Événytelen kezdődátum!";
@@ -369,12 +343,10 @@ validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezd�
 "Events" = "Események";
 "Tasks" = "Feladatok";
 "Show completed tasks" = "Befejezett feladatok megjelenítése";
-
 /* tabs */
 "Task" = "Feladat";
 "Event" = "Esemény";
 "Recurrence" = "Ismétlődés";
-
 /* toolbar */
 "New Event" = "Új esemény";
 "New Task" = "Új feladat";
@@ -388,7 +360,6 @@ validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezd�
 /* Number of selected components in events or tasks list */
 "selected" = "kijelölt";
 "eventPartStatModificationError" = "A résztvevői állapota nem módosítható.";
-
 /* menu */
 "New Event..." = "Új esemény...";
 "New Task..." = "Új feladat...";
@@ -404,7 +375,6 @@ validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezd�
 = "Nem törölhet, valamint nem iratkozhat le egy személyes naptárról.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Biztosan törli ezt a naptárat: \"%{0}\"?";
-
 /* Legend */
 "Participant" = "Kötelező résztvevő";
 "Optional Participant" = "Nem kötelező résztvevő";
@@ -418,7 +388,6 @@ validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezd�
 "Busy" = "Foglalt";
 "Maybe busy" = "Bizonytalan";
 "No free-busy information" = "Nincs foglaltsági információ";
-
 /* FreeBusy panel buttons and labels */
 "Suggest time slot" = "Javasolt időablak";
 "Zoom" = "Nagyítás";
@@ -432,14 +401,12 @@ validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezd�
 "and" = "and";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Egy vagy több résztvevő között időütközés van.\nMegtartja ennek ellenére a beállításokat?";
-
 /* events list */
 "Due" = "Lejárat";
 "(Private Event)" = "(Magán esemény)";
 vevent_class0 = "(Nyilvános esemény)";
 vevent_class1 = "(Magán esemény)";
 vevent_class2 = "(Bizalmas esemény)";
-
 /* tasks list */
 "Descending Order" = "Csökkenő sorrend";
 vtodo_class0 = "(Nyilvános feladat)";
@@ -455,7 +422,6 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Edit All Occurrences" = "Összes előfordulás szerkesztése";
 "Update This Occurrence" = "Frissítse ezt az előfordulást";
 "Update All Occurrences" = "Frissítse az összes előfordulást ";
-
 /* Properties dialog */
 "Color" = "Szín";
 "Include in free-busy" = "Foglaltság mutatása";
@@ -476,7 +442,6 @@ vtodo_class2 = "(Bizalmas feladat)";
 "CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
-
 /* Error messages */
 "dayFieldInvalid" = "Kérem adjon meg egy számértéket a Napok mezőben, amely egyenlő vagy nagyobb, mint 1.";
 "weekFieldInvalid" = "Kérem adjon meg egy számértéket a Hét mezőben, amely egyenlő vagy nagyobb, mint 1.";
@@ -501,7 +466,7 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Copy event to my calendar" = "Esemény másolása a naptáromba";
 "View Raw Source" = "Forrás megtekintése";
 "Subscriptions" = "Feliratkozások";
-"Subscribe to a shared folder" = "Feliratkozás megosztott maoppára";
+"Subscribe to a shared folder" = "Feliratkozás megosztott mappára";
 "Subscribe to a web calendar..." = "Internetes naptár becsatolása";
 "URL of the Calendar" = "A naptár URL címe";
 "Web Calendar" = "Internetes naptár";
@@ -537,4 +502,5 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Rename" = "Átnevezés";
 "Import Calendar" = "Naptár importálása";
 "Select an ICS file." = "Válasszon ICS állományt.";
+/* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Sikeresen feliratkozott a naptárra";

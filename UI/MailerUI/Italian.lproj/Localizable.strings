@@ -8,11 +8,13 @@
 "Forward"     = "Inoltra";
 "Get Mail"    = "Scarica posta";
 "Junk"        = "Indesiderato";
+"Not junk"    = "Non spam";
 "Reply"       = "Rispondi";
 "Reply All"   = "Rispondi a tutti";
 "Print"       = "Stampa";
 "Stop"        = "Stop";
 "Write"       = "Scrivi";
+"Search"      = "Cerca";
 "Send" = "Invia";
 "Contacts" = "Contatti";
 "Attach" = "Allegato";
@@ -32,12 +34,12 @@
 "Reply to sender and all recipients" = "Rispondi al mittente e a tutti i destinatari";
 "Forward selected message" = "Inoltra il messaggio selezionato";
 "Delete selected message or folder" = "Cancella il messaggio o la cartella selezionata";
-"Mark the selected messages as junk" = "Contrassegna il messaggio selezionato come indesiderato";
 "Print this message" = "Stampa questo messaggio";
 "Stop the current transfer" = "Ferma il trasferimento in corso";
 "Attachment" = "Allegato";
 "Unread" = "Non letti";
 "Flagged" = "Contrassegnato";
+"Search multiple mailboxes" = "Cerca caselle email multiple";
 /* Main Frame  */
 "Home"                 = "Home"; 
 "Calendar"             = "Calendario";
@@ -52,6 +54,10 @@
 "Share" = "Condividi";
 "Account" = "Account";
 "Shared Account" = "Account condiviso";
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "Nessun messaggio selezionato";
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "No mailbox selected";
 /* acls */
 "Access rights to" = "Permessi di accesso a";
 "For user" = "Per utente";
@@ -66,6 +72,7 @@
 "Remove this folder" = "Rimuovi questa cartella";
 "Erase mails from this folder" = "Elimina emails da questa cartella";
 "Expunge this folder" = "Pulisci questa cartella";
+"Export This Folder" = "Esporta questa cartella";
 "Modify the acl of this folder" = "Modifica i permessi per questa cartella";
 "Saved Messages.zip" = "Salvato Messages.zip";
 "Update" = "Aggiorna";
@@ -76,16 +83,19 @@
 "To"            = "A";
 "Cc"            = "Cc";
 "Bcc"           = "Bcc";
-"Reply-To"	= "Rispondi a";
+"Reply-To"	    = "Rispondi a";
 "Add address"   = "Aggiungi indirizzi";
-"Attachments" = "Allegati";
+"Body"          = "Corpo";
 "Open" = "Apri";
 "Select All" = "Seleziona tutti";
 "Attach Web Page..." = "Allega pagina Web...";
-"Attach File(s)..." = "Allega File(s)...";
+"file" = "file";
+"files" = "files";
+"Save all" = "Salva tutto.";
 "to"            = "A";
 "cc"            = "Cc";
 "bcc"           = "Bcc";
+"Add a recipient" = "Aggiungi un destinatario";
 "Edit Draft..." = "Modifica bozza...";
 "Load Images" = "Carica Immagini";
 "Return Receipt" = "Ricevuta di ritorno";
@@ -117,6 +127,7 @@
 "All"           = "Tutti";
 "No message"    = "Nessun messaggio";
 "messages"      = "messaggi";
+"Yesterday"     = "Ieri";
 "first"         = "Primo";
 "previous"      = "Precedente";
 "next"          = "Prossimo";
@@ -131,6 +142,7 @@
 "TrashFolderName"  = "Cestino";
 "InboxFolderName"  = "Posta in arrivo";
 "DraftsFolderName" = "Bozze";
+"JunkFolderName" = "Spam";
 "SieveFolderName"  = "Filtri";
 "Folders"          = "Cartelle"; /* title line */
 /* MailMoveToPopUp */
@@ -162,6 +174,7 @@
 "Sent Messages" = "Messaggi inviati";
 "Drafts" = "Bozze";
 "Deleted Messages" = "Messaggi cancellati";
+"Junk Messages" = "Messaggi spam";
 /* Message list popup menu */
 "Open Message In New Window" = "Apri messaggio in una nuova finestra";
 "Reply to Sender Only" = "Rispondi";
@@ -177,6 +190,10 @@
 "Print..." = "Stampa...";
 "Delete Message" = "Cancella messaggio";
 "Delete Selected Messages" = "Cancella i messaggi selezionati";
+"Mark the selected messages as junk" = "Contrassegna il messaggio selezionato come indesiderato";
+"Mark the selected messages as not junk" = "Contrassegna il messaggio selezionato come non spam";
+/* Number of selected messages in list */
+"selected" = "selezionato";
 "This Folder" = "Questa cartella";
 /* Label popup menu */
 "None" = "Nessuno";
@@ -189,10 +206,21 @@
 "As Junk" = "Come indesiderati";
 "As Not Junk" = "Come non indesiderati";
 "Run Junk Mail Controls" = "Avvia controllo email indesiderate";
+"Search messages in" = "Cerca messaggi in";
+"Search" = "Cerca";
+"Search subfolders" = "Cerca sottocartelle";
+"Match any of the following" = "Corrisponde almeno ad una delle seguenti";
+"Match all of the following" = "Corrisponde a tutte le seguenti";
+"contains" = "contiene";
+"does not contain" = "on contiene";
+"No matches found" = "Nessuna corrispondenza trovata";
+"results found" = "risultati trovati";
+"result found" = "risultato trovato";
+"Please specify at least one filter" = "Per favore specifica almeno un filtro";
 /* Folder operations */
 "Name" = "Nome";
 "Enter the new name of your folder"
- = "Inserisci il nuovo nome della cartella ";
+ ="Inserisci il nuovo nome della cartella ";
 "Do you really want to move this folder into the trash ?"
  = "Sei sicuro di voler spostare la cartella nel cestino ?";
 "Operation failed" = "Operazione non riuscita";
@@ -224,8 +252,43 @@
 "error_missingsubject" = "Nessun oggetto specificato";
 "error_missingrecipients" = "Nessun destinatario specificato";
 "Send Anyway" = "Invia comunque";
+"Error while saving the draft" = "Errore salvando la bozza";
+"Error while uploading the file \"%{0}\":" = "Errore durante l'upload del file \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "Caricamento in corso. Chiudendo la finestra verrà interrotto.";
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Impossibile inviare il messaggio: tutti i destinatari non sono validi.";
 "cannot send message (smtp) - recipients discarded" = "Impossibile inviare il messaggio. Il seguente indirizzo non è valido";
 "cannot send message: (smtp) error when connecting" = "Impossibile inviare il messaggio: si è verificato un errore durante la connessione al server SMTP.";
+/* Contacts list in mail editor */
 "Email" = "Email";
+"More mail options" = "Altre opzioni mail";
+"Delegation" = "Delega";
+"Add User" = "Aggiungi utente";
+"Add a tag" = "Aggiungi un tag";
+"reply" = "ispondi";
+"Edit" = "Modifica";
+"Yes" = "Si";
+"No" = "No";
+"Location" = "Luogo";
+"Rename" = "Rinomina";
+"Compact" = "Riduci";
+"Export" = "orta";
+"Set as Drafts" = "Imposta come bozze";
+"Set as Sent" = "Imposta come inviato";
+"Set as Trash" = "Imposta come eliminata";
+"Sort" = "Ordinare";
+"Descending Order" = "Ordine discendente";
+"Back" = "Indietro";
+"Copy messages" = "Copia messaggi";
+"More messages options" = "Altre opzioni messaggi";
+"Mark as Unread" = "Contrassegna come da leggere";
+"Closing Window ..." = "Chiusura finestra...";
+"Tried to send too many mails. Please wait." = "Hai provato ad inviare troppe email. Per favore attendi.";
+"View Mail" = "Visualizza email";
+"This message contains external images." = "Questo messaggio contiene immagini esterne.";
+"Expanded" = "Espandi";
+"Add a Criteria" = "Aggiungi un criterio";
+"More search options" = "Altre opzioni di ricerca";
+"Your email has been saved" = "La tua email è stata salvata";
+"Your email has been sent" = "La tua email è stata inviata";
+"Folder compacted" = "Cartella ridotta";
