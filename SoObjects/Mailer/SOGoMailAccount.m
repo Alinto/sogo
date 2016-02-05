@@ -358,6 +358,8 @@ static NSString *inboxFolderName = @"INBOX";
   NSMutableArray *folderPaths, *namespaces;
   NSArray *folders, *mainFolders;
   SOGoUserDefaults *ud;
+  NSString *namespace;
+
   BOOL subscribedOnly;
   int count, max;
 
@@ -381,12 +383,19 @@ static NSString *inboxFolderName = @"INBOX";
   max = [namespaces count];
   for (count = 0; count < max; count++)
     {
-      folders = [self _allFoldersFromNS: [namespaces objectAtIndex: count]
+      namespace = [namespaces objectAtIndex: count];
+      folders = [self _allFoldersFromNS: namespace
                          subscribedOnly: subscribedOnly];
       if ([folders count])
         {
           [folderPaths removeObjectsInArray: folders];
           [folderPaths addObjectsFromArray: folders];
+
+          // We make sure our "shared" / "public" namespace is always defined. Cyrus does NOT
+          // return them in LIST while Dovecot does.
+          namespace = [NSString stringWithFormat: @"/%@", namespace];
+          [folderPaths removeObject: namespace];
+          [folderPaths addObject: namespace];
         }
     }
   [folderPaths
