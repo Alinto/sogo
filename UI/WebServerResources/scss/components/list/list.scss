@@ -148,7 +148,6 @@ div.md-tile-left {
   &-tile-content {
     flex: 1;
     overflow: hidden; // required in Firefox
-    margin-left: $list-item-primary-avatar-width + (2 * $baseline-grid); // Leave space for an avatar
     .sg-tile-date {
       font-size: sg-size(body);
       font-weight: $sg-font-light;

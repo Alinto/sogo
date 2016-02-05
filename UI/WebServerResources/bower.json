@@ -7,7 +7,7 @@
     "angular-sanitize": "1.4.x",
     "angular-ui-router": "latest",
     "angular-file-upload": "latest",
-    "angular-material": "master",
+    "angular-material": "v1.0.5",
     "lodash": "latest",
     "breakpoint-sass": ">=2.4.2"
   },
