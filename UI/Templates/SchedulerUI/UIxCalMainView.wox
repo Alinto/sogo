@@ -374,7 +374,7 @@
                          ng-click="$mdOpenMenu()">
                 <md-icon>filter_list</md-icon>
               </md-button>
-              <md-menu-content>
+              <md-menu-content width="4">
                 <md-menu-item>
                   <md-button ng-click="list.filter('view_all')">
                     <md-icon ng-class="{ 'icon-check': list.filteredBy('view_all') }">
@@ -457,7 +457,7 @@
                          ng-click="$mdOpenMenu()">
                 <md-icon>sort</md-icon>
               </md-button>
-              <md-menu-content>
+              <md-menu-content width="4">
                 <md-menu-item>
                   <md-button ng-click="list.sort('title')">
                     <md-icon ng-class="{ 'icon-check': list.sortedBy('title') }">
@@ -515,7 +515,7 @@
                 <md-menu-divider><!-- divider --></md-menu-divider>
                 <md-menu-item ng-if="list.componentType == 'events'">
                   <md-button>
-                    <md-checkbox
+                    <md-checkbox class="sg-no-wrap"
                         ng-change="list.component.$filter(list.componentType)"
                         ng-model="list.component.$queryEvents.asc"
                         ng-true-value="0"
@@ -524,7 +524,7 @@
                 </md-menu-item>
                 <md-menu-item ng-if="list.componentType == 'tasks'">
                   <md-button>
-                    <md-checkbox
+                    <md-checkbox class="sg-no-wrap"
                         ng-change="list.component.$filter(list.componentType)"
                         ng-model="list.component.$queryTasks.asc"
                         ng-true-value="0"
