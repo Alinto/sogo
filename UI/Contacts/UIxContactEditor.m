@@ -349,7 +349,8 @@ static Class SOGoContactGCSEntryK = Nil;
   NSMutableArray *units, *categories;
   NSCalendarDate *date;
   id o;
-  unsigned int i, year, month, day, seconds;
+  int seconds;
+  unsigned int i, year, month, day;
 
   [card setNWithFamily: [attributes objectForKey: @"c_sn"]
                  given: [attributes objectForKey: @"c_givenname"]
@@ -365,7 +366,7 @@ static Class SOGoContactGCSEntryK = Nil;
               forKey: @""];
 
   seconds = [[NSString stringWithFormat: @"%@", [attributes objectForKey: @"birthday"]] intValue];
-  if (seconds > 0)
+  if (seconds != 0)
     {
       date = [NSCalendarDate dateWithTimeIntervalSince1970: seconds];
       year = [date yearOfCommonEra];

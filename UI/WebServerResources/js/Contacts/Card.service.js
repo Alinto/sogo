@@ -42,7 +42,8 @@
     angular.extend(Card, {
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Contacts', Settings.activeUser()),
       $timeout: $timeout,
-      $gravatar: Gravatar
+      $gravatar: Gravatar,
+      $Preferences: Preferences
     });
     // Initialize categories from user's defaults
     Preferences.ready().then(function() {
@@ -170,6 +171,9 @@
                                 this.$omit(),
                                 { action: action })
       .then(function(data) {
+        // Format birthdate
+        if (_this.birthday)
+          _this.$birthday = Card.$Preferences.$mdDateLocaleProvider.formatDate(_this.birthday);
         // Make a copy of the data for an eventual reset
         _this.$shadowData = _this.$omit(true);
         return data;
@@ -279,18 +283,6 @@
     if (email && email != this.$$fullname)
       fullname.push(' <' + email + '>');
     return fullname.join(' ');
-  };
-
-  /**
-   * @function $birthday
-   * @memberof Card.prototype
-   * @returns the formatted birthday object
-   */
-  Card.prototype.$birthday = function() {
-    if (this.birthday) {
-      return [this.birthday.getFullYear(), this.birthday.getMonth() + 1, this.birthday.getDate()].join('/');
-    }
-    return '';
   };
 
   Card.prototype.$isCard = function() {
@@ -468,6 +460,7 @@
       });
       if (_this.birthday) {
         _this.birthday = new Date(_this.birthday * 1000);
+        _this.$birthday = Card.$Preferences.$mdDateLocaleProvider.formatDate(_this.birthday);
       }
       // Make a copy of the data for an eventual reset
       _this.$shadowData = _this.$omit(true);
