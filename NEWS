@@ -1,5 +1,8 @@
-2.3.8 (2016-02-XX)
+2.3.8 (2016-02-05)
 ------------------
+
+Enhancements
+ - updated CKEditor to version 4.5.7
 
 Bug fixes
  - correctly encode filename of attachments over EAS (#3491)
