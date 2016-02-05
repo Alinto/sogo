@@ -689,6 +689,9 @@
       Mailbox.$timeout(function() {
         var uids, headers;
 
+        if (_this.$topIndex > data.uids.length - 1)
+          _this.$topIndex = 0;
+
         _this.init(data);
 
         if (_this.uids) {
