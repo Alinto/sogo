@@ -51,15 +51,15 @@
 
 static Class EOKeyValueQualifierK, SOGoCacheGCSFolderK, MAPIStoreDBFolderK;
 
-static NSString *MAPIStoreRightReadItems = @"RightsReadItems";
-static NSString *MAPIStoreRightCreateItems = @"RightsCreateItems";
-static NSString *MAPIStoreRightEditOwn = @"RightsEditOwn";
-static NSString *MAPIStoreRightEditAll = @"RightsEditAll";
-static NSString *MAPIStoreRightDeleteOwn = @"RightsDeleteOwn";
-static NSString *MAPIStoreRightDeleteAll = @"RightsDeleteAll";
-static NSString *MAPIStoreRightCreateSubfolders = @"RightsCreateSubfolders";
-static NSString *MAPIStoreRightFolderOwner = @"RightsFolderOwner";
-static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
+NSString *MAPIStoreRightReadItems = @"RightsReadItems";
+NSString *MAPIStoreRightCreateItems = @"RightsCreateItems";
+NSString *MAPIStoreRightEditOwn = @"RightsEditOwn";
+NSString *MAPIStoreRightEditAll = @"RightsEditAll";
+NSString *MAPIStoreRightDeleteOwn = @"RightsDeleteOwn";
+NSString *MAPIStoreRightDeleteAll = @"RightsDeleteAll";
+NSString *MAPIStoreRightCreateSubfolders = @"RightsCreateSubfolders";
+NSString *MAPIStoreRightFolderOwner = @"RightsFolderOwner";
+NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 
 @implementation MAPIStoreDBFolder
 
@@ -355,8 +355,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 
 - (BOOL) subscriberCanModifyMessages
 {
-  return ([self _testRoleForActiveUser: MAPIStoreRightEditAll]
-          || [self _testRoleForActiveUser: MAPIStoreRightEditOwn]);
+  return [self _testRoleForActiveUser: MAPIStoreRightEditAll];
 }
 
 - (BOOL) subscriberCanReadMessages
@@ -377,8 +376,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 
 - (BOOL) subscriberCanDeleteMessages
 {
-  return ([self _testRoleForActiveUser: MAPIStoreRightDeleteAll]
-          || [self _testRoleForActiveUser: MAPIStoreRightDeleteOwn]);
+  return [self _testRoleForActiveUser: MAPIStoreRightDeleteAll];
 }
 
 - (BOOL) subscriberCanCreateSubFolders

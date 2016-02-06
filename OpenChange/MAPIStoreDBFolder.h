@@ -25,6 +25,16 @@
 
 #import "MAPIStoreFolder.h"
 
+extern NSString *MAPIStoreRightReadItems;
+extern NSString *MAPIStoreRightCreateItems;
+extern NSString *MAPIStoreRightEditOwn;
+extern NSString *MAPIStoreRightEditAll;
+extern NSString *MAPIStoreRightDeleteOwn;
+extern NSString *MAPIStoreRightDeleteAll;
+extern NSString *MAPIStoreRightCreateSubfolders;
+extern NSString *MAPIStoreRightFolderOwner;
+extern NSString *MAPIStoreRightFolderContact;
+
 @interface MAPIStoreDBFolder : MAPIStoreFolder
 
 @end
