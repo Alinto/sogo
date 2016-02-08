@@ -6,6 +6,7 @@ Enhancements
 
 Bug fixes
  - [web] handle birthday dates before 1970
+ - [web] safe-guarding against bogus value coming from the quick tables
 
 3.0.1 (2016-02-05)
 ------------------

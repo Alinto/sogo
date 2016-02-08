@@ -902,17 +902,22 @@ static inline iCalPersonPartStat _userStateInEvent (NSArray *event)
   state = iCalPersonPartStatOther;
   
   participants = [event objectAtIndex: eventPartMailsIndex];
-  states = [event objectAtIndex: eventPartStatesIndex];
-  count = 0;
-  max = [participants count];
-  user = [SOGoUser userWithLogin: [event objectAtIndex: eventOwnerIndex]
-                           roles: nil];
-  while (state == iCalPersonPartStatOther && count < max)
+
+  // We guard ourself against bogus value coming from the quick tables
+  if ([participants isKindOfClass: [NSArray class]])
     {
-      if ([user hasEmail: [participants objectAtIndex: count]])
-        state = [[states objectAtIndex: count] intValue];
-      else
-        count++;
+      states = [event objectAtIndex: eventPartStatesIndex];
+      count = 0;
+      max = [participants count];
+      user = [SOGoUser userWithLogin: [event objectAtIndex: eventOwnerIndex]
+                               roles: nil];
+      while (state == iCalPersonPartStatOther && count < max)
+        {
+          if ([user hasEmail: [participants objectAtIndex: count]])
+            state = [[states objectAtIndex: count] intValue];
+          else
+            count++;
+        }
     }
   
   return state;
