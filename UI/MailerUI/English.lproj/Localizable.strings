@@ -276,6 +276,10 @@
 "Set as Drafts" = "Set as Drafts";
 "Set as Sent" = "Set as Sent";
 "Set as Trash" = "Set as Trash";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "Set as Junk";
+
 "Sort" = "Sort";
 "Descending Order" = "Descending Order";
 "Back" = "Back";

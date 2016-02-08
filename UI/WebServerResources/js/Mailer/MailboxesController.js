@@ -301,6 +301,8 @@
         return {name: l('SentFolderName'), icon: 'send'};
       else if (folder.type == 'trash')
         return {name: l('TrashFolderName'), icon: 'delete'};
+      else if (folder.type == 'junk')
+        return {name: l('JunkFolderName'), icon: 'thumb_down'};
       else if (folder.type == 'additional')
         return {name: folder.name, icon: 'folder_shared'};
 

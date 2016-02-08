@@ -195,8 +195,7 @@
         };
     mailbox = _find(this.$mailboxes);
 
-    console.debug(mailbox);
-    console.debug(this.specialMailboxes);
+    return mailbox;
   };
 
   /**

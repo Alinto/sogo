@@ -172,6 +172,11 @@
                         <var:string label:value="Set as Trash"/>
                       </md-button>
                     </md-menu-item>
+                    <md-menu-item ng-show="folder.type == 'folder'">
+                      <md-button type="button" ng-click="app.setFolderAs(folder, 'Junk')">
+                        <var:string label:value="Set as Junk"/>
+                      </md-button>
+                    </md-menu-item>
                     <md-menu-divider ng-show="folder.type != 'additional'"><!-- divider --></md-menu-divider>
                     <md-menu-item ng-show="folder.type != 'additional'">
                       <md-button type="button" ng-click="app.share(folder)">

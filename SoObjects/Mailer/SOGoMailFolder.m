@@ -857,7 +857,9 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
                   body = [[[NGMimeMultipartBody alloc] initWithPart: messageToSend] autorelease];
                 }
 
-              mailObject = [self lookupName: [uids objectAtIndex: i]  inContext: context  acquire: NO];
+              mailObject = [self lookupName: [NSString stringWithFormat: @"%@", [uids objectAtIndex: i]]
+                                  inContext: context
+                                    acquire: NO];
 
               // We skip emails that might have disappeared before we were able
               // to perform the action

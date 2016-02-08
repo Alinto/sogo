@@ -155,6 +155,10 @@
         <md-button class="sg-icon-button" ng-click="mailbox.confirmDeleteSelectedMessages()">
           <md-icon>delete</md-icon>
         </md-button>
+        <md-button class="sg-icon-button" ng-click="mailbox.markOrUnMarkMessagesAsJunk()">
+          <md-icon ng-hide="mailbox.service.selectedFolder.type == 'junk'">thumb_down</md-icon>
+          <md-icon ng-hide="mailbox.service.selectedFolder.type != 'junk'">thumb_up</md-icon>
+        </md-button>
         <md-menu>
           <md-button class="sg-icon-button" label:aria-label="More messages options" ng-click="$mdOpenMenu()">
             <md-icon>more_vert</md-icon>

@@ -23,6 +23,7 @@
     vm.toggleMessageSelection = toggleMessageSelection;
     vm.unselectMessages = unselectMessages;
     vm.confirmDeleteSelectedMessages = confirmDeleteSelectedMessages;
+    vm.markOrUnMarkMessagesAsJunk = markOrUnMarkMessagesAsJunk;
     vm.copySelectedMessages = copySelectedMessages;
     vm.moveSelectedMessages = moveSelectedMessages;
     vm.saveSelectedMessages = saveSelectedMessages;
@@ -67,6 +68,28 @@
             unselectMessage(deleteSelectedMessage, index);
           });
         });
+    }
+
+    function markOrUnMarkMessagesAsJunk() {
+      var moveSelectedMessage = false;
+      var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) {
+        if (message.selected &&
+            message.uid == vm.selectedFolder.selectedMessage)
+          moveSelectedMessage = true;
+        return message.selected;
+      });
+
+      vm.selectedFolder.$markOrUnMarkMessagesAsJunk(selectedMessages).then(function() {
+        var folder = '/' + vm.account.id + '/folderINBOX';
+
+        if (vm.selectedFolder.type != 'junk') {
+          folder = '/' + vm.account.$getMailboxByType('junk').id;
+        }
+
+        vm.selectedFolder.$moveMessages(selectedMessages, folder).then(function(index) {
+          unselectMessage(moveSelectedMessage, index);
+        });
+      });
     }
 
     function unselectMessage(message, index) {

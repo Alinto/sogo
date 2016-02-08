@@ -577,6 +577,20 @@
   };
 
   /**
+   * @function $markOrUnMarkMessagesAsJunk
+   * @memberof Mailbox.prototype
+   * @desc Mark messages as junk/not junk
+   * @return a promise of the HTTP operation
+   */
+  Mailbox.prototype.$markOrUnMarkMessagesAsJunk = function(messages) {
+    var _this = this, uids;
+    var method = (this.type == 'junk' ? 'markMessagesAsNotJunk' : 'markMessagesAsJunk');
+    uids = _.pluck(messages, 'uid');
+
+    return Mailbox.$$resource.post(this.id, method, {uids: uids});
+  };
+
+  /**
    * @function $copyMessages
    * @memberof Mailbox.prototype
    * @desc Copy multiple messages from the current mailbox to a target one
