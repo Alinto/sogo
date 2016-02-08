@@ -312,6 +312,7 @@
   Mailbox.prototype.$loadMessage = function(messageId) {
     var startIndex = this.uidsMap[messageId],
         endIndex,
+        index,
         max = this.$messages.length,
         loaded = false,
         uids,
@@ -325,9 +326,25 @@
 
       // Preload more headers if possible
       endIndex = Math.min(startIndex + Mailbox.PRELOAD.LOOKAHEAD, max - 1);
-      if (!angular.isDefined(this.$messages[endIndex].subject) &&
-          !angular.isDefined(this.$messages[endIndex].loading)) {
+      if (angular.isDefined(this.$messages[endIndex].subject) ||
+          angular.isDefined(this.$messages[endIndex].loading)) {
+        index = Math.max(startIndex - Mailbox.PRELOAD.LOOKAHEAD, 0);
+        if (!angular.isDefined(this.$messages[index].subject) &&
+            !angular.isDefined(this.$messages[index].loading)) {
+          // Previous messages not loaded; preload more headers further up
+          endIndex = startIndex;
+          startIndex = Math.max(startIndex - Mailbox.PRELOAD.SIZE, 0);
+        }
+      }
+      else
+        // Next messages not load; preload more headers further down
         endIndex = Math.min(startIndex + Mailbox.PRELOAD.SIZE, max);
+
+      if (!angular.isDefined(this.$messages[startIndex].subject) &&
+          !angular.isDefined(this.$messages[startIndex].loading) ||
+          !angular.isDefined(this.$messages[endIndex].subject) &&
+          !angular.isDefined(this.$messages[endIndex].loading)) {
+
         for (uids = []; startIndex < endIndex && startIndex < max; startIndex++) {
           if (angular.isDefined(this.$messages[startIndex].subject) || this.$messages[startIndex].loading) {
             // Message at this index is already loaded; increase the end index
