@@ -275,6 +275,7 @@
         options.filters = _.reject(filters, function(filter) {
           return angular.isUndefined(filter.searchInput) || filter.searchInput.length === 0;
         });
+        // Decompose filters that match two fields
         _.each(options.filters, function(filter) {
           var secondFilter,
               match = filter.searchBy.match(/(\w+)_or_(\w+)/);
@@ -292,7 +293,7 @@
       if (!Mailbox.$virtualMode) {
         var refreshViewCheck = Mailbox.$Preferences.defaults.SOGoRefreshViewCheck;
         if (refreshViewCheck && refreshViewCheck != 'manually') {
-          var f = angular.bind(_this, Mailbox.prototype.$filter);
+          var f = angular.bind(_this, Mailbox.prototype.$filter, null, filters);
           Mailbox.$refreshTimeout = Mailbox.$timeout(f, refreshViewCheck.timeInterval()*1000);
         }
       }
