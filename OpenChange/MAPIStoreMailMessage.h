@@ -44,11 +44,11 @@
   NSMutableDictionary *bodyPartsEncodings;
   NSMutableDictionary *bodyPartsCharsets;
   NSMutableDictionary *bodyPartsMimeTypes;
+  NSMutableDictionary *bodyPartsMixed;
   
   NSString *headerCharset;
   NSString *headerMimeType;
   BOOL bodySetup;
-  BOOL multipartMixed;
   NSArray *bodyContent;
   BOOL fetchedAttachments;
 
