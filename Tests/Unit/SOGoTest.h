@@ -54,6 +54,8 @@
 
 - (BOOL) run;
 
+NSString *_stringForCharacterAtIndex(NSUInteger index, NSString *str, NSUInteger length);
+
 - (NSString*) stringFromDiffBetween: (NSString*) str1
                                 and: (NSString*) str2;
 @end
