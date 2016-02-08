@@ -207,8 +207,10 @@
 
     mailbox = _find(stateAccount.$mailboxes);
 
-    if (mailbox)
+    if (mailbox) {
+      mailbox.$topIndex = 0;
       return mailbox;
+    }
     else
       // Mailbox not found
       return $state.go('mail.account.inbox');
