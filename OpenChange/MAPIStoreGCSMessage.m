@@ -20,10 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSValue.h>
 #import <NGObjWeb/SoSecurityManager.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSObject+Values.h>
 #import <SOGo/SOGoContentObject.h>
@@ -35,6 +37,7 @@
 #import "MAPIStoreTypes.h"
 #import "MAPIStoreUserContext.h"
 #import "NSData+MAPIStore.h"
+#import "NSString+MAPIStore.h"
 
 #import "MAPIStoreGCSMessage.h"
 
@@ -52,6 +55,24 @@
 - (NSDate *) lastModificationTime
 {
   return [sogoObject lastModified];
+}
+
+- (enum mapistore_error) getPidTagCreatorName: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  enum mapistore_error rc;
+  NSString *creator;
+
+  creator = [self creator];
+  if (creator)
+    {
+      *data = [creator asUnicodeInMemCtx: memCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
 }
 
 - (enum mapistore_error) getPidTagChangeKey: (void **) data
@@ -173,6 +194,71 @@
       updateVersionsForMessageWithKey: [self nameInContainer]
                         withChangeKey: newChangeKey
              andPredecessorChangeList: predecessorChangeList];
+}
+
+//----------------------
+// Sharing
+//----------------------
+
+- (NSString *) creator
+{
+  return [self owner];
+}
+
+- (NSString *) owner
+{
+  return [sogoObject ownerInContext: nil];
+}
+
+- (SOGoUser *) ownerUser
+{
+  NSString *ownerName;
+  SOGoUser *owner = nil;
+
+  ownerName = [self owner];
+  if ([ownerName length] != 0)
+    owner = [SOGoUser userWithLogin: ownerName];
+
+  return owner;
+}
+
+- (BOOL) subscriberCanModifyMessage
+{
+  BOOL rc;
+  NSArray *roles;
+
+  roles = [self activeUserRoles];
+
+  if (isNew)
+    rc = [roles containsObject: SOGoRole_ObjectCreator];
+  else
+    rc = [roles containsObject: SOGoRole_ObjectEditor];
+
+  /* Check if the message is owned and it has permission to edit it */
+  if (!rc && [roles containsObject: MAPIStoreRightEditOwn])
+    rc = [[[container context] activeUser] isEqual: [self ownerUser]];
+
+  return rc;
+}
+
+- (BOOL) subscriberCanDeleteMessage
+{
+  BOOL rc;
+  NSArray *roles;
+
+  roles = [self activeUserRoles];
+  rc = [roles containsObject: SOGoRole_ObjectEraser];
+
+  /* Check if the message is owned and it has permission to delete it */
+  if (!rc && [roles containsObject: MAPIStoreRightDeleteOwn])
+    {
+      NSString *currentUser;
+
+      currentUser = [[container context] activeUser];
+      rc = [currentUser isEqual: [self ownerUser]];
+    }
+
+  return rc;
 }
 
 @end
