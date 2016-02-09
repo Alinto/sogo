@@ -10,6 +10,7 @@ Enhancements
 Bug fixes
  - [eas] fixed long GUID issue preventing sometimes synchronisation (#3460)
  - [web] improved extraction of HTML signature in Preferences module
+ - [web] really delete mailboxes being deleted from the Trash folder (#595, #1189, #641)
 
 2.3.13 (2016-07-06)
 -------------------
