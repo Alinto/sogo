@@ -23,6 +23,17 @@ CKEDITOR.editorConfig = function( config ) {
   config.tabSpaces = 4;
   config.allowedContent = true; // don't filter tags
 
+  // The list of fonts size to be displayed in the Font Size combo in the toolbar.
+  config.fontSize_sizes = '8/8px;9/9px;10/10px;11/11px;12/12px;13/13px;14/14px;16/16px;18/18px;20/20px;22/22px;24/24px;26/26px;28/28px;36/36px;48/48px;72/72px';
+
+  // Explicitly show the default site font size to the end user (as defined in contents.css)
+  config.fontSize_defaultLabel = '13px';
+
+  // The CSS file(s) to be used to apply style to editor content.
+  // For example, the following ck.css could overwrite the font-size of .cke_editable
+  //config.contentsCss = ['/SOGo.woa/WebServerResources/js/vendor/ckeditor/contents.css', // default CSS
+  //                      '/css/ck.css']; // custom CSS
+
   // Disables the built-in words spell checker if browser provides one. Defaults to true.
   // http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-disableNativeSpellChecker
   //config.disableNativeSpellChecker = false;
