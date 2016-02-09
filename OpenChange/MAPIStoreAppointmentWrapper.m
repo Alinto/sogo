@@ -1023,6 +1023,63 @@ static NSCharacterSet *hexCharacterSet = nil;
                   inMemCtx: memCtx];
 }
 
+/* creator (only if created from Outlook/SOGo or organizer as fallback */
+- (NSString *) creator
+{
+  iCalPerson *person;
+  NSDictionary *contactInfos;
+  NSString *creator = nil, *email;
+  SOGoUserManager *mgr;
+
+  creator = [[event uniqueChildWithTag: @"x-sogo-component-created-by"]
+              flattenedValuesForKey: @""];
+  if ([creator length] == 0)
+    {
+      person = [event organizer];
+      if (person)
+        {
+          email = [person rfc822Email];
+          if ([email length] > 0)
+            {
+              mgr = [SOGoUserManager sharedUserManager];
+              contactInfos = [mgr contactInfosForUserWithUIDorEmail: email];
+              if (contactInfos)
+                creator = [contactInfos objectForKey: @"sAMAccountName"];
+            }
+        }
+    }
+  return creator;
+}
+
+/* owner is the organizer of the event, if none, try with the creator
+   who has saved only from Outlook or SOGo */
+- (NSString *) owner
+{
+  iCalPerson *person;
+  NSDictionary *contactInfos;
+  NSString *email, *owner = nil;
+  SOGoUserManager *mgr;
+
+  person = [event organizer];
+  if (person)
+    {
+      email = [person rfc822Email];
+      if ([email length] > 0)
+        {
+          mgr = [SOGoUserManager sharedUserManager];
+          contactInfos = [mgr contactInfosForUserWithUIDorEmail: email];
+          if (contactInfos)
+            owner = [contactInfos objectForKey: @"sAMAccountName"];
+        }
+    }
+
+  if (!owner)
+    owner = [[event uniqueChildWithTag: @"x-sogo-component-created-by"]
+                flattenedValuesForKey: @""];
+
+  return owner;
+}
+
 /* sender representing */
 - (enum mapistore_error) getPidTagSentRepresentingEmailAddress: (void **) data
                                                       inMemCtx: (TALLOC_CTX *) memCtx

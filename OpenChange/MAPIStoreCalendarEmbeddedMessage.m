@@ -208,6 +208,7 @@
   [[container event] updateFromMAPIProperties: properties
                                 inUserContext: [self userContext]
                                withActiveUser: activeUser
+                                        isNew: NO
 				     inMemCtx: memCtx];
 }
 

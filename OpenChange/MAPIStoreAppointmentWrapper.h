@@ -68,6 +68,9 @@
 - (void) fillMessageData: (struct mapistore_message *) dataPtr
                 inMemCtx: (TALLOC_CTX *) memCtx;
 
+- (NSString *) creator;
+- (NSString *) owner;
+
 - (enum mapistore_error) getPidTagSenderEmailAddress: (void **) data
                                             inMemCtx: (TALLOC_CTX *) memCtx;
 - (enum mapistore_error) getPidTagSenderAddressType: (void **) data
