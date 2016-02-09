@@ -202,6 +202,21 @@ div.md-tile-left {
       margin: 1px 2px;
     }
   }
+
+  /* Classes for ng-sortable */
+  &-sortable-grip {
+    &:hover {
+      cursor: move;
+    }
+  }
+
+  &-sortable-ghost {
+    opacity: 0.5;
+  }
+
+  &-sortable-chosen {
+    background-color: white;
+  }
 }
 
 .card-picture {

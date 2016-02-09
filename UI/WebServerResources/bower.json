@@ -9,6 +9,7 @@
     "angular-file-upload": "latest",
     "angular-material": "v1.0.5",
     "lodash": "latest",
+    "Sortable": "latest",
     "breakpoint-sass": ">=2.4.2"
   },
   "resolutions": {

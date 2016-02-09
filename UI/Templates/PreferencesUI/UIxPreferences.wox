@@ -8,7 +8,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:jsFiles="Common.js, Preferences.js, Preferences.services.js, Mailer.services.js, Contacts.services.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js">
+    const:jsFiles="Common.js, vendor/ng-sortable.js, Preferences.js, Preferences.services.js, Mailer.services.js, Contacts.services.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js">
 
   <main class="view layout-fill" ui-view="preferences" layout="row"
         ng-controller="navController"><!-- preferences --> </main>
@@ -612,11 +612,12 @@
             <div role="tabpanel" aria-labelledby="mailFiltersView"
                  id="mailFiltersView-content">
 
-              <div class="md-padding">
+              <div class="md-padding" ng-sortable="{ animation: 150, draggable: '.layout-row', handle: '.sg-sortable-grip', ghostClass: 'sg-sortable-ghost', chosenClass: 'sg-sortable-chosen' }">
                 <div layout="row" layout-align="start center"
-                     ng-repeat="item in
-                                app.preferences.defaults.SOGoSieveFilters
-                                track by $index">
+                     ng-repeat="item in app.preferences.defaults.SOGoSieveFilters track by $index">
+                  <md-button class="md-icon-button" md-no-ink="md-no-ink">
+                    <md-icon class="sg-sortable-grip">drag_handle</md-icon>
+                  </md-button>
                   <md-checkbox
                       style="margin-bottom: 0;"
                       ng-model="app.preferences.defaults.SOGoSieveFilters[$index].active"

@@ -15,6 +15,9 @@ module.exports = function(grunt) {
     'js/Administration.js': ['js/Administration/Administration.app.js', 'js/Administration/*Controller.js']
 
   };
+  var sortable_files = {
+    'js/vendor/ng-sortable.js': ['bower_components/Sortable/Sortable.js', 'bower_components/Sortable/ng-sortable.js']
+  };
 
   require('time-grunt')(grunt);
 
@@ -87,6 +90,12 @@ module.exports = function(grunt) {
           mangle: false,
         },
         files: js_files
+      },
+      sortable: {
+        options: {
+          compress: true
+        },
+        files: sortable_files,
       }
     },
     watch: {
@@ -170,7 +179,7 @@ module.exports = function(grunt) {
     }
     */
   });
-  grunt.task.registerTask('build', ['static', 'uglify:dist', 'sass:dist', 'postcss:dist']);
+  grunt.task.registerTask('build', ['static', 'uglify:dist', 'uglify:sortable', 'sass:dist', 'postcss:dist']);
   // Tasks for developers
   grunt.task.registerTask('default', ['watch']);
   grunt.task.registerTask('css', ['sass:dev', 'postcss:dev']);
