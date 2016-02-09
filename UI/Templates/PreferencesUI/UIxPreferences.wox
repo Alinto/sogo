@@ -15,6 +15,8 @@
 
   <script type="text/javascript">
     var mailCustomFromEnabled = <var:string value="mailCustomFromEnabled" const:escapeHTML="NO"/>;
+    var forwardEnabled = <var:string value="forwardEnabled" const:escapeHTML="NO"/>;
+    var vacationEnabled = <var:string value="isVacationEnabled" const:escapeHTML="NO"/>;
     var timeZonesList = <var:string value="timeZonesList" const:escapeHTML="NO"/>;
     var defaultEmailAddresses = '<var:string value="defaultEmailAddresses" const:escapeHTML="NO"/>';
     var forwardConstraints = <var:string value="forwardConstraints" const:escapeHTML="NO"/>;

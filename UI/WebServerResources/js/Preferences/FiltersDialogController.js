@@ -9,7 +9,10 @@
    */
   FiltersDialogController.$inject = ['$scope', '$window', '$mdDialog', 'filter', 'mailboxes', 'labels'];
   function FiltersDialogController($scope, $window, $mdDialog, filter, mailboxes, labels) {
-    var vm = this, sieveCapabilities = $window.sieveCapabilities;
+    var vm = this,
+        sieveCapabilities = $window.sieveCapabilities,
+        forwardEnabled = $window.forwardEnabled,
+        vacationEnabled = $window.vacationEnabled;
 
     vm.filter = filter;
     vm.mailboxes = mailboxes;
@@ -37,10 +40,14 @@
     vm.methodLabels = {
       "discard": l("Discard the message"),
       "keep": l("Keep the message"),
-      "redirect": l("Forward the message to"),
-      "vacation": l("Send a vacation message"),
       "stop": l("Stop processing filter rules")
     };
+
+    if (forwardEnabled)
+      vm.methodLabels.redirect = l("Forward the message to");
+
+    if (vacationEnabled)
+      vm.methodLabels.vacation = l("Send a vacation message");
 
     if (sieveCapabilities.indexOf("reject") > -1)
       vm.methodLabels.reject = l("Send a reject message");

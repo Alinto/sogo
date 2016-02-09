@@ -4,6 +4,7 @@
 Enhancements
  - [web] added Junk handling feature from v2
  - [web] updated Material Icons font to version 2.1.3
+ - [web] don't offer forward/vacation options in filters if not enabled
 
 Bug fixes
  - [web] handle birthday dates before 1970

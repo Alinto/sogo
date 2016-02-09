@@ -144,6 +144,7 @@ static NSArray *reminderValues = nil;
 	}
 
       mailCustomFromEnabled = [dd mailCustomFromEnabled];
+      forwardEnabled = [dd forwardEnabled];
 
       hasChanged = NO;
     }
@@ -2077,6 +2078,11 @@ static NSArray *reminderValues = nil;
 - (NSString *) mailCustomFromEnabled
 {
   return (mailCustomFromEnabled ? @"true" : @"false");
+}
+
+- (NSString *) forwardEnabled
+{
+  return (forwardEnabled ? @"true" : @"false");
 }
 
 //
