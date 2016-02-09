@@ -31,9 +31,11 @@
 #import <NGCards/NGVCardPhoto.h>
 #import <NGCards/NSArray+NGCards.h>
 #import <NGCards/NSString+NGCards.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <Contacts/SOGoContactGCSEntry.h>
 #import <Mailer/NSString+Mail.h>
 #import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserManager.h>
 
 #import "MAPIStoreAttachment.h"
@@ -1224,23 +1226,28 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 }
 
 // ---------------------------------------------------------
+// Permissions
+// ---------------------------------------------------------
+
+- (NSString *) creator
+{
+  return [[[sogoObject vCard] uniqueChildWithTag: @"x-openchange-creator"]
+                  flattenedValuesForKey: @""];
+}
+
+- (NSString *) owner
+{
+  return [self creator];
+}
 
 - (BOOL) subscriberCanReadMessage
 {
   return [[self activeUserRoles] containsObject: SOGoRole_ObjectViewer];
 }
 
-- (BOOL) subscriberCanModifyMessage
-{
-  NSArray *roles;
-
-  roles = [self activeUserRoles];
-
-  return ((isNew
-           && [roles containsObject: SOGoRole_ObjectCreator])
-          || (!isNew && [roles containsObject: SOGoRole_ObjectEditor]));
-}
-
+// ---------------------------------------------------------
+// Save
+// ---------------------------------------------------------
 - (void) saveDistList:(TALLOC_CTX *) memCtx
 {
   [self warnWithFormat: @"IPM.DistList messages are ignored"];
@@ -1583,6 +1590,14 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
     }
   if (value)
     [newCard setNote: value];
+
+  /* Store the creator name for sharing purposes */
+  if (isNew)
+    {
+      value = [[[self context] activeUser] login];
+      [[newCard uniqueChildWithTag: @"x-openchange-creator"]
+        setSingleValue: value forKey: @""];
+    }
 
   //
   // we save the new/modified card
