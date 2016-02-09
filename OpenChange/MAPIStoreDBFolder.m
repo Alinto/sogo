@@ -51,16 +51,6 @@
 
 static Class EOKeyValueQualifierK, SOGoCacheGCSFolderK, MAPIStoreDBFolderK;
 
-NSString *MAPIStoreRightReadItems = @"RightsReadItems";
-NSString *MAPIStoreRightCreateItems = @"RightsCreateItems";
-NSString *MAPIStoreRightEditOwn = @"RightsEditOwn";
-NSString *MAPIStoreRightEditAll = @"RightsEditAll";
-NSString *MAPIStoreRightDeleteOwn = @"RightsDeleteOwn";
-NSString *MAPIStoreRightDeleteAll = @"RightsDeleteAll";
-NSString *MAPIStoreRightCreateSubfolders = @"RightsCreateSubfolders";
-NSString *MAPIStoreRightFolderOwner = @"RightsFolderOwner";
-NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
-
 @implementation MAPIStoreDBFolder
 
 + (void) initialize

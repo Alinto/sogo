@@ -42,11 +42,19 @@
 
 #import "MAPIStoreSOGoObject.h"
 
-/* Custom MAPI Permissions */
-extern NSString *SOGoOpenChangeRole_EditOwned;
-extern NSString *SOGoOpenChangeRole_DeleteOwned;
-extern NSString *SOGoOpenChangeRole_FolderContact;
-extern NSString *SOGoOpenChangeRole_FolderOwner;
+/* MAPI Permissions
+
+   This set has only sogo-openchange library scope
+ */
+extern NSString *MAPIStoreRightReadItems;
+extern NSString *MAPIStoreRightCreateItems;
+extern NSString *MAPIStoreRightEditOwn;
+extern NSString *MAPIStoreRightEditAll;
+extern NSString *MAPIStoreRightDeleteOwn;
+extern NSString *MAPIStoreRightDeleteAll;
+extern NSString *MAPIStoreRightCreateSubfolders;
+extern NSString *MAPIStoreRightFolderOwner;
+extern NSString *MAPIStoreRightFolderContact;
 
 @interface MAPIStoreFolder : MAPIStoreSOGoObject
 {
