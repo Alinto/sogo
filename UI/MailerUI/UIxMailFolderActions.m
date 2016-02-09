@@ -185,22 +185,23 @@
 }
 
 - (NSURL *) _trashedURLOfFolder: (NSURL *) srcURL
-			 withCO: (SOGoMailFolder *) co
+                     withObject: (SOGoMailFolder *) co
 {
-  NSURL *destURL;
   NSString *trashFolderName, *folderName, *path, *testPath;
   NGImap4Connection *connection;
-  int i = 1;
+  NSURL *destURL;
   id test;
+  int i;
 
   connection = [co imap4Connection];
-
   folderName = [[srcURL path] lastPathComponent];
   trashFolderName
     = [[co mailAccountFolder] trashFolderNameInContext: context];
   path = [NSString stringWithFormat: @"/%@/%@",
 		   trashFolderName, folderName];
   testPath = path;
+  i = 1;
+
   while ( i < 10 )
     {
       test = [[connection client] select: testPath];
@@ -216,7 +217,7 @@
         }
     }
   destURL = [[NSURL alloc] initWithScheme: [srcURL scheme]
-			   host: [srcURL host] path: path];
+                                     host: [srcURL host] path: path];
   [destURL autorelease];
 
   return destURL;
@@ -224,63 +225,79 @@
 
 - (WOResponse *) deleteAction
 {
+  NSString *currentMailbox, *currentAccount, *keyForMsgUIDs;
+  NSMutableDictionary *moduleSettings, *threadsCollapsed;
+  NGImap4Connection *connection;
   SOGoMailFolder *co, *inbox;
+  NSDictionary *jsonResponse;
+  NSURL *srcURL, *destURL;
   SOGoUserSettings *us;
   WOResponse *response;
-  NGImap4Connection *connection;
   NSException *error;
-  NSURL *srcURL, *destURL;
-  NSDictionary *jsonResponse;
-  NSMutableDictionary *moduleSettings, *threadsCollapsed;
-  NSString *currentMailbox, *currentAccount, *keyForMsgUIDs;
+
+  BOOL moved;
 
   co = [self clientObject];
-  if ([co ensureTrashFolder])
-  {
-    connection = [co imap4Connection];
-    srcURL = [co imap4URL];
-    destURL = [self _trashedURLOfFolder: srcURL withCO: co];
-    connection = [co imap4Connection];
-    inbox = [[co mailAccountFolder] inboxFolderInContext: context];
-    [[connection client] select: [inbox absoluteImap4Name]];
-    error = [connection moveMailboxAtURL: srcURL toURL: destURL];
-    if (error)
-      {
-        jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to move folder." inContext: context]
-                                                 forKey: @"error"];
-        response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
-      }
-    else
-      {
-        // We unsubscribe to the old one, and subscribe back to the new one
-        [[connection client] subscribe: [destURL path]];
-        [[connection client] unsubscribe: [srcURL path]];
-    
-         // Verify if the current folder have any collapsed threads save under it name and erase it
-         us = [[context activeUser] userSettings];
-         moduleSettings = [us objectForKey: @"Mail"];
-         threadsCollapsed = [moduleSettings objectForKey:@"threadsCollapsed"];
-         currentMailbox = [co nameInContainer];
-         currentAccount = [[co container] nameInContainer];
-         keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", currentAccount, currentMailbox];
+  moved = YES;
 
-         if (threadsCollapsed)
-           {
-             if ([threadsCollapsed objectForKey:keyForMsgUIDs])
-               {
-                  [threadsCollapsed removeObjectForKey:keyForMsgUIDs];
+  if ([co ensureTrashFolder])
+    {
+      connection = [co imap4Connection];
+      srcURL = [co imap4URL];
+      destURL = [self _trashedURLOfFolder: srcURL withObject: co];
+      connection = [co imap4Connection];
+      inbox = [[co mailAccountFolder] inboxFolderInContext: context];
+      [[connection client] select: [inbox absoluteImap4Name]];
+
+      // If srcURL is a prefix of destURL, that means we are deleting
+      // the folder within the 'Trash' folder, as it's getting renamed
+      // over and over with an integer suffix (in trashedURLOfFolder:...)
+      // If that is the case, we simple delete the folder, instead of renaming it
+      if ([[destURL path] hasPrefix: [srcURL path]])
+        {
+          error = [connection deleteMailboxAtURL: srcURL];
+          moved = NO;
+        }
+      else
+        error = [connection moveMailboxAtURL: srcURL toURL: destURL];
+      if (error)
+        {
+          jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to move/delete folder." inContext: context]
+                                                     forKey: @"error"];
+          response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
+        }
+      else
+        {
+          // We unsubscribe to the old one, and subscribe back to the new one
+          if (moved)
+            [[connection client] subscribe: [destURL path]];
+          [[connection client] unsubscribe: [srcURL path]];
+
+          // Verify if the current folder have any collapsed threads save under it name and erase it
+          us = [[context activeUser] userSettings];
+          moduleSettings = [us objectForKey: @"Mail"];
+          threadsCollapsed = [moduleSettings objectForKey: @"threadsCollapsed"];
+          currentMailbox = [co nameInContainer];
+          currentAccount = [[co container] nameInContainer];
+          keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", currentAccount, currentMailbox];
+
+          if (threadsCollapsed)
+            {
+              if ([threadsCollapsed objectForKey: keyForMsgUIDs])
+                {
+                  [threadsCollapsed removeObjectForKey: keyForMsgUIDs];
                   [us synchronize];
-               }
-           }
-        response = [self responseWith204];
-      }
-  }
+                }
+            }
+          response = [self responseWith204];
+        }
+    }
   else
-  {
-    jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to move folder." inContext: context]
-                                               forKey: @"message"];
-    response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
-  }
+    {
+      jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to move/delete folder." inContext: context]
+                                                 forKey: @"message"];
+      response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
+    }
 
   return response;
 }

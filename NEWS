@@ -11,6 +11,7 @@ Bug fixes
  - [web] safe-guarding against bogus value coming from the quick tables
  - [web] apply search filters when automatically reloading current mailbox (#3507)
  - [web] fixed virtual repeater when moving up in messages list
+ - [web] really delete mailboxes being deleted from the Trash folder (#595, #1189, #641)
 
 3.0.1 (2016-02-05)
 ------------------
