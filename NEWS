@@ -9,6 +9,7 @@ Enhancements
  - [web] now supports RFC6154 and NoInferiors IMAP flag
  - [web] improved confirm dialogs for deletions
  - [web] show all/only this calendar
+ - [web] allow resources to prevent invitations (#3410)
 
 Bug fixes
  - [web] handle birthday dates before 1970
