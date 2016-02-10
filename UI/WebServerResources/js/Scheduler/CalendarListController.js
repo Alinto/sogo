@@ -76,7 +76,8 @@
 
     function confirmDeleteSelectedComponents() {
       Dialog.confirm(l('Warning'),
-                     l('Are you sure you want to delete the selected components?'))
+                     l('Are you sure you want to delete the selected components?'),
+                     { ok: l('Delete') })
         .then(function() {
           // User confirmed the deletion
           var components = _.filter(Component['$' + vm.componentType], function(component) { return component.selected; });

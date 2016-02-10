@@ -97,7 +97,8 @@
           });
       }
       else {
-        Dialog.confirm(l('Warning'), l('Are you sure you want to delete the calendar <em>%{0}</em>?', folder.name))
+        Dialog.confirm(l('Warning'), l('Are you sure you want to delete the calendar <em>%{0}</em>?', folder.name),
+                       { ok: l('Delete') })
           .then(function() {
             folder.$delete()
               .then(function() {

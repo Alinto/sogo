@@ -55,7 +55,8 @@
 
     function confirmDeleteSelectedMessages() {
       Dialog.confirm(l('Warning'),
-                     l('Are you sure you want to delete the selected messages?'))
+                     l('Are you sure you want to delete the selected messages?'),
+                     { ok: l('Delete') })
         .then(function() {
           var deleteSelectedMessage = false;
           var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) {

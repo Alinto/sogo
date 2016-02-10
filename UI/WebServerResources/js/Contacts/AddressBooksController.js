@@ -97,7 +97,8 @@
       }
       else {
         Dialog.confirm(l('Warning'), l('Are you sure you want to delete the addressbook <em>%{0}</em>?',
-                                       vm.service.selectedFolder.name))
+                                       vm.service.selectedFolder.name),
+                       { ok: l('Delete') })
           .then(function() {
             return vm.service.selectedFolder.$delete();
           })
