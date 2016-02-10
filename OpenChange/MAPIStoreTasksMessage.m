@@ -154,6 +154,9 @@
   return MAPISTORE_SUCCESS;
 }
 
+//------------------------------------
+// Specific task related properties
+//------------------------------------
 - (enum mapistore_error) getPidLidTaskComplete: (void **) data
                                       inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -323,6 +326,7 @@
 {
   NSString *owner;
 
+  /* FIXME: This is wrong when setting task's request */
   owner = [sogoObject ownerInContext: nil];
 
   *data = [owner asUnicodeInMemCtx: memCtx];
@@ -334,6 +338,25 @@
                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
+}
+
+// ----------------------------------
+// Sharing
+// ----------------------------------
+- (NSString *) creator
+{
+  iCalToDo *task;
+
+  task = [sogoObject component: NO secure: YES];
+  return [[task uniqueChildWithTag: @"x-sogo-component-created-by"]
+            flattenedValuesForKey: @""];
+}
+
+- (NSString *) owner
+{
+  /* This is not true but to allow a user edit its own tasks is required.
+     FIXME: When PidLidTaskOwner getter is properly implemented for Task Requests */
+  return [self creator];
 }
 
 - (BOOL) subscriberCanReadMessage
@@ -353,6 +376,15 @@
   else
     rc = ([roles containsObject: SOGoCalendarRole_ComponentModifier]
           || [roles containsObject: SOGoCalendarRole_ComponentResponder]);
+
+  /* Check if the message is owned and it has permission to edit it */
+  if (!rc && [roles containsObject: MAPIStoreRightEditOwn])
+    {
+      NSString *currentUser;
+
+      currentUser = [[container context] activeUser];
+      rc = [currentUser isEqual: [self ownerUser]];
+    }
 
   return rc;
 }
@@ -524,10 +556,16 @@
 	[vToDo setAccessClass: @"PUBLIC"];
     }
 
+  /* Creation */
   now = [NSCalendarDate date];
   if ([sogoObject isNew])
     {
       [vToDo setCreated: now];
+      /* Creator is used for sharing purposes */
+      value = [properties objectForKey: MAPIPropertyKey (PidTagLastModifierName)];
+      if (value)
+        [[vToDo uniqueChildWithTag: @"x-sogo-component-created-by"] setSingleValue: value
+                                                                            forKey: @""];
     }
   [vToDo setTimeStampAsDate: now];
 
