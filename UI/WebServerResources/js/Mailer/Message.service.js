@@ -585,27 +585,24 @@
    */
   Message.prototype.$send = function() {
     var _this = this,
-        data = angular.copy(this.editable),
-        deferred = Message.$q.defer();
+        data = angular.copy(this.editable);
 
     Message.$log.debug('send = ' + JSON.stringify(data, undefined, 2));
 
-    Message.$$resource.post(this.$absolutePath({asDraft: true}), 'send', data).then(function(data) {
+    return Message.$$resource.post(this.$absolutePath({asDraft: true}), 'send', data).then(function(data) {
       if (data.status == 'success') {
-        deferred.resolve(data);
         if (angular.isDefined(_this.origin)) {
           if (_this.origin.action.startsWith('reply'))
             _this.origin.message.isanswered = true;
           else if (_this.origin.action == 'forward')
             _this.origin.message.isforwarded = true;
         }
+        return data;
       }
       else {
-        deferred.reject(data);
+        return Message.$q.reject(data);
       }
     });
-
-    return deferred.promise;
   };
 
   /**
