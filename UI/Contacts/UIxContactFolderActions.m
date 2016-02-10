@@ -35,6 +35,7 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NGBase64Coding.h>
+#import <NGHttp/NGHttpRequest.h>
 #import <NGMime/NGMimeMultipartBody.h>
 
 #import <Contacts/SOGoContactObject.h>

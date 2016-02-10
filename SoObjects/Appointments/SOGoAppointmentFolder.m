@@ -30,6 +30,7 @@
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
+#import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOMessage.h>
 #import <NGObjWeb/WORequest.h>

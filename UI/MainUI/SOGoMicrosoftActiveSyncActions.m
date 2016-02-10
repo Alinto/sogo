@@ -26,6 +26,7 @@
 #import <SOGo/SOGoFolder.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WODirectAction.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>

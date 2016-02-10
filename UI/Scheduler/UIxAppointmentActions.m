@@ -24,6 +24,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSValue.h>
 
 #import <NGExtensions/NSObject+Values.h>
 

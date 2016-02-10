@@ -25,6 +25,7 @@
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <DOM/DOMElement.h>

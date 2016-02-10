@@ -19,6 +19,7 @@
  */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSValue.h>
 
