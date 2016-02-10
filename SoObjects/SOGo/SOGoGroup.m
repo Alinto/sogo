@@ -197,7 +197,7 @@
 	}
 
         gclasses = [[source groupObjectClasses] objectEnumerator];
-        while (gclass = [gclasses nextObject])
+        while ((gclass = [gclasses nextObject]))
           if ([classes containsObject: gclass])
            {
           // Found a group, let's return it.
