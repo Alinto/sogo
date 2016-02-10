@@ -39,7 +39,7 @@
       $Preferences: Preferences,
       $Card: Card,
       $gravatar: Gravatar,
-      $$resource: new Resource(Settings.baseURL(), Settings.activeUser()),
+      $$resource: new Resource(Settings.activeUser('folderURL') + 'Calendar', Settings.activeUser()),
       timeFormat: "%H:%M",
       // Filter parameters common to events and tasks
       $query: { value: '', search: 'title_Category_Location' },
@@ -236,35 +236,40 @@
    * @returns a promise of a collection of objects describing the events blocks
    */
   Component.$eventsBlocksForView = function(view, date) {
-    var viewAction, startDate, endDate, params;
+    var _this = this;
 
-    if (view == 'day') {
-      viewAction = 'dayView';
-      startDate = endDate = date;
-    }
-    else if (view == 'multicolumnday') {
-      viewAction = 'multicolumndayView';
-      startDate = endDate = date;
-    }
-    else if (view == 'week') {
-      viewAction = 'weekView';
-      startDate = date.beginOfWeek();
-      endDate = new Date();
-      endDate.setTime(startDate.getTime());
-      endDate.addDays(6);
-    }
-    else if (view == 'month') {
-      viewAction = 'monthView';
-      startDate = date;
-      startDate.setDate(1);
-      startDate = startDate.beginOfWeek();
-      endDate = new Date();
-      endDate.setTime(startDate.getTime());
-      endDate.setMonth(endDate.getMonth() + 1);
-      endDate.addDays(-1);
-      endDate = endDate.endOfWeek();
-    }
-    return this.$eventsBlocks(viewAction, startDate, endDate);
+    return Component.$Preferences.ready().then(function(data) {
+      var firstDayOfWeek, viewAction, startDate, endDate, params;
+      firstDayOfWeek = Component.$Preferences.defaults.SOGoFirstDayOfWeek;
+
+      if (view == 'day') {
+        viewAction = 'dayView';
+        startDate = endDate = date;
+      }
+      else if (view == 'multicolumnday') {
+        viewAction = 'multicolumndayView';
+        startDate = endDate = date;
+      }
+      else if (view == 'week') {
+        viewAction = 'weekView';
+        startDate = date.beginOfWeek(firstDayOfWeek);
+        endDate = new Date();
+        endDate.setTime(startDate.getTime());
+        endDate.addDays(6);
+      }
+      else if (view == 'month') {
+        viewAction = 'monthView';
+        startDate = date;
+        startDate.setDate(1);
+        startDate = startDate.beginOfWeek(firstDayOfWeek);
+        endDate = new Date();
+        endDate.setTime(startDate.getTime());
+        endDate.setMonth(endDate.getMonth() + 1);
+        endDate.addDays(-1);
+        endDate = endDate.endOfWeek(firstDayOfWeek);
+      }
+      return _this.$eventsBlocks(viewAction, startDate, endDate);
+    });
   };
 
   /**

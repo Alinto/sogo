@@ -124,6 +124,14 @@
           _this.$calendars.push(calendar);
       });
     }
+    else if (angular.isUndefined(this.$calendars)) {
+      this.$calendars = [];
+      this.$subscriptions = [];
+      this.$webcalendars = [];
+      Calendar.$$resource.fetch('calendarslist').then(function(data) {
+        Calendar.$findAll(data.calendars, writable);
+      });
+    }
 
     if (writable) {
       return _.union(this.$calendars, _.filter(this.$subscriptions, function(calendar) { return calendar.acls.objectCreator; }));

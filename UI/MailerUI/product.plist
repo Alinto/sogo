@@ -278,6 +278,11 @@
           actionClass = "UIxMailActions";
           actionName  = "forward";
         };
+        viewplain = {
+          protectedBy = "View";
+          actionClass = "UIxMailActions";
+          actionName  = "viewPlain";
+        };
         markMessageUncollapse = {
           protectedBy = "View";
           actionClass = "UIxMailActions";

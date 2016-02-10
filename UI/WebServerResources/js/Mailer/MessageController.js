@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageController.$inject = ['$window', '$scope', '$state', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'encodeUriFilter', 'sgSettings', 'sgFocus', 'Dialog', 'Account', 'Mailbox', 'Message'];
-  function MessageController($window, $scope, $state, $mdDialog, stateAccounts, stateAccount, stateMailbox, stateMessage, encodeUriFilter, sgSettings, focus, Dialog, Account, Mailbox, Message) {
+  MessageController.$inject = ['$window', '$scope', '$state', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'encodeUriFilter', 'sgSettings', 'sgFocus', 'Dialog', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message'];
+  function MessageController($window, $scope, $state, $mdDialog, stateAccounts, stateAccount, stateMailbox, stateMessage, encodeUriFilter, sgSettings, focus, Dialog, Calendar, Component, Account, Mailbox, Message) {
     var vm = this, messageDialog = null, popupWindow = null;
 
     // Expose controller
@@ -35,6 +35,8 @@
     vm.saveMessage = saveMessage;
     vm.toggleRawSource = toggleRawSource;
     vm.showRawSource = false;
+    vm.convertToEvent = convertToEvent;
+    vm.convertToTask = convertToTask;
 
     // One-way refresh of the parent window when modifying the message from a popup window.
     if ($window.opener) {
@@ -253,6 +255,45 @@
       else {
         vm.showRawSource = !vm.showRawSource;
       }
+    }
+
+    function convertToEvent($event) {
+      return convertToComponent($event, 'appointment');
+    }
+
+    function convertToTask($event) {
+      return convertToComponent($event, 'task');
+    }
+
+    function convertToComponent($event, type) {
+      vm.message.$plainContent().then(function(data) {
+        var componentData = {
+          pid: Calendar.$defaultCalendar(),
+          type: type,
+          summary: data.subject,
+          comment: data.content
+        };
+        var component = new Component(componentData);
+        // UI/Templates/SchedulerUI/UIxAppointmentEditorTemplate.wox or
+        // UI/Templates/SchedulerUI/UIxTaskEditorTemplate.wox
+        var templateUrl = [
+          sgSettings.activeUser('folderURL'),
+          'Calendar',
+          'UIx' + type.capitalize() + 'EditorTemplate'
+        ].join('/');
+        return $mdDialog.show({
+          parent: angular.element(document.body),
+          targetEvent: $event,
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          templateUrl: templateUrl,
+          controller: 'ComponentEditorController',
+          controllerAs: 'editor',
+          locals: {
+            stateComponent: component
+          }
+        });
+      });
     }
   }
   

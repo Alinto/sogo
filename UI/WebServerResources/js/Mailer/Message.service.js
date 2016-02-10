@@ -363,6 +363,15 @@
   };
 
   /**
+   * @function $plainContent
+   * @memberof Message.prototype
+   * @returns the a plain text representation of the subject and body
+   */
+  Message.prototype.$plainContent = function() {
+    return Message.$$resource.fetch(this.$absolutePath(), 'viewplain');
+  };
+
+  /**
    * @function addTag
    * @memberof Message.prototype
    * @desc Add a mail tag on the current message.

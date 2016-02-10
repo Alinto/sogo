@@ -187,6 +187,13 @@
 "Save As..." = "Save As...";
 "Print Preview" = "Print Preview";
 "View Message Source" = "View Message Source";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Convert To Event";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Convert To Task";
+
 "Print..." = "Print...";
 "Delete Message" = "Delete Message";
 "Delete Selected Messages" = "Delete Selected Messages";

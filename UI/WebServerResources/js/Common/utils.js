@@ -328,7 +328,7 @@ Date.prototype.beginOfDay = function() {
     return beginOfDay;
 };
 
-Date.prototype.beginOfWeek = function() {
+Date.prototype.beginOfWeek = function(firstDayOfWeek) {
     var offset = firstDayOfWeek - this.getDay();
     if (offset > 0)
         offset -= 7;
@@ -340,8 +340,8 @@ Date.prototype.beginOfWeek = function() {
     return beginOfWeek;
 };
 
-Date.prototype.endOfWeek = function() {
-    var endOfWeek = this.beginOfWeek();
+Date.prototype.endOfWeek = function(firstDayOfWeek) {
+    var endOfWeek = this.beginOfWeek(firstDayOfWeek);
     endOfWeek.addDays(6);
 
     endOfWeek.setHours(23);

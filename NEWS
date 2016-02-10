@@ -1,6 +1,10 @@
 3.0.2 (2016-02-DD)
 ------------------
 
+New features
+ - [web] show all/only this calendar
+ - [web] convert a message to an appointment or a task (#1722)
+
 Enhancements
  - [web] added Junk handling feature from v2
  - [web] updated Material Icons font to version 2.1.3
@@ -8,7 +12,6 @@ Enhancements
  - [web] mail filters are now sortable
  - [web] now supports RFC6154 and NoInferiors IMAP flag
  - [web] improved confirm dialogs for deletions
- - [web] show all/only this calendar
  - [web] allow resources to prevent invitations (#3410)
 
 Bug fixes
