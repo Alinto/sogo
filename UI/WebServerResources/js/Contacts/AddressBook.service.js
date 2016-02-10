@@ -79,7 +79,7 @@
    * @returns a collection of Cards instances
    */
   AddressBook.$filterAll = function(search, options, excludedCards) {
-    var params = {search: search};
+    var params = { search: search };
 
     if (!search) {
       // No query specified
@@ -90,11 +90,6 @@
       // First session query
       AddressBook.$cards = [];
     }
-    else if (AddressBook.$query.value == search) {
-      // Query hasn't changed
-      return AddressBook.$q.when(AddressBook.$cards);
-    }
-    AddressBook.$query.value = search;
 
     angular.extend(params, options);
 
