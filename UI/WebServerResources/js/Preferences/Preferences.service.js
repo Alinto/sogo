@@ -66,21 +66,22 @@
       angular.extend(_this.defaults, data);
 
       // Configure date locale
-      angular.extend(Preferences.$mdDateLocaleProvider, data.locale);
-      Preferences.$mdDateLocaleProvider.firstDayOfWeek = parseInt(data.SOGoFirstDayOfWeek);
-      Preferences.$mdDateLocaleProvider.weekNumberFormatter = function(weekNumber) {
+      _this.$mdDateLocaleProvider = Preferences.$mdDateLocaleProvider;
+      angular.extend(_this.$mdDateLocaleProvider, data.locale);
+      _this.$mdDateLocaleProvider.firstDayOfWeek = parseInt(data.SOGoFirstDayOfWeek);
+      _this.$mdDateLocaleProvider.weekNumberFormatter = function(weekNumber) {
         return l('Week %d', weekNumber);
       };
-      Preferences.$mdDateLocaleProvider.msgCalendar = l('Calender');
-      Preferences.$mdDateLocaleProvider.msgOpenCalendar = l('Open Calendar');
-      Preferences.$mdDateLocaleProvider.parseDate = function(dateString) {
-        return dateString? dateString.parseDate(Preferences.$mdDateLocaleProvider, data.SOGoShortDateFormat) : new Date(NaN);
+      _this.$mdDateLocaleProvider.msgCalendar = l('Calender');
+      _this.$mdDateLocaleProvider.msgOpenCalendar = l('Open Calendar');
+      _this.$mdDateLocaleProvider.parseDate = function(dateString) {
+        return dateString? dateString.parseDate(_this.$mdDateLocaleProvider, data.SOGoShortDateFormat) : new Date(NaN);
       };
-      Preferences.$mdDateLocaleProvider.formatDate = function(date) {
-        return date? date.format(Preferences.$mdDateLocaleProvider, data.SOGoShortDateFormat) : '';
+      _this.$mdDateLocaleProvider.formatDate = function(date) {
+        return date? date.format(_this.$mdDateLocaleProvider, data.SOGoShortDateFormat) : '';
       };
-      Preferences.$mdDateLocaleProvider.formatTime = function(date) {
-        return date? date.format(Preferences.$mdDateLocaleProvider, data.SOGoTimeFormat) : '';
+      _this.$mdDateLocaleProvider.formatTime = function(date) {
+        return date? date.format(_this.$mdDateLocaleProvider, data.SOGoTimeFormat) : '';
       };
 
       return _this.defaults;
