@@ -92,4 +92,73 @@ uchar *auth_LMhash( uchar *dst, const uchar *pwd, const int pwdlen );
    *
    * ------------------------------------------------------------------------ **
    */
+
+uchar *auth_DESkey8to7( uchar *dst, const uchar *key );
+  /* ------------------------------------------------------------------------ **
+   * Compress an 8-byte DES key to its 7-byte form.
+   *
+   *  Input:  dst - Pointer to a memory location (minimum 7 bytes) to accept
+   *                the compressed key.
+   *          key - Pointer to an 8-byte DES key.  See the notes below.
+   *
+   *  Output: A pointer to the compressed key (same as <dst>) or NULL if
+   *          either <src> or <dst> were NULL.
+   *
+   *  Notes:  There are no checks done to ensure that <dst> and <key> point
+   *          to sufficient space.  Please be carefull.
+   *
+   *          The two pointers, <dst> and <key> may point to the same
+   *          memory location.  Internally, a temporary buffer is used and
+   *          the results are copied back to <dst>.
+   *
+   *          The DES algorithm uses 8 byte keys by definition.  The first
+   *          step in the algorithm, however, involves removing every eigth
+   *          bit to produce a 56-bit key (seven bytes).  SMB authentication
+   *          skips this step and uses 7-byte keys.  The <auth_DEShash()>
+   *          algorithm in this module expects 7-byte keys.  This function
+   *          is used to convert an 8-byte DES key into a 7-byte SMB DES key.
+   *
+   * ------------------------------------------------------------------------ **
+   */
+
+uchar *auth_DEShash( uchar *dst, const uchar *key, const uchar *src );
+  /* ------------------------------------------------------------------------ **
+   * DES encryption of the input data using the input key.
+   *
+   *  Input:  dst - Destination buffer.  It *must* be at least eight bytes
+   *                in length, to receive the encrypted result.
+   *          key - Encryption key.  Exactly seven bytes will be used.
+   *                If your key is shorter, ensure that you pad it to seven
+   *                bytes.
+   *          src - Source data to be encrypted.  Exactly eight bytes will
+   *                be used.  If your source data is shorter, ensure that
+   *                you pad it to eight bytes.
+   *
+   *  Output: A pointer to the encrpyted data (same as <dst>).
+   *
+   *  Notes:  In SMB, the DES function is used as a hashing function rather
+   *          than an encryption/decryption tool.  When used for generating
+   *          the LM hash the <src> input is the known value "KGS!@#$%" and
+   *          the key is derived from the password entered by the user.
+   *          When used to generate the LM or NTLM response, the <key> is
+   *          derived from the LM or NTLM hash, and the challenge is used
+   *          as the <src> input.
+   *          See: http://ubiqx.org/cifs/SMB.html#SMB.8.3
+   *
+   *        - This function is called "DEShash" rather than just "DES"
+   *          because it is only used for creating LM hashes and the
+   *          LM/NTLM responses.  For all practical purposes, however, it
+   *          is a full DES encryption implementation.
+   *
+   *        - This DES implementation does not need to be fast, nor is a
+   *          DES decryption function needed.  The goal is to keep the
+   *          code small, simple, and well documented.
+   *
+   *        - The input values are copied and refiddled within the module
+   *          and the result is not written to <dst> until the very last
+   *          step, so it's okay if <dst> points to the same memory as
+   *          <key> or <src>.
+   *
+   * ------------------------------------------------------------------------ **
+   */
 #endif
