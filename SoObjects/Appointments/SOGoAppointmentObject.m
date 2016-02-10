@@ -432,7 +432,7 @@
   
   i = count = 0;
 
-  // Build list of the attendees uids without ressources
+  // Build list of the attendees uids
   unavailableAttendees = [[NSMutableArray alloc] init];
   enumerator = [theAttendees objectEnumerator];
   ownerUID = [[[self context] activeUser] login];
@@ -448,7 +448,7 @@
           moduleSettings = [us objectForKey:@"Calendar"];
           
           // Check if the user prevented their account from beeing invited to events
-          if (![user isResource] && [[moduleSettings objectForKey:@"PreventInvitations"] boolValue])
+          if ([[moduleSettings objectForKey:@"PreventInvitations"] boolValue])
             {
               // Check if the user have a whiteList
               whiteList = [moduleSettings objectForKey:@"PreventInvitationsWhitelist"];
