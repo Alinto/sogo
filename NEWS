@@ -1,3 +1,9 @@
+2.3.9 (2016-XX-XX)
+------------------
+
+Enhancements
+ - allow resources to prevent invitations (#3410)
+
 2.3.8 (2016-02-05)
 ------------------
 
