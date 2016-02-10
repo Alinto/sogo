@@ -65,7 +65,7 @@
 {
   WORequest *request;
   NSDictionary *params;
-  id o, values;
+  id o;
 
   request = [context request];
   params = [[request contentAsString] objectFromJSONString];

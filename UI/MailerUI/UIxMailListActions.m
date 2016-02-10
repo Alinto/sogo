@@ -759,7 +759,6 @@
   NSDictionary *data, *requestContent;
   SOGoMailFolder *folder;
   WORequest *request;
-  WOResponse *response;
 
   request = [context request];
   requestContent = [[request contentAsString] objectFromJSONString];

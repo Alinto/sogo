@@ -649,7 +649,6 @@
 {
   NSString *folderType;
   NSMutableArray *folders;
-  NSDictionary *message;
   id <WOActionResults> result;
   SOGoUserFolder *userFolder;
 
