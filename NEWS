@@ -6,6 +6,7 @@ Enhancements
  - [web] updated Material Icons font to version 2.1.3
  - [web] don't offer forward/vacation options in filters if not enabled
  - [web] mail filters are now sortable
+ - [web] now supports RFC6154 and NoInferiors IMAP flag
 
 Bug fixes
  - [web] handle birthday dates before 1970

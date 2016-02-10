@@ -165,6 +165,7 @@
     if (this.type) {
       this.$isEditable = this.isEditable();
     }
+    this.$isNoInferiors = this.isNoInferiors();
     if (angular.isUndefined(this.$shadowData)) {
       // Make a copy of the data for an eventual reset
       this.$shadowData = this.$omit();
@@ -373,6 +374,16 @@
    */
   Mailbox.prototype.isEditable = function() {
     return this.type == 'folder';
+  };
+
+  /**
+   * @function isNoInferiors
+   * @memberof Mailbox.prototype
+   * @desc Checks if the mailbox can contain submailboxes
+   * @returns true if the mailbox can not contain submailboxes
+   */
+  Mailbox.prototype.isNoInferiors = function() {
+    return this.flags.indexOf('noinferiors') >= 0;
   };
 
   /**
@@ -721,7 +732,7 @@
       Mailbox.$timeout(function() {
         var uids, headers;
 
-        if (_this.$topIndex > data.uids.length - 1)
+        if (!data.uids || _this.$topIndex > data.uids.length - 1)
           _this.$topIndex = 0;
 
         _this.init(data);

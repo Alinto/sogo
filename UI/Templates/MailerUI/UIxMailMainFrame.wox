@@ -120,7 +120,7 @@
                         <var:string label:value="Mark Folder Read"/>
                       </md-button>
                     </md-menu-item>
-                    <md-menu-item>
+                    <md-menu-item ng-hide="folder.$isNoInferiors">
                       <md-button type="button" ng-click="app.newFolder(folder)">
                         <var:string label:value="New Subfolder..."/>
                       </md-button>
