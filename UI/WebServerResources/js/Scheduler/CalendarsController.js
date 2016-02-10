@@ -21,6 +21,8 @@
     vm.share = share;
     vm.importCalendar = importCalendar;
     vm.exportCalendar = exportCalendar;
+    vm.showOnly = showOnly;
+    vm.showAll = showAll;
     vm.showLinks = showLinks;
     vm.showProperties = showProperties;
     vm.subscribeToFolder = subscribeToFolder;
@@ -200,6 +202,19 @@
 
     function exportCalendar(calendar) {
       window.location.href = ApplicationBaseURL + '/' + calendar.id + '.ics' + '/export';
+    }
+
+    function showOnly(calendar) {
+      _.forEach(Calendar.$findAll(), function(o) {
+        if (calendar.id == o.id)
+          o.active = 1;
+        else
+          o.active = 0;
+      });
+    }
+
+    function showAll() {
+      _.forEach(Calendar.$findAll(), function(o) { o.active = 1; });
     }
 
     function showLinks(calendar) {
