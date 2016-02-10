@@ -8,6 +8,7 @@
     <form name="eventForm" ng-submit="editor.save(eventForm)">
       <md-toolbar ng-class="editor.component.getClassName('bg')">
         <div class="md-toolbar-tools">
+          <md-icon class="material-icons sg-icon-toolbar-bg">event</md-icon>
           <!-- summary -->
           <md-icon ng-if="editor.component.classification == 'confidential'">visibility_off</md-icon>
           <md-icon ng-if="editor.component.classification == 'private'">vpn_key</md-icon>
