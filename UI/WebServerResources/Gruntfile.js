@@ -178,8 +178,9 @@ module.exports = function(grunt) {
       }
     }
     */
+    grunt.task.run('uglify:sortable');
   });
-  grunt.task.registerTask('build', ['static', 'uglify:dist', 'uglify:sortable', 'sass:dist', 'postcss:dist']);
+  grunt.task.registerTask('build', ['static', 'uglify:dist', 'sass:dist', 'postcss:dist']);
   // Tasks for developers
   grunt.task.registerTask('default', ['watch']);
   grunt.task.registerTask('css', ['sass:dev', 'postcss:dev']);
