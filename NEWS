@@ -25,6 +25,7 @@ Bug fixes
  - [web] fixed batched delete of components (#3516)
  - [web] fixed mail draft autosave in preferences (#3519)
  - [web] fixed password change (#3496)
+ - [eas] allow EAS attachments get on 2nd-level mailboxes (#3505)
 
 3.0.1 (2016-02-05)
 ------------------
