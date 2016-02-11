@@ -132,6 +132,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setMailComposeMessageType: (NSString *) newValue;
 - (NSString *) mailComposeMessageType;
 
+- (void) setMailComposeFontSize: (NSString *) newValue;
+- (NSString *) mailComposeFontSize;
+
 - (void) setMailDisplayRemoteInlineImages: (NSString *) newValue;
 - (NSString *) mailDisplayRemoteInlineImages;
 

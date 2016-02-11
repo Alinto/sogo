@@ -26,6 +26,15 @@
       // Mail editor autosave is a number of minutes or 0 if disabled
       data.SOGoMailAutoSave = parseInt(data.SOGoMailAutoSave) || 0;
 
+      // Specify a base font size for HTML messages when SOGoMailComposeFontSize is not zero
+      data.SOGoMailComposeFontSizeEnabled = parseInt(data.SOGoMailComposeFontSize) > 0;
+
+      if (window.CKEDITOR && data.SOGoMailComposeFontSize) {
+        // HTML editor is enabled; set user's preferred font size
+        window.CKEDITOR.config.fontSize_defaultLabel = data.SOGoMailComposeFontSize;
+        window.CKEDITOR.addCss('.cke_editable { font-size: ' + data.SOGoMailComposeFontSize + 'px; }');
+      }
+
       // We convert our list of autoReplyEmailAddresses/forwardAddress into a string.
       // We also convert our date objects into real date, otherwise we'll have strings
       // or undefined values and the md-datepicker does NOT like this.
@@ -200,6 +209,9 @@
     }));
 
     preferences.defaults.SOGoMailLabelsColors = labels;
+
+    if (!preferences.defaults.SOGoMailComposeFontSizeEnabled)
+      preferences.defaults.SOGoMailComposeFontSize = 0;
 
     if (preferences.defaults.Vacation) {
       if (preferences.defaults.Vacation.endDateEnabled)

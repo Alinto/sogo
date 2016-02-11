@@ -539,6 +539,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self stringForKey: @"SOGoMailComposeMessageType"];
 }
 
+- (void) setMailComposeFontSize: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoMailComposeFontSize"];
+}
+
+- (NSString *) mailComposeFontSize
+{
+  return [self stringForKey: @"SOGoMailComposeFontSize"];
+}
+
 - (void) setMailDisplayRemoteInlineImages: (NSString *) newValue
 {
   [self setObject: newValue forKey: @"SOGoMailDisplayRemoteInlineImages"];
