@@ -46,6 +46,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "NSDate+ActiveSync.h"
 #include "NSString+ActiveSync.h"
 
+#import <NGObjWeb/WOContext+SoObjects.h>
+
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+
 @implementation NGVCard (ActiveSync)
 
 //
@@ -233,7 +238,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   // Other, less important fields
   if ((o = [self birthday]))
-    [s appendFormat: @"<Birthday xmlns=\"Contacts:\">%@</Birthday>", [o activeSyncRepresentationInContext: context]];
+    {
+      NSTimeZone *userTimeZone;
+      userTimeZone = [[[context activeUser] userDefaults] timeZone];
+
+      [s appendFormat: @"<Birthday xmlns=\"Contacts:\">%@</Birthday>",
+         [[o dateByAddingYears: 0 months: 0 days: 0
+                         hours: 0 minutes: 0
+                       seconds: ([userTimeZone secondsFromGMTForDate: o])*-1]
+              activeSyncRepresentationInContext: context]];
+    }
 
   if ((o = [self note]))
     {

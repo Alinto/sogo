@@ -1153,7 +1153,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
       a = [[realCollectionId  componentsSeparatedByString: @"/"] mutableCopy];
-      [a autorelease]
+      [a autorelease];
       pathToPart = [a lastObject];
       [a removeLastObject];
       messageName = [a lastObject];
@@ -1364,8 +1364,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   int p;
 
                   a = [[realCollectionId  componentsSeparatedByString: @"/"] mutableCopy];
-                  [a autorelease]
-                    pathToPart = [a lastObject];
+                  [a autorelease];
+                  pathToPart = [a lastObject];
                   [a removeLastObject];
                   messageName = [a lastObject];
                   [a removeLastObject];
