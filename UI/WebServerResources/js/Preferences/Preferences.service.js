@@ -23,6 +23,9 @@
 
       data.SOGoMailLabelsColors = labels;
 
+      // Mail editor autosave is a number of minutes or 0 if disabled
+      data.SOGoMailAutoSave = parseInt(data.SOGoMailAutoSave) || 0;
+
       // We convert our list of autoReplyEmailAddresses/forwardAddress into a string.
       // We also convert our date objects into real date, otherwise we'll have strings
       // or undefined values and the md-datepicker does NOT like this.

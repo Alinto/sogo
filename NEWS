@@ -23,6 +23,7 @@ Bug fixes
  - [web] really delete mailboxes being deleted from the Trash folder (#595, #1189, #641)
  - [web] fixed address autocompletion of mail editor affecting cards list of active addressbook
  - [web] fixed batched delete of components (#3516)
+ - [web] fixed mail draft autosave in preferences (#3519)
 
 3.0.1 (2016-02-05)
 ------------------
