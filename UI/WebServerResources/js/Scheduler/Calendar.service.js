@@ -243,25 +243,19 @@
    * @return a promise of the HTTP operation
    */
   Calendar.$deleteComponents = function(components) {
-
-    // We create a c_folder -> event hash
-    var calendars = {}, _this = this;
+    var _this = this, calendars = {}, promises = [];
 
     _.forEach(components, function(component) {
-      if (!angular.isDefined(calendars[component.c_folder]))
-        calendars[component.c_folder] = [];
-
-      calendars[component.c_folder].push(component.c_name);
+      if (!angular.isDefined(calendars[component.pid]))
+        calendars[component.pid] = [];
+      calendars[component.pid].push(component.id);
     });
 
-    _.forEach(calendars, function(uids, c_folder) {
-      Calendar.$$resource.post(c_folder, 'batchDelete', {uids: uids});
+    _.forEach(calendars, function(uids, pid) {
+      promises.push(Calendar.$$resource.post(pid, 'batchDelete', {uids: uids}));
     });
 
-    // We slice both arrays - might be useful if in the future, we can delete
-    // events and tasks at the same time.
-    _this.$Component.$events = _.difference(_this.$Component.$events, components);
-    _this.$Component.$tasks = _.difference(_this.$Component.$tasks, components);
+    return Calendar.$q.all(promises);
   };
 
   /**
