@@ -6,6 +6,7 @@ Enhancements
 
 Bug fixes
  - allow EAS attachments get on 2nd-level mailboxes (#3505)
+ - fix EAS bday shift (#3518)
 
 2.3.8 (2016-02-05)
 ------------------
