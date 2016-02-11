@@ -685,6 +685,12 @@
   return [self saveCalendar: [newObject parent]];
 }
 
+- (NSException *) saveComponent: (iCalRepeatableEntityObject *) newEvent
+                          force: (BOOL) forceSave
+{
+  return [self saveComponent: newEvent];
+}
+
 /* raw saving */
 
 /* EMail Notifications */
