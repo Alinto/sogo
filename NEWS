@@ -24,6 +24,7 @@ Bug fixes
  - [web] fixed address autocompletion of mail editor affecting cards list of active addressbook
  - [web] fixed batched delete of components (#3516)
  - [web] fixed mail draft autosave in preferences (#3519)
+ - [web] fixed password change (#3496)
 
 3.0.1 (2016-02-05)
 ------------------

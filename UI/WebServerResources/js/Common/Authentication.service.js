@@ -93,7 +93,7 @@
      */
     getService.$inject = ['$q', '$http', 'passwordPolicyConfig'];
     function getService($q, $http, passwordPolicyConfig) {
-      var _this = this, service;
+      var service;
 
       service = {
         login: function(data) {
@@ -171,7 +171,7 @@
 
         changePassword: function(newPassword) {
           var d = $q.defer(),
-              loginCookie = _this.readLoginCookie();
+              loginCookie = readLoginCookie();
 
           $http({
             method: 'POST',
