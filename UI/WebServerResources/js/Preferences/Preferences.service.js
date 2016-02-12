@@ -29,7 +29,7 @@
       // Specify a base font size for HTML messages when SOGoMailComposeFontSize is not zero
       data.SOGoMailComposeFontSizeEnabled = parseInt(data.SOGoMailComposeFontSize) > 0;
 
-      if (window.CKEDITOR && data.SOGoMailComposeFontSize) {
+      if (window.CKEDITOR && data.SOGoMailComposeFontSizeEnabled) {
         // HTML editor is enabled; set user's preferred font size
         window.CKEDITOR.config.fontSize_defaultLabel = data.SOGoMailComposeFontSize;
         window.CKEDITOR.addCss('.cke_editable { font-size: ' + data.SOGoMailComposeFontSize + 'px; }');
@@ -212,6 +212,7 @@
 
     if (!preferences.defaults.SOGoMailComposeFontSizeEnabled)
       preferences.defaults.SOGoMailComposeFontSize = 0;
+    delete preferences.defaults.SOGoMailComposeFontSizeEnabled;
 
     if (preferences.defaults.Vacation) {
       if (preferences.defaults.Vacation.endDateEnabled)
