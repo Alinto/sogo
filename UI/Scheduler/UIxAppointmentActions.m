@@ -147,7 +147,7 @@
 
           httpStatus = 500;
 
-          if ([ex respondsToSelect: @selector(httpStatus)])
+          if ([ex respondsToSelector: @selector(httpStatus)])
             httpStatus = [ex httpStatus];
 
           jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
