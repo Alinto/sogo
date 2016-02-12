@@ -2014,6 +2014,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
   else
     {
+      if (heartbeatInterval < internalInterval)
+        heartbeatInterval = internalInterval; 
+
       status = 1;
     }
 
