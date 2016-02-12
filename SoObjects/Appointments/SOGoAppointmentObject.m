@@ -559,7 +559,7 @@
       folder = [user personalCalendarFolderInContext: context];
           
       // Deny access to the resource if the ACLs don't allow the user
-      if (![folder aclSQLListingFilter])
+      if ([user isResource] && ![folder aclSQLListingFilter])
         {
           NSDictionary *values;
           NSString *reason;
