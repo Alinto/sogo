@@ -26,8 +26,6 @@
 
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
-#include <dlinklist.h>
 
 @implementation MAPIStoreGCSBaseContext
 

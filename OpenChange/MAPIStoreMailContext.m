@@ -27,9 +27,7 @@
 
 #import <SOGo/NSString+Utilities.h>
 
-#include <dlinklist.h>
 #undef DEBUG
-#include <mapistore/mapistore.h>
 
 static Class MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 

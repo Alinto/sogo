@@ -24,10 +24,6 @@
 #define MAPISTORETYPES_H
 
 
-#include <stdbool.h>
-#include <talloc.h>
-#include <util/time.h>
-#include <gen_ndr/exchange.h>
 
 @class NSData;
 @class NSDictionary;

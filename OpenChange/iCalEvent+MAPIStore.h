@@ -23,7 +23,6 @@
 #ifndef ICALEVENT_MAPISTORE_H
 #define ICALEVENT_MAPISTORE_H
 
-#include <talloc.h>
 
 
 @class MAPIStoreUserContext;

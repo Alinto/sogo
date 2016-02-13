@@ -29,9 +29,6 @@
 
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
-#include <libmapiproxy.h>
 
 @interface MAPIStoreTable (Private)
 

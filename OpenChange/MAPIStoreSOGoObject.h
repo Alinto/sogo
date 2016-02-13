@@ -23,7 +23,6 @@
 #ifndef MAPISTORESOGOOBJECT_H
 #define MAPISTORESOGOOBJECT_H
 
-#include <talloc.h>
 
 
 @class NSDate;

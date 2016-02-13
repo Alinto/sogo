@@ -18,7 +18,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <ldap.h>
 
 
 #import <NGExtensions/NSObject+Logs.h>

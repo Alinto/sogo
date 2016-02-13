@@ -27,7 +27,6 @@
 #import "NSString+MAPIStore.h"
 
 
-#include <mapistore/mapistore_nameid.h>
 
 static Class MAPIStoreCalendarMessageK = Nil;
 

@@ -25,9 +25,6 @@
 #import "NSString+MAPIStore.h"
 
 
-#include <util/time.h>
-#include <gen_ndr/exchange.h>
-#include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreTasksFolder
 

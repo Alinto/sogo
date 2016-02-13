@@ -58,11 +58,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "NSDate+ActiveSync.h"
 #include "NSData+ActiveSync.h"
 #include "NSString+ActiveSync.h"
-#include "SOGoActiveSyncConstants.h"
 #include "SOGoMailObject+ActiveSync.h"
-#include "SOGoSyncCacheObject.h"
 
-#include <unistd.h>
 
 @implementation SOGoActiveSyncDispatcher (Sync)
 

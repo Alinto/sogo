@@ -29,16 +29,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "NSString+ActiveSync.h"
 
-#include <Foundation/NSArray.h>
-#include <Foundation/NSCalendarDate.h>
-#include <Foundation/NSData.h>
-#include <Foundation/NSDate.h>
-#include <Foundation/NSTimeZone.h>
 
 #include <SOGo/NSString+Utilities.h>
 #include <SOGo/NSData+Crypto.h>
 
-#include <NGExtensions/NGBase64Coding.h>
 #include <NGExtensions/NSString+misc.h>
 
 static NSArray *easCommandCodes = nil;

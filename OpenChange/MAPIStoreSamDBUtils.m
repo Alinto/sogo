@@ -20,10 +20,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <talloc.h>
-#include <ldb.h>
-#include <libmapiproxy.h>
-#include <samba/version.h>
 
 #import "NSData+MAPIStore.h"
 

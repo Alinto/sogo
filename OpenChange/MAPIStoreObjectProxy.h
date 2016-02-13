@@ -23,7 +23,6 @@
 #ifndef MAPISTOREOBJECTPROXY_H
 #define MAPISTOREOBJECTPROXY_H
 
-#include <talloc.h>
 
 
 @interface MAPIStoreObjectProxy : NSObject

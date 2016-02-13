@@ -20,15 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <inttypes.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/EOQualifier+SOGoCacheObject.h>
 
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
 
 static Class EOKeyValueQualifierK, SOGoCacheGCSFolderK, MAPIStoreDBFolderK;
 

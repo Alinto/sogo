@@ -27,7 +27,6 @@
 
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
 
 static Class MAPIStoreDBFolderK;
 

@@ -26,9 +26,6 @@
 #import "NSString+MAPIStore.h"
 
 
-#include <mapistore/mapistore_errors.h>
-#include <util/time.h>
-#include <gen_ndr/exchange.h>
 
 @implementation MAPIStoreCalendarFolder
 

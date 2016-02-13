@@ -22,7 +22,5 @@
 #ifndef __NGiCalTests_common_H__
 #define __NGiCalTests_common_H__
 
-#include <NGExtensions/NGExtensions.h>
-#include <NGExtensions/NGCalendarDateRange.h>
 
 #endif /* __NGiCalTests_common_H__ */

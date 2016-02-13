@@ -24,7 +24,6 @@
 #import "NSObject+MAPIStore.h"
 
 
-#include <mapistore/mapistore_errors.h>
 
 static Class MAPIStoreAttachmentK;
 

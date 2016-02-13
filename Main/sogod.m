@@ -21,7 +21,6 @@
 */
 
 #include <unistd.h>
-#include <sys/types.h>
 
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSTimeZone.h>

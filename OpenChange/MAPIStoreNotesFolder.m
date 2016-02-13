@@ -22,7 +22,6 @@
 
 #import "NSString+MAPIStore.h"
 
-#include <mapistore/mapistore_errors.h>
 
 
 @implementation MAPIStoreNotesFolder

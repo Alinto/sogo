@@ -20,7 +20,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <talloc.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -35,15 +34,6 @@
 
 
 #undef DEBUG
-#include <stdbool.h>
-#include <gen_ndr/exchange.h>
-#include <gen_ndr/property.h>
-#include <gen_ndr/ndr_property.h>
-#include <util/attr.h>
-#include <libmapi/libmapi.h>
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
-#include <mapistore/mapistore_nameid.h>
 
 static NSCharacterSet *hexCharacterSet = nil;
 

@@ -23,7 +23,6 @@
 #ifndef MAPISTORERECURRENCEUTILS_H
 #define MAPISTORERECURRENCEUTILS_H
 
-#include <talloc.h>
 
 
 @class iCalEvent;

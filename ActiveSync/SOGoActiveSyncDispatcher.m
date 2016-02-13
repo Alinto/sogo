@@ -27,7 +27,6 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
-#include "SOGoActiveSyncDispatcher.h"
 
 #if GNUSTEP_BASE_MINOR_VERSION >= 21
 #endif
@@ -68,16 +67,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "NSData+ActiveSync.h"
 #include "NSDate+ActiveSync.h"
 #include "NSString+ActiveSync.h"
-#include "SOGoActiveSyncConstants.h"
 #include "SOGoMailObject+ActiveSync.h"
 
 
-#include <unistd.h>
 
 #ifdef HAVE_OPENSSL
-#include <openssl/bio.h>
-#include <openssl/err.h>
-#include <openssl/x509.h>
 #endif
 
 @interface SOGoActiveSyncDispatcher (Sync)

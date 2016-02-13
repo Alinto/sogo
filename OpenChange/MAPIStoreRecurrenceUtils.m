@@ -27,10 +27,6 @@
 
 #import "NSDate+MAPIStore.h"
 
-#include <stdbool.h>
-#include <talloc.h>
-#include <util/time.h>
-#include <gen_ndr/property.h>
 
 @implementation iCalCalendar (MAPIStoreRecurrence)
 

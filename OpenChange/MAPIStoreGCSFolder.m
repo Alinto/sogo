@@ -30,8 +30,6 @@
 
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
 
 static Class NSNumberK;
 

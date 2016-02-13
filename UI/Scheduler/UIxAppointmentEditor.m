@@ -18,7 +18,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <math.h>
 
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>

@@ -23,12 +23,10 @@
 #ifndef MAPISTORETABLE_H
 #define MAPISTORETABLE_H
 
-#include <talloc.h>
 
 #import "NSObject+MAPIStore.h"
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
 
 #define SENSITIVITY_NONE 0
 #define SENSITIVITY_PERSONAL 1

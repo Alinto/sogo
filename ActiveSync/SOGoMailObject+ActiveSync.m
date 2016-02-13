@@ -47,8 +47,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <Appointments/iCalEntityObject+SOGo.h>
 #include <Appointments/iCalPerson+SOGo.h>
 #include <Mailer/NSString+Mail.h>
-#include <Mailer/SOGoMailBodyPart.h>
-#include <SOGo/SOGoUser.h>
 #include <SOGo/NSString+Utilities.h>
 
 

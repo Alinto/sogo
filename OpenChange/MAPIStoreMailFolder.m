@@ -18,7 +18,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <talloc.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -35,15 +34,8 @@
 
 static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 
-#include <gen_ndr/exchange.h>
 
 #undef DEBUG
-#include <util/attr.h>
-#include <libmapi/libmapi.h>
-#include <libmapiproxy.h>
-#include <limits.h>
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreMailFolder
 

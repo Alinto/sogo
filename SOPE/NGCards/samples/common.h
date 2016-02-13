@@ -27,4 +27,3 @@
 #  include <NGExtensions/NSString+Ext.h>
 #endif
 
-#include <NGExtensions/NGExtensions.h>

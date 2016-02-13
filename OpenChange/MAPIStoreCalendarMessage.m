@@ -24,8 +24,6 @@
    - merge common code with tasks
    - take the tz definitions from Outlook */
 
-#include <talloc.h>
-#include <util/attr.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -41,13 +39,6 @@
 
 
 #undef DEBUG
-#include <stdbool.h>
-#include <gen_ndr/exchange.h>
-#include <gen_ndr/property.h>
-#include <libmapi/libmapi.h>
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
-#include <mapistore/mapistore_nameid.h>
 
 // extern void ndr_print_AppointmentRecurrencePattern(struct ndr_print *ndr, const char *name, const struct AppointmentRecurrencePattern *r);
 

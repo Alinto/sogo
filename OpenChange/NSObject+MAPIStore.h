@@ -24,8 +24,6 @@
 #define NSOBJECT_MAPISTORE_H
 
 
-#include <talloc.h>
-#include <mapistore/mapistore_errors.h>
 
 struct MAPIStoreTallocWrapper
 {

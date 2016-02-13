@@ -29,7 +29,6 @@
 #import "NSData+Crypto.h"
 #import <NGExtensions/NGBase64Coding.h>
 
-#include "lmhash.h"
 
 @implementation NSString (SOGoCryptoExtension)
 

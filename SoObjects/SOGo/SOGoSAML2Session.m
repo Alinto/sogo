@@ -18,13 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <lasso/lasso.h>
 #include <lasso/xml/misc_text_node.h>
 #include <lasso/xml/saml-2.0/saml2_attribute.h>
 #include <lasso/xml/saml-2.0/saml2_attribute_statement.h>
 #include <lasso/xml/saml-2.0/saml2_attribute_value.h>
 #include <lasso/xml/saml-2.0/samlp2_authn_request.h>
-#include <lasso/xml/saml-2.0/samlp2_response.h>
 
 
 #import <NGObjWeb/WOApplication.h>

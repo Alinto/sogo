@@ -18,12 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <stdio.h>
 #ifdef HAVE_OPENSSL
-#include <openssl/bio.h>
-#include <openssl/err.h>
-#include <openssl/pkcs7.h>
-#include <openssl/x509.h>
 #endif
 
 #import <Foundation/NSDictionary.h>

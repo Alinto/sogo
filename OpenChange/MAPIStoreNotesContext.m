@@ -24,7 +24,6 @@
 
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
 
 @implementation MAPIStoreNotesContext
 

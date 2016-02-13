@@ -23,9 +23,6 @@
 
 
 #undef DEBUG
-#include <inttypes.h>
-#include <dlinklist.h>
-#include <mapistore/mapistore.h>
 
 @implementation MAPIStoreFallbackContext
 

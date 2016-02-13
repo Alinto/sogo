@@ -23,7 +23,6 @@
 #ifndef MAPISTORECONTEXT_H
 #define MAPISTORECONTEXT_H
 
-#include <talloc.h>
 
 
 @class NSArray;

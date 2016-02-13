@@ -33,11 +33,6 @@
 
 @end
 
-#include <NGCards/iCalDataSource.h>
-#include <NGCards/iCalObject.h>
-#include <EOControl/EOQualifier.h>
-#include <EOControl/EOSortOrdering.h>
-#include "common.h"
 
 @implementation iCal3Tool
 

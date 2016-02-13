@@ -19,7 +19,6 @@
   02111-1307, USA.
 */
 
-#include <SaxObjC/SaxObjC.h>
 
 @interface iCal2Tool : NSObject
 {

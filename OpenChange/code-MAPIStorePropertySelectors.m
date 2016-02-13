@@ -22,7 +22,6 @@
 
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
 
 const MAPIStorePropertyGetter *
 MAPIStorePropertyGettersForClass (Class klass)

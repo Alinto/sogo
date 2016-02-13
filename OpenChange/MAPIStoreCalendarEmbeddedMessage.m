@@ -20,7 +20,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <talloc.h>
 
 
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -30,7 +29,6 @@
 #import "NSObject+MAPIStore.h"
 
 
-#include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreCalendarEmbeddedMessage
 

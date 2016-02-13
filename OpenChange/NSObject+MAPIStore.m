@@ -31,8 +31,6 @@
 #import "NSObject+MAPIStore.h"
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
 
 @implementation NSObject (MAPIStoreTallocHelpers)
 

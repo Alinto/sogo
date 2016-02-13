@@ -27,10 +27,6 @@
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
-#include <libmapi/libmapi.h>
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
-#include <execinfo.h>
 
 static Class MAPIStoreContextK = Nil;
 static BOOL leakDebugging = NO;

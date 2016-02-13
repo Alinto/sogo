@@ -32,15 +32,6 @@
 
 
 #undef DEBUG
-#include <dlinklist.h>
-#include <stdbool.h>
-#include <gen_ndr/exchange.h>
-#include <util/attr.h>
-#include <libmapiproxy.h>
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
-#include <mapistore/mapistore_nameid.h>
-#include <talloc.h>
 
 /* TODO: homogenize method names and order of parameters */
 

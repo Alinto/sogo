@@ -23,7 +23,6 @@
 #ifndef MAPISTOREOBJECT_H
 #define MAPISTOREOBJECT_H
 
-#include <talloc.h>
 
 
 @class NSDate;

@@ -27,7 +27,6 @@
 #import "NSString+MAPIStore.h"
 
 
-#include <mapistore/mapistore_errors.h>
 
 /* TODO: handle URL pictures via PidTagAttachMethod = ref ? */
 

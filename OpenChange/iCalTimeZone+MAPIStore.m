@@ -25,11 +25,7 @@
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 
-#include <stdbool.h>
-#include <stdint.h>
-#include <talloc.h>
 #undef DEBUG
-#include <libmapi/libmapi.h>
 
 #import "iCalTimeZone+MAPIStore.h"
 

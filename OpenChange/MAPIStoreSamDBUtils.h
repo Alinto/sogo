@@ -25,7 +25,6 @@
 
 @class NSString;
 
-#include <mapistore/mapistore.h>
 
 NSString *MAPIStoreSamDBUserAttribute (struct mapistore_connection_info *connInfo,
                                        NSString *userKey,

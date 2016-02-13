@@ -26,9 +26,6 @@
 
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_nameid.h>
-#include <libmapiproxy.h>
 
 @implementation MAPIStoreFolderTable
 

@@ -19,7 +19,6 @@
  */
 
 
-#include "MAPIStoreTypes.h"
 
 #include "SOGoCacheGCSObject+MAPIStore.h"
 

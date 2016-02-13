@@ -23,7 +23,6 @@
 
 
 #include "SOGoSource.h"
-#include "SOGoConstants.h"
 
 @class LDAPSourceSchema;
 @class NGLdapEntry;

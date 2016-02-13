@@ -28,11 +28,6 @@
 #import "NSData+MAPIStore.h"
 
 #undef DEBUG
-#include <stdbool.h>
-#include <libmapi/libmapi.h>
-#include <talloc.h>
-#include <util/time.h>
-#include <gen_ndr/exchange.h>
 
 @implementation NSData (MAPIStoreDataTypes)
 

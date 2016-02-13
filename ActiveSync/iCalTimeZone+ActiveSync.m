@@ -29,11 +29,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #import "iCalTimeZone+ActiveSync.h"
 
-#include <Foundation/NSArray.h>
-#include <Foundation/NSCalendarDate.h>
-#include <Foundation/NSData.h>
-#include <Foundation/NSDate.h>
-#include <Foundation/NSString.h>
 
 
 

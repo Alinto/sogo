@@ -39,9 +39,6 @@
 
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
-#include <mapistore/mapistore_nameid.h>
 
 static Class NSNumberK = Nil;
 

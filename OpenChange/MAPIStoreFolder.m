@@ -29,13 +29,8 @@
 #import "NSObject+MAPIStore.h"
 #import "SOGoCacheGCSObject+MAPIStore.h"
 
-#include <gen_ndr/exchange.h>
 
 #undef DEBUG
-#include <util/attr.h>
-#include <libmapiproxy.h>
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
 
 Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStoreFolderTableK;
 

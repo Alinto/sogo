@@ -29,10 +29,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include <NGObjWeb/SoObject+SoDAV.h>
-#include <NGObjWeb/WEClientCapabilities.h>
-#include <NGObjWeb/WOContext.h>
-#include <NGObjWeb/WORequest.h>
-#include <NGObjWeb/WOResponse.h>
 
 
 @interface SoObjectWebDAVDispatcher (ActiveSync)
