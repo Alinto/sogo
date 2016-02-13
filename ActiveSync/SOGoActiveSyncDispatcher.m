@@ -28,37 +28,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-#if GNUSTEP_BASE_MINOR_VERSION >= 21
-#endif
-
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
-
-
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSString+Encoding.h>
-
 #import <NGImap4/NSString+Imap4.h>
-
-
-
-
 #import <SOGo/NSArray+DAV.h>
 #import <SOGo/NSDictionary+DAV.h>
 #import <SOGo/GCSSpecialQueries+SOGoCacheObject.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
-
-
-
 #import <Mailer/SOGoMailObject+Draft.h>
 #import <Mailer/NSString+Mail.h>
-
-
-
 #include "iCalEvent+ActiveSync.h"
 #include "iCalToDo+ActiveSync.h"
 #include "NGMimeMessage+ActiveSync.h"
@@ -68,11 +52,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "NSDate+ActiveSync.h"
 #include "NSString+ActiveSync.h"
 #include "SOGoMailObject+ActiveSync.h"
-
-
-
-#ifdef HAVE_OPENSSL
-#endif
 
 @interface SOGoActiveSyncDispatcher (Sync)
 
