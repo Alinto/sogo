@@ -21,7 +21,6 @@
 #ifndef UIXDATEPICKER_H
 #define UIXDATEPICKER_H
 
-#import <NGObjWeb/WOComponent.h>
 
 @class NSString;
 

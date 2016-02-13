@@ -20,12 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 
-#import "MAPIStoreFAIMessage.h"
-#import "MAPIStoreFolder.h"
 
-#import "MAPIStoreFAIMessageTable.h"
 
 #undef DEBUG
 #include <talloc.h>

@@ -20,12 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSString.h>
 
-#import "MAPIStoreNotesFolder.h"
-#import "MAPIStoreMapping.h"
 
-#import "MAPIStoreNotesContext.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>

@@ -20,9 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 #import <NGCards/CardVersitRenderer.h>
-#import <NGCards/CardElement.h>
 #import <NGCards/CardGroup.h>
 
 #import "SOGoTest.h"

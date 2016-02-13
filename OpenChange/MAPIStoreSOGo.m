@@ -22,28 +22,8 @@
 
 /* OpenChange SOGo storage backend */
 
-#import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSDebug.h>
-#import <Foundation/NSFileHandle.h>
-#import <Foundation/NSProcessInfo.h>
-#import <Foundation/NSUserDefaults.h>
-#import <Foundation/NSThread.h>
-#import <NGObjWeb/SoProductRegistry.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <SOGo/SOGoCache.h>
-#import <SOGo/SOGoProductLoader.h>
-#import <SOGo/SOGoSystemDefaults.h>
 
-#import "MAPIApplication.h"
-#import "MAPIStoreAttachment.h"
-#import "MAPIStoreAttachmentTable.h"
-#import "MAPIStoreContext.h"
-#import "MAPIStoreEmbeddedMessage.h"
-#import "MAPIStoreFolder.h"
-#import "MAPIStoreMessage.h"
-#import "MAPIStoreMailVolatileMessage.h"
-#import "MAPIStoreObject.h"
-#import "MAPIStoreTable.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 

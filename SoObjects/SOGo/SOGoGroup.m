@@ -54,18 +54,12 @@
 
 #include "SOGoGroup.h"
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 
 #include "SOGoCache.h"
 #include "SOGoSource.h"
 #include "SOGoUserManager.h"
 #include "SOGoUser.h"
 
-#import <NGLdap/NGLdapConnection.h>
-#import <NGLdap/NGLdapAttribute.h>
 #import <NGLdap/NGLdapEntry.h>
 
 #define CHECK_CLASS(o) ({ \

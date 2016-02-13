@@ -21,7 +21,6 @@
 #ifndef SOGOCREDENTIALSFILE_H
 #define SOGOCREDENTIALSFILE_H
 
-#import <Foundation/NSObject.h>
 
 @interface SOGoCredentialsFile : NSObject
 {

@@ -26,7 +26,6 @@
 #import "iCalToDo.h"
 #import "iCalJournal.h"
 #import "iCalFreeBusy.h"
-#import "iCalEntityObject.h"
 #import "iCalTimeZone.h"
 
 #import "iCalCalendar.h"

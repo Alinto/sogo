@@ -26,7 +26,6 @@
 #import <SoObjects/SOGo/SOGoSystemDefaults.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
-#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
@@ -35,20 +34,12 @@
 
 #import <Common/WODirectAction+SOGo.h>
 
-#import <Contacts/SOGoContactObject.h>
-#import <Contacts/SOGoContactFolder.h>
-#import <Contacts/SOGoContactFolders.h>
 
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
 
-#import <NGCards/NGVCard.h>
-#import <NGCards/NGVList.h>
 #import <SoObjects/Contacts/SOGoContactGCSEntry.h>
-#import <SoObjects/Contacts/SOGoContactLDIFEntry.h>
-#import <SoObjects/Contacts/SOGoContactGCSList.h>
 #import <SoObjects/Contacts/SOGoContactGCSFolder.h>
-#import <GDLContentStore/GCSFolder.h>
 
 #import "UIxContactsListActions.h"
 

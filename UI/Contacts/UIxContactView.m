@@ -24,9 +24,6 @@
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOResponse.h>
-#import <NGCards/NGVCard.h>
-#import <NGCards/NGVCardPhoto.h>
-#import <NGCards/CardElement.h>
 #import <NGCards/NSArray+NGCards.h>
 #import <NGExtensions/NSString+Ext.h>
 #import <NGExtensions/NSString+misc.h>
@@ -34,7 +31,6 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>
-#import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 

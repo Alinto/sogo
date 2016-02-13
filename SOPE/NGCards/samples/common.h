@@ -19,7 +19,6 @@
   02111-1307, USA.
 */
 
-#import <Foundation/Foundation.h>
 
 #if LIB_FOUNDATION_LIBRARY
 #  include <Foundation/exceptions/GeneralExceptions.h>

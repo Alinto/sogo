@@ -25,7 +25,6 @@
 
 #include <talloc.h>
 
-#import <NGCards/iCalEvent.h>
 
 @class MAPIStoreUserContext;
 @class NSDictionary;

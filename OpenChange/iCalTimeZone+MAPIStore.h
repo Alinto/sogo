@@ -23,7 +23,6 @@
 #ifndef ICALTIMEZONE_MAPISTORE_H
 #define ICALTIMEZONE_MAPISTORE_H
 
-#import <NGCards/iCalTimeZone.h>
 
 @interface iCalTimeZone (MAPIStoreProperties)
 

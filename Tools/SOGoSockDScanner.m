@@ -23,7 +23,6 @@
 
 #import <Foundation/NSArray.h>
 
-#import "SOGoSockDOperation.h"
 
 #import "SOGoSockDScanner.h"
 

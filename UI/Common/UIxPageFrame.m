@@ -21,9 +21,7 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSNull.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h> /* for locale strings */
 
 #import <NGObjWeb/WOResourceManager.h>
@@ -31,8 +29,6 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
-#import <SOGo/SOGoUserProfile.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoWebAuthenticator.h>

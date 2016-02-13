@@ -23,7 +23,6 @@
 #ifndef SOGOSOCKD_H
 #define SOGOSOCKD_H
 
-#import <Foundation/NSObject.h>
 #import <Foundation/NSRunLoop.h>
 
 @class NGPassiveSocket;

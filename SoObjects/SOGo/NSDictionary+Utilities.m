@@ -20,12 +20,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
-#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSNull.h>
-#import <Foundation/NSString.h>
 
 #import "NSArray+Utilities.h"
 #import "NSString+Utilities.h"

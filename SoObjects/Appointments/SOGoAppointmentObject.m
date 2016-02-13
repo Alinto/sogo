@@ -21,11 +21,8 @@
 */
 
 #import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
-#import <Foundation/NSPredicate.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -33,12 +30,8 @@
 #import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalEvent.h>
-#import <NGCards/iCalEventChanges.h>
-#import <NGCards/iCalPerson.h>
-#import <NGCards/iCalRecurrenceCalculator.h>
 #import <NGCards/iCalToDo.h>
 #import <NGCards/NSCalendarDate+NGCards.h>
 #import <SaxObjC/XMLNamespaces.h>
@@ -49,19 +42,14 @@
 #import <NGCards/iCalToDo.h>
 #import <NGCards/NSString+NGCards.h>
 
-#import <SOGo/SOGoConstants.h>
-#import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSString+Utilities.h>
-#import <SOGo/SOGoObject.h>
-#import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoGroup.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoDomainDefaults.h>
-#import <SOGo/SOGoWebDAVValue.h>
 #import <SOGo/WORequest+SOGo.h>
 
 #import "iCalCalendar+SOGo.h"
@@ -71,7 +59,6 @@
 #import "NSArray+Appointments.h"
 #import "SOGoAppointmentFolder.h"
 #import "SOGoAppointmentOccurence.h"
-#import "SOGoCalendarComponent.h"
 
 #import "SOGoAppointmentObject.h"
 

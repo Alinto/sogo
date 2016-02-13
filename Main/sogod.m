@@ -24,7 +24,6 @@
 #include <sys/types.h>
 
 #import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
 #import <NGObjWeb/SoApplication.h>

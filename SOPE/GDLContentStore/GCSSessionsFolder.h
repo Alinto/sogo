@@ -23,7 +23,6 @@
 #ifndef GCSSESSIONSFOLDER_H
 #define GCSSESSIONSFOLDER_H
 
-#import <Foundation/NSObject.h>
 
 @class NSCalendarDate;
 @class NSException;

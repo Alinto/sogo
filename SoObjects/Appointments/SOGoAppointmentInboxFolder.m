@@ -18,17 +18,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSException.h>
-#import <Foundation/NSString.h>
 #import <SaxObjC/XMLNamespaces.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoWebDAVValue.h>
 
 #import "SOGoAppointmentFolders.h"
 

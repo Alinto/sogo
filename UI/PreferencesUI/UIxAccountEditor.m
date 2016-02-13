@@ -19,16 +19,12 @@
  */
 
 #import <Foundation/NSCharacterSet.h>
-#import <Foundation/NSDictionary.h>
 
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
-#import <SOGo/SOGoSystemDefaults.h>
 
 #import <SOGoUI/UIxComponent.h>
 

@@ -18,10 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSSet.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
 #import <NGImap4/NSString+Imap4.h>
@@ -30,11 +27,9 @@
 #import <NGObjWeb/WEClientCapabilities.h>
 
 #import "NSString+Utilities.h"
-#import "SOGoDomainDefaults.h"
 #import "SOGoSystemDefaults.h"
 #import "SOGoUserProfile.h"
 
-#import "SOGoUserDefaults.h"
 
 
 NSString *SOGoWeekStartJanuary1 = @"January1";

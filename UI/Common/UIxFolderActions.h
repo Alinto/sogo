@@ -21,7 +21,6 @@
 #ifndef UIXFOLDERACTIONS_H
 #define UIXFOLDERACTIONS_H
 
-#import <NGObjWeb/WODirectAction.h>
 
 @class NSString;
 @class NSMutableString;

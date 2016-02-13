@@ -18,24 +18,18 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
 
-#import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalTimeZone.h>
-#import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRecurrenceRule.h>
-#import <NGCards/iCalTrigger.h>
 #import <NGCards/NSString+NGCards.h>
 
 #import <SoObjects/SOGo/SOGoUser.h>
@@ -44,7 +38,6 @@
 
 #import <SOGo/NSCalendarDate+SOGo.h>
 
-#import "SOGoAppointmentFolder.h"
 #import "iCalRepeatableEntityObject+SOGo.h"
 
 #import "iCalEvent+SOGo.h"

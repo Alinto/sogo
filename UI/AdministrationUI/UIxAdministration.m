@@ -20,7 +20,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 
 #import <SoObjects/SOGo/SOGoUser.h>

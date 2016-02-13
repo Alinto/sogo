@@ -23,8 +23,6 @@
 
 #import <NGObjWeb/SoObjects.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
-#import <NGObjWeb/WODirectAction.h>
-#import <NGObjWeb/WOResponse.h>
 
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
@@ -35,7 +33,6 @@
 #import <SOGo/WOResourceManager+SOGo.h>
 #import <Mailer/SOGoMailLabel.h>
 
-#import <SOGoUI/UIxComponent.h>
 #import <UI/Common/WODirectAction+SOGo.h>
 
 #import "UIxJSONPreferences.h"

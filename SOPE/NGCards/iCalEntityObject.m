@@ -20,7 +20,6 @@
 */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
@@ -29,7 +28,6 @@
 #import "iCalAlarm.h"
 #import "iCalCalendar.h"
 #import "iCalDateTime.h"
-#import "iCalEntityObject.h"
 #import "iCalEvent.h"
 #import "iCalPerson.h"
 

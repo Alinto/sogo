@@ -22,15 +22,8 @@
 
 #include <stdio.h>
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSException.h>
-#import <Foundation/NSObject.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 
 #import <NGCards/NGVList.h>
@@ -40,7 +33,6 @@
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLAccess/EOAdaptorContext.h>
 
-#import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/GCSFolderManager.h>
 #import <GDLContentStore/GCSFolder.h>
 

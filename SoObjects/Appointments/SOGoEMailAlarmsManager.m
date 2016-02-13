@@ -21,14 +21,12 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalCalendar.h>
-#import <NGCards/iCalEntityObject.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalToDo.h>
 

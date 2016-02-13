@@ -21,7 +21,6 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGCards/NGVList.h>
-#import <NGCards/NGVCard.h>
 #import <NGCards/NGVCardReference.h>
 
 #import <SOGo/NSArray+Utilities.h>

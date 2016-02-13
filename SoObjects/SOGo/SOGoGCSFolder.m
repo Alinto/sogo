@@ -19,30 +19,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSException.h>
-#import <Foundation/NSKeyValueCoding.h>
-#import <Foundation/NSURL.h>
-#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
-#import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOApplication.h>
-#import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <DOM/DOMElement.h>
-#import <DOM/DOMProtocols.h>
 #import <EOControl/EOFetchSpecification.h>
 #import <EOControl/EOQualifier.h>
-#import <EOControl/EOSortOrdering.h>
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLAccess/EOAdaptorContext.h>
 #import <GDLContentStore/GCSChannelManager.h>
@@ -67,7 +53,6 @@
 #import "SOGoParentFolder.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
-#import "SOGoUserDefaults.h"
 #import "SOGoUserSettings.h"
 #import "SOGoUserManager.h"
 #import "SOGoWebDAVAclManager.h"

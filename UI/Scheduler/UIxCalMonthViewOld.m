@@ -1,4 +1,3 @@
-#import <Foundation/NSCalendarDate.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 
 #import <SOGo/NSCalendarDate+SOGo.h>

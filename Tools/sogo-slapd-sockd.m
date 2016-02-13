@@ -21,7 +21,6 @@
  */
 
 #import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSUserDefaults.h>
 
 #import <SOGo/SOGoSystemDefaults.h>
 

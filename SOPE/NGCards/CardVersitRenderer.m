@@ -21,13 +21,9 @@
  */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "CardElement.h"
 #import "CardGroup.h"
 
 #import "NSString+NGCards.h"

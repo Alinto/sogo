@@ -21,7 +21,6 @@
  */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSString.h>
 #import <NGExtensions/NGBase64Coding.h>
 
 #import "NSString+LDIF.h"

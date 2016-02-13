@@ -24,7 +24,6 @@
 #ifndef __versitCardsSaxDriver_VSSaxDriver_H__
 #define __versitCardsSaxDriver_VSSaxDriver_H__
 
-#import <Foundation/NSObject.h>
 #include <SaxObjC/SaxXMLReader.h>
 
 @class NSString, NSSet, NSDictionary, NSMutableArray, NSMutableDictionary;

@@ -19,7 +19,6 @@
  */
 
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 #import <NGExtensions/NSString+misc.h>
 
 #import "NSDictionary+Mail.h"

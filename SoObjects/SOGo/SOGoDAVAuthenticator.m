@@ -21,16 +21,13 @@
 */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
-#import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "SOGoCASSession.h"
-#import "SOGoConstants.h"
 #import "SOGoPermissions.h"
 #import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"

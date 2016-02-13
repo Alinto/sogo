@@ -24,7 +24,6 @@
 #define __Mailer_SOGoMailFolder_H__
 
 #include <Mailer/SOGoMailBaseObject.h>
-#import <Foundation/NSRange.h>
 #import <NGObjWeb/WOResponse.h>
 
 /*

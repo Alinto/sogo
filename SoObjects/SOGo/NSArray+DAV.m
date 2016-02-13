@@ -18,8 +18,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 
 #import <SaxObjC/XMLNamespaces.h>

@@ -29,8 +29,6 @@
 
 #import "iCalEventChanges.h"
 #import "iCalDateTime.h"
-#import "iCalRecurrenceRule.h"
-#import "iCalRecurrenceCalculator.h"
 
 #import "iCalEvent.h"
 

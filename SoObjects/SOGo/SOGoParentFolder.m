@@ -18,22 +18,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSString.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
-#import <NGObjWeb/WOMessage.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/GCSFolderManager.h>
 #import <GDLContentStore/NSURL+GCS.h>
 #import <GDLAccess/EOAdaptorChannel.h>
-#import <DOM/DOMElement.h>
 #import <DOM/DOMProtocols.h>
 #import <SaxObjC/XMLNamespaces.h>
 #import <SOGo/SOGoUserDefaults.h>

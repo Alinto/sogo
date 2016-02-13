@@ -21,30 +21,14 @@
 
 #import <unistd.h>
 
-#import <Foundation/NSBundle.h>
-#import <Foundation/NSClassDescription.h>
-#import <Foundation/NSFileManager.h>
-#import <Foundation/NSPathUtilities.h>
-#import <Foundation/NSSet.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSURL.h>
-#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/SoClass.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
-#import <NGObjWeb/WEClientCapabilities.h>
 #import <NGObjWeb/WOApplication.h>
-#import <NGObjWeb/WOContext.h>
-#import <NGObjWeb/WOResourceManager.h>
-#import <NGObjWeb/WOResponse.h>
-#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WORequest+So.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
-#import <DOM/DOMDocument.h>
-#import <DOM/DOMNode.h>
-#import <DOM/DOMProtocols.h>
 #import <NGCards/NSDictionary+NGCards.h>
 #import <SaxObjC/XMLNamespaces.h>
 
@@ -58,18 +42,12 @@
 #import "NSString+DAV.h"
 #import "NSString+Utilities.h"
 #import "SOGoCache.h"
-#import "SOGoDomainDefaults.h"
-#import "SOGoPermissions.h"
 #import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
-#import "SOGoUserDefaults.h"
-#import "SOGoUserFolder.h"
 #import "SOGoWebDAVAclManager.h"
-#import "SOGoWebDAVValue.h"
 #import "WORequest+SOGo.h"
 #import "WOResponse+SOGo.h"
 
-#import "SOGoObject.h"
 
 @implementation SOGoObject
 

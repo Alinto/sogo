@@ -30,9 +30,6 @@
 #ifndef NSOBJECT_PROPERTYLIST_H
 #define NSOBJECT_PROPERTYLIST_H
 
-#import <Foundation/NSObject.h>
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
 
 
 @interface NSObject (plext)

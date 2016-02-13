@@ -25,7 +25,6 @@
 #ifndef NSSTRING_CRYPTO_H
 #define NSSTRING_CRYPTO_H
 
-#import <Foundation/NSData.h>
 #import <Foundation/NSString.h>
 
 typedef enum {

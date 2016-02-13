@@ -18,8 +18,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import "Codepages.h"
-#import <Foundation/NSArray.h>
 
 @implementation Codepages
 

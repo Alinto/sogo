@@ -21,7 +21,6 @@
 #ifndef UIXMAILACTIONS_H
 #define UIXMAILACTIONS_H
 
-#import <NGObjWeb/WODirectAction.h>
 
 @interface UIxMailActions : WODirectAction
 @end

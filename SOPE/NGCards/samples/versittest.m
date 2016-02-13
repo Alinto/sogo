@@ -20,14 +20,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/Foundation.h>
 
-#import "CardElement.h"
-#import "CardGroup.h"
-#import "CardVersitRenderer.h"
 #import "NSString+NGCards.h"
 
-#import "unittest.h"
 
 @interface versittest : unittest
 

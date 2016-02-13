@@ -23,10 +23,8 @@
 #ifndef NSDATE_NGCARDS_H
 #define NSDATE_NGCARDS_H
 
-#import <Foundation/NSDate.h>
 #import <Foundation/NSCalendarDate.h>
 
-#import "CardElement.h"
 
 @interface NSDate (NGCardsExtensions)
 

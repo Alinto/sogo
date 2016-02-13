@@ -20,10 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
-#import <Foundation/NSString.h>
 
 #import "SOGoTestRunner.h"
 

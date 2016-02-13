@@ -21,10 +21,8 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSDictionary.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSPathUtilities.h>
-#import <Foundation/NSProcessInfo.h>
 
 #import <NGObjWeb/SoProductRegistry.h>
 #import <NGExtensions/NSObject+Logs.h>

@@ -19,7 +19,6 @@
  */
 
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
@@ -27,8 +26,6 @@
 
 #import "SOGoSystemDefaults.h"
 
-#import "SOGoDomainDefaults.h"
-#import "SOGoConstants.h"
 
 @implementation SOGoDomainDefaults
 

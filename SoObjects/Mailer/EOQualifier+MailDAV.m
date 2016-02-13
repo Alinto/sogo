@@ -20,12 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSString.h>
-#import <Foundation/NSSet.h>
 
 #import <DOM/DOMElement.h>
-#import <DOM/DOMProtocols.h>
-#import <SaxObjC/XMLNamespaces.h>
 #import <SOGo/DOMNode+SOGo.h>
 
 #import <NGCards/NSString+NGCards.h>

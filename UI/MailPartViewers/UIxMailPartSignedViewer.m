@@ -26,11 +26,8 @@
 #include <openssl/x509.h>
 #endif
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSValue.h>
-#import <NGMime/NGPart.h>
-#import <Mailer/SOGoMailObject.h>
 
 #import "UIxMailRenderingContext.h"
 #import "UIxMailPartSignedViewer.h"

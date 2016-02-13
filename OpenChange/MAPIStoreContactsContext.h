@@ -23,7 +23,6 @@
 #ifndef MAPISTORECONTACTSCONTEXT_H
 #define MAPISTORECONTACTSCONTEXT_H
 
-#import "MAPIStoreGCSBaseContext.h"
 
 @interface MAPIStoreContactsContext : MAPIStoreGCSBaseContext
 

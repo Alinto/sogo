@@ -24,7 +24,6 @@
 /* implementation of the SAML2 protocol as required for a client:
    https://www.oasis-open.org/standards#samlv2.0 */
 
-#import <Foundation/NSObject.h>
 
 #include <lasso/lasso.h>
 

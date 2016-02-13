@@ -21,7 +21,6 @@
 #ifndef NSOBJECT_DAV_H
 #define NSOBJECT_DAV_H
 
-#import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
 
 @class NSMutableDictionary;

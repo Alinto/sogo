@@ -23,7 +23,6 @@
 #ifndef MAPISTORETYPES_H
 #define MAPISTORETYPES_H
 
-#import <Foundation/NSValue.h>
 
 #include <stdbool.h>
 #include <talloc.h>

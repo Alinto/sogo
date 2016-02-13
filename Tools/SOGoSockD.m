@@ -22,10 +22,8 @@
 
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSData.h>
-#import <Foundation/NSRunLoop.h>
 #import <Foundation/NSUserDefaults.h>
 
-#import <NGStreams/NGActiveSocket.h>
 #import <NGStreams/NGLocalSocketAddress.h>
 #import <NGStreams/NGPassiveSocket.h>
 

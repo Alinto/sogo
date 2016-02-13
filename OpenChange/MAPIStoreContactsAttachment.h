@@ -23,7 +23,6 @@
 #ifndef MAPISTORECONTACTSATTACHMENT_H
 #define MAPISTORECONTACTSATTACHMENT_H
 
-#import "MAPIStoreAttachment.h"
 
 @class NSData;
 @class NGVCardPhoto;

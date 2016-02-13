@@ -25,7 +25,6 @@
 
 #include <talloc.h>
 
-#import <Foundation/NSObject.h>
 
 @interface MAPIStoreObjectProxy : NSObject
 {

@@ -21,7 +21,6 @@
 #ifndef SOGOCONTACTSOURCEFOLDER_H
 #define SOGOCONTACTSOURCEFOLDER_H
 
-#import "SOGoContactFolder.h"
 #import "SOGoFolder+CardDAV.h"
 
 #import <SOGo/SOGoSource.h>

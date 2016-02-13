@@ -24,7 +24,6 @@
 #ifndef SQLSOURCE_H
 #define SQLSOURCE_H
 
-#import <Foundation/NSObject.h>
 
 #import "SOGoSource.h"
 

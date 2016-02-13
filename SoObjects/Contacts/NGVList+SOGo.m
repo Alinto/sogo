@@ -19,8 +19,6 @@
  */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 
 #import <NGCards/NGVCardReference.h>

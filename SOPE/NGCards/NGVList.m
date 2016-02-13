@@ -21,9 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSDictionary.h>
 
 #import "NGVCardReference.h"
 

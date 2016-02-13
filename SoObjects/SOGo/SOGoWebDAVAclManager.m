@@ -19,8 +19,6 @@
  */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/SoClass.h>
@@ -30,8 +28,6 @@
 #import "NSDictionary+Utilities.h"
 #import "NSObject+DAV.h"
 #import "SOGoObject.h"
-#import "SOGoUser.h"
-#import "SOGoWebDAVValue.h"
 
 #import "SOGoWebDAVAclManager.h"
 

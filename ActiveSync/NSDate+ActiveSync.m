@@ -29,8 +29,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #import "NSDate+ActiveSync.h"
 
-#import <Foundation/NSString.h>
-#import <Foundation/NSTimeZone.h>
 
 @implementation NSDate (ActiveSync)
 

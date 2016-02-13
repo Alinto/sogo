@@ -20,7 +20,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSUserDefaults.h>
 
 @interface SOGoLDAPUserDefaults : NSUserDefaults
 

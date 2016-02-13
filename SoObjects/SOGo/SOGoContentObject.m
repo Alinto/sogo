@@ -20,10 +20,6 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext.h>
@@ -32,13 +28,11 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <GDLContentStore/GCSFolder.h>
 
-#import <NGCards/iCalCalendar.h>
 #import <NGCards/NGVCard.h>
 
 #import "NSCalendarDate+SOGo.h"
 #import "SOGoCache.h"
 #import "SOGoGCSFolder.h"
-#import "SOGoUser.h"
 #import "SOGoPermissions.h"
 #import "SOGoContentObject.h"
 

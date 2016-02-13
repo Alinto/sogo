@@ -36,7 +36,6 @@
         route later, we can still do it :-)
 */
 
-#import <Foundation/NSObject.h>
 
 @class NSString, NSArray, NSDictionary;
 @class EOQualifier;

@@ -21,7 +21,6 @@
 #ifndef SOGOEMAILALARMSMANAGER_H
 #define SOGOEMAILALARMSMANAGER_H
 
-#import <Foundation/NSObject.h>
 
 @class NSCalendarDate;
 

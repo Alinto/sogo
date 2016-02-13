@@ -23,7 +23,6 @@
 #ifndef NSURL_DAV_H
 #define NSURL_DAV_H
 
-#import <Foundation/NSURL.h>
 
 @class NSMutableDictionary;
 

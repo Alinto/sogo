@@ -25,7 +25,6 @@
 
 #include <talloc.h>
 
-#import <Foundation/NSObject.h>
 
 @class NSArray;
 @class NSFileHandle;

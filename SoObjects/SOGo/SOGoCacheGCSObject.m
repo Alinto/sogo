@@ -18,18 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSException.h>
-#import <Foundation/NSNull.h>
-#import <Foundation/NSPropertyList.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSURL.h>
-#import <Foundation/NSUserDefaults.h>
-#import <Foundation/NSValue.h>
 #import <GDLAccess/EOAdaptor.h>
-#import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLAccess/EOAdaptorContext.h>
 #import <GDLAccess/EOAttribute.h>
 #import <GDLContentStore/GCSChannelManager.h>
@@ -39,14 +28,11 @@
 #import <SOGo/SOGoCache.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
-#import <SOGo/SOGoDomainDefaults.h>
-#import <SOGo/SOGoUser.h>
 
 #import "GCSSpecialQueries+SOGoCacheObject.h"
 #import "SOGoCacheGCSFolder.h"
 #import "BSONCodec.h"
 
-#import "SOGoCacheGCSObject.h"
 
 static EOAttribute *textColumn = nil;
 

@@ -23,7 +23,6 @@
 #ifndef UIXOBJECTACTIONS_H
 #define UIXOBJECTACTIONS_H
 
-#import <NGObjWeb/WODirectAction.h>
 
 @class WOResponse;
 

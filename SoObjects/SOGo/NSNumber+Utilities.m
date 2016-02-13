@@ -20,7 +20,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSString.h>
 
 #import "NSNumber+Utilities.h"
 

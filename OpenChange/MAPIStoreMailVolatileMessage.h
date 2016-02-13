@@ -23,7 +23,6 @@
 #ifndef MAPISTOREMAILVOLATILEMESSAGE_H
 #define MAPISTOREMAILVOLATILEMESSAGE_H
 
-#import "MAPIStoreMessage.h"
 
 @interface MAPIStoreMailVolatileMessage : MAPIStoreMessage
 

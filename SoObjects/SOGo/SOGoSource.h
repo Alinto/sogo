@@ -23,7 +23,6 @@
 #ifndef SOGOSOURCE_H
 #define SOGOSOURCE_H
 
-#import <Foundation/NSObject.h>
 
 #import "SOGoConstants.h"
 

@@ -18,11 +18,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSString+misc.h>
 
-#import <Foundation/NSString.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
 
 #import <UI/Common/WODirectAction+SOGo.h>

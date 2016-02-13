@@ -18,12 +18,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
-#import <NGCards/NGVCard.h>
-#import <NGCards/NGVCardPhoto.h>
 
 #import "NGVCard+SOGo.h"
 #import "SOGoContactEntryPhoto.h"

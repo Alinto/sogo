@@ -19,31 +19,22 @@
  */
 
 #import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSPropertyList.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSTimeZone.h>
 #import <Foundation/NSUserDefaults.h> /* for locale strings */
 #import <Foundation/NSValue.h>
 
-#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 
-#import <NGImap4/NGSieveClient.h>
 #import <NGImap4/NSString+Imap4.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <NGCards/iCalTimeZone.h>
-#import <NGCards/iCalTimeZonePeriod.h>
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
-#import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoSieveManager.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUserFolder.h>

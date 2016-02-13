@@ -20,8 +20,6 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -29,7 +27,6 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <DOM/DOMElement.h>
-#import <DOM/DOMProtocols.h>
 
 #import "../SOGo/NSArray+Utilities.h"
 #import "../SOGo/NSObject+DAV.h"

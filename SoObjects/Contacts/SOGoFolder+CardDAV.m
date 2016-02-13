@@ -18,21 +18,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
 
-#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
-#import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
-#import <DOM/DOMProtocols.h>
 #import <DOM/DOMNode.h>
 #import <SaxObjC/SaxObjC.h>
-#import <SaxObjC/XMLNamespaces.h>
 
 #import <SOGo/SOGoUser.h>
 #import <SOGo/WOResponse+SOGo.h>

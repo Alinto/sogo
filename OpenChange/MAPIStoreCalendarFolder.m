@@ -20,25 +20,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSURL.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <EOControl/EOQualifier.h>
-#import <SOGo/SOGoPermissions.h>
-#import <Appointments/SOGoAppointmentFolder.h>
-#import <Appointments/SOGoAppointmentFolders.h>
-#import <Appointments/SOGoAppointmentObject.h>
 
-#import "MAPIApplication.h"
-#import "MAPIStoreCalendarContext.h"
-#import "MAPIStoreCalendarMessage.h"
-#import "MAPIStoreCalendarMessageTable.h"
-#import "MAPIStoreUserContext.h"
 #import "NSString+MAPIStore.h"
 
-#import "MAPIStoreCalendarFolder.h"
 
 #include <mapistore/mapistore_errors.h>
 #include <util/time.h>

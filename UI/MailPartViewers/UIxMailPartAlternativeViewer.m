@@ -27,7 +27,6 @@
 
 #import <UI/MailerUI/WOContext+UIxMailer.h>
 
-#import "UIxMailPartViewer.h"
 #import "UIxMailPartMixedViewer.h"
 #import "UIxMailRenderingContext.h"
 

@@ -21,18 +21,10 @@
 /* A generic parent class for all context that will store their data on the
    disk in the form of a plist. */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSURL.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "MAPIStoreDBFolder.h"
-#import "MAPIStoreMapping.h"
-#import "MAPIStoreUserContext.h"
-#import <SOGo/SOGoCacheGCSFolder.h>
 
-#import "MAPIStoreDBBaseContext.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>

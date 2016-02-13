@@ -30,34 +30,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import "iCalEvent+ActiveSync.h"
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDate.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSTimeZone.h>
 
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
-#import <NGObjWeb/WORequest.h>
 
-#import <NGCards/iCalCalendar.h>
-#import <NGCards/iCalDateTime.h>
-#import <NGCards/iCalPerson.h>
 #import <NGCards/NSCalendarDate+NGCards.h>
 #import <NGCards/NSString+NGCards.h>
-#import <NGCards/iCalCalendar.h>
 
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/WORequest+SOGo.h>
 
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/iCalRepeatableEntityObject+SOGo.h>
-#import <Appointments/SOGoAppointmentObject.h>
 
 #include "iCalAlarm+ActiveSync.h"
 #include "iCalRecurrenceRule+ActiveSync.h"

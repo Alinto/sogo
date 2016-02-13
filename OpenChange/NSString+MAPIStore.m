@@ -23,7 +23,6 @@
 #include <talloc.h>
 #include <stdbool.h>
 
-#import <Foundation/NSData.h>
 
 #import "NSString+MAPIStore.h"
 

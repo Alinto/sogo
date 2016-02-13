@@ -21,7 +21,6 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <Foundation/NSProcessInfo.h>
 
 #import "SOGoTestRunner.h"
 

@@ -24,7 +24,6 @@
 #define S_GO_SOOBJECTS_SOGO_DOMNODE_SOGO_H
 
 #import <DOM/DOMElement.h>
-#import <DOM/DOMNode.h>
 
 @class DOMElement;
 

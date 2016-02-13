@@ -18,14 +18,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSURL.h>
 
 #import <NGObjWeb/SoDefaultRenderer.h>
 #import <NGObjWeb/WOApplication.h>
-#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOCookie.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
@@ -35,13 +30,11 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSString+Ext.h>
-#import <NGLdap/NGLdapConnection.h>
 
 #import <MainUI/SOGoRootPage.h>
 
 #import "SOGoCache.h"
 #import "SOGoCASSession.h"
-#import "SOGoConstants.h"
 #import "SOGoPermissions.h"
 #import "SOGoSession.h"
 #import "SOGoSystemDefaults.h"

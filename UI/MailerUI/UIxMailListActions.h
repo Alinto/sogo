@@ -23,7 +23,6 @@
 #ifndef UIXMAILLISTACTIONS_H
 #define UIXMAILLISTACTIONS_H
 
-#import <NGObjWeb/WODirectAction.h>
 
 @class NSDictionary;
 @class EOQualifier;

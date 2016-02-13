@@ -18,18 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
 
 #import <NGCards/iCalByDayMask.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalEvent.h>
-#import <NGCards/iCalPerson.h>
-#import <NGCards/iCalRecurrenceRule.h>
 #import <NGCards/iCalRecurrenceCalculator.h>
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/NSString+NGCards.h>

@@ -22,7 +22,6 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSObject+Logs.h>

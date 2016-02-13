@@ -20,11 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSString.h>
 
-#import "MAPIStoreTypes.h"
 
-#import "MAPIStoreDBFolderTable.h"
 
 @implementation MAPIStoreDBFolderTable
 

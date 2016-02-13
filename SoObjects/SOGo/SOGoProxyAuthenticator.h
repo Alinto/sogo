@@ -23,8 +23,6 @@
 #ifndef _SOGoProxyAuthenticator_H__
 #define _SOGoProxyAuthenticator_H__
 
-#import <Foundation/NSObject.h>
-#import <NGObjWeb/SoHTTPAuthenticator.h>
 
 #import "SOGoAuthenticator.h"
 

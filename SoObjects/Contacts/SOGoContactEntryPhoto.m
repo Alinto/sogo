@@ -20,9 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
-#import <Foundation/NSString.h>
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOResponse.h>

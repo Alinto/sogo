@@ -25,9 +25,6 @@
 
 #include <talloc.h>
 
-#import <NGCards/iCalCalendar.h>
-#import <NGCards/iCalRecurrenceRule.h>
-#import <NGCards/iCalTimeZone.h>
 
 @class iCalEvent;
 @class iCalRepeatableEntityObject;

@@ -20,14 +20,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
-#import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <NGCards/iCalCalendar.h>

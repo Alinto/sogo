@@ -19,11 +19,6 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSBundle.h>
-#import <Foundation/NSObject.h>
-#import <Foundation/NSURL.h>
 
 #import <EOControl/EOClassDescription.h>
 #import <EOControl/EOFetchSpecification.h>

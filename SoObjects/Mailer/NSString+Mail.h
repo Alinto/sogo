@@ -22,7 +22,6 @@
 #define NSSTRING_MAIL_H
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSString.h>
 
 @interface NSString (SOGoExtension)
 

@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <stdint.h>
 
 @protocol BSONCoding
 - (uint8_t) BSONTypeID;

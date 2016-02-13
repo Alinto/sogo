@@ -23,7 +23,6 @@
 #ifndef SOGOSIEVEMANAGER_H
 #define SOGOSIEVEMANAGER_H
 
-#import <Foundation/NSObject.h>
 
 @class NSDictionary;
 @class NSMutableArray;

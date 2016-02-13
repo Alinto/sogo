@@ -23,7 +23,6 @@
 #ifndef GCSALARMSFOLDER_H
 #define GCSALARMSFOLDER_H
 
-#import <Foundation/NSObject.h>
 
 @class NSCalendarDate;
 @class NSException;

@@ -22,7 +22,6 @@
 #ifndef __UIxContactsListActions_H__
 #define __UIxContactsListActions_H__
 
-#import <NGObjWeb/WODirectAction.h>
 
 @class NSDictionary;
 @class NSString;

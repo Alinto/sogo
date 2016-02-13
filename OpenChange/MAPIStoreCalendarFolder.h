@@ -23,7 +23,6 @@
 #ifndef MAPISTORECALENDARFOLDER_H
 #define MAPISTORECALENDARFOLDER_H
 
-#import "MAPIStoreGCSFolder.h"
 
 @interface MAPIStoreCalendarFolder : MAPIStoreGCSFolder
 

@@ -21,7 +21,6 @@
 #ifndef UIXMAILACCOUNTACTIONS_H
 #define UIXMAILACCOUNTACTIONS_H
 
-#import <NGObjWeb/WODirectAction.h>
 
 @class WOResponse;
 

@@ -20,14 +20,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSString.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <EOControl/EOQualifier.h>
 
-#import "MAPIStoreTypes.h"
-#import "MAPIStoreDBMessage.h"
 
-#import "MAPIStoreDBMessageTable.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>

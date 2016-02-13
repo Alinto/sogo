@@ -23,7 +23,6 @@
 #ifndef NSCALENDARDATE_MAPISTORE_H
 #define NSCALENDARDATE_MAPISTORE_H
 
-#import <Foundation/NSDate.h>
 
 @class NSCalendarDate;
 

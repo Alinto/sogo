@@ -20,22 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSURL.h>
 #import <NGImap4/NSString+Imap4.h>
 #import <NGExtensions/NSString+misc.h>
-#import <Mailer/SOGoMailAccount.h>
-#import <Mailer/SOGoMailFolder.h>
 
-#import "MAPIStoreMailFolder.h"
-#import "MAPIStoreUserContext.h"
 #import "NSString+MAPIStore.h"
 
 #import <SOGo/NSString+Utilities.h>
-#import "MAPIApplication.h"
-#import "MAPIStoreMailContext.h"
 
 #include <dlinklist.h>
 #undef DEBUG

@@ -22,7 +22,6 @@
 #ifndef __GDLContentStore_GCSFolderManager_H__
 #define __GDLContentStore_GCSFolderManager_H__
 
-#import <Foundation/NSObject.h>
 
 /*
   GCSFolderManager

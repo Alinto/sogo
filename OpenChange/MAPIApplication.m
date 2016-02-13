@@ -20,19 +20,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSUserDefaults.h>
-#import <Foundation/NSTimeZone.h>
-#import <WEExtensions/WEResourceManager.h>
 
-#import <SOGo/SOGoProductLoader.h>
-#import <SOGo/SOGoSystemDefaults.h>
 
 #import <Appointments/iCalEntityObject+SOGo.h>
 
-#import "MAPIStoreUserContext.h"
-#import "MAPIStoreTypes.h"
 
-#import "MAPIApplication.h"
 
 MAPIApplication *MAPIApp = nil;
 

@@ -19,9 +19,7 @@
  */
 
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSNull.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
 #import "NSArray+Utilities.h"

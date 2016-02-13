@@ -44,23 +44,13 @@
  */
 
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSData.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSLock.h>
-#import <Foundation/NSValue.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSTimer.h>
 
-#import <NGObjWeb/SoObject.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "NSDictionary+Utilities.h"
 #import "NSString+Utilities.h"
 #import "SOGoObject.h"
 #import "SOGoSystemDefaults.h"
-#import "SOGoUser.h"
-#import "SOGoUserProfile.h"
 
 #import "SOGoCache.h"
 

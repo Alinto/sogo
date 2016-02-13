@@ -22,7 +22,6 @@
 #ifndef SOGOCONTACTLDIFENTRY_H
 #define SOGOCONTACTLDIFENTRY_H
 
-#import <SOGo/SOGoObject.h>
 
 #import "SOGoContactObject.h"
 

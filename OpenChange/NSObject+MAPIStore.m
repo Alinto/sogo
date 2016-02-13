@@ -20,13 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSThread.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "MAPIStorePropertySelectors.h"
-#import "MAPIStoreTypes.h"
 #import "NSArray+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"

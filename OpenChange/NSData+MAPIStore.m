@@ -22,7 +22,6 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "MAPIStoreTypes.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 

@@ -22,7 +22,6 @@
 #ifndef	__SOGoUserDefaults_H_
 #define	__SOGoUserDefaults_H_
 
-#import <Foundation/NSObject.h>
 
 /*
   SOGoUserDefaults

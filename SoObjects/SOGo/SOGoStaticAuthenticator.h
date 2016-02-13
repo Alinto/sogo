@@ -21,7 +21,6 @@
 #ifndef SOGOSTATICAUTHENTICATOR_H
 #define SOGOSTATICAUTHENTICATOR_H
 
-#import <Foundation/NSObject.h>
 
 
 #import "SOGoAuthenticator.h"

@@ -22,7 +22,6 @@
 #ifndef	__NGiCal_iCalRecurrenceCalculator_H_
 #define	__NGiCal_iCalRecurrenceCalculator_H_
 
-#import <Foundation/NSObject.h>
 
 /*
   iCalRecurrenceCalculator

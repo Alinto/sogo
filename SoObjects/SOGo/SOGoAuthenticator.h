@@ -23,7 +23,6 @@
 #ifndef SOGOAUTHENTICATOR_H
 #define SOGOAUTHENTICATOR_H
 
-#import <Foundation/NSObject.h>
 
 @class NSString;
 @class SOGoUser;

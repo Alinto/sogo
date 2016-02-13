@@ -31,7 +31,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __ICALRECURRENCERULEACTIVESYNC_H__
 #define __ICALRECURRENCERULEACTIVESYNC_H__
 
-#import <NGCards/iCalRecurrenceRule.h>
 
 @class NSDictionary;
 @class NSString;

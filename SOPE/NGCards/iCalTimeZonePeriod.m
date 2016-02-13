@@ -24,7 +24,6 @@
 #import <Foundation/NSTimeZone.h>
 
 #import "iCalDateTime.h"
-#import "iCalRecurrenceRule.h"
 #import "iCalByDayMask.h"
 #import "iCalUTCOffset.h"
 

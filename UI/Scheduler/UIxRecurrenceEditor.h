@@ -23,7 +23,6 @@
 #ifndef UIXRECURRENCEEDITOR_H
 #define UIXRECURRENCEEDITOR_H
 
-#import <SOGoUI/UIxComponent.h>
 
 @interface UIxRecurrenceEditor : UIxComponent
 {

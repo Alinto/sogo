@@ -20,21 +20,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
-#import <SOGo/SOGoFolder.h>
-#import <SOGo/SOGoObject.h>
-#import <SOGo/SOGoUser.h>
 
-#import "MAPIStoreContext.h"
-#import "MAPIStoreFolder.h"
-#import "MAPIStoreTypes.h"
-#import "MAPIStoreSamDBUtils.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
-#import "MAPIStorePermissionsTable.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>

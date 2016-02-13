@@ -38,7 +38,6 @@
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
 
 #import "SOGoAptMailReceipt.h"
 

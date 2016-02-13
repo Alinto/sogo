@@ -20,13 +20,10 @@
  */
 
 #import <dlfcn.h>
-#import <unistd.h>
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSBundle.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSFileManager.h>
-#import <Foundation/NSDictionary.h>
 #import <Foundation/NSUserDefaults.h>
 
 #import <NGExtensions/NSObject+Logs.h>
@@ -41,7 +38,6 @@
 @implementation SOGoSystemDefaults
 
 #if defined(LDAP_CONFIG)
-#import <SOGo/SOGoLDAPUserDefaults.h>
 #endif
 
 typedef void (*NSUserDefaultsInitFunction) ();

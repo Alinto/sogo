@@ -20,8 +20,6 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSDate.h>
-#import <Foundation/NSArray.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NGCalendarDateRange.h>
@@ -29,7 +27,6 @@
 #import "NSCalendarDate+ICal.h"
 
 #import "iCalRecurrenceCalculator.h"
-#import "iCalRecurrenceRule.h"
 #import "iCalByDayMask.h"
 
 @interface iCalDailyRecurrenceCalculator : iCalRecurrenceCalculator

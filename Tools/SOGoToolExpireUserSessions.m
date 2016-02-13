@@ -22,12 +22,9 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
-#import <Foundation/NSValue.h>
 
 #import <GDLAccess/EOAdaptorChannel.h>
 
@@ -37,9 +34,6 @@
 #import <NGExtensions/NSNull+misc.h>
 
 #import <SOGo/NSString+Utilities.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoSystemDefaults.h>
-#import <SOGo/SOGoUserDefaults.h>
 
 #import "SOGoTool.h"
 

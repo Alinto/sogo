@@ -23,7 +23,6 @@
 #ifndef MAPISTOREGCSMESSAGETABLE_H
 #define MAPISTOREGCSMESSAGETABLE_H
 
-#import "MAPIStoreMessageTable.h"
 
 @class EOQualifier;
 

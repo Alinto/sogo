@@ -22,8 +22,6 @@
 #ifndef SOGOMAILLABEL_H
 #define SOGOMAILLABEL_H
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSString.h>
 
 #import "../../UI/SOGoUI/UIxComponent.h"
 

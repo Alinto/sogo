@@ -19,7 +19,6 @@
    02111-1307, USA.
 */
 
-#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
 

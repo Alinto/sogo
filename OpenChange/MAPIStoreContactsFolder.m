@@ -20,21 +20,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSURL.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
-#import <EOControl/EOQualifier.h>
-#import <SOGo/SOGoPermissions.h>
-#import <Contacts/SOGoContactGCSEntry.h>
-#import <Contacts/SOGoContactFolders.h>
 
-#import "MAPIApplication.h"
-#import "MAPIStoreUserContext.h"
-#import "MAPIStoreContactsContext.h"
-#import "MAPIStoreContactsMessage.h"
-#import "MAPIStoreContactsMessageTable.h"
 #import "NSString+MAPIStore.h"
 
-#import "MAPIStoreContactsFolder.h"
 
 #include <util/time.h>
 #include <gen_ndr/exchange.h>

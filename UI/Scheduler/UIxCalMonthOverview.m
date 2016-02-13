@@ -1,5 +1,4 @@
 
-#import <Foundation/NSCalendarDate.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 
 #import <SOGoUI/SOGoAptFormatter.h>

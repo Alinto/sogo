@@ -22,7 +22,6 @@
 #ifndef __SkyDaemon_skyaptd_IcalResponse_H__
 #define __SkyDaemon_skyaptd_IcalResponse_H__
 
-#import <Foundation/NSObject.h>
 
 @class NSMutableString, NSData;
 

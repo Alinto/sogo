@@ -32,7 +32,6 @@
   is, a content folder containing vcal?? files (and a proper quicktable).
 */
 
-#import <Foundation/NSObject.h>
 
 #import <SOGo/SOGoFolder.h>
 

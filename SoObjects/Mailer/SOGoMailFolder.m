@@ -20,16 +20,11 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSData.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 #import <Foundation/NSTask.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
-#import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSURL+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -38,8 +33,6 @@
 #import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 
-#import <DOM/DOMElement.h>
-#import <DOM/DOMProtocols.h>
 #import <SaxObjC/XMLNamespaces.h>
 
 #import <EOControl/EOSortOrdering.h>
@@ -63,7 +56,6 @@
 #import <SOGo/NSString+DAV.h>
 #import <SOGo/NSArray+DAV.h>
 #import <SOGo/NSObject+DAV.h>
-#import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
@@ -74,11 +66,8 @@
 #import <SOGo/SOGoMailer.h>
 
 #import "EOQualifier+MailDAV.h"
-#import "SOGoMailObject.h"
 #import "SOGoMailAccount.h"
 #import "SOGoMailAccounts.h"
-#import "SOGoMailManager.h"
-#import "SOGoMailFolder.h"
 #import "SOGoTrashFolder.h"
 #import "SOGoMailObject+Draft.h"
 

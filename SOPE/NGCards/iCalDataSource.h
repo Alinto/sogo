@@ -22,7 +22,6 @@
 #ifndef __NGiCal_iCalDataSource_H__
 #define __NGiCal_iCalDataSource_H__
 
-#import <EOControl/EODataSource.h>
 
 @class NSString, NSURL;
 @class EOFetchSpecification;

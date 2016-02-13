@@ -20,24 +20,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSData.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSTimeZone.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "iCalEvent+MAPIStore.h"
-#import "MAPIStoreCalendarEmbeddedMessage.h"
-#import "MAPIStoreTypes.h"
-#import "MAPIStoreUserContext.h"
 #import "NSDate+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
-#import "MAPIStoreCalendarAttachment.h"
 
 #undef DEBUG
 #include <stdbool.h>

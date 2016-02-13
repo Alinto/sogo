@@ -20,12 +20,9 @@
 */
 
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
 
 #import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSNull+misc.h>
-#import <NGMail/NGMailAddress.h>
-#import <NGMail/NGMailAddressParser.h>
 
 #import <SOGoUI/UIxComponent.h>
 

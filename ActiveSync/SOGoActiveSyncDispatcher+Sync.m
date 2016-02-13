@@ -29,32 +29,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #import "SOGoActiveSyncDispatcher+Sync.h"
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSNull.h>
-#import <Foundation/NSProcessInfo.h>
-#import <Foundation/NSSortDescriptor.h>
-#import <Foundation/NSTimeZone.h>
-#import <Foundation/NSURL.h>
-#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
-#import <NGObjWeb/SoApplication.h>
-#import <NGObjWeb/SoObject.h>
-#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
-#import <NGObjWeb/WOCookie.h>
-#import <NGObjWeb/WODirectAction.h>
-#import <NGObjWeb/WORequest.h>
-#import <NGObjWeb/WOResponse.h>
 
-#import <NGCards/iCalCalendar.h>
-#import <NGCards/iCalEntityObject.h>
-#import <NGCards/iCalEvent.h>
-#import <NGCards/iCalPerson.h>
-#import <NGCards/iCalToDo.h>
-#import <NGCards/NGVCard.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -62,40 +40,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <NGImap4/NSString+Imap4.h>
 
-#import <DOM/DOMElement.h>
-#import <DOM/DOMProtocols.h>
 
-#import <EOControl/EOQualifier.h>
 
 #import <SOGo/NSArray+DAV.h>
-#import <SOGo/SOGoCache.h>
 #import <SOGo/NSDictionary+DAV.h>
-#import <SOGo/SOGoDAVAuthenticator.h>
-#import <SOGo/SOGoDomainDefaults.h>
-#import <SOGo/SOGoMailer.h>
-#import <SOGo/SOGoSystemDefaults.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserSettings.h>
-#import <SOGo/SOGoCacheGCSObject.h>
 
 #import <Appointments/iCalEntityObject+SOGo.h>
-#import <Appointments/SOGoAppointmentObject.h>
-#import <Appointments/SOGoAppointmentFolder.h>
-#import <Appointments/SOGoAppointmentFolders.h>
-#import <Appointments/SOGoTaskObject.h>
 
-#import <Contacts/SOGoContactGCSEntry.h>
-#import <Contacts/SOGoContactGCSFolder.h>
-#import <Contacts/SOGoContactFolders.h>
-#import <Contacts/SOGoContactSourceFolder.h>
 
-#import <Mailer/SOGoMailAccount.h>
-#import <Mailer/SOGoMailAccounts.h>
-#import <Mailer/SOGoMailFolder.h>
-#import <Mailer/SOGoMailObject.h>
 
-#import <Foundation/NSObject.h>
-#import <Foundation/NSString.h>
 
 #include "iCalEvent+ActiveSync.h"
 #include "iCalToDo+ActiveSync.h"

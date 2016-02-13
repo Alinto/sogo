@@ -22,38 +22,17 @@
 
 #include <talloc.h>
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSCharacterSet.h>
-#import <Foundation/NSData.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSTimeZone.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <NGCards/iCalAlarm.h>
-#import <NGCards/iCalDateTime.h>
-#import <NGCards/iCalEvent.h>
-#import <NGCards/iCalEventChanges.h>
-#import <NGCards/iCalPerson.h>
-#import <NGCards/iCalTrigger.h>
-#import <NGCards/iCalTimeZonePeriod.h>
 #import <NGCards/NSString+NGCards.h>
-#import <SOGo/SOGoDomainDefaults.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserManager.h>
 
 #import "iCalTimeZone+MAPIStore.h"
-#import "MAPIStoreRecurrenceUtils.h"
-#import "MAPIStoreSamDBUtils.h"
-#import "MAPIStoreTypes.h"
 #import "NSArray+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
-#import "MAPIStoreAppointmentWrapper.h"
 
 #undef DEBUG
 #include <stdbool.h>

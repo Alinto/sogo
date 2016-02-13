@@ -19,7 +19,6 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSString.h>
 
 #import "SOGoSentFolder.h"
 

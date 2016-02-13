@@ -21,8 +21,6 @@
  */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSFileManager.h>
 #import <Foundation/NSProcessInfo.h>
 
 #import <SaxObjC/SaxXMLReaderFactory.h>

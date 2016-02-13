@@ -20,10 +20,6 @@
 
 #include <ldap.h>
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSException.h>
-#import <Foundation/NSString.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOControl.h>
@@ -38,11 +34,9 @@
 #import "NSString+Utilities.h"
 #import "NSString+Crypto.h"
 #import "SOGoCache.h"
-#import "SOGoDomainDefaults.h"
 #import "SOGoSystemDefaults.h"
 
 #import "LDAPSource.h"
-#import "../../Main/SOGo.h"
 
 static Class NSStringK;
 

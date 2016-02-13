@@ -22,7 +22,6 @@
 #ifndef __GDLContentStore_GCSChannelManager_H__
 #define __GDLContentStore_GCSChannelManager_H__
 
-#import <Foundation/NSObject.h>
 
 /*
   GCSChannelManager

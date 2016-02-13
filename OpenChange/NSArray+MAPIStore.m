@@ -20,7 +20,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSValue.h>
 
 #import "NSDate+MAPIStore.h"
 #import "NSData+MAPIStore.h"

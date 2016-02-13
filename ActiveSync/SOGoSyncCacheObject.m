@@ -30,9 +30,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "SOGoSyncCacheObject.h"
 
-#import <Foundation/NSNull.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSValue.h>
 
 static Class NSNullK;
 

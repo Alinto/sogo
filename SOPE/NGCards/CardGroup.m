@@ -20,11 +20,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSString.h>
-#import <SaxObjC/SaxXMLReader.h>
 #import <SaxObjC/SaxXMLReaderFactory.h>
 
 #import "NGCardsSaxHandler.h"

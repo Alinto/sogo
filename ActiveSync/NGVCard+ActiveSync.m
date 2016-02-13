@@ -29,15 +29,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #import "NGVCard+ActiveSync.h"
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSTimeZone.h>
 
 #import <NGExtensions/NSString+misc.h>
 
-#import <NGCards/CardElement.h>
 
 #import <Contacts/NGVCard+SOGo.h>
 

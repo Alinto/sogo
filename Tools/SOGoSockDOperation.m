@@ -23,7 +23,6 @@
 #include <ldap.h>
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSString.h>
 
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGStreams/NGActiveSocket.h>

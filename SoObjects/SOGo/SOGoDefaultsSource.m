@@ -22,7 +22,6 @@
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
 #import <NGExtensions/NSObject+Logs.h>

@@ -27,7 +27,6 @@
   TODO: add contained link detection.
 */
 
-#import <Foundation/NSException.h>
 
 #import <NGExtensions/NSString+misc.h>
 

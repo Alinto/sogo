@@ -20,13 +20,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
-#import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
-#import <SaxObjC/XMLNamespaces.h>
 
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserManager.h>

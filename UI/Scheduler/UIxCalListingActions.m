@@ -18,28 +18,19 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSNull.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSUserDefaults.h> /* for locale string constants */
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOApplication.h>
-#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
-#import <NGObjWeb/WOResponse.h>
 
 #import <NGCards/iCalPerson.h>
-#import <NGCards/iCalTimeZone.h>
-#import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalCalendar.h>
-#import <NGCards/iCalObject.h>
 
-#import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
@@ -48,15 +39,12 @@
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
-#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/WOResourceManager+SOGo.h>
-#import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
-#import <Appointments/SOGoAppointmentObject.h>
 #import <Appointments/SOGoWebAppointmentFolder.h>
 
 #import <UI/Common/WODirectAction+SOGo.h>

@@ -20,7 +20,6 @@
   02111-1307, USA.
 */
 
-#import <SoObjects/Mailer/SOGoMailBodyPart.h>
 
 #import "UIxMailPartViewer.h"
 

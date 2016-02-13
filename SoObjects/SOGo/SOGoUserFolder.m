@@ -20,35 +20,20 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSURL.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
-#import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGObjWeb/SoSecurityManager.h>
-#import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
-#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WORequest+So.h>
-#import <NGObjWeb/WOResponse.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
-#import <DOM/DOMDocument.h>
 #import <DOM/DOMNode.h>
-#import <DOM/DOMProtocols.h>
-#import <SaxObjC/SaxObjC.h>
-#import <SaxObjC/XMLNamespaces.h>
 
 #import <Appointments/SOGoAppointmentFolders.h>
-#import <Appointments/SOGoFreeBusyObject.h>
 #import <Appointments/SOGoCalendarProxy.h>
 #import <Contacts/SOGoContactFolders.h>
-#import <Mailer/SOGoMailAccounts.h>
 
-#import <SOGoUI/UIxComponent.h>
 
 #import "NSArray+Utilities.h"
 #import "NSDictionary+Utilities.h"

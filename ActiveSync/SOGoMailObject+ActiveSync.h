@@ -30,7 +30,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __SOGOMAILOBJECTACTIVESYNC_H__
 #define __SOGOMAILOBJECTACTIVESYNC_H__
 
-#import <Mailer/SOGoMailObject.h>
 
 @class iCalCalendar;
 @class NSDictionary;

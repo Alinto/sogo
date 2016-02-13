@@ -25,7 +25,6 @@
 
 #include <talloc.h>
 
-#import "MAPIStoreObject.h"
 
 @class NSDate;
 @class NSData;

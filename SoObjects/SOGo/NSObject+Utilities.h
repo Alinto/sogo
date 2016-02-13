@@ -21,7 +21,6 @@
 #ifndef NSOBJECT_UTILITIES_H
 #define NSOBJECT_UTILITIES_H
 
-#import <Foundation/NSObject.h>
 
 #import <DOM/DOMProtocols.h>
 

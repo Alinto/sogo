@@ -24,7 +24,6 @@
 /* implementation of the CAS protocol as required for a client/proxy:
    http://www.jasig.org/cas/protocol */
 
-#import <Foundation/NSObject.h>
 
 @class NSString;
 @class NSMutableDictionary;

@@ -21,7 +21,6 @@
 #ifndef SOGOMAILER_H
 #define SOGOMAILER_H
 
-#import <Foundation/NSObject.h>
 
 @class NSArray;
 @class NSException;

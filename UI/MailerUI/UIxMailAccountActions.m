@@ -18,17 +18,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
-#import <NGObjWeb/WOResponse.h>
-#import <NGImap4/NGImap4Connection.h>
-#import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NSString+Imap4.h>
 #import <NGExtensions/NSString+misc.h>
 
@@ -40,7 +33,6 @@
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserManager.h>
 
 #import "../Common/WODirectAction+SOGo.h"
 

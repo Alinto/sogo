@@ -22,7 +22,6 @@
 #warning this module should be cleaned up and \
   merged with NSCalendarDate+NGCards
 
-#import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>

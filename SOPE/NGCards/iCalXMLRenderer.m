@@ -24,19 +24,14 @@
    http://tools.ietf.org/html/rfc6321 */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 
-#import "CardElement.h"
-#import "CardGroup.h"
 #import "iCalCalendar.h"
 #import "iCalDateTime.h"
 #import "iCalPerson.h"
-#import "iCalRecurrenceRule.h"
 #import "iCalUTCOffset.h"
 
 #import "iCalXMLRenderer.h"

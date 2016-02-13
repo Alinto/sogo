@@ -19,9 +19,7 @@
  */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
 
 #import "SOGoTool.h"

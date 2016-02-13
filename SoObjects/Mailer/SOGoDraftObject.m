@@ -20,13 +20,6 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSData.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSFileManager.h>
-#import <Foundation/NSKeyValueCoding.h>
-#import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
@@ -34,13 +27,11 @@
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest+So.h>
-#import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSFileManager+Extensions.h>
 #import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <NGExtensions/NGQuotedPrintableCoding.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
@@ -54,7 +45,6 @@
 #import <NGMime/NGMimeFileData.h>
 #import <NGMime/NGMimeMultipartBody.h>
 #import <NGMime/NGMimeType.h>
-#import <NGMime/NGMimeHeaderFieldGenerator.h>
 #import <NGMime/NGMimeHeaderFields.h>
 
 #import <SOGo/NSArray+Utilities.h>
@@ -65,19 +55,15 @@
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
-#import <SOGo/SOGoUserDefaults.h>
 
 #import <NGCards/NGVCard.h>
 
-#import <Contacts/SOGoContactFolder.h>
 #import <Contacts/SOGoContactFolders.h>
 #import <Contacts/SOGoContactGCSEntry.h>
 
 #import "NSData+Mail.h"
 #import "NSString+Mail.h"
 #import "SOGoMailAccount.h"
-#import "SOGoMailFolder.h"
-#import "SOGoMailObject.h"
 #import "SOGoMailObject+Draft.h"
 #import "SOGoSentFolder.h"
 

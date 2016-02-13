@@ -18,9 +18,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/NSException+HTTP.h>
@@ -34,7 +31,6 @@
 
 #import <Contacts/SOGoContactGCSEntry.h>
 #import <Contacts/SOGoContactGCSFolder.h>
-#import <Contacts/SOGoContactGCSList.h>
 
 #import "UIxListEditor.h"
 

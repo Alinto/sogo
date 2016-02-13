@@ -20,13 +20,9 @@
 
 #import <curl/curl.h>
 
-#import <Foundation/NSData.h>
-#import <Foundation/NSDictionary.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
-#import <NGObjWeb/WOHTTPConnection.h>
-#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGHttp/NGHttpResponse.h>
@@ -35,8 +31,6 @@
 #import <GDLContentStore/GCSFolder.h>
 #import <SOGo/SOGoAuthenticator.h>
 #import <SOGo/SOGoSystemDefaults.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserSettings.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 
