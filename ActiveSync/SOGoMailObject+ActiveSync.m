@@ -1021,46 +1021,53 @@ struct GlobalObjectId {
           }
           break;
         case 1:
-          {
-            content = [content substringToIndex: 4096];
-            len = 4096;
-          }
+          if ([content length] > 4096)
+            {
+              content = [content substringToIndex: 4096];
+              len = 4096;
+            }
           break;
         case 2:
-          {
-            content = [content substringToIndex: 5120];
-            len = 5120;
-          }
+          if ([content length] > 5120)
+            {
+              content = [content substringToIndex: 5120];
+              len = 5120;
+            }
           break;
         case 3:
-          {
-            content = [content substringToIndex: 7168];
-            len = 7168;
-          }
+          if ([content length] > 7168)
+            {
+              content = [content substringToIndex: 7168];
+              len = 7168;
+            }
           break;
         case 4:
-          {
-            content = [content substringToIndex: 10240];
-            len = 10240;
-          }
+          if ([content length] > 10240)
+            {
+              content = [content substringToIndex: 10240];
+              len = 10240;
+            }
           break;
         case 5:
-          {
-            content = [content substringToIndex: 20480];
-            len = 20480;
-          }
+          if ([content length] > 20480)
+            {
+              content = [content substringToIndex: 20480];
+              len = 20480;
+            }
           break;
         case 6:
-          {
-            content = [content substringToIndex: 51200];
-            len = 51200;
-          }
+          if ([content length] > 51200)
+            {
+              content = [content substringToIndex: 51200];
+              len = 51200;
+            }
           break;
         case 7:
-          {
-            content = [content substringToIndex: 102400];
-            len = 102400;
-          }
+          if ([content length] > 102400)
+            {
+              content = [content substringToIndex: 102400];
+              len = 102400;
+            }
           break;
         case 8:
         default:
