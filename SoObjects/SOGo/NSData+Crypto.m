@@ -43,6 +43,10 @@
 #define SHA256_DIGEST_LENGTH 32
 #define SHA512_DIGEST_LENGTH 64
 #elif defined(HAVE_OPENSSL)
+#include <openssl/evp.h>
+#include <openssl/md4.h>
+#include <openssl/md5.h>
+#include <openssl/sha.h>
 #else
 #error this module requires either gnutls or openssl
 #endif

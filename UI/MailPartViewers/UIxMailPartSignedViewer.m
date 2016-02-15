@@ -19,10 +19,16 @@
  */
 
 #ifdef HAVE_OPENSSL
+#include <openssl/bio.h>
+#include <openssl/err.h>
+#include <openssl/pkcs7.h>
+#include <openssl/x509.h>
 #endif
 
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSValue.h>
+#import <Mailer/SOGoMailObject.h>
 
 #import "UIxMailRenderingContext.h"
 #import "UIxMailPartSignedViewer.h"
