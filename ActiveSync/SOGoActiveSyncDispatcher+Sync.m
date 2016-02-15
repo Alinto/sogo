@@ -1388,7 +1388,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 changeDetected: (BOOL *) changeDetected
            maxSyncResponseSize: (int) theMaxSyncResponseSize
 {
-  NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType, *mimeSupport, *lastServerKey, *syncKeyInCache, *folderKey;
+  NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType, *mimeSupport, *mimeTruncation, *lastServerKey, *syncKeyInCache, *folderKey;
   NSMutableDictionary *folderMetadata, *folderOptions;
   NSMutableArray *supportedElements, *supportedElementNames;
   NSMutableString *changeBuffer, *commandsBuffer;
@@ -1500,48 +1500,60 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   bodyPreferenceType = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"BodyPreference"] lastObject] getElementsByTagName: @"Type"] lastObject] textValue];
 
   if (!bodyPreferenceType)
-   {
-     bodyPreferenceType = [[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"BodyPreferenceType"];
+    {
+      bodyPreferenceType = [[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"BodyPreferenceType"];
 
-     // By default, send MIME mails. See #3146 for details.
-     if (!bodyPreferenceType)
-       bodyPreferenceType = @"4";
+      // By default, send MIME mails. See #3146 for details.
+      if (!bodyPreferenceType)
+        bodyPreferenceType = @"4";
 
-     mimeSupport = [[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMESupport"];
+      mimeSupport = [[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMESupport"];
+      mimeTruncation = [[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMETruncation"];
 
-     if (!mimeSupport)
-       mimeSupport = @"1";
-   }
+      if (!mimeSupport)
+        mimeSupport = @"1";
+
+      if (!mimeTruncation)
+        mimeTruncation = @"8";
+    }
   else
-   {
-     mimeSupport = [[(id)[theDocumentElement getElementsByTagName: @"MIMESupport"] lastObject] textValue];
+    {
+      mimeSupport = [[(id)[theDocumentElement getElementsByTagName: @"MIMESupport"] lastObject] textValue];
+      mimeTruncation = [[(id)[theDocumentElement getElementsByTagName: @"MIMETruncation"] lastObject] textValue];
 
-     if (!mimeSupport)
+      if (!mimeSupport)
         mimeSupport = [[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMESupport"];
 
-     if (!mimeSupport)
+      if (!mimeSupport)
         mimeSupport = @"0";
 
-     if ([mimeSupport isEqualToString: @"1"] && [bodyPreferenceType isEqualToString: @"4"])
+      if (!mimeTruncation)
+        mimeTruncation = [[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMETruncation"];
+
+      if (!mimeTruncation)
+        mimeTruncation = @"8";
+
+      if ([mimeSupport isEqualToString: @"1"] && [bodyPreferenceType isEqualToString: @"4"])
         bodyPreferenceType = @"2";
-     else if ([mimeSupport isEqualToString: @"2"] && [bodyPreferenceType isEqualToString: @"4"])
+      else if ([mimeSupport isEqualToString: @"2"] && [bodyPreferenceType isEqualToString: @"4"])
         bodyPreferenceType = @"4";
-     else if ([mimeSupport isEqualToString: @"0"] && [bodyPreferenceType isEqualToString: @"4"])
+      else if ([mimeSupport isEqualToString: @"0"] && [bodyPreferenceType isEqualToString: @"4"])
         bodyPreferenceType = @"2";
 
-
-     // Avoid writing to cache if there is nothing to change.
-     if (![[[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"BodyPreferenceType"] isEqualToString: bodyPreferenceType] ||
-         ![[[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMESupport"] isEqualToString: mimeSupport])
-       {
-         folderOptions = [[NSDictionary alloc] initWithObjectsAndKeys: mimeSupport, @"MIMESupport", bodyPreferenceType, @"BodyPreferenceType", nil];
-         [folderMetadata setObject: folderOptions forKey: @"FolderOptions"];
-         [self _setFolderMetadata: folderMetadata forKey: folderKey];
-       }
-   }
+      // Avoid writing to cache if there is nothing to change.
+      if (![[[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"BodyPreferenceType"] isEqualToString: bodyPreferenceType] ||
+          ![[[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMESupport"] isEqualToString: mimeSupport] ||
+          ![[[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMETruncation"] isEqualToString: mimeTruncation])
+        {
+          folderOptions = [[NSDictionary alloc] initWithObjectsAndKeys: mimeSupport, @"MIMESupport", mimeTruncation, @"MIMETruncation", bodyPreferenceType, @"BodyPreferenceType", nil];
+          [folderMetadata setObject: folderOptions forKey: @"FolderOptions"];
+          [self _setFolderMetadata: folderMetadata forKey: folderKey];
+        }
+    }
   
   [context setObject: bodyPreferenceType  forKey: @"BodyPreferenceType"];
   [context setObject: mimeSupport  forKey: @"MIMESupport"];
+  [context setObject: mimeTruncation  forKey: @"MIMETruncation"];
   [context setObject: [folderMetadata objectForKey: @"SupportedElements"]  forKey: @"SupportedElements"];
 
   //
