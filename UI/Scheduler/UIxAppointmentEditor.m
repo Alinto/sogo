@@ -467,6 +467,7 @@
   SOGoAppointmentObject *co;
   SoSecurityManager *sm;
   WORequest *request;
+  id error;
 
   unsigned int httpStatus;
   BOOL forceSave;
@@ -490,7 +491,7 @@
   else
     {
       [self setAttributes: params];
-      forceSave = NO;
+      forceSave = [[params objectForKey: @"ignoreConflicts"] boolValue];
 
       if ([event hasRecurrenceRules])
         [self _adjustRecurrentRules];
@@ -546,9 +547,11 @@
       if ([ex respondsToSelector: @selector(httpStatus)])
         httpStatus = [ex httpStatus];
 
+      error = [[ex reason] objectFromJSONString];
+      if (error == nil)
+        error = [ex reason];
       jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [ex reason], @"message",
-                                   nil];
+                                     error, @"message", nil];
     }
   else
     {

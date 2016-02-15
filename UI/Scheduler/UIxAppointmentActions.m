@@ -22,6 +22,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSValue.h>
 
 #import <NGExtensions/NSObject+Values.h>
 
@@ -68,6 +69,7 @@
   SOGoAppointmentFolder *targetCalendar, *sourceCalendar;
   SOGoAppointmentFolders *folders;
   BOOL forceSave;
+  id error;
 
   rq = [context request];
   params = [[rq contentAsString] objectFromJSONString];
@@ -76,7 +78,7 @@
   startDelta = [params objectForKey: @"start"];
   durationDelta = [params objectForKey: @"duration"];
   destionationCalendar = [params objectForKey: @"destination"];
-  forceSave = NO;
+  forceSave = [[params objectForKey: @"ignoreConflicts"] boolValue];
 
   if (daysDelta || startDelta || durationDelta)
     {
@@ -150,8 +152,11 @@
           if ([ex respondsToSelector: @selector(httpStatus)])
             httpStatus = [ex httpStatus];
 
+          error = [[ex reason] objectFromJSONString];
+          if (error == nil)
+            error = [ex reason];
           jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
-                                         [ex reason], @"message",
+                                         error, @"message",
                                        nil];
 
           response = [self responseWithStatus: httpStatus

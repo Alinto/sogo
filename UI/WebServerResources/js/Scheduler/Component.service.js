@@ -415,6 +415,15 @@
   };
 
   /**
+   * @function $resetGhost
+   * @desc Prepare the ghost object for the next drag by resetting appropriate attributes
+   */
+  Component.$resetGhost = function() {
+    this.$ghost.pointerHandler = null;
+    this.$ghost.component = null;
+  };
+
+  /**
    * @function $parseDate
    * @desc Parse a date string with format YYYY-MM-DDTHH:MM
    * @param {string} dateString - the string representing the date
@@ -1035,8 +1044,9 @@
    * @function $save
    * @memberof Component.prototype
    * @desc Save the component to the server.
+   * @param {object} extraAttributes - additional attributes to send to the server
    */
-  Component.prototype.$save = function() {
+  Component.prototype.$save = function(extraAttributes) {
     var _this = this, options, path, component, date, dlp;
 
     component = this.$omit();
@@ -1105,6 +1115,8 @@
 
     if (this.occurrenceId)
       path.push(this.occurrenceId);
+
+    angular.extend(component, extraAttributes);
 
     return Component.$$resource.save(path.join('/'), component, options)
       .then(function(data) {

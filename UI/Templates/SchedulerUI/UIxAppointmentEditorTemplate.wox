@@ -275,7 +275,7 @@
         </div>
       </md-dialog-content>
       <!-- cancel/reset/save -->
-      <md-dialog-actions>
+      <md-dialog-actions ng-hide="editor.attendeeConflictError">
         <md-button type="button" ng-click="editor.cancel()">
           <var:string label:value="Cancel"/>
         </md-button>
@@ -283,6 +283,48 @@
           <var:string label:value="Reset"/>
         </md-button>
         <md-button class="md-primary" type="submit"
+                   ng-disabled="editor.eventForm.$invalid">
+          <var:string label:value="Save"/>
+        </md-button>
+      </md-dialog-actions>
+
+      <!-- attendee availability conflict -->
+      <md-dialog-actions class="md-default-theme md-bg md-warn"
+                         ng-show="editor.attendeeConflictError">
+        <div class="md-flex"><var:string label:value="A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"/></div>
+        <md-button class="md-icon-button" ng-click="editor.attendeeConflictError = false">
+          <md-icon label:aria-label="Close">close</md-icon>
+        </md-button>
+      </md-dialog-actions>
+      <md-dialog-actions class="md-default-theme md-bg md-warn"
+                         ng-show="editor.attendeeConflictError">
+          <div class="md-flex">
+            <md-icon>person</md-icon> {{editor.attendeeConflictError.attendee_name}} ({{editor.attendeeConflictError.attendee_email}})
+          </div>
+      </md-dialog-actions>
+      <md-dialog-actions class="md-default-theme md-bg md-warn"
+                         ng-show="editor.attendeeConflictError"
+                         ng-repeat="conflict in editor.attendeeConflictError.conflicts">
+        <md-icon>schedule</md-icon>
+        <div class="pseudo-input-container">
+          <label class="pseudo-input-label"><var:string label:value="From"/></label>
+          <div>{{conflict.startDate}} <md-icon>trending_flat</md-icon></div>
+        </div>
+        <div class="pseudo-input-container md-flex">
+          <label class="pseudo-input-label"><var:string label:value="To"/></label>
+          <div>{{conflict.endDate}}</div>
+        </div>
+      </md-dialog-actions>
+      <md-dialog-actions ng-show="editor.attendeeConflictError">
+        <md-button type="button" ng-click="editor.cancel()">
+          <var:string label:value="Cancel"/>
+        </md-button>
+        <md-button type="button"
+                   ng-click="editor.attendeeConflictError = false">
+          <var:string label:value="Edit"/>
+        </md-button>
+        <md-button class="md-warn" type="button"
+                   ng-click="editor.save(eventForm, { ignoreConflicts: true })"
                    ng-disabled="editor.eventForm.$invalid">
           <var:string label:value="Save"/>
         </md-button>
