@@ -1,6 +1,6 @@
 /* UIxMailActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,10 +24,13 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/NSException+HTTP.h>
 
+#import <SoObjects/Mailer/NSString+Mail.h>
 #import <SoObjects/Mailer/SOGoDraftObject.h>
 #import <SoObjects/Mailer/SOGoDraftsFolder.h>
 #import <SoObjects/Mailer/SOGoMailAccount.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
+#import <SoObjects/Mailer/SOGoMailObject+Draft.h>
+#import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
@@ -111,6 +114,61 @@
                        messageName, @"draftId",
                        // Message was saved ([SOGoDraftObject fetchMailForForwarding:]) so IMAP ID exists
                        [NSNumber numberWithInt: [newMail IMAP4ID]], @"uid", nil];
+
+  return [self responseWithStatus: 201
+                        andString: [data jsonRepresentation]];
+}
+
+- (WOResponse *) viewPlainAction
+{
+  BOOL htmlContent;
+  NSArray *acceptedTypes, *types;
+  NSDictionary *parts;
+  NSMutableArray *keys;
+  NSMutableDictionary *data;
+  NSString *rawPart, *contentKey, *subject, *content;
+  NSUInteger index;
+  SOGoMailObject *co;
+
+  co = [self clientObject];
+  subject = [co decodedSubject];
+  htmlContent = NO;
+  data = [NSMutableDictionary dictionary];
+
+  if (subject)
+    [data setObject: subject
+             forKey: @"subject"];
+
+  // Fetch the text parts of the message body structure
+  acceptedTypes = [NSArray arrayWithObjects: @"text/plain", @"text/html", nil];
+  keys = [NSMutableArray array];
+  [co addRequiredKeysOfStructure: [co bodyStructure]
+                              path: @"" toArray: keys acceptedTypes: acceptedTypes
+                          withPeek: NO];
+
+  // Use plain part if available, otherwise use the HTML part
+  types = [keys objectsForKey: @"mimeType" notFoundMarker: @""];
+  index = [types indexOfObject: @"text/plain"];
+  if (index == NSNotFound)
+    {
+      index = [types indexOfObject: @"text/html"];
+      htmlContent = YES;
+    }
+
+  // Fetch part and convert HTML if necessary
+  contentKey = [keys objectAtIndex: index];
+  parts = [co fetchPlainTextStrings: [NSArray arrayWithObject: contentKey]];
+  if ([parts count] > 0)
+    {
+      rawPart = [[parts allValues] objectAtIndex: 0];
+      if (htmlContent)
+        content = [rawPart htmlToText];
+      else
+        content = rawPart;
+      if (content)
+        [data setObject: [content stringByTrimmingSpaces]
+                 forKey: @"content"];
+    }
 
   return [self responseWithStatus: 201
                         andString: [data jsonRepresentation]];

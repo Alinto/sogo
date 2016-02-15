@@ -1,6 +1,6 @@
 /* UIxAppointmentEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -454,7 +454,9 @@
   SOGoAppointmentObject *co;
   SoSecurityManager *sm;
   WORequest *request;
+
   unsigned int httpStatus;
+  BOOL forceSave;
 
   event = [self event];
   co = [self clientObject];
@@ -475,6 +477,7 @@
   else
     {
       [self setAttributes: params];
+      forceSave = NO;
 
       if ([event hasRecurrenceRules])
         [self _adjustRecurrentRules];
@@ -498,12 +501,12 @@
             }
 
           // Save the event.
-          ex = [co saveComponent: event];
+          ex = [co saveComponent: event  force: forceSave];
         }
       else
         {
           // The event was modified -- save it.
-          ex = [co saveComponent: event];
+          ex = [co saveComponent: event  force: forceSave];
 
           if (componentCalendar
               && ![[componentCalendar ocsPath]
@@ -526,9 +529,12 @@
   if (ex)
     {
       httpStatus = 500;
+
+      if ([ex respondsToSelector: @selector(httpStatus)])
+        httpStatus = [ex httpStatus];
+
       jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     @"failure", @"status",
-                                   [ex reason], @"message",
+                                     [ex reason], @"message",
                                    nil];
     }
   else

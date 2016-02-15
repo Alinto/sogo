@@ -8,7 +8,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:jsFiles="Common.js, Preferences.services.js, Contacts.services.js, Mailer.js, Mailer.services.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/angular-file-upload.min.js">
+    const:jsFiles="Common.js, Preferences.services.js, Contacts.services.js, Scheduler.services.js, Mailer.js, Mailer.services.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/angular-file-upload.min.js">
   <script type="text/javascript">
     var mailAccounts = <var:string value="mailAccounts" const:escapeHTML="NO" />;
     var userNames = <var:string value="userNames" const:escapeHTML="NO" />;
@@ -116,7 +116,8 @@
                            md-menu-origin="md-menu-origin">more_vert</md-icon>
                   <md-menu-content width="3">
                     <md-menu-item>
-                      <md-button type="button" md-menu-align-target="md-menu-align-target" ng-click="app.markFolderRead(folder)">
+                      <md-button type="button" md-menu-align-target="md-menu-align-target"
+                                 ng-click="app.markFolderRead(folder)">
                         <var:string label:value="Mark Folder Read"/>
                       </md-button>
                     </md-menu-item>

@@ -2,8 +2,8 @@ module.exports = function(grunt) {
   var js_files = {
     'js/Common.js': ['js/Common/*.app.js', 'js/Common/*.filter.js', 'js/Common/*Controller.js', 'js/Common/*.service.js', 'js/Common/*.directive.js', 'js/Common/utils.js'],
     'js/Main.js': ['js/Main/Main.app.js'],
-    'js/Scheduler.services.js': ['js/Scheduler/*.service.js'],
-    'js/Scheduler.js': ['js/Scheduler/Scheduler.app.js', 'js/Scheduler/*Controller.js', 'js/Scheduler/*.directive.js'],
+    'js/Scheduler.services.js': ['js/Scheduler/*.service.js', 'js/Scheduler/*Controller.js', 'js/Scheduler/*.directive.js'],
+    'js/Scheduler.js': ['js/Scheduler/Scheduler.app.js'],
     'js/Contacts.services.js': ['js/Contacts/*.service.js'],
     'js/Contacts.js': ['js/Contacts/Contacts.app.js', 'js/Contacts/*Controller.js', 'js/Contacts/*.directive.js'],
     'js/Mailer.services.js': ['js/Mailer/*.service.js', 'js/Mailer/*Controller.js', 'js/Mailer/*.directive.js'],

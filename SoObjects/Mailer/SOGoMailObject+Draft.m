@@ -164,8 +164,7 @@
   NSMutableArray *keys;
   NSArray *acceptedTypes;
 
-  acceptedTypes
-    = [NSArray arrayWithObjects: @"text/plain", @"text/html", nil];
+  acceptedTypes = [NSArray arrayWithObjects: @"text/plain", @"text/html", nil];
   keys = [NSMutableArray array];
   [self addRequiredKeysOfStructure: [self bodyStructure]
                               path: @"" toArray: keys acceptedTypes: acceptedTypes

@@ -171,6 +171,9 @@ static SoProduct *preferencesProduct = nil;
   if (![[defaults source] objectForKey: @"SOGoMailComposeMessageType"])
     [[defaults source] setObject: [defaults mailComposeMessageType] forKey: @"SOGoMailComposeMessageType"];
 
+  if (![[defaults source] objectForKey: @"SOGoMailComposeFontSize"])
+    [[defaults source] setObject: [defaults mailComposeFontSize] forKey: @"SOGoMailComposeFontSize"];
+
   if (![[defaults source] objectForKey: @"SOGoMailDisplayRemoteInlineImages"])
     [[defaults source] setObject: [defaults mailDisplayRemoteInlineImages] forKey: @"SOGoMailDisplayRemoteInlineImages"];
 

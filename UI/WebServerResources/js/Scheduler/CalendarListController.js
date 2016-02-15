@@ -80,8 +80,12 @@
                      { ok: l('Delete') })
         .then(function() {
           // User confirmed the deletion
-          var components = _.filter(Component['$' + vm.componentType], function(component) { return component.selected; });
-          Calendar.$deleteComponents(components);
+          var components = _.filter(Component['$' + vm.componentType], function(component) {
+            return component.selected;
+          });
+          Calendar.$deleteComponents(components).then(function() {
+            $rootScope.$emit('calendars:list');
+          });
         });
     }
 

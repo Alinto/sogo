@@ -1,8 +1,6 @@
 /* UIxAppointmentActions.m - this file is part of SOGo
  *
- * Copyright (C) 2011-2014 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2011-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,6 +63,7 @@
   NSException *ex;
   SOGoAppointmentFolder *targetCalendar, *sourceCalendar;
   SOGoAppointmentFolders *folders;
+  BOOL forceSave;
 
   rq = [context request];
   params = [[rq contentAsString] objectFromJSONString];
@@ -73,6 +72,7 @@
   startDelta = [params objectForKey: @"start"];
   durationDelta = [params objectForKey: @"duration"];
   destionationCalendar = [params objectForKey: @"destination"];
+  forceSave = NO;
 
   if (daysDelta || startDelta || durationDelta)
     {
@@ -116,7 +116,8 @@
         [event updateRecurrenceRulesUntilDate: end];
 
       [event setLastModified: [NSCalendarDate calendarDate]];
-      ex = [co saveComponent: event];
+      ex = [co saveComponent: event  force: forceSave];
+
       // This condition will be executed only if the event is moved from a calendar to another. If destionationCalendar == 0; there is no calendar change
       if ([destionationCalendar length] > 0)
         {
@@ -135,12 +136,21 @@
               ex = [co moveToFolder: targetCalendar];
           }
         }
+
       if (ex)
         {
+          unsigned int httpStatus;
+
+          httpStatus = 500;
+
+          if ([ex respondsToSelector: @selector(httpStatus)])
+            httpStatus = [ex httpStatus];
+
           jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
-                                       [ex reason], @"message",
+                                         [ex reason], @"message",
                                        nil];
-          response = [self responseWithStatus: 403
+
+          response = [self responseWithStatus: httpStatus
                         andJSONRepresentation: jsonResponse];
         }
       else

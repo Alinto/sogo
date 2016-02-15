@@ -23,6 +23,18 @@
 
       data.SOGoMailLabelsColors = labels;
 
+      // Mail editor autosave is a number of minutes or 0 if disabled
+      data.SOGoMailAutoSave = parseInt(data.SOGoMailAutoSave) || 0;
+
+      // Specify a base font size for HTML messages when SOGoMailComposeFontSize is not zero
+      data.SOGoMailComposeFontSizeEnabled = parseInt(data.SOGoMailComposeFontSize) > 0;
+
+      if (window.CKEDITOR && data.SOGoMailComposeFontSizeEnabled) {
+        // HTML editor is enabled; set user's preferred font size
+        window.CKEDITOR.config.fontSize_defaultLabel = data.SOGoMailComposeFontSize;
+        window.CKEDITOR.addCss('.cke_editable { font-size: ' + data.SOGoMailComposeFontSize + 'px; }');
+      }
+
       // We convert our list of autoReplyEmailAddresses/forwardAddress into a string.
       // We also convert our date objects into real date, otherwise we'll have strings
       // or undefined values and the md-datepicker does NOT like this.
@@ -66,21 +78,22 @@
       angular.extend(_this.defaults, data);
 
       // Configure date locale
-      angular.extend(Preferences.$mdDateLocaleProvider, data.locale);
-      Preferences.$mdDateLocaleProvider.firstDayOfWeek = parseInt(data.SOGoFirstDayOfWeek);
-      Preferences.$mdDateLocaleProvider.weekNumberFormatter = function(weekNumber) {
+      _this.$mdDateLocaleProvider = Preferences.$mdDateLocaleProvider;
+      angular.extend(_this.$mdDateLocaleProvider, data.locale);
+      _this.$mdDateLocaleProvider.firstDayOfWeek = parseInt(data.SOGoFirstDayOfWeek);
+      _this.$mdDateLocaleProvider.weekNumberFormatter = function(weekNumber) {
         return l('Week %d', weekNumber);
       };
-      Preferences.$mdDateLocaleProvider.msgCalendar = l('Calender');
-      Preferences.$mdDateLocaleProvider.msgOpenCalendar = l('Open Calendar');
-      Preferences.$mdDateLocaleProvider.parseDate = function(dateString) {
-        return dateString? dateString.parseDate(Preferences.$mdDateLocaleProvider, data.SOGoShortDateFormat) : new Date(NaN);
+      _this.$mdDateLocaleProvider.msgCalendar = l('Calender');
+      _this.$mdDateLocaleProvider.msgOpenCalendar = l('Open Calendar');
+      _this.$mdDateLocaleProvider.parseDate = function(dateString) {
+        return dateString? dateString.parseDate(_this.$mdDateLocaleProvider, data.SOGoShortDateFormat) : new Date(NaN);
       };
-      Preferences.$mdDateLocaleProvider.formatDate = function(date) {
-        return date? date.format(Preferences.$mdDateLocaleProvider, data.SOGoShortDateFormat) : '';
+      _this.$mdDateLocaleProvider.formatDate = function(date) {
+        return date? date.format(_this.$mdDateLocaleProvider, data.SOGoShortDateFormat) : '';
       };
-      Preferences.$mdDateLocaleProvider.formatTime = function(date) {
-        return date? date.format(Preferences.$mdDateLocaleProvider, data.SOGoTimeFormat) : '';
+      _this.$mdDateLocaleProvider.formatTime = function(date) {
+        return date? date.format(_this.$mdDateLocaleProvider, data.SOGoTimeFormat) : '';
       };
 
       return _this.defaults;
@@ -196,6 +209,10 @@
     }));
 
     preferences.defaults.SOGoMailLabelsColors = labels;
+
+    if (!preferences.defaults.SOGoMailComposeFontSizeEnabled)
+      preferences.defaults.SOGoMailComposeFontSize = 0;
+    delete preferences.defaults.SOGoMailComposeFontSizeEnabled;
 
     if (preferences.defaults.Vacation) {
       if (preferences.defaults.Vacation.endDateEnabled)

@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2007-2015 Inverse inc.
-  Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2007-2016 Inverse inc.
 
   This file is part of SOGo
 
@@ -46,6 +45,7 @@
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoGroup.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
@@ -402,8 +402,8 @@
 }
 
 // This method scans the list of attendees.
-- (NSException *) _handleAttendeeAvailability: (NSArray *) theAttendees
-                                     forEvent: (iCalEvent *) theEvent
+- (NSException *) _handleAttendeesAvailability: (NSArray *) theAttendees
+                                      forEvent: (iCalEvent *) theEvent
 {
   iCalPerson *currentAttendee;
   SOGoUser *user;
@@ -420,7 +420,7 @@
   
   i = count = 0;
 
-  // Build list of the attendees uids without ressources
+  // Build list of the attendees uids
   unavailableAttendees = [[NSMutableArray alloc] init];
   enumerator = [theAttendees objectEnumerator];
   ownerUID = [[[self context] activeUser] login];
@@ -436,7 +436,7 @@
           moduleSettings = [us objectForKey:@"Calendar"];
           
           // Check if the user prevented their account from beeing invited to events
-          if (![user isResource] && [[moduleSettings objectForKey:@"PreventInvitations"] boolValue])
+          if ([[moduleSettings objectForKey:@"PreventInvitations"] boolValue])
             {
               // Check if the user have a whiteList
               whiteList = [moduleSettings objectForKey:@"PreventInvitationsWhitelist"];
@@ -483,20 +483,20 @@
 //
 // This methods scans the list of attendees. If they are
 // considered as resource, it checks for conflicting
-// dates for the event.
+// dates for the event and potentially auto-accept/decline
+// the invitation.
 //
+// For normal attendees, it'll return an exception with
+// conflicting dates, unless we force the save.//
 // We check for between startDate + 1 second and
 // endDate - 1 second
-//
-//
-// It also CHANGES the participation status of resources
-// depending on constraints defined on them.
 //
 // Note that it doesn't matter if it changes the participation
 // status since in case of an error, nothing will get saved.
 //
-- (NSException *) _handleResourcesConflicts: (NSArray *) theAttendees
+- (NSException *) _handleAttendeesConflicts: (NSArray *) theAttendees
                                    forEvent: (iCalEvent *) theEvent
+                                      force: (BOOL) forceSave
 {
   iCalPerson *currentAttendee;
   NSMutableArray *attendees;
@@ -527,110 +527,115 @@
   enumerator = [attendees objectEnumerator];
   while ((currentUID = [enumerator nextObject]))
     {
+      NSCalendarDate *start, *end, *rangeStartDate, *rangeEndDate;
+      SOGoAppointmentFolder *folder;
+      NGCalendarDateRange *range;
+      NSMutableArray *fbInfo;
+      NSArray *allOccurences;
+          
+      BOOL must_delete;
+      int i, j, delta;
+
       user = [SOGoUser userWithLogin: currentUID];
-      
-      if ([user isResource])
+
+      // We get the start/end date for our conflict range. If the event to be added is recurring, we
+      // check for at least a year to start with.
+      start = [[theEvent startDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: 1];
+      end = [[theEvent endDate] dateByAddingYears: ([theEvent isRecurrent] ? 1 : 0)  months: 0  days: 0  hours: 0  minutes: 0  seconds: -1];
+          
+      folder = [user personalCalendarFolderInContext: context];
+          
+      // Deny access to the resource if the ACLs don't allow the user
+      if ([user isResource] && ![folder aclSQLListingFilter])
         {
-          NSCalendarDate *start, *end, *rangeStartDate, *rangeEndDate;
-          SOGoAppointmentFolder *folder;
-          NGCalendarDateRange *range;
-          NSMutableArray *fbInfo;
-          NSArray *allOccurences;
-          
-          BOOL must_delete;
-          int i, j, delta;
-          
-          // We get the start/end date for our conflict range. If the event to be added is recurring, we
-          // check for at least a year to start with.
-          start = [[theEvent startDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: 1];
-          end = [[theEvent endDate] dateByAddingYears: ([theEvent isRecurrent] ? 1 : 0)  months: 0  days: 0  hours: 0  minutes: 0  seconds: -1];
-          
-          folder = [user personalCalendarFolderInContext: context];
-          
-          // Deny access to the resource if the ACLs don't allow the user
-          if (![folder aclSQLListingFilter])
-            {
-              NSDictionary *values;
-              NSString *reason;
+          NSDictionary *values;
+          NSString *reason;
               
-              values = [NSDictionary dictionaryWithObjectsAndKeys:
-                        [user cn], @"Cn",
-                        [user systemEmail], @"SystemEmail"];
-              reason = [values keysWithFormat: [self labelForKey: @"Cannot access resource: \"%{Cn} %{SystemEmail}\""]];
-              return [NSException exceptionWithHTTPStatus:403 reason: reason];
-            }
+          values = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   [user cn], @"Cn",
+                                 [user systemEmail], @"SystemEmail"];
+          reason = [values keysWithFormat: [self labelForKey: @"Cannot access resource: \"%{Cn} %{SystemEmail}\""]];
+          return [NSException exceptionWithHTTPStatus:403 reason: reason];
+        }
           
-          fbInfo = [NSMutableArray arrayWithArray: [folder fetchFreeBusyInfosFrom: start
+      fbInfo = [NSMutableArray arrayWithArray: [folder fetchFreeBusyInfosFrom: start
                                                                                to: end]];
           
-          // We first remove any occurences in the freebusy that corresponds to the
-          // current event. We do this to avoid raising a conflict if we move a 1 hour
-          // meeting from 12:00-13:00 to 12:15-13:15. We would overlap on ourself otherwise.
-          //
-          // We must also check here for repetitive events that don't overlap our event.
-          // We remove all events that don't overlap. The events here are already
-          // decomposed.
-          //
-          if ([theEvent isRecurrent])
-            allOccurences = [theEvent recurrenceRangesWithinCalendarDateRange: [NGCalendarDateRange calendarDateRangeWithStartDate: start
-                                                                                                                           endDate: end]
-                                               firstInstanceCalendarDateRange: [NGCalendarDateRange calendarDateRangeWithStartDate: [theEvent startDate]
-                                                                                                                           endDate: [theEvent endDate]]];
-          else
-            allOccurences = nil;
-          
-          for (i = [fbInfo count]-1; i >= 0; i--)
+      // We first remove any occurences in the freebusy that corresponds to the
+      // current event. We do this to avoid raising a conflict if we move a 1 hour
+      // meeting from 12:00-13:00 to 12:15-13:15. We would overlap on ourself otherwise.
+      //
+      // We must also check here for repetitive events that don't overlap our event.
+      // We remove all events that don't overlap. The events here are already
+      // decomposed.
+      //
+      if ([theEvent isRecurrent])
+        allOccurences = [theEvent recurrenceRangesWithinCalendarDateRange: [NGCalendarDateRange calendarDateRangeWithStartDate: start
+                                                                                                                       endDate: end]
+                                           firstInstanceCalendarDateRange: [NGCalendarDateRange calendarDateRangeWithStartDate: [theEvent startDate]
+                                                                                                                       endDate: [theEvent endDate]]];
+      else
+        allOccurences = nil;
+
+      for (i = [fbInfo count]-1; i >= 0; i--)
+        {
+          // We MUST use the -uniqueChildWithTag method here because the event has been flattened, so its timezone has been
+          // modified in SOGoAppointmentFolder: -fixupCycleRecord: ....
+          rangeStartDate = [[fbInfo objectAtIndex: i] objectForKey: @"startDate"];
+          delta = [[rangeStartDate timeZoneDetail] timeZoneSecondsFromGMT] - [[[(iCalDateTime *)[theEvent uniqueChildWithTag: @"dtstart"] timeZone] periodForDate: [theEvent startDate]] secondsOffsetFromGMT];
+          rangeStartDate = [rangeStartDate dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: delta];
+
+          rangeEndDate = [[fbInfo objectAtIndex: i] objectForKey: @"endDate"];
+          delta = [[rangeEndDate timeZoneDetail] timeZoneSecondsFromGMT] - [[[(iCalDateTime *)[theEvent uniqueChildWithTag: @"dtend"] timeZone] periodForDate: [theEvent endDate]] secondsOffsetFromGMT];
+          rangeEndDate = [rangeEndDate dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: delta];
+
+          range = [NGCalendarDateRange calendarDateRangeWithStartDate: rangeStartDate
+                                                              endDate: rangeEndDate];
+
+          // We remove the freebusy entries corresponding to the actual event being modified
+          if ([[[fbInfo objectAtIndex: i] objectForKey: @"c_uid"] compare: [theEvent uid]] == NSOrderedSame)
             {
-              // We MUST use the -uniqueChildWithTag method here because the event has been flattened, so its timezone has been
-              // modified in SOGoAppointmentFolder: -fixupCycleRecord: ....
-              rangeStartDate = [[fbInfo objectAtIndex: i] objectForKey: @"startDate"];
-              delta = [[rangeStartDate timeZoneDetail] timeZoneSecondsFromGMT] - [[[(iCalDateTime *)[theEvent uniqueChildWithTag: @"dtstart"] timeZone] periodForDate: [theEvent startDate]] secondsOffsetFromGMT];
-              rangeStartDate = [rangeStartDate dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: delta];
-
-              rangeEndDate = [[fbInfo objectAtIndex: i] objectForKey: @"endDate"];
-              delta = [[rangeEndDate timeZoneDetail] timeZoneSecondsFromGMT] - [[[(iCalDateTime *)[theEvent uniqueChildWithTag: @"dtend"] timeZone] periodForDate: [theEvent endDate]] secondsOffsetFromGMT];
-              rangeEndDate = [rangeEndDate dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: delta];
-
-              range = [NGCalendarDateRange calendarDateRangeWithStartDate: rangeStartDate
-                                                                  endDate: rangeEndDate];
+              [fbInfo removeObjectAtIndex: i];
+              continue;
+            }
               
-              if ([[[fbInfo objectAtIndex: i] objectForKey: @"c_uid"] compare: [theEvent uid]] == NSOrderedSame)
+          // No need to check if the event isn't recurrent here as it's handled correctly
+          // when we compute the "end" date.
+          if ([allOccurences count])
+            {
+              must_delete = YES;
+
+              for (j = 0; j < [allOccurences count]; j++)
                 {
-                  [fbInfo removeObjectAtIndex: i];
-                  continue;
-                }
-              
-              // No need to check if the event isn't recurrent here as it's handled correctly
-              // when we compute the "end" date.
-              if ([allOccurences count])
-                {
-                  must_delete = YES;
-                  
-                  for (j = 0; j < [allOccurences count]; j++)
+                  if ([range doesIntersectWithDateRange: [allOccurences objectAtIndex: j]])
                     {
-                      if ([range doesIntersectWithDateRange: [allOccurences objectAtIndex: j]])
-                        {
-                          must_delete = NO;
-                          break;
-                        }
+                      must_delete = NO;
+                      break;
                     }
-                  
-                  if (must_delete)
-                    [fbInfo removeObjectAtIndex: i];
                 }
+
+              if (must_delete)
+                [fbInfo removeObjectAtIndex: i];
             }
+        }
+
+      // Find the attendee associated to the current UID
+      for (i = 0; i < [theAttendees count]; i++)
+        {
+          currentAttendee = [theAttendees objectAtIndex: i];
+          if ([[currentAttendee uidInContext: context] isEqualToString: currentUID])
+            break;
+          else
+            currentAttendee = nil;
+        }
+
+      if ([fbInfo count])
+        {
+          SOGoDateFormatter *formatter;
+
+          formatter = [[context activeUser] dateFormatterInContext: context];
           
-          // Find the attendee associated to the current UID
-          for (i = 0; i < [theAttendees count]; i++)
-            {
-              currentAttendee = [theAttendees objectAtIndex: i];
-              if ([[currentAttendee uidInContext: context] isEqualToString: currentUID])
-                break;
-              else
-                currentAttendee = nil;
-            }
-          
-          if ([fbInfo count])
+          if ([user isResource])
             {
               // If we always force the auto-accept if numberOfSimultaneousBookings <= 0 (ie., no limit
               // is imposed) or if numberOfSimultaneousBookings is greater than the number of
@@ -650,35 +655,63 @@
                   NSDictionary *values;
                   NSString *reason;
                   iCalEvent *event;
-                  
+
                   calendar =  [iCalCalendar parseSingleFromSource: [[fbInfo objectAtIndex: 0] objectForKey: @"c_content"]];
                   event = [[calendar events] lastObject];
-                  
+
                   values = [NSDictionary dictionaryWithObjectsAndKeys:
-                            [NSString stringWithFormat: @"%d", [user numberOfSimultaneousBookings]], @"NumberOfSimultaneousBookings",
-                            [user cn], @"Cn",
-                            [user systemEmail], @"SystemEmail",
-                            ([event summary] ? [event summary] : @""), @"EventTitle",
-                            [[fbInfo objectAtIndex: 0] objectForKey: @"startDate"], @"StartDate",
-                            nil];
-                  
+                                           [NSString stringWithFormat: @"%d", [user numberOfSimultaneousBookings]], @"NumberOfSimultaneousBookings",
+                                         [user cn], @"Cn",
+                                         [user systemEmail], @"SystemEmail",
+                                  ([event summary] ? [event summary] : @""), @"EventTitle",
+                                      [formatter formattedDateAndTime: [[fbInfo objectAtIndex: 0] objectForKey: @"startDate"]], @"StartDate",
+                                         nil];
+
                   reason = [values keysWithFormat: [self labelForKey: @"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}."]];
-                  
+
                   return [NSException exceptionWithHTTPStatus: 403
                                                        reason: reason];
                 }
             }
-          else if (currentAttendee)
+          //
+          // We are dealing with a normal attendee. Lets check if we have conflicts, unless
+          // we are being asked to force the save anyway
+          //
+          else if (!forceSave)
             {
-              // No conflict, we auto-accept. We do this for resources automatically if no
-              // double-booking is observed. If it's not the desired behavior, just don't
-              // set the resource as one!
-              [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
-              [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
+              NSMutableDictionary *info;
+              NSMutableArray *conflicts;
+              id o;
+
+              info = [NSMutableDictionary dictionary];
+              conflicts = [NSMutableArray array];
+
+              [info setObject: [currentAttendee cn]  forKey: @"attendee_name"];
+              [info setObject: [currentAttendee rfc822Email]  forKey: @"attendee_email"];
+
+              for (i = 0; i < [fbInfo count]; i++)
+                {
+                  o = [fbInfo objectAtIndex: i];
+                  [conflicts addObject: [NSDictionary dictionaryWithObjectsAndKeys: [formatter formattedDateAndTime: [o objectForKey: @"startDate"]], @"startDate",
+                                                   [formatter formattedDateAndTime: [o objectForKey: @"endDate"]], @"endDate", nil]];
+                }
+
+              [info setObject: conflicts  forKey: @"conflicts"];
+
+              return [NSException exceptionWithHTTPStatus: 403
+                                                   reason: [info jsonRepresentation]];
             }
+        } // if ([fbInfo count]) ...
+      else if (currentAttendee && [user isResource])
+        {
+          // No conflict, we auto-accept. We do this for resources automatically if no
+          // double-booking is observed. If it's not the desired behavior, just don't
+          // set the resource as one!
+          [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
+          [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
         }
-    }
-      
+    } // if ([user isResource]) ...
+
   return nil;
 }
 
@@ -687,6 +720,7 @@
 //
 - (NSException *) _handleAddedUsers: (NSArray *) attendees
                           fromEvent: (iCalEvent *) newEvent
+                              force: (BOOL) forceSave
 {
   iCalPerson *currentAttendee;
   NSEnumerator *enumerator;
@@ -694,9 +728,9 @@
   NSException *e;
   
   // We check for conflicts
-  if ((e = [self _handleResourcesConflicts: attendees  forEvent: newEvent]))
+  if ((e = [self _handleAttendeesConflicts: attendees  forEvent: newEvent  force: forceSave]))
     return e;
-  if ((e = [self _handleAttendeeAvailability: attendees  forEvent: newEvent]))
+  if ((e = [self _handleAttendeesAvailability: attendees  forEvent: newEvent]))
     return e;
   
   enumerator = [attendees objectEnumerator];
@@ -752,6 +786,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 //
 - (NSException *) _handleUpdatedEvent: (iCalEvent *) newEvent
 		         fromOldEvent: (iCalEvent *) oldEvent
+                                force: (BOOL) forceSave
 {
   NSArray *addedAttendees, *deletedAttendees, *updatedAttendees;
   iCalEventChanges *changes;
@@ -791,9 +826,9 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                                withType: @"calendar:cancellation"];
     }
   
-  if ((ex = [self _handleResourcesConflicts: [newEvent attendees] forEvent: newEvent]))
+  if ((ex = [self _handleAttendeesConflicts: [newEvent attendees] forEvent: newEvent  force: forceSave]))
     return ex;
-  if ((ex = [self _handleAttendeeAvailability: [newEvent attendees] forEvent: newEvent]))
+  if ((ex = [self _handleAttendeesAvailability: [newEvent attendees] forEvent: newEvent]))
     return ex;
 
   addedAttendees = [changes insertedAttendees];
@@ -842,7 +877,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   if ([addedAttendees count])
     {
       // Send an invitation to new attendees
-      if ((ex = [self _handleAddedUsers: addedAttendees fromEvent: newEvent]))
+      if ((ex = [self _handleAddedUsers: addedAttendees fromEvent: newEvent  force: forceSave]))
         return ex;
       
       [self sendEMailUsingTemplateNamed: @"Invitation"
@@ -888,6 +923,12 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 //
 - (NSException *) saveComponent: (iCalEvent *) newEvent
 {
+  return [self saveComponent: newEvent  force: NO];
+}
+
+- (NSException *) saveComponent: (iCalEvent *) newEvent
+                          force: (BOOL) forceSave
+{
   iCalEvent *oldEvent, *oldMasterEvent;
   NSCalendarDate *recurrenceId;
   NSString *recurrenceTime;
@@ -911,7 +952,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       
       // We catch conflicts and abort the save process immediately
       // in case of one with resources
-      if ((ex = [self _handleAddedUsers: attendees fromEvent: newEvent]))
+      if ((ex = [self _handleAddedUsers: attendees fromEvent: newEvent  force: forceSave]))
         return ex;
       
       if ([attendees count])
@@ -954,7 +995,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       if (!hasOrganizer || [oldMasterEvent userIsOrganizer: ownerUser])
       // The owner is the organizer of the event; handle the modifications. We aslo
       // catch conflicts just like when the events are created
-        if ((ex = [self _handleUpdatedEvent: newEvent fromOldEvent: oldEvent]))
+        if ((ex = [self _handleUpdatedEvent: newEvent fromOldEvent: oldEvent  force: forceSave]))
           return ex;
     }
       
@@ -1591,7 +1632,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       currentUser = [context activeUser];
       attendees = [occurence attendeesWithoutUser: currentUser];
       
-#warning Make sure this is correct ..
       if (![attendees count] && event != occurence)
         attendees = [event attendeesWithoutUser: currentUser];
       
@@ -1994,7 +2034,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
         attendees = [event attendeesWithoutUser: ownerUser];
         if ([attendees count])
           {
-            if ((ex = [self _handleAddedUsers: attendees fromEvent: event]))
+            if ((ex = [self _handleAddedUsers: attendees fromEvent: event  force: YES]))
               return ex;
             else
               {
@@ -2146,7 +2186,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               if (!newEvent && oldEvent)
                 [self prepareDeleteOccurence: oldEvent];
               // The master event was changed, A RECCURENCE-ID was added or modified
-              else if ((ex = [self _handleUpdatedEvent: newEvent  fromOldEvent: oldEvent]))
+              else if ((ex = [self _handleUpdatedEvent: newEvent  fromOldEvent: oldEvent  force: YES]))
                 return ex;
             }
           //

@@ -14,7 +14,11 @@
         <md-icon class="material-icons sg-icon-toolbar-bg">filter_list</md-icon>
         <md-input-container class="md-block md-flex">
           <label><var:string label:value="Filter name"/></label>
-          <input class="md-title" type="text" ng-model="filterEditor.filter.name" required="required"/>
+          <input class="md-title"
+                 type="text"
+                 md-autofocus="true"
+                 ng-model="filterEditor.filter.name"
+                 required="required"/>
         </md-input-container>
         <md-button type="button" class="sg-icon-button " ng-click="filterEditor.cancel()">
           <md-icon>close</md-icon>

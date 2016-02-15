@@ -142,6 +142,10 @@
 "Compose messages in" = "Compose messages in";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Plain text";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Default font size";
+
 "Display remote inline images" = "Display remote inline images";
 "displayremoteinlineimages_never" = "Never";
 "displayremoteinlineimages_always" = "Always";

@@ -61,7 +61,8 @@
 - (void) updateComponent: (iCalRepeatableEntityObject *) newObject;
 - (NSException *) saveCalendar: (iCalCalendar *) newCalendar;
 - (NSException *) saveComponent: (iCalRepeatableEntityObject *) newObject;
-
+- (NSException *) saveComponent: (iCalRepeatableEntityObject *) newEvent
+                          force: (BOOL) forceSave;
 /* mail notifications */
 - (void) sendEMailUsingTemplateNamed: (NSString *) pageName
 			   forObject: (iCalRepeatableEntityObject *) object

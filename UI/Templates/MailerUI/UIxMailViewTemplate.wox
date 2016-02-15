@@ -87,6 +87,19 @@
                   <var:string label:value="View Message Source"/>
                 </md-button>
               </md-menu-item>
+              <md-menu-divider><!-- divider --></md-menu-divider>
+              <md-menu-item>
+                <md-button label:aria-label="Convert To Event"
+                           ng-click="viewer.convertToEvent($event)">
+                  <var:string label:value="Convert To Event"/>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button label:aria-label="Convert To Task"
+                           ng-click="viewer.convertToTask($event)">
+                  <var:string label:value="Convert To Task"/>
+                </md-button>
+              </md-menu-item>
             </md-menu-content>
           </md-menu>
         </md-card-actions>
