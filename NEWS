@@ -15,6 +15,7 @@ Enhancements
  - [web] improved confirm dialogs for deletions
  - [web] allow resources to prevent invitations (#3410)
  - [web] warn when double-booking attendees and offer force save option
+ - [eas] now support EAS MIME truncation
 
 Bug fixes
  - [web] handle birthday dates before 1970
