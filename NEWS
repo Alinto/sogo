@@ -3,6 +3,7 @@
 
 Enhancements
  - allow resources to prevent invitations (#3410)
+ - now support EAS MIME truncation
 
 Bug fixes
  - allow EAS attachments get on 2nd-level mailboxes (#3505)
