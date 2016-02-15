@@ -212,16 +212,16 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   return completeURL;
 }
 
-+ (int) openContext: (MAPIStoreContext **) contextPtr
-            withURI: (const char *) newUri
-     connectionInfo: (struct mapistore_connection_info *) newConnInfo
-     andTDBIndexing: (struct indexing_context *) indexing
++ (enum mapistore_error) openContext: (MAPIStoreContext **) contextPtr
+                             withURI: (const char *) newUri
+                      connectionInfo: (struct mapistore_connection_info *) newConnInfo
+                      andTDBIndexing: (struct indexing_context *) indexing
 {
   MAPIStoreContext *context;
   Class contextClass;
   NSString *module;
   NSURL *baseURL;
-  int rc = MAPISTORE_ERR_NOT_FOUND;
+  enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
 
   context = nil;
 
@@ -338,11 +338,11 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   return activeUser;
 }
 
-- (int) getPath: (char **) path
-         ofFMID: (uint64_t) fmid
-       inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPath: (char **) path
+                          ofFMID: (uint64_t) fmid
+                        inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc;
+  enum mapistore_error rc;
   NSString *objectURL, *url;
 
   url = [contextUrl absoluteString];
@@ -379,8 +379,8 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 {
 }
 
-- (int) getRootFolder: (MAPIStoreFolder **) folderPtr
-              withFID: (uint64_t) newFid
+- (enum mapistore_error) getRootFolder: (MAPIStoreFolder **) folderPtr
+                               withFID: (uint64_t) newFid
 {
   enum mapistore_error rc;
   MAPIStoreFolder *baseFolder;

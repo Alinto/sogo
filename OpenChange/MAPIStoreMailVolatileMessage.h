@@ -27,7 +27,7 @@
 
 @interface MAPIStoreMailVolatileMessage : MAPIStoreMessage
 
-- (int) submitWithFlags: (enum SubmitFlags) flags;
+- (enum mapistore_error) submitWithFlags: (enum SubmitFlags) flags;
 
 @end
 

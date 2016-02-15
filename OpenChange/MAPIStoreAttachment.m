@@ -67,40 +67,40 @@
   return mimeAttachTag;
 }
 
-- (int) getPidTagMid: (void **) data
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMid: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongLongValue (memCtx, [container objectId]);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAttachNumber: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachNumber: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, aid);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagRenderingPosition: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagRenderingPosition: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0xffffffff);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAccessLevel: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAccessLevel: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (int) openEmbeddedMessage: (MAPIStoreEmbeddedMessage **) messagePtr
-                    withMID: (uint64_t *) mid
-           withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) openEmbeddedMessage: (MAPIStoreEmbeddedMessage **) messagePtr
+                                     withMID: (uint64_t *) mid
+                            withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   MAPIStoreEmbeddedMessage *attMessage;
   struct mapistore_message *mapistoreMsg;
@@ -118,9 +118,9 @@
   return (attMessage ? MAPISTORE_SUCCESS : MAPISTORE_ERROR);
 }
 
-- (int) createEmbeddedMessage: (MAPIStoreEmbeddedMessage **) messagePtr
-             withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) createEmbeddedMessage: (MAPIStoreEmbeddedMessage **) messagePtr
+                              withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   MAPIStoreEmbeddedMessage *attMessage;
   struct mapistore_message *mapistoreMsg;

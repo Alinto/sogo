@@ -128,7 +128,7 @@
             [(SOGoAppointmentFolder *) sogoObject aclSQLListingFilter]];
 }
 
-- (int) getPidTagDefaultPostMessageClass: (void **) data
+- (enum mapistore_error) getPidTagDefaultPostMessageClass: (void **) data
                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPM.Task" asUnicodeInMemCtx: memCtx];

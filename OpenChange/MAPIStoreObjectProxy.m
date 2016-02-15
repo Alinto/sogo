@@ -51,7 +51,7 @@
   MAPIStorePropertyGetter method;
   uint16_t propValue;
   SEL methodSel;
-  int rc;
+  enum mapistore_error rc;
 
   propValue = (propTag & 0xffff0000) >> 16;
   methodSel = MAPIStoreSelectorForPropertyGetter (propValue);

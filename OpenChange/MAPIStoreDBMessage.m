@@ -282,7 +282,7 @@
 // We might get there if for some reasons, all classes weren't able
 // to tell us the message class.
 //
-- (int) getPidTagMessageClass: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMessageClass: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPM.Note" asUnicodeInMemCtx: memCtx];
 
@@ -291,10 +291,10 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getProperties: (struct mapistore_property_data *) data
-             withTags: (enum MAPITAGS *) tags
-             andCount: (uint16_t) columnCount
-             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getProperties: (struct mapistore_property_data *) data
+                              withTags: (enum MAPITAGS *) tags
+                              andCount: (uint16_t) columnCount
+                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   [sogoObject reloadIfNeeded];
 
@@ -304,12 +304,12 @@
                      inMemCtx: memCtx];
 }
 
-- (int) getProperty: (void **) data
-            withTag: (enum MAPITAGS) propTag
-           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getProperty: (void **) data
+                             withTag: (enum MAPITAGS) propTag
+                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   id value;
-  int rc;
+  enum mapistore_error rc;
  
   value = [properties objectForKey: MAPIPropertyKey (propTag)];
   if (value)

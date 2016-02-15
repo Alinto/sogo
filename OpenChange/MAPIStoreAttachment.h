@@ -36,13 +36,13 @@
 - (void) setAID: (uint32_t) newAID;
 - (uint32_t) AID;
 
-- (int) openEmbeddedMessage: (MAPIStoreEmbeddedMessage **) messagePtr
-                    withMID: (uint64_t *) mid
-           withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
-                   inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) createEmbeddedMessage: (MAPIStoreEmbeddedMessage **) messagePtr
-             withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
-                     inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) openEmbeddedMessage: (MAPIStoreEmbeddedMessage **) messagePtr
+                                     withMID: (uint64_t *) mid
+                            withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
+                                    inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) createEmbeddedMessage: (MAPIStoreEmbeddedMessage **) messagePtr
+                              withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
+                                      inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* helpers */
 - (NSData *) mimeAttachTag;

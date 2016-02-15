@@ -48,21 +48,21 @@
 - (void) getMessageData: (struct mapistore_message **) dataPtr
                inMemCtx: (TALLOC_CTX *) memCtx;
 
-- (int) modifyRecipientsWithRecipients: (struct mapistore_message_recipient *) recipients
-                              andCount: (NSUInteger) max
-                            andColumns: (struct SPropTagArray *) columns;
+- (enum mapistore_error) modifyRecipientsWithRecipients: (struct mapistore_message_recipient *) recipients
+                                               andCount: (NSUInteger) max
+                                             andColumns: (struct SPropTagArray *) columns;
 - (NSArray *) attachmentKeys;
 - (NSArray *) attachmentKeysMatchingQualifier: (EOQualifier *) qualifier
                              andSortOrderings: (NSArray *) sortOrderings;
 - (id) lookupAttachment: (NSString *) childKey;
 
 /* backend methods */
-- (int) createAttachment: (MAPIStoreAttachment **) attachmentPtr
-                   inAID: (uint32_t *) aidPtr;
-- (int) getAttachment: (MAPIStoreAttachment **) attachmentPtr
-              withAID: (uint32_t) aid;
-- (int) getAttachmentTable: (MAPIStoreAttachmentTable **) tablePtr
-               andRowCount: (uint32_t *) countPtr;
+- (enum mapistore_error) createAttachment: (MAPIStoreAttachment **) attachmentPtr
+                                    inAID: (uint32_t *) aidPtr;
+- (enum mapistore_error) getAttachment: (MAPIStoreAttachment **) attachmentPtr
+                               withAID: (uint32_t) aid;
+- (enum mapistore_error) getAttachmentTable: (MAPIStoreAttachmentTable **) tablePtr
+                                andRowCount: (uint32_t *) countPtr;
 - (enum mapistore_error) setReadFlag: (uint8_t) flag;
 - (enum mapistore_error) saveMessage: (TALLOC_CTX *) memCtx;
 

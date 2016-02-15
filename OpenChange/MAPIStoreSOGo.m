@@ -256,7 +256,7 @@ sogo_backend_create_context(TALLOC_CTX *mem_ctx,
 {
   NSAutoreleasePool *pool;
   MAPIStoreContext *context;
-  int rc;
+  enum mapistore_error rc;
 
   NS_CURRENT_THREAD_REGISTER();
   pool = [NSAutoreleasePool new];
@@ -291,7 +291,7 @@ sogo_backend_create_root_folder (const char *username,
   NSAutoreleasePool *pool;
   NSString *userName, *folderName;
   NSString *mapistoreUri;
-  int rc;
+  enum mapistore_error rc;
 
   NS_CURRENT_THREAD_REGISTER();
   pool = [NSAutoreleasePool new];
@@ -326,7 +326,7 @@ sogo_backend_list_contexts(const char *username, struct indexing_context *indexi
 {
   NSAutoreleasePool *pool;
   NSString *userName;
-  int rc;
+  enum mapistore_error rc;
 
   NS_CURRENT_THREAD_REGISTER();
   pool = [NSAutoreleasePool new];
@@ -372,7 +372,7 @@ sogo_context_get_path(void *backend_object, TALLOC_CTX *mem_ctx,
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreContext *context;
-  int rc;
+  enum mapistore_error rc;
 
   if (backend_object)
     {
@@ -404,7 +404,7 @@ sogo_context_get_root_folder(void *backend_object, TALLOC_CTX *mem_ctx,
   NSAutoreleasePool *pool;
   MAPIStoreContext *context;
   MAPIStoreFolder *folder;
-  int rc;
+  enum mapistore_error rc;
 
   if (backend_object)
     {
@@ -445,7 +445,7 @@ sogo_folder_open_folder(void *folder_object, TALLOC_CTX *mem_ctx, uint64_t fid, 
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreFolder *folder, *childFolder;
-  int rc;
+  enum mapistore_error rc;
 
   if (folder_object)
     {
@@ -487,7 +487,7 @@ sogo_folder_create_folder(void *folder_object, TALLOC_CTX *mem_ctx,
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreFolder *folder, *childFolder;
-  int rc;
+  enum mapistore_error rc;
 
   if (folder_object)
     {
@@ -528,7 +528,7 @@ sogo_folder_delete(void *folder_object)
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreFolder *folder;
-  int rc;
+  enum mapistore_error rc;
 
   if (folder_object)
     {
@@ -558,7 +558,7 @@ sogo_folder_get_child_count(void *folder_object, enum mapistore_table_type table
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreFolder *folder;
-  int rc;
+  enum mapistore_error rc;
 
   if (folder_object)
     {
@@ -592,7 +592,7 @@ sogo_folder_open_message(void *folder_object,
   NSAutoreleasePool *pool;
   MAPIStoreFolder *folder;
   MAPIStoreMessage *message;
-  int rc;
+  enum mapistore_error rc;
 
   if (folder_object)
     {
@@ -632,7 +632,7 @@ sogo_folder_create_message(void *folder_object,
   NSAutoreleasePool *pool;
   MAPIStoreFolder *folder;
   MAPIStoreMessage *message;
-  int rc;
+  enum mapistore_error rc;
 
   if (folder_object)
     {
@@ -666,7 +666,7 @@ sogo_folder_delete_message(void *folder_object, uint64_t mid, uint8_t flags)
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreFolder *folder;
-  int rc;
+  enum mapistore_error rc;
 
   if (folder_object)
     {
@@ -703,7 +703,7 @@ sogo_folder_move_copy_messages(void *folder_object,
   MAPIStoreFolder *sourceFolder, *targetFolder;
   NSAutoreleasePool *pool;
   struct MAPIStoreTallocWrapper *wrapper;
-  int rc;
+  enum mapistore_error rc;
 
   if (folder_object)
     {
@@ -746,7 +746,7 @@ sogo_folder_move_folder(void *folder_object, void *target_folder_object,
   MAPIStoreFolder *moveFolder, *targetFolder;
   NSString *newFolderName;
   struct MAPIStoreTallocWrapper *wrapper;
-  int rc;
+  enum mapistore_error rc;
 
   if (folder_object)
     {
@@ -794,7 +794,7 @@ sogo_folder_copy_folder(void *folder_object, void *target_folder_object, TALLOC_
   MAPIStoreFolder *copyFolder, *targetFolder;
   NSString *newFolderName;
   struct MAPIStoreTallocWrapper *wrapper;
-  int rc;
+  enum mapistore_error rc;
 
   if (folder_object)
     {
@@ -836,7 +836,7 @@ sogo_folder_get_deleted_fmids(void *folder_object, TALLOC_CTX *mem_ctx,
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreFolder *folder;
-  int rc;
+  enum mapistore_error rc;
 
   if (folder_object)
     {
@@ -873,7 +873,7 @@ sogo_folder_open_table(void *folder_object, TALLOC_CTX *mem_ctx,
   NSAutoreleasePool *pool;
   MAPIStoreFolder *folder;
   MAPIStoreTable *table;
-  int rc;
+  enum mapistore_error rc;
 
   if (folder_object)
     {
@@ -910,7 +910,7 @@ sogo_folder_modify_permissions(void *folder_object, uint8_t flags,
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreFolder *folder;
-  int rc;
+  enum mapistore_error rc;
 
   if (folder_object)
     {
@@ -942,7 +942,7 @@ sogo_folder_preload_message_bodies(void *folder_object, enum mapistore_table_typ
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreFolder *folder;
-  int rc;
+  enum mapistore_error rc;
 
   if (folder_object)
     {
@@ -975,7 +975,7 @@ sogo_message_get_message_data(void *message_object,
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreMessage *message;
-  int rc;
+  enum mapistore_error rc;
 
   if (message_object)
     {
@@ -1008,7 +1008,7 @@ sogo_message_create_attachment (void *message_object, TALLOC_CTX *mem_ctx, void 
   NSAutoreleasePool *pool;
   MAPIStoreMessage *message;
   MAPIStoreAttachment *attachment;
-  int rc;
+  enum mapistore_error rc;
 
   if (message_object)
     {
@@ -1042,7 +1042,7 @@ sogo_message_open_attachment (void *message_object, TALLOC_CTX *mem_ctx,
   NSAutoreleasePool *pool;
   MAPIStoreMessage *message;
   MAPIStoreAttachment *attachment;
-  int rc;
+  enum mapistore_error rc;
 
   if (message_object)
     {
@@ -1075,7 +1075,7 @@ sogo_message_get_attachment_table (void *message_object, TALLOC_CTX *mem_ctx, vo
   NSAutoreleasePool *pool;
   MAPIStoreMessage *message;
   MAPIStoreAttachmentTable *table;
-  int rc;
+  enum mapistore_error rc;
 
   if (message_object)
     {
@@ -1111,7 +1111,7 @@ sogo_message_modify_recipients (void *message_object,
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreMessage *message;
-  int rc;
+  enum mapistore_error rc;
 
   if (message_object)
     {
@@ -1173,7 +1173,7 @@ sogo_message_save (void *message_object, TALLOC_CTX *mem_ctx)
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreMessage *message;
-  int rc;
+  enum mapistore_error rc;
 
   if (message_object)
     {
@@ -1203,7 +1203,7 @@ sogo_message_submit (void *message_object, enum SubmitFlags flags)
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreMailVolatileMessage *message;
-  int rc;
+  enum mapistore_error rc;
 
   if (message_object)
     {
@@ -1238,7 +1238,7 @@ sogo_message_attachment_open_embedded_message (void *attachment_object,
   NSAutoreleasePool *pool;
   MAPIStoreAttachment *attachment;
   MAPIStoreEmbeddedMessage *message;
-  int rc;
+  enum mapistore_error rc;
 
   if (attachment_object)
     {
@@ -1277,7 +1277,7 @@ sogo_message_attachment_create_embedded_message (void *attachment_object,
   NSAutoreleasePool *pool;
   MAPIStoreAttachment *attachment;
   MAPIStoreEmbeddedMessage *message;
-  int rc;
+  enum mapistore_error rc;
 
   if (attachment_object)
     {
@@ -1311,7 +1311,7 @@ static enum mapistore_error sogo_table_get_available_properties(void *table_obje
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
-  int rc;
+  enum mapistore_error rc;
 
   if (table_object)
     {
@@ -1341,7 +1341,7 @@ sogo_table_set_columns (void *table_object, uint16_t count, enum MAPITAGS *prope
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
-  int rc;
+  enum mapistore_error rc;
 
   if (table_object)
     {
@@ -1372,7 +1372,7 @@ sogo_table_set_restrictions (void *table_object, struct mapi_SRestriction *restr
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
-  int rc;
+  enum mapistore_error rc;
 
   if (table_object)
     {
@@ -1405,7 +1405,7 @@ sogo_table_set_sort_order (void *table_object, struct SSortOrderSet *sort_order,
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
-  int rc;
+  enum mapistore_error rc;
 
   if (table_object)
     {
@@ -1440,7 +1440,7 @@ sogo_table_get_row (void *table_object, TALLOC_CTX *mem_ctx,
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
-  int rc;
+  enum mapistore_error rc;
 
   if (table_object)
     {
@@ -1473,7 +1473,7 @@ sogo_table_get_row_count (void *table_object,
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
-  int rc;
+  enum mapistore_error rc;
 
   if (table_object)
     {
@@ -1504,7 +1504,7 @@ sogo_table_handle_destructor (void *table_object, uint32_t handle_id)
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
-  int rc;
+  enum mapistore_error rc;
 
   if (table_object)
     {
@@ -1536,7 +1536,7 @@ static enum mapistore_error sogo_properties_get_available_properties(void *objec
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreObject *propObject;
-  int rc;
+  enum mapistore_error rc;
 
   if (object)
     {
@@ -1569,7 +1569,7 @@ sogo_properties_get_properties (void *object,
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreObject *propObject;
-  int rc;
+  enum mapistore_error rc;
 
   if (object)
     {
@@ -1601,7 +1601,7 @@ sogo_properties_set_properties (void *object, struct SRow *aRow)
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreObject *propObject;
-  int rc;
+  enum mapistore_error rc;
 
   if (object)
     {
@@ -1679,10 +1679,10 @@ sogo_manager_generate_uri (TALLOC_CTX *mem_ctx,
 
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE error
 */
-int mapistore_init_backend(void)
+enum mapistore_error mapistore_init_backend(void)
 {
   struct mapistore_backend backend;
-  int ret;
+  enum mapistore_error ret;
   static BOOL registered = NO;
 
   if (registered)

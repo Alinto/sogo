@@ -1,6 +1,6 @@
 /* MAPIStoreSharingMessage.m - this file is part of SOGo-OpenChange
  *
- * Copyright (C) 2015 Enrique J. Hernández
+ * Copyright (C) 2015-2016 Enrique J. Hernández
  *
  * Author: Enrique J. Hernández <ejhernandez@zentyal.com>
  *
@@ -108,8 +108,8 @@
 
 }
 
-- (int) getPidLidSharingCapabilities: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidSharingCapabilities: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx
 {
 
   enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
@@ -125,8 +125,8 @@
   return rc;
 }
 
-- (int) getPidNameXSharingCapabilities: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidNameXSharingCapabilities: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
 
   enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
@@ -143,22 +143,22 @@
   return rc;
 }
 
-- (int) getPidLidSharingConfigurationUrl: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidSharingConfigurationUrl: (void **) data
+                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
 
   *data = [@"" asUnicodeInMemCtx: memCtx];
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidNameXSharingConfigUrl: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidNameXSharingConfigUrl: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidLidSharingConfigurationUrl: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidSharingFlavor: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidSharingFlavor: (void **) data
+                                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* See [MS-OXSHARE] Section 2.2.2.5 for details */
   enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
@@ -206,8 +206,8 @@
   return rc;
 }
 
-- (int) getPidNameXSharingFlavor: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidNameXSharingFlavor: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
   id value;
@@ -223,8 +223,8 @@
   return rc;
 }
 
-- (int) getPidLidSharingInitiatorEntryId: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidSharingInitiatorEntryId: (void **) data
+                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
   id value;
@@ -244,38 +244,38 @@
   return rc;
 }
 
-- (int) getPidLidSharingInitiatorName: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidSharingInitiatorName: (void **) data
+                                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getStringProperty: @"x-ms-sharing-initiatorname"
                            inData: data
                          inMemCtx: memCtx];
 }
 
-- (int) getPidLidSharingInitiatorSmtp: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidSharingInitiatorSmtp: (void **) data
+                                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getStringProperty: @"x-ms-sharing-initiatorsmtp"
                            inData: data
                          inMemCtx: memCtx];
 }
 
-- (int) getPidLidSharingLocalType: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidSharingLocalType: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getStringProperty: @"x-ms-sharing-localtype"
                            inData: data
                          inMemCtx: memCtx];
 }
 
-- (int) getPidNameXSharingLocalType: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidNameXSharingLocalType: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidLidSharingLocalType: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidSharingProviderGuid: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidSharingProviderGuid: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx
 {
   const unsigned char providerGuidBytes[] = {0xAE, 0xF0, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00,
                                              0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46};
@@ -284,15 +284,15 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidNameXSharingProviderGuid: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidNameXSharingProviderGuid: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"AEF0060000000000C000000000000046" asUnicodeInMemCtx: memCtx];
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidSharingProviderName: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidSharingProviderName: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx
 {
 
   return [self _getStringProperty: @"x-ms-sharing-providername"
@@ -300,84 +300,84 @@
                          inMemCtx: memCtx];
 }
 
-- (int) getPidNameXSharingProviderName: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidNameXSharingProviderName: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidLidSharingProviderName: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidSharingProviderUrl: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidSharingProviderUrl: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getStringProperty: @"x-ms-sharing-providerurl"
                            inData: data
                          inMemCtx: memCtx];
 }
 
-- (int) getPidNameXSharingProviderUrl: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidNameXSharingProviderUrl: (void **) data
+                                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidLidSharingProviderUrl: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidSharingRemoteName: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidSharingRemoteName: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getStringProperty: @"x-ms-sharing-remotename"
                            inData: data
                          inMemCtx: memCtx];
 }
 
-- (int) getPidNameXSharingRemoteName: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidNameXSharingRemoteName: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidLidSharingRemoteName: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidSharingRemoteStoreUid: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidSharingRemoteStoreUid: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getStringProperty: @"x-ms-sharing-remotestoreuid"
                            inData: data
                          inMemCtx: memCtx];
 }
 
-- (int) getPidNameXSharingRemoteStoreUid: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidNameXSharingRemoteStoreUid: (void **) data
+                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidLidSharingRemoteStoreUid: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidSharingRemoteType: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidSharingRemoteType: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getStringProperty: @"x-ms-sharing-remotetype"
                            inData: data
                          inMemCtx: memCtx];
 }
 
-- (int) getPidTypeXSharingRemoteType: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTypeXSharingRemoteType: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidLidSharingRemoteType: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidSharingRemoteUid: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidSharingRemoteUid: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getStringProperty: @"x-ms-sharing-remoteuid"
                            inData: data
                          inMemCtx: memCtx];
 }
 
-- (int) getPidUidXSharingRemoteUid: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidUidXSharingRemoteUid: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidLidSharingRemoteUid: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidSharingResponseTime: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidSharingResponseTime: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
   id value;
@@ -403,8 +403,8 @@
   return rc;
 }
 
-- (int) getPidLidSharingResponseType: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidSharingResponseType: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx
 {
 
   enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
@@ -423,8 +423,8 @@
   return rc;
 }
 
-- (int) getPidNameContentClass: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidNameContentClass: (void **) data
+                                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = talloc_strdup (memCtx, "Sharing");
   return MAPISTORE_SUCCESS;

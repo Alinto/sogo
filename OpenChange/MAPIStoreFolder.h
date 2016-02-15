@@ -96,34 +96,34 @@
 
 /* backend interface */
 
-- (int) openFolder: (MAPIStoreFolder **) childFolderPtr
-           withFID: (uint64_t) fid;
-- (int) createFolder: (MAPIStoreFolder **) childFolderPtr
-             withRow: (struct SRow *) aRow
-              andFID: (uint64_t) fid;
-- (int) deleteFolder;
-- (int) getChildCount: (uint32_t *) rowCount
-          ofTableType: (enum mapistore_table_type) tableType;
+- (enum mapistore_error) openFolder: (MAPIStoreFolder **) childFolderPtr
+                            withFID: (uint64_t) fid;
+- (enum mapistore_error) createFolder: (MAPIStoreFolder **) childFolderPtr
+                              withRow: (struct SRow *) aRow
+                               andFID: (uint64_t) fid;
+- (enum mapistore_error) deleteFolder;
+- (enum mapistore_error) getChildCount: (uint32_t *) rowCount
+                           ofTableType: (enum mapistore_table_type) tableType;
 
-- (int) createMessage: (MAPIStoreMessage **) messagePtr
-              withMID: (uint64_t) mid
-         isAssociated: (BOOL) isAssociated;
+- (enum mapistore_error) createMessage: (MAPIStoreMessage **) messagePtr
+                               withMID: (uint64_t) mid
+                          isAssociated: (BOOL) isAssociated;
 
-- (int) openMessage: (MAPIStoreMessage **) messagePtr
-            withMID: (uint64_t) mid
-         forWriting: (BOOL) readWrite
-           inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) deleteMessageWithMID: (uint64_t) mid
-                    andFlags: (uint8_t) flags;
+- (enum mapistore_error) openMessage: (MAPIStoreMessage **) messagePtr
+                             withMID: (uint64_t) mid
+                          forWriting: (BOOL) readWrite
+                            inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) deleteMessageWithMID: (uint64_t) mid
+                                     andFlags: (uint8_t) flags;
 
-- (int) moveCopyMessagesWithMIDs: (uint64_t *) srcMids
-                        andCount: (uint32_t) count
-                      fromFolder: (MAPIStoreFolder *) sourceFolder
-                        withMIDs: (uint64_t *) targetMids
-                   andChangeKeys: (struct Binary_r **) targetChangeKeys
-       andPredecessorChangeLists: (struct Binary_r **) targetPredecessorChangeLists
-                        wantCopy: (uint8_t) want_copy
-                        inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) moveCopyMessagesWithMIDs: (uint64_t *) srcMids
+                                         andCount: (uint32_t) count
+                                       fromFolder: (MAPIStoreFolder *) sourceFolder
+                                         withMIDs: (uint64_t *) targetMids
+                                    andChangeKeys: (struct Binary_r **) targetChangeKeys
+                        andPredecessorChangeLists: (struct Binary_r **) targetPredecessorChangeLists
+                                         wantCopy: (uint8_t) want_copy
+                                         inMemCtx: (TALLOC_CTX *) memCtx;
 
 - (enum mapistore_error) moveCopyToFolder: (MAPIStoreFolder *) targetFolder
                               withNewName: (NSString *) newFolderName
@@ -131,20 +131,20 @@
                               isRecursive: (BOOL) isRecursive
                           inMemCtx: (TALLOC_CTX *) memCtx;
 
-- (int) getDeletedFMIDs: (struct UI8Array_r **) fmidsPtr
-                  andCN: (uint64_t *) cnPtr
-       fromChangeNumber: (uint64_t) changeNum
-            inTableType: (enum mapistore_table_type) tableType
-               inMemCtx: (TALLOC_CTX *) mem_ctx;
+- (enum mapistore_error) getDeletedFMIDs: (struct UI8Array_r **) fmidsPtr
+                                   andCN: (uint64_t *) cnPtr
+                        fromChangeNumber: (uint64_t) changeNum
+                             inTableType: (enum mapistore_table_type) tableType
+                                inMemCtx: (TALLOC_CTX *) mem_ctx;
 
-- (int) getTable: (MAPIStoreTable **) tablePtr
-     andRowCount: (uint32_t *) count
-       tableType: (enum mapistore_table_type) tableType
-     andHandleId: (uint32_t) handleId;
+- (enum mapistore_error) getTable: (MAPIStoreTable **) tablePtr
+                      andRowCount: (uint32_t *) count
+                        tableType: (enum mapistore_table_type) tableType
+                      andHandleId: (uint32_t) handleId;
 
-- (int) modifyPermissions: (struct PermissionData *) permissions
-                withCount: (uint16_t) pcount
-                 andFlags: (int8_t) flags;
+- (enum mapistore_error) modifyPermissions: (struct PermissionData *) permissions
+                                 withCount: (uint16_t) pcount
+                                  andFlags: (int8_t) flags;
 - (enum mapistore_error) preloadMessageBodiesWithMIDs: (const struct UI8Array_r *) mids
                                           ofTableType: (enum mapistore_table_type) tableType;
 
