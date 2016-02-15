@@ -136,16 +136,16 @@ static Class MAPIStoreFolderK;
 }
 
 /* getters */
-- (int) getPidTagDisplayName: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagDisplayName: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[sogoObject displayName] asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagSearchKey: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagSearchKey: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -156,31 +156,31 @@ static Class MAPIStoreFolderK;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagGenerateExchangeViews: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagGenerateExchangeViews: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagParentSourceKey: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagParentSourceKey: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getReplicaKey: data fromGlobCnt: [container objectId] >> 16
                     inMemCtx: memCtx];
 }
 
-- (int) getPidTagSourceKey: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagSourceKey: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getReplicaKey: data fromGlobCnt: [self objectId] >> 16
                     inMemCtx: memCtx];
 }
 
 /* helper getters */
-- (int) getPidTagChangeKey: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagChangeKey: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc;
+  enum mapistore_error rc;
   uint64_t obVersion;
 
   obVersion = [self objectVersion];
@@ -193,10 +193,10 @@ static Class MAPIStoreFolderK;
   return rc;
 }
 
-- (int) getPidTagChangeNumber: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagChangeNumber: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc;
+  enum mapistore_error rc;
   struct mapistore_connection_info *connInfo;
   uint64_t obVersion;
 

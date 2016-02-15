@@ -365,10 +365,10 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return foundObject;
 }
 
-- (int) openFolder: (MAPIStoreFolder **) childFolderPtr
-           withFID: (uint64_t) fid
+- (enum mapistore_error) openFolder: (MAPIStoreFolder **) childFolderPtr
+                            withFID: (uint64_t) fid
 {
-  int rc = MAPISTORE_ERR_NOT_FOUND;
+  enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
   MAPIStoreFolder *childFolder;
   MAPIStoreMapping *mapping;
   NSString *childURL;
@@ -390,9 +390,9 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) createFolder: (MAPIStoreFolder **) childFolderPtr
-             withRow: (struct SRow *) aRow
-              andFID: (uint64_t) fid
+- (enum mapistore_error) createFolder: (MAPIStoreFolder **) childFolderPtr
+                              withRow: (struct SRow *) aRow
+                               andFID: (uint64_t) fid
 {
   BOOL mapped;
   enum mapistore_error rc = MAPISTORE_SUCCESS;
@@ -447,7 +447,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) deleteFolder
+- (enum mapistore_error) deleteFolder
 {
   // TODO: raise exception in case underlying delete fails?
   // [propsMessage delete];
@@ -458,11 +458,11 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getChildCount: (uint32_t *) rowCount
-          ofTableType: (enum mapistore_table_type) tableType
+- (enum mapistore_error) getChildCount: (uint32_t *) rowCount
+                           ofTableType: (enum mapistore_table_type) tableType
 {
   NSArray *keys;
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
 
   //[self logWithFormat: @"METHOD '%s' (%d) -- tableType: %d",
 	//__FUNCTION__, __LINE__, tableType];
@@ -483,16 +483,16 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) openMessage: (MAPIStoreMessage **) messagePtr
-            withMID: (uint64_t) mid
-         forWriting: (BOOL) readWrite
-           inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) openMessage: (MAPIStoreMessage **) messagePtr
+                             withMID: (uint64_t) mid
+                          forWriting: (BOOL) readWrite
+                            inMemCtx: (TALLOC_CTX *) memCtx;
 {
   NSString *messageURL;
   MAPIStoreMapping *mapping;
   MAPIStoreMessage *message;
   SOGoUser *ownerUser;
-  int rc = MAPISTORE_ERR_NOT_FOUND;
+  enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
 
   mapping = [self mapping];
   messageURL = [mapping urlFromID: mid];
@@ -523,9 +523,9 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) createMessage: (MAPIStoreMessage **) messagePtr
-              withMID: (uint64_t) mid
-         isAssociated: (BOOL) isAssociated
+- (enum mapistore_error) createMessage: (MAPIStoreMessage **) messagePtr
+                               withMID: (uint64_t) mid
+                          isAssociated: (BOOL) isAssociated
 {
   enum mapistore_error rc;
   MAPIStoreMessage *message;
@@ -570,8 +570,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) deleteMessageWithMID: (uint64_t) mid
-                    andFlags: (uint8_t) flags
+- (enum mapistore_error) deleteMessageWithMID: (uint64_t) mid
+                                     andFlags: (uint8_t) flags
 {
   NSString *childURL;
   MAPIStoreMapping *mapping;
@@ -580,7 +580,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSUInteger count, max;
   id msgObject;
   SOGoUser *ownerUser;
-  int rc;
+  enum mapistore_error rc;
 
   /* flags that control the behaviour of the operation
      (MAPISTORE_SOFT_DELETE or MAPISTORE_PERMANENT_DELETE) */
@@ -638,15 +638,15 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 }
 
 // private method
-- (int) _moveCopyMessageWithMID: (uint64_t) srcMid
-                     fromFolder: (MAPIStoreFolder *) sourceFolder
-                        withMID: (uint64_t) targetMid
-                   andChangeKey: (struct Binary_r *) targetChangeKey
-       andPredecessorChangeList: (struct Binary_r *) targetPredecessorChangeList
-                       wantCopy: (uint8_t) wantCopy
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) _moveCopyMessageWithMID: (uint64_t) srcMid
+                                      fromFolder: (MAPIStoreFolder *) sourceFolder
+                                         withMID: (uint64_t) targetMid
+                                    andChangeKey: (struct Binary_r *) targetChangeKey
+                        andPredecessorChangeList: (struct Binary_r *) targetPredecessorChangeList
+                                        wantCopy: (uint8_t) wantCopy
+                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc;
+  enum mapistore_error rc;
   MAPIStoreMessage *sourceMsg, *destMsg;
   //TALLOC_CTX *memCtx;
   struct SRow aRow;
@@ -695,16 +695,16 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) moveCopyMessagesWithMIDs: (uint64_t *) srcMids
-                        andCount: (uint32_t) midCount
-                      fromFolder: (MAPIStoreFolder *) sourceFolder
-                        withMIDs: (uint64_t *) targetMids
-                   andChangeKeys: (struct Binary_r **) targetChangeKeys
-       andPredecessorChangeLists: (struct Binary_r **) targetPredecessorChangeLists
-                        wantCopy: (uint8_t) wantCopy
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) moveCopyMessagesWithMIDs: (uint64_t *) srcMids
+                                         andCount: (uint32_t) midCount
+                                       fromFolder: (MAPIStoreFolder *) sourceFolder
+                                         withMIDs: (uint64_t *) targetMids
+                                    andChangeKeys: (struct Binary_r **) targetChangeKeys
+                        andPredecessorChangeLists: (struct Binary_r **) targetPredecessorChangeLists
+                                         wantCopy: (uint8_t) wantCopy
+                                         inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
   NSUInteger count;
   NSMutableArray *oldMessageURLs;
   NSString *oldMessageURL;
@@ -957,13 +957,13 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                 withIDs: newIDs];
 }
 
-- (int) getDeletedFMIDs: (struct UI8Array_r **) fmidsPtr
-                  andCN: (uint64_t *) cnPtr
-       fromChangeNumber: (uint64_t) changeNum
-            inTableType: (enum mapistore_table_type) tableType
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getDeletedFMIDs: (struct UI8Array_r **) fmidsPtr
+                                   andCN: (uint64_t *) cnPtr
+                        fromChangeNumber: (uint64_t) changeNum
+                             inTableType: (enum mapistore_table_type) tableType
+                                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc;
+  enum mapistore_error rc;
   NSString *baseURL, *format, *url;
   NSArray *keys;
   NSNumber *cnNbr;
@@ -1016,12 +1016,12 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) getTable: (MAPIStoreTable **) tablePtr
-     andRowCount: (uint32_t *) countPtr
-       tableType: (enum mapistore_table_type) tableType
-     andHandleId: (uint32_t) handleId
+- (enum mapistore_error) getTable: (MAPIStoreTable **) tablePtr
+                      andRowCount: (uint32_t *) countPtr
+                        tableType: (enum mapistore_table_type) tableType
+                      andHandleId: (uint32_t) handleId
 {
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
   MAPIStoreTable *table;
   SOGoUser *ownerUser;
 
@@ -1208,16 +1208,16 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   // folderKeys = nil;
 }
 
-- (int) getPidTagParentFolderId: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagParentFolderId: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongLongValue (memCtx, [container objectId]);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagFolderId: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagFolderId: (void **) data
+                                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongLongValue (memCtx, [self objectId]);
 
@@ -1234,8 +1234,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   0x00000010 Create Contents Table
   0x00000020 Create Associated Contents Table
 */
-- (int) getPidTagAccess: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAccess: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t access = 0;
   SOGoUser *ownerUser;
@@ -1263,8 +1263,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagRights: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagRights: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t rights = 0;
   SOGoUser *ownerUser;
@@ -1292,74 +1292,74 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAccessControlListData: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAccessControlListData: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[NSData data] asBinaryInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAttributeHidden: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttributeHidden: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagAttributeSystem: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttributeSystem: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagAttributeReadOnly: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttributeReadOnly: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagSubfolders: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagSubfolders: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPIBoolValue (memCtx, [self supportsSubFolders] && [[self folderKeys] count] > 0);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagFolderChildCount: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagFolderChildCount: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, [[self folderKeys] count]);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagContentCount: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagContentCount: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, [[self messageKeys] count]);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagContentUnreadCount: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagContentUnreadCount: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAssociatedContentCount: (void **) data
-                               inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAssociatedContentCount: (void **) data
+                                                inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, [[self faiMessageKeys] count]);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagDeletedCountTotal: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagDeletedCountTotal: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* TODO */
   *data = MAPILongValue (memCtx, 0);
@@ -1367,10 +1367,10 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagLocalCommitTimeMax: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagLocalCommitTimeMax: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
   NSDate *date;
 
   date = [self lastMessageModificationTime];
@@ -1382,18 +1382,18 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) getPidTagDefaultPostMessageClass: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagDefaultPostMessageClass: (void **) data
+                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPM.Note" asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getProperties: (struct mapistore_property_data *) data
-             withTags: (enum MAPITAGS *) tags
-             andCount: (uint16_t) columnCount
-             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getProperties: (struct mapistore_property_data *) data
+                              withTags: (enum MAPITAGS *) tags
+                              andCount: (uint16_t) columnCount
+                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   [dbFolder reloadIfNeeded];
 
@@ -1403,11 +1403,11 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                      inMemCtx: memCtx];
 }
 
-- (int) getProperty: (void **) data
-            withTag: (enum MAPITAGS) propTag
-           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getProperty: (void **) data
+                             withTag: (enum MAPITAGS) propTag
+                            inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc;
+  enum mapistore_error rc;
   id value;
 
   value = [properties objectForKey: MAPIPropertyKey (propTag)];
@@ -1614,9 +1614,9 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   [users release];
 }
 
-- (int) modifyPermissions: (struct PermissionData *) permissions
-                withCount: (uint16_t) pcount
-                 andFlags: (int8_t) flags
+- (enum mapistore_error) modifyPermissions: (struct PermissionData *) permissions
+                                 withCount: (uint16_t) pcount
+                                  andFlags: (int8_t) flags
 {
   NSUInteger count, propCount;
   struct PermissionData *currentPermission;

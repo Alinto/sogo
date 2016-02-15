@@ -20,8 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-typedef int (*MAPIStorePropertyGetter) (id inst, SEL _cmd,
-                                        void **data, TALLOC_CTX *memCtx);
+typedef enum mapistore_error (*MAPIStorePropertyGetter) (id inst, SEL _cmd,
+                                                         void **data, TALLOC_CTX *memCtx);
 
 const MAPIStorePropertyGetter *MAPIStorePropertyGettersForClass (Class klass);
 SEL MAPIStoreSelectorForPropertyGetter (uint16_t propertyId);

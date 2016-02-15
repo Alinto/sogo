@@ -1,6 +1,6 @@
 /* MAPIStoreSharingMessage.h - this file is part of SOGo-OpenChange
  *
- * Copyright (C) 2015 Enrique J. Hernández
+ * Copyright (C) 2015-2016 Enrique J. Hernández
  *
  * Author: Enrique J. Hernández <ejhernandez@zentyal.com>
  *
@@ -39,58 +39,58 @@
                fromMessage: (MAPIStoreMailMessage *) msg;
 
 /* getters */
-- (int) getPidLidSharingCapabilities: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidNameXSharingCapabilities: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidSharingConfigurationUrl: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidNameXSharingConfigUrl: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidSharingFlavor: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidNameXSharingFlavor: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidSharingInitiatorEntryId: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidSharingInitiatorName: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidSharingInitiatorSmtp: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidSharingLocalType: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidNameXSharingLocalType: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidSharingProviderGuid: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidNameXSharingProviderGuid: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidSharingProviderName: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidNameXSharingProviderName: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidSharingProviderUrl: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidNameXSharingProviderUrl: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidSharingRemoteName: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidNameXSharingRemoteName: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidSharingRemoteStoreUid: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidNameXSharingRemoteStoreUid: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidSharingRemoteType: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTypeXSharingRemoteType: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidSharingResponseTime: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidSharingResponseType: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidNameContentClass: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidSharingCapabilities: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidNameXSharingCapabilities: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidSharingConfigurationUrl: (void **) data
+                                                 inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidNameXSharingConfigUrl: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidSharingFlavor: (void **) data
+                                       inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidNameXSharingFlavor: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidSharingInitiatorEntryId: (void **) data
+                                                 inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidSharingInitiatorName: (void **) data
+                                              inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidSharingInitiatorSmtp: (void **) data
+                                              inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidSharingLocalType: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidNameXSharingLocalType: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidSharingProviderGuid: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidNameXSharingProviderGuid: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidSharingProviderName: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidNameXSharingProviderName: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidSharingProviderUrl: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidNameXSharingProviderUrl: (void **) data
+                                              inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidSharingRemoteName: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidNameXSharingRemoteName: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidSharingRemoteStoreUid: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidNameXSharingRemoteStoreUid: (void **) data
+                                                 inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidSharingRemoteType: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTypeXSharingRemoteType: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidSharingResponseTime: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidSharingResponseType: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidNameContentClass: (void **) data
+                                       inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* Save */
 - (void) saveWithMessage: (MAPIStoreMailMessage *) msg

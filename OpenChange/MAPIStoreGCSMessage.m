@@ -54,8 +54,8 @@
   return [sogoObject lastModified];
 }
 
-- (int) getPidTagAccess: (void **) data // TODO
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAccess: (void **) data // TODO
+                                inMemCtx: (TALLOC_CTX *) memCtx
 {
   MAPIStoreContext *context;
   WOContext *woContext;
@@ -91,8 +91,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAccessLevel: (void **) data // TODO
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAccessLevel: (void **) data // TODO
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   MAPIStoreContext *context;
   MAPIStoreUserContext *userContext;
@@ -120,10 +120,10 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagChangeKey: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagChangeKey: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
   NSData *changeKey;
   MAPIStoreGCSFolder *parentFolder;
   NSString *nameInContainer;
@@ -155,10 +155,10 @@
   return rc;
 }
 
-- (int) getPidTagPredecessorChangeList: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagPredecessorChangeList: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
   NSData *changeList;
   MAPIStoreGCSFolder *parentFolder;
 

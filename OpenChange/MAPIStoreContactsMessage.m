@@ -104,8 +104,8 @@
   return element;
 }
 
-- (int) getPidTagIconIndex: (void **) data // TODO
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagIconIndex: (void **) data // TODO
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
   *data = MAPILongValue (memCtx, 0x00000200);
@@ -113,52 +113,52 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAlternateRecipientAllowed: (void **) data
-                                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAlternateRecipientAllowed: (void **) data
+                                                   inMemCtx: (TALLOC_CTX *) memCtx
 
 {
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagMessageFlags: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMessageFlags: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, MSGFLAG_READ);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagDeleteAfterSubmit: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagDeleteAfterSubmit: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 
 {
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagMessageClass: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMessageClass: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = talloc_strdup (memCtx, "IPM.Contact");
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagSendInternetEncoding: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagSendInternetEncoding: (void **) data
+                                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x00065001);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagNormalizedSubject: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagNormalizedSubject: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidTagDisplayName: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidFileUnder: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidFileUnder: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *surName, *givenName, *middleName;
   NSMutableString *fileUnder;
@@ -184,22 +184,22 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidFileUnderId: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidFileUnderId: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x00008017); /* what ol2003 sets */
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAccount: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAccount: (void **) data
+                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidLidEmail1EmailAddress: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagContactEmailAddresses: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagContactEmailAddresses: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -212,8 +212,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagEmsAbTargetAddress: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagEmsAbTargetAddress: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -224,8 +224,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagSearchKey: (void **) data // TODO
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagSearchKey: (void **) data // TODO
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -236,16 +236,16 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagMailPermission: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMailPermission: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagBody: (void **) data
-             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagBody: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
   NSString *stringValue;
 
   stringValue = [[sogoObject vCard] note];
@@ -257,8 +257,8 @@
   return rc;
 }
 
-- (int) getPidTagSensitivity: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagSensitivity: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
 }
@@ -267,8 +267,8 @@
 // Contact Name Properties [MS-OXOCNTC 2.2.1.1]
 // ---------------------------------------------------------
 
-- (int) getPidTagNickname: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagNickname: (void **) data
+                                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -278,8 +278,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagGeneration: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagGeneration: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -291,8 +291,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagSurname: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagSurname: (void **) data
+                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -304,8 +304,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagMiddleName: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMiddleName: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -317,8 +317,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagGivenName: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagGivenName: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -330,8 +330,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagDisplayNamePrefix: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagDisplayNamePrefix: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -398,9 +398,9 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   Store on *data the given email (position)
   It can return MAPISTORE_ERR_NOT_FOUND if the email doesn't exist
 */
-- (int) _getPidLidEmailAddress: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
-                    atPosition: (NSUInteger) position
+- (enum mapistore_error) _getPidLidEmailAddress: (void **) data
+                                       inMemCtx: (TALLOC_CTX *) memCtx
+                                     atPosition: (NSUInteger) position
 {
   NSString *email;
 
@@ -412,60 +412,60 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidEmail1EmailAddress: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidEmail1EmailAddress: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getPidLidEmailAddress: data inMemCtx: memCtx atPosition: 1];
 }
 
-- (int) getPidLidEmail2EmailAddress: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidEmail2EmailAddress: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getPidLidEmailAddress: data inMemCtx: memCtx atPosition: 2];
 }
 
-- (int) getPidLidEmail3EmailAddress: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidEmail3EmailAddress: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getPidLidEmailAddress: data inMemCtx: memCtx atPosition: 3];
 }
 
-- (int) getPidLidEmail1OriginalDisplayName: (void **) data
-                                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidEmail1OriginalDisplayName: (void **) data
+                                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidLidEmail1EmailAddress: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidEmail2OriginalDisplayName: (void **) data
-                                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidEmail2OriginalDisplayName: (void **) data
+                                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidLidEmail2EmailAddress: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidEmail3OriginalDisplayName: (void **) data
-                                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidEmail3OriginalDisplayName: (void **) data
+                                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidLidEmail3EmailAddress: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidEmail1AddressType: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidEmail1AddressType: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (![self _fetchEmailAddress: 1]) return MAPISTORE_ERR_NOT_FOUND;
 
   return [self getSMTPAddrType: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidEmail2AddressType: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidEmail2AddressType: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (![self _fetchEmailAddress: 2]) return MAPISTORE_ERR_NOT_FOUND;
 
   return [self getSMTPAddrType: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidEmail3AddressType: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidEmail3AddressType: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (![self _fetchEmailAddress: 3]) return MAPISTORE_ERR_NOT_FOUND;
 
@@ -476,9 +476,9 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   Store on *data a string with the display name for the given email (position)
   It can return MAPISTORE_ERR_NOT_FOUND if the email doesn't exist
 */
-- (int) _getPidLidEmailDisplayName: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
-                        atPosition: (NSUInteger) position
+- (enum mapistore_error) _getPidLidEmailDisplayName: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
+                                         atPosition: (NSUInteger) position
 {
   NGVCard *vCard;
   NSString *fn, *email;
@@ -495,20 +495,20 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidEmail1DisplayName: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidEmail1DisplayName: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getPidLidEmailDisplayName: data inMemCtx: memCtx atPosition: 1];
 }
 
-- (int) getPidLidEmail2DisplayName: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidEmail2DisplayName: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getPidLidEmailDisplayName: data inMemCtx: memCtx atPosition: 2];
 }
 
-- (int) getPidLidEmail3DisplayName: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidEmail3DisplayName: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getPidLidEmailDisplayName: data inMemCtx: memCtx atPosition: 3];
 }
@@ -544,9 +544,9 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   Store on *data an entryId for the given email (position)
   It can return MAPISTORE_ERR_NOT_FOUND if the email doesn't exist
 */
-- (int) _getPidLidEmailOriginalEntryId: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
-                            atPosition: (NSUInteger) position
+- (enum mapistore_error) _getPidLidEmailOriginalEntryId: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
+                                             atPosition: (NSUInteger) position
 {
   NSData *value;
 
@@ -558,36 +558,36 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidEmail1OriginalEntryId: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidEmail1OriginalEntryId: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getPidLidEmailOriginalEntryId: data
                                      inMemCtx: memCtx
                                    atPosition: 1];
 }
 
-- (int) getPidLidEmail2OriginalEntryId: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidEmail2OriginalEntryId: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getPidLidEmailOriginalEntryId: data
                                      inMemCtx: memCtx
                                    atPosition: 2];
 }
 
-- (int) getPidLidEmail3OriginalEntryId: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidEmail3OriginalEntryId: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getPidLidEmailOriginalEntryId: data
                                      inMemCtx: memCtx
                                    atPosition: 3];
 }
 
-- (int) _getElement: (NSString *) elementTag
-             ofType: (NSString *) aType
-          excluding: (NSString *) aTypeToExclude
-              atPos: (NSUInteger) pos
-             inData: (void **) data
-           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) _getElement: (NSString *) elementTag
+                              ofType: (NSString *) aType
+                           excluding: (NSString *) aTypeToExclude
+                               atPos: (NSUInteger) pos
+                              inData: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSArray *elements;
   CardElement *ce;
@@ -618,8 +618,8 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagBusinessFaxNumber: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagBusinessFaxNumber: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"tel" ofType: @"fax" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
@@ -656,8 +656,8 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return list;
 }
 
-- (int) getPidLidAddressBookProviderArrayType: (void **) data
-                                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidAddressBookProviderArrayType: (void **) data
+                                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   // [MS-OXOCNTC] 2.2.1.2.12
   // https://msdn.microsoft.com/en-us/library/ee218011%28v=exchg.80%29.aspx
@@ -677,8 +677,8 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
     return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidLidAddressBookProviderEmailList: (void **) data
-                                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidAddressBookProviderEmailList: (void **) data
+                                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSArray *emailList = [self _buildAddressBookProviderEmailList];
 
@@ -697,49 +697,49 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 
 // Home Address
 
-- (int) getPidTagHomeAddressStreet: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagHomeAddressStreet: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"home" excluding: nil
                      atPos: 2 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagHomeAddressCity: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagHomeAddressCity: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"home" excluding: nil
                      atPos: 3 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagHomeAddressStateOrProvince: (void **) data
-                                   inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagHomeAddressStateOrProvince: (void **) data
+                                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"home" excluding: nil
                      atPos: 4 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagHomeAddressPostalCode: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagHomeAddressPostalCode: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"home" excluding: nil
                      atPos: 5 inData: data inMemCtx: memCtx];
 }
-- (int) getPidTagHomeAddressCountry: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagHomeAddressCountry: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"home" excluding: nil
                      atPos: 6 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagHomeAddressPostOfficeBox: (void **) data
-                                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagHomeAddressPostOfficeBox: (void **) data
+                                                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"home" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidHomeAddress: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidHomeAddress: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"label" ofType: @"home" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
@@ -747,50 +747,50 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 
 // Work Address
 
-- (int) getPidLidWorkAddressStreet: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidWorkAddressStreet: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"work" excluding: nil
                      atPos: 2 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidWorkAddressCity: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidWorkAddressCity: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"work" excluding: nil
                      atPos: 3 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidWorkAddressState: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidWorkAddressState: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"work" excluding: nil
                      atPos: 4 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidWorkAddressPostalCode: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidWorkAddressPostalCode: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"work" excluding: nil
                      atPos: 5 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidWorkAddressCountry: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidWorkAddressCountry: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"work" excluding: nil
                      atPos: 6 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidWorkAddressPostOfficeBox: (void **) data
-                                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidWorkAddressPostOfficeBox: (void **) data
+                                                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"work" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidWorkAddress: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidWorkAddress: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"label" ofType: @"work" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
@@ -798,57 +798,57 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 
 // Mailing Address
 
-- (int) getPidTagStreetAddress: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagStreetAddress: (void **) data
+                                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"pref" excluding: nil
                      atPos: 2 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagLocality: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagLocality: (void **) data
+                                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"pref" excluding: nil
                      atPos: 3 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagStateOrProvince: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagStateOrProvince: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"pref" excluding: nil
                      atPos: 4 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagPostalCode: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagPostalCode: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"pref" excluding: nil
                      atPos: 5 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagCountry: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagCountry: (void **) data
+                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"pref" excluding: nil
                      atPos: 6 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagPostOfficeBox: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagPostOfficeBox: (void **) data
+                                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"pref" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagPostalAddress: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagPostalAddress: (void **) data
+                                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"label" ofType: @"pref" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidPostalAddressId: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidPostalAddressId: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSArray *elements;
   CardElement *element;
@@ -878,36 +878,36 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 // Telephone Properties [MS-OXOCNTC 2.2.1.4]
 // -------------------------------------------------------
 
-- (int) getPidTagPagerTelephoneNumber: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagPagerTelephoneNumber: (void **) data
+                                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"tel" ofType: @"pager" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagBusinessTelephoneNumber: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagBusinessTelephoneNumber: (void **) data
+                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"tel" ofType: @"work" excluding: @"fax"
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagHomeTelephoneNumber: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagHomeTelephoneNumber: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"tel" ofType: @"home" excluding: @"fax"
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagPrimaryTelephoneNumber: (void **) data
-                               inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagPrimaryTelephoneNumber: (void **) data
+                                                inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"tel" ofType: @"pref" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagMobileTelephoneNumber: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMobileTelephoneNumber: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"tel" ofType: @"cell" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
@@ -917,12 +917,12 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 // Event Properties [MS-OXOCNTC 2.2.1.5]
 // ---------------------------------------------------------
 
-- (int) getPidTagBirthday: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagBirthday: (void **) data
+                                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSCalendarDate *dateValue;
   NSString *stringValue;
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
 
   stringValue = [[sogoObject vCard] bday];
   if ([stringValue length] != 0)
@@ -938,12 +938,12 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return rc;
 }
 
-- (int) getPidTagWeddingAnniversary: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagWeddingAnniversary: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSCalendarDate *dateValue;
   NSString *stringValue;
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
 
   stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-anniversary"]
                   flattenedValuesForKey: @""];
@@ -963,8 +963,8 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 // Professional Properties [MS-OXOCNTC 2.2.1.6]
 // ---------------------------------------------------------
 
-- (int) getPidTagTitle: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagTitle: (void **) data
+                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -974,8 +974,8 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagCompanyName: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagCompanyName: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   CardElement *org;
 
@@ -986,8 +986,8 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagDepartmentName: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagDepartmentName: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   CardElement *org;
 
@@ -998,11 +998,11 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagOfficeLocation: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagOfficeLocation: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
 
   stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-office"]
                   flattenedValuesForKey: @""];
@@ -1014,11 +1014,11 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return rc;
 }
 
-- (int) getPidTagManagerName: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagManagerName: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
 
   stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-manager"]
                   flattenedValuesForKey: @""];
@@ -1030,11 +1030,11 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return rc;
 }
 
-- (int) getPidTagAssistant: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAssistant: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
 
   stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-assistant"]
                   flattenedValuesForKey: @""];
@@ -1046,11 +1046,11 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return rc;
 }
 
-- (int) getPidTagProfession: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagProfession: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
 
   stringValue = [[sogoObject vCard] role];
   if (stringValue)
@@ -1089,8 +1089,8 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   fetchedAttachments = YES;
 }
 
-- (int) getPidLidHasPicture: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidHasPicture: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!fetchedAttachments)
     [self _fetchAttachmentParts];
@@ -1163,11 +1163,11 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
 // Other Properties [MS-OXOCNTC 2.2.1.10]
 // ---------------------------------------------------------
 
-- (int) getPidTagSpouseName: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagSpouseName: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
 
   stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-ms-spouse"]
                   flattenedValuesForKey: @""];
@@ -1179,8 +1179,8 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return rc;
 }
 
-- (int) getPidLidInstantMessagingAddress: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidInstantMessagingAddress: (void **) data
+                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -1193,11 +1193,11 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidFreeBusyLocation: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidFreeBusyLocation: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
 
   stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"fburl"]
                   flattenedValuesForKey: @""];
@@ -1209,15 +1209,15 @@ enum {  // [MS-OXOCNTC] 2.2.1.2.11
   return rc;
 }
 
-- (int) getPidTagPersonalHomePage: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagPersonalHomePage: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"url" ofType: @"home" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagBusinessHomePage: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagBusinessHomePage: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"url" ofType: @"work" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];

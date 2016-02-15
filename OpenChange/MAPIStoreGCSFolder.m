@@ -86,9 +86,9 @@ static Class NSNumberK;
   [super dealloc];
 }
 
-- (int) deleteFolder
+- (enum mapistore_error) deleteFolder
 {
-  int rc;
+  enum mapistore_error rc;
   NSException *error;
   NSString *name;
 
@@ -138,8 +138,8 @@ static Class NSNumberK;
     [sogoObject renameTo: newDisplayName];
 }
 
-- (int) getPidTagDisplayName: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagDisplayName: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *displayName;
   Class cClass;

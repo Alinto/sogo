@@ -76,24 +76,24 @@
   ASSIGN (bodyPart, newBodyPart);
 }
 
-- (int) getPidTagAttachMethod: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachMethod: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x00000001); // afByValue
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAttachTag: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachTag: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[self mimeAttachTag] asBinaryInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAttachSize: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachSize: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t longValue;
 
@@ -103,8 +103,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagRecordKey: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagRecordKey: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   static char recordBytes[] = {0xd9, 0xd8, 0x11, 0xa3, 0xe2, 0x90, 0x18, 0x41,
                                0x9e, 0x04, 0x58, 0x46, 0x9d, 0x6d, 0x1b,
@@ -121,16 +121,16 @@
   return [bodyInfo filename];
 }
 
-- (int) getPidTagAttachLongFilename: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachLongFilename: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[self _fileName] asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAttachFilename: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachFilename: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *fileName, *baseName, *ext;
 
@@ -149,8 +149,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagDisplayName: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagDisplayName: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *fileName;
 
@@ -165,8 +165,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAttachContentId: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachContentId: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[bodyInfo objectForKey: @"bodyId"]
             asUnicodeInMemCtx: memCtx];
@@ -174,8 +174,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAttachMimeTag: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachMimeTag: (void **) data
+                                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *mimeTag, *fileName;
 
@@ -193,8 +193,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAttachDataBinary: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachDataBinary: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[bodyPart fetchBLOBWithPeek: YES] asBinaryInMemCtx: memCtx];
 

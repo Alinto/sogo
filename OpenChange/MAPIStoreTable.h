@@ -88,17 +88,17 @@ typedef enum {
 
 - (void) cleanupCaches;
 
-- (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
-                      inMemCtx: (TALLOC_CTX *) localMemCtx;
+- (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                                       inMemCtx: (TALLOC_CTX *) localMemCtx;
 - (void) setRestrictions: (const struct mapi_SRestriction *) res;
-- (int) setColumns: (enum MAPITAGS *) newColumns
-         withCount: (uint16_t) newColumCount;
-- (int) getRow: (struct mapistore_property_data **) dataP
-     withRowID: (uint32_t) rowId
-  andQueryType: (enum mapistore_query_type) queryType
-      inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getRowCount: (uint32_t *) countP
-      withQueryType: (enum mapistore_query_type) queryType;
+- (enum mapistore_error) setColumns: (enum MAPITAGS *) newColumns
+                          withCount: (uint16_t) newColumCount;
+- (enum mapistore_error) getRow: (struct mapistore_property_data **) dataP
+                      withRowID: (uint32_t) rowId
+                   andQueryType: (enum mapistore_query_type) queryType
+                       inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getRowCount: (uint32_t *) countP
+                       withQueryType: (enum mapistore_query_type) queryType;
 
 /* helpers */
 

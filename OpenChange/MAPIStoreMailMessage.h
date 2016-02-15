@@ -57,27 +57,27 @@
 
 - (NSString *) subject;
 
-- (int) getPidTagIconIndex: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagFlagStatus: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagIconIndex: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagFlagStatus: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx;
 
-- (int) getPidTagMessageFlags: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagFollowupIcon: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagImportance: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagReceivedByEmailAddress: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagSenderEmailAddress: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagDisplayTo: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagDisplayCc: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagDisplayBcc: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagMessageFlags: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagFollowupIcon: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagImportance: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagReceivedByEmailAddress: (void **) data
+                                                inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagSenderEmailAddress: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagDisplayTo: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagDisplayCc: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagDisplayBcc: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* batch-mode helpers */
 - (void) setBodyContentFromRawData: (NSArray *) rawContent;

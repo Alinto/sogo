@@ -208,9 +208,9 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
   return rc;
 }
 
-- (int) deleteFolder
+- (enum mapistore_error) deleteFolder
 {
-  int rc;
+  enum mapistore_error rc;
   NSException *error;
   NSString *name;
 
@@ -234,8 +234,8 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
   return (rc == MAPISTORE_SUCCESS) ? [super deleteFolder] : rc;
 }
 
-- (int) getPidTagContentUnreadCount: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagContentUnreadCount: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   EOQualifier *searchQualifier;
   uint32_t longValue;
@@ -250,8 +250,8 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagContainerClass: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagContainerClass: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPF.Note" asUnicodeInMemCtx: memCtx];
 
@@ -1363,15 +1363,14 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 // Move (or eventually copy) the mails identified by
 // "srcMids" from the source folder into this folder.
 //
-- (int) moveCopyMessagesWithMIDs: (uint64_t *) srcMids
-                        andCount: (uint32_t) midCount
-                      fromFolder: (MAPIStoreFolder *) sourceFolder
-                        withMIDs: (uint64_t *) targetMids
-                   andChangeKeys: (struct Binary_r **) targetChangeKeys
-       andPredecessorChangeLists: (struct Binary_r **) targetPredecessorChangeLists
-                        wantCopy: (uint8_t) wantCopy
-                        inMemCtx: (TALLOC_CTX *) memCtx
-
+- (enum mapistore_error) moveCopyMessagesWithMIDs: (uint64_t *) srcMids
+                                         andCount: (uint32_t) midCount
+                                       fromFolder: (MAPIStoreFolder *) sourceFolder
+                                         withMIDs: (uint64_t *) targetMids
+                                    andChangeKeys: (struct Binary_r **) targetChangeKeys
+                        andPredecessorChangeLists: (struct Binary_r **) targetPredecessorChangeLists
+                                         wantCopy: (uint8_t) wantCopy
+                                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   NGImap4Connection *connection;
   NGImap4Client *client;
@@ -1767,8 +1766,8 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 
 @implementation MAPIStoreOutboxFolder
 
-- (int) getPidTagDisplayName: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagDisplayName: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"Outbox" asUnicodeInMemCtx: memCtx];
 

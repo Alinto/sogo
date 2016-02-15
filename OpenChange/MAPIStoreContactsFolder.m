@@ -117,8 +117,8 @@
   return [[self activeUserRoles] containsObject: SOGoRole_ObjectViewer];
 }
 
-- (int) getPidTagDefaultPostMessageClass: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagDefaultPostMessageClass: (void **) data
+                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPM.Contact" asUnicodeInMemCtx: memCtx];
 
