@@ -27,6 +27,7 @@ Bug fixes
  - [web] fixed batched delete of components (#3516)
  - [web] fixed mail draft autosave in preferences (#3519)
  - [web] fixed password change (#3496)
+ - [web] fixed saving of notification email for calendar changes (#3522)
  - [eas] allow EAS attachments get on 2nd-level mailboxes (#3505)
  - [eas] fix EAS bday shift (#3518)
 
