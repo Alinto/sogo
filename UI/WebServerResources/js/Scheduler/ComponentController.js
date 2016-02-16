@@ -162,6 +162,7 @@
     vm.addAttachUrl = addAttachUrl;
     vm.cancel = cancel;
     vm.save = save;
+    vm.attendeeConflictError = false;
     vm.attendeesEditor = {
       days: getDays(),
       hours: getHours()
@@ -217,15 +218,18 @@
       }
     }
 
-    function save(form) {
+    function save(form, options) {
       if (form.$valid) {
-        vm.component.$save()
+        vm.component.$save(options)
           .then(function(data) {
             $rootScope.$emit('calendars:list');
             $mdDialog.hide();
             Alarm.getAlarms();
-          }, function(data, status) {
-            $log.debug('failed');
+          }, function(response) {
+            if (response.status == 403 &&
+                response.data && response.data.message &&
+                angular.isObject(response.data.message))
+              vm.attendeeConflictError = response.data.message;
           });
       }
     }

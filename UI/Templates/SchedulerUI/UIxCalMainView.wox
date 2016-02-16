@@ -737,4 +737,46 @@
     </md-dialog>
   </script>
 
+  <!-- modal for attendee availability conflict -->
+  <script type="text/ng-template" id="UIxAttendeeConflictDialog">
+    <md-dialog flex="60" flex-xs="100">
+      <md-dialog-content class="md-dialog-content"
+                         ng-show="$AttendeeConflictDialogController.conflictError.attendee_email">
+        <h2 class="md-title"><var:string label:value="Warning"/></h2>
+        <p><var:string label:value="A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"/></p>
+        <md-list>
+          <md-list-item>
+            <md-icon>person</md-icon> {{$AttendeeConflictDialogController.conflictError.attendee_name}} ({{$AttendeeConflictDialogController.conflictError.attendee_email}})
+          </md-list-item>
+          <md-list-item ng-repeat="conflict in $AttendeeConflictDialogController.conflictError.conflicts">
+            <md-icon>schedule</md-icon>
+            <div class="pseudo-input-container">
+              <label class="pseudo-input-label"><var:string label:value="From"/></label>
+              <div>{{conflict.startDate}}</div>
+            </div>
+            <div class="pseudo-input-container md-flex">
+              <label class="pseudo-input-label"><var:string label:value="To"/></label>
+              <div>{{conflict.endDate}}</div>
+            </div>
+          </md-list-item>
+        </md-list>
+      </md-dialog-content>
+      <md-dialog-content class="md-dialog-content"
+                         ng-show="$AttendeeConflictDialogController.conflictError.reject">
+        <h2 class="md-title"><var:string label:value="Warning"/></h2>
+        <p>{{$AttendeeConflictDialogController.conflictError.reject}}</p>
+      </md-dialog-content>
+      <md-dialog-actions>
+        <md-button type="button" ng-click="$AttendeeConflictDialogController.cancel()">
+          <var:string label:value="Cancel"/>
+        </md-button>
+        <md-button class="md-warn" type="button"
+                   ng-show="$AttendeeConflictDialogController.conflictError.conflicts"
+                   ng-click="$AttendeeConflictDialogController.save()">
+          <var:string label:value="Save"/>
+        </md-button>
+      </md-dialog-actions>
+    </md-dialog>
+  </script>
+
 </var:component>

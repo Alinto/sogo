@@ -1,6 +1,6 @@
 /* SOGoComponentOccurence.m - this file is part of SOGo
  * 
- * Copyright (C) 2008-2014 Inverse inc.
+ * Copyright (C) 2008-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -202,6 +202,13 @@
 - (NSException *) saveComponent: (iCalRepeatableEntityObject *) newObject
 {
   return [container saveComponent: newObject];
+}
+
+- (NSException *) saveComponent: (iCalRepeatableEntityObject *) newObject
+                          force: (BOOL) forceSave
+{
+  return [container saveComponent: newObject
+                            force: forceSave];
 }
 
 #warning most of SOGoCalendarComponent and SOGoComponentOccurence share the same external interface... \

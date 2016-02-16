@@ -162,8 +162,7 @@
         component.setDelta(coordinates.duration * 15);
         newComponent(null, component).finally(function() {
           $timeout(function() {
-            Component.$ghost.pointerHandler = null;
-            Component.$ghost.component = null;
+            Component.$resetGhost();
           });
         });
       }
@@ -186,8 +185,11 @@
           // Immediately perform the adjustments
           component.$adjust(params).then(function() {
             $rootScope.$emit('calendars:list');
+          }, function(response) {
+            onComponentAdjustError(response, component, params);
+          }).finally(function() {
             $timeout(function() {
-              Component.$ghost = {};
+              Component.$resetGhost();
             });
           });
         else if (component.occurrenceId) {
@@ -199,7 +201,7 @@
               params: params
             },
             template: [
-              '<md-dialog flex="50" md-flex="80" sm-flex="90">',
+              '<md-dialog flex="50" sm-flex="80" xs-flex="90">',
               '  <md-dialog-content class="md-dialog-content">',
               '    <p>' + l('editRepeatingItem') + '</p>',
               '  </md-dialog-content>',
@@ -214,7 +216,7 @@
             $rootScope.$emit('calendars:list');
           }).finally(function() {
             $timeout(function() {
-              Component.$ghost = {};
+              Component.$resetGhost();
             });
           });
         }
@@ -226,12 +228,57 @@
       RecurrentComponentDialogController.$inject = ['$scope', '$mdDialog', 'component', 'params'];
       function RecurrentComponentDialogController($scope, $mdDialog, component, params) {
         $scope.updateThisOccurrence = function() {
-          component.$adjust(params).then($mdDialog.hide, $mdDialog.cancel);
+          component.$adjust(params).then($mdDialog.hide, function(response) {
+            $mdDialog.cancel().then(function() {
+              onComponentAdjustError(response, component, params);
+            });
+          });
         };
         $scope.updateAllOccurrences = function() {
           delete component.occurrenceId;
-          component.$adjust(params).then($mdDialog.hide, $mdDialog.cancel);
+          component.$adjust(params).then($mdDialog.hide, function(response) {
+            $mdDialog.cancel().then(function() {
+              onComponentAdjustError(response, component, params);
+            });
+          });
         };
+      }
+
+      function onComponentAdjustError(response, component, params) {
+        if (response.status == 403 &&
+            response.data && response.data.message && angular.isObject(response.data.message)) {
+          $mdDialog.show({
+            parent: angular.element(document.body),
+            clickOutsideToClose: false,
+            escapeToClose: false,
+            templateUrl: 'UIxAttendeeConflictDialog',
+            controller: AttendeeConflictDialogController,
+            controllerAs: '$AttendeeConflictDialogController',
+            locals: {
+              component: component,
+              params: params,
+              conflictError: response.data.message
+            }
+          }).then(function() {
+            $rootScope.$emit('calendars:list');
+          });
+        }
+      }
+
+      /**
+       * @ngInject
+       */
+      AttendeeConflictDialogController.$inject = ['$scope', '$mdDialog', 'component', 'params', 'conflictError'];
+      function AttendeeConflictDialogController($scope, $mdDialog, component, params, conflictError) {
+        var vm = this;
+
+        vm.conflictError = conflictError;
+        vm.cancel = $mdDialog.cancel;
+        vm.save = save;
+
+        function save() {
+          component.$adjust(angular.extend({ ignoreConflicts: true }, params)).then($mdDialog.hide);
+        }
       }
     }
 

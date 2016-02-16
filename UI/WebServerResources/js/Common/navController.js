@@ -66,7 +66,7 @@
 
     function onHttpError(event, response) {
       var message;
-      if (response.data && response.data.message)
+      if (response.data && response.data.message && angular.isString(response.data.message))
         message = response.data.message;
       else if (response.status)
         message = response.statusText;
@@ -85,7 +85,7 @@
           position: 'top right'
         });
       else
-        console.debug('untrap error');
+        $log.debug('untrap error');
     }
 
     // Listen to HTTP errors broadcasted from HTTP interceptor

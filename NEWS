@@ -15,6 +15,7 @@ Enhancements
  - [web] improved confirm dialogs for deletions
  - [web] allow resources to prevent invitations (#3410)
  - [web] warn when double-booking attendees and offer force save option
+ - [eas] now support EAS MIME truncation
 
 Bug fixes
  - [web] handle birthday dates before 1970
@@ -26,6 +27,7 @@ Bug fixes
  - [web] fixed batched delete of components (#3516)
  - [web] fixed mail draft autosave in preferences (#3519)
  - [web] fixed password change (#3496)
+ - [web] fixed saving of notification email for calendar changes (#3522)
  - [eas] allow EAS attachments get on 2nd-level mailboxes (#3505)
  - [eas] fix EAS bday shift (#3518)
 
