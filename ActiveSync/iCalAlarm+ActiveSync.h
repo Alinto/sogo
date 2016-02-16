@@ -30,6 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __ICALALARMACTIVESYNC_H__
 #define __ICALALARMACTIVESYNC_H__
 
+#import <NGCards/iCalAlarm.h>
 
 @class NSString;
 @class WOContext;

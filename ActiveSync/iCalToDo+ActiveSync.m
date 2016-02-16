@@ -29,11 +29,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #import "iCalToDo+ActiveSync.h"
 
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSTimeZone.h>
 
 #import <NGExtensions/NSString+misc.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WORequest.h>
 
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
+#import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalTimeZone.h>
 
 #include "NSDate+ActiveSync.h"
 #include "NSString+ActiveSync.h"

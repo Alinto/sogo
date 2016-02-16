@@ -30,6 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __NGVCARDACTIVESYNC_H__
 #define __NGVCARDACTIVESYNC_H__
 
+#import <NGCards/NGVCard.h>
 
 @class NSDictionary;
 @class NSString;

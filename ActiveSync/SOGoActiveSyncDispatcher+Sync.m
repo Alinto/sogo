@@ -29,10 +29,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #import "SOGoActiveSyncDispatcher+Sync.h"
 
+#import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSNull.h>
+#import <Foundation/NSProcessInfo.h>
+#import <Foundation/NSSortDescriptor.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
-
+#import <NGObjWeb/WORequest.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -40,15 +45,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <NGImap4/NSString+Imap4.h>
 
-
-
 #import <SOGo/NSArray+DAV.h>
+#import <SOGo/SOGoCache.h>
 #import <SOGo/NSDictionary+DAV.h>
+#import <SOGo/SOGoSystemDefaults.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoCacheGCSObject.h>
 
 #import <Appointments/iCalEntityObject+SOGo.h>
+#import <Appointments/SOGoAppointmentObject.h>
+#import <Appointments/SOGoTaskObject.h>
 
+#import <Contacts/SOGoContactGCSEntry.h>
 
-
+#import <Mailer/SOGoMailFolder.h>
 
 #include "iCalEvent+ActiveSync.h"
 #include "iCalToDo+ActiveSync.h"
@@ -59,7 +69,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "NSData+ActiveSync.h"
 #include "NSString+ActiveSync.h"
 #include "SOGoMailObject+ActiveSync.h"
+#include "SOGoSyncCacheObject.h"
 
+#include <unistd.h>
 
 @implementation SOGoActiveSyncDispatcher (Sync)
 

@@ -29,6 +29,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "NGDOMElement+ActiveSync.h"
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
 
 static NSArray *asElementArray = nil;
 

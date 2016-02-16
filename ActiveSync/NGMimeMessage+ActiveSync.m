@@ -29,7 +29,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #import "NGMimeMessage+ActiveSync.h"
 
+#import <Foundation/NSArray.h>
 
+#import <NGMail/NGMailAddress.h>
+#import <NGMail/NGMailAddressParser.h>
 
 #import <SOGo/NSString+Utilities.h>
 

@@ -31,6 +31,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __SOGOSYNCCACHEOBJECT_H__
 #define __SOGOSYNCCACHEOBJECT_H__
 
+#import <Foundation/NSObject.h>
 
 @class NSNull;
 

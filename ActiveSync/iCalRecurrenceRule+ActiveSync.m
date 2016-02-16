@@ -30,7 +30,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import "iCalRecurrenceRule+ActiveSync.h"
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
 
+#import <NGCards/iCalEvent.h>
+#import <NGCards/iCalByDayMask.h>
 
 #import "NSCalendarDate+ActiveSync.h"
 #import "NSDate+ActiveSync.h"

@@ -28,6 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+#import <Foundation/NSObject.h>
 
 @interface ActiveSyncProduct : NSObject
 {

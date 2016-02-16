@@ -30,6 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __NSARRAYSYNCCACHE_H__
 #define __NSARRAYSYNCCACHE_H__
 
+#import <Foundation/NSArray.h>
 
 @class NSDictionary;
 
