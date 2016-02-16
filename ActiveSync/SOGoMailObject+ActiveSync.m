@@ -1009,7 +1009,7 @@ struct GlobalObjectId {
       
       content = [content activeSyncRepresentationInContext: context];
       len = [content length];
-      truncated = 1;
+      truncated = 0;
 
       // We handle MIMETruncation
       switch (mimeTruncation)
@@ -1024,49 +1024,49 @@ struct GlobalObjectId {
           if ([content length] > 4096)
             {
               content = [content substringToIndex: 4096];
-              len = 4096;
+              len = 4096; truncated = 1;
             }
           break;
         case 2:
           if ([content length] > 5120)
             {
               content = [content substringToIndex: 5120];
-              len = 5120;
+              len = 5120; truncated = 1;
             }
           break;
         case 3:
           if ([content length] > 7168)
             {
               content = [content substringToIndex: 7168];
-              len = 7168;
+              len = 7168; truncated = 1;
             }
           break;
         case 4:
           if ([content length] > 10240)
             {
               content = [content substringToIndex: 10240];
-              len = 10240;
+              len = 10240; truncated = 1;
             }
           break;
         case 5:
           if ([content length] > 20480)
             {
               content = [content substringToIndex: 20480];
-              len = 20480;
+              len = 20480; truncated = 1;
             }
           break;
         case 6:
           if ([content length] > 51200)
             {
               content = [content substringToIndex: 51200];
-              len = 51200;
+              len = 51200; truncated = 1;
             }
           break;
         case 7:
           if ([content length] > 102400)
             {
               content = [content substringToIndex: 102400];
-              len = 102400;
+              len = 102400; truncated = 1;
             }
           break;
         case 8:
