@@ -19,7 +19,6 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSEnumerator.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NGCalendarDateRange.h>

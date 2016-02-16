@@ -19,22 +19,15 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSValue.h>
 
-#import <EOControl/EOQualifier.h>
 
-#import <NGCards/NGVCard.h>
 #import <NGCards/NGVCardReference.h>
 #import <NGCards/NGVList.h>
-#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
-#import <NGObjWeb/WOResponse.h>
-#import <NGObjWeb/SoComponent.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 
-#import <Contacts/SOGoContactObject.h>
 #import <Contacts/SOGoContactGCSList.h>
 #import <Contacts/SOGoContactGCSEntry.h>
 #import <Contacts/SOGoContactFolders.h>
@@ -43,9 +36,7 @@
 #import <Mailer/SOGoDraftsFolder.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
-#import <Mailer/SOGoMailFolder.h>
 #import <Mailer/SOGoMailLabel.h>
-#import <Mailer/SOGoMailObject.h>
 #import <Mailer/SOGoSentFolder.h>
 #import <SOGo/NSDictionary+URL.h>
 #import <SOGo/NSArray+Utilities.h>
@@ -53,13 +44,10 @@
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserSettings.h>
-#import <SOGoUI/UIxComponent.h>
 
 #import "UIxMailMainFrame.h"
-#import "UIxMailListActions.h"
 
 // Avoid compilation warnings
 @interface SOGoUserFolder (private)

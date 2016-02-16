@@ -18,11 +18,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCharacterSet.h>
-#import <Foundation/NSData.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSValue.h>
 
 #import <EOControl/EOQualifier.h>
 

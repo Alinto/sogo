@@ -23,7 +23,6 @@
 #ifndef MAPISTOREACTIVETABLES_H
 #define MAPISTOREACTIVETABLES_H
 
-#import <Foundation/NSObject.h>
 
 @class NSMutableArray;
 

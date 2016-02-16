@@ -21,16 +21,9 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSException.h>
-#import <Foundation/NSTimeZone.h>
-#import <Foundation/NSURL.h>
-#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOApplication.h>
-#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOCookie.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
@@ -47,8 +40,6 @@
 #import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoCASSession.h>
-#import <SOGo/SOGoConstants.h>
-#import <SOGo/SOGoDomainDefaults.h>
 #if defined(SAML2_CONFIG)
 #import <SOGo/SOGoSAML2Session.h>
 #endif /* SAML2_ENABLE */

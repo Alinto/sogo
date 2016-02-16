@@ -21,8 +21,6 @@
 
 // Note: this does not yet produce valid XML output
 
-#import <Foundation/NSObject.h>
-#include <SaxObjC/SaxObjC.h>
 
 @interface vcf2xml : NSObject
 {
@@ -34,7 +32,6 @@
 
 @end
 
-#include "common.h"
 
 @interface MySAXHandler : SaxDefaultHandler
 {

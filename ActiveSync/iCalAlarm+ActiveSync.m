@@ -29,16 +29,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #import "iCalAlarm+ActiveSync.h"
 
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 
 #import <NGExtensions/NSString+misc.h>
-#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 
-#import <NGCards/iCalAlarm.h>
-#import <NGCards/iCalEvent.h>
-#import <NGCards/iCalTrigger.h>
 
 @implementation iCalAlarm (ActiveSync)
 

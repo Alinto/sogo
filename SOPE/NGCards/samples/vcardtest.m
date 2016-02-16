@@ -20,12 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/Foundation.h>
 
-#import "CardElement.h"
-#import "CardGroup.h"
 
-#import "unittest.h"
 
 @interface subtest: unittest
 {

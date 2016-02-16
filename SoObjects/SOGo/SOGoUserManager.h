@@ -21,7 +21,6 @@
 #ifndef SOGOUSERMANAGER_H
 #define SOGOUSERMANAGER_H
 
-#import <Foundation/NSObject.h>
 
 #import "SOGoConstants.h"
 

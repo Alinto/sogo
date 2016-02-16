@@ -20,28 +20,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSData.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSValue.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "MAPIStoreContext.h"
-#import "MAPIStorePropertySelectors.h"
-#import "SOGoMAPIDBMessage.h"
 
-#import "MAPIStoreDBFolder.h"
-#import "MAPIStoreDBMessage.h"
-#import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreDBMessage
 

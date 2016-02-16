@@ -18,23 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSBundle.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSException.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSKeyValueCoding.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
-#import <Foundation/NSURL.h>
 
-#import <NGCards/iCalAlarm.h>
-#import <NGCards/iCalByDayMask.h>
-#import <NGCards/iCalDateTime.h>
-#import <NGCards/iCalEvent.h>
-#import <NGCards/iCalPerson.h>
-#import <NGCards/iCalRepeatableEntityObject.h>
-#import <NGCards/iCalRecurrenceRule.h>
 #import <NGCards/iCalToDo.h>
 #import <NGCards/iCalTrigger.h>
 
@@ -42,7 +27,6 @@
 #import <NGCards/NSCalendarDate+NGCards.h>
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/NSException+HTTP.h>
-#import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
@@ -53,27 +37,19 @@
 #import <Appointments/iCalAlarm+SOGo.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/iCalPerson+SOGo.h>
-#import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoWebAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
-#import <Appointments/SOGoAppointmentObject.h>
-#import <Appointments/SOGoAppointmentOccurence.h>
 #import <Appointments/SOGoTaskObject.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserManager.h>
-#import <SOGo/SOGoSource.h>
 #import <SOGo/SOGoPermissions.h>
-#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/WOResourceManager+SOGo.h>
 
-#import "../../Main/SOGo.h"
 
 #import "UIxComponentEditor.h"
-#import "UIxDatePicker.h"
 
 #define componentReadableWritable  0
 #define componentOwnerIsInvited    1

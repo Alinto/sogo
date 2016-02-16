@@ -20,14 +20,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSKeyValueCoding.h>
-#import <Foundation/NSString.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 
-#import <EOControl/EOQualifier.h>
 
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>

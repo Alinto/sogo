@@ -19,10 +19,6 @@
   02111-1307, USA.
 */
 
-#include <NGCards/iCalRecurrenceRule.h>
-#include <NGCards/iCalRecurrenceCalculator.h>
-#include <NGExtensions/NGCalendarDateRange.h>
-#include "common.h"
 
 static NSCalendarDate *dateForString(NSString *_s) {
   // copied from ogo-chkaptconflicts, maybe move to NGExtensions?

@@ -18,20 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSURL.h>
 
-#import "MAPIStoreUserContext.h"
 #import "NSString+MAPIStore.h"
-#import <SOGo/SOGoCacheGCSFolder.h>
 
-#import "MAPIStoreFallbackContext.h"
 
 #undef DEBUG
-#include <inttypes.h>
-#include <dlinklist.h>
-#include <mapistore/mapistore.h>
 
 @implementation MAPIStoreFallbackContext
 

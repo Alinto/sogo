@@ -20,19 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "MAPIStoreFolder.h"
-#import "MAPIStoreTypes.h"
 
-#import "MAPIStoreFolderTable.h"
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_nameid.h>
-#include <libmapiproxy.h>
 
 @implementation MAPIStoreFolderTable
 

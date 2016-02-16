@@ -19,7 +19,7 @@
  */
 
 #import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSEnumerator.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
@@ -31,8 +31,6 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <NGCards/iCalCalendar.h>
-#import <NGCards/iCalEvent.h>
-#import <NGCards/iCalPerson.h>
 
 #import <UI/Common/WODirectAction+SOGo.h>
 
@@ -44,7 +42,6 @@
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
 #import <Mailer/SOGoMailObject.h>
-#import <SOGo/SOGoParentFolder.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/NSString+Utilities.h>
 #import <Mailer/SOGoMailBodyPart.h>

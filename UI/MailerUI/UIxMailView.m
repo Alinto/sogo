@@ -19,13 +19,10 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSException.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WORequest.h>
-#import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSException+misc.h>
 #import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NSString+misc.h>
@@ -37,9 +34,6 @@
 #import <NGMail/NGMimeMessage.h>
 #import <NGMail/NGMimeMessageGenerator.h>
 
-#import <NGImap4/NGImap4Client.h>
-#import <NGImap4/NGImap4Connection.h>
-#import <NGImap4/NGImap4Envelope.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 
 #import <SOGo/NSDictionary+Utilities.h>
@@ -48,11 +42,7 @@
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
-#import <SOGo/SOGoUserManager.h>
-#import <SOGoUI/UIxComponent.h>
 #import <Mailer/SOGoMailObject.h>
-#import <Mailer/SOGoDraftObject.h>
-#import <Mailer/SOGoDraftsFolder.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailFolder.h>
 #import <MailPartViewers/UIxMailRenderingContext.h> // cyclic

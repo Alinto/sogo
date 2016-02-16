@@ -21,7 +21,6 @@
 #ifndef NSSTRING_DAV_H
 #define NSSTRING_DAV_H
 
-#import <Foundation/NSString.h>
 
 @class NSMutableDictionary;
 

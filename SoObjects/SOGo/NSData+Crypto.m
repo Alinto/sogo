@@ -27,8 +27,6 @@
 #include <crypt.h>
 #endif
 
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -36,7 +34,6 @@
 #include <unistd.h>
 
 #if defined(HAVE_GNUTLS)
-#include <stdint.h>
 #include <gnutls/gnutls.h>
 #include <gnutls/crypto.h>
 #include "md4.h"
@@ -62,7 +59,7 @@
 
 static unsigned charTo4Bits(char c);
 #if defined(HAVE_GNUTLS)
-static BOOL check_gnutls_init();
+static BOOL check_gnutls_init(void);
 static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
 #endif
 
@@ -742,7 +739,7 @@ static unsigned charTo4Bits(char c)
 #if defined(HAVE_GNUTLS)
 static BOOL didGlobalInit = NO;
 
-static BOOL check_gnutls_init() {
+static BOOL check_gnutls_init(void) {
   if (!didGlobalInit) {
     /* Global system initialization*/
     if (gnutls_global_init()) {

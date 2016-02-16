@@ -19,7 +19,6 @@
   02111-1307, USA.
 */
 
-#include "common.h"
 
 @class NGCalendarDateRange;
 @class iCalRecurrenceRule;
@@ -36,8 +35,6 @@
 
 @end
 
-#include "iCalRecurrenceRule.h"
-#include "iCalRecurrenceCalculator.h"
 
 @implementation iCalRecurrenceCalculatorTests
 

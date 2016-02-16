@@ -23,6 +23,8 @@
 
 #import "SOGoAppointmentFolder.h"
 
+size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer);
+
 @interface SOGoWebAppointmentFolder : SOGoAppointmentFolder
 
 - (void) setUsername: (NSString *) username

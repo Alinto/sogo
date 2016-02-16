@@ -20,34 +20,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSException.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSObject+Values.h>
-#import <EOControl/EOQualifier.h>
-#import <EOControl/EOFetchSpecification.h>
-#import <EOControl/EOSortOrdering.h>
-#import <GDLContentStore/GCSFolder.h>
 #import <SOGo/NSArray+Utilities.h>
-#import <SOGo/SOGoGCSFolder.h>
-#import <SOGo/SOGoParentFolder.h>
-#import <SOGo/SOGoPermissions.h>
-#import <SOGo/SOGoUser.h>
 
-#import "MAPIStoreGCSBaseContext.h"
-#import "MAPIStoreTypes.h"
-#import "MAPIStoreUserContext.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
-#import "SOGoMAPIDBMessage.h"
 
-#import "MAPIStoreGCSFolder.h"
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
 
 static Class NSNumberK;
 

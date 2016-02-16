@@ -18,11 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSURL.h>
 
 #import <SOGo/SOGoSystemDefaults.h>
-#import <Appointments/SOGoAppointmentFolder.h>
-#import <Appointments/SOGoWebAppointmentFolder.h>
 
 #import "UIxCalendarFolderLinksTemplate.h"
 

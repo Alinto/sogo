@@ -18,9 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSError.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSString.h>
 
@@ -36,7 +34,6 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserProfile.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoSystemDefaults.h>

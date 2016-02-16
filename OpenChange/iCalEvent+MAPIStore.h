@@ -23,9 +23,7 @@
 #ifndef ICALEVENT_MAPISTORE_H
 #define ICALEVENT_MAPISTORE_H
 
-#include <talloc.h>
 
-#import <NGCards/iCalEvent.h>
 
 @class MAPIStoreUserContext;
 @class NSDictionary;

@@ -24,11 +24,9 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
 
-#import <NGCards/iCalEvent.h>
 
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
-#import <SOGo/SOGoUser.h>
 #import "iCalPerson+SOGo.h"
 
 #import "SOGoAptMailNotification.h"

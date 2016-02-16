@@ -18,8 +18,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSString.h>
-#import <Foundation/NSArray.h>
 
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoUser.h>

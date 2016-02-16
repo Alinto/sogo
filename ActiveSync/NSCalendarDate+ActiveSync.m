@@ -29,8 +29,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #import "NSCalendarDate+ActiveSync.h"
 
-#import <Foundation/NSString.h>
-#import <Foundation/NSTimeZone.h>
 
 #define ONE_DAY 86400
 

@@ -24,13 +24,8 @@
    instances of a given table, independently from its store and context.
    Primary useful for notifications across different connections. */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSString.h>
 
-#import "MAPIStoreFolder.h"
-#import "MAPIStoreTable.h"
 
-#import "MAPIStoreActiveTables.h"
 
 @interface MAPIStoreActiveTableRecord : NSObject
 {

@@ -23,7 +23,6 @@
 #ifndef MAPISTOREMAPPING_H
 #define MAPISTOREMAPPING_H
 
-#import <Foundation/NSObject.h>
 
 @class NSMutableDictionary;
 @class NSString;

@@ -20,27 +20,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <talloc.h>
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSData.h>
-#import <Foundation/NSDictionary.h>
 
-#import <Mailer/SOGoMailObject.h>
-#import <NGExtensions/NGBase64Coding.h>
 
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "NSValue+MAPIStore.h"
 
-#import "MAPIStoreMailFolder.h"
-#import "MAPIStoreSharingMessage.h"
-#import "MAPIStoreTypes.h"
 
-#include <gen_ndr/property.h>
-#include <mapistore/mapistore_errors.h>
-#include <mapistore/mapistore_nameid.h>
 
 @implementation MAPIStoreSharingMessage
 

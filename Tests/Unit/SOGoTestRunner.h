@@ -23,7 +23,6 @@
 #ifndef SOGOTESTRUNNER_H
 #define SOGOTESTRUNNER_H
 
-#import <Foundation/NSObject.h>
 
 @class NSException;
 @class NSMutableArray;

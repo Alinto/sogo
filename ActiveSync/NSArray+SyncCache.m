@@ -29,9 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #import "NSArray+SyncCache.h"
 
-#import <Foundation/NSDictionary.h>
 
-#include "SOGoSyncCacheObject.h"
 
 @implementation NSMutableArray (SyncCache)
 

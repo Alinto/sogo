@@ -22,7 +22,6 @@
 #ifndef __Appointments_SOGoAppointmentObject_H__
 #define __Appointments_SOGoAppointmentObject_H__
 
-#import <SOGo/SOGoContentObject.h>
 
 @class NSArray;
 @class NSException;

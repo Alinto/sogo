@@ -23,7 +23,6 @@
 #ifndef ICALXMLRENDERER_H
 #define ICALXMLRENDERER_H
 
-#import <Foundation/NSObject.h>
 
 @class NSMutableString;
 @class NSString;

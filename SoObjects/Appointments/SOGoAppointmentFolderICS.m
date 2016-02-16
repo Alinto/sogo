@@ -20,7 +20,6 @@
 
 #import <Foundation/NSString.h>
 
-#import <NGCards/CardElement.h>
 #import <NGCards/iCalCalendar.h>
 
 #import "SOGoAppointmentFolderICS.h"

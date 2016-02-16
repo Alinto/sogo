@@ -30,7 +30,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __ICALTIMEZONEACTIVESYNC_H__
 #define __ICALTIMEZONEACTIVESYNC_H__
 
-#import <NGCards/iCalTimeZone.h>
 
 @class NSString;
 @class WOContext;

@@ -23,7 +23,6 @@
 #ifndef SOGOPERMISSIONS_H
 #define SOGOPERMISSIONS_H
 
-#import <Foundation/NSString.h>
 
 #import <NGObjWeb/SoPermissions.h>
 

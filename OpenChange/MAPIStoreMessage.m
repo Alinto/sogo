@@ -20,40 +20,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSBundle.h>
-#import <Foundation/NSData.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSURL.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <SOGo/SOGoObject.h>
-#import <SOGo/SOGoPermissions.h>
-#import <SOGo/SOGoUser.h>
 
-#import "MAPIStoreActiveTables.h"
-#import "MAPIStoreAttachment.h"
-#import "MAPIStoreAttachmentTable.h"
-#import "MAPIStoreContext.h"
-#import "MAPIStoreEmbeddedMessage.h"
-#import "MAPIStoreFolder.h"
-#import "MAPIStoreMessageTable.h"
-#import "MAPIStorePropertySelectors.h"
-#import "MAPIStoreSamDBUtils.h"
-#import "MAPIStoreTypes.h"
-#import "MAPIStoreUserContext.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
-#import "RTFHandler.h"
 
-#import "MAPIStoreMessage.h"
 
 #undef DEBUG
-#include <stdbool.h>
-#include <gen_ndr/exchange.h>
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
 
 static Class MAPIStoreFolderK, MAPIStoreEmbeddedMessageK;
 

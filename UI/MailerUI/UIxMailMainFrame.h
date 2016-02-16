@@ -21,7 +21,6 @@
 #ifndef UIXMAILMAINFRAME_H
 #define UIXMAILMAINFRAME_H
 
-#import "../SOGoUI/UIxComponent.h"
 
 @class SOGoMailLabel;
 

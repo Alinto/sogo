@@ -23,9 +23,7 @@
 #ifndef MAPISTORESOGOOBJECT_H
 #define MAPISTORESOGOOBJECT_H
 
-#include <talloc.h>
 
-#import "MAPIStoreObject.h"
 
 @class NSDate;
 @class NSData;

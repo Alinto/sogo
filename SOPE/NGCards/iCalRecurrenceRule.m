@@ -184,12 +184,9 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSException.h>
 #import <NGExtensions/NSString+Ext.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import <ctype.h>
 
 #import "NSCalendarDate+ICal.h"
 #import "NSCalendarDate+NGCards.h"
@@ -197,7 +194,6 @@
 
 #import "CardGroup.h"
 #import "iCalByDayMask.h"
-#import "iCalRecurrenceRule.h"
 
 NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
 				  @"SA" };

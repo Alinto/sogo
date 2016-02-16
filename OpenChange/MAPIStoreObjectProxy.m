@@ -20,17 +20,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import "MAPIStorePropertySelectors.h"
 #import "NSString+MAPIStore.h"
 
-#import "MAPIStoreObjectProxy.h"
 
 #undef DEBUG
-#include <stdbool.h>
-#include <talloc.h>
-#include <gen_ndr/exchange.h>
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreObjectProxy
 

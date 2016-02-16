@@ -23,7 +23,6 @@
 #ifndef MAPISTOREFALLBACKCONTEXT_H
 #define MAPISTOREFALLBACKCONTEXT_H
 
-#import "MAPIStoreDBBaseContext.h"
 
 @interface MAPIStoreFallbackContext : MAPIStoreDBBaseContext
 

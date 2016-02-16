@@ -30,7 +30,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __NSDATEACTIVESYNC_H__
 #define __NSDATEACTIVESYNC_H__
 
-#import <Foundation/NSDate.h>
 
 @class NSString;
 @class WOContext;

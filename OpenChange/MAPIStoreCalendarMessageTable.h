@@ -23,7 +23,6 @@
 #ifndef MAPISTORECALENDARMESSAGETABLE_H
 #define MAPISTORECALENDARMESSAGETABLE_H
 
-#import "MAPIStoreGCSMessageTable.h"
 
 @interface MAPIStoreCalendarMessageTable : MAPIStoreGCSMessageTable
 

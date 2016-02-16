@@ -26,7 +26,6 @@
 #import <SoObjects/SOGo/NSString+Utilities.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
-#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOResponse.h>
 #define COMPILING_NGOBJWEB 1 /* we want httpRequest for parsing multi-part
                                 form data */
@@ -35,12 +34,9 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NGBase64Coding.h>
+#import <NGHttp/NGHttpRequest.h>
 #import <NGMime/NGMimeMultipartBody.h>
 
-#import <Contacts/SOGoContactObject.h>
-#import <Contacts/SOGoContactFolder.h>
-#import <Contacts/SOGoContactFolders.h>
-#import <Contacts/SOGoContactGCSFolder.h>
 #import <Contacts/NSDictionary+LDIF.h>
 
 #import <SoObjects/Contacts/NGVCard+SOGo.h>
@@ -49,7 +45,6 @@
 #import <SoObjects/Contacts/SOGoContactLDIFEntry.h>
 #import <SoObjects/Contacts/SOGoContactGCSList.h>
 #import <SoObjects/Contacts/SOGoContactGCSFolder.h>
-#import <GDLContentStore/GCSFolder.h>
 
 #import <SOGo/NSString+Utilities.h>
 

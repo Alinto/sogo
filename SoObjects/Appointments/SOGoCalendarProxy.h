@@ -23,7 +23,6 @@
 #ifndef SOGOCALENDARPROXY_H
 #define SOGOCALENDARPROXY_H
 
-#import <SOGo/SOGoFolder.h>
 
 @interface SOGoCalendarProxy : SOGoFolder
 {

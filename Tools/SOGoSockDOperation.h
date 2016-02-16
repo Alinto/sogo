@@ -23,7 +23,6 @@
 #ifndef SOGOSOCKDOPERATION_H
 #define SOGOSOCKDOPERATION_H
 
-#import <Foundation/NSObject.h>
 
 @class NGActiveSocket;
 

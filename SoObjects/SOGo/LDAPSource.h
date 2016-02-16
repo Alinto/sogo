@@ -21,10 +21,8 @@
 #ifndef LDAPSOURCE_H
 #define LDAPSOURCE_H
 
-#import <Foundation/NSObject.h>
 
 #include "SOGoSource.h"
-#include "SOGoConstants.h"
 
 @class LDAPSourceSchema;
 @class NGLdapEntry;

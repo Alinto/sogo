@@ -19,9 +19,6 @@
  */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSException.h>
-#import <Foundation/NSString.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -31,8 +28,6 @@
 #import <NGStreams/NGInternetSocketAddress.h>
 
 #import "NSString+Utilities.h"
-#import "SOGoAuthenticator.h"
-#import "SOGoDomainDefaults.h"
 #import "SOGoStaticAuthenticator.h"
 #import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"

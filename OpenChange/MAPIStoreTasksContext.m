@@ -20,16 +20,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSString.h>
-#import <Appointments/SOGoAppointmentFolders.h>
 
-#import "MAPIStoreTasksFolder.h"
-#import "MAPIStoreUserContext.h"
 
-#import "MAPIStoreTasksContext.h"
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
 
 static Class MAPIStoreTasksFolderK;
 

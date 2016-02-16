@@ -18,21 +18,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSKeyValueCoding.h>
-#import <Foundation/NSValue.h>
 
-#import <SaxObjC/SaxAttributes.h>
-#import <SaxObjC/SaxContentHandler.h>
 #import <SaxObjC/SaxLexicalHandler.h>
-#import <SaxObjC/SaxXMLReader.h>
 #import <SaxObjC/SaxXMLReaderFactory.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSString+Encoding.h>
-#import <NGObjWeb/SoObjects.h>
 
 #include <libxml/encoding.h>
 

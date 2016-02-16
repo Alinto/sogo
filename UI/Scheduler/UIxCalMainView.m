@@ -18,28 +18,21 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSKeyValueCoding.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
 
-#import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WORequest.h>
-#import <NGObjWeb/WOResponse.h>
 
 #import <NGCards/iCalPerson.h>
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
-#import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
 
-#import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
 
 #import "UIxCalMainView.h"

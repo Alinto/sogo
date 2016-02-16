@@ -23,10 +23,8 @@
 #include "md4.h"
 
 #include <stdalign.h>
-#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
 
 #if USE_UNLOCKED_IO
 # include "unlocked-io.h"

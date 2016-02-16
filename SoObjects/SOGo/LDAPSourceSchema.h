@@ -23,7 +23,6 @@
 #ifndef LDAPSOURCESCHEMA_H
 #define LDAPSOURCESCHEMA_H
 
-#import <Foundation/NSObject.h>
 
 @class NSMutableDictionary;
 @class NGLdapConnection;

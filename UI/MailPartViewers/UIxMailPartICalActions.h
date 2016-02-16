@@ -23,7 +23,6 @@
 #ifndef UIXMAILPARTICALACTIONS_H
 #define UIXMAILPARTICALACTIONS_H
 
-#import <NGObjWeb/WODirectAction.h>
 
 @class iCalCalendar;
 @class SOGoMailBodyPart;

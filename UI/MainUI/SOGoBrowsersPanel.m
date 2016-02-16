@@ -21,8 +21,6 @@
  */
 
 #import <NGObjWeb/WEClientCapabilities.h>
-#import <NGObjWeb/WOContext.h>
-#import <NGObjWeb/WORequest.h>
 
 #import "SOGoBrowsersPanel.h"
 

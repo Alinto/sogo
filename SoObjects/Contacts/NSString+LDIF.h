@@ -23,7 +23,6 @@
 #ifndef NSSTRING_LDIF_H
 #define NSSTRING_LDIF_H
 
-#import <Foundation/NSString.h>
 
 @interface NSString (SOGoLDIF)
 

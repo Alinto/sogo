@@ -19,16 +19,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSException.h>
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoObject.h>
 
 #import <GDLContentStore/GCSFolderManager.h>
-#import <GDLContentStore/GCSFolder.h>
 
 #import "SOGoToolRestore.h"
 

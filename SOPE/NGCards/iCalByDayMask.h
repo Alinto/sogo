@@ -21,7 +21,6 @@
 #ifndef ICALBYDAYMASK_H
 #define ICALBYDAYMASK_H
 
-#import <Foundation/NSObject.h>
 
 #import "iCalRecurrenceRule.h"
 

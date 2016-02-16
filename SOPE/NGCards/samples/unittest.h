@@ -23,7 +23,6 @@
 #ifndef UNITTEST_H
 #define UNITTEST_H
 
-#import <Foundation/NSObject.h>
 
 @interface unittest : NSObject
 

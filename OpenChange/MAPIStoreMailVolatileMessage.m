@@ -25,54 +25,20 @@
    - merge some code in a common module with SOGoDraftObject
 */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSData.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSScanner.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSValue.h>
-#import <NGExtensions/NGBase64Coding.h>
-#import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSObject+Values.h>
 #import <NGExtensions/NSString+Encoding.h>
-#import <NGMime/NGMimeBodyPart.h>
-#import <NGMime/NGMimeMultipartBody.h>
-#import <NGMail/NGMimeMessage.h>
-#import <NGMail/NGMimeMessageGenerator.h>
-#import <NGImap4/NGImap4Client.h>
-#import <NGImap4/NGImap4Connection.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSString+Utilities.h>
-#import <SOGo/SOGoCacheObject.h>
-#import <SOGo/SOGoDomainDefaults.h>
-#import <SOGo/SOGoMailer.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserManager.h>
-#import <Mailer/SOGoMailFolder.h>
 #import <Mailer/NSString+Mail.h>
 
-#import "Codepages.h"
-#import "MAPIStoreAttachment.h"
-#import "MAPIStoreAttachmentTable.h"
-#import "MAPIStoreContext.h"
-#import "MAPIStoreMailFolder.h"
-#import "MAPIStoreMIME.h"
-#import "MAPIStoreMapping.h"
-#import "MAPIStoreSamDBUtils.h"
-#import "MAPIStoreTypes.h"
-#import "MAPIStoreUserContext.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
-#import "MAPIStoreMailVolatileMessage.h"
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
-#include <mapistore/mapistore_nameid.h>
 
 static Class NSNumberK = Nil;
 

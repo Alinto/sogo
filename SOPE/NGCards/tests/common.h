@@ -22,9 +22,5 @@
 #ifndef __NGiCalTests_common_H__
 #define __NGiCalTests_common_H__
 
-#import <Foundation/Foundation.h>
-#import <SenTestingKit/SenTestingKit.h>
-#include <NGExtensions/NGExtensions.h>
-#include <NGExtensions/NGCalendarDateRange.h>
 
 #endif /* __NGiCalTests_common_H__ */

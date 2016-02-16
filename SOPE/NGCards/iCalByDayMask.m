@@ -20,13 +20,10 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
 #import "iCalByDayMask.h"
 
-#import <ctype.h>
-#import <math.h>
 
 @interface iCalByDayMask (PrivateAPI)
 

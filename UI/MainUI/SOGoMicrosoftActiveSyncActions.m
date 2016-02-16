@@ -19,16 +19,12 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSBundle.h>
 
 #import <SOGo/SOGoCache.h>
 #import <SOGo/NSObject+Utilities.h>
-#import <SOGo/SOGoFolder.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
-#import <NGObjWeb/WODirectAction.h>
-#import <NGObjWeb/WORequest.h>
-#import <NGObjWeb/WOResponse.h>
+#import <NGObjWeb/WOContext.h>
 
 #import <Common/WODirectAction+SOGo.h>
 #import <ActiveSync/SOGoActiveSyncDispatcher.h>

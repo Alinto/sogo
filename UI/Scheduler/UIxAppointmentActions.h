@@ -21,7 +21,6 @@
 #ifndef UIXAPPOINTMENTACTIONS_H
 #define UIXAPPOINTMENTACTIONS_H
 
-#import <NGObjWeb/WODirectAction.h>
 
 @interface UIxAppointmentActions : WODirectAction
 

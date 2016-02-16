@@ -23,7 +23,6 @@
 #ifndef SOGOWEBDAVACLMANAGER_H
 #define SOGOWEBDAVACLMANAGER_H
 
-#import <Foundation/NSObject.h>
 
 @class NSDictionary;
 @class NSMutableDictionary;

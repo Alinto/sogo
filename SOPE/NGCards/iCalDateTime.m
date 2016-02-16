@@ -19,7 +19,6 @@
  */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
 #import <NGExtensions/NSObject+Logs.h>

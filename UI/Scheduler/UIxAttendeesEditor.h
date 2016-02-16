@@ -21,7 +21,6 @@
 #ifndef UIXATTENDEESEDITOR_H
 #define UIXATTENDEESEDITOR_H
 
-#import <SOGoUI/UIxComponent.h>
 
 @interface UIxAttendeesEditor : UIxComponent
 {

@@ -20,7 +20,6 @@
 */
 
 #import <Foundation/NSValue.h>
-#import <Foundation/NSString.h>
 
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>

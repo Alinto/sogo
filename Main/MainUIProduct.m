@@ -19,7 +19,6 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSObject.h>
 
 @interface MainUIProduct : NSObject
 {
@@ -27,7 +26,6 @@
 
 @end
 
-#import <Foundation/Foundation.h>
 
 @implementation MainUIProduct
 

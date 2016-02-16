@@ -20,33 +20,25 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
-#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSCalendarDate.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoPermissions.h>
 #import <NGObjWeb/SoSecurityManager.h>
-#import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSNull+misc.h>
 
-#import <NGCards/NGVCard.h>
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
-#import <SOGo/SOGoContentObject.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 
 #import <Contacts/NGVCard+SOGo.h>
-#import <Contacts/SOGoContactFolder.h>
 #import <Contacts/SOGoContactFolders.h>
-#import <Contacts/SOGoContactObject.h>
 #import <Contacts/SOGoContactGCSEntry.h>
 #import <Contacts/SOGoContactGCSFolder.h>
 

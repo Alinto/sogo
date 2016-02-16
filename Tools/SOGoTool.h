@@ -21,7 +21,6 @@
 #ifndef SOGOTOOL_H
 #define SOGOTOOL_H
 
-#import <Foundation/NSObject.h>
 
 // void printStringOnChannel(int channel, NSString * format, ...);
 

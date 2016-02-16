@@ -22,8 +22,6 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSLock.h>
 #import <Foundation/NSTimer.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
@@ -33,7 +31,6 @@
 
 #import <GDLAccess/EOAdaptor.h>
 #import <GDLAccess/EOAdaptorContext.h>
-#import <GDLAccess/EOAdaptorChannel.h>
 
 #import "GCSChannelManager.h"
 #import "NSURL+GCS.h"

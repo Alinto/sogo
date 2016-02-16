@@ -20,27 +20,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSException.h>
 
 #import <NGExtensions/NSObject+Logs.h>
-#import <EOControl/EOQualifier.h>
 
-#import <SOGo/EOBitmaskQualifier.h>
-#import "MAPIStoreActiveTables.h"
-#import "MAPIStoreObject.h"
-#import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
-#import "MAPIStoreContext.h"
-#import "MAPIStoreObject.h"
 
-#import "MAPIStoreTable.h"
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
-#include <libmapiproxy.h>
 
 @interface MAPIStoreTable (Private)
 

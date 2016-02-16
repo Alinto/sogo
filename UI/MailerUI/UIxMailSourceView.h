@@ -21,7 +21,6 @@
 #ifndef UIXMAILSOURCEVIEW_H
 #define UIXMAILSOURCEVIEW_H
 
-#import <NGObjWeb/WODirectAction.h>
 
 @interface UIxMailSourceView : WODirectAction
 

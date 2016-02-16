@@ -20,18 +20,11 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
-#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
-#import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NSNull+misc.h>
@@ -54,8 +47,6 @@
 #import "NSData+Mail.h"
 #import "NSDictionary+Mail.h"
 #import "SOGoMailFolder.h"
-#import "SOGoMailAccount.h"
-#import "SOGoMailAccounts.h"
 #import "SOGoMailManager.h"
 #import "SOGoMailBodyPart.h"
 

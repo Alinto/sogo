@@ -19,7 +19,6 @@
  */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSString.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext.h>

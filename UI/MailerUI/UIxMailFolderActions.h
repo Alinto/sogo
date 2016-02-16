@@ -21,7 +21,6 @@
 #ifndef UIXMAILFOLDERACTIONS_H
 #define UIXMAILFOLDERACTIONS_H
 
-#import <NGObjWeb/WODirectAction.h>
 
 @class WOResponse;
 

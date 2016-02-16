@@ -23,7 +23,6 @@
 #ifndef	NSARRAY_SCHEDULER_H
 #define	NSARRAY_SCHEDULER_H
 
-#import <Foundation/NSArray.h>
 
 // See [UIxCalListingActions initialize]
 #define eventNameIndex              0

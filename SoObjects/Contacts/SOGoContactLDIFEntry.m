@@ -20,13 +20,9 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 
-#import <NGCards/NGVCard.h>
-#import <NGCards/CardVersitRenderer.h>
 
 #import <SOGo/SOGoBuild.h>
-#import <SOGo/SOGoSource.h>
 #import <SOGo/SOGoPermissions.h>
 
 #import "NGVCard+SOGo.h"

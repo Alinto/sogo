@@ -21,7 +21,6 @@
 #ifndef UIXAPPOINTMENTEDITOR_H
 #define UIXAPPOINTMENTEDITOR_H
 
-#import <SOGoUI/UIxComponent.h>
 
 @class iCalToDo;
 @class NSString;

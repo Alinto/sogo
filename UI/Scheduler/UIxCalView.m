@@ -18,13 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/Foundation.h>
 
-#import <NGObjWeb/SoSecurityManager.h>
-#import <NGObjWeb/SoUser.h>
 #import <NGObjWeb/WOResponse.h>
-#import <NGObjWeb/WORequest.h>
-#import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -33,20 +28,15 @@
 
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
-#import <Appointments/SOGoAppointmentObject.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
-#import <SOGo/SOGoObject.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
 
 #import <SOGoUI/SOGoAptFormatter.h>
 
-#import <NGCards/iCalCalendar.h>
-#import <NGCards/iCalEvent.h>
-#import <GDLContentStore/GCSFolder.h>
 
 #import "UIxCalView.h"
 

@@ -23,7 +23,6 @@
 #ifndef NGVLIST_H
 #define NGVLIST_H
 
-#import "CardGroup.h"
 
 #import "NGVCard.h"
 

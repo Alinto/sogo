@@ -19,13 +19,7 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSData.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSValue.h>
 
-#import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
@@ -37,9 +31,7 @@
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoSource.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserManager.h>
-#import <SOGo/SOGoPermissions.h>
 
 #import "SOGoAppointmentFolder.h"
 #import "SOGoAppointmentFolders.h"

@@ -21,7 +21,6 @@
  */
 
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 

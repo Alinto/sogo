@@ -30,7 +30,6 @@
 @class NSString;
 @class iCalPerson;
 
-#import <SOGo/SOGoConstants.h>
 
 @interface SOGoAptMailReceipt : SOGoAptMailNotification
 {

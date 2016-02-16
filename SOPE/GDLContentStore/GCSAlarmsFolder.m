@@ -18,16 +18,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSURL.h>
-#import <Foundation/NSUserDefaults.h>
-#import <Foundation/NSValue.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSNull+misc.h>
 
-#import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLAccess/EOAdaptorContext.h>
 #import <GDLAccess/EOAttribute.h>
 #import <GDLAccess/EOEntity.h>
@@ -37,7 +31,6 @@
 #import "GCSChannelManager.h"
 #import "GCSFolderManager.h"
 #import "GCSSpecialQueries.h"
-#import "GCSStringFormatter.h"
 #import "NSURL+GCS.h"
 
 #import "GCSAlarmsFolder.h"

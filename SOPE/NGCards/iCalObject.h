@@ -24,8 +24,6 @@
 #ifndef __NGiCal_iCalObject_H__
 #define __NGiCal_iCalObject_H__
 
-#import <Foundation/NSObject.h>
-#import <Foundation/NSDate.h>
 
 /*
   iCalObject

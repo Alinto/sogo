@@ -18,27 +18,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCharacterSet.h>
-#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSURL.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
-#import <NGObjWeb/WOApplication.h>
 
 #import <SOGo/NSString+Utilities.h>
-#import <SOGo/SOGoProductLoader.h>
-#import "SOGo/SOGoCredentialsFile.h"
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserFolder.h>
-#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoSystemDefaults.h>
-#import <SOGo/SOGoUserSettings.h>
-#import <Mailer/SOGoMailAccounts.h>
-#import <Mailer/SOGoMailAccount.h>
 
 #import <SOGo/SOGoCacheGCSObject.h>
 

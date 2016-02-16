@@ -30,10 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __SOGOACTIVESYNCDISPATCHERSYNC_H__
 #define __SOGOACTIVESYNCDISPATCHERSYNC_H__
 
-#import "SOGoActiveSyncDispatcher.h"
 
-#import <DOM/DOMElement.h>
-#import <DOM/DOMProtocols.h>
 
 @class WOResponse;
 

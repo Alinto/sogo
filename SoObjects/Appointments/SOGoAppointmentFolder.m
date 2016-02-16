@@ -20,34 +20,19 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSTimeZone.h>
-#import <Foundation/NSURL.h>
-#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
+#import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
-#import <NGObjWeb/WOMessage.h>
-#import <NGObjWeb/WORequest.h>
-#import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSString+misc.h>
 #import <GDLContentStore/GCSFolder.h>
-#import <DOM/DOMElement.h>
-#import <DOM/DOMProtocols.h>
 #import <EOControl/EOQualifier.h>
-#import <EOControl/EOSortOrdering.h>
 #import <NGCards/iCalAlarm.h>
-#import <NGCards/iCalCalendar.h>
-#import <NGCards/iCalEvent.h>
 #import <NGCards/iCalFreeBusy.h>
 #import <NGCards/iCalDateTime.h>
-#import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRecurrenceCalculator.h>
-#import <NGCards/iCalRecurrenceRule.h>
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalTimeZonePeriod.h>
 #import <NGCards/iCalToDo.h>
@@ -67,7 +52,6 @@
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserManager.h>
@@ -86,7 +70,6 @@
 #import "SOGoTaskObject.h"
 #import "SOGoWebAppointmentFolder.h"
 
-#import "SOGoAppointmentFolder.h"
 
 #define defaultColor @"#AAAAAA"
 

@@ -19,7 +19,6 @@
   02111-1307, USA.
 */
 
-#import <Foundation/Foundation.h>
 
 @class EOQualifier, NSString, EOSortOrdering;
 
@@ -34,11 +33,6 @@
 
 @end
 
-#include <NGCards/iCalDataSource.h>
-#include <NGCards/iCalObject.h>
-#include <EOControl/EOQualifier.h>
-#include <EOControl/EOSortOrdering.h>
-#include "common.h"
 
 @implementation iCal3Tool
 

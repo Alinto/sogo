@@ -22,12 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSException.h>
-#import <Foundation/NSFileManager.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
-#import <Foundation/NSValue.h>
 #import <Foundation/NSPropertyList.h>
 
 #import "SOGoTool.h"

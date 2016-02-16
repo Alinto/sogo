@@ -27,102 +27,22 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
-#include "SOGoActiveSyncDispatcher.h"
-
-#import <Foundation/NSArray.h>
-#import <Foundation/NSData.h>
-#import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSCalendarDate.h>
-#if GNUSTEP_BASE_MINOR_VERSION >= 21
-#import <Foundation/NSLocale.h>
-#endif
-#import <Foundation/NSProcessInfo.h>
-#import <Foundation/NSTimeZone.h>
-#import <Foundation/NSURL.h>
-#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
-#import <NGObjWeb/SoPermissions.h>
-#import <NGObjWeb/SoSecurityManager.h>
-#import <NGObjWeb/SoApplication.h>
-#import <NGObjWeb/SoObject.h>
-#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
-#import <NGObjWeb/WOCookie.h>
-#import <NGObjWeb/WODirectAction.h>
-#import <NGObjWeb/WORequest.h>
-#import <NGObjWeb/WOResponse.h>
-
-#import <NGCards/iCalCalendar.h>
-#import <NGCards/iCalEntityObject.h>
-#import <NGCards/iCalEvent.h>
-#import <NGCards/iCalToDo.h>
-#import <NGCards/NGVCard.h>
-
-#import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
-#import <NGExtensions/NGCalendarDateRange.h>
-#import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSString+Encoding.h>
-
-#import <NGImap4/NGImap4Client.h>
-#import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NSString+Imap4.h>
-
-#import <NGMime/NGMimeBodyPart.h>
-#import <NGMime/NGMimeFileData.h>
-#import <NGMime/NGMimeMultipartBody.h>
-#import <NGMime/NGMimeType.h>
-#import <NGMail/NGMimeMessageParser.h>
-#import <NGMail/NGMimeMessage.h>
-#import <NGMail/NGMimeMessageGenerator.h>
-
-#import <DOM/DOMElement.h>
-#import <DOM/DOMProtocols.h>
-#import <DOM/DOMSaxBuilder.h>
-
-#import <EOControl/EOQualifier.h>
-
 #import <SOGo/NSArray+DAV.h>
 #import <SOGo/NSDictionary+DAV.h>
-#import <SOGo/SOGoCache.h>
-#import <SOGo/SOGoCacheGCSObject.h>
-#import <SOGo/SOGoDAVAuthenticator.h>
-#import <SOGo/SOGoDomainDefaults.h>
-#import <SOGo/SOGoMailer.h>
-#import <SOGo/SOGoSystemDefaults.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserFolder.h>
-#import <SOGo/SOGoUserManager.h>
-#import <SOGo/SOGoUserSettings.h>
 #import <SOGo/GCSSpecialQueries+SOGoCacheObject.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
-
-#import <Appointments/SOGoAppointmentFolder.h>
-#import <Appointments/SOGoAppointmentFolders.h>
-#import <Appointments/SOGoAppointmentObject.h>
-
-#import <Contacts/SOGoContactGCSFolder.h>
-#import <Contacts/SOGoContactFolders.h>
-#import <Contacts/SOGoContactObject.h>
-#import <Contacts/SOGoContactSourceFolder.h>
-
-#import <Mailer/SOGoMailAccount.h>
-#import <Mailer/SOGoMailAccounts.h>
-#import <Mailer/SOGoMailBodyPart.h>
-#import <Mailer/SOGoMailFolder.h>
-#import <Mailer/SOGoMailObject.h>
 #import <Mailer/SOGoMailObject+Draft.h>
 #import <Mailer/NSString+Mail.h>
-
-
-#import <Foundation/NSObject.h>
-#import <Foundation/NSString.h>
-
 #include "iCalEvent+ActiveSync.h"
 #include "iCalToDo+ActiveSync.h"
 #include "NGMimeMessage+ActiveSync.h"
@@ -131,18 +51,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "NSData+ActiveSync.h"
 #include "NSDate+ActiveSync.h"
 #include "NSString+ActiveSync.h"
-#include "SOGoActiveSyncConstants.h"
 #include "SOGoMailObject+ActiveSync.h"
-
-#import <GDLContentStore/GCSChannelManager.h>
-
-#include <unistd.h>
-
-#ifdef HAVE_OPENSSL
-#include <openssl/bio.h>
-#include <openssl/err.h>
-#include <openssl/x509.h>
-#endif
 
 @interface SOGoActiveSyncDispatcher (Sync)
 

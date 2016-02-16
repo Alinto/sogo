@@ -19,7 +19,6 @@
   02111-1307, USA.
 */
 
-#import "IcalResponse.h"
 
 @implementation IcalResponse
 

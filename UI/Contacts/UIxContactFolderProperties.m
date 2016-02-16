@@ -19,16 +19,11 @@
  */
 
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WORequest.h>
 
 #import <SOGo/NSString+Utilities.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserSettings.h>
-#import <SOGo/SOGoSystemDefaults.h>
 
 #import <Contacts/SOGoContactGCSFolder.h>
 
@@ -65,7 +60,7 @@
 {
   WORequest *request;
   NSDictionary *params;
-  id o, values;
+  id o;
 
   request = [context request];
   params = [[request contentAsString] objectFromJSONString];

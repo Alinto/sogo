@@ -23,7 +23,6 @@
 #ifndef NSARRAY_MAPISTORE_H
 #define NSARRAY_MAPISTORE_H
 
-#import <Foundation/NSArray.h>
 
 @interface NSArray (MAPIStoreFolders)
 

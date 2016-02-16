@@ -19,28 +19,17 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSCharacterSet.h>
-#import <Foundation/NSFileManager.h>
-#import <Foundation/NSKeyValueCoding.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSValue.h>
 
 #import <NGHttp/NGHttpRequest.h>
 #import <NGObjWeb/NSException+HTTP.h>
-#import <NGObjWeb/SoSubContext.h>
 #define COMPILING_NGOBJWEB 1 /* we want httpRequest for parsing multi-part
                                 form data */
 #import <NGObjWeb/WORequest.h>
 #undef COMPILING_NGOBJWEB
-#import <NGObjWeb/WOApplication.h>
-#import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSException+misc.h>
-#import <NGMail/NGMimeMessage.h>
-#import <NGMail/NGMimeMessageGenerator.h>
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeHeaderFields.h>
 #import <NGMime/NGMimeMultipartBody.h>
@@ -48,9 +37,7 @@
 
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoSystemDefaults.h>
-#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
@@ -60,10 +47,6 @@
 #import <Mailer/SOGoMailObject+Draft.h>
 #import <Mailer/SOGoMailFolder.h>
 #import <Mailer/SOGoMailAccount.h>
-#import <Mailer/SOGoMailAccounts.h>
-#import <Contacts/SOGoContactFolders.h>
-#import <Contacts/SOGoContactFolder.h>
-#import <Contacts/SOGoContactSourceFolder.h>
 
 #import <UI/MailPartViewers/UIxMailSizeFormatter.h>
 

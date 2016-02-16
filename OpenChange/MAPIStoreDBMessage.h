@@ -23,7 +23,6 @@
 #ifndef MAPISTOREDBMESSAGE_H
 #define MAPISTOREDBMESSAGE_H
 
-#import "MAPIStoreMessage.h"
 
 @interface MAPIStoreDBMessage : MAPIStoreMessage
 @end

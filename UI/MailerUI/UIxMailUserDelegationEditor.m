@@ -19,10 +19,7 @@
  */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSString.h>
 
-#import <SOGo/SOGoUserManager.h>
-#import <Mailer/SOGoMailAccount.h>
 
 #import <SOGoUI/UIxComponent.h>
 

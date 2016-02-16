@@ -23,7 +23,6 @@
 #ifndef MAPISTOREDBBASECONTEXT_H
 #define MAPISTOREDBBASECONTEXT_H
 
-#import "MAPIStoreContext.h"
 
 @interface MAPIStoreDBBaseContext : MAPIStoreContext
 

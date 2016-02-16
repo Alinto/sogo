@@ -20,20 +20,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSString.h>
-#import <NGExtensions/NGBase64Coding.h>
-#import <NGCards/NGVCardPhoto.h>
 
-#import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
-#import "MAPIStoreContactsAttachment.h"
 
-#include <mapistore/mapistore_errors.h>
 
 /* TODO: handle URL pictures via PidTagAttachMethod = ref ? */
 

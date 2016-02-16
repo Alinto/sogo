@@ -20,45 +20,18 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSException.h>
-#import <Foundation/NSNull.h>
-#import <Foundation/NSURL.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSObject+Values.h>
 
-#import <SOGo/SOGoFolder.h>
-#import <SOGo/SOGoUser.h>
 
-#import "MAPIStoreAttachment.h"
-#import "MAPIStoreFallbackContext.h"
-#import "MAPIStoreFolder.h"
-#import "MAPIStoreFolderTable.h"
-#import "MAPIStoreMapping.h"
-#import "MAPIStoreMessage.h"
-#import "MAPIStoreMessageTable.h"
-#import "MAPIStoreFAIMessage.h"
-#import "MAPIStoreFAIMessageTable.h"
-#import "MAPIStoreTypes.h"
-#import "MAPIStoreUserContext.h"
 #import "NSArray+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
-#import "MAPIStoreContext.h"
 
 #undef DEBUG
-#include <dlinklist.h>
-#include <stdbool.h>
-#include <gen_ndr/exchange.h>
-#include <util/attr.h>
-#include <libmapiproxy.h>
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
-#include <mapistore/mapistore_nameid.h>
-#include <talloc.h>
 
 /* TODO: homogenize method names and order of parameters */
 

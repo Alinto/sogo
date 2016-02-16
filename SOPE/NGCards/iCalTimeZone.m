@@ -19,13 +19,9 @@
  */
 
 #import <Foundation/NSArray.h>
-#import <Foundation/NSBundle.h>
-#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSData.h>
-#import <Foundation/NSDictionary.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSPathUtilities.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
 #import "NSCalendarDate+NGCards.h"

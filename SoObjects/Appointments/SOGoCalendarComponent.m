@@ -19,10 +19,6 @@
  */
 
 #import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSProcessInfo.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
@@ -36,8 +32,6 @@
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalEvent.h>
-#import <NGCards/iCalPerson.h>
-#import <NGCards/iCalRepeatableEntityObject.h>
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeMultipartBody.h>
 #import <NGMail/NGMimeMessage.h>
@@ -49,12 +43,10 @@
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoBuild.h>
-#import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoGroup.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoWebDAVAclManager.h>
@@ -63,14 +55,12 @@
 #import <Mailer/NSString+Mail.h>
 
 #import "SOGoAptMailICalReply.h"
-#import "SOGoAptMailNotification.h"
 #import "SOGoAptMailReceipt.h"
 #import "SOGoEMailAlarmsManager.h"
 #import "iCalEntityObject+SOGo.h"
 #import "iCalPerson+SOGo.h"
 #import "iCalRepeatableEntityObject+SOGo.h"
 #import "SOGoCalendarComponent.h"
-#import "SOGoComponentOccurence.h"
 
 @implementation SOGoCalendarComponent
 

@@ -20,51 +20,20 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <talloc.h>
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSCharacterSet.h>
-#import <Foundation/NSData.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSTimeZone.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <NGCards/iCalAlarm.h>
-#import <NGCards/iCalDateTime.h>
-#import <NGCards/iCalEvent.h>
-#import <NGCards/iCalEventChanges.h>
-#import <NGCards/iCalPerson.h>
-#import <NGCards/iCalTrigger.h>
-#import <NGCards/iCalTimeZonePeriod.h>
 #import <NGCards/NSString+NGCards.h>
-#import <SOGo/SOGoDomainDefaults.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserManager.h>
 
 #import "iCalTimeZone+MAPIStore.h"
-#import "MAPIStoreRecurrenceUtils.h"
-#import "MAPIStoreSamDBUtils.h"
-#import "MAPIStoreTypes.h"
 #import "NSArray+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
-#import "MAPIStoreAppointmentWrapper.h"
 
 #undef DEBUG
-#include <stdbool.h>
-#include <gen_ndr/exchange.h>
-#include <gen_ndr/property.h>
-#include <gen_ndr/ndr_property.h>
-#include <util/attr.h>
-#include <libmapi/libmapi.h>
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
-#include <mapistore/mapistore_nameid.h>
 
 static NSCharacterSet *hexCharacterSet = nil;
 

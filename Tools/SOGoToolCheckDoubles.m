@@ -27,8 +27,6 @@
 
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
-#import <Foundation/NSObject.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 

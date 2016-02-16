@@ -22,4 +22,3 @@
 
 #import <Foundation/Foundation.h>
 
-#include <NGExtensions/NGObjectMacros.h>

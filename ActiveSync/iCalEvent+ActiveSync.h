@@ -31,7 +31,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __ICALEVENTACTIVESYNC_H__
 #define __ICALEVENTACTIVESYNC_H__
 
-#import <NGCards/iCalEvent.h>
 
 @class NSString;
 @class WOContext;

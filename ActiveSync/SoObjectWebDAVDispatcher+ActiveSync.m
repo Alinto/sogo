@@ -27,15 +27,9 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
-#import <NGObjWeb/SoObjectWebDAVDispatcher.h>
 
 #include <NGObjWeb/SoObject+SoDAV.h>
-#include <NGObjWeb/WEClientCapabilities.h>
-#include <NGObjWeb/WOContext.h>
-#include <NGObjWeb/WORequest.h>
-#include <NGObjWeb/WOResponse.h>
 
-#import <Foundation/NSArray.h>
 
 @interface SoObjectWebDAVDispatcher (ActiveSync)
 

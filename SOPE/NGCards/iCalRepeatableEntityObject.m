@@ -20,10 +20,6 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
 #import <NGExtensions/NGCalendarDateRange.h>
@@ -33,10 +29,8 @@
 #import "iCalDateTime.h"
 #import "iCalEvent.h"
 #import "iCalTimeZone.h"
-#import "iCalTimeZonePeriod.h"
 #import "iCalRecurrenceRule.h"
 #import "iCalRecurrenceCalculator.h"
-#import "iCalRepeatableEntityObject.h"
 
 @implementation iCalRepeatableEntityObject
 

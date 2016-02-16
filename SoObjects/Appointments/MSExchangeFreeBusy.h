@@ -25,6 +25,8 @@
 
 #include <Foundation/Foundation.h>
 
+size_t curl_body_function_freebusy(void *ptr, size_t size, size_t nmemb, void *inSelf);
+
 @class MSExchangeFreeBusyResponse;
 @class MSExchangeFreeBusyView;
 

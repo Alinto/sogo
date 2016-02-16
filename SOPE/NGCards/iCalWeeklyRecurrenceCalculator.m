@@ -28,7 +28,6 @@
 @end
 
 #import <NGExtensions/NGCalendarDateRange.h>
-#import "iCalRecurrenceRule.h"
 #import "iCalByDayMask.h"
 #import "NSCalendarDate+ICal.h"
 

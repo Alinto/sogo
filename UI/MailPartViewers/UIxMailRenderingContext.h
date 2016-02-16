@@ -22,7 +22,6 @@
 #ifndef __Mailer_UIxMailRenderingContext_H__
 #define __Mailer_UIxMailRenderingContext_H__
 
-#import <Foundation/NSObject.h>
 
 #include <NGObjWeb/WOContext.h>
 

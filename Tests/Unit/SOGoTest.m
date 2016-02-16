@@ -20,16 +20,44 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
-#import <Foundation/NSString.h>
 
 #import "SOGoTestRunner.h"
 
 #import "SOGoTest.h"
 
 static NSString *SOGoTestAssertException = @"SOGoTestAssertException";
+
+/* Helper function for diffForString:andString */
+static NSString *_stringForCharacterAtIndex(NSUInteger index, NSString *str, NSUInteger length)
+{
+  NSString *chrStr;
+  unichar chr;
+  if (index < length)
+    {
+      chr = [str characterAtIndex: index];
+      if (isprint(chr)) 
+        {
+          chrStr = [NSString stringWithFormat: @"%c", chr];
+        }
+      else
+        {
+          if (chr == 10) 
+            chrStr = @"[NL]";
+          else if (chr == 0)
+            chrStr = @"[\0]";
+          else    
+            chrStr = [NSString stringWithFormat: @"[NP: %u]", chr];
+        }
+    }
+  else
+    {
+      chrStr = @"[none]";
+    }
+
+  return chrStr;
+}
 
 @implementation SOGoTest
 
@@ -184,36 +212,6 @@ static NSString *SOGoTestAssertException = @"SOGoTestAssertException";
     }
 
   return YES;
-}
-
-/* Helper function for diffForString:andString */
-NSString *_stringForCharacterAtIndex(NSUInteger index, NSString *str, NSUInteger length)
-{
-  NSString *chrStr;
-  unichar chr;
-  if (index < length)
-    {
-      chr = [str characterAtIndex: index];
-      if (isprint(chr)) 
-        {
-          chrStr = [NSString stringWithFormat: @"%c", chr];
-        }
-      else
-        {
-          if (chr == 10) 
-            chrStr = @"[NL]";
-          else if (chr == 0)
-            chrStr = @"[\0]";
-          else    
-            chrStr = [NSString stringWithFormat: @"[NP: %u]", chr];
-        }
-    }
-  else
-    {
-      chrStr = @"[none]";
-    }
-
-  return chrStr;
 }
 
 /*

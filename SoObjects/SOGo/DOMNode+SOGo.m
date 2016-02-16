@@ -23,8 +23,6 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
-#import <DOM/DOMProtocols.h>
-#import <DOM/DOMElement.h>
 
 #import <SaxObjC/XMLNamespaces.h>
 

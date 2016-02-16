@@ -30,8 +30,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __NGDOMELEMENTACTIVESYNC_H__
 #define __NGDOMELEMENTACTIVESYNC_H__
 
-#import <DOM/DOMElement.h>
-#import <DOM/DOMProtocols.h>
 
 @class NSDictionary;
 

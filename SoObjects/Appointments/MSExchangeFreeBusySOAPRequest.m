@@ -19,23 +19,15 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSTimeZone.h>
 
-#import <NGObjWeb/WOActionResults.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
-#import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <NGCards/iCalEvent.h>
-#import <NGCards/iCalPerson.h>
 
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
-#import <SOGo/SOGoDateFormatter.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
 
 #import "MSExchangeFreeBusySOAPRequest.h"
 

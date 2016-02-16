@@ -21,7 +21,6 @@
 #ifndef NSDICTIONARY_MAIL_H
 #define NSDICTIONARY_MAIL_H
 
-#import <Foundation/NSDictionary.h>
 
 @class NSString;
 

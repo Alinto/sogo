@@ -17,16 +17,6 @@
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSException.h>
-#import <Foundation/NSLock.h>
-#import <Foundation/NSNull.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSTimer.h>
-#import <Foundation/NSValue.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
@@ -34,12 +24,10 @@
 #import "NSString+Utilities.h"
 #import "NSString+Crypto.h"
 #import "NSObject+Utilities.h"
-#import "SOGoDomainDefaults.h"
 #import "SOGoSource.h"
 #import "SOGoSystemDefaults.h"
 #import "SOGoUserManager.h"
 #import "SOGoCache.h"
-#import "SOGoConstants.h"
 #import "SOGoSource.h"
 
 static Class NSNullK;

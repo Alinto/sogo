@@ -20,34 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <inttypes.h>
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSException.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSURL.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <EOControl/EOQualifier.h>
-#import <SOGo/SOGoFolder.h>
-#import <SOGo/SOGoUser.h>
 #import <SOGo/EOQualifier+SOGoCacheObject.h>
-#import "MAPIStoreContext.h"
-#import "MAPIStoreDBFolderTable.h"
-#import "MAPIStoreDBMessage.h"
-#import "MAPIStoreDBMessageTable.h"
-#import "MAPIStoreMapping.h"
-#import "MAPIStoreTypes.h"
-#import "MAPIStoreUserContext.h"
-#import <SOGo/SOGoCacheGCSFolder.h>
-#import "SOGoMAPIDBMessage.h"
 
-#import "MAPIStoreDBFolder.h"
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
 
 static Class EOKeyValueQualifierK, SOGoCacheGCSFolderK, MAPIStoreDBFolderK;
 

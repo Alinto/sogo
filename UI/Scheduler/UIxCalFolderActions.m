@@ -29,7 +29,6 @@
 
 #import <SOGo/NSDictionary+Utilities.h>
 
-#import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoWebAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolderICS.h>
 

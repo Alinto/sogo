@@ -23,7 +23,6 @@
 #ifndef __SoObjects_SOGoObject_H__
 #define __SoObjects_SOGoObject_H__
 
-#import <Foundation/NSObject.h>
 
 #if LIB_FOUNDATION_LIBRARY
 #error SOGo will not work properly with libFoundation.

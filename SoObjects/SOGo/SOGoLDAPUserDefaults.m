@@ -20,17 +20,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <ldap.h>
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "SOGoLDAPUserDefaults.h"
 
 #define SOGoLDAPDescriptor @"/etc/sogo.conf"
 #define SOGoLDAPContainerSize 8192

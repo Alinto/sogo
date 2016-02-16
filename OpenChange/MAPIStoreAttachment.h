@@ -23,7 +23,6 @@
 #ifndef MAPISTOREATTACHMENT_H
 #define MAPISTOREATTACHMENT_H
 
-#import "MAPIStoreObject.h"
 
 @class NSData;
 @class MAPIStoreEmbeddedMessage;

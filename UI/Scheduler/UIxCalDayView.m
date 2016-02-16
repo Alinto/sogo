@@ -19,19 +19,11 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSKeyValueCoding.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSValue.h>
 
-#import <EOControl/EOQualifier.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
-#import <NGExtensions/NGCalendarDateRange.h>
 
-#import <SoObjects/SOGo/SOGoDateFormatter.h>
 
 #import "UIxCalDayView.h"
 

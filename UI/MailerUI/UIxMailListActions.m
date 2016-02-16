@@ -28,15 +28,12 @@
 
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSCharacterSet.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSUserDefaults.h> /* for locale string constants */
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
-#import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGObjWeb/NSException+HTTP.h>
@@ -50,8 +47,6 @@
 #import <Mailer/NSString+Mail.h>
 #import <Mailer/SOGoDraftsFolder.h>
 #import <Mailer/SOGoMailAccount.h>
-#import <Mailer/SOGoMailFolder.h>
-#import <Mailer/SOGoMailObject.h>
 #import <Mailer/SOGoSentFolder.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
@@ -759,7 +754,6 @@
   NSDictionary *data, *requestContent;
   SOGoMailFolder *folder;
   WORequest *request;
-  WOResponse *response;
 
   request = [context request];
   requestContent = [[request contentAsString] objectFromJSONString];

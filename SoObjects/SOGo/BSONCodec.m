@@ -9,9 +9,6 @@
 */
 
 #import "BSONCodec.h"
-#import <ctype.h>
-#import <string.h>
-#import <objc/objc.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 

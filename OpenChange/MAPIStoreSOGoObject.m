@@ -20,33 +20,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSTimeZone.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <SOGo/SOGoObject.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
 
-#import "MAPIStoreContext.h"
-#import "MAPIStoreFolder.h"
-#import "MAPIStorePropertySelectors.h"
-#import "MAPIStoreTypes.h"
-#import "MAPIStoreUserContext.h"
 #import "NSDate+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
-#import "MAPIStoreSOGoObject.h"
 
 #undef DEBUG
-#include <stdbool.h>
-#include <talloc.h>
-#include <gen_ndr/exchange.h>
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreSOGoObject
 

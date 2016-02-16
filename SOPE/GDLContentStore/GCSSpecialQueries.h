@@ -23,7 +23,6 @@
 #ifndef GCSSPECIALQUERIES_H
 #define GCSSPECIALQUERIES_H
 
-#import <Foundation/NSObject.h>
 
 #import <GDLAccess/EOAdaptorChannel.h>
 

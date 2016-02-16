@@ -20,9 +20,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
@@ -32,7 +29,6 @@
 #import <SOGo/SOGoUser.h>
 
 #import <NGExtensions/NSObject+Logs.h>
-#import <NGStreams/NGInternetSocketAddress.h>
 #import <NGImap4/NGSieveClient.h>
 
 #import "../Mailer/SOGoMailAccount.h"

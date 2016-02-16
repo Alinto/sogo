@@ -20,31 +20,22 @@
 
 #include <unistd.h>
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSProcessInfo.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
 
 #import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NGQuotedPrintableCoding.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGMail/NGMimeMessage.h>
-#import <NGMime/NGMimeBodyPart.h>
 
 #import <NGCards/iCalAlarm.h>
-#import <NGCards/iCalEntityObject.h>
-#import <NGCards/iCalPerson.h>
 
 #import "SOGo/SOGoCredentialsFile.h"
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSString+Utilities.h>
-#import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoProductLoader.h>
-#import <SOGo/SOGoStaticAuthenticator.h>
-#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <Appointments/iCalPerson+SOGo.h>
 #import <Appointments/SOGoEMailAlarmsManager.h>

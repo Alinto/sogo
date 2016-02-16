@@ -21,7 +21,6 @@
 #ifndef SOGOEALARMSNOTIFIER_H
 #define SOGOEALARMSNOTIFIER_H
 
-#import <Foundation/NSObject.h>
 
 #import <SOGo/SOGoStaticAuthenticator.h>
 

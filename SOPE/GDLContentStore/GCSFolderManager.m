@@ -24,19 +24,14 @@
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
-#import <Foundation/NSLock.h>
 #import <Foundation/NSProcessInfo.h>
-#import <Foundation/NSSet.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
 
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLAccess/EOAdaptorContext.h>
 #import <NGExtensions/NGResourceLocator.h>
-#import <unistd.h>
 
 #import "GCSChannelManager.h"
 #import "EOAdaptorChannel+GCS.h"

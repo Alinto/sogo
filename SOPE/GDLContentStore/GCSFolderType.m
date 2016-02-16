@@ -22,7 +22,6 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSSet.h>
-#import <Foundation/NSString.h>
 
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -30,7 +29,6 @@
 
 #import <EOControl/EOQualifier.h>
 
-#import <EOControl/EOKeyValueCoding.h>
 #import <NGExtensions/NGResourceLocator.h>
 
 #import "GCSFolderType.h"

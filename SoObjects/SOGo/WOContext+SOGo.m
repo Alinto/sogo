@@ -18,16 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
 
-#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
-#import <NGObjWeb/WOSession.h>
 
 #import "SOGoDomainDefaults.h"
 #import "SOGoUser.h"
-#import "SOGoUserDefaults.h"
 
 #import "WOContext+SOGo.h"
 

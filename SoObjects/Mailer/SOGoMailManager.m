@@ -19,14 +19,12 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGImap4/NGImap4Connection.h>
-#import <NGImap4/NGImap4ConnectionManager.h>
 
 #import "SOGoMailManager.h"
 

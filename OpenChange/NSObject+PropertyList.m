@@ -21,17 +21,8 @@
 /* A format-agnostic property list dumper.
    Usage: dbmsgdump [filename] */
 
-#import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSArray.h>
-#import <Foundation/NSData.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSProcessInfo.h>
-#import <Foundation/NSPropertyList.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSValue.h>
 #import <NGExtensions/NSNull+misc.h>
 
-#import <SOGo/BSONCodec.h>
 #import "NSObject+PropertyList.h"
 
 const char *indentationStep = "  ";

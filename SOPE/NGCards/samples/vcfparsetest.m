@@ -19,8 +19,6 @@
   02111-1307, USA.
 */
 
-#import <Foundation/Foundation.h>
-#import <NGCards/NGVCard.h>
 
 @interface vcsparsetest : NSObject
 {

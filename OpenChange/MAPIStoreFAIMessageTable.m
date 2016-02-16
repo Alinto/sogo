@@ -20,17 +20,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 
-#import "MAPIStoreFAIMessage.h"
-#import "MAPIStoreFolder.h"
 
-#import "MAPIStoreFAIMessageTable.h"
 
 #undef DEBUG
-#include <talloc.h>
-#include <util/time.h>
-#include <mapistore/mapistore.h>
 
 static Class MAPIStoreFAIMessageK = Nil;
 

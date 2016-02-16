@@ -20,41 +20,30 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSURL.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
-#import <DOM/DOMElement.h>
-#import <DOM/DOMProtocols.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
-#import <NGObjWeb/SoHTTPAuthenticator.h>
-#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
-#import <NGImap4/NGImap4Context.h>
 #import <NGImap4/NSString+Imap4.h>
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoAuthenticator.h>
 #import <SOGo/SOGoDomainDefaults.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoSieveManager.h>
 
 #import "SOGoDraftsFolder.h"
-#import "SOGoMailFolder.h"
-#import "SOGoMailManager.h"
 #import "SOGoMailNamespace.h"
 #import "SOGoSentFolder.h"
 #import "SOGoTrashFolder.h"

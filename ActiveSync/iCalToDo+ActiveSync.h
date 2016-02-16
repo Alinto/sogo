@@ -30,7 +30,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __ICALTODOACTIVESYNC_H__
 #define __ICALTODOACTIVESYNC_H__
 
-#import <NGCards/iCalToDo.h>
 
 @class NSString;
 @class WOContext;

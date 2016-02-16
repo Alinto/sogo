@@ -18,13 +18,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSURL.h>
-#import <Foundation/NSTimeZone.h>
-#import <Foundation/NSValue.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOCookie.h>
 #import <NGObjWeb/WORequest.h>
@@ -42,7 +35,6 @@
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoWebAuthenticator.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoSession.h>
 #import <SOGo/SOGoSystemDefaults.h>
@@ -649,7 +641,6 @@
 {
   NSString *folderType;
   NSMutableArray *folders;
-  NSDictionary *message;
   id <WOActionResults> result;
   SOGoUserFolder *userFolder;
 

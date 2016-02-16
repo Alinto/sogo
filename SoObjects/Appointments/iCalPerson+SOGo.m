@@ -19,7 +19,6 @@
  */
 
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserManager.h>

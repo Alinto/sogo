@@ -23,7 +23,6 @@
 #ifndef NSDATA_MAPISTORE_H
 #define NSDATA_MAPISTORE_H
 
-#import <Foundation/NSData.h>
 
 @interface NSData (MAPIStoreDataTypes)
 

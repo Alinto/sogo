@@ -29,39 +29,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "SOGoMailObject+ActiveSync.h"
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSException.h>
-#import <Foundation/NSString.h>
 
-#import <NGCards/iCalCalendar.h>
-#import <NGCards/iCalDateTime.h>
-#import <NGCards/iCalEvent.h>
-#import <NGCards/iCalPerson.h>
-#import <NGCards/iCalTimeZone.h>
 
-#import <NGExtensions/NGBase64Coding.h>
-#import <NGExtensions/NGQuotedPrintableCoding.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSString+Encoding.h>
-#import <NGImap4/NGImap4Envelope.h>
-#import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGImap4/NSString+Imap4.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
-#import <NGObjWeb/WOApplication.h>
 
-#import <NGMime/NGMimeBodyPart.h>
-#import <NGMime/NGMimeFileData.h>
-#import <NGMime/NGMimeMultipartBody.h>
-#import <NGMime/NGMimeType.h>
-#import <NGMail/NGMimeMessageParser.h>
-#import <NGMail/NGMimeMessage.h>
-#import <NGMail/NGMimeMessageGenerator.h>
 
-#import <Mailer/SOGoMailLabel.h>
 
-#import <SOGo/SOGoUserDefaults.h>
 
 #include "iCalTimeZone+ActiveSync.h"
 #include "NSData+ActiveSync.h"
@@ -71,11 +47,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <Appointments/iCalEntityObject+SOGo.h>
 #include <Appointments/iCalPerson+SOGo.h>
 #include <Mailer/NSString+Mail.h>
-#include <Mailer/SOGoMailBodyPart.h>
-#include <SOGo/SOGoUser.h>
 #include <SOGo/NSString+Utilities.h>
 
-#import <Appointments/SOGoAptMailNotification.h>
 
 unsigned char strToChar(char a, char b) {
     char encoder[3] = {'\0','\0','\0'};

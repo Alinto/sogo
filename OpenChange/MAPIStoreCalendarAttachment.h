@@ -23,7 +23,6 @@
 #ifndef MAPISTORECALENDARATTACHMENT_H
 #define MAPISTORECALENDARATTACHMENT_H
 
-#import "MAPIStoreAttachment.h"
 
 @class NSTimeZone;
 

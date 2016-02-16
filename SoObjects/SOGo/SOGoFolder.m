@@ -18,21 +18,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
-#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOApplication.h>
-#import <NGObjWeb/WOContext.h>
-#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/SoWebDAVValue.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 
-#import <DOM/DOMElement.h>
 
 #import <SaxObjC/XMLNamespaces.h>
 
@@ -50,7 +42,6 @@
 #import "WORequest+SOGo.h"
 #import "WOResponse+SOGo.h"
 
-#import "SOGoFolder.h"
 
 @interface SOGoObject (SOGoDAVHelpers)
 

@@ -18,25 +18,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <lasso/lasso.h>
 #include <lasso/xml/misc_text_node.h>
 #include <lasso/xml/saml-2.0/saml2_attribute.h>
 #include <lasso/xml/saml-2.0/saml2_attribute_statement.h>
 #include <lasso/xml/saml-2.0/saml2_attribute_value.h>
 #include <lasso/xml/saml-2.0/samlp2_authn_request.h>
-#include <lasso/xml/saml-2.0/samlp2_response.h>
 
-#import <Foundation/NSBundle.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSException.h>
-#import <Foundation/NSMapTable.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSURL.h>
 
 #import <NGObjWeb/WOApplication.h>
-#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOContext.h>
-#import <NGObjWeb/WOResponse.h>
 
 #import "SOGoCache.h"
 #import "SOGoSAML2Exceptions.h"

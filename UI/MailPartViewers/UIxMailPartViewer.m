@@ -20,14 +20,10 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
 
-#import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <NGExtensions/NGQuotedPrintableCoding.h>
 #import <NGExtensions/NSString+Encoding.h>
 #import <NGExtensions/NSString+misc.h>
 
@@ -41,7 +37,6 @@
 #import "MailerUI/WOContext+UIxMailer.h"
 #import "UIxMailRenderingContext.h"
 #import "UIxMailSizeFormatter.h"
-#import "SOGoUI/UIxComponent.h"
 
 #import "UIxMailPartViewer.h"
 

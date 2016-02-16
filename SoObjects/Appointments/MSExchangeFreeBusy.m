@@ -18,9 +18,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSBundle.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDictionary.h>
 
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -28,8 +25,6 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
-#import <SaxObjC/SaxObjC.h>
-#import <SaxObjC/SaxMethodCallHandler.h>
 #import <SaxObjC/SaxObjectDecoder.h>
 #import <SaxObjC/SaxXMLReaderFactory.h>
 

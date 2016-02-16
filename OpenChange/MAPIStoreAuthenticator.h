@@ -24,7 +24,6 @@
 #ifndef MAPISTOREAUTHENTICATOR_H
 #define MAPISTOREAUTHENTICATOR_H
 
-#import <Foundation/NSObject.h>
 
 @class NSString;
 @class NSURL;

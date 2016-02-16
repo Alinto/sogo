@@ -20,11 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSMapTable.h>
-#import <NGExtensions/NGLogger.h>
 
 #undef DEBUG
-#include <mapistore/mapistore.h>
 
 const MAPIStorePropertyGetter *
 MAPIStorePropertyGettersForClass (Class klass)

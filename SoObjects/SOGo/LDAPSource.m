@@ -18,12 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <ldap.h>
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSException.h>
-#import <Foundation/NSString.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOControl.h>
@@ -38,11 +33,9 @@
 #import "NSString+Utilities.h"
 #import "NSString+Crypto.h"
 #import "SOGoCache.h"
-#import "SOGoDomainDefaults.h"
 #import "SOGoSystemDefaults.h"
 
 #import "LDAPSource.h"
-#import "../../Main/SOGo.h"
 
 static Class NSStringK;
 
@@ -1090,7 +1083,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
         // We check if our entry is a group. If so, we set the
         // 'isGroup' custom attribute.
         gclasses = [groupObjectClasses objectEnumerator];
-        while (gclass = [gclasses nextObject])
+        while ((gclass = [gclasses nextObject]))
          if ([classes containsObject: [gclass lowercaseString]])
            {
              [ldifRecord setObject: [NSNumber numberWithInt: 1]

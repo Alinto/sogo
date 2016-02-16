@@ -23,8 +23,6 @@
 #ifndef MAPISTORESHARINGMESSAGE_H
 #define MAPISTORESHARINGMESSAGE_H
 
-#import "MAPIStoreMailMessage.h"
-#import "MAPIStoreObjectProxy.h"
 
 #define SHARING_SPECIAL_FOLDER 0x40290
 

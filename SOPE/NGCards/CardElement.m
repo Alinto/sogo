@@ -18,11 +18,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSRange.h>
-#import <Foundation/NSString.h>
 
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -32,7 +27,6 @@
 #import "NSDictionary+NGCards.h"
 #import "CardVersitRenderer.h"
 
-#import "CardElement.h"
 #import "CardGroup.h"
 
 @implementation CardElement

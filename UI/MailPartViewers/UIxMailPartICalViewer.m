@@ -29,7 +29,6 @@
 #import <Foundation/NSException.h>
 #import <Foundation/NSValue.h>
 
-#import <NGObjWeb/WOResponse.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -39,7 +38,6 @@
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
-#import <NGCards/iCalDateTime.h>
 
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoUser.h>

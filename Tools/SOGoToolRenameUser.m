@@ -20,16 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <stdio.h>
 
 #import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
-#import <Foundation/NSString.h>
 
 #import <EOControl/EOQualifier.h>
-#import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLAccess/EOAdaptorContext.h>
 
 #import <GDLContentStore/GCSChannelManager.h>

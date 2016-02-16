@@ -23,7 +23,6 @@
 #ifndef __GDLContentStore_GCSFolder_H__
 #define __GDLContentStore_GCSFolder_H__
 
-#import <Foundation/NSObject.h>
 
 /*
   GCSFolder

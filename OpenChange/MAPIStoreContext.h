@@ -23,9 +23,7 @@
 #ifndef MAPISTORECONTEXT_H
 #define MAPISTORECONTEXT_H
 
-#include <talloc.h>
 
-#import <Foundation/NSObject.h>
 
 @class NSArray;
 @class NSFileHandle;

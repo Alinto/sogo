@@ -20,7 +20,6 @@
 
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSData.h>
-#import <Foundation/NSString.h>
 
 #import "SOGoCredentialsFile.h"
 

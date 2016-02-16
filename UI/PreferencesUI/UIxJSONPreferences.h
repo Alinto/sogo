@@ -21,7 +21,6 @@
 #ifndef UIXJSONPREFERENCES_H
 #define UIXJSONPREFERENCES_H
 
-#import <NGObjWeb/WODirectAction.h>
 
 @interface UIxJSONPreferences : WODirectAction
 

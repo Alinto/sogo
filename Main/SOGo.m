@@ -20,14 +20,6 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSDebug.h>
-#import <Foundation/NSData.h>
-#import <Foundation/NSDate.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSProcessInfo.h>
-#import <Foundation/NSRunLoop.h>
-#import <Foundation/NSURL.h>
 
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLContentStore/GCSChannelManager.h>
@@ -58,7 +50,6 @@
 #import <SOGo/SOGoPublicBaseFolder.h>
 #import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoProxyAuthenticator.h>
-#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoWebAuthenticator.h>

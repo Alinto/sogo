@@ -24,60 +24,21 @@
    - merge common code with tasks
    - take the tz definitions from Outlook */
 
-#include <talloc.h>
-#include <util/attr.h>
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSData.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
-#import <Foundation/NSTimeZone.h>
-#import <EOControl/EOQualifier.h>
-#import <EOControl/EOFetchSpecification.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <GDLContentStore/GCSFolder.h>
-#import <NGCards/iCalAlarm.h>
-#import <NGCards/iCalCalendar.h>
-#import <NGCards/iCalEvent.h>
-#import <NGCards/iCalDateTime.h>
-#import <NGCards/iCalPerson.h>
-#import <NGCards/iCalTimeZone.h>
-#import <NGCards/iCalTrigger.h>
-#import <SOGo/SOGoPermissions.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserManager.h>
-#import <Appointments/SOGoAppointmentFolder.h>
-#import <Appointments/SOGoAppointmentObject.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Mailer/NSString+Mail.h>
 
 #import "iCalEvent+MAPIStore.h"
-#import "MAPIStoreAppointmentWrapper.h"
-#import "MAPIStoreCalendarAttachment.h"
-#import "MAPIStoreCalendarFolder.h"
-#import "MAPIStoreContext.h"
-#import "MAPIStoreMapping.h"
-#import "MAPIStoreRecurrenceUtils.h"
-#import "MAPIStoreTypes.h"
-#import "MAPIStoreUserContext.h"
 #import "NSDate+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "NSValue+MAPIStore.h"
 
-#import "MAPIStoreCalendarMessage.h"
 
 #undef DEBUG
-#include <stdbool.h>
-#include <gen_ndr/exchange.h>
-#include <gen_ndr/property.h>
-#include <libmapi/libmapi.h>
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
-#include <mapistore/mapistore_nameid.h>
 
 // extern void ndr_print_AppointmentRecurrencePattern(struct ndr_print *ndr, const char *name, const struct AppointmentRecurrencePattern *r);
 

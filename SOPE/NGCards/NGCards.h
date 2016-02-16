@@ -22,23 +22,9 @@
 #ifndef __NGCards_H__
 #define __NGCards_H__
 
-#import <NGCards/iCalAttachment.h>
-#import <NGCards/iCalObject.h>
-#import <NGCards/iCalEntityObject.h>
-#import <NGCards/iCalRepeatableEntityObject.h>
-#import <NGCards/iCalCalendar.h>
-#import <NGCards/iCalToDo.h>
-#import <NGCards/iCalJournal.h>
-#import <NGCards/iCalEvent.h>
-#import <NGCards/iCalFreeBusy.h>
 #import <NGCards/iCalPerson.h>
-#import <NGCards/iCalAlarm.h>
-#import <NGCards/iCalTrigger.h>
 
-#import <NGCards/iCalEventChanges.h>
 
-#import <NGCards/iCalRecurrenceRule.h>
-#import <NGCards/iCalRecurrenceCalculator.h>
 
 #import <NGCards/NSCalendarDate+ICal.h>
 

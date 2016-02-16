@@ -28,7 +28,6 @@
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSException.h>
 
-#include <string.h>
 
 
 @interface TestRTFHandler : SOGoTest

@@ -23,7 +23,6 @@
 #ifndef __Main_SOGoProductLoader_H__
 #define __Main_SOGoProductLoader_H__
 
-#import <Foundation/NSObject.h>
 
 @class NSString, NSArray;
 

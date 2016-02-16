@@ -20,30 +20,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSSet.h>
-#import <Foundation/NSString.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import <NGCards/iCalByDayMask.h>
-#import <NGCards/iCalDateTime.h>
-#import <NGCards/iCalEvent.h>
-#import <NGCards/iCalRepeatableEntityObject.h>
-#import <NGCards/iCalRecurrenceRule.h>
-#import <NGCards/iCalTimeZone.h>
-#import <NGCards/iCalTimeZonePeriod.h>
 
 #import "NSDate+MAPIStore.h"
-#import "MAPIStoreRecurrenceUtils.h"
-#import "MAPIStoreTypes.h"
 
-#include <stdbool.h>
-#include <talloc.h>
-#include <util/time.h>
-#include <gen_ndr/property.h>
 
 @implementation iCalCalendar (MAPIStoreRecurrence)
 

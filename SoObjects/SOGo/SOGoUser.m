@@ -20,18 +20,9 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSEnumerator.h>
-#import <Foundation/NSNull.h>
-#import <Foundation/NSTimeZone.h>
-#import <Foundation/NSValue.h>
-#import <Foundation/NSURL.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
-#import <NGObjWeb/SoObject.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -42,14 +33,10 @@
 #import "NSArray+Utilities.h"
 #import "SOGoCache.h"
 #import "SOGoDateFormatter.h"
-#import "SOGoDomainDefaults.h"
-#import "SOGoObject.h"
 #import "SOGoPermissions.h"
 #import "SOGoSystemDefaults.h"
-#import "SOGoUserDefaults.h"
 #import "SOGoUserFolder.h"
 #import "SOGoUserManager.h"
-#import "SOGoUserProfile.h"
 #import "SOGoUserSettings.h"
 #import "WOResourceManager+SOGo.h"
 

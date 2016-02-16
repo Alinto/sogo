@@ -20,7 +20,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <talloc.h>
 
 #import "NSValue+MAPIStore.h"
 

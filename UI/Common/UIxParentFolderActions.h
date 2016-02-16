@@ -23,7 +23,6 @@
 #ifndef UIXPARENTFOLDERACTIONS_H
 #define UIXPARENTFOLDERACTIONS_H
 
-#import <NGObjWeb/WODirectAction.h>
 
 @interface UIxParentFolderActions : WODirectAction
 @end
