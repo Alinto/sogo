@@ -125,7 +125,7 @@ SPAN.timeDateControl INPUT.textField
 /* mail options */
 DIV#mailOptionsTabs
 { position: absolute;
-  top: 225px;
+  top: 250px;
   left: 0px;
   right: 0px;
   bottom: 0px; }
