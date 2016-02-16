@@ -227,9 +227,9 @@
             Alarm.getAlarms();
           }, function(response) {
             if (response.status == 403 &&
-                response.data && response.data.message && angular.isObject(response.data.message)) {
+                response.data && response.data.message &&
+                angular.isObject(response.data.message))
               vm.attendeeConflictError = response.data.message;
-            }
           });
       }
     }

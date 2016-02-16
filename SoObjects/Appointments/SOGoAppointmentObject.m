@@ -665,7 +665,7 @@
               else
                 {
                   iCalCalendar *calendar;
-                  NSDictionary *values;
+                  NSDictionary *values, *info;
                   NSString *reason;
                   iCalEvent *event;
 
@@ -682,8 +682,10 @@
 
                   reason = [values keysWithFormat: [self labelForKey: @"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}."]];
 
+                  info = [NSDictionary dictionaryWithObject: reason forKey: @"reject"];
+
                   return [NSException exceptionWithHTTPStatus: 403
-                                                       reason: reason];
+                                                       reason: [info jsonRepresentation]];
                 }
             }
           //

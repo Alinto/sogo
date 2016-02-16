@@ -19,6 +19,22 @@ body.popup {
   }
 }
 
+md-dialog {
+  md-dialog-content {
+    &.sg-dialog-message {
+      // Prepare content to receive a "close" button on the right
+      align-items: flex-start;
+      display: flex;
+      flex-shrink: 0;
+      transition: background-color $swift-ease-in-duration $swift-ease-in-timing-function;
+      &.ng-hide {
+        background-color: white !important;
+        transition-duration: 0s;
+      }
+    }
+  }
+}
+
 @media (max-width: $layout-breakpoint-xs) {
   md-dialog {
     &[flex-xs="100"],
