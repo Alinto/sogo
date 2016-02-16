@@ -1,6 +1,10 @@
 2.3.9 (2016-XX-XX)
 ------------------
 
+New features
+ - you can now limit the file upload size using the WOMaxUploadSize
+   configuration parameter (integer value in kilobytes) (#3510, #3135)
+
 Enhancements
  - allow resources to prevent invitations (#3410)
  - now support EAS MIME truncation

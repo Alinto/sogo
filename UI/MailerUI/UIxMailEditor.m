@@ -593,6 +593,12 @@ static NSArray *infoKeys = nil;
   if ([[mimeType type] isEqualToString: @"multipart"])
     {
       httpBody = [[request httpRequest] body];
+
+      // We got an exception from SOPE - most likely due to
+      // WOMaxUploadSize being reached.
+      if ([httpBody isKindOfClass: [NSException class]])
+        return httpBody;
+
       filenames = [self _scanAttachmentFilenamesInRequest: httpBody];
 
       co = [self clientObject];
