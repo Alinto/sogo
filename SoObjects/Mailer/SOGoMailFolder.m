@@ -895,7 +895,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
         }
     }
 
-  return error;
+  return (WOResponse *) error;
 }
 
 - (NSDictionary *) statusForFlags: (NSArray *) flags
