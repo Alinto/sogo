@@ -2245,18 +2245,13 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   NSDictionary *d;
   id fetchResults;
 
-  int uidnext, highestmodseq, i; 
+  int highestmodseq, i;
 
   allTokens = [NSMutableArray array];
 
-  if ([theSyncToken isEqualToString: @"-1"])
-    {
-      uidnext = highestmodseq = 0;
-    }
-  else
+  if (![theSyncToken isEqualToString: @"-1"])
     {
       a = [theSyncToken componentsSeparatedByString: @"-"];
-      uidnext = [[a objectAtIndex: 0] intValue];
       highestmodseq = [[a objectAtIndex: 1] intValue];
     }
   
