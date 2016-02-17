@@ -260,8 +260,11 @@
 "error_missingrecipients" = "Please specify at least one recipient.";
 "Send Anyway" = "Send Anyway";
 "Error while saving the draft" = "Error while saving the draft";
+
+/* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Error while uploading the file \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "There is an active file upload. Closing the window will interrupt it.";
+
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
 "cannot send message (smtp) - recipients discarded" = "Cannot send message. The following addresses are invalid";
@@ -303,6 +306,3 @@
 "Your email has been saved" = "Your email has been saved";
 "Your email has been sent" = "Your email has been sent";
 "Folder compacted" = "Folder compacted";
-
-/* Error when uploading a file attachment */
-"An error occured while uploading" = "An error occured while uploading";

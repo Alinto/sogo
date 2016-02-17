@@ -46,7 +46,7 @@
       onErrorItem: function(item, response, status, headers) {
         $mdToast.show(
           $mdToast.simple()
-            .content(l('An error occured while uploading' + ' ' + item.file.name))
+            .content(l('Error while uploading the file \"%{0}\":', item.file.name))
             .position('top right')
             .hideDelay(3000));
         this.removeFromQueue(item);
