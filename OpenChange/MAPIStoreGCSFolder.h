@@ -23,6 +23,7 @@
 #ifndef MAPISTOREGCSFOLDER_H
 #define MAPISTOREGCSFOLDER_H
 
+#import "MAPIStoreFolder.h"
 
 @class NSArray;
 @class NSCalendarDate;

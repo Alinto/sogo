@@ -20,15 +20,23 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
 
+#import <EOControl/EOQualifier.h>
 
+#import <NGCards/iCalToDo.h>
 
+#import <Appointments/SOGoTaskObject.h>
 
+#import "MAPIStoreTasksMessage.h"
+#import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
+#import "MAPIStoreTasksMessageTable.h"
 
+#include <mapistore/mapistore_nameid.h>
 
 static Class MAPIStoreTasksMessageK = Nil;
 

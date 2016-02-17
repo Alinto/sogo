@@ -23,6 +23,7 @@
 #ifndef MAPISTORECALENDARCONTEXT_H
 #define MAPISTORECALENDARCONTEXT_H
 
+#import "MAPIStoreGCSBaseContext.h"
 
 @interface MAPIStoreCalendarContext : MAPIStoreGCSBaseContext
 

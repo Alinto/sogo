@@ -21,17 +21,41 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalTimeZone.h>
+#import <NGCards/iCalToDo.h>
+#import <NGCards/iCalPerson.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
+#import <Appointments/SOGoTaskObject.h>
 #import <Mailer/NSString+Mail.h>
 
+#import "MAPIStoreContext.h"
+#import "MAPIStoreTasksFolder.h"
+#import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
 #import "NSDate+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
+#import "MAPIStoreTasksMessage.h"
 
 #undef DEBUG
+#include <stdbool.h>
+#include <gen_ndr/exchange.h>
+#include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
+#include <mapistore/mapistore_nameid.h>
 
 @implementation SOGoTaskObject (MAPIStoreExtension)
 

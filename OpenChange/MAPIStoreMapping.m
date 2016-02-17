@@ -20,7 +20,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <inttypes.h>
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSObject+Values.h>
@@ -28,9 +34,14 @@
 #import <SOGo/NSString+Utilities.h>
 
 #undef DEBUG
+#include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 
+#import "MAPIStoreTypes.h"
 
+#import "MAPIStoreMapping.h"
 
+#include <talloc.h>
 
 static NSMutableDictionary *mappingRegistry = nil;
 

@@ -20,13 +20,22 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
+#import <Foundation/NSNull.h>
+#import <Foundation/NSString.h>
 
 #import "NSArray+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 
+#import "MAPIStoreTypes.h"
 
 #undef DEBUG
+#include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 
 NSTimeZone *utcTZ;
 

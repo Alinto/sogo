@@ -23,6 +23,7 @@
 #ifndef MAPISTORECONTACTSMESSAGETABLE_H
 #define MAPISTORECONTACTSMESSAGETABLE_H
 
+#import "MAPIStoreGCSMessageTable.h"
 
 @interface MAPIStoreContactsMessageTable : MAPIStoreGCSMessageTable
 @end

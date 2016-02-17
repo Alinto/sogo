@@ -23,6 +23,7 @@
 #ifndef MAPISTORECONTACTSFOLDER_H
 #define MAPISTORECONTACTSFOLDER_H
 
+#import "MAPIStoreGCSFolder.h"
 
 @interface MAPIStoreContactsFolder : MAPIStoreGCSFolder
 

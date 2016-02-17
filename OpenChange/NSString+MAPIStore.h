@@ -23,6 +23,7 @@
 #ifndef NSSTRING_MAPISTORE_H
 #define NSSTRING_MAPISTORE_H
 
+#import <Foundation/NSString.h>
 
 @interface NSString (MAPIStoreDataTypes)
 

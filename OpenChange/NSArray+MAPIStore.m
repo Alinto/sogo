@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSValue.h>
 
 #import "NSDate+MAPIStore.h"
 #import "NSData+MAPIStore.h"
@@ -28,6 +29,11 @@
 #import "NSArray+MAPIStore.h"
 
 #undef DEBUG
+#include <stdbool.h>
+#include <talloc.h>
+#include <util/time.h>
+#include <gen_ndr/exchange.h>
+#include <mapistore/mapistore.h>
 
 @implementation NSArray (MAPIStoreFolders)
 

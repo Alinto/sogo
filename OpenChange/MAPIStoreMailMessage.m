@@ -21,19 +21,49 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSObject+Values.h>
+#import <NGImap4/NGImap4Client.h>
+#import <NGImap4/NGImap4Connection.h>
+#import <NGImap4/NGImap4EnvelopeAddress.h>
+#import <NGMail/NGMailAddress.h>
+#import <NGMail/NGMailAddressParser.h>
+#import <NGMail/NGMimeMessageGenerator.h>
+#import <NGCards/iCalCalendar.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoUserManager.h>
 #import <Mailer/NSData+Mail.h>
+#import <Mailer/SOGoMailBodyPart.h>
+#import <Mailer/SOGoMailObject.h>
 #import <Mailer/NSDictionary+Mail.h>
 
+#import "Codepages.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
+#import "MAPIStoreAppointmentWrapper.h"
+#import "MAPIStoreContext.h"
+#import "MAPIStoreFolder.h"
+#import "MAPIStoreMailAttachment.h"
+#import "MAPIStoreMailFolder.h"
+#import "MAPIStoreMapping.h"
+#import "MAPIStoreSamDBUtils.h"
+#import "MAPIStoreSharingMessage.h"
+#import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
 
+#import "MAPIStoreMailMessage.h"
 
 #undef DEBUG
+#include <stdbool.h>
+#include <gen_ndr/exchange.h>
+#include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 
 @class iCalCalendar, iCalEvent;
 

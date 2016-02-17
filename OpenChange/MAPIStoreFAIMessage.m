@@ -20,11 +20,21 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <SOGo/SOGoUser.h>
 
+#import "MAPIStoreActiveTables.h"
+#import "MAPIStoreContext.h"
+#import "MAPIStoreUserContext.h"
 #import "NSObject+MAPIStore.h"
 
+#import "MAPIStoreFAIMessage.h"
 
 #undef DEBUG
+#include <stdbool.h>
+#include <talloc.h>
+#include <util/time.h>
+#include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreFAIMessage
 

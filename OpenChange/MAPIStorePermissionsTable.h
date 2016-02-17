@@ -23,6 +23,7 @@
 #ifndef MAPISTOREPERMISSIONSTABLE_H
 #define MAPISTOREPERMISSIONSTABLE_H
 
+#import "MAPIStoreTable.h"
 
 struct ldb_context;
 

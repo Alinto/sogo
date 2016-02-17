@@ -23,6 +23,7 @@
 #ifndef MAPISTOREMAILFOLDER_H
 #define MAPISTOREMAILFOLDER_H
 
+#import "MAPIStoreFolder.h"
 
 @class NSNumber;
 

@@ -23,6 +23,7 @@
 #ifndef MAPISTOREGCSBASECONTEXT_H
 #define MAPISTOREGCSBASECONTEXT_H
 
+#import "MAPIStoreContext.h"
 
 @class EOQualifier;
 

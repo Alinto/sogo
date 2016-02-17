@@ -23,6 +23,7 @@
 #ifndef MAPISTORETASKSFOLDER_H
 #define MAPISTORETASKSFOLDER_H
 
+#import "MAPIStoreGCSFolder.h"
 
 @interface MAPIStoreTasksFolder : MAPIStoreGCSFolder
 

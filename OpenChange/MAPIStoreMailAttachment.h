@@ -23,6 +23,7 @@
 #ifndef MAPISTOREMAILATTACHMENT_H
 #define MAPISTOREMAILATTACHMENT_H
 
+#import "MAPIStoreAttachment.h"
 
 @class NSDictionary;
 

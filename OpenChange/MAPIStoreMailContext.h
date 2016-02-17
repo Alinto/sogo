@@ -23,6 +23,7 @@
 #ifndef MAPISTOREMAILCONTEXT_H
 #define MAPISTOREMAILCONTEXT_H
 
+#import "MAPIStoreContext.h"
 
 @interface MAPIStoreMailContext : MAPIStoreContext
 

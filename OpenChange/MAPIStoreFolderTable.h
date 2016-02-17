@@ -23,6 +23,7 @@
 #ifndef MAPISTOREFOLDERTABLE_H
 #define MAPISTOREFOLDERTABLE_H
 
+#import "MAPIStoreTable.h"
 
 @interface MAPIStoreFolderTable : MAPIStoreTable
 @end

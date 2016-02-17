@@ -23,6 +23,7 @@
 #ifndef MAPISTOREMESSAGETABLE_H
 #define MAPISTOREMESSAGETABLE_H
 
+#import "MAPIStoreTable.h"
 
 @interface MAPIStoreMessageTable : MAPIStoreTable
 

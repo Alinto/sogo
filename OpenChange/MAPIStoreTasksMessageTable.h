@@ -23,6 +23,7 @@
 #ifndef MAPISTORETASKSMESSAGETABLE_H
 #define MAPISTORETASKSMESSAGETABLE_H
 
+#import "MAPIStoreGCSMessageTable.h"
 
 @interface MAPIStoreTasksMessageTable : MAPIStoreGCSMessageTable
 

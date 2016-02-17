@@ -20,16 +20,29 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSData.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
+#import <Foundation/NSString.h>
 
+#import <EOControl/EOQualifier.h>
+#import <NGMail/NGMailAddress.h>
+#import <NGMail/NGMailAddressParser.h>
 #import <NGCards/NSArray+NGCards.h>
+#import <NGCards/NGVCard.h>
 
+#import <Contacts/SOGoContactGCSEntry.h>
 
+#import "MAPIStoreContactsMessage.h"
+#import "MAPIStoreTypes.h"
 #import "NSDate+MAPIStore.h"
 #import "NSArray+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
+#import "MAPIStoreContactsMessageTable.h"
 
+#include <mapistore/mapistore_nameid.h>
 
 static Class MAPIStoreContactsMessageK, NGMailAddressK, NSDataK, NSStringK;
 

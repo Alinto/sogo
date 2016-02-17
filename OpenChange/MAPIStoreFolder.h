@@ -21,6 +21,7 @@
 #ifndef MAPISTOREFOLDER_H
 #define MAPISTOREFOLDER_H
 
+#import <Foundation/NSObject.h>
 
 @class NSArray;
 @class NSMutableArray;
@@ -38,6 +39,7 @@
 @class SOGoCacheGCSFolder;
 @class SOGoMAPIDBMessage;
 
+#import "MAPIStoreSOGoObject.h"
 
 @interface MAPIStoreFolder : MAPIStoreSOGoObject
 {

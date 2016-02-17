@@ -23,6 +23,7 @@
 #ifndef MAPISTOREATTACHMENTTABLE_H
 #define MAPISTOREATTACHMENTTABLE_H
 
+#import "MAPIStoreTable.h"
 
 @interface MAPIStoreAttachmentTable : MAPIStoreTable
 @end

@@ -18,6 +18,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSValue.h>
+#import <Foundation/NSString.h>
 
 
 @interface Codepages

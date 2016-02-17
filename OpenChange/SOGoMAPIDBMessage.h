@@ -21,6 +21,7 @@
 #ifndef SOGOMAPIDBMESSAGE_H
 #define SOGOMAPIDBMESSAGE_H
 
+#import <SOGo/SOGoCacheGCSObject.h>
 
 @class NSDate;
 @class NSString;

@@ -20,15 +20,26 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <talloc.h>
 
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 
+#import <SOGo/SOGoUser.h>
 #import "iCalEvent+MAPIStore.h"
 
+#import "MAPIStoreAppointmentWrapper.h"
+#import "MAPIStoreCalendarAttachment.h"
+#import "MAPIStoreContext.h"
+#import "MAPIStoreUserContext.h"
+#import "MAPIStoreTypes.h"
 #import "NSObject+MAPIStore.h"
 
+#import "MAPIStoreCalendarEmbeddedMessage.h"
 
+#include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreCalendarEmbeddedMessage
 

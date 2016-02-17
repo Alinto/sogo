@@ -20,13 +20,27 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSValue.h>
+#import <NGObjWeb/SoSecurityManager.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSObject+Values.h>
+#import <SOGo/SOGoContentObject.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUser.h>
 
+#import "MAPIStoreContext.h"
+#import "MAPIStoreGCSFolder.h"
+#import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
 #import "NSData+MAPIStore.h"
 
+#import "MAPIStoreGCSMessage.h"
 
 #undef DEBUG
+#include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreGCSMessage
 

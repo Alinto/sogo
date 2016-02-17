@@ -23,6 +23,7 @@
 #ifndef MAPISTOREDBMESSAGETABLE_H
 #define MAPISTOREDBMESSAGETABLE_H
 
+#import "MAPIStoreMessageTable.h"
 
 @interface MAPIStoreDBMessageTable : MAPIStoreMessageTable
 @end

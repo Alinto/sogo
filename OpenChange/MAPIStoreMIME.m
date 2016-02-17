@@ -20,7 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSData.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSFileHandle.h>
+#import <Foundation/NSString.h>
 
+#import "MAPIStoreMIME.h"
 
 /* Seems common to all distros ? */
 #define MAPIStoreMIMEFile @"/etc/mime.types"

@@ -23,7 +23,9 @@
 #ifndef MAPISTOREOBJECT_H
 #define MAPISTOREOBJECT_H
 
+#include <talloc.h>
 
+#import <Foundation/NSObject.h>
 
 @class NSDate;
 @class NSData;

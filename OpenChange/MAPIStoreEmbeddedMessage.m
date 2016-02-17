@@ -20,10 +20,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSString.h>
 
+#import "MAPIStoreAttachment.h"
+#import "MAPIStoreFolder.h"
 #import "NSObject+MAPIStore.h"
 
+#import "MAPIStoreEmbeddedMessage.h"
 
+#include <mapistore/mapistore_errors.h>
 
 static Class MAPIStoreAttachmentK;
 

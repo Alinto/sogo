@@ -20,13 +20,22 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSNull.h>
+#import <Foundation/NSString.h>
 
+#import <EOControl/EOQualifier.h>
 
+#import <NGCards/iCalEvent.h>
 
+#import "MAPIStoreCalendarMessage.h"
+#import "MAPIStoreTypes.h"
 #import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
+#import "MAPIStoreCalendarMessageTable.h"
 
+#include <mapistore/mapistore_nameid.h>
 
 static Class MAPIStoreCalendarMessageK = Nil;
 

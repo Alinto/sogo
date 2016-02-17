@@ -23,8 +23,11 @@
 #ifndef MAPISTORECALENDARWRAPPER_H
 #define MAPISTORECALENDARWRAPPER_H
 
+#import <NGCards/iCalPerson.h>
+#import <NGCards/iCalTimeZone.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
 
+#import "MAPIStoreObjectProxy.h"
 
 @class NSTimeZone;
 

@@ -20,16 +20,31 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSData.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/NSArray+Utilities.h>
+#import <Mailer/SOGoMailBodyPart.h>
+#import <Mailer/SOGoMailObject.h>
 #import <Mailer/NSDictionary+Mail.h>
 
+#import "MAPIStoreTypes.h"
+#import "MAPIStoreMailMessage.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
+#import "MAPIStoreMailAttachment.h"
 
 #undef DEBUG
+#include <stdbool.h>
+#include <gen_ndr/exchange.h>
+#include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreMailAttachment
 

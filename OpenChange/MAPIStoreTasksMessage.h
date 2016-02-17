@@ -23,6 +23,7 @@
 #ifndef MAPISTORETASKSMESSAGE_H
 #define MAPISTORETASKSMESSAGE_H
 
+#import "MAPIStoreGCSMessage.h"
 
 @interface MAPIStoreTasksMessage : MAPIStoreGCSMessage
 

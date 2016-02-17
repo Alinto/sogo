@@ -23,6 +23,7 @@
 #ifndef MAPISTOREUSERCONTEXT_H
 #define MAPISTOREUSERCONTEXT_H
 
+#import <Foundation/NSObject.h>
 
 @class NSMutableDictionary;
 @class NSString;

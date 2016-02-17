@@ -21,6 +21,7 @@
 
 #include "RTFHandler.h"
 #include <Foundation/NSValue.h>
+#include <Foundation/NSException.h>
 
 //
 // Useful macros

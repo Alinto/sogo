@@ -23,9 +23,22 @@
 /* A format-agnostic property list readerer.
    Usage: dbmsgreader [username] [filename] */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSBundle.h>
+#import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSProcessInfo.h>
+#import <Foundation/NSUserDefaults.h>
+#import <NGExtensions/NGBase64Coding.h>
+#import <NGObjWeb/SoProductRegistry.h>
+#import <SOGo/SOGoProductLoader.h>
+#import <SOGo/SOGoSystemDefaults.h>
 
+#import <libmapi/libmapi.h>
 
+#import "MAPIStoreUserContext.h"
+#import <SOGo/SOGoCacheGCSObject.h>
 
+#import <SOGo/BSONCodec.h>
 #import "NSObject+PropertyList.h"
 
 

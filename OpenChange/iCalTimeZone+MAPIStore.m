@@ -20,14 +20,27 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
+#import <NGCards/iCalByDayMask.h>
+#import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalTimeZonePeriod.h>
+#import <NGCards/iCalRecurrenceRule.h>
 
 #import "NSString+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 
+#include <stdbool.h>
+#include <stdint.h>
+#include <talloc.h>
 #undef DEBUG
+#include <libmapi/libmapi.h>
 
 #import "iCalTimeZone+MAPIStore.h"
+#import "MAPIStoreTypes.h"
 
 @interface iCalTimeZonePeriod (MAPIStorePropertiesPrivate)
 

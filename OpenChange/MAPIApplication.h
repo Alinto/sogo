@@ -23,6 +23,7 @@
 #ifndef MAPIAPPLICATION_H
 #define MAPIAPPLICATION_H
 
+#import <NGObjWeb/SoApplication.h>
 
 @class MAPIStoreUserContext;
 

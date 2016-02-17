@@ -23,6 +23,7 @@
 #ifndef NSVALUE_MAPISTORE_H
 #define NSVALUE_MAPISTORE_H
 
+#import <Foundation/NSValue.h>
 
 @interface NSNumber (MAPIStoreDataTypes)
 

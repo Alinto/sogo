@@ -23,6 +23,7 @@
 #ifndef MAPISTOREDBFOLDER_H
 #define MAPISTOREDBFOLDER_H
 
+#import "MAPIStoreFolder.h"
 
 @interface MAPIStoreDBFolder : MAPIStoreFolder
 

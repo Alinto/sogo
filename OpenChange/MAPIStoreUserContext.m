@@ -20,15 +20,35 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSCharacterSet.h>
+#import <Foundation/NSData.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSMapTable.h>
+#import <Foundation/NSPropertyList.h>
+#import <Foundation/NSThread.h>
+#import <Foundation/NSTimeZone.h>
+#import <Foundation/NSURL.h>
 
+#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 
+#import <NGImap4/NGImap4Connection.h>
 
+#import <GDLContentStore/GCSChannelManager.h>
+#import <SOGo/SOGoDomainDefaults.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/NSString+Utilities.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <Mailer/SOGoMailAccount.h>
+#import <Mailer/SOGoMailAccounts.h>
 
 #import <SOGo/GCSSpecialQueries+SOGoCacheObject.h>
+#import "MAPIApplication.h"
+#import "MAPIStoreAuthenticator.h"
+#import "MAPIStoreMapping.h"
 
+#import "MAPIStoreUserContext.h"
 
 static NSMapTable *contextsTable = nil;
 

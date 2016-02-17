@@ -21,19 +21,42 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
+#import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGCards/NGVCard.h>
+#import <NGCards/NGVCardPhoto.h>
 #import <NGCards/NSArray+NGCards.h>
 #import <NGCards/NSString+NGCards.h>
+#import <Contacts/SOGoContactGCSEntry.h>
 #import <Mailer/NSString+Mail.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUserManager.h>
 
+#import "MAPIStoreAttachment.h"
+#import "MAPIStoreContactsAttachment.h"
+#import "MAPIStoreContactsFolder.h"
+#import "MAPIStoreContext.h"
+#import "MAPIStorePropertySelectors.h"
+#import "MAPIStoreSamDBUtils.h"
+#import "MAPIStoreTypes.h"
 #import "NSArray+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
+#import "MAPIStoreContactsMessage.h"
 
 #undef DEBUG
+#include <stdbool.h>
+#include <gen_ndr/exchange.h>
+#include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
+#include <mapistore/mapistore_nameid.h>
 
 @implementation SOGoContactGCSEntry (MAPIStoreExtension)
 

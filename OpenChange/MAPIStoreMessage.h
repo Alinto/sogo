@@ -23,6 +23,7 @@
 #ifndef MAPISTOREMESSAGE_H
 #define MAPISTOREMESSAGE_H
 
+#import <Foundation/NSObject.h>
 
 @class NSArray;
 @class NSMutableArray;
@@ -34,6 +35,7 @@
 @class MAPIStoreAttachmentTable;
 @class MAPIStoreFolder;
 
+#import "MAPIStoreSOGoObject.h"
 
 @interface MAPIStoreMessage : MAPIStoreSOGoObject
 {

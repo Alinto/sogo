@@ -20,8 +20,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSURL.h>
 
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoPermissions.h>
 
+#import "MAPIStoreAuthenticator.h"
 
 @implementation MAPIStoreAuthenticator
 

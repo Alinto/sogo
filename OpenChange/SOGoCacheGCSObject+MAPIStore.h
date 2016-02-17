@@ -21,6 +21,7 @@
 #ifndef SOGOCACHEGCSOBJECTMAPISTORE
 #define SOGOCACHEGCSOBJECTMAPISTORE
 
+#include <SOGo/SOGoCacheGCSObject.h>
 
 @interface SOGoCacheGCSObject (MAPIStore)
 

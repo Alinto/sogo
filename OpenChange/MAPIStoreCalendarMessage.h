@@ -23,6 +23,7 @@
 #ifndef MAPISTORECALENDARMESSAGE_H
 #define MAPISTORECALENDARMESSAGE_H
 
+#import "MAPIStoreGCSMessage.h"
 
 @class iCalCalendar;
 @class iCalEvent;

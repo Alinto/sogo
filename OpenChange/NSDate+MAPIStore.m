@@ -20,10 +20,18 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
 
+#import "MAPIStoreTypes.h"
 #import "NSDate+MAPIStore.h"
 
 #undef DEBUG
+#include <stdbool.h>
+#include <talloc.h>
+#include <util/time.h>
+#include <mapistore/mapistore.h>
 
 static NSCalendarDate *refDate = nil;
 

@@ -20,17 +20,48 @@
 
 /* TODO: main key arrays must be initialized */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSData.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSURL.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <SOGo/SOGoContentObject.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoFolder.h>
 
+#import "MAPIStoreActiveTables.h"
+#import "MAPIStoreContext.h"
+#import "MAPIStoreFAIMessage.h"
+#import "MAPIStoreFAIMessageTable.h"
+#import "MAPIStoreFolder.h"
+#import "MAPIStoreFolderTable.h"
+#import "MAPIStoreMapping.h"
+#import "MAPIStoreMessage.h"
+#import "MAPIStorePermissionsTable.h"
+#import "MAPIStoreSamDBUtils.h"
+#import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
+#import <SOGo/SOGoCacheGCSFolder.h>
+#import "SOGoMAPIDBMessage.h"
 #import "SOGoCacheGCSObject+MAPIStore.h"
+#import <Mailer/SOGoMailObject.h>
 
+#include <gen_ndr/exchange.h>
 
 #undef DEBUG
+#include <util/attr.h>
+#include <libmapiproxy.h>
+#include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 
 Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStoreFolderTableK;
 

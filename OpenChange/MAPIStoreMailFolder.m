@@ -18,24 +18,65 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <talloc.h>
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSSet.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSURL.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <EOControl/EOQualifier.h>
+#import <EOControl/EOSortOrdering.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSObject+Values.h>
 #import <NGExtensions/NSString+misc.h>
+#import <NGImap4/NGImap4Connection.h>
+#import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NSString+Imap4.h>
+#import <Mailer/SOGoDraftsFolder.h>
+#import <Mailer/SOGoMailAccount.h>
+#import <Mailer/SOGoMailAccounts.h>
+#import <Mailer/SOGoMailFolder.h>
+#import <Mailer/SOGoMailObject.h>
+#import <Mailer/SOGoSentFolder.h>
+#import <Mailer/SOGoTrashFolder.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoPermissions.h>
 
+#import "MAPIApplication.h"
+#import "MAPIStoreAppointmentWrapper.h"
+#import "MAPIStoreContext.h"
+#import "MAPIStoreFAIMessage.h"
+#import "MAPIStoreMailContext.h"
+#import "MAPIStoreMailMessage.h"
+#import "MAPIStoreMailFolderTable.h"
+#import "MAPIStoreMailMessageTable.h"
+#import "MAPIStoreMapping.h"
+#import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
+#import "SOGoMAPIDBMessage.h"
+#import <SOGo/SOGoCacheGCSFolder.h>
 
+#import "MAPIStoreMailVolatileMessage.h"
 
+#import "MAPIStoreMailFolder.h"
 
 static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 
+#include <gen_ndr/exchange.h>
 
 #undef DEBUG
+#include <util/attr.h>
+#include <libmapi/libmapi.h>
+#include <libmapiproxy.h>
+#include <limits.h>
+#include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreMailFolder
 

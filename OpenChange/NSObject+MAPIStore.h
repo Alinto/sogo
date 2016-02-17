@@ -23,7 +23,10 @@
 #ifndef NSOBJECT_MAPISTORE_H
 #define NSOBJECT_MAPISTORE_H
 
+#import <Foundation/NSObject.h>
 
+#include <talloc.h>
+#include <mapistore/mapistore_errors.h>
 
 struct MAPIStoreTallocWrapper
 {

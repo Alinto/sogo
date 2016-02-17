@@ -23,6 +23,7 @@
 #ifndef MAPISTOREMAILMESSAGE_H
 #define MAPISTOREMAILMESSAGE_H
 
+#import "MAPIStoreMessage.h"
 
 @class NSData;
 @class NSString;

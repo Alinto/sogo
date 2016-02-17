@@ -23,6 +23,9 @@
 /* A format-agnostic property list dumper.
    Usage: plreader [filename] */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSProcessInfo.h>
 
 #import "NSObject+PropertyList.m"
 

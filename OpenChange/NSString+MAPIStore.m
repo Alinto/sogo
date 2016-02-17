@@ -20,11 +20,17 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <talloc.h>
+#include <stdbool.h>
 
+#import <Foundation/NSData.h>
 
 #import "NSString+MAPIStore.h"
 
 #undef DEBUG
+#include <talloc.h>
+#include <util/time.h>
+#include <mapistore/mapistore.h>
 
 @implementation NSString (MAPIStoreDataTypes)
 

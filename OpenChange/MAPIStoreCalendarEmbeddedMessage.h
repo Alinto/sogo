@@ -23,6 +23,7 @@
 #ifndef MAPISTORECALENDAREMBEDDEDMESSAGE_H
 #define MAPISTORECALENDAREMBEDDEDMESSAGE_H
 
+#import "MAPIStoreEmbeddedMessage.h"
 
 @class MAPIStoreAppointmentWrapper;
 
