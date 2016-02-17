@@ -130,6 +130,25 @@
   return aclManager;
 }
 
+- (void) setIsNew: (BOOL) newIsNew
+{
+  // Required for protocol <SOGoComponentOccurence>
+  // but not yet implemented.  Violently warn if
+  // used.
+  NSLog (@"SOGoCalendarComponent::setIsNew is not implemented.");
+  abort();
+}
+
+- (BOOL) isNew
+{
+  // Required for protocol <SOGoComponentOccurence>
+  // but not yet implemented.  Violently warn if
+  // used.
+  NSLog (@"SOGoCalendarComponent::isNew is not implemented.");
+  abort();
+  return false;
+}
+
 - (NSException *) changeParticipationStatus: (NSString *) newPartStat
                                withDelegate: (iCalPerson *) delegate
                                       alarm: (iCalAlarm *) alarm
