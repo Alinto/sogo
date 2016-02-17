@@ -303,3 +303,6 @@
 "Your email has been saved" = "Your email has been saved";
 "Your email has been sent" = "Your email has been sent";
 "Folder compacted" = "Folder compacted";
+
+/* Error when uploading a file attachment */
+"An error occured while uploading" = "An error occured while uploading";
