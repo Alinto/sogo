@@ -869,7 +869,7 @@ static NSArray *infoKeys = nil;
     {
       error = [self validateForSend];
       if (!error)
-        error = [co sendMail];
+        error = [co sendMailAndCopyToSent: false];
       else
 	error = [self failedToSaveFormResponse: [error reason]];
     }

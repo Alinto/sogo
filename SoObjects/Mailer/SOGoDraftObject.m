@@ -69,6 +69,7 @@
 
 #import "SOGoDraftObject.h"
 
+
 static NSString *contentTypeValue = @"text/plain; charset=utf-8";
 static NSString *htmlContentTypeValue = @"text/html; charset=utf-8";
 static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc", 
@@ -1782,6 +1783,7 @@ static NSString    *userAgent      = nil;
 //
 //
 //
+/*
 - (NSException *) sendMail
 {
   SOGoUserDefaults *ud;
@@ -1843,6 +1845,7 @@ static NSString    *userAgent      = nil;
     }
   return [self sendMailAndCopyToSent: YES];
 }
+*/
 
 //
 //
