@@ -5,6 +5,8 @@ New features
  - [web] show all/only this calendar
  - [web] convert a message to an appointment or a task (#1722)
  - [web] customizable base font size for HTML messages
+ - [web you can now limit the file upload size using the WOMaxUploadSize
+   configuration parameter (integer value in kilobytes) (#3510, #3135)
 
 Enhancements
  - [web] added Junk handling feature from v2

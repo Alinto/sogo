@@ -20,8 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <Foundation/NSAutoreleasePool.h>
+#include <Foundation/NSDictionary.h>
+#include <Foundation/NSException.h>
+#include <Foundation/NSString.h>
 
-#import <SOGo/NSDictionary+Utilities.h>
+#include <SOGo/NSDictionary+Utilities.h>
 
 static int
 performTest (char *filename)
