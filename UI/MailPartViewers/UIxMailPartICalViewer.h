@@ -39,6 +39,11 @@
 }
 
 - (iCalEvent *) authorativeEvent;
+- (NSString *) endDate;
+- (NSString *) endTime;
+- (NSString *) startDate;
+- (NSString *) startTime;
+- (BOOL) isEndDateOnSameDay;
 
 @end
 
