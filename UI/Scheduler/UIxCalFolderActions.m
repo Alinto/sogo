@@ -21,9 +21,15 @@
 */
 
 #import <Foundation/NSValue.h>
+
+#import <NGHttp/NGHttpRequest.h>
 #import <NGObjWeb/NSException+HTTP.h>
+#define COMPILING_NGOBJWEB 1 /* httpRequest is needed in
+                                importAction */
 #import <NGObjWeb/WORequest.h>
+#undef COMPILING_NGOBJWEB
 #import <NGObjWeb/WOResponse.h>
+#import <NGMime/NGMimeMultipartBody.h>
 
 #import <NGCards/iCalCalendar.h>
 
