@@ -2234,7 +2234,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 // 
 // FIXME: refactor MAPIStoreMailFolder.m - synchroniseCache to use this method
 //
-- (NSArray *) syncTokenFieldsWithProperties: (NSArray *) theProperties
+- (NSArray *) syncTokenFieldsWithProperties: (NSDictionary *) theProperties
                           matchingSyncToken: (NSString *) theSyncToken
                                    fromDate: (NSCalendarDate *) theStartDate
                                 initialLoad: (BOOL) initialLoadInProgress
