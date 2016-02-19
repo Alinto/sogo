@@ -259,7 +259,7 @@
                 </md-menu-item>
                 <md-menu-divider> <!-- divider --></md-menu-divider>
                 <md-menu-item >
-                  <md-button ng-href="#">
+                  <md-button>
                     <md-checkbox
                         ng-change="addressbook.sort(addressbook.selectedFolder.constructor.$query.sort)"
                         ng-model="addressbook.selectedFolder.constructor.$query.asc"
