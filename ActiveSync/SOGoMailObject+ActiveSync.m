@@ -606,6 +606,35 @@ struct GlobalObjectId {
 }
 
 
+- (NSString *) _truncateContent: (NSString *) theContent
+                          limit: (int) theLimit
+                      truncated: (int *) wasTruncated
+{
+  if ([theContent length] > theLimit)
+    {
+      int i, len;
+
+      theContent = [theContent substringToIndex: theLimit];
+      *wasTruncated = 1;
+
+      // We search for the first "space" character starting from the
+      // end and we truncate the string once more. We do this to avoid
+      // truncating the content in the middle of a XML entity
+      len = theLimit-1;
+
+      for (i = len; i >= 0; i--)
+        {
+          if (isspace([theContent characterAtIndex: i]))
+            break;
+        }
+
+      return [theContent substringToIndex: i];
+    }
+
+  *wasTruncated = 0;
+  return theContent;
+}
+
 //
 //
 //
@@ -1017,57 +1046,36 @@ struct GlobalObjectId {
         case 0:
           {
             content = @"";
-            len = 0;
+            len = 0; truncated = 1;
           }
           break;
         case 1:
-          if ([content length] > 4096)
-            {
-              content = [content substringToIndex: 4096];
-              len = 4096; truncated = 1;
-            }
+          content = [self _truncateContent: content  limit: 4096  truncated: &truncated];
+          len = [content length];
           break;
         case 2:
-          if ([content length] > 5120)
-            {
-              content = [content substringToIndex: 5120];
-              len = 5120; truncated = 1;
-            }
+          content = [self _truncateContent: content  limit: 5120  truncated: &truncated];
+          len = [content length];
           break;
         case 3:
-          if ([content length] > 7168)
-            {
-              content = [content substringToIndex: 7168];
-              len = 7168; truncated = 1;
-            }
+          content = [self _truncateContent: content  limit: 7168  truncated: &truncated];
+          len = [content length];
           break;
         case 4:
-          if ([content length] > 10240)
-            {
-              content = [content substringToIndex: 10240];
-              len = 10240; truncated = 1;
-            }
+          content = [self _truncateContent: content  limit: 10240  truncated: &truncated];
+          len = [content length];
           break;
         case 5:
-          if ([content length] > 20480)
-            {
-              content = [content substringToIndex: 20480];
-              len = 20480; truncated = 1;
-            }
+          content = [self _truncateContent: content  limit: 20480  truncated: &truncated];
+          len = [content length];
           break;
         case 6:
-          if ([content length] > 51200)
-            {
-              content = [content substringToIndex: 51200];
-              len = 51200; truncated = 1;
-            }
+          content = [self _truncateContent: content  limit: 51200  truncated: &truncated];
+          len = [content length];
           break;
         case 7:
-          if ([content length] > 102400)
-            {
-              content = [content substringToIndex: 102400];
-              len = 102400; truncated = 1;
-            }
+          content = [self _truncateContent: content  limit: 102400  truncated: &truncated];
+          len = [content length];
           break;
         case 8:
         default:
