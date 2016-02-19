@@ -314,7 +314,6 @@
       [newRecord setObject: data forKey: @"isGroup"];
       [newRecord setObject: @"vlist" forKey: @"c_component"];
     }
-#warning TODO: create a custom icon for resources
   else
     {
       [newRecord setObject: @"vcard" forKey: @"c_component"];
