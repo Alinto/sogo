@@ -107,6 +107,7 @@ static GCSStringFormatter *stringFormatter = nil;
     while ((field = [fields nextObject]))
       {
 	fieldName = [field columnName];
+
 	if (![fieldName isEqualToString: @"c_name"])
 	  [quickFieldNames addObject: fieldName];
       }
@@ -116,7 +117,9 @@ static GCSStringFormatter *stringFormatter = nil;
     while ((field = [fields nextObject]))
       {
 	fieldName = [field columnName];
-        [contentFieldNames addObject: fieldName];
+
+	if (![fieldName isEqualToString: @"c_name"])
+          [contentFieldNames addObject: fieldName];
       }
     
     folderId       = [_folderId copy];
