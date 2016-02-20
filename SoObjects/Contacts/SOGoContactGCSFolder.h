@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2015 Inverse inc.
+  Copyright (C) 2006-2016 Inverse inc.
 
   This file is part of SOGo.
 
@@ -14,13 +14,15 @@
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
 
 #ifndef __Contacts_SOGoContactGCSFolder_H__
 #define __Contacts_SOGoContactGCSFolder_H__
+
+#import <EOControl/EOQualifier.h>
 
 #import <SOGo/SOGoGCSFolder.h>
 
@@ -34,7 +36,13 @@
   NSString *baseCardDAVURL, *basePublicCardDAVURL;
 }
 - (void) fixupContactRecord: (NSMutableDictionary *) contactRecord;
+- (EOQualifier *) qualifierForFilter: (NSString *) filter
+                          onCriteria: (NSString *) criteria;
 - (NSDictionary *) lookupContactWithName: (NSString *) aName;
+- (NSArray *) lookupContactsWithQualifier: (EOQualifier *) qualifier;
+- (NSArray *) lookupContactsFields: (NSArray *) fields
+                     withQualifier: (EOQualifier *) qualifier
+                      andOrderings: (NSArray *) orderings;
 - (NSString *) cardDavURL;
 - (NSString *) publicCardDavURL;
 

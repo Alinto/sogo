@@ -28,7 +28,6 @@
     vm.addPhone = addPhone;
     vm.addUrl = addUrl;
     vm.addAddress = addAddress;
-    vm.addMember = addMember;
     vm.userFilter = userFilter;
     vm.save = save;
     vm.close = close;
@@ -71,13 +70,9 @@
       var i = vm.card.$addAddress('', '', '', '', '', '', '', '');
       focus('address_' + i);
     }
-    function addMember() {
-      var i = vm.card.$addMember('');
-      focus('ref_' + i);
-    }
     function userFilter($query, excludedCards) {
       AddressBook.selectedFolder.$filter($query, {dry: true, excludeLists: true}, excludedCards);
-      return AddressBook.selectedFolder.$cards;
+      return AddressBook.selectedFolder.$$cards;
     }
     function save(form) {
       if (form.$valid) {
@@ -120,7 +115,7 @@
     }
     function confirmDelete(card) {
       Dialog.confirm(l('Warning'),
-                     l('Are you sure you want to delete the card of %{0}?', card.$fullname()),
+                     l('Are you sure you want to delete the card of %{0}?', '<b>' + card.$fullname() + '</b>'),
                      { ok: l('Delete') })
         .then(function() {
           // User confirmed the deletion

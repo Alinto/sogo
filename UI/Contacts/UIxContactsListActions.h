@@ -31,8 +31,13 @@
 @interface UIxContactsListActions : WODirectAction
 {
   NSDictionary *currentContact;
+
   NSArray *contactInfos;
+  NSArray *sortedIDs;
 }
+
+- (NSString *) cardDavURL;
+- (NSString *) publicCardDavURL;
 
 @end
 

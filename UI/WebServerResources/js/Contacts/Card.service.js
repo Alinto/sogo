@@ -38,8 +38,9 @@
    * @desc The factory we'll use to register with Angular.
    * @returns the Card constructor
    */
-  Card.$factory = ['$timeout', 'sgSettings', 'Resource', 'Preferences', 'Gravatar', function($timeout, Settings, Resource, Preferences, Gravatar) {
+  Card.$factory = ['$timeout', 'sgSettings', 'sgCard_STATUS', 'Resource', 'Preferences', 'Gravatar', function($timeout, Settings, Card_STATUS, Resource, Preferences, Gravatar) {
     angular.extend(Card, {
+      STATUS: Card_STATUS,
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Contacts', Settings.activeUser()),
       $timeout: $timeout,
       $gravatar: Gravatar,
@@ -68,6 +69,11 @@
     angular.module('SOGo.ContactsUI', ['SOGo.Common', 'SOGo.PreferencesUI']);
   }
   angular.module('SOGo.ContactsUI')
+    .constant('sgCard_STATUS', {
+      NOT_LOADED: 0,
+      LOADING: 1,
+      LOADED: 2
+    })
     .factory('Card', Card.$factory);
 
   /**
@@ -138,7 +144,9 @@
       this.$$email = this.$preferredEmail(partial);
     if (!this.$$image)
       this.$$image = this.image || Card.$gravatar(this.$preferredEmail(partial), 32, Card.$alternateAvatar, {no_404: true});
-    this.selected = false;
+    if (this.isgroup)
+      this.c_component = 'vlist';
+    this.$loaded = angular.isDefined(this.c_name)? Card.STATUS.LOADED : Card.STATUS.NOT_LOADED;
 
     // An empty attribute to trick md-autocomplete when adding attendees from the appointment editor
     this.empty = ' ';
@@ -449,6 +457,9 @@
   Card.prototype.$unwrap = function(futureCardData) {
     var _this = this;
 
+    // Card is not loaded yet
+    this.$loaded = Card.STATUS.LOADING;
+
     // Expose the promise
     this.$futureCardData = futureCardData.then(function(data) {
       _this.init(data);
@@ -462,8 +473,11 @@
         _this.birthday = new Date(_this.birthday * 1000);
         _this.$birthday = Card.$Preferences.$mdDateLocaleProvider.formatDate(_this.birthday);
       }
+      // Mark card as loaded
+      _this.$loaded = Card.STATUS.LOADED;
       // Make a copy of the data for an eventual reset
       _this.$shadowData = _this.$omit(true);
+
       return _this;
     });
   };

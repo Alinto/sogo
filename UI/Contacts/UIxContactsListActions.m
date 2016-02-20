@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2015 Inverse inc.
+  Copyright (C) 2006-2016 Inverse inc.
 
   This file is part of SOGo.
 
@@ -20,6 +20,8 @@
 */
 
 #import <Foundation/Foundation.h>
+#import <Foundation/NSEnumerator.h>
+
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
@@ -32,6 +34,9 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 
+#import <EOControl/EOQualifier.h>
+#import <EOControl/EOSortOrdering.h>
+
 #import <Common/WODirectAction+SOGo.h>
 
 
@@ -43,12 +48,18 @@
 
 #import "UIxContactsListActions.h"
 
+// The maximum number of headers to prefetch when querying the IDs list
+#define headersPrefetchMaxSize 100
+
 @implementation UIxContactsListActions
 
 - (id) init
 {
   if ((self = [super init]))
-    contactInfos = nil;
+    {
+      contactInfos = nil;
+      sortedIDs = nil;
+    }
   
   return self;
 }
@@ -56,6 +67,7 @@
 - (void) dealloc
 {
   [contactInfos release];
+  [sortedIDs release];
   [super dealloc];
 }
 
@@ -99,7 +111,7 @@
           [us setObject: contactSettings forKey: @"Contact"];
         }
       [contactSettings setObject: [NSArray arrayWithObjects: [sort lowercaseString], [NSString stringWithFormat: @"%d", [ascending intValue]], nil]
-                                                     forKey: @"SortingState"];
+                          forKey: @"SortingState"];
       [us synchronize];
     }
 }
@@ -108,11 +120,12 @@
 {
   id <SOGoContactFolder> folder;
   NSString *ascending, *searchText, *valueText;
-  NSArray *results;
-  NSMutableArray *filteredContacts;
+  NSArray *results, *fields;
+  NSMutableArray *filteredContacts, *headers;
   NSDictionary *contact;
   BOOL excludeLists;
   NSComparisonResult ordering;
+  NSUInteger max, count;
   WORequest *rq;
   unsigned int i;
 
@@ -158,6 +171,152 @@
         {
           contactInfos = results;
         }
+
+      // Convert array of dictionaries to array of arrays (lighter on the wire)
+      max = [contactInfos count];
+      headers = [NSMutableArray arrayWithCapacity: max];
+      if (max > 0)
+        {
+          count = 0;
+          fields = [[contactInfos objectAtIndex: 0] allKeys];
+          [headers addObject: fields];
+          while (count < max)
+            {
+              [headers addObject: [[contactInfos objectAtIndex: count] objectsForKeys: fields
+                                                                       notFoundMarker: [NSNull null]]];
+              count++;
+            }
+        }
+
+      contactInfos = headers;
+      [contactInfos retain];
+    }
+
+  return contactInfos;
+}
+
+- (NSArray *) sortedIDs
+{
+  id <SOGoContactFolder> folder;
+  NSString *ascending, *searchText, *valueText;
+  NSArray *fields, *records;
+  NSDictionary *record;
+  NSEnumerator *recordsList;
+  NSMutableArray *ids;
+  BOOL excludeLists;
+  EOKeyValueQualifier *kvQualifier;
+  EOSortOrdering *ordering;
+  EOQualifier *qualifier;
+  WORequest *rq;
+  SEL compare;
+
+  folder = [self clientObject];
+
+  if (!sortedIDs && [folder isKindOfClass: [SOGoContactGCSFolder class]])
+    {
+      fields = [NSArray arrayWithObjects: @"c_name", nil];
+      rq = [context request];
+      qualifier = nil;
+
+      // ORDER BY clause
+      ascending = [rq formValueForKey: @"asc"];
+      if (![ascending length] || [ascending boolValue])
+        compare = EOCompareAscending;
+      else
+        compare = EOCompareDescending;
+      ordering = [EOSortOrdering sortOrderingWithKey: [self sortKey]
+                                            selector: compare];
+
+      // WHERE clause
+      searchText = [rq formValueForKey: @"search"];
+      if ([searchText length] > 0)
+        {
+          valueText = [rq formValueForKey: @"value"];
+          qualifier = [(SOGoContactGCSFolder *) folder qualifierForFilter: valueText
+                                                               onCriteria: searchText];
+        }
+      excludeLists = [[rq formValueForKey: @"excludeLists"] boolValue];
+      if (excludeLists)
+        {
+          kvQualifier = [[EOKeyValueQualifier alloc]
+                               initWithKey: @"c_component"
+                          operatorSelector: EOQualifierOperatorNotEqual
+                                     value: @"vlist"];
+          [kvQualifier autorelease];
+          if (qualifier)
+            qualifier = [[EOAndQualifier alloc] initWithQualifiers: kvQualifier, qualifier, nil];
+          else
+            qualifier = kvQualifier;
+        }
+
+      // Perform lookup
+      records = [(SOGoContactGCSFolder *) folder lookupContactsFields: fields
+                                                        withQualifier: qualifier
+                                                         andOrderings: [NSArray arrayWithObject: ordering]];
+
+      // Convert records to an array of strings (c_name)
+      ids = [NSMutableArray arrayWithCapacity: [records count]];
+      recordsList = [records objectEnumerator];
+      while ((record = [recordsList nextObject]))
+        [ids addObject: [record objectForKey: @"c_name"]];
+
+      [sortedIDs release];
+      sortedIDs = ids;
+      [sortedIDs retain];
+    }
+
+  return sortedIDs;
+}
+
+- (NSArray *) getHeadersForIDs: (NSArray *) ids
+{
+  id <SOGoContactFolder> folder;
+  NSArray *results, *fields;
+  NSEnumerator *idsList;
+  NSMutableArray *qualifiers, *headers;
+  NSString *contactID;
+  EOKeyValueQualifier *kvQualifier;
+  EOQualifier *orQualifier;
+  NSUInteger max, count;
+
+  folder = [self clientObject];
+
+  if (!contactInfos && [ids count] && [folder isKindOfClass: [SOGoContactGCSFolder class]])
+    {
+      qualifiers = [NSMutableArray arrayWithCapacity: [ids count]];
+      idsList = [ids objectEnumerator];
+
+      while ((contactID = [idsList nextObject]))
+        {
+          kvQualifier = [[EOKeyValueQualifier alloc]
+                               initWithKey: @"c_name"
+                          operatorSelector: EOQualifierOperatorEqual
+                                     value: contactID];
+          [kvQualifier autorelease];
+          [qualifiers addObject: kvQualifier];
+        }
+
+      orQualifier = [[EOOrQualifier alloc] initWithQualifierArray: qualifiers];
+      [orQualifier autorelease];
+
+      results = [(SOGoContactGCSFolder *) folder lookupContactsWithQualifier: orQualifier];
+      max = [results count];
+      headers = [NSMutableArray arrayWithCapacity: max];
+      if (max > 0)
+        {
+          count = 0;
+          fields = [[results objectAtIndex: 0] allKeys];
+          [headers addObject: fields];
+          while (count < max)
+            {
+              [headers addObject: [[results objectAtIndex: count] objectsForKeys: fields
+                                                                  notFoundMarker: [NSNull null]]];
+              count++;
+            }
+        }
+
+      [contactInfos release];
+      contactInfos = headers;
       [contactInfos retain];
     }
 
@@ -172,6 +331,7 @@
  * @apiExample {curl} Example usage:
  *     curl -i http://localhost/SOGo/so/sogo1/Contacts/personal/view?search=name_or_address\&value=Bob
  *
+ * @apiParam {Boolean} [partial] Descending sort when false. Defaults to true (ascending).
  * @apiParam {Boolean} [asc] Descending sort when false. Defaults to true (ascending).
  * @apiParam {String} [sort] Sort field. Either c_cn, c_mail, c_screenname, c_o, or c_telephonenumber.
  * @apiParam {String} [search] Field criteria. Either name_or_address, category, or organization.
@@ -201,22 +361,85 @@
 - (id <WOActionResults>) contactsListAction
 {
   id <WOActionResults> result;
-  NSDictionary *data;
-  NSArray *contactsList;
+  id folder;
+  NSMutableDictionary *data;
+  NSArray *ids, *partialIds, *headers;
+  NSRange range;
+  NSString *partial;
 
-  contactsList = [self contactInfos];
+  folder = [self clientObject];
+  data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                [folder nameInContainer], @"id",
+                              [self cardDavURL], @"cardDavURL",
+                              [self publicCardDavURL], @"publicCardDavURL",
+                              nil];
+  partial = [[context request] formValueForKey: @"partial"];
 
-  data = [NSDictionary dictionaryWithObjectsAndKeys:
-                         [[self clientObject] nameInContainer], @"id",
-                       [self cardDavURL], @"cardDavURL",
-                       [self publicCardDavURL], @"publicCardDavURL",
-                       contactsList, @"cards",
-                       nil];
+  if ([partial intValue] && [folder isKindOfClass: [SOGoContactGCSFolder class]])
+    {
+      // Only save sort state when performing a partial listing
+      [self saveSortValue];
+
+      // Fetch all sorted IDs
+      ids = [self sortedIDs];
+
+      // Fetch the first X entries
+      if ([ids count] > headersPrefetchMaxSize)
+        {
+          range = NSMakeRange(0, headersPrefetchMaxSize);
+          partialIds = [ids subarrayWithRange: range];
+        }
+      else
+        {
+          partialIds = ids;
+        }
+      headers = [self getHeadersForIDs: partialIds];
+
+      if (ids)
+        [data setObject: ids forKey: @"ids"];
+      if (headers)
+        [data setObject: headers forKey: @"headers"];
+    }
+  else
+    {
+      headers = [self contactInfos];
+      if (headers)
+        [data setObject: headers forKey: @"headers"];
+    }
 
   result = [self responseWithStatus: 200
-                          andString: [data jsonRepresentation]];
+              andJSONRepresentation: data];
 
   return result;
+}
+
+- (id <WOActionResults>) getHeadersAction
+{
+  NSArray *ids, *headers;
+  NSDictionary *data;
+  WORequest *request;
+  WOResponse *response;
+
+  request = [context request];
+  data = [[request contentAsString] objectFromJSONString];
+  if (![[data objectForKey: @"ids"] isKindOfClass: [NSArray class]] ||
+      [[data objectForKey: @"ids"] count] == 0)
+    {
+      data = [NSDictionary dictionaryWithObjectsAndKeys:
+                             @"No ID specified", @"message", nil];
+      response = [self responseWithStatus: 404 /* Not Found */
+                    andJSONRepresentation: data];
+
+      return response;
+    }
+
+  ids = [data objectForKey: @"ids"];
+  headers = [self getHeadersForIDs: ids];
+
+  response = [self responseWithStatus: 200
+                andJSONRepresentation: headers];
+
+  return response;
 }
 
 - (id <WOActionResults>) contactSearchAction

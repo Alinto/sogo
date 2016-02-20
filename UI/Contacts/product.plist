@@ -78,6 +78,11 @@
           actionClass = "UIxContactsListActions";
           actionName  = "contactsList";
         };
+        headers = {
+          protectedBy = "View";
+          actionClass = "UIxContactsListActions";
+          actionName  = "getHeaders";
+        };
         // contacts = {
         //   protectedBy = "View";
         //   actionClass = "UIxContactsListActions";

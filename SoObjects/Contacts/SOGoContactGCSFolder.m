@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2013-2015 Inverse inc.
+  Copyright (C) 2006-2016 Inverse inc.
 
   This file is part of SOGo.
 
@@ -14,7 +14,7 @@
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
@@ -26,6 +26,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <SaxObjC/XMLNamespaces.h>
+#import <EOControl/EOFetchSpecification.h>
 #import <EOControl/EOQualifier.h>
 #import <EOControl/EOSortOrdering.h>
 
@@ -181,8 +182,8 @@ static NSArray *folderListingFields = nil;
   return obj;
 }
 
-- (EOQualifier *) _qualifierForFilter: (NSString *) filter
-                           onCriteria: (NSString *) criteria
+- (EOQualifier *) qualifierForFilter: (NSString *) filter
+                          onCriteria: (NSString *) criteria
 {
   NSString *qs;
   EOQualifier *qualifier;
@@ -239,7 +240,7 @@ static NSArray *folderListingFields = nil;
   if ([data length])
     [contactRecord setObject: data forKey: @"id"];
 
-  // c_cn => fn
+  // c_cn
   data = [contactRecord objectForKey: @"c_cn"];
   if (![data length])
     {
@@ -255,7 +256,7 @@ static NSArray *folderListingFields = nil;
         }
     }
 
-  // c_screenname => X-AIM
+  // c_screenname
   if (![contactRecord objectForKey: @"c_screenname"])
     [contactRecord setObject: @"" forKey: @"c_screenname"];
 
@@ -268,9 +269,12 @@ static NSArray *folderListingFields = nil;
       [contactRecord setObject: [NSArray arrayWithObject: email] forKey: @"emails"];
     }
   else
-    [contactRecord setObject: @"" forKey: @"c_mail"];
+    {
+      [contactRecord setObject: @"" forKey: @"c_mail"];
+      [contactRecord setObject: [NSArray array] forKey: @"emails"];
+    }
 
-  // c_telephonenumber => phones
+  // c_telephonenumber => phones[]
   data = [contactRecord objectForKey: @"c_telephonenumber"];
   if ([data length])
     {
@@ -279,7 +283,10 @@ static NSArray *folderListingFields = nil;
       [contactRecord setObject: [NSArray arrayWithObject: phonenumber] forKey: @"phones"];
     }
   else
-    [contactRecord setObject: @"" forKey: @"c_telephonenumber"];
+    {
+      [contactRecord setObject: @"" forKey: @"c_telephonenumber"];
+      [contactRecord setObject: [NSArray array] forKey: @"phones"];
+    }
 }
 
 - (NSArray *) _flattenedRecords: (NSArray *) records
@@ -347,9 +354,9 @@ static NSArray *folderListingFields = nil;
   EOQualifier *qualifier;
   EOSortOrdering *ordering;
 
-  qualifier = [self _qualifierForFilter: filter onCriteria: criteria];
+  qualifier = [self qualifierForFilter: filter onCriteria: criteria];
   dbRecords = [[self ocsFolder] fetchFields: folderListingFields
-				matchingQualifier: qualifier];
+                          matchingQualifier: qualifier];
 
   if ([dbRecords count] > 0)
     {
@@ -365,6 +372,37 @@ static NSArray *folderListingFields = nil;
     }
   else
     records = nil;
+
+  [self debugWithFormat:@"fetched %i records.", [records count]];
+  return records;
+}
+
+- (NSArray *) lookupContactsWithQualifier: (EOQualifier *) qualifier
+{
+  return [self lookupContactsFields: folderListingFields
+                      withQualifier: qualifier
+                       andOrderings: nil];
+}
+
+- (NSArray *) lookupContactsFields: (NSArray *) fields
+                     withQualifier: (EOQualifier *) qualifier
+                      andOrderings: (NSArray *) orderings
+{
+  NSArray *dbRecords, *records;
+  EOFetchSpecification *spec;
+
+  spec = [EOFetchSpecification fetchSpecificationWithEntityName: [[self ocsFolder] folderName]
+                                                      qualifier: qualifier
+                                                  sortOrderings: orderings];
+
+  dbRecords = [[self ocsFolder] fetchFields: fields
+                         fetchSpecification: spec
+                              ignoreDeleted: YES];
+
+  if ([dbRecords count] > 0 && fields == folderListingFields)
+    records = [self _flattenedRecords: dbRecords];
+  else
+    records = dbRecords;
 
   [self debugWithFormat:@"fetched %i records.", [records count]];
   return records;

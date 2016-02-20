@@ -1,4 +1,4 @@
-/* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+ /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 
 (function() {
   'use strict';
@@ -33,11 +33,12 @@
    * @desc The factory we'll use to register with Angular
    * @returns the AddressBook constructor
    */
-  AddressBook.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Card', 'Acl', 'Preferences', function($q, $timeout, $log, Settings, Resource, Card, Acl, Preferences) {
+  AddressBook.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgAddressBook_PRELOAD', 'Resource', 'Card', 'Acl', 'Preferences', function($q, $timeout, $log, Settings, AddressBook_PRELOAD, Resource, Card, Acl, Preferences) {
     angular.extend(AddressBook, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
+      PRELOAD: AddressBook_PRELOAD,
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Contacts', Settings.activeUser()),
       $Card: Card,
       $$Acl: Acl,
@@ -68,6 +69,10 @@
     angular.module('SOGo.ContactsUI', ['SOGo.Common', 'SOGo.PreferencesUI']);
   }
   angular.module('SOGo.ContactsUI')
+    .constant('sgAddressBook_PRELOAD', {
+      LOOKAHEAD: 50,
+      SIZE: 100
+    })
     .factory('AddressBook', AddressBook.$factory);
 
   /**
@@ -212,12 +217,20 @@
    * @param {object} data - attributes of addressbook
    */
   AddressBook.prototype.init = function(data, options) {
-    if (!this.$cards) {
-      this.$isLoading = true;
-      this.$cards = [];
-      this.cards = [];
+    var _this = this;
+    if (!this.$$cards) {
+      // Array of cards for "dry" searches (see $filter)
+      this.$$cards = [];
     }
-    angular.extend(this, data);
+    this.$isLoading = true;
+    this.idsMap = {};
+    this.$cards = []; // TODO Keep the "selected" state of cards
+    // Extend instance with all attributes of data except headers
+    angular.forEach(data, function(value, key) {
+      if (key != 'headers' && key != 'cards') {
+        _this[key] = value;
+      }
+    });
     // Add 'isOwned' and 'isSubscription' attributes based on active user (TODO: add it server-side?)
     this.isOwned = AddressBook.activeUser.isSuperUser || this.owner == AddressBook.activeUser.login;
     this.isSubscription = !this.isRemote && this.owner != AddressBook.activeUser.login;
@@ -243,6 +256,100 @@
   };
 
   /**
+   * @function getLength
+   * @memberof AddressBook.prototype
+   * @desc Used by md-virtual-repeat / md-on-demand
+   * @returns the number of cards in the addressbook
+   */
+  AddressBook.prototype.getLength = function() {
+    return this.$cards.length;
+  };
+
+  /**
+   * @function getItemAtIndex
+   * @memberof AddressBook.prototype
+   * @desc Used by md-virtual-repeat / md-on-demand
+   * @returns the card at the specified index
+   */
+  AddressBook.prototype.getItemAtIndex = function(index) {
+    var card;
+
+    if (!this.$isLoading && index >= 0 && index < this.$cards.length) {
+      card = this.$cards[index];
+      this.$lastVisibleIndex = Math.max(0, index - 3); // Magic number is NUM_EXTRA from virtual-repeater.js
+
+      if (this.$loadCard(card))
+        return card;
+    }
+    return null;
+  };
+
+  /**
+   * @function $loadCard
+   * @memberof AddressBook.prototype
+   * @desc Check if the card is loaded and in any case, fetch more cards headers from the server.
+   * @returns true if the card metadata are already fetched
+   */
+  AddressBook.prototype.$loadCard = function(card) {
+    var cardId = card.id,
+        startIndex = this.idsMap[cardId],
+        endIndex,
+        index,
+        max = this.$cards.length,
+        loaded = false,
+        ids,
+        futureHeadersData;
+
+    if (angular.isUndefined(this.ids) && card.id) {
+      loaded = true;
+    }
+    else if (angular.isDefined(startIndex) && startIndex < this.$cards.length) {
+      // Index is valid
+      if (card.$loaded != AddressBook.$Card.STATUS.NOT_LOADED) {
+        // Card headers are loaded or data is coming
+        loaded = true;
+      }
+
+      // Preload more headers if possible
+      endIndex = Math.min(startIndex + AddressBook.PRELOAD.LOOKAHEAD, max - 1);
+      if (this.$cards[endIndex].$loaded != AddressBook.$Card.STATUS.NOT_LOADED) {
+        index = Math.max(startIndex - AddressBook.PRELOAD.LOOKAHEAD, 0);
+        if (this.$cards[index].$loaded != AddressBook.$Card.STATUS.LOADED) {
+          // Previous cards not loaded; preload more headers further up
+          endIndex = startIndex;
+          startIndex = Math.max(startIndex - AddressBook.PRELOAD.SIZE, 0);
+        }
+      }
+      else
+        // Next cards not load; preload more headers further down
+        endIndex = Math.min(startIndex + AddressBook.PRELOAD.SIZE, max - 1);
+
+      if (this.$cards[startIndex].$loaded == AddressBook.$Card.STATUS.NOT_LOADED ||
+          this.$cards[endIndex].$loaded == AddressBook.$Card.STATUS.NOT_LOADED) {
+
+        for (ids = []; startIndex < endIndex && startIndex < max; startIndex++) {
+          if (this.$cards[startIndex].$loaded != AddressBook.$Card.STATUS.NOT_LOADED) {
+            // Card at this index is already loaded; increase the end index
+            endIndex++;
+          }
+          else {
+            // Card at this index will be loaded
+            ids.push(this.$cards[startIndex].id);
+            this.$cards[startIndex].$loaded = AddressBook.$Card.STATUS.LOADING;
+          }
+        }
+
+        AddressBook.$log.debug('Loading Ids ' + ids.join(' ') + ' (' + ids.length + ' cards)');
+        if (ids.length > 0) {
+          futureHeadersData = AddressBook.$$resource.post(this.id, 'headers', {ids: ids});
+          this.$unwrapHeaders(futureHeadersData);
+        }
+      }
+    }
+    return loaded;
+  };
+
+  /**
    * @function isSelectedCard
    * @memberof AddressBook.prototype
    * @desc Check if the specified card is selected.
@@ -263,8 +370,8 @@
     var count;
 
     count = 0;
-    if (this.cards) {
-      count = (_.filter(this.cards, function(card) { return card.selected; })).length;
+    if (this.$cards) {
+      count = (_.filter(this.$cards, function(card) { return card.selected; })).length;
     }
     return count;
   };
@@ -312,25 +419,27 @@
    * @returns a collection of Cards instances
    */
   AddressBook.prototype.$filter = function(search, options, excludedCards) {
-    var _this = this, query;
+    var _this = this, query,
+        dry = options && options.dry;
 
-    if (!options || !options.dry) {
-      this.$isLoading = true;
-      query = AddressBook.$query;
-    }
-    else if (options.dry) {
+    if (dry) {
       // Don't keep a copy of the query in dry mode
       query = angular.copy(AddressBook.$query);
+    }
+    else {
+      this.$isLoading = true;
+      query = AddressBook.$query;
+      if (!this.isRemote) query.partial = 1;
     }
 
     return AddressBook.$Preferences.ready().then(function() {
       if (options) {
         angular.extend(query, options);
-        if (options.dry) {
+        if (dry) {
           if (!search) {
             // No query specified
-            _this.$cards = [];
-            return AddressBook.$q.when(_this.$cards);
+            _this.$$cards = [];
+            return AddressBook.$q.when(_this.$$cards);
           }
         }
       }
@@ -339,54 +448,73 @@
         query.value = search;
 
       return _this.$id().then(function(addressbookId) {
-        return AddressBook.$$resource.fetch(addressbookId, 'view', query);
-      }).then(function(response) {
-        var results, cards, card, index,
-            compareIds = function(data) {
-              return _this.id == data.id;
-            };
-        if (options && options.dry) {
-          // Don't keep a copy of the resulting cards.
-          // This is usefull when doing autocompletion.
-          cards = _this.$cards;
-        }
-        else {
-          cards = _this.cards;
-        }
-        if (excludedCards) {
-          // Remove excluded cards from results
-          results = _.filter(response.cards, function(card) {
-            return _.isUndefined(_.find(excludedCards, compareIds, card));
+        var futureData = AddressBook.$$resource.fetch(addressbookId, 'view', query);
+
+        if (dry) {
+          futureData.then(function(response) {
+            var results, headers, card, index, fields, idFieldIndex,
+                cards = _this.$$cards,
+                compareIds = function(card) {
+                  return this == card.id;
+                };
+
+            // First entry of 'headers' are keys
+            fields = _.invoke(response.headers[0], 'toLowerCase');
+            idFieldIndex = fields.indexOf('id');
+            response.headers.splice(0, 1);
+
+            if (excludedCards)
+              // Remove excluded cards from results
+              results = _.filter(response.ids, function(id) {
+                return _.isUndefined(_.find(excludedCards, compareIds, id));
+              });
+            else
+              results = response.ids;
+
+            // Remove cards that no longer match the search query
+            for (index = cards.length - 1; index >= 0; index--) {
+              card = cards[index];
+              if (_.isUndefined(_.find(results, compareIds, card.id))) {
+                cards.splice(index, 1);
+              }
+            }
+
+            // Add new cards matching the search query
+            _.each(results, function(cardId, index) {
+              if (_.isUndefined(_.find(cards, compareIds, cardId))) {
+                var data = { id: cardId };
+                var card = new AddressBook.$Card(data, search);
+                cards.splice(index, 0, card);
+              }
+            });
+
+            // Respect the order of the results
+            _.each(results, function(cardId, index) {
+              var oldIndex, removedCards;
+              if (cards[index].id != cardId) {
+                oldIndex = _.findIndex(cards, compareIds, cardId);
+                removedCards = cards.splice(oldIndex, 1);
+                cards.splice(index, 0, removedCards[0]);
+              }
+            });
+
+            // Extend Card objects with received headers
+            _.each(response.headers, function(data) {
+              var card, index = _.findIndex(cards, compareIds, data[idFieldIndex]);
+              if (index > -1) {
+                card = _.object(fields, data);
+                cards[index].init(card, search);
+              }
+            });
+
+            _this.$isLoading = false;
+            return cards;
           });
         }
         else {
-          results = response.cards;
+          // Unwrap promise and instantiate or extend Cards objets
+          _this.$unwrap(futureData);
         }
-        // Remove cards that no longer match the search query
-        for (index = cards.length - 1; index >= 0; index--) {
-          card = cards[index];
-          if (_.isUndefined(_.find(results, compareIds, card))) {
-            cards.splice(index, 1);
-          }
-        }
-        // Add new cards matching the search query
-        _.each(results, function(data, index) {
-          if (_.isUndefined(_.find(cards, compareIds, data))) {
-            var card = new AddressBook.$Card(data, search);
-            cards.splice(index, 0, card);
-          }
-        });
-        // Respect the order of the results
-        _.each(results, function(data, index) {
-          var oldIndex, removedCards;
-          if (cards[index].id != data.id) {
-            oldIndex = _.findIndex(cards, compareIds, data);
-            removedCards = cards.splice(oldIndex, 1);
-            cards.splice(index, 0, removedCards[0]);
-          }
-        });
-        _this.$isLoading = false;
-        return cards;
       });
     });
   };
@@ -447,7 +575,7 @@
     var _this = this;
     
     return AddressBook.$$resource.post(this.id, 'batchDelete', {uids: uids}).then(function() {
-      _this.cards = _.difference(_this.cards, cards);
+      _this.$cards = _.difference(_this.$cards, cards);
     });
   };
 
@@ -485,7 +613,7 @@
 
     return this.$id().then(function(addressbookId) {
       var fullCard,
-          cachedCard = _.find(_this.cards, function(data) {
+          cachedCard = _.find(_this.$cards, function(data) {
             return cardId == data.id;
           });
 
@@ -512,28 +640,74 @@
   AddressBook.prototype.$unwrap = function(futureAddressBookData) {
     var _this = this;
 
+    this.$isLoading = true;
+
     // Expose and resolve the promise
-    this.$futureAddressBookData = futureAddressBookData.then(function(data) {
+    this.$futureAddressBookData = futureAddressBookData.then(function(response) {
       return AddressBook.$timeout(function() {
+        var headers;
+
+        if (!response.ids || _this.$topIndex > response.ids.length - 1)
+          _this.$topIndex = 0;
+
         // Extend AddressBook instance from data of addressbooks list.
         // Will inherit attributes such as isEditable and isRemote.
         angular.forEach(AddressBook.$findAll(), function(o, i) {
-          if (o.id == data.id) {
+          if (o.id == response.id) {
             angular.extend(_this, o);
           }
         });
+
         // Extend AddressBook instance with received data
-        _this.init(data);
-        // Instanciate Card objects
-        angular.forEach(_this.cards, function(o, i) {
-          _this.cards[i] = new AddressBook.$Card(o);
-        });
+        _this.init(response);
+
+        if (_this.ids) {
+          AddressBook.$log.debug('unwrapping ' + _this.ids.length + ' cards');
+
+          // Instanciate Card objects
+          _.reduce(_this.ids, function(cards, card, i) {
+            var data = { id: card };
+
+            // Build map of ID <=> index
+            _this.idsMap[data.id] = i;
+
+            cards.push(new AddressBook.$Card(data));
+
+            return cards;
+          }, _this.$cards);
+        }
+
+        if (response.headers) {
+          // First entry of 'headers' are keys
+          headers = _.invoke(response.headers[0], 'toLowerCase');
+          response.headers.splice(0, 1);
+
+          if (_this.ids) {
+            // Extend Card objects with received headers
+            _.each(response.headers, function(data) {
+              var o = _.object(headers, data),
+                  i = _this.idsMap[o.id];
+              _this.$cards[i].init(o);
+            });
+          }
+          else {
+            // Instanciate Card objects
+            _this.$cards = [];
+            angular.forEach(response.headers, function(data) {
+              var o = _.object(headers, data);
+              _this.$cards.push(new AddressBook.$Card(o));
+            });
+          }
+        }
+
         // Instanciate Acl object
         _this.$acl = new AddressBook.$$Acl('Contacts/' + _this.id);
 
         _this.$startRefreshTimeout();
 
         _this.$isLoading = false;
+
+        AddressBook.$log.debug('addressbook ' + _this.id + ' ready');
 
         return _this;
       });
@@ -548,6 +722,34 @@
   };
 
   /**
+   * @function $unwrapHeaders
+   * @memberof AddressBook.prototype
+   * @desc Unwrap a promise and extend matching Card objects with received data.
+   * @param {promise} futureHeadersData - a promise of the metadata of some cards
+   */
+  AddressBook.prototype.$unwrapHeaders = function(futureHeadersData) {
+    var _this = this;
+
+    futureHeadersData.then(function(data) {
+      AddressBook.$timeout(function() {
+        var headers, j;
+        if (data.length > 0) {
+          // First entry of 'headers' are keys
+          headers = _.invoke(data[0], 'toLowerCase');
+          data.splice(0, 1);
+          _.each(data, function(cardHeaders) {
+            cardHeaders = _.object(headers, cardHeaders);
+            j = _this.idsMap[cardHeaders.id];
+            if (angular.isDefined(j)) {
+              _this.$cards[j].init(cardHeaders);
+            }
+          });
+        }
+      });
+    });
+  };
+
+  /**
    * @function $omit
    * @memberof AddressBook.prototype
    * @desc Return a sanitized object used to send to the server.
@@ -557,7 +759,7 @@
     var addressbook = {};
     angular.forEach(this, function(value, key) {
       if (key != 'constructor' &&
-          key != 'cards' &&
+          key != 'ids' &&
           key[0] != '$') {
         addressbook[key] = value;
       }

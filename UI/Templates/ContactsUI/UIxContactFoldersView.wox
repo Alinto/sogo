@@ -356,9 +356,9 @@
 
         <md-content id="contactsList" layout="column" class="md-flex">
           <md-subheader ng-show="addressbook.service.$query.value">
-            <span ng-switch="addressbook.selectedFolder.cards.length">
+            <span ng-switch="addressbook.selectedFolder.$cards.length">
               <span ng-switch-when="0"><var:string label:value="No matching contact"/></span>
-              <span ng-switch-default="true">{{addressbook.selectedFolder.cards.length}} <var:string label:value="matching contacts"/></span>
+              <span ng-switch-default="true">{{addressbook.selectedFolder.$cards.length}} <var:string label:value="matching contacts"/></span>
             </span>
           </md-subheader>
           <md-subheader ng-hide="addressbook.service.$query.value">
@@ -367,19 +367,20 @@
                 <var:string label:value="Start a search to browse this address book"/>
               </span>
               <span ng-switch-default="true">
-                <span ng-switch="addressbook.selectedFolder.cards.length">
+                <span ng-switch="addressbook.selectedFolder.$cards.length">
                   <span ng-switch-when="0"><var:string label:value="No contact"/></span>
-                  <span ng-switch-default="true">{{addressbook.selectedFolder.cards.length}} <var:string label:value="contacts"/></span>
+                  <span ng-switch-default="true">{{addressbook.selectedFolder.$cards.length}} <var:string label:value="contacts"/></span>
                 </span>
               </span>
             </span>
           </md-subheader>
-          <md-virtual-repeat-container class="md-flex">
+          <md-virtual-repeat-container class="md-flex" md-top-index="addressbook.selectedFolder.$topIndex">
             <md-list class="sg-section-list">
               <md-list-item
                   class="md-default-theme md-accent md-hue-2"
                   ng-class="{'md-bg': addressbook.selectedFolder.isSelectedCard(currentCard.id)}"
-                  md-virtual-repeat="currentCard in addressbook.selectedFolder.cards" md-item-size="56"
+                  md-virtual-repeat="currentCard in addressbook.selectedFolder"
+                  md-on-demand="md-on-demand" md-item-size="56"
                   aria-label="{{currentCard.$fullname()}}"
                   ng-click="addressbook.selectCard(currentCard)">
                 <div class="md-secondary"
