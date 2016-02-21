@@ -422,7 +422,7 @@ struct GlobalObjectId {
           mimeType = [NGMimeType mimeType: [[thePart contentType] type]
                                   subType: [[thePart contentType] subType]
                                parameters: [NSDictionary dictionaryWithObject: @"utf-8"  forKey: @"charset"]];
-          [thePart setHeader: mimeType  forKey: @"content-type"];
+          [(NGMimeBodyPart *)thePart setHeader: mimeType  forKey: @"content-type"];
           
           fdata = [[NGMimeFileData alloc] initWithBytes: [body bytes]
                                                  length: [body length]];
