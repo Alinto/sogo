@@ -981,10 +981,20 @@ rtf2html (NSData *compressedRTF)
       activeUserRoles = [[context activeUser]
                           rolesForObject: sogoObject
                                inContext: [userContext woContext]];
+      /* We use in this library the roles as flags, so we expand high
+         access rights with the lower ones */
+      activeUserRoles = [self expandRoles: activeUserRoles];
       [activeUserRoles retain];
     }
 
   return activeUserRoles;
+}
+
+/* Expand current roles with lower access roles to transform them to
+   flags */
+- (NSArray *) expandRoles: (NSArray *) roles
+{
+  return roles;
 }
 
 /* Can the current active user read the message? */

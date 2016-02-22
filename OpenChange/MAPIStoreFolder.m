@@ -919,6 +919,11 @@ NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   return nil;
 }
 
+- (NSArray *) expandRoles: (NSArray *) roles
+{
+  return roles;
+}
+
 - (void) _modifyPermissionEntryForUser: (NSString *) user
                              withRoles: (NSArray *) roles
                             isAddition: (BOOL) isAddition
@@ -1053,6 +1058,7 @@ NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
           NSArray *roles;
 
           roles = [[self aclFolder] aclsForUser: [activeUser login]];
+          roles = [self expandRoles: roles];  // Not required here
           /* Check FolderVisible right to return the table */
           access = ([self exchangeRightsForRoles: roles] & RoleNone) != 0;
         }
@@ -1307,6 +1313,7 @@ NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
       NSArray *roles;
 
       roles = [[self aclFolder] aclsForUser: [activeUser login]];
+      roles = [self expandRoles: roles];
       rights = [self exchangeRightsForRoles: roles];
       /* FreeBusySimple and FreeBusyDetailed does not apply here
          [MS-OXCFOLD] Section 2.2.2.2.2.8 */
@@ -1664,6 +1671,7 @@ NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
       NSArray *roles;
 
       roles = [[self aclFolder] aclsForUser: [activeUser login]];
+      roles = [self expandRoles: roles]; // Not required
       if (([self exchangeRightsForRoles: roles] & RightsFolderOwner) == 0)
         return MAPISTORE_ERR_DENIED;
     }

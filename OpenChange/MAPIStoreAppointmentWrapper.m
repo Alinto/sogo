@@ -1080,6 +1080,29 @@ static NSCharacterSet *hexCharacterSet = nil;
   return owner;
 }
 
+- (NSUInteger) sensitivity
+{
+  NSString *accessClass = nil;
+  NSUInteger v;
+
+  accessClass = [event accessClass];
+  if (accessClass)
+    {
+      if ([accessClass isEqualToString: @"X-PERSONAL"])
+        v = 0x1;
+      else if ([accessClass isEqualToString: @"PRIVATE"])
+        v = 0x2;
+      else if ([accessClass isEqualToString: @"CONFIDENTIAL"])
+        v = 0x3;
+      else
+        v = 0x0;  /* PUBLIC */
+    }
+  else
+      v = 0x0;  /* PUBLIC */
+
+  return v;
+}
+
 /* sender representing */
 - (enum mapistore_error) getPidTagSentRepresentingEmailAddress: (void **) data
                                                       inMemCtx: (TALLOC_CTX *) memCtx
@@ -1242,23 +1265,8 @@ static NSCharacterSet *hexCharacterSet = nil;
 {
   /* See [MS-OXCICAL] Section 2.1.3.11.20.4 */
   uint32_t v;
-  NSString *accessClass;
 
-  accessClass = [event accessClass];
-  if (accessClass)
-    {
-      if ([accessClass isEqualToString: @"X-PERSONAL"])
-        v = 0x1;
-      else if ([accessClass isEqualToString: @"PRIVATE"])
-        v = 0x2;
-      else if ([accessClass isEqualToString: @"CONFIDENTIAL"])
-        v = 0x3;
-      else
-        v = 0x0;  /* PUBLIC */
-    }
-  else
-      v = 0x0;  /* PUBLIC */
-
+  v = (uint32_t) [self sensitivity];
   *data = MAPILongValue (memCtx, v);
 
   return MAPISTORE_SUCCESS;

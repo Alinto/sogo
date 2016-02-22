@@ -528,6 +528,11 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
   ASSIGN (sogoObject, newObject);
 }
 
+- (NSUInteger) sensitivity
+{
+  return [[self _appointmentWrapper] sensitivity];
+}
+
 - (NSString *) creator
 {
   return [[self _appointmentWrapper] creator];
@@ -536,17 +541,6 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
 - (NSString *) owner
 {
   return [[self _appointmentWrapper] owner];
-}
-
-- (BOOL) subscriberCanReadMessage
-{
-  NSArray *roles;
-
-  roles = [self activeUserRoles];
-
-  return ([roles containsObject: SOGoCalendarRole_ComponentViewer]
-          || [roles containsObject: SOGoCalendarRole_ComponentDAndTViewer]
-          || [self subscriberCanModifyMessage]);
 }
 
 - (void) _updateAttachedEvents

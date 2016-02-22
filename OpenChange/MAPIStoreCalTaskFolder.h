@@ -1,8 +1,8 @@
-/* MAPIStoreTasksMessage.h - this file is part of SOGo
+/* MAPIStoreCalTaskFolder.h - this file is part of SOGo
  *
- * Copyright (C) 2011-2012 Inverse inc
+ * Copyright (C) 2016 Enrique J. Hernandez
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Author: Enrique J. Hernandez <ejhernandez@zentyal.com>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,13 +20,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTORETASKSMESSAGE_H
-#define MAPISTORETASKSMESSAGE_H
+#ifndef MAPISTORECALTASKFOLDER_H
+#define MAPISTORECALTASKFOLDER_H
 
-#import "MAPIStoreCalTaskMessage.h"
+#import "MAPIStoreGCSFolder.h"
 
-@interface MAPIStoreTasksMessage : MAPIStoreCalTaskMessage
+/* This class is intended to share code between Calendar and Tasks as
+   of nowadays share the table */
+
+@interface MAPIStoreCalTaskFolder : MAPIStoreGCSFolder
 
 @end
 
-#endif /* MAPISTORETASKSMESSAGE_H */
+#endif /* MAPISTORECALTASKFOLDER_H */

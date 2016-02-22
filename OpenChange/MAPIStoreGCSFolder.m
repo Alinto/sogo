@@ -859,6 +859,7 @@ static Class NSNumberK;
       woContext = [[self userContext] woContext];
       activeUserRoles = [activeUser rolesForObject: sogoObject
                                          inContext: woContext];
+      activeUserRoles = [self expandRoles: activeUserRoles];
       [activeUserRoles retain];
     }
 

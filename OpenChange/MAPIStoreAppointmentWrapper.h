@@ -70,6 +70,7 @@
 
 - (NSString *) creator;
 - (NSString *) owner;
+- (NSUInteger) sensitivity;
 
 - (enum mapistore_error) getPidTagSenderEmailAddress: (void **) data
                                             inMemCtx: (TALLOC_CTX *) memCtx;

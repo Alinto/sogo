@@ -89,6 +89,8 @@ extern NSString *MAPIStoreRightFolderContact;
 - (MAPIStorePermissionsTable *) permissionsTable;
 - (NSArray *) permissionEntries;
 
+- (NSArray *) expandRoles: (NSArray *) roles;
+
 /* message objects and tables */
 - (id) lookupMessage: (NSString *) messageKey;
 - (NSArray *) messageKeys;

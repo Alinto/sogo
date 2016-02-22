@@ -129,10 +129,21 @@
   
   task = [sogoObject component: NO secure: YES];
 
-  if ([task symbolicAccessClass] == iCalAccessPublic)
+  if ([task isPublic])
     return [self getNo: data inMemCtx: memCtx];
 
   return [self getYes: data inMemCtx: memCtx];
+}
+
+- (enum mapistore_error) getPidTagSensitivity: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  uint32_t v;
+
+  v = (uint32_t) [self sensitivity];
+
+  *data = MAPILongValue (memCtx, v);
+  return MAPISTORE_SUCCESS;
 }
 
 - (enum mapistore_error) getPidTagImportance: (void **) data
@@ -343,6 +354,28 @@
 // ----------------------------------
 // Sharing
 // ----------------------------------
+- (NSUInteger) sensitivity
+{
+  iCalToDo *task;
+  NSUInteger v;
+
+  task = [sogoObject component: NO secure: YES];
+  /* FIXME: Use OpenChange constants names */
+  switch ([task symbolicAccessClass])
+    {
+    case iCalAccessPrivate:
+      v = 0x2;
+      break;
+    case iCalAccessConfidential:
+      v = 0x3;
+      break;
+    default:
+      v = 0x0;
+      break;
+    }
+  return v;
+}
+
 - (NSString *) creator
 {
   iCalToDo *task;
@@ -357,36 +390,6 @@
   /* This is not true but to allow a user edit its own tasks is required.
      FIXME: When PidLidTaskOwner getter is properly implemented for Task Requests */
   return [self creator];
-}
-
-- (BOOL) subscriberCanReadMessage
-{
-  return ([[self activeUserRoles]
-            containsObject: SOGoCalendarRole_ComponentViewer]
-          || [self subscriberCanModifyMessage]);
-}
-
-- (BOOL) subscriberCanModifyMessage
-{
-  BOOL rc;
-  NSArray *roles = [self activeUserRoles];
-
-  if (isNew)
-    rc = [roles containsObject: SOGoRole_ObjectCreator];
-  else
-    rc = ([roles containsObject: SOGoCalendarRole_ComponentModifier]
-          || [roles containsObject: SOGoCalendarRole_ComponentResponder]);
-
-  /* Check if the message is owned and it has permission to edit it */
-  if (!rc && [roles containsObject: MAPIStoreRightEditOwn])
-    {
-      NSString *currentUser;
-
-      currentUser = [[container context] activeUser];
-      rc = [currentUser isEqual: [self ownerUser]];
-    }
-
-  return rc;
 }
 
 - (void) save:(TALLOC_CTX *) memCtx

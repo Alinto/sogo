@@ -23,9 +23,9 @@
 #ifndef MAPISTORETASKSFOLDER_H
 #define MAPISTORETASKSFOLDER_H
 
-#import "MAPIStoreGCSFolder.h"
+#import "MAPIStoreCalTaskFolder.h"
 
-@interface MAPIStoreTasksFolder : MAPIStoreGCSFolder
+@interface MAPIStoreTasksFolder : MAPIStoreCalTaskFolder
 
 @end
 

@@ -1,8 +1,8 @@
-/* MAPIStoreTasksMessage.h - this file is part of SOGo
+/* MAPIStoreCalTaskMessage.h - this file is part of SOGo
  *
- * Copyright (C) 2011-2012 Inverse inc
+ * Copyright (C) 2016 Enrique J. Hernandez
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Author: Enrique J. Hernandez <ejhernandez@zentyal.com>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,13 +20,21 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTORETASKSMESSAGE_H
-#define MAPISTORETASKSMESSAGE_H
+#ifndef MAPISTORECALTASKMESSAGE_H
+#define MAPISTORECALTASKMESSAGE_H
 
-#import "MAPIStoreCalTaskMessage.h"
+#import "MAPIStoreGCSMessage.h"
 
-@interface MAPIStoreTasksMessage : MAPIStoreCalTaskMessage
+/* This class is intended to share common logic for Calendar and Tasks
+   as of today they are stored in the same table. This is relevant for
+   permissions */
+@interface MAPIStoreCalTaskMessage : MAPIStoreGCSMessage
+{
+}
+
+/* Get the sensitivity (access class) from a message */
+- (NSUInteger) sensitivity;
 
 @end
 
-#endif /* MAPISTORETASKSMESSAGE_H */
+#endif /* MAPISTORECALTASKMESSAGE_H */
