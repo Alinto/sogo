@@ -88,7 +88,7 @@ fixes from the current development version of Mozilla Lightning. For
 Thunderbird 2, it is based on release version 0.9 of Lightning. For
 Thunderbird 3.1, it is based on 1.0b2.
 
-In order to download and install Mozilla Lightning – Inverse Edition for
+In order to download and install Mozilla Lightning - Inverse Edition for
 Thunderbird 2 or 3.1, please visit:
 
 http://www.sogo.nu/downloads/frontends.html
@@ -136,7 +136,7 @@ extensions, please visit:
 http://www.sogo.nu/downloads/frontends.html
 
 Prior to installing the SOGo Integrator extension, you should read the
-following chapter – _SOGo Integrator Customization_.
+following chapter - _SOGo Integrator Customization_.
 
 SOGo Integrator Customization
 -----------------------------
@@ -195,7 +195,7 @@ if the SOGo server is accessible from the following URL:
 
 Note that if you changed the `x-webobjects-server-url` configuration
 setting from your HTTP server configuration file for SOGo, the
-value *must* match the one you specify in `isi:updateURL` – even the
+value *must* match the one you specify in `isi:updateURL` - even the
 port number.
 
 Moreover, you *must* change the value of the
@@ -216,7 +216,7 @@ In this section, you will learn how to install and configure the SOGo
 Update Server.
 
 The SOGo Update Server can be used to automatically install or uninstall
-Mozilla Thunderbird extensions, push user settings and more – all from a
+Mozilla Thunderbird extensions, push user settings and more - all from a
 central place managed by system administrators.
 
 Installation

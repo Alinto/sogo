@@ -142,7 +142,7 @@ to authenticate users. A SOGoUserSources entry to achieve this wold look
 like this:
 
 ----
-su – sogo
+su - sogo
 defaults write sogod SOGoUserSources '(
     {
         CNFieldName = displayName;
@@ -245,7 +245,7 @@ http://www.sogo.nu/english/downloads/backend.html.
 In order to satisfy certain dependencies, you should also add the EPEL
 source corresponding to your distribution and architecture. More
 information on this is available here:
-http://fedoraproject.org/wiki/EPEL – or more specifically,
+http://fedoraproject.org/wiki/EPEL - or more specifically,
 http://fedoraproject.org/wiki/EPEL/FAQ#How_can_I_install_the_packages_from_the_EPEL_software_repository.3F.
 
 Once ready, install the OpenChange packages on top of an existing SOGo
@@ -720,7 +720,7 @@ Adding Users
 ------------
 
 Users that wish to connect natively to SOGo must be provisioned in
-Samba 4 and in OpenChange – even if they already exist in your current
+Samba 4 and in OpenChange - even if they already exist in your current
 LDAP or Microsoft Active Directory server.
 
 To add a user, execute the following commands: 
