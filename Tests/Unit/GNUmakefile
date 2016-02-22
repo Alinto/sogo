@@ -23,6 +23,7 @@ $(TEST_TOOL)_OBJC_FILES += \
 	\
 	TestNGMimeHeaderFieldGenerator.m \
 	TestNGMimeMessageGenerator.m \
+	TestNGMimeType.m \
 	\
 	TestNSData+Crypto.m \
 	TestNSString+Crypto.m \
