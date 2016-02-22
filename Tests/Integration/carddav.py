@@ -71,8 +71,12 @@ class Carddav:
             url = "/SOGo/so/%s/Contacts/personal/view" % (self.login)
             content = self._get(url)
             #print "\nCONTENT:", content
-            if 'cards' in content:
-                self.cards = content['cards']
+            if 'headers' in content:
+                self.cards = []
+                fields = content['headers'][0]
+                for h in content['headers'][1:]:
+                    card = {f: h[i] for i, f in enumerate(fields)}
+                    self.cards.append(card)
             else:
                 self.cards = []
         return self.cards
