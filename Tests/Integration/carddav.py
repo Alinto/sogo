@@ -75,7 +75,9 @@ class Carddav:
                 self.cards = []
                 fields = content['headers'][0]
                 for h in content['headers'][1:]:
-                    card = {f: h[i] for i, f in enumerate(fields)}
+                    card = {}
+                    for i, f in enumerate(fields):
+                        card[f] = h[i]
                     self.cards.append(card)
             else:
                 self.cards = []
