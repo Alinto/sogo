@@ -104,10 +104,10 @@
     </md-dialog-content>
     <md-dialog-actions ng-show="acl.confirmation.showing">
       <md-button ng-click="acl.selectedUser.$resetRights(true); acl.confirmation.showing = false">
-        <var:string label:value="Cancel"/>
+        <var:string label:value="Keep Private"/>
       </md-button>
       <md-button class="md-warn" ng-click="acl.confirmation.showing = false">
-        <var:string label:value="OK"/>
+        <var:string label:value="Give Access"/>
       </md-button>
     </md-dialog-actions>
   </md-dialog>
