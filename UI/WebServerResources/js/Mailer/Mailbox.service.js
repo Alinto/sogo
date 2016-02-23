@@ -339,7 +339,7 @@
       }
       else
         // Next messages not load; preload more headers further down
-        endIndex = Math.min(startIndex + Mailbox.PRELOAD.SIZE, max);
+        endIndex = Math.min(startIndex + Mailbox.PRELOAD.SIZE, max - 1);
 
       if (!angular.isDefined(this.$messages[startIndex].subject) &&
           !angular.isDefined(this.$messages[startIndex].loading) ||
