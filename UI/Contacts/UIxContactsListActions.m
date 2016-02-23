@@ -331,7 +331,7 @@
  * @apiExample {curl} Example usage:
  *     curl -i http://localhost/SOGo/so/sogo1/Contacts/personal/view?search=name_or_address\&value=Bob
  *
- * @apiParam {Boolean} [partial] Descending sort when false. Defaults to true (ascending).
+ * @apiParam {Boolean} [partial] Send all contacts IDs and headers of a the first 50 contacts. Defaults to false.
  * @apiParam {Boolean} [asc] Descending sort when false. Defaults to true (ascending).
  * @apiParam {String} [sort] Sort field. Either c_cn, c_mail, c_screenname, c_o, or c_telephonenumber.
  * @apiParam {String} [search] Field criteria. Either name_or_address, category, or organization.
@@ -340,21 +340,25 @@
  * @apiSuccess (Success 200) {String} id Address book         ID
  * @apiSuccess (Success 200) {String} [publicCardDavURL]      Public CardDAV URL of the address book
  * @apiSuccess (Success 200) {String} cardDavURL              CardDAV URL of the address book
- * @apiSuccess (Success 200) {Object[]} [cards]               Matching cards
- * @apiSuccess (Success 200) {String} cards.id                Card ID
- * @apiSuccess (Success 200) {String} cards.c_name            Card ID
- * @apiSuccess (Success 200) {String} cards.c_component       Either vcard or vlist
- * @apiSuccess (Success 200) {String} cards.c_cn              Fullname
- * @apiSuccess (Success 200) {String} cards.c_givenname       Firstname
- * @apiSuccess (Success 200) {String} cards.c_sn              Lastname
- * @apiSuccess (Success 200) {String} cards.c_screenname      Screenname
- * @apiSuccess (Success 200) {String} cards.c_o               Organization name
- * @apiSuccess (Success 200) {Object} cards.emails            Preferred email address
- * @apiSuccess (Success 200) {String} cards.emails.type       Type (e.g., home or work)
- * @apiSuccess (Success 200) {String} cards.emails.value      Email address
- * @apiSuccess (Success 200) {String} cards.c_mail            Preferred email address
- * @apiSuccess (Success 200) {String} cards.c_telephonenumber Preferred telephone number
- * @apiSuccess (Success 200) {String} cards.c_categories      Comma-separated list of categories
+ * @apiSuccess (Success 200) {String[]} [ids]                 Sorted IDs when requesting partial results
+ * @apiSuccess (Success 200) {Object[]} headers               Matching cards
+ * @apiSuccess (Success 200) {String} headers.id                Card ID
+ * @apiSuccess (Success 200) {String} headers.c_name            Card ID
+ * @apiSuccess (Success 200) {String} headers.c_component       Either vcard or vlist
+ * @apiSuccess (Success 200) {String} headers.c_cn              Fullname
+ * @apiSuccess (Success 200) {String} headers.c_givenname       Firstname
+ * @apiSuccess (Success 200) {String} headers.c_sn              Lastname
+ * @apiSuccess (Success 200) {String} headers.c_screenname      Screenname
+ * @apiSuccess (Success 200) {String} headers.c_o               Organization name
+ * @apiSuccess (Success 200) {Object} headers.emails            Preferred email address
+ * @apiSuccess (Success 200) {String} headers.emails.type       Type (e.g., home or work)
+ * @apiSuccess (Success 200) {String} headers.emails.value      Email address
+ * @apiSuccess (Success 200) {String} headers.c_mail            Preferred email address
+ * @apiSuccess (Success 200) {String} headers.phones            Preferred telephone number
+ * @apiSuccess (Success 200) {String} headers.phones.type       Type (e.g., home or work)
+ * @apiSuccess (Success 200) {String} headers.phones.value      Phone number
+ * @apiSuccess (Success 200) {String} headers.c_telephonenumber Preferred telephone number
+ * @apiSuccess (Success 200) {String} headers.c_categories      Comma-separated list of categories
  *
  * See [SOGoContactGCSFolder fixupContactRecord:]
  */
