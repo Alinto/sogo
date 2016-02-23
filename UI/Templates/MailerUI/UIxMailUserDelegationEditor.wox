@@ -21,9 +21,10 @@
     </md-toolbar>
 
     <md-dialog-content class="md-padding">
-      <div>
+      <div layout="row">
+          <md-icon>search</md-icon>
         <md-autocomplete
-            class="md-flex"
+            class="md-flex sg-input-no-message"
             md-input-name="addUser"
             md-search-text="delegate.searchText"
             md-selected-item="delegate.userToAdd"
@@ -33,13 +34,16 @@
             md-min-length="3"
             md-no-cache="true"
             label:md-floating-label="Add User">
-          <span class="md-contact-suggestion" layout="row" layout-align="space-between center">
-            <span class="md-contact-name"
-                  md-highlight-text="delegate.searchText"
-                  md-highlight-flags="^i">{{user.cn}}</span> <span class="md-contact-email"
-                  md-highlight-text="delegate.searchText"
-                  md-highlight-flags="^i">{{user.c_email}}</span>
-          </span>
+          <md-item-template>
+            <span class="md-contact-suggestion">
+              <span class="md-contact-name"
+                    md-highlight-text="delegate.searchText"
+                    md-highlight-flags="^i">{{user.cn}}</span>
+              <span class="md-contact-email"
+                    md-highlight-text="delegate.searchText"
+                    md-highlight-flags="^i">{{user.c_email}}</span>
+            </span>
+          </md-item-template>
         </md-autocomplete>
       </div>
 
