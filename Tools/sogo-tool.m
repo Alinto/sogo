@@ -29,6 +29,7 @@
 #import <Foundation/NSValue.h>
 
 #import <SOGo/SOGoSystemDefaults.h>
+#import <SOGo/SOGoProductLoader.h>
 
 #import "SOGoTool.h"
 
@@ -244,6 +245,9 @@ main (int argc, char **argv, char **env)
   rc = 0;
 
   pool = [NSAutoreleasePool new];
+
+  /* load products */
+  [[SOGoProductLoader productLoader] loadAllProducts];
 
   [SOGoSystemDefaults sharedSystemDefaults];
   setupUserDefaults ();
