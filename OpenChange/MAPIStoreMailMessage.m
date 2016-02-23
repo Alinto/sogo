@@ -25,6 +25,7 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSValue.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSObject+Values.h>
 #import <NGExtensions/NSString+Encoding.h>
@@ -42,6 +43,7 @@
 #import <Mailer/SOGoMailBodyPart.h>
 #import <Mailer/SOGoMailObject.h>
 #import <Mailer/NSDictionary+Mail.h>
+#import <Mailer/NSString+Mail.h>
 
 #import "Codepages.h"
 #import "NSData+MAPIStore.h"
@@ -131,11 +133,11 @@ static NSArray *acceptedMimeTypes;
       bodyPartsEncodings = nil;
       bodyPartsCharsets = nil;
       bodyPartsMimeTypes = nil;
+      bodyPartsMixed = nil;
 
       headerSetup = NO;
       bodySetup = NO;
       bodyContent = nil;
-      multipartMixed = NO;
       
       mailIsEvent = NO;
       mailIsMeetingRequest = NO;
@@ -155,6 +157,7 @@ static NSArray *acceptedMimeTypes;
   [bodyPartsEncodings release];
   [bodyPartsCharsets release];
   [bodyPartsMimeTypes release];
+  [bodyPartsMixed release];
   
   [bodyContent release];
   
@@ -260,7 +263,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 
   keys = [NSMutableArray array];
   [sogoObject addRequiredKeysOfStructure: [sogoObject bodyStructure]
-                                    path: @"" toArray: keys
+                                    path: @""
+                                 toArray: keys
                            acceptedTypes: acceptedMimeTypes
                                 withPeek: YES];
   [keys sortUsingFunction: _compareBodyKeysByPriority context: acceptedMimeTypes];
@@ -268,39 +272,29 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   if (keysCount > 0)
     {
       NSUInteger i;
-      id bodyStructure;
       BOOL hasHtml = NO;
       BOOL hasText = NO;
-
-      bodyStructure = [sogoObject bodyStructure];
-      /* multipart/mixed is the default type. 
-         multipart/alternative and multipart/related are the only other type of multipart supported for the
-         message body
-      */
-      if ([[bodyStructure objectForKey: @"type"] isEqualToString: @"multipart"])
-        {
-          NSString *subtype = [bodyStructure objectForKey: @"subtype"];
-          multipartMixed = !([subtype isEqualToString: @"alternative"] ||
-                             [subtype isEqualToString: @"related"]);
-        }
-      else
-        multipartMixed = NO;
       
       bodyContentKeys = [[NSMutableArray alloc] initWithCapacity: keysCount];
       bodyPartsEncodings = [[NSMutableDictionary alloc] initWithCapacity: keysCount];
       bodyPartsCharsets = [[NSMutableDictionary alloc] initWithCapacity: keysCount];
       bodyPartsMimeTypes = [[NSMutableDictionary alloc] initWithCapacity: keysCount];
+      bodyPartsMixed = [[NSMutableDictionary alloc] initWithCapacity: keysCount];
       
       for (i = 0; i < keysCount; i++)
         {
+          NSDictionary *bodyStructureKey;
           NSString *key;
           NSString *mimeType;
+          BOOL      mixedPart;
           NSString *strippedKey;
           NSString *encoding;
           NSString *charset;
           NSDictionary *partParameters;
+          NSString *multipart;
 
-          key = [[keys objectAtIndex: i] objectForKey: @"key"];
+          bodyStructureKey = [keys objectAtIndex: i];
+          key = [bodyStructureKey objectForKey: @"key"];
           if (key == nil)
             continue;
           
@@ -312,7 +306,21 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
           partParameters = [partHeaderData objectForKey: @"parameterList"];
           encoding = [partHeaderData objectForKey: @"encoding"];
           charset = [partParameters objectForKey: @"charset"];
-          mimeType = [[keys objectAtIndex: i] objectForKey: @"mimeType"];  
+          mimeType = [bodyStructureKey objectForKey: @"mimeType"];
+
+          /* multipart/mixed is the default type.
+             multipart/alternative is the only other type of multipart supported now.
+          */
+          multipart = [bodyStructureKey objectForKey: @"multipart"];
+          if ([multipart isEqualToString: @""])
+            {
+              mixedPart = NO;
+            }
+          else
+            {
+              mixedPart = !([multipart isEqualToString: @"multipart/alternative"] ||
+                            [multipart isEqualToString: @"multipart/related"]);
+            }
 
           if (encoding)
             [bodyPartsEncodings setObject: encoding forKey: key];
@@ -326,6 +334,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
               else if ([mimeType isEqualToString: @"text/html"])
                 hasHtml = YES;
             }
+          [bodyPartsMixed setObject: [NSNumber numberWithBool: mixedPart] forKey: key];
 
           if (i == 0)
              {
@@ -336,17 +345,28 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
           if (charset)
             {
               if (headerCharset == nil)
-                ASSIGN (headerCharset, charset);
+                {
+                  ASSIGN (headerCharset, charset);
+                }
               else if (![headerCharset isEqualToString: charset])
                 {
                   /* Because we have different charsets we will encode all in UTF-8 */
                   ASSIGN (headerCharset, @"utf-8");
                 }
             }
+
         }
 
       if (!hasHtml || !hasText)
-        multipartMixed = NO;
+        {
+          NSArray *bodyPartsMixedKeys = [bodyPartsMixed allKeys];
+          for (i = 0; i < [keys count]; i++)
+            {
+              NSString *key = [bodyPartsMixedKeys objectAtIndex: i];
+              [bodyPartsMixed setObject: [NSNumber numberWithBool: NO] forKey: key];
+            }
+        }
+
 
       if ([headerMimeType isEqualToString: @"text/calendar"]
           || [headerMimeType isEqualToString: @"application/ics"])
@@ -410,9 +430,9 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
           NSString *mimeType = [bodyPartsMimeTypes objectForKey: key];
           if (mimeType == nil)
             continue;          
-          NSString *encoding = [bodyPartsEncodings objectForKey: key];
-          if (encoding == nil)
-            encoding = @"7-bit";
+          NSString *contentEncoding = [bodyPartsEncodings objectForKey: key];
+          if (contentEncoding == nil)
+            contentEncoding = @"7-bit";
 
           /* We should provide a case for each of the types in acceptedMimeTypes */
           if (!mailIsEvent)
@@ -421,6 +441,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
               NSStringEncoding charsetEncoding;
               NSString *stringValue; 
               BOOL html;
+              BOOL mixed = [[bodyPartsMixed objectForKey: key] boolValue];
               if ([mimeType isEqualToString: @"text/html"])
                 {
                   html = YES;
@@ -436,7 +457,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                   continue;
                 }
                           
-              content = [content bodyDataFromEncoding: encoding];
+              content = [content bodyDataFromEncoding: contentEncoding];
               charset = [bodyPartsCharsets objectForKey: key];
 
               stringValue = nil;
@@ -459,7 +480,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                         [textContent appendData: [stringValue dataUsingEncoding: headerEncoding]];
                     }                  
 
-                  if (multipartMixed)
+                  if (mixed)
                     {
                       // We must add it also to the other mail representation
                       if (html)
@@ -491,9 +512,9 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
               else
                 {
                   /* Without charset we cannot mangle the text, so we add as it stands */
-                  if (html || multipartMixed)
+                  if (html || mixed)
                     [htmlContent appendData: content];
-                  if (!html || multipartMixed)
+                  if (!html || mixed)
                     [textContent appendData: content];
                 }
 
@@ -501,7 +522,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
           else if ([mimeType isEqualToString: @"text/calendar"] ||
                    [mimeType isEqualToString: @"application/ics"])
             {
-              content = [content bodyDataFromEncoding: encoding];
+              content = [content bodyDataFromEncoding: contentEncoding];
               [textContent appendData: content];
             }
           else
