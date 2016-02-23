@@ -528,29 +528,19 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
   ASSIGN (sogoObject, newObject);
 }
 
-- (BOOL) subscriberCanReadMessage
+- (NSUInteger) sensitivity
 {
-  NSArray *roles;
-
-  roles = [self activeUserRoles];
-
-  return ([roles containsObject: SOGoCalendarRole_ComponentViewer]
-          || [roles containsObject: SOGoCalendarRole_ComponentDAndTViewer]
-          || [self subscriberCanModifyMessage]);
+  return [[self _appointmentWrapper] sensitivity];
 }
 
-- (BOOL) subscriberCanModifyMessage
+- (NSString *) creator
 {
-  BOOL rc;
-  NSArray *roles = [self activeUserRoles];
+  return [[self _appointmentWrapper] creator];
+}
 
-  if (isNew)
-    rc = [roles containsObject: SOGoRole_ObjectCreator];
-  else
-    rc = ([roles containsObject: SOGoCalendarRole_ComponentModifier]
-          || [roles containsObject: SOGoCalendarRole_ComponentResponder]);
-
-  return rc;
+- (NSString *) owner
+{
+  return [[self _appointmentWrapper] owner];
 }
 
 - (void) _updateAttachedEvents
@@ -632,6 +622,7 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
   [masterEvent updateFromMAPIProperties: properties
                           inUserContext: [self userContext]
                          withActiveUser: activeUser
+                                  isNew: isNew
 	                       inMemCtx: memCtx];
   [self _updateAttachedEvents];
   [[self userContext] activate];

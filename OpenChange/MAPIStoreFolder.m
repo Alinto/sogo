@@ -65,6 +65,17 @@
 
 Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStoreFolderTableK;
 
+/* MAPI permissions */
+NSString *MAPIStoreRightReadItems = @"RightsReadItems";
+NSString *MAPIStoreRightCreateItems = @"RightsCreateItems";
+NSString *MAPIStoreRightEditOwn = @"RightsEditOwn";
+NSString *MAPIStoreRightEditAll = @"RightsEditAll";
+NSString *MAPIStoreRightDeleteOwn = @"RightsDeleteOwn";
+NSString *MAPIStoreRightDeleteAll = @"RightsDeleteAll";
+NSString *MAPIStoreRightCreateSubfolders = @"RightsCreateSubfolders";
+NSString *MAPIStoreRightFolderOwner = @"RightsFolderOwner";
+NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
+
 @implementation MAPIStoreFolder
 
 + (void) initialize
@@ -597,7 +608,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
           if ([[context activeUser] isEqual: ownerUser]
               || (![message isKindOfClass: MAPIStoreFAIMessageK]
-                  && [self subscriberCanDeleteMessages]))
+                  && ([self subscriberCanDeleteMessages] || [message subscriberCanDeleteMessage])))
             {
               /* we ensure the table caches are loaded so that old and new state
                  can be compared */
@@ -908,6 +919,11 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return nil;
 }
 
+- (NSArray *) expandRoles: (NSArray *) roles
+{
+  return roles;
+}
+
 - (void) _modifyPermissionEntryForUser: (NSString *) user
                              withRoles: (NSArray *) roles
                             isAddition: (BOOL) isAddition
@@ -1021,9 +1037,10 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                         tableType: (enum mapistore_table_type) tableType
                       andHandleId: (uint32_t) handleId
 {
+  BOOL access;
   enum mapistore_error rc = MAPISTORE_SUCCESS;
   MAPIStoreTable *table;
-  SOGoUser *ownerUser;
+  SOGoUser *activeUser, *ownerUser;
 
   if (tableType == MAPISTORE_MESSAGE_TABLE)
     table = [self messageTable];
@@ -1034,8 +1051,20 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   else if (tableType == MAPISTORE_PERMISSIONS_TABLE)
     {
       ownerUser = [[self userContext] sogoUser];
-      if ([[context activeUser] isEqual: ownerUser])
-        table = [self permissionsTable];
+      activeUser = [context activeUser];
+      access = [activeUser isEqual: ownerUser];
+      if (!access)
+        {
+          NSArray *roles;
+
+          roles = [[self aclFolder] aclsForUser: [activeUser login]];
+          roles = [self expandRoles: roles];  // Not required here
+          /* Check FolderVisible right to return the table */
+          access = ([self exchangeRightsForRoles: roles] & RoleNone) != 0;
+        }
+
+      if (access)
+          table = [self permissionsTable];
       else
         rc = MAPISTORE_ERR_DENIED;
     }
@@ -1267,25 +1296,29 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t rights = 0;
-  SOGoUser *ownerUser;
-  BOOL userIsOwner;
+  SOGoUser *activeUser, *ownerUser;
 
   ownerUser = [[self userContext] sogoUser];
+  activeUser = [context activeUser];
 
-  userIsOwner = [[context activeUser] isEqual: ownerUser];
-  if (userIsOwner || [self subscriberCanReadMessages])
-    rights |= RightsReadItems;
-  if (userIsOwner || [self subscriberCanCreateMessages])
-    rights |= RightsCreateItems;
-  if (userIsOwner || [self subscriberCanModifyMessages])
-    rights |= RightsEditOwn | RightsEditAll;
-  if (userIsOwner || [self subscriberCanDeleteMessages])
-    rights |= RightsDeleteOwn | RightsDeleteAll;
-  if ((userIsOwner || [self subscriberCanCreateSubFolders])
-      && [self supportsSubFolders])
-    rights |= RightsCreateSubfolders;
-  if (userIsOwner)
-    rights |= RightsFolderOwner | RightsFolderContact;
+  if ([activeUser isEqual: ownerUser])
+    {
+      rights = RightsReadItems | RightsCreateItems | RightsEditOwn | RightsEditAll
+        | RightsDeleteOwn | RightsDeleteAll | RightsFolderOwner | RightsFolderContact | RoleNone;
+      if ([self supportsSubFolders])
+        rights |= RightsCreateSubfolders;
+    }
+  else
+    {
+      NSArray *roles;
+
+      roles = [[self aclFolder] aclsForUser: [activeUser login]];
+      roles = [self expandRoles: roles];
+      rights = [self exchangeRightsForRoles: roles];
+      /* FreeBusySimple and FreeBusyDetailed does not apply here
+         [MS-OXCFOLD] Section 2.2.2.2.2.8 */
+      rights &= ~RightsFreeBusySimple & ~RightsFreeBusyDetailed;
+    }
 
   *data = MAPILongValue (memCtx, rights);
 
@@ -1626,6 +1659,22 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSArray *permissionRoles;
   BOOL reset, isAdd = NO, isDelete = NO, isModify = NO;
   SOGoFolder *aclFolder;
+  SOGoUser *activeUser, *ownerUser;
+
+  /* Check if we have permissions to modify the permissions.
+   See [MS-OXCPERM] Section 3.2.5.2 for details */
+  ownerUser = [[self userContext] sogoUser];
+  activeUser = [context activeUser];
+  if (![activeUser isEqual: ownerUser])
+    {
+      /* Check if we have FolderOwner right */
+      NSArray *roles;
+
+      roles = [[self aclFolder] aclsForUser: [activeUser login]];
+      roles = [self expandRoles: roles]; // Not required
+      if (([self exchangeRightsForRoles: roles] & RightsFolderOwner) == 0)
+        return MAPISTORE_ERR_DENIED;
+    }
 
   aclFolder = [self aclFolder];
 

@@ -129,10 +129,21 @@
   
   task = [sogoObject component: NO secure: YES];
 
-  if ([task symbolicAccessClass] == iCalAccessPublic)
+  if ([task isPublic])
     return [self getNo: data inMemCtx: memCtx];
 
   return [self getYes: data inMemCtx: memCtx];
+}
+
+- (enum mapistore_error) getPidTagSensitivity: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  uint32_t v;
+
+  v = (uint32_t) [self sensitivity];
+
+  *data = MAPILongValue (memCtx, v);
+  return MAPISTORE_SUCCESS;
 }
 
 - (enum mapistore_error) getPidTagImportance: (void **) data
@@ -154,6 +165,9 @@
   return MAPISTORE_SUCCESS;
 }
 
+//------------------------------------
+// Specific task related properties
+//------------------------------------
 - (enum mapistore_error) getPidLidTaskComplete: (void **) data
                                       inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -323,6 +337,7 @@
 {
   NSString *owner;
 
+  /* FIXME: This is wrong when setting task's request */
   owner = [sogoObject ownerInContext: nil];
 
   *data = [owner asUnicodeInMemCtx: memCtx];
@@ -336,25 +351,45 @@
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (BOOL) subscriberCanReadMessage
+// ----------------------------------
+// Sharing
+// ----------------------------------
+- (NSUInteger) sensitivity
 {
-  return ([[self activeUserRoles]
-            containsObject: SOGoCalendarRole_ComponentViewer]
-          || [self subscriberCanModifyMessage]);
+  iCalToDo *task;
+  NSUInteger v;
+
+  task = [sogoObject component: NO secure: YES];
+  /* FIXME: Use OpenChange constants names */
+  switch ([task symbolicAccessClass])
+    {
+    case iCalAccessPrivate:
+      v = 0x2;
+      break;
+    case iCalAccessConfidential:
+      v = 0x3;
+      break;
+    default:
+      v = 0x0;
+      break;
+    }
+  return v;
 }
 
-- (BOOL) subscriberCanModifyMessage
+- (NSString *) creator
 {
-  BOOL rc;
-  NSArray *roles = [self activeUserRoles];
+  iCalToDo *task;
 
-  if (isNew)
-    rc = [roles containsObject: SOGoRole_ObjectCreator];
-  else
-    rc = ([roles containsObject: SOGoCalendarRole_ComponentModifier]
-          || [roles containsObject: SOGoCalendarRole_ComponentResponder]);
+  task = [sogoObject component: NO secure: YES];
+  return [[task uniqueChildWithTag: @"x-sogo-component-created-by"]
+            flattenedValuesForKey: @""];
+}
 
-  return rc;
+- (NSString *) owner
+{
+  /* This is not true but to allow a user edit its own tasks is required.
+     FIXME: When PidLidTaskOwner getter is properly implemented for Task Requests */
+  return [self creator];
 }
 
 - (void) save:(TALLOC_CTX *) memCtx
@@ -524,10 +559,16 @@
 	[vToDo setAccessClass: @"PUBLIC"];
     }
 
+  /* Creation */
   now = [NSCalendarDate date];
   if ([sogoObject isNew])
     {
       [vToDo setCreated: now];
+      /* Creator is used for sharing purposes */
+      value = [properties objectForKey: MAPIPropertyKey (PidTagLastModifierName)];
+      if (value)
+        [[vToDo uniqueChildWithTag: @"x-sogo-component-created-by"] setSingleValue: value
+                                                                            forKey: @""];
     }
   [vToDo setTimeStampAsDate: now];
 

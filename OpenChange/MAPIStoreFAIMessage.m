@@ -24,6 +24,7 @@
 
 #import "MAPIStoreActiveTables.h"
 #import "MAPIStoreContext.h"
+#import "MAPIStoreFolder.h"
 #import "MAPIStoreUserContext.h"
 #import "NSObject+MAPIStore.h"
 
@@ -69,7 +70,7 @@
 
 - (BOOL) subscriberCanReadMessage
 {
-  return NO;
+  return [(MAPIStoreFolder *)container subscriberCanReadMessages];
 }
 
 - (BOOL) subscriberCanModifyMessage

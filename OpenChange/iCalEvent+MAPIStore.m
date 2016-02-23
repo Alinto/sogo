@@ -247,6 +247,7 @@
 - (void) updateFromMAPIProperties: (NSDictionary *) properties
                     inUserContext: (MAPIStoreUserContext *) userContext
                    withActiveUser: (SOGoUser *) activeUser
+                            isNew: (BOOL) isNew
                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   BOOL isAllDay;
@@ -572,6 +573,14 @@
               [person release];
             }
         }
+    }
+  // Creator (with sharing purposes)
+  if (isNew)
+    {
+      value = [properties objectForKey: MAPIPropertyKey (PidTagLastModifierName)];
+      if (value)
+        [[self uniqueChildWithTag: @"x-sogo-component-created-by"] setSingleValue: value
+                                                                           forKey: @""];
     }
 }
 

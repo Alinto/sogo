@@ -69,6 +69,7 @@
 - (NSArray *) activeContainerMessageTables;
 
 - (NSArray *) activeUserRoles;
+- (NSArray *) expandRoles: (NSArray *) roles;
 
 /* move & copy internal ops */
 - (void) copyToMessage: (MAPIStoreMessage *) newMessage  inMemCtx: (TALLOC_CTX *) memCtx;
@@ -82,6 +83,7 @@
 
 - (BOOL) subscriberCanReadMessage;
 - (BOOL) subscriberCanModifyMessage;
+- (BOOL) subscriberCanDeleteMessage;
 
 @end
 

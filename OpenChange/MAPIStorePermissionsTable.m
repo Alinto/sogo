@@ -134,6 +134,7 @@
   NSArray *roles;
 
   roles = [[(MAPIStoreFolder *) container aclFolder] aclsForUser: userId];
+  roles = [(MAPIStoreFolder *) container expandRoles: roles];
   rights = [(MAPIStoreFolder *) container exchangeRightsForRoles: roles];
 
   *data = MAPILongValue (memCtx, rights);

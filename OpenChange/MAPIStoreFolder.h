@@ -22,6 +22,7 @@
 #define MAPISTOREFOLDER_H
 
 #import <Foundation/NSObject.h>
+#import <Foundation/NSString.h>
 
 @class NSArray;
 @class NSMutableArray;
@@ -40,6 +41,20 @@
 @class SOGoMAPIDBMessage;
 
 #import "MAPIStoreSOGoObject.h"
+
+/* MAPI Permissions
+
+   This set has only sogo-openchange library scope
+ */
+extern NSString *MAPIStoreRightReadItems;
+extern NSString *MAPIStoreRightCreateItems;
+extern NSString *MAPIStoreRightEditOwn;
+extern NSString *MAPIStoreRightEditAll;
+extern NSString *MAPIStoreRightDeleteOwn;
+extern NSString *MAPIStoreRightDeleteAll;
+extern NSString *MAPIStoreRightCreateSubfolders;
+extern NSString *MAPIStoreRightFolderOwner;
+extern NSString *MAPIStoreRightFolderContact;
 
 @interface MAPIStoreFolder : MAPIStoreSOGoObject
 {
@@ -73,6 +88,8 @@
 /* permissions */
 - (MAPIStorePermissionsTable *) permissionsTable;
 - (NSArray *) permissionEntries;
+
+- (NSArray *) expandRoles: (NSArray *) roles;
 
 /* message objects and tables */
 - (id) lookupMessage: (NSString *) messageKey;
