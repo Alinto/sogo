@@ -754,6 +754,7 @@
   NSDictionary *data, *requestContent;
   SOGoMailFolder *folder;
   WORequest *request;
+  WOResponse *response;
 
   request = [context request];
   requestContent = [[request contentAsString] objectFromJSONString];
@@ -764,7 +765,9 @@
   data = [self getUIDsInFolder: folder
                    withHeaders: !noHeaders];
 
-  return [self responseWithStatus: 200 andJSONRepresentation: data];
+  response = [self responseWithStatus: 200 andJSONRepresentation: data];
+
+  return response;
 }
 
 - (NSArray *) getHeadersForUIDs: (NSArray *) uids
@@ -893,19 +896,18 @@
       || [[data objectForKey: @"uids"] count] == 0)
     {
       data = [NSDictionary dictionaryWithObjectsAndKeys:
-                             @"No UID specified", @"error", nil];
-      return [self responseWithStatus: 404 /* Not Found */
-                            andString: [data jsonRepresentation]];
+                             @"No UID specified", @"message", nil];
+      response = [self responseWithStatus: 404 /* Not Found */
+                    andJSONRepresentation: data];
+
+      return response;
     }
 
   uids = [data objectForKey: @"uids"];
   headers = [self getHeadersForUIDs: uids
 			   inFolder: [self clientObject]];
-
-  response = [context response];
-  [response setHeader: @"application/json; charset=utf-8"
-	    forKey: @"content-type"];
-  [response appendContentString: [headers jsonRepresentation]];
+  response = [self responseWithStatus: 200
+                andJSONRepresentation: headers];
 
   return response;
 }
