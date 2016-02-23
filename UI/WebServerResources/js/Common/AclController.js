@@ -44,7 +44,7 @@
     }
 
     function confirmChange(user) {
-      var confirmation = user.$confirmRights();
+      var confirmation = user.$confirmRights(vm.folder);
       if (confirmation) {
         vm.confirmation.showing = true;
         vm.confirmation.message = confirmation;

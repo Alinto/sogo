@@ -135,15 +135,15 @@
         }
 
       // Add the 'Any authenticated' user
-      if ([self canSubscribeUsers])
-        {
+      if (defaultUserID)
+      {
           userData = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     @"<default>", @"uid",
-                                              [self labelForKey: @"Any Authenticated User"], @"cn",
+                                     defaultUserID, @"uid",
+                                   [self labelForKey: @"Any Authenticated User"], @"cn",
                                    @"public-user", @"userClass",
                                    nil];
-          [users setObject: userData forKey: @"<default>"];
-        }
+          [users setObject: userData forKey: defaultUserID];
+      }
 
       if ([self canSubscribeUsers] && [self isPublicAccessEnabled])
         {
