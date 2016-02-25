@@ -123,7 +123,7 @@
           input = form[vm.inputName],
           rawSearchText = input.$viewValue;
 
-      if (vm.allowDot && rawSearchText == '.' || form.$valid) {
+      if (vm.allowDot && rawSearchText == '.' || form.$valid && rawSearchText) {
         if (rawSearchText == '.')
           // Ignore the minlength constraint when using the dot operator
           input.$setValidity('minlength', true);

@@ -274,7 +274,7 @@
       angular.extend(options, { sortingAttributes: Mailbox.$query });
       if (angular.isDefined(filters)) {
         options.filters = _.reject(filters, function(filter) {
-          return angular.isUndefined(filter.searchInput) || filter.searchInput.length === 0;
+          return !filter.searchInput || filter.searchInput.length === 0;
         });
         // Decompose filters that match two fields
         _.each(options.filters, function(filter) {
