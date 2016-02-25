@@ -26,7 +26,7 @@ prod:
 	grunt --stack build
 	git update-index --no-assume-unchanged $(CSS_FILES) $(JS_FILES) $(JS_LIB_FILES)
 	git add -f $(CSS_FILES) $(JS_FILES) $(JS_LIB_FILES)
-	@if ! git diff --quiet --exit-code; then \
+	@if ! git diff --cached --quiet --exit-code; then \
 		git commit -m "(js/css) Update generated files"; \
 	else \
 		echo "Nothing to commit; skipping git-commit"; \
