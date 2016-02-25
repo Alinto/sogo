@@ -3,7 +3,7 @@
 (function() {
   'use strict';
 
-  angular.module('SOGo.Common', ['ngAnimate', 'ngSanitize', 'ngMaterial', 'mdColors'])
+  angular.module('SOGo.Common', ['ngAnimate', 'ngMessages', 'ngSanitize', 'ngMaterial', 'mdColors'])
     .value('sgSettings', {
       isPopup: document.body.classList.contains('popup'),
       baseURL: function() {
