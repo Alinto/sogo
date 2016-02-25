@@ -4,7 +4,7 @@
 (function() {
   'use strict';
 
-  angular.module('SOGo.MailerUI', ['ui.router', 'ck', 'angularFileUpload', 'SOGo.Common', 'SOGo.ContactsUI', 'ngAnimate', 'SOGo.PreferencesUI'])
+  angular.module('SOGo.MailerUI', ['ui.router', 'ck', 'angularFileUpload', 'SOGo.Common', 'SOGo.ContactsUI', 'SOGo.SchedulerUI', 'ngAnimate', 'SOGo.PreferencesUI'])
     .config(configure)
     .run(runBlock)
     .controller('MessageEditorControllerPopup', MessageEditorControllerPopup);
