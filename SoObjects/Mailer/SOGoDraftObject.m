@@ -306,7 +306,7 @@ static NSString    *userAgent      = nil;
     {
       // newHeaders come from Web form; convert priority to MIME header representation
       priority = [newHeaders objectForKey: @"priority"];
-      if (!priority || [priority intValue] == 3)
+      if (!priority || ![priority length] || [priority intValue] == 3)
         {
           [headers removeObjectForKey: @"X-Priority"];
         }
