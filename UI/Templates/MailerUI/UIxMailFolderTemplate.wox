@@ -116,10 +116,12 @@
         </md-button>
       </div>
       <!-- search mode -->
-      <div class="md-toolbar-tools sg-toolbar-secondary"
-           layout="row"
-           ng-show="mailbox.mode.search"
-           sg-search="mailbox.selectedFolder.$filter(null, [{ searchBy: searchField, searchInput: searchText }])">
+      <form class="md-toolbar-tools sg-toolbar-secondary"
+            name="searchForm"
+            layout="row"
+            ng-show="mailbox.mode.search"
+            sg-search="mailbox.selectedFolder.$filter(null, [{ searchBy: searchField, searchInput: searchText }])"
+            sg-allow-dot="false">
         <md-button class="sg-icon-button"
                    sg-search-cancel="mailbox.cancelSearch()"
                    label:aria-label="Back">
@@ -137,7 +139,7 @@
             <md-option value="body"><var:string label:value="Entire Message"/></md-option>
           </md-select>
         </md-input-container>
-      </div>
+      </form>
     </md-toolbar>
 
     <!-- multiple-selection mode -->

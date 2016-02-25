@@ -86,6 +86,10 @@
 /* SoUser */
 - (NSString *) shortUserNameForDisplay;
 
+/* Common defaults and settings */
+- (int) minimumSearchLength;
+- (NSString *) minimumSearchLengthLabel;
+
 /* labels */
 - (NSString *) labelForKey:(NSString *)_key;
 - (NSString *) commonLabelForKey:(NSString *)_key;

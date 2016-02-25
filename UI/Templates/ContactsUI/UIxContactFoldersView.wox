@@ -274,17 +274,21 @@
             </md-button>
           </div>
           <!-- search mode -->
-          <div class="md-toolbar-tools sg-toolbar-secondary"
+          <form name="searchForm" class="md-toolbar-tools sg-toolbar-secondary"
                layout="row"
                ng-show="addressbook.mode.search"
-               sg-search="addressbook.selectedFolder.$filter(searchText, { search: searchField })">
+               sg-search="addressbook.selectedFolder.$filter(searchText, { search: searchField })"
+               sg-allow-dot="addressbook.selectedFolder.listRequiresDot">
             <md-button class="md-icon-button"
                        sg-search-cancel="addressbook.cancelSearch()"
                        label:aria-label="Back">
               <md-icon>arrow_back</md-icon>
             </md-button>
             <md-input-container class="md-flex" md-no-float="md-no-float">
-              <input name="folderSearch" type="search" label:placeholder="Search"/>
+              <input name="folderSearch" type="search" var:minlength="minimumSearchLength" label:placeholder="Search"/>
+              <div ng-messages="searchForm.folderSearch.$error" ng-show="searchForm.folderSearch.$dirty">
+                <div ng-message="minlength"><var:string value="minimumSearchLengthLabel"/></div>
+              </div>
             </md-input-container>
             <md-input-container flex="25">
               <md-select>
@@ -293,7 +297,7 @@
                 <md-option value="organization"><var:string label:value="Organization"/></md-option>
               </md-select>
             </md-input-container>
-          </div>
+          </form>
         </md-toolbar>
 
         <!-- multiple selection mode -->
@@ -362,7 +366,7 @@
             </span>
           </md-subheader>
           <md-subheader ng-hide="addressbook.service.$query.value">
-            <span ng-switch="addressbook.selectedFolder.isRemote">
+            <span ng-switch="addressbook.selectedFolder.listRequiresDot">
               <span ng-switch-when="1">
                 <var:string label:value="Start a search to browse this address book"/>
               </span>

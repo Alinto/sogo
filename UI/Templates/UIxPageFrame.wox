@@ -53,11 +53,11 @@
           <!-- MAIN CONTENT ROW -->
           <var:component-content />
           
-          <!-- JAVASCRIPT IMPORTS -->
           <script type="text/javascript">
             var ApplicationBaseURL = '<var:string value="modulePath" />';
             var ResourcesURL = '<var:string value="applicationPath" />.woa/WebServerResources';
             var minimumSearchLength = <var:string value="minimumSearchLength" />;
+            var minimumSearchLengthLabel = '<var:string value="minimumSearchLengthLabel" />';
             <var:if condition="isUIxDebugEnabled">
               var DebugEnabled = true;
             </var:if>
@@ -121,6 +121,7 @@
           <script type="text/javascript" rsrc:src="js/vendor/angular-animate.min.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular-sanitize.min.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular-aria.min.js"><!-- space --></script>
+          <script type="text/javascript" rsrc:src="js/vendor/angular-messages.min.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular-material.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular-ui-router.min.js"><!-- space --></script>
 

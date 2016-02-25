@@ -22,6 +22,7 @@
 
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSUserDefaults.h> /* for locale strings */
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
@@ -507,6 +508,22 @@ static SoProduct      *commonProduct      = nil;
 - (NSString *) shortUserNameForDisplay
 {
   return [[context activeUser] login];
+}
+
+/* Common defaults and settings */
+
+- (int) minimumSearchLength
+{
+  return [[[context activeUser] domainDefaults] searchMinimumWordLength];
+}
+
+- (NSString *) minimumSearchLengthLabel
+{
+  NSDictionary *defaults;
+
+  defaults = [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: [self minimumSearchLength]]
+                                         forKey: @"minimumSearchLength"];
+  return [defaults keysWithFormat: [self commonLabelForKey: @"Enter at least %{minimumSearchLength} characters"]];
 }
 
 /* labels */

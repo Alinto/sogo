@@ -615,11 +615,6 @@
 	   );
 }
 
-- (int) minimumSearchLength
-{
-  return [[[context activeUser] domainDefaults] searchMinimumWordLength];
-}
-
 @end /* UIxPageFrame */
 
 @interface UIxSidenavToolbarTemplate : UIxComponent

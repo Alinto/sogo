@@ -1035,6 +1035,10 @@ not work for entries in this source and thus, freebusy lookups.
 |If set as an address book, the human identification name of the LDAP
 repository
 
+|listRequiresDot (optional)
+|If set to `YES`, listing of this LDAP source is only possible when performing a search (respecting the SOGoSearchMinimumWordLength parameter) or when explicitely typing a single dot.
+Defaults to `YES` when unset.
+
 |ModulesConstraints (optional)
 |Limits the access of any module through a constraint based on an LDAP
 attribute; must be a dictionary with keys `Mail`, and/or `Calendar`,

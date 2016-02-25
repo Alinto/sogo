@@ -457,10 +457,12 @@
             </md-button>
           </div>
           <!-- search mode -->
-          <div class="md-toolbar-tools sg-toolbar-secondary"
-               layout="row"
-               ng-show="list.mode.search"
-               sg-search="list.component.$filter(list.componentType, { value: searchText, search: searchField })">
+          <form class="md-toolbar-tools sg-toolbar-secondary"
+                name="searchForm"
+                layout="row"
+                ng-show="list.mode.search"
+                sg-search="list.component.$filter(list.componentType, { value: searchText, search: searchField })"
+                sg-allow-dot="false">
             <md-button class="md-icon-button"
                        sg-search-cancel="list.cancelSearch()"
                        label:aria-label="Back">
@@ -475,7 +477,7 @@
                 <md-option value="entireContent"><var:string label:value="Entire content"/></md-option>
               </md-select>
             </md-input-container>
-          </div>
+          </form>
         </md-toolbar>
 
         <!-- multiple-selection mode -->

@@ -60,6 +60,13 @@
       return function postLink(scope, iElement, iAttr, controller) {
         var compiledButtonEl = iElement.find('button');
 
+        // Retrive the form and input names to check the form's validity in the controller
+        controller.formName = iElement.attr('name');
+        controller.inputName = inputEl.attr('name');
+
+        // Associate the sg-allow-dot parameter (boolean) to the controller
+        controller.allowDot = $parse(iElement.attr('sg-allow-dot'))(scope);
+
         // Associate callback to controller
         controller.doSearch = $parse(iElement.attr('sg-search'));
 
@@ -99,7 +106,6 @@
     minLength = angular.isNumber($window.minimumSearchLength)? $window.minimumSearchLength : 2;
 
     // Controller variables
-    vm.previous = { searchText: '', searchField: '' };
     vm.searchText = null;
 
     // Model options
@@ -113,20 +119,22 @@
 
     // Method to call on data changes
     vm.onChange = function() {
-      if (typeof vm.searchText !== 'undefined' && vm.searchText !== null) {
-        if (vm.searchText != vm.previous.searchText || vm.searchField != vm.previous.searchField) {
-          if (vm.searchText.length > minLength || vm.searchText.length === 0 || vm.searchText == '.') {
-            // doSearch is the compiled expression of the sg-search attribute
-            vm.doSearch($scope, { searchText: vm.searchText, searchField: vm.searchField });
-          }
-          vm.previous = { searchText: vm.searchText, searchField: vm.searchField };
-        }
+      var form = $scope[vm.formName],
+          input = form[vm.inputName],
+          rawSearchText = input.$viewValue;
+
+      if (vm.allowDot && rawSearchText == '.' || form.$valid) {
+        if (rawSearchText == '.')
+          // Ignore the minlength constraint when using the dot operator
+          input.$setValidity('minlength', true);
+
+        // doSearch is the compiled expression of the sg-search attribute
+        vm.doSearch($scope, { searchText: rawSearchText, searchField: vm.searchField });
       }
     };
 
     // Reset input field when cancelling the search
     vm.cancelSearch = function() {
-      vm.previous = { searchText: '', searchField: '' };
       vm.searchText = null;
     };
   }

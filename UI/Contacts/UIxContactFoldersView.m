@@ -339,6 +339,8 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
                                   [NSNumber numberWithBool: [currentFolder isKindOfClass: SOGoGCSFolderK]], @"isEditable",
                                   [NSNumber numberWithBool: [currentFolder isKindOfClass: SOGoContactSourceFolderK]
                                             && ![currentFolder isPersonalSource]], @"isRemote",
+                                  [NSNumber numberWithBool: [currentFolder isKindOfClass: SOGoContactSourceFolderK]
+                                            && [currentFolder listRequiresDot]], @"listRequiresDot",
                                   acls, @"acls",
                                   urls, @"urls",
                                   nil];
