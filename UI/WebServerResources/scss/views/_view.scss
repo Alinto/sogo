@@ -41,17 +41,7 @@ body {
 
 // Variables
 $listView-width: grid-step(6) !global;
-$detailView-width: grid-step(8) !global;
-
-//[id="messagesList"] {
-//  flex: 0 0 $listView-width;
-//
-//}
-//
-//[id ="contactsList"] {
-//  flex: 0 1 $listView-width;
-//  min-width: ($listView-width - ($pitch * 2));
-//}
+//$detailView-width: grid-step(8) !global;
 
 [class|="view"] {
   position: relative;
@@ -82,11 +72,11 @@ $detailView-width: grid-step(8) !global;
     min-width: 100%;
   }
   @include at(sm){
-    @include flex-col(sm, 6, 1, 1);
+    @include flex-col($breakpoint: sm, $nb: 6, $grow: 1, $shrink: 1);
     min-width: ($pitch * 3);
   }
   @include from(md) {
-    @include flex-col(md, 6, 1, 0);
+    @include flex-col($breakpoint: md, $nb: 6, $grow: 1, $shrink: 0);
   }
 }
 

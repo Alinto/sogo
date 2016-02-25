@@ -277,8 +277,8 @@
              </div> -->
       </md-toolbar>
       <div layout="row" class="md-flex">
-      <div class="view-list" layout="column">
 
+      <div class="view-list" layout="column">
         <md-toolbar class="md-accent md-hue-1"
                     ng-show="list.component.$selectedCount() == 0">
           <!-- sort/filter mode (default) -->

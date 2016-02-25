@@ -17,16 +17,17 @@ $quarter_height: 10px;
 
   // Decrease width of middle column (list of events and tasks)
   $listView-width: grid-step(4) !global;
-  $detailView-width: grid-step(10) !global;
+  //$detailView-width: grid-step(10) !global;
 
   .view-list {
     min-width: ($listView-width - ($pitch * 2));
-    @include at(sm) {
-      @include flex-col(sm, 6, 1, 1);
-      min-width: ($pitch * 3);
+
+    @include to(xs) {
+      min-width: 100%;
+      @include flex-col($breakpoint: xs, $nb: 1, $grow: 1, $shrink: 1);
     }
     @include from(md) {
-      @include flex-col(md, 5, 1, 0);
+      @include flex-col($breakpoint: md, $nb: 5, $grow: 1, $shrink: 1);
     }
 
     // The color chip is smaller; adjust the "selected" icon accordingly
@@ -42,7 +43,7 @@ $quarter_height: 10px;
 
   .view-detail {
     @include at(sm) {
-      @include flex-col(sm, 10);
+      @include flex-col($breakpoint: sm, $nb: 10);
     }
     @include from(md) {
       flex: 1 1 auto;
