@@ -22,7 +22,7 @@
     vm.tags = { searchText: '', selected: '' };
     vm.showFlags = stateMessage.flags && stateMessage.flags.length > 0;
     vm.$showDetailedRecipients = false;
-    vm.showDetailedRecipients = showDetailedRecipients;
+    vm.toggleDetailedRecipients = toggleDetailedRecipients;
     vm.doDelete = doDelete;
     vm.close = close;
     vm.reply = reply;
@@ -87,8 +87,8 @@
       return ctrls;
     }
 
-    function showDetailedRecipients($event) {
-      vm.$showDetailedRecipients = true;
+    function toggleDetailedRecipients($event) {
+      vm.$showDetailedRecipients = !vm.$showDetailedRecipients;
       $event.stopPropagation();
       $event.preventDefault();
     }

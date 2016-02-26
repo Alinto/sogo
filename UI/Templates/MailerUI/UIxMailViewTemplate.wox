@@ -125,19 +125,25 @@
                   </div>
                 </div>
               </div>
-              <div class="msg-recipients" layout="column" flex="50">
+              <div class="msg-recipients" layout="column" flex="50" flex-xs="100">
                 <div class="pseudo-input-container--compact">
                   <label class="pseudo-input-label">
                     <var:string label:value="To"/>
                   </label>
-                  <div class="pseudo-input-field" ng-hide="viewer.$showDetailedRecipients">
-                    <a href="#" ng-click="viewer.showDetailedRecipients($event)">{{viewer.message.$shortRecipients()}}</a>
+                  <div class="pseudo-input-field"
+                       ng-hide="viewer.$showDetailedRecipients">
+                    <a href="#" ng-click="viewer.toggleDetailedRecipients($event)">{{viewer.message.$shortRecipients(5)}}</a>
                   </div>
                   <div class="pseudo-input-field" ng-show="viewer.$showDetailedRecipients">
                     <span ng-repeat="recipient in viewer.message.to">
                       <a href="#" ng-bind="recipient.full"
                          ng-click="viewer.newMessage($event, recipient)"><!-- recipient --></a>
                     </span>
+                    <md-button style="float: right"
+                               label:aria-label="Hide"
+                               ng-click="viewer.toggleDetailedRecipients($event)">
+                      <var:string label:value="Hide"/>
+                    </md-button>
                   </div>
                 </div>
                 <div class="pseudo-input-container--compact" ng-show="viewer.$showDetailedRecipients">

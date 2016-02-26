@@ -160,12 +160,15 @@
 
     // Build long representation of email addresses
     _.each(['from', 'to', 'cc', 'bcc', 'reply-to'], function(type) {
-      _.each(_this[type], function(data, i) {
+      _.each(_this[type], function(data) {
         if (data.name && data.name != data.email) {
           data.full = data.name + ' <' + data.email + '>';
 
-          // If we have "Alice Foo" as name, we grab "Alice"
-          if (data.name.split(' ').length)
+          if (data.name.length < 10)
+            // Name is already short
+            data.shortname = data.name;
+          else if (data.name.split(' ').length)
+            // If we have "Alice Foo" as name, we grab "Alice"
             data.shortname = data.name.split(' ')[0].replace('\'','');
         }
         else if (data.email) {
@@ -190,16 +193,21 @@
    * @desc Format all recipients into a very compact string
    * @returns a compacted string of all recipients
    */
-  Message.prototype.$shortRecipients = function() {
-    var _this = this;
-    var result = [];
+  Message.prototype.$shortRecipients = function(max) {
+    var _this = this, result = [], count = 0, total = 0;
 
-    // Build long representation of email addresses
+    // Build short representation of email addresses
     _.each(['to', 'cc', 'bcc'], function(type) {
+      total += _this[type]? _this[type].length : 0;
       _.each(_this[type], function(data, i) {
-        result.push(data.shortname);
+        if (count < max)
+          result.push(data.shortname);
+        count++;
       });
     });
+
+    if (total > max)
+      result.push(l('and %{0} more...', (total - max)));
 
     return result.join(', ');
   };

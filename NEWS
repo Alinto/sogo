@@ -19,6 +19,7 @@ Enhancements
  - [web] warn when double-booking attendees and offer force save option
  - [web] list search now displays a warning regarding the minlength constraint
  - [web] loading an LDAP-based addressbook is now instantaneous when listRequiresDot is disabled (#438, #3464)
+ - [web] improve display of messages with many recipients
  - [eas] now support EAS MIME truncation
 
 Bug fixes
