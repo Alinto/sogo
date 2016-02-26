@@ -48,14 +48,16 @@
       <div class="view-list" layout="column">
         <md-toolbar class="md-accent md-hue-1">
           <!-- search toolbar -->
-          <div class="md-toolbar-tools"
-               sg-search="app.filter(searchText)">
+          <form class="md-toolbar-tools"
+                name="searchForm"
+                sg-search="app.filter(searchText)"
+                sg-allow-dot="false">
             <md-icon>search</md-icon>
             <md-input-container class="md-block md-flex" md-no-float="md-no-float">
               <input name="folderSearch" type="search" ng-minlength="3"
                      label:placeholder="Search Users"/>
             </md-input-container>
-          </div>
+          </form>
         </md-toolbar>
 
         <md-divider><!-- divider --></md-divider>
