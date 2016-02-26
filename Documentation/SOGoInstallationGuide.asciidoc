@@ -24,7 +24,7 @@ devices with SOGo.
 The instructions are based on version {release_version} of SOGo.
 
 The latest version of this guide is available
-at http://www.sogo.nu/downloads/documentation.html.
+at http://sogo.nu/downloads/documentation.html.
 
 Introduction
 ------------
@@ -50,8 +50,7 @@ the SOGo Connector and the SOGo Integrator
 device, or Outlook 2013
 
 SOGo is developed by a community of developers located mainly in North
-America and Europe. More information can be found
-at http://www.sogo.nu/
+America and Europe. More information can be found at http://sogo.nu/
 
 Architecture and Compatibility
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -178,14 +177,14 @@ Make sure the required components are started automatically at boot time
 and that they are running before proceeding with the SOGo configuration.
 Also make sure that you can install additional packages from your
 standard distribution. For example, if you are using Red Hat Enterprise
-Linux 5, you have to be subscribed to the Red Hat Network before
+Linux 7, you have to be subscribed to the Red Hat Network before
 continuing with the SOGo software installation.
 
-NOTE: This document covers the installation of SOGo under RHEL 6.
+NOTE: This document covers the installation of SOGo under RHEL 7.
 
 For installation instructions on Debian and Ubuntu, please refer
-directly to the SOGo website at http://www.sogo.nu/.
-Under the downloads section, you will find links for installation steps
+directly to the SOGo website at http://sogo.nu/.
+Under the _Support_ section, you will find links for installation steps
 for Debian and Ubuntu.
 
 Note that once the SOGo packages are installed under Debian and Ubuntu,
@@ -196,7 +195,7 @@ Installation
 
 This section will guide you through the installation of SOGo together
 with its dependencies. The steps described here apply to an RPM-based
-installation for a Red Hat or CentOS 6 distribution. Most of these steps
+installation for a Red Hat or CentOS 7 distribution. Most of these steps
 should apply to all supported operating systems.
 
 Software Downloads
@@ -209,7 +208,7 @@ content:
 ----
 [SOGo]
 name=Inverse SOGo Repository
-baseurl=http://inverse.ca/rhel-v3/6/$basearch
+baseurl=http://inverse.ca/rhel-v3/7/$basearch
 gpgcheck=0
 ----
 
@@ -1111,6 +1110,7 @@ LDAP Attributes Indexing
 To ensure proper performance of the SOGo application, the following LDAP
 attributes must be fully indexed:
 
+[options="compact"]
 * givenName
 * cn
 * mail
@@ -1306,7 +1306,7 @@ If you want to test the IdP-initiated logout using SimpleSAMLphp, you can do so 
 the following URL:
 
 ----
-https://idp.example.org/simplesaml/saml2/idp/SingleLogoutService.php?ReturnTo=www.sogo.nu
+https://idp.example.org/simplesaml/saml2/idp/SingleLogoutService.php?ReturnTo=sogo.nu
 ----
 
 In order to relay authentication information to your IMAP server and if
@@ -1809,7 +1809,7 @@ interface)
 |Parameter used to specify the default order of the columns from the
 SOGo webmail interface. The parameter is an array, for example:
 
- SOGoMailListViewColumnsOrder = (Flagged, Attachment, Priority, From, Subject, Unread, Date, Size);
+`SOGoMailListViewColumnsOrder = (Flagged, Attachment, Priority, From, Subject, Unread, Date, Size);`
 
 |D |SOGoVacationEnabled
 |Parameter used to activate the edition from the preferences window of a
@@ -2282,7 +2282,7 @@ RequestHeader set "x-webobjects-server-url" "http://yourhostname"
 You may consider enabling SSL on top of this current installation to
 secure access to your SOGo installation.
 
-See http://httpd.apache.org/docs/2.2/ssl/ for details.
+See http://httpd.apache.org/docs/2.4/ssl/ for details.
 
 You might also have to adjust the configuration if you have SELinux
 enabled.
@@ -2297,13 +2297,13 @@ Starting Services
 Once SOGo if fully installed and configured, start the services using
 the following command:
 
- service sogod start
+ systemctl start sogod.service
 
-You may verify using thechkconfigcommand that the SOGo service is
-automatically started at boot time. Restart the Apache service since
+You may verify using the `systemctl is-enabled sogod` command that the SOGo
+service is automatically started at boot time. Restart the Apache service since
 modules and configuration files were added:
 
- service httpd restart
+ systemctl restart httpd.service
 
 Finally, you should also make sure that the `memcached` service is
 started and that it is also automatically started at boot time.
@@ -2647,7 +2647,7 @@ your site. However, be aware that in order to use the SOGo Integrator
 plug in, you will need to repackage it with specific modifications.
 Please refer to the documentation published online:
 
-http://www.sogo.nu/downloads/documentation.html
+http://sogo.nu/downloads/documentation.html
 
 If you only use the SOGo Connector plug in, you can still easily access
 your data.
