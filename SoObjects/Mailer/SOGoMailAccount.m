@@ -819,6 +819,25 @@ static NSString *inboxFolderName = @"INBOX";
 
 /* name lookup */
 
+- (id) lookupNameByPaths: (NSArray *) _paths
+               inContext: (id)_ctx
+                 acquire: (BOOL) _flag
+{
+  NSString *folderName;
+  NSUInteger count, max;
+  SOGoMailBaseObject *folder;
+
+  max = [_paths count];
+  folder = self;
+  for (count = 0; folder && count < max; count++)
+    {
+      folderName = [_paths objectAtIndex: count];
+      folder = [folder lookupName: folderName inContext: _ctx acquire: _flag];
+    }
+
+  return folder;
+}
+
 - (id) lookupName: (NSString *) _key
 	inContext: (id)_ctx
 	  acquire: (BOOL) _flag

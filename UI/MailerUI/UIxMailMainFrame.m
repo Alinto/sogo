@@ -641,10 +641,9 @@
   account = [[self clientObject] lookupName: [pathComponents objectAtIndex: 0]
                                   inContext: context
                                     acquire: YES];
-
-  folder = [account lookupName: [NSString pathWithComponents: [pathComponents subarrayWithRange: NSMakeRange(1, [pathComponents count]-1)]]
-                     inContext: context
-                       acquire: YES];
+  folder = [account lookupNameByPaths: [pathComponents subarrayWithRange: NSMakeRange(1, [pathComponents count]-1)]
+                            inContext: context
+                              acquire: YES];
 
   return [folder unseenCount];
 }

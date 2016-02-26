@@ -90,7 +90,11 @@ typedef enum {
 
 - (BOOL) isInDraftsFolder;
 
-/* special folders */
+- (id) lookupNameByPaths: (NSArray *) _paths
+               inContext: (id)_ctx
+                 acquire: (BOOL) _flag;
+
+  /* special folders */
 - (NSString *) inboxFolderNameInContext: (id)_ctx;
 - (NSString *) draftsFolderNameInContext: (id)_ctx;
 - (NSString *) sentFolderNameInContext: (id)_ctx;
