@@ -14,26 +14,6 @@
     var userNames = <var:string value="userNames" const:escapeHTML="NO" />;
     var unseenCountFolders = <var:string value="unseenCountFolders" const:escapeHTML="NO" />;
   </script>
-  <style type="text/css">
-    <var:foreach list="availableLabels" item="currentLabel">
-      #label-menu LI.<var:string value="currentLabel.name.asCSSIdentifier" />,
-      TABLE.messageList TR[labels~=
-      <var:string const:value = '"' const:escapeHTML="NO"
-          />
-      <var:string value="currentLabel.name" />
-      <var:string const:value = '"' const:escapeHTML="NO" />] TD
-      { color:<var:string value="currentLabel.color" />; }
-      TABLE.messageList TR[labels~=
-      <var:string const:value = '"' const:escapeHTML="NO"
-          />
-      <var:string value="currentLabel.name" />
-      <var:string const:value = '"' const:escapeHTML="NO" />]._selected TD
-      { color: #fff;
-      background-color:
-      <var:string value="currentLabel.color" />
-      !important; }
-    </var:foreach>
-  </style>
 
   <!--
       MAIN CONTENT ROW
