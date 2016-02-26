@@ -84,7 +84,7 @@
     }
 
     function unselectCards() {
-      _.each(vm.selectedFolder.cards, function(card) { card.selected = false; });
+      _.each(vm.selectedFolder.$cards, function(card) { card.selected = false; });
     }
     
     function confirmDeleteSelectedCards() {
@@ -93,7 +93,7 @@
                      { ok: l('Delete') })
         .then(function() {
           // User confirmed the deletion
-          var selectedCards = _.filter(vm.selectedFolder.cards, function(card) { return card.selected; });
+          var selectedCards = _.filter(vm.selectedFolder.$cards, function(card) { return card.selected; });
           vm.selectedFolder.$deleteCards(selectedCards);
           delete vm.selectedFolder.selectedCard;
         },  function(data, status) {
@@ -102,13 +102,13 @@
     }
 
     function saveSelectedCards() {
-      var selectedCards = _.filter(vm.selectedFolder.cards, function(card) { return card.selected; });
+      var selectedCards = _.filter(vm.selectedFolder.$cards, function(card) { return card.selected; });
       var selectedUIDs = _.pluck(selectedCards, 'id');
       $window.location.href = ApplicationBaseURL + '/' + vm.selectedFolder.id + '/export?uid=' + selectedUIDs.join('&uid=');
     }
 
     function copySelectedCards(folder) {
-      var selectedCards = _.filter(vm.selectedFolder.cards, function(card) { return card.selected; });
+      var selectedCards = _.filter(vm.selectedFolder.$cards, function(card) { return card.selected; });
       vm.selectedFolder.$copyCards(selectedCards, folder).then(function() {
         // TODO: refresh target addressbook?
       }, function(error) {
@@ -117,7 +117,7 @@
     }
 
     function selectAll() {
-      _.each(vm.selectedFolder.cards, function(card) {
+      _.each(vm.selectedFolder.$cards, function(card) {
         card.selected = true;
       });
     }
@@ -173,7 +173,7 @@
     }
 
     function newMessageWithSelectedCards($event) {
-      var selectedCards = _.filter(vm.selectedFolder.cards, function(card) { return card.selected; });
+      var selectedCards = _.filter(vm.selectedFolder.$cards, function(card) { return card.selected; });
       var promises = [], recipients = [];
 
       _.each(selectedCards, function(card) {

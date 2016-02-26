@@ -78,14 +78,14 @@
       if (form.$valid) {
         vm.card.$save()
           .then(function(data) {
-            var i = _.indexOf(_.pluck(AddressBook.selectedFolder.cards, 'id'), vm.card.id);
+            var i = _.indexOf(_.pluck(AddressBook.selectedFolder.$cards, 'id'), vm.card.id);
             if (i < 0) {
               // New card; reload contacts list and show addressbook in which the card has been created
               AddressBook.selectedFolder.$reload();
             }
             else {
               // Update contacts list with new version of the Card object
-              AddressBook.selectedFolder.cards[i] = angular.copy(vm.card);
+              AddressBook.selectedFolder.$cards[i] = angular.copy(vm.card);
             }
             $state.go('app.addressbook.card.view', { cardId: vm.card.id });
           });
@@ -122,7 +122,7 @@
           card.$delete()
             .then(function() {
               // Remove card from addressbook
-              AddressBook.selectedFolder.cards = _.reject(AddressBook.selectedFolder.cards, function(o) {
+              AddressBook.selectedFolder.$cards = _.reject(AddressBook.selectedFolder.$cards, function(o) {
                 return o.id == card.id;
               });
               close();
