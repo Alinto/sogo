@@ -35,6 +35,7 @@ Bug fixes
  - [web] fixed ACL editor for authenticated users in Mail module
  - [web] fixed fab button position in Calendar module (#3462)
  - [web] fixed default priority of sent messages (#3542)
+ - [web] removed double-quotes from Chinese (Taiwan) translations that were breaking templates
  - [eas] allow EAS attachments get on 2nd-level mailboxes (#3505)
  - [eas] fix EAS bday shift (#3518)
 
