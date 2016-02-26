@@ -1,0 +1,39 @@
+/// print.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
+
+// Common print media stylesheet
+// See https://github.com/angular/material/issues/1747
+
+@media print {
+
+  // Don't print some components
+  md-sidenav,
+  md-card-actions,
+  .toolbar-main,
+  .view-list,
+  .sg-reversible.sg-flip .sg-face,
+  .sg-reversible:not(.sg-flip) .sg-back,
+  .sg-no-print
+   {
+    display: none !important;
+  }
+
+  // Content must be visible to be printed on multiple pages
+  md-content,
+  md-card-content,
+  md-card-content pre,
+  .view-detail,
+  .sg-reversible:not(.sg-flip) .sg-face,
+  .sg-reversible.sg-flip .sg-back {
+    overflow: visible !important;
+  }
+
+  // Remove shadow from Cards
+  md-card {
+    box-shadow: none !important;
+  }
+
+  // Ignore layout-fill style
+  .layout-fill {
+    height: auto !important;
+  }
+}

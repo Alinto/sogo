@@ -87,6 +87,12 @@
                   <var:string label:value="View Message Source"/>
                 </md-button>
               </md-menu-item>
+              <md-menu-item>
+                <md-button label:aria-label="Print..."
+                           ng-click="viewer.print()">
+                  <var:string label:value="Print..."/>
+                </md-button>
+              </md-menu-item>
               <md-menu-divider><!-- divider --></md-menu-divider>
               <md-menu-item>
                 <md-button label:aria-label="Convert To Event"
@@ -192,7 +198,7 @@
           </div>
 
           <!-- S/MIME Signature -->
-          <md-whiteframe class="md-whiteframe-z2" layout="row" layout-align="space-between center"
+          <md-whiteframe class="md-whiteframe-z2 sg-no-print" layout="row" layout-align="space-between center"
                          ng-show="::viewer.message.$smime.message">
             <div layout="row" layout-align="start center">
               <div class="md-tile-left">
@@ -204,7 +210,7 @@
           </md-whiteframe>
 
           <!-- Load external images -->
-          <md-whiteframe class="md-whiteframe-z2" layout="row" layout-align="space-between center"
+          <md-whiteframe class="md-whiteframe-z2 sg-no-print" layout="row" layout-align="space-between center"
                          ng-show="viewer.message.$hasUnsafeContent">
             <div layout="row" layout-align="start center" class="layout-fill">
               <div class="md-tile-left">
@@ -220,7 +226,7 @@
           </md-whiteframe>
 
           <!-- Return Receipt / Send MDN -->
-          <md-whiteframe class="md-whiteframe-z2" layout="column" layout-align="center start"
+          <md-whiteframe class="md-whiteframe-z2 sg-no-print" layout="column" layout-align="center start"
                          ng-show="viewer.message.shouldAskReceipt == 1">
             <div layout="row" layout-align="start center">
               <div class="md-tile-left">

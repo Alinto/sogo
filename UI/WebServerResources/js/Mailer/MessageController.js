@@ -35,6 +35,7 @@
     vm.saveMessage = saveMessage;
     vm.toggleRawSource = toggleRawSource;
     vm.showRawSource = false;
+    vm.print = print;
     vm.convertToEvent = convertToEvent;
     vm.convertToTask = convertToTask;
 
@@ -255,6 +256,10 @@
       else {
         vm.showRawSource = !vm.showRawSource;
       }
+    }
+
+    function print($event) {
+      $window.print();
     }
 
     function convertToEvent($event) {
