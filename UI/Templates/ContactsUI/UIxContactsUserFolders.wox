@@ -16,15 +16,23 @@
       </div>
     </md-toolbar>
     <md-dialog-content class="md-dialog-content">
-      <md-input-container class="md-block md-flex">
-        <md-icon>search</md-icon>
-        <label><var:string label:value="Search User"/></label>
-        <input type="input"
-               autocomplete="off"
-               ng-model="subscribe.searchText"
-               ng-model-options="subscribe.searchTextOptions"
-               ng-change="subscribe.onChange()"/>
-      </md-input-container>
+      <form name="searchForm">
+        <md-input-container class="md-icon-float md-block md-flex md-icon-left">
+          <md-icon>search</md-icon>
+          <label><var:string label:value="Search User"/></label>
+          <input type="search"
+                 name="userSearch"
+                 autocomplete="off"
+                 md-autofocus="true"
+                 ng-model="subscribe.searchText"
+                 ng-model-options="subscribe.searchTextOptions"
+                 var:minlength="minimumSearchLength"
+                 ng-change="subscribe.onChange()"/>
+          <div ng-messages="searchForm.userSearch.$error">
+            <div ng-message="minlength"><var:string value="minimumSearchLengthLabel"/></div>
+          </div>
+        </md-input-container>
+      </form>
       <md-card ng-repeat="user in subscribe.users"
                ng-class="{ 'sg-collapsed': user.uid != subscribe.selectedUser.uid,
                            'sg-expanded': user.uid == subscribe.selectedUser.uid }">
