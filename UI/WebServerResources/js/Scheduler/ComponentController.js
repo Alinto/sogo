@@ -159,6 +159,7 @@
     //vm.searchText = null;
     vm.cardFilter = cardFilter;
     vm.addAttendee = addAttendee;
+    vm.removeAttendee = removeAttendee;
     vm.addAttachUrl = addAttachUrl;
     vm.cancel = cancel;
     vm.save = save;
@@ -216,6 +217,12 @@
       else {
         vm.component.addAttendee(card);
       }
+    }
+
+    function removeAttendee(attendee) {
+      vm.component.deleteAttendee(attendee);
+      if (vm.component.attendees.length === 0)
+        vm.showAttendeesEditor = false;
     }
 
     function save(form, options) {
