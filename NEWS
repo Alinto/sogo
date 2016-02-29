@@ -39,6 +39,7 @@ Bug fixes
  - [web] fixed default priority of sent messages (#3542)
  - [web] removed double-quotes from Chinese (Taiwan) translations that were breaking templates
  - [web] fixed unseen count retrieval of nested IMAP folders
+ - [web] properly extract the mail column values from an SQL contacts source (#3544)
  - [eas] allow EAS attachments get on 2nd-level mailboxes (#3505)
  - [eas] fix EAS bday shift (#3518)
 

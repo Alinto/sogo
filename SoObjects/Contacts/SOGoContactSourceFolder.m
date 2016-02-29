@@ -249,6 +249,8 @@
 
   // mail => emails[]
   data = [oldRecord objectForKey: @"c_emails"];
+  if (!data)
+    data = [oldRecord objectForKey: @"mail"];
   if (data)
     {
       if ([data isKindOfClass: [NSArray class]])
