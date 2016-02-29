@@ -65,8 +65,12 @@
             return this.uid == data.uid;
           };
 
-      if (options && options.dry)
-        users = [];
+      if (options) {
+        if (options.dry)
+          users = [];
+        else if (options.results)
+          users = options.results;
+      }
       else
         users = User.$users;
 

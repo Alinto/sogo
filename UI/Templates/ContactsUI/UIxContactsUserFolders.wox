@@ -27,9 +27,10 @@
                  ng-model="subscribe.searchText"
                  ng-model-options="subscribe.searchTextOptions"
                  var:minlength="minimumSearchLength"
-                 ng-change="subscribe.onChange()"/>
+                 ng-change="subscribe.onChange(searchForm.userSearch)"/>
           <div ng-messages="searchForm.userSearch.$error">
             <div ng-message="minlength"><var:string value="minimumSearchLengthLabel"/></div>
+            <div ng-message="matches">{{'No such user.' | loc }}</div>
           </div>
         </md-input-container>
       </form>

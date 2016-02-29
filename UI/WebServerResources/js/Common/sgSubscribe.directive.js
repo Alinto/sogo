@@ -64,7 +64,7 @@
     var vm = this;
 
     vm.selectedUser = null;
-    vm.users = User.$users;
+    vm.users = [];
 
     vm.searchTextOptions = {
       updateOn: 'default blur',
@@ -74,11 +74,13 @@
       }
     };
 
-    vm.onChange = function() {
-      User.$filter(vm.searchText).then(function() {
+    vm.onChange = function(input) {
+      User.$filter(vm.searchText, null, { results: vm.users }).then(function(users) {
+        input.$setValidity('matches', users.length > 0);
+        input.$setTouched();
         if (vm.selectedUser) {
           // If selected user is no longer part of the matching users, unselect it
-          if (_.isUndefined(_.find(User.$users, function(user) {
+          if (_.isUndefined(_.find(users, function(user) {
             return user.uid == vm.selectedUser.uid;
           }))) {
             vm.selectedUser = null;
