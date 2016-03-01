@@ -17,9 +17,6 @@
                  ng-readonly="$AccountDialogController.accountId == 0"
                  ng-model="$AccountDialogController.account.name"/>
         </md-input-container>
-        <md-button type="button" class="sg-icon-button " ng-click="$AccountDialogController.cancel()">
-          <md-icon>close</md-icon>
-        </md-button>
       </div>
     </md-toolbar>
     <md-dialog-content class="md-dialog-content">
@@ -142,14 +139,17 @@
               <md-option  const:value="ignore"><var:string label:value="Never send"/></md-option>
               <md-option  const:value="send"><var:string label:value="Always send"/></md-option>
               <md-option  const:value="ask"><var:string label:value="Ask me"/></md-option>
-            </md-select>        
+            </md-select>
           </md-input-container>
         </div>
 
       </form>
     </md-dialog-content>
     <md-dialog-actions>
-      <md-button ng-disabled="$AccountDialogController.accountForm.$invalid" ng-click="$AccountDialogController.save()"><var:string label:value="Save"/></md-button>
+      <md-button type="button" ng-click="$AccountDialogController.cancel()"><var:string label:value="Cancel"/></md-button>
+      <md-button ng-disabled="$AccountDialogController.accountForm.$invalid"
+                 ng-click="$AccountDialogController.save()"
+                 ng-bind="::'OK' | loc"><!-- OK --></md-button>
     </md-dialog-actions>
   </md-dialog>
 </container>

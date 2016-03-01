@@ -20,9 +20,6 @@
                  ng-model="filterEditor.filter.name"
                  required="required"/>
         </md-input-container>
-        <md-button type="button" class="sg-icon-button " ng-click="filterEditor.cancel()">
-          <md-icon>close</md-icon>
-        </md-button>
       </div>
     </md-toolbar>
     <md-dialog-content class="md-dialog-content">
@@ -178,7 +175,8 @@
       </div>
     </md-dialog-content>
     <md-dialog-actions>
-      <md-button type="submit"><var:string label:value="Save"/></md-button>
+      <md-button type="button" ng-click="filterEditor.cancel()"><var:string label:value="Cancel"/></md-button>
+      <md-button type="submit" ng-bind="::'OK' | loc"><!-- OK --></md-button>
     </md-dialog-actions>
   </form>
 </md-dialog>
