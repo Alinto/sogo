@@ -560,6 +560,43 @@
   return categories;
 }
 
+- (NSArray *) urls
+{
+  NSMutableArray *urls;
+  NSMutableDictionary *attrs;
+  NSArray *values;
+  NSString *type, *value;
+  NSURL *url;
+  CardElement *element;
+  NSUInteger count, max;
+
+  values = [card childrenWithTag: @"url"];
+  max = [values count];
+  if (max > 0)
+    {
+      urls = [NSMutableArray arrayWithCapacity: max];
+      for (count = 0; count < max; count++)
+        {
+          attrs = [NSMutableDictionary dictionary];
+          element = [values objectAtIndex: count];
+          type = [element value: 0 ofAttribute: @"type"];
+          if ([type length])
+            [attrs setObject: type forKey: @"type"];
+          value = [element flattenedValuesForKey: @""];
+          url = [NSURL URLWithString: value];
+          if (![url scheme] && [value length] > 0)
+            url = [NSURL URLWithString: [NSString stringWithFormat: @"http://%@", value]];
+          [attrs setObject: [url absoluteString] forKey: @"value"];
+
+          [urls addObject: attrs];
+        }
+    }
+  else
+    urls = nil;
+
+  return urls;
+}
+
 - (NSArray *) deliveryAddresses
 {
   NSMutableArray *addresses;
@@ -853,7 +890,7 @@
   if ([o count]) [data setObject: o forKey: @"categories"];
   o = [self deliveryAddresses];
   if ([o count] > 0) [data setObject: o forKey: @"addresses"];
-  o = [card childrenWithTag: @"url"];
+  o = [self urls];
   if ([o count]) [data setObject: o forKey: @"urls"];
 
   o = [self note];
