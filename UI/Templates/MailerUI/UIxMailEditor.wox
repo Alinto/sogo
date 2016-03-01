@@ -164,11 +164,9 @@
             </md-button>
             <md-menu-content width="4">
               <md-menu-item>
-                <md-button>
-                  <md-checkbox ng-model="editor.message.editable.receipt">
-                    <var:string label:value="Return Receipt"/>
-                  </md-checkbox>
-                </md-button>
+                <sg-checkmark ng-model="editor.message.editable.receipt">
+                  <var:string label:value="Return Receipt"/>
+                </sg-checkmark>
               </md-menu-item>
               <md-menu-item>
                 <md-button class="md-primary" ng-disabled="true"><var:string label:value="Priority"/></md-button>

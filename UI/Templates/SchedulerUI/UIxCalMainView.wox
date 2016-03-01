@@ -362,12 +362,11 @@
                 </md-menu-item>
                 <md-menu-divider ng-if="list.componentType == 'tasks'"><!-- divider --></md-menu-divider>
                 <md-menu-item ng-if="list.componentType == 'tasks'">
-                  <md-button ng-click="list.component.$filter(list.componentType)">
-                    <md-checkbox
-                        ng-model="list.component.$queryTasks.show_completed"
-                        ng-true-value="1"
-                        ng-false-value="0"> <var:string label:value="Show completed tasks"/></md-checkbox>
-                  </md-button>
+                  <sg-checkmark
+                      ng-change="list.component.$filter(list.componentType)"
+                      ng-model="list.component.$queryTasks.show_completed"
+                      sg-true-value="1"
+                      sg-false-value="0"> <var:string label:value="Show completed tasks"/></sg-checkmark>
                 </md-menu-item>
               </md-menu-content>
             </md-menu>
@@ -433,22 +432,20 @@
                 </md-menu-item>
                 <md-menu-divider><!-- divider --></md-menu-divider>
                 <md-menu-item ng-if="list.componentType == 'events'">
-                  <md-button>
-                    <md-checkbox class="sg-no-wrap"
-                        ng-change="list.component.$filter(list.componentType)"
-                        ng-model="list.component.$queryEvents.asc"
-                        ng-true-value="0"
-                        ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>
-                  </md-button>
+                  <sg-checkmark
+                      class="sg-no-wrap"
+                      ng-change="list.component.$filter(list.componentType)"
+                      ng-model="list.component.$queryEvents.asc"
+                      sg-true-value="0"
+                      sg-false-value="1"><var:string label:value="Descending Order"/></sg-checkmark>
                 </md-menu-item>
                 <md-menu-item ng-if="list.componentType == 'tasks'">
-                  <md-button>
-                    <md-checkbox class="sg-no-wrap"
-                        ng-change="list.component.$filter(list.componentType)"
-                        ng-model="list.component.$queryTasks.asc"
-                        ng-true-value="0"
-                        ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>
-                  </md-button>
+                  <sg-checkmark
+                      class="sg-no-wrap"
+                      ng-change="list.component.$filter(list.componentType)"
+                      ng-model="list.component.$queryTasks.asc"
+                      sg-true-value="0"
+                      sg-false-value="1"><var:string label:value="Descending Order"/></sg-checkmark>
                 </md-menu-item>
               </md-menu-content>
             </md-menu>

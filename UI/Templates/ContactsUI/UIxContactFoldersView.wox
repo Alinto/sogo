@@ -259,13 +259,11 @@
                 </md-menu-item>
                 <md-menu-divider> <!-- divider --></md-menu-divider>
                 <md-menu-item >
-                  <md-button>
-                    <md-checkbox
-                        ng-change="addressbook.sort(addressbook.selectedFolder.constructor.$query.sort)"
-                        ng-model="addressbook.selectedFolder.constructor.$query.asc"
-                        ng-true-value="0"
-                        ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>
-                  </md-button>
+                  <sg-checkmark
+                      ng-change="addressbook.sort(addressbook.selectedFolder.constructor.$query.sort)"
+                      ng-model="addressbook.selectedFolder.constructor.$query.asc"
+                      sg-true-value="0"
+                      sg-false-value="1"><var:string label:value="Descending Order"/></sg-checkmark>
                 </md-menu-item>
               </md-menu-content>
             </md-menu>

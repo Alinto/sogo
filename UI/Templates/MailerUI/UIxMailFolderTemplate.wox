@@ -29,14 +29,13 @@
           </md-button>
           <md-menu-content>
             <md-menu-item>
-              <md-button>
-                <md-checkbox ng-model="app.search.subfolders"
-                             ng-true-value="1"
-                             ng-false-value="0">
-                  <var:string label:value="Search subfolders"/>
-                </md-checkbox>
-              </md-button>
+              <sg-checkmark ng-model="app.search.subfolders"
+                            sg-true-value="1"
+                            sg-false-value="0">
+                <var:string label:value="Search subfolders"/>
+              </sg-checkmark>
             </md-menu-item>
+            <md-menu-divider> <!-- divider --></md-menu-divider>
             <md-menu-item>
               <md-button ng-click="app.search.match='AND'">
                 <md-icon ng-class="{ 'icon-check': app.search.match == 'AND'}">
@@ -102,12 +101,12 @@
             </md-menu-item>
             <md-menu-divider> <!-- divider --></md-menu-divider>
             <md-menu-item>
-              <md-button ng-click="mailbox.selectedFolder.$filter()">
-                <md-checkbox
-                    ng-model="mailbox.service.$query.asc"
-                    ng-true-value="0"
-                    ng-false-value="1"><var:string label:value="Descending Order"/></md-checkbox>
-              </md-button>
+              <sg-checkmark
+                  label:aria-label="Descending Order"
+                  ng-model="mailbox.service.$query.asc"
+                  ng-change="mailbox.selectedFolder.$filter()"
+                  sg-true-value="0"
+                  sg-false-value="1"><var:string label:value="Descending Order"/></sg-checkmark>
             </md-menu-item>
           </md-menu-content>
         </md-menu>
