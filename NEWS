@@ -20,6 +20,7 @@ Enhancements
  - [web] list search now displays a warning regarding the minlength constraint
  - [web] loading an LDAP-based addressbook is now instantaneous when listRequiresDot is disabled (#438, #3464)
  - [web] improve display of messages with many recipients
+ - [web] colorize categories chips in event and task viewers
  - [web] initial stylesheet for printing
  - [eas] now support EAS MIME truncation
 

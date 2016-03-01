@@ -41,6 +41,9 @@
         <md-list-item ng-show="editor.component.categories.length > 0">
           <md-chips class="sg-readonly" ng-model="::editor.component.categories" readonly="true">
             <md-chip-template>
+              <span class="sg-chip-color" style="z-index: 1">
+                <span ng-style="{ 'background-color': editor.service.$categories[$chip] }"><!-- color --></span>
+              </span>
               <span>{{$chip}}</span>
             </md-chip-template>
           </md-chips>

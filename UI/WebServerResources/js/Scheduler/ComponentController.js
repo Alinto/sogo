@@ -6,10 +6,11 @@
   /**
    * @ngInject
    */
-  ComponentController.$inject = ['$rootScope', '$mdDialog', 'Calendar', 'AddressBook', 'Alarm', 'stateComponent'];
-  function ComponentController($rootScope, $mdDialog, Calendar, AddressBook, Alarm, stateComponent) {
+  ComponentController.$inject = ['$rootScope', '$mdDialog', 'Calendar', 'Component', 'AddressBook', 'Alarm', 'stateComponent'];
+  function ComponentController($rootScope, $mdDialog, Calendar, Component, AddressBook, Alarm, stateComponent) {
     var vm = this, component;
 
+    vm.service = Component;
     vm.component = stateComponent;
     vm.close = close;
     vm.cardFilter = cardFilter;
