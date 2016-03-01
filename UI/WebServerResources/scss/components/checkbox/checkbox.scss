@@ -6,3 +6,14 @@
 md-sidenav md-checkbox {
     margin: 0;
 }
+
+// Checkbox for the sg-checkmark directive
+// ---------------------------------------
+.sg-checkmark {
+  md-icon {
+    opacity: 0;
+  }
+  &.sg-checked md-icon {
+    opacity: 1;
+  }
+}
