@@ -1442,7 +1442,7 @@ present. Required columns are:
 * `c_password`: password of the user, plain text, crypt, md5 or sha
   encoded 
 * `c_cn`: the user's common name
-* mail : the user's email address
+* `mail`: the user's email address
 
 Other columns can exist and will actually be mapped automatically if
 they have the same name as popular LDAP attributes (such as `givenName`,
