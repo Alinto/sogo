@@ -8,7 +8,7 @@
     >
 
   <md-dialog flex="60" flex-sm="80" flex-xs="100">
-    <md-toolbar>
+    <md-toolbar ng-class="links.calendar.getClassName('bg')">
       <md-icon class="material-icons sg-icon-toolbar-bg">link</md-icon>
       <div class="md-toolbar-tools">
         <div class="pseudo-input-container md-flex">
