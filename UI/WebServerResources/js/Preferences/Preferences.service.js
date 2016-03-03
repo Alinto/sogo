@@ -15,7 +15,7 @@
 
     this.defaultsPromise = Preferences.$$resource.fetch("jsonDefaults").then(function(data) {
       // We swap $key -> _$key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
-      var labels = _.object(_.map(data.SOGoMailLabelsColors, function(value, key) {
+      var labels = _.zipObject(_.map(data.SOGoMailLabelsColors, function(value, key) {
         if (key.charAt(0) == '$')
           return ['_' + key, value];
         return [key, value];
@@ -197,7 +197,7 @@
     });
 
     // We swap _$key -> $key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
-    labels = _.object(_.map(preferences.defaults.SOGoMailLabelsColors, function(value, key) {
+    labels = _.zipObject(_.map(preferences.defaults.SOGoMailLabelsColors, function(value, key) {
       if (key.charAt(0) == '_' && key.charAt(1) == '$') {
         // New key, let's take the value and flatten it
         if (key.length > 2 && key.charAt(2) == '$') {
@@ -230,7 +230,7 @@
       preferences.defaults.Forward.forwardAddress = preferences.defaults.Forward.forwardAddress.split(",");
 
     if (preferences.settings.Calendar && preferences.settings.Calendar.PreventInvitationsWhitelist) {
-      _.each(preferences.settings.Calendar.PreventInvitationsWhitelist, function(user) {
+      _.forEach(preferences.settings.Calendar.PreventInvitationsWhitelist, function(user) {
         whitelist[user.uid] = user.$shortFormat();
       });
       preferences.settings.Calendar.PreventInvitationsWhitelist = whitelist;

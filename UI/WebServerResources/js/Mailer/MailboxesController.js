@@ -78,7 +78,7 @@
         // Start search
         var root, mailboxes = [],
             _visit = function(folders) {
-              _.each(folders, function(o) {
+              _.forEach(folders, function(o) {
                 mailboxes.push(o);
                 if (o.children && o.children.length > 0) {
                   _visit(o.children);

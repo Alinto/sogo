@@ -74,7 +74,7 @@
   VirtualMailbox.prototype.setMailboxes = function(data) {
     this.$mailboxes = data;
 
-    _.each(this.$mailboxes, function(mailbox) {
+    _.forEach(this.$mailboxes, function(mailbox) {
       mailbox.$messages = [];
       mailbox.uidsMap = {};
     });
@@ -86,7 +86,7 @@
 
     this.$isLoading = true;
 
-    _.each(this.$mailboxes, function(mailbox) {
+    _.forEach(this.$mailboxes, function(mailbox) {
       search = search.then(function() {
         if (_this.$isLoading) {
           VirtualMailbox.$log.debug("searching mailbox " + mailbox.path);
@@ -109,7 +109,7 @@
    * @desc Delete 'selectedMessage' attribute of all submailboxes.
    */
   VirtualMailbox.prototype.resetSelectedMessage = function() {
-    _.each(this.$mailboxes, function(mailbox) {
+    _.forEach(this.$mailboxes, function(mailbox) {
       delete mailbox.selectedMessage;
     });
   };
@@ -140,7 +140,7 @@
     if (!angular.isDefined(this.$mailboxes))
       return len;
 
-    _.each(this.$mailboxes, function(mailbox) {
+    _.forEach(this.$mailboxes, function(mailbox) {
       len += mailbox.$messages.length;
     });
 

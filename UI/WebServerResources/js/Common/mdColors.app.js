@@ -73,7 +73,7 @@
         addRule(fgHue, bgHue, themeName, paletteName, _$mdThemingProvider._PALETTES[color.name][color.hues['hue-1'] ], 'hue-1');
       });
 
-      //$log.debug(_.pluck(customSheet.cssRules, 'cssText').join("\n"));
+      //$log.debug(_.map(customSheet.cssRules, 'cssText').join("\n"));
     });
 
     function addRule(fgInterpolate, bgInterpolate, themeName, paletteName, colorArray, hueName){

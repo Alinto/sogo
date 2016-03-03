@@ -77,7 +77,7 @@
       if (excludedUsers) {
         // Remove excluded users from response
         results = _.filter(response.users, function(user) {
-          return !_.find(excludedUsers, compareUids, user);
+          return !_.find(excludedUsers, _.bind(compareUids, user));
         });
       }
       else {
@@ -87,13 +87,13 @@
       // Remove users that no longer match the search query
       for (index = users.length - 1; index >= 0; index--) {
         user = users[index];
-        if (!_.find(results, compareUids, user)) {
+        if (!_.find(results, _.bind(compareUids, user))) {
           users.splice(index, 1);
         }
       }
       // Add new users matching the search query
-      _.each(results, function(data, index) {
-        if (_.isUndefined(_.find(users, compareUids, data))) {
+      _.forEach(results, function(data, index) {
+        if (_.isUndefined(_.find(users, _.bind(compareUids, data)))) {
           var user = new User(data);
           users.splice(index, 0, user);
         }

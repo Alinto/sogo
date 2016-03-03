@@ -97,7 +97,7 @@
               (o.id != 'personal' &&
                o.name.localeCompare(calendar.name) === 1));
     });
-    i = sibling ? _.indexOf(_.pluck(list, 'id'), sibling.id) : 1;
+    i = sibling ? _.indexOf(_.map(list, 'id'), sibling.id) : 1;
     list.splice(i, 0, calendar);
   };
 
@@ -168,11 +168,11 @@
   Calendar.$getIndex = function(id) {
     var i;
 
-    i = _.indexOf(_.pluck(Calendar.$calendars, 'id'), id);
+    i = _.indexOf(_.map(Calendar.$calendars, 'id'), id);
     if (i < 0)
-      i = _.indexOf(_.pluck(Calendar.$subscriptions, 'id'), id);
+      i = _.indexOf(_.map(Calendar.$subscriptions, 'id'), id);
     if (i < 0)
-      i = _.indexOf(_.pluck(Calendar.$webcalendars, 'id'), id);
+      i = _.indexOf(_.map(Calendar.$webcalendars, 'id'), id);
 
     return i;
   };
@@ -335,7 +335,7 @@
     else
       calendars = Calendar.$calendars;
 
-    i = _.indexOf(_.pluck(calendars, 'id'), this.id);
+    i = _.indexOf(_.map(calendars, 'id'), this.id);
     if (i > -1) {
       return this.$save().then(function() {
         calendars.splice(i, 1);
@@ -371,7 +371,7 @@
     }
 
     return promise.then(function() {
-      var i = _.indexOf(_.pluck(list, 'id'), _this.id);
+      var i = _.indexOf(_.map(list, 'id'), _this.id);
       list.splice(i, 1);
     });
   };

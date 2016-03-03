@@ -21,7 +21,7 @@
     vm.send = send;
     vm.removeAttachment = removeAttachment;
     vm.contactFilter = contactFilter;
-    vm.identities = _.pluck(_.flatten(_.pluck(stateAccounts, 'identities')), 'full');
+    vm.identities = _.map(_.flatten(_.map(stateAccounts, 'identities')), 'full');
     vm.recipientSeparatorKeys = [$mdConstant.KEY_CODE.ENTER, $mdConstant.KEY_CODE.TAB, $mdConstant.KEY_CODE.COMMA, semicolon];
     vm.uploader = new FileUploader({
       url: stateMessage.$absolutePath({asDraft: true}) + '/save',
@@ -80,7 +80,7 @@
     }
 
     if (angular.isDefined(stateRecipients)) {
-      vm.message.editable.to = _.union(vm.message.editable.to, _.pluck(stateRecipients, 'full'));
+      vm.message.editable.to = _.union(vm.message.editable.to, _.map(stateRecipients, 'full'));
     }
 
     /**
@@ -215,7 +215,7 @@
       if (contact.$isList()) {
         // If the list's members were already fetch, use them
         if (angular.isDefined(contact.refs) && contact.refs.length) {
-          _.each(contact.refs, function(ref) {
+          _.forEach(contact.refs, function(ref) {
             if (ref.email.length)
               recipients.push(ref.$shortFormat());
           });

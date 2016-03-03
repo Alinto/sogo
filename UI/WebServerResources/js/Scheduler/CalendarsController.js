@@ -49,10 +49,10 @@
       },
       function(newList, oldList) {
         // Identify which calendar has changed
-        var ids = _.pluck(_.filter(newList, function(o, i) { return !_.isEqual(o, oldList[i]); }), 'id');
+        var ids = _.map(_.filter(newList, function(o, i) { return !_.isEqual(o, oldList[i]); }), 'id');
         if (ids.length > 0) {
           $log.debug(ids.join(', ') + ' changed');
-          _.each(ids, function(id) {
+          _.forEach(ids, function(id) {
             var calendar = Calendar.$get(id);
             calendar.$setActivation().then(function() {
               $rootScope.$emit('calendars:list');
@@ -304,8 +304,6 @@
       folder.$rename()
         .then(function(data) {
           vm.editMode = false;
-        }, function(data, status) {
-          Dialog.alert(l('Warning'), data);
         });
     }
 

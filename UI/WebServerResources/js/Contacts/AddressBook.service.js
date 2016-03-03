@@ -1,4 +1,4 @@
- /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+/* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 
 (function() {
   'use strict';
@@ -106,7 +106,7 @@
       if (excludedCards) {
         // Remove excluded cards from results
         results = _.filter(response.contacts, function(data) {
-          return _.isUndefined(_.find(excludedCards, compareIds, data));
+          return _.isUndefined(_.find(excludedCards, _.bind(compareIds, data)));
         });
       }
       else {
@@ -115,13 +115,13 @@
       // Remove cards that no longer match the search query
       for (index = AddressBook.$cards.length - 1; index >= 0; index--) {
         card = AddressBook.$cards[index];
-        if (_.isUndefined(_.find(results, compareIds, card))) {
+        if (_.isUndefined(_.find(results, _.bind(compareIds, card)))) {
           AddressBook.$cards.splice(index, 1);
         }
       }
       // Add new cards matching the search query
-      _.each(results, function(data, index) {
-        if (_.isUndefined(_.find(AddressBook.$cards, compareIds, data))) {
+      _.forEach(results, function(data, index) {
+        if (_.isUndefined(_.find(AddressBook.$cards, _.bind(compareIds, data)))) {
           var card = new AddressBook.$Card(data, search);
           AddressBook.$cards.splice(index, 0, card);
         }
@@ -146,7 +146,7 @@
               (o.id != 'personal' &&
                o.name.localeCompare(addressbook.name) === 1));
     });
-    i = sibling ? _.indexOf(_.pluck(list, 'id'), sibling.id) : 1;
+    i = sibling ? _.indexOf(_.map(list, 'id'), sibling.id) : 1;
     list.splice(i, 0, addressbook);
   };
 
@@ -459,14 +459,14 @@
                 };
 
             // First entry of 'headers' are keys
-            fields = _.invoke(response.headers[0], 'toLowerCase');
+            fields = _.invokeMap(response.headers[0], 'toLowerCase');
             idFieldIndex = fields.indexOf('id');
             response.headers.splice(0, 1);
 
             if (excludedCards)
               // Remove excluded cards from results
               results = _.filter(response.ids, function(id) {
-                return _.isUndefined(_.find(excludedCards, compareIds, id));
+                return _.isUndefined(_.find(excludedCards, _.bind(compareIds, id)));
               });
             else
               results = response.ids;
@@ -474,14 +474,14 @@
             // Remove cards that no longer match the search query
             for (index = cards.length - 1; index >= 0; index--) {
               card = cards[index];
-              if (_.isUndefined(_.find(results, compareIds, card.id))) {
+              if (_.isUndefined(_.find(results, _.bind(compareIds, card.id)))) {
                 cards.splice(index, 1);
               }
             }
 
             // Add new cards matching the search query
-            _.each(results, function(cardId, index) {
-              if (_.isUndefined(_.find(cards, compareIds, cardId))) {
+            _.forEach(results, function(cardId, index) {
+              if (_.isUndefined(_.find(cards, _.bind(compareIds, cardId)))) {
                 var data = { id: cardId };
                 var card = new AddressBook.$Card(data, search);
                 cards.splice(index, 0, card);
@@ -489,20 +489,20 @@
             });
 
             // Respect the order of the results
-            _.each(results, function(cardId, index) {
+            _.forEach(results, function(cardId, index) {
               var oldIndex, removedCards;
               if (cards[index].id != cardId) {
-                oldIndex = _.findIndex(cards, compareIds, cardId);
+                oldIndex = _.findIndex(cards, _.bind(compareIds, cardId));
                 removedCards = cards.splice(oldIndex, 1);
                 cards.splice(index, 0, removedCards[0]);
               }
             });
 
             // Extend Card objects with received headers
-            _.each(response.headers, function(data) {
-              var card, index = _.findIndex(cards, compareIds, data[idFieldIndex]);
+            _.forEach(response.headers, function(data) {
+              var card, index = _.findIndex(cards, _.bind(compareIds, data[idFieldIndex]));
               if (index > -1) {
-                card = _.object(fields, data);
+                card = _.zipObject(fields, data);
                 cards[index].init(card, search);
               }
             });
@@ -527,7 +527,7 @@
    * @returns a promise of the HTTP operation
    */
   AddressBook.prototype.$rename = function(name) {
-    var i = _.indexOf(_.pluck(AddressBook.$addressbooks, 'id'), this.id);
+    var i = _.indexOf(_.map(AddressBook.$addressbooks, 'id'), this.id);
     this.name = name;
     AddressBook.$addressbooks.splice(i, 1);
     AddressBook.$add(this);
@@ -556,7 +556,7 @@
     }
 
     promise.then(function() {
-      var i = _.indexOf(_.pluck(list, 'id'), _this.id);
+      var i = _.indexOf(_.map(list, 'id'), _this.id);
       list.splice(i, 1);
       d.resolve();
     }, d.reject);
@@ -570,12 +570,14 @@
    * @return a promise of the HTTP operation
    */
   AddressBook.prototype.$deleteCards = function(cards) {
-
-    var uids = _.map(cards, function(card) { return card.id; });
-    var _this = this;
+    var _this = this,
+        ids = _.map(cards, function(card) { return card.id; });
     
-    return AddressBook.$$resource.post(this.id, 'batchDelete', {uids: uids}).then(function() {
-      _this.$cards = _.difference(_this.$cards, cards);
+    return AddressBook.$$resource.post(this.id, 'batchDelete', {uids: ids}).then(function() {
+      _this.$cards = _.differenceBy(_this.$cards, cards, 'id');
+      _.forEach(cards, function(card) {
+        delete _this.idsMap[card.id];
+      });
     });
   };
 
@@ -679,13 +681,13 @@
 
         if (response.headers) {
           // First entry of 'headers' are keys
-          headers = _.invoke(response.headers[0], 'toLowerCase');
+          headers = _.invokeMap(response.headers[0], 'toLowerCase');
           response.headers.splice(0, 1);
 
           if (_this.ids) {
             // Extend Card objects with received headers
-            _.each(response.headers, function(data) {
-              var o = _.object(headers, data),
+            _.forEach(response.headers, function(data) {
+              var o = _.zipObject(headers, data),
                   i = _this.idsMap[o.id];
               _this.$cards[i].init(o);
             });
@@ -694,7 +696,7 @@
             // Instanciate Card objects
             _this.$cards = [];
             angular.forEach(response.headers, function(data) {
-              var o = _.object(headers, data);
+              var o = _.zipObject(headers, data);
               _this.$cards.push(new AddressBook.$Card(o));
             });
           }
@@ -735,10 +737,10 @@
         var headers, j;
         if (data.length > 0) {
           // First entry of 'headers' are keys
-          headers = _.invoke(data[0], 'toLowerCase');
+          headers = _.invokeMap(data[0], 'toLowerCase');
           data.splice(0, 1);
-          _.each(data, function(cardHeaders) {
-            cardHeaders = _.object(headers, cardHeaders);
+          _.forEach(data, function(cardHeaders) {
+            cardHeaders = _.zipObject(headers, cardHeaders);
             j = _this.idsMap[cardHeaders.id];
             if (angular.isDefined(j)) {
               _this.$cards[j].init(cardHeaders);

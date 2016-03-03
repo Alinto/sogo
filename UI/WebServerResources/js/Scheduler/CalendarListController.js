@@ -59,11 +59,11 @@
     }
 
     function unselectComponents() {
-      _.each(Component['$' + vm.componentType], function(component) { component.selected = false; });
+      _.forEach(Component['$' + vm.componentType], function(component) { component.selected = false; });
     }
 
     function selectAll() {
-      _.each(Component['$' + vm.componentType], function(component) {
+      _.forEach(Component['$' + vm.componentType], function(component) {
         component.selected = true;
       });
     }

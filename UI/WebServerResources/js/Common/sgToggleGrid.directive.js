@@ -41,11 +41,11 @@
           modelDays = days;
           if (attrs.sgToggleGridAttr) {
             modelAttr = attrs.sgToggleGridAttr;
-            flattenedDays = _.pluck(days, attrs.sgToggleGridAttr);
+            flattenedDays = _.map(days, attrs.sgToggleGridAttr);
           }
-          _.each(tiles, function(o) {
+          _.forEach(tiles, function(o) {
             var tile = angular.element(o);
-            if (_.contains(flattenedDays, tile.attr('value'))) {
+            if (_.includes(flattenedDays, tile.attr('value'))) {
               tile.addClass('sg-active');
             }
           });

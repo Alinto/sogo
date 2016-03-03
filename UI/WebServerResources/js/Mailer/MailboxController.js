@@ -50,7 +50,7 @@
     }
 
     function unselectMessages() {
-      _.each(vm.selectedFolder.$messages, function(message) { message.selected = false; });
+      _.forEach(vm.selectedFolder.$messages, function(message) { message.selected = false; });
     }
 
     function confirmDeleteSelectedMessages() {
@@ -131,7 +131,7 @@
 
     function copySelectedMessages(folder) {
       var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) { return message.selected; });
-      var selectedUIDs = _.pluck(selectedMessages, 'uid');
+      var selectedUIDs = _.map(selectedMessages, 'uid');
       vm.selectedFolder.$copyMessages(selectedUIDs, '/' + folder);
     }
 
@@ -150,7 +150,7 @@
 
     function saveSelectedMessages() {
       var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) { return message.selected; });
-      var selectedUIDs = _.pluck(selectedMessages, 'uid');
+      var selectedUIDs = _.map(selectedMessages, 'uid');
       window.location.href = ApplicationBaseURL + '/' + vm.selectedFolder.id + '/saveMessages?uid=' + selectedUIDs.join(",");
     }
 
@@ -162,7 +162,7 @@
 
     function markSelectedMessagesAsFlagged() {
       var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) { return message.selected; });
-      var selectedUIDs = _.pluck(selectedMessages, 'uid');
+      var selectedUIDs = _.map(selectedMessages, 'uid');
 
       vm.selectedFolder.$flagMessages(selectedUIDs, '\\Flagged', 'add').then(function(d) {
         // Success
@@ -174,7 +174,7 @@
 
     function markSelectedMessagesAsUnread() {
       var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) { return message.selected; });
-      var selectedUIDs = _.pluck(selectedMessages, 'uid');
+      var selectedUIDs = _.map(selectedMessages, 'uid');
 
       vm.selectedFolder.$flagMessages(selectedUIDs, 'seen', 'remove').then(function(d) {
         // Success

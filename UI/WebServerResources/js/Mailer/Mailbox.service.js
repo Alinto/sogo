@@ -277,7 +277,7 @@
           return !filter.searchInput || filter.searchInput.length === 0;
         });
         // Decompose filters that match two fields
-        _.each(options.filters, function(filter) {
+        _.forEach(options.filters, function(filter) {
           var secondFilter,
               match = filter.searchBy.match(/(\w+)_or_(\w+)/);
           if (match) {
@@ -432,7 +432,7 @@
       children = parent.children;
 
     // Find index of mailbox among siblings
-    i = _.indexOf(_.pluck(children, 'id'), this.id);
+    i = _.indexOf(_.map(children, 'id'), this.id);
 
     return this.$save().then(function(data) {
       var sibling;
@@ -446,7 +446,7 @@
         return (o.type == 'folder' && o.name.localeCompare(_this.name) > 0);
       });
       if (sibling) {
-        i = _.indexOf(_.pluck(children, 'id'), sibling.id);
+        i = _.indexOf(_.map(children, 'id'), sibling.id);
       }
       else {
         i = children.length;
@@ -593,7 +593,7 @@
   Mailbox.prototype.$deleteMessages = function(messages) {
     var _this = this, uids;
 
-    uids = _.pluck(messages, 'uid');
+    uids = _.map(messages, 'uid');
     return Mailbox.$$resource.post(this.id, 'batchDelete', {uids: uids})
       .then(function(data) {
         // Update inbox quota
@@ -613,7 +613,7 @@
   Mailbox.prototype.$markOrUnMarkMessagesAsJunk = function(messages) {
     var _this = this, uids;
     var method = (this.type == 'junk' ? 'markMessagesAsNotJunk' : 'markMessagesAsJunk');
-    uids = _.pluck(messages, 'uid');
+    uids = _.map(messages, 'uid');
 
     return Mailbox.$$resource.post(this.id, method, {uids: uids});
   };
@@ -644,7 +644,7 @@
   Mailbox.prototype.$moveMessages = function(messages, folder) {
     var _this = this, uids;
 
-    uids = _.pluck(messages, 'uid');
+    uids = _.map(messages, 'uid');
     return Mailbox.$$resource.post(this.id, 'moveMessages', {uids: uids, folder: folder})
       .then(function() {
         return _this.$_deleteMessages(uids, messages);
@@ -741,7 +741,7 @@
           Mailbox.$log.debug('unwrapping ' + data.uids.length + ' messages');
 
           // First entry of 'headers' are keys
-          headers = _.invoke(_this.headers[0], 'toLowerCase');
+          headers = _.invokeMap(_this.headers[0], 'toLowerCase');
           _this.headers.splice(0, 1);
 
           // First entry of 'uids' are keys when threaded view is enabled
@@ -754,7 +754,7 @@
           _.reduce(_this.uids, function(msgs, msg, i) {
             var data;
             if (_this.threaded)
-              data = _.object(uids, msg);
+              data = _.zipObject(uids, msg);
             else
               data = {uid: msg.toString()};
 
@@ -767,8 +767,8 @@
           }, _this.$messages);
 
           // Extend Message objects with received headers
-          _.each(_this.headers, function(data) {
-            var msg = _.object(headers, data),
+          _.forEach(_this.headers, function(data) {
+            var msg = _.zipObject(headers, data),
                 i = _this.uidsMap[msg.uid.toString()];
             _.extend(_this.$messages[i], msg);
           });
@@ -800,10 +800,10 @@
         var headers, j;
         if (data.length > 0) {
           // First entry of 'headers' are keys
-          headers = _.invoke(data[0], 'toLowerCase');
+          headers = _.invokeMap(data[0], 'toLowerCase');
           data.splice(0, 1);
-          _.each(data, function(messageHeaders) {
-            messageHeaders = _.object(headers, messageHeaders);
+          _.forEach(data, function(messageHeaders) {
+            messageHeaders = _.zipObject(headers, messageHeaders);
             j = _this.uidsMap[messageHeaders.uid.toString()];
             if (angular.isDefined(j)) {
               _.extend(_this.$messages[j], messageHeaders);

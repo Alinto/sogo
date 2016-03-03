@@ -156,11 +156,11 @@
    */
   Message.prototype.$formatFullAddresses = function() {
     var _this = this;
-    var identities = _.pluck(_this.$mailbox.$account.identities, 'email');
+    var identities = _.map(_this.$mailbox.$account.identities, 'email');
 
     // Build long representation of email addresses
-    _.each(['from', 'to', 'cc', 'bcc', 'reply-to'], function(type) {
-      _.each(_this[type], function(data) {
+    _.forEach(['from', 'to', 'cc', 'bcc', 'reply-to'], function(type) {
+      _.forEach(_this[type], function(data) {
         if (data.name && data.name != data.email) {
           data.full = data.name + ' <' + data.email + '>';
 
@@ -197,9 +197,9 @@
     var _this = this, result = [], count = 0, total = 0;
 
     // Build short representation of email addresses
-    _.each(['to', 'cc', 'bcc'], function(type) {
+    _.forEach(['to', 'cc', 'bcc'], function(type) {
       total += _this[type]? _this[type].length : 0;
-      _.each(_this[type], function(data, i) {
+      _.forEach(_this[type], function(data, i) {
         if (count < max)
           result.push(data.shortname);
         count++;
@@ -235,12 +235,12 @@
    */
   Message.prototype.allowReplyAll = function() {
     var recipientsCount = 0;
-    recipientsCount = _.reduce(['to', 'cc'], function(count, type) {
+    recipientsCount = _.reduce(['to', 'cc'], _.bind(function(count, type) {
       if (this[type])
         return count + this[type].length;
       else
         return count;
-    }, recipientsCount, this);
+    }, this), recipientsCount);
 
     return !this.isDraft && recipientsCount > 1;
   };
@@ -281,7 +281,7 @@
                 message: formattedMessage
               };
             }
-            _.each(part.content, function(mixedPart) {
+            _.forEach(part.content, function(mixedPart) {
               _visit(mixedPart);
             });
           }
@@ -324,7 +324,7 @@
 
               // UIxMailPartICalViewer injects 'participants'
               if (part.participants) {
-                _.each(part.participants, function(participant) {
+                _.forEach(part.participants, function(participant) {
                   participant.image = Message.$gravatar(participant.email, 32);
                 });
               }

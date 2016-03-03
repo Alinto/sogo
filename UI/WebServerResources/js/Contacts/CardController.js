@@ -78,7 +78,7 @@
       if (form.$valid) {
         vm.card.$save()
           .then(function(data) {
-            var i = _.indexOf(_.pluck(AddressBook.selectedFolder.$cards, 'id'), vm.card.id);
+            var i = _.indexOf(_.map(AddressBook.selectedFolder.$cards, 'id'), vm.card.id);
             if (i < 0) {
               // New card; reload contacts list and show addressbook in which the card has been created
               AddressBook.selectedFolder.$reload();

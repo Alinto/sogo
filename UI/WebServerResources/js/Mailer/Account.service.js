@@ -12,7 +12,7 @@
     // Data is immediately available
     if (typeof futureAccountData.then !== 'function') {
       angular.extend(this, futureAccountData);
-      _.each(this.identities, function(identity) {
+      _.forEach(this.identities, function(identity) {
         if (identity.fullName)
           identity.full = identity.fullName + ' <' + identity.email + '>';
         else
@@ -147,7 +147,7 @@
         allMailboxes = [],
         expandedMailboxes = [],
         _visit = function(mailboxes) {
-          _.each(mailboxes, function(o) {
+          _.forEach(mailboxes, function(o) {
             allMailboxes.push(o);
             if ((options && options.all || o.$expanded) && o.children && o.children.length > 0) {
               _visit(o.children);
@@ -291,7 +291,7 @@
     var _this = this,
         deferred = Account.$q.defer(),
         param = {uid: user.uid};
-    if (!user.uid || _.indexOf(_.pluck(this.delegates, 'uid'), user.uid) > -1) {
+    if (!user.uid || _.indexOf(_.map(this.delegates, 'uid'), user.uid) > -1) {
       // No UID specified or user already in delegates
       deferred.resolve();
     }
@@ -317,7 +317,7 @@
     var _this = this,
         param = {uid: uid};
     return Account.$$resource.fetch(this.id.toString(), 'removeDelegate', param).then(function() {
-      var i = _.indexOf(_.pluck(_this.delegates, 'uid'), uid);
+      var i = _.indexOf(_.map(_this.delegates, 'uid'), uid);
       if (i >= 0) {
         _this.delegates.splice(i, 1);
       }

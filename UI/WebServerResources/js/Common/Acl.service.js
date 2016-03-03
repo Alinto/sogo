@@ -81,7 +81,7 @@
     var _this = this,
         deferred = Acl.$q.defer(),
         param = {uid: user.uid};
-    if (!user.uid || _.indexOf(_.pluck(this.users, 'uid'), user.uid) > -1) {
+    if (!user.uid || _.indexOf(_.map(this.users, 'uid'), user.uid) > -1) {
       // No UID specified or user already in ACLs
       deferred.resolve();
     }
@@ -116,7 +116,7 @@
     var _this = this,
         param = {uid: uid};
     return Acl.$$resource.fetch(this.folderId, 'removeUserFromAcls', param).then(function() {
-      var i = _.indexOf(_.pluck(_this.users, 'uid'), uid);
+      var i = _.indexOf(_.map(_this.users, 'uid'), uid);
       if (i >= 0) {
         _this.users.splice(i, 1);
       }
