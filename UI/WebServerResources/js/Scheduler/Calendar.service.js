@@ -93,8 +93,9 @@
       list = this.$calendars;
 
     sibling = _.find(list, function(o) {
-      return (o.id != 'personal' &&
-              o.name.localeCompare(calendar.name) === 1);
+      return (calendar.id == 'personal' ||
+              (o.id != 'personal' &&
+               o.name.localeCompare(calendar.name) === 1));
     });
     i = sibling ? _.indexOf(_.pluck(list, 'id'), sibling.id) : 1;
     list.splice(i, 0, calendar);
