@@ -30,8 +30,7 @@
         '<style type="text/css">',
         /* Background color */
         '  .bg-folder{{ cssCtrl.ngModel.id }},',
-        '  .bg-folder{{ cssCtrl.ngModel.id }} label,',
-        '  .bg-folder{{ cssCtrl.ngModel.id }} .md-input {',
+        '  .bg-folder{{ cssCtrl.ngModel.id }} label {',
         '    background-color: {{ cssCtrl.ngModel.color }} !important;',
         '    color: {{ cssCtrl.contrast(cssCtrl.ngModel.color) }} !important;',
         '  }',
