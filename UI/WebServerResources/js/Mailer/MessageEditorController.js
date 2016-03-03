@@ -112,19 +112,19 @@
 
     function addAttachments() {
       // Add existing attached files to uploader
-      var i, data, fileItem;
-      if (vm.message.attachmentAttrs)
-        for (i = 0; i < vm.message.attachmentAttrs.length; i++) {
+      var i, data, fileItem, attrs = vm.message.editable.attachmentAttrs;
+      if (attrs)
+        for (i = 0; i < attrs.length; i++) {
           data = {
-            name: vm.message.attachmentAttrs[i].filename,
-            type: vm.message.attachmentAttrs[i].mimetype,
-            size: parseInt(vm.message.attachmentAttrs[i].size)
+            name: attrs[i].filename,
+            type: attrs[i].mimetype,
+            size: parseInt(attrs[i].size)
           };
           fileItem = new FileUploader.FileItem(vm.uploader, data);
           fileItem.progress = 100;
           fileItem.isUploaded = true;
           fileItem.isSuccess = true;
-          fileItem.inlineUrl = vm.message.attachmentAttrs[i].url;
+          fileItem.inlineUrl = attrs[i].url;
           vm.uploader.queue.push(fileItem);
         }
     }
