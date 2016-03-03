@@ -40,7 +40,7 @@
       if (Mailbox.$virtualMode)
         $state.go('mail.account.virtualMailbox.message', {accountId: stateAccount.id, mailboxId: encodeUriFilter(message.$mailbox.path), messageId: message.uid});
       else
-        $state.go('mail.account.mailbox.message', {accountId: stateAccount.id, mailboxId: encodeUriFilter(message.$mailbox.path), messageId: message.uid});
+        $state.go('mail.account.mailbox.message', {messageId: message.uid});
     }
 
     function toggleMessageSelection($event, message) {
