@@ -199,8 +199,6 @@
       if ([o isEqualToString: @"COMPLETED"] && completedDate)
         // As specified in RFC5545, the COMPLETED property must use UTC time
         [self setCompleted: completedDate];
-      else
-        [self setCompleted: nil];
     }
 
   // Percent complete
