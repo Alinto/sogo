@@ -265,8 +265,6 @@
             // Refresh list instance
             srcAddressBook.init(vm.addressbook.$omit());
             $mdDialog.hide();
-          }, function() {
-            // TODO handle error
           });
         }
 

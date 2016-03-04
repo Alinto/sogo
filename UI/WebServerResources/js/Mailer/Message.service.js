@@ -461,8 +461,6 @@
         _this.editable.attachmentAttrs = _.filter(_this.editable.attachmentAttrs, function(attachment) {
           return attachment.filename != filename;
         });
-      }, function() {
-        // TODO: show toast
       });
     });
   };
