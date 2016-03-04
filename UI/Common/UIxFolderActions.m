@@ -75,8 +75,11 @@
 - (WOResponse *) _subscribeAction: (BOOL) reallyDo
 {
   WOResponse *response;
+  NSArray *allACLs;
   NSDictionary *jsonResponse;
+  NSMutableDictionary *acls;
   NSURL *mailInvitationURL;
+  BOOL objectCreator, objectEditor, objectEraser;
 
   response = nil;
   [self _setupContext];
@@ -102,6 +105,15 @@
         }
       else
         {
+          // We extract ACLs for this address book
+          allACLs = ([owner isEqualToString: login] ? nil : [clientObject aclsForUser: login]);
+          objectCreator = ([owner isEqualToString: login] || [allACLs containsObject: SOGoRole_ObjectCreator]);
+          objectEditor = ([owner isEqualToString: login] || [allACLs containsObject: SOGoRole_ObjectEditor]);
+          objectEraser = ([owner isEqualToString: login] || [allACLs containsObject: SOGoRole_ObjectEraser]);
+          acls = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool: objectCreator], @"objectCreator",
+                                   [NSNumber numberWithBool: objectEditor], @"objectEditor",
+                                   [NSNumber numberWithBool: objectEraser], @"objectEraser", nil];
+
           // @see [SOGoGCSFolder folderWithSubscriptionReference:inContainer:]
           jsonResponse
             = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -112,6 +124,7 @@
                             [NSNumber numberWithBool:
                                         [clientObject isKindOfClass: [SOGoContactSourceFolder class]]
                                       && ![(SOGoContactSourceFolder *) clientObject isPersonalSource]], @"isRemote",
+                            acls, @"acls",
                             nil];
           response = [self responseWithStatus: 200
                         andJSONRepresentation: jsonResponse];
