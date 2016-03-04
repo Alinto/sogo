@@ -222,7 +222,6 @@
       // Array of cards for "dry" searches (see $filter)
       this.$$cards = [];
     }
-    this.$isLoading = true;
     this.idsMap = {};
     this.$cards = []; // TODO Keep the "selected" state of cards
     // Extend instance with all attributes of data except headers
