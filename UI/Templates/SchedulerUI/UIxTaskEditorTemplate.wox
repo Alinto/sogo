@@ -137,7 +137,7 @@
             <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
               <md-datepicker ng-model="editor.component.due"
                              ng-change="editor.updateDueTime()"
-                             label:md-placeholder="Due"> <!-- date picker--></md-datepicker>
+                             label:md-placeholder="Due"><!-- date picker--></md-datepicker>
               <sg-timepicker ng-model="editor.component.due"
                              ng-change="editor.adjustDueTime()"><!-- time picker --></sg-timepicker>
               <md-button class="md-icon-button" type="button" ng-click="editor.component.$deleteDueDate()">
@@ -152,7 +152,7 @@
             <label class="button-label"><var:string label:value="Add Due"/></label>
           </div>
           <!-- status -->
-          <div layout="row">
+          <div layout="row" layout-align="start center">
             <md-input-container flex="50">
               <label><var:string label:value="Status"/></label>
               <md-select ng-model="editor.component.status">
@@ -161,10 +161,9 @@
                 </var:foreach>
               </md-select>
             </md-input-container>
-            <md-input-container ng-show="editor.component.status == 'completed'">
-              <label><var:string label:value="status_COMPLETED"/></label>
-              <input type="text" ng-model="editor.component.completedDate"/>
-            </md-input-container>
+              <md-datepicker ng-show="editor.component.status == 'completed'"
+                             ng-model="editor.component.completed"
+                             label:md-placeholder="status_COMPLETED"><!-- date picker--></md-datepicker>
           </div>
           <div layout="row" layout-align="center center"
                ng-show="editor.component.enablePercentComplete()">

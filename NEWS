@@ -46,6 +46,7 @@ Bug fixes
  - [web] replaced checkboxes in menu by a custom checkmark (#3557)
  - [web] fixed attachments display when forwarding a message (#3560)
  - [web] activate new calendar subscriptions by default
+ - [web] keep specified task status when not completed (#3499)
  - [eas] allow EAS attachments get on 2nd-level mailboxes (#3505)
  - [eas] fix EAS bday shift (#3518)
 

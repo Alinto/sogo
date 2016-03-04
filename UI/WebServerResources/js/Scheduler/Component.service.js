@@ -470,7 +470,7 @@
 
     if (this.component == 'vevent')
       this.type = 'appointment';
-    else if (this.component == 'vtoto')
+    else if (this.component == 'vtodo')
       this.type = 'task';
 
     if (this.startDate) {
@@ -496,6 +496,11 @@
 
     if (this.dueDate)
       this.due = Component.$parseDate(this.dueDate);
+
+    if (this.completedDate)
+      this.completed = Component.$parseDate(this.completedDate);
+    else if (this.type == 'task')
+      this.completed = new Date();
 
     if (this.c_category)
       this.categories = _.invokeMap(this.c_category, 'asCSSIdentifier');
@@ -1059,6 +1064,7 @@
     component.endTime = component.end ? component.end.format(dlp, '%H:%M') : '';
     component.dueDate = component.due ? component.due.format(dlp, '%Y-%m-%d') : '';
     component.dueTime = component.due ? component.due.format(dlp, '%H:%M') : '';
+    component.completedDate = component.completed ? component.completed.format(dlp, '%Y-%m-%d') : '';
 
     // Update recurrence definition depending on selections
     if (this.$hasCustomRepeat) {
@@ -1093,6 +1099,8 @@
     // Check status
     if (this.status == 'not-specified')
       delete component.status;
+    else if (this.status != 'completed')
+      delete component.completedDate;
 
     // Verify alarm
     if (this.$hasAlarm) {

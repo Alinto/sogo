@@ -187,11 +187,15 @@
   // Handle completed date
   o = [data objectForKey: @"completedDate"];
   if ([o isKindOfClass: [NSString class]] && [o length])
-    completedDate = [self dateFromString: o inContext: context];
+    {
+      completedDate = [self dateFromString: o inContext: context];
 
-  o = [data objectForKey: @"completedTime"];
-  if ([o isKindOfClass: [NSString class]] && [o length])
-    [self adjustDate: &completedDate withTimeString: o inContext: context];
+      o = [data objectForKey: @"completedTime"];
+      if ([o isKindOfClass: [NSString class]] && [o length])
+        [self adjustDate: &completedDate withTimeString: o inContext: context];
+    }
+  else
+    [(iCalDateTime *) [self uniqueChildWithTag: @"completed"] setDateTime: nil];
 
   o = [self status];
   if ([o length])
