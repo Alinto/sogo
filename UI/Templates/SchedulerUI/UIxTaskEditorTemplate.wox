@@ -178,61 +178,6 @@
           </div>
         </div>
 
-        <div class="sg-form-section">
-          <!-- repeat -->
-          <div layout="row" layout-align="start center">
-            <md-input-container class="md-block md-flex">
-              <label><var:string label:value="Repeat"/></label>
-              <md-select class="pseudo-input-field" ng-model="editor.component.repeat.frequency">
-                <var:foreach list="repeatList" item="item">
-                  <md-option var:value="item"><var:string var:value="itemRepeatText"/></md-option>
-                </var:foreach>
-              </md-select>
-            </md-input-container>
-            <md-button type="button" class="md-icon-button"
-                       label:aria-label="repeat_CUSTOM"
-                       ng-show="editor.component.repeat.frequency != 'never'"
-                       ng-click="editor.toggleRecurrenceEditor()">
-              <md-icon ng-class="{'md-rotate-45': editor.showRecurrenceEditor}">add</md-icon>
-            </md-button>
-          </div>
-          <div ng-show="editor.showRecurrenceEditor" flex-offset="5">
-            <var:component className="UIxRecurrenceEditor" />
-          </div>
-          <!-- end repeat -->
-          <div layout="row">
-            <md-input-container class="md-block" flex="50" flex-xs="100"
-                                ng-show="editor.component.repeat.frequency != 'never'">
-              <label><var:string label:value="End Repeat"/></label>
-              <md-select ng-model="editor.component.repeat.end"
-                         ng-disabled="editor.component.occurrenceId">
-                <md-option value="never"><var:string label:value="Never"/></md-option>
-                <md-option value="count"><var:string label:value="After"/></md-option>
-                <md-option value="until"><var:string label:value="On Date"/></md-option>
-              </md-select>
-            </md-input-container>
-            <md-input-container class="md-block md-input-number"
-                                ng-show="editor.component.repeat.end == 'count'">
-              <label><var:string label:value="times"/></label>
-              <input type="number" label:aria-label="times" ng-model="editor.component.repeat.count"/>
-            </md-input-container>
-            <md-datepicker ng-show="editor.component.repeat.end == 'until'"
-                           ng-model="editor.component.repeat.until"
-                           label:md-placeholder="On Date"><!-- date picker --></md-datepicker>
-          </div>
-        </div>
-
-        <div class="sg-form-section">
-          <!-- reminder -->
-          <md-checkbox ng-model="editor.component.$hasAlarm"
-                       label:aria-label="Reminder">
-            <var:string label:value="Reminder"/>
-          </md-checkbox>
-          <div flex-offset="5"
-               ng-show="editor.component.$hasAlarm">
-            <var:component className="UIxReminderEditor" />
-          </div>
-        </div>
       </md-dialog-content>
       <!-- cancel/reset/save -->
       <md-dialog-actions>
