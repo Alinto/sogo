@@ -187,7 +187,7 @@
   Calendar.$subscribe = function(uid, path) {
     var _this = this;
     return Calendar.$$resource.userResource(uid).fetch(path, 'subscribe').then(function(calendarData) {
-      var calendar = new Calendar(calendarData);
+      var calendar = new Calendar(angular.extend({ active: 1 }, calendarData));
       if (!_.find(_this.$subscriptions, function(o) {
         return o.id == calendarData.id;
       })) {

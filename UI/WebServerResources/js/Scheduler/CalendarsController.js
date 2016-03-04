@@ -48,17 +48,27 @@
         );
       },
       function(newList, oldList) {
+        var commonList, ids, promises;
+
         // Identify which calendar has changed
-        var ids = _.map(_.filter(newList, function(o, i) { return !_.isEqual(o, oldList[i]); }), 'id');
+        commonList = _.intersectionBy(newList, oldList, 'id');
+        ids = _.map(_.filter(commonList, function(o) {
+          var oldObject = _.find(oldList, { id: o.id });
+          return !_.isEqual(o, oldObject);
+        }), 'id');
+        promises = [];
+
         if (ids.length > 0) {
           $log.debug(ids.join(', ') + ' changed');
           _.forEach(ids, function(id) {
             var calendar = Calendar.$get(id);
-            calendar.$setActivation().then(function() {
-              $rootScope.$emit('calendars:list');
-            });
+            promises.push(calendar.$setActivation());
           });
         }
+        if (commonList.length > 0)
+          Calendar.$q.all(promises).then(function() {
+            $rootScope.$emit('calendars:list');
+          });
       },
       true // compare for object equality
     );
@@ -91,9 +101,7 @@
       if (folder.isSubscription) {
         // Unsubscribe without confirmation
         folder.$delete()
-          .then(function() {
-            $rootScope.$emit('calendars:list');
-          }, function(data, status) {
+          .catch(function(data, status) {
             Dialog.alert(l('An error occured while deleting the calendar "%{0}".', folder.name),
                          l(data.error));
           });
@@ -103,9 +111,7 @@
                        { ok: l('Delete') })
           .then(function() {
             folder.$delete()
-              .then(function() {
-                $rootScope.$emit('calendars:list');
-              }, function(data, status) {
+              .catch(function(data, status) {
                 Dialog.alert(l('An error occured while deleting the calendar "%{0}".', folder.name),
                              l(data.error));
               });

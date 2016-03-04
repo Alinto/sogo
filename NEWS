@@ -43,6 +43,9 @@ Bug fixes
  - [web] fixed unseen count retrieval of nested IMAP folders
  - [web] properly extract the mail column values from an SQL contacts source (#3544)
  - [web] fixed incorrect date formatting when timezone was after UTC+0 (#3481, #3494)
+ - [web] replaced checkboxes in menu by a custom checkmark (#3557)
+ - [web] fixed attachments display when forwarding a message (#3560)
+ - [web] activate new calendar subscriptions by default
  - [eas] allow EAS attachments get on 2nd-level mailboxes (#3505)
  - [eas] fix EAS bday shift (#3518)
 
