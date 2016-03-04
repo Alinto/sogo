@@ -471,7 +471,9 @@
       });
       if (_this.birthday) {
         _this.birthday = new Date(_this.birthday * 1000);
-        _this.$birthday = Card.$Preferences.$mdDateLocaleProvider.formatDate(_this.birthday);
+        Card.$Preferences.ready().then(function() {
+          _this.$birthday = Card.$Preferences.$mdDateLocaleProvider.formatDate(_this.birthday);
+        });
       }
       // Mark card as loaded
       _this.$loaded = Card.STATUS.LOADED;
