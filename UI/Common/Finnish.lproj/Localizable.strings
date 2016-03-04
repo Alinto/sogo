@@ -104,5 +104,6 @@
 "Loading" = "Lataa";
 "No such user." = "Käyttäjää ei löydy.";
 "You cannot (un)subscribe to a folder that you own!" = "Et voi (ulos)kirjautua itse omistamaasi hakemistoon!";
-"SOGo" = "SOGo";
-"Modules" = "Modulit";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Syötä vähintään %{minimumSearchLength} merkkiä";
