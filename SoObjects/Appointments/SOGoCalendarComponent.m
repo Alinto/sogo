@@ -132,21 +132,12 @@
 
 - (void) setIsNew: (BOOL) newIsNew
 {
-  // Required for protocol <SOGoComponentOccurence>
-  // but not yet implemented.  Violently warn if
-  // used.
-  NSLog (@"SOGoCalendarComponent::setIsNew is not implemented.");
-  abort();
+  [super setIsNew: newIsNew];
 }
 
 - (BOOL) isNew
 {
-  // Required for protocol <SOGoComponentOccurence>
-  // but not yet implemented.  Violently warn if
-  // used.
-  NSLog (@"SOGoCalendarComponent::isNew is not implemented.");
-  abort();
-  return false;
+  return [super isNew];
 }
 
 - (NSException *) changeParticipationStatus: (NSString *) newPartStat
