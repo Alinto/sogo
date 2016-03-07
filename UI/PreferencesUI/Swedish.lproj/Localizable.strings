@@ -140,7 +140,8 @@ Servernamn:";
 "PRIVATE_item" = "Private";
 /* Event+task categories */
 "category_none" = "Ingen";
-"calendar_category_labels" = "Arbete,Diverse,Favoriter,Födelsedagar,Helgdagar,Idéer,Kunder,Ledighet,Leverantörer,Personligt,Presenter,Projekt,Möte,Resor,Status,Telefonsamtal,Tävlingar,Uppföljning,Ärenden";
+"calendar_category_labels" = "Jubileum,Födelsedagar,Arbete,Telefonsamtal,Klient,Tävlingar,Kunder,Favoriter,Uppföljning,Presenter,Ledighet,Idéer,Möte,Ärenden,Diverse,Personligt,Projekt,Helgdagar,Status,Leverantörer,Resor,Semester";
+
 /* Default module */
 "Calendar" = "Kalender";
 "Contacts" = "Adressbok";

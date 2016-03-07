@@ -11,7 +11,7 @@ add_info_text = "iMIP 'ADD' requests worden door SOGo nog niet ondersteund.";
 publish_info_text = "De afzender stelt u op de hoogte van bijgevoegde afspraak.";
 cancel_info_text = "Uw uitnodiging of de hele afspraak is vervallen..";
 request_info_no_attendee = "stelt een afspraak voor met de volgende deelnemers. U ontvangt deze mail als notificatie, u bent geen deelnemer.";
-Appointment = "afspraak";
+Appointment = "Afspraak";
 "Status Update" = "Statusupdate";
 was = "was";
 
@@ -41,3 +41,10 @@ reply_info = "Dit is een antwoord op een door u verstuurde uitnodiging.";
 "Date" = "Datum";
 "To" = "Aan";
 "Issuer" = "Uitgever";
+/* Tooltips */
+"View Attachment" = "Bekijk Bijlage";
+"Save Attachment" = "Bijlage Opslaan";
+"CC" = "CC";
+"Cancel" = "Annuleren";
+"OK" = "OK";
+"Comment" = "Commentaar:";

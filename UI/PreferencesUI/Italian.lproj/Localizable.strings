@@ -6,7 +6,7 @@
 /* tabs */
 "General" = "Generale";
 "Calendar Options" = "Opzioni calendario";
-"Contacts Options" = "Contacts Options";
+"Contacts Options" = "Opzioni contatti";
 "Mail Options" = "Opzioni di posta";
 "IMAP Accounts" = "Account IMAP";
 "Vacation" = "Risponditore automatico";
@@ -50,7 +50,7 @@
 "Short Date Format" = "Data breve";
 "Long Date Format" = "Data estesa";
 "Time Format" = "Formato ora";
-"default" = "Default";
+"default" = "Predefinito";
 "Default Module" = "Modulo di default";
 "Save" = "Salva";
 "shortDateFmt_0" = "%d-%b-%y";
@@ -128,9 +128,9 @@
 "Label" = "Etichetta";
 "Show subscribed mailboxes only" = "Mostra solo le cartelle sottoscritte";
 "Sort messages by threads" = "Ordina i messaggi per conversazione";
-"When sending mail, add unknown recipients to my" = "Durante l'invio di posta elettronica, aggiungere destinatari sconosciuti alla mia";
+"When sending mail, add unknown recipients to my" = "Durante l'invio di email, aggiungi destinatari sconosciuti alla mia";
 "Address Book" = "Rubrica";
-"Forward messages" = "Inoltra messaggi come";
+"Forward messages" = "Inoltra messaggi";
 "messageforward_inline" = "Parte del messaggio";
 "messageforward_attached" = "Allegato";
 "When replying to a message" = "Quando rispondi ad un messaggio";
@@ -145,7 +145,7 @@
 "Display remote inline images" = "Carica le immagini remote";
 "displayremoteinlineimages_never" = "Mai";
 "displayremoteinlineimages_always" = "Sempre";
-"Auto save every" = "Salva automaticamente tutto";
+"Auto save every" = "Salva automaticamente tutto ogni";
 "minutes" = "minuti";
 
 /* Contact */
@@ -185,12 +185,12 @@
 "PRIVATE_item" = "Privato";
 
 /* Event+task categories */
-"Calendar Category" = "Categoria calendario";
-"Add Calendar Category" = "Aggiungi categoria calendario";
-"Remove Calendar Category" = "Rimuovi categoria calendario";
-"Contact Category" = "Categoria contatto";
-"Add Contact Category" = "Aggiungi categoria contatto";
-"Remove Contact Category" = "Rimuovi categoria contatto";
+"Calendar Category" = "Categorie calendari";
+"Add Calendar Category" = "Aggiungi categoria calendari";
+"Remove Calendar Category" = "Rimuovi categoria calendari";
+"Contact Category" = "Categorie contatti";
+"Add Contact Category" = "Aggiungi categoria contatti";
+"Remove Contact Category" = "Rimuovi categoria contatti";
 "category_none" = "Nessuna";
 "calendar_category_labels" = "Anniversari,Compleanni,Lavoro,Chiamate,Clienti,Competizioni,Compratori,Preferiti,Incontri,Regali,Vacanze,Idee,Meeting,Problemi,Varie,Personale,Progetti,Giorno festivo,Stato,Fornitori,Viaggio,Chiusura";
 
@@ -249,7 +249,7 @@
 "When I receive a request for a return receipt" = "Quando ricevo una richiesta di notifica di lettura";
 "Never send a return receipt" = "Non inviare mail una notifica di lettura";
 "Allow return receipts for some messages" = "Permetti la notifica di lettura per alcuni messaggi";
-"If I'm not in the To or Cc of the message" = "Se non sono presente nel campo To e Cc del messaggio";
+"If I'm not in the To or Cc of the message" = "Se io non sono presente nel campo A o Cc del messaggio";
 "If the sender is outside my domain" = "Se il mittente ha un dominio diverso dal mio";
 "In all other cases" = "In tutti gli altri casi";
 "Never send" = "Non inviare mai";
@@ -292,8 +292,8 @@
 "Send a reject message" = "Invia un messaggio di rifiuto";
 "Send a vacation message" = "Invia un messaggio automatico";
 "Stop processing filter rules" = "Interrompi il controllo delle regole di filtro";
-"is under" = "è maggiore";
-"is over" = "è minore";
+"is under" = "è minore";
+"is over" = "è maggiore";
 "is" = "è";
 "is not" = "non è";
 "contains" = "contiene";
@@ -341,7 +341,7 @@
 "TLS" = "TLS";
 
 /* Avatars */
-"Alternate Avatar" = "Avatar alternativo";
+"Alternate Avatar" = "Avatar alternativi";
 "none" =  "Niente";
 "identicon" = "Icona Ident";
 "monsterid" = "Monster";

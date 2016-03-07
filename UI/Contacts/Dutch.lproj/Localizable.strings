@@ -21,6 +21,7 @@
 "HomePhone" = "Privé";
 "Lastname" = "Achternaam";
 "Location" = "Adres";
+"Add a category" = "Categorie toevoegen";
 "MobilePhone" = "Mobiel";
 "Name" = "Naam";
 "OfficePhone" = "Kantoor";
@@ -40,6 +41,20 @@
 "Move To" = "Verplaatsen naar";
 "Copy To" = "Kopieren naar";
 "Add to" = "Toevoegen aan";
+/* Subheader of empty addressbook */
+"No contact" = "Geen contactpersoon";
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Begin met zoeken om in adresboek te bladeren";
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "Contactpersonen";
+/* No contact matching search criteria */
+"No matching contact" = "Geen overeenkomstige contactpersoon";
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "overeenkomstige contactpersonen";
+/* Number of selected contacts in list */
+"selected" = "geselecteerd";
+/* Empty right pane */
+"No contact selected" = "Geen contactpersoon geselecteerd";
 /* Tooltips */
 "Create a new address book card" = "Nieuwe contactpersoon aanmaken";
 "Create a new list" = "Nieuwe lijst aanmaken";
@@ -106,6 +121,8 @@
 "New Addressbook..." = "Nieuw adresboek...";
 "Subscribe to an Addressbook..." = "Abonneren...";
 "Remove the selected Addressbook" = "Verwijderen";
+"Subscribe to a shared folder" = "Abonneren op een gedeelde map";
+"Search User" = "Zoek gebruiker";
 "Name of the Address Book" = "Naam van het adresboek";
 "Are you sure you want to delete the selected address book?"
 = "Weet u zeker dat u het geselecteerde adresboek wilt verwijderen?";
@@ -166,7 +183,46 @@
 "A total of %{0} cards were imported in the addressbook." = "Een totaal van %{0} kaarten werd in het adresboek geïmporteerd.";
 "Reload" = "Herlaad";
 /* Properties window */
-"Address Book Name:" = "Naam van het adresboek";
+"Address Book Name" = "Naam van het adresboek";
 "Links to this Address Book" = "Koppeling naar adresboek";
 "Authenticated User Access" = "Toegang voor geauthenticeerde gebruikers";
 "CardDAV URL" = "CardDAV-URL";
+"Options" = "Opties";
+"Rename" = "Hernoem";
+"Subscriptions" = "Abonnementen";
+"Global Addressbooks" = "Algemene adresboeken";
+"Search" = "Zoeken";
+"Sort" = "Sorteren";
+"Descending Order" = "Aflopende volgorde";
+"Back" = "Terug";
+"Select All" = "Alle selecteren";
+"Copy contacts" = "Kopieer contactpersonen";
+"More messages options" = "Meer berichtopties";
+"New Contact" = "Nieuwe contactpersoon";
+"Close" = "Sluiten";
+"More contact options" = "Meer contactopties";
+"Organization Unit" = "Organisatie-eenheid";
+"Add Organizational Unit" = "Organisatie-eenheid toevoegen";
+"Type" = "Type";
+"Email Address" = "E-mailadres";
+"New Email Address" = "Nieuw e-mailadres";
+"New Phone Number" = "Nieuw telefoonnummer";
+"URL" = "URL";
+"New URL" = "Nieuwe URL";
+"street" = "straat";
+"Postoffice" = "Postkantoor";
+"Region" = "Regio";
+"Postal Code" = "Postcode";
+"New Address" = "Nieuw adres";
+"Reset" = "Resetten";
+"Description" = "Omschrijving";
+"Add Member" = "Lid toevoegen";
+"Subscribe" = "Abonneren";
+"Add Birthday" = "Geboortedatum toevoegen";
+"Import" = "Importeren";
+"More options" = "Meer opties";
+"Role" = "Rol";
+"Add Screen Name" = "Weergavenaam toevoegen";
+"Synchronization" = "Synchronisatie";
+"Synchronize" = "Synchroniseren";
+"Successfully subscribed to address book" = "Met succes geabonneerd op dit adresboek";

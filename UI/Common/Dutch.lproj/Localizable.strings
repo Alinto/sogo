@@ -8,7 +8,7 @@
 "Calendar" = "Agenda";
 "Address Book"	= "Adresboek";
 "Mail" = "E-mail";
-"Preferences" = "Instellingen";
+"Preferences" = "Voorkeuren";
 "Administration" = "Beheer";
 "Disconnect" = "Uitloggen";
 "Toggle Menu" = "Menu in-/uitschakelen";
@@ -30,7 +30,7 @@
 "Anybody accessing this resource from the public area" = "Iedereen die dit hulpmiddel uit het publieke gedeelte benadert";
 "Sorry, the user rights can not be configured for that object." = "De machtigingen kunnen niet worden ingesteld voor dit object.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
-     = "Iedereen met een gebruikersaccount voor dit systeem zal toegang hebben tot uw mailbox \"%{0}\". Weet u zeker dat u iedereen kan vertrouwen?";
+     = "Iedereen met een gebruikersaccount voor dit systeem zal toegang hebben tot uw postvak \"%{0}\". Weet u zeker dat u iedereen kan vertrouwen?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
      = "Iedereen met een gebruikersaccount voor dit systeem zal toegang hebben tot uw agenda \"%{0}\". Weet u zeker dat u iedereen kan vertrouwen?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
@@ -104,5 +104,6 @@
 "Loading" = "Laden";
 "No such user." = "Geen dergelijke gebruiker";
 "You cannot (un)subscribe to a folder that you own!" = "Kan niet aan- of afmelden van eigen map!";
-"SOGo" = "SOGo";
-"Modules" = "Modules";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Voer minstens %{minimumSearchLength} tekens in";

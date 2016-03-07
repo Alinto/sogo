@@ -22,6 +22,7 @@
 "Options" = "Opties";
 "Close" = "Sluiten";
 "Size" = "Grootte";
+
 /* Tooltips */
 "Send this message now" = "Stuur dit bericht nu";
 "Select a recipient from an Address Book" = "Kies een ontvanger uit een adresboek";
@@ -39,7 +40,8 @@
 "Attachment" = "Bijlage";
 "Unread" = "Ongelezen";
 "Flagged" = "Gemarkeerd";
-"Search multiple mailboxes" = "Zoek in meerdere mailboxen";
+"Search multiple mailboxes" = "Zoek in meerdere postvakken";
+
 /* Main Frame  */
 "Home"                 = "Start"; 
 "Calendar"             = "Agenda";
@@ -47,6 +49,7 @@
 "Mail"                 = "E-mail";
 "Right Administration" = "Machtigingen beheren";
 "Help" = "Help";
+
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Welkom bij de SOGo Mailer. Gebruik de mappenlijst aan de linkerkant om door uw e-mailaccounts te bladeren.";
 "Read messages"       = "Berichten lezen";
@@ -54,10 +57,13 @@
 "Share" = "Delen";
 "Account" = "Account";
 "Shared Account" = "Gedeeld account";
+
 /* A mailbox is selected, but no message (only shown on large screens) */
 "No message selected" = "Geen bericht geselecteerd";
+
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
-"No mailbox selected" = "No mailbox selected";
+"No mailbox selected" = "Geen postvak geselecteerd";
+
 /* acls */
 "Access rights to" = "Toegangsrechten voor";
 "For user" = "Voor gebruiker";
@@ -77,6 +83,7 @@
 "Saved Messages.zip" = "Bewaarde Berichten.zip";
 "Update" = "Opslaan";
 "Cancel" = "Annuleren";
+
 /* Mail edition */
 "From"          = "Van";
 "Subject"       = "Onderwerp";
@@ -99,7 +106,7 @@
 "Edit Draft..." = "Concept aanpassen...";
 "Load Images" = "Afbeeldingen laden";
 "Return Receipt" = "Ontvangstbevestiging";
-"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "De afzender van dit bericht heeft om een kennisgeving verzocht als het is gelezen. Wilt u de afzender verwittigen?";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "De afzender van dit bericht heeft gevraagd om een leesbevestiging. Wilt u een leesbevestiging sturen?";
 "Return Receipt (displayed) - %@"= "Ontvangstbevestigig (vertoond) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dit is een Ontvangstbevestiging voor de e-mail die u hebt verzonden naar %@.\n\nOpmerking: Deze Ontvangstbevestiging bevestigt alleen dat het bericht is weergegeven op de computer van de ontvanger. Er is geen garantie dat de ontvanger het heeft gelezen of begrepen.";
 "Priority" = "Prioriteit";
@@ -111,12 +118,14 @@
 "This mail is being sent from an unsecure network!" = "Deze e-mail wordt verzonden vanaf een onveilig netwerk!";
 "Address Book" = "Adresboek";
 "Search For" = "Zoek naar";
+
 /* Popup "show" */
 "all"     = "alle";
 "read"    = "gelezen";
 "unread"  = "ongelezen";
 "deleted" = "verwijderde";
 "flagged" = "gemarkeerde";
+
 /* MailListView */
 "Sender" = "Afzender";
 "Subject or Sender" = "Onderwerp of afzender";
@@ -137,6 +146,7 @@
 "Mark Unread" = "Als ongelezen markeren";
 "Mark Read"   = "Als gelezen markeren";
 "Untitled" = "(geen onderwerp)";
+
 /* Tree */
 "SentFolderName"   = "Verzonden";
 "TrashFolderName"  = "Prullenbak";
@@ -145,15 +155,19 @@
 "JunkFolderName" = "Ongewenst";
 "SieveFolderName"  = "Berichtregel";
 "Folders"          = "Mappen"; /* title line */
+
 /* MailMoveToPopUp */
 "MoveTo"        = "Verplaatsen naar";
+
 /* Address Popup menu */
 "Add to Address Book..." = "Aan adresboek toevoegen";
 "Compose Mail To" = "Bericht opstellen";
 "Create Filter From Message..." = "Berichtregel maken op basis van bericht...";
+
 /* Image Popup menu */
 "Save Image" = "Afbeelding opslaan";
 "Save Attachment" = "Bijlage Opslaan";
+
 /* Mailbox popup menus */
 "Open in New Mail Window" = "In nieuw e-mailvenster openen";
 "Copy Folder Location" = "Kopieer maplocatie";
@@ -170,11 +184,13 @@
 "Get Messages for Account" = "Berichten ophalen voor account";
 "Properties..." = "Eigenschappen...";
 "Delegation..." = "Delegeren ...";
+
 /* Use This Folder menu */
 "Sent Messages" = "Berichten verzenden";
 "Drafts" = "Concepten";
 "Deleted Messages" = "Verwijderde berichten";
 "Junk Messages" = "Ongewenste berichten";
+
 /* Message list popup menu */
 "Open Message In New Window" = "In nieuw venster openen";
 "Reply to Sender Only" = "Beantwoorden";
@@ -187,16 +203,33 @@
 "Save As..." = "Opslaan als...";
 "Print Preview" = "Afdrukvoorbeeld";
 "View Message Source" = "Bron bekijken";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Omzetten naar gebeurtenis";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Omzetten naar taak";
+
 "Print..." = "Afdrukken...";
 "Delete Message" = "Bericht verwijderen";
 "Delete Selected Messages" = "Verwijder geselecteerde berichten";
 "Mark the selected messages as junk" = "Markeer de geselecteerde berichten als ongewenst";
 "Mark the selected messages as not junk" = "Markeer de geselecteerde berichten als niet-ongewenst";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "en nog %{0} anderen...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "Verbergen";
+
 /* Number of selected messages in list */
 "selected" = "geselecteerd";
+
 "This Folder" = "Deze map";
+
 /* Label popup menu */
 "None" = "Geen label";
+
 /* Mark popup menu */
 "As Read" = "Als gelezen";
 "Thread As Read" = "Draad als gelezen";
@@ -217,6 +250,7 @@
 "results found" = "resultaten gevonden";
 "result found" = "resultaat gevonden";
 "Please specify at least one filter" = "Specificeer tenminste een filter";
+
 /* Folder operations */
 "Name" = "Naam";
 "Enter the new name of your folder"
@@ -226,6 +260,10 @@
 "Operation failed" = "Bewerking mislukt.";
 "Quota" = "Quota:";
 "quotasFormat" = "%{0}% van %{1} MB gebruikt";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "Weet u zeker dat u de geselecteerde berichten wilt verwijderen?";
+
 "Please select a message." = "Selecteer een bericht.";
 "Please select a message to print." = "Selecteer een bericht om af te drukken.";
 "Please select only one message to print." = "Selecteer een enkel bericht om af te drukken.";
@@ -245,20 +283,26 @@
 = "Kan bericht niet naar zijn eigen map verplaatsen";
 "Copying a message into its own folder is impossible!"
 = "Kan bericht niet naar zijn eigen map kopiëren!";
+
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "De berichten konden niet naar de vuilnisbak worden verplaatst. Wilt u ze direct verwijderen?";
+
 /* Message editing */
 "error_missingsubject" = "U heeft geen onderwerp opgegeven!";
 "error_missingrecipients" = "U heeft geen ontvanger opgegeven!";
 "Send Anyway" = "Toch verzenden";
 "Error while saving the draft" = "Fout bij het opslaan van het concept";
+
+/* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Fout bij het uploaden van het bestand \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Een bestandsupload is actief. Sluiten van het venster zal hem onderbreken.";
+
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Kan bericht niet sturen: alle ontvangers zijn ongeldig.";
 "cannot send message (smtp) - recipients discarded" = "Kan bericht niet sturen: de volgende adressen zijn ongeldig";
 "cannot send message: (smtp) error when connecting" = "Kan bericht niet sturen: fout bij verbinden met de SMTP server.";
+
 /* Contacts list in mail editor */
 "Email" = "E-mail";
 "More mail options" = "Meer mailopties";
@@ -276,6 +320,10 @@
 "Set as Drafts" = "Als concept instellen";
 "Set as Sent" = "Als verzonden instellen";
 "Set as Trash" = "Als afval instellen";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "Als ongewenst instellen";
+
 "Sort" = "Sorteren";
 "Descending Order" = "Aflopende volgorde";
 "Back" = "Terug";

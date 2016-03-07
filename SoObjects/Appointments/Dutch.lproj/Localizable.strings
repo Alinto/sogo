@@ -1,8 +1,8 @@
-"Inviting the following persons is prohibited:" = "De volgende personen uitnodigen is niet toegestaan:";
+"Inviting the following persons is prohibited:" = "Uitnodigen van de volgende personen is niet toegestaan:";
 "Personal Calendar" = "Persoonlijke agenda";
 vevent_class0 = "(Publieke afspraak)";
-vevent_class1 = "(Privé-afspraak)";
-vevent_class2 = "(Vertrouwelijke afspraak)";
+vevent_class1 = "(Privé-gebeurtenis)";
+vevent_class2 = "(Vertrouwelijke gebeurtenis)";
 
 vtodo_class0 = "(Publieke taak)";
 vtodo_class1 = "(Privétaak)";

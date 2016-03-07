@@ -437,6 +437,13 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "When I modify my calendar, send a mail to" = "Wenn ich meinen Kalender verändere, schicke eine E-Mail an ";
 "Email Address" = "E-Mail-Adresse";
 "Export" = "Exportieren";
+
+/* Show only the calendar for which the menu is displayed */ 
+"Show Only This Calendar" = "Nur diesen Kalender anzeigen";
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "Alle Kalender anzeigen";
+
 "Links to this Calendar" = "Links zu diesem Kalender";
 "Authenticated User Access" = "Zugang für authentifizierte Benutzer";
 "CalDAV URL" = "CalDAV-URL";
@@ -502,5 +509,12 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "Rename" = "Umbenennen";
 "Import Calendar" = "Kalender importieren";
 "Select an ICS file." = "Eine ICS-Datei auswählen.";
+
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Der Kalender wurde erfolgreich abonniert";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Punkt umschalten";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Suchbereich";

@@ -104,5 +104,6 @@
 "Loading" = "Ładowanie";
 "No such user." = "Nie ma takiego użytkownika.";
 "You cannot (un)subscribe to a folder that you own!" = "Nie możesz (od)subskrybować folderu, który jest twoją własnością!";
-"SOGo" = "SOGo";
-"Modules" = "Moduły";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Wprowadź co najmniej %{minimumSearchLength} znaków";
