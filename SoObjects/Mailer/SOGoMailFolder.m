@@ -2245,7 +2245,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   NSDictionary *d;
   id fetchResults;
 
-  int highestmodseq, i;
+  int highestmodseq = 0, i;
 
   allTokens = [NSMutableArray array];
 
