@@ -428,20 +428,36 @@ static GCSStringFormatter *stringFormatter = nil;
 		 ignoreDeleted: (BOOL) ignoreDeleted
 {
   EOQualifier      *qualifier;
+  EOSortOrdering   *ordering;
   NSArray          *sortOrderings;
+  NSEnumerator     *sortOrderingsList;
   NSMutableString  *sql;
-  NSMutableArray   *whereSql;
+  NSMutableArray   *allFields, *whereSql;
   GCSTableRequirement requirement;
   NSString *whereString;
 
-//   NSLog(@"queryForFields...");
   qualifier = [spec qualifier];
-  requirement = [self _tableRequirementForFields: fields
-		      andOrQualifier: qualifier];
+  sortOrderings = [spec sortOrderings];
+
+  if (fields)
+    allFields = [NSMutableArray arrayWithArray: fields];
+  else
+    allFields = [NSMutableArray arrayWithCapacity: [sortOrderings count]];
+
+  if ([sortOrderings count] > 0)
+    {
+      sortOrderingsList = [sortOrderings objectEnumerator];
+      while ((ordering = [sortOrderingsList nextObject]))
+        {
+          [allFields addObject: [ordering key]];
+        }
+    }
+  requirement = [self _tableRequirementForFields: allFields
+                                  andOrQualifier: qualifier];
   sql = [NSMutableString stringWithCapacity: 256];
   [sql appendString: @"SELECT "];
-  if (fields)
-    [sql appendString: [self _selectedFields: fields requirement: requirement]];
+  if ([allFields count])
+    [sql appendString: [self _selectedFields: allFields requirement: requirement]];
   else
     [sql appendString: @"*"];
   [sql appendString:@" FROM "];
@@ -477,7 +493,6 @@ static GCSStringFormatter *stringFormatter = nil;
     [sql appendFormat: @" WHERE %@",
 	 [whereSql componentsJoinedByString: @" AND "]];
 
-  sortOrderings = [spec sortOrderings];
   if ([sortOrderings count] > 0)
     {
       [sql appendString:@" ORDER BY "];
