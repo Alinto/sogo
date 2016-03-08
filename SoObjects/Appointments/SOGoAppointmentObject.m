@@ -688,7 +688,9 @@
               info = [NSMutableDictionary dictionary];
               conflicts = [NSMutableArray array];
 
-              [info setObject: [currentAttendee cn]  forKey: @"attendee_name"];
+              if ([currentAttendee cn])
+                [info setObject: [currentAttendee cn]  forKey: @"attendee_name"];
+
               [info setObject: [currentAttendee rfc822Email]  forKey: @"attendee_email"];
 
               for (i = 0; i < [fbInfo count]; i++)
