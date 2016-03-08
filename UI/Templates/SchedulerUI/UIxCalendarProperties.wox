@@ -6,7 +6,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-  <md-dialog flex-xs="100">
+  <md-dialog flex="50" flex-sm="70" flex-xs="100">
 
     <md-toolbar ng-class="properties.calendar.getClassName('bg')">
       <div class="md-toolbar-tools">
@@ -25,7 +25,8 @@
       </div>
     </md-toolbar>
 
-    <md-dialog-content class="md-dialog-content" layout="column">
+    <md-dialog-content class="sg-has-form-sections">
+        <div class="sg-form-section" layout="column">
       <md-checkbox
           ng-model="properties.calendar.includeInFreeBusy"
           ng-true-value="1"
@@ -59,8 +60,8 @@
           ng-false-value="0">
         <var:string label:value="Reload on login"/>
       </md-checkbox>
-      <div ng-hide="properties.calendar.isWebCalendar || !properties.calendar.isOwned" layout="column">
-        <md-divider class="md-padding"><!-- divider --></md-divider>
+        </div>
+      <div class="sg-form-section" ng-hide="properties.calendar.isWebCalendar || !properties.calendar.isOwned" layout="column">
         <md-checkbox
             ng-model="properties.calendar.notifications.notifyOnPersonalModifications"
             ng-true-value="1"

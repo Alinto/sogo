@@ -79,6 +79,22 @@
                 </md-button>
                 <md-menu-content width="2">
                   <md-menu-item>
+                    <md-button ng-click="app.showOnly(calendar)">
+                      <var:string label:value="Show Only This Calendar"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="app.showAll()">
+                      <var:string label:value="Show All Calendars"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-divider><!-- divider --></md-menu-divider>
+                  <md-menu-item>
+                    <md-button ng-click="app.showProperties(calendar)">
+                      <var:string label:value="Properties"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
                     <md-button type="button" ng-click="app.editFolder(calendar)">
                       <var:string label:value="Rename"/>
                     </md-button>
@@ -88,6 +104,13 @@
                       <var:string label:value="Delete"/>
                     </md-button>
                   </md-menu-item>
+                  <md-menu-divider><!-- divider --></md-menu-divider>
+                  <md-menu-item>
+                    <md-button ng-click="app.showLinks(calendar)">
+                      <var:string label:value="Links to this Calendar"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-divider><!-- divider --></md-menu-divider>
                   <md-menu-item>
                     <md-button ng-click="app.importCalendar($event, calendar)">
                       <var:string label:value="Import"/>
@@ -100,30 +123,8 @@
                   </md-menu-item>
                   <md-menu-divider><!-- divider --></md-menu-divider>
                   <md-menu-item>
-                    <md-button ng-click="app.showOnly(calendar)">
-                      <var:string label:value="Show Only This Calendar"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item>
-                    <md-button ng-click="app.showAll()">
-                      <var:string label:value="Show All Calendars"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-divider><!-- divider --></md-menu-divider>
-                  <md-menu-item>
-                    <md-button ng-click="app.showLinks(calendar)">
-                      <var:string label:value="Links to this Calendar"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item>
                     <md-button ng-click="app.share(calendar)">
                       <var:string label:value="Sharing..."/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-divider><!-- divider --></md-menu-divider>
-                  <md-menu-item>
-                    <md-button ng-click="app.showProperties(calendar)">
-                      <var:string label:value="Properties"/>
                     </md-button>
                   </md-menu-item>
                 </md-menu-content>
@@ -174,6 +175,11 @@
                 </md-button>
                 <md-menu-content width="2">
                   <md-menu-item>
+                    <md-button ng-click="app.showProperties(calendar)">
+                      <var:string label:value="Properties"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
                     <md-button type="button" ng-click="app.editFolder(calendar)">
                       <var:string label:value="Rename"/>
                     </md-button>
@@ -187,12 +193,6 @@
                   <md-menu-item>
                     <md-button ng-click="app.showLinks(calendar)">
                       <var:string label:value="Links to this Calendar"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-divider><!-- divider --></md-menu-divider>
-                  <md-menu-item>
-                    <md-button ng-click="app.showProperties(calendar)">
-                      <var:string label:value="Properties"/>
                     </md-button>
                   </md-menu-item>
                 </md-menu-content>
@@ -239,6 +239,11 @@
                 </md-button>
                 <md-menu-content width="2">
                   <md-menu-item>
+                    <md-button ng-click="app.showProperties(calendar)">
+                      <var:string label:value="Properties"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
                     <md-button type="button" ng-click="app.editFolder(calendar)">
                       <var:string label:value="Rename"/>
                     </md-button>
@@ -252,12 +257,6 @@
                   <md-menu-item>
                     <md-button ng-click="app.showLinks(calendar)">
                       <var:string label:value="Links to this Calendar"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-divider><!-- divider --></md-menu-divider>
-                  <md-menu-item>
-                    <md-button ng-click="app.showProperties(calendar)">
-                      <var:string label:value="Properties"/>
                     </md-button>
                   </md-menu-item>
                 </md-menu-content>
