@@ -29,7 +29,7 @@
     vm.newMessage = newMessage;
     vm.newMessageWithSelectedCards = newMessageWithSelectedCards;
     vm.newMessageWithRecipient = newMessageWithRecipient;
-    vm.mode = { search: false };
+    vm.mode = { search: false, multiple: 0 };
     
     function selectCard(card) {
       $state.go('app.addressbook.card.view', {addressbookId: stateAddressbook.id, cardId: card.id});
@@ -37,6 +37,7 @@
     
     function toggleCardSelection($event, card) {
       card.selected = !card.selected;
+      vm.mode.multiple += card.selected? 1 : -1;
       $event.preventDefault();
       $event.stopPropagation();
     }
@@ -84,7 +85,10 @@
     }
 
     function unselectCards() {
-      _.forEach(vm.selectedFolder.$cards, function(card) { card.selected = false; });
+      _.forEach(vm.selectedFolder.$cards, function(card) {
+        card.selected = false;
+      });
+      vm.mode.multiple = 0;
     }
     
     function confirmDeleteSelectedCards() {
@@ -116,6 +120,7 @@
       _.forEach(vm.selectedFolder.$cards, function(card) {
         card.selected = true;
       });
+      vm.mode.multiple = vm.selectedFolder.$cards.length;
     }
 
     function sort(field) {

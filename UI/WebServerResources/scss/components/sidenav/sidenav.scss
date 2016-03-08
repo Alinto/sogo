@@ -1,25 +1,28 @@
 /// sidenav.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
-@import "extends";
-$sidenav-default-width: (4 * $pitch);
+
+$sidenav-desktop-width: (4 * $pitch);
 $sidenav-min-space: $pitch;
 //$sidenav-right-width: (8 * $pitch);
 
-md-sidenav {
-  &.md-locked-open {
-    @include from(md) {
-      @include flex-col(md, 4, 1, 0);
-      // Custom representation of a closed sidenav where the sidenav is pushed to the left;
-      // Used in in "locked open" mode.
-      &.sg-closed.md-sidenav-left {
-        transform: translateX(-100%);
-        margin-right: -20vw; // See views/_views.scss
-      }
-    }
-  }
-}
+@import "extends";
 
 md-sidenav {
   overflow: inherit;
+
+  &._md-locked-open {
+    @include from(md) {
+      @include flex-col($breakpoint: md, $nb: 4, $grow: 1, $shrink: 0);
+      // Custom representation of a closed sidenav where the sidenav is pushed to the left;
+      // Used in in "locked open" mode.
+      &.md-sidenav-left {
+        transition: $swift-ease-out;
+        &.sg-close {
+          margin-right: -20vw; // See views/_views.scss
+          transform: translateX(-100%);
+        }
+      }
+    }
+  }
 }
 
 // MAIN SIDENAV, actually to the left

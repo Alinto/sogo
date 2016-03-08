@@ -7,7 +7,7 @@
 
     <!-- in virtual mailbox mode -->
     <md-toolbar class="md-whiteframe-z1"
-                ng-hide="!app.showingAdvancedSearch || mailbox.selectedFolder.$selectedCount() > 0">
+                ng-hide="!app.showingAdvancedSearch || mailbox.mode.multiple">
       <div class="md-toolbar-tools">
         <md-input-container class="md-flex">
           <label><var:string label:value="Search messages in"/></label>
@@ -60,7 +60,7 @@
     </md-toolbar>
     <!-- single-selection toolbars -->
     <md-toolbar class="md-accent md-hue-1"
-                ng-hide="app.showingAdvancedSearch || mailbox.selectedFolder.$selectedCount() > 0">
+                ng-hide="app.showingAdvancedSearch || mailbox.mode.multiple">
       <!-- sort mode (default) -->
       <div class="md-toolbar-tools" ng-hide="mailbox.mode.search">
         <md-button class="sg-icon-button" label:aria-label="Search"
@@ -145,7 +145,8 @@
     </md-toolbar>
 
     <!-- multiple-selection mode -->
-    <md-toolbar class="md-hue-1 sg-toolbar-secondary" ng-show="mailbox.selectedFolder.$selectedCount() > 0">
+    <md-toolbar class="md-hue-1 sg-toolbar-secondary"
+                ng-show="mailbox.mode.multiple">
       <div class="md-toolbar-tools">
         <md-button class="sg-icon-button" ng-click="mailbox.unselectMessages()">
           <md-icon>arrow_back</md-icon>
@@ -319,11 +320,11 @@
     </md-content>
   </div>
 
-  <div id="detailView" class="view-detail md-default-theme md-background md-bg md-hue-1"
+  <div id="detailView" class="view-detail md-default-theme md-background md-bg md-hue-2"
        layout="column" layout-align="start center"
        ng-class="{ 'sg-close': !mailbox.service.selectedFolder.selectedMessage }"
        ui-view="message">
-    <md-content class="hide-xs md-flex layout-fill md-hue-1"
+    <md-content class="hide-xs md-flex layout-fill md-hue-2"
                 layout="column" layout-align="center center">
       <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title"><var:string label:value="No message selected"/></div>
     </md-content>

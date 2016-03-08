@@ -21,13 +21,14 @@
     vm.openEvent = openEvent;
     vm.openTask = openTask;
     vm.newComponent = newComponent;
+    vm.filterpopup = filterpopup;
     vm.filter = filter;
     vm.filteredBy = filteredBy;
     vm.sort = sort;
     vm.sortedBy = sortedBy;
     vm.reload = reload;
     vm.cancelSearch = cancelSearch;
-    vm.mode = { search: false };
+    vm.mode = { search: false, multiple: 0 };
 
     // Select list based on user's settings
     Preferences.ready().then(function() {
@@ -59,17 +60,22 @@
     }
 
     function unselectComponents() {
-      _.forEach(Component['$' + vm.componentType], function(component) { component.selected = false; });
+      _.forEach(Component['$' + vm.componentType], function(component) {
+        component.selected = false;
+      });
+      vm.mode.multiple = 0;
     }
 
     function selectAll() {
       _.forEach(Component['$' + vm.componentType], function(component) {
         component.selected = true;
       });
+      vm.mode.multiple = Component['$' + vm.componentType].length;
     }
 
     function toggleComponentSelection($event, component) {
       component.selected = !component.selected;
+      vm.mode.multiple += component.selected? 1 : -1;
       $event.preventDefault();
       $event.stopPropagation();
     }
@@ -280,6 +286,10 @@
           component.$adjust(angular.extend({ ignoreConflicts: true }, params)).then($mdDialog.hide);
         }
       }
+    }
+
+    function filterpopup() {
+      return Component['$query' + vm.componentType.capitalize()].filterpopup;
     }
 
     function filter(filterpopup) {

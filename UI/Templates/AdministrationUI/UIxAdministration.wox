@@ -11,7 +11,10 @@
                               Administration.services.js, Preferences.services.js,
                               Contacts.services.js, Scheduler.services.js">
 
-  <main class="view layout-fill" ui-view="administration" layout="row" ng-controller="navController">
+  <main class="view"
+        layout="row" layout-fill="layout-fill"
+        ui-view="administration"
+        ng-controller="navController">
     <!-- administration -->
   </main>
 
@@ -30,7 +33,8 @@
       </md-content>
     </md-sidenav>
 
-    <section layout="column" class="layout-fill" ui-view="module"><!-- admin module --></section>
+    <section layout="column" layout-fill="layout-fill"
+             ui-view="module"><!-- admin module --></section>
 
   </script>
 
@@ -123,8 +127,8 @@
            layout="column" layout-align="start center"
            ng-class="{ 'sg-close': !app.selectedUser.selectedFolder }"
            ui-view="acl">
-        <md-content class="hide-xs md-flex layout-fill md-hue-1"
-                    layout="column" layout-align="center center">
+        <md-content class="hide-xs md-flex md-hue-1"
+                    layout="column" layout-align="center center" layout-fill="layout-fill">
           <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title"><var:string label:value="No resource selected"/></div>
         </md-content>
       </div>

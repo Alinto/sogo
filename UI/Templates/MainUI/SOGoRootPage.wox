@@ -15,8 +15,8 @@
       MUST be the first html element after body
       SHOULD  be a main tag (with role="main")
   -->
-  <main class="view layout-fill layout-padding md-default-theme md-background md-hue-1 md-bg"
-        layout="row" layout-align="center start"
+  <main class="view layout-padding md-default-theme md-background md-hue-1 md-bg"
+        layout="row" layout-align="center start" layout-fill="layout-fill"
         ui-view="login"
         ng-controller="LoginController as app">
     <md-content class="ng-cloak md-whiteframe-z1"

@@ -25,6 +25,13 @@ md-input-container .bgroup {
   left-margin: -1.25em;
 }
 
+md-autocomplete .sg-input-no-message [md-floating-label] {
+  md-input-container {
+    // See .md-input-has-messages
+    padding-bottom: $input-container-padding;
+  }
+}
+
 .PseudoField input {
   flex: 1;
   order: 2;

@@ -28,7 +28,7 @@ md-list-item {
     }
   }
 
-  .md-list-item-inner {
+  ._md-list-item-inner {
     flex-grow: 1; // use all column space
     overflow: hidden;
 
@@ -71,14 +71,20 @@ md-list-item {
   }
 
   md-list-item {
-    .md-button {
+    // Gain some space on the right side of the folder icon
+    ._md-list-item-inner > md-icon:first-child,
+    ._md-list-item-inner > md-checkbox:first-child {
+      margin-right: $bl * 2;
+    }
+
+    .md-button,
+    &.md-clickable {
       margin: 0;
       transition: background-color $swift-ease-in-duration $swift-ease-in-timing-function;
     }
-    // Gain some space on the right side of the folder icon
-    .md-list-item-inner > md-icon:first-child,
-    .md-list-item-inner > md-checkbox:first-child {
-      margin-right: $bl * 2;
+
+    &.md-clickable:hover {
+      background-color: rgba(158,158,158,0.2);
     }
   }
 }
@@ -123,9 +129,9 @@ div.md-tile-left {
 
 .sg-section-list {
   md-list-item {
-    &.md-button-wrap {
+    &._md-button-wrap {
       > .md-button:first-child {
-        .md-list-item-inner {
+        ._md-list-item-inner {
           // Expect the container to include a sg-tile-icons
           padding-right: 0px;
         }
@@ -264,6 +270,7 @@ sg-avatar-image md-icon,
 }
 .sg-avatar-selected {
   &:before {
+    color: inherit;
     content: "\e5ca"; // check
   }
 }

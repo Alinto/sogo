@@ -1,3 +1,9 @@
+3.0.3 (2016-03-dd)
+------------------
+
+Enhancements
+ - [web] updated Angular Material to version 1.0.6
+
 3.0.2 (2016-03-04)
 ------------------
 
@@ -27,7 +33,7 @@ Enhancements
  - [eas] now support EAS MIME truncation
 
 Bug fixes
- - [web] handle birthday dates before 1970
+ - [web] handle birthday dates before 1970 (#3567)
  - [web] safe-guarding against bogus value coming from the quick tables
  - [web] apply search filters when automatically reloading current mailbox (#3507)
  - [web] fixed virtual repeater when moving up in messages list

@@ -6,9 +6,9 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-  <div layout="column" class="layout-fill">
+  <div layout="column" layout-fill="layout-fill">
     <md-card>
-      <md-toolbar class="hide show-xs">
+      <md-toolbar class="hide show-xs" flex-none="flex-none">
         <div class="md-toolbar-tools">
           <md-button class="sg-icon-button"
                      label:aria-label="Close"
@@ -22,7 +22,7 @@
           </md-button>
         </div>
       </md-toolbar>
-      <md-toolbar>
+      <md-toolbar flex-none="flex-none">
         <div layout="row">
           <sg-avatar-image class="md-tile-left"
                            ng-show="acl.user.isGroup === 0"

@@ -10,7 +10,7 @@
   <div class="sg-reversible" ng-class="{ 'sg-flip': viewer.showRawSource }">
     <div layout="column" class="layout-fill sg-face">
       <md-card>
-        <md-card-actions flex="none" layout="row" layout-align="end center">
+        <md-card-actions flex-none="flex-none" layout="row" layout-align="end center">
           <md-button class="md-icon-button"
                      ng-if="isPopup"
                      label:aria-label="Close"
@@ -262,7 +262,7 @@
     </div>
     <div class="layout-fill sg-back" layout="column">
       <md-card>
-        <md-card-actions flex="none" layout="row" layout-align="end center">
+        <md-card-actions flex-none="flex-none" layout="row" layout-align="end center">
           <div class="md-flex"><!-- spacer --></div>
           <md-button class="md-icon-button"
                      label:aria-label="Close"

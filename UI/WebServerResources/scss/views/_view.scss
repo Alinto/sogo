@@ -56,11 +56,11 @@ $listView-width: grid-step(6) !global;
   // right side of the list item. Since we define the avatar as the secondary button, we must move it to the left
   // side of the list item and add some padding to the main button (.md-no-style).
   .md-with-secondary {
-    .md-no-style {
+    ._md-no-style {
       min-height: $baseline-grid * 7; // 56px
-      padding-left: 40 + $baseline-grid * 3;
+      padding-left: 40 + $baseline-grid * 2 !important; // 56px
     }
-    .md-secondary-container {
+    ._md-secondary-container {
       left: $baseline-grid * 2;
       right: initial;
       padding: 0;
@@ -91,6 +91,9 @@ $listView-width: grid-step(6) !global;
       min-width: 100%;
       min-height: 0;
     }
+  }
+  md-card {
+    background-color: white;
   }
 
   // On small screens, the view slides from the right and takes all screen place.

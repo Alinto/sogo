@@ -5,7 +5,7 @@
   padding-bottom: $baseline-grid;
   padding: 0 $baseline-grid*2 $baseline-grid $baseline-grid*2;
   text-align: center;
-  md-progress-linear > .md-container {
+  md-progress-linear > ._md-container {
     height: 2px;
   }
 }
@@ -67,7 +67,7 @@ md-sidenav {
   md-checkbox {
     &.sg-folder {
       // Show checkbox as a "closed" folder when unchecked and "opened" folder when checked
-      .md-container:after {
+      ._md-container:after {
         color: rgba(0,0,0,0.54);
         font-family: 'Material Icons';
         font-size: 24px;
@@ -77,14 +77,14 @@ md-sidenav {
         width: 1em;
         height: 1em;
       }
-      .md-icon {
+      ._md-icon {
         border-width: 0;
       }
       &.md-checked {
-        .md-container:after {
+        ._md-container:after {
           content: "\e2c8";
         }
-        .md-icon {
+        ._md-icon {
           background-color: initial;
           &:after {
             border-style: none;
@@ -94,7 +94,6 @@ md-sidenav {
     }
   }
   .sg-item-name {
-    line-height: 6 * $baseline-grid; // $list-item-height, 48px
     &:focus {
       outline: none;
     }

@@ -17,7 +17,10 @@
   </script>
   <var:component className="UIxCalendarSelector" />
 
-  <main class="view layout-fill" ui-view="calendars" layout="row" ng-controller="navController"><!-- calendars list --></main>
+  <main class="view"
+        layout="row" layout-fill="layout-fill"
+        ui-view="calendars"
+        ng-controller="navController"><!-- calendars list --></main>
 
   <script type="text/ng-template" id="UIxCalMainView">
     <!-- calendars colors -->
@@ -31,9 +34,9 @@
     <!-- Sidenav -->
     <md-sidenav class="md-sidenav-left md-whiteframe-z1" layout="column"
                 md-component-id="left" md-is-locked-open="isGtMedium"
-                ng-class="{ 'sg-closed': leftIsClose }">
+                ng-class="{ 'sg-close': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
-      <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
+      <md-content class="md-flex md-hue-2" md-scroll-y="md-scroll-y">
         <!-- User's calendars -->
         <section class="sg-section-list">
           <md-subheader class="md-hue-2">
@@ -266,9 +269,9 @@
     </md-sidenav>
 
     <!-- Main section -->
-    <section layout="column" class="layout-fill"
+    <section layout="column" layout-fill="layout-fill"
              ng-controller="CalendarListController as list">
-      <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main" >
+      <md-toolbar class="toolbar-main" flex-none="flex-none" layout="row" layout-align="space-between center">
         <var:component className="UIxTopnavToolbarTemplate" />
         <!-- <div class="sg-toolbar-group-2">
              <md-button class="sg-icon-button" label:aria-label="Search">
@@ -279,8 +282,8 @@
       <div layout="row" class="md-flex">
 
       <div class="view-list" layout="column">
-        <md-toolbar class="md-accent md-hue-1"
-                    ng-show="list.component.$selectedCount() == 0">
+        <md-toolbar class="md-accent md-hue-1" flex-none="flex-none"
+                    ng-hide="list.mode.multiple">
           <!-- sort/filter mode (default) -->
           <div class="md-toolbar-tools" layout="row" ng-hide="list.mode.search">
             <md-button class="sg-icon-button" label:aria-label="Search"
@@ -478,7 +481,8 @@
         </md-toolbar>
 
         <!-- multiple-selection mode -->
-        <md-toolbar class="md-whiteframe-z1 md-hue-1 sg-toolbar-secondary" ng-show="list.component.$selectedCount() > 0">
+        <md-toolbar class="md-whiteframe-z1 md-hue-1 sg-toolbar-secondary"
+                    ng-show="list.mode.multiple">
           <div class="md-toolbar-tools">
             <md-button class="sg-icon-button" ng-click="list.unselectComponents()">
               <md-icon>arrow_back</md-icon>
@@ -504,7 +508,7 @@
             <md-tab label:label="Events"
                     md-on-select="list.selectComponentType('events')">
               <md-subheader>
-                <span>{{list.component.$queryEvents.filterpopup | loc}}</span>
+                <span>{{list.filterpopup() | loc}}</span>
               </md-subheader>
               <md-list class="sg-section-list">
                 <md-list-item ng-repeat="event in list.component.$events"
@@ -514,7 +518,7 @@
                        label:aria-label="Toggle item"
                        ng-click="list.toggleComponentSelection($event, event)"
                        ng-switch="event.selected">
-                    <div class="md-avatar sg-avatar-selected"
+                    <div class="md-avatar sg-avatar-selected" ng-class="event.getClassName('fg')"
                          ng-switch-when="true"><!-- selected avatar --></div>
                     <div class="sg-color-chip" ng-class="event.getClassName('bg')"
                          ng-switch-when="false"><!-- calendar color --></div>
@@ -547,7 +551,7 @@
             <md-tab label:label="Tasks"
                     md-on-select="list.selectComponentType('tasks')">
               <md-subheader>
-                <span>{{list.component.$queryTasks.filterpopup | loc}}</span>
+                <span>{{list.filterpopup() | loc}}</span>
               </md-subheader>
               <md-list class="sg-section-list">
                 <md-list-item ng-repeat="task in list.component.$tasks"
@@ -600,7 +604,8 @@
           <md-icon>assignment_turned_in</md-icon>
         </md-button>
         </div>
-        <div id="detailView" class="view-detail hide-xs" layout="column" ui-view="calendarView">
+        <div id="detailView" class="view-detail hide-xs md-default-theme md-background md-bg md-hue-2"
+             layout="column" ui-view="calendarView">
           <!-- calendar view -->
         </div>
       </div>

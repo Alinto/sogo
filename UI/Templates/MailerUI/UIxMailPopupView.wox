@@ -12,7 +12,7 @@
     const:jsFiles="Common.js, Preferences.services.js, Contacts.services.js, Scheduler.services.js, Mailer.app.popup.js, Mailer.services.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/angular-file-upload.min.js">
 
   <main class="layout-fill" ng-controller="navController">
-    <div id="detailView" class="view-detail md-default-theme md-background md-bg md-hue-1"
+    <div id="detailView" class="view-detail md-default-theme md-background md-bg md-hue-2"
          layout="column" layout-align="start center"
          ui-view="message">
       <div class="sg-progress-circular-floating">

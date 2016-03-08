@@ -14,7 +14,10 @@
     var contactFolders = <var:string value="contactFolders" const:escapeHTML="NO" />;
   </script>
 
-  <main class="view layout-fill" ui-view="addressbooks" layout="row" ng-controller="navController"><!-- addressbooks list --></main>
+  <main class="view"
+        layout="row" layout-fill="layout-fill"
+        ui-view="addressbooks"
+        ng-controller="navController"><!-- addressbooks list --></main>
 
   <!-- TEMPLATE SCRIPT WRAPPER -->
   <script type="text/ng-template" id="UIxContactFoldersView">
@@ -22,7 +25,7 @@
     <!-- Sidenav -->
     <md-sidenav class="md-sidenav-left md-whiteframe-z1" layout="column"
                 md-component-id="left" md-is-locked-open="isGtMedium"
-                ng-class="{ 'sg-closed': leftIsClose }">
+                ng-class="{ 'sg-close': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
         <!-- User's addressbooks -->
@@ -183,7 +186,7 @@
       </md-content>
     </md-sidenav>
 
-    <section layout="column" class="layout-fill" ui-view="addressbook"><!-- contacts list --></section>
+    <section layout="column" layout-fill="layout-fill" ui-view="addressbook"><!-- contacts list --></section>
   </script>
 
   <script type="text/ng-template" id="addressbook">
@@ -197,7 +200,7 @@
 
         <!-- single-selection toolbar -->
         <md-toolbar class="md-accent md-hue-1"
-                    ng-show="addressbook.selectedFolder.$selectedCount() == 0">
+                    ng-hide="addressbook.mode.multiple">
           <!-- sort mode (default) -->
           <div class="md-toolbar-tools" ng-hide="addressbook.mode.search">
             <md-button class="sg-icon-button" label:aria-label="Search"
@@ -300,7 +303,7 @@
 
         <!-- multiple selection mode -->
         <md-toolbar class="md-whiteframe-z1 md-hue-1 sg-toolbar-secondary"
-                    ng-show="addressbook.selectedFolder.$selectedCount() > 0">
+                    ng-show="addressbook.mode.multiple">
           <div class="md-toolbar-tools">
             <md-button class="sg-icon-button" ng-click="addressbook.unselectCards()">
               <md-icon>arrow_back</md-icon>
@@ -430,12 +433,12 @@
         </md-content>
       </div>
 
-      <div id="detailView" class="view-detail md-default-theme md-background md-bg md-hue-1"
+      <div id="detailView" class="view-detail md-default-theme md-background md-bg md-hue-2"
            layout="column" layout-align="start center"
            ng-class="{ 'sg-close': !addressbook.selectedFolder.selectedCard }"
            ui-view="card">
-        <md-content class="hide-xs md-flex layout-fill md-hue-1"
-                    layout="column" layout-align="center center">
+        <md-content class="hide-xs md-flex md-hue-2"
+                    layout="column" layout-align="center center" layout-fill="layout-fill">
           <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title"><var:string label:value="No contact selected"/></div>
         </md-content>
       </div>

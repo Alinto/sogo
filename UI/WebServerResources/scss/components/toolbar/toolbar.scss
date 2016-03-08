@@ -16,14 +16,16 @@ md-toolbar {
   z-index: $z-index-toolbar;
   // dirty fix to override angular-material botchy typography
   font-size: 1em !important;
+  // No transition when switching toolbars
+  transition-duration: 0s;
 }
 
-// Colors transition when changing folder in dialogs
+// Colors transition when changing folder color in dialogs
 md-dialog {
   md-toolbar,
   md-toolbar .md-input,
   md-toolbar md-input-container.md-input-has-value label,
-  md-toolbar md-input-container label:not(.md-no-float),
+  md-toolbar md-input-container.md-input-has-value label:not(.md-no-float),
   md-toolbar md-icon {
     transition: background-color $swift-ease-out-duration $swift-ease-out-timing-function,
     color $swift-ease-out-duration $swift-ease-out-timing-function;

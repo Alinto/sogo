@@ -10,7 +10,9 @@
     title="title"
     const:jsFiles="Common.js, vendor/ng-sortable.js, Preferences.js, Preferences.services.js, Mailer.services.js, Contacts.services.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js">
 
-  <main class="view layout-fill" ui-view="preferences" layout="row"
+  <main class="view"
+        layout="row" layout-fill="layout-fill"
+        ui-view="preferences"
         ng-controller="navController"><!-- preferences --> </main>
 
   <script type="text/javascript">
@@ -26,7 +28,7 @@
   <script type="text/ng-template" id="preferences.html">
     <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" layout="column"
                 md-component-id="left" md-is-locked-open="isGtMedium"
-                ng-class="{ 'sg-closed': leftIsClose }">
+                ng-class="{ 'sg-close': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
         <md-list>
@@ -62,7 +64,7 @@
       </md-content>
     </md-sidenav>
 
-    <section  layout="column" class="layout-fill">
+    <section  layout="column" layout-fill="layout-fill">
 
       <!-- TOP RIGHT TOOLBAR -->
       <md-toolbar layout="row" layout-align="space-between start" class="md-tall">

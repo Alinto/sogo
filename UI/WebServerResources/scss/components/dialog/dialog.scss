@@ -20,6 +20,7 @@ body.popup {
 }
 
 md-dialog {
+  background-color: white !important;
   md-dialog-content {
     &.sg-dialog-message {
       // Prepare content to receive a "close" button on the right

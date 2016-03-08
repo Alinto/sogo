@@ -29,11 +29,17 @@
     }, window.currentDay.secondsBeforeTomorrow * 1000);
 
     $scope.toggleLeft = function() {
-      $scope.leftIsClose = leftIsClose();
-      $mdSidenav('left').toggle()
-        .then(function () {
-          $log.debug("toggle left is done");
-        });
+      if ($scope.isGtMedium) {
+        // Left sidenav is toggled while sidenav is locked open; bypass $mdSidenav
+        $scope.leftIsClose = !$scope.leftIsClose;
+      }
+      else {
+        $scope.leftIsClose = leftIsClose();
+        $mdSidenav('left').toggle()
+          .then(function () {
+            $log.debug("toggle left is done");
+          });
+      }
     };
     $scope.toggleRight = function() {
       $mdSidenav('right').toggle()

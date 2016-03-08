@@ -56,4 +56,8 @@ html * {
   @extend .md-padding;
   background-color: white;
   margin-bottom: $mg/2;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }

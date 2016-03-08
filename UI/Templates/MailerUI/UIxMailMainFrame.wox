@@ -22,14 +22,17 @@
       SHOULD be a main tag
       Templates script tag wrappers go next
   -->
-  <main class="view layout-fill" ui-view="mailboxes" layout="row" ng-controller="navController"><!-- mailboxes list --></main>
+  <main class="view"
+        layout="row" layout-fill="layout-fill"
+        ui-view="mailboxes"
+        ng-controller="navController"><!-- mailboxes list --></main>
 
   <script type="text/ng-template" id="UIxMailMainFrame">
 
     <!-- Sidenav -->
-    <md-sidenav class="md-sidenav-left md-whiteframe-z1 layout-fill" layout="column"
+    <md-sidenav class="md-sidenav-left md-whiteframe-z1" layout="column" layout-fill="layout-fill"
                 md-component-id="left" md-is-locked-open="isGtMedium"
-                ng-class="{ 'sg-closed': leftIsClose }">
+                ng-class="{ 'sg-close': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content class="md-flex md-hue-2" layout="column" md-scroll-y="md-scroll-y">
         <section class="md-flex" layout="column"
@@ -174,12 +177,12 @@
       </md-content>
     </md-sidenav>
 
-    <section layout="column" class="layout-fill" ui-view="mailbox">
+    <section layout="column" layout-fill="layout-fill" ui-view="mailbox">
       <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main">
         <var:component className="UIxTopnavToolbarTemplate"/>
       </md-toolbar>
-      <md-content class="md-flex layout-fill md-hue-1"
-                  layout="column" layout-align="center center">
+      <md-content class="md-flex md-hue-2"
+                  layout="column" layout-align="center center" layout-fill="layout-fill">
         <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title">
           <var:string label:value="No mailbox selected"/>
         </div>
