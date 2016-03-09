@@ -590,6 +590,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   serverId = [[(id)[theDocumentElement getElementsByTagName: @"ServerId"] lastObject] textValue];
 
+  // https://msdn.microsoft.com/en-us/library/gg675490%28v=exchg.80%29.aspx
+  // The fetch element is used to request the application data of an item that was truncated in a synchronization response from the server.
+  // The complete item is then returned to the client in a server response.
+  [context setObject: @"8" forKey: @"MIMETruncation"];
+
   o = [theCollection lookupName: [serverId sanitizedServerIdWithType: theFolderType]
                       inContext: context
                         acquire: NO];
