@@ -15,7 +15,7 @@
 
     this.defaultsPromise = Preferences.$$resource.fetch("jsonDefaults").then(function(data) {
       // We swap $key -> _$key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
-      var labels = _.zipObject(_.map(data.SOGoMailLabelsColors, function(value, key) {
+      var labels = _.fromPairs(_.map(data.SOGoMailLabelsColors, function(value, key) {
         if (key.charAt(0) == '$')
           return ['_' + key, value];
         return [key, value];
@@ -197,7 +197,7 @@
     });
 
     // We swap _$key -> $key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
-    labels = _.zipObject(_.map(preferences.defaults.SOGoMailLabelsColors, function(value, key) {
+    labels = _.fromPairs(_.map(preferences.defaults.SOGoMailLabelsColors, function(value, key) {
       if (key.charAt(0) == '_' && key.charAt(1) == '$') {
         // New key, let's take the value and flatten it
         if (key.length > 2 && key.charAt(2) == '$') {

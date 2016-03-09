@@ -690,8 +690,7 @@
                       id="mailLabelsView-content" class="md-padding">
             <md-list layout="row" layout-xs="column" layout-wrap="layout-wrap">
               <md-list-item flex="50" flex-xs="100"
-                            ng-repeat="(key, value) in
-                                       app.preferences.defaults.SOGoMailLabelsColors">
+                            ng-repeat="(key, value) in app.preferences.defaults.SOGoMailLabelsColors">
                 <sg-color-picker ng-model="value[1]"><!-- color picker--></sg-color-picker>
                 <md-input-container class="md-block md-flex">
 	          <input type="text"
