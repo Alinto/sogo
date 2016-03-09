@@ -1043,8 +1043,8 @@
   if (nameInContainer) 
     [_ms appendFormat:@" name=%@", nameInContainer];
   if (container)
-    [_ms appendFormat:@" container=0x%08X/%@", 
-         (unsigned int)container, [container valueForKey:@"nameInContainer"]];
+    [_ms appendFormat:@" container=%p/%@", 
+         container, [container valueForKey:@"nameInContainer"]];
 }
 
 - (NSString *) description
@@ -1052,7 +1052,7 @@
   NSMutableString *ms;
 
   ms = [NSMutableString stringWithCapacity:64];
-  [ms appendFormat:@"<0x%08X[%@]:", (unsigned int) self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
   [self appendAttributesToDescription:ms];
   [ms appendString:@">"];
 
@@ -1061,8 +1061,8 @@
 
 - (NSString *) loggingPrefix
 {
-  return [NSString stringWithFormat:@"<0x%08X[%@]:%@>",
-		   (unsigned int) self, NSStringFromClass([self class]),
+  return [NSString stringWithFormat:@"<%p[%@]:%@>",
+		   self, NSStringFromClass([self class]),
 		   [self nameInContainer]];
 }
 

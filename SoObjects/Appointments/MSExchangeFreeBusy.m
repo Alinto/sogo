@@ -339,7 +339,7 @@ size_t curl_body_function_freebusy(void *ptr, size_t size, size_t nmemb, void *i
   NSMutableString *s;
 
   s = [NSMutableString stringWithCapacity: 64];
-  [s appendFormat:@"<0x%08X[%@]:", (unsigned int)self, NSStringFromClass([self class])];
+  [s appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
   if (freeBusyViewType)
     [s appendFormat:@" freeBusyViewType='%@'", freeBusyViewType];
   if (mergedFreeBusy)

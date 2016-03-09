@@ -130,6 +130,16 @@
   return aclManager;
 }
 
+- (void) setIsNew: (BOOL) newIsNew
+{
+  [super setIsNew: newIsNew];
+}
+
+- (BOOL) isNew
+{
+  return [super isNew];
+}
+
 - (NSException *) changeParticipationStatus: (NSString *) newPartStat
                                withDelegate: (iCalPerson *) delegate
                                       alarm: (iCalAlarm *) alarm

@@ -895,7 +895,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
         }
     }
 
-  return error;
+  return (WOResponse *) error;
 }
 
 - (NSDictionary *) statusForFlags: (NSArray *) flags
@@ -2234,7 +2234,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 // 
 // FIXME: refactor MAPIStoreMailFolder.m - synchroniseCache to use this method
 //
-- (NSArray *) syncTokenFieldsWithProperties: (NSArray *) theProperties
+- (NSArray *) syncTokenFieldsWithProperties: (NSDictionary *) theProperties
                           matchingSyncToken: (NSString *) theSyncToken
                                    fromDate: (NSCalendarDate *) theStartDate
                                 initialLoad: (BOOL) initialLoadInProgress
@@ -2245,18 +2245,13 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   NSDictionary *d;
   id fetchResults;
 
-  int uidnext, highestmodseq, i; 
+  int highestmodseq = 0, i;
 
   allTokens = [NSMutableArray array];
 
-  if ([theSyncToken isEqualToString: @"-1"])
-    {
-      uidnext = highestmodseq = 0;
-    }
-  else
+  if (![theSyncToken isEqualToString: @"-1"])
     {
       a = [theSyncToken componentsSeparatedByString: @"-"];
-      uidnext = [[a objectAtIndex: 0] intValue];
       highestmodseq = [[a objectAtIndex: 1] intValue];
     }
   

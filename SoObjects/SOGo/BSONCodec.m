@@ -600,7 +600,7 @@ static NSDictionary *BSONTypes()
 
   /* We may have the zone using the UTC offset
      or abbreviation (deprecated) */
-  if (timezone && strlen(timezone) > 0 && (timezone[0] == '+' || timezone[0] == '-'))
+  if (strlen(timezone) > 0 && (timezone[0] == '+' || timezone[0] == '-'))
     {
       NSCalendarDate *tzDate;
 

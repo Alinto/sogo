@@ -234,7 +234,7 @@
           labelNode = [labelNodes objectAtIndex: count];
           
           label = [labelNode attribute: @"id"];
-          name = [labelNode textValue];
+          name = [[labelNode firstChild] nodeValue];
           color = [labelNode attribute: @"color"];
 
           [values addObject: name];

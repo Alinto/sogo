@@ -91,6 +91,7 @@
   test ([obtained compare: expected] == NSOrderedSame);
 #endif
 
+  locale = nil;
   result = [parser objectWithString: @"[ -312.3456 ]"];
   obtained = [result objectAtIndex: 0];
   expected = [NSDecimalNumber decimalNumberWithString: @"-312.3456" locale: locale];

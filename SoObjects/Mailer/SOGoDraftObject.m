@@ -69,6 +69,7 @@
 
 #import "SOGoDraftObject.h"
 
+
 static NSString *contentTypeValue = @"text/plain; charset=utf-8";
 static NSString *htmlContentTypeValue = @"text/html; charset=utf-8";
 static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc", 
@@ -1115,7 +1116,7 @@ static NSString    *userAgent      = nil;
       pmime = [self pathToAttachmentWithName: [NSString stringWithFormat: @".%@.mime", name]];
       if (![[mimeType dataUsingEncoding: NSUTF8StringEncoding] writeToFile: pmime atomically: YES])
         {
-          [[NSFileManager defaultManager] removeItemAtPath: p error: nil];
+          [[NSFileManager defaultManager] removeItemAtPath: p error: NULL];
           return [NSException exceptionWithHTTPStatus: 500 /* Server Error */
                                                reason: @"Could not write attachment to draft!"];
         }
@@ -1782,6 +1783,7 @@ static NSString    *userAgent      = nil;
 //
 //
 //
+/*
 - (NSException *) sendMail
 {
   SOGoUserDefaults *ud;
@@ -1843,6 +1845,7 @@ static NSString    *userAgent      = nil;
     }
   return [self sendMailAndCopyToSent: YES];
 }
+*/
 
 //
 //

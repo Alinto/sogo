@@ -46,7 +46,7 @@ extern NSNumber *iCalDistantFutureNumber;
 
 - (iCalPerson *) participantForUser:  (SOGoUser *) theUser
                            attendee: (iCalPerson *) theAttendee;
-- (NSArray *) attendeeUIDs;
+/* - (NSArray *) attendeeUIDs; */
 - (BOOL) isStillRelevant;
 
 - (id) itipEntryWithMethod: (NSString *) method;
