@@ -47,7 +47,7 @@
 
         component = scope.block.component;
         dayNumber = scope.block.dayNumber;
-        blockIndex = _.findIndex(component.blocks, _.matchesProperty('dayNumber', dayNumber));
+        blockIndex = _.findIndex(component.blocks, ['dayNumber', dayNumber]);
         isFirstBlock = (blockIndex === 0);
         isLastBlock = (blockIndex === component.blocks.length - 1);
 
@@ -113,7 +113,7 @@
       }
 
       function dragStart(ev) {
-        var block, dragMode, eventType, isHourCell, isMonthly, startDate, newData, newComponent, pointerHandler, calendarData;
+        var block, eventType, isHourCell, isMonthly, startDate, newData, newComponent, pointerHandler, calendarData;
 
         isHourCell = element.hasClass('clickableHourCell');
         isMonthly = (element[0].parentNode.tagName == 'SG-CALENDAR-MONTH-DAY') ||
@@ -166,10 +166,9 @@
           pointerHandler.initFromCalendar(calendarData);
 
         // Update Component.$ghost
-        Component.$ghost.starthour = block.starthour;
         Component.$ghost.component = block.component;
 
-        $log.debug('emit calendar:dragstart ' + eventType + ' ' + dragMode);
+        $log.debug('emit calendar:dragstart ' + eventType);
         $rootScope.$emit('calendar:dragstart');
       }
 
@@ -266,7 +265,7 @@
             // Get the start (first quarter) from the event's first block
             // Compute overall length
             this.start = block.component.blocks[0].start;
-            this.duration = _.sum(block.component.blocks, function(b) {
+            this.duration = _.sumBy(block.component.blocks, function(b) {
               return b.length;
             });
           }

@@ -5,7 +5,8 @@ Enhancements
  - [web] updated Angular Material to version 1.0.6
 
 Bug fixes
- - [web] fix missing columns in SELECT statements (PostgreSQL)
+ - [web] fixed missing columns in SELECT statements (PostgreSQL)
+ - [web] fixed display of ghosts when dragging events
 
 3.0.2 (2016-03-04)
 ------------------

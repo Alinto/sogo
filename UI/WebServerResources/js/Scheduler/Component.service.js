@@ -421,6 +421,8 @@
   Component.$resetGhost = function() {
     this.$ghost.pointerHandler = null;
     this.$ghost.component = null;
+    this.$ghost.startHour = null;
+    this.$ghost.endHour = null;
   };
 
   /**
