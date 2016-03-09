@@ -688,10 +688,14 @@
               info = [NSMutableDictionary dictionary];
               conflicts = [NSMutableArray array];
 
-              if ([currentAttendee cn])
-                [info setObject: [currentAttendee cn]  forKey: @"attendee_name"];
+              if (currentAttendee)
+                {
+                  if ([currentAttendee cn])
+                    [info setObject: [currentAttendee cn]  forKey: @"attendee_name"];
 
-              [info setObject: [currentAttendee rfc822Email]  forKey: @"attendee_email"];
+                  if ([currentAttendee rfc822Email])
+                    [info setObject: [currentAttendee rfc822Email]  forKey: @"attendee_email"];
+                }
 
               for (i = 0; i < [fbInfo count]; i++)
                 {
