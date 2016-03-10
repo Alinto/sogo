@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2005-2014 Inverse inc.
-  Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2005-2016 Inverse inc.
 
   This file is part of SOGo
 
@@ -24,6 +23,7 @@
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/GCSFolderManager.h>
+#import <GDLContentStore/GCSFolderType.h>
 #import <GDLContentStore/GCSAlarmsFolder.h>
 #import <GDLContentStore/GCSSessionsFolder.h>
 
@@ -211,34 +211,92 @@ static BOOL debugLeaks;
   [cm releaseChannel: tc];
 }
 
+- (void) _checkQuickTableWithTypeName: typeName
+                               withCm: (GCSChannelManager *) cm
+                             tableURL: (NSString *) url
+{
+  GCSFolderType *type;
+  NSString *sql;
+  NSString *tableName;
+  EOAdaptorChannel *channel;
+
+  channel = [cm acquireOpenChannelForURL: [NSURL URLWithString: url]];
+
+  tableName = [NSString stringWithFormat: @"sogo_quick_%@", typeName];
+  sql = [NSString stringWithFormat: @"SELECT count(*) FROM %@",
+                  tableName];
+  if ([channel evaluateExpressionX: sql])
+    {
+      type = [GCSFolderType folderTypeWithName: typeName];
+      if (type)
+        {
+          sql = [type sqlQuickCreateWithTableName: tableName];
+          if (![channel evaluateExpressionX: sql])
+            [self logWithFormat: @"sogo quick table %@ successfully created!",
+                  tableName];
+        }
+    }
+  else
+    [channel cancelFetch];
+
+  [cm releaseChannel:channel];
+}
+
+
+//
+// If OCSStoreURL is defined, we also check for OCSAclURL, OCSCacheFolderURL
+// and we create the combined quick tables.
+//
 - (BOOL) _checkMandatoryTables
 {
   GCSChannelManager *cm;
   GCSFolderManager *fm;
-  NSString *urlStrings[] = {@"SOGoProfileURL", @"OCSFolderInfoURL", nil};
-  NSString **urlString;
-  NSString *value;
+  NSArray *urlStrings;
+  NSArray *quickTypeStrings;
+  NSString *tmp, *value;
   SOGoSystemDefaults *defaults;
-  BOOL ok;
+  NSEnumerator *e;
+  BOOL ok, combined;
 
   defaults = [SOGoSystemDefaults sharedSystemDefaults];
   ok = YES;
+
+  if ([GCSFolderManager singleStoreMode])
+    {
+      urlStrings = [NSArray arrayWithObjects: @"SOGoProfileURL", @"OCSFolderInfoURL", @"OCSStoreURL", @"OCSAclURL", @"OCSCacheFolderURL", nil];
+      quickTypeStrings = [NSArray arrayWithObjects: @"contact", @"appointment", nil];
+      combined = YES;
+    }
+  else
+    {
+      urlStrings = [NSArray arrayWithObjects: @"SOGoProfileURL", @"OCSFolderInfoURL", nil];
+      combined = NO;
+    }
+
   cm = [GCSChannelManager defaultChannelManager];
 
-  urlString = urlStrings;
-  while (ok && *urlString)
+  e = [urlStrings objectEnumerator];
+  while (ok && (tmp = [e nextObject]))
     {
-      value = [defaults stringForKey: *urlString];
+      value = [defaults stringForKey: tmp];
       if (value)
-	{
-	  [self _checkTableWithCM: cm tableURL: value andType: *urlString];
-	  urlString++;
-	}
+	  [self _checkTableWithCM: cm tableURL: value andType: tmp];
       else
 	{
-	  [self errorWithFormat: @"No value specified for '%@'", *urlString];
+	  [self errorWithFormat: @"No value specified for '%@'", tmp];
 	  ok = NO;
 	}
+    }
+
+  if (combined)
+    {
+      e = [quickTypeStrings objectEnumerator];
+      while ((tmp = [e nextObject]))
+        {
+          [self _checkQuickTableWithTypeName: tmp
+                                      withCm: cm
+                                    tableURL: [defaults stringForKey: @"OCSFolderInfoURL"]];
+        }
     }
 
   if (ok)

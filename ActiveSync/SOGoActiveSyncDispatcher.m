@@ -111,6 +111,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoMailObject+ActiveSync.h"
 
 #import <GDLContentStore/GCSChannelManager.h>
+#import <GDLContentStore/GCSFolderManager.h>
 
 #include <unistd.h>
 
@@ -3322,6 +3323,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   EOAdaptorChannel *channel;
   NSString *tableName, *query;
   GCSSpecialQueries *queries;
+
+  if ([GCSFolderManager singleStoreMode])
+    return;
 
   [self folderTableURL];
 

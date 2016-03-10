@@ -1,6 +1,6 @@
 /* SOGoCacheGCSObject.m - this file is part of SOGo
  *
- * Copyright (C) 2012-2014 Inverse inc
+ * Copyright (C) 2012-2016 Inverse inc
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,9 @@
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <SOGo/SOGoCache.h>
+#import <SOGo/SOGoUser.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 
@@ -124,6 +126,16 @@ static EOAttribute *textColumn = nil;
 
 - (NSURL *) tableUrl
 {
+  NSString *s;
+
+  s = [[NSUserDefaults standardUserDefaults] stringForKey: @"OCSCacheFolderURL"];
+
+  if (s)
+    {
+      tableUrl = [NSURL URLWithString: s];
+      [tableUrl retain];
+    }
+
   if (!tableUrl)
     {
       tableUrl = [container tableUrl];
@@ -247,6 +259,10 @@ static EOAttribute *textColumn = nil;
                              [self tableName],
                              newPath];
       [sql appendFormat: @" WHERE c_path = '%@'", oldPath];
+
+      if ([GCSFolderManager singleStoreMode])
+        [sql appendFormat: @" AND c_uid = '%@'", [[context activeUser] login]];
+
       [self performBatchSQLQueries: [NSArray arrayWithObject: sql]];
     }
 }
@@ -275,6 +291,10 @@ static EOAttribute *textColumn = nil;
   else
     [sql appendString: @", c_parent_path = NULL"];
   [sql appendFormat: @" WHERE c_path = '%@'", oldPath];
+
+  if ([GCSFolderManager singleStoreMode])
+    [sql appendFormat: @" AND c_uid = '%@'", [[context activeUser] login]];
+
   [self performBatchSQLQueries: [NSArray arrayWithObject: sql]];
 }
 
@@ -379,6 +399,10 @@ static EOAttribute *textColumn = nil;
   sql = [NSMutableString stringWithFormat:
                            @"SELECT * FROM %@ WHERE c_path = %@",
                          tableName, pathValue];
+
+  if ([GCSFolderManager singleStoreMode])
+    [sql appendFormat: @" AND c_uid = '%@'", [[context activeUser] login]];
+
   if (startVersion > -1)
     [sql appendFormat: @" AND c_version > %d", (int)startVersion];
 
@@ -412,6 +436,9 @@ static EOAttribute *textColumn = nil;
   /* query */
   sql = [NSMutableString stringWithFormat:
                            @"SELECT * FROM %@ WHERE c_type = %d AND c_deleted <> 1", tableName, objectType];
+
+  if ([GCSFolderManager singleStoreMode])
+    [sql appendFormat: @" AND c_uid = '%@'", [[context activeUser] login]];
 
   if (startVersion > -1)
     [sql appendFormat: @" AND c_version > %d", (int)startVersion];
@@ -478,8 +505,9 @@ static EOAttribute *textColumn = nil;
 
 - (NSException *) destroy
 {
-  NSString *tableName, *pathValue, *sql;
+  NSString *tableName, *pathValue;
   EOAdaptorChannel *channel;
+  NSMutableString *sql;
   GCSChannelManager *cm;
   NSException *result;
   EOAdaptor *adaptor;
@@ -493,11 +521,14 @@ static EOAttribute *textColumn = nil;
                       forAttribute: textColumn];
   result = nil;
 
-  sql = [NSString stringWithFormat:
-                    (@"DELETE FROM %@"
-                     @" WHERE c_path = %@"),
-                  tableName,
-                  pathValue];
+  sql = [NSMutableString stringWithFormat:
+                           (@"DELETE FROM %@"
+                            @" WHERE c_path = %@"),
+                         tableName,
+                         pathValue];
+
+  if ([GCSFolderManager singleStoreMode])
+    [sql appendFormat: @" AND c_uid = '%@'", [[context activeUser] login]];
 
   result = [channel evaluateExpressionX: sql];
   
@@ -512,14 +543,14 @@ static EOAttribute *textColumn = nil;
 
 - (void) save
 {
-  NSString *sql;
+  NSMutableString *sql;
   NSData *content;
   NSCalendarDate *now;
   GCSChannelManager *cm;
   EOAdaptor *adaptor;
   EOAdaptorChannel *channel;
   NSInteger creationDateValue, lastModifiedValue, deletedValue;
-  NSString *tableName, *pathValue, *parentPathValue, *propsValue;
+  NSString *tableName, *loginValue, *pathValue, *parentPathValue, *propsValue;
   NSException *result;
 
   if (!initialized)
@@ -538,6 +569,8 @@ static EOAttribute *textColumn = nil;
   adaptor = [[channel adaptorContext] adaptor];
   pathValue = [adaptor formatValue: [self path]
                       forAttribute: textColumn];
+  loginValue = [adaptor formatValue: [[context activeUser] login]
+                       forAttribute: textColumn];
   
   lastModifiedValue = (NSInteger) [lastModified timeIntervalSince1970];
   
@@ -563,30 +596,46 @@ static EOAttribute *textColumn = nil;
                                  forAttribute: textColumn];
       if (!parentPathValue)
         parentPathValue = @"NULL";
-      sql = [NSString stringWithFormat:
-                        (@"INSERT INTO %@"
-                         @"  (c_path, c_parent_path, c_type, c_creationdate, c_lastmodified,"
-                         @"   c_deleted, c_version, c_content)"
-                         @" VALUES (%@, %@, %d, %d, %d, 0, 0, %@"
-                         @")"),
-                      tableName,
-                      pathValue, parentPathValue, objectType,
-                      (int)creationDateValue, (int)lastModifiedValue,
-                      propsValue];
+
+      if ([GCSFolderManager singleStoreMode])
+        sql = [NSString stringWithFormat:
+                          (@"INSERT INTO %@"
+                           @"  (c_uid, c_path, c_parent_path, c_type, c_creationdate, c_lastmodified,"
+                           @"   c_deleted, c_version, c_content)"
+                           @" VALUES (%@, %@, %@, %d, %d, %d, 0, 0, %@"
+                           @")"),
+                        tableName,
+                        loginValue, pathValue, parentPathValue, objectType,
+                        (int)creationDateValue, (int)lastModifiedValue,
+                        propsValue];
+      else
+        sql = [NSString stringWithFormat:
+                          (@"INSERT INTO %@"
+                           @"  (c_path, c_parent_path, c_type, c_creationdate, c_lastmodified,"
+                           @"   c_deleted, c_version, c_content)"
+                           @" VALUES (%@, %@, %d, %d, %d, 0, 0, %@"
+                           @")"),
+                        tableName,
+                        pathValue, parentPathValue, objectType,
+                        (int)creationDateValue, (int)lastModifiedValue,
+                        propsValue];
       isNew = NO;
     }
   else
     {
       version++;
       deletedValue = (deleted ? 1 : 0);
-      sql = [NSString stringWithFormat:
-                        (@"UPDATE %@"
-                         @"  SET c_lastmodified = %d, c_deleted = %d,"
-                         @"      c_version = %d, c_content = %@"
-                         @" WHERE c_path = %@"),
-                      tableName,
-                      (int)lastModifiedValue, (int)deletedValue, (int)version, propsValue,
-                    pathValue];
+      sql = [NSMutableString stringWithFormat:
+                               (@"UPDATE %@"
+                                @"  SET c_lastmodified = %d, c_deleted = %d,"
+                                @"      c_version = %d, c_content = %@"
+                                @" WHERE c_path = %@"),
+                             tableName,
+                             (int)lastModifiedValue, (int)deletedValue, (int)version, propsValue,
+                             pathValue];
+
+      if ([GCSFolderManager singleStoreMode])
+        [sql appendFormat: @" AND c_uid = %@", loginValue];
     }
 
   result = [channel evaluateExpressionX: sql];

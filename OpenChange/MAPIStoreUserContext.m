@@ -1,8 +1,6 @@
 /* MAPIStoreUserContext.m - this file is part of SOGo
  *
- * Copyright (C) 2012 Inverse inc
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2012-2016 Inverse inc
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +33,7 @@
 #import <NGImap4/NGImap4Connection.h>
 
 #import <GDLContentStore/GCSChannelManager.h>
+#import <GDLContentStore/GCSFolderManager.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
@@ -338,6 +337,9 @@ static NSMapTable *contextsTable = nil;
   EOAdaptorChannel *channel;
   NSString *tableName, *query;
   GCSSpecialQueries *queries;
+
+  if ([GCSFolderManager singleStoreMode])
+    return;
 
   [self folderTableURL];
 

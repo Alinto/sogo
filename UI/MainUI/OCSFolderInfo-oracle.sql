@@ -10,7 +10,7 @@ CREATE TABLE @{tableName} (
   c_path3          VARCHAR(255)  NULL,     -- parts (for fast queries)
   c_path4          VARCHAR(255)  NULL,     -- parts (for fast queries)
   c_foldername     VARCHAR(255)  NOT NULL, -- last path component
-  c_location       VARCHAR(2048) NOT NULL, -- URL to folder
+  c_location       VARCHAR(2048) NULL,     -- URL to folder
   c_quick_location VARCHAR(2048) NULL,     -- URL to quicktable of folder
   c_acl_location   VARCHAR(2048) NULL,     -- URL to quicktable of folder
   c_folder_type    VARCHAR(255)  NOT NULL  -- the folder type ...

@@ -91,13 +91,6 @@ static GCSStringFormatter *stringFormatter = nil;
   NSEnumerator *fields;
   GCSFieldInfo *field;
   NSString *fieldName;
-
-  if (![_loc isNotNull])
-    {
-      [self errorWithFormat:@"missing quicktable parameter!"];
-      [self release];
-      return nil;
-    }
   
   if ((self = [super init])) {
     folderManager  = [_fm    retain];
@@ -190,12 +183,31 @@ static GCSStringFormatter *stringFormatter = nil;
 }
 
 - (NSURL *)location {
+  if ([GCSFolderManager singleStoreMode])
+    return [folderManager storeLocation];
+
   return location;
 }
 - (NSURL *)quickLocation {
+  if ([GCSFolderManager singleStoreMode])
+    {
+      NSString *baseURL;
+      NSRange range;
+
+      baseURL = [[folderManager folderInfoLocation] absoluteString];
+      range = [baseURL rangeOfString: @"/" options: NSBackwardsSearch];
+      if (range.location != NSNotFound)
+        baseURL = [baseURL substringToIndex: range.location];
+
+      return [NSURL URLWithString: [NSString stringWithFormat: @"%@/%@", baseURL, [self quickTableName]]];
+    }
+
   return quickLocation;
 }
 - (NSURL *)aclLocation {
+  if ([GCSFolderManager singleStoreMode])
+    return [folderManager aclLocation];
+
   return aclLocation;
 }
 
@@ -211,6 +223,9 @@ static GCSStringFormatter *stringFormatter = nil;
   return [[self location] gcsTableName];
 }
 - (NSString *)quickTableName {
+  if ([GCSFolderManager singleStoreMode])
+    return [NSString stringWithFormat: @"sogo_quick_%@", [folderTypeName lowercaseString]];
+
   return [[self quickLocation] gcsTableName];
 }
 - (NSString *)aclTableName {
@@ -473,6 +488,16 @@ static GCSStringFormatter *stringFormatter = nil;
     }
 
   whereSql = [NSMutableArray array];
+  if ([GCSFolderManager singleStoreMode])
+    {
+      if (requirement == bothTableRequired)
+        [whereSql addObject: [NSString stringWithFormat:
+                                         @"(a.c_folder_id = %@ AND b.c_folder_id = %@)",
+                                       folderId, folderId]];
+      else
+        [whereSql addObject: [NSString stringWithFormat: @"c_folder_id = %@",
+                                       folderId]];
+    }
   if (qualifier)
     {
       whereString = [NSString stringWithFormat: @"(%@)",
@@ -693,6 +718,8 @@ andAttribute: (EOAttribute *)_attribute
   [sql appendString:@"INSERT INTO "];
   [sql appendString:_table];
   [sql appendString:@" ("];
+  if ([GCSFolderManager singleStoreMode])
+    [sql appendString:@"c_folder_id, "];
 
   for (i = 0, count = [keys count]; i < count; i++) {
     if (i != 0) [sql appendString:@", "];
@@ -700,6 +727,8 @@ andAttribute: (EOAttribute *)_attribute
   }
 
   [sql appendString:@") VALUES ("];
+  if ([GCSFolderManager singleStoreMode])
+    [sql appendFormat:@"%@, ", folderId];
 
   for (i = 0, count = [keys count]; i < count; i++) {
     fieldName = [keys objectAtIndex:i];
@@ -767,6 +796,8 @@ andAttribute: (EOAttribute *)_attribute
   }
 
   [sql appendString:@" WHERE "];
+  if ([GCSFolderManager singleStoreMode])
+    [sql appendString: [NSString stringWithFormat: @"c_folder_id = %@ AND ", folderId]];
   [sql appendString:_colname];
   [sql appendString:@" = "];
   attribute = [self _attributeForColumn: _colname];
@@ -853,22 +884,39 @@ andAttribute: (EOAttribute *)_attribute
   attribute1 = [self _attributeForColumn: _colname];
   if (_colname2 == nil)
     {
-      qualifier = [[EOSQLQualifier alloc] initWithEntity: _entity
-					  qualifierFormat: @"%A = %@", _colname,
-                                          [self _formatRowValue:_value
-                                                withAdaptor: _adaptor andAttribute: attribute1]];
+      if ([GCSFolderManager singleStoreMode])
+        qualifier = [[EOSQLQualifier alloc] initWithEntity: _entity
+                                           qualifierFormat: @"%A = %@ AND c_folder_id = %@", _colname,
+                                     [self _formatRowValue:_value
+                                               withAdaptor: _adaptor andAttribute: attribute1], folderId];
+      else
+        qualifier = [[EOSQLQualifier alloc] initWithEntity: _entity
+                                           qualifierFormat: @"%A = %@", _colname,
+                                     [self _formatRowValue:_value
+                                               withAdaptor: _adaptor andAttribute: attribute1]];
     }
   else
     {
       attribute2 = [self _attributeForColumn: _colname2];
-      qualifier = [[EOSQLQualifier alloc] initWithEntity: _entity
-					  qualifierFormat: @"%A = %@ AND %A = %@",
-                                          _colname,
-                                          [self _formatRowValue:_value
-                                                withAdaptor: _adaptor andAttribute: attribute1],
-                                          _colname2,
-                                          [self _formatRowValue:_value2
-                                                withAdaptor: _adaptor andAttribute: attribute2]];
+      if ([GCSFolderManager singleStoreMode])
+        qualifier = [[EOSQLQualifier alloc] initWithEntity: _entity
+                                           qualifierFormat: @"%A = %@ AND %A = %@ AND c_folder_id = %@",
+                                            _colname,
+                                     [self _formatRowValue:_value
+                                               withAdaptor: _adaptor andAttribute: attribute1],
+                                            _colname2,
+                                     [self _formatRowValue:_value2
+                                               withAdaptor: _adaptor andAttribute: attribute2]];
+      else
+        qualifier = [[EOSQLQualifier alloc] initWithEntity: _entity
+                                           qualifierFormat: @"%A = %@ AND %A = %@",
+                                            _colname,
+                                     [self _formatRowValue:_value
+                                               withAdaptor: _adaptor andAttribute: attribute1],
+                                            _colname2,
+                                     [self _formatRowValue:_value2
+                                               withAdaptor: _adaptor andAttribute: attribute2],
+                                            folderId];
     }
 
   return AUTORELEASE(qualifier);
@@ -887,10 +935,17 @@ andAttribute: (EOAttribute *)_attribute
 
   table = [self storeTableName];
   attribute = [self _attributeForColumn: @"c_name"];
-  delSql = [NSString stringWithFormat: @"DELETE FROM %@"
-		     @" WHERE c_name = %@", table,
-                     [self _formatRowValue: recordName
-                           withAdaptor: [adaptorCtx adaptor]
+  if ([GCSFolderManager singleStoreMode])
+    delSql = [NSString stringWithFormat: @"DELETE FROM %@"
+                       @" WHERE c_name = %@ AND c_folder_id = %@", table,
+                  [self _formatRowValue: recordName
+                            withAdaptor: [adaptorCtx adaptor]
+                           andAttribute: attribute], folderId];
+  else
+    delSql = [NSString stringWithFormat: @"DELETE FROM %@"
+                       @" WHERE c_name = %@", table,
+                  [self _formatRowValue: recordName
+                            withAdaptor: [adaptorCtx adaptor]
                            andAttribute: attribute]];
   [channel evaluateExpressionX: delSql];
 
@@ -1170,6 +1225,8 @@ andAttribute: (EOAttribute *)_attribute
   delsql = [delsql stringByAppendingString: [self _formatRowValue:_name
                                                   withAdaptor: [adaptorCtx adaptor]
                                                   andAttribute: [self _attributeForColumn: @"c_name"]]];
+  if ([GCSFolderManager singleStoreMode])
+    delsql = [delsql stringByAppendingFormat:@" AND c_folder_id = %@", folderId];
   if ((error = [storeChannel evaluateExpressionX:delsql]) != nil) {
     [self errorWithFormat:
 	    @"%s: cannot delete content '%@': %@", 
@@ -1182,6 +1239,8 @@ andAttribute: (EOAttribute *)_attribute
     delsql = [delsql stringByAppendingString: [self _formatRowValue:_name
                                                     withAdaptor: [adaptorCtx adaptor]
                                                     andAttribute: [self _attributeForColumn: @"c_name"]]];
+    if ([GCSFolderManager singleStoreMode])
+      delsql = [delsql stringByAppendingFormat:@" AND c_folder_id = %@", folderId];
     if ((error = [quickChannel evaluateExpressionX:delsql]) != nil) {
       [self errorWithFormat:
 	      @"%s: cannot delete quick row '%@': %@", 
@@ -1229,18 +1288,24 @@ andAttribute: (EOAttribute *)_attribute
     if (!ofFlags.sameTableForQuick) [[quickChannel adaptorContext] beginTransaction];
     [[storeChannel adaptorContext] beginTransaction];
 
-    query = [NSString stringWithFormat: @"DELETE FROM %@", [self storeTableName]];
+    if ([GCSFolderManager singleStoreMode])
+      query = [NSString stringWithFormat: @"DELETE FROM %@ WHERE c_folder_id = %@", [self storeTableName], folderId];
+    else
+      query = [NSString stringWithFormat: @"DELETE FROM %@", [self storeTableName]];
     error = [storeChannel evaluateExpressionX:query];
     if (error)
       [self errorWithFormat: @"%s: cannot delete content '%@': %@", 
         __PRETTY_FUNCTION__, query, error];
     else if (!ofFlags.sameTableForQuick) {
-        /* content row deleted, now delete the quick row */
+      /* content row deleted, now delete the quick row */
+      if ([GCSFolderManager singleStoreMode])
+        query = [NSString stringWithFormat: @"DELETE FROM %@ WHERE c_folder_id = %@", [self quickTableName], folderId];
+      else
         query = [NSString stringWithFormat: @"DELETE FROM %@", [self quickTableName]];
-        error = [quickChannel evaluateExpressionX: query];
-        if (error)
-          [self errorWithFormat: @"%s: cannot delete quick row '%@': %@", 
-            __PRETTY_FUNCTION__, query, error];
+      error = [quickChannel evaluateExpressionX: query];
+      if (error)
+        [self errorWithFormat: @"%s: cannot delete quick row '%@': %@", 
+              __PRETTY_FUNCTION__, query, error];
     }
 
     /* release channels and return */
@@ -1271,17 +1336,26 @@ andAttribute: (EOAttribute *)_attribute
   [[channel adaptorContext] beginTransaction];
   table = [self storeTableName];
   if ([table length] > 0) {
-    delsql = [@"DROP TABLE " stringByAppendingString: table];
+    if ([GCSFolderManager singleStoreMode])
+      delsql = [NSString stringWithFormat: @"DELETE FROM %@ WHERE c_folder_id = %@", table, folderId];
+    else
+      delsql = [@"DROP TABLE " stringByAppendingString: table];
     [channel evaluateExpressionX:delsql];
   }
   table = [self quickTableName];
   if ([table length] > 0) {
-    delsql = [@"DROP TABLE " stringByAppendingString: table];
+    if ([GCSFolderManager singleStoreMode])
+      delsql = [NSString stringWithFormat: @"DELETE FROM %@ WHERE c_folder_id = %@", table, folderId];
+    else
+      delsql = [@"DROP TABLE " stringByAppendingString: table];
     [channel evaluateExpressionX:delsql];
   }
   table = [self aclTableName];
   if ([table length] > 0) {
-    delsql = [@"DROP TABLE  " stringByAppendingString: table];
+    if ([GCSFolderManager singleStoreMode])
+      delsql = [NSString stringWithFormat: @"DELETE FROM %@ WHERE c_folder_id = %@", table, folderId];
+    else
+      delsql = [@"DROP TABLE  " stringByAppendingString: table];
     [channel evaluateExpressionX:delsql];
   }
   
@@ -1376,10 +1450,17 @@ andAttribute: (EOAttribute *)_attribute
   [sql appendString:@"SELECT c_uid, c_object, c_role"];
   [sql appendString:@" FROM "];
   [sql appendString:[self aclTableName]];
-  
+  if ([GCSFolderManager singleStoreMode])
+    [sql appendFormat:@" WHERE c_folder_id = %@", folderId];
+
   if (qualifier != nil) {
-    [sql appendString:@" WHERE "];
-    [sql appendString:[self _sqlForQualifier:qualifier]];
+    if ([GCSFolderManager singleStoreMode])
+      [sql appendFormat:@" AND (%@)", [self _sqlForQualifier:qualifier]];
+    else
+      {
+        [sql appendString:@" WHERE "];
+        [sql appendString:[self _sqlForQualifier:qualifier]];
+      }
   }
   if ([sortOrderings count] > 0) {
     [sql appendString:@" ORDER BY "];
@@ -1462,10 +1543,14 @@ andAttribute: (EOAttribute *)_attribute
   [sql appendString:[self aclTableName]];
   qSql = [self _sqlForQualifier: [_fs qualifier]];
   if (qSql)
-    [sql appendFormat:@" WHERE %@", qSql];
-  
-  /* open channel */
+    {
+      if ([GCSFolderManager singleStoreMode])
+        [sql appendFormat:@" WHERE c_folder_id = %@ AND (%@)", folderId, qSql];
+      else
+        [sql appendFormat:@" WHERE %@", qSql];
+    }
 
+  /* open channel */
   if ((channel = [self acquireAclChannel]) == nil) {
     [self errorWithFormat:@"could not open acl channel!"];
     return;
@@ -1495,11 +1580,21 @@ andAttribute: (EOAttribute *)_attribute
 
   count = 0;
 
-  sqlString = [NSMutableString stringWithFormat:
-				 @"SELECT COUNT(*) AS CNT FROM %@",
-			       [self storeTableName]];
+  if ([GCSFolderManager singleStoreMode])
+    sqlString = [NSMutableString stringWithFormat:
+                                   @"SELECT COUNT(*) AS CNT FROM %@ WHERE c_folder_id = %@",
+                                 [self storeTableName], folderId];
+  else
+    sqlString = [NSMutableString stringWithFormat:
+                                   @"SELECT COUNT(*) AS CNT FROM %@",
+                                 [self storeTableName]];
   if (excludeDeleted)
-    [sqlString appendString: @" WHERE (c_deleted != 1 OR c_deleted IS NULL)"];
+    {
+      if ([GCSFolderManager singleStoreMode])
+        [sqlString appendString: @" AND (c_deleted != 1 OR c_deleted IS NULL)"];
+      else
+        [sqlString appendString: @" WHERE (c_deleted != 1 OR c_deleted IS NULL)"];
+    }
 
   channel = [self acquireStoreChannel];
   if (channel)

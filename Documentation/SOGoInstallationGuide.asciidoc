@@ -1388,6 +1388,32 @@ _SOGoEnableEMailAlarms_ is set to `YES`. For PostgreSQL, the database
 URL could be set to something like:
 `postgresql://sogo:sogo@localhost:5432/sogo/sogo_alarms_folder`
 
+|S |OCSStoreURL
+|Parameter used to set the database URL so that SOGo can use to start
+all content data. You must also set `OCSAclURL` and `OCSCacheFolderURL`
+if you set this parameter. Using these parameters will allow SOGo to use
+a total of nine database tables - and prevent SOGo from creating three
+database tables per collection.
+
+For PostgresSQL, set the database URL to something like:
+`postgresql://sogo:@localhost:5432/sogo/sogo_store`.
+
+|S |OCSAclURL
+|Parameter used to set the database URL so that SOGo can use to start
+all ACL data. You must also set `OCSStoreURL` and `OCSCacheFolderURL`
+if you set this parameter.
+
+For PostgresSQL, set the database URL to something like:
+`postgresql://sogo:@localhost:5432/sogo/sogo_acl`.
+
+|S |OCSCacheFolderURL
+|Parameter used to set the database URL so that SOGo can use to start
+all cache data. You must also set `OCSStoreURL` and `OCSAclURL`
+if you set this parameter.
+
+For PostgresSQL, set the database URL to something like:
+`postgresql://sogo:@localhost:5432/sogo/sogo_cache_folder`.
+
 See the "EMail reminders" section in this document for more information.
 |=======================================================================
 

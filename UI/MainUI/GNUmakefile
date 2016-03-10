@@ -26,6 +26,12 @@ MainUI_RESOURCE_FILES += 	\
 	SOGoProfile-oracle.sql \
 	OCSFolderInfo.sql \
 	OCSFolderInfo-oracle.sql \
+	OCSStore.sql \
+	OCSStore-mysql.sql \
+	OCSAcl-mysql.sql \
+	OCSAcl-postgresql.sql \
+	OCSCacheFolder-mysql.sql \
+	OCSCacheFolder-postgresql.sql
 
 MainUI_LOCALIZED_RESOURCE_FILES += \
 	Locale Localizable.strings

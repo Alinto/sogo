@@ -25,6 +25,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSProcessInfo.h>
+#import <Foundation/NSURL.h>
 #import <Foundation/NSUserDefaults.h>
 
 #import <NGExtensions/NSNull+misc.h>
@@ -74,6 +75,7 @@ static NSString   *GCSPathRecordName        = @"c_path";
 static NSString   *GCSGenericFolderTypeName = @"Container";
 static const char *GCSPathColumnPattern     = "c_path%i";
 static NSCharacterSet *asciiAlphaNumericCS  = nil;
+static BOOL       _singleStoreMode           = NO;
 
 + (void) initialize
 {
@@ -96,11 +98,24 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 			  @"abcdefghijklmnopqrstuvwxyz"];
       [asciiAlphaNumericCS retain];
     }
+
+  if ([ud stringForKey: @"OCSStoreURL"] &&
+      [ud stringForKey: @"OCSAclURL"] &&
+      [ud stringForKey: @"OCSCacheFolderURL"])
+    _singleStoreMode = YES;
+}
+
++ (BOOL) singleStoreMode
+{
+  return _singleStoreMode;
 }
 
 + (id)defaultFolderManager {
   NSString *s;
-  NSURL    *url;
+  NSURL    *infoUrl;
+  NSURL    *storeUrl;
+  NSURL    *aclUrl;
+  NSURL    *cacheFolderUrl;
 
   if (!fm)
     {
@@ -110,18 +125,66 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 	      __PRETTY_FUNCTION__);
 	return nil;
       }
-      if ((url = [NSURL URLWithString:s]) == nil) {
+      if ((infoUrl = [NSURL URLWithString:s]) == nil) {
 	NSLog(@"ERROR(%s): default 'OCSFolderInfoURL' is not a valid URL: '%@'",
 	      __PRETTY_FUNCTION__, s);
 	return nil;
       }
-      if ((fm = [[self alloc] initWithFolderInfoLocation:url]) == nil) {
-	NSLog(@"ERROR(%s): could not create folder manager with URL: '%@'",
-	      __PRETTY_FUNCTION__, [url absoluteString]);
+
+      if (_singleStoreMode)
+        {
+          s = [[NSUserDefaults standardUserDefaults] stringForKey:@"OCSStoreURL"];
+          if ([s length] == 0) {
+            NSLog(@"ERROR(%s): default 'OCSStoreURL' is not configured.",
+                  __PRETTY_FUNCTION__);
+            return nil;
+          }
+          if ((storeUrl = [NSURL URLWithString:s]) == nil) {
+            NSLog(@"ERROR(%s): default 'OCSStoreURL' is not a valid URL: '%@'",
+                  __PRETTY_FUNCTION__, s);
+            return nil;
+          }
+          s = [[NSUserDefaults standardUserDefaults] stringForKey:@"OCSAclURL"];
+          if ([s length] == 0) {
+            NSLog(@"ERROR(%s): default 'OCSAclURL' is not configured.",
+                  __PRETTY_FUNCTION__);
+            return nil;
+          }
+          if ((aclUrl = [NSURL URLWithString:s]) == nil) {
+            NSLog(@"ERROR(%s): default 'OCSAclURL' is not a valid URL: '%@'",
+                  __PRETTY_FUNCTION__, s);
+            return nil;
+          }
+          s = [[NSUserDefaults standardUserDefaults] stringForKey:@"OCSCacheFolderURL"];
+          if ([s length] == 0) {
+            NSLog(@"ERROR(%s): default 'OCSCacheFolderURL' is not configured.",
+                  __PRETTY_FUNCTION__);
+            return nil;
+          }
+          if ((cacheFolderUrl = [NSURL URLWithString:s]) == nil) {
+            NSLog(@"ERROR(%s): default 'OCSCacheFolderURL' is not a valid URL: '%@'",
+                  __PRETTY_FUNCTION__, s);
+            return nil;
+          }
+        }
+      else
+        {
+          storeUrl = nil;
+          aclUrl = nil;
+          cacheFolderUrl = nil;
+        }
+
+      if ((fm = [[self alloc] initWithFolderInfoLocation: infoUrl 
+                                        andStoreLocation: storeUrl
+                                          andAclLocation: aclUrl
+                                  andCacheFolderLocation: cacheFolderUrl]) == nil) {
+	NSLog(@"ERROR(%s): could not create folder manager with URLs: '%@', '%@', '%@'",
+	      __PRETTY_FUNCTION__, [infoUrl absoluteString],
+              [storeUrl absoluteString], [aclUrl absoluteString]);
 	return nil;
       }
       if (debugOn)
-        [self debugWithFormat:@"Note: setup default manager at: %@", url];
+        [self debugWithFormat:@"Note: setup default manager at: %@", infoUrl];
     }
       
   return fm;
@@ -159,20 +222,81 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   return typeMap;
 }
 
-- (id)initWithFolderInfoLocation:(NSURL *)_url {
-  if (_url == nil) {
+- (id)initWithFolderInfoLocation: (NSURL *)_infoUrl 
+                andStoreLocation: (NSURL *)_storeUrl
+                  andAclLocation: (NSURL *)_aclUrl
+          andCacheFolderLocation: (NSURL *)_cacheFolderUrl {
+  if (_infoUrl == nil) {
     [self logWithFormat:@"ERROR(%s): missing folder info url!", 
 	  __PRETTY_FUNCTION__];
     [self release];
     return nil;
   }
+
+  if (_singleStoreMode)
+    {
+      if (_storeUrl == nil) {
+        [self logWithFormat:@"ERROR(%s): missing folder store url!",
+              __PRETTY_FUNCTION__];
+        [self release];
+        return nil;
+      }
+      if (_aclUrl == nil) {
+        [self logWithFormat:@"ERROR(%s): missing folder acl url!",
+              __PRETTY_FUNCTION__];
+        [self release];
+        return nil;
+      }
+      if (_cacheFolderUrl == nil) {
+        [self logWithFormat:@"ERROR(%s): missing cache folder url!",
+              __PRETTY_FUNCTION__];
+        [self release];
+        return nil;
+      }
+
+    }
+
   if ((self = [super init])) {
     channelManager = [[GCSChannelManager defaultChannelManager] retain];
-    folderInfoLocation = [_url retain];
+    folderInfoLocation = [_infoUrl retain];
+
+    if (_singleStoreMode)
+      {
+        storeLocation = [_storeUrl retain];
+        aclLocation = [_aclUrl retain];
+        cacheFolderLocation = [_cacheFolderUrl retain];
+      }
+    else
+      {
+        storeLocation = nil;
+        aclLocation = nil;
+        cacheFolderLocation = nil;
+      }
 
     if ([[self folderInfoTableName] length] == 0) {
-      [self logWithFormat:@"ERROR(%s): missing tablename in URL: %@", 
-            __PRETTY_FUNCTION__, [_url absoluteString]];
+      [self logWithFormat:@"ERROR(%s): missing tablename in URL: %@",
+            __PRETTY_FUNCTION__, [_infoUrl absoluteString]];
+      [self release];
+      return nil;
+    }
+
+    if (_singleStoreMode && [[self storeTableName] length] == 0) {
+      [self logWithFormat:@"ERROR(%s): missing tablename in URL: %@",
+            __PRETTY_FUNCTION__, [_storeUrl absoluteString]];
+      [self release];
+      return nil;
+    }
+
+    if (_singleStoreMode && [[self aclTableName] length] == 0) {
+      [self logWithFormat:@"ERROR(%s): missing tablename in URL: %@",
+            __PRETTY_FUNCTION__, [_aclUrl absoluteString]];
+      [self release];
+      return nil;
+    }
+
+    if (_singleStoreMode && [[self cacheFolderTableName] length] == 0) {
+      [self logWithFormat:@"ERROR(%s): missing tablename in URL: %@",
+            __PRETTY_FUNCTION__, [_cacheFolderUrl absoluteString]];
       [self release];
       return nil;
     }
@@ -200,6 +324,31 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 - (NSString *)folderInfoTableName {
   return [[self folderInfoLocation] gcsTableName];
 }
+
+- (NSURL *)storeLocation {
+  return storeLocation;
+}
+
+- (NSString *)storeTableName {
+  return [[self storeLocation] gcsTableName];
+}
+
+- (NSURL *)aclLocation {
+  return aclLocation;
+}
+
+- (NSString *)aclTableName {
+  return [[self aclLocation] gcsTableName];
+}
+
+- (NSURL *)cacheFolderLocation {
+  return cacheFolderLocation;
+}
+
+- (NSString *)cacheFolderTableName {
+  return [[self cacheFolderLocation] gcsTableName];
+}
+
 
 /* connection */
 
@@ -266,7 +415,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   GCSFolderType *folderType;
   NSString      *folderTypeName, *locationString, *folderName, *path;
   NSNumber      *folderId;
-  NSURL         *location, *quickLocation, *aclLocation;
+  NSURL         *location, *quickLocation, *acl_location;
   
   if (_record == nil) return nil;
   
@@ -309,7 +458,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   }
 
   locationString = [_record objectForKey:@"c_acl_location"];
-  aclLocation = [locationString isNotNull]
+  acl_location = [locationString isNotNull]
     ? [NSURL URLWithString:locationString]
     : nil;
   
@@ -317,7 +466,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 			      folderTypeName:folderTypeName 
 			      folderType:folderType
 			      location:location quickLocation:quickLocation
-                              aclLocation:aclLocation
+                              aclLocation:acl_location
 			      folderManager:self];
   return [folder autorelease];
 }
@@ -766,7 +915,7 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 		  baseURL, aclTableName,
 		  folderType];
   error = [channel evaluateExpressionX: sql];
-  if (!error)
+  if (!_singleStoreMode && !error)
     {
       specialQuery = [channel specialQueries];
       createQuery = [specialQuery createFolderTableWithName: tableName];

@@ -1,6 +1,9 @@
 3.0.3 (2016-03-dd)
 ------------------
 
+New features
+ - [core] new database structure options to make SOGo use a total of nine tables
+
 Enhancements
  - [web] updated Angular Material to version 1.0.6
 

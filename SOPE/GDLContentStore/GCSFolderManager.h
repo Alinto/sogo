@@ -38,15 +38,28 @@
   GCSChannelManager *channelManager;
   NSDictionary      *nameToType;
   NSURL             *folderInfoLocation;
+  NSURL             *storeLocation;
+  NSURL             *aclLocation;
+  NSURL             *cacheFolderLocation;
 }
 
++ (BOOL) singleStoreMode;
 + (id)defaultFolderManager;
-- (id)initWithFolderInfoLocation:(NSURL *)_url;
+- (id)initWithFolderInfoLocation: (NSURL *)_infoUrl 
+                andStoreLocation: (NSURL *)_storeUrl
+                  andAclLocation: (NSURL *)_aclUrl
+	  andCacheFolderLocation: (NSURL *)_cacheFolderUrl;
 
 /* accessors */
 
 - (NSURL *)folderInfoLocation;
 - (NSString *)folderInfoTableName;
+- (NSURL *)storeLocation;
+- (NSString *)storeTableName;
+- (NSURL *)aclLocation;
+- (NSString *)aclTableName;
+- (NSURL *)cacheFolderLocation;
+- (NSString *)cacheFolderTableName;
 
 /* connection */
 

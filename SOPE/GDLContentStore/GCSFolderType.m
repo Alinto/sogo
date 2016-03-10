@@ -31,6 +31,7 @@
 
 #import <NGExtensions/NGResourceLocator.h>
 
+#import "GCSFolderManager.h"
 #import "GCSFolderType.h"
 #import "GCSFolder.h"
 #import "GCSFieldInfo.h"
@@ -157,15 +158,52 @@
 {
   NSMutableString *sql;
   unsigned i, count;
- 
+  GCSFieldInfo *field;
+  BOOL combined;
+
+  combined = NO;
+
+  if ([GCSFolderManager singleStoreMode])
+    combined = YES;
+
   sql = [NSMutableString stringWithFormat: @"CREATE TABLE %@ (", _tabName];
+
+  if (combined)
+    [sql appendString: @"c_folder_id INT NOT NULL, "];
+
   count = [quickFields count];
   for (i = 0; i < count; i++)
     {
-      if (i > 0) [sql appendString:@", "];
-      [sql appendFormat: @" %@", [[quickFields objectAtIndex:i] sqlCreateSection]];
+      field = [quickFields objectAtIndex:i];
+
+      if (i != 0) [sql appendString: @", "];
+      [sql appendString:[field columnName]];
+      [sql appendString:@" "];
+      [sql appendString:[field sqlType]];
+
+      [sql appendString:@" "];
+      if (![field doesAllowNull]) [sql appendString:@"NOT "];
+      [sql appendString:@"NULL"];
+
+      if (!combined && [field isPrimaryKey])
+        [sql appendString:@" PRIMARY KEY"];
     }
-  [sql appendString:@"\n)"];
+
+  // Define primary key constraint for c_folder_id and additional primary key fields
+  if (combined)
+    {
+      [sql appendFormat:@", CONSTRAINT %@_pkey PRIMARY KEY(c_folder_id", _tabName];
+      for (i = 0; i < count; i++)
+        {
+          field = [quickFields objectAtIndex:i];
+          if ([field isPrimaryKey])
+            [sql appendFormat:@", %@", [field columnName]];
+        }
+
+      [sql appendString:@")"];
+    }
+
+  [sql appendString:@")"];
  
   return sql;
 }
