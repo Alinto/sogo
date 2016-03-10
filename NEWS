@@ -8,6 +8,7 @@ Bug fixes
  - [web] fixed missing columns in SELECT statements (PostgreSQL)
  - [web] fixed display of ghosts when dragging events
  - [web] fixed management of mail labels in Preferences module
+ - [web] respect super user privileges to create in any calendar and addressbook
 
 3.0.2 (2016-03-04)
 ------------------

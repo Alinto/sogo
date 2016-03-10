@@ -135,7 +135,9 @@
     }
 
     if (writable) {
-      return _.union(this.$calendars, _.filter(this.$subscriptions, function(calendar) { return calendar.acls.objectCreator; }));
+      return _.union(this.$calendars, _.filter(this.$subscriptions, function(calendar) {
+        return calendar.isOwned || calendar.acls.objectCreator;
+      }));
     }
 
     return _.union(this.$calendars, this.$subscriptions, this.$webcalendars);
