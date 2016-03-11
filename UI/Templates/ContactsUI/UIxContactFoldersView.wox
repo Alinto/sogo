@@ -67,6 +67,11 @@
                          md-menu-origin="md-menu-origin">more_vert</md-icon>
                 <md-menu-content width="2">
                   <md-menu-item>
+                    <md-button type="button" ng-click="app.showProperties(folder)">
+                      <var:string label:value="Properties"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
                     <md-button type="button" ng-click="app.edit(folder)">
                       <var:string label:value="Rename"/>
                     </md-button>
@@ -74,6 +79,12 @@
                   <md-menu-item ng-show="folder.id != 'personal'">
                     <md-button type="button" ng-click="app.confirmDelete()">
                       <var:string label:value="Delete"/>
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-divider><!-- divider --></md-menu-divider>
+                  <md-menu-item>
+                    <md-button type="button" ng-click="app.showLinks(folder)">
+                      <var:string label:value="Links to this Address Book"/>
                     </md-button>
                   </md-menu-item>
                   <md-menu-divider><!-- divider --></md-menu-divider>
@@ -89,18 +100,8 @@
                   </md-menu-item>
                   <md-menu-divider><!-- divider --></md-menu-divider>
                   <md-menu-item>
-                    <md-button type="button" ng-click="app.showLinks(folder)">
-                      <var:string label:value="Links to this Address Book"/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item>
                     <md-button type="button" ng-click="app.share(folder)">
                       <var:string label:value="Sharing..."/>
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item>
-                    <md-button type="button" ng-click="app.showProperties(folder)">
-                      <var:string label:value="Properties"/>
                     </md-button>
                   </md-menu-item>
                 </md-menu-content>
