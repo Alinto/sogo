@@ -17,9 +17,6 @@
                  class="md-title"
                  ng-model="properties.addressbook.name"/>
         </md-input-container>
-        <md-button class="md-icon-button" ng-click="properties.close()">
-          <md-icon aria-label="Close dialog">close</md-icon>
-        </md-button>
       </div>
     </md-toolbar>
 
