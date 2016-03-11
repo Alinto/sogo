@@ -8,7 +8,7 @@
     xmlns:uix="OGo:uix">
 
   <div class="sg-reversible" ng-class="{ 'sg-flip': viewer.showRawSource }">
-    <div layout="column" class="layout-fill sg-face">
+    <div class="sg-face" layout="column" layout-fill="layout-fill">
       <md-card>
         <md-card-actions flex-none="flex-none" layout="row" layout-align="end center">
           <md-button class="md-icon-button"
@@ -145,11 +145,6 @@
                       <a href="#" ng-bind="recipient.full"
                          ng-click="viewer.newMessage($event, recipient)"><!-- recipient --></a>
                     </span>
-                    <md-button style="float: right"
-                               label:aria-label="Hide"
-                               ng-click="viewer.toggleDetailedRecipients($event)">
-                      <var:string label:value="Hide"/>
-                    </md-button>
                   </div>
                 </div>
                 <div class="pseudo-input-container--compact" ng-show="viewer.$showDetailedRecipients">
@@ -161,6 +156,11 @@
                       <a href="#" ng-bind="recipient.full"
                          ng-click="viewer.newMessage($event, recipient)"><!-- recipient --></a>
                     </span>
+                    <md-button style="float: right"
+                               label:aria-label="Hide"
+                               ng-click="viewer.toggleDetailedRecipients($event)">
+                      <var:string label:value="Hide"/>
+                    </md-button>
                   </div>
                 </div>
               </div>
@@ -212,7 +212,7 @@
           <!-- Load external images -->
           <md-whiteframe class="md-whiteframe-z2 sg-no-print" layout="row" layout-align="space-between center"
                          ng-show="viewer.message.$hasUnsafeContent">
-            <div layout="row" layout-align="start center" class="layout-fill">
+            <div layout="row" layout-align="start center" layout-fill="layout-fill">
               <div class="md-tile-left">
                 <md-icon>collections</md-icon>
               </div>
@@ -234,7 +234,7 @@
               </div>
               <p class="sg-padded--right"><var:string label:value="The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?"/></p>
             </div>
-            <div class="layout-fill" layout="row" layout-align="end center">
+            <div layout-fill="layout-fill" layout="row" layout-align="end center">
               <md-button label:aria-label="No"
                          type="button"
                          ng-click="viewer.message.shouldAskReceipt = 0"><var:string label:value="No"/></md-button>
@@ -251,7 +251,7 @@
                 <div class="mailer_mailcontent" layout="row" layout-wrap="layout-wrap"
                      ng-repeat="part in viewer.message.$content()"
                      ng-class="part.msgclass">
-                  <div ng-if="part.html" ng-bind-html="part.content | ensureTarget"><!-- msg --></div>
+                  <div class="md-flex" ng-if="part.html" ng-bind-html="part.content | ensureTarget"><!-- msg --></div>
                   <div ng-if="part.compile" class="md-flex" sg-compile="part.content" sg-zoomable-image="sg-zoomable-image"><!-- msg --></div>
                 </div>
               </div>
@@ -260,7 +260,7 @@
         </md-card-content>
       </md-card>
     </div>
-    <div class="layout-fill sg-back" layout="column">
+    <div class="sg-back" layout="column" layout-fill="layout-fill">
       <md-card>
         <md-card-actions flex-none="flex-none" layout="row" layout-align="end center">
           <div class="md-flex"><!-- spacer --></div>
