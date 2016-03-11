@@ -38,8 +38,8 @@
       <label class="pseudo-input-label"><var:string label:value="CC"/></label>
       <div>
         <var:string value="ccAddresses"/>
-    </div>
+      </div>
     </div>
   </var:if>
-  <br/>
+  <md-divider class="md-margin"><!-- divider --></md-divider>
 </div>
