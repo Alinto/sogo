@@ -2017,7 +2017,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSMutableString *s;
   id collection;
   NSData *d;
-  
+  NSAutoreleasePool *pool;
 
   int i, j, heartbeatInterval, defaultInterval, internalInterval, status;
   
@@ -2076,6 +2076,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // We enter our loop detection change
   for (i = 0; i < (heartbeatInterval/internalInterval); i++)
     {
+      pool = [[NSAutoreleasePool alloc] init];
       for (j = 0; j < [allFoldersID count]; j++)
         {
           collectionId = [allFoldersID objectAtIndex: j];
@@ -2100,7 +2101,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               [foldersWithChanges addObject: collectionId];
             }
         }
-      
+      DESTROY(pool);
+
       if ([foldersWithChanges count])
         {
           [self logWithFormat: @"Change detected using Ping, we let the EAS client know to send a Sync."];
