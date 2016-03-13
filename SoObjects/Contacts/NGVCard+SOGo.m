@@ -19,6 +19,8 @@
  */
 
 
+#import <Foundation/NSTimeZone.h>
+
 #import <NGExtensions/NSNull+misc.h>
 
 #import <NGCards/NSArray+NGCards.h>
