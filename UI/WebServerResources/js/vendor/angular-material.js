@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-3f34900
+ * v1.0.6-master-48a3b9c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -4773,14 +4773,14 @@ var DARK_FOREGROUND = {
   name: 'dark',
   '1': 'rgba(0,0,0,0.87)',
   '2': 'rgba(0,0,0,0.54)',
-  '3': 'rgba(0,0,0,0.26)',
+  '3': 'rgba(0,0,0,0.38)',
   '4': 'rgba(0,0,0,0.12)'
 };
 var LIGHT_FOREGROUND = {
   name: 'light',
   '1': 'rgba(255,255,255,1.0)',
   '2': 'rgba(255,255,255,0.7)',
-  '3': 'rgba(255,255,255,0.3)',
+  '3': 'rgba(255,255,255,0.5)',
   '4': 'rgba(255,255,255,0.12)'
 };
 
@@ -25242,4 +25242,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.6-master-3f34900"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.6-master-48a3b9c"}};
