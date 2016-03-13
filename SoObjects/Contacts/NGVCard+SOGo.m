@@ -818,7 +818,7 @@ convention:
       value = [bday stringByReplacingString: @"-" withString: @""];
       date = [NSCalendarDate dateFromShortDateString: value
                                   andShortTimeString: nil
-                                          inTimeZone: nil];
+                                          inTimeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
     }
   
   return date;
