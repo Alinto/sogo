@@ -24,6 +24,8 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
 
+#import <Foundation/NSTimeZone.h>
+
 #import <NGExtensions/NSNull+misc.h>
 
 #import <NGCards/NSArray+NGCards.h>
