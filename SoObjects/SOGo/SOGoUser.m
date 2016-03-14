@@ -718,8 +718,6 @@
   replyTo = [_defaults mailReplyTo];
 
   max = [mails count];
-  if (max > 1)
-    max--;
 
   /* custom from */
   if ([[self domainDefaults] mailCustomFromEnabled])
@@ -777,7 +775,7 @@
       [identities addObject: identity];
 
       if ([[identity objectForKey: @"email"] caseInsensitiveCompare: defaultEmail] == NSOrderedSame)
-            default_identity = [identities count]-1;
+        default_identity = [identities count]-1;
 
       [identity release];
     }
