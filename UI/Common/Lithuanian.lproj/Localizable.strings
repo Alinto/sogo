@@ -1,0 +1,109 @@
+/* this file is in UTF-8 format! */
+
+/* toolbars */
+"Save" = "Išsaugoti";
+"Close" = "Uždaryti";
+"Edit User Rights" = "Redaguoti vartotojo teises";
+"Home" = "Namai";
+"Calendar" = "Kalendorius";
+"Address Book"	= "Adresų knyga";
+"Mail" = "paštas";
+"Preferences" = "Nustatymai";
+"Administration" = "Administracija";
+"Disconnect" = "Atsijungti";
+"Toggle Menu" = "Perjungti meniu";
+"Right Administration" = "Teisinė administracija";
+"Log Console (dev.)" = "Log konsolė (dev.)";
+"User" = "Vartotojas";
+"Vacation message is enabled" = "Atostogų žinutė įgalinta";
+"Help" = "Pagalba";
+"noJavascriptError" = "SOGo paleisti reikalingas JavaScript'as. Prašome įsitikinti, kad ši galimybė yra prieinama ir aktyvi per naršyklės nuostatas.";
+"noJavascriptRetry" = "Bandykit dar kartą";
+"Owner" = "Savininkas";
+"Publish the Free/Busy information" = "Publikuoti užimtumo informaciją";
+"Add..." = "Pridėti...";
+"Remove" = "Pašalinti";
+"Subscribe User" = "Prenumeruoti vartotoją";
+"Any Authenticated User" = "Bet kokiam autentifikuotam vartotojui";
+"Public Access" = "Vieša prieiga";
+"Any user not listed above" = "Bet kuris vartotojas, nesantis aukščiau išvardytų";
+"Anybody accessing this resource from the public area" = "Kas nors jungiansi prie šio šaltinio iš viešos erdvės";
+"Sorry, the user rights can not be configured for that object." = "Atsiprašome, vartotojo teisės negali būti konfiguruojamos šiam objektui.";
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Bet koks vartotojas su paskyra šioje systemoje galės prieiti prie Jūsų elektroninės pašto dėžutės \"%{0}\". Ar Jūs tikrai jais pasitikite?";
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "Bet koks vartotojas su paskyra šioje systemoje galės prieiti prie Jūsų kalendoriaus \"%{0}\". Ar Jūs tikrai jais pasitikite?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Potencialiai visi internete galės prieiti prie Jūsų kalendoriaus \"%{0}\", net jei jie ir neturi paskyros šioje sistemoje. Ar ši informacija tinka viešai prieigai?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Visi vartotojai su paskyromis šioje sistemoje galės prieiti prie adresų knygos \"%{0}\". Ar Jūs tikrai jais pasitikite?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Potencialiai visi internete galės prieiti prie Jūsų adresų knygos \"%{0}\", net jei jie ir neturi paskyros šioje sistemoje. Ar ši informacija tinka viešai prieigai?";
+"Give Access" = "Suteikti prieigą";
+"Keep Private" = "Išlaikyti privatų";
+/* generic.js */
+"Unable to subscribe to that folder!"
+	= "Neįmanoma prenumeruoti šio aplanko!";
+"You cannot subscribe to a folder that you own!"
+      	= "Jūs negalite prenumeruoti savo aplanko!";
+"Unable to unsubscribe from that folder!"
+	= "Negalima neprenumeruoti iš šio aplanko!";
+"You cannot unsubscribe from a folder that you own!"
+      	= "Jūs negalite neprenumeruoti savo aplanko!";
+"Unable to rename that folder!" = "Negalima pervardinti aplanko!";
+"You have already subscribed to that folder!"
+     	= "Jūs jau prenumeruojate šį aplanką!";
+"The user rights cannot be edited for this object!"
+        = "Vartotojo teisės negali būti keičiamos šiam objektui!";
+"A folder by that name already exists." = "Aplankas tokiu pavadinimu jau egzistuoja.";
+"You cannot create a list in a shared address book." 
+        = "Jūs negalite sukurti sąrašo pasidalinameme adresų knygoje.";
+"Warning" = "Įspėjimas";
+"Can't contact server" = "Įvyko klaida, kai buvo bandoma susisiekti su serveriu. Prašome bandyti dar kartą.";
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "Jūms negalima prieiti prie šio modulio ar šios sistemos. Prašome susitiekti su Jūsų sistemos administratoriumi.";
+"You don't have the required privileges to perform the operation."
+= "Jūs neturite reikalingų privilėgijų atlikti šiaim veiksmui.";
+"noEmailForDelegation" = "Jūs turite nurodyti adresą, kurį norite perduoti Jūsų kvietime.";
+"delegate is organizer" = "Atstovas yra kelionių organizatorius. Prašome nurodyti kitą ";
+"delegate is a participant" = "Atstovas jau yra dalyvis.";
+"delegate is a group" = "Nurodytas adresas atitinka grupę. Jūs galite tik atstovauti unikalų asmenį.";
+"Snooze for " = "Nusnausti";
+"5 minutes" = "5 minutes";
+"10 minutes" = "10 minučių";
+"15 minutes" = "15 minučių";
+"30 minutes" = "30 minučių";
+"45 minutes" = "45 minutes";
+"1 hour" = "1 valanda";
+"1 day" = "1 diena";
+/* common buttons */
+"OK" = "Gerai";
+"Cancel" = "Atšaukti";
+"Yes" = "Taip";
+"No" = "Ne";
+/* alarms */
+"Reminder" = "Priminimas";
+"Start" = "Pradėti";
+"Due Date" = "Terminas";
+"Location" = "Vietovė";
+/* mail labels */
+"Important" = "Svarbu";
+"Work" = "Darbas";
+"Personal" = "Asmeninis";
+"To Do" = "Padaryti";
+"Later" = "Vėliau";
+"a2_Sunday" = "S";
+"a2_Monday" = "P";
+"a2_Tuesday" = "A";
+"a2_Wednesday" = "T";
+"a2_Thursday" = "K";
+"a2_Friday" = "Pn";
+"a2_Saturday" = "Š";
+"Access Rights" = "Prieigos teisės";
+"Add User" = "Pridėti vartotoją";
+"Loading" = "Įkrovimas";
+"No such user." = "Tokio vartotojo nėra.";
+"You cannot (un)subscribe to a folder that you own!" = "Jūs negalite (atsisakyti) užsiregistruoti šio aplanką, nes jis jums priklauso!";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Įveskite bent %{minimumSearchLength} simbolius";

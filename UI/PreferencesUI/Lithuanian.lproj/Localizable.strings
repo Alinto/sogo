@@ -1,0 +1,350 @@
+/* toolbar */
+"Save and Close" = "Išsaugoti ir uždaryti";
+"Close" = "Uždaryti";
+"Preferences saved" = "Nustatymai išsaugoti";
+
+/* tabs */
+"General" = "Bendras";
+"Calendar Options" = "Bendri nustatymai";
+"Contacts Options" = "Kontaktų nustatymai";
+"Mail Options" = "Elektroninio pašto nustatymai";
+"IMAP Accounts" = "IMAP paskyros";
+"Vacation" = "Profesija";
+"Forward" = "Pirmyn";
+"Password" = "Slaptažodis";
+"Categories" = "Kategorijos";
+"Appointments invitations" = "Paskyrimai kvietimai";
+"Name" = "Vardas";
+"Color" = "Spalva";
+"Add" = "Pridėti";
+"Delete" = "Ištrinti";
+
+/* contacts categories */
+"contacts_category_labels" = "Kolega, Konkurentas, Klientas, Draugas, Šeima, Verslo partneris, Tiekėjas, Spauda, VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Įgalinti automatinį atsakymo pranešimą";
+"Auto reply message" = "Automatinė atsakymo žinutė";
+"Email addresses (separated by commas)" = "Elektroninio adreso (atskirto kableliais)";
+"Add default email addresses" = "Pridėti numatytajį elektroninį adresą";
+"Days between responses" = "Dienos iki atsakymo";
+"Do not send responses to mailing lists" = "Nesiųsti atsakymo į pašto sąrašus";
+"Disable auto reply on" = "Išjungti automatinį atsakymą";
+"Always send vacation message response" = "Visada atsiųsti atsakomąją žinutę";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Prašome nurodyti savo pranešimą ir savo elektroninio pašto adresą, kurį norite įgalinti automatiniam atsakymui.";
+"Your vacation message must not end with a single dot on a line." = "Jūsų pranešimas neturi baigtis vienu tašku eilutėje.";
+"End date of your auto reply must be in the future."
+= "Jūsų automatinio atsakymo pabaigos data turi būti ateityje.";
+
+/* forward messages */
+"Forward incoming messages" = "Persiųsti gaunamus laiškus";
+"Keep a copy" = "Pasilikti kopiją";
+"Please specify an address to which you want to forward your messages."
+= "Prašome nurodyti adresą, kurį norite persiųsti laiškus.";
+"You are not allowed to forward your messages to an external email address." = "Jums neleidžiama persiųsti savo laiškus į įšorinį el. pašto adresą.";
+"You are not allowed to forward your messages to an internal email address." = "Jums neleidžiama persiųsti savo laiškus į vidinį el. pašto adresą.";
+
+/* d & t */
+"Current Time Zone" = "Dabartinė Laiko Zona";
+"Short Date Format" = "Trumpasis datos formatas";
+"Long Date Format" = "Ilgasis datos formatas";
+"Time Format" = "Laiko formatas";
+"default" = "Numatytasis";
+"Default Module" = "Numatytasis modulis";
+"Save" = "Išsaugoti";
+"shortDateFmt_0" = "%d-%b-%y";
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+"shortDateFmt_9" = "%y/%m/%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "";
+   
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* calendar */
+"Week begins on" = "Savaitė prasideda nuo";
+"Day start time" = "Diena prasideda nuo";
+"Day end time" = "Diena baigiaisi";
+"Day start time must be prior to day end time." = "Dienos pradžios laikas turi būti prieš dienos pabaigos laiką.";
+"Show time as busy outside working hours" = "Rodyti laiką, kai užimtas ne darbo metu.";
+"First week of year" = "Pirma metų savaitė";
+"Enable reminders for Calendar items" = "Įgalinti kelendorinius priminimus";
+"Play a sound when a reminder comes due" = "Paleisi priminimo garsą, kai jis iššoka";
+"Default reminder" = "Numatytasis priminimas";
+"firstWeekOfYear_January1" = "Prasideda Sausio 1 d.";
+"firstWeekOfYear_First4DayWeek" = "Pirma 4 dienų savaitė";
+"firstWeekOfYear_FirstFullWeek" = "Pirma pilna savaitė";
+"Prevent from being invited to appointments" = "Neleisti kviesti į susitikimus";
+"White list for appointment invitations" = "Baltas sąrašas paskyrimo kvietimams";
+"Contacts Names" = "Kontaktų vardai";
+
+/* Default Calendar */
+"Default calendar" = "Numatysasis kalendorius";
+"selectedCalendar" = "Pasirinktas kalendorius";
+"personalCalendar" = "Asmeninis kalendorius";
+"firstCalendar" = "Pirmas įgalintas kalendorius";
+"reminder_NONE" = "Jokio priminimo";
+"reminder_5_MINUTES_BEFORE" = "pries 5 minutes";
+"reminder_10_MINUTES_BEFORE" = "prieš 10 minučių";
+"reminder_15_MINUTES_BEFORE" = "prieš 15 minučių";
+"reminder_30_MINUTES_BEFORE" = "prieš 30 minučių";
+"reminder_45_MINUTES_BEFORE" = "prieš 45 minutes";
+"reminder_1_HOUR_BEFORE" = "prieš 1 valandą";
+"reminder_2_HOURS_BEFORE" = "prieš 2 valandas";
+"reminder_5_HOURS_BEFORE" = "prieš 5 valandas";
+"reminder_15_HOURS_BEFORE" = "prieš 15 valandų";
+"reminder_1_DAY_BEFORE" = "prieš 1 dieną";
+"reminder_2_DAYS_BEFORE" = "prieš 2 dienas";
+"reminder_1_WEEK_BEFORE" = "prieš 1 savaitę";
+
+/* Mailer */
+"Labels" = "Etiketės";
+"Label" = "Etiketė";
+"Show subscribed mailboxes only" = "Rodyti tik pasirašytas pašto dėžutes";
+"Sort messages by threads" = "Rūšiuoti pranešimus pagal temas";
+"When sending mail, add unknown recipients to my" = "Siunčiant paštą, pridėti nežinomų  gavėjus į mano";
+"Address Book" = "Adresų knyga";
+"Forward messages" = "Persiųsti laiškus";
+"messageforward_inline" = "Pagal";
+"messageforward_attached" = "Kaip priedą";
+"When replying to a message" = "Kai atsakote į pranešimą";
+"replyplacement_above" = "Pradėti mano atsakymą virš kvotos";
+"replyplacement_below" = "Pradėti mano atsakymą po kvota";
+"And place my signature" = "Ir mano parašą";
+"signatureplacement_above" = "po mano atsakymo";
+"signatureplacement_below" = "po kvotos";
+"Compose messages in" = "Kurti pranešimus";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Paprastas tekstas";
+"Display remote inline images" = "Rodyti nuotolinius įdėtus vaizdus";
+"displayremoteinlineimages_never" = "Niekada";
+"displayremoteinlineimages_always" = "Visada";
+"Auto save every" = "Automatiškai išsaugoti viską";
+"minutes" = "minutės";
+
+/* Contact */
+"Personal Address Book" = "Asmeninė adresų knyga";
+"Collected Address Book" = "Surinkta adresų knyga";
+
+/* IMAP Accounts */
+"Mail Account" = "Pašto paskyra";
+"New Mail Account" = "Nauja pašto paskyra";
+"Server Name" = "Serverio pavadinimas";
+"Port" = "Prievadas";
+"Encryption" = "Šifravimas";
+"None" = "Nė vienas";
+"User Name" = "Vartotojo vardas\n";
+"Full Name" = "Pilvas vardas";
+"Email" = "Elektroninis paštas";
+"Reply To Email" = "Atsakyti į elektroninį laišką";
+"Signature" = "Parašas";
+"(Click to create)" = "(Sukurti)";
+"Please enter your signature below" = "Prašome įvesti Jūsų parašą žemiau";
+"Please specify a valid sender address." = "Prašome nurodyti galiojantį siuntėjo adresą.";
+"Please specify a valid reply-to address." = "Prašome nurodyti galiojantį atsakymo adresą.";
+
+/* Additional Parameters */
+"Additional Parameters" = "Papildomi parametrai";
+
+/* password */
+"New password" = "Naujas slaptažodis";
+"Confirmation" = "Patvirtinimas";
+"Change" = "Pakeisti";
+
+/* Event+task classifications */
+"Default events classification" = "Numatytujų renginių klasifikacija";
+"Default tasks classification" = "Numatytų užduočių klasifikacija";
+"PUBLIC_item" = "Viešas";
+"CONFIDENTIAL_item" = "Konfidencialus";
+"PRIVATE_item" = "Privatus";
+
+/* Event+task categories */
+"Calendar Category" = "Kalendoriaus kategorija";
+"Add Calendar Category" = "Pridėti kalendoriaus kategoriją";
+"Remove Calendar Category" = "Pašalinti kalendoriaus kategoriją";
+"Contact Category" = "Kontakto kategorija";
+"Add Contact Category" = "Pridėti kontakto kategoriją";
+"Remove Contact Category" = "Pašalinti kontakto kategoriją";
+"category_none" = "Nė vienas";
+"calendar_category_labels" = "Jubiliejus, Gimtadienis, Verslas, Skambučiai, Klientai, Varžytuvės, Pirkėjas, Mėgstami, Sekami, Dovanos, Atostogos, Idėjos, Susitikimas, Problemos, Įvairūs, Asmeninis, Projektai, Valstybinės šventės, Statusas, Tiekėjai, Kelionės, Atostogos ";
+
+/* Default module */
+"Calendar" = "Kalendorius";
+"Contacts" = "Adresų knyga";
+"Mail" = "Paštas";
+"Last" = "Paskutinis naudotas";
+"Default Module " = "Numatytasis modulis";
+"SOGo Version" = "SOGo versija";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Išsaugoti nustatymus ir perkraukite puslapį dabar?";
+"Language" = "Kalba";
+"choose" = "Pasirinkti: ...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Catalan" = "Català";
+"ChineseTaiwan" = "Kinų (Taivanis)";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Makedonų";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Portugalų";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovėnų";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+"Refresh View" = "Atnaujinti vaizdą";
+"refreshview_manually" = "Rankiniu būdu";
+"refreshview_every_minute" = "Kiekvieną minutę";
+"refreshview_every_2_minutes" = "Kas 2 minutes";
+"refreshview_every_5_minutes" = "Kas 5 minutes";
+"refreshview_every_10_minutes" = "Kas 10 minučių";
+"refreshview_every_20_minutes" = "Kas 20 minučių";
+"refreshview_every_30_minutes" = "Kas 30 minučių";
+"refreshview_once_per_hour" = "Kartą per valandą";
+
+/* Return receipts */
+"When I receive a request for a return receipt" = "Kai aš gaunu užklausa dėl grąžinimo gavimo";
+"Never send a return receipt" = "Niekada nesiųsti grąžinimo gavimo";
+"Allow return receipts for some messages" = "Leisti grąžinimo kvitus kai kuriems pranešimams";
+"If I'm not in the To or Cc of the message" = "Jei aš nesu Kam ar Kopijos žinutėje";
+"If the sender is outside my domain" = "Jei siuntėas yra už mano domeno";
+"In all other cases" = "Visais kitais atvejais";
+"Never send" = "Niekada nesiųstis";
+"Always send" = "Visada siųsti";
+"Ask me" = "Paklausti manęs";
+
+/* Filters - UIxPreferences */
+"Filters" = "Filtrai";
+"Active" = "Aktyvus";
+"Move Up" = "Perkelti aukštyn";
+"Move Down" = "Perkelti žemyn";
+"Connection error" = "Sujungimo klaida";
+"Service temporarily unavailable" = "Paslauga laikinai nepasiekiama";
+
+/* Filters - UIxFilterEditor */
+"Filter name" = "Filtro pavadinimas";
+/* Button label */
+"Add a condition" = "Pridėti būklę";
+/* Button label */
+"Add an action" = "Pridėti veiksmą";
+"For incoming messages that" = "Už gaunamus pranešimus";
+"match all of the following rules" = "atitikti visas šias taisykles:";
+"match any of the following rules" = "atitinka bet kurią iš šių taisyklių";
+"match all messages" = "Atitikti visus pranešimus";
+"Perform these actions" = "Atlikti šiuos veiksmus";
+"Untitled Filter" = "Filtras be pavadinimo";
+"Subject" = "Tema";
+"From" = "Nuo";
+"To" = "Kam";
+"Cc" = "Papildomi gavėjai";
+"To or Cc" = "Kam arba papildomi gavėjai";
+"Size (Kb)" = "Dydis (Kb)";
+"Header" = "Antraštė";
+"Body" = "Turinys";
+"Flag the message with" = "Pažymėti laiška su";
+"Discard the message" = "Išmesti laišką";
+"File the message in" = "Failas pranešime";
+"Keep the message" = "Laikyti pranešimą";
+"Forward the message to" = "Persiųsti laišką kam";
+"Send a reject message" = "Siųsti atmetimo žinutę";
+"Send a vacation message" = "Siųsti atosgoų pranešimą";
+"Stop processing filter rules" = "Sustabdyti filtrų taisyklių procesą";
+"is under" = "Pagal";
+"is over" = "yra daugiau nei";
+"is" = "yra";
+"is not" = "nėra";
+"contains" = "yra";
+"does not contain" = "nėra";
+"matches" = "sutampa";
+"does not match" = "nesutampa";
+"matches regex" = "Atitinka įpraišką";
+"does not match regex" = "neatitinka įpraiškos";
+/* Placeholder for the value field of a condition */
+"Value" = "Vertė";
+"Seen" = "Matyta";
+"Deleted" = "Ištrintos";
+"Answered" = "Atsakybos";
+"Flagged" = "Pažymėtos";
+"Junk" = "Šlamštas";
+"Not Junk" = "Ne šlamštas";
+
+/* Password policy */
+"The password was changed successfully." = "Slaptažodis sėkmingai pakeistas.";
+"Password must not be empty." = "Slaptažodis ne turi būti tuščias.";
+"The passwords do not match. Please try again." = "Neatitinka slaptažodis. Prašome pabandyti dar kartą.";
+"Password change failed" = "Slaptažodžio keitimo klaida";
+"Password change failed - Permission denied" = "Slaptažodžio keitimo klaida - Neturite leidimo";
+"Password change failed - Insufficient password quality" = "Slaptažoždio keitimo klaida - Nepakankama slaptažodžio kokybė";
+"Password change failed - Password is too short" = "Slaptažodžio keitimo klaida - Slaptažodis yra per trumpas";
+"Password change failed - Password is too young" = "Slaptažodžio keitimo klaida - Slaptažodis yra per silpnas";
+"Password change failed - Password is in history" = "Slaptažodžio keitimo klaida - Toks slaptažodis jau buvo";
+"Unhandled policy error: %{0}" = "Neapdoroto poliso klaida: %{0}";
+"Unhandled error response" = "Neapdorotas klaidos atsakas";
+"Password change is not supported." = "Slaptažodžio keitimas nepalaikomas.";
+"Unhandled HTTP error code: %{0}" = "Neapdorotas HTTP klaidos kodas: %{0}";
+"Cancel" = "Atšaukti";
+"Invitations" = "Kvietimas";
+"Edit Filter" = "Redaguoti filtrą";
+"Delete Filter" = "Ištrinti filtrą";
+"Create Filter" = "Sukurti filtrą";
+"Delete Label" = "Ištrinti etiketę";
+"Create Label" = "Sukurti etiketę";
+"Accounts" = "Paskyros";
+"Edit Account" = "Redaguoti paskyrą";
+"Delete Account" = "Ištrinti paskyrą";
+"Create Account" = "Sukurti paskyrą";
+"Account Name" = "Paskyros vadas";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Alternate Avatar" = "Alternatyvus avataras";
+"none" =  "Nėra";
+"identicon" = "Identiška piktograma";
+"monsterid" = "Monstras";
+"wavatar" = "Wavatar";
+"retro" = "Retro";

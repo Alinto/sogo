@@ -1,0 +1,228 @@
+/* this file is in UTF-8 format! */
+
+"Contact" = "Adresatas";
+"Address" = "Adresas";
+"Photos" = "Nuotraukos";
+"Other" = "Kita";
+"Address Books" = "Adresų knygos";
+"Addressbook" = "Adresų knyga";
+"Addresses" = "Adresai";
+"Update" = "Atnaujinti";
+"Cancel" = "Atšaukti";
+"Common" = "Bendras";
+"Contact editor" = "Kontaktų redaktorius";
+"Contact viewer" = "Kontaktų peržiūra";
+"Email" = "Elektroninis paštas";
+"Screen Name" = "Ekrano vardas";
+"Extended" = "Išplėstas";
+"Fax" = "Faksas";
+"Firstname" = "Vardas";
+"Home" = "Namai";
+"HomePhone" = "Namų telefonas";
+"Lastname" = "Pavardė";
+"Location" = "Vietovė";
+"Add a category" = "Pridėti kategoriją";
+"MobilePhone" = "Mobilus Telefonas";
+"Name" = "Vardas";
+"OfficePhone" = "Biuro telefonas";
+"Organization" = "Organizacija";
+"Work Phone" = "Darbo telefonas";
+"Phone" = "Telefonas";
+"Phones" = "Telefonai";
+"Postal" = "Pašto indeksas";
+"Save" = "Išsaugoti";
+"Internet" = "Internetas";
+"Unit" = "Vienetas";
+"delete" = "trinti";
+"edit" = "redaguoti";
+"invalidemailwarn" = "Neteisingai nurodytas elektroninis paštas";
+"new" = "naujas";
+"Preferred Phone" = "Pagrindinis telefonas";
+"Move To" = "Perkelti į";
+"Copy To" = "Kopijuoti į";
+"Add to" = "Pridėti prie";
+/* Subheader of empty addressbook */
+"No contact" = "Nėra kontakto";
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Pradėti paiešką šioje adresų knygelėje";
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "kontaktai";
+/* No contact matching search criteria */
+"No matching contact" = "Nėra atitinkamo kontakto";
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "atitinkantys kontaktai";
+/* Number of selected contacts in list */
+"selected" = "pasirinti";
+/* Empty right pane */
+"No contact selected" = "Nėra pasirinkto kontakto";
+/* Tooltips */
+"Create a new address book card" = "Sukurti naują adresato kortelę";
+"Create a new list" = "Sukurti naują sąrašą";
+"Edit the selected card" = "Redaguoti pasirinktą kortelę";
+"Send a mail message" = "Siūsti el. pašto žinutę";
+"Delete selected card or address book" = "Pašalinti pažymėtą kortelę arba adresų knygą";
+"Reload all contacts" = "Atnaujinti visus kontaktus";
+"htmlMailFormat_UNKNOWN" = "Nežinomas";
+"htmlMailFormat_FALSE" = "Paprastas tekstas";
+"htmlMailFormat_TRUE" = "HTML";
+"Name or Email" = "Vardas arba el. paštas";
+"Category" = "Kategorija";
+"Personal Addressbook" = "Asmeninė adresų knyga";
+"Search in Addressbook" = "Ieškoti adresų knygoje";
+"New Card" = "Nauja kortelė";
+"New List" = "Naujas sąrašas";
+"Edit" = "Tvarkyti";
+"Properties" = "Savybės";
+"Sharing..." = "Bendrinti...";
+"Write" = "Rašyti";
+"Delete" = "Panaikinti";
+"Instant Message" = "Greitoji žinutė";
+"Add..." = "Pridėti";
+"Remove" = "Pašalinti";
+"Please wait..." = "Prašome palaukti...";
+"No possible subscription" = "Nėra įmanomos prenumeratos";
+"Preferred" = "Pageidautina";
+"Display" = "Rodyti";
+"Display Name" = "Ekrano vardas";
+"Additional Email" = "Papildomas elektroninis paštas:";
+"Phone Number" = "Telefono numeris:";
+"Prefers to receive messages formatted as" = "Pirmenybę gauti pranešimus suformatuota taip";
+"Categories" = "Kategorijos";
+"First" = "Vardas:";
+"Last" = "Pavardė:";
+"Nickname" = "Slapyvardis:";
+"Telephone" = "Telefonas";
+"Work" = "Darbo";
+"Mobile" = "Mobilus:";
+"Pager" = "Gaviklis:";
+/* categories */
+"contacts_category_labels" = "Kolega, konkurentas, Klientas, Draugas, Šeima, Verslo partneris, Teikėjas, Spauda, VIP";
+"New category" = "Nauja kategorija";
+/* adresses */
+"Title" = "Pavadinimas";
+"Service" = "Paslaugos";
+"Company" = "Įmonė";
+"Department" = "Skyrius";
+"City" = "Miestas";
+"State_Province" = "Valstija/Provincija";
+"ZIP_Postal Code" = "Pašto kodas";
+"Country" = "Šalis";
+"Web Page" = "Tinklapis";
+"Other Infos" = "Kita informacija";
+"Note" = "Pastaba";
+"Timezone" = "Laiko juosta";
+"Birthday" = "Gimtadienis";
+"Birthday (yyyy-mm-dd)" = "Gimtadienis (yyyy-mm-dd):";
+"Freebusy URL" = "Laisvalaikiui ir užimto adresas";
+"Add as..." = "Pridėti kaip...";
+"Recipient" = "Gavėjas";
+"Carbon Copy" = "Kopija";
+"Blind Carbon Copy" = "Nematoma kopija";
+"New Addressbook..." = "Nauja adresų knyga...";
+"Subscribe to an Addressbook..." = "Įsirašyti į adresų knygą...";
+"Remove the selected Addressbook" = "Ištrinti pažymętus iš adresų knygos";
+"Subscribe to a shared folder" = "Prenumeruoti aplankas";
+"Search User" = "Ieškoti vartotojo";
+"Name of the Address Book" = "Adresų knygos pavadinimas";
+"Are you sure you want to delete the selected address book?"
+= "Ar jūs įsitikinęs, jog norite ištrinti pažymėtą adresų knygą?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "Jūs negalite pašalinti arba atsisakyti iš viešos adresų knygos.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "Jūs negalite pašalinti arba atsisakyti iš jūsų asmeninės adresų knygos.";
+"Are you sure you want to delete the selected contacts?"
+= "Ar tikrai norite ištrinti pasirinktus kontaktus?";
+"You cannot delete the card of \"%{0}\"."
+= "Jūs negalite trinti kortelės iš \"%{0}\".";
+"You cannot subscribe to a folder that you own!"
+= "Jūs negalite prisijungti prie aplanko kuris jums priklauso.";
+"Unable to subscribe to that folder!"
+= "Nepavyko prisijungti prie šio aplanko.";
+/* acls */
+"Access rights to" = "Prieigos teisės";
+"For user" = "Vartotojui";
+"Any Authenticated User" = "Visiems autorizuotiems vartotojams";
+"Public Access" = "Viešas priėjimas";
+"This person can add cards to this addressbook."
+= "Šis asmuo gali pridėti korteles šioje adresų knygoje.";
+"This person can edit the cards of this addressbook."
+= "Šis asmuo gali tvarkyti korteles šioje adresų knygoje.";
+"This person can list the content of this addressbook."
+= "Šis asmuo gali žiūrėti korteles šioje adresų knygoje.";
+"This person can read the cards of this addressbook."
+= "Šis asmuo gali skaityti korteles šioje adresų knygoje.";
+"This person can erase cards from this addressbook."
+= "Šis asmuo gali trinti korteles šioje adresų knygoje.";
+"The selected contact has no email address."
+= "Pažymėtame kontakte nėra elektroninio pašto adreso.";
+"Please select a contact." = "Prašome pažymėti kontaktą.";
+/* Error messages for move and copy */
+"SoAccessDeniedException" = "Jūs negalite įrašyti į šią adresų knygą.";
+"Forbidden" = "Jūs negalite įrašyti į šią adresų knygą.";
+"Invalid Contact" = "Pažymėtas kontaktas neegzistuoja.";
+"Unknown Destination Folder" = "Pasirinkta vieta adresų knygoje neegzistuoja.";
+/* Lists */
+"List details" = "Detalus sąrašas";
+"List name" = "Sarašo pavadinimas";
+"List nickname" = "Sarašo slapyvardis";
+"List description" = "Sąrašo aprašymas";
+"Members" = "Nariai";
+"Contacts" = "Kontaktai:";
+"Add" = "Pridėti";
+"Lists can't be moved or copied." = "Sąrašų negali būti perkelti ar nukopijuoti.";
+"Export" = "Eksportas";
+"Export Address Book..." = "Eksportuoti adresų knygą...";
+"View Raw Source" = "Peržiūrėti atvirus šaltinius";
+"Import Cards" = "Importuoti korteles";
+"Select a vCard or LDIF file." = "Pažymėkite vCard arba LDIF bylas.";
+"Upload" = "Įkelti";
+"Uploading" = "Įkeliama";
+"Done" = "Atlikta";
+"An error occured while importing contacts." = "Importuojant kontaktus įvyko klaida.";
+"No card was imported." = "Kortelė nebuvo importuota.";
+"A total of %{0} cards were imported in the addressbook." = "Iš viso %{0} kortelės buvo importuotos į adresų knygą.";
+"Reload" = "Perkrauti";
+/* Properties window */
+"Address Book Name" = "Adresų knygos pavadinimas";
+"Links to this Address Book" = "Nuoroda į adresų knygą";
+"Authenticated User Access" = "Autorizuotų vartotojų prieigos";
+"CardDAV URL" = "CardDAV nuoroda";
+"Options" = "Nustatymai";
+"Rename" = "Pervadinti";
+"Subscriptions" = "Prenumeratos";
+"Global Addressbooks" = "Visuotinės adresų knygos";
+"Search" = "Paieška";
+"Sort" = "Rūšiuoti";
+"Descending Order" = "Mažėjančia tvarka";
+"Back" = "Atgal";
+"Select All" = "Pažymėti visus";
+"Copy contacts" = "Kopijuoti kontaktus";
+"More messages options" = "Daugiau žinučių nustatymų";
+"New Contact" = "Naujas kontaktas";
+"Close" = "Uždarytis";
+"More contact options" = "Daugiau kontakto nustatymų";
+"Organization Unit" = "Organizacijos vienetas";
+"Add Organizational Unit" = "Pridėti organizacijos vienetą";
+"Type" = "Rūšis";
+"Email Address" = "Elektroninio pašto adresas";
+"New Email Address" = "Naujas elektroninio pašto adresas";
+"New Phone Number" = "Naujas telefono numeris";
+"URL" = "Nuoroda";
+"New URL" = "Nauja nuoroda";
+"street" = "gatvė";
+"Postoffice" = "Pašto skyrius";
+"Region" = "Regionas";
+"Postal Code" = "Pašto kodas";
+"New Address" = "Naujas adresas";
+"Reset" = "Atstatyti";
+"Description" = "Aprašymas";
+"Add Member" = "Pridėti narį";
+"Subscribe" = "Prenumeruoti";
+"Add Birthday" = "Pridėti gimtadienį";
+"Import" = "Importuoti";
+"More options" = "Daugiau nustatymų";
+"Role" = "Taisyklė";
+"Add Screen Name" = "Pridėti ekrano vardą";
+"Synchronization" = "Sinchronizavimas";
+"Synchronize" = "Sinchronizuoti";
+"Successfully subscribed to address book" = "Sėkmingai užsiprenumeravote adresų knygą";
