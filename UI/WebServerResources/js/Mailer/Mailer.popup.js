@@ -179,7 +179,7 @@
       // Message is available from the parent window
       message = new Message(stateMailbox.$account.id,
                             stateMailbox,
-                            window.opener.$messageController.message.$omit());
+                            window.opener.$messageController.message.$omit({privateAttributes: true}));
       return $q.when(message);
     }
     else {

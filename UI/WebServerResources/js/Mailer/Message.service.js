@@ -648,10 +648,11 @@
    * @desc Return a sanitized object used to send to the server.
    * @return an object literal copy of the Message instance
    */
-  Message.prototype.$omit = function() {
-    var message = {};
+  Message.prototype.$omit = function(options) {
+    var message = {},
+        privateAttributes = options && options.privateAttributes;
     angular.forEach(this, function(value, key) {
-      if (key != 'constructor' && key[0] != '$') {
+      if (key != 'constructor' && key[0] != '$' || privateAttributes) {
         message[key] = value;
       }
     });

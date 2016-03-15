@@ -15,6 +15,7 @@ Bug fixes
  - [web] respect super user privileges to create in any calendar and addressbook (#3533)
  - [web] properly null-terminate IS8601-formatted dates (#3539)
  - [web] display CC/BCC fields in message editor when initialized with values
+ - [web] fixed message initialization in popup window (#3583)
 
 3.0.2 (2016-03-04)
 ------------------
