@@ -2154,10 +2154,10 @@ function initMailer(event) {
 }
 
 function initRefreshViewCheckTimer() {
-    // TEMPORARY : to be erase
-    var refreshViewCheck = UserDefaults["SOGoMailMessageCheck"];
+    var refreshViewCheck = UserDefaults["SOGoRefreshViewCheck"];
     if (refreshViewCheck == null)
-        refreshViewCheck = UserDefaults["SOGoRefreshViewCheck"];
+        // NOTE: SOGoMailMessageCheck is deprecated
+        refreshViewCheck = UserDefaults["SOGoMailMessageCheck"];
 
     if (refreshViewCheck && refreshViewCheck != "manually") {
         var interval;
