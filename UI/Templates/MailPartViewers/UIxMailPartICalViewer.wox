@@ -248,7 +248,7 @@
         </div>
 
         <!-- ATTENDEES -->
-        <md-list>
+        <md-list ng-show="part.participants.length > 0">
           <div class="pseudo-input-container">
             <label class="pseudo-input-label"><var:string label:value="Attendees"/></label>
             <!-- md-contact-chips don't support "readonly", so we build them using md-chips
