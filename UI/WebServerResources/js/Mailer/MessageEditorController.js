@@ -14,8 +14,8 @@
     vm.autocomplete = {to: {}, cc: {}, bcc: {}};
     vm.autosave = null;
     vm.autosaveDrafts = autosaveDrafts;
-    vm.hideCc = true;
-    vm.hideBcc = true;
+    vm.hideCc = (stateMessage.editable.cc.length === 0);
+    vm.hideBcc = (stateMessage.editable.bcc.length === 0);
     vm.cancel = cancel;
     vm.save = save;
     vm.send = send;
