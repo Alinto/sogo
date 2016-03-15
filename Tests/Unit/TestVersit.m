@@ -204,7 +204,7 @@
   testEquals([element value: 0 ofAttribute: @"param1"], @"paramvalue1");
   testEquals([element value: 1 ofAttribute: @"param1"], @"paramvalue2");
 
-  versit = @"BEGIN:GROUP1\r\nELEMENT;PARAM1=paramvalue1\\, with comma:value\r\nEND:GROUP1";
+  versit = @"BEGIN:GROUP1\r\nELEMENT;PARAM1=\"paramvalue1, with comma\":value\r\nEND:GROUP1";
   group = [CardGroup parseSingleFromSource: versit];
   testEquals([group versitString], versit);
   element = [group firstChildWithTag: @"element"];
