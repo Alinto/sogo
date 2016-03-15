@@ -33,6 +33,20 @@
       </head>
 
       <body var:ng-app="angularModule" var:class="bodyClasses">
+
+        <noscript>
+          <div layout="column" layout-align="center center" layout-fill="layout-fill">
+            <div class="md-padding">
+              <var:string label:value="noJavascriptError"/>
+            </div>
+            <div>
+              <a class="md-button" var:href="context.applicationURL">
+                <var:string label:value="noJavascriptRetry"/>
+              </a>
+            </div>
+          </div>
+        </noscript>
+
         <var:if condition="isCompatibleBrowser">
           <var:if condition="singleWindowModeEnabled">
             <div id="popupFrame" style="display: none;">
@@ -141,19 +155,6 @@
         <var:if condition="isCompatibleBrowser" const:negate="YES">
           <var:component className="SOGoBrowsersPanel"/>
         </var:if>
-
-        <noscript>
-          <div class="javascriptPopupBackground">
-          </div>
-          <div class="javascriptMessagePseudoWindow noJavascriptErrorMessage">
-            <var:string label:value="noJavascriptError"/>
-            <br/>
-            <br/>
-            <a class="button" var:href="page.context.uri">
-              <var:string label:value="noJavascriptRetry"/>
-            </a>
-          </div>
-        </noscript>
 
       </body>
     </html>
