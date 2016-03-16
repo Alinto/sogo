@@ -32,6 +32,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSCharacterSet.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
@@ -1186,9 +1188,9 @@ struct GlobalObjectId {
       value = [[self mailHeaders] objectForKey: @"references"];
 
       if ([value isKindOfClass: [NSArray class]])
-         reference = [[[value objectAtIndex: 0] componentsSeparatedByString: @" "] objectAtIndex: 0];
+         reference = [[[value objectAtIndex: 0] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] objectAtIndex: 0];
       else
-         reference = [[value componentsSeparatedByString: @" "] objectAtIndex: 0];
+         reference = [[value componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] objectAtIndex: 0];
 
       if ([reference length] > 0)
         [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[reference dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];

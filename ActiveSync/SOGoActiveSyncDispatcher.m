@@ -2864,7 +2864,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         {
           [map setObject: [mailObject messageId] forKey: @"in-reply-to"];
 
-          references = [[[[[mailObject mailHeaders] objectForKey: @"references"] componentsSeparatedByString: @" "] mutableCopy] autorelease];
+          references = [[[[[mailObject mailHeaders] objectForKey: @"references"] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] mutableCopy] autorelease];
 
           // If there is no References: header, initialize it with In-Reply-To.
           if ([mailObject inReplyTo] && ![references count])
