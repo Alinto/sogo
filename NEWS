@@ -17,6 +17,7 @@ Bug fixes
  - [web] display CC/BCC fields in message editor when initialized with values
  - [web] fixed message initialization in popup window (#3583)
  - [web] fixed position of warning when JavaScript is disabled (#3449)
+ - [eas] properly unfold long mail headers (#3152)
 
 3.0.2 (2016-03-04)
 ------------------
