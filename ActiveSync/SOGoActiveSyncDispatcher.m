@@ -931,7 +931,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
        {
          // Search GUID to check name change in cache (diff between IMAP and cache)
          key = [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], [cachedGUIDs objectForKey: [imapGUIDs objectForKey: nameInCache ]]];
-         nkey = [NSString stringWithFormat: @"%@+folder%@", [context objectForKey: @"DeviceId"], [[folderMetadata objectForKey: @"path"] substringFromIndex: 1] ];
+         nkey = [NSString stringWithFormat: @"%@+folder%@", [context objectForKey: @"DeviceId"], [folderMetadata objectForKey: @"path"]];
                    
          if (![key isEqualToString: nkey])
            {
@@ -946,7 +946,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
              [o setTableUrl: [self folderTableURL]];
              [o reloadIfNeeded];
 
-             [[o properties ]  setObject: [[folderMetadata objectForKey: @"path"] substringFromIndex: 1]  forKey: @"displayName"];
+             [[o properties ]  setObject: [folderMetadata objectForKey: @"path"] forKey: @"displayName"];
              [o save];
 
              command_count++;
@@ -966,7 +966,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
          [o setTableUrl: [self folderTableURL]];
          [o reloadIfNeeded];
               
-         [[o properties ]  setObject: [[folderMetadata objectForKey: @"path"] substringFromIndex: 1] forKey: @"displayName"];
+         [[o properties ]  setObject: [folderMetadata objectForKey: @"path"] forKey: @"displayName"];
 
          // clean cache content to avoid stale data
          [[o properties] removeObjectForKey: @"SyncKey"];
