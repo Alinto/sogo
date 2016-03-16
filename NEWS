@@ -13,6 +13,7 @@ Bug fixes
  - allow EAS attachments get on 2nd-level mailboxes (#3505)
  - fixed EAS bday shift (#3518)
  - prefer SOGoRefreshViewCheck to SOGoMailMessageCheck (#3465)
+ - properly unfold long mail headers (#3152)
 
 2.3.8 (2016-02-05)
 ------------------
