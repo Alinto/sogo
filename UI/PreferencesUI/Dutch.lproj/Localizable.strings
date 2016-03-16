@@ -5,7 +5,7 @@
 
 /* tabs */
 "General" = "Algemeen";
-"Calendar Options" = "Agenda";
+"Calendar Options" = "Agenda Opties";
 "Contacts Options" = "Adresboek";
 "Mail Options" = "E-mail";
 "IMAP Accounts" = "IMAP Accounts";
@@ -221,12 +221,13 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
+"Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk Bokmål";
 "NorwegianNynorsk" = "Norsk Nynorsk";
-"BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
 "Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";

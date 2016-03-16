@@ -6,6 +6,7 @@
   NSLanguageCode = "slk"; /* ISO 639-2 */
   NSParentContext = "";
 
+  NSAMPMDesignation = (AM, PM);
   NSCurrencySymbol = "€";
   NSDateFormatString = "%A, %d. %B %Y";
   NSDateTimeOrdering = DMYH;

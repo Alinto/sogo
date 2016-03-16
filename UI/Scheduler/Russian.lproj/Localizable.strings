@@ -437,6 +437,13 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "When I modify my calendar, send a mail to" = "Если я изменяю календарь, отправлять письмо на адрес";
 "Email Address" = "Адрес электронной почты";
 "Export" = "Экспорт";
+
+/* Show only the calendar for which the menu is displayed */ 
+"Show Only This Calendar" = "Показать только этот календарь";
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "Показать все календари";
+
 "Links to this Calendar" = "Ссылки на этот календарь";
 "Authenticated User Access" = "Доступ авторизированных пользователей";
 "CalDAV URL" = "CalDAV URL ";
@@ -502,5 +509,12 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Rename" = "Переименовать";
 "Import Calendar" = "Импортировать календарь";
 "Select an ICS file." = "Выберите iCalendar файл (.ics).";
+
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Успешная подписка на календарь";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Сменить выделение";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Поиск по типу";

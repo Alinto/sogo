@@ -50,7 +50,7 @@
 "Properties" = "屬性";
 "Done" = "完成";
 "An error occurred while importing calendar." = "匯入行事曆時發生錯誤。";
-"No event was imported." = "沒有事件匯入。\"";
+"No event was imported." = "沒有事件匯入。";
 "A total of %{0} events were imported in the calendar." = "共 %{0} 筆事件匯入此行事曆。";
 "Compose E-Mail to All Attendees" = "發送通知信件給所有的邀請者";
 "Compose E-Mail to Undecided Attendees" = "發送通知信件給所有未定的邀請者";
@@ -82,7 +82,7 @@
 "This person can erase objects from my calendar."
 = "允許在我的行事曆刪除事件。";
 /* Button Titles */
-"Subscribe to a Calendar..." = "\"訂閱行事曆...";
+"Subscribe to a Calendar..." = "訂閱行事曆...";
 "Remove the selected Calendar" = "移除選擇的行事曆";
 "Name of the Calendar" = "行事曆名稱";
 "new" = "新增";
@@ -306,7 +306,7 @@
 "Reminder Details" = "提醒詳細內容";
 "Choose a Reminder Action" = "選擇提醒方式";
 "Show an Alert" = "顯示警告訊息";
-"Send an E-mail" = "寄送電子郵件\"";
+"Send an E-mail" = "寄送電子郵件";
 "Email Organizer" = "電子郵件發送者";
 "Email Attendees" = "電子郵件接收者";
 "zoom_400" = "400%";

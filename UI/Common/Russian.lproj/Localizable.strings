@@ -104,5 +104,6 @@
 "Loading" = "Загружается";
 "No such user." = "Нет такого пользователя";
 "You cannot (un)subscribe to a folder that you own!" = "Вы не можете подписаться или отписаться от собственной папки.";
-"SOGo" = "SOGo";
-"Modules" = "Модули";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Введите не менее %{minimumSearchLength} символов";

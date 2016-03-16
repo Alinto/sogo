@@ -6,7 +6,7 @@
 "Edit this event or task" = "Modifica questo evento o attività";
 "Print the current calendar view" = "Stampa vista calendario corrente";
 "Delete this event or task" = "Cancella questo evento o attività";
-"Go to today" = "Vai a Oggi";
+"Go to today" = "Vai a oggi";
 "Switch to day view" = "Giorno";
 "Switch to week view" = "Settimana";
 "Switch to month view" = "Mese";
@@ -272,11 +272,11 @@
 "cycle_of" = "di";
 "No end date" = "Nessuna data di fine";
 "Create" = "Crea";
-"appointment(s)" = "Appuntamento/i";
+"appointment(s)" = "appuntamento/i";
 "Repeat until" = "Ripeti fino ";
 "End Repeat" = "Fine ripetizione";
 "Never" = "Mai";
-"After" = "Dop";
+"After" = "Dopo";
 "On Date" = "In data";
 "times" = "ore";
 "First" = "Primo";
@@ -316,8 +316,8 @@
 "reminder_WEEKS" = "settimane";
 "reminder_BEFORE" = "prima";
 "reminder_AFTER" = "dopo";
-"reminder_START" = "l'evento inizia";
-"reminder_END" = "l'evento termina";
+"reminder_START" = "l'evento inizi";
+"reminder_END" = "l'evento termini";
 "Reminder Details" = "Dettagli promemoria";
 "Choose a Reminder Action" = "Scegli l'azione dell'allarme";
 "Show an Alert" = "Mostra un allarme";
@@ -436,14 +436,21 @@ vtodo_class2 = "(Attività confidenziale)";
 "Receive a mail when someone else modifies my calendar" = "Ricevi una mail quando qualcuno modifica il mio calendario";
 "When I modify my calendar, send a mail to" = "Quando modifico il mio calendario, invia una mail a";
 "Email Address" = "Indirizzo email";
-"Export" = "orta";
+"Export" = "Esporta";
+
+/* Show only the calendar for which the menu is displayed */ 
+"Show Only This Calendar" = "Mostra solo questo calendario";
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "Mostra tutti i calendari";
+
 "Links to this Calendar" = "Link a questo Calendario";
 "Authenticated User Access" = "Tutti gli utenti autenticati";
 "CalDAV URL" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 /* Error messages */
-"dayFieldInvalid" = "Prego specificare nel campo Giorni un valore numerico maggiore o ugale a 1.";
+"dayFieldInvalid" = "Prego specificare nel campo Giorni un valore numerico maggiore o uguale a 1.";
 "weekFieldInvalid" = "Prego specificare nel campo Settimana(e) un valore numerico maggiore o uguale a 1.";
 "monthFieldInvalid" = "Prego specificare nel campo Mese(i) un valore numerico maggiore o uguale a 1.";
 "monthDayFieldInvalid" = "Prego specificare nel campo giorno del mese un valore numerico maggiore o uguale a 1.";
@@ -465,7 +472,7 @@ vtodo_class2 = "(Attività confidenziale)";
 "Delete Event" = "Elimina evento";
 "Copy event to my calendar" = "Copia gli eventi sul mio calendario";
 "View Raw Source" = "Vedi sorgente";
-"Subscriptions" = "Sottosrizioni";
+"Subscriptions" = "Sottoscrizioni";
 "Subscribe to a shared folder" = "Sottoscrivi una cartella condivisa";
 "Subscribe to a web calendar..." = "Sottoscrivi un calendario remoto...";
 "URL of the Calendar" = "URL del calendario";
@@ -502,5 +509,12 @@ vtodo_class2 = "(Attività confidenziale)";
 "Rename" = "Rinomina";
 "Import Calendar" = "Importa calendario";
 "Select an ICS file." = "Seleziona un file ICS.";
+
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Sottoscrizione al calendario effettuata.";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Azioni elemento";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Ambito di ricerca";

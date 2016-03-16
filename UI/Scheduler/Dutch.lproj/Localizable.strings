@@ -6,7 +6,7 @@
 "Edit this event or task" = "Bewerk deze gebeurtenis of taak";
 "Print the current calendar view" = "Print de huidige agendaweergave";
 "Delete this event or task" = "Verwijder deze gebeurtenis of taak";
-"Go to today" = "Naar vandaag gaan";
+"Go to today" = "Ga naar vandaag";
 "Switch to day view" = "Overschakelen naar dagweergave";
 "Switch to week view" = "Overschakelen naar weekweergave";
 "Switch to month view" = "Overschakelen naar maandweergave";
@@ -334,7 +334,7 @@
 /* email notifications */
 "Send Appointment Notifications" = "Stuur afspraakmeldingen";
 "From" = "Van";
-"To" = "Naar";
+"To" = "Tot";
 /* validation errors */
 validate_notitle           = "U heeft geen titel opgegeven. Wilt u doorgaan?";
 validate_invalid_startdate = "Ongeldige begindatum!";
@@ -437,6 +437,13 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "When I modify my calendar, send a mail to" = "Als ik mijn agenda verander, stuur een e-mail naar";
 "Email Address" = "E-mailadres";
 "Export" = "Exporteren";
+
+/* Show only the calendar for which the menu is displayed */ 
+"Show Only This Calendar" = "Toon alleen deze agenda";
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "Toon alle agenda's";
+
 "Links to this Calendar" = "Koppelingen naar deze agenda";
 "Authenticated User Access" = "Toegang voor geauthenticeerde gebruikers";
 "CalDAV URL" = "CalDAV-URL";
@@ -468,9 +475,9 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "Subscriptions" = "Abonnementen";
 "Subscribe to a shared folder" = "Abonneren op een gedeelde map";
 "Subscribe to a web calendar..." = "Abonneren op een web-agenda...";
-"URL of the Calendar" = "URL van de Agenda";
-"Web Calendar" = "Web Agenda";
-"Web Calendars" = "Web Agenda's";
+"URL of the Calendar" = "URL van de agenda";
+"Web Calendar" = "Web-agenda";
+"Web Calendars" = "Web-agenda's";
 "Reload on login" = "Herladen bij inloggen";
 "Invalid number." = "Ongeldig nummer.";
 "Please identify yourself to %{0}" = "Identificeer u alstublieft tegenover %{0}";
@@ -502,5 +509,12 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "Rename" = "Hernoem";
 "Import Calendar" = "Agenda Importeren";
 "Select an ICS file." = "Selecteer een ICS bestand.";
+
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Abonneren op agenda succesvol";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Item in-/uitschakelen";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Zoekbereik";

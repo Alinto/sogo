@@ -437,6 +437,13 @@ vtodo_class2 = "(Bizalmas feladat)";
 "When I modify my calendar, send a mail to" = "Email értesítés küldése az alábbi címre a naptáram módosításakor";
 "Email Address" = "Email cím";
 "Export" = "Exportálás";
+
+/* Show only the calendar for which the menu is displayed */ 
+"Show Only This Calendar" = "Csak ennek a naptárnak a megjelenítése";
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "Minden naptár megjelenítése";
+
 "Links to this Calendar" = "Hivatkozások ehhez a naptárhoz";
 "Authenticated User Access" = "Belépett felhasználók";
 "CalDAV URL" = "CalDAV URL";
@@ -502,5 +509,12 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Rename" = "Átnevezés";
 "Import Calendar" = "Naptár importálása";
 "Select an ICS file." = "Válasszon ICS állományt.";
+
 /* Notification when user subscribes to a calendar */
 "Successfully subscribed to calendar" = "Sikeresen feliratkozott a naptárra";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Elem összecsukása";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Keresés hatóköre";

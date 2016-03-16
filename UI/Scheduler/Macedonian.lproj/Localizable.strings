@@ -10,6 +10,7 @@
 "Switch to day view" = "Префрли на дневен преглед";
 "Switch to week view" = "Префрли на неделен преглед";
 "Switch to month view" = "Префрли на месечен преглед";
+"Switch to multi-columns day view" = "Префрли на дневен поглед во повеќе колони";
 "Reload all calendars" = "Повторно вчитај ги сите календари";
 /* Tabs */
 "Date" = "Датум";
@@ -49,7 +50,7 @@
 "Uploading" = "Префрлам";
 "Publish Calendar..." = "Објави го календарот...";
 "Reload Remote Calendars" = "Освежи го далечинските календари";
-"Properties" = "Особини...";
+"Properties" = "Особини";
 "Done" = "Завршено";
 "An error occurred while importing calendar." = "Настана грешка при увозот на календарот.";
 "No event was imported." = "Нитуе еден настан не е увезен.";
@@ -436,6 +437,13 @@ vtodo_class2 = "(Доверлива задача)";
 "When I modify my calendar, send a mail to" = "Кога ќе го модификувам мојот календар, испрати порака на";
 "Email Address" = "Електронска адреса/пошта";
 "Export" = "Извези";
+
+/* Show only the calendar for which the menu is displayed */ 
+"Show Only This Calendar" = "Прикажи го само овој календар";
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "Прикажи ги сите календари";
+
 "Links to this Calendar" = "Линкво кон овој календар";
 "Authenticated User Access" = "Авторизиран кориснички пристап";
 "CalDAV URL" = "CalDAV URL:";
@@ -501,3 +509,12 @@ vtodo_class2 = "(Доверлива задача)";
 "Rename" = "Преименувај";
 "Import Calendar" = "Увези календарот";
 "Select an ICS file." = "Одбери ICS датотека.";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "Успешно сте претплатени на календарот";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Промени ја поставката";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Предмет на пребарување";

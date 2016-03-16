@@ -104,5 +104,6 @@
 "Loading" = "Lade";
 "No such user." = "Kein Benutzer gefunden";
 "You cannot (un)subscribe to a folder that you own!" = "Sie können keinen Ordner abonnieren/abbestellen, den Sie besitzen!";
-"SOGo" = "SOGo";
-"Modules" = "Module";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Mindestens %{minimumSearchLength} Zeichen eingeben";

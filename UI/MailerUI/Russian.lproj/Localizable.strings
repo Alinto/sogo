@@ -8,6 +8,7 @@
 "Forward"     = "Переслать";
 "Get Mail"    = "Получить";
 "Junk"        = "Спам";
+"Not junk"    = "Не спам";
 "Reply"       = "Ответить";
 "Reply All"   = "Ответить всем";
 "Print"       = "Печать";
@@ -34,7 +35,6 @@
 "Reply to sender and all recipients" = "Сосотавить ответ для отправителя и всех получателей";
 "Forward selected message" = "Переслать выделенное письмо";
 "Delete selected message or folder" = "Удалить выделенное письмо или папку";
-"Mark the selected messages as junk" = "Пометить выделенные сообщения как спам";
 "Print this message" = "Напечатать это сообщение";
 "Stop the current transfer" = "Остановить текущую операцию";
 "Attachment" = "Вложения";
@@ -58,14 +58,11 @@
 "Account" = "Пользователь";
 "Shared Account" = "Общая учетная запись";
 
-/* Empty right pane */
+/* A mailbox is selected, but no message (only shown on large screens) */
 "No message selected" = "Сообщения не выбраны";
 
-/* Mailbox actions */
-/* Compact Folder success message */
-"Folder compacted" = "Папка сжата";
-/* Empty Trash success message */
-"Trash emptied" = "Корзина очищена";
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "Не выбрано ни одной папки";
 
 /* acls */
 "Access rights to" = "Права доступа к";
@@ -109,7 +106,7 @@
 "Edit Draft..." = "Редактировать черновик...";
 "Load Images" = "Загрузить изображения";
 "Return Receipt" = "Уведомление о вручении";
-"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Отправитель этого сообщения запросил уведомление о прочтении. Вы хотите отправить такое сообщение?";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Отправитель этого сообщения запросил уведомление о прочтении. Отправить уведомление?";
 "Return Receipt (displayed) - %@"= "Уведомление о вручении (отображается на дисплее) -% @";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
 "Priority" = "Важность";
@@ -155,6 +152,7 @@
 "TrashFolderName"  = "Корзина";
 "InboxFolderName"  = "Входящие";
 "DraftsFolderName" = "Черновики";
+"JunkFolderName" = "Спам";
 "SieveFolderName"  = "Папки";
 "Folders"          = "Папки"; /* title line */
 
@@ -191,6 +189,7 @@
 "Sent Messages" = "Отправленные сообщения";
 "Drafts" = "Черновики";
 "Deleted Messages" = "Удаленные сообщения";
+"Junk Messages" = "Спам сообщения";
 
 /* Message list popup menu */
 "Open Message In New Window" = "Открыть сообщение в новом окне";
@@ -204,12 +203,28 @@
 "Save As..." = "Сохранить как...";
 "Print Preview" = "Печатать с предпросмотром";
 "View Message Source" = "Просмотр исходного текста";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Преобразовать в событие";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Преобразовать в задание";
+
 "Print..." = "Печать...";
 "Delete Message" = "Удалить сообщение";
 "Delete Selected Messages" = "Удалить выделенные сообщения";
+"Mark the selected messages as junk" = "Пометить выделенные сообщения как спам";
+"Mark the selected messages as not junk" = "Отметить выделенные сообщения как не спам";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "и ещё %{0}...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "Скрыть";
 
 /* Number of selected messages in list */
 "selected" = "выбран";
+
 "This Folder" = "Текущая папка";
 
 /* Label popup menu */
@@ -245,6 +260,10 @@
 "Operation failed" = "Операция завершилась неудачно";
 "Quota" = "Квота:";
 "quotasFormat" = "Занято %{0}% из %{1}МБ";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "Вы уверены, что вы хотите удалить выбранные сообщения?";
+
 "Please select a message." = "Пожалуйста выберите сообщение.";
 "Please select a message to print." = "Пожалуйста выберите сообщение для отправки на печать.";
 "Please select only one message to print." = "Пожалуйста выберите только одно сообщение для печати.";
@@ -274,6 +293,8 @@
 "error_missingrecipients" = "Не указан адрес получателя";
 "Send Anyway" = "Всё равно послать";
 "Error while saving the draft" = "Ошибка при сохранении черновика";
+
+/* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Ошибка при загрузке файла \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Сейчас выполняется загрузка файла. Закрытие окна прервет её.";
 
@@ -296,9 +317,13 @@
 "Rename" = "Переименовать";
 "Compact" = "Сжать";
 "Export" = "Экспорт";
-"Set as Drafts" = "Установить как черновики";
-"Set as Sent" = "Установить как отправленные";
-"Set as Trash" = "Установить как мусор";
+"Set as Drafts" = "Установить как Черновики";
+"Set as Sent" = "Установить как Отправленные";
+"Set as Trash" = "Установить как Корзина";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "Установить как Спам";
+
 "Sort" = "Сортировка";
 "Descending Order" = "В убывающем порядке";
 "Back" = "Назад";

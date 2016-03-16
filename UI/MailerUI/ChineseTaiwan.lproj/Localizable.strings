@@ -60,7 +60,7 @@
 "Any Authenticated User" = "任何認證的使用者";
 "List and see this folder" = "列出並檢視這個資料匣";
 "Read mails from this folder" = "讀取這個資料匣的信件";
-"Mark mails read and unread" = "標示信件為己讀/未讀\"";
+"Mark mails read and unread" = "標示信件為己讀/未讀";
 "Modify the flags of the mails in this folder" = "修改這個資料匣信件的標示";
 "Insert, copy and move mails into this folder" = "插入, 拷貝 及搬移信件到這個資料匣";
 "Post mails" = "寄出信件";
@@ -162,7 +162,7 @@
 "Use This Folder For" = "這個資料匣使用於";
 "Get Messages for Account" = "讀取這個帳號的信件";
 "Properties..." = "屬性...";
-"Delegation..." = "授權...\"";
+"Delegation..." = "授權...";
 /* Use This Folder menu */
 "Sent Messages" = "寄信備份";
 "Drafts" = "草稿匣";

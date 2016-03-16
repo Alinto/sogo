@@ -104,3 +104,6 @@
 "Loading" = "Loading";
 "No such user." = "No such user.";
 "You cannot (un)subscribe to a folder that you own!" = "You cannot (un)subscribe to a folder that you own!";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Enter at least %{minimumSearchLength} characters";

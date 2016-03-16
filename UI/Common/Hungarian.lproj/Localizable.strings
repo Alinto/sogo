@@ -104,5 +104,6 @@
 "Loading" = "Betöltés";
 "No such user." = "Nincs ilyen felhasználó";
 "You cannot (un)subscribe to a folder that you own!" = "Saját tulajdonban lévő mappá(ra/ról) nem lehet feliratkozni, vagy leiratkozni.";
-"SOGo" = "SOGo";
-"Modules" = "Modulok";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Adjon meg legalább %{minimumSearchLength} karaktert";
