@@ -104,5 +104,6 @@
 "Loading" = "Вчитувам";
 "No such user." = "Нема таков корисник.";
 "You cannot (un)subscribe to a folder that you own!" = "Не е можно да се запишете/отпишете од папката која е ваша!";
-"SOGo" = "SOGo";
-"Modules" = "Модули";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Внесете барем %{minimumSearchLength} карактери";
