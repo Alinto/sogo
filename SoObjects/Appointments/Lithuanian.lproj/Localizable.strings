@@ -1,0 +1,60 @@
+"Inviting the following persons is prohibited:" = "Draužiama kviesti šiuos asmenis:";
+"Personal Calendar" = "Asmenins kalendorius";
+vevent_class0 = "(Viešas įvykis)";
+vevent_class1 = "(Privatus įvykis)";
+vevent_class2 = "(Konfidencialus įvykis)";
+
+vtodo_class0 = "(Vieša užduotis)";
+vtodo_class1 = "(Privati užduotis)";
+vtodo_class2 = "(Konfidenciali užduotis)";
+/* Receipts */
+"The event \"%{Summary}\" was created" = "Įvykis \"%{summary}\" buvo sukurtas";
+"The event \"%{Summary}\" was deleted" = "Įvykis \"%{Summary}\" buvo ištrintas";
+"The event \"%{Summary}\" was updated" = "Įvykis \"%{Summary}\" buvo atnaujintas";
+"The following attendees(s) were notified" = "Šiems dalyviui(iams) buvo pranešta";
+"The following attendees(s) were added" = "Šie dalyvis(iai) buvo pridėti";
+"The following attendees(s) were removed" = "Šie dalyvis(iai) buvo pašalinti";
+/* IMIP messages */
+"calendar_label" = "Kalendorius";
+"startDate_label" = "Pradėti";
+"endDate_label" = "Pabaiga";
+"due_label" = "Terminas";
+"location_label" = "Vietovė";
+"summary_label" = "Santrauka";
+"comment_label" = "Komentaras:";
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "Įvykio pakvietimas: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(išsiųsta nuo %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} pakvietė Jus į %{Summary}.\nPradžia: %{StartDate}\nPabaiga: %{EndDate}\nAprašymas: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} pakvietė Jus į %{Summary}.\n\nPradžia: %{StartDate} nuo %{StartTime}\nPabaiga: %{EndDate} nuo %{EndTime}\nAprašymas: %{Description}";
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "Įvykis vadinasi: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} atšaukė šį įvykį: %{Summary}.\n\nPradžia: %{StartDate}\nPabaiga: %{EndDate}\nAprašymas: %{Description}";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} atšaukė šį įvykį: %{Summary}.\n\nPradžia: %{StartDate} at %{StartTime}\nPabaiga: %{EndDate} at %{EndTime}\nAprašymas: %{Description}";
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "Paskyrimas \"%{Summary}\" už %{OldStartDate} pasikeitė.";
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "Paskyrimas \"%{Summary}\" už %{OldStartDate} nuo  %{OldStartTime} pasikeitė.";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "Šie parametrai buvo pakeisti \"%{Summary}\"  susitikime:";
+"Please accept or decline those changes."
+= "Prašome priimti ar atmesti pakeitimus.";
+/* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Priimti pakvietima: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Atmesti pakvietimą: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Deleguoti pakvietimą: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Dar neapsisprendęs dėl pakvietimo: \"%{Summary}\"";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "%{Attendee} %{SentByText} priėmė Kūsų įvykio pakvietimą.";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "%{Attendee} %{SentByText} atmetė Jūsų įvykio pakvietimą.";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText} delegavo pakvietimą į %{Delegate}.";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText} neapsisprendė dėl Jūsų įvykio pakvietimo.";
+/* Resources */
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Negalime prieiti prie išteklių: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Didžiausias užsakymų vienu metu skaičius (%{NumberOfSimultaneousBookings}) pasiekė ribą \"%{Cn} %{SystemEmail}\". Įvykio konfliktas yra \"%{EventTitle}\", ir prasideda nuo %{StartDate}.";

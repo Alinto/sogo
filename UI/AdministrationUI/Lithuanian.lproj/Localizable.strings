@@ -1,0 +1,26 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "Pagalba";
+"Close" = "Uždarytis";
+"Modules" = "Moduliai";
+/* Modules short names */
+"ACLs" = "ACLs";
+/* Modules titles */
+"ACLs_title" = "Vartotojų aplankų ACLs valdymas";
+/* Modules descriptions */
+"ACLs_description" = "<p>Prieigos kontrolės sąrašo administravimo modulis leidžia keisti ACLs vartotojų kalendorius ir adresų knygas. </p><p>Norėdami tvarkyti ACL's vartotojų aplankus, paspauskite paieškos langelį lango viršuje, įrašykite vartotojo vardą ir du kartus paspauskite norimą aplanką. <p>";
+"Name or Email" = "Vardas arba el. paštas";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Pradėti paiešką redaguoti savo teisėms";
+/* Rights module: Empty search result */
+"No matching user" = "Nerasta atitinkantis vartotojas";
+/* Rights module: no selection */
+"No resource selected" = "Nėra pasirinkta  išteklių";
+"Add User" = "Pridėti vartotoją";
+"Subscribe User" = "Prenumeruoti vartotoją";
+"Rights" = "Teisės";
+"Search Users" = "Ieškoti vartotojų";
+"users found" = "vartotojai rasti";
+"No resource" = "Nėra išteklių";
+"Any Authenticated User" = "Visiems autorizuotiems vartotojams";
+"Public Access" = "Viešas priėjimas";
