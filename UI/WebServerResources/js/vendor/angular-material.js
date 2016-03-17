@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-31787c0
+ * v1.0.6-master-6a9ee5c
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -23928,17 +23928,12 @@ function MenuItemDirective() {
 
 angular
   .module('material.components.progressCircular')
-  .directive('mdProgressCircular', [
-    '$$rAF',
-    '$window',
-    '$mdProgressCircular',
-    '$mdUtil',
-    '$interval',
-    '$log',
-    MdProgressCircularDirective
-  ]);
+  .directive('mdProgressCircular', MdProgressCircularDirective);
 
-function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUtil, $interval, $log) {
+/* @ngInject */
+function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdTheming,
+                                     $mdUtil, $interval, $log) {
+
   var DEGREE_IN_RADIANS = $window.Math.PI / 180;
   var MODE_DETERMINATE = 'determinate';
   var MODE_INDETERMINATE = 'indeterminate';
@@ -23984,6 +23979,14 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUti
     var rotationIndeterminate = 0;
     var lastAnimationId = 0;
     var interval;
+
+    $mdTheming(element);
+
+    // If the mode is indeterminate, it doesn't need to
+    // wait for the next digest. It can start right away.
+    if(scope.mdMode === MODE_INDETERMINATE){
+      startIndeterminateAnimation();
+    }
 
     scope.$watchGroup(['value', 'mdMode'], function(newValues, oldValues) {
       var mode = newValues[1];
@@ -24214,6 +24217,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdUti
     return $mdProgressCircular.strokeWidth / 100 * diameter;
   }
 }
+MdProgressCircularDirective.$inject = ["$$rAF", "$window", "$mdProgressCircular", "$mdTheming", "$mdUtil", "$interval", "$log"];
 
 })();
 (function(){
@@ -25539,4 +25543,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.6-master-31787c0"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.6-master-6a9ee5c"}};
