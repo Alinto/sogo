@@ -851,7 +851,7 @@ static BOOL debugSoParts       = NO;
 
           // We set the path to 0 in case of a smime mail if not provided.
           subtype = [[part objectForKey: @"subtype"] lowercaseString];
-          if ([subtype isEqualToString: @"pkcs7-mime"])
+          if ([subtype isEqualToString: @"pkcs7-mime"] || [subtype isEqualToString: @"x-pkcs7-mime"])
              path = @"0";
         }
 

@@ -499,6 +499,91 @@ struct GlobalObjectId {
    return NO;
 }
 
+
+- (BOOL) _isSigned: (NSDictionary *) thePart
+{
+  NSMutableDictionary *currentPart;
+  NSArray *subparts;
+  NSString *type, *subtype;
+  NSUInteger i;
+
+  type = [[thePart objectForKey: @"type"] lowercaseString];
+  subtype = [[thePart objectForKey: @"subtype"] lowercaseString];
+
+  if ([type isEqualToString: @"multipart"])
+    {
+      if ([subtype isEqualToString: @"signed"])
+        return YES;
+
+      subparts = [thePart objectForKey: @"parts"];
+      for (i = 0; i < [subparts count]; i++)
+        {
+          currentPart = [subparts objectAtIndex: i];
+          if ([self _isSigned: currentPart])
+            return YES;
+        }
+    }
+
+  return NO;
+}
+
+- (BOOL) _isSmimeEncrypted: (NSDictionary *) thePart
+{
+  NSMutableDictionary *currentPart;
+  NSArray *subparts;
+  NSString *type, *subtype;
+  NSUInteger i;
+
+  type = [[thePart objectForKey: @"type"] lowercaseString];
+  subtype = [[thePart objectForKey: @"subtype"] lowercaseString];
+
+  if ([type isEqualToString: @"multipart"])
+    {
+      subparts = [thePart objectForKey: @"parts"];
+      for (i = 0; i < [subparts count]; i++)
+        {
+          currentPart = [subparts objectAtIndex: i];
+          if ([self _isSmimeEncrypted: currentPart])
+            return YES;
+        }
+    }
+  else if ([type isEqualToString: @"application"] && ([subtype isEqualToString: @"pkcs7-mime"] ||
+           [subtype isEqualToString: @"x-pkcs7-mime"]))
+    return YES;
+
+  return NO;
+}
+
+- (BOOL) _isPGP: (NSDictionary *) thePart
+{
+  NSMutableDictionary *currentPart;
+  NSArray *subparts;
+  NSString *type, *subtype, *protocol;
+  NSUInteger i;
+
+  type = [[thePart objectForKey: @"type"] lowercaseString];
+  subtype = [[thePart objectForKey: @"subtype"] lowercaseString];
+  protocol = [[[thePart objectForKey: @"parameterList"] objectForKey: @"protocol"] lowercaseString];
+
+  if ([type isEqualToString: @"multipart"])
+    {
+      if (([protocol isEqualToString: @"application/pgp-signature"] || [protocol isEqualToString: @"application/pgp-encrypted"]))
+        return YES;
+
+      subparts = [thePart objectForKey: @"parts"];
+      for (i = 0; i < [subparts count]; i++)
+        {
+          currentPart = [subparts objectAtIndex: i];
+          if ([self _isPGP: currentPart])
+            return YES;
+        }
+    }
+  else if ([type isEqualToString: @"application"] && [subtype isEqualToString: @"pgp-encrypted"])
+    return YES;
+
+  return NO;
+}
+
 //
 //
 //
@@ -523,7 +608,9 @@ struct GlobalObjectId {
   else if ([type isEqualToString: @"multipart"])
     *theNativeType = 4;
 
-  if (([subtype isEqualToString: @"signed"] || [subtype isEqualToString: @"pkcs7-mime"] ) && theMimeSupport > 0)
+  if (([self _isSigned: [self bodyStructure]] ||
+       [self _isSmimeEncrypted: [self bodyStructure]] ||
+       [self _isPGP: [self bodyStructure]]) && theMimeSupport > 0)
     {
       *theNativeType = 4;
       isSMIME = YES;
@@ -721,14 +808,12 @@ struct GlobalObjectId {
   NSData *d, *globalObjId;
   NSArray *attachmentKeys;
   iCalCalendar *calendar;
-  NSString *p, *subtype;
+  NSString *p;
   NSMutableString *s;
   id value;
       
   int preferredBodyType, mimeSupport, mimeTruncation, nativeBodyType;
   uint32_t v;
-
-  subtype = [[[self bodyStructure] valueForKey: @"subtype"] lowercaseString];
 
   preferredBodyType = [[context objectForKey: @"BodyPreferenceType"] intValue];
   mimeSupport = [[context objectForKey: @"MIMESupport"] intValue];
@@ -929,12 +1014,13 @@ struct GlobalObjectId {
   else
     {
       // MesssageClass and ContentClass
-      if ([subtype isEqualToString: @"signed"])
+      if ([self _isSigned: [self bodyStructure]])
         [s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Note.SMIME.MultipartSigned"];
-      else if ([subtype isEqualToString: @"pkcs7-mime"])
+      else if ([self _isSmimeEncrypted: [self bodyStructure]])
         [s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Note.SMIME"];
       else
         [s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Note"];
+
       [s appendFormat: @"<ContentClass xmlns=\"Email:\">%@</ContentClass>", @"urn:content-classes:message"];
     }
 
@@ -1096,7 +1182,9 @@ struct GlobalObjectId {
           // For s/mime mails type is always 4 if mimeSupport is 1 or 2.
           if (preferredBodyType == 2 && nativeBodyType == 1)
              [s appendString: @"<Type>1</Type>"];
-          else if (([subtype isEqualToString: @"signed"] || [subtype isEqualToString: @"pkcs7-mime"] ) && mimeSupport > 0)
+          else if (([self _isSigned: [self bodyStructure]] ||
+                    [self _isSmimeEncrypted: [self bodyStructure]] ||
+                    [self _isPGP: [self bodyStructure]]) && mimeSupport > 0)
              [s appendString: @"<Type>4</Type>"];
           else
              [s appendFormat: @"<Type>%d</Type>", preferredBodyType];
@@ -1112,7 +1200,7 @@ struct GlobalObjectId {
   // Attachments -namespace 16
   attachmentKeys = [self fetchFileAttachmentKeys];
 
-  if ([attachmentKeys count] && !([subtype isEqualToString: @"signed"]))
+  if ([attachmentKeys count] && !([self _isSigned: [self bodyStructure]]))
     {
       int i;
 
