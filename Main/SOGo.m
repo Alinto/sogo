@@ -462,7 +462,13 @@ static BOOL debugLeaks;
       NSRange r;
 
       r = [path rangeOfString: @"/"];
-      username = [path substringWithRange: NSMakeRange(0, r.location)];
+
+      // We handle /sogo1/Calendar/.../ and "sogo1" as paths
+      if (r.length)
+        username = [path substringWithRange: NSMakeRange(0, r.location)];
+      else
+        username = path;
+
       requestCount = [cache requestCountForLogin: username];
 
       if (requestCount)
