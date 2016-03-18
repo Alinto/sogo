@@ -1,3 +1,9 @@
+2.3.10 (2016-03-XX)
+-------------------
+
+New features
+ - new user-based rate-limiting support for all SOGo requests (#3188)
+
 2.3.9 (2016-03-16)
 ------------------
 
