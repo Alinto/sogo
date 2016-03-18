@@ -123,6 +123,8 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField;
 - (NGLdapEntry *) lookupGroupEntryByEmail: (NSString *) theEmail
                                  inDomain: (NSString *) domain;
 
+- (void) applyContactMappingToResult: (NSMutableDictionary *) ldifRecord;
+
 @end
 
 #endif /* LDAPSOURCE_H */

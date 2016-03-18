@@ -965,7 +965,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 }
 
 /* conversion LDAP -> SOGo inetOrgPerson entry */
-- (void) _applyContactMappingToResult: (NSMutableDictionary *) ldifRecord
+- (void) applyContactMappingToResult: (NSMutableDictionary *) ldifRecord
 {
   NSArray *sourceFields;
   NSArray *keys;
@@ -1165,7 +1165,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
           intoLDIFRecord: (NSMutableDictionary *) ldifRecord];
 
   if (contactMapping)
-    [self _applyContactMappingToResult: ldifRecord];
+    [self applyContactMappingToResult: ldifRecord];
 
   return ldifRecord;
 }
@@ -1489,7 +1489,7 @@ _convertRecordToLDAPAttributes (LDAPSourceSchema *schema, NSDictionary *ldifReco
           [ldifRecord setObject: aId forKey: @"cn"];
         }
 
-      [self _applyContactMappingToOutput: ldifRecord];
+      [self applyContactMappingToOutput: ldifRecord];
 
       /* since the id might have changed due to the mapping above, we
          reload the record ID */
@@ -1597,7 +1597,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
       ldapConnection = [self _ldapConnection];
       ldifRecord = [roLdifRecord mutableCopy];
       [ldifRecord autorelease];
-      [self _applyContactMappingToOutput: ldifRecord];
+      [self applyContactMappingToOutput: ldifRecord];
       attributes = _convertRecordToLDAPAttributes (schema, ldifRecord);
 
       changes = _makeLDAPChanges (ldapConnection, dn, attributes);
