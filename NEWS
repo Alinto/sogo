@@ -20,6 +20,7 @@ Bug fixes
  - [web] fixed position of warning when JavaScript is disabled (#3449)
  - [eas] properly unfold long mail headers (#3152)
  - [web] respect the LDAP attributes mapping in the list view
+ - [web] handle empty body data when forwarding mails (#3581)
 
 3.0.2 (2016-03-04)
 ------------------
