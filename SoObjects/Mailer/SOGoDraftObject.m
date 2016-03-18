@@ -844,7 +844,10 @@ static NSString    *userAgent      = nil;
   while ((currentKey = [attachmentKeys nextObject]))
     {
       body = [fetch objectForKey: [currentKey lowercaseString]];
-      [bodies addObject: [body objectForKey: @"data"]];
+      if (body)
+        [bodies addObject: [body objectForKey: @"data"]];
+      else
+        [bodies addObject: [NSData data]];
     }
 
   return bodies;
