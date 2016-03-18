@@ -6,6 +6,7 @@ New features
 
 Bug fixes
  - respect the LDAP attributes mapping in the list view
+ - handle empty body data when forwarding mails (#3581)
 
 2.3.9 (2016-03-16)
 ------------------
