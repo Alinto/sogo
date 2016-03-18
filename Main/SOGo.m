@@ -476,6 +476,8 @@ static BOOL debugLeaks;
   static BOOL debugOn = NO;
   WOResponse *resp;
   NSDate *startDate;
+  NSString *path;
+
   NSTimeInterval timeDelta;
 
   if (debugRequests)
@@ -498,6 +500,62 @@ static BOOL debugLeaks;
         }
     }
 #endif
+
+  // We check for rate-limiting settings - ignore anything actually
+  // sent to /SOGo/ (so unauthenticated requests).
+  path = [_request requestHandlerPath];
+  if ([path length])
+    {
+      NSDictionary *requestCount;
+      NSString *username;
+      NSRange r;
+
+      r = [path rangeOfString: @"/"];
+      username = [path substringWithRange: NSMakeRange(0, r.location)];
+      requestCount = [cache requestCountForLogin: username];
+
+      if (requestCount)
+        {
+          SOGoSystemDefaults *sd;
+
+          unsigned int  current_time, start_time, delta, block_time, request_count;
+
+          sd = [SOGoSystemDefaults sharedSystemDefaults];
+
+          current_time = [[NSCalendarDate date] timeIntervalSince1970];
+          start_time = [[requestCount objectForKey: @"InitialDate"] unsignedIntValue];
+          delta = current_time - start_time;
+
+          block_time = [sd requestBlockInterval];
+          request_count = [[requestCount objectForKey: @"RequestCount"] intValue];
+
+          if ( request_count >= [sd maximumRequestCount] &&
+               delta < [sd maximumRequestInterval] &&
+               delta <= block_time )
+            {
+              resp = [WOResponse responseWithRequest: _request];
+              [resp setStatus: 429];
+              return resp;
+            }
+
+          if (delta > block_time)
+            {
+              [cache setRequestCount: 1
+                            forLogin: username
+                            interval: current_time];
+            }
+          else
+            [cache setRequestCount: (request_count+1)
+                          forLogin: username
+                          interval: start_time];
+        }
+      else
+        {
+          [cache setRequestCount: 1
+                        forLogin: username
+                        interval: 0];
+        }
+    }
 
   resp = [super dispatchRequest: _request];
   [cache killCache];

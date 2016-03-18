@@ -727,5 +727,58 @@ static memcached_st *handle = NULL;
 }
 
 
+//
+// SOGo request count for rate-limiting
+//
+- (void) setRequestCount: (int) theCount
+                forLogin: (NSString *) theLogin
+                interval: (unsigned int) theInterval
+{
+  NSMutableDictionary *d;
+  NSNumber *count;
+
+  if (theCount)
+    {
+      count = [NSNumber numberWithInt: theCount];
+
+      d = [NSMutableDictionary dictionaryWithDictionary: [self requestCountForLogin: theLogin]];
+
+      if (![d objectForKey: @"InitialDate"] || theInterval == 0)
+        [d setObject: [NSNumber numberWithUnsignedInt: [[NSCalendarDate date] timeIntervalSince1970]] forKey: @"InitialDate"];
+      else
+        [d setObject: [NSNumber numberWithUnsignedInt: theInterval] forKey: @"InitialDate"];
+
+      [d setObject: count  forKey: @"RequestCount"];
+      [self _cacheValues: [d jsonRepresentation]
+                  ofType:  @"requestcount"
+                  forKey: theLogin];
+    }
+  else
+    {
+      [self removeValueForKey: [NSString stringWithFormat: @"%@+failedlogins", theLogin]];
+    }
+}
+
+//
+// Returns a dictionary with two keys/values
+//
+// RequestCount ->
+// InitialDate ->
+//
+- (NSDictionary *) requestCountForLogin: (NSString *) theLogin
+{
+  NSDictionary *d;
+  NSString *s;
+
+  s = [self _valuesOfType: @"requestcount" forKey: theLogin];
+  d = nil;
+
+  if (s)
+    {
+      d = [s objectFromJSONString];
+    }
+
+  return d;
+}
 
 @end

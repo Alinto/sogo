@@ -97,6 +97,11 @@
 - (int) maximumSubmissionInterval;
 - (int) messageSubmissionBlockInterval;
 
+- (int) maximumRequestCount;
+- (int) maximumRequestInterval;
+- (int) requestBlockInterval;
+
+
 - (int) maximumPingInterval;
 - (int) maximumSyncInterval;
 - (int) internalSyncInterval;

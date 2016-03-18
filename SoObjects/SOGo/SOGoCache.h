@@ -141,6 +141,15 @@
 	 forPath: (NSString *) thePath;
 - (NSMutableDictionary *) aclsForPath: (NSString *) thePath;
 
+//
+// SOGo rate-limiting
+//
+- (void) setRequestCount: (int) theCount
+                forLogin: (NSString *) theLogin
+                interval: (unsigned int) theInterval;
+
+- (NSDictionary *) requestCountForLogin: (NSString *) theLogin;
+
 @end
 
 #endif /* SOGOCACHE_H */
