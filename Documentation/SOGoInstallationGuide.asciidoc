@@ -716,6 +716,21 @@ Default value is `0`, or disabled.
 |Number of seconds, default to `300` (or 5 minutes). Note that
 _SOGoCacheCleanupInterval_ must be set to a value equal or higher than
 _SOGoFailedLoginBlockInterval_.
+
+|S |SOGoMaximumRequestCount
+|Parameter used to control the number of requests a user can send to the SOGo
+server in _SOGoMaximumRequestInterval_ seconds or more. If conditions are met
+or exceeded, the user will not be able to perform requests on the SOGo server
+for _SOGoRequestBlockInterval_ seconds and will receive 429 HTTP responses for
+any requests being made. Default value is 0, or disabled
+
+|S |SOGoMaximumRequestInterval
+|Number of seconds, defaults to `30`.
+
+|S |SOGoRequestBlockInterval
+|Number of seconds, defaults to 300 (or 5 minutes). Note that _SOGoCacheCleanupInterval_
+must be set to a value equal or higher than _SOGoRequestBlockInterval_.
+
 |=======================================================================
 
 Authentication using LDAP
