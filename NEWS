@@ -3,6 +3,7 @@
 
 New features
  - [core] new database structure options to make SOGo use a total of nine tables
+ - [core] new user-based rate-limiting support for all SOGo requests (#3188)
 
 Enhancements
  - [web] updated Angular Material to version 1.0.6
