@@ -41,6 +41,7 @@
 #import <SaxObjC/XMLNamespaces.h>
 
 #import <SOGo/DOMNode+SOGo.h>
+#import <SOGo/LDAPSource.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
@@ -257,7 +258,9 @@
     }
   [newRecord setObject: data forKey: @"c_mail"];
 
-  data = [oldRecord objectForKey: @"nsaimid"];
+  data = [oldRecord objectForKey: @"mozillanickname"];
+  if (![data length])
+    data = [oldRecord objectForKey: @"nsaimid"];
   if (![data length])
     data = [oldRecord objectForKey: @"nscpaimscreenname"];
   if (![data length])
@@ -313,15 +316,22 @@
 
 - (NSArray *) _flattenedRecords: (NSArray *) records
 {
+  NSMutableDictionary *oldRecord;
   NSMutableArray *newRecords;
   NSEnumerator *oldRecords;
-  NSDictionary *oldRecord;
+  NSDictionary *o;
 
   newRecords = [NSMutableArray arrayWithCapacity: [records count]];
 
   oldRecords = [records objectEnumerator];
-  while ((oldRecord = [oldRecords nextObject]))
-    [newRecords addObject: [self _flattenedRecord: oldRecord]];
+  while ((o = [oldRecords nextObject]))
+    {
+      oldRecord = [NSMutableDictionary dictionary];
+      [oldRecord addEntriesFromDictionary: o];
+      if ([source isKindOfClass: [LDAPSource class]])
+        [(LDAPSource *)source applyContactMappingToResult: oldRecord];
+      [newRecords addObject: [self _flattenedRecord: oldRecord]];
+    }
 
   return newRecords;
 }
