@@ -4,6 +4,9 @@
 New features
  - new user-based rate-limiting support for all SOGo requests (#3188)
 
+Bug fixes
+ - respect the LDAP attributes mapping in the list view
+
 2.3.9 (2016-03-16)
 ------------------
 
