@@ -355,7 +355,7 @@ Date.prototype.getHourString = function() {
 Date.prototype.format = function(localeProvider, format) {
   var separators, parts, i, max,
       date = [],
-      validParts = /%[daAmbByYHIMp]/g,
+      validParts = /%[deaAmbByYHIMp]/g,
       val = {
         '%d': this.getDate(),                                  // day of month (e.g., 01)
         '%e': this.getDate(),                                  // day of month, space padded
