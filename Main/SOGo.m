@@ -474,6 +474,8 @@ static BOOL debugLeaks;
 {
   static NSArray *runLoopModes = nil;
   static BOOL debugOn = NO;
+
+  SOGoSystemDefaults *sd;
   WOResponse *resp;
   NSDate *startDate;
   NSString *path;
@@ -487,6 +489,7 @@ static BOOL debugLeaks;
       startDate = [NSDate date];
     }
 
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
   cache = [SOGoCache sharedCache];
 #ifdef GNUSTEP_BASE_LIBRARY
   if (debugLeaks)
@@ -504,7 +507,7 @@ static BOOL debugLeaks;
   // We check for rate-limiting settings - ignore anything actually
   // sent to /SOGo/ (so unauthenticated requests).
   path = [_request requestHandlerPath];
-  if ([path length])
+  if ([path length] && [sd maximumRequestCount] > 0)
     {
       NSDictionary *requestCount;
       NSString *username;
@@ -522,11 +525,7 @@ static BOOL debugLeaks;
 
       if (requestCount)
         {
-          SOGoSystemDefaults *sd;
-
           unsigned int  current_time, start_time, delta, block_time, request_count;
-
-          sd = [SOGoSystemDefaults sharedSystemDefaults];
 
           current_time = [[NSCalendarDate date] timeIntervalSince1970];
           start_time = [[requestCount objectForKey: @"InitialDate"] unsignedIntValue];
