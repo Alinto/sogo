@@ -64,6 +64,12 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "No mailbox selected";
 
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Folder compacted";
+/* Empty Trash success message */
+"Trash emptied" = "Trash emptied";
+
 /* acls */
 "Access rights to" = "Access rights to";
 "For user" = "For user";
