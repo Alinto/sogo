@@ -19,7 +19,7 @@ New features
 Enhancements
  - allow resources to prevent invitations (#3410)
  - now support EAS MIME truncation
- - [web] added Lithuanan (lt) translation - thanks to Mantas Liobė
+ - added Lithuanan (lt) translation - thanks to Mantas Liobė
 
 Bug fixes
  - allow EAS attachments get on 2nd-level mailboxes (#3505)
