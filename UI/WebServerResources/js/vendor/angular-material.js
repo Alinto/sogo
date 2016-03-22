@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.6-master-991cd7a
+ * v1.0.6-master-ba130f2
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -12824,7 +12824,8 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
 
       function copyAttributes(item, wrapper) {
         var copiedAttrs = ['ng-if', 'ng-click', 'aria-label', 'ng-disabled',
-          'ui-sref', 'href', 'ng-href', 'ng-attr-ui-sref'];
+          'ui-sref', 'href', 'ng-href', 'ng-attr-ui-sref', 'ui-sref-opts'];
+
         angular.forEach(copiedAttrs, function(attr) {
           if (item.hasAttribute(attr)) {
             wrapper.setAttribute(attr, item.getAttribute(attr));
@@ -25571,4 +25572,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.6-master-991cd7a"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.0.6-master-ba130f2"}};
