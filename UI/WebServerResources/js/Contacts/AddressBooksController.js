@@ -96,7 +96,7 @@
           });
       }
       else {
-        Dialog.confirm(l('Warning'), l('Are you sure you want to delete the addressbook <em>%{0}</em>?',
+        Dialog.confirm(l('Warning'), l('Are you sure you want to delete the addressbook "%{0}"?',
                                        vm.service.selectedFolder.name),
                        { ok: l('Delete') })
           .then(function() {
