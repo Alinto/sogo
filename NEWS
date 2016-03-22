@@ -9,6 +9,7 @@ Enhancements
  - [web] updated Angular Material to version 1.0.6
  - [web] added Lithuanan (lt) translation - thanks to Mantas Liobė
  - [web] we now "cc" delegates during invitation updates (#3195)
+ - [web] new SOGoHelpURL preference to set a custom URL for SOGo help (#2768)
 
 Bug fixes
  - [web] fixed missing columns in SELECT statements (PostgreSQL)

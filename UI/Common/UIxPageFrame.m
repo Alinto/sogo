@@ -112,20 +112,21 @@
   return (@"<!DOCTYPE html>");
 }
 
-/* Help URL/target */
-
+/* Help URL */
 - (NSString *) helpURL
 {
-  return [NSString stringWithFormat: @"help/%@.html", title];
-}
+  SOGoSystemDefaults *sd;
+  NSString *s;
 
-- (NSString *) helpWindowTarget
-{
-  return [NSString stringWithFormat: @"Help_%@", title];
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  if ((s = [sd helpURL]))
+    return s;
+
+  return @"";
 }
 
 /* notifications */
-
 - (void) sleep
 {
   [item release];

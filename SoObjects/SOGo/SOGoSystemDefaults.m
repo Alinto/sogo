@@ -435,6 +435,11 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self stringForKey: @"SOGoPageTitle"];
 }
 
+- (NSString *) helpURL
+{
+  return [self stringForKey: @"SOGoHelpURL"];
+}
+
 - (NSArray *) supportedLanguages
 {
   static NSArray *supportedLanguages = nil;
