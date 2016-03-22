@@ -8,6 +8,7 @@ New features
 Enhancements
  - [web] updated Angular Material to version 1.0.6
  - [web] added Lithuanan (lt) translation - thanks to Mantas Liobė
+ - [web] we now "cc" delegates during invitation updates (#3195)
 
 Bug fixes
  - [web] fixed missing columns in SELECT statements (PostgreSQL)

@@ -905,12 +905,15 @@
     }
 }
 
-#warning fix this when sendEmailUsing blabla has been cleaned up
-- (void) sendIMIPReplyForEvent: (iCalRepeatableEntityObject *) event
-			  from: (SOGoUser *) from
-			    to: (iCalPerson *) recipient
+//
+//
+//
+- (void) _sendIMIPReplyForEvent: (iCalRepeatableEntityObject *) event
+                           from: (SOGoUser *) from
+                             to: (iCalPerson *) recipient
+                       textOnly: (BOOL) textOnly
 {
-  NSString *pageName, *mailDate, *email;
+  NSString *mailDate, *email;
   WOApplication *app;
   iCalPerson *attendee;
   SOGoAptMailICalReply *p;
@@ -922,50 +925,58 @@
   SOGoDomainDefaults *dd;
 
   dd = [from domainDefaults];
-  if ([dd appointmentSendEMailNotifications] && [event isStillRelevant])
-    {
-      /* get WOApplication instance */
-      app = [WOApplication application];
 
-      /* create page name */
-      pageName = @"SOGoAptMailICalReply";
-      /* construct message content */
-      p = [app pageWithName: pageName inContext: context];
-      [p setApt: (iCalEvent *) event];
+  /* get WOApplication instance */
+  app = [WOApplication application];
 
-      attendee = [event userAsAttendee: from];
-      [p setAttendee: attendee];
+  /* construct message content */
+  p = [app pageWithName: @"SOGoAptMailICalReply"  inContext: context];
+  [p setApt: (iCalEvent *) event];
 
-      /* construct message */
-      headerMap = [NGMutableHashMap hashMapWithCapacity: 5];
+  attendee = [event userAsAttendee: from];
+  [p setAttendee: attendee];
 
-      /* NOTE: multipart/alternative seems like the correct choice but
-       * unfortunately Thunderbird doesn't offer the rich content alternative
-       * at all. Mail.app shows the rich content alternative _only_
-       * so we'll stick with multipart/mixed for the time being.
-       */
+  /* construct message */
+  headerMap = [NGMutableHashMap hashMapWithCapacity: 5];
+
+  /* NOTE: multipart/alternative seems like the correct choice but
+   * unfortunately Thunderbird doesn't offer the rich content alternative
+   * at all. Mail.app shows the rich content alternative _only_
+   * so we'll stick with multipart/mixed for the time being.
+   */
 #warning SOPE is just plain stupid here - if you change the case of keys, it will break the encoding of fields
-      [headerMap setObject: [attendee mailAddress] forKey: @"from"];
-      [headerMap setObject: [recipient mailAddress] forKey: @"to"];
-      mailDate = [[NSCalendarDate date] rfc822DateString];
-      [headerMap setObject: mailDate forKey: @"date"];
-      [headerMap setObject: [[p getSubject] asQPSubjectString: @"UTF-8"]
-                    forKey: @"subject"];
-      [headerMap setObject: [NSString generateMessageID] forKey: @"message-id"];
-      [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
-      [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
-      [headerMap setObject: @"calendar:invitation-reply" forKey: @"x-sogo-message-type"];
-      msg = [NGMimeMessage messageWithHeader: headerMap];
+  [headerMap setObject: [attendee mailAddress] forKey: @"from"];
+  [headerMap setObject: [recipient mailAddress] forKey: @"to"];
+  mailDate = [[NSCalendarDate date] rfc822DateString];
+  [headerMap setObject: mailDate forKey: @"date"];
+  [headerMap setObject: [[p getSubject] asQPSubjectString: @"UTF-8"]
+                forKey: @"subject"];
+  [headerMap setObject: [NSString generateMessageID] forKey: @"message-id"];
+  [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
 
+  if (textOnly)
+    [headerMap setObject: @"text/html" forKey: @"content-type"];
+  else
+    [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
+
+  [headerMap setObject: @"calendar:invitation-reply" forKey: @"x-sogo-message-type"];
+  msg = [NGMimeMessage messageWithHeader: headerMap];
+
+  /* text part */
+  headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
+  [headerMap setObject: @"text/html; charset=utf-8"
+                forKey: @"content-type"];
+  bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
+  bodyData = [[p getBody] dataUsingEncoding: NSUTF8StringEncoding];
+
+  if (textOnly)
+    {
+      [msg setBody: bodyData];
+    }
+  else
+    {
       /* multipart body */
       body = [[NGMimeMultipartBody alloc] initWithPart: msg];
-
-      /* text part */
-      headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
-      [headerMap setObject: @"text/html; charset=utf-8"
-		    forKey: @"content-type"];
-      bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
-      bodyData = [[p getBody] dataUsingEncoding: NSUTF8StringEncoding];
       [bodyPart setBody: bodyData];
 
       /* attach text part to multipart body */
@@ -977,15 +988,51 @@
       /* attach multipart body to message */
       [msg setBody: body];
       [body release];
+    }
 
-      /* send the damn thing */
-      email = [recipient rfc822Email];
-      [[SOGoMailer mailerWithDomainDefaults: dd]
+  /* send the damn thing */
+  email = [recipient rfc822Email];
+  [[SOGoMailer mailerWithDomainDefaults: dd]
 	       sendMimePart: msg
                toRecipients: [NSArray arrayWithObject: email]
                      sender: [attendee rfc822Email]
           withAuthenticator: [self authenticatorInContext: context]
                   inContext: context];
+}
+
+
+//
+//
+//
+- (void) sendIMIPReplyForEvent: (iCalRepeatableEntityObject *) event
+			  from: (SOGoUser *) from
+			    to: (iCalPerson *) recipient
+{
+  SOGoDomainDefaults *dd;
+
+  dd = [from domainDefaults];
+  if ([dd appointmentSendEMailNotifications] && [event isStillRelevant])
+    {
+      // We first send to the real recipient (organizer)
+      [self _sendIMIPReplyForEvent: event
+                              from: from
+                                to: recipient
+                          textOnly: NO];
+
+      // If we have a sent-by, we send it to it also. This is useful since
+      // if Alice is Bob's asssitant and invites Tony, when Tony accepts/declines
+      // the event, Alice will also be informed about this. See #3195 for details.
+      if ([recipient hasSentBy])
+        {
+          iCalPerson *sentBy;
+
+          sentBy = [[[iCalPerson alloc] init] autorelease];
+          [sentBy setEmail: [recipient sentBy]];
+          [self _sendIMIPReplyForEvent: event
+                                  from: from
+                                    to: sentBy
+                              textOnly: YES];
+        }
     }
 }
 
