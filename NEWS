@@ -22,6 +22,7 @@ Bug fixes
  - [web] respect the LDAP attributes mapping in the list view
  - [web] handle empty body data when forwarding mails (#3581)
  - [eas] correctly set EAS message class for S/MIME messages (#3576)
+ - [web] show repeating events when we ask for "All" or "Future" events (#69)
 
 3.0.2 (2016-03-04)
 ------------------

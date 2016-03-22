@@ -1453,14 +1453,35 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       else
         ma = nil;
 
-      // Fetch recurrent apts now, *excluding* events with no cycle end.
-      if (canCycle && _endDate)
+      // Fetch recurrent apts now. We support the following scenarios:
+      // "All events" - so the start and end date is nil
+      // "All future events" - start is defined, date is nil
+      if (canCycle)
         {
-          /* we know the last element of "baseWhere" is the c_iscycle
-             condition */
+          unsigned int delta;
+
+          delta = 1;
+
+          // If we don't have a start date, we use the current date - 1 year
+          if (!_startDate)
+            {
+              _startDate = [[NSCalendarDate date] dateByAddingYears: -1  months: 0  days: 0  hours: 0  minutes: 0  seconds: 0];
+              delta++;
+            }
+
+          // We if we don't have an end date, we use the start date + 1 year
+          if (!_endDate)
+            {
+              endDate = [_startDate dateByAddingYears: delta  months: 0  days: 0  hours: 0  minutes: 0  seconds: 0];
+            }
+
+          r = [NGCalendarDateRange calendarDateRangeWithStartDate: _startDate
+                                                          endDate: endDate];
+
+          // we know the last element of "baseWhere" is the c_iscycle condition
           [baseWhere removeLastObject];
 
-          /* replace the date range */
+          // replace the date range
           if (r)
             {
               [baseWhere removeLastObject];
@@ -1483,6 +1504,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                 ma = [NSMutableArray arrayWithArray: records];
             }
         }
+
       if (!ma)
         {
           [self errorWithFormat: @"(%s): fetch failed!", __PRETTY_FUNCTION__];
