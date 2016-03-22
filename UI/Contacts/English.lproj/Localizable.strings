@@ -127,7 +127,7 @@
 "Are you sure you want to delete the selected address book?"
 = "Are you sure you want to delete the selected address book?";
 "Are you sure you want to delete the addressbook \"%{0}\"?"
-= "Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Are you sure you want to delete the addressbook \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "You cannot remove nor unsubscribe from a public addressbook.";
 "You cannot remove nor unsubscribe from your personal addressbook."
