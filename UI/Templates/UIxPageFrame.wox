@@ -121,6 +121,7 @@
                 UserLogoffPath = '<var:string value="logoffPath" const:escapeHTML="NO" />';
               </var:if>
 
+              var HelpURL =  '<var:string value="helpURL" const:escapeHTML="NO" />';
             </var:if>
 
             // This is the equivalent of an AJAX call to /SOGo/so/_UserLogin_/date
