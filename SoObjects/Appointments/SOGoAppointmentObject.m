@@ -1722,37 +1722,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
     }
 }
 
-- (void) _adjustClassificationInRequestCalendar: (iCalCalendar *) rqCalendar
-{
-  SOGoUserDefaults *userDefaults;
-  NSString *accessClass;
-  NSArray *allObjects;
-  id entity;
-  
-  int i;
-  
-  userDefaults = [[context activeUser] userDefaults];
-  allObjects = [rqCalendar allObjects];
-
-  for (i = 0; i < [allObjects count]; i++)
-    {
-      entity = [allObjects objectAtIndex: i];
-
-      if ([entity respondsToSelector: @selector(accessClass)])
-        {
-          accessClass = [entity accessClass];
-          
-          if (!accessClass || [accessClass length] == 0)
-            {
-              if ([entity isKindOfClass: [iCalEvent class]])
-                [entity setAccessClass: [userDefaults calendarEventsDefaultClassification]];
-              else if ([entity isKindOfClass: [iCalToDo class]])
-                [entity setAccessClass: [userDefaults calendarTasksDefaultClassification]];
-            }
-        }
-    }
-}
-
 //
 // iOS devices (and potentially others) send event invitations with no PARTSTAT defined.
 // This confuses DAV clients like Thunderbird, or event SOGo web. The RFC says:
@@ -1969,7 +1938,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
         }
       
       [self _adjustEventsInRequestCalendar: calendar];
-      [self _adjustClassificationInRequestCalendar: calendar];
+      [self adjustClassificationInRequestCalendar: calendar];
       [self _adjustPartStatInRequestCalendar: calendar];
     }
       

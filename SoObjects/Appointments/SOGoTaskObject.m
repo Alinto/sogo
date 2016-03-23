@@ -24,6 +24,8 @@
 #import <Foundation/NSDate.h>
 #import <Foundation/NSException.h>
 
+#import <NGObjWeb/WOResponse.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGCards/iCalCalendar.h>
@@ -112,6 +114,19 @@
 - (void) prepareDeleteOccurence: (iCalToDo *) occurence
 {
 
+}
+
+- (id) PUTAction: (WOContext *) _ctx
+{
+  iCalCalendar *rqCalendar;
+  WORequest *rq;
+
+  rq = [_ctx request];
+  rqCalendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
+  [self adjustClassificationInRequestCalendar: rqCalendar];
+  [rq setContent: [[rqCalendar versitString] dataUsingEncoding: [rq contentEncoding]]];
+
+  return [super PUTAction: _ctx];
 }
 
 @end /* SOGoTaskObject */
