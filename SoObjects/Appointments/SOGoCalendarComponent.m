@@ -1360,19 +1360,17 @@
 
 - (id) PUTAction: (WOContext *) localContext
 {
-  WORequest *rq;
-  iCalCalendar *putCalendar;
-
-  rq = [localContext request];
-  putCalendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
-
   if ([[SOGoSystemDefaults sharedSystemDefaults] enableEMailAlarms])
     {
       SOGoEMailAlarmsManager *eaMgr;
+      iCalCalendar *putCalendar;
+      WORequest *rq;
 
+      rq = [localContext request];
+      putCalendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
       eaMgr = [SOGoEMailAlarmsManager sharedEMailAlarmsManager];
       [eaMgr handleAlarmsInCalendar: putCalendar
-	     fromComponent: self];
+                      fromComponent: self];
     }
 
   return [super PUTAction: localContext];
