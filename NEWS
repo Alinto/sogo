@@ -8,6 +8,7 @@ Bug fixes
  - respect the LDAP attributes mapping in the list view
  - handle empty body data when forwarding mails (#3581)
  - correctly set EAS message class for S/MIME messages (#3576)
+ - we now handle the default classifications for tasks (#3541)
 
 2.3.9 (2016-03-16)
 ------------------
