@@ -272,7 +272,7 @@
                  ng-switch="currentMessage.selected">
               <sg-avatar-image class="md-avatar"
                                ng-switch-when="false"
-                               sg-email="currentMessage.from[0].email"
+                               sg-email="mailbox.service.selectedFolder.type == 'sent' ? currentMessage.to[0].email : currentMessage.from[0].email"
                                size="40"><!-- avatar --></sg-avatar-image>
               <div class="md-avatar sg-avatar-selected"
                    ng-switch-when="true"><!-- selected avatar --></div>
@@ -289,7 +289,7 @@
                            ng-show="currentMessage.priority.level == 1 ||
                                     currentMessage.priority.level == 2"
                            ng-class="{'md-warn': currentMessage.priority.level == 1}">error</md-icon>
-                  {{currentMessage.$shortAddress('from')}}
+                  {{mailbox.service.selectedFolder.type == 'sent' ? currentMessage.$shortAddress('to' ) : currentMessage.$shortAddress('from' )}}
                 </div>
                 <div class="sg-tile-date" ng-bind="currentMessage.relativedate"><!-- date --></div>
               </div>
