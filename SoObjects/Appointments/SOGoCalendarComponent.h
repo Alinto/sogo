@@ -94,6 +94,8 @@
 
 - (void) snoozeAlarm: (unsigned int) minutes;
 
+- (void) adjustClassificationInRequestCalendar: (iCalCalendar *) rqCalendar;
+
 @end
 
 #endif /* SOGOCALENDARCOMPONENT_H */

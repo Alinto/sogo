@@ -1445,4 +1445,36 @@
 //   return values;
 // }
 
+- (void) adjustClassificationInRequestCalendar: (iCalCalendar *) rqCalendar
+{
+  SOGoUserDefaults *userDefaults;
+  NSString *accessClass;
+  NSArray *allObjects;
+  id entity;
+
+  int i;
+
+  userDefaults = [[context activeUser] userDefaults];
+  allObjects = [rqCalendar allObjects];
+
+  for (i = 0; i < [allObjects count]; i++)
+    {
+      entity = [allObjects objectAtIndex: i];
+
+      if ([entity respondsToSelector: @selector(accessClass)])
+        {
+          accessClass = [entity accessClass];
+
+          if (!accessClass || [accessClass length] == 0)
+            {
+              if ([entity isKindOfClass: [iCalEvent class]])
+                [entity setAccessClass: [userDefaults calendarEventsDefaultClassification]];
+              else if ([entity isKindOfClass: [iCalToDo class]])
+                [entity setAccessClass: [userDefaults calendarTasksDefaultClassification]];
+            }
+        }
+    }
+}
+
+
 @end
