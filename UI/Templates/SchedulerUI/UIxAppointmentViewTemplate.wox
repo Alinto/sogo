@@ -28,6 +28,41 @@
                 <var:string label:value="View Raw Source"/>
               </md-button>
             </md-menu-item>
+            <md-menu-item>
+              <md-menu>
+                <md-button label:aria-label="Copy To" ng-click="$mdOpenMenu($event)">
+                  <var:string label:value="Copy To"/>
+                </md-button>
+                <md-menu-content width="4">
+                  <div ng-repeat="calendar in editor.calendarService.$findAll(null, true) track by calendar.id">
+                    <md-menu-item>
+                      <md-button class="sg-no-wrap"
+                                 ng-click="editor.copySelectedComponent(calendar.id)">
+                        <span>{{calendar.name}}</span>
+                      </md-button>
+                    </md-menu-item>
+                  </div>
+                </md-menu-content>
+              </md-menu>
+            </md-menu-item>
+            <md-menu-item>
+              <md-menu>
+                <md-button label:aria-label="Move To" ng-click="$mdOpenMenu($event)">
+                  <var:string label:value="Move To"/>
+                </md-button>
+                <md-menu-content width="4">
+                  <div ng-repeat="calendar in editor.calendarService.$findAll(null, true) track by calendar.id">
+                    <md-menu-item>
+                      <md-button class="sg-no-wrap"
+                                 ng-disabled="editor.component.destinationCalendar == calendar.id"
+                                 ng-click="editor.moveSelectedComponent(calendar.id)">
+                        <span>{{calendar.name}}</span>
+                      </md-button>
+                    </md-menu-item>
+                  </div>
+                </md-menu-content>
+              </md-menu>
+            </md-menu-item>
           </md-menu-content>
         </md-menu>
         <md-button class="md-icon-button" ng-click="editor.close()">

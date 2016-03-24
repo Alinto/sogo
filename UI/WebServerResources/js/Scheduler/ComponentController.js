@@ -10,6 +10,7 @@
   function ComponentController($rootScope, $mdDialog, Calendar, Component, AddressBook, Alarm, stateComponent) {
     var vm = this, component;
 
+    vm.calendarService = Calendar;
     vm.service = Component;
     vm.component = stateComponent;
     vm.close = close;
@@ -21,6 +22,8 @@
     vm.deleteOccurrence = deleteOccurrence;
     vm.deleteAllOccurrences = deleteAllOccurrences;
     vm.toggleRawSource = toggleRawSource;
+    vm.copySelectedComponent = copySelectedComponent;
+    vm.moveSelectedComponent = moveSelectedComponent;
 
     // Load all attributes of component
     if (angular.isUndefined(vm.component.$futureComponentData)) {
@@ -139,6 +142,20 @@
             $mdDialog.hide();
           };
         }
+      });
+    }
+
+    function copySelectedComponent(calendar) {
+      vm.component.copyTo(calendar).then(function() {
+        $mdDialog.hide();
+        $rootScope.$emit('calendars:list');
+      });
+    }
+
+    function moveSelectedComponent(calendar) {
+      vm.component.moveTo(calendar).then(function() {
+        $mdDialog.hide();
+        $rootScope.$emit('calendars:list');
       });
     }
   }

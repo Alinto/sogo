@@ -269,8 +269,13 @@
         };
         copy = {
           protectedBy = "ViewAllComponent";
-          actionClass    = "UIxAppointmentActions";
+          actionClass = "UIxAppointmentActions";
           actionName  = "copy";
+        };
+        move = {
+          protectedBy = "ViewAllComponent";
+          actionClass = "UIxAppointmentActions";
+          actionName  = "move";
         };
         raw = {
           protectedBy = "ViewAllComponent";

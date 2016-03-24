@@ -1235,6 +1235,36 @@
   return uids;
 }
 
+- (NSException *) _copyComponent: (iCalCalendar *) calendar
+                        toFolder: (SOGoGCSFolder *) newFolder
+                       updateUID: (BOOL) updateUID
+{
+  NSString *newUID;
+  SOGoCalendarComponent *newComponent;
+
+  if (updateUID)
+    {
+      NSArray *elements;
+      unsigned int count, max;
+
+      newUID = [self globallyUniqueObjectId];
+      elements = [calendar allObjects];
+      max = [elements count];
+      for (count = 0; count < max; count++)
+        [[elements objectAtIndex: count] setUid: newUID];
+    }
+  else
+    {
+      newUID = [[[calendar events] objectAtIndex: 0] uid];
+    }
+
+  newComponent = [[self class] objectWithName:
+				 [NSString stringWithFormat: @"%@.ics", newUID]
+			       inContainer: newFolder];
+
+  return [newComponent saveCalendar: calendar];
+}
+
 - (NSException *) copyToFolder: (SOGoGCSFolder *) newFolder
 {
   return [self copyComponent: [self calendar: NO secure: NO]
@@ -1244,29 +1274,18 @@
 - (NSException *) copyComponent: (iCalCalendar *) calendar
 		       toFolder: (SOGoGCSFolder *) newFolder
 {
-  NSArray *elements;
-  NSString *newUID;
-  unsigned int count, max;
-  SOGoCalendarComponent *newComponent;
-
-  newUID = [self globallyUniqueObjectId];
-  elements = [calendar allObjects];
-  max = [elements count];
-  for (count = 0; count < max; count++)
-    [[elements objectAtIndex: count] setUid: newUID];
-
-  newComponent = [[self class] objectWithName:
-				 [NSString stringWithFormat: @"%@.ics", newUID]
-			       inContainer: newFolder];
-
-  return [newComponent saveCalendar: calendar];
+  return [self _copyComponent: calendar
+                     toFolder: newFolder
+                    updateUID: YES];
 }
 
 - (NSException *) moveToFolder: (SOGoGCSFolder *) newFolder
 {
   NSException *ex;
 
-  ex = [self copyToFolder: newFolder];
+  ex = [self _copyComponent: [self calendar: NO secure: NO]
+                   toFolder: newFolder
+                  updateUID: NO];
 
   if (!ex)
     ex = [self delete];

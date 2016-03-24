@@ -1229,6 +1229,28 @@
     return localizedString;
   };
 
+  /**
+   * @function copyTo
+   * @memberof Component.prototype
+   * @desc Copy an event to a calendar
+   * @param {string} calendar - a target calendar UID
+   * @returns a promise of the HTTP operation
+   */
+  Component.prototype.copyTo = function(calendar) {
+    return Component.$$resource.post(this.pid + '/' + this.id, 'copy', {destination: calendar});
+  };
+
+  /**
+   * @function moveTo
+   * @memberof Component.prototype
+   * @desc Move an event to a calendar
+   * @param {string} calendar - a target calendar UID
+   * @returns a promise of the HTTP operation
+   */
+  Component.prototype.moveTo = function(calendar) {
+    return Component.$$resource.post(this.pid + '/' + this.id, 'move', {destination: calendar});
+  };
+
   Component.prototype.toString = function() {
     return '[Component ' + this.id + ']';
   };

@@ -172,21 +172,21 @@
   return response;
 }
 
-- (WOResponse *) copyAction
+- (WOResponse *) _copyOrMoveAction: (BOOL) moving
 {
-  NSString *destination;
-  NSArray *events;
-  iCalCalendar *calendar;
-  iCalRepeatableEntityObject *masterOccurence;
-  SOGoAppointmentObject *thisEvent;
   SOGoAppointmentFolder *sourceCalendar, *destinationCalendar;
+  SOGoAppointmentObject *thisEvent;
+  iCalCalendar *calendar;
+  NSString *destination;
   SoSecurityManager *sm;
+  NSDictionary *params;
   WOResponse *response;
   WORequest *rq;
 
   rq = [context request];
+  params = [[rq contentAsString] objectFromJSONString];
+  destination = [params objectForKey: @"destination"];
 
-  destination = [rq formValueForKey: @"destination"];
   if (![destination length])
     destination = @"personal";
   
@@ -206,40 +206,50 @@
 	  response = [NSException exceptionWithHTTPStatus: 403
 						   reason: @"Can't add event to destination calendar."];
 	}
-      // Verify that the destination calendar is not the source calendar
-      else if ([[destinationCalendar nameInContainer] isEqualToString: [sourceCalendar nameInContainer]])
-	{
-	  response = [NSException exceptionWithHTTPStatus: 400
-						   reason: @"Destination calendar is the source calendar."];
-	}
       else
 	{
-	  // Remove attendees, recurrence exceptions and single occurences from the event
-	  calendar = [thisEvent calendar: NO secure: NO];
-	  events = [calendar events];
-	  masterOccurence = [events objectAtIndex: 0];
-	  
-	  if ([masterOccurence hasAlarms])
-	    [masterOccurence removeAllAlarms];
-	  if ([masterOccurence hasRecurrenceRules])
-	    {
-	      [masterOccurence removeAllExceptionRules];
-	      [masterOccurence removeAllExceptionDates];
-	    }
-	  if ([[masterOccurence attendees] count] > 0)
-	    {
-	      [masterOccurence setOrganizer: nil];
-	      [masterOccurence removeAllAttendees];
-	    }
-	  [calendar setUniqueChild: masterOccurence];
+          calendar = [thisEvent calendar: NO secure: NO];
 
-	  // Perform the copy
-	  if ([thisEvent copyComponent: calendar
-			      toFolder: (SOGoGCSFolder *) destinationCalendar])
-	    response = [NSException exceptionWithHTTPStatus: 500
-						     reason: @"Can't copy event to destination calendar."];
-	  else
-	    response = [self responseWith204];
+          if (moving)
+            {
+              // Perform the move
+              if ([thisEvent moveToFolder: (SOGoGCSFolder *) destinationCalendar])
+                response = [NSException exceptionWithHTTPStatus: 500
+                                                         reason: @"Can't move event to destination calendar."];
+              else
+                response = [self responseWith204];
+            }
+          else
+            {
+              iCalRepeatableEntityObject *masterOccurence;
+              NSArray *events;
+
+              // Remove attendees, recurrence exceptions and single occurences from the event
+              events = [calendar events];
+              masterOccurence = [events objectAtIndex: 0];
+
+              if ([masterOccurence hasAlarms])
+                [masterOccurence removeAllAlarms];
+              if ([masterOccurence hasRecurrenceRules])
+                {
+                  [masterOccurence removeAllExceptionRules];
+                  [masterOccurence removeAllExceptionDates];
+                }
+              if ([[masterOccurence attendees] count] > 0)
+                {
+                  [masterOccurence setOrganizer: nil];
+                  [masterOccurence removeAllAttendees];
+                }
+              [calendar setUniqueChild: masterOccurence];
+
+              // Perform the copy
+              if ([thisEvent copyComponent: calendar
+                                  toFolder: (SOGoGCSFolder *) destinationCalendar])
+                response = [NSException exceptionWithHTTPStatus: 500
+                                                         reason: @"Can't copy event to destination calendar."];
+              else
+                response = [self responseWith204];
+            }
 	}
     }
   else
@@ -249,6 +259,16 @@
     }
   
   return response;
+}
+
+- (WOResponse *) copyAction
+{
+  return [self _copyOrMoveAction: NO];
+}
+
+- (WOResponse *) moveAction
+{
+  return [self _copyOrMoveAction: YES];
 }
 
 @end
