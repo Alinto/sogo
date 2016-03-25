@@ -1,6 +1,6 @@
 /* UIxJSONPreferences.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@
 #import <NGObjWeb/SoObjects.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 
+#import <NGExtensions/NSObject+Logs.h>
+
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
@@ -41,12 +43,38 @@ static SoProduct *preferencesProduct = nil;
 
 @implementation UIxJSONPreferences
 
+- (NSDictionary *) _localizedCategoryLabels
+{
+  NSArray *categoryLabels, *localizedCategoryLabels;
+  NSDictionary *labelsDictionary;
+
+  labelsDictionary = nil;
+  localizedCategoryLabels = [[self labelForKey: @"calendar_category_labels"
+                                   withResourceManager: [preferencesProduct resourceManager]]
+                              componentsSeparatedByString: @","];
+  categoryLabels = [[[preferencesProduct resourceManager]
+                                      stringForKey: @"calendar_category_labels"
+                                      inTableNamed: nil
+                                  withDefaultValue: @""
+                                         languages: [NSArray arrayWithObject: @"English"]]
+                                      componentsSeparatedByString: @","];
+
+  if ([localizedCategoryLabels count] == [categoryLabels count])
+    labelsDictionary = [NSDictionary dictionaryWithObjects: localizedCategoryLabels
+                                                   forKeys: categoryLabels];
+  else
+    [self logWithFormat: @"ERROR: localizable strings calendar_category_labels is incorrect for language %@",
+          [[[context activeUser] userDefaults] language]];
+
+  return labelsDictionary;
+}
+
 - (WOResponse *) jsonDefaultsAction
 {
   NSMutableDictionary *values, *account;
   SOGoUserDefaults *defaults;
   NSMutableArray *accounts;
-  NSArray *categoryLabels;
+  NSDictionary *categoryLabels;
   NSDictionary *locale;
 
   if (!preferencesProduct)
@@ -56,6 +84,7 @@ static SoProduct *preferencesProduct = nil;
     }
 
   defaults = [[context activeUser] userDefaults];
+  categoryLabels = nil;
 
   //
   // Default General preferences
@@ -112,28 +141,89 @@ static SoProduct *preferencesProduct = nil;
     [[defaults source] setObject: [defaults calendarDefaultReminder] forKey: @"SOGoCalendarDefaultReminder"];
 
   // Populate default calendar categories, based on the user's preferred language
-  if (![defaults calendarCategories])
+  if (![[defaults source] objectForKey: @"SOGoCalendarCategories"])
     {
-      categoryLabels = [[[self labelForKey: @"calendar_category_labels"  withResourceManager: [preferencesProduct resourceManager]]
-                         componentsSeparatedByString: @","]
-                         sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+      NSArray *defaultCalendarCategories;
 
-      [defaults setCalendarCategories: categoryLabels];
+      categoryLabels = [self _localizedCategoryLabels];
 
-      // TODO: build categories colors dictionary with localized keys
+      if ((defaultCalendarCategories = [defaults calendarCategories]))
+        {
+          // Calendar categories are taken from SOGo's configuration or SOGoDefaults.plist
+
+          NSMutableArray *filteredCalendarCategories;
+          NSString *label, *localizedLabel;
+          int count, max;
+
+          max = [defaultCalendarCategories count];
+          filteredCalendarCategories = [NSMutableArray arrayWithCapacity: max];
+
+          for (count = 0; count < max; count++)
+            {
+              label = [defaultCalendarCategories objectAtIndex: count];
+              if ((localizedLabel = [categoryLabels objectForKey: label]))
+                {
+                  [filteredCalendarCategories addObject: localizedLabel];
+                }
+            }
+
+          [defaults setCalendarCategories: filteredCalendarCategories];
+        }
+      else
+        {
+          // Calendar categories are taken from localizable strings
+
+          [defaults setCalendarCategories: [categoryLabels allValues]];
+        }
     }
-  if (![defaults calendarCategoriesColors])
+  if (![[defaults source] objectForKey: @"SOGoCalendarCategoriesColors"])
     {
-      NSMutableDictionary *colors;
-      int i;
+      NSDictionary *defaultCalendarCategoriesColors;
 
-      categoryLabels = [defaults calendarCategories];
-      colors = [NSMutableDictionary dictionaryWithCapacity: [categoryLabels count]];
+      if (!categoryLabels)
+        categoryLabels = [self _localizedCategoryLabels];
 
-      for (i = 0; i < [categoryLabels count]; i++)
-        [colors setObject: @"#aaa"  forKey: [categoryLabels objectAtIndex: i]];
+      if ((defaultCalendarCategoriesColors = [defaults calendarCategoriesColors]))
+        {
+          // Calendar categories colors are taken from SOGo's configuration or SOGoDefaults.plist
 
-      [defaults setCalendarCategoriesColors: colors];
+          NSArray *defaultCalendarCategories;
+          NSMutableDictionary *filteredCalendarCategoriesColors;
+          NSString *label, *localizedLabel;
+          int count, max;
+
+          defaultCalendarCategories = [defaultCalendarCategoriesColors allKeys];
+          max = [defaultCalendarCategories count];
+          filteredCalendarCategoriesColors = [NSMutableDictionary dictionaryWithCapacity: max];
+
+          for (count = 0; count < max; count++)
+            {
+              label = [defaultCalendarCategories objectAtIndex: count];
+              if ((localizedLabel = [categoryLabels objectForKey: label]))
+                {
+                  [filteredCalendarCategoriesColors setObject: [defaultCalendarCategoriesColors objectForKey: label]
+                                                       forKey: localizedLabel];
+                }
+            }
+
+          [defaults setCalendarCategoriesColors: filteredCalendarCategoriesColors];
+        }
+      else
+        {
+          // Calendar categories colors are set to #CCC
+
+          NSArray *calendarCategories;
+          NSMutableDictionary *colors;
+          int i;
+
+          calendarCategories = [categoryLabels allValues];
+          colors = [NSMutableDictionary dictionaryWithCapacity: [calendarCategories count]];
+
+          for (i = 0; i < [calendarCategories count]; i++)
+            [colors setObject: @"#CCCCCCC"  forKey: [calendarCategories objectAtIndex: i]];
+
+          [defaults setCalendarCategoriesColors: colors];
+        }
     }
 
   //
@@ -203,10 +293,6 @@ static SoProduct *preferencesProduct = nil;
   if ([[defaults source] dirty])
     [defaults synchronize];
 
-  //
-  // We inject our default mail account, something we don't want to do before we
-  // call -synchronize on our defaults.
-  //
   values = [[[[defaults source] values] mutableCopy] autorelease];
 
   // Add locale code (used by CK Editor)
@@ -219,6 +305,10 @@ static SoProduct *preferencesProduct = nil;
                                            [locale objectForKey: @"NSShortWeekDayNameArray"], @"shortDays",
                                                     nil] forKey: @"locale"];
 
+  //
+  // We inject our default mail account, something we don't want to do before we
+  // call -synchronize on our defaults.
+  //
   accounts = [NSMutableArray arrayWithArray: [values objectForKey: @"AuxiliaryMailAccounts"]];
   account = [[[context activeUser] mailAccounts] objectAtIndex: 0];
   if (![account objectForKey: @"receipts"])
