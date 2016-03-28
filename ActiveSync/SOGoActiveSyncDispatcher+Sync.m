@@ -1305,7 +1305,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             if (firstUIDAdded)
               {
                 a = [davCollectionTagToStore componentsSeparatedByString: @"-"];
-                [folderMetadata setObject: [[NSString alloc] initWithFormat: @"%@-%@", firstUIDAdded, [a objectAtIndex: 1]] forKey: @"SyncKey"];
+                [folderMetadata setObject: [NSString stringWithFormat: @"%@-%@", firstUIDAdded, [a objectAtIndex: 1]] forKey: @"SyncKey"];
                 RELEASE(firstUIDAdded);
               }
             else
