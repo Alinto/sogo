@@ -149,6 +149,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [super dealloc];
 }
 
+- (void) _ensureFolder: (SOGoMailFolder *) mailFolder
+{
+  BOOL rc;
+
+  if (![mailFolder isKindOfClass: [NSException class]])
+  {
+    rc = [mailFolder exists];
+    if (!rc)
+      rc = [mailFolder create];
+  }
+}
+
 - (void) _setFolderSyncKey: (NSString *) theSyncKey
 {
   SOGoCacheGCSObject *o;
@@ -770,6 +782,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   userFolder = [[context activeUser] homeFolderInContext: context];
   accountsFolder = [userFolder lookupName: @"Mail" inContext: context acquire: NO];
   accountFolder = [accountsFolder lookupName: @"0" inContext: context acquire: NO];
+
+  if (first_sync)
+    {
+      [self _ensureFolder: (SOGoMailFolder *)[accountFolder draftsFolderInContext: context]];
+      [self _ensureFolder: [accountFolder sentFolderInContext: context]];
+      [self _ensureFolder: (SOGoMailFolder *)[accountFolder trashFolderInContext: context]];
+    }
 
   allFoldersMetadata = [NSMutableArray array];
   [self _flattenFolders: [accountFolder allFoldersMetadata]  into: allFoldersMetadata  parent: nil];
