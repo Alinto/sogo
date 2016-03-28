@@ -158,6 +158,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [[o properties] removeObjectForKey: @"SupportedElements"];
   [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
   [[o properties] removeObjectForKey: @"InitialLoadSequence"];
+  [[o properties] removeObjectForKey: @"FirstIdInCache"];
+  [[o properties] removeObjectForKey: @"LastIdInCache"];
 
   [[o properties] addEntriesFromDictionary: values];
   [o save];
@@ -728,7 +730,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // No changes in the collection - 2.2.2.19.1.1 Empty Sync Request.
   // We check this and we don't generate any commands if we don't have to.
   //
-  if ([theSyncKey isEqualToString: [theCollection davCollectionTag]] && !([s length]))
+  if ([theSyncKey isEqualToString: [theCollection davCollectionTag]] && !([s length]) && ![context objectForKey: @"FilterTypeChanged"] && ![folderMetadata objectForKey: @"InitialLoadSequence"])
     return;
 
   davCollectionTagToStore = [theCollection davCollectionTag];
@@ -759,6 +761,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         if ([theSyncKey isEqualToString: @"-1"])
           [folderMetadata setObject: davCollectionTagToStore forKey: @"InitialLoadSequence"];
+        else if ([context objectForKey: @"FilterTypeChanged"])
+          {
+            if (debugOn)
+              [self logWithFormat: @"EAS - FilterTypeChanged!"];
+
+            theSyncKey = @"-1";
+          }
 
         if ([folderMetadata objectForKey: @"InitialLoadSequence"])
           {
@@ -971,6 +980,30 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             a = [[theCollection davCollectionTag] componentsSeparatedByString: @"-"];
             [folderMetadata setObject: [a objectAtIndex: 1] forKey: @"InitialLoadSequence"];
           }
+        else if ([context objectForKey: @"FilterTypeChanged"])
+          {
+            NSMutableArray *sortedByUID;
+
+            if (debugOn)
+              [self logWithFormat: @"EAS - FilterTypeChanged!"];
+
+            sortedByUID = [[NSMutableArray alloc] initWithDictionary: syncCache];
+
+            if ([sortedByUID count])
+              {
+                [sortedByUID sortUsingSelector: @selector(compareUID:)];
+
+                // Save first and last uid in cache. We don't need to touch this range in case a cleanup is required.
+                [folderMetadata setObject: [[sortedByUID objectAtIndex: 0] uid] forKey: @"FirstIdInCache"];
+                [folderMetadata setObject: [[sortedByUID lastObject] uid] forKey: @"LastIdInCache"];
+
+                [folderMetadata setObject: [[sortedByUID lastObject] sequence] forKey: @"InitialLoadSequence"];
+              }
+
+            theSyncKey = @"-1";
+
+            RELEASE(sortedByUID);
+          }
         else
          {
            a = [theSyncKey componentsSeparatedByString: @"-"];
@@ -982,7 +1015,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             if (highestmodseq < [[folderMetadata objectForKey: @"InitialLoadSequence"] intValue])
               initialLoadInProgress = YES;
             else
-              [folderMetadata removeObjectForKey: @"InitialLoadSequence"];
+              {
+                [folderMetadata removeObjectForKey: @"FirstIdInCache"];
+                [folderMetadata removeObjectForKey: @"LastIdInCache"];
+                [folderMetadata removeObjectForKey: @"InitialLoadSequence"];
+              }
           }
 
         allMessages = [theCollection syncTokenFieldsWithProperties: nil  matchingSyncToken: theSyncKey  fromDate: theFilterType  initialLoad: initialLoadInProgress];
@@ -1031,6 +1068,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             // Remove all entries from cache beginning with the first uid added by the last sync request.
             for (j = uidnextFromCache; j <= [[[sortedByUID lastObject] uid] intValue]; j++)
               {
+                if ([folderMetadata objectForKey: @"FirstIdInCache"])
+                  {
+                    if (j >= [[folderMetadata objectForKey: @"FirstIdInCache"] intValue] && j <= [[folderMetadata objectForKey: @"LastIdInCache"] intValue])
+                      {
+                        if (debugOn)
+                          [self logWithFormat: @"EAS - Cache cleanupa: ignore (a) %d", j];
+
+                        continue;
+                      }
+                  }
+
                 if (debugOn)
                   [self logWithFormat: @"EAS - Cache cleanup: ADD %d", j];
 
@@ -1042,8 +1090,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
             for (j = 0; j < [allCacheObjects count]; j++)
               {
-                // Update the modseq in cache, sence othersie, it would be identical to the modseq from server
-                //and we would skip the cache when generating the response.
+                if ([folderMetadata objectForKey: @"FirstIdInCache"])
+                  {
+                    if ([[[allCacheObjects objectAtIndex: j] uid] intValue] >= [[folderMetadata objectForKey: @"FirstIdInCache"] intValue] &&
+                        [[[allCacheObjects objectAtIndex: j] uid] intValue] <= [[folderMetadata objectForKey: @"LastIdInCache"] intValue])
+                      {
+                        if (debugOn)
+                          [self logWithFormat: @"EAS - Cache cleanupa: ignore (c) %@", [[allCacheObjects objectAtIndex: j] uid]];
+
+                        continue;
+                      }
+                  }
+
+                // Update the modseq in cache, since otherwise, it would be identical to the modseq from server
+                // and we would skip the cache when generating the response.
                 if ([syncCache objectForKey: [[allCacheObjects objectAtIndex: j] uid]] && ![[[allCacheObjects objectAtIndex: j] sequence] isEqual: [NSNull null]])
                   {
                     if (debugOn)
@@ -1355,7 +1415,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 changeDetected: (BOOL *) changeDetected
            maxSyncResponseSize: (int) theMaxSyncResponseSize
 {
-  NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType, *mimeSupport, *mimeTruncation, *lastServerKey, *syncKeyInCache, *folderKey;
+  NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType, *mimeSupport, *mimeTruncation, *filterType, *lastServerKey, *syncKeyInCache, *folderKey;
   NSMutableDictionary *folderMetadata, *folderOptions;
   NSMutableArray *supportedElements, *supportedElementNames;
   NSMutableString *changeBuffer, *commandsBuffer;
@@ -1476,17 +1536,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       mimeSupport = [[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMESupport"];
       mimeTruncation = [[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMETruncation"];
+      filterType = [[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"FilterType"];
 
       if (!mimeSupport)
         mimeSupport = @"1";
 
       if (!mimeTruncation)
         mimeTruncation = @"8";
+
+      if (!filterType)
+        filterType = @"0";
     }
   else
     {
       mimeSupport = [[(id)[theDocumentElement getElementsByTagName: @"MIMESupport"] lastObject] textValue];
       mimeTruncation = [[(id)[theDocumentElement getElementsByTagName: @"MIMETruncation"] lastObject] textValue];
+      filterType = [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue];
 
       if (!mimeSupport)
         mimeSupport = [[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMESupport"];
@@ -1500,6 +1565,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       if (!mimeTruncation)
         mimeTruncation = @"8";
 
+      if (!filterType)
+        filterType = @"0";
+
       if ([mimeSupport isEqualToString: @"1"] && [bodyPreferenceType isEqualToString: @"4"])
         bodyPreferenceType = @"2";
       else if ([mimeSupport isEqualToString: @"2"] && [bodyPreferenceType isEqualToString: @"4"])
@@ -1510,9 +1578,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       // Avoid writing to cache if there is nothing to change.
       if (![[[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"BodyPreferenceType"] isEqualToString: bodyPreferenceType] ||
           ![[[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMESupport"] isEqualToString: mimeSupport] ||
-          ![[[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMETruncation"] isEqualToString: mimeTruncation])
+          ![[[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMETruncation"] isEqualToString: mimeTruncation] ||
+          ![[[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"FilterType"] isEqualToString: filterType])
         {
-          folderOptions = [[NSDictionary alloc] initWithObjectsAndKeys: mimeSupport, @"MIMESupport", mimeTruncation, @"MIMETruncation", bodyPreferenceType, @"BodyPreferenceType", nil];
+          if ((([filterType intValue] != 0) && [[[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"FilterType"] intValue] < [filterType intValue]) ||
+              (([filterType intValue] == 0) && ([[[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"FilterType"] intValue] > [filterType intValue])))
+           {
+             [context setObject: [NSNumber numberWithBool: YES] forKey: @"FilterTypeChanged"];
+           }
+
+          folderOptions = [[NSDictionary alloc] initWithObjectsAndKeys: mimeSupport, @"MIMESupport", mimeTruncation, @"MIMETruncation", filterType, @"FilterType", bodyPreferenceType, @"BodyPreferenceType", nil];
           [folderMetadata setObject: folderOptions forKey: @"FolderOptions"];
           [self _setFolderMetadata: folderMetadata forKey: folderKey];
         }

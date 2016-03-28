@@ -251,6 +251,8 @@ typedef enum
               [[oc properties] removeObjectForKey: @"SyncCache"];
               [[oc properties] removeObjectForKey: @"DateCache"];
               [[oc properties] removeObjectForKey: @"MoreAvailable"];
+              [[oc properties] removeObjectForKey: @"FirstIdInCache"];
+              [[oc properties] removeObjectForKey: @"LastIdInCache"];
 
               [oc save];
               rc = YES;

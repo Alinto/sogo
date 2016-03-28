@@ -977,6 +977,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
          [[o properties] removeObjectForKey: @"SupportedElements"];
          [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
          [[o properties] removeObjectForKey: @"InitialLoadSequence"];
+         [[o properties] removeObjectForKey: @"FirstIdInCache"];
+         [[o properties] removeObjectForKey: @"LastIdInCache"];
+
          [o save];
               
          command_count++;
@@ -1075,6 +1078,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                    [[o properties] removeObjectForKey: @"SupportedElements"];
                    [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
                    [[o properties] removeObjectForKey: @"InitialLoadSequence"];
+                   [[o properties] removeObjectForKey: @"FirstIdInCache"];
+                   [[o properties] removeObjectForKey: @"LastIdInCache"];
                  }
 
                [o save];
@@ -1100,6 +1105,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                    [[o properties] removeObjectForKey: @"SupportedElements"];
                    [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
                    [[o properties] removeObjectForKey: @"InitialLoadSequence"];
+                   [[o properties] removeObjectForKey: @"FirstIdInCache"];
+                   [[o properties] removeObjectForKey: @"LastIdInCache"];
                  }
 
                [o save];
