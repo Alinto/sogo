@@ -64,6 +64,31 @@
         }
       });
     }
+    else {
+      // Flatten new tags when coming from the predefined list of tags (Message.$tags) and
+      // sync tags with server when adding or removing a tag.
+      $scope.$watchCollection('viewer.message.flags', function(newTags, oldTags) {
+        var tags;
+        if (newTags || oldTags) {
+          _.forEach(newTags, function(tag, i) {
+            if (angular.isObject(tag))
+              newTags[i] = tag.name;
+          });
+          if (newTags.length > oldTags.length) {
+            tags = _.difference(newTags, oldTags);
+            _.forEach(tags, function(tag) {
+              vm.message.addTag(tag);
+            });
+          }
+          else if (newTags.length < oldTags.length) {
+            tags = _.difference(oldTags, newTags);
+            _.forEach(tags, function(tag) {
+              vm.message.removeTag(tag);
+            });
+          }
+        }
+      });
+    }
 
     /**
      * If this is a popup window, retrieve the matching controllers (mailbox and message) of the parent window.
