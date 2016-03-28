@@ -10,6 +10,7 @@ Enhancements
  - [web] added Lithuanan (lt) translation - thanks to Mantas Liobė
  - [web] we now "cc" delegates during invitation updates (#3195)
  - [web] new SOGoHelpURL preference to set a custom URL for SOGo help (#2768)
+ - [web] now able to copy/move events and also duplicate them (#3196)
 
 Bug fixes
  - [web] fixed missing columns in SELECT statements (PostgreSQL)
@@ -27,6 +28,7 @@ Bug fixes
  - [web] show repeating events when we ask for "All" or "Future" events (#69)
  - [web] show the To instead of From when we are in the Sent folder (#3547)
  - [dav] we now handle the default classifications for tasks (#3541)
+ - [eas] handle FilterType changes using EAS (#3543)
 
 3.0.2 (2016-03-04)
 ------------------
