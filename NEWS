@@ -11,6 +11,7 @@ Bug fixes
  - we now handle the default classifications for tasks (#3541)
  - handle FilterType changes using EAS (#3543)
  - handle Dovecot's mail_shared_explicit_inbox parameter when using EAS
+ - prevent concurrent Sync ops from same EAS device (#3603)
 
 2.3.9 (2016-03-16)
 ------------------
