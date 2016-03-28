@@ -2015,11 +2015,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processPing: (id <DOMElement>) theDocumentElement
           inResponse: (WOResponse *) theResponse
 {
-  NSString *collectionId, *realCollectionId, *syncKey;
+  NSString *collectionId, *realCollectionId, *syncKey, *processIdentifier, *pingRequestInCache;
   NSMutableArray *foldersWithChanges, *allFoldersID;
   SOGoMicrosoftActiveSyncFolderType folderType;
   NSMutableDictionary *folderMetadata;
   SOGoSystemDefaults *defaults;
+  SOGoCacheGCSObject *o;
   id <DOMElement> aCollection;
   NSArray *allCollections;
 
@@ -2028,8 +2029,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSData *d;
   NSAutoreleasePool *pool;
 
-  int i, j, heartbeatInterval, defaultInterval, internalInterval, status;
+  int i, j, heartbeatInterval, defaultInterval, internalInterval, status, total_sleep;
   
+  // Let other ping requests know that a new request has arrived.
+  processIdentifier = [NSString stringWithFormat: @"%d", [[NSProcessInfo processInfo] processIdentifier]];
+  o = [SOGoCacheGCSObject objectWithName: [context objectForKey: @"DeviceId"]  inContainer: nil  useCache: NO];
+  [o setObjectType: ActiveSyncGlobalCacheObject];
+  [o setTableUrl: [self folderTableURL]];
+  [o reloadIfNeeded];
+  [[o properties] setObject: processIdentifier forKey: @"PingRequest"];
+  [o save];
+
   defaults = [SOGoSystemDefaults sharedSystemDefaults];
   defaultInterval = [defaults maximumPingInterval];
   internalInterval = [defaults internalSyncInterval];
@@ -2123,8 +2133,30 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
       else
         {
-          [self logWithFormat: @"Sleeping %d seconds while detecting changes in Ping...", internalInterval];
-          sleep(internalInterval);
+          total_sleep = 0;
+
+          while (total_sleep < internalInterval)
+            {
+              // We check if we must break the current ping request since an other ping request
+              // has just arrived.
+              pingRequestInCache = [[self globalMetadataForDevice] objectForKey: @"PingRequest"];
+              if (pingRequestInCache && ![pingRequestInCache isEqualToString: processIdentifier])
+                {
+                  if (debugOn)
+                    [self logWithFormat: @"EAS - Ping request canceled (%@)", pingRequestInCache];
+
+                  // Make sure we end the heardbeat-loop.
+                  internalInterval = heartbeatInterval;
+
+                  break;
+                }
+              else
+                {
+                  [self logWithFormat: @"Sleeping %d seconds while detecting changes in Ping...", internalInterval-total_sleep];
+                  sleep(5);
+                  total_sleep += 5;
+                }
+            }
         }
     }
   
