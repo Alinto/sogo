@@ -13,6 +13,7 @@ Bug fixes
  - handle Dovecot's mail_shared_explicit_inbox parameter when using EAS
  - prevent concurrent Sync ops from same EAS device (#3603)
  - handle EAS loop termination when SOGo is being shutdown (#3604)
+ - avoid marking mails as read when archiving a folder (#2792)
 
 2.3.9 (2016-03-16)
 ------------------
