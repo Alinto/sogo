@@ -37,6 +37,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @class NSURL;
 @class NSNumber;
 
+static volatile BOOL shouldTerminate = NO;
+
 @interface SOGoActiveSyncDispatcher : NSObject
 {
   NSURL *folderTableURL;
@@ -44,7 +46,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   id context;
 
   NSNumber *syncRequest;
-
   BOOL debugOn;
 }
 

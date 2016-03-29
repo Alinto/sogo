@@ -1905,6 +1905,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // We enter our loop detection change
   for (i = 0; i < (heartbeatInterval/internalInterval); i++)
     {
+      if (shouldTerminate)
+        break;
+
       s = [NSMutableString string];
 
       for (j = 0; j < [allCollections count]; j++)
@@ -1944,7 +1947,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         {
           total_sleep = 0;
 
-          while (total_sleep < internalInterval)
+          while (!shouldTerminate && total_sleep < internalInterval)
             {
               // We check if we must break the current synchronization since an other Sync
               // has just arrived.
