@@ -33,6 +33,7 @@ Bug fixes
  - [eas] handle FilterType changes using EAS (#3543)
  - [eas] handle Dovecot's mail_shared_explicit_inbox parameter
  - [eas] prevent concurrent Sync ops from same device (#3603)
+ - [eas] handle EAS loop termination when SOGo is being shutdown (#3604)
 
 3.0.2 (2016-03-04)
 ------------------
