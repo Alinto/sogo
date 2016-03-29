@@ -800,12 +800,11 @@ void handle_terminate(int signum)
   if (first_sync)
     {
       [self _ensureFolder: (SOGoMailFolder *)[accountFolder draftsFolderInContext: context]];
-      [self _ensureFolder: [accountFolder sentFolderInContext: context]];
+      [self _ensureFolder: (SOGoMailFolder *)[accountFolder sentFolderInContext: context]];
       [self _ensureFolder: (SOGoMailFolder *)[accountFolder trashFolderInContext: context]];
     }
 
-  allFoldersMetadata = [NSMutableArray array];
-  [self _flattenFolders: [accountFolder allFoldersMetadata]  into: allFoldersMetadata  parent: nil];
+  allFoldersMetadata = [accountFolder allFoldersMetadata];
   
   // Get GUIDs of folder (IMAP)
   // e.g. {folderINBOX = folder6b93c528176f1151c7260000aef6df92}
