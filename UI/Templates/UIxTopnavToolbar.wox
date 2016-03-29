@@ -27,12 +27,14 @@
       <md-button class="md-icon-button"
                  ng-show="activeUser.path.calendar.length"
                  ng-disabled="baseURL.endsWith('/Calendar/')"
+                 var:ng-click="navButtonClick"
                  ng-href="{{activeUser.path.calendar}}">
         <md-tooltip><var:string label:value="Calendar"/></md-tooltip>
         <md-icon>event</md-icon>
       </md-button>
       <md-button class="md-icon-button"
                  ng-disabled="baseURL.endsWith('/Contacts/')"
+                 var:ng-click="navButtonClick"
                  ng-href="{{activeUser.path.contacts}}">
         <md-icon>contacts</md-icon>
         <md-tooltip><var:string label:value="Address Book"/></md-tooltip>
@@ -40,6 +42,7 @@
       <md-button class="md-icon-button"
                  ng-show="activeUser.path.mail.length"
                  ng-disabled="baseURL.endsWith('/Mail/')"
+                 var:ng-click="navButtonClick"
                  ng-href="{{activeUser.path.mail}}">
         <md-icon>email</md-icon>
         <md-tooltip><var:string label:value="Mail"/></md-tooltip>
@@ -47,6 +50,7 @@
       <md-button class="md-icon-button"
                  ng-disabled="baseURL.endsWith('/Administration/')"
                  ng-show="activeUser.isSuperUser"
+                 var:ng-click="navButtonClick"
                  ng-href="{{activeUser.path.administration}}">
         <md-icon>settings_applications</md-icon>
         <md-tooltip><var:string label:value="Administration"/></md-tooltip>
@@ -62,6 +66,7 @@
       </md-button>
       <md-button class="md-icon-button"
                  ng-show="activeUser.path.logoff.length"
+                 var:ng-click="navButtonClick"
                  ng-href="{{activeUser.path.logoff}}">
         <md-icon>settings_power</md-icon>
         <md-tooltip><var:string label:value="Disconnect"/></md-tooltip>

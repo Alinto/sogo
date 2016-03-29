@@ -11,6 +11,7 @@ Enhancements
  - [web] we now "cc" delegates during invitation updates (#3195)
  - [web] new SOGoHelpURL preference to set a custom URL for SOGo help (#2768)
  - [web] now able to copy/move events and also duplicate them (#3196)
+ - [web] improve preferences validation and check for unsaved changes
 
 Bug fixes
  - [web] fixed missing columns in SELECT statements (PostgreSQL)

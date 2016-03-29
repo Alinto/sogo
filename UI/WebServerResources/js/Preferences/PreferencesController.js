@@ -30,6 +30,7 @@
     vm.removeMailFilter = removeMailFilter;
     vm.addDefaultEmailAddresses = addDefaultEmailAddresses;
     vm.userFilter = User.$filter;
+    vm.confirmChanges = confirmChanges;
     vm.save = save;
     vm.canChangePassword = canChangePassword;
     vm.changePassword = changePassword;
@@ -55,46 +56,52 @@
         User.$alternateAvatar = statePreferences.defaults.SOGoAlternateAvatar;
     });
 
-    function go(module) {
-      // Close sidenav on small devices
-      if ($mdMedia('xs'))
-        $mdSidenav('left').close();
-      $state.go('preferences.' + module);
+    function go(module, form) {
+      if (form.$valid) {
+        // Close sidenav on small devices
+        if ($mdMedia('xs'))
+          $mdSidenav('left').close();
+        $state.go('preferences.' + module);
+      }
     }
 
-    function onLanguageChange() {
+    function onLanguageChange(form) {
       Dialog.confirm(l('Warning'),
                      l('Save preferences and reload page now?'),
                      {ok: l('Yes'), cancel: l('No')})
         .then(function() {
-          save().then(function() {
+          save(form, { quick: true }).then(function() {
             $window.location.reload(true);
           });
         });
     }
 
-    function addCalendarCategory() {
+    function addCalendarCategory(form) {
       vm.preferences.defaults.SOGoCalendarCategoriesColors["New category"] = "#aaa";
       vm.preferences.defaults.SOGoCalendarCategories.push("New category");
       focus('calendarCategory_' + (vm.preferences.defaults.SOGoCalendarCategories.length - 1));
+      form.$setDirty();
     }
 
-    function removeCalendarCategory(index) {
+    function removeCalendarCategory(index, form) {
       var key = vm.preferences.defaults.SOGoCalendarCategories[index];
       vm.preferences.defaults.SOGoCalendarCategories.splice(index, 1);
       delete vm.preferences.defaults.SOGoCalendarCategoriesColors[key];
+      form.$setDirty();
     }
 
-    function addContactCategory() {
+    function addContactCategory(form) {
       vm.preferences.defaults.SOGoContactsCategories.push("");
       focus('contactCategory_' + (vm.preferences.defaults.SOGoContactsCategories.length - 1));
+      form.$setDirty();
     }
 
-    function removeContactCategory(index) {
+    function removeContactCategory(index, form) {
       vm.preferences.defaults.SOGoContactsCategories.splice(index, 1);
+      form.$setDirty();
     }
 
-    function addMailAccount(ev) {
+    function addMailAccount(ev, form) {
       var account;
 
       vm.preferences.defaults.AuxiliaryMailAccounts.push({});
@@ -125,10 +132,12 @@
           accountId: (vm.preferences.defaults.AuxiliaryMailAccounts.length-1),
           mailCustomFromEnabled: window.mailCustomFromEnabled
         }
+      }).then(function() {
+        form.$setDirty();
       });
     }
 
-    function editMailAccount(event, index) {
+    function editMailAccount(event, index, form) {
       var account = vm.preferences.defaults.AuxiliaryMailAccounts[index];
       $mdDialog.show({
         controller: 'AccountDialogController',
@@ -143,24 +152,28 @@
         }
       }).then(function() {
         vm.preferences.defaults.AuxiliaryMailAccounts[index] = account;
+        form.$setDirty();
       });
     }
 
-    function removeMailAccount(index) {
+    function removeMailAccount(index, form) {
       vm.preferences.defaults.AuxiliaryMailAccounts.splice(index, 1);
+      form.$setDirty();
     }
     
-    function addMailLabel() {
+    function addMailLabel(form) {
       // See $omit() in the Preferences services for real key generation
       var key = '_$$' + guid();
       vm.preferences.defaults.SOGoMailLabelsColors[key] =  ["New label", "#aaa"];
+      form.$setDirty();
     }
 
-    function removeMailLabel(key) {
+    function removeMailLabel(key, form) {
       delete vm.preferences.defaults.SOGoMailLabelsColors[key];
+      form.$setDirty();
     }
 
-    function addMailFilter(ev) {
+    function addMailFilter(ev, form) {
       var filter = { match: 'all' };
 
       $mdDialog.show({
@@ -177,10 +190,11 @@
         if (!vm.preferences.defaults.SOGoSieveFilters)
           vm.preferences.defaults.SOGoSieveFilters = [];
         vm.preferences.defaults.SOGoSieveFilters.push(filter);
+        form.$setDirty();
       });
     }
     
-    function editMailFilter(ev, index) {
+    function editMailFilter(ev, index, form) {
       var filter = angular.copy(vm.preferences.defaults.SOGoSieveFilters[index]);
       
       $mdDialog.show({
@@ -195,14 +209,16 @@
         }
       }).then(function() {
         vm.preferences.defaults.SOGoSieveFilters[index] = filter;
+        form.$setDirty();
       });
     }
 
-    function removeMailFilter(index) {
+    function removeMailFilter(index, form) {
       vm.preferences.defaults.SOGoSieveFilters.splice(index, 1);
+      form.$setDirty();
     }
 
-    function addDefaultEmailAddresses() {
+    function addDefaultEmailAddresses(form) {
       var v = [];
 
       if (angular.isDefined(vm.preferences.defaults.Vacation.autoReplyEmailAddresses)) {
@@ -210,9 +226,38 @@
       }
 
       vm.preferences.defaults.Vacation.autoReplyEmailAddresses = (_.union(window.defaultEmailAddresses.split(','), v)).join(',');
+      form.$setDirty();
     }
-    
-    function save() {
+
+    function confirmChanges($event, form) {
+      var target;
+
+      if (form.$dirty) {
+        // Stop default action
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        // Find target link
+        target = $event.target;
+        while (target.tagName != 'A')
+          target = target.parentNode;
+
+        Dialog.confirm(l('Unsaved Changes'),
+                       l('Do you want to save your changes made to the configuration?'),
+                       { ok: l('Save'), cancel: l('Don\'t Save') })
+        .then(function() {
+          // Save & follow link
+          save(form, { quick: true }).then(function() {
+            $window.location = target.href;
+          });
+        }, function() {
+          // Don't save & follow link
+          $window.location = target.href;
+        });
+      }
+    }
+
+    function save(form, options) {
       var i, sendForm, addresses, defaultAddresses, domains, domain;
 
       sendForm = true;
@@ -252,21 +297,14 @@
 
       if (sendForm)
         return vm.preferences.$save().then(function(data) {
-          $mdToast.show({
-            controller: 'savePreferencesToastCtrl',
-            template: [
-              '<md-toast>',
-              '  <div class="md-toast-content">',
-              '    <span flex>' + l('Preferences saved') + '</span>',
-              '    <md-button class="md-icon-button md-primary" ng-click="closeToast()">',
-              '      <md-icon>close</md-icon>',
-              '    </md-button>',
-              '  </div>',
-              '</md-toast>'
-            ].join(''),
-            hideDelay: 2000,
-            position: 'top right'
-          });
+          if (!options || !options.quick) {
+            $mdToast.show(
+              $mdToast.simple()
+                .content(l('Preferences saved'))
+                .position('bottom right')
+                .hideDelay(2000));
+            form.$setPristine();
+          }
         });
 
       return $q.reject();
@@ -312,16 +350,8 @@
     }
   }
 
-  savePreferencesToastCtrl.$inject = ['$scope', '$mdToast'];
-  function savePreferencesToastCtrl($scope, $mdToast) {
-    $scope.closeToast = function() {
-      $mdToast.hide();
-    };
-  }
-
   angular
     .module('SOGo.PreferencesUI')
-    .controller('savePreferencesToastCtrl', savePreferencesToastCtrl)
     .controller('PreferencesController', PreferencesController);
 
 })();

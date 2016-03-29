@@ -3,6 +3,18 @@
 "Close" = "Close";
 "Preferences saved" = "Preferences saved";
 
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Unsaved Changes";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Do you want to save your changes made to the configuration?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Save";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Don't Save";
+
 /* tabs */
 "General" = "General";
 "Calendar Options" = "Calendar Options";
@@ -86,6 +98,9 @@
 "timeFmt_2" = "";
 "timeFmt_3" = "";
 "timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "No matches found.";
 
 /* calendar */
 "Week begins on" = "Week begins on";

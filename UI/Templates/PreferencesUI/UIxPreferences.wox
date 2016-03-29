@@ -10,9 +10,7 @@
     title="title"
     const:jsFiles="Common.js, vendor/ng-sortable.js, Preferences.js, Preferences.services.js, Mailer.services.js, Contacts.services.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js">
 
-  <main class="view"
-        layout="row" layout-fill="layout-fill"
-        ui-view="preferences"
+  <main layout-fill="layout-fill" ui-view="preferences"
         ng-controller="navController"><!-- preferences --> </main>
 
   <script type="text/javascript">
@@ -26,34 +24,40 @@
   </script>
 
   <script type="text/ng-template" id="preferences.html">
+    <form name="preferencesForm" class="view"
+          layout="row" layout-fill="layout-fill">
     <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" layout="column"
                 md-component-id="left" md-is-locked-open="isGtMedium"
                 ng-class="{ 'sg-close': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
         <md-list>
-          <md-list-item ng-click="app.go('general')"
+          <md-list-item ng-click="app.go('general', preferencesForm)"
+                        ng-disabled="preferencesForm.$invalid"
                         ui-sref="preferences.general"
                         ui-sref-active="md-default-theme md-background md-bg md-hue-1">
             <md-icon>settings</md-icon>
             <p class="sg-item-name"><var:string label:value="General"/></p>
           </md-list-item>
           <var:if condition="userHasCalendarAccess">
-            <md-list-item ng-click="app.go('calendars')"
+            <md-list-item ng-click="app.go('calendars', preferencesForm)"
+                          ng-disabled="preferencesForm.$invalid"
                           ui-sref="preferences.calendars"
                           ui-sref-active="md-default-theme md-background md-bg md-hue-1">
               <md-icon>event</md-icon>
               <p class="sg-item-name"><var:string label:value="Calendar"/></p>
             </md-list-item>
           </var:if>
-          <md-list-item ng-click="app.go('addressbooks')"
+          <md-list-item ng-click="app.go('addressbooks', preferencesForm)"
+                        ng-disabled="preferencesForm.$invalid"
                         ui-sref="preferences.addressbooks"
                         ui-sref-active="md-default-theme md-background md-bg md-hue-1">
             <md-icon>contacts</md-icon>
             <p class="sg-item-name"><var:string label:value="Contacts"/></p>
           </md-list-item>
           <var:if condition="userHasMailAccess">
-            <md-list-item ng-click="app.go('mailer')"
+            <md-list-item ng-click="app.go('mailer', preferencesForm)"
+                          ng-disabled="preferencesForm.$invalid"
                           ui-sref="preferences.mailer"
                           ui-sref-active="md-default-theme md-background md-bg md-hue-1">
               <md-icon>email</md-icon>
@@ -68,18 +72,20 @@
 
       <!-- TOP RIGHT TOOLBAR -->
       <md-toolbar layout="row" layout-align="space-between start" class="md-tall">
-        <var:component className="UIxTopnavToolbarTemplate" />
+        <var:component className="UIxTopnavToolbarTemplate" const:navButtonClick="app.confirmChanges($event, preferencesForm)"/>
         <md-button type="button" class="md-fab md-fab-bottom-right md-fab-overlap-bottom"
-                   ng-click="app.save()">
+                   ng-disabled="preferencesForm.$invalid || preferencesForm.$pristine"
+                   ng-click="app.save(preferencesForm)">
           <md-icon>save</md-icon>
         </md-button>
       </md-toolbar>
 
-      <md-content>
+      <md-content layout="column">
         <div ui-view="module"><!-- view --></div>
       </md-content>
     </section>
 
+    </form>
   </script>
 
   <!--
@@ -104,7 +110,7 @@
               <md-input-container class="md-block" flex="50">
                 <label><var:string label:value="Language"/></label>
                 <md-select ng-model="app.preferences.defaults.SOGoLanguage"
-                           ng-change="app.onLanguageChange()">
+                           ng-change="app.onLanguageChange(preferencesForm)">
                   <var:foreach list="languages" item="item">
                     <md-option var:value="item">
                       <var:string value="languageText"/>
@@ -114,15 +120,22 @@
               </md-input-container>
               <md-autocomplete
                   class="md-block" flex="50"
-                  style="padding-bottom: 0"
                   md-search-text="app.timeZonesSearchText"
                   md-selected-item="app.preferences.defaults.SOGoTimeZone"
                   md-items="timezone in app.timeZonesListFilter(app.timeZonesSearchText)"
                   md-item-text="timezone"
                   md-min-length="3"
                   md-select-on-match="true"
+                  md-match-case-insensitive="true"
+                  ng-required="true"
+                  sg-select-only="sg-select-only"
                   label:md-floating-label="Current Time Zone">
-                <span md-highlight-text="app.timeZonesSearchText">{{timezone}}</span>
+                <md-item-template>
+                  <span md-highlight-text="app.timeZonesSearchText">{{timezone}}</span>
+                </md-item-template>
+                <md-not-found>
+                  <var:string label:value="No matches found."/>
+                </md-not-found>
               </md-autocomplete>
             </div>
 
@@ -365,7 +378,7 @@
                   <md-button class="sg-icon-button" type="button"
                              layout="row" layout-align="end center"
                              label:aria-label="Remove Calendar Category"
-                             ng-click="app.removeCalendarCategory($index)">
+                             ng-click="app.removeCalendarCategory($index, preferencesForm)">
                     <md-icon>remove_circle</md-icon>
                   </md-button>
                 </md-list-item>
@@ -374,7 +387,7 @@
               <div layout="row" layout-align="end center">
                 <md-button type="button"
                            label:aria-label="Add Calendar Category"
-                           ng-click="app.addCalendarCategory()">
+                           ng-click="app.addCalendarCategory(preferencesForm)">
                   <var:string label:value="Add Calendar Category"/>
                 </md-button>
               </div>
@@ -586,7 +599,7 @@
                    ng-show="app.preferences.defaults.SOGoMailComposeMessageType == 'html'">
                 <md-checkbox
                     ng-model="app.preferences.defaults.SOGoMailComposeFontSizeEnabled"
-                    label:aria-label="Default font size">
+                    label:aria-label="Default font size"><!-- default font size -->
                 </md-checkbox>
                 <md-input-container class="md-block md-flex">
                   <label><var:string label:value="Default font size"/></label>
@@ -655,13 +668,13 @@
 	            <input type="text" ng-model="app.preferences.defaults.SOGoSieveFilters[$index].name"/>
                   </md-input-container>
                   <md-button class="sg-icon-button" type="button"
-                             ng-click="app.editMailFilter($event, $index)"
+                             ng-click="app.editMailFilter($event, $index, preferencesForm)"
                              layout="row" layout-align="end center"
                              label:aria-label="Edit Filter">
                     <md-icon>edit</md-icon>
                   </md-button>
                   <md-button class="sg-icon-button" type="button"
-                             ng-click="app.removeMailFilter($index)"
+                             ng-click="app.removeMailFilter($index, preferencesForm)"
                              layout="row" layout-align="end center"
                              label:aria-label="Delete Filter">
                     <md-icon>remove_circle</md-icon>
@@ -672,7 +685,7 @@
               <!-- FIXME: move up/down to be replaced by DnD? -->
               <div layout="row" layout-align="end center">
                 <md-button type="button"
-                           ng-click="app.addMailFilter($event)"
+                           ng-click="app.addMailFilter($event, preferencesForm)"
                            label:aria-label="Create Filter">
                   <var:string label:value="Create Filter"/>
                 </md-button>
@@ -700,7 +713,7 @@
                 <md-button class="md-icon-button" type="button"
                            layout="row" layout-align="end center"
                            label:aria-label="Delete Label"
-                           ng-click="app.removeMailLabel(key)">
+                           ng-click="app.removeMailLabel(key, preferencesForm)">
                   <md-icon>remove_circle</md-icon>
                 </md-button>
               </md-list-item>
@@ -709,7 +722,7 @@
             <div layout="row" layout-align="end center">
               <md-button type="button"
                          label:aria-label="Create Label"
-                         ng-click="app.addMailLabel()">
+                         ng-click="app.addMailLabel(preferencesForm)">
                 <var:string label:value="Create Label"/>
               </md-button>
             </div>
@@ -794,7 +807,7 @@
                               const:id="autoReplyEmailAddresses"
                               ng-model="app.preferences.defaults.Vacation.autoReplyEmailAddresses"/>
                   </md-input-container>
-                  <md-button ng-click="app.addDefaultEmailAddresses()">
+                  <md-button ng-click="app.addDefaultEmailAddresses(preferencesForm)">
                     <var:string label:value="Add default email addresses" type="button"/>
                   </md-button>
                 </div>

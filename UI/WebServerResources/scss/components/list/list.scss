@@ -80,11 +80,19 @@ md-list-item {
     .md-button,
     &.md-clickable {
       margin: 0;
-      transition: background-color $swift-ease-in-duration $swift-ease-in-timing-function;
+      transition: background-color $swift-ease-in-duration $swift-ease-in-timing-function,
+      color $swift-linear-duration $swift-linear-timing-function;
     }
 
-    &.md-clickable:hover {
-      background-color: rgba(158,158,158,0.2);
+    &.md-clickable:not([disabled]):hover {
+      background-color: rgba($colorGrey500, 0.2); // See button-theme.scss
+    }
+
+    &[disabled] {
+      color: rgba(0,0,0,0.38) !important; // = {{foreground-3}}; See button-theme.scss
+      md-icon {
+        color: rgba(0,0,0,0.38);
+      }
     }
   }
 }
