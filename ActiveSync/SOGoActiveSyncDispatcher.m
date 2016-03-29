@@ -40,6 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGObjWeb/SoPermissions.h>
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOCoreApplication.h>
 
 #import <NGCards/iCalCalendar.h>
 
@@ -121,6 +122,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <openssl/x509.h>
 #endif
 
+void handle_terminate(int signum)
+{
+  NSLog(@"Forcing termination of EAS loop.");
+  shouldTerminate = YES;
+  [[WOCoreApplication application] terminateAfterTimeInterval: 1];
+}
+
 @interface SOGoActiveSyncDispatcher (Sync)
 
 - (NSMutableDictionary *) _folderMetadataForKey: (NSString *) theFolderKey;
@@ -138,6 +146,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   folderTableURL = nil;
   imapFolderGUIDS = nil;
   syncRequest = nil;
+
+  shouldTerminate = NO;
+  signal(SIGTERM, handle_terminate);
+
   return self;
 }
 
@@ -2099,6 +2111,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // We enter our loop detection change
   for (i = 0; i < (heartbeatInterval/internalInterval); i++)
     {
+      if (shouldTerminate)
+        break;
+
       pool = [[NSAutoreleasePool alloc] init];
       for (j = 0; j < [allFoldersID count]; j++)
         {
@@ -2136,7 +2151,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         {
           total_sleep = 0;
 
-          while (total_sleep < internalInterval)
+          while (!shouldTerminate && total_sleep < internalInterval)
             {
               // We check if we must break the current ping request since an other ping request
               // has just arrived.
