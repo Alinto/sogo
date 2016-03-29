@@ -562,7 +562,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   [zipTaskArguments addObject: @"SavedMessages.zip"];
 
   msgs = (NSDictionary *)[self fetchUIDs: uids  
-                                   parts: [NSArray arrayWithObject: @"RFC822"]];
+                                   parts: [NSArray arrayWithObject: @"BODY.PEEK[]"]];
   messages = [msgs objectForKey: @"fetch"];
 
   for (i = 0; i < [messages count]; i++) {
