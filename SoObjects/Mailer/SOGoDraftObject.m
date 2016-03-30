@@ -307,11 +307,7 @@ static NSString    *userAgent      = nil;
     {
       // newHeaders come from Web form; convert priority to MIME header representation
       priority = [newHeaders objectForKey: @"priority"];
-      if (!priority || ![priority length] || [priority intValue] == 3)
-        {
-          [headers removeObjectForKey: @"X-Priority"];
-        }
-      else if ([priority intValue] == 1)
+      if ([priority intValue] == 1)
         {
           [headers setObject: @"1 (Highest)"  forKey: @"X-Priority"];
         }
@@ -323,9 +319,13 @@ static NSString    *userAgent      = nil;
         {
           [headers setObject: @"4 (Low)"  forKey: @"X-Priority"];
         }
-      else
+      else if ([priority intValue] == 5)
         {
           [headers setObject: @"5 (Lowest)"  forKey: @"X-Priority"];
+        }
+      else
+        {
+          [headers removeObjectForKey: @"X-Priority"];
         }
       if (priority)
         {
