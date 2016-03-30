@@ -137,6 +137,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <GDLContentStore/GCSChannelManager.h>
 
+#include <signal.h>
 #include <unistd.h>
 
 #ifdef HAVE_OPENSSL
