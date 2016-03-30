@@ -179,7 +179,7 @@
 
     <section layout="column" layout-fill="layout-fill" ui-view="mailbox">
       <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main">
-        <var:component className="UIxTopnavToolbarTemplate"/>
+        <var:component className="UIxTopnavToolbar"/>
       </md-toolbar>
       <md-content class="md-flex md-hue-2"
                   layout="column" layout-align="center center" layout-fill="layout-fill">
@@ -193,7 +193,7 @@
   <script type="text/ng-template" id="UIxMailFolderTemplate">
     <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main"
                 ng-hide="app.showingAdvancedSearch">
-      <var:component className="UIxTopnavToolbarTemplate"/>
+      <var:component className="UIxTopnavToolbar"/>
     </md-toolbar>
 
     <!-- Advanced search toolbar -->

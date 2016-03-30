@@ -44,7 +44,7 @@
   <script type="text/ng-template" id="rights.html">
     <!-- TOP RIGHT TOOLBAR -->
     <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main">
-      <var:component className="UIxTopnavToolbarTemplate" />
+      <var:component className="UIxTopnavToolbar" />
     </md-toolbar>
 
     <div layout="row" class="md-flex">

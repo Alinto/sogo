@@ -271,7 +271,7 @@
     <section layout="column" layout-fill="layout-fill"
              ng-controller="CalendarListController as list">
       <md-toolbar class="toolbar-main" flex-none="flex-none" layout="row" layout-align="space-between center">
-        <var:component className="UIxTopnavToolbarTemplate" />
+        <var:component className="UIxTopnavToolbar"/>
         <!-- <div class="sg-toolbar-group-2">
              <md-button class="sg-icon-button" label:aria-label="Search">
              <md-icon>search</md-icon>

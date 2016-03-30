@@ -72,7 +72,7 @@
 
       <!-- TOP RIGHT TOOLBAR -->
       <md-toolbar layout="row" layout-align="space-between start" class="md-tall">
-        <var:component className="UIxTopnavToolbarTemplate" const:navButtonClick="app.confirmChanges($event, preferencesForm)"/>
+        <var:component className="UIxTopnavToolbar" const:navButtonClick="app.confirmChanges($event, preferencesForm)"/>
         <md-button type="button" class="md-fab md-fab-bottom-right md-fab-overlap-bottom"
                    ng-disabled="preferencesForm.$invalid || preferencesForm.$pristine"
                    ng-click="app.save(preferencesForm)">

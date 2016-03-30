@@ -192,7 +192,7 @@
 
   <script type="text/ng-template" id="addressbook">
     <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main">
-      <var:component className="UIxTopnavToolbarTemplate" />
+      <var:component className="UIxTopnavToolbar" />
     </md-toolbar>
 
     <div layout="row" class="md-flex">
