@@ -6,73 +6,82 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
-  <md-toolbar class="daysView" var:sg-view="currentView">
-
-    <!-- Display today abreviation and date -->
-    <div class="days dayLabels">
-      <var:foreach list="daysToDisplay" item="currentTableDay">
-        <div var:class="dayClasses">
-          <!-- Week view day header -->
-          <var:if condition="isWeekView">
-            <div class="sg-md-caption md-default-theme md-fg md-primary md-hue-1"><var:string value="labelForDay"/></div>
-            <var:if condition="currentTableDay.isToday">
-              <div class="sg-md-display-2 md-default-theme md-fg md-accent md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></div>
-            </var:if>
-            <var:if condition="currentTableDay.isToday" const:negate="YES">
-              <div class="sg-md-display-2--thin md-default-theme md-fg md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></div>
-            </var:if>
-            <div class="md-default-theme md-fg md-primary md-hue-2"><var:string value="labelForMonth"/></div>
-          </var:if>
-
-          <!-- Day view header -->
-          <var:if condition="isWeekView" const:negate="YES">
-            <var:if condition="currentTableDay.isToday">
-              <div class="sg-md-display-4 md-default-theme md-fg md-accent md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></div>
-            </var:if>
-            <var:if condition="currentTableDay.isToday" const:negate="YES">
-              <div class="sg-md-display-4 md-default-theme md-fg md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></div>
-            </var:if>
-            <div class="md-default-theme md-fg md-primary md-hue-2"><var:string value="labelForMonth"/></div>
-          </var:if>
-        </div>
-      </var:foreach>
+  <md-toolbar class="daysView" layout="row" var:sg-view="currentView">
+    <div class="allDaysView--sidenav">
+      <md-button class="md-icon-button" ng-click="calendar.toggleAllDays()">
+        <md-icon class="md-default-theme md-fg md-hue-1"
+                 ng-class="{'md-rotate-180-ccw': calendar.expandedAllDays}">keyboard_arrow_down</md-icon>
+      </md-button>
     </div>
 
-    <var:if condition="isMultiColumnView">
-      <!-- Calendars names in multicolumn day view -->
+    <div layout="column" class="md-flex">
+      <!-- Display today abreviation and date -->
       <div class="days dayLabels">
-        <div class="day multicolumnDay"
-             ng-repeat="view in calendar.views"
-             ng-class="view.calendar.getClassName('bdr')">
-          {{view.calendar.name}}
-        </div>
-      </div>
-    </var:if>
-
-    <!-- All day cells -->
-    <div class="allDaysView md-default-theme md-background md-bg">
-      <div class="days" sg-calendar-scroll-view="multiday-allday">
         <var:foreach list="daysToDisplay" item="currentTableDay">
-          <sg-calendar-day var:class="dayClasses"
-               var:day="currentTableDay.shortDateString"
-               var:id="currentAllDayId"
-               hour="allday"
-               var:sg-day-number="currentDayNumber"
-               var:sg-day="currentTableDay.shortDateString"
-               var:sg-day-string="currentTableDay.iso8601DateString"
-               sg-calendar="{{view.id}}"
-               ng-repeat="view in calendar.views">
-            <sg-calendar-day-table
-                sg-blocks="view.allDayBlocks"
-                sg-click="list.openEvent(event, component)"
-                var:sg-day="currentTableDay.shortDateString"><!-- blocks for current day --></sg-calendar-day-table>
-            <sg-calendar-day-block
-                sg-calendar-ghost="sg-calendar-ghost"
-                sg-block="list.component.$ghost"><!-- drag ghost --></sg-calendar-day-block>
-          </sg-calendar-day>
+          <div var:class="dayClasses">
+            <!-- Week view day header -->
+            <var:if condition="isWeekView">
+              <div class="sg-md-caption md-default-theme md-fg md-primary md-hue-1"><var:string value="labelForDay"/></div>
+              <var:if condition="currentTableDay.isToday">
+                <div class="sg-md-display-2 md-default-theme md-fg md-accent md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></div>
+              </var:if>
+              <var:if condition="currentTableDay.isToday" const:negate="YES">
+                <div class="sg-md-display-2--thin md-default-theme md-fg md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></div>
+              </var:if>
+              <div class="md-default-theme md-fg md-primary md-hue-2"><var:string value="labelForMonth"/></div>
+            </var:if>
+
+            <!-- Day view header -->
+            <var:if condition="isWeekView" const:negate="YES">
+              <var:if condition="currentTableDay.isToday">
+                <div class="sg-md-display-4 md-default-theme md-fg md-accent md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></div>
+              </var:if>
+              <var:if condition="currentTableDay.isToday" const:negate="YES">
+                <div class="sg-md-display-4 md-default-theme md-fg md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></div>
+              </var:if>
+              <div class="md-default-theme md-fg md-primary md-hue-2"><var:string value="labelForMonth"/></div>
+            </var:if>
+          </div>
         </var:foreach>
       </div>
+
+      <var:if condition="isMultiColumnView">
+        <!-- Calendars names in multicolumn day view -->
+        <div class="days dayLabels">
+          <div class="day multicolumnDay"
+               ng-repeat="view in calendar.views"
+               ng-class="view.calendar.getClassName('bdr')">
+            {{view.calendar.name}}
+          </div>
+        </div>
+      </var:if>
+
+      <!-- All day cells -->
+      <div class="allDaysView" ng-class="{allDaysView__expanded: calendar.expandedAllDays}">
+        <div class="days" sg-calendar-scroll-view="multiday-allday">
+          <var:foreach list="daysToDisplay" item="currentTableDay">
+            <sg-calendar-day var:class="dayClasses"
+                             var:day="currentTableDay.shortDateString"
+                             var:id="currentAllDayId"
+                             hour="allday"
+                             var:sg-day-number="currentDayNumber"
+                             var:sg-day="currentTableDay.shortDateString"
+                             var:sg-day-string="currentTableDay.iso8601DateString"
+                             sg-calendar="{{view.id}}"
+                             ng-repeat="view in calendar.views">
+              <sg-calendar-day-table
+                  sg-blocks="view.allDayBlocks"
+                  sg-click="list.openEvent(event, component)"
+                  var:sg-day="currentTableDay.shortDateString"><!-- blocks for current day --></sg-calendar-day-table>
+              <sg-calendar-day-block
+                  sg-calendar-ghost="sg-calendar-ghost"
+                  sg-block="list.component.$ghost"><!-- drag ghost --></sg-calendar-day-block>
+            </sg-calendar-day>
+          </var:foreach>
+        </div>
+      </div>
     </div>
+
   </md-toolbar>
 
   <md-content class="md-flex" sg-calendar-scroll-view="multiday" var:sg-view="currentView">
@@ -92,12 +101,12 @@
         <div class="days">
           <var:foreach list="daysToDisplay" item="currentTableDay">
             <sg-calendar-day var:class="dayClasses"
-                 var:id="currentDayId"
-                 var:sg-day-number="currentDayNumber"
-                 var:sg-day="currentTableDay.shortDateString"
-                 var:sg-day-string="currentTableDay.iso8601DateString"
-                 sg-calendar="{{view.id}}"
-                 ng-repeat="view in calendar.views">
+                             var:id="currentDayId"
+                             var:sg-day-number="currentDayNumber"
+                             var:sg-day="currentTableDay.shortDateString"
+                             var:sg-day-string="currentTableDay.iso8601DateString"
+                             sg-calendar="{{view.id}}"
+                             ng-repeat="view in calendar.views">
               <div class="hourCells">
                 <var:foreach list="hoursToDisplay" item="currentTableHour">
                   <div var:class="clickableHourCellClass"

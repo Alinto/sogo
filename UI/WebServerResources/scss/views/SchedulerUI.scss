@@ -62,16 +62,17 @@ $quarter_height: 10px;
 
   // The days labels appear in the toolbar
   md-toolbar {
+    flex-shrink: 0;
     min-height: 0;
     &.daysView, &.monthView {
       background-color: #fff;
       z-index: $z-index-toolbar - 1;
       .days {
-        margin-left: $hours_margin;
         &:not([sg-calendar-scroll-view$="allday"]) {
           overflow-y: scroll;
         }
         &.dayLabels {
+          flex-shrink: 0;
           min-height: 0;
           .day {
             padding-left: 1%;
@@ -80,6 +81,12 @@ $quarter_height: 10px;
             }
           }
         }
+      }
+    }
+    &.monthView {
+      // Toolbar of month view
+      > div {
+        overflow-y: scroll;
       }
     }
     &[sg-view$=dayview] {
@@ -91,17 +98,12 @@ $quarter_height: 10px;
         }
       }
     }
-    &.monthView {
-      // Toolbar of month view
-      > div {
-        overflow-y: scroll;
-      }
-    }
   }
 
   // The all-day events appear in the shrinkable toolbar, bellow the days labels
   .allDaysView {
     border-bottom: 1px solid sg-color($sogoPaper, 300);
+    flex-shrink: 0;
     max-height: $sg-font-size-4 * 6;
     min-height: 0;
     overflow: hidden;
@@ -144,6 +146,23 @@ $quarter_height: 10px;
     .text {
       position: static;
       padding: 3px 1%;
+    }
+  }
+
+  // Toolbar of all-day events when expanded to display all events
+  .allDaysView__expanded {
+    max-height: none;
+    min-height: 0;
+  }
+
+  // Side column on the left of the days labels and all-day events;
+  // Contains the toggle button to collapse/expand the toolbar
+  .allDaysView--sidenav {
+    border-bottom: 1px solid sg-color($sogoPaper, 300);
+    width: $hours_margin;
+    .md-icon-button {
+      position: absolute;
+      bottom: 0;
     }
   }
 

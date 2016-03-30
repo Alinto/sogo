@@ -10,6 +10,12 @@
   function CalendarController($scope, $rootScope, $state, $stateParams, Calendar, Component, stateEventsBlocks) {
     var vm = this, deregisterCalendarsList;
 
+    // Make the toolbar state of all-day events persistent
+    if (angular.isUndefined(CalendarController.expandedAllDays))
+      CalendarController.expandedAllDays = false;
+
+    vm.expandedAllDays = CalendarController.expandedAllDays;
+    vm.toggleAllDays = toggleAllDays;
     vm.views = stateEventsBlocks;
     vm.changeDate = changeDate;
     vm.changeView = changeView;
@@ -18,6 +24,12 @@
     deregisterCalendarsList = $rootScope.$on('calendars:list', updateView);
 
     $scope.$on('$destroy', deregisterCalendarsList);
+
+    // Expand or collapse all-day events
+    function toggleAllDays() {
+      CalendarController.expandedAllDays = !CalendarController.expandedAllDays;
+      vm.expandedAllDays = CalendarController.expandedAllDays;
+    }
 
     function updateView() {
       // See stateEventsBlocks in Scheduler.app.js
