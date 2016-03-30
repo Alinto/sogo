@@ -2043,7 +2043,7 @@ void handle_terminate(int signum)
   NSData *d;
   NSAutoreleasePool *pool;
 
-  int i, j, heartbeatInterval, defaultInterval, internalInterval, status, total_sleep;
+  int i, j, heartbeatInterval, defaultInterval, internalInterval, status, total_sleep, sleepInterval;
   
   // Let other ping requests know that a new request has arrived.
   processIdentifier = [NSString stringWithFormat: @"%d", [[NSProcessInfo processInfo] processIdentifier]];
@@ -2057,6 +2057,7 @@ void handle_terminate(int signum)
   defaults = [SOGoSystemDefaults sharedSystemDefaults];
   defaultInterval = [defaults maximumPingInterval];
   internalInterval = [defaults internalSyncInterval];
+  sleepInterval = (internalInterval < 5) ? internalInterval : 5;
 
   if (theDocumentElement)
     heartbeatInterval = [[[(id)[theDocumentElement getElementsByTagName: @"HeartbeatInterval"] lastObject] textValue] intValue];
@@ -2170,8 +2171,8 @@ void handle_terminate(int signum)
               else
                 {
                   [self logWithFormat: @"Sleeping %d seconds while detecting changes in Ping...", internalInterval-total_sleep];
-                  sleep(5);
-                  total_sleep += 5;
+                  sleep(sleepInterval);
+                  total_sleep += sleepInterval;
                 }
             }
         }

@@ -1804,7 +1804,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSArray *allCollections;
   NSData *d;
 
-  int i, j, defaultInterval, heartbeatInterval, internalInterval, maxSyncResponseSize, total_sleep;
+  int i, j, defaultInterval, heartbeatInterval, internalInterval, maxSyncResponseSize, total_sleep, sleepInterval;
   BOOL changeDetected;
   
   // We initialize our output buffer
@@ -1841,6 +1841,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   maxSyncResponseSize = [[SOGoSystemDefaults sharedSystemDefaults] maximumSyncResponseSize];
   heartbeatInterval = [[[(id)[theDocumentElement getElementsByTagName: @"HeartbeatInterval"] lastObject] textValue] intValue];
   internalInterval = [defaults internalSyncInterval];
+  sleepInterval = (internalInterval < 5) ? internalInterval : 5;
 
   // If the request doesn't contain "HeartbeatInterval" there is no reason to delay the response.
   if (heartbeatInterval == 0)
@@ -1927,8 +1928,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               else
                 {
                   [self logWithFormat: @"Sleeping %d seconds while detecting changes in Sync...", internalInterval-total_sleep];
-                  sleep(5);
-                  total_sleep += 5;
+                  sleep(sleepInterval);
+                  total_sleep += sleepInterval;
                 }
             }
         }
