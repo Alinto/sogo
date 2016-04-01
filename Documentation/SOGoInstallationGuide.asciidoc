@@ -216,12 +216,10 @@ gpgcheck=0
 Some of the softwares on which SOGo depends are available from the
 repository of RepoForge (previously known as RPMforge). To add RepoForge
 to your packages sources, download and install the appropriate RPM
-package
-from http://packages.sw.be/rpmforge-release/.
+package from http://packages.sw.be/rpmforge-release/.
 Also make sure you enabled the "rpmforge-extras" repository.
 
-For more information on using RepoForge,
-visit http://repoforge.org/use/.
+For more information on using RepoForge, visit http://repoforge.org/use/.
 
 Software Installation
 ~~~~~~~~~~~~~~~~~~~~~
@@ -1346,8 +1344,10 @@ supported, such as MySQL and Oracle.
 First, make sure that your PostgreSQL server has TCP/IP connections
 support enabled.
 
-*Caveat: SOGo stores the database hostname together with table references
-inside several database tables.* To prevent possible future issues when moving
+[TIP]
+===============================
+SOGo stores the database hostname together with table references inside
+several database tables. To prevent possible future issues when moving
 the database to another host, it is best practice to add a local alias name to
 your `/etc/hosts` file, and using this in `/etc/sogo/sogo.conf` instead of the
 actual name of your server or localhost. When the database host name changes,
@@ -1365,6 +1365,7 @@ host name, for example
 SOGoProfileURL =
     "postgresql://sogo:sogo@db-alias:5432/sogo/sogo_user_profile";
 ----
+===============================
 
 Create the database user and schema using the following commands:
 
