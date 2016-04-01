@@ -2082,19 +2082,37 @@ void handle_terminate(int signum)
 
   if (![allCollections count])
     {
-      // We received an empty Ping request. Return status '3' to ask client to resend the request with complete body.
-      s = [NSMutableString string];
-      [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
-      [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
-      [s appendString: @"<Ping xmlns=\"Ping:\">"];
-      [s appendString: @"<Status>3</Status>"];
-      [s appendString: @"</Ping>"];
+      heartbeatInterval = [[[o properties] objectForKey: @"PingHeartbeatInterval"] intValue];
 
-      d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+      if (debugOn)
+        [self logWithFormat: @"EAS - Empty Ping request - using cached HeatbeatInterval (%d)", heartbeatInterval];
 
-      [theResponse setContent: d];
+      if (heartbeatInterval > defaultInterval || heartbeatInterval == 0)
+        {
+          heartbeatInterval = defaultInterval;
+          status = 5;
+        }
 
-      return;
+      allFoldersID = [[o properties] objectForKey: @"PingCachedFolders"];
+      if (![allFoldersID count])
+        {
+          // We received an empty Ping request. Return status '3' to ask client to resend the request with complete body.
+          s = [NSMutableString string];
+          [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+          [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+          [s appendString: @"<Ping xmlns=\"Ping:\">"];
+          [s appendString: @"<Status>3</Status>"];
+          [s appendString: @"</Ping>"];
+
+          d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+
+          [theResponse setContent: d];
+
+          return;
+        }
+
+      if (debugOn)
+        [self logWithFormat: @"EAS - Empty Ping request - using cached folders %@", allFoldersID];
     }
   else
     {      
@@ -2103,6 +2121,16 @@ void handle_terminate(int signum)
           aCollection = [allCollections objectAtIndex: i];
           collectionId = [[(id) [aCollection getElementsByTagName: @"Id"] lastObject] textValue];
           [allFoldersID addObject: collectionId];
+        }
+
+      if (![allFoldersID isEqualToArray: [[o properties] objectForKey: @"PingCachedFolders"]])
+        {
+          if (debugOn)
+            [self logWithFormat: @"EAS - Ping - Save folderlist to cache (HeartbeatInterval: %d) (%@)", heartbeatInterval, allFoldersID];
+
+          [[o properties] setObject: [NSNumber numberWithInteger: heartbeatInterval] forKey: @"PingHeartbeatInterval"];
+          [[o properties] setObject: allFoldersID forKey: @"PingCachedFolders"];
+          [o save];
         }
     }
 
