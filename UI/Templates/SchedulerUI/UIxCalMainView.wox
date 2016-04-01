@@ -39,7 +39,7 @@
       <md-content class="md-flex md-hue-2" md-scroll-y="md-scroll-y">
         <!-- User's calendars -->
         <section class="sg-section-list">
-          <md-subheader class="md-hue-2">
+          <md-subheader class="sg-md-subheader--icon-button md-hue-2">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Calendars"/></span>
               <md-button class="sg-icon-button"
@@ -134,7 +134,7 @@
         </section>
         <!-- Subscriptions -->
         <section class="sg-section-list">
-          <md-subheader class="md-hue-2">
+          <md-subheader class="sg-md-subheader--icon-button md-hue-2">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Subscriptions"/></span>
               <md-button class="sg-icon-button"
@@ -202,7 +202,7 @@
         </section>
         <!-- Web Calendars -->
         <section class="sg-section-list">
-          <md-subheader class="md-hue-2">
+          <md-subheader class="sg-md-subheader--icon-button md-hue-2">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Web Calendars"/></span>
               <md-button class="sg-icon-button"

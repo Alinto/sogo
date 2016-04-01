@@ -52,12 +52,12 @@
         <md-card-content>
           <header class="msg-header">
             <div ng-show="editor.card.c_component == 'vcard'">
-              <sg-avatar-image class="md-tile-left"
+              <sg-avatar-image class="md-avatar md-tile-left"
                                sg-email="editor.card.$preferredEmail()"
                                sg-src="editor.card.photoURL"
                                size="40"><!-- avatar --></sg-avatar-image>
             </div>
-            <div class="md-tile-left sg-avatar-list" ng-show="editor.card.$isList()">
+            <div class="md-tile-left md-avatar sg-avatar-list" ng-show="editor.card.$isList()">
               <!--list avatar-->
             </div>
             <div class="msg-header-content">

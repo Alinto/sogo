@@ -41,7 +41,7 @@
 
     <md-toolbar class="monthView">
       <div layout="row" layout-align="center center"
-           class="md-flex md-default-theme md-fg md-hue-1">
+           class="md-default-theme md-fg md-hue-1">
         <var:foreach list="headerDaysToDisplay" item="currentTableDay">
           <div class="dayLabels"><var:string value="labelForCurrentDayToDisplay"/></div>
         </var:foreach>
@@ -62,7 +62,7 @@
                   var:class="dayCellClasses"
                   var:id="currentDayId"
                   >
-                <sg-calendar-day layout="column" layout-fill="true"
+                <sg-calendar-day layout="column" layout-fill="layout-fill"
                                  var:sg-day="currentTableDay.shortDateString"
                                  var:sg-day-number="currentDayNumber"
                                  var:sg-day-string="currentTableDay.iso8601DateString">
@@ -71,12 +71,11 @@
                       <span class="md-default-theme md-bg md-accent md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></span> <var:string value="dayHeaderMonth"/>
                     </var:if>
                     <var:if condition="currentTableDay.isToday" const:negate="YES">
-                      <span class=""><var:string value="currentTableDay.dayOfMonth"/></span> <var:string value="dayHeaderMonth"/>
+                      <span><var:string value="currentTableDay.dayOfMonth"/></span> <var:string value="dayHeaderMonth"/>
                     </var:if>
                   </div>
-                  <md-content
-                      sg-draggable-calendar-block="sg-draggable-calendar-block"
-                      class="clickableDayCell">
+                  <md-content class="clickableDayCell"
+                              sg-draggable-calendar-block="sg-draggable-calendar-block">
                     <sg-calendar-month-day
                         sg-blocks="calendar.views[0].blocks"
                         sg-click="list.openEvent(event, component)"

@@ -1,24 +1,11 @@
 /// subheader.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
-.md-subheader {
-  margin-right: 0;
-}
-
-.md-subheader {
-  .md-subheader-inner {
-    padding: 0 0 0 $layout-gutter-width;
-  }
-}
-md-tab-content {
-  .md-subheader {
-    .md-subheader-inner {
-      padding-left: $layout-gutter-width/2;
-    }
-  }
-}
-
 .sg-md-subheader {
+  &--icon-button ._md-subheader-inner {
+    padding: ($subheader-padding - ($icon-button-height - $subheader-font-size)/2) $baseline-grid;
+    padding-left: $subheader-padding;
+  }
   &--fixed {
     position: fixed;
     z-index: auto;

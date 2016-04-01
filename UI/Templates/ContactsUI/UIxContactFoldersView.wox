@@ -30,7 +30,7 @@
       <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
         <!-- User's addressbooks -->
         <section>
-          <md-subheader class="sg-md-subheader md-hue-2">
+          <md-subheader class="sg-md-subheader--icon-button md-hue-2">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Address Books"/></span>
               <md-button class="sg-icon-button"
@@ -111,7 +111,7 @@
         </section>
         <!-- Subscriptions -->
         <section>
-          <md-subheader class="sg-md-subheader md-hue-2">
+          <md-subheader class="sg-md-subheader--icon-button md-hue-2">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Subscriptions"/></span>
               <md-button class="sg-icon-button"
@@ -171,7 +171,7 @@
         </section>
         <!-- Remote/domain addressbooks -->
         <section>
-          <md-subheader class="sg-md-subheader md-hue-2">
+          <md-subheader class="sg-md-subheader--icon-button md-hue-2">
             <var:string label:value="Global Addressbooks"/>
           </md-subheader>
           <md-list>

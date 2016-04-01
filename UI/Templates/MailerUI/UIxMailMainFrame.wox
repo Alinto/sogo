@@ -37,7 +37,7 @@
       <md-content class="md-flex md-hue-2" layout="column" md-scroll-y="md-scroll-y">
         <section class="md-flex" layout="column"
                  ng-repeat="account in app.accounts track by account.id">
-          <md-subheader class="md-hue-2">
+          <md-subheader class="sg-md-subheader--icon-button md-hue-2">
             <div layout="row" layout-align="start center">
               <md-button class="md-icon-button"
                          ng-show="account.id == 0"

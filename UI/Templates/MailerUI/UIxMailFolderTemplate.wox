@@ -324,8 +324,8 @@
        layout="column" layout-align="start center"
        ng-class="{ 'sg-close': !mailbox.service.selectedFolder.selectedMessage }"
        ui-view="message">
-    <md-content class="hide-xs md-flex layout-fill md-hue-2"
-                layout="column" layout-align="center center">
+    <md-content class="hide-xs md-flex md-hue-2"
+                layout="column" layout-align="center center" layout-fill="layout-fill">
       <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title"><var:string label:value="No message selected"/></div>
     </md-content>
   </div>

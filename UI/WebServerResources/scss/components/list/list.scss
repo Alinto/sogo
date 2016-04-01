@@ -18,18 +18,7 @@ $sg-avatar-width: 40px;
 $sg-color-chip-width: 16px;
 
 md-list-item {
-  &.md-with-secondary {
-    &.md-accent.md-bg {
-      .md-button {
-        // List items with a secondary button must have a transparent background when highlighted
-        // in order to honor the contrast color
-        background-color: transparent;
-      }
-    }
-  }
-
   ._md-list-item-inner {
-    flex-grow: 1; // use all column space
     overflow: hidden;
 
     // Gain some space since we want small list items
@@ -261,10 +250,10 @@ sg-avatar-image {
 .md-avatar:before,
 .md-avatar md-icon,
 sg-avatar-image md-icon,
-.sg-avatar-list {
+sg-avatar-image md-icon.material-icons {
+  color: rgba(0, 0, 0, 0.26);
   font-family: 'Material Icons';
   font-size: $sg-avatar-width;
-  color: rgba(0, 0, 0, 0.26);
 }
 .sg-avatar-list {
   &:before {
