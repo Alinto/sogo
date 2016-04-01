@@ -1346,6 +1346,26 @@ supported, such as MySQL and Oracle.
 First, make sure that your PostgreSQL server has TCP/IP connections
 support enabled.
 
+*Caveat: SOGo stores the database hostname together with table references
+inside several database tables.* To prevent possible future issues when moving
+the database to another host, it is best practice to add a local alias name to
+your `/etc/hosts` file, and using this in `/etc/sogo/sogo.conf` instead of the
+actual name of your server or localhost. When the database host name changes,
+you can now simply change the hosts file instead of updating several table
+columns replacing the old hostname. An example entry for `/etc/hosts` when
+running the database on the same host, registering `127.0.0.1` not only for
+`localhost`, but also the `db-alias` alias:
+
+ 127.0.0.1		localhost db-alias
+
+In the SOGo configuration, use the alias name instead of the real IP address or
+host name, for example
+
+----
+SOGoProfileURL =
+    "postgresql://sogo:sogo@db-alias:5432/sogo/sogo_user_profile";
+----
+
 Create the database user and schema using the following commands:
 
 ----
