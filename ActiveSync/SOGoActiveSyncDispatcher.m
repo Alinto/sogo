@@ -146,7 +146,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <openssl/x509.h>
 #endif
 
-void handle_terminate(int signum)
+void handle_eas_terminate(int signum)
 {
   NSLog(@"Forcing termination of EAS loop.");
   shouldTerminate = YES;
@@ -172,7 +172,7 @@ void handle_terminate(int signum)
   syncRequest = nil;
 
   shouldTerminate = NO;
-  signal(SIGTERM, handle_terminate);
+  signal(SIGTERM, handle_eas_terminate);
 
   return self;
 }
