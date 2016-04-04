@@ -1076,7 +1076,8 @@
         delete component.repeat.monthdays;
         component.repeat.days = [{ day: this.repeat.month.day, occurrence: this.repeat.month.occurrence.toString() }];
       }
-      else if (this.repeat.month.type) {
+      else if ((this.repeat.frequency == 'monthly' || this.repeat.frequency == 'yearly') &&
+               this.repeat.month.type) {
         // montly recurrence by month days or yearly by month
         delete component.repeat.days;
       }
