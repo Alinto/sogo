@@ -746,14 +746,14 @@
                        ng-readonly="$index == 0"/>
               </md-input-container>
               <md-button class="sg-icon-button" type="button"
-                         ng-click="app.editMailAccount($event, $index)"
+                         ng-click="app.editMailAccount($event, $index, preferencesForm)"
                          layout="row"
                          layout-align="end center"
                          label:aria-label="Edit Account">
                 <md-icon>edit</md-icon>
               </md-button>
               <md-button class="sg-icon-button" type="button"
-                         ng-click="app.removeMailAccount($index)"
+                         ng-click="app.removeMailAccount($index, preferencesForm)"
                          ng-show="$index > 0"
                          layout="row"
                          layout-align="end center"
@@ -766,7 +766,7 @@
           <var:if condition="mailAuxiliaryUserAccountsEnabled">
             <div layout="row" layout-align="end center">
               <md-button type="button"
-                         ng-click="app.addMailAccount()"
+                         ng-click="app.addMailAccount($event, preferencesForm)"
                          label:aria-label="Create Account">
                 <var:string label:value="New Mail Account"/>
               </md-button>
