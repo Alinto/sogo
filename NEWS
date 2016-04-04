@@ -15,6 +15,7 @@ Bug fixes
  - handle EAS loop termination when SOGo is being shutdown (#3604)
  - avoid marking mails as read when archiving a folder (#2792)
  - now cache heartbeat interval and folders list during EAS Ping ops (#3606)
+ - sanitize non-us-ascii 7bit emails when using EAS (#3592)
 
 2.3.9 (2016-03-16)
 ------------------
