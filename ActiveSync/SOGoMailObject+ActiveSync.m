@@ -485,7 +485,7 @@ struct GlobalObjectId {
     {
       encoding = [[theParts objectAtIndex: i ] objectForKey: @"encoding"];
       charset = [[[theParts objectAtIndex: i ] objectForKey: @"parameterList"] objectForKey: @"charset"];
-      if (encoding && [encoding caseInsensitiveCompare: @"8bit"] == NSOrderedSame &&
+      if (encoding && ([encoding caseInsensitiveCompare: @"7bit"] == NSOrderedSame || [encoding caseInsensitiveCompare: @"8bit"] == NSOrderedSame) &&
           charset  && ![charset caseInsensitiveCompare: @"utf-8"] == NSOrderedSame
                    && ![charset caseInsensitiveCompare: @"us-ascii"] == NSOrderedSame)
         {
