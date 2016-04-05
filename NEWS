@@ -41,6 +41,7 @@ Bug fixes
  - [eas] handle EAS loop termination when SOGo is being shutdown (#3604)
  - [eas] now cache heartbeat interval and folders list during Ping ops (#3606)
  - [eas] sanitize non-us-ascii 7bit emails (#3592)
+ - [eas] properly escape organizer name (#3615)
 
 3.0.2 (2016-03-04)
 ------------------
