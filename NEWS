@@ -1,3 +1,9 @@
+2.3.11 (2016-04-XX)
+-------------------
+
+Bug fixes
+ - properly escape organizer name when using EAS (#3615)
+
 2.3.10 (2016-04-05)
 -------------------
 
