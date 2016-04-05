@@ -21,6 +21,7 @@
 "HomePhone" = "Telefone Residencia";
 "Lastname" = "Último Nome";
 "Location" = "Localização";
+"Add a category" = "Adicionar uma categoria";
 "MobilePhone" = "Telefone móvel";
 "Name" = "Nome";
 "OfficePhone" = "Telefone de escritório";
@@ -40,6 +41,20 @@
 "Move To" = "Mover para";
 "Copy To" = "Copiar para";
 "Add to" = "Adicionar a";
+/* Subheader of empty addressbook */
+"No contact" = "Nenhum contacto";
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Começar uma pesquisa para pesquisar neste catálogo de endereços";
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "contactos";
+/* No contact matching search criteria */
+"No matching contact" = "Este contacto não existe";
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "contactos encontrados";
+/* Number of selected contacts in list */
+"selected" = "selecionado";
+/* Empty right pane */
+"No contact selected" = "Nenhum contacto selecionado";
 /* Tooltips */
 "Create a new address book card" = "Cria um novo contato";
 "Create a new list" = "Cria uma nova lista";
@@ -69,11 +84,9 @@
 "Preferred" = "Preferido";
 "Display" = "Exibir";
 "Display Name" = "Exibir Nome";
-"Email" = "Endereço de Email";
 "Additional Email" = "Email adicional";
 "Phone Number" = "Numero de telegone";
 "Prefers to receive messages formatted as" = "Preferências na recepção de mensagens no formato";
-"Screen Name" = "Nome de apresentado";
 "Categories" = "Categorias";
 "First" = "Primeiro Nome";
 "Last" = "Último Nome";
@@ -108,6 +121,8 @@
 "New Addressbook..." = "Novo Catálogo...";
 "Subscribe to an Addressbook..." = "Inscrever-se num Catálogo...";
 "Remove the selected Addressbook" = "Remover o Catálogo selecionado";
+"Subscribe to a shared folder" = "Inscrever-se para uma pasta compartilhada";
+"Search User" = "Pesquisar Utilizador";
 "Name of the Address Book" = "Nome do Catálogo";
 "Are you sure you want to delete the selected address book?"
 = "Você tem certeza que quer apagar o catálogo selecionado?";
@@ -172,3 +187,42 @@
 "Links to this Address Book" = "Link para este Catálogo";
 "Authenticated User Access" = "Acesso de Usuário Autenticado";
 "CardDAV URL" = "CardDAV URL";
+"Options" = "Opções";
+"Rename" = "Renomear";
+"Subscriptions" = "Inscrições";
+"Global Addressbooks" = "Catálogo de Endereço";
+"Search" = "Pesquisar";
+"Sort" = "Ordenar";
+"Descending Order" = "Ordem descrescente";
+"Back" = "Voltar";
+"Select All" = "Selecionar Tudo";
+"Copy contacts" = "Copiar contactos";
+"More messages options" = "Mais opções de mensagem";
+"New Contact" = "Novo Contacto";
+"Close" = "Fechar";
+"More contact options" = "Mais opções de contactos";
+"Organization Unit" = "Unidade de Organização";
+"Add Organizational Unit" = "Adicionar Unidade de Organização";
+"Type" = "Tipo";
+"Email Address" = "Endereço eletrónico";
+"New Email Address" = "Novo Endereço eletrónico";
+"New Phone Number" = "Novo Número de Telefone";
+"URL" = "URL";
+"New URL" = "Nova URL";
+"street" = "rua";
+"Postoffice" = "Agência dos Correios";
+"Region" = "Região";
+"Postal Code" = "Código Postal";
+"New Address" = "Novo Endereço";
+"Reset" = "Reestabelecer";
+"Description" = "Descrição";
+"Add Member" = "Adicionar Membro";
+"Subscribe" = "Subscrever";
+"Add Birthday" = "Adicionar Aniversário";
+"Import" = "Importar";
+"More options" = "Mais opções";
+"Role" = "Papel";
+"Add Screen Name" = "Adicionar Nome de Apresentação";
+"Synchronization" = "Sincronização";
+"Synchronize" = "Sincronizar";
+"Successfully subscribed to address book" = "Inscrição ao catálogo de endereços realizada com sucesso";

@@ -41,3 +41,10 @@ reply_info = "Esta é uma resposta de um convite feito por si.";
 "Date" = "Data";
 "To" = "Para";
 "Issuer" = "Emissor";
+/* Tooltips */
+"View Attachment" = "Visualizar Anexo";
+"Save Attachment" = "Salvar Anexo";
+"CC" = "CC";
+"Cancel" = "Cancelar";
+"OK" = "OK";
+"Comment" = "Comentário:";

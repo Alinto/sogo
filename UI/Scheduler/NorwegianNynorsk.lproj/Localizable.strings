@@ -4,15 +4,19 @@
 "Create a new event" = "Opprett en ny hendelse";
 "Create a new task" = "Opprett en ny oppgave";
 "Edit this event or task" = "Endre hendelse eller oppgave";
+"Print the current calendar view" = "Print the current calendar view";
 "Delete this event or task" = "Slett denne hendelsen eller oppgaven";
 "Go to today" = "Gå til i dag";
 "Switch to day view" = "Endre til dagsvisning";
 "Switch to week view" = "Endre til ukesvisning";
 "Switch to month view" = "Endre til månedsvisning";
+"Switch to multi-columns day view" = "Switch to multi-columns day view";
 "Reload all calendars" = "Last på nytt alle kalendre";
 /* Tabs */
 "Date" = "Dato";
 "Calendars" = "Kalendere";
+"No events for selected criteria" = "No events for selected criteria";
+"No tasks for selected criteria" = "No tasks for selected criteria";
 /* Day */
 "DayOfTheMonth" = "Dag i måneden";
 "dayLabelFormat" = "%Y-%m-%d";
@@ -43,6 +47,7 @@
 "Import Events" = "Importer hendelser";
 "Select an iCalendar file (.ics)." = "Velg en iCalendar fil (.ics).";
 "Upload" = "Last opp";
+"Uploading" = "Uploading";
 "Publish Calendar..." = "Publiser Kalender...";
 "Reload Remote Calendars" = "Last på nytt fjernkalendre";
 "Properties" = "Egenskaper";
@@ -58,7 +63,8 @@
 "OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Forbudt";
 /* acls */
-"User rights for" = "Brukerrettigheter for";
+"Access rights to" = "Access rights to";
+"For user" = "For user";
 "Any Authenticated User" = "Enhver autentisert bruker";
 "Public Access" = "Felles adgang";
 "label_Public" = "Felles";
@@ -81,9 +87,10 @@
 /* Button Titles */
 "Subscribe to a Calendar..." = "Abonnere på en kalender...";
 "Remove the selected Calendar" = "Slett markert kalender";
+"New calendar" = "New calendar";
 "Name of the Calendar" = "Navn på kalenderen";
 "new" = "Ny";
-"printview" = "Skriv ut";
+"Print view" = "Print view";
 "edit" = "Endre";
 "delete" = "Slett";
 "proposal" = "Foreslå";
@@ -93,6 +100,8 @@
 "Attach" = "Vedlegg";
 "Update" = "Oppdater";
 "Cancel" = "Avbryt";
+"Reset" = "Reset";
+"Save" = "Save";
 "show_rejected_apts" = "Vis avbrutte møter";
 "hide_rejected_apts" = "Skjul avbrutte møter";
 /* Schedule */
@@ -107,6 +116,19 @@
 "more attendees" = "Flere deltagere";
 "Hide already accepted and rejected appointments" = "Skjul allerede aksepterte og avviste avtaler";
 "Show already accepted and rejected appointments" = "Vis aksepterte og avviste avtaler";
+/* Print view */
+"LIST" = "List";
+"Print Settings" = "Print Settings";
+"Title" = "Tittel";
+"Layout" = "Layout";
+"What to Print" = "What to Print";
+"Options" = "Options";
+"Tasks with no due date" = "Tasks with no due date";
+"Display working hours only" = "Display working hours only";
+"Completed tasks" = "Completed Tasks";
+"Display events and tasks colors" = "Display events and tasks colors";
+"Borders" = "Borders";
+"Backgrounds" = "Backgrounds";
 /* Appointments */
 "Appointment viewer" = "Avtaleviser";
 "Appointment editor" = "Avtaleredigerer";
@@ -115,12 +137,12 @@
 "Start" = "Starter";
 "End" = "Slutter";
 "Due Date" = "Dato";
-"Title" = "Tittel";
 "Name" = "Navn";
 "Email" = "E-post";
 "Status" = "Status";
 "% complete" = "% utført";
 "Location" = "Plass";
+"Add a category" = "Add a category";
 "Priority" = "Prioritet";
 "Privacy" = "Personvern";
 "Cycle" = "Intervall";
@@ -138,6 +160,8 @@
 "Reminder" = "Påminnelse";
 "General" = "Generell";
 "Reply" = "Svar";
+"Created by" = "Created by";
+"You are invited to participate" = "You are invited to participate";
 "Target" = "Mål";
 "attributes" = "attributter";
 "attendees" = "deltakere";
@@ -171,15 +195,19 @@
 "view_thismonth" = "Denne måneden";
 "view_future" = "Alle fremtidige hendelser";
 "view_selectedday" = "Valgt dag";
+"view_not_started" = "Not started tasks";
+"view_overdue" = "Overdue tasks";
+"view_incomplete" = "Incomplete tasks";
 "View" = "Vis";
-"Title or Description" = "Tittel eller beskrivelse";
+"Title, category or location" = "Title, category or location";
+"Entire content" = "Entire content";
 "Search" = "Søk";
 "Search attendees" = "Søk deltakere";
 "Search resources" = "Søk ressurser";
 "Search appointments" = "Søk avtaler";
 "All day Event" = "Heldagshendelse";
 "check for conflicts" = "Kontroller konflikter";
-"Browse URL" = "URL";
+"URL" = "URL";
 "newAttendee" = "Legg til deltakere";
 /* calendar modes */
 "Overview" = "Oversikt";
@@ -227,6 +255,7 @@
 "Recurrence pattern" = "Regelmessighetsmønsteret";
 "Range of recurrence" = "Område for regelmessighet";
 "Daily" = "Daglig";
+"Multi-Columns" = "Multi-Columns";
 "Weekly" = "Ukentlig";
 "Monthly" = "Månedlig";
 "Yearly" = "Årlig";
@@ -235,14 +264,21 @@
 "Week(s)" = "Uke(r)";
 "On" = "På";
 "Month(s)" = "Måned(er)";
+/* [Event recurrence editor] Ex: _The_ first Sunday */
 "The" = "The";
 "Recur on day(s)" = "Gjentas på dag(er)";
 "Year(s)" = "År";
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
 "cycle_of" = "av";
 "No end date" = "Ingen sluttdato";
 "Create" = "Oprett";
 "appointment(s)" = "avtale(r)";
 "Repeat until" = "Gjenta til";
+"End Repeat" = "End Repeat";
+"Never" = "Never";
+"After" = "After";
+"On Date" = "On Date";
+"times" = "times";
 "First" = "Første";
 "Second" = "Andre";
 "Third" = "Tredje";
@@ -277,6 +313,7 @@
 "reminder_MINUTES" = "minutter";
 "reminder_HOURS" = "timer";
 "reminder_DAYS" = "dager";
+"reminder_WEEKS" = "weeks";
 "reminder_BEFORE" = "før";
 "reminder_AFTER" = "etter";
 "reminder_START" = "hendelser starter";
@@ -294,11 +331,16 @@
 "zoom_25" = "25%";
 /* transparency */
 "Show Time as Free" = "Vis tid som ledig";
+/* email notifications */
+"Send Appointment Notifications" = "Send Appointment Notifications";
+"From" = "From";
+"To" = "To";
 /* validation errors */
 validate_notitle           = "Ingen tittel er angitt, fortsette?";
 validate_invalid_startdate = "Feil startdato!";
 validate_invalid_enddate   = "Feil sluttdato!";
 validate_endbeforestart    = "Angitt sluttdato inntreffer før angitt startdato.";
+"Events" = "Events";
 "Tasks" = "Oppgaver";
 "Show completed tasks" = "Vis utførte oppgave";
 /* tabs */
@@ -315,6 +357,8 @@ validate_endbeforestart    = "Angitt sluttdato inntreffer før angitt startdato.
 "Week View" = "Ukesvisning";
 "Month View" = "Månedsvisning";
 "Reload" = "Last på nytt";
+/* Number of selected components in events or tasks list */
+"selected" = "selected";
 "eventPartStatModificationError" = "Din deltakerstatus kunne ikke endres.";
 /* menu */
 "New Event..." = "Ny hendelse...";
@@ -357,13 +401,14 @@ validate_endbeforestart    = "Angitt sluttdato inntreffer før angitt startdato.
 "and" = "og";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "En tidskonflikt eksisterer med en eller flere detakere.\nVil du likevel beholde de nåværende innstillingene?";
-/* apt list */
-"Start" = "Start";
-"End" = "Slutt";
+/* events list */
+"Due" = "Due";
 "(Private Event)" = "(Privat hendelse)";
 vevent_class0 = "(Offentlig hendelse)";
 vevent_class1 = "(Privat hendelse)";
 vevent_class2 = "(Konfidensiell hendelse)";
+/* tasks list */
+"Descending Order" = "Descending Order";
 vtodo_class0 = "(Offentlig oppgave)";
 vtodo_class1 = "(Privat oppgave)";
 vtodo_class2 = "(Konfidensiell oppgave)";
@@ -373,6 +418,10 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "editRepeatingItem" = "Objektet du redigerer har gjentakelser. Vil du redigere alle forekomster eller bare denne forekomsten?";
 "button_thisOccurrenceOnly" = "Bare denne forekomsten";
 "button_allOccurrences" = "Alle forekomster";
+"Edit This Occurrence" = "Edit This Occurrence";
+"Edit All Occurrences" = "Edit All Occurrences";
+"Update This Occurrence" = "Update This Occurrence";
+"Update All Occurrences" = "Update All Occurrences";
 /* Properties dialog */
 "Color" = "Farge";
 "Include in free-busy" = "Inkluder i fritt opptatt";
@@ -382,6 +431,19 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "Display" = "Vis";
 "Show alarms" = "Vis alarm";
 "Show tasks" = "Vis oppgaver";
+"Notifications" = "Notifications";
+"Receive a mail when I modify my calendar" = "Receive a mail when I modify my calendar";
+"Receive a mail when someone else modifies my calendar" = "Receive a mail when someone else modifies my calendar";
+"When I modify my calendar, send a mail to" = "When I modify my calendar, send a mail to";
+"Email Address" = "Email Address";
+"Export" = "Export";
+
+/* Show only the calendar for which the menu is displayed */ 
+"Show Only This Calendar" = "Show Only This Calendar";
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "Show All Calendars";
+
 "Links to this Calendar" = "Linker til denne kalenderen";
 "Authenticated User Access" = "Authenticated User Access";
 "CalDAV URL" = "CalDAV url";
@@ -403,13 +465,56 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "tagWasRemoved" = "Om fjerner kalenderen fra synkronisering trenger du å laste dataene i din mobiltelefon på nytt.\nFortsetta?";
 "DestinationCalendarError" = "Kilde- og målkalendere er de samme. Prøv å kopiere til en annen kalender.";
 "EventCopyError" = "Kopiering feilet. Vennligst prøv å kopiere til en annen kalender.";
+"Please select at least one calendar" = "Please select at least one calendar";
 "Open Task..." = "Åpne oppgave...";
 "Mark Completed" = "Merk utført";
 "Delete Task" = "Slett oppgave";
 "Delete Event" = "Slett hendelse";
 "Copy event to my calendar" = "Copy event to my calendar";
+"View Raw Source" = "View Raw Source";
+"Subscriptions" = "Subscriptions";
+"Subscribe to a shared folder" = "Subscribe to a shared folder";
 "Subscribe to a web calendar..." = "Abonnere på en internett-kalender...";
 "URL of the Calendar" = "URL til kalenderen";
 "Web Calendar" = "Internett-kalender";
+"Web Calendars" = "Web Calendars";
 "Reload on login" = "Last på nytt ved innlogging";
 "Invalid number." = "Ugyldig tall.";
+"Please identify yourself to %{0}" = "Please identify yourself to %{0}";
+"quantity" = "quantity";
+"Current view" = "Current view";
+"Selected events and tasks" = "Selected events and tasks";
+"Custom date range" = "Custom date range";
+"Select starting date" = "Select starting date";
+"Select ending date" = "Select ending date";
+"Delegated to" = "Delegated to";
+"Keep sending me updates" = "Keep sending me updates";
+"OK" = "OK";
+"Confidential" = "Confidential";
+"Enable" = "Enable";
+"Filter" = "Filter";
+"Sort" = "Sort";
+"Back" = "Back";
+"Day" = "Day";
+"Month" = "Month";
+"New Appointment" = "New Appointment";
+"filters" = "filters";
+"Today" = "Today";
+"More options" = "More options";
+"Delete This Occurrence" = "Delete This Occurrence";
+"Delete All Occurrences" = "Delete All Occurrences";
+"Add From" = "Add From";
+"Add Due" = "Add Due";
+"Import" = "Import";
+"Rename" = "Rename";
+"Import Calendar" = "Import Calendar";
+"Select an ICS file." = "Select an ICS file.";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "Successfully subscribed to calendar";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Toggle item";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Search scope";
