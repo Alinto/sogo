@@ -11,6 +11,7 @@
 "Preferences" = "Innstillinger";
 "Administration" = "Administrasjon";
 "Disconnect" = "Koble fra";
+"Toggle Menu" = "Veksle Meny";
 "Right Administration" = "Rettighetsinnstillinger";
 "Log Console (dev.)" = "Loggkonsoll";
 "User" = "Bruker";
@@ -98,3 +99,11 @@
 "a2_Thursday" = "To";
 "a2_Friday" = "Fr";
 "a2_Saturday" = "Lø";
+"Access Rights" = "Tilgangsrettigheter";
+"Add User" = "Legg til Bruker";
+"Loading" = "Laster";
+"No such user." = "Ingen slik bruker";
+"You cannot (un)subscribe to a folder that you own!" = "Du kan ikke (av)abonnere på en mappe du selv eier!";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Enter at least %{minimumSearchLength} characters";

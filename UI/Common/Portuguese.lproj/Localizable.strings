@@ -11,6 +11,7 @@
 "Preferences" = "Preferências";
 "Administration" = "Administração";
 "Disconnect" = "Sair";
+"Toggle Menu" = "Menu alternativo";
 "Right Administration" = "Administração de permissões";
 "Log Console (dev.)" = "Log Console (dev.)";
 "User" = "Utilizador";
@@ -98,3 +99,11 @@
 "a2_Thursday" = "Qu";
 "a2_Friday" = "Se";
 "a2_Saturday" = "Sa";
+"Access Rights" = "Direitos de Acesso";
+"Add User" = "Adicionar Utilizador";
+"Loading" = "Carregando";
+"No such user." = "Este utilizador não existe";
+"You cannot (un)subscribe to a folder that you own!" = "Você não pode (des)aderir a uma pasta que seja sua.";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Digite no mínimo %{minimumSearchLength} caracteres";

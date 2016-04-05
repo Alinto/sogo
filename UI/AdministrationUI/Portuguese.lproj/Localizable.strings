@@ -9,3 +9,18 @@
 "ACLs_title" = "Gerenciamento de ACLs para Utilizadores";
 /* Modules descriptions */
 "ACLs_description" = "<p>O módulo administrativo das Listas de Controlo de Acessos permitem alterar os ACLs de Calendário e Contactos de cada utilizador.</p><p>Para modificar as ACLs do utilizador, digite o nome no campo de pesquisa, no topo da janela e dê um duplo-click na opção desejada.</p>";
+"Name or Email" = "Nome ou Email";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Começar uma pesquisa para editar os direitos";
+/* Rights module: Empty search result */
+"No matching user" = "Este utilizador não existe";
+/* Rights module: no selection */
+"No resource selected" = "Nenhum recurso selecionado";
+"Add User" = "Adicionar Utilizador";
+"Subscribe User" = "Subscrever Utilizador";
+"Rights" = "Direitos";
+"Search Users" = "Pesquisar Utilizadores";
+"users found" = "utilizadores encontrados";
+"No resource" = "Nenhum recurso";
+"Any Authenticated User" = "Qualquer Utilizador Autenticado";
+"Public Access" = "Acesso Público";

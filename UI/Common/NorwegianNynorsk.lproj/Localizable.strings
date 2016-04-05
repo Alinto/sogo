@@ -11,9 +11,11 @@
 "Preferences" = "Innstillinger";
 "Administration" = "Administrasjon";
 "Disconnect" = "Logg ut";
+"Toggle Menu" = "Toggle Menu";
 "Right Administration" = "Rettighetsinnstillinger";
 "Log Console (dev.)" = "Loggkonsoll";
 "User" = "Bruker";
+"Vacation message is enabled" = "Feriemelding er aktivert";
 "Help" = "Hjelp";
 "noJavascriptError" = "SOGo krever at Javascript kan kjøres. Kontroll at Javascript kan kjøres og at det er aktivert i din nettlesers innstillinger.";
 "noJavascriptRetry" = "Forsøk igjen";
@@ -27,6 +29,18 @@
 "Any user not listed above" = "Enhver bruker som ikke er listet ovenfor";
 "Anybody accessing this resource from the public area" = "Enhver aksesserer denne ressursen fra det offentlige området";
 "Sorry, the user rights can not be configured for that object." = "Beklager, brukerrettighetene kan ikke konfigureres for objektet.";
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Enhver bruker med systemkonto her vil kunne se din innboks \"%{0}\". Er du trygg på at du kan stole på alle sammen?";
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "Enhver bruker med systemkonto her vil kunne se din kalender \"%{0}\". Er du trygg på at du kan stole på alle sammen?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Alle på internett kan potensielt få tilgang til din kalender \"%{0}\", selv om de ikke har en systemkonto her. Ønsker du at denne informasjonen skal være åpen for det offentlige internettet?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Enhver bruker med systemkonto her vil kunne se din kalender \"%{0}\". Er du trygg på at du kan stole på alle sammen?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Alle på internett kan potensielt få tilgang til din kalender \"%{0}\", selv om de ikke har en systemkonto her. Ønsker du at denne informasjonen skal være åpen for det offentlige internettet?";
+"Give Access" = "Gi tilgang";
+"Keep Private" = "Behold privat";
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Du kan ikke abonnere på den mappen!";
@@ -45,6 +59,7 @@
 "You cannot create a list in a shared address book." 
         = "Du kan ikke opprette en liste i en delt adressebok.";
 "Warning" = "Advarsel";
+"Can't contact server" = "An error occurred while contacting the server. Please try again later.";
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Du har ikke rettigheter til modulen eller systemet. Kontakt din systemadministrator.";
 "You don't have the required privileges to perform the operation."
@@ -53,6 +68,14 @@
 "delegate is organizer" = "Personen du delegerer til er arrangør. Vennligst deleger til en annen person.";
 "delegate is a participant" = "The delegate is already a participant.";
 "delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
+"Snooze for " = "Utsett i";
+"5 minutes" = "5 minutter";
+"10 minutes" = "10 minutter";
+"15 minutes" = "15 minutter";
+"30 minutes" = "30 minutter";
+"45 minutes" = "5 minutter";
+"1 hour" = "1 time";
+"1 day" = "1 day";
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Avbryt";
@@ -63,7 +86,7 @@
 "Start" = "Start";
 "Due Date" = "Forfallsdato";
 "Location" = "Lokasjon";
-/* Mail labels */
+/* mail labels */
 "Important" = "Viktig";
 "Work" = "Arbeid";
 "Personal" = "Personlig";
@@ -76,3 +99,11 @@
 "a2_Thursday" = "To";
 "a2_Friday" = "Fr";
 "a2_Saturday" = "Lø";
+"Access Rights" = "Access Rights";
+"Add User" = "Add User";
+"Loading" = "Loading";
+"No such user." = "No such user.";
+"You cannot (un)subscribe to a folder that you own!" = "You cannot (un)subscribe to a folder that you own!";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Enter at least %{minimumSearchLength} characters";

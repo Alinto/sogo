@@ -1,4 +1,4 @@
-"Inviting the following persons is prohibited:" = "Convidando as seguintes pessoas é proibido:";
+"Inviting the following persons is prohibited:" = "Convidar as seguintes pessoas é proibido:";
 "Personal Calendar" = "Calendário Pessoal";
 vevent_class0 = "(Evento Público)";
 vevent_class1 = "(Evento Privado)";
@@ -11,9 +11,9 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "The event \"%{Summary}\" was created" = "O evento \"%{Summary}\" foi criado";
 "The event \"%{Summary}\" was deleted" = "O evento \"%{Summary}\" foi removido";
 "The event \"%{Summary}\" was updated" = "O evento \"%{Summary}\" foi atualizado";
-"The following attendees(s) were notified:" = "Os seguintes participantes foram notificados:";
-"The following attendees(s) were added:" = "Os seguintes participantes foram adicionados:";
-"The following attendees(s) were removed:" = "Os seguintes participantes foram removidos:";
+"The following attendees(s) were notified" = "Os seguintes participantes foram notificados:";
+"The following attendees(s) were added" = "Os seguintes participantes foram adicionados:";
+"The following attendees(s) were removed" = "Os seguintes participantes foram removidos:";
 /* IMIP messages */
 "calendar_label" = "Calendário:";
 "startDate_label" = "Início:";
