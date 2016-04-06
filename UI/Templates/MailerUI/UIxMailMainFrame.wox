@@ -56,7 +56,7 @@
               </md-button>
             </div>
           </md-subheader>
-          <div class="sg-quota" ng-if="account.$quota">
+          <div class="sg-quota ng-hide" ng-show="account.$quota">
             <md-progress-linear md-mode="determinate"
                                 ng-class="{ 'md-warn': account.$quota.percent > 70 }"
                                 value="{{account.$quota.percent}}"><!-- quota --></md-progress-linear>
@@ -70,20 +70,21 @@
                             ng-class="{'md-bg': folder.id == app.service.selectedFolder.id}"
                             ng-dblclick="app.editFolder(folder)">
                 <div ng-class="'sg-child-level-' + folder.level">
-                  <md-icon ng-hide="folder.children.length">{{app.metadataForFolder(folder).icon}}</md-icon>
-                  <md-checkbox class="sg-folder"
+                  <md-icon class="ng-hide"
+                           ng-hide="folder.children.length">{{app.metadataForFolder(folder).icon}}</md-icon>
+                  <md-checkbox class="sg-folder ng-hide"
                                label:aria-label="Expanded"
                                ng-show="folder.children.length"
                                ng-model="folder.$expanded"
                                ng-change="account.$flattenMailboxes({ reload: true, saveState: true })"><!-- expanded --></md-checkbox>
                 </div>
-                <p class="sg-item-name"
+                <p class="sg-item-name ng-hide"
                    ng-click="app.selectFolder($event, account, folder)"
                    ng-show="app.editMode != folder.path">
                   {{app.metadataForFolder(folder).name}}
-                  <span class="sg-counter-badge" ng-show="folder.unseenCount">{{folder.unseenCount}}</span>
+                  <span class="sg-counter-badge ng-hide" ng-show="folder.unseenCount">{{folder.unseenCount}}</span>
                 </p>
-                <md-input-container class="md-flex"
+                <md-input-container class="md-flex ng-hide"
                                     ng-show="app.editMode == folder.path">
                   <input class="sg-item-name" type="text"
                          label:aria-label="Enter the new name of your folder"
@@ -93,7 +94,8 @@
                          sg-enter="app.saveFolder(folder)"
                          sg-escape="app.revertEditing(folder)"/>
                 </md-input-container>
-                <md-menu ng-show="app.service.selectedFolder.path == folder.path">
+                <md-menu class="ng-hide"
+                         ng-show="app.service.selectedFolder.path == folder.path">
                   <md-icon label:aria-label="Options"
                            ng-click="$mdOpenMenu($event)"
                            md-menu-origin="md-menu-origin">more_vert</md-icon>
