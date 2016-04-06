@@ -498,7 +498,7 @@
       methodSel = SOGoSelectorForPropertyGetter (*currentProperty);
       if (methodSel && [ldifEntry respondsToSelector: methodSel])
         *currentValue = [[ldifEntry performSelector: methodSel]
-                          stringByEscapingXMLString];
+                          safeStringByEscapingXMLString];
       currentProperty++;
       currentValue++;
     }

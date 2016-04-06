@@ -2140,7 +2140,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       [content addObject: davElementWithContent (@"request-status", XMLNS_CALDAV,
 						 @"2.0;Success")];
       [content addObject: davElementWithContent (@"calendar-data", XMLNS_CALDAV,
-                                                 [calendarData stringByEscapingXMLString])];
+                                                 [calendarData safeStringByEscapingXMLString])];
     }
   else
       [content addObject:

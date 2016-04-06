@@ -37,6 +37,7 @@
 
 #import "NSArray+Utilities.h"
 #import "NSDictionary+Utilities.h"
+#import "NSString+Utilities.h"
 #import "SOGoUserManager.h"
 #import "SOGoPermissions.h"
 #import "SOGoSystemDefaults.h"
@@ -271,7 +272,7 @@
       [r appendContentString: @"<D:status>HTTP/1.1 200 OK</D:status>"];
       [r appendContentString: @"<D:prop><D:displayname>"];
       data = [currentFolder objectForKey: @"displayName"];
-      [r appendContentString: [data stringByEscapingXMLString]];
+      [r appendContentString: [data safeStringByEscapingXMLString]];
       [r appendContentString: @"</D:displayname></D:prop></D:propstat>"];
 
       /* Remove this once extensions 0.8x are no longer used */
@@ -284,12 +285,12 @@
       ownerUser = [SOGoUser userWithLogin: [currentFolder objectForKey: @"owner"]
 			    roles: nil];
       data = [ownerUser cn];
-      [r appendContentString: [data stringByEscapingXMLString]];
+      [r appendContentString: [data safeStringByEscapingXMLString]];
       [r appendContentString: @"</ownerdisplayname>"];
 
       [r appendContentString: @"<D:displayname>"];
       data = [currentFolder objectForKey: @"displayName"];
-      [r appendContentString: [data stringByEscapingXMLString]];
+      [r appendContentString: [data safeStringByEscapingXMLString]];
       [r appendContentString: @"</D:displayname>"];
       /* end of temporary compatibility hack */
 
@@ -421,14 +422,14 @@
                      [field stringByEscapingXMLString]];
               field = [currentUser objectForKey: @"cn"];
               [fetch appendFormat: @"<displayName>%@</displayName>",
-                     [field stringByEscapingXMLString]];
+                     [field safeStringByEscapingXMLString]];
               field = [currentUser objectForKey: @"c_email"];
               [fetch appendFormat: @"<email>%@</email>",
                      [field stringByEscapingXMLString]];
               field = [currentUser objectForKey: @"c_info"];
               if ([field length])
                 [fetch appendFormat: @"<info>%@</info>",
-                       [field stringByEscapingXMLString]];
+                       [field safeStringByEscapingXMLString]];
               [fetch appendString: @"</user>"];
             }
         }
