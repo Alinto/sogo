@@ -212,31 +212,31 @@ static NSArray *tasksFields = nil;
   value = [request formValueForKey: @"value"];
   param = [request formValueForKey: @"filterpopup"];
   if ([param length])
-  {
-    [self _setupDatesWithPopup: param andUserTZ: userTimeZone];
-  }
+    {
+      [self _setupDatesWithPopup: param andUserTZ: userTimeZone];
+    }
   else
-  {
-    param = [request formValueForKey: @"sd"];
-    if ([param length] > 0)
-      startDate = [[NSCalendarDate dateFromShortDateString: param
+    {
+      param = [request formValueForKey: @"sd"];
+      if ([param length] > 0)
+        startDate = [[NSCalendarDate dateFromShortDateString: param
+                                          andShortTimeString: nil
+                                                  inTimeZone: userTimeZone] beginOfDay];
+      else
+        startDate = nil;
+    
+      param = [request formValueForKey: @"ed"];
+      if ([param length] > 0)
+        endDate = [[NSCalendarDate dateFromShortDateString: param
                                         andShortTimeString: nil
-                                                inTimeZone: userTimeZone] beginOfDay];
-    else
-      startDate = nil;
+                                                inTimeZone: userTimeZone] endOfDay];
+      else
+        endDate = nil;
     
-    param = [request formValueForKey: @"ed"];
-    if ([param length] > 0)
-      endDate = [[NSCalendarDate dateFromShortDateString: param
-                                      andShortTimeString: nil
-                                              inTimeZone: userTimeZone] endOfDay];
-    else
-      endDate = nil;
-    
-    param = [request formValueForKey: @"view"];
-    currentView = param;
-    dayBasedView = ![param isEqualToString: @"monthview"];
-  }
+      param = [request formValueForKey: @"view"];
+      currentView = param;
+      dayBasedView = ![param isEqualToString: @"monthview"];
+    }
 }
 
 - (void) _fixComponentTitle: (NSMutableDictionary *) component
@@ -360,13 +360,14 @@ static NSArray *tasksFields = nil;
   SOGoAppointmentFolders *clientObject;
   SOGoUser *ownerUser;
   
-  BOOL isErasable, folderIsRemote, quickInfosFlag = NO;
+  BOOL isErasable, folderIsRemote, quickInfosFlag, searchByTitleOrContent;
   int i;
   
   infos = [NSMutableArray array];
   marker = [NSNull null];
   clientObject = [self clientObject];
-  
+  quickInfosFlag = searchByTitleOrContent = NO;
+
   folders = [[clientObject subFolders] objectEnumerator];
   while ((currentFolder = [folders nextObject]))
     {
@@ -384,15 +385,18 @@ static NSArray *tasksFields = nil;
                                                           title: value
                                                       component: component
                                               additionalFilters: criteria] objectEnumerator];
+              searchByTitleOrContent = ([value length] > 0);
             }
           else if ([criteria isEqualToString:@"entireContent"])
             {
               // First search : Through the quick table inside the location, category and title columns
               quickInfos = (NSMutableArray *)[currentFolder fetchCoreInfosFrom: startDate
-                                                          to: endDate
-                                                       title: value
-                                                   component: component
-                                           additionalFilters: criteria];
+                                                                            to: endDate
+                                                                         title: value
+                                                                     component: component
+                                                             additionalFilters: criteria];
+
+              searchByTitleOrContent = ([value length] > 0);
         
               // Save the c_name in another array to compare with
               if ([quickInfos count] > 0)
@@ -405,9 +409,9 @@ static NSArray *tasksFields = nil;
         
               // Second research : Every objects except for those already in the quickInfos array
               allInfos = (NSMutableArray *)[currentFolder fetchCoreInfosFrom: startDate
-                                                        to: endDate
-                                                     title: nil
-                                                 component: component];
+                                                                          to: endDate
+                                                                       title: nil
+                                                                   component: component];
               if (quickInfosFlag == YES)
                 {
                   for (i = ([allInfos count] - 1); i >= 0 ; i--) {
@@ -415,8 +419,7 @@ static NSArray *tasksFields = nil;
                       [allInfos removeObjectAtIndex:i];
                   }
                 }
-        
-        
+
               for (i = 0; i < [allInfos count]; i++)
                 {
                   iCalString = [[allInfos objectAtIndex:i] objectForKey:@"c_content"];
@@ -434,7 +437,7 @@ static NSArray *tasksFields = nil;
                 }
         
               currentInfos = [quickInfos objectEnumerator];
-            }
+            } // else if ([criteria isEqualToString:@"entireContent"])
           else
             {
               currentInfos = [[currentFolder fetchCoreInfosFrom: startDate
@@ -460,7 +463,14 @@ static NSArray *tasksFields = nil;
                                                                     forUser : userLogin];
 
                       if ([role isEqualToString: @"ComponentDAndTViewer"])
-                        [newInfo setObject: [NSNumber numberWithInt: 0]  forKey: @"viewable"];
+                        {
+                          // We skip results that could lead to information "exposure".
+                          // See http://sogo.nu/bugs/view.php?id=3619
+                          if (searchByTitleOrContent)
+                            continue;
+
+                          [newInfo setObject: [NSNumber numberWithInt: 0]  forKey: @"viewable"];
+                        }
                       else
                         [newInfo setObject: [NSNumber numberWithInt: 1]  forKey: @"viewable"];
                     }
