@@ -1,6 +1,6 @@
 /* CardElement+SOGo.h - this file is part of SOGo
  *
- * Copyright (C) 2014 Inverse inc.
+ * Copyright (C) 2014-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +23,13 @@
 
 #import <NGCards/CardElement.h>
 
+@class NSCalendarDate;
+@class WOContext;
+
 @interface CardElement (SOGoExtensions)
 
+- (NSCalendarDate *) dateFromString: (NSString *) dateString
+                          inContext: (WOContext *) context;
 - (NSString *) jsonRepresentation;
 
 @end

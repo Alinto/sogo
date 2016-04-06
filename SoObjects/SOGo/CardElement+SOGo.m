@@ -1,6 +1,6 @@
 /* CardElement+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2014 Inverse inc.
+ * Copyright (C) 2014-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,53 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
+#import <Foundation/NSValue.h>
 
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+
+#import "SOGoUser.h"
+#import "SOGoUserDefaults.h"
 #import "NSDictionary+Utilities.h"
-
 #import "CardElement+SOGo.h"
 
 
 @implementation CardElement (SOGoExtensions)
+
+/**
+ * From [UIxDatePicker takeValuesFromRequest:inContext:]
+ */
+- (NSCalendarDate *) dateFromString: (NSString *) dateString
+                          inContext: (WOContext *) context
+{
+  NSInteger dateTZOffset, userTZOffset;
+  NSTimeZone *systemTZ, *userTZ;
+  SOGoUserDefaults *ud;
+  NSCalendarDate *date;
+
+  date = [NSCalendarDate dateWithString: dateString
+                         calendarFormat: @"%Y-%m-%d"];
+  if (!date)
+    [self warnWithFormat: @"Could not parse dateString: '%@'", dateString];
+
+  // We must adjust the date timezone because "dateWithString:..." uses the
+  // system timezone, which can be different from the user's. */
+  ud = [[context activeUser] userDefaults];
+  systemTZ = [date timeZone];
+  dateTZOffset = [systemTZ secondsFromGMTForDate: date];
+  userTZ = [ud timeZone];
+  userTZOffset = [userTZ secondsFromGMTForDate: date];
+  if (dateTZOffset != userTZOffset)
+    date = [date dateByAddingYears: 0 months: 0 days: 0
+                             hours: 0 minutes: 0
+                           seconds: (dateTZOffset - userTZOffset)];
+  [date setTimeZone: userTZ];
+
+  return date;
+}
 
 /**
  * Return the JSON representation of the element as a dictionary with two keys:
