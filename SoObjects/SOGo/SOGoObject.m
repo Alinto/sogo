@@ -1277,7 +1277,7 @@
       if (!cn)
 	cn = user;
       [userRecord appendFormat: @"<displayName>%@</displayName>",
-		  [cn stringByEscapingXMLString]];
+		  [cn safeStringByEscapingXMLString]];
     }
   
   if (![params containsObject: @"noemail"])

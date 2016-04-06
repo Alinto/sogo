@@ -2084,7 +2084,7 @@ static NSArray *childRecordFields = nil;
       methodSel = SOGoSelectorForPropertyGetter (*currentProperty);
       if (methodSel && [sogoObject respondsToSelector: methodSel])
         *currentValue = [[sogoObject performSelector: methodSel]
-                          stringByEscapingXMLString];
+                          safeStringByEscapingXMLString];
       currentProperty++;
       currentValue++;
     }

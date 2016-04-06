@@ -34,6 +34,7 @@
 #import <SaxObjC/SaxObjC.h>
 #import <SaxObjC/XMLNamespaces.h>
 
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/WOResponse+SOGo.h>
 
@@ -73,7 +74,7 @@
                            [component davEntityTag]];
       [r appendContentString: etagLine];
       [r appendContentString: @"<C:address-data>"];
-      contactString = [[component contentAsString] stringByEscapingXMLString];
+      contactString = [[component contentAsString] safeStringByEscapingXMLString];
       [r appendContentString: contactString];
       [r appendContentString: @"</C:address-data>"
                         @"<C:addressbook-data>"];

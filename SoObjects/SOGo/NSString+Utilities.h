@@ -54,6 +54,7 @@
 
 /* Unicode safety */
 - (NSString *) safeString;
+- (NSString *) safeStringByEscapingXMLString;
 
 /* JSON */
 - (NSString *) jsonRepresentation;
