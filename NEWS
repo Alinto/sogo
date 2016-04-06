@@ -33,6 +33,7 @@ Bug fixes
  - [web] fixed crash when sending a message with a special priority
  - [web] fixed saving of a custom weekly recurrence definition
  - [web] properly escape the user's display name (#3617)
+ - [core] properly escape wide characters (#3616)
  - [dav] we now handle the default classifications for tasks (#3541)
  - [eas] properly unfold long mail headers (#3152)
  - [eas] correctly set EAS message class for S/MIME messages (#3576)
