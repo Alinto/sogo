@@ -3,6 +3,7 @@
 
 Bug fixes
  - properly escape organizer name when using EAS (#3615)
+ - properly escape wide characters (#3616)
 
 2.3.10 (2016-04-05)
 -------------------
