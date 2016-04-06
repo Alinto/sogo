@@ -8,7 +8,7 @@
     xmlns:rsrc="OGo:url"
     xmlns:uix="OGo:uix"><var:string var:value="doctype" const:escapeHTML="NO" />
 <md-dialog flex="50" flex-sm="80" flex-xs="100">
-  <form name="mainForm" ng-submit="filterEditor.save(mainForm)">
+  <form id="filterForm" name="filterForm" ng-submit="filterEditor.save(filterForm)">
     <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">filter_list</md-icon>
@@ -176,7 +176,9 @@
     </md-dialog-content>
     <md-dialog-actions>
       <md-button type="button" ng-click="filterEditor.cancel()"><var:string label:value="Cancel"/></md-button>
-      <md-button type="submit" ng-bind="::'OK' | loc"><!-- OK --></md-button>
+      <md-button type="submit"
+                 ng-disabled="filterForm.$invalid"
+                 ng-bind="::'OK' | loc"><!-- OK --></md-button>
     </md-dialog-actions>
   </form>
 </md-dialog>

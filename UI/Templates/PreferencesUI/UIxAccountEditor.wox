@@ -21,7 +21,7 @@
     </md-toolbar>
     <md-dialog-content class="md-dialog-content">
 
-      <form id="mainForm" name="accountForm" var:href="ownPath">
+      <form id="accountForm" name="accountForm" var:href="ownPath">
 
         <div layout="row">
           <md-input-container class="md-block md-flex">
@@ -147,7 +147,7 @@
     </md-dialog-content>
     <md-dialog-actions>
       <md-button type="button" ng-click="$AccountDialogController.cancel()"><var:string label:value="Cancel"/></md-button>
-      <md-button ng-disabled="$AccountDialogController.accountForm.$invalid"
+      <md-button ng-disabled="accountForm.$invalid"
                  ng-click="$AccountDialogController.save()"
                  ng-bind="::'OK' | loc"><!-- OK --></md-button>
     </md-dialog-actions>
