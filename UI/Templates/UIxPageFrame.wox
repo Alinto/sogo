@@ -93,7 +93,7 @@
             <var:if condition="shortUserNameForDisplay" const:value="anonymous" const:negate="YES">
               var UserFolderURL = '<var:string value="userFolderPath" const:escapeHTML="NO" />';
               var UserLogin = '<var:string value="shortUserNameForDisplay" const:escapeHTML="NO" />';
-              var UserIdentification = '<var:string value="userIdentification" const:escapeHTML="NO" />';
+              var UserIdentification = <var:string value="userIdentification.doubleQuotedString" const:escapeHTML="NO" />;
               var UserEmail = '<var:string value="userEmail" const:escapeHTML="NO" />';
               var UserLanguage = '<var:string value="userLanguage" const:escapeHTML="NO" />';
 
