@@ -470,9 +470,10 @@
         _this.refs[i] = new Card(o);
       });
       if (_this.birthday) {
-        _this.birthday = new Date(_this.birthday * 1000);
         Card.$Preferences.ready().then(function() {
-          _this.$birthday = Card.$Preferences.$mdDateLocaleProvider.formatDate(_this.birthday);
+          var dlp = Card.$Preferences.$mdDateLocaleProvider;
+          _this.birthday = _this.birthday.parseDate(dlp, '%Y-%m-%d');
+          _this.$birthday = dlp.formatDate(_this.birthday);
         });
       }
       // Mark card as loaded
@@ -510,9 +511,9 @@
     // We convert back our birthday object
     if (!deep) {
       if (card.birthday)
-        card.birthday = card.birthday.getTime()/1000;
+        card.birthday = card.birthday.format(Card.$Preferences.$mdDateLocaleProvider, '%Y-%m-%d');
       else
-        card.birthday = 0;
+        card.birthday = '';
     }
 
     return card;

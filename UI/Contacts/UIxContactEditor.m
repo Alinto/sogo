@@ -31,6 +31,7 @@
 #import <NGExtensions/NSNull+misc.h>
 
 
+#import <SOGo/CardElement+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
@@ -341,7 +342,6 @@ static Class SOGoContactGCSEntryK = Nil;
   NSMutableArray *units, *categories;
   NSCalendarDate *date;
   id o;
-  int seconds;
   unsigned int i, year, month, day;
 
   [card setNWithFamily: [attributes objectForKey: @"c_sn"]
@@ -357,10 +357,10 @@ static Class SOGoContactGCSEntryK = Nil;
       setSingleValue: [attributes objectForKey: @"c_screenname"]
               forKey: @""];
 
-  seconds = [[NSString stringWithFormat: @"%@", [attributes objectForKey: @"birthday"]] intValue];
-  if (seconds != 0)
+  o = [attributes objectForKey: @"birthday"];
+  if ([o isKindOfClass: [NSString class]] && [o length])
     {
-      date = [NSCalendarDate dateWithTimeIntervalSince1970: seconds];
+      date = [card dateFromString: o inContext: context];
       year = [date yearOfCommonEra];
       month = [date monthOfYear];
       day = [date dayOfMonth];

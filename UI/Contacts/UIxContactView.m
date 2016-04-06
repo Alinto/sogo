@@ -875,7 +875,7 @@
   o = [card birthday];
   if (o)
     {
-      [data setObject: [NSNumber numberWithInt: [o timeIntervalSince1970]]
+      [data setObject: [o descriptionWithCalendarFormat: @"%Y-%m-%d"]
                forKey: @"birthday"];
     }
 
