@@ -38,7 +38,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @class NSURL;
 @class NSNumber;
 
-static volatile BOOL shouldTerminate = NO;
+static volatile BOOL easShouldTerminate = NO;
 
 @interface SOGoActiveSyncDispatcher : NSObject
 {
@@ -64,5 +64,6 @@ static volatile BOOL shouldTerminate = NO;
 
 - (NSURL *) folderTableURL;
 - (void) ensureFolderTableExists;
+- (BOOL) easShouldTerminate;
 
 @end
