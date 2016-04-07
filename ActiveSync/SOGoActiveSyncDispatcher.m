@@ -149,7 +149,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 void handle_eas_terminate(int signum)
 {
   NSLog(@"Forcing termination of EAS loop.");
-  shouldTerminate = YES;
+  easShouldTerminate = YES;
   [[WOCoreApplication application] terminateAfterTimeInterval: 1];
 }
 
@@ -171,7 +171,7 @@ void handle_eas_terminate(int signum)
   imapFolderGUIDS = nil;
   syncRequest = nil;
 
-  shouldTerminate = NO;
+  easShouldTerminate = NO;
   signal(SIGTERM, handle_eas_terminate);
 
   return self;
@@ -2139,7 +2139,7 @@ void handle_eas_terminate(int signum)
   // We enter our loop detection change
   for (i = 0; i < (heartbeatInterval/internalInterval); i++)
     {
-      if (shouldTerminate)
+      if (easShouldTerminate)
         break;
 
       pool = [[NSAutoreleasePool alloc] init];
@@ -2179,7 +2179,7 @@ void handle_eas_terminate(int signum)
         {
           total_sleep = 0;
 
-          while (!shouldTerminate && total_sleep < internalInterval)
+          while (!easShouldTerminate && total_sleep < internalInterval)
             {
               // We check if we must break the current ping request since an other ping request
               // has just arrived.
@@ -3450,6 +3450,11 @@ void handle_eas_terminate(int signum)
 
 
   [cm releaseChannel: channel]; 
+}
+
+- (BOOL) easShouldTerminate
+{
+  return easShouldTerminate;
 }
 
 @end
