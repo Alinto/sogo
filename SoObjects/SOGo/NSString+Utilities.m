@@ -368,10 +368,6 @@ static int cssEscapingCount;
   for (i = 0, j = 0; i < len; i++) {
     switch (chars[i]) {
       /* escape special chars */
-      case '\r':
-        buf[j] = '&'; j++; buf[j] = '#'; j++; buf[j] = '1'; j++;
-        buf[j] = '3'; j++; buf[j] = ';'; j++;
-        break;
       case '&':
         buf[j] = '&'; j++; buf[j] = 'a'; j++; buf[j] = 'm'; j++;
         buf[j] = 'p'; j++; buf[j] = ';'; j++;
