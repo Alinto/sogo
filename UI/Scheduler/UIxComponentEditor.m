@@ -1247,12 +1247,14 @@ iRANGE(2);
       sm = [SoSecurityManager sharedSecurityManager];
 
       perm = SoPerm_DeleteObjects;
-      if ([sm validatePermission: perm
-			onObject: calendar
-		       inContext: context])
-	{
+      if (![[self clientObject] isNew] &&
+          [sm validatePermission: perm
+                        onObject: calendar
+                       inContext: context])
+        {
 	  // User can't delete components from this calendar;
 	  // don't add any calendar other than the current one
+          // unless it's a new component
 	  [calendarList addObject: calendar];
 	}
       else
