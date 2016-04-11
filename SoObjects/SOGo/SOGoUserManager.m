@@ -525,6 +525,9 @@ static Class NSNullK;
   SOGoSystemDefaults *sd;
   BOOL checkOK;
 
+  if (!_login)
+    return NO;
+
   sd = [SOGoSystemDefaults sharedSystemDefaults];
 
   username = _login;
