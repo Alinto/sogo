@@ -753,7 +753,7 @@ static Class iCalEventK = nil;
   NSCalendarDate *date;
   NSNumber *dateValue;
   BOOL isAllDay;
-  unsigned int offset;
+  NSInteger offset;
 
   isAllDay = [[theRecord objectForKey: @"c_isallday"] boolValue];
   record = [[theRecord mutableCopy] autorelease];
