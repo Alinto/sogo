@@ -394,6 +394,9 @@ fi
 %post
 # update timestamp on imgs,css,js to let apache know the files changed
 find %{_libdir}/GNUstep/SOGo/WebServerResources  -exec touch {} \;
+# make shells scripts in documentation directory executable
+find %{_docdir}/ -name '*.sh' -exec chmod a+x {} \;
+
 %if 0%{?_with_systemd}
   systemctl daemon-reload
   systemctl enable sogod
