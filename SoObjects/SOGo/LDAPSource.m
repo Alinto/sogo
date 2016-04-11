@@ -1090,7 +1090,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
         // We check if our entry is a group. If so, we set the
         // 'isGroup' custom attribute.
         gclasses = [groupObjectClasses objectEnumerator];
-        while (gclass = [gclasses nextObject])
+        while ((gclass = [gclasses nextObject]))
          if ([classes containsObject: [gclass lowercaseString]])
            {
              [ldifRecord setObject: [NSNumber numberWithInt: 1]
