@@ -364,6 +364,9 @@ static SoProduct      *commonProduct      = nil;
 
       baseURL = [[self clientObject] baseURLInContext: context];
 
+      if (!baseURL)
+        baseURL = @"/SOGo/so/";
+
       if ([baseURL hasSuffix: [NSString stringWithFormat: @"%@/", [[self parent] modulePath]]])
         return baseURL;
 

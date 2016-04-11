@@ -466,8 +466,12 @@
 
 - (NSString *) userIdentification
 {
+  NSString *v;
+
   /* The "identification" term is used in the human sense here. */
-  return [[context activeUser] cn];
+  v = [[context activeUser] cn];
+
+  return (v ? v : @"");
 }
 
 - (NSString *) userEmail
