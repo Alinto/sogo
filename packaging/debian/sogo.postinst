@@ -32,6 +32,19 @@ case "$1" in
           chown root:sogo /etc/sogo
           chmod 640 /etc/sogo/sogo.conf
           chown root:sogo /etc/sogo/sogo.conf
+          cat << EOF
+======= Important SOGo post-installation note =======
+
+SOGo database schemas are _not_ automatically upgraded by
+the packaging system.
+
+Please check the list of database schema upgrade scripts
+inside /usr/share/doc/sogo/ and apply them if needed.
+
+More details can be found in the Upgrading section in
+http://sogo.nu/files/docs/SOGo%20Installation%20Guide.pdf
+
+EOF
         ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
