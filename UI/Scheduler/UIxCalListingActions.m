@@ -321,13 +321,15 @@ static NSArray *tasksFields = nil;
   SOGoAppointmentFolders *clientObject;
   SOGoUser *ownerUser;
   
-  BOOL isErasable, folderIsRemote, quickInfosFlag = NO;
+  BOOL isErasable, folderIsRemote, searchByTitleOrContent, quickInfosFlag;
   id currentInfo;
   int i, count;
   
   infos = [NSMutableArray array];
   marker = [NSNull null];
   clientObject = [self clientObject];
+  quickInfosFlag = searchByTitleOrContent = NO;
+
   
   folders = [[clientObject subFolders] objectEnumerator];
   while ((currentFolder = [folders nextObject]))
@@ -335,7 +337,8 @@ static NSArray *tasksFields = nil;
       if ([currentFolder isActive])
         {
           folderIsRemote = [currentFolder isKindOfClass: [SOGoWebAppointmentFolder class]];
-      
+          searchByTitleOrContent = ([value length] > 0);
+
           //
           // criteria can have the following values: "title", "title_Category_Location" and "entireContent"
           //
@@ -355,7 +358,7 @@ static NSArray *tasksFields = nil;
                                                        title: value
                                                    component: component
                                            additionalFilters: criteria];
-        
+
               // Save the c_name in another array to compare with
               if ([quickInfos count] > 0)
                 {
@@ -402,8 +405,8 @@ static NSArray *tasksFields = nil;
               id foo;
 
               foo = [currentFolder fetchCoreInfosFrom: startDate
-                                                             to: endDate
-                                                          title: value
+                                                   to: endDate
+                                                title: value
                                             component: component];
               currentInfos = [foo objectEnumerator];
             }
@@ -414,6 +417,19 @@ static NSArray *tasksFields = nil;
       
           while ((newInfo = [currentInfos nextObject]))
             {
+              if (![owner isEqualToString: userLogin])
+                {
+                  role = [currentFolder roleForComponentsWithAccessClass: [[newInfo objectForKey: @"c_classification"] intValue]
+                                                                forUser : userLogin];
+
+                  if ([role isEqualToString: @"ComponentDAndTViewer"])
+                    {
+                      // We skip results that could lead to information "exposure".
+                      // See http://sogo.nu/bugs/view.php?id=3619
+                      if (searchByTitleOrContent)
+                        continue;
+                    }
+                }
               if ([fields containsObject: @"editable"])
                 {
                   if (folderIsRemote)
