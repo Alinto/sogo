@@ -6,6 +6,7 @@ Bug fixes
  - properly escape wide characters (#3616)
  - calendars list when creating a new component in a calendar in which the user
    can't delete components
+ - avoid double-appending domains in cahce for multi-domain configurations (#3614)
 
 2.3.10 (2016-04-05)
 -------------------
