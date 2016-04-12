@@ -224,7 +224,7 @@
       // has all the logic for this, so lets use it.
       if ([domain isNotNull])
         {
-          username = [[SOGoUserManager sharedUserManager]  getUIDForEmail: username];
+          username = [[SOGoUserManager sharedUserManager] getUIDForEmail: username];
         }
 
       authCookie = [auth cookieWithUsername: username
