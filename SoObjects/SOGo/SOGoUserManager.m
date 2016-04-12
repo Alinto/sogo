@@ -410,7 +410,7 @@ static Class NSNullK;
 {
   NSDictionary *info;
   SOGoSystemDefaults *sd;
-  NSString *uid, *domain;
+  NSString *uid, *domain, *suffix;
 
   info = [self contactInfosForUserWithUIDorEmail: email];
   uid = [info objectForKey: @"c_uid"];
@@ -420,7 +420,11 @@ static Class NSNullK;
       && ![[info objectForKey: @"DomainLessLogin"] boolValue])
     {
       domain = [info objectForKey: @"c_domain"];
-      uid = [NSString stringWithFormat: @"%@@%@", uid, domain];
+      suffix = [NSString stringWithFormat: @"@%@", domain];
+
+      // Don't add @domain suffix if it's already there
+      if (![uid hasSuffix: suffix])
+        uid = [NSString stringWithFormat: @"%@%@", uid, suffix];
     }
 
   return uid;
@@ -1051,8 +1055,15 @@ static Class NSNullK;
                   // multi-domain environments authenticating only with the UIDFieldName
                   if ([sd enableDomainBasedUID] && !domain)
                     {
-                      cacheUid = [NSString stringWithFormat: @"%@@%@", cacheUid, [currentUser objectForKey: @"c_domain"]];
-                      [currentUser setObject: [NSNumber numberWithBool: YES]  forKey: @"DomainLessLogin"];
+                      NSString *suffix;
+
+                      suffix = [NSString stringWithFormat: @"@%@", [currentUser objectForKey: @"c_domain"]];
+
+                      if (![cacheUid hasSuffix: suffix])
+                        {
+                          cacheUid = [NSString stringWithFormat: @"%@%@", cacheUid, suffix];
+                          [currentUser setObject: [NSNumber numberWithBool: YES]  forKey: @"DomainLessLogin"];
+                        }
                     }
 
                   [self _retainUser: currentUser  withLogin: cacheUid];
