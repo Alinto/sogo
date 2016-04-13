@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc2-master-f6cf82d
+ * v1.1.0-rc2-master-fb4670f
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -10,7 +10,7 @@
 (function(){
 "use strict";
 
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.layout","material.core.theming.palette","material.core.theming","material.core.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.fabTrigger","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.showHide","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.virtualRepeat","material.components.whiteframe"]);
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.layout","material.core.theming.palette","material.core.theming","material.core.animate","material.components.backdrop","material.components.autocomplete","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.colors","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.fabTrigger","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.showHide","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.virtualRepeat","material.components.whiteframe"]);
 })();
 (function(){
 "use strict";
@@ -210,6 +210,83 @@ function postLink(scope, element, attrs) {
   });
 }
 
+})();
+(function(){
+"use strict";
+
+/**
+ * @ngdoc module
+ * @name material.core.colorUtil
+ * @description
+ * Color Util
+ */
+angular
+  .module('material.core')
+  .factory('$mdColorUtil', ColorUtilFactory);
+
+function ColorUtilFactory() {
+  /**
+   * Converts hex value to RGBA string
+   * @param color {string}
+   * @returns {string}
+   */
+  function hexToRgba (color) {
+    var hex   = color[ 0 ] === '#' ? color.substr(1) : color,
+      dig   = hex.length / 3,
+      red   = hex.substr(0, dig),
+      green = hex.substr(dig, dig),
+      blue  = hex.substr(dig * 2);
+    if (dig === 1) {
+      red += red;
+      green += green;
+      blue += blue;
+    }
+    return 'rgba(' + parseInt(red, 16) + ',' + parseInt(green, 16) + ',' + parseInt(blue, 16) + ',0.1)';
+  }
+
+  /**
+   * Converts rgba value to hex string
+   * @param color {string}
+   * @returns {string}
+   */
+  function rgbaToHex(color) {
+    color = color.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
+
+    var hex = (color && color.length === 4) ? "#" +
+    ("0" + parseInt(color[1],10).toString(16)).slice(-2) +
+    ("0" + parseInt(color[2],10).toString(16)).slice(-2) +
+    ("0" + parseInt(color[3],10).toString(16)).slice(-2) : '';
+
+    return hex.toUpperCase();
+  }
+
+  /**
+   * Converts an RGB color to RGBA
+   * @param color {string}
+   * @returns {string}
+   */
+  function rgbToRgba (color) {
+    return color.replace(')', ', 0.1)').replace('(', 'a(');
+  }
+
+  /**
+   * Converts an RGBA color to RGB
+   * @param color {string}
+   * @returns {string}
+   */
+  function rgbaToRgb (color) {
+    return color
+      ? color.replace('rgba', 'rgb').replace(/,[^\),]+\)/, ')')
+      : 'rgb(0,0,0)';
+  }
+
+  return {
+    rgbaToHex: rgbaToHex,
+    hexToRgba: hexToRgba,
+    rgbToRgba: rgbToRgba,
+    rgbaToRgb: rgbaToRgb
+  }
+}
 })();
 (function(){
 "use strict";
@@ -1494,7 +1571,7 @@ function AriaService($$rAF, $log, $window, $interpolate) {
 
   function expectWithText(element, attrName) {
     var content = getText(element) || "";
-    var hasBinding = content.indexOf($interpolate.startSymbol())>-1;
+    var hasBinding = content.indexOf($interpolate.startSymbol()) > -1;
 
     if ( hasBinding ) {
       expectAsync(element, attrName, function() {
@@ -1506,7 +1583,26 @@ function AriaService($$rAF, $log, $window, $interpolate) {
   }
 
   function getText(element) {
-    return (element.text() || "").trim();
+    element = element[0] || element;
+    var walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+    var text = '';
+
+    var node;
+    while (node = walker.nextNode()) {
+      if (!isAriaHiddenNode(node)) {
+        text += node.textContent;
+      }
+    }
+
+    return text.trim() || '';
+
+    function isAriaHiddenNode(node) {
+      while (node.parentNode && (node = node.parentNode) !== element) {
+        if (node.getAttribute && node.getAttribute('aria-hidden') === 'true') {
+          return true;
+        }
+      }
+    }
   }
 
   function childHasAttribute(node, attrName) {
@@ -1518,17 +1614,18 @@ function AriaService($$rAF, $log, $window, $interpolate) {
       return (style.display === 'none');
     }
 
-    if(hasChildren) {
+    if (hasChildren) {
       var children = node.childNodes;
-      for(var i=0; i<children.length; i++){
+      for (var i=0; i < children.length; i++) {
         var child = children[i];
-        if(child.nodeType === 1 && child.hasAttribute(attrName)) {
-          if(!isHidden(child)){
+        if (child.nodeType === 1 && child.hasAttribute(attrName)) {
+          if (!isHidden(child)) {
             hasAttr = true;
           }
         }
       }
     }
+
     return hasAttr;
   }
 }
@@ -3613,8 +3710,8 @@ function InterimElementProvider() {
       /**
        * Used to print an error when an instance for a handle isn't found.
        */
-      notFoundError: function(handle) {
-        $log.error('No instance found for handle', handle);
+      notFoundError: function(handle, msgContext) {
+        $log.error( (msgContext || "") + 'No instance found for handle', handle);
       },
       /**
        * Return all registered instances as an array.
@@ -3670,7 +3767,9 @@ function InterimElementProvider() {
         function resolveWhen() {
           var dfd = pendings[handle];
           if ( dfd ) {
-            dfd.resolve( instance );
+            dfd.forEach(function (promise) {
+              promise.resolve(instance);
+            });
             delete pendings[handle];
           }
         }
@@ -3689,7 +3788,10 @@ function InterimElementProvider() {
           if ( instance )  {
             deferred.resolve( instance );
           } else {
-            pendings[handle] = deferred;
+            if (pendings[handle] === undefined) {
+              pendings[handle] = [];
+            }
+            pendings[handle].push(deferred);
           }
 
           return deferred.promise;
@@ -3960,10 +4062,11 @@ InkRippleService.$inject = ["$injector"];
  * Controller used by the ripple service in order to apply ripples
  * @ngInject
  */
-function InkRippleCtrl ($scope, $element, rippleOptions, $window, $timeout, $mdUtil) {
+function InkRippleCtrl ($scope, $element, rippleOptions, $window, $timeout, $mdUtil, $mdColorUtil) {
   this.$window    = $window;
   this.$timeout   = $timeout;
   this.$mdUtil    = $mdUtil;
+  this.$mdColorUtil    = $mdColorUtil;
   this.$scope     = $scope;
   this.$element   = $element;
   this.options    = rippleOptions;
@@ -3982,7 +4085,7 @@ function InkRippleCtrl ($scope, $element, rippleOptions, $window, $timeout, $mdU
 
   this.bindEvents();
 }
-InkRippleCtrl.$inject = ["$scope", "$element", "rippleOptions", "$window", "$timeout", "$mdUtil"];
+InkRippleCtrl.$inject = ["$scope", "$element", "rippleOptions", "$window", "$timeout", "$mdUtil", "$mdColorUtil"];
 
 
 /**
@@ -4044,39 +4147,12 @@ InkRippleCtrl.prototype.calculateColor = function () {
 
 InkRippleCtrl.prototype._parseColor = function parseColor (color, multiplier) {
   multiplier = multiplier || 1;
-
+  var colorUtil = this.$mdColorUtil;
+  
   if (!color) return;
   if (color.indexOf('rgba') === 0) return color.replace(/\d?\.?\d*\s*\)\s*$/, (0.1 * multiplier).toString() + ')');
-  if (color.indexOf('rgb') === 0) return rgbToRGBA(color);
-  if (color.indexOf('#') === 0) return hexToRGBA(color);
-
-  /**
-   * Converts hex value to RGBA string
-   * @param color {string}
-   * @returns {string}
-   */
-  function hexToRGBA (color) {
-    var hex   = color[ 0 ] === '#' ? color.substr(1) : color,
-      dig   = hex.length / 3,
-      red   = hex.substr(0, dig),
-      green = hex.substr(dig, dig),
-      blue  = hex.substr(dig * 2);
-    if (dig === 1) {
-      red += red;
-      green += green;
-      blue += blue;
-    }
-    return 'rgba(' + parseInt(red, 16) + ',' + parseInt(green, 16) + ',' + parseInt(blue, 16) + ',0.1)';
-  }
-
-  /**
-   * Converts an RGB color to RGBA
-   * @param color {string}
-   * @returns {string}
-   */
-  function rgbToRGBA (color) {
-    return color.replace(')', ', 0.1)').replace('(', 'a(');
-  }
+  if (color.indexOf('rgb') === 0) return colorUtil.rgbToRgba(color);
+  if (color.indexOf('#') === 0) return colorUtil.hexToRgba(color);
 
 };
 
@@ -4200,6 +4276,7 @@ InkRippleCtrl.prototype.createRipple = function (left, top) {
   if (!this.isRippleAllowed()) return;
 
   var ctrl        = this;
+  var colorUtil   = ctrl.$mdColorUtil;
   var ripple      = angular.element('<div class="md-ripple"></div>');
   var width       = this.$element.prop('clientWidth');
   var height      = this.$element.prop('clientHeight');
@@ -4214,8 +4291,8 @@ InkRippleCtrl.prototype.createRipple = function (left, top) {
     background:      'black',
     width:           size + 'px',
     height:          size + 'px',
-    backgroundColor: rgbaToRGB(color),
-    borderColor:     rgbaToRGB(color)
+    backgroundColor: colorUtil.rgbaToRgb(color),
+    borderColor:     colorUtil.rgbaToRgb(color)
   });
   this.lastRipple = ripple;
 
@@ -4239,12 +4316,6 @@ InkRippleCtrl.prototype.createRipple = function (left, top) {
     }, DURATION, false);
 
   }, false);
-
-  function rgbaToRGB (color) {
-    return color
-        ? color.replace('rgba', 'rgb').replace(/,[^\),]+\)/, ')')
-        : 'rgb(0,0,0)';
-  }
 
   function getSize (fit, x, y) {
     return fit
@@ -4668,7 +4739,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#8d6e63',
     'A700': '#5d4037',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200',
+    'contrastDarkColors': '50 100 200 A100 A200',
     'contrastStrongLightColors': '300 400'
   },
   'grey': {
@@ -4687,7 +4758,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#303030',
     'A700': '#616161',
     'contrastDefaultColor': 'dark',
-    'contrastLightColors': '600 700 800 900'
+    'contrastLightColors': '600 700 800 900 A200 A400 A700'
   },
   'blue-grey': {
     '50': '#eceff1',
@@ -4705,7 +4776,7 @@ angular.module('material.core.theming.palette', [])
     'A400': '#78909c',
     'A700': '#455a64',
     'contrastDefaultColor': 'light',
-    'contrastDarkColors': '50 100 200 300 700',
+    'contrastDarkColors': '50 100 200 300 A100 A200',
     'contrastStrongLightColors': '400 500 700'
   }
 });
@@ -4777,8 +4848,9 @@ var GENERATED = { };
 
 // In memory storage of defined themes and color palettes (both loaded by CSS, and user specified)
 var PALETTES;
-var THEMES;
 
+// Text Colors on light and dakr backgrounds
+// @see https://www.google.com/design/spec/style/color.html#color-text-background-colors
 var DARK_FOREGROUND = {
   name: 'dark',
   '1': 'rgba(0,0,0,0.87)',
@@ -4850,10 +4922,11 @@ var generateOnDemand = false;
 
 // Nonce to be added as an attribute to the generated themes style tags.
 var nonce = null;
+var disableTheming = false;
 
 function ThemingProvider($mdColorPalette) {
   PALETTES = { };
-  THEMES = { };
+  var THEMES = { };
 
   var themingProvider;
   var defaultTheme = 'default';
@@ -4869,6 +4942,15 @@ function ThemingProvider($mdColorPalette) {
     definePalette: definePalette,
     extendPalette: extendPalette,
     theme: registerTheme,
+
+    /**
+     * Easy way to disable theming without having to use
+     * `.constant("$MD_THEME_CSS","");` This disables
+     * all dynamic theme style sheet generations and injections...
+     */
+    disableTheming: function() {
+      disableTheming = true;
+    },
 
     setNonce: function(nonceValue) {
       nonce = nonceValue;
@@ -5062,7 +5144,7 @@ function ThemingProvider($mdColorPalette) {
     applyTheme.inherit = inheritTheme;
     applyTheme.registered = registered;
     applyTheme.defaultTheme = function() { return defaultTheme; };
-    applyTheme.generateTheme = function(name) { generateTheme(name, nonce); };
+    applyTheme.generateTheme = function(name) { generateTheme(THEMES[name], name, nonce); };
 
     return applyTheme;
 
@@ -5204,10 +5286,10 @@ function parseRules(theme, colorType, rules) {
 var rulesByType = {};
 
 // Generate our themes at run time given the state of THEMES and PALETTES
-function generateAllThemes($injector) {
+function generateAllThemes($injector, $mdTheming ) {
   var head = document.head;
   var firstChild = head ? head.firstElementChild : null;
-  var themeCss = $injector.has('$MD_THEME_CSS') ? $injector.get('$MD_THEME_CSS') : '';
+  var themeCss = !disableTheming && $injector.has('$MD_THEME_CSS') ? $injector.get('$MD_THEME_CSS') : '';
 
   if ( !firstChild ) return;
   if (themeCss.length === 0) return; // no rules, so no point in running this expensive task
@@ -5258,9 +5340,9 @@ function generateAllThemes($injector) {
   // call generateTheme to do this on a theme-by-theme basis.
   if (generateOnDemand) return;
 
-  angular.forEach(THEMES, function(theme) {
+  angular.forEach($mdTheming.THEMES, function(theme) {
     if (!GENERATED[theme.name]) {
-      generateTheme(theme.name, nonce);
+      generateTheme(theme, theme.name, nonce);
     }
   });
 
@@ -5324,10 +5406,9 @@ function generateAllThemes($injector) {
     });
   }
 }
-generateAllThemes.$inject = ["$injector"];
+generateAllThemes.$inject = ["$injector", "$mdTheming"];
 
-function generateTheme(name, nonce) {
-  var theme = THEMES[name];
+function generateTheme(theme, name, nonce) {
   var head = document.head;
   var firstChild = head ? head.firstElementChild : null;
 
@@ -6046,23 +6127,6 @@ if (angular.version.minor >= 4) {
 (function(){
 "use strict";
 
-/**
- * @ngdoc module
- * @name material.components.autocomplete
- */
-/*
- * @see js folder for autocomplete implementation
- */
-angular.module('material.components.autocomplete', [
-  'material.core',
-  'material.components.icon',
-  'material.components.virtualRepeat'
-]);
-
-})();
-(function(){
-"use strict";
-
 /*
  * @ngdoc module
  * @name material.components.backdrop
@@ -6141,6 +6205,23 @@ angular
 
 /**
  * @ngdoc module
+ * @name material.components.autocomplete
+ */
+/*
+ * @see js folder for autocomplete implementation
+ */
+angular.module('material.components.autocomplete', [
+  'material.core',
+  'material.components.icon',
+  'material.components.virtualRepeat'
+]);
+
+})();
+(function(){
+"use strict";
+
+/**
+ * @ngdoc module
  * @name material.components.bottomSheet
  * @description
  * BottomSheet
@@ -6157,7 +6238,9 @@ angular
 function MdBottomSheetDirective($mdBottomSheet) {
   return {
     restrict: 'E',
-    link : function postLink(scope, element, attr) {
+    link : function postLink(scope, element) {
+      element.addClass('_md');     // private md component indicator for styling
+
       // When navigation force destroys an interimElement, then
       // listen and $destroy() that interim instance...
       scope.$on('$destroy', function() {
@@ -6433,7 +6516,41 @@ MdBottomSheetProvider.$inject = ["$$interimElementProvider"];
  */
 angular
     .module('material.components.button', [ 'material.core' ])
-    .directive('mdButton', MdButtonDirective);
+    .directive('mdButton', MdButtonDirective)
+    .directive('a', MdAnchorDirective);
+
+
+/**
+ * @ngdoc directive
+ * @name a
+ * @module material.components.button
+ *
+ * @restrict E
+ *
+ * @description
+ * `a` is a anchnor directive used to inherit theme so stand-alone anchors.
+ * This allows standalone `a` tags to support theme colors for md-primary, md-accent, etc.
+ *
+ * @usage
+ *
+ * <hljs lang="html">
+ *  <md-content md-theme="myTheme">
+ *    <a href="#chapter1" class="md-accent"></a>
+ *  </md-content>
+ * </hljs>
+ */
+function MdAnchorDirective($mdTheming) {
+  return {
+    restrict : 'E',
+    link : function postLink(scope, element) {
+      // Make sure to inherit theme so stand-alone anchors
+      // support theme colors for md-primary, md-accent, etc.
+      $mdTheming(element);
+    }
+  };
+}
+MdAnchorDirective.$inject = ["$mdTheming"];
+
 
 /**
  * @ngdoc directive
@@ -6686,7 +6803,8 @@ angular.module('material.components.card', [
 function mdCardDirective($mdTheming) {
   return {
     restrict: 'E',
-    link: function ($scope, $element) {
+    link: function ($scope, $element, attr) {
+      $element.addClass('_md');     // private md component indicator for styling
       $mdTheming($element);
     }
   };
@@ -6921,6 +7039,264 @@ angular.module('material.components.chips', [
 (function(){
 "use strict";
 
+(function () {
+  "use strict";
+
+  /**
+   *  Use a RegExp to check if the `md-colors="<expression>"` is static string
+   *  or one that should be observed and dynamically interpolated.
+   */
+  var STATIC_COLOR_EXPRESSION = /^{((\s|,)*?["'a-zA-Z-]+?\s*?:\s*?('|")[a-zA-Z0-9-.]*('|"))+\s*}$/;
+  var COLOR_PALETTES = undefined;
+
+  /**
+   * @ngdoc module
+   * @name material.components.colors
+   *
+   * @description
+   * Define $mdColors service and a `md-colors=""` attribute directive
+   */
+  angular
+    .module('material.components.colors', ['material.core'])
+    .directive('mdColors', MdColorsDirective)
+    .service('$mdColors', MdColorsService);
+
+  /**
+   * @ngdoc service
+   * @name $mdColors
+   * @module material.core.theming.colors
+   *
+   * @description
+   * With only defining themes, one couldn't get non ngMaterial elements colored with Material colors,
+   * `$mdColors` service is used by the md-color directive to convert the 1..n color expressions to RGBA values and will apply
+   * those values to element as CSS property values.
+   *
+   *  @usage
+   *  <hljs lang="html">
+   *    <div md-colors="{background: 'myTheme-accent-900-0.43'}">
+   *      <div md-colors="{color: 'red-A100', border-color: 'primary-600'}">
+   *        <span>Color demo</span>
+   *      </div>
+   *    </div>
+   *  </hljs>
+   *
+   */
+  function MdColorsService($mdTheming, $mdColorPalette, $mdUtil, $parse) {
+    COLOR_PALETTES = COLOR_PALETTES || Object.keys($mdColorPalette);
+
+    // Publish service instance
+    return {
+      applyThemeColors: applyThemeColors,
+      getThemeColor: getThemeColor
+    };
+
+    // ********************************************
+    // Internal Methods
+    // ********************************************
+
+    /**
+     * Convert the color expression into an object with scope-interpolated values
+     * Then calculate the rgba() values based on the theme color parts
+     */
+    function applyThemeColors(element, scope, colorExpression) {
+      // Json.parse() does not work because the keys are not quoted;
+      // use $parse to convert to a hash map
+      var themeColors = $parse(colorExpression)(scope);
+
+      // Assign the calculate RGBA color values directly as inline CSS
+      element.css(interpolateColors(themeColors));
+    }
+
+    /**
+     * Public api to get parsed color from expression
+     *
+     */
+    function getThemeColor(expression) {
+      var color = extractColorOptions(expression);
+
+      return parseColor(color);
+    }
+
+    /**
+     * Return the parsed color
+     * @param color hashmap of color definitions
+     * @param contrast whether use contrast color for foreground
+     * @returns rgba color string
+     */
+    function parseColor(color, contrast) {
+      contrast = contrast || false;
+      var rgbValues = $mdColorPalette[color.palette][color.hue];
+
+      rgbValues = contrast ? rgbValues.contrast : rgbValues.value;
+
+      return $mdUtil.supplant('rgba( {0}, {1}, {2}, {3} )',
+        [rgbValues[0], rgbValues[1], rgbValues[2], rgbValues[3] || color.opacity]
+      );
+    }
+
+    /**
+     * Convert the color expression into an object with scope-interpolated values
+     * Then calculate the rgba() values based on the theme color parts
+     *
+     * @results Hashmap of CSS properties with associated `rgba( )` string vales
+     *
+     *
+     */
+    function interpolateColors(themeColors) {
+      var rgbColors = {};
+
+      var hasColorProperty = themeColors.hasOwnProperty('color');
+
+      angular.forEach(themeColors, function (value, key) {
+        var color = extractColorOptions(value);
+
+        rgbColors[key] = parseColor(color);
+
+        if (key === 'background' && !hasColorProperty) {
+          rgbColors['color'] = parseColor(color, true);
+        }
+      });
+
+      return rgbColors;
+    }
+
+    /**
+     * For the evaluated expression, extract the color parts into a hash map
+     */
+    function extractColorOptions(expression) {
+      var parts = expression.split('-'),
+        hasTheme = angular.isDefined($mdTheming.THEMES[parts[0]]),
+        theme = hasTheme ? parts.splice(0, 1)[0] : 'default';
+
+      var defaultHue = parts[0] !== 'accent' ? 500 : 'A200';
+
+      return {
+        theme: theme,
+        palette: extractPalette(parts, theme),
+        hue: parts[1] || defaultHue,
+        opacity: parts[2] || 1
+      };
+    }
+
+    /**
+     * Calculate the theme palette name
+     */
+    function extractPalette(parts, theme) {
+      // If the next section is one of the palettes we assume it's a two word palette
+      // Two word palette can be also written in camelCase, forming camelCase to dash-case
+
+      var isTwoWord = parts.length > 1 && COLOR_PALETTES.indexOf(parts[1]) !== -1;
+      var palette = parts[0].replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+
+      if (isTwoWord)  palette = parts[0] + '-' + parts.splice(1, 1);
+
+      if (COLOR_PALETTES.indexOf(palette) === -1) {
+        // If the palette is not in the palette list it's one of primary/accent/warn/background
+        var scheme = $mdTheming.THEMES[theme].colors[palette];
+        if (!scheme) {
+          throw new Error($mdUtil.supplant('mdColors: couldn\'t find \'{palette}\' in the palettes.', {palette: palette}));
+        }
+        palette = scheme.name;
+      }
+
+      return palette;
+    }
+  }
+  MdColorsService.$inject = ["$mdTheming", "$mdColorPalette", "$mdUtil", "$parse"];
+
+  /**
+   * @ngdoc directive
+   * @name mdColors
+   * @module material.components.colors
+   *
+   * @restrict A
+   *
+   * @description
+   * `mdColors` directive will apply the theme-based color expression as RGBA CSS style values.
+   *
+   *   The format will be similar to our color defining in the scss files:
+   *
+   *   ## `[?theme]-[palette]-[?hue]-[?opacity]`
+   *   - [theme]    - default value is the `default` theme
+   *   - [palette]  - can be either palette name or primary/accent/warn/background
+   *   - [hue]      - default is 500
+   *   - [opacity]  - default is 1
+   *
+   *   > `?` indicates optional parameter
+   *
+   * @usage
+   * <hljs lang="html">
+   *   <div md-colors="{background: 'myTheme-accent-900-0.43'}">
+   *     <div md-colors="{color: 'red-A100', border-color: 'primary-600'}">
+   *       <span>Color demo</span>
+   *     </div>
+   *   </div>
+   * </hljs>
+   *
+   * `mdColors` directive will automatically watch for changes in the expression if it recognizes an interpolation
+   * expression or a function. For performance options, you can use `::` prefix to the `md-colors` expression
+   * to indicate a one-time data binding.
+   * <hljs lang="html">
+   *   <md-card md-colors="::{background: '{{theme}}-primary-700'}">
+   *   </md-card>
+   * </hljs>
+   *
+   */
+  function MdColorsDirective($mdColors, $mdUtil, $log) {
+    return {
+      restrict: 'A',
+      compile: function (tElem, tAttrs) {
+        var shouldWatch = shouldColorsWatch();
+
+        return function (scope, element, attrs) {
+          var colorExpression = function () {
+            return attrs.mdColors;
+          };
+
+          try {
+            if (shouldWatch) {
+              scope.$watch(colorExpression, angular.bind(this,
+                $mdColors.applyThemeColors, element, scope
+              ));
+            }
+            else {
+              $mdColors.applyThemeColors(element, scope, colorExpression());
+            }
+
+          }
+          catch (e) {
+            $log.error(e.message);
+          }
+
+        };
+
+        function shouldColorsWatch() {
+            // Simulate 1x binding and mark mdColorsWatch == false
+            var rawColorExpression = tAttrs.mdColors;
+            var bindOnce = rawColorExpression.indexOf('::') > -1;
+            var isStatic = bindOnce ? true : STATIC_COLOR_EXPRESSION.test(tAttrs.mdColors);
+
+              // Remove it for the postLink...
+              tAttrs.mdColors = rawColorExpression.replace('::','');
+
+            var hasWatchAttr = angular.isDefined(tAttrs.mdColorsWatch);
+
+            return (bindOnce || isStatic) ? false :
+                   hasWatchAttr ? $mdUtil.parseAttributeBoolean(tAttrs.mdColorsWatch) : true;
+          }
+      }
+    };
+
+  }
+  MdColorsDirective.$inject = ["$mdColors", "$mdUtil", "$log"];
+
+
+})();
+
+})();
+(function(){
+"use strict";
+
 /**
  * @ngdoc module
  * @name material.components.content
@@ -6971,8 +7347,8 @@ function mdContentDirective($mdTheming) {
   return {
     restrict: 'E',
     controller: ['$scope', '$element', ContentController],
-    link: function(scope, element, attr) {
-      var node = element[0];
+    link: function(scope, element) {
+      element.addClass('_md');     // private md component indicator for styling
 
       $mdTheming(element);
       scope.$broadcast('$mdContentLoaded', element);
@@ -9056,7 +9432,9 @@ angular
 function MdDialogDirective($$rAF, $mdTheming, $mdDialog) {
   return {
     restrict: 'E',
-    link: function(scope, element, attr) {
+    link: function(scope, element) {
+      element.addClass('_md');     // private md component indicator for styling
+
       $mdTheming(element);
       $$rAF(function() {
         var images;
@@ -11088,6 +11466,8 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia) {
   };
 
   function postLink(scope, element, attrs, ctrl) {
+    element.addClass('_md');     // private md component indicator for styling
+    
     // Apply semantics
     element.attr('role', 'list');
 
@@ -12789,7 +13169,7 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
 
           // Button which shows ripple and executes primary action.
           var buttonWrap = angular.element(
-            '<md-button class="_md-no-style" md-no-focus-style></md-button>'
+            '<md-button class="_md-no-style"></md-button>'
           );
 
           buttonWrap[0].setAttribute('aria-label', tEl[0].textContent);
@@ -12842,7 +13222,7 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
 
       function copyAttributes(item, wrapper) {
         var copiedAttrs = ['ng-if', 'ng-click', 'aria-label', 'ng-disabled',
-          'ui-sref', 'href', 'ng-href', 'ng-attr-ui-sref', 'ui-sref-opts'];
+          'ui-sref', 'href', 'ng-href', 'target', 'ng-attr-ui-sref', 'ui-sref-opts'];
 
         angular.forEach(copiedAttrs, function(attr) {
           if (item.hasAttribute(attr)) {
@@ -12873,7 +13253,8 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
       return postLink;
 
       function postLink($scope, $element, $attr, ctrl) {
-
+        $element.addClass('_md');     // private md component indicator for styling
+        
         var proxies       = [],
             firstElement  = $element[0].firstElementChild,
             isButtonWrap  = $element.hasClass('_md-button-wrap'),
@@ -12989,7 +13370,6 @@ function MdListController($scope, $element, $mdListInkRipple) {
 }
 MdListController.$inject = ["$scope", "$element", "$mdListInkRipple"];
 
-
 })();
 (function(){
 "use strict";
@@ -13078,6 +13458,7 @@ angular.module('material.components.progressLinear', [
  * then `md-mode="determinate"` would be auto-injected instead.
  * @param {number=} value In determinate and buffer modes, this number represents the percentage of the primary progress bar. Default: 0
  * @param {number=} md-buffer-value In the buffer mode, this number represents the percentage of the secondary progress bar. Default: 0
+ * @param {boolean=} ng-disabled Determines whether to disable the progress element.
  *
  * @usage
  * <hljs lang="html">
@@ -13093,10 +13474,11 @@ angular.module('material.components.progressLinear', [
  * </hljs>
  */
 function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
-  var MODE_DETERMINATE = "determinate",
-      MODE_INDETERMINATE = "indeterminate",
-      MODE_BUFFER = "buffer",
-      MODE_QUERY = "query";
+  var MODE_DETERMINATE = "determinate";
+  var MODE_INDETERMINATE = "indeterminate";
+  var MODE_BUFFER = "buffer";
+  var MODE_QUERY = "query";
+  var DISABLED_CLASS = "_md-progress-linear-disabled";
 
   return {
     restrict: 'E',
@@ -13107,7 +13489,7 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
       '</div>',
     compile: compile
   };
-  
+
   function compile(tElement, tAttrs, transclude) {
     tElement.attr('aria-valuemin', 0);
     tElement.attr('aria-valuemax', 100);
@@ -13118,12 +13500,16 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
   function postLink(scope, element, attr) {
     $mdTheming(element);
 
-    var lastMode, toVendorCSS = $mdUtil.dom.animator.toCss;
-    var bar1 = angular.element(element[0].querySelector('._md-bar1')),
-        bar2 = angular.element(element[0].querySelector('._md-bar2')),
-        container = angular.element(element[0].querySelector('._md-container'));
+    var lastMode;
+    var isDisabled = attr.hasOwnProperty('disabled');
+    var toVendorCSS = $mdUtil.dom.animator.toCss;
+    var bar1 = angular.element(element[0].querySelector('._md-bar1'));
+    var bar2 = angular.element(element[0].querySelector('._md-bar2'));
+    var container = angular.element(element[0].querySelector('._md-container'));
 
-    element.attr('md-mode', mode());
+    element
+      .attr('md-mode', mode())
+      .toggleClass(DISABLED_CLASS, isDisabled);
 
     validateMode();
     watchAttributes();
@@ -13141,6 +13527,16 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
 
       attr.$observe('mdBufferValue', function(value) {
         animateIndicator(bar1, clamp(value));
+      });
+
+      attr.$observe('disabled', function(value) {
+        if (value === true || value === false) {
+          isDisabled = value;
+        } else {
+          isDisabled = angular.isDefined(value);
+        }
+
+        element.toggleClass(DISABLED_CLASS, !!isDisabled);
       });
 
       attr.$observe('mdMode',function(mode){
@@ -13169,10 +13565,10 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
         var mode = hasValue ? MODE_DETERMINATE : MODE_INDETERMINATE;
         var info = "Auto-adding the missing md-mode='{0}' to the ProgressLinear element";
 
-        $log.debug( $mdUtil.supplant(info, [mode]) );
+        //$log.debug( $mdUtil.supplant(info, [mode]) );
 
         element.attr("md-mode",mode);
-        attr['mdMode'] = mode;
+        attr.mdMode = mode;
       }
     }
 
@@ -13201,7 +13597,7 @@ function MdProgressLinearDirective($mdTheming, $mdUtil, $log) {
      * percentage value (0-100).
      */
     function animateIndicator(target, value) {
-      if ( !mode() ) return;
+      if ( isDisabled || !mode() ) return;
 
       var to = $mdUtil.supplant("translateX({0}%) scale({1},1)", [ (value-100)/2, value/100 ]);
       var styles = toVendorCSS({ transform : to });
@@ -13287,7 +13683,9 @@ function mdRadioGroupDirective($mdUtil, $mdConstant, $mdTheming, $timeout) {
   };
 
   function linkRadioGroup(scope, element, attr, ctrls) {
+    element.addClass('_md');     // private md component indicator for styling
     $mdTheming(element);
+    
     var rgCtrl = ctrls[0];
     var ngModelCtrl = ctrls[1] || $mdUtil.fakeNgModel();
 
@@ -13736,7 +14134,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         .find('md-content')
         .prepend(angular.element(
           '<div>' +
-          ' <md-progress-circular md-mode="{{progressMode}}" ng-hide="$$loadingAsyncDone" md-diameter="25px"></md-progress-circular>' +
+          ' <md-progress-circular md-mode="indeterminate" ng-if="!$$loadingAsyncDone" md-diameter="25px"></md-progress-circular>' +
           '</div>'
         ));
 
@@ -13922,7 +14320,9 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         $mdAria.expect(element, 'aria-label', labelText);
       }
 
-      scope.$watch(selectMenuCtrl.selectedLabels, syncLabelText);
+      scope.$watch(function() {
+          return selectMenuCtrl.selectedLabels();
+      }, syncLabelText);
 
       function syncLabelText() {
         if (selectContainer) {
@@ -14109,6 +14509,8 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
   function preLink(scope, element, attr, ctrls) {
     var selectCtrl = ctrls[0];
 
+    element.addClass('_md');     // private md component indicator for styling
+    
     $mdTheming(element);
     element.on('click', clickListener);
     element.on('keypress', keyListener);
@@ -14384,7 +14786,7 @@ function OptionDirective($mdButtonInkRipple, $mdUtil) {
     var selectCtrl = ctrls[1];
 
     if (selectCtrl.isMultiple) {
-      element.attr('md-checkbox-enabled', '');
+      element.addClass('_md-checkbox-enabled');
       element.prepend(CHECKBOX_SELECTION_INDICATOR.clone());
     }
 
@@ -14729,12 +15131,10 @@ function SelectProvider($$interimElementProvider) {
       function watchAsyncLoad() {
         if (opts.loadingAsync && !opts.isRemoved) {
           scope.$$loadingAsyncDone = false;
-          scope.progressMode = 'indeterminate';
 
           $q.when(opts.loadingAsync)
             .then(function() {
               scope.$$loadingAsyncDone = true;
-              scope.progressMode = '';
               delete opts.loadingAsync;
             }).then(function() {
               $$rAF(positionAndFocusMenu);
@@ -15193,60 +15593,54 @@ angular
  * $mdSidenav(componentId).isLockedOpen();
  * </hljs>
  */
-function SidenavService($mdComponentRegistry, $q) {
-  return function(handle) {
+function SidenavService($mdComponentRegistry, $mdUtil, $q, $log) {
+  var errorMsg = "SideNav '{0}' is not available! Did you use md-component-id='{0}'?";
+  var service = {
+        find    : findInstance,     //  sync  - returns proxy API
+        waitFor : waitForInstance   //  async - returns promise
+      };
 
-    // Lookup the controller instance for the specified sidNav instance
-    var self;
-    var errorMsg = "SideNav '" + handle + "' is not available!";
-    var instance = $mdComponentRegistry.get(handle);
+  /**
+   * Service API that supports three (3) usages:
+   *   $mdSidenav().find("left")                       // sync (must already exist) or returns undefined
+   *   $mdSidenav("left").toggle();                    // sync (must already exist) or returns undefined; deprecated
+   *   $mdSidenav("left",true).then( function(left){   // async returns instance when available
+   *    left.toggle();
+   *   });
+   */
+  return function(handle, enableWait) {
+    if ( angular.isUndefined(handle) ) return service;
 
-    if(!instance) {
-      $mdComponentRegistry.notFoundError(handle);
-    }
-
-    return self = {
-      // -----------------
-      // Sync methods
-      // -----------------
-      isOpen: function() {
-        return instance && instance.isOpen();
-      },
-      isLockedOpen: function() {
-        return instance && instance.isLockedOpen();
-      },
-      // -----------------
-      // Async methods
-      // -----------------
-      toggle: function() {
-        return instance ? instance.toggle() : $q.reject(errorMsg);
-      },
-      open: function() {
-        return instance ? instance.open() : $q.reject(errorMsg);
-      },
-      close: function() {
-        return instance ? instance.close() : $q.reject(errorMsg);
-      },
-      then : function( callbackFn ) {
-        var promise = instance ? $q.when(instance) : waitForInstance();
-        return promise.then( callbackFn || angular.noop );
-      }
-    };
+    var instance = service.find(handle);
+    return  !instance && (enableWait === true) ? service.waitFor(handle) : instance;
+  };
 
     /**
+     * Synchronously lookup the controller instance for the specified sidNav instance which has been
+     * registered with the markup `md-component-id`
+     */
+    function findInstance(handle) {
+      var instance = $mdComponentRegistry.get(handle);
+      if(!instance) {
+        // Report missing instance
+        $log.error( $mdUtil.supplant(errorMsg, [handle || ""]) );
+
+        // The component has not registered itself... most like NOT yet created
+        // return null to indicate that the Sidenav is not in the DOM
+        return undefined;
+      }
+      return instance;
+    }
+
+    /**
+     * Asynchronously wait for the component instantiation,
      * Deferred lookup of component instance using $component registry
      */
-    function waitForInstance() {
-      return $mdComponentRegistry
-                .when(handle)
-                .then(function( it ){
-                  instance = it;
-                  return it;
-                });
+    function waitForInstance(handle) {
+      return $mdComponentRegistry.when(handle);
     }
-  };
 }
-SidenavService.$inject = ["$mdComponentRegistry", "$q"];
+SidenavService.$inject = ["$mdComponentRegistry", "$mdUtil", "$q", "$log"];
 /**
  * @ngdoc directive
  * @name mdSidenavFocus
@@ -15334,7 +15728,7 @@ function SidenavFocusDirective() {
  * @param {expression=} md-is-open A model bound to whether the sidenav is opened.
  * @param {boolean=} md-disable-backdrop When present in the markup, the sidenav will not show a backdrop.
  * @param {string=} md-component-id componentId to use with $mdSidenav service.
- * @param {expression=} md-is-locked-open When this expression evalutes to true,
+ * @param {expression=} md-is-locked-open When this expression evaluates to true,
  * the sidenav 'locks open': it falls into the content's flow instead
  * of appearing over it. This overrides the `md-is-open` attribute.
  *
@@ -15383,7 +15777,8 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $animate, 
     if (!angular.isDefined(attr.mdDisableBackdrop)) {
       backdrop = $mdUtil.createBackdrop(scope, "_md-sidenav-backdrop md-opaque ng-enter");
     }
-
+    
+    element.addClass('_md');     // private md component indicator for styling
     $mdTheming(element);
 
     // The backdrop should inherit the sidenavs theme,
@@ -15592,7 +15987,6 @@ function SliderContainerDirective() {
     controller: function () {},
     compile: function (elem) {
       var slider = elem.find('md-slider');
-
       if (!slider) {
         return;
       }
@@ -15607,7 +16001,8 @@ function SliderContainerDirective() {
         slider.attr('flex', '');
       }
 
-      return function (scope, element, attr, ctrl) {
+      return function postLink(scope, element, attr, ctrl) {
+        element.addClass('_md');     // private md component indicator for styling
 
         // We have to manually stop the $watch on ngDisabled because it exists
         // on the parent scope, and won't be automatically destroyed when
@@ -15618,6 +16013,7 @@ function SliderContainerDirective() {
         }
 
         var stopDisabledWatch = angular.noop;
+
         if (attr.disabled) {
           setDisable(true);
         }
@@ -16558,7 +16954,7 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil) {
     replace: true,
     transclude: true,
     template: (
-    '<div class="md-subheader">' +
+    '<div class="md-subheader _md">' +
     '  <div class="_md-subheader-inner">' +
     '    <span class="_md-subheader-content"></span>' +
     '  </div>' +
@@ -16566,6 +16962,8 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil) {
     ),
     link: function postLink(scope, element, attr, controllers, transclude) {
       $mdTheming(element);
+      element.addClass('_md');
+      
       var outerHTML = element[0].outerHTML;
 
       function getContent(el) {
@@ -16925,7 +17323,9 @@ angular.module('material.components.toast', [
 function MdToastDirective($mdToast) {
   return {
     restrict: 'E',
-    link: function postLink(scope, element, attr) {
+    link: function postLink(scope, element) {
+      element.addClass('_md');     // private md component indicator for styling
+      
       // When navigation force destroys an interimElement, then
       // listen and $destroy() that interim instance...
       scope.$on('$destroy', function() {
@@ -17412,11 +17812,11 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
 
   return {
     template: '',
-
     restrict: 'E',
 
     link: function(scope, element, attr) {
 
+      element.addClass('_md');     // private md component indicator for styling
       $mdTheming(element);
 
       if (angular.isDefined(attr.mdScrollShrink)) {
@@ -17627,7 +18027,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     restrict: 'E',
     transclude: true,
     priority:210, // Before ngAria
-    template: '<div class="_md-content" ng-transclude></div>',
+    template: '<div class="_md-content _md" ng-transclude></div>',
     scope: {
       delay: '=?mdDelay',
       visible: '=?mdVisible',
@@ -17677,6 +18077,11 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       content.css('transform-origin', origin);
     }
 
+    function onVisibleChanged (isVisible) {
+      if (isVisible) showTooltip();
+      else hideTooltip();
+    }
+
     function configureWatchers () {
       scope.$on('$destroy', function() {
         scope.visible = false;
@@ -17684,12 +18089,30 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
         angular.element($window).off('resize', debouncedOnResize);
       });
 
-      scope.$watch('visible', function (isVisible) {
-        if (isVisible) showTooltip();
-        else hideTooltip();
-      });
+      if (element[0] && 'MutationObserver' in $window) {
+        var attributeObserver = new MutationObserver(function(mutations) {
+          mutations
+            .forEach(function (mutation) {              
+              if (mutation.attributeName === 'md-visible') {
+                if (!scope.visibleWatcher)
+                  scope.visibleWatcher = scope.$watch('visible', onVisibleChanged );
+              }
+              if (mutation.attributeName === 'md-direction') {
+                updatePosition(scope.direction);
+              }
+            });
+        });
 
-      scope.$watch('direction', updatePosition );
+        attributeObserver.observe(element[0], { attributes: true});
+
+        if (attr.hasOwnProperty('mdVisible')) // build watcher only if mdVisible is being used
+          scope.visibleWatcher = scope.$watch('visible', onVisibleChanged );
+
+      }
+      else { // MutationObserver not supported
+        scope.visibleWatcher = scope.$watch('visible', onVisibleChanged );
+        scope.$watch('direction', updatePosition );
+      }
     }
 
     function addAriaLabel () {
@@ -17713,13 +18136,12 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       if (parent[0] && 'MutationObserver' in $window) {
         // use an mutationObserver to tackle #2602
         var attributeObserver = new MutationObserver(function(mutations) {
-          mutations
-            .forEach(function (mutation) {
-              if (mutation.attributeName === 'disabled' && parent[0].disabled) {
-                setVisible(false);
-                scope.$digest(); // make sure the elements gets updated
-              }
-            });
+          mutations.forEach(function (mutation) {
+            if (mutation.attributeName === 'disabled' && parent[0].disabled) {
+              setVisible(false);
+              scope.$digest(); // make sure the elements gets updated
+            }
+          });
         });
 
         attributeObserver.observe(parent[0], { attributes: true});
@@ -17772,6 +18194,9 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     }
 
     function setVisible (value) {
+      // break if passed value is already in queue or there is no queue and passed value is current in the scope
+      if (setVisible.queued && setVisible.visible === !!value || scope.visible === !!value) return;
+      
       setVisible.value = !!value;
       if (!setVisible.queued) {
         if (value) {
@@ -17779,9 +18204,15 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
           $timeout(function() {
             scope.visible = setVisible.value;
             setVisible.queued = false;
+            if (!scope.visibleWatcher)
+              onVisibleChanged(scope.visible);
           }, scope.delay);
         } else {
-          $mdUtil.nextTick(function() { scope.visible = false; });
+          $mdUtil.nextTick(function() { 
+            scope.visible = false; 
+            if (!scope.visibleWatcher)
+              onVisibleChanged(false);
+          });
         }
       }
     }
@@ -19298,7 +19729,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       case $mdConstant.KEY_CODE.ESCAPE:
         event.stopPropagation();
         event.preventDefault();
-        clearValue();
+        if ($scope.searchText) clearValue();
 
         // Force the component to blur if they hit escape
         doBlur(true);
@@ -22490,7 +22921,9 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
 
     menuContainer.on('$mdInterimElementRemove', function() {
       self.isOpen = false;
+      $mdUtil.nextTick(function(){ self.onIsOpenChanged(self.isOpen);});
     });
+    $mdUtil.nextTick(function(){ self.onIsOpenChanged(self.isOpen);});
 
     var menuContainerId = 'menu_container_' + $mdUtil.nextUid();
     menuContainer.attr('id', menuContainerId);
@@ -22546,11 +22979,11 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
       if (self.currentlyOpenMenu && self.currentlyOpenMenu != nestedMenu) {
         var closeTo = self.nestLevel + 1;
         self.currentlyOpenMenu.close(true, { closeTo: closeTo });
-        self.isAlreadyOpening = true;
-        nestedMenu.open();
+        self.isAlreadyOpening = !!nestedMenu;
+        nestedMenu && nestedMenu.open();
       } else if (nestedMenu && !nestedMenu.isOpen && nestedMenu.open) {
-        self.isAlreadyOpening = true;
-        nestedMenu.open();
+        self.isAlreadyOpening = !!nestedMenu;
+        nestedMenu && nestedMenu.open();
       }
     }, nestedMenu ? 100 : 250);
     var focusableTarget = event.currentTarget.querySelector('.md-button:not([disabled])');
@@ -22574,6 +23007,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
     if (self.isOpen) return;
     self.enableHoverListener();
     self.isOpen = true;
+    $mdUtil.nextTick(function(){ self.onIsOpenChanged(self.isOpen);});
     triggerElement = triggerElement || (ev ? ev.target : $element[0]);
     triggerElement.setAttribute('aria-expanded', 'true');
     $scope.$emit('$mdMenuOpen', $element);
@@ -22594,7 +23028,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
   // Expose a open function to the child scope for html to use
   $scope.$mdOpenMenu = this.open;
 
-  $scope.$watch(function() { return self.isOpen; }, function(isOpen) {
+  this.onIsOpenChanged = function(isOpen) {
     if (isOpen) {
       menuContainer.attr('aria-hidden', 'false');
       $element[0].classList.add('_md-open');
@@ -22606,7 +23040,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
       $element[0].classList.remove('_md-open');
     }
     $scope.$mdMenuIsOpen = self.isOpen;
-  });
+  };
 
   this.focusMenuContainer = function focusMenuContainer() {
     var focusTarget = menuContainer[0].querySelector('[md-menu-focus-target]');
@@ -22630,6 +23064,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
   this.close = function closeMenu(skipFocus, closeOpts) {
     if ( !self.isOpen ) return;
     self.isOpen = false;
+    $mdUtil.nextTick(function(){ self.onIsOpenChanged(self.isOpen);});
 
     var eventDetails = angular.extend({}, closeOpts, { skipFocus: skipFocus });
     $scope.$emit('$mdMenuClose', $element, eventDetails);
@@ -22881,14 +23316,15 @@ function MenuDirective($mdUtil) {
     return link;
   }
 
-  function link(scope, element, attrs, ctrls) {
+  function link(scope, element, attr, ctrls) {
     var mdMenuCtrl = ctrls[0];
     var isInMenuBar = ctrls[1] != undefined;
     // Move everything into a md-menu-container and pass it to the controller
-    var menuContainer = angular.element(
-      '<div class="_md-open-menu-container md-whiteframe-z2"></div>'
-    );
+    var menuContainer = angular.element( '<div class="_md _md-open-menu-container md-whiteframe-z2"></div>');
     var menuContents = element.children()[1];
+
+    element.addClass('_md');     // private md component indicator for styling
+
     if (!menuContents.hasAttribute('role')) {
       menuContents.setAttribute('role', 'menu');
     }
@@ -22901,6 +23337,7 @@ function MenuDirective($mdUtil) {
     element.append(menuContainer);
     menuContainer[0].style.display = 'none';
     mdMenuCtrl.init(menuContainer, { isInMenuBar: isInMenuBar });
+
   }
 }
 MenuDirective.$inject = ["$mdUtil"];
@@ -23812,7 +24249,8 @@ function MenuBarDirective($mdUtil, $mdTheming) {
         }
       });
 
-      return function postLink(scope, el, attrs, ctrl) {
+      return function postLink(scope, el, attr, ctrl) {
+        el.addClass('_md');     // private md component indicator for styling
         $mdTheming(scope, el);
         ctrl.init();
       };
@@ -24050,6 +24488,8 @@ function MenuItemDirective() {
  * should be a pixel-size value (eg '100'). If this attribute is
  * not present then a default value of '50px' is assumed.
  *
+ * @param {boolean=} ng-disabled Determines whether to disable the progress element.
+ *
  * @usage
  * <hljs lang="html">
  * <md-progress-circular md-mode="determinate" value="..."></md-progress-circular>
@@ -24067,12 +24507,18 @@ angular
   .directive('mdProgressCircular', MdProgressCircularDirective);
 
 /* @ngInject */
-function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdTheming,
+function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
                                      $mdUtil, $interval, $log) {
 
+  // Note that this shouldn't use use $$rAF, because it can cause an infinite loop
+  // in any tests that call $animate.flush.
+  var rAF = $window.requestAnimationFrame || angular.noop;
+  var cAF = $window.cancelAnimationFrame || angular.noop;
   var DEGREE_IN_RADIANS = $window.Math.PI / 180;
   var MODE_DETERMINATE = 'determinate';
   var MODE_INDETERMINATE = 'indeterminate';
+  var DISABLED_CLASS = '_md-progress-circular-disabled';
+  var INDETERMINATE_CLASS = '_md-mode-indeterminate';
 
   return {
     restrict: 'E',
@@ -24097,7 +24543,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
         var mode = hasValue ? MODE_DETERMINATE : MODE_INDETERMINATE;
         var info = "Auto-adding the missing md-mode='{0}' to the ProgressCircular element";
 
-        $log.debug( $mdUtil.supplant(info, [mode]) );
+          // $log.debug( $mdUtil.supplant(info, [mode]) );
         attrs.$set('mdMode', mode);
       } else {
         attrs.$set('mdMode', attrs.mdMode.trim());
@@ -24108,15 +24554,18 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
   };
 
   function MdProgressCircularLink(scope, element, attrs) {
-    var svg = angular.element(element[0].querySelector('svg'));
-    var path = angular.element(element[0].querySelector('path'));
+    var node = element[0];
+    var svg = angular.element(node.querySelector('svg'));
+    var path = angular.element(node.querySelector('path'));
     var startIndeterminate = $mdProgressCircular.startIndeterminate;
     var endIndeterminate = $mdProgressCircular.endIndeterminate;
     var rotationIndeterminate = 0;
     var lastAnimationId = 0;
+    var lastDrawFrame;
     var interval;
 
     $mdTheming(element);
+    element.toggleClass(DISABLED_CLASS, attrs.hasOwnProperty('disabled'));
 
     // If the mode is indeterminate, it doesn't need to
     // wait for the next digest. It can start right away.
@@ -24124,22 +24573,52 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
       startIndeterminateAnimation();
     }
 
-    scope.$watchGroup(['value', 'mdMode'], function(newValues, oldValues) {
-      var mode = newValues[1];
+    scope.$on('$destroy', function(){
+      cleanupIndeterminateAnimation();
 
-      if (mode !== MODE_DETERMINATE && mode !== MODE_INDETERMINATE) {
-        mode = MODE_INDETERMINATE;
-        attrs.$set('mdMode', mode);
+      if (lastDrawFrame) {
+        cAF(lastDrawFrame);
+      }
+    });
+
+    scope.$watchGroup(['value', 'mdMode', function() {
+      var isDisabled = node.disabled;
+
+      // Sometimes the browser doesn't return a boolean, in
+      // which case we should check whether the attribute is
+      // present.
+      if (isDisabled === true || isDisabled === false){
+        return isDisabled;
+      }
+      return angular.isDefined(element.attr('disabled'));
+
+    }], function(newValues, oldValues) {
+      var mode = newValues[1];
+      var isDisabled = newValues[2];
+      var wasDisabled = oldValues[2];
+
+      if (isDisabled !== wasDisabled) {
+        element.toggleClass(DISABLED_CLASS, !!isDisabled);
       }
 
-      if (mode === MODE_INDETERMINATE) {
-        startIndeterminateAnimation();
-      } else {
-        var newValue = clamp(newValues[0]);
-
+      if (isDisabled) {
         cleanupIndeterminateAnimation();
-        element.attr('aria-valuenow', newValue);
-        renderCircle(clamp(oldValues[0]), newValue);
+      } else {
+        if (mode !== MODE_DETERMINATE && mode !== MODE_INDETERMINATE) {
+          mode = MODE_INDETERMINATE;
+          attrs.$set('mdMode', mode);
+        }
+
+        if (mode === MODE_INDETERMINATE) {
+          startIndeterminateAnimation();
+        } else {
+          var newValue = clamp(newValues[0]);
+
+          cleanupIndeterminateAnimation();
+
+          element.attr('aria-valuenow', newValue);
+          renderCircle(clamp(oldValues[0]), newValue);
+        }
       }
 
     });
@@ -24149,6 +24628,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
     scope.$watch('mdDiameter', function(newValue) {
       var diameter = getSize(newValue);
       var strokeWidth = getStroke(diameter);
+      var transformOrigin = (diameter / 2) + 'px';
       var dimensions = {
         width: diameter + 'px',
         height: diameter + 'px'
@@ -24161,7 +24641,15 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
 
       // Usually viewBox sets the dimensions for the SVG, however that doesn't
       // seem to be the case on IE10.
-      svg.css(dimensions);
+      // Important! The transform origin has to be set from here and it has to
+      // be in the format of "Ypx Ypx Ypx", otherwise the rotation wobbles in
+      // IE and Edge, because they don't account for the stroke width when
+      // rotating. Also "center" doesn't help in this case, it has to be a
+      // precise value.
+      svg
+        .css(dimensions)
+        .css('transform-origin', transformOrigin + ' ' + transformOrigin + ' ' + transformOrigin);
+
       element.css(dimensions);
       path.css('stroke-width',  strokeWidth + 'px');
     });
@@ -24179,8 +24667,8 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
       if (animateTo === animateFrom) {
         path.attr('d', getSvgArc(animateTo, diameter, pathDiameter, rotation));
       } else {
-        $$rAF(function animation(now) {
-          var currentTime = $window.Math.min((now || $mdUtil.now()) - startTime, animationDuration);
+        lastDrawFrame = rAF(function animation(now) {
+          var currentTime = $window.Math.max(0, $window.Math.min((now || $mdUtil.now()) - startTime, animationDuration));
 
           path.attr('d', getSvgArc(
             ease(currentTime, animateFrom, changeInValue, animationDuration),
@@ -24189,8 +24677,9 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
             rotation
           ));
 
+          // Do not allow overlapping animations
           if (id === lastAnimationId && currentTime < animationDuration) {
-            $$rAF(animation);
+            lastDrawFrame = rAF(animation);
           }
         });
       }
@@ -24216,35 +24705,6 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
 
     function startIndeterminateAnimation() {
       if (!interval) {
-        var startTime = $mdUtil.now();
-        var animationDuration = $mdProgressCircular.rotationDurationIndeterminate;
-        var radius = getSize(scope.mdDiameter) / 2;
-
-        // Spares us at least a little bit of string concatenation.
-        radius = ' ' + radius + ', ' + radius;
-
-        // This animates the indeterminate rotation. This can be achieved much easier
-        // with CSS keyframes, however IE11 seems to have problems centering the rotation
-        // which causes a wobble in the indeterminate animation.
-        $$rAF(function animation(now) {
-          var timestamp = now || $mdUtil.now();
-          var currentTime = timestamp - startTime;
-          var rotation = $mdProgressCircular.easingPresets.linearEase(currentTime, 0, 360, animationDuration);
-
-          path.attr('transform', 'rotate(' + rotation + radius + ')');
-
-          if (interval) {
-            $$rAF(animation);
-          } else {
-            path.removeAttr('transform');
-          }
-
-          // Reset the animation
-          if (currentTime >= animationDuration) {
-            startTime = timestamp;
-          }
-        });
-
         // Note that this interval isn't supposed to trigger a digest.
         interval = $interval(
           animateIndeterminate,
@@ -24254,7 +24714,10 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
         );
 
         animateIndeterminate();
-        element.removeAttr('aria-valuenow');
+
+        element
+          .addClass(INDETERMINATE_CLASS)
+          .removeAttr('aria-valuenow');
       }
     }
 
@@ -24262,6 +24725,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
       if (interval) {
         $interval.cancel(interval);
         interval = null;
+        element.removeClass(INDETERMINATE_CLASS);
       }
     }
   }
@@ -24353,7 +24817,7 @@ function MdProgressCircularDirective($$rAF, $window, $mdProgressCircular, $mdThe
     return $mdProgressCircular.strokeWidth / 100 * diameter;
   }
 }
-MdProgressCircularDirective.$inject = ["$$rAF", "$window", "$mdProgressCircular", "$mdTheming", "$mdUtil", "$interval", "$log"];
+MdProgressCircularDirective.$inject = ["$window", "$mdProgressCircular", "$mdTheming", "$mdUtil", "$interval", "$log"];
 
 })();
 (function(){
@@ -24376,7 +24840,6 @@ MdProgressCircularDirective.$inject = ["$$rAF", "$window", "$mdProgressCircular"
  * @property {number} durationIndeterminate Duration of the indeterminate animation.
  * @property {number} startIndeterminate Indeterminate animation start point.
  * @property {number} endIndeterminate Indeterminate animation end point.
- * @property {number} rotationDurationIndeterminate Duration of the indeterminate rotating animation.
  * @property {function} easeFnIndeterminate Easing function to be used when animating
  * between the indeterminate values.
  *
@@ -24411,7 +24874,6 @@ function MdProgressCircularProvider() {
     durationIndeterminate: 500,
     startIndeterminate: 3,
     endIndeterminate: 80,
-    rotationDurationIndeterminate: 2900,
     easeFnIndeterminate: materialEase,
 
     easingPresets: {
@@ -25597,9 +26059,10 @@ function MdTabs () {
             '</div> ' +
           '</md-tabs-canvas> ' +
         '</md-tabs-wrapper> ' +
-        '<md-tabs-content-wrapper ng-show="$mdTabsCtrl.hasContent && $mdTabsCtrl.selectedIndex >= 0"> ' +
+        '<md-tabs-content-wrapper ng-show="$mdTabsCtrl.hasContent && $mdTabsCtrl.selectedIndex >= 0" class="_md"> ' +
           '<md-tab-content ' +
               'id="tab-content-{{::tab.id}}" ' +
+              'class="_md" ' +
               'role="tabpanel" ' +
               'aria-labelledby="tab-item-{{::tab.id}}" ' +
               'md-swipe-left="$mdTabsCtrl.swipeContent && $mdTabsCtrl.incrementIndex(1)" ' +
@@ -25675,8 +26138,8 @@ MdTabsTemplate.$inject = ["$compile", "$mdUtil"];
 
 })();
 (function(){ 
-angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Theme processes */html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-color}}'; }md-autocomplete.md-THEME_NAME-theme {  background: '{{background-A100}}'; }  md-autocomplete.md-THEME_NAME-theme[disabled] {    background: '{{background-100}}'; }  md-autocomplete.md-THEME_NAME-theme button md-icon path {    fill: '{{background-600}}'; }  md-autocomplete.md-THEME_NAME-theme button:after {    background: '{{background-600-0.3}}'; }.md-autocomplete-suggestions-container.md-THEME_NAME-theme {  background: '{{background-A100}}'; }  .md-autocomplete-suggestions-container.md-THEME_NAME-theme li {    color: '{{background-900}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li .highlight {      color: '{{background-600}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li:hover, .md-autocomplete-suggestions-container.md-THEME_NAME-theme li.selected {      background: '{{background-200}}'; }md-backdrop {  background-color: '{{background-900-0.0}}'; }  md-backdrop.md-opaque.md-THEME_NAME-theme {    background-color: '{{background-900-1.0}}'; }md-bottom-sheet.md-THEME_NAME-theme {  background-color: '{{background-50}}';  border-top-color: '{{background-300}}'; }  md-bottom-sheet.md-THEME_NAME-theme.md-list md-list-item {    color: '{{foreground-1}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    background-color: '{{background-50}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    color: '{{foreground-1}}'; }.md-button.md-THEME_NAME-theme:not([disabled]):hover {  background-color: '{{background-500-0.2}}'; }.md-button.md-THEME_NAME-theme:not([disabled]).md-focused {  background-color: '{{background-500-0.2}}'; }.md-button.md-THEME_NAME-theme:not([disabled]).md-icon-button:hover {  background-color: transparent; }.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab md-icon {    color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-600}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-600}}'; }.md-button.md-THEME_NAME-theme.md-primary {  color: '{{primary-color}}'; }  .md-button.md-THEME_NAME-theme.md-primary.md-raised, .md-button.md-THEME_NAME-theme.md-primary.md-fab {    color: '{{primary-contrast}}';    background-color: '{{primary-color}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]) md-icon, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]) md-icon {      color: '{{primary-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover {      background-color: '{{primary-600}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]).md-focused, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]).md-focused {      background-color: '{{primary-600}}'; }  .md-button.md-THEME_NAME-theme.md-primary:not([disabled]) md-icon {    color: '{{primary-color}}'; }.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]) .md-icon {    color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-600}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-600}}'; }.md-button.md-THEME_NAME-theme.md-raised {  color: '{{background-900}}';  background-color: '{{background-50}}'; }  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]) md-icon {    color: '{{background-900}}'; }  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover {    background-color: '{{background-50}}'; }  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]).md-focused {    background-color: '{{background-200}}'; }.md-button.md-THEME_NAME-theme.md-warn {  color: '{{warn-color}}'; }  .md-button.md-THEME_NAME-theme.md-warn.md-raised, .md-button.md-THEME_NAME-theme.md-warn.md-fab {    color: '{{warn-contrast}}';    background-color: '{{warn-color}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]) md-icon, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]) md-icon {      color: '{{warn-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover {      background-color: '{{warn-600}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]).md-focused, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]).md-focused {      background-color: '{{warn-600}}'; }  .md-button.md-THEME_NAME-theme.md-warn:not([disabled]) md-icon {    color: '{{warn-color}}'; }.md-button.md-THEME_NAME-theme.md-accent {  color: '{{accent-color}}'; }  .md-button.md-THEME_NAME-theme.md-accent.md-raised, .md-button.md-THEME_NAME-theme.md-accent.md-fab {    color: '{{accent-contrast}}';    background-color: '{{accent-color}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]) md-icon, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]) md-icon {      color: '{{accent-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover {      background-color: '{{accent-600}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]).md-focused, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]).md-focused {      background-color: '{{accent-600}}'; }  .md-button.md-THEME_NAME-theme.md-accent:not([disabled]) md-icon {    color: '{{accent-color}}'; }.md-button.md-THEME_NAME-theme[disabled], .md-button.md-THEME_NAME-theme.md-raised[disabled], .md-button.md-THEME_NAME-theme.md-fab[disabled], .md-button.md-THEME_NAME-theme.md-accent[disabled], .md-button.md-THEME_NAME-theme.md-warn[disabled] {  color: '{{foreground-3}}';  cursor: default; }  .md-button.md-THEME_NAME-theme[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-raised[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-fab[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-accent[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-warn[disabled] md-icon {    color: '{{foreground-3}}'; }.md-button.md-THEME_NAME-theme.md-raised[disabled], .md-button.md-THEME_NAME-theme.md-fab[disabled] {  background-color: '{{foreground-4}}'; }.md-button.md-THEME_NAME-theme[disabled] {  background-color: transparent; }a.md-THEME_NAME-theme:not(.md-button) {  color: '{{accent-color}}'; }  a.md-THEME_NAME-theme:not(.md-button):hover {    color: '{{accent-700}}'; }  a.md-THEME_NAME-theme:not(.md-button).md-primary {    color: '{{primary-color}}'; }    a.md-THEME_NAME-theme:not(.md-button).md-primary:hover {      color: '{{primary-700}}'; }  a.md-THEME_NAME-theme:not(.md-button).md-warn {    color: '{{warn-color}}'; }    a.md-THEME_NAME-theme:not(.md-button).md-warn:hover {      color: '{{warn-700}}'; }md-card.md-THEME_NAME-theme {  background-color: '{{background-hue-1}}';  border-radius: 2px; }  md-card.md-THEME_NAME-theme .md-card-image {    border-radius: 2px 2px 0 0; }  md-card.md-THEME_NAME-theme md-card-header md-card-avatar md-icon {    color: '{{background-color}}';    background-color: '{{foreground-3}}'; }  md-card.md-THEME_NAME-theme md-card-header md-card-header-text .md-subhead {    color: '{{foreground-2}}'; }  md-card.md-THEME_NAME-theme md-card-title md-card-title-text:not(:only-child) .md-subhead {    color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme .md-ripple {  color: '{{accent-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked.md-focused ._md-container:before {  background-color: '{{accent-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme ._md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked ._md-icon {  background-color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme.md-checked ._md-icon:after {  border-color: '{{accent-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ripple {  color: '{{primary-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary ._md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked ._md-icon {  background-color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked.md-focused ._md-container:before {  background-color: '{{primary-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked ._md-icon:after {  border-color: '{{primary-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-indeterminate[disabled] ._md-container {  color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ripple {  color: '{{warn-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn ._md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked ._md-icon {  background-color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked.md-focused:not([disabled]) ._md-container:before {  background-color: '{{warn-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked ._md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] ._md-icon {  border-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked ._md-icon {  background-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked ._md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] ._md-label {  color: '{{foreground-3}}'; }md-chips.md-THEME_NAME-theme .md-chips {  box-shadow: 0 1px '{{foreground-4}}'; }  md-chips.md-THEME_NAME-theme .md-chips.md-focused {    box-shadow: 0 2px '{{primary-color}}'; }  md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input {    color: '{{foreground-1}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input::-webkit-input-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input:-moz-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input::-moz-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input:-ms-input-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input::-webkit-input-placeholder {      color: '{{foreground-3}}'; }md-chips.md-THEME_NAME-theme md-chip {  background: '{{background-300}}';  color: '{{background-800}}'; }  md-chips.md-THEME_NAME-theme md-chip md-icon {    color: '{{background-700}}'; }  md-chips.md-THEME_NAME-theme md-chip.md-focused {    background: '{{primary-color}}';    color: '{{primary-contrast}}'; }    md-chips.md-THEME_NAME-theme md-chip.md-focused md-icon {      color: '{{primary-contrast}}'; }  md-chips.md-THEME_NAME-theme md-chip._md-chip-editing {    background: transparent;    color: '{{background-800}}'; }md-chips.md-THEME_NAME-theme md-chip-remove .md-button md-icon path {  fill: '{{background-500}}'; }.md-contact-suggestion span.md-contact-email {  color: '{{background-400}}'; }md-content.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-hue-1}}'; }/** Theme styles for mdCalendar. */.md-calendar.md-THEME_NAME-theme {  background: '{{background-A100}}';  color: '{{background-A200-0.87}}'; }  .md-calendar.md-THEME_NAME-theme tr:last-child td {    border-bottom-color: '{{background-200}}'; }.md-THEME_NAME-theme .md-calendar-day-header {  background: '{{background-300}}';  color: '{{background-A200-0.87}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator {  border: 1px solid '{{primary-500}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today.md-calendar-date-disabled {  color: '{{primary-500-0.6}}'; }.md-THEME_NAME-theme .md-calendar-date.md-focus .md-calendar-date-selection-indicator {  background: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-calendar-date-selection-indicator:hover {  background: '{{background-300}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator,.md-THEME_NAME-theme .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator {  background: '{{primary-500}}';  color: '{{primary-500-contrast}}';  border-color: transparent; }.md-THEME_NAME-theme .md-calendar-date-disabled,.md-THEME_NAME-theme .md-calendar-month-label-disabled {  color: '{{foreground-3}}'; }/** Theme styles for mdDatepicker. */.md-THEME_NAME-theme .md-datepicker-input {  color: '{{foreground-1}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input:-moz-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-moz-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input:-ms-input-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }.md-THEME_NAME-theme .md-datepicker-input-container {  border-bottom-color: '{{background-300}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-focused {    border-bottom-color: '{{primary-500}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-invalid {    border-bottom-color: '{{warn-A700}}'; }.md-THEME_NAME-theme .md-datepicker-calendar-pane {  border-color: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button .md-datepicker-expand-triangle {  border-top-color: '{{foreground-3}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button:hover .md-datepicker-expand-triangle {  border-top-color: '{{foreground-2}}'; }.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon {  fill: '{{primary-500}}'; }.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-input-container,.md-THEME_NAME-theme .md-datepicker-input-mask-opaque {  background: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-datepicker-calendar {  background: '{{background-A100}}'; }md-dialog.md-THEME_NAME-theme {  border-radius: 4px;  background-color: '{{background-hue-1}}'; }  md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions, md-dialog.md-THEME_NAME-theme.md-content-overflow md-dialog-actions {    border-top-color: '{{foreground-4}}'; }md-divider.md-THEME_NAME-theme {  border-top-color: '{{foreground-4}}'; }.layout-row > md-divider.md-THEME_NAME-theme,.layout-xs-row > md-divider.md-THEME_NAME-theme, .layout-gt-xs-row > md-divider.md-THEME_NAME-theme,.layout-sm-row > md-divider.md-THEME_NAME-theme, .layout-gt-sm-row > md-divider.md-THEME_NAME-theme,.layout-md-row > md-divider.md-THEME_NAME-theme, .layout-gt-md-row > md-divider.md-THEME_NAME-theme,.layout-lg-row > md-divider.md-THEME_NAME-theme, .layout-gt-lg-row > md-divider.md-THEME_NAME-theme,.layout-xl-row > md-divider.md-THEME_NAME-theme {  border-right-color: '{{foreground-4}}'; }md-icon.md-THEME_NAME-theme {  color: '{{foreground-2}}'; }  md-icon.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  md-icon.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  md-icon.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-input-container.md-THEME_NAME-theme .md-input {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme > md-icon {  color: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme label,md-input-container.md-THEME_NAME-theme ._md-placeholder {  color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme label.md-required:after {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-focused):not(.md-input-invalid) label.md-required:after {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme .md-input-messages-animation, md-input-container.md-THEME_NAME-theme .md-input-message-animation {  color: '{{warn-A700}}'; }  md-input-container.md-THEME_NAME-theme .md-input-messages-animation .md-char-counter, md-input-container.md-THEME_NAME-theme .md-input-message-animation .md-char-counter {    color: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-has-value label {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused .md-input {  border-color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused label {  color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused md-icon {  color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent .md-input {  border-color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent label {  color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn .md-input {  border-color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn label {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input {  border-color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid label {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input-message-animation, md-input-container.md-THEME_NAME-theme.md-input-invalid .md-char-counter {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme .md-input[disabled],md-input-container.md-THEME_NAME-theme .md-input [disabled] {  border-bottom-color: transparent;  color: '{{foreground-3}}';  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h3, md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h4,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h3,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h4 {  color: '{{foreground-1}}'; }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text p,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text p {  color: '{{foreground-2}}'; }md-list.md-THEME_NAME-theme ._md-proxy-focus.md-focused div._md-no-style {  background-color: '{{background-100}}'; }md-list.md-THEME_NAME-theme md-list-item .md-avatar-icon {  background-color: '{{foreground-3}}';  color: '{{background-color}}'; }md-list.md-THEME_NAME-theme md-list-item > md-icon {  color: '{{foreground-2}}'; }  md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight {    color: '{{primary-color}}'; }    md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight.md-accent {      color: '{{accent-color}}'; }md-menu-content.md-THEME_NAME-theme {  background-color: '{{background-A100}}'; }  md-menu-content.md-THEME_NAME-theme md-menu-item {    color: '{{background-A200-0.87}}'; }    md-menu-content.md-THEME_NAME-theme md-menu-item md-icon {      color: '{{background-A200-0.54}}'; }    md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled] {      color: '{{background-A200-0.25}}'; }      md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled] md-icon {        color: '{{background-A200-0.25}}'; }  md-menu-content.md-THEME_NAME-theme md-menu-divider {    background-color: '{{background-A200-0.11}}'; }md-menu-bar.md-THEME_NAME-theme > button.md-button {  color: '{{foreground-2}}';  border-radius: 2px; }md-menu-bar.md-THEME_NAME-theme md-menu._md-open > button, md-menu-bar.md-THEME_NAME-theme md-menu > button:focus {  outline: none;  background: '{{background-200}}'; }md-menu-bar.md-THEME_NAME-theme._md-open:not(._md-keyboard-mode) md-menu:hover > button {  background-color: '{{ background-500-0.2}}'; }md-menu-bar.md-THEME_NAME-theme:not(._md-keyboard-mode):not(._md-open) md-menu button:hover,md-menu-bar.md-THEME_NAME-theme:not(._md-keyboard-mode):not(._md-open) md-menu button:focus {  background: transparent; }md-menu-content.md-THEME_NAME-theme .md-menu > .md-button:after {  color: '{{background-A200-0.54}}'; }md-menu-content.md-THEME_NAME-theme .md-menu._md-open > .md-button {  background-color: '{{ background-500-0.2}}'; }md-toolbar.md-THEME_NAME-theme.md-menu-toolbar {  background-color: '{{background-A100}}';  color: '{{background-A200}}'; }  md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler {    background-color: '{{primary-color}}';    color: '{{background-A100-0.87}}'; }    md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler md-icon {      color: '{{background-A100-0.87}}'; }md-progress-circular.md-THEME_NAME-theme path {  stroke: '{{primary-color}}'; }md-progress-circular.md-THEME_NAME-theme.md-warn path {  stroke: '{{warn-color}}'; }md-progress-circular.md-THEME_NAME-theme.md-accent path {  stroke: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme ._md-container {  background-color: '{{primary-100}}'; }md-progress-linear.md-THEME_NAME-theme ._md-bar {  background-color: '{{primary-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn ._md-container {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn ._md-bar {  background-color: '{{warn-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent ._md-container {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent ._md-bar {  background-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn ._md-bar1 {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn ._md-dashed:before {  background: radial-gradient(\"{{warn-100}}\" 0%, \"{{warn-100}}\" 16%, transparent 42%); }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent ._md-bar1 {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent ._md-dashed:before {  background: radial-gradient(\"{{accent-100}}\" 0%, \"{{accent-100}}\" 16%, transparent 42%); }md-radio-button.md-THEME_NAME-theme ._md-off {  border-color: '{{foreground-2}}'; }md-radio-button.md-THEME_NAME-theme ._md-on {  background-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked ._md-off {  border-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme ._md-container .md-ripple {  color: '{{accent-600}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary ._md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary ._md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary ._md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary ._md-on {  background-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked ._md-off {  border-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary ._md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary ._md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary ._md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary ._md-container .md-ripple {  color: '{{primary-600}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn ._md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn ._md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn ._md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn ._md-on {  background-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked ._md-off {  border-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn ._md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn ._md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn ._md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn ._md-container .md-ripple {  color: '{{warn-600}}'; }md-radio-group.md-THEME_NAME-theme[disabled],md-radio-button.md-THEME_NAME-theme[disabled] {  color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] ._md-container ._md-off,  md-radio-button.md-THEME_NAME-theme[disabled] ._md-container ._md-off {    border-color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] ._md-container ._md-on,  md-radio-button.md-THEME_NAME-theme[disabled] ._md-container ._md-on {    border-color: '{{foreground-3}}'; }md-radio-group.md-THEME_NAME-theme .md-checked .md-ink-ripple {  color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-primary .md-checked:not([disabled]) .md-ink-ripple, md-radio-group.md-THEME_NAME-theme .md-checked:not([disabled]).md-primary .md-ink-ripple {  color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme .md-checked.md-primary .md-ink-ripple {  color: '{{warn-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked ._md-container:before {  background-color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-primary .md-checked ._md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-primary ._md-container:before {  background-color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-warn .md-checked ._md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-warn ._md-container:before {  background-color: '{{warn-color-0.26}}'; }md-select.md-THEME_NAME-theme[disabled] ._md-select-value {  border-bottom-color: transparent;  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-select.md-THEME_NAME-theme ._md-select-value {  border-bottom-color: '{{foreground-4}}'; }  md-select.md-THEME_NAME-theme ._md-select-value._md-select-placeholder {    color: '{{foreground-3}}'; }md-select.md-THEME_NAME-theme.ng-invalid.ng-dirty ._md-select-value {  color: '{{warn-A700}}' !important;  border-bottom-color: '{{warn-A700}}' !important; }md-select.md-THEME_NAME-theme:not([disabled]):focus ._md-select-value {  border-bottom-color: '{{primary-color}}';  color: '{{ foreground-1 }}'; }  md-select.md-THEME_NAME-theme:not([disabled]):focus ._md-select-value._md-select-placeholder {    color: '{{ foreground-1 }}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-accent ._md-select-value {  border-bottom-color: '{{accent-color}}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-warn ._md-select-value {  border-bottom-color: '{{warn-color}}'; }md-select.md-THEME_NAME-theme[disabled] ._md-select-value {  color: '{{foreground-3}}'; }  md-select.md-THEME_NAME-theme[disabled] ._md-select-value._md-select-placeholder {    color: '{{foreground-3}}'; }md-select-menu.md-THEME_NAME-theme md-content {  background: '{{background-A100}}'; }  md-select-menu.md-THEME_NAME-theme md-content md-optgroup {    color: '{{background-600-0.87}}'; }  md-select-menu.md-THEME_NAME-theme md-content md-option {    color: '{{background-900-0.87}}'; }    md-select-menu.md-THEME_NAME-theme md-content md-option[disabled] ._md-text {      color: '{{background-400-0.87}}'; }    md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):focus, md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):hover {      background: '{{background-200}}'; }    md-select-menu.md-THEME_NAME-theme md-content md-option[selected] {      color: '{{primary-500}}'; }      md-select-menu.md-THEME_NAME-theme md-content md-option[selected]:focus {        color: '{{primary-600}}'; }      md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent {        color: '{{accent-500}}'; }        md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent:focus {          color: '{{accent-600}}'; }[md-checkbox-enabled].md-THEME_NAME-theme .md-ripple {  color: '{{primary-600}}'; }[md-checkbox-enabled].md-THEME_NAME-theme[selected] .md-ripple {  color: '{{background-600}}'; }[md-checkbox-enabled].md-THEME_NAME-theme .md-ink-ripple {  color: '{{foreground-2}}'; }[md-checkbox-enabled].md-THEME_NAME-theme[selected] .md-ink-ripple {  color: '{{primary-color-0.87}}'; }[md-checkbox-enabled].md-THEME_NAME-theme ._md-icon {  border-color: '{{foreground-2}}'; }[md-checkbox-enabled].md-THEME_NAME-theme[selected] ._md-icon {  background-color: '{{primary-color-0.87}}'; }[md-checkbox-enabled].md-THEME_NAME-theme[selected].md-focused ._md-container:before {  background-color: '{{primary-color-0.26}}'; }[md-checkbox-enabled].md-THEME_NAME-theme[selected] ._md-icon:after {  border-color: '{{primary-contrast-0.87}}'; }[md-checkbox-enabled].md-THEME_NAME-theme .md-indeterminate[disabled] ._md-container {  color: '{{foreground-3}}'; }[md-checkbox-enabled].md-THEME_NAME-theme md-option ._md-text {  color: '{{background-900-0.87}}'; }md-sidenav.md-THEME_NAME-theme, md-sidenav.md-THEME_NAME-theme md-content {  background-color: '{{background-hue-1}}'; }md-slider.md-THEME_NAME-theme ._md-track {  background-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme ._md-track-ticks {  color: '{{background-contrast}}'; }md-slider.md-THEME_NAME-theme ._md-focus-ring {  background-color: '{{accent-200-0.38}}'; }md-slider.md-THEME_NAME-theme ._md-disabled-thumb {  border-color: '{{background-color}}';  background-color: '{{background-color}}'; }md-slider.md-THEME_NAME-theme._md-min ._md-thumb:after {  background-color: '{{background-color}}';  border-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme._md-min ._md-focus-ring {  background-color: '{{foreground-3-0.38}}'; }md-slider.md-THEME_NAME-theme._md-min[md-discrete] ._md-thumb:after {  background-color: '{{background-contrast}}';  border-color: transparent; }md-slider.md-THEME_NAME-theme._md-min[md-discrete] ._md-sign {  background-color: '{{background-400}}'; }  md-slider.md-THEME_NAME-theme._md-min[md-discrete] ._md-sign:after {    border-top-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme._md-min[md-discrete][md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme ._md-track._md-track-fill {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme ._md-thumb:after {  border-color: '{{accent-color}}';  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme ._md-sign {  background-color: '{{accent-color}}'; }  md-slider.md-THEME_NAME-theme ._md-sign:after {    border-top-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme[md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme ._md-thumb-text {  color: '{{accent-contrast}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-focus-ring {  background-color: '{{warn-200-0.38}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-track._md-track-fill {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-thumb:after {  border-color: '{{warn-color}}';  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-sign {  background-color: '{{warn-color}}'; }  md-slider.md-THEME_NAME-theme.md-warn ._md-sign:after {    border-top-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn[md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-thumb-text {  color: '{{warn-contrast}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-focus-ring {  background-color: '{{primary-200-0.38}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-track._md-track-fill {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-thumb:after {  border-color: '{{primary-color}}';  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-sign {  background-color: '{{primary-color}}'; }  md-slider.md-THEME_NAME-theme.md-primary ._md-sign:after {    border-top-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary[md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-thumb-text {  color: '{{primary-contrast}}'; }md-slider.md-THEME_NAME-theme[disabled] ._md-thumb:after {  border-color: transparent; }md-slider.md-THEME_NAME-theme[disabled]:not(._md-min) ._md-thumb:after, md-slider.md-THEME_NAME-theme[disabled][md-discrete] ._md-thumb:after {  background-color: '{{foreground-3}}';  border-color: transparent; }md-slider.md-THEME_NAME-theme[disabled][readonly] ._md-sign {  background-color: '{{background-400}}'; }  md-slider.md-THEME_NAME-theme[disabled][readonly] ._md-sign:after {    border-top-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme[disabled][readonly][md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme[disabled][readonly] ._md-disabled-thumb {  border-color: transparent;  background-color: transparent; }md-slider-container[disabled] > *:first-child:not(md-slider),md-slider-container[disabled] > *:last-child:not(md-slider) {  color: '{{foreground-3}}'; }.md-subheader.md-THEME_NAME-theme {  color: '{{ foreground-2-0.23 }}';  background-color: '{{background-hue-2}}'; }  .md-subheader.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme .md-ink-ripple {  color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme ._md-thumb {  background-color: '{{background-50}}'; }md-switch.md-THEME_NAME-theme ._md-bar {  background-color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked ._md-thumb {  background-color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked ._md-bar {  background-color: '{{accent-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-focused ._md-thumb:before {  background-color: '{{accent-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-ink-ripple {  color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary ._md-thumb {  background-color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary ._md-bar {  background-color: '{{primary-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary.md-focused ._md-thumb:before {  background-color: '{{primary-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-ink-ripple {  color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn ._md-thumb {  background-color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn ._md-bar {  background-color: '{{warn-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn.md-focused ._md-thumb:before {  background-color: '{{warn-color-0.26}}'; }md-switch.md-THEME_NAME-theme[disabled] ._md-thumb {  background-color: '{{background-400}}'; }md-switch.md-THEME_NAME-theme[disabled] ._md-bar {  background-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme md-tabs-wrapper {  background-color: transparent;  border-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme .md-paginator md-icon {  color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme md-ink-bar {  color: '{{accent-color}}';  background: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme .md-tab {  color: '{{foreground-2}}'; }  md-tabs.md-THEME_NAME-theme .md-tab[disabled], md-tabs.md-THEME_NAME-theme .md-tab[disabled] md-icon {    color: '{{foreground-3}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-active, md-tabs.md-THEME_NAME-theme .md-tab.md-active md-icon, md-tabs.md-THEME_NAME-theme .md-tab.md-focused, md-tabs.md-THEME_NAME-theme .md-tab.md-focused md-icon {    color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-focused {    background: '{{primary-color-0.1}}'; }  md-tabs.md-THEME_NAME-theme .md-tab .md-ripple-container {    color: '{{accent-100}}'; }md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-100}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-100}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toast.md-THEME_NAME-theme .md-toast-content {  background-color: #323232;  color: '{{background-50}}'; }  md-toast.md-THEME_NAME-theme .md-toast-content .md-button {    color: '{{background-50}}'; }    md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight {      color: '{{accent-A200}}'; }      md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-primary {        color: '{{primary-A200}}'; }      md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-warn {        color: '{{warn-A200}}'; }md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {  background-color: '{{primary-color}}';  color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-icon {    color: '{{primary-contrast}}';    fill: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) .md-button[disabled] md-icon {    color: '{{primary-contrast-0.26}}';    fill: '{{primary-contrast-0.26}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent {    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent .md-ink-ripple {      color: '{{accent-contrast}}'; }    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent md-icon {      color: '{{accent-contrast}}';      fill: '{{accent-contrast}}'; }    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent .md-button[disabled] md-icon {      color: '{{accent-contrast-0.26}}';      fill: '{{accent-contrast-0.26}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn {    background-color: '{{warn-color}}';    color: '{{warn-contrast}}'; }md-tooltip.md-THEME_NAME-theme {  color: '{{background-A100}}'; }  md-tooltip.md-THEME_NAME-theme ._md-content {    background-color: '{{foreground-2}}'; }"); 
+angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Theme processes */html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-color}}'; }md-backdrop {  background-color: '{{background-900-0.0}}'; }  md-backdrop.md-opaque.md-THEME_NAME-theme {    background-color: '{{background-900-1.0}}'; }md-autocomplete.md-THEME_NAME-theme {  background: '{{background-A100}}'; }  md-autocomplete.md-THEME_NAME-theme[disabled]:not([md-floating-label]) {    background: '{{background-100}}'; }  md-autocomplete.md-THEME_NAME-theme button md-icon path {    fill: '{{background-600}}'; }  md-autocomplete.md-THEME_NAME-theme button:after {    background: '{{background-600-0.3}}'; }.md-autocomplete-suggestions-container.md-THEME_NAME-theme {  background: '{{background-A100}}'; }  .md-autocomplete-suggestions-container.md-THEME_NAME-theme li {    color: '{{background-900}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li .highlight {      color: '{{background-600}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li:hover, .md-autocomplete-suggestions-container.md-THEME_NAME-theme li.selected {      background: '{{background-200}}'; }md-bottom-sheet.md-THEME_NAME-theme {  background-color: '{{background-50}}';  border-top-color: '{{background-300}}'; }  md-bottom-sheet.md-THEME_NAME-theme.md-list md-list-item {    color: '{{foreground-1}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    background-color: '{{background-50}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    color: '{{foreground-1}}'; }.md-button.md-THEME_NAME-theme:not([disabled]):hover {  background-color: '{{background-500-0.2}}'; }.md-button.md-THEME_NAME-theme:not([disabled]).md-focused {  background-color: '{{background-500-0.2}}'; }.md-button.md-THEME_NAME-theme:not([disabled]).md-icon-button:hover {  background-color: transparent; }.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab md-icon {    color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-A700}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-A700}}'; }.md-button.md-THEME_NAME-theme.md-primary {  color: '{{primary-color}}'; }  .md-button.md-THEME_NAME-theme.md-primary.md-raised, .md-button.md-THEME_NAME-theme.md-primary.md-fab {    color: '{{primary-contrast}}';    background-color: '{{primary-color}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]) md-icon, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]) md-icon {      color: '{{primary-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover {      background-color: '{{primary-600}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]).md-focused, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]).md-focused {      background-color: '{{primary-600}}'; }  .md-button.md-THEME_NAME-theme.md-primary:not([disabled]) md-icon {    color: '{{primary-color}}'; }.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]) .md-icon {    color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-A700}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-A700}}'; }.md-button.md-THEME_NAME-theme.md-raised {  color: '{{background-900}}';  background-color: '{{background-50}}'; }  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]) md-icon {    color: '{{background-900}}'; }  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover {    background-color: '{{background-50}}'; }  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]).md-focused {    background-color: '{{background-200}}'; }.md-button.md-THEME_NAME-theme.md-warn {  color: '{{warn-color}}'; }  .md-button.md-THEME_NAME-theme.md-warn.md-raised, .md-button.md-THEME_NAME-theme.md-warn.md-fab {    color: '{{warn-contrast}}';    background-color: '{{warn-color}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]) md-icon, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]) md-icon {      color: '{{warn-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover {      background-color: '{{warn-600}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]).md-focused, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]).md-focused {      background-color: '{{warn-600}}'; }  .md-button.md-THEME_NAME-theme.md-warn:not([disabled]) md-icon {    color: '{{warn-color}}'; }.md-button.md-THEME_NAME-theme.md-accent {  color: '{{accent-color}}'; }  .md-button.md-THEME_NAME-theme.md-accent.md-raised, .md-button.md-THEME_NAME-theme.md-accent.md-fab {    color: '{{accent-contrast}}';    background-color: '{{accent-color}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]) md-icon, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]) md-icon {      color: '{{accent-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover {      background-color: '{{accent-A700}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]).md-focused, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]).md-focused {      background-color: '{{accent-A700}}'; }  .md-button.md-THEME_NAME-theme.md-accent:not([disabled]) md-icon {    color: '{{accent-color}}'; }.md-button.md-THEME_NAME-theme[disabled], .md-button.md-THEME_NAME-theme.md-raised[disabled], .md-button.md-THEME_NAME-theme.md-fab[disabled], .md-button.md-THEME_NAME-theme.md-accent[disabled], .md-button.md-THEME_NAME-theme.md-warn[disabled] {  color: '{{foreground-3}}';  cursor: default; }  .md-button.md-THEME_NAME-theme[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-raised[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-fab[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-accent[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-warn[disabled] md-icon {    color: '{{foreground-3}}'; }.md-button.md-THEME_NAME-theme.md-raised[disabled], .md-button.md-THEME_NAME-theme.md-fab[disabled] {  background-color: '{{foreground-4}}'; }.md-button.md-THEME_NAME-theme[disabled] {  background-color: transparent; }._md a.md-THEME_NAME-theme:not(.md-button).md-primary {  color: '{{primary-color}}'; }  ._md a.md-THEME_NAME-theme:not(.md-button).md-primary:hover {    color: '{{primary-700}}'; }._md a.md-THEME_NAME-theme:not(.md-button).md-accent {  color: '{{accent-color}}'; }  ._md a.md-THEME_NAME-theme:not(.md-button).md-accent:hover {    color: '{{accent-700}}'; }._md a.md-THEME_NAME-theme:not(.md-button).md-accent {  color: '{{accent-color}}'; }  ._md a.md-THEME_NAME-theme:not(.md-button).md-accent:hover {    color: '{{accent-A700}}'; }._md a.md-THEME_NAME-theme:not(.md-button).md-warn {  color: '{{warn-color}}'; }  ._md a.md-THEME_NAME-theme:not(.md-button).md-warn:hover {    color: '{{warn-700}}'; }md-card.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-hue-1}}';  border-radius: 2px; }  md-card.md-THEME_NAME-theme .md-card-image {    border-radius: 2px 2px 0 0; }  md-card.md-THEME_NAME-theme md-card-header md-card-avatar md-icon {    color: '{{background-color}}';    background-color: '{{foreground-3}}'; }  md-card.md-THEME_NAME-theme md-card-header md-card-header-text .md-subhead {    color: '{{foreground-2}}'; }  md-card.md-THEME_NAME-theme md-card-title md-card-title-text:not(:only-child) .md-subhead {    color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme .md-ripple {  color: '{{accent-A700}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked.md-focused ._md-container:before {  background-color: '{{accent-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme ._md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked ._md-icon {  background-color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme.md-checked ._md-icon:after {  border-color: '{{accent-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ripple {  color: '{{primary-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary ._md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked ._md-icon {  background-color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked.md-focused ._md-container:before {  background-color: '{{primary-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked ._md-icon:after {  border-color: '{{primary-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-indeterminate[disabled] ._md-container {  color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ripple {  color: '{{warn-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn ._md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked ._md-icon {  background-color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked.md-focused:not([disabled]) ._md-container:before {  background-color: '{{warn-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked ._md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] ._md-icon {  border-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked ._md-icon {  background-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked ._md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] ._md-label {  color: '{{foreground-3}}'; }md-chips.md-THEME_NAME-theme .md-chips {  box-shadow: 0 1px '{{foreground-4}}'; }  md-chips.md-THEME_NAME-theme .md-chips.md-focused {    box-shadow: 0 2px '{{primary-color}}'; }  md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input {    color: '{{foreground-1}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input::-webkit-input-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input:-moz-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input::-moz-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input:-ms-input-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input::-webkit-input-placeholder {      color: '{{foreground-3}}'; }md-chips.md-THEME_NAME-theme md-chip {  background: '{{background-300}}';  color: '{{background-800}}'; }  md-chips.md-THEME_NAME-theme md-chip md-icon {    color: '{{background-700}}'; }  md-chips.md-THEME_NAME-theme md-chip.md-focused {    background: '{{primary-color}}';    color: '{{primary-contrast}}'; }    md-chips.md-THEME_NAME-theme md-chip.md-focused md-icon {      color: '{{primary-contrast}}'; }  md-chips.md-THEME_NAME-theme md-chip._md-chip-editing {    background: transparent;    color: '{{background-800}}'; }md-chips.md-THEME_NAME-theme md-chip-remove .md-button md-icon path {  fill: '{{background-500}}'; }.md-contact-suggestion span.md-contact-email {  color: '{{background-400}}'; }md-content.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-hue-1}}'; }/** Theme styles for mdCalendar. */.md-calendar.md-THEME_NAME-theme {  background: '{{background-A100}}';  color: '{{background-A200-0.87}}'; }  .md-calendar.md-THEME_NAME-theme tr:last-child td {    border-bottom-color: '{{background-200}}'; }.md-THEME_NAME-theme .md-calendar-day-header {  background: '{{background-300}}';  color: '{{background-A200-0.87}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator {  border: 1px solid '{{primary-500}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today.md-calendar-date-disabled {  color: '{{primary-500-0.6}}'; }.md-THEME_NAME-theme .md-calendar-date.md-focus .md-calendar-date-selection-indicator {  background: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-calendar-date-selection-indicator:hover {  background: '{{background-300}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator,.md-THEME_NAME-theme .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator {  background: '{{primary-500}}';  color: '{{primary-500-contrast}}';  border-color: transparent; }.md-THEME_NAME-theme .md-calendar-date-disabled,.md-THEME_NAME-theme .md-calendar-month-label-disabled {  color: '{{foreground-3}}'; }/** Theme styles for mdDatepicker. */.md-THEME_NAME-theme .md-datepicker-input {  color: '{{foreground-1}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input:-moz-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-moz-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input:-ms-input-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }.md-THEME_NAME-theme .md-datepicker-input-container {  border-bottom-color: '{{background-300}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-focused {    border-bottom-color: '{{primary-500}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-invalid {    border-bottom-color: '{{warn-A700}}'; }.md-THEME_NAME-theme .md-datepicker-calendar-pane {  border-color: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button .md-datepicker-expand-triangle {  border-top-color: '{{foreground-3}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button:hover .md-datepicker-expand-triangle {  border-top-color: '{{foreground-2}}'; }.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon {  fill: '{{primary-500}}'; }.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-input-container,.md-THEME_NAME-theme .md-datepicker-input-mask-opaque {  background: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-datepicker-calendar {  background: '{{background-A100}}'; }md-dialog.md-THEME_NAME-theme {  border-radius: 4px;  background-color: '{{background-hue-1}}'; }  md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions, md-dialog.md-THEME_NAME-theme.md-content-overflow md-dialog-actions {    border-top-color: '{{foreground-4}}'; }md-divider.md-THEME_NAME-theme {  border-top-color: '{{foreground-4}}'; }.layout-row > md-divider.md-THEME_NAME-theme,.layout-xs-row > md-divider.md-THEME_NAME-theme, .layout-gt-xs-row > md-divider.md-THEME_NAME-theme,.layout-sm-row > md-divider.md-THEME_NAME-theme, .layout-gt-sm-row > md-divider.md-THEME_NAME-theme,.layout-md-row > md-divider.md-THEME_NAME-theme, .layout-gt-md-row > md-divider.md-THEME_NAME-theme,.layout-lg-row > md-divider.md-THEME_NAME-theme, .layout-gt-lg-row > md-divider.md-THEME_NAME-theme,.layout-xl-row > md-divider.md-THEME_NAME-theme {  border-right-color: '{{foreground-4}}'; }md-icon.md-THEME_NAME-theme {  color: '{{foreground-2}}'; }  md-icon.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  md-icon.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  md-icon.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-input-container.md-THEME_NAME-theme .md-input {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme > md-icon {  color: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme label,md-input-container.md-THEME_NAME-theme ._md-placeholder {  color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme label.md-required:after {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-focused):not(.md-input-invalid) label.md-required:after {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme .md-input-messages-animation, md-input-container.md-THEME_NAME-theme .md-input-message-animation {  color: '{{warn-A700}}'; }  md-input-container.md-THEME_NAME-theme .md-input-messages-animation .md-char-counter, md-input-container.md-THEME_NAME-theme .md-input-message-animation .md-char-counter {    color: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-has-value label {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused .md-input {  border-color: '{{primary-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused label {  color: '{{primary-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused md-icon {  color: '{{primary-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent .md-input {  border-color: '{{accent-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent label {  color: '{{accent-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn .md-input {  border-color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn label {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input {  border-color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid label {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input-message-animation, md-input-container.md-THEME_NAME-theme.md-input-invalid .md-char-counter {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme .md-input[disabled],[disabled] md-input-container.md-THEME_NAME-theme .md-input {  border-bottom-color: transparent;  color: '{{foreground-3}}';  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h3, md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h4,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h3,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h4 {  color: '{{foreground-1}}'; }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text p,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text p {  color: '{{foreground-2}}'; }md-list.md-THEME_NAME-theme ._md-proxy-focus.md-focused div._md-no-style {  background-color: '{{background-100}}'; }md-list.md-THEME_NAME-theme md-list-item .md-avatar-icon {  background-color: '{{foreground-3}}';  color: '{{background-color}}'; }md-list.md-THEME_NAME-theme md-list-item > md-icon {  color: '{{foreground-2}}'; }  md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight {    color: '{{primary-color}}'; }    md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight.md-accent {      color: '{{accent-color}}'; }md-menu-content.md-THEME_NAME-theme {  background-color: '{{background-A100}}'; }  md-menu-content.md-THEME_NAME-theme md-menu-item {    color: '{{background-A200-0.87}}'; }    md-menu-content.md-THEME_NAME-theme md-menu-item md-icon {      color: '{{background-A200-0.54}}'; }    md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled] {      color: '{{background-A200-0.25}}'; }      md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled] md-icon {        color: '{{background-A200-0.25}}'; }  md-menu-content.md-THEME_NAME-theme md-menu-divider {    background-color: '{{background-A200-0.11}}'; }md-menu-bar.md-THEME_NAME-theme > button.md-button {  color: '{{foreground-2}}';  border-radius: 2px; }md-menu-bar.md-THEME_NAME-theme md-menu._md-open > button, md-menu-bar.md-THEME_NAME-theme md-menu > button:focus {  outline: none;  background: '{{background-200}}'; }md-menu-bar.md-THEME_NAME-theme._md-open:not(._md-keyboard-mode) md-menu:hover > button {  background-color: '{{ background-500-0.2}}'; }md-menu-bar.md-THEME_NAME-theme:not(._md-keyboard-mode):not(._md-open) md-menu button:hover,md-menu-bar.md-THEME_NAME-theme:not(._md-keyboard-mode):not(._md-open) md-menu button:focus {  background: transparent; }md-menu-content.md-THEME_NAME-theme .md-menu > .md-button:after {  color: '{{background-A200-0.54}}'; }md-menu-content.md-THEME_NAME-theme .md-menu._md-open > .md-button {  background-color: '{{ background-500-0.2}}'; }md-toolbar.md-THEME_NAME-theme.md-menu-toolbar {  background-color: '{{background-A100}}';  color: '{{background-A200}}'; }  md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler {    background-color: '{{primary-color}}';    color: '{{background-A100-0.87}}'; }    md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler md-icon {      color: '{{background-A100-0.87}}'; }md-progress-circular.md-THEME_NAME-theme path {  stroke: '{{primary-color}}'; }md-progress-circular.md-THEME_NAME-theme.md-warn path {  stroke: '{{warn-color}}'; }md-progress-circular.md-THEME_NAME-theme.md-accent path {  stroke: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme ._md-container {  background-color: '{{primary-100}}'; }md-progress-linear.md-THEME_NAME-theme ._md-bar {  background-color: '{{primary-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn ._md-container {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn ._md-bar {  background-color: '{{warn-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent ._md-container {  background-color: '{{accent-A100}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent ._md-bar {  background-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn ._md-bar1 {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn ._md-dashed:before {  background: radial-gradient(\"{{warn-100}}\" 0%, \"{{warn-100}}\" 16%, transparent 42%); }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent ._md-bar1 {  background-color: '{{accent-A100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent ._md-dashed:before {  background: radial-gradient(\"{{accent-A100}}\" 0%, \"{{accent-A100}}\" 16%, transparent 42%); }md-radio-button.md-THEME_NAME-theme ._md-off {  border-color: '{{foreground-2}}'; }md-radio-button.md-THEME_NAME-theme ._md-on {  background-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked ._md-off {  border-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme ._md-container .md-ripple {  color: '{{accent-A700}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary ._md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary ._md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary ._md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary ._md-on {  background-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked ._md-off {  border-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary ._md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary ._md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary ._md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary ._md-container .md-ripple {  color: '{{primary-600}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn ._md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn ._md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn ._md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn ._md-on {  background-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked ._md-off {  border-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn ._md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn ._md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn ._md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn ._md-container .md-ripple {  color: '{{warn-600}}'; }md-radio-group.md-THEME_NAME-theme[disabled],md-radio-button.md-THEME_NAME-theme[disabled] {  color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] ._md-container ._md-off,  md-radio-button.md-THEME_NAME-theme[disabled] ._md-container ._md-off {    border-color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] ._md-container ._md-on,  md-radio-button.md-THEME_NAME-theme[disabled] ._md-container ._md-on {    border-color: '{{foreground-3}}'; }md-radio-group.md-THEME_NAME-theme .md-checked .md-ink-ripple {  color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-primary .md-checked:not([disabled]) .md-ink-ripple, md-radio-group.md-THEME_NAME-theme .md-checked:not([disabled]).md-primary .md-ink-ripple {  color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme .md-checked.md-primary .md-ink-ripple {  color: '{{warn-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked ._md-container:before {  background-color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-primary .md-checked ._md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-primary ._md-container:before {  background-color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-warn .md-checked ._md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-warn ._md-container:before {  background-color: '{{warn-color-0.26}}'; }md-select.md-THEME_NAME-theme[disabled] ._md-select-value {  border-bottom-color: transparent;  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-select.md-THEME_NAME-theme ._md-select-value {  border-bottom-color: '{{foreground-4}}'; }  md-select.md-THEME_NAME-theme ._md-select-value._md-select-placeholder {    color: '{{foreground-3}}'; }md-select.md-THEME_NAME-theme.ng-invalid.ng-dirty ._md-select-value {  color: '{{warn-A700}}' !important;  border-bottom-color: '{{warn-A700}}' !important; }md-select.md-THEME_NAME-theme:not([disabled]):focus ._md-select-value {  border-bottom-color: '{{primary-color}}';  color: '{{ foreground-1 }}'; }  md-select.md-THEME_NAME-theme:not([disabled]):focus ._md-select-value._md-select-placeholder {    color: '{{ foreground-1 }}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-accent ._md-select-value {  border-bottom-color: '{{accent-color}}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-warn ._md-select-value {  border-bottom-color: '{{warn-color}}'; }md-select.md-THEME_NAME-theme[disabled] ._md-select-value {  color: '{{foreground-3}}'; }  md-select.md-THEME_NAME-theme[disabled] ._md-select-value._md-select-placeholder {    color: '{{foreground-3}}'; }md-select-menu.md-THEME_NAME-theme md-content {  background: '{{background-A100}}'; }  md-select-menu.md-THEME_NAME-theme md-content md-optgroup {    color: '{{background-600-0.87}}'; }  md-select-menu.md-THEME_NAME-theme md-content md-option {    color: '{{background-900-0.87}}'; }    md-select-menu.md-THEME_NAME-theme md-content md-option[disabled] ._md-text {      color: '{{background-400-0.87}}'; }    md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):focus, md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):hover {      background: '{{background-200}}'; }    md-select-menu.md-THEME_NAME-theme md-content md-option[selected] {      color: '{{primary-500}}'; }      md-select-menu.md-THEME_NAME-theme md-content md-option[selected]:focus {        color: '{{primary-600}}'; }      md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent {        color: '{{accent-color}}'; }        md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent:focus {          color: '{{accent-A700}}'; }._md-checkbox-enabled.md-THEME_NAME-theme .md-ripple {  color: '{{primary-600}}'; }._md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-ripple {  color: '{{background-600}}'; }._md-checkbox-enabled.md-THEME_NAME-theme .md-ink-ripple {  color: '{{foreground-2}}'; }._md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-ink-ripple {  color: '{{primary-color-0.87}}'; }._md-checkbox-enabled.md-THEME_NAME-theme ._md-icon {  border-color: '{{foreground-2}}'; }._md-checkbox-enabled.md-THEME_NAME-theme[selected] ._md-icon {  background-color: '{{primary-color-0.87}}'; }._md-checkbox-enabled.md-THEME_NAME-theme[selected].md-focused ._md-container:before {  background-color: '{{primary-color-0.26}}'; }._md-checkbox-enabled.md-THEME_NAME-theme[selected] ._md-icon:after {  border-color: '{{primary-contrast-0.87}}'; }._md-checkbox-enabled.md-THEME_NAME-theme .md-indeterminate[disabled] ._md-container {  color: '{{foreground-3}}'; }._md-checkbox-enabled.md-THEME_NAME-theme md-option ._md-text {  color: '{{background-900-0.87}}'; }md-sidenav.md-THEME_NAME-theme, md-sidenav.md-THEME_NAME-theme md-content {  background-color: '{{background-hue-1}}'; }md-slider.md-THEME_NAME-theme ._md-track {  background-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme ._md-track-ticks {  color: '{{background-contrast}}'; }md-slider.md-THEME_NAME-theme ._md-focus-ring {  background-color: '{{accent-A200-0.2}}'; }md-slider.md-THEME_NAME-theme ._md-disabled-thumb {  border-color: '{{background-color}}';  background-color: '{{background-color}}'; }md-slider.md-THEME_NAME-theme._md-min ._md-thumb:after {  background-color: '{{background-color}}';  border-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme._md-min ._md-focus-ring {  background-color: '{{foreground-3-0.38}}'; }md-slider.md-THEME_NAME-theme._md-min[md-discrete] ._md-thumb:after {  background-color: '{{background-contrast}}';  border-color: transparent; }md-slider.md-THEME_NAME-theme._md-min[md-discrete] ._md-sign {  background-color: '{{background-400}}'; }  md-slider.md-THEME_NAME-theme._md-min[md-discrete] ._md-sign:after {    border-top-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme._md-min[md-discrete][md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme ._md-track._md-track-fill {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme ._md-thumb:after {  border-color: '{{accent-color}}';  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme ._md-sign {  background-color: '{{accent-color}}'; }  md-slider.md-THEME_NAME-theme ._md-sign:after {    border-top-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme[md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme ._md-thumb-text {  color: '{{accent-contrast}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-focus-ring {  background-color: '{{warn-200-0.38}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-track._md-track-fill {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-thumb:after {  border-color: '{{warn-color}}';  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-sign {  background-color: '{{warn-color}}'; }  md-slider.md-THEME_NAME-theme.md-warn ._md-sign:after {    border-top-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn[md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-thumb-text {  color: '{{warn-contrast}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-focus-ring {  background-color: '{{primary-200-0.38}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-track._md-track-fill {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-thumb:after {  border-color: '{{primary-color}}';  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-sign {  background-color: '{{primary-color}}'; }  md-slider.md-THEME_NAME-theme.md-primary ._md-sign:after {    border-top-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary[md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-thumb-text {  color: '{{primary-contrast}}'; }md-slider.md-THEME_NAME-theme[disabled] ._md-thumb:after {  border-color: transparent; }md-slider.md-THEME_NAME-theme[disabled]:not(._md-min) ._md-thumb:after, md-slider.md-THEME_NAME-theme[disabled][md-discrete] ._md-thumb:after {  background-color: '{{foreground-3}}';  border-color: transparent; }md-slider.md-THEME_NAME-theme[disabled][readonly] ._md-sign {  background-color: '{{background-400}}'; }  md-slider.md-THEME_NAME-theme[disabled][readonly] ._md-sign:after {    border-top-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme[disabled][readonly][md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme[disabled][readonly] ._md-disabled-thumb {  border-color: transparent;  background-color: transparent; }md-slider-container[disabled] > *:first-child:not(md-slider),md-slider-container[disabled] > *:last-child:not(md-slider) {  color: '{{foreground-3}}'; }.md-subheader.md-THEME_NAME-theme {  color: '{{ foreground-2-0.23 }}';  background-color: '{{background-hue-2}}'; }  .md-subheader.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme .md-ink-ripple {  color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme ._md-thumb {  background-color: '{{background-50}}'; }md-switch.md-THEME_NAME-theme ._md-bar {  background-color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked ._md-thumb {  background-color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked ._md-bar {  background-color: '{{accent-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-focused ._md-thumb:before {  background-color: '{{accent-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-ink-ripple {  color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary ._md-thumb {  background-color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary ._md-bar {  background-color: '{{primary-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary.md-focused ._md-thumb:before {  background-color: '{{primary-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-ink-ripple {  color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn ._md-thumb {  background-color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn ._md-bar {  background-color: '{{warn-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn.md-focused ._md-thumb:before {  background-color: '{{warn-color-0.26}}'; }md-switch.md-THEME_NAME-theme[disabled] ._md-thumb {  background-color: '{{background-400}}'; }md-switch.md-THEME_NAME-theme[disabled] ._md-bar {  background-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme md-tabs-wrapper {  background-color: transparent;  border-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme .md-paginator md-icon {  color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme md-ink-bar {  color: '{{accent-color}}';  background: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme .md-tab {  color: '{{foreground-2}}'; }  md-tabs.md-THEME_NAME-theme .md-tab[disabled], md-tabs.md-THEME_NAME-theme .md-tab[disabled] md-icon {    color: '{{foreground-3}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-active, md-tabs.md-THEME_NAME-theme .md-tab.md-active md-icon, md-tabs.md-THEME_NAME-theme .md-tab.md-focused, md-tabs.md-THEME_NAME-theme .md-tab.md-focused md-icon {    color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-focused {    background: '{{primary-color-0.1}}'; }  md-tabs.md-THEME_NAME-theme .md-tab .md-ripple-container {    color: '{{accent-A100}}'; }md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-A100}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-A100}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toast.md-THEME_NAME-theme .md-toast-content {  background-color: #323232;  color: '{{background-50}}'; }  md-toast.md-THEME_NAME-theme .md-toast-content .md-button {    color: '{{background-50}}'; }    md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight {      color: '{{accent-color}}'; }      md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-primary {        color: '{{primary-color}}'; }      md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-warn {        color: '{{warn-color}}'; }md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {  background-color: '{{primary-color}}';  color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-icon {    color: '{{primary-contrast}}';    fill: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) .md-button[disabled] md-icon {    color: '{{primary-contrast-0.26}}';    fill: '{{primary-contrast-0.26}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent {    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent .md-ink-ripple {      color: '{{accent-contrast}}'; }    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent md-icon {      color: '{{accent-contrast}}';      fill: '{{accent-contrast}}'; }    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent .md-button[disabled] md-icon {      color: '{{accent-contrast-0.26}}';      fill: '{{accent-contrast-0.26}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn {    background-color: '{{warn-color}}';    color: '{{warn-contrast}}'; }md-tooltip.md-THEME_NAME-theme {  color: '{{background-A100}}'; }  md-tooltip.md-THEME_NAME-theme ._md-content {    background-color: '{{foreground-2}}'; }"); 
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc2-master-f6cf82d"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc2-master-fb4670f"}};
