@@ -41,6 +41,8 @@ the packaging system.
 Please check the list of database schema upgrade scripts
 inside /usr/share/doc/sogo/ and apply them if needed.
 
+EOF
+
           # Apache 2.2 / 2.4 kungfu
           COMMON_STATE=$(dpkg-query -f '${Status}' -W 'apache2.2-common' 2>/dev/null | awk '{print $3}' || true)
 
