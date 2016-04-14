@@ -65,7 +65,7 @@ static NSArray *easCommandParameters = nil;
 
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
-  return [self safeStringByEscapingXMLString];
+  return [self safeStringByEscapingXMLString: YES];
 }
 
 - (int) activeSyncFolderType

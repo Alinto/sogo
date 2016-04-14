@@ -324,7 +324,10 @@ static int cssEscapingCount;
   return AUTORELEASE(s);
 }
 
-
+- (NSString *) safeStringByEscapingXMLString
+{
+  return [self safeStringByEscapingXMLString: NO];
+}
 //
 // This is a copy from NSString+XMLEscaping.m from SOPE.
 // The difference here is that we use wchar_t instead of unichar.
@@ -335,7 +338,8 @@ static int cssEscapingCount;
 // We avoid naming it like the one in SOPE since if the ActiveSync
 // bundle is loaded, it'll overwrite the one provided by SOPE.
 //
-- (NSString *) safeStringByEscapingXMLString {
+- (NSString *) safeStringByEscapingXMLString: (BOOL) encoreCR
+{
   register unsigned i, len, j;
   register wchar_t *buf;
   const wchar_t *chars;
@@ -384,7 +388,13 @@ static int cssEscapingCount;
         buf[j] = '&'; j++; buf[j] = 'g'; j++; buf[j] = 't'; j++;
         buf[j] = ';'; j++;
         break;
-
+      case '\r':
+        if (encoreCR) // falls back to default if we don't encode
+          {
+            buf[j] = '&'; j++; buf[j] = '#'; j++; buf[j] = '1'; j++;
+            buf[j] = '3'; j++; buf[j] = ';'; j++;
+            break;
+          }
       default:
         /* escape big chars */
         if (chars[i] > 127) {
