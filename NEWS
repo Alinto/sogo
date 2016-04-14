@@ -99,6 +99,7 @@ Bug fixes
  - [web] keep specified task status when not completed (#3499)
  - [eas] allow EAS attachments get on 2nd-level mailboxes (#3505)
  - [eas] fix EAS bday shift (#3518)
+ - [eas] encode CR in EAS paylog (#3626)
 
 3.0.1 (2016-02-05)
 ------------------
