@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc3-master-30e6657
+ * v1.1.0-rc3-master-fbf17db
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -7051,7 +7051,7 @@ angular.module('material.components.chips', [
    *  or one that should be observed and dynamically interpolated.
    */
   var STATIC_COLOR_EXPRESSION = /^{((\s|,)*?["'a-zA-Z-]+?\s*?:\s*?('|")[a-zA-Z0-9-.]*('|"))+\s*}$/;
-  var COLOR_PALETTES = undefined;
+  var colorPalettes = undefined;
 
   /**
    * @ngdoc module
@@ -7086,7 +7086,7 @@ angular.module('material.components.chips', [
    *
    */
   function MdColorsService($mdTheming, $mdColorPalette, $mdUtil, $parse) {
-    COLOR_PALETTES = COLOR_PALETTES || Object.keys($mdColorPalette);
+    colorPalettes = colorPalettes || Object.keys($mdColorPalette);
 
     // Publish service instance
     return {
@@ -7189,12 +7189,12 @@ angular.module('material.components.chips', [
       // If the next section is one of the palettes we assume it's a two word palette
       // Two word palette can be also written in camelCase, forming camelCase to dash-case
 
-      var isTwoWord = parts.length > 1 && COLOR_PALETTES.indexOf(parts[1]) !== -1;
+      var isTwoWord = parts.length > 1 && colorPalettes.indexOf(parts[1]) !== -1;
       var palette = parts[0].replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 
       if (isTwoWord)  palette = parts[0] + '-' + parts.splice(1, 1);
 
-      if (COLOR_PALETTES.indexOf(palette) === -1) {
+      if (colorPalettes.indexOf(palette) === -1) {
         // If the palette is not in the palette list it's one of primary/accent/warn/background
         var scheme = $mdTheming.THEMES[theme].colors[palette];
         if (!scheme) {
@@ -11179,15 +11179,17 @@ MdDividerDirective.$inject = ["$mdTheming"];
    *     <md-button aria-label="Add..."><md-icon icon="/img/icons/plus.svg"></md-icon></md-button>
    *   </md-fab-trigger>
    *
-   *   <md-fab-actions>
-   *     <md-button aria-label="Add User">
-   *       <md-icon icon="/img/icons/user.svg"></md-icon>
-   *     </md-button>
+   *   <md-toolbar>
+   *    <md-fab-actions>
+   *      <md-button aria-label="Add User">
+   *        <md-icon icon="/img/icons/user.svg"></md-icon>
+   *      </md-button>
    *
-   *     <md-button aria-label="Add Group">
-   *       <md-icon icon="/img/icons/group.svg"></md-icon>
-   *     </md-button>
-   *   </md-fab-actions>
+   *      <md-button aria-label="Add Group">
+   *        <md-icon icon="/img/icons/group.svg"></md-icon>
+   *      </md-button>
+   *    </md-fab-actions>
+   *   </md-toolbar>
    * </md-fab-toolbar>
    * </hljs>
    *
@@ -11319,6 +11321,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
     }
   }
 })();
+
 })();
 (function(){
 "use strict";
@@ -14013,6 +14016,7 @@ angular.module('material.components.select', [
   .directive('mdSelectMenu', SelectMenuDirective)
   .directive('mdOption', OptionDirective)
   .directive('mdOptgroup', OptgroupDirective)
+  .directive('mdSelectHeader', SelectHeaderDirective)
   .provider('$mdSelect', SelectProvider);
 
 /**
@@ -14054,6 +14058,27 @@ angular.module('material.components.select', [
  *     <label>State</label>
  *     <md-select
  *       ng-model="someModel">
+ *       <md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>
+ *     </md-select>
+ *   </md-input-container>
+ * </hljs>
+ *
+ * With a select-header
+ *
+ * When a developer needs to put more than just a text label in the
+ * md-select-menu, they should use the md-select-header.
+ * The user can put custom HTML inside of the header and style it to their liking.
+ * One common use case of this would be a sticky search bar.
+ *
+ * When using the md-select-header the labels that would previously be added to the
+ * OptGroupDirective are ignored.
+ *
+ * <hljs lang="html">
+ *   <md-input-container>
+ *     <md-select ng-model="someModel">
+ *       <md-select-header>
+ *         <span> Neighborhoods - </span>
+ *       </md-select-header>
  *       <md-option ng-value="opt" ng-repeat="opt in neighborhoods2">{{ opt }}</md-option>
  *     </md-select>
  *   </md-input-container>
@@ -14202,7 +14227,11 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
           };
 
         if (containerCtrl.input) {
-          throw new Error("<md-input-container> can only have *one* child <input>, <textarea> or <select> element!");
+          // We ignore inputs that are in the md-select-header (one
+          // case where this might be useful would be adding as searchbox)
+          if (element.find('md-select-header').find('input')[0] !== containerCtrl.input[0]) {
+            throw new Error("<md-input-container> can only have *one* child <input>, <textarea> or <select> element!");
+          }
         }
 
         containerCtrl.input = element;
@@ -14498,12 +14527,14 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
 SelectDirective.$inject = ["$mdSelect", "$mdUtil", "$mdTheming", "$mdAria", "$compile", "$parse"];
 
 function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
-
+  // We want the scope to be set to 'false' so an isolated scope is not created
+  // which would interfere with the md-select-header's access to the
+  // parent scope.
   SelectMenuController.$inject = ["$scope", "$attrs", "$element"];
   return {
     restrict: 'E',
     require: ['mdSelectMenu'],
-    scope: true,
+    scope: false,
     controller: SelectMenuController,
     link: {pre: preLink}
   };
@@ -14892,14 +14923,32 @@ function OptgroupDirective() {
     compile: compile
   };
   function compile(el, attrs) {
-    var labelElement = el.find('label');
-    if (!labelElement.length) {
-      labelElement = angular.element('<label>');
-      el.prepend(labelElement);
+    // If we have a select header element, we don't want to add the normal label
+    // header.
+    if (!hasSelectHeader()) {
+      setupLabelElement();
     }
-    labelElement.addClass('_md-container-ignore');
-    if (attrs.label) labelElement.text(attrs.label);
+
+    function hasSelectHeader() {
+      return el.parent().find('md-select-header').length;
+    }
+
+    function setupLabelElement() {
+      var labelElement = el.find('label');
+      if (!labelElement.length) {
+        labelElement = angular.element('<label>');
+        el.prepend(labelElement);
+      }
+      labelElement.addClass('_md-container-ignore');
+      if (attrs.label) labelElement.text(attrs.label);
+    }
   }
+}
+
+function SelectHeaderDirective() {
+  return {
+    restrict: 'E',
+  };
 }
 
 function SelectProvider($$interimElementProvider) {
@@ -15241,6 +15290,7 @@ function SelectProvider($$interimElementProvider) {
             newOption = optionsArray[index];
             if (newOption.hasAttribute('disabled')) newOption = undefined;
           } while (!newOption && index < optionsArray.length - 1 && index > 0);
+
           newOption && newOption.focus();
           opts.focusedNode = newOption;
         }
@@ -15607,7 +15657,7 @@ function SidenavService($mdComponentRegistry, $mdUtil, $q, $log) {
   /**
    * Service API that supports three (3) usages:
    *   $mdSidenav().find("left")                       // sync (must already exist) or returns undefined
-   *   $mdSidenav("left").toggle();                    // sync (must already exist) or returns undefined; deprecated
+   *   $mdSidenav("left").toggle();                    // sync (must already exist) or returns reject promise;
    *   $mdSidenav("left",true).then( function(left){   // async returns instance when available
    *    left.toggle();
    *   });
@@ -15616,9 +15666,32 @@ function SidenavService($mdComponentRegistry, $mdUtil, $q, $log) {
     if ( angular.isUndefined(handle) ) return service;
 
     var instance = service.find(handle);
-    return  !instance && (enableWait === true) ? service.waitFor(handle) : instance;
+    return  !instance && (enableWait === true) ? service.waitFor(handle) :
+            !instance && angular.isUndefined(enableWait) ? addLegacyAPI(service, handle) : instance;
   };
 
+  /**
+   * For failed instance/handle lookups, older-clients expect an response object with noops
+   * that include `rejected promise APIs`
+   */
+  function addLegacyAPI(service, handle) {
+      var falseFn  = function() { return false; };
+      var rejectFn = function() {
+            return $q.when($mdUtil.supplant(errorMsg, [handle || ""]));
+          };
+
+      return angular.extend({
+        isLockedOpen : falseFn,
+        isOpen       : falseFn,
+        toggle       : rejectFn,
+        open         : rejectFn,
+        close        : rejectFn,
+        then : function(callback) {
+          return waitForInstance(handle)
+            .then(callback || angular.noop);
+        }
+       }, service);
+    }
     /**
      * Synchronously lookup the controller instance for the specified sidNav instance which has been
      * registered with the markup `md-component-id`
@@ -18140,12 +18213,13 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       if (parent[0] && 'MutationObserver' in $window) {
         // use an mutationObserver to tackle #2602
         var attributeObserver = new MutationObserver(function(mutations) {
-          mutations.forEach(function (mutation) {
-            if (mutation.attributeName === 'disabled' && parent[0].disabled) {
-              setVisible(false);
-              scope.$digest(); // make sure the elements gets updated
-            }
-          });
+          if (mutations.some(function (mutation) {
+              return (mutation.attributeName === 'disabled' && parent[0].disabled);
+            })) {
+              $mdUtil.nextTick(function() {
+                setVisible(false);
+              });
+          }
         });
 
         attributeObserver.observe(parent[0], { attributes: true});
@@ -22966,7 +23040,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
       deregisterScopeListeners.shift()();
     }
     menuItems && menuItems.off('mouseenter', self.handleMenuItemHover);
-    menuItems && menuItems.off('mouseleave', self.handleMenuMouseLeave);
+    menuItems && menuItems.off('mouseleave', self.handleMenuItemMouseLeave);
   };
 
   this.handleMenuItemHover = function(event) {
@@ -26146,4 +26220,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc3-master-30e6657"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc3-master-fbf17db"}};
