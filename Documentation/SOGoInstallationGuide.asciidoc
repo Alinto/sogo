@@ -1430,6 +1430,13 @@ URL could be set to something like:
 See the "EMail reminders" section in this document for more information.
 |=======================================================================
 
+
+[NOTE]
+Any non-URL safe characters in username/password must be URL-encoded.
+For example, if your SOGo database password is `so%go`, you must set
+the value in your preferences to `so%25go` - where `%` is encoded
+to `%25`.
+
 If you're using MySQL, make sure in your `my.cnf` file you have:
 
 ----
