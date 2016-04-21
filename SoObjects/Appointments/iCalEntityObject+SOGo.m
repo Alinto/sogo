@@ -86,7 +86,7 @@ NSNumber *iCalDistantFutureNumber = nil;
                               nil];
 
   value = [self priority];
-  if ([value length]) [data setObject: value forKey: @"priority"];
+  if ([value length]) [data setObject: [NSNumber numberWithInteger: [value intValue]] forKey: @"priority"];
 
   value = [self location];
   if ([value length]) [data setObject: value forKey: @"location"];

@@ -34,6 +34,7 @@ Bug fixes
  - [web] fixed saving of a custom weekly recurrence definition
  - [web] properly escape the user's display name (#3617)
  - [web] avoid returning search results on objects without read permissions (#3619)
+ - [web] restore priority of event or task in component editor
  - [core] properly escape wide characters (#3616)
  - [core] avoid double-appending domains in cache for multi-domain configurations (#3614)
  - [dav] we now handle the default classifications for tasks (#3541)
