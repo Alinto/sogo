@@ -6,7 +6,7 @@
   <div class="view-list" layout="column">
 
     <!-- in virtual mailbox mode -->
-    <md-toolbar class="md-whiteframe-z1"
+    <md-toolbar class="md-whiteframe-z1 md-hue-3"
                 ng-hide="!app.showingAdvancedSearch || mailbox.mode.multiple">
       <div class="md-toolbar-tools">
         <md-input-container class="md-flex">
@@ -133,7 +133,7 @@
           </div>
         </md-input-container>
         <md-input-container flex="25">
-          <md-select>
+          <md-select label:aria-label="Search scope">
             <md-option value="subject" selected="selected"><var:string label:value="Subject"/></md-option>
             <md-option value="from"><var:string label:value="Sender"/></md-option>
             <md-option value="subject_or_from"><var:string label:value="Subject or Sender"/></md-option>
@@ -258,7 +258,8 @@
         </span>
       </md-subheader>
       <md-virtual-repeat-container class="md-flex" md-top-index="mailbox.selectedFolder.$topIndex">
-        <md-list class="sg-section-list">
+        <md-list class="sg-section-list"
+                 ng-class="{ 'sg-list-selectable': mailbox.mode.multiple }">
           <md-list-item
               class="md-default-theme md-accent md-hue-2"
               ng-class="{'md-bg': mailbox.selectedFolder.isSelectedMessage(currentMessage.uid, currentMessage.$mailbox.path),
@@ -267,15 +268,12 @@
               md-on-demand="md-on-demand" md-item-size="56"
               ng-click="mailbox.selectMessage(currentMessage)"
               aria-label="{{currentMessage.subject}}">
-            <div class="md-secondary"
-                 ng-click="mailbox.toggleMessageSelection($event, currentMessage)"
-                 ng-switch="currentMessage.selected">
+            <div class="md-secondary sg-avatar-selectable"
+                 ng-class="{ 'sg-avatar-selected': currentMessage.selected }"
+                 ng-click="mailbox.toggleMessageSelection($event, currentMessage)">
               <sg-avatar-image class="md-avatar"
-                               ng-switch-when="false"
                                sg-email="mailbox.service.selectedFolder.type == 'sent' ? currentMessage.to[0].email : currentMessage.from[0].email"
                                size="40"><!-- avatar --></sg-avatar-image>
-              <div class="md-avatar sg-avatar-selected"
-                   ng-switch-when="true"><!-- selected avatar --></div>
             </div>
             <div class="sg-category"
                  ng-repeat="tag in currentMessage.flags | limitTo:5"
@@ -320,13 +318,16 @@
     </md-content>
   </div>
 
-  <div id="detailView" class="view-detail md-default-theme md-background md-bg md-hue-2"
+  <div id="detailView" class="view-detail"
        layout="column" layout-align="start center"
        ng-class="{ 'sg-close': !mailbox.service.selectedFolder.selectedMessage }"
+       md-colors="::{backgroundColor: 'default-background-200'}"
        ui-view="message">
-    <md-content class="hide-xs md-flex md-hue-2"
+    <md-content class="hide-xs md-flex"
+                md-colors="::{backgroundColor: 'default-background-200'}"
                 layout="column" layout-align="center center" layout-fill="layout-fill">
-      <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title"><var:string label:value="No message selected"/></div>
+      <div class="sg-md-title"
+           md-colors="::{color: 'default-background-500'}"><var:string label:value="No message selected"/></div>
     </md-content>
   </div>
 

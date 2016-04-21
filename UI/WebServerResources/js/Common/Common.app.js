@@ -145,7 +145,7 @@
       '800': '367d2e',
       '900': '225e1b',
       // 'A100': 'b9f6ca',
-      'A100': 'ffffff', // assigned to md-hue-1
+      'A100': 'fafafa', // assigned to md-hue-1
       'A200': '69f0ae',
       'A400': '00e676',
       'A700': '00c853',
@@ -204,12 +204,12 @@
       .accentPalette('sogo-green', {
         'default': '500',
         // 'hue-1': '200',
-        'hue-1': 'A100',
+        'hue-1': 'A100', // background-50
         'hue-2': '300',
         'hue-3': 'A700'
       })
       .backgroundPalette('grey', {
-        'default': 'A100',
+        'default': '50',
         'hue-1': '200',
         'hue-2': '300',
         'hue-3': '500'

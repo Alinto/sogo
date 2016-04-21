@@ -17,7 +17,27 @@ $sg-avatar-width: 40px;
 // Circle diamter of color chips
 $sg-color-chip-width: 16px;
 
+
+/*------------------------------------*\
+    MD-LIST-ITEM
+\*------------------------------------*/
+
 md-list-item {
+
+  // Gain some space with secondary action button;
+  // Impact: list with checkbox in sidevav of Calendar module
+  &.md-with-secondary ._md-list-item-inner {
+    padding-right: $bl;
+  }
+
+  // Fix for md-menu visibility when set as a secondary action in a list item
+  &._md-button-wrap > div.md-button:first-child > .md-button:first-child {
+    z-index: $z-index-sidenav - 2;
+  }
+  ._md-secondary-container {
+    z-index: $z-index-sidenav - 1;
+  }
+
   ._md-list-item-inner {
     overflow: hidden;
 
@@ -44,6 +64,11 @@ md-list-item {
     text-transform: uppercase;
   }
 }
+
+
+/*------------------------------------*\
+    MD-SIDENAV
+\*------------------------------------*/
 
 .md-sidenav-left {
   md-list {
@@ -98,6 +123,7 @@ md-list-item {
 .md-tile-right {
   padding-right: $item-padding-right;
 }
+
 // The right tile for a list item (avatar container)
 // ----------------------------------------------------------------------------
 
@@ -124,17 +150,9 @@ div.md-tile-left {
   min-width: $sg-md-grid-pitch + $baseline-grid;
 }
 
-.sg-section-list {
-  md-list-item {
-    &._md-button-wrap {
-      > .md-button:first-child {
-        ._md-list-item-inner {
-          // Expect the container to include a sg-tile-icons
-          padding-right: 0px;
-        }
-      }
-    }
-  }
+.sg-section-list md-list-item._md-button-wrap > .md-button:first-child ._md-list-item-inner {
+  // Expect the container to include a sg-tile-icons (Mailer module)
+  padding-right: 0px;
 }
 
 .sg {
@@ -180,8 +198,8 @@ div.md-tile-left {
   &-tile-icons {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: start;
+    align-items: flex-end;
+    justify-content: center;
     width: (2 * $mg);
     height: (2 + $sg-font-size-1) * 4; // (vertical padding + icon size) * max number of icons
   }
@@ -203,6 +221,8 @@ div.md-tile-left {
       font-size: $sg-font-size-1;
       //color: $colorGray;
       margin: 1px 2px;
+      min-height: $sg-font-size-1;
+      min-width: $sg-font-size-1;
     }
   }
 
@@ -265,10 +285,29 @@ sg-avatar-image md-icon.material-icons {
     content: "\e80b"; // public
   }
 }
-.sg-avatar-selected {
+
+
+/*------------------------------------*\
+    SELECTABLE AVATARS
+\*------------------------------------*/
+
+.sg-list-selectable .sg-avatar-selectable,
+.sg-avatar-selectable:hover {
+  font-family: 'Material Icons';
+  font-size: $sg-avatar-width;
+  height: 100%;
   &:before {
     color: inherit;
-    content: "\e5ca"; // check
+    content: "\e835"; // check box outline
+    font-size: $icon-size;
+    margin: 0 ($sg-avatar-width - $icon-size)/2;
+  }
+  &.sg-avatar-selected:before {
+    content: "\e834"; // check box
+  }
+
+  > * {
+    display: none;
   }
 }
 //.md-tile-left-accepted:before {

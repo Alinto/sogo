@@ -36,10 +36,12 @@
                 md-component-id="left" md-is-locked-open="isGtMedium"
                 ng-class="{ 'sg-close': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
-      <md-content class="md-flex md-hue-2" md-scroll-y="md-scroll-y">
+      <md-content class="md-flex" md-scroll-y="md-scroll-y"
+                  md-colors="::{ backgroundColor: 'default-background-300' }">
         <!-- User's calendars -->
         <section class="sg-section-list">
-          <md-subheader class="sg-md-subheader--icon-button md-hue-2">
+          <md-subheader class="sg-md-subheader--icon-button"
+                        md-colors="::{background: 'default-background-300'}">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Calendars"/></span>
               <md-button class="sg-icon-button"
@@ -134,7 +136,8 @@
         </section>
         <!-- Subscriptions -->
         <section class="sg-section-list">
-          <md-subheader class="sg-md-subheader--icon-button md-hue-2">
+          <md-subheader class="sg-md-subheader--icon-button"
+                        md-colors="::{background: 'default-background-300'}">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Subscriptions"/></span>
               <md-button class="sg-icon-button"
@@ -202,7 +205,8 @@
         </section>
         <!-- Web Calendars -->
         <section class="sg-section-list">
-          <md-subheader class="sg-md-subheader--icon-button md-hue-2">
+          <md-subheader class="sg-md-subheader--icon-button"
+                        md-colors="::{background: 'default-background-300'}">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Web Calendars"/></span>
               <md-button class="sg-icon-button"
@@ -509,18 +513,17 @@
               <md-subheader>
                 <span>{{list.filterpopup() | loc}}</span>
               </md-subheader>
-              <md-list class="sg-section-list">
+              <md-list class="sg-section-list"
+                       ng-class="{ 'sg-list-selectable': list.mode.multiple }">
                 <md-list-item ng-repeat="event in list.component.$events"
                               aria-label="{{event.c_title}}"
                               ng-click="list.openEvent($event, event)">
-                  <div class="md-secondary"
+                  <div class="md-secondary sg-avatar-selectable"
                        label:aria-label="Toggle item"
-                       ng-click="list.toggleComponentSelection($event, event)"
-                       ng-switch="event.selected">
-                    <div class="md-avatar sg-avatar-selected" ng-class="event.getClassName('fg')"
-                         ng-switch-when="true"><!-- selected avatar --></div>
-                    <div class="sg-color-chip" ng-class="event.getClassName('bg')"
-                         ng-switch-when="false"><!-- calendar color --></div>
+                       ng-class="[event.getClassName('fg'), { 'sg-avatar-selected' : event.selected }]"
+                       ng-click="list.toggleComponentSelection($event, event)">
+                    <div class="sg-color-chip"
+                         ng-class="event.getClassName('bg')"><!-- calendar color --></div>
                   </div>
                   <div class="sg-category"
                        ng-repeat="category in event.categories | limitTo:5"

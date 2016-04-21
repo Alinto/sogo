@@ -31,13 +31,9 @@ $quarter_height: 10px;
     }
 
     // The color chip is smaller; adjust the "selected" icon accordingly
-    .sg-avatar-selected {
-      &:before {
-        margin-left: -($bl);
-      }
-      &.md-avatar:first-child {
-        margin-right: 0;
-      }
+    .sg-list-selectable .sg-avatar-selectable:before,
+    .sg-avatar-selectable:hover:before {
+      margin: 0 (($sg-color-chip-width + 2*$bl) - $icon-size)/2;
     }
   }
 

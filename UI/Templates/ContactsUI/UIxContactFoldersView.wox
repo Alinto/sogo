@@ -27,10 +27,12 @@
                 md-component-id="left" md-is-locked-open="isGtMedium"
                 ng-class="{ 'sg-close': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
-      <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
+      <md-content md-scroll-y="md-scroll-y" class="md-flex"
+                  md-colors="::{ backgroundColor: 'default-background-300' }">
         <!-- User's addressbooks -->
         <section>
-          <md-subheader class="sg-md-subheader--icon-button md-hue-2">
+          <md-subheader class="sg-md-subheader--icon-button"
+                        md-colors="::{background: 'default-background-300'}">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Address Books"/></span>
               <md-button class="sg-icon-button"
@@ -111,7 +113,8 @@
         </section>
         <!-- Subscriptions -->
         <section>
-          <md-subheader class="sg-md-subheader--icon-button md-hue-2">
+          <md-subheader class="sg-md-subheader--icon-button"
+                        md-colors="::{background: 'default-background-300'}">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Subscriptions"/></span>
               <md-button class="sg-icon-button"
@@ -171,7 +174,8 @@
         </section>
         <!-- Remote/domain addressbooks -->
         <section>
-          <md-subheader class="sg-md-subheader--icon-button md-hue-2">
+          <md-subheader class="sg-md-subheader--icon-button"
+                        md-colors="::{background: 'default-background-300'}">
             <var:string label:value="Global Addressbooks"/>
           </md-subheader>
           <md-list>
@@ -293,7 +297,7 @@
               </div>
             </md-input-container>
             <md-input-container flex="25">
-              <md-select>
+              <md-select label:aria-label="Search scope">
                 <md-option value="name_or_address" selected="selected"><var:string label:value="Name or Email"/></md-option>
                 <md-option value="category"><var:string label:value="Category"/></md-option>
                 <md-option value="organization"><var:string label:value="Organization"/></md-option>
@@ -381,7 +385,8 @@
             </span>
           </md-subheader>
           <md-virtual-repeat-container class="md-flex" md-top-index="addressbook.selectedFolder.$topIndex">
-            <md-list class="sg-section-list">
+            <md-list class="sg-section-list"
+                     ng-class="{ 'sg-list-selectable': addressbook.mode.multiple }">
               <md-list-item
                   class="md-default-theme md-accent md-hue-2"
                   ng-class="{'md-bg': addressbook.selectedFolder.isSelectedCard(currentCard.id)}"
@@ -389,12 +394,22 @@
                   md-on-demand="md-on-demand" md-item-size="56"
                   aria-label="{{currentCard.$fullname()}}"
                   ng-click="addressbook.selectCard(currentCard)">
-                <div class="md-secondary"
-                     ng-click="addressbook.toggleCardSelection($event, currentCard)">
-                  <div class="md-avatar sg-avatar-selected"
-                       ng-if="currentCard.selected">
-                    <!-- selected avatar -->
+                <div class="sg-tile-content">
+                  <div class="sg-md-subhead">
+                    <div ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
                   </div>
+                  <div class="sg-md-body">
+                    <div>{{currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)}}</div>
+                  </div>
+                </div>
+                <div class="sg-tile-icons"><!-- spacer --></div>
+                <div class="md-secondary sg-avatar-selectable"
+                     ng-class="{ 'sg-avatar-selected': currentCard.selected }"
+                     ng-click="addressbook.toggleCardSelection($event, currentCard)">
+                  <!-- <div class="md-avatar sg-avatar-selected" -->
+                  <!--      ng-if="currentCard.selected"> -->
+                    <!-- selected avatar -->
+                  <!-- </div> -->
                   <sg-avatar-image class="md-avatar"
                                    ng-if="addressbook.notSelectedComponent(currentCard, 'vcard')"
                                    sg-email="currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)"
@@ -407,15 +422,6 @@
                     <!-- list avatar -->
                   </div>
                 </div>
-                <div class="sg-tile-content">
-                  <div class="sg-md-subhead">
-                    <div ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
-                  </div>
-                  <div class="sg-md-body">
-                    <div>{{currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)}}</div>
-                  </div>
-                </div>
-                <div class="sg-tile-icons"><!-- spacer --></div>
               </md-list-item>
             </md-list>
           </md-virtual-repeat-container>
@@ -434,13 +440,16 @@
         </md-content>
       </div>
 
-      <div id="detailView" class="view-detail md-default-theme md-background md-bg md-hue-2"
+      <div id="detailView" class="view-detail"
            layout="column" layout-align="start center"
            ng-class="{ 'sg-close': !addressbook.selectedFolder.selectedCard }"
+           md-colors="::{backgroundColor: 'default-background-200'}"
            ui-view="card">
-        <md-content class="hide-xs md-flex md-hue-2"
+        <md-content class="hide-xs md-flex"
+                    md-colors="::{backgroundColor: 'default-background-200'}"
                     layout="column" layout-align="center center" layout-fill="layout-fill">
-          <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title"><var:string label:value="No contact selected"/></div>
+          <div class="sg-md-title"
+               md-colors="::{color: 'default-background-500'}"><var:string label:value="No contact selected"/></div>
         </md-content>
       </div>
     </div>

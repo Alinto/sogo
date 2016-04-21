@@ -34,10 +34,12 @@
                 md-component-id="left" md-is-locked-open="isGtMedium"
                 ng-class="{ 'sg-close': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
-      <md-content class="md-flex md-hue-2" layout="column" md-scroll-y="md-scroll-y">
+      <md-content class="md-flex" layout="column" md-scroll-y="md-scroll-y"
+                  md-colors="::{ backgroundColor: 'default-background-300' }">
         <section class="md-flex" layout="column"
                  ng-repeat="account in app.accounts track by account.id">
-          <md-subheader class="sg-md-subheader--icon-button md-hue-2">
+          <md-subheader class="sg-md-subheader--icon-button"
+                        md-colors="::{ backgroundColor: 'default-background-300' }">
             <div layout="row" layout-align="start center">
               <md-button class="md-icon-button"
                          ng-show="account.id == 0"
@@ -183,9 +185,11 @@
       <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main">
         <var:component className="UIxTopnavToolbar"/>
       </md-toolbar>
-      <md-content class="md-flex md-hue-2"
+      <md-content class="md-flex"
+                  md-colors="::{backgroundColor: 'default-background-200'}"
                   layout="column" layout-align="center center" layout-fill="layout-fill">
-        <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title">
+        <div class="sg-md-title"
+             md-colors="::{color: 'default-background-500'}">
           <var:string label:value="No mailbox selected"/>
         </div>
       </md-content>
@@ -199,7 +203,7 @@
     </md-toolbar>
 
     <!-- Advanced search toolbar -->
-    <md-toolbar layout="column" class="md-tall toolbar-main"
+    <md-toolbar layout="column" class="md-tall toolbar-main md-hue-3"
                 ng-show="app.showingAdvancedSearch">
       <div class="md-toolbar-tools">
         <div layout="column" class="md-flex">

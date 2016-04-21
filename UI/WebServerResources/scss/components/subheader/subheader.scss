@@ -1,10 +1,17 @@
 /// subheader.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
+$sg-subheader-padding-top-bottom: ($subheader-padding - ($icon-button-height - $subheader-font-size)/2);
+$sg-subheader-padding-left-right: $baseline-grid;
+
+
 .sg-md-subheader {
   &--icon-button ._md-subheader-inner {
+    line-height: $sg-avatar-width + ($sg-subheader-padding-top-bottom)*2;
     padding: ($subheader-padding - ($icon-button-height - $subheader-font-size)/2) $baseline-grid;
+    padding: $sg-subheader-padding-top-bottom $sg-subheader-padding-left-right;
     padding-left: $subheader-padding;
+    padding-right: 0;
   }
   &--fixed {
     position: fixed;
