@@ -13,6 +13,7 @@ Enhancements
  - [web] new SOGoHelpURL preference to set a custom URL for SOGo help (#2768)
  - [web] now able to copy/move events and also duplicate them (#3196)
  - [web] improve preferences validation and check for unsaved changes
+ - [web] display events and tasks priorities in list and day/week views
 
 Bug fixes
  - [web] fixed missing columns in SELECT statements (PostgreSQL)

@@ -179,6 +179,7 @@
     vm.addAttendee = addAttendee;
     vm.removeAttendee = removeAttendee;
     vm.addAttachUrl = addAttachUrl;
+    vm.priorityLevel = priorityLevel;
     vm.cancel = cancel;
     vm.save = save;
     vm.attendeeConflictError = false;
@@ -241,6 +242,17 @@
       vm.component.deleteAttendee(attendee);
       if (vm.component.attendees.length === 0)
         vm.showAttendeesEditor = false;
+    }
+
+    function priorityLevel() {
+      if (vm.component.priority) {
+        if (vm.component.priority > 5)
+          return l('low');
+        else if (vm.component.priority > 4)
+          return l('normal');
+        else
+          return l('high');
+      }
     }
 
     function save(form, options) {

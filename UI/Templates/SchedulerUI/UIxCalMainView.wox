@@ -531,7 +531,10 @@
                        ng-style="{ left: ($index * 3) + 'px' }"><!-- calendar color --></div>
                   <div class="sg-tile-content">
                     <div class="sg-md-subhead">
-                      <div>{{event.c_title}}</div>
+                      <div>
+                        <span ng-show="event.c_priority" class="sg-priority">{{event.c_priority}}</span>
+                        {{event.c_title}}
+                      </div>
                     </div>
                     <div class="sg-md-body">
                       <div>{{event.c_location}}</div>
@@ -573,7 +576,10 @@
                        ng-style="{ left: ($index * 3) + 'px' }"><!-- calendar color --></div>
                   <div class="sg-tile-content">
                     <div class="sg-md-subhead">
-                      <div>{{task.c_title}}</div>
+                      <div>
+                        <span ng-show="task.c_priority" class="sg-priority">{{task.c_priority}}</span>
+                        {{task.c_title}}
+                      </div>
                     </div>
                     <div class="sg-md-body">
                       <div><!-- spacer --></div>

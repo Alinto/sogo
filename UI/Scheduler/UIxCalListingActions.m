@@ -1,6 +1,6 @@
 /* UIxCalListingActions.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2015 Inverse inc.
+ * Copyright (C) 2006-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -79,7 +79,7 @@ static NSArray *tasksFields = nil;
                     @"calendarName",
                     @"c_status", @"c_title", @"c_startdate",
                     @"c_enddate", @"c_location", @"c_isallday",
-                    @"c_classification", @"c_category",
+                    @"c_classification", @"c_category", @"c_priority",
                     @"c_partmails", @"c_partstates", @"c_owner",
                     @"c_iscycle", @"c_nextalarm",
                     @"c_recurrence_id", @"isException", @"viewable", @"editable",

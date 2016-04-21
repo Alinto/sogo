@@ -72,13 +72,16 @@
             <!-- priority -->
             <div class="pseudo-input-container" flex="50" flex-xs="100">
               <label class="pseudo-input-label"><var:string label:value="Priority"/></label>
-              <md-slider class="md-flex"
+              <md-slider-container>
+                <md-slider class="md-flex"
                          md-discrete="true"
                          ng-model="editor.component.priority"
                          step="1"
                          min="0"
                          max="9"
                          label:aria-label="Priority"><!-- slider --></md-slider>
+                <span>{{editor.priorityLevel()}}</span>
+              </md-slider-container>
             </div>
           </div>
           <!-- attach urls -->

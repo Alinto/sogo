@@ -38,7 +38,9 @@
         '    <div class="sg-category" ng-repeat="category in block.component.categories"',
         '         ng-class="\'bg-category\' + category"',
         '         ng-style="{ right: ($index * 3) + \'px\' }"></div>',
-        '    <div class="text">{{ block.component.summary }}',
+        '    <div class="text">',
+        '      <span ng-show="block.component.c_priority" class="sg-priority">{{block.component.c_priority}}</span>',
+        '      {{ block.component.summary }}',
         '      <span class="icons">',
         //       Component is reccurent
         '        <md-icon ng-if="block.component.occurrenceId" class="material-icons icon-repeat"></md-icon>',
