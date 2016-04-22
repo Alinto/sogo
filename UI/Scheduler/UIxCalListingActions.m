@@ -77,7 +77,7 @@ static NSArray *tasksFields = nil;
   {
     eventsFields = [NSArray arrayWithObjects: @"c_name", @"c_folder",
                     @"calendarName",
-                    @"c_status", @"c_title", @"c_startdate",
+                    @"c_status", @"c_isopaque", @"c_title", @"c_startdate",
                     @"c_enddate", @"c_location", @"c_isallday",
                     @"c_classification", @"c_category", @"c_priority",
                     @"c_partmails", @"c_partstates", @"c_owner",
@@ -747,6 +747,7 @@ static NSArray *tasksFields = nil;
  * @apiSuccess (Success 200) {String} events.c_folder            Calendar ID
  * @apiSuccess (Success 200) {String} events.calendarName        Human readable name of calendar
  * @apiSuccess (Success 200) {Number} events.c_status            0: Cancelled, 1: Normal, 2: Tentative
+ * @apiSuccess (Success 200) {Number} events.c_isopaque          1 if event is opaque (not transparent)
  * @apiSuccess (Success 200) {String} events.c_title             Title
  * @apiSuccess (Success 200) {String} events.c_startdate         Epoch time of start date
  * @apiSuccess (Success 200) {String} events.c_enddate           Epoch time of end date
@@ -754,6 +755,7 @@ static NSArray *tasksFields = nil;
  * @apiSuccess (Success 200) {Number} events.c_isallday          1 if event lasts all day
  * @apiSuccess (Success 200) {Number} events.c_classification    0: Public, 1: Private, 2: Confidential
  * @apiSuccess (Success 200) {String} events.c_category          Category
+ * @apiSuccess (Success 200) {Number} events.c_priority          Priority (0 to 9)
  * @apiSuccess (Success 200) {String[]} events.c_partmails       Participants email addresses
  * @apiSuccess (Success 200) {String[]} events.c_partstates      Participants states
  * @apiSuccess (Success 200) {String} events.c_owner             Event's owner

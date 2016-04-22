@@ -61,9 +61,14 @@
         if (scope.block.userState)
           iElement.addClass('sg-event--' + scope.block.userState);
 
-        // Set background color
-        if (scope.block.component)
+        if (scope.block.component) {
+          // Set background color
           iElement.addClass('bg-folder' + scope.block.component.pid);
+
+          // Add class for transparency
+          if (scope.block.component.c_isopaque === 0)
+            iElement.addClass('sg-event--transparent');
+        }
 
       }
     }
