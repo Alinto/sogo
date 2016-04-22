@@ -44,7 +44,7 @@
 
 // Define CSS styles to use ng-class with md-icon
 md-icon {
-  transition: 240ms;
+  transition: transform 240ms;
   &.sg-icon-toolbar-bg {
     font-size: 84px;
     opacity: 0.2;
