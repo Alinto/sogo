@@ -14,6 +14,7 @@ Enhancements
  - [web] now able to copy/move events and also duplicate them (#3196)
  - [web] improve preferences validation and check for unsaved changes
  - [web] display events and tasks priorities in list and day/week views
+ - [web] style events depending on the user participation state
 
 Bug fixes
  - [web] fixed missing columns in SELECT statements (PostgreSQL)

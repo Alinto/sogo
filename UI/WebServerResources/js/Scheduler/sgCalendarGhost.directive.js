@@ -46,7 +46,7 @@
       });
 
       function initGhost() {
-        var pid, calendarData;
+        var pid, calendarData, userState;
 
         // Expose ghost block to the scope
         scope.block = Component.$ghost;
@@ -61,6 +61,11 @@
 
         if (!pid)
           pid = scope.block.component.pid;
+
+        // Add class for user's participation state
+        userState = scope.block.component.blocks[0].userState;
+        if (userState)
+          iElement.addClass('sg-event--' + userState);
 
         // Set background color
         iElement.addClass('bg-folder' + pid);

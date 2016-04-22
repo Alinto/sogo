@@ -55,6 +55,9 @@
         '  .bdr-folder{{ cssCtrl.ngModel.id }} {',
         '    border-color: {{ cssCtrl.ngModel.color }} !important;',
         '  }',
+        '  .contrast-bdr-folder{{ cssCtrl.ngModel.id }} {',
+        '    border-color: {{ cssCtrl.contrast(cssCtrl.ngModel.color) }} !important;',
+        '  }',
         /* Checkbox color */
         '  .checkbox-folder{{ cssCtrl.ngModel.id }} ._md-icon {',
         '    background-color: {{ cssCtrl.ngModel.color }} !important;',
@@ -69,7 +72,7 @@
     function sgFolderStylesheetController() {
       var vm = this;
 
-      vm.contrast = contrast;
+      vm.contrast = contrast; // defined in Common/utils.js
     }
   }
 

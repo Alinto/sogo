@@ -23,31 +23,49 @@
         clickBlock: '&sgClick'
       },
       replace: true,
-      template: [
+      template: template,
+      link: link
+    };
+
+    function template(tElem, tAttrs) {
+      var p = _.has(tAttrs, 'sgCalendarGhost')? '' : '::';
+
+      return [
         '<div class="sg-event"',
         //    Add a class while dragging
         '     ng-class="{\'sg-event--dragging\': block.dragging}"',
         '     ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
-        '  <span class="secondary" ng-if="!block.component.c_isallday">{{ block.starthour }}</span>',
-        '  {{ block.component.summary }}',
+        '  <span class="secondary" ng-if="'+p+'!block.component.c_isallday">{{ '+p+'block.starthour }}</span>',
+        //     Priority
+        '  <span ng-show="'+p+'block.component.c_priority" class="sg-priority">{{'+p+'block.component.c_priority}}</span>',
+        // Summary
+        '  {{ '+p+'block.component.summary }}',
         '  <span class="icons">',
         //   Component is reccurent
-        '    <md-icon ng-if="block.component.occurrenceId" class="material-icons icon-repeat"></md-icon>',
+        '    <md-icon ng-if="'+p+'block.component.occurrenceId" class="material-icons icon-repeat"></md-icon>',
         //   Component has an alarm
-        '    <md-icon ng-if="block.component.c_nextalarm" class="material-icons icon-alarm"></md-icon>',
+        '    <md-icon ng-if="'+p+'block.component.c_nextalarm" class="material-icons icon-alarm"></md-icon>',
         //   Component is confidential
-        '    <md-icon ng-if="block.component.c_classification == 1" class="material-icons icon-visibility-off"></md-icon>',
+        '    <md-icon ng-if="'+p+'block.component.c_classification == 1" class="material-icons icon-visibility-off"></md-icon>',
         //   Component is private
-        '    <md-icon ng-if="block.component.c_classification == 2" class="material-icons icon-vpn-key"></md-icon>',
+        '    <md-icon ng-if="'+p+'block.component.c_classification == 2" class="material-icons icon-vpn-key"></md-icon>',
         '  </span>',
         '</div>'
-      ].join(''),
-      link: link
-    };
+      ].join('');
+    }
 
     function link(scope, iElement, attrs) {
-      if (scope.block.component)
-        iElement.addClass('bg-folder' + scope.block.component.pid);
+      if (!_.has(attrs, 'sgCalendarGhost')) {
+
+        // Add class for user's participation state
+        if (scope.block.userState)
+          iElement.addClass('sg-event--' + scope.block.userState);
+
+        // Set background color
+        if (scope.block.component)
+          iElement.addClass('bg-folder' + scope.block.component.pid);
+
+      }
     }
   }
 

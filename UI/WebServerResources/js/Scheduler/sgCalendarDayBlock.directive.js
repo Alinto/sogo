@@ -28,73 +28,91 @@
         clickBlock: '&sgClick'
       },
       replace: true,
-      template: [
+      template: template,
+      link: link
+    };
+
+    function template(tElem, tAttrs) {
+      var p = _.has(tAttrs, 'sgCalendarGhost')? '' : '::';
+
+      return [
         '<div class="sg-event"',
         //    Add a class while dragging
         '     ng-class="{\'sg-event--dragging\': block.dragging}">',
         '  <div class="eventInside"',
         '       ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
         //   Categories color stripes
-        '    <div class="sg-category" ng-repeat="category in block.component.categories"',
+        '    <div class="sg-category" ng-repeat="category in '+p+'block.component.categories"',
         '         ng-class="\'bg-category\' + category"',
         '         ng-style="{ right: ($index * 3) + \'px\' }"></div>',
         '    <div class="text">',
-        '      <span ng-show="block.component.c_priority" class="sg-priority">{{block.component.c_priority}}</span>',
-        '      {{ block.component.summary }}',
+        //     Priority
+        '      <span ng-show="'+p+'block.component.c_priority" class="sg-priority">{{'+p+'block.component.c_priority}}</span>',
+        //     Summary
+        '      {{ '+p+'block.component.summary }}',
         '      <span class="icons">',
         //       Component is reccurent
-        '        <md-icon ng-if="block.component.occurrenceId" class="material-icons icon-repeat"></md-icon>',
+        '        <md-icon ng-if="'+p+'block.component.occurrenceId" class="material-icons icon-repeat"></md-icon>',
         //       Component has an alarm
-        '        <md-icon ng-if="block.component.c_nextalarm" class="material-icons icon-alarm"></md-icon>',
+        '        <md-icon ng-if="'+p+'block.component.c_nextalarm" class="material-icons icon-alarm"></md-icon>',
         //       Component is confidential
-        '        <md-icon ng-if="block.component.c_classification == 1" class="material-icons icon-visibility-off"></md-icon>',
+        '        <md-icon ng-if="'+p+'block.component.c_classification == 1" class="material-icons icon-visibility-off"></md-icon>',
         //       Component is private
-        '        <md-icon ng-if="block.component.c_classification == 2" class="material-icons icon-vpn-key"></md-icon>',
+        '        <md-icon ng-if="'+p+'block.component.c_classification == 2" class="material-icons icon-vpn-key"></md-icon>',
         '      </span>',
         //     Location
-        '      <div class="secondary" ng-if="block.component.c_location">',
-        '        <md-icon>place</md-icon> {{block.component.c_location}}',
+        '      <div class="secondary" ng-if="'+p+'block.component.c_location">',
+        '        <md-icon>place</md-icon> {{'+p+'block.component.c_location}}',
         '      </div>',
         '    </div>',
         '  </div>',
         '  <div class="ghostStartHour" ng-if="block.startHour">{{ block.startHour }}</div>',
         '  <div class="ghostEndHour" ng-if="block.endHour">{{ block.endHour }}</div>',
         '</div>'
-      ].join(''),
-      link: link
-    };
+      ].join('');
+    }
 
     function link(scope, iElement, attrs) {
       var pc, left, right;
 
-      // Compute overlapping (2%)
-      pc = 100 / scope.block.siblings;
-      left = scope.block.position * pc;
-      right = 100 - (scope.block.position + 1) * pc;
-      if (pc < 100) {
-        if (left > 0)
-          left -= 2;
-        if (right > 0)
-          right -= 2;
+      if (!_.has(attrs, 'sgCalendarGhost')) {
+
+        // Compute overlapping (2%)
+        pc = 100 / scope.block.siblings;
+        left = scope.block.position * pc;
+        right = 100 - (scope.block.position + 1) * pc;
+        if (pc < 100) {
+          if (left > 0)
+            left -= 2;
+          if (right > 0)
+            right -= 2;
+        }
+
+        // Add some padding (2%)
+        if (left === 0)
+          left = 2;
+        if (right === 0)
+          right = 2;
+
+        // Set position
+        iElement.css('left', left + '%');
+        iElement.css('right', right + '%');
+        if (!scope.block.component || !scope.block.component.c_isallday) {
+          iElement.addClass('starts' + scope.block.start);
+          iElement.addClass('lasts' + scope.block.length);
+        }
+
+        // Add class for user's participation state
+        if (scope.block.userState)
+          iElement.addClass('sg-event--' + scope.block.userState);
+
+        // Set background color
+        if (scope.block.component) {
+          iElement.addClass('bg-folder' + scope.block.component.pid);
+          iElement.addClass('contrast-bdr-folder' + scope.block.component.pid);
+        }
+
       }
-
-      // Add some padding (2%)
-      if (left === 0)
-        left = 2;
-      if (right === 0)
-        right = 2;
-
-      // Set position
-      iElement.css('left', left + '%');
-      iElement.css('right', right + '%');
-      if (!scope.block.component || !scope.block.component.c_isallday) {
-        iElement.addClass('starts' + scope.block.start);
-        iElement.addClass('lasts' + scope.block.length);
-      }
-
-      // Set background color
-      if (scope.block.component)
-        iElement.addClass('bg-folder' + scope.block.component.pid);
     }
   }
 

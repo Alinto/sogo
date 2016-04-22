@@ -290,6 +290,23 @@ $quarter_height: 10px;
       }
     }
 
+    // User participation status is "needs action"
+    &--needs-action {
+      border-width: 1px;
+      border-style: dashed;
+      opacity: 0.7;
+    }
+
+    // User participation status is "tentative"
+    &--tentative {
+      opacity: 0.7;
+    }
+
+    // User has declined the invitation
+    &--declined {
+      opacity: 0.4;
+    }
+
     .eventInside {
       overflow: hidden;
     }

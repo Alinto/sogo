@@ -868,7 +868,7 @@ static inline void _feedBlockWithMonthBasedData (NSMutableDictionary *block, uns
                                         number: (NSNumber *) number
                                          onDay: (unsigned int) dayStart
                                 recurrenceTime: (unsigned int) recurrenceTime
-                                     userState: (iCalPersonPartStat) userState
+                                     userState: (NSString *) userState
 {
   NSMutableDictionary *block;
   
@@ -882,22 +882,22 @@ static inline void _feedBlockWithMonthBasedData (NSMutableDictionary *block, uns
   if (recurrenceTime)
     [block setObject: [NSNumber numberWithInt: recurrenceTime]
               forKey: @"recurrenceTime"];
-  if (userState != iCalPersonPartStatOther)
-    [block setObject: [NSNumber numberWithInt: userState]
+  if (userState != nil)
+    [block setObject: userState
               forKey: @"userState"];
   
   return block;
 }
 
-static inline iCalPersonPartStat _userStateInEvent (NSArray *event)
+static inline NSString* _userStateInEvent (NSArray *event)
 {
   unsigned int count, max;
-  iCalPersonPartStat state;
+  NSString *state;
   NSArray *participants, *states;
   SOGoUser *user;
   
   participants = nil;
-  state = iCalPersonPartStatOther;
+  state = nil;
   
   participants = [event objectAtIndex: eventPartMailsIndex];
 
@@ -909,10 +909,10 @@ static inline iCalPersonPartStat _userStateInEvent (NSArray *event)
       max = [participants count];
       user = [SOGoUser userWithLogin: [event objectAtIndex: eventOwnerIndex]
                                roles: nil];
-      while (state == iCalPersonPartStatOther && count < max)
+      while (state == nil && count < max)
         {
           if ([user hasEmail: [participants objectAtIndex: count]])
-            state = [[states objectAtIndex: count] intValue];
+            state = [states objectAtIndex: count];
           else
             count++;
         }
@@ -929,7 +929,7 @@ static inline iCalPersonPartStat _userStateInEvent (NSArray *event)
   eventEnd, computedEventEnd, offset, recurrenceTime, swap;
   NSMutableArray *currentDay;
   NSMutableDictionary *eventBlock;
-  iCalPersonPartStat userState;
+  NSString *userState;
   
   eventStart = [[event objectAtIndex: eventStartDateIndex] intValue];
   if (eventStart < 0)
