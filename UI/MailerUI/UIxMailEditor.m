@@ -510,14 +510,6 @@ static NSArray *infoKeys = nil;
 //           ? @"remote" : @"local");
 // }
 
-/* requests */
-
-// - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
-// 			   inContext: (WOContext*) localContext
-// {
-//   return YES;
-// }
-
 /* actions */
 - (NSString *) _fixedFilename: (NSString *) filename
 {
