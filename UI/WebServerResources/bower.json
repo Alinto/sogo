@@ -5,6 +5,7 @@
     "angular": "1.4.x",
     "angular-animate": "1.4.x",
     "angular-aria": "1.4.x",
+    "angular-cookies": "1.4.x",
     "angular-messages": "1.4.x",
     "angular-sanitize": "1.4.x",
     "angular-ui-router": "latest",

@@ -132,6 +132,7 @@ module.exports = function(grunt) {
       '<%= src %>/angular-animate/angular-animate{,.min}.js{,.map}',
       '<%= src %>/angular-sanitize/angular-sanitize{,.min}.js{,.map}',
       '<%= src %>/angular-aria/angular-aria{,.min}.js{,.map}',
+      '<%= src %>/angular-cookies/angular-cookies{,.min}.js{,.map}',
       '<%= src %>/angular-messages/angular-messages{,.min}.js{,.map}',
       '<%= src %>/angular-material/angular-material{,.min}.js{,.map}',
       '<%= src %>/angular-ui-router/release/angular-ui-router{,.min}.js',

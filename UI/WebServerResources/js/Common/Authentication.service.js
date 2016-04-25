@@ -5,7 +5,7 @@
   /* jshint validthis: true */
   'use strict';
 
-  angular.module('SOGo.Authentication', [])
+  angular.module('SOGo.Authentication', ['ngCookies'])
 
     .constant('passwordPolicyConfig', {
       PolicyPasswordChangeUnsupported: -3,
@@ -23,41 +23,9 @@
       PolicyNoError: 65535
     })
 
-  // TODO: convert to a Factory recipe?
   .provider('Authentication', Authentication);
 
   function Authentication() {
-    function readCookie(name) {
-      var foundCookie, prefix, pairs, i, currentPair, start;
-      foundCookie = null;
-      prefix = name + '=';
-      pairs = document.cookie.split(';');
-      for (i = 0; !foundCookie && i < pairs.length; i++) {
-        currentPair = pairs[i];
-        start = 0;
-        while (currentPair.charAt(start) == ' ')
-          start++;
-        if (start > 0)
-          currentPair = currentPair.substr(start);
-        if (currentPair.indexOf(prefix) === 0)
-          foundCookie = currentPair.substr(prefix.length);
-      }
-
-      return foundCookie;
-    }
-
-    function readLoginCookie() {
-      var loginValues = null,
-          cookie = readCookie('0xHIGHFLYxSOGo'),
-          value;
-      if (cookie && cookie.length > 8) {
-        value = decodeURIComponent(cookie.substr(8));
-        loginValues = value.base64decode().split(':');
-      }
-
-      return loginValues;
-    }
-
     function redirectUrl(username, domain) {
       var userName, address, baseAddress, altBaseAddress, parts, hostpart, protocol, newAddress;
 
@@ -91,9 +59,21 @@
     /**
      * @ngInject
      */
-    getService.$inject = ['$q', '$http', 'passwordPolicyConfig'];
-    function getService($q, $http, passwordPolicyConfig) {
+    getService.$inject = ['$q', '$http', '$cookies', 'passwordPolicyConfig'];
+    function getService($q, $http, $cookies, passwordPolicyConfig) {
       var service;
+
+      function readLoginCookie() {
+        var loginValues = null,
+            cookie = $cookies.get('0xHIGHFLYxSOGo'),
+            value;
+        if (cookie && cookie.length > 8) {
+          value = decodeURIComponent(cookie.substr(8));
+          loginValues = value.base64decode().split(':');
+        }
+
+        return loginValues;
+      }
 
       service = {
         login: function(data) {
