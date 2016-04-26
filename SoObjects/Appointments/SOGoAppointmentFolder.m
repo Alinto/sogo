@@ -2944,6 +2944,18 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   refDict = [moduleSettings objectForKey: @"FolderShowTasks"];
   [refDict removeObjectForKey: reference];
 
+  refDict = [moduleSettings objectForKey: @"FolderSynchronize"];
+  [refDict removeObjectForKey: reference];
+
+  refDict = [moduleSettings objectForKey: @"NotifyOnExternalModifications"];
+  [refDict removeObjectForKey: reference];
+
+  refDict = [moduleSettings objectForKey: @"NotifyOnPersonalModifications"];
+  [refDict removeObjectForKey: reference];
+
+  refDict = [moduleSettings objectForKey: @"NotifyUserOnPersonalModifications"];
+  [refDict removeObjectForKey: reference];
+
   refArray = [moduleSettings objectForKey: @"InactiveFolders"];
   [refArray removeObject: nameInContainer];
 
