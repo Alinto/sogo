@@ -65,6 +65,7 @@
 
 - (BOOL) uixDebugEnabled;
 - (BOOL) easDebugEnabled;
+- (BOOL) xsrfValidationEnabled;
 
 - (NSString *) pageTitle;
 - (NSString *) helpURL;

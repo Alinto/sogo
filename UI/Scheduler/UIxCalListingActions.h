@@ -1,6 +1,6 @@
 /* UIxCalListingActions.h - this file is part of SOGo
  *
- * Copyright (C) 2006-2015 Inverse inc.
+ * Copyright (C) 2006-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #ifndef UIXCALLISTINGACTIONVIEW_H
 #define UIXCALLISTINGACTIONVIEW_H
 
-#import <Common/WODirectAction+SOGo.h>
+#import <Common/SOGoDirectAction.h>
 
 @class NSCalendarDate;
 @class NSMutableDictionary;
@@ -33,7 +33,7 @@
 @class WOResponse;
 @class WORequest;
 
-@interface UIxCalListingActions : WODirectAction
+@interface UIxCalListingActions : SOGoDirectAction
 {
   NSMutableDictionary *componentsData;
   NSCalendarDate *startDate;

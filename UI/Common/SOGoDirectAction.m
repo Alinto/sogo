@@ -1,6 +1,6 @@
-/* WODirectAction+SOGo.m - this file is part of SOGo
+/* SOGoDirectAction - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,15 +26,19 @@
 
 #import <SoObjects/SOGo/NSObject+Utilities.h>
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
+#import <SoObjects/SOGo/NSString+Crypto.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>
+#import <SoObjects/SOGo/SOGoSession.h>
+#import <SoObjects/SOGo/SOGoSystemDefaults.h>
+#import <SoObjects/SOGo/SOGoWebAuthenticator.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "WODirectAction+SOGo.h"
+#import "SOGoDirectAction.h"
 
 static SoProduct      *commonProduct      = nil;
 
-@implementation WODirectAction (SOGoExtension)
+@implementation SOGoDirectAction
 
 + (void) initialize
 {
@@ -203,6 +207,36 @@ static SoProduct      *commonProduct      = nil;
     url = @"";
 
   return url;
+}
+
+//
+// Protection against XSRF
+//
+- (id<WOActionResults>)performActionNamed:(NSString *)_actionName
+{
+  SOGoWebAuthenticator *auth;
+  NSString *value, *token;
+  NSArray *creds;
+
+  if (![[SOGoSystemDefaults sharedSystemDefaults] xsrfValidationEnabled])
+    return [super performActionNamed: _actionName];
+
+  // We grab the X-XSRF-TOKEN header
+  token = [[context request] headerForKey: @"X-XSRF-TOKEN"];
+
+  // We compare it with our session key
+  auth = [[WOApplication application]
+           authenticatorInContext: context];
+  value = [[context request]
+           cookieValueForKey: [auth cookieNameInContext: context]];
+  creds = [auth parseCredentials: value];
+
+  value = [SOGoSession valueForSessionKey: [creds lastObject]];
+
+  if ([token isEqualToString: [value asSHA1String]])
+    return [super performActionNamed: _actionName];
+
+  return nil;
 }
 
 @end

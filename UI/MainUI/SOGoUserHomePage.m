@@ -455,8 +455,8 @@
 
 - (id <WOActionResults>) logoffAction
 {
-  SOGoWebAuthenticator *auth;
   NSString *userName, *value;
+  SOGoWebAuthenticator *auth;
   WOResponse *response;
   NSCalendarDate *date;
   WOCookie *cookie;
@@ -485,6 +485,12 @@
   cookie = [self _logoutCookieWithDate: date];
   if (cookie)
     [response addCookie: cookie];
+
+  // We remove the XSRF cookie
+  cookie = [WOCookie cookieWithName: @"XSRF-TOKEN"  value: @"discard"];
+  [cookie setPath: [NSString stringWithFormat: @"/%@/", [[context request] applicationName]]];
+  [cookie setExpires: [date yesterday]];
+  [response addCookie: cookie];
 
   [response setHeader: [date rfc822DateString] forKey: @"Last-Modified"];
   [response setHeader: @"no-store, no-cache, must-revalidate,"

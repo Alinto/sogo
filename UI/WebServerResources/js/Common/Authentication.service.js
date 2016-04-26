@@ -151,11 +151,17 @@
 
         changePassword: function(newPassword) {
           var d = $q.defer(),
-              loginCookie = readLoginCookie();
+              loginCookie = readLoginCookie(),
+              xsrfCookie = $cookies.get('XSRF-TOKEN');
+
+          $cookies.remove('XSRF-TOKEN', {path: '/SOGo/'});
 
           $http({
             method: 'POST',
             url: '/SOGo/so/changePassword',
+            headers: {
+              'X-XSRF-TOKEN' : xsrfCookie
+            },
             data: {
               userName: loginCookie[0],
               password: loginCookie[1],
@@ -186,6 +192,8 @@
               perr = passwordPolicyConfig.PolicyPasswordUnknown;
             }
 
+            // Restore the cookie
+            $cookies.put('XSRF-TOKEN', xsrfCookie, {path: '/SOGo/'});
             d.reject(error);
           });
           return d.promise;

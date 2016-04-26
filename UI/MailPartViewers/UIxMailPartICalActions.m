@@ -1,6 +1,6 @@
 /* UIxMailPartICalActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,8 +31,6 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <NGCards/iCalCalendar.h>
-
-#import <UI/Common/WODirectAction+SOGo.h>
 
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 
@@ -239,7 +237,6 @@
   WOResponse *response;
   SOGoAppointmentObject *eventObject;
   iCalEvent *chosenEvent;
-  //NSException *ex;
 
   chosenEvent = [self _setupChosenEventAndEventObject: &eventObject];
   if (chosenEvent)

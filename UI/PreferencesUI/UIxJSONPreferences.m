@@ -35,8 +35,6 @@
 #import <SOGo/WOResourceManager+SOGo.h>
 #import <Mailer/SOGoMailLabel.h>
 
-#import <UI/Common/WODirectAction+SOGo.h>
-
 #import "UIxJSONPreferences.h"
 
 static SoProduct *preferencesProduct = nil;

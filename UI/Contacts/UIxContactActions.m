@@ -1,8 +1,6 @@
 /* UIxContactActions.m - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2010-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +28,7 @@
 
 #import <Contacts/SOGoContactGCSEntry.h>
 
-#import <Common/WODirectAction+SOGo.h>
+#import <Common/SOGoDirectAction.h>
 
 @interface NGVCard (SOGoActionCategory)
 
@@ -80,7 +78,7 @@
 
 @end
 
-@interface UIxContactActions : WODirectAction
+@interface UIxContactActions : SOGoDirectAction
 
 - (WOResponse *) setCategoryAction;
 - (WOResponse *) unsetCategoryAction;

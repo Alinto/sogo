@@ -21,10 +21,11 @@
 #ifndef UIXMAILFOLDERACTIONS_H
 #define UIXMAILFOLDERACTIONS_H
 
+#import <UI/Common/SOGoDirectAction.h>
 
 @class WOResponse;
 
-@interface UIxMailFolderActions : WODirectAction
+@interface UIxMailFolderActions : SOGoDirectAction
 
 - (id <WOActionResults>) createFolderAction;
 - (WOResponse *) renameFolderAction;

@@ -30,8 +30,6 @@
 
 #import <SOGo/NSDictionary+Utilities.h>
 
-#import "WODirectAction+SOGo.h"
-
 #import "UIxObjectActions.h"
 
 @implementation UIxObjectActions

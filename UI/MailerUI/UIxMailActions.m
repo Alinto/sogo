@@ -37,8 +37,6 @@
 #import <SoObjects/SOGo/SOGoUserSettings.h>
 #import <SoObjects/SOGo/SOGoUserDefaults.h>
 
-#import "../Common/WODirectAction+SOGo.h"
-
 #import "UIxMailActions.h"
 
 @implementation UIxMailActions

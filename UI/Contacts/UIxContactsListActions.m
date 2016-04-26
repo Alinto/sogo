@@ -37,9 +37,6 @@
 #import <EOControl/EOQualifier.h>
 #import <EOControl/EOSortOrdering.h>
 
-#import <Common/WODirectAction+SOGo.h>
-
-
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
 

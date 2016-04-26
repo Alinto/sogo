@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2004-2014 Inverse inc
+  Copyright (C) 2004-2016 Inverse inc
 
   This file is part of SOGo.
 
@@ -23,13 +22,14 @@
 #ifndef UIXMAILLISTACTIONS_H
 #define UIXMAILLISTACTIONS_H
 
-
 @class NSDictionary;
 @class EOQualifier;
 @class SOGoDateFormatter;
 @class UIxMailSizeFormatter;
 
-@interface UIxMailListActions : WODirectAction
+#import <UI/Common/SOGoDirectAction.h>
+
+@interface UIxMailListActions : SOGoDirectAction
 {
   NSArray *sortedUIDs; /* we always need to retrieve all anyway! */
   NSArray *messages;

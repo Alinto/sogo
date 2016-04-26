@@ -36,6 +36,7 @@
 
 #import <Appointments/SOGoAppointmentFolders.h>
 
+#import <SOGo/NSString+Crypto.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoCache.h>
@@ -170,14 +171,14 @@
 {
   WOResponse *response;
   WORequest *request;
-  WOCookie *authCookie;
+  WOCookie *authCookie, *xsrfCookie;
   SOGoWebAuthenticator *auth;
   SOGoAppointmentFolders *calendars;
   SOGoUserDefaults *ud;
   SOGoUser *loggedInUser;
   NSDictionary *params;
   NSString *username, *password, *language, *domain, *remoteHost;
-  NSArray *supportedLanguages;
+  NSArray *supportedLanguages, *creds;
   
   SOGoPasswordPolicyError err;
   int expire, grace;
@@ -231,6 +232,13 @@
                                 andPassword: password
                                   inContext: context];
       [response addCookie: authCookie];
+
+      // We prepare the XSRF protection cookie
+      creds = [auth parseCredentials: [authCookie value]];
+      xsrfCookie = [WOCookie cookieWithName: @"XSRF-TOKEN"
+                                      value: [[SOGoSession valueForSessionKey: [creds lastObject]] asSHA1String]];
+      [xsrfCookie setPath: [NSString stringWithFormat: @"/%@/", [[context request] applicationName]]];
+      [response addCookie: xsrfCookie];
 
       supportedLanguages = [[SOGoSystemDefaults sharedSystemDefaults]
                              supportedLanguages];
@@ -540,8 +548,8 @@
 - (WOResponse *) changePasswordAction
 {
   NSString *username, *domain, *password, *newPassword, *value;
+  WOCookie *authCookie, *xsrfCookie;
   NSDictionary *message;
-  WOCookie *authCookie;
   NSArray *creds;
   SOGoUserManager *um;
   SOGoPasswordPolicyError error;
@@ -592,6 +600,12 @@
                                 andPassword: newPassword
                                   inContext: context];
       [response addCookie: authCookie];
+
+      // We update the XSRF protection cookie
+      creds = [auth parseCredentials: [authCookie value]];
+      xsrfCookie = [WOCookie cookieWithName: @"XSRF-TOKEN"
+                                      value: [[SOGoSession valueForSessionKey: [creds lastObject]] asSHA1String]];
+      [response addCookie: xsrfCookie];
     }
   else
     response = [self _responseWithLDAPPolicyError: error];

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2014 Inverse inc. 
+  Copyright (C) 2014-2016 Inverse inc.
 
   This file is part of SOGo.
 
@@ -23,10 +23,11 @@
 #import <SOGo/SOGoCache.h>
 #import <SOGo/NSObject+Utilities.h>
 
-#import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WODirectAction.h>
+#import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/WOResponse.h>
 
-#import <Common/WODirectAction+SOGo.h>
 #import <ActiveSync/SOGoActiveSyncDispatcher.h>
 
 @interface SOGoMicrosoftActiveSyncActions : WODirectAction
@@ -47,7 +48,9 @@
   Class clazz;
 
   request = (WORequest *)[context request];
-  response = [self responseWithStatus: 200];
+  response = [context response];
+  [response setStatus: 200];
+  [response setHeader: @"text/plain; charset=utf-8"  forKey: @"content-type"];
 
   bundle = [NSBundle bundleForClass: NSClassFromString(@"ActiveSyncProduct")];
   clazz = [bundle classNamed: @"SOGoActiveSyncDispatcher"];

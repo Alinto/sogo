@@ -47,8 +47,6 @@
 #import <Appointments/SOGoAppointmentFolders.h>
 #import <Appointments/SOGoWebAppointmentFolder.h>
 
-#import <UI/Common/WODirectAction+SOGo.h>
-
 #import "NSArray+Scheduler.h"
 
 #import "UIxCalListingActions.h"
@@ -638,7 +636,7 @@ static NSArray *tasksFields = nil;
   NSDictionary *data;
   NSEnumerator *folders;
   unsigned int browserTime, laterTime;
-  
+
   // We look for alarms in the next 48 hours
   browserTime = [[[context request] formValueForKey: @"browserTime"] intValue];
   laterTime = browserTime + 60*60*48;
@@ -779,7 +777,7 @@ static NSArray *tasksFields = nil;
   unsigned int interval;
   BOOL isAllDay;
   NSString *sort, *ascending;
-  
+
   [self _setupContext];
   [self saveFilterValue: @"EventsFilterState"];
   [self saveSortValue: @"EventsSortingState"];
@@ -1317,7 +1315,7 @@ _computeBlocksPosition (NSArray *blocks)
   NSString *calendarName, *calendarId;
   BOOL isAllDay;
   int i, j;
-  
+
   [self _setupContext];
   
   events = [self _fetchFields: eventsFields forComponentOfType: @"vevent"];
@@ -1486,7 +1484,7 @@ _computeBlocksPosition (NSArray *blocks)
   int statusCode;
   int startSecs;
   int endsSecs;
-  
+
   filteredTasks = [NSMutableArray array];
   
   [self _setupContext];
@@ -1573,9 +1571,8 @@ _computeBlocksPosition (NSArray *blocks)
   SOGoAppointmentFolder *folder;
   SOGoAppointmentFolders *co;
   NSArray *folders;
-  
   int i;
-  
+
   co = [self clientObject];
   folders = [co subFolders];
   activeTasksByCalendars = [NSMutableDictionary dictionaryWithCapacity: [folders count]];

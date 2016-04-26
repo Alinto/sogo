@@ -1,6 +1,6 @@
 /* UIxMailAccountActions.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2013 Inverse inc.
+ * Copyright (C) 2007-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,11 @@
 #ifndef UIXMAILACCOUNTACTIONS_H
 #define UIXMAILACCOUNTACTIONS_H
 
+#import <UI/Common/SOGoDirectAction.h>
 
 @class WOResponse;
 
-@interface UIxMailAccountActions : WODirectAction
+@interface UIxMailAccountActions : SOGoDirectAction
 {
 }
 

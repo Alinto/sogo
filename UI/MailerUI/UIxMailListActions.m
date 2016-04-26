@@ -58,7 +58,6 @@
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/WOResourceManager+SOGo.h>
 
-#import <UI/Common/WODirectAction+SOGo.h>
 #import <UI/MailPartViewers/UIxMailSizeFormatter.h>
 
 #import "WOContext+UIxMailer.h"

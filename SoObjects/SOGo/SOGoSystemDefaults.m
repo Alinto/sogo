@@ -430,6 +430,18 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self boolForKey: @"SOGoEASDebugEnabled"];
 }
 
+- (BOOL) xsrfValidationEnabled
+{
+  id o;
+
+  if (!(o = [self objectForKey: @"SOGoXSRFValidationEnabled"]))
+    {
+      return YES;
+    }
+
+  return [o boolValue];
+}
+
 - (NSString *) pageTitle
 {
   return [self stringForKey: @"SOGoPageTitle"];

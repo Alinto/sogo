@@ -1,6 +1,6 @@
 /* UIxParentFolderActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,8 +28,6 @@
 
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
-
-#import <UI/Common/WODirectAction+SOGo.h>
 
 #import "UIxParentFolderActions.h"
 

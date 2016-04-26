@@ -21,7 +21,7 @@ CommonUI_OBJC_FILES +=			\
 	UIxTopnavToolbar.m      	\
 	UIxToolbar.m			\
 	\
-	WODirectAction+SOGo.m		\
+	SOGoDirectAction.m		\
 
 CommonUI_RESOURCE_FILES += \
 	product.plist

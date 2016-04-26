@@ -40,8 +40,6 @@
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
 
-#import <Common/WODirectAction+SOGo.h>
-
 #import "UIxAppointmentActions.h"
 
 @implementation UIxAppointmentActions

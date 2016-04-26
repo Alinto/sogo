@@ -34,11 +34,14 @@
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
+#import <SOGo/NSString+Crypto.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoBuild.h>
+#import <SOGo/SOGoSession.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
+#import <SOGo/SOGoWebAuthenticator.h>
 #import <SOGo/WOContext+SOGo.h>
 #import <SOGo/WOResourceManager+SOGo.h>
 
@@ -761,6 +764,44 @@ static SoProduct      *commonProduct      = nil;
   sd = [SOGoSystemDefaults sharedSystemDefaults];
 
   return [sd uixDebugEnabled];
+}
+
+//
+// Protection against XSRF
+//
+- (id<WOActionResults>)performActionNamed:(NSString *)_actionName
+{
+  SOGoWebAuthenticator *auth;
+  NSString *value, *token;
+  NSArray *creds;
+
+  if (![[SOGoSystemDefaults sharedSystemDefaults] xsrfValidationEnabled])
+    return [super performActionNamed: _actionName];
+
+  // If the action is 'connect' (or 'logoff'), we let it go as the token
+  // needs to be created (or destroyed) during the session initialization
+  if ([_actionName isEqualToString: @"connect"] ||
+      [_actionName isEqualToString: @"logoff"])
+    {
+      return [super performActionNamed: _actionName];
+    }
+
+  // We grab the X-XSRF-TOKEN header
+  token = [[context request] headerForKey: @"X-XSRF-TOKEN"];
+
+  // We compare it with our session key
+  auth = [[WOApplication application]
+           authenticatorInContext: context];
+  value = [[context request]
+           cookieValueForKey: [auth cookieNameInContext: context]];
+  creds = [auth parseCredentials: value];
+
+  value = [SOGoSession valueForSessionKey: [creds lastObject]];
+
+  if ([token isEqualToString: [value asSHA1String]])
+    return [super performActionNamed: _actionName];
+
+  return nil;
 }
 
 @end /* UIxComponent */
