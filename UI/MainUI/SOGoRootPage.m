@@ -597,6 +597,8 @@
                      newPassword: newPassword
                             perr: &error])
     {
+      response = [self responseWith204];
+
       // We delete the previous session
       if (creds)
         {
@@ -610,7 +612,6 @@
                 username = [NSString stringWithFormat: @"%@@%@", username, domain];
             }
           
-          response = [self responseWith204];
           authCookie = [auth cookieWithUsername: username
                                     andPassword: newPassword
                                       inContext: context];
