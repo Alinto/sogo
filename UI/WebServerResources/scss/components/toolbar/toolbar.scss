@@ -112,6 +112,23 @@ hgroup {
   flex: 1 1 auto;
 }
 
-.sg-toolbar-search {
-  padding: $toolbar-padding 0;
+// Animate transitions from one toolbar to the other
+.sg-toolbar-multiple {
+  overflow: hidden;
+  .md-toolbar-tools {
+    &.ng-hide {
+      transform: translateY(100%);
+      transition: transform 0ms;
+    }
+    transform: translateY(0%);
+    transition: transform 240ms;
+  }
 }
+
+.sg-toolbar-tools--dense {
+  height: $bl * 6;
+}
+
+//.sg-toolbar-search {
+//  padding: $toolbar-padding 0;
+//}

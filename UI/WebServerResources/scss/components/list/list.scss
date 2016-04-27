@@ -76,7 +76,7 @@ md-list-item {
   }
 
   // Remove padding of input fields in the sidenav for better transitions between read and edit mode of a folder
-  md-input-container {
+  md-input-container:not(.md-icon-left) {
     margin: 0;
     padding: 0;
     .md-input {
@@ -231,12 +231,25 @@ div.md-tile-left {
     }
   }
 
+  &-sortable-chosen {
+    background-color: white;
+  }
+
   &-sortable-ghost {
     opacity: 0.5;
   }
 
-  &-sortable-chosen {
-    background-color: white;
+  &-list-sortable {
+    ._md-secondary-container > .md-menu {
+      .md-button {
+        display: none;
+      }
+      &:before {
+        @extend .material-icons;
+        content: "\e8fe";
+        cursor: move;
+      }
+    }
   }
 }
 

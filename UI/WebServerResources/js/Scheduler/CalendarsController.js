@@ -28,6 +28,22 @@
     vm.subscribeToFolder = subscribeToFolder;
     vm.today = today;
 
+    vm.filter = { name: '' };
+    vm.toggleSortableMode = toggleSortableMode;
+    vm.resetSort = resetSort;
+    vm.sortableCalendars = {
+      disabled: true,
+      animation: 150,
+      draggable: 'md-list-item',
+      handle: '.md-menu',
+      ghostClass: 'sg-sortable-ghost',
+      chosenClass: 'sg-sortable-chosen',
+      setData: sortable_setData,
+      onEnd: sortable_onEnd
+    };
+    vm.sortableSubscriptions = angular.copy(vm.sortableCalendars);
+    vm.sortableWebCalendars = angular.copy(vm.sortableCalendars);
+
     Preferences.ready().then(function() {
       vm.categories = _.map(Preferences.defaults.SOGoCalendarCategories, function(name) {
         return { id: name.asCSSIdentifier(),
@@ -65,13 +81,32 @@
             promises.push(calendar.$setActivation());
           });
         }
-        if (commonList.length > 0)
+        if (promises.length > 0 || commonList.length != newList.length || commonList.length != oldList.length)
           Calendar.$q.all(promises).then(function() {
             $rootScope.$emit('calendars:list');
           });
       },
       true // compare for object equality
     );
+
+    function sortable_setData(dataTransfer, dragEl) {
+      dataTransfer.clearData();
+    }
+
+    function sortable_onEnd() {
+      Calendar.saveFoldersOrder(_.flatMap(Calendar.$findAll(), 'id'));
+    }
+
+    function toggleSortableMode() {
+      vm.sortableCalendars.disabled = !vm.sortableCalendars.disabled;
+      vm.sortableSubscriptions.disabled = !vm.sortableSubscriptions.disabled;
+      vm.sortableWebCalendars.disabled = !vm.sortableWebCalendars.disabled;
+      vm.filter.name = '';
+    }
+
+    function resetSort() {
+      Calendar.saveFoldersOrder();
+    }
 
     function newCalendar(ev) {
       Dialog.prompt(l('New calendar'), l('Name of the Calendar'))

@@ -99,6 +99,12 @@
     });
     i = sibling ? _.indexOf(_.map(list, 'id'), sibling.id) : 1;
     list.splice(i, 0, calendar);
+
+    this.$Preferences.ready().then(function() {
+      if (Calendar.$Preferences.settings.Calendar.FoldersOrder)
+        // Save list order
+        Calendar.saveFoldersOrder(_.flatMap(Calendar.$findAll(), 'id'));
+    });
   };
 
   /**
@@ -129,8 +135,8 @@
       this.$calendars = [];
       this.$subscriptions = [];
       this.$webcalendars = [];
-      Calendar.$$resource.fetch('calendarslist').then(function(data) {
-        Calendar.$findAll(data.calendars, writable);
+      return Calendar.$$resource.fetch('calendarslist').then(function(data) {
+        return Calendar.$findAll(data.calendars, writable);
       });
     }
 
@@ -259,6 +265,23 @@
     });
 
     return Calendar.$q.all(promises);
+  };
+
+  /**
+   * @function saveFoldersOrder
+   * @desc Save to the user's settings the current calendars order.
+   * @param {string[]} folders - the folders IDs
+   * @returns a promise of the HTTP operation
+   */
+  Calendar.saveFoldersOrder = function(folders) {
+    return this.$$resource.post(null, 'saveFoldersOrder', { folders: folders }).then(function() {
+      Calendar.$Preferences.settings.Calendar.FoldersOrder = folders;
+      if (!folders)
+        // Calendars order was reset; reload list
+        return Calendar.$$resource.fetch('calendarslist').then(function(data) {
+          return Calendar.$findAll(data.calendars);
+        });
+    });
   };
 
   /**

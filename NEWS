@@ -6,6 +6,7 @@ New features
  - [core] new user-based rate-limiting support for all SOGo requests (#3188)
  - [web] toolbar of all-day events can be expanded to display all events
  - [web] added AngularJS's XSRF support (#3246)
+ - [web] calendars list can be reordered and filtered
 
 Enhancements
  - [web] updated Angular Material to version 1.0.6
