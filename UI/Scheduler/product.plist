@@ -65,6 +65,11 @@
           pageName    = "UIxCalMainView";
           actionName  = "saveListState";
         };
+        saveFoldersOrder = {
+          protectedBy = "View";
+          pageName    = "UIxCalMainView";
+          actionName  = "saveFoldersOrder";
+        };
         dateselector = {
           protectedBy = "View";
           pageName    = "UIxCalDateSelector"; 

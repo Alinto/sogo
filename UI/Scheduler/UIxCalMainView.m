@@ -1,6 +1,6 @@
 /* UIxCalMainView.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2015 Inverse inc.
+ * Copyright (C) 2006-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -299,6 +299,27 @@
   state = [moduleSettings objectForKey: @"ListState"];
 
   return (state && [state compare: @"collapse"] == NSOrderedSame)? @"display: none;" : @"";
+}
+
+- (WOResponse *) saveFoldersOrderAction
+{
+  WORequest *request;
+  NSDictionary *params;
+  NSArray *list;
+
+  [self _setupContext];
+  request = [context request];
+  params = [[request contentAsString] objectFromJSONString];
+
+  list = [params objectForKey: @"folders"];
+  if (list)
+    [moduleSettings setObject: list
+                       forKey: @"FoldersOrder"];
+  else
+    [moduleSettings removeObjectForKey: @"FoldersOrder"];
+  [us synchronize];
+
+  return [self responseWithStatus: 204];
 }
 
 - (unsigned int) firstDayOfWeek

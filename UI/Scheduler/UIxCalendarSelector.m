@@ -1,6 +1,6 @@
 /* UIxCalendarSelector.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserSettings.h>
 
 #import <Appointments/SOGoAppointmentFolders.h>
 #import <Appointments/SOGoWebAppointmentFolder.h>
@@ -89,26 +90,77 @@ _intValueFromHex (NSString *hexString)
 
 - (NSArray *) calendars
 {
-  NSMutableDictionary *calendar, *notifications, *urls, *acls;
-  NSString *userLogin, *folderName, *fDisplayName, *owner;
+  BOOL objectCreator, objectEraser, reloadOnLogin, synchronize, dirty;
+  NSArray *folders, *allACLs;
+  NSMutableArray *sortedFolders, *sortedFolderNames;
+  NSMutableDictionary *moduleSettings, *calendar, *notifications, *urls, *acls;
   NSNumber *isActive, *fActiveTasks;
+  NSString *userLogin, *folderName, *fDisplayName, *owner;
+  NSUInteger count, index, max;
   SOGoAppointmentFolder *folder;
   SOGoAppointmentFolders *co;
-  NSArray *folders, *allACLs;
+  SOGoUser *activeUser;
+  SOGoUserSettings *us;
 
-  BOOL objectCreator, objectEraser, reloadOnLogin, synchronize;
-  NSUInteger count, max;
-  
   if (!calendars)
     {
       co = [self clientObject];
-      userLogin = [[context activeUser] login];
+      activeUser = [context activeUser];
+      userLogin = [activeUser login];
       folders = [co subFolders];
+
+      // Sort calendars according to user settings
+      dirty = NO;
+      us = [activeUser userSettings];
+      moduleSettings = [us objectForKey: [co nameInContainer]];
+      sortedFolders = [NSMutableArray arrayWithArray: [moduleSettings objectForKey: @"FoldersOrder"]];
+
+      max = [folders count];
+      for (count = 0; count < max; count++)
+        {
+          folder = [folders objectAtIndex: count];
+          folderName = [folder nameInContainer];
+          index = [sortedFolders indexOfObject: folderName];
+          if (index == NSNotFound)
+            {
+              // Calendar is missing from user's "FoldersOrder" setting; add it
+              dirty = YES;
+              [sortedFolders addObject: folder];
+            }
+          else
+            [sortedFolders replaceObjectAtIndex: index withObject: folder];
+        }
+
+      max = [sortedFolders count];
+      sortedFolderNames = [NSMutableArray arrayWithCapacity: max];
+      for (count = max; count > -1; count--)
+        {
+          if ([[sortedFolders objectAtIndex: count] isKindOfClass: [NSString class]])
+            {
+              // Calendar no longer exists; remove it from user's "FoldersOrder" setting
+              dirty = YES;
+              [sortedFolders removeObjectAtIndex: count];
+            }
+          else
+            {
+              folder = [sortedFolders objectAtIndex: count];
+              folderName = [folder nameInContainer];
+              [sortedFolderNames addObject: folderName];
+            }
+        }
+
+      if (dirty)
+        {
+          // Synchronize user's settings
+          [moduleSettings setObject: sortedFolderNames forKey: @"FoldersOrder"];
+          [us synchronize];
+        }
+
       max = [folders count];
       calendars = [[NSMutableArray alloc] initWithCapacity: max];
       for (count = 0; count < max; count++)
         {
-          folder = [folders objectAtIndex: count];
+          folder = [sortedFolders objectAtIndex: count];
           owner = [folder ownerInContext: context];
           calendar = [NSMutableDictionary dictionary];
           folderName = [folder nameInContainer];
@@ -195,7 +247,7 @@ _intValueFromHex (NSString *hexString)
 
           [calendars addObject: calendar];
         }
-  }
+    }
 
   return calendars;
 }

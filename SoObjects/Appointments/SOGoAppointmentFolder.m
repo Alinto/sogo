@@ -2956,6 +2956,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   refDict = [moduleSettings objectForKey: @"NotifyUserOnPersonalModifications"];
   [refDict removeObjectForKey: reference];
 
+  refArray = [moduleSettings objectForKey: @"FoldersOrder"];
+  [refArray removeObject: nameInContainer];
+
   refArray = [moduleSettings objectForKey: @"InactiveFolders"];
   [refArray removeObject: nameInContainer];
 
