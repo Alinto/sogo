@@ -564,13 +564,27 @@
 	   authenticatorInContext: context];
   value = [[context request]
            cookieValueForKey: [auth cookieNameInContext: context]];
-  creds = [auth parseCredentials: value];
+  creds = nil;
 
-  [SOGoSession decodeValue: [SOGoSession valueForSessionKey: [creds objectAtIndex: 1]]
-                  usingKey: [creds objectAtIndex: 0]
-                     login: &username
-                    domain: &domain
-                  password: &password];
+  // If we are logged in
+  if (value)
+    {
+      creds = [auth parseCredentials: value];
+
+      [SOGoSession decodeValue: [SOGoSession valueForSessionKey: [creds objectAtIndex: 1]]
+                      usingKey: [creds objectAtIndex: 0]
+                         login: &username
+                        domain: &domain
+                      password: &password];
+    }
+  else
+    {
+      // We are using ppolicy, and changing the password
+      // upon login
+      username = [message objectForKey: @"userName"];
+      password = [message objectForKey: @"password"];
+      domain = nil;
+    }
 
   newPassword = [message objectForKey: @"newPassword"];
 
@@ -584,21 +598,24 @@
                             perr: &error])
     {
       // We delete the previous session
-      [SOGoSession deleteValueForSessionKey: [creds objectAtIndex: 1]]; 
-
-      if ([domain isNotNull])
+      if (creds)
         {
-          sd = [SOGoSystemDefaults sharedSystemDefaults];
-          if ([sd enableDomainBasedUID] &&
-              [username rangeOfString: @"@"].location == NSNotFound)
-            username = [NSString stringWithFormat: @"%@@%@", username, domain];
+          [SOGoSession deleteValueForSessionKey: [creds objectAtIndex: 1]]; 
+
+          if ([domain isNotNull])
+            {
+              sd = [SOGoSystemDefaults sharedSystemDefaults];
+              if ([sd enableDomainBasedUID] &&
+                  [username rangeOfString: @"@"].location == NSNotFound)
+                username = [NSString stringWithFormat: @"%@@%@", username, domain];
+            }
+          
+          response = [self responseWith204];
+          authCookie = [auth cookieWithUsername: username
+                                    andPassword: newPassword
+                                      inContext: context];
+          [response addCookie: authCookie];
         }
-      
-      response = [self responseWith204];
-      authCookie = [auth cookieWithUsername: username
-                                andPassword: newPassword
-                                  inContext: context];
-      [response addCookie: authCookie];
     }
   else
     response = [self _responseWithLDAPPolicyError: error];
