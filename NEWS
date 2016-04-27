@@ -40,6 +40,7 @@ Bug fixes
  - [web] avoid returning search results on objects without read permissions (#3619)
  - [web] restore priority of event or task in component editor
  - [web] fixed menu content visibility when printing an email (#3584)
+ - [web] retired CSS reset so the style of HTML messages is respected (#3582)
  - [core] properly escape wide characters (#3616)
  - [core] avoid double-appending domains in cache for multi-domain configurations (#3614)
  - [dav] we now handle the default classifications for tasks (#3541)
