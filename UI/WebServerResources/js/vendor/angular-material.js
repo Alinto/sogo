@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-e638c51
+ * v1.1.0-rc4-master-f0e6de9
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -6526,15 +6526,11 @@ angular
 
 
 /**
- * @ngdoc directive
- * @name a
- * @module material.components.button
- *
+ * @private
  * @restrict E
  *
  * @description
- * `a` is a anchnor directive used to inherit theme so stand-alone anchors.
- * This allows standalone `a` tags to support theme colors for md-primary, md-accent, etc.
+ * `a` is an anchor directive used to inherit theme colors for md-primary, md-accent, etc.
  *
  * @usage
  *
@@ -8323,7 +8319,8 @@ function iosScrollFix(node) {
    *     };
    *
    *     $mdDateLocaleProvider.formatDate = function(date) {
-   *       return moment(date).format('L');
+   *       var m = moment(date);
+   *       return m.isValid() ? m.format('L') : '';
    *     };
    *
    *     $mdDateLocaleProvider.monthHeaderFormatter = function(date) {
@@ -10329,7 +10326,8 @@ function MdDialogProvider($$interimElementProvider) {
 
       var role = (options.$type === 'alert') ? 'alertdialog' : 'dialog';
       var dialogContent = element.find('md-dialog-content');
-      var dialogContentId = 'dialogContent_' + (element.attr('id') || $mdUtil.nextUid());
+      var existingDialogId = element.attr('id');
+      var dialogContentId = 'dialogContent_' + (existingDialogId || $mdUtil.nextUid());
 
       element.attr({
         'role': role,
@@ -10338,6 +10336,10 @@ function MdDialogProvider($$interimElementProvider) {
 
       if (dialogContent.length === 0) {
         dialogContent = element;
+        // If the dialog element already had an ID, don't clobber it.
+        if (existingDialogId) {
+          dialogContentId = existingDialogId;
+        }
       }
 
       dialogContent.attr('id', dialogContentId);
@@ -11306,7 +11308,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
         // If we're open
         if (ctrl.isOpen) {
           // Turn on toolbar pointer events when closed
-          toolbarElement.style.pointerEvents = 'initial';
+          toolbarElement.style.pointerEvents = 'inherit';
 
           backgroundElement.style.width = triggerElement.offsetWidth + 'px';
           backgroundElement.style.height = triggerElement.offsetHeight + 'px';
@@ -17241,7 +17243,6 @@ angular.module('material.components.switch', [
   .directive('mdSwitch', MdSwitch);
 
 /**
- * @private
  * @ngdoc directive
  * @module material.components.switch
  * @name mdSwitch
@@ -17769,10 +17770,16 @@ function MdToastProvider($$interimElementProvider) {
           var templateRoot = document.createElement('md-template');
           templateRoot.innerHTML = template;
 
+          // Iterate through all root children, to detect possible md-toast directives.
           for (var i = 0; i < templateRoot.children.length; i++) {
             if (templateRoot.children[i].nodeName === 'MD-TOAST') {
               var wrapper = angular.element('<div class="md-toast-content">');
-              wrapper.append(templateRoot.children[i].children);
+
+              // Wrap the children of the `md-toast` directive in jqLite, to be able to append multiple
+              // nodes with the same execution.
+              wrapper.append(angular.element(templateRoot.children[i].childNodes));
+
+              // Append the new wrapped element to the `md-toast` directive.
               templateRoot.children[i].appendChild(wrapper[0]);
             }
           }
@@ -18340,8 +18347,9 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     }
 
     function showTooltip() {
-      // Insert the element before positioning it, so we can get the position
+      // Insert the element and position at top left, so we can get the position
       // and check if we should display it
+      element.css({top: 0, left: 0});
       tooltipParent.append(element);
 
       // Check if we should display it or not.
@@ -18618,7 +18626,7 @@ VirtualRepeatContainerController.prototype.getSize = function() {
 /**
  * Resizes the container.
  * @private
- * @param {number} The new size to set.
+ * @param {number} size The new size to set.
  */
 VirtualRepeatContainerController.prototype.setSize_ = function(size) {
   var dimension = this.getDimensionName_();
@@ -18636,6 +18644,7 @@ VirtualRepeatContainerController.prototype.unsetSize_ = function() {
 
 /** Instructs the container to re-measure its size. */
 VirtualRepeatContainerController.prototype.updateSize = function() {
+  // If the original size is already determined, we can skip the update.
   if (this.originalSize) return;
 
   this.size = this.isHorizontal()
@@ -18709,22 +18718,35 @@ VirtualRepeatContainerController.prototype.sizeScroller_ = function(size) {
  */
 VirtualRepeatContainerController.prototype.autoShrink_ = function(size) {
   var shrinkSize = Math.max(size, this.autoShrinkMin * this.repeater.getItemSize());
+
   if (this.autoShrink && shrinkSize !== this.size) {
     if (this.oldElementSize === null) {
       this.oldElementSize = this.$element[0].style[this.getDimensionName_()];
     }
 
     var currentSize = this.originalSize || this.size;
+
     if (!currentSize || shrinkSize < currentSize) {
       if (!this.originalSize) {
         this.originalSize = this.size;
       }
 
+      // Now we update the containers size, because shrinking is enabled.
       this.setSize_(shrinkSize);
     } else if (this.originalSize !== null) {
+      // Set the size back to our initial size.
       this.unsetSize_();
+
+      var _originalSize = this.originalSize;
       this.originalSize = null;
-      this.updateSize();
+
+      // We determine the repeaters size again, if the original size was zero.
+      // The originalSize needs to be null, to be able to determine the size.
+      if (!_originalSize) this.updateSize();
+
+      // Apply the original size or the determined size back to the container, because
+      // it has been overwritten before, in the shrink block.
+      this.setSize_(_originalSize || this.size);
     }
 
     this.repeater.containerUpdated();
@@ -18937,6 +18959,8 @@ function VirtualRepeatController($scope, $element, $attrs, $browser, $document, 
   this.blocks = {};
   /** @type {Array<!VirtualRepeatController.Block>} A pool of presently unused blocks. */
   this.pooledBlocks = [];
+
+  $scope.$on('$destroy', angular.bind(this, this.cleanupBlocks_));
 }
 VirtualRepeatController.$inject = ["$scope", "$element", "$attrs", "$browser", "$document", "$rootScope", "$$rAF", "$mdUtil"];
 
@@ -18970,6 +18994,14 @@ VirtualRepeatController.prototype.link_ =
   this.repeatListExpression = angular.bind(this, this.repeatListExpression_);
 
   this.container.register(this);
+};
+
+
+/** @private Cleans up unused blocks. */
+VirtualRepeatController.prototype.cleanupBlocks_ = function() {
+  angular.forEach(this.pooledBlocks, function cleanupBlock(block) {
+    block.element.remove();
+  });
 };
 
 
@@ -19356,7 +19388,6 @@ angular
   .directive('mdWhiteframe', MdWhiteframeDirective);
 
 /**
- * @private
  * @ngdoc directive
  * @module material.components.whiteframe
  * @name mdWhiteframe
@@ -19427,7 +19458,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       selectedItemWatchers = [],
       hasFocus             = false,
       lastCount            = 0,
-      fetchesInProgress    = 0;
+      fetchesInProgress    = 0,
+      enableWrapScroll     = null;
 
   //-- public variables with handlers
   defineProperty('hidden', handleHiddenChange, true);
@@ -19655,12 +19687,36 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
       if (elements) {
         $mdUtil.nextTick(function () {
           $mdUtil.disableScrollAround(elements.ul);
+          enableWrapScroll = disableElementScrollEvents(angular.element(elements.wrap));
         }, false, $scope);
       }
     } else if (hidden && !oldHidden) {
       $mdUtil.nextTick(function () {
         $mdUtil.enableScrolling();
+
+        if (enableWrapScroll) {
+          enableWrapScroll();
+          enableWrapScroll = null;
+        }
       }, false, $scope);
+    }
+  }
+
+  /**
+   * Disables scrolling for a specific element
+   */
+  function disableElementScrollEvents(element) {
+
+    function preventDefault(e) {
+      e.preventDefault();
+    }
+
+    element.on('wheel', preventDefault);
+    element.on('touchmove', preventDefault);
+
+    return function() {
+      element.off('wheel', preventDefault);
+      element.off('touchmove', preventDefault);
     }
   }
 
@@ -20313,8 +20369,8 @@ angular
  * </form>
  * </hljs>
  *
- * In this example, our code utilizes `md-item-template` and `md-not-found` to specify the
- *     different parts that make up our component.
+ * In this example, our code utilizes `md-item-template` and `ng-messages` to specify
+ *     input validation for the field.
  */
 
 function MdAutocomplete () {
@@ -20367,8 +20423,7 @@ function MdAutocomplete () {
       return '\
         <md-autocomplete-wrap\
             layout="row"\
-            ng-class="{ \'md-whiteframe-z1\': !floatingLabel, \'md-menu-showing\': !$mdAutocompleteCtrl.hidden }"\
-            role="listbox">\
+            ng-class="{ \'md-whiteframe-z1\': !floatingLabel, \'md-menu-showing\': !$mdAutocompleteCtrl.hidden }">\
           ' + getInputElement() + '\
           <md-progress-linear\
               class="' + (attr.mdFloatingLabel ? 'md-inline' : '') + '"\
@@ -20444,6 +20499,7 @@ function MdAutocomplete () {
                   ' + (attr.mdSelectOnFocus != null ? 'md-select-on-focus=""' : '') + '\
                   aria-label="{{floatingLabel}}"\
                   aria-autocomplete="list"\
+                  role="combobox"\
                   aria-haspopup="true"\
                   aria-activedescendant=""\
                   aria-expanded="{{!$mdAutocompleteCtrl.hidden}}"/>\
@@ -20469,6 +20525,7 @@ function MdAutocomplete () {
                 ' + (attr.mdSelectOnFocus != null ? 'md-select-on-focus=""' : '') + '\
                 aria-label="{{placeholder}}"\
                 aria-autocomplete="list"\
+                role="combobox"\
                 aria-haspopup="true"\
                 aria-activedescendant=""\
                 aria-expanded="{{!$mdAutocompleteCtrl.hidden}}"/>\
@@ -20926,11 +20983,13 @@ function MdChip($mdTheming, $mdUtil) {
       if (chipsController) {
         chipController.init(chipsController);
 
-        angular.element(element[0].querySelector('._md-chip-content'))
-            .on('blur', function () {
-              chipsController.selectedChip = -1;
-              chipsController.$scope.$applyAsync();
-            });
+        angular
+          .element(element[0]
+          .querySelector('._md-chip-content'))
+          .on('blur', function () {
+            chipsController.resetSelectedChip();
+            chipsController.$scope.$applyAsync();
+          });
       }
     };
   }
@@ -21246,7 +21305,7 @@ MdChipsCtrl.prototype.chipKeydown = function (event) {
  */
 MdChipsCtrl.prototype.getPlaceholder = function() {
   // Allow `secondary-placeholder` to be blank.
-  var useSecondary = (this.items.length &&
+  var useSecondary = (this.items && this.items.length &&
       (this.secondaryPlaceholder == '' || this.secondaryPlaceholder));
   return useSecondary ? this.secondaryPlaceholder : this.placeholder;
 };
@@ -25495,7 +25554,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
       case $mdConstant.KEY_CODE.SPACE:
       case $mdConstant.KEY_CODE.ENTER:
         event.preventDefault();
-        if (!locked) ctrl.selectedIndex = ctrl.focusIndex;
+        if (!locked) select(ctrl.focusIndex);
         break;
     }
     ctrl.lastClick = false;
@@ -26264,4 +26323,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Th
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc4-master-e638c51"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc4-master-f0e6de9"}};
