@@ -8,6 +8,7 @@ Bug fixes
    can't delete components
  - avoid double-appending domains in cache for multi-domain configurations (#3614)
  - encode CR in EAS paylog (#3626)
+ - password change during login process when using ppolicy
 
 2.3.10 (2016-04-05)
 -------------------
