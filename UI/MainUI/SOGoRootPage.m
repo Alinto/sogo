@@ -603,20 +603,20 @@
       if (creds)
         {
           [SOGoSession deleteValueForSessionKey: [creds objectAtIndex: 1]]; 
-
-          if ([domain isNotNull])
-            {
-              sd = [SOGoSystemDefaults sharedSystemDefaults];
-              if ([sd enableDomainBasedUID] &&
-                  [username rangeOfString: @"@"].location == NSNotFound)
-                username = [NSString stringWithFormat: @"%@@%@", username, domain];
-            }
-          
-          authCookie = [auth cookieWithUsername: username
-                                    andPassword: newPassword
-                                      inContext: context];
-          [response addCookie: authCookie];
         }
+
+      if ([domain isNotNull])
+        {
+          sd = [SOGoSystemDefaults sharedSystemDefaults];
+          if ([sd enableDomainBasedUID] &&
+              [username rangeOfString: @"@"].location == NSNotFound)
+            username = [NSString stringWithFormat: @"%@@%@", username, domain];
+        }
+
+      authCookie = [auth cookieWithUsername: username
+                                andPassword: newPassword
+                                  inContext: context];
+      [response addCookie: authCookie];
     }
   else
     response = [self _responseWithLDAPPolicyError: error];
