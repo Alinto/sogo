@@ -10,7 +10,7 @@
     "angular-sanitize": "1.4.x",
     "angular-ui-router": "latest",
     "angular-file-upload": "latest",
-    "angular-material": ">v1.1.0-rc2-master",
+    "angular-material": ">v1.1.0-rc4-master",
     "lodash": "latest",
     "Sortable": "latest",
     "breakpoint-sass": ">=2.4.2"
