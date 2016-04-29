@@ -1,5 +1,7 @@
 Mobile Devices Configuration Guide
 ==================================
+:toc: left
+:icons: font
 
 ////
 

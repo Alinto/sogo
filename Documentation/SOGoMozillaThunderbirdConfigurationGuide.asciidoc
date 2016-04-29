@@ -1,5 +1,7 @@
 Mozilla Thunderbird Configuration Guide
 =======================================
+:toc: left
+:icons: font
 
 ////
 

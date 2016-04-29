@@ -1,5 +1,7 @@
 Native Microsoft Outlook Configuration Guide
 ============================================
+:toc: left
+:icons: font
 
 ////
 

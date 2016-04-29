@@ -1,6 +1,17 @@
-https://wiki.inverse.ca/focus/SOGo/CodingStyle
-https://wiki.inverse.ca/focus/SOGo/D%C3%A9veloppement
-https://wiki.inverse.ca/focus/PacketFence/Devel/BestPractices
+Developer's Guide
+=================
+:toc: left
+:icons: font
+
+////
+
+    This file is part of the SOGo project.
+
+    See docinfo.xml for authors, copyright and license information.
+
+////
+
+include::includes/global-attributes.asciidoc[]
 
 UI and UX
 ---------
@@ -84,6 +95,7 @@ JavaScript
 ~~~~~~~~~~
 
 * http://eslint.org/
+* http://standardjs.com
 * https://github.com/toddmotto/angularjs-styleguide
 * https://github.com/angular/material/blob/master/docs/guides/CODING.md
 * http://jshint.com/
@@ -116,6 +128,7 @@ SASS/CSS
 * http://sixrevisions.com/css/css-methodologies/
 * https://css-tricks.com/what-a-css-code-review-might-look-like/
 * http://una.im/classy-css/
+* http://stylelint.io/
 
 A `@mixin` is like a stamp: it creates a duplicated version of the property block (optionally) with arguments provided. An `@extend` appends the element you are extending to the property block. It is your "yes, and ___" statement.
 
@@ -132,6 +145,19 @@ Fonts
 
 * [Mozilla Fira](http://mozilla.github.io/Fira/)
 * [Material icons](https://www.google.com/design/icons/)
+
+Building frontend
+-----------------
+
+* Install the latest stable release of https://nodejs.org[Node.js]
+* Install grunt
+
+    npm install -g grunt-cli
+
+* Generate JavaScript files
+
+    cd UI/WebServerResources
+    grunt build
 
 Version Control
 ---------------
