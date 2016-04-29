@@ -186,9 +186,10 @@ $quarter_height: 10px;
     flex-direction: row;
     align-items: stretch;
     .day {
+      border-left: 1px solid sg-color($sogoPaper, 300);
       flex-grow: 1;
       flex-basis: 0;
-      border-left: 1px solid sg-color($sogoPaper, 300);
+      overflow: hidden;
       .clickableHourCell {
         height: $quarter_height * 4;
         border-bottom: 1px solid sg-color($sogoPaper, 300);
