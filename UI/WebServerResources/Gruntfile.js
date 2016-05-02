@@ -15,8 +15,9 @@ module.exports = function(grunt) {
     'js/Administration.js': ['js/Administration/Administration.app.js', 'js/Administration/*Controller.js']
 
   };
-  var sortable_files = {
-    'js/vendor/ng-sortable.js': ['bower_components/Sortable/Sortable.js', 'bower_components/Sortable/ng-sortable.js']
+  var custom_vendor_files = {
+    'js/vendor/ng-sortable.min.js': ['bower_components/Sortable/Sortable.js', 'bower_components/Sortable/ng-sortable.js'],
+    'js/vendor/angular-file-upload.min.js': ['bower_components/angular-file-upload/dist/angular-file-upload.js', 'js/Common/angular-file-upload.trump.js']
   };
 
   require('time-grunt')(grunt);
@@ -91,11 +92,11 @@ module.exports = function(grunt) {
         },
         files: js_files
       },
-      sortable: {
+      vendor: {
         options: {
-          compress: true
+          compress: true,
         },
-        files: sortable_files,
+        files: custom_vendor_files,
       }
     },
     watch: {
@@ -136,7 +137,6 @@ module.exports = function(grunt) {
       '<%= src %>/angular-messages/angular-messages{,.min}.js{,.map}',
       '<%= src %>/angular-material/angular-material{,.min}.js{,.map}',
       '<%= src %>/angular-ui-router/release/angular-ui-router{,.min}.js',
-      '<%= src %>/angular-file-upload/dist/angular-file-upload{,.min}.js{,.map}',
       //'<%= src %>/ng-file-upload/ng-file-upload{,.min}.js{,map}',
       '<%= src %>/lodash/dist/lodash{,.min}.js'
     ];
@@ -180,7 +180,7 @@ module.exports = function(grunt) {
       }
     }
     */
-    grunt.task.run('uglify:sortable');
+    grunt.task.run('uglify:vendor');
   });
   grunt.task.registerTask('build', ['static', 'uglify:dist', 'sass:dist', 'postcss:dist']);
   // Tasks for developers
