@@ -54,6 +54,8 @@ Bug fixes
  - [eas] now cache heartbeat interval and folders list during Ping ops (#3606)
  - [eas] sanitize non-us-ascii 7bit emails (#3592)
  - [eas] properly escape organizer name (#3615)
+ - [eas] correctly set answered/forwarded flags during smart operations
+ - [eas] don't mark calendar invitations as read when fetching messages
 
 3.0.2 (2016-03-04)
 ------------------
