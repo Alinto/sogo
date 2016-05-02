@@ -782,7 +782,7 @@ struct GlobalObjectId {
                   iCalCalendar *calendar;
                   NSData *calendarData;
                   
-                  calendarData = [bodyPart fetchBLOB];
+                  calendarData = [bodyPart fetchBLOBWithPeek: YES];
                   calendar = nil;
 
                   NS_DURING
