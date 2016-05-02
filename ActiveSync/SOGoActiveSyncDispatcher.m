@@ -2981,7 +2981,7 @@ void handle_eas_terminate(int signum)
 
               [references addObject: [mailObject messageId]];
 
-              [map setObject: [references componentsJoinedByString:@" "] forKey: @"references"];
+              [map setObject: [references componentsJoinedByString: @" "] forKey: @"references"];
             }
           else
             {
@@ -3020,28 +3020,28 @@ void handle_eas_terminate(int signum)
                     {
                       apart = [aparts objectAtIndex: j];
                       if ([[[apart contentType] type] isEqualToString: @"text"] && [[[apart contentType] subType] isEqualToString: @"html"])
-                          htmlPart = apart;
+                        htmlPart = apart;
                       if ([[[apart contentType] type] isEqualToString: @"text"] && [[[apart contentType] subType] isEqualToString: @"plain"])
-                          textPart = apart;
+                        textPart = apart;
                     }
                 }
               else 
                 {
                   if ([[[part contentType] type] isEqualToString: @"text"] && [[[part contentType] subType] isEqualToString: @"html"])
-                     htmlPart = part;
+                    htmlPart = part;
                   else if ([[[part contentType] type] isEqualToString: @"text"] && [[[part contentType] subType] isEqualToString: @"plain"])
-                     textPart = part;
+                    textPart = part;
                   else
-                     [attachments addObject: part];
+                    [attachments addObject: part];
                }
             }
         }
       else
         {
           if ([[[messageFromSmartForward contentType] type] isEqualToString: @"text"] && [[[messageFromSmartForward contentType] subType] isEqualToString: @"html"])
-             htmlPart = messageFromSmartForward;
+            htmlPart = messageFromSmartForward;
           else
-             textPart = messageFromSmartForward;
+            textPart = messageFromSmartForward;
         }
 
       htmlComposition = [[ud mailComposeMessageType] isEqualToString: @"html"];
@@ -3145,26 +3145,24 @@ void handle_eas_terminate(int signum)
                   response = [[mailObject fetchParts: paths] objectForKey: @"RawResponse"];
 
                   for (a = 0; a < [attachmentKeys count]; a++)
-                     {
-                       currentAttachment = [attachmentKeys objectAtIndex: a];
-                       bodydata = [[[response objectForKey: @"fetch"] objectForKey: [NSString stringWithFormat: @"body[%@]", [currentAttachment objectForKey: @"path"]]] valueForKey: @"data"]; 
+                    {
+                      currentAttachment = [attachmentKeys objectAtIndex: a];
+                      bodydata = [[[response objectForKey: @"fetch"] objectForKey: [NSString stringWithFormat: @"body[%@]", [currentAttachment objectForKey: @"path"]]] valueForKey: @"data"]; 
 
-                       map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
-                       [map setObject: [currentAttachment objectForKey: @"mimetype"] forKey: @"content-type"];
-                       [map setObject: [currentAttachment objectForKey: @"encoding"] forKey: @"content-transfer-encoding"];
-                       [map addObject: [NSString stringWithFormat: @"attachment; filename=\"%@\"", [currentAttachment objectForKey: @"filename"]] forKey: @"content-disposition"];
-                       bodyPart = [[[NGMimeBodyPart alloc] initWithHeader: map] autorelease];
+                      map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
+                      [map setObject: [currentAttachment objectForKey: @"mimetype"] forKey: @"content-type"];
+                      [map setObject: [currentAttachment objectForKey: @"encoding"] forKey: @"content-transfer-encoding"];
+                      [map addObject: [NSString stringWithFormat: @"attachment; filename=\"%@\"", [currentAttachment objectForKey: @"filename"]] forKey: @"content-disposition"];
+                      bodyPart = [[[NGMimeBodyPart alloc] initWithHeader: map] autorelease];
 
-                       fdata = [[NGMimeFileData alloc] initWithBytes:[bodydata bytes]  length:[bodydata length]];
-
-                       [bodyPart setBody: fdata];
-                       RELEASE(fdata);
-                       [body addBodyPart: bodyPart];
-                     }
-
+                      fdata = [[NGMimeFileData alloc] initWithBytes:[bodydata bytes]  length:[bodydata length]];
+                      [bodyPart setBody: fdata];
+                      RELEASE(fdata);
+                      [body addBodyPart: bodyPart];
+                    }
                 }
             }
-        }
+        } //  if (isSmartForward)
 
       [messageToSend setBody: body];
       
@@ -3179,6 +3177,14 @@ void handle_eas_terminate(int signum)
         {
           [theResponse setStatus: 500];
           [theResponse appendContentString: @"FATAL ERROR occured during SmartForward"];
+        }
+      else if (!isSmartForward)
+        {
+          [mailObject addFlags: @"Answered"];
+        }
+      else
+        {
+          [mailObject addFlags: @"$Forwarded"];
         }
     }
   else
