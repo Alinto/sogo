@@ -7,7 +7,7 @@ Bug fixes
  - calendars list when creating a new component in a calendar in which the user
    can't delete components
  - avoid double-appending domains in cache for multi-domain configurations (#3614)
- - encode CR in EAS paylog (#3626)
+ - encode CR in EAS payload (#3626)
  - password change during login process when using ppolicy
  - correctly set answered/forwarded flags during EAS smart operations
  - don't mark calendar invitations as read when fetching messages using EAS
