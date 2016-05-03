@@ -1,5 +1,5 @@
 { /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
-  requires = ( MAIN, Mailer, Appointments );
+  requires = ( MAIN, CommonUI, Mailer, Appointments );
 
   publicResources = (
 );
