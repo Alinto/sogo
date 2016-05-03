@@ -154,10 +154,61 @@
    * @return a promise
    */
   Resource.prototype.save = function(id, newValue, options) {
-    var deferred = this._q.defer(),
-        action = (options && options.action)? options.action : 'save';
+    var action = (options && options.action)? options.action : 'save';
 
     return this.post(id, action, newValue);
+  };
+
+  /**
+   * @function download
+   * @memberof Resource.prototype
+   * @desc Download a file from the server. Requires FileSaver.js.
+   * @see {@link http://blog.davidjs.com/2015/07/download-files-via-post-request-in-angularjs/|Download files via POST request in AngularJs}
+   * @see {@link https://github.com/eligrey/FileSaver.js|FileSaver.js}
+   * @return a promise
+   */
+  Resource.prototype.download = function(id, action, data, options) {
+    var deferred = this._q.defer(),
+        type = (options && options.type)? options.type : 'application/zip',
+        path = [this._path];
+    if (id) path.push(id);
+    if (action) path.push(action);
+    path = _.compact(_.flatten(path)).join('/');
+
+    function getFileNameFromHeader(header) {
+      var result;
+
+      if (!header) return null;
+      result = header.split(";")[1].trim().split("=")[1];
+
+      return result.replace(/"/g, '');
+    }
+
+    return this._http({
+      method: 'POST',
+      url: path,
+      data: data,
+      headers: {
+        accept: type
+      },
+      responseType: 'arraybuffer',
+      cache: false,
+      transformResponse: function (data, headers) {
+        var fileName, result, blob = null;
+
+        if (data) {
+          blob = new Blob([data], { type: type });
+        }
+        fileName = getFileNameFromHeader(headers('content-disposition'));
+
+        if (!saveAs) {
+          throw new Error('To use Resource.download, FileSaver.js must be loaded.');
+        }
+        else {
+          saveAs(blob, fileName);
+        }
+      }
+    });
   };
 
   /**

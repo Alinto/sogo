@@ -531,6 +531,21 @@
   };
 
   /**
+   * @function saveSelectedMessages
+   * @memberof Mailbox.prototype
+   * @desc Download the selected messages
+   * @returns a promise of the HTTP operation
+   */
+  Mailbox.prototype.saveSelectedMessages = function() {
+    var selectedMessages, selectedUIDs;
+
+    selectedMessages = _.filter(this.$messages, function(message) { return message.selected; });
+    selectedUIDs = _.map(selectedMessages, 'uid');
+
+    return Mailbox.$$resource.download(this.id, 'saveMessages', {uids: selectedUIDs});
+  };
+
+  /**
    * @function $delete
    * @memberof Mailbox.prototype
    * @desc Delete the mailbox from the server

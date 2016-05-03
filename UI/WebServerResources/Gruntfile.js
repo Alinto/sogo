@@ -17,7 +17,8 @@ module.exports = function(grunt) {
   };
   var custom_vendor_files = {
     'js/vendor/ng-sortable.min.js': ['bower_components/Sortable/Sortable.js', 'bower_components/Sortable/ng-sortable.js'],
-    'js/vendor/angular-file-upload.min.js': ['bower_components/angular-file-upload/dist/angular-file-upload.js', 'js/Common/angular-file-upload.trump.js']
+    'js/vendor/angular-file-upload.min.js': ['bower_components/angular-file-upload/dist/angular-file-upload.js', 'js/Common/angular-file-upload.trump.js'],
+    'js/vendor/FileSaver.min.js': ['bower_components/file-saver.js/FileSaver.js']
   };
 
   require('time-grunt')(grunt);

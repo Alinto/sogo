@@ -26,7 +26,6 @@
     vm.markOrUnMarkMessagesAsJunk = markOrUnMarkMessagesAsJunk;
     vm.copySelectedMessages = copySelectedMessages;
     vm.moveSelectedMessages = moveSelectedMessages;
-    vm.saveSelectedMessages = saveSelectedMessages;
     vm.markSelectedMessagesAsFlagged = markSelectedMessagesAsFlagged;
     vm.markSelectedMessagesAsUnread = markSelectedMessagesAsUnread;
     vm.selectAll = selectAll;
@@ -151,12 +150,6 @@
       vm.selectedFolder.$moveMessages(selectedMessages, '/' + folder).then(function(index) {
         unselectMessage(moveSelectedMessage, index);
       });
-    }
-
-    function saveSelectedMessages() {
-      var selectedMessages = _.filter(vm.selectedFolder.$messages, function(message) { return message.selected; });
-      var selectedUIDs = _.map(selectedMessages, 'uid');
-      window.location.href = ApplicationBaseURL + '/' + vm.selectedFolder.id + '/saveMessages?uid=' + selectedUIDs.join(",");
     }
 
     function selectAll() {

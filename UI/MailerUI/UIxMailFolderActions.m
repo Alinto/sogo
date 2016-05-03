@@ -369,16 +369,15 @@
   SOGoMailFolder *co;
   WOResponse *response;
   NSArray *uids;
-  NSDictionary *jsonResponse;
-  NSString *value;
+  NSDictionary *data, *jsonResponse;
 
   co = [self clientObject];
-  value = [[context request] formValueForKey: @"uid"];
+  data = [[[context request] contentAsString] objectFromJSONString];
+  uids = [data objectForKey: @"uids"];
   response = nil;
 
-  if ([value length] > 0)
+  if ([uids count] > 0)
     {
-      uids = [value componentsSeparatedByString: @","];
       response = [co archiveUIDs: uids
                   inArchiveNamed: [self labelForKey: @"Saved Messages.zip" inContext: context]
                        inContext: context];
@@ -387,7 +386,7 @@
     }
   else
     {
-      jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing 'uid' parameter." inContext: context]
+      jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing 'uids' parameter." inContext: context]
                                                  forKey: @"message"];
       response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
     }
