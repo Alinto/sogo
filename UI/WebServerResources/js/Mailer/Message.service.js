@@ -673,7 +673,7 @@
 
     selectedUIDs = [ this.uid ];
 
-    return this.$mailbox.constructor.$$resource.download(this.$mailbox.id, 'saveMessages', {uids: selectedUIDs});
+    return Message.$$resource.download(this.$mailbox.id, 'saveMessages', {uids: selectedUIDs});
   };
 
 })();
