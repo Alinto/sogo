@@ -30,11 +30,13 @@
 #import "SOGoProductLoader.h"
 
 static NSString *productDirectoryName = @"SOGo";
+static NSArray *baseProducts;
 
 @implementation SOGoProductLoader
 
 + (id) productLoader
 {
+  baseProducts = [[NSArray alloc] initWithObjects: @"Appointments.SOGo", @"Contacts.SOGo", @"Mailer.SOGo", @"CommonUI.SOGo", @"MainUI.SOGo", nil];
   return [[self new] autorelease];
 }
 
@@ -105,7 +107,7 @@ static NSString *productDirectoryName = @"SOGo";
 {
   SoProductRegistry *registry = nil;
   NSFileManager *fm;
-  NSMutableArray *loadedProducts;
+  NSMutableArray *loadedProducts, *remainingProducts;
   NSEnumerator *pathes;
   NSString *lpath, *bpath;
   NSEnumerator *productNames;
@@ -122,7 +124,20 @@ static NSString *productDirectoryName = @"SOGo";
   pathes = [[self productSearchPathes] objectEnumerator];
   while ((lpath = [pathes nextObject]))
     {
-      productNames = [[fm directoryContentsAtPath: lpath] objectEnumerator];
+      productNames = [baseProducts objectEnumerator];
+      while ((productName = [productNames nextObject]))
+        {
+          bpath = [lpath stringByAppendingPathComponent: productName];
+          if ([fm fileExistsAtPath: bpath])
+            {
+              [registry registerProductAtPath: bpath];
+              [loadedProducts addObject: productName];
+            }
+        }
+
+      remainingProducts = [NSMutableArray arrayWithArray: [fm directoryContentsAtPath: lpath]];
+      [remainingProducts removeObjectsInArray: baseProducts];
+      productNames = [remainingProducts objectEnumerator];
       while ((productName = [productNames nextObject]))
 	{
           if ([[productName pathExtension] isEqualToString: @"SOGo"])
