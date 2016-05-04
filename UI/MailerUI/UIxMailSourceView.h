@@ -21,7 +21,7 @@
 #ifndef UIXMAILSOURCEVIEW_H
 #define UIXMAILSOURCEVIEW_H
 
-#import <UI/Common/SOGoDirectAction.h>
+#import <UI/SOGoUI/SOGoDirectAction.h>
 
 @interface UIxMailSourceView : SOGoDirectAction
 

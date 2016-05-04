@@ -27,7 +27,7 @@
 @class SOGoDateFormatter;
 @class UIxMailSizeFormatter;
 
-#import <UI/Common/SOGoDirectAction.h>
+#import <UI/SOGoUI/SOGoDirectAction.h>
 
 @interface UIxMailListActions : SOGoDirectAction
 {

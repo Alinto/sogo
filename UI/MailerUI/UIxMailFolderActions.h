@@ -21,7 +21,7 @@
 #ifndef UIXMAILFOLDERACTIONS_H
 #define UIXMAILFOLDERACTIONS_H
 
-#import <UI/Common/SOGoDirectAction.h>
+#import <UI/SOGoUI/SOGoDirectAction.h>
 
 @class WOResponse;
 

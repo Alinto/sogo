@@ -28,7 +28,7 @@
 
 #import <Contacts/SOGoContactGCSEntry.h>
 
-#import <Common/SOGoDirectAction.h>
+#import <SOGoUI/SOGoDirectAction.h>
 
 @interface NGVCard (SOGoActionCategory)
 

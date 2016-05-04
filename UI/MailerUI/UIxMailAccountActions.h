@@ -21,7 +21,7 @@
 #ifndef UIXMAILACCOUNTACTIONS_H
 #define UIXMAILACCOUNTACTIONS_H
 
-#import <UI/Common/SOGoDirectAction.h>
+#import <UI/SOGoUI/SOGoDirectAction.h>
 
 @class WOResponse;
 

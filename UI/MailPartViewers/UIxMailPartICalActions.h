@@ -25,7 +25,7 @@
 @class SOGoMailBodyPart;
 @class WOResponse;
 
-#import <UI/Common/SOGoDirectAction.h>
+#import <UI/SOGoUI/SOGoDirectAction.h>
 
 @interface UIxMailPartICalActions : SOGoDirectAction
 

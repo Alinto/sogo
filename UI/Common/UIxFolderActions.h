@@ -30,7 +30,7 @@
 @class SOGoGCSFolder;
 @class SOGoUserSettings;
 
-#include "SOGoDirectAction.h"
+#include <SOGoUI/SOGoDirectAction.h>
 
 @interface UIxFolderActions : SOGoDirectAction
 {

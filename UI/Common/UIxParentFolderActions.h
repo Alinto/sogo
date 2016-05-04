@@ -21,7 +21,7 @@
 #ifndef UIXPARENTFOLDERACTIONS_H
 #define UIXPARENTFOLDERACTIONS_H
 
-#include "SOGoDirectAction.h"
+#include <SOGoUI/SOGoDirectAction.h>
 
 @interface UIxParentFolderActions : SOGoDirectAction
 @end

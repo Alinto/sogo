@@ -21,7 +21,7 @@
 #ifndef UIXCALLISTINGACTIONVIEW_H
 #define UIXCALLISTINGACTIONVIEW_H
 
-#import <Common/SOGoDirectAction.h>
+#import <SOGoUI/SOGoDirectAction.h>
 
 @class NSCalendarDate;
 @class NSMutableDictionary;

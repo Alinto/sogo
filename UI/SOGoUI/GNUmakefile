@@ -17,7 +17,8 @@ libSOGoUI_HEADER_FILES +=	\
 	\
 	UIxJSClose.h		\
 	UIxComponent.h		\
-	SOGoAptFormatter.h
+	SOGoAptFormatter.h	\
+	SOGoDirectAction.h
 
 libSOGoUI_OBJC_FILES +=		\
 	\
@@ -25,8 +26,9 @@ libSOGoUI_OBJC_FILES +=		\
 	UIxComponent.m		\
 	UIxModuleAccessDenied.m	\
 	SOGoAptFormatter.m	\
-	SOGoACLAdvisory.m \
-	SOGoFolderAdvisory.m
+	SOGoACLAdvisory.m	\
+	SOGoFolderAdvisory.m	\
+	SOGoDirectAction.m
 
 # make
 

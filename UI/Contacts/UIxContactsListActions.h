@@ -22,7 +22,7 @@
 #ifndef __UIxContactsListActions_H__
 #define __UIxContactsListActions_H__
 
-#import <Common/SOGoDirectAction.h>
+#import <SOGoUI/SOGoDirectAction.h>
 
 @class NSDictionary;
 @class NSString;

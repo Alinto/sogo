@@ -21,7 +21,7 @@
 #ifndef UIXCALMAINACTIONS_H
 #define UIXCALMAINACTIONS_H
 
-#import <Common/SOGoDirectAction.h>
+#import <SOGoUI/SOGoDirectAction.h>
 
 @interface UIxCalMainActions : SOGoDirectAction
 

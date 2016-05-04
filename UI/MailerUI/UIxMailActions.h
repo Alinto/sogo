@@ -21,7 +21,7 @@
 #ifndef UIXMAILACTIONS_H
 #define UIXMAILACTIONS_H
 
-#import <UI/Common/SOGoDirectAction.h>
+#import <UI/SOGoUI/SOGoDirectAction.h>
 
 @interface UIxMailActions : SOGoDirectAction
 @end

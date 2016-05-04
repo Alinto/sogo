@@ -21,7 +21,7 @@
 #ifndef UIXJSONPREFERENCES_H
 #define UIXJSONPREFERENCES_H
 
-#import <UI/Common/SOGoDirectAction.h>
+#import <UI/SOGoUI/SOGoDirectAction.h>
 
 @interface UIxJSONPreferences : SOGoDirectAction
 

@@ -21,7 +21,7 @@
 #ifndef UIXOBJECTACTIONS_H
 #define UIXOBJECTACTIONS_H
 
-#include "SOGoDirectAction.h"
+#include <SOGoUI/SOGoDirectAction.h>
 
 @class WOResponse;
 
