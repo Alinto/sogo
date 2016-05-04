@@ -8,7 +8,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:jsFiles="Common.js, vendor/ng-sortable.min.js, Preferences.services.js, Contacts.services.js, Mailer.services.js, vendor/angular-file-upload.min.js, Scheduler.js, Scheduler.services.js">
+    const:jsFiles="Common.js, vendor/ng-sortable.min.js, Preferences.services.js, Contacts.services.js, Mailer.services.js, vendor/angular-file-upload.min.js, Scheduler.js, Scheduler.services.js,  vendor/FileSaver.min.js">
   <script type="text/javascript">
     var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;
     var dayStartHour = <var:string value="dayStartHour"/>;
@@ -121,7 +121,7 @@
                     </md-button>
                   </md-menu-item>
                   <md-menu-item>
-                    <md-button ng-click="app.exportCalendar(calendar)">
+                    <md-button ng-click="calendar.export()">
                       <var:string label:value="Export"/>
                     </md-button>
                   </md-menu-item>

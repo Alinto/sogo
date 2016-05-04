@@ -20,7 +20,6 @@
     vm.renameFolder = renameFolder;
     vm.share = share;
     vm.importCalendar = importCalendar;
-    vm.exportCalendar = exportCalendar;
     vm.showOnly = showOnly;
     vm.showAll = showAll;
     vm.showLinks = showLinks;
@@ -239,10 +238,6 @@
           return isTextFile;
         }
       }
-    }
-
-    function exportCalendar(calendar) {
-      window.location.href = ApplicationBaseURL + '/' + calendar.id + '.ics' + '/export';
     }
 
     function showOnly(calendar) {

@@ -439,6 +439,16 @@
   };
 
   /**
+   * @function export
+   * @memberof Calendar.prototype
+   * @desc Export the calendar
+   * @returns a promise of the HTTP operation
+   */
+  Calendar.prototype.export = function() {
+    return Calendar.$$resource.download(this.id + '.ics', 'export', null, {type: 'application/octet-stream'});
+  };
+
+  /**
    * @function $setActivation
    * @memberof Calendar.prototype
    * @desc Either activate or deactivate the calendar.
