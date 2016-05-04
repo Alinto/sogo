@@ -34,7 +34,6 @@
     vm.reset = reset;
     vm.cancel = cancel;
     vm.confirmDelete = confirmDelete;
-    vm.exportCard = exportCard;
     vm.toggleRawSource = toggleRawSource;
     vm.showRawSource = false;
 
@@ -131,10 +130,6 @@
                                            card.$fullname()));
             });
         });
-    }
-
-    function exportCard() {
-      $window.location.href = ApplicationBaseURL + '/' + vm.currentFolder.id + '/export?uid=' + vm.card.id;
     }
 
     function toggleRawSource($event) {

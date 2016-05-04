@@ -633,6 +633,23 @@
   };
 
   /**
+   * @function $exportCards
+   * @memberof AddressBook.prototype
+   * @desc Export the selected/all cards
+   * @returns a promise of the HTTP operation
+   */
+  AddressBook.prototype.exportCards = function(selectedOnly) {
+    var selectedUIDs;
+
+    if (selectedOnly) {
+      var selectedCards = _.filter(this.$cards, function(card) { return card.selected; });
+      selectedUIDs = _.map(selectedCards, 'id');
+    }
+
+    return AddressBook.$$resource.download(this.id, 'export', (angular.isDefined(selectedUIDs) ? {uids: selectedUIDs} : null), {type: 'application/octet-stream'});
+  };
+
+  /**
    * @function $unwrap
    * @memberof AddressBook.prototype
    * @desc Unwrap a promise and instanciate new Card objects using received data.

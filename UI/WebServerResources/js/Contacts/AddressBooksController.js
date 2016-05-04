@@ -19,7 +19,6 @@
     vm.save = save;
     vm.confirmDelete = confirmDelete;
     vm.importCards = importCards;
-    vm.exportCards = exportCards;
     vm.showLinks = showLinks;
     vm.showProperties = showProperties;
     vm.share = share;
@@ -201,10 +200,6 @@
           return isTextFile;
         }
       }
-    }
-
-    function exportCards() {
-      $window.location.href = ApplicationBaseURL + '/' + vm.service.selectedFolder.id + '/exportFolder';
     }
 
     function showLinks(addressbook) {

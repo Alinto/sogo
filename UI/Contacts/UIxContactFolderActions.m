@@ -69,7 +69,8 @@
   content = [NSMutableString string];
   request = [context request];
   sourceFolder = [self clientObject];
-  contactsId = [request formValuesForKey: @"uid"];
+  contactsId = [[[[context request] contentAsString] objectFromJSONString] objectForKey: @"uids"];
+
   if (!contactsId)
     contactsId = [sourceFolder toOneRelationshipKeys];
 

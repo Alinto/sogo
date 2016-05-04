@@ -202,6 +202,20 @@
     }
   };
 
+  /**
+   * @function export
+   * @memberof Card.prototype
+   * @desc Download the current card
+   * @returns a promise of the HTTP operation
+   */
+  Card.prototype.export = function() {
+    var selectedIDs;
+
+    selectedIDs = [ this.id ];
+
+    return Card.$$resource.download(this.pid, 'export', {uids: selectedIDs}, {type: 'application/octet-stream'});
+  };
+
   Card.prototype.$fullname = function() {
     var fn = this.c_cn || '', names;
     if (fn.length === 0) {

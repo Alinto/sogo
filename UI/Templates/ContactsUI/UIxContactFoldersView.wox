@@ -9,7 +9,7 @@
     className="UIxPageFrame"
     title="title"
     const:userDefaultsKeys="SOGoContactsCategories"
-    const:jsFiles="vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, Common.js, Preferences.services.js, Mailer.services.js, Contacts.js, Contacts.services.js, vendor/angular-file-upload.min.js">
+    const:jsFiles="vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, Common.js, Preferences.services.js, Mailer.services.js, Contacts.js, Contacts.services.js, vendor/angular-file-upload.min.js, vendor/FileSaver.min.js">
   <script type="text/javascript">
     var contactFolders = <var:string value="contactFolders" const:escapeHTML="NO" />;
   </script>
@@ -96,7 +96,7 @@
                     </md-button>
                   </md-menu-item>
                   <md-menu-item>
-                    <md-button type="button" ng-click="app.exportCards()">
+                    <md-button type="button" ng-click="folder.exportCards(false)">
                       <var:string label:value="Export"/>
                     </md-button>
                   </md-menu-item>
@@ -353,7 +353,7 @@
                   </md-button>
                 </md-menu-item>
                 <md-menu-item ng-hide="addressbook.selectedFolder.isRemote">
-                  <md-button ng-click="addressbook.saveSelectedCards()">
+                  <md-button ng-click="addressbook.selectedFolder.exportCards(true)">
                     <var:string label:value="Export"/>
                   </md-button>
                 </md-menu-item>

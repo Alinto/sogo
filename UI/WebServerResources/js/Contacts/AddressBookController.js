@@ -20,7 +20,6 @@
     vm.notSelectedComponent = notSelectedComponent;
     vm.unselectCards = unselectCards;
     vm.confirmDeleteSelectedCards = confirmDeleteSelectedCards;
-    vm.saveSelectedCards = saveSelectedCards;
     vm.copySelectedCards = copySelectedCards;
     vm.selectAll = selectAll;
     vm.sort = sort;
@@ -101,12 +100,6 @@
           vm.selectedFolder.$deleteCards(selectedCards);
           delete vm.selectedFolder.selectedCard;
         });
-    }
-
-    function saveSelectedCards() {
-      var selectedCards = _.filter(vm.selectedFolder.$cards, function(card) { return card.selected; });
-      var selectedUIDs = _.map(selectedCards, 'id');
-      $window.location.href = ApplicationBaseURL + '/' + vm.selectedFolder.id + '/export?uid=' + selectedUIDs.join('&uid=');
     }
 
     function copySelectedCards(folder) {

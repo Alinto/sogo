@@ -36,7 +36,7 @@
             <md-menu-content>
               <md-menu-item>
                 <md-button label:aria-label="Export"
-                           ng-click="editor.exportCard()">
+                           ng-click="editor.card.export()">
                   <var:string label:value="Export"/>
                 </md-button>
               </md-menu-item>
