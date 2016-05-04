@@ -77,7 +77,7 @@
               </md-menu-item>
               <md-menu-item>
                 <md-button label:aria-label="Save As..."
-                           ng-click="viewer.saveMessage()">
+                           ng-click="viewer.message.saveMessage()">
                   <var:string label:value="Save As..."/>
                 </md-button>
               </md-menu-item>

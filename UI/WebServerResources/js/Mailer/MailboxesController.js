@@ -22,7 +22,6 @@
     vm.saveFolder = saveFolder;
     vm.compactFolder = compactFolder;
     vm.emptyTrashFolder = emptyTrashFolder;
-    vm.exportMails = exportMails;
     vm.confirmDelete = confirmDelete;
     vm.markFolderRead = markFolderRead;
     vm.share = share;
@@ -250,10 +249,6 @@
             .position('top right')
             .hideDelay(3000));
       });
-    }
-
-    function exportMails(folder) {
-      window.location.href = ApplicationBaseURL + '/' + folder.id + '/exportFolder';
     }
 
     function confirmDelete(folder) {

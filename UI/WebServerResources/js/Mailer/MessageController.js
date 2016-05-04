@@ -32,7 +32,6 @@
     vm.openPopup = openPopup;
     vm.closePopup = closePopup;
     vm.newMessage = newMessage;
-    vm.saveMessage = saveMessage;
     vm.toggleRawSource = toggleRawSource;
     vm.showRawSource = false;
     vm.print = print;
@@ -265,10 +264,6 @@
       showMailEditor($event, message, [recipient]);
       $event.stopPropagation();
       $event.preventDefault();
-    }
-
-    function saveMessage() {
-      window.location.href = ApplicationBaseURL + '/' + vm.mailbox.id + '/saveMessages?uid=' + vm.message.uid;
     }
 
     function toggleRawSource($event) {

@@ -662,4 +662,18 @@
     return message;
   };
 
+  /**
+   * @function saveMessage
+   * @memberof Message.prototype
+   * @desc Download the current message
+   * @returns a promise of the HTTP operation
+   */
+  Message.prototype.saveMessage = function() {
+    var selectedUIDs;
+
+    selectedUIDs = [ this.uid ];
+
+    return this.$mailbox.constructor.$$resource.download(this.$mailbox.id, 'saveMessages', {uids: selectedUIDs});
+  };
+
 })();

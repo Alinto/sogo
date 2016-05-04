@@ -546,6 +546,16 @@
   };
 
   /**
+   * @function export
+   * @memberof Mailbox.prototype
+   * @desc Export this mailbox
+   * @returns a promise of the HTTP operation
+   */
+  Mailbox.prototype.export = function() {
+    return Mailbox.$$resource.download(this.id, 'exportFolder');
+  };
+
+  /**
    * @function $delete
    * @memberof Mailbox.prototype
    * @desc Delete the mailbox from the server
