@@ -235,13 +235,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Other, less important fields
   if ((o = [self birthday]))
     {
-      NSTimeZone *userTimeZone;
-      userTimeZone = [[[context activeUser] userDefaults] timeZone];
-
       [s appendFormat: @"<Birthday xmlns=\"Contacts:\">%@</Birthday>",
          [[o dateByAddingYears: 0 months: 0 days: 0
-                         hours: 0 minutes: 0
-                       seconds: ([userTimeZone secondsFromGMTForDate: o])*-1]
+                         hours: -12 minutes: 0
+                       seconds: 0]
               activeSyncRepresentationInContext: context]];
     }
 
