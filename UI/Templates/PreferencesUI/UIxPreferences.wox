@@ -295,7 +295,8 @@
                 <label class="pseudo-input-label"><var:string label:value="Week days to display"/></label>
                 <md-grid-list md-cols="7" md-row-height="2em" md-gutter="0.5em"
                               flex="50" flex-sm="80" flex-xs="100"
-                              sg-toggle-grid="app.preferences.defaults.SOGoCalendarWeekdays">
+                              ng-model="app.preferences.defaults.SOGoCalendarWeekdays"
+                              sg-toggle-grid="sg-toggle-grid">
                   <var:foreach list="shortWeekDaysList" item="item">
                     <md-grid-tile var:value="valueForWeekDay"><var:string value="item"/></md-grid-tile>
                   </var:foreach>

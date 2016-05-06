@@ -28,7 +28,8 @@
       <label class="pseudo-input-label"><var:string label:value="On"/></label>
       <md-grid-list md-cols="7" md-row-height="2em" md-gutter="0.5em"
                     flex="50" flex-sm="80" flex-xs="100"
-                    sg-toggle-grid="editor.component.repeat.days"
+                    ng-model="editor.component.repeat.days"
+                    sg-toggle-grid="sg-toggle-grid"
                     sg-toggle-grid-attr="day">
         <var:foreach list="shortWeekDaysList" item="item">
           <md-grid-tile var:value="valueForWeekDay"><var:string value="labelForWeekDay"/></md-grid-tile>
@@ -53,7 +54,8 @@
       <div layout="row" layout-align="start center">
         <md-grid-list md-cols="7" md-row-height="2em" md-gutter="0.5em"
                       flex="50" flex-sm="80" flex-xs="100"
-                      sg-toggle-grid="editor.component.repeat.monthdays">
+                      ng-model="editor.component.repeat.monthdays"
+                      sg-toggle-grid="sg-toggle-grid">
           <md-grid-tile value="1">1</md-grid-tile>
           <md-grid-tile value="2">2</md-grid-tile>
           <md-grid-tile value="3">3</md-grid-tile>
@@ -121,7 +123,8 @@
     <div layout="row" layout-align="start center">
       <md-grid-list md-cols="6" md-row-height="2em" md-gutter="0.5em"
                     flex="50" flex-sm="80" flex-xs="100"
-                    sg-toggle-grid="editor.component.repeat.months">
+                    ng-model="editor.component.repeat.months"
+                    sg-toggle-grid="sg-toggle-grid">
         <var:foreach list="yearlyMonthList" item="item">
           <md-grid-tile var:value="valueForYearlyMonth"><var:string value="item"/></md-grid-tile>
         </var:foreach>
