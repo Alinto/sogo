@@ -245,7 +245,7 @@
     }
 
     function priorityLevel() {
-      if (vm.component.priority) {
+      if (vm.component && vm.component.priority) {
         if (vm.component.priority > 5)
           return l('low');
         else if (vm.component.priority > 4)
