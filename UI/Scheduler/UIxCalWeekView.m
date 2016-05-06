@@ -44,7 +44,7 @@
 
   date = [[context activeUser] firstDayOfWeekForDate: [super startDate]];
 
-  return [date beginOfDay];
+  return [self _nextValidDate: [date beginOfDay]];
 }
 
 - (NSCalendarDate *) endDate

@@ -25,11 +25,13 @@
       },
       controller: sgCalendarScrollViewController,
       link: function(scope, element, attrs, controller) {
-        var view, scrollView, type, lastScroll, deregisterDragStart, deregisterDragStop;
+        var view, scrollView, type, lastScroll, days, deregisterDragStart, deregisterDragStop;
 
+        view = null;
         scrollView = element[0];
         type = scope.type; // multiday, multiday-allday, monthly, unknown?
         lastScroll = 0;
+        days = null;
 
         // Listen to dragstart and dragend events
         deregisterDragStart = $rootScope.$on('calendar:dragstart', onDragStart);
@@ -56,6 +58,7 @@
             type: type,
             quarterHeight: quarterHeight,
             scrollStep: 6 * quarterHeight,
+            dayNumbers: getDayNumbers(),
             maxX: getMaxColumns(),
 
             // Expose a reference of the view element
@@ -94,7 +97,7 @@
           var width, height, leftOffset, topOffset, nodes, domRect, tileHeader;
 
           height = width = leftOffset = topOffset = 0;
-          nodes = scrollView.getElementsByClassName('day0');
+          nodes = scrollView.getElementsByClassName('day');
 
           if (nodes.length > 0) {
             domRect = nodes[0].getBoundingClientRect();
@@ -107,6 +110,22 @@
           }
 
           return { height: height, width: width, offset: { left: leftOffset, top: topOffset } };
+        }
+
+        function getDayNumbers() {
+          var viewType = null, isMultiColumn, days, total, sum;
+
+          if (scrollView.attributes['sg-view'])
+            viewType = scrollView.attributes['sg-view'].value;
+          isMultiColumn = (viewType == 'multicolumndayview');
+          days = scrollView.getElementsByTagName('sg-calendar-day');
+
+          return _.map(days, function(element, index) {
+            if (isMultiColumn)
+              return index;
+            else
+              return parseInt(element.attributes['sg-day-number'].value);
+          });
         }
 
         function getMaxColumns() {
@@ -153,9 +172,9 @@
         function updateFromPointerHandler() {
           var scrollStep, pointerHandler, pointerCoordinates, now, scrollY, minY, delta;
 
-          scrollStep = view.scrollStep;
           pointerHandler = Component.$ghost.pointerHandler;
-          if (pointerHandler) {
+          if (view && pointerHandler) {
+            scrollStep = view.scrollStep;
             pointerCoordinates = pointerHandler.getContainerBasedCoordinates(view);
 
             if (pointerCoordinates) {

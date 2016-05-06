@@ -199,6 +199,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setCalendarShouldDisplayWeekend: (BOOL) newValue;
 - (BOOL) calendarShouldDisplayWeekend;
 
+- (void) setCalendarWeekdays: (NSArray *) newValues;
+- (NSArray *) calendarWeekdays;
+
 - (void) setCalendarEventsDefaultClassification: (NSString *) newValue;
 - (NSString *) calendarEventsDefaultClassification;
 

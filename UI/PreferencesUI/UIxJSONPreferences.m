@@ -26,6 +26,8 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <SOPE/NGCards/iCalRecurrenceRule.h>
+
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
@@ -122,6 +124,9 @@ static SoProduct *preferencesProduct = nil;
 
   if (![[defaults source] objectForKey: @"SOGoDayEndTime"])
     [[defaults source] setObject: [NSString stringWithFormat: @"%02d:00", [defaults dayEndHour]] forKey: @"SOGoDayEndTime"];
+
+  if (![[defaults source] objectForKey: @"SOGoCalendarWeekdays"])
+    [[defaults source] setObject: [NSArray arrayWithObjects: iCalWeekDayString count: 7] forKey: @"SOGoCalendarWeekdays"];
 
   if (![[defaults source] objectForKey: @"SOGoFirstWeekOfYear"])
     [[defaults source] setObject: [defaults firstWeekOfYear] forKey: @"SOGoFirstWeekOfYear"];

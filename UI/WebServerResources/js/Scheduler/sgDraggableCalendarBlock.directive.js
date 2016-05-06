@@ -42,12 +42,12 @@
       });
 
       function initGrips() {
-        var component, dayNumber, blockIndex, isFirstBlock, isLastBlock,
+        var component, dayIndex, blockIndex, isFirstBlock, isLastBlock,
             dragGrip, leftGrip, rightGrip, topGrip, bottomGrip;
 
         component = scope.block.component;
-        dayNumber = scope.block.dayNumber;
-        blockIndex = _.findIndex(component.blocks, ['dayNumber', dayNumber]);
+        dayIndex = scope.block.dayIndex;
+        blockIndex = _.findIndex(component.blocks, ['dayIndex', dayIndex]);
         isFirstBlock = (blockIndex === 0);
         isLastBlock = (blockIndex === component.blocks.length - 1);
 
@@ -78,12 +78,12 @@
       }
 
       function onDragDetect(ev) {
-        var block, dragMode, eventType, startDate, newData, newComponent, pointerHandler;
+        var dragMode, pointerHandler;
 
         ev.stopPropagation();
 
         dragMode = 'move-event';
-        
+
         if (scope.block && scope.block.component) {
           // Move or resize existing component
           if (ev.target.className == 'dragGrip-top' ||
@@ -220,6 +220,10 @@
           delta.x = this.x - otherCoordinates.x;
           delta.y = this.y - otherCoordinates.y;
 
+          if (Calendar.$view) {
+            delta.days = Calendar.$view.dayNumbers[this.x] - Calendar.$view.dayNumbers[otherCoordinates.x];
+          }
+
           return delta;
         },
 
@@ -247,6 +251,7 @@
 
       SOGoEventDragEventCoordinates.prototype = {
         dayNumber: -1,
+        weekDay: -1,
         start: -1,
         duration: -1,
 
@@ -257,21 +262,29 @@
         },
 
         initFromBlock: function(block) {
+          var prevDayNumber = -1;
+
           if (this.eventType === 'monthly') {
             this.start = 0;
-            this.duration = block.component.blocks.length * 96;
+            this.duration = block.component.blocks.length * CalendarSettings.EventDragDayLength;
           }
           else {
             // Get the start (first quarter) from the event's first block
             // Compute overall length
             this.start = block.component.blocks[0].start;
             this.duration = _.sumBy(block.component.blocks, function(b) {
-              return b.length;
+              var delta, currentDayNumber;
+
+              currentDayNumber = b.dayNumber;
+              if (prevDayNumber < 0)
+                delta = 0;
+              else
+                delta = currentDayNumber - prevDayNumber - 1;
+              prevDayNumber = currentDayNumber;
+
+              return b.length + delta * CalendarSettings.EventDragDayLength;
             });
           }
-
-          // Get the dayNumber from the event's first block
-          this.dayNumber = block.component.blocks[0].dayNumber;
         },
 
         initFromCalendar: function(calendarNumber) {
@@ -411,12 +424,16 @@
 
           // Compute delta wrt to position of mouse at dragstart on the day/quarter grid
           var delta = this.currentViewCoordinates.getDelta(this.originalViewCoordinates);
-          var deltaQuarters = delta.x * CalendarSettings.EventDragDayLength + delta.y;
+          var deltaQuarters = delta.days * CalendarSettings.EventDragDayLength + delta.y;
           $log.debug('quarters delta ' + deltaQuarters);
 
           if (angular.isUndefined(this.originalEventCoordinates.start)) {
-            this.originalEventCoordinates.dayNumber = this.originalViewCoordinates.x;
+            // Creating new appointment from DnD
+            this.originalEventCoordinates.dayNumber = Calendar.$view.dayNumbers[this.originalViewCoordinates.x];
             this.originalEventCoordinates.start = this.originalViewCoordinates.y;
+          }
+          else if (this.originalEventCoordinates.dayNumber < 0) {
+            this.originalEventCoordinates.dayNumber = Calendar.$view.dayNumbers[scope.block.component.blocks[0].dayIndex];
           }
           // if (currentView == "multicolumndayview")
           //   this._updateMulticolumnViewDayNumber_SEDGC();
@@ -461,12 +478,9 @@
           else if (this.currentEventCoordinates.start >= CalendarSettings.EventDragDayLength) {
             deltaDays = Math.floor(this.currentEventCoordinates.start / CalendarSettings.EventDragDayLength);
             this.currentEventCoordinates.start -= deltaDays * CalendarSettings.EventDragDayLength;
-
-            // This dayNumber needs to be updated with the calendar number.
-            // if (currentView == "multicolumndayview")
-            //   this._updateMulticolumnViewDayNumber_SEDGC();
             this.currentEventCoordinates.dayNumber += deltaDays;
           }
+
           $log.debug('event coordinates ' + JSON.stringify(this.currentEventCoordinates));
           $rootScope.$emit('calendar:drag');
         },

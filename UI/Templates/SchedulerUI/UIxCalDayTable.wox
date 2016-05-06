@@ -61,8 +61,8 @@
         <div class="days" sg-calendar-scroll-view="multiday-allday">
           <var:foreach list="daysToDisplay" item="currentTableDay">
             <sg-calendar-day var:class="dayClasses"
-                             var:day="currentTableDay.shortDateString"
                              var:id="currentAllDayId"
+                             var:day="currentTableDay.shortDateString"
                              hour="allday"
                              var:sg-day-number="currentDayNumber"
                              var:sg-day="currentTableDay.shortDateString"
@@ -118,9 +118,8 @@
                   </div>
                 </var:foreach>
                 <sg-calendar-day-table
-                    sg-click="list.openEvent(event, component)"
                     sg-blocks="view.blocks"
-                    var:sg-day-number="currentDayNumber"
+                    sg-click="list.openEvent(event, component)"
                     var:sg-day="currentTableDay.shortDateString"><!-- blocks for current day --></sg-calendar-day-table>
                 <sg-calendar-day-block
                     sg-calendar-ghost="sg-calendar-ghost"

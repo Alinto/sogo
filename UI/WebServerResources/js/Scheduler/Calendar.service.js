@@ -51,8 +51,8 @@
   }
   angular.module('SOGo.SchedulerUI')
     .value('CalendarSettings', {
-      EventDragDayLength: 24 * 4,
-      EventDragHorizontalOffset: 3
+      EventDragDayLength: 24 * 4,   // hour quarters
+      EventDragHorizontalOffset: 3  // pixels
     })
     .factory('Calendar', Calendar.$factory);
 

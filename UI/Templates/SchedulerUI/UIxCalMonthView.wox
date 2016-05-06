@@ -20,7 +20,8 @@
       <div class="md-flex"><var:string value="monthNameOfThisMonth" /> <var:string value="selectedDate.yearOfCommonEra" /></div>
       <md-button class="md-icon-button md-accent"
                  label:aria-label="Today"
-                 ng-click="app.today()">
+                 var:date="todayQueryParameters.day"
+                 ng-click="calendar.changeDate($event)">
         <md-tooltip><var:string label:value="Today"/></md-tooltip>
         <md-icon>today</md-icon>
       </md-button>
@@ -51,7 +52,7 @@
     <md-content class="md-flex" sg-calendar-scroll-view="monthly">
       <div class="calendarView monthView">
         <md-grid-list
-            md-cols="7"
+            var:md-cols="headerDaysToDisplay.count"
             md-row-height="1:1"
             md-gutter="0">
           <var:foreach list="weeksToDisplay" item="currentWeek">

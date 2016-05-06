@@ -20,7 +20,8 @@
       <div class="md-flex"><var:string value="currentWeekName" /></div>
       <md-button class="md-icon-button md-accent"
                  label:aria-label="Today"
-                 ng-click="app.today()">
+                 var:date="todayQueryParameters.day"
+                 ng-click="calendar.changeDate($event)">
         <md-tooltip><var:string label:value="Today"/></md-tooltip>
         <md-icon>today</md-icon>
       </md-button>

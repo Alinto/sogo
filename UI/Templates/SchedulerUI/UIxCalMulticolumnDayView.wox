@@ -10,11 +10,11 @@
   <md-card>
     <md-card-actions flex-none="flex-none" layout="row" layout-align="start center">
       <md-button class="md-icon-button"
-                 label:aria-label="Previous Day"
+                 var:aria-label="yesterdayName"
                  var:date="prevDayQueryParameters.day"
                  ng-click="calendar.changeDate($event)"><md-icon>chevron_left</md-icon></md-button>
       <md-button class="md-icon-button"
-                 label:aria-label="Next Day"
+                 var:aria-label="tomorrowName"
                  var:date="nextDayQueryParameters.day"
                  ng-click="calendar.changeDate($event)"><md-icon>chevron_right</md-icon></md-button>
       <div class="md-flex"><var:string value="currentDayName" /></div>

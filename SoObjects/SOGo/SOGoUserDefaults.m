@@ -741,6 +741,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self objectForKey: @"SOGoCalendarCategoriesColors"];
 }
 
+- (void) setCalendarWeekdays: (NSArray *) newValues
+{
+  [self setObject: newValues forKey: @"SOGoCalendarWeekdays"];
+}
+
+- (NSArray *) calendarWeekdays
+{
+  return [self stringArrayForKey: @"SOGoCalendarWeekdays"];
+}
+
 - (void) setCalendarShouldDisplayWeekend: (BOOL) newValue
 {
   [self setBool: newValue forKey: @"SOGoCalendarShouldDisplayWeekend"];

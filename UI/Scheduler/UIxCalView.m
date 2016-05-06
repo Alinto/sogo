@@ -1,6 +1,6 @@
 /* UIxCalView.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2015 Inverse inc.
+ * Copyright (C) 2006-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,8 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGCards/NGCards.h>
+
+#import <SOPE/NGCards/iCalRecurrenceRule.h>
 
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
@@ -55,6 +57,7 @@
     {
       ud = [[context activeUser] userDefaults];
       ASSIGN (timeZone, [ud timeZone]);
+      ASSIGN (enabledWeekDays, [ud calendarWeekdays]);
       aptFormatter
         = [[SOGoAptFormatter alloc] initWithDisplayTimeZone: timeZone];
       aptTooltipFormatter
@@ -253,7 +256,7 @@
   title = [appointment valueForKey: @"title"];
   if ([title length] > 12)
     title = [[title substringToIndex: 11] stringByAppendingString: @"..."];
-  
+
   return title;
 }
 
@@ -396,7 +399,7 @@
       if ([bv boolValue])
         [filtered addObject: apt];
     }
-    
+
   ASSIGN(allDayApts, filtered);
   [filtered release];
   return allDayApts;
@@ -448,10 +451,10 @@
 - (NSString *) appointmentViewURL
 {
   id pkey;
-  
+
   if (![(pkey = [[self appointment] valueForKey: @"uid"]) isNotNull])
     return nil;
-  
+
   return [[[self clientObject] baseURLForAptWithUID: [pkey stringValue]
                                inContext: [self context]]
            stringByAppendingString: @"/view"];
@@ -474,7 +477,7 @@
 - (BOOL) shouldDisplayRejectedAppointments
 {
   NSString *bv;
-  
+
   bv = [self queryParameterForKey: @"dr"];
   if (!bv) return NO;
   return [bv boolValue];
@@ -484,7 +487,7 @@
 {
   NSMutableDictionary *qp;
   BOOL                shouldDisplay;
-  
+
   shouldDisplay = ![self shouldDisplayRejectedAppointments];
   qp = [[[self queryParameters] mutableCopy] autorelease];
   [qp setObject: shouldDisplay ? @"1" : @"0" forKey: @"dr"];
@@ -500,19 +503,68 @@
 
 /* date selection & conversion */
 
+- (NSCalendarDate *) _nextValidDate: (NSCalendarDate *) date
+{
+  NSCalendarDate *validDate;
+  NSString *weekDay;
+
+  validDate = [[date copy] autorelease];
+  if ([enabledWeekDays count])
+    {
+      weekDay = iCalWeekDayString[[validDate dayOfWeek]];
+      while (![enabledWeekDays containsObject: weekDay])
+        {
+          validDate = [validDate dateByAddingYears:0 months:0 days:1 hours:0 minutes:0 seconds:0];
+          weekDay = iCalWeekDayString[[validDate dayOfWeek]];
+        }
+    }
+
+  return validDate;
+}
+
+- (int) _nextValidOffset: (int) daysOffset
+{
+  NSCalendarDate *date;
+  NSString *weekDay;
+  int count, offset;
+
+  count = (daysOffset < 0)? -1 : +1;
+  offset = daysOffset;
+
+  if ([enabledWeekDays count])
+    {
+      date = [[self startDate] dateByAddingYears:0 months:0 days:offset hours:0 minutes:0 seconds:0];
+      weekDay = iCalWeekDayString[[date dayOfWeek]];
+      while (![enabledWeekDays containsObject: weekDay])
+        {
+          offset += count;
+          date = [date dateByAddingYears:0 months:0 days:count hours:0 minutes:0 seconds:0];
+          weekDay = iCalWeekDayString[[date dayOfWeek]];
+        }
+    }
+
+  return offset;
+}
+
 - (NSDictionary *) _dateQueryParametersWithOffset: (int) daysOffset
 {
   NSCalendarDate *date;
-  
+
   date = [[self startDate] dateByAddingYears: 0 months: 0
                            days: daysOffset
                            hours: 0 minutes: 0 seconds: 0];
+
   return [self queryParametersBySettingSelectedDate: date];
 }
 
 - (NSDictionary *) todayQueryParameters
 {
-  return [self queryParametersBySettingSelectedDate: [NSCalendarDate date]];
+  NSCalendarDate *today;
+
+  today = [NSCalendarDate date];
+  [today setTimeZone: timeZone];
+
+  return [self queryParametersBySettingSelectedDate: [self _nextValidDate: today]];
 }
 
 - (NSDictionary *) currentDayQueryParameters
@@ -581,7 +633,7 @@
            && (![userFolderID isEqualToString: uidsString])))
         {
           NSRange r;
-          
+
           /* uri ends with an '/', so we have to adjust the range a little */
           r = NSMakeRange(0, [uri length] - 1);
           r = [uri rangeOfString: @"/"

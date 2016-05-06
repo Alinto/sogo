@@ -155,6 +155,7 @@ $quarter_height: 10px;
   // Contains the toggle button to collapse/expand the toolbar
   .allDaysView--sidenav {
     border-bottom: 1px solid sg-color($sogoPaper, 300);
+    min-width: $hours_margin;
     width: $hours_margin;
     .md-icon-button {
       position: absolute;

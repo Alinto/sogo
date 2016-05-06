@@ -35,6 +35,8 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 
+#import <SOPE/NGCards/iCalRecurrenceRule.h>
+
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
@@ -114,6 +116,7 @@ static NSArray *tasksFields = nil;
     ASSIGN (userTimeZone, [[user userDefaults] timeZone]);
     dayBasedView = NO;
     currentView = nil;
+    ASSIGN (enabledWeekDays, [[user userDefaults] calendarWeekdays]);
   }
   
   return self;
@@ -125,6 +128,7 @@ static NSArray *tasksFields = nil;
   [request release];
   [componentsData release];
   [userTimeZone release];
+  [enabledWeekDays release];
   [super dealloc];
 }
 
@@ -350,7 +354,7 @@ static NSArray *tasksFields = nil;
   NSMutableDictionary *newInfo;
   NSMutableArray *infos, *quickInfos, *allInfos, *quickInfosName;
   NSNull *marker;
-  NSString *owner, *role, *calendarName, *iCalString, *recurrenceTime, *categories;
+  NSString *owner, *role, *calendarName, *iCalString, *recurrenceTime, *categories, *weekDay;
   NSRange match;
   iCalCalendar *calendar;
   iCalEntityObject *master;
@@ -451,6 +455,11 @@ static NSArray *tasksFields = nil;
 
           while ((newInfo = [currentInfos nextObject]))
             {
+              // Skip components that appear on disabled weekdays
+              weekDay = iCalWeekDayString[[[newInfo objectForKey: @"startDate"] dayOfWeek]];
+              if ([enabledWeekDays count] && ![enabledWeekDays containsObject: weekDay])
+                continue;
+
               if ([fields containsObject: @"viewable"])
                 {
                   if ([owner isEqualToString: userLogin])
@@ -770,26 +779,35 @@ static NSArray *tasksFields = nil;
  */
 - (WOResponse *) eventsListAction
 {
+  BOOL isAllDay;
   NSArray *oldEvent;
+  NSCalendarDate *date;
   NSDictionary *data;
   NSEnumerator *events;
   NSMutableArray *fields, *newEvents, *newEvent;
+  NSString *sort, *ascending, *weekDay;
   unsigned int interval;
-  BOOL isAllDay;
-  NSString *sort, *ascending;
 
   [self _setupContext];
   [self saveFilterValue: @"EventsFilterState"];
   [self saveSortValue: @"EventsSortingState"];
-  
+
   newEvents = [NSMutableArray array];
   events = [[self _fetchFields: eventsFields
             forComponentOfType: @"vevent"] objectEnumerator];
   while ((oldEvent = [events nextObject]))
   {
+    interval = [[oldEvent objectAtIndex: eventStartDateIndex] intValue];
+    date = [NSCalendarDate dateWithTimeIntervalSince1970: interval];
+    [date setTimeZone: userTimeZone];
+
+    // Skip components that appear on disabled weekdays
+    weekDay = iCalWeekDayString[[date dayOfWeek]];
+    if ([enabledWeekDays count] && ![enabledWeekDays containsObject: weekDay])
+        continue;
+
     newEvent = [NSMutableArray arrayWithArray: oldEvent];
     isAllDay = [[oldEvent objectAtIndex: eventIsAllDayIndex] boolValue];
-    interval = [[oldEvent objectAtIndex: eventStartDateIndex] intValue];
     [newEvent addObject: [self _formattedDateForSeconds: interval
                                               forAllDay: isAllDay]];
     interval = [[oldEvent objectAtIndex: eventEndDateIndex] intValue];
@@ -967,8 +985,7 @@ static inline NSString* _userStateInEvent (NSArray *event)
         offset = 0;
       }
       else
-        offset = ((currentStart - startSecs)
-                  / dayLength);
+        offset = ((currentStart - startSecs) / dayLength);
       if (offset >= [blocks count])
         [self errorWithFormat: @"event '%@' has a computed offset that"
          @" overflows the amount of blocks (skipped)",
@@ -1309,15 +1326,16 @@ _computeBlocksPosition (NSArray *blocks)
 {
   int count, max;
   NSArray *events, *event, *calendars;
+  NSCalendarDate *currentDate;
   NSDictionary *eventsBlocks, *calendar;
-  NSMutableArray *allDayBlocks, *blocks, *currentDay, *eventsForCalendar, *eventsByCalendars;
+  NSMutableArray *allDayBlocks, *blocks, *days, *currentDay, *eventsForCalendar, *eventsByCalendars;
   NSNumber *eventNbr;
   NSString *calendarName, *calendarId;
   BOOL isAllDay;
   int i, j;
 
   [self _setupContext];
-  
+
   events = [self _fetchFields: eventsFields forComponentOfType: @"vevent"];
   
   if ([currentView isEqualToString: @"multicolumndayview"])
@@ -1329,6 +1347,7 @@ _computeBlocksPosition (NSArray *blocks)
       calendar = [calendars objectAtIndex:i];
       calendarName = [calendar objectForKey: @"name"];
       calendarId = [calendar objectForKey: @"id"];
+      days = [NSMutableArray array];
       eventsForCalendar = [NSMutableArray array];
       [self _prepareEventBlocks: &blocks withAllDays: &allDayBlocks];
       for (j = 0; j < [events count]; j++) {
@@ -1343,7 +1362,8 @@ _computeBlocksPosition (NSArray *blocks)
                                    eventsFields, @"eventsFields",
                                    eventsForCalendar, @"events",
                                    allDayBlocks, @"allDayBlocks",
-                                   blocks, @"blocks", nil];
+                                   blocks, @"blocks",
+                                   days, @"days", nil];
       max = [eventsForCalendar count];
       for (count = 0; count < max; count++)
       {
@@ -1355,12 +1375,20 @@ _computeBlocksPosition (NSArray *blocks)
         else
           [self _fillBlocks: blocks withEvent: event withNumber: eventNbr];
       }
+
+      currentDate = [[startDate copy] autorelease];
+      [currentDate setTimeZone: userTimeZone];
       max = [blocks count];
       for (count = 0; count < max; count++)
       {
         currentDay = [blocks objectAtIndex: count];
         [currentDay sortUsingSelector: @selector (compareEventByStart:)];
         [self _addBlocksWidth: currentDay];
+
+        [days addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+                                         [currentDate shortDateString], @"date",
+                                            [NSNumber numberWithInt: count], @"number", nil]];
+        currentDate = [currentDate addYear:0 month:0 day:1 hour:0 minute:0 second:0];
       }
       [eventsByCalendars addObject: eventsBlocks];
     }
@@ -1368,12 +1396,14 @@ _computeBlocksPosition (NSArray *blocks)
   }
   else
   {
+    days = [NSMutableArray array];
     [self _prepareEventBlocks: &blocks withAllDays: &allDayBlocks];
     eventsBlocks = [NSDictionary dictionaryWithObjectsAndKeys:
                                    eventsFields, @"eventsFields",
                                  events, @"events",
                                  allDayBlocks, @"allDayBlocks",
-                                 blocks, @"blocks", nil];
+                                 blocks, @"blocks",
+                                 days, @"days", nil];
     max = [events count];
     for (count = 0; count < max; count++)
     {
@@ -1390,14 +1420,44 @@ _computeBlocksPosition (NSArray *blocks)
       else
         [self _fillBlocks: blocks withEvent: event withNumber: eventNbr];
     }
-    
+
+    currentDate = [[startDate copy] autorelease];
+    [ setTimeZone: userTimeZone];
     max = [blocks count];
     for (count = 0; count < max; count++)
     {
       currentDay = [blocks objectAtIndex: count];
       [currentDay sortUsingSelector: @selector (compareEventByStart:)];
       [self _addBlocksWidth: currentDay];
+
+      [days addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+                                       [currentDate shortDateString], @"date",
+                                          [NSNumber numberWithInt: count], @"number", nil]];
+      currentDate = [currentDate addYear:0 month:0 day:1 hour:0 minute:0 second:0];
     }
+
+    if ([enabledWeekDays count] > 0 && [enabledWeekDays count] < 7)
+      {
+        // Remove the days that are disabled in the user's defaults
+        int weekDay, weekDayCount;
+
+        weekDayCount= [currentDate dayOfWeek];
+        for (count = max - 1; count >= 0; count--)
+          {
+            weekDayCount--;
+            if (weekDayCount < 0)
+              weekDay = ((weekDayCount % 7) + 7) % 7;
+            else
+              weekDay = weekDayCount;
+            if (![enabledWeekDays containsObject: iCalWeekDayString[weekDay]])
+              {
+                [allDayBlocks removeObjectAtIndex: count];
+                [blocks removeObjectAtIndex: count];
+                [days removeObjectAtIndex: count];
+              }
+          }
+      }
+
     return [self _responseWithData: [NSArray arrayWithObject: eventsBlocks]];
   }
 }

@@ -83,7 +83,7 @@
 
       function updateGhost() {
         // From SOGoEventDragGhostController._updateGhosts
-        var showGhost, isRelative, originalDay, currentDay, wasOtherBlock,
+        var showGhost, isRelative, currentDay, wasOtherBlock,
             start, duration, durationLeft, maxDuration, enableTransition;
 
         showGhost = false;
@@ -95,7 +95,6 @@
           // The view of the dragging block is the scrolling view of this ghost block
 
           isRelative   = scrollViewCtrl.type === 'multiday-allday';
-          originalDay  = scope.block.pointerHandler.originalEventCoordinates.dayNumber;
           currentDay   = scope.block.pointerHandler.currentEventCoordinates.dayNumber;
           start        = scope.block.pointerHandler.currentEventCoordinates.start;
           durationLeft = scope.block.pointerHandler.currentEventCoordinates.duration;
@@ -103,7 +102,6 @@
 
           if (angular.isUndefined(durationLeft))
             return;
-
           duration = durationLeft;
           if (duration > maxDuration)
             duration = maxDuration;
@@ -118,7 +116,7 @@
               )) {
             // This ghost block (day) is the first of the dragging event
             showGhost = true;
-            if (!isRelative)  {
+            if (!isRelative) {
               // Show start hour and set the vertical position
               scope.block.startHour = getStartTime(start);
               wasOtherBlock = parseInt(iElement.css('top')) === 0;

@@ -42,6 +42,7 @@
   NSMutableArray *daysToDisplay, *calendarsToDisplay, *hoursToDisplay;
   NSMutableDictionary *currentCalendar;
   unsigned int numberOfDays;
+  unsigned int *daysNumbersToDisplay;
 }
 
 - (void) setNumberOfDays: (NSNumber *) aNumber;

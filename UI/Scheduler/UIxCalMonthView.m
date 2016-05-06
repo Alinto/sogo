@@ -1,6 +1,6 @@
 /* UIxCalMonthView.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2015 Inverse inc.
+ * Copyright (C) 2006-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +23,11 @@
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 
+#import <SOPE/NGCards/iCalRecurrenceRule.h>
+
 #import <SOGoUI/SOGoAptFormatter.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/WOResourceManager+SOGo.h>
 
 #import "UIxCalMonthView.h"
@@ -59,6 +62,8 @@
   [weeksToDisplay release];
   [currentTableDay release];
   [currentWeek release];
+  [enabledWeekDays release];
+  free(daysNumbersToDisplay);
   [super dealloc];
 }
 
@@ -71,16 +76,19 @@
 
 - (NSArray *) headerDaysToDisplay
 {
-  NSMutableArray *headerDaysToDisplay;
-  unsigned int counter;
   NSCalendarDate *currentDate;
+  NSMutableArray *headerDaysToDisplay;
+  NSString *weekDay;
+  unsigned int counter;
 
   headerDaysToDisplay = [NSMutableArray arrayWithCapacity: 7];
-  currentDate
-    = [[context activeUser] firstDayOfWeekForDate: [self selectedDate]];
+  currentDate = [[context activeUser] firstDayOfWeekForDate: [self selectedDate]];
   for (counter = 0; counter < 7; counter++)
     {
-      [headerDaysToDisplay addObject: currentDate];
+      // Skip days that match disabled weekdays in user's defaults
+      weekDay = iCalWeekDayString[[currentDate dayOfWeek]];
+      if ([enabledWeekDays count] == 0 || [enabledWeekDays containsObject: weekDay])
+        [headerDaysToDisplay addObject: currentDate];
       currentDate = [currentDate tomorrow];
     }
 
@@ -89,31 +97,37 @@
 
 - (NSArray *) weeksToDisplay
 {
-  NSMutableArray *week;
-  unsigned int counter, day;
   NSCalendarDate *currentDate, *selectedDate, *lastDayOfMonth, *firstOfAllDays;
+  NSMutableArray *week;
+  NSString *weekDay;
+  unsigned int counter, day, enabledCounter;
   unsigned int firstToLast, weeks;
 
   if (!weeksToDisplay)
     {
       selectedDate = [self selectedDate];
-      firstOfAllDays
-	= [[context activeUser] firstDayOfWeekForDate:
-				  [selectedDate firstDayOfMonth]];
+      firstOfAllDays = [[context activeUser] firstDayOfWeekForDate:
+                                               [selectedDate firstDayOfMonth]];
       lastDayOfMonth = [selectedDate lastDayOfMonth];
-      firstToLast = ([lastDayOfMonth timeIntervalSinceDate: firstOfAllDays]
-		     / 86400) + 1;
+      firstToLast = ([lastDayOfMonth timeIntervalSinceDate: firstOfAllDays] / 86400) + 1;
       weeks = firstToLast / 7;
       if ((firstToLast % 7))
 	weeks++;
       weeksToDisplay = [NSMutableArray arrayWithCapacity: weeks];
+      daysNumbersToDisplay = malloc (weeks * 7 * sizeof (unsigned int));
       currentDate = firstOfAllDays;
-      for (counter = 0; counter < weeks; counter++)
+      for (counter = 0, enabledCounter = 0; counter < weeks; counter++)
 	{
 	  week = [NSMutableArray arrayWithCapacity: 7];
 	  for (day = 0; day < 7; day++)
 	    {
-	      [week addObject: currentDate];
+              weekDay = iCalWeekDayString[[currentDate dayOfWeek]];
+              if ([enabledWeekDays count] == 0 || [enabledWeekDays containsObject: weekDay])
+                {
+                  [week addObject: currentDate];
+                  daysNumbersToDisplay[enabledCounter] = (counter * 7) + day;
+                  enabledCounter++;
+                }
 	      currentDate = [currentDate tomorrow];
 	    }
 	  [weeksToDisplay addObject: week];
@@ -137,7 +151,7 @@
   date = [firstDay dateByAddingYears: 0 months: monthsOffset
 		   days: 0 hours: 0 minutes: 0 seconds: 0];
 
-  return [self queryParametersBySettingSelectedDate: date];
+  return [self queryParametersBySettingSelectedDate: [self _nextValidDate: date]];
 }
 
 - (NSDictionary *) monthBeforePrevMonthQueryParameters
@@ -214,8 +228,10 @@
 
 - (int) currentDayNumber
 {
-  return ([currentWeek indexOfObject: currentTableDay]
-          + [weeksToDisplay indexOfObject: currentWeek] * 7);
+  int i = [currentWeek indexOfObject: currentTableDay] +
+    ([weeksToDisplay indexOfObject: currentWeek] * [currentWeek count]);
+
+  return daysNumbersToDisplay[i];
 }
 
 - (void) setCurrentWeek: (NSArray *) newCurrentWeek
@@ -285,8 +301,9 @@
   NSCalendarDate *firstDayOfMonth;
 
   firstDayOfMonth = [[self selectedDate] firstDayOfMonth];
+  firstDayOfMonth = [[context activeUser] firstDayOfWeekForDate: firstDayOfMonth];
 
-  return [[context activeUser] firstDayOfWeekForDate: firstDayOfMonth];
+  return [self _nextValidDate: firstDayOfMonth];
 }
 
 - (NSCalendarDate *) endDate

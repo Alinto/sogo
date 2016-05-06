@@ -1,29 +1,26 @@
 /*
   Copyright (C) 2004 SKYRIX Software AG
+  Copyright (C) 2006-2016 Inverse inc.
 
-  This file is part of OpenGroupware.org.
-
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
 
 #import <Foundation/NSDictionary.h>
 
-
 #import <NGExtensions/NSCalendarDate+misc.h>
-
 
 #import "UIxCalDayView.h"
 
@@ -66,7 +63,7 @@
 // {
 //   NSCalendarDate *dateStart, *dateEnd, *aptStart, *aptEnd;
 //   NGCalendarDateRange *dateRange, *aptRange;
-    
+
 //   dateStart = self->currentDate;
 //   dateEnd   = [dateStart dateByAddingYears:0 months:0 days:0
 //                          hours:1 minutes:0 seconds:0];
@@ -104,7 +101,7 @@
 //     if ([d isDateOnSameDay:max])
 //       max = (NSCalendarDate *)[d laterDate:max];
 //   }
-  
+
 //   return [self _getDatesFrom:min to:max];
 // }
 
@@ -119,7 +116,7 @@
 //   dates  = [[NSMutableArray alloc] initWithCapacity:count];
 //   for(i = 0; i < count; i++) {
 //     NSCalendarDate *date;
-        
+
 //     date = [_from hour:offset + i minute:0];
 //     [dates addObject:date];
 //   }
@@ -135,12 +132,12 @@
 
 - (NSDictionary *) prevDayQueryParameters
 {
-  return [self _dateQueryParametersWithOffset: -1];
+  return [self _dateQueryParametersWithOffset: [self _nextValidOffset: -1]];
 }
 
 - (NSDictionary *) nextDayQueryParameters
 {
-  return [self _dateQueryParametersWithOffset: 1];
+  return [self _dateQueryParametersWithOffset: [self _nextValidOffset: +1]];
 }
 
 - (NSDictionary *) dayAfterNextDayQueryParameters
@@ -153,7 +150,7 @@
   NSMutableDictionary *qp;
   NSString *hmString;
   NSCalendarDate *date;
-    
+
   date = [self selectedDate];
   hmString = [NSString stringWithFormat:@"%.2d%.2d",
                        (int)[date hourOfDay], (int)[date minuteOfHour]];
@@ -177,7 +174,7 @@
 //   NSArray        *apts;
 //   NSMutableArray *filtered;
 //   unsigned       i, count;
-  
+
 //   if (self->allDayApts)
 //     return self->allDayApts;
 
@@ -188,7 +185,7 @@
 //   for (i = 0; i < count; i++) {
 //     id       apt;
 //     NSNumber *bv;
-    
+
 //     apt = [apts objectAtIndex:i];
 //     bv  = [apt valueForKey:@"isallday"];
 //     if ([bv boolValue]) {
@@ -203,7 +200,7 @@
 //       }
 //     }
 //   }
-  
+
 //   ASSIGN(self->allDayApts, filtered);
 //   [filtered release];
 //   return self->allDayApts;
@@ -219,8 +216,8 @@
   NSCalendarDate *date;
 
   date = [[self selectedDate] dateByAddingYears: 0
-                              months: 0
-                              days: offset];
+                                         months: 0
+                                           days: offset];
 
   return [self localizedNameForDayOfWeek: [date dayOfWeek]];
 }
@@ -232,7 +229,7 @@
 
 - (NSString *) yesterdayName
 {
-  return [self _dayNameWithOffsetFromToday: -1];
+  return [self _dayNameWithOffsetFromToday: [self _nextValidOffset: -1]];
 }
 
 - (NSString *) currentDayName
@@ -242,7 +239,7 @@
 
 - (NSString *) tomorrowName
 {
-  return [self _dayNameWithOffsetFromToday: 1];
+  return [self _dayNameWithOffsetFromToday: [self _nextValidOffset: +1]];
 }
 
 - (NSString *) dayAfterTomorrowName

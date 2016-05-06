@@ -35,6 +35,7 @@
 
 @interface UIxCalListingActions : SOGoDirectAction
 {
+  NSArray *enabledWeekDays;
   NSMutableDictionary *componentsData;
   NSCalendarDate *startDate;
   NSCalendarDate *endDate;

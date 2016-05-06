@@ -1,6 +1,6 @@
 /* UIxPreferences.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <NGCards/iCalTimeZone.h>
+
+#import <SOPE/NGCards/iCalRecurrenceRule.h>
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
@@ -720,6 +722,28 @@ static NSArray *reminderValues = nil;
 //   moduleSettings = [us objectForKey: @"Calendar"];
 //   return [[moduleSettings objectForKey: @"PreventInvitations"] boolValue];
 // }
+
+- (NSArray *) shortWeekDaysList
+{
+  static NSArray *shortWeekDaysList = nil;
+
+  if (!shortWeekDaysList)
+    {
+      shortWeekDaysList = [locale objectForKey: NSShortWeekDayNameArray];
+      [shortWeekDaysList retain];
+    }
+
+  return shortWeekDaysList;
+}
+
+- (NSString *) valueForWeekDay
+{
+  unsigned int i;
+
+  i = [[self shortWeekDaysList] indexOfObject: item];
+
+  return iCalWeekDayString[i];
+}
 
 //
 // Used by wox template
