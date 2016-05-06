@@ -267,7 +267,7 @@ static NSData* _sanitizeContent(NSData *theData)
                   
                   tags = [VoidTags objectEnumerator];
                   tag = [tags nextObject];
-                  while (tag)
+                  while (tag && found_tag)
                     {
                       if ([tag caseInsensitiveCompare: found_tag] == NSOrderedSame)
                         {
