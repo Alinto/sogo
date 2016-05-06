@@ -379,12 +379,16 @@ static Class NSNullK;
       if ([dd forceExternalLoginWithEmail])
         {
           sd = [SOGoSystemDefaults sharedSystemDefaults];
-          if ([sd enableDomainBasedUID])
-            // On multidomain environment we must use uid@domain
-            // for getEmailForUID method
-            login = [NSString stringWithFormat: @"%@@%@", uid, domain];
+          if ([sd enableDomainBasedUID] &&
+              [login rangeOfString: @"@"].location == NSNotFound)
+            {
+              // On multidomain environment we must use uid@domain
+              // for getEmailForUID method
+              login = [NSString stringWithFormat: @"%@@%@", uid, domain];
+            }
           else
             login = uid;
+
           login = [self getEmailForUID: login];
         }
       else
