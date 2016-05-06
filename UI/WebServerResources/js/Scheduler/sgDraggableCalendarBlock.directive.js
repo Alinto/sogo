@@ -566,6 +566,7 @@
           if (pxCoordinates) {
             coordinates = new SOGoCoordinates();
 
+            var maxX = view.maxX;
             var daysTopOffset = 0;
             var dayWidth = view.dayWidth;
             var daysOffset = view.daysOffset;
@@ -577,9 +578,9 @@
             coordinates.x = Math.floor((pxCoordinates.x - daysOffset) / dayWidth);
             if (coordinates.x < 0)
               coordinates.x = 0;
-            else if (coordinates.x > 6)
-              coordinates.x = 6;
-            coordinates.x += 7 * daysY;
+            else if (coordinates.x > maxX)
+              coordinates.x = maxX;
+            coordinates.x += (maxX + 1) * daysY;
             coordinates.y = 0;
           }
           else {

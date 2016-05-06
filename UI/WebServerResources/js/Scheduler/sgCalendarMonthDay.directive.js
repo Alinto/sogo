@@ -5,11 +5,14 @@
 
   /*
    * sgCalendarMonthDay - Build list of blocks for a specific day in a month
-   * @memberof SOGo.Common
+   * @memberof SOGo.SchedulerUI
    * @restrict element
    * @param {object} sgBlocks - the events blocks definitions for the current view
    * @param {string} sgDay - the day of the events to display
-   * @ngInject
+   * @param {function} sgClick - the function to call when clicking on a block.
+   *        Two variables are available: event (the event that triggered the mouse click),
+   *        and component (a Component object)
+   *
    * @example:
 
    <sg-calendar-monh-day

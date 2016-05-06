@@ -129,11 +129,15 @@
         }
 
         function getMaxColumns() {
-          var max = 0;
+          var mdGridList, max = 0;
 
-          //if (type == 'multiday') {
+          if (type == 'monthly') {
+            mdGridList = scrollView.getElementsByTagName('md-grid-list')[0];
+            max = parseInt(mdGridList.attributes['md-cols'].value) - 1;
+          }
+          else {
             max = scrollView.getElementsByClassName('day').length - 1;
-          //}
+          }
 
           return max;
         }
