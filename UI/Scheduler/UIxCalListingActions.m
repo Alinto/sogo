@@ -1422,7 +1422,7 @@ _computeBlocksPosition (NSArray *blocks)
     }
 
     currentDate = [[startDate copy] autorelease];
-    [ setTimeZone: userTimeZone];
+    [currentDate setTimeZone: userTimeZone];
     max = [blocks count];
     for (count = 0; count < max; count++)
     {
