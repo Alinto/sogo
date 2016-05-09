@@ -392,7 +392,7 @@ static Class NSNullK;
         {
           sd = [SOGoSystemDefaults sharedSystemDefaults];
           if ([sd enableDomainBasedUID] &&
-              [login rangeOfString: @"@"].location == NSNotFound)
+              [uid rangeOfString: @"@"].location == NSNotFound)
             {
               // On multidomain environment we must use uid@domain
               // for getEmailForUID method
