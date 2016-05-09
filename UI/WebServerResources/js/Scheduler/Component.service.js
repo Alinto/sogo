@@ -285,17 +285,22 @@
         deferred = Component.$q.defer();
 
     params = { view: view.toLowerCase(), sd: startDate.getDayString(), ed: endDate.getDayString() };
-    Component.$log.debug('eventsblocks ' + JSON.stringify(params, undefined, 2));
     futureComponentData = this.$$resource.fetch(null, 'eventsblocks', params);
     futureComponentData.then(function(views) {
       var reduceComponent, associateComponent;
 
       reduceComponent = function(objects, eventData, i) {
         var componentData = _.zipObject(this.eventsFields, eventData),
-            start = new Date(componentData.c_startdate * 1000);
+            start = new Date(componentData.c_startdate * 1000),
+            component;
         componentData.hour = start.getHourString();
         componentData.blocks = [];
-        objects.push(new Component(componentData));
+        component = new Component(componentData);
+        // Filter out categories for which there's no associated color
+        component.categories = _.filter(component.categories, function(name) {
+          return Component.$Preferences.defaults.SOGoCalendarCategoriesColors[name];
+        });
+        objects.push(component);
         return objects;
       };
 
@@ -402,8 +407,13 @@
 
         // Instanciate Component objects
         _.reduce(data[type], function(components, componentData, i) {
-          var data = _.zipObject(fields, componentData);
-          components.push(new Component(data));
+          var data = _.zipObject(fields, componentData), component;
+          component = new Component(data);
+          // Filter out categories for which there's no associated color
+          component.categories = _.filter(component.categories, function(name) {
+            return Component.$Preferences.defaults.SOGoCalendarCategoriesColors[name];
+          });
+          components.push(component);
           return components;
         }, components);
 
