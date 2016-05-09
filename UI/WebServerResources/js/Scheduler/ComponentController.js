@@ -295,7 +295,6 @@
     function getHours() {
       var hours = [];
       for (var i = 0; i <= 23; i++) {
-        //hours.push(Component.timeFormat.formatTime(i, 0));
         hours.push(i.toString());
       }
       return hours;
@@ -318,17 +317,19 @@
     }
 
     function adjustStartTime() {
-      // Preserve the delta between the start and end dates
-      var delta;
-      delta = oldStartDate.valueOf() - vm.component.start.valueOf();
-      if (delta !== 0) {
-        oldStartDate = new Date(vm.component.start.getTime());
-        if (vm.component.type === 'appointment') {
-          vm.component.end = new Date(vm.component.start.getTime());
-          vm.component.end.addMinutes(vm.component.delta);
-          oldEndDate = new Date(vm.component.end.getTime());
+      if (vm.component.start) {
+        // Preserve the delta between the start and end dates
+        var delta;
+        delta = oldStartDate.valueOf() - vm.component.start.valueOf();
+        if (delta !== 0) {
+          oldStartDate = new Date(vm.component.start.getTime());
+          if (vm.component.type === 'appointment') {
+            vm.component.end = new Date(vm.component.start.getTime());
+            vm.component.end.addMinutes(vm.component.delta);
+            oldEndDate = new Date(vm.component.end.getTime());
+          }
+          updateFreeBusy();
         }
-        updateFreeBusy();
       }
     }
 
@@ -339,17 +340,19 @@
     }
 
     function adjustEndTime() {
-      // The end date must be after the start date
-      var delta = oldEndDate.valueOf() - vm.component.end.valueOf();
-      if (delta !== 0) {
+      if (vm.component.end) {
+        // The end date must be after the start date
+        var delta = oldEndDate.valueOf() - vm.component.end.valueOf();
+        if (delta !== 0) {
           delta = vm.component.start.minutesTo(vm.component.end);
-        if (delta < 0)
-          vm.component.end = new Date(oldEndDate.getTime());
-        else {
-          vm.component.delta = delta;
-          oldEndDate = new Date(vm.component.end.getTime());
+          if (delta < 0)
+            vm.component.end = new Date(oldEndDate.getTime());
+          else {
+            vm.component.delta = delta;
+            oldEndDate = new Date(vm.component.end.getTime());
+          }
+          updateFreeBusy();
         }
-        updateFreeBusy();
       }
     }
 
