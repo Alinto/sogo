@@ -24,6 +24,7 @@ Enhancements
 Bug fixes
  - [core] properly escape wide characters (#3616)
  - [core] avoid double-appending domains in cache for multi-domain configurations (#3614)
+ - [core] fixed multidomain issue with non-unique ID accross domains (#3625)
  - [web] fixed missing columns in SELECT statements (PostgreSQL)
  - [web] fixed display of ghosts when dragging events
  - [web] fixed management of mail labels in Preferences module
