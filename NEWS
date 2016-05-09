@@ -12,6 +12,7 @@ Bug fixes
  - correctly set answered/forwarded flags during EAS smart operations
  - don't mark calendar invitations as read when fetching messages using EAS
  - fixed messages archiving as zip file
+ - fixed multidomain issue with non-unique ID accross domains (#3625)
 
 2.3.10 (2016-04-05)
 -------------------
