@@ -21,6 +21,8 @@ Enhancements
  - [web] style transparent events (show time as free) (#3192)
 
 Bug fixes
+ - [core] properly escape wide characters (#3616)
+ - [core] avoid double-appending domains in cache for multi-domain configurations (#3614)
  - [web] fixed missing columns in SELECT statements (PostgreSQL)
  - [web] fixed display of ghosts when dragging events
  - [web] fixed management of mail labels in Preferences module
@@ -44,8 +46,7 @@ Bug fixes
  - [web] fixed menu content visibility when printing an email (#3584)
  - [web] retired CSS reset so the style of HTML messages is respected (#3582)
  - [web] fixed messages archiving as zip file
- - [core] properly escape wide characters (#3616)
- - [core] avoid double-appending domains in cache for multi-domain configurations (#3614)
+ - [web] adapted time picker to match changes of md calendar picker
  - [dav] we now handle the default classifications for tasks (#3541)
  - [eas] properly unfold long mail headers (#3152)
  - [eas] correctly set EAS message class for S/MIME messages (#3576)

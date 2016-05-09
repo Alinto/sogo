@@ -1,20 +1,17 @@
 /** Styles for sgTimePane. */
+
 $sg-time-pane-cell-size: 40px;
 $sg-time-width: (12 * $sg-time-pane-cell-size) + (2 * $md-calendar-side-padding);
+$sg-time-font-size: 13px;
 
-sg-time-pane {
-  font-size: 13px;
+.sg-time-pane {
+  font-size: $sg-time-font-size;
   user-select: none;
 }
 
 .hours-pane {
   // TODO: should use background-200
   border-bottom: solid 1px rgb(224,224,224);
-}
-
-.toggle-pane {
-  // TODO: should use background-200
-  border-top: solid 1px rgb(224,224,224);
 }
 
 .sg-time-scroll-mask {
@@ -39,35 +36,53 @@ sg-time-pane {
   padding: 0 $md-calendar-side-padding;
 }
 
-.md-button.md-fab.hourBtn,
-.md-button.md-fab.minuteBtn,
+// Circle element inside of every hour/minute cell used to indicate selection or focus.
+.sg-time-selection-indicator {
+  transition: background-color, color $swift-ease-out-duration $swift-ease-out-timing-function;
+
+  border-radius: 50%;
+  display: inline-block;
+
+  font-size: $sg-time-font-size;
+  font-weight: normal;
+
+  width: $md-calendar-cell-emphasis-size;
+  min-width: $md-calendar-cell-emphasis-size;
+  height: $md-calendar-cell-emphasis-size;
+  line-height: $md-calendar-cell-emphasis-size;
+  margin: 0;
+
+//  .md-calendar-date:not(.md-disabled) & {
+//    cursor: pointer;
+//  }
+
+  &:hover {
+    background: $colorGrey300; // {{background-300}}
+  }
+
+  &.md-focus {
+    background: $colorGrey200; // {{background-hue-1}}
+  }
+
+  &.sg-time-selected, &:hover.sg-time-selected, &.md-focus.sg-time-selected {
+    background: sg-color($sogoBlue, 500); // {{primary-500}}
+    color: #fff; // {{primary-500-contrast}}
+    border-color: transparent;
+  }
+}
+
 .md-button.md-fab.toggleBtn,
-.md-button.md-fab.hourBtn.md-focused,
-.md-button.md-fab.minuteBtn.md-focused,
 .md-button.md-fab.toggleBtn.md-focused,
-.md-button.md-fab.hourBtn.md-focus,
-.md-button.md-fab.minuteBtn.md-focus,
 .md-button.md-fab.toggleBtn.md-focus {
   min-width: 10px;
   min-height: 10px;
   border-color: transparent;
   font-weight:normal;
-  color: rgba(0,0,0,0.5);
+  color: #fff;
   height: $sg-time-pane-cell-size;
   width: $sg-time-pane-cell-size;
   line-height: $sg-time-pane-cell-size;
   box-shadow: none;
-  margin: 0;
-  &:not(.md-bg):not(.toggleBtn) {
-    background-color: transparent;
-    &:hover {
-      background-color: lightgrey;
-      color: #666666;
-    }
-  }
-}
-.md-button.md-fab.toggleBtn {
-  color: white;
   margin: 5px;
 }
 
@@ -189,17 +204,25 @@ sg-timepicker[disabled] {
 // Open state for all of the elements of the picker.
 .sg-timepicker-open {
   .sg-timepicker-input-container {
-    margin-left: -$md-datepicker-button-gap;
+    @include rtl-prop(margin-left, margin-right, -$md-datepicker-button-gap);
+
+    // The negative bottom margin prevents the content around the datepicker
+    // from jumping when it gets opened.
+    margin-bottom: -$md-datepicker-border-bottom-gap;
     border: none;
   }
 
   .sg-timepicker-input {
-    margin-left: 24px;
+    @include rtl-prop(margin-left, margin-right, 24px);
     height: 40px;
   }
 
   .sg-timepicker-triangle-button {
     display: none;
+  }
+
+  .sg-timepicker-icon {
+    color: sg-color($sogoBlue, 500); //'{{primary-500}}';
   }
 }
 

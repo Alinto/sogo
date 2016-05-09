@@ -10,42 +10,54 @@
       template: [
         '<div class="sg-time-pane">',
         '  <div class="hours-pane">',
-        '    <div ng-repeat="hoursBigLine in hours" layout="row" layout-sm="column">',
+        '    <div ng-repeat="hoursBigLine in hours" layout="row" layout-xs="column">',
         '      <div ng-repeat="hoursLine in hoursBigLine" layout="row" class="hours">',
-        '          <md-button class="hourBtn md-fab md-mini" ng-repeat="hour in hoursLine" id="{{hour.id}}"',
+        '          <md-button class="hourBtn sg-time-selection-indicator" id="{{hour.id}}"',
+        '                     md-no-ink',
+        '                     ng-repeat="hour in hoursLine"',
         '                     ng-click="hourClickHandler(hour.displayName)">{{hour.displayName}}</md-button>',
         '      </div>',
         '    </div>',
         '  </div>',
         '  <div class="min5" ng-show="is5min()">',
-        '    <div layout="row" layout-sm="column">',
+        '    <div layout="row" layout-xs="column">',
         '      <div ng-repeat="minutesLine in min5" layout="row">',
-        '        <md-button class="minuteBtn md-fab md-mini" ng-repeat="minute in minutesLine" id="{{minute.id}}"',
+        '        <md-button class="minuteBtn sg-time-selection-indicator" id="{{minute.id}}"',
+        '                   md-no-ink',
+        '                   ng-repeat="minute in minutesLine"',
         '                   ng-click="minuteClickHandler(minute.displayName)">{{minute.displayName}}</md-button>',
         '      </div>',
         '    </div>',
         '  </div>',
         '  <div class="sg-time-scroll-mask" ng-hide="is5min()">',
-        '    <div class="min1" layout="row" layout-sm="column" layout-wrap>',
-        '      <div ng-repeat="minutesLine in min1" layout="row" layout-align="space-around center" flex="50">',
-        '        <md-button class="minuteBtn md-fab md-mini" ng-repeat="minute in minutesLine" id="{{minute.id}}"',
+        '    <div class="min1" layout="row" layout-xs="column" layout-wrap>',
+        '      <div ng-repeat="minutesLine in min1" layout="row" layout-align="space-around center">',
+        '        <md-button class="minuteBtn sg-time-selection-indicator" id="{{minute.id}}"',
+        '                   md-no-ink',
+        '                   ng-repeat="minute in minutesLine"',
         '                   ng-click="minuteClickHandler(minute.displayName)">{{minute.displayName}}</md-button>',
         '      </div>',
         '    </div>',
         '  </div>',
-        '  <div flex layout="row" layout-align="center center" class="toggle-pane">',
+        '  <div flex layout="row" layout-align="center center" md-colors="::{background: \'default-background-200\'}">',
         '    <md-button class="toggleBtn md-fab md-mini" ng-bind="getToggleBtnLbl()" ng-click="toggleManual5min()"></md-button>',
         '  </div>',
         '</div>'
       ].join(''),
       scope: {},
-      require: ['ngModel', 'sgTimePane'],
+      require: ['ngModel', 'sgTimePane', '?^mdInputContainer'],
       controller: TimePaneCtrl,
       controllerAs: 'ctrl',
       bindToController: true,
       link: function(scope, element, attrs, controllers) {
         var ngModelCtrl = controllers[0];
         var sgTimePaneCtrl = controllers[1];
+
+        var mdInputContainer = controllers[2];
+        if (mdInputContainer) {
+          throw Error('sg-timepicker should not be placed inside md-input-container.');
+        }
+
         var timePaneElement = element;
         sgTimePaneCtrl.configureNgModel(ngModelCtrl, sgTimePaneCtrl, timePaneElement);
       }
@@ -53,7 +65,7 @@
   }
 
   /** Class applied to the selected hour or minute cell/. */
-  var SELECTED_TIME_CLASS = 'md-bg';
+  var SELECTED_TIME_CLASS = 'sg-time-selected';
 
   /** Class applied to the focused hour or minute cell/. */
   var FOCUSED_TIME_CLASS = 'md-focus';
@@ -359,7 +371,7 @@
         '<md-button class="sg-timepicker-button md-icon-button" type="button" ',
         '           tabindex="-1" aria-hidden="true" ',
         '           ng-click="ctrl.openTimePane($event)">',
-        '  <md-icon>access_time</md-icon>',
+        '  <md-icon class="sg-timepicker-icon">access_time</md-icon>',
         '</md-button>',
         '<div class="md-default-theme sg-timepicker-input-container" ',
         '     ng-class="{\'sg-timepicker-focused\': ctrl.isFocused,',
@@ -376,10 +388,10 @@
         // This pane will be detached from here and re-attached to the document body.
         '<div class="sg-timepicker-time-pane md-whiteframe-z1">',
         '  <div class="sg-timepicker-input-mask">',
-        '    <div class="sg-timepicker-input-mask-opaque',
-        '                md-default-theme md-background md-bg"></div>', // using mdColors
+        '    <div class="sg-timepicker-input-mask-opaque"',
+        '                md-colors="::{background: \'default-background-A100\'}"></div>', // using mdColors
         '  </div>',
-        '  <div class="sg-timepicker-time md-default-theme md-bg md-background">',
+        '  <div class="sg-timepicker-time" md-colors="::{background: \'default-background-A100\'}">',
         '    <sg-time-pane role="dialog" aria-label="{{::ctrl.dateLocale.msgCalendar}}" ',
         '                  ng-model="ctrl.time" ng-if="ctrl.isTimeOpen"></sg-time-pane>',
         '  </div>',
@@ -418,8 +430,8 @@
    *  This is computed statically now, but can be changed to be measured if the circumstances
    *  of calendar sizing are changed.
    */
-  var TIME_PANE_HEIGHT = { MIN5: { GTSM: 172 + 20, SM: 292 + 20 },
-                           MIN1: { GTSM: 364 + 20, SM: 454 + 20 } };
+  var TIME_PANE_HEIGHT = { MIN5: { GTXS: 172 + 20, XS: 291 + 20 },
+                           MIN1: { GTXS: 364 + 20, XS: 454 + 20 } };
 
   /**
    * Width of the calendar pane used to check if the pane is going outside the boundary of
@@ -429,7 +441,7 @@
    *  This is computed statically now, but can be changed to be measured if the circumstances
    *  of calendar sizing are changed.
    */
-  var TIME_PANE_WIDTH = { GTSM: 510 + 20, SM: 272 + 20 };
+  var TIME_PANE_WIDTH = { GTXS: 510 + 20, XS: 274 + 20 };
 
   /**
    * Controller for sg-timepicker.
@@ -624,7 +636,7 @@
     if (this.$attrs.ngDisabled) {
       // The expression is to be evaluated against the directive element's scope and not
       // the directive's isolate scope.
-      var scope = this.$mdUtil.validateScope(this.$element) ? this.$element.scope() : null;
+      var scope = this.$scope.$parent;
       if (scope) {
         scope.$watch(this.$attrs.ngDisabled, function(isDisabled) {
           self.setDisabled(isDisabled);
@@ -731,7 +743,6 @@
   TimePickerCtrl.prototype.attachTimePane = function() {
     var timePane = this.timePane;
     this.$element.addClass('sg-timepicker-open');
-    this.$element.find('button').addClass('md-primary');
 
     var elementRect = this.inputContainer.getBoundingClientRect();
     var bodyRect = document.body.getBoundingClientRect();
@@ -741,26 +752,48 @@
     var paneTop = elementRect.top - bodyRect.top;
     var paneLeft = elementRect.left - bodyRect.left;
 
+    // If ng-material has disabled body scrolling (for example, if a dialog is open),
+    // then it's possible that the already-scrolled body has a negative top/left. In this case,
+    // we want to treat the "real" top as (0 - bodyRect.top). In a normal scrolling situation,
+    // though, the top of the viewport should just be the body's scroll position.
+    var viewportTop = (bodyRect.top < 0 && document.body.scrollTop === 0) ?
+        -bodyRect.top :
+        document.body.scrollTop;
+
+    var viewportLeft = (bodyRect.left < 0 && document.body.scrollLeft === 0) ?
+        -bodyRect.left :
+        document.body.scrollLeft;
+
+    var viewportBottom = viewportTop + this.$window.innerHeight;
+    var viewportRight = viewportLeft + this.$window.innerWidth;
+
     // If the right edge of the pane would be off the screen and shifting it left by the
-    // difference would not go past the left edge of the screen.
-    var paneWidth = this.$mdMedia('sm')? TIME_PANE_WIDTH.SM : TIME_PANE_WIDTH.GTSM;
-    if (paneLeft + paneWidth > bodyRect.right &&
-        bodyRect.right - paneWidth > 0) {
-      paneLeft = bodyRect.right - paneWidth;
+    // difference would not go past the left edge of the screen. If the time pane is too
+    // big to fit on the screen at all, move it to the left of the screen and scale the entire
+    // element down to fit.
+    var paneWidth = this.$mdMedia('xs')? TIME_PANE_WIDTH.XS : TIME_PANE_WIDTH.GTXS;
+    if (paneLeft + paneWidth > viewportRight) {
+      if (viewportRight - paneWidth > 0) {
+        paneLeft = viewportRight - paneWidth;
+      } else {
+        paneLeft = viewportLeft;
+        var scale = this.$window.innerWidth / paneWidth;
+        timePane.style.transform = 'scale(' + scale + ')';
+      }
       timePane.classList.add('sg-timepicker-pos-adjusted');
     }
-    timePane.style.left = paneLeft + 'px';
 
     // If the bottom edge of the pane would be off the screen and shifting it up by the
     // difference would not go past the top edge of the screen.
     var min = (typeof this.time == 'object' && this.time.getMinutes() % 5 === 0)? 'MIN5' : 'MIN1';
-    var paneHeight = this.$mdMedia('sm')? TIME_PANE_HEIGHT[min].SM : TIME_PANE_HEIGHT[min].GTSM;
-    if (paneTop + paneHeight > bodyRect.bottom &&
-        bodyRect.bottom - paneHeight > 0) {
-      paneTop = bodyRect.bottom - paneHeight;
+    var paneHeight = this.$mdMedia('xs')? TIME_PANE_HEIGHT[min].XS : TIME_PANE_HEIGHT[min].GTXS;
+    if (paneTop + paneHeight > viewportBottom &&
+        viewportBottom - paneHeight > viewportTop) {
+      paneTop = viewportBottom - paneHeight;
       timePane.classList.add('sg-timepicker-pos-adjusted');
     }
 
+    timePane.style.left = paneLeft + 'px';
     timePane.style.top = paneTop + 'px';
     document.body.appendChild(timePane);
 
@@ -779,9 +812,12 @@
   /** Detach the floating time pane from the document. */
   TimePickerCtrl.prototype.detachTimePane = function() {
     this.$element.removeClass('sg-timepicker-open');
-    this.$element.find('button').removeClass('md-primary');
     this.timePane.classList.remove('md-pane-open');
     this.timePane.classList.remove('md-timepicker-pos-adjusted');
+
+    if (this.isTimeOpen) {
+      this.$mdUtil.enableScrolling();
+    }
 
     if (this.timePane.parentNode) {
       // Use native DOM removal because we do not want any of the angular state of this element
@@ -822,11 +858,12 @@
   /** Close the floating time pane. */
   TimePickerCtrl.prototype.closeTimePane = function() {
     if (this.isTimeOpen) {
-      this.isTimeOpen = false;
       this.detachTimePane();
+      this.isTimeOpen = false;
       this.timePaneOpenedFrom.focus();
       this.timePaneOpenedFrom = null;
-      this.$mdUtil.enableScrolling();
+
+      this.ngModelCtrl.$setTouched();
 
       document.body.removeEventListener('click', this.bodyClickHandler);
       window.removeEventListener('resize', this.windowResizeHandler);
@@ -853,6 +890,9 @@
    * @param {boolean} isFocused
    */
   TimePickerCtrl.prototype.setFocused = function(isFocused) {
+    if (!isFocused) {
+      this.ngModelCtrl.$setTouched();
+    }
     this.isFocused = isFocused;
   };
 

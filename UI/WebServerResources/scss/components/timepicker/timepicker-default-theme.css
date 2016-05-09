@@ -3,17 +3,19 @@
 sg-timepicker.md-THEME_NAME-theme {
   background: white; }
 
-.md-THEME_NAME-theme .sg-timepicker-input-container {
-  border-bottom-color: '{{background-300}}'; }
-  .md-THEME_NAME-theme .sg-timepicker-input-container.sg-timepicker-focused {
+.md-THEME_NAME-theme {
+  .sg-timepicker-input-container {
+    border-bottom-color: '{{background-300}}'; }
+  .sg-timepicker-input-container.sg-timepicker-focused {
     border-bottom-color: '{{primary-500}}'; }
-  .md-THEME_NAME-theme .sg-timepicker-input-container.sg-timepicker-invalid {
+  .sg-timepicker-input-container.sg-timepicker-invalid {
     border-bottom-color: '{{warn-500}}'; }
-.md-THEME_NAME-theme .sg-timepicker-time-pane {
+  .sg-timepicker-time-pane {
   border-color: '{{background-300}}'; }
-.md-THEME_NAME-theme .sg-timepicker-triangle-button:hover .sg-timepicker-expand-triangle {
+  .sg-timepicker-triangle-button:hover .sg-timepicker-expand-triangle {
   border-top-color: '{{foreground-2}}'; }
-.md-THEME_NAME-theme .sg-timepicker-open .sg-timepicker-time-icon {
+  .sg-timepicker-open .sg-timepicker-time-icon {
   fill: '{{primary-500}}'; }
-.md-THEME_NAME-theme .sg-timepicker-calendar {
+  .sg-timepicker-calendar {
   background: white; }
+}
