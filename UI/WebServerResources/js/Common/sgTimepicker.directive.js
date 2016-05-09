@@ -374,8 +374,7 @@
         '  <md-icon class="sg-timepicker-icon">access_time</md-icon>',
         '</md-button>',
         '<div class="md-default-theme sg-timepicker-input-container" ',
-        '     ng-class="{\'sg-timepicker-focused\': ctrl.isFocused,',
-        '                \'md-bdr\': ctrl.isFocused}">',
+        '     ng-class="{\'sg-timepicker-focused\': ctrl.isFocused}">',
         '  <input class="sg-timepicker-input" aria-haspopup="true" ',
         '         ng-focus="ctrl.setFocused(true)" ng-blur="ctrl.setFocused(false)">',
         '  <md-button type="button" md-no-ink ',
@@ -720,6 +719,12 @@
       this.inputContainer.classList.remove(INVALID_CLASS);
     }
     else if (arr.length < 2) {
+      arr = /(\d{1,2})(\d{2})/i.exec(inputString);
+      if (arr)
+        arr.splice(0, 1); // only keep text captured by parenthesis
+    }
+
+    if (!arr || arr.length < 2) {
       this.inputContainer.classList.toggle(INVALID_CLASS, inputString);
     }
     else {
@@ -731,6 +736,7 @@
         newVal.setMinutes(m);
         this.ngModelCtrl.$setViewValue(newVal);
         this.time = newVal;
+        this.inputElement.value = this.dateLocale.formatTime(newVal);
         this.inputContainer.classList.remove(INVALID_CLASS);
       }
       else {

@@ -15,10 +15,11 @@ Enhancements
  - [web] we now "cc" delegates during invitation updates (#3195)
  - [web] new SOGoHelpURL preference to set a custom URL for SOGo help (#2768)
  - [web] now able to copy/move events and also duplicate them (#3196)
- - [web] improve preferences validation and check for unsaved changes
+ - [web] improved preferences validation and now check for unsaved changes
  - [web] display events and tasks priorities in list and day/week views (#3162)
  - [web] style events depending on the user participation state
  - [web] style transparent events (show time as free) (#3192)
+ - [web] improved input parsing of time picker (#3659)
 
 Bug fixes
  - [core] properly escape wide characters (#3616)

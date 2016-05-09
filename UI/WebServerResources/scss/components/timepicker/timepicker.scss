@@ -115,13 +115,17 @@ sg-timepicker {
 .sg-timepicker-input-container {
   @extend .md-datepicker-input-container;
 
+  // From datePicker-theme.scss
+  border-bottom-color: $colorGrey300; // {{background-300}}
+
   &.sg-timepicker-focused {
+    border-bottom-color: sg-color($sogoBlue, 500); // {{primary-500}}
     border-bottom-width: 2px;
   }
 
-  // From datePicker-theme.scss
-  // TODO: should use background-300
-  border-bottom-color: rgb(224,224,224);
+  &.sg-timepicker-invalid {
+    border-bottom-color: $colorRedA700; // {{warn-A700}}
+  }
 }
 
 
