@@ -250,13 +250,16 @@ static NSArray *infoKeys = nil;
 
 - (NSString *) from
 {
-  NSDictionary *identity;
+  NSArray *identities;
 
   if (!from)
     {
-      identity = [[context activeUser] primaryIdentity];
-      from = [self _emailFromIdentity: identity];
-      [from retain];
+      identities = [[[self clientObject] mailAccountFolder] identities];
+      if ([identities count])
+        {
+          from = [self _emailFromIdentity: [identities objectAtIndex: 0]];
+          [from retain];
+        }
     }
 
   return from;
@@ -426,7 +429,7 @@ static NSArray *infoKeys = nil;
 {
   if (![_info isNotNull]) return;
   [self debugWithFormat:@"loading info ..."];
-  [self setValuesForKeysWithDictionary:_info];
+  [self setValuesForKeysWithDictionary: _info];
 }
 
 - (NSDictionary *) infoFromRequest
@@ -439,6 +442,7 @@ static NSArray *infoKeys = nil;
   filteredParams = [NSDictionary dictionaryWithObjects: [params objectsForKeys: infoKeys notFoundMarker: [NSNull null]]
                                                forKeys: infoKeys];
 
+  [self setFrom: [filteredParams objectForKey: @"from"]];
   [self setTo: [filteredParams objectForKey: @"to"]];
   [self setCc: [filteredParams objectForKey: @"cc"]];
   [self setBcc: [filteredParams objectForKey: @"bcc"]];

@@ -924,6 +924,10 @@ static NSString    *userAgent      = nil;
     [info setObject: msgid forKey: @"message-id"];
 
   addresses = [NSMutableArray array];
+  [self _addEMailsOfAddresses: [sourceEnvelope from] toArray: addresses];
+  if ([addresses count])
+    [info setObject: [addresses objectAtIndex: 0] forKey: @"from"];
+  addresses = [NSMutableArray array];
   [self _addEMailsOfAddresses: [sourceEnvelope to] toArray: addresses];
   [info setObject: addresses forKey: @"to"];
   addresses = [NSMutableArray array];

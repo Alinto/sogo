@@ -103,23 +103,26 @@
    * @returns a string representing the path relative to the mail module
    */
   Message.prototype.$absolutePath = function(options) {
-    if (angular.isUndefined(this.id) || options) {
+    var _this = this, id = this.id;
+
+    function buildPath() {
       var path;
-      path = _.map(this.$mailbox.path.split('/'), function(component) {
+      path = _.map(_this.$mailbox.path.split('/'), function(component) {
         return 'folder' + component.asCSSIdentifier();
       });
-      path.splice(0, 0, this.accountId); // insert account ID
-      if (options && options.asDraft && this.draftId) {
-        path.push(this.draftId); // add draft ID
-      }
-      else {
-        path.push(this.uid); // add message UID
-      }
-
-      this.id = path.join('/');
+      path.splice(0, 0, _this.accountId); // insert account ID
+      return path.join('/');
     }
 
-    return this.id;
+    if (angular.isUndefined(this.id) || options && options.nocache) {
+      this.id = buildPath() + '/' + this.uid; // add message UID
+      id = this.id;
+    }
+    if (options && options.asDraft && this.draftId) {
+      id = buildPath() + '/' + this.draftId; // add draft ID
+    }
+
+    return id;
   };
 
   /**
@@ -129,15 +132,22 @@
    * @param {number} uid - the new message UID
    */
   Message.prototype.$setUID = function(uid) {
-    var oldUID = (this.uid || -1);
+    var oldUID = (this.uid || -1), _this = this, index;
 
     if (oldUID != parseInt(uid)) {
       this.uid = parseInt(uid);
+      this.$absolutePath({nocache: true});
       if (oldUID > -1) {
         oldUID = oldUID.toString();
         if (angular.isDefined(this.$mailbox.uidsMap[oldUID])) {
-          this.$mailbox.uidsMap[uid] = this.$mailbox.uidsMap[oldUID];
+          index = this.$mailbox.uidsMap[oldUID];
+          this.$mailbox.uidsMap[uid] = index;
           delete this.$mailbox.uidsMap[oldUID];
+
+          // Update messages list of mailbox
+          _.forEach(['from', 'to', 'subject'], function(attr) {
+            _this.$mailbox.$messages[index][attr] = _this[attr];
+          });
         }
       }
       else {
@@ -365,6 +375,12 @@
     return Message.$$resource.fetch(this.$absolutePath(), 'edit').then(function(data) {
       angular.extend(_this, data);
       return Message.$$resource.fetch(_this.$absolutePath({asDraft: true}), 'edit').then(function(data) {
+        // Try to match a known account identity from the specified "from" address
+        var identity = _.find(_this.$mailbox.$account.identities, function(identity) {
+          return data.from.toLowerCase().indexOf(identity.email) !== -1;
+        });
+        if (identity)
+          data.from = identity.full;
         Message.$log.debug('editable = ' + JSON.stringify(data, undefined, 2));
         angular.extend(_this.editable, data);
         return data.text;
@@ -580,7 +596,7 @@
     return Message.$$resource.save(this.$absolutePath({asDraft: true}), data).then(function(response) {
       Message.$log.debug('save = ' + JSON.stringify(response, undefined, 2));
       _this.$setUID(response.uid);
-      _this.$reload({asDraft: false}); // fetch a new viewable version of the message
+      _this.$reload(); // fetch a new viewable version of the message
       _this.isNew = false;
     });
   };

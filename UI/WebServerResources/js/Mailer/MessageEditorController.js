@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$window', '$stateParams', '$mdConstant', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccounts', 'stateMessage', 'stateRecipients', 'encodeUriFilter', '$timeout', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
-  function MessageEditorController($window, $stateParams, $mdConstant, $mdDialog, $mdToast, FileUploader, stateAccounts, stateMessage, stateRecipients, encodeUriFilter, $timeout, Dialog, AddressBook, Card, Preferences) {
+  MessageEditorController.$inject = ['$window', '$stateParams', '$mdConstant', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccount', 'stateMessage', 'stateRecipients', 'encodeUriFilter', '$timeout', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
+  function MessageEditorController($window, $stateParams, $mdConstant, $mdDialog, $mdToast, FileUploader, stateAccount, stateMessage, stateRecipients, encodeUriFilter, $timeout, Dialog, AddressBook, Card, Preferences) {
     var vm = this, semicolon = 186;
 
     vm.addRecipient = addRecipient;
@@ -21,7 +21,7 @@
     vm.send = send;
     vm.removeAttachment = removeAttachment;
     vm.contactFilter = contactFilter;
-    vm.identities = _.map(_.flatten(_.map(stateAccounts, 'identities')), 'full');
+    vm.identities = _.map(stateAccount.identities, 'full');
     vm.recipientSeparatorKeys = [$mdConstant.KEY_CODE.ENTER, $mdConstant.KEY_CODE.TAB, $mdConstant.KEY_CODE.COMMA, semicolon];
     vm.uploader = new FileUploader({
       url: stateMessage.$absolutePath({asDraft: true}) + '/save',

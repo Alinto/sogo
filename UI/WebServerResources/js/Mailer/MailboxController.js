@@ -218,7 +218,7 @@
             controller: 'MessageEditorController',
             controllerAs: 'editor',
             locals: {
-              stateAccounts: vm.accounts,
+              stateAccount: vm.account,
               stateMessage: message,
               stateRecipients: []
             }
