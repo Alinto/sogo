@@ -97,7 +97,7 @@
                          sg-escape="app.revertEditing(folder)"/>
                 </md-input-container>
                 <md-menu class="ng-hide"
-                         ng-show="app.service.selectedFolder.path == folder.path">
+                         ng-show="app.service.selectedFolder.id == folder.id">
                   <md-icon label:aria-label="Options"
                            ng-click="$mdOpenMenu($event)"
                            md-menu-origin="md-menu-origin">more_vert</md-icon>
