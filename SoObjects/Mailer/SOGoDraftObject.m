@@ -92,6 +92,7 @@ static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc",
 //
 @interface NSMutableData (DataCleanupExtension)
 
+- (unichar) characterAtIndex: (int) theIndex;
 - (NSRange) rangeOfCString: (const char *) theCString;
 - (NSRange) rangeOfCString: (const char *) theCString
 		  options: (unsigned int) theOptions
@@ -99,6 +100,32 @@ static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc",
 @end
 
 @implementation NSMutableData (DataCleanupExtension)
+
+- (unichar) characterAtIndex: (int) theIndex
+{
+  const char *bytes;
+  int i, len;
+
+  len = [self length];
+
+  if (len == 0 || theIndex >= len)
+    {
+      [[NSException exceptionWithName: NSRangeException
+                    reason: @"Index out of range."
+                    userInfo: nil] raise];
+
+      return (unichar)0;
+    }
+
+  bytes = [self bytes];
+
+  for (i = 0; i < theIndex; i++)
+    {
+      bytes++;
+    }
+
+  return (unichar)*bytes;
+}
 
 - (NSRange) rangeOfCString: (const char *) theCString
 {
@@ -1861,9 +1888,9 @@ static NSString    *userAgent      = nil;
   NSURL *sourceIMAP4URL;
   NSException *error;
   NSData *message;
-  NSRange r1, r2;
-  
-  /* send mail */
+  NSRange r1;
+
+  unsigned int limit;
 
   // We strip the BCC fields prior sending any mails
   NGMimeMessageGenerator *generator;
@@ -1877,21 +1904,32 @@ static NSString    *userAgent      = nil;
   //
 #warning FIXME - we should fix the case issue when we switch to Pantomime
   cleaned_message = [NSMutableData dataWithData: message];
+
+  // We search only in the headers so we start at 0 until
+  // we find \r\n\r\n, which is the headers delimiter
   r1 = [cleaned_message rangeOfCString: "\r\n\r\n"];
+  limit = r1.location-1;
   r1 = [cleaned_message rangeOfCString: "\r\nbcc: "
                                options: 0
-                                 range: NSMakeRange(0,r1.location-1)];
+                                 range: NSMakeRange(0,limit)];
       
   if (r1.location != NSNotFound)
     {
       // We search for the first \r\n AFTER the Bcc: header and
       // replace the whole thing with \r\n.
-      r2 = [cleaned_message rangeOfCString: "\r\n"
-                                   options: 0
-                                     range: NSMakeRange(NSMaxRange(r1)+1,[cleaned_message length]-NSMaxRange(r1)-1)];
-      [cleaned_message replaceBytesInRange: NSMakeRange(r1.location, NSMaxRange(r2)-r1.location)
-                                 withBytes: "\r\n"
-                                    length: 2];
+      unsigned int i;
+
+      for (i = r1.location+7; i < limit; i++)
+        {
+          if ([cleaned_message characterAtIndex: i] == '\r' &&
+              (i+1 < limit && [cleaned_message characterAtIndex: i+1] == '\n') &&
+              (i+2 < limit && !isspace([cleaned_message characterAtIndex: i+2])))
+            break;
+        }
+
+      [cleaned_message replaceBytesInRange: NSMakeRange(r1.location, i-r1.location)
+                                 withBytes: NULL
+                                    length: 0];
     }
 
   dd = [[context activeUser] domainDefaults];
