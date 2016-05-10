@@ -1150,7 +1150,7 @@ static NSString    *userAgent      = nil;
       pmime = [self pathToAttachmentWithName: [NSString stringWithFormat: @".%@.mime", name]];
       if (![[mimeType dataUsingEncoding: NSUTF8StringEncoding] writeToFile: pmime atomically: YES])
         {
-          [[NSFileManager defaultManager] removeItemAtPath: p error: NULL];
+          [[NSFileManager defaultManager] removeFileAtPath: p  handler: nil];
           return [NSException exceptionWithHTTPStatus: 500 /* Server Error */
                                                reason: @"Could not write attachment to draft!"];
         }
