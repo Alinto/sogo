@@ -127,7 +127,7 @@
                     <span>{{ viewer.message.from[0].name }}</span><br/>
                     <a href="#" class="md-caption"
                        ng-bind="viewer.message.from[0].email"
-                       ng-click="viewer.newMessage($event, viewer.message.from[0])"><!-- from --></a>
+                       ng-click="viewer.newMessage($event, { to: [viewer.message.from[0].full] })"><!-- from --></a>
                   </div>
                 </div>
               </div>
@@ -143,7 +143,7 @@
                   <div class="pseudo-input-field" ng-show="viewer.$showDetailedRecipients">
                     <span ng-repeat="recipient in viewer.message.to">
                       <a href="#" ng-bind="recipient.full"
-                         ng-click="viewer.newMessage($event, recipient)"><!-- recipient --></a>
+                         ng-click="viewer.newMessage($event, { to: [recipient.full] })"><!-- recipient --></a>
                     </span>
                   </div>
                 </div>
@@ -154,7 +154,7 @@
                   <div class="pseudo-input-field">
                     <span ng-repeat="recipient in viewer.message.cc">
                       <a href="#" ng-bind="recipient.full"
-                         ng-click="viewer.newMessage($event, recipient)"><!-- recipient --></a>
+                         ng-click="viewer.newMessage($event, { to: [recipient.full] })"><!-- recipient --></a>
                     </span>
                     <md-button style="float: right"
                                label:aria-label="Hide"
@@ -246,8 +246,14 @@
                 <div class="mailer_mailcontent" layout="row" layout-wrap="layout-wrap"
                      ng-repeat="part in viewer.message.$content()"
                      ng-class="part.msgclass">
-                  <div class="md-flex" ng-if="part.html" ng-bind-html="part.content | ensureTarget"><!-- msg --></div>
-                  <div ng-if="part.compile" class="md-flex" sg-compile="part.content" sg-zoomable-image="sg-zoomable-image"><!-- msg --></div>
+                  <div class="md-flex"
+                       ng-if="part.html"
+                       ng-click="viewer.filterMailtoLinks($event)"
+                       ng-bind-html="part.content | ensureTarget"><!-- html msg --></div>
+                  <div class="md-flex"
+                       ng-if="part.compile"
+                       sg-compile="part.content"
+                       sg-zoomable-image="sg-zoomable-image"><!-- angular-friendly msg --></div>
                 </div>
               </div>
             </div>

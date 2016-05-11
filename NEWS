@@ -51,6 +51,7 @@ Bug fixes
  - [web] fixed messages archiving as zip file
  - [web] adapted time picker to match changes of md calendar picker
  - [web] fixed sender addresses of draft when using multiple IMAP accounts (#3577)
+ - [web] create a new message when clicking on a "mailto" link (#3588)
  - [dav] we now handle the default classifications for tasks (#3541)
  - [eas] properly unfold long mail headers (#3152)
  - [eas] correctly set EAS message class for S/MIME messages (#3576)

@@ -23,6 +23,7 @@
     vm.showFlags = stateMessage.flags && stateMessage.flags.length > 0;
     vm.$showDetailedRecipients = false;
     vm.toggleDetailedRecipients = toggleDetailedRecipients;
+    vm.filterMailtoLinks = filterMailtoLinks;
     vm.doDelete = doDelete;
     vm.close = close;
     vm.reply = reply;
@@ -120,6 +121,37 @@
       $event.preventDefault();
     }
 
+    function filterMailtoLinks($event) {
+      var href, match, to, cc, bcc, subject, body, data;
+      if ($event.target.tagName == 'A' && 'href' in $event.target.attributes) {
+        href = $event.target.attributes.href.value;
+        match = /^mailto:([^\?]+)/.exec(href);
+        if (match) {
+          // Recipients
+          to = _.map(decodeURIComponent(match[1]).split(','), function(email) {
+            return '<' + email + '>';
+          });
+          data = { to: to };
+          // Subject & body
+          _.forEach(['subject', 'body'], function(param) {
+            var re = new RegExp(param + '=([^&]+)');
+            param = (param == 'body')? 'text' : param;
+            match = re.exec(href);
+            if (match)
+              data[param] = [decodeURIComponent(match[1])];
+          });
+          // Recipients
+          _.forEach(['cc', 'bcc'], function(param) {
+            var re = new RegExp(param + '=([^&]+)');
+            match = re.exec(href);
+            if (match)
+              data[param] = [decodeURIComponent(match[1])];
+          });
+          newMessage($event, data); // will stop event propagation
+        }
+      }
+    }
+
     function doDelete() {
       var mailbox, message, state, nextMessage, previousMessage,
           parentCtrls = $parentControllers();
@@ -177,11 +209,8 @@
       });
     }
 
-    function showMailEditor($event, message, recipients) {
+    function showMailEditor($event, message) {
       if (messageDialog === null) {
-        if (!angular.isDefined(recipients))
-          recipients = [];
-
         messageDialog = $mdDialog
           .show({
             parent: angular.element(document.body),
@@ -194,8 +223,7 @@
             locals: {
               stateAccounts: vm.accounts,
               stateAccount: vm.account,
-              stateMessage: message,
-              stateRecipients: recipients
+              stateMessage: message
             }
           })
           .finally(function() {
@@ -261,9 +289,11 @@
         $window.close();
     }
 
-    function newMessage($event, recipient) {
-      var message = vm.account.$newMessage();
-      showMailEditor($event, message, [recipient]);
+    function newMessage($event, editableContent) {
+      vm.account.$newMessage().then(function(message) {
+        angular.extend(message.editable, editableContent);
+        showMailEditor($event, message);
+      });
       $event.stopPropagation();
       $event.preventDefault();
     }

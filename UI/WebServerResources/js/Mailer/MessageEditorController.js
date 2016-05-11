@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$window', '$stateParams', '$mdConstant', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccount', 'stateMessage', 'stateRecipients', 'encodeUriFilter', '$timeout', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
-  function MessageEditorController($window, $stateParams, $mdConstant, $mdDialog, $mdToast, FileUploader, stateAccount, stateMessage, stateRecipients, encodeUriFilter, $timeout, Dialog, AddressBook, Card, Preferences) {
+  MessageEditorController.$inject = ['$window', '$stateParams', '$mdConstant', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccount', 'stateMessage', 'encodeUriFilter', '$timeout', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
+  function MessageEditorController($window, $stateParams, $mdConstant, $mdDialog, $mdToast, FileUploader, stateAccount, stateMessage, encodeUriFilter, $timeout, Dialog, AddressBook, Card, Preferences) {
     var vm = this, semicolon = 186;
 
     vm.addRecipient = addRecipient;
@@ -77,10 +77,6 @@
     else if (angular.isDefined(stateMessage)) {
       vm.message = stateMessage;
       addAttachments();
-    }
-
-    if (angular.isDefined(stateRecipients)) {
-      vm.message.editable.to = _.union(vm.message.editable.to, _.map(stateRecipients, 'full'));
     }
 
     /**
