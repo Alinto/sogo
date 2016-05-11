@@ -261,8 +261,7 @@
         <md-list class="sg-section-list"
                  ng-class="{ 'sg-list-selectable': mailbox.mode.multiple }">
           <md-list-item
-              class="md-default-theme md-accent md-hue-2"
-              ng-class="{'md-bg': mailbox.selectedFolder.isSelectedMessage(currentMessage.uid, currentMessage.$mailbox.path),
+              ng-class="{'md-default-theme md-accent md-bg md-hue-2': mailbox.selectedFolder.isSelectedMessage(currentMessage.uid, currentMessage.$mailbox.path),
                           unread: !currentMessage.isread}"
               md-virtual-repeat="currentMessage in mailbox.service.selectedFolder"
               md-on-demand="md-on-demand" md-item-size="56"
