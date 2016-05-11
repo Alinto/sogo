@@ -471,6 +471,7 @@ $quarter_height: 10px;
   .monthView {
     .dayLabels {
       // Cells of week days of all the same width
+      border-bottom: 1px solid $colorGrey100;
       flex: 1 1 0;
       text-align: center;
     }
