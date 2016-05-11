@@ -14,6 +14,7 @@ Bug fixes
  - fixed messages archiving as zip file
  - fixed multidomain issue with non-unique ID accross domains (#3625)
  - fixed bogus headers generation when stripping folded bcc header (#3664)
+ - fixed issue with multi-value org units (#3630)
 
 2.3.10 (2016-04-05)
 -------------------
