@@ -66,9 +66,11 @@
     else {
       // Flatten new tags when coming from the predefined list of tags (Message.$tags) and
       // sync tags with server when adding or removing a tag.
-      $scope.$watchCollection('viewer.message.flags', function(newTags, oldTags) {
-        var tags;
-        if (newTags || oldTags) {
+      $scope.$watchCollection('viewer.message.flags', function(_newTags, _oldTags) {
+        var newTags, oldTags, tags;
+        if (_newTags || _oldTags) {
+          newTags = _newTags || [];
+          oldTags = _oldTags || [];
           _.forEach(newTags, function(tag, i) {
             if (angular.isObject(tag))
               newTags[i] = tag.name;
