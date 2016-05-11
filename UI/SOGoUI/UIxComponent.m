@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2007-2015 Inverse inc.
-  Copyright (C) 2004 SKYRIX Software AG
+  Copyright (C) 2007-2016 Inverse inc.
 
   This file is part of SOGo
 
@@ -775,7 +774,11 @@ static SoProduct      *commonProduct      = nil;
   NSString *value, *token;
   NSArray *creds;
 
-  if (![[SOGoSystemDefaults sharedSystemDefaults] xsrfValidationEnabled])
+  auth = [[WOApplication application]
+           authenticatorInContext: context];
+
+  if (![[SOGoSystemDefaults sharedSystemDefaults] xsrfValidationEnabled] ||
+      ![auth isKindOfClass: [SOGoWebAuthenticator class]])
     return [super performActionNamed: _actionName];
 
   // If the action is 'connect' (or 'logoff'), we let it go as the token
@@ -790,8 +793,6 @@ static SoProduct      *commonProduct      = nil;
   token = [[context request] headerForKey: @"X-XSRF-TOKEN"];
 
   // We compare it with our session key
-  auth = [[WOApplication application]
-           authenticatorInContext: context];
   value = [[context request]
            cookieValueForKey: [auth cookieNameInContext: context]];
   creds = [auth parseCredentials: value];

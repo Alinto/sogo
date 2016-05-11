@@ -218,15 +218,17 @@ static SoProduct      *commonProduct      = nil;
   NSString *value, *token;
   NSArray *creds;
 
-  if (![[SOGoSystemDefaults sharedSystemDefaults] xsrfValidationEnabled])
+  auth = [[WOApplication application]
+           authenticatorInContext: context];
+
+  if (![[SOGoSystemDefaults sharedSystemDefaults] xsrfValidationEnabled] ||
+      ![auth isKindOfClass: [SOGoWebAuthenticator class]])
     return [super performActionNamed: _actionName];
 
   // We grab the X-XSRF-TOKEN header
   token = [[context request] headerForKey: @"X-XSRF-TOKEN"];
 
   // We compare it with our session key
-  auth = [[WOApplication application]
-           authenticatorInContext: context];
   value = [[context request]
            cookieValueForKey: [auth cookieNameInContext: context]];
   creds = [auth parseCredentials: value];
