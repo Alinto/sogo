@@ -38,6 +38,7 @@
     if (attrs.size) {
       imgElement.attr('width', attrs.size);
       imgElement.attr('height', attrs.size);
+      mdIconElement.css('font-size', attrs.size + 'px');
     }
 
     controller.img = imgElement;
