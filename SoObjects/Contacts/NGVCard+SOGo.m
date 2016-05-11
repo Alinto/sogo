@@ -293,7 +293,9 @@ convention:
                   atIndex: 6 forKey: @""];
 
   ou = [ldifRecord objectForKey: @"ou"];
-  if (ou)
+  if ([ou isKindOfClass: [NSArray class]])
+    units = [NSArray arrayWithArray: ou];
+  else if (ou)
     units = [NSArray arrayWithObject: ou];
   else
     units = nil;
