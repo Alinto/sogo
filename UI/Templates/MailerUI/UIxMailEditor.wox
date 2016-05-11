@@ -82,7 +82,7 @@
           </div>
 
           <!-- cc -->
-          <div class="pseudo-input-container" ng-hide="editor.hideCc">
+          <div class="pseudo-input-container ng-hide" ng-hide="editor.hideCc">
             <label class="pseudo-input-label">
               <var:string label:value="Cc"/>
             </label>
@@ -114,7 +114,7 @@
           </div>
 
           <!-- bcc -->
-          <div class="pseudo-input-container" ng-hide="editor.hideBcc">
+          <div class="pseudo-input-container ng-hide" ng-hide="editor.hideBcc">
             <label class="pseudo-input-label">
               <var:string label:value="Bcc"/>
             </label>
