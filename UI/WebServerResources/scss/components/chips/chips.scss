@@ -17,9 +17,11 @@ md-chips {
         &:hover {
           cursor: pointer;
         }
+        position: absolute;
+        right: 0;
+        margin: (($chip-height - 24) / 2);
         height: $chip-delete-icon-size;
         width: $chip-delete-icon-size;
-        line-height: $chip-delete-icon-size;
       }
     }
   }
@@ -61,20 +63,6 @@ md-chips {
     left: 0;
     right: 0;
     width: auto;
-  }
-}
-
-// Adjust avatar size according to chips dimensions
-.md-contact-chips {
-  .md-chips {
-    .md-chip {
-      .md-contact-avatar {
-        md-icon {
-          height: ($chip-height * .75);
-          margin: ($chip-height * .25/2);
-        }
-      }
-    }
   }
 }
 
