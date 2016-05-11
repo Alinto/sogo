@@ -23,6 +23,7 @@
             mail: UserMailPath || null,
             preferences: UserPreferencesPath || null,
             administration: (IsSuperUser ? UserAdministrationPath : null),
+            help: HelpURL || null,
             logoff: UserLogoffPath || null
           }
         };
