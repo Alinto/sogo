@@ -26,6 +26,7 @@ Bug fixes
  - [core] avoid double-appending domains in cache for multi-domain configurations (#3614)
  - [core] fixed multidomain issue with non-unique ID accross domains (#3625)
  - [core] fixed bogus headers generation when stripping folded bcc header (#3664)
+ - [core] fixed issue with multi-value org units (#3630)
  - [web] fixed missing columns in SELECT statements (PostgreSQL)
  - [web] fixed display of ghosts when dragging events
  - [web] fixed management of mail labels in Preferences module
