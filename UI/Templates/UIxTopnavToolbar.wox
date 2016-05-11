@@ -22,8 +22,7 @@
   </div>
 
   <div class="sg-toolbar-group-last" layout="row" layout-align="center center">
-    <div class="md-toolbar-tools" layout="row"
-         layout-align="space-around start">
+    <div layout="row" layout-align="space-around start">
       <md-button class="md-icon-button"
                  ng-show="activeUser.path.calendar.length"
                  ng-disabled="baseURL.endsWith('/Calendar/')"
