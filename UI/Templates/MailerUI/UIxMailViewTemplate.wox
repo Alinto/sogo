@@ -266,7 +266,7 @@
           </md-button>
         </md-card-actions>
         <md-card-content>
-          <pre ng-bind-html="viewer.rawSource"><!-- raw source --></pre>
+          <pre ng-bind-html="viewer.message.$rawSource"><!-- raw source --></pre>
         </md-card-content>
       </md-card>
     </div>

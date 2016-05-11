@@ -269,9 +269,9 @@
     }
 
     function toggleRawSource($event) {
-      if (!vm.showRawSource && !vm.rawSource) {
+      if (!vm.showRawSource && !vm.message.$rawSource) {
         Message.$$resource.post(vm.message.id, "viewsource").then(function(data) {
-          vm.rawSource = data;
+          vm.message.$rawSource = data;
           vm.showRawSource = true;
         });
       }

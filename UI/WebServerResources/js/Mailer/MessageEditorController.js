@@ -151,6 +151,7 @@
     function save() {
       var ctrls = $parentControllers();
       vm.message.$save().then(function(data) {
+        vm.message.$rawSource = null;
         if (ctrls.draftMailboxCtrl) {
           // We're saving a draft from a popup window.
           // Reload draft mailbox
