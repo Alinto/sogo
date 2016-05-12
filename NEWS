@@ -1,4 +1,4 @@
-2.3.11 (2016-04-XX)
+2.3.11 (2016-05-12)
 -------------------
 
 Bug fixes
@@ -12,10 +12,10 @@ Bug fixes
  - correctly set answered/forwarded flags during EAS smart operations
  - don't mark calendar invitations as read when fetching messages using EAS
  - fixed messages archiving as zip file
- - fixed multidomain issue with non-unique ID accross domains (#3625)
+ - fixed multi-domain issue with non-unique ID across domains (#3625)
  - fixed bogus headers generation when stripping folded bcc header (#3664)
  - fixed issue with multi-value org units (#3630)
- - fixed senstive range of checkboxes in appointment editor (#3665)
+ - fixed sensitive range of checkboxes in appointment editor (#3665)
 
 2.3.10 (2016-04-05)
 -------------------
