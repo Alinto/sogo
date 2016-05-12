@@ -1467,6 +1467,10 @@ For example, if your SOGo database password is `so%go`, you must set
 the value in your preferences to `so%25go` - where `%` is encoded
 to `%25`.
 
+In addition to the seven tables described above, two other tables get
+created in the database: `sogo_quick_appointment` and `sogo_quick_contact`
+which store calendar and contact information.
+
 If you're using MySQL, make sure in your `my.cnf` file you have:
 
 ----
