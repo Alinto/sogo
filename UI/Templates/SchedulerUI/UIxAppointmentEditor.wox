@@ -28,12 +28,12 @@
         /><span class="content"
         ><a href="#" id="attendeesHref"><!-- space --></a></span></label>
     <hr />
-    <label><span class="content">
-        <span id="allDay"><input id="isAllDay" name="isAllDay" class="checkBox"
+    <span class="checkBoxList"><span class="content">
+        <label id="allDay"><input id="isAllDay" name="isAllDay" class="checkBox"
             type="checkbox" var:selection="isAllDay"
             var:checked="isAllDay"
             /> <var:string label:value="All day Event"
-            /></span></span></label>
+            /></label></span></span>
     <span class="checkBoxList"><var:string label:value="Start" />
       <span class="content"><var:component className="UIxTimeDateControl"
           const:controlID="startTime"
@@ -48,18 +48,18 @@
           const:dayStartHour="0"
           const:dayEndHour="23"
           /></span></span>
-    <label><span class="content">
-        <span id="isTransparent"><input class="checkBox"
+    <span class="checkBoxList"><span class="content">
+        <label id="isTransparent"><input class="checkBox"
             type="checkbox" name="isTransparent" var:selection="isTransparent"
             var:checked="isTransparent"
             /> <var:string label:value="Show Time as Free"
-            /></span></span></label>
-    <label><span class="content">
-        <span id="sendAppointmentNotifications"><input class="checkBox"
+            /></label></span></span>
+    <span class="checkBoxList"><span class="content">
+        <label id="sendAppointmentNotifications"><input class="checkBox"
             type="checkbox" name="sendAppointmentNotifications" var:selection="sendAppointmentNotifications"
             var:checked="sendAppointmentNotifications"
             /> <var:string label:value="Send Appointment Notifications"
-            /></span></span></label>
+            /></label></span></span>
 
   </var:if>
   <var:if condition="eventIsReadOnly">

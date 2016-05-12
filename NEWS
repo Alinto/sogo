@@ -15,6 +15,7 @@ Bug fixes
  - fixed multidomain issue with non-unique ID accross domains (#3625)
  - fixed bogus headers generation when stripping folded bcc header (#3664)
  - fixed issue with multi-value org units (#3630)
+ - fixed senstive range of checkboxes in appointment editor (#3665)
 
 2.3.10 (2016-04-05)
 -------------------
