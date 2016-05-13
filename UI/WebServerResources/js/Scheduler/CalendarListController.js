@@ -309,7 +309,9 @@
     }
 
     function reload() {
-      $rootScope.$emit('calendars:list');
+      Calendar.reloadWebCalendars().finally(function() {
+        $rootScope.$emit('calendars:list');
+      });
     }
 
     function cancelSearch() {

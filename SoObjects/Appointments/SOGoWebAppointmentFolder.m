@@ -206,8 +206,7 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
 
 - (BOOL) reloadOnLogin
 {
-  return [[self folderPropertyValueInCategory: @"AutoReloadedWebCalendars"]
-           boolValue];
+  return [[self folderPropertyValueInCategory: @"AutoReloadedWebCalendars"] boolValue];
 }
 
 - (NSException *) delete

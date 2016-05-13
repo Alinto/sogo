@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2006-2015 Inverse inc.
-  Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2006-2016 Inverse inc.
 
   This file is part of SOGo
 
@@ -15,7 +14,7 @@
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
@@ -34,6 +33,7 @@
 #import <NGCards/iCalCalendar.h>
 
 #import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 
 #import <Appointments/SOGoWebAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolderICS.h>
@@ -142,22 +142,24 @@
   httpCode = 200;
   results = [[self clientObject] loadWebCalendar];
 
-  if ([results objectForKey: @"error"])
-    httpCode = 500;
+  if ([results objectForKey: @"status"])
+    httpCode = [[results objectForKey: @"status"] intValue];
 
   return [self responseWithStatus: httpCode andJSONRepresentation: results];
 }
 
 - (WOResponse *) setCredentialsAction
 {
+  NSDictionary *params;
+  NSString *username, *password;
   WORequest *request;
   WOResponse *response;
-  NSString *username, *password;
 
   request = [context request];
+  params = [[request contentAsString] objectFromJSONString];
 
-  username = [[request formValueForKey: @"username"] stringByTrimmingSpaces];
-  password = [[request formValueForKey: @"password"] stringByTrimmingSpaces];
+  username = [[params objectForKey: @"username"] stringByTrimmingSpaces];
+  password = [[params objectForKey: @"password"] stringByTrimmingSpaces];
   if ([username length] > 0 && [password length] > 0)
     {
       [[self clientObject] setUsername: username
@@ -165,10 +167,10 @@
       response = [self responseWith204];
     }
   else
-    response
-      = (WOResponse *) [NSException exceptionWithHTTPStatus: 400
-                                    reason: @"missing 'username' and/or"
-                                    @" 'password' parameters"];
+    response = [self responseWithStatus: 400
+                  andJSONRepresentation: [NSDictionary dictionaryWithObject: @"missing 'username' and/or"
+                                                       @" 'password' parameters"
+                                                                     forKey: @"message"]];
 
   return response;
 }

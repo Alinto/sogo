@@ -127,8 +127,48 @@
     function addWebCalendar() {
       Dialog.prompt(l('Subscribe to a web calendar...'), l('URL of the Calendar'), {inputType: 'url'})
         .then(function(url) {
-          Calendar.$addWebCalendar(url);
+          Calendar.$addWebCalendar(url).then(function(calendar) {
+            if (angular.isObject(calendar)) {
+              // Web calendar requires HTTP authentication
+              $mdDialog.show({
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+                escapeToClose: true,
+                templateUrl: 'UIxWebCalendarAuthDialog',
+                controller: WebCalendarAuthDialogController,
+                controllerAs: '$WebCalendarAuthDialogController',
+                locals: {
+                  url: url,
+                  calendar: calendar
+                }
+              });
+            }
+          });
         });
+
+      /**
+       * @ngInject
+       */
+      WebCalendarAuthDialogController.$inject = ['scope', '$mdDialog', 'url', 'calendar'];
+      function WebCalendarAuthDialogController(scope, $mdDialog, url, calendar) {
+        var vm = this,
+            parts = url.split("/"),
+            hostname = parts[2];
+
+        vm.title = l("Please identify yourself to %{0}").formatted(hostname);
+        vm.authenticate = function(form) {
+          if (form.$valid || !form.$error.required) {
+            calendar.setCredentials(vm.username, vm.password).then(function(message) {
+              $mdDialog.hide();
+            }, function(reason) {
+              form.password.$setValidity('credentials', false);
+            });
+          }
+        };
+        vm.cancel = function() {
+          $mdDialog.cancel();
+        };
+      }
     }
 
     function confirmDelete(folder) {

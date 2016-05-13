@@ -20,6 +20,7 @@ Enhancements
  - [web] style events depending on the user participation state
  - [web] style transparent events (show time as free) (#3192)
  - [web] improved input parsing of time picker (#3659)
+ - [web] restored support for Web calendars that require authentication
 
 Bug fixes
  - [core] properly escape wide characters (#3616)
@@ -53,6 +54,7 @@ Bug fixes
  - [web] adapted time picker to match changes of md calendar picker
  - [web] fixed sender addresses of draft when using multiple IMAP accounts (#3577)
  - [web] create a new message when clicking on a "mailto" link (#3588)
+ - [web] fixed handling of Web calendars option "reload on login"
  - [dav] we now handle the default classifications for tasks (#3541)
  - [eas] properly unfold long mail headers (#3152)
  - [eas] correctly set EAS message class for S/MIME messages (#3576)

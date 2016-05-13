@@ -231,18 +231,46 @@
           urls: { webCalendarURL: url }
         });
         var calendar = new Calendar(calendarData);
-        Calendar.$add(calendar);
         Calendar.$$resource.fetch(calendar.id, 'reload').then(function(data) {
           // TODO: show a toast of the reload status
           Calendar.$log.debug(JSON.stringify(data, undefined, 2));
+          Calendar.$add(calendar);
+          d.resolve();
+        }, function(response) {
+          if (response.status == 401) {
+            // Web calendar requires authentication
+            d.resolve(calendar);
+          }
+          else {
+            d.reject();
+          }
         });
-        d.resolve();
-      }, function() {
-        d.reject();
-      });
+      }, d.reject);
     }
 
     return d.promise;
+  };
+
+  /**
+   * @function reloadWebCalendars
+   * @memberof Calendar
+   * @desc Reload all Web calendars
+   * @return a promise combining the results of all HTTP operations
+   */
+  Calendar.reloadWebCalendars = function() {
+    var promises = [];
+
+    _.forEach(this.$webcalendars, function(calendar) {
+      var promise = Calendar.$$resource.fetch(calendar.id, 'reload');
+      promise.then(function(data) {
+        calendar.$error = false;
+      }, function(response) {
+        calendar.$error = l(response.statusText);
+      });
+      promises.push(promise);
+    });
+
+    return Calendar.$q.all(promises);
   };
 
   /**
@@ -292,6 +320,7 @@
    */
   Calendar.prototype.init = function(data) {
     this.color = this.color || '#AAAAAA';
+    this.active = 1;
     angular.extend(this, data);
     if (this.id) {
       this.$acl = new Calendar.$$Acl('Calendar/' + this.id);
@@ -436,6 +465,34 @@
       _this.$reset();
       return data;
     });
+  };
+
+  /**
+   * @function setCredentials
+   * @memberof Calendar.prototype
+   * @desc Set the credentials for a Web calendar that requires authentication
+   * @returns a promise of the HTTP operation
+   */
+  Calendar.prototype.setCredentials = function(username, password) {
+    var _this = this,
+        d = Calendar.$q.defer();
+
+    Calendar.$$resource.post(this.id, 'set-credentials', { username: username, password: password }).then(function() {
+      Calendar.$$resource.fetch(_this.id, 'reload').then(function(data) {
+        Calendar.$add(_this);
+        d.resolve();
+      }, function(response) {
+        if (response.status == 401) {
+          // Authentication failed
+          d.reject(l('Wrong username or password'));
+        }
+        else {
+          d.reject(response.statusText);
+        }
+      });
+    }, d.reject);
+
+    return d.promise;
   };
 
   /**

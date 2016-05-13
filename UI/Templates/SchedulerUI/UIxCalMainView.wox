@@ -195,6 +195,11 @@
                       <var:string label:value="Unsubscribe Calendar"/>
                     </md-button>
                   </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="app.exportCalendar(calendar)">
+                      <var:string label:value="Export"/>
+                    </md-button>
+                  </md-menu-item>
                   <md-menu-divider><!-- divider --></md-menu-divider>
                   <md-menu-item>
                     <md-button ng-click="app.showLinks(calendar)">
@@ -227,7 +232,13 @@
                            ng-true-value="1"
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
-              <p class="sg-item-name" ng-show="app.editMode != calendar.id">{{calendar.name}}</p>
+              <p class="sg-item-name" ng-show="app.editMode != calendar.id">
+                <span class="ng-hide" ng-show="calendar.$error">
+                  <md-icon class="md-warn">warning</md-icon>
+                  <md-tooltip>{{ calendar.$error }}</md-tooltip>
+                </span>
+                {{calendar.name}}
+              </p>
               <md-input-container class="md-flex"
                                   ng-show="app.editMode == calendar.id">
                 <input class="sg-item-name" type="text"
@@ -645,6 +656,7 @@
     </section>
   </script>
 
+  <!-- modal inner content for acl editor -->
   <script type="text/ng-template" id="UIxUserRightsEditor">
     <var:component className="UIxCalUserRightsEditor" />
   </script>
@@ -721,6 +733,39 @@
           <var:string label:value="Save"/>
         </md-button>
       </md-dialog-actions>
+    </md-dialog>
+  </script>
+
+  <!-- modal for Web calendar authentication -->
+  <script type="text/ng-template" id="UIxWebCalendarAuthDialog">
+    <md-dialog flex="50" flex-xs="90">
+      <form name="authForm" ng-submit="$WebCalendarAuthDialogController.authenticate(authForm)">
+        <md-dialog-content class="md-dialog-content" layout="column">
+          <h2 class="md-title" ng-bind="$WebCalendarAuthDialogController.title"><!-- title --></h2>
+          <md-input-container>
+            <label>{{ ::'Username' | loc }}</label>
+            <input type="text" name="username"
+                   ng-model="$WebCalendarAuthDialogController.username" md-autofocus="true" required="required" />
+          </md-input-container>
+          <md-input-container>
+            <label>{{ ::'Password' | loc }}</label>
+            <input type="password" name="password"
+                   ng-model="$WebCalendarAuthDialogController.password" required="required" />
+            <div ng-messages="authForm.password.$error">
+              <div ng-message="credentials">{{ ::'Wrong username or password.' | loc }}</div>
+            </div>
+          </md-input-container>
+        </md-dialog-content>
+        <md-dialog-actions>
+          <md-button ng-click="$WebCalendarAuthDialogController.cancel()"
+                     aria-label="::'Cancel' | loc"
+                     ng-bind="::'Cancel' | loc"><!-- Cancel --></md-button>
+          <md-button class="md-primary" type="submit"
+                     ng-disabled="authForm.$error.required"
+                     aria-label="::'OK' | loc"
+                     ng-bind="::'OK' | loc"><!-- Submit --></md-button>
+        </md-dialog-actions>
+      </form>
     </md-dialog>
   </script>
 

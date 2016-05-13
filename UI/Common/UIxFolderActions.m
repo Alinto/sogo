@@ -193,8 +193,7 @@
   NSString *folderName;
 
   [self _setupContext];
-  folderSubscription
-    = [moduleSettings objectForKey: @"InactiveFolders"];
+  folderSubscription = [moduleSettings objectForKey: @"InactiveFolders"];
   if (!folderSubscription)
     {
       folderSubscription = [NSMutableArray array];

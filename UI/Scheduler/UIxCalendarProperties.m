@@ -107,6 +107,10 @@
   if ([o isKindOfClass: [NSNumber class]])
     [calendar setSynchronize: [o boolValue]];
 
+  o = [params objectForKey: @"reloadOnLogin"];
+  if ([o isKindOfClass: [NSNumber class]] && [calendar isKindOfClass: [SOGoWebAppointmentFolder class]])
+    [(SOGoWebAppointmentFolder *) calendar setReloadOnLogin: [o boolValue]];
+
   values = [params objectForKey: @"notifications"];
   if ([values isKindOfClass: [NSDictionary class]])
     {

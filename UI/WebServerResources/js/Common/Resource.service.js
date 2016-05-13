@@ -77,10 +77,7 @@
     })
       .then(function(response) {
         return deferred.resolve(response.data);
-      }, function(response) {
-        if (response.status == 404)
-          return deferred.reject();
-      });
+      }, deferred.reject);
 
     return deferred.promise;
   };
