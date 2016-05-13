@@ -436,32 +436,38 @@ static BOOL       _singleStoreMode           = NO;
   folderId   = [_record objectForKey:@"c_folder_id"];
   folderName = [_record objectForKey:@"c_path"];
   path       = [self pathFromInternalName:folderName];
-  
-  locationString = [_record objectForKey:@"c_location"];
-  location = [locationString isNotNull] 
-    ? [NSURL URLWithString:locationString]
-    : nil;
-  if (location == nil) {
-    [self logWithFormat:@"ERROR(%s): missing folder location in record: %@", 
-	  __PRETTY_FUNCTION__, _record];
-    return nil;
-  }
-  
-  locationString = [_record objectForKey:@"c_quick_location"];
-  quickLocation = [locationString isNotNull] 
-    ? [NSURL URLWithString:locationString]
-    : nil;
 
-  if (quickLocation == nil) {
-    [self logWithFormat:@"WARNING(%s): missing quick location in record: %@", 
-	  __PRETTY_FUNCTION__, _record];
+  if (!_singleStoreMode) {
+    locationString = [_record objectForKey:@"c_location"];
+    location = [locationString isNotNull] 
+      ? [NSURL URLWithString:locationString]
+      : nil;
+    if (location == nil) {
+      [self logWithFormat:@"ERROR(%s): missing folder location in record: %@",
+            __PRETTY_FUNCTION__, _record];
+      return nil;
+    }
+
+    locationString = [_record objectForKey:@"c_quick_location"];
+    quickLocation = [locationString isNotNull] 
+      ? [NSURL URLWithString:locationString]
+      : nil;
+
+    if (quickLocation == nil) {
+      [self logWithFormat:@"WARNING(%s): missing quick location in record: %@",
+            __PRETTY_FUNCTION__, _record];
+    }
+
+    locationString = [_record objectForKey:@"c_acl_location"];
+    acl_location = [locationString isNotNull]
+      ? [NSURL URLWithString:locationString]
+      : nil;
+  } else {
+    location = nil;
+    quickLocation = nil;
+    acl_location = nil;
   }
 
-  locationString = [_record objectForKey:@"c_acl_location"];
-  acl_location = [locationString isNotNull]
-    ? [NSURL URLWithString:locationString]
-    : nil;
-  
   folder = [[GCSFolder alloc] initWithPath:path primaryKey:folderId
 			      folderTypeName:folderTypeName 
 			      folderType:folderType
