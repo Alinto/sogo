@@ -861,11 +861,11 @@ would be:
     CNFieldName = cn;
     IDFieldName = cn;
     UIDFieldName = cn;
-    baseDN = "ou=groups,dc=inverse,dc=ca”;
+    baseDN = "ou=groups,dc=inverse,dc=ca";
     bindDN = "cn=sogo,ou=services,dc=inverse,dc=ca";
     bindPassword = zot;
     canAuthenticate = YES;
-    displayName = “Inverse Groups”;
+    displayName = "Inverse Groups";
     hostname = ldap://127.0.0.1:389;
     id = inverse_groups;
     isAddressBook = YES;
