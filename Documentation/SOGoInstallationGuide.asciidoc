@@ -1486,6 +1486,72 @@ default-character-set=utf8
 default-character-set=utf8
 ----
 
+MySQL complete Unicode compliance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default MySQL only supports a subset of UTF-8, meaning that characters such
+as emoji are not handled properly.  Some extra steps at installation can be
+undertaken to leverage full Unicode support under MySQL.
+
+IMPORTANT: Switching to complete Unicode compliance on an already-deployed SOGo
+is out of scope of this document, as it would typically involve delicate manual
+operations on the database system.
+
+Requirements:
+
+* MySQL >= 5.5
+* SOGo >= 3.1.0
+
+Strongly suggested MySQL configuration settings (innodb* parameters are
+mandatory):
+
+----
+[client]
+default-character-set          = utf8mb4
+
+[mysql]
+default-character-set          = utf8mb4
+
+[mysqld]
+character-set-client-handshake = FALSE
+character-set-server           = utf8mb4
+collation-server               = utf8mb4_unicode_ci
+innodb_file_per_table          = TRUE
+innodb_file_format             = barracuda
+innodb_large_prefix            = TRUE
+----
+
+CAUTION: Changing InnoDB parameters on an already deployed database server can
+cause severe data loss.  Do not blindly edit MySQL parameters without reading
+and understanding the implication of such changes.
+
+A parameter must be added to `sogo.conf` to turn on complete Unicode
+compliance:
+
+----
+MySQL4Encoding = "utf8mb4";
+----
+
+SOGo automatically creates missing database tables on start but slightly
+different table creation parameters are needed for complete Unicode compliance;
+meaning that before SOGo runs for the first time, all database tables must
+already exist.  A MySQL script to achieve just that is provided in the SOGo
+distribution under `Scripts/mysql-utf8mb4.sql` and you can deploy it with
+a command such as:
+
+----
+mysql -hHOST -uUSER -p -D SOGO < Scripts/mysql-utf8mb4.sql
+----
+
+Where `HOST`, `USER` and `SOGO` are your MySQL host, username and database name
+respectively.
+
+Once SOGo is running, you can test correctness by creating an event such as
+“Lunch with &#127829; and fries” and seeing it properly displayed in the SOGo
+calendar.
+
+Ensure the computer used for the test has emoji fonts installed.
+
 Authentication using SQL
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
