@@ -1924,7 +1924,7 @@ Defaults to `SOGo` when unset.
 |S |SOGoHelpURL
 |Parameter used to define the URL to online help for SOGo. When set,
 an additional icon will appear near the logout button in SOGo's
-web interface. The URL will always be open in a blank target.
+web interface. The URL will always be open in a separate page.
 
 |U |SOGoLoginModule
 |Parameter used to specify which module to show after login. Possible
