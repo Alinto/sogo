@@ -131,10 +131,10 @@
 
     function newMessage($event, recipients) {
       Account.$findAll().then(function(accounts) {
-        var account = _.filter(accounts, function(o) {
+        var account = _.find(accounts, function(o) {
           if (o.id === 0)
             return o;
-        })[0];
+        });
 
         // We must initialize the Account with its mailbox
         // list before proceeding with message's creation
@@ -149,7 +149,7 @@
               controller: 'MessageEditorController',
               controllerAs: 'editor',
               locals: {
-                stateAccounts: accounts,
+                stateAccount: account,
                 stateMessage: message,
                 stateRecipients: recipients
               }
