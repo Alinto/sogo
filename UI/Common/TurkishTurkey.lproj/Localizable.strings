@@ -1,0 +1,109 @@
+/* this file is in UTF-8 format! */
+
+/* toolbars */
+"Save" = "Kaydet";
+"Close" = "Kapat";
+"Edit User Rights" = "Kullanıcı Yetkilerini Düzenle";
+"Home" = "Ev";
+"Calendar" = "Takvim";
+"Address Book"	= "Adres Defteri";
+"Mail" = "E-posta";
+"Preferences" = "Tercihler";
+"Administration" = "Yönetim";
+"Disconnect" = "Bağlantıyı Kes";
+"Toggle Menu" = "Menüde Geçiş Yap";
+"Right Administration" = "Yetki Yönetimi";
+"Log Console (dev.)" = "Seyir Defteri Kumanda Paneli (dev.)";
+"User" = "Kullanıcı";
+"Vacation message is enabled" = "Tatil mesajı etkinleştirildi";
+"Help" = "Yardım";
+"noJavascriptError" = "SOGo'yu çalıştırmak için Javascript gereklidir. Lütfen internet gezgininizde Javascript özelliğinin bulunup, etkinleştirilmiş olduğundan emin olun. ";
+"noJavascriptRetry" = "Yeniden Dene";
+"Owner" = "Hak Sahibi";
+"Publish the Free/Busy information" = "Serbest/Meşgul bilgisini yayınla";
+"Add..." = "Ekle...";
+"Remove" = "Çıkar";
+"Subscribe User" = "Kullanıcıyı Üye Yap";
+"Any Authenticated User" = "Herhangi kimliği doğrulanmış kullanıcı";
+"Public Access" = "Halka Açık Erişim";
+"Any user not listed above" = "Aşağıdaki listede bulanmayan her hangi kullanıcı";
+"Anybody accessing this resource from the public area" = "Bu kaynağa halka açık alandan ulaşan herkes";
+"Sorry, the user rights can not be configured for that object." = "Üzgünüz, bu öge için kullanıcı yetkileri ayarlanamaz.";
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Bu ağda hesabı bulunan her kullanıcı \"%{0}\" e-posta klasörünüze erişebilecek. Hepsine güvenebileceğinizden emin misiniz?";
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "Bu ağda hesabı olan her kullanıcı \"%{0}\" takviminize erişebilecek. Hepsine güvenebileceğinizden emin misiniz?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Muhtemelen internetteki herkes, bu ağ üzerinde bir hesapları olmasa bile \"%{0}\" takviminize erişebilecek. Bu bilgi halka açık internet için uygun mu?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Bu ağda hesabı olan her kullanıcı \"%{0}\" adres defterinize erişebilecek. Hepsine güvenebileceğinizden emin misiniz?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Muhtemelen internetteki herkes, bu ağ üzerinde bir hesapları olmasa bile \"%{0}\" adres defterinize erişebilecek. Bu bilgi halka açık internet için uygun mu?";
+"Give Access" = "Erişim Yetkisi Ver";
+"Keep Private" = "Halka Kapalı Tut";
+/* generic.js */
+"Unable to subscribe to that folder!"
+	= "Bu klasöre üye olunamıyor!";
+"You cannot subscribe to a folder that you own!"
+      	= "Kendi klasörünüze üye olamazsınız!";
+"Unable to unsubscribe from that folder!"
+	= "Bu klasörden üyelik kaldırılamıyor!";
+"You cannot unsubscribe from a folder that you own!"
+      	= "Kendinize ait bir klasörden üyelik kaldıramazsınız!";
+"Unable to rename that folder!" = "Bu klasörün adı değiştirilemiyor!";
+"You have already subscribed to that folder!"
+     	= "Bu klasöre zaten üyesiniz!";
+"The user rights cannot be edited for this object!"
+        = "Bu ögenin kullanıcı yetkileri düzenlenemez!";
+"A folder by that name already exists." = "Bu isimde başka bir klasör var.";
+"You cannot create a list in a shared address book." 
+        = "Paylaşılan bir adres defterinde liste oluşturmazsınız!";
+"Warning" = "Uyarı";
+"Can't contact server" = "Sunucuya erişirken bir hata oluştu. Lütfen, daha sonra tekrar deneyin.";
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "Bu modül veya sisteme erişim yetkiniz yok. Lütfen, sistem yöneticisiyle iletişime geçin.";
+"You don't have the required privileges to perform the operation."
+= "Bu işlemi gerçekleştirmek için gereken yetkilere sahip değilsiniz.";
+"noEmailForDelegation" = "Davetinize temsilci atayacağınız adresleri belirtmelisiniz.";
+"delegate is organizer" = "Temsilci etkinliği düzenleyen kişidir. Lütfen başka bir temsilci seçin. ";
+"delegate is a participant" = "Temsilci zaten bu etkinliğe katılıyor.";
+"delegate is a group" = "Belirtilen adres bir gruba denk geliyor. Sadece tek bir kişiyi temsilci atayabilirsiniz.";
+"Snooze for " = "Beklenecek süre";
+"5 minutes" = "5 dakika";
+"10 minutes" = "10 dakika";
+"15 minutes" = "15 dakika";
+"30 minutes" = "30 dakika";
+"45 minutes" = "45 dakika";
+"1 hour" = "1 saat";
+"1 day" = "1 gün";
+/* common buttons */
+"OK" = "Tamam";
+"Cancel" = "İptal";
+"Yes" = "Evet";
+"No" = "Hayır";
+/* alarms */
+"Reminder" = "Hatırlatma";
+"Start" = "Başlangıç";
+"Due Date" = "Vade";
+"Location" = "Konum";
+/* mail labels */
+"Important" = "Önemli";
+"Work" = "İş";
+"Personal" = "Kişisel";
+"To Do" = "Yapılacak İşler";
+"Later" = "Sonra";
+"a2_Sunday" = "Pzr";
+"a2_Monday" = "Pts";
+"a2_Tuesday" = "Sal";
+"a2_Wednesday" = "Çar";
+"a2_Thursday" = "Per";
+"a2_Friday" = "Cum";
+"a2_Saturday" = "Cts";
+"Access Rights" = "Erişim Yetkileri";
+"Add User" = "Kullanıcı Ekle";
+"Loading" = "Yükleniyor";
+"No such user." = "Böyle bir kullanıcı yok.";
+"You cannot (un)subscribe to a folder that you own!" = "Kendinize ait bir klasöre üye olamaz (üyeliğinizi kaldıramazsınız)!";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "En az %{minimumSearchLength} harf girin";

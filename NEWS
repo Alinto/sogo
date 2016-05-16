@@ -12,6 +12,7 @@ New features
 Enhancements
  - [web] updated Angular Material to version 1.0.6
  - [web] added Lithuanan (lt) translation - thanks to Mantas Liobė
+ - [web] added Turkish (Turkey) (tr_TR) translation - thanks to Sinan Kurşunoğlu
  - [web] we now "cc" delegates during invitation updates (#3195)
  - [web] new SOGoHelpURL preference to set a custom URL for SOGo help (#2768)
  - [web] now able to copy/move events and also duplicate them (#3196)

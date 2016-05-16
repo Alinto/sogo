@@ -314,6 +314,15 @@
 @implementation SOGoMailPortugueseForward
 @end
 
+@implementation SOGoMailRussianForward
+@end
+
+@implementation SOGoMailSlovakForward
+@end
+
+@implementation SOGoMailSlovenianForward
+@end
+
 @implementation SOGoMailSpanishSpainForward
 @end
 
@@ -323,13 +332,7 @@
 @implementation SOGoMailSwedishForward
 @end
 
-@implementation SOGoMailRussianForward
-@end
-
-@implementation SOGoMailSlovakForward
-@end
-
-@implementation SOGoMailSlovenianForward
+@implementation SOGoMailTurkishTurkeyForward
 @end
 
 @implementation SOGoMailUkrainianForward

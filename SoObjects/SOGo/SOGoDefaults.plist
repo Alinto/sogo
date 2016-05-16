@@ -44,7 +44,7 @@
                                "SpanishSpain", "SpanishArgentina", "Finnish", "French", "German",
                                "Icelandic", "Italian", "Lithuanian", "Macedonian", "Hungarian", "Portuguese", "BrazilianPortuguese",
                                "NorwegianBokmal", "NorwegianNynorsk", "Polish", "Russian", "Slovak",
-                               "Slovenian", "Ukrainian", "Swedish" );
+                               "Slovenian", "Swedish", "TurkishTurkey", "Ukrainian" );
 
     SOGoTimeZone = "UTC";
     SOGoDayStartTime = "8";

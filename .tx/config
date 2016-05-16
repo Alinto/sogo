@@ -31,6 +31,7 @@ trans.ru = UI/MailerUI/Russian.lproj/Localizable.strings
 trans.sk = UI/MailerUI/Slovak.lproj/Localizable.strings
 trans.sl_SI = UI/MailerUI/Slovenian.lproj/Localizable.strings
 trans.sv = UI/MailerUI/Swedish.lproj/Localizable.strings
+trans.tr_TR = UI/MailerUI/TurkishTurkey.lproj/Localizable.strings
 trans.uk = UI/MailerUI/Ukrainian.lproj/Localizable.strings
 trans.zh_TW = UI/MailerUI/ChineseTaiwan.lproj/Localizable.strings
 
@@ -64,6 +65,7 @@ trans.ru = UI/PreferencesUI/Russian.lproj/Localizable.strings
 trans.sk = UI/PreferencesUI/Slovak.lproj/Localizable.strings
 trans.sl_SI = UI/PreferencesUI/Slovenian.lproj/Localizable.strings
 trans.sv = UI/PreferencesUI/Swedish.lproj/Localizable.strings
+trans.tr_TR = UI/PreferencesUI/TurkishTurkey.lproj/Localizable.strings
 trans.uk = UI/PreferencesUI/Ukrainian.lproj/Localizable.strings
 trans.zh_TW = UI/PreferencesUI/ChineseTaiwan.lproj/Localizable.strings
 
@@ -97,6 +99,7 @@ trans.ru = UI/Scheduler/Russian.lproj/Localizable.strings
 trans.sk = UI/Scheduler/Slovak.lproj/Localizable.strings
 trans.sl_SI = UI/Scheduler/Slovenian.lproj/Localizable.strings
 trans.sv = UI/Scheduler/Swedish.lproj/Localizable.strings
+trans.tr_TR = UI/Scheduler/TurkishTurkey.lproj/Localizable.strings
 trans.uk = UI/Scheduler/Ukrainian.lproj/Localizable.strings
 trans.zh_TW = UI/Scheduler/ChineseTaiwan.lproj/Localizable.strings
 
@@ -130,6 +133,7 @@ trans.ru = UI/Contacts/Russian.lproj/Localizable.strings
 trans.sk = UI/Contacts/Slovak.lproj/Localizable.strings
 trans.sl_SI = UI/Contacts/Slovenian.lproj/Localizable.strings
 trans.sv = UI/Contacts/Swedish.lproj/Localizable.strings
+trans.tr_TR = UI/Contacts/TurkishTurkey.lproj/Localizable.strings
 trans.uk = UI/Contacts/Ukrainian.lproj/Localizable.strings
 trans.zh_TW = UI/Contacts/ChineseTaiwan.lproj/Localizable.strings
 
@@ -163,6 +167,7 @@ trans.ru = UI/MainUI/Russian.lproj/Localizable.strings
 trans.sk = UI/MainUI/Slovak.lproj/Localizable.strings
 trans.sl_SI = UI/MainUI/Slovenian.lproj/Localizable.strings
 trans.sv = UI/MainUI/Swedish.lproj/Localizable.strings
+trans.tr_TR = UI/MainUI/TurkishTurkey.lproj/Localizable.strings
 trans.uk = UI/MainUI/Ukrainian.lproj/Localizable.strings
 trans.zh_TW = UI/MainUI/ChineseTaiwan.lproj/Localizable.strings
 
@@ -196,6 +201,7 @@ trans.ru = UI/Common/Russian.lproj/Localizable.strings
 trans.sk = UI/Common/Slovak.lproj/Localizable.strings
 trans.sl_SI = UI/Common/Slovenian.lproj/Localizable.strings
 trans.sv = UI/Common/Swedish.lproj/Localizable.strings
+trans.tr_TR = UI/Common/TurkishTurkey.lproj/Localizable.strings
 trans.uk = UI/Common/Ukrainian.lproj/Localizable.strings
 trans.zh_TW = UI/Common/ChineseTaiwan.lproj/Localizable.strings
 
@@ -229,6 +235,7 @@ trans.ru = UI/AdministrationUI/Russian.lproj/Localizable.strings
 trans.sk = UI/AdministrationUI/Slovak.lproj/Localizable.strings
 trans.sl_SI = UI/AdministrationUI/Slovenian.lproj/Localizable.strings
 trans.sv = UI/AdministrationUI/Swedish.lproj/Localizable.strings
+trans.tr_TR = UI/AdministrationUI/TurkishTurkey.lproj/Localizable.strings
 trans.uk = UI/AdministrationUI/Ukrainian.lproj/Localizable.strings
 trans.zh_TW = UI/AdministrationUI/ChineseTaiwan.lproj/Localizable.strings
 
@@ -262,6 +269,7 @@ trans.ru = SoObjects/Appointments/Russian.lproj/Localizable.strings
 trans.sk = SoObjects/Appointments/Slovak.lproj/Localizable.strings
 trans.sl_SI = SoObjects/Appointments/Slovenian.lproj/Localizable.strings
 trans.sv = SoObjects/Appointments/Swedish.lproj/Localizable.strings
+trans.tr_TR = SoObjects/Appointments/TurkishTurkey.lproj/Localizable.strings
 trans.uk = SoObjects/Appointments/Ukrainian.lproj/Localizable.strings
 trans.zh_TW = SoObjects/Appointments/ChineseTaiwan.lproj/Localizable.strings
 
@@ -295,6 +303,7 @@ trans.ru = SoObjects/Contacts/Russian.lproj/Localizable.strings
 trans.sk = SoObjects/Contacts/Slovak.lproj/Localizable.strings
 trans.sl_SI = SoObjects/Contacts/Slovenian.lproj/Localizable.strings
 trans.sv = SoObjects/Contacts/Swedish.lproj/Localizable.strings
+trans.tr_TR = SoObjects/Contacts/TurkishTurkey.lproj/Localizable.strings
 trans.uk = SoObjects/Contacts/Ukrainian.lproj/Localizable.strings
 trans.zh_TW = SoObjects/Contacts/ChineseTaiwan.lproj/Localizable.strings
 
@@ -328,6 +337,7 @@ trans.ru = SoObjects/Mailer/Russian.lproj/Localizable.strings
 trans.sk = SoObjects/Mailer/Slovak.lproj/Localizable.strings
 trans.sl_SI = SoObjects/Mailer/Slovenian.lproj/Localizable.strings
 trans.sv = SoObjects/Mailer/Swedish.lproj/Localizable.strings
+trans.tr_TR = SoObjects/Mailer/TurkishTurkey.lproj/Localizable.strings
 trans.uk = SoObjects/Mailer/Ukrainian.lproj/Localizable.strings
 trans.zh_TW = SoObjects/Mailer/ChineseTaiwan.lproj/Localizable.strings
 
@@ -361,5 +371,6 @@ trans.ru = UI/MailPartViewers/Russian.lproj/Localizable.strings
 trans.sk = UI/MailPartViewers/Slovak.lproj/Localizable.strings
 trans.sl_SI = UI/MailPartViewers/Slovenian.lproj/Localizable.strings
 trans.sv = UI/MailPartViewers/Swedish.lproj/Localizable.strings
+trans.tr_TR = UI/MailPartViewers/TurkishTurkey.lproj/Localizable.strings
 trans.uk = UI/MailPartViewers/Ukrainian.lproj/Localizable.strings
 trans.zh_TW = UI/MailPartViewers/ChineseTaiwan.lproj/Localizable.strings

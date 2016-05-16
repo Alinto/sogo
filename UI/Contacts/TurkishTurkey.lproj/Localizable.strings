@@ -1,0 +1,237 @@
+/* this file is in UTF-8 format! */
+
+"Contact" = "Kişi";
+"Address" = "Adres";
+"Photos" = "Resimler";
+"Other" = "Diğer";
+"Address Books" = "Adres Defterleri";
+"Addressbook" = "Adres deftreri";
+"Addresses" = "Adresler";
+"Update" = "Güncelle";
+"Cancel" = "İptal";
+"Common" = "Genel";
+"Contact editor" = "Kişi düzenleyici";
+"Contact viewer" = "Kişi görüntüleyici";
+"Email" = "E-posta";
+"Screen Name" = "Görünen İsim";
+"Extended" = "Genişletilmiş";
+"Fax" = "Faks";
+"Firstname" = "Ad";
+"Home" = "Ev";
+"HomePhone" = "EvTelefonu";
+"Lastname" = "Soyad";
+"Location" = "Konum";
+"Add a category" = "Bir sınıf ekle";
+"MobilePhone" = "CepTelefonu";
+"Name" = "İsim";
+"OfficePhone" = "OfisTelefonu";
+"Organization" = "Kuruluş";
+"Work Phone" = "İş Telefonu";
+"Phone" = "Telefon";
+"Phones" = "Telefonlar";
+"Postal" = "Posta";
+"Save" = "Kaydet";
+"Internet" = "İnternet";
+"Unit" = "Birim";
+"delete" = "sil";
+"edit" = "düzenle";
+"invalidemailwarn" = "Belirtilen e-posta adresi geçersiz";
+"new" = "yeni";
+"Preferred Phone" = "Tercih Edilen Telefon";
+"Move To" = "Taşı";
+"Copy To" = "Şuraya Kopyala";
+"Add to" = "Şuraya Ekle";
+/* Subheader of empty addressbook */
+"No contact" = "Kişi yok";
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Bu adres defterini taramak için bir arama başlatın";
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "kişiler";
+/* No contact matching search criteria */
+"No matching contact" = "Eşleşen kişi yok";
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "eşleşen kişiler";
+/* Number of selected contacts in list */
+"selected" = "seçili";
+/* Empty right pane */
+"No contact selected" = "Seçilen kişi yok";
+/* Tooltips */
+"Create a new address book card" = "Yeni adres defteri kartı oluştur";
+"Create a new list" = "Yeni liste oluştu";
+"Edit the selected card" = "Seçili kartı düzenle";
+"Send a mail message" = "Bir e-posta iletisi gönder";
+"Delete selected card or address book" = "Seçili kartı veya adres defterini sil";
+"Reload all contacts" = "Tüm kişileri tazele";
+"htmlMailFormat_UNKNOWN" = "Bilinmeyen";
+"htmlMailFormat_FALSE" = "Düz Metin";
+"htmlMailFormat_TRUE" = "HTML";
+"Name or Email" = "İsim veya E-posta";
+"Category" = "Sınıf";
+"Personal Addressbook" = "Kişisel Adres Defteri";
+"Search in Addressbook" = "Adres Defterinde Ara";
+"New Card" = "Yeni Kart";
+"New List" = "Yeni Liste";
+"Edit" = "Düzenle";
+"Properties" = "Özellikler";
+"Sharing..." = "Paylaşılıyor...";
+"Write" = "Yaz";
+"Delete" = "Sil";
+"Instant Message" = "Anlık İleti";
+"Add..." = "Ekle...";
+"Remove" = "Sil";
+"Please wait..." = "Lütfen bekleyin...";
+"No possible subscription" = "Mümkün olan bir üyelik yok";
+"Preferred" = "Tercih edilen";
+"Display" = "Göster";
+"Display Name" = "Görünen İsim";
+"Additional Email" = "Diğer E-posta";
+"Phone Number" = "Telefon Numarası";
+"Prefers to receive messages formatted as" = "Almayı tercih ettiği ileti formatı";
+"Categories" = "Sınıflar";
+"First" = "İlk";
+"Last" = "Son";
+"Nickname" = "Takma ad";
+"Telephone" = "Telefon";
+"Work" = "İş";
+"Mobile" = "Cep";
+"Pager" = "Çağrı cihazı";
+/* categories */
+"contacts_category_labels" = "Meslektaş, Rakip, Müşteri, Arkadaş, Aile, İş Ortağı, Tedarikçi, Basın, VIP";
+"New category" = "Yeni sınıf";
+/* adresses */
+"Title" = "Ünvan";
+"Service" = "Servis";
+"Company" = "Şirket";
+"Department" = "Şube";
+"City" = "Şehir";
+"State_Province" = "Eyalet / İl";
+"ZIP_Postal Code" = "ZIP/Posta Kodu";
+"Country" = "Ülke";
+"Web Page" = "Web Sayfası";
+"Other Infos" = "Diğer Bilgiler";
+"Note" = "Açıklama";
+"Timezone" = "Zaman Dilimi";
+"Birthday" = "Doğum Günü";
+"Birthday (yyyy-mm-dd)" = "Doğum Günü (yyyy-aa-gg)";
+"Freebusy URL" = "Serbest/Meşgul URL";
+"Add as..." = "Şu Şekilde Ekle...";
+"Recipient" = "Alıcı";
+"Carbon Copy" = "Karbon Kopya";
+"Blind Carbon Copy" = "Gizli Karbon Kopya";
+"New Addressbook..." = "Yeni Adres Defteri...";
+"Subscribe to an Addressbook..." = "Bir Adres defterine Üye Ol...";
+"Remove the selected Addressbook" = "Seçili Adres defterini sil";
+"Subscribe to a shared folder" = "Paylaşılan bir klasöre üye ol";
+"Search User" = "Kullanıcı Ara";
+"Name of the Address Book" = "Adres Defterinin Adı";
+"Are you sure you want to delete the selected address book?"
+= "Seçili adres defterlerini silmek istediğinizden emin misiniz?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "\"%{0}\" adres defterini silmek istediğinizden emin misiniz?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "Halka açık bir adres defterinden çıkamaz ve üyeliğinizi kaldıramazsınız.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "Kişisel adres defterinizden çıkamaz ve üyeliğinizi kaldıramazsınız.";
+"Are you sure you want to delete the selected contacts?"
+= "Seçili kişileri silmek istediğinizden emin misiniz?";
+"You cannot delete the card of \"%{0}\"."
+= "\"%{0}\" kartını silemezsiniz.";
+"You cannot subscribe to a folder that you own!"
+= "Size ait bir klasöre üye olamazsınız.";
+"Unable to subscribe to that folder!"
+= "Bu klasöre üye olunamıyor.";
+/* acls */
+"Access rights to" = "Erişim yetkileri";
+"For user" = "Şu kullanıcı için";
+"Any Authenticated User" = "Herhangi kimliği doğrulanmış kullanıcı";
+"Public Access" = "Halka Açık Erişim";
+"This person can add cards to this addressbook."
+= "Bu kişi bu adres defterine kart ekleyebilir.";
+"This person can edit the cards of this addressbook."
+= "Bu kişi bu adres defterindeki kartları düzenleyebilir.";
+"This person can list the content of this addressbook."
+= "Bu kişi bu adres defterinin içeriğini listeleyebilir.";
+"This person can read the cards of this addressbook."
+= "Bu kişi bu adres defterindeki kartları okuyabilir.";
+"This person can erase cards from this addressbook."
+= "Bu kişi bu adres defterinden kart silebilir.";
+"The selected contact has no email address."
+= "Seçili kişinin bir e-posta adresi yok.";
+"Please select a contact." = "Lütfen bir kişi seçin.";
+/* Error messages for move and copy */
+"SoAccessDeniedException" = "Bu adres defterine yazamazsınız.";
+"Forbidden" = "Bu adres defterine yazamazsınız.";
+"Invalid Contact" = "Seçili kişi artık mevcut değil.";
+"Unknown Destination Folder" = "Seçilen hedef adres defteri artık mevcut değil.";
+/* Lists */
+"List details" = "Ayrıntıları listele";
+"List name" = "Liste adı";
+"List nickname" = "Takma adı listele";
+"List description" = "Liste tanımı";
+"Members" = "Üyeler";
+"Contacts" = "Kişiler";
+"Add" = "Ekle";
+"Lists can't be moved or copied." = "Listeler taşınamaz ve kopyalanamaz.";
+"Export" = "Dışarı Aktar";
+"Export Address Book..." = "Adres Defterini Dışarı Aktar...";
+"View Raw Source" = "Kaynak Kodunu Görüntüle";
+"Import Cards" = "Kartları İçeri Aktar";
+"Select a vCard or LDIF file." = "Bir vCard veya LDIF dosyası seçin.";
+"Upload" = "Yükle";
+"Uploading" = "Yükleniyor";
+"Done" = "Tamamlandı";
+"An error occured while importing contacts." = "Kişileri içe aktarırken bir hata oluştu.";
+"No card was imported." = "Hiç bir kart içe aktarılmadı.";
+"A total of %{0} cards were imported in the addressbook." = "Toplam %{0} kart adres defterinine aktarıldı.";
+"Reload" = "Tazele";
+/* Properties window */
+"Address Book Name" = "Adres Defteri Adı";
+"Links to this Address Book" = "Adres Defteri Bağlantıları";
+"Authenticated User Access" = "Kimliği Doğrulamış Kullanıcı Erişimi";
+"CardDAV URL" = "CardDAV URL";
+"Options" = "Seçenekler";
+"Rename" = "Yeniden Adlandır";
+"Subscriptions" = "Üyelikler";
+"Global Addressbooks" = "Genel Adres Defteri";
+"Search" = "Ara";
+"Sort" = "Sıralandır";
+"Descending Order" = "Azalan Sıralama";
+"Back" = "Geri";
+"Select All" = "Hepsini Seç";
+"Copy contacts" = "Kişileri kopyala";
+
+/* Notification on the number of messages successfully copied */
+"%{0} cards copied" = "%{0} kart kopyalandı";
+
+"More messages options" = "Diğer ileti seçenekleri";
+"New Contact" = "Yeni Kişi";
+"Close" = "Kapat";
+"More contact options" = "Diğer kişi seçenekleri";
+"Organization Unit" = "Kuruluş Birimi";
+"Add Organizational Unit" = "Kuruluş Birimi Ekle";
+"Type" = "Tür";
+"Email Address" = "E-posta Adresi";
+"New Email Address" = "Yeni E-posta Adresi";
+"New Phone Number" = "Yeni Telefon Numarası";
+"URL" = "URL";
+"New URL" = "Yeni URL";
+"street" = "sokak";
+"Postoffice" = "Postane";
+"Region" = "Bölge";
+"Postal Code" = "Posta Kodu";
+"New Address" = "Yeni Adres";
+"Reset" = "Baştaki konumuna getir";
+"Description" = "Tanım";
+"Add Member" = "Üye Ekle";
+"Subscribe" = "Üye ol";
+"Add Birthday" = "Doğum Günü Ekle";
+"Import" = "İçeri Aktar";
+"More options" = "Diğer seçenekler";
+"Role" = "Görev";
+"Add Screen Name" = "Görünen İsim Ekle";
+"Synchronization" = "Eşitleme";
+"Synchronize" = "Eşitle";
+"Sucessfully subscribed to address book" = "Adres defterine başarıyla abone";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Arama kapsamı";

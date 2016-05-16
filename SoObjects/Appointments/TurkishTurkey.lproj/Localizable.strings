@@ -1,0 +1,60 @@
+"Inviting the following persons is prohibited:" = "Bu kişileri davet etmek yasaklanmış:";
+"Personal Calendar" = "Kişisel Takvim";
+vevent_class0 = "(Halka Açık etkinlik)";
+vevent_class1 = "(Özel etkinlik)";
+vevent_class2 = "(Gizli etkinlik)";
+
+vtodo_class0 = "(Halka Açık görev)";
+vtodo_class1 = "(Özel görev)";
+vtodo_class2 = "(Gizli görev)";
+/* Receipts */
+"The event \"%{Summary}\" was created" = "\"%{Summary}\" etkinliği oluşturuldu";
+"The event \"%{Summary}\" was deleted" = "\"%{Summary}\" etkinliği silindi";
+"The event \"%{Summary}\" was updated" = "\"%{Summary}\" etkinliği güncellendi";
+"The following attendees(s) were notified" = "Şu katılımcı(lar) haberdar edilidi";
+"The following attendees(s) were added" = "Şu katılımcılar eklendi";
+"The following attendees(s) were removed" = "Şu katılımcılar çıkarıldı";
+/* IMIP messages */
+"calendar_label" = "Takvim";
+"startDate_label" = "Başlangıç";
+"endDate_label" = "Bitiş";
+"due_label" = "Vade";
+"location_label" = "Konum";
+"summary_label" = "Özet";
+"comment_label" = "Açıklama";
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "Etkinlik Daveti: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(%{SentBy} tarafından gönderilidi) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}sizi %{Summary} etkinliğine davet etti.\n\n\nBaşlangıç: %{StartDate}\n\nBitiş: %{EndDate}\n\nTanım: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}sizi %{Summary} etkinliğine davet etti.\n\n\nBaşlangıç: %{StartDate} saat %{StartTime}\n\nBitiş: %{EndDate} saat %{EndTime}\n\nTanım: %{Description}";
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "Etkinlik İptal Edildi: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}şu etkiliği iptal etti: %{Summary}.\n\n\nBaşlangıç: %{StartDate}\n\nBitiş: %{EndDate}\n\nTanım: %{Description}";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}şu etkinliği iptal etti: %{Summary}.\n\n\nBaşlangıç: %{StartDate} saat %{StartTime}\n\nBitiş: %{EndDate} saat %{EndTime}\n\nTanım: %{Description}";
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "%{OldStartDate} tarihli \"%{Summary}\" buluşması değişti.";
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "%{OldStartDate} tarihli ve %{OldStartTime} saatli \"%{Summary}\" buluşması değişti";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "\"%{Summary}\" buluşmasının şu özellikleri değişti:";
+"Please accept or decline those changes."
+= "Lütfen şu değişikleri onaylayın veya reddedin.";
+/* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Davet kabul edilidi: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Davet Geri Çevrildi: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Temsilci atanmış davet: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Davet hakkında henüz karar verilmedi: \"%{Summary}\"";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "%{Attendee} %{SentByText}etkinlik davetinizi kabul etti.";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "%{Attendee} %{SentByText}davetinizi reddetti.";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText} davete temsilci atadı: %{Delegate} ";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText}henüz etkinlik davetinizle ilgili kararını vermedi.";
+/* Resources */
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Kaynağa ulaşılamıyor: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "\"%{Cn} %{SystemEmail}\" kanağı için maksimum eşzamanlı kayıt adedine (%{NumberOfSimultaneousBookings}) ulaşıldı. Çakışan  \"%{EventTitle}\" etkinlik, %{StartDate} tarihinde başlıyor.";

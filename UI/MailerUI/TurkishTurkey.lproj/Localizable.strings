@@ -1,0 +1,351 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Oluştur";
+"Empty Trash" = "Çöp Kutusunu Boşalt";
+"Delete"      = "Sil";
+"Expunge"     = "Silip At";
+"Forward"     = "İlet";
+"Get Mail"    = "E-posta Al";
+"Junk"        = "İstenmeyen";
+"Not junk"    = "İstenen";
+"Reply"       = "Yanıtla";
+"Reply All"   = "Hepsini Yanıtla";
+"Print"       = "Yazdır";
+"Stop"        = "Durdur";
+"Write"       = "Yaz";
+"Search"      = "Arama";
+"Send" = "Gönder";
+"Contacts" = "Kişiler";
+"Attach" = "Ekle";
+"Save" = "Kaydet";
+"Options" = "Seçenekler";
+"Close" = "Kapat";
+"Size" = "Boyut";
+
+/* Tooltips */
+"Send this message now" = "Bu iletiyi şimdi gönder";
+"Select a recipient from an Address Book" = "Bir Adres Defterinden Bir Alıcı Seçin";
+"Include an attachment" = "Dosya Ekle";
+"Save this message" = "Bu iletiyi kaydet";
+"Get new messages" = "Yeni iletileri al";
+"Create a new message" = "Yeni ileti oluştur";
+"Go to address book" = "Adres defterine git";
+"Reply to the message" = "İletiyi yanıtla";
+"Reply to sender and all recipients" = "Göndereni ve tüm alıcıları yanıtla";
+"Forward selected message" = "Seçili iletiyi İlet";
+"Delete selected message or folder" = "Seçili ileti veya klasörü sil";
+"Print this message" = "Bu iletiyi yazdır";
+"Stop the current transfer" = "Geçerli aktarımı durdur";
+"Attachment" = "Eklenti";
+"Unread" = "Okunmamış";
+"Flagged" = "Bayraklı";
+"Search multiple mailboxes" = "Birden fazla klasörde ara";
+
+/* Main Frame  */
+"Home"                 = "Ev"; 
+"Calendar"             = "Takvim";
+"Addressbook"          = "Adres Defteri";
+"Mail"                 = "E-posta";
+"Right Administration" = "Yetki Yönetimi";
+"Help" = "Yardım";
+
+/* Mail account main windows */
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "SOGo Postalayıcısına hoş geldiniz. E-posta hesaplarınızı görmek için soldaki klasör ağacını kullanın!";
+"Read messages"       = "İletileri oku";
+"Write a new message" = "Yeni ileti yaz";
+"Share" = "Paylaş";
+"Account" = "Hesap";
+"Shared Account" = "Paylaşılan Hesap";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "Seçilen ileti yok";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "Seçilen e-posta klasörü yok";
+
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Klasör sıkıştırıldı";
+/* Empty Trash success message */
+"Trash emptied" = "Çöp Kutusu boşaltıldı";
+
+/* acls */
+"Access rights to" = "Erişim yetkileri";
+"For user" = "Şu kullanıcı için";
+"Any Authenticated User" = "Kimliği doğrulanmış herhangi kullanıcı";
+"List and see this folder" = "Bu klasörü listele ve görüntüle";
+"Read mails from this folder" = "Bu klasörden iletileri oku";
+"Mark mails read and unread" = "İletileri okumuş ve okunmamış olarak işaretle";
+"Modify the flags of the mails in this folder" = "Bu klasördeki iletilerin bayraklarını değiştir";
+"Insert, copy and move mails into this folder" = "İletiler bu klasöre yerleştir, kopyala ve taşı";
+"Post mails" = "İletileri postala";
+"Add subfolders to this folder" = "Bu klasöre alt klasörler ekle";
+"Remove this folder" = "Bu klasörü kaldır";
+"Erase mails from this folder" = "Bu klasörden iletileri sil";
+"Expunge this folder" = "Bu klasörü temizle";
+"Export This Folder" = "Bu klasörü dışa aktar";
+"Modify the acl of this folder" = "Bu klasörün erişim denetimi listesini değiştir";
+"Saved Messages.zip" = "Messages.zip olarak kaydedildi";
+"Update" = "Güncelle";
+"Cancel" = "İptal";
+
+/* Mail edition */
+"From"          = "Gönderen";
+"Subject"       = "Konu";
+"To"            = "Alıcı";
+"Cc"            = "Karbon Kopya";
+"Bcc"           = "Gizli Karbon Kopya";
+"Reply-To"	    = "Yanıtlama adresi";
+"Add address"   = "Adresleri ekle";
+"Body"          = "Gövde";
+"Open" = "Aç";
+"Select All" = "Hepsini seç";
+"Attach Web Page..." = "Web sayfası ekle...";
+"file" = "dosya";
+"files" = "dosyalar";
+"Save all" = "Hepsini kaydet";
+"to"            = "Alıcı";
+"cc"            = "Karbon Kopya";
+"bcc"           = "Gizli Karbon Kopya";
+"Add a recipient" = "Bir alıcı ekle";
+"Edit Draft..." = "Taslağı Düzenle...";
+"Load Images" = "Resimleri yükle";
+"Return Receipt" = "Alındı Raporu";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Bu iletiyi gönderen kişi, iletiyi okuduğunuzdan haberdar olmak istedi. Gönderene alındı raporu yollamak ister misiniz?";
+"Return Receipt (displayed) - %@"= "Alındı Raporu (görüntülendi) - %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Şuraya gönderdiğiniz iletinin Alındı Raporudur: %@\n\nBilgi Notu: Bu Alındı Raporu gönderdiğiniz iletinin yalnızca, alıcının bilgisayarında görüntülendiğini belirtir. İleti içeriğinin alıcı tarafından okunduğunu veya anlaşıldığını garanti etmez.";
+"Priority" = "Öncelik";
+"highest" = "En yüksek";
+"high" = "Yüksek";
+"normal" = "Normal";
+"low" = "Düşük";
+"lowest" = "En düşük";
+"This mail is being sent from an unsecure network!" = "Bu ileti güvenli olmayan bir ağdan gönderilmiştir!";
+"Address Book" = "Adres Defteri";
+"Search For" = "Şunu Ara";
+
+/* Popup "show" */
+"all"     = "hepsi";
+"read"    = "okunmuş";
+"unread"  = "okunmamış";
+"deleted" = "silinmiş";
+"flagged" = "bayraklı";
+
+/* MailListView */
+"Sender" = "Gönderen";
+"Subject or Sender" = "Konu veya Gönderen";
+"To or Cc" = "Alıcı veya Karbon Kopya";
+"Entire Message" = "Tüm İleti";
+"Date"          = "Tarih";
+"View"          = "Görüntüle";
+"All"           = "Hepsi";
+"No message"    = "İleti yok";
+"messages"      = "iletiler";
+"Yesterday"     = "Dün";
+"first"         = "İlk";
+"previous"      = "Önceki";
+"next"          = "Sonraki";
+"last"          = "En son";
+"msgnumber_to"  = "alıcı";
+"msgnumber_of"  = "den";
+"Mark Unread" = "Okunmamış olarak işaretle";
+"Mark Read"   = "Okunmuş olarak işaretle";
+"Untitled" = "Başlıksız";
+
+/* Tree */
+"SentFolderName"   = "Gönderilmiş";
+"TrashFolderName"  = "Çöp Kutusu";
+"InboxFolderName"  = "Gelen Kutusu";
+"DraftsFolderName" = "Taslaklar";
+"JunkFolderName" = "İstenmeyen";
+"SieveFolderName"  = "Süzgeçler";
+"Folders"          = "Klasörler"; /* title line */
+
+/* MailMoveToPopUp */
+"MoveTo"        = "Taşı &hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Adres Defterine Ekle...";
+"Compose Mail To" = "İleti Yaz";
+"Create Filter From Message..." = "İletiden Süzgeç Oluştur...";
+
+/* Image Popup menu */
+"Save Image" = "Resmi kaydet";
+"Save Attachment" = "Eklentiyi Kaydet";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Yeni İleti Penceresinde Aç";
+"Copy Folder Location" = "Klasörün Konumunu Kopyala";
+"Subscribe..." = "Üye ol...";
+"Mark Folder Read" = "Klasörü Okunmuş Olarak İşretle";
+"New Folder..." = "Yeni Klasör...";
+"Compact This Folder" = "Bu Klasörü Sıkıştır";
+"Search Messages..." = "İletileri Ara...";
+"Sharing..." = "Paylaş...";
+"New Subfolder..." = "Yeni Alt Klasör...";
+"Rename Folder..." = "Klasörü Yeniden Adlandır...";
+"Delete Folder" = "Klasörü Sil";
+"Use This Folder For" = "Bu Klasörü Şunun İçin Kullan";
+"Get Messages for Account" = "Hesaptaki İletileri Al";
+"Properties..." = "Özellikler...";
+"Delegation..." = "Temsilci Atama...";
+
+/* Use This Folder menu */
+"Sent Messages" = "Gönderilmiş İletiler";
+"Drafts" = "Taslaklar";
+"Deleted Messages" = "Silinmiş İletiler";
+"Junk Messages" = "İstenmeyen İletiler";
+
+/* Message list popup menu */
+"Open Message In New Window" = "İletiyi Yeni Pencerede Aç";
+"Reply to Sender Only" = "Sadece Gönderini Yanıtla";
+"Reply to All" = "Herkesi Yanıtla";
+"Edit As New..." = "Yeni Olarak Düzenle...";
+"Move To" = "Şuraya Taşı";
+"Copy To" = "Şuraya Kopyala";
+"Label" = "Etiket";
+"Mark" = "İşaretle";
+"Save As..." = "Farklı Kaydet...";
+"Print Preview" = "Baskı Önizleme";
+"View Message Source" = "İletinin Kaynak Kodunu Göster";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Etkinliğe Çevir";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Göreve Çevir";
+
+"Print..." = "Yazdır...";
+"Delete Message" = "İletiyi Sil";
+"Delete Selected Messages" = "Seçili İletileri Sil";
+"Mark the selected messages as junk" = "Seçili İletileri İstenmeyen Olarak İşaretle";
+"Mark the selected messages as not junk" = "Seçili İletileri İstenen Olarak İşaretle";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "ve %{0} daha...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "Gizle";
+
+/* Number of selected messages in list */
+"selected" = "seçildi";
+
+"This Folder" = "Bu Klasör";
+
+/* Label popup menu */
+"None" = "Hiç biri";
+
+/* Mark popup menu */
+"As Read" = "Okunmuş Olarak";
+"Thread As Read" = "Okunmuşları Zincirleme Sırala";
+"As Read By Date..." = "Okunma Tarihi...";
+"All Read" = "Hepsi Okunmuş";
+"Flag" = "Bayrak";
+"As Junk" = "İstenmeyen Olarak";
+"As Not Junk" = "İstenen Olarak";
+"Run Junk Mail Controls" = "İstenmeyen İleti Denetimi Yap";
+"Search messages in" = "İletileri şurada ara";
+"Search" = "Arama";
+"Search subfolders" = "Alt klasörleri ara";
+"Match any of the following" = "Şunlardan biriyle eşleştir";
+"Match all of the following" = "Şunların hepsiyle eşleştir";
+"contains" = "içeren";
+"does not contain" = "içermeyen";
+"No matches found" = "Eşleşme bulunamadı";
+"results found" = "bulundu";
+"result found" = "bulunamadı";
+"Please specify at least one filter" = "Lütfen en az bir süzgeç belirtin";
+
+/* Folder operations */
+"Name" = "İsim";
+"Enter the new name of your folder"
+ ="Klasörün yeni adını yazın";
+"Do you really want to move this folder into the trash ?"
+ = "Bu klasörü çöp kutusuna taşımak istediğinizden emin misiniz?";
+"Operation failed" = "İşlem başarısiz oldu";
+"Quota" = "Kota:";
+"quotasFormat" = "%{0}%  kullanılıyor, toplam %{1} MB";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "Seçili iletileri silmek istediğinizden emin misiniz?";
+
+"Please select a message." = "Lütfen bir ileti seçin.";
+"Please select a message to print." = "Lütfen yazdırılacak iletiyi seçin.";
+"Please select only one message to print." = "Lütfen yazdırmak için sadece bir ileti seçin.";
+"The message you have selected doesn't exist anymore." = "Seçtiğiniz ileti artık mevcut değil.";
+"The folder with name \"%{0}\" could not be created."
+= "\"%{0}\" adındaki klasör oluşturulamıyor.";
+"This folder could not be renamed to \"%{0}\"."
+= "Klasörün adı  \"%{0}\" olarak değiştirilemiyor.";
+"The folder could not be deleted."
+= "Klasör silinemiyor.";
+"The trash could not be emptied."
+= "Çöp Kutusu boşaltılamıyor.";
+"The folder functionality could not be changed."
+= "Klasörün işlevi değişitirilemiyor.";
+"You need to choose a non-virtual folder!" = "Sanal olmayan bir klasör seçmelisiniz.";
+"Moving a message into its own folder is impossible!"
+= "İletiyi bulunduğu klasöre taşımak mümkün değil!";
+"Copying a message into its own folder is impossible!"
+= "İletiyi bulunduğu klasöre kopyalamak mümkün değil!";
+
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "İletileri çöp kutusuna taşımak mümkün değil. İletileri hemen silmek ister misiniz?";
+
+/* Message editing */
+"error_missingsubject" = "İletiye bir konu başlığı yazılmadı. İletiyi konusuz olarak göndermek istediğinizden emin misiniz?";
+"error_missingrecipients" = "Lütfen en az bir alıcı belirtin.";
+"Send Anyway" = "Yinede Gönder";
+"Error while saving the draft" = "Taslağı kaydederken hata oluştu";
+
+/* Error when uploading a file attachment */
+"Error while uploading the file \"%{0}\":" = " \"%{0}\" dosyasını yüklerken hata oluştu:";
+"There is an active file upload. Closing the window will interrupt it." = "Devam eden bir dosya yükleme işlemi var. Pencereyi kapanırsa yükleme işlemi duracak.";
+
+/* Message sending */
+"cannot send message: (smtp) all recipients discarded" = "İleti gönderilemiyor: tüm alıcılar geçersiz.";
+"cannot send message (smtp) - recipients discarded" = "İleti gönderilemiyor. Şu adresler geçersiz";
+"cannot send message: (smtp) error when connecting" = "İleti gönderilemiyor: SMTP sunucusuna erişirken hata ile karşılaşıldı.";
+
+/* Contacts list in mail editor */
+"Email" = "E-posta";
+"More mail options" = "Diğer e-posta seçenekleri";
+"Delegation" = "Temsilci Atama";
+"Add User" = "Kullanıcı Ekle";
+"Add a tag" = "Bir etiket ekle";
+"reply" = "yanıtla";
+"Edit" = "Düzenle";
+"Yes" = "Evet";
+"No" = "Hayır";
+"Location" = "Konum";
+"Rename" = "Yeniden Adlandır";
+"Compact" = "Sıkıştır";
+"Export" = "Dışarı Aktar";
+"Set as Drafts" = "Taslaklar olarak tanımla";
+"Set as Sent" = "Gönderilmiş olarak tanımla";
+"Set as Trash" = "Çöp Kutusu olarak tanımla";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "İstenmeyen olarak belirle";
+
+"Sort" = "Sıralandır";
+"Descending Order" = "Azalan Sıralama";
+"Back" = "Geri";
+"Copy messages" = "İletileri kopyala";
+"More messages options" = "Diğer ileti seçenekleri";
+"Mark as Unread" = "Okunmamış olarak işaretle";
+"Closing Window ..." = "Pencere Kapatılıyor ...";
+"Tried to send too many mails. Please wait." = "Çok fazla ileti gönderilmeye çalışıldı. Lütfen bekleyin.";
+"View Mail" = "İletiyi Görüntüle";
+"This message contains external images." = "İleti harici konumlarda bulunan resimler içeriyor.";
+"Expanded" = "Genişletildi";
+"Add a Criteria" = "Ayırt edici bir özellik ekleyin";
+"More search options" = "Diğer arama tercihleri";
+"Your email has been saved" = "İletiniz kaydedildi";
+"Your email has been sent" = "İletiniz gönderildi";
+"Folder compacted" = "Klasör sıkıştırıldı";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Arama kapsamı";

@@ -103,6 +103,15 @@
 @interface SOGoMailPortugueseForward : SOGoMailForward
 @end
 
+@interface SOGoMailRussianForward : SOGoMailForward
+@end
+
+@interface SOGoMailSlovakForward : SOGoMailForward
+@end
+
+@interface SOGoMailSlovenianForward : SOGoMailForward
+@end
+
 @interface SOGoMailSpanishSpainForward : SOGoMailForward
 @end
 
@@ -112,13 +121,7 @@
 @interface SOGoMailSwedishForward : SOGoMailForward
 @end
 
-@interface SOGoMailRussianForward : SOGoMailForward
-@end
-
-@interface SOGoMailSlovakForward : SOGoMailForward
-@end
-
-@interface SOGoMailSlovenianForward : SOGoMailForward
+@interface SOGoMailTurkishTurkeyForward : SOGoMailForward
 @end
 
 @interface SOGoMailUkrainianForward : SOGoMailForward

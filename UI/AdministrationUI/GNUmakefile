@@ -6,7 +6,7 @@ BUNDLE_NAME = AdministrationUI
 
 AdministrationUI_PRINCIPAL_CLASS = AdministrationUIProduct
 
-AdministrationUI_LANGUAGES = Arabic Basque BrazilianPortuguese Catalan ChineseTaiwan Croatian Czech Danish Dutch English Finnish French German Hungarian Italian Lithuanian Macedonian NorwegianBokmal NorwegianNynorsk Polish Portuguese Russian Slovak Slovenian SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
+AdministrationUI_LANGUAGES = $(SOGO_LANGUAGES)
 
 AdministrationUI_OBJC_FILES =		\
 	AdministrationUIProduct.m	\
