@@ -735,6 +735,10 @@ any requests being made. Default value is 0, or disabled
 |Number of seconds, defaults to 300 (or 5 minutes). Note that _SOGoCacheCleanupInterval_
 must be set to a value equal or higher than _SOGoRequestBlockInterval_.
 
+|D |SOGoXSRFValidationEnabled
+|Parameter used to enable or not XSRF (also known as CSRF) protection in SOGo.
+Default value is `NO`, or disabled.
+
 |=======================================================================
 
 Authentication using LDAP
