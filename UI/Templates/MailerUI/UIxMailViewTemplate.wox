@@ -54,7 +54,7 @@
             <md-icon>create</md-icon>
           </md-button>
           <md-button class="sg-icon-button" label:aria-label="Delete"
-                     ng-click="viewer.doDelete()">
+                     ng-click="viewer.deleteMessage()">
             <md-tooltip md-direction="bottom"><var:string label:value="Delete selected message or folder"/></md-tooltip>
             <md-icon>delete</md-icon>
           </md-button>

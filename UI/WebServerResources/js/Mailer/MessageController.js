@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageController.$inject = ['$window', '$scope', '$state', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'encodeUriFilter', 'sgSettings', 'sgFocus', 'Dialog', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message'];
-  function MessageController($window, $scope, $state, $mdDialog, stateAccounts, stateAccount, stateMailbox, stateMessage, encodeUriFilter, sgSettings, focus, Dialog, Calendar, Component, Account, Mailbox, Message) {
+  MessageController.$inject = ['$window', '$scope', '$state', '$mdMedia', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'encodeUriFilter', 'sgSettings', 'sgFocus', 'Dialog', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message'];
+  function MessageController($window, $scope, $state, $mdMedia, $mdDialog, stateAccounts, stateAccount, stateMailbox, stateMessage, encodeUriFilter, sgSettings, focus, Dialog, Calendar, Component, Account, Mailbox, Message) {
     var vm = this, messageDialog = null, popupWindow = null;
 
     // Expose controller
@@ -24,7 +24,7 @@
     vm.$showDetailedRecipients = false;
     vm.toggleDetailedRecipients = toggleDetailedRecipients;
     vm.filterMailtoLinks = filterMailtoLinks;
-    vm.doDelete = doDelete;
+    vm.deleteMessage = deleteMessage;
     vm.close = close;
     vm.reply = reply;
     vm.replyAll = replyAll;
@@ -152,7 +152,7 @@
       }
     }
 
-    function doDelete() {
+    function deleteMessage() {
       var mailbox, message, state, nextMessage, previousMessage,
           parentCtrls = $parentControllers();
 
@@ -192,7 +192,7 @@
           }
 
           try {
-            if (nextMessage) {
+            if (nextMessage && !$mdMedia('xs')) {
               state.go('mail.account.mailbox.message', { messageId: nextMessage.uid });
               if (nextIndex < mailbox.$topIndex)
                 mailbox.$topIndex = nextIndex;
@@ -200,7 +200,10 @@
                 mailbox.$topIndex = nextIndex - (mailbox.$lastVisibleIndex - mailbox.$topIndex);
             }
             else {
-              state.go('mail.account.mailbox');
+              state.go('mail.account.mailbox').then(function() {
+                message = null;
+                delete mailbox.selectedMessage;
+              });
             }
           }
           catch (error) {}
