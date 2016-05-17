@@ -255,16 +255,21 @@
   return currentCalendar;
 }
 
-- (void) setCurrentTableHour: (NSString *) aTableHour
+- (void) setCurrentTableHour: (NSNumber *) aTableHour
 {
-  currentTableHour = aTableHour;
+  ASSIGN(currentTableHour, aTableHour);
 }
 
-- (NSString *) currentTableHour
+- (NSNumber *) currentTableHour
+{
+  return currentTableHour;
+}
+
+- (NSString *) currentFormattedHour
 {
   int hour;
   NSCalendarDate *tmp;
-  NSString *formatted = currentTableHour, *parse;
+  NSString *formatted = [NSString stringWithFormat: @"%d", [currentTableHour intValue]], *parse;
 
   hour = [currentTableHour intValue];
   parse = [NSString stringWithFormat: @"2000-01-01 %02d:00", hour];
@@ -272,7 +277,8 @@
   tmp = [NSCalendarDate dateWithString: parse
                         calendarFormat: @"%Y-%m-%d %H:%M"];
   if (tmp)
-    formatted = [tmp descriptionWithCalendarFormat: timeFormat];
+    formatted = [tmp descriptionWithCalendarFormat: timeFormat
+                                            locale: locale];
 
   return formatted;
 }

@@ -91,7 +91,7 @@
       <div class="hours">
         <var:foreach list="hoursToDisplay" item="currentTableHour">
           <div class="hour" var:id="currentHourId">
-            <var:string value="currentTableHour"/>
+            <var:string value="currentFormattedHour"/>
           </div>
         </var:foreach>
       </div>

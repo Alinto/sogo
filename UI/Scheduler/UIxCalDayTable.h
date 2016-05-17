@@ -37,7 +37,8 @@
 {
   SOGoDateFormatter *dateFormatter;
   NSArray *weekDays;
-  NSString *currentView, *timeFormat, *currentTableHour;
+  NSString *currentView, *timeFormat;
+  NSNumber *currentTableHour;
   NSCalendarDate *startDate, *currentTableDay;
   NSMutableArray *daysToDisplay, *calendarsToDisplay, *hoursToDisplay;
   NSMutableDictionary *currentCalendar;
