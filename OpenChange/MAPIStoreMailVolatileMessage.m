@@ -290,17 +290,17 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
           : ULLONG_MAX);
 }
 
-- (int) getPidTagMessageClass: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMessageClass: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPM.Note" asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagChangeKey: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagChangeKey: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSData *changeKey;
-  int rc;
+  enum mapistore_error rc;
 
   changeKey = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
   if (changeKey)
@@ -1051,7 +1051,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
   return messageData;
 }
 
-- (int) submitWithFlags: (enum SubmitFlags) flags
+- (enum mapistore_error) submitWithFlags: (enum SubmitFlags) flags
 {
   enum mapistore_error rc = MAPISTORE_SUCCESS;
   NSDictionary *recipients;

@@ -27,6 +27,9 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <SOGo/SOGoFolder.h>
+#import <SOGo/SOGoUser.h>
 
 #import "MAPIStoreContext.h"
 #import "MAPIStorePropertySelectors.h"
@@ -282,7 +285,7 @@
 // We might get there if for some reasons, all classes weren't able
 // to tell us the message class.
 //
-- (int) getPidTagMessageClass: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMessageClass: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPM.Note" asUnicodeInMemCtx: memCtx];
 
@@ -291,10 +294,10 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getProperties: (struct mapistore_property_data *) data
-             withTags: (enum MAPITAGS *) tags
-             andCount: (uint16_t) columnCount
-             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getProperties: (struct mapistore_property_data *) data
+                              withTags: (enum MAPITAGS *) tags
+                              andCount: (uint16_t) columnCount
+                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   [sogoObject reloadIfNeeded];
 
@@ -304,12 +307,12 @@
                      inMemCtx: memCtx];
 }
 
-- (int) getProperty: (void **) data
-            withTag: (enum MAPITAGS) propTag
-           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getProperty: (void **) data
+                             withTag: (enum MAPITAGS) propTag
+                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   id value;
-  int rc;
+  enum mapistore_error rc;
  
   value = [properties objectForKey: MAPIPropertyKey (propTag)];
   if (value)
@@ -346,6 +349,16 @@
   /* Update PredecessorChangeList accordingly */
   [self _updatePredecessorChangeList];
 
+  if (isNew)
+    {
+      NSString *lastModifierName;
+
+      lastModifierName = (NSString *)[properties objectForKey: MAPIPropertyKey (PidTagLastModifierName)];
+      if ([lastModifierName length] > 0)
+        [properties setObject: lastModifierName
+                       forKey: MAPIPropertyKey (PidTagCreatorName)];
+    }
+
   // [self logWithFormat: @"Saving %@", [self description]];
   // [self logWithFormat: @"%d props in dict", [properties count]];
 
@@ -364,20 +377,77 @@
   return [msgClass isEqualToString: @"IPM.Microsoft.ScheduleData.FreeBusy"];
 }
 
-/* TODO: differentiate between the "Own" and "All" cases */
+//-----------------------------
+// Permissions
+//-----------------------------
+
 - (BOOL) subscriberCanReadMessage
 {
   return [(MAPIStoreFolder *) container subscriberCanReadMessages];
-          // || [self _messageIsFreeBusy]);
+}
+
+- (SOGoUser *) _ownerUser
+{
+  NSString *ownerName;
+  SOGoUser *ownerUser = nil;
+
+  ownerName = [properties objectForKey: MAPIPropertyKey (PidTagCreatorName)];
+  if ([ownerName length] > 0)
+    ownerUser = [SOGoUser userWithLogin: ownerName];
+
+  return ownerUser;
+}
+
+- (NSArray *) activeUserRoles
+{
+  /* Override because of this exception: NSInvalidArgumentException,
+     reason: [SOGoMAPIDBMessage-aclsForUser:] should be overridden by
+     subclass */
+  if (!activeUserRoles)
+    {
+      SOGoUser *activeUser;
+
+      activeUser = [[self context] activeUser];
+      activeUserRoles = [[container aclFolder] aclsForUser: [activeUser login]];
+      [activeUserRoles retain];
+    }
+
+  return activeUserRoles;
 }
 
 - (BOOL) subscriberCanModifyMessage
 {
-  return ((isNew
-           && [(MAPIStoreFolder *) container subscriberCanCreateMessages])
-          || (!isNew
-              && [(MAPIStoreFolder *) container subscriberCanModifyMessages]));
-          // || [self _messageIsFreeBusy]);
+  BOOL rc;
+  NSArray *roles;
+
+  roles = [self activeUserRoles];
+
+  if (isNew)
+    rc = [(MAPIStoreFolder *) container subscriberCanCreateMessages];
+  else
+    rc = [roles containsObject: MAPIStoreRightEditAll];
+
+  /* Check if the message is owned and it has permission to edit it */
+  if (!rc && [roles containsObject: MAPIStoreRightEditOwn])
+    rc = [[[container context] activeUser] isEqual: [self _ownerUser]];
+
+  return rc;
+}
+
+- (BOOL) subscriberCanDeleteMessage
+{
+  BOOL rc;
+  NSArray *roles;
+
+  roles = [self activeUserRoles];
+
+  rc = [roles containsObject: MAPIStoreRightDeleteAll];
+
+  /* Check if the message is owned and it has permission to delete it */
+  if (!rc && [roles containsObject: MAPIStoreRightDeleteOwn])
+    rc = [[[container context] activeUser] isEqual: [self _ownerUser]];
+
+  return rc;
 }
 
 - (NSDate *) creationTime

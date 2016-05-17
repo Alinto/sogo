@@ -20,10 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSValue.h>
 #import <NGObjWeb/SoSecurityManager.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSObject+Values.h>
 #import <SOGo/SOGoContentObject.h>
@@ -35,6 +37,7 @@
 #import "MAPIStoreTypes.h"
 #import "MAPIStoreUserContext.h"
 #import "NSData+MAPIStore.h"
+#import "NSString+MAPIStore.h"
 
 #import "MAPIStoreGCSMessage.h"
 
@@ -54,76 +57,28 @@
   return [sogoObject lastModified];
 }
 
-- (int) getPidTagAccess: (void **) data // TODO
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagCreatorName: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
-  MAPIStoreContext *context;
-  WOContext *woContext;
-  SoSecurityManager *sm;
-  MAPIStoreUserContext *userContext;
-  uint32_t access;
+  enum mapistore_error rc;
+  NSString *creator;
 
-  context = [self context];
-  userContext = [self userContext];
-  if ([[context activeUser] isEqual: [userContext sogoUser]])
-    access = 0x03;
-  else
+  creator = [self creator];
+  if (creator)
     {
-      sm = [SoSecurityManager sharedSecurityManager];
-      woContext = [userContext woContext];
-
-      access = 0;
-      if (![sm validatePermission: SoPerm_ChangeImagesAndFiles
-                         onObject: sogoObject
-                        inContext: woContext])
-        access |= 1;
-      if (![sm validatePermission: SoPerm_AccessContentsInformation
-                         onObject: sogoObject
-                        inContext: woContext])
-        access |= 2;
-      if (![sm validatePermission: SOGoPerm_DeleteObject
-                         onObject: sogoObject
-                        inContext: woContext])
-        access |= 4;
+      *data = [creator asUnicodeInMemCtx: memCtx];
+      rc = MAPISTORE_SUCCESS;
     }
-  *data = MAPILongValue (memCtx, access);
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
 
-  return MAPISTORE_SUCCESS;
+  return rc;
 }
 
-- (int) getPidTagAccessLevel: (void **) data // TODO
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagChangeKey: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
-  MAPIStoreContext *context;
-  MAPIStoreUserContext *userContext;
-  WOContext *woContext;
-  SoSecurityManager *sm;
-  uint32_t accessLvl;
-
-  context = [self context];
-  userContext = [self userContext];
-  if ([[context activeUser] isEqual: [userContext sogoUser]])
-    accessLvl = 1;
-  else
-    {
-      sm = [SoSecurityManager sharedSecurityManager];
-      woContext = [userContext woContext];
-      if (![sm validatePermission: SoPerm_ChangeImagesAndFiles
-                         onObject: sogoObject
-                        inContext: woContext])
-        accessLvl = 1;
-      else
-        accessLvl = 0;
-    }
-  *data = MAPILongValue (memCtx, accessLvl);
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidTagChangeKey: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
-{
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
   NSData *changeKey;
   MAPIStoreGCSFolder *parentFolder;
   NSString *nameInContainer;
@@ -155,10 +110,10 @@
   return rc;
 }
 
-- (int) getPidTagPredecessorChangeList: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagPredecessorChangeList: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
   NSData *changeList;
   MAPIStoreGCSFolder *parentFolder;
 
@@ -239,6 +194,71 @@
       updateVersionsForMessageWithKey: [self nameInContainer]
                         withChangeKey: newChangeKey
              andPredecessorChangeList: predecessorChangeList];
+}
+
+//----------------------
+// Sharing
+//----------------------
+
+- (NSString *) creator
+{
+  return [self owner];
+}
+
+- (NSString *) owner
+{
+  return [sogoObject ownerInContext: nil];
+}
+
+- (SOGoUser *) ownerUser
+{
+  NSString *ownerName;
+  SOGoUser *owner = nil;
+
+  ownerName = [self owner];
+  if ([ownerName length] != 0)
+    owner = [SOGoUser userWithLogin: ownerName];
+
+  return owner;
+}
+
+- (BOOL) subscriberCanModifyMessage
+{
+  BOOL rc;
+  NSArray *roles;
+
+  roles = [self activeUserRoles];
+
+  if (isNew)
+    rc = [roles containsObject: SOGoRole_ObjectCreator];
+  else
+    rc = [roles containsObject: SOGoRole_ObjectEditor];
+
+  /* Check if the message is owned and it has permission to edit it */
+  if (!rc && [roles containsObject: MAPIStoreRightEditOwn])
+    rc = [[[container context] activeUser] isEqual: [self ownerUser]];
+
+  return rc;
+}
+
+- (BOOL) subscriberCanDeleteMessage
+{
+  BOOL rc;
+  NSArray *roles;
+
+  roles = [self activeUserRoles];
+  rc = [roles containsObject: SOGoRole_ObjectEraser];
+
+  /* Check if the message is owned and it has permission to delete it */
+  if (!rc && [roles containsObject: MAPIStoreRightDeleteOwn])
+    {
+      NSString *currentUser;
+
+      currentUser = [[container context] activeUser];
+      rc = [currentUser isEqual: [self ownerUser]];
+    }
+
+  return rc;
 }
 
 @end

@@ -84,16 +84,16 @@
   return memberId;
 }
 
-- (int) getPidTagMemberId: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMemberId: (void **) data
+                                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongLongValue (memCtx, memberId);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagEntryId: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagEntryId: (void **) data
+                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSData *entryId;
   struct mapistore_connection_info *connInfo;
@@ -110,8 +110,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagMemberName: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMemberName: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *displayName;
 
@@ -127,13 +127,14 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagMemberRights: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMemberRights: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t rights;
   NSArray *roles;
 
   roles = [[(MAPIStoreFolder *) container aclFolder] aclsForUser: userId];
+  roles = [(MAPIStoreFolder *) container expandRoles: roles];
   rights = [(MAPIStoreFolder *) container exchangeRightsForRoles: roles];
 
   *data = MAPILongValue (memCtx, rights);

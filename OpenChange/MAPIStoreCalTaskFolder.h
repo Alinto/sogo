@@ -1,8 +1,8 @@
-/* MAPIStoreDBFolder.h - this file is part of SOGo
+/* MAPIStoreCalTaskFolder.h - this file is part of SOGo
  *
- * Copyright (C) 2012 Inverse inc
+ * Copyright (C) 2016 Enrique J. Hernandez
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Author: Enrique J. Hernandez <ejhernandez@zentyal.com>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,24 +20,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTOREDBFOLDER_H
-#define MAPISTOREDBFOLDER_H
+#ifndef MAPISTORECALTASKFOLDER_H
+#define MAPISTORECALTASKFOLDER_H
 
-#import "MAPIStoreFolder.h"
+#import "MAPIStoreGCSFolder.h"
 
-extern NSString *MAPIStoreRightReadItems;
-extern NSString *MAPIStoreRightCreateItems;
-extern NSString *MAPIStoreRightEditOwn;
-extern NSString *MAPIStoreRightEditAll;
-extern NSString *MAPIStoreRightDeleteOwn;
-extern NSString *MAPIStoreRightDeleteAll;
-extern NSString *MAPIStoreRightCreateSubfolders;
-extern NSString *MAPIStoreRightFolderOwner;
-extern NSString *MAPIStoreRightFolderContact;
+/* This class is intended to share code between Calendar and Tasks as
+   of nowadays share the table */
 
-@interface MAPIStoreDBFolder : MAPIStoreFolder
+@interface MAPIStoreCalTaskFolder : MAPIStoreGCSFolder
 
 @end
 
-
-#endif /* MAPISTOREDBFOLDER_H */
+#endif /* MAPISTORECALTASKFOLDER_H */

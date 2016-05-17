@@ -78,6 +78,9 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreGCSMessage.m \
 	MAPIStoreGCSMessageTable.m \
 	\
+	MAPIStoreCalTaskFolder.m \
+	MAPIStoreCalTaskMessage.m \
+	\
 	MAPIStoreCalendarAttachment.m \
 	MAPIStoreCalendarContext.m \
 	MAPIStoreCalendarFolder.m \

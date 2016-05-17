@@ -68,105 +68,109 @@
 - (void) fillMessageData: (struct mapistore_message *) dataPtr
                 inMemCtx: (TALLOC_CTX *) memCtx;
 
-- (int) getPidTagSenderEmailAddress: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagSenderAddressType: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagSenderName: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagSenderEntryId: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx;
+- (NSString *) creator;
+- (NSString *) owner;
+- (NSUInteger) sensitivity;
 
-- (int) getPidTagReceivedByAddressType: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagReceivedByEmailAddress: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagReceivedByName: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagReceivedByEntryId: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagSenderEmailAddress: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagSenderAddressType: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagSenderName: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagSenderEntryId: (void **) data
+                                       inMemCtx: (TALLOC_CTX *) memCtx;
 
-- (int) getPidTagIconIndex: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagOwnerAppointmentId: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidMeetingType: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagMessageClass: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagStartDate: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidAppointmentSequence: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidAppointmentStateFlags: (void **) data
+- (enum mapistore_error) getPidTagReceivedByAddressType: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagReceivedByEmailAddress: (void **) data
+                                                inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagReceivedByName: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagReceivedByEntryId: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx;
+
+- (enum mapistore_error) getPidTagIconIndex: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagOwnerAppointmentId: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidMeetingType: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagMessageClass: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagStartDate: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidAppointmentSequence: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidAppointmentStateFlags: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidResponseStatus: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx;
+
+- (enum mapistore_error) getPidLidAppointmentStartWhole: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidCommonStart: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagEndDate: (void **) data
+                                 inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidAppointmentEndWhole: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidCommonEnd: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidAppointmentDuration: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidAppointmentSubType: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidBusyStatus: (void **) data // TODO
+                                    inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidIndentedBusyStatus: (void **) data // TODO
+                                            inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagNormalizedSubject: (void **) data // SUMMARY
+                                           inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidLocation: (void **) data // LOCATION
+                                  inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidPrivate: (void **) data // private (bool), should depend on CLASS and permissions
+                                 inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagSensitivity: (void **) data // not implemented, depends on CLASS
+                                     inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagImportance: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagBody: (void **) data
                               inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidResponseStatus: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx;
-
-- (int) getPidLidAppointmentStartWhole: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidCommonStart: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagEndDate: (void **) data
-            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidAppointmentEndWhole: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidCommonEnd: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidAppointmentDuration: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidAppointmentSubType: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidBusyStatus: (void **) data // TODO
-                   inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidIndentedBusyStatus: (void **) data // TODO
-                           inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagNormalizedSubject: (void **) data // SUMMARY
-                          inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidLocation: (void **) data // LOCATION
-                 inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidPrivate: (void **) data // private (bool), should depend on CLASS and permissions
-                inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagSensitivity: (void **) data // not implemented, depends on CLASS
-                inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagImportance: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagBody: (void **) data
-         inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidIsRecurring: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidRecurring: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidAppointmentRecur: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidGlobalObjectId: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidCleanGlobalObjectId: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidServerProcessed: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidServerProcessingActions: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidAppointmentReplyTime: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidIsRecurring: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidRecurring: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidAppointmentRecur: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidGlobalObjectId: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidCleanGlobalObjectId: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidServerProcessed: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidServerProcessingActions: (void **) data
+                                                 inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidAppointmentReplyTime: (void **) data
+                                              inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* reminders */
-- (int) getPidLidReminderSet: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidReminderDelta: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidReminderTime: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidReminderSignalTime: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidReminderOverride: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidReminderType: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidReminderPlaySound: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidLidReminderFileParameter: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidReminderSet: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidReminderDelta: (void **) data
+                                       inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidReminderTime: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidReminderSignalTime: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidReminderOverride: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidReminderType: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidReminderPlaySound: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidLidReminderFileParameter: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx;
 
 @end
 

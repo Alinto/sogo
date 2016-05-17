@@ -89,73 +89,73 @@
   *dataPtr = msgData;
 }
 
-- (int) getPidTagMessageClass: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMessageClass: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = talloc_strdup (memCtx, "IPM.OLE.CLASS.{00061055-0000-0000-C000-000000000046}");
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagMessageFlags: (void **) data // TODO
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMessageFlags: (void **) data // TODO
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, MSGFLAG_UNMODIFIED);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagProcessed: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagProcessed: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagResponseRequested: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagResponseRequested: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
 }
 
 /* discarded properties */
 
-- (int) getPidLidAppointmentLastSequence: (void **)
-                                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidAppointmentLastSequence: (void **)
+                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidLidMeetingWorkspaceUrl: (void **)
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidMeetingWorkspaceUrl: (void **)
+                                             inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidLidContacts: (void **)
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidContacts: (void **)
+                                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidTagSensitivity: (void **)
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagSensitivity: (void **)
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidLidPrivate: (void **)
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidPrivate: (void **)
+                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidNameKeywords: (void **)
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidNameKeywords: (void **)
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidLidFExceptionalBody: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidFExceptionalBody: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
@@ -208,6 +208,7 @@
   [[container event] updateFromMAPIProperties: properties
                                 inUserContext: [self userContext]
                                withActiveUser: activeUser
+                                        isNew: NO
 				     inMemCtx: memCtx];
 }
 

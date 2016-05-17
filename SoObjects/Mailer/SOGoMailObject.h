@@ -129,9 +129,9 @@ NSArray *SOGoMailCoreInfoKeys;
                           inContext: (id)_ctx;
 
 - (void) addRequiredKeysOfStructure: (NSDictionary *) info
-			       path: (NSString *) p
-			    toArray: (NSMutableArray *) keys
-		      acceptedTypes: (NSArray *) types
+                               path: (NSString *) p
+                            toArray: (NSMutableArray *) keys
+                      acceptedTypes: (NSArray *) types
                            withPeek: (BOOL) withPeek;
 
 @end

@@ -81,11 +81,7 @@
 
      Following rights are not supported by SOGo specifically:
 
-     - DeleteOwned : Delete only own objects
-     - EditOwned : Edit only own objects
      - CreateSubfolders: No calendar subfolders
-     - FolderOwner: No sharing folder ownership?
-     - FolderContact: No support to store this information
      - FolderVisible: It is inferred by other rights when extracting
    */
   NSMutableArray *roles;
@@ -95,26 +91,35 @@
     [roles addObject: SOGoRole_ObjectCreator];
   if (rights & RightsDeleteAll)
     [roles addObject: SOGoRole_ObjectEraser];
+  if (rights & RightsDeleteOwn)
+    [roles addObject: MAPIStoreRightDeleteOwn];
+
   if (rights & RightsEditAll)
     {
       [roles addObject: SOGoCalendarRole_PublicModifier];
       [roles addObject: SOGoCalendarRole_PrivateModifier];
       [roles addObject: SOGoCalendarRole_ConfidentialModifier];
     }
-  else if (rights & RightsReadItems)
+  if (rights & RightsEditOwn)
+    [roles addObject: MAPIStoreRightEditOwn];
+
+  if (rights & RightsReadItems)
     {
       [roles addObject: SOGoCalendarRole_PublicViewer];
       [roles addObject: SOGoCalendarRole_PrivateViewer];
       [roles addObject: SOGoCalendarRole_ConfidentialViewer];
     }
   if (rights & RightsFreeBusySimple)
-    {
-      [roles addObject: SOGoCalendarRole_PublicDAndTViewer];
-    }
+    [roles addObject: SOGoCalendarRole_PublicDAndTViewer];
+
   if (rights & RightsFreeBusyDetailed)
-    {
-      [roles addObject: SOGoCalendarRole_ConfidentialDAndTViewer];
-    }
+    [roles addObject: SOGoCalendarRole_ConfidentialDAndTViewer];
+
+  if (rights & RightsFolderOwner)
+    [roles addObject: MAPIStoreRightFolderOwner];
+
+  if (rights & RightsFolderContact)
+    [roles addObject: MAPIStoreRightFolderContact];
 
   // [self logWithFormat: @"roles for rights %.8x = (%@)", rights, roles];
 
@@ -136,18 +141,27 @@
   else if ([roles containsObject: SOGoCalendarRole_PublicViewer]
            && [roles containsObject: SOGoCalendarRole_PrivateViewer]
            && [roles containsObject: SOGoCalendarRole_ConfidentialViewer])
-    // We have to set by hand other rights as only the highest role is returned
-    // See SOGoAppointmentFolder.m:aclsForUser for details
-    rights |= RightsReadItems | RightsFreeBusySimple | RightsFreeBusyDetailed;
+    rights |= RightsReadItems;
+
+  if ([roles containsObject: MAPIStoreRightEditOwn])
+    rights |= RightsEditOwn;
+  if ([roles containsObject: MAPIStoreRightDeleteOwn])
+    rights |= RightsDeleteOwn;
 
   if ([roles containsObject: SOGoCalendarRole_PublicDAndTViewer])
       rights |= RightsFreeBusySimple;
 
   if ([roles containsObject: SOGoCalendarRole_ConfidentialDAndTViewer])
-      rights |= RightsFreeBusyDetailed;
+      rights |= RightsFreeBusySimple | RightsFreeBusyDetailed;
 
   if ((rights & RightsReadItems) != 0 || (rights & RightsCreateItems) != 0 || (rights & RightsDeleteAll) != 0)
     rights |= RoleNone; /* actually "folder visible" */
+
+  if ([roles containsObject: MAPIStoreRightFolderOwner])
+    rights |= RightsFolderOwner | RoleNone;
+
+  if ([roles containsObject: MAPIStoreRightFolderContact])
+    rights |= RightsFolderContact;
 
   // [self logWithFormat: @"rights for roles (%@) = %.8x", roles, rights];
 
@@ -193,16 +207,16 @@
             [(SOGoAppointmentFolder *) sogoObject aclSQLListingFilter]];
 }
 
-- (int) getPidTagContainerClass: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagContainerClass: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPF.Appointment" asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagDefaultPostMessageClass: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagDefaultPostMessageClass: (void **) data
+                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPM.Appointment" asUnicodeInMemCtx: memCtx];
 

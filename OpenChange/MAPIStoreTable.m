@@ -366,8 +366,8 @@ static Class NSDataK, NSStringK;
   currentRow = (uint32_t) -1;
 }
 
-- (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [[isa childObjectClass] getAvailableProperties: propertiesP
                                                inMemCtx: memCtx];
@@ -749,8 +749,8 @@ static Class NSDataK, NSStringK;
 }
 
 /* proof of concept */
-- (int) setColumns: (enum MAPITAGS *) newColumns
-         withCount: (uint16_t) newColumnsCount
+- (enum mapistore_error) setColumns: (enum MAPITAGS *) newColumns
+                          withCount: (uint16_t) newColumnsCount
 {
   NSUInteger count;
 
@@ -831,15 +831,15 @@ static Class NSDataK, NSStringK;
   return nil;
 }
 
-- (int) getRow: (struct mapistore_property_data **) dataP
-     withRowID: (uint32_t) rowId
-  andQueryType: (enum mapistore_query_type) queryType
-      inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getRow: (struct mapistore_property_data **) dataP
+                      withRowID: (uint32_t) rowId
+                   andQueryType: (enum mapistore_query_type) queryType
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSUInteger count;
   MAPIStoreObject *child;
   struct mapistore_property_data *rowData;
-  int rc;
+  enum mapistore_error rc;
 
   child = [self childAtRowID: rowId forQueryType: queryType];
   if (child)
@@ -858,8 +858,8 @@ static Class NSDataK, NSStringK;
   return rc;
 }
 
-- (int) getRowCount: (uint32_t *) countP
-      withQueryType: (enum mapistore_query_type) queryType
+- (enum mapistore_error) getRowCount: (uint32_t *) countP
+                       withQueryType: (enum mapistore_query_type) queryType
 {
   NSArray *children;
 

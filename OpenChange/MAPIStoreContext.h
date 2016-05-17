@@ -72,10 +72,10 @@
                                   forUser: (NSString *) username
                                  withRole: (enum mapistore_context_role) role;
 
-+ (int) openContext: (MAPIStoreContext **) contextPtr
-            withURI: (const char *) newUri
-     connectionInfo: (struct mapistore_connection_info *) newConnInfo
-     andTDBIndexing: (struct indexing_context *) indexing;
++ (enum mapistore_error) openContext: (MAPIStoreContext **) contextPtr
+                             withURI: (const char *) newUri
+                      connectionInfo: (struct mapistore_connection_info *) newConnInfo
+                      andTDBIndexing: (struct indexing_context *) indexing;
 
 - (id)   initFromURL: (NSURL *) newUri
   withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
@@ -91,11 +91,11 @@
 // - (id) lookupObject: (NSString *) objectURLString;
 
 /* backend methods */
-- (int) getPath: (char **) path
-         ofFMID: (uint64_t) fmid
-       inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getRootFolder: (MAPIStoreFolder **) folderPtr
-              withFID: (uint64_t) fmid;
+- (enum mapistore_error) getPath: (char **) path
+                          ofFMID: (uint64_t) fmid
+                        inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getRootFolder: (MAPIStoreFolder **) folderPtr
+                               withFID: (uint64_t) fmid;
 
 /* util methods */
 - (NSString *) extractChildNameFromURL: (NSString *) childURL

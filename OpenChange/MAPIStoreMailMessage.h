@@ -25,8 +25,10 @@
 
 #import "MAPIStoreMessage.h"
 
-@class NSData;
 @class NSString;
+@class NSArray;
+@class NSMutableArray;
+@class NSMutableDictionary;
 
 @class MAPIStoreAppointmentWrapper;
 @class MAPIStoreMailFolder;
@@ -37,12 +39,17 @@
   BOOL mailIsEvent;
   BOOL mailIsMeetingRequest;
   BOOL mailIsSharingObject;
-  NSString *mimeKey;
+
+  NSMutableArray *bodyContentKeys;
+  NSMutableDictionary *bodyPartsEncodings;
+  NSMutableDictionary *bodyPartsCharsets;
+  NSMutableDictionary *bodyPartsMimeTypes;
+  NSMutableDictionary *bodyPartsMixed;
+  
   NSString *headerCharset;
-  NSString *headerEncoding;
   NSString *headerMimeType;
   BOOL bodySetup;
-  NSData *bodyContent;
+  NSArray *bodyContent;
   BOOL fetchedAttachments;
 
   MAPIStoreAppointmentWrapper *appointmentWrapper;
@@ -50,31 +57,31 @@
 
 - (NSString *) subject;
 
-- (int) getPidTagIconIndex: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagFlagStatus: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagIconIndex: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagFlagStatus: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx;
 
-- (int) getPidTagMessageFlags: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagFollowupIcon: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagImportance: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagReceivedByEmailAddress: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagSenderEmailAddress: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagDisplayTo: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagDisplayCc: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagDisplayBcc: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagMessageFlags: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagFollowupIcon: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagImportance: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagReceivedByEmailAddress: (void **) data
+                                                inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagSenderEmailAddress: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagDisplayTo: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagDisplayCc: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagDisplayBcc: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* batch-mode helpers */
-- (NSString *) bodyContentPartKey;
-- (void) setBodyContentFromRawData: (NSData *) rawContent;
+- (void) setBodyContentFromRawData: (NSArray *) rawContent;
+- (NSArray *) getBodyContent;
 
 @end
 

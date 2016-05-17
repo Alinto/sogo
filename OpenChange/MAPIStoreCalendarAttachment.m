@@ -94,64 +94,64 @@
            flattenedValuesForKey: @""];
 }
 
-- (int) getPidTagAttachmentHidden: (void **) data
-                         inMemCtx: (TALLOC_CTX *) localMemCtx
+- (enum mapistore_error) getPidTagAttachmentHidden: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) localMemCtx
 {
   return [self getYes: data inMemCtx: localMemCtx];
 }
 
-- (int) getPidTagAttachmentFlags: (void **) data
-                        inMemCtx: (TALLOC_CTX *) localMemCtx
+- (enum mapistore_error) getPidTagAttachmentFlags: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) localMemCtx
 {
   *data = MAPILongValue (localMemCtx, 0x00000002); /* afException */
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAttachmentLinkId: (void **) data
-                         inMemCtx: (TALLOC_CTX *) localMemCtx
+- (enum mapistore_error) getPidTagAttachmentLinkId: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) localMemCtx
 {
   return [self getLongZero: data inMemCtx: localMemCtx];
 }
 
-- (int) getPidTagAttachFlags: (void **) data
-                    inMemCtx: (TALLOC_CTX *) localMemCtx
+- (enum mapistore_error) getPidTagAttachFlags: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) localMemCtx
 {
   return [self getLongZero: data inMemCtx: localMemCtx];
 }
 
-- (int) getPidTagAttachMethod: (void **) data
-                     inMemCtx: (TALLOC_CTX *) localMemCtx
+- (enum mapistore_error) getPidTagAttachMethod: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) localMemCtx
 {
   *data = MAPILongValue (localMemCtx, afEmbeddedMessage);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAttachEncoding: (void **) data
-                      inMemCtx: (TALLOC_CTX *) localMemCtx
+- (enum mapistore_error) getPidTagAttachEncoding: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) localMemCtx
 {
   *data = [[NSData data] asBinaryInMemCtx: localMemCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagDisplayName: (void **) data
-                    inMemCtx: (TALLOC_CTX *) localMemCtx
+- (enum mapistore_error) getPidTagDisplayName: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) localMemCtx
 {
   *data = [@"Untitled" asUnicodeInMemCtx: localMemCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAttachmentContactPhoto: (void **) data
-                               inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachmentContactPhoto: (void **) data
+                                                inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagExceptionReplaceTime: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagExceptionReplaceTime: (void **) data
+                                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc;
   NSCalendarDate *dateValue;
@@ -178,8 +178,8 @@
   return rc;
 }
 
-- (int) getPidTagExceptionStartTime: (void **) data
-                           inMemCtx: (TALLOC_CTX *) localMemCtx
+- (enum mapistore_error) getPidTagExceptionStartTime: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) localMemCtx
 {
   enum mapistore_error rc;
   NSCalendarDate *dateValue;
@@ -205,8 +205,8 @@
   return rc;
 }
 
-- (int) getPidTagExceptionEndTime: (void **) data
-                         inMemCtx: (TALLOC_CTX *) localMemCtx
+- (enum mapistore_error) getPidTagExceptionEndTime: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) localMemCtx
 {
   enum mapistore_error rc;
   NSCalendarDate *dateValue;

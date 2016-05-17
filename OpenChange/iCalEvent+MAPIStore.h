@@ -37,6 +37,7 @@
 - (void) updateFromMAPIProperties: (NSDictionary *) properties
                     inUserContext: (MAPIStoreUserContext *) userContext
                    withActiveUser: (SOGoUser *) activeUser
+                            isNew: (BOOL) isNew
                          inMemCtx: (TALLOC_CTX *) memCtx;
 @end
 

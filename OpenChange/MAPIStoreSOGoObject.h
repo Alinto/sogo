@@ -65,18 +65,18 @@
 - (uint64_t) objectId;
 
 /* implemented getters */
-- (int) getPidTagDisplayName: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagSearchKey: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagGenerateExchangeViews: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagParentSourceKey: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagSourceKey: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagChangeKey: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagDisplayName: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagSearchKey: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagGenerateExchangeViews: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagParentSourceKey: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagSourceKey: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagChangeKey: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* subclasses */
 - (uint64_t) objectVersion;

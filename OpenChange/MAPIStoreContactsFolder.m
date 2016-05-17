@@ -74,17 +74,33 @@
 
 - (NSArray *) rolesForExchangeRights: (uint32_t) rights
 {
+  /* Limitations
+
+     Following rights are not supported by SOGo specifically:
+
+     - CreateSubfolders: No contacts subfolders
+     - FolderVisible: It is inferred by other rights when extracting
+   */
   NSMutableArray *roles;
 
-  roles = [NSMutableArray arrayWithCapacity: 6];
+  roles = [NSMutableArray arrayWithCapacity: 8];
   if (rights & RightsCreateItems)
     [roles addObject: SOGoRole_ObjectCreator];
   if (rights & RightsDeleteAll)
     [roles addObject: SOGoRole_ObjectEraser];
+  if (rights & RightsDeleteOwn)
+    [roles addObject: MAPIStoreRightDeleteOwn];
   if (rights & RightsEditAll)
     [roles addObject: SOGoRole_ObjectEditor];
+  if (rights & RightsEditOwn)
+    [roles addObject: MAPIStoreRightEditOwn];
   if (rights & RightsReadItems)
     [roles addObject: SOGoRole_ObjectViewer];
+
+  if (rights & RightsFolderOwner)
+    [roles addObject: MAPIStoreRightFolderOwner];
+  if (rights & RightsFolderContact)
+    [roles addObject: MAPIStoreRightFolderContact];
 
   return roles;
 }
@@ -95,14 +111,27 @@
 
   if ([roles containsObject: SOGoRole_ObjectCreator])
     rights |= RightsCreateItems;
+
   if ([roles containsObject: SOGoRole_ObjectEraser])
     rights |= RightsDeleteAll | RightsDeleteOwn;
+  else if ([roles containsObject: MAPIStoreRightDeleteOwn])
+    rights |= RightsDeleteOwn;
+
   if ([roles containsObject: SOGoRole_ObjectEditor])
     rights |= RightsEditAll | RightsEditOwn;
+  else if ([roles containsObject: MAPIStoreRightEditOwn])
+    rights |= RightsEditOwn;
+
   if ([roles containsObject: SOGoRole_ObjectViewer])
     rights |= RightsReadItems;
   if (rights != 0)
     rights |= RoleNone; /* actually "folder visible" */
+
+  if ([roles containsObject: MAPIStoreRightFolderOwner])
+    rights |= RightsFolderOwner | RoleNone;
+
+  if ([roles containsObject: MAPIStoreRightFolderContact])
+    rights |= RightsFolderContact;
 
   return rights;
 }
@@ -117,8 +146,8 @@
   return [[self activeUserRoles] containsObject: SOGoRole_ObjectViewer];
 }
 
-- (int) getPidTagDefaultPostMessageClass: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagDefaultPostMessageClass: (void **) data
+                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPM.Contact" asUnicodeInMemCtx: memCtx];
 

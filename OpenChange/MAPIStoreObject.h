@@ -68,27 +68,27 @@
 - (NSMutableDictionary *) properties;
 
 /* ops */
-- (int) getProperties: (struct mapistore_property_data *) data
-             withTags: (enum MAPITAGS *) tags
-             andCount: (uint16_t) columnCount
-             inMemCtx: (TALLOC_CTX *) localMemCtx;
+- (enum mapistore_error) getProperties: (struct mapistore_property_data *) data
+                              withTags: (enum MAPITAGS *) tags
+                              andCount: (uint16_t) columnCount
+                              inMemCtx: (TALLOC_CTX *) localMemCtx;
 
-- (int) addPropertiesFromRow: (struct SRow *) aRow;
+- (enum mapistore_error) addPropertiesFromRow: (struct SRow *) aRow;
 
-- (int) getProperty: (void **) data
-            withTag: (enum MAPITAGS) propTag
-           inMemCtx: (TALLOC_CTX *) localMemCtx;
+- (enum mapistore_error) getProperty: (void **) data
+                             withTag: (enum MAPITAGS) propTag
+                            inMemCtx: (TALLOC_CTX *) localMemCtx;
 
 /* helper getters */
 - (NSData *) getReplicaKeyFromGlobCnt: (uint64_t) objectCnt;
-- (int) getReplicaKey: (void **) data
-          fromGlobCnt: (uint64_t) objectCnt
-             inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getReplicaKey: (void **) data
+                           fromGlobCnt: (uint64_t) objectCnt
+                              inMemCtx: (TALLOC_CTX *) memCtx;
 
-- (int) getPidTagCreationTime: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagLastModificationTime: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagCreationTime: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagLastModificationTime: (void **) data
+                                              inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* move and copy operations */
 - (void) copyPropertiesToObject: (MAPIStoreObject *) newObject  inMemCtx: (TALLOC_CTX *) memCtx;

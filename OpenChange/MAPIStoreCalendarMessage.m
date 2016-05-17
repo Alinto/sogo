@@ -228,8 +228,8 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
 
 
 /* getters */
-- (int) getPidTagMessageClass: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMessageClass: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   SOGoUser *owner;
 
@@ -242,8 +242,8 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidSideEffects: (void **) data // TODO
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidSideEffects: (void **) data // TODO
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx,
                          seOpenToDelete | seOpenToCopy | seOpenToMove
@@ -252,7 +252,7 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagProcessed: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagProcessed: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
 }
@@ -347,8 +347,8 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
   *dataPtr = msgData;
 }
 
-- (int) getPidTagResponseRequested: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagResponseRequested: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
 }
@@ -358,8 +358,8 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
    MAPIStoreMessage base class, then the proxy method is not reached
    (see MAPIStoreObject).
 */
-- (int) getPidTagNormalizedSubject: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagNormalizedSubject: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   MAPIStoreAppointmentWrapper *appointmentWrapper;
 
@@ -370,8 +370,8 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidTagSensitivity: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagSensitivity: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   MAPIStoreAppointmentWrapper *appointmentWrapper;
 
@@ -382,8 +382,8 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagImportance: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagImportance: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   MAPIStoreAppointmentWrapper *appointmentWrapper;
 
@@ -528,29 +528,19 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
   ASSIGN (sogoObject, newObject);
 }
 
-- (BOOL) subscriberCanReadMessage
+- (NSUInteger) sensitivity
 {
-  NSArray *roles;
-
-  roles = [self activeUserRoles];
-
-  return ([roles containsObject: SOGoCalendarRole_ComponentViewer]
-          || [roles containsObject: SOGoCalendarRole_ComponentDAndTViewer]
-          || [self subscriberCanModifyMessage]);
+  return [[self _appointmentWrapper] sensitivity];
 }
 
-- (BOOL) subscriberCanModifyMessage
+- (NSString *) creator
 {
-  BOOL rc;
-  NSArray *roles = [self activeUserRoles];
+  return [[self _appointmentWrapper] creator];
+}
 
-  if (isNew)
-    rc = [roles containsObject: SOGoRole_ObjectCreator];
-  else
-    rc = ([roles containsObject: SOGoCalendarRole_ComponentModifier]
-          || [roles containsObject: SOGoCalendarRole_ComponentResponder]);
-
-  return rc;
+- (NSString *) owner
+{
+  return [[self _appointmentWrapper] owner];
 }
 
 - (void) _updateAttachedEvents
@@ -632,6 +622,7 @@ static Class NSArrayK, MAPIStoreAppointmentWrapperK;
   [masterEvent updateFromMAPIProperties: properties
                           inUserContext: [self userContext]
                          withActiveUser: activeUser
+                                  isNew: isNew
 	                       inMemCtx: memCtx];
   [self _updateAttachedEvents];
   [[self userContext] activate];
