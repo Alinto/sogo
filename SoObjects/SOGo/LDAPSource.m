@@ -110,6 +110,7 @@ static Class NSStringK;
       _scope = @"sub";
       _filter = nil;
       _userPasswordAlgorithm = nil;
+      listRequiresDot = YES;
 
       searchAttributes = nil;
       passwordPolicy = NO;
@@ -200,6 +201,9 @@ static Class NSStringK;
             kindField: [udSource objectForKey: @"KindFieldName"]
             andMultipleBookingsField: [udSource objectForKey: @"MultipleBookingsFieldName"]];
 
+      dotValue = [udSource objectForKey: @"listRequiresDot"];
+      if (dotValue)
+        [self setListRequiresDot: [dotValue boolValue]];
       [self setContactMapping: [udSource objectForKey: @"mapping"]
              andObjectClasses: [udSource objectForKey: @"objectClasses"]];
 
@@ -365,6 +369,16 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
     ASSIGN(kindField, [newKindField lowercaseString]);
   if (newMultipleBookingsField)
     ASSIGN(multipleBookingsField, [newMultipleBookingsField lowercaseString]);
+}
+
+- (void) setListRequiresDot: (BOOL) aBool
+{
+  listRequiresDot = aBool;
+}
+
+- (BOOL) listRequiresDot
+{
+  return listRequiresDot;
 }
 
 - (void) setContactMapping: (NSDictionary *) newMapping
@@ -776,13 +790,15 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
     }
-  else
+  else if (!listRequiresDot)
     {
       qs = [NSMutableString stringWithFormat: @"(%@='*')", CNField];
       if ([_filter length])
         [qs appendFormat: @" AND %@", _filter];
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
     }
+  else
+    qualifier = nil;
 
   return qualifier;
 }
@@ -1173,25 +1189,29 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
   contacts = [NSMutableArray array];
 
-  ldapConnection = [self _ldapConnection];
-  qualifier = [self _qualifierForFilter: match];
-  // attributes = [self _searchAttributes];
-  attributes = [NSArray arrayWithObject: @"*"];
+  if ([match length] > 0 || !listRequiresDot)
+    {
+      ldapConnection = [self _ldapConnection];
+      qualifier = [self _qualifierForFilter: match];
+      // attributes = [self _searchAttributes];
+      attributes = [NSArray arrayWithObject: @"*"];
 
-  if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
-    entries = [ldapConnection baseSearchAtBaseDN: baseDN
-                                       qualifier: qualifier
-                                      attributes: attributes];
-  else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
-    entries = [ldapConnection flatSearchAtBaseDN: baseDN
-                                       qualifier: qualifier
-                                      attributes: attributes];
-  else /* we do it like before */
-    entries = [ldapConnection deepSearchAtBaseDN: baseDN
-                                       qualifier: qualifier
-                                      attributes: attributes];
-  while ((currentEntry = [entries nextObject]))
-    [contacts addObject: [self _convertLDAPEntryToContact: currentEntry]];
+      if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
+        entries = [ldapConnection baseSearchAtBaseDN: baseDN
+                                           qualifier: qualifier
+                                          attributes: attributes];
+      else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
+        entries = [ldapConnection flatSearchAtBaseDN: baseDN
+                                           qualifier: qualifier
+                                          attributes: attributes];
+      else /* we do it like before */ 
+        entries = [ldapConnection deepSearchAtBaseDN: baseDN
+                                           qualifier: qualifier
+                                          attributes: attributes];
+      while ((currentEntry = [entries nextObject]))
+        [contacts addObject:
+                    [self _convertLDAPEntryToContact: currentEntry]];
+    }
 
   return contacts;
 }
@@ -1701,6 +1721,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
                                      bindFields: nil
                                       kindField: nil
                        andMultipleBookingsField: nil];
+              [ab setListRequiresDot: NO];
               [ab setModifiers: modifier];
               [sources addObject: ab];
               [ab release];

@@ -65,6 +65,8 @@
   NSString *SieveHostField;
   NSArray *bindFields;
 
+  BOOL listRequiresDot;
+
   NSString *domain;
   NSString *contactInfoAttribute;
 
