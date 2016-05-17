@@ -29,8 +29,9 @@ md-card {
     @extend .md-secondary;
   }
 
-  // Collapsed/expanded states for cards in ACL editor
+  // Collapsed/expanded states for cards in ACL editor and user folders (subscriptions)
   &.sg-collapsed, &.sg-expanded {
+    background-color: transparent;
     transition: $swift-ease-in-out;
     transition-delay: 0s;
     > .md-button {
@@ -61,7 +62,6 @@ md-card {
   }
 
   &.sg-collapsed {
-    background-color: transparent;
     border-radius: 0;
     box-shadow: none;
     margin-top: 0;
