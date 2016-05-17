@@ -63,6 +63,10 @@
   offsetTo = [[self uniqueChildWithTag: offsetName]
                flattenedValuesForKey: @""];
   length = [offsetTo length];
+
+  if (!length)
+    return seconds;
+
   negative = [offsetTo hasPrefix: @"-"];
   if (negative)
     {
