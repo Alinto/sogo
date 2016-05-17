@@ -29,6 +29,7 @@ Bug fixes
  - [core] fixed multidomain issue with non-unique ID accross domains (#3625)
  - [core] fixed bogus headers generation when stripping folded bcc header (#3664)
  - [core] fixed issue with multi-value org units (#3630)
+ - [core] sanity checks for events with bogus timezone offsets
  - [web] fixed missing columns in SELECT statements (PostgreSQL)
  - [web] fixed display of ghosts when dragging events
  - [web] fixed management of mail labels in Preferences module
