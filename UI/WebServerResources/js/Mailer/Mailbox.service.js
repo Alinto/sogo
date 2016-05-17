@@ -546,12 +546,12 @@
   };
 
   /**
-   * @function export
+   * @function exportFolder
    * @memberof Mailbox.prototype
    * @desc Export this mailbox
    * @returns a promise of the HTTP operation
    */
-  Mailbox.prototype.export = function() {
+  Mailbox.prototype.exportFolder = function() {
     return Mailbox.$$resource.download(this.id, 'exportFolder');
   };
 

@@ -134,7 +134,7 @@
                       </md-button>
                     </md-menu-item>
                     <md-menu-item>
-                      <md-button type="button" ng-click="folder.export()">
+                      <md-button type="button" ng-click="folder.exportFolder()">
                         <var:string label:value="Export"/>
                       </md-button>
                     </md-menu-item>
