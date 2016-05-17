@@ -38,10 +38,11 @@
                   md-colors="::{ backgroundColor: 'default-background-300' }">
         <section class="md-flex" layout="column"
                  ng-repeat="account in app.accounts track by account.id">
-          <md-subheader class="sg-md-subheader--icon-button"
+          <md-subheader class="sg-md-subheader--with-secondary-icon"
+                        ng-class="{ 'sg-md-subheader--with-icon': account.id == 0 }"
                         md-colors="::{ backgroundColor: 'default-background-300' }">
             <div layout="row" layout-align="start center">
-              <md-button class="md-icon-button"
+              <md-button class="sg-icon-button"
                          ng-show="account.id == 0"
                          label:aria-label="Delegation..."
                          ng-click="app.delegate(account)">

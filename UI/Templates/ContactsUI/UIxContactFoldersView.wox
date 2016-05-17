@@ -31,7 +31,7 @@
                   md-colors="::{ backgroundColor: 'default-background-300' }">
         <!-- User's addressbooks -->
         <section>
-          <md-subheader class="sg-md-subheader--icon-button"
+          <md-subheader class="sg-md-subheader--with-secondary-icon"
                         md-colors="::{background: 'default-background-300'}">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Address Books"/></span>
@@ -113,7 +113,7 @@
         </section>
         <!-- Subscriptions -->
         <section>
-          <md-subheader class="sg-md-subheader--icon-button"
+          <md-subheader class="sg-md-subheader--with-secondary-icon"
                         md-colors="::{background: 'default-background-300'}">
             <div layout="row" layout-align="space-between center">
               <span><var:string label:value="Subscriptions"/></span>
@@ -174,7 +174,7 @@
         </section>
         <!-- Remote/domain addressbooks -->
         <section>
-          <md-subheader class="sg-md-subheader--icon-button"
+          <md-subheader class="sg-md-subheader--with-secondary-icon"
                         md-colors="::{background: 'default-background-300'}">
             <var:string label:value="Global Addressbooks"/>
           </md-subheader>
