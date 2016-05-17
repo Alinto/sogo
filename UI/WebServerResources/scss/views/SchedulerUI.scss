@@ -59,7 +59,6 @@ $quarter_height: 10px;
   // The days labels appear in the toolbar
   md-toolbar {
     flex-shrink: 0;
-    min-height: 0;
     &.daysView, &.monthView {
       background-color: #fff;
       z-index: $z-index-toolbar - 1;
@@ -81,6 +80,7 @@ $quarter_height: 10px;
     }
     &.monthView {
       // Toolbar of month view
+      min-height: 0;
       > div {
         overflow-y: scroll;
       }
