@@ -138,7 +138,7 @@
           <script type="text/javascript" rsrc:src="js/vendor/angular-aria.min.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular-cookies.min.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular-messages.min.js"><!-- space --></script>
-          <script type="text/javascript" rsrc:src="js/vendor/angular-material.js"><!-- space --></script>
+          <script type="text/javascript" rsrc:src="js/vendor/angular-material.min.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="js/vendor/angular-ui-router.min.js"><!-- space --></script>
 
           <var:if condition="hasProductSpecificJavaScript">
