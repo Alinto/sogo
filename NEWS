@@ -1,4 +1,4 @@
-3.1.0 (2016-05-dd)
+3.1.0 (2016-05-18)
 ------------------
 
 New features
@@ -10,7 +10,7 @@ New features
  - [web] user can limit the calendars view to specific week days (#1841)
 
 Enhancements
- - [web] updated Angular Material to version 1.0.6
+ - [web] updated Angular Material to version 1.1.0rc4
  - [web] added Lithuanan (lt) translation - thanks to Mantas Liobė
  - [web] added Turkish (Turkey) (tr_TR) translation - thanks to Sinan Kurşunoğlu
  - [web] we now "cc" delegates during invitation updates (#3195)
