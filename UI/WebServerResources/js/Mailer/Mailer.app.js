@@ -61,6 +61,8 @@
             controllerAs: 'viewer'
           }
         },
+        onEnter: onEnterMessage,
+        onExit: onExitMessage,
         resolve: {
           stateMailbox: stateVirtualMailboxOfMessage,
           stateMessages: stateMessages,
@@ -192,7 +194,7 @@
       return mailbox;
     };
 
-    if (Mailbox.selectedFolder)
+    if (Mailbox.selectedFolder && !Mailbox.$virtualMode)
       Mailbox.selectedFolder.$isLoading = true;
 
     mailbox = _find(stateAccount.$mailboxes);
@@ -298,7 +300,7 @@
    */
   onExitMessage.$inject = ['stateMailbox'];
   function onExitMessage(stateMailbox) {
-    stateMailbox.selectedMessage = -1;
+    delete stateMailbox.selectedMessage;
   }
 
   /**

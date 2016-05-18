@@ -173,6 +173,16 @@
   };
 
   /**
+   * @function selectFolder
+   * @memberof Mailbox.prototype
+   * @desc Mark the folder as selected in the constructor unless virtual mode is active
+   */
+  Mailbox.prototype.selectFolder = function() {
+    if (!Mailbox.$virtualMode)
+      Mailbox.selectedFolder = this;
+  };
+
+  /**
    * @function getLength
    * @memberof Mailbox.prototype
    * @desc Used by md-virtual-repeat / md-on-demand
@@ -236,6 +246,16 @@
    */
   Mailbox.prototype.isSelectedMessage = function(messageId) {
     return this.selectedMessage == messageId;
+  };
+
+  /**
+   * @function hasSelectedMessage
+   * @memberof Mailbox.prototype
+   * @desc Check if a message is selected.
+   * @returns true if the a message is selected
+   */
+  Mailbox.prototype.hasSelectedMessage = function() {
+    return angular.isDefined(this.selectedMessage);
   };
 
   /**

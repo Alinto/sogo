@@ -13,7 +13,7 @@
     // Expose controller
     $window.$mailboxController = vm;
 
-    Mailbox.selectedFolder = stateMailbox;
+    stateMailbox.selectFolder();
 
     vm.service = Mailbox;
     vm.accounts = stateAccounts;

@@ -319,7 +319,7 @@
 
   <div id="detailView" class="view-detail"
        layout="column" layout-align="start center"
-       ng-class="{ 'sg-close': !mailbox.service.selectedFolder.selectedMessage }"
+       ng-class="{ 'sg-close': !mailbox.service.selectedFolder.hasSelectedMessage() }"
        md-colors="::{backgroundColor: 'default-background-200'}"
        ui-view="message">
     <md-content class="hide show-gt-md md-flex"

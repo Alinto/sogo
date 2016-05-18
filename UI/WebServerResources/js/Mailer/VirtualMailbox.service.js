@@ -95,12 +95,23 @@
       });
     });
 
-    search.finally(function() { _this.$isLoading = false; });
+    search.finally(function() {
+      _this.$isLoading = false;
+    });
   };
 
   VirtualMailbox.prototype.stopSearch = function() {
     VirtualMailbox.$log.debug("stopping search...");
     this.$isLoading = false;
+  };
+
+  /**
+   * @function selectFolder
+   * @memberof VirtualMailbox.prototype
+   * @desc A no-op for virtual mailbox
+   */
+  VirtualMailbox.prototype.selectFolder = function() {
+    return;
   };
 
   /**
@@ -112,6 +123,18 @@
     _.forEach(this.$mailboxes, function(mailbox) {
       delete mailbox.selectedMessage;
     });
+  };
+
+  /**
+   * @function hasSelectedMessage
+   * @memberof VirtualMailbox.prototype
+   * @desc Check if a message is selected among the resulting mailboxes
+   * @returns true if one message is selected
+   */
+  VirtualMailbox.prototype.hasSelectedMessage = function() {
+    return angular.isDefined(_.find(this.$mailboxes, function(mailbox) {
+      return angular.isDefined(mailbox.selectedMessage);
+    }));
   };
 
   /**
