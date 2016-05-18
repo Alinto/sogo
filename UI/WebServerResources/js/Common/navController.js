@@ -15,7 +15,7 @@
     $scope.isPopup = sgSettings.isPopup;
     $scope.activeUser = sgSettings.activeUser();
     $scope.baseURL = sgSettings.baseURL();
-    $scope.leftIsClose = $mdMedia(sgConstant.xs);
+    $scope.leftIsClose = !$mdMedia(sgConstant['gt-md']);
 
     // Show current day in top bar
     $scope.currentDay = window.currentDay;
@@ -58,7 +58,7 @@
     //   detail.toggleClass('sg-close');
     // };
     $scope.$watch(function() {
-      return $mdMedia(sgConstant['gt-sm']);
+      return $mdMedia(sgConstant['gt-md']);
     }, function(newVal) {
       $scope.isGtMedium = newVal;
       if (newVal) {

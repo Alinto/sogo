@@ -17,7 +17,7 @@
                      ng-click="viewer.closePopup()">
             <md-icon>close</md-icon>
           </md-button>
-          <md-button class="md-icon-button hide show-xs"
+          <md-button class="md-icon-button hide-gt-md"
                      ng-hide="isPopup"
                      label:aria-label="Close"
                      ng-click="viewer.close()">
@@ -58,7 +58,7 @@
             <md-tooltip md-direction="bottom"><var:string label:value="Delete selected message or folder"/></md-tooltip>
             <md-icon>delete</md-icon>
           </md-button>
-          <md-button class="sg-icon-button hide-xs" label:aria-label="Open in New Mail Window"
+          <md-button class="sg-icon-button hide show-gt-md" label:aria-label="Open in New Mail Window"
                      ng-hide="isPopup"
                      ng-click="viewer.openPopup()">
             <md-tooltip md-direction="bottom"><var:string label:value="Open in New Mail Window"/></md-tooltip>

@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MailboxesController.$inject = ['$state', '$timeout', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
-  function MailboxesController($state, $timeout, $mdDialog, $mdToast, $mdMedia, $mdSidenav, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
+  MailboxesController.$inject = ['$state', '$timeout', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'sgConstant', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
+  function MailboxesController($state, $timeout, $mdDialog, $mdToast, $mdMedia, $mdSidenav, sgConstant, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
     var vm = this,
         account,
         mailbox;
@@ -55,7 +55,7 @@
       vm.showingAdvancedSearch = true;
       vm.search.mailbox = path;
       // Close sidenav on small devices
-      if ($mdMedia('xs'))
+      if (!$mdMedia(sgConstant['gt-md']))
         $mdSidenav('left').close();
     }
 
@@ -217,7 +217,7 @@
       vm.showingAdvancedSearch = false;
       vm.service.$virtualMode = false;
       // Close sidenav on small devices
-      if ($mdMedia('xs'))
+      if (!$mdMedia(sgConstant['gt-md']))
         $mdSidenav('left').close();
       $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(folder.path) });
       $event.stopPropagation();

@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageController.$inject = ['$window', '$scope', '$state', '$mdMedia', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'encodeUriFilter', 'sgSettings', 'sgFocus', 'Dialog', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message'];
-  function MessageController($window, $scope, $state, $mdMedia, $mdDialog, stateAccounts, stateAccount, stateMailbox, stateMessage, encodeUriFilter, sgSettings, focus, Dialog, Calendar, Component, Account, Mailbox, Message) {
+  MessageController.$inject = ['$window', '$scope', '$state', '$mdMedia', '$mdDialog', 'sgConstant', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'encodeUriFilter', 'sgSettings', 'sgFocus', 'Dialog', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message'];
+  function MessageController($window, $scope, $state, $mdMedia, $mdDialog, sgConstant, stateAccounts, stateAccount, stateMailbox, stateMessage, encodeUriFilter, sgSettings, focus, Dialog, Calendar, Component, Account, Mailbox, Message) {
     var vm = this, messageDialog = null, popupWindow = null;
 
     // Expose controller
@@ -192,7 +192,7 @@
           }
 
           try {
-            if (nextMessage && !$mdMedia('xs')) {
+            if (nextMessage && $mdMedia(sgConstant['gt-md'])) {
               state.go('mail.account.mailbox.message', { messageId: nextMessage.uid });
               if (nextIndex < mailbox.$topIndex)
                 mailbox.$topIndex = nextIndex;

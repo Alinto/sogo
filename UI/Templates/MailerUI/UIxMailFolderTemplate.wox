@@ -322,7 +322,7 @@
        ng-class="{ 'sg-close': !mailbox.service.selectedFolder.selectedMessage }"
        md-colors="::{backgroundColor: 'default-background-200'}"
        ui-view="message">
-    <md-content class="hide-xs md-flex"
+    <md-content class="hide show-gt-md md-flex"
                 md-colors="::{backgroundColor: 'default-background-200'}"
                 layout="column" layout-align="center center" layout-fill="layout-fill">
       <div class="sg-md-title"

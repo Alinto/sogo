@@ -20,7 +20,7 @@
         ui-view="login"
         ng-controller="LoginController as app">
     <md-content class="ng-cloak md-whiteframe-z1"
-                layout-gt-sm="row" layout-align-gt-sm="start center"
+                layout-gt-md="row" layout-align-gt-md="start center"
                 layout="column" layout-align="space-between center"
                 md-scroll-y="true"
                 ng-show="app.showLogin">

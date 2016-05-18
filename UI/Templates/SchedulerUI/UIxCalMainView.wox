@@ -648,7 +648,7 @@
           <md-icon>assignment_turned_in</md-icon>
         </md-button>
         </div>
-        <div id="detailView" class="view-detail hide-xs md-default-theme md-background md-bg md-hue-2"
+        <div id="detailView" class="view-detail hide show-gt-md md-default-theme md-background md-bg md-hue-2"
              layout="column" ui-view="calendarView">
           <!-- calendar view -->
         </div>

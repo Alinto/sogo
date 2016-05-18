@@ -119,7 +119,7 @@
           clickOutsideToClose: true,
           escapeToClose: true,
           template: [
-            '<md-dialog flex="80" flex-xs="100" aria-label="' + l('View Raw Source') + '">',
+            '<md-dialog flex="40" flex-sm="80" flex-xs="100" aria-label="' + l('View Raw Source') + '">',
             '  <md-dialog-content class="md-dialog-content">',
             '    <pre>',
             data,

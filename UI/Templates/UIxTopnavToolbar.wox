@@ -7,18 +7,23 @@
 
   <div class="sg-toolbar-group-1" layout="row">
     <md-button ng-click="toggleLeft()"
-               class="md-icon-button"
+               class="md-icon-button hide-sm"
                label:aria-label="Toggle Menu"
                ng-switch="leftIsClose">
-      <md-icon ng-switch-when="true">menu</md-icon>
-      <md-icon ng-switch-when="false">arrow_back</md-icon>
+      <md-icon ng-switch-when="true">fullscreen_exit</md-icon>
+      <md-icon ng-switch-when="false">fullscreen</md-icon>
     </md-button>
-    <div class="sg-date-group sg-padded hide-xs" layout="column" layout-align="space-between end">
+    <md-button ng-click="toggleLeft()"
+               class="md-icon-button hide show-sm"
+               label:aria-label="Toggle Menu">
+      <md-icon>menu</md-icon>
+    </md-button>
+    <div class="sg-date-group sg-padded hide-sm" layout="column" layout-align="space-between end">
       <p class="sg-day" ng-bind="currentDay.weekday"><!-- weekday --></p>
       <p class="sg-month" ng-bind="currentDay.month"><!-- month --></p>
       <p class="sg-year" ng-bind="currentDay.year"><!-- year --></p>
     </div>
-    <p class="sg-md-display-3 sg-date-today hide-xs" ng-bind="currentDay.day"><!-- day --></p>
+    <p class="sg-md-display-3 sg-date-today hide-sm" ng-bind="currentDay.day"><!-- day --></p>
   </div>
 
   <div class="sg-toolbar-group-last" layout="row" layout-align="center center">
