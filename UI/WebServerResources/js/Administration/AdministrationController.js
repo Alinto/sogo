@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  AdministrationController.$inject = ['$state', '$mdToast', '$mdMedia', '$mdSidenav', 'Dialog', 'encodeUriFilter', 'User'];
-  function AdministrationController($state, $mdToast, $mdMedia, $mdSidenav, Dialog, encodeUriFilter, User) {
+  AdministrationController.$inject = ['$state', '$mdToast', '$mdMedia', '$mdSidenav', 'sgConstant', 'Dialog', 'encodeUriFilter', 'User'];
+  function AdministrationController($state, $mdToast, $mdMedia, $mdSidenav, sgConstant, Dialog, encodeUriFilter, User) {
     var vm = this;
 
     vm.service = User;
@@ -24,7 +24,7 @@
     function go(module) {
       $state.go('administration.' + module);
       // Close sidenav on small devices
-      if ($mdMedia('xs'))
+      if (!$mdMedia(sgConstant['gt-md']))
         $mdSidenav('left').close();
     }
 
