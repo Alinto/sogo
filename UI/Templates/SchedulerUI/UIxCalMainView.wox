@@ -284,7 +284,7 @@
           </md-list>
         </section>
       </md-content>
-      <md-toolbar class="sg-toolbar-multiple">
+      <md-toolbar class="sg-toolbar-multiple sg-toolbar-tools--dense">
         <div class="md-toolbar-tools sg-toolbar-tools--dense"
              md-colors="::{backgroundColor: 'background-500'}"
              ng-show="app.sortableCalendars.disabled">
