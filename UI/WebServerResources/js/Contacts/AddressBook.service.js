@@ -457,10 +457,12 @@
                   return this == card.id;
                 };
 
-            // First entry of 'headers' are keys
-            fields = _.invokeMap(response.headers[0], 'toLowerCase');
-            idFieldIndex = fields.indexOf('id');
-            response.headers.splice(0, 1);
+            if (response.headers) {
+              // First entry of 'headers' are keys
+              fields = _.invokeMap(response.headers[0], 'toLowerCase');
+              idFieldIndex = fields.indexOf('id');
+              response.headers.splice(0, 1);
+            }
 
             if (excludedCards)
               // Remove excluded cards from results
