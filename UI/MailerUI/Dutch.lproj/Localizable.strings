@@ -28,7 +28,7 @@
 "Select a recipient from an Address Book" = "Kies een ontvanger uit een adresboek";
 "Include an attachment" = "Voeg een bijlage toe";
 "Save this message" = "Sla dit bericht op";
-"Get new messages" = "Haal nieuwe berichten op";
+"Get new messages" = "Nieuwe berichten ophalen";
 "Create a new message" = "Maak een nieuw bericht";
 "Go to address book" = "Ga naar adresboek";
 "Reply to the message" = "Beantwoord het bericht";
@@ -52,7 +52,7 @@
 
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Welkom bij de SOGo Mailer. Gebruik de mappenlijst aan de linkerkant om door uw e-mailaccounts te bladeren.";
-"Read messages"       = "Berichten lezen";
+"Read messages"       = "Gelezen berichten";
 "Write a new message" = "Een nieuw bericht opstellen";
 "Share" = "Delen";
 "Account" = "Account";
@@ -63,6 +63,12 @@
 
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Geen postvak geselecteerd";
+
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Map gecomprimeerd";
+/* Empty Trash success message */
+"Trash emptied" = "Prullenbak geleegd";
 
 /* acls */
 "Access rights to" = "Toegangsrechten voor";
@@ -81,7 +87,7 @@
 "Export This Folder" = "Deze map exporteren";
 "Modify the acl of this folder" = "Machtigingen voor deze map aanpassen";
 "Saved Messages.zip" = "Bewaarde Berichten.zip";
-"Update" = "Opslaan";
+"Update" = "Bijwerken";
 "Cancel" = "Annuleren";
 
 /* Mail edition */
@@ -108,7 +114,7 @@
 "Return Receipt" = "Ontvangstbevestiging";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "De afzender van dit bericht heeft gevraagd om een leesbevestiging. Wilt u een leesbevestiging sturen?";
 "Return Receipt (displayed) - %@"= "Ontvangstbevestigig (vertoond) - %@";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dit is een Ontvangstbevestiging voor de e-mail die u hebt verzonden naar %@.\n\nOpmerking: Deze Ontvangstbevestiging bevestigt alleen dat het bericht is weergegeven op de computer van de ontvanger. Er is geen garantie dat de ontvanger het heeft gelezen of begrepen.";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dit is een Ontvangstbevestiging voor de e-mail die u hebt verzonden naar %@.\n\nOpmerking: Deze ontvangstbevestiging bevestigt alleen dat het bericht is weergegeven op de computer van de ontvanger. Er is geen garantie dat de ontvanger het gelezen of begrepen heeft.";
 "Priority" = "Prioriteit";
 "highest" = "Hoogste";
 "high" = "Hoog";
@@ -124,7 +130,7 @@
 "read"    = "gelezen";
 "unread"  = "ongelezen";
 "deleted" = "verwijderde";
-"flagged" = "gemarkeerde";
+"flagged" = "gemarkeerd";
 
 /* MailListView */
 "Sender" = "Afzender";
@@ -153,7 +159,7 @@
 "InboxFolderName"  = "Postvak IN";
 "DraftsFolderName" = "Concepten";
 "JunkFolderName" = "Ongewenst";
-"SieveFolderName"  = "Berichtregel";
+"SieveFolderName"  = "Filters";
 "Folders"          = "Mappen"; /* title line */
 
 /* MailMoveToPopUp */
@@ -162,7 +168,7 @@
 /* Address Popup menu */
 "Add to Address Book..." = "Aan adresboek toevoegen";
 "Compose Mail To" = "Bericht opstellen";
-"Create Filter From Message..." = "Berichtregel maken op basis van bericht...";
+"Create Filter From Message..." = "Filter maken op basis van bericht...";
 
 /* Image Popup menu */
 "Save Image" = "Afbeelding opslaan";
@@ -180,22 +186,22 @@
 "New Subfolder..." = "Nieuwe submap...";
 "Rename Folder..." = "Mapnaam wijzigen...";
 "Delete Folder" = "Map verwijderen";
-"Use This Folder For" = "De map gebruiken voor...";
+"Use This Folder For" = "Deze map gebruiken voor...";
 "Get Messages for Account" = "Berichten ophalen voor account";
 "Properties..." = "Eigenschappen...";
 "Delegation..." = "Delegeren ...";
 
 /* Use This Folder menu */
-"Sent Messages" = "Berichten verzenden";
+"Sent Messages" = "Verzonden berichten";
 "Drafts" = "Concepten";
 "Deleted Messages" = "Verwijderde berichten";
 "Junk Messages" = "Ongewenste berichten";
 
 /* Message list popup menu */
-"Open Message In New Window" = "In nieuw venster openen";
-"Reply to Sender Only" = "Beantwoorden";
+"Open Message In New Window" = "Bericht in nieuw venster openen";
+"Reply to Sender Only" = "Alleen afzender beantwoorden";
 "Reply to All" = "Allen antwoorden";
-"Edit As New..." = "Als nieuw bewerken";
+"Edit As New..." = "Als nieuw bewerken...";
 "Move To" = "Verplaatsen naar";
 "Copy To" = "Kopiëren naar";
 "Label" = "Labelen";
@@ -205,16 +211,16 @@
 "View Message Source" = "Bron bekijken";
 
 /* Message view "more" menu: create an event from message */
-"Convert To Event" = "Omzetten naar gebeurtenis";
+"Convert To Event" = "Omzetten naar afspraak";
 
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Omzetten naar taak";
 
 "Print..." = "Afdrukken...";
 "Delete Message" = "Bericht verwijderen";
-"Delete Selected Messages" = "Verwijder geselecteerde berichten";
-"Mark the selected messages as junk" = "Markeer de geselecteerde berichten als ongewenst";
-"Mark the selected messages as not junk" = "Markeer de geselecteerde berichten als niet-ongewenst";
+"Delete Selected Messages" = "Geselecteerde berichten verwijderen";
+"Mark the selected messages as junk" = "Geselecteerde berichten als ongewenst markeren";
+"Mark the selected messages as not junk" = "Geselecteerde berichten als niet-ongewenst markeren";
 
 /* Text appended to the recipients list when there are too many recipients */
 "and %{0} more..." = "en nog %{0} anderen...";
@@ -237,8 +243,8 @@
 "All Read" = "Alles als gelezen";
 "Flag" = "Met vlag";
 "As Junk" = "Als ongewenst";
-"As Not Junk" = "Als gewenst";
-"Run Junk Mail Controls" = "Ongewenste berichtenfilter starten";
+"As Not Junk" = "Als niet-ongewenst";
+"Run Junk Mail Controls" = "Ongewenste-berichtenfilter starten";
 "Search messages in" = "Zoek berichten in";
 "Search" = "Zoeken";
 "Search subfolders" = "Zoek in submappen";
@@ -249,16 +255,16 @@
 "No matches found" = "Geen overeenkomsten gevonden";
 "results found" = "resultaten gevonden";
 "result found" = "resultaat gevonden";
-"Please specify at least one filter" = "Specificeer tenminste een filter";
+"Please specify at least one filter" = "Specificeer tenminste één filter";
 
 /* Folder operations */
 "Name" = "Naam";
 "Enter the new name of your folder"
- ="Geef de nieuw naam van de map op";
+ ="Geef de nieuwe naam van de map op";
 "Do you really want to move this folder into the trash ?"
  = "Weet u zeker dat u deze map naar de prullenbak wilt verplaatsen?";
 "Operation failed" = "Bewerking mislukt.";
-"Quota" = "Quota:";
+"Quota" = "Quotum:";
 "quotasFormat" = "%{0}% van %{1} MB gebruikt";
 
 /* Confirmation message when deleting multiple messages */
@@ -289,19 +295,19 @@
 = "De berichten konden niet naar de vuilnisbak worden verplaatst. Wilt u ze direct verwijderen?";
 
 /* Message editing */
-"error_missingsubject" = "U heeft geen onderwerp opgegeven!";
+"error_missingsubject" = "Dit bericht heeft geen onderwerp. Weet u zeker dat u het wilt verzenden?";
 "error_missingrecipients" = "U heeft geen ontvanger opgegeven!";
 "Send Anyway" = "Toch verzenden";
-"Error while saving the draft" = "Fout bij het opslaan van het concept";
+"Error while saving the draft" = "Fout bij opslaan van concept";
 
 /* Error when uploading a file attachment */
-"Error while uploading the file \"%{0}\":" = "Fout bij het uploaden van het bestand \"%{0}\":";
+"Error while uploading the file \"%{0}\":" = "Fout bij uploaden van bestand \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Een bestandsupload is actief. Sluiten van het venster zal hem onderbreken.";
 
 /* Message sending */
-"cannot send message: (smtp) all recipients discarded" = "Kan bericht niet sturen: alle ontvangers zijn ongeldig.";
-"cannot send message (smtp) - recipients discarded" = "Kan bericht niet sturen: de volgende adressen zijn ongeldig";
-"cannot send message: (smtp) error when connecting" = "Kan bericht niet sturen: fout bij verbinden met de SMTP server.";
+"cannot send message: (smtp) all recipients discarded" = "Kan bericht niet versturen: alle ontvangers zijn ongeldig.";
+"cannot send message (smtp) - recipients discarded" = "Kan bericht niet versturen: de volgende adressen zijn ongeldig";
+"cannot send message: (smtp) error when connecting" = "Kan bericht niet versturen: fout bij verbinden met de SMTP server.";
 
 /* Contacts list in mail editor */
 "Email" = "E-mail";
@@ -317,12 +323,12 @@
 "Rename" = "Hernoem";
 "Compact" = "Comprimeren";
 "Export" = "Exporteren";
-"Set as Drafts" = "Als concept instellen";
-"Set as Sent" = "Als verzonden instellen";
-"Set as Trash" = "Als afval instellen";
+"Set as Drafts" = "Als Concepten instellen";
+"Set as Sent" = "Als Verzonden instellen";
+"Set as Trash" = "Als Prullenbak instellen";
 
 /* Set the folder as the one holding Junk mails */
-"Set as Junk" = "Als ongewenst instellen";
+"Set as Junk" = "Als Ongewenst instellen";
 
 "Sort" = "Sorteren";
 "Descending Order" = "Aflopende volgorde";
@@ -340,3 +346,6 @@
 "Your email has been saved" = "Uw email is opgeslagen";
 "Your email has been sent" = "Uw email is verzonden";
 "Folder compacted" = "Map gecomprimeerd";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Zoekbereik";

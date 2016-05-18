@@ -16,7 +16,7 @@
 /* Tabs */
 "Date" = "Tarih";
 "Calendars" = "Takvimler";
-"No events for selected criteria" = "Seçilen ayırıcı özellik için bir etkinlik yok";
+"No events for selected criteria" = "Seçili özellikte bir etkinlik yok";
 "No tasks for selected criteria" = "Seçilen ayırıcı özellik için bir görev yok";
 
 /* Day */
@@ -106,7 +106,7 @@
 "proposal" = "Teklif";
 "Save and Close" = "Kaydet ve Kapat";
 "Close" = "Kapat";
-"Invite Attendees" = "Katılımcıları Davet Et";
+"Invite Attendees" = "Katılımcı Davet Et";
 "Attach" = "Ekle";
 "Update" = "Güncelle";
 "Cancel" = "İptal";
@@ -131,7 +131,7 @@
 /* Print view */
 "LIST" = "Listele";
 "Print Settings" = "Yazdırma Ayarları";
-"Title" = "Ünvan";
+"Title" = "Başlık";
 "Layout" = "Düzenleme";
 "What to Print" = "Yazdırılacak";
 "Options" = "Seçenekler";
@@ -169,7 +169,7 @@
 "Description" = "Tanım";
 "Document" = "Belge";
 "Category" = "Sınıf";
-"Repeat" = "Tekrarla";
+"Repeat" = "Tekrar Sıklığı";
 "Reminder" = "Hatırlatma";
 "General" = "Genel";
 "Reply" = "Yanıtla";
@@ -295,7 +295,7 @@
 "Every" = "Her";
 "Days" = "Gün";
 "Week(s)" = "Hafta";
-"On" = "Tarihinde";
+"On" = "Gün";
 "Month(s)" = "Ay";
 
 /* [Event recurrence editor] Ex: _The_ first Sunday */
@@ -309,7 +309,7 @@
 "Create" = "Oluştur";
 "appointment(s)" = "buluşma(lar)";
 "Repeat until" = "Şu Zamana Tekrar et";
-"End Repeat" = "Tekrarı Bitişi";
+"End Repeat" = "Tekrar Bitişi";
 "Never" = "Hiç bir zaman";
 "After" = "Sonra";
 "On Date" = "Gününde";
@@ -324,7 +324,7 @@
 /* Appointment categories */
 "category_none" = "Hiç biri";
 "category_labels" = "Yıldönümü,Doğum Günü,İş,Aramalar,Müşteriler,Rekabet,Müşteri,Favoriler,Takip,Hediyelik Eşya,Tatiller,Fikirler,Toplantı,Sorunlar,Çeşitli,Kişisel,Projeler,Bayram,Durum,Tedarikçi,Seyahat,Tatil";
-"repeat_NEVER" = "Tekrar etmeyen";
+"repeat_NEVER" = "Tekrarsız";
 "repeat_DAILY" = "Günlük";
 "repeat_WEEKLY" = "Haftalık";
 "repeat_BI-WEEKLY" = "İki-Haftada-bir";
@@ -352,8 +352,8 @@
 "reminder_WEEKS" = "hafta";
 "reminder_BEFORE" = "önce";
 "reminder_AFTER" = "sonra";
-"reminder_START" = "etkinlik başlangıcı";
-"reminder_END" = "etkinlik bitişi";
+"reminder_START" = "etkinlik başlangıcından";
+"reminder_END" = "etkinlik bitişinden";
 "Reminder Details" = "Hatırlatıcı Ayrıntıları";
 "Choose a Reminder Action" = "Bir Hatırlatıcı Eylemi Seçin";
 "Show an Alert" = "Bir Uyarı Göster";
@@ -367,12 +367,12 @@
 "zoom_25" = "25%";
 
 /* transparency */
-"Show Time as Free" = "Zamanı Serbest Olarak Göster";
+"Show Time as Free" = "Süreyi Serbest Olarak Göster";
 
 /* email notifications */
 "Send Appointment Notifications" = "Buluşma Bildirimi Gönder";
-"From" = "Gönderen";
-"To" = "Alıcı";
+"From" = "Başlangıç";
+"To" = "Bitiş";
 
 /* validation errors */
 validate_notitle           = "Başlık konulmadı, devam etmek istiyor musunuz?";
@@ -476,13 +476,13 @@ vtodo_class2 = "(Gizli görev)";
 "Synchronization" = "Eşitleme";
 "Synchronize" = "Eşitle";
 "Tag" = "Etiket";
-"Display" = "Göster";
+"Display" = "Görünen";
 "Show alarms" = "Uyarıları göster";
 "Show tasks" = "Görevleri göster";
 "Notifications" = "Bildirimler";
 "Receive a mail when I modify my calendar" = "Takvimimi değiştirdiğimde bir ileti al";
 "Receive a mail when someone else modifies my calendar" = "Başka biri  takvimimi değiştirdiğinde ileti al";
-"When I modify my calendar, send a mail to" = "Bir takvimi değiştirdiğimde, şu kişiye ileti gönder";
+"When I modify my calendar, send a mail to" = "Bir takvimi değiştirdiğimde, aşağıdaki kişiye ileti gönder";
 "Email Address" = "E-posta Adresi";
 "Export" = "Dışarı Aktar";
 

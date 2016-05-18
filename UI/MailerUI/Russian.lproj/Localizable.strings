@@ -64,6 +64,12 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Не выбрано ни одной папки";
 
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Папка сжата";
+/* Empty Trash success message */
+"Trash emptied" = "Корзина очищена";
+
 /* acls */
 "Access rights to" = "Права доступа к";
 "For user" = "Для пользователя";
@@ -340,3 +346,6 @@
 "Your email has been saved" = "Письмо сохранено";
 "Your email has been sent" = "Письмо отправлено";
 "Folder compacted" = "Папка сжата";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Область поиска";

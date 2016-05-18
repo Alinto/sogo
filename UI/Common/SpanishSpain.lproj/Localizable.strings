@@ -104,5 +104,6 @@
 "Loading" = "Cargando";
 "No such user." = "Este usuario no existe";
 "You cannot (un)subscribe to a folder that you own!" = "No es posible suscribirse a una carpeta que le pertenece.";
-"SOGo" = "SOGo";
-"Modules" = "Módulos";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Entrar al mínimo %{minimumSearchLength} caracteres";

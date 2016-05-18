@@ -46,7 +46,7 @@
 /* Subheader of system addressbook */
 "Start a search to browse this address book" = "Indítson egy keresést a címjegyzék tallózásához.";
 /* Number of contacts in addressbook; string is prefixed by number */
-"contacts" = "kapcsolatok";
+"contacts" = "kapcsolat";
 /* No contact matching search criteria */
 "No matching contact" = "Nincs megfelelő kapcsolat";
 /* Number of contacts matching search criteria; string is prefixed by number */
@@ -81,7 +81,7 @@
 "Remove" = "Törlés";
 "Please wait..." = "Kérem várjon...";
 "No possible subscription" = "Nincs mappa, melyre feliratkozhat";
-"Preferred" = "Preferált";
+"Preferred" = "Előnyben részesített";
 "Display" = "Megjelenítendő név";
 "Display Name" = "Megjelenítendő név";
 "Additional Email" = "További email";
@@ -121,11 +121,13 @@
 "New Addressbook..." = "Új címjegyzék...";
 "Subscribe to an Addressbook..." = "Feliratkozás címjegyzékre...";
 "Remove the selected Addressbook" = "Kijelölt címjegyzék törlése";
-"Subscribe to a shared folder" = "Feliratkozás megosztott maoppára";
+"Subscribe to a shared folder" = "Feliratkozás megosztott mappára";
 "Search User" = "Felhasználó keresése";
 "Name of the Address Book" = "A címjegyzék neve";
 "Are you sure you want to delete the selected address book?"
 = "Biztosan törli a kijelölt címjegyzéket?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Biztosan törli ezt a címjegyzéket: \"%{0}\" ?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "Nem lehet törölni vagy leiratkozni a publikus címjegyzékről.";
 "You cannot remove nor unsubscribe from your personal addressbook."
@@ -197,6 +199,10 @@
 "Back" = "Vissza";
 "Select All" = "Összes kijelölése";
 "Copy contacts" = "Kapcsolatok másolása";
+
+/* Notification on the number of messages successfully copied */
+"%{0} cards copied" = "%{0} névjegy törölve";
+
 "More messages options" = "További üzenet tulajdonságok";
 "New Contact" = "Új kapcsolat";
 "Close" = "Bezárás";
@@ -225,4 +231,7 @@
 "Add Screen Name" = "Fedőnév hozzáadása";
 "Synchronization" = "Szinkronizálás";
 "Synchronize" = "Szinkronizálás";
-"Successfully subscribed to address book" = "Sikeresen feliratkozott a címjegyzékre";
+"Sucessfully subscribed to address book" = "Sikeresen feliratkozott a címjegyzékre";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Keresés hatóköre";

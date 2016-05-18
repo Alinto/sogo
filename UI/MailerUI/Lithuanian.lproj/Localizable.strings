@@ -64,6 +64,12 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Nėra pasirinkta pašto dėžutė";
 
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Aplankas suspaustas";
+/* Empty Trash success message */
+"Trash emptied" = "Šiukšliadėžė ištuštinti";
+
 /* acls */
 "Access rights to" = "Prieigos teisės";
 "For user" = "Vartotojui";
@@ -340,3 +346,6 @@
 "Your email has been saved" = "Jūsų žinutė buvo išsaugota";
 "Your email has been sent" = "Jūsų žinutė buvo išsiūsta";
 "Folder compacted" = "Aplankas suspaustas";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Paieškos sritis";

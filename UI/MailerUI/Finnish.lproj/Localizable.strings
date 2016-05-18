@@ -64,6 +64,12 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Ei valittua postilaatikkoa";
 
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Kansio tiivistetty";
+/* Empty Trash success message */
+"Trash emptied" = "Roskakori tyhjennetty";
+
 /* acls */
 "Access rights to" = "Käyttöoikeudet";
 "For user" = "Käyttäjälle";
@@ -340,3 +346,6 @@
 "Your email has been saved" = "Sähköpostiviestisi on tallennettu";
 "Your email has been sent" = "Sähköpostiviestisi on lähetetty";
 "Folder compacted" = "Kansio tiivistetty";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Hakualue";

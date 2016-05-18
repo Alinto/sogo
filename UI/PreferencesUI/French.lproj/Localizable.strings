@@ -3,6 +3,18 @@
 "Close" = "Fermer";
 "Preferences saved" = "Préférences sauvegardées";
 
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Enregistrer vos changements";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Voulez-vous enregistrer vos changements apportés à la configuration?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Sauvegarder";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Ne pas enregistrer";
+
 /* tabs */
 "General" = "Général";
 "Calendar Options" = "Calendrier";
@@ -87,6 +99,9 @@
 "timeFmt_3" = "";
 "timeFmt_4" = "";
 
+/* Timezone autocompletion */
+"No matches found." = "Aucun résultat";
+
 /* calendar */
 "Week begins on" = "Premier jour de la semaine";
 "Day start time" = "Début de la journée";
@@ -127,6 +142,7 @@
 "Labels" = "Étiquettes";
 "Label" = "Étiquette";
 "Show subscribed mailboxes only" = "Afficher seulement les abonnements";
+"Synchronize only default mail folders (EAS)" = "Synchroniser uniquement les boîtes principales (EAS)";
 "Sort messages by threads" = "Grouper les discussions";
 "When sending mail, add unknown recipients to my" = "Lors de l'envoi d'un message, ajouter les destinataires inconnus au carnet";
 "Address Book" = "Carnet d'adresses";
@@ -142,6 +158,10 @@
 "Compose messages in" = "Composer les messages en";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Texte";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Taille de la police par défaut";
+
 "Display remote inline images" = "Afficher les images externes";
 "displayremoteinlineimages_never" = "Jamais";
 "displayremoteinlineimages_always" = "Toujours";
@@ -234,7 +254,6 @@
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
-"TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 "Refresh View" = "Actualisation";

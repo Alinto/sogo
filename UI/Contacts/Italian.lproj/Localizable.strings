@@ -126,6 +126,8 @@
 "Name of the Address Book" = "Nome della rubrica";
 "Are you sure you want to delete the selected address book?"
 = "Sei sicuro di voler cancellare la rubrica selezionata?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Sei sicuro di voler cancellare la rubrica \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "Non puoi rimuovere una rubrica pubblica.";
 "You cannot remove nor unsubscribe from your personal addressbook."
@@ -197,6 +199,10 @@
 "Back" = "Indietro";
 "Select All" = "Seleziona tutti";
 "Copy contacts" = "Copia contatti";
+
+/* Notification on the number of messages successfully copied */
+"%{0} cards copied" = "%{0} contatti copiati";
+
 "More messages options" = "Altre opzioni messaggi";
 "New Contact" = "Nuovo contatto";
 "Close" = "Chiudi";
@@ -225,4 +231,7 @@
 "Add Screen Name" = "Aggiungi Instant Messanger";
 "Synchronization" = "Sincronizzazione";
 "Synchronize" = "Sincronizza";
-"Successfully subscribed to address book" = "Sottoscrizione ad una rubrica effettuata correttamente";
+"Sucessfully subscribed to address book" = "Sottoscrizione ad una rubrica effettuata correttamente";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Ambito di ricerca";

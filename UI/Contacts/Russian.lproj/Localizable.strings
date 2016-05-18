@@ -126,6 +126,8 @@
 "Name of the Address Book" = "Имя адресной книги";
 "Are you sure you want to delete the selected address book?"
 = "Вы уверены, что хотите удалить выбранную адресную книгу?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Вы уверены что хотите удалить адресную книгу \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "Вы не можете ни удалить, ни отписаться от выбранной адресной книги.";
 "You cannot remove nor unsubscribe from your personal addressbook."
@@ -197,6 +199,10 @@
 "Back" = "Назад";
 "Select All" = "Выбрать все";
 "Copy contacts" = "Копировать контакты";
+
+/* Notification on the number of messages successfully copied */
+"%{0} cards copied" = "%{0} карточек скопировано";
+
 "More messages options" = "Больше опций сообщений";
 "New Contact" = "Новый контакт";
 "Close" = "Закрыть";
@@ -225,4 +231,7 @@
 "Add Screen Name" = "Добавить имя экрана";
 "Synchronization" = "Синхронизация";
 "Synchronize" = "Синхронизировать";
-"Successfully subscribed to address book" = "Успешная подписка на адресную книгу";
+"Sucessfully subscribed to address book" = "Успешная подписка на адресную книгу";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Область поиска";

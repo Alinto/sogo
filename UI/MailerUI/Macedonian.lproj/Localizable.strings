@@ -64,6 +64,12 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Нема одбрано сандаче";
 
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Папката е компактирана";
+/* Empty Trash success message */
+"Trash emptied" = "Кантата за ѓубре е испразнета";
+
 /* acls */
 "Access rights to" = "Пристапни права за";
 "For user" = "За корисник";
@@ -340,3 +346,6 @@
 "Your email has been saved" = "Вашата порака е снимена";
 "Your email has been sent" = "Вашата порака е испратена";
 "Folder compacted" = "Папката е компактирана";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Предмет на пребарување";

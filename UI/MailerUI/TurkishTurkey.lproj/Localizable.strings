@@ -14,7 +14,7 @@
 "Print"       = "Yazdır";
 "Stop"        = "Durdur";
 "Write"       = "Yaz";
-"Search"      = "Arama";
+"Search"      = "Ara";
 "Send" = "Gönder";
 "Contacts" = "Kişiler";
 "Attach" = "Ekle";
@@ -33,7 +33,7 @@
 "Go to address book" = "Adres defterine git";
 "Reply to the message" = "İletiyi yanıtla";
 "Reply to sender and all recipients" = "Göndereni ve tüm alıcıları yanıtla";
-"Forward selected message" = "Seçili iletiyi İlet";
+"Forward selected message" = "Seçili e-postayı İlet";
 "Delete selected message or folder" = "Seçili ileti veya klasörü sil";
 "Print this message" = "Bu iletiyi yazdır";
 "Stop the current transfer" = "Geçerli aktarımı durdur";
@@ -54,15 +54,15 @@
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "SOGo Postalayıcısına hoş geldiniz. E-posta hesaplarınızı görmek için soldaki klasör ağacını kullanın!";
 "Read messages"       = "İletileri oku";
 "Write a new message" = "Yeni ileti yaz";
-"Share" = "Paylaş";
+"Share" = "Paylaşım";
 "Account" = "Hesap";
 "Shared Account" = "Paylaşılan Hesap";
 
 /* A mailbox is selected, but no message (only shown on large screens) */
-"No message selected" = "Seçilen ileti yok";
+"No message selected" = "Seçili bir ileti yok";
 
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
-"No mailbox selected" = "Seçilen e-posta klasörü yok";
+"No mailbox selected" = "Seçili bir e-posta klasörü yok";
 
 /* Mailbox actions */
 /* Compact Folder success message */
@@ -73,19 +73,19 @@
 /* acls */
 "Access rights to" = "Erişim yetkileri";
 "For user" = "Şu kullanıcı için";
-"Any Authenticated User" = "Kimliği doğrulanmış herhangi kullanıcı";
+"Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
 "List and see this folder" = "Bu klasörü listele ve görüntüle";
-"Read mails from this folder" = "Bu klasörden iletileri oku";
+"Read mails from this folder" = "Bu klasördeki iletileri okur";
 "Mark mails read and unread" = "İletileri okumuş ve okunmamış olarak işaretle";
-"Modify the flags of the mails in this folder" = "Bu klasördeki iletilerin bayraklarını değiştir";
-"Insert, copy and move mails into this folder" = "İletiler bu klasöre yerleştir, kopyala ve taşı";
-"Post mails" = "İletileri postala";
-"Add subfolders to this folder" = "Bu klasöre alt klasörler ekle";
+"Modify the flags of the mails in this folder" = "Bu klasördeki iletilerin bayraklarını değiştirir";
+"Insert, copy and move mails into this folder" = "İletiler bu klasöre yerleştirir, kopyalar ve taşır";
+"Post mails" = "İletileri postalar";
+"Add subfolders to this folder" = "Bu klasöre alt klasörler ekler";
 "Remove this folder" = "Bu klasörü kaldır";
-"Erase mails from this folder" = "Bu klasörden iletileri sil";
+"Erase mails from this folder" = "Bu klasörden iletileri siler";
 "Expunge this folder" = "Bu klasörü temizle";
 "Export This Folder" = "Bu klasörü dışa aktar";
-"Modify the acl of this folder" = "Bu klasörün erişim denetimi listesini değiştir";
+"Modify the acl of this folder" = "Bu klasörün erişim denetimi listesini değiştirir";
 "Saved Messages.zip" = "Messages.zip olarak kaydedildi";
 "Update" = "Güncelle";
 "Cancel" = "İptal";
@@ -141,7 +141,7 @@
 "View"          = "Görüntüle";
 "All"           = "Hepsi";
 "No message"    = "İleti yok";
-"messages"      = "iletiler";
+"messages"      = "ileti";
 "Yesterday"     = "Dün";
 "first"         = "İlk";
 "previous"      = "Önceki";
@@ -229,7 +229,7 @@
 "Hide" = "Gizle";
 
 /* Number of selected messages in list */
-"selected" = "seçildi";
+"selected" = "ileti seçildi";
 
 "This Folder" = "Bu Klasör";
 
@@ -246,7 +246,7 @@
 "As Not Junk" = "İstenen Olarak";
 "Run Junk Mail Controls" = "İstenmeyen İleti Denetimi Yap";
 "Search messages in" = "İletileri şurada ara";
-"Search" = "Arama";
+"Search" = "Ara";
 "Search subfolders" = "Alt klasörleri ara";
 "Match any of the following" = "Şunlardan biriyle eşleştir";
 "Match all of the following" = "Şunların hepsiyle eşleştir";
@@ -341,7 +341,7 @@
 "View Mail" = "İletiyi Görüntüle";
 "This message contains external images." = "İleti harici konumlarda bulunan resimler içeriyor.";
 "Expanded" = "Genişletildi";
-"Add a Criteria" = "Ayırt edici bir özellik ekleyin";
+"Add a Criteria" = "Bir Arama Kriteri Ekleyin";
 "More search options" = "Diğer arama tercihleri";
 "Your email has been saved" = "İletiniz kaydedildi";
 "Your email has been sent" = "İletiniz gönderildi";

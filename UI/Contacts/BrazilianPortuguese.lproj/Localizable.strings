@@ -126,6 +126,8 @@
 "Name of the Address Book" = "Nome do Catálogo";
 "Are you sure you want to delete the selected address book?"
 = "Você tem certeza que quer apagar o catálogo selecionado?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Tem certeza que deseja apagar o catálogo de endereços \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "Você não pode apagar nem retirar-se de uma catálogo público.";
 "You cannot remove nor unsubscribe from your personal addressbook."
@@ -197,6 +199,10 @@
 "Back" = "Voltar";
 "Select All" = "Selecionar Tudo";
 "Copy contacts" = "Copiar contatos";
+
+/* Notification on the number of messages successfully copied */
+"%{0} cards copied" = "%{0} cartões copiados";
+
 "More messages options" = "Mais opções de mensagens";
 "New Contact" = "Novo Contato";
 "Close" = "Fechar";
@@ -225,4 +231,7 @@
 "Add Screen Name" = "Adicionar Nome de Apresentação";
 "Synchronization" = "Sincronização";
 "Synchronize" = "Sincronizar";
-"Successfully subscribed to address book" = "Inscrito com sucesso no catálogo de endereços";
+"Sucessfully subscribed to address book" = "Inscrito com sucesso no catálogo de endereços";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Escopo de pesquisa";

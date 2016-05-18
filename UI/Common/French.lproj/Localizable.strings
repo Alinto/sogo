@@ -106,3 +106,6 @@
 "You cannot (un)subscribe to a folder that you own!" = "Vous ne pouvez pas vous (dés)abonner à vos propres dossiers!";
 "SOGo" = "SOGo";
 "Modules" = "Modules";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Entrez au moins %{minimumSearchLength} caractères";
