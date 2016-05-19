@@ -171,15 +171,12 @@
       var promises = [], recipients = [];
 
       _.forEach(selectedCards, function(card) {
-        if (card.c_component == 'vcard' && card.c_mail.length) {
-          recipients.push(card.c_cn + ' <' + card.c_mail + '>');
-        }
-        else if (card.$isList()) {
+        if (card.$isList({expandable: true})) {
           // If the list's members were already fetch, use them
           if (angular.isDefined(card.refs) && card.refs.length) {
             _.forEach(card.refs, function(ref) {
               if (ref.email.length)
-                recipients.push(ref.c_cn + ' <' + ref.email + '>');
+                recipients.push(ref.$shortFormat());
             });
           }
           else {
@@ -187,15 +184,19 @@
               return card.$futureCardData.then(function(data) {
                 _.forEach(data.refs, function(ref) {
                   if (ref.email.length)
-                    recipients.push(ref.c_cn + ' <' + ref.email + '>');
+                    recipients.push(ref.$shortFormat());
                 });
               });
             }));
           }
         }
+        else if (card.c_mail.length) {
+          recipients.push(card.$shortFormat());
+        }
       });
 
       $q.all(promises).then(function() {
+        recipients = _.uniq(recipients);
         if (recipients.length)
           vm.newMessage($event, recipients);
       });

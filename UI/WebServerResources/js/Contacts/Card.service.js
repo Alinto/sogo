@@ -285,6 +285,9 @@
       else if (this.emails && this.emails.length) {
         email = this.emails[0].value;
       }
+      else if (this.c_mail && this.c_mail.length) {
+        email = this.c_mail[0];
+      }
       else {
         email = '';
       }
@@ -311,8 +314,10 @@
     return this.c_component == 'vcard';
   };
 
-  Card.prototype.$isList = function() {
-    return this.c_component == 'vlist';
+  Card.prototype.$isList = function(options) {
+    // isGroup attribute means it's a group of a LDAP source (not expandable on the client-side)
+    var condition = (!options || !options.expandable || options.expandable && !this.isgroup);
+    return this.c_component == 'vlist' && condition;
   };
 
   Card.prototype.$addOrgUnit = function(orgUnit) {

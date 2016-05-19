@@ -4,6 +4,7 @@
 Bug fixes
  - [web] fixed creation of chip on blur (sgTransformOnBlur directive)
  - [web] fixed composition of new messages from Contacts module
+ - [web] fixed autocompletion of LDAP-based groups (#3673)
 
 3.1.0 (2016-05-18)
 ------------------

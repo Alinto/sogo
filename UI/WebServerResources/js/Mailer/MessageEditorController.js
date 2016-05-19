@@ -209,7 +209,7 @@
 
       recipients = vm.message.editable[field];
 
-      if (contact.$isList()) {
+      if (contact.$isList({expandable: true})) {
         // If the list's members were already fetch, use them
         if (angular.isDefined(contact.refs) && contact.refs.length) {
           _.forEach(contact.refs, function(ref) {
