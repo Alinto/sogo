@@ -1,6 +1,7 @@
 /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 
 (function() {
+  /* jshint loopfunc: true */
   'use strict';
 
   /**
@@ -24,7 +25,8 @@
              md-transform-chip="editor.addRecipient($chip, 'to')"
              sg-transform-on-blur>
    */
-  function sgTransformOnBlur() {
+  sgTransformOnBlur.$inject = ['$window', '$timeout'];
+  function sgTransformOnBlur($window, $timeout) {
     return {
       link: link,
       require: 'mdChips', // Extends the original mdChips directive
@@ -32,15 +34,33 @@
     };
 
     function link(scope, element, attributes, mdChipsCtrl) {
-      mdChipsCtrl.onInputBlur = function() {
-        this.inputHasFocus = false;
+      var mouseUpActions = [];
 
-        // ADDED CODE
-        var chipBuffer = this.getChipBuffer();
-        if ((this.hasAutocomplete && this.requireMatch) || !chipBuffer || chipBuffer === "") return;
-        this.appendChip(chipBuffer);
-        this.resetChipBuffer();
-        // - EOF - ADDED CODE
+      mdChipsCtrl.onInputBlur = function() {
+        var appendFcn;
+
+        this.inputHasFocus = false;
+        appendFcn = (function() {
+          var chipBuffer = this.getChipBuffer();
+          if ((this.hasAutocomplete && this.requireMatch) || !chipBuffer || chipBuffer === "") return;
+          this.appendChip(chipBuffer);
+          this.resetChipBuffer();
+        }).bind(this);
+
+        if (this.hasAutocomplete) {
+          mouseUpActions.push(appendFcn);
+          $window.addEventListener('click', function(event){
+            while (mouseUpActions.length > 0) {
+              // Trigger actions after some delay to give time to md-autocomple to clear the input field
+              var action = mouseUpActions.splice(0,1)[0];
+              $timeout(function(){
+                $timeout(action);
+              });
+            }
+          }, false);
+        }
+        else
+          appendFcn();
       };
     }
   }

@@ -1,3 +1,9 @@
+3.1.1 (2016-MM-DD)
+------------------
+
+Bug fixes
+ - [web] fix creation of chip on blur (sgTransformOnBlur directive)
+
 3.1.0 (2016-05-18)
 ------------------
 
