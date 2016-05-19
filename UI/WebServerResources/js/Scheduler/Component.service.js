@@ -263,7 +263,7 @@
         startDate.setDate(1);
         startDate = startDate.beginOfWeek(firstDayOfWeek);
         endDate = new Date();
-        endDate.setTime(startDate.getTime());
+        endDate.setTime(date.getTime());
         endDate.setMonth(endDate.getMonth() + 1);
         endDate.addDays(-1);
         endDate = endDate.endOfWeek(firstDayOfWeek);
