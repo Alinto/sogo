@@ -140,6 +140,7 @@
         // list before proceeding with message's creation
         account.$getMailboxes().then(function(mailboxes) {
           account.$newMessage().then(function(message) {
+            angular.extend(message.editable, { to: recipients });
             $mdDialog.show({
               parent: angular.element(document.body),
               targetEvent: $event,
@@ -150,8 +151,7 @@
               controllerAs: 'editor',
               locals: {
                 stateAccount: account,
-                stateMessage: message,
-                stateRecipients: recipients
+                stateMessage: message
               }
             });
           });
@@ -160,7 +160,7 @@
     }
 
     function newMessageWithRecipient($event, recipient, fn) {
-      var recipients = [{full: fn + ' <' + recipient + '>'}];
+      var recipients = [fn + ' <' + recipient + '>'];
       vm.newMessage($event, recipients);
       $event.stopPropagation();
       $event.preventDefault();
@@ -172,14 +172,14 @@
 
       _.forEach(selectedCards, function(card) {
         if (card.c_component == 'vcard' && card.c_mail.length) {
-          recipients.push({full: card.c_cn + ' <' + card.c_mail + '>'});
+          recipients.push(card.c_cn + ' <' + card.c_mail + '>');
         }
         else if (card.$isList()) {
           // If the list's members were already fetch, use them
           if (angular.isDefined(card.refs) && card.refs.length) {
             _.forEach(card.refs, function(ref) {
               if (ref.email.length)
-                recipients.push({full: ref.c_cn + ' <' + ref.email + '>'});
+                recipients.push(ref.c_cn + ' <' + ref.email + '>');
             });
           }
           else {
@@ -187,7 +187,7 @@
               return card.$futureCardData.then(function(data) {
                 _.forEach(data.refs, function(ref) {
                   if (ref.email.length)
-                    recipients.push({full: ref.c_cn + ' <' + ref.email + '>'});
+                    recipients.push(ref.c_cn + ' <' + ref.email + '>');
                 });
               });
             }));
