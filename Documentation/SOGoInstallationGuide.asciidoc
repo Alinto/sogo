@@ -577,6 +577,8 @@ for SOGo. Possible values are:
 * `Basque`
 * `BrazilianPortuguese`
 * `Catalan`
+* `ChineseTaiwan`
+* `Croatian`
 * `Czech`
 * `Danish`
 * `Dutch`
@@ -587,14 +589,19 @@ for SOGo. Possible values are:
 * `Hungarian`
 * `Icelandic`
 * `Italian`
+* `Lithuanian`
+* `Macedonian`
 * `NorwegianBokmal`
 * `NorwegianNynorsk`
 * `Polish`
+* `Portuguese`
 * `Russian`
 * `Slovak`
-* `SpanishSpain`
+* `Slovenian`
 * `SpanishArgentina`
+* `SpanishSpain`
 * `Swedish`
+* `TurkishTurkey`
 * `Ukrainian`
 * `Welsh`
 
