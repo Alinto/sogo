@@ -50,9 +50,10 @@ BuildRequires:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{so
 # saml is enabled everywhere except on el5 since its glib2 is prehistoric
 %define saml2_cfg_opts "--enable-saml2"
 %{?el5:%define saml2_cfg_opts ""}
-%{?el7:%define saml2_cfg_opts ""}
 %{?el6:Requires: lasso}
 %{?el6:BuildRequires: lasso-devel}
+%{?el7:Requires: lasso}
+%{?el7:BuildRequires: lasso-devel}
 
 %description
 SOGo is a groupware server built around OpenGroupware.org (OGo) and
