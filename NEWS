@@ -6,6 +6,7 @@ Bug fixes
  - [web] fixed composition of new messages from Contacts module
  - [web] fixed autocompletion of LDAP-based groups (#3673)
  - [web] fixed month view when current month covers six weeks (#3663)
+ - [web] fixed negative offset when converting a regular event to an all-day event (#3655)
 
 3.1.0 (2016-05-18)
 ------------------
