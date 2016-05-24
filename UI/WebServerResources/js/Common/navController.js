@@ -9,8 +9,8 @@
   /**
    * @ngInject
    */
-  navController.$inject =  ['$rootScope', '$scope', '$timeout', '$interval', '$http', '$mdSidenav', '$mdToast', '$mdMedia', '$log', 'sgConstant', 'sgSettings', 'Alarm'];
-  function navController($rootScope, $scope, $timeout, $interval, $http, $mdSidenav, $mdToast, $mdMedia, $log, sgConstant, sgSettings, Alarm) {
+  navController.$inject =  ['$rootScope', '$scope', '$timeout', '$interval', '$http', '$window', '$mdSidenav', '$mdToast', '$mdMedia', '$log', 'sgConstant', 'sgSettings', 'Alarm'];
+  function navController($rootScope, $scope, $timeout, $interval, $http, $window, $mdSidenav, $mdToast, $mdMedia, $log, sgConstant, sgSettings, Alarm) {
 
     $scope.isPopup = sgSettings.isPopup;
     $scope.activeUser = sgSettings.activeUser();
@@ -35,6 +35,11 @@
       }
       else {
         $scope.leftIsClose = leftIsClose();
+        // Fire a window resize when opening the sidenav on a small device.
+        // This is a fix until the following issue is officially resolved:
+        // https://github.com/angular/material/issues/7309
+        if ($scope.leftIsClose)
+          angular.element($window).triggerHandler('resize');
         $mdSidenav('left').toggle()
           .then(function () {
             $log.debug("toggle left is done");
