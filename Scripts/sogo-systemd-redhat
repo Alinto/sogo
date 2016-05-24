@@ -1,6 +1,7 @@
 [Unit]
 Description=SOGo is a groupware server
 After=network.target
+After=mariadb.service
 
 [Service]
 Environment="PREFORK=3"
