@@ -9,6 +9,7 @@ Bug fixes
  - [web] fixed negative offset when converting a regular event to an all-day event (#3655)
  - [web] fixed event classification icon (private/confidential) in day/week/multicolumn views
  - [web] fixed display of mailboxes list on mobiles (#3654)
+ - [web] restored Catalan and Slovak translations (#3687)
 
 3.1.0 (2016-05-18)
 ------------------
