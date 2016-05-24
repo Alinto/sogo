@@ -8,7 +8,7 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    <var:string value="currentUserName" const:escapeHTML="NO"/> erişim yetkilerini değiştirdi has modified the access rights
+    <var:string value="currentUserName" const:escapeHTML="NO"/> erişim yetkilerini değiştirdi
 </var:if>
 
 <var:if condition="isBody">

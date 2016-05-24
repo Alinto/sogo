@@ -1,7 +1,7 @@
 /* Turkish */
 {
   NSLanguageName = "Turkish (Turkey)";
-  NSFormalName = "Türkçe (Türkiye)";
+  NSFormalName = "Turkish";
   NSLocaleCode = "tr_TR"; /* ISO 639-1 */
   NSLanguageCode = "tur"; /* ISO 639-2 */
   NSParentContext = "";
@@ -18,7 +18,7 @@
   NSLaterTimeDesignations = (next);
   NSMonthNameArray = (Ocak, "Şubat", Mart, Nisan, "Mayıs", Haziran, Temmuz, "Ağustos", "Eylül", Ekim, "Kasım", "Aralık");
   NSNextDayDesignations = ("yarın");
-  NSNextNextDayDesignations = ("gelecek gün");
+  NSNextNextDayDesignations = ("ertesi gün");
   NSPriorDayDesignations = ("dün");
   NSShortDateFormatString = "%e/%m/%y";
   NSShortMonthNameArray = (Oca, "Şub", Mar, Nis, May, Haz, Tem, "Ağu", Eyl, Eki, Kas, Ara);
