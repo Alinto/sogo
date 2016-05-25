@@ -399,7 +399,7 @@
                     <div ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
                   </div>
                   <div class="sg-md-body">
-                    <div>{{currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)}}</div>
+                    <div>{{currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query.value)}}</div>
                   </div>
                 </div>
                 <div class="sg-tile-icons"><!-- spacer --></div>
@@ -412,7 +412,7 @@
                   <!-- </div> -->
                   <sg-avatar-image class="md-avatar"
                                    ng-if="addressbook.notSelectedComponent(currentCard, 'vcard')"
-                                   sg-email="currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query)"
+                                   sg-email="currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query.value)"
                                    sg-src="currentCard.photoURL"
                                    size="40">
                     <!-- contact avatar -->
