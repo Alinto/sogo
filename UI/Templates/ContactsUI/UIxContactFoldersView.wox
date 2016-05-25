@@ -396,7 +396,7 @@
                   ng-click="addressbook.selectCard(currentCard)">
                 <div class="sg-tile-content">
                   <div class="sg-md-subhead">
-                    <div ng-bind-html="currentCard.$fullname()"><!-- cn --></div>
+                    <div ng-bind-html="currentCard.$fullname({html: true})"><!-- cn --></div>
                   </div>
                   <div class="sg-md-body">
                     <div>{{currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query.value)}}</div>

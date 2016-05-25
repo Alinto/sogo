@@ -61,7 +61,7 @@
               <!--list avatar-->
             </div>
             <div class="msg-header-content">
-              <h1 class="sg-md-display-2--thin" ng-bind-html="editor.card.$fullname()"><!-- fullname --></h1>
+              <h1 class="sg-md-display-2--thin" ng-bind-html="editor.card.$fullname({html: true})"><!-- fullname --></h1>
               <h6 class="sg-md-display-2-subheader--thin">{{editor.card.$description()}}</h6>
               <md-chips ng-model="editor.card.categories"
                         class="sg-readonly" readonly="true">

@@ -216,14 +216,14 @@
     return Card.$$resource.download(this.pid, 'export', {uids: selectedIDs}, {type: 'application/octet-stream'});
   };
 
-  Card.prototype.$fullname = function() {
-    var fn = this.c_cn || '', names;
+  Card.prototype.$fullname = function(options) {
+    var fn = this.c_cn || '', html = options && options.html, names;
     if (fn.length === 0) {
       names = [];
       if (this.c_givenname && this.c_givenname.length > 0)
         names.push(this.c_givenname);
       if (this.nickname && this.nickname.length > 0)
-        names.push('<em>' + this.nickname + '</em>');
+        names.push((html?'<em>':'') + this.nickname + (html?'</em>':''));
       if (this.c_sn && this.c_sn.length > 0)
         names.push(this.c_sn);
       if (names.length > 0)
