@@ -30,6 +30,7 @@
 
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
@@ -73,6 +74,7 @@ static SoProduct *preferencesProduct = nil;
 {
   NSMutableDictionary *values, *account;
   SOGoUserDefaults *defaults;
+  SOGoDomainDefaults *domainDefaults;
   NSMutableArray *accounts;
   NSDictionary *categoryLabels;
   NSDictionary *locale;
@@ -84,6 +86,7 @@ static SoProduct *preferencesProduct = nil;
     }
 
   defaults = [[context activeUser] userDefaults];
+  domainDefaults = [[context activeUser] domainDefaults];
   categoryLabels = nil;
 
   //
@@ -110,8 +113,18 @@ static SoProduct *preferencesProduct = nil;
   if (![[defaults source] objectForKey: @"SOGoRefreshViewCheck"])
     [[defaults source] setObject: [defaults refreshViewCheck]  forKey: @"SOGoRefreshViewCheck"];
 
-  if (![[defaults source] objectForKey: @"SOGoAlternateAvatar"])
-      [[defaults source] setObject: [defaults alternateAvatar]  forKey: @"SOGoAlternateAvatar"];
+  if ([domainDefaults externalAvatarsEnabled])
+    {
+      if (![[defaults source] objectForKey: @"SOGoGravatarEnabled"])
+        [[defaults source] setObject: [NSNumber numberWithBool: [defaults gravatarEnabled]]  forKey: @"SOGoGravatarEnabled"];
+      if (![[defaults source] objectForKey: @"SOGoAlternateAvatar"])
+        [[defaults source] setObject: [defaults alternateAvatar]  forKey: @"SOGoAlternateAvatar"];
+    }
+  else
+    {
+      [[defaults source] setObject: [NSNumber numberWithInt: 0]  forKey: @"SOGoGravatarEnabled"];
+      [[defaults source] removeObjectForKey: @"SOGoAlternateAvatar"];
+    }
 
   //
   // Default Calendar preferences

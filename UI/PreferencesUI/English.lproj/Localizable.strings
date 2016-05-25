@@ -365,6 +365,7 @@
 "TLS" = "TLS";
 
 /* Avatars */
+"Use Gravatar" = "Use Gravatar";
 "Alternate Avatar" = "Alternate Avatar";
 "none" =  "None";
 "identicon" = "Ident Icon";

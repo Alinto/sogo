@@ -54,12 +54,14 @@
     SOGoFirstWeekOfYear = "January1";
     SOGoShortDateFormat = "%d-%b-%y";
     SOGoLongDateFormat = "%A, %B %d, %Y";
+    SOGoExternalAvatarsEnabled = YES;
+    SOGoGravatarEnabled = NO;
+    SOGoAlternateAvatar = "none";
 
     SOGoIMAPServer = "localhost";
     SOGoMailDomain = "localhost";
     SOGoSelectedAddressBook = "collected";
     SOGoRefreshViewCheck = "manually";
-    SOGoAlternateAvatar = "none";
     SOGoMailMessageForwarding = "inline";
     SOGoMailReplyPlacement = "below";
     SOGoMailSignaturePlacement = "below";

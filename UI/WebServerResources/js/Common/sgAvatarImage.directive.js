@@ -60,7 +60,8 @@
         if (email && vm.urlEmail != email) {
           // Email has changed or doesn't match the current URL (this happens when using md-virtual-repeat)
           showGenericAvatar();
-          getGravatar(email);
+          if (Preferences.defaults.SOGoGravatarEnabled)
+            getGravatar(email);
         }
         else if (!email)
           showGenericAvatar();

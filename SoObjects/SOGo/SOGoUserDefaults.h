@@ -126,6 +126,7 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setRefreshViewCheck: (NSString *) newValue;
 - (NSString *) refreshViewCheck;
 
+- (BOOL) gravatarEnabled;
 - (void) setAlternateAvatar: (NSString *) newValue;
 - (NSString *) alternateAvatar;
 

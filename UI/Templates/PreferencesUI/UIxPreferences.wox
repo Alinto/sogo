@@ -194,16 +194,28 @@
               </md-select>
             </md-input-container>
 
-            <md-input-container>
-              <label><var:string label:value="Alternate Avatar"/></label>
-              <md-select ng-model="app.preferences.defaults.SOGoAlternateAvatar">
-                <var:foreach list="alternateAvatar" item="item">
-                  <md-option var:value="item">
-                    <var:string value="itemAlternateAvatarText"/>
-                  </md-option>
-                </var:foreach>
-              </md-select>
-            </md-input-container>
+            <var:if condition="externalAvatarsEnabled">
+            <div layout="row" layout-align="start start">
+              <md-checkbox flex="20"
+                           ng-model="app.preferences.defaults.SOGoGravatarEnabled"
+                           ng-true-value="1"
+                           ng-false-value="0"
+                           label:aria-label="Use Gravatar">
+                <var:string label:value="Use Gravatar"/>
+              </md-checkbox>
+              <md-input-container class="md-flex">
+                <label><var:string label:value="Alternate Avatar"/></label>
+                <md-select ng-model="app.preferences.defaults.SOGoAlternateAvatar"
+                           ng-disabled="!app.preferences.defaults.SOGoGravatarEnabled">
+                  <var:foreach list="alternateAvatar" item="item">
+                    <md-option var:value="item">
+                      <var:string value="itemAlternateAvatarText"/>
+                    </md-option>
+                  </var:foreach>
+                </md-select>
+              </md-input-container>
+            </div>
+            </var:if>
           </div>
         </md-content>
       </md-tab>

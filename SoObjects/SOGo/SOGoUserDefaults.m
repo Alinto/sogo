@@ -514,6 +514,11 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self stringForKey: @"SOGoRefreshViewCheck"];
 }
 
+- (BOOL) gravatarEnabled
+{
+  return [self boolForKey: @"SOGoGravatarEnabled"];
+}
+
 - (void) setAlternateAvatar: (NSString *) newValue
 {
   [self setObject: newValue forKey: @"SOGoAlternateAvatar"];

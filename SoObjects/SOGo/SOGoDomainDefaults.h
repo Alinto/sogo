@@ -47,6 +47,7 @@
 - (NSString *) imapFolderSeparator;
 - (BOOL) imapAclConformsToIMAPExt;
 - (BOOL) forceExternalLoginWithEmail;
+- (BOOL) externalAvatarsEnabled;
 - (BOOL) sieveScriptsEnabled;
 - (BOOL) forwardEnabled;
 - (int) forwardConstraints;

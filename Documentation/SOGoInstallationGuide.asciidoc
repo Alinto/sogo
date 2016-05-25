@@ -1973,6 +1973,16 @@ SOGo webmail interface. The parameter is an array, for example:
 
 `SOGoMailListViewColumnsOrder = (Flagged, Attachment, Priority, From, Subject, Unread, Date, Size);`
 
+|D |SOGoExternalAvatarsEnabled
+|Parameter used to enable fetching of avatars from remote services.
+
+Defaults to `YES` when unset.
+
+|U |SOGoGravatarEnabled
+|Parameter used to activate fetching of avatars from http://gravatar.com/[Gravatar].
+
+Defaults to `YES` when unset.
+
 |D |SOGoVacationEnabled
 |Parameter used to activate the edition from the preferences window of a
 vacation message.
