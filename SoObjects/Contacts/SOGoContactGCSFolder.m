@@ -264,9 +264,23 @@ static NSArray *folderListingFields = nil;
   data = [contactRecord objectForKey: @"c_mail"];
   if ([data length])
     {
+      NSArray *values;
       NSDictionary *email;
-      email = [NSDictionary dictionaryWithObjectsAndKeys: @"pref", @"type", data, @"value", nil];
-      [contactRecord setObject: [NSArray arrayWithObject: email] forKey: @"emails"];
+      NSMutableArray *emails;
+      NSString *type, *value;
+      int i, max;
+
+      values = [data componentsSeparatedByString: @","];
+      max = [values count];
+      emails = [NSMutableArray arrayWithCapacity: max];
+      for (i = 0; i < max; i++)
+        {
+          type = (i == 0)? @"pref" : @"home";
+          value = [values objectAtIndex: i];
+          email = [NSDictionary dictionaryWithObjectsAndKeys: type, @"type", value, @"value", nil];
+          [emails addObject: email];
+        }
+      [contactRecord setObject: emails forKey: @"emails"];
     }
   else
     {

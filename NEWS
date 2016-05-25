@@ -1,6 +1,9 @@
 3.1.1 (2016-MM-DD)
 ------------------
 
+Enhancements
+ - [web] expose all email addresses in autocompletion of message editor (#3443)
+
 Bug fixes
  - [web] fixed creation of chip on blur (sgTransformOnBlur directive)
  - [web] fixed composition of new messages from Contacts module

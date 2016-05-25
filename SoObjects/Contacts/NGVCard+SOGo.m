@@ -45,7 +45,7 @@ objectclass ( 2.5.6.7 NAME 'organizationalPerson'
 	SUP person STRUCTURAL
 	MAY ( title $ x121Address $ registeredAddress $ destinationIndicator $
 		preferredDeliveryMethod $ telexNumber $ teletexTerminalIdentifier $
-		telephoneNumber $ internationaliSDNNumber $ 
+		telephoneNumber $ internationaliSDNNumber $
 		facsimileTelephoneNumber $ street $ postOfficeBox $ postalCode $
 		postalAddress $ physicalDeliveryOfficeName $ ou $ st $ l ) )
 
@@ -64,10 +64,10 @@ objectclass	( 2.16.840.1.113730.3.2.2
 		userSMIMECertificate $ userPKCS12 )
 	)
 
-objectclass ( 1.3.6.1.4.1.13769.9.1 NAME 'mozillaAbPersonAlpha' 
-         SUP top AUXILIARY 
+objectclass ( 1.3.6.1.4.1.13769.9.1 NAME 'mozillaAbPersonAlpha'
+         SUP top AUXILIARY
          MUST ( cn )
-         MAY( c $ 
+         MAY( c $
               description $
               displayName $
               facsimileTelephoneNumber $
@@ -257,7 +257,7 @@ convention:
                  given: [ldifRecord objectForKey: @"givenname"]
             additional: nil prefixes: nil suffixes: nil];
   [self setNickname: [ldifRecord objectForKey: @"mozillanickname"]];
-  [self setTitle: [ldifRecord objectForKey: @"title"]];  
+  [self setTitle: [ldifRecord objectForKey: @"title"]];
 
   fn = [ldifRecord objectForKey: @"displayname"];
   if (!fn)
@@ -294,7 +294,7 @@ convention:
 
   ou = [ldifRecord objectForKey: @"ou"];
   if ([ou isKindOfClass: [NSArray class]])
-    units = [NSArray arrayWithArray: ou];
+    units = [NSArray arrayWithArray: (NSArray *)ou];
   else if (ou)
     units = [NSArray arrayWithObject: ou];
   else
@@ -308,7 +308,7 @@ convention:
     setSingleValue: [ldifRecord objectForKey: @"mozillahomeurl"] forKey: @""];
   [[self elementWithTag: @"url" ofType: @"work"]
     setSingleValue: [ldifRecord objectForKey: @"mozillaworkurl"] forKey: @""];
-  
+
   [[self uniqueChildWithTag: @"x-aim"]
     setSingleValue: [ldifRecord objectForKey: @"nsaimid"]
             forKey: @""];
@@ -343,7 +343,7 @@ convention:
 
   o = [ldifRecord objectForKey: @"vcardcategories"];
 
-  // We can either have an array (from SOGo's web gui) or a 
+  // We can either have an array (from SOGo's web gui) or a
   // string (from a LDIF import) as the value here.
   if ([o isKindOfClass: [NSArray class]])
     [self setCategories: o];
@@ -356,7 +356,7 @@ convention:
 /* VCARD -> LDIF */
 - (NSString *) _simpleValueForType: (NSString *) aType
                            inArray: (NSArray *) anArray
-                         excluding: (NSString *) aTypeToExclude		  
+                         excluding: (NSString *) aTypeToExclude
 {
   NSArray *elements;
   NSString *value;
@@ -377,7 +377,7 @@ convention:
 
 	  if (!aTypeToExclude)
 	    break;
-	  
+
 	  if (![ce hasAttribute: @"type" havingValue: aTypeToExclude])
 	    break;
 
@@ -609,8 +609,8 @@ convention:
                to: [self _simpleValueForType: @"home" inArray: elements
                                    excluding: nil]
       inLDIFRecord: ldifRecord];
-  
-  // If we don't have a "work" or "home" URL but we still have 
+
+  // If we don't have a "work" or "home" URL but we still have
   // an URL field present, let's add it to the "home" value
   if ([[ldifRecord objectForKey: @"mozillaworkurl"] length] == 0 &&
       [[ldifRecord objectForKey: @"mozillahomeurl"] length] == 0 &&
@@ -640,7 +640,7 @@ convention:
 	    }
 	}
     }
-    
+
   [self _setValue: @"title" to: [self title] inLDIFRecord: ldifRecord];
   [self _setupOrgFieldsInLDIFRecord: ldifRecord];
 
@@ -683,7 +683,7 @@ convention:
 {
   CardElement *org;
   NSString *company;
-  
+
   org = [self org];
   company = [org flattenedValueAtIndex: 0 forKey: @""];
   if ([company length] == 0)
@@ -696,7 +696,7 @@ convention:
 {
   CardElement *n;
   NSString *fn, *firstName, *lastName, *org;
-  
+
   fn = [self fn];
   if ([fn length] == 0)
     {
@@ -723,6 +723,29 @@ convention:
   return fn;
 }
 
+- (NSArray *) emails
+{
+  NSArray *elements;
+  NSMutableArray *emails;
+  NSString *email;
+  int i;
+
+  emails = [NSMutableArray array];
+  elements = [self childrenWithTag: @"email"];
+
+  for (i = [elements count]-1; i >= 0; i--)
+    {
+      email = [[elements objectAtIndex: i] flattenedValuesForKey: @""];
+      if ([email caseInsensitiveCompare: [self preferredEMail]] == NSOrderedSame)
+        // First element of array is the preferred email address
+        [emails insertObject: email atIndex: 0];
+      else
+        [emails addObject: email];
+    }
+
+  return emails;
+}
+
 - (NSArray *) secondaryEmails
 {
   NSMutableArray *emails;
@@ -735,11 +758,11 @@ convention:
   [emails removeObjectsInArray: [self childrenWithTag: @"email"
                                          andAttribute: @"type"
                                           havingValue: @"pref"]];
-  
+
   for (i = [emails count]-1; i >= 0; i--)
     {
       email = [[emails objectAtIndex: i] flattenedValuesForKey: @""];
-      
+
       if ([email caseInsensitiveCompare: [self preferredEMail]] == NSOrderedSame)
         [emails removeObjectAtIndex: i];
     }
@@ -771,7 +794,7 @@ convention:
 
 	  if (!aTypeToExclude)
 	    break;
-	  
+
 	  if (![ce hasAttribute: @"type" havingValue: aTypeToExclude])
 	    break;
 
@@ -824,7 +847,7 @@ convention:
                                   andShortTimeString: nil
                                           inTimeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
     }
-  
+
   return date;
 }
 
@@ -849,10 +872,12 @@ convention:
   value = [self preferredTel];
   if (value)
     [fields setObject: value forKey: @"c_telephonenumber"];
-  value = [self preferredEMail];
-  if (![value isNotNull])
-    value = @"";
-  [fields setObject: value forKey: @"c_mail"];
+  v = [self emails];
+  if ([v count] > 0)
+    [fields setObject: [v componentsJoinedByString: @","]
+               forKey: @"c_mail"];
+  else
+    [fields setObject: [NSNull null] forKey: @"c_mail"];
   element = [self org];
   [fields setObject: [element flattenedValueAtIndex: 0 forKey: @""]
              forKey: @"c_o"];

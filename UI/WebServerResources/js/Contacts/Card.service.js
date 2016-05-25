@@ -425,6 +425,27 @@
   };
 
   /**
+   * @function explode
+   * @memberof Card.prototype
+   * @desc Create a new Card associated to each email address of this card.
+   * @return an array of Card instances
+   */
+  Card.prototype.explode = function() {
+    var _this = this, cards = [], data;
+
+    if (this.emails.length > 1) {
+      data = this.$omit();
+      _.forEach(this.emails, function(email) {
+        var card = new Card(angular.extend({}, data, {emails: [email]}));
+        cards.push(card);
+      });
+      return cards;
+    }
+    else
+      return [this];
+  };
+
+  /**
    * @function $reset
    * @memberof Card.prototype
    * @desc Reset the original state the card's data.

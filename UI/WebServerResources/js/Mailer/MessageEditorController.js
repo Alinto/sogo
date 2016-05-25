@@ -197,8 +197,20 @@
     }
 
     function contactFilter($query) {
-      AddressBook.$filterAll($query);
-      return AddressBook.$cards;
+      return AddressBook.$filterAll($query).then(function(cards) {
+        // Divide the matching cards by email addresses so the user can select
+        // the recipient address of her choice
+        var explodedCards = [];
+        _.forEach(_.invokeMap(cards, 'explode'), function(manyCards) {
+          _.forEach(manyCards, function(card) {
+            explodedCards.push(card);
+          });
+        });
+        // Remove duplicates
+        return _.uniqBy(explodedCards, function(card) {
+          return card.$$fullname + ' ' + card.$$email;
+        });
+      });
     }
 
     function addRecipient(contact, field) {
