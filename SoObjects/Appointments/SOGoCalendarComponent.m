@@ -202,8 +202,10 @@
 
 - (void) _filterComponent: (iCalEntityObject *) component
 {
-  NSString *type, *summary;
-  int classification;
+  NSString *type, *summary, *tag;
+  NSArray *children;
+
+  int classification, i;
 
   type = @"vtodo";
   classification = 0;
@@ -225,8 +227,19 @@
   [component setLocation: @""];
   [component setCategories: [NSArray array]];
   [component setUrl: @""];
+  [component setOrganizer: nil];
   [component removeAllAttendees];
   [component removeAllAlarms];
+
+  // We strip all X- tags
+  children = [component children];
+
+  for (i = 0; i < [children count]; i++)
+    {
+      tag = [[children objectAtIndex: i] tag];
+      if ([[tag uppercaseString] hasPrefix: @"X-"])
+        [component removeChild: [children objectAtIndex: i]];
+    }
 }
 
 - (NSString *) secureContentAsString
