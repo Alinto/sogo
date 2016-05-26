@@ -4,6 +4,7 @@
 Enhancements
  - [web] expose all email addresses in autocompletion of message editor (#3443)
  - [web] Gravatar service can now be disabled (#3600)
+ - [web] collapsable mail accounts (#3493)
 
 Bug fixes
  - [web] fixed creation of chip on blur (sgTransformOnBlur directive)

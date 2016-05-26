@@ -6,14 +6,15 @@
   /**
    * @ngInject
    */
-  MailboxesController.$inject = ['$state', '$timeout', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'sgConstant', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
-  function MailboxesController($state, $timeout, $mdDialog, $mdToast, $mdMedia, $mdSidenav, sgConstant, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
+  MailboxesController.$inject = ['$state', '$timeout', '$window', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'sgConstant', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
+  function MailboxesController($state, $timeout, $window, $mdDialog, $mdToast, $mdMedia, $mdSidenav, sgConstant, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
     var vm = this,
         account,
         mailbox;
 
     vm.service = Mailbox;
     vm.accounts = stateAccounts;
+    vm.toggleAccountState = toggleAccountState;
     vm.newFolder = newFolder;
     vm.delegate = delegate;
     vm.editFolder = editFolder;
@@ -128,6 +129,17 @@
         vm.currentSearchParam = '';
         return { searchBy: searchParam, searchInput: pattern, negative: n };
       }
+    }
+
+    function toggleAccountState(account) {
+      account.$expanded = !account.$expanded;
+      account.$flattenMailboxes({ reload: true, saveState: true });
+      // Fire a window resize to recompute the virtual-repeater.
+      // This is a fix until the following issue is officially resolved:
+      // https://github.com/angular/material/issues/7309
+      $timeout(function() {
+        angular.element($window).triggerHandler('resize');
+      }, 150);
     }
 
     function newFolder(parentFolder) {

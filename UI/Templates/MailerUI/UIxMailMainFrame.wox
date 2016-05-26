@@ -36,39 +36,39 @@
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content class="md-flex" layout="column" md-scroll-y="md-scroll-y"
                   md-colors="::{ backgroundColor: 'default-background-300' }">
-        <section class="md-flex" layout="column"
-                 ng-repeat="account in app.accounts track by account.id">
-          <md-subheader class="sg-md-subheader--with-secondary-icon"
-                        ng-class="{ 'sg-md-subheader--with-icon': account.id == 0 }"
-                        md-colors="::{ backgroundColor: 'default-background-300' }">
-            <div layout="row" layout-align="start center">
-              <md-button class="sg-icon-button"
+        <section layout="column"
+                 ng-repeat="account in ::app.accounts track by account.id"
+                 ng-class="{ 'md-flex': account.$expanded }">
+          <md-list>
+            <md-list-item ng-click="app.toggleAccountState(account)">
+              <div class="sg-no-wrap">{{account.name}}</div>
+              <div class="md-flex"><!-- spacer --></div>
+              <md-button class="md-icon-button md-secondary"
                          ng-show="account.id == 0"
                          label:aria-label="Delegation..."
                          ng-click="app.delegate(account)">
                 <md-tooltip md-delay="300"><var:string label:value="Delegation..."/></md-tooltip>
                 <md-icon>people</md-icon>
               </md-button>
-              <div class="sg-no-wrap">{{account.name}}</div>
-              <div class="md-flex"><!-- spacer --></div>
-              <md-button class="sg-icon-button"
+              <md-button class="md-icon-button md-secondary"
                          label:aria-label="New Folder..."
                          ng-click="app.newFolder(account)">
                 <md-tooltip md-delay="300"><var:string label:value="New Folder..."/></md-tooltip>
                 <md-icon>add_circle_outline</md-icon>
               </md-button>
-            </div>
-          </md-subheader>
+            </md-list-item>
+          </md-list>
           <div class="sg-quota ng-hide" ng-show="account.$quota">
             <md-progress-linear md-mode="determinate"
                                 ng-class="{ 'md-warn': account.$quota.percent > 70 }"
                                 value="{{account.$quota.percent}}"><!-- quota --></md-progress-linear>
             <div class="sg-md-caption md-default-theme md-fg md-primary"
+                 ng-show="account.$expanded"
                  ng-class="{ 'md-warn': account.$quota.percent > 70 }">{{account.$quota.description}}</div>
           </div>
-          <md-virtual-repeat-container class="md-flex">
+          <md-virtual-repeat-container ng-class="{ 'md-flex': account.$expanded }">
             <md-list>
-              <md-list-item md-virtual-repeat="folder in account.$flattenMailboxes()" md-item-size="48"
+              <md-list-item md-virtual-repeat="folder in account" md-item-size="48" md-on-demand="md-on-demand"
                             class="md-default-theme md-background md-hue-1"
                             ng-class="{'md-bg': folder.id == app.service.selectedFolder.id}"
                             ng-dblclick="app.editFolder(folder)">

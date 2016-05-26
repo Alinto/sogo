@@ -92,6 +92,32 @@
   };
 
   /**
+   * @function getLength
+   * @memberof Account.prototype
+   * @desc Used by md-virtual-repeat / md-on-demand
+   * @returns the number of mailboxes in the account
+   */
+  Account.prototype.getLength = function() {
+    return this.$flattenMailboxes().length;
+  };
+
+  /**
+   * @function getItemAtIndex
+   * @memberof Account.prototype
+   * @desc Used by md-virtual-repeat / md-on-demand
+   * @returns the mailbox at the specified index
+   */
+  Account.prototype.getItemAtIndex = function(index) {
+    var expandedMailboxes;
+
+    expandedMailboxes = this.$flattenMailboxes();
+    if (index >= 0 && index < expandedMailboxes.length)
+      return expandedMailboxes[index];
+
+    return null;
+  };
+
+  /**
    * @function $getMailboxes
    * @memberof Account.prototype
    * @desc Fetch the list of mailboxes for the current account.
@@ -125,6 +151,7 @@
               expandedFolders = angular.fromJson(Account.$Preferences.settings.Mail.ExpandedFolders);
             else
               expandedFolders = Account.$Preferences.settings.Mail.ExpandedFolders;
+            _this.$expanded = (expandedFolders.indexOf('/' + _this.id) >= 0) || Account.$accounts.length == 1;
             if (expandedFolders.length > 0) {
               _visit(_this.$mailboxes);
             }
@@ -170,6 +197,9 @@
         if (options && options.saveState) {
           // Save expansion state of mailboxes to the server
           _.forEach(Account.$accounts, function(account) {
+            if (account.$expanded) {
+              expandedMailboxes.push('/' + account.id);
+            }
             _.reduce(account.$$flattenMailboxes, function(expandedFolders, mailbox) {
               if (mailbox.$expanded) {
                 expandedFolders.push('/' + mailbox.id);
