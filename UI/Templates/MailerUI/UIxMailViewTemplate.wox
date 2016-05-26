@@ -247,6 +247,7 @@
                      ng-repeat="part in viewer.message.$content()"
                      ng-class="part.msgclass">
                   <div class="md-flex"
+                       tabindex="-1"
                        ng-if="part.html"
                        ng-click="viewer.filterMailtoLinks($event)"
                        ng-bind-html="part.content | ensureTarget"><!-- html msg --></div>
