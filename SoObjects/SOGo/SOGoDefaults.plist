@@ -40,11 +40,11 @@
 
     SOGoLoginModule = "Mail";
     SOGoLanguage = "English";
-    SOGoSupportedLanguages = ( "Arabic", "Basque", "Catalan", "ChineseTaiwan", "Croatian", "Czech", "Dutch", "Danish", "Welsh", "English",
-                               "SpanishSpain", "SpanishArgentina", "Finnish", "French", "German",
-                               "Icelandic", "Italian", "Lithuanian", "Macedonian", "Hungarian", "Portuguese", "BrazilianPortuguese",
-                               "NorwegianBokmal", "NorwegianNynorsk", "Polish", "Russian", "Slovak",
-                               "Slovenian", "Swedish", "TurkishTurkey", "Ukrainian" );
+    SOGoSupportedLanguages = ( "Arabic", "Basque", "BrazilianPortuguese", "Catalan", "ChineseTaiwan", "Croatian",
+                               "Czech", "Danish", "Dutch", "English", "Finnish", "French", "German", "Hungarian",
+                               "Icelandic", "Italian", "Lithuanian", "Macedonian", "NorwegianBokmal",
+                               "NorwegianNynorsk", "Polish", "Portuguese", "Russian", "Slovak", "Slovenian",
+                               "SpanishArgentina", "SpanishSpain", "Swedish", "TurkishTurkey", "Ukrainian", "Welsh" );
 
     SOGoTimeZone = "UTC";
     SOGoDayStartTime = "8";
