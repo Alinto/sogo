@@ -86,6 +86,8 @@
       o.id = i;
       collection[i] = new Account(o);
     });
+    Account.$accounts = collection;
+
     return collection;
   };
 
@@ -139,7 +141,10 @@
    * @function $flattenMailboxes
    * @memberof Account.prototype
    * @desc Get a flatten array of the mailboxes.
-   * @param {object} [options] - force a reload
+   * @param {object} [options] - the following boolean attributes are available:
+   *   - reload: rebuild the flatten array of mailboxes from the original tree representation (this.$mailboxes)
+   *   - all: return all mailboxes, ignoring their expanstion state
+   *   - saveState: save expansion state of mailboxes to the server
    * @returns an array of Mailbox instances
    */
   Account.prototype.$flattenMailboxes = function(options) {
@@ -163,12 +168,15 @@
       if (!options || !options.all) {
         _this.$$flattenMailboxes = allMailboxes;
         if (options && options.saveState) {
-          _.reduce(allMailboxes, function(expandedFolders, mailbox) {
-            if (mailbox.$expanded) {
-              expandedFolders.push('/' + mailbox.id);
-            }
-            return expandedFolders;
-          }, expandedMailboxes);
+          // Save expansion state of mailboxes to the server
+          _.forEach(Account.$accounts, function(account) {
+            _.reduce(account.$$flattenMailboxes, function(expandedFolders, mailbox) {
+              if (mailbox.$expanded) {
+                expandedFolders.push('/' + mailbox.id);
+              }
+              return expandedFolders;
+            }, expandedMailboxes);
+          });
           Account.$$resource.post(null, 'saveFoldersState', expandedMailboxes);
         }
       }
