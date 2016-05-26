@@ -268,7 +268,7 @@
                        ng-click="editor.removeAttendee($chip)">close</md-icon>
             </md-chip-template>
           </md-chips>
-          <div ng-show="editor.showAttendeesEditor" class="attendees">
+          <div class="ng-hide attendees" ng-show="editor.showAttendeesEditor">
             <var:component className="UIxAttendeesEditor" />
           </div>
         </div>

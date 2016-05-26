@@ -51,6 +51,7 @@
           </md-menu-content>
         </md-menu>
         <md-button class="sg-icon-button"
+                   label:aria-label="Search"
                    ng-click="app.toggleAdvancedSearch()"
                    ng-disabled="app.search.params.length == 0">
           <md-icon ng-class="{'icon-stop': app.service.selectedFolder.$isLoading,
@@ -268,6 +269,7 @@
               ng-click="mailbox.selectMessage(currentMessage)"
               aria-label="{{currentMessage.subject}}">
             <div class="md-secondary sg-avatar-selectable"
+                 label:aria-label="Select Message"
                  ng-class="{ 'sg-avatar-selected': currentMessage.selected }"
                  ng-click="mailbox.toggleMessageSelection($event, currentMessage)">
               <sg-avatar-image class="md-avatar"

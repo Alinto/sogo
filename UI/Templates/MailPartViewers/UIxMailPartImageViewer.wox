@@ -8,8 +8,7 @@
     >
   <md-card>
     <img var:src="pathToAttachment"
-         var:title="filenameForDisplay"
-         class="md-card-image"></img>
+         var:title="filenameForDisplay"><!-- image --></img>
     <md-card-content>
       <p class="md-caption" var:title="filenameForDisplay">
         <var:string value="filenameForDisplay" />
