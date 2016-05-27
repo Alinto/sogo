@@ -47,6 +47,7 @@
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSObject+Utilities.h>
+#import <SOGo/NSString+Crypto.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoDomainDefaults.h>
@@ -55,6 +56,7 @@
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoWebDAVAclManager.h>
@@ -202,13 +204,20 @@
 
 - (void) _filterComponent: (iCalEntityObject *) component
 {
-  NSString *type, *summary, *tag;
-  NSArray *children;
+  NSString *type, *summary, *tag, *uid;
+  SOGoUserSettings *settings;
+  SOGoUser *calendarOwner;
+  NSEnumerator *children;
+  CardElement *element;
+  NSArray *tags;
 
-  int classification, i;
+  int classification;
 
   type = @"vtodo";
   classification = 0;
+
+  calendarOwner = [SOGoUser userWithLogin: [self ownerInContext: context]];
+  settings = [calendarOwner userSettings];
 
   if ([component isKindOfClass: [iCalEvent class]])
     type = @"vevent";
@@ -221,25 +230,23 @@
   summary = [self labelForKey: [NSString stringWithFormat: @"%@_class%d",
                                          type, classification]
                     inContext: context];
-  [component setSummary: summary];
-  [component setComment: @""];
-  [component setUserComment: @""];
-  [component setLocation: @""];
-  [component setCategories: [NSArray array]];
-  [component setUrl: @""];
-  [component setOrganizer: nil];
-  [component removeAllAttendees];
-  [component removeAllAlarms];
 
-  // We strip all X- tags
-  children = [component children];
+  tags = [NSArray arrayWithObjects: @"DTSTAMP", @"DTSTART", @"DTEND", @"DUE", @"EXDATE", @"EXRULE", @"RRULE", nil];
+  uid = [[component uid] asCryptedPassUsingScheme: @"ssha256"
+                                         withSalt: [[settings userSalt] dataUsingEncoding: NSASCIIStringEncoding]
+                                      andEncoding: encHex];
 
-  for (i = 0; i < [children count]; i++)
+  children = [[[[component children] copy] autorelease] objectEnumerator];
+
+  while ((element = [children nextObject]))
     {
-      tag = [[children objectAtIndex: i] tag];
-      if ([[tag uppercaseString] hasPrefix: @"X-"])
-        [component removeChild: [children objectAtIndex: i]];
+      tag = [element tag];
+      if (![tags containsObject: [tag uppercaseString]])
+        [component removeChild: element];
     }
+
+  [component setSummary: summary];
+  [component setUid: uid];
 }
 
 - (NSString *) secureContentAsString

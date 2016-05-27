@@ -1,6 +1,6 @@
 /* SOGoUserSettings.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2014 Inverse inc.
+ * Copyright (C) 2009-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@
 
 - (NSArray *) subscribedCalendars;
 - (NSArray *) subscribedAddressBooks;
+- (NSString *) userSalt;
 
 @end
 
