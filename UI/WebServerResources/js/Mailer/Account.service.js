@@ -133,6 +133,7 @@
     else {
       return Account.$Mailbox.$find(this).then(function(data) {
         _this.$mailboxes = data;
+        _this.$expanded = false;
 
         // Set expanded folders from user's settings
         Account.$Preferences.ready().then(function() {
@@ -151,11 +152,12 @@
               expandedFolders = angular.fromJson(Account.$Preferences.settings.Mail.ExpandedFolders);
             else
               expandedFolders = Account.$Preferences.settings.Mail.ExpandedFolders;
-            _this.$expanded = (expandedFolders.indexOf('/' + _this.id) >= 0) || Account.$accounts.length == 1;
+            _this.$expanded = (expandedFolders.indexOf('/' + _this.id) >= 0);
             if (expandedFolders.length > 0) {
               _visit(_this.$mailboxes);
             }
           }
+          _this.$expanded |= (Account.$accounts.length == 1); // Always expand single account
           _this.$flattenMailboxes({reload: true});
         });
 
