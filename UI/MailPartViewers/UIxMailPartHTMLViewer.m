@@ -412,9 +412,35 @@ static NSData* _sanitizeContent(NSData *theData)
   showWhoWeAre();
 }
 
+/**
+ * About CSS At-Rules (https://css-tricks.com/the-at-rules-of-css/)
+ *
+ * At-Rules follow two possible synthaxes:
+ *
+ *   @[KEYWORD] (RULE);
+ *     Examples:
+ *       @charset "UTF-8";
+ *       @import 'global.css';
+ *       @namespace svg url(http://www.w3.org/2000/svg);
+ *
+ *   @[KEYWORD] { (Nested Statements) }
+ *     Examples:
+ *       @font-face {
+ *         font-family: 'MyWebFont';
+ *         src:  url('myfont.woff2') format('woff2'),
+ *               url('myfont.woff') format('woff');
+ *       }
+ *       @media only screen
+ *         and (min-device-width: 320px)
+ *         and (max-device-width: 480px)
+ *         and (-webkit-min-device-pixel-ratio: 2) {
+ *           .module { width: 100%; }
+ *       }
+ */
 - (void) _appendStyle: (unichar *) _chars
                length: (NSUInteger) _len
 {
+  NSMutableString *declaration;
   NSUInteger count, length;
   unichar *start, *currentChar;
 
@@ -428,16 +454,59 @@ static NSData* _sanitizeContent(NSData *theData)
       currentChar = _chars + count;
       if (inCSSDeclaration)
         {
-          if (*currentChar == '}')
+          if (*currentChar < 32)
+            {
+              // Append substring since last valid character and reset start counter
+              if (currentChar > start)
+                [declaration appendString: [NSString stringWithCharacters: start
+                                                                   length: (currentChar - start)]];
+              start = currentChar + 1;
+            }
+          else if (*currentChar == '}')
             {
               inCSSDeclaration = NO;
-              hasEmbeddedCSS = NO;
+              if (hasEmbeddedCSS)
+                {
+                  // End of at-rule definition; remove it from the stylesheet
+                  hasEmbeddedCSS = NO;
+                  start = currentChar + 1;
+                }
+              else
+                {
+                  // Prefix CSS rule
+                  length = (currentChar - start);
+                  [declaration appendString: [NSString stringWithCharacters: start length: length]];
+                  [css appendFormat: @".SOGoHTMLMail-CSS-Delimiter %@\n", declaration];
+                  start = currentChar;
+                }
+            }
+          else if (*currentChar == ';')
+            {
+              // Add !important
+              if ((currentChar < _chars - 10) ||
+                  !((*(currentChar-1) == 't' || *(currentChar-1) == 'T') &&
+                    (*(currentChar-2) == 'n' || *(currentChar-2) == 'N') &&
+                    (*(currentChar-3) == 'a' || *(currentChar-3) == 'A') &&
+                    (*(currentChar-4) == 't' || *(currentChar-4) == 'T') &&
+                    (*(currentChar-5) == 'r' || *(currentChar-5) == 'R') &&
+                    (*(currentChar-6) == 'o' || *(currentChar-6) == 'O') &&
+                    (*(currentChar-7) == 'p' || *(currentChar-7) == 'P') &&
+                    (*(currentChar-8) == 'm' || *(currentChar-8) == 'M') &&
+                    (*(currentChar-9) == 'i' || *(currentChar-9) == 'I') &&
+                    *(currentChar-10) == '!'))
+                {
+                  length = (currentChar - start);
+                  [declaration appendFormat: @"%@ !important;",
+                               [NSString stringWithCharacters: start length: length]];
+                  start = currentChar + 1;
+                }
             }
         }
       else
         {
           if (*currentChar < 32)
             {
+              // Append substring since last valid character and reset start counter
               if (currentChar > start)
                 [css appendString: [NSString stringWithCharacters: start
                                                            length: (currentChar - start)]];
@@ -446,26 +515,36 @@ static NSData* _sanitizeContent(NSData *theData)
           else
             {
               if (*currentChar == '{')
-                inCSSDeclaration = YES;
+                {
+                  // Start of rule declaration
+                  inCSSDeclaration = YES;
+                  declaration = [NSMutableString string];
+                }
               if (*currentChar == '}')
                 // CSS syntax error: ending declaration character while not in a CSS declaration.
                 // Ignore eveything from last CSS declaration.
                 start = currentChar + 1;
-              else if (*currentChar == ',')
-                hasEmbeddedCSS = NO;
-              else if (!hasEmbeddedCSS)
+              else if (hasEmbeddedCSS)
                 {
-                  if (*currentChar == '@')
-                    hasEmbeddedCSS = YES;
-                  else
-                    if (*currentChar > 32)
-                      {
-                        length = (currentChar - start);
-                        [css appendFormat: @"%@\n.SOGoHTMLMail-CSS-Delimiter ",
-                             [NSString stringWithCharacters: start length: length]];
-                        hasEmbeddedCSS = YES;
-                        start = currentChar;
-                      }
+                  if (*currentChar == ';')
+                    {
+                      // End of at-rule definition; remove it from the stylesheet
+                      hasEmbeddedCSS = NO;
+                      start = currentChar + 1;
+                    }
+                }
+              else if (*currentChar == ',')
+                {
+                  // Prefix CSS selector
+                  length = (currentChar - start);
+                  [css appendFormat: @" .SOGoHTMLMail-CSS-Delimiter %@,",
+                       [NSString stringWithCharacters: start length: length]];
+                  start = currentChar + 1;
+                }
+              else if (*currentChar == '@')
+                {
+                  // Start of at-rule definition
+                  hasEmbeddedCSS = YES;
                 }
             }
         }
@@ -619,21 +698,10 @@ static NSData* _sanitizeContent(NSData *theData)
 
 - (void) _finishCSS
 {
-  NSRange excessiveDelimiter;
-
   [css replaceString: @"<!--" withString: @""];
   [css replaceString: @"-->" withString: @""];
   [css replaceString: @".SOGoHTMLMail-CSS-Delimiter body"
        withString: @".SOGoHTMLMail-CSS-Delimiter"];
-  [css replaceString: @";" withString: @" !important;"];
-
-  excessiveDelimiter = [css rangeOfString: @".SOGoHTMLMail-CSS-Delimiter "
-                                  options: NSBackwardsSearch];
-  if (excessiveDelimiter.location != NSNotFound)
-    {
-      if (NSMaxRange (excessiveDelimiter) == [css length])
-        [css deleteCharactersInRange: excessiveDelimiter];
-    }
 }
 
 - (void) endElement: (NSString *) _localName
