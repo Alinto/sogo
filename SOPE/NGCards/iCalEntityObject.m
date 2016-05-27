@@ -20,6 +20,7 @@
 */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSException.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
@@ -436,12 +437,21 @@
   for (count = 0; count < max; count++)
     {
       stringAttach = [[elements objectAtIndex: count] flattenedValuesForKey: @""];
-      url = [NSURL URLWithString: stringAttach];
 
-      if (![url scheme] && [stringAttach length] > 0)
-        url = [NSURL URLWithString: [NSString stringWithFormat: @"http://%@", stringAttach]];
+      NS_DURING
+        {
+          url = [NSURL URLWithString: stringAttach];
 
-      [attachUrls addObject: [url absoluteString]];
+          if (![url scheme] && [stringAttach length] > 0)
+            url = [NSURL URLWithString: [NSString stringWithFormat: @"http://%@", stringAttach]];
+
+          [attachUrls addObject: [url absoluteString]];
+        }
+      NS_HANDLER
+        {
+          // Invalid URL, skipping.
+        }
+      NS_ENDHANDLER
     }
   
   return attachUrls;
