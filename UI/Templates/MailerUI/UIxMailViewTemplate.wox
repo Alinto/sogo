@@ -17,7 +17,7 @@
                      ng-click="viewer.closePopup()">
             <md-icon>close</md-icon>
           </md-button>
-          <md-button class="md-icon-button hide-gt-md"
+          <md-button class="md-icon-button hide-gt-xs"
                      ng-hide="isPopup"
                      label:aria-label="Close"
                      ng-click="viewer.close()">
