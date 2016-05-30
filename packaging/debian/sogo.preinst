@@ -13,8 +13,8 @@ set -e
 
 if [ "$1" == "install" ] || [ "$1" == "upgrade" ]; then
 
+  getent group sogo >& /dev/null || groupadd -f -r sogo
   if ! id sogo 1> /dev/null 2>&1; then
-    groupadd -f -r sogo
     useradd -d /var/lib/sogo -g sogo -c "SOGo daemon" -s /usr/sbin/nologin -r sogo
   fi
 
