@@ -249,7 +249,7 @@
 "Search" = "Keresés";
 "Search subfolders" = "Keresés almappákban";
 "Match any of the following" = "A következők egyikének feleljen meg";
-"Match all of the following" = "Az összes következőnek felejen meg";
+"Match all of the following" = "Az összes következőnek feleljen meg";
 "contains" = "tartalmazza";
 "does not contain" = "nem tartalmazza";
 "No matches found" = "Nincs találat";
@@ -321,7 +321,7 @@
 "No" = "Nem";
 "Location" = "Hely";
 "Rename" = "Átnevezés";
-"Compact" = "Tömörített";
+"Compact" = "Tömörítés";
 "Export" = "Exportálás";
 "Set as Drafts" = "Beállítás piszkozatként";
 "Set as Sent" = "Beállítás elküldöttként";
