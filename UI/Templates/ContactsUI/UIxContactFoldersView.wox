@@ -411,16 +411,21 @@
                     <!-- selected avatar -->
                   <!-- </div> -->
                   <sg-avatar-image class="md-avatar"
-                                   ng-if="addressbook.notSelectedComponent(currentCard, 'vcard')"
+                                   ng-if="currentCard.$isCard()"
                                    sg-email="currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query.value)"
                                    sg-src="currentCard.photoURL"
                                    size="40">
                     <!-- contact avatar -->
                   </sg-avatar-image>
                   <div class="md-avatar sg-avatar-list"
-                       ng-show="addressbook.notSelectedComponent(currentCard, 'vlist')">
+                       ng-show="currentCard.$isList()">
                     <!-- list avatar -->
                   </div>
+                </div>
+                <div class="sg-progress-linear-bottom">
+                  <md-progress-linear class="md-accent"
+                                      md-mode="indeterminate"
+                                      ng-show="currentCard.$isLoading()"><!-- progress --></md-progress-linear>
                 </div>
               </md-list-item>
             </md-list>

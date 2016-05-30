@@ -70,9 +70,11 @@
   }
   angular.module('SOGo.ContactsUI')
     .constant('sgCard_STATUS', {
-      NOT_LOADED: 0,
-      LOADING: 1,
-      LOADED: 2
+      NOT_LOADED:      0,
+      DELAYED_LOADING: 1,
+      LOADING:         2,
+      LOADED:          3,
+      DELAYED_MS:      300
     })
     .factory('Card', Card.$factory);
 
@@ -162,6 +164,33 @@
     return this.$futureCardData.then(function(data) {
       return data.id;
     });
+  };
+
+  /**
+   * @function $isLoading
+   * @memberof Card.prototype
+   * @returns true if the Card definition is still being retrieved from server after a specific delay
+   * @see sgCard_STATUS
+   */
+  Card.prototype.$isLoading = function() {
+    return this.$loaded == Card.STATUS.LOADING;
+  };
+
+  /**
+   * @function $reload
+   * @memberof Message.prototype
+   * @desc Fetch the viewable message body along with other metadata such as the list of attachments.
+   * @returns a promise of the HTTP operation
+   */
+  Card.prototype.$reload = function() {
+    var futureCardData;
+
+    if (this.$futureCardData)
+      return this;
+
+    futureCardData = Card.$$resource.fetch([this.pid, this.id].join('/'), 'view');
+
+    return this.$unwrap(futureCardData);
   };
 
   /**
@@ -498,7 +527,11 @@
     var _this = this;
 
     // Card is not loaded yet
-    this.$loaded = Card.STATUS.LOADING;
+    this.$loaded = Card.STATUS.DELAYED_LOADING;
+    Card.$timeout(function() {
+      if (_this.$loaded != Card.STATUS.LOADED)
+        _this.$loaded = Card.STATUS.LOADING;
+    }, Card.STATUS.DELAYED_MS);
 
     // Expose the promise
     this.$futureCardData = futureCardData.then(function(data) {
@@ -523,6 +556,8 @@
 
       return _this;
     });
+
+    return this.$futureCardData;
   };
 
   /**

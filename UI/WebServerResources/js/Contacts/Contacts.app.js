@@ -64,7 +64,9 @@
         },
         resolve: {
           stateCard: stateCard
-        }
+        },
+        onEnter: onEnterCard,
+        onExit: onExitCard
       })
       .state('app.addressbook.card.view', {
         url: '/view',
@@ -129,10 +131,37 @@
   /**
    * @ngInject
    */
-  stateCard.$inject = ['$stateParams', 'stateAddressbook'];
-  function stateCard($stateParams, stateAddressbook) {
+  stateCard.$inject = ['$state', '$stateParams', 'stateAddressbook'];
+  function stateCard($state, $stateParams, stateAddressbook) {
+    var card;
+
+    card = _.find(stateAddressbook.$cards, function(cardObject) {
+      return (cardObject.id == $stateParams.cardId);
+    });
+
+    if (card) {
+      return card.$reload();
+    }
+    else {
+      // Card not found
+      $state.go('app.addressbook');
+    }
+  }
+
+  /**
+   * @ngInject
+   */
+  onEnterCard.$inject = ['$stateParams', 'stateAddressbook'];
+  function onEnterCard($stateParams, stateAddressbook) {
     stateAddressbook.selectedCard = $stateParams.cardId;
-    return stateAddressbook.$getCard($stateParams.cardId);
+  }
+
+  /**
+   * @ngInject
+   */
+  onExitCard.$inject = ['stateAddressbook'];
+  function onExitCard(stateMailbox) {
+    delete stateAddressbook.selectedCard;
   }
 
   /**

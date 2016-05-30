@@ -600,7 +600,7 @@
    * @return the index of the first deleted message
    */
   Mailbox.prototype.$_deleteMessages = function(uids, messages) {
-    var _this = this, selectedMessages, selectedUIDs, unseen, firstIndex = this.$messages.length;
+    var _this = this, selectedUIDs, _$messages, unseen, firstIndex = this.$messages.length;
 
     // Decrement the unseen count
     unseen = _.filter(messages, function(message, i) { return !message.isread; });

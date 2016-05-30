@@ -302,6 +302,11 @@
               <md-icon class="ng-hide" ng-show="currentMessage.isforwarded">forward</md-icon>
               <md-icon class="ng-hide" ng-show="currentMessage.hasattachment">attach_file</md-icon>
             </div>
+            <div class="sg-progress-linear-bottom">
+              <md-progress-linear class="md-accent"
+                                  md-mode="indeterminate"
+                                  ng-show="currentMessage.$isLoading()"><!-- message loading progress --></md-progress-linear>
+            </div>
           </md-list-item>
         </md-list>
       </md-virtual-repeat-container>
@@ -309,7 +314,7 @@
            ng-show="mailbox.service.selectedFolder.$isLoading">
         <md-progress-circular class="md-accent"
                               md-mode="indeterminate"
-                              md-diameter="32"><!-- progress --></md-progress-circular>
+                              md-diameter="32"><!-- mailbox loading progress --></md-progress-circular>
       </div>
       <md-button class="md-fab md-fab-bottom-right md-accent"
                  label:aria-label="Write a new message"

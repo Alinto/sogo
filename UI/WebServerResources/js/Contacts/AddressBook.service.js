@@ -483,7 +483,7 @@
             // Add new cards matching the search query
             _.forEach(results, function(cardId, index) {
               if (_.isUndefined(_.find(cards, _.bind(compareIds, cardId)))) {
-                var data = { id: cardId };
+                var data = { pid: addressbookId, id: cardId };
                 var card = new AddressBook.$Card(data, search);
                 cards.splice(index, 0, card);
               }
@@ -686,7 +686,7 @@
 
           // Instanciate Card objects
           _.reduce(_this.ids, function(cards, card, i) {
-            var data = { id: card };
+            var data = { pid: _this.id, id: card };
 
             // Build map of ID <=> index
             _this.idsMap[data.id] = i;

@@ -39,8 +39,9 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Message constructor
    */
-  Message.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Gravatar', 'Resource', 'Preferences', function($q, $timeout, $log, Settings, Gravatar, Resource, Preferences) {
+  Message.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgMessage_STATUS', 'Gravatar', 'Resource', 'Preferences', function($q, $timeout, $log, Settings, Message_STATUS, Gravatar, Resource, Preferences) {
     angular.extend(Message, {
+      STATUS: Message_STATUS,
       $q: $q,
       $timeout: $timeout,
       $log: $log,
@@ -72,6 +73,13 @@
     angular.module('SOGo.MailerUI', ['SOGo.Common']);
   }
   angular.module('SOGo.MailerUI')
+    .constant('sgMessage_STATUS', {
+      NOT_LOADED:      0,
+      DELAYED_LOADING: 1,
+      LOADING:         2,
+      LOADED:          3,
+      DELAYED_MS:      300
+    })
     .factory('Message', Message.$factory);
 
   /**
@@ -504,13 +512,27 @@
   };
 
   /**
+   * @function $isLoading
+   * @memberof Message.prototype
+   * @returns true if the Message content is still being retrieved from server after a specific delay
+   * @see sgMessage_STATUS
+   */
+  Message.prototype.$isLoading = function() {
+    return this.$loaded == Message.STATUS.LOADING;
+  };
+
+  /**
    * @function $reload
    * @memberof Message.prototype
    * @desc Fetch the viewable message body along with other metadata such as the list of attachments.
+   * @param {object} [options] - set {useCache: true} to use already fetched data
    * @returns a promise of the HTTP operation
    */
   Message.prototype.$reload = function(options) {
     var futureMessageData;
+
+    if (options && options.useCache && this.$futureMessageData)
+      return this;
 
     futureMessageData = Message.$$resource.fetch(this.$absolutePath(options), 'view');
 
@@ -638,6 +660,13 @@
   Message.prototype.$unwrap = function(futureMessageData) {
     var _this = this;
 
+    // Message is not loaded yet
+    this.$loaded = Message.STATUS.DELAYED_LOADING;
+    Message.$timeout(function() {
+      if (_this.$loaded != Message.STATUS.LOADED)
+        _this.$loaded = Message.STATUS.LOADING;
+    }, Message.STATUS.DELAYED_MS);
+
     // Resolve and expose the promise
     this.$futureMessageData = futureMessageData.then(function(data) {
       // Calling $timeout will force Angular to refresh the view
@@ -653,6 +682,7 @@
         angular.extend(_this, data);
         _this.$formatFullAddresses();
         _this.$loadUnsafeContent = false;
+        _this.$loaded = Message.STATUS.LOADED;
         return _this;
       });
     });

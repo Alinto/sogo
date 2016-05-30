@@ -1,2 +1,9 @@
 /// progressLinear.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
+
+.sg-progress-linear-bottom {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+}

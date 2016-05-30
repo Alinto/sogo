@@ -61,13 +61,13 @@
             controllerAs: 'viewer'
           }
         },
-        onEnter: onEnterMessage,
-        onExit: onExitMessage,
         resolve: {
           stateMailbox: stateVirtualMailboxOfMessage,
           stateMessages: stateMessages,
           stateMessage: stateMessage
-        }
+        },
+        onEnter: onEnterMessage,
+        onExit: onExitMessage
       })
       .state('mail.account.inbox', {
         url: '/inbox',
@@ -279,7 +279,7 @@
     });
 
     if (message) {
-      return message.$reload();
+      return message.$reload({useCache: true});
     }
     else {
       // Message not found

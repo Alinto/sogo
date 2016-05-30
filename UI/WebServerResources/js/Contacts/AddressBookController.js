@@ -17,7 +17,6 @@
     vm.selectCard = selectCard;
     vm.toggleCardSelection = toggleCardSelection;
     vm.newComponent = newComponent;
-    vm.notSelectedComponent = notSelectedComponent;
     vm.unselectCards = unselectCards;
     vm.confirmDeleteSelectedCards = confirmDeleteSelectedCards;
     vm.copySelectedCards = copySelectedCards;
@@ -77,10 +76,6 @@
           $state.go('app.addressbook.new', { addressbookId: addressbookId, contactType: type });
         };
       }
-    }
-
-    function notSelectedComponent(currentCard, type) {
-      return (currentCard && currentCard.c_component == type && !currentCard.selected);
     }
 
     function unselectCards() {
@@ -180,12 +175,10 @@
             });
           }
           else {
-            promises.push(vm.selectedFolder.$getCard(card.id).then(function(card) {
-              return card.$futureCardData.then(function(data) {
-                _.forEach(data.refs, function(ref) {
-                  if (ref.email.length)
-                    recipients.push(ref.$shortFormat());
-                });
+            promises.push(card.$reload().then(function(card) {
+              _.forEach(card.refs, function(ref) {
+                if (ref.email.length)
+                  recipients.push(ref.$shortFormat());
               });
             }));
           }
