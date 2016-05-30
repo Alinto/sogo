@@ -1,5 +1,26 @@
 #!/bin/bash
 
+echo "
+========================================================================
+WARNING
+========================================================================
+This script modifies the SOGo database schema so that it complies to the
+new optional 9-table model.  It is *not* part of a normal upgrade.
+
+It is *strongly* recommended you backup your database before proceeding.
+
+In other words, only run this if you absolutely know what you're doing.
+"
+
+while [[ -z "${GO_WITH_INSTALL}" ]]; do
+    read -p "Do you really want to proceed (yes/no)? " GO_WITH_INSTALL
+done
+
+if [[ ${GO_WITH_INSTALL:0:1} != "Y" && ${GO_WITH_INSTALL:0:1} != "y" ]]; then
+    echo "User-aborted."
+    exit;
+fi
+
 STOREFIELDS="c_name, c_content, c_creationdate, c_lastmodified, c_version, c_deleted"
 APPOINTMENTFIELDS="c_name, c_uid, c_startdate, c_enddate, c_cycleenddate, c_title, c_participants, c_isallday, c_iscycle, c_cycleinfo, \
 c_classification, c_isopaque, c_status, c_priority, c_location, c_orgmail, c_partmails, c_partstates, c_category, c_sequence, c_component, c_nextalarm, c_description"
