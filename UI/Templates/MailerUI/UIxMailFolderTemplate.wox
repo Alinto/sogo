@@ -294,6 +294,7 @@
               </div>
               <div class="sg-md-body">
                 <div>{{currentMessage.subject}}</div>
+                <div class="sg-tile-size" ng-bind="currentMessage.size"><!-- size --></div>
               </div>
             </div>
             <div class="sg-tile-icons">

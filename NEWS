@@ -6,6 +6,7 @@ Enhancements
  - [web] Gravatar service can now be disabled (#3600)
  - [web] collapsable mail accounts (#3493)
  - [web] show progress indicator when loading messages and cards
+ - [web] display messages sizes in list of Mail module
 
 Bug fixes
  - [web] fixed creation of chip on blur (sgTransformOnBlur directive)

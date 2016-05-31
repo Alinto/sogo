@@ -1,5 +1,12 @@
 /// MailerUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
+.view-list {
+  // Overwrite style from list.scss to make some place for .sg-tile-icons
+  md-list-item._md-button-wrap > div.md-button:first-child {
+    padding-right: 0;
+  }
+}
+
 // Container for the linear progress bar of the quota
 .sg-quota {
   padding-bottom: $baseline-grid;

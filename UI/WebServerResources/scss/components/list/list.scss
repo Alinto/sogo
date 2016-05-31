@@ -158,23 +158,27 @@ div.md-tile-left {
 
 .sg {
   &-color-chip {
-    display: block;
-    border-radius: 50%;
-    margin: 0 $bl;
     border-color: white;
+    border-radius: 50%;
     border-style: solid;
-    width: $sg-color-chip-width;
+    display: block;
     height: $sg-color-chip-width;
+    margin: 0 $bl;
+    width: $sg-color-chip-width;
   }
 
   &-tile-content {
     flex: 1;
     overflow: hidden; // required in Firefox
-    .sg-tile-date {
+    .sg-tile-date, .sg-tile-size {
+      flex-shrink: 0;
       font-size: sg-size(body);
       font-weight: $sg-font-light;
       line-height: $sg-line-height-2;
-      flex-shrink: 0;
+      margin-left: 3px;
+    }
+    .sg-tile-size {
+      font-size: sg-size(caption);
     }
     .#{$md}-subhead {
       @extend .#{$md}-body-1;
@@ -195,13 +199,14 @@ div.md-tile-left {
       }
     }
   }
+
   // Small tile of vertically-aligned icons
   &-tile-icons {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
-    width: (2 * $mg);
+    width: (3 * $bl);
     height: (2 + $sg-font-size-1) * 4; // (vertical padding + icon size) * max number of icons
   }
 
@@ -271,18 +276,12 @@ div.md-tile-left {
   }
 }
 
-sg-avatar-image {
-  img {
-    border-radius: 50%;
-  }
-}
-
 // Avatar placeholder
 // ------------------------------------
 .md-avatar:before,
 .md-avatar md-icon,
 sg-avatar-image md-icon,
-sg-avatar-image md-icon.material-icons {
+sg-avatar-image .material-icons {
   color: rgba(0, 0, 0, 0.26);
   font-family: 'Material Icons';
   font-size: $sg-avatar-width;
@@ -298,6 +297,13 @@ sg-avatar-image md-icon.material-icons {
   }
 }
 
+/*------------------------------------*\
+    SG-AVATAR-IMAGE DIRECTIVE
+\*------------------------------------*/
+
+sg-avatar-image img {
+  border-radius: 50%;
+}
 
 /*------------------------------------*\
     SELECTABLE AVATARS
