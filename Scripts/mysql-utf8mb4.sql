@@ -36,7 +36,7 @@
 --   OCSCacheFolderURL       -> sogo_cache_folder
 --   OCSEMailAlarmsFolderURL -> sogo_alarms_folder
 --   OCSFolderInfoURL        -> sogo_folder_info
---   OCSSessionsFolderURL    -> sogo_sessions_info
+--   OCSSessionsFolderURL    -> sogo_sessions_folder
 --   OCSStoreURL             -> sogo_store
 --   SOGoProfileURL          -> sogo_user_profile
 --
@@ -138,7 +138,7 @@ CREATE TABLE sogo_quick_contact (
 	PRIMARY KEY (c_folder_id,c_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
-CREATE TABLE sogo_sessions_info (
+CREATE TABLE sogo_sessions_folder (
 	c_id           varchar(255) NOT NULL,
 	c_value        varchar(255) NOT NULL,
 	c_creationdate int(11)      NOT NULL,
