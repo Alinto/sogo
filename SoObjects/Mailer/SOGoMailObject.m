@@ -790,7 +790,7 @@ static BOOL debugSoParts       = NO;
       // See [UIxMailPartViewer _filenameForAttachment:]
       filenameURL = [[filename stringByReplacingString: @"/" withString: @"-"] stringByEscapingURL];
       currentFile = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  filename, @"filename",
+                                  [filename stringByUnescapingURL], @"filename",
                                   [mimeType lowercaseString], @"mimetype",
                                   path, @"path",
                                   [part objectForKey: @"encoding"], @"encoding",

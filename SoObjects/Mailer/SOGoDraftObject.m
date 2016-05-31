@@ -1294,7 +1294,7 @@ static NSString    *userAgent      = nil;
     {
       s = [self mimeTypeForExtension:[_name pathExtension]];
       if ([_name length] > 0)
-	s = [s stringByAppendingFormat: @"; name=\"%@\"", _name];
+	s = [s stringByAppendingFormat: @"; name=\"%@\"", [_name stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]];
     }
 
   return s;
@@ -1320,7 +1320,7 @@ static NSString    *userAgent      = nil;
     cdtype = @"attachment";
 
   cd = [cdtype stringByAppendingString: @"; filename=\""];
-  cd = [cd stringByAppendingString: _name];
+  cd = [cd stringByAppendingString: [_name stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]];
   cd = [cd stringByAppendingString: @"\""];
 
   // TODO: add size parameter (useful addition, RFC 2183)
