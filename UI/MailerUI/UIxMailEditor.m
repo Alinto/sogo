@@ -523,10 +523,9 @@ static NSArray *infoKeys = nil;
   if (!attachedFiles)
     attachedFiles = [NSMutableArray new];
 
-  newFilename = filename;
-
-  baseFilename = [filename stringByDeletingPathExtension];
-  extension = [filename pathExtension];
+  newFilename = [filename stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""]; /* to real filename */
+  baseFilename = [newFilename stringByDeletingPathExtension];
+  extension = [newFilename pathExtension];
   variation = 0;
   while ([attachedFiles containsObject: newFilename])
     {
