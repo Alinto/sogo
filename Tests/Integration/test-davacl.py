@@ -190,20 +190,27 @@ class DAVAclTest(unittest.TestCase):
         delete = webdavlib.WebDAVDELETE(self.resource)
         self.client.execute(delete)
 
-    def _versitLine(self, line):
-        key, value = line.split(":")
-        semicolon = key.find(";")
-        if semicolon > -1:
-            key = key[:semicolon]
+    def _versitLine(self, previous_key, line):
+        if line[:1] == ' ' and previous_key:
+            key, value = (previous_key, line[1:])
+        else:
+            key, value = line.split(":")
+            semicolon = key.find(";")
+            if semicolon > -1:
+                key = key[:semicolon]
 
         return (key, value)
 
     def versitDict(self, event):
         versitStruct = {}
+        key = ''
         for line in event.splitlines():
-            (key, value) = self._versitLine(line)
-            if not (key == "BEGIN" or key == "END"):
-                versitStruct[key] = value
+            (key, value) = self._versitLine(key, line)
+            if not (key == "BEGIN" or key == "UID" or key == "END"):
+                if key in versitStruct:
+                    versitStruct[key] += value
+                else:
+                    versitStruct[key] = value
 
         return versitStruct
 
@@ -623,15 +630,9 @@ class DAVCalendarAclTest(DAVAclTest):
         icsClass = self.classToICSClass[event_class]
         expected_dict = { "VERSION": "2.0",
                           "PRODID": "-//Inverse//Event Generator//EN",
-                          "SEQUENCE": "0",
-                          "TRANSP": "OPAQUE",
-                          "UID": "12345-%s-%s-event.ics" % (icsClass,
-                                                      icsClass.lower()),
                           "SUMMARY": "(%s event)" % icsClass.capitalize(),
                           "DTSTART": "20090805T100000Z",
                           "DTEND": "20090805T140000Z",
-                          "CLASS": icsClass,
-                          "CREATED": "20090805T100000Z",
                           "DTSTAMP": "20090805T100000Z",
                           "X-SOGO-SECURE": "YES" }
         event_dict = self.versitDict(event)
