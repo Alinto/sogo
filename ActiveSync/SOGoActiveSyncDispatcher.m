@@ -1438,7 +1438,7 @@ void handle_eas_terminate(int signum)
                   if ([[theResponse headerForKey: @"Content-Type"] isEqualToString:@"application/vnd.ms-sync.multipart"])
                     {
                       NSData *d;
-                      d = [currentBodyPart fetchBLOB];
+                      d = [currentBodyPart fetchBLOBWithPeek: YES];
 
                       [s appendFormat: @"<Part>%d</Part>", i+1];
                       [partLength addObject: [NSNumber numberWithInteger: [d length]]];
