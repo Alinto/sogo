@@ -1220,7 +1220,7 @@ void handle_eas_terminate(int signum)
       [theResponse setHeader: [NSString stringWithFormat: @"%@/%@", [[currentBodyPart partInfo] objectForKey: @"type"], [[currentBodyPart partInfo] objectForKey: @"subtype"]]
                  forKey: @"Content-Type"];
 
-      [theResponse setContent: [currentBodyPart fetchBLOB] ];
+      [theResponse setContent: [currentBodyPart fetchBLOBWithPeek: YES] ];
     }
   else
     {
@@ -1447,7 +1447,7 @@ void handle_eas_terminate(int signum)
                   else
                     {
                       NSString *a;
-                      a = [[currentBodyPart fetchBLOB] activeSyncRepresentationInContext: context];
+                      a = [[currentBodyPart fetchBLOBWithPeek: YES] activeSyncRepresentationInContext: context];
 
                       [s appendFormat: @"<Range>0-%d</Range>", [a length]-1];
                       [s appendFormat: @"<Data>%@</Data>", a];
