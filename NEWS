@@ -4,6 +4,7 @@
 Bug fixes
  - sanity checks for events with bogus timezone offsets
  - strip X- tags when securing content (#3695)
+ - when using EAS/ItemOperations, use IMAP PEEK operation
 
 2.3.11 (2016-05-12)
 -------------------
