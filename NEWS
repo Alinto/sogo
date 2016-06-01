@@ -22,6 +22,7 @@ Bug fixes
  - [web] improved CSS sanitizer for HTML messages (#3700)
  - [web] fixed toolbar of mail editor when sender address was too long (#3705)
  - [core] strip X- tags when securing content (#3695)
+ - [eas] when using EAS/ItemOperations, use IMAP PEEK operation
 
 3.1.0 (2016-05-18)
 ------------------
