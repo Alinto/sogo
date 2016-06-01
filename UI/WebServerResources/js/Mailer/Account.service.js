@@ -157,7 +157,8 @@
               _visit(_this.$mailboxes);
             }
           }
-          _this.$expanded |= (Account.$accounts.length == 1); // Always expand single account
+          if (Account.$accounts)
+            _this.$expanded |= (Account.$accounts.length == 1); // Always expand single account
           _this.$flattenMailboxes({reload: true});
         });
 
