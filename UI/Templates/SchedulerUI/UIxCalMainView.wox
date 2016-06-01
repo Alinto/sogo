@@ -508,7 +508,10 @@
               <md-icon>arrow_back</md-icon>
             </md-button>
             <md-input-container class="md-flex" md-no-float="md-no-float">
-              <input name="folderSearch" type="search" label:placeholder="Search"/>
+              <input name="folderSearch" type="search" var:minlength="minimumSearchLength" label:placeholder="Search"/>
+              <div ng-messages="searchForm.folderSearch.$error" ng-show="searchForm.folderSearch.$dirty">
+                <div ng-message="minlength"><var:string value="minimumSearchLengthLabel"/></div>
+              </div>
             </md-input-container>
             <md-input-container flex="25">
               <md-select label:aria-label="Search scope">

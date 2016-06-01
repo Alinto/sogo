@@ -8,6 +8,7 @@ Enhancements
  - [web] show progress indicator when loading messages and cards
  - [web] display messages sizes in list of Mail module
  - [web] link event's attendees email addresses to mail composer
+ - [web] respect SOGoSearchMinimumWordLength when searching for events or tasks
 
 Bug fixes
  - [web] fixed creation of chip on blur (sgTransformOnBlur directive)
