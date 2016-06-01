@@ -23,6 +23,7 @@ Bug fixes
  - [web] improved CSS sanitizer for HTML messages (#3700)
  - [web] fixed toolbar of mail editor when sender address was too long (#3705)
  - [web] fixed decoding of filename in attachments (quotes and Cyrillic characters) (#2272)
+ - [web] fixed recipients when replying from a message in the Sent mailbox (#2625)
  - [core] strip X- tags when securing content (#3695)
  - [eas] when using EAS/ItemOperations, use IMAP PEEK operation
 

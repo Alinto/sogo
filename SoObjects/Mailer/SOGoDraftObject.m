@@ -735,6 +735,7 @@ static NSString    *userAgent      = nil;
 //
 - (void) _fillInReplyAddresses: (NSMutableDictionary *) _info
 		    replyToAll: (BOOL) _replyToAll
+               fromSentMailbox: (BOOL) _fromSentMailbox
 		      envelope: (NGImap4Envelope *) _envelope
 {
   /*
@@ -746,8 +747,6 @@ static NSString    *userAgent      = nil;
     Note: we cannot check reply-to, because Cyrus even sets a reply-to in the
           envelope if none is contained in the message itself! (bug or
           feature?)
-    
-    TODO: what about sender (RFC 822 3.6.2)
   */
   NSMutableArray *to, *addrs, *allRecipients;
   NSArray *envelopeAddresses;
@@ -789,7 +788,9 @@ static NSString    *userAgent      = nil;
 
   addrs = [NSMutableArray array];
   envelopeAddresses = [_envelope replyTo];
-  if ([envelopeAddresses count])
+  if (_fromSentMailbox)
+    [addrs setArray: [_envelope to]];
+  else if ([envelopeAddresses count])
     [addrs setArray: envelopeAddresses];
   else
     [addrs setArray: [_envelope from]];
@@ -963,17 +964,21 @@ static NSString    *userAgent      = nil;
 - (void) fetchMailForReplying: (SOGoMailObject *) sourceMail
 			toAll: (BOOL) toAll
 {
+  BOOL fromSentMailbox;
   NSString *msgID;
   NSMutableDictionary *info;
   NGImap4Envelope *sourceEnvelope;
 
+  fromSentMailbox = [[sourceMail container] isKindOfClass: [SOGoSentFolder class]];
   [sourceMail fetchCoreInfos];
 
   info = [NSMutableDictionary dictionaryWithCapacity: 16];
   [info setObject: [sourceMail subjectForReply] forKey: @"subject"];
 
   sourceEnvelope = [sourceMail envelope];
-  [self _fillInReplyAddresses: info replyToAll: toAll
+  [self _fillInReplyAddresses: info
+                   replyToAll: toAll
+              fromSentMailbox: fromSentMailbox
                      envelope: sourceEnvelope];
   msgID = [sourceEnvelope messageID];
   if ([msgID length] > 0)
