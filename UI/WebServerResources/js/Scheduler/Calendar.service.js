@@ -432,8 +432,8 @@
 
   /**
    * @function $reset
-   * @memberof Mailbox.prototype
-   * @desc Reset the original state the mailbox's data.
+   * @memberof Calendar.prototype
+   * @desc Reset the original state the calendar's data.
    */
   Calendar.prototype.$reset = function() {
     var _this = this;

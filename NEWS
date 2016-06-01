@@ -7,6 +7,7 @@ Enhancements
  - [web] collapsable mail accounts (#3493)
  - [web] show progress indicator when loading messages and cards
  - [web] display messages sizes in list of Mail module
+ - [web] link event's attendees email addresses to mail composer
 
 Bug fixes
  - [web] fixed creation of chip on blur (sgTransformOnBlur directive)

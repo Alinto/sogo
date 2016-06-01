@@ -18,7 +18,7 @@
           <md-icon ng-repeat="i in ::editor.component.priority | range">star</md-icon>
         </div>
         <md-menu>
-          <md-button label:aria-label="More options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
+          <md-button label:aria-label="More options" class="md-icon-button" ng-click="$mdOpenMenu($event)">
             <md-icon>more_vert</md-icon>
           </md-button>
           <md-menu-content>
@@ -65,6 +65,11 @@
             </md-menu-item>
           </md-menu-content>
         </md-menu>
+        <md-button class="md-icon-button"
+                   ng-show="editor.component.attendees.length > 0"
+                   ng-click="editor.newMessageWithAllRecipients($event)">
+          <md-icon label:aria-label="Email Attendees">mail</md-icon>
+        </md-button>
         <md-button class="md-icon-button" ng-click="editor.close()">
           <md-icon label:aria-label="Close">close</md-icon>
         </md-button>
@@ -150,7 +155,11 @@
                   <div class="md-contact-avatar">
                     <sg-avatar-image sg-email="$chip.email" size="32"><!-- avatar --></sg-avatar-image>
                   </div>
-                  <div class="md-contact-name">{{$chip.name}}</div>
+                  <div class="md-contact-name">
+                    <a href="#"
+                       label:aria-label="Email Organizer"
+                       ng-click="editor.newMessageWithRecipient($event, $chip.name, $chip.email)">{{$chip.name}}</a>
+                  </div>
                 </md-chip-template>
               </md-chips>
             </div>
@@ -166,7 +175,10 @@
                   <div class="md-contact-avatar">
                     <sg-avatar-image sg-email="$chip.email" size="32"><!-- avatar --></sg-avatar-image>
                   </div>
-                  <div class="md-contact-name">{{$chip.name}}</div>
+                  <div class="md-contact-name">
+                    <a href="#"
+                       ng-click="editor.newMessageWithRecipient($event, $chip.name, $chip.email)">{{$chip.name}}</a>
+                  </div>
                   <md-icon ng-class="'icon-' + $chip.status"><!-- partstat --></md-icon>
                 </md-chip-template>
               </md-chips>

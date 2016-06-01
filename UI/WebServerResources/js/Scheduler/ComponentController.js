@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  ComponentController.$inject = ['$rootScope', '$mdDialog', 'Calendar', 'Component', 'AddressBook', 'Alarm', 'stateComponent'];
-  function ComponentController($rootScope, $mdDialog, Calendar, Component, AddressBook, Alarm, stateComponent) {
+  ComponentController.$inject = ['$rootScope', '$mdDialog', 'Calendar', 'Component', 'AddressBook', 'Alarm', 'Account', 'stateComponent'];
+  function ComponentController($rootScope, $mdDialog, Calendar, Component, AddressBook, Alarm, Account, stateComponent) {
     var vm = this, component;
 
     vm.calendarService = Calendar;
@@ -15,6 +15,8 @@
     vm.component = stateComponent;
     vm.close = close;
     vm.cardFilter = cardFilter;
+    vm.newMessageWithAllRecipients = newMessageWithAllRecipients;
+    vm.newMessageWithRecipient = newMessageWithRecipient;
     vm.edit = edit;
     vm.editAllOccurrences = editAllOccurrences;
     vm.reply = reply;
@@ -42,6 +44,50 @@
     function cardFilter($query) {
       AddressBook.$filterAll($query);
       return AddressBook.$cards;
+    }
+
+    function newMessageWithAllRecipients($event) {
+      var recipients = _.map(vm.component.attendees, function(attendee) {
+        return attendee.name + " <" + attendee.email + ">";
+      });
+      _newMessage($event, recipients);
+    }
+
+    function newMessageWithRecipient($event, name, email) {
+      _newMessage($event, [name + " <" + email + ">"]);
+    }
+
+    function _newMessage($event, recipients) {
+      Account.$findAll().then(function(accounts) {
+        var account = _.find(accounts, function(o) {
+          if (o.id === 0)
+            return o;
+        });
+
+        // We must initialize the Account with its mailbox
+        // list before proceeding with message's creation
+        account.$getMailboxes().then(function(mailboxes) {
+          account.$newMessage().then(function(message) {
+            angular.extend(message.editable, { to: recipients, subject: vm.component.summary });
+            $mdDialog.show({
+              parent: angular.element(document.body),
+              targetEvent: $event,
+              clickOutsideToClose: false,
+              escapeToClose: false,
+              templateUrl: '../Mail/UIxMailEditor',
+              controller: 'MessageEditorController',
+              controllerAs: 'editor',
+              locals: {
+                stateAccount: account,
+                stateMessage: message
+              }
+            });
+          });
+        });
+      });
+
+      $event.preventDefault();
+      $event.stopPropagation();
     }
 
     function edit() {
