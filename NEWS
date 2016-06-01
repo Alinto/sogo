@@ -2,9 +2,10 @@
 -------------------
 
 Bug fixes
- - sanity checks for events with bogus timezone offsets
- - strip X- tags when securing content (#3695)
- - when using EAS/ItemOperations, use IMAP PEEK operation
+ - [core] sanity checks for events with bogus timezone offsets
+ - [core] strip X- tags when securing content (#3695)
+ - [eas] when using EAS/ItemOperations, use IMAP PEEK operation
+ - [web] fixed recipients when replying from a message in the Sent mailbox (#2625)
 
 2.3.11 (2016-05-12)
 -------------------
