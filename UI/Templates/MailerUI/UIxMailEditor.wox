@@ -118,7 +118,7 @@
           <li class="attachButton"><span class="button fileinput-button"><span><img rsrc:src="title_attachment_14x14.png" /> <var:string label:value="Attach"/></span><input id="fileUpload" type="file" name="attachments" tabindex="-1" multiple="multiple"/></span></li>
           <var:foreach list="attachmentAttrs" item="attachment"
           ><li class="progressDone" var:data-filename="attachment.filename">
-            <i class="icon-attachment"><!-- icon --></i><a var:href="attachment.url" target="_new"><var:string value="attachment.filename"/></a><span class="muted">(<var:string value="attachment.size" formatter="sizeFormatter" />)</span>
+            <i class="icon-attachment"><!-- icon --></i><a var:href="attachment.url" target="_new"><var:string value="attachment.filename" const:escapeHTML="YES"/></a><span class="muted">(<var:string value="attachment.size" formatter="sizeFormatter"/>)</span>
           </li></var:foreach>
         </ul>
       </div>
