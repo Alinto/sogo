@@ -3,6 +3,18 @@
 "Close" = "Schließen";
 "Preferences saved" = "Einstellungen gespeichert";
 
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Ungespeicherte Änderungen";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Möchten Sie Ihre an der Konfiguration gemachten Änderungen speichern?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Speichern";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Nicht speichern";
+
 /* tabs */
 "General" = "Allgemein";
 "Calendar Options" = "Kalender";
@@ -24,7 +36,7 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Automatische Abwesenheitsnachricht aktivieren";
-"Auto reply message" = "Mit folgender Nachricht auf jede eingehende E-Mail antworten";
+"Auto reply message" = "Mit folgender Nachricht auf jede eingehende E-Mail automatisch antworten";
 "Email addresses (separated by commas)" = "E-Mail-Adressen (getrennt durch Kommata)";
 "Add default email addresses" = "Standardadresse hinzufügen";
 "Days between responses" = "Tage zwischen automatischen Antworten";
@@ -87,11 +99,15 @@
 "timeFmt_3" = "";
 "timeFmt_4" = "";
 
+/* Timezone autocompletion */
+"No matches found." = "Keine Treffer gefunden.";
+
 /* calendar */
 "Week begins on" = "Erster Wochentag";
 "Day start time" = "Tagesanfang";
 "Day end time" = "Tagesende";
 "Day start time must be prior to day end time." = "Der Tagesanfang muss vor dem Tagesende liegen.";
+"Week days to display" = "Anzuzeigende Wochentage";
 "Show time as busy outside working hours" = "Zeiten außerhalb der Arbeitszeit als belegt anzeigen";
 "First week of year" = "Erste Woche des Jahres";
 "Enable reminders for Calendar items" = "Termin- und Aufgabenerinnerungen aktivieren";
@@ -127,6 +143,7 @@
 "Labels" = "Bezeichnungen";
 "Label" = "Schlagwort";
 "Show subscribed mailboxes only" = "Nur abonnierte Ordner anzeigen";
+"Synchronize only default mail folders (EAS)" = "Nur Standard-Mail-Ordner synchronisieren (EAS)";
 "Sort messages by threads" = "Nachrichten nach Thema sortieren";
 "When sending mail, add unknown recipients to my" = "Unbekannte Empfänger meiner E-Mails hinzufügen zu";
 "Address Book" = "Adressbuch";
@@ -142,6 +159,10 @@
 "Compose messages in" = "Nachrichten verfassen in";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Reintext";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Standard-Schriftgröße";
+
 "Display remote inline images" = "Entfernte eingebettete Bilder anzeigen";
 "displayremoteinlineimages_never" = "Niemals";
 "displayremoteinlineimages_always" = "Immer";
@@ -237,6 +258,7 @@
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
 "Refresh View" = "Ansicht aktualisieren";
 "refreshview_manually" = "Manuell";
 "refreshview_every_minute" = "Minütlich";
@@ -274,7 +296,7 @@
 "Add an action" = "Aktion hinzufügen";
 "For incoming messages that" = "Für eingehende Nachrichten die";
 "match all of the following rules" = "mit allen der folgenden Regeln übereinstimmen";
-"match any of the following rules" = "mit einer der folgenden Regeln übereinstimmen";
+"match any of the following rules" = "mit mindestens einer der folgenden Regeln übereinstimmen";
 "match all messages" = "mit allen Nachrichten übereinstimmen";
 "Perform these actions" = "Führe folgende Aktionen aus";
 "Untitled Filter" = "Namenloser Filter";
@@ -343,6 +365,7 @@
 "TLS" = "TLS";
 
 /* Avatars */
+"Use Gravatar" = "Gravatar benutzen";
 "Alternate Avatar" = "Alternativer Avatar";
 "none" =  "Kein";
 "identicon" = "Passbild";

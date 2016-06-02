@@ -199,10 +199,6 @@
 "Back" = "Zurück";
 "Select All" = "Alles auswählen";
 "Copy contacts" = "Kontakte kopieren";
-
-/* Notification on the number of messages successfully copied */
-"%{0} cards copied" = "%{0} Karten kopiert";
-
 "More messages options" = "Weitere Nachrichtenoptionen";
 "New Contact" = "Neuer Kontakt";
 "Close" = "Schließen";
