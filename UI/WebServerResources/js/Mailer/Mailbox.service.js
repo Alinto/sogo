@@ -726,8 +726,8 @@
       _this.$shadowData = _this.$omit();
       Mailbox.$log.debug(JSON.stringify(data, undefined, 2));
       return data;
-    }, function(data) {
-      Mailbox.$log.error(JSON.stringify(data, undefined, 2));
+    }, function(response) {
+      Mailbox.$log.error(JSON.stringify(response.data, undefined, 2));
       // Restore previous version
       _this.$reset();
     });
@@ -750,15 +750,7 @@
    * @return an object literal copy of the Mailbox instance
    */
   Mailbox.prototype.$omit = function() {
-    var mailbox = {};
-    angular.forEach(this, function(value, key) {
-      if (key != 'constructor' &&
-          key != 'children' &&
-          key[0] != '$') {
-        mailbox[key] = value;
-      }
-    });
-    return mailbox;
+    return { name: this.name };
   };
 
   /**

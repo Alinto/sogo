@@ -1,3 +1,9 @@
+3.1.2 (2016-MM-DD)
+------------------
+
+Bug fixes
+ - [web] fixed error handling when renaming a mailbox
+
 3.1.1 (2016-06-02)
 ------------------
 
