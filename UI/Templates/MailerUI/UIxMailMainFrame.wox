@@ -70,8 +70,7 @@
             <md-list>
               <md-list-item md-virtual-repeat="folder in account" md-item-size="48" md-on-demand="md-on-demand"
                             class="md-default-theme md-background md-hue-1"
-                            ng-class="{'md-bg': folder.id == app.service.selectedFolder.id}"
-                            ng-dblclick="app.editFolder(folder)">
+                            ng-class="{'md-bg': folder.id == app.service.selectedFolder.id}">
                 <div ng-class="'sg-child-level-' + folder.level">
                   <md-icon class="ng-hide"
                            ng-hide="folder.children.length">{{app.metadataForFolder(folder).icon}}</md-icon>
@@ -83,6 +82,7 @@
                 </div>
                 <p class="sg-item-name ng-hide"
                    ng-click="app.selectFolder($event, account, folder)"
+                   ng-dblclick="app.editFolder(folder)"
                    ng-show="app.editMode != folder.path">
                   {{app.metadataForFolder(folder).name}}
                   <span class="sg-counter-badge ng-hide" ng-show="folder.unseenCount">{{folder.unseenCount}}</span>
