@@ -1,4 +1,4 @@
-3.1.1 (2016-MM-DD)
+3.1.1 (2016-06-02)
 ------------------
 
 Enhancements
@@ -9,8 +9,12 @@ Enhancements
  - [web] display messages sizes in list of Mail module
  - [web] link event's attendees email addresses to mail composer
  - [web] respect SOGoSearchMinimumWordLength when searching for events or tasks
+ - [web] updated CKEditor to version 4.5.9
+ - [web] CKEditor: switched to the minimalist skin
+ - [web] CKEditor: added the base64image plugin
 
 Bug fixes
+ - [core] strip X- tags when securing content (#3695)
  - [web] fixed creation of chip on blur (sgTransformOnBlur directive)
  - [web] fixed composition of new messages from Contacts module
  - [web] fixed autocompletion of LDAP-based groups (#3673)
@@ -24,7 +28,6 @@ Bug fixes
  - [web] fixed toolbar of mail editor when sender address was too long (#3705)
  - [web] fixed decoding of filename in attachments (quotes and Cyrillic characters) (#2272)
  - [web] fixed recipients when replying from a message in the Sent mailbox (#2625)
- - [core] strip X- tags when securing content (#3695)
  - [eas] when using EAS/ItemOperations, use IMAP PEEK operation
 
 3.1.0 (2016-05-18)
