@@ -53,14 +53,15 @@
             </div>
           </md-subheader>
           <md-list ng-sortable="app.sortableCalendars">
-            <md-list-item ng-repeat="calendar in app.service.$calendars | filter:app.filter"
-                          ng-dblclick="app.editFolder(calendar)">
+            <md-list-item ng-repeat="calendar in app.service.$calendars | filter:app.filter">
               <md-checkbox ng-model="calendar.active"
                            ng-class="calendar.getClassName('checkbox')"
                            ng-true-value="1"
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
-              <p class="sg-item-name" ng-show="app.editMode != calendar.id">
+              <p class="sg-item-name"
+                 ng-dblclick="app.editFolder(calendar)"
+                 ng-show="app.editMode != calendar.id">
                 {{calendar.name}}
                 <span class="sg-counter-badge" ng-show="calendar.activeTasks">{{calendar.activeTasks}}</span>
               </p>
@@ -151,14 +152,15 @@
             </div>
           </md-subheader>
           <md-list ng-sortable="app.sortableSubscriptions">
-            <md-list-item ng-repeat="calendar in app.service.$subscriptions | filter:app.filter"
-                          ng-dblclick="app.editFolder(calendar)">
+            <md-list-item ng-repeat="calendar in app.service.$subscriptions | filter:app.filter">
               <md-checkbox ng-model="calendar.active"
                            ng-class="calendar.getClassName('checkbox')"
                            ng-true-value="1"
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
-              <p class="sg-item-name" ng-show="app.editMode != calendar.id">
+              <p class="sg-item-name"
+                 ng-dblclick="app.editFolder(calendar)"
+                 ng-show="app.editMode != calendar.id">
                 {{calendar.name}}
                 <span class="sg-counter-badge" ng-show="calendar.activeTasks">{{calendar.activeTasks}}</span>
               </p>
@@ -225,14 +227,15 @@
             </div>
           </md-subheader>
           <md-list ng-sortable="app.sortableWebCalendars">
-            <md-list-item ng-repeat="calendar in app.service.$webcalendars | filter:app.filter"
-                          ng-dblclick="app.editFolder(calendar)">
+            <md-list-item ng-repeat="calendar in app.service.$webcalendars | filter:app.filter">
               <md-checkbox ng-model="calendar.active"
                            ng-class="calendar.getClassName('checkbox')"
                            ng-true-value="1"
                            ng-false-value="0"
                            label:aria-label="Enable"><!-- enable --></md-checkbox>
-              <p class="sg-item-name" ng-show="app.editMode != calendar.id">
+              <p class="sg-item-name"
+                 ng-dblclick="app.editFolder(calendar)"
+                 ng-show="app.editMode != calendar.id">
                 <span class="ng-hide" ng-show="calendar.$error">
                   <md-icon class="md-warn">warning</md-icon>
                   <md-tooltip>{{ calendar.$error }}</md-tooltip>
