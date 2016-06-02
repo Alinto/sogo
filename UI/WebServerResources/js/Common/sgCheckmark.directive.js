@@ -50,7 +50,7 @@
       compile: compile
     };
 
-    function compile (tElement, tAttrs) {
+    function compile(tElement, tAttrs) {
 
       // Attach a click handler in compile in order to immediately stop propagation
       // (especially for ng-click) when the checkmark is disabled.

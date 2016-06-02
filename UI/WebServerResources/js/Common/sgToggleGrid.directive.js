@@ -51,7 +51,6 @@
         }
 
         function render() {
-          console.debug(ngModelCtrl.$viewValue);
           var flattenedDays = ngModelCtrl.$viewValue;
           modelDays = ngModelCtrl.$viewValue;
           if (tAttrs.sgToggleGridAttr) {

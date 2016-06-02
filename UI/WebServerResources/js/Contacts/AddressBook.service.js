@@ -178,19 +178,6 @@
 
   /**
    * @memberOf AddressBook
-   * @desc Fetch list of cards and return an AddressBook instance.
-   * @param {string} addressbookId - the addressbook identifier
-   * @returns an AddressBook object instance
-   */
-  AddressBook.$find = function(addressbookId) {
-    var futureAddressBookData = AddressBook.$Preferences.ready().then(function() {
-      return AddressBook.$$resource.fetch(addressbookId, 'view', AddressBook.$query);
-    });
-    return new AddressBook(futureAddressBookData);
-  };
-
-  /**
-   * @memberOf AddressBook
    * @desc Subscribe to another user's addressbook and add it to the list of addressbooks.
    * @param {string} uid - user id
    * @param {string} path - path of folder for specified user
