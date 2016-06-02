@@ -20,7 +20,6 @@
 "Catalan" = "Català";
 "ChineseTaiwan" = "Chinese (Taiwan)";
 "Croatian" = "Hrvatski";
-"Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -32,9 +31,11 @@
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
 "Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "Polish" = "Polski";
+"Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
@@ -77,7 +78,6 @@
 "Confirmation" = "Vahvistus";
 "Cancel" = "Peruuta";
 "Please wait..." = "Odota hetki...";
-"AboutBox" = "Kehittänyt Inverse, SOGo on täysiverinen groupware palvelin jossa on keskitytty skaalautuvuuteen ja yksinkertaisuuteen. <br/><br/>⏎ SOGo tarjoaa rikkaan AJAX-pohjaisen web-käyttöliittymän ja tukee useita natiivi asiakasohjelmistoja käyttämällä protokolla standardeja kuten CalDAV ja CardDAV. <br/> ⏎ SOGon jakelu tapahtuu <a href=\"http://gnu.org/licenses/gpl.html\"> GNU GPL </ a> version 2 tai uudempi lisenssillä ja osat jaetaan GNU LGPL version 2 lisenssillä. Tämä on vapaa ohjelma: voit vapaasti muuttaa ja jakaa sitä edelleen. Ohjelmistolla EI OLE TAKUUTA lain sallimissa puitteissa. <br/> ⏎ Katso <a href=\"http://www.sogo.nu/en/support/community.html\"> tämä sivu </> saadaksesi tietoa eri tukivaihtoehdoista.";
 "Close" = "Sulje";
 "Missing search parameter" = "Puuttuva hakuehto";
 "Missing type parameter" = "Puuttuva tyyppiehto";

@@ -107,6 +107,7 @@
 "Day start time" = "Début de la journée";
 "Day end time" = "Fin de la journée";
 "Day start time must be prior to day end time." = "Le début de la journée doit être avant la fin de la journée.";
+"Week days to display" = "Jours de la semaine à afficher";
 "Show time as busy outside working hours" = "Afficher comme occupé pendant les heures non-ouvrables";
 "First week of year" = "Première semaine de l'année";
 "Enable reminders for Calendar items" = "Activer les rappels pour les éléments du calendrier";
@@ -254,8 +255,10 @@
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
 "Refresh View" = "Actualisation";
 "refreshview_manually" = "Manuellement";
 "refreshview_every_minute" = "Chaque minute";
@@ -362,6 +365,7 @@
 "TLS" = "TLS";
 
 /* Avatars */
+"Use Gravatar" = "Utiliser Gravatar";
 "Alternate Avatar" = "Avatar alternatif";
 "none" =  "Aucun";
 "identicon" = "Icône Ident";

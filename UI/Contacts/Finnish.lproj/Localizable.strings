@@ -199,10 +199,6 @@
 "Back" = "Takaisin";
 "Select All" = "Valitse kaikki";
 "Copy contacts" = "Kopioi yhteystiedot";
-
-/* Notification on the number of messages successfully copied */
-"%{0} cards copied" = "%{0} korttia kopioitu";
-
 "More messages options" = "Lisää viestiasetuksia";
 "New Contact" = "Uusi yhteystieto";
 "Close" = "Sulje";

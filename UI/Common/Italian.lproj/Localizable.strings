@@ -41,6 +41,7 @@
      = "Potenzialmente chiunque su internet può accedere alla tua rubrica \"%{0}\", anche se non ha alcun account di sistema. Questa informazione può essere resa pubblica su internet?";
 "Give Access" = "Dai Accesso";
 "Keep Private" = "Mantieni Privato";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Impossibile sottoscrivere la cartella!";
@@ -76,16 +77,19 @@
 "45 minutes" = "45 minuti";
 "1 hour" = "1 ora";
 "1 day" = "1 giorno";
+
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Annulla";
 "Yes" = "Sì";
 "No" = "No";
+
 /* alarms */
 "Reminder" = "Promemoria";
 "Start" = "Inizio";
 "Due Date" = "Scadenza";
 "Location" = "Luogo";
+
 /* mail labels */
 "Important" = "Importante";
 "Work" = "Lavoro";
@@ -104,6 +108,15 @@
 "Loading" = "Caricamento";
 "No such user." = "Nessun utente.";
 "You cannot (un)subscribe to a folder that you own!" = "Non puoi (dis)iscriverti ad una cartella di cui sei proprietario!";
+
+/* Authentication username */
+"Username" = "Nome utente";
+
+/* Authentication password */
+"Password" = "Password";
+
+/* Authentication failed */
+"Wrong username or password." = "Username o password non corretti.";
 
 /* Error message display bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Inserisci almeno %{minimumSearchLength} caratteri";

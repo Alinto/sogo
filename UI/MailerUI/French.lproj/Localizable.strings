@@ -101,6 +101,7 @@
 "Body"          = "Contenu";
 "Open" = "Ouvrir";
 "Select All" = "Tout sélectionner";
+"Select Message" = "Sélectionner le message";
 "Attach Web Page..." = "Joindre une page Web...";
 "file" = "fichier";
 "files" = "fichiers";

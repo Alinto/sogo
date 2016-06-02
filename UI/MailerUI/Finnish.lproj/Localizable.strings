@@ -101,6 +101,7 @@
 "Body"          = "Runko";
 "Open" = "Avaa.";
 "Select All" = "Valitse kaikki";
+"Select Message" = "Valitse viesti";
 "Attach Web Page..." = "Liitä Web-sivu...";
 "file" = "tiedosto";
 "files" = "tiedostot";
