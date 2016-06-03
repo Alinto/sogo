@@ -54,7 +54,7 @@
     }
 
     function removeUser(user) {
-      stateFolder.$acl.$removeUser(user.uid).catch(function(data, status) {
+      stateFolder.$acl.$removeUser(user.uid, stateFolder.owner).catch(function(data, status) {
         Dialog.alert(l('Warning'), l('An error occured please try again.'));
       });
     }

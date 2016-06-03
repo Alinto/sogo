@@ -112,10 +112,17 @@
    * @desc Remove a user from the folder's ACL
    * @return a promise of the server call to remove the user from the folder's ACL
    */
-  Acl.prototype.$removeUser = function(uid) {
+  Acl.prototype.$removeUser = function(uid, owner) {
     var _this = this,
-        param = {uid: uid};
-    return Acl.$$resource.fetch(this.folderId, 'removeUserFromAcls', param).then(function() {
+        param = {uid: uid},
+        acls;
+
+    if (angular.isDefined(owner))
+      acls = Acl.$$resource.userResource(owner).fetch(this.folderId, 'removeUserFromAcls', param);
+    else
+      acls = Acl.$$resource.fetch(this.folderId, 'removeUserFromAcls', param);
+
+    return acls.then(function() {
       var i = _.indexOf(_.map(_this.users, 'uid'), uid);
       if (i >= 0) {
         _this.users.splice(i, 1);
