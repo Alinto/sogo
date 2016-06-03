@@ -5,6 +5,7 @@ Bug fixes
  - [web] fixed error handling when renaming a mailbox
  - [web] fixed user removal from ACLs in Administration module (#3713)
  - [web] fixed event classification icon (private/confidential) in month view (#3711)
+ - [web] CKEditor: added the pastefromword plugin (#2295, #3313)
 
 3.1.1 (2016-06-02)
 ------------------
