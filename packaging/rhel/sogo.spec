@@ -391,7 +391,7 @@ if ! getent group %sogo_user >& /dev/null; then
   groupadd -f -r %sogo_user
 fi
 if ! id %sogo_user >& /dev/null; then
-  /usr/sbin/useradd -d %{_var}/lib/sogo -c "SOGo daemon" -s /sbin/nologin -M -r %sogo_user
+  /usr/sbin/useradd -d %{_var}/lib/sogo -c "SOGo daemon" -s /sbin/nologin -M -r -g %sogo_user %sogo_user
 fi
 
 %post
