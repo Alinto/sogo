@@ -7,6 +7,7 @@ Bug fixes
  - [web] fixed event classification icon (private/confidential) in month view (#3711)
  - [web] CKEditor: added the pastefromword plugin (#2295, #3313)
  - [web] fixed loading of card from global addressbooks
+ - [web] fixed negative offset when saving an all-day event (#3717)
 
 3.1.1 (2016-06-02)
 ------------------
