@@ -891,7 +891,9 @@ void handle_eas_terminate(int signum)
              else
                folderType = @"Contacts";
 
-             if ([ cKey rangeOfString: @"/"].location != NSNotFound) 
+	     currentFolder = nil;
+
+             if ([cKey rangeOfString: @"/"].location != NSNotFound) 
                currentFolder = [[[[context activeUser] homeFolderInContext: context] lookupName: folderType inContext: context acquire: NO]
                                                             lookupName: [cKey substringFromIndex: [cKey rangeOfString: @"/"].location+1]  inContext: context acquire: NO];
 
@@ -1763,11 +1765,14 @@ void handle_eas_terminate(int signum)
   NSMutableString *s;
   NSData *d; 
   int i;
-  
-  currentFolder = nil;
 
   moveOperations = (id)[theDocumentElement getElementsByTagName: @"Move"];
-  
+
+  newSuccessfulMoveItemsOps = [NSMutableDictionary dictionary];
+  prevSuccessfulMoveItemsOps = nil;
+  folderMetadata = nil;
+  currentFolder = nil;
+
   s = [NSMutableString string];
 
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
@@ -1791,7 +1796,6 @@ void handle_eas_terminate(int signum)
         {
           folderMetadata = [self _folderMetadataForKey: nameInCache];
           prevSuccessfulMoveItemsOps = [folderMetadata objectForKey: @"SuccessfulMoveItemsOps"];
-          newSuccessfulMoveItemsOps = [NSMutableDictionary dictionary] ;
           currentFolder = nameInCache;
         }
       
