@@ -702,6 +702,7 @@
             _this.$cards = [];
             angular.forEach(response.headers, function(data) {
               var o = _.zipObject(headers, data);
+              angular.extend(o, { pid: _this.id });
               _this.$cards.push(new AddressBook.$Card(o));
             });
           }

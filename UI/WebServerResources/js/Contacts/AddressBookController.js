@@ -30,7 +30,7 @@
     vm.mode = { search: false, multiple: 0 };
     
     function selectCard(card) {
-      $state.go('app.addressbook.card.view', {addressbookId: stateAddressbook.id, cardId: card.id});
+      $state.go('app.addressbook.card.view', {cardId: card.id});
     }
     
     function toggleCardSelection($event, card) {
