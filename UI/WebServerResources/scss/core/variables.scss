@@ -114,9 +114,9 @@ $toast-margin: $baseline-grid * 1 !default;
 
 // Whiteframes
 
-$shadow-key-umbra-opacity:      0.2;
-$shadow-key-penumbra-opacity:   0.14;
-$shadow-ambient-shadow-opacity: 0.12;
+$shadow-key-umbra-opacity:      0.2 !default;
+$shadow-key-penumbra-opacity:   0.14 !default;
+$shadow-ambient-shadow-opacity: 0.12 !default;
 
 $whiteframe-shadow-1dp: 0px 1px 3px 0px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 1px 1px 0px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 2px 1px -1px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
 $whiteframe-shadow-2dp: 0px 1px 5px 0px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 2px 2px 0px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 3px 1px -2px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
@@ -149,10 +149,12 @@ $whiteframe-shadow-24dp: 0px 11px 15px -7px rgba(0, 0, 0, $shadow-key-umbra-opac
 $z-index-toast: 105 !default;
 $z-index-tooltip: 100 !default;
 $z-index-menu: 100 !default;
+$z-index-calendar-pane: 100 !default;
 $z-index-select: 90 !default;
 $z-index-dialog: 80 !default;
 $z-index-bottom-sheet: 70 !default;
 $z-index-scroll-mask: 65 !default;
+$z-index-scroll-mask-bar: 65 !default;
 $z-index-sidenav: 60 !default;
 $z-index-backdrop: 50 !default;
 $z-index-fab: 60 !default;
@@ -178,6 +180,14 @@ $swift-ease-in-out: all $swift-ease-in-out-duration $swift-ease-in-out-timing-fu
 $swift-linear-duration: 0.08s !default;
 $swift-linear-timing-function: linear !default;
 $swift-linear: all $swift-linear-duration $swift-linear-timing-function !default;
+
+$material-enter-duration: 0.3s;
+$material-enter-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
+$material-enter: all $material-enter-duration $material-enter-timing-function;
+
+$material-leave-duration: 0.3s;
+$material-leave-timing-function: cubic-bezier(0.4, 0.0, 1, 1);
+$material-leave: all $material-leave-duration $material-leave-timing-function;
 
 // Fab Buttons (shared between buttons.scss and fab*.scss)
 // -------------------------------------------
