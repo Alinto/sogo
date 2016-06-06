@@ -835,6 +835,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           }
 
         return_count = 0;
+	component = nil;
 
         for (i = 0; i < max; i++)
           {
@@ -1001,6 +1002,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               }
 
             theSyncKey = @"-1";
+	    highestmodseq = 0;
 
             RELEASE(sortedByUID);
           }
@@ -1158,7 +1160,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           [self logWithFormat: @"EAS - found in cache: %d  k = %d", found_in_cache, k];
         
         return_count = 0;
-        
+        aCacheObject = nil;
+
         for (; k < [allCacheObjects count]; k++)
           {
             pool = [[NSAutoreleasePool alloc] init];
@@ -1864,6 +1867,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
 
   [output appendString: @"<Collections>"];
+  s = nil;
 
   // We enter our loop detection change
   for (i = 0; i < (heartbeatInterval/internalInterval); i++)
@@ -1948,7 +1952,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       // We always return the last generated response.
       // If we only return <Sync><Collections/></Sync>,
       // iOS powered devices will simply crash.
-      [output appendString: s];
+      if (s)
+	[output appendString: s];
 
       [output appendString: @"</Collections></Sync>"];
 
