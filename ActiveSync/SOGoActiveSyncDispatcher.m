@@ -2577,8 +2577,9 @@ void handle_eas_terminate(int signum)
         {          
           contact = [allContacts objectAtIndex: j];
           
-          // We skip lists for now
-          if ([[contact objectForKey: @"c_component"] isEqualToString: @"vlist"])
+          // We skip lists for now and bogus entries
+          if ([[contact objectForKey: @"c_component"] isEqualToString: @"vlist"] ||
+	      [[contact objectForKey: @"c_name"] length] == 0)
             continue;
           
           // We get the LDIF entry of our record, for easier processing
