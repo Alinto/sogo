@@ -1,5 +1,8 @@
-3.1.2 (2016-MM-DD)
+3.1.2 (2016-06-06)
 ------------------
+
+Enhancements
+ - [web] updated Angular Material to version 1.1.0rc5
 
 Bug fixes
  - [web] fixed error handling when renaming a mailbox
