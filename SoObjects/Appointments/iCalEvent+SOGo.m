@@ -338,8 +338,9 @@
 - (void) setAttributes: (NSDictionary *) data
              inContext: (WOContext *) context
 {
-  NSCalendarDate *aptStartDate, *aptEndDate;
-  NSInteger nbrDays;
+  NSCalendarDate *aptStartDate, *aptEndDate, *allDayStartDate;
+  NSInteger offset, nbrDays;
+  NSTimeZone *timeZone;
   iCalDateTime *startDate;
   iCalTimeZone *tz;
   SOGoUserDefaults *ud;
@@ -380,7 +381,12 @@
             }
 
           nbrDays = ((float) abs ([aptEndDate timeIntervalSinceDate: aptStartDate]) / 86400) + 1;
-          [self setAllDayWithStartDate: aptStartDate
+          timeZone = [aptStartDate timeZone];
+          offset = [timeZone secondsFromGMTForDate: aptStartDate];
+          allDayStartDate = [aptStartDate dateByAddingYears: 0 months: 0 days: 0
+                                                      hours: 0 minutes: 0
+                                                    seconds: offset];
+          [self setAllDayWithStartDate: allDayStartDate
                               duration: nbrDays];
         }
       else
