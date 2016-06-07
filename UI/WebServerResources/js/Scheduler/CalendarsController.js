@@ -348,7 +348,7 @@
         vm.saveProperties = saveProperties;
         vm.close = close;
 
-        $scope.$watch('properties.calendar.color', function() {
+        $scope.$watch(function() { return vm.calendar.color; }, function() {
           srcCalendar.color = vm.calendar.color;
         });
 

@@ -56,7 +56,7 @@
 
     // Wait on user's defaults
     Preferences.ready().then(function() {
-      $scope.$watch('vm.email', function(email, old) {
+      $scope.$watch(function() { return vm.email; }, function(email, old) {
         if (email && vm.urlEmail != email) {
           // Email has changed or doesn't match the current URL (this happens when using md-virtual-repeat)
           showGenericAvatar();
@@ -70,7 +70,7 @@
 
     // If sg-src is defined, watch the expression for the URL of a local image
     if ('sg-src' in $element[0].attributes) {
-      $scope.$watch('vm.src', function(src) {
+      $scope.$watch(function() { return vm.src; }, function(src) {
         if (src) {
           // Set image URL and save the associated email address
           vm.url = src;

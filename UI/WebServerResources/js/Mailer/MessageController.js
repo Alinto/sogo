@@ -42,19 +42,20 @@
     // One-way refresh of the parent window when modifying the message from a popup window.
     if ($window.opener) {
       // Update the message flags. The message must be displayed in the parent window.
-      $scope.$watchCollection('viewer.message.flags', function(newTags, oldTags) {
+      $scope.$watchCollection(function() { return vm.message.flags; }, function(newTags, oldTags) {
         var ctrls;
         if (newTags || oldTags) {
           ctrls = $parentControllers();
           if (ctrls.messageCtrl) {
             ctrls.messageCtrl.service.$timeout(function() {
+              ctrls.messageCtrl.showFlags = true;
               ctrls.messageCtrl.message.flags = newTags;
             });
           }
         }
       });
       // Update the "isflagged" (star icon) of the message. The mailbox must be displayed in the parent window.
-      $scope.$watch('viewer.message.isflagged', function(isflagged, wasflagged) {
+      $scope.$watch(function() { return vm.message.isflagged; }, function(isflagged, wasflagged) {
         var ctrls = $parentControllers();
         if (ctrls.mailboxCtrl) {
           ctrls.mailboxCtrl.service.$timeout(function() {
@@ -67,7 +68,7 @@
     else {
       // Flatten new tags when coming from the predefined list of tags (Message.$tags) and
       // sync tags with server when adding or removing a tag.
-      $scope.$watchCollection('viewer.message.flags', function(_newTags, _oldTags) {
+      $scope.$watchCollection(function() { return vm.message.flags; }, function(_newTags, _oldTags) {
         var newTags, oldTags, tags;
         if (_newTags || _oldTags) {
           newTags = _newTags || [];
