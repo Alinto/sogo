@@ -32,7 +32,7 @@
       <div layout="row" layout-align="start center">
         <p><var:string label:value="For incoming messages that"/></p>
         <md-input-container class="md-flex">
-          <md-select ng-model="filterEditor.filter.match" required="required">
+          <md-select ng-model="filterEditor.filter.match">
             <md-option const:value="all">
               <var:string label:value="match all of the following rules"/>
             </md-option>
@@ -58,11 +58,11 @@
               </md-select>
             </md-input-container>
 
-            <md-input-container class="md-block" flex="25" ng-show="rule.field == 'header'">
-              <input type="text" ng-model="rule.custom_header"/>
+            <md-input-container class="md-block" flex="25" ng-if="rule.field == 'header'">
+              <input type="text" ng-model="rule.custom_header" required="required"/>
             </md-input-container>
 
-            <md-input-container class="md-block" flex="25" ng-show="rule.field == 'size'">
+            <md-input-container class="md-block" flex="25" ng-if="rule.field == 'size'">
               <md-select ng-model="rule.operator">
                 <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.numberOperatorLabels">
                   {{ value }}
@@ -70,7 +70,7 @@
               </md-select>
             </md-input-container>
 
-            <md-input-container class="md-block" flex="25" ng-show="rule.field != 'size'">
+            <md-input-container class="md-block" flex="25" ng-if="rule.field != 'size'">
               <md-select ng-model="rule.operator">
                 <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.textOperatorLabels">
                   {{ value }}
@@ -80,7 +80,7 @@
 
             <md-input-container class="md-block md-flex" md-no-float="md-no-float">
               <label><var:string label:value="Value"/></label>
-              <input type="text" ng-model="rule.value"/>
+              <input type="text" ng-model="rule.value" required="required"/>
             </md-input-container>
 
             <md-button class="md-icon-button" type="button"
@@ -112,9 +112,9 @@
           </md-input-container>
 
           <!-- FORWARD MESSAGE TO -->
-          <md-input-container class="md-block" flex="50" ng-show="action.method == 'redirect'" >
+          <md-input-container class="md-block" flex="50" ng-if="action.method == 'redirect'" >
             <label><var:string label:value="Email"/></label>
-            <input type="text" ng-model="action.argument"/>
+            <input type="text" ng-model="action.argument" required="required"/>
           </md-input-container>
 
           <!-- DISCARD -->
@@ -124,15 +124,15 @@
           <!-- nada -->
 
           <!-- SEND REJECT MESSAGE -->
-          <md-input-container class="md-block" flex="50" ng-show="action.method == 'reject'">
+          <md-input-container class="md-block" flex="50" ng-if="action.method == 'reject'">
             <label><var:string label:value="Message"/></label>
-            <input type="text" ng-model="action.argument"/>
+            <input type="text" ng-model="action.argument" required="required"/>
           </md-input-container>
 
           <!-- FILE INTO -->
-          <md-input-container class="md-block" flex="50" ng-show="action.method == 'fileinto'" >
+          <md-input-container class="md-block" flex="50" ng-if="action.method == 'fileinto'">
             <label><var:string label:value="Mailbox"/></label>
-            <md-select ng-model="action.argument">
+            <md-select ng-model="action.argument" required="required">
               <md-option ng-value="item.path" ng-repeat="item in filterEditor.mailboxes">
                 <div ng-class="'sg-child-level-' + item.level">
                   {{ item.name }}
@@ -142,9 +142,9 @@
           </md-input-container>
 
           <!-- FLAG WITH -->
-          <md-input-container class="md-block" flex="50" ng-show="action.method == 'addflag'" >
+          <md-input-container class="md-block" flex="50" ng-if="action.method == 'addflag'">
             <label><var:string label:value="Flag"/></label>
-            <md-select ng-model="action.argument" >
+            <md-select ng-model="action.argument" required="required">
               <md-option value="seen"><var:string label:value="Seen"/></md-option>
               <md-option value="deleted"><var:string label:value="Deleted"/></md-option>
               <md-option value="answered"><var:string label:value="Answered"/></md-option>
@@ -177,7 +177,7 @@
     <md-dialog-actions>
       <md-button type="button" ng-click="filterEditor.cancel()"><var:string label:value="Cancel"/></md-button>
       <md-button type="submit"
-                 ng-disabled="filterForm.$invalid"
+                 ng-disabled="filterForm.$invalid || !filterEditor.hasRulesAndActions()"
                  ng-bind="::'OK' | loc"><!-- OK --></md-button>
     </md-dialog-actions>
   </form>

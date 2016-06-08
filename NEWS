@@ -3,6 +3,7 @@
 
 Bug fixes
  - [web] fixed generic avatar in lists (#3719)
+ - [web] fixed validation in Sieve filter editor
 
 3.1.2 (2016-06-06)
 ------------------

@@ -18,6 +18,7 @@
     vm.mailboxes = mailboxes;
     vm.labels = labels;
     vm.cancel = cancel;
+    vm.hasRulesAndActions = hasRulesAndActions;
     vm.save = save;
     vm.addMailFilterRule = addMailFilterRule;
     vm.removeMailFilterRule = removeMailFilterRule;
@@ -89,11 +90,16 @@
     function cancel() {
       $mdDialog.cancel();
     }
+
+    function hasRulesAndActions() {
+      return vm.filter.rules && vm.filter.rules.length > 0 &&
+        vm.filter.actions && vm.filter.actions.length > 0;
+    }
     
     function save(form) {
       $mdDialog.hide();
     }
-    
+
     function addMailFilterRule(event) {
       if (!vm.filter.rules)
         vm.filter.rules = [];
