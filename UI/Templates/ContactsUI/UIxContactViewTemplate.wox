@@ -192,7 +192,7 @@
           </md-button>
         </md-card-actions>
         <md-card-content>
-          <pre>{{editor.rawSource}}</pre>
+          <pre ng-bind-html="editor.rawSource"><!-- raw --></pre>
         </md-card-content>
       </md-card>
     </div>

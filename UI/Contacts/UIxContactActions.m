@@ -20,6 +20,8 @@
 
 #import <Foundation/NSArray.h>
 
+#import <NGExtensions/NSString+misc.h>
+
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
@@ -140,7 +142,7 @@
   [content appendFormat: @"%@", [[self clientObject] contentAsString]];
   [response setHeader: @"text/plain; charset=utf-8" 
             forKey: @"content-type"];
-  [response appendContentString: content];
+  [response appendContentString: [content stringByEscapingHTMLString]];
 
   return response;
 }

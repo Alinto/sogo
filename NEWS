@@ -4,7 +4,8 @@
 Bug fixes
  - [web] fixed generic avatar in lists (#3719)
  - [web] fixed validation in Sieve filter editor
- - [web] properly encode events and tasks rawsource to avoid XSS issues (#3718)
+ - [web] properly encode rawsource of events and tasks to avoid XSS issues (#3718)
+ - [web] properly encode rawsource of cards to avoid XSS issues
 
 3.1.2 (2016-06-06)
 ------------------
