@@ -115,13 +115,13 @@
 
 - (NSString *) displayName
 {
-  return [self _cardStringWithLabel: @"Display Name:"
+  return [self _cardStringWithLabel: @"Display Name"
                value: [card fn]];
 }
 
 - (NSString *) nickName
 {
-  return [self _cardStringWithLabel: @"Nickname:"
+  return [self _cardStringWithLabel: @"Nickname"
                value: [card nickname]];
 }
 
@@ -151,7 +151,7 @@
       attrs = nil;
     }
 
-  return [self _cardStringWithLabel: @"Email:"
+  return [self _cardStringWithLabel: @"Email"
                               value: email
                byEscapingHTMLString: YES
                        asLinkScheme: @"mailto:"
@@ -220,14 +220,14 @@
 
   screenName = [[card uniqueChildWithTag: @"x-aim"] flattenedValuesForKey: @""];
 
-  return [self _cardStringWithLabel: @"Screen Name:"
+  return [self _cardStringWithLabel: @"Screen Name"
                               value: screenName
                        asLinkScheme: @"aim:goim?screenname="];
 }
 
 - (NSString *) preferredTel
 {
-  return [self _cardStringWithLabel: @"Phone Number:"
+  return [self _cardStringWithLabel: @"Phone Number"
                               value: [card preferredTel] asLinkScheme: @"tel:"];
 }
 
@@ -241,7 +241,7 @@
   NSString *categories;
 
   categories = [[card categories] componentsJoinedByString: @", "];
-  return [self _cardStringWithLabel: @"Categories:"
+  return [self _cardStringWithLabel: @"Categories"
                value: categories];
 }
 
@@ -257,27 +257,27 @@
 {
   // We do this (exclude FAX) in order to avoid setting the WORK number as the FAX
   // one if we do see the FAX field BEFORE the WORK number.
-  return [self _cardStringWithLabel: @"Work:" value: [card workPhone] asLinkScheme: @"tel:"];
+  return [self _cardStringWithLabel: @"Work" value: [card workPhone] asLinkScheme: @"tel:"];
 }
 
 - (NSString *) homePhone
 {
-  return [self _cardStringWithLabel: @"Home:" value: [card homePhone] asLinkScheme: @"tel:"];
+  return [self _cardStringWithLabel: @"Home" value: [card homePhone] asLinkScheme: @"tel:"];
 }
 
 - (NSString *) fax
 {
-  return [self _cardStringWithLabel: @"Fax:" value: [card fax] asLinkScheme: @"tel:"];
+  return [self _cardStringWithLabel: @"Fax" value: [card fax] asLinkScheme: @"tel:"];
 }
 
 - (NSString *) mobile
 {
-  return [self _cardStringWithLabel: @"Mobile:" value: [card mobile] asLinkScheme: @"tel:"];
+  return [self _cardStringWithLabel: @"Mobile" value: [card mobile] asLinkScheme: @"tel:"];
 }
 
 - (NSString *) pager
 {
-  return [self _cardStringWithLabel: @"Pager:" value: [card pager] asLinkScheme: @"tel:"];
+  return [self _cardStringWithLabel: @"Pager" value: [card pager] asLinkScheme: @"tel:"];
 }
 
 - (BOOL) hasHomeInfos
@@ -595,12 +595,12 @@
       bday = [dateFormatter formattedDate: date];
     }
 
-  return [self _cardStringWithLabel: @"Birthday:" value: bday];
+  return [self _cardStringWithLabel: @"Birthday" value: bday];
 }
 
 - (NSString *) tz
 {
-  return [self _cardStringWithLabel: @"Timezone:" value: [card tz]];
+  return [self _cardStringWithLabel: @"Timezone" value: [card tz]];
 }
 
 - (NSString *) note
@@ -617,7 +617,7 @@
                    withString: @"<br />"];
     }
 
-  return [self _cardStringWithLabel: @"Note:"
+  return [self _cardStringWithLabel: @"Note"
                               value: note
                byEscapingHTMLString: NO
                        asLinkScheme: nil
