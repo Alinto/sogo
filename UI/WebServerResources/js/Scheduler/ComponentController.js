@@ -167,23 +167,23 @@
           template: [
             '<md-dialog flex="40" flex-sm="80" flex-xs="100" aria-label="' + l('View Raw Source') + '">',
             '  <md-dialog-content class="md-dialog-content">',
-            '    <pre>',
-            data,
-            '    </pre>',
+            '    <pre ng-bind-html="data"></pre>',
             '  </md-dialog-content>',
             '  <md-dialog-actions>',
             '    <md-button ng-click="close()">' + l('Close') + '</md-button>',
             '  </md-dialog-actions>',
             '</md-dialog>'
           ].join(''),
-          controller: ComponentRawSourceDialogController
+          controller: ComponentRawSourceDialogController,
+          locals: { data: data }
         });
 
         /**
          * @ngInject
          */
-        ComponentRawSourceDialogController.$inject = ['scope', '$mdDialog'];
-        function ComponentRawSourceDialogController(scope, $mdDialog) {
+        ComponentRawSourceDialogController.$inject = ['scope', '$mdDialog', 'data'];
+        function ComponentRawSourceDialogController(scope, $mdDialog, data) {
+          scope.data = data;
           scope.close = function() {
             $mdDialog.hide();
           };

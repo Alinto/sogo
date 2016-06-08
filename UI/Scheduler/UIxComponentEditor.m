@@ -875,7 +875,7 @@ static NSArray *reminderValues = nil;
   [content appendFormat: @"%@", [[self clientObject] contentAsString]];
   [response setHeader: @"text/plain; charset=utf-8" 
             forKey: @"content-type"];
-  [response appendContentString: content];
+  [response appendContentString: [content stringByEscapingHTMLString]];
 
   return response;
 }
