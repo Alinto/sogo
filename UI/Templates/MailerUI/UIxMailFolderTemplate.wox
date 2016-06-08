@@ -272,9 +272,9 @@
                  label:aria-label="Select Message"
                  ng-class="{ 'sg-avatar-selected': currentMessage.selected }"
                  ng-click="mailbox.toggleMessageSelection($event, currentMessage)">
-              <sg-avatar-image class="md-avatar"
-                               sg-email="mailbox.service.selectedFolder.type == 'sent' ? currentMessage.to[0].email : currentMessage.from[0].email"
-                               size="40"><!-- avatar --></sg-avatar-image>
+              <sg-avatar-image
+                  sg-email="mailbox.service.selectedFolder.type == 'sent' ? currentMessage.to[0].email : currentMessage.from[0].email"
+                  size="40"><!-- avatar --></sg-avatar-image>
             </div>
             <div class="sg-category"
                  ng-repeat="tag in currentMessage.flags | limitTo:5"

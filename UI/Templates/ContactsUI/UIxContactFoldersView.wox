@@ -410,11 +410,11 @@
                   <!--      ng-if="currentCard.selected"> -->
                     <!-- selected avatar -->
                   <!-- </div> -->
-                  <sg-avatar-image class="md-avatar"
-                                   ng-if="currentCard.$isCard()"
-                                   sg-email="currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query.value)"
-                                   sg-src="currentCard.photoURL"
-                                   size="40">
+                  <sg-avatar-image
+                     ng-if="currentCard.$isCard()"
+                     sg-email="currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query.value)"
+                     sg-src="currentCard.photoURL"
+                     size="40">
                     <!-- contact avatar -->
                   </sg-avatar-image>
                   <div class="md-avatar sg-avatar-list"
