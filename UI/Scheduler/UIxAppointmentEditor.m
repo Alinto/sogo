@@ -315,6 +315,7 @@
           offset = [timeZone secondsFromGMTForDate: startDate];
           startDate = [startDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
                                            seconds:-offset];
+          offset = [timeZone secondsFromGMTForDate: endDate];
           endDate = [endDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
                                        seconds:-offset];
         }
@@ -717,16 +718,27 @@
 
   if (isAllDay)
     {
-      nbrDays = ((float) abs ([aptEndDate timeIntervalSinceDate: aptStartDate])
-                 / 86400) + 1;
-      // Convert all-day start date to GMT (floating date)
-      ud = [[context activeUser] userDefaults];
-      timeZone = [ud timeZone];
-      offset = [timeZone secondsFromGMTForDate: aptStartDate];
-      allDayStartDate = [aptStartDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-                                                seconds:offset];
-      [event setAllDayWithStartDate: allDayStartDate
-                           duration: nbrDays];
+      if ([aptStartDate earlierDate: aptEndDate] == aptStartDate)
+        {
+          // Remove the vTimeZone when dealing with an all-day event.
+          startDate = (iCalDateTime *)[event uniqueChildWithTag: @"dtstart"];
+          tz = [startDate timeZone];
+          if (tz)
+            {
+              [startDate setTimeZone: nil];
+              [(iCalDateTime *)[event uniqueChildWithTag: @"dtend"] setTimeZone: nil];
+              [[event parent] removeChild: tz];
+            }
+
+          nbrDays = round ([aptEndDate timeIntervalSinceDate: aptStartDate] / 86400) + 1;
+          // Convert all-day start date to GMT (floating date)
+          timeZone = [aptStartDate timeZone];
+          offset = [timeZone secondsFromGMTForDate: aptStartDate];
+          allDayStartDate = [aptStartDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                                    seconds:offset];
+          [event setAllDayWithStartDate: allDayStartDate
+                               duration: nbrDays];
+        }
     }
   else
     {
@@ -748,18 +760,6 @@
               [startDate setTimeZone: tz];
               [(iCalDateTime *)[event uniqueChildWithTag: @"dtend"] setTimeZone: tz];
             }
-        }
-    }
-  else if (![[self clientObject] isNew])
-    {
-      // Remove the vTimeZone when dealing with an all-day event.
-      startDate = (iCalDateTime *)[event uniqueChildWithTag: @"dtstart"];
-      tz = [startDate timeZone];
-      if (tz)
-        {
-          [startDate setTimeZone: nil];
-          [(iCalDateTime *)[event uniqueChildWithTag: @"dtend"] setTimeZone: nil];
-          [[event parent] removeChild: tz];
         }
     }
 
