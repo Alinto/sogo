@@ -157,7 +157,10 @@ _intValueFromHex (NSString *hexString)
         }
 
       max = [folders count];
+
+      DESTROY(calendars);
       calendars = [[NSMutableArray alloc] initWithCapacity: max];
+
       for (count = 0; count < max; count++)
         {
           folder = [sortedFolders objectAtIndex: count];
