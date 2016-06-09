@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #
 # Note: When adding make options to this script, ensure that the source still
@@ -12,7 +12,7 @@
 TOPDIR="$(cd `dirname $0`; pwd)"
 
 # we ensure that the configure script is run from TOPDIR
-cd $TOPDIR
+cd "${TOPDIR}"
 
 CFG_ARGS="$0 $1 $2 $3 $4 $5 $6 $7 $8 $9"
 
@@ -212,7 +212,7 @@ printGNUstepSetup() {
 }
 
 cfgwrite() {
-  echo "$1" >> $ARG_CFGMAKE
+  echo "$1" >> "${ARG_CFGMAKE}"
 }
 
 genConfigMake() {
@@ -226,7 +226,7 @@ genConfigMake() {
     echo "creating: $ARG_CFGMAKE"
   fi
   
-  echo "# GNUstep environment configuration" > $ARG_CFGMAKE
+  echo "# GNUstep environment configuration" > "${ARG_CFGMAKE}"
 
   cfgwrite "#   created by: '$CFG_ARGS'"
   cfgwrite ""
@@ -235,7 +235,7 @@ genConfigMake() {
   cfgwrite "#         $MAKE debug=yes"
   cfgwrite ""
 
-  cfgwrite "TOPDIR:=$TOPDIR"
+  cfgwrite "TOPDIR:=$( sed 's/ /\\\ /g' <<< ${TOPDIR} )"
   cfgwrite ""
 
   cfgwrite "NEEDS_GUI=no"
@@ -321,7 +321,7 @@ genConfigMake() {
 
 checkLinking() {
   # library-name => $1, type => $2
-  local oldpwd=$PWD
+  local oldpwd="${PWD}"
   local tmpdir=".configure-test-$$"
   
   mkdir $tmpdir
@@ -371,7 +371,7 @@ EOF
     fi
   fi
   
-  cd $oldpwd
+  cd "${oldpwd}"
   rm -rf $tmpdir
 
   return $LINK_RESULT
