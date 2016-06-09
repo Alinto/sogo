@@ -37,6 +37,8 @@
 
   if ([classTag isEqualToString: @"RRULE"])
     tagClass = [iCalRecurrenceRule class];
+  else if ([classTag isEqualToString: @"RDATE"])
+    tagClass = [iCalDateTime class];
   else if ([classTag isEqualToString: @"DTSTART"])
     tagClass = [iCalDateTime class];
   else if ([classTag isEqualToString: @"TZOFFSETFROM"]
@@ -247,19 +249,59 @@
   return tmpDate;
 }
 
+- (NSCalendarDate *) _occurrenceFromRdate: (NSCalendarDate *) refDate
+                                   rDates: (NSArray *) rDatesIn;
+{
+  NSArray *rDates;
+  NSEnumerator *dateList;
+  NSCalendarDate *rDateCur, *rDateOut;
+  NSString *dateString;
+  unsigned i;
+
+  rDateCur = nil;
+  rDateOut = nil;
+
+  dateList = [rDatesIn objectEnumerator];
+
+  while ((dateString = [dateList nextObject]))
+    {
+      rDates = [(iCalDateTime*) dateString dateTimes];
+
+      for (i = 0; i < [rDates count]; i++)
+        {
+          rDateCur = [rDates objectAtIndex: i];
+          if (!rDateOut || ([rDateCur yearOfCommonEra] > [rDateOut yearOfCommonEra] && [refDate yearOfCommonEra] >= [rDateCur yearOfCommonEra]))
+              rDateOut = rDateCur;
+        }
+    }
+
+  return rDateOut;
+}
+
+
 - (NSCalendarDate *) occurrenceForDate: (NSCalendarDate *) refDate;
 {
   NSCalendarDate *tmpDate;
   iCalRecurrenceRule *rrule;
+  NSArray *rDates;
 
   tmpDate = nil;
   rrule = (iCalRecurrenceRule *) [self uniqueChildWithTag: @"rrule"];
+  rDates = (NSArray *) [self childrenWithTag: @"rdate"];
+
+  if ([rDates count])
+    {
+      tmpDate = [self _occurrenceFromRdate: refDate rDates: rDates];
+      return tmpDate;
+    }
 
   if ([rrule isVoid])
     tmpDate
       = [(iCalDateTime *) [self uniqueChildWithTag: @"dtstart"] dateTime];
   else if ([rrule untilDate] == nil || [refDate compare: [rrule untilDate]] == NSOrderedAscending)
     tmpDate = [self _occurrenceForDate: refDate byRRule: rrule];
+  else if ([refDate compare: [rrule untilDate]] == NSOrderedDescending)
+    tmpDate = [rrule untilDate];
 
   return tmpDate;
 }

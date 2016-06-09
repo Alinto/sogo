@@ -183,29 +183,44 @@ static NSArray *knownTimeZones;
   return [[self uniqueChildWithTag: @"tzid"] flattenedValuesForKey: @""];
 }
 
-- (NSCalendarDate *) _occurrenceForPeriodNamed: (NSString *) pName
+- (NSDictionary *) _occurrenceForPeriodNamed: (NSString *) pName
                                        forDate: (NSCalendarDate *) aDate
 {
   NSArray *periods;
   NSEnumerator *periodsList;
   iCalTimeZonePeriod *period;
   NSCalendarDate *occurrence;
+  NSDictionary *periodDict;
 
   occurrence = nil;
+  periodDict = nil;
 
   periods = [[self childrenWithTag: pName]
               sortedArrayUsingSelector: @selector (compare:)];
   periodsList = [periods reverseObjectEnumerator];
-  while (!occurrence
-         && (period = (iCalTimeZonePeriod *) [periodsList nextObject]))
-    occurrence = [period occurrenceForDate: aDate];
+  while ((period = (iCalTimeZonePeriod *) [periodsList nextObject]))
+    {
+      if ([periods count] > 1 && ([[period startDate] yearOfCommonEra] > [aDate yearOfCommonEra]))
+        continue;
 
-  return occurrence;
+      occurrence = [period occurrenceForDate: aDate];
+
+      if (occurrence && (!periodDict || [occurrence earlierDate: [periodDict objectForKey: @"occurrence"]] == [periodDict objectForKey: @"occurrence"]))
+        {
+           periodDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                       period, @"period",
+                       occurrence, @"occurrence",nil];
+           occurrence = nil;
+         }
+    }
+
+  return periodDict;
 }
 
 - (iCalTimeZonePeriod *) periodForDate: (NSCalendarDate *) date
 {
-  NSCalendarDate *daylightOccurence, *standardOccurence;
+  //NSCalendarDate *daylightOccurence, *standardOccurence;
+  NSDictionary *daylightOccurence, *standardOccurence;
   iCalTimeZonePeriod *period;
 
   /* FIXME, this could cause crashes when timezones are not properly
@@ -213,30 +228,33 @@ static NSArray *knownTimeZones;
 
   daylightOccurence = [self _occurrenceForPeriodNamed: @"daylight"
                                               forDate: date];
+
   standardOccurence = [self _occurrenceForPeriodNamed: @"standard"
                                               forDate: date];
 
-  if (!standardOccurence)
+  if (!standardOccurence && !daylightOccurence)
+    period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"standard"];
+  else if (!standardOccurence)
     period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"daylight"];
   else if (!daylightOccurence)
     period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"standard"];
-  else if ([date earlierDate: daylightOccurence] == date)
+  else if ([date earlierDate: [daylightOccurence objectForKey: @"occurrence"]] == date)
     {
-      if ([date earlierDate: standardOccurence] == date
-          && ([standardOccurence earlierDate: daylightOccurence]
-              == standardOccurence))
-        period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"daylight"];
+      if ([date earlierDate: [standardOccurence objectForKey: @"occurrence"]] == date
+          && ([[standardOccurence objectForKey: @"occurrence"] earlierDate: [daylightOccurence objectForKey: @"occurrence"]]
+              == [standardOccurence objectForKey: @"occurrence"]))
+        period = (iCalTimeZonePeriod *) [daylightOccurence objectForKey: @"period"];
       else
-        period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"standard"];
+        period = (iCalTimeZonePeriod *) [standardOccurence objectForKey: @"period"];
     }
   else
     {
-      if ([standardOccurence earlierDate: date] == standardOccurence
-          && ([daylightOccurence earlierDate: standardOccurence]
-              == daylightOccurence))
-        period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"standard"];
+      if ([[standardOccurence objectForKey: @"occurrence"] earlierDate: date] == [standardOccurence objectForKey: @"occurrence"]
+          && ([[daylightOccurence objectForKey: @"occurrence"] earlierDate: [standardOccurence objectForKey: @"occurrence"]]
+              == [daylightOccurence objectForKey: @"occurrence"] ))
+        period = (iCalTimeZonePeriod *) [standardOccurence objectForKey: @"period"];
       else
-        period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"daylight"];
+        period = (iCalTimeZonePeriod *) [daylightOccurence objectForKey: @"period"];
     }
 
   return period;
