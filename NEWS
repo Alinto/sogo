@@ -8,6 +8,7 @@ Bug fixes
  - [web] fixed recipients when replying from a message in the Sent mailbox (#2625)
  - [web] fixed localizable strings in Card viewer
  - [web] properly encode HTML attributes in Contacts module to avoid XSS issues
+ - [web] handle c_mail field format of quick record of contacts of v3 (#3443)
 
 2.3.11 (2016-05-12)
 -------------------

@@ -228,7 +228,15 @@ static NSArray *folderListingFields = nil;
         }
     }
 
-  if (![contactRecord objectForKey: @"c_mail"])
+  data = [contactRecord objectForKey: @"c_mail"];
+  if ([data length])
+    {
+      // We return the first email address only
+      // (We only benefit from all email addresses in v3)
+      NSArray *values = [data componentsSeparatedByString: @","];
+      [contactRecord setObject: [values objectAtIndex: 0] forKey: @"c_mail"];
+    }
+  else
     [contactRecord setObject: @"" forKey: @"c_mail"];
   if (![contactRecord objectForKey: @"c_screenname"])
     [contactRecord setObject: @"" forKey: @"c_screenname"];
