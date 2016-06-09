@@ -16,6 +16,7 @@ Bug fixes
  - [web] properly encode HTML attributes in Contacts module to avoid XSS issues
  - [web] handle c_mail field format of quick record of contacts of v3 (#3443)
  - [web] fixed all-day events covering a timezone change (#3457)
+ - [web] fixed display of invitation with a category (#3590)
 
 2.3.11 (2016-05-12)
 -------------------

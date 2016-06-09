@@ -1991,7 +1991,7 @@ function newBaseEventDIV(eventRep, event, eventText) {
             categoryStyle = 'category_' + categoriesStyles.keys().length;
             categoriesStyles.set([category], categoryStyle);
         }
-        innerDiv.addClassName(categoryStyle);
+        gradientDiv.addClassName(categoryStyle);
     }
     eventCell.observe("contextmenu", onMenuCurrentView);
 
