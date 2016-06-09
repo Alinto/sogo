@@ -1,6 +1,6 @@
 /* iCalEvent+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@
 #import <NGCards/iCalRecurrenceRule.h>
 #import <NGCards/NSString+NGCards.h>
 
+#import <SoObjects/SOGo/CardElement+SOGo.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoUserDefaults.h>
 #import <SoObjects/SOGo/WOContext+SOGo.h>
@@ -366,7 +367,7 @@
 
   isAllDay = [[data objectForKey: @"isAllDay"] boolValue];
 
-  if (aptStartDate && aptEndDate)
+  if (aptStartDate && aptEndDate && [aptStartDate earlierDate: aptEndDate] == aptStartDate)
     {
       if (isAllDay)
         {
@@ -380,7 +381,7 @@
               [[self parent] removeChild: tz];
             }
 
-          nbrDays = ((float) abs ([aptEndDate timeIntervalSinceDate: aptStartDate]) / 86400) + 1;
+          nbrDays = round ([aptEndDate timeIntervalSinceDate: aptStartDate] / 86400) + 1;
           timeZone = [aptStartDate timeZone];
           offset = [timeZone secondsFromGMTForDate: aptStartDate];
           allDayStartDate = [aptStartDate dateByAddingYears: 0 months: 0 days: 0
