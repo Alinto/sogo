@@ -96,7 +96,7 @@ _intValueFromHex (NSString *hexString)
   NSMutableDictionary *moduleSettings, *calendar, *notifications, *urls, *acls;
   NSNumber *isActive, *fActiveTasks;
   NSString *userLogin, *folderName, *fDisplayName, *owner;
-  NSUInteger count, index, max;
+  NSInteger count, index, max;
   SOGoAppointmentFolder *folder;
   SOGoAppointmentFolders *co;
   SOGoUser *activeUser;
@@ -115,6 +115,7 @@ _intValueFromHex (NSString *hexString)
       moduleSettings = [us objectForKey: [co nameInContainer]];
       sortedFolders = [NSMutableArray arrayWithArray: [moduleSettings objectForKey: @"FoldersOrder"]];
 
+      // We first start by replacing folder names with actual SOGoFolder instances
       max = [folders count];
       for (count = 0; count < max; count++)
         {
@@ -131,9 +132,10 @@ _intValueFromHex (NSString *hexString)
             [sortedFolders replaceObjectAtIndex: index withObject: folder];
         }
 
+      // We then build our sorted folder list names, removing any deleted folders
       max = [sortedFolders count];
       sortedFolderNames = [NSMutableArray arrayWithCapacity: max];
-      for (count = max; count > -1; count--)
+      for (count = max-1; count >= 0; count--)
         {
           if ([[sortedFolders objectAtIndex: count] isKindOfClass: [NSString class]])
             {

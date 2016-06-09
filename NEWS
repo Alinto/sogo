@@ -6,6 +6,7 @@ Bug fixes
  - [web] fixed validation in Sieve filter editor
  - [web] properly encode rawsource of events and tasks to avoid XSS issues (#3718)
  - [web] properly encode rawsource of cards to avoid XSS issues
+ - [core] properly handle sorted/deleted calendars (#3723)
 
 3.1.2 (2016-06-06)
 ------------------
