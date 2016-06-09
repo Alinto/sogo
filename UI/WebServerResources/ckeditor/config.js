@@ -1,6 +1,6 @@
 /**
- * @license Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.html or http://ckeditor.com/license
  */
 
 CKEDITOR.editorConfig = function( config ) {
@@ -17,8 +17,8 @@ CKEDITOR.editorConfig = function( config ) {
     { name: 'mode' }
   ];
 
-  config.removeButtons = 'Strike,Subscript,Superscript,BGColor,Anchor,Format';
-  config.removeDialogTabs = 'link:advanced;image:advanced';
+  config.removeButtons = 'Strike,Subscript,Superscript,BGColor,Anchor,Format,Image';
+  config.removeDialogTabs = 'link:advanced';
   config.enterMode = CKEDITOR.ENTER_BR;
   config.tabSpaces = 4;
   config.allowedContent = true; // don't filter tags
