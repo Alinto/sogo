@@ -123,16 +123,13 @@
       }
     }
 
-    function newComponent($event, baseComponent) {
-      var type = 'appointment', component;
+    function newComponent($event, type, baseComponent) {
+      var component;
 
       if (baseComponent) {
         component = baseComponent;
-        type = baseComponent.type;
       }
       else {
-        if (vm.componentType == 'tasks')
-          type = 'task';
         component = new Component({ pid: Calendar.$defaultCalendar(), type: type });
       }
 
@@ -166,7 +163,7 @@
         if (component.isAllDay)
           coordinates.duration -= 96;
         component.setDelta(coordinates.duration * 15);
-        newComponent(null, component).finally(function() {
+        newComponent(null, 'appointment', component).finally(function() {
           $timeout(function() {
             Component.$resetGhost();
           });
