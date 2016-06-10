@@ -99,12 +99,14 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailSpanishArgentinaReply.wo \
 	SOGoMailSwedishForward.wo \
 	SOGoMailSwedishReply.wo \
+	SOGoMailTurkishTurkeyForward.wo \
+	SOGoMailTurkishTurkeyReply.wo \
 	SOGoMailUkrainianForward.wo \
 	SOGoMailUkrainianReply.wo \
 	SOGoMailWelshForward.wo \
 	SOGoMailWelshReply.wo
 
-Mailer_LANGUAGES = Arabic Basque BrazilianPortuguese ChineseTaiwan Croatian Czech Danish Dutch English Finnish French German Hungarian Icelandic Italian Lithuanian Macedonian NorwegianBokmal NorwegianNynorsk Polish Portuguese Russian Slovenian Slovenian SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
+Mailer_LANGUAGES = $(SOGO_LANGUAGES)
 
 Mailer_LOCALIZED_RESOURCE_FILES = Localizable.strings
 

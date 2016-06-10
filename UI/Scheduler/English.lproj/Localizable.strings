@@ -12,29 +12,35 @@
 "Switch to month view" = "Switch to month view";
 "Switch to multi-columns day view" = "Switch to multi-columns day view";
 "Reload all calendars" = "Reload all calendars";
+
 /* Tabs */
 "Date" = "Date";
 "Calendars" = "Calendars";
 "No events for selected criteria" = "No events for selected criteria";
 "No tasks for selected criteria" = "No tasks for selected criteria";
+
 /* Day */
 "DayOfTheMonth" = "Day of the month";
 "dayLabelFormat" = "%m/%d/%Y";
 "today" = "Today";
 "Previous Day" = "Previous Day";
 "Next Day" = "Next Day";
+
 /* Week */
 "Week" = "Week";
 "this week" = "this week";
 "Week %d" = "Week %d";
 "Previous Week" = "Previous Week";
 "Next Week" = "Next Week";
+
 /* Month */
 "this month" = "this month";
 "Previous Month" = "Previous Month";
 "Next Month" = "Next Month";
+
 /* Year */
 "this year" = "this year";
+
 /* Menu */
 "Calendar" = "Calendar";
 "Contacts" = "Contacts";
@@ -57,11 +63,14 @@
 "A total of %{0} events were imported in the calendar." = "A total of %{0} events were imported in the calendar.";
 "Compose E-Mail to All Attendees" = "Compose E-Mail to All Attendees";
 "Compose E-Mail to Undecided Attendees" = "Compose E-Mail to Undecided Attendees";
+
 /* Folders */
 "Personal calendar" = "Personal calendar";
+
 /* Misc */
 "OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Forbidden";
+
 /* acls */
 "Access rights to" = "Access rights to";
 "For user" = "For user";
@@ -84,6 +93,7 @@
 = "This person can create objects in my calendar.";
 "This person can erase objects from my calendar."
 = "This person can erase objects from my calendar.";
+
 /* Button Titles */
 "Subscribe to a Calendar..." = "Subscribe to a Calendar...";
 "Remove the selected Calendar" = "Remove the selected Calendar";
@@ -104,6 +114,7 @@
 "Save" = "Save";
 "show_rejected_apts" = "Show rejected appointments";
 "hide_rejected_apts" = "Hide rejected appointments";
+
 /* Schedule */
 "Schedule" = "Schedule";
 "No appointments found" = "No appointments found";
@@ -116,6 +127,7 @@
 "more attendees" = "More Attendees";
 "Hide already accepted and rejected appointments" = "Hide already accepted and rejected appointments";
 "Show already accepted and rejected appointments" = "Show already accepted and rejected appointments";
+
 /* Print view */
 "LIST" = "List";
 "Print Settings" = "Print Settings";
@@ -129,6 +141,7 @@
 "Display events and tasks colors" = "Display events and tasks colors";
 "Borders" = "Borders";
 "Backgrounds" = "Backgrounds";
+
 /* Appointments */
 "Appointment viewer" = "Appointment Viewer";
 "Appointment editor" = "Appointment Editor";
@@ -166,15 +179,19 @@
 "attributes" = "attributes";
 "attendees" = "attendees";
 "delegated from" = "delegated from";
+
 /* checkbox title */
 "is private" = "is private";
+
 /* classification */
 "Public" = "Public";
 "Private" = "Private";
+
 /* text used in overviews and tooltips */
 "empty title" = "Empty title";
 "private appointment" = "Private appointment";
 "Change..." = "Change...";
+
 /* Appointments (participation state) */
 "partStat_NEEDS-ACTION" = "I will confirm later";
 "partStat_ACCEPTED" = "I will attend";
@@ -182,10 +199,12 @@
 "partStat_TENTATIVE" = "I might attend";
 "partStat_DELEGATED" = "I delegate";
 "partStat_OTHER" = "Other";
+
 /* Appointments (error messages) */
 "Conflicts found!" = "Conflicts found!";
 "Invalid iCal data!" = "Invalid iCal data!";
 "Could not create iCal data!" = "Could not create iCal data!";
+
 /* Searching */
 "view_all" = "All";
 "view_today" = "Today";
@@ -209,11 +228,13 @@
 "check for conflicts" = "Check for conflicts";
 "URL" = "URL";
 "newAttendee" = "Add attendee";
+
 /* calendar modes */
 "Overview" = "Overview";
 "Chart" = "Chart";
 "List" = "List";
 "Columns" = "Columns";
+
 /* Priorities */
 "prio_0" = "Not specified";
 "prio_1" = "High";
@@ -225,6 +246,7 @@
 "prio_7" = "Low";
 "prio_8" = "Low";
 "prio_9" = "Low";
+
 /* access classes (privacy) */
 "PUBLIC_vevent" = "Public Event";
 "CONFIDENTIAL_vevent" = "Confidential Event";
@@ -232,6 +254,7 @@
 "PUBLIC_vtodo" = "Public Task";
 "CONFIDENTIAL_vtodo" = "Confidential Task";
 "PRIVATE_vtodo" = "Private Task";
+
 /* status type */
 "status_" = "Not specified";
 "status_NOT-SPECIFIED" = "Not specified";
@@ -241,6 +264,16 @@
 "status_NEEDS-ACTION" = "Needs Action";
 "status_IN-PROCESS" = "In Process";
 "status_COMPLETED" = "Completed on";
+
+/* Priority level */
+"low" = "low";
+
+/* Priority level */
+"normal" = "normal";
+
+/* Priority level */
+"high" = "high";
+
 /* Cycles */
 "cycle_once" = "cycle_once";
 "cycle_daily" = "cycle_daily";
@@ -264,10 +297,12 @@
 "Week(s)" = "Week(s)";
 "On" = "On";
 "Month(s)" = "Month(s)";
+
 /* [Event recurrence editor] Ex: _The_ first Sunday */
 "The" = "The";
 "Recur on day(s)" = "Recur on day(s)";
 "Year(s)" = "Year(s)";
+
 /* [Event recurrence editor] Ex: Every first Sunday _of_ April */
 "cycle_of" = "of";
 "No end date" = "No end date";
@@ -285,6 +320,7 @@
 "Fourth" = "Fourth";
 "Fift" = "Fift";
 "Last" = "Last";
+
 /* Appointment categories */
 "category_none" = "None";
 "category_labels" = "Anniversary,Birthday,Business,Calls,Clients,Competition,Customer,Favorites,Follow up,Gifts,Holidays,Ideas,Meeting,Issues,Miscellaneous,Personal,Projects,Public Holiday,Status,Suppliers,Travel,Vacation";
@@ -329,12 +365,15 @@
 "zoom_100" = "100%";
 "zoom_50" = "50%";
 "zoom_25" = "25%";
+
 /* transparency */
 "Show Time as Free" = "Show Time as Free";
+
 /* email notifications */
 "Send Appointment Notifications" = "Send Appointment Notifications";
 "From" = "From";
 "To" = "To";
+
 /* validation errors */
 validate_notitle           = "No title is set, continue?";
 validate_invalid_startdate = "Incorrect startdate field!";
@@ -343,10 +382,12 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 "Events" = "Events";
 "Tasks" = "Tasks";
 "Show completed tasks" = "Show completed tasks";
+
 /* tabs */
 "Task" = "Task";
 "Event" = "Event";
 "Recurrence" = "Recurrence";
+
 /* toolbar */
 "New Event" = "New Event";
 "New Task" = "New Task";
@@ -357,9 +398,11 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 "Week View" = "Week View";
 "Month View" = "Month View";
 "Reload" = "Reload";
+
 /* Number of selected components in events or tasks list */
 "selected" = "selected";
 "eventPartStatModificationError" = "Your participation status could not be modified.";
+
 /* menu */
 "New Event..." = "New Event...";
 "New Task..." = "New Task...";
@@ -375,6 +418,7 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 = "You cannot remove nor unsubscribe from your personal calendar.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Are you sure you want to delete the calendar \"%{0}\"?";
+
 /* Legend */
 "Participant" = "Participant";
 "Optional Participant" = "Optional Participant";
@@ -388,6 +432,7 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 "Busy" = "Busy";
 "Maybe busy" = "Maybe busy";
 "No free-busy information" = "No free-busy information";
+
 /* FreeBusy panel buttons and labels */
 "Suggest time slot" = "Suggest time slot";
 "Zoom" = "Zoom";
@@ -401,12 +446,14 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 "and" = "and";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?";
+
 /* events list */
 "Due" = "Due";
 "(Private Event)" = "(Private Event)";
 vevent_class0 = "(Public event)";
 vevent_class1 = "(Private event)";
 vevent_class2 = "(Confidential event)";
+
 /* tasks list */
 "Descending Order" = "Descending Order";
 vtodo_class0 = "(Public task)";
@@ -422,6 +469,7 @@ vtodo_class2 = "(Confidential task)";
 "Edit All Occurrences" = "Edit All Occurrences";
 "Update This Occurrence" = "Update This Occurrence";
 "Update All Occurrences" = "Update All Occurrences";
+
 /* Properties dialog */
 "Color" = "Color";
 "Include in free-busy" = "Include in free-busy";
@@ -438,8 +486,10 @@ vtodo_class2 = "(Confidential task)";
 "Email Address" = "Email Address";
 "Export" = "Export";
 
+
 /* Show only the calendar for which the menu is displayed */ 
 "Show Only This Calendar" = "Show Only This Calendar";
+
 
 /* Show all calendar (personal, subscriptions and web) */
 "Show All Calendars" = "Show All Calendars";
@@ -449,6 +499,7 @@ vtodo_class2 = "(Confidential task)";
 "CalDAV URL" = "CalDAV URL ";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
+
 /* Error messages */
 "dayFieldInvalid" = "Please specify a numerical value in the Days field greater or equal to 1.";
 "weekFieldInvalid" = "Please specify a numerical value in the Week(s) field greater or equal to 1.";

@@ -12,29 +12,35 @@
 "Switch to month view" = "Pakeisti į mėnesio vaizdą";
 "Switch to multi-columns day view" = "Perjungti į multi-kolonų dienos vaizdą";
 "Reload all calendars" = "Atnaujinti visus kalendorius";
+
 /* Tabs */
 "Date" = "Data";
 "Calendars" = "Kalendoriai";
 "No events for selected criteria" = "Pagal pasirinktus kriterijus įvykių nėra";
 "No tasks for selected criteria" = "Pagal pasirinktus kriterijus užduočių nėra";
+
 /* Day */
 "DayOfTheMonth" = "Mėnesio diena";
 "dayLabelFormat" = "%m/%d/%Y";
 "today" = "Šiandiena";
 "Previous Day" = "Vakar diena";
 "Next Day" = "Kita diena";
+
 /* Week */
 "Week" = "Savaitė";
 "this week" = "Šita savaitė";
 "Week %d" = "Savaitė %d";
 "Previous Week" = "Praėjusi savaitė";
 "Next Week" = "Sekanti savaitė";
+
 /* Month */
 "this month" = "Šis mėnesis";
 "Previous Month" = "Praėjęs mėnuo";
 "Next Month" = "Sekantis mėnesis";
+
 /* Year */
 "this year" = "Dabartiniai metai";
+
 /* Menu */
 "Calendar" = "Kalendorius";
 "Contacts" = "Kontaktai";
@@ -57,11 +63,14 @@
 "A total of %{0} events were imported in the calendar." = "Iš viso importuota įvykių iš %{0} į kalendorių.";
 "Compose E-Mail to All Attendees" = "Rašyti elektroninį laišką visiems dalyviams";
 "Compose E-Mail to Undecided Attendees" = "Rašyti elektroninį laišką neapsisprendusiems dalyviams";
+
 /* Folders */
 "Personal calendar" = "Asmeninis kalendorius";
+
 /* Misc */
 "OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Draudžiama";
+
 /* acls */
 "Access rights to" = "Prieigos teisės";
 "For user" = "Vartotojui";
@@ -84,6 +93,7 @@
 = "Šis asmuo gali sukurti objektus mano kalendoriuje";
 "This person can erase objects from my calendar."
 = "Šis asmuo gali ištrinti objektus iš mano kalendoriaus";
+
 /* Button Titles */
 "Subscribe to a Calendar..." = "Komentuoti į kalendorių";
 "Remove the selected Calendar" = "Pašalinti pasirinktą kalendorių";
@@ -104,6 +114,7 @@
 "Save" = "Išsaugoti";
 "show_rejected_apts" = "Rodyti atmestus paskyrimus";
 "hide_rejected_apts" = "Paslėpti atmestus paskyrimus";
+
 /* Schedule */
 "Schedule" = "Tvarkaraštis";
 "No appointments found" = "Paskyrimų nerasta";
@@ -116,6 +127,7 @@
 "more attendees" = "Daugiau dalyvių";
 "Hide already accepted and rejected appointments" = "Paslėpti jau priimtus ir atmestus paskyrimus";
 "Show already accepted and rejected appointments" = "Rodyti jau priimtus ir atmestus paskyrimus";
+
 /* Print view */
 "LIST" = "Sąrašas";
 "Print Settings" = "Spausdinimo parametrai";
@@ -129,6 +141,7 @@
 "Display events and tasks colors" = "Rodyti įvykių ir užduočių spalvas";
 "Borders" = "Kraštinės";
 "Backgrounds" = "Fonai";
+
 /* Appointments */
 "Appointment viewer" = "Paskyrimo peržiūros programa";
 "Appointment editor" = "Paskyrimo redaktorius";
@@ -166,15 +179,19 @@
 "attributes" = "atributai";
 "attendees" = "dalyviai";
 "delegated from" = "Perduotos nuo";
+
 /* checkbox title */
 "is private" = "yra privatus";
+
 /* classification */
 "Public" = "Viešas";
 "Private" = "Privatus";
+
 /* text used in overviews and tooltips */
 "empty title" = "Tuščias pavadinimas";
 "private appointment" = "Privatus paskyrimas";
 "Change..." = "Keisti...";
+
 /* Appointments (participation state) */
 "partStat_NEEDS-ACTION" = "Aš patvirtinsiu vėliau";
 "partStat_ACCEPTED" = "Aš dalyvausiu";
@@ -182,10 +199,12 @@
 "partStat_TENTATIVE" = "Aš turbut dalyvausiu";
 "partStat_DELEGATED" = "Aš deleguoju";
 "partStat_OTHER" = "Kita";
+
 /* Appointments (error messages) */
 "Conflicts found!" = "Rasti konfilktai!";
 "Invalid iCal data!" = "Neleistini iCal duomenys!";
 "Could not create iCal data!" = "Negalima sukurti iCal duomenų!";
+
 /* Searching */
 "view_all" = "Visi";
 "view_today" = "Šiandiena";
@@ -209,11 +228,13 @@
 "check for conflicts" = "Tikrinti konfliktus";
 "URL" = "Nuoroda";
 "newAttendee" = "Pridėti dalyvį";
+
 /* calendar modes */
 "Overview" = "Apžvalga";
 "Chart" = "Schema";
 "List" = "Sąrašas";
 "Columns" = "Stulpeliai";
+
 /* Priorities */
 "prio_0" = "Nenurodyta";
 "prio_1" = "Didelis";
@@ -225,6 +246,7 @@
 "prio_7" = "Mažas";
 "prio_8" = "Mažas";
 "prio_9" = "Mažas";
+
 /* access classes (privacy) */
 "PUBLIC_vevent" = "Viešas įvykis";
 "CONFIDENTIAL_vevent" = "Konfidencialus įvykis";
@@ -232,6 +254,7 @@
 "PUBLIC_vtodo" = "vieša užduotis";
 "CONFIDENTIAL_vtodo" = "Konfidenciali užduotis";
 "PRIVATE_vtodo" = "Asmeninė užduotis";
+
 /* status type */
 "status_" = "Nenurodyta";
 "status_NOT-SPECIFIED" = "Nenurodyta";
@@ -241,6 +264,16 @@
 "status_NEEDS-ACTION" = "Reikia veiksmo";
 "status_IN-PROCESS" = "Vykdoma";
 "status_COMPLETED" = "Kada baigta";
+
+/* Priority level */
+"low" = "žemas";
+
+/* Priority level */
+"normal" = "narmalus";
+
+/* Priority level */
+"high" = "aukštas";
+
 /* Cycles */
 "cycle_once" = "Vienkartinis ciklas";
 "cycle_daily" = "Kasdieninis ciklas";
@@ -264,10 +297,12 @@
 "Week(s)" = "Savaitė(s)";
 "On" = "Apie";
 "Month(s)" = "Mėnesis(iai)";
+
 /* [Event recurrence editor] Ex: _The_ first Sunday */
 "The" = "Šis";
 "Recur on day(s)" = "Pasikartoja per dieną(as)";
 "Year(s)" = "Metas(ai)";
+
 /* [Event recurrence editor] Ex: Every first Sunday _of_ April */
 "cycle_of" = "iš";
 "No end date" = "Nėra pabaigos datos";
@@ -285,6 +320,7 @@
 "Fourth" = "Ketvirtas";
 "Fift" = "Penktas";
 "Last" = "Paskutinis";
+
 /* Appointment categories */
 "category_none" = "Ne";
 "category_labels" = "Jubiliejus, Gimtadienis, Verslas, Skambučiai, Klientai, Varžytuvės, Pirkėjas, Mėgstami, Sekami, Dovanos, Atostogos, Idėjos, Susitikimas, Problemos, Įvairūs, Asmeninis, Projektai, Valstybinės šventės, Statusas, Tiekėjai, Kelionės, Atostogos ";
@@ -329,12 +365,15 @@
 "zoom_100" = "100%";
 "zoom_50" = "50%";
 "zoom_25" = "25%";
+
 /* transparency */
 "Show Time as Free" = "Rodyti laisvą laiką";
+
 /* email notifications */
 "Send Appointment Notifications" = "Siųsti susitikimo pranešimus";
 "From" = "Nuo";
 "To" = "Kam";
+
 /* validation errors */
 validate_notitle           = "Nepriskirtas pavadinimas, tęsti?";
 validate_invalid_startdate = "Neteisingas datos pradžios laukas!";
@@ -343,10 +382,12 @@ validate_endbeforestart    = "Pabaigos data, kurią įvėdėte yra ankščiau ne
 "Events" = "Įvykiai";
 "Tasks" = "Užduotys";
 "Show completed tasks" = "Rodyti užbaigtas užduotis";
+
 /* tabs */
 "Task" = "Užduotis";
 "Event" = "Įvykis";
 "Recurrence" = "Pasikartojimas";
+
 /* toolbar */
 "New Event" = "Naujas įvykis";
 "New Task" = "Nauja užduotis";
@@ -357,9 +398,11 @@ validate_endbeforestart    = "Pabaigos data, kurią įvėdėte yra ankščiau ne
 "Week View" = "Savaitės vaizdas";
 "Month View" = "Mėnesio vaizdas";
 "Reload" = "Perkrauti";
+
 /* Number of selected components in events or tasks list */
 "selected" = "pasirinti";
 "eventPartStatModificationError" = "Jūsų dalyvavimo statusas negali būti pakeistas.";
+
 /* menu */
 "New Event..." = "Naujas įvykis...";
 "New Task..." = "Nauja užduotis...";
@@ -375,6 +418,7 @@ validate_endbeforestart    = "Pabaigos data, kurią įvėdėte yra ankščiau ne
 = "Jūs negalite pašalinti ar nebeprenumeruoti savo asmeninio kalendoriaus.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Ar tikrai norite ištrinti kalendoriu \"%{0}\"?";
+
 /* Legend */
 "Participant" = "Dalyvis";
 "Optional Participant" = "Nebūtinas dalyvis";
@@ -388,6 +432,7 @@ validate_endbeforestart    = "Pabaigos data, kurią įvėdėte yra ankščiau ne
 "Busy" = "Užimtas";
 "Maybe busy" = "Gal užimtas";
 "No free-busy information" = "Nėra laisvos-naudojamos informacijos";
+
 /* FreeBusy panel buttons and labels */
 "Suggest time slot" = "Siūlykite laiko tarpą";
 "Zoom" = "Pritraukti";
@@ -401,12 +446,14 @@ validate_endbeforestart    = "Pabaigos data, kurią įvėdėte yra ankščiau ne
 "and" = "ir";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Egzistuoja laiko konfliktas su vienu ar daugiau dalyvių.\nAr norite saugoti dabartinius parametrus bet kuriuo atveju?";
+
 /* events list */
 "Due" = "Dėl";
 "(Private Event)" = "(Privatus įvykis)";
 vevent_class0 = "(Viešas įvykis)";
 vevent_class1 = "(Privatus įvykis)";
 vevent_class2 = "(Konfidencialus įvykis)";
+
 /* tasks list */
 "Descending Order" = "Mažėjančia tvarka";
 vtodo_class0 = "(Vieša užduotis)";
@@ -422,6 +469,7 @@ vtodo_class2 = "(Konfidenciali užduotis)";
 "Edit All Occurrences" = "Redaguoti visus įvykius";
 "Update This Occurrence" = "Atnaujiti šį įvykį";
 "Update All Occurrences" = "Atnaujiti visus įvykius";
+
 /* Properties dialog */
 "Color" = "Spalva";
 "Include in free-busy" = "Įtraukti į laisvus-užimtus";
@@ -438,8 +486,10 @@ vtodo_class2 = "(Konfidenciali užduotis)";
 "Email Address" = "Elektroninio pašto adresas";
 "Export" = "Exportuoti";
 
+
 /* Show only the calendar for which the menu is displayed */ 
 "Show Only This Calendar" = "Rodyti tik šio kalendoriaus";
+
 
 /* Show all calendar (personal, subscriptions and web) */
 "Show All Calendars" = "Rodyti visų kalendorių";
@@ -449,6 +499,7 @@ vtodo_class2 = "(Konfidenciali užduotis)";
 "CalDAV URL" = "CalDAV nuoroda:";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
+
 /* Error messages */
 "dayFieldInvalid" = "Prašome nurodyti skaitinę dienos vertę didesnę arba lygią 1, dienos laukelyje.";
 "weekFieldInvalid" = "Prašome nurodyti skaitinę savaitės(čių) vertę didesnę arba lygią 1, savaitės laukelyje.";

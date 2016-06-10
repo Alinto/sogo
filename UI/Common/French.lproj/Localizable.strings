@@ -41,6 +41,7 @@
      = "N'importe quel internaute aura potentiellement accès à votre carnet d'adresses «%{0}», même s'il n'a pas de compte sur ce système. Est-ce que le contenu de votre calendrier est adapté à une telle visibilité?";
 "Give Access" = "Appliquer les droits";
 "Keep Private" = "Garder privé";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Impossible de s'abonner à ce dossier.";
@@ -76,16 +77,19 @@
 "45 minutes" = "45 minutes";
 "1 hour" = "1 heure";
 "1 day" = "1 jour";
+
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Annuler";
 "Yes" = "Oui";
 "No" = "Non";
+
 /* alarms */
 "Reminder" = "Rappel";
 "Start" = "Début";
 "Due Date" = "Échéance";
 "Location" = "Lieu";
+
 /* mail labels */
 "Important" = "Important";
 "Work" = "Travail";
@@ -104,5 +108,15 @@
 "Loading" = "Chargement";
 "No such user." = "Aucun utilisateur.";
 "You cannot (un)subscribe to a folder that you own!" = "Vous ne pouvez pas vous (dés)abonner à vos propres dossiers!";
-"SOGo" = "SOGo";
-"Modules" = "Modules";
+
+/* Authentication username */
+"Username" = "Nom d'utilisateur";
+
+/* Authentication password */
+"Password" = "Mot de passe";
+
+/* Authentication failed */
+"Wrong username or password." = "Mauvais nom d'utilisateur ou mot de passe.";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Entrez au moins %{minimumSearchLength} caractères";

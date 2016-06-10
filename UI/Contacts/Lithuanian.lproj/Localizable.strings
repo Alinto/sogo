@@ -126,6 +126,8 @@
 "Name of the Address Book" = "Adresų knygos pavadinimas";
 "Are you sure you want to delete the selected address book?"
 = "Ar jūs įsitikinęs, jog norite ištrinti pažymėtą adresų knygą?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Ar tikrai norite ištrinti adresų knygelę \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "Jūs negalite pašalinti arba atsisakyti iš viešos adresų knygos.";
 "You cannot remove nor unsubscribe from your personal addressbook."
@@ -197,6 +199,10 @@
 "Back" = "Atgal";
 "Select All" = "Pažymėti visus";
 "Copy contacts" = "Kopijuoti kontaktus";
+
+/* Notification on the number of messages successfully copied */
+"%{0} cards copied" = "%{0} kortelės nukopijuotos";
+
 "More messages options" = "Daugiau žinučių nustatymų";
 "New Contact" = "Naujas kontaktas";
 "Close" = "Uždarytis";
@@ -225,4 +231,7 @@
 "Add Screen Name" = "Pridėti ekrano vardą";
 "Synchronization" = "Sinchronizavimas";
 "Synchronize" = "Sinchronizuoti";
-"Successfully subscribed to address book" = "Sėkmingai užsiprenumeravote adresų knygą";
+"Sucessfully subscribed to address book" = "Sėkmingai užsiprenumeravote adresų knygą";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Paieškos sritis";

@@ -31,7 +31,6 @@
 
 #import <SoObjects/SOGo/SOGoMailer.h>
 #import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoObject.h>
 #import <SoObjects/SOGo/SOGoUserManager.h>
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 #import <SoObjects/SOGo/NSString+Utilities.h>

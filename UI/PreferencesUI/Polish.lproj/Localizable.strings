@@ -3,6 +3,18 @@
 "Close" = "Zamknij";
 "Preferences saved" = "Zapisano ustawienia";
 
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Nie zapisano zmian";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Czy chcesz zapisać wprowadzone zmiany w konfiguracji?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Zapisz";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Nie zapisuj";
+
 /* tabs */
 "General" = "Ogólne";
 "Calendar Options" = "Opcje kalendarza";
@@ -87,11 +99,15 @@
 "timeFmt_3" = "";
 "timeFmt_4" = "";
 
+/* Timezone autocompletion */
+"No matches found." = "Nic nie pasuje.";
+
 /* calendar */
 "Week begins on" = "Pierwszy dzień tygodnia";
 "Day start time" = "Początek dnia";
 "Day end time" = "Koniec dnia";
 "Day start time must be prior to day end time." = "Początek dnia musi wypadać wcześniej niż koniec dnia.";
+"Week days to display" = "Widoczne dni tygodnia";
 "Show time as busy outside working hours" = "Pokaż czas poza godzinami pracy jako zajęty";
 "First week of year" = "Pierwszy tydzień roku";
 "Enable reminders for Calendar items" = "Włącz przypomnienia pozycji kalendarza";
@@ -127,6 +143,7 @@
 "Labels" = "Etykiety";
 "Label" = "Etykieta";
 "Show subscribed mailboxes only" = "Pokaż tylko subskrybowane konta pocztowe";
+"Synchronize only default mail folders (EAS)" = "Synchronizuj wyłącznie domyślne foldery (EAS)";
 "Sort messages by threads" = "Sortuj wiadomości według wątków";
 "When sending mail, add unknown recipients to my" = "Gdy wysyłam e-mail, dodaj adresy nowych odbiorców do";
 "Address Book" = "Książka adresowa";
@@ -142,6 +159,10 @@
 "Compose messages in" = "Twórz wiadomości";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "czysty tekst";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Podstawowy rozmiar czcionki";
+
 "Display remote inline images" = "Pokazuj podlinkowane zdalne obrazy";
 "displayremoteinlineimages_never" = "Nigdy";
 "displayremoteinlineimages_always" = "Zawsze";
@@ -229,13 +250,15 @@
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
-"Slovak" = "Slovenská";
+"Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
 "Refresh View" = "Odświeżanie";
 "refreshview_manually" = "ręcznie";
 "refreshview_every_minute" = "co minutę";
@@ -342,6 +365,7 @@
 "TLS" = "TLS";
 
 /* Avatars */
+"Use Gravatar" = "Użyj Gravatara";
 "Alternate Avatar" = "Alternatywny awatar";
 "none" =  "Brak";
 "identicon" = "Ikona";

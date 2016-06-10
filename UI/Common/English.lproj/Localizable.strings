@@ -41,6 +41,7 @@
      = "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?";
 "Give Access" = "Give Access";
 "Keep Private" = "Keep Private";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Unable to subscribe to that folder!";
@@ -76,16 +77,19 @@
 "45 minutes" = "45 minutes";
 "1 hour" = "1 hour";
 "1 day" = "1 day";
+
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Cancel";
 "Yes" = "Yes";
 "No" = "No";
+
 /* alarms */
 "Reminder" = "Reminder";
 "Start" = "Start";
 "Due Date" = "Due Date";
 "Location" = "Location";
+
 /* mail labels */
 "Important" = "Important";
 "Work" = "Work";
@@ -104,6 +108,15 @@
 "Loading" = "Loading";
 "No such user." = "No such user.";
 "You cannot (un)subscribe to a folder that you own!" = "You cannot (un)subscribe to a folder that you own!";
+
+/* Authentication username */
+"Username" = "Username";
+
+/* Authentication password */
+"Password" = "Password";
+
+/* Authentication failed */
+"Wrong username or password." = "Wrong username or password.";
 
 /* Error message display bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Enter at least %{minimumSearchLength} characters";

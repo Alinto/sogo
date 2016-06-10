@@ -1,0 +1,571 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+"Create a new event" = "Yeni etkinlik oluştur";
+"Create a new task" = "Yeni görev oluştur";
+"Edit this event or task" = "Bu etkinlik veya görevi düzenle";
+"Print the current calendar view" = "Geçerli takvim görünütüsünü yazdır";
+"Delete this event or task" = "Bu etkinlik veya görevi sil";
+"Go to today" = "Bugüne git";
+"Switch to day view" = "Günlük görünüme geç";
+"Switch to week view" = "Haftalık görünüme geç";
+"Switch to month view" = "Aylık görünüme geç";
+"Switch to multi-columns day view" = "Çok-sütunlu günlük görünüme geç";
+"Reload all calendars" = "Tüm takvimleri tazele";
+
+/* Tabs */
+"Date" = "Tarih";
+"Calendars" = "Takvimler";
+"No events for selected criteria" = "Seçili kriterde bir etkinlik yok";
+"No tasks for selected criteria" = "Seçilen ayırıcı özellik için bir görev yok";
+
+/* Day */
+"DayOfTheMonth" = "Ayın günü";
+"dayLabelFormat" = "%m/%d/%Y";
+"today" = "Bugün";
+"Previous Day" = "Önceki Gün";
+"Next Day" = "Sonraki Gün";
+
+/* Week */
+"Week" = "Hafta";
+"this week" = "bu hafta";
+"Week %d" = "Hafta %d";
+"Previous Week" = "Önceki Hafta";
+"Next Week" = "Sonraki Hafta";
+
+/* Month */
+"this month" = "bu ay";
+"Previous Month" = "Önceki Ay";
+"Next Month" = "Sonraki Ay";
+
+/* Year */
+"this year" = "bu yıl";
+
+/* Menu */
+"Calendar" = "Takvim";
+"Contacts" = "Kişiler";
+"New Calendar..." = "Yeni Takvim...";
+"Delete Calendar" = "Takvimi Sil...";
+"Unsubscribe Calendar" = "Takvim Üyeliğinden Ayrıl";
+"Sharing..." = "Paylaş...";
+"Export Calendar..." = "Takvimi Dışa Aktar...";
+"Import Events..." = "Etkinlikleri İçeri Aktar...";
+"Import Events" = "Etkinlikleri İçeri Aktar";
+"Select an iCalendar file (.ics)." = "Bir iCalendar (.ics) dosyası seçin.";
+"Upload" = "Yükle";
+"Uploading" = "Yükleniyor";
+"Publish Calendar..." = "Takvimi Yayınla...";
+"Reload Remote Calendars" = "Uzak Takvimleri Tazele";
+"Properties" = "Özellikler";
+"Done" = "Tamamlandı";
+"An error occurred while importing calendar." = "Takvimi içeri aktarırken bir hata oluştu.";
+"No event was imported." = "İçeri aktarılan etkinlik yok.";
+"A total of %{0} events were imported in the calendar." = "Toplam %{0} etkinlik takvime aktarıldı.";
+"Compose E-Mail to All Attendees" = "Tüm Katılımcılara İleti Yaz";
+"Compose E-Mail to Undecided Attendees" = "Karar Vermemiş Katılımcılara İleti Yaz";
+
+/* Folders */
+"Personal calendar" = "Kişisel takvim";
+
+/* Misc */
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "Yasaklanmış";
+
+/* acls */
+"Access rights to" = "Erişim yetkileri";
+"For user" = "Şu kullanıcı için";
+"Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
+"Public Access" = "Halka Açık Erişim";
+"label_Public" = "Halka Açık";
+"label_Private" = "Özel";
+"label_Confidential" = "Gizli";
+"label_Viewer" = "Hepsini Görüntüler";
+"label_DAndTViewer" = "Günü ve Saati Görüntüler";
+"label_Modifier" = "Değiştir";
+"label_Responder" = "Kişiyi Yanıtlar";
+"label_None" = "Hiç biri";
+"View All" = "Hepsini Görüntüler";
+"View the Date & Time" = "Günü ve Saati Görüntüler";
+"Modify" = "Değiştirir";
+"Respond To" = "Kişiyi Yanıtlar";
+"None" = "Hiç biri";
+"This person can create objects in my calendar."
+= "Bu kişi bu takvimimde öge oluşturabilir.";
+"This person can erase objects from my calendar."
+= "Bu kişi takvimimden öge silebilir.";
+
+/* Button Titles */
+"Subscribe to a Calendar..." = "Bir Takvime Üye Ol...";
+"Remove the selected Calendar" = "Seçili takvimi sil";
+"New calendar" = "Yeni Takvim";
+"Name of the Calendar" = "Takvimin Adı";
+"new" = "Yeni";
+"Print view" = "Yazdırma görünümü";
+"edit" = "Düzenle";
+"delete" = "Sil";
+"proposal" = "Teklif";
+"Save and Close" = "Kaydet ve Kapat";
+"Close" = "Kapat";
+"Invite Attendees" = "Katılımcı Davet Et";
+"Attach" = "Ekle";
+"Update" = "Güncelle";
+"Cancel" = "İptal";
+"Reset" = "Öntanımlı";
+"Save" = "Kaydet";
+"show_rejected_apts" = "Reddedilen buluşmaları göster";
+"hide_rejected_apts" = "Reddedilen buluşmaları gizle";
+
+/* Schedule */
+"Schedule" = "İş Programı";
+"No appointments found" = "Buluşma bulunamadı";
+"Meetings proposed by you" = "Sizin tarafınızdan teklif edilen toplantılar";
+"Meetings proposed to you" = "Size teklif edilen toplantılar";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "Eylem";
+"accept" = "Kabul et";
+"decline" = "Reddet";
+"more attendees" = "Diğer katılımcılar";
+"Hide already accepted and rejected appointments" = "Kabul edilmiş ve reddedilmiş buluşmaları gizle";
+"Show already accepted and rejected appointments" = "Kabul edilmiş ve reddedilmiş buluşmaları göster";
+
+/* Print view */
+"LIST" = "Listele";
+"Print Settings" = "Yazdırma Ayarları";
+"Title" = "Başlık";
+"Layout" = "Düzenleme";
+"What to Print" = "Yazdırılacak";
+"Options" = "Seçenekler";
+"Tasks with no due date" = "Son günü olmayan görevler";
+"Display working hours only" = "Sadece çalışma saatlerini göster";
+"Completed tasks" = "Tamamlanmış Görevler";
+"Display events and tasks colors" = "Etkinlik ve görev renklerini göster";
+"Borders" = "Sınırlar";
+"Backgrounds" = "Arka Plan";
+
+/* Appointments */
+"Appointment viewer" = "Buluşma Gösterici";
+"Appointment editor" = "Buluşma Düzenleyici";
+"Appointment proposal" = "Buluşma Teklifi";
+"Appointment on" = "Buluşma";
+"Start" = "Başlangıç";
+"End" = "Bitiş";
+"Due Date" = "Son Tarihi";
+"Name" = "Ad ve Soyad";
+"Email" = "E-posta";
+"Status" = "Durum";
+"% complete" = "% tamamlandı";
+"Location" = "Konum";
+"Add a category" = "Kategori ekle";
+"Priority" = "Öncelik";
+"Privacy" = "Gizlilik";
+"Cycle" = "Tekrar";
+"Cycle End" = "Tekrar Bitişi";
+"Categories" = "Kategoriler";
+"Classification" = "Sınıflandırma";
+"Duration" = "Süre";
+"Attendees" = "Katılımcılar";
+"Resources" = "Kaynaklar";
+"Organizer" = "Düzenleyen";
+"Description" = "Tanım";
+"Document" = "Belge";
+"Category" = "Kategori";
+"Repeat" = "Tekrar Sıklığı";
+"Reminder" = "Hatırlatma";
+"General" = "Genel";
+"Reply" = "Yanıtla";
+"Created by" = "Oluşturan";
+"You are invited to participate" = "Katılmaya davet edildiniz";
+"Target" = "Hedef";
+"attributes" = "özellikler";
+"attendees" = "katılımcılar";
+"delegated from" = "tarafından temsilci atandı";
+
+/* checkbox title */
+"is private" = "özel mi";
+
+/* classification */
+"Public" = "Halka Açık";
+"Private" = "Özel";
+
+/* text used in overviews and tooltips */
+"empty title" = "Boş başlık";
+"private appointment" = "Özel buluşma";
+"Change..." = "Değiştir...";
+
+/* Appointments (participation state) */
+"partStat_NEEDS-ACTION" = "Daha sonra onaylayacağım";
+"partStat_ACCEPTED" = "Katılacağım";
+"partStat_DECLINED" = "Katılmayacağım";
+"partStat_TENTATIVE" = "Katılabilirim";
+"partStat_DELEGATED" = "Temsilci atıyorum";
+"partStat_OTHER" = "Diğer";
+
+/* Appointments (error messages) */
+"Conflicts found!" = "Çakışma bulundu!";
+"Invalid iCal data!" = "Geçersiz iCal verisi!";
+"Could not create iCal data!" = "iCal verisi oluşturulamıyor!";
+
+/* Searching */
+"view_all" = "Hepsi";
+"view_today" = "Bugün";
+"view_next7" = "Gelecek 7 gün";
+"view_next14" = "Gelecek 14 gün";
+"view_next31" = "Gelecek 31 gün";
+"view_thismonth" = "Bu Ay";
+"view_future" = "İleri Tarihteki Tüm Etkinlikler";
+"view_selectedday" = "Seçili Gün";
+"view_not_started" = "Başlamamış görevler";
+"view_overdue" = "Süresi geçmiş görevler";
+"view_incomplete" = "Tamamlanmamış görevler";
+"View" = "Görüntüle";
+"Title, category or location" = "Başlık, sınıf veya konum";
+"Entire content" = "Tüm İçerik";
+"Search" = "Arama";
+"Search attendees" = "Katılımcıları ara";
+"Search resources" = "Kaynakları ara";
+"Search appointments" = "Buluşmaları ara";
+"All day Event" = "Tam gün süren Etkinlik";
+"check for conflicts" = "Çakışmaları denetle";
+"URL" = "URL";
+"newAttendee" = "Katılımcı ekle";
+
+/* calendar modes */
+"Overview" = "Genel görünüm";
+"Chart" = "Çizelge";
+"List" = "Listele";
+"Columns" = "Sütunlar";
+
+/* Priorities */
+"prio_0" = "Belirtilmemiş";
+"prio_1" = "Yüksek";
+"prio_2" = "Yüksek";
+"prio_3" = "Yüksek";
+"prio_4" = "Yüksek";
+"prio_5" = "Normal";
+"prio_6" = "Düşük";
+"prio_7" = "Düşük";
+"prio_8" = "Düşük";
+"prio_9" = "Düşük";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "Halka Açık Etkinlik";
+"CONFIDENTIAL_vevent" = "Gizli Etkinlik";
+"PRIVATE_vevent" = "Özel Etkinlik";
+"PUBLIC_vtodo" = "Halka Açık Görev";
+"CONFIDENTIAL_vtodo" = "Gizli Görev";
+"PRIVATE_vtodo" = "Özel görev";
+
+/* status type */
+"status_" = "Belirtilmemiş";
+"status_NOT-SPECIFIED" = "Belirtilmemiş";
+"status_TENTATIVE" = "Geçici";
+"status_CONFIRMED" = "Onaylandi";
+"status_CANCELLED" = "İptal edildi";
+"status_NEEDS-ACTION" = "Eylem Gerekli";
+"status_IN-PROCESS" = "Devam ediyor";
+"status_COMPLETED" = "Şu tarihte tamamlandı";
+
+/* Priority level */
+"low" = "düşük";
+
+/* Priority level */
+"normal" = "normal";
+
+/* Priority level */
+"high" = "yüksek";
+
+/* Cycles */
+"cycle_once" = "bir_kere";
+"cycle_daily" = "günlük_tekrar";
+"cycle_weekly" = "haftalık_tekrar";
+"cycle_2weeks" = "2haftalık_tekrar";
+"cycle_4weeks" = "4haftalık_tekrar";
+"cycle_monthly" = "aylık_tekrar";
+"cycle_weekday" = "haftaiçi_tekrar";
+"cycle_yearly" = "yıllık_tekrar";
+"cycle_end_never" = "bitmeyen_tekrar";
+"cycle_end_until" = "tarihine_kadar_tekrar";
+"Recurrence pattern" = "Tekrar örüntüsü";
+"Range of recurrence" = "Tekrar aralığı";
+"Daily" = "Günlük";
+"Multi-Columns" = "Çoklu-Sütun";
+"Weekly" = "Haftalık";
+"Monthly" = "Aylık";
+"Yearly" = "Yıllık";
+"Every" = "Her";
+"Days" = "Gün";
+"Week(s)" = "Hafta";
+"On" = "Gün";
+"Month(s)" = "Ay";
+
+/* [Event recurrence editor] Ex: _The_ first Sunday */
+"The" = " ";
+"Recur on day(s)" = "Gün(ün/lerin)de tekrar et";
+"Year(s)" = "Yıl";
+
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
+"cycle_of" = "-";
+"No end date" = "Bitiş tarihi yok";
+"Create" = "Oluştur";
+"appointment(s)" = "buluşma(lar)";
+"Repeat until" = "Şu Zamana Tekrar et";
+"End Repeat" = "Tekrar Bitişi";
+"Never" = "Hiç bir zaman";
+"After" = "Şu tekrardan sonra";
+"On Date" = "Şu Tarihte";
+"times" = "kere";
+"First" = "İlk";
+"Second" = "İkinci";
+"Third" = "Üçüncü";
+"Fourth" = "Dördüncü";
+"Fift" = "Beşinci";
+"Last" = "Son";
+
+/* Appointment categories */
+"category_none" = "Hiç biri";
+"category_labels" = "Yıldönümü,Doğum Günü,İş,Aramalar,Müşteriler,Rekabet,Müşteri,Favoriler,Takip,Hediyelik Eşya,Tatiller,Fikirler,Toplantı,Sorunlar,Çeşitli,Kişisel,Projeler,Bayram,Durum,Tedarikçi,Seyahat,Tatil";
+"repeat_NEVER" = "Tekrarsız";
+"repeat_DAILY" = "Günlük";
+"repeat_WEEKLY" = "Haftalık";
+"repeat_BI-WEEKLY" = "İki-Haftada-bir";
+"repeat_EVERY WEEKDAY" = "Haftanın Her Günü";
+"repeat_MONTHLY" = "Aylık";
+"repeat_YEARLY" = "Yıllık";
+"repeat_CUSTOM" = "Özel...";
+"reminder_NONE" = "Hatırlatma yok";
+"reminder_5_MINUTES_BEFORE" = "5 dakika önce";
+"reminder_10_MINUTES_BEFORE" = "10 dakika önce";
+"reminder_15_MINUTES_BEFORE" = "15 dakika önce";
+"reminder_30_MINUTES_BEFORE" = "30 dakika önce";
+"reminder_45_MINUTES_BEFORE" = "45 dakika önce";
+"reminder_1_HOUR_BEFORE" = "1 saat önce";
+"reminder_2_HOURS_BEFORE" = "2 saat önce";
+"reminder_5_HOURS_BEFORE" = "5 saat önce";
+"reminder_15_HOURS_BEFORE" = "15 saat önce";
+"reminder_1_DAY_BEFORE" = "1 gün önce";
+"reminder_2_DAYS_BEFORE" = "2 gün önce";
+"reminder_1_WEEK_BEFORE" = "1 hafta  önce";
+"reminder_CUSTOM" = "Özel...";
+"reminder_MINUTES" = "dakika";
+"reminder_HOURS" = "saat";
+"reminder_DAYS" = "gün";
+"reminder_WEEKS" = "hafta";
+"reminder_BEFORE" = "önce";
+"reminder_AFTER" = "sonra";
+"reminder_START" = "etkinlik başlangıcından";
+"reminder_END" = "etkinlik bitişinden";
+"Reminder Details" = "Hatırlatıcı Ayrıntıları";
+"Choose a Reminder Action" = "Bir Hatırlatıcı Eylemi Seçin";
+"Show an Alert" = "Bir Uyarı Göster";
+"Send an E-mail" = "Bir İleti Gönder";
+"Email Organizer" = "Düzenleyene postala";
+"Email Attendees" = "Katılımcılara postala";
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* transparency */
+"Show Time as Free" = "Süreyi Serbest Olarak Göster";
+
+/* email notifications */
+"Send Appointment Notifications" = "Buluşma Bildirimi Gönder";
+"From" = "Başlangıç";
+"To" = "Bitiş";
+
+/* validation errors */
+validate_notitle           = "Başlık konulmadı, devam etmek istiyor musunuz?";
+validate_invalid_startdate = "Geçersiz başlangıç tarihi alanı!";
+validate_invalid_enddate   = "Geçersiz bitiş tarihi alanı!";
+validate_endbeforestart    = "Girdiğiniz bitiş tarihi, başlangıç tarihinden önce.";
+"Events" = "Etkinlikler";
+"Tasks" = "Görevler";
+"Show completed tasks" = "Tamamlanmış görevleri göster";
+
+/* tabs */
+"Task" = "Görev";
+"Event" = "Etkinlik";
+"Recurrence" = "Tekrar";
+
+/* toolbar */
+"New Event" = "Yeni Etkinlik";
+"New Task" = "Yeni Görev";
+"Edit" = "Düzenle";
+"Delete" = "Sil";
+"Go to Today" = "Bugüne Git";
+"Day View" = "Günlük Görünüm";
+"Week View" = "Haftalık Görünüm";
+"Month View" = "Aylık Görünüm";
+"Reload" = "Tazele";
+
+/* Number of selected components in events or tasks list */
+"selected" = "seçili";
+"eventPartStatModificationError" = "Katılım durumunuz değiştirilemez.";
+
+/* menu */
+"New Event..." = "Yeni Etkinlik...";
+"New Task..." = "Yeni Görev...";
+"Edit Selected Event..." = "Seçili Etkinliği Düzenle...";
+"Delete Selected Event" = "Seçili Etkinliği Sil";
+"Select All" = "Hepsini Seç";
+"Workweek days only" = "Sadece haftanın çalışma günleri";
+"Tasks in View" = "Görev Görünümü";
+"eventDeleteConfirmation" = "Şu etkilik(ler) silinecek:";
+"taskDeleteConfirmation" = "Şu görev(ler) silinecek:";
+"Would you like to continue?" = "Devam etmek istiyor musunuz?";
+"You cannot remove nor unsubscribe from your personal calendar."
+= "Kişisel takviminizden çıkamaz ve üyeliğinizi kaldıramazsınız.";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "\"%{0}\" takvimini silmek istediğinizden emin misiniz?";
+
+/* Legend */
+"Participant" = "Katılan";
+"Optional Participant" = "Tercihli Katılımcı";
+"Non Participant" = "Katılmayan";
+"Chair" = "Başkan";
+"Needs action" = "Eyleme gerekli";
+"Accepted" = "Kabul edilmiş";
+"Declined" = "Reddedilmiş";
+"Tentative" = "Geçici";
+"Free" = "Serbest";
+"Busy" = "Meşgul";
+"Maybe busy" = "Meşgul olabilir";
+"No free-busy information" = "serbest-meşgul bilgisi yok";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot" = "Zaman aralığı öner";
+"Zoom" = "Zoom";
+"Previous slot" = "Önceki aralık";
+"Next slot" = "Sonraki aralık";
+"Previous hour" = "Önceki saat";
+"Next hour" = "Sonraki saat";
+"Work days only" = "Sadece çalışma günleri";
+"The whole day" = "Tam gün";
+"Between" = "Arasında";
+"and" = "ve";
+"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
+= "Bir ya da daha fazla katılımcı ile zaman çakışması var.\nYine de mevcut düzenlemeyi tutmak ister misiniz?";
+
+/* events list */
+"Due" = "Son Tarih";
+"(Private Event)" = "(Özel Etkinlik)";
+vevent_class0 = "(Halka açık etkinlik)";
+vevent_class1 = "(Özel etkinlik)";
+vevent_class2 = "(Gizli etkinlik)";
+
+/* tasks list */
+"Descending Order" = "Azalan Sıralama";
+vtodo_class0 = "(Halka Açık görev)";
+vtodo_class1 = "(Özel görev)";
+vtodo_class2 = "(Gizli görev)";
+"closeThisWindowMessage" = "Teşekkürler! Bu pencereyi kapatabilir veya şunları görüntüleyebilirsiniz";
+"Multicolumn Day View" = "Çok Sütunlu Günlük Görünüm";
+"Please select an event or a task." = "Lütfen bir etkinlik veya görev seçin.";
+"editRepeatingItem" = "Düzenlediğiniz öge tekrarlanan bir ögedir. Bu ögenin tüm tekrarlarını mı yoksa sadece bu tek örneği mi düzenlemek istiyor musunuz?";
+"button_thisOccurrenceOnly" = "Sadece bu tek örnek";
+"button_allOccurrences" = "Tüm tekrarlanan örnekler";
+"Edit This Occurrence" = "Bu Örneği Düzenle";
+"Edit All Occurrences" = "Tüm Örnekleri Düzenle";
+"Update This Occurrence" = "Bu Örneği Güncelle";
+"Update All Occurrences" = "Tüm Örnekleri Güncelle";
+
+/* Properties dialog */
+"Color" = "Renk";
+"Include in free-busy" = "serbest-meşgul'e dahil et";
+"Synchronization" = "Eşitleme";
+"Synchronize" = "Eşitle";
+"Tag" = "Etiket";
+"Display" = "Görünen";
+"Show alarms" = "Uyarıları göster";
+"Show tasks" = "Görevleri göster";
+"Notifications" = "Bildirimler";
+"Receive a mail when I modify my calendar" = "Takvimimi değiştirdiğimde bir ileti al";
+"Receive a mail when someone else modifies my calendar" = "Başka biri  takvimimi değiştirdiğinde ileti al";
+"When I modify my calendar, send a mail to" = "Bir takvimi değiştirdiğimde, aşağıdaki kişiye ileti gönder";
+"Email Address" = "E-posta Adresi";
+"Export" = "Dışarı Aktar";
+
+
+/* Show only the calendar for which the menu is displayed */ 
+"Show Only This Calendar" = "Sadece Bu Takvimi Göster";
+
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "Tüm Takvimleri Göster";
+
+"Links to this Calendar" = "Bu Takvimin Bağlantıları";
+"Authenticated User Access" = "Kimliği Doğrulamış Kullanıcı Erişimi";
+"CalDAV URL" = "CalDAV URL";
+"WebDAV ICS URL" = "WebDAV ICS URL";
+"WebDAV XML URL" = "WebDAV XML URL";
+
+/* Error messages */
+"dayFieldInvalid" = "Lütfen Gün alanına 1 veya daha büyük bir sayısal değer belirleyin.";
+"weekFieldInvalid" = "Lütfen Hafta alanına 1 veya daha büyük bir sayısal değer belirleyin.";
+"monthFieldInvalid" = "Lütfen Ay alanına 1 veya daha büyük bir sayısal değer belirleyin.";
+"monthDayFieldInvalid" = "Lütfen ayın günü alanında 1 veya daha büyük bir sayısal değer belirleyin.";
+"yearFieldInvalid" = "Lütfen Yıl alanına 1 veya daha büyük bir sayısal değer belirleyin.";
+"appointmentFieldInvalid" = "Lütfen Buluşma alanına 1 veya daha büyük bir sayısal değer belirleyin.";
+"recurrenceUnsupported" = "Bu tip tekrar şimdilik desteklenmiyor.";
+"Please specify a calendar name." = "Lütfen bir takvim adı belirtin.";
+"tagNotDefined" = "Bu takvimi eşitlemek istiyorsanız bir etiket belirtmelisiniz.";
+"tagAlreadyExists" = "Belirlediğiniz etiket başka bir takvim ile ilişkilendirilmiş.";
+"tagHasChanged" = "Eğer takviminizin etiketini değiştirirseniz,  taşınabilir cihazınızda  verileri tazelemeniz gerekir.\n\nDevam etmek istiyor musunuz?";
+"tagWasAdded" = "Eğer bu takvimi eşitlemek isterseniz, taşınabilir cihazınızda verileri tazelemeniz gerekir.\n\nDevam etmek istiyor musunuz?";
+"tagWasRemoved" = "Eğer bu takvimin eşitleme işlemini kaldırırsanız, taşınabilir cihazınızda verileri tazelemeniz gerekir.\n\nDevam etmek istiyor musunuz?";
+"DestinationCalendarError" = "Kaynak ve hedef takvimler aynı. Lütfen farklı bir takvime kopyalamayı deneyin.";
+"EventCopyError" = "Kopyalama başarısız oldu. Lütfen başka bir takvimi kopyalamayı deneyin.";
+"Please select at least one calendar" = "Lütfen en az bir takvim seçin";
+"Open Task..." = "Görev Aç...";
+"Mark Completed" = "Tamamlanmış olarak İşaretle";
+"Delete Task" = "Görevi Sil";
+"Delete Event" = "Etkinliği Sil";
+"Copy event to my calendar" = "Etkinliği takvimime kopyala";
+"View Raw Source" = "Kaynak Kodunu Göster";
+"Subscriptions" = "Üyelikler";
+"Subscribe to a shared folder" = "Paylaşılan bir klasöre üye ol";
+"Subscribe to a web calendar..." = "Bir web takvimine üye ol...";
+"URL of the Calendar" = "Takvimin URL adresi";
+"Web Calendar" = "Web Takvimi";
+"Web Calendars" = "Web Takvimleri";
+"Reload on login" = "Girişte tazele";
+"Invalid number." = "Geçersiz sayı.";
+"Please identify yourself to %{0}" = "Lütfen kendinizi şu kişiye tanıtın %{0} ";
+"quantity" = "adet";
+"Current view" = "Geçerli görünüm";
+"Selected events and tasks" = "Seçili etkinlik ve görevler";
+"Custom date range" = "Özel tarih aralığı";
+"Select starting date" = "Başlangıç tarihini seçin";
+"Select ending date" = "Bitiş tarihini seçin";
+"Delegated to" = "Temsilci atanan";
+"Keep sending me updates" = "Güncellemeleri bana göndermeye devam et";
+"OK" = "TAMAM";
+"Confidential" = "Gizli";
+"Enable" = "Etkinleştir";
+"Filter" = "Süzgeç";
+"Sort" = "Sıralandır";
+"Back" = "Geri";
+"Day" = "Gün";
+"Month" = "Ay";
+"New Appointment" = "Yeni Buluşma";
+"filters" = "süzgeçler";
+"Today" = "Bugün";
+"More options" = "Daha fazla seçenek";
+"Delete This Occurrence" = "Bu Örneği Sil";
+"Delete All Occurrences" = "Tüm Örnekleri Sil";
+"Add From" = "Başlangıç Tarihi Ekle";
+"Add Due" = "Son Tarih Ekle";
+"Import" = "İçeri Aktar";
+"Rename" = "Yeniden Adlandır";
+"Import Calendar" = "Takvimi İçeri Aktar";
+"Select an ICS file." = "Bir  ICS dosyası seçin.";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "Takvime başarıyla üye olundu";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Ögede Geçiş Yap";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Arama kapsamı";

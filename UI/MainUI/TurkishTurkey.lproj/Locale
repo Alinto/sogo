@@ -1,0 +1,35 @@
+/* Turkish */
+{
+  NSLanguageName = "Turkish (Turkey)";
+  NSFormalName = "Turkish";
+  NSLocaleCode = "tr_TR"; /* ISO 639-1 */
+  NSLanguageCode = "tur"; /* ISO 639-2 */
+  NSParentContext = "";
+
+  NSAMPMDesignation = (Sabah, "Akşam");
+  NSCurrencySymbol = "TL";
+  NSDateFormatString = "%e, %B, %Y, %A";
+  NSDateTimeOrdering = DMYH;
+  NSDecimalDigits = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+  NSDecimalSeparator = ",";
+  NSEarlierTimeDesignations = (ilk, son, "geçmiş", "önce");
+  NSHourNameDesignations = ((0, gece), (10, sabah), (12, "öğlen"), (14, "öğleden sonra"), (19, "akşam"));
+  NSInternationalCurrencyString = TRY; /* ISO 4217 */
+  NSLaterTimeDesignations = (next);
+  NSMonthNameArray = (Ocak, "Şubat", Mart, Nisan, "Mayıs", Haziran, Temmuz, "Ağustos", "Eylül", Ekim, "Kasım", "Aralık");
+  NSNextDayDesignations = ("yarın");
+  NSNextNextDayDesignations = ("ertesi gün");
+  NSPriorDayDesignations = ("dün");
+  NSShortDateFormatString = "%e/%m/%y";
+  NSShortMonthNameArray = (Oca, "Şub", Mar, Nis, May, Haz, Tem, "Ağu", Eyl, Eki, Kas, Ara);
+  NSShortTimeDateFormatString = "%e/%m/%y %H:%M";
+  NSShortWeekDayNameArray = (Pzr, Pts, Sal, "Çar", Per, Cum, Cts);
+  NSThisDayDesignations = ("bugün", "şimdi");
+  NSThousandsSeparator = ".";
+  NSTimeDateFormatString = "%e %B %Y %A %H:%M:%S %Z";
+  NSTimeFormatString = "%H:%M:%S";
+  NSWeekDayNameArray = (Pazar, Pazartesi, "Salı", "Çarşamba", "Perşembe", Cuma, Cumartesi);
+  NSYearMonthWeekDesignations = ("yıl", ay, hafta);
+  NSPositiveCurrencyFormatString = "9.999,00 TL";
+  NSNegativeCurrencyFormatString = "-9.999,00 TL";
+}

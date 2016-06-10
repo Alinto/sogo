@@ -41,6 +41,7 @@
      = "Jokaisella Internet käyttäjällä on mahdollisuus käyttää osoitekirjaasi \"%{0}\" ilman tunnuksia tähän järjestelmään. Ovatko nämä tiedot sopivia julkiseen Internetiin? ";
 "Give Access" = "Salli pääsy";
 "Keep Private" = "Pidä yksityisenä";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Hakemistoon kirjautuminen ei onnistu!";
@@ -76,16 +77,19 @@
 "45 minutes" = "45 minuuttia";
 "1 hour" = "1 tunti";
 "1 day" = "1 päivä";
+
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Peruuta";
 "Yes" = "Kyllä";
 "No" = "Ei";
+
 /* alarms */
 "Reminder" = "Muistutus";
 "Start" = "Alkaa";
 "Due Date" = "Päättyy";
 "Location" = "Sijainti";
+
 /* mail labels */
 "Important" = "Tärkeä";
 "Work" = "Työ";
@@ -104,6 +108,15 @@
 "Loading" = "Lataa";
 "No such user." = "Käyttäjää ei löydy.";
 "You cannot (un)subscribe to a folder that you own!" = "Et voi (ulos)kirjautua itse omistamaasi hakemistoon!";
+
+/* Authentication username */
+"Username" = "Käyttäjätunnus";
+
+/* Authentication password */
+"Password" = "Salasana";
+
+/* Authentication failed */
+"Wrong username or password." = "Väärä käyttäjätunnus tai salasana.";
 
 /* Error message display bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Syötä vähintään %{minimumSearchLength} merkkiä";

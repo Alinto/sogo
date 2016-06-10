@@ -41,6 +41,7 @@
      = "Потенцијално било кој  на интеернет ќе може да го достапи адресарот \"%{0}\", дури и ако нема сметка на системот. Дали оваа информација е погодна за јавен интернет?";
 "Give Access" = "Дади пристап";
 "Keep Private" = "Сочувај го приватно";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Не е можно да се претплатите на оваа папка!";
@@ -76,16 +77,19 @@
 "45 minutes" = "45 минути";
 "1 hour" = "1 час";
 "1 day" = "1 ден";
+
 /* common buttons */
 "OK" = "Во ред";
 "Cancel" = "Откажи";
 "Yes" = "Да";
 "No" = "Не";
+
 /* alarms */
 "Reminder" = "Потсетник";
 "Start" = "Почеток";
 "Due Date" = "Краен датум";
 "Location" = "Локација";
+
 /* mail labels */
 "Important" = "Важно";
 "Work" = "Работа";
@@ -104,6 +108,15 @@
 "Loading" = "Вчитувам";
 "No such user." = "Нема таков корисник.";
 "You cannot (un)subscribe to a folder that you own!" = "Не е можно да се запишете/отпишете од папката која е ваша!";
+
+/* Authentication username */
+"Username" = "Корисничко име";
+
+/* Authentication password */
+"Password" = "Лозинка";
+
+/* Authentication failed */
+"Wrong username or password." = "Погрешно корисничко име или лозинка.";
 
 /* Error message display bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Внесете барем %{minimumSearchLength} карактери";

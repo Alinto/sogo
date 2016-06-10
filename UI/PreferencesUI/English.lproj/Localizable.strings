@@ -107,6 +107,7 @@
 "Day start time" = "Day start time";
 "Day end time" = "Day end time";
 "Day start time must be prior to day end time." = "Day start time must be prior to day end time.";
+"Week days to display" = "Week days to display";
 "Show time as busy outside working hours" = "Show time as busy outside working hours";
 "First week of year" = "First week of year";
 "Enable reminders for Calendar items" = "Enable reminders for Calendar items";
@@ -254,8 +255,10 @@
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
 "Refresh View" = "Refresh View";
 "refreshview_manually" = "Manually";
 "refreshview_every_minute" = "Every minute";
@@ -362,6 +365,7 @@
 "TLS" = "TLS";
 
 /* Avatars */
+"Use Gravatar" = "Use Gravatar";
 "Alternate Avatar" = "Alternate Avatar";
 "none" =  "None";
 "identicon" = "Ident Icon";

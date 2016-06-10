@@ -17,7 +17,7 @@
 "User" = "Gebruiker";
 "Vacation message is enabled" = "Afwezigheidsbericht is ingeschakeld";
 "Help" = "Help";
-"noJavascriptError" = "SOGo heeft Javascript nodig om te functioneren. U dient Javascript in uw browser in te schakelen.";
+"noJavascriptError" = "SOGo heeft Javascript nodig om te kunnen functioneren. U dient Javascript in uw browser in te schakelen.";
 "noJavascriptRetry" = "Opnieuw proberen";
 "Owner" = "Eigenaar";
 "Publish the Free/Busy information" = "Beschikbaarheidsinformatie publiceren";
@@ -27,18 +27,18 @@
 "Any Authenticated User" = "Elke geauthenticeerde gebruiker";
 "Public Access" = "Publieke toegang";
 "Any user not listed above" = "Elke niet hierboven vermelde gebruiker";
-"Anybody accessing this resource from the public area" = "Iedereen die dit hulpmiddel uit het publieke gedeelte benadert";
+"Anybody accessing this resource from the public area" = "Iedereen die dit middel vanuit het publieke gedeelte benadert";
 "Sorry, the user rights can not be configured for that object." = "De machtigingen kunnen niet worden ingesteld voor dit object.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Iedereen met een gebruikersaccount voor dit systeem zal toegang hebben tot uw postvak \"%{0}\". Weet u zeker dat u iedereen kan vertrouwen?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
-     = "Iedereen met een gebruikersaccount voor dit systeem zal toegang hebben tot uw agenda \"%{0}\". Weet u zeker dat u iedereen kan vertrouwen?";
+     = "Iedereen met een gebruikersaccount voor dit systeem zal toegang hebben tot uw agenda \"%{0}\". Weet u zeker dat u iedereen kunt vertrouwen?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Iedereen op het Internet toegang kunnen krijgen tot uw agenda \"%{0}\", zelfs als diegenen geen gebruikersaccount hebben voor dit systeem. Is de informatie geschikt voor het openbare Internet?";
+     = "Iedereen op het Internet zou toegang kunnen krijgen tot uw agenda \"%{0}\", zelfs als diegenen geen gebruikersaccount hebben voor dit systeem. Is de informatie geschikt voor het openbare Internet?";
 "Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
-     = "Iedereen met een gebruikersaccount voor dit systeem zal toegang hebben tot uw adresboek \"%{0}\". Weet u zeker dat u iedereen kan vertrouwen?";
+     = "Iedereen met een gebruikersaccount voor dit systeem zal toegang hebben tot uw adresboek \"%{0}\". Weet u zeker dat u iedereen kunt vertrouwen?";
 "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Iedereen op het Internet toegang kunnen krijgen tot uw adresboek \"%{0}\", zelfs als diegenen geen gebruikersaccount hebben voor dit systeem. Is de informatie geschikt voor het openbare Internet?";
+     = "Iedereen op het internet zal toegang kunnen krijgen tot uw adresboek \"%{0}\", zelfs als diegenen geen gebruikersaccount hebben voor dit systeem. Is de informatie geschikt voor het openbare Internet?";
 "Give Access" = "Toegang geven";
 "Keep Private" = "Privé houden";
 /* generic.js */
@@ -55,7 +55,7 @@
      	= "U bent al op deze map geabonneerd!";
 "The user rights cannot be edited for this object!"
         = "De machtigingen kunnen niet worden aangepast voor dit object!";
-"A folder by that name already exists." = "Een map met die naam bestaat reeds.";
+"A folder by that name already exists." = "Er bestaat al een map met die naam.";
 "You cannot create a list in a shared address book." 
         = "U kunt geen lijst maken in een gedeeld adresboek.";
 "Warning" = "Waarschuwing";
@@ -63,7 +63,7 @@
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "U heeft geen toegang tot deze module of dit systeem. Neem contact op met uw systeembeheerder.";
 "You don't have the required privileges to perform the operation."
-= "U heeft niet de benodigde rechten voor deze actie.";
+= "U heeft niet de benodigde rechten om deze actie uit te voeren.";
 "noEmailForDelegation" = "U moet het adres opgeven waarnaar u uw uitnodiging wilt delegeren.";
 "delegate is organizer" = "De gedelegeerde is de organisator. Geef een andere gedelegeerde op.";
 "delegate is a participant" = "De gedelegeerde is al een deelnemer.";

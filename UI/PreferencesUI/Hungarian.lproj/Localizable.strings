@@ -3,11 +3,23 @@
 "Close" = "Bezárás";
 "Preferences saved" = "Beállítások mentve";
 
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Nem mentett változások";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Kívánja menteni a konfigurációban történt változtatásokat? ";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Mentés";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Ne mentse";
+
 /* tabs */
 "General" = "Általános";
-"Calendar Options" = "Naptár";
-"Contacts Options" = "Kapcsolatok beállítása";
-"Mail Options" = "Levelezés";
+"Calendar Options" = "Naptár beállítások";
+"Contacts Options" = "Kapcsolat beállítások";
+"Mail Options" = "Levelezési beállítások";
 "IMAP Accounts" = "IMAP fiókok";
 "Vacation" = "Távollét";
 "Forward" = "Továbbítás";
@@ -27,7 +39,7 @@
 "Auto reply message" = "Automatikus válasz minden feladónak csak egy alkalommal";
 "Email addresses (separated by commas)" = "Email címek (vesszővel elválasztva)";
 "Add default email addresses" = "Saját email címek hozzáadása";
-"Days between responses" = "Válaszok közötti napok száma";
+"Days between responses" = "Válaszok között eltelt napok száma";
 "Do not send responses to mailing lists" = "Levelező listákra válasz mellőzése";
 "Disable auto reply on" = "Automatikus válasz tiltása";
 "Always send vacation message response" = "Mindig küldjön távollét üzenet választ";
@@ -87,19 +99,23 @@
 "timeFmt_3" = "";
 "timeFmt_4" = "";
 
+/* Timezone autocompletion */
+"No matches found." = "Nincs találat";
+
 /* calendar */
 "Week begins on" = "Hét kezdőnapja";
 "Day start time" = "Nap kezdete";
 "Day end time" = "Nap vége";
 "Day start time must be prior to day end time." = "A kezdőnap nem lehet későbbi, mint a befejező nap.";
+"Week days to display" = "A hét megjelenítendő napjai";
 "Show time as busy outside working hours" = "A munkaidőn túli időszakokra foglaltság jelzése";
 "First week of year" = "Év első hete";
 "Enable reminders for Calendar items" = "Emlékeztető engedélyezése a naptárbejegyzésekhez";
 "Play a sound when a reminder comes due" = "Hang lejátszása az emlékeztetőhöz";
 "Default reminder" = "Alapértelmezett emlékeztető";
-"firstWeekOfYear_January1" = "Január 1-jétől";
-"firstWeekOfYear_First4DayWeek" = "Első 4 napos héttől";
-"firstWeekOfYear_FirstFullWeek" = "Első teljes héttől";
+"firstWeekOfYear_January1" = "január 1-től indul";
+"firstWeekOfYear_First4DayWeek" = "az első 4 napos héttel indul";
+"firstWeekOfYear_FirstFullWeek" = "az első teljes héttel indul";
 "Prevent from being invited to appointments" = "Megakadályozza a meghívást találkozókra";
 "White list for appointment invitations" = "Engedélyezési lista a találkozók meghívásaihoz";
 "Contacts Names" = "Kapcsolatok nevei";
@@ -127,6 +143,7 @@
 "Labels" = "Címkék";
 "Label" = "Címke";
 "Show subscribed mailboxes only" = "Csak azon fiókok mutatása, amelyre feliratkozott";
+"Synchronize only default mail folders (EAS)" = "Csak az alapértelmezett levelezési mappák szinkronizálása (EAS)";
 "Sort messages by threads" = "Üzenetek beszélgetések szerinti rendezése";
 "When sending mail, add unknown recipients to my" = "Levél küldésekor az ismeretlen címeket adja hozzá a következőhöz";
 "Address Book" = "Címjegyzék";
@@ -142,6 +159,10 @@
 "Compose messages in" = "Üzenet formátuma";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Egyszerű szöveg";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Alapértelmezett betűméret";
+
 "Display remote inline images" = "Távoli beágyazott képek megjelenítése";
 "displayremoteinlineimages_never" = "Soha";
 "displayremoteinlineimages_always" = "Mindig";
@@ -175,11 +196,11 @@
 /* password */
 "New password" = "Új jelszó";
 "Confirmation" = "Megerősítés";
-"Change" = "Megváltoztat";
+"Change" = "Módosítás";
 
 /* Event+task classifications */
-"Default events classification" = "Az események alapértelmezett besorolása";
-"Default tasks classification" = "Alapértelmezett feladat besorolás";
+"Default events classification" = "Események alapértelmezett besorolása";
+"Default tasks classification" = "Feladatok alapértelmezett besorolása";
 "PUBLIC_item" = "Nyilvános";
 "CONFIDENTIAL_item" = "Bizalmas";
 "PRIVATE_item" = "Magán";
@@ -197,7 +218,7 @@
 /* Default module */
 "Calendar" = "Naptár";
 "Contacts" = "Címjegyzék";
-"Mail" = "Levél";
+"Mail" = "Levelezés";
 "Last" = "Utoljára használt";
 "Default Module " = "Alapértelmezett modul";
 "SOGo Version" = "SOGo verzió";
@@ -211,7 +232,6 @@
 "Catalan" = "Català";
 "ChineseTaiwan" = "Chinese (Taiwan)";
 "Croatian" = "Hrvatski";
-"Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -223,19 +243,23 @@
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
 "Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
-"BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
-"Refresh View" = "Nézet frissítés";
+
+"Refresh View" = "Nézet frissítése";
 "refreshview_manually" = "Kézi";
 "refreshview_every_minute" = "Percenként";
 "refreshview_every_2_minutes" = "Kétpercenként";
@@ -250,7 +274,7 @@
 "Never send a return receipt" = "Soha ne küldjön visszaigazolást";
 "Allow return receipts for some messages" = "Egyes üzenetek esetén visszaigazolás küldésének engedélyezése";
 "If I'm not in the To or Cc of the message" = "Amennyiben nem szereplek a címzett vagy másolat mezőben";
-"If the sender is outside my domain" = "Amennyiben a feladó külső (más domain)";
+"If the sender is outside my domain" = "Amennyiben a feladó más tartományban van";
 "In all other cases" = "Minden egyéb esetben";
 "Never send" = "Küldés mellőzése mindig";
 "Always send" = "Küldés minden esetben";
@@ -291,7 +315,7 @@
 "Forward the message to" = "Üzenet továbbítása erre a címre";
 "Send a reject message" = "Elutasító üzenet küldése";
 "Send a vacation message" = "Távollét üzenet küldése";
-"Stop processing filter rules" = "Szűró szabályok feldolgozásának leállítása";
+"Stop processing filter rules" = "Szűrő szabályok feldolgozásának befejezése";
 "is under" = "kisebb, mint";
 "is over" = "nagyobb, mint";
 "is" = "is";
@@ -341,7 +365,8 @@
 "TLS" = "TLS";
 
 /* Avatars */
-"Alternate Avatar" = "Másik logó";
+"Use Gravatar" = "Gravatar használata";
+"Alternate Avatar" = "Másik kép";
 "none" =  "Nincs";
 "identicon" = "Azonosító ikon";
 "monsterid" = "Szörny";

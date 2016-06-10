@@ -64,6 +64,12 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Aucune boîte sélectionnée";
 
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Dossier compressé";
+/* Empty Trash success message */
+"Trash emptied" = "La corbeille est vidée";
+
 /* acls */
 "Access rights to" = "Droits d'accès à";
 "For user" = "Pour l'utilisateur";
@@ -95,6 +101,7 @@
 "Body"          = "Contenu";
 "Open" = "Ouvrir";
 "Select All" = "Tout sélectionner";
+"Select Message" = "Sélectionner le message";
 "Attach Web Page..." = "Joindre une page Web...";
 "file" = "fichier";
 "files" = "fichiers";
@@ -340,3 +347,6 @@
 "Your email has been saved" = "Votre courriel a été sauvegardé";
 "Your email has been sent" = "Votre courriel a été envoyé";
 "Folder compacted" = "Dossier compressé";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Étendue de la recherche";

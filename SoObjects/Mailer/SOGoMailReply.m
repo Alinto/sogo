@@ -22,8 +22,6 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGImap4/NGImap4Envelope.h>
 
-#import <SoObjects/SOGo/SOGoDateFormatter.h>
-#import <SoObjects/SOGo/SOGoUser.h>
 
 #import "SOGoMailObject+Draft.h"
 #import "SOGoMailReply.h"
@@ -152,6 +150,15 @@
 @implementation SOGoMailPortugueseReply
 @end
 
+@implementation SOGoMailRussianReply
+@end
+
+@implementation SOGoMailSlovakReply
+@end
+
+@implementation SOGoMailSlovenianReply
+@end
+
 @implementation SOGoMailSpanishSpainReply
 @end
 
@@ -161,13 +168,7 @@
 @implementation SOGoMailSwedishReply
 @end
 
-@implementation SOGoMailRussianReply
-@end
-
-@implementation SOGoMailSlovakReply
-@end
-
-@implementation SOGoMailSlovenianReply
+@implementation SOGoMailTurkishTurkeyReply
 @end
 
 @implementation SOGoMailUkrainianReply

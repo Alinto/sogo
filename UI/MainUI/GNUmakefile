@@ -6,7 +6,7 @@ BUNDLE_NAME = MainUI
 
 MainUI_PRINCIPAL_CLASS = MainUIProduct
 
-MainUI_LANGUAGES = Arabic Basque BrazilianPortuguese Catalan ChineseTaiwan Croatian Czech Danish Dutch English Finnish French German Hungarian Icelandic Italian Lithuanian Macedonian NorwegianBokmal NorwegianNynorsk Polish Portuguese Russian Slovak Slovenian SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
+MainUI_LANGUAGES = $(SOGO_LANGUAGES)
 
 MainUI_OBJC_FILES += \
 	MainUIProduct.m		\

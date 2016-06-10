@@ -126,6 +126,8 @@
 "Name of the Address Book" = "Nom du carnet d'adresses";
 "Are you sure you want to delete the selected address book?"
 = "Voulez-vous vraiment supprimer le carnet d'adresses sélectionné ?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Voulez-vous vraiment supprimer le carnet d'adresses «%{0}» ?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "Vous ne pouvez pas supprimer ni vous désabonner d'un carnet public.";
 "You cannot remove nor unsubscribe from your personal addressbook."
@@ -225,4 +227,7 @@
 "Add Screen Name" = "Ajouter un surnom";
 "Synchronization" = "Synchronisation";
 "Synchronize" = "Synchroniser";
-"Successfully subscribed to address book" = "Abonnement au carnet d'adresses complété";
+"Sucessfully subscribed to address book" = "Abonnement au carnet d'adresses complété";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Étendue de la recherche";

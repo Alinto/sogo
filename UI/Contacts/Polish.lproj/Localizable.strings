@@ -126,6 +126,8 @@
 "Name of the Address Book" = "Nazwa książki adresowej";
 "Are you sure you want to delete the selected address book?"
 = "Czy na pewno chcesz skasować zaznaczoną książkę adresową?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Na pewno chcesz usunąć książkę adresową \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "Nie możesz usunąć ani zrezygnować z subskrypcji publicznej książki adresowej.";
 "You cannot remove nor unsubscribe from your personal addressbook."
@@ -225,4 +227,7 @@
 "Add Screen Name" = "Dodaj nazwę ekranową";
 "Synchronization" = "Synchronizacja";
 "Synchronize" = "Synchronizuj";
-"Successfully subscribed to address book" = "Subskrypcja książki adresowej zakończona powodzeniem";
+"Sucessfully subscribed to address book" = "Subskrypcja książki adresowej zakończona powodzeniem";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Zakres wyszukiwania";

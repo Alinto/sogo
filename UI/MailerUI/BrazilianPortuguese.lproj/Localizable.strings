@@ -64,6 +64,12 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Nenhuma caixa de correio selecionada";
 
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Pasta compactada";
+/* Empty Trash success message */
+"Trash emptied" = "Lixeira esvaziada";
+
 /* acls */
 "Access rights to" = "Direitos de acesso para";
 "For user" = "Para usuário";
@@ -340,3 +346,6 @@
 "Your email has been saved" = "Seu e-mail foi salvo";
 "Your email has been sent" = "Seu e-mail foi enviado";
 "Folder compacted" = "Pasta compactada";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Escopo de pesquisa";

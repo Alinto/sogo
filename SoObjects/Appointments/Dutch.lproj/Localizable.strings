@@ -1,16 +1,16 @@
 "Inviting the following persons is prohibited:" = "Uitnodigen van de volgende personen is niet toegestaan:";
 "Personal Calendar" = "Persoonlijke agenda";
 vevent_class0 = "(Publieke afspraak)";
-vevent_class1 = "(Privé-gebeurtenis)";
-vevent_class2 = "(Vertrouwelijke gebeurtenis)";
+vevent_class1 = "(Privé-afspraak)";
+vevent_class2 = "(Vertrouwelijke afspraak)";
 
 vtodo_class0 = "(Publieke taak)";
 vtodo_class1 = "(Privétaak)";
 vtodo_class2 = "(Vertrouwelijke taak)";
 /* Receipts */
-"The event \"%{Summary}\" was created" = "De gebeurtenis \"%{Summary}\" is aangemaakt";
-"The event \"%{Summary}\" was deleted" = "De gebeurtenis \"%{Summary}\" is verwijderd";
-"The event \"%{Summary}\" was updated" = "De gebeurtenis \"%{Summary}\" is gewijzigd";
+"The event \"%{Summary}\" was created" = "De afspraak \"%{Summary}\" is aangemaakt";
+"The event \"%{Summary}\" was deleted" = "De afspraak \"%{Summary}\" is verwijderd";
+"The event \"%{Summary}\" was updated" = "De afspraak \"%{Summary}\" is gewijzigd";
 "The following attendees(s) were notified" = "De volgende deelnemers zijn in kennis gesteld";
 "The following attendees(s) were added" = "De volgende deelnemers zijn toegevoegd";
 "The following attendees(s) were removed" = "De volgende deelnemers zijn verwijderd";
@@ -23,38 +23,38 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "summary_label" = "Samenvatting:";
 "comment_label" = "Commentaar:";
 /* Invitation */
-"Event Invitation: \"%{Summary}\"" = "Uitnodiging voor gebeurtenis: \"%{Summary}\"";
+"Event Invitation: \"%{Summary}\"" = "Uitnodiging voor afspraak: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(Verzonden door %{SentBy})";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}heeft u uitgenodigd voor: %{Summary}.\n\nBegin: %{StartDate}\nEinde: %{EndDate}\nBeschrijving: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}heeft u uitgenodigd voor %{Summary}.\n\nStart: %{StartDate} om %{StartTime}\nEinde: %{EndDate} om %{EndTime}\nOmschrijving: %{Description}";
 /* Deletion */
-"Event Cancelled: \"%{Summary}\"" = "Gebeurtenis geannuleerd: \"%{Summary}\"";
+"Event Cancelled: \"%{Summary}\"" = "Afspraak geannuleerd: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText}heeft deze gebeurtenis afgezegd: %{Summary}.\n\nBegin: %{StartDate}\nEinde: %{EndDate}\nBeschrijving: %{Description}";
+= "%{Organizer} %{SentByText}heeft deze afspraak afgezegd: %{Summary}.\n\nBegin: %{StartDate}\nEinde: %{EndDate}\nBeschrijving: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText}heeft de gebeurtenis: %{Summary} geannuleerd.\n\nStart: %{StartDate} om %{StartTime}\nEinde: %{EndDate} om %{EndTime}\nOmschrijving: %{Description}";
+= "%{Organizer} %{SentByText}heeft de afspraak: %{Summary} geannuleerd.\n\nStart: %{StartDate} om %{StartTime}\nEinde: %{EndDate} om %{EndTime}\nOmschrijving: %{Description}";
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
-= "De gebeurtenis \"%{Summary}\" op %{OldStartDate} is veranderd.";
+= "De afspraak \"%{Summary}\" op %{OldStartDate} is veranderd.";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= "De gebeurtenis \"%{Summary}\" op %{OldStartDate} om %{OldStartTime} is gewijzigd";
+= "De afspraak \"%{Summary}\" op %{OldStartDate} om %{OldStartTime} is gewijzigd";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
 = "De volgende parameters zijn veranderd in de \"%{Summary}\" vergadering:";
 "Please accept or decline those changes."
 = "Accepteer deze wijzigingen of wijs ze af.";
 /* Reply */
-"Accepted invitation: \"%{Summary}\"" = "Uitnodiging aanvaard: \"%{Summary}\"";
+"Accepted invitation: \"%{Summary}\"" = "Uitnodiging geaccepteerd: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Uitnodiging afgewezen: \"%{Summary}\"";
 "Delegated invitation: \"%{Summary}\"" = "Uitnodiging gedelegeerd: \"%{Summary}\"";
 "Not yet decided on invitation: \"%{Summary}\"" = "Nog niet besloten over uitnodiging: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
-= "%{Attendee} %{SentByText}heeft uw uitnodiging voor de gebeurtenis geaccepteerd.";
+= "%{Attendee} %{SentByText}heeft uw uitnodiging voor de afspraak geaccepteerd.";
 "%{Attendee} %{SentByText}has declined your event invitation."
-= "%{Attendee} %{SentByText}heeft uw uitnodiging voor de gebeurtenis geweigerd.";
+= "%{Attendee} %{SentByText}heeft uw uitnodiging voor de afspraak geweigerd.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
 = "%{Attendee} %{SentByText}heeft de uitnodiging gedelegeerd aan %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}heeft nog niet gereageerd op uw uitnodiging.";
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Kan bron \"%{Cn} %{SystemEmail}\" niet benaderen";
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Het maximale aantal gelijktijdige reserveringen (%{NumberOfSimultaneousBookings}) voor \"%{Cn} %{SystemEmail}\" is bereikt. De conflicterende gebeurtenis is \"%{EventTitle}\" en begint op %{StartDate}.";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Het maximale aantal gelijktijdige reserveringen (%{NumberOfSimultaneousBookings}) voor \"%{Cn} %{SystemEmail}\" is bereikt. De conflicterende afspraak is \"%{EventTitle}\" en begint op %{StartDate}.";

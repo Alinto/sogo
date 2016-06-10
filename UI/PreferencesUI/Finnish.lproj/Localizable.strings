@@ -3,6 +3,18 @@
 "Close" = "Sulje";
 "Preferences saved" = "Asetukset tallennettu";
 
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Tallentamattomat muutokset";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Haluatko tallentaa konfiguraatioon tekemääsi muutokset?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Tallenna";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Älä tallenna";
+
 /* tabs */
 "General" = "Yleiset";
 "Calendar Options" = "Kalenteriasetukset";
@@ -87,11 +99,15 @@
 "timeFmt_3" = "";
 "timeFmt_4" = "";
 
+/* Timezone autocompletion */
+"No matches found." = "Vastaavuuksia ei löytynyt";
+
 /* calendar */
 "Week begins on" = "Viikon alkupäivä";
 "Day start time" = "Päivä alkaa klo";
 "Day end time" = "Päivä päättyy klo";
 "Day start time must be prior to day end time." = "Päivän alkuajan tulee olla ennen päättymisaikaa.";
+"Week days to display" = "Näytettävät viikonpäivät";
 "Show time as busy outside working hours" = "Näytä työajan ulkopuolinen aika varattuna";
 "First week of year" = "Vuoden ensimmäinen viikko";
 "Enable reminders for Calendar items" = "Ota käyttöön kalenterimerkintöjen muistuttajat";
@@ -127,6 +143,7 @@
 "Labels" = "Otsikot";
 "Label" = "Otsikoi";
 "Show subscribed mailboxes only" = "Näytä vain tilatut sähköpostikansiot";
+"Synchronize only default mail folders (EAS)" = "Synkronoi vain oletus sähköpostikansiot (EAS)";
 "Sort messages by threads" = "Järjestä viestit ketjuiksi";
 "When sending mail, add unknown recipients to my" = "Postia lähettäessä lisää tuntemattomat vastaanottajat";
 "Address Book" = "Osoitekirja";
@@ -142,6 +159,10 @@
 "Compose messages in" = "Luo viestejä";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Pelkkä teksti";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Oletuskirjasinkoko";
+
 "Display remote inline images" = "Näytä etäsisällön kuvat";
 "displayremoteinlineimages_never" = "Ei koskaan";
 "displayremoteinlineimages_always" = "Aina";
@@ -234,8 +255,10 @@
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
 "Refresh View" = "Päivitä näkymä";
 "refreshview_manually" = "Manuaalisesti";
 "refreshview_every_minute" = "Joka minuutti";
@@ -342,6 +365,7 @@
 "TLS" = "TLS";
 
 /* Avatars */
+"Use Gravatar" = "Käytä Gravatarta";
 "Alternate Avatar" = "Vaihtoehtoinen Avatar";
 "none" =  "Ei mitään";
 "identicon" = "Tunnuskuvake";

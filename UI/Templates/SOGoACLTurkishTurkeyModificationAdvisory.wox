@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+<var:if condition="isSubject">
+    <var:string value="currentUserName" const:escapeHTML="NO"/> erişim yetkilerini değiştirdi
+</var:if>
+
+<var:if condition="isBody">
+<var:string value="currentUserName" const:escapeHTML="NO"/> erişim yetkilerinizi <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> klasörü için değiştirdi.
+<!--
+Bu klasöre şu bağı takip ederek hemen üye olabilirsiniz:
+    <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>subscribe?mail-invitation=YES
+
+Ayrıca, SOGo web arayüzünü kullanarak sonradan üye olabilirsiniz.
+
+Bu kaynağa aşağıdaki URL'yi kullanarak uzaktan da erişebilirsiniz:
+
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
+-->
+</var:if>
+
+</container>

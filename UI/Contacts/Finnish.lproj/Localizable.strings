@@ -126,6 +126,8 @@
 "Name of the Address Book" = "Osoitekirjan nimi";
 "Are you sure you want to delete the selected address book?"
 = "Haluatko varmasti poistaa valitun osoitekirjan?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Oletko varma että haluat poistaa osoitekirjan \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "Et voi poistaa tai lopettaa julkisen osoitekirjan tilausta.";
 "You cannot remove nor unsubscribe from your personal addressbook."
@@ -225,4 +227,7 @@
 "Add Screen Name" = "Lisää näyttönimi";
 "Synchronization" = "Synkronointi";
 "Synchronize" = "Synkronoi";
-"Successfully subscribed to address book" = "Osoitekirjan tilaus onnistui";
+"Sucessfully subscribed to address book" = "Osoitekirjan tilaus onnistui";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Hakualue";

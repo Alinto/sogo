@@ -101,6 +101,7 @@
 "Body"          = "Body";
 "Open" = "Open";
 "Select All" = "Select All";
+"Select Message" = "Select Message";
 "Attach Web Page..." = "Attach Web Page...";
 "file" = "file";
 "files" = "files";
@@ -346,3 +347,6 @@
 "Your email has been saved" = "Your email has been saved";
 "Your email has been sent" = "Your email has been sent";
 "Folder compacted" = "Folder compacted";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Search scope";

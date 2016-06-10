@@ -41,6 +41,7 @@
      = "Jeder im Internet wird in der Lage sein auf Ihr Adressbuch \"%{0}\" zuzugreifen, selbst wenn diese kein Konto auf diesem System haben. Ist diese Information passend für das öffentliche Internet?";
 "Give Access" = "Allen Zugriff gewähren";
 "Keep Private" = "Privat halten";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Es ist nicht möglich, diesen Ordner zu abonnieren!";
@@ -76,16 +77,19 @@
 "45 minutes" = "45 Minuten";
 "1 hour" = "1 Stunde";
 "1 day" = "1 Tag";
+
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Abbrechen";
 "Yes" = "Ja";
 "No" = "Nein";
+
 /* alarms */
 "Reminder" = "Erinnerung";
 "Start" = "Beginn";
 "Due Date" = "Fällig";
 "Location" = "Ort";
+
 /* mail labels */
 "Important" = "Wichtig";
 "Work" = "Geschäftlich";
@@ -104,6 +108,15 @@
 "Loading" = "Lade";
 "No such user." = "Kein Benutzer gefunden";
 "You cannot (un)subscribe to a folder that you own!" = "Sie können keinen Ordner abonnieren/abbestellen, den Sie besitzen!";
+
+/* Authentication username */
+"Username" = "Benutzername";
+
+/* Authentication password */
+"Password" = "Passwort";
+
+/* Authentication failed */
+"Wrong username or password." = "Falscher Benutzername oder falsches Passwort";
 
 /* Error message display bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Mindestens %{minimumSearchLength} Zeichen eingeben";
