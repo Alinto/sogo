@@ -2155,12 +2155,15 @@ static NSArray *reminderValues = nil;
       else
         [v setObject: [NSNumber numberWithBool: NO]  forKey: @"SOGoRememberLastModule"];
 
-      // We remove short/long date formats if they are default ones
+      // We remove short/long date/time formats if they are default ones
       if ([[v objectForKey: @"SOGoShortDateFormat"] isEqualToString: @"default"])
         [v removeObjectForKey: @"SOGoShortDateFormat"];
 
       if ([[v objectForKey: @"SOGoLongDateFormat"] isEqualToString: @"default"])
         [v removeObjectForKey: @"SOGoLongDateFormat"];
+
+      if ([[v objectForKey: @"SOGoTimeFormat"] isEqualToString: @"default"])
+        [v removeObjectForKey: @"SOGoTimeFormat"];
 
       if (![self externalAvatarsEnabled])
         {
