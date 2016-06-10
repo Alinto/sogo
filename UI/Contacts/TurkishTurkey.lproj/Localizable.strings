@@ -21,11 +21,11 @@
 "HomePhone" = "EvTelefonu";
 "Lastname" = "Soyad";
 "Location" = "Konum";
-"Add a category" = "Bir sınıf ekle";
+"Add a category" = "Bir kategori ekle";
 "MobilePhone" = "CepTelefonu";
-"Name" = "İsim";
+"Name" = "Ad ve Soyad";
 "OfficePhone" = "OfisTelefonu";
-"Organization" = "Kuruluş";
+"Organization" = "Organizasyon";
 "Work Phone" = "İş Telefonu";
 "Phone" = "Telefon";
 "Phones" = "Telefonlar";
@@ -42,11 +42,11 @@
 "Copy To" = "Şuraya Kopyala";
 "Add to" = "Şuraya Ekle";
 /* Subheader of empty addressbook */
-"No contact" = "Kişi yok";
+"No contact" = "Adres defteri boş";
 /* Subheader of system addressbook */
 "Start a search to browse this address book" = "Bu adres defterini taramak için bir arama başlatın";
 /* Number of contacts in addressbook; string is prefixed by number */
-"contacts" = "kişiler";
+"contacts" = "kişi";
 /* No contact matching search criteria */
 "No matching contact" = "Eşleşen kişi yok";
 /* Number of contacts matching search criteria; string is prefixed by number */
@@ -54,7 +54,7 @@
 /* Number of selected contacts in list */
 "selected" = "seçili";
 /* Empty right pane */
-"No contact selected" = "Seçilen kişi yok";
+"No contact selected" = "Seçili bir kişi yok";
 /* Tooltips */
 "Create a new address book card" = "Yeni adres defteri kartı oluştur";
 "Create a new list" = "Yeni liste oluştu";
@@ -65,8 +65,8 @@
 "htmlMailFormat_UNKNOWN" = "Bilinmeyen";
 "htmlMailFormat_FALSE" = "Düz Metin";
 "htmlMailFormat_TRUE" = "HTML";
-"Name or Email" = "İsim veya E-posta";
-"Category" = "Sınıf";
+"Name or Email" = "Ad Soyad veya E-posta";
+"Category" = "Kategori";
 "Personal Addressbook" = "Kişisel Adres Defteri";
 "Search in Addressbook" = "Adres Defterinde Ara";
 "New Card" = "Yeni Kart";
@@ -87,7 +87,7 @@
 "Additional Email" = "Diğer E-posta";
 "Phone Number" = "Telefon Numarası";
 "Prefers to receive messages formatted as" = "Almayı tercih ettiği ileti formatı";
-"Categories" = "Sınıflar";
+"Categories" = "Kategoriler";
 "First" = "İlk";
 "Last" = "Son";
 "Nickname" = "Takma ad";
@@ -97,7 +97,7 @@
 "Pager" = "Çağrı cihazı";
 /* categories */
 "contacts_category_labels" = "Meslektaş, Rakip, Müşteri, Arkadaş, Aile, İş Ortağı, Tedarikçi, Basın, VIP";
-"New category" = "Yeni sınıf";
+"New category" = "Yeni kategori";
 /* adresses */
 "Title" = "Ünvan";
 "Service" = "Servis";
@@ -143,7 +143,7 @@
 /* acls */
 "Access rights to" = "Erişim yetkileri";
 "For user" = "Şu kullanıcı için";
-"Any Authenticated User" = "Herhangi kimliği doğrulanmış kullanıcı";
+"Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
 "Public Access" = "Halka Açık Erişim";
 "This person can add cards to this addressbook."
 = "Bu kişi bu adres defterine kart ekleyebilir.";
@@ -156,7 +156,7 @@
 "This person can erase cards from this addressbook."
 = "Bu kişi bu adres defterinden kart silebilir.";
 "The selected contact has no email address."
-= "Seçili kişinin bir e-posta adresi yok.";
+= "Seçili kişinin e-posta adresi yok.";
 "Please select a contact." = "Lütfen bir kişi seçin.";
 /* Error messages for move and copy */
 "SoAccessDeniedException" = "Bu adres defterine yazamazsınız.";
@@ -180,8 +180,8 @@
 "Upload" = "Yükle";
 "Uploading" = "Yükleniyor";
 "Done" = "Tamamlandı";
-"An error occured while importing contacts." = "Kişileri içe aktarırken bir hata oluştu.";
-"No card was imported." = "Hiç bir kart içe aktarılmadı.";
+"An error occured while importing contacts." = "Kişileri içeri aktarırken bir hata oluştu.";
+"No card was imported." = "Hiç bir kart içeri aktarılmadı.";
 "A total of %{0} cards were imported in the addressbook." = "Toplam %{0} kart adres defterinine aktarıldı.";
 "Reload" = "Tazele";
 /* Properties window */
@@ -199,16 +199,12 @@
 "Back" = "Geri";
 "Select All" = "Hepsini Seç";
 "Copy contacts" = "Kişileri kopyala";
-
-/* Notification on the number of messages successfully copied */
-"%{0} cards copied" = "%{0} kart kopyalandı";
-
 "More messages options" = "Diğer ileti seçenekleri";
 "New Contact" = "Yeni Kişi";
 "Close" = "Kapat";
 "More contact options" = "Diğer kişi seçenekleri";
-"Organization Unit" = "Kuruluş Birimi";
-"Add Organizational Unit" = "Kuruluş Birimi Ekle";
+"Organization Unit" = "Organizasyon Birimi";
+"Add Organizational Unit" = "Organizasyon Birimi Ekle";
 "Type" = "Tür";
 "Email Address" = "E-posta Adresi";
 "New Email Address" = "Yeni E-posta Adresi";
@@ -216,11 +212,11 @@
 "URL" = "URL";
 "New URL" = "Yeni URL";
 "street" = "sokak";
-"Postoffice" = "Postane";
+"Postoffice" = "Posta kutusu";
 "Region" = "Bölge";
 "Postal Code" = "Posta Kodu";
 "New Address" = "Yeni Adres";
-"Reset" = "Baştaki konumuna getir";
+"Reset" = "Öntanımlı";
 "Description" = "Tanım";
 "Add Member" = "Üye Ekle";
 "Subscribe" = "Üye ol";

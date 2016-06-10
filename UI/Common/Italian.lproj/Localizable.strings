@@ -116,7 +116,7 @@
 "Password" = "Password";
 
 /* Authentication failed */
-"Wrong username or password." = "Username o password non corretti.";
+"Wrong username or password." = "Nome utente o password non corretti.";
 
 /* Error message display bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Inserisci almeno %{minimumSearchLength} caratteri";

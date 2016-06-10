@@ -16,7 +16,7 @@
 /* Tabs */
 "Date" = "Tarih";
 "Calendars" = "Takvimler";
-"No events for selected criteria" = "Seçili özellikte bir etkinlik yok";
+"No events for selected criteria" = "Seçili kriterde bir etkinlik yok";
 "No tasks for selected criteria" = "Seçilen ayırıcı özellik için bir görev yok";
 
 /* Day */
@@ -49,8 +49,8 @@
 "Unsubscribe Calendar" = "Takvim Üyeliğinden Ayrıl";
 "Sharing..." = "Paylaş...";
 "Export Calendar..." = "Takvimi Dışa Aktar...";
-"Import Events..." = "Etkinlikleri İçe Aktar...";
-"Import Events" = "Etkinlikleri İçe Aktar";
+"Import Events..." = "Etkinlikleri İçeri Aktar...";
+"Import Events" = "Etkinlikleri İçeri Aktar";
 "Select an iCalendar file (.ics)." = "Bir iCalendar (.ics) dosyası seçin.";
 "Upload" = "Yükle";
 "Uploading" = "Yükleniyor";
@@ -58,7 +58,7 @@
 "Reload Remote Calendars" = "Uzak Takvimleri Tazele";
 "Properties" = "Özellikler";
 "Done" = "Tamamlandı";
-"An error occurred while importing calendar." = "Takvimi içe aktarırken bir hata oluştu.";
+"An error occurred while importing calendar." = "Takvimi içeri aktarırken bir hata oluştu.";
 "No event was imported." = "İçeri aktarılan etkinlik yok.";
 "A total of %{0} events were imported in the calendar." = "Toplam %{0} etkinlik takvime aktarıldı.";
 "Compose E-Mail to All Attendees" = "Tüm Katılımcılara İleti Yaz";
@@ -74,20 +74,20 @@
 /* acls */
 "Access rights to" = "Erişim yetkileri";
 "For user" = "Şu kullanıcı için";
-"Any Authenticated User" = "Herhangi kimliği doğrulanmış bir kullanıcı";
+"Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
 "Public Access" = "Halka Açık Erişim";
 "label_Public" = "Halka Açık";
 "label_Private" = "Özel";
 "label_Confidential" = "Gizli";
-"label_Viewer" = "Hepsini Görüntüle";
-"label_DAndTViewer" = "Gün ve Tarihi Görüntüle";
+"label_Viewer" = "Hepsini Görüntüler";
+"label_DAndTViewer" = "Günü ve Saati Görüntüler";
 "label_Modifier" = "Değiştir";
-"label_Responder" = "Kişiyi Yanıtla";
+"label_Responder" = "Kişiyi Yanıtlar";
 "label_None" = "Hiç biri";
-"View All" = "Hepsini Görüntüle";
-"View the Date & Time" = "Gün ve Tarihi Görüntüle";
-"Modify" = "Değiştir";
-"Respond To" = "Kişiyi Yanıtla";
+"View All" = "Hepsini Görüntüler";
+"View the Date & Time" = "Günü ve Saati Görüntüler";
+"Modify" = "Değiştirir";
+"Respond To" = "Kişiyi Yanıtlar";
 "None" = "Hiç biri";
 "This person can create objects in my calendar."
 = "Bu kişi bu takvimimde öge oluşturabilir.";
@@ -110,7 +110,7 @@
 "Attach" = "Ekle";
 "Update" = "Güncelle";
 "Cancel" = "İptal";
-"Reset" = "Baştaki konumuna getir";
+"Reset" = "Öntanımlı";
 "Save" = "Kaydet";
 "show_rejected_apts" = "Reddedilen buluşmaları göster";
 "hide_rejected_apts" = "Reddedilen buluşmaları gizle";
@@ -135,7 +135,7 @@
 "Layout" = "Düzenleme";
 "What to Print" = "Yazdırılacak";
 "Options" = "Seçenekler";
-"Tasks with no due date" = "Vadesi olmayan görevler";
+"Tasks with no due date" = "Son günü olmayan görevler";
 "Display working hours only" = "Sadece çalışma saatlerini göster";
 "Completed tasks" = "Tamamlanmış Görevler";
 "Display events and tasks colors" = "Etkinlik ve görev renklerini göster";
@@ -149,18 +149,18 @@
 "Appointment on" = "Buluşma";
 "Start" = "Başlangıç";
 "End" = "Bitiş";
-"Due Date" = "Vade";
-"Name" = "İsim";
+"Due Date" = "Son Tarihi";
+"Name" = "Ad ve Soyad";
 "Email" = "E-posta";
 "Status" = "Durum";
 "% complete" = "% tamamlandı";
 "Location" = "Konum";
-"Add a category" = "Sınıf ekle";
+"Add a category" = "Kategori ekle";
 "Priority" = "Öncelik";
 "Privacy" = "Gizlilik";
 "Cycle" = "Tekrar";
 "Cycle End" = "Tekrar Bitişi";
-"Categories" = "Sınıflar";
+"Categories" = "Kategoriler";
 "Classification" = "Sınıflandırma";
 "Duration" = "Süre";
 "Attendees" = "Katılımcılar";
@@ -168,7 +168,7 @@
 "Organizer" = "Düzenleyen";
 "Description" = "Tanım";
 "Document" = "Belge";
-"Category" = "Sınıf";
+"Category" = "Kategori";
 "Repeat" = "Tekrar Sıklığı";
 "Reminder" = "Hatırlatma";
 "General" = "Genel";
@@ -214,9 +214,9 @@
 "view_thismonth" = "Bu Ay";
 "view_future" = "İleri Tarihteki Tüm Etkinlikler";
 "view_selectedday" = "Seçili Gün";
-"view_not_started" = "Başlamış görev yok";
-"view_overdue" = "Vadesi geçmiş görev";
-"view_incomplete" = "Tamamlanmamış görev";
+"view_not_started" = "Başlamamış görevler";
+"view_overdue" = "Süresi geçmiş görevler";
+"view_incomplete" = "Tamamlanmamış görevler";
 "View" = "Görüntüle";
 "Title, category or location" = "Başlık, sınıf veya konum";
 "Entire content" = "Tüm İçerik";
@@ -256,14 +256,14 @@
 "PRIVATE_vtodo" = "Özel görev";
 
 /* status type */
-"status_" = "Belirtilmedi";
-"status_NOT-SPECIFIED" = "Belirtilmedi";
+"status_" = "Belirtilmemiş";
+"status_NOT-SPECIFIED" = "Belirtilmemiş";
 "status_TENTATIVE" = "Geçici";
 "status_CONFIRMED" = "Onaylandi";
 "status_CANCELLED" = "İptal edildi";
-"status_NEEDS-ACTION" = "Eylem İhtiyacı";
-"status_IN-PROCESS" = "işlemde";
-"status_COMPLETED" = "Tamamlandığı tarih";
+"status_NEEDS-ACTION" = "Eylem Gerekli";
+"status_IN-PROCESS" = "Devam ediyor";
+"status_COMPLETED" = "Şu tarihte tamamlandı";
 
 /* Priority level */
 "low" = "düşük";
@@ -311,8 +311,8 @@
 "Repeat until" = "Şu Zamana Tekrar et";
 "End Repeat" = "Tekrar Bitişi";
 "Never" = "Hiç bir zaman";
-"After" = "Sonra";
-"On Date" = "Gününde";
+"After" = "Şu tekrardan sonra";
+"On Date" = "Şu Tarihte";
 "times" = "kere";
 "First" = "İlk";
 "Second" = "İkinci";
@@ -424,7 +424,7 @@ validate_endbeforestart    = "Girdiğiniz bitiş tarihi, başlangıç tarihinden
 "Optional Participant" = "Tercihli Katılımcı";
 "Non Participant" = "Katılmayan";
 "Chair" = "Başkan";
-"Needs action" = "Eyleme İhtiyaç var";
+"Needs action" = "Eyleme gerekli";
 "Accepted" = "Kabul edilmiş";
 "Declined" = "Reddedilmiş";
 "Tentative" = "Geçici";
@@ -448,7 +448,7 @@ validate_endbeforestart    = "Girdiğiniz bitiş tarihi, başlangıç tarihinden
 = "Bir ya da daha fazla katılımcı ile zaman çakışması var.\nYine de mevcut düzenlemeyi tutmak ister misiniz?";
 
 /* events list */
-"Due" = "Vade";
+"Due" = "Son Tarih";
 "(Private Event)" = "(Özel Etkinlik)";
 vevent_class0 = "(Halka açık etkinlik)";
 vevent_class1 = "(Özel etkinlik)";
@@ -554,11 +554,11 @@ vtodo_class2 = "(Gizli görev)";
 "More options" = "Daha fazla seçenek";
 "Delete This Occurrence" = "Bu Örneği Sil";
 "Delete All Occurrences" = "Tüm Örnekleri Sil";
-"Add From" = "Gönderen Ekle";
-"Add Due" = "Vade Ekle";
+"Add From" = "Başlangıç Tarihi Ekle";
+"Add Due" = "Son Tarih Ekle";
 "Import" = "İçeri Aktar";
 "Rename" = "Yeniden Adlandır";
-"Import Calendar" = "Takvimi İçe Aktar";
+"Import Calendar" = "Takvimi İçeri Aktar";
 "Select an ICS file." = "Bir  ICS dosyası seçin.";
 
 /* Notification when user subscribes to a calendar */

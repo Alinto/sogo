@@ -199,10 +199,6 @@
 "Back" = "Назад";
 "Select All" = "Выбрать все";
 "Copy contacts" = "Копировать контакты";
-
-/* Notification on the number of messages successfully copied */
-"%{0} cards copied" = "%{0} карточек скопировано";
-
 "More messages options" = "Больше опций сообщений";
 "New Contact" = "Новый контакт";
 "Close" = "Закрыть";

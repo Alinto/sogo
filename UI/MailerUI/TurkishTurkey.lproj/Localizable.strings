@@ -33,7 +33,7 @@
 "Go to address book" = "Adres defterine git";
 "Reply to the message" = "İletiyi yanıtla";
 "Reply to sender and all recipients" = "Göndereni ve tüm alıcıları yanıtla";
-"Forward selected message" = "Seçili e-postayı İlet";
+"Forward selected message" = "Seçili e-postayı başkasına ilet";
 "Delete selected message or folder" = "Seçili ileti veya klasörü sil";
 "Print this message" = "Bu iletiyi yazdır";
 "Stop the current transfer" = "Geçerli aktarımı durdur";
@@ -76,7 +76,7 @@
 "Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
 "List and see this folder" = "Bu klasörü listele ve görüntüle";
 "Read mails from this folder" = "Bu klasördeki iletileri okur";
-"Mark mails read and unread" = "İletileri okumuş ve okunmamış olarak işaretle";
+"Mark mails read and unread" = "İletileri okumuş ve okunmamış olarak işaretler";
 "Modify the flags of the mails in this folder" = "Bu klasördeki iletilerin bayraklarını değiştirir";
 "Insert, copy and move mails into this folder" = "İletiler bu klasöre yerleştirir, kopyalar ve taşır";
 "Post mails" = "İletileri postalar";
@@ -101,6 +101,7 @@
 "Body"          = "Gövde";
 "Open" = "Aç";
 "Select All" = "Hepsini seç";
+"Select Message" = "İleti Seç";
 "Attach Web Page..." = "Web sayfası ekle...";
 "file" = "dosya";
 "files" = "dosyalar";
@@ -108,7 +109,7 @@
 "to"            = "Alıcı";
 "cc"            = "Karbon Kopya";
 "bcc"           = "Gizli Karbon Kopya";
-"Add a recipient" = "Bir alıcı ekle";
+"Add a recipient" = "Bir alıcı ekleyin";
 "Edit Draft..." = "Taslağı Düzenle...";
 "Load Images" = "Resimleri yükle";
 "Return Receipt" = "Alındı Raporu";
@@ -199,7 +200,7 @@
 
 /* Message list popup menu */
 "Open Message In New Window" = "İletiyi Yeni Pencerede Aç";
-"Reply to Sender Only" = "Sadece Gönderini Yanıtla";
+"Reply to Sender Only" = "Sadece Göndereni Yanıtla";
 "Reply to All" = "Herkesi Yanıtla";
 "Edit As New..." = "Yeni Olarak Düzenle...";
 "Move To" = "Şuraya Taşı";
@@ -245,11 +246,11 @@
 "As Junk" = "İstenmeyen Olarak";
 "As Not Junk" = "İstenen Olarak";
 "Run Junk Mail Controls" = "İstenmeyen İleti Denetimi Yap";
-"Search messages in" = "İletileri şurada ara";
+"Search messages in" = "Aşağıdaki klasörde ara";
 "Search" = "Ara";
-"Search subfolders" = "Alt klasörleri ara";
-"Match any of the following" = "Şunlardan biriyle eşleştir";
-"Match all of the following" = "Şunların hepsiyle eşleştir";
+"Search subfolders" = "Alt klasörlerde ara";
+"Match any of the following" = "ifadelerden birini ara";
+"Match all of the following" = "hepsini  ara";
 "contains" = "içeren";
 "does not contain" = "içermeyen";
 "No matches found" = "Eşleşme bulunamadı";
@@ -258,9 +259,9 @@
 "Please specify at least one filter" = "Lütfen en az bir süzgeç belirtin";
 
 /* Folder operations */
-"Name" = "İsim";
+"Name" = "Ad ve Soyad";
 "Enter the new name of your folder"
- ="Klasörün yeni adını yazın";
+ ="Yeni klasörünüzün adını yazın";
 "Do you really want to move this folder into the trash ?"
  = "Bu klasörü çöp kutusuna taşımak istediğinizden emin misiniz?";
 "Operation failed" = "İşlem başarısiz oldu";
@@ -313,7 +314,7 @@
 "Email" = "E-posta";
 "More mail options" = "Diğer e-posta seçenekleri";
 "Delegation" = "Temsilci Atama";
-"Add User" = "Kullanıcı Ekle";
+"Add User" = "Kullanıcı Ekleyin";
 "Add a tag" = "Bir etiket ekle";
 "reply" = "yanıtla";
 "Edit" = "Düzenle";

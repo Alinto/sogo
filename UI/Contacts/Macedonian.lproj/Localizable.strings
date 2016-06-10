@@ -199,10 +199,6 @@
 "Back" = "Назад";
 "Select All" = "Одбери се";
 "Copy contacts" = "Копирај ги контактите";
-
-/* Notification on the number of messages successfully copied */
-"%{0} cards copied" = "%{0} картички се ископирани";
-
 "More messages options" = "Повеќе опции за пораки";
 "New Contact" = "Нов контакт";
 "Close" = "Затвори";

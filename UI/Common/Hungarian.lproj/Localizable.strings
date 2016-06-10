@@ -41,6 +41,7 @@
      = "Lényegében bárki az interneten el tudja érni a(z) \"%{0}\" címjegyzékét, még akkor is, ha nem rendelkezik fiókkal a rendszerben. Biztos, hogy a címjegyzék publikus adatokat tartalmaz?";
 "Give Access" = "Hozzáférés biztosítása";
 "Keep Private" = "Magán célúnak megtart";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "A mappára nem lehet feliratkozni!";
@@ -76,16 +77,19 @@
 "45 minutes" = "45 perc";
 "1 hour" = "1 óra";
 "1 day" = "1 nap";
+
 /* common buttons */
 "OK" = "Ok";
 "Cancel" = "Mégse";
 "Yes" = "Igen";
 "No" = "Nem";
+
 /* alarms */
 "Reminder" = "Emlékeztető";
 "Start" = "Kezdés";
 "Due Date" = "Lejárat dátuma";
 "Location" = "Helyszín";
+
 /* mail labels */
 "Important" = "Fontos";
 "Work" = "Hivatalos";
@@ -104,6 +108,15 @@
 "Loading" = "Betöltés";
 "No such user." = "Nincs ilyen felhasználó";
 "You cannot (un)subscribe to a folder that you own!" = "Saját tulajdonban lévő mappá(ra/ról) nem lehet feliratkozni, vagy leiratkozni.";
+
+/* Authentication username */
+"Username" = "Felhasználónév";
+
+/* Authentication password */
+"Password" = "Jelszó";
+
+/* Authentication failed */
+"Wrong username or password." = "Hibás felhasználónév vagy jelszó";
 
 /* Error message display bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Adjon meg legalább %{minimumSearchLength} karaktert";

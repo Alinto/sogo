@@ -199,10 +199,6 @@
 "Back" = "Vissza";
 "Select All" = "Összes kijelölése";
 "Copy contacts" = "Kapcsolatok másolása";
-
-/* Notification on the number of messages successfully copied */
-"%{0} cards copied" = "%{0} névjegy másolva";
-
 "More messages options" = "További üzenet tulajdonságok";
 "New Contact" = "Új kapcsolat";
 "Close" = "Bezárás";

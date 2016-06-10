@@ -107,6 +107,7 @@
 "Day start time" = "Nap kezdete";
 "Day end time" = "Nap vége";
 "Day start time must be prior to day end time." = "A kezdőnap nem lehet későbbi, mint a befejező nap.";
+"Week days to display" = "A hét megjelenítendő napjai";
 "Show time as busy outside working hours" = "A munkaidőn túli időszakokra foglaltság jelzése";
 "First week of year" = "Év első hete";
 "Enable reminders for Calendar items" = "Emlékeztető engedélyezése a naptárbejegyzésekhez";
@@ -242,11 +243,11 @@
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
 "Lithuanian" = "Lietuvių";
-"Macedonian" = "Macedón";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "Polish" = "Polski";
-"Portuguese" = "Portugál";
+"Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
@@ -254,8 +255,10 @@
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
 "Refresh View" = "Nézet frissítése";
 "refreshview_manually" = "Kézi";
 "refreshview_every_minute" = "Percenként";
@@ -362,6 +365,7 @@
 "TLS" = "TLS";
 
 /* Avatars */
+"Use Gravatar" = "Gravatar használata";
 "Alternate Avatar" = "Másik kép";
 "none" =  "Nincs";
 "identicon" = "Azonosító ikon";

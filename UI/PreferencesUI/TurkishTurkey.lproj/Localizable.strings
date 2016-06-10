@@ -4,7 +4,7 @@
 "Preferences saved" = "Tercihler kaydedildi";
 
 /* Unsaved changes confirmation dialog title */
-"Unsaved Changes" = "Kaydedilmemiş Değşiklikler";
+"Unsaved Changes" = "Kaydedilmemiş Değişiklikler";
 
 /* Unsaved changes confirmation dialog text */
 "Do you want to save your changes made to the configuration?" = "Yapılandırmadaki değişikliklerinizi kaydetmek istiyor musunuz?";
@@ -26,7 +26,7 @@
 "Password" = "Şifre";
 "Categories" = "Kategoriler";
 "Appointments invitations" = "Buluşma davetleri";
-"Name" = "İsim";
+"Name" = "Ad ve Soyad";
 "Color" = "Renk";
 "Add" = "Ekle";
 "Delete" = "Sil";
@@ -41,7 +41,7 @@
 "Add default email addresses" = "Varsayılan e-posta adresi ekle";
 "Days between responses" = "Yanıtlar arasındaki gün sayısı";
 "Do not send responses to mailing lists" = "Yanıtları e-posta listelerine gönderme";
-"Disable auto reply on" = "Otomatik yanıtlamayı şu tarihde devre dışı bırak";
+"Disable auto reply on" = "Otomatik yanıtlamayı şu tarihte devre dışı bırak";
 "Always send vacation message response" = "Her zaman tatil yanıtı iletisi gönder";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Lütfen otomatik yanıtı etkinleştireceğiniz e-posta adreslerini ve yanıt iletinizi belirleyin.";
@@ -107,6 +107,7 @@
 "Day start time" = "Günün başlangıç saati";
 "Day end time" = "Günün bitiş saati";
 "Day start time must be prior to day end time." = "Günün başlangıç saati, günün bitiş saatinden önce olmalı.";
+"Week days to display" = "Gösterilen günler";
 "Show time as busy outside working hours" = "Çalışma saati dışındaki saatleri meşgul olarak göster";
 "First week of year" = "Yılın ilk haftası";
 "Enable reminders for Calendar items" = "Takvim ögeleri için hatırlatmaları etkinleştir";
@@ -147,8 +148,8 @@
 "When sending mail, add unknown recipients to my" = "İleti gönderirken, kayıtlı olmayan alıcıları aşağıdaki adres defterime ekle";
 "Address Book" = "Adres Defteri";
 "Forward messages" = "Başkasına İletilen e-postayı";
-"messageforward_inline" = "Gövde İçine Ekle";
-"messageforward_attached" = "Dosyası Olarak Ekle";
+"messageforward_inline" = "Gövde Metinine Ekle";
+"messageforward_attached" = "Dosya Olarak Ekle";
 "When replying to a message" = "İletiyi yanıtlarken";
 "replyplacement_above" = "Yanıtımı alıntı metnin üzerinde başlat";
 "replyplacement_below" = "Yanıtımı alıntı metnin altında başlat";
@@ -165,12 +166,12 @@
 "Display remote inline images" = "İleti içinindeki harici resimleri";
 "displayremoteinlineimages_never" = "Hiç bir zaman gösterme";
 "displayremoteinlineimages_always" = "Her zaman göster";
-"Auto save every" = "Şu aralıklarla otomatik kaydet";
+"Auto save every" = "Yazdığım iletiyi şu aralıklarla kaydet";
 "minutes" = "dakika";
 
 /* Contact */
 "Personal Address Book" = "Kişisel Adres Defteri";
-"Collected Address Book" = "Toplanan Adresler Defteri";
+"Collected Address Book" = "Otomatik Toplanan Adresler";
 
 /* IMAP Accounts */
 "Mail Account" = "E-posta Hesabı";
@@ -226,38 +227,40 @@
 "Save preferences and reload page now?" = "Tercihler kaydedilip ve sayfa tazelensin mi?";
 "Language" = "Dil";
 "choose" = "Seç ...";
-"Arabic" = "Arapça";
-"Basque" = "Bask";
-"Catalan" = "Katalonya Dili";
-"ChineseTaiwan" = "Çince (Tayvan)";
-"Croatian" = "Hırvatca";
-"Czech" = "Çek";
-"Danish" = "Danimarka Dili (Danimarka)";
-"Dutch" = "Flemenke";
-"English" = "İngilizce";
-"Finnish" = "Fince";
-"French" = "Fransızca";
-"German" = "Almanca";
-"Hungarian" = "Macarca";
-"Icelandic" = "İzlandaca";
-"Italian" = "İtalyanca";
-"Lithuanian" = "Litvanca";
-"Macedonian" = "Makedonya Dili";
-"NorwegianBokmal" = "Norveççe (Bokmal)";
-"NorwegianNynorsk" = "Norveççe (Bokmal)";
-"Polish" = "Lehçe";
-"Portuguese" = "Portekizce";
-"BrazilianPortuguese" = "Portekizce (Brezilya)";
-"Russian" = "Rusça";
-"Slovak" = "Slavca";
-"Slovenian" = "Slovence";
-"SpanishSpain" = "İspanyolca (İspanya)";
-"SpanishArgentina" = "İspanyolca (Arjantin)";
-"Swedish" = "İsveççe";
-"Ukrainian" = "Ukraynaca";
-"Welsh" = "Gal Dili";
-"Refresh View" = "Görünümü";
-"refreshview_manually" = "Otomatik olarak tazeleme";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"Refresh View" = "Görünüm Tazeleme Sıklığı";
+"refreshview_manually" = "El ile";
 "refreshview_every_minute" = "Dakikada bir";
 "refreshview_every_2_minutes" = "Her 2 dakikada bir";
 "refreshview_every_5_minutes" = "Her 5 dakikada bir";
@@ -305,7 +308,7 @@
 "Size (Kb)" = "Boyut (Kb)";
 "Header" = "Başlık";
 "Body" = "Gövde";
-"Flag the message with" = "İletilye şu bayrağı ekle";
+"Flag the message with" = "İletiye şu bayrağı ekle";
 "Discard the message" = "İletiyi reddet";
 "File the message in" = "Şurada dosyala";
 "Keep the message" = "İletiyi tut";
@@ -315,14 +318,14 @@
 "Stop processing filter rules" = "Süzgeç kurallarının işlenmesini durdur";
 "is under" = "den küçük";
 "is over" = "den büyük";
-"is" = "eşit";
-"is not" = "eşit değil";
-"contains" = "içeriyorsa";
-"does not contain" = "içermiyorsa";
-"matches" = "eşleşiyor";
-"does not match" = "eşleşmiyorsa";
-"matches regex" = "regex kuralıyla eşleşiyorsa";
-"does not match regex" = "regex kuralıyla eşleşmiyorsa";
+"is" = "şuna eşitse";
+"is not" = "şuna eşit değilse";
+"contains" = "şunu içeriyorsa";
+"does not contain" = "şunu içermiyorsa";
+"matches" = "şununla eşleşiyorsa";
+"does not match" = "şununla eşleşmiyorsa";
+"matches regex" = "şu regex kuralıyla eşleşiyorsa";
+"does not match regex" = "şu regex kuralıyla eşleşmiyorsa";
 /* Placeholder for the value field of a condition */
 "Value" = "Değer";
 "Seen" = "Görülmüş";
@@ -362,6 +365,7 @@
 "TLS" = "TLS";
 
 /* Avatars */
+"Use Gravatar" = "Gravatar Kullan";
 "Alternate Avatar" = "Avatarı Değiştir";
 "none" =  "Hiç biri";
 "identicon" = "Profil İkonu";

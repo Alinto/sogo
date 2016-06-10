@@ -7,7 +7,7 @@
 "Remember username" = "Ricorda il nome utente";
 "Connect" = "Entra";
 "Authentication Failed" = "Autenticazione fallita";
-"Wrong username or password." = "Username o password non corretti.";
+"Wrong username or password." = "Nome utente o password non corretti.";
 "cookiesNotEnabled" = "Non è possibile eseguire il login perchè il browser non ha i cookies abilitati. Prego abilitare i cookies nel preferenze del proprio bowser e riprovare.";
 "browserNotCompatible" = "La versione del browser utilizzato non è supportata. Raccomandiamo l'utilizzo di Firefox. Clicca sul link per scaricarne l'ultima versione disponibile.";
 "alternativeBrowsers" = "Alternativamente, puoi utilizzare questi browser compatibili";

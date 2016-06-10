@@ -24,9 +24,9 @@
 "Add..." = "Ekle...";
 "Remove" = "Çıkar";
 "Subscribe User" = "Kullanıcıyı Üye Yap";
-"Any Authenticated User" = "Herhangi kimliği doğrulanmış kullanıcı";
+"Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
 "Public Access" = "Halka Açık Erişim";
-"Any user not listed above" = "Aşağıdaki listede bulanmayan her hangi kullanıcı";
+"Any user not listed above" = "Aşağıdaki listede bulanmayan her kullanıcı";
 "Anybody accessing this resource from the public area" = "Bu kaynağa halka açık alandan ulaşan herkes";
 "Sorry, the user rights can not be configured for that object." = "Üzgünüz, bu öge için kullanıcı yetkileri ayarlanamaz.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
@@ -41,6 +41,7 @@
      = "Muhtemelen internetteki herkes, bu ağ üzerinde bir hesapları olmasa bile \"%{0}\" adres defterinize erişebilecek. Bu bilgi halka açık internet için uygun mu?";
 "Give Access" = "Erişim Yetkisi Ver";
 "Keep Private" = "Halka Kapalı Tut";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Bu klasöre üye olunamıyor!";
@@ -67,7 +68,7 @@
 "noEmailForDelegation" = "Davetinize temsilci atayacağınız adresleri belirtmelisiniz.";
 "delegate is organizer" = "Temsilci etkinliği düzenleyen kişidir. Lütfen başka bir temsilci seçin. ";
 "delegate is a participant" = "Temsilci zaten bu etkinliğe katılıyor.";
-"delegate is a group" = "Belirtilen adres bir gruba denk geliyor. Sadece tek bir kişiyi temsilci atayabilirsiniz.";
+"delegate is a group" = "Belirtilen adres bir gruba denk geliyor. Sadece bir kişiyi temsilci atayabilirsiniz.";
 "Snooze for " = "Beklenecek süre";
 "5 minutes" = "5 dakika";
 "10 minutes" = "10 dakika";
@@ -76,22 +77,25 @@
 "45 minutes" = "45 dakika";
 "1 hour" = "1 saat";
 "1 day" = "1 gün";
+
 /* common buttons */
 "OK" = "Tamam";
 "Cancel" = "İptal";
 "Yes" = "Evet";
 "No" = "Hayır";
+
 /* alarms */
 "Reminder" = "Hatırlatma";
 "Start" = "Başlangıç";
-"Due Date" = "Vade";
+"Due Date" = "Son Tarihi";
 "Location" = "Konum";
+
 /* mail labels */
 "Important" = "Önemli";
 "Work" = "İş";
 "Personal" = "Kişisel";
 "To Do" = "Yapılacak İşler";
-"Later" = "Sonra";
+"Later" = "Daha Sonra";
 "a2_Sunday" = "Pzr";
 "a2_Monday" = "Pts";
 "a2_Tuesday" = "Sal";
@@ -100,10 +104,19 @@
 "a2_Friday" = "Cum";
 "a2_Saturday" = "Cts";
 "Access Rights" = "Erişim Yetkileri";
-"Add User" = "Kullanıcı Ekle";
+"Add User" = "Kullanıcı Ekleyin";
 "Loading" = "Yükleniyor";
 "No such user." = "Böyle bir kullanıcı yok.";
 "You cannot (un)subscribe to a folder that you own!" = "Kendinize ait bir klasöre üye olamaz (üyeliğinizi kaldıramazsınız)!";
+
+/* Authentication username */
+"Username" = "Kullanıcı Adı";
+
+/* Authentication password */
+"Password" = "Şifre";
+
+/* Authentication failed */
+"Wrong username or password." = "Kullanıcı adı veya şifre yanlış.";
 
 /* Error message display bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "En az %{minimumSearchLength} harf girin";

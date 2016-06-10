@@ -3,6 +3,18 @@
 "Close" = "Затвори";
 "Preferences saved" = "Поставките се снимени";
 
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Несочувани промени";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Дали сакате да ги сочувате конфигурациските промени?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Сними";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Не сочувувај";
+
 /* tabs */
 "General" = "Општо";
 "Calendar Options" = "Опции за календарот";
@@ -87,11 +99,15 @@
 "timeFmt_3" = "";
 "timeFmt_4" = "";
 
+/* Timezone autocompletion */
+"No matches found." = "Не се пронајдени совпаѓања.";
+
 /* calendar */
 "Week begins on" = "Неделата запонува на";
 "Day start time" = "Почетен датум";
 "Day end time" = "Краен датум";
 "Day start time must be prior to day end time." = "Почетокот мора да биде пред завршетокот (денови).";
+"Week days to display" = "Колку дена во неделата да прикажам";
 "Show time as busy outside working hours" = "Прикажи го надвор од работното време како зафатено";
 "First week of year" = "Прва недела од годината";
 "Enable reminders for Calendar items" = "Овозможи ги потсетниците за календарот";
@@ -127,6 +143,7 @@
 "Labels" = "Лабели";
 "Label" = "Лабела";
 "Show subscribed mailboxes only" = "Прикажи ги само претплатените поштенски сандачиња";
+"Synchronize only default mail folders (EAS)" = "Синхронизирај ги само основните папки за пошта (EAS)";
 "Sort messages by threads" = "Сортирај ги пораките според конверзацијата";
 "When sending mail, add unknown recipients to my" = "Кога испраќаш порака, додади ги непознатите приматели во мојата";
 "Address Book" = "Адресар";
@@ -142,6 +159,10 @@
 "Compose messages in" = "Уреди ја пораката во";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "обичен текст";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Стандардна големина на фонтот";
+
 "Display remote inline images" = "Прикажи ги фотографиите кои треба да се преземат";
 "displayremoteinlineimages_never" = "Никогаш";
 "displayremoteinlineimages_always" = "Секогаш";
@@ -211,7 +232,6 @@
 "Catalan" = "Català";
 "ChineseTaiwan" = "Chinese (Taiwan)";
 "Croatian" = "Hrvatski";
-"Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -223,10 +243,12 @@
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
 "Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
-"BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
@@ -236,6 +258,7 @@
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
 "Refresh View" = "Освежи го погледот";
 "refreshview_manually" = "Рачно";
 "refreshview_every_minute" = "Секоја минута";
@@ -309,8 +332,8 @@
 "Deleted" = "Избришана";
 "Answered" = "Одговорена";
 "Flagged" = "Означена";
-"Junk" = "Ѓубре";
-"Not Junk" = "Не е ѓубре";
+"Junk" = "Отпад";
+"Not Junk" = "Не е отпад";
 
 /* Password policy */
 "The password was changed successfully." = "Лозинката е успешно сменета.";
@@ -342,6 +365,7 @@
 "TLS" = "TLS";
 
 /* Avatars */
+"Use Gravatar" = "Користи граватар";
 "Alternate Avatar" = "Алтернативен аватар";
 "none" =  "Ниту еден";
 "identicon" = "Икона за идентификација";
