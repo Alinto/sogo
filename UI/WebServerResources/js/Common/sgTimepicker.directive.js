@@ -711,38 +711,22 @@
    */
   TimePickerCtrl.prototype.handleInputEvent = function(self) {
     var inputString = this.inputElement.value;
-    var arr = inputString.split(/[\.:]/);
+    var parsedTime = inputString ? this.dateLocale.parseTime(inputString) : null;
 
-    if (inputString === '') {
-      this.ngModelCtrl.$setViewValue(null);
-      this.time = null;
-      this.inputContainer.classList.remove(INVALID_CLASS);
-    }
-    else if (arr.length < 2) {
-      arr = /(\d{1,2})(\d{2})/i.exec(inputString);
-      if (arr)
-        arr.splice(0, 1); // only keep text captured by parenthesis
+    // An input string is valid if it is either empty (representing no date)
+    // or if it parses to a valid time that the user is allowed to select.
+    var isValidInput = inputString === '' || this.dateUtil.isValidDate(parsedTime);
+
+    // The datepicker's model is only updated when there is a valid input.
+    if (isValidInput) {
+      var updated = new Date(this.time);
+      updated.setHours(parsedTime.getHours());
+      updated.setMinutes(parsedTime.getMinutes());
+      this.ngModelCtrl.$setViewValue(updated);
+      this.time = updated;
     }
 
-    if (!arr || arr.length < 2) {
-      this.inputContainer.classList.toggle(INVALID_CLASS, inputString);
-    }
-    else {
-      var h = Number(arr[0]);
-      var m = Number(arr[1]);
-      var newVal = new Date(this.time);
-      if (h && h >= 0 && h <= 23 && m && m >= 0 && m <= 59 && angular.isDate(newVal)) {
-        newVal.setHours(h);
-        newVal.setMinutes(m);
-        this.ngModelCtrl.$setViewValue(newVal);
-        this.time = newVal;
-        this.inputElement.value = this.dateLocale.formatTime(newVal);
-        this.inputContainer.classList.remove(INVALID_CLASS);
-      }
-      else {
-        this.inputContainer.classList.toggle(INVALID_CLASS, inputString);
-      }
-    }
+    this.updateErrorState(parsedTime);
   };
 
   /** Position and attach the floating calendar to the document. */

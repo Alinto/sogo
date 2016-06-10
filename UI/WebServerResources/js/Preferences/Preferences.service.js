@@ -92,6 +92,9 @@
       _this.$mdDateLocaleProvider.formatDate = function(date) {
         return date? date.format(_this.$mdDateLocaleProvider, data.SOGoShortDateFormat) : '';
       };
+      _this.$mdDateLocaleProvider.parseTime = function(timeString) {
+        return timeString? timeString.parseDate(_this.$mdDateLocaleProvider, data.SOGoTimeFormat) : new Date(NaN);
+      };
       _this.$mdDateLocaleProvider.formatTime = function(date) {
         return date? date.format(_this.$mdDateLocaleProvider, data.SOGoTimeFormat) : '';
       };

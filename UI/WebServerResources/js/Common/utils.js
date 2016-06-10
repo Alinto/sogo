@@ -152,12 +152,14 @@ String.prototype.parseDate = function(localeProvider, format) {
   var string, formattingTokens, tokens, token, now, date, regexes, i, parsedInput, matchesCount;
 
   string = '' + this;
-  formattingTokens = /%[dembByY]/g;
+  formattingTokens = /%[dembByYHIMp]/g;
   now = new Date();
   date = {
-    year: -1,
-    month: -1,
-    day: -1
+    year: now.getYear() + 1900,
+    month: now.getMonth(),
+    day: now.getDate(),
+    hour: 0,
+    minute: 0
   };
   regexes = {
     '%d': [/\d\d/, function(input) {
@@ -173,13 +175,13 @@ String.prototype.parseDate = function(localeProvider, format) {
       return (date.month < 12);
     }],
     '%b': [/[^\d\s\.\/\-]{2,}/, function(input) {
-      var i = _.indexOf(localeProvider.shortMonths, input);
+      var i = _.indexOf(_.map(localeProvider.shortMonths, _.toLower), _.toLower(input));
       if (i >= 0)
         date.month = i;
       return (i >= 0);
     }],
     '%B': [/[^\d\s\.\/\-]{2,}/, function(input) {
-      var i = _.indexOf(localeProvider.months, input);
+      var i = _.indexOf(_.map(localeProvider.months, _.toLower), _.toLower(input));
       if (i >= 0)
         date.month = i;
       return (i >= 0);
@@ -194,7 +196,25 @@ String.prototype.parseDate = function(localeProvider, format) {
     '%Y': [/[12]\d\d\d/, function(input) {
       date.year = parseInt(input);
       return true;
-    }]
+    }],
+    '%H': [/\d{1,2}/, function(input) {
+      date.hour = parseInt(input);
+      return (date.hour < 24);
+    }],
+    '%I': [/\d{1,2}/, function(input) {
+      date.hour = parseInt(input);
+      return (date.hour <= 12);
+    }],
+    '%M': [/[0-5]\d/, function(input) {
+      date.minute = parseInt(input);
+      return (date.minute < 60 );
+    }],
+    '%p': [/[^\d\s\/\-]+/, function(input) {
+      var linput = _.toLower(input), am = _.toLower(l('AM')), pm = _.toLower(l('PM'));
+      if (linput == pm)
+        date.hour += 12;
+      return (linput == am || linput == pm);
+    }],
   };
   tokens = format.match(formattingTokens) || [];
   matchesCount = 0;
@@ -211,7 +231,7 @@ String.prototype.parseDate = function(localeProvider, format) {
 
   if (tokens.length === matchesCount) {
     // console.debug(this + ' + ' + format + ' = ' + JSON.stringify(date));
-    return new Date(date.year, date.month, date.day);
+    return new Date(date.year, date.month, date.day, date.hour, date.minute);
   }
   else
     return new Date(NaN);

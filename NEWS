@@ -7,6 +7,7 @@ Bug fixes
  - [web] properly encode rawsource of events and tasks to avoid XSS issues (#3718)
  - [web] properly encode rawsource of cards to avoid XSS issues
  - [web] fixed all-day events covering a timezone change (#3457)
+ - [web] sgTimePicker parser now respects the user's time format and language
  - [core] properly handle sorted/deleted calendars (#3723)
  - [core] properly handle flattened timezone definitions (#2690)
 
