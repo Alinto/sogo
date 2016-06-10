@@ -312,35 +312,23 @@
 
 - (NSString *) labelForMonth
 {
-  NSCalendarDate *nextDay;
   NSString *calendarFormat;
-  BOOL isLastOrFirstDay;
+  BOOL isFirstDay;
 
-  isLastOrFirstDay = NO;
+  isFirstDay = NO;
   calendarFormat = @"%b";
 
   if ([currentView hasSuffix: @"dayview"])
     {
-      isLastOrFirstDay = YES;
+      isFirstDay = YES;
       calendarFormat = @"%B";
     }
-  else
+  else if ([currentTableDay dayOfMonth] == 1 || [daysToDisplay indexOfObject: currentTableDay] == 0)
     {
-      if ([currentTableDay dayOfMonth] == 1)
-        {
-          isLastOrFirstDay = YES;
-        }
-      else if ([currentTableDay dayOfMonth] > 27)
-        {
-          nextDay = [currentTableDay dateByAddingYears: 0
-                                                months: 0
-                                                  days: 1];
-          if ([nextDay dayOfMonth] == 1)
-            isLastOrFirstDay = YES;
-        }
+      isFirstDay = YES;
     }
 
-  return isLastOrFirstDay? [currentTableDay descriptionWithCalendarFormat: calendarFormat locale: locale] : nil;
+  return isFirstDay? [currentTableDay descriptionWithCalendarFormat: calendarFormat locale: locale] : nil;
 }
 
 - (NSString *) labelForDate
