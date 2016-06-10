@@ -1,4 +1,4 @@
-2.3.12 (2016-XX-YY)
+2.3.12 (2016-06-10)
 -------------------
 
 Enhancements
@@ -6,6 +6,7 @@ Enhancements
  - [web] CKEditor: switched to the minimalist skin
  - [web] CKEditor: added the base64image plugin
  - [web] CKEditor: added the pastefromword plugin (#2295, #3313)
+ - [web] added Turkish (Turkey) (tr_TR) translation - thanks to Sinan Kurşunoğlu
 
 Bug fixes
  - [core] sanity checks for events with bogus timezone offsets
