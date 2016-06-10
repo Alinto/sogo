@@ -8,6 +8,7 @@ Bug fixes
  - [web] properly encode rawsource of cards to avoid XSS issues
  - [web] fixed all-day events covering a timezone change (#3457)
  - [core] properly handle sorted/deleted calendars (#3723)
+ - [core] properly handle flattened timezone definitions (#2690)
 
 3.1.2 (2016-06-06)
 ------------------
