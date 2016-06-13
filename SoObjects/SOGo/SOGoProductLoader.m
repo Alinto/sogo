@@ -1,14 +1,15 @@
 /*
-  Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2004 SKYRIX Software AG
+  Copyright (C) 2005-2016 Inverse inc.
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo
 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
@@ -101,7 +102,7 @@ static NSString *productDirectoryName = @"SOGo";
   return searchPathes;
 }
 
-- (void) loadAllProducts
+- (void) loadAllProducts: (BOOL) verbose
 {
   SoProductRegistry *registry = nil;
   NSFileManager *fm;
@@ -134,14 +135,17 @@ static NSString *productDirectoryName = @"SOGo";
 	}
       if ([loadedProducts count])
         {
-          [self logWithFormat: @"SOGo products loaded from '%@':", lpath];
-          [self logWithFormat: @"  %@",
-                [loadedProducts componentsJoinedByString: @", "]];
+	  if (verbose)
+	    {
+	      [self logWithFormat: @"SOGo products loaded from '%@':", lpath];
+	      [self logWithFormat: @"  %@",
+		    [loadedProducts componentsJoinedByString: @", "]];
+	    }
           [loadedProducts removeAllObjects];
         }
     }
 
-  if (![registry loadAllProducts])
+  if (![registry loadAllProducts] && verbose)
     [self warnWithFormat: @"could not load all products !"];
   [pool release];
 }
