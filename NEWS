@@ -8,6 +8,7 @@ Enhancements
  - [web] always display name of month in week view (#3724)
  - [web] use a speed dial (instead of a dialog) for card/list creation
  - [web] use a speed dial for event/task creation
+ - [core] when restoring data using sogo-tool, regenerate Sieve script (#3029)
 
 Bug fixes
  - [web] fixed generic avatar in lists (#3719)
