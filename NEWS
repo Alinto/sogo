@@ -1,6 +1,9 @@
 2.3.13 (2016-06-XX)
 -------------------
 
+New features
+ - [core] now possible to set default Sieve script (#2949)
+
 Enhancements
  - [core] avoid showing bundle loading info when not needed (#3726)
 
