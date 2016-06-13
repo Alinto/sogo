@@ -6,6 +6,7 @@ New features
 
 Enhancements
  - [core] avoid showing bundle loading info when not needed (#3726)
+ - [core] when restoring data using sogo-tool, regenerate Sieve script (#3029)
 
 2.3.12 (2016-06-10)
 -------------------
