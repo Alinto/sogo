@@ -247,7 +247,7 @@ main (int argc, char **argv, char **env)
   pool = [NSAutoreleasePool new];
 
   /* load products */
-  [[SOGoProductLoader productLoader] loadAllProducts];
+  [[SOGoProductLoader productLoader] loadAllProducts: NO];
 
   [SOGoSystemDefaults sharedSystemDefaults];
   setupUserDefaults ();

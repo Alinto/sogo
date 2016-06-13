@@ -145,7 +145,7 @@ static BOOL debugLeaks;
   [$(@"SOGoFolder") soClass];
 
   /* load products */
-  [[SOGoProductLoader productLoader] loadAllProducts];
+  [[SOGoProductLoader productLoader] loadAllProducts: YES];
 }
 
 - (id) init
