@@ -14,6 +14,7 @@ Bug fixes
  - [web] fixed all-day events covering a timezone change (#3457)
  - [web] sgTimePicker parser now respects the user's time format and language
  - [web] fixed time format when user chooses the default one
+ - [web] added missing delegators identities in mail editor (#3720)
  - [core] properly handle sorted/deleted calendars (#3723)
  - [core] properly handle flattened timezone definitions (#2690)
 

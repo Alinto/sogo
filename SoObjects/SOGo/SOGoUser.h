@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2006-2015 Inverse inc.
-  Copyright (C) 2005 SKYRIX Software AG
+  Copyright (C) 2006-2016 Inverse inc.
 
   This file is part of SOGo.
 
@@ -15,7 +14,7 @@
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
@@ -113,6 +112,7 @@
 - (unsigned int) weekNumberForDate: (NSCalendarDate *) date;
 
 - (NSArray *) mailAccounts;
+- (NSArray *) mailAccountsWithDelegatedIdentities: (BOOL) appendDeletegatedIdentities;
 - (NSDictionary *) accountWithName: (NSString *) accountName;
 - (NSArray *) allIdentities;
 - (NSDictionary *) primaryIdentity;

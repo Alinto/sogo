@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2006-2015 Inverse inc.
-  Copyright (C) 2005 SKYRIX Software AG
+  Copyright (C) 2006-2016 Inverse inc.
 
   This file is part of SOGo.
 
@@ -15,7 +14,7 @@
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
@@ -621,20 +620,21 @@
     }
 }
 
-- (void) _appendSystemMailAccount
+- (void) _appendSystemMailAccountWithDelegatedIdentities: (BOOL) appendDeletegatedIdentities
 {
   NSString *fullName, *replyTo, *imapLogin, *imapServer, *cImapServer, *signature,
     *encryption, *scheme, *action, *query, *customEmail, *defaultEmail, *sieveServer;
   NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts, *mailSettings;
   NSNumber *port;
   NSMutableArray *identities;
-  NSArray *mails, *delegates;
+  NSArray *mails, *delegators, *delegates;
   NSURL *url, *cUrl;
   unsigned int count, max, default_identity;
   NSInteger defaultPort;
 
   [self userDefaults];
 
+  mailSettings = [[self userSettings] objectForKey: @"Mail"];
   mailAccount = [NSMutableDictionary new];
 
   // 1. login
@@ -781,7 +781,29 @@
     }
   [[identities objectAtIndex: default_identity] setObject: [NSNumber numberWithBool: YES]
                                                    forKey: @"isDefault"];
-  
+
+  /* identities from delegators */
+  if (appendDeletegatedIdentities)
+    {
+      delegators = [mailSettings objectForKey: @"DelegateFrom"];
+      if (delegators)
+        {
+          NSDictionary *delegatorAccount;
+          SOGoUser *delegator;
+
+          max = [delegators count];
+          for (count = 0; count < max; count++)
+            {
+              delegator = [SOGoUser userWithLogin: [delegators objectAtIndex: count]];
+              if (delegator)
+                {
+                  delegatorAccount = [[delegator mailAccountsWithDelegatedIdentities: NO] objectAtIndex: 0];
+                  [identities addObjectsFromArray: [delegatorAccount objectForKey: @"identities"]];
+                }
+            }
+        }
+    }
+
   [mailAccount setObject: identities forKey: @"identities"];
   [identities release];
 
@@ -820,11 +842,7 @@
   [mailAccount setObject: mailboxes forKey: @"specialMailboxes"];
   [mailboxes release];
 
-  [mailAccounts addObject: mailAccount];
-  [mailAccount release];
-
   /* delegates */
-  mailSettings = [[self userSettings] objectForKey: @"Mail"];
   delegates = [mailSettings objectForKey: @"DelegateTo"];
   if (!delegates)
     delegates = [NSArray array];
@@ -845,16 +863,24 @@
       delegates = allDelegates;
     }
   [mailAccount setObject: delegates  forKey: @"delegates"];
+
+  [mailAccounts addObject: mailAccount];
+  [mailAccount release];
 }
 
 - (NSArray *) mailAccounts
+{
+  return [self mailAccountsWithDelegatedIdentities: YES];
+}
+
+- (NSArray *) mailAccountsWithDelegatedIdentities: (BOOL) appendDeletegatedIdentities
 {
   NSArray *auxAccounts;
 
   if (!mailAccounts)
     {
       mailAccounts = [NSMutableArray new];
-      [self _appendSystemMailAccount];
+      [self _appendSystemMailAccountWithDelegatedIdentities: appendDeletegatedIdentities];
       if ([[self domainDefaults] mailAuxiliaryUserAccountsEnabled])
         {
           auxAccounts = [[self userDefaults] auxiliaryMailAccounts];
