@@ -27,11 +27,15 @@
 
 #import <Appointments/SOGoFreeBusyObject.h>
 
+#import <Mailer/SOGoMailAccount.h>
+#import <Mailer/SOGoMailAccounts.h>
+
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoCASSession.h>
 #if defined(SAML2_CONFIG)
 #import <SOGo/SOGoSAML2Session.h>
 #endif
+#import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoWebAuthenticator.h>
 #import <SOGo/SOGoUser.h>
@@ -58,10 +62,16 @@
 {
   SOGoUserFolder *co;
   NSString *loginModule;
+  SOGoSystemDefaults *sd;
+  SOGoDomainDefaults *dd;
   SOGoUserDefaults *ud;
+  NSArray *filters;
   NSURL *moduleURL;
 
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  dd = [[context activeUser] domainDefaults];
   ud = [[context activeUser] userDefaults];
+
   loginModule = [ud loginModule];
   if (!([loginModule isEqualToString: @"Calendar"]
         || [loginModule isEqualToString: @"Contacts"]
@@ -70,6 +80,24 @@
       [self errorWithFormat: @"login module '%@' not accepted (must be"
             @"'Calendar', 'Contacts' or 'Mail')", loginModule];
       loginModule = @"Calendar";
+    }
+
+  // We check if we must write the Sieve scripts to the server
+  // upon first login if no user preferences are found, and the SOGo
+  // admin has defined SOGoSieveFilters in the domain or system settings
+  if ([dd sieveScriptsEnabled] && [[[ud source] values] count] == 0 &&
+      ((filters = [[dd source] objectForKey: @"SOGoSieveFilters"]) || (filters = [[sd source] objectForKey: @"SOGoSieveFilters"])))
+    {
+      SOGoMailAccount *account;
+      SOGoMailAccounts *folder;
+
+      [ud setSieveFilters: filters];
+      [ud synchronize];
+
+      folder = [[self clientObject] mailAccountsFolder: @"Mail"
+					     inContext: context];
+      account = [folder lookupName: @"0" inContext: context acquire: NO];
+      [account updateFilters];
     }
 
   co = [self clientObject];

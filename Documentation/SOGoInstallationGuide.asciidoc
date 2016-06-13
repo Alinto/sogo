@@ -2018,6 +2018,11 @@ host.
 
 Defaults to `NO` when unset.
 
+|U |SOGoSieveFilters
+|Parameter used to define initial Sieve scripts for users. The user
+can still modify the scripts and the initial values will be written
+to the Sieve server upon first login.
+
 |D |SOGoMailPollingIntervals
 |Parameter used to define the mail polling intervals (in minutes)
 available to the user. The parameter is an array that can contain the
