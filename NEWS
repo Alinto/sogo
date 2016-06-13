@@ -3,6 +3,7 @@
 
 New features
  - [core] now possible to define default Sieve filters (#2949)
+ - [core] now possible to set vacation message start date (#3679)
 
 Enhancements
  - [web] always display name of month in week view (#3724)

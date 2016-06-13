@@ -2509,11 +2509,11 @@ If your mail server requires use of SMTP AUTH, specify a credential file
 using `-p /path/to/credFile`. This file should contain the username and
 password, separated by a colon (`username:password`)
 
-_Cronjob_ — Vacation messages expiration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+_Cronjob_ — Vacation messages activation and expiration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When vacation messages are enabled (see the parameter
-_SOGoVacationEnabled_), users can set an expiration date to messages
+_SOGoVacationEnabled_), users can set an activation or expiration date to messages
 auto-reply. For this feature to work, you must run a _cronjob_ under the
 "sogo" user.
 
@@ -2527,7 +2527,7 @@ contain the username and password, separated by a colon
 The _cronjob_ should look like this:
 
 ----
-0 0 * * * sogo /usr/sbin/sogo-tool expire-autoreply -p /etc/sogo/sieve.creds
+0 0 * * * sogo /usr/sbin/sogo-tool update-autoreply -p /etc/sogo/sieve.creds
 ----
 
 Managing User Accounts

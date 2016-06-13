@@ -39,6 +39,12 @@
       // We also convert our date objects into real date, otherwise we'll have strings
       // or undefined values and the md-datepicker does NOT like this.
       if (data.Vacation) {
+        if (data.Vacation.startDate)
+          data.Vacation.startDate = new Date(parseInt(data.Vacation.startDate) * 1000);
+        else {
+          data.Vacation.startDateEnabled = 0;
+          data.Vacation.startDate = new Date();
+        }
         if (data.Vacation.endDate)
           data.Vacation.endDate = new Date(parseInt(data.Vacation.endDate) * 1000);
         else {
@@ -58,6 +64,11 @@
 
       if (angular.isUndefined(data.Vacation.daysBetweenResponse))
         data.Vacation.daysBetweenResponse = 7;
+
+      if (angular.isUndefined(data.Vacation.startDate)) {
+        data.Vacation.startDateEnabled = 0;
+        data.Vacation.startDate = new Date();
+      }
 
       if (angular.isUndefined(data.Vacation.endDate)) {
         data.Vacation.endDateEnabled = 0;
@@ -218,6 +229,10 @@
     delete preferences.defaults.SOGoMailComposeFontSizeEnabled;
 
     if (preferences.defaults.Vacation) {
+      if (preferences.defaults.Vacation.startDateEnabled)
+        preferences.defaults.Vacation.startDate = preferences.defaults.Vacation.startDate.getTime()/1000;
+      else
+        preferences.defaults.Vacation.startDate = 0;
       if (preferences.defaults.Vacation.endDateEnabled)
         preferences.defaults.Vacation.endDate = preferences.defaults.Vacation.endDate.getTime()/1000;
       else

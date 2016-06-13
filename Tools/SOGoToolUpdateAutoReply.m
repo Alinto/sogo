@@ -1,8 +1,6 @@
-/* SOGoToolUserPreferences.m - this file is part of SOGo
+/* SOGoToolUpdateAutoReply.m - this file is part of SOGo
  *
- * Copyright (C) 2011-2013 Inverse inc.
- *
- * Author: Francis Lachapelle <flachapelle@inverse.ca>
+ * Copyright (C) 2011-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,10 +43,10 @@
 
 #import "SOGoTool.h"
 
-@interface SOGoToolExpireAutoReply : SOGoTool
+@interface SOGoToolUpdateAutoReply : SOGoTool
 @end
 
-@implementation SOGoToolExpireAutoReply
+@implementation SOGoToolUpdateAutoReply
 
 + (void) initialize
 {
@@ -56,27 +54,28 @@
 
 + (NSString *) command
 {
-  return @"expire-autoreply";
+  return @"update-autoreply";
 }
 
 + (NSString *) description
 {
-  return @"disable auto reply for reached end dates";
+  return @"enable or disable auto reply for reached start/end dates";
 }
 
 - (void) usage
 {
-  fprintf (stderr, "expire-autoreply -p credentialFile\n\n"
+  fprintf (stderr, "update-autoreply -p credentialFile\n\n"
      "  -p credentialFile    Specify the file containing the sieve admin credentials\n"
      "                       The file should contain a single line:\n"
      "                         username:password\n"
      "\n"
-     "The expire-autoreply action should be configured as a daily cronjob.\n");
+     "The update-autoreply action should be configured as a daily cronjob.\n");
 }
 
-- (BOOL) removeAutoReplyForLogin: (NSString *) theLogin
+- (BOOL) updateAutoReplyForLogin: (NSString *) theLogin
                withSieveUsername: (NSString *) theUsername
                      andPassword: (NSString *) thePassword
+		       disabling: (BOOL) disabling
 {
   NSMutableDictionary *vacationOptions;
   SOGoUserDefaults *userDefaults;
@@ -88,7 +87,15 @@
   vacationOptions = [[userDefaults vacationOptions] mutableCopy];
   [vacationOptions autorelease];
 
-  [vacationOptions setObject: [NSNumber numberWithBool: NO] forKey: @"enabled"];
+  if (disabling)
+    {
+      [vacationOptions setObject: [NSNumber numberWithBool: NO] forKey: @"enabled"];
+    }
+  else
+    {
+      [vacationOptions setObject: [NSNumber numberWithBool: NO] forKey: @"startDateEnabled"];
+    }
+
   [userDefaults setVacationOptions: vacationOptions];
   result = [userDefaults synchronize];
 
@@ -115,7 +122,10 @@
       if (!result)
         {
           // Can't update Sieve script -- Reactivate auto-reply
-          [vacationOptions setObject: [NSNumber numberWithBool: YES] forKey: @"enabled"];
+	  if (disabling)
+	    [vacationOptions setObject: [NSNumber numberWithBool: YES] forKey: @"enabled"];
+	  else
+	    [vacationOptions setObject: [NSNumber numberWithBool: YES] forKey: @"startDateEnabled"];
           [userDefaults setVacationOptions: vacationOptions];
           [userDefaults synchronize];
         }
@@ -124,7 +134,7 @@
   return result;
 }
 
-- (void) expireAutoReplyWithUsername: (NSString *) theUsername
+- (void) updateAutoReplyWithUsername: (NSString *) theUsername
                          andPassword: (NSString *) thePassword
 {
   GCSChannelManager *cm;
@@ -134,8 +144,7 @@
   NSString *sql, *profileURL, *user, *c_defaults;
   NSURL *tableURL;
   SOGoSystemDefaults *sd;
-  BOOL enabled;
-  unsigned int endTime, now;
+  unsigned int endTime, startTime, now;
 
   now = [[NSCalendarDate calendarDate] timeIntervalSince1970];
   sd = [SOGoSystemDefaults sharedSystemDefaults];
@@ -169,18 +178,33 @@
                 {
                   defaults = [c_defaults objectFromJSONString];
                   vacationOptions = (NSDictionary *) [defaults objectForKey: @"Vacation"];
-                  enabled = [[vacationOptions objectForKey: @"enabled"] boolValue];
-                  if (enabled)
+                  if ([[vacationOptions objectForKey: @"enabled"] boolValue])
                     {
-                      enabled = [[vacationOptions objectForKey: @"endDateEnabled"] boolValue];
-                      if (enabled)
+		      // We handle the start date
+		      if ([[vacationOptions objectForKey: @"startDateEnabled"] boolValue])
+			{
+			  startTime = [[vacationOptions objectForKey: @"startDate"] intValue];
+			  if (now >= startTime)
+			    {
+                              if ([self updateAutoReplyForLogin: user
+					      withSieveUsername: theUsername
+						    andPassword: thePassword
+						      disabling: NO])
+                                NSLog(@"Enabled auto-reply of user %@", user);
+                              else
+                                NSLog(@"An error occured while enabling auto-reply of user %@", user);
+			    }
+			}
+		      // We handle the end date
+                      if ([[vacationOptions objectForKey: @"endDateEnabled"] boolValue])
                         {
                           endTime = [[vacationOptions objectForKey: @"endDate"] intValue];
                           if (endTime <= now)
                             {
-                              if ([self removeAutoReplyForLogin: user
-                                               withSieveUsername: theUsername
-                                                     andPassword: thePassword])
+                              if ([self updateAutoReplyForLogin: user
+					      withSieveUsername: theUsername
+						    andPassword: thePassword
+						      disabling: YES])
                                 NSLog(@"Removed auto-reply of user %@", user);
                               else
                                 NSLog(@"An error occured while removing auto-reply of user %@", user);
@@ -238,7 +262,7 @@
 
   if (authname && authpwd)
    {
-     [self expireAutoReplyWithUsername: authname andPassword: authpwd];
+     [self updateAutoReplyWithUsername: authname andPassword: authpwd];
      rc = YES;
    }
 
