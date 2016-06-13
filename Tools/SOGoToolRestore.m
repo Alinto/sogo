@@ -23,6 +23,7 @@
 #import <Foundation/NSError.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLAccess/EOAdaptorContext.h>
@@ -34,6 +35,7 @@
 
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
+#import "SOGo/SOGoCredentialsFile.h"
 #import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
@@ -42,9 +44,14 @@
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoSystemDefaults.h>
 
+#import <Mailer/SOGoMailAccounts.h>
+#import <Mailer/SOGoMailAccount.h>
+
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/NGVCard.h>
 #import <NGCards/NGVList.h>
+
+#import <NGObjWeb/WOContext+SoObjects.h>
 
 #import "SOGoToolRestore.h"
 
@@ -92,12 +99,17 @@
 
 - (void) usage
 {
-  fprintf (stderr, "restore [-l|-p|-f/-F folder/ALL|-p] directory user\n\n"
+  fprintf (stderr, "restore [-l|-p|-f/-F folder/ALL|-p] [-c credentialFile] directory user\n\n"
 	   "           directory  the directory where backup files were initially stored\n"
 	   "           user       the user of whom to restore the data\n"
 	   "           -l         flag used to list folders to restore\n"
 	   "           -p         flag used to restore only the user's preferences\n"
-	   "           -f/-F      flag used to specify which folder to restore, ALL for everything\n\n"
+	   "           -f/-F      flag used to specify which folder to restore, ALL for everything\n"
+	   "           -c credentialFile    Specify the file containing the sieve admin credentials\n"
+	   "                                If set, it is used automatically to generate the sieve\n"
+           "                                script after a data restore.\n"
+	   "                                The file should contain a single line:\n"
+	   "                                username:password\n\n"
 	   "Examples:   sogo-tool restore -l /tmp/foo bob\n"
 	   "            sogo-tool restore -f Contacts/personal /tmp/foo bob\n"
 	   "            sogo-tool restore -p /tmp/foo bob\n");
@@ -246,14 +258,22 @@
   BOOL rc;
   NSString *identifier;
   NSArray *newArguments;
-  int count, max;
+  int count, max, v;
 
   count = [self parseModeArguments];
   max = [arguments count] - count;
-  if (max == 2)
+  v = 2;
+
+  if ([[NSUserDefaults standardUserDefaults] stringForKey: @"c"])
+    {
+      count = 3;
+      v = 4;
+    }
+
+  if (max == v)
     {
       newArguments
-        = [arguments subarrayWithRange: NSMakeRange (count, max)];
+        = [arguments subarrayWithRange: NSMakeRange (count, 2)];
       ASSIGN (directory, [newArguments objectAtIndex: 0]);
       identifier = [newArguments objectAtIndex: 1];
       rc = ([self checkDirectory]
@@ -585,6 +605,51 @@
   return rc;
 }
 
+//
+// We regenerate the Sieve script
+//
+- (BOOL) _updateSieveScripsForLogin: (NSString *) theLogin
+{
+  /* credentials file handling */
+  NSString *credsFilename, *authname=nil, *authpwd=nil;
+  SOGoCredentialsFile *cf;
+  SOGoUser *user;
+  SOGoUserFolder *home;
+  SOGoMailAccounts *folder;
+  SOGoMailAccount *account;
+  WOContext *localContext;
+  Class SOGoMailAccounts_class;
+
+  credsFilename = [[NSUserDefaults standardUserDefaults] stringForKey: @"c"];
+  if (credsFilename)
+    {
+      cf = [SOGoCredentialsFile credentialsFromFile: credsFilename];
+      authname = [cf username];
+      authpwd = [cf password];
+    }
+
+  if (authname == nil || authpwd == nil)
+    {
+      NSLog(@"To update Sieve scripts, you must provide the \"-p credentialFile\" parameter");
+      return NO;
+    }
+
+  /* update sieve script */
+  [[SOGoProductLoader productLoader] loadProducts: [NSArray arrayWithObject: @"Mailer.SOGo"]];
+  SOGoMailAccounts_class = NSClassFromString(@"SOGoMailAccounts");
+
+  user = [SOGoUser userWithLogin: theLogin];
+  localContext = [WOContext context];
+  [localContext setActiveUser: user];
+
+  home = [user homeFolderInContext: localContext];
+  folder = [SOGoMailAccounts_class objectWithName: @"Mail" inContainer: home];
+  account = [folder lookupName: @"0" inContext: localContext acquire: NO];
+  [account setContext: localContext];
+
+  return [account updateFiltersWithUsername: authname  andPassword: authpwd];
+}
+
 - (BOOL) restoreUserPreferencesFromUserRecord: (NSDictionary *) userRecord
 {
   SOGoUser *sogoUser;
@@ -600,7 +665,14 @@
 
       up = [[sogoUser userDefaults] source];
       [up setValues: [preferences objectAtIndex: 0]];
-      [up synchronize];
+
+      if ([[NSUserDefaults standardUserDefaults] stringForKey: @"c"])
+	{
+	  if ([self _updateSieveScripsForLogin: userID])
+	    [up synchronize];
+	}
+      else
+	[up synchronize];
 
       up = [[sogoUser userSettings] source];
       [up setValues: [preferences objectAtIndex: 1]];
