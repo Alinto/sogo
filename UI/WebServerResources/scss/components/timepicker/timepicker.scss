@@ -98,12 +98,9 @@ sg-timepicker {
   vertical-align: middle;
 }
 
-// The calendar icon button used to open the calendar pane.
-// Need absurd specificty to override md-button.md-icon-button.
+// The time icon button used to open the time pane.
 .sg-timepicker-button {
-  display: inline-block;
-  box-sizing: border-box;
-  background: none;
+  @extend .md-datepicker-button;
 }
 
 // The input into which the user can type the time.
@@ -143,12 +140,7 @@ sg-timepicker {
 
 // Portion of the floating panel that sits, invisibly, on top of the input.
 .sg-timepicker-input-mask {
-  height: 40px;
-  position: relative;
-
-  background: transparent;
-  pointer-events: none;
-  cursor: text;
+  @extend .md-datepicker-input-mask;
 }
 
 .sg-timepicker-input-mask-opaque {
@@ -207,21 +199,37 @@ sg-timepicker[disabled] {
 
 // Open state for all of the elements of the picker.
 .sg-timepicker-open {
-  .sg-timepicker-input-container {
-    @include rtl-prop(margin-left, margin-right, -$md-datepicker-button-gap);
+  overflow: hidden;
 
+  .sg-timepicker-input-container {
     // The negative bottom margin prevents the content around the datepicker
     // from jumping when it gets opened.
     margin-bottom: -$md-datepicker-border-bottom-gap;
-    border: none;
+
+    // From datePicker-theme.scss
+    background: $colorGrey200; //'{{background-hue-1}}';
   }
 
-  .sg-timepicker-input {
+  .md-icon-button + .sg-timepicker-input-container {
+    @include rtl-prop(margin-left, margin-right, -$md-datepicker-button-gap);
+  }
+
+  .sg-timepicker-input,
+  label:not(.md-no-float):not(._md-container-ignore) {
+    margin-bottom: -$md-datepicker-border-bottom-gap;
+  }
+
+  // This needs some extra specificity in order to override
+  // the focused/invalid border colors.
+  input.sg-timepicker-input {
     @include rtl-prop(margin-left, margin-right, 24px);
-    height: 40px;
+    height: $md-datepicker-input-mask-height;
+    border-bottom-color: transparent;
   }
 
-  .sg-timepicker-triangle-button {
+  .sg-timepicker-triangle-button,
+  &.md-input-has-value > label,
+  &.md-input-has-placeholder > label {
     display: none;
   }
 

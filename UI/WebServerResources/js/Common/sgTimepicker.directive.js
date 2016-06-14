@@ -388,7 +388,7 @@
         '<div class="sg-timepicker-time-pane md-whiteframe-z1">',
         '  <div class="sg-timepicker-input-mask">',
         '    <div class="sg-timepicker-input-mask-opaque"',
-        '                md-colors="::{background: \'default-background-A100\'}"></div>', // using mdColors
+        '                md-colors="::{background: \'default-background-hue-1\'}"></div>', // using mdColors
         '  </div>',
         '  <div class="sg-timepicker-time" md-colors="::{background: \'default-background-A100\'}">',
         '    <sg-time-pane role="dialog" aria-label="{{::ctrl.dateLocale.msgCalendar}}" ',
