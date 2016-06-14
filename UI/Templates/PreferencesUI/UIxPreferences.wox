@@ -31,6 +31,7 @@
                 ng-class="{ 'sg-close': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
+          <md-subheader>{{ ::'Preferences' | loc }}</md-subheader>
         <md-list>
           <md-list-item ng-click="app.go('general', preferencesForm)"
                         ng-disabled="preferencesForm.$invalid"
