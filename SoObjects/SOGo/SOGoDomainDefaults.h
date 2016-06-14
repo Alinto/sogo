@@ -52,6 +52,8 @@
 - (BOOL) forwardEnabled;
 - (int) forwardConstraints;
 - (BOOL) vacationEnabled;
+- (NSString *) vacationHeaderTemplateFile;
+- (NSString *) vacationFooterTemplateFile;
 - (NSString *) mailingMechanism;
 - (NSString *) smtpServer;
 - (NSString *) smtpAuthenticationType;

@@ -57,6 +57,7 @@
 
 - (BOOL) _isSieveServerAvailable;
 - (id) _sieveClient;
+- (NSString *) _vacationTextForTemplate: (NSString *) templateFilePath;
 
 @end
 

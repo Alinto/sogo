@@ -820,9 +820,15 @@
               <div layout="column" flex-offset="5" ng-show="app.preferences.defaults.Vacation.enabled == 1">
                 <md-input-container class="md-block md-flex">
                   <label><var:string label:value="Auto reply message"/></label>
+                  <var:if condition="vacationHeader.length">
+                    <p class="text-preview" md-colors="::{color: 'default-background-600'}"><var:string value="vacationHeader"/></p>
+                  </var:if>
                   <textarea const:name="autoReplyText"
                             const:id="autoReplyText"
                             ng-model="app.preferences.defaults.Vacation.autoReplyText"/>
+                  <var:if condition="vacationFooter.length">
+                    <p class="text-preview" md-colors="::{color: 'default-background-600'}"><var:string value="vacationFooter"/></p>
+                  </var:if>
                 </md-input-container>
 
                 <div layout="row" layout-align="start center">

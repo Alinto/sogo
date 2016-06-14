@@ -27,6 +27,7 @@
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoTextTemplateFile.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGImap4/NGSieveClient.h>
@@ -833,7 +834,8 @@ static NSString *sieveScriptName = @"sogo";
     {
       NSMutableString *vacation_script;
       NSArray *addresses;
-      NSString *text;
+      NSString *text, *templateFilePath;
+      SOGoTextTemplateFile *templateFile;
       
       BOOL ignore, alwaysSend;
       int days, i;
@@ -844,6 +846,24 @@ static NSString *sieveScriptName = @"sogo";
       ignore = [[values objectForKey: @"ignoreLists"] boolValue];
       text = [values objectForKey: @"autoReplyText"];
       b = YES;
+
+      /* Add autoresponder header if configured */
+      templateFilePath = [dd vacationHeaderTemplateFile];
+      if (templateFilePath)
+        {
+          templateFile = [SOGoTextTemplateFile textTemplateFromFile: templateFilePath];
+          if (templateFile)
+            text = [NSString stringWithFormat: @"%@%@", [templateFile textForUser: user], text];
+        }
+
+      /* Add autoresponder footer if configured */
+      templateFilePath = [dd vacationFooterTemplateFile];
+      if (templateFilePath)
+        {
+          templateFile = [SOGoTextTemplateFile textTemplateFromFile: templateFilePath];
+          if (templateFile)
+            text = [NSString stringWithFormat: @"%@%@", text, [templateFile textForUser: user]];
+        }
 
       if (days == 0)
         days = 7;

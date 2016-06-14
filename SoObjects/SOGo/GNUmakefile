@@ -86,7 +86,8 @@ SOGo_HEADER_FILES = \
 	WOResponse+SOGo.h		\
 	WOContext+SOGo.h		\
 	\
-	SOGoCredentialsFile.h
+	SOGoCredentialsFile.h		\
+	SOGoTextTemplateFile.h
 
 all::
 	@touch SOGoBuild.m
@@ -165,7 +166,8 @@ SOGo_OBJC_FILES = \
 	WOResponse+SOGo.m		\
 	WOContext+SOGo.m		\
 	\
-	SOGoCredentialsFile.m
+	SOGoCredentialsFile.m		\
+	SOGoTextTemplateFile.m
 
 SOGo_C_FILES += lmhash.c
 

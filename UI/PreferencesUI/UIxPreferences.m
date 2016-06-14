@@ -41,6 +41,7 @@
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoParentFolder.h>
+#import <SOGo/SOGoTextTemplateFile.h>
 #import <SOGo/WOResourceManager+SOGo.h>
 #import <SOGo/SOGoBuild.h>
 #import <Mailer/SOGoMailAccount.h>
@@ -1101,6 +1102,40 @@ static NSArray *reminderValues = nil;
 - (BOOL) isVacationEnabled
 {
   return [[user domainDefaults] vacationEnabled];
+}
+
+- (NSString *) vacationHeader
+{
+  NSString *path;
+
+  path = [[user domainDefaults] vacationHeaderTemplateFile];
+
+  return [self _vacationTextForTemplate: path];
+}
+
+- (NSString *) vacationFooter
+{
+  NSString *path;
+
+  path = [[user domainDefaults] vacationFooterTemplateFile];
+
+  return [self _vacationTextForTemplate: path];
+}
+
+- (NSString *) _vacationTextForTemplate: (NSString *) templateFilePath
+{
+  NSString *text;
+  SOGoTextTemplateFile *templateFile;
+
+  text = nil;
+  if (templateFilePath)
+    {
+      templateFile = [SOGoTextTemplateFile textTemplateFromFile: templateFilePath];
+      if (templateFile)
+        text = [templateFile textForUser: user];
+    }
+
+  return text;
 }
 
 // - (void) setSieveFiltersValue: (NSString *) newValue
