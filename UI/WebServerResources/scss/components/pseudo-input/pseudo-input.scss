@@ -37,8 +37,9 @@
   margin-top: $mg;
   color: $colorGray;
   font-weight: $sg-font-regular;
-  font-size: sg-size(caption);
   line-height: $sg-line-height-1;
+  transform: scale($input-label-float-scale);
+  @include rtl(transform-origin, left top, right top);
 }
 
 .pseudo-input-label--no-margin,
