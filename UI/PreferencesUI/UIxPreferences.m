@@ -1243,6 +1243,11 @@ static NSArray *reminderValues = nil;
   return fontSizes;
 }
 
+- (NSString *) itemFontSizeText
+{
+  return [NSString stringWithFormat: @"%@ px", item];
+}
+
 //
 // Used by templates
 //

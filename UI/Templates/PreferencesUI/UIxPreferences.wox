@@ -100,7 +100,7 @@
       <md-tab id="generalOptionsView" aria-controls="generalOptionsView-content" label:label="General">
         <md-content layout="row"
                     aria-labelledby="generalOptionsView"
-                    id="generalOptionsView-content" class="md-padding">
+                    id="generalOptionsView-content" class="md-inline-form md-padding">
           <div layout="column" flex="100">
             <md-input-container>
               <label><var:string label:value="SOGo Version"/></label>
@@ -520,7 +520,7 @@
         <!-- MAIL > GENERAL -->
         <md-tab id="mailGeneralTab" aria-controls="mailGeneralTab-content" label:label="General">
           <md-content role="tabpanel" aria-labelledby="mailGeneralView"
-                      id="mailGeneralView-content" class="md-padding">
+                      id="mailGeneralView-content" class="md-padding md-inline-form">
 
             <div>
               <md-checkbox
@@ -635,11 +635,10 @@
                              ng-model="app.preferences.defaults.SOGoMailComposeFontSize">
                     <var:foreach list="fontSizesList" item="item">
                       <md-option var:value="item">
-                        <var:string value="item"/>
+                        <var:string value="itemFontSizeText"/>
                       </md-option>
                     </var:foreach>
                   </md-select>
-                  <div class="md-char-counter">px</div>
                 </md-input-container>
               </div>
             </div>
@@ -817,7 +816,8 @@
                 <var:string label:value="Enable vacation auto reply"/>
               </md-checkbox>
 
-              <div layout="column" flex-offset="5" ng-show="app.preferences.defaults.Vacation.enabled == 1">
+              <div class="md-inline-form" layout="column" flex-offset="5" ng-show="app.preferences.defaults.Vacation.enabled == 1">
+
                 <md-input-container class="md-block md-flex">
                   <label><var:string label:value="Auto reply message"/></label>
                   <var:if condition="vacationHeader.length">
@@ -865,7 +865,7 @@
                   </md-checkbox>
                 </div>
 
-		<div layout="row">
+                <div>
                   <md-checkbox
                       ng-model="app.preferences.defaults.Vacation.startDateEnabled"
                       ng-true-value="1"

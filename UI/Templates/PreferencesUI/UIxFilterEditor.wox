@@ -8,7 +8,7 @@
     xmlns:rsrc="OGo:url"
     xmlns:uix="OGo:uix"><var:string var:value="doctype" const:escapeHTML="NO" />
 <md-dialog flex="50" flex-sm="80" flex-xs="100">
-  <form id="filterForm" name="filterForm" ng-submit="filterEditor.save(filterForm)">
+  <form id="filterForm" name="filterForm" class="md-inline-form" ng-submit="filterEditor.save(filterForm)">
     <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">filter_list</md-icon>
@@ -18,19 +18,23 @@
                  type="text"
                  md-autofocus="true"
                  ng-model="filterEditor.filter.name"
+                 label:placeholder="Filter name"
                  required="required"/>
         </md-input-container>
       </div>
     </md-toolbar>
-    <md-dialog-content class="md-dialog-content">
+    <md-dialog-content class="sg-has-form-sections">
       <script type="text/javascript">
         var filterId = '<var:string value="filterId"/>';
         var sieveFolderEncoding = '<var:string value="sieveFolderEncoding"/>';
         var mailTags = <var:string value="labels" const:escapeHTML="NO"/>;
       </script>
 
-      <div layout="row" layout-align="start center">
-        <p><var:string label:value="For incoming messages that"/></p>
+      <div class="sg-form-section">
+        <div layout="row" layout-align="start center">
+          <div class="pseudo-input-container">
+            <p class="pseudo-input-field"><var:string label:value="For incoming messages that"/></p>
+          </div>
         <md-input-container class="md-flex">
           <md-select ng-model="filterEditor.filter.match">
             <md-option const:value="all">
@@ -49,7 +53,7 @@
       <!-- CONDITIONS -->
       <div layout="column">
         <div id="filterRules"><!-- empty --></div>
-          <div layout="row"
+          <div layout="row" layout-align="start center"
                ng-repeat="rule in filterEditor.filter.rules">
 
             <md-input-container class="md-block" flex="25">
@@ -97,12 +101,14 @@
           </md-button>
         </div>
       </div>
+      </div>
+      <div class="sg-form-section">
 
       <!-- ACTIONS -->
       <div layout="column">
         <p><var:string label:value="Perform these actions"/></p>
         <div id="filterActions"><!-- empty --></div>
-        <div layout="row"
+        <div layout="row" layout-align="start center"
              ng-repeat="action in filterEditor.filter.actions">
 
           <md-input-container class="md-block md-flex">
@@ -172,6 +178,7 @@
             <md-icon>add_circle</md-icon>
           </md-button>
         </div>
+      </div>
       </div>
     </md-dialog-content>
     <md-dialog-actions>

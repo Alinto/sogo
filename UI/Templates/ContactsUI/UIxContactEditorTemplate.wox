@@ -32,7 +32,7 @@
         </hgroup>
         
         <!-- contact editor -->
-        <form name="cardForm" ng-show="editor.card.$isCard()" ng-submit="editor.save(cardForm)">
+        <form class="md-inline-form" name="cardForm" ng-show="editor.card.$isCard()" ng-submit="editor.save(cardForm)">
           <md-input-container class="md-block md-flex">
             <var:entity const:name="nbsp"/>
             <label>
@@ -123,7 +123,7 @@
           <!-- emails -->
           <div class="section">
             <div class="attr" ng-repeat="email in editor.card.emails">
-              <div layout="row">
+              <div layout="row" layout-align="start center">
                 <md-input-container flex="20">
                   <md-select ng-model="email.type" label:placeholder="Type">
                     <md-option ng-repeat="type in ::editor.allEmailTypes" ng-value="type">{{ type }}</md-option>
@@ -155,7 +155,7 @@
           <div class="section">
             <div layout="row" ng-show="editor.card.c_screenname != null">
               <md-input-container class="md-flex">
-                <label class="pseudo-input-label">
+                <label>
                   <var:string label:value="Screen Name"/>
                 </label>
                 <input type="text" ng-model="editor.card.c_screenname"/>
@@ -201,7 +201,7 @@
           <!-- phones -->
           <div class="section">
             <div class="attr" ng-repeat="phone in editor.card.phones">
-              <div layout="row">
+              <div layout="row" layout-align="start center">
                 <md-input-container flex="20">
                   <md-select ng-model="phone.type" label:placeholder="Type">
                     <md-option ng-repeat="type in ::editor.allTelTypes" ng-value="type">{{ type }}</md-option>
@@ -232,7 +232,7 @@
           <!-- urls -->
           <div class="section">
             <div class="attr" ng-repeat="url in editor.card.urls">
-              <div layout="row">
+              <div layout="row" layout-align="start center">
                 <md-input-container flex="20">
                   <md-select ng-model="url.type" label:placeholder="Type">
                     <md-option ng-repeat="type in ::editor.allUrlTypes" ng-value="type">{{ type }}</md-option>
@@ -304,7 +304,7 @@
                   <input type="text" ng-model="address.region"/>
                 </md-input-container>
               </div>
-              <div layout="row">
+              <div layout="row" layout-align="start center">
                 <md-input-container flex="50" flex-xs="100">
                   <label>
                     <var:string label:value="Country"/>
@@ -334,9 +334,7 @@
 
           <!-- note -->
           <md-input-container class="md-block md-flex">
-            <label class="right inline">
-              <var:string label:value="Note"/>
-            </label>
+            <label><var:string label:value="Note"/></label>
             <textarea ng-model="editor.card.note"><!-- note --></textarea>
           </md-input-container>
         </form>
