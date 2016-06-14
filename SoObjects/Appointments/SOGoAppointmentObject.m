@@ -567,7 +567,7 @@
               
               values = [NSDictionary dictionaryWithObjectsAndKeys:
                         [user cn], @"Cn",
-                        [user systemEmail], @"SystemEmail"];
+                        [user systemEmail], @"SystemEmail"], nil;
               reason = [values keysWithFormat: [self labelForKey: @"Cannot access resource: \"%{Cn} %{SystemEmail}\""]];
               return [NSException exceptionWithHTTPStatus:403 reason: reason];
             }
