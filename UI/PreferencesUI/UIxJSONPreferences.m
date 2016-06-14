@@ -311,6 +311,14 @@ static SoProduct *preferencesProduct = nil;
 
   values = [[[[defaults source] values] mutableCopy] autorelease];
 
+  //
+  // Expose additional information that must not be synchronized in the defaults
+  //
+
+  // Expose the SOGoAppointmentSendEMailNotifications configuration parameter from the domain defaults
+  [values setObject: [NSNumber numberWithBool: [domainDefaults appointmentSendEMailNotifications]]
+             forKey: @"SOGoAppointmentSendEMailNotifications"];
+
   // Add locale code (used by CK Editor)
   locale = [[preferencesProduct resourceManager] localeForLanguageNamed: [defaults language]];
   [values setObject: [locale objectForKey: @"NSLocaleCode"] forKey: @"LocaleCode"];
@@ -321,10 +329,7 @@ static SoProduct *preferencesProduct = nil;
                                            [locale objectForKey: @"NSShortWeekDayNameArray"], @"shortDays",
                                                     nil] forKey: @"locale"];
 
-  //
-  // We inject our default mail account, something we don't want to do before we
-  // call -synchronize on our defaults.
-  //
+  // We inject our default mail account
   accounts = [NSMutableArray arrayWithArray: [values objectForKey: @"AuxiliaryMailAccounts"]];
   account = [[[context activeUser] mailAccounts] objectAtIndex: 0];
   if (![account objectForKey: @"receipts"])
@@ -335,7 +340,6 @@ static SoProduct *preferencesProduct = nil;
                                         @"ignore", @"receiptAnyAction", nil]
                   forKey:  @"receipts"];
     }
-
   [accounts insertObject: account  atIndex: 0];
   [values setObject: accounts  forKey: @"AuxiliaryMailAccounts"];
 

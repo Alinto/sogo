@@ -20,6 +20,7 @@ Bug fixes
  - [web] sgTimePicker parser now respects the user's time format and language
  - [web] fixed time format when user chooses the default one
  - [web] added missing delegators identities in mail editor (#3720)
+ - [web] honor the domain default SOGoAppointmentSendEMailNotifications (#3729)
  - [core] properly handle sorted/deleted calendars (#3723)
  - [core] properly handle flattened timezone definitions (#2690)
 
