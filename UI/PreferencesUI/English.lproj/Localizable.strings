@@ -41,6 +41,7 @@
 "Add default email addresses" = "Add default email addresses";
 "Days between responses" = "Days between responses";
 "Do not send responses to mailing lists" = "Do not send responses to mailing lists";
+"Enable auto reply on" = "Enable auto reply on";
 "Disable auto reply on" = "Disable auto reply on";
 "Always send vacation message response" = "Always send vacation message response";
 "Please specify your message and your email addresses for which you want to enable auto reply."
