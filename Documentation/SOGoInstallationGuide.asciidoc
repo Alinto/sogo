@@ -2025,10 +2025,6 @@ appended to the user's vacation message. For example:
 
 See `SOGoVacationHeaderTemplateFile` for available template variables.
 
-|D |SOGoVacationHeaderTemplateFile
-|Parameter used to specify the path of a text file whose content must be
-prepended to the user's vacation message.
-
 |D |SOGoForwardEnabled
 |Parameter used to activate the edition from the preferences window of a
 forwarding email address. Requires Sieve script support on the IMAP
