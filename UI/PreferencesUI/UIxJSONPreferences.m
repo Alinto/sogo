@@ -72,11 +72,11 @@ static SoProduct *preferencesProduct = nil;
 
 - (WOResponse *) jsonDefaultsAction
 {
-  NSMutableDictionary *values, *account;
+  NSMutableDictionary *values, *account, *vacation;
   SOGoUserDefaults *defaults;
   SOGoDomainDefaults *domainDefaults;
   NSMutableArray *accounts;
-  NSDictionary *categoryLabels;
+  NSDictionary *categoryLabels, *vacationOptions;
   NSDictionary *locale;
 
   if (!preferencesProduct)
@@ -312,7 +312,7 @@ static SoProduct *preferencesProduct = nil;
   values = [[[[defaults source] values] mutableCopy] autorelease];
 
   //
-  // Expose additional information that must not be synchronized in the defaults
+  // Expose additional information that must *not* be synchronized in the defaults
   //
 
   // Expose the SOGoAppointmentSendEMailNotifications configuration parameter from the domain defaults
@@ -343,6 +343,18 @@ static SoProduct *preferencesProduct = nil;
   [accounts insertObject: account  atIndex: 0];
   [values setObject: accounts  forKey: @"AuxiliaryMailAccounts"];
 
+  // Add the domain's default vacation subject if user has not specified a custom subject
+  vacationOptions = [defaults vacationOptions];
+  if (![vacationOptions objectForKey: @"customSubject"] && [domainDefaults vacationDefaultSubject])
+    {
+      if (vacationOptions)
+        vacation = [NSMutableDictionary dictionaryWithDictionary: vacationOptions];
+      else
+        vacation = [NSMutableDictionary dictionary];
+
+      [vacation setObject: [domainDefaults vacationDefaultSubject] forKey: @"customSubject"];
+      [values setObject: vacation forKey: @"Vacation"];
+    }
 
   return [self responseWithStatus: 200 andJSONRepresentation: values];
 }

@@ -25,6 +25,7 @@
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoTextTemplateFile.h>
@@ -834,18 +835,27 @@ static NSString *sieveScriptName = @"sogo";
     {
       NSMutableString *vacation_script;
       NSArray *addresses;
-      NSString *text, *templateFilePath;
+      NSString *text, *templateFilePath, *customSubject;
       SOGoTextTemplateFile *templateFile;
       
-      BOOL ignore, alwaysSend;
+      BOOL ignore, alwaysSend, useCustomSubject;
       int days, i;
       
       days = [[values objectForKey: @"daysBetweenResponse"] intValue];
       addresses = [values objectForKey: @"autoReplyEmailAddresses"];
       alwaysSend = [[values objectForKey: @"alwaysSend"] boolValue];
       ignore = [[values objectForKey: @"ignoreLists"] boolValue];
+      useCustomSubject = [[values objectForKey: @"customSubjectEnabled"] boolValue];
+      customSubject = [values objectForKey: @"customSubject"];
       text = [values objectForKey: @"autoReplyText"];
       b = YES;
+
+      if (!useCustomSubject)
+        {
+          // If user has not specified a custom subject, fallback to the domain's defaults
+          customSubject = [dd vacationDefaultSubject];
+          useCustomSubject = [customSubject length] > 0;
+        }
 
       /* Add autoresponder header if configured */
       templateFilePath = [dd vacationHeaderTemplateFile];
@@ -874,10 +884,25 @@ static NSString *sieveScriptName = @"sogo";
 
       // Skip mailing lists
       if (ignore)
-        [vacation_script appendString: @"if allof ( not exists [\"list-help\", \"list-unsubscribe\", \"list-subscribe\", \"list-owner\", \"list-post\", \"list-archive\", \"list-id\", \"Mailing-List\"], not header :comparator \"i;ascii-casemap\" :is \"Precedence\" [\"list\", \"bulk\", \"junk\"], not header :comparator \"i;ascii-casemap\" :matches \"To\" \"Multiple recipients of*\" ) {"];
-      
-      [vacation_script appendFormat: @"vacation :days %d :addresses [", days];
+        [vacation_script appendString: @"if allof ( not exists [\"list-help\", \"list-unsubscribe\", \"list-subscribe\", \"list-owner\", \"list-post\", \"list-archive\", \"list-id\", \"Mailing-List\"], not header :comparator \"i;ascii-casemap\" :is \"Precedence\" [\"list\", \"bulk\", \"junk\"], not header :comparator \"i;ascii-casemap\" :matches \"To\" \"Multiple recipients of*\" ) { "];
 
+      // Custom subject
+      if (useCustomSubject)
+        {
+          if (([customSubject rangeOfString: @"${subject}"].location != NSNotFound) &&
+              [client hasCapability: @"variables"])
+            {
+              [req addObjectUniquely: @"variables"];
+              [vacation_script appendString: @"if header :matches \"Subject\" \"*\" { set \"subject\" \"${1}\"; } "];
+            }
+        }
+
+      [vacation_script appendFormat: @"vacation :days %d", days];
+
+      if (useCustomSubject)
+        [vacation_script appendFormat: @" :subject %@", [customSubject doubleQuotedString]];
+
+      [vacation_script appendString: @" :addresses ["];
       for (i = 0; i < [addresses count]; i++)
         {
           [vacation_script appendFormat: @"\"%@\"", [addresses objectAtIndex: i]];

@@ -5,6 +5,7 @@ New features
  - [core] now possible to define default Sieve filters (#2949)
  - [core] now possible to set vacation message start date (#3679)
  - [web] add a header and/or footer to the vacation message (#1961)
+ - [web] specify a custom subject for the vacation message (#685, #1447)
 
 Enhancements
  - [core] when restoring data using sogo-tool, regenerate Sieve script (#3029)

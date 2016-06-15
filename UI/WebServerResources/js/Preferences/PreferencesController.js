@@ -37,6 +37,7 @@
     vm.timeZonesList = window.timeZonesList;
     vm.timeZonesListFilter = timeZonesListFilter;
     vm.timeZonesSearchText = '';
+    vm.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
 
     // Fetch a flatten version of the mailboxes list of the main account (0)
     // This list will be forwarded to the Sieve filter controller

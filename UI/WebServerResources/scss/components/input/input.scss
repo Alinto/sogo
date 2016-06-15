@@ -16,14 +16,18 @@ md-input-container {
     // Temporary fix for https://github.com/angular/material/issues/6214
     min-height: 0 !important;
   }
+  .sg-hint {
+    @extend .md-char-counter;
+    @include rtl(text-align, left, right);
+  }
 }
 
-md-input-container .bgroup {
-  display: block;
-}
-.bgroup b {
-  left-margin: -1.25em;
-}
+//md-input-container .bgroup {
+//  display: block;
+//}
+//.bgroup b {
+//  left-margin: -1.25em;
+//}
 
 md-autocomplete .sg-input-no-message [md-floating-label] {
   md-input-container {

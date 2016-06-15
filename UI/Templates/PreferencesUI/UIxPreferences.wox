@@ -818,6 +818,24 @@
 
               <div class="md-inline-form" layout="column" flex-offset="5" ng-show="app.preferences.defaults.Vacation.enabled == 1">
 
+                <div layout="row">
+                  <md-checkbox
+                      ng-model="app.preferences.defaults.Vacation.customSubjectEnabled"
+                      ng-true-value="1"
+                      ng-false-value="0"
+                      label:aria-label="Enable custom auto reply subject">
+                  <!-- enable auto reply subject --></md-checkbox>
+                  <md-input-container class="md-block md-flex">
+                    <label><var:string label:value="Auto reply subject"/></label>
+                    <input type="text"
+                           ng-disabled="!app.preferences.defaults.Vacation.customSubjectEnabled"
+                           ng-model="app.preferences.defaults.Vacation.customSubject"/>
+                    <div class="sg-hint" ng-show="app.sieveVariablesCapability">
+                      <var:string label:value="You can write ${subject} to insert the original subject"/>
+                    </div>
+                  </md-input-container>
+                </div>
+
                 <md-input-container class="md-block md-flex">
                   <label><var:string label:value="Auto reply message"/></label>
                   <var:if condition="vacationHeader.length">

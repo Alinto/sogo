@@ -36,6 +36,9 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Enable vacation auto reply";
+"Enable custom auto reply subject" = "Enable custom auto reply subject";
+"Auto reply subject" = "Auto reply subject";
+"You can write ${subject} to insert the original subject" = "You can write ${subject} to insert the original subject";
 "Auto reply message" = "Auto reply message";
 "Email addresses (separated by commas)" = "Email addresses (separated by commas)";
 "Add default email addresses" = "Add default email addresses";

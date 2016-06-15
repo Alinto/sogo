@@ -1998,6 +1998,13 @@ message expiration.
 See the _Cronjob — Vacation messages expiration_ section below for
 details.
 
+|D |SOGoVacationDefaultSubject
+|Parameter used to define a default vacation subject if user don't specify a
+custom subject.
+
+Defaults to the characters "Auto: " followed by the original subject when unset,
+as stated by RFC 5230.
+
 |D |SOGoVacationHeaderTemplateFile
 |Parameter used to specify the path of a text file whose content must be
 prepended to the user's vacation message. For example:
