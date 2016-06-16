@@ -999,7 +999,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 }
 
 /* conversion SOGo inetOrgPerson entry -> LDAP */
-- (void) _applyContactMappingToOutput: (NSMutableDictionary *) ldifRecord
+- (void) applyContactMappingToOutput: (NSMutableDictionary *) ldifRecord
 {
   NSArray *sourceFields;
   NSArray *keys;
