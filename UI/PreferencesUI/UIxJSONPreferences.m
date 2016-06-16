@@ -283,7 +283,7 @@ static SoProduct *preferencesProduct = nil;
   if (![[defaults source] objectForKey: @"SOGoMailDisplayRemoteInlineImages"])
     [[defaults source] setObject: [defaults mailDisplayRemoteInlineImages] forKey: @"SOGoMailDisplayRemoteInlineImages"];
 
-  // Populate default mail lablels, based on the user's preferred language
+  // Populate default mail labels, based on the user's preferred language
   if (![[defaults source] objectForKey: @"SOGoMailLabelsColors"])
     {
       SOGoMailLabel *label;
@@ -355,6 +355,10 @@ static SoProduct *preferencesProduct = nil;
       [vacation setObject: [domainDefaults vacationDefaultSubject] forKey: @"customSubject"];
       [values setObject: vacation forKey: @"Vacation"];
     }
+
+  // Don't expose SOGoRememberLastModule;
+  // User can edit SOGoLoginModule but SOGoRememberLastModule is managed internally.
+  [values removeObjectForKey: @"SOGoRememberLastModule"];
 
   return [self responseWithStatus: 200 andJSONRepresentation: values];
 }

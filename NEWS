@@ -25,6 +25,7 @@ Bug fixes
  - [web] fixed time format when user chooses the default one
  - [web] added missing delegators identities in mail editor (#3720)
  - [web] honor the domain default SOGoAppointmentSendEMailNotifications (#3729)
+ - [web] the login module parameter is now properly restored when set as "Last used"
 
 3.1.2 (2016-06-06)
 ------------------
