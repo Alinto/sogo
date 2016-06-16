@@ -218,7 +218,7 @@
     vm.categories = {};
     vm.showRecurrenceEditor = vm.component.$hasCustomRepeat;
     vm.toggleRecurrenceEditor = toggleRecurrenceEditor;
-    vm.showAttendeesEditor = angular.isDefined(vm.component.attendees);
+    vm.showAttendeesEditor = false;
     vm.toggleAttendeesEditor = toggleAttendeesEditor;
     //vm.searchText = null;
     vm.cardFilter = cardFilter;
@@ -276,13 +276,11 @@
         // User pressed "Enter" in search field, adding a non-matching card
         if (card.isValidEmail()) {
           vm.component.addAttendee(new Card({ emails: [{ value: card }] }));
-          vm.showAttendeesEditor = true;
           vm.searchText = '';
         }
       }
       else {
         vm.component.addAttendee(card);
-        vm.showAttendeesEditor = true;
       }
     }
 

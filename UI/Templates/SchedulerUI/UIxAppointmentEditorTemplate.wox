@@ -251,25 +251,27 @@
               <md-icon ng-class="{'md-rotate-180': editor.showAttendeesEditor}">expand_more</md-icon>
             </md-button>
           </div>
-          <!-- md-contact-chips don't support "readonly", so we build them using md-chips
-               in readonly mode and a template similar to the one of md-contact-chips -->
-          <md-chips class="ng-hide md-contact-chips sg-readonly attendees-chips"
-                    ng-model="editor.component.attendees"
-                    ng-hide="editor.showAttendeesEditor"
-                    readonly="true">
-            <md-chip-template>
-              <div class="md-contact-avatar">
-                <sg-avatar-image sg-email="$chip.email" size="32"><!-- avatar --></sg-avatar-image>
-              </div>
-              <div class="md-contact-name">{{$chip.name || $chip.email}}</div>
-              <md-icon ng-class="'icon-' + $chip.status"><!-- partstat --></md-icon>
-              <md-icon class="sg-chip-remove"
-                       label:aria-label="Delete"
-                       ng-click="editor.removeAttendee($chip)">close</md-icon>
-            </md-chip-template>
-          </md-chips>
-          <div class="ng-hide attendees" ng-show="editor.showAttendeesEditor">
-            <var:component className="UIxAttendeesEditor" />
+          <div ng-show="editor.component.attendees.length">
+            <!-- md-contact-chips don't support "readonly", so we build them using md-chips
+                 in readonly mode and a template similar to the one of md-contact-chips -->
+            <md-chips class="ng-hide md-contact-chips sg-readonly attendees-chips"
+                      ng-model="editor.component.attendees"
+                      ng-hide="editor.showAttendeesEditor"
+                      readonly="true">
+              <md-chip-template>
+                <div class="md-contact-avatar">
+                  <sg-avatar-image sg-email="$chip.email" size="32"><!-- avatar --></sg-avatar-image>
+                </div>
+                <div class="md-contact-name">{{$chip.name || $chip.email}}</div>
+                <md-icon ng-class="'icon-' + $chip.status"><!-- partstat --></md-icon>
+                <md-icon class="sg-chip-remove"
+                         label:aria-label="Delete"
+                         ng-click="editor.removeAttendee($chip)">close</md-icon>
+              </md-chip-template>
+            </md-chips>
+            <div class="ng-hide attendees" ng-show="editor.showAttendeesEditor">
+              <var:component className="UIxAttendeesEditor" />
+            </div>
           </div>
         </div>
         <div class="sg-form-section">
