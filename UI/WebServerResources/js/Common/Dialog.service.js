@@ -50,6 +50,7 @@
    */
   Dialog.prompt = function(title, label, options) {
     var o = options || {},
+        id = title.asCSSIdentifier(),
         d = this.$q.defer();
 
     this.$modal.show({
@@ -58,23 +59,25 @@
       escapeToClose: true,
       template: [
         '<md-dialog flex="50" flex-xs="90">',
-        '  <md-dialog-content class="md-dialog-content" layout="column">',
-        '    <h2 class="md-title" ng-bind="title"></h2>',
-        '    <md-input-container>',
-        '      <label>' + label + '</label>',
-        '      <input type="' + (o.inputType || 'text') + '"',
-        '             aria-label="' + title + '"',
-        '             ng-model="name" md-autofocus="true" required />',
-        '    </md-input-container>',
-        '  </md-dialog-content>',
+        '  <form name="' + id + 'Form" ng-submit="ok()">',
+        '    <md-dialog-content class="md-dialog-content" layout="column">',
+        '      <h2 class="md-title" ng-bind="title"></h2>',
+        '      <md-input-container>',
+        '        <label>' + label + '</label>',
+        '        <input type="' + (o.inputType || 'text') + '"',
+        '               aria-label="' + title + '"',
+        '               ng-model="name" md-autofocus="true" required />',
+        '      </md-input-container>',
+        '    </md-dialog-content>',
         '    <md-dialog-actions>',
         '      <md-button ng-click="cancel()">',
         '        ' + l('Cancel'),
         '      </md-button>',
-        '      <md-button class="md-primary" ng-click="ok()" ng-disabled="!name.length">',
+        '      <md-button type="submit" class="md-primary" ng-disabled="' + id + 'Form.$invalid">',
         '        ' + l('OK'),
         '      </md-button>',
         '    </md-dialog-actions>',
+        '  </form>',
         '</md-dialog>'
       ].join(''),
       controller: PromptDialogController
