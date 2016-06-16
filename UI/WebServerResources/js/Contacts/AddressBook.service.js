@@ -122,7 +122,9 @@
       // Add new cards matching the search query
       _.forEach(results, function(data, index) {
         if (_.isUndefined(_.find(AddressBook.$cards, _.bind(compareIds, data)))) {
-          var card = new AddressBook.$Card(data, search);
+          var card = new AddressBook.$Card(_.mapKeys(data, function(value, key) {
+            return key.toLowerCase();
+          }), search);
           AddressBook.$cards.splice(index, 0, card);
         }
       });

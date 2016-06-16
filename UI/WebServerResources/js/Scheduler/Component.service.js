@@ -832,7 +832,7 @@
   Component.prototype.addAttendee = function(card) {
     var _this = this, attendee, list, url, params;
     if (card) {
-      if (card.$isList() && card.isGroup !== 1) {
+      if (card.$isList({expandable: true})) {
         // Decompose list members
         list = Component.$Card.$find(card.container, card.c_name);
         list.$id().then(function(listId) {
