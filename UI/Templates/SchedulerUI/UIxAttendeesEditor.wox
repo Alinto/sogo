@@ -29,15 +29,18 @@
                    ng-click="editor.removeAttendee(currentAttendee)">
           <md-icon>close</md-icon>
         </md-button>
+        <md-divider><!-- divider --></md-divider>
       </md-list-item>
     </md-list>
     <!-- freebusy -->
     <md-list class="day"
              ng-repeat="day in editor.attendeesEditor.days">
-      <md-list-item layout="column" layout-align="end start">
-        <div>{{day.stringWithSeparator}}</div>
-        <div class="hours" layout="row" layout-align="space-between center" layout-fill="layout-fill">
-          <div class="hour" ng-repeat="hour in ::editor.attendeesEditor.hours">{{hour}}</div>
+      <md-list-item layout-align="start end">
+        <div layout="column" layout-align="end start">
+          <div>{{day.stringWithSeparator}}</div>
+          <div class="hours" layout="row" layout-align="space-between center">
+            <div class="hour" ng-repeat="hour in ::editor.attendeesEditor.hours">{{hour}}</div>
+          </div>
         </div>
       </md-list-item>
       <md-list-item ng-repeat="currentAttendee in editor.component.attendees track by currentAttendee.email">

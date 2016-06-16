@@ -253,7 +253,7 @@
           </div>
           <!-- md-contact-chips don't support "readonly", so we build them using md-chips
                in readonly mode and a template similar to the one of md-contact-chips -->
-          <md-chips class="md-contact-chips sg-readonly"
+          <md-chips class="ng-hide md-contact-chips sg-readonly attendees-chips"
                     ng-model="editor.component.attendees"
                     ng-hide="editor.showAttendeesEditor"
                     readonly="true">
@@ -302,7 +302,7 @@
       <md-dialog-content class="md-default-theme md-bg md-warn md-padding sg-dialog-message ng-hide"
                          ng-show="editor.attendeeConflictError.conflicts">
         <div layout="row">
-          <div class="md-flex"><var:string label:value="A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"/></div>
+          <div class="md-flex sg-padded--bottom"><var:string label:value="A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"/></div>
           <md-button class="md-icon-button" ng-click="editor.attendeeConflictError = false">
             <md-icon label:aria-label="Close">close</md-icon>
           </md-button>

@@ -276,11 +276,13 @@
         // User pressed "Enter" in search field, adding a non-matching card
         if (card.isValidEmail()) {
           vm.component.addAttendee(new Card({ emails: [{ value: card }] }));
+          vm.showAttendeesEditor = true;
           vm.searchText = '';
         }
       }
       else {
         vm.component.addAttendee(card);
+        vm.showAttendeesEditor = true;
       }
     }
 

@@ -590,11 +590,42 @@ $quarter_height: 10px;
   }
 }
 
-/* Attendees Editor */
+.attendees-chips {
+  md-chips-wrap {
+    max-height: ($chip-height * 10); // show a maximum of 10 rows
+    opacity: 1;
+    overflow: auto;
+    transition: $swift-ease-in-out;
+    transition-delay: $swift-ease-in-out-duration;
+  }
+  &.ng-hide {
+    transition-duration: $swift-ease-in-out-duration;
+    md-chips-wrap {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: $swift-ease-in-out;
+      transition-delay: 0s;
+    }
+  }
+}
+
+/* Attendees dialog Editor */
 .attendees {
-  overflow: hidden;
-  overflow-x: auto;
+  max-height: ($list-item-height * 20); // show a maximum of 20 attendees
+  opacity: 1;
+  overflow: auto;
+  transition: $swift-ease-in-out;
+  transition-delay: $swift-ease-in-out-duration;
+  &.ng-hide {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition-delay: 0s;
+  }
+
   md-content {
+    background-color: transparent;
     display: table-row;
   }
   md-list {
@@ -602,7 +633,8 @@ $quarter_height: 10px;
     vertical-align: top;
     padding-top: 0;
     &.day {
-      min-width: 408px;
+      max-width: (16px * 24);
+      width: (16px * 24);
       md-list-item {
         //padding: 0;
         align-items: stretch;
@@ -641,7 +673,7 @@ $quarter_height: 10px;
     min-height: 16px;
     flex-wrap: nowrap;
     flex-grow: 0;
-    flex-basis: 17px; // hour's width + hour's border
+    flex-basis: 16px; // hour's width
     align-items: stretch;
     &.sg-no-freebusy {
       background-color: sg-color($sogoPaper, 200);
