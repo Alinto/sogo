@@ -103,7 +103,10 @@
     this.$Preferences.ready().then(function() {
       if (Calendar.$Preferences.settings.Calendar.FoldersOrder)
         // Save list order
-        Calendar.saveFoldersOrder(_.flatMap(Calendar.$findAll(), 'id'));
+        Calendar.saveFoldersOrder(_.flatMap(Calendar.$findAll(), 'id')).then(function() {
+          // Refresh list of calendars to fetch links associated to new calendar
+          Calendar.$reloadAll();
+        });
     });
   };
 
@@ -147,6 +150,31 @@
     }
 
     return _.union(this.$calendars, this.$subscriptions, this.$webcalendars);
+  };
+
+  /**
+   * @memberof Calendar
+   * @desc Reload the list of known calendars.
+   */
+  Calendar.$reloadAll = function() {
+    var _this = this;
+
+    Calendar.$$resource.fetch('calendarslist').then(function(data) {
+      _.forEach(data.calendars, function(calendarData) {
+        var group, calendar;
+
+        if (calendarData.isWebCalendar)
+          group = _this.$webcalendars;
+        else if (calendarData.isSubscription)
+          group = _this.$subscriptions;
+        else
+          group = _this.$calendars;
+
+        calendar = _.find(group, function(o) { return o.id == calendarData.id; });
+        if (calendar)
+          calendar.init(calendarData);
+      });
+    });
   };
 
   /**
