@@ -513,9 +513,10 @@ static NSString *inboxFolderName = @"INBOX";
               // Parent folder is the "Other users" folder; translate the user's mailbox name
               // to the full name of the person
               userManager = [SOGoUserManager sharedUserManager];
-              fullName = [userManager getCNForUID: currentFolderName];
-              if (fullName)
+              if ((fullName = [userManager getCNForUID: currentFolderName]) && [fullName length])
                 currentFolderName = fullName;
+	      else if ((fullName = [userManager getEmailForUID: currentFolderName]) && [fullName length])
+		currentFolderName = fullName;
             }
           else if (isOtherUsersFolder)
             {
