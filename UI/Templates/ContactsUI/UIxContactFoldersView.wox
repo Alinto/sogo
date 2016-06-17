@@ -50,7 +50,10 @@
                           ui-sref-active="md-default-theme md-background md-bg md-hue-1">
               <md-icon>contacts</md-icon>
               <p class="sg-item-name"
-                 ng-show="app.editMode!=folder.id">{{folder.name}}</p>
+                 ng-show="app.editMode!=folder.id">
+		{{folder.name}}
+		<md-tooltip md-delay="2000">{{folder.name}}</md-tooltip>
+	      </p>
               <md-input-container class="md-flex"
                                   ng-show="app.editMode == folder.id">
                 <input class="sg-item-name" type="text"
@@ -133,7 +136,10 @@
                           ui-sref-active="md-default-theme md-background md-bg md-hue-1">
               <md-icon>contacts</md-icon>
               <p class="sg-item-name"
-                 ng-show="editMode!=folder.id">{{folder.name}}</p>
+                 ng-show="app.editMode!=folder.id">
+		{{folder.name}}
+		<md-tooltip md-delay="2000">{{folder.name}}</md-tooltip>
+	      </p>
               <md-input-container class="md-flex"
                                   ng-show="app.editMode==folder.id">
                 <input class="sg-item-name" type="text"
@@ -184,7 +190,10 @@
                           ui-sref="app.addressbook({addressbookId: folder.id})"
                           ui-sref-active="md-default-theme md-background md-bg md-hue-1">
               <md-icon>public</md-icon>
-              <p class="sg-item-name">{{folder.name}}</p>
+              <p class="sg-item-name">
+		{{folder.name}}
+		<md-tooltip md-delay="2000">{{folder.name}}</md-tooltip>
+	      </p>
             </md-list-item>
           </md-list>
         </section>

@@ -63,6 +63,7 @@
                  ng-dblclick="app.editFolder(calendar)"
                  ng-show="app.editMode != calendar.id">
                 {{calendar.name}}
+		<md-tooltip md-delay="2000">{{calendar.name}}</md-tooltip>
                 <span class="sg-counter-badge" ng-show="calendar.activeTasks">{{calendar.activeTasks}}</span>
               </p>
               <md-input-container class="md-flex"
@@ -157,11 +158,13 @@
                            ng-class="calendar.getClassName('checkbox')"
                            ng-true-value="1"
                            ng-false-value="0"
-                           label:aria-label="Enable"><!-- enable --></md-checkbox>
+                           label:aria-label="Enable"><!-- enable -->
+	      </md-checkbox>
               <p class="sg-item-name"
                  ng-dblclick="app.editFolder(calendar)"
                  ng-show="app.editMode != calendar.id">
                 {{calendar.name}}
+		<md-tooltip md-delay="2000">{{calendar.name}}</md-tooltip>
                 <span class="sg-counter-badge" ng-show="calendar.activeTasks">{{calendar.activeTasks}}</span>
               </p>
               <md-input-container class="md-flex"
@@ -240,6 +243,7 @@
                   <md-icon class="md-warn">warning</md-icon>
                   <md-tooltip>{{ calendar.$error }}</md-tooltip>
                 </span>
+		<md-tooltip md-delay="2000">{{calendar.name}}</md-tooltip>
                 {{calendar.name}}
               </p>
               <md-input-container class="md-flex"
