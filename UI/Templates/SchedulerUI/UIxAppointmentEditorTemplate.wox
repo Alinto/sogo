@@ -263,7 +263,7 @@
                   <sg-avatar-image sg-email="$chip.email" size="32"><!-- avatar --></sg-avatar-image>
                 </div>
                 <div class="md-contact-name">{{$chip.name || $chip.email}}</div>
-                <md-icon ng-class="'icon-' + $chip.status"><!-- partstat --></md-icon>
+                <md-icon ng-class="'icon-' + $chip.partstat"><!-- partstat --></md-icon>
                 <md-icon class="sg-chip-remove"
                          label:aria-label="Delete"
                          ng-click="editor.removeAttendee($chip)">close</md-icon>

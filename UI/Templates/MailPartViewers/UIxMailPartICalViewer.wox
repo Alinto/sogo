@@ -261,7 +261,7 @@
                   <sg-avatar-image sg-email="$chip.email" size="32"><!-- avatar --></sg-avatar-image>
                 </div>
                 <div class="md-contact-name">{{$chip.name}}</div>
-                <md-icon ng-class="'icon-' + $chip.status"><!-- partstat --></md-icon>
+                <md-icon ng-class="'icon-' + $chip.partstat"><!-- partstat --></md-icon>
               </md-chip-template>
             </md-chips>
           </div>

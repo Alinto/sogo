@@ -548,7 +548,7 @@
       if (![[person delegatedTo] length])
         [a addObject: [NSDictionary dictionaryWithObjectsAndKeys: ([person cnWithoutQuotes] ? [person cnWithoutQuotes] : [person rfc822Email]), @"name",
                                     [person rfc822Email], @"email",
-                                    [[person partStatWithDefault] lowercaseString], @"status", nil]];
+                                    [[person partStatWithDefault] lowercaseString], @"partstat", nil]];
     }
 
   [d setObject: a  forKey: @"participants"];

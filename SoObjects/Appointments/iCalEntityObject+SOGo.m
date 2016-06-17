@@ -158,7 +158,7 @@ NSNumber *iCalDistantFutureNumber = nil;
                 }
             }
         }
-      [attendeeData setObject: [[currentAttendee partStat] lowercaseString] forKey: @"status"];
+      [attendeeData setObject: [[currentAttendee partStat] lowercaseString] forKey: @"partstat"];
       [attendeeData setObject: [[currentAttendee role] lowercaseString] forKey: @"role"];
       if ([[currentAttendee delegatedTo] length])
 	[attendeeData setObject: [[currentAttendee delegatedTo] rfc822Email] forKey: @"delegatedTo"];
@@ -232,7 +232,9 @@ NSNumber *iCalDistantFutureNumber = nil;
                   [currentAttendee setCn: [currentData objectForKey: @"name"]];
                   [currentAttendee setEmail: currentEmail];
                 }
-              [currentAttendee
+              if (!currentAttendee || ![[currentAttendee role] isEqualToString: role])
+                // Set the RSVP only if this is a new attendee or the role has changed
+                [currentAttendee
                     setRsvp: ([role isEqualToString: @"NON-PARTICIPANT"]
                               ? @"FALSE"
                               : @"TRUE")];

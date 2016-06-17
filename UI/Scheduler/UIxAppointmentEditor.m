@@ -409,7 +409,7 @@
  * @apiParam {String} [attendees.name]        Attendee's name
  * @apiParam {String} attendees.email         Attendee's email address
  * @apiParam {String} [attendees.uid]         System user ID
- * @apiParam {String} attendees.status        Attendee's participation status
+ * @apiParam {String} attendees.partstat      Attendee's participation status
  * @apiParam {String} [attendees.role]        Either CHAIR, REQ-PARTICIPANT, OPT-PARTICIPANT, or NON-PARTICIPANT
  * @apiParam {String} [attendees.delegatedTo] User that the original request was delegated to
  * @apiParam {String} [attendees.delegatedFrom] User the request was delegated from
@@ -617,7 +617,7 @@
  * @apiSuccess (Success 200) {String} [attendees.name]        Attendee's name
  * @apiSuccess (Success 200) {String} attendees.email         Attendee's email address
  * @apiSuccess (Success 200) {String} [attendees.uid]         System user ID
- * @apiSuccess (Success 200) {String} attendees.status        Attendee's participation status
+ * @apiSuccess (Success 200) {String} attendees.partstat      Attendee's participation status
  * @apiSuccess (Success 200) {String} [attendees.role]        Either CHAIR, REQ-PARTICIPANT, OPT-PARTICIPANT, or NON-PARTICIPANT
  * @apiSuccess (Success 200) {String} [attendees.delegatedTo] User that the original request was delegated to
  * @apiSuccess (Success 200) {String} [attendees.delegatedFrom] User the request was delegated from

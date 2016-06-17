@@ -179,7 +179,7 @@
                     <a href="#"
                        ng-click="editor.newMessageWithRecipient($event, $chip.name, $chip.email)">{{$chip.name}}</a>
                   </div>
-                  <md-icon ng-class="'icon-' + $chip.status"><!-- partstat --></md-icon>
+                  <md-icon ng-class="'icon-' + $chip.partstat"><!-- partstat --></md-icon>
                 </md-chip-template>
               </md-chips>
             </div>
