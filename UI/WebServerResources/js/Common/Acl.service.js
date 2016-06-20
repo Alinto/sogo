@@ -96,7 +96,7 @@
       acls.then(function() {
         user.wasSubscribed = false;
         user.userClass = user.isGroup ? 'normal-group' : 'normal-user';
-        user.$rights = angular.bind(user, user.$acl, _this.folderId);
+        user.$rights = angular.bind(user, user.$acl, _this.folderId, owner);
         _this.users.push(user);
         deferred.resolve(user);
       }, function(data, status) {
