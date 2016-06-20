@@ -46,10 +46,10 @@
           </md-item-template>
         </md-autocomplete>
       </div>
-      <md-card ng-repeat="user in acl.users | orderBy:['userClass', 'displayName']"
+      <md-card ng-repeat="user in acl.users track by user.uid | orderBy:['userClass', 'displayName']"
                class="sg-collapsed"
                ng-class="{ 'sg-expanded': user.uid == acl.selectedUid }">
-        <a class="md-flex md-button" ng-click="acl.selectUser(user)">
+        <a class="md-flex md-button" ng-click="acl.selectUser(user, $event)">
           <div layout="row" layout-align="start center">
             <span class="card-picture" ng-switch="user.userClass">
               <div ng-switch-when="normal-user">
@@ -69,7 +69,7 @@
                        ng-hide="user.uid != acl.selectedUid || user.$isSpecial()">
               <md-icon>select_all</md-icon>
             </md-button>
-            <md-button class="md-icon-button md-secondary" type="button"
+            <md-button class="md-icon-button" type="button"
                        ng-click="acl.removeUser(user)"
                        ng-hide="user.uid != acl.selectedUid || user.$isSpecial()">
               <md-icon>delete</md-icon>

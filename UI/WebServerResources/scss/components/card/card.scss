@@ -59,6 +59,17 @@ md-card {
         padding-top: 0;
       }
     }
+    // Animate item removal
+    &.ng-leave {
+      transform: translateX(0%);
+      transition-duration: 500ms;
+      &.ng-leave-active {
+        .md-button:not([disabled]):hover {
+          background-color: transparent;
+        }
+        transform: translateX(-70%);
+      }
+    }
   }
 
   &.sg-collapsed {

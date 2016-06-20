@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  AdministrationAclController.$inject = ['$animate', '$state', '$mdMedia', '$mdToast', 'stateUser', 'stateFolder', 'User'];
-  function AdministrationAclController($animate, $state, $mdMedia, $mdToast, stateUser, stateFolder, User) {
+  AdministrationAclController.$inject = ['$timeout', '$state', '$mdMedia', '$mdToast', 'stateUser', 'stateFolder', 'User'];
+  function AdministrationAclController($timeout, $state, $mdMedia, $mdToast, stateUser, stateFolder, User) {
     var vm = this;
 
     vm.user = stateUser;
@@ -17,6 +17,7 @@
     vm.selectedUser = null;
     vm.selectedUid = null;
     vm.selectUser = selectUser;
+    vm.selectAllRights = selectAllRights;
     vm.removeUser = removeUser;
     vm.getTemplate = getTemplate;
     vm.close = close;
@@ -38,7 +39,13 @@
       return '../' + stateFolder.owner + '/Calendar/' + stateFolder.id + '/UIxCalUserRightsEditor';
     }
 
-    function selectUser(user) {
+    function selectAllRights(user) {
+      stateFolder.$acl.$selectAllRights(user);
+    }
+
+    function selectUser(user, $event) {
+      if ($event && $event.target.parentNode.classList.contains('md-secondary'))
+        return false;
       if (vm.selectedUid == user.uid) {
         vm.selectedUid = null;
       }
@@ -54,18 +61,19 @@
     }
 
     function removeUser(user) {
-      stateFolder.$acl.$removeUser(user.uid, stateFolder.owner).catch(function(data, status) {
-        Dialog.alert(l('Warning'), l('An error occured please try again.'));
-      });
+      $timeout(function() {
+        stateFolder.$acl.$removeUser(user.uid, stateFolder.owner);
+      }, 500); // wait for CSS transition to complete (see card.scss)
     }
 
     function addUser(data) {
       if (data) {
-        stateFolder.$acl.$addUser(data, stateFolder.owner).then(function() {
+        stateFolder.$acl.$addUser(data, stateFolder.owner).then(function(user) {
           vm.userToAdd = '';
           vm.searchText = '';
-        }, function(error) {
-          Dialog.alert(l('Warning'), error);
+          vm.selectedUid = null;
+          if (user)
+            selectUser(user);
         });
       }
     }
@@ -88,8 +96,6 @@
         // Close acls on small devices
         if ($mdMedia('xs'))
           close();
-      }, function(data, status) {
-        Dialog.alert(l('Warning'), l('An error occured please try again.'));
       });
     }
   }
