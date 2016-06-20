@@ -6,4 +6,5 @@
 	delaycompress
 	notifempty
 	copytruncate
+	su sogo sogo
 }
