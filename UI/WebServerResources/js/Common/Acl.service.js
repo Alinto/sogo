@@ -137,7 +137,8 @@
    */
   Acl.prototype.$selectAllRights = function(user) {
       _.forEach(user.rights, function(value, right) {
-        user.rights[right] = 1;
+        if (angular.isNumber(user.rights[right]))
+          user.rights[right] = 1;
     });
   };
 
