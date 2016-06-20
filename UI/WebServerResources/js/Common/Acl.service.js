@@ -131,6 +131,17 @@
   };
 
   /**
+   * @function $selectAllRights
+   * @memberof Acl.prototype
+   * @desc Select all rights of an user
+   */
+  Acl.prototype.$selectAllRights = function(user) {
+      _.forEach(user.rights, function(value, right) {
+        user.rights[right] = 1;
+    });
+  };
+
+  /**
    * @function $resetUsersRights
    * @memberof Acl.prototype
    * @desc Restore initial rights of all users.

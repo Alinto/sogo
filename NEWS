@@ -29,6 +29,7 @@ Bug fixes
  - [web] if cn isn't found for shared mailboxes, use email address (#3733)
  - [web] fixed handling of attendees when updating an event
  - [web] show tooltips over long calendar/ab names (#232)
+ - [web] one-click option to give all permissions for user (#1637)
 
 3.1.2 (2016-06-06)
 ------------------

@@ -21,6 +21,7 @@
     vm.saveModal = saveModal;
     vm.confirmChange = confirmChange;
     vm.removeUser = removeUser;
+    vm.selectAllRights = selectAllRights;
     vm.addUser = addUser;
     vm.selectUser = selectUser;
     vm.confirmation = { showing: false,
@@ -53,6 +54,10 @@
 
     function removeUser(user) {
       folder.$acl.$removeUser(user.uid);
+    }
+
+    function selectAllRights(user) {
+      folder.$acl.$selectAllRights(user);
     }
 
     function addUser(data) {
