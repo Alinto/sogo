@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc.5-master-42833aa
+ * v1.1.0-rc4-master-f9738f5
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -10,7 +10,7 @@
 (function(){
 "use strict";
 
-angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.layout","material.core.theming.palette","material.core.theming","material.core.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.colors","material.components.content","material.components.dialog","material.components.datepicker","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.navBar","material.components.panel","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.showHide","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.virtualRepeat","material.components.whiteframe"]);
+angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.gestures","material.core.layout","material.core.theming.palette","material.core.theming","material.core.animate","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.chips","material.components.colors","material.components.content","material.components.datepicker","material.components.dialog","material.components.divider","material.components.fabActions","material.components.fabShared","material.components.fabSpeedDial","material.components.fabToolbar","material.components.fabTrigger","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.menu","material.components.menuBar","material.components.navBar","material.components.panel","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.showHide","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.virtualRepeat","material.components.whiteframe"]);
 })();
 (function(){
 "use strict";
@@ -298,32 +298,11 @@ angular.module('material.core')
  * Factory function that creates the grab-bag $mdConstant service.
  * @ngInject
  */
-function MdConstantFactory($sniffer, $window, $document) {
+function MdConstantFactory($sniffer) {
 
-  var vendorPrefix = $sniffer.vendorPrefix;
-  var isWebkit = /webkit/i.test(vendorPrefix);
-  var SPECIAL_CHARS_REGEXP = /([:\-_]+(.))/g;
-  var prefixTestEl = document.createElement('div');
-
+  var webkit = /webkit/i.test($sniffer.vendorPrefix);
   function vendorProperty(name) {
-    // Add a dash between the prefix and name, to be able to transform the string into camelcase.
-    var prefixedName = vendorPrefix + '-' + name;
-    var ucPrefix = camelCase(prefixedName);
-    var lcPrefix = ucPrefix.charAt(0).toLowerCase() + ucPrefix.substring(1);
-
-    return hasStyleProperty(name)     ? name     :       // The current browser supports the un-prefixed property
-           hasStyleProperty(ucPrefix) ? ucPrefix :       // The current browser only supports the prefixed property.
-           hasStyleProperty(lcPrefix) ? lcPrefix : name; // Some browsers are only supporting the prefix in lowercase.
-  }
-
-  function hasStyleProperty(property) {
-    return angular.isDefined(prefixTestEl.style[property]);
-  }
-
-  function camelCase(input) {
-    return input.replace(SPECIAL_CHARS_REGEXP, function(matches, separator, letter, offset) {
-      return offset ? letter.toUpperCase() : letter;
-    });
+    return webkit ?  ('webkit' + name.charAt(0).toUpperCase() + name.substring(1)) : name;
   }
 
   return {
@@ -347,8 +326,8 @@ function MdConstantFactory($sniffer, $window, $document) {
     },
     CSS: {
       /* Constants */
-      TRANSITIONEND: 'transitionend' + (isWebkit ? ' webkitTransitionEnd' : ''),
-      ANIMATIONEND: 'animationend' + (isWebkit ? ' webkitAnimationEnd' : ''),
+      TRANSITIONEND: 'transitionend' + (webkit ? ' webkitTransitionEnd' : ''),
+      ANIMATIONEND: 'animationend' + (webkit ? ' webkitAnimationEnd' : ''),
 
       TRANSFORM: vendorProperty('transform'),
       TRANSFORM_ORIGIN: vendorProperty('transformOrigin'),
@@ -370,17 +349,15 @@ function MdConstantFactory($sniffer, $window, $document) {
      *
      */
     MEDIA: {
-      'xs'        : '(max-width: 599px)'                         ,
-      'gt-xs'     : '(min-width: 600px)'                         ,
-      'sm'        : '(min-width: 600px) and (max-width: 959px)'  ,
-      'gt-sm'     : '(min-width: 960px)'                         ,
-      'md'        : '(min-width: 960px) and (max-width: 1279px)' ,
-      'gt-md'     : '(min-width: 1280px)'                        ,
-      'lg'        : '(min-width: 1280px) and (max-width: 1919px)',
-      'gt-lg'     : '(min-width: 1920px)'                        ,
-      'xl'        : '(min-width: 1920px)'                        ,
-      'landscape' : '(orientation: landscape)'                   ,
-      'portrait'  : '(orientation: portrait)'                    ,
+      'xs'    : '(max-width: 599px)'                         ,
+      'gt-xs' : '(min-width: 600px)'                         ,
+      'sm'    : '(min-width: 600px) and (max-width: 959px)'  ,
+      'gt-sm' : '(min-width: 960px)'                         ,
+      'md'    : '(min-width: 960px) and (max-width: 1279px)' ,
+      'gt-md' : '(min-width: 1280px)'                        ,
+      'lg'    : '(min-width: 1280px) and (max-width: 1919px)',
+      'gt-lg' : '(min-width: 1920px)'                        ,
+      'xl'    : '(min-width: 1920px)'                        ,
       'print' : 'print'
     },
     MEDIA_PRIORITY: [
@@ -393,13 +370,11 @@ function MdConstantFactory($sniffer, $window, $document) {
       'sm',
       'gt-xs',
       'xs',
-      'landscape',
-      'portrait',
       'print'
     ]
   };
 }
-MdConstantFactory.$inject = ["$sniffer", "$window", "$document"];
+MdConstantFactory.$inject = ["$sniffer"];
 
 })();
 (function(){
@@ -697,14 +672,6 @@ angular.module('material.core')
  *      <td>(min-width: 1920px)</td>
  *    </tr>
  *    <tr>
- *      <td>landscape</td>
- *      <td>landscape</td>
- *    </tr>
- *    <tr>
- *      <td>portrait</td>
- *      <td>portrait</td>
- *    </tr>
- *    <tr>
  *      <td>print</td>
  *      <td>print</td>
  *    </tr>
@@ -837,73 +804,6 @@ mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];
 (function(){
 "use strict";
 
-angular
-  .module('material.core')
-  .config( ["$provide", function($provide) {
-    $provide.decorator('$mdUtil', ['$delegate', function ($delegate) {
-
-      // Inject the prefixer into our original $mdUtil service.
-      $delegate.prefixer = MdPrefixer;
-
-      return $delegate;
-    }]);
-  }]);
-
-function MdPrefixer(initialAttributes, buildSelector) {
-  var PREFIXES = ['data', 'x'];
-
-  if (initialAttributes) {
-    // The prefixer also accepts attributes as a parameter, and immediately builds a list or selector for
-    // the specified attributes.
-    return buildSelector ? _buildSelector(initialAttributes) : _buildList(initialAttributes);
-  }
-
-  return {
-    buildList: _buildList,
-    buildSelector: _buildSelector,
-    hasAttribute: _hasAttribute
-  };
-
-  function _buildList(attributes) {
-    attributes = angular.isArray(attributes) ? attributes : [attributes];
-
-    attributes.forEach(function(item) {
-      PREFIXES.forEach(function(prefix) {
-        attributes.push(prefix + '-' + item);
-      });
-    });
-
-    return attributes;
-  }
-
-  function _buildSelector(attributes) {
-    attributes = angular.isArray(attributes) ? attributes : [attributes];
-
-    return _buildList(attributes)
-      .map(function (item) {
-        return '[' + item + ']'
-      })
-      .join(',');
-  }
-
-  function _hasAttribute(element, attribute) {
-    element = element[0] || element;
-
-    var prefixedAttrs = _buildList(attribute);
-
-    for (var i = 0; i < prefixedAttrs.length; i++) {
-      if (element.hasAttribute(prefixedAttrs[i])) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-}
-})();
-(function(){
-"use strict";
-
 /*
  * This var has to be outside the angular factory, otherwise when
  * there are multiple material apps on the same page, each app
@@ -949,20 +849,6 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     return hasValue;
   };
 
-  function validateCssValue(value) {
-    return !value       ? '0'   :
-      hasPx(value) || hasPercent(value) ? value : value + 'px';
-  }
-
-  function hasPx(value) {
-    return String(value).indexOf('px') > -1;
-  }
-
-  function hasPercent(value) {
-    return String(value).indexOf('%') > -1;
-
-  }
-
   var $mdUtil = {
     dom: {},
     now: window.performance ?
@@ -981,29 +867,22 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
       if ( arguments.length == 0 ) return ltr ? 'ltr' : 'rtl';
 
       // If mutator
-      var elem = angular.element(element);
-
       if ( ltr && angular.isDefined(lValue)) {
-        elem.css(property, validateCssValue(lValue));
+        angular.element(element).css(property, validate(lValue));
       }
       else if ( !ltr && angular.isDefined(rValue)) {
-        elem.css(property, validateCssValue(rValue) );
+        angular.element(element).css(property, validate(rValue) );
       }
-    },
 
-    bidiProperty: function (element, lProperty, rProperty, value) {
-      var ltr = !($document[0].dir == 'rtl' || $document[0].body.dir == 'rtl');
+        // Internal utils
 
-      var elem = angular.element(element);
-
-      if ( ltr && angular.isDefined(lProperty)) {
-        elem.css(lProperty, validateCssValue(value));
-        elem.css(rProperty, '');
-      }
-      else if ( !ltr && angular.isDefined(rProperty)) {
-        elem.css(rProperty, validateCssValue(value) );
-        elem.css(lProperty, '');
-      }
+        function validate(value) {
+          return !value       ? '0'   :
+                 hasPx(value) ? value : value + 'px';
+        }
+        function hasPx(value) {
+          return String(value).indexOf('px') > -1;
+        }
     },
 
     clientRect: function(element, offsetParent, isOffsetRect) {
@@ -1061,14 +940,14 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      * @returns {*}
      */
     findFocusTarget: function(containerEl, attributeVal) {
-      var AUTO_FOCUS = this.prefixer('md-autofocus', true);
+      var AUTO_FOCUS = '[md-autofocus]';
       var elToFocus;
 
       elToFocus = scanForFocusable(containerEl, attributeVal || AUTO_FOCUS);
 
       if ( !elToFocus && attributeVal != AUTO_FOCUS) {
         // Scan for deprecated attribute
-        elToFocus = scanForFocusable(containerEl, this.prefixer('md-auto-focus', true));
+        elToFocus = scanForFocusable(containerEl, '[md-auto-focus]');
 
         if ( !elToFocus ) {
           // Scan for fallback to 'universal' API
@@ -1125,10 +1004,11 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
       // Creates a virtual scrolling mask to absorb touchmove, keyboard, scrollbar clicking, and wheel events
       function disableElementScroll(element) {
         element = angular.element(element || body)[0];
+        var zIndex = 50;
         var scrollMask = angular.element(
           '<div class="md-scroll-mask">' +
           '  <div class="md-scroll-mask-bar"></div>' +
-          '</div>');
+          '</div>').css('z-index', zIndex);
         element.appendChild(scrollMask[0]);
 
         scrollMask.on('wheel', preventDefault);
@@ -1399,29 +1279,19 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      * getClosest replicates jQuery.closest() to walk up the DOM tree until it finds a matching nodeName
      *
      * @param el Element to start walking the DOM from
-     * @param check Either a string or a function. If a string is passed, it will be evaluated against
-     * each of the parent nodes' tag name. If a function is passed, the loop will call it with each of
-     * the parents and will use the return value to determine whether the node is a match.
+     * @param tagName Tag name to find closest to el, such as 'form'
      * @param onlyParent Only start checking from the parent element, not `el`.
      */
-    getClosest: function getClosest(el, validateWith, onlyParent) {
-      if ( angular.isString(validateWith) ) {
-        var tagName = validateWith.toUpperCase();
-        validateWith = function(el) {
-          return el.nodeName === tagName;
-        };
-      }
-
+    getClosest: function getClosest(el, tagName, onlyParent) {
       if (el instanceof angular.element) el = el[0];
+      tagName = tagName.toUpperCase();
       if (onlyParent) el = el.parentNode;
       if (!el) return null;
-
       do {
-        if (validateWith(el)) {
+        if (el.nodeName === tagName) {
           return el;
         }
       } while (el = el.parentNode);
-
       return null;
     },
 
@@ -1602,34 +1472,6 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     },
 
     /**
-     * Checks if the current browser is natively supporting the `sticky` position.
-     * @returns {string} supported sticky property name
-     */
-    checkStickySupport: function() {
-      var stickyProp;
-      var testEl = angular.element('<div>');
-      $document[0].body.appendChild(testEl[0]);
-
-      var stickyProps = ['sticky', '-webkit-sticky'];
-      for (var i = 0; i < stickyProps.length; ++i) {
-        testEl.css({
-          position: stickyProps[i], 
-          top: 0, 
-          'z-index': 2
-        });
-        
-        if (testEl.css('position') == stickyProps[i]) {
-          stickyProp = stickyProps[i];
-          break;
-        }
-      }
-      
-      testEl.remove();
-      
-      return stickyProp;
-    },
-
-    /**
      * Parses an attribute value, mostly a string.
      * By default checks for negated values and returns `false´ if present.
      * Negated values are: (native falsy) and negative strings like:
@@ -1642,21 +1484,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
       return value === '' || !!value && (negatedCheck === false || value !== 'false' && value !== '0');
     },
 
-    hasComputedStyle: hasComputedStyle,
-
-    /**
-     * Returns true if the parent form of the element has been submitted.
-     * 
-     * @param element An Angular or HTML5 element.
-     * 
-     * @returns {boolean}
-     */
-    isParentFormSubmitted: function(element) {
-      var parent = $mdUtil.getClosest(element, 'form');
-      var form = parent ? angular.element(parent).controller('form') : null;
-
-      return form ? form.$submitted : false;
-    }
+    hasComputedStyle: hasComputedStyle
   };
 
 
@@ -1696,69 +1524,14 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
 (function(){
 "use strict";
 
-/**
- * @ngdoc module
- * @name material.core.aria
- * @description
- * Aria Expectations for ngMaterial components.
- */
-angular
-  .module('material.core')
-  .provider('$mdAria', MdAriaProvider);
 
-/**
- * @ngdoc service
- * @name $mdAriaProvider
- * @module material.core.aria
- *
- * @description
- *
- * Modify options of the `$mdAria` service, which will be used by most of the Angular Material components.
- **
- *
- * You are able to disable `$mdAria` warnings, by using the following markup.
- * <hljs lang="js">
- *   app.config(function($mdAriaProvider) {
- *     // Globally disables all ARIA warnings.
- *     $mdAriaProvider.disableWarnings();
- *   });
- * </hljs>
- *
- */
-function MdAriaProvider() {
-
-  var self = this;
-
-  /**
-   * Whether we should show ARIA warnings in the console, if labels are missing on the element
-   * By default the warnings are enabled
-   */
-  self.showWarnings = true;
-
-  return {
-    disableWarnings: disableWarnings,
-    $get: ["$$rAF", "$log", "$window", "$interpolate", function($$rAF, $log, $window, $interpolate) {
-      return MdAriaService.apply(self, arguments);
-    }]
-  };
-
-  /**
-   * @ngdoc method
-   * @name $mdAriaProvider#disableWarnings
-   */
-  function disableWarnings() {
-    self.showWarnings = false;
-  }
-}
+angular.module('material.core')
+  .service('$mdAria', AriaService);
 
 /*
  * @ngInject
  */
-function MdAriaService($$rAF, $log, $window, $interpolate) {
-
-  // Load the showWarnings option from the current context and store it inside of a scope variable,
-  // because the context will be probably lost in some function calls.
-  var showWarnings = this.showWarnings;
+function AriaService($$rAF, $log, $window, $interpolate) {
 
   return {
     expect: expect,
@@ -1785,7 +1558,7 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
       defaultValue = angular.isString(defaultValue) ? defaultValue.trim() : '';
       if (defaultValue.length) {
         element.attr(attrName, defaultValue);
-      } else if (showWarnings) {
+      } else {
         $log.warn('ARIA: Attribute "', attrName, '", required for accessibility, is missing on node:', node);
       }
 
@@ -1861,7 +1634,7 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
     return hasAttr;
   }
 }
-MdAriaService.$inject = ["$$rAF", "$log", "$window", "$interpolate"];
+AriaService.$inject = ["$$rAF", "$log", "$window", "$interpolate"];
 
 })();
 (function(){
@@ -2087,7 +1860,6 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
   var userAgent = navigator.userAgent || navigator.vendor || window.opera;
   var isIos = userAgent.match(/ipad|iphone|ipod/i);
   var isAndroid = userAgent.match(/android/i);
-  var touchActionProperty = getTouchAction();
   var hasJQuery =  (typeof window.jQuery !== 'undefined') && (angular.element === window.jQuery);
 
   var self = {
@@ -2123,7 +1895,7 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
 
           return (element.getAttribute('tabindex') != '-1') &&
               !element.hasAttribute('DISABLED') &&
-              (element.hasAttribute('tabindex') || element.hasAttribute('href') || element.isContentEditable ||
+              (element.hasAttribute('tabindex') || element.hasAttribute('href') ||
               (focusableElements.indexOf(element.nodeName) != -1));
         }
       }
@@ -2230,7 +2002,7 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
         // If we don't preventDefault touchmove events here, Android will assume we don't
         // want to listen to anymore touch events. It will start scrolling and stop sending
         // touchmove events.
-        if (!touchActionProperty && ev.type === 'touchmove') ev.preventDefault();
+        ev.preventDefault();
 
         // If the user moves greater than <maxDistance> pixels, stop the hold timer
         // set in onStart
@@ -2249,7 +2021,7 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
      * The drag handler dispatches a drag event if the user holds and moves his finger greater than
      * <minDistance> px in the x or y direction, depending on options.horizontal.
      * The drag will be cancelled if the user moves his finger greater than <minDistance>*<cancelMultiplier> in
-     * the perpendicular direction. Eg if the drag is horizontal and the user moves his finger <minDistance>*<cancelMultiplier>
+     * the perpindicular direction. Eg if the drag is horizontal and the user moves his finger <minDistance>*<cancelMultiplier>
      * pixels vertically, this handler won't consider the move part of a drag.
      */
     .handler('drag', {
@@ -2257,18 +2029,6 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
         minDistance: 6,
         horizontal: true,
         cancelMultiplier: 1.5
-      },
-      onSetup: function(element, options) {
-        if (touchActionProperty) {
-          // We check for horizontal to be false, because otherwise we would overwrite the default opts.
-          this.oldTouchAction = element[0].style[touchActionProperty];
-          element[0].style[touchActionProperty] = options.horizontal === false ? 'pan-y' : 'pan-x';
-        }
-      },
-      onCleanup: function(element) {
-        if (this.oldTouchAction) {
-          element[0].style[touchActionProperty] = this.oldTouchAction;
-        }
       },
       onStart: function (ev) {
         // For drag, require a parent to be registered with $mdGesture.register()
@@ -2280,7 +2040,7 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
         // If we don't preventDefault touchmove events here, Android will assume we don't
         // want to listen to anymore touch events. It will start scrolling and stop sending
         // touchmove events.
-        if (!touchActionProperty && ev.type === 'touchmove') ev.preventDefault();
+        ev.preventDefault();
 
         if (!this.state.dragPointer) {
           if (this.state.options.horizontal) {
@@ -2304,7 +2064,7 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
           this.dispatchDragMove(ev);
         }
       },
-      // Only dispatch dragmove events every frame; any more is unnecessary
+      // Only dispatch dragmove events every frame; any more is unnecessray
       dispatchDragMove: $$rAF.throttle(function (ev) {
         // Make sure the drag didn't stop while waiting for the next frame
         if (this.state.isRunning) {
@@ -2345,19 +2105,6 @@ function MdGesture($$MdGestureHandler, $$rAF, $timeout) {
       }
     });
 
-  function getTouchAction() {
-    var testEl = document.createElement('div');
-    var vendorPrefixes = ['', 'webkit', 'Moz', 'MS', 'ms', 'o'];
-
-    for (var i = 0; i < vendorPrefixes.length; i++) {
-      var prefix = vendorPrefixes[i];
-      var property = prefix ? prefix + 'TouchAction' : 'touchAction';
-      if (angular.isDefined(testEl.style[property])) {
-        return property;
-      }
-    }
-  }
-
 }
 MdGesture.$inject = ["$$MdGestureHandler", "$$rAF", "$timeout"];
 
@@ -2387,8 +2134,6 @@ function MdGestureHandler() {
     dispatchEvent: hasJQuery ?  jQueryDispatchEvent : nativeDispatchEvent,
 
     // These are overridden by the registered handler
-    onSetup: angular.noop,
-    onCleanup: angular.noop,
     onStart: angular.noop,
     onMove: angular.noop,
     onEnd: angular.noop,
@@ -2438,7 +2183,7 @@ function MdGestureHandler() {
       return null;
     },
 
-    // Called from $mdGesture.register when an element registers itself with a handler.
+    // Called from $mdGesture.register when an element reigsters itself with a handler.
     // Store the options the user gave on the DOMElement itself. These options will
     // be retrieved with getNearestParent when the handler starts.
     registerElement: function (element, options) {
@@ -2447,15 +2192,11 @@ function MdGestureHandler() {
       element[0].$mdGesture[this.name] = options || {};
       element.on('$destroy', onDestroy);
 
-      self.onSetup(element, options || {});
-
       return onDestroy;
 
       function onDestroy() {
         delete element[0].$mdGesture[self.name];
         element.off('$destroy', onDestroy);
-
-        self.onCleanup(element, options || {});
       }
     }
   };
@@ -3185,11 +2926,7 @@ function InterimElementProvider() {
          * Use optional autoHided and transition-in effects
          */
         function createAndTransitionIn() {
-          return $q(function(resolve, reject) {
-
-            // Trigger onCompiling callback before the compilation starts.
-            // This is useful, when modifying options, which can be influenced by developers.
-            options.onCompiling && options.onCompiling(options);
+          return $q(function(resolve, reject){
 
             compileElement(options)
               .then(function( compiledData ) {
@@ -5104,74 +4841,8 @@ angular.module('material.core.theming', ['material.core.theming.palette'])
  * @module material.core.theming
  *
  * @description Provider to configure the `$mdTheming` service.
- *
- * ### Default Theme
- * The `$mdThemingProvider` uses by default the following theme configuration:
- *
- * - Primary Palette: `Primary`
- * - Accent Palette: `Pink`
- * - Warn Palette: `Deep-Orange`
- * - Background Palette: `Grey`
- *
- * If you don't want to use the `md-theme` directive on the elements itself, you may want to overwrite
- * the default theme.<br/>
- * This can be done by using the following markup.
- *
- * <hljs lang="js">
- *   myAppModule.config(function($mdThemingProvider) {
- *     $mdThemingProvider
- *       .theme('default')
- *       .primaryPalette('blue')
- *       .accentPalette('teal')
- *       .warnPalette('red')
- *       .backgroundPalette('grey');
- *   });
- * </hljs>
- *
-
- * ### Dynamic Themes
- *
- * By default, if you change a theme at runtime, the `$mdTheming` service will not detect those changes.<br/>
- * If you have an application, which changes its theme on runtime, you have to enable theme watching.
- *
- * <hljs lang="js">
- *   myAppModule.config(function($mdThemingProvider) {
- *     // Enable theme watching.
- *     $mdThemingProvider.alwaysWatchTheme(true);
- *   });
- * </hljs>
- *
- * ### Custom Theme Styles
- *
- * Sometimes you may want to use your own theme styles for some custom components.<br/>
- * You are able to register your own styles by using the following markup.
- *
- * <hljs lang="js">
- *   myAppModule.config(function($mdThemingProvider) {
- *     // Register our custom stylesheet into the theming provider.
- *     $mdThemingProvider.registerStyles(STYLESHEET);
- *   });
- * </hljs>
- *
- * The `registerStyles` method only accepts strings as value, so you're actually not able to load an external
- * stylesheet file into the `$mdThemingProvider`.
- *
- * If it's necessary to load an external stylesheet, we suggest using a bundler, which supports including raw content,
- * like [raw-loader](https://github.com/webpack/raw-loader) for `webpack`.
- *
- * <hljs lang="js">
- *   myAppModule.config(function($mdThemingProvider) {
- *     // Register your custom stylesheet into the theming provider.
- *     $mdThemingProvider.registerStyles(require('../styles/my-component.theme.css'));
- *   });
- * </hljs>
  */
 
-/**
- * @ngdoc method
- * @name $mdThemingProvider#registerStyles
- * @param {string} styles The styles to be appended to Angular Material's built in theme css.
- */
 /**
  * @ngdoc method
  * @name $mdThemingProvider#setNonce
@@ -5297,9 +4968,6 @@ var generateOnDemand = false;
 var nonce = null;
 var disableTheming = false;
 
-// Custom styles registered to be used in the theming of custom components.
-var registeredStyles = [];
-
 function ThemingProvider($mdColorPalette) {
   PALETTES = { };
   var THEMES = { };
@@ -5328,26 +4996,18 @@ function ThemingProvider($mdColorPalette) {
       disableTheming = true;
     },
 
-    registerStyles: function(styles) {
-      registeredStyles.push(styles);
-    },
-
     setNonce: function(nonceValue) {
       nonce = nonceValue;
     },
-
     setDefaultTheme: function(theme) {
       defaultTheme = theme;
     },
-
     alwaysWatchTheme: function(alwaysWatch) {
       alwaysWatchTheme = alwaysWatch;
     },
-
     generateThemesOnDemand: function(onDemand) {
       generateOnDemand = onDemand;
     },
-
     $get: ThemingService,
     _LIGHT_DEFAULT_HUES: LIGHT_DEFAULT_HUES,
     _DARK_DEFAULT_HUES: DARK_DEFAULT_HUES,
@@ -5699,8 +5359,6 @@ function generateAllThemes($injector, $mdTheming) {
   var head = document.head;
   var firstChild = head ? head.firstElementChild : null;
   var themeCss = !disableTheming && $injector.has('$MD_THEME_CSS') ? $injector.get('$MD_THEME_CSS') : '';
-  // Append our custom registered styles to the theme stylesheet.
-  themeCss += registeredStyles.join('');
 
   if ( !firstChild ) return;
   if (themeCss.length === 0) return; // no rules, so no point in running this expensive task
@@ -6078,9 +5736,6 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
               break;
             case 'transformOrigin':
               convertToVendor(key, $mdConstant.CSS.TRANSFORM_ORIGIN, value);
-              break;
-            case 'font-size':
-              css['font-size'] = value; // font sizes aren't always in px
               break;
           }
         }
@@ -6874,7 +6529,7 @@ function MdBottomSheetProvider($$interimElementProvider) {
           var focusable = $mdUtil.findFocusTarget(element) || angular.element(
             element[0].querySelector('button') ||
             element[0].querySelector('a') ||
-            element[0].querySelector($mdUtil.prefixer('ng-click', true))
+            element[0].querySelector('[ng-click]')
           ) || backdrop;
 
           if (options.escapeToClose) {
@@ -7018,30 +6673,8 @@ MdAnchorDirective.$inject = ["$mdTheming"];
  * the FAB button background is filled with the accent color [by default]. The primary color palette may be used with
  * the `md-primary` class.
  *
- * Developers can also change the color palette of the button, by using the following classes
- * - `md-primary`
- * - `md-accent`
- * - `md-warn`
- *
- * See for example
- *
- * <hljs lang="html">
- *   <md-button class="md-primary">Primary Button</md-button>
- * </hljs>
- *
- * Button can be also raised, which means that they will use the current color palette to fill the button.
- *
- * <hljs lang="html">
- *   <md-button class="md-accent md-raised">Raised and Accent Button</md-button>
- * </hljs>
- *
- * It is also possible to disable the focus effect on the button, by using the following markup.
- *
- * <hljs lang="html">
- *   <md-button class="md-no-focus">No Focus Style</md-button>
- * </hljs>
- *
  * @param {boolean=} md-no-ink If present, disable ripple ink effects.
+ * @param {boolean=} md-no-focus-style If present, disable focus style on button
  * @param {expression=} ng-disabled En/Disable based on the expression
  * @param {string=} md-ripple-size Overrides the default ripple size logic. Options: `full`, `partial`, `auto`
  * @param {string=} aria-label Adds alternative text to button for accessibility, useful for icon buttons.
@@ -7125,7 +6758,7 @@ function MdButtonDirective($mdButtonInkRipple, $mdTheming, $mdAria, $timeout) {
       }
     });
 
-    if (!element.hasClass('md-no-focus')) {
+    if (!angular.isDefined(attr.mdNoFocusStyle)) {
       // restrict focus styles to the keyboard
       scope.mouseActive = false;
       element.on('mousedown', function() {
@@ -7143,7 +6776,6 @@ function MdButtonDirective($mdButtonInkRipple, $mdTheming, $mdAria, $timeout) {
         element.removeClass('md-focused');
       });
     }
-
   }
 
 }
@@ -7176,8 +6808,7 @@ angular.module('material.components.card', [
  * @description
  * The `<md-card>` directive is a container element used within `<md-content>` containers.
  *
- * An image included as a direct descendant will fill the card's width. If you want to avoid this,
- * you can add the `md-image-no-fill` class to the parent element. The `<md-card-content>`
+ * An image included as a direct descendant will fill the card's width, while the `<md-card-content>`
  * container will wrap text content and provide padding. An `<md-card-footer>` element can be
  * optionally included to put content flush against the bottom edge of the card.
  *
@@ -7464,9 +7095,7 @@ function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $
       }
 
       function listener(ev) {
-        // skipToggle boolean is used by the switch directive to prevent the click event
-        // when releasing the drag. There will be always a click if releasing the drag over the checkbox
-        if (element[0].hasAttribute('disabled') || scope.skipToggle) {
+        if (element[0].hasAttribute('disabled')) {
           return;
         }
 
@@ -7600,10 +7229,8 @@ angular.module('material.components.chips', [
      */
     function applyThemeColors(element, colorExpression) {
       try {
-        if (colorExpression) {
-          // Assign the calculate RGBA color values directly as inline CSS
-          element.css(interpolateColors(colorExpression));
-        }
+        // Assign the calculate RGBA color values directly as inline CSS
+        element.css(interpolateColors(colorExpression));
       } catch (e) {
         $log.error(e.message);
       }
@@ -7802,17 +7429,7 @@ angular.module('material.components.chips', [
         return function (scope, element, attrs, ctrl) {
           var mdThemeController = ctrl[0];
 
-          var lastColors = {};
-
           var parseColors = function (theme) {
-            if (typeof theme !== 'string') {
-              theme = '';
-            }
-
-            if (!attrs.mdColors) {
-              attrs.mdColors = '{}';
-            }
-
             /**
              * Json.parse() does not work because the keys are not quoted;
              * use $parse to convert to a hash map
@@ -7844,25 +7461,7 @@ angular.module('material.components.chips', [
               });
             }
 
-            cleanElement(colors);
-
             return colors;
-          };
-
-          var cleanElement = function (colors) {
-            if (!angular.equals(colors, lastColors)) {
-              var keys = Object.keys(lastColors);
-
-              if (lastColors.background && !keys['color']) {
-                keys.push('color');
-              }
-
-              keys.forEach(function (key) {
-                element.css(key, '');
-              });
-            }
-
-            lastColors = colors;
           };
 
           /**
@@ -7876,7 +7475,7 @@ angular.module('material.components.chips', [
             });
           }
 
-          scope.$on('$destroy', function () {
+          scope.$on('destroy', function () {
             unregisterChanges();
           });
 
@@ -7958,15 +7557,6 @@ angular.module('material.components.content', [
  * momentum scrolling is disabled. Momentum scrolling can cause flickering issues while scrolling
  * SVG icons and some other components.
  *
- * Additionally, we now also automatically apply a new `md-no-flicker` class to the `<md-content>`
- * which applies a Webkit-specific transform of `translateX(0)` to help reduce the flicker. If you
- * need to disable this for any reason, you can do so globally with the following code, or on a
- * case-by-case basis by ensuring your CSS operator is more specific than our global class.
- *
- * <hljs lang="css">
- *   .md-no-flicker { -webkit-transform: none }
- * </hljs>
- *
  * @usage
  *
  * Add the `[layout-padding]` attribute to make the content padded.
@@ -7976,6 +7566,7 @@ angular.module('material.components.content', [
  *      Lorem ipsum dolor sit amet, ne quod novum mei.
  *  </md-content>
  * </hljs>
+ *
  */
 
 function mdContentDirective($mdTheming) {
@@ -7984,7 +7575,6 @@ function mdContentDirective($mdTheming) {
     controller: ['$scope', '$element', ContentController],
     link: function(scope, element) {
       element.addClass('_md');     // private md component indicator for styling
-      element.addClass('md-no-flicker'); // add a class that helps prevent flickering on iOS devices
 
       $mdTheming(element);
       scope.$broadcast('$mdContentLoaded', element);
@@ -8019,6 +7609,2691 @@ function iosScrollFix(node) {
     }
   });
 }
+
+})();
+(function(){
+"use strict";
+
+(function() {
+  'use strict';
+
+  /**
+   * @ngdoc module
+   * @name material.components.calendar
+   * @description Calendar
+   */
+  angular.module('material.components.datepicker', [
+    'material.core',
+    'material.components.icon',
+    'material.components.virtualRepeat'
+  ]).directive('mdCalendar', calendarDirective);
+
+
+  // POST RELEASE
+  // TODO(jelbourn): Mac Cmd + left / right == Home / End
+  // TODO(jelbourn): Refactor month element creation to use cloneNode (performance).
+  // TODO(jelbourn): Define virtual scrolling constants (compactness) users can override.
+  // TODO(jelbourn): Animated month transition on ng-model change (virtual-repeat)
+  // TODO(jelbourn): Scroll snapping (virtual repeat)
+  // TODO(jelbourn): Remove superfluous row from short months (virtual-repeat)
+  // TODO(jelbourn): Month headers stick to top when scrolling.
+  // TODO(jelbourn): Previous month opacity is lowered when partially scrolled out of view.
+  // TODO(jelbourn): Support md-calendar standalone on a page (as a tabstop w/ aria-live
+  //     announcement and key handling).
+  // Read-only calendar (not just date-picker).
+
+  function calendarDirective() {
+    return {
+      template: function(tElement, tAttr) {
+        // TODO(crisbeto): This is a workaround that allows the calendar to work, without
+        // a datepicker, until issue #8585 gets resolved. It can safely be removed
+        // afterwards. This ensures that the virtual repeater scrolls to the proper place on load by
+        // deferring the execution until the next digest. It's necessary only if the calendar is used
+        // without a datepicker, otherwise it's already wrapped in an ngIf.
+        var extraAttrs = tAttr.hasOwnProperty('ngIf') ? '' : 'ng-if="calendarCtrl.isInitialized"';
+        var template = '' +
+          '<div ng-switch="calendarCtrl.currentView" ' + extraAttrs + '>' +
+            '<md-calendar-year ng-switch-when="year"></md-calendar-year>' +
+            '<md-calendar-month ng-switch-default></md-calendar-month>' +
+          '</div>';
+
+        return template;
+      },
+      scope: {
+        minDate: '=mdMinDate',
+        maxDate: '=mdMaxDate',
+        dateFilter: '=mdDateFilter'
+      },
+      require: ['ngModel', 'mdCalendar'],
+      controller: CalendarCtrl,
+      controllerAs: 'calendarCtrl',
+      bindToController: true,
+      link: function(scope, element, attrs, controllers) {
+        var ngModelCtrl = controllers[0];
+        var mdCalendarCtrl = controllers[1];
+        mdCalendarCtrl.configureNgModel(ngModelCtrl);
+      }
+    };
+  }
+
+  /**
+   * Occasionally the hideVerticalScrollbar method might read an element's
+   * width as 0, because it hasn't been laid out yet. This value will be used
+   * as a fallback, in order to prevent scenarios where the element's width
+   * would otherwise have been set to 0. This value is the "usual" width of a
+   * calendar within a floating calendar pane.
+   */
+  var FALLBACK_WIDTH = 340;
+
+  /** Next identifier for calendar instance. */
+  var nextUniqueId = 0;
+
+  /**
+   * Controller for the mdCalendar component.
+   * @ngInject @constructor
+   */
+  function CalendarCtrl($element, $scope, $$mdDateUtil, $mdUtil,
+    $mdConstant, $mdTheming, $$rAF, $attrs) {
+
+    $mdTheming($element);
+
+    /** @final {!angular.JQLite} */
+    this.$element = $element;
+
+    /** @final {!angular.Scope} */
+    this.$scope = $scope;
+
+    /** @final */
+    this.dateUtil = $$mdDateUtil;
+
+    /** @final */
+    this.$mdUtil = $mdUtil;
+
+    /** @final */
+    this.keyCode = $mdConstant.KEY_CODE;
+
+    /** @final */
+    this.$$rAF = $$rAF;
+
+    /** @final {Date} */
+    this.today = this.dateUtil.createDateAtMidnight();
+
+    /** @type {!angular.NgModelController} */
+    this.ngModelCtrl = null;
+
+    /** @type {String} The currently visible calendar view. */
+    this.currentView = 'month';
+
+    /** @type {String} Class applied to the selected date cell. */
+    this.SELECTED_DATE_CLASS = 'md-calendar-selected-date';
+
+    /** @type {String} Class applied to the cell for today. */
+    this.TODAY_CLASS = 'md-calendar-date-today';
+
+    /** @type {String} Class applied to the focused cell. */
+    this.FOCUSED_DATE_CLASS = 'md-focus';
+
+    /** @final {number} Unique ID for this calendar instance. */
+    this.id = nextUniqueId++;
+
+    /**
+     * The date that is currently focused or showing in the calendar. This will initially be set
+     * to the ng-model value if set, otherwise to today. It will be updated as the user navigates
+     * to other months. The cell corresponding to the displayDate does not necesarily always have
+     * focus in the document (such as for cases when the user is scrolling the calendar).
+     * @type {Date}
+     */
+    this.displayDate = null;
+
+    /**
+     * The selected date. Keep track of this separately from the ng-model value so that we
+     * can know, when the ng-model value changes, what the previous value was before it's updated
+     * in the component's UI.
+     *
+     * @type {Date}
+     */
+    this.selectedDate = null;
+
+    /**
+     * Used to toggle initialize the root element in the next digest.
+     * @type {Boolean}
+     */
+    this.isInitialized = false;
+
+    /**
+     * Cache for the  width of the element without a scrollbar. Used to hide the scrollbar later on
+     * and to avoid extra reflows when switching between views.
+     * @type {Number}
+     */
+    this.width = 0;
+
+    /**
+     * Caches the width of the scrollbar in order to be used when hiding it and to avoid extra reflows.
+     * @type {Number}
+     */
+    this.scrollbarWidth = 0;
+
+    // Unless the user specifies so, the calendar should not be a tab stop.
+    // This is necessary because ngAria might add a tabindex to anything with an ng-model
+    // (based on whether or not the user has turned that particular feature on/off).
+    if (!$attrs.tabindex) {
+      $element.attr('tabindex', '-1');
+    }
+
+    $element.on('keydown', angular.bind(this, this.handleKeyEvent));
+  }
+  CalendarCtrl.$inject = ["$element", "$scope", "$$mdDateUtil", "$mdUtil", "$mdConstant", "$mdTheming", "$$rAF", "$attrs"];
+
+  /**
+   * Sets up the controller's reference to ngModelController.
+   * @param {!angular.NgModelController} ngModelCtrl
+   */
+  CalendarCtrl.prototype.configureNgModel = function(ngModelCtrl) {
+    var self = this;
+
+    self.ngModelCtrl = ngModelCtrl;
+
+    self.$mdUtil.nextTick(function() {
+      self.isInitialized = true;
+    });
+
+    ngModelCtrl.$render = function() {
+      var value = this.$viewValue;
+
+      // Notify the child scopes of any changes.
+      self.$scope.$broadcast('md-calendar-parent-changed', value);
+
+      // Set up the selectedDate if it hasn't been already.
+      if (!self.selectedDate) {
+        self.selectedDate = value;
+      }
+
+      // Also set up the displayDate.
+      if (!self.displayDate) {
+        self.displayDate = self.selectedDate || self.today;
+      }
+    };
+  };
+
+  /**
+   * Sets the ng-model value for the calendar and emits a change event.
+   * @param {Date} date
+   */
+  CalendarCtrl.prototype.setNgModelValue = function(date) {
+    var value = this.dateUtil.createDateAtMidnight(date);
+    this.focus(value);
+    this.$scope.$emit('md-calendar-change', value);
+    this.ngModelCtrl.$setViewValue(value);
+    this.ngModelCtrl.$render();
+    return value;
+  };
+
+  /**
+   * Sets the current view that should be visible in the calendar
+   * @param {string} newView View name to be set.
+   * @param {number|Date} time Date object or a timestamp for the new display date.
+   */
+  CalendarCtrl.prototype.setCurrentView = function(newView, time) {
+    var self = this;
+
+    self.$mdUtil.nextTick(function() {
+      self.currentView = newView;
+
+      if (time) {
+        self.displayDate = angular.isDate(time) ? time : new Date(time);
+      }
+    });
+  };
+
+  /**
+   * Focus the cell corresponding to the given date.
+   * @param {Date} date The date to be focused.
+   */
+  CalendarCtrl.prototype.focus = function(date) {
+    if (this.dateUtil.isValidDate(date)) {
+      var previousFocus = this.$element[0].querySelector('.md-focus');
+      if (previousFocus) {
+        previousFocus.classList.remove(this.FOCUSED_DATE_CLASS);
+      }
+
+      var cellId = this.getDateId(date, this.currentView);
+      var cell = document.getElementById(cellId);
+      if (cell) {
+        cell.classList.add(this.FOCUSED_DATE_CLASS);
+        cell.focus();
+        this.displayDate = date;
+      }
+    } else {
+      var rootElement = this.$element[0].querySelector('[ng-switch]');
+
+      if (rootElement) {
+        rootElement.focus();
+      }
+    }
+  };
+
+  /**
+   * Normalizes the key event into an action name. The action will be broadcast
+   * to the child controllers.
+   * @param {KeyboardEvent} event
+   * @returns {String} The action that should be taken, or null if the key
+   * does not match a calendar shortcut.
+   */
+  CalendarCtrl.prototype.getActionFromKeyEvent = function(event) {
+    var keyCode = this.keyCode;
+
+    switch (event.which) {
+      case keyCode.ENTER: return 'select';
+
+      case keyCode.RIGHT_ARROW: return 'move-right';
+      case keyCode.LEFT_ARROW: return 'move-left';
+
+      // TODO(crisbeto): Might want to reconsider using metaKey, because it maps
+      // to the "Windows" key on PC, which opens the start menu or resizes the browser.
+      case keyCode.DOWN_ARROW: return event.metaKey ? 'move-page-down' : 'move-row-down';
+      case keyCode.UP_ARROW: return event.metaKey ? 'move-page-up' : 'move-row-up';
+
+      case keyCode.PAGE_DOWN: return 'move-page-down';
+      case keyCode.PAGE_UP: return 'move-page-up';
+
+      case keyCode.HOME: return 'start';
+      case keyCode.END: return 'end';
+
+      default: return null;
+    }
+  };
+
+  /**
+   * Handles a key event in the calendar with the appropriate action. The action will either
+   * be to select the focused date or to navigate to focus a new date.
+   * @param {KeyboardEvent} event
+   */
+  CalendarCtrl.prototype.handleKeyEvent = function(event) {
+    var self = this;
+
+    this.$scope.$apply(function() {
+      // Capture escape and emit back up so that a wrapping component
+      // (such as a date-picker) can decide to close.
+      if (event.which == self.keyCode.ESCAPE || event.which == self.keyCode.TAB) {
+        self.$scope.$emit('md-calendar-close');
+
+        if (event.which == self.keyCode.TAB) {
+          event.preventDefault();
+        }
+
+        return;
+      }
+
+      // Broadcast the action that any child controllers should take.
+      var action = self.getActionFromKeyEvent(event);
+      if (action) {
+        event.preventDefault();
+        event.stopPropagation();
+        self.$scope.$broadcast('md-calendar-parent-action', action);
+      }
+    });
+  };
+
+  /**
+   * Hides the vertical scrollbar on the calendar scroller of a child controller by
+   * setting the width on the calendar scroller and the `overflow: hidden` wrapper
+   * around the scroller, and then setting a padding-right on the scroller equal
+   * to the width of the browser's scrollbar.
+   *
+   * This will cause a reflow.
+   *
+   * @param {object} childCtrl The child controller whose scrollbar should be hidden.
+   */
+  CalendarCtrl.prototype.hideVerticalScrollbar = function(childCtrl) {
+    var self = this;
+    var element = childCtrl.$element[0];
+    var scrollMask = element.querySelector('.md-calendar-scroll-mask');
+
+    if (self.width > 0) {
+      setWidth();
+    } else {
+      self.$$rAF(function() {
+        var scroller = childCtrl.calendarScroller;
+
+        self.scrollbarWidth = scroller.offsetWidth - scroller.clientWidth;
+        self.width = element.querySelector('table').offsetWidth;
+        setWidth();
+      });
+    }
+
+    function setWidth() {
+      var width = self.width || FALLBACK_WIDTH;
+      var scrollbarWidth = self.scrollbarWidth;
+      var scroller = childCtrl.calendarScroller;
+
+      scrollMask.style.width = width + 'px';
+      scroller.style.width = (width + scrollbarWidth) + 'px';
+      scroller.style.paddingRight = scrollbarWidth + 'px';
+    }
+  };
+
+  /**
+   * Gets an identifier for a date unique to the calendar instance for internal
+   * purposes. Not to be displayed.
+   * @param {Date} date The date for which the id is being generated
+   * @param {string} namespace Namespace for the id. (month, year etc.)
+   * @returns {string}
+   */
+  CalendarCtrl.prototype.getDateId = function(date, namespace) {
+    if (!namespace) {
+      throw new Error('A namespace for the date id has to be specified.');
+    }
+
+    return [
+      'md',
+      this.id,
+      namespace,
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    ].join('-');
+  };
+})();
+
+})();
+(function(){
+"use strict";
+
+(function() {
+  'use strict';
+
+  angular.module('material.components.datepicker')
+    .directive('mdCalendarMonth', calendarDirective);
+
+  /**
+   * Height of one calendar month tbody. This must be made known to the virtual-repeat and is
+   * subsequently used for scrolling to specific months.
+   */
+  var TBODY_HEIGHT = 265;
+
+  /**
+   * Height of a calendar month with a single row. This is needed to calculate the offset for
+   * rendering an extra month in virtual-repeat that only contains one row.
+   */
+  var TBODY_SINGLE_ROW_HEIGHT = 45;
+
+  /** Private directive that represents a list of months inside the calendar. */
+  function calendarDirective() {
+    return {
+      template:
+        '<table aria-hidden="true" class="md-calendar-day-header"><thead></thead></table>' +
+        '<div class="md-calendar-scroll-mask">' +
+        '<md-virtual-repeat-container class="md-calendar-scroll-container" ' +
+              'md-offset-size="' + (TBODY_SINGLE_ROW_HEIGHT - TBODY_HEIGHT) + '">' +
+            '<table role="grid" tabindex="0" class="md-calendar" aria-readonly="true">' +
+              '<tbody ' +
+                  'md-calendar-month-body ' +
+                  'role="rowgroup" ' +
+                  'md-virtual-repeat="i in monthCtrl.items" ' +
+                  'md-month-offset="$index" ' +
+                  'class="md-calendar-month" ' +
+                  'md-start-index="monthCtrl.getSelectedMonthIndex()" ' +
+                  'md-item-size="' + TBODY_HEIGHT + '"></tbody>' +
+            '</table>' +
+          '</md-virtual-repeat-container>' +
+        '</div>',
+      require: ['^^mdCalendar', 'mdCalendarMonth'],
+      controller: CalendarMonthCtrl,
+      controllerAs: 'monthCtrl',
+      bindToController: true,
+      link: function(scope, element, attrs, controllers) {
+        var calendarCtrl = controllers[0];
+        var monthCtrl = controllers[1];
+        monthCtrl.initialize(calendarCtrl);
+      }
+    };
+  }
+
+  /**
+   * Controller for the calendar month component.
+   * @ngInject @constructor
+   */
+  function CalendarMonthCtrl($element, $scope, $animate, $q,
+    $$mdDateUtil, $mdDateLocale) {
+
+    /** @final {!angular.JQLite} */
+    this.$element = $element;
+
+    /** @final {!angular.Scope} */
+    this.$scope = $scope;
+
+    /** @final {!angular.$animate} */
+    this.$animate = $animate;
+
+    /** @final {!angular.$q} */
+    this.$q = $q;
+
+    /** @final */
+    this.dateUtil = $$mdDateUtil;
+
+    /** @final */
+    this.dateLocale = $mdDateLocale;
+
+    /** @final {HTMLElement} */
+    this.calendarScroller = $element[0].querySelector('.md-virtual-repeat-scroller');
+
+    /** @type {Date} */
+    this.firstRenderableDate = null;
+
+    /** @type {boolean} */
+    this.isInitialized = false;
+
+    /** @type {boolean} */
+    this.isMonthTransitionInProgress = false;
+
+    var self = this;
+
+    /**
+     * Handles a click event on a date cell.
+     * Created here so that every cell can use the same function instance.
+     * @this {HTMLTableCellElement} The cell that was clicked.
+     */
+    this.cellClickHandler = function() {
+      var timestamp = $$mdDateUtil.getTimestampFromNode(this);
+      self.$scope.$apply(function() {
+        self.calendarCtrl.setNgModelValue(timestamp);
+      });
+    };
+
+    /**
+     * Handles click events on the month headers. Switches
+     * the calendar to the year view.
+     * @this {HTMLTableCellElement} The cell that was clicked.
+     */
+    this.headerClickHandler = function() {
+      self.calendarCtrl.setCurrentView('year', $$mdDateUtil.getTimestampFromNode(this));
+    };
+  }
+  CalendarMonthCtrl.$inject = ["$element", "$scope", "$animate", "$q", "$$mdDateUtil", "$mdDateLocale"];
+
+  /*** Initialization ***/
+
+  /**
+   * Initialize the controller by saving a reference to the calendar and
+   * setting up the object that will be iterated by the virtual repeater.
+   */
+  CalendarMonthCtrl.prototype.initialize = function(calendarCtrl) {
+    var minDate = calendarCtrl.minDate;
+    var maxDate = calendarCtrl.maxDate;
+    this.calendarCtrl = calendarCtrl;
+
+    /**
+     * Dummy array-like object for virtual-repeat to iterate over. The length is the total
+     * number of months that can be viewed. This is shorter than ideal because of (potential)
+     * Firefox bug https://bugzilla.mozilla.org/show_bug.cgi?id=1181658.
+     */
+    this.items = { length: 2000 };
+
+    if (maxDate && minDate) {
+      // Limit the number of months if min and max dates are set.
+      var numMonths = this.dateUtil.getMonthDistance(minDate, maxDate) + 1;
+      numMonths = Math.max(numMonths, 1);
+      // Add an additional month as the final dummy month for rendering purposes.
+      numMonths += 1;
+      this.items.length = numMonths;
+    }
+
+    this.firstRenderableDate = this.dateUtil.incrementMonths(calendarCtrl.today, -this.items.length / 2);
+
+    if (minDate && minDate > this.firstRenderableDate) {
+      this.firstRenderableDate = minDate;
+    } else if (maxDate) {
+      // Calculate the difference between the start date and max date.
+      // Subtract 1 because it's an inclusive difference and 1 for the final dummy month.
+      var monthDifference = this.items.length - 2;
+      this.firstRenderableDate = this.dateUtil.incrementMonths(maxDate, -(this.items.length - 2));
+    }
+
+    this.attachScopeListeners();
+
+    // Fire the initial render, since we might have missed it the first time it fired.
+    calendarCtrl.ngModelCtrl && calendarCtrl.ngModelCtrl.$render();
+  };
+
+  /**
+   * Gets the "index" of the currently selected date as it would be in the virtual-repeat.
+   * @returns {number}
+   */
+  CalendarMonthCtrl.prototype.getSelectedMonthIndex = function() {
+    var calendarCtrl = this.calendarCtrl;
+    return this.dateUtil.getMonthDistance(this.firstRenderableDate,
+        calendarCtrl.displayDate || calendarCtrl.selectedDate || calendarCtrl.today);
+  };
+
+  /**
+   * Change the selected date in the calendar (ngModel value has already been changed).
+   * @param {Date} date
+   */
+  CalendarMonthCtrl.prototype.changeSelectedDate = function(date) {
+    var self = this;
+    var calendarCtrl = self.calendarCtrl;
+    var previousSelectedDate = calendarCtrl.selectedDate;
+    calendarCtrl.selectedDate = date;
+
+    this.changeDisplayDate(date).then(function() {
+      var selectedDateClass = calendarCtrl.SELECTED_DATE_CLASS;
+      var namespace = 'month';
+
+      // Remove the selected class from the previously selected date, if any.
+      if (previousSelectedDate) {
+        var prevDateCell = document.getElementById(calendarCtrl.getDateId(previousSelectedDate, namespace));
+        if (prevDateCell) {
+          prevDateCell.classList.remove(selectedDateClass);
+          prevDateCell.setAttribute('aria-selected', 'false');
+        }
+      }
+
+      // Apply the select class to the new selected date if it is set.
+      if (date) {
+        var dateCell = document.getElementById(calendarCtrl.getDateId(date, namespace));
+        if (dateCell) {
+          dateCell.classList.add(selectedDateClass);
+          dateCell.setAttribute('aria-selected', 'true');
+        }
+      }
+    });
+  };
+
+  /**
+   * Change the date that is being shown in the calendar. If the given date is in a different
+   * month, the displayed month will be transitioned.
+   * @param {Date} date
+   */
+  CalendarMonthCtrl.prototype.changeDisplayDate = function(date) {
+    // Initialization is deferred until this function is called because we want to reflect
+    // the starting value of ngModel.
+    if (!this.isInitialized) {
+      this.buildWeekHeader();
+      this.calendarCtrl.hideVerticalScrollbar(this);
+      this.isInitialized = true;
+      return this.$q.when();
+    }
+
+    // If trying to show an invalid date or a transition is in progress, do nothing.
+    if (!this.dateUtil.isValidDate(date) || this.isMonthTransitionInProgress) {
+      return this.$q.when();
+    }
+
+    this.isMonthTransitionInProgress = true;
+    var animationPromise = this.animateDateChange(date);
+
+    this.calendarCtrl.displayDate = date;
+
+    var self = this;
+    animationPromise.then(function() {
+      self.isMonthTransitionInProgress = false;
+    });
+
+    return animationPromise;
+  };
+
+  /**
+   * Animates the transition from the calendar's current month to the given month.
+   * @param {Date} date
+   * @returns {angular.$q.Promise} The animation promise.
+   */
+  CalendarMonthCtrl.prototype.animateDateChange = function(date) {
+    if (this.dateUtil.isValidDate(date)) {
+      var monthDistance = this.dateUtil.getMonthDistance(this.firstRenderableDate, date);
+      this.calendarScroller.scrollTop = monthDistance * TBODY_HEIGHT;
+    }
+
+    return this.$q.when();
+  };
+
+  /**
+   * Builds and appends a day-of-the-week header to the calendar.
+   * This should only need to be called once during initialization.
+   */
+  CalendarMonthCtrl.prototype.buildWeekHeader = function() {
+    var firstDayOfWeek = this.dateLocale.firstDayOfWeek;
+    var shortDays = this.dateLocale.shortDays;
+
+    var row = document.createElement('tr');
+    for (var i = 0; i < 7; i++) {
+      var th = document.createElement('th');
+      th.textContent = shortDays[(i + firstDayOfWeek) % 7];
+      row.appendChild(th);
+    }
+
+    this.$element.find('thead').append(row);
+  };
+
+  /**
+   * Attaches listeners for the scope events that are broadcast by the calendar.
+   */
+  CalendarMonthCtrl.prototype.attachScopeListeners = function() {
+    var self = this;
+
+    self.$scope.$on('md-calendar-parent-changed', function(event, value) {
+      self.changeSelectedDate(value);
+    });
+
+    self.$scope.$on('md-calendar-parent-action', angular.bind(this, this.handleKeyEvent));
+  };
+
+  /**
+   * Handles the month-specific keyboard interactions.
+   * @param {Object} event Scope event object passed by the calendar.
+   * @param {String} action Action, corresponding to the key that was pressed.
+   */
+  CalendarMonthCtrl.prototype.handleKeyEvent = function(event, action) {
+    var calendarCtrl = this.calendarCtrl;
+    var displayDate = calendarCtrl.displayDate;
+
+    if (action === 'select') {
+      calendarCtrl.setNgModelValue(displayDate);
+    } else {
+      var date = null;
+      var dateUtil = this.dateUtil;
+
+      switch (action) {
+        case 'move-right': date = dateUtil.incrementDays(displayDate, 1); break;
+        case 'move-left': date = dateUtil.incrementDays(displayDate, -1); break;
+
+        case 'move-page-down': date = dateUtil.incrementMonths(displayDate, 1); break;
+        case 'move-page-up': date = dateUtil.incrementMonths(displayDate, -1); break;
+
+        case 'move-row-down': date = dateUtil.incrementDays(displayDate, 7); break;
+        case 'move-row-up': date = dateUtil.incrementDays(displayDate, -7); break;
+
+        case 'start': date = dateUtil.getFirstDateOfMonth(displayDate); break;
+        case 'end': date = dateUtil.getLastDateOfMonth(displayDate); break;
+      }
+
+      if (date) {
+        date = this.dateUtil.clampDate(date, calendarCtrl.minDate, calendarCtrl.maxDate);
+
+        this.changeDisplayDate(date).then(function() {
+          calendarCtrl.focus(date);
+        });
+      }
+    }
+  };
+})();
+
+})();
+(function(){
+"use strict";
+
+(function() {
+  'use strict';
+
+  angular.module('material.components.datepicker')
+      .directive('mdCalendarMonthBody', mdCalendarMonthBodyDirective);
+
+  /**
+   * Private directive consumed by md-calendar-month. Having this directive lets the calender use
+   * md-virtual-repeat and also cleanly separates the month DOM construction functions from
+   * the rest of the calendar controller logic.
+   */
+  function mdCalendarMonthBodyDirective() {
+    return {
+      require: ['^^mdCalendar', '^^mdCalendarMonth', 'mdCalendarMonthBody'],
+      scope: { offset: '=mdMonthOffset' },
+      controller: CalendarMonthBodyCtrl,
+      controllerAs: 'mdMonthBodyCtrl',
+      bindToController: true,
+      link: function(scope, element, attrs, controllers) {
+        var calendarCtrl = controllers[0];
+        var monthCtrl = controllers[1];
+        var monthBodyCtrl = controllers[2];
+
+        monthBodyCtrl.calendarCtrl = calendarCtrl;
+        monthBodyCtrl.monthCtrl = monthCtrl;
+        monthBodyCtrl.generateContent();
+
+        // The virtual-repeat re-uses the same DOM elements, so there are only a limited number
+        // of repeated items that are linked, and then those elements have their bindings updataed.
+        // Since the months are not generated by bindings, we simply regenerate the entire thing
+        // when the binding (offset) changes.
+        scope.$watch(function() { return monthBodyCtrl.offset; }, function(offset, oldOffset) {
+          if (offset != oldOffset) {
+            monthBodyCtrl.generateContent();
+          }
+        });
+      }
+    };
+  }
+
+  /**
+   * Controller for a single calendar month.
+   * @ngInject @constructor
+   */
+  function CalendarMonthBodyCtrl($element, $$mdDateUtil, $mdDateLocale) {
+    /** @final {!angular.JQLite} */
+    this.$element = $element;
+
+    /** @final */
+    this.dateUtil = $$mdDateUtil;
+
+    /** @final */
+    this.dateLocale = $mdDateLocale;
+
+    /** @type {Object} Reference to the month view. */
+    this.monthCtrl = null;
+
+    /** @type {Object} Reference to the calendar. */
+    this.calendarCtrl = null;
+
+    /**
+     * Number of months from the start of the month "items" that the currently rendered month
+     * occurs. Set via angular data binding.
+     * @type {number}
+     */
+    this.offset = null;
+
+    /**
+     * Date cell to focus after appending the month to the document.
+     * @type {HTMLElement}
+     */
+    this.focusAfterAppend = null;
+  }
+  CalendarMonthBodyCtrl.$inject = ["$element", "$$mdDateUtil", "$mdDateLocale"];
+
+  /** Generate and append the content for this month to the directive element. */
+  CalendarMonthBodyCtrl.prototype.generateContent = function() {
+    var date = this.dateUtil.incrementMonths(this.monthCtrl.firstRenderableDate, this.offset);
+
+    this.$element.empty();
+    this.$element.append(this.buildCalendarForMonth(date));
+
+    if (this.focusAfterAppend) {
+      this.focusAfterAppend.classList.add(this.calendarCtrl.FOCUSED_DATE_CLASS);
+      this.focusAfterAppend.focus();
+      this.focusAfterAppend = null;
+    }
+  };
+
+  /**
+   * Creates a single cell to contain a date in the calendar with all appropriate
+   * attributes and classes added. If a date is given, the cell content will be set
+   * based on the date.
+   * @param {Date=} opt_date
+   * @returns {HTMLElement}
+   */
+  CalendarMonthBodyCtrl.prototype.buildDateCell = function(opt_date) {
+    var monthCtrl = this.monthCtrl;
+    var calendarCtrl = this.calendarCtrl;
+
+    // TODO(jelbourn): cloneNode is likely a faster way of doing this.
+    var cell = document.createElement('td');
+    cell.tabIndex = -1;
+    cell.classList.add('md-calendar-date');
+    cell.setAttribute('role', 'gridcell');
+
+    if (opt_date) {
+      cell.setAttribute('tabindex', '-1');
+      cell.setAttribute('aria-label', this.dateLocale.longDateFormatter(opt_date));
+      cell.id = calendarCtrl.getDateId(opt_date, 'month');
+
+      // Use `data-timestamp` attribute because IE10 does not support the `dataset` property.
+      cell.setAttribute('data-timestamp', opt_date.getTime());
+
+      // TODO(jelourn): Doing these comparisons for class addition during generation might be slow.
+      // It may be better to finish the construction and then query the node and add the class.
+      if (this.dateUtil.isSameDay(opt_date, calendarCtrl.today)) {
+        cell.classList.add(calendarCtrl.TODAY_CLASS);
+      }
+
+      if (this.dateUtil.isValidDate(calendarCtrl.selectedDate) &&
+          this.dateUtil.isSameDay(opt_date, calendarCtrl.selectedDate)) {
+        cell.classList.add(calendarCtrl.SELECTED_DATE_CLASS);
+        cell.setAttribute('aria-selected', 'true');
+      }
+
+      var cellText = this.dateLocale.dates[opt_date.getDate()];
+
+      if (this.isDateEnabled(opt_date)) {
+        // Add a indicator for select, hover, and focus states.
+        var selectionIndicator = document.createElement('span');
+        selectionIndicator.classList.add('md-calendar-date-selection-indicator');
+        selectionIndicator.textContent = cellText;
+        cell.appendChild(selectionIndicator);
+        cell.addEventListener('click', monthCtrl.cellClickHandler);
+
+        if (calendarCtrl.displayDate && this.dateUtil.isSameDay(opt_date, calendarCtrl.displayDate)) {
+          this.focusAfterAppend = cell;
+        }
+      } else {
+        cell.classList.add('md-calendar-date-disabled');
+        cell.textContent = cellText;
+      }
+    }
+
+    return cell;
+  };
+
+  /**
+   * Check whether date is in range and enabled
+   * @param {Date=} opt_date
+   * @return {boolean} Whether the date is enabled.
+   */
+  CalendarMonthBodyCtrl.prototype.isDateEnabled = function(opt_date) {
+    return this.dateUtil.isDateWithinRange(opt_date,
+          this.calendarCtrl.minDate, this.calendarCtrl.maxDate) &&
+          (!angular.isFunction(this.calendarCtrl.dateFilter)
+           || this.calendarCtrl.dateFilter(opt_date));
+  };
+
+  /**
+   * Builds a `tr` element for the calendar grid.
+   * @param rowNumber The week number within the month.
+   * @returns {HTMLElement}
+   */
+  CalendarMonthBodyCtrl.prototype.buildDateRow = function(rowNumber) {
+    var row = document.createElement('tr');
+    row.setAttribute('role', 'row');
+
+    // Because of an NVDA bug (with Firefox), the row needs an aria-label in order
+    // to prevent the entire row being read aloud when the user moves between rows.
+    // See http://community.nvda-project.org/ticket/4643.
+    row.setAttribute('aria-label', this.dateLocale.weekNumberFormatter(rowNumber));
+
+    return row;
+  };
+
+  /**
+   * Builds the <tbody> content for the given date's month.
+   * @param {Date=} opt_dateInMonth
+   * @returns {DocumentFragment} A document fragment containing the <tr> elements.
+   */
+  CalendarMonthBodyCtrl.prototype.buildCalendarForMonth = function(opt_dateInMonth) {
+    var date = this.dateUtil.isValidDate(opt_dateInMonth) ? opt_dateInMonth : new Date();
+
+    var firstDayOfMonth = this.dateUtil.getFirstDateOfMonth(date);
+    var firstDayOfTheWeek = this.getLocaleDay_(firstDayOfMonth);
+    var numberOfDaysInMonth = this.dateUtil.getNumberOfDaysInMonth(date);
+
+    // Store rows for the month in a document fragment so that we can append them all at once.
+    var monthBody = document.createDocumentFragment();
+
+    var rowNumber = 1;
+    var row = this.buildDateRow(rowNumber);
+    monthBody.appendChild(row);
+
+    // If this is the final month in the list of items, only the first week should render,
+    // so we should return immediately after the first row is complete and has been
+    // attached to the body.
+    var isFinalMonth = this.offset === this.monthCtrl.items.length - 1;
+
+    // Add a label for the month. If the month starts on a Sun/Mon/Tues, the month label
+    // goes on a row above the first of the month. Otherwise, the month label takes up the first
+    // two cells of the first row.
+    var blankCellOffset = 0;
+    var monthLabelCell = document.createElement('td');
+    monthLabelCell.textContent = this.dateLocale.monthHeaderFormatter(date);
+    monthLabelCell.classList.add('md-calendar-month-label');
+    // If the entire month is after the max date, render the label as a disabled state.
+    if (this.calendarCtrl.maxDate && firstDayOfMonth > this.calendarCtrl.maxDate) {
+      monthLabelCell.classList.add('md-calendar-month-label-disabled');
+    } else {
+      monthLabelCell.addEventListener('click', this.monthCtrl.headerClickHandler);
+      monthLabelCell.setAttribute('data-timestamp', firstDayOfMonth.getTime());
+      monthLabelCell.setAttribute('aria-label', this.dateLocale.monthFormatter(date));
+    }
+
+    if (firstDayOfTheWeek <= 2) {
+      monthLabelCell.setAttribute('colspan', '7');
+
+      var monthLabelRow = this.buildDateRow();
+      monthLabelRow.appendChild(monthLabelCell);
+      monthBody.insertBefore(monthLabelRow, row);
+
+      if (isFinalMonth) {
+        return monthBody;
+      }
+    } else {
+      blankCellOffset = 2;
+      monthLabelCell.setAttribute('colspan', '2');
+      row.appendChild(monthLabelCell);
+    }
+
+    // Add a blank cell for each day of the week that occurs before the first of the month.
+    // For example, if the first day of the month is a Tuesday, add blank cells for Sun and Mon.
+    // The blankCellOffset is needed in cases where the first N cells are used by the month label.
+    for (var i = blankCellOffset; i < firstDayOfTheWeek; i++) {
+      row.appendChild(this.buildDateCell());
+    }
+
+    // Add a cell for each day of the month, keeping track of the day of the week so that
+    // we know when to start a new row.
+    var dayOfWeek = firstDayOfTheWeek;
+    var iterationDate = firstDayOfMonth;
+    for (var d = 1; d <= numberOfDaysInMonth; d++) {
+      // If we've reached the end of the week, start a new row.
+      if (dayOfWeek === 7) {
+        // We've finished the first row, so we're done if this is the final month.
+        if (isFinalMonth) {
+          return monthBody;
+        }
+        dayOfWeek = 0;
+        rowNumber++;
+        row = this.buildDateRow(rowNumber);
+        monthBody.appendChild(row);
+      }
+
+      iterationDate.setDate(d);
+      var cell = this.buildDateCell(iterationDate);
+      row.appendChild(cell);
+
+      dayOfWeek++;
+    }
+
+    // Ensure that the last row of the month has 7 cells.
+    while (row.childNodes.length < 7) {
+      row.appendChild(this.buildDateCell());
+    }
+
+    // Ensure that all months have 6 rows. This is necessary for now because the virtual-repeat
+    // requires that all items have exactly the same height.
+    while (monthBody.childNodes.length < 6) {
+      var whitespaceRow = this.buildDateRow();
+      for (var j = 0; j < 7; j++) {
+        whitespaceRow.appendChild(this.buildDateCell());
+      }
+      monthBody.appendChild(whitespaceRow);
+    }
+
+    return monthBody;
+  };
+
+  /**
+   * Gets the day-of-the-week index for a date for the current locale.
+   * @private
+   * @param {Date} date
+   * @returns {number} The column index of the date in the calendar.
+   */
+  CalendarMonthBodyCtrl.prototype.getLocaleDay_ = function(date) {
+    return (date.getDay() + (7 - this.dateLocale.firstDayOfWeek)) % 7;
+  };
+})();
+
+})();
+(function(){
+"use strict";
+
+(function() {
+  'use strict';
+
+  angular.module('material.components.datepicker')
+    .directive('mdCalendarYear', calendarDirective);
+
+  /**
+   * Height of one calendar year tbody. This must be made known to the virtual-repeat and is
+   * subsequently used for scrolling to specific years.
+   */
+  var TBODY_HEIGHT = 88;
+
+  /** Private component, representing a list of years in the calendar. */
+  function calendarDirective() {
+    return {
+      template:
+        '<div class="md-calendar-scroll-mask">' +
+          '<md-virtual-repeat-container class="md-calendar-scroll-container">' +
+            '<table role="grid" tabindex="0" class="md-calendar" aria-readonly="true">' +
+              '<tbody ' +
+                  'md-calendar-year-body ' +
+                  'role="rowgroup" ' +
+                  'md-virtual-repeat="i in yearCtrl.items" ' +
+                  'md-year-offset="$index" class="md-calendar-year" ' +
+                  'md-start-index="yearCtrl.getFocusedYearIndex()" ' +
+                  'md-item-size="' + TBODY_HEIGHT + '"></tbody>' +
+            '</table>' +
+          '</md-virtual-repeat-container>' +
+        '</div>',
+      require: ['^^mdCalendar', 'mdCalendarYear'],
+      controller: CalendarYearCtrl,
+      controllerAs: 'yearCtrl',
+      bindToController: true,
+      link: function(scope, element, attrs, controllers) {
+        var calendarCtrl = controllers[0];
+        var yearCtrl = controllers[1];
+        yearCtrl.initialize(calendarCtrl);
+      }
+    };
+  }
+
+  /**
+   * Controller for the mdCalendar component.
+   * @ngInject @constructor
+   */
+  function CalendarYearCtrl($element, $scope, $animate, $q, $$mdDateUtil, $timeout) {
+
+    /** @final {!angular.JQLite} */
+    this.$element = $element;
+
+    /** @final {!angular.Scope} */
+    this.$scope = $scope;
+
+    /** @final {!angular.$animate} */
+    this.$animate = $animate;
+
+    /** @final {!angular.$q} */
+    this.$q = $q;
+
+    /** @final */
+    this.dateUtil = $$mdDateUtil;
+
+    /** @final */
+    this.$timeout = $timeout;
+
+    /** @final {HTMLElement} */
+    this.calendarScroller = $element[0].querySelector('.md-virtual-repeat-scroller');
+
+    /** @type {Date} */
+    this.firstRenderableDate = null;
+
+    /** @type {boolean} */
+    this.isInitialized = false;
+
+    /** @type {boolean} */
+    this.isMonthTransitionInProgress = false;
+
+    var self = this;
+
+    /**
+     * Handles a click event on a date cell.
+     * Created here so that every cell can use the same function instance.
+     * @this {HTMLTableCellElement} The cell that was clicked.
+     */
+    this.cellClickHandler = function() {
+      self.calendarCtrl.setCurrentView('month', $$mdDateUtil.getTimestampFromNode(this));
+    };
+  }
+  CalendarYearCtrl.$inject = ["$element", "$scope", "$animate", "$q", "$$mdDateUtil", "$timeout"];
+
+  /**
+   * Initialize the controller by saving a reference to the calendar and
+   * setting up the object that will be iterated by the virtual repeater.
+   */
+  CalendarYearCtrl.prototype.initialize = function(calendarCtrl) {
+    var minDate = calendarCtrl.minDate;
+    var maxDate = calendarCtrl.maxDate;
+    this.calendarCtrl = calendarCtrl;
+
+    /**
+     * Dummy array-like object for virtual-repeat to iterate over. The length is the total
+     * number of months that can be viewed. This is shorter than ideal because of (potential)
+     * Firefox bug https://bugzilla.mozilla.org/show_bug.cgi?id=1181658.
+     */
+    this.items = { length: 400 };
+
+    if (maxDate && minDate) {
+      // Limit the number of years if min and max dates are set.
+      var numYears = this.dateUtil.getYearDistance(minDate, maxDate) + 1;
+      this.items.length = Math.max(numYears, 1);
+    }
+
+    this.firstRenderableDate = this.dateUtil.incrementYears(calendarCtrl.today, - (this.items.length / 2));
+
+    if (minDate && minDate > this.firstRenderableDate) {
+      this.firstRenderableDate = minDate;
+    } else if (maxDate) {
+      // Calculate the year difference between the start date and max date.
+      // Subtract 1 because it's an inclusive difference.
+      this.firstRenderableDate = this.dateUtil.incrementMonths(maxDate, - (this.items.length - 1));
+    }
+
+    // Trigger an extra digest to ensure that the virtual repeater has updated. This
+    // is necessary, because the virtual repeater doesn't update the $index the first
+    // time around since the content isn't in place yet. The case, in which this is an
+    // issues, is when the repeater has less than a page of content (e.g. there's a min
+    // and max date).
+    if (minDate || maxDate) this.$timeout();
+    this.attachScopeListeners();
+
+    // Fire the initial render, since we might have missed it the first time it fired.
+    calendarCtrl.ngModelCtrl && calendarCtrl.ngModelCtrl.$render();
+  };
+
+  /**
+   * Gets the "index" of the currently selected date as it would be in the virtual-repeat.
+   * @returns {number}
+   */
+  CalendarYearCtrl.prototype.getFocusedYearIndex = function() {
+    var calendarCtrl = this.calendarCtrl;
+    return this.dateUtil.getYearDistance(this.firstRenderableDate,
+      calendarCtrl.displayDate || calendarCtrl.selectedDate || calendarCtrl.today);
+  };
+
+  /**
+   * Change the date that is highlighted in the calendar.
+   * @param {Date} date
+   */
+  CalendarYearCtrl.prototype.changeDate = function(date) {
+    // Initialization is deferred until this function is called because we want to reflect
+    // the starting value of ngModel.
+    if (!this.isInitialized) {
+      this.calendarCtrl.hideVerticalScrollbar(this);
+      this.isInitialized = true;
+      return this.$q.when();
+    } else if (this.dateUtil.isValidDate(date) && !this.isMonthTransitionInProgress) {
+      var self = this;
+      var animationPromise = this.animateDateChange(date);
+
+      self.isMonthTransitionInProgress = true;
+      self.calendarCtrl.displayDate = date;
+
+      return animationPromise.then(function() {
+        self.isMonthTransitionInProgress = false;
+      });
+    }
+  };
+
+  /**
+   * Animates the transition from the calendar's current month to the given month.
+   * @param {Date} date
+   * @returns {angular.$q.Promise} The animation promise.
+   */
+  CalendarYearCtrl.prototype.animateDateChange = function(date) {
+    if (this.dateUtil.isValidDate(date)) {
+      var monthDistance = this.dateUtil.getYearDistance(this.firstRenderableDate, date);
+      this.calendarScroller.scrollTop = monthDistance * TBODY_HEIGHT;
+    }
+
+    return this.$q.when();
+  };
+
+  /**
+   * Handles the year-view-specific keyboard interactions.
+   * @param {Object} event Scope event object passed by the calendar.
+   * @param {String} action Action, corresponding to the key that was pressed.
+   */
+  CalendarYearCtrl.prototype.handleKeyEvent = function(event, action) {
+    var calendarCtrl = this.calendarCtrl;
+    var displayDate = calendarCtrl.displayDate;
+
+    if (action === 'select') {
+      this.changeDate(displayDate).then(function() {
+        calendarCtrl.setCurrentView('month', displayDate);
+        calendarCtrl.focus(displayDate);
+      });
+    } else {
+      var date = null;
+      var dateUtil = this.dateUtil;
+
+      switch (action) {
+        case 'move-right': date = dateUtil.incrementMonths(displayDate, 1); break;
+        case 'move-left': date = dateUtil.incrementMonths(displayDate, -1); break;
+
+        case 'move-row-down': date = dateUtil.incrementMonths(displayDate, 6); break;
+        case 'move-row-up': date = dateUtil.incrementMonths(displayDate, -6); break;
+      }
+
+      if (date) {
+        var min = calendarCtrl.minDate ? dateUtil.incrementMonths(dateUtil.getFirstDateOfMonth(calendarCtrl.minDate), 1) : null;
+        var max = calendarCtrl.maxDate ? dateUtil.getFirstDateOfMonth(calendarCtrl.maxDate) : null;
+        date = dateUtil.getFirstDateOfMonth(this.dateUtil.clampDate(date, min, max));
+
+        this.changeDate(date).then(function() {
+          calendarCtrl.focus(date);
+        });
+      }
+    }
+  };
+
+  /**
+   * Attaches listeners for the scope events that are broadcast by the calendar.
+   */
+  CalendarYearCtrl.prototype.attachScopeListeners = function() {
+    var self = this;
+
+    self.$scope.$on('md-calendar-parent-changed', function(event, value) {
+      self.changeDate(value);
+    });
+
+    self.$scope.$on('md-calendar-parent-action', angular.bind(self, self.handleKeyEvent));
+  };
+})();
+
+})();
+(function(){
+"use strict";
+
+(function() {
+  'use strict';
+
+  angular.module('material.components.datepicker')
+      .directive('mdCalendarYearBody', mdCalendarYearDirective);
+
+  /**
+   * Private component, consumed by the md-calendar-year, which separates the DOM construction logic
+   * and allows for the year view to use md-virtual-repeat.
+   */
+  function mdCalendarYearDirective() {
+    return {
+      require: ['^^mdCalendar', '^^mdCalendarYear', 'mdCalendarYearBody'],
+      scope: { offset: '=mdYearOffset' },
+      controller: CalendarYearBodyCtrl,
+      controllerAs: 'mdYearBodyCtrl',
+      bindToController: true,
+      link: function(scope, element, attrs, controllers) {
+        var calendarCtrl = controllers[0];
+        var yearCtrl = controllers[1];
+        var yearBodyCtrl = controllers[2];
+
+        yearBodyCtrl.calendarCtrl = calendarCtrl;
+        yearBodyCtrl.yearCtrl = yearCtrl;
+        yearBodyCtrl.generateContent();
+
+        scope.$watch(function() { return yearBodyCtrl.offset; }, function(offset, oldOffset) {
+          if (offset != oldOffset) {
+            yearBodyCtrl.generateContent();
+          }
+        });
+      }
+    };
+  }
+
+  /**
+   * Controller for a single year.
+   * @ngInject @constructor
+   */
+  function CalendarYearBodyCtrl($element, $$mdDateUtil, $mdDateLocale) {
+    /** @final {!angular.JQLite} */
+    this.$element = $element;
+
+    /** @final */
+    this.dateUtil = $$mdDateUtil;
+
+    /** @final */
+    this.dateLocale = $mdDateLocale;
+
+    /** @type {Object} Reference to the calendar. */
+    this.calendarCtrl = null;
+
+    /** @type {Object} Reference to the year view. */
+    this.yearCtrl = null;
+
+    /**
+     * Number of months from the start of the month "items" that the currently rendered month
+     * occurs. Set via angular data binding.
+     * @type {number}
+     */
+    this.offset = null;
+
+    /**
+     * Date cell to focus after appending the month to the document.
+     * @type {HTMLElement}
+     */
+    this.focusAfterAppend = null;
+  }
+  CalendarYearBodyCtrl.$inject = ["$element", "$$mdDateUtil", "$mdDateLocale"];
+
+  /** Generate and append the content for this year to the directive element. */
+  CalendarYearBodyCtrl.prototype.generateContent = function() {
+    var date = this.dateUtil.incrementYears(this.yearCtrl.firstRenderableDate, this.offset);
+
+    this.$element.empty();
+    this.$element.append(this.buildCalendarForYear(date));
+
+    if (this.focusAfterAppend) {
+      this.focusAfterAppend.classList.add(this.calendarCtrl.FOCUSED_DATE_CLASS);
+      this.focusAfterAppend.focus();
+      this.focusAfterAppend = null;
+    }
+  };
+
+  /**
+   * Creates a single cell to contain a year in the calendar.
+   * @param {number} opt_year Four-digit year.
+   * @param {number} opt_month Zero-indexed month.
+   * @returns {HTMLElement}
+   */
+  CalendarYearBodyCtrl.prototype.buildMonthCell = function(year, month) {
+    var calendarCtrl = this.calendarCtrl;
+    var yearCtrl = this.yearCtrl;
+    var cell = this.buildBlankCell();
+
+    // Represent this month/year as a date.
+    var firstOfMonth = new Date(year, month, 1);
+    cell.setAttribute('aria-label', this.dateLocale.monthFormatter(firstOfMonth));
+    cell.id = calendarCtrl.getDateId(firstOfMonth, 'year');
+
+    // Use `data-timestamp` attribute because IE10 does not support the `dataset` property.
+    cell.setAttribute('data-timestamp', firstOfMonth.getTime());
+
+    if (this.dateUtil.isSameMonthAndYear(firstOfMonth, calendarCtrl.today)) {
+      cell.classList.add(calendarCtrl.TODAY_CLASS);
+    }
+
+    if (this.dateUtil.isValidDate(calendarCtrl.selectedDate) &&
+        this.dateUtil.isSameMonthAndYear(firstOfMonth, calendarCtrl.selectedDate)) {
+      cell.classList.add(calendarCtrl.SELECTED_DATE_CLASS);
+      cell.setAttribute('aria-selected', 'true');
+    }
+
+    var cellText = this.dateLocale.shortMonths[month];
+
+    if (this.dateUtil.isDateWithinRange(firstOfMonth,
+        calendarCtrl.minDate, calendarCtrl.maxDate)) {
+      var selectionIndicator = document.createElement('span');
+      selectionIndicator.classList.add('md-calendar-date-selection-indicator');
+      selectionIndicator.textContent = cellText;
+      cell.appendChild(selectionIndicator);
+      cell.addEventListener('click', yearCtrl.cellClickHandler);
+
+      if (calendarCtrl.displayDate && this.dateUtil.isSameMonthAndYear(firstOfMonth, calendarCtrl.displayDate)) {
+        this.focusAfterAppend = cell;
+      }
+    } else {
+      cell.classList.add('md-calendar-date-disabled');
+      cell.textContent = cellText;
+    }
+
+    return cell;
+  };
+
+  /**
+   * Builds a blank cell.
+   * @return {HTMLTableCellElement}
+   */
+  CalendarYearBodyCtrl.prototype.buildBlankCell = function() {
+    var cell = document.createElement('td');
+    cell.tabIndex = -1;
+    cell.classList.add('md-calendar-date');
+    cell.setAttribute('role', 'gridcell');
+
+    cell.setAttribute('tabindex', '-1');
+    return cell;
+  };
+
+  /**
+   * Builds the <tbody> content for the given year.
+   * @param {Date} date Date for which the content should be built.
+   * @returns {DocumentFragment} A document fragment containing the months within the year.
+   */
+  CalendarYearBodyCtrl.prototype.buildCalendarForYear = function(date) {
+    // Store rows for the month in a document fragment so that we can append them all at once.
+    var year = date.getFullYear();
+    var yearBody = document.createDocumentFragment();
+
+    var monthCell, i;
+    // First row contains label and Jan-Jun.
+    var firstRow = document.createElement('tr');
+    var labelCell = document.createElement('td');
+    labelCell.className = 'md-calendar-month-label';
+    labelCell.textContent = year;
+    firstRow.appendChild(labelCell);
+
+    for (i = 0; i < 6; i++) {
+      firstRow.appendChild(this.buildMonthCell(year, i));
+    }
+    yearBody.appendChild(firstRow);
+
+    // Second row contains a blank cell and Jul-Dec.
+    var secondRow = document.createElement('tr');
+    secondRow.appendChild(this.buildBlankCell());
+    for (i = 6; i < 12; i++) {
+      secondRow.appendChild(this.buildMonthCell(year, i));
+    }
+    yearBody.appendChild(secondRow);
+
+    return yearBody;
+  };
+})();
+
+})();
+(function(){
+"use strict";
+
+(function() {
+  'use strict';
+
+  /**
+   * @ngdoc service
+   * @name $mdDateLocaleProvider
+   * @module material.components.datepicker
+   *
+   * @description
+   * The `$mdDateLocaleProvider` is the provider that creates the `$mdDateLocale` service.
+   * This provider that allows the user to specify messages, formatters, and parsers for date
+   * internationalization. The `$mdDateLocale` service itself is consumed by Angular Material
+   * components that deal with dates.
+   *
+   * @property {(Array<string>)=} months Array of month names (in order).
+   * @property {(Array<string>)=} shortMonths Array of abbreviated month names.
+   * @property {(Array<string>)=} days Array of the days of the week (in order).
+   * @property {(Array<string>)=} shortDays Array of abbreviated dayes of the week.
+   * @property {(Array<string>)=} dates Array of dates of the month. Only necessary for locales
+   *     using a numeral system other than [1, 2, 3...].
+   * @property {(Array<string>)=} firstDayOfWeek The first day of the week. Sunday = 0, Monday = 1,
+   *    etc.
+   * @property {(function(string): Date)=} parseDate Function to parse a date object from a string.
+   * @property {(function(Date): string)=} formatDate Function to format a date object to a string.
+   * @property {(function(Date): string)=} monthHeaderFormatter Function that returns the label for
+   *     a month given a date.
+   * @property {(function(Date): string)=} monthFormatter Function that returns the full name of a month
+   *     for a giben date.
+   * @property {(function(number): string)=} weekNumberFormatter Function that returns a label for
+   *     a week given the week number.
+   * @property {(string)=} msgCalendar Translation of the label "Calendar" for the current locale.
+   * @property {(string)=} msgOpenCalendar Translation of the button label "Open calendar" for the
+   *     current locale.
+   *
+   * @usage
+   * <hljs lang="js">
+   *   myAppModule.config(function($mdDateLocaleProvider) {
+   *
+   *     // Example of a French localization.
+   *     $mdDateLocaleProvider.months = ['janvier', 'février', 'mars', ...];
+   *     $mdDateLocaleProvider.shortMonths = ['janv', 'févr', 'mars', ...];
+   *     $mdDateLocaleProvider.days = ['dimanche', 'lundi', 'mardi', ...];
+   *     $mdDateLocaleProvider.shortDays = ['Di', 'Lu', 'Ma', ...];
+   *
+   *     // Can change week display to start on Monday.
+   *     $mdDateLocaleProvider.firstDayOfWeek = 1;
+   *
+   *     // Optional.
+   *     $mdDateLocaleProvider.dates = [1, 2, 3, 4, 5, 6, ...];
+   *
+   *     // Example uses moment.js to parse and format dates.
+   *     $mdDateLocaleProvider.parseDate = function(dateString) {
+   *       var m = moment(dateString, 'L', true);
+   *       return m.isValid() ? m.toDate() : new Date(NaN);
+   *     };
+   *
+   *     $mdDateLocaleProvider.formatDate = function(date) {
+   *       var m = moment(date);
+   *       return m.isValid() ? m.format('L') : '';
+   *     };
+   *
+   *     $mdDateLocaleProvider.monthHeaderFormatter = function(date) {
+   *       return myShortMonths[date.getMonth()] + ' ' + date.getFullYear();
+   *     };
+   *
+   *     // In addition to date display, date components also need localized messages
+   *     // for aria-labels for screen-reader users.
+   *
+   *     $mdDateLocaleProvider.weekNumberFormatter = function(weekNumber) {
+   *       return 'Semaine ' + weekNumber;
+   *     };
+   *
+   *     $mdDateLocaleProvider.msgCalendar = 'Calendrier';
+   *     $mdDateLocaleProvider.msgOpenCalendar = 'Ouvrir le calendrier';
+   *
+   * });
+   * </hljs>
+   *
+   */
+
+  angular.module('material.components.datepicker').config(["$provide", function($provide) {
+    // TODO(jelbourn): Assert provided values are correctly formatted. Need assertions.
+
+    /** @constructor */
+    function DateLocaleProvider() {
+      /** Array of full month names. E.g., ['January', 'Febuary', ...] */
+      this.months = null;
+
+      /** Array of abbreviated month names. E.g., ['Jan', 'Feb', ...] */
+      this.shortMonths = null;
+
+      /** Array of full day of the week names. E.g., ['Monday', 'Tuesday', ...] */
+      this.days = null;
+
+      /** Array of abbreviated dat of the week names. E.g., ['M', 'T', ...] */
+      this.shortDays = null;
+
+      /** Array of dates of a month (1 - 31). Characters might be different in some locales. */
+      this.dates = null;
+
+      /** Index of the first day of the week. 0 = Sunday, 1 = Monday, etc. */
+      this.firstDayOfWeek = 0;
+
+      /**
+       * Function that converts the date portion of a Date to a string.
+       * @type {(function(Date): string)}
+       */
+      this.formatDate = null;
+
+      /**
+       * Function that converts a date string to a Date object (the date portion)
+       * @type {function(string): Date}
+       */
+      this.parseDate = null;
+
+      /**
+       * Function that formats a Date into a month header string.
+       * @type {function(Date): string}
+       */
+      this.monthHeaderFormatter = null;
+
+      /**
+       * Function that formats a week number into a label for the week.
+       * @type {function(number): string}
+       */
+      this.weekNumberFormatter = null;
+
+      /**
+       * Function that formats a date into a long aria-label that is read
+       * when the focused date changes.
+       * @type {function(Date): string}
+       */
+      this.longDateFormatter = null;
+
+      /**
+       * ARIA label for the calendar "dialog" used in the datepicker.
+       * @type {string}
+       */
+      this.msgCalendar = '';
+
+      /**
+       * ARIA label for the datepicker's "Open calendar" buttons.
+       * @type {string}
+       */
+      this.msgOpenCalendar = '';
+    }
+
+    /**
+     * Factory function that returns an instance of the dateLocale service.
+     * @ngInject
+     * @param $locale
+     * @returns {DateLocale}
+     */
+    DateLocaleProvider.prototype.$get = function($locale) {
+      /**
+       * Default date-to-string formatting function.
+       * @param {!Date} date
+       * @returns {string}
+       */
+      function defaultFormatDate(date) {
+        if (!date) {
+          return '';
+        }
+
+        // All of the dates created through ng-material *should* be set to midnight.
+        // If we encounter a date where the localeTime shows at 11pm instead of midnight,
+        // we have run into an issue with DST where we need to increment the hour by one:
+        // var d = new Date(1992, 9, 8, 0, 0, 0);
+        // d.toLocaleString(); // == "10/7/1992, 11:00:00 PM"
+        var localeTime = date.toLocaleTimeString();
+        var formatDate = date;
+        if (date.getHours() == 0 &&
+            (localeTime.indexOf('11:') !== -1 || localeTime.indexOf('23:') !== -1)) {
+          formatDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 1, 0, 0);
+        }
+
+        return formatDate.toLocaleDateString();
+      }
+
+      /**
+       * Default string-to-date parsing function.
+       * @param {string} dateString
+       * @returns {!Date}
+       */
+      function defaultParseDate(dateString) {
+        return new Date(dateString);
+      }
+
+      /**
+       * Default function to determine whether a string makes sense to be
+       * parsed to a Date object.
+       *
+       * This is very permissive and is just a basic sanity check to ensure that
+       * things like single integers aren't able to be parsed into dates.
+       * @param {string} dateString
+       * @returns {boolean}
+       */
+      function defaultIsDateComplete(dateString) {
+        dateString = dateString.trim();
+
+        // Looks for three chunks of content (either numbers or text) separated
+        // by delimiters.
+        var re = /^(([a-zA-Z]{3,}|[0-9]{1,4})([ \.,]+|[\/\-])){2}([a-zA-Z]{3,}|[0-9]{1,4})$/;
+        return re.test(dateString);
+      }
+
+      /**
+       * Default date-to-string formatter to get a month header.
+       * @param {!Date} date
+       * @returns {string}
+       */
+      function defaultMonthHeaderFormatter(date) {
+        return service.shortMonths[date.getMonth()] + ' ' + date.getFullYear();
+      }
+
+      /**
+       * Default formatter for a month.
+       * @param {!Date} date
+       * @returns {string}
+       */
+      function defaultMonthFormatter(date) {
+        return service.months[date.getMonth()] + ' ' + date.getFullYear();
+      }
+
+      /**
+       * Default week number formatter.
+       * @param number
+       * @returns {string}
+       */
+      function defaultWeekNumberFormatter(number) {
+        return 'Week ' + number;
+      }
+
+      /**
+       * Default formatter for date cell aria-labels.
+       * @param {!Date} date
+       * @returns {string}
+       */
+      function defaultLongDateFormatter(date) {
+        // Example: 'Thursday June 18 2015'
+        return [
+          service.days[date.getDay()],
+          service.months[date.getMonth()],
+          service.dates[date.getDate()],
+          date.getFullYear()
+        ].join(' ');
+      }
+
+      // The default "short" day strings are the first character of each day,
+      // e.g., "Monday" => "M".
+      var defaultShortDays = $locale.DATETIME_FORMATS.DAY.map(function(day) {
+        return day[0];
+      });
+
+      // The default dates are simply the numbers 1 through 31.
+      var defaultDates = Array(32);
+      for (var i = 1; i <= 31; i++) {
+        defaultDates[i] = i;
+      }
+
+      // Default ARIA messages are in English (US).
+      var defaultMsgCalendar = 'Calendar';
+      var defaultMsgOpenCalendar = 'Open calendar';
+
+      var service = {
+        months: this.months || $locale.DATETIME_FORMATS.MONTH,
+        shortMonths: this.shortMonths || $locale.DATETIME_FORMATS.SHORTMONTH,
+        days: this.days || $locale.DATETIME_FORMATS.DAY,
+        shortDays: this.shortDays || defaultShortDays,
+        dates: this.dates || defaultDates,
+        firstDayOfWeek: this.firstDayOfWeek || 0,
+        formatDate: this.formatDate || defaultFormatDate,
+        parseDate: this.parseDate || defaultParseDate,
+        isDateComplete: this.isDateComplete || defaultIsDateComplete,
+        monthHeaderFormatter: this.monthHeaderFormatter || defaultMonthHeaderFormatter,
+        monthFormatter: this.monthFormatter || defaultMonthFormatter,
+        weekNumberFormatter: this.weekNumberFormatter || defaultWeekNumberFormatter,
+        longDateFormatter: this.longDateFormatter || defaultLongDateFormatter,
+        msgCalendar: this.msgCalendar || defaultMsgCalendar,
+        msgOpenCalendar: this.msgOpenCalendar || defaultMsgOpenCalendar
+      };
+
+      return service;
+    };
+    DateLocaleProvider.prototype.$get.$inject = ["$locale"];
+
+    $provide.provider('$mdDateLocale', new DateLocaleProvider());
+  }]);
+})();
+
+})();
+(function(){
+"use strict";
+
+(function() {
+  'use strict';
+
+  // POST RELEASE
+  // TODO(jelbourn): Demo that uses moment.js
+  // TODO(jelbourn): make sure this plays well with validation and ngMessages.
+  // TODO(jelbourn): calendar pane doesn't open up outside of visible viewport.
+  // TODO(jelbourn): forward more attributes to the internal input (required, autofocus, etc.)
+  // TODO(jelbourn): something better for mobile (calendar panel takes up entire screen?)
+  // TODO(jelbourn): input behavior (masking? auto-complete?)
+  // TODO(jelbourn): UTC mode
+  // TODO(jelbourn): RTL
+
+
+  angular.module('material.components.datepicker')
+      .directive('mdDatepicker', datePickerDirective);
+
+  /**
+   * @ngdoc directive
+   * @name mdDatepicker
+   * @module material.components.datepicker
+   *
+   * @param {Date} ng-model The component's model. Expects a JavaScript Date object.
+   * @param {expression=} ng-change Expression evaluated when the model value changes.
+   * @param {Date=} md-min-date Expression representing a min date (inclusive).
+   * @param {Date=} md-max-date Expression representing a max date (inclusive).
+   * @param {(function(Date): boolean)=} md-date-filter Function expecting a date and returning a boolean whether it can be selected or not.
+   * @param {String=} md-placeholder The date input placeholder value.
+   * @param {String=} md-open-on-focus When present, the calendar will be opened when the input is focused.
+   * @param {boolean=} ng-disabled Whether the datepicker is disabled.
+   * @param {boolean=} ng-required Whether a value is required for the datepicker.
+   *
+   * @description
+   * `<md-datepicker>` is a component used to select a single date.
+   * For information on how to configure internationalization for the date picker,
+   * see `$mdDateLocaleProvider`.
+   *
+   * This component supports [ngMessages](https://docs.angularjs.org/api/ngMessages/directive/ngMessages).
+   * Supported attributes are:
+   * * `required`: whether a required date is not set.
+   * * `mindate`: whether the selected date is before the minimum allowed date.
+   * * `maxdate`: whether the selected date is after the maximum allowed date.
+   *
+   * @usage
+   * <hljs lang="html">
+   *   <md-datepicker ng-model="birthday"></md-datepicker>
+   * </hljs>
+   *
+   */
+  function datePickerDirective() {
+    return {
+      template:
+          // Buttons are not in the tab order because users can open the calendar via keyboard
+          // interaction on the text input, and multiple tab stops for one component (picker)
+          // may be confusing.
+          '<md-button class="md-datepicker-button md-icon-button" type="button" ' +
+              'tabindex="-1" aria-hidden="true" ' +
+              'ng-click="ctrl.openCalendarPane($event)">' +
+            '<md-icon class="md-datepicker-calendar-icon" md-svg-icon="md-calendar"></md-icon>' +
+          '</md-button>' +
+          '<div class="md-datepicker-input-container" ' +
+              'ng-class="{\'md-datepicker-focused\': ctrl.isFocused}">' +
+            '<input class="md-datepicker-input" aria-haspopup="true" ' +
+                'ng-focus="ctrl.setFocused(true)" ng-blur="ctrl.setFocused(false)">' +
+            '<md-button type="button" md-no-ink ' +
+                'class="md-datepicker-triangle-button md-icon-button" ' +
+                'ng-click="ctrl.openCalendarPane($event)" ' +
+                'aria-label="{{::ctrl.dateLocale.msgOpenCalendar}}">' +
+              '<div class="md-datepicker-expand-triangle"></div>' +
+            '</md-button>' +
+          '</div>' +
+
+          // This pane will be detached from here and re-attached to the document body.
+          '<div class="md-datepicker-calendar-pane md-whiteframe-z1">' +
+            '<div class="md-datepicker-input-mask">' +
+              '<div class="md-datepicker-input-mask-opaque"></div>' +
+            '</div>' +
+            '<div class="md-datepicker-calendar">' +
+              '<md-calendar role="dialog" aria-label="{{::ctrl.dateLocale.msgCalendar}}" ' +
+                  'md-min-date="ctrl.minDate" md-max-date="ctrl.maxDate"' +
+                  'md-date-filter="ctrl.dateFilter"' +
+                  'ng-model="ctrl.date" ng-if="ctrl.isCalendarOpen">' +
+              '</md-calendar>' +
+            '</div>' +
+          '</div>',
+      require: ['ngModel', 'mdDatepicker', '?^mdInputContainer'],
+      scope: {
+        minDate: '=mdMinDate',
+        maxDate: '=mdMaxDate',
+        placeholder: '@mdPlaceholder',
+        dateFilter: '=mdDateFilter'
+      },
+      controller: DatePickerCtrl,
+      controllerAs: 'ctrl',
+      bindToController: true,
+      link: function(scope, element, attr, controllers) {
+        var ngModelCtrl = controllers[0];
+        var mdDatePickerCtrl = controllers[1];
+
+        var mdInputContainer = controllers[2];
+        if (mdInputContainer) {
+          throw Error('md-datepicker should not be placed inside md-input-container.');
+        }
+
+        mdDatePickerCtrl.configureNgModel(ngModelCtrl);
+      }
+    };
+  }
+
+  /** Additional offset for the input's `size` attribute, which is updated based on its content. */
+  var EXTRA_INPUT_SIZE = 3;
+
+  /** Class applied to the container if the date is invalid. */
+  var INVALID_CLASS = 'md-datepicker-invalid';
+
+  /** Default time in ms to debounce input event by. */
+  var DEFAULT_DEBOUNCE_INTERVAL = 500;
+
+  /**
+   * Height of the calendar pane used to check if the pane is going outside the boundary of
+   * the viewport. See calendar.scss for how $md-calendar-height is computed; an extra 20px is
+   * also added to space the pane away from the exact edge of the screen.
+   *
+   *  This is computed statically now, but can be changed to be measured if the circumstances
+   *  of calendar sizing are changed.
+   */
+  var CALENDAR_PANE_HEIGHT = 368;
+
+  /**
+   * Width of the calendar pane used to check if the pane is going outside the boundary of
+   * the viewport. See calendar.scss for how $md-calendar-width is computed; an extra 20px is
+   * also added to space the pane away from the exact edge of the screen.
+   *
+   *  This is computed statically now, but can be changed to be measured if the circumstances
+   *  of calendar sizing are changed.
+   */
+  var CALENDAR_PANE_WIDTH = 360;
+
+  /**
+   * Controller for md-datepicker.
+   *
+   * @ngInject @constructor
+   */
+  function DatePickerCtrl($scope, $element, $attrs, $compile, $timeout, $window,
+      $mdConstant, $mdTheming, $mdUtil, $mdDateLocale, $$mdDateUtil, $$rAF) {
+    /** @final */
+    this.$compile = $compile;
+
+    /** @final */
+    this.$timeout = $timeout;
+
+    /** @final */
+    this.$window = $window;
+
+    /** @final */
+    this.dateLocale = $mdDateLocale;
+
+    /** @final */
+    this.dateUtil = $$mdDateUtil;
+
+    /** @final */
+    this.$mdConstant = $mdConstant;
+
+    /* @final */
+    this.$mdUtil = $mdUtil;
+
+    /** @final */
+    this.$$rAF = $$rAF;
+
+    /**
+     * The root document element. This is used for attaching a top-level click handler to
+     * close the calendar panel when a click outside said panel occurs. We use `documentElement`
+     * instead of body because, when scrolling is disabled, some browsers consider the body element
+     * to be completely off the screen and propagate events directly to the html element.
+     * @type {!angular.JQLite}
+     */
+    this.documentElement = angular.element(document.documentElement);
+
+    /** @type {!angular.NgModelController} */
+    this.ngModelCtrl = null;
+
+    /** @type {HTMLInputElement} */
+    this.inputElement = $element[0].querySelector('input');
+
+    /** @final {!angular.JQLite} */
+    this.ngInputElement = angular.element(this.inputElement);
+
+    /** @type {HTMLElement} */
+    this.inputContainer = $element[0].querySelector('.md-datepicker-input-container');
+
+    /** @type {HTMLElement} Floating calendar pane. */
+    this.calendarPane = $element[0].querySelector('.md-datepicker-calendar-pane');
+
+    /** @type {HTMLElement} Calendar icon button. */
+    this.calendarButton = $element[0].querySelector('.md-datepicker-button');
+
+    /**
+     * Element covering everything but the input in the top of the floating calendar pane.
+     * @type {HTMLElement}
+     */
+    this.inputMask = $element[0].querySelector('.md-datepicker-input-mask-opaque');
+
+    /** @final {!angular.JQLite} */
+    this.$element = $element;
+
+    /** @final {!angular.Attributes} */
+    this.$attrs = $attrs;
+
+    /** @final {!angular.Scope} */
+    this.$scope = $scope;
+
+    /** @type {Date} */
+    this.date = null;
+
+    /** @type {boolean} */
+    this.isFocused = false;
+
+    /** @type {boolean} */
+    this.isDisabled;
+    this.setDisabled($element[0].disabled || angular.isString($attrs.disabled));
+
+    /** @type {boolean} Whether the date-picker's calendar pane is open. */
+    this.isCalendarOpen = false;
+
+    /** @type {boolean} Whether the calendar should open when the input is focused. */
+    this.openOnFocus = $attrs.hasOwnProperty('mdOpenOnFocus');
+
+    /**
+     * Element from which the calendar pane was opened. Keep track of this so that we can return
+     * focus to it when the pane is closed.
+     * @type {HTMLElement}
+     */
+    this.calendarPaneOpenedFrom = null;
+
+    this.calendarPane.id = 'md-date-pane' + $mdUtil.nextUid();
+
+    $mdTheming($element);
+
+    /** Pre-bound click handler is saved so that the event listener can be removed. */
+    this.bodyClickHandler = angular.bind(this, this.handleBodyClick);
+
+    /** Pre-bound resize handler so that the event listener can be removed. */
+    this.windowResizeHandler = $mdUtil.debounce(angular.bind(this, this.closeCalendarPane), 100);
+
+    // Unless the user specifies so, the datepicker should not be a tab stop.
+    // This is necessary because ngAria might add a tabindex to anything with an ng-model
+    // (based on whether or not the user has turned that particular feature on/off).
+    if (!$attrs.tabindex) {
+      $element.attr('tabindex', '-1');
+    }
+
+    this.installPropertyInterceptors();
+    this.attachChangeListeners();
+    this.attachInteractionListeners();
+
+    var self = this;
+    $scope.$on('$destroy', function() {
+      self.detachCalendarPane();
+    });
+  }
+  DatePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$compile", "$timeout", "$window", "$mdConstant", "$mdTheming", "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF"];
+
+  /**
+   * Sets up the controller's reference to ngModelController.
+   * @param {!angular.NgModelController} ngModelCtrl
+   */
+  DatePickerCtrl.prototype.configureNgModel = function(ngModelCtrl) {
+    this.ngModelCtrl = ngModelCtrl;
+
+    var self = this;
+    ngModelCtrl.$render = function() {
+      var value = self.ngModelCtrl.$viewValue;
+
+      if (value && !(value instanceof Date)) {
+        throw Error('The ng-model for md-datepicker must be a Date instance. ' +
+            'Currently the model is a: ' + (typeof value));
+      }
+
+      self.date = value;
+      self.inputElement.value = self.dateLocale.formatDate(value);
+      self.resizeInputElement();
+      self.updateErrorState();
+    };
+  };
+
+  /**
+   * Attach event listeners for both the text input and the md-calendar.
+   * Events are used instead of ng-model so that updates don't infinitely update the other
+   * on a change. This should also be more performant than using a $watch.
+   */
+  DatePickerCtrl.prototype.attachChangeListeners = function() {
+    var self = this;
+
+    self.$scope.$on('md-calendar-change', function(event, date) {
+      self.ngModelCtrl.$setViewValue(date);
+      self.date = date;
+      self.inputElement.value = self.dateLocale.formatDate(date);
+      self.closeCalendarPane();
+      self.resizeInputElement();
+      self.updateErrorState();
+    });
+
+    self.ngInputElement.on('input', angular.bind(self, self.resizeInputElement));
+    // TODO(chenmike): Add ability for users to specify this interval.
+    self.ngInputElement.on('input', self.$mdUtil.debounce(self.handleInputEvent,
+        DEFAULT_DEBOUNCE_INTERVAL, self));
+  };
+
+  /** Attach event listeners for user interaction. */
+  DatePickerCtrl.prototype.attachInteractionListeners = function() {
+    var self = this;
+    var $scope = this.$scope;
+    var keyCodes = this.$mdConstant.KEY_CODE;
+
+    // Add event listener through angular so that we can triggerHandler in unit tests.
+    self.ngInputElement.on('keydown', function(event) {
+      if (event.altKey && event.keyCode == keyCodes.DOWN_ARROW) {
+        self.openCalendarPane(event);
+        $scope.$digest();
+      }
+    });
+
+    if (self.openOnFocus) {
+      self.ngInputElement.on('focus', angular.bind(self, self.openCalendarPane));
+    }
+
+    $scope.$on('md-calendar-close', function() {
+      self.closeCalendarPane();
+    });
+  };
+
+  /**
+   * Capture properties set to the date-picker and imperitively handle internal changes.
+   * This is done to avoid setting up additional $watches.
+   */
+  DatePickerCtrl.prototype.installPropertyInterceptors = function() {
+    var self = this;
+
+    if (this.$attrs.ngDisabled) {
+      // The expression is to be evaluated against the directive element's scope and not
+      // the directive's isolate scope.
+      var scope = this.$scope.$parent;
+
+      if (scope) {
+        scope.$watch(this.$attrs.ngDisabled, function(isDisabled) {
+          self.setDisabled(isDisabled);
+        });
+      }
+    }
+
+    Object.defineProperty(this, 'placeholder', {
+      get: function() { return self.inputElement.placeholder; },
+      set: function(value) { self.inputElement.placeholder = value || ''; }
+    });
+  };
+
+  /**
+   * Sets whether the date-picker is disabled.
+   * @param {boolean} isDisabled
+   */
+  DatePickerCtrl.prototype.setDisabled = function(isDisabled) {
+    this.isDisabled = isDisabled;
+    this.inputElement.disabled = isDisabled;
+    this.calendarButton.disabled = isDisabled;
+  };
+
+  /**
+   * Sets the custom ngModel.$error flags to be consumed by ngMessages. Flags are:
+   *   - mindate: whether the selected date is before the minimum date.
+   *   - maxdate: whether the selected flag is after the maximum date.
+   *   - filtered: whether the selected date is allowed by the custom filtering function.
+   *   - valid: whether the entered text input is a valid date
+   *
+   * The 'required' flag is handled automatically by ngModel.
+   *
+   * @param {Date=} opt_date Date to check. If not given, defaults to the datepicker's model value.
+   */
+  DatePickerCtrl.prototype.updateErrorState = function(opt_date) {
+    var date = opt_date || this.date;
+
+    // Clear any existing errors to get rid of anything that's no longer relevant.
+    this.clearErrorState();
+
+    if (this.dateUtil.isValidDate(date)) {
+      // Force all dates to midnight in order to ignore the time portion.
+      date = this.dateUtil.createDateAtMidnight(date);
+
+      if (this.dateUtil.isValidDate(this.minDate)) {
+        var minDate = this.dateUtil.createDateAtMidnight(this.minDate);
+        this.ngModelCtrl.$setValidity('mindate', date >= minDate);
+      }
+
+      if (this.dateUtil.isValidDate(this.maxDate)) {
+        var maxDate = this.dateUtil.createDateAtMidnight(this.maxDate);
+        this.ngModelCtrl.$setValidity('maxdate', date <= maxDate);
+      }
+
+      if (angular.isFunction(this.dateFilter)) {
+        this.ngModelCtrl.$setValidity('filtered', this.dateFilter(date));
+      }
+    } else {
+      // The date is seen as "not a valid date" if there is *something* set
+      // (i.e.., not null or undefined), but that something isn't a valid date.
+      this.ngModelCtrl.$setValidity('valid', date == null);
+    }
+
+    // TODO(jelbourn): Change this to classList.toggle when we stop using PhantomJS in unit tests
+    // because it doesn't conform to the DOMTokenList spec.
+    // See https://github.com/ariya/phantomjs/issues/12782.
+    if (!this.ngModelCtrl.$valid) {
+      this.inputContainer.classList.add(INVALID_CLASS);
+    }
+  };
+
+  /** Clears any error flags set by `updateErrorState`. */
+  DatePickerCtrl.prototype.clearErrorState = function() {
+    this.inputContainer.classList.remove(INVALID_CLASS);
+    ['mindate', 'maxdate', 'filtered', 'valid'].forEach(function(field) {
+      this.ngModelCtrl.$setValidity(field, true);
+    }, this);
+  };
+
+  /** Resizes the input element based on the size of its content. */
+  DatePickerCtrl.prototype.resizeInputElement = function() {
+    this.inputElement.size = this.inputElement.value.length + EXTRA_INPUT_SIZE;
+  };
+
+  /**
+   * Sets the model value if the user input is a valid date.
+   * Adds an invalid class to the input element if not.
+   */
+  DatePickerCtrl.prototype.handleInputEvent = function() {
+    var inputString = this.inputElement.value;
+    var parsedDate = inputString ? this.dateLocale.parseDate(inputString) : null;
+    this.dateUtil.setDateTimeToMidnight(parsedDate);
+
+    // An input string is valid if it is either empty (representing no date)
+    // or if it parses to a valid date that the user is allowed to select.
+    var isValidInput = inputString == '' || (
+      this.dateUtil.isValidDate(parsedDate) &&
+      this.dateLocale.isDateComplete(inputString) &&
+      this.isDateEnabled(parsedDate)
+    );
+
+    // The datepicker's model is only updated when there is a valid input.
+    if (isValidInput) {
+      this.ngModelCtrl.$setViewValue(parsedDate);
+      this.date = parsedDate;
+    }
+
+    this.updateErrorState(parsedDate);
+  };
+
+  /**
+   * Check whether date is in range and enabled
+   * @param {Date=} opt_date
+   * @return {boolean} Whether the date is enabled.
+   */
+  DatePickerCtrl.prototype.isDateEnabled = function(opt_date) {
+    return this.dateUtil.isDateWithinRange(opt_date, this.minDate, this.maxDate) &&
+          (!angular.isFunction(this.dateFilter) || this.dateFilter(opt_date));
+  };
+
+  /** Position and attach the floating calendar to the document. */
+  DatePickerCtrl.prototype.attachCalendarPane = function() {
+    var calendarPane = this.calendarPane;
+    calendarPane.style.transform = '';
+    this.$element.addClass('md-datepicker-open');
+
+    var elementRect = this.inputContainer.getBoundingClientRect();
+    var bodyRect = document.body.getBoundingClientRect();
+
+    // Check to see if the calendar pane would go off the screen. If so, adjust position
+    // accordingly to keep it within the viewport.
+    var paneTop = elementRect.top - bodyRect.top;
+    var paneLeft = elementRect.left - bodyRect.left;
+
+    // If ng-material has disabled body scrolling (for example, if a dialog is open),
+    // then it's possible that the already-scrolled body has a negative top/left. In this case,
+    // we want to treat the "real" top as (0 - bodyRect.top). In a normal scrolling situation,
+    // though, the top of the viewport should just be the body's scroll position.
+    var viewportTop = (bodyRect.top < 0 && document.body.scrollTop == 0) ?
+        -bodyRect.top :
+        document.body.scrollTop;
+
+    var viewportLeft = (bodyRect.left < 0 && document.body.scrollLeft == 0) ?
+        -bodyRect.left :
+        document.body.scrollLeft;
+
+    var viewportBottom = viewportTop + this.$window.innerHeight;
+    var viewportRight = viewportLeft + this.$window.innerWidth;
+
+    // If the right edge of the pane would be off the screen and shifting it left by the
+    // difference would not go past the left edge of the screen. If the calendar pane is too
+    // big to fit on the screen at all, move it to the left of the screen and scale the entire
+    // element down to fit.
+    if (paneLeft + CALENDAR_PANE_WIDTH > viewportRight) {
+      if (viewportRight - CALENDAR_PANE_WIDTH > 0) {
+        paneLeft = viewportRight - CALENDAR_PANE_WIDTH;
+      } else {
+        paneLeft = viewportLeft;
+        var scale = this.$window.innerWidth / CALENDAR_PANE_WIDTH;
+        calendarPane.style.transform = 'scale(' + scale + ')';
+      }
+
+      calendarPane.classList.add('md-datepicker-pos-adjusted');
+    }
+
+    // If the bottom edge of the pane would be off the screen and shifting it up by the
+    // difference would not go past the top edge of the screen.
+    if (paneTop + CALENDAR_PANE_HEIGHT > viewportBottom &&
+        viewportBottom - CALENDAR_PANE_HEIGHT > viewportTop) {
+      paneTop = viewportBottom - CALENDAR_PANE_HEIGHT;
+      calendarPane.classList.add('md-datepicker-pos-adjusted');
+    }
+
+    calendarPane.style.left = paneLeft + 'px';
+    calendarPane.style.top = paneTop + 'px';
+    document.body.appendChild(calendarPane);
+
+    // The top of the calendar pane is a transparent box that shows the text input underneath.
+    // Since the pane is floating, though, the page underneath the pane *adjacent* to the input is
+    // also shown unless we cover it up. The inputMask does this by filling up the remaining space
+    // based on the width of the input.
+    this.inputMask.style.left = elementRect.width + 'px';
+
+    // Add CSS class after one frame to trigger open animation.
+    this.$$rAF(function() {
+      calendarPane.classList.add('md-pane-open');
+    });
+  };
+
+  /** Detach the floating calendar pane from the document. */
+  DatePickerCtrl.prototype.detachCalendarPane = function() {
+    this.$element.removeClass('md-datepicker-open');
+    this.calendarPane.classList.remove('md-pane-open');
+    this.calendarPane.classList.remove('md-datepicker-pos-adjusted');
+
+    if (this.isCalendarOpen) {
+      this.$mdUtil.enableScrolling();
+    }
+
+    if (this.calendarPane.parentNode) {
+      // Use native DOM removal because we do not want any of the angular state of this element
+      // to be disposed.
+      this.calendarPane.parentNode.removeChild(this.calendarPane);
+    }
+  };
+
+  /**
+   * Open the floating calendar pane.
+   * @param {Event} event
+   */
+  DatePickerCtrl.prototype.openCalendarPane = function(event) {
+    if (!this.isCalendarOpen && !this.isDisabled) {
+      this.isCalendarOpen = true;
+      this.calendarPaneOpenedFrom = event.target;
+
+      // Because the calendar pane is attached directly to the body, it is possible that the
+      // rest of the component (input, etc) is in a different scrolling container, such as
+      // an md-content. This means that, if the container is scrolled, the pane would remain
+      // stationary. To remedy this, we disable scrolling while the calendar pane is open, which
+      // also matches the native behavior for things like `<select>` on Mac and Windows.
+      this.$mdUtil.disableScrollAround(this.calendarPane);
+
+      this.attachCalendarPane();
+      this.focusCalendar();
+
+      // Attach click listener inside of a timeout because, if this open call was triggered by a
+      // click, we don't want it to be immediately propogated up to the body and handled.
+      var self = this;
+      this.$mdUtil.nextTick(function() {
+        // Use 'touchstart` in addition to click in order to work on iOS Safari, where click
+        // events aren't propogated under most circumstances.
+        // See http://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
+        self.documentElement.on('click touchstart', self.bodyClickHandler);
+      }, false);
+
+      window.addEventListener('resize', this.windowResizeHandler);
+    }
+  };
+
+  /** Close the floating calendar pane. */
+  DatePickerCtrl.prototype.closeCalendarPane = function() {
+    if (this.isCalendarOpen) {
+      var self = this;
+
+      self.calendarPaneOpenedFrom.focus();
+      self.calendarPaneOpenedFrom = null;
+
+      if (self.openOnFocus) {
+        // Ensures that all focus events have fired before detaching
+        // the calendar. Prevents the calendar from reopening immediately
+        // in IE when md-open-on-focus is set. Also it needs to trigger
+        // a digest, in order to prevent issues where the calendar wasn't
+        // showing up on the next open.
+        this.$mdUtil.nextTick(detach);
+      } else {
+        detach();
+      }
+    }
+
+    function detach() {
+      self.detachCalendarPane();
+      self.isCalendarOpen = false;
+      self.ngModelCtrl.$setTouched();
+
+      self.documentElement.off('click touchstart', self.bodyClickHandler);
+      window.removeEventListener('resize', self.windowResizeHandler);
+    }
+  };
+
+  /** Gets the controller instance for the calendar in the floating pane. */
+  DatePickerCtrl.prototype.getCalendarCtrl = function() {
+    return angular.element(this.calendarPane.querySelector('md-calendar')).controller('mdCalendar');
+  };
+
+  /** Focus the calendar in the floating pane. */
+  DatePickerCtrl.prototype.focusCalendar = function() {
+    // Use a timeout in order to allow the calendar to be rendered, as it is gated behind an ng-if.
+    var self = this;
+    this.$mdUtil.nextTick(function() {
+      self.getCalendarCtrl().focus();
+    }, false);
+  };
+
+  /**
+   * Sets whether the input is currently focused.
+   * @param {boolean} isFocused
+   */
+  DatePickerCtrl.prototype.setFocused = function(isFocused) {
+    if (!isFocused) {
+      this.ngModelCtrl.$setTouched();
+    }
+    this.isFocused = isFocused;
+  };
+
+  /**
+   * Handles a click on the document body when the floating calendar pane is open.
+   * Closes the floating calendar pane if the click is not inside of it.
+   * @param {MouseEvent} event
+   */
+  DatePickerCtrl.prototype.handleBodyClick = function(event) {
+    if (this.isCalendarOpen) {
+      // TODO(jelbourn): way want to also include the md-datepicker itself in this check.
+      var closest = this.$mdUtil.getClosest;
+      var isInCalendar = closest(event.target, 'md-calendar-year') || closest(event.target, 'md-calendar-month');
+
+      if (!isInCalendar) {
+        this.closeCalendarPane();
+      }
+
+      this.$scope.$digest();
+    }
+  };
+})();
+
+})();
+(function(){
+"use strict";
+
+(function() {
+  'use strict';
+
+  /**
+   * Utility for performing date calculations to facilitate operation of the calendar and
+   * datepicker.
+   */
+  angular.module('material.components.datepicker').factory('$$mdDateUtil', function() {
+    return {
+      getFirstDateOfMonth: getFirstDateOfMonth,
+      getNumberOfDaysInMonth: getNumberOfDaysInMonth,
+      getDateInNextMonth: getDateInNextMonth,
+      getDateInPreviousMonth: getDateInPreviousMonth,
+      isInNextMonth: isInNextMonth,
+      isInPreviousMonth: isInPreviousMonth,
+      getDateMidpoint: getDateMidpoint,
+      isSameMonthAndYear: isSameMonthAndYear,
+      getWeekOfMonth: getWeekOfMonth,
+      incrementDays: incrementDays,
+      incrementMonths: incrementMonths,
+      getLastDateOfMonth: getLastDateOfMonth,
+      isSameDay: isSameDay,
+      getMonthDistance: getMonthDistance,
+      isValidDate: isValidDate,
+      setDateTimeToMidnight: setDateTimeToMidnight,
+      createDateAtMidnight: createDateAtMidnight,
+      isDateWithinRange: isDateWithinRange,
+      incrementYears: incrementYears,
+      getYearDistance: getYearDistance,
+      clampDate: clampDate,
+      getTimestampFromNode: getTimestampFromNode
+    };
+
+    /**
+     * Gets the first day of the month for the given date's month.
+     * @param {Date} date
+     * @returns {Date}
+     */
+    function getFirstDateOfMonth(date) {
+      return new Date(date.getFullYear(), date.getMonth(), 1);
+    }
+
+    /**
+     * Gets the number of days in the month for the given date's month.
+     * @param date
+     * @returns {number}
+     */
+    function getNumberOfDaysInMonth(date) {
+      return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    }
+
+    /**
+     * Get an arbitrary date in the month after the given date's month.
+     * @param date
+     * @returns {Date}
+     */
+    function getDateInNextMonth(date) {
+      return new Date(date.getFullYear(), date.getMonth() + 1, 1);
+    }
+
+    /**
+     * Get an arbitrary date in the month before the given date's month.
+     * @param date
+     * @returns {Date}
+     */
+    function getDateInPreviousMonth(date) {
+      return new Date(date.getFullYear(), date.getMonth() - 1, 1);
+    }
+
+    /**
+     * Gets whether two dates have the same month and year.
+     * @param {Date} d1
+     * @param {Date} d2
+     * @returns {boolean}
+     */
+    function isSameMonthAndYear(d1, d2) {
+      return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth();
+    }
+
+    /**
+     * Gets whether two dates are the same day (not not necesarily the same time).
+     * @param {Date} d1
+     * @param {Date} d2
+     * @returns {boolean}
+     */
+    function isSameDay(d1, d2) {
+      return d1.getDate() == d2.getDate() && isSameMonthAndYear(d1, d2);
+    }
+
+    /**
+     * Gets whether a date is in the month immediately after some date.
+     * @param {Date} startDate The date from which to compare.
+     * @param {Date} endDate The date to check.
+     * @returns {boolean}
+     */
+    function isInNextMonth(startDate, endDate) {
+      var nextMonth = getDateInNextMonth(startDate);
+      return isSameMonthAndYear(nextMonth, endDate);
+    }
+
+    /**
+     * Gets whether a date is in the month immediately before some date.
+     * @param {Date} startDate The date from which to compare.
+     * @param {Date} endDate The date to check.
+     * @returns {boolean}
+     */
+    function isInPreviousMonth(startDate, endDate) {
+      var previousMonth = getDateInPreviousMonth(startDate);
+      return isSameMonthAndYear(endDate, previousMonth);
+    }
+
+    /**
+     * Gets the midpoint between two dates.
+     * @param {Date} d1
+     * @param {Date} d2
+     * @returns {Date}
+     */
+    function getDateMidpoint(d1, d2) {
+      return createDateAtMidnight((d1.getTime() + d2.getTime()) / 2);
+    }
+
+    /**
+     * Gets the week of the month that a given date occurs in.
+     * @param {Date} date
+     * @returns {number} Index of the week of the month (zero-based).
+     */
+    function getWeekOfMonth(date) {
+      var firstDayOfMonth = getFirstDateOfMonth(date);
+      return Math.floor((firstDayOfMonth.getDay() + date.getDate() - 1) / 7);
+    }
+
+    /**
+     * Gets a new date incremented by the given number of days. Number of days can be negative.
+     * @param {Date} date
+     * @param {number} numberOfDays
+     * @returns {Date}
+     */
+    function incrementDays(date, numberOfDays) {
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate() + numberOfDays);
+    }
+
+    /**
+     * Gets a new date incremented by the given number of months. Number of months can be negative.
+     * If the date of the given month does not match the target month, the date will be set to the
+     * last day of the month.
+     * @param {Date} date
+     * @param {number} numberOfMonths
+     * @returns {Date}
+     */
+    function incrementMonths(date, numberOfMonths) {
+      // If the same date in the target month does not actually exist, the Date object will
+      // automatically advance *another* month by the number of missing days.
+      // For example, if you try to go from Jan. 30 to Feb. 30, you'll end up on March 2.
+      // So, we check if the month overflowed and go to the last day of the target month instead.
+      var dateInTargetMonth = new Date(date.getFullYear(), date.getMonth() + numberOfMonths, 1);
+      var numberOfDaysInMonth = getNumberOfDaysInMonth(dateInTargetMonth);
+      if (numberOfDaysInMonth < date.getDate()) {
+        dateInTargetMonth.setDate(numberOfDaysInMonth);
+      } else {
+        dateInTargetMonth.setDate(date.getDate());
+      }
+
+      return dateInTargetMonth;
+    }
+
+    /**
+     * Get the integer distance between two months. This *only* considers the month and year
+     * portion of the Date instances.
+     *
+     * @param {Date} start
+     * @param {Date} end
+     * @returns {number} Number of months between `start` and `end`. If `end` is before `start`
+     *     chronologically, this number will be negative.
+     */
+    function getMonthDistance(start, end) {
+      return (12 * (end.getFullYear() - start.getFullYear())) + (end.getMonth() - start.getMonth());
+    }
+
+    /**
+     * Gets the last day of the month for the given date.
+     * @param {Date} date
+     * @returns {Date}
+     */
+    function getLastDateOfMonth(date) {
+      return new Date(date.getFullYear(), date.getMonth(), getNumberOfDaysInMonth(date));
+    }
+
+    /**
+     * Checks whether a date is valid.
+     * @param {Date} date
+     * @return {boolean} Whether the date is a valid Date.
+     */
+    function isValidDate(date) {
+      return date != null && date.getTime && !isNaN(date.getTime());
+    }
+
+    /**
+     * Sets a date's time to midnight.
+     * @param {Date} date
+     */
+    function setDateTimeToMidnight(date) {
+      if (isValidDate(date)) {
+        date.setHours(0, 0, 0, 0);
+      }
+    }
+
+    /**
+     * Creates a date with the time set to midnight.
+     * Drop-in replacement for two forms of the Date constructor:
+     * 1. No argument for Date representing now.
+     * 2. Single-argument value representing number of seconds since Unix Epoch
+     * or a Date object.
+     * @param {number|Date=} opt_value
+     * @return {Date} New date with time set to midnight.
+     */
+    function createDateAtMidnight(opt_value) {
+      var date;
+      if (angular.isUndefined(opt_value)) {
+        date = new Date();
+      } else {
+        date = new Date(opt_value);
+      }
+      setDateTimeToMidnight(date);
+      return date;
+    }
+
+     /**
+      * Checks if a date is within a min and max range, ignoring the time component.
+      * If minDate or maxDate are not dates, they are ignored.
+      * @param {Date} date
+      * @param {Date} minDate
+      * @param {Date} maxDate
+      */
+     function isDateWithinRange(date, minDate, maxDate) {
+       var dateAtMidnight = createDateAtMidnight(date);
+       var minDateAtMidnight = isValidDate(minDate) ? createDateAtMidnight(minDate) : null;
+       var maxDateAtMidnight = isValidDate(maxDate) ? createDateAtMidnight(maxDate) : null;
+       return (!minDateAtMidnight || minDateAtMidnight <= dateAtMidnight) &&
+           (!maxDateAtMidnight || maxDateAtMidnight >= dateAtMidnight);
+     }
+
+    /**
+     * Gets a new date incremented by the given number of years. Number of years can be negative.
+     * See `incrementMonths` for notes on overflow for specific dates.
+     * @param {Date} date
+     * @param {number} numberOfYears
+     * @returns {Date}
+     */
+     function incrementYears(date, numberOfYears) {
+       return incrementMonths(date, numberOfYears * 12);
+     }
+
+     /**
+      * Get the integer distance between two years. This *only* considers the year portion of the
+      * Date instances.
+      *
+      * @param {Date} start
+      * @param {Date} end
+      * @returns {number} Number of months between `start` and `end`. If `end` is before `start`
+      *     chronologically, this number will be negative.
+      */
+     function getYearDistance(start, end) {
+       return end.getFullYear() - start.getFullYear();
+     }
+
+     /**
+      * Clamps a date between a minimum and a maximum date.
+      * @param {Date} date Date to be clamped
+      * @param {Date=} minDate Minimum date
+      * @param {Date=} maxDate Maximum date
+      * @return {Date}
+      */
+     function clampDate(date, minDate, maxDate) {
+       var boundDate = date;
+       if (minDate && date < minDate) {
+         boundDate = new Date(minDate.getTime());
+       }
+       if (maxDate && date > maxDate) {
+         boundDate = new Date(maxDate.getTime());
+       }
+       return boundDate;
+     }
+
+     /**
+      * Extracts and parses the timestamp from a DOM node.
+      * @param  {HTMLElement} node Node from which the timestamp will be extracted.
+      * @return {number} Time since epoch.
+      */
+     function getTimestampFromNode(node) {
+       if (node && node.hasAttribute('data-timestamp')) {
+         return Number(node.getAttribute('data-timestamp'));
+       }
+     }
+
+  });
+})();
 
 })();
 (function(){
@@ -8448,7 +10723,6 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming", "$mdDialog"];
  * - $mdDialogPreset#htmlContent(string) - Sets the prompt message as HTML. Requires ngSanitize
  *     module to be loaded. HTML is not run through Angular's compiler.
  * - $mdDialogPreset#placeholder(string) - Sets the placeholder text for the input.
- * - $mdDialogPreset#initialValue(string) - Sets the initial value for the prompt input.
  * - $mdDialogPreset#ok(string) - Sets the prompt "Okay" button text.
  * - $mdDialogPreset#cancel(string) - Sets the prompt "Cancel" button text.
  * - $mdDialogPreset#theme(string) - Sets the theme of the prompt dialog.
@@ -8555,8 +10829,8 @@ function MdDialogProvider($$interimElementProvider) {
   // Elements to capture and redirect focus when the user presses tab at the dialog boundary.
   var topFocusTrap, bottomFocusTrap;
 
-  advancedDialogOptions.$inject = ["$mdDialog", "$mdConstant"];
-  dialogDefaultOptions.$inject = ["$mdDialog", "$mdAria", "$mdUtil", "$mdConstant", "$animate", "$document", "$window", "$rootElement", "$log", "$injector", "$mdTheming"];
+  advancedDialogOptions.$inject = ["$mdDialog", "$mdTheming", "$mdConstant"];
+  dialogDefaultOptions.$inject = ["$mdDialog", "$mdAria", "$mdUtil", "$mdConstant", "$animate", "$document", "$window", "$rootElement", "$log", "$injector"];
   return $$interimElementProvider('$mdDialog')
     .setDefaults({
       methods: ['disableParentScroll', 'hasBackdrop', 'clickOutsideToClose', 'escapeToClose',
@@ -8574,13 +10848,13 @@ function MdDialogProvider($$interimElementProvider) {
       options: advancedDialogOptions
     })
     .addPreset('prompt', {
-      methods: ['title', 'htmlContent', 'textContent', 'initialValue', 'content', 'placeholder', 'ariaLabel',
+      methods: ['title', 'htmlContent', 'textContent', 'content', 'placeholder', 'ariaLabel',
           'ok', 'cancel', 'theme', 'css'],
       options: advancedDialogOptions
     });
 
   /* @ngInject */
-  function advancedDialogOptions($mdDialog, $mdConstant) {
+  function advancedDialogOptions($mdDialog, $mdTheming, $mdConstant) {
     return {
       template: [
         '<md-dialog md-theme="{{ dialog.theme }}" aria-label="{{ dialog.ariaLabel }}" ng-class="dialog.css">',
@@ -8592,8 +10866,7 @@ function MdDialogProvider($$interimElementProvider) {
         '      <p>{{::dialog.mdTextContent}}</p>',
         '    </div>',
         '    <md-input-container md-no-float ng-if="::dialog.$type == \'prompt\'" class="md-prompt-input-container">',
-        '      <input ng-keypress="dialog.keypress($event)" md-autofocus ng-model="dialog.result" ' +
-        '             placeholder="{{::dialog.placeholder}}">',
+        '      <input ng-keypress="dialog.keypress($event)" md-autofocus ng-model="dialog.result" placeholder="{{::dialog.placeholder}}">',
         '    </md-input-container>',
         '  </md-dialog-content>',
         '  <md-dialog-actions>',
@@ -8608,14 +10881,8 @@ function MdDialogProvider($$interimElementProvider) {
         '</md-dialog>'
       ].join('').replace(/\s\s+/g, ''),
       controller: function mdDialogCtrl() {
-        var isPrompt = this.$type == 'prompt';
-
-        if (isPrompt && this.initialValue) {
-          this.result = this.initialValue;
-        }
-
         this.hide = function() {
-          $mdDialog.hide(isPrompt ? this.result : true);
+          $mdDialog.hide(this.$type === 'prompt' ? this.result : true);
         };
         this.abort = function() {
           $mdDialog.cancel();
@@ -8628,17 +10895,15 @@ function MdDialogProvider($$interimElementProvider) {
       },
       controllerAs: 'dialog',
       bindToController: true,
+      theme: $mdTheming.defaultTheme()
     };
   }
 
   /* @ngInject */
-  function dialogDefaultOptions($mdDialog, $mdAria, $mdUtil, $mdConstant, $animate, $document, $window, $rootElement,
-                                $log, $injector, $mdTheming) {
-
+  function dialogDefaultOptions($mdDialog, $mdAria, $mdUtil, $mdConstant, $animate, $document, $window, $rootElement, $log, $injector) {
     return {
       hasBackdrop: true,
       isolateScope: true,
-      onCompiling: beforeCompile,
       onShow: onShow,
       onShowing: beforeShow,
       onRemove: onRemove,
@@ -8672,15 +10937,7 @@ function MdDialogProvider($$interimElementProvider) {
       }
     };
 
-    function beforeCompile(options) {
-      // Automatically apply the theme, if the user didn't specify a theme explicitly.
-      // Those option changes need to be done, before the compilation has started, because otherwise
-      // the option changes will be not available in the $mdCompilers locales.
-      detectTheming(options);
-    }
-
     function beforeShow(scope, element, options, controller) {
-
       if (controller) {
         controller.mdHtmlContent = controller.htmlContent || options.htmlContent || '';
         controller.mdTextContent = controller.textContent || options.textContent ||
@@ -8836,22 +11093,6 @@ function MdDialogProvider($$interimElementProvider) {
       }
     }
 
-    function detectTheming(options) {
-      // Only detect the theming, if the developer didn't specify the theme specifically.
-      if (options.theme) return;
-
-      options.theme = $mdTheming.defaultTheme();
-
-      if (options.targetEvent && options.targetEvent.target) {
-        var targetEl = angular.element(options.targetEvent.target);
-
-        // Once the user specifies a targetEvent, we will automatically try to find the correct
-        // nested theme.
-        options.theme = (targetEl.controller('mdTheme') || {}).$mdTheme || options.theme;
-      }
-
-    }
-
     /**
      * Capture originator/trigger/from/to element information (if available)
      * and the parent container for the dialog; defaults to the $rootElement
@@ -8871,7 +11112,6 @@ function MdDialogProvider($$interimElementProvider) {
           if ( options.targetEvent ) {
             options.origin   = getBoundingClientRect(options.targetEvent.target, options.origin);
           }
-
 
           /**
            * Identify the bounding RECT for the target element
@@ -9254,22 +11494,6 @@ MdDialogProvider.$inject = ["$$interimElementProvider"];
 
 /**
  * @ngdoc module
- * @name material.components.datepicker
- * @description Module for the datepicker component.
- */
-
-angular.module('material.components.datepicker', [
-  'material.core',
-  'material.components.icon',
-  'material.components.virtualRepeat'
-]);
-
-})();
-(function(){
-"use strict";
-
-/**
- * @ngdoc module
  * @name material.components.divider
  * @description Divider module!
  */
@@ -9334,7 +11558,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
    * @usage
    * See the `<md-fab-speed-dial>` or `<md-fab-toolbar>` directives for example usage.
    */
-  function MdFabActionsDirective($mdUtil) {
+  function MdFabActionsDirective() {
     return {
       restrict: 'E',
 
@@ -9343,7 +11567,11 @@ MdDividerDirective.$inject = ["$mdTheming"];
       compile: function(element, attributes) {
         var children = element.children();
 
-        var hasNgRepeat = $mdUtil.prefixer().hasAttribute(children, 'ng-repeat');
+        var hasNgRepeat = false;
+
+        angular.forEach(['', 'data-', 'x-'], function(prefix) {
+          hasNgRepeat = hasNgRepeat || (children.attr(prefix + 'ng-repeat') ? true : false);
+        });
 
         // Support both ng-repeat and static content
         if (hasNgRepeat) {
@@ -9355,7 +11583,6 @@ MdDividerDirective.$inject = ["$mdTheming"];
       }
     }
   }
-  MdFabActionsDirective.$inject = ["$mdUtil"];
 
 })();
 
@@ -9684,6 +11911,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
     .module('material.components.fabSpeedDial', [
       'material.core',
       'material.components.fabShared',
+      'material.components.fabTrigger',
       'material.components.fabActions'
     ])
 
@@ -9937,6 +12165,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
     .module('material.components.fabToolbar', [
       'material.core',
       'material.components.fabShared',
+      'material.components.fabTrigger',
       'material.components.fabActions'
     ])
 
@@ -10122,6 +12351,47 @@ MdDividerDirective.$inject = ["$mdTheming"];
     }
   }
 })();
+
+})();
+(function(){
+"use strict";
+
+(function() {
+  'use strict';
+
+  /**
+   * @ngdoc module
+   * @name material.components.fabTrigger
+   */
+  angular
+    .module('material.components.fabTrigger', ['material.core'])
+    .directive('mdFabTrigger', MdFabTriggerDirective);
+
+  /**
+   * @ngdoc directive
+   * @name mdFabTrigger
+   * @module material.components.fabSpeedDial
+   *
+   * @restrict E
+   *
+   * @description
+   * The `<md-fab-trigger>` directive is used inside of a `<md-fab-speed-dial>` or
+   * `<md-fab-toolbar>` directive to mark an element (or elements) as the trigger and setup the
+   * proper event listeners.
+   *
+   * @usage
+   * See the `<md-fab-speed-dial>` or `<md-fab-toolbar>` directives for example usage.
+   */
+  function MdFabTriggerDirective() {
+    // TODO: Remove this completely?
+    return {
+      restrict: 'E',
+
+      require: ['^?mdFabSpeedDial', '^?mdFabToolbar']
+    };
+  }
+})();
+
 
 })();
 (function(){
@@ -11181,9 +13451,6 @@ function labelDirective() {
  * - If a `textarea` has the `rows` attribute, it will treat the `rows` as the minimum height and will
  * continue growing as the user types. For example a textarea with `rows="3"` will be 3 lines of text
  * high initially. If no rows are specified, the directive defaults to 1.
- * - The textarea's height gets set on initialization, as well as while the user is typing. In certain situations
- * (e.g. while animating) the directive might have been initialized, before the element got it's final height. In
- * those cases, you can trigger a resize manually by broadcasting a `md-resize-textarea` event on the scope.
  * - If you wan't a `textarea` to stop growing at a certain point, you can specify the `max-rows` attribute.
  * - The textarea's bottom border acts as a handle which users can drag, in order to resize the element vertically.
  * Once the user has resized a `textarea`, the autogrowing functionality becomes disabled. If you don't want a
@@ -11204,7 +13471,6 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
     var ngModelCtrl = ctrls[1] || $mdUtil.fakeNgModel();
     var isReadonly = angular.isDefined(attr.readonly);
     var mdNoAsterisk = $mdUtil.parseAttributeBoolean(attr.mdNoAsterisk);
-    var tagName = element[0].tagName.toLowerCase();
 
 
     if (!containerCtrl) return;
@@ -11223,7 +13489,7 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
     element.after(errorsSpacer);
 
     if (!containerCtrl.label) {
-      $mdAria.expect(element, 'aria-label', attr.placeholder);
+      $mdAria.expect(element, 'aria-label', element.attr('placeholder'));
     }
 
     element.addClass('md-input');
@@ -11231,13 +13497,7 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
       element.attr('id', 'input_' + $mdUtil.nextUid());
     }
 
-    // This works around a Webkit issue where number inputs, placed in a flexbox, that have
-    // a `min` and `max` will collapse to about 1/3 of their proper width. Please check #7349
-    // for more info. Also note that we don't override the `step` if the user has specified it,
-    // in order to prevent some unexpected behaviour.
-    if (tagName === 'input' && attr.type === 'number' && attr.min && attr.max && !attr.step) {
-      element.attr('step', 'any');
-    } else if (tagName === 'textarea') {
+    if (element[0].tagName.toLowerCase() === 'textarea') {
       setupTextarea();
     }
 
@@ -11249,16 +13509,17 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
     }
 
     var isErrorGetter = containerCtrl.isErrorGetter || function() {
-      return ngModelCtrl.$invalid && (ngModelCtrl.$touched || $mdUtil.isParentFormSubmitted(element));
+      return ngModelCtrl.$invalid && (ngModelCtrl.$touched || isParentFormSubmitted());
+    };
+
+    var isParentFormSubmitted = function () {
+      var parent = $mdUtil.getClosest(element, 'form');
+      var form = parent ? angular.element(parent).controller('form') : null;
+
+      return form ? form.$submitted : false;
     };
 
     scope.$watch(isErrorGetter, containerCtrl.setInvalid);
-
-    // When the developer uses the ngValue directive for the input, we have to observe the attribute, because
-    // Angular's ngValue directive is just setting the `value` attribute.
-    if (attr.ngValue) {
-      attr.$observe('value', inputCheckValue);
-    }
 
     ngModelCtrl.$parsers.push(ngModelPipelineCheckValue);
     ngModelCtrl.$formatters.push(ngModelPipelineCheckValue);
@@ -11280,13 +13541,18 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
         });
     }
 
+    //ngModelCtrl.$setTouched();
+    //if( ngModelCtrl.$invalid ) containerCtrl.setInvalid();
+
     scope.$on('$destroy', function() {
       containerCtrl.setFocused(false);
       containerCtrl.setHasValue(false);
       containerCtrl.input = null;
     });
 
-    /** Gets run through ngModel's pipeline and set the `has-value` class on the container. */
+    /**
+     *
+     */
     function ngModelPipelineCheckValue(arg) {
       containerCtrl.setHasValue(!ngModelCtrl.$isEmpty(arg));
       return arg;
@@ -11319,7 +13585,6 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
       // so rows attribute will take precedence if present
       var minRows = attr.hasOwnProperty('rows') ? parseInt(attr.rows) : NaN;
       var maxRows = attr.hasOwnProperty('maxRows') ? parseInt(attr.maxRows) : NaN;
-      var scopeResizeListener = scope.$on('md-resize-textarea', growTextarea);
       var lineHeight = null;
       var node = element[0];
 
@@ -11403,7 +13668,6 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
 
         isAutogrowing = false;
         angular.element($window).off('resize', growTextarea);
-        scopeResizeListener && scopeResizeListener();
         element
           .attr('md-no-autogrow', '')
           .off('input', growTextarea);
@@ -11467,7 +13731,7 @@ function inputTextareaDirective($mdUtil, $window, $mdAria, $timeout, $mdGesture)
 
         function onDrag(ev) {
           if (!isDragging) return;
-          element.css('height', startHeight + (ev.pointer.y - dragStart) - $mdUtil.scrollTop() + 'px');
+          element.css('height', startHeight + (ev.pointer.y - dragStart) + 'px');
         }
 
         function onDragEnd(ev) {
@@ -11566,65 +13830,49 @@ function mdMaxlengthDirective($animate, $mdUtil) {
 
       // Force the value into a string since it may be a number,
       // which does not have a length property.
-      charCountEl.text(String(element.val() || value || '').length + ' / ' + maxlength);
+      charCountEl.text(String(element.val() || value || '').length + '/' + maxlength);
       return value;
     }
   }
 }
 mdMaxlengthDirective.$inject = ["$animate", "$mdUtil"];
 
-function placeholderDirective($compile) {
+function placeholderDirective($log) {
   return {
     restrict: 'A',
     require: '^^?mdInputContainer',
     priority: 200,
-    link: {
-      // Note that we need to do this in the pre-link, as opposed to the post link, if we want to
-      // support data bindings in the placeholder. This is necessary, because we have a case where
-      // we transfer the placeholder value to the `<label>` and we remove it from the original `<input>`.
-      // If we did this in the post-link, Angular would have set up the observers already and would be
-      // re-adding the attribute, even though we removed it from the element.
-      pre: preLink
-    }
+    link: postLink
   };
 
-  function preLink(scope, element, attr, inputContainer) {
+  function postLink(scope, element, attr, inputContainer) {
     // If there is no input container, just return
     if (!inputContainer) return;
 
     var label = inputContainer.element.find('label');
-    var noFloat = inputContainer.element.attr('md-no-float');
+    var hasNoFloat = angular.isDefined(inputContainer.element.attr('md-no-float'));
 
     // If we have a label, or they specify the md-no-float attribute, just return
-    if ((label && label.length) || noFloat === '' || scope.$eval(noFloat)) {
+    if ((label && label.length) || hasNoFloat) {
       // Add a placeholder class so we can target it in the CSS
       inputContainer.setHasPlaceholder(true);
       return;
     }
 
-    // md-select handles placeholders on it's own
-    if (element[0].nodeName != 'MD-SELECT') {
-      // Move the placeholder expression to the label
-      var newLabel = angular.element('<label ng-click="delegateClick()" tabindex="-1">' + attr.placeholder + '</label>');
+    // Otherwise, grab/remove the placeholder
+    var placeholderText = attr.placeholder;
+    element.removeAttr('placeholder');
 
-      // Note that we unset it via `attr`, in order to get Angular
-      // to remove any observers that it might have set up. Otherwise
-      // the attribute will be added on the next digest.
-      attr.$set('placeholder', null);
+    // And add the placeholder text as a separate label
+    if (inputContainer.input && inputContainer.input[0].nodeName != 'MD-SELECT') {
+      var placeholder = '<label ng-click="delegateClick()">' + placeholderText + '</label>';
 
-      // We need to compile the label manually in case it has any bindings.
-      // A gotcha here is that we first add the element to the DOM and we compile
-      // it later. This is necessary, because if we compile the element beforehand,
-      // it won't be able to find the `mdInputContainer` controller.
-      inputContainer.element
-        .addClass('md-icon-float')
-        .prepend(newLabel);
-
-      $compile(newLabel)(scope);
+      inputContainer.element.addClass('md-icon-float');
+      inputContainer.element.prepend(placeholder);
     }
   }
 }
-placeholderDirective.$inject = ["$compile"];
+placeholderDirective.$inject = ["$log"];
 
 /**
  * @ngdoc directive
@@ -11985,172 +14233,38 @@ mdListDirective.$inject = ["$mdTheming"];
  * @restrict E
  *
  * @description
- * A `md-list-item` element can be used to represent some information in a row.<br/>
+ * The `<md-list-item>` directive is a container intended for row items in a `<md-list>` container.
+ * The `md-2-line` and `md-3-line` classes can be added to a `<md-list-item>`
+ * to increase the height with 22px and 40px respectively.
+ *
+ * ## CSS
+ * `.md-avatar` - class for image avatars
+ *
+ * `.md-avatar-icon` - class for icon avatars
+ *
+ * `.md-offset` - on content without an avatar
  *
  * @usage
- * ### Single Row Item
  * <hljs lang="html">
- *   <md-list-item>
- *     <span>Single Row Item</span>
- *   </md-list-item>
+ *  <md-list>
+ *    <md-list-item>
+ *      <img class="md-avatar" ng-src="path/to/img"/>
+ *      <span>Item content in list</span>
+ *    </md-list-item>
+ *    <md-list-item>
+ *      <md-icon class="md-avatar-icon" md-svg-icon="communication:phone"></md-icon>
+ *      <span>Item content in list</span>
+ *    </md-list-item>
+ *  </md-list>
  * </hljs>
  *
- * ### Multiple Lines
- * By using the following markup, you will be able to have two lines inside of one `md-list-item`.
- *
- * <hljs lang="html">
- *   <md-list-item class="md-2-line">
- *     <div class="md-list-item-text" layout="column">
- *       <p>First Line</p>
- *       <p>Second Line</p>
- *     </div>
- *   </md-list-item>
- * </hljs>
- *
- * It is also possible to have three lines inside of one list item.
- *
- * <hljs lang="html">
- *   <md-list-item class="md-3-line">
- *     <div class="md-list-item-text" layout="column">
- *       <p>First Line</p>
- *       <p>Second Line</p>
- *       <p>Third Line</p>
- *     </div>
- *   </md-list-item>
- * </hljs>
- *
- * ### Secondary Items
- * Secondary items are elements which will be aligned at the end of the `md-list-item`.
- *
- * <hljs lang="html">
- *   <md-list-item>
- *     <span>Single Row Item</span>
- *     <md-button class="md-secondary">
- *       Secondary Button
- *     </md-button>
- *   </md-list-item>
- * </hljs>
- *
- * It also possible to have multiple secondary items inside of one `md-list-item`.
- *
- * <hljs lang="html">
- *   <md-list-item>
- *     <span>Single Row Item</span>
- *     <md-button class="md-secondary">First Button</md-button>
- *     <md-button class="md-secondary">Second Button</md-button>
- *   </md-list-item>
- * </hljs>
- *
- * ### Proxy Item
- * Proxies are elements, which will execute their specific action on click<br/>
- * Currently supported proxy items are
- * - `md-checkbox` (Toggle)
- * - `md-switch` (Toggle)
- * - `md-menu` (Open)
- *
- * This means, when using a supported proxy item inside of `md-list-item`, the list item will
- * become clickable and executes the associated action of the proxy element on click.
- *
- * <hljs lang="html">
- *   <md-list-item>
- *     <span>First Line</span>
- *     <md-checkbox class="md-secondary"></md-checkbox>
- *   </md-list-item>
- * </hljs>
- *
- * The `md-checkbox` element will be automatically detected as a proxy element and will toggle on click.
- *
- * <hljs lang="html">
- *   <md-list-item>
- *     <span>First Line</span>
- *     <md-switch class="md-secondary"></md-switch>
- *   </md-list-item>
- * </hljs>
- *
- * The recognized `md-switch` will toggle its state, when the user clicks on the `md-list-item`.
- *
- * It is also possible to have a `md-menu` inside of a `md-list-item`.
- * <hljs lang="html">
- *   <md-list-item>
- *     <p>Click anywhere to fire the secondary action</p>
- *     <md-menu class="md-secondary">
- *       <md-button class="md-icon-button">
- *         <md-icon md-svg-icon="communication:message"></md-icon>
- *       </md-button>
- *       <md-menu-content width="4">
- *         <md-menu-item>
- *           <md-button>
- *             Redial
- *           </md-button>
- *         </md-menu-item>
- *         <md-menu-item>
- *           <md-button>
- *             Check voicemail
- *           </md-button>
- *         </md-menu-item>
- *         <md-menu-divider></md-menu-divider>
- *         <md-menu-item>
- *           <md-button>
- *             Notifications
- *           </md-button>
- *         </md-menu-item>
- *       </md-menu-content>
- *     </md-menu>
- *   </md-list-item>
- * </hljs>
- *
- * The menu will automatically open, when the users clicks on the `md-list-item`.<br/>
- *
- * If the developer didn't specify any position mode on the menu, the `md-list-item` will automatically detect the
- * position mode and applies it to the `md-menu`.
- *
- * ### Avatars
- * Sometimes you may want to have some avatars inside of the `md-list-item `.<br/>
- * You are able to create a optimized icon for the list item, by applying the `.md-avatar` class on the `<img>` element.
- *
- * <hljs lang="html">
- *   <md-list-item>
- *     <img src="my-avatar.png" class="md-avatar">
- *     <span>Alan Turing</span>
- * </hljs>
- *
- * When using `<md-icon>` for an avater, you have to use the `.md-avatar-icon` class.
- * <hljs lang="html">
- *   <md-list-item>
- *     <md-icon class="md-avatar-icon" md-svg-icon="avatars:timothy"></md-icon>
- *     <span>Timothy Kopra</span>
- *   </md-list-item>
- * </hljs>
- *
- * In cases, you have a `md-list-item`, which doesn't have any avatar,
- * but you want to align it with the other avatar items, you have to use the `.md-offset` class.
- *
- * <hljs lang="html">
- *   <md-list-item class="md-offset">
- *     <span>Jon Doe</span>
- *   </md-list-item>
- * </hljs>
- *
- * ### DOM modification
- * The `md-list-item` component automatically detects if the list item should be clickable.
- *
- * ---
- * If the `md-list-item` is clickable, we wrap all content inside of a `<div>` and create
- * an overlaying button, which will will execute the given actions (like `ng-href`, `ng-click`)
- *
- * We create an overlaying button, instead of wrapping all content inside of the button,
- * because otherwise some elements may not be clickable inside of the button.
- *
- * ---
- * When using a secondary item inside of your list item, the `md-list-item` component will automatically create
- * a secondary container at the end of the `md-list-item`, which contains all secondary items.
- *
- * The secondary item container is not static, because otherwise the overflow will not work properly on the
- * list item.
- *
+ * _**Note:** We automatically apply special styling when the inner contents are wrapped inside
+ * of a `<md-button>` tag. This styling is automatically ignored for `class="md-secondary"` buttons
+ * and you can include a class of `class="md-exclude"` if you need to use a non-secondary button
+ * that is inside the list, but does not wrap the contents._
  */
 function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
-  var proxiedTypes = ['md-checkbox', 'md-switch', 'md-menu'];
+  var proxiedTypes = ['md-checkbox', 'md-switch'];
   return {
     restrict: 'E',
     controller: 'MdListController',
@@ -12179,13 +14293,9 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
           tEl.addClass('_md-no-proxy');
         }
       }
-
       wrapSecondaryItems();
       setupToggleAria();
 
-      if (hasProxiedElement && proxyElement.nodeName === "MD-MENU") {
-        setupProxiedMenu();
-      }
 
       function setupToggleAria() {
         var toggleTypes = ['md-switch', 'md-checkbox'];
@@ -12199,35 +14309,6 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
               toggle.setAttribute('aria-label', 'Toggle ' + p.textContent);
             }
           }
-        }
-      }
-
-      function setupProxiedMenu() {
-        var menuEl = angular.element(proxyElement);
-
-        var isEndAligned = menuEl.parent().hasClass('_md-secondary-container') ||
-                           proxyElement.parentNode.firstElementChild !== proxyElement;
-
-        var xAxisPosition = 'left';
-
-        if (isEndAligned) {
-          // When the proxy item is aligned at the end of the list, we have to set the origin to the end.
-          xAxisPosition = 'right';
-        }
-        
-        // Set the position mode / origin of the proxied menu.
-        if (!menuEl.attr('md-position-mode')) {
-          menuEl.attr('md-position-mode', xAxisPosition + ' target');
-        }
-
-        // Apply menu open binding to menu button
-        var menuOpenButton = menuEl.children().eq(0);
-        if (!hasClickEvent(menuOpenButton[0])) {
-          menuOpenButton.attr('ng-click', '$mdOpenMenu($event)');
-        }
-
-        if (!menuOpenButton.attr('aria-label')) {
-          menuOpenButton.attr('aria-label', 'Open List Menu');
         }
       }
 
@@ -12250,15 +14331,7 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
           );
 
           buttonWrap[0].setAttribute('aria-label', tEl[0].textContent);
-
           copyAttributes(tEl[0], buttonWrap[0]);
-
-          // We allow developers to specify the `md-no-focus` class, to disable the focus style
-          // on the button executor. Once more classes should be forwarded, we should probably make the
-          // class forward more generic.
-          if (tEl.hasClass('md-no-focus')) {
-            buttonWrap.addClass('md-no-focus');
-          }
 
           // Append the button wrap before our list-item content, because it will overlay in relative.
           itemContainer.prepend(buttonWrap);
@@ -12302,10 +14375,8 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
       }
 
       function copyAttributes(item, wrapper) {
-        var copiedAttrs = $mdUtil.prefixer([
-          'ng-if', 'ng-click', 'ng-dblclick', 'aria-label', 'ng-disabled', 'ui-sref',
-          'href', 'ng-href', 'target', 'ng-attr-ui-sref', 'ui-sref-opts'
-        ]);
+        var copiedAttrs = ['ng-if', 'ng-click', 'ng-dblclick', 'aria-label', 'ng-disabled',
+          'ui-sref', 'href', 'ng-href', 'target', 'ng-attr-ui-sref', 'ui-sref-opts'];
 
         angular.forEach(copiedAttrs, function(attr) {
           if (item.hasAttribute(attr)) {
@@ -12383,7 +14454,6 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
 
           }
         }
-
         function computeClickable() {
           if (proxies.length == 1 || hasClick) {
             $element.addClass('md-clickable');
@@ -12420,9 +14490,6 @@ function mdListItemDirective($mdAria, $mdConstant, $mdUtil, $timeout) {
             if (!parentButton && clickChild.contains(e.target)) {
               angular.forEach(proxies, function(proxy) {
                 if (e.target !== proxy && !proxy.contains(e.target)) {
-                  if (proxy.nodeName === 'MD-MENU') {
-                    proxy = proxy.children[0];
-                  }
                   angular.element(proxy).triggerHandler('click');
                 }
               });
@@ -12700,26 +14767,28 @@ MdNavBarController.prototype._initTabs = function() {
  * @private
  */
 MdNavBarController.prototype._updateTabs = function(newValue, oldValue) {
-  var self = this;
   var tabs = this._getTabs();
-  var oldIndex = -1;
-  var newIndex = -1;
-  var newTab = this._getTabByName(newValue);
-  var oldTab = this._getTabByName(oldValue);
 
-  if (oldTab) {
-    oldTab.setSelected(false);
-    oldIndex = tabs.indexOf(oldTab);
+  var oldIndex;
+  if (oldValue) {
+    var oldTab = this._getTabByName(oldValue);
+    if (oldTab) {
+      oldTab.setSelected(false);
+      oldIndex = tabs.indexOf(oldTab);
+    }
   }
 
-  if (newTab) {
-    newTab.setSelected(true);
-    newIndex = tabs.indexOf(newTab);
+  if (newValue) {
+    var tab = this._getTabByName(newValue);
+    if (tab) {
+      tab.setSelected(true);
+      var newIndex = tabs.indexOf(tab);
+      var self = this;
+      this._$timeout(function() {
+        self._updateInkBarStyles(tab, newIndex, oldIndex);
+      });
+    }
   }
-
-  this._$timeout(function() {
-    self._updateInkBarStyles(newTab, newIndex, oldIndex);
-  });
 };
 
 /**
@@ -12727,17 +14796,12 @@ MdNavBarController.prototype._updateTabs = function(newValue, oldValue) {
  * @private
  */
 MdNavBarController.prototype._updateInkBarStyles = function(tab, newIndex, oldIndex) {
+  var tabEl = tab.getButtonEl();
+  var left = tabEl.offsetLeft;
+
   this._inkbar.toggleClass('_md-left', newIndex < oldIndex)
       .toggleClass('_md-right', newIndex > oldIndex);
-
-  this._inkbar.css({display: newIndex < 0 ? 'none' : ''});
-
-  if(tab){
-    var tabEl = tab.getButtonEl();
-    var left = tabEl.offsetLeft;
-
-    this._inkbar.css({left: left + 'px', width: tabEl.offsetWidth + 'px'});
-  }
+  this._inkbar.css({left: left + 'px', width: tabEl.offsetWidth + 'px'});
 };
 
 /**
@@ -15978,10 +18042,8 @@ angular.module('material.components.select', [
  * @description Displays a select box, bound to an ng-model.
  *
  * When the select is required and uses a floating label, then the label will automatically contain
- * an asterisk (`*`). This behavior can be disabled by using the `md-no-asterisk` attribute.
- * 
- * By default, the select will display with an underline to match other form elements. This can be
- * disabled by applying the `md-no-underline` CSS class.
+ * an asterisk (`*`).<br/>
+ * This behavior can be disabled by using the `md-no-asterisk` attribute.
  *
  * @param {expression} ng-model The model!
  * @param {boolean=} multiple Whether it's multiple.
@@ -16133,7 +18195,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
     if (attr.name) {
       var autofillClone = angular.element('<select class="_md-visually-hidden">');
       autofillClone.attr({
-        'name': attr.name,
+        'name': '.' + attr.name,
+        'ng-model': attr.ngModel,
         'aria-hidden': 'true',
         'tabindex': '-1'
       });
@@ -16144,15 +18207,6 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         else if (el.hasAttribute('value')) newEl.attr('value', el.getAttribute('value'));
         autofillClone.append(newEl);
       });
-
-      // Adds an extra option that will hold the selected value for the
-      // cases where the select is a part of a non-angular form. This can be done with a ng-model,
-      // however if the `md-option` is being `ng-repeat`-ed, Angular seems to insert a similar
-      // `option` node, but with a value of `? string: <value> ?` which would then get submitted.
-      // This also goes around having to prepend a dot to the name attribute.
-      autofillClone.append(
-        '<option ng-value="' + attr.ngModel + '" selected></option>'
-      );
 
       element.parent().append(autofillClone);
     }
@@ -16189,8 +18243,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
 
       if (containerCtrl) {
         var isErrorGetter = containerCtrl.isErrorGetter || function() {
-          return ngModelCtrl.$invalid && (ngModelCtrl.$touched || $mdUtil.isParentFormSubmitted(element));
-        };
+            return ngModelCtrl.$invalid && ngModelCtrl.$touched;
+          };
 
         if (containerCtrl.input) {
           // We ignore inputs that are in the md-select-header (one
@@ -16212,6 +18266,16 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
 
       findSelectContainer();
       $mdTheming(element);
+
+      if (attr.name && formCtrl) {
+        var selectEl = element.parent()[0].querySelector('select[name=".' + attr.name + '"]');
+        $mdUtil.nextTick(function() {
+          var controller = angular.element(selectEl).controller('ngModel');
+          if (controller) {
+            formCtrl.$removeControl(controller);
+          }
+        });
+      }
 
       if (formCtrl && angular.isDefined(attr.multiple)) {
         $mdUtil.nextTick(function() {
@@ -16274,9 +18338,11 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
       if (!isReadonly) {
         element
           .on('focus', function(ev) {
-            // Always focus the container (if we have one) so floating labels and other styles are
-            // applied properly
-            containerCtrl && containerCtrl.setFocused(true);
+            // only set focus on if we don't currently have a selected value. This avoids the "bounce"
+            // on the label transition because the focus will immediately switch to the open menu.
+            if (containerCtrl && containerCtrl.element.hasClass('md-input-has-value')) {
+              containerCtrl.setFocused(true);
+            }
           });
 
         // Attach before ngModel's blur listener to stop propagation of blur event
@@ -16284,12 +18350,12 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         element.on('blur', function(event) {
           if (untouched) {
             untouched = false;
-            if (selectScope._mdSelectIsOpen) {
+            if (selectScope.isOpen) {
               event.stopImmediatePropagation();
             }
           }
 
-          if (selectScope._mdSelectIsOpen) return;
+          if (selectScope.isOpen) return;
           containerCtrl && containerCtrl.setFocused(false);
           inputCheckValue();
         });
@@ -16450,7 +18516,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
           if (e.keyCode <= 90 && e.keyCode >= 31) {
             e.preventDefault();
             var node = selectMenuCtrl.optNodeForKeyboardSearch(e);
-            if (!node || node.hasAttribute('disabled')) return;
+            if (!node) return;
             var optionCtrl = angular.element(node).controller('mdOption');
             if (!selectMenuCtrl.isMultiple) {
               selectMenuCtrl.deselect(Object.keys(selectMenuCtrl.selected)[0]);
@@ -16462,7 +18528,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
       }
 
       function openSelect() {
-        selectScope._mdSelectIsOpen = true;
+        selectScope.isOpen = true;
         element.attr('aria-expanded', 'true');
 
         $mdSelect.show({
@@ -16476,7 +18542,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
           hasBackdrop: true,
           loadingAsync: attr.mdOnOpen ? scope.$eval(attr.mdOnOpen) || true : false
         }).finally(function() {
-          selectScope._mdSelectIsOpen = false;
+          selectScope.isOpen = false;
           element.focus();
           element.attr('aria-expanded', 'false');
           ngModelCtrl.$setTouched();
@@ -16667,21 +18733,9 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
           // container remove it from the HTML string, before returning the string.
           mapFn = function(el) {
             var html = el.innerHTML;
-
             // Remove the ripple container from the selected option, copying it would cause a CSP violation.
             var rippleContainer = el.querySelector('.md-ripple-container');
-            if (rippleContainer) {
-              html = html.replace(rippleContainer.outerHTML, '');
-            }
-
-            // Remove the checkbox container, because it will cause the label to wrap inside of the placeholder.
-            // It should be not displayed inside of the label element.
-            var checkboxContainer = el.querySelector('._md-container');
-            if (checkboxContainer) {
-              html = html.replace(checkboxContainer.outerHTML, '');
-            }
-
-            return html;
+            return rippleContainer ? html.replace(rippleContainer.outerHTML, '') : html;
           };
         } else if (mode == 'aria') {
           mapFn = function(el) { return el.hasAttribute('aria-label') ? el.getAttribute('aria-label') : el.textContent; };
@@ -17434,7 +19488,7 @@ function SelectProvider($$interimElementProvider) {
         }
       }
 
-      var left, top, transformOrigin, minWidth, fontSize;
+      var left, top, transformOrigin, minWidth;
       if (shouldOpenAroundTarget) {
         left = targetRect.left;
         top = targetRect.top + targetRect.height;
@@ -17452,8 +19506,6 @@ function SelectProvider($$interimElementProvider) {
           (centeredRect.top + centeredRect.height / 2 - contentNode.scrollTop) + 'px 0px';
 
         minWidth = Math.min(targetRect.width + centeredRect.paddingLeft + centeredRect.paddingRight, maxWidth);
-
-        fontSize = window.getComputedStyle(targetNode)['font-size'];
       }
 
       // Keep left and top within the window
@@ -17467,8 +19519,7 @@ function SelectProvider($$interimElementProvider) {
           styles: {
             left: Math.floor(clamp(bounds.left, left, bounds.right - containerRect.width)),
             top: Math.floor(clamp(bounds.top, top, bounds.bottom - containerRect.height)),
-            'min-width': minWidth,
-            'font-size': fontSize
+            'min-width': minWidth
           }
         },
         dropDown: {
@@ -17806,7 +19857,7 @@ function SidenavFocusDirective() {
  * the sidenav 'locks open': it falls into the content's flow instead
  * of appearing over it. This overrides the `md-is-open` attribute.
  *
-* The $mdMedia() service is exposed to the is-locked-open attribute, which
+* The $mdMedia() servic  e is exposed to the is-locked-open attribute, which
  * can be given a media query or one of the `sm`, `gt-sm`, `md`, `gt-md`, `lg` or `gt-lg` presets.
  * Examples:
  *
@@ -17835,7 +19886,6 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $animate, 
     var lastParentOverFlow;
     var backdrop;
     var triggeringElement = null;
-    var previousContainerStyles;
     var promise = $q.when(true);
     var isLockedOpenParsed = $parse(attr.mdIsLockedOpen);
     var isLocked = function() {
@@ -17904,8 +19954,6 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $animate, 
       parent[isOpen ? 'on' : 'off']('keydown', onKeyDown);
       if (backdrop) backdrop[isOpen ? 'on' : 'off']('click', close);
 
-      var restorePositioning = updateContainerPositions(parent, isOpen);
-
       if ( isOpen ) {
         // Capture upon opening..
         triggeringElement = $document[0].activeElement;
@@ -17914,60 +19962,16 @@ function SidenavDirective($mdMedia, $mdUtil, $mdConstant, $mdTheming, $animate, 
       disableParentScroll(isOpen);
 
       return promise = $q.all([
-        isOpen && backdrop ? $animate.enter(backdrop, parent) : backdrop ?
-                             $animate.leave(backdrop) : $q.when(true),
-        $animate[isOpen ? 'removeClass' : 'addClass'](element, '_md-closed')
-      ]).then(function() {
-        // Perform focus when animations are ALL done...
-        if (scope.isOpen) {
-          focusEl && focusEl.focus();
-        }
-
-        // Restores the positioning on the sidenav and backdrop.
-        restorePositioning && restorePositioning();
-      });
-    }
-
-    function updateContainerPositions(parent, willOpen) {
-      var drawerEl = element[0];
-      var scrollTop = parent[0].scrollTop;
-
-      if (willOpen && scrollTop) {
-        previousContainerStyles = {
-          top: drawerEl.style.top,
-          bottom: drawerEl.style.bottom,
-          height: drawerEl.style.height
-        };
-
-        // When the parent is scrolled down, then we want to be able to show the sidenav at the current scroll
-        // position. We're moving the sidenav down to the correct scroll position and apply the height of the
-        // parent, to increase the performance. Using 100% as height, will impact the performance heavily.
-        var positionStyle = {
-          top: scrollTop + 'px',
-          bottom: 'initial',
-          height: parent[0].clientHeight + 'px'
-        };
-
-        // Apply the new position styles to the sidenav and backdrop.
-        element.css(positionStyle);
-        backdrop.css(positionStyle);
-      }
-
-      // When the sidenav is closing and we have previous defined container styles,
-      // then we return a restore function, which resets the sidenav and backdrop.
-      if (!willOpen && previousContainerStyles) {
-        return function() {
-          drawerEl.style.top = previousContainerStyles.top;
-          drawerEl.style.bottom = previousContainerStyles.bottom;
-          drawerEl.style.height = previousContainerStyles.height;
-
-          backdrop[0].style.top = null;
-          backdrop[0].style.bottom = null;
-          backdrop[0].style.height = null;
-
-          previousContainerStyles = null;
-        }
-      }
+                isOpen && backdrop ? $animate.enter(backdrop, parent) :
+                backdrop ? $animate.leave(backdrop) : $q.when(true),
+                $animate[isOpen ? 'removeClass' : 'addClass'](element, '_md-closed')
+              ])
+              .then(function() {
+                // Perform focus when animations are ALL done...
+                if (scope.isOpen) {
+                  focusEl && focusEl.focus();
+                }
+              });
     }
 
     /**
@@ -18108,7 +20112,6 @@ function SliderContainerDirective() {
     controller: function () {},
     compile: function (elem) {
       var slider = elem.find('md-slider');
-
       if (!slider) {
         return;
       }
@@ -18539,13 +20542,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       var thumbPosition = (percent * 100) + '%';
       var activeTrackPercent = invert ? (1 - percent) * 100 + '%' : thumbPosition;
 
-      if (vertical) {
-        thumbContainer.css('bottom', thumbPosition);
-      }
-      else {
-        $mdUtil.bidiProperty(thumbContainer, 'left', 'right', thumbPosition);
-      }
-
+      thumbContainer.css(vertical ? 'bottom' : 'left', thumbPosition);
       
       activeTrack.css(vertical ? 'height' : 'width', activeTrackPercent);
 
@@ -18651,10 +20648,6 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       var size = vertical ? sliderDimensions.height : sliderDimensions.width;
       var calc = (position - offset) / size;
 
-      if (!vertical && $mdUtil.bidi() === 'rtl') {
-        calc = 1 - calc;
-      }
-
       return Math.max(0, Math.min(1, vertical ? 1 - calc : calc));
     }
 
@@ -18750,9 +20743,9 @@ angular
  *     when the user starts scrolling past the original element.
  *     If not provided, it will use the result of `element.clone()` and compiles it in the given scope.
  */
-function MdSticky($mdConstant, $$rAF, $mdUtil, $compile) {
+function MdSticky($document, $mdConstant, $$rAF, $mdUtil, $compile) {
 
-  var browserStickySupport = $mdUtil.checkStickySupport();
+  var browserStickySupport = checkStickySupport();
 
   /**
    * Registers an element as sticky, used internally by directives to register themselves
@@ -18997,6 +20990,23 @@ function MdSticky($mdConstant, $$rAF, $mdUtil, $compile) {
     }
   }
 
+  // Function to check for browser sticky support
+  function checkStickySupport($el) {
+    var stickyProp;
+    var testEl = angular.element('<div>');
+    $document[0].body.appendChild(testEl[0]);
+
+    var stickyProps = ['sticky', '-webkit-sticky'];
+    for (var i = 0; i < stickyProps.length; ++i) {
+      testEl.css({position: stickyProps[i], top: 0, 'z-index': 2});
+      if (testEl.css('position') == stickyProps[i]) {
+        stickyProp = stickyProps[i];
+        break;
+      }
+    }
+    testEl.remove();
+    return stickyProp;
+  }
 
   // Android 4.4 don't accurately give scroll events.
   // To fix this problem, we setup a fake scroll event. We say:
@@ -19029,7 +21039,7 @@ function MdSticky($mdConstant, $$rAF, $mdUtil, $compile) {
   }
 
 }
-MdSticky.$inject = ["$mdConstant", "$$rAF", "$mdUtil", "$compile"];
+MdSticky.$inject = ["$document", "$mdConstant", "$$rAF", "$mdUtil", "$compile"];
 
 })();
 (function(){
@@ -19114,17 +21124,13 @@ function MdSubheaderDirective($mdSticky, $compile, $mdTheming, $mdUtil) {
           // compiled clone below will only be a comment tag (since they replace their elements with
           // a comment) which cannot be properly passed to the $mdSticky; so we wrap it in our own
           // DIV to ensure we have something $mdSticky can use
-          var wrapper = $compile('<div class="_md-subheader-wrapper">' + outerHTML + '</div>')(scope);
+          var wrapper = angular.element('<div class="_md-subheader-wrapper">' + outerHTML + '</div>');
 
-          // Delay initialization until after any `ng-if`/`ng-repeat`/etc has finished before
-          // attempting to create the clone
-          $mdUtil.nextTick(function() {
-            // Append our transcluded clone into the wrapper.
-            // We don't have to recompile the element again, because the clone is already
-            // compiled in it's transclusion scope. If we recompile the outerHTML of the new clone, we would lose
-            // our ngIf's and other previous registered bindings / properties.
-            getContent(wrapper).append(clone);
-          });
+          // Immediately append our transcluded clone into the wrapper.
+          // We don't have to recompile the element again, because the clone is already
+          // compiled in it's transclusion scope. If we recompile the outerHTML of the new clone, we would lose
+          // our ngIf's and other previous registered bindings / properties.
+          getContent(wrapper).append(clone);
 
           // Make the element sticky and provide the stickyClone our self, to avoid recompilation of the subheader
           // element.
@@ -19289,7 +21295,7 @@ angular.module('material.components.switch', [
  *
  * </hljs>
  */
-function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdGesture, $timeout) {
+function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdGesture) {
   var checkboxDirective = mdCheckboxDirective[0];
 
   return {
@@ -19381,17 +21387,11 @@ function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdG
 
         // We changed if there is no distance (this is a click a click),
         // or if the drag distance is >50% of the total.
-        var isChanged = ngModel.$viewValue ? drag.translate < 0.5 : drag.translate > 0.5;
+        var isChanged = ngModel.$viewValue ? drag.translate > 0.5 : drag.translate < 0.5;
         if (isChanged) {
           applyModelValue(!ngModel.$viewValue);
         }
         drag = null;
-
-        // Wait for incoming mouse click
-        scope.skipToggle = true;
-        $timeout(function() {
-          scope.skipToggle = false;
-        }, 1);
       }
 
       function applyModelValue(newValue) {
@@ -19406,7 +21406,7 @@ function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdG
 
 
 }
-MdSwitch.$inject = ["mdCheckboxDirective", "$mdUtil", "$mdConstant", "$parse", "$$rAF", "$mdGesture", "$timeout"];
+MdSwitch.$inject = ["mdCheckboxDirective", "$mdUtil", "$mdConstant", "$parse", "$$rAF", "$mdGesture"];
 
 })();
 (function(){
@@ -19965,10 +21965,6 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
       element.addClass('_md');     // private md component indicator for styling
       $mdTheming(element);
 
-      $mdUtil.nextTick(function () {
-        element.addClass('_md-toolbar-transitions');     // adding toolbar transitions after digest
-      }, false);
-
       if (angular.isDefined(attr.mdScrollShrink)) {
         setupScrollShrink();
       }
@@ -20163,23 +22159,20 @@ angular
  * </hljs>
  *
  * @param {expression=} md-visible Boolean bound to whether the tooltip is currently visible.
- * @param {number=} md-delay How many milliseconds to wait to show the tooltip after the user focuses, hovers, or touches the
- * parent. Defaults to 0ms on non-touch devices and 75ms on touch.
+ * @param {number=} md-delay How many milliseconds to wait to show the tooltip after the user focuses, hovers, or touches the parent. Defaults to 0ms.
  * @param {boolean=} md-autohide If present or provided with a boolean value, the tooltip will hide on mouse leave, regardless of focus
  * @param {string=} md-direction Which direction would you like the tooltip to go?  Supports left, right, top, and bottom.  Defaults to bottom.
  */
 function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdTheming, $rootElement,
-                            $animate, $q, $interpolate) {
+                            $animate, $q) {
 
-  var ENTER_EVENTS = 'focus touchstart mouseenter';
-  var LEAVE_EVENTS = 'blur touchcancel mouseleave';
   var TOOLTIP_SHOW_DELAY = 0;
   var TOOLTIP_WINDOW_EDGE_SPACE = 8;
 
   return {
     restrict: 'E',
     transclude: true,
-    priority: 210, // Before ngAria
+    priority:210, // Before ngAria
     template: '<div class="_md-content _md" ng-transclude></div>',
     scope: {
       delay: '=?mdDelay',
@@ -20288,22 +22281,11 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
         element.remove();
         attributeObserver && attributeObserver.disconnect();
       });
-
-      // Updates the aria-label when the element text changes. This watch
-      // doesn't need to be set up if the element doesn't have any data
-      // bindings.
-      if (element.text().indexOf($interpolate.startSymbol()) > -1) {
-        scope.$watch(function() {
-          return element.text().trim();
-        }, addAriaLabel);
-      }
     }
 
-    function addAriaLabel (override) {
-      if ((override || !parent.attr('aria-label')) && !parent.text().trim()) {
-        var rawText = override || element.text().trim();
-        var interpolatedText = $interpolate(rawText)(parent.scope());
-        parent.attr('aria-label', interpolatedText);
+    function addAriaLabel () {
+      if (!parent.attr('aria-label') && !parent.text().trim()) {
+        parent.attr('aria-label', element.text().trim());
       }
     }
 
@@ -20353,8 +22335,8 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
           .off('resize', debouncedOnResize);
 
         parent
-          .off(ENTER_EVENTS, enterHandler)
-          .off(LEAVE_EVENTS, leaveHandler)
+          .off('focus mouseenter touchstart', enterHandler)
+          .off('blur mouseleave touchend touchcancel', leaveHandler)
           .off('mousedown', mousedownHandler);
 
         // Trigger the handler in case any the tooltip was still visible.
@@ -20367,25 +22349,16 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
         // Prevent the tooltip from showing when the window is receiving focus.
         if (e.type === 'focus' && elementFocusedOnWindowBlur) {
           elementFocusedOnWindowBlur = false;
-        } else if (!scope.visible) {
-          parent.on(LEAVE_EVENTS, leaveHandler);
-          setVisible(true);
-
-          // If the user is on a touch device, we should bind the tap away after
-          // the `touched` in order to prevent the tooltip being removed immediately.
-          if (e.type === 'touchstart') {
-            parent.one('touchend', function() {
-              $mdUtil.nextTick(function() {
-                $document.one('touchend', leaveHandler);
-              }, false);
-            });
-          }
+          return;
         }
+        parent.on('blur mouseleave touchend touchcancel', leaveHandler );
+        setVisible(true);
       };
       var leaveHandler = function () {
         var autohide = scope.hasOwnProperty('autohide') ? scope.autohide : attr.hasOwnProperty('mdAutohide');
 
-        if (autohide || mouseActive || $document[0].activeElement !== parent[0]) {
+        if (autohide || mouseActive || ($document[0].activeElement !== parent[0]) ) {
+
           // When a show timeout is currently in progress, then we have to cancel it.
           // Otherwise the tooltip will remain showing without focus or hover.
           if (showTimeout) {
@@ -20394,8 +22367,8 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
             showTimeout = null;
           }
 
-          parent.off(LEAVE_EVENTS, leaveHandler);
-          parent.triggerHandler('blur');
+          parent.off('blur mouseleave touchend touchcancel', leaveHandler );
+          parent.triggerHandler("blur");
           setVisible(false);
         }
         mouseActive = false;
@@ -20406,7 +22379,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
 
       // to avoid `synthetic clicks` we listen to mousedown instead of `click`
       parent.on('mousedown', mousedownHandler);
-      parent.on(ENTER_EVENTS, enterHandler);
+      parent.on('focus mouseenter touchstart', enterHandler );
     }
 
     function setVisible (value) {
@@ -20527,7 +22500,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
   }
 
 }
-MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdUtil", "$mdTheming", "$rootElement", "$animate", "$q", "$interpolate"];
+MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdUtil", "$mdTheming", "$rootElement", "$animate", "$q"];
 
 })();
 (function(){
@@ -21221,12 +23194,10 @@ VirtualRepeatController.prototype.virtualRepeatUpdate_ = function(items, oldItem
   var itemsLength = items && items.length || 0;
   var lengthChanged = false;
 
-  // If the number of items shrank
+  // If the number of items shrank, scroll up to the top.
   if (this.items && itemsLength < this.items.length && this.container.getScrollOffset() !== 0) {
     this.items = items;
-    var previousScrollOffset = this.container.getScrollOffset();
     this.container.resetScroll();
-    this.container.scrollTo(previousScrollOffset);
     return;
   }
 
@@ -22496,7 +24467,7 @@ angular
  *     input validation for the field.
  */
 
-function MdAutocomplete ($$mdSvgRegistry) {
+function MdAutocomplete () {
 
   return {
     controller:   'MdAutocompleteCtrl',
@@ -22657,7 +24628,7 @@ function MdAutocomplete ($$mdSvgRegistry) {
                 tabindex="-1"\
                 ng-if="$mdAutocompleteCtrl.scope.searchText && !$mdAutocompleteCtrl.isDisabled"\
                 ng-click="$mdAutocompleteCtrl.clear($event)">\
-              <md-icon md-svg-src="' + $$mdSvgRegistry.mdClose + '"></md-icon>\
+              <md-icon md-svg-icon="md-close"></md-icon>\
               <span class="_md-visually-hidden">Clear</span>\
             </button>\
                 ';
@@ -22666,7 +24637,6 @@ function MdAutocomplete ($$mdSvgRegistry) {
     }
   };
 }
-MdAutocomplete.$inject = ["$$mdSvgRegistry"];
 
 })();
 (function(){
@@ -22786,10 +24756,11 @@ function MdHighlightCtrl ($scope, $element, $attrs) {
   }
 
   function getRegExp (text, flags) {
-    var startFlag = '', endFlag = '';
-    if (flags.indexOf('^') >= 0) startFlag = '^';
-    if (flags.indexOf('$') >= 0) endFlag = '$';
-    return new RegExp(startFlag + sanitize(text) + endFlag, flags.replace(/[\$\^]/g, ''));
+    var str = '';
+    if (flags.indexOf('^') >= 1) str += '^';
+    str += text;
+    if (flags.indexOf('$') >= 1) str += '$';
+    return new RegExp(sanitize(str), flags.replace(/[\$\^]/g, ''));
   }
 }
 MdHighlightCtrl.$inject = ["$scope", "$element", "$attrs"];
@@ -23803,31 +25774,10 @@ MdChipsCtrl.prototype.hasFocus = function () {
    *   </ul>
    * </ul>
    *
-   * <span style="font-size:.8em;text-align:center">
-   *   Warning: This component is a WORK IN PROGRESS. If you use it now,
-   *   it will probably break on you in the future.
-   * </span>
-   *
-   * Sometimes developers want to limit the amount of possible chips.<br/>
-   * You can specify the maximum amount of chips by using the following markup.
-   *
-   * <hljs lang="html">
-   *   <md-chips
-   *       ng-model="myItems"
-   *       placeholder="Add an item"
-   *       md-max-chips="5">
-   *   </md-chips>
-   * </hljs>
-   *
-   * In some cases, you have an autocomplete inside of the `md-chips`.<br/>
-   * When the maximum amount of chips has been reached, you can also disable the autocomplete selection.<br/>
-   * Here is an example markup.
-   *
-   * <hljs lang="html">
-   *   <md-chips ng-model="myItems" md-max-chips="5">
-   *     <md-autocomplete ng-hide="myItems.length > 5" ...></md-autocomplete>
-   *   </md-chips>
-   * </hljs>
+   *  <span style="font-size:.8em;text-align:center">
+   *    Warning: This component is a WORK IN PROGRESS. If you use it now,
+   *    it will probably break on you in the future.
+   *  </span>
    *
    * @param {string=|object=} ng-model A model to bind the list of items to
    * @param {string=} placeholder Placeholder text that will be forwarded to the input.
@@ -23936,7 +25886,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
           type="button"\
           aria-hidden="true"\
           tabindex="-1">\
-        <md-icon md-svg-src="{{ $mdChipsCtrl.mdCloseIcon }}"></md-icon>\
+        <md-icon md-svg-icon="md-close"></md-icon>\
         <span class="_md-visually-hidden">\
           {{$mdChipsCtrl.deleteButtonLabel}}\
         </span>\
@@ -23945,7 +25895,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
   /**
    * MDChips Directive Definition
    */
-  function MdChips ($mdTheming, $mdUtil, $compile, $log, $timeout, $$mdSvgRegistry) {
+  function MdChips ($mdTheming, $mdUtil, $compile, $log, $timeout) {
     // Run our templates through $mdUtil.processTemplate() to allow custom start/end symbols
     var templates = getTemplates();
 
@@ -24017,17 +25967,9 @@ MdChipsCtrl.prototype.hasFocus = function () {
 
       var chipTemplate = getTemplateByQuery('md-chips>md-chip-template');
 
-      var chipRemoveSelector = $mdUtil
-        .prefixer()
-        .buildList('md-chip-remove')
-        .map(function(attr) {
-          return 'md-chips>*[' + attr + ']';
-        })
-        .join(',');
-
       // Set the chip remove, chip contents and chip input templates. The link function will put
       // them on the scope for transclusion later.
-      var chipRemoveTemplate   = getTemplateByQuery(chipRemoveSelector) || templates.remove,
+      var chipRemoveTemplate   = getTemplateByQuery('md-chips>*[md-chip-remove]') || templates.remove,
           chipContentsTemplate = chipTemplate || templates.default,
           chipInputTemplate    = getTemplateByQuery('md-chips>md-autocomplete')
               || getTemplateByQuery('md-chips>input')
@@ -24061,8 +26003,6 @@ MdChipsCtrl.prototype.hasFocus = function () {
         mdChipsCtrl.chipContentsTemplate = chipContentsTemplate;
         mdChipsCtrl.chipRemoveTemplate   = chipRemoveTemplate;
         mdChipsCtrl.chipInputTemplate    = chipInputTemplate;
-
-        mdChipsCtrl.mdCloseIcon = $$mdSvgRegistry.mdClose;
 
         element
             .attr({ 'aria-hidden': true, tabindex: -1 })
@@ -24139,7 +26079,7 @@ MdChipsCtrl.prototype.hasFocus = function () {
       };
     }
   }
-  MdChips.$inject = ["$mdTheming", "$mdUtil", "$compile", "$log", "$timeout", "$$mdSvgRegistry"];
+  MdChips.$inject = ["$mdTheming", "$mdUtil", "$compile", "$log", "$timeout"];
 
 })();
 (function(){
@@ -24319,2779 +26259,6 @@ function MdContactChips($mdTheming, $mdUtil) {
   }
 }
 MdContactChips.$inject = ["$mdTheming", "$mdUtil"];
-
-})();
-(function(){
-"use strict";
-
-(function() {
-  'use strict';
-
-  /**
-   * @ngdoc directive
-   * @name mdCalendar
-   * @module material.components.datepicker
-   *
-   * @param {Date} ng-model The component's model. Should be a Date object.
-   * @param {Date=} md-min-date Expression representing the minimum date.
-   * @param {Date=} md-max-date Expression representing the maximum date.
-   * @param {(function(Date): boolean)=} md-date-filter Function expecting a date and returning a boolean whether it can be selected or not.
-   *
-   * @description
-   * `<md-calendar>` is a component that renders a calendar that can be used to select a date.
-   * It is a part of the `<md-datepicker` pane, however it can also be used on it's own.
-   *
-   * @usage
-   *
-   * <hljs lang="html">
-   *   <md-calendar ng-model="birthday"></md-calendar>
-   * </hljs>
-   */
-  angular.module('material.components.datepicker')
-    .directive('mdCalendar', calendarDirective);
-
-  // POST RELEASE
-  // TODO(jelbourn): Mac Cmd + left / right == Home / End
-  // TODO(jelbourn): Refactor month element creation to use cloneNode (performance).
-  // TODO(jelbourn): Define virtual scrolling constants (compactness) users can override.
-  // TODO(jelbourn): Animated month transition on ng-model change (virtual-repeat)
-  // TODO(jelbourn): Scroll snapping (virtual repeat)
-  // TODO(jelbourn): Remove superfluous row from short months (virtual-repeat)
-  // TODO(jelbourn): Month headers stick to top when scrolling.
-  // TODO(jelbourn): Previous month opacity is lowered when partially scrolled out of view.
-  // TODO(jelbourn): Support md-calendar standalone on a page (as a tabstop w/ aria-live
-  //     announcement and key handling).
-  // Read-only calendar (not just date-picker).
-
-  function calendarDirective() {
-    return {
-      template: function(tElement, tAttr) {
-        // TODO(crisbeto): This is a workaround that allows the calendar to work, without
-        // a datepicker, until issue #8585 gets resolved. It can safely be removed
-        // afterwards. This ensures that the virtual repeater scrolls to the proper place on load by
-        // deferring the execution until the next digest. It's necessary only if the calendar is used
-        // without a datepicker, otherwise it's already wrapped in an ngIf.
-        var extraAttrs = tAttr.hasOwnProperty('ngIf') ? '' : 'ng-if="calendarCtrl.isInitialized"';
-        var template = '' +
-          '<div ng-switch="calendarCtrl.currentView" ' + extraAttrs + '>' +
-            '<md-calendar-year ng-switch-when="year"></md-calendar-year>' +
-            '<md-calendar-month ng-switch-default></md-calendar-month>' +
-          '</div>';
-
-        return template;
-      },
-      scope: {
-        minDate: '=mdMinDate',
-        maxDate: '=mdMaxDate',
-        dateFilter: '=mdDateFilter'
-      },
-      require: ['ngModel', 'mdCalendar'],
-      controller: CalendarCtrl,
-      controllerAs: 'calendarCtrl',
-      bindToController: true,
-      link: function(scope, element, attrs, controllers) {
-        var ngModelCtrl = controllers[0];
-        var mdCalendarCtrl = controllers[1];
-        mdCalendarCtrl.configureNgModel(ngModelCtrl);
-      }
-    };
-  }
-
-  /**
-   * Occasionally the hideVerticalScrollbar method might read an element's
-   * width as 0, because it hasn't been laid out yet. This value will be used
-   * as a fallback, in order to prevent scenarios where the element's width
-   * would otherwise have been set to 0. This value is the "usual" width of a
-   * calendar within a floating calendar pane.
-   */
-  var FALLBACK_WIDTH = 340;
-
-  /** Next identifier for calendar instance. */
-  var nextUniqueId = 0;
-
-  /**
-   * Controller for the mdCalendar component.
-   * @ngInject @constructor
-   */
-  function CalendarCtrl($element, $scope, $$mdDateUtil, $mdUtil,
-    $mdConstant, $mdTheming, $$rAF, $attrs) {
-
-    $mdTheming($element);
-
-    /** @final {!angular.JQLite} */
-    this.$element = $element;
-
-    /** @final {!angular.Scope} */
-    this.$scope = $scope;
-
-    /** @final */
-    this.dateUtil = $$mdDateUtil;
-
-    /** @final */
-    this.$mdUtil = $mdUtil;
-
-    /** @final */
-    this.keyCode = $mdConstant.KEY_CODE;
-
-    /** @final */
-    this.$$rAF = $$rAF;
-
-    /** @final {Date} */
-    this.today = this.dateUtil.createDateAtMidnight();
-
-    /** @type {!angular.NgModelController} */
-    this.ngModelCtrl = null;
-
-    /** @type {String} The currently visible calendar view. */
-    this.currentView = 'month';
-
-    /** @type {String} Class applied to the selected date cell. */
-    this.SELECTED_DATE_CLASS = 'md-calendar-selected-date';
-
-    /** @type {String} Class applied to the cell for today. */
-    this.TODAY_CLASS = 'md-calendar-date-today';
-
-    /** @type {String} Class applied to the focused cell. */
-    this.FOCUSED_DATE_CLASS = 'md-focus';
-
-    /** @final {number} Unique ID for this calendar instance. */
-    this.id = nextUniqueId++;
-
-    /**
-     * The date that is currently focused or showing in the calendar. This will initially be set
-     * to the ng-model value if set, otherwise to today. It will be updated as the user navigates
-     * to other months. The cell corresponding to the displayDate does not necesarily always have
-     * focus in the document (such as for cases when the user is scrolling the calendar).
-     * @type {Date}
-     */
-    this.displayDate = null;
-
-    /**
-     * The selected date. Keep track of this separately from the ng-model value so that we
-     * can know, when the ng-model value changes, what the previous value was before it's updated
-     * in the component's UI.
-     *
-     * @type {Date}
-     */
-    this.selectedDate = null;
-
-    /**
-     * Used to toggle initialize the root element in the next digest.
-     * @type {Boolean}
-     */
-    this.isInitialized = false;
-
-    /**
-     * Cache for the  width of the element without a scrollbar. Used to hide the scrollbar later on
-     * and to avoid extra reflows when switching between views.
-     * @type {Number}
-     */
-    this.width = 0;
-
-    /**
-     * Caches the width of the scrollbar in order to be used when hiding it and to avoid extra reflows.
-     * @type {Number}
-     */
-    this.scrollbarWidth = 0;
-
-    // Unless the user specifies so, the calendar should not be a tab stop.
-    // This is necessary because ngAria might add a tabindex to anything with an ng-model
-    // (based on whether or not the user has turned that particular feature on/off).
-    if (!$attrs.tabindex) {
-      $element.attr('tabindex', '-1');
-    }
-
-    $element.on('keydown', angular.bind(this, this.handleKeyEvent));
-  }
-  CalendarCtrl.$inject = ["$element", "$scope", "$$mdDateUtil", "$mdUtil", "$mdConstant", "$mdTheming", "$$rAF", "$attrs"];
-
-  /**
-   * Sets up the controller's reference to ngModelController.
-   * @param {!angular.NgModelController} ngModelCtrl
-   */
-  CalendarCtrl.prototype.configureNgModel = function(ngModelCtrl) {
-    var self = this;
-
-    self.ngModelCtrl = ngModelCtrl;
-
-    self.$mdUtil.nextTick(function() {
-      self.isInitialized = true;
-    });
-
-    ngModelCtrl.$render = function() {
-      var value = this.$viewValue;
-
-      // Notify the child scopes of any changes.
-      self.$scope.$broadcast('md-calendar-parent-changed', value);
-
-      // Set up the selectedDate if it hasn't been already.
-      if (!self.selectedDate) {
-        self.selectedDate = value;
-      }
-
-      // Also set up the displayDate.
-      if (!self.displayDate) {
-        self.displayDate = self.selectedDate || self.today;
-      }
-    };
-  };
-
-  /**
-   * Sets the ng-model value for the calendar and emits a change event.
-   * @param {Date} date
-   */
-  CalendarCtrl.prototype.setNgModelValue = function(date) {
-    var value = this.dateUtil.createDateAtMidnight(date);
-    this.focus(value);
-    this.$scope.$emit('md-calendar-change', value);
-    this.ngModelCtrl.$setViewValue(value);
-    this.ngModelCtrl.$render();
-    return value;
-  };
-
-  /**
-   * Sets the current view that should be visible in the calendar
-   * @param {string} newView View name to be set.
-   * @param {number|Date} time Date object or a timestamp for the new display date.
-   */
-  CalendarCtrl.prototype.setCurrentView = function(newView, time) {
-    var self = this;
-
-    self.$mdUtil.nextTick(function() {
-      self.currentView = newView;
-
-      if (time) {
-        self.displayDate = angular.isDate(time) ? time : new Date(time);
-      }
-    });
-  };
-
-  /**
-   * Focus the cell corresponding to the given date.
-   * @param {Date} date The date to be focused.
-   */
-  CalendarCtrl.prototype.focus = function(date) {
-    if (this.dateUtil.isValidDate(date)) {
-      var previousFocus = this.$element[0].querySelector('.md-focus');
-      if (previousFocus) {
-        previousFocus.classList.remove(this.FOCUSED_DATE_CLASS);
-      }
-
-      var cellId = this.getDateId(date, this.currentView);
-      var cell = document.getElementById(cellId);
-      if (cell) {
-        cell.classList.add(this.FOCUSED_DATE_CLASS);
-        cell.focus();
-        this.displayDate = date;
-      }
-    } else {
-      var rootElement = this.$element[0].querySelector('[ng-switch]');
-
-      if (rootElement) {
-        rootElement.focus();
-      }
-    }
-  };
-
-  /**
-   * Normalizes the key event into an action name. The action will be broadcast
-   * to the child controllers.
-   * @param {KeyboardEvent} event
-   * @returns {String} The action that should be taken, or null if the key
-   * does not match a calendar shortcut.
-   */
-  CalendarCtrl.prototype.getActionFromKeyEvent = function(event) {
-    var keyCode = this.keyCode;
-
-    switch (event.which) {
-      case keyCode.ENTER: return 'select';
-
-      case keyCode.RIGHT_ARROW: return 'move-right';
-      case keyCode.LEFT_ARROW: return 'move-left';
-
-      // TODO(crisbeto): Might want to reconsider using metaKey, because it maps
-      // to the "Windows" key on PC, which opens the start menu or resizes the browser.
-      case keyCode.DOWN_ARROW: return event.metaKey ? 'move-page-down' : 'move-row-down';
-      case keyCode.UP_ARROW: return event.metaKey ? 'move-page-up' : 'move-row-up';
-
-      case keyCode.PAGE_DOWN: return 'move-page-down';
-      case keyCode.PAGE_UP: return 'move-page-up';
-
-      case keyCode.HOME: return 'start';
-      case keyCode.END: return 'end';
-
-      default: return null;
-    }
-  };
-
-  /**
-   * Handles a key event in the calendar with the appropriate action. The action will either
-   * be to select the focused date or to navigate to focus a new date.
-   * @param {KeyboardEvent} event
-   */
-  CalendarCtrl.prototype.handleKeyEvent = function(event) {
-    var self = this;
-
-    this.$scope.$apply(function() {
-      // Capture escape and emit back up so that a wrapping component
-      // (such as a date-picker) can decide to close.
-      if (event.which == self.keyCode.ESCAPE || event.which == self.keyCode.TAB) {
-        self.$scope.$emit('md-calendar-close');
-
-        if (event.which == self.keyCode.TAB) {
-          event.preventDefault();
-        }
-
-        return;
-      }
-
-      // Broadcast the action that any child controllers should take.
-      var action = self.getActionFromKeyEvent(event);
-      if (action) {
-        event.preventDefault();
-        event.stopPropagation();
-        self.$scope.$broadcast('md-calendar-parent-action', action);
-      }
-    });
-  };
-
-  /**
-   * Hides the vertical scrollbar on the calendar scroller of a child controller by
-   * setting the width on the calendar scroller and the `overflow: hidden` wrapper
-   * around the scroller, and then setting a padding-right on the scroller equal
-   * to the width of the browser's scrollbar.
-   *
-   * This will cause a reflow.
-   *
-   * @param {object} childCtrl The child controller whose scrollbar should be hidden.
-   */
-  CalendarCtrl.prototype.hideVerticalScrollbar = function(childCtrl) {
-    var self = this;
-    var element = childCtrl.$element[0];
-    var scrollMask = element.querySelector('.md-calendar-scroll-mask');
-
-    if (self.width > 0) {
-      setWidth();
-    } else {
-      self.$$rAF(function() {
-        var scroller = childCtrl.calendarScroller;
-
-        self.scrollbarWidth = scroller.offsetWidth - scroller.clientWidth;
-        self.width = element.querySelector('table').offsetWidth;
-        setWidth();
-      });
-    }
-
-    function setWidth() {
-      var width = self.width || FALLBACK_WIDTH;
-      var scrollbarWidth = self.scrollbarWidth;
-      var scroller = childCtrl.calendarScroller;
-
-      scrollMask.style.width = width + 'px';
-      scroller.style.width = (width + scrollbarWidth) + 'px';
-      scroller.style.paddingRight = scrollbarWidth + 'px';
-    }
-  };
-
-  /**
-   * Gets an identifier for a date unique to the calendar instance for internal
-   * purposes. Not to be displayed.
-   * @param {Date} date The date for which the id is being generated
-   * @param {string} namespace Namespace for the id. (month, year etc.)
-   * @returns {string}
-   */
-  CalendarCtrl.prototype.getDateId = function(date, namespace) {
-    if (!namespace) {
-      throw new Error('A namespace for the date id has to be specified.');
-    }
-
-    return [
-      'md',
-      this.id,
-      namespace,
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate()
-    ].join('-');
-  };
-})();
-
-})();
-(function(){
-"use strict";
-
-(function() {
-  'use strict';
-
-  angular.module('material.components.datepicker')
-    .directive('mdCalendarMonth', calendarDirective);
-
-  /**
-   * Height of one calendar month tbody. This must be made known to the virtual-repeat and is
-   * subsequently used for scrolling to specific months.
-   */
-  var TBODY_HEIGHT = 265;
-
-  /**
-   * Height of a calendar month with a single row. This is needed to calculate the offset for
-   * rendering an extra month in virtual-repeat that only contains one row.
-   */
-  var TBODY_SINGLE_ROW_HEIGHT = 45;
-
-  /** Private directive that represents a list of months inside the calendar. */
-  function calendarDirective() {
-    return {
-      template:
-        '<table aria-hidden="true" class="md-calendar-day-header"><thead></thead></table>' +
-        '<div class="md-calendar-scroll-mask">' +
-        '<md-virtual-repeat-container class="md-calendar-scroll-container" ' +
-              'md-offset-size="' + (TBODY_SINGLE_ROW_HEIGHT - TBODY_HEIGHT) + '">' +
-            '<table role="grid" tabindex="0" class="md-calendar" aria-readonly="true">' +
-              '<tbody ' +
-                  'md-calendar-month-body ' +
-                  'role="rowgroup" ' +
-                  'md-virtual-repeat="i in monthCtrl.items" ' +
-                  'md-month-offset="$index" ' +
-                  'class="md-calendar-month" ' +
-                  'md-start-index="monthCtrl.getSelectedMonthIndex()" ' +
-                  'md-item-size="' + TBODY_HEIGHT + '"></tbody>' +
-            '</table>' +
-          '</md-virtual-repeat-container>' +
-        '</div>',
-      require: ['^^mdCalendar', 'mdCalendarMonth'],
-      controller: CalendarMonthCtrl,
-      controllerAs: 'monthCtrl',
-      bindToController: true,
-      link: function(scope, element, attrs, controllers) {
-        var calendarCtrl = controllers[0];
-        var monthCtrl = controllers[1];
-        monthCtrl.initialize(calendarCtrl);
-      }
-    };
-  }
-
-  /**
-   * Controller for the calendar month component.
-   * @ngInject @constructor
-   */
-  function CalendarMonthCtrl($element, $scope, $animate, $q,
-    $$mdDateUtil, $mdDateLocale) {
-
-    /** @final {!angular.JQLite} */
-    this.$element = $element;
-
-    /** @final {!angular.Scope} */
-    this.$scope = $scope;
-
-    /** @final {!angular.$animate} */
-    this.$animate = $animate;
-
-    /** @final {!angular.$q} */
-    this.$q = $q;
-
-    /** @final */
-    this.dateUtil = $$mdDateUtil;
-
-    /** @final */
-    this.dateLocale = $mdDateLocale;
-
-    /** @final {HTMLElement} */
-    this.calendarScroller = $element[0].querySelector('.md-virtual-repeat-scroller');
-
-    /** @type {Date} */
-    this.firstRenderableDate = null;
-
-    /** @type {boolean} */
-    this.isInitialized = false;
-
-    /** @type {boolean} */
-    this.isMonthTransitionInProgress = false;
-
-    var self = this;
-
-    /**
-     * Handles a click event on a date cell.
-     * Created here so that every cell can use the same function instance.
-     * @this {HTMLTableCellElement} The cell that was clicked.
-     */
-    this.cellClickHandler = function() {
-      var timestamp = $$mdDateUtil.getTimestampFromNode(this);
-      self.$scope.$apply(function() {
-        self.calendarCtrl.setNgModelValue(timestamp);
-      });
-    };
-
-    /**
-     * Handles click events on the month headers. Switches
-     * the calendar to the year view.
-     * @this {HTMLTableCellElement} The cell that was clicked.
-     */
-    this.headerClickHandler = function() {
-      self.calendarCtrl.setCurrentView('year', $$mdDateUtil.getTimestampFromNode(this));
-    };
-  }
-  CalendarMonthCtrl.$inject = ["$element", "$scope", "$animate", "$q", "$$mdDateUtil", "$mdDateLocale"];
-
-  /*** Initialization ***/
-
-  /**
-   * Initialize the controller by saving a reference to the calendar and
-   * setting up the object that will be iterated by the virtual repeater.
-   */
-  CalendarMonthCtrl.prototype.initialize = function(calendarCtrl) {
-    var minDate = calendarCtrl.minDate;
-    var maxDate = calendarCtrl.maxDate;
-    this.calendarCtrl = calendarCtrl;
-
-    /**
-     * Dummy array-like object for virtual-repeat to iterate over. The length is the total
-     * number of months that can be viewed. This is shorter than ideal because of (potential)
-     * Firefox bug https://bugzilla.mozilla.org/show_bug.cgi?id=1181658.
-     */
-    this.items = { length: 2000 };
-
-    if (maxDate && minDate) {
-      // Limit the number of months if min and max dates are set.
-      var numMonths = this.dateUtil.getMonthDistance(minDate, maxDate) + 1;
-      numMonths = Math.max(numMonths, 1);
-      // Add an additional month as the final dummy month for rendering purposes.
-      numMonths += 1;
-      this.items.length = numMonths;
-    }
-
-    this.firstRenderableDate = this.dateUtil.incrementMonths(calendarCtrl.today, -this.items.length / 2);
-
-    if (minDate && minDate > this.firstRenderableDate) {
-      this.firstRenderableDate = minDate;
-    } else if (maxDate) {
-      // Calculate the difference between the start date and max date.
-      // Subtract 1 because it's an inclusive difference and 1 for the final dummy month.
-      var monthDifference = this.items.length - 2;
-      this.firstRenderableDate = this.dateUtil.incrementMonths(maxDate, -(this.items.length - 2));
-    }
-
-    this.attachScopeListeners();
-
-    // Fire the initial render, since we might have missed it the first time it fired.
-    calendarCtrl.ngModelCtrl && calendarCtrl.ngModelCtrl.$render();
-  };
-
-  /**
-   * Gets the "index" of the currently selected date as it would be in the virtual-repeat.
-   * @returns {number}
-   */
-  CalendarMonthCtrl.prototype.getSelectedMonthIndex = function() {
-    var calendarCtrl = this.calendarCtrl;
-    return this.dateUtil.getMonthDistance(this.firstRenderableDate,
-        calendarCtrl.displayDate || calendarCtrl.selectedDate || calendarCtrl.today);
-  };
-
-  /**
-   * Change the selected date in the calendar (ngModel value has already been changed).
-   * @param {Date} date
-   */
-  CalendarMonthCtrl.prototype.changeSelectedDate = function(date) {
-    var self = this;
-    var calendarCtrl = self.calendarCtrl;
-    var previousSelectedDate = calendarCtrl.selectedDate;
-    calendarCtrl.selectedDate = date;
-
-    this.changeDisplayDate(date).then(function() {
-      var selectedDateClass = calendarCtrl.SELECTED_DATE_CLASS;
-      var namespace = 'month';
-
-      // Remove the selected class from the previously selected date, if any.
-      if (previousSelectedDate) {
-        var prevDateCell = document.getElementById(calendarCtrl.getDateId(previousSelectedDate, namespace));
-        if (prevDateCell) {
-          prevDateCell.classList.remove(selectedDateClass);
-          prevDateCell.setAttribute('aria-selected', 'false');
-        }
-      }
-
-      // Apply the select class to the new selected date if it is set.
-      if (date) {
-        var dateCell = document.getElementById(calendarCtrl.getDateId(date, namespace));
-        if (dateCell) {
-          dateCell.classList.add(selectedDateClass);
-          dateCell.setAttribute('aria-selected', 'true');
-        }
-      }
-    });
-  };
-
-  /**
-   * Change the date that is being shown in the calendar. If the given date is in a different
-   * month, the displayed month will be transitioned.
-   * @param {Date} date
-   */
-  CalendarMonthCtrl.prototype.changeDisplayDate = function(date) {
-    // Initialization is deferred until this function is called because we want to reflect
-    // the starting value of ngModel.
-    if (!this.isInitialized) {
-      this.buildWeekHeader();
-      this.calendarCtrl.hideVerticalScrollbar(this);
-      this.isInitialized = true;
-      return this.$q.when();
-    }
-
-    // If trying to show an invalid date or a transition is in progress, do nothing.
-    if (!this.dateUtil.isValidDate(date) || this.isMonthTransitionInProgress) {
-      return this.$q.when();
-    }
-
-    this.isMonthTransitionInProgress = true;
-    var animationPromise = this.animateDateChange(date);
-
-    this.calendarCtrl.displayDate = date;
-
-    var self = this;
-    animationPromise.then(function() {
-      self.isMonthTransitionInProgress = false;
-    });
-
-    return animationPromise;
-  };
-
-  /**
-   * Animates the transition from the calendar's current month to the given month.
-   * @param {Date} date
-   * @returns {angular.$q.Promise} The animation promise.
-   */
-  CalendarMonthCtrl.prototype.animateDateChange = function(date) {
-    if (this.dateUtil.isValidDate(date)) {
-      var monthDistance = this.dateUtil.getMonthDistance(this.firstRenderableDate, date);
-      this.calendarScroller.scrollTop = monthDistance * TBODY_HEIGHT;
-    }
-
-    return this.$q.when();
-  };
-
-  /**
-   * Builds and appends a day-of-the-week header to the calendar.
-   * This should only need to be called once during initialization.
-   */
-  CalendarMonthCtrl.prototype.buildWeekHeader = function() {
-    var firstDayOfWeek = this.dateLocale.firstDayOfWeek;
-    var shortDays = this.dateLocale.shortDays;
-
-    var row = document.createElement('tr');
-    for (var i = 0; i < 7; i++) {
-      var th = document.createElement('th');
-      th.textContent = shortDays[(i + firstDayOfWeek) % 7];
-      row.appendChild(th);
-    }
-
-    this.$element.find('thead').append(row);
-  };
-
-  /**
-   * Attaches listeners for the scope events that are broadcast by the calendar.
-   */
-  CalendarMonthCtrl.prototype.attachScopeListeners = function() {
-    var self = this;
-
-    self.$scope.$on('md-calendar-parent-changed', function(event, value) {
-      self.changeSelectedDate(value);
-    });
-
-    self.$scope.$on('md-calendar-parent-action', angular.bind(this, this.handleKeyEvent));
-  };
-
-  /**
-   * Handles the month-specific keyboard interactions.
-   * @param {Object} event Scope event object passed by the calendar.
-   * @param {String} action Action, corresponding to the key that was pressed.
-   */
-  CalendarMonthCtrl.prototype.handleKeyEvent = function(event, action) {
-    var calendarCtrl = this.calendarCtrl;
-    var displayDate = calendarCtrl.displayDate;
-
-    if (action === 'select') {
-      calendarCtrl.setNgModelValue(displayDate);
-    } else {
-      var date = null;
-      var dateUtil = this.dateUtil;
-
-      switch (action) {
-        case 'move-right': date = dateUtil.incrementDays(displayDate, 1); break;
-        case 'move-left': date = dateUtil.incrementDays(displayDate, -1); break;
-
-        case 'move-page-down': date = dateUtil.incrementMonths(displayDate, 1); break;
-        case 'move-page-up': date = dateUtil.incrementMonths(displayDate, -1); break;
-
-        case 'move-row-down': date = dateUtil.incrementDays(displayDate, 7); break;
-        case 'move-row-up': date = dateUtil.incrementDays(displayDate, -7); break;
-
-        case 'start': date = dateUtil.getFirstDateOfMonth(displayDate); break;
-        case 'end': date = dateUtil.getLastDateOfMonth(displayDate); break;
-      }
-
-      if (date) {
-        date = this.dateUtil.clampDate(date, calendarCtrl.minDate, calendarCtrl.maxDate);
-
-        this.changeDisplayDate(date).then(function() {
-          calendarCtrl.focus(date);
-        });
-      }
-    }
-  };
-})();
-
-})();
-(function(){
-"use strict";
-
-(function() {
-  'use strict';
-
-  angular.module('material.components.datepicker')
-      .directive('mdCalendarMonthBody', mdCalendarMonthBodyDirective);
-
-  /**
-   * Private directive consumed by md-calendar-month. Having this directive lets the calender use
-   * md-virtual-repeat and also cleanly separates the month DOM construction functions from
-   * the rest of the calendar controller logic.
-   */
-  function mdCalendarMonthBodyDirective() {
-    return {
-      require: ['^^mdCalendar', '^^mdCalendarMonth', 'mdCalendarMonthBody'],
-      scope: { offset: '=mdMonthOffset' },
-      controller: CalendarMonthBodyCtrl,
-      controllerAs: 'mdMonthBodyCtrl',
-      bindToController: true,
-      link: function(scope, element, attrs, controllers) {
-        var calendarCtrl = controllers[0];
-        var monthCtrl = controllers[1];
-        var monthBodyCtrl = controllers[2];
-
-        monthBodyCtrl.calendarCtrl = calendarCtrl;
-        monthBodyCtrl.monthCtrl = monthCtrl;
-        monthBodyCtrl.generateContent();
-
-        // The virtual-repeat re-uses the same DOM elements, so there are only a limited number
-        // of repeated items that are linked, and then those elements have their bindings updataed.
-        // Since the months are not generated by bindings, we simply regenerate the entire thing
-        // when the binding (offset) changes.
-        scope.$watch(function() { return monthBodyCtrl.offset; }, function(offset, oldOffset) {
-          if (offset != oldOffset) {
-            monthBodyCtrl.generateContent();
-          }
-        });
-      }
-    };
-  }
-
-  /**
-   * Controller for a single calendar month.
-   * @ngInject @constructor
-   */
-  function CalendarMonthBodyCtrl($element, $$mdDateUtil, $mdDateLocale) {
-    /** @final {!angular.JQLite} */
-    this.$element = $element;
-
-    /** @final */
-    this.dateUtil = $$mdDateUtil;
-
-    /** @final */
-    this.dateLocale = $mdDateLocale;
-
-    /** @type {Object} Reference to the month view. */
-    this.monthCtrl = null;
-
-    /** @type {Object} Reference to the calendar. */
-    this.calendarCtrl = null;
-
-    /**
-     * Number of months from the start of the month "items" that the currently rendered month
-     * occurs. Set via angular data binding.
-     * @type {number}
-     */
-    this.offset = null;
-
-    /**
-     * Date cell to focus after appending the month to the document.
-     * @type {HTMLElement}
-     */
-    this.focusAfterAppend = null;
-  }
-  CalendarMonthBodyCtrl.$inject = ["$element", "$$mdDateUtil", "$mdDateLocale"];
-
-  /** Generate and append the content for this month to the directive element. */
-  CalendarMonthBodyCtrl.prototype.generateContent = function() {
-    var date = this.dateUtil.incrementMonths(this.monthCtrl.firstRenderableDate, this.offset);
-
-    this.$element.empty();
-    this.$element.append(this.buildCalendarForMonth(date));
-
-    if (this.focusAfterAppend) {
-      this.focusAfterAppend.classList.add(this.calendarCtrl.FOCUSED_DATE_CLASS);
-      this.focusAfterAppend.focus();
-      this.focusAfterAppend = null;
-    }
-  };
-
-  /**
-   * Creates a single cell to contain a date in the calendar with all appropriate
-   * attributes and classes added. If a date is given, the cell content will be set
-   * based on the date.
-   * @param {Date=} opt_date
-   * @returns {HTMLElement}
-   */
-  CalendarMonthBodyCtrl.prototype.buildDateCell = function(opt_date) {
-    var monthCtrl = this.monthCtrl;
-    var calendarCtrl = this.calendarCtrl;
-
-    // TODO(jelbourn): cloneNode is likely a faster way of doing this.
-    var cell = document.createElement('td');
-    cell.tabIndex = -1;
-    cell.classList.add('md-calendar-date');
-    cell.setAttribute('role', 'gridcell');
-
-    if (opt_date) {
-      cell.setAttribute('tabindex', '-1');
-      cell.setAttribute('aria-label', this.dateLocale.longDateFormatter(opt_date));
-      cell.id = calendarCtrl.getDateId(opt_date, 'month');
-
-      // Use `data-timestamp` attribute because IE10 does not support the `dataset` property.
-      cell.setAttribute('data-timestamp', opt_date.getTime());
-
-      // TODO(jelourn): Doing these comparisons for class addition during generation might be slow.
-      // It may be better to finish the construction and then query the node and add the class.
-      if (this.dateUtil.isSameDay(opt_date, calendarCtrl.today)) {
-        cell.classList.add(calendarCtrl.TODAY_CLASS);
-      }
-
-      if (this.dateUtil.isValidDate(calendarCtrl.selectedDate) &&
-          this.dateUtil.isSameDay(opt_date, calendarCtrl.selectedDate)) {
-        cell.classList.add(calendarCtrl.SELECTED_DATE_CLASS);
-        cell.setAttribute('aria-selected', 'true');
-      }
-
-      var cellText = this.dateLocale.dates[opt_date.getDate()];
-
-      if (this.isDateEnabled(opt_date)) {
-        // Add a indicator for select, hover, and focus states.
-        var selectionIndicator = document.createElement('span');
-        selectionIndicator.classList.add('md-calendar-date-selection-indicator');
-        selectionIndicator.textContent = cellText;
-        cell.appendChild(selectionIndicator);
-        cell.addEventListener('click', monthCtrl.cellClickHandler);
-
-        if (calendarCtrl.displayDate && this.dateUtil.isSameDay(opt_date, calendarCtrl.displayDate)) {
-          this.focusAfterAppend = cell;
-        }
-      } else {
-        cell.classList.add('md-calendar-date-disabled');
-        cell.textContent = cellText;
-      }
-    }
-
-    return cell;
-  };
-
-  /**
-   * Check whether date is in range and enabled
-   * @param {Date=} opt_date
-   * @return {boolean} Whether the date is enabled.
-   */
-  CalendarMonthBodyCtrl.prototype.isDateEnabled = function(opt_date) {
-    return this.dateUtil.isDateWithinRange(opt_date,
-          this.calendarCtrl.minDate, this.calendarCtrl.maxDate) &&
-          (!angular.isFunction(this.calendarCtrl.dateFilter)
-           || this.calendarCtrl.dateFilter(opt_date));
-  };
-
-  /**
-   * Builds a `tr` element for the calendar grid.
-   * @param rowNumber The week number within the month.
-   * @returns {HTMLElement}
-   */
-  CalendarMonthBodyCtrl.prototype.buildDateRow = function(rowNumber) {
-    var row = document.createElement('tr');
-    row.setAttribute('role', 'row');
-
-    // Because of an NVDA bug (with Firefox), the row needs an aria-label in order
-    // to prevent the entire row being read aloud when the user moves between rows.
-    // See http://community.nvda-project.org/ticket/4643.
-    row.setAttribute('aria-label', this.dateLocale.weekNumberFormatter(rowNumber));
-
-    return row;
-  };
-
-  /**
-   * Builds the <tbody> content for the given date's month.
-   * @param {Date=} opt_dateInMonth
-   * @returns {DocumentFragment} A document fragment containing the <tr> elements.
-   */
-  CalendarMonthBodyCtrl.prototype.buildCalendarForMonth = function(opt_dateInMonth) {
-    var date = this.dateUtil.isValidDate(opt_dateInMonth) ? opt_dateInMonth : new Date();
-
-    var firstDayOfMonth = this.dateUtil.getFirstDateOfMonth(date);
-    var firstDayOfTheWeek = this.getLocaleDay_(firstDayOfMonth);
-    var numberOfDaysInMonth = this.dateUtil.getNumberOfDaysInMonth(date);
-
-    // Store rows for the month in a document fragment so that we can append them all at once.
-    var monthBody = document.createDocumentFragment();
-
-    var rowNumber = 1;
-    var row = this.buildDateRow(rowNumber);
-    monthBody.appendChild(row);
-
-    // If this is the final month in the list of items, only the first week should render,
-    // so we should return immediately after the first row is complete and has been
-    // attached to the body.
-    var isFinalMonth = this.offset === this.monthCtrl.items.length - 1;
-
-    // Add a label for the month. If the month starts on a Sun/Mon/Tues, the month label
-    // goes on a row above the first of the month. Otherwise, the month label takes up the first
-    // two cells of the first row.
-    var blankCellOffset = 0;
-    var monthLabelCell = document.createElement('td');
-    monthLabelCell.textContent = this.dateLocale.monthHeaderFormatter(date);
-    monthLabelCell.classList.add('md-calendar-month-label');
-    // If the entire month is after the max date, render the label as a disabled state.
-    if (this.calendarCtrl.maxDate && firstDayOfMonth > this.calendarCtrl.maxDate) {
-      monthLabelCell.classList.add('md-calendar-month-label-disabled');
-    } else {
-      monthLabelCell.addEventListener('click', this.monthCtrl.headerClickHandler);
-      monthLabelCell.setAttribute('data-timestamp', firstDayOfMonth.getTime());
-      monthLabelCell.setAttribute('aria-label', this.dateLocale.monthFormatter(date));
-    }
-
-    if (firstDayOfTheWeek <= 2) {
-      monthLabelCell.setAttribute('colspan', '7');
-
-      var monthLabelRow = this.buildDateRow();
-      monthLabelRow.appendChild(monthLabelCell);
-      monthBody.insertBefore(monthLabelRow, row);
-
-      if (isFinalMonth) {
-        return monthBody;
-      }
-    } else {
-      blankCellOffset = 2;
-      monthLabelCell.setAttribute('colspan', '2');
-      row.appendChild(monthLabelCell);
-    }
-
-    // Add a blank cell for each day of the week that occurs before the first of the month.
-    // For example, if the first day of the month is a Tuesday, add blank cells for Sun and Mon.
-    // The blankCellOffset is needed in cases where the first N cells are used by the month label.
-    for (var i = blankCellOffset; i < firstDayOfTheWeek; i++) {
-      row.appendChild(this.buildDateCell());
-    }
-
-    // Add a cell for each day of the month, keeping track of the day of the week so that
-    // we know when to start a new row.
-    var dayOfWeek = firstDayOfTheWeek;
-    var iterationDate = firstDayOfMonth;
-    for (var d = 1; d <= numberOfDaysInMonth; d++) {
-      // If we've reached the end of the week, start a new row.
-      if (dayOfWeek === 7) {
-        // We've finished the first row, so we're done if this is the final month.
-        if (isFinalMonth) {
-          return monthBody;
-        }
-        dayOfWeek = 0;
-        rowNumber++;
-        row = this.buildDateRow(rowNumber);
-        monthBody.appendChild(row);
-      }
-
-      iterationDate.setDate(d);
-      var cell = this.buildDateCell(iterationDate);
-      row.appendChild(cell);
-
-      dayOfWeek++;
-    }
-
-    // Ensure that the last row of the month has 7 cells.
-    while (row.childNodes.length < 7) {
-      row.appendChild(this.buildDateCell());
-    }
-
-    // Ensure that all months have 6 rows. This is necessary for now because the virtual-repeat
-    // requires that all items have exactly the same height.
-    while (monthBody.childNodes.length < 6) {
-      var whitespaceRow = this.buildDateRow();
-      for (var j = 0; j < 7; j++) {
-        whitespaceRow.appendChild(this.buildDateCell());
-      }
-      monthBody.appendChild(whitespaceRow);
-    }
-
-    return monthBody;
-  };
-
-  /**
-   * Gets the day-of-the-week index for a date for the current locale.
-   * @private
-   * @param {Date} date
-   * @returns {number} The column index of the date in the calendar.
-   */
-  CalendarMonthBodyCtrl.prototype.getLocaleDay_ = function(date) {
-    return (date.getDay() + (7 - this.dateLocale.firstDayOfWeek)) % 7;
-  };
-})();
-
-})();
-(function(){
-"use strict";
-
-(function() {
-  'use strict';
-
-  angular.module('material.components.datepicker')
-    .directive('mdCalendarYear', calendarDirective);
-
-  /**
-   * Height of one calendar year tbody. This must be made known to the virtual-repeat and is
-   * subsequently used for scrolling to specific years.
-   */
-  var TBODY_HEIGHT = 88;
-
-  /** Private component, representing a list of years in the calendar. */
-  function calendarDirective() {
-    return {
-      template:
-        '<div class="md-calendar-scroll-mask">' +
-          '<md-virtual-repeat-container class="md-calendar-scroll-container">' +
-            '<table role="grid" tabindex="0" class="md-calendar" aria-readonly="true">' +
-              '<tbody ' +
-                  'md-calendar-year-body ' +
-                  'role="rowgroup" ' +
-                  'md-virtual-repeat="i in yearCtrl.items" ' +
-                  'md-year-offset="$index" class="md-calendar-year" ' +
-                  'md-start-index="yearCtrl.getFocusedYearIndex()" ' +
-                  'md-item-size="' + TBODY_HEIGHT + '"></tbody>' +
-            '</table>' +
-          '</md-virtual-repeat-container>' +
-        '</div>',
-      require: ['^^mdCalendar', 'mdCalendarYear'],
-      controller: CalendarYearCtrl,
-      controllerAs: 'yearCtrl',
-      bindToController: true,
-      link: function(scope, element, attrs, controllers) {
-        var calendarCtrl = controllers[0];
-        var yearCtrl = controllers[1];
-        yearCtrl.initialize(calendarCtrl);
-      }
-    };
-  }
-
-  /**
-   * Controller for the mdCalendar component.
-   * @ngInject @constructor
-   */
-  function CalendarYearCtrl($element, $scope, $animate, $q, $$mdDateUtil, $timeout) {
-
-    /** @final {!angular.JQLite} */
-    this.$element = $element;
-
-    /** @final {!angular.Scope} */
-    this.$scope = $scope;
-
-    /** @final {!angular.$animate} */
-    this.$animate = $animate;
-
-    /** @final {!angular.$q} */
-    this.$q = $q;
-
-    /** @final */
-    this.dateUtil = $$mdDateUtil;
-
-    /** @final */
-    this.$timeout = $timeout;
-
-    /** @final {HTMLElement} */
-    this.calendarScroller = $element[0].querySelector('.md-virtual-repeat-scroller');
-
-    /** @type {Date} */
-    this.firstRenderableDate = null;
-
-    /** @type {boolean} */
-    this.isInitialized = false;
-
-    /** @type {boolean} */
-    this.isMonthTransitionInProgress = false;
-
-    var self = this;
-
-    /**
-     * Handles a click event on a date cell.
-     * Created here so that every cell can use the same function instance.
-     * @this {HTMLTableCellElement} The cell that was clicked.
-     */
-    this.cellClickHandler = function() {
-      self.calendarCtrl.setCurrentView('month', $$mdDateUtil.getTimestampFromNode(this));
-    };
-  }
-  CalendarYearCtrl.$inject = ["$element", "$scope", "$animate", "$q", "$$mdDateUtil", "$timeout"];
-
-  /**
-   * Initialize the controller by saving a reference to the calendar and
-   * setting up the object that will be iterated by the virtual repeater.
-   */
-  CalendarYearCtrl.prototype.initialize = function(calendarCtrl) {
-    var minDate = calendarCtrl.minDate;
-    var maxDate = calendarCtrl.maxDate;
-    this.calendarCtrl = calendarCtrl;
-
-    /**
-     * Dummy array-like object for virtual-repeat to iterate over. The length is the total
-     * number of months that can be viewed. This is shorter than ideal because of (potential)
-     * Firefox bug https://bugzilla.mozilla.org/show_bug.cgi?id=1181658.
-     */
-    this.items = { length: 400 };
-
-    if (maxDate && minDate) {
-      // Limit the number of years if min and max dates are set.
-      var numYears = this.dateUtil.getYearDistance(minDate, maxDate) + 1;
-      this.items.length = Math.max(numYears, 1);
-    }
-
-    this.firstRenderableDate = this.dateUtil.incrementYears(calendarCtrl.today, - (this.items.length / 2));
-
-    if (minDate && minDate > this.firstRenderableDate) {
-      this.firstRenderableDate = minDate;
-    } else if (maxDate) {
-      // Calculate the year difference between the start date and max date.
-      // Subtract 1 because it's an inclusive difference.
-      this.firstRenderableDate = this.dateUtil.incrementMonths(maxDate, - (this.items.length - 1));
-    }
-
-    // Trigger an extra digest to ensure that the virtual repeater has updated. This
-    // is necessary, because the virtual repeater doesn't update the $index the first
-    // time around since the content isn't in place yet. The case, in which this is an
-    // issues, is when the repeater has less than a page of content (e.g. there's a min
-    // and max date).
-    if (minDate || maxDate) this.$timeout();
-    this.attachScopeListeners();
-
-    // Fire the initial render, since we might have missed it the first time it fired.
-    calendarCtrl.ngModelCtrl && calendarCtrl.ngModelCtrl.$render();
-  };
-
-  /**
-   * Gets the "index" of the currently selected date as it would be in the virtual-repeat.
-   * @returns {number}
-   */
-  CalendarYearCtrl.prototype.getFocusedYearIndex = function() {
-    var calendarCtrl = this.calendarCtrl;
-    return this.dateUtil.getYearDistance(this.firstRenderableDate,
-      calendarCtrl.displayDate || calendarCtrl.selectedDate || calendarCtrl.today);
-  };
-
-  /**
-   * Change the date that is highlighted in the calendar.
-   * @param {Date} date
-   */
-  CalendarYearCtrl.prototype.changeDate = function(date) {
-    // Initialization is deferred until this function is called because we want to reflect
-    // the starting value of ngModel.
-    if (!this.isInitialized) {
-      this.calendarCtrl.hideVerticalScrollbar(this);
-      this.isInitialized = true;
-      return this.$q.when();
-    } else if (this.dateUtil.isValidDate(date) && !this.isMonthTransitionInProgress) {
-      var self = this;
-      var animationPromise = this.animateDateChange(date);
-
-      self.isMonthTransitionInProgress = true;
-      self.calendarCtrl.displayDate = date;
-
-      return animationPromise.then(function() {
-        self.isMonthTransitionInProgress = false;
-      });
-    }
-  };
-
-  /**
-   * Animates the transition from the calendar's current month to the given month.
-   * @param {Date} date
-   * @returns {angular.$q.Promise} The animation promise.
-   */
-  CalendarYearCtrl.prototype.animateDateChange = function(date) {
-    if (this.dateUtil.isValidDate(date)) {
-      var monthDistance = this.dateUtil.getYearDistance(this.firstRenderableDate, date);
-      this.calendarScroller.scrollTop = monthDistance * TBODY_HEIGHT;
-    }
-
-    return this.$q.when();
-  };
-
-  /**
-   * Handles the year-view-specific keyboard interactions.
-   * @param {Object} event Scope event object passed by the calendar.
-   * @param {String} action Action, corresponding to the key that was pressed.
-   */
-  CalendarYearCtrl.prototype.handleKeyEvent = function(event, action) {
-    var calendarCtrl = this.calendarCtrl;
-    var displayDate = calendarCtrl.displayDate;
-
-    if (action === 'select') {
-      this.changeDate(displayDate).then(function() {
-        calendarCtrl.setCurrentView('month', displayDate);
-        calendarCtrl.focus(displayDate);
-      });
-    } else {
-      var date = null;
-      var dateUtil = this.dateUtil;
-
-      switch (action) {
-        case 'move-right': date = dateUtil.incrementMonths(displayDate, 1); break;
-        case 'move-left': date = dateUtil.incrementMonths(displayDate, -1); break;
-
-        case 'move-row-down': date = dateUtil.incrementMonths(displayDate, 6); break;
-        case 'move-row-up': date = dateUtil.incrementMonths(displayDate, -6); break;
-      }
-
-      if (date) {
-        var min = calendarCtrl.minDate ? dateUtil.incrementMonths(dateUtil.getFirstDateOfMonth(calendarCtrl.minDate), 1) : null;
-        var max = calendarCtrl.maxDate ? dateUtil.getFirstDateOfMonth(calendarCtrl.maxDate) : null;
-        date = dateUtil.getFirstDateOfMonth(this.dateUtil.clampDate(date, min, max));
-
-        this.changeDate(date).then(function() {
-          calendarCtrl.focus(date);
-        });
-      }
-    }
-  };
-
-  /**
-   * Attaches listeners for the scope events that are broadcast by the calendar.
-   */
-  CalendarYearCtrl.prototype.attachScopeListeners = function() {
-    var self = this;
-
-    self.$scope.$on('md-calendar-parent-changed', function(event, value) {
-      self.changeDate(value);
-    });
-
-    self.$scope.$on('md-calendar-parent-action', angular.bind(self, self.handleKeyEvent));
-  };
-})();
-
-})();
-(function(){
-"use strict";
-
-(function() {
-  'use strict';
-
-  angular.module('material.components.datepicker')
-      .directive('mdCalendarYearBody', mdCalendarYearDirective);
-
-  /**
-   * Private component, consumed by the md-calendar-year, which separates the DOM construction logic
-   * and allows for the year view to use md-virtual-repeat.
-   */
-  function mdCalendarYearDirective() {
-    return {
-      require: ['^^mdCalendar', '^^mdCalendarYear', 'mdCalendarYearBody'],
-      scope: { offset: '=mdYearOffset' },
-      controller: CalendarYearBodyCtrl,
-      controllerAs: 'mdYearBodyCtrl',
-      bindToController: true,
-      link: function(scope, element, attrs, controllers) {
-        var calendarCtrl = controllers[0];
-        var yearCtrl = controllers[1];
-        var yearBodyCtrl = controllers[2];
-
-        yearBodyCtrl.calendarCtrl = calendarCtrl;
-        yearBodyCtrl.yearCtrl = yearCtrl;
-        yearBodyCtrl.generateContent();
-
-        scope.$watch(function() { return yearBodyCtrl.offset; }, function(offset, oldOffset) {
-          if (offset != oldOffset) {
-            yearBodyCtrl.generateContent();
-          }
-        });
-      }
-    };
-  }
-
-  /**
-   * Controller for a single year.
-   * @ngInject @constructor
-   */
-  function CalendarYearBodyCtrl($element, $$mdDateUtil, $mdDateLocale) {
-    /** @final {!angular.JQLite} */
-    this.$element = $element;
-
-    /** @final */
-    this.dateUtil = $$mdDateUtil;
-
-    /** @final */
-    this.dateLocale = $mdDateLocale;
-
-    /** @type {Object} Reference to the calendar. */
-    this.calendarCtrl = null;
-
-    /** @type {Object} Reference to the year view. */
-    this.yearCtrl = null;
-
-    /**
-     * Number of months from the start of the month "items" that the currently rendered month
-     * occurs. Set via angular data binding.
-     * @type {number}
-     */
-    this.offset = null;
-
-    /**
-     * Date cell to focus after appending the month to the document.
-     * @type {HTMLElement}
-     */
-    this.focusAfterAppend = null;
-  }
-  CalendarYearBodyCtrl.$inject = ["$element", "$$mdDateUtil", "$mdDateLocale"];
-
-  /** Generate and append the content for this year to the directive element. */
-  CalendarYearBodyCtrl.prototype.generateContent = function() {
-    var date = this.dateUtil.incrementYears(this.yearCtrl.firstRenderableDate, this.offset);
-
-    this.$element.empty();
-    this.$element.append(this.buildCalendarForYear(date));
-
-    if (this.focusAfterAppend) {
-      this.focusAfterAppend.classList.add(this.calendarCtrl.FOCUSED_DATE_CLASS);
-      this.focusAfterAppend.focus();
-      this.focusAfterAppend = null;
-    }
-  };
-
-  /**
-   * Creates a single cell to contain a year in the calendar.
-   * @param {number} opt_year Four-digit year.
-   * @param {number} opt_month Zero-indexed month.
-   * @returns {HTMLElement}
-   */
-  CalendarYearBodyCtrl.prototype.buildMonthCell = function(year, month) {
-    var calendarCtrl = this.calendarCtrl;
-    var yearCtrl = this.yearCtrl;
-    var cell = this.buildBlankCell();
-
-    // Represent this month/year as a date.
-    var firstOfMonth = new Date(year, month, 1);
-    cell.setAttribute('aria-label', this.dateLocale.monthFormatter(firstOfMonth));
-    cell.id = calendarCtrl.getDateId(firstOfMonth, 'year');
-
-    // Use `data-timestamp` attribute because IE10 does not support the `dataset` property.
-    cell.setAttribute('data-timestamp', firstOfMonth.getTime());
-
-    if (this.dateUtil.isSameMonthAndYear(firstOfMonth, calendarCtrl.today)) {
-      cell.classList.add(calendarCtrl.TODAY_CLASS);
-    }
-
-    if (this.dateUtil.isValidDate(calendarCtrl.selectedDate) &&
-        this.dateUtil.isSameMonthAndYear(firstOfMonth, calendarCtrl.selectedDate)) {
-      cell.classList.add(calendarCtrl.SELECTED_DATE_CLASS);
-      cell.setAttribute('aria-selected', 'true');
-    }
-
-    var cellText = this.dateLocale.shortMonths[month];
-
-    if (this.dateUtil.isDateWithinRange(firstOfMonth,
-        calendarCtrl.minDate, calendarCtrl.maxDate)) {
-      var selectionIndicator = document.createElement('span');
-      selectionIndicator.classList.add('md-calendar-date-selection-indicator');
-      selectionIndicator.textContent = cellText;
-      cell.appendChild(selectionIndicator);
-      cell.addEventListener('click', yearCtrl.cellClickHandler);
-
-      if (calendarCtrl.displayDate && this.dateUtil.isSameMonthAndYear(firstOfMonth, calendarCtrl.displayDate)) {
-        this.focusAfterAppend = cell;
-      }
-    } else {
-      cell.classList.add('md-calendar-date-disabled');
-      cell.textContent = cellText;
-    }
-
-    return cell;
-  };
-
-  /**
-   * Builds a blank cell.
-   * @return {HTMLTableCellElement}
-   */
-  CalendarYearBodyCtrl.prototype.buildBlankCell = function() {
-    var cell = document.createElement('td');
-    cell.tabIndex = -1;
-    cell.classList.add('md-calendar-date');
-    cell.setAttribute('role', 'gridcell');
-
-    cell.setAttribute('tabindex', '-1');
-    return cell;
-  };
-
-  /**
-   * Builds the <tbody> content for the given year.
-   * @param {Date} date Date for which the content should be built.
-   * @returns {DocumentFragment} A document fragment containing the months within the year.
-   */
-  CalendarYearBodyCtrl.prototype.buildCalendarForYear = function(date) {
-    // Store rows for the month in a document fragment so that we can append them all at once.
-    var year = date.getFullYear();
-    var yearBody = document.createDocumentFragment();
-
-    var monthCell, i;
-    // First row contains label and Jan-Jun.
-    var firstRow = document.createElement('tr');
-    var labelCell = document.createElement('td');
-    labelCell.className = 'md-calendar-month-label';
-    labelCell.textContent = year;
-    firstRow.appendChild(labelCell);
-
-    for (i = 0; i < 6; i++) {
-      firstRow.appendChild(this.buildMonthCell(year, i));
-    }
-    yearBody.appendChild(firstRow);
-
-    // Second row contains a blank cell and Jul-Dec.
-    var secondRow = document.createElement('tr');
-    secondRow.appendChild(this.buildBlankCell());
-    for (i = 6; i < 12; i++) {
-      secondRow.appendChild(this.buildMonthCell(year, i));
-    }
-    yearBody.appendChild(secondRow);
-
-    return yearBody;
-  };
-})();
-
-})();
-(function(){
-"use strict";
-
-(function() {
-  'use strict';
-
-  /**
-   * @ngdoc service
-   * @name $mdDateLocaleProvider
-   * @module material.components.datepicker
-   *
-   * @description
-   * The `$mdDateLocaleProvider` is the provider that creates the `$mdDateLocale` service.
-   * This provider that allows the user to specify messages, formatters, and parsers for date
-   * internationalization. The `$mdDateLocale` service itself is consumed by Angular Material
-   * components that deal with dates.
-   *
-   * @property {(Array<string>)=} months Array of month names (in order).
-   * @property {(Array<string>)=} shortMonths Array of abbreviated month names.
-   * @property {(Array<string>)=} days Array of the days of the week (in order).
-   * @property {(Array<string>)=} shortDays Array of abbreviated dayes of the week.
-   * @property {(Array<string>)=} dates Array of dates of the month. Only necessary for locales
-   *     using a numeral system other than [1, 2, 3...].
-   * @property {(Array<string>)=} firstDayOfWeek The first day of the week. Sunday = 0, Monday = 1,
-   *    etc.
-   * @property {(function(string): Date)=} parseDate Function to parse a date object from a string.
-   * @property {(function(Date): string)=} formatDate Function to format a date object to a string.
-   * @property {(function(Date): string)=} monthHeaderFormatter Function that returns the label for
-   *     a month given a date.
-   * @property {(function(Date): string)=} monthFormatter Function that returns the full name of a month
-   *     for a giben date.
-   * @property {(function(number): string)=} weekNumberFormatter Function that returns a label for
-   *     a week given the week number.
-   * @property {(string)=} msgCalendar Translation of the label "Calendar" for the current locale.
-   * @property {(string)=} msgOpenCalendar Translation of the button label "Open calendar" for the
-   *     current locale.
-   *
-   * @usage
-   * <hljs lang="js">
-   *   myAppModule.config(function($mdDateLocaleProvider) {
-   *
-   *     // Example of a French localization.
-   *     $mdDateLocaleProvider.months = ['janvier', 'février', 'mars', ...];
-   *     $mdDateLocaleProvider.shortMonths = ['janv', 'févr', 'mars', ...];
-   *     $mdDateLocaleProvider.days = ['dimanche', 'lundi', 'mardi', ...];
-   *     $mdDateLocaleProvider.shortDays = ['Di', 'Lu', 'Ma', ...];
-   *
-   *     // Can change week display to start on Monday.
-   *     $mdDateLocaleProvider.firstDayOfWeek = 1;
-   *
-   *     // Optional.
-   *     $mdDateLocaleProvider.dates = [1, 2, 3, 4, 5, 6, ...];
-   *
-   *     // Example uses moment.js to parse and format dates.
-   *     $mdDateLocaleProvider.parseDate = function(dateString) {
-   *       var m = moment(dateString, 'L', true);
-   *       return m.isValid() ? m.toDate() : new Date(NaN);
-   *     };
-   *
-   *     $mdDateLocaleProvider.formatDate = function(date) {
-   *       var m = moment(date);
-   *       return m.isValid() ? m.format('L') : '';
-   *     };
-   *
-   *     $mdDateLocaleProvider.monthHeaderFormatter = function(date) {
-   *       return myShortMonths[date.getMonth()] + ' ' + date.getFullYear();
-   *     };
-   *
-   *     // In addition to date display, date components also need localized messages
-   *     // for aria-labels for screen-reader users.
-   *
-   *     $mdDateLocaleProvider.weekNumberFormatter = function(weekNumber) {
-   *       return 'Semaine ' + weekNumber;
-   *     };
-   *
-   *     $mdDateLocaleProvider.msgCalendar = 'Calendrier';
-   *     $mdDateLocaleProvider.msgOpenCalendar = 'Ouvrir le calendrier';
-   *
-   * });
-   * </hljs>
-   *
-   */
-
-  angular.module('material.components.datepicker').config(["$provide", function($provide) {
-    // TODO(jelbourn): Assert provided values are correctly formatted. Need assertions.
-
-    /** @constructor */
-    function DateLocaleProvider() {
-      /** Array of full month names. E.g., ['January', 'Febuary', ...] */
-      this.months = null;
-
-      /** Array of abbreviated month names. E.g., ['Jan', 'Feb', ...] */
-      this.shortMonths = null;
-
-      /** Array of full day of the week names. E.g., ['Monday', 'Tuesday', ...] */
-      this.days = null;
-
-      /** Array of abbreviated dat of the week names. E.g., ['M', 'T', ...] */
-      this.shortDays = null;
-
-      /** Array of dates of a month (1 - 31). Characters might be different in some locales. */
-      this.dates = null;
-
-      /** Index of the first day of the week. 0 = Sunday, 1 = Monday, etc. */
-      this.firstDayOfWeek = 0;
-
-      /**
-       * Function that converts the date portion of a Date to a string.
-       * @type {(function(Date): string)}
-       */
-      this.formatDate = null;
-
-      /**
-       * Function that converts a date string to a Date object (the date portion)
-       * @type {function(string): Date}
-       */
-      this.parseDate = null;
-
-      /**
-       * Function that formats a Date into a month header string.
-       * @type {function(Date): string}
-       */
-      this.monthHeaderFormatter = null;
-
-      /**
-       * Function that formats a week number into a label for the week.
-       * @type {function(number): string}
-       */
-      this.weekNumberFormatter = null;
-
-      /**
-       * Function that formats a date into a long aria-label that is read
-       * when the focused date changes.
-       * @type {function(Date): string}
-       */
-      this.longDateFormatter = null;
-
-      /**
-       * ARIA label for the calendar "dialog" used in the datepicker.
-       * @type {string}
-       */
-      this.msgCalendar = '';
-
-      /**
-       * ARIA label for the datepicker's "Open calendar" buttons.
-       * @type {string}
-       */
-      this.msgOpenCalendar = '';
-    }
-
-    /**
-     * Factory function that returns an instance of the dateLocale service.
-     * @ngInject
-     * @param $locale
-     * @returns {DateLocale}
-     */
-    DateLocaleProvider.prototype.$get = function($locale, $filter) {
-      /**
-       * Default date-to-string formatting function.
-       * @param {!Date} date
-       * @returns {string}
-       */
-      function defaultFormatDate(date) {
-        if (!date) {
-          return '';
-        }
-
-        // All of the dates created through ng-material *should* be set to midnight.
-        // If we encounter a date where the localeTime shows at 11pm instead of midnight,
-        // we have run into an issue with DST where we need to increment the hour by one:
-        // var d = new Date(1992, 9, 8, 0, 0, 0);
-        // d.toLocaleString(); // == "10/7/1992, 11:00:00 PM"
-        var localeTime = date.toLocaleTimeString();
-        var formatDate = date;
-        if (date.getHours() == 0 &&
-            (localeTime.indexOf('11:') !== -1 || localeTime.indexOf('23:') !== -1)) {
-          formatDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 1, 0, 0);
-        }
-
-        return $filter('date')(formatDate, 'M/d/yyyy');
-      }
-
-      /**
-       * Default string-to-date parsing function.
-       * @param {string} dateString
-       * @returns {!Date}
-       */
-      function defaultParseDate(dateString) {
-        return new Date(dateString);
-      }
-
-      /**
-       * Default function to determine whether a string makes sense to be
-       * parsed to a Date object.
-       *
-       * This is very permissive and is just a basic sanity check to ensure that
-       * things like single integers aren't able to be parsed into dates.
-       * @param {string} dateString
-       * @returns {boolean}
-       */
-      function defaultIsDateComplete(dateString) {
-        dateString = dateString.trim();
-
-        // Looks for three chunks of content (either numbers or text) separated
-        // by delimiters.
-        var re = /^(([a-zA-Z]{3,}|[0-9]{1,4})([ \.,]+|[\/\-])){2}([a-zA-Z]{3,}|[0-9]{1,4})$/;
-        return re.test(dateString);
-      }
-
-      /**
-       * Default date-to-string formatter to get a month header.
-       * @param {!Date} date
-       * @returns {string}
-       */
-      function defaultMonthHeaderFormatter(date) {
-        return service.shortMonths[date.getMonth()] + ' ' + date.getFullYear();
-      }
-
-      /**
-       * Default formatter for a month.
-       * @param {!Date} date
-       * @returns {string}
-       */
-      function defaultMonthFormatter(date) {
-        return service.months[date.getMonth()] + ' ' + date.getFullYear();
-      }
-
-      /**
-       * Default week number formatter.
-       * @param number
-       * @returns {string}
-       */
-      function defaultWeekNumberFormatter(number) {
-        return 'Week ' + number;
-      }
-
-      /**
-       * Default formatter for date cell aria-labels.
-       * @param {!Date} date
-       * @returns {string}
-       */
-      function defaultLongDateFormatter(date) {
-        // Example: 'Thursday June 18 2015'
-        return [
-          service.days[date.getDay()],
-          service.months[date.getMonth()],
-          service.dates[date.getDate()],
-          date.getFullYear()
-        ].join(' ');
-      }
-
-      // The default "short" day strings are the first character of each day,
-      // e.g., "Monday" => "M".
-      var defaultShortDays = $locale.DATETIME_FORMATS.DAY.map(function(day) {
-        return day[0];
-      });
-
-      // The default dates are simply the numbers 1 through 31.
-      var defaultDates = Array(32);
-      for (var i = 1; i <= 31; i++) {
-        defaultDates[i] = i;
-      }
-
-      // Default ARIA messages are in English (US).
-      var defaultMsgCalendar = 'Calendar';
-      var defaultMsgOpenCalendar = 'Open calendar';
-
-      var service = {
-        months: this.months || $locale.DATETIME_FORMATS.MONTH,
-        shortMonths: this.shortMonths || $locale.DATETIME_FORMATS.SHORTMONTH,
-        days: this.days || $locale.DATETIME_FORMATS.DAY,
-        shortDays: this.shortDays || defaultShortDays,
-        dates: this.dates || defaultDates,
-        firstDayOfWeek: this.firstDayOfWeek || 0,
-        formatDate: this.formatDate || defaultFormatDate,
-        parseDate: this.parseDate || defaultParseDate,
-        isDateComplete: this.isDateComplete || defaultIsDateComplete,
-        monthHeaderFormatter: this.monthHeaderFormatter || defaultMonthHeaderFormatter,
-        monthFormatter: this.monthFormatter || defaultMonthFormatter,
-        weekNumberFormatter: this.weekNumberFormatter || defaultWeekNumberFormatter,
-        longDateFormatter: this.longDateFormatter || defaultLongDateFormatter,
-        msgCalendar: this.msgCalendar || defaultMsgCalendar,
-        msgOpenCalendar: this.msgOpenCalendar || defaultMsgOpenCalendar
-      };
-
-      return service;
-    };
-    DateLocaleProvider.prototype.$get.$inject = ["$locale", "$filter"];
-
-    $provide.provider('$mdDateLocale', new DateLocaleProvider());
-  }]);
-})();
-
-})();
-(function(){
-"use strict";
-
-(function() {
-  'use strict';
-
-  /**
-   * Utility for performing date calculations to facilitate operation of the calendar and
-   * datepicker.
-   */
-  angular.module('material.components.datepicker').factory('$$mdDateUtil', function() {
-    return {
-      getFirstDateOfMonth: getFirstDateOfMonth,
-      getNumberOfDaysInMonth: getNumberOfDaysInMonth,
-      getDateInNextMonth: getDateInNextMonth,
-      getDateInPreviousMonth: getDateInPreviousMonth,
-      isInNextMonth: isInNextMonth,
-      isInPreviousMonth: isInPreviousMonth,
-      getDateMidpoint: getDateMidpoint,
-      isSameMonthAndYear: isSameMonthAndYear,
-      getWeekOfMonth: getWeekOfMonth,
-      incrementDays: incrementDays,
-      incrementMonths: incrementMonths,
-      getLastDateOfMonth: getLastDateOfMonth,
-      isSameDay: isSameDay,
-      getMonthDistance: getMonthDistance,
-      isValidDate: isValidDate,
-      setDateTimeToMidnight: setDateTimeToMidnight,
-      createDateAtMidnight: createDateAtMidnight,
-      isDateWithinRange: isDateWithinRange,
-      incrementYears: incrementYears,
-      getYearDistance: getYearDistance,
-      clampDate: clampDate,
-      getTimestampFromNode: getTimestampFromNode
-    };
-
-    /**
-     * Gets the first day of the month for the given date's month.
-     * @param {Date} date
-     * @returns {Date}
-     */
-    function getFirstDateOfMonth(date) {
-      return new Date(date.getFullYear(), date.getMonth(), 1);
-    }
-
-    /**
-     * Gets the number of days in the month for the given date's month.
-     * @param date
-     * @returns {number}
-     */
-    function getNumberOfDaysInMonth(date) {
-      return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-    }
-
-    /**
-     * Get an arbitrary date in the month after the given date's month.
-     * @param date
-     * @returns {Date}
-     */
-    function getDateInNextMonth(date) {
-      return new Date(date.getFullYear(), date.getMonth() + 1, 1);
-    }
-
-    /**
-     * Get an arbitrary date in the month before the given date's month.
-     * @param date
-     * @returns {Date}
-     */
-    function getDateInPreviousMonth(date) {
-      return new Date(date.getFullYear(), date.getMonth() - 1, 1);
-    }
-
-    /**
-     * Gets whether two dates have the same month and year.
-     * @param {Date} d1
-     * @param {Date} d2
-     * @returns {boolean}
-     */
-    function isSameMonthAndYear(d1, d2) {
-      return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth();
-    }
-
-    /**
-     * Gets whether two dates are the same day (not not necesarily the same time).
-     * @param {Date} d1
-     * @param {Date} d2
-     * @returns {boolean}
-     */
-    function isSameDay(d1, d2) {
-      return d1.getDate() == d2.getDate() && isSameMonthAndYear(d1, d2);
-    }
-
-    /**
-     * Gets whether a date is in the month immediately after some date.
-     * @param {Date} startDate The date from which to compare.
-     * @param {Date} endDate The date to check.
-     * @returns {boolean}
-     */
-    function isInNextMonth(startDate, endDate) {
-      var nextMonth = getDateInNextMonth(startDate);
-      return isSameMonthAndYear(nextMonth, endDate);
-    }
-
-    /**
-     * Gets whether a date is in the month immediately before some date.
-     * @param {Date} startDate The date from which to compare.
-     * @param {Date} endDate The date to check.
-     * @returns {boolean}
-     */
-    function isInPreviousMonth(startDate, endDate) {
-      var previousMonth = getDateInPreviousMonth(startDate);
-      return isSameMonthAndYear(endDate, previousMonth);
-    }
-
-    /**
-     * Gets the midpoint between two dates.
-     * @param {Date} d1
-     * @param {Date} d2
-     * @returns {Date}
-     */
-    function getDateMidpoint(d1, d2) {
-      return createDateAtMidnight((d1.getTime() + d2.getTime()) / 2);
-    }
-
-    /**
-     * Gets the week of the month that a given date occurs in.
-     * @param {Date} date
-     * @returns {number} Index of the week of the month (zero-based).
-     */
-    function getWeekOfMonth(date) {
-      var firstDayOfMonth = getFirstDateOfMonth(date);
-      return Math.floor((firstDayOfMonth.getDay() + date.getDate() - 1) / 7);
-    }
-
-    /**
-     * Gets a new date incremented by the given number of days. Number of days can be negative.
-     * @param {Date} date
-     * @param {number} numberOfDays
-     * @returns {Date}
-     */
-    function incrementDays(date, numberOfDays) {
-      return new Date(date.getFullYear(), date.getMonth(), date.getDate() + numberOfDays);
-    }
-
-    /**
-     * Gets a new date incremented by the given number of months. Number of months can be negative.
-     * If the date of the given month does not match the target month, the date will be set to the
-     * last day of the month.
-     * @param {Date} date
-     * @param {number} numberOfMonths
-     * @returns {Date}
-     */
-    function incrementMonths(date, numberOfMonths) {
-      // If the same date in the target month does not actually exist, the Date object will
-      // automatically advance *another* month by the number of missing days.
-      // For example, if you try to go from Jan. 30 to Feb. 30, you'll end up on March 2.
-      // So, we check if the month overflowed and go to the last day of the target month instead.
-      var dateInTargetMonth = new Date(date.getFullYear(), date.getMonth() + numberOfMonths, 1);
-      var numberOfDaysInMonth = getNumberOfDaysInMonth(dateInTargetMonth);
-      if (numberOfDaysInMonth < date.getDate()) {
-        dateInTargetMonth.setDate(numberOfDaysInMonth);
-      } else {
-        dateInTargetMonth.setDate(date.getDate());
-      }
-
-      return dateInTargetMonth;
-    }
-
-    /**
-     * Get the integer distance between two months. This *only* considers the month and year
-     * portion of the Date instances.
-     *
-     * @param {Date} start
-     * @param {Date} end
-     * @returns {number} Number of months between `start` and `end`. If `end` is before `start`
-     *     chronologically, this number will be negative.
-     */
-    function getMonthDistance(start, end) {
-      return (12 * (end.getFullYear() - start.getFullYear())) + (end.getMonth() - start.getMonth());
-    }
-
-    /**
-     * Gets the last day of the month for the given date.
-     * @param {Date} date
-     * @returns {Date}
-     */
-    function getLastDateOfMonth(date) {
-      return new Date(date.getFullYear(), date.getMonth(), getNumberOfDaysInMonth(date));
-    }
-
-    /**
-     * Checks whether a date is valid.
-     * @param {Date} date
-     * @return {boolean} Whether the date is a valid Date.
-     */
-    function isValidDate(date) {
-      return date != null && date.getTime && !isNaN(date.getTime());
-    }
-
-    /**
-     * Sets a date's time to midnight.
-     * @param {Date} date
-     */
-    function setDateTimeToMidnight(date) {
-      if (isValidDate(date)) {
-        date.setHours(0, 0, 0, 0);
-      }
-    }
-
-    /**
-     * Creates a date with the time set to midnight.
-     * Drop-in replacement for two forms of the Date constructor:
-     * 1. No argument for Date representing now.
-     * 2. Single-argument value representing number of seconds since Unix Epoch
-     * or a Date object.
-     * @param {number|Date=} opt_value
-     * @return {Date} New date with time set to midnight.
-     */
-    function createDateAtMidnight(opt_value) {
-      var date;
-      if (angular.isUndefined(opt_value)) {
-        date = new Date();
-      } else {
-        date = new Date(opt_value);
-      }
-      setDateTimeToMidnight(date);
-      return date;
-    }
-
-     /**
-      * Checks if a date is within a min and max range, ignoring the time component.
-      * If minDate or maxDate are not dates, they are ignored.
-      * @param {Date} date
-      * @param {Date} minDate
-      * @param {Date} maxDate
-      */
-     function isDateWithinRange(date, minDate, maxDate) {
-       var dateAtMidnight = createDateAtMidnight(date);
-       var minDateAtMidnight = isValidDate(minDate) ? createDateAtMidnight(minDate) : null;
-       var maxDateAtMidnight = isValidDate(maxDate) ? createDateAtMidnight(maxDate) : null;
-       return (!minDateAtMidnight || minDateAtMidnight <= dateAtMidnight) &&
-           (!maxDateAtMidnight || maxDateAtMidnight >= dateAtMidnight);
-     }
-
-    /**
-     * Gets a new date incremented by the given number of years. Number of years can be negative.
-     * See `incrementMonths` for notes on overflow for specific dates.
-     * @param {Date} date
-     * @param {number} numberOfYears
-     * @returns {Date}
-     */
-     function incrementYears(date, numberOfYears) {
-       return incrementMonths(date, numberOfYears * 12);
-     }
-
-     /**
-      * Get the integer distance between two years. This *only* considers the year portion of the
-      * Date instances.
-      *
-      * @param {Date} start
-      * @param {Date} end
-      * @returns {number} Number of months between `start` and `end`. If `end` is before `start`
-      *     chronologically, this number will be negative.
-      */
-     function getYearDistance(start, end) {
-       return end.getFullYear() - start.getFullYear();
-     }
-
-     /**
-      * Clamps a date between a minimum and a maximum date.
-      * @param {Date} date Date to be clamped
-      * @param {Date=} minDate Minimum date
-      * @param {Date=} maxDate Maximum date
-      * @return {Date}
-      */
-     function clampDate(date, minDate, maxDate) {
-       var boundDate = date;
-       if (minDate && date < minDate) {
-         boundDate = new Date(minDate.getTime());
-       }
-       if (maxDate && date > maxDate) {
-         boundDate = new Date(maxDate.getTime());
-       }
-       return boundDate;
-     }
-
-     /**
-      * Extracts and parses the timestamp from a DOM node.
-      * @param  {HTMLElement} node Node from which the timestamp will be extracted.
-      * @return {number} Time since epoch.
-      */
-     function getTimestampFromNode(node) {
-       if (node && node.hasAttribute('data-timestamp')) {
-         return Number(node.getAttribute('data-timestamp'));
-       }
-     }
-
-  });
-})();
-
-})();
-(function(){
-"use strict";
-
-(function() {
-  'use strict';
-
-  // POST RELEASE
-  // TODO(jelbourn): Demo that uses moment.js
-  // TODO(jelbourn): make sure this plays well with validation and ngMessages.
-  // TODO(jelbourn): calendar pane doesn't open up outside of visible viewport.
-  // TODO(jelbourn): forward more attributes to the internal input (required, autofocus, etc.)
-  // TODO(jelbourn): something better for mobile (calendar panel takes up entire screen?)
-  // TODO(jelbourn): input behavior (masking? auto-complete?)
-  // TODO(jelbourn): UTC mode
-  // TODO(jelbourn): RTL
-
-
-  angular.module('material.components.datepicker')
-      .directive('mdDatepicker', datePickerDirective);
-
-  /**
-   * @ngdoc directive
-   * @name mdDatepicker
-   * @module material.components.datepicker
-   *
-   * @param {Date} ng-model The component's model. Expects a JavaScript Date object.
-   * @param {expression=} ng-change Expression evaluated when the model value changes.
-   * @param {Date=} md-min-date Expression representing a min date (inclusive).
-   * @param {Date=} md-max-date Expression representing a max date (inclusive).
-   * @param {(function(Date): boolean)=} md-date-filter Function expecting a date and returning a boolean whether it can be selected or not.
-   * @param {String=} md-placeholder The date input placeholder value.
-   * @param {String=} md-open-on-focus When present, the calendar will be opened when the input is focused.
-   * @param {Boolean=} md-is-open Expression that can be used to open the datepicker's calendar on-demand.
-   * @param {String=} md-hide-icons Determines which datepicker icons should be hidden. Note that this may cause the
-   * datepicker to not align properly with other components. **Use at your own risk.** Possible values are:
-   * * `"all"` - Hides all icons.
-   * * `"calendar"` - Only hides the calendar icon.
-   * * `"triangle"` - Only hides the triangle icon.
-   * @param {boolean=} ng-disabled Whether the datepicker is disabled.
-   * @param {boolean=} ng-required Whether a value is required for the datepicker.
-   *
-   * @description
-   * `<md-datepicker>` is a component used to select a single date.
-   * For information on how to configure internationalization for the date picker,
-   * see `$mdDateLocaleProvider`.
-   *
-   * This component supports [ngMessages](https://docs.angularjs.org/api/ngMessages/directive/ngMessages).
-   * Supported attributes are:
-   * * `required`: whether a required date is not set.
-   * * `mindate`: whether the selected date is before the minimum allowed date.
-   * * `maxdate`: whether the selected date is after the maximum allowed date.
-   *
-   * @usage
-   * <hljs lang="html">
-   *   <md-datepicker ng-model="birthday"></md-datepicker>
-   * </hljs>
-   *
-   */
-  function datePickerDirective($$mdSvgRegistry) {
-    return {
-      template: function(tElement, tAttrs) {
-        // Buttons are not in the tab order because users can open the calendar via keyboard
-        // interaction on the text input, and multiple tab stops for one component (picker)
-        // may be confusing.
-        var hiddenIcons = tAttrs.mdHideIcons;
-
-        var calendarButton = (hiddenIcons === 'all' || hiddenIcons === 'calendar') ? '' :
-          '<md-button class="md-datepicker-button md-icon-button" type="button" ' +
-              'tabindex="-1" aria-hidden="true" ' +
-              'ng-click="ctrl.openCalendarPane($event)">' +
-            '<md-icon class="md-datepicker-calendar-icon" aria-label="md-calendar" ' +
-                     'md-svg-src="' + $$mdSvgRegistry.mdCalendar + '"></md-icon>' +
-          '</md-button>';
-
-        var triangleButton = (hiddenIcons === 'all' || hiddenIcons === 'triangle') ? '' :
-          '<md-button type="button" md-no-ink ' +
-              'class="md-datepicker-triangle-button md-icon-button" ' +
-              'ng-click="ctrl.openCalendarPane($event)" ' +
-              'aria-label="{{::ctrl.dateLocale.msgOpenCalendar}}">' +
-            '<div class="md-datepicker-expand-triangle"></div>' +
-          '</md-button>';
-
-        return '' +
-        calendarButton +
-        '<div class="md-datepicker-input-container" ' +
-            'ng-class="{\'md-datepicker-focused\': ctrl.isFocused}">' +
-          '<input class="md-datepicker-input" aria-haspopup="true" ' +
-              'ng-focus="ctrl.setFocused(true)" ng-blur="ctrl.setFocused(false)">' +
-          triangleButton +
-        '</div>' +
-
-        // This pane will be detached from here and re-attached to the document body.
-        '<div class="md-datepicker-calendar-pane md-whiteframe-z1">' +
-          '<div class="md-datepicker-input-mask">' +
-            '<div class="md-datepicker-input-mask-opaque"></div>' +
-          '</div>' +
-          '<div class="md-datepicker-calendar">' +
-            '<md-calendar role="dialog" aria-label="{{::ctrl.dateLocale.msgCalendar}}" ' +
-                'md-min-date="ctrl.minDate" md-max-date="ctrl.maxDate"' +
-                'md-date-filter="ctrl.dateFilter"' +
-                'ng-model="ctrl.date" ng-if="ctrl.isCalendarOpen">' +
-            '</md-calendar>' +
-          '</div>' +
-        '</div>';
-      },
-      require: ['ngModel', 'mdDatepicker', '?^mdInputContainer'],
-      scope: {
-        minDate: '=mdMinDate',
-        maxDate: '=mdMaxDate',
-        placeholder: '@mdPlaceholder',
-        dateFilter: '=mdDateFilter',
-        isOpen: '=?mdIsOpen'
-      },
-      controller: DatePickerCtrl,
-      controllerAs: 'ctrl',
-      bindToController: true,
-      link: function(scope, element, attr, controllers) {
-        var ngModelCtrl = controllers[0];
-        var mdDatePickerCtrl = controllers[1];
-        var mdInputContainer = controllers[2];
-
-        mdDatePickerCtrl.configureNgModel(ngModelCtrl, mdInputContainer);
-
-        if (mdInputContainer) {
-          // We need to move the spacer after the datepicker itself,
-          // because md-input-container adds it after the
-          // md-datepicker-input by default. The spacer gets wrapped in a
-          // div, because it floats and gets aligned next to the datepicker.
-          // There are easier ways of working around this with CSS (making the
-          // datepicker 100% wide, change the `display` etc.), however they
-          // break the alignment with any other form controls.
-          var spacer = element[0].querySelector('.md-errors-spacer');
-
-          if (spacer) {
-            element.after(angular.element('<div>').append(spacer));
-          }
-
-          mdInputContainer.setHasPlaceholder(attr.mdPlaceholder);
-          mdInputContainer.element.addClass(INPUT_CONTAINER_CLASS);
-          mdInputContainer.input = element;
-
-          if (!mdInputContainer.label) {
-            $mdAria.expect(element, 'aria-label', attr.mdPlaceholder);
-          }
-
-          scope.$watch(mdInputContainer.isErrorGetter || function() {
-            return ngModelCtrl.$invalid && ngModelCtrl.$touched;
-          }, mdInputContainer.setInvalid);
-        }
-      }
-    };
-  }
-  datePickerDirective.$inject = ["$$mdSvgRegistry"];
-
-  /** Additional offset for the input's `size` attribute, which is updated based on its content. */
-  var EXTRA_INPUT_SIZE = 3;
-
-  /** Class applied to the container if the date is invalid. */
-  var INVALID_CLASS = 'md-datepicker-invalid';
-
-  /** Class applied to the datepicker when it's open. */
-  var OPEN_CLASS = 'md-datepicker-open';
-
-  /** Class applied to the md-input-container, if a datepicker is placed inside it */
-  var INPUT_CONTAINER_CLASS = '_md-datepicker-floating-label';
-
-  /** Default time in ms to debounce input event by. */
-  var DEFAULT_DEBOUNCE_INTERVAL = 500;
-
-  /**
-   * Height of the calendar pane used to check if the pane is going outside the boundary of
-   * the viewport. See calendar.scss for how $md-calendar-height is computed; an extra 20px is
-   * also added to space the pane away from the exact edge of the screen.
-   *
-   *  This is computed statically now, but can be changed to be measured if the circumstances
-   *  of calendar sizing are changed.
-   */
-  var CALENDAR_PANE_HEIGHT = 368;
-
-  /**
-   * Width of the calendar pane used to check if the pane is going outside the boundary of
-   * the viewport. See calendar.scss for how $md-calendar-width is computed; an extra 20px is
-   * also added to space the pane away from the exact edge of the screen.
-   *
-   *  This is computed statically now, but can be changed to be measured if the circumstances
-   *  of calendar sizing are changed.
-   */
-  var CALENDAR_PANE_WIDTH = 360;
-
-  /**
-   * Controller for md-datepicker.
-   *
-   * @ngInject @constructor
-   */
-  function DatePickerCtrl($scope, $element, $attrs, $compile, $timeout, $window,
-      $mdConstant, $mdTheming, $mdUtil, $mdDateLocale, $$mdDateUtil, $$rAF) {
-    /** @final */
-    this.$compile = $compile;
-
-    /** @final */
-    this.$timeout = $timeout;
-
-    /** @final */
-    this.$window = $window;
-
-    /** @final */
-    this.dateLocale = $mdDateLocale;
-
-    /** @final */
-    this.dateUtil = $$mdDateUtil;
-
-    /** @final */
-    this.$mdConstant = $mdConstant;
-
-    /* @final */
-    this.$mdUtil = $mdUtil;
-
-    /** @final */
-    this.$$rAF = $$rAF;
-
-    /**
-     * The root document element. This is used for attaching a top-level click handler to
-     * close the calendar panel when a click outside said panel occurs. We use `documentElement`
-     * instead of body because, when scrolling is disabled, some browsers consider the body element
-     * to be completely off the screen and propagate events directly to the html element.
-     * @type {!angular.JQLite}
-     */
-    this.documentElement = angular.element(document.documentElement);
-
-    /** @type {!angular.NgModelController} */
-    this.ngModelCtrl = null;
-
-    /** @type {HTMLInputElement} */
-    this.inputElement = $element[0].querySelector('input');
-
-    /** @final {!angular.JQLite} */
-    this.ngInputElement = angular.element(this.inputElement);
-
-    /** @type {HTMLElement} */
-    this.inputContainer = $element[0].querySelector('.md-datepicker-input-container');
-
-    /** @type {HTMLElement} Floating calendar pane. */
-    this.calendarPane = $element[0].querySelector('.md-datepicker-calendar-pane');
-
-    /** @type {HTMLElement} Calendar icon button. */
-    this.calendarButton = $element[0].querySelector('.md-datepicker-button');
-
-    /**
-     * Element covering everything but the input in the top of the floating calendar pane.
-     * @type {HTMLElement}
-     */
-    this.inputMask = $element[0].querySelector('.md-datepicker-input-mask-opaque');
-
-    /** @final {!angular.JQLite} */
-    this.$element = $element;
-
-    /** @final {!angular.Attributes} */
-    this.$attrs = $attrs;
-
-    /** @final {!angular.Scope} */
-    this.$scope = $scope;
-
-    /** @type {Date} */
-    this.date = null;
-
-    /** @type {boolean} */
-    this.isFocused = false;
-
-    /** @type {boolean} */
-    this.isDisabled;
-    this.setDisabled($element[0].disabled || angular.isString($attrs.disabled));
-
-    /** @type {boolean} Whether the date-picker's calendar pane is open. */
-    this.isCalendarOpen = false;
-
-    /** @type {boolean} Whether the calendar should open when the input is focused. */
-    this.openOnFocus = $attrs.hasOwnProperty('mdOpenOnFocus');
-
-    /** @final */
-    this.mdInputContainer = null;
-
-    /**
-     * Element from which the calendar pane was opened. Keep track of this so that we can return
-     * focus to it when the pane is closed.
-     * @type {HTMLElement}
-     */
-    this.calendarPaneOpenedFrom = null;
-
-    this.calendarPane.id = 'md-date-pane' + $mdUtil.nextUid();
-
-    $mdTheming($element);
-    $mdTheming(angular.element(this.calendarPane));
-
-    /** Pre-bound click handler is saved so that the event listener can be removed. */
-    this.bodyClickHandler = angular.bind(this, this.handleBodyClick);
-
-    /** Pre-bound resize handler so that the event listener can be removed. */
-    this.windowResizeHandler = $mdUtil.debounce(angular.bind(this, this.closeCalendarPane), 100);
-
-    // Unless the user specifies so, the datepicker should not be a tab stop.
-    // This is necessary because ngAria might add a tabindex to anything with an ng-model
-    // (based on whether or not the user has turned that particular feature on/off).
-    if (!$attrs.tabindex) {
-      $element.attr('tabindex', '-1');
-    }
-
-    this.installPropertyInterceptors();
-    this.attachChangeListeners();
-    this.attachInteractionListeners();
-
-    var self = this;
-
-    $scope.$on('$destroy', function() {
-      self.detachCalendarPane();
-    });
-
-    if ($attrs.mdIsOpen) {
-      $scope.$watch('ctrl.isOpen', function(shouldBeOpen) {
-        if (shouldBeOpen) {
-          self.openCalendarPane({
-            target: self.inputElement
-          });
-        } else {
-          self.closeCalendarPane();
-        }
-      });
-    }
-  }
-  DatePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$compile", "$timeout", "$window", "$mdConstant", "$mdTheming", "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF"];
-
-  /**
-   * Sets up the controller's reference to ngModelController.
-   * @param {!angular.NgModelController} ngModelCtrl
-   */
-  DatePickerCtrl.prototype.configureNgModel = function(ngModelCtrl, mdInputContainer) {
-    this.ngModelCtrl = ngModelCtrl;
-    this.mdInputContainer = mdInputContainer;
-
-    var self = this;
-    ngModelCtrl.$render = function() {
-      var value = self.ngModelCtrl.$viewValue;
-
-      if (value && !(value instanceof Date)) {
-        throw Error('The ng-model for md-datepicker must be a Date instance. ' +
-            'Currently the model is a: ' + (typeof value));
-      }
-
-      self.date = value;
-      self.inputElement.value = self.dateLocale.formatDate(value);
-      self.mdInputContainer && self.mdInputContainer.setHasValue(!!value);
-      self.resizeInputElement();
-      self.updateErrorState();
-    };
-  };
-
-  /**
-   * Attach event listeners for both the text input and the md-calendar.
-   * Events are used instead of ng-model so that updates don't infinitely update the other
-   * on a change. This should also be more performant than using a $watch.
-   */
-  DatePickerCtrl.prototype.attachChangeListeners = function() {
-    var self = this;
-
-    self.$scope.$on('md-calendar-change', function(event, date) {
-      self.ngModelCtrl.$setViewValue(date);
-      self.date = date;
-      self.inputElement.value = self.dateLocale.formatDate(date);
-      self.mdInputContainer && self.mdInputContainer.setHasValue(!!date);
-      self.closeCalendarPane();
-      self.resizeInputElement();
-      self.updateErrorState();
-    });
-
-    self.ngInputElement.on('input', angular.bind(self, self.resizeInputElement));
-    // TODO(chenmike): Add ability for users to specify this interval.
-    self.ngInputElement.on('input', self.$mdUtil.debounce(self.handleInputEvent,
-        DEFAULT_DEBOUNCE_INTERVAL, self));
-  };
-
-  /** Attach event listeners for user interaction. */
-  DatePickerCtrl.prototype.attachInteractionListeners = function() {
-    var self = this;
-    var $scope = this.$scope;
-    var keyCodes = this.$mdConstant.KEY_CODE;
-
-    // Add event listener through angular so that we can triggerHandler in unit tests.
-    self.ngInputElement.on('keydown', function(event) {
-      if (event.altKey && event.keyCode == keyCodes.DOWN_ARROW) {
-        self.openCalendarPane(event);
-        $scope.$digest();
-      }
-    });
-
-    if (self.openOnFocus) {
-      self.ngInputElement.on('focus', angular.bind(self, self.openCalendarPane));
-    }
-
-    $scope.$on('md-calendar-close', function() {
-      self.closeCalendarPane();
-    });
-  };
-
-  /**
-   * Capture properties set to the date-picker and imperitively handle internal changes.
-   * This is done to avoid setting up additional $watches.
-   */
-  DatePickerCtrl.prototype.installPropertyInterceptors = function() {
-    var self = this;
-
-    if (this.$attrs.ngDisabled) {
-      // The expression is to be evaluated against the directive element's scope and not
-      // the directive's isolate scope.
-      var scope = this.$scope.$parent;
-
-      if (scope) {
-        scope.$watch(this.$attrs.ngDisabled, function(isDisabled) {
-          self.setDisabled(isDisabled);
-        });
-      }
-    }
-
-    Object.defineProperty(this, 'placeholder', {
-      get: function() { return self.inputElement.placeholder; },
-      set: function(value) { self.inputElement.placeholder = value || ''; }
-    });
-  };
-
-  /**
-   * Sets whether the date-picker is disabled.
-   * @param {boolean} isDisabled
-   */
-  DatePickerCtrl.prototype.setDisabled = function(isDisabled) {
-    this.isDisabled = isDisabled;
-    this.inputElement.disabled = isDisabled;
-
-    if (this.calendarButton) {
-      this.calendarButton.disabled = isDisabled;
-    }
-  };
-
-  /**
-   * Sets the custom ngModel.$error flags to be consumed by ngMessages. Flags are:
-   *   - mindate: whether the selected date is before the minimum date.
-   *   - maxdate: whether the selected flag is after the maximum date.
-   *   - filtered: whether the selected date is allowed by the custom filtering function.
-   *   - valid: whether the entered text input is a valid date
-   *
-   * The 'required' flag is handled automatically by ngModel.
-   *
-   * @param {Date=} opt_date Date to check. If not given, defaults to the datepicker's model value.
-   */
-  DatePickerCtrl.prototype.updateErrorState = function(opt_date) {
-    var date = opt_date || this.date;
-
-    // Clear any existing errors to get rid of anything that's no longer relevant.
-    this.clearErrorState();
-
-    if (this.dateUtil.isValidDate(date)) {
-      // Force all dates to midnight in order to ignore the time portion.
-      date = this.dateUtil.createDateAtMidnight(date);
-
-      if (this.dateUtil.isValidDate(this.minDate)) {
-        var minDate = this.dateUtil.createDateAtMidnight(this.minDate);
-        this.ngModelCtrl.$setValidity('mindate', date >= minDate);
-      }
-
-      if (this.dateUtil.isValidDate(this.maxDate)) {
-        var maxDate = this.dateUtil.createDateAtMidnight(this.maxDate);
-        this.ngModelCtrl.$setValidity('maxdate', date <= maxDate);
-      }
-
-      if (angular.isFunction(this.dateFilter)) {
-        this.ngModelCtrl.$setValidity('filtered', this.dateFilter(date));
-      }
-    } else {
-      // The date is seen as "not a valid date" if there is *something* set
-      // (i.e.., not null or undefined), but that something isn't a valid date.
-      this.ngModelCtrl.$setValidity('valid', date == null);
-    }
-
-    // TODO(jelbourn): Change this to classList.toggle when we stop using PhantomJS in unit tests
-    // because it doesn't conform to the DOMTokenList spec.
-    // See https://github.com/ariya/phantomjs/issues/12782.
-    if (!this.ngModelCtrl.$valid) {
-      this.inputContainer.classList.add(INVALID_CLASS);
-    }
-  };
-
-  /** Clears any error flags set by `updateErrorState`. */
-  DatePickerCtrl.prototype.clearErrorState = function() {
-    this.inputContainer.classList.remove(INVALID_CLASS);
-    ['mindate', 'maxdate', 'filtered', 'valid'].forEach(function(field) {
-      this.ngModelCtrl.$setValidity(field, true);
-    }, this);
-  };
-
-  /** Resizes the input element based on the size of its content. */
-  DatePickerCtrl.prototype.resizeInputElement = function() {
-    this.inputElement.size = this.inputElement.value.length + EXTRA_INPUT_SIZE;
-  };
-
-  /**
-   * Sets the model value if the user input is a valid date.
-   * Adds an invalid class to the input element if not.
-   */
-  DatePickerCtrl.prototype.handleInputEvent = function() {
-    var inputString = this.inputElement.value;
-    var parsedDate = inputString ? this.dateLocale.parseDate(inputString) : null;
-    this.dateUtil.setDateTimeToMidnight(parsedDate);
-
-    // An input string is valid if it is either empty (representing no date)
-    // or if it parses to a valid date that the user is allowed to select.
-    var isValidInput = inputString == '' || (
-      this.dateUtil.isValidDate(parsedDate) &&
-      this.dateLocale.isDateComplete(inputString) &&
-      this.isDateEnabled(parsedDate)
-    );
-
-    // The datepicker's model is only updated when there is a valid input.
-    if (isValidInput) {
-      this.ngModelCtrl.$setViewValue(parsedDate);
-      this.date = parsedDate;
-    }
-
-    this.updateErrorState(parsedDate);
-  };
-
-  /**
-   * Check whether date is in range and enabled
-   * @param {Date=} opt_date
-   * @return {boolean} Whether the date is enabled.
-   */
-  DatePickerCtrl.prototype.isDateEnabled = function(opt_date) {
-    return this.dateUtil.isDateWithinRange(opt_date, this.minDate, this.maxDate) &&
-          (!angular.isFunction(this.dateFilter) || this.dateFilter(opt_date));
-  };
-
-  /** Position and attach the floating calendar to the document. */
-  DatePickerCtrl.prototype.attachCalendarPane = function() {
-    var calendarPane = this.calendarPane;
-    var body = document.body;
-
-    calendarPane.style.transform = '';
-    this.$element.addClass(OPEN_CLASS);
-    this.mdInputContainer && this.mdInputContainer.element.addClass(OPEN_CLASS);
-    angular.element(body).addClass('md-datepicker-is-showing');
-
-    var elementRect = this.inputContainer.getBoundingClientRect();
-    var bodyRect = body.getBoundingClientRect();
-
-    // Check to see if the calendar pane would go off the screen. If so, adjust position
-    // accordingly to keep it within the viewport.
-    var paneTop = elementRect.top - bodyRect.top;
-    var paneLeft = elementRect.left - bodyRect.left;
-
-    // If ng-material has disabled body scrolling (for example, if a dialog is open),
-    // then it's possible that the already-scrolled body has a negative top/left. In this case,
-    // we want to treat the "real" top as (0 - bodyRect.top). In a normal scrolling situation,
-    // though, the top of the viewport should just be the body's scroll position.
-    var viewportTop = (bodyRect.top < 0 && document.body.scrollTop == 0) ?
-        -bodyRect.top :
-        document.body.scrollTop;
-
-    var viewportLeft = (bodyRect.left < 0 && document.body.scrollLeft == 0) ?
-        -bodyRect.left :
-        document.body.scrollLeft;
-
-    var viewportBottom = viewportTop + this.$window.innerHeight;
-    var viewportRight = viewportLeft + this.$window.innerWidth;
-
-    // If the right edge of the pane would be off the screen and shifting it left by the
-    // difference would not go past the left edge of the screen. If the calendar pane is too
-    // big to fit on the screen at all, move it to the left of the screen and scale the entire
-    // element down to fit.
-    if (paneLeft + CALENDAR_PANE_WIDTH > viewportRight) {
-      if (viewportRight - CALENDAR_PANE_WIDTH > 0) {
-        paneLeft = viewportRight - CALENDAR_PANE_WIDTH;
-      } else {
-        paneLeft = viewportLeft;
-        var scale = this.$window.innerWidth / CALENDAR_PANE_WIDTH;
-        calendarPane.style.transform = 'scale(' + scale + ')';
-      }
-
-      calendarPane.classList.add('md-datepicker-pos-adjusted');
-    }
-
-    // If the bottom edge of the pane would be off the screen and shifting it up by the
-    // difference would not go past the top edge of the screen.
-    if (paneTop + CALENDAR_PANE_HEIGHT > viewportBottom &&
-        viewportBottom - CALENDAR_PANE_HEIGHT > viewportTop) {
-      paneTop = viewportBottom - CALENDAR_PANE_HEIGHT;
-      calendarPane.classList.add('md-datepicker-pos-adjusted');
-    }
-
-    calendarPane.style.left = paneLeft + 'px';
-    calendarPane.style.top = paneTop + 'px';
-    document.body.appendChild(calendarPane);
-
-    // The top of the calendar pane is a transparent box that shows the text input underneath.
-    // Since the pane is floating, though, the page underneath the pane *adjacent* to the input is
-    // also shown unless we cover it up. The inputMask does this by filling up the remaining space
-    // based on the width of the input.
-    this.inputMask.style.left = elementRect.width + 'px';
-
-    // Add CSS class after one frame to trigger open animation.
-    this.$$rAF(function() {
-      calendarPane.classList.add('md-pane-open');
-    });
-  };
-
-  /** Detach the floating calendar pane from the document. */
-  DatePickerCtrl.prototype.detachCalendarPane = function() {
-    this.$element.removeClass(OPEN_CLASS);
-    this.mdInputContainer && this.mdInputContainer.element.removeClass(OPEN_CLASS);
-    angular.element(document.body).removeClass('md-datepicker-is-showing');
-    this.calendarPane.classList.remove('md-pane-open');
-    this.calendarPane.classList.remove('md-datepicker-pos-adjusted');
-
-    if (this.isCalendarOpen) {
-      this.$mdUtil.enableScrolling();
-    }
-
-    if (this.calendarPane.parentNode) {
-      // Use native DOM removal because we do not want any of the angular state of this element
-      // to be disposed.
-      this.calendarPane.parentNode.removeChild(this.calendarPane);
-    }
-  };
-
-  /**
-   * Open the floating calendar pane.
-   * @param {Event} event
-   */
-  DatePickerCtrl.prototype.openCalendarPane = function(event) {
-    if (!this.isCalendarOpen && !this.isDisabled) {
-      this.isCalendarOpen = this.isOpen = true;
-      this.calendarPaneOpenedFrom = event.target;
-
-      // Because the calendar pane is attached directly to the body, it is possible that the
-      // rest of the component (input, etc) is in a different scrolling container, such as
-      // an md-content. This means that, if the container is scrolled, the pane would remain
-      // stationary. To remedy this, we disable scrolling while the calendar pane is open, which
-      // also matches the native behavior for things like `<select>` on Mac and Windows.
-      this.$mdUtil.disableScrollAround(this.calendarPane);
-
-      this.attachCalendarPane();
-      this.focusCalendar();
-
-      // Attach click listener inside of a timeout because, if this open call was triggered by a
-      // click, we don't want it to be immediately propogated up to the body and handled.
-      var self = this;
-      this.$mdUtil.nextTick(function() {
-        // Use 'touchstart` in addition to click in order to work on iOS Safari, where click
-        // events aren't propogated under most circumstances.
-        // See http://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
-        self.documentElement.on('click touchstart', self.bodyClickHandler);
-      }, false);
-
-      window.addEventListener('resize', this.windowResizeHandler);
-    }
-  };
-
-  /** Close the floating calendar pane. */
-  DatePickerCtrl.prototype.closeCalendarPane = function() {
-    if (this.isCalendarOpen) {
-      var self = this;
-
-      self.calendarPaneOpenedFrom.focus();
-      self.calendarPaneOpenedFrom = null;
-
-      if (self.openOnFocus) {
-        // Ensures that all focus events have fired before detaching
-        // the calendar. Prevents the calendar from reopening immediately
-        // in IE when md-open-on-focus is set. Also it needs to trigger
-        // a digest, in order to prevent issues where the calendar wasn't
-        // showing up on the next open.
-        this.$mdUtil.nextTick(detach);
-      } else {
-        detach();
-      }
-    }
-
-    function detach() {
-      self.detachCalendarPane();
-      self.isCalendarOpen = self.isOpen = false;
-      self.ngModelCtrl.$setTouched();
-
-      self.documentElement.off('click touchstart', self.bodyClickHandler);
-      window.removeEventListener('resize', self.windowResizeHandler);
-    }
-  };
-
-  /** Gets the controller instance for the calendar in the floating pane. */
-  DatePickerCtrl.prototype.getCalendarCtrl = function() {
-    return angular.element(this.calendarPane.querySelector('md-calendar')).controller('mdCalendar');
-  };
-
-  /** Focus the calendar in the floating pane. */
-  DatePickerCtrl.prototype.focusCalendar = function() {
-    // Use a timeout in order to allow the calendar to be rendered, as it is gated behind an ng-if.
-    var self = this;
-    this.$mdUtil.nextTick(function() {
-      self.getCalendarCtrl().focus();
-    }, false);
-  };
-
-  /**
-   * Sets whether the input is currently focused.
-   * @param {boolean} isFocused
-   */
-  DatePickerCtrl.prototype.setFocused = function(isFocused) {
-    if (!isFocused) {
-      this.ngModelCtrl.$setTouched();
-    }
-    this.isFocused = isFocused;
-  };
-
-  /**
-   * Handles a click on the document body when the floating calendar pane is open.
-   * Closes the floating calendar pane if the click is not inside of it.
-   * @param {MouseEvent} event
-   */
-  DatePickerCtrl.prototype.handleBodyClick = function(event) {
-    if (this.isCalendarOpen) {
-      // TODO(jelbourn): way want to also include the md-datepicker itself in this check.
-      var closest = this.$mdUtil.getClosest;
-      var isInCalendar = closest(event.target, 'md-calendar-year') || closest(event.target, 'md-calendar-month');
-
-      if (!isInCalendar) {
-        this.closeCalendarPane();
-      }
-
-      this.$scope.$digest();
-    }
-  };
-})();
 
 })();
 (function(){
@@ -27284,13 +26451,8 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $sce) {
    */
   function postLink(scope, element, attr) {
     $mdTheming(element);
-    var lastFontIcon = attr.mdFontIcon;
-    var lastFontSet = $mdIcon.fontSet(attr.mdFontSet);
 
     prepareForFontIcon();
-
-    attr.$observe('mdFontIcon', fontIconChanged);
-    attr.$observe('mdFontSet', fontIconChanged);
 
     // Keep track of the content of the svg src so we can compare against it later to see if the
     // attribute is static (and thus safe).
@@ -27331,9 +26493,9 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $sce) {
         if (attrVal) {
           $mdIcon(attrVal)
             .then(function(svg) {
-            element.empty();
-            element.append(svg);
-          });
+              element.empty();
+              element.append(svg);
+            });
         }
 
       });
@@ -27355,28 +26517,7 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $sce) {
         if (attr.mdFontIcon) {
           element.addClass('md-font ' + attr.mdFontIcon);
         }
-
-        element.addClass(lastFontSet);
-      }
-    }
-
-    function fontIconChanged() {
-      if (!attr.mdSvgIcon && !attr.mdSvgSrc) {
-        if (attr.mdFontIcon) {
-          element.removeClass(lastFontIcon);
-          element.addClass(attr.mdFontIcon);
-
-          lastFontIcon = attr.mdFontIcon;
-        }
-
-        var fontSet = $mdIcon.fontSet(attr.mdFontSet);
-
-        if (lastFontSet !== fontSet) {
-          element.removeClass(lastFontSet);
-          element.addClass(fontSet);
-
-          lastFontSet = fontSet;
-        }
+        element.addClass($mdIcon.fontSet(attr.mdFontSet));
       }
     }
   }
@@ -27396,17 +26537,9 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $sce) {
 (function(){
 "use strict";
 
-  angular
-    .module('material.components.icon')
-    .constant('$$mdSvgRegistry', {
-        'mdTabsArrow':   'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxnPjxwb2x5Z29uIHBvaW50cz0iMTUuNCw3LjQgMTQsNiA4LDEyIDE0LDE4IDE1LjQsMTYuNiAxMC44LDEyICIvPjwvZz48L3N2Zz4=',
-        'mdClose':       'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxnPjxwYXRoIGQ9Ik0xOSA2LjQxbC0xLjQxLTEuNDEtNS41OSA1LjU5LTUuNTktNS41OS0xLjQxIDEuNDEgNS41OSA1LjU5LTUuNTkgNS41OSAxLjQxIDEuNDEgNS41OS01LjU5IDUuNTkgNS41OSAxLjQxLTEuNDEtNS41OS01LjU5eiIvPjwvZz48L3N2Zz4=',
-        'mdCancel':      'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxnPjxwYXRoIGQ9Ik0xMiAyYy01LjUzIDAtMTAgNC40Ny0xMCAxMHM0LjQ3IDEwIDEwIDEwIDEwLTQuNDcgMTAtMTAtNC40Ny0xMC0xMC0xMHptNSAxMy41OWwtMS40MSAxLjQxLTMuNTktMy41OS0zLjU5IDMuNTktMS40MS0xLjQxIDMuNTktMy41OS0zLjU5LTMuNTkgMS40MS0xLjQxIDMuNTkgMy41OSAzLjU5LTMuNTkgMS40MSAxLjQxLTMuNTkgMy41OSAzLjU5IDMuNTl6Ii8+PC9nPjwvc3ZnPg==',
-        'mdMenu':        'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGQ9Ik0zLDZIMjFWOEgzVjZNMywxMUgyMVYxM0gzVjExTTMsMTZIMjFWMThIM1YxNloiIC8+PC9zdmc+',
-        'mdToggleArrow': 'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNDggNDgiPjxwYXRoIGQ9Ik0yNCAxNmwtMTIgMTIgMi44MyAyLjgzIDkuMTctOS4xNyA5LjE3IDkuMTcgMi44My0yLjgzeiIvPjxwYXRoIGQ9Ik0wIDBoNDh2NDhoLTQ4eiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==',
-        'mdCalendar':    'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTkgM2gtMVYxaC0ydjJIOFYxSDZ2Mkg1Yy0xLjExIDAtMS45OS45LTEuOTkgMkwzIDE5YzAgMS4xLjg5IDIgMiAyaDE0YzEuMSAwIDItLjkgMi0yVjVjMC0xLjEtLjktMi0yLTJ6bTAgMTZINVY4aDE0djExek03IDEwaDV2NUg3eiIvPjwvc3ZnPg=='
-    })
-    .provider('$mdIcon', MdIconProvider);
+angular
+  .module('material.components.icon')
+  .provider('$mdIcon', MdIconProvider);
 
 /**
  * @ngdoc service
@@ -27424,23 +26557,6 @@ function mdIconDirective($mdIcon, $mdTheming, $mdAria, $sce) {
  * internally by the `$mdIcon` service using the `$templateRequest` service. When an SVG is
  * requested by name/ID, the `$mdIcon` service searches its registry for the associated source URL;
  * that URL is used to on-demand load and parse the SVG dynamically.
- *
- * The `$templateRequest` service expects the icons source to be loaded over trusted URLs.<br/>
- * This means, when loading icons from an external URL, you have to trust the URL in the `$sceDelegateProvider`.
- *
- * <hljs lang="js">
- *   app.config(function($sceDelegateProvider) {
- *     $sceDelegateProvider.resourceUrlWhitelist([
- *       // Adding 'self' to the whitelist, will allow requests from the current origin.
- *       'self',
- *       // Using double asterisks here, will allow all URLs to load.
- *       // We recommend to only specify the given domain you want to allow.
- *       '**'
- *     ]);
- *   });
- * </hljs>
- *
- * Read more about the [$sceDelegateProvider](https://docs.angularjs.org/api/ng/provider/$sceDelegateProvider).
  *
  * **Notice:** Most font-icons libraries do not support ligatures (for example `fontawesome`).<br/>
  *  In such cases you are not able to use the icon's ligature name - Like so:
@@ -27739,7 +26855,50 @@ MdIconProvider.prototype = {
     return this;
   },
 
+  preloadIcons: function($templateCache) {
+    var iconProvider = this;
+    var svgRegistry = [
+      {
+        id: 'md-tabs-arrow',
+        url: 'md-tabs-arrow.svg',
+        svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><polygon points="15.4,7.4 14,6 8,12 14,18 15.4,16.6 10.8,12 "/></g></svg>'
+      },
+      {
+        id: 'md-close',
+        url: 'md-close.svg',
+        svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/></g></svg>'
+      },
+      {
+        id: 'md-cancel',
+        url: 'md-cancel.svg',
+        svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><path d="M12 2c-5.53 0-10 4.47-10 10s4.47 10 10 10 10-4.47 10-10-4.47-10-10-10zm5 13.59l-1.41 1.41-3.59-3.59-3.59 3.59-1.41-1.41 3.59-3.59-3.59-3.59 1.41-1.41 3.59 3.59 3.59-3.59 1.41 1.41-3.59 3.59 3.59 3.59z"/></g></svg>'
+      },
+      {
+        id: 'md-menu',
+        url: 'md-menu.svg',
+        svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" /></svg>'
+      },
+      {
+        id: 'md-toggle-arrow',
+        url: 'md-toggle-arrow-svg',
+        svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 48 48"><path d="M24 16l-12 12 2.83 2.83 9.17-9.17 9.17 9.17 2.83-2.83z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>'
+      },
+      {
+        id: 'md-calendar',
+        url: 'md-calendar.svg',
+        svg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>'
+      }
+    ];
+
+    svgRegistry.forEach(function(asset) {
+      iconProvider.icon(asset.id, asset.url);
+      $templateCache.put(asset.url, asset.svg);
+    });
+
+  },
+
   $get: ['$templateRequest', '$q', '$log', '$templateCache', '$mdUtil', '$sce', function($templateRequest, $q, $log, $templateCache, $mdUtil, $sce) {
+    this.preloadIcons($templateCache);
     return MdIconService(config, $templateRequest, $q, $log, $mdUtil, $sce);
   }]
 };
@@ -28028,7 +27187,6 @@ angular
  */
 function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $rootScope, $q) {
 
-  var prefixer = $mdUtil.prefixer();
   var menuContainer;
   var self = this;
   var triggerElement;
@@ -28042,9 +27200,8 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
   this.init = function init(setMenuContainer, opts) {
     opts = opts || {};
     menuContainer = setMenuContainer;
-    
     // Default element for ARIA attributes has the ngClick or ngMouseenter expression
-    triggerElement = $element[0].querySelector(prefixer.buildSelector(['ng-click', 'ng-mouseenter']));
+    triggerElement = $element[0].querySelector('[ng-click],[ng-mouseenter]');
     triggerElement.setAttribute('aria-expanded', 'false');
 
     this.isInMenuBar = opts.isInMenuBar;
@@ -28174,9 +27331,7 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
   };
 
   this.focusMenuContainer = function focusMenuContainer() {
-    var focusTarget = menuContainer[0]
-      .querySelector(prefixer.buildSelector(['md-menu-focus-target', 'md-autofocus']));
-
+    var focusTarget = menuContainer[0].querySelector('[md-menu-focus-target], [md-autofocus]');
     if (!focusTarget) focusTarget = menuContainer[0].querySelector('.md-button');
     focusTarget.focus();
   };
@@ -28433,11 +27588,8 @@ function MenuDirective($mdUtil) {
   function compile(templateElement) {
     templateElement.addClass('md-menu');
     var triggerElement = templateElement.children()[0];
-    var prefixer = $mdUtil.prefixer();
-
-    if (!prefixer.hasAttribute(triggerElement, 'ng-click')) {
-      triggerElement = triggerElement
-          .querySelector(prefixer.buildSelector(['ng-click', 'ng-mouseenter'])) || triggerElement;
+    if (!triggerElement.hasAttribute('ng-click')) {
+      triggerElement = triggerElement.querySelector('[ng-click],[ng-mouseenter]') || triggerElement;
     }
     if (triggerElement && (
       triggerElement.nodeName == 'MD-BUTTON' ||
@@ -28523,7 +27675,6 @@ function MenuProvider($$interimElementProvider) {
 
   /* @ngInject */
   function menuDefaultOptions($mdUtil, $mdTheming, $mdConstant, $document, $window, $q, $$rAF, $animateCss, $animate) {
-    var prefixer = $mdUtil.prefixer();
     var animator = $mdUtil.dom.animator;
 
     return {
@@ -28711,9 +27862,7 @@ function MenuProvider($$interimElementProvider) {
         opts.menuContentEl[0].addEventListener('click', captureClickListener, true);
 
         // kick off initial focus in the menu on the first element
-        var focusTarget = opts.menuContentEl[0]
-          .querySelector(prefixer.buildSelector(['md-menu-focus-target', 'md-autofocus']));
-
+        var focusTarget = opts.menuContentEl[0].querySelector('[md-menu-focus-target], [md-autofocus]');
         if ( !focusTarget ) {
           var firstChild = opts.menuContentEl[0].firstElementChild;
 
@@ -28809,13 +27958,14 @@ function MenuProvider($$interimElementProvider) {
 
           function hasAnyAttribute(target, attrs) {
             if (!target) return false;
-
             for (var i = 0, attr; attr = attrs[i]; ++i) {
-              if (prefixer.hasAttribute(target, attr)) {
-                return true;
+              var altForms = [attr, 'data-' + attr, 'x-' + attr];
+              for (var j = 0, rawAttr; rawAttr = altForms[j]; ++j) {
+                if (target.hasAttribute(rawAttr)) {
+                  return true;
+                }
               }
             }
-
             return false;
           }
         }
@@ -28891,7 +28041,7 @@ function MenuProvider($$interimElementProvider) {
 
       var menuStyle = $window.getComputedStyle(openMenuNode);
 
-      var originNode = opts.target[0].querySelector(prefixer.buildSelector('md-menu-origin')) || opts.target[0],
+      var originNode = opts.target[0].querySelector('[md-menu-origin]') || opts.target[0],
         originNodeRect = originNode.getBoundingClientRect();
 
       var bounds = {
@@ -28909,7 +28059,7 @@ function MenuProvider($$interimElementProvider) {
         if ( alignTarget ) {
           // TODO: Allow centering on an arbitrary node, for now center on first menu-item's child
           alignTarget = alignTarget.firstElementChild || alignTarget;
-          alignTarget = alignTarget.querySelector(prefixer.buildSelector('md-menu-align-target')) || alignTarget;
+          alignTarget = alignTarget.querySelector('[md-menu-align-target]') || alignTarget;
           alignTargetRect = alignTarget.getBoundingClientRect();
 
           existingOffsets = {
@@ -28956,17 +28106,8 @@ function MenuProvider($$interimElementProvider) {
           position.left = willFitRight ? originNodeRect.right - originNode.style.left : originNodeRect.left - originNode.style.left - openMenuNodeRect.width;
           transformOrigin += willFitRight ? 'left' : 'right';
           break;
-        case 'right':
-          if (rtl) {
-            position.left = originNodeRect.right - originNodeRect.width;
-            transformOrigin += 'left';
-          } else {
-            position.left = originNodeRect.right - openMenuNodeRect.width;
-            transformOrigin += 'right';
-          }
-          break;
         case 'left':
-          if (rtl) {
+          if(rtl) {
             position.left = originNodeRect.right - openMenuNodeRect.width;
             transformOrigin += 'right';
           } else {
@@ -29391,10 +28532,7 @@ function MenuBarDirective($mdUtil, $mdTheming) {
         if (menuEl.nodeName == 'MD-MENU') {
           if (!menuEl.hasAttribute('md-position-mode')) {
             menuEl.setAttribute('md-position-mode', 'left bottom');
-
-            // Since we're in the compile function and actual `md-buttons` are not compiled yet,
-            // we need to query for possible `md-buttons` as well.
-            menuEl.querySelector('button, a, md-button').setAttribute('role', 'menuitem');
+            menuEl.querySelector('button,a').setAttribute('role', 'menuitem');
           }
           var contentEls = $mdUtil.nodesToArray(menuEl.querySelectorAll('md-menu-content'));
           angular.forEach(contentEls, function(contentEl) {
@@ -30765,11 +29903,7 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   function shouldPaginate () {
     if (ctrl.noPagination || !loaded) return false;
     var canvasWidth = $element.prop('clientWidth');
-
-    angular.forEach(getElements().dummies, function (tab) {
-      canvasWidth -= tab.offsetWidth;
-    });
-
+    angular.forEach(getElements().dummies, function (tab) { canvasWidth -= tab.offsetWidth; });
     return canvasWidth < 0;
   }
 
@@ -30834,22 +29968,17 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   }
 
   /**
-   * Calculates the width of the pagination wrapper by summing the widths of the dummy tabs.
    * @returns {number}
    */
   function calcPagingWidth () {
-    return calcTabsWidth(getElements().dummies);
-  }
+    var width = 1;
 
-  function calcTabsWidth(tabs) {
-    var width = 0;
-
-    angular.forEach(tabs, function (tab) {
+    angular.forEach(getElements().dummies, function (element) {
       //-- Uses the larger value between `getBoundingClientRect().width` and `offsetWidth`.  This
       //   prevents `offsetWidth` value from being rounded down and causing wrapping issues, but
       //   also handles scenarios where `getBoundingClientRect()` is inaccurate (ie. tabs inside
       //   of a dialog)
-      width += Math.max(tab.offsetWidth, tab.getBoundingClientRect().width);
+      width += Math.max(element.offsetWidth, element.getBoundingClientRect().width);
     });
 
     return Math.ceil(width);
@@ -31015,25 +30144,21 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
       angular.element(elements.inkBar).css({ left: 'auto', right: 'auto' });
       return;
     }
-
     if (!ctrl.tabs.length) return queue.push(ctrl.updateInkBarStyles);
     // if the element is not visible, we will not be able to calculate sizes until it is
     // we should treat that as a resize event rather than just updating the ink bar
     if (!$element.prop('offsetParent')) return handleResizeWhenVisible();
-
     var index      = ctrl.selectedIndex,
         totalWidth = elements.paging.offsetWidth,
         tab        = elements.tabs[ index ],
         left       = tab.offsetLeft,
-        right      = totalWidth - left - tab.offsetWidth;
-
+        right      = totalWidth - left - tab.offsetWidth,
+        tabWidth;
     if (ctrl.shouldCenterTabs) {
-      // We need to use the same calculate process as in the pagination wrapper, to avoid rounding deviations.
-      var tabWidth = calcTabsWidth(elements.tabs);
-
-      if (totalWidth > tabWidth) {
-        $mdUtil.nextTick(updateInkBarStyles, false);
-      }
+      tabWidth = Array.prototype.slice.call(elements.tabs).reduce(function (value, element) {
+        return value + element.offsetWidth;
+      }, 0);
+      if (totalWidth > tabWidth) $mdUtil.nextTick(updateInkBarStyles, false);
     }
     updateInkBarClassName();
     angular.element(elements.inkBar).css({ left: left + 'px', right: right + 'px' });
@@ -31178,7 +30303,7 @@ angular
     .module('material.components.tabs')
     .directive('mdTabs', MdTabs);
 
-function MdTabs ($$mdSvgRegistry) {
+function MdTabs () {
   return {
     scope:            {
       selectedIndex: '=?mdSelected'
@@ -31196,7 +30321,7 @@ function MdTabs ($$mdSvgRegistry) {
               'ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageBack() }" ' +
               'ng-if="$mdTabsCtrl.shouldPaginate" ' +
               'ng-click="$mdTabsCtrl.previousPage()"> ' +
-            '<md-icon md-svg-src="'+ $$mdSvgRegistry.mdTabsArrow +'"></md-icon> ' +
+            '<md-icon md-svg-icon="md-tabs-arrow"></md-icon> ' +
           '</md-prev-button> ' +
           '<md-next-button ' +
               'tabindex="-1" ' +
@@ -31206,7 +30331,7 @@ function MdTabs ($$mdSvgRegistry) {
               'ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageForward() }" ' +
               'ng-if="$mdTabsCtrl.shouldPaginate" ' +
               'ng-click="$mdTabsCtrl.nextPage()"> ' +
-            '<md-icon md-svg-src="'+ $$mdSvgRegistry.mdTabsArrow +'"></md-icon> ' +
+            '<md-icon md-svg-icon="md-tabs-arrow"></md-icon> ' +
           '</md-next-button> ' +
           '<md-tabs-canvas ' +
               'tabindex="{{ $mdTabsCtrl.hasFocus ? -1 : 0 }}" ' +
@@ -31289,7 +30414,6 @@ function MdTabs ($$mdSvgRegistry) {
     bindToController: true
   };
 }
-MdTabs.$inject = ["$$mdSvgRegistry"];
 
 })();
 (function(){
@@ -31380,8 +30504,8 @@ MdTabsTemplate.$inject = ["$compile", "$mdUtil"];
 
 })();
 (function(){ 
-angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Theme processes */html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-color}}'; }md-autocomplete.md-THEME_NAME-theme {  background: '{{background-A100}}'; }  md-autocomplete.md-THEME_NAME-theme[disabled]:not([md-floating-label]) {    background: '{{background-100}}'; }  md-autocomplete.md-THEME_NAME-theme button md-icon path {    fill: '{{background-600}}'; }  md-autocomplete.md-THEME_NAME-theme button:after {    background: '{{background-600-0.3}}'; }.md-autocomplete-suggestions-container.md-THEME_NAME-theme {  background: '{{background-A100}}'; }  .md-autocomplete-suggestions-container.md-THEME_NAME-theme li {    color: '{{background-900}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li .highlight {      color: '{{background-600}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li:hover, .md-autocomplete-suggestions-container.md-THEME_NAME-theme li.selected {      background: '{{background-200}}'; }md-backdrop {  background-color: '{{background-900-0.0}}'; }  md-backdrop.md-opaque.md-THEME_NAME-theme {    background-color: '{{background-900-1.0}}'; }md-bottom-sheet.md-THEME_NAME-theme {  background-color: '{{background-50}}';  border-top-color: '{{background-300}}'; }  md-bottom-sheet.md-THEME_NAME-theme.md-list md-list-item {    color: '{{foreground-1}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    background-color: '{{background-50}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    color: '{{foreground-1}}'; }.md-button.md-THEME_NAME-theme:not([disabled]):hover {  background-color: '{{background-500-0.2}}'; }.md-button.md-THEME_NAME-theme:not([disabled]).md-focused {  background-color: '{{background-500-0.2}}'; }.md-button.md-THEME_NAME-theme:not([disabled]).md-icon-button:hover {  background-color: transparent; }.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab md-icon {    color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-A700}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-A700}}'; }.md-button.md-THEME_NAME-theme.md-primary {  color: '{{primary-color}}'; }  .md-button.md-THEME_NAME-theme.md-primary.md-raised, .md-button.md-THEME_NAME-theme.md-primary.md-fab {    color: '{{primary-contrast}}';    background-color: '{{primary-color}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]) md-icon, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]) md-icon {      color: '{{primary-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover {      background-color: '{{primary-600}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]).md-focused, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]).md-focused {      background-color: '{{primary-600}}'; }  .md-button.md-THEME_NAME-theme.md-primary:not([disabled]) md-icon {    color: '{{primary-color}}'; }.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]) .md-icon {    color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-A700}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-A700}}'; }.md-button.md-THEME_NAME-theme.md-raised {  color: '{{background-900}}';  background-color: '{{background-50}}'; }  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]) md-icon {    color: '{{background-900}}'; }  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover {    background-color: '{{background-50}}'; }  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]).md-focused {    background-color: '{{background-200}}'; }.md-button.md-THEME_NAME-theme.md-warn {  color: '{{warn-color}}'; }  .md-button.md-THEME_NAME-theme.md-warn.md-raised, .md-button.md-THEME_NAME-theme.md-warn.md-fab {    color: '{{warn-contrast}}';    background-color: '{{warn-color}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]) md-icon, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]) md-icon {      color: '{{warn-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover {      background-color: '{{warn-600}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]).md-focused, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]).md-focused {      background-color: '{{warn-600}}'; }  .md-button.md-THEME_NAME-theme.md-warn:not([disabled]) md-icon {    color: '{{warn-color}}'; }.md-button.md-THEME_NAME-theme.md-accent {  color: '{{accent-color}}'; }  .md-button.md-THEME_NAME-theme.md-accent.md-raised, .md-button.md-THEME_NAME-theme.md-accent.md-fab {    color: '{{accent-contrast}}';    background-color: '{{accent-color}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]) md-icon, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]) md-icon {      color: '{{accent-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover {      background-color: '{{accent-A700}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]).md-focused, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]).md-focused {      background-color: '{{accent-A700}}'; }  .md-button.md-THEME_NAME-theme.md-accent:not([disabled]) md-icon {    color: '{{accent-color}}'; }.md-button.md-THEME_NAME-theme[disabled], .md-button.md-THEME_NAME-theme.md-raised[disabled], .md-button.md-THEME_NAME-theme.md-fab[disabled], .md-button.md-THEME_NAME-theme.md-accent[disabled], .md-button.md-THEME_NAME-theme.md-warn[disabled] {  color: '{{foreground-3}}';  cursor: default; }  .md-button.md-THEME_NAME-theme[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-raised[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-fab[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-accent[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-warn[disabled] md-icon {    color: '{{foreground-3}}'; }.md-button.md-THEME_NAME-theme.md-raised[disabled], .md-button.md-THEME_NAME-theme.md-fab[disabled] {  background-color: '{{foreground-4}}'; }.md-button.md-THEME_NAME-theme[disabled] {  background-color: transparent; }._md a.md-THEME_NAME-theme:not(.md-button).md-primary {  color: '{{primary-color}}'; }  ._md a.md-THEME_NAME-theme:not(.md-button).md-primary:hover {    color: '{{primary-700}}'; }._md a.md-THEME_NAME-theme:not(.md-button).md-accent {  color: '{{accent-color}}'; }  ._md a.md-THEME_NAME-theme:not(.md-button).md-accent:hover {    color: '{{accent-700}}'; }._md a.md-THEME_NAME-theme:not(.md-button).md-accent {  color: '{{accent-color}}'; }  ._md a.md-THEME_NAME-theme:not(.md-button).md-accent:hover {    color: '{{accent-A700}}'; }._md a.md-THEME_NAME-theme:not(.md-button).md-warn {  color: '{{warn-color}}'; }  ._md a.md-THEME_NAME-theme:not(.md-button).md-warn:hover {    color: '{{warn-700}}'; }md-card.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-hue-1}}';  border-radius: 2px; }  md-card.md-THEME_NAME-theme .md-card-image {    border-radius: 2px 2px 0 0; }  md-card.md-THEME_NAME-theme md-card-header md-card-avatar md-icon {    color: '{{background-color}}';    background-color: '{{foreground-3}}'; }  md-card.md-THEME_NAME-theme md-card-header md-card-header-text .md-subhead {    color: '{{foreground-2}}'; }  md-card.md-THEME_NAME-theme md-card-title md-card-title-text:not(:only-child) .md-subhead {    color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme .md-ripple {  color: '{{accent-A700}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked.md-focused ._md-container:before {  background-color: '{{accent-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme ._md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked ._md-icon {  background-color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme.md-checked ._md-icon:after {  border-color: '{{accent-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ripple {  color: '{{primary-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary ._md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked ._md-icon {  background-color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked.md-focused ._md-container:before {  background-color: '{{primary-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked ._md-icon:after {  border-color: '{{primary-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-indeterminate[disabled] ._md-container {  color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ripple {  color: '{{warn-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn ._md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked ._md-icon {  background-color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked.md-focused:not([disabled]) ._md-container:before {  background-color: '{{warn-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked ._md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] ._md-icon {  border-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked ._md-icon {  background-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked ._md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] ._md-icon:after {  border-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled] ._md-label {  color: '{{foreground-3}}'; }md-chips.md-THEME_NAME-theme .md-chips {  box-shadow: 0 1px '{{foreground-4}}'; }  md-chips.md-THEME_NAME-theme .md-chips.md-focused {    box-shadow: 0 2px '{{primary-color}}'; }  md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input {    color: '{{foreground-1}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input::-webkit-input-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input:-moz-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input::-moz-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input:-ms-input-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input::-webkit-input-placeholder {      color: '{{foreground-3}}'; }md-chips.md-THEME_NAME-theme md-chip {  background: '{{background-300}}';  color: '{{background-800}}'; }  md-chips.md-THEME_NAME-theme md-chip md-icon {    color: '{{background-700}}'; }  md-chips.md-THEME_NAME-theme md-chip.md-focused {    background: '{{primary-color}}';    color: '{{primary-contrast}}'; }    md-chips.md-THEME_NAME-theme md-chip.md-focused md-icon {      color: '{{primary-contrast}}'; }  md-chips.md-THEME_NAME-theme md-chip._md-chip-editing {    background: transparent;    color: '{{background-800}}'; }md-chips.md-THEME_NAME-theme md-chip-remove .md-button md-icon path {  fill: '{{background-500}}'; }.md-contact-suggestion span.md-contact-email {  color: '{{background-400}}'; }md-content.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-default}}'; }md-dialog.md-THEME_NAME-theme {  border-radius: 4px;  background-color: '{{background-hue-1}}';  color: '{{foreground-1}}'; }  md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions, md-dialog.md-THEME_NAME-theme.md-content-overflow md-dialog-actions {    border-top-color: '{{foreground-4}}'; }/** Theme styles for mdCalendar. */.md-calendar.md-THEME_NAME-theme {  background: '{{background-A100}}';  color: '{{background-A200-0.87}}'; }  .md-calendar.md-THEME_NAME-theme tr:last-child td {    border-bottom-color: '{{background-200}}'; }.md-THEME_NAME-theme .md-calendar-day-header {  background: '{{background-300}}';  color: '{{background-A200-0.87}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator {  border: 1px solid '{{primary-500}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today.md-calendar-date-disabled {  color: '{{primary-500-0.6}}'; }.md-calendar-date.md-focus .md-THEME_NAME-theme .md-calendar-date-selection-indicator, .md-THEME_NAME-theme .md-calendar-date-selection-indicator:hover {  background: '{{background-300}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator,.md-THEME_NAME-theme .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator {  background: '{{primary-500}}';  color: '{{primary-500-contrast}}';  border-color: transparent; }.md-THEME_NAME-theme .md-calendar-date-disabled,.md-THEME_NAME-theme .md-calendar-month-label-disabled {  color: '{{background-A200-0.435}}'; }/** Theme styles for mdDatepicker. */.md-THEME_NAME-theme .md-datepicker-input {  color: '{{foreground-1}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input:-moz-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-moz-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input:-ms-input-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }.md-THEME_NAME-theme .md-datepicker-input-container {  border-bottom-color: '{{foreground-4}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-focused {    border-bottom-color: '{{primary-color}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-invalid {    border-bottom-color: '{{warn-A700}}'; }.md-THEME_NAME-theme .md-datepicker-calendar-pane {  border-color: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button .md-datepicker-expand-triangle {  border-top-color: '{{foreground-3}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button:hover .md-datepicker-expand-triangle {  border-top-color: '{{foreground-2}}'; }.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon {  fill: '{{primary-500}}'; }.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-input-container,.md-THEME_NAME-theme .md-datepicker-input-mask-opaque {  background: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-datepicker-calendar {  background: '{{background-A100}}'; }md-divider.md-THEME_NAME-theme {  border-top-color: '{{foreground-4}}'; }.layout-row > md-divider.md-THEME_NAME-theme,.layout-xs-row > md-divider.md-THEME_NAME-theme, .layout-gt-xs-row > md-divider.md-THEME_NAME-theme,.layout-sm-row > md-divider.md-THEME_NAME-theme, .layout-gt-sm-row > md-divider.md-THEME_NAME-theme,.layout-md-row > md-divider.md-THEME_NAME-theme, .layout-gt-md-row > md-divider.md-THEME_NAME-theme,.layout-lg-row > md-divider.md-THEME_NAME-theme, .layout-gt-lg-row > md-divider.md-THEME_NAME-theme,.layout-xl-row > md-divider.md-THEME_NAME-theme {  border-right-color: '{{foreground-4}}'; }md-icon.md-THEME_NAME-theme {  color: '{{foreground-2}}'; }  md-icon.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  md-icon.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  md-icon.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-input-container.md-THEME_NAME-theme .md-input {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme > md-icon {  color: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme label,md-input-container.md-THEME_NAME-theme ._md-placeholder {  color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid label.md-required:after {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-focused):not(.md-input-invalid) label.md-required:after {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme .md-input-messages-animation, md-input-container.md-THEME_NAME-theme .md-input-message-animation {  color: '{{warn-A700}}'; }  md-input-container.md-THEME_NAME-theme .md-input-messages-animation .md-char-counter, md-input-container.md-THEME_NAME-theme .md-input-message-animation .md-char-counter {    color: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-has-value label {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused .md-input, md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-resized .md-input {  border-color: '{{primary-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused label {  color: '{{primary-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused md-icon {  color: '{{primary-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent .md-input {  border-color: '{{accent-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent label {  color: '{{accent-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn .md-input {  border-color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn label {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input {  border-color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid label {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input-message-animation, md-input-container.md-THEME_NAME-theme.md-input-invalid .md-char-counter {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme .md-input[disabled],[disabled] md-input-container.md-THEME_NAME-theme .md-input {  border-bottom-color: transparent;  color: '{{foreground-3}}';  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h3, md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h4,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h3,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h4 {  color: '{{foreground-1}}'; }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text p,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text p {  color: '{{foreground-2}}'; }md-list.md-THEME_NAME-theme ._md-proxy-focus.md-focused div._md-no-style {  background-color: '{{background-100}}'; }md-list.md-THEME_NAME-theme md-list-item .md-avatar-icon {  background-color: '{{foreground-3}}';  color: '{{background-color}}'; }md-list.md-THEME_NAME-theme md-list-item > md-icon {  color: '{{foreground-2}}'; }  md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight {    color: '{{primary-color}}'; }    md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight.md-accent {      color: '{{accent-color}}'; }md-menu-content.md-THEME_NAME-theme {  background-color: '{{background-A100}}'; }  md-menu-content.md-THEME_NAME-theme md-menu-item {    color: '{{background-A200-0.87}}'; }    md-menu-content.md-THEME_NAME-theme md-menu-item md-icon {      color: '{{background-A200-0.54}}'; }    md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled] {      color: '{{background-A200-0.25}}'; }      md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled] md-icon {        color: '{{background-A200-0.25}}'; }  md-menu-content.md-THEME_NAME-theme md-menu-divider {    background-color: '{{background-A200-0.11}}'; }md-menu-bar.md-THEME_NAME-theme > button.md-button {  color: '{{foreground-2}}';  border-radius: 2px; }md-menu-bar.md-THEME_NAME-theme md-menu._md-open > button, md-menu-bar.md-THEME_NAME-theme md-menu > button:focus {  outline: none;  background: '{{background-200}}'; }md-menu-bar.md-THEME_NAME-theme._md-open:not(._md-keyboard-mode) md-menu:hover > button {  background-color: '{{ background-500-0.2}}'; }md-menu-bar.md-THEME_NAME-theme:not(._md-keyboard-mode):not(._md-open) md-menu button:hover,md-menu-bar.md-THEME_NAME-theme:not(._md-keyboard-mode):not(._md-open) md-menu button:focus {  background: transparent; }md-menu-content.md-THEME_NAME-theme .md-menu > .md-button:after {  color: '{{background-A200-0.54}}'; }md-menu-content.md-THEME_NAME-theme .md-menu._md-open > .md-button {  background-color: '{{ background-500-0.2}}'; }md-toolbar.md-THEME_NAME-theme.md-menu-toolbar {  background-color: '{{background-A100}}';  color: '{{background-A200}}'; }  md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler {    background-color: '{{primary-color}}';    color: '{{background-A100-0.87}}'; }    md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler md-icon {      color: '{{background-A100-0.87}}'; }md-nav-bar.md-THEME_NAME-theme .md-nav-bar {  background-color: transparent;  border-color: '{{foreground-4}}'; }md-nav-bar.md-THEME_NAME-theme .md-button._md-nav-button.md-unselected {  color: '{{foreground-2}}'; }md-nav-bar.md-THEME_NAME-theme md-nav-ink-bar {  color: '{{accent-color}}';  background: '{{accent-color}}'; }.md-panel {  background-color: '{{background-900-0.0}}'; }  .md-panel._md-panel-backdrop.md-THEME_NAME-theme {    background-color: '{{background-900-1.0}}'; }md-progress-circular.md-THEME_NAME-theme path {  stroke: '{{primary-color}}'; }md-progress-circular.md-THEME_NAME-theme.md-warn path {  stroke: '{{warn-color}}'; }md-progress-circular.md-THEME_NAME-theme.md-accent path {  stroke: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme ._md-container {  background-color: '{{primary-100}}'; }md-progress-linear.md-THEME_NAME-theme ._md-bar {  background-color: '{{primary-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn ._md-container {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn ._md-bar {  background-color: '{{warn-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent ._md-container {  background-color: '{{accent-A100}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent ._md-bar {  background-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn ._md-bar1 {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn ._md-dashed:before {  background: radial-gradient(\"{{warn-100}}\" 0%, \"{{warn-100}}\" 16%, transparent 42%); }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent ._md-bar1 {  background-color: '{{accent-A100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent ._md-dashed:before {  background: radial-gradient(\"{{accent-A100}}\" 0%, \"{{accent-A100}}\" 16%, transparent 42%); }md-radio-button.md-THEME_NAME-theme ._md-off {  border-color: '{{foreground-2}}'; }md-radio-button.md-THEME_NAME-theme ._md-on {  background-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked ._md-off {  border-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme ._md-container .md-ripple {  color: '{{accent-A700}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary ._md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary ._md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary ._md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary ._md-on {  background-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked ._md-off {  border-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary ._md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary ._md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary ._md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary ._md-container .md-ripple {  color: '{{primary-600}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn ._md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn ._md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn ._md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn ._md-on {  background-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked ._md-off {  border-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn ._md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn ._md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn ._md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn ._md-container .md-ripple {  color: '{{warn-600}}'; }md-radio-group.md-THEME_NAME-theme[disabled],md-radio-button.md-THEME_NAME-theme[disabled] {  color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] ._md-container ._md-off,  md-radio-button.md-THEME_NAME-theme[disabled] ._md-container ._md-off {    border-color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] ._md-container ._md-on,  md-radio-button.md-THEME_NAME-theme[disabled] ._md-container ._md-on {    border-color: '{{foreground-3}}'; }md-radio-group.md-THEME_NAME-theme .md-checked .md-ink-ripple {  color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-primary .md-checked:not([disabled]) .md-ink-ripple, md-radio-group.md-THEME_NAME-theme .md-checked:not([disabled]).md-primary .md-ink-ripple {  color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme .md-checked.md-primary .md-ink-ripple {  color: '{{warn-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked ._md-container:before {  background-color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-primary .md-checked ._md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-primary ._md-container:before {  background-color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-warn .md-checked ._md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-warn ._md-container:before {  background-color: '{{warn-color-0.26}}'; }md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-THEME_NAME-theme ._md-select-value {  color: '{{primary-color}}'; }  md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-THEME_NAME-theme ._md-select-value._md-select-placeholder {    color: '{{primary-color}}'; }md-input-container.md-input-invalid md-select.md-THEME_NAME-theme ._md-select-value {  color: '{{warn-A700}}' !important;  border-bottom-color: '{{warn-A700}}' !important; }md-input-container.md-input-invalid md-select.md-THEME_NAME-theme.md-no-underline ._md-select-value {  border-bottom-color: transparent !important; }md-select.md-THEME_NAME-theme[disabled] ._md-select-value {  border-bottom-color: transparent;  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-select.md-THEME_NAME-theme ._md-select-value {  border-bottom-color: '{{foreground-4}}'; }  md-select.md-THEME_NAME-theme ._md-select-value._md-select-placeholder {    color: '{{foreground-3}}'; }md-select.md-THEME_NAME-theme.md-no-underline ._md-select-value {  border-bottom-color: transparent !important; }md-select.md-THEME_NAME-theme.ng-invalid.ng-touched ._md-select-value {  color: '{{warn-A700}}' !important;  border-bottom-color: '{{warn-A700}}' !important; }md-select.md-THEME_NAME-theme.ng-invalid.ng-touched.md-no-underline ._md-select-value {  border-bottom-color: transparent !important; }md-select.md-THEME_NAME-theme:not([disabled]):focus ._md-select-value {  border-bottom-color: '{{primary-color}}';  color: '{{ foreground-1 }}'; }  md-select.md-THEME_NAME-theme:not([disabled]):focus ._md-select-value._md-select-placeholder {    color: '{{ foreground-1 }}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-no-underline ._md-select-value {  border-bottom-color: transparent !important; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-accent ._md-select-value {  border-bottom-color: '{{accent-color}}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-warn ._md-select-value {  border-bottom-color: '{{warn-color}}'; }md-select.md-THEME_NAME-theme[disabled] ._md-select-value {  color: '{{foreground-3}}'; }  md-select.md-THEME_NAME-theme[disabled] ._md-select-value._md-select-placeholder {    color: '{{foreground-3}}'; }md-select-menu.md-THEME_NAME-theme md-content {  background: '{{background-A100}}'; }  md-select-menu.md-THEME_NAME-theme md-content md-optgroup {    color: '{{background-600-0.87}}'; }  md-select-menu.md-THEME_NAME-theme md-content md-option {    color: '{{background-900-0.87}}'; }    md-select-menu.md-THEME_NAME-theme md-content md-option[disabled] ._md-text {      color: '{{background-400-0.87}}'; }    md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):focus, md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):hover {      background: '{{background-200}}'; }    md-select-menu.md-THEME_NAME-theme md-content md-option[selected] {      color: '{{primary-500}}'; }      md-select-menu.md-THEME_NAME-theme md-content md-option[selected]:focus {        color: '{{primary-600}}'; }      md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent {        color: '{{accent-color}}'; }        md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent:focus {          color: '{{accent-A700}}'; }._md-checkbox-enabled.md-THEME_NAME-theme .md-ripple {  color: '{{primary-600}}'; }._md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-ripple {  color: '{{background-600}}'; }._md-checkbox-enabled.md-THEME_NAME-theme .md-ink-ripple {  color: '{{foreground-2}}'; }._md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-ink-ripple {  color: '{{primary-color-0.87}}'; }._md-checkbox-enabled.md-THEME_NAME-theme ._md-icon {  border-color: '{{foreground-2}}'; }._md-checkbox-enabled.md-THEME_NAME-theme[selected] ._md-icon {  background-color: '{{primary-color-0.87}}'; }._md-checkbox-enabled.md-THEME_NAME-theme[selected].md-focused ._md-container:before {  background-color: '{{primary-color-0.26}}'; }._md-checkbox-enabled.md-THEME_NAME-theme[selected] ._md-icon:after {  border-color: '{{primary-contrast-0.87}}'; }._md-checkbox-enabled.md-THEME_NAME-theme .md-indeterminate[disabled] ._md-container {  color: '{{foreground-3}}'; }._md-checkbox-enabled.md-THEME_NAME-theme md-option ._md-text {  color: '{{background-900-0.87}}'; }md-sidenav.md-THEME_NAME-theme, md-sidenav.md-THEME_NAME-theme md-content {  background-color: '{{background-hue-1}}'; }md-slider.md-THEME_NAME-theme ._md-track {  background-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme ._md-track-ticks {  color: '{{background-contrast}}'; }md-slider.md-THEME_NAME-theme ._md-focus-ring {  background-color: '{{accent-A200-0.2}}'; }md-slider.md-THEME_NAME-theme ._md-disabled-thumb {  border-color: '{{background-color}}';  background-color: '{{background-color}}'; }md-slider.md-THEME_NAME-theme._md-min ._md-thumb:after {  background-color: '{{background-color}}';  border-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme._md-min ._md-focus-ring {  background-color: '{{foreground-3-0.38}}'; }md-slider.md-THEME_NAME-theme._md-min[md-discrete] ._md-thumb:after {  background-color: '{{background-contrast}}';  border-color: transparent; }md-slider.md-THEME_NAME-theme._md-min[md-discrete] ._md-sign {  background-color: '{{background-400}}'; }  md-slider.md-THEME_NAME-theme._md-min[md-discrete] ._md-sign:after {    border-top-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme._md-min[md-discrete][md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme ._md-track._md-track-fill {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme ._md-thumb:after {  border-color: '{{accent-color}}';  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme ._md-sign {  background-color: '{{accent-color}}'; }  md-slider.md-THEME_NAME-theme ._md-sign:after {    border-top-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme[md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme ._md-thumb-text {  color: '{{accent-contrast}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-focus-ring {  background-color: '{{warn-200-0.38}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-track._md-track-fill {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-thumb:after {  border-color: '{{warn-color}}';  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-sign {  background-color: '{{warn-color}}'; }  md-slider.md-THEME_NAME-theme.md-warn ._md-sign:after {    border-top-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn[md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-thumb-text {  color: '{{warn-contrast}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-focus-ring {  background-color: '{{primary-200-0.38}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-track._md-track-fill {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-thumb:after {  border-color: '{{primary-color}}';  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-sign {  background-color: '{{primary-color}}'; }  md-slider.md-THEME_NAME-theme.md-primary ._md-sign:after {    border-top-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary[md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-thumb-text {  color: '{{primary-contrast}}'; }md-slider.md-THEME_NAME-theme[disabled] ._md-thumb:after {  border-color: transparent; }md-slider.md-THEME_NAME-theme[disabled]:not(._md-min) ._md-thumb:after, md-slider.md-THEME_NAME-theme[disabled][md-discrete] ._md-thumb:after {  background-color: '{{foreground-3}}';  border-color: transparent; }md-slider.md-THEME_NAME-theme[disabled][readonly] ._md-sign {  background-color: '{{background-400}}'; }  md-slider.md-THEME_NAME-theme[disabled][readonly] ._md-sign:after {    border-top-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme[disabled][readonly][md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme[disabled][readonly] ._md-disabled-thumb {  border-color: transparent;  background-color: transparent; }md-slider-container[disabled] > *:first-child:not(md-slider),md-slider-container[disabled] > *:last-child:not(md-slider) {  color: '{{foreground-3}}'; }.md-subheader.md-THEME_NAME-theme {  color: '{{ foreground-2-0.23 }}';  background-color: '{{background-default}}'; }  .md-subheader.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme .md-ink-ripple {  color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme ._md-thumb {  background-color: '{{background-50}}'; }md-switch.md-THEME_NAME-theme ._md-bar {  background-color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked ._md-thumb {  background-color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked ._md-bar {  background-color: '{{accent-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-focused ._md-thumb:before {  background-color: '{{accent-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-ink-ripple {  color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary ._md-thumb {  background-color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary ._md-bar {  background-color: '{{primary-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary.md-focused ._md-thumb:before {  background-color: '{{primary-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-ink-ripple {  color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn ._md-thumb {  background-color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn ._md-bar {  background-color: '{{warn-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn.md-focused ._md-thumb:before {  background-color: '{{warn-color-0.26}}'; }md-switch.md-THEME_NAME-theme[disabled] ._md-thumb {  background-color: '{{background-400}}'; }md-switch.md-THEME_NAME-theme[disabled] ._md-bar {  background-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme md-tabs-wrapper {  background-color: transparent;  border-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme .md-paginator md-icon {  color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme md-ink-bar {  color: '{{accent-color}}';  background: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme .md-tab {  color: '{{foreground-2}}'; }  md-tabs.md-THEME_NAME-theme .md-tab[disabled], md-tabs.md-THEME_NAME-theme .md-tab[disabled] md-icon {    color: '{{foreground-3}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-active, md-tabs.md-THEME_NAME-theme .md-tab.md-active md-icon, md-tabs.md-THEME_NAME-theme .md-tab.md-focused, md-tabs.md-THEME_NAME-theme .md-tab.md-focused md-icon {    color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-focused {    background: '{{primary-color-0.1}}'; }  md-tabs.md-THEME_NAME-theme .md-tab .md-ripple-container {    color: '{{accent-A100}}'; }md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-A100}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-A100}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toast.md-THEME_NAME-theme .md-toast-content {  background-color: #323232;  color: '{{background-50}}'; }  md-toast.md-THEME_NAME-theme .md-toast-content .md-button {    color: '{{background-50}}'; }    md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight {      color: '{{accent-color}}'; }      md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-primary {        color: '{{primary-color}}'; }      md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-warn {        color: '{{warn-color}}'; }md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {  background-color: '{{primary-color}}';  color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-icon {    color: '{{primary-contrast}}';    fill: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) .md-button[disabled] md-icon {    color: '{{primary-contrast-0.26}}';    fill: '{{primary-contrast-0.26}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent {    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent .md-ink-ripple {      color: '{{accent-contrast}}'; }    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent md-icon {      color: '{{accent-contrast}}';      fill: '{{accent-contrast}}'; }    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent .md-button[disabled] md-icon {      color: '{{accent-contrast-0.26}}';      fill: '{{accent-contrast-0.26}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn {    background-color: '{{warn-color}}';    color: '{{warn-contrast}}'; }md-tooltip.md-THEME_NAME-theme {  color: '{{background-A100}}'; }  md-tooltip.md-THEME_NAME-theme ._md-content {    background-color: '{{foreground-2}}'; }"); 
+angular.module("material.core").constant("$MD_THEME_CSS", "/*  Only used with Theme processes */html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-color}}'; }md-autocomplete.md-THEME_NAME-theme {  background: '{{background-A100}}'; }  md-autocomplete.md-THEME_NAME-theme[disabled]:not([md-floating-label]) {    background: '{{background-100}}'; }  md-autocomplete.md-THEME_NAME-theme button md-icon path {    fill: '{{background-600}}'; }  md-autocomplete.md-THEME_NAME-theme button:after {    background: '{{background-600-0.3}}'; }.md-autocomplete-suggestions-container.md-THEME_NAME-theme {  background: '{{background-A100}}'; }  .md-autocomplete-suggestions-container.md-THEME_NAME-theme li {    color: '{{background-900}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li .highlight {      color: '{{background-600}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li:hover, .md-autocomplete-suggestions-container.md-THEME_NAME-theme li.selected {      background: '{{background-200}}'; }md-backdrop {  background-color: '{{background-900-0.0}}'; }  md-backdrop.md-opaque.md-THEME_NAME-theme {    background-color: '{{background-900-1.0}}'; }md-bottom-sheet.md-THEME_NAME-theme {  background-color: '{{background-50}}';  border-top-color: '{{background-300}}'; }  md-bottom-sheet.md-THEME_NAME-theme.md-list md-list-item {    color: '{{foreground-1}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    background-color: '{{background-50}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    color: '{{foreground-1}}'; }.md-button.md-THEME_NAME-theme:not([disabled]):hover {  background-color: '{{background-500-0.2}}'; }.md-button.md-THEME_NAME-theme:not([disabled]).md-focused {  background-color: '{{background-500-0.2}}'; }.md-button.md-THEME_NAME-theme:not([disabled]).md-icon-button:hover {  background-color: transparent; }.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab md-icon {    color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-A700}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-A700}}'; }.md-button.md-THEME_NAME-theme.md-primary {  color: '{{primary-color}}'; }  .md-button.md-THEME_NAME-theme.md-primary.md-raised, .md-button.md-THEME_NAME-theme.md-primary.md-fab {    color: '{{primary-contrast}}';    background-color: '{{primary-color}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]) md-icon, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]) md-icon {      color: '{{primary-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover {      background-color: '{{primary-600}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]).md-focused, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]).md-focused {      background-color: '{{primary-600}}'; }  .md-button.md-THEME_NAME-theme.md-primary:not([disabled]) md-icon {    color: '{{primary-color}}'; }.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]) .md-icon {    color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-A700}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-A700}}'; }.md-button.md-THEME_NAME-theme.md-raised {  color: '{{background-900}}';  background-color: '{{background-50}}'; }  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]) md-icon {    color: '{{background-900}}'; }  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover {    background-color: '{{background-50}}'; }  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]).md-focused {    background-color: '{{background-200}}'; }.md-button.md-THEME_NAME-theme.md-warn {  color: '{{warn-color}}'; }  .md-button.md-THEME_NAME-theme.md-warn.md-raised, .md-button.md-THEME_NAME-theme.md-warn.md-fab {    color: '{{warn-contrast}}';    background-color: '{{warn-color}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]) md-icon, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]) md-icon {      color: '{{warn-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover {      background-color: '{{warn-600}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]).md-focused, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]).md-focused {      background-color: '{{warn-600}}'; }  .md-button.md-THEME_NAME-theme.md-warn:not([disabled]) md-icon {    color: '{{warn-color}}'; }.md-button.md-THEME_NAME-theme.md-accent {  color: '{{accent-color}}'; }  .md-button.md-THEME_NAME-theme.md-accent.md-raised, .md-button.md-THEME_NAME-theme.md-accent.md-fab {    color: '{{accent-contrast}}';    background-color: '{{accent-color}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]) md-icon, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]) md-icon {      color: '{{accent-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover {      background-color: '{{accent-A700}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]).md-focused, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]).md-focused {      background-color: '{{accent-A700}}'; }  .md-button.md-THEME_NAME-theme.md-accent:not([disabled]) md-icon {    color: '{{accent-color}}'; }.md-button.md-THEME_NAME-theme[disabled], .md-button.md-THEME_NAME-theme.md-raised[disabled], .md-button.md-THEME_NAME-theme.md-fab[disabled], .md-button.md-THEME_NAME-theme.md-accent[disabled], .md-button.md-THEME_NAME-theme.md-warn[disabled] {  color: '{{foreground-3}}';  cursor: default; }  .md-button.md-THEME_NAME-theme[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-raised[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-fab[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-accent[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-warn[disabled] md-icon {    color: '{{foreground-3}}'; }.md-button.md-THEME_NAME-theme.md-raised[disabled], .md-button.md-THEME_NAME-theme.md-fab[disabled] {  background-color: '{{foreground-4}}'; }.md-button.md-THEME_NAME-theme[disabled] {  background-color: transparent; }._md a.md-THEME_NAME-theme:not(.md-button).md-primary {  color: '{{primary-color}}'; }  ._md a.md-THEME_NAME-theme:not(.md-button).md-primary:hover {    color: '{{primary-700}}'; }._md a.md-THEME_NAME-theme:not(.md-button).md-accent {  color: '{{accent-color}}'; }  ._md a.md-THEME_NAME-theme:not(.md-button).md-accent:hover {    color: '{{accent-700}}'; }._md a.md-THEME_NAME-theme:not(.md-button).md-accent {  color: '{{accent-color}}'; }  ._md a.md-THEME_NAME-theme:not(.md-button).md-accent:hover {    color: '{{accent-A700}}'; }._md a.md-THEME_NAME-theme:not(.md-button).md-warn {  color: '{{warn-color}}'; }  ._md a.md-THEME_NAME-theme:not(.md-button).md-warn:hover {    color: '{{warn-700}}'; }md-card.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-hue-1}}';  border-radius: 2px; }  md-card.md-THEME_NAME-theme .md-card-image {    border-radius: 2px 2px 0 0; }  md-card.md-THEME_NAME-theme md-card-header md-card-avatar md-icon {    color: '{{background-color}}';    background-color: '{{foreground-3}}'; }  md-card.md-THEME_NAME-theme md-card-header md-card-header-text .md-subhead {    color: '{{foreground-2}}'; }  md-card.md-THEME_NAME-theme md-card-title md-card-title-text:not(:only-child) .md-subhead {    color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme .md-ripple {  color: '{{accent-A700}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked.md-focused ._md-container:before {  background-color: '{{accent-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme ._md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked ._md-icon {  background-color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme.md-checked ._md-icon:after {  border-color: '{{accent-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ripple {  color: '{{primary-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary ._md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked ._md-icon {  background-color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked.md-focused ._md-container:before {  background-color: '{{primary-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked ._md-icon:after {  border-color: '{{primary-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-indeterminate[disabled] ._md-container {  color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ripple {  color: '{{warn-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn ._md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked ._md-icon {  background-color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked.md-focused:not([disabled]) ._md-container:before {  background-color: '{{warn-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked ._md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] ._md-icon {  border-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked ._md-icon {  background-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked ._md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] ._md-icon:after {  border-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled] ._md-label {  color: '{{foreground-3}}'; }md-chips.md-THEME_NAME-theme .md-chips {  box-shadow: 0 1px '{{foreground-4}}'; }  md-chips.md-THEME_NAME-theme .md-chips.md-focused {    box-shadow: 0 2px '{{primary-color}}'; }  md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input {    color: '{{foreground-1}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input::-webkit-input-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input:-moz-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input::-moz-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input:-ms-input-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips ._md-chip-input-container input::-webkit-input-placeholder {      color: '{{foreground-3}}'; }md-chips.md-THEME_NAME-theme md-chip {  background: '{{background-300}}';  color: '{{background-800}}'; }  md-chips.md-THEME_NAME-theme md-chip md-icon {    color: '{{background-700}}'; }  md-chips.md-THEME_NAME-theme md-chip.md-focused {    background: '{{primary-color}}';    color: '{{primary-contrast}}'; }    md-chips.md-THEME_NAME-theme md-chip.md-focused md-icon {      color: '{{primary-contrast}}'; }  md-chips.md-THEME_NAME-theme md-chip._md-chip-editing {    background: transparent;    color: '{{background-800}}'; }md-chips.md-THEME_NAME-theme md-chip-remove .md-button md-icon path {  fill: '{{background-500}}'; }.md-contact-suggestion span.md-contact-email {  color: '{{background-400}}'; }md-content.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-default}}'; }/** Theme styles for mdCalendar. */.md-calendar.md-THEME_NAME-theme {  background: '{{background-A100}}';  color: '{{background-A200-0.87}}'; }  .md-calendar.md-THEME_NAME-theme tr:last-child td {    border-bottom-color: '{{background-200}}'; }.md-THEME_NAME-theme .md-calendar-day-header {  background: '{{background-300}}';  color: '{{background-A200-0.87}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator {  border: 1px solid '{{primary-500}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today.md-calendar-date-disabled {  color: '{{primary-500-0.6}}'; }.md-calendar-date.md-focus .md-THEME_NAME-theme .md-calendar-date-selection-indicator, .md-THEME_NAME-theme .md-calendar-date-selection-indicator:hover {  background: '{{background-300}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator,.md-THEME_NAME-theme .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator {  background: '{{primary-500}}';  color: '{{primary-500-contrast}}';  border-color: transparent; }.md-THEME_NAME-theme .md-calendar-date-disabled,.md-THEME_NAME-theme .md-calendar-month-label-disabled {  color: '{{foreground-3}}'; }/** Theme styles for mdDatepicker. */.md-THEME_NAME-theme .md-datepicker-input {  color: '{{foreground-1}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input:-moz-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-moz-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input:-ms-input-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }.md-THEME_NAME-theme .md-datepicker-input-container {  border-bottom-color: '{{background-300}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-focused {    border-bottom-color: '{{primary-500}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-invalid {    border-bottom-color: '{{warn-A700}}'; }.md-THEME_NAME-theme .md-datepicker-calendar-pane {  border-color: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button .md-datepicker-expand-triangle {  border-top-color: '{{foreground-3}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button:hover .md-datepicker-expand-triangle {  border-top-color: '{{foreground-2}}'; }.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon {  fill: '{{primary-500}}'; }.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-input-container,.md-THEME_NAME-theme .md-datepicker-input-mask-opaque {  background: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-datepicker-calendar {  background: '{{background-A100}}'; }md-dialog.md-THEME_NAME-theme {  border-radius: 4px;  background-color: '{{background-hue-1}}'; }  md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions, md-dialog.md-THEME_NAME-theme.md-content-overflow md-dialog-actions {    border-top-color: '{{foreground-4}}'; }md-divider.md-THEME_NAME-theme {  border-top-color: '{{foreground-4}}'; }.layout-row > md-divider.md-THEME_NAME-theme,.layout-xs-row > md-divider.md-THEME_NAME-theme, .layout-gt-xs-row > md-divider.md-THEME_NAME-theme,.layout-sm-row > md-divider.md-THEME_NAME-theme, .layout-gt-sm-row > md-divider.md-THEME_NAME-theme,.layout-md-row > md-divider.md-THEME_NAME-theme, .layout-gt-md-row > md-divider.md-THEME_NAME-theme,.layout-lg-row > md-divider.md-THEME_NAME-theme, .layout-gt-lg-row > md-divider.md-THEME_NAME-theme,.layout-xl-row > md-divider.md-THEME_NAME-theme {  border-right-color: '{{foreground-4}}'; }md-icon.md-THEME_NAME-theme {  color: '{{foreground-2}}'; }  md-icon.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  md-icon.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  md-icon.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-input-container.md-THEME_NAME-theme .md-input {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme > md-icon {  color: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme label,md-input-container.md-THEME_NAME-theme ._md-placeholder {  color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme label.md-required:after {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-focused):not(.md-input-invalid) label.md-required:after {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme .md-input-messages-animation, md-input-container.md-THEME_NAME-theme .md-input-message-animation {  color: '{{warn-A700}}'; }  md-input-container.md-THEME_NAME-theme .md-input-messages-animation .md-char-counter, md-input-container.md-THEME_NAME-theme .md-input-message-animation .md-char-counter {    color: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-has-value label {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused .md-input, md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-resized .md-input {  border-color: '{{primary-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused label {  color: '{{primary-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused md-icon {  color: '{{primary-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent .md-input {  border-color: '{{accent-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent label {  color: '{{accent-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn .md-input {  border-color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn label {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input {  border-color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid label {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input-message-animation, md-input-container.md-THEME_NAME-theme.md-input-invalid .md-char-counter {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme .md-input[disabled],[disabled] md-input-container.md-THEME_NAME-theme .md-input {  border-bottom-color: transparent;  color: '{{foreground-3}}';  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h3, md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h4,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h3,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h4 {  color: '{{foreground-1}}'; }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text p,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text p {  color: '{{foreground-2}}'; }md-list.md-THEME_NAME-theme ._md-proxy-focus.md-focused div._md-no-style {  background-color: '{{background-100}}'; }md-list.md-THEME_NAME-theme md-list-item .md-avatar-icon {  background-color: '{{foreground-3}}';  color: '{{background-color}}'; }md-list.md-THEME_NAME-theme md-list-item > md-icon {  color: '{{foreground-2}}'; }  md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight {    color: '{{primary-color}}'; }    md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight.md-accent {      color: '{{accent-color}}'; }md-menu-content.md-THEME_NAME-theme {  background-color: '{{background-A100}}'; }  md-menu-content.md-THEME_NAME-theme md-menu-item {    color: '{{background-A200-0.87}}'; }    md-menu-content.md-THEME_NAME-theme md-menu-item md-icon {      color: '{{background-A200-0.54}}'; }    md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled] {      color: '{{background-A200-0.25}}'; }      md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled] md-icon {        color: '{{background-A200-0.25}}'; }  md-menu-content.md-THEME_NAME-theme md-menu-divider {    background-color: '{{background-A200-0.11}}'; }md-menu-bar.md-THEME_NAME-theme > button.md-button {  color: '{{foreground-2}}';  border-radius: 2px; }md-menu-bar.md-THEME_NAME-theme md-menu._md-open > button, md-menu-bar.md-THEME_NAME-theme md-menu > button:focus {  outline: none;  background: '{{background-200}}'; }md-menu-bar.md-THEME_NAME-theme._md-open:not(._md-keyboard-mode) md-menu:hover > button {  background-color: '{{ background-500-0.2}}'; }md-menu-bar.md-THEME_NAME-theme:not(._md-keyboard-mode):not(._md-open) md-menu button:hover,md-menu-bar.md-THEME_NAME-theme:not(._md-keyboard-mode):not(._md-open) md-menu button:focus {  background: transparent; }md-menu-content.md-THEME_NAME-theme .md-menu > .md-button:after {  color: '{{background-A200-0.54}}'; }md-menu-content.md-THEME_NAME-theme .md-menu._md-open > .md-button {  background-color: '{{ background-500-0.2}}'; }md-toolbar.md-THEME_NAME-theme.md-menu-toolbar {  background-color: '{{background-A100}}';  color: '{{background-A200}}'; }  md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler {    background-color: '{{primary-color}}';    color: '{{background-A100-0.87}}'; }    md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler md-icon {      color: '{{background-A100-0.87}}'; }md-nav-bar.md-THEME_NAME-theme .md-nav-bar {  background-color: transparent;  border-color: '{{foreground-4}}'; }md-nav-bar.md-THEME_NAME-theme .md-button._md-nav-button.md-unselected {  color: '{{foreground-2}}'; }md-nav-bar.md-THEME_NAME-theme md-nav-ink-bar {  color: '{{accent-color}}';  background: '{{accent-color}}'; }.md-panel {  background-color: '{{background-900-0.0}}'; }  .md-panel._md-panel-backdrop.md-THEME_NAME-theme {    background-color: '{{background-900-1.0}}'; }md-progress-circular.md-THEME_NAME-theme path {  stroke: '{{primary-color}}'; }md-progress-circular.md-THEME_NAME-theme.md-warn path {  stroke: '{{warn-color}}'; }md-progress-circular.md-THEME_NAME-theme.md-accent path {  stroke: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme ._md-container {  background-color: '{{primary-100}}'; }md-progress-linear.md-THEME_NAME-theme ._md-bar {  background-color: '{{primary-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn ._md-container {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn ._md-bar {  background-color: '{{warn-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent ._md-container {  background-color: '{{accent-A100}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent ._md-bar {  background-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn ._md-bar1 {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn ._md-dashed:before {  background: radial-gradient(\"{{warn-100}}\" 0%, \"{{warn-100}}\" 16%, transparent 42%); }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent ._md-bar1 {  background-color: '{{accent-A100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent ._md-dashed:before {  background: radial-gradient(\"{{accent-A100}}\" 0%, \"{{accent-A100}}\" 16%, transparent 42%); }md-radio-button.md-THEME_NAME-theme ._md-off {  border-color: '{{foreground-2}}'; }md-radio-button.md-THEME_NAME-theme ._md-on {  background-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked ._md-off {  border-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme ._md-container .md-ripple {  color: '{{accent-A700}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary ._md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary ._md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary ._md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary ._md-on {  background-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked ._md-off {  border-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary ._md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary ._md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary ._md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary ._md-container .md-ripple {  color: '{{primary-600}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn ._md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn ._md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn ._md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn ._md-on {  background-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked ._md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked ._md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked ._md-off {  border-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn ._md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn ._md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn ._md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn ._md-container .md-ripple {  color: '{{warn-600}}'; }md-radio-group.md-THEME_NAME-theme[disabled],md-radio-button.md-THEME_NAME-theme[disabled] {  color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] ._md-container ._md-off,  md-radio-button.md-THEME_NAME-theme[disabled] ._md-container ._md-off {    border-color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] ._md-container ._md-on,  md-radio-button.md-THEME_NAME-theme[disabled] ._md-container ._md-on {    border-color: '{{foreground-3}}'; }md-radio-group.md-THEME_NAME-theme .md-checked .md-ink-ripple {  color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-primary .md-checked:not([disabled]) .md-ink-ripple, md-radio-group.md-THEME_NAME-theme .md-checked:not([disabled]).md-primary .md-ink-ripple {  color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme .md-checked.md-primary .md-ink-ripple {  color: '{{warn-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked ._md-container:before {  background-color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-primary .md-checked ._md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-primary ._md-container:before {  background-color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-warn .md-checked ._md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-warn ._md-container:before {  background-color: '{{warn-color-0.26}}'; }md-select.md-THEME_NAME-theme[disabled] ._md-select-value {  border-bottom-color: transparent;  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-select.md-THEME_NAME-theme ._md-select-value {  border-bottom-color: '{{foreground-4}}'; }  md-select.md-THEME_NAME-theme ._md-select-value._md-select-placeholder {    color: '{{foreground-3}}'; }md-select.md-THEME_NAME-theme.ng-invalid.ng-dirty ._md-select-value {  color: '{{warn-A700}}' !important;  border-bottom-color: '{{warn-A700}}' !important; }md-select.md-THEME_NAME-theme:not([disabled]):focus ._md-select-value {  border-bottom-color: '{{primary-color}}';  color: '{{ foreground-1 }}'; }  md-select.md-THEME_NAME-theme:not([disabled]):focus ._md-select-value._md-select-placeholder {    color: '{{ foreground-1 }}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-accent ._md-select-value {  border-bottom-color: '{{accent-color}}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-warn ._md-select-value {  border-bottom-color: '{{warn-color}}'; }md-select.md-THEME_NAME-theme[disabled] ._md-select-value {  color: '{{foreground-3}}'; }  md-select.md-THEME_NAME-theme[disabled] ._md-select-value._md-select-placeholder {    color: '{{foreground-3}}'; }md-select-menu.md-THEME_NAME-theme md-content {  background: '{{background-A100}}'; }  md-select-menu.md-THEME_NAME-theme md-content md-optgroup {    color: '{{background-600-0.87}}'; }  md-select-menu.md-THEME_NAME-theme md-content md-option {    color: '{{background-900-0.87}}'; }    md-select-menu.md-THEME_NAME-theme md-content md-option[disabled] ._md-text {      color: '{{background-400-0.87}}'; }    md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):focus, md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):hover {      background: '{{background-200}}'; }    md-select-menu.md-THEME_NAME-theme md-content md-option[selected] {      color: '{{primary-500}}'; }      md-select-menu.md-THEME_NAME-theme md-content md-option[selected]:focus {        color: '{{primary-600}}'; }      md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent {        color: '{{accent-color}}'; }        md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent:focus {          color: '{{accent-A700}}'; }._md-checkbox-enabled.md-THEME_NAME-theme .md-ripple {  color: '{{primary-600}}'; }._md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-ripple {  color: '{{background-600}}'; }._md-checkbox-enabled.md-THEME_NAME-theme .md-ink-ripple {  color: '{{foreground-2}}'; }._md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-ink-ripple {  color: '{{primary-color-0.87}}'; }._md-checkbox-enabled.md-THEME_NAME-theme ._md-icon {  border-color: '{{foreground-2}}'; }._md-checkbox-enabled.md-THEME_NAME-theme[selected] ._md-icon {  background-color: '{{primary-color-0.87}}'; }._md-checkbox-enabled.md-THEME_NAME-theme[selected].md-focused ._md-container:before {  background-color: '{{primary-color-0.26}}'; }._md-checkbox-enabled.md-THEME_NAME-theme[selected] ._md-icon:after {  border-color: '{{primary-contrast-0.87}}'; }._md-checkbox-enabled.md-THEME_NAME-theme .md-indeterminate[disabled] ._md-container {  color: '{{foreground-3}}'; }._md-checkbox-enabled.md-THEME_NAME-theme md-option ._md-text {  color: '{{background-900-0.87}}'; }md-sidenav.md-THEME_NAME-theme, md-sidenav.md-THEME_NAME-theme md-content {  background-color: '{{background-hue-1}}'; }md-slider.md-THEME_NAME-theme ._md-track {  background-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme ._md-track-ticks {  color: '{{background-contrast}}'; }md-slider.md-THEME_NAME-theme ._md-focus-ring {  background-color: '{{accent-A200-0.2}}'; }md-slider.md-THEME_NAME-theme ._md-disabled-thumb {  border-color: '{{background-color}}';  background-color: '{{background-color}}'; }md-slider.md-THEME_NAME-theme._md-min ._md-thumb:after {  background-color: '{{background-color}}';  border-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme._md-min ._md-focus-ring {  background-color: '{{foreground-3-0.38}}'; }md-slider.md-THEME_NAME-theme._md-min[md-discrete] ._md-thumb:after {  background-color: '{{background-contrast}}';  border-color: transparent; }md-slider.md-THEME_NAME-theme._md-min[md-discrete] ._md-sign {  background-color: '{{background-400}}'; }  md-slider.md-THEME_NAME-theme._md-min[md-discrete] ._md-sign:after {    border-top-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme._md-min[md-discrete][md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme ._md-track._md-track-fill {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme ._md-thumb:after {  border-color: '{{accent-color}}';  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme ._md-sign {  background-color: '{{accent-color}}'; }  md-slider.md-THEME_NAME-theme ._md-sign:after {    border-top-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme[md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme ._md-thumb-text {  color: '{{accent-contrast}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-focus-ring {  background-color: '{{warn-200-0.38}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-track._md-track-fill {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-thumb:after {  border-color: '{{warn-color}}';  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-sign {  background-color: '{{warn-color}}'; }  md-slider.md-THEME_NAME-theme.md-warn ._md-sign:after {    border-top-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn[md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn ._md-thumb-text {  color: '{{warn-contrast}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-focus-ring {  background-color: '{{primary-200-0.38}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-track._md-track-fill {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-thumb:after {  border-color: '{{primary-color}}';  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-sign {  background-color: '{{primary-color}}'; }  md-slider.md-THEME_NAME-theme.md-primary ._md-sign:after {    border-top-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary[md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary ._md-thumb-text {  color: '{{primary-contrast}}'; }md-slider.md-THEME_NAME-theme[disabled] ._md-thumb:after {  border-color: transparent; }md-slider.md-THEME_NAME-theme[disabled]:not(._md-min) ._md-thumb:after, md-slider.md-THEME_NAME-theme[disabled][md-discrete] ._md-thumb:after {  background-color: '{{foreground-3}}';  border-color: transparent; }md-slider.md-THEME_NAME-theme[disabled][readonly] ._md-sign {  background-color: '{{background-400}}'; }  md-slider.md-THEME_NAME-theme[disabled][readonly] ._md-sign:after {    border-top-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme[disabled][readonly][md-vertical] ._md-sign:after {  border-top-color: transparent;  border-left-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme[disabled][readonly] ._md-disabled-thumb {  border-color: transparent;  background-color: transparent; }md-slider-container[disabled] > *:first-child:not(md-slider),md-slider-container[disabled] > *:last-child:not(md-slider) {  color: '{{foreground-3}}'; }.md-subheader.md-THEME_NAME-theme {  color: '{{ foreground-2-0.23 }}';  background-color: '{{background-default}}'; }  .md-subheader.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme .md-ink-ripple {  color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme ._md-thumb {  background-color: '{{background-50}}'; }md-switch.md-THEME_NAME-theme ._md-bar {  background-color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked ._md-thumb {  background-color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked ._md-bar {  background-color: '{{accent-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-focused ._md-thumb:before {  background-color: '{{accent-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-ink-ripple {  color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary ._md-thumb {  background-color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary ._md-bar {  background-color: '{{primary-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary.md-focused ._md-thumb:before {  background-color: '{{primary-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-ink-ripple {  color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn ._md-thumb {  background-color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn ._md-bar {  background-color: '{{warn-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn.md-focused ._md-thumb:before {  background-color: '{{warn-color-0.26}}'; }md-switch.md-THEME_NAME-theme[disabled] ._md-thumb {  background-color: '{{background-400}}'; }md-switch.md-THEME_NAME-theme[disabled] ._md-bar {  background-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme md-tabs-wrapper {  background-color: transparent;  border-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme .md-paginator md-icon {  color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme md-ink-bar {  color: '{{accent-color}}';  background: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme .md-tab {  color: '{{foreground-2}}'; }  md-tabs.md-THEME_NAME-theme .md-tab[disabled], md-tabs.md-THEME_NAME-theme .md-tab[disabled] md-icon {    color: '{{foreground-3}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-active, md-tabs.md-THEME_NAME-theme .md-tab.md-active md-icon, md-tabs.md-THEME_NAME-theme .md-tab.md-focused, md-tabs.md-THEME_NAME-theme .md-tab.md-focused md-icon {    color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-focused {    background: '{{primary-color-0.1}}'; }  md-tabs.md-THEME_NAME-theme .md-tab .md-ripple-container {    color: '{{accent-A100}}'; }md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-A100}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-A100}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toast.md-THEME_NAME-theme .md-toast-content {  background-color: #323232;  color: '{{background-50}}'; }  md-toast.md-THEME_NAME-theme .md-toast-content .md-button {    color: '{{background-50}}'; }    md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight {      color: '{{accent-color}}'; }      md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-primary {        color: '{{primary-color}}'; }      md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-warn {        color: '{{warn-color}}'; }md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {  background-color: '{{primary-color}}';  color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-icon {    color: '{{primary-contrast}}';    fill: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) .md-button[disabled] md-icon {    color: '{{primary-contrast-0.26}}';    fill: '{{primary-contrast-0.26}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent {    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent .md-ink-ripple {      color: '{{accent-contrast}}'; }    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent md-icon {      color: '{{accent-contrast}}';      fill: '{{accent-contrast}}'; }    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent .md-button[disabled] md-icon {      color: '{{accent-contrast-0.26}}';      fill: '{{accent-contrast-0.26}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn {    background-color: '{{warn-color}}';    color: '{{warn-contrast}}'; }md-tooltip.md-THEME_NAME-theme {  color: '{{background-A100}}'; }  md-tooltip.md-THEME_NAME-theme ._md-content {    background-color: '{{foreground-2}}'; }"); 
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc.5-master-42833aa"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.0-rc4-master-f9738f5"}};
