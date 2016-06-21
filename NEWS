@@ -24,7 +24,7 @@ Bug fixes
  - [web] sgTimePicker parser now respects the user's time format and language
  - [web] fixed time format when user chooses the default one
  - [web] added missing delegators identities in mail editor (#3720)
- - [web] honor the domain default SOGoAppointmentSendEMailNotifications (#3729)
+ - [web] honour the domain default SOGoAppointmentSendEMailNotifications (#3729)
  - [web] the login module parameter is now properly restored when set as "Last used"
  - [web] if cn isn't found for shared mailboxes, use email address (#3733)
  - [web] fixed handling of attendees when updating an event
