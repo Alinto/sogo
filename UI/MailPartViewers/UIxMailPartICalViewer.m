@@ -546,7 +546,7 @@
       person = [participants objectAtIndex: i];
 
       if (![[person delegatedTo] length])
-        [a addObject: [NSDictionary dictionaryWithObjectsAndKeys: ([person cnWithoutQuotes] ? [person cnWithoutQuotes] : [person rfc822Email]), @"name",
+        [a addObject: [NSDictionary dictionaryWithObjectsAndKeys: ([[person cnWithoutQuotes] length] ? [person cnWithoutQuotes] : [person rfc822Email]), @"name",
                                     [person rfc822Email], @"email",
                                     [[person partStatWithDefault] lowercaseString], @"partstat", nil]];
     }

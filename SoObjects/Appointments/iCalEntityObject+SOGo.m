@@ -118,7 +118,7 @@ NSNumber *iCalDistantFutureNumber = nil;
     {
       organizerData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                              [organizer rfc822Email], @"email",
-                                           [organizer cnWithoutQuotes], @"name",
+                                           ([[organizer cnWithoutQuotes] length] ? [organizer cnWithoutQuotes] : [organizer rfc822Email]), @"name",
                                            nil];
       uid = [organizer uid];
       if ([uid length]) [organizerData setObject: uid forKey: @"uid"];
@@ -134,7 +134,7 @@ NSNumber *iCalDistantFutureNumber = nil;
     {
       attendeeData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                             [currentAttendee rfc822Email], @"email",
-                                          [currentAttendee cnWithoutQuotes], @"name",
+                                          ([[currentAttendee cnWithoutQuotes] length] ? [currentAttendee cnWithoutQuotes] : [currentAttendee rfc822Email]) , @"name",
                                           nil];
       if ((uid = [currentAttendee uid]))
         {
