@@ -35,24 +35,24 @@
           <div class="pseudo-input-container">
             <p class="pseudo-input-field"><var:string label:value="For incoming messages that"/></p>
           </div>
-        <md-input-container class="md-flex">
-          <md-select ng-model="filterEditor.filter.match">
-            <md-option const:value="all">
-              <var:string label:value="match all of the following rules"/>
-            </md-option>
-            <md-option const:value="any">
-              <var:string label:value="match any of the following rules"/>
-            </md-option>
-            <md-option const:value="allmessages">
-              <var:string label:value="match all messages"/>
-            </md-option>
-          </md-select>
-        </md-input-container>
-      </div>
+          <md-input-container class="md-flex">
+            <md-select ng-model="filterEditor.filter.match">
+              <md-option const:value="all">
+                <var:string label:value="match all of the following rules"/>
+              </md-option>
+              <md-option const:value="any">
+                <var:string label:value="match any of the following rules"/>
+              </md-option>
+              <md-option const:value="allmessages">
+                <var:string label:value="match all messages"/>
+              </md-option>
+            </md-select>
+          </md-input-container>
+        </div>
 
-      <!-- CONDITIONS -->
-      <div layout="column">
-        <div id="filterRules"><!-- empty --></div>
+        <!-- CONDITIONS -->
+        <div layout="column">
+          <div id="filterRules"><!-- empty --></div>
           <div layout="row" layout-align="start center"
                ng-repeat="rule in filterEditor.filter.rules">
 
@@ -93,92 +93,92 @@
             </md-button>
           </div>
 
-        <div layout="row" layout-align="end center">
-          <label class="button-label"><var:string label:value="Add a condition"/></label>
-          <md-button class="md-icon-button" type="button"
-                     ng-click="filterEditor.addMailFilterRule($event)">
-            <md-icon>add_circle</md-icon>
-          </md-button>
+          <div layout="row" layout-align="end center">
+            <label class="button-label"><var:string label:value="Add a condition"/></label>
+            <md-button class="md-icon-button" type="button"
+                       ng-click="filterEditor.addMailFilterRule($event)">
+              <md-icon>add_circle</md-icon>
+            </md-button>
+          </div>
         </div>
-      </div>
       </div>
       <div class="sg-form-section">
 
-      <!-- ACTIONS -->
-      <div layout="column">
-        <p><var:string label:value="Perform these actions"/></p>
-        <div id="filterActions"><!-- empty --></div>
-        <div layout="row" layout-align="start center"
-             ng-repeat="action in filterEditor.filter.actions">
+        <!-- ACTIONS -->
+        <div layout="column">
+          <p><var:string label:value="Perform these actions"/></p>
+          <div id="filterActions"><!-- empty --></div>
+          <div layout="row" layout-align="start center"
+               ng-repeat="action in filterEditor.filter.actions">
 
-          <md-input-container class="md-block md-flex">
-            <md-select ng-model="action.method">
-              <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.methodLabels">{{ value }}</md-option>
-            </md-select>
-          </md-input-container>
+            <md-input-container class="md-block md-flex">
+              <md-select ng-model="action.method">
+                <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.methodLabels">{{ value }}</md-option>
+              </md-select>
+            </md-input-container>
 
-          <!-- FORWARD MESSAGE TO -->
-          <md-input-container class="md-block" flex="50" ng-if="action.method == 'redirect'" >
-            <label><var:string label:value="Email"/></label>
-            <input type="text" ng-model="action.argument" required="required"/>
-          </md-input-container>
+            <!-- FORWARD MESSAGE TO -->
+            <md-input-container class="md-block" flex="50" ng-if="action.method == 'redirect'" >
+              <label><var:string label:value="Email"/></label>
+              <input type="text" ng-model="action.argument" required="required"/>
+            </md-input-container>
 
-          <!-- DISCARD -->
-          <!-- nada -->
+            <!-- DISCARD -->
+            <!-- nada -->
 
-          <!-- KEEP -->
-          <!-- nada -->
+            <!-- KEEP -->
+            <!-- nada -->
 
-          <!-- SEND REJECT MESSAGE -->
-          <md-input-container class="md-block" flex="50" ng-if="action.method == 'reject'">
-            <label><var:string label:value="Message"/></label>
-            <input type="text" ng-model="action.argument" required="required"/>
-          </md-input-container>
+            <!-- SEND REJECT MESSAGE -->
+            <md-input-container class="md-block" flex="50" ng-if="action.method == 'reject'">
+              <label><var:string label:value="Message"/></label>
+              <input type="text" ng-model="action.argument" required="required"/>
+            </md-input-container>
 
-          <!-- FILE INTO -->
-          <md-input-container class="md-block" flex="50" ng-if="action.method == 'fileinto'">
-            <label><var:string label:value="Mailbox"/></label>
-            <md-select ng-model="action.argument" required="required">
-              <md-option ng-value="item.path" ng-repeat="item in filterEditor.mailboxes">
-                <div ng-class="'sg-child-level-' + item.level">
-                  {{ item.name }}
-                </div>
-              </md-option>
-            </md-select>
-          </md-input-container>
+            <!-- FILE INTO -->
+            <md-input-container class="md-block" flex="50" ng-if="action.method == 'fileinto'">
+              <label><var:string label:value="Mailbox"/></label>
+              <md-select ng-model="action.argument" required="required">
+                <md-option ng-value="item.path" ng-repeat="item in filterEditor.mailboxes">
+                  <div ng-class="'sg-child-level-' + item.level">
+                    {{ item.name }}
+                  </div>
+                </md-option>
+              </md-select>
+            </md-input-container>
 
-          <!-- FLAG WITH -->
-          <md-input-container class="md-block" flex="50" ng-if="action.method == 'addflag'">
-            <label><var:string label:value="Flag"/></label>
-            <md-select ng-model="action.argument" required="required">
-              <md-option value="seen"><var:string label:value="Seen"/></md-option>
-              <md-option value="deleted"><var:string label:value="Deleted"/></md-option>
-              <md-option value="answered"><var:string label:value="Answered"/></md-option>
-              <md-option value="flagged"><var:string label:value="Flagged"/></md-option>
-              <md-option value="junk"><var:string label:value="Junk"/></md-option>
-              <md-option value="not_junk"><var:string label:value="Not Junk"/></md-option>
-              <md-option ng-value="key" ng-repeat="(key, value) in labels">{{ value[0] }}</md-option>
-            </md-select>
-          </md-input-container>
+            <!-- FLAG WITH -->
+            <md-input-container class="md-block" flex="50" ng-if="action.method == 'addflag'">
+              <label><var:string label:value="Flag"/></label>
+              <md-select ng-model="action.argument" required="required">
+                <md-option value="seen"><var:string label:value="Seen"/></md-option>
+                <md-option value="deleted"><var:string label:value="Deleted"/></md-option>
+                <md-option value="answered"><var:string label:value="Answered"/></md-option>
+                <md-option value="flagged"><var:string label:value="Flagged"/></md-option>
+                <md-option value="junk"><var:string label:value="Junk"/></md-option>
+                <md-option value="not_junk"><var:string label:value="Not Junk"/></md-option>
+                <md-option ng-value="key" ng-repeat="(key, value) in labels">{{ value[0] }}</md-option>
+              </md-select>
+            </md-input-container>
 
-          <!-- STOP -->
-          <!-- nada -->
+            <!-- STOP -->
+            <!-- nada -->
 
-          <md-button class="md-icon-button" type="button"
-                     ng-click="filterEditor.removeMailFilterAction($index)">
-            <md-icon>remove_circle</md-icon>
-          </md-button>
+            <md-button class="md-icon-button" type="button"
+                       ng-click="filterEditor.removeMailFilterAction($index)">
+              <md-icon>remove_circle</md-icon>
+            </md-button>
 
+          </div>
+
+          <div layout="row" layout-align="end center">
+            <label class="button-label"><var:string label:value="Add an action"/></label>
+            <md-button class="md-icon-button" type="button"
+                       ng-click="filterEditor.addMailFilterAction($event)">
+              <md-icon>add_circle</md-icon>
+            </md-button>
+          </div>
         </div>
-
-        <div layout="row" layout-align="end center">
-          <label class="button-label"><var:string label:value="Add an action"/></label>
-          <md-button class="md-icon-button" type="button"
-                     ng-click="filterEditor.addMailFilterAction($event)">
-            <md-icon>add_circle</md-icon>
-          </md-button>
-        </div>
-      </div>
       </div>
     </md-dialog-content>
     <md-dialog-actions>
