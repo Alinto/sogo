@@ -6,5 +6,8 @@
 	delaycompress
 	notifempty
 	copytruncate
-	su sogo sogo
+	# The 'su' parameter is normally not needed but in cases where two
+	# instances of SOGo run in parallel under different UNIX users it
+	# allows proper rotation; requires logrotate >= 3.8.0
+	# su sogo sogo
 }
