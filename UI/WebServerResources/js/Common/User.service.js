@@ -17,12 +17,11 @@
    * @desc The factory we'll use to register with Angular.
    * @return the User constructor
    */
-  User.factory = ['$q', '$log', 'sgSettings', 'Resource', 'Gravatar', function($q, $log, Settings, Resource, Gravatar) {
+  User.factory = ['$q', '$log', 'sgSettings', 'Resource', function($q, $log, Settings, Resource) {
     angular.extend(User, {
       $q: $q,
       $log: $log,
       $$resource: new Resource(Settings.activeUser('folderURL'), Settings.activeUser()),
-      $gravatar: Gravatar,
       $query: '',
       $users: []
     });
@@ -114,7 +113,9 @@
     if (!this.$$shortFormat)
       this.$$shortFormat = this.$shortFormat();
     if (!this.$$image)
-      this.$$image = this.image || User.$gravatar(this.c_email, 32, User.$alternateAvatar, {no_404: true});
+      this.$$image = this.image;
+    // NOTE: We can't assign a Gravatar at this stage since we would need the Preferences module
+    // which already depend on the User module.
 
     // An empty attribute to trick md-autocomplete when adding users from the ACLs editor
     this.empty = ' ';

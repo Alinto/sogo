@@ -116,11 +116,17 @@
     this.settingsPromise = Preferences.$$resource.fetch("jsonSettings").then(function(data) {
       // We convert our PreventInvitationsWhitelist hash into a array of user
       if (data.Calendar) {
-        if (data.Calendar.PreventInvitationsWhitelist)
+        if (data.Calendar.PreventInvitationsWhitelist) {
           data.Calendar.PreventInvitationsWhitelist = _.map(data.Calendar.PreventInvitationsWhitelist, function(value, key) {
-            var match = /^(.+)\s<(\S+)>$/.exec(value);
-            return new Preferences.$User({uid: key, cn: match[1], c_email: match[2]});
+            var match = /^(.+)\s<(\S+)>$/.exec(value),
+                user = new Preferences.$User({uid: key, cn: match[1], c_email: match[2]});
+            if (!user.$$image)
+              _this.avatar(user.c_email, 32, {no_404: true}).then(function(url) {
+                user.$$image = url;
+              });
+            return user;
           });
+        }
         else
           data.Calendar.PreventInvitationsWhitelist = [];
       }
@@ -136,14 +142,15 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Preferences constructor
    */
-  Preferences.$factory = ['$q', '$timeout', '$log', '$mdDateLocale', 'sgSettings', 'Resource', 'User', function($q, $timeout, $log, $mdDateLocaleProvider, Settings, Resource, User) {
+  Preferences.$factory = ['$q', '$timeout', '$log', '$mdDateLocale', 'sgSettings', 'Gravatar', 'Resource', 'User', function($q, $timeout, $log, $mdDateLocaleProvider, Settings, Gravatar, Resource, User) {
     angular.extend(Preferences, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
       $mdDateLocaleProvider: $mdDateLocaleProvider,
+      $gravatar: Gravatar,
       $$resource: new Resource(Settings.activeUser('folderURL'), Settings.activeUser()),
-      activeUser: Settings.activeUser(),
+      $resourcesURL: Settings.resourcesURL(),
       $User: User
     });
 
@@ -170,6 +177,26 @@
    */
   Preferences.prototype.ready = function() {
     return Preferences.$q.all([this.defaultsPromise, this.settingsPromise]);
+  };
+
+  /**
+   * @function avatar
+   * @memberof Preferences.prototype
+   * @desc Get the avatar URL associated to an email address
+   * @return a combined promise
+   */
+  Preferences.prototype.avatar = function(email, size, options) {
+    var _this = this;
+    return this.ready().then(function() {
+      var alternate_avatar = _this.defaults.SOGoAlternateAvatar, url;
+      if (_this.defaults.SOGoGravatarEnabled)
+        url = Preferences.$gravatar(email, size, alternate_avatar, options);
+      else
+        url = [Preferences.$resourcesURL, 'img', 'ic_person_grey_24px.svg'].join('/');
+      if (options && options.dstObject && options.dstAttr)
+        options.dstObject[options.dstAttr] = url;
+      return url;
+    });
   };
 
   /**

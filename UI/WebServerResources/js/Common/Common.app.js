@@ -9,6 +9,9 @@
       baseURL: function() {
         return ApplicationBaseURL || null;
       },
+      resourcesURL: function() {
+        return ResourcesURL || null;
+      },
       activeUser: function(param) {
         var settings = {
           login: UserLogin || null,

@@ -38,12 +38,11 @@
    * @desc The factory we'll use to register with Angular.
    * @returns the Card constructor
    */
-  Card.$factory = ['$timeout', 'sgSettings', 'sgCard_STATUS', 'Resource', 'Preferences', 'Gravatar', function($timeout, Settings, Card_STATUS, Resource, Preferences, Gravatar) {
+  Card.$factory = ['$timeout', 'sgSettings', 'sgCard_STATUS', 'Resource', 'Preferences', function($timeout, Settings, Card_STATUS, Resource, Preferences) {
     angular.extend(Card, {
       STATUS: Card_STATUS,
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Contacts', Settings.activeUser()),
       $timeout: $timeout,
-      $gravatar: Gravatar,
       $Preferences: Preferences
     });
     // Initialize categories from user's defaults
@@ -146,7 +145,7 @@
     if (!this.$$email)
       this.$$email = this.$preferredEmail(partial);
     if (!this.$$image)
-      this.$$image = this.image || Card.$gravatar(this.$preferredEmail(partial), 32, Card.$alternateAvatar, {no_404: true});
+      this.$$image = this.image || Card.$Preferences.avatar(this.$$email, 32, {no_404: true});
     if (this.isgroup)
       this.c_component = 'vlist';
     this.$loaded = angular.isDefined(this.c_name)? Card.STATUS.LOADED : Card.STATUS.NOT_LOADED;

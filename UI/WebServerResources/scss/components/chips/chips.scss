@@ -56,7 +56,8 @@ md-chips {
 }
 
 // Enlarge the default autocompletion menu
-.sg-chips-autocomplete {
+.sg-chips-autocomplete,
+.sg-chips-autocomplete input {
   width: (3 * $contact-chip-name-width);
   @media (max-width: $layout-breakpoint-xs) {
     // Enlarge the autocompletion menu on small devices to fit the entire screen

@@ -29,7 +29,7 @@
     vm.editMailFilter = editMailFilter;
     vm.removeMailFilter = removeMailFilter;
     vm.addDefaultEmailAddresses = addDefaultEmailAddresses;
-    vm.userFilter = User.$filter;
+    vm.userFilter = userFilter;
     vm.confirmChanges = confirmChanges;
     vm.save = save;
     vm.canChangePassword = canChangePassword;
@@ -228,6 +228,23 @@
 
       vm.preferences.defaults.Vacation.autoReplyEmailAddresses = (_.union(window.defaultEmailAddresses.split(','), v)).join(',');
       form.$setDirty();
+    }
+
+    function userFilter(search, excludedUsers) {
+      return User.$filter(search, excludedUsers).then(function(users) {
+        // Set users avatars
+        _.forEach(users, function(user) {
+          if (!user.$$image) {
+            if (user.image)
+              user.$$image = user.image;
+            else
+              vm.preferences.avatar(user.c_email, 32, {no_404: true}).then(function(url) {
+                user.$$image = url;
+              });
+            }
+        });
+        return users;
+      });
     }
 
     function confirmChanges($event, form) {

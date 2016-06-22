@@ -39,14 +39,14 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Message constructor
    */
-  Message.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgMessage_STATUS', 'Gravatar', 'Resource', 'Preferences', function($q, $timeout, $log, Settings, Message_STATUS, Gravatar, Resource, Preferences) {
+  Message.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgMessage_STATUS', 'Resource', 'Preferences', function($q, $timeout, $log, Settings, Message_STATUS, Resource, Preferences) {
     angular.extend(Message, {
       STATUS: Message_STATUS,
       $q: $q,
       $timeout: $timeout,
       $log: $log,
-      $gravatar: Gravatar,
-      $$resource: new Resource(Settings.activeUser('folderURL') + 'Mail', Settings.activeUser())
+      $$resource: new Resource(Settings.activeUser('folderURL') + 'Mail', Settings.activeUser()),
+      $avatar: angular.bind(Preferences, Preferences.avatar)
     });
     // Initialize tags form user's defaults
     Preferences.ready().then(function() {
@@ -172,7 +172,7 @@
    * @function $formatFullAddresses
    * @memberof Message.prototype
    * @desc Format all sender and recipients addresses with a complete description (name <email>).
-   *       This function also generates a gravatar for each email address, and a short name
+   *       This function also generates the avatar URL for each email address and a short name
    */
   Message.prototype.$formatFullAddresses = function() {
     var _this = this;
@@ -188,16 +188,15 @@
             // Name is already short
             data.shortname = data.name;
           else if (data.name.split(' ').length)
-            // If we have "Alice Foo" as name, we grab "Alice"
-            data.shortname = data.name.split(' ')[0].replace('\'','');
+            // If we have "Alice Foo" or "Foo, Alice" as name, we grab "Alice"
+            data.shortname = _.first(_.last(data.name.split(/, */)).split(/ +/)).replace('\'','');
         }
         else if (data.email) {
           data.full = '<' + data.email + '>';
           data.shortname = data.email.split('@')[0];
         }
 
-        // Generate the gravatar
-        data.image = Message.$gravatar(data.email, 32);
+        data.image = Message.$avatar(data.email, 32);
 
         // If the current user is the recepient, overwrite
         // the short name with 'me'
@@ -341,13 +340,6 @@
             else if (part.type == 'UIxMailPartICalViewer' ||
                      part.type == 'UIxMailPartImageViewer' ||
                      part.type == 'UIxMailPartLinkViewer') {
-
-              // UIxMailPartICalViewer injects 'participants'
-              if (part.participants) {
-                _.forEach(part.participants, function(participant) {
-                  participant.image = Message.$gravatar(participant.email, 32);
-                });
-              }
 
               if (part.type == 'UIxMailPartImageViewer')
                 part.msgclass = 'msg-attachment-image';
