@@ -102,12 +102,12 @@
         <md-list-item ng-class="{ 'md-2-line': editor.component.isAllDay, 'md-3-line': !editor.component.isAllDay }">
           <md-icon>access_time</md-icon>
           <div class="md-list-item-text" ng-show="editor.component.startDate">
-            <p class="pseudo-input-label"><var:string label:value="Start"/></p>
+            <label class="pseudo-input-label"><var:string label:value="Start"/></label>
             <h3>{{::editor.component.localizedStartDate}}</h3>
             <h3 ng-hide="editor.component.isAllDay">{{::editor.component.localizedStartTime}}</h3>
           </div>
           <div class="md-list-item-text" ng-show="editor.component.endDate">
-            <p class="pseudo-input-label"><var:string label:value="End"/></p>
+            <label class="pseudo-input-label"><var:string label:value="End"/></label>
             <h3>{{::editor.component.localizedEndDate}}</h3>
             <h3 ng-hide="editor.component.isAllDay">{{::editor.component.localizedEndTime}}</h3>
           </div>

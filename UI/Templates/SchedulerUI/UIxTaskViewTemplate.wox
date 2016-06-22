@@ -63,12 +63,12 @@
                       ng-show="editor.component.startDate || editor.component.dueDate">
           <md-icon>access_time</md-icon>
           <div class="md-list-item-text" ng-show="editor.component.startDate">
-            <p class="pseudo-input-label"><var:string label:value="Start"/></p>
+            <label class="pseudo-input-label"><var:string label:value="Start"/></label>
             <h3>{{::editor.component.localizedStartDate}}</h3>
             <h3 ng-hide="editor.component.isAllDay"> {{::editor.component.localizedStartTime}}</h3>
           </div>
           <div class="md-list-item-text" ng-show="editor.component.dueDate">
-            <p class="pseudo-input-label"><var:string label:value="Due Date"/></p>
+            <label class="pseudo-input-label"><var:string label:value="Due Date"/></label>
             <h3>{{::editor.component.localizedDueDate}}</h3>
             <h3 ng-hide="editor.component.isAllDay">{{::editor.component.localizedDueTime}}</h3>
           </div>
