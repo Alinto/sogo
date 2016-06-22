@@ -141,8 +141,8 @@
 "Unable to subscribe to that folder!"
 = "Bu klasöre üye olunamıyor.";
 /* acls */
-"Access rights to" = "Erişim yetkileri";
-"For user" = "Şu kullanıcı için";
+"Access rights to" = "Aşağıdaki adres defterine erişim yetkileri";
+"For user" = "Aşağıdaki kullanıcı için";
 "Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
 "Public Access" = "Halka Açık Erişim";
 "This person can add cards to this addressbook."

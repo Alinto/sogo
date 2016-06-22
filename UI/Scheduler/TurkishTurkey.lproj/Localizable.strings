@@ -73,7 +73,7 @@
 
 /* acls */
 "Access rights to" = "Erişim yetkileri";
-"For user" = "Şu kullanıcı için";
+"For user" = "Aşağıdaki kullanıcı için";
 "Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
 "Public Access" = "Halka Açık Erişim";
 "label_Public" = "Halka Açık";

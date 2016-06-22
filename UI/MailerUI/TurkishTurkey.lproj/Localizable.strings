@@ -71,7 +71,7 @@
 "Trash emptied" = "Çöp Kutusu boşaltıldı";
 
 /* acls */
-"Access rights to" = "Erişim yetkileri";
+"Access rights to" = "Aşağıdaki klasöre erişim yetkileri";
 "For user" = "Şu kullanıcı için";
 "Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
 "List and see this folder" = "Bu klasörü listele ve görüntüle";
@@ -81,9 +81,9 @@
 "Insert, copy and move mails into this folder" = "İletiler bu klasöre yerleştirir, kopyalar ve taşır";
 "Post mails" = "İletileri postalar";
 "Add subfolders to this folder" = "Bu klasöre alt klasörler ekler";
-"Remove this folder" = "Bu klasörü kaldır";
+"Remove this folder" = "Bu klasörü kaldırır";
 "Erase mails from this folder" = "Bu klasörden iletileri siler";
-"Expunge this folder" = "Bu klasörü temizle";
+"Expunge this folder" = "Bu klasörü temizler";
 "Export This Folder" = "Bu klasörü dışa aktar";
 "Modify the acl of this folder" = "Bu klasörün erişim denetimi listesini değiştirir";
 "Saved Messages.zip" = "Messages.zip olarak kaydedildi";

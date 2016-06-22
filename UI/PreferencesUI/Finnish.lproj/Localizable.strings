@@ -36,11 +36,15 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Laita automaattinen lomavastaaja päälle";
+"Enable custom auto reply subject" = "Käytä mukautettua automaattivastauksen otsikkoa";
+"Auto reply subject" = "Automaattivastauksen otsikko";
+"You can write ${subject} to insert the original subject" = "Voit kirjoittaa ${subject} sisällyttääksesi alkuperäisen otsikon";
 "Auto reply message" = "Automaattivastaus";
 "Email addresses (separated by commas)" = "Sähköpostiosoitteet (eroteltuna pilkuin)";
 "Add default email addresses" = "Syötä oletussähköpostiosoite";
 "Days between responses" = "Päivät vastausten välillä";
 "Do not send responses to mailing lists" = "Älä lähetä vastauksia postituslistoille";
+"Enable auto reply on" = "Ota automaattivastaus käyttöön";
 "Disable auto reply on" = "Poista automaattivastaus käytöstä";
 "Always send vacation message response" = "Lähetä lomaviestivastaus aina";
 "Please specify your message and your email addresses for which you want to enable auto reply."

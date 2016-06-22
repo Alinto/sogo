@@ -36,11 +36,15 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Otomatik tatil yanıtını etkinleştir";
+"Enable custom auto reply subject" = "Özelleştirilmiş otomatik yanıt konusunu etkinleştir";
+"Auto reply subject" = "Otomatik yanıt konusu";
+"You can write ${subject} to insert the original subject" = "Orjinal konuyu iliştirmek için ${subject} yazabilirsiniz";
 "Auto reply message" = "Otomatik yanıt iletisi";
 "Email addresses (separated by commas)" = "E-posta adresleri (virgülle ayrılmış)";
 "Add default email addresses" = "Varsayılan e-posta adresi ekle";
 "Days between responses" = "Yanıtlar arasındaki gün sayısı";
 "Do not send responses to mailing lists" = "Yanıtları e-posta listelerine gönderme";
+"Enable auto reply on" = "Otomatik yanıtlamayı şu tarihte etkinleştir";
 "Disable auto reply on" = "Otomatik yanıtlamayı şu tarihte devre dışı bırak";
 "Always send vacation message response" = "Her zaman tatil yanıtı iletisi gönder";
 "Please specify your message and your email addresses for which you want to enable auto reply."

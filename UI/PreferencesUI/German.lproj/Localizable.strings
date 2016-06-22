@@ -36,11 +36,15 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Automatische Abwesenheitsnachricht aktivieren";
+"Enable custom auto reply subject" = "Benutzerdefinierten Betreff für automatische Abwesenheitsnachricht aktivieren";
+"Auto reply subject" = "Betreff für automatische Abwesenheitsnachricht";
+"You can write ${subject} to insert the original subject" = "Sie können ${subject} schreiben, um den originalen Betreff einzufügen";
 "Auto reply message" = "Mit folgender Nachricht auf jede eingehende E-Mail automatisch antworten";
 "Email addresses (separated by commas)" = "E-Mail-Adressen (getrennt durch Kommata)";
 "Add default email addresses" = "Standardadresse hinzufügen";
 "Days between responses" = "Tage zwischen automatischen Antworten";
 "Do not send responses to mailing lists" = "Keine automatischen Abwesenheitsnachrichten an Mailinglisten senden";
+"Enable auto reply on" = "Automatische Abwesenheitsnachricht anschalten am";
 "Disable auto reply on" = "Automatische Abwesenheitsnachricht abschalten am";
 "Always send vacation message response" = "Immer Abwesenheitsmeldung senden";
 "Please specify your message and your email addresses for which you want to enable auto reply."
