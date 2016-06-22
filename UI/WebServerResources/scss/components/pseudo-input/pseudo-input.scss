@@ -51,12 +51,6 @@
 .button-label {
   margin-top: 0;
 }
-// md overqualifies so we are
-//.md-input-focused label.pseudo-input-label,
-//.md-input-has-value label.pseudo-input-label {
-//  transform: translate3d(0, 4px, 0) scale(1);
-//  margin-top: $mg;
-//}
 
 .pseudo-input-field {
   display: block;
@@ -89,28 +83,4 @@
 input #inner-editor {
   color: $colorGrayLight;
   line-height: inherit;
-}
-
-md-input-container .bgroup {
-  display: block;
-}
-.bgroup b {
-  left-margin: -1.25em;
-}
-
-.PseudoField input {
-  flex: 1;
-  order: 2;
-  display: block;
-
-  background: none;
-  padding-top: $input-padding-top;
-  padding-bottom: 0;
-  border-width: 0 0 $input-border-width-default 0;
-  line-height: $input-line-height;
-  -ms-flex-preferred-size: $input-line-height; //IE fix
-
-  &:focus {
-    outline: none;
-  }
 }

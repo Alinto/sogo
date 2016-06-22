@@ -22,33 +22,9 @@ md-input-container {
   }
 }
 
-//md-input-container .bgroup {
-//  display: block;
-//}
-//.bgroup b {
-//  left-margin: -1.25em;
-//}
-
 md-autocomplete .sg-input-no-message [md-floating-label] {
   md-input-container {
     // See .md-input-has-messages
     padding-bottom: $input-container-padding;
-  }
-}
-
-.PseudoField input {
-  flex: 1;
-  order: 2;
-  display: block;
-
-  background: none;
-  padding-top: $input-padding-top;
-  padding-bottom: 0;
-  border-width: 0 0 $input-border-width-default 0;
-  line-height: $input-line-height;
-  -ms-flex-preferred-size: $input-line-height; //IE fix
-
-  &:focus {
-    outline: none;
   }
 }

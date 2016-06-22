@@ -16,14 +16,16 @@ html.dev {
     background-image: linear-gradient(90deg,rgba(0, 255, 255, 0.10) 0, rgba(0, 255, 255, 0.10) 80%, rgba(0, 0, 0, 0.0) 80%);
     background-size: (8 * $baseline-grid) (8 * $baseline-grid);
     background-repeat-x: repeat;
+    pointer-events: none;
     width: 100%;
     height: 100%;
     content: " ";
     z-index: 1000;
   }
-}
-// for visibility while devopping
-// ____________________________________________________________________________
-.md-tile-left {
-  background-color: rgba(224, 255, 255, 0.5);
+
+  // for visibility while devopping
+  // ____________________________________________________________________________
+  .md-tile-left {
+    background-color: rgba(224, 255, 255, 0.5);
+  }
 }

@@ -64,15 +64,6 @@ md-toolbar,
   }
 }
 
-.md-toolbar-tools.md-toolbar-tools-top {
-  align-items: flex-start;
-}
-
-.md-toolbar-tools.md-toolbar-tools-bottom {
-  height: (5 * $line);
-  max-height: (5 * $line);
-}
-
 header {
   flex-direction: row;
   flex-wrap: nowrap;
