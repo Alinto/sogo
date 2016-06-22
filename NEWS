@@ -1,4 +1,4 @@
-3.1.3 (2016-MM-DD)
+3.1.3 (2016-06-22)
 ------------------
 
 New features
@@ -12,6 +12,7 @@ Enhancements
  - [web] always display name of month in week view (#3724)
  - [web] use a speed dial (instead of a dialog) for card/list creation
  - [web] use a speed dial for event/task creation
+ - [web] CSS is now minified using clean-css
 
 Bug fixes
  - [core] properly handle sorted/deleted calendars (#3723)

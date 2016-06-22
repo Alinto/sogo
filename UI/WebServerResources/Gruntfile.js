@@ -1,3 +1,4 @@
+// Load Grunt
 module.exports = function(grunt) {
   var js_files = {
     'js/Common.js': ['js/Common/*.app.js', 'js/Common/*.filter.js', 'js/Common/*Controller.js', 'js/Common/*.service.js', 'js/Common/*.directive.js', 'js/Common/utils.js'],
@@ -23,6 +24,7 @@ module.exports = function(grunt) {
 
   require('time-grunt')(grunt);
 
+  // Tasks
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     sass: {
@@ -34,34 +36,14 @@ module.exports = function(grunt) {
                        'bower_components/breakpoint-sass/stylesheets/'
         ]
       },
-      dist: {
+      target: {
         files: {
           'css/styles.css': 'scss/styles.scss'
         },
-        options: {
-          outputStyle: 'compressed'
-        }
       },
-      dev: {
-        files: {
-          'css/styles.css': 'scss/styles.scss'
-        }
-      }
     },
     postcss: {
-      dist: {
-        options: {
-          map: false,
-          processors: [
-            require('autoprefixer')({browsers: '> 1%, last 2 versions, last 3 Firefox versions'}),
-            // minifier
-            require('csswring').postcss
-          ]
-          // We may consider using css grace (https://github.com/cssdream/cssgrace) for larger support
-        },
-        src: 'css/styles.css'
-      },
-      dev: {
+      target: {
         options: {
           map: true,
           processors: [
@@ -70,6 +52,16 @@ module.exports = function(grunt) {
           // We may consider using css grace (https://github.com/cssdream/cssgrace) for larger support
         },
         src: 'css/styles.css'
+      }
+    },
+    cssmin: {
+      options: {
+        sourceMap: true,
+      },
+      target: {
+        files: {
+          'css/styles.css': 'css/styles.css'
+        }
       }
     },
     jshint: {
@@ -115,12 +107,15 @@ module.exports = function(grunt) {
     }
   });
 
+  // Load Grunt plugins
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-postcss');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
+  // Register Grunt tasks
   grunt.task.registerTask('static', function() {
     var options = {
       'src': 'bower_components',
@@ -183,10 +178,10 @@ module.exports = function(grunt) {
     */
     grunt.task.run('uglify:vendor');
   });
-  grunt.task.registerTask('build', ['static', 'uglify:dist', 'sass:dist', 'postcss:dist']);
+  grunt.task.registerTask('build', ['static', 'uglify:dist', 'sass', 'postcss', 'cssmin']);
   // Tasks for developers
   grunt.task.registerTask('default', ['watch']);
-  grunt.task.registerTask('css', ['sass:dev', 'postcss:dev']);
+  grunt.task.registerTask('css', ['sass', 'postcss']);
   grunt.task.registerTask('js', ['jshint', 'uglify:dev']);
   grunt.task.registerTask('dev', ['css', 'js']);
 };
