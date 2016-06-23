@@ -135,6 +135,27 @@ static NSArray *easCommandParameters = nil;
   return o;
 }
 
+- (NSString *) protocolVersion
+{
+  NSMutableArray *components;
+
+  components = [NSMutableArray arrayWithArray: [[[self componentsSeparatedByString: @"?"] lastObject] componentsSeparatedByString: @"&"]];
+
+  // We handle BASE64 encoded queryStrings. See http://msdn.microsoft.com/en-us/library/ee160227%28v=exchg.80%29.aspx for details.
+  if ([components count] == 1)
+    {
+      NSData *queryString;
+      const char* qs_bytes;
+
+      queryString = [[components objectAtIndex: 0] dataByDecodingBase64];
+      qs_bytes = (const char*)[queryString bytes];
+
+      return [NSString stringWithFormat:@"%.1f", (float)((uint8_t)qs_bytes[0]/10)];
+    }
+
+  return nil;
+}
+
 - (NSString *) _valueForParameter: (NSString *) theParameter
 {
   NSMutableArray *components;

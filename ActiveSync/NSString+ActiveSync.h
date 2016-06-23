@@ -52,6 +52,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSString *) itemid;
 - (BOOL) acceptsMultiPart;
 - (NSData *) convertHexStringToBytes;
+- (NSString *) protocolVersion;
 
 @end
 
