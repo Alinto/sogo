@@ -2692,6 +2692,38 @@ void handle_eas_terminate(int signum)
   return nil;
 }
 
+- (BOOL) _isEMailValid: (NSString *) email
+{
+  NSArray *identities;
+  int i;
+
+  identities = [[context activeUser] allIdentities];
+
+  for (i = 0; i < [identities count]; i++)
+    {
+      if ([email isEqualToString: [[identities objectAtIndex: i] objectForKey: @"email"]])
+	return YES;
+    }
+
+  return NO;
+}
+
+- (NSString *) _fullNameForEMail: (NSString *) email
+{
+  NSArray *identities;
+  int i;
+
+  identities = [[context activeUser] allIdentities];
+
+  for (i = 0; i < [identities count]; i++)
+    {
+      if ([email isEqualToString: [[identities objectAtIndex: i] objectForKey: @"email"]])
+	return [[identities objectAtIndex: i] objectForKey: @"fullName"];
+    }
+
+  return nil;
+}
+
 //
 //
 //
@@ -2705,10 +2737,12 @@ void handle_eas_terminate(int signum)
   NSData *new_from_header;
   NSDictionary *identity;
   NSString *fullName, *email;
+  NSArray *from;
 
   const char *bytes;
   int i, e, len;
   BOOL found_header;
+  email = nil;
   
   // We get the mail's data
   data = [NSMutableData dataWithData: [[[[(id)[theDocumentElement getElementsByTagName: @"MIME"] lastObject] textValue] stringByDecodingBase64] dataUsingEncoding: NSUTF8StringEncoding]];
@@ -2718,81 +2752,97 @@ void handle_eas_terminate(int signum)
   message = [parser parsePartFromData: data];
   RELEASE(parser);
 
-  identity = [[context activeUser] primaryIdentity];
+  from = [message headersForKey: @"from"];
 
-  fullName = [identity objectForKey: @"fullName"];
-  email = [identity objectForKey: @"email"];
-
-  if ([fullName length])
-    new_from_header = [[NSString stringWithFormat: @"From: %@ <%@>\r\n", [fullName asQPSubjectString: @"utf-8"], email] dataUsingEncoding:NSUTF8StringEncoding];
-  else
-    new_from_header = [[NSString stringWithFormat: @"From: %@\r\n", email] dataUsingEncoding:NSUTF8StringEncoding];
-
-  bytes = [data bytes];
-  len = [data length];
-  i = 0;
-  found_header = NO;
-
-  // Search for the from-header
-  while (i < len)
+  if (![from count] || ![self _isEMailValid: [[from objectAtIndex: 0] pureEMailAddress]] ||
+      [[[from objectAtIndex: 0] pureEMailAddress] isEqualToString: [from objectAtIndex: 0]] ||
+      [[NSString stringWithFormat: @"<%@>", [[from objectAtIndex: 0] pureEMailAddress]] isEqualToString: [from objectAtIndex: 0]])
     {
-      if (i == 0 &&
-          (*bytes == 'f' || *bytes == 'F') &&
-          (*(bytes+1) == 'r' || *(bytes+1) == 'R') &&
-          (*(bytes+2) == 'o' || *(bytes+2) == 'O') &&
-          (*(bytes+3) == 'm' || *(bytes+3) == 'M') &&
-          (*(bytes+4) == ':'))
+      if ([from count] && [self _isEMailValid: [[from objectAtIndex: 0] pureEMailAddress]])
         {
-          found_header = YES;
-          break;
+          // We have a valid email address, lets fill in the fullname.
+          email = [[from objectAtIndex: 0] pureEMailAddress];
+          fullName = [self _fullNameForEMail: email];
+        }
+      else
+        {
+          // Fallback to primary identity.
+          identity = [[context activeUser] primaryIdentity];
+          fullName = [identity objectForKey: @"fullName"];
+          email = [identity objectForKey: @"email"];
         }
 
-      if (((*bytes == '\r') && (*(bytes+1) == '\n')) &&
-          (*(bytes+2) == 'f' || *(bytes+2) == 'F') &&
-          (*(bytes+3) == 'r' || *(bytes+3) == 'R') &&
-          (*(bytes+4) == 'o' || *(bytes+4) == 'O') &&
-          (*(bytes+5) == 'm' || *(bytes+5) == 'M') &&
-          (*(bytes+6) == ':'))
+      if ([fullName length])
+        new_from_header = [[NSString stringWithFormat: @"From: %@ <%@>\r\n", [fullName asQPSubjectString: @"utf-8"], email] dataUsingEncoding: NSUTF8StringEncoding];
+      else
+        new_from_header = [[NSString stringWithFormat: @"From: %@\r\n", email] dataUsingEncoding: NSUTF8StringEncoding];
+
+      bytes = [data bytes];
+      len = [data length];
+      i = 0;
+      found_header = NO;
+
+      // Search for the from-header
+      while (i < len)
         {
-          found_header = YES;
-          i = i + 2; // \r\n
-          bytes = bytes + 2;
-          break;
+          if (i == 0 &&
+              (*bytes == 'f' || *bytes == 'F') &&
+              (*(bytes+1) == 'r' || *(bytes+1) == 'R') &&
+              (*(bytes+2) == 'o' || *(bytes+2) == 'O') &&
+              (*(bytes+3) == 'm' || *(bytes+3) == 'M') &&
+              (*(bytes+4) == ':'))
+            {
+              found_header = YES;
+              break;
+            }
+
+          if (((*bytes == '\r') && (*(bytes+1) == '\n')) &&
+              (*(bytes+2) == 'f' || *(bytes+2) == 'F') &&
+              (*(bytes+3) == 'r' || *(bytes+3) == 'R') &&
+              (*(bytes+4) == 'o' || *(bytes+4) == 'O') &&
+              (*(bytes+5) == 'm' || *(bytes+5) == 'M') &&
+              (*(bytes+6) == ':'))
+            {
+              found_header = YES;
+              i = i + 2; // \r\n
+              bytes = bytes + 2;
+              break;
+            }
+
+          bytes++;
+          i++;
         }
 
-      bytes++;
-      i++;
-    }
+      // We search for the first \r\n AFTER the From: header to get the length of the string to replace.
+      e = i;
+      while (e < len)
+	{
+	  if ((*bytes == '\r') && (*(bytes+1) == '\n'))
+	    {
+	      e = e + 2;
+	      break;
+	    }
 
-   // We search for the first \r\n AFTER the From: header to get the length of the string to replace.
-   e = i;
-   while (e < len)
-     {
-       if ((*bytes == '\r') && (*(bytes+1) == '\n'))
-         {
-           e = e + 2;
-           break;
-         }
+	  bytes++;
+	  e++;
+	}
 
-       bytes++;
-       e++;
-     }
-
-  // Update/Add the From header in the MIMEBody of the SendMail request.
-  // Any other way to modify the mail body would break s/mime emails.
-  if (found_header)
-    {
-      // Change the From header
-      [data replaceBytesInRange: NSMakeRange(i, (NSUInteger)(e-i))
-                      withBytes: [new_from_header bytes]
-                         length: [new_from_header length]];
-    }
-  else
-    {
-      // Add a From header
-      [data replaceBytesInRange: NSMakeRange(0, 0)
-                      withBytes: [new_from_header bytes]
-                         length: [new_from_header length]];
+      // Update/Add the From header in the MIMEBody of the SendMail request.
+      // Any other way to modify the mail body would break s/mime emails.
+      if (found_header)
+        {
+          // Change the From header
+          [data replaceBytesInRange: NSMakeRange(i, (NSUInteger)(e-i))
+                          withBytes: [new_from_header bytes]
+                             length: [new_from_header length]];
+        }
+      else
+        {
+          // Add a From header
+          [data replaceBytesInRange: NSMakeRange(0, 0)
+                          withBytes: [new_from_header bytes]
+                             length: [new_from_header length]];
+        }
     }
 
   error = [self _sendMail: data
@@ -2931,7 +2981,7 @@ void handle_eas_terminate(int signum)
       NSMutableArray *attachments, *references;
 
       id body, bodyFromSmartForward, htmlPart, textPart;
-      NSString *fullName, *email, *charset, *s;
+      NSString *fullName, *email, *charset, *s, *from;
       NSDictionary *identity;
 
       int a;
@@ -2957,14 +3007,32 @@ void handle_eas_terminate(int signum)
       map = [NGHashMap hashMapWithDictionary: [messageFromSmartForward headers]];
       [map setObject: @"multipart/mixed"  forKey: @"content-type"];
 
-      identity = [[context activeUser] primaryIdentity];
+      from = [map objectForKey: @"from"];
 
-      fullName = [identity objectForKey: @"fullName"];
-      email = [identity objectForKey: @"email"];
-      if ([fullName length])
-        [map setObject: [NSString stringWithFormat: @"%@ <%@>", fullName, email]  forKey: @"from"];
-      else
-        [map setObject: email forKey: @"from"];
+      if (![from length] || ![self _isEMailValid: [from pureEMailAddress]] ||
+          [[from pureEMailAddress] isEqualToString: from] ||
+          [[NSString stringWithFormat: @"<%@>", [from pureEMailAddress]] isEqualToString: from])
+        {
+          if ([from length] && [self _isEMailValid: [from pureEMailAddress]])
+            {
+              // We have a valid email address, lets fill in the fullname.
+              email = [from pureEMailAddress];
+              fullName = [self _fullNameForEMail: email];
+            }
+          else
+            {
+              // Fallback to primary identity.
+              identity = [[context activeUser] primaryIdentity];
+
+              fullName = [identity objectForKey: @"fullName"];
+              email = [identity objectForKey: @"email"];
+            }
+
+          if ([fullName length])
+            [map setObject: [NSString stringWithFormat: @"%@ <%@>", fullName, email]  forKey: @"from"];
+          else
+            [map setObject: email forKey: @"from"];
+        }
 
       if ([mailObject messageId])
         {
