@@ -92,52 +92,52 @@
   return [container lastModificationTime];
 }
 
-- (int) getPidTagAttachEncoding: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getPidTagAttachEncoding: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
 {
   *data = [[NSData data] asBinaryInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAttachFlags: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachFlags: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagAttachmentFlags: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachmentFlags: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagAttachmentHidden: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachmentHidden: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagAttachmentLinkId: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachmentLinkId: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagAttachMethod: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachMethod: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x00000001);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAttachmentContactPhoto: (void **) data
-                               inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachmentContactPhoto: (void **) data
+                                                inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagAttachDataBinary: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachDataBinary: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!photoData)
     ASSIGN (photoData,
@@ -148,8 +148,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAttachSize: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachSize: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!photoData)
     ASSIGN (photoData,
@@ -160,16 +160,16 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAttachExtension: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachExtension: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[self fileExtension] asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAttachLongFilename: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachLongFilename: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *filename;
 
@@ -181,15 +181,15 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagAttachFilename: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAttachFilename: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidTagAttachLongFilename: data
                                   inMemCtx: memCtx];
 }
 
-- (int) getPidTagDisplayName: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagDisplayName: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidTagAttachLongFilename: data inMemCtx: memCtx];
 }

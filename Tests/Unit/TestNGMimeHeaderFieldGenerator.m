@@ -83,6 +83,15 @@
       @" =?utf-8?q?=D1=8C=D1=8C=D1=8C=D1=8C=D1=8C=D1=8C=D1=8C=D1=8C=D1=8C=D1=8C=D1=8C?=\n"
       @" =?utf-8?q?=D1=8C=D1=8C=D1=8C=D1=8C=D1=8C=D1=8C=D1=8C=D1=8C=D1=8C=D1=8C=D1=8C?=\n"
       @" =?utf-8?q?=D1=8C=D1=8C=D1=8C?=", nil],
+    [NSArray arrayWithObjects:
+      @"aжжжжжжжжжжж",
+      @"=?utf-8?q?a=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6?=\n"
+      @" =?utf-8?q?=D0=B6=D0=B6?=", nil],
+    [NSArray arrayWithObjects:
+      @"aжжжжжжжжжжжжжжжжжжжжж",
+      @"=?utf-8?q?a=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6?=\n"
+      @" =?utf-8?q?=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6=D0=B6?=\n"
+      @" =?utf-8?q?=D0=B6?=", nil],
     nil
   ];
   NSArray *caseData;

@@ -51,25 +51,24 @@
 {
   NSEnumerator *roles, *types;
   NSString *role, *type;
-  unsigned int length;
 
-  roles = [userRights objectEnumerator];
-  role = [roles nextObject];
-  while (role)
+  types = [[self rightTypes] objectEnumerator];
+  type = [types nextObject];
+  while (type)
     {
-      types = [[self rightTypes] objectEnumerator];
-      type = [types nextObject];
-      while (type)
-	{
-	  if ([role hasPrefix: type])
-	    {
-	      length = [type length];
-	      [rights setObject: [role substringFromIndex: length]
-		      forKey: type];
-	    }
-	  type = [types nextObject];
-	}
+      roles = [userRights objectEnumerator];
       role = [roles nextObject];
+      while (role)
+        {
+          if ([role hasPrefix: type])
+            {
+              [rights setObject: [role substringFromIndex: [type length]]
+                         forKey: type];
+              break;
+            }
+          role = [roles nextObject];
+        }
+      type = [types nextObject];
     }
 }
 

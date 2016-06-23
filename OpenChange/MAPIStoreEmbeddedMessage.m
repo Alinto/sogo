@@ -56,81 +56,81 @@ static Class MAPIStoreAttachmentK;
            idForObjectWithKey: objectKey];
 }
 
-- (int) getPidTagAccessLevel: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAccessLevel: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
 /* disabled properties */
-- (int) getPidTagFolderId: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagFolderId: (void **) data
+                                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidTagChangeKey: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagChangeKey: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidTagSourceKey: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagSourceKey: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidTagParentSourceKey: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagParentSourceKey: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidTagChangeNumber: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagChangeNumber: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidTagInstID: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagInstID: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidTagInstanceNum: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagInstanceNum: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidTagRowType: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagRowType: (void **) data
+                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidTagDepth: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagDepth: (void **) data
+                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidTagIconIndex: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagIconIndex: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidTagGenerateExchangeViews: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagGenerateExchangeViews: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidTagOriginalMessageClass: (void **) dataa
-                             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagOriginalMessageClass: (void **) dataa
+                                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }

@@ -23,13 +23,13 @@
 #ifndef MAPISTORECALENDARMESSAGE_H
 #define MAPISTORECALENDARMESSAGE_H
 
-#import "MAPIStoreGCSMessage.h"
+#import "MAPIStoreCalTaskMessage.h"
 
 @class iCalCalendar;
 @class iCalEvent;
 @class MAPIStoreAppointmentWrapper;
 
-@interface MAPIStoreCalendarMessage : MAPIStoreGCSMessage
+@interface MAPIStoreCalendarMessage : MAPIStoreCalTaskMessage
 {
   iCalCalendar *calendar;
   iCalEvent *masterEvent;

@@ -40,11 +40,25 @@
 
 @implementation SOGoMailBaseObject
 
+
+- (id)init
+{
+  if ((self = [super init]))
+    {
+      NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+      // With this to YES, imap4Connection will raise exception if a working
+      // connection cannot be provided
+      imap4ExceptionsEnabled = [ud boolForKey:@"SoIMAP4ExceptionsEnabled"];
+    }
+
+  return self;
+}
+
 - (id) initWithImap4URL: (NSURL *) _url
 	    inContainer: (id) _container
 {
   NSString *n;
-  
+
   n = [[_url path] lastPathComponent];
   if ((self = [self initWithName: n inContainer:_container]))
     {
@@ -143,7 +157,10 @@
   if (!newConnection)
     {
       newConnection = (NGImap4Connection *) [NSNull null];
-      [self errorWithFormat:@"Could not connect IMAP4"];
+      if (imap4ExceptionsEnabled)
+        [NSException raise: @"IOException" format: @"IMAP connection failed"];
+      else
+        [self errorWithFormat:@"Could not connect IMAP4"];
     }
   else
     {
@@ -200,6 +217,22 @@
         }
       [imap4 retain];
     }
+
+   // Connection broken, try to reconnect
+   if (![imap4 isKindOfClass: [NSNull class]] && ![[[imap4 client] isConnected] boolValue])
+     {
+       [self warnWithFormat: @"IMAP connection is broken, trying to reconnect..."];
+       [[imap4 client] reconnect];
+
+       // Still broken, give up
+       if (![[[imap4 client] isConnected] boolValue])
+         {
+           if (imap4ExceptionsEnabled)
+             [NSException raise: @"IOException" format: @"IMAP connection failed"];
+           else
+             [self errorWithFormat: @"Could not get a valid IMAP connection"];
+         }
+     }
 
   return [imap4 isKindOfClass: [NSNull class]] ? nil : imap4;
 }

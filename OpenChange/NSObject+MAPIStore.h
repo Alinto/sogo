@@ -41,16 +41,16 @@ struct MAPIStoreTallocWrapper
 
 @interface NSObject (MAPIStoreDataTypes)
 
-- (int) getValue: (void **) data
-          forTag: (enum MAPITAGS) propTag
-        inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getValue: (void **) data
+                           forTag: (enum MAPITAGS) propTag
+                         inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* getter helpers */
-- (int) getEmptyString: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getLongZero: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getYes: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getNo: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getSMTPAddrType: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getEmptyString: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getLongZero: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getYes: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getNo: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getSMTPAddrType: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
 
 @end
 

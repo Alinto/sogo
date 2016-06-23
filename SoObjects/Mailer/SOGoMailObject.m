@@ -507,12 +507,15 @@ static BOOL debugSoParts       = NO;
   return s;
 }
 
+/* This is defined before the public version without parentMimeType
+   argument to be able to call it recursively */
 /* bulk fetching of plain/text content */
 - (void) addRequiredKeysOfStructure: (NSDictionary *) info
-			       path: (NSString *) p
-			    toArray: (NSMutableArray *) keys
-		      acceptedTypes: (NSArray *) types
+                               path: (NSString *) p
+                            toArray: (NSMutableArray *) keys
+                      acceptedTypes: (NSArray *) types
                            withPeek: (BOOL) withPeek
+                    parentMultipart: (NSString *) parentMPart
 {
   /* 
      This is used to collect the set of IMAP4 fetch-keys required to fetch
@@ -527,6 +530,7 @@ static BOOL debugSoParts       = NO;
   id body;
   NSString *bodyToken, *sp, *mimeType;
   id childInfo;
+  NSString *multipart;
 
   bodyToken = (withPeek ? @"body.peek" : @"body");
 
@@ -534,6 +538,12 @@ static BOOL debugSoParts       = NO;
 			[info valueForKey: @"type"],
 			[info valueForKey: @"subtype"]]
 	       lowercaseString];
+
+  if ([[info valueForKey: @"type"] isEqualToString: @"multipart"])
+    multipart = mimeType;
+  else
+    multipart = parentMPart;
+  
   if ([types containsObject: mimeType])
     {
       if ([p length] > 0)
@@ -548,7 +558,8 @@ static BOOL debugSoParts       = NO;
 	  k = [NSString stringWithFormat: @"%@[text]", bodyToken];
 	}
       [keys addObject: [NSDictionary dictionaryWithObjectsAndKeys: k, @"key",
-				     mimeType, @"mimeType", nil]];
+                                     mimeType, @"mimeType",
+                                     multipart, @"multipart", nil]];
     }
 
   parts = [info objectForKey: @"parts"];
@@ -562,9 +573,11 @@ static BOOL debugSoParts       = NO;
       childInfo = [parts objectAtIndex: i];
       
       [self addRequiredKeysOfStructure: childInfo
-	    path: sp toArray: keys
-	    acceptedTypes: types
-            withPeek: withPeek];
+                                  path: sp
+                               toArray: keys
+                         acceptedTypes: types
+                              withPeek: withPeek
+                       parentMultipart: multipart];
     }
       
   /* check body */
@@ -588,10 +601,26 @@ static BOOL debugSoParts       = NO;
       else
 	sp = [p length] > 0 ? (id)[p stringByAppendingString: @".1"] : (id)@"1";
       [self addRequiredKeysOfStructure: body
-	    path: sp toArray: keys
-	    acceptedTypes: types
-            withPeek: withPeek];
+                                  path: sp
+                               toArray: keys
+                         acceptedTypes: types
+                              withPeek: withPeek
+                       parentMultipart: multipart];
     }
+}
+
+- (void) addRequiredKeysOfStructure: (NSDictionary *) info
+                               path: (NSString *) p
+                            toArray: (NSMutableArray *) keys
+                      acceptedTypes: (NSArray *) types
+                           withPeek: (BOOL) withPeek
+{
+  [self addRequiredKeysOfStructure: (NSDictionary *) info
+                              path: (NSString *) p
+                           toArray: (NSMutableArray *) keys
+                     acceptedTypes: (NSArray *) types
+                          withPeek: (BOOL) withPeek
+                   parentMultipart: @""];
 }
 
 - (NSArray *) plainTextContentFetchKeys

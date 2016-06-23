@@ -57,6 +57,7 @@
 
 #include "SOGoCache.h"
 #include "SOGoSource.h"
+#include "SOGoSystemDefaults.h"
 #include "SOGoUserManager.h"
 #include "SOGoUser.h"
 
@@ -102,13 +103,29 @@
 + (id) groupWithIdentifier: (NSString *) theID
                   inDomain: (NSString *) domain
 {
-  NSString *uid;
+  NSRange r;
+  NSString *uid, *inDomain;
+  SOGoSystemDefaults *sd;
 
   uid = [theID hasPrefix: @"@"] ? [theID substringFromIndex: 1] : theID;
+  inDomain = domain;
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if ([sd enableDomainBasedUID])
+    {
+      /* Split domain from uid */
+      r = [uid rangeOfString: @"@" options: NSBackwardsSearch];
+      if (r.location != NSNotFound)
+        {
+          if (!domain)
+            inDomain = [uid substringFromIndex: r.location + 1];
+          uid = [uid substringToIndex: r.location];
+        }
+    }
 
   return [SOGoGroup groupWithValue: uid
                  andSourceSelector: @selector (lookupGroupEntryByUID:inDomain:)
-                          inDomain: domain];
+                          inDomain: inDomain];
 }
 
 + (id) groupWithEmail: (NSString *) theEmail

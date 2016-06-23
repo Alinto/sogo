@@ -23,6 +23,8 @@
 #ifndef MAPISTOREGCSMESSAGE_H
 #define MAPISTOREGCSMESSAGE_H
 
+#import <SOGo/SOGoUser.h>
+
 #import "MAPIStoreMessage.h"
 
 @interface MAPIStoreGCSMessage : MAPIStoreMessage
@@ -30,6 +32,11 @@
 }
 
 /* subclass helpers */
+
+/* Return the message original creator */
+- (NSString *) creator;
+- (NSString *) owner;
+- (SOGoUser *) ownerUser;
 - (void) updateVersions;
 
 @end

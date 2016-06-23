@@ -75,6 +75,10 @@
   return newMessage;
 }
 
+// --------------------------------------------
+// Permissions and sharing
+// --------------------------------------------
+
 - (NSArray *) rolesForExchangeRights: (uint32_t) rights
 {
   NSMutableArray *roles;
@@ -82,20 +86,33 @@
   roles = [NSMutableArray arrayWithCapacity: 6];
   if (rights & RightsCreateItems)
     [roles addObject: SOGoRole_ObjectCreator];
+
   if (rights & RightsDeleteAll)
     [roles addObject: SOGoRole_ObjectEraser];
+  if (rights & RightsDeleteOwn)
+    [roles addObject: MAPIStoreRightDeleteOwn];
+
   if (rights & RightsEditAll)
     {
       [roles addObject: SOGoCalendarRole_PublicModifier];
       [roles addObject: SOGoCalendarRole_PrivateModifier];
       [roles addObject: SOGoCalendarRole_ConfidentialModifier];
     }
-  else if (rights & RightsReadItems)
+  if (rights & RightsEditOwn)
+    [roles addObject: MAPIStoreRightEditOwn];
+
+  if (rights & RightsReadItems)
     {
       [roles addObject: SOGoCalendarRole_PublicViewer];
       [roles addObject: SOGoCalendarRole_PrivateViewer];
       [roles addObject: SOGoCalendarRole_ConfidentialViewer];
     }
+
+  if (rights & RightsFolderOwner)
+    [roles addObject: MAPIStoreRightFolderOwner];
+
+  if (rights & RightsFolderContact)
+    [roles addObject: MAPIStoreRightFolderContact];
 
   return roles;
 }
@@ -116,10 +133,52 @@
            && [roles containsObject: SOGoCalendarRole_PrivateViewer]
            && [roles containsObject: SOGoCalendarRole_ConfidentialViewer])
     rights |= RightsReadItems;
+
+  if ([roles containsObject: MAPIStoreRightEditOwn])
+    rights |= RightsEditOwn;
+  if ([roles containsObject: MAPIStoreRightDeleteOwn])
+    rights |= RightsDeleteOwn;
+
   if (rights != 0)
     rights |= RoleNone; /* actually "folder visible" */
 
+  if ([roles containsObject: MAPIStoreRightFolderOwner])
+    rights |= RightsFolderOwner | RoleNone;
+
+  if ([roles containsObject: MAPIStoreRightFolderContact])
+    rights |= RightsFolderContact;
+
   return rights;
+}
+
+- (BOOL) subscriberCanModifyMessages
+{
+  static NSArray *modifierRoles = nil;
+
+  if (!modifierRoles)
+    modifierRoles = [[NSArray alloc] initWithObjects:
+                                       SOGoCalendarRole_PublicModifier,
+                                       SOGoCalendarRole_PrivateModifier,
+                                       SOGoCalendarRole_ConfidentialModifier,
+                                       nil];
+
+  return ([[self activeUserRoles] firstObjectCommonWithArray: modifierRoles]
+          != nil);
+}
+
+- (BOOL) subscriberCanReadMessages
+{
+  static NSArray *viewerRoles = nil;
+
+  if (!viewerRoles)
+    viewerRoles = [[NSArray alloc] initWithObjects:
+                                     SOGoCalendarRole_PublicViewer,
+                                     SOGoCalendarRole_PrivateViewer,
+                                     SOGoCalendarRole_ConfidentialViewer,
+                                     nil];
+
+  return ([[self activeUserRoles] firstObjectCommonWithArray: viewerRoles]
+          != nil);
 }
 
 - (EOQualifier *) aclQualifier
@@ -128,8 +187,11 @@
             [(SOGoAppointmentFolder *) sogoObject aclSQLListingFilter]];
 }
 
-- (int) getPidTagDefaultPostMessageClass: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx
+// --------------------------------------------
+// Property getters
+// --------------------------------------------
+- (enum mapistore_error) getPidTagDefaultPostMessageClass: (void **) data
+                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPM.Task" asUnicodeInMemCtx: memCtx];
 

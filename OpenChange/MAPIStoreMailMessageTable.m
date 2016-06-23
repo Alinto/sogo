@@ -340,10 +340,10 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
   [self cleanupCaches];
 }
 
-- (int) getRow: (struct mapistore_property_data **) dataP
-     withRowID: (uint32_t) rowId
-  andQueryType: (enum mapistore_query_type) queryType
-      inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getRow: (struct mapistore_property_data **) dataP
+                      withRowID: (uint32_t) rowId
+                   andQueryType: (enum mapistore_query_type) queryType
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!fetchedCoreInfos)
     {
@@ -352,8 +352,8 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
          prefetchCoreInfosForMessageKeys: [self restrictedChildKeys]];
     }
 
- return [super   getRow: dataP withRowID: rowId
-           andQueryType: queryType inMemCtx: memCtx];
+ return [super getRow: dataP withRowID: rowId
+               andQueryType: queryType inMemCtx: memCtx];
 }
 
 @end

@@ -74,12 +74,12 @@ MAPIStoreTallocWrapperDestroy (void *data)
 
 @implementation NSObject (MAPIStoreDataTypes)
 
-- (int) getValue: (void **) data
-          forTag: (enum MAPITAGS) propTag
-        inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getValue: (void **) data
+                           forTag: (enum MAPITAGS) propTag
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint16_t valueType;
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
 
   // [self logWithFormat: @"property %.8x found", propTag];
   valueType = (propTag & 0xffff);
@@ -139,35 +139,35 @@ MAPIStoreTallocWrapperDestroy (void *data)
 }
 
 /* helper getters */
-- (int) getEmptyString: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getEmptyString: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"" asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getLongZero: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getLongZero: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getYes: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getYes: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPIBoolValue (memCtx, YES);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getNo: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getNo: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPIBoolValue (memCtx, NO);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getSMTPAddrType: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getSMTPAddrType: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"SMTP" asUnicodeInMemCtx: memCtx];
 

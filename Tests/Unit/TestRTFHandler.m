@@ -43,26 +43,18 @@
     return nil;
 
   RTFHandler *handler = [[RTFHandler alloc] initWithData: rtf];
-  NSMutableData *data2 = [handler parse];
-  if (data2 == nil)
+  NSMutableData *data = [handler parse];
+  if (data == nil)
     {
       NSString *error = [NSString stringWithFormat: @"Couldn't parse RTF data:\n %s",
                          (char *)[rtf bytes]];           
       testWithMessage(NO, error);
     }
 
-  html = [[NSString alloc] initWithData: data2 encoding: NSUTF8StringEncoding];
+  html = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
   if (html == nil) 
     {
-      html = [[NSString alloc] initWithData: data2 encoding: NSASCIIStringEncoding];
-    }
-  if (html == nil) 
-    {
-      html = [[NSString alloc] initWithData: data2 encoding: NSISOLatin1StringEncoding];
-    }
-  if (html == nil) 
-    {
-      NSString *error = [NSString stringWithFormat: @"Couldn't convert parsed data"];
+      NSString *error = [NSString stringWithFormat: @"Couldn't convert parsed data to UTF8 string"];
       testWithMessage(NO, error);
     }
   return html;
@@ -299,6 +291,24 @@
 {
   NSString *file =@"spanish_accents.rtf";
   NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Calibri\"><font color=\"#000000\">xñxáxéxíxóxú</font><font color=\"#000000\"><br></font></font></body></html>";
+
+  [self checkHTMLConversionOfRTFFile: file
+                 againstExpectedHTML: expected];  
+}
+
+- (void) test_cyr_event_ru_editor
+{
+  NSString *file =@"cyr_event_ru_editor.rtf";
+  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Calibri\"><font face=\"Calibri Cyr\"><font color=\"#000000\">йчсмй</font></font><font color=\"#000000\"><br></font></font></body></html>";
+
+  [self checkHTMLConversionOfRTFFile: file
+                 againstExpectedHTML: expected];  
+}
+
+- (void) test_bad_hex_and_cr
+{
+  NSString *file =@"bad_hex_and_cr.rtf";
+  NSString *expected=@"<html><meta charset='utf-8'><body><font face=\"Calibri\"><font face=\"Calibri Cyr\"><font color=\"#000000\">Good hex:H Bad1Hex: Bad2Hex: Ignored Carriadge Return</font></font></font></body></html>";
 
   [self checkHTMLConversionOfRTFFile: file
                  againstExpectedHTML: expected];  

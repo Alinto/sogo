@@ -68,8 +68,8 @@
 
 @implementation MAPIStoreTasksMessage
 
-- (int) getPidTagIconIndex: (void **) data // TODO
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagIconIndex: (void **) data // TODO
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
   // Unassigned recurring task 0x00000501
@@ -83,16 +83,16 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagMessageClass: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMessageClass: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = talloc_strdup(memCtx, "IPM.Task");
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagNormalizedSubject: (void **) data // SUMMARY
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagNormalizedSubject: (void **) data // SUMMARY
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   iCalToDo *task;
 
@@ -103,10 +103,10 @@
 }
 
 /* FIXME: Should be combined somehow with the code in MAPIStoreAppointmentWrapper.m */
-- (int) getPidTagBody: (void **) data
-             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagBody: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
   NSString *stringValue;
   iCalToDo *task;
   
@@ -122,21 +122,32 @@
 }
 
 /* FIXME: Should be combined somehow with the code in MAPIStoreAppointmentWrapper.m */
-- (int) getPidLidPrivate: (void **) data // private (bool), should depend on CLASS and permissions
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidPrivate: (void **) data // private (bool), should depend on CLASS and permissions
+                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   iCalToDo *task;
   
   task = [sogoObject component: NO secure: YES];
 
-  if ([task symbolicAccessClass] == iCalAccessPublic)
+  if ([task isPublic])
     return [self getNo: data inMemCtx: memCtx];
 
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagImportance: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagSensitivity: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  uint32_t v;
+
+  v = (uint32_t) [self sensitivity];
+
+  *data = MAPILongValue (memCtx, v);
+  return MAPISTORE_SUCCESS;
+}
+
+- (enum mapistore_error) getPidTagImportance: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t v;
   iCalToDo *task;
@@ -154,8 +165,11 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidTaskComplete: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+//------------------------------------
+// Specific task related properties
+//------------------------------------
+- (enum mapistore_error) getPidLidTaskComplete: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   iCalToDo *task;
 
@@ -166,8 +180,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidPercentComplete: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidPercentComplete: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   double doubleValue;
   iCalToDo *task;
@@ -180,10 +194,10 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidTaskDateCompleted: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidTaskDateCompleted: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
   NSCalendarDate *dateValue;
   iCalToDo *task;
 
@@ -198,54 +212,54 @@
   return rc;
 }
 
-- (int) getPidLidTaskState: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidTaskState: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x1); // not assigned
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidTaskMode: (void **) data // TODO
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidTaskMode: (void **) data // TODO
+                                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidTaskFRecurring: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidTaskFRecurring: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidTaskAccepted: (void **) data // TODO
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidTaskAccepted: (void **) data // TODO
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidTaskActualEffort: (void **) data // TODO
-                         inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidTaskActualEffort: (void **) data // TODO
+                                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidTaskEstimatedEffort: (void **) data // TODO
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidTaskEstimatedEffort: (void **) data // TODO
+                                             inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagHasAttachments: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagHasAttachments: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidTaskDueDate: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidTaskDueDate: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
   NSCalendarDate *dateValue;
   iCalToDo *task;
 
@@ -259,10 +273,10 @@
   return rc;
 }
 
-- (int) getPidLidTaskStartDate: (void **) data
-		      inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidTaskStartDate: (void **) data
+                                       inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
   NSCalendarDate *dateValue;
   iCalToDo *task;
 
@@ -277,26 +291,26 @@
 }
 
 
-- (int) getPidTagMessageDeliveryTime: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMessageDeliveryTime: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidTagLastModificationTime: data inMemCtx: memCtx];
 }
 
-- (int) getClientSubmitTime: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getClientSubmitTime: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidTagLastModificationTime: data inMemCtx: memCtx];
 }
 
-- (int) getLocalCommitTime: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getLocalCommitTime: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidTagLastModificationTime: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidTaskStatus: (void **) data // status
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidTaskStatus: (void **) data // status
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *status;
   uint32_t longValue;
@@ -318,11 +332,12 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidTaskOwner: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidTaskOwner: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *owner;
 
+  /* FIXME: This is wrong when setting task's request */
   owner = [sogoObject ownerInContext: nil];
 
   *data = [owner asUnicodeInMemCtx: memCtx];
@@ -330,31 +345,51 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidTaskOwnership: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidTaskOwnership: (void **) data
+                                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (BOOL) subscriberCanReadMessage
+// ----------------------------------
+// Sharing
+// ----------------------------------
+- (NSUInteger) sensitivity
 {
-  return ([[self activeUserRoles]
-            containsObject: SOGoCalendarRole_ComponentViewer]
-          || [self subscriberCanModifyMessage]);
+  iCalToDo *task;
+  NSUInteger v;
+
+  task = [sogoObject component: NO secure: YES];
+  /* FIXME: Use OpenChange constants names */
+  switch ([task symbolicAccessClass])
+    {
+    case iCalAccessPrivate:
+      v = 0x2;
+      break;
+    case iCalAccessConfidential:
+      v = 0x3;
+      break;
+    default:
+      v = 0x0;
+      break;
+    }
+  return v;
 }
 
-- (BOOL) subscriberCanModifyMessage
+- (NSString *) creator
 {
-  BOOL rc;
-  NSArray *roles = [self activeUserRoles];
+  iCalToDo *task;
 
-  if (isNew)
-    rc = [roles containsObject: SOGoRole_ObjectCreator];
-  else
-    rc = ([roles containsObject: SOGoCalendarRole_ComponentModifier]
-          || [roles containsObject: SOGoCalendarRole_ComponentResponder]);
+  task = [sogoObject component: NO secure: YES];
+  return [[task uniqueChildWithTag: @"x-sogo-component-created-by"]
+            flattenedValuesForKey: @""];
+}
 
-  return rc;
+- (NSString *) owner
+{
+  /* This is not true but to allow a user edit its own tasks is required.
+     FIXME: When PidLidTaskOwner getter is properly implemented for Task Requests */
+  return [self creator];
 }
 
 - (void) save:(TALLOC_CTX *) memCtx
@@ -524,10 +559,16 @@
 	[vToDo setAccessClass: @"PUBLIC"];
     }
 
+  /* Creation */
   now = [NSCalendarDate date];
   if ([sogoObject isNew])
     {
       [vToDo setCreated: now];
+      /* Creator is used for sharing purposes */
+      value = [properties objectForKey: MAPIPropertyKey (PidTagLastModifierName)];
+      if (value)
+        [[vToDo uniqueChildWithTag: @"x-sogo-component-created-by"] setSingleValue: value
+                                                                            forKey: @""];
     }
   [vToDo setTimeStampAsDate: now];
 

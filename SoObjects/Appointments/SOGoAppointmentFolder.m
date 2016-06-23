@@ -3387,12 +3387,60 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 }
 
 /* acls */
+
+/* Compare two permissions to set first the highest access right, if unknown, then
+   do nothing */
+static NSComparisonResult _comparePermissions (id perm1, id perm2, void *context)
+{
+  static NSDictionary *permMap = nil;
+  NSNumber *num_1, *num_2;
+
+  if (!permMap)
+    {
+      NSMutableArray *numberObjs;
+      NSUInteger i, max = 16;
+
+      numberObjs = [NSMutableArray arrayWithCapacity: max];
+      for (i = 0; i < max; i++)
+        [numberObjs addObject: [NSNumber numberWithInteger: i]];
+
+      /* Build the map to compare easily */
+      permMap = [[NSDictionary alloc] initWithObjects: numberObjs
+                                              forKeys: [NSArray arrayWithObjects:
+                                                                  SOGoRole_ObjectEraser,
+                                                                  SOGoRole_ObjectCreator,
+                                                                  SOGoRole_ObjectEditor,
+                                                                  SOGoCalendarRole_ConfidentialModifier,
+                                                                  SOGoCalendarRole_ConfidentialResponder,
+                                                                  SOGoCalendarRole_ConfidentialViewer,
+                                                                  SOGoCalendarRole_ConfidentialDAndTViewer,
+                                                                  SOGoCalendarRole_PrivateModifier,
+                                                                  SOGoCalendarRole_PrivateResponder,
+                                                                  SOGoCalendarRole_PrivateViewer,
+                                                                  SOGoCalendarRole_PrivateDAndTViewer,
+                                                                  SOGoCalendarRole_PublicModifier,
+                                                                  SOGoCalendarRole_PublicResponder,
+                                                                  SOGoCalendarRole_PublicViewer,
+                                                                  SOGoCalendarRole_PublicDAndTViewer,
+                                                                  SOGoCalendarRole_FreeBusyReader, nil]];
+      [permMap retain];
+    }
+
+  num_1 = [permMap objectForKey: perm1];
+  if (!num_1)
+    num_1 = [NSNumber numberWithInteger: 255];
+  num_2 = [permMap objectForKey: perm2];
+  if (!num_2)
+    num_2 = [NSNumber numberWithInteger: 255];
+
+  return [num_1 compare: num_2];
+}
+
 - (NSArray *) aclsForUser: (NSString *) uid
           forObjectAtPath: (NSArray *) objectPathArray
 {
   NSMutableArray *aclsForUser;
   NSArray *superAcls;
-  static NSArray *rolesClassifications = nil;
 
   superAcls = [super aclsForUser: uid forObjectAtPath: objectPathArray];
   if ([uid isEqualToString: [self defaultUserID]])
@@ -3408,44 +3456,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     }
   else
     {
-      aclsForUser = [NSMutableArray array];
-      if (!rolesClassifications)
-        {
-          rolesClassifications =
-            [NSArray arrayWithObjects:
-                     [NSArray arrayWithObjects:
-                              SOGoCalendarRole_PublicModifier,
-                              SOGoCalendarRole_PublicResponder,
-                              SOGoCalendarRole_PublicViewer,
-                              SOGoCalendarRole_PublicDAndTViewer,
-                              nil],
-                     [NSArray arrayWithObjects:
-                              SOGoCalendarRole_ConfidentialModifier,
-                              SOGoCalendarRole_ConfidentialResponder,
-                              SOGoCalendarRole_ConfidentialViewer,
-                              SOGoCalendarRole_ConfidentialDAndTViewer,
-                              nil],
-                     [NSArray arrayWithObjects:
-                              SOGoCalendarRole_PrivateModifier,
-                              SOGoCalendarRole_PrivateResponder,
-                              SOGoCalendarRole_PrivateViewer,
-                              SOGoCalendarRole_PrivateDAndTViewer,
-                              nil],
-                     [NSArray arrayWithObject: SOGoRole_ObjectCreator],
-                     [NSArray arrayWithObject: SOGoRole_ObjectEraser],
-                     nil];
-          [rolesClassifications retain];
-        }
-      // When a user is a member of many groups for which there are access rights, multiple access rights
-      // can be returned for each classification. In this case, we only keep the highest access right.
-      int i, count = [rolesClassifications count];
-      NSString *role;
-      for (i = 0; i < count; i++)
-        {
-          role = [[rolesClassifications objectAtIndex: i] firstObjectCommonWithArray: superAcls];
-          if (role)
-            [aclsForUser addObject: role];
-        }
+      /* Sort setting the highest access right first, so in the case
+         of a user member of several groups, the highest access right
+         is checked first, for instance, in
+         [SOGoAppointmentFolder:roleForComponentsWithAccessClass:forUser] */
+      aclsForUser = (NSMutableArray *) [superAcls sortedArrayUsingFunction: _comparePermissions
+                                                                   context: NULL];
     }
 
   return aclsForUser;

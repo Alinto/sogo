@@ -150,15 +150,15 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return properties;
 }
 
-- (int) getProperty: (void **) data
-            withTag: (enum MAPITAGS) propTag
-           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getProperty: (void **) data
+                             withTag: (enum MAPITAGS) propTag
+                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   MAPIStorePropertyGetter method = NULL;
   uint16_t propValue;
   SEL methodSel;
   id value;
-  int rc = MAPISTORE_ERR_NOT_FOUND;
+  enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
   NSUInteger count, max;
 
   value = [properties objectForKey: MAPIPropertyKey (propTag)];
@@ -186,16 +186,16 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return rc;
 }
 
-- (int) getPidTagCreationTime: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagCreationTime: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[self creationTime] asFileTimeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagLastModificationTime: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagLastModificationTime: (void **) data
+                                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[self lastModificationTime] asFileTimeInMemCtx: memCtx];
 
@@ -219,10 +219,10 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return canGetProperty;
 }
 
-- (int) getProperties: (struct mapistore_property_data *) data
-             withTags: (enum MAPITAGS *) tags
-             andCount: (uint16_t) columnCount
-             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getProperties: (struct mapistore_property_data *) data
+                              withTags: (enum MAPITAGS *) tags
+                              andCount: (uint16_t) columnCount
+                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint16_t count;
 
@@ -239,7 +239,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   [proxies addObject: newProxy];
 }
 
-- (int) addPropertiesFromRow: (struct SRow *) aRow
+- (enum mapistore_error) addPropertiesFromRow: (struct SRow *) aRow
 {
   struct SPropValue *cValue;
   NSUInteger counter;
@@ -298,9 +298,9 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return replicaKey;
 }
 
-- (int) getReplicaKey: (void **) data
-          fromGlobCnt: (uint64_t) objectCnt
-             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getReplicaKey: (void **) data
+                           fromGlobCnt: (uint64_t) objectCnt
+                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[self getReplicaKeyFromGlobCnt: objectCnt] asBinaryInMemCtx: memCtx];
 

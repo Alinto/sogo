@@ -452,8 +452,8 @@ static NSCharacterSet *hexCharacterSet = nil;
     }
 }
 
-- (int) getPidTagIconIndex: (void **) data // TODO
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagIconIndex: (void **) data // TODO
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t longValue;
 
@@ -518,10 +518,10 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagOwnerAppointmentId: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagOwnerAppointmentId: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc;
+  enum mapistore_error rc;
   const char *utf8UID;
   union {
     uint32_t longValue;
@@ -549,8 +549,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return rc;
 }
 
-- (int) getPidLidMeetingType: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidMeetingType: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* TODO
      See 2.2.6.5 PidLidMeetingType (OXOCAL) */
@@ -559,10 +559,10 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidOwnerCriticalChange: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidOwnerCriticalChange: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_ERR_NOT_FOUND;
+  enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
   NSCalendarDate *lastModified;
 
   if ([[event attendees] count] > 0)
@@ -578,10 +578,10 @@ static NSCharacterSet *hexCharacterSet = nil;
   return rc;
 }
 
-- (int) getPidLidAttendeeCriticalChange: (void **) data
-                               inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidAttendeeCriticalChange: (void **) data
+                                                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_ERR_NOT_FOUND;
+  enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
   NSCalendarDate *lastModified;
 
   if ([[event attendees] count] > 0)
@@ -597,8 +597,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return rc;
 }
 
-- (int) getPidTagMessageClass: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMessageClass: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   const char *className;
 
@@ -644,30 +644,30 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidAppointmentMessageClass: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidAppointmentMessageClass: (void **) data
+                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = talloc_strdup (memCtx, "IPM.Appointment");
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidFInvited: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidFInvited: (void **) data
+                                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidAppointmentSequence: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidAppointmentSequence: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, [[event sequence] unsignedIntValue]);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidAppointmentStateFlags: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidAppointmentStateFlags: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t flags = 0x00;
 
@@ -684,8 +684,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidResponseStatus: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidResponseStatus: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t status = 0x00;
   iCalPerson *person;
@@ -722,14 +722,14 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
  
-- (int) getPidLidAppointmentNotAllowPropose: (void **) data
-                                   inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidAppointmentNotAllowPropose: (void **) data
+                                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidAppointmentStartWhole: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidAppointmentStartWhole: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSCalendarDate *dateValue;
 
@@ -744,8 +744,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagStartDate: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagStartDate: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* "The PidTagStartDate property ([MS-OXPROPS] section 2.1077) SHOULD be
      set, and when set, it MUST be equal to the value of the
@@ -764,8 +764,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidCommonStart: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidCommonStart: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSCalendarDate *dateValue;
 
@@ -777,8 +777,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidClipStart: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidClipStart: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc;
   NSCalendarDate *dateValue, *start;
@@ -806,8 +806,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return rc;
 }
 
-- (int) getPidLidAppointmentEndWhole: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidAppointmentEndWhole: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSCalendarDate *dateValue;
   NSInteger offset;
@@ -827,8 +827,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagEndDate: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagEndDate: (void **) data
+                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSCalendarDate *dateValue;
   NSInteger offset;
@@ -847,8 +847,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidCommonEnd: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidCommonEnd: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSCalendarDate *dateValue;
   NSInteger offset;
@@ -868,8 +868,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidClipEnd: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidClipEnd: (void **) data
+                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc;
   NSCalendarDate *dateValue;
@@ -896,10 +896,10 @@ static NSCharacterSet *hexCharacterSet = nil;
   return rc;
 }
 
-- (int) _getEntryIdFromCN: (NSString *) cn
-                 andEmail: (NSString *) email
-                   inData: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) _getEntryIdFromCN: (NSString *) cn
+                                  andEmail: (NSString *) email
+                                    inData: (void **) data
+                                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *username;
   SOGoUserManager *mgr;
@@ -921,11 +921,11 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) _getEmailAddress: (void **) data
-           forICalPerson: (iCalPerson *) person
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) _getEmailAddress: (void **) data
+                            forICalPerson: (iCalPerson *) person
+                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc;
+  enum mapistore_error rc;
   NSString *email;
 
   email = [person rfc822Email];
@@ -940,20 +940,20 @@ static NSCharacterSet *hexCharacterSet = nil;
   return rc;
 }
 
-- (int) _getAddrType: (void **) data
-       forICalPerson: (iCalPerson *) person
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) _getAddrType: (void **) data
+                        forICalPerson: (iCalPerson *) person
+                             inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"SMTP" asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) _getName: (void **) data
-   forICalPerson: (iCalPerson *) person
-        inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) _getName: (void **) data
+                    forICalPerson: (iCalPerson *) person
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc;
+  enum mapistore_error rc;
   NSString *cn;
 
   cn = [person cn];
@@ -968,11 +968,11 @@ static NSCharacterSet *hexCharacterSet = nil;
   return rc;
 }
 
-- (int) _getEntryId: (void **) data
-      forICalPerson: (iCalPerson *) person
-           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) _getEntryId: (void **) data
+                       forICalPerson: (iCalPerson *) person
+                            inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_ERR_NOT_FOUND;
+  enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
   NSString *email, *cn;
 
   if (person)
@@ -991,201 +991,99 @@ static NSCharacterSet *hexCharacterSet = nil;
 }
 
 /* sender (organizer) */
-- (int) getPidTagSenderEmailAddress: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagSenderEmailAddress: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getEmailAddress: data
                   forICalPerson: [event organizer]
                        inMemCtx: memCtx];
 }
 
-- (int) getPidTagSenderAddressType: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagSenderAddressType: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getAddrType: data
               forICalPerson: [event organizer]
                    inMemCtx: memCtx];
 }
 
-- (int) getPidTagSenderName: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagSenderName: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getName: data
           forICalPerson: [event organizer]
                inMemCtx: memCtx];
 }
 
-- (int) getPidTagSenderEntryId: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagSenderEntryId: (void **) data
+                                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getEntryId: data
              forICalPerson: [event organizer]
                   inMemCtx: memCtx];
 }
 
-/* sender representing */
-- (int) getPidTagSentRepresentingEmailAddress: (void **) data
-                                     inMemCtx: (TALLOC_CTX *) memCtx
+/* creator (only if created from Outlook/SOGo or organizer as fallback */
+- (NSString *) creator
 {
-  return [self getPidTagSenderEmailAddress: data inMemCtx: memCtx];
+  iCalPerson *person;
+  NSDictionary *contactInfos;
+  NSString *creator = nil, *email;
+  SOGoUserManager *mgr;
+
+  creator = [[event uniqueChildWithTag: @"x-sogo-component-created-by"]
+              flattenedValuesForKey: @""];
+  if ([creator length] == 0)
+    {
+      person = [event organizer];
+      if (person)
+        {
+          email = [person rfc822Email];
+          if ([email length] > 0)
+            {
+              mgr = [SOGoUserManager sharedUserManager];
+              contactInfos = [mgr contactInfosForUserWithUIDorEmail: email];
+              if (contactInfos)
+                creator = [contactInfos objectForKey: @"sAMAccountName"];
+            }
+        }
+    }
+  return creator;
 }
 
-- (int) getPidTagSentRepresentingAddressType: (void **) data
-                                    inMemCtx: (TALLOC_CTX *) memCtx
+/* owner is the organizer of the event, if none, try with the creator
+   who has saved only from Outlook or SOGo */
+- (NSString *) owner
 {
-  return [self getSMTPAddrType: data inMemCtx: memCtx];
+  iCalPerson *person;
+  NSDictionary *contactInfos;
+  NSString *email, *owner = nil;
+  SOGoUserManager *mgr;
+
+  person = [event organizer];
+  if (person)
+    {
+      email = [person rfc822Email];
+      if ([email length] > 0)
+        {
+          mgr = [SOGoUserManager sharedUserManager];
+          contactInfos = [mgr contactInfosForUserWithUIDorEmail: email];
+          if (contactInfos)
+            owner = [contactInfos objectForKey: @"sAMAccountName"];
+        }
+    }
+
+  if (!owner)
+    owner = [[event uniqueChildWithTag: @"x-sogo-component-created-by"]
+                flattenedValuesForKey: @""];
+
+  return owner;
 }
 
-- (int) getPidTagSentRepresentingName: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
+- (NSUInteger) sensitivity
 {
-  return [self getPidTagSenderName: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagSentRepresentingEntryId: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPidTagSenderEntryId: data inMemCtx: memCtx];
-}
-
-/* attendee */
-- (int) getPidTagReceivedByEmailAddress: (void **) data
-                               inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getEmailAddress: data
-                  forICalPerson: [event userAsAttendee: user]
-                       inMemCtx: memCtx];
-}
-
-- (int) getPidTagReceivedByAddressType: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getAddrType: data
-              forICalPerson: [event userAsAttendee: user]
-                   inMemCtx: memCtx];
-}
-
-- (int) getPidTagReceivedByName: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getName: data
-          forICalPerson: [event userAsAttendee: user]
-               inMemCtx: memCtx];
-}
-
-- (int) getPidTagReceivedByEntryId: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self _getEntryId: data
-             forICalPerson: [event userAsAttendee: user]
-                  inMemCtx: memCtx];
-}
-/* /attendee */
-
-- (int) getPidLidAppointmentDuration: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSTimeInterval timeValue;
-
-  timeValue = [[event endDate] timeIntervalSinceDate: [event startDate]];
-  *data = MAPILongValue (memCtx, (uint32_t) (timeValue / 60));
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidLidAppointmentSubType: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
-{
-  *data = MAPIBoolValue (memCtx, [event isAllDay]);
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidLidBusyStatus: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
-{
-  uint8_t value;
-  
-  value = 0x2;  // olBusy
-
-  if (![event isOpaque])
-    value = 0x0; // olFree
-  
-  *data = MAPILongValue (memCtx, value);
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidLidIndentedBusyStatus: (void **) data // TODO
-                           inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPidLidBusyStatus: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagNormalizedSubject: (void **) data // SUMMARY
-                          inMemCtx: (TALLOC_CTX *) memCtx
-{
-  *data = [[event summary] asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidLidLocation: (void **) data // LOCATION
-                 inMemCtx: (TALLOC_CTX *) memCtx
-{
-  int rc = MAPISTORE_SUCCESS;
-  NSString *location;
-
-  location = [event location];
-  if (location)
-    *data = [location asUnicodeInMemCtx: memCtx];
-  else
-    rc = MAPISTORE_ERR_NOT_FOUND;
-
-  return rc;
-}
-
-- (int) getPidLidWhere: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPidLidLocation: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidServerProcessed: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
-{
-  /* TODO: we need to check whether the event has been processed internally by
-     SOGo or if it was received only by mail. We only assume the SOGo case
-     here. */
-  return [self getYes: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidServerProcessingActions: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx
-{
-  *data = MAPILongValue (memCtx,
-                         0x00000010 /* cpsCreatedOnPrincipal */
-                         | 0x00000080 /* cpsUpdatedCalItem */
-                         | 0x00000100 /* cpsCopiedOldProperties */);
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidLidPrivate: (void **) data // private (bool), should depend on CLASS and permissions
-                inMemCtx: (TALLOC_CTX *) memCtx
-{
-  if ([event symbolicAccessClass] == iCalAccessPublic)
-    return [self getNo: data inMemCtx: memCtx];
-
-  return [self getYes: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagSensitivity: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
-{
-  /* See [MS-OXCICAL] Section 2.1.3.11.20.4 */
-  uint32_t v;
-  NSString *accessClass;
+  NSString *accessClass = nil;
+  NSUInteger v;
 
   accessClass = [event accessClass];
   if (accessClass)
@@ -1202,13 +1100,180 @@ static NSCharacterSet *hexCharacterSet = nil;
   else
       v = 0x0;  /* PUBLIC */
 
+  return v;
+}
+
+/* sender representing */
+- (enum mapistore_error) getPidTagSentRepresentingEmailAddress: (void **) data
+                                                      inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagSenderEmailAddress: data inMemCtx: memCtx];
+}
+
+- (enum mapistore_error) getPidTagSentRepresentingAddressType: (void **) data
+                                                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getSMTPAddrType: data inMemCtx: memCtx];
+}
+
+- (enum mapistore_error) getPidTagSentRepresentingName: (void **) data
+                                              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagSenderName: data inMemCtx: memCtx];
+}
+
+- (enum mapistore_error) getPidTagSentRepresentingEntryId: (void **) data
+                                                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagSenderEntryId: data inMemCtx: memCtx];
+}
+
+/* attendee */
+- (enum mapistore_error) getPidTagReceivedByEmailAddress: (void **) data
+                                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getEmailAddress: data
+                  forICalPerson: [event userAsAttendee: user]
+                       inMemCtx: memCtx];
+}
+
+- (enum mapistore_error) getPidTagReceivedByAddressType: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getAddrType: data
+              forICalPerson: [event userAsAttendee: user]
+                   inMemCtx: memCtx];
+}
+
+- (enum mapistore_error) getPidTagReceivedByName: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getName: data
+               forICalPerson: [event userAsAttendee: user]
+               inMemCtx: memCtx];
+}
+
+- (enum mapistore_error) getPidTagReceivedByEntryId: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getEntryId: data
+             forICalPerson: [event userAsAttendee: user]
+                  inMemCtx: memCtx];
+}
+/* /attendee */
+
+- (enum mapistore_error) getPidLidAppointmentDuration: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSTimeInterval timeValue;
+
+  timeValue = [[event endDate] timeIntervalSinceDate: [event startDate]];
+  *data = MAPILongValue (memCtx, (uint32_t) (timeValue / 60));
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (enum mapistore_error) getPidLidAppointmentSubType: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = MAPIBoolValue (memCtx, [event isAllDay]);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (enum mapistore_error) getPidLidBusyStatus: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  uint8_t value;
+  
+  value = 0x2;  // olBusy
+
+  if (![event isOpaque])
+    value = 0x0; // olFree
+  
+  *data = MAPILongValue (memCtx, value);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (enum mapistore_error) getPidLidIndentedBusyStatus: (void **) data // TODO
+                                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidLidBusyStatus: data inMemCtx: memCtx];
+}
+
+- (enum mapistore_error) getPidTagNormalizedSubject: (void **) data // SUMMARY
+                                           inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [[event summary] asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (enum mapistore_error) getPidLidLocation: (void **) data // LOCATION
+                                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
+  NSString *location;
+
+  location = [event location];
+  if (location)
+    *data = [location asUnicodeInMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (enum mapistore_error) getPidLidWhere: (void **) data
+                               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidLidLocation: data inMemCtx: memCtx];
+}
+
+- (enum mapistore_error) getPidLidServerProcessed: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx
+{
+  /* TODO: we need to check whether the event has been processed internally by
+     SOGo or if it was received only by mail. We only assume the SOGo case
+     here. */
+  return [self getYes: data inMemCtx: memCtx];
+}
+
+- (enum mapistore_error) getPidLidServerProcessingActions: (void **) data
+                                                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = MAPILongValue (memCtx,
+                         0x00000010 /* cpsCreatedOnPrincipal */
+                         | 0x00000080 /* cpsUpdatedCalItem */
+                         | 0x00000100 /* cpsCopiedOldProperties */);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (enum mapistore_error) getPidLidPrivate: (void **) data // private (bool), should depend on CLASS and permissions
+                                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if ([event symbolicAccessClass] == iCalAccessPublic)
+    return [self getNo: data inMemCtx: memCtx];
+
+  return [self getYes: data inMemCtx: memCtx];
+}
+
+- (enum mapistore_error) getPidTagSensitivity: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  /* See [MS-OXCICAL] Section 2.1.3.11.20.4 */
+  uint32_t v;
+
+  v = (uint32_t) [self sensitivity];
   *data = MAPILongValue (memCtx, v);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagImportance: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagImportance: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t v;
   if ([[event priority] isEqualToString: @"9"])
@@ -1223,8 +1288,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidNameKeywords: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidNameKeywords: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* See [MS-OXCICAL] Section 2.1.3.1.1.20.3 */
   NSArray *categories;
@@ -1239,10 +1304,10 @@ static NSCharacterSet *hexCharacterSet = nil;
     return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidTagBody: (void **) data
-             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagBody: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc;
+  enum mapistore_error rc;
   NSRange range;
   NSString *stringValue;
   NSString *trimingString = @"\r\n\n";
@@ -1270,8 +1335,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return rc;
 }
 
-- (int) getPidTagInternetCodepage: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagInternetCodepage: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* ref:
      http://msdn.microsoft.com/en-us/library/dd317756%28v=vs.85%29.aspx
@@ -1286,16 +1351,16 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidRecurring: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidRecurring: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPIBoolValue (memCtx, [event isRecurrent]);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidIsRecurring: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidIsRecurring: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPIBoolValue (memCtx,
                          [event isRecurrent]
@@ -1304,16 +1369,16 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidIsException: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidIsException: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPIBoolValue (memCtx, [event recurrenceId] != nil);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidExceptionReplaceTime: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidExceptionReplaceTime: (void **) data
+                                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc;
   NSCalendarDate *dateValue;
@@ -1333,8 +1398,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return rc;
 }
 
-- (int) getPidLidRecurrencePattern: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidRecurrencePattern: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"No description" asUnicodeInMemCtx: memCtx];
 
@@ -1569,10 +1634,10 @@ ExtendedException: (1)
 ReservedBlockEE2Size: 00 00 00 00
 */
 
-- (int) getPidLidAppointmentRecur: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidAppointmentRecur: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
 
   if ([event isRecurrent])
     *data = [self _computeAppointmentRecurInMemCtx: memCtx];
@@ -1582,10 +1647,10 @@ ReservedBlockEE2Size: 00 00 00 00
   return rc;
 }
 
-- (int) getPidLidRecurrenceType: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidRecurrenceType: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc;
+  enum mapistore_error rc;
   iCalRecurrenceFrequency freq;
   iCalRecurrenceRule *rrule;
   enum RecurrenceType rectype;
@@ -1614,7 +1679,7 @@ ReservedBlockEE2Size: 00 00 00 00
   return rc;
 }
 
-// - (int) getPidLidGlobalObjectId: (void **) data
+// - (enum mapistore_error) getPidLidGlobalObjectId: (void **) data
 //                        inMemCtx: (TALLOC_CTX *) memCtx
 // {
 //   static char byteArrayId[] = {0x04, 0x00, 0x00, 0x00, 0x82, 0x00, 0xE0,
@@ -1776,10 +1841,10 @@ ReservedBlockEE2Size: 00 00 00 00
   talloc_free (localMemCtx);
 }
 
-- (int) getPidLidGlobalObjectId: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidGlobalObjectId: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
 
   if (!globalObjectId)
     [self _computeGlobalObjectIds];
@@ -1792,10 +1857,10 @@ ReservedBlockEE2Size: 00 00 00 00
   return rc;
 }
 
-- (int) getPidLidCleanGlobalObjectId: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidCleanGlobalObjectId: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
 
   if (!cleanGlobalObjectId)
     [self _computeGlobalObjectIds];
@@ -1808,8 +1873,8 @@ ReservedBlockEE2Size: 00 00 00 00
   return rc;
 }
 
-- (int) getPidLidAppointmentReplyTime: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidAppointmentReplyTime: (void **) data
+                                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* We always return LAST-MODIFIED, which is a hack, but one that works
      because: the user is either (NOT recipient OR (is recipient AND its
@@ -1817,7 +1882,7 @@ ReservedBlockEE2Size: 00 00 00 00
      client OR the user is recipient and its status is defined, where this
      value is thus correct because the recipient status is the only property
      that can be changed. */
-  int rc = MAPISTORE_ERR_NOT_FOUND;
+  enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
   NSCalendarDate *lastModified;
 
   lastModified = [event lastModified];
@@ -1860,8 +1925,8 @@ ReservedBlockEE2Size: 00 00 00 00
   alarmSet = YES;
 }
 
-- (int) getPidLidReminderSet: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidReminderSet: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!alarmSet)
     [self _setupAlarm];
@@ -1871,8 +1936,8 @@ ReservedBlockEE2Size: 00 00 00 00
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidReminderTime: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidReminderTime: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!alarmSet)
     [self _setupAlarm];
@@ -1882,10 +1947,10 @@ ReservedBlockEE2Size: 00 00 00 00
           : MAPISTORE_ERR_NOT_FOUND);
 }
 
-- (int) getPidLidReminderDelta: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidReminderDelta: (void **) data
+                                       inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_ERR_NOT_FOUND;
+  enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
   iCalTrigger *trigger;
   NSCalendarDate *startDate, *relationDate, *alarmDate;
   NSTimeInterval interval;
@@ -1922,10 +1987,10 @@ ReservedBlockEE2Size: 00 00 00 00
   return rc;
 }
 
-- (int) getPidLidReminderSignalTime: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidReminderSignalTime: (void **) data
+                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
   NSCalendarDate *alarmDate;
 
   if (!alarmSet)
@@ -1942,10 +2007,10 @@ ReservedBlockEE2Size: 00 00 00 00
   return rc;
 }
 
-- (int) getPidLidReminderOverride: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidReminderOverride: (void **) data
+                                          inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
 
   if (!alarmSet)
     [self _setupAlarm];
@@ -1958,10 +2023,10 @@ ReservedBlockEE2Size: 00 00 00 00
   return rc;
 }
 
-- (int) getPidLidReminderPlaySound: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidReminderPlaySound: (void **) data
+                                           inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
 
   if (!alarmSet)
     [self _setupAlarm];
@@ -1974,8 +2039,8 @@ ReservedBlockEE2Size: 00 00 00 00
   return rc;
 }
 
-- (int) getPidLidReminderFileParameter: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidReminderFileParameter: (void **) data
+                                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   // if (!alarmSet)
   //   [self _setupAlarm];
@@ -1983,14 +2048,14 @@ ReservedBlockEE2Size: 00 00 00 00
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidLidReminderType: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidReminderType: (void **) data
+                                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPidLidTimeZoneDescription: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidTimeZoneDescription: (void **) data
+                                             inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc;
   NSString *tzid;
@@ -2007,8 +2072,8 @@ ReservedBlockEE2Size: 00 00 00 00
   return rc;
 }
 
-- (int) getPidLidTimeZoneStruct: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidTimeZoneStruct: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc;
 
@@ -2018,15 +2083,15 @@ ReservedBlockEE2Size: 00 00 00 00
   return rc;
 }
 
-- (int) getPidLidAppointmentTimeZoneDefinitionStartDisplay: (void **) data
-                                                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidAppointmentTimeZoneDefinitionStartDisplay: (void **) data
+                                                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc;
 
   /* [MS-OXOCAL] 3.1.5.5.1: This property is used in floating (all-day) events,
      specified in floating time, to convert the start date from UTC to the user's
      time zone */
-  if ([event isAllDay] | [event isRecurrent])
+  if ([event isAllDay] || [event isRecurrent])
     {
       /* [MS-OXOCAL] 2.2.1.42: This property can only have the E flag set in the
          TimeZoneDefinition struct */
@@ -2040,8 +2105,8 @@ ReservedBlockEE2Size: 00 00 00 00
   return rc;
 }
 
-- (int) getPidLidAppointmentTimeZoneDefinitionEndDisplay: (void **) data
-                                                inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidLidAppointmentTimeZoneDefinitionEndDisplay: (void **) data
+                                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidLidAppointmentTimeZoneDefinitionStartDisplay: data
                                                          inMemCtx: memCtx];

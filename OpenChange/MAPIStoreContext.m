@@ -212,16 +212,16 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   return completeURL;
 }
 
-+ (int) openContext: (MAPIStoreContext **) contextPtr
-            withURI: (const char *) newUri
-     connectionInfo: (struct mapistore_connection_info *) newConnInfo
-     andTDBIndexing: (struct indexing_context *) indexing
++ (enum mapistore_error) openContext: (MAPIStoreContext **) contextPtr
+                             withURI: (const char *) newUri
+                      connectionInfo: (struct mapistore_connection_info *) newConnInfo
+                      andTDBIndexing: (struct indexing_context *) indexing
 {
   MAPIStoreContext *context;
   Class contextClass;
   NSString *module;
   NSURL *baseURL;
-  int rc = MAPISTORE_ERR_NOT_FOUND;
+  enum mapistore_error rc = MAPISTORE_ERR_NOT_FOUND;
 
   context = nil;
 
@@ -338,11 +338,11 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   return activeUser;
 }
 
-- (int) getPath: (char **) path
-         ofFMID: (uint64_t) fmid
-       inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPath: (char **) path
+                          ofFMID: (uint64_t) fmid
+                        inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc;
+  enum mapistore_error rc;
   NSString *objectURL, *url;
 
   url = [contextUrl absoluteString];
@@ -379,8 +379,8 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 {
 }
 
-- (int) getRootFolder: (MAPIStoreFolder **) folderPtr
-              withFID: (uint64_t) newFid
+- (enum mapistore_error) getRootFolder: (MAPIStoreFolder **) folderPtr
+                               withFID: (uint64_t) newFid
 {
   enum mapistore_error rc;
   MAPIStoreFolder *baseFolder;
@@ -438,8 +438,16 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
                      mapiStoreObjectWithSOGoObject: currentFolder
                                        inContainer: nil];
       [baseFolder setContext: self];
-      *folderPtr = baseFolder;
-      rc = MAPISTORE_SUCCESS;
+
+      if ([[userContext sogoUser] isEqual: activeUser]
+          || [baseFolder subscriberCanReadMessages])
+        {
+          *folderPtr = baseFolder;
+          rc = MAPISTORE_SUCCESS;
+        }
+      else
+        rc = MAPISTORE_ERR_DENIED;
+
     }
   else if ([[userContext sogoUser] isEqual: activeUser])
     rc = MAPISTORE_ERR_NOT_FOUND;
@@ -494,8 +502,11 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   mappingId = [mapping idFromURL: childURL];
   if (mappingId == NSNotFound)
     {
+      const char *owner;
+
       [self logWithFormat: @"No id exist yet for '%@', requesting one", childURL];
-      ret = mapistore_indexing_get_new_folderID (connInfo->mstore_ctx, &mappingId);
+      owner = [[userContext username] UTF8String];
+      ret = mapistore_indexing_get_new_folderID_as_user (connInfo->mstore_ctx, owner, &mappingId);
       if (ret == MAPISTORE_SUCCESS)
         [mapping registerURL: childURL withID: mappingId];
       else
@@ -506,36 +517,56 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   return mappingId;
 }
 
+/* Get new change number from openchange db interface using
+   resource's owner user */
 - (uint64_t) getNewChangeNumber
 {
+  const char *owner;
+  enum MAPISTATUS retval;
   uint64_t newVersionNumber;
 
-  if (openchangedb_get_new_changeNumber (connInfo->oc_ctx, connInfo->username, &newVersionNumber)
-      != MAPI_E_SUCCESS)
-    abort ();
+  owner = [[userContext username] UTF8String];
+  retval = openchangedb_get_new_changeNumber (connInfo->oc_ctx, owner, &newVersionNumber);
+  if (retval != MAPI_E_SUCCESS)
+    [NSException raise: @"MAPIStoreIOException"
+                format: @"Impossible to get new change number for %s: %s", owner,
+                 mapi_get_errstr (retval)];
 
   return newVersionNumber;
 }
 
+/* Get new change numbers from openchange db interface using
+   resource's owner user */
 - (NSArray *) getNewChangeNumbers: (uint64_t) max
 {
+  const char *owner;
+  enum MAPISTATUS retval;
   TALLOC_CTX *memCtx;
   NSMutableArray *newChangeNumbers;
   uint64_t count;
   struct UI8Array_r *numbers;
   NSString *newNumber;
 
-  memCtx = talloc_zero(NULL, TALLOC_CTX);
-  newChangeNumbers = [NSMutableArray arrayWithCapacity: max];
+  memCtx = talloc_new (NULL);
+  if (!memCtx)
+    [NSException raise: @"MAPIStoreIOException"
+                format: @"Not enough memory to allocate change numbers"];
 
-  if (openchangedb_get_new_changeNumbers (connInfo->oc_ctx,
-                                          memCtx, connInfo->username, max, &numbers)
-      != MAPI_E_SUCCESS || numbers->cValues != max)
-    abort ();
+  newChangeNumbers = [NSMutableArray arrayWithCapacity: max];
+  owner = [[userContext username] UTF8String];
+
+  retval = openchangedb_get_new_changeNumbers (connInfo->oc_ctx, memCtx, owner, max, &numbers);
+  if (retval != MAPI_E_SUCCESS || numbers->cValues != max)
+    {
+      talloc_free (memCtx);
+      [NSException raise: @"MAPIStoreIOException"
+                  format: @"Failing to get %d new change numbers: %s", max,
+                          mapi_get_errstr (retval)];
+    }
+
   for (count = 0; count < max; count++)
     {
-      newNumber
-        = [NSString stringWithUnsignedLongLong: numbers->lpui8[count]];
+      newNumber = [NSString stringWithUnsignedLongLong: numbers->lpui8[count]];
       [newChangeNumbers addObject: newNumber];
     }
 
@@ -544,28 +575,30 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   return newChangeNumbers;
 }
 
+/* Get new fmids from mapistore_indexing interface using resource's
+   owner user */
 - (NSArray *) getNewFMIDs: (uint64_t) max
 {
-  TALLOC_CTX *memCtx;
+  const char *owner;
+  enum mapistore_error ret;
   NSMutableArray *newFMIDs;
-  uint64_t count;
-  struct UI8Array_r *numbers;
   NSString *newNumber;
+  uint64_t count, newFID;
 
-  memCtx = talloc_zero(NULL, TALLOC_CTX);
   newFMIDs = [NSMutableArray arrayWithCapacity: max];
+  /* Get the resource's owner name */
+  owner = [[userContext username] UTF8String];
 
-  if (mapistore_indexing_get_new_folderIDs (connInfo->mstore_ctx,
-                                            memCtx, max, &numbers)
-      != MAPISTORE_SUCCESS || numbers->cValues != max)
-    abort ();
   for (count = 0; count < max; count++)
     {
-      newNumber = [NSString stringWithUnsignedLongLong: numbers->lpui8[count]];
+      ret = mapistore_indexing_get_new_folderID_as_user (connInfo->mstore_ctx, owner, &newFID);
+      if (ret != MAPISTORE_SUCCESS)
+          [NSException raise: @"MAPIStoreIOException"
+                      format: @"Impossible to get new fmid for %s", owner];
+
+      newNumber = [NSString stringWithUnsignedLongLong: newFID];
       [newFMIDs addObject: newNumber];
     }
-
-  talloc_free (memCtx);
 
   return newFMIDs;
 }

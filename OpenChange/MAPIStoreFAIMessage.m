@@ -24,6 +24,7 @@
 
 #import "MAPIStoreActiveTables.h"
 #import "MAPIStoreContext.h"
+#import "MAPIStoreFolder.h"
 #import "MAPIStoreUserContext.h"
 #import "NSObject+MAPIStore.h"
 
@@ -45,8 +46,8 @@
                          andType: MAPISTORE_FAI_TABLE];
 }
 
-- (int) getPidTagAssociated: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagAssociated: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
 }
@@ -69,7 +70,7 @@
 
 - (BOOL) subscriberCanReadMessage
 {
-  return NO;
+  return [(MAPIStoreFolder *)container subscriberCanReadMessages];
 }
 
 - (BOOL) subscriberCanModifyMessage

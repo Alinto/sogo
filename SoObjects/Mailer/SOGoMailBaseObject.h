@@ -47,9 +47,12 @@
 {
   NSURL             *imap4URL;
   NGImap4Connection *imap4;
+  BOOL              imap4ExceptionsEnabled;
 }
 
 - (BOOL) isFolderish;
+
+- (id) init;
 
 - (id) initWithImap4URL: (NSURL *) _url
 	    inContainer: (id) _container;

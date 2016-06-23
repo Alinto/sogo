@@ -32,8 +32,8 @@
 
 @implementation MAPIStoreNotesMessage
 
-- (int) getPidTagIconIndex: (void **) data // TODO
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagIconIndex: (void **) data // TODO
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
   // *longValue = 0x00000300 for blue
@@ -46,7 +46,7 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagMessageClass: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (enum mapistore_error) getPidTagMessageClass: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPM.StickyNote" asUnicodeInMemCtx: memCtx];
 

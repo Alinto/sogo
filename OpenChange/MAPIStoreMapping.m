@@ -258,7 +258,7 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
   if (oldURL != NULL)
     {
       [self errorWithFormat:
-	     @"url with idNbr already registered: (oldUrl='%@', newUrl='%@', id=x%.16"PRIx64")",
+	     @"url with idNbr already registered: (oldUrl='%@', newUrl='%@', id=0x%.16"PRIx64")",
 	     oldURL, urlString, idNbr];
       return NO;
     }
@@ -306,7 +306,7 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
     }
   else
     [NSException raise: NSInvalidArgumentException
-                format: @"number of urls and ids do not match"];
+                format: @"number of urls (%d) and ids (%d) do not match", max, [idNbrs count]];
 }
 
 - (void) unregisterURLWithID: (uint64_t) idNbr
