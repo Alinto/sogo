@@ -330,7 +330,8 @@ $quarter_height: 10px;
             rgba(255, 255, 255, .15) 50%,
             rgba(255, 255, 255, 0) 50%,
             rgba(255, 255, 255, 0)
-          );
+        );
+        pointer-events: none;
       }
     }
 
