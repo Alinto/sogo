@@ -1,6 +1,9 @@
 3.1.4 (2016-MM-DD)
 ------------------
 
+Enhancements
+ - [eas] use the preferred email identity in EAS if valid (#3698)
+
 Bug fixes
  - [web] fixed crash when an attachment filename has no extension
  - [web] fixed selection of transparent all-day events (#3744)
