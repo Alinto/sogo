@@ -222,19 +222,23 @@
   };
 
   /**
+   * @function $selectedMessages
+   * @memberof Mailbox.prototype
+   * @desc Return the messages selected by the user.
+   * @returns Message instances
+   */
+  Mailbox.prototype.$selectedMessages = function() {
+    return _.filter(this.$messages, function(message) { return message.selected; });
+  };
+
+  /**
    * @function $selectedCount
    * @memberof Mailbox.prototype
    * @desc Return the number of messages selected by the user.
    * @returns the number of selected messages
    */
   Mailbox.prototype.$selectedCount = function() {
-    var count;
-
-    count = 0;
-    if (this.$messages) {
-      count = (_.filter(this.$messages, function(message) { return message.selected; })).length;
-    }
-    return count;
+    return this.$selectedMessages().length;
   };
 
   /**
@@ -542,12 +546,14 @@
    * @desc Add or remove a flag on a message set
    * @returns a promise of the HTTP operation
    */
-  Mailbox.prototype.$flagMessages = function(uids, flags, operation) {
-    var data = {msgUIDs: uids,
+  Mailbox.prototype.$flagMessages = function(messages, flags, operation) {
+    var data = {msgUIDs: _.map(messages, 'uid'),
                 flags: flags,
                 operation: operation};
 
-    return Mailbox.$$resource.post(this.id, 'addOrRemoveLabel', data);
+    return Mailbox.$$resource.post(this.id, 'addOrRemoveLabel', data).then(function() {
+      return messages;
+    });
   };
 
   /**
@@ -656,9 +662,9 @@
    * @return a promise of the HTTP operation
    */
   Mailbox.prototype.$markOrUnMarkMessagesAsJunk = function(messages) {
-    var _this = this, uids;
-    var method = (this.type == 'junk' ? 'markMessagesAsNotJunk' : 'markMessagesAsJunk');
-    uids = _.map(messages, 'uid');
+    var _this = this,
+        uids = _.map(messages, 'uid'),
+        method = (this.type == 'junk' ? 'markMessagesAsNotJunk' : 'markMessagesAsJunk');
 
     return Mailbox.$$resource.post(this.id, method, {uids: uids});
   };
@@ -669,8 +675,9 @@
    * @desc Copy multiple messages from the current mailbox to a target one
    * @return a promise of the HTTP operation
    */
-  Mailbox.prototype.$copyMessages = function(uids, folder) {
-    var _this = this;
+  Mailbox.prototype.$copyMessages = function(messages, folder) {
+    var _this = this,
+        uids = _.map(messages, 'uid');
 
     return Mailbox.$$resource.post(this.id, 'copyMessages', {uids: uids, folder: folder})
       .then(function(data) {

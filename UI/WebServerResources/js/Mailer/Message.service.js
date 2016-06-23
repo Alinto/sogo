@@ -521,10 +521,19 @@
    * @returns a promise of the HTTP operation
    */
   Message.prototype.$reload = function(options) {
-    var futureMessageData;
+    var _this = this, futureMessageData;
 
-    if (options && options.useCache && this.$futureMessageData)
+    if (options && options.useCache && this.$futureMessageData) {
+      if (!this.isread) {
+        Message.$$resource.fetch(this.$absolutePath(), 'markMessageRead').then(function() {
+          Message.$timeout(function() {
+            _this.isread = true;
+            _this.$mailbox.unseenCount--;
+          });
+        });
+      }
       return this;
+    }
 
     futureMessageData = Message.$$resource.fetch(this.$absolutePath(options), 'view');
 

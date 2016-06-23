@@ -65,11 +65,11 @@
       <!-- sort mode (default) -->
       <div class="md-toolbar-tools" ng-hide="mailbox.mode.search">
         <md-button class="sg-icon-button" label:aria-label="Search"
-                   ng-click="mailbox.mode.search = true">
+                   ng-click="mailbox.searchMode()">
           <md-icon>search</md-icon>
         </md-button>
         <a href="javascript:void(0)" class="sg-folder-name"
-           ng-click="mailbox.mode.search = true">{{mailbox.selectedFolder.name}}</a>
+           ng-click="mailbox.searchMode()">{{mailbox.selectedFolder.name}}</a>
         <md-menu>
           <md-button class="sg-icon-button" label:aria-label="Sort"
                      ng-click="$mdOpenMenu()">
@@ -128,7 +128,7 @@
           <md-icon>arrow_back</md-icon>
         </md-button>
         <md-input-container class="md-flex" md-no-float="md-no-float">
-          <input name="folderSearch" type="search" var:minlength="minimumSearchLength" label:placeholder="Search"/>
+          <input name="folderSearch" type="search" var:minlength="minimumSearchLength" label:placeholder="Search" sg-focus-on="search" />
           <div ng-messages="searchForm.folderSearch.$error" ng-show="searchForm.folderSearch.$dirty">
             <div ng-message="minlength"><var:string value="minimumSearchLengthLabel"/></div>
           </div>

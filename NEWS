@@ -7,6 +7,7 @@ New features
 Enhancements
  - [eas] use the preferred email identity in EAS if valid (#3698)
  - [eas] handle inline attachments during EAS content generation
+ - [web] all batch operations can now be performed on selected messages in advanced search mode
 
 Bug fixes
  - [web] fixed crash when an attachment filename has no extension
