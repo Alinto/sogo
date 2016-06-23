@@ -3345,6 +3345,12 @@ void handle_eas_terminate(int signum)
   [context setObject: [[theRequest uri] deviceType]  forKey: @"DeviceType"];
   [context setObject: [[theRequest uri] attachmentName]  forKey: @"AttachmentName"];
 
+  // Save ASProtocolVersion to context
+  if ([[context request] headerForKey: @"MS-ASProtocolVersion"])
+    [context setObject: [[context request] headerForKey: @"MS-ASProtocolVersion"] forKey: @"ASProtocolVersion"];
+  else
+    [context setObject: [[theRequest uri] protocolVersion] forKey: @"ASProtocolVersion"];
+
   cmdName = [[theRequest uri] command];
 
   // We make sure our cache table exists
