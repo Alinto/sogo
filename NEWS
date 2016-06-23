@@ -11,6 +11,7 @@ Enhancements
 
 Bug fixes
  - [web] fixed crash when an attachment filename has no extension
+ - [eas] handle base64 EAS protocol version
 
 2.3.12 (2016-06-10)
 -------------------
