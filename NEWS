@@ -8,6 +8,7 @@ Enhancements
  - [core] avoid showing bundle loading info when not needed (#3726)
  - [core] when restoring data using sogo-tool, regenerate Sieve script (#3029)
  - [eas] use the preferred email identity in EAS if valid (#3698)
+ - [eas] handle inline attachments during EAS content generation
 
 Bug fixes
  - [web] fixed crash when an attachment filename has no extension
