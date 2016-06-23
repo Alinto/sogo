@@ -1231,6 +1231,12 @@ struct GlobalObjectId {
             }
           else
             {
+              if ([[value objectForKey: @"bodyId"] length])
+                {
+                  [s appendFormat: @"<ContentId>%@</ContentId>", [[value objectForKey: @"bodyId"] activeSyncRepresentationInContext: context]];
+                  [s appendFormat: @"<IsInline>%d</IsInline>", 1];
+                }
+
               [s appendFormat: @"<Method>%d</Method>", 1]; // See: http://msdn.microsoft.com/en-us/library/ee160322(v=exchg.80).aspx
               [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [[value objectForKey: @"size"] intValue]];
               //[s appendFormat: @"<IsInline>%d</IsInline>", 1];
