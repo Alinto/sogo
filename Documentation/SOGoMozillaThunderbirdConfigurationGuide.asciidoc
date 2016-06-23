@@ -63,9 +63,9 @@ Mozilla Thunderbird
 
 Mozilla Thunderbird is the official front end client of SOGo.
 
-Mozilla Thunderbird version 2, 3.1, 10 ESR (Extended Support Release),
-17 ESR, 24 and 31 are supported and it is recommended to use version 31 of
-Thunderbird.
+Mozilla Thunderbird versions 2, 3.1, 10 ESR (Extended Support Release),
+17 ESR, 24, 31 and above are supported and it is recommended to use
+the latest version of Thunderbird.
 
 In order to download and install Mozilla Thunderbird, please visit:
 
@@ -74,8 +74,9 @@ https://www.mozilla.org/en-US/thunderbird/organizations/all-esr.html
 Mozilla Lightning
 ~~~~~~~~~~~~~~~~~
 
-When using version 24 or 31 of Thunderbird, you can use the latest version of
-Mozilla Lightning. Use the Add-ons manager of Thunderbird or visit:
+When using Thunderbird, version 24, 31 or later, you can use the latest
+version of Mozilla Lightning. Use the Add-ons manager of Thunderbird or
+visit:
 
 https://addons.mozilla.org/en-US/thunderbird/addon/lightning/
 
@@ -99,8 +100,8 @@ SOGo Connector and SOGo Integrator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The SOGo Connector and Integrator extensions are provided to perfect the
-integration of Mozilla Thunderbird 2, 3.1, 10 ESR, 17 ESR, 24 and 31 with
-the SOGo groupware solution.
+integration of Mozilla Thunderbird 2, 3.1, 10 ESR, 17 ESR, 24, 31 and
+later with the SOGo groupware solution.
 
 First of all, the SOGo Connector extension transforms Thunderbird into a
 full DAV client for groupware servers such as SOGo, eGroupware or
@@ -159,7 +160,7 @@ the same user name used to connect to the first email server configured
 in Thunderbird. It is a current limitation but it will fit nearly all
 configurations out there.
 
-For testing purpose, you are strongly recommended to create and
+For testing purpose, it is strongly recommended to create and
 configure an additional user profile for Thunderbird. This is for two
 reasons. The first is because of the limitation mentioned above. The
 second is because the Integrator will synchronize your personal address
@@ -170,7 +171,7 @@ you may want to make a copy of that address book beforehand.
 The second part requires editing one file in the extension file sub tree
 to specify where the SOGo server is located. This is done by hand. In an
 enterprise environment, this step is only required once per release
-since the updates are expected to propagate automatically. 
+since the updates are expected to propagate automatically.
 
 Uncompress (using a ZIP or jar tool) the SOGo Integrator XPI and locate
 the following file:
