@@ -2899,15 +2899,119 @@ void handle_eas_terminate(int signum)
 - (void) processSettings: (id <DOMElement>) theDocumentElement
               inResponse: (WOResponse *) theResponse
 {
-  
+  SOGoDomainDefaults *dd;
+  NSMutableDictionary *vacationOptions;
   NSMutableString *s;
   NSData *d;
-  
+  int OofState, time, i;
+  id setElements;
+  NSCalendarDate *endDate;
+  NSString *autoReplyText;
+  NSArray *OofMessages;
+
   s = [NSMutableString string];
+
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
   [s appendString: @"<Settings xmlns=\"Settings:\">"];
-  [s appendFormat: @"    <Status>1</Status>"];
+  [s appendString: @"<Status>1</Status>"];
+
+  if ([(id)[[(id)[theDocumentElement getElementsByTagName: @"Oof"] lastObject] getElementsByTagName: @"Get"] lastObject])
+    {
+      dd = [[context activeUser] domainDefaults];
+      if ([dd vacationEnabled])
+        {
+          vacationOptions = [[[[context activeUser] userDefaults] vacationOptions] mutableCopy];
+          if (!vacationOptions)
+            vacationOptions = [NSMutableDictionary new];
+
+          if ([[vacationOptions objectForKey: @"enabled"] boolValue] && [[vacationOptions objectForKey: @"endDateEnabled"] intValue])
+            OofState = 2;
+          else if ([[vacationOptions objectForKey: @"enabled"] boolValue])
+            OofState = 1;
+          else
+            OofState = 0;
+
+          [s appendString: @"<Oof>"];
+          [s appendString: @"<Status>1</Status>"];
+          [s appendString: @"<Get>"];
+          [s appendFormat: @"<OofState>%d</OofState>", OofState];
+
+          time = [[vacationOptions objectForKey: @"endDate"] intValue];
+
+          [s appendFormat: @"<StartTime>%@</StartTime>", [[NSCalendarDate calendarDate] activeSyncRepresentationInContext: context]];
+          [s appendFormat: @"<EndTime>%@</EndTime>", [[NSCalendarDate dateWithTimeIntervalSince1970: time] activeSyncRepresentationInContext: context]];
+
+          [s appendFormat: @"<OofMessage>"];
+          [s appendFormat: @"<AppliesToInternal/>"];
+          [s appendFormat: @"<Enabled>%d</Enabled>", (OofState) ? 1 : 0];
+          [s appendFormat: @"<ReplyMessage>%@</ReplyMessage>", [vacationOptions objectForKey: @"autoReplyText"]];
+          [s appendFormat: @"<BodyType>TEXT</BodyType>"];
+          [s appendFormat: @"</OofMessage>"];
+
+          [s appendFormat: @"<OofMessage>"];
+          [s appendFormat: @"<AppliesToExternalKnown/>"];
+          [s appendFormat: @"<Enabled>0</Enabled>"];
+          [s appendFormat: @"<ReplyMessage/>"];
+          [s appendFormat: @"</OofMessage>"];
+
+          [s appendFormat: @"<OofMessage>"];
+          [s appendFormat: @"<AppliesToExternalUnknown/>"];
+          [s appendFormat: @"<Enabled>0</Enabled>"];
+          [s appendFormat: @"<ReplyMessage/>"];
+          [s appendFormat: @"</OofMessage>"];
+
+          [s appendString: @"</Get>"];
+          [s appendString: @"</Oof>"];
+        }
+    }
+
+  if ([(id)[[(id)[theDocumentElement getElementsByTagName: @"Oof"] lastObject] getElementsByTagName: @"Set"] lastObject])
+    {
+      dd = [[context activeUser] domainDefaults];
+      if ([dd vacationEnabled])
+        {
+          setElements = [(id)[[(id)[theDocumentElement getElementsByTagName: @"Oof"] lastObject] getElementsByTagName: @"Set"] lastObject];
+          OofState = [[[(id)[setElements getElementsByTagName: @"OofState"] lastObject] textValue] intValue];
+          OofMessages = (id)[setElements getElementsByTagName: @"OofMessage"];
+
+          autoReplyText = [NSMutableString string];
+
+          for (i = 0; i < [OofMessages count]; i++)
+            {
+              if ([(id)[[OofMessages objectAtIndex: i] getElementsByTagName: @"AppliesToInternal"] lastObject])
+                {
+                  autoReplyText = [[(id)[[OofMessages objectAtIndex: i] getElementsByTagName: @"ReplyMessage"] lastObject] textValue];
+                  break;
+                }
+            }
+
+          vacationOptions = [[[[context activeUser] userDefaults] vacationOptions] mutableCopy];
+
+          if (!vacationOptions)
+            vacationOptions = [NSMutableDictionary new];
+
+          [vacationOptions setObject: [NSNumber numberWithBool: (OofState > 0) ? YES : NO]
+                    forKey: @"enabled"];
+
+          [vacationOptions setObject: [NSNumber numberWithBool: (OofState == 2) ? YES : NO]
+                    forKey: @"endDateEnabled"];
+
+          endDate = [[[(id)[setElements getElementsByTagName: @"EndTime"] lastObject] textValue] calendarDate];
+
+          if (endDate)
+            [vacationOptions setObject: [NSNumber numberWithInt: [endDate timeIntervalSince1970]] forKey: @"endDate"];
+
+          if (autoReplyText)
+            [vacationOptions setObject: autoReplyText forKey: @"autoReplyText"];
+
+          [[[context activeUser] userDefaults] setVacationOptions: vacationOptions];
+          [[[context activeUser] userDefaults] synchronize];
+
+          [s appendString: @"<Oof><Status>1</Status></Oof>"];
+        }
+     }
+
   [s appendString: @"</Settings>"];
   
   d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
