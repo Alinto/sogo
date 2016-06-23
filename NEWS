@@ -3,6 +3,7 @@
 
 New features
  - [core] now possible to set default Sieve script (#2949)
+ - [eas] initial Out-of-Office support in EAS
 
 Enhancements
  - [core] avoid showing bundle loading info when not needed (#3726)
