@@ -47,8 +47,8 @@
     if (forwardEnabled)
       vm.methodLabels.redirect = l("Forward the message to");
 
-    if (vacationEnabled)
-      vm.methodLabels.vacation = l("Send a vacation message");
+    //if (vacationEnabled)
+    //  vm.methodLabels.vacation = l("Send a vacation message");
 
     if (sieveCapabilities.indexOf("reject") > -1)
       vm.methodLabels.reject = l("Send a reject message");
