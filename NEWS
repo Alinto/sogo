@@ -3,6 +3,7 @@
 
 New features
  - [core] now possible to set default Sieve script (#2949)
+ - [core] new sogo-tool truncate-calendar feature (#1513, #3141)
  - [eas] initial Out-of-Office support in EAS
 
 Enhancements
