@@ -538,7 +538,7 @@
   fom = [GCSFolderManager defaultFolderManager];
   if (fom)
     rc = [self processFolder: folder ofUser: username
-	       withFoM: fom];
+		     withFoM: fom];
   else
     rc = NO;
 
