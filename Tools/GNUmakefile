@@ -14,7 +14,6 @@ $(SOGO_TOOL)_OBJC_FILES += \
 	\
 	SOGoTool.m \
 	SOGoToolBackup.m \
-	SOGoToolCheckDoubles.m \
 	SOGoToolDumpDefaults.m \
 	SOGoToolUpdateAutoReply.m \
 	SOGoToolExpireUserSessions.m \
