@@ -2,6 +2,7 @@
 ------------------
 
 New features
+ - [core] new sogo-tool truncate-calendar feature (#1513, #3141)
  - [eas] initial Out-of-Office support in EAS
 
 Enhancements
