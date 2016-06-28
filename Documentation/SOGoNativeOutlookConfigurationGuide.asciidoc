@@ -321,11 +321,11 @@ disable the upstart check. For more details, refer to:
 https://wiki.samba.org/index.php/Samba4/InitScript
 ////
 
-Debian 8 (Jessie) and Ubuntu 14.04 (Trusty Tahr)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Ubuntu 16.04 (Xenial Xerus)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Please follow the instructions from
-http://www.sogo.nu/english/downloads/backend.html to setup your
+https://sogo.nu/download.html to setup your
 apt sources.
 
 Then install Samba 4 on top of an existing SOGo
@@ -805,10 +805,6 @@ contact Inverse by sending an email to support@inverse.ca.
 General
 ^^^^^^^
 
-* If you can't see any email's content with Microsoft Outlook 2007,
-install the latest Service Pack available from Microsoft's website for
-this specific version. Microsoft Outlook 2007 (12.0.6423.100) SP2 MSO
-(12.0.6425.1000) is known to work.
 * When you create a new Microsoft Outlook profile, not all folders might
 be synchronized during the first start. Simply select the appropriate
 folder and click "Send and Receive". Synchronizing a folder may take
