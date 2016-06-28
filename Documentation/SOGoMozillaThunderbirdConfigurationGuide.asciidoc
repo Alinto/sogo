@@ -63,9 +63,8 @@ Mozilla Thunderbird
 
 Mozilla Thunderbird is the official front end client of SOGo.
 
-Mozilla Thunderbird versions 2, 3.1, 10 ESR (Extended Support Release),
-17 ESR, 24, 31 and above are supported and it is recommended to use
-the latest version of Thunderbird.
+Mozilla Thunderbird versions 31, 38, 45 and above are supported
+and it is recommended to use the latest version of Thunderbird.
 
 In order to download and install Mozilla Thunderbird, please visit:
 
@@ -74,34 +73,16 @@ https://www.mozilla.org/en-US/thunderbird/organizations/all-esr.html
 Mozilla Lightning
 ~~~~~~~~~~~~~~~~~
 
-When using Thunderbird, version 24, 31 or later, you can use the latest
-version of Mozilla Lightning. Use the Add-ons manager of Thunderbird or
-visit:
+When using Thunderbird, you can use the latest version of Mozilla
+Lightning.  Use the Add-ons manager of Thunderbird or visit:
 
 https://addons.mozilla.org/en-US/thunderbird/addon/lightning/
-
-When using version 17 ESR of Thunderbird, you can use Mozilla Lightning
-version 1.9.1. In order to download the extension, please visit:
-
-https://addons.mozilla.org/en-US/thunderbird/addon/lightning/versions/1.9.1
-
-For Thunderbird 2 and 3.1, you need the _Inverse Edition_of Mozilla
-Lightning. It provides back ported features, bug fixes and security
-fixes from the current development version of Mozilla Lightning. For
-Thunderbird 2, it is based on release version 0.9 of Lightning. For
-Thunderbird 3.1, it is based on 1.0b2.
-
-In order to download and install Mozilla Lightning - Inverse Edition for
-Thunderbird 2 or 3.1, please visit:
-
-http://www.sogo.nu/downloads/frontends.html
 
 SOGo Connector and SOGo Integrator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The SOGo Connector and Integrator extensions are provided to perfect the
-integration of Mozilla Thunderbird 2, 3.1, 10 ESR, 17 ESR, 24, 31 and
-later with the SOGo groupware solution.
+integration of Mozilla Thunderbird with the SOGo groupware solution.
 
 First of all, the SOGo Connector extension transforms Thunderbird into a
 full DAV client for groupware servers such as SOGo, eGroupware or
