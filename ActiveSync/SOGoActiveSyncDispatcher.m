@@ -2907,7 +2907,7 @@ void handle_eas_terminate(int signum)
   NSData *d;
   int OofState, time, i;
   id setElements;
-  NSCalendarDate *endDate;
+  NSCalendarDate *startDate, *endDate;
   NSString *autoReplyText;
   NSArray *OofMessages;
 
@@ -2939,9 +2939,10 @@ void handle_eas_terminate(int signum)
           [s appendString: @"<Get>"];
           [s appendFormat: @"<OofState>%d</OofState>", OofState];
 
-          time = [[vacationOptions objectForKey: @"endDate"] intValue];
+          time = [[vacationOptions objectForKey: @"startDate"] intValue];
+          [s appendFormat: @"<StartTime>%@</StartTime>", [[NSCalendarDate dateWithTimeIntervalSince1970: time] activeSyncRepresentationInContext: context]];
 
-          [s appendFormat: @"<StartTime>%@</StartTime>", [[NSCalendarDate calendarDate] activeSyncRepresentationInContext: context]];
+          time = [[vacationOptions objectForKey: @"endDate"] intValue];
           [s appendFormat: @"<EndTime>%@</EndTime>", [[NSCalendarDate dateWithTimeIntervalSince1970: time] activeSyncRepresentationInContext: context]];
 
           [s appendFormat: @"<OofMessage>"];
@@ -2995,6 +2996,14 @@ void handle_eas_terminate(int signum)
 
           [vacationOptions setObject: [NSNumber numberWithBool: (OofState > 0) ? YES : NO]
                     forKey: @"enabled"];
+
+          startDate = [[[(id)[setElements getElementsByTagName: @"StartTime"] lastObject] textValue] calendarDate];
+
+          if (startDate)
+            [vacationOptions setObject: [NSNumber numberWithInt: [startDate timeIntervalSince1970]] forKey: @"startDate"];
+
+          [vacationOptions setObject: [NSNumber numberWithBool: (OofState == 2) ? YES : NO]
+                    forKey: @"startDateEnabled"];
 
           [vacationOptions setObject: [NSNumber numberWithBool: (OofState == 2) ? YES : NO]
                     forKey: @"endDateEnabled"];
