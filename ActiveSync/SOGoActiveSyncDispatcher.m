@@ -716,6 +716,7 @@ void handle_eas_terminate(int signum)
 - (void) _flattenFolders: (NSArray *) theFolders
                     into: (NSMutableArray *) theTarget
                   parent: (NSString *) theParent
+              parentType: (NSString *) theParentType
 {
   NSArray *o;
   int i;
@@ -724,13 +725,16 @@ void handle_eas_terminate(int signum)
 
   for (i = 0; i < [theFolders count]; i++)
     {
-      if (theParent)
+      if (theParent && ![theParentType isEqualToString: @"additional"])
         [[theFolders objectAtIndex: i] setObject: theParent  forKey: @"parent"];
+
+      if ([theParentType isEqualToString: @"additional"])
+        [[theFolders objectAtIndex: i] setObject: [[theFolders objectAtIndex: i] objectForKey: @"path"]  forKey: @"name"];
 
       o = [[theFolders objectAtIndex: i] objectForKey: @"children"];
 
       if (o)
-        [self _flattenFolders: o  into: theTarget  parent: [[theFolders objectAtIndex: i] objectForKey: @"path"]];
+        [self _flattenFolders: o  into: theTarget  parent: [[theFolders objectAtIndex: i] objectForKey: @"path"] parentType: [[theFolders objectAtIndex: i] objectForKey: @"type"]];
     }
 }
 
@@ -804,7 +808,7 @@ void handle_eas_terminate(int signum)
     }
 
   allFoldersMetadata = [NSMutableArray array];
-  [self _flattenFolders: [accountFolder allFoldersMetadata]  into: allFoldersMetadata  parent: nil];
+  [self _flattenFolders: [accountFolder allFoldersMetadata]  into: allFoldersMetadata  parent: nil parentType: nil];
   
   // Get GUIDs of folder (IMAP)
   // e.g. {folderINBOX = folder6b93c528176f1151c7260000aef6df92}

@@ -16,6 +16,7 @@ Bug fixes
  - [web] fixed crash when an attachment filename has no extension
  - [web] fixed selection of transparent all-day events (#3744)
  - [eas] handle base64 EAS protocol version
+ - [eas] handle missing IMAP folders from a hierarchy using EAS
 
 3.1.3 (2016-06-22)
 ------------------
