@@ -104,8 +104,6 @@ function onDelegationLoadHandler() {
         $("addDelegate").observe("mousedown", onDelegateAdd);
         $("deleteDelegate").observe("mousedown", onDelegateRemove);
     }
-
-    Event.observe(window, "unload", onDelegationCloseHandler);
 }
 
 document.observe("dom:loaded", onDelegationLoadHandler);
