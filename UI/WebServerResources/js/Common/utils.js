@@ -299,6 +299,8 @@ Date.prototype.addDays = function(nbrDays) {
     milliSeconds = this.getTime() + dstOffset*60*1000;
     this.setTime(milliSeconds);
   }
+
+  return this;
 };
 
 Date.prototype.addHours = function(nbrHours) {
@@ -321,6 +323,56 @@ Date.prototype.beginOfDay = function() {
     beginOfDay.setMilliseconds(0);
 
     return beginOfDay;
+};
+
+Date.prototype.firstWeekOfYearForDate = function(localeProvider) {
+  var firstWeekRule, dayOfWeek, januaryFirst, firstWeek;
+
+  firstWeekRule = localeProvider.firstWeekOfYear;
+
+  januaryFirst = new Date(this.getTime());
+  januaryFirst.setMonth(0);
+  januaryFirst.setDate(1);
+  dayOfWeek = januaryFirst.getDay();
+
+  if (firstWeekRule == 'First4DayWeek') {
+    if ((dayOfWeek + localeProvider.firstDayOfWeek) % 7 < 4)
+      firstWeek = januaryFirst.beginOfWeek(localeProvider.firstDayOfWeek);
+    else
+      firstWeek = januaryFirst.addDays(7).beginOfWeek(localeProvider.firstDayOfWeek);
+  }
+  else if (firstWeekRule == 'FirstFullWeek') {
+    if (dayOfWeek === 0)
+      firstWeek = januaryFirst.beginOfWeek(localeProvider.firstDayOfWeek);
+    else
+      firstWeek = januaryFirst.addDays(7).beginOfWeek(localeProvider.firstDayOfWeek);
+  }
+  else {
+    firstWeek = januaryFirst.beginOfWeek(localeProvider.firstDayOfWeek);
+  }
+
+  return firstWeek;
+};
+
+Date.prototype.getWeek = function(localeProvider) {
+  var firstWeek, previousWeek, weekNumber;
+
+  firstWeek = this.firstWeekOfYearForDate(localeProvider);
+  if (firstWeek.getTime() < this.getTime()) {
+    weekNumber = 1 + Math.floor((this.getTime() - firstWeek.getTime()) / (86400000 * 7));
+  }
+  else
+    {
+      // Date is within the last week of the previous year;
+      // Compute the previous week number to find the week number of the requested date.
+      // The number will either be 52 or 53.
+      previousWeek = new Date(this.getTime());
+      previousWeek.addDays(-7);
+      firstWeek = previousWeek.firstWeekOfYearForDate(localeProvider);
+      weekNumber = 2 + Math.floor((previousWeek.getTime() - firstWeek.getTime()) / (86400000 * 7));
+    }
+
+  return weekNumber;
 };
 
 Date.prototype.beginOfWeek = function(firstDayOfWeek) {
@@ -375,7 +427,7 @@ Date.prototype.getHourString = function() {
 Date.prototype.format = function(localeProvider, format) {
   var separators, parts, i, max,
       date = [],
-      validParts = /%[deaAmbByYHIMp]/g,
+      validParts = /%[deaAmbByYUHIMp]/g,
       val = {
         '%d': this.getDate(),                                  // day of month (e.g., 01)
         '%e': this.getDate(),                                  // day of month, space padded
@@ -386,6 +438,7 @@ Date.prototype.format = function(localeProvider, format) {
         '%B': localeProvider.months[this.getMonth()],          // locale's full month name (e.g., January)
         '%y': this.getFullYear().toString().substring(2),      // last two digits of year (00..99)
         '%Y': this.getFullYear(),                              // year
+        '%U': this.getWeek(localeProvider),                    // week of the year
         '%H': this.getHours(),                                 // hour (00..23)
         '%M': this.getMinutes() };                             // minute (00..59)
   val['%I'] = val['%H'] > 12 ? val['%H'] % 12 : val['%H'];     // hour (01..12)

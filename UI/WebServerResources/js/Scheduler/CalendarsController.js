@@ -25,7 +25,7 @@
     vm.showLinks = showLinks;
     vm.showProperties = showProperties;
     vm.subscribeToFolder = subscribeToFolder;
-    vm.today = today;
+    // vm.today = today;
 
     vm.filter = { name: '' };
     vm.toggleSortableMode = toggleSortableMode;
@@ -412,14 +412,14 @@
       });
     }
 
-    function today() {
-      var fragments = $window.location.hash.split('/'),
-          state = fragments[1],
-          view = fragments[2],
-          now = new Date(),
-          path = ['#', state, view, now.getDayString()];
-      $window.location = path.join('/');
-    }
+    // function today() {
+    //   var fragments = $window.location.hash.split('/'),
+    //       state = fragments[1],
+    //       view = fragments[2],
+    //       now = new Date(),
+    //       path = ['#', state, view, now.getDayString()];
+    //   $window.location = path.join('/');
+    // }
   }
 
   angular

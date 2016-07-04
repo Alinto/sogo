@@ -12,18 +12,24 @@
       <md-button class="md-icon-button"
                  label:aria-label="Previous Week"
                  var:date="prevWeekQueryParameters.day"
-                 ng-click="calendar.changeDate($event)"><md-icon>chevron_left</md-icon></md-button>
+                 ng-click="calendar.changeDate($event)"
+                 md-no-ink="md-no-ink"><md-icon>chevron_left</md-icon></md-button>
       <md-button class="md-icon-button"
                  label:aria-label="Next Week"
                  var:date="nextWeekQueryParameters.day"
-                 ng-click="calendar.changeDate($event)"><md-icon>chevron_right</md-icon></md-button>
-      <div class="md-flex"><var:string value="currentWeekName" /></div>
-      <md-button class="md-icon-button md-accent"
-                 label:aria-label="Today"
+                 ng-click="calendar.changeDate($event)"
+                 md-no-ink="md-no-ink"><md-icon>chevron_right</md-icon></md-button>
+      <md-datepicker md-hide-icons="triangle"
+                     md-open-on-focus="md-open-on-focus"
+                     ng-model="calendar.selectedDate"
+                     ng-change="calendar.changeDate($event, calendar.selectedDate)"
+                     sg-datepicker-readonly-input="true"><!-- date picker --></md-datepicker>
+      <div class="md-flex"><!-- spacer --></div>
+      <md-button label:aria-label="Today"
                  var:date="todayQueryParameters.day"
-                 ng-click="calendar.changeDate($event)">
-        <md-tooltip><var:string label:value="Today"/></md-tooltip>
-        <md-icon>today</md-icon>
+                 ng-click="calendar.changeDate($event)"
+                 md-no-ink="md-no-ink">
+        <var:string label:value="Today"/>
       </md-button>
       <a class="md-icon-button md-button"
          label:aria-label="Day"

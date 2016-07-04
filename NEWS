@@ -10,6 +10,7 @@ Enhancements
  - [eas] use the preferred email identity in EAS if valid (#3698)
  - [eas] handle inline attachments during EAS content generation
  - [web] all batch operations can now be performed on selected messages in advanced search mode
+ - [web] add date picker to change date, week, or month of current Calendar view
  - [oc] better handling of nested attachments with OpenChange
 
 Bug fixes

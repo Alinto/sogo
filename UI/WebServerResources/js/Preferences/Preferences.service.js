@@ -91,6 +91,10 @@
       // Configure date locale
       _this.$mdDateLocaleProvider = Preferences.$mdDateLocaleProvider;
       angular.extend(_this.$mdDateLocaleProvider, data.locale);
+      angular.extend(_this.$mdDateLocaleProvider, {
+        firstDayOfWeek: data.SOGoFirstDayOfWeek,
+        firstWeekOfYear: data.SOGoFirstWeekOfYear
+      });
       _this.$mdDateLocaleProvider.firstDayOfWeek = parseInt(data.SOGoFirstDayOfWeek);
       _this.$mdDateLocaleProvider.weekNumberFormatter = function(weekNumber) {
         return l('Week %d', weekNumber);
@@ -101,7 +105,7 @@
         return dateString? dateString.parseDate(_this.$mdDateLocaleProvider, data.SOGoShortDateFormat) : new Date(NaN);
       };
       _this.$mdDateLocaleProvider.formatDate = function(date) {
-        return date? date.format(_this.$mdDateLocaleProvider, data.SOGoShortDateFormat) : '';
+        return date? date.format(_this.$mdDateLocaleProvider, date.$dateFormat || data.SOGoShortDateFormat) : '';
       };
       _this.$mdDateLocaleProvider.parseTime = function(timeString) {
         return timeString? timeString.parseDate(_this.$mdDateLocaleProvider, data.SOGoTimeFormat) : new Date(NaN);
