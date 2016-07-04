@@ -17,11 +17,12 @@
    * @desc The factory we'll use to register with Angular
    * @returns the VirtualMailbox constructor
    */
-  VirtualMailbox.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Message', 'Mailbox', 'sgMailbox_PRELOAD', function($q, $timeout, $log, Settings, Mailbox, Message, PRELOAD) {
+  VirtualMailbox.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Message', 'Mailbox', 'sgMailbox_PRELOAD', function($q, $timeout, $log, Settings, Resource, Mailbox, Message, PRELOAD) {
     angular.extend(VirtualMailbox, {
       $q: $q,
       $timeout: $timeout,
       $log: $log,
+      $$resource: new Resource(Settings.activeUser('folderURL') + 'Mail', Settings.activeUser()),
       $Message: Message,
       selectedFolder: null,
       PRELOAD: PRELOAD
@@ -207,62 +208,143 @@
   };
 
   /**
+   * @function $selectedMessages
+   * @memberof VirtualMailbox.prototype
+   * @desc Return an associative array of the selected messages for each mailbox. Keys are the mailboxes ids.
+   * @returns an associative array
+   */
+  VirtualMailbox.prototype.$selectedMessages = function() {
+    var messagesMap = {};
+    return _.transform(this.$mailboxes, function(messagesMap, mailbox) {
+      messagesMap[mailbox.id] = mailbox.$selectedMessages();
+    }, {});
+  };
+
+  /**
    * @function $selectedCount
    * @memberof VirtualMailbox.prototype
    * @desc Return the number of messages selected by the user.
    * @returns the number of selected messages
    */
   VirtualMailbox.prototype.$selectedCount = function() {
-    // TODO
-    return 0;
+    return _.sum(_.invokeMap(this.$mailboxes, '$selectedCount'));
   };
 
   /**
    * @function $flagMessages
    * @memberof VirtualMailbox.prototype
    * @desc Add or remove a flag on a message set
+   * @param {object} messagesMap
+   * @param {array} flags
+   * @param {string} operation
    * @returns a promise of the HTTP operation
    */
-  VirtualMailbox.prototype.$flagMessages = function(uids, flags, operation) {
-    // TODO
-    // var data = {msgUIDs: uids,
-    //             flags: flags,
-    //             operation: operation};
+  VirtualMailbox.prototype.$flagMessages = function(messagesMap, flags, operation) {
+    var data = {
+      flags: flags,
+      operation: operation
+    };
+    var allMessages = [];
+    var promises = [];
 
-    // return VirtualMailbox.$$resource.post(this.id, 'addOrRemoveLabel', data);
+    _.forEach(messagesMap, function(messages, id) {
+      if (messages.length > 0) {
+        var uids = _.map(messages, 'uid');
+        allMessages.push(messages);
+        var promise = VirtualMailbox.$$resource.post(id, 'addOrRemoveLabel', _.assign(data, {msgUIDs: uids}));
+        promises.push(promise);
+      }
+    });
+
+    return VirtualMailbox.$q.all(promises).then(function() {
+      return _.flatten(allMessages);
+    });
   };
 
   /**
    * @function $deleteMessages
    * @memberof VirtualMailbox.prototype
    * @desc Delete multiple messages from mailbox.
+   * @param {object} messagesMap
    * @return a promise of the HTTP operation
    */
-  VirtualMailbox.prototype.$deleteMessages = function(uids) {
-    // TODO
-    //return VirtualMailbox.$$resource.post(this.id, 'batchDelete', {uids: uids});
+  VirtualMailbox.prototype.$deleteMessages = function(messagesMap) {
+    var promises = [];
+
+    _.forEach(messagesMap, function(messages, id) {
+      if (messages.length > 0) {
+        var mailbox = messages[0].$mailbox;
+        var promise = mailbox.$deleteMessages(messages);
+        promises.push(promise);
+      }
+    });
+
+    return VirtualMailbox.$q.all(promises);
+  };
+
+  /**
+   * @function $markOrUnMarkMessagesAsJunk
+   * @memberof VirtualMailbox.prototype
+   * @desc Mark messages as junk/not junk
+   * @param {object} messagesMap
+   * @return a promise of the HTTP operation
+   */
+  VirtualMailbox.prototype.$markOrUnMarkMessagesAsJunk = function(messagesMap) {
+    var promises = [];
+
+    _.forEach(messagesMap, function(messages, id) {
+      if (messages.length > 0) {
+        var mailbox = messages[0].$mailbox;
+        var promise = mailbox.$markOrUnMarkMessagesAsJunk(messages);
+        promises.push(promise);
+      }
+    });
+
+    return VirtualMailbox.$q.all(promises);
   };
 
   /**
    * @function $copyMessages
    * @memberof VirtualMailbox.prototype
    * @desc Copy multiple messages from the current mailbox to a target one
+   * @param {object} messagesMap
+   * @param {string} folder
    * @return a promise of the HTTP operation
    */
-  VirtualMailbox.prototype.$copyMessages = function(uids, folder) {
-    // TODO
-    //return VirtualMailbox.$$resource.post(this.id, 'copyMessages', {uids: uids, folder: folder});
+  VirtualMailbox.prototype.$copyMessages = function(messagesMap, folder) {
+    var promises = [];
+
+    _.forEach(messagesMap, function(messages, id) {
+      if (messages.length > 0) {
+        var mailbox = messages[0].$mailbox;
+        var promise = mailbox.$copyMessages(messages, folder);
+        promises.push(promise);
+      }
+    });
+
+    return VirtualMailbox.$q.all(promises);
   };
 
   /**
    * @function $moveMessages
    * @memberof VirtualMailbox.prototype
    * @desc Move multiple messages from the current mailbox to a target one
+   * @param {object} messagesMap
+   * @param {string} folder
    * @return a promise of the HTTP operation
    */
-  VirtualMailbox.prototype.$moveMessages = function(uids, folder) {
-    // TODO
-    //return VirtualMailbox.$$resource.post(this.id, 'moveMessages', {uids: uids, folder: folder});
+  VirtualMailbox.prototype.$moveMessages = function(messagesMap, folder) {
+    var promises = [];
+
+    _.forEach(messagesMap, function(messages, id) {
+      if (messages.length > 0) {
+        var mailbox = messages[0].$mailbox;
+        var promise = mailbox.$moveMessages(messages, folder);
+        promises.push(promise);
+      }
+    });
+
+    return VirtualMailbox.$q.all(promises);
   };
 
 })();

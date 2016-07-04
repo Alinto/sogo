@@ -780,35 +780,53 @@
   NSDictionary *content, *result;
   BOOL addOrRemove;
   NGImap4Client *client;
-  id flag;
+  id o, flag;
 
   int i;
 
   request = [context request];
   content = [[request contentAsString] objectFromJSONString];
-  flags = [NSMutableArray arrayWithObject:[content objectForKey:@"flags"]];
-  msgUIDs = [NSArray arrayWithArray:[content objectForKey:@"msgUIDs"]];
+  flags = nil;
+  msgUIDs = nil;
+
+  // Validate parameters
+  o = [content objectForKey:@"flags"];
+  if ([o isKindOfClass: [NSString class]])
+    flags = [NSMutableArray arrayWithObject: o];
+  o = [content objectForKey:@"msgUIDs"];
+  if ([o isKindOfClass: [NSArray class]])
+    msgUIDs = [NSArray arrayWithArray: o];
   operation = [content objectForKey:@"operation"];
   addOrRemove = ([operation isEqualToString:@"add"]? YES: NO);
 
-  // We unescape our flags
-  for (i = [flags count]-1; i >= 0; i--)
+  if (!flags || !msgUIDs)
     {
-      flag = [flags objectAtIndex: i];
-      if ([flag isKindOfClass: [NSString class]])
-        [flags replaceObjectAtIndex: i  withObject: [flag fromCSSIdentifier]];
-      else
-        [flags removeObjectAtIndex: i];
+      result = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing 'flags' and 'msgUIDs' parameters."
+                                                           inContext: context]
+                                           forKey: @"error"];
+      response = [self responseWithStatus: 500 andJSONRepresentation: result];
     }
-
-  co = [self clientObject];
-  client = [[co imap4Connection] client];
-  [[co imap4Connection] selectFolder: [co imap4URL]];
-  result = [client storeFlags:flags forUIDs:msgUIDs addOrRemove:addOrRemove];
-  if ([[result valueForKey: @"result"] boolValue])
-    response = [self responseWith204];
   else
-    response = [self responseWithStatus: 500 andJSONRepresentation: result];
+    {
+      // We unescape our flags
+      for (i = [flags count]-1; i >= 0; i--)
+        {
+          flag = [flags objectAtIndex: i];
+          if ([flag isKindOfClass: [NSString class]])
+            [flags replaceObjectAtIndex: i  withObject: [flag fromCSSIdentifier]];
+          else
+            [flags removeObjectAtIndex: i];
+        }
+
+      co = [self clientObject];
+      client = [[co imap4Connection] client];
+      [[co imap4Connection] selectFolder: [co imap4URL]];
+      result = [client storeFlags:flags forUIDs:msgUIDs addOrRemove:addOrRemove];
+      if ([[result valueForKey: @"result"] boolValue])
+        response = [self responseWith204];
+      else
+        response = [self responseWithStatus: 500 andJSONRepresentation: result];
+    }
 
   return response;
 }
