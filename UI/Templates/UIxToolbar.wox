@@ -11,7 +11,7 @@
       <var:foreach list="toolbarConfig" item="toolbarGroup">
         <var:foreach list="toolbarGroup" item="buttonInfo">
           <var:if condition="isButtonEnabled">
-            <a var:class="cssClasses"
+            <a var:class="cssClasses" draggable="false" ondragstart="return false"
               var:href="buttonInfo.link"
               var:target="buttonInfo.target"
               var:onclick="buttonInfo.onclick"
@@ -27,7 +27,7 @@
           
           <var:if condition="isButtonEnabled" const:negate="YES">
             <span var:class="cssClasses">
-              <img class="buttonImage"
+              <img class="buttonImage" draggable="false" ondragstart="return false"
                 var:src="buttonImage"
                 var:alt="buttonTooltip"/><br/>
                 <span class="buttonLabel">

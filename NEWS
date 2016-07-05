@@ -15,6 +15,7 @@ Enhancements
 
 Bug fixes
  - [web] fixed crash when an attachment filename has no extension
+ - [web] dragging a toolbar button was blocking the mail editor in Firefox
  - [eas] handle base64 EAS protocol version
 
 2.3.12 (2016-06-10)

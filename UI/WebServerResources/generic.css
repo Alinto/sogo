@@ -1072,7 +1072,11 @@ DIV#toolbar
   margin: 0px;
   padding: 0px;
   white-space: nowrap;
-  overflow: hidden; }
+  overflow: hidden;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
 
 BODY.popup DIV#toolbar
 { border-top: 0px; }
