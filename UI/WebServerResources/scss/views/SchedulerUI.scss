@@ -333,6 +333,11 @@ $quarter_height: 10px;
         );
         pointer-events: none;
       }
+
+      // Event is cancelled
+      &--cancelled .text {
+        text-decoration: line-through;
+      }
     }
 
     .eventInside {

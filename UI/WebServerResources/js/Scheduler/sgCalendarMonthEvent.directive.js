@@ -68,6 +68,10 @@
           // Add class for transparency
           if (scope.block.component.c_isopaque === 0)
             iElement.addClass('sg-event--transparent');
+
+          // Add class for cancelled event
+          if (scope.block.component.c_status === 0)
+            iElement.addClass('sg-event--cancelled');
         }
 
       }
