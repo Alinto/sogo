@@ -358,18 +358,22 @@ static Class NSNullK;
   NSDictionary *contactInfos;
   NSString *cn, *email, *fullEmail;
 
+  fullEmail = nil;
   contactInfos = [self contactInfosForUserWithUIDorEmail: uid];
-  email = [contactInfos objectForKey: @"c_email"];
-  cn = [contactInfos objectForKey: @"cn"];
-  if ([cn length] > 0)
+  if (contactInfos)
     {
-      if ([email length] > 0)
-        fullEmail = [NSString stringWithFormat: @"%@ <%@>", cn, email];
+      email = [contactInfos objectForKey: @"c_email"];
+      cn = [contactInfos objectForKey: @"cn"];
+      if ([cn length] > 0)
+        {
+          if ([email length] > 0)
+            fullEmail = [NSString stringWithFormat: @"%@ <%@>", cn, email];
+          else
+            fullEmail = cn;
+        }
       else
-        fullEmail = cn;
+        fullEmail = email;
     }
-  else
-    fullEmail = email;
 
   return fullEmail;
 }

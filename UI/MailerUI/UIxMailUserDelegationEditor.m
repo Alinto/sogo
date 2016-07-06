@@ -84,14 +84,15 @@
 - (NSString *) currentDelegateDisplayName
 {
   SOGoUserManager *um;
-  NSString *s;
+  NSString *s, *fullEmail;
 
   um = [SOGoUserManager sharedUserManager];
   s = ([currentDelegate hasPrefix: @"@"]
        ? [currentDelegate substringFromIndex: 1]
        : currentDelegate);
+  fullEmail = [um getFullEmailForUID: s];
 
-  return [um getFullEmailForUID: s];
+  return fullEmail? fullEmail : currentDelegate;
 }
 
 - (id) defaultAction
