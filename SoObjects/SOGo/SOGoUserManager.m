@@ -598,6 +598,9 @@ static Class NSNullK;
   jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: username];
   currentUser = [jsonUser objectFromJSONString];
 
+  if ([currentUser isKindOfClass: NSNullK])
+    currentUser = nil;
+
   //
   // If we are using multidomain and the UIDFieldName is not part of the email address
   // we must bind without the domain part since internally, SOGo will use
@@ -611,7 +614,7 @@ static Class NSNullK;
   // and authenticates with "foo", using bindFields = (uid, mail) and SOGoEnableDomainBasedUID = YES;
   // Otherwise, -_sourceCheckLogin:... would have failed because SOGo would try to bind using: foo@example.com
   //
-  if ([[currentUser objectForKey: @"DomainLessLogin"] boolValue])
+  if (currentUser && [[currentUser objectForKey: @"DomainLessLogin"] boolValue])
     {
       NSRange r;
 
@@ -619,7 +622,7 @@ static Class NSNullK;
       _login = [_login substringToIndex: r.location];
     }
 
-  dictPassword = [currentUser objectForKey: @"password"];
+  dictPassword = (currentUser ? [currentUser objectForKey: @"password"] : nil);
   if (useCache && currentUser && dictPassword)
     {
       checkOK = ([dictPassword isEqualToString: [_pwd asSHA1String]]);
@@ -710,6 +713,9 @@ static Class NSNullK;
 
   jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: login];
   currentUser = [jsonUser objectFromJSONString];
+
+  if ([currentUser isKindOfClass: NSNullK])
+    currentUser = nil;
 
   if ([self _sourceChangePasswordForLogin: login
                                  inDomain: domain
