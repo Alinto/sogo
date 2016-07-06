@@ -24,84 +24,9 @@
 #import <SOGoUI/UIxComponent.h>
 
 @interface UIxMailUserDelegationEditor : UIxComponent
-// {
-//   NSArray *delegates;
-//   NSString *currentDelegate;
-// }
-
-// - (NSArray *) delegates;
-// - (void) setCurrentDelegate: (NSString *) newCurrentDelegate;
-// - (NSString *) currentDelegate;
 
 @end
 
 @implementation UIxMailUserDelegationEditor
-
-// - (id) init
-// {
-//   if ((self = [super init]))
-//     {
-//       delegates = nil;
-//       currentDelegate = nil;
-//     }
-
-//   return self;
-// }
-
-// - (void) dealloc
-// {
-//   [delegates release];
-//   [currentDelegate release];
-//   [super dealloc];
-// }
-
-// - (NSArray *) delegates
-// {
-//   if (!delegates)
-//     {
-//       delegates = [[self clientObject] delegates];
-//       [delegates retain];
-//     }
-
-//   return delegates;
-// }
-
-// - (void) setCurrentDelegate: (NSString *) newCurrentDelegate
-// {
-//   ASSIGN (currentDelegate, newCurrentDelegate);
-// }
-
-// - (NSString *) currentDelegate
-// {
-//   return currentDelegate;
-// }
-
-// - (NSString *) currentDelegateDisplayName
-// {
-//   SOGoUserManager *um;
-//   NSString *s;
-
-//   um = [SOGoUserManager sharedUserManager];
-//   s = ([currentDelegate hasPrefix: @"@"]
-//        ? [currentDelegate substringFromIndex: 1]
-//        : currentDelegate);
-
-//   return [um getFullEmailForUID: s];
-// }
-
-// - (id) defaultAction
-// {
-//   id response;
-//   SOGoMailAccount *co;
-
-//   co = [self clientObject];
-//   if ([[co nameInContainer] isEqualToString: @"0"])
-//     response = self;
-//   else
-//     response = [self responseWithStatus: 403
-//                               andString: @"The list of account delegates cannot be modified on secondary accounts."];
-
-//   return response;
-// }
 
 @end

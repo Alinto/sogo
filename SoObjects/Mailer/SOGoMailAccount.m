@@ -1100,7 +1100,7 @@ static NSString *inboxFolderName = @"INBOX";
       max = [newDelegates count];
       for (count = 0; count < max; count++)
         {
-          currentDelegate = [newDelegates objectAtIndex: 0];
+          currentDelegate = [newDelegates objectAtIndex: count];
           delegateUser = [SOGoUser userWithLogin: currentDelegate];
           if (delegateUser)
             {
@@ -1127,7 +1127,7 @@ static NSString *inboxFolderName = @"INBOX";
       max = [oldDelegates count];
       for (count = 0; count < max; count++)
         {
-          currentDelegate = [oldDelegates objectAtIndex: 0];
+          currentDelegate = [oldDelegates objectAtIndex: count];
           delegateUser = [SOGoUser userWithLogin: currentDelegate];
           if (delegateUser)
             {
