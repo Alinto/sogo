@@ -199,10 +199,6 @@
 "Back" = "Terug";
 "Select All" = "Alles selecteren";
 "Copy contacts" = "Kopieer contactpersonen";
-
-/* Notification on the number of messages successfully copied */
-"%{0} cards copied" = "%{0} contactpersonen gekopieerd";
-
 "More messages options" = "Meer berichtopties";
 "New Contact" = "Nieuwe contactpersoon";
 "Close" = "Sluiten";

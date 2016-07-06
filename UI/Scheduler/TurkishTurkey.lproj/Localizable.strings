@@ -57,7 +57,7 @@
 "Publish Calendar..." = "Takvimi Yayınla...";
 "Reload Remote Calendars" = "Uzak Takvimleri Tazele";
 "Properties" = "Özellikler";
-"Done" = "Tamamlandı";
+"Done" = "Tamam";
 "An error occurred while importing calendar." = "Takvimi içeri aktarırken bir hata oluştu.";
 "No event was imported." = "İçeri aktarılan etkinlik yok.";
 "A total of %{0} events were imported in the calendar." = "Toplam %{0} etkinlik takvime aktarıldı.";
@@ -75,9 +75,9 @@
 "Access rights to" = "Erişim yetkileri";
 "For user" = "Aşağıdaki kullanıcı için";
 "Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
-"Public Access" = "Halka Açık Erişim";
-"label_Public" = "Halka Açık";
-"label_Private" = "Özel";
+"Public Access" = "Herkese Açık Erişim";
+"label_Public" = "Herkese Açık";
+"label_Private" = "Kişisel";
 "label_Confidential" = "Gizli";
 "label_Viewer" = "Hepsini Görüntüler";
 "label_DAndTViewer" = "Günü ve Saati Görüntüler";
@@ -129,7 +129,7 @@
 "Show already accepted and rejected appointments" = "Kabul edilmiş ve reddedilmiş buluşmaları göster";
 
 /* Print view */
-"LIST" = "Listele";
+"LIST" = "Liste";
 "Print Settings" = "Yazdırma Ayarları";
 "Title" = "Başlık";
 "Layout" = "Düzenleme";
@@ -139,8 +139,8 @@
 "Display working hours only" = "Sadece çalışma saatlerini göster";
 "Completed tasks" = "Tamamlanmış Görevler";
 "Display events and tasks colors" = "Etkinlik ve görev renklerini göster";
-"Borders" = "Sınırlar";
-"Backgrounds" = "Arka Plan";
+"Borders" = "Kenarlar";
+"Backgrounds" = "Arkaplan";
 
 /* Appointments */
 "Appointment viewer" = "Buluşma Gösterici";
@@ -169,8 +169,8 @@
 "Description" = "Tanım";
 "Document" = "Belge";
 "Category" = "Kategori";
-"Repeat" = "Tekrar Sıklığı";
-"Reminder" = "Hatırlatma";
+"Repeat" = "Tekrar";
+"Reminder" = "Hatırlatıcı";
 "General" = "Genel";
 "Reply" = "Yanıtla";
 "Created by" = "Oluşturan";
@@ -181,15 +181,15 @@
 "delegated from" = "tarafından temsilci atandı";
 
 /* checkbox title */
-"is private" = "özel mi";
+"is private" = "kişisel mi";
 
 /* classification */
-"Public" = "Halka Açık";
-"Private" = "Özel";
+"Public" = "Herkese Açık";
+"Private" = "Kişisel";
 
 /* text used in overviews and tooltips */
 "empty title" = "Boş başlık";
-"private appointment" = "Özel buluşma";
+"private appointment" = "Kişisel buluşma";
 "Change..." = "Değiştir...";
 
 /* Appointments (participation state) */
@@ -232,11 +232,11 @@
 /* calendar modes */
 "Overview" = "Genel görünüm";
 "Chart" = "Çizelge";
-"List" = "Listele";
+"List" = "Liste";
 "Columns" = "Sütunlar";
 
 /* Priorities */
-"prio_0" = "Belirtilmemiş";
+"prio_0" = "Belirlenmemiş";
 "prio_1" = "Yüksek";
 "prio_2" = "Yüksek";
 "prio_3" = "Yüksek";
@@ -248,16 +248,16 @@
 "prio_9" = "Düşük";
 
 /* access classes (privacy) */
-"PUBLIC_vevent" = "Halka Açık Etkinlik";
+"PUBLIC_vevent" = "Herkese Açık Etkinlik";
 "CONFIDENTIAL_vevent" = "Gizli Etkinlik";
-"PRIVATE_vevent" = "Özel Etkinlik";
-"PUBLIC_vtodo" = "Halka Açık Görev";
+"PRIVATE_vevent" = "Kişisel Etkinlik";
+"PUBLIC_vtodo" = "Herkese Açık Görev";
 "CONFIDENTIAL_vtodo" = "Gizli Görev";
-"PRIVATE_vtodo" = "Özel görev";
+"PRIVATE_vtodo" = "Kişisel görev";
 
 /* status type */
-"status_" = "Belirtilmemiş";
-"status_NOT-SPECIFIED" = "Belirtilmemiş";
+"status_" = "Belirlenmemiş";
+"status_NOT-SPECIFIED" = "Belirlenmemiş";
 "status_TENTATIVE" = "Geçici";
 "status_CONFIRMED" = "Onaylandi";
 "status_CANCELLED" = "İptal edildi";
@@ -286,7 +286,7 @@
 "cycle_end_never" = "bitmeyen_tekrar";
 "cycle_end_until" = "tarihine_kadar_tekrar";
 "Recurrence pattern" = "Tekrar örüntüsü";
-"Range of recurrence" = "Tekrar aralığı";
+"Range of recurrence" = "Tekrar Süresi";
 "Daily" = "Günlük";
 "Multi-Columns" = "Çoklu-Sütun";
 "Weekly" = "Haftalık";
@@ -306,9 +306,9 @@
 /* [Event recurrence editor] Ex: Every first Sunday _of_ April */
 "cycle_of" = "-";
 "No end date" = "Bitiş tarihi yok";
-"Create" = "Oluştur";
-"appointment(s)" = "buluşma(lar)";
-"Repeat until" = "Şu Zamana Tekrar et";
+"Create" = "Sadece";
+"appointment(s)" = "buluşma";
+"Repeat until" = "Şu Tarihe Kadar Tekrar Et";
 "End Repeat" = "Tekrar Bitişi";
 "Never" = "Hiç bir zaman";
 "After" = "Şu tekrardan sonra";
@@ -332,7 +332,7 @@
 "repeat_MONTHLY" = "Aylık";
 "repeat_YEARLY" = "Yıllık";
 "repeat_CUSTOM" = "Özel...";
-"reminder_NONE" = "Hatırlatma yok";
+"reminder_NONE" = "Hatırlatıcı yok";
 "reminder_5_MINUTES_BEFORE" = "5 dakika önce";
 "reminder_10_MINUTES_BEFORE" = "10 dakika önce";
 "reminder_15_MINUTES_BEFORE" = "15 dakika önce";
@@ -449,15 +449,15 @@ validate_endbeforestart    = "Girdiğiniz bitiş tarihi, başlangıç tarihinden
 
 /* events list */
 "Due" = "Son Tarih";
-"(Private Event)" = "(Özel Etkinlik)";
-vevent_class0 = "(Halka açık etkinlik)";
-vevent_class1 = "(Özel etkinlik)";
+"(Private Event)" = "(Kişisel Etkinlik)";
+vevent_class0 = "(Herkese açık etkinlik)";
+vevent_class1 = "(Kişisel etkinlik)";
 vevent_class2 = "(Gizli etkinlik)";
 
 /* tasks list */
 "Descending Order" = "Azalan Sıralama";
-vtodo_class0 = "(Halka Açık görev)";
-vtodo_class1 = "(Özel görev)";
+vtodo_class0 = "(Herkese Açık görev)";
+vtodo_class1 = "(Kişisel görev)";
 vtodo_class2 = "(Gizli görev)";
 "closeThisWindowMessage" = "Teşekkürler! Bu pencereyi kapatabilir veya şunları görüntüleyebilirsiniz";
 "Multicolumn Day View" = "Çok Sütunlu Günlük Görünüm";

@@ -44,8 +44,8 @@
 "Add default email addresses" = "Varsayılan e-posta adresi ekle";
 "Days between responses" = "Yanıtlar arasındaki gün sayısı";
 "Do not send responses to mailing lists" = "Yanıtları e-posta listelerine gönderme";
-"Enable auto reply on" = "Otomatik yanıtlamayı şu tarihte etkinleştir";
-"Disable auto reply on" = "Otomatik yanıtlamayı şu tarihte devre dışı bırak";
+"Enable auto reply on" = "Otomatik yanıtlamayı şu tarihlerde etkinleştir";
+"Disable auto reply on" = "Otomatik yanıtlamayı şu tarihlerde devre dışı bırak";
 "Always send vacation message response" = "Her zaman tatil yanıtı iletisi gönder";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Lütfen otomatik yanıtı etkinleştireceğiniz e-posta adreslerini ve yanıt iletinizi belirleyin.";
@@ -114,7 +114,7 @@
 "Week days to display" = "Gösterilen günler";
 "Show time as busy outside working hours" = "Çalışma saati dışındaki saatleri meşgul olarak göster";
 "First week of year" = "Yılın ilk haftası";
-"Enable reminders for Calendar items" = "Takvim ögeleri için hatırlatmaları etkinleştir";
+"Enable reminders for Calendar items" = "Takvim ögeleri için hatırlatıcıları etkinleştir";
 "Play a sound when a reminder comes due" = "Hatırlatma zamanı geldiğinde sesli olarak uyar";
 "Default reminder" = "Varsayılan hatırlatma süresi";
 "firstWeekOfYear_January1" = "1 Ocak'da başlar";
@@ -129,7 +129,7 @@
 "selectedCalendar" = "Seçili takvim";
 "personalCalendar" = "Kişisel takvim";
 "firstCalendar" = "İlk etkin takvim";
-"reminder_NONE" = "Hatırlatma yok";
+"reminder_NONE" = "Hatırlatıcı yok";
 "reminder_5_MINUTES_BEFORE" = "5 dakika önce";
 "reminder_10_MINUTES_BEFORE" = "10 dakika önce";
 "reminder_15_MINUTES_BEFORE" = "15 dakika önce";
@@ -148,7 +148,7 @@
 "Label" = "Etiket";
 "Show subscribed mailboxes only" = "Sadece üye olunan e-posta klasörlerini göster";
 "Synchronize only default mail folders (EAS)" = "Sadece varsayılan e-posta klasörlerini eşitle (EAS)";
-"Sort messages by threads" = "İletileri zincirleme sırala";
+"Sort messages by threads" = "İlişkili iletileri zincirleme sırala";
 "When sending mail, add unknown recipients to my" = "İleti gönderirken, kayıtlı olmayan alıcıları aşağıdaki adres defterime ekle";
 "Address Book" = "Adres Defteri";
 "Forward messages" = "Başkasına İletilen e-postayı";
@@ -205,9 +205,9 @@
 /* Event+task classifications */
 "Default events classification" = "Varsayılan etkinlik sınıflandırması";
 "Default tasks classification" = "Varsayılan görev sınıflandırması";
-"PUBLIC_item" = "Halka Açık";
+"PUBLIC_item" = "Herkese Açık";
 "CONFIDENTIAL_item" = "Gizli";
-"PRIVATE_item" = "Özel";
+"PRIVATE_item" = "Kişisel";
 
 /* Event+task categories */
 "Calendar Category" = "Takvim Kategorisi";
@@ -301,7 +301,7 @@
 "For incoming messages that" = "Gelen iletiler";
 "match all of the following rules" = "aşağıdaki tüm kurallarla eşleşiyorsa";
 "match any of the following rules" = "aşağıdaki kurallardan biriyle eşleşiyorsa";
-"match all messages" = "hepsi";
+"match all messages" = "tüm iletilerle eşleşiyorsa";
 "Perform these actions" = "Şu eylemleri gerçekleştir";
 "Untitled Filter" = "Başlıksız Süzgeç";
 "Subject" = "Konu";

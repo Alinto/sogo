@@ -1,11 +1,11 @@
 "Inviting the following persons is prohibited:" = "Bu kişileri davet etmek yasaklanmış:";
 "Personal Calendar" = "Kişisel Takvim";
-vevent_class0 = "(Halka Açık etkinlik)";
-vevent_class1 = "(Özel etkinlik)";
+vevent_class0 = "(Herkese açık etkinlik)";
+vevent_class1 = "(Kişisel etkinlik)";
 vevent_class2 = "(Gizli etkinlik)";
 
-vtodo_class0 = "(Halka Açık görev)";
-vtodo_class1 = "(Özel görev)";
+vtodo_class0 = "(Herkese açık görev)";
+vtodo_class1 = "(Kişisel görev)";
 vtodo_class2 = "(Gizli görev)";
 /* Receipts */
 "The event \"%{Summary}\" was created" = "\"%{Summary}\" etkinliği oluşturuldu";

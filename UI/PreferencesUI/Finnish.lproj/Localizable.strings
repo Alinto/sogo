@@ -7,7 +7,7 @@
 "Unsaved Changes" = "Tallentamattomat muutokset";
 
 /* Unsaved changes confirmation dialog text */
-"Do you want to save your changes made to the configuration?" = "Haluatko tallentaa konfiguraatioon tekemääsi muutokset?";
+"Do you want to save your changes made to the configuration?" = "Haluatko tallentaa asetuksiin tekemäsi muutokset?";
 
 /* Unsaved changes confirmation dialog button */
 "Save" = "Tallenna";

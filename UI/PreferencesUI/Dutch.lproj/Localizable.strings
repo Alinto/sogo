@@ -3,11 +3,23 @@
 "Close" = "Sluiten";
 "Preferences saved" = "Voorkeuren opgeslagen";
 
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Niet-opgeslagen wijzigingen";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Wilt u uw wijzigingen opslaan?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Opslaan";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Niet opslaan";
+
 /* tabs */
 "General" = "Algemeen";
 "Calendar Options" = "Agenda Opties";
 "Contacts Options" = "Adresboek";
-"Mail Options" = "E-mail";
+"Mail Options" = "Mailopties";
 "IMAP Accounts" = "IMAP Accounts";
 "Vacation" = "Afwezigheid";
 "Forward" = "Doorsturen";
@@ -24,15 +36,19 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Automatisch bericht bij afwezigheid inschakelen";
+"Enable custom auto reply subject" = "Aangepast automatisch antwoord op onderwerp inschakelen";
+"Auto reply subject" = "Automatisch antwoorden op onderwerp";
+"You can write ${subject} to insert the original subject" = "Schrijf ${subject} om het oorspronkelijke onderwerp in te voegen";
 "Auto reply message" = "Automatisch eenmalig met het volgende bericht beantwoorden";
 "Email addresses (separated by commas)" = "E-mailaddressen (gescheiden door komma's)";
 "Add default email addresses" = "Standaard e-mailadres toevoegen";
 "Days between responses" = "Dagen tussen reacties";
 "Do not send responses to mailing lists" = "Geen reacties naar maillinglijsten sturen";
+"Enable auto reply on" = "Automatisch beantwoorden inschakelen";
 "Disable auto reply on" = "Automatisch bericht bij afwezigheid uitschakelen op";
 "Always send vacation message response" = "Afwezigheidsbericht altijd versturen";
 "Please specify your message and your email addresses for which you want to enable auto reply."
-= "Geeft u alstublieft de tekst van het automatische bericht bij afwezigheid op en de e-mailadressen waarvoor het moet worden geactiveerd.";
+= "Geef alstublieft de tekst van het automatische bericht bij afwezigheid en de e-mailadressen waarvoor het moet worden geactiveerd op.";
 "Your vacation message must not end with a single dot on a line." = "Uw automatisch bericht bij afwezigheid mag niet eindigen met een enkele punt op een regel.";
 "End date of your auto reply must be in the future."
 = "Einddatum van uw automatische antwoord moet in de toekomst liggen.";
@@ -50,7 +66,7 @@
 "Short Date Format" = "Kort datumformaat";
 "Long Date Format" = "Lang datumformaat";
 "Time Format" = "Tijdformaat";
-"default" = "Default";
+"default" = "Standaard";
 "Default Module" = "Standaardmodule";
 "Save" = "Opslaan";
 "shortDateFmt_0" = "%d-%b-%y";
@@ -87,11 +103,15 @@
 "timeFmt_3" = "";
 "timeFmt_4" = "";
 
+/* Timezone autocompletion */
+"No matches found." = "Geen overeenkomsten gevonden";
+
 /* calendar */
 "Week begins on" = "Week begint op";
 "Day start time" = "Dag begint om";
 "Day end time" = "Dag eindigt om";
 "Day start time must be prior to day end time." = "Het begin van de dag moet voor het einde liggen.";
+"Week days to display" = "Weer te geven dagen van de week";
 "Show time as busy outside working hours" = "Tijd buiten werkdag weergeven als bezet";
 "First week of year" = "Eerste week van het jaar";
 "Enable reminders for Calendar items" = "Herinneringen inschakelen voor afspraken";
@@ -100,7 +120,7 @@
 "firstWeekOfYear_January1" = "Begint op 1 januari";
 "firstWeekOfYear_First4DayWeek" = "Eerste week met 4 dagen";
 "firstWeekOfYear_FirstFullWeek" = "Eerste volledige week";
-"Prevent from being invited to appointments" = "Voorkom uitnodigingen voor gebeurtenissen";
+"Prevent from being invited to appointments" = "Voorkom uitnodigingen voor afspraken";
 "White list for appointment invitations" = "Whitelist voor uitnodigingen";
 "Contacts Names" = "Contactnamen";
 
@@ -115,10 +135,10 @@
 "reminder_15_MINUTES_BEFORE" = "15 minuten";
 "reminder_30_MINUTES_BEFORE" = "30 minuten";
 "reminder_45_MINUTES_BEFORE" = "45 minuten van tevoren";
-"reminder_1_HOUR_BEFORE" = "1 uur";
-"reminder_2_HOURS_BEFORE" = "2 uren";
-"reminder_5_HOURS_BEFORE" = "5 uren";
-"reminder_15_HOURS_BEFORE" = "15 uren";
+"reminder_1_HOUR_BEFORE" = "1 uur van tevoren";
+"reminder_2_HOURS_BEFORE" = "2 uren van tevoren";
+"reminder_5_HOURS_BEFORE" = "5 uren van tevoren";
+"reminder_15_HOURS_BEFORE" = "15 uren van tevoren";
 "reminder_1_DAY_BEFORE" = "1 dag";
 "reminder_2_DAYS_BEFORE" = "2 dagen";
 "reminder_1_WEEK_BEFORE" = "1 week van tevoren";
@@ -127,6 +147,7 @@
 "Labels" = "Labels";
 "Label" = "Labelen";
 "Show subscribed mailboxes only" = "Toon alleen geabonneerde postvakken";
+"Synchronize only default mail folders (EAS)" = "Alleen standaard e-mailmappen synchroniseren (EAS)";
 "Sort messages by threads" = "Berichten sorteren op threads";
 "When sending mail, add unknown recipients to my" = "Bij het versturen van mail, voeg onbekende ontvangers toe aan mijn";
 "Address Book" = "Adresboek";
@@ -142,6 +163,10 @@
 "Compose messages in" = "Berichten opstellen in";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Platte tekst";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Standaard lettergrootte";
+
 "Display remote inline images" = "Externe afbeeldingen tonen";
 "displayremoteinlineimages_never" = "Nooit";
 "displayremoteinlineimages_always" = "Altijd";
@@ -150,7 +175,7 @@
 
 /* Contact */
 "Personal Address Book" = "Persoonlijk adresboek";
-"Collected Address Book" = "Verzameld adresboek";
+"Collected Address Book" = "Verzamelde adressen";
 
 /* IMAP Accounts */
 "Mail Account" = "Mailaccount";
@@ -180,7 +205,7 @@
 /* Event+task classifications */
 "Default events classification" = "Standaardclassificatie afspraken";
 "Default tasks classification" = "Standaardclassificatie taken";
-"PUBLIC_item" = "Publiek";
+"PUBLIC_item" = "Openbaar";
 "CONFIDENTIAL_item" = "Vertrouwelijk";
 "PRIVATE_item" = "Privé";
 
@@ -223,8 +248,8 @@
 "Italian" = "Italiano";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
-"NorwegianBokmal" = "Norsk Bokmål";
-"NorwegianNynorsk" = "Norsk Nynorsk";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
@@ -232,11 +257,12 @@
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
-"SpanishArgentina" = "Español (Argentinië)";
+"SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
 "Refresh View" = "Overzicht verversen";
 "refreshview_manually" = "Handmatig";
 "refreshview_every_minute" = "Iedere minuut";
@@ -249,7 +275,7 @@
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "Bij aanvraag van een ontvangstbevestiging";
-"Never send a return receipt" = "Ontvangstbevestiging nooit sturen";
+"Never send a return receipt" = "Nooit ontvangstbevestigingen sturen";
 "Allow return receipts for some messages" = "Ontvangstbevestigingen voor sommige berichten toestaan";
 "If I'm not in the To or Cc of the message" = "Als ik niet in aan of cc van het bericht sta";
 "If the sender is outside my domain" = "Als de afzender buiten mijn domein zit";
@@ -294,27 +320,27 @@
 "Send a reject message" = "Stuur een weigeringsbericht";
 "Send a vacation message" = "Stuur een automatisch bericht bij afwezigheid";
 "Stop processing filter rules" = "Stop de filterbewerkingen";
-"is under" = "is kleiner";
-"is over" = "is groter";
+"is under" = "is kleiner dan";
+"is over" = "is groter dan";
 "is" = "is";
 "is not" = "is niet";
 "contains" = "bevat";
 "does not contain" = "bevat niet";
-"matches" = "komt overeen met";
-"does not match" = "komt niet overeen met";
-"matches regex" = "past bij regex";
-"does not match regex" = "past niet bij regex";
+"matches" = "is gelijk aan";
+"does not match" = "is niet gelijk aan";
+"matches regex" = "is gelijk aan regex";
+"does not match regex" = "is niet gelijk aan regex";
 /* Placeholder for the value field of a condition */
 "Value" = "Waarde";
 "Seen" = "Gelezen";
 "Deleted" = "Verwijderd";
 "Answered" = "Beantwoord";
 "Flagged" = "Gemarkeerd";
-"Junk" = "Junk";
-"Not Junk" = "Geen junk";
+"Junk" = "Ongewenst";
+"Not Junk" = "Niet-ongewenst";
 
 /* Password policy */
-"The password was changed successfully." = "Het wachtwoord is met succes veranderd.";
+"The password was changed successfully." = "Het wachtwoord is veranderd.";
 "Password must not be empty." = "Wachtwoord mag niet leeg zijn.";
 "The passwords do not match. Please try again." = "De wachtwoorden komen niet overeen. Probeer opnieuw.";
 "Password change failed" = "Wachtwoord wijzigen mislukt";
@@ -343,6 +369,7 @@
 "TLS" = "TLS";
 
 /* Avatars */
+"Use Gravatar" = "Gebruik Gravatar";
 "Alternate Avatar" = "Alternatieve avatar";
 "none" =  "Geen";
 "identicon" = "Identicoon";

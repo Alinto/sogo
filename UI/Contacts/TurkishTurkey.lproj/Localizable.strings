@@ -62,7 +62,7 @@
 "Send a mail message" = "Bir e-posta iletisi gönder";
 "Delete selected card or address book" = "Seçili kartı veya adres defterini sil";
 "Reload all contacts" = "Tüm kişileri tazele";
-"htmlMailFormat_UNKNOWN" = "Bilinmeyen";
+"htmlMailFormat_UNKNOWN" = "Bilinmiyor";
 "htmlMailFormat_FALSE" = "Düz Metin";
 "htmlMailFormat_TRUE" = "HTML";
 "Name or Email" = "Ad Soyad veya E-posta";
@@ -129,7 +129,7 @@
 "Are you sure you want to delete the addressbook \"%{0}\"?"
 = "\"%{0}\" adres defterini silmek istediğinizden emin misiniz?";
 "You cannot remove nor unsubscribe from a public addressbook."
-= "Halka açık bir adres defterinden çıkamaz ve üyeliğinizi kaldıramazsınız.";
+= "Genel adres defterinden çıkamaz ve üyeliğinizi kaldıramazsınız.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Kişisel adres defterinizden çıkamaz ve üyeliğinizi kaldıramazsınız.";
 "Are you sure you want to delete the selected contacts?"
@@ -144,7 +144,7 @@
 "Access rights to" = "Aşağıdaki adres defterine erişim yetkileri";
 "For user" = "Aşağıdaki kullanıcı için";
 "Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
-"Public Access" = "Halka Açık Erişim";
+"Public Access" = "Herkese Açık Erişim";
 "This person can add cards to this addressbook."
 = "Bu kişi bu adres defterine kart ekleyebilir.";
 "This person can edit the cards of this addressbook."
@@ -166,7 +166,7 @@
 /* Lists */
 "List details" = "Ayrıntıları listele";
 "List name" = "Liste adı";
-"List nickname" = "Takma adı listele";
+"List nickname" = "Listenin takma adı";
 "List description" = "Liste tanımı";
 "Members" = "Üyeler";
 "Contacts" = "Kişiler";
@@ -179,7 +179,7 @@
 "Select a vCard or LDIF file." = "Bir vCard veya LDIF dosyası seçin.";
 "Upload" = "Yükle";
 "Uploading" = "Yükleniyor";
-"Done" = "Tamamlandı";
+"Done" = "Tamam";
 "An error occured while importing contacts." = "Kişileri içeri aktarırken bir hata oluştu.";
 "No card was imported." = "Hiç bir kart içeri aktarılmadı.";
 "A total of %{0} cards were imported in the addressbook." = "Toplam %{0} kart adres defterinine aktarıldı.";
