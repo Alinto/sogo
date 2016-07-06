@@ -36,13 +36,17 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Abilita il risponditore automatico";
-"Auto reply message" = "Rispondi automaticamente solo una volta ad ogni mittente usando questo testo";
+"Enable custom auto reply subject" = "Attiva un oggetto personalizzato per la risposta automatica";
+"Auto reply subject" = "Oggetto della risposta automatica";
+"You can write ${subject} to insert the original subject" = "Puoi scrivere ${subject} per inserire l'oggetto originale";
+"Auto reply message" = "Messaggio della risposta automatica";
 "Email addresses (separated by commas)" = "Indirizzi email (separati da virgole)";
 "Add default email addresses" = "Aggiungi gli indirizzi email";
 "Days between responses" = "Numero giorni tra le risposte";
 "Do not send responses to mailing lists" = "Non mandare risposte alle mailing list";
-"Disable auto reply on" = "Disabilita il risponditore automatico";
-"Always send vacation message response" = "Manda sempre un messaggio automatico";
+"Enable auto reply on" = "Abilita il risponditore automatico il";
+"Disable auto reply on" = "Disabilita il risponditore automatico il";
+"Always send vacation message response" = "Manda sempre una risposta automatica";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Prego specificare il tuo messaggio e l'indirizzo email per il quale vuoi abilitare il risponditore automatico.";
 "Your vacation message must not end with a single dot on a line." = "Il messaggio dell'auto-risponditore non deve finire con un singolo punto per linea";

@@ -13,7 +13,7 @@
 "Disconnect" = "Bağlantıyı Kes";
 "Toggle Menu" = "Menüde Geçiş Yap";
 "Right Administration" = "Yetki Yönetimi";
-"Log Console (dev.)" = "Seyir Defteri Kumanda Paneli (dev.)";
+"Log Console (dev.)" = "Seyir Defteri (geliştirici)";
 "User" = "Kullanıcı";
 "Vacation message is enabled" = "Tatil mesajı etkinleştirildi";
 "Help" = "Yardım";
@@ -25,22 +25,22 @@
 "Remove" = "Çıkar";
 "Subscribe User" = "Kullanıcıyı Üye Yap";
 "Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
-"Public Access" = "Halka Açık Erişim";
+"Public Access" = "Herkese Açık Erişim";
 "Any user not listed above" = "Aşağıdaki listede bulanmayan her kullanıcı";
-"Anybody accessing this resource from the public area" = "Bu kaynağa halka açık alandan ulaşan herkes";
+"Anybody accessing this resource from the public area" = "Bu kaynağa genel alandan ulaşan herkes";
 "Sorry, the user rights can not be configured for that object." = "Üzgünüz, bu öge için kullanıcı yetkileri ayarlanamaz.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Bu ağda hesabı bulunan her kullanıcı \"%{0}\" e-posta klasörünüze erişebilecek. Hepsine güvenebileceğinizden emin misiniz?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
      = "Bu ağda hesabı olan her kullanıcı \"%{0}\" takviminize erişebilecek. Hepsine güvenebileceğinizden emin misiniz?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Muhtemelen internetteki herkes, bu ağ üzerinde bir hesapları olmasa bile \"%{0}\" takviminize erişebilecek. Bu bilgi halka açık internet için uygun mu?";
+     = "Muhtemelen internetteki herkes, bu ağ üzerinde bir hesapları olmasa bile \"%{0}\" takviminize erişebilecek. Bu bilgi genel internet için uygun mu?";
 "Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
      = "Bu ağda hesabı olan her kullanıcı \"%{0}\" adres defterinize erişebilecek. Hepsine güvenebileceğinizden emin misiniz?";
 "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Muhtemelen internetteki herkes, bu ağ üzerinde bir hesapları olmasa bile \"%{0}\" adres defterinize erişebilecek. Bu bilgi halka açık internet için uygun mu?";
+     = "Muhtemelen internetteki herkes, bu ağ üzerinde bir hesapları olmasa bile \"%{0}\" adres defterinize erişebilecek. Bu bilgi genel internet için uygun mu?";
 "Give Access" = "Erişim Yetkisi Ver";
-"Keep Private" = "Halka Kapalı Tut";
+"Keep Private" = "Kişisel Tut";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -85,7 +85,7 @@
 "No" = "Hayır";
 
 /* alarms */
-"Reminder" = "Hatırlatma";
+"Reminder" = "Hatırlatıcı";
 "Start" = "Başlangıç";
 "Due Date" = "Son Tarihi";
 "Location" = "Konum";

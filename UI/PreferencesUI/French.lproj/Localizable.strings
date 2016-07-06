@@ -36,11 +36,15 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Activer message d'absence prolongée";
+"Enable custom auto reply subject" = "Activer un sujet personnalisé";
+"Auto reply subject" = "Sujet personnalisé";
+"You can write ${subject} to insert the original subject" = "Inscrivez ${subject} pour insérer le sujet original";
 "Auto reply message" = "Message de réponse automatique";
 "Email addresses (separated by commas)" = "Adresses courriels (séparées par des virgules)";
 "Add default email addresses" = "Ajouter les adresses par défaut";
 "Days between responses" = "Nombre de jours entre réponses";
 "Do not send responses to mailing lists" = "Ne pas envoyer les réponses aux listes de diffusion";
+"Enable auto reply on" = "Activer la réponse automatique le";
 "Disable auto reply on" = "Désactiver la réponse automatique le";
 "Always send vacation message response" = "Toujours envoyer le message de vacances prolongées";
 "Please specify your message and your email addresses for which you want to enable auto reply."
