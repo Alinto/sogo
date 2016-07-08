@@ -8,7 +8,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:jsFiles="Common.js, vendor/ng-sortable.min.js, Preferences.js, Preferences.services.js, Mailer.services.js, Contacts.services.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js">
+    const:jsFiles="vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/ng-sortable.min.js, Common.js, Preferences.js, Preferences.services.js, Mailer.services.js, Contacts.services.js">
 
   <main layout-fill="layout-fill" ui-view="preferences"
         ng-controller="navController"><!-- preferences --> </main>
@@ -675,13 +675,16 @@
           <md-tab id="mailFiltersTab"
                   aria-controls="mailFiltersTab-content"
                   label:label="Filters">
-            <div role="tabpanel" aria-labelledby="mailFiltersView"
+            <md-content role="tabpanel" aria-labelledby="mailFiltersView"
                  id="mailFiltersView-content">
-
-              <div class="md-padding" ng-sortable="{ animation: 150, draggable: '.layout-row', handle: '.sg-sortable-grip', ghostClass: 'sg-sortable-ghost', chosenClass: 'sg-sortable-chosen' }">
+              <div class="sg-list-sortable"
+                   ng-model="app.preferences.defaults.SOGoSieveFilters"
+                   as-sortable="{ scrollableContainer: '#mailFiltersView-content', containment: '.sg-list-sortable', containerPositioning: 'relative', orderChanged: preferencesForm.$setDirty }">
                 <div layout="row" layout-align="start center"
-                     ng-repeat="item in app.preferences.defaults.SOGoSieveFilters track by $index">
-                  <md-button class="md-icon-button" md-no-ink="md-no-ink">
+                     ng-repeat="item in app.preferences.defaults.SOGoSieveFilters"
+                     as-sortable-item="as-sortable-item">
+                  <md-button class="md-icon-button" md-no-ink="md-no-ink"
+                             as-sortable-item-handle="as-sortable-item-handle">
                     <md-icon class="sg-sortable-grip">drag_handle</md-icon>
                   </md-button>
                   <md-checkbox
@@ -709,7 +712,6 @@
                 </div>
               </div>
 
-              <!-- FIXME: move up/down to be replaced by DnD? -->
               <div layout="row" layout-align="end center">
                 <md-button type="button"
                            ng-click="app.addMailFilter($event, preferencesForm)"
@@ -717,7 +719,7 @@
                   <var:string label:value="Create Filter"/>
                 </md-button>
               </div>
-            </div>
+            </md-content>
           </md-tab>
         </var:if>
         <!-- END OF MAIL > FILTERS -->

@@ -8,7 +8,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:jsFiles="vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, Common.js, vendor/ng-sortable.min.js, Preferences.services.js, Contacts.services.js, Mailer.services.js, vendor/angular-file-upload.min.js, Scheduler.js, Scheduler.services.js,  vendor/FileSaver.min.js">
+    const:jsFiles="vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/ng-sortable.min.js, Common.js, Preferences.services.js, Contacts.services.js, Mailer.services.js, vendor/angular-file-upload.min.js, Scheduler.js, Scheduler.services.js,  vendor/FileSaver.min.js">
   <script type="text/javascript">
     var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;
     var dayStartHour = <var:string value="dayStartHour"/>;
@@ -36,8 +36,8 @@
                 md-component-id="left" md-is-locked-open="isGtMedium"
                 ng-class="{ 'sg-close': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
-      <md-content class="md-flex" md-scroll-y="md-scroll-y"
-                  ng-class="{'sg-list-sortable': !app.sortableCalendars.disabled}"
+      <md-content id="sidenav-content" class="md-flex" md-scroll-y="md-scroll-y"
+                  ng-class="{'sg-list-sortable': app.sortableMode}"
                   md-colors="::{ backgroundColor: 'default-background-300' }">
         <!-- User's calendars -->
         <section>
@@ -52,8 +52,10 @@
               </md-button>
             </div>
           </md-subheader>
-          <md-list ng-sortable="app.sortableCalendars">
-            <md-list-item ng-repeat="calendar in app.service.$calendars | filter:app.filter">
+          <md-list ng-model="app.service.$calendars"
+                   as-sortable="app.sortableCalendars" is-disabled="!app.sortableMode">
+            <md-list-item ng-repeat="calendar in app.service.$calendars | filter:app.filter"
+                          as-sortable-item="as-sortable-item">
               <md-checkbox ng-model="calendar.active"
                            ng-class="calendar.getClassName('checkbox')"
                            ng-true-value="1"
@@ -76,8 +78,11 @@
                        sg-enter="app.renameFolder(calendar)"
                        sg-escape="app.revertEditing(calendar)"/>
               </md-input-container>
-              <md-menu class="md-secondary" label:aria-label="Options"
-                       md-colors="::{color: 'accent-400'}">
+              <md-button class="md-secondary md-icon-button" md-no-ink="md-no-ink"
+                         as-sortable-item-handle="as-sortable-item-handle">
+                <md-icon md-colors="::{color: 'accent-400'}">drag_handle</md-icon>
+              </md-button>
+              <md-menu class="md-secondary sg-list-sortable-hide" label:aria-label="Options">
                 <md-button class="md-icon-button" label:aria-label="Options"
                            ng-click="$mdOpenMenu()"
                            md-menu-origin="md-menu-origin">
@@ -152,8 +157,10 @@
               </md-button>
             </div>
           </md-subheader>
-          <md-list ng-sortable="app.sortableSubscriptions">
-            <md-list-item ng-repeat="calendar in app.service.$subscriptions | filter:app.filter">
+          <md-list ng-model="app.service.$subscriptions"
+                   as-sortable="app.sortableCalendars" is-disabled="!app.sortableMode">
+            <md-list-item ng-repeat="calendar in app.service.$subscriptions | filter:app.filter"
+                          as-sortable-item="as-sortable-item">
               <md-checkbox ng-model="calendar.active"
                            ng-class="calendar.getClassName('checkbox')"
                            ng-true-value="1"
@@ -177,8 +184,11 @@
                        sg-enter="app.renameFolder(calendar)"
                        sg-escape="app.revertEditing(calendar)"/>
               </md-input-container>
-              <md-menu class="md-secondary" label:aria-label="Options"
-                       md-colors="::{color: 'accent-400'}">
+              <md-button class="md-secondary md-icon-button" md-no-ink="md-no-ink"
+                         as-sortable-item-handle="as-sortable-item-handle">
+                <md-icon md-colors="::{color: 'accent-400'}">drag_handle</md-icon>
+              </md-button>
+              <md-menu class="md-secondary sg-list-sortable-hide" label:aria-label="Options">
                 <md-button class="md-icon-button" label:aria-label="Options"
                          ng-click="$mdOpenMenu()"
                          md-menu-origin="md-menu-origin">
@@ -229,8 +239,10 @@
               </md-button>
             </div>
           </md-subheader>
-          <md-list ng-sortable="app.sortableWebCalendars">
-            <md-list-item ng-repeat="calendar in app.service.$webcalendars | filter:app.filter">
+          <md-list ng-model="app.service.$webcalendars"
+                   as-sortable="app.sortableCalendars" is-disabled="!app.sortableMode">
+            <md-list-item ng-repeat="calendar in app.service.$webcalendars | filter:app.filter"
+                          as-sortable-item="as-sortable-item">
               <md-checkbox ng-model="calendar.active"
                            ng-class="calendar.getClassName('checkbox')"
                            ng-true-value="1"
@@ -256,8 +268,11 @@
                        sg-enter="app.renameFolder(calendar)"
                        sg-escape="app.revertEditing(calendar)"/>
               </md-input-container>
-              <md-menu class="md-secondary" label:aria-label="Options"
-                       md-colors="::{color: 'accent-400'}">
+              <md-button class="md-secondary md-icon-button" md-no-ink="md-no-ink"
+                         as-sortable-item-handle="as-sortable-item-handle">
+                <md-icon md-colors="::{color: 'accent-400'}">drag_handle</md-icon>
+              </md-button>
+              <md-menu class="md-secondary sg-list-sortable-hide" label:aria-label="Options">
                 <md-button class="md-icon-button" label:aria-label="Options"
                            ng-click="$mdOpenMenu()"
                            md-menu-origin="md-menu-origin">
@@ -294,7 +309,7 @@
       <md-toolbar class="sg-toolbar-multiple sg-toolbar-tools--dense">
         <div class="md-toolbar-tools sg-toolbar-tools--dense"
              md-colors="::{backgroundColor: 'background-500'}"
-             ng-show="app.sortableCalendars.disabled">
+             ng-hide="app.sortableMode">
           <md-input-container class="md-flex" md-no-float="md-no-float">
             <md-icon>search</md-icon>
             <input ng-model="app.filter.name" type="search" label:placeholder="Filter"/>
@@ -306,7 +321,7 @@
         </div>
         <div class="md-toolbar-tools sg-toolbar-tools--dense ng-hide" layout-align="center center"
              md-colors="::{backgroundColor: 'accent-600'}"
-             ng-hide="app.sortableCalendars.disabled">
+             ng-show="app.sortableMode">
           <md-button ng-click="app.resetSort()"><var:string label:value="Reset"/></md-button>
           <div class="md-flex"><!-- spacer --></div>
           <md-button ng-click="app.toggleSortableMode()"><var:string label:value="Done"/></md-button>

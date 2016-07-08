@@ -12,6 +12,7 @@ Enhancements
  - [web] all batch operations can now be performed on selected messages in advanced search mode
  - [web] add date picker to change date, week, or month of current Calendar view
  - [web] style cancelled events in Calendar module
+ - [web] replace sortable library for better support with Firefox
  - [oc] better handling of nested attachments with OpenChange
 
 Bug fixes

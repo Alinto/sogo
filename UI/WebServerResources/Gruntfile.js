@@ -17,7 +17,6 @@ module.exports = function(grunt) {
 
   };
   var custom_vendor_files = {
-    'js/vendor/ng-sortable.min.js': ['bower_components/Sortable/Sortable.js', 'bower_components/Sortable/ng-sortable.js'],
     'js/vendor/angular-file-upload.min.js': ['bower_components/angular-file-upload/dist/angular-file-upload.js', 'js/Common/angular-file-upload.trump.js'],
     'js/vendor/FileSaver.min.js': ['bower_components/file-saver.js/FileSaver.js']
   };
@@ -134,6 +133,7 @@ module.exports = function(grunt) {
       '<%= src %>/angular-material/angular-material{,.min}.js{,.map}',
       '<%= src %>/angular-ui-router/release/angular-ui-router{,.min}.js',
       //'<%= src %>/ng-file-upload/ng-file-upload{,.min}.js{,map}',
+      '<%= src %>/ng-sortable/dist/ng-sortable.min.js{,map}',
       '<%= src %>/lodash/dist/lodash{,.min}.js'
     ];
     for (var j = 0; j < js.length; j++) {

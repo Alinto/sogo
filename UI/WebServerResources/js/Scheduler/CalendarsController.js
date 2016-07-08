@@ -28,20 +28,15 @@
     // vm.today = today;
 
     vm.filter = { name: '' };
+    vm.sortableMode = false;
     vm.toggleSortableMode = toggleSortableMode;
     vm.resetSort = resetSort;
     vm.sortableCalendars = {
-      disabled: true,
-      animation: 150,
-      draggable: 'md-list-item',
-      handle: '.md-menu',
-      ghostClass: 'sg-sortable-ghost',
-      chosenClass: 'sg-sortable-chosen',
-      setData: sortable_setData,
-      onEnd: sortable_onEnd
+      scrollableContainer: '#sidenav-content',
+      containment: 'md-list',
+      orderChanged: _sortableEnd,
+      accept: _sortableAccept
     };
-    vm.sortableSubscriptions = angular.copy(vm.sortableCalendars);
-    vm.sortableWebCalendars = angular.copy(vm.sortableCalendars);
 
     Preferences.ready().then(function() {
       vm.categories = _.map(Preferences.defaults.SOGoCalendarCategories, function(name) {
@@ -88,18 +83,19 @@
       true // compare for object equality
     );
 
-    function sortable_setData(dataTransfer, dragEl) {
-      dataTransfer.clearData();
+    /**
+     * Only allow to sort items within the same list.
+     */
+    function _sortableAccept(sourceItemHandleScope, destSortableScope, destItemScope) {
+      return sourceItemHandleScope.sortableScope.element[0] == destSortableScope.element[0];
     }
 
-    function sortable_onEnd() {
+    function _sortableEnd() {
       Calendar.saveFoldersOrder(_.flatMap(Calendar.$findAll(), 'id'));
     }
 
     function toggleSortableMode() {
-      vm.sortableCalendars.disabled = !vm.sortableCalendars.disabled;
-      vm.sortableSubscriptions.disabled = !vm.sortableSubscriptions.disabled;
-      vm.sortableWebCalendars.disabled = !vm.sortableWebCalendars.disabled;
+      vm.sortableMode = !vm.sortableMode;
       vm.filter.name = '';
     }
 

@@ -229,40 +229,64 @@ div.md-tile-left {
       min-width: $sg-font-size-1;
     }
   }
+}
 
-  /* Classes for ng-sortable */
-  &-sortable-grip {
-    &:hover {
-      cursor: move;
-    }
+/**
+ * Sortable list items are provided by the ng-sortable library. CSS classes are
+ * from ng-sortable are prefixed by as-. Basic rules come from the CSS file
+ * bundled with the library.
+ *
+ * 1. We hide sortable handles when not inside a .sg-list-sortable;
+ * 2. Elements wih the class .sg-list-sortable-hide are hidden when the list is
+ *    currently sortable;
+ * 3. Dragged element is highligh with a whiteframe.
+ *
+ * See https://github.com/a5hik/ng-sortable
+ */
+
+.as-sortable-item {
+  touch-action: none;
+}
+
+.as-sortable-hidden {
+  display: none !important;
+}
+
+.as-sortable-un-selectable {
+  user-select: none;
+}
+
+.as-sortable-item-handle {
+  display: none; /* [1] */
+}
+
+.sg-list-sortable {
+  .as-sortable-item-handle {
+    cursor: move;
+    display: block; /* [1] */
   }
-
-  &-sortable-chosen {
-    background-color: white;
-  }
-
-  &-sortable-ghost {
-    opacity: 0.5;
-  }
-
-  &-list-sortable {
-    ._md-secondary-container > .md-menu {
-      .md-button {
-        display: none;
-      }
-      &:before {
-        @extend .material-icons;
-        content: "\e8fe";
-        cursor: move;
-      }
-    }
+  .sg-list-sortable-hide {
+    display: none; /* [2] */
   }
 }
+
+.as-sortable-drag { /* [3] */
+  @extend .md-whiteframe-1dp;
+  background-color: rgba(255,255,255,0.4);
+  position: absolute;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/**
+ * A md-avatar can either include a md-icon or an img.
+ */
 
 .card-picture {
   .md-avatar {
     display: block;
-    // From md-list-item > .md-avatar:first-child
+
+    // From md-list-item ._md-list-item-inner .md-avatar
     width: $list-item-primary-avatar-width;
     height: $list-item-primary-avatar-width;
     margin-top: $baseline-grid;
@@ -270,14 +294,13 @@ div.md-tile-left {
     margin-right: $list-item-primary-width - $list-item-primary-avatar-width;
     border-radius: 50%;
     box-sizing: content-box;
+
     img {
       width: initial !important;
     }
   }
 }
 
-// Avatar placeholder
-// ------------------------------------
 .md-avatar:before,
 .md-avatar md-icon,
 sg-avatar-image md-icon,
@@ -297,20 +320,20 @@ sg-avatar-image .material-icons {
   }
 }
 
-/*------------------------------------*\
-    SG-AVATAR-IMAGE DIRECTIVE
-\*------------------------------------*/
-
 sg-avatar-image img {
   border-radius: 50%;
 }
 
-/*------------------------------------*\
-    SELECTABLE AVATARS
-\*------------------------------------*/
+/**
+ * In the middle list of the main view, we allow items selection through a
+ * checkbox that replaces the avatar when
+ *
+ * 1. the mouse cursor is over the selectable avatar;
+ * 2. the list is marked as selectable.
+ */
 
-.sg-list-selectable .sg-avatar-selectable,
-.sg-avatar-selectable:hover {
+.sg-avatar-selectable:hover, /* [1] */
+.sg-list-selectable .sg-avatar-selectable { /* [2] */
   font-family: 'Material Icons';
   font-size: $sg-avatar-width;
   height: 100%;
@@ -328,71 +351,3 @@ sg-avatar-image img {
     display: none;
   }
 }
-//.md-tile-left-accepted:before {
-//  @extend .md-tile-left;
-//  background-color: rgba(0, 255, 0, 0.3) !important;
-//  content: "\e5ca"; // check
-//  color: rgba(0, 0, 0, 0.5);
-//}
-//.md-tile-left-declined:before {
-//  @extend .md-tile-left;
-//  background-color: rgba(255, 0, 0, 0.3) !important;
-//  content: "\e15b"; // remove
-//  color: rgba(0, 0, 0, 0.5);
-//}
-//.md-tile-left-delegated:before {
-//  @extend .md-tile-left;
-//  background-color: rgba(192, 192, 192, 0.3) !important;
-//  content: "\e5c8"; // arrow-forward
-//  color: rgba(0, 0, 0, 0.5);
-//}
-//.md-tile-left-needs-action:before {
-//  @extend .md-tile-left;
-//  background-color: rgba(255, 255, 0, 0.3) !important;
-//  content: "?";
-//}
-//.md-tile-left-tentative:before {
-//  @extend .md-tile-left;
-//  background-color: rgba(255, 255, 0, 0.3) !important;
-//  content: "\e7fd"; // person
-//}
-//.sg-avatar {
-//  @extend .md-tile-left-card;
-//  margin-right: 0;
-//  margin-left: 0;
-//}
-//.sg-list-avatar {
-//  @extend .md-tile-left-list;
-//  margin-right: 0;
-//  margin-left: 0;
-//}
-//.sg-selected-avatar {
-//  @extend .md-tile-left-selected;
-//  margin-right: 0;
-//  margin-left: 0;
-//}
-//.sg-accepted {
-//  @extend .md-tile-left-accepted;
-//  margin-right: 0;
-//  margin-left: 0;
-//}
-//.sg-declined {
-//  @extend .md-tile-left-declined;
-//  margin-right: 0;
-//  margin-left: 0;
-//}
-//.sg-delegated {
-//  @extend .md-tile-left-delegated;
-//  margin-right: 0;
-//  margin-left: 0;
-//}
-//.sg-needs-action {
-//  @extend .md-tile-left-needs-action;
-//  margin-right: 0;
-//  margin-left: 0;
-//}
-//.sg-tentative {
-//  @extend .md-tile-left-tentative;
-//  margin-right: 0;
-//  margin-left: 0;
-//}
