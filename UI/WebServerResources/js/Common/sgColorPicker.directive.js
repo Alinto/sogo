@@ -31,9 +31,9 @@
         '    <md-content class="md-padding">',
         '      <md-grid-list class="sg-color-picker" md-cols="7" md-row-height="1:1" md-gutter="0.5em">',
         '        <md-grid-tile ng-repeat="color in ::sgColors track by $index"',
-        '                      ng-style="{ \'background-color\': color }"',
-        '                      ng-class="{ selected: color == sgColor }"',
-        '                      ng-click="setColor(color)"><md-icon ng-style="{ color: color }">check_box</md-icon></md-grid-tile>',
+        '                      ng-style="::{ \'background-color\': color }"',
+        '                      ng-class="::{ selected: color == sgColor }"',
+        '                      ng-click="setColor($event, color)"><md-icon ng-style="::{ color: color }">check_box</md-icon></md-grid-tile>',
         '      </md-grid-list>',
         '    </md-content>',
         '  </md-menu-content>',
@@ -61,7 +61,13 @@
     var ngModelController = $element.controller('ngModel');
 
     $scope.sgColors = sgColors.selection;
-    $scope.setColor = function(color) {
+    $scope.setColor = function(event, color) {
+      if (event) {
+        _.forEach(event.currentTarget.parentElement.children, function(tile) {
+          tile.classList.remove('selected');
+        });
+        event.currentTarget.classList.add('selected');
+      }
       // Update scope value and ng-model
       $scope.sgColor = color;
       $scope.sgIconColor = contrast(color);

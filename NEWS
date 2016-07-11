@@ -13,6 +13,7 @@ Enhancements
  - [web] add date picker to change date, week, or month of current Calendar view
  - [web] style cancelled events in Calendar module
  - [web] replace sortable library for better support with Firefox
+ - [web] stage-1 tuning of sgColorPicker directive
  - [oc] better handling of nested attachments with OpenChange
 
 Bug fixes
