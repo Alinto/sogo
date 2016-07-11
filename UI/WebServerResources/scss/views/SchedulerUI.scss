@@ -61,6 +61,7 @@ $quarter_height: 10px;
     flex-shrink: 0;
     &.daysView, &.monthView {
       background-color: #fff;
+      flex-shrink: 1;
       z-index: $z-index-toolbar - 1;
       .days {
         &:not([sg-calendar-scroll-view$="allday"]) {
@@ -99,7 +100,6 @@ $quarter_height: 10px;
   // The all-day events appear in the shrinkable toolbar, bellow the days labels
   .allDaysView {
     border-bottom: 1px solid sg-color($sogoPaper, 300);
-    flex-shrink: 0;
     max-height: $sg-font-size-4 * 6;
     min-height: 0;
     overflow: hidden;

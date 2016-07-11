@@ -19,6 +19,7 @@ Bug fixes
  - [web] fixed crash when an attachment filename has no extension
  - [web] fixed selection of transparent all-day events (#3744)
  - [web] leaving the dropping area while dragging a file was blocking the mail editor
+ - [web] fixed scrolling of all-day events (#3190)
  - [eas] handle base64 EAS protocol version
  - [eas] handle missing IMAP folders from a hierarchy using EAS
 
