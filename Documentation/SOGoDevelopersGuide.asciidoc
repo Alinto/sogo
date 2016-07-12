@@ -18,30 +18,30 @@ UI and UX
 
 * http://www.google.com/design/spec/material-design/
 * http://goodui.org/
- * Try Repeating Your Primary Action instead of showing it just once.
- * Try Distinct Clickable/Selected Styles instead of blurring them.
- * Try Undos instead of prompting for confirmation.
- * Try More Contrast instead of similarity.
- * Try Exposing Options instead of hiding them.
- * Try Showing State instead of being state agnostic.
- * Try Direct Manipulation instead of contextless menus.
- * Try Exposing Fields instead of creating extra pages.
- * Try Transitions instead of showing changes instantly.
- * Try Fewer Borders instead of wasting attention.
- * Try Designing For Zero Data instead of just data heavy cases.
- * Try Consistency instead of making people relearn.
- * Try Conventions instead of reinventing the wheel.
- * Try Visual Hierarchy instead of dullness.
- * Try Grouping Related Items instead of disordering.
- * Try Inline Validation instead of delaying errors.
- * Try Forgiving Inputs instead of being strict with data.
- * Try Bigger Click Areas instead of tiny ones.
- * Try Faster Load Times instead of making people wait.
- * Try Keyboard Shortcuts instead of buttons only.
- * Try Upfront Progress instead of starting with a blank.
- * Try Softer Prompts instead of modal windows.
- * Try Multifunctional Controls instead of more parts.
- * Try Icon Labels instead of opening for interpretation.
+  - Try Repeating Your Primary Action instead of showing it just once.
+  - Try Distinct Clickable/Selected Styles instead of blurring them.
+  - Try Undos instead of prompting for confirmation.
+  - Try More Contrast instead of similarity.
+  - Try Exposing Options instead of hiding them.
+  - Try Showing State instead of being state agnostic.
+  - Try Direct Manipulation instead of contextless menus.
+  - Try Exposing Fields instead of creating extra pages.
+  - Try Transitions instead of showing changes instantly.
+  - Try Fewer Borders instead of wasting attention.
+  - Try Designing For Zero Data instead of just data heavy cases.
+  - Try Consistency instead of making people relearn.
+  - Try Conventions instead of reinventing the wheel.
+  - Try Visual Hierarchy instead of dullness.
+  - Try Grouping Related Items instead of disordering.
+  - Try Inline Validation instead of delaying errors.
+  - Try Forgiving Inputs instead of being strict with data.
+  - Try Bigger Click Areas instead of tiny ones.
+  - Try Faster Load Times instead of making people wait.
+  - Try Keyboard Shortcuts instead of buttons only.
+  - Try Upfront Progress instead of starting with a blank.
+  - Try Softer Prompts instead of modal windows.
+  - Try Multifunctional Controls instead of more parts.
+  - Try Icon Labels instead of opening for interpretation.
 * http://designmodo.com/create-style-guides/
 * http://uxmyths.com/
 
@@ -143,8 +143,8 @@ A `@mixin` is like a stamp: it creates a duplicated version of the property bloc
 Fonts
 ^^^^^
 
-* [Mozilla Fira](http://mozilla.github.io/Fira/)
-* [Material icons](https://www.google.com/design/icons/)
+* http://mozilla.github.io/Fira/[Mozilla Fira]
+* https://www.google.com/design/icons/[Material icons]
 
 Building frontend
 -----------------
@@ -180,7 +180,7 @@ Testing
 JSON API
 ~~~~~~~~
 
-One practical way to test the JSON API is to use `curl`. To do so, you need to enable `SOGoTrustProxyAuthentication` and configure HTTP authentifcation in Apache. You can pipe the result to [jq](http://stedolan.github.io/jq/) to nicely format and filter the output:
+One practical way to test the JSON API is to use `curl`. To do so, you need to enable `SOGoTrustProxyAuthentication` and configure HTTP authentifcation in Apache. You can pipe the result to http://stedolan.github.io/jq/[jq] to nicely format and filter the output:
 
     curl -u username:password http://localhost/SOGo/so/username/Calendar/calendarslist | jq '.'
 
