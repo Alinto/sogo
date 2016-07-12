@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #
 # Note: When adding make options to this script, ensure that the source still
@@ -235,7 +235,8 @@ genConfigMake() {
   cfgwrite "#         $MAKE debug=yes"
   cfgwrite ""
 
-  cfgwrite "TOPDIR:=$( sed 's/ /\\\ /g' <<< ${TOPDIR} )"
+  TOPDIR_CFGWRITE=`echo ${TOPDIR} | sed 's/ /\\\ /g'`
+  cfgwrite "TOPDIR:=${TOPDIR_CFGWRITE}"
   cfgwrite ""
 
   cfgwrite "NEEDS_GUI=no"
