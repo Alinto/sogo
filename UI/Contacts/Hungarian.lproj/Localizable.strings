@@ -38,8 +38,8 @@
 "invalidemailwarn" = "A megadott email cím érvénytelen";
 "new" = "új";
 "Preferred Phone" = "Preferált telefon";
-"Move To" = "Move To";
-"Copy To" = "Copy To";
+"Move To" = "Áthelyezés";
+"Copy To" = "Másolás";
 "Add to" = "Add to";
 /* Subheader of empty addressbook */
 "No contact" = "Nincs kapcsolat";

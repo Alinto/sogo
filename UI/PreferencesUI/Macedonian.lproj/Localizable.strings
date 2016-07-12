@@ -36,11 +36,15 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Овозможи автоматски одговор поради одмор";
+"Enable custom auto reply subject" = "Овозможи прилагодлива тема на автоматски одговор";
+"Auto reply subject" = "Тема за автоматски одговор";
+"You can write ${subject} to insert the original subject" = "Можете да напишете ${subject} за да ја уфрлите оригиналната тема";
 "Auto reply message" = "Порака за автоматски одговор";
 "Email addresses (separated by commas)" = "Електронски адреси (раздвоени со запирки)";
 "Add default email addresses" = "Додади ја основната адреса за електронска пошта";
 "Days between responses" = "Денови помеѓу одговорите";
 "Do not send responses to mailing lists" = "Не испраќај одговори кон мејлинг листи";
+"Enable auto reply on" = "Овозможи го автоматскиот одговор";
 "Disable auto reply on" = "Исклучи го автоматскиот одговор";
 "Always send vacation message response" = "Секогаш испрати порака кога си на одмор";
 "Please specify your message and your email addresses for which you want to enable auto reply."
