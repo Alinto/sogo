@@ -12,7 +12,7 @@
   padding-bottom: $baseline-grid;
   padding: 0 $baseline-grid*2 $baseline-grid $baseline-grid*2;
   text-align: center;
-  md-progress-linear > ._md-container {
+  md-progress-linear > .md-container {
     height: 2px;
   }
 }
@@ -74,24 +74,24 @@ md-sidenav {
   md-checkbox {
     &.sg-folder {
       // Show checkbox as a "closed" folder when unchecked and "opened" folder when checked
-      ._md-container:after {
+      .md-container:after {
         color: rgba(0,0,0,0.54);
         font-family: 'Material Icons';
         font-size: 24px;
         content: "\e2c7";
         top: -4px;
-        left: -2px;
+        left: 0px;
         width: 1em;
         height: 1em;
       }
-      ._md-icon {
+      .md-icon {
         border-width: 0;
       }
       &.md-checked {
-        ._md-container:after {
+        .md-container:after {
           content: "\e2c8";
         }
-        ._md-icon {
+        .md-icon {
           background-color: initial;
           &:after {
             border-style: none;

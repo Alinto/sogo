@@ -9,7 +9,7 @@ $sidenav-min-space: $pitch;
 md-sidenav {
   overflow: inherit;
 
-  &._md-locked-open {
+  &.md-locked-open {
     @include from(md) {
       @include flex-col($breakpoint: md, $nb: 4, $grow: 1, $shrink: 0);
       // Custom representation of a closed sidenav where the sidenav is pushed to the left;

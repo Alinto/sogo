@@ -59,10 +59,10 @@
         '    border-color: {{ cssCtrl.contrast(cssCtrl.ngModel.color) }} !important;',
         '  }',
         /* Checkbox color */
-        '  .checkbox-folder{{ cssCtrl.ngModel.id }} ._md-icon {',
+        '  .checkbox-folder{{ cssCtrl.ngModel.id }} .md-icon {',
         '    background-color: {{ cssCtrl.ngModel.color }} !important;',
         '  }',
-        '  .checkbox-folder{{ cssCtrl.ngModel.id }}.md-checked ._md-icon:after {',
+        '  .checkbox-folder{{ cssCtrl.ngModel.id }}.md-checked .md-icon:after {',
         '    border-color: {{ cssCtrl.contrast(cssCtrl.ngModel.color) }} !important;',
         '  }',
         '</style>'

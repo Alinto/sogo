@@ -5,15 +5,22 @@ $sg-subheader-padding-top-bottom: ($subheader-padding - ($icon-button-height - $
 $sg-subheader-padding-left-right: $baseline-grid;
 
 
+.md-subheader-wrapper:not(.md-sticky-no-effect).md-sticky-clone {
+  // Increase the z-index of sticky subheaders so it always appear above
+  // seconday buttons of list items.
+  // See z-index changes in custom list.scss.
+  z-index: $z-index-sidenav;
+}
+
 .sg-md-subheader {
-  &--with-icon ._md-subheader-inner,
-  &--with-secondary-icon ._md-subheader-inner {
+  &--with-icon .md-subheader-inner,
+  &--with-secondary-icon .md-subheader-inner {
     line-height: $sg-avatar-width + ($sg-subheader-padding-top-bottom)*2;
     padding: ($subheader-padding - ($icon-button-height - $subheader-font-size)/2) $baseline-grid;
     padding: 0;
     padding-left: $subheader-padding;
   }
-  &--with-icon ._md-subheader-inner {
+  &--with-icon .md-subheader-inner {
     padding-left: 0;
   }
   &--fixed {

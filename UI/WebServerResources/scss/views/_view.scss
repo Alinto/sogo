@@ -57,11 +57,11 @@ $listView-width: grid-step(6) !global;
   // on the right side of the list item. Since we define the avatar as the secondary button, we must move it to
   // the left side of the list item.
   .md-with-secondary {
-    ._md-list-item-inner {
+    .md-list-item-inner {
       order: 2;
       padding-left: $baseline-grid;
     }
-    ._md-secondary-container {
+    .md-secondary-container {
       order: 1; // move secondary container to the left
     }
     .md-secondary {

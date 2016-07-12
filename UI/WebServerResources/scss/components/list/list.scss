@@ -26,7 +26,7 @@ md-list-item {
 
   // Gain some space with secondary action button;
   // Impact: list with checkbox in sidevav of Calendar module
-  &.md-with-secondary ._md-list-item-inner {
+  &.md-with-secondary .md-list-item-inner {
     padding-right: $bl;
   }
 
@@ -34,11 +34,11 @@ md-list-item {
   &._md-button-wrap > div.md-button:first-child > .md-button:first-child {
     z-index: $z-index-sidenav - 2;
   }
-  ._md-secondary-container {
+  .md-secondary-container {
     z-index: $z-index-sidenav - 1;
   }
 
-  ._md-list-item-inner {
+  .md-list-item-inner {
     overflow: hidden;
 
     // Gain some space since we want small list items
@@ -87,8 +87,8 @@ md-list-item {
 
   md-list-item {
     // Gain some space on the right side of the folder icon
-    ._md-list-item-inner > md-icon:first-child,
-    ._md-list-item-inner > md-checkbox:first-child {
+    .md-list-item-inner > md-icon:first-child,
+    .md-list-item-inner > md-checkbox:first-child {
       margin-right: $bl * 2;
     }
 
@@ -151,7 +151,7 @@ div.md-tile-left {
   min-width: $sg-md-grid-pitch + $baseline-grid;
 }
 
-.sg-section-list md-list-item._md-button-wrap > .md-button:first-child ._md-list-item-inner {
+.sg-section-list md-list-item._md-button-wrap > .md-button:first-child .md-list-item-inner {
   // Expect the container to include a sg-tile-icons (Mailer module)
   padding-right: 0px;
 }
@@ -286,7 +286,7 @@ div.md-tile-left {
   .md-avatar {
     display: block;
 
-    // From md-list-item ._md-list-item-inner .md-avatar
+    // From md-list-item .md-list-item-inner .md-avatar
     width: $list-item-primary-avatar-width;
     height: $list-item-primary-avatar-width;
     margin-top: $baseline-grid;

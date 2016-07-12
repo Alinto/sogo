@@ -1,8 +1,2 @@
 @import "extends";
 
-._md-sticky-clone {
-  // Increase the z-index of sticky subheaders so it always appear above
-  // seconday buttons of list items.
-  // See z-index changes in custom list.scss.
-  z-index: $z-index-sidenav;
-}
