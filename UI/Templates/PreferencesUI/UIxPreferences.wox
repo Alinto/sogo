@@ -468,48 +468,47 @@
       CONTACTS PREFERENCE PANEL
   -->
   <script type="text/ng-template" id="addressbooksPreferences.html">
-    <md-content layout="row" class="md-flex">
-      <md-tabs class="md-flex" md-dynamic-height="true">
+    <md-tabs md-dynamic-height="true">
 
-        <!-- CONTACT > CATEGORIES -->
-        <md-tab id="contactsCategoriesTab" aria-controls="contactsCategoriesTab-content" label:label="Categories">
+      <!-- CONTACT > CATEGORIES -->
+      <md-tab id="contactsCategoriesTab" aria-controls="contactsCategoriesTab-content" label:label="Categories">
 
-          <md-content role="tabpanel" aria-labelledby="contactsCategoriesView"  id="contactsCategoriesView-content">
-            <div layout="column" flex="100">
-              <md-list layout="row" layout-wrap="layout-wrap">
-                <md-list-item flex="50" flex-sm="100"
-                              ng-repeat="item in
-                                         app.preferences.defaults.SOGoContactsCategories
-                                         track by $index">
-                  <md-input-container class="md-block md-flex">
-	            <input type="text"
-                           label:aria-label="Contact Category"
-                           ng-model="app.preferences.defaults.SOGoContactsCategories[$index]"
-                           sg-focus-on="contactCategory_{{$index}}"/>
-                  </md-input-container>
-                  <md-button type="button" class="sg-icon-button"
-                             label:aria-label="Remove Contact Category"
-                             ng-click="app.removeContactCategory($index)">
-                    <md-icon>remove_circle</md-icon>
-                  </md-button>
-                </md-list-item>
-              </md-list>
-
-              <div layout="row" layout-align="end center">
-                <md-button type="button"
-                           label:aria-label="Add Contact Category"
-                           ng-click="app.addContactCategory()">
-                  <var:string label:value="Add Contact Category"/>
+        <md-content role="tabpanel" aria-labelledby="contactsCategoriesView"
+                    id="contactsCategoriesView-content" class="md-padding">
+          <div layout="column" flex="100">
+            <md-list layout="row" layout-wrap="layout-wrap">
+              <md-list-item flex="50" flex-sm="100"
+                            ng-repeat="item in
+                                       app.preferences.defaults.SOGoContactsCategories
+                                       track by $index">
+                <md-input-container class="md-block md-flex">
+	          <input type="text"
+                         label:aria-label="Contact Category"
+                         ng-model="app.preferences.defaults.SOGoContactsCategories[$index]"
+                         sg-focus-on="contactCategory_{{$index}}"/>
+                </md-input-container>
+                <md-button type="button" class="sg-icon-button"
+                           label:aria-label="Remove Contact Category"
+                           ng-click="app.removeContactCategory($index)">
+                  <md-icon>remove_circle</md-icon>
                 </md-button>
-              </div>
+              </md-list-item>
+            </md-list>
+
+            <div layout="row" layout-align="end center">
+              <md-button type="button"
+                         label:aria-label="Add Contact Category"
+                         ng-click="app.addContactCategory()">
+                <var:string label:value="Add Contact Category"/>
+              </md-button>
             </div>
-          </md-content>
+          </div>
+        </md-content>
 
-        </md-tab>
-        <!-- END OF CONTACT > CATEGORIES -->
+      </md-tab>
+      <!-- END OF CONTACT > CATEGORIES -->
 
-      </md-tabs>
-    </md-content>
+    </md-tabs>
   </script>
 
   <!--
