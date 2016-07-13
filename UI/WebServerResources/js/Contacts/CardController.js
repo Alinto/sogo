@@ -124,6 +124,7 @@
               AddressBook.selectedFolder.$cards = _.reject(AddressBook.selectedFolder.$cards, function(o) {
                 return o.id == card.id;
               });
+	      AddressBook.selectedFolder.$reload();
               close();
             }, function(data, status) {
               Dialog.alert(l('Warning'), l('An error occured while deleting the card "%{0}".',
