@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MailboxController.$inject = ['$window', '$timeout', '$q', '$state', '$mdDialog', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
-  function MailboxController($window, $timeout, $q, $state, $mdDialog, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, focus, Dialog, Account, Mailbox) {
+  MailboxController.$inject = ['$window', '$timeout', '$q', '$state', '$mdDialog', '$mdToast', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
+  function MailboxController($window, $timeout, $q, $state, $mdDialog, $mdToast, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, focus, Dialog, Account, Mailbox) {
     var vm = this, messageDialog = null;
 
     // Expose controller
@@ -200,14 +200,26 @@
     function copySelectedMessages(dstFolder) {
       var selectedMessages = vm.selectedFolder.$selectedMessages();
       if (_.size(selectedMessages) > 0)
-        vm.selectedFolder.$copyMessages(selectedMessages, '/' + dstFolder);
+        vm.selectedFolder.$copyMessages(selectedMessages, '/' + dstFolder).then(function() {
+          $mdToast.show(
+            $mdToast.simple()
+              .content(l('%{0} message(s) copied', vm.selectedFolder.$selectedCount()))
+              .position('top right')
+              .hideDelay(2000));
+        });
     }
 
     function moveSelectedMessages(dstFolder) {
       var moveSelectedMessage = vm.selectedFolder.hasSelectedMessage();
       var selectedMessages = vm.selectedFolder.$selectedMessages();
+      var count = vm.selectedFolder.$selectedCount();
       if (_.size(selectedMessages) > 0)
         vm.selectedFolder.$moveMessages(selectedMessages, '/' + dstFolder).then(function(index) {
+          $mdToast.show(
+            $mdToast.simple()
+              .content(l('%{0} message(s) moved', count))
+              .position('top right')
+              .hideDelay(2000));
           if (Mailbox.$virtualMode) {
             // When performing an advanced search, we refresh the view if the selected message
             // was moved, but only once all promises have completed.

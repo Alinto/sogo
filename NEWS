@@ -4,6 +4,7 @@
 Enhancements
  - [web] improve action progress when login in or sending a message (#3765, #3761)
  - [web] don't allow to send the message while an upload is in progress
+ - [web] notify when successfuly copied or moved some messages
 
 3.1.4 (2016-07-12)
 ------------------
