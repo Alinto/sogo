@@ -5,7 +5,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
 
-  <md-dialog class="sg-mail-editor" flex="80" flex-sm="90" flex-xs="100"
+  <md-dialog id="mailEditor" class="sg-mail-editor" flex="80" flex-sm="90" flex-xs="100"
              nv-file-drop="nv-file-drop"
              nv-file-over="nv-file-over"
              over-class="sg-over-dropzone"
@@ -26,7 +26,8 @@
           </md-input-container>
           <div flex="flex"><!-- spacer --></div>
           <md-button class="sg-icon-button" ng-click="editor.send()"
-                     ng-disabled="!(editor.message.editable.to.length > 0 || editor.message.editable.cc.length > 0 || editor.message.editable.bcc.length > 0) || messageForm.$invalid">
+                     ng-disabled="!(editor.message.editable.to.length > 0 || editor.message.editable.cc.length > 0 || editor.message.editable.bcc.length > 0) || editor.uploader.isUploading || messageForm.$invalid"
+                     sg-ripple-click="mailEditor">
             <md-icon>send</md-icon>
           </md-button>
           <md-button class="sg-icon-button" ng-click="editor.save()">
@@ -254,5 +255,43 @@
         </div>
       </md-dialog-actions>
     </form>
+    <sg-ripple class="md-default-theme md-accent md-bg"
+               ng-class="{ 'md-warn': editor.sendState == 'error' }"><!-- ripple background --></sg-ripple>
+    <sg-ripple-content class="md-default-theme md-accent md-hue-1 md-fg md-flex ng-hide"
+                       layout="column" layout-align="center center" layout-fill="layout-fill"
+                       ng-switch="editor.sendState">
+
+      <!-- Sending -->
+      <div layout="column" layout-align="center center"
+           ng-switch-when="sending">
+        <md-progress-circular class="md-hue-1"
+                              md-mode="indeterminate"
+                              md-diameter="48"><!-- mailbox loading progress --></md-progress-circular>
+        <div class="md-padding">
+          <var:string label:value="Sending"/>
+        </div>
+      </div>
+
+      <!-- Sent -->
+      <div layout="column" layout-align="center center"
+           ng-switch-when="sent">
+        <md-icon class="md-accent md-hue-1 sg-icon--large">done</md-icon>
+        <div class="md-default-theme md-accent md-hue-1 md-fg md-padding">
+          <var:string label:value="Sent"/>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div layout="column" layout-align="center center"
+           ng-switch-when="error">
+        <md-icon class="md-accent md-hue-1 sg-icon--large">error</md-icon>
+        <div class="md-padding">
+          {{editor.errorMessage}}
+        </div>
+        <md-button sg-ripple-click="mailEditor"><var:string label:value="Close"/></md-button>
+      </div>
+
+    </sg-ripple-content>
+
   </md-dialog>
 </container>

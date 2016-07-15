@@ -1,46 +1,76 @@
 /// LoginUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
+$sg-login-width: grid-step(5);
+
 [ui-view="login"] {
   md-content {
-    padding: 0;
-    @include to(sm) {
-      [id=logo] {
-        text-align: center;
+    // Keep content centered
+    margin: auto;
+
+    .sg-logo img {
+      width: grid-step(5);
+    }
+
+    /**
+     * On small screens, we dispose the logo and login form as column.
+     */
+    @include to(md) {
+      & {
+        // Fill the screen
+        min-height: 100%;
+      }
+      .sg-logo {
+        // Center content
+        margin: auto;
         img {
+          margin: auto;
+          height: 100%;
           max-width: 75%;
         }
       }
+      .sg-login {
+        // Let the form take all available space
+        flex-grow: 1;
+        margin: 0;
+      }
+      .sg-login-content {
+        margin: auto;
+        max-width: $sg-login-width;
+      }
     }
-    @include from(sm) {
+
+    /**
+     * On larger screen, we dispose the logo and login form as a row.
+     */
+    @include from(md) {
       &.ng-hide {
-        [id=logo] {
+        .sg-logo img {
           opacity: 0;
-          transform: translateX(50%);
+          transform: translateX($sg-login-width/2 + $baseline-grid + $baseline-grid*2);
         }
         .sg-login {
           opacity: 0;
           transform: translateX(100%);
         }
       }
-      [id=logo], .sg-login {
+      .sg-logo img, .sg-login {
         opacity: 1;
-        //transform: translateX(0%);
       }
-      [id=logo] {
-        transition: transform $swift-ease-out-duration $swift-ease-out-timing-function 600ms,
-        opacity 400ms linear;
+      .sg-logo {
+        max-height: 100%;
+        max-width: 50%;
+        img {
+          transition: transform $swift-ease-out-duration $swift-ease-out-timing-function 600ms,
+          opacity 400ms linear;
+        }
       }
       .sg-login {
+        max-width: 50%;
         transition: all $swift-ease-out-duration $swift-ease-out-timing-function 600ms;
       }
-    }
+      .sg-login-content {
+        width: $sg-login-width;
+      }
+    } // from(md)
   }
-}
-
-[ui-view="login"] > md-content > div {
-  width: grid-step(5);
-}
-
-[id=logo] img {
-  max-width: 100%;
 }

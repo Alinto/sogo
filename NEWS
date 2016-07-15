@@ -1,3 +1,9 @@
+3.1.5 (2016-MM-DD)
+------------------
+
+Enhancements
+ - [web] improve action progress when login in or sending a message (#3765, #3761)
+
 3.1.4 (2016-07-12)
 ------------------
 

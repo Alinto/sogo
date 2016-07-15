@@ -6,6 +6,13 @@
 "Domain" = "Domain";
 "Remember username" = "Remember username";
 "Connect" = "Connect";
+
+/* Appears while authentication is in progress */
+"Authenticating" = "Authenticating";
+
+/* Appears when authentication succeeds */
+"Success" = "Success";
+
 "Authentication Failed" = "Authentication Failed";
 "Wrong username or password." = "Wrong username or password.";
 "cookiesNotEnabled" = "You cannot login because your browser's cookies are disabled. Please enable cookies in your browser's settings and try again.";

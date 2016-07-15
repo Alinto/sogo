@@ -1,0 +1,21 @@
+/// ripple.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
+
+sg-ripple {
+  border-radius: 100%;
+  height: 0px;
+  width: 0px;
+  position: absolute;
+  transition: width 800ms linear, height 800ms linear, background-color 400ms linear;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  z-index: $z-index-toolbar + 1;
+}
+
+sg-ripple-content {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: $z-index-toolbar + 2;
+}

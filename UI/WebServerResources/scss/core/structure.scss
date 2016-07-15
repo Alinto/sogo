@@ -29,16 +29,6 @@ html * {
   }
 }
 
-.sg-logo {
-  background-image: url("../img/sogo-full.svg");
-  background-size: contain;
-  background-repeat: no-repeat;
-  height: 7 * $bl;
-  min-width: 18 * $bl;
-  //optical adjustement
-  transform: translateY(-10%);
-}
-
 .sg-category {
   position: absolute;
   top: 0;

@@ -6,9 +6,9 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$window', '$stateParams', '$mdConstant', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccount', 'stateMessage', 'encodeUriFilter', '$timeout', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
-  function MessageEditorController($window, $stateParams, $mdConstant, $mdDialog, $mdToast, FileUploader, stateAccount, stateMessage, encodeUriFilter, $timeout, Dialog, AddressBook, Card, Preferences) {
-    var vm = this, semicolon = 186;
+  MessageEditorController.$inject = ['$scope', '$window', '$stateParams', '$mdConstant', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccount', 'stateMessage', 'encodeUriFilter', '$timeout', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
+  function MessageEditorController($scope, $window, $stateParams, $mdConstant, $mdDialog, $mdToast, FileUploader, stateAccount, stateMessage, encodeUriFilter, $timeout, Dialog, AddressBook, Card, Preferences) {
+    var vm = this;
 
     vm.addRecipient = addRecipient;
     vm.autocomplete = {to: {}, cc: {}, bcc: {}};
@@ -19,10 +19,16 @@
     vm.cancel = cancel;
     vm.save = save;
     vm.send = send;
+    vm.sendState = false;
     vm.removeAttachment = removeAttachment;
     vm.contactFilter = contactFilter;
     vm.identities = _.map(stateAccount.identities, 'full');
-    vm.recipientSeparatorKeys = [$mdConstant.KEY_CODE.ENTER, $mdConstant.KEY_CODE.TAB, $mdConstant.KEY_CODE.COMMA, semicolon];
+    vm.recipientSeparatorKeys = [
+      $mdConstant.KEY_CODE.ENTER,
+      $mdConstant.KEY_CODE.TAB,
+      $mdConstant.KEY_CODE.COMMA,
+      $mdConstant.KEY_CODE.SEMICOLON
+    ];
     vm.uploader = new FileUploader({
       url: stateMessage.$absolutePath({asDraft: true}) + '/save',
       autoUpload: true,
@@ -53,6 +59,9 @@
         //console.debug(item); console.debug('error = ' + JSON.stringify(response, undefined, 2));
       }
     });
+
+    // Destroy file uploader when the controller is being deactivated
+    $scope.$on('$destroy', function() { vm.uploader.destroy(); });
 
     if ($stateParams.actionName == 'reply') {
       stateMessage.$reply().then(function(msgObject) {
@@ -168,10 +177,13 @@
 
     function send() {
       var ctrls = $parentControllers();
+
+      vm.sendState = 'sending';
       if (vm.autosave)
         $timeout.cancel(vm.autosave);
 
       vm.message.$send().then(function(data) {
+        vm.sendState = 'sent';
         if (ctrls.draftMailboxCtrl) {
           // We're sending a draft from a popup window and the draft mailbox is opened.
           // Reload draft mailbox
@@ -192,7 +204,12 @@
             .content(l('Your email has been sent'))
             .position('top right')
             .hideDelay(3000));
-        $mdDialog.hide();
+
+        // Let the user see the succesfull message before closing the dialog
+        $timeout($mdDialog.hide, 1000);
+      }, function(response) {
+        vm.sendState = 'error';
+        vm.errorMessage = response.data? response.data.message : response.statusText;
       });
     }
 

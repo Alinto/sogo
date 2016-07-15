@@ -636,18 +636,18 @@
 
     Message.$log.debug('send = ' + JSON.stringify(data, undefined, 2));
 
-    return Message.$$resource.post(this.$absolutePath({asDraft: true}), 'send', data).then(function(data) {
-      if (data.status == 'success') {
+    return Message.$$resource.post(this.$absolutePath({asDraft: true}), 'send', data).then(function(response) {
+      if (response.status == 'success') {
         if (angular.isDefined(_this.origin)) {
           if (_this.origin.action.startsWith('reply'))
             _this.origin.message.isanswered = true;
           else if (_this.origin.action == 'forward')
             _this.origin.message.isforwarded = true;
         }
-        return data;
+        return response;
       }
       else {
-        return Message.$q.reject(data);
+        return Message.$q.reject(response.data);
       }
     });
   };

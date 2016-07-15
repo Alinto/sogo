@@ -9,30 +9,31 @@
     xmlns:label="OGo:label"
     const:jsFiles="Main.js, Common.js"
     >
+  <script type="text/javascript">
+    var cookieUsername = '<var:string var:value="cookieUsername" const:escapeHTML="NO"/>';
+  </script>
+
   <!--
       MAIN CONTENT ROW
       Content of the application view injected injected in the element bellow
       MUST be the first html element after body
       SHOULD  be a main tag (with role="main")
   -->
-  <main class="view layout-padding md-default-theme md-background md-hue-1 md-bg"
-        layout="row" layout-align="center start" layout-fill="layout-fill"
+  <main class="view md-default-theme md-background md-hue-1 md-bg"
+        layout-gt-md="row" layout-align-gt-md="center start" layout-fill="layout-fill"
         ui-view="login"
         ng-controller="LoginController as app">
-    <md-content class="ng-cloak md-whiteframe-z1"
-                layout-gt-md="row" layout-align-gt-md="start center"
-                layout="column" layout-align="space-between center"
-                md-scroll-y="true"
+    <md-content id="loginContent" class="ng-cloak md-whiteframe-3dp" flex="100"
+                layout="column" layout-gt-md="row" layout-align="start stretch"
                 ng-show="app.showLogin">
-      <div id="logo" class="md-padding">
-        <img const:alt="*" id="splash" rsrc:src="img/sogo-full.svg"/>
+      <div class="sg-logo" flex-gt-md="50">
+        <div layout="row" class="md-padding">
+          <div class="md-flex hide show-gt-md"><!-- push logo to the right on larger screens --></div>
+          <img const:alt="*" class="md-margin" rsrc:src="img/sogo-full.svg"/>
+        </div>
       </div>
-      <div class="sg-login md-padding md-default-theme md-bg md-accent">
-        <script type="text/javascript">
-          var cookieUsername = '<var:string var:value="cookieUsername" const:escapeHTML="NO"/>';
-        </script>
-        <div id="login">
-
+      <div class="sg-login md-default-theme md-bg md-accent" flex-gt-md="50">
+        <div id="login" class="sg-login-content md-padding">
           <form name="loginForm" layout="column"
                 ng-cloak="ng-cloak"
                 ng-submit="app.login()">
@@ -52,7 +53,7 @@
 
             <!-- CONNECT BUTTON -->
             <div layout="row" layout-align="end center">
-              <md-button class="md-raised md-accent md-hue-2" type="submit" ng-disabled='app.loginForm.$invalid'>
+              <md-button type="submit" ng-disabled='app.loginForm.$invalid' sg-ripple-click="loginContent">
                 <var:string label:value="Connect"/>
               </md-button>
             </div>
@@ -101,6 +102,43 @@
               <md-icon class="md-fg">info</md-icon>
             </md-button>
           </div>
+          <sg-ripple class="md-default-theme md-accent md-bg"
+                     ng-class="{ 'md-warn': app.loginState == 'error' }"><!-- ripple background --></sg-ripple>
+          <sg-ripple-content class="md-flex ng-hide"
+                             layout="column" layout-align="center center" layout-fill="layout-fill"
+                             ng-switch="app.loginState">
+
+            <!-- Authenticating -->
+            <div layout="column" layout-align="center center"
+                 ng-switch-when="authenticating">
+              <md-progress-circular class="md-hue-1"
+                                    md-mode="indeterminate"
+                                    md-diameter="32"><!-- mailbox loading progress --></md-progress-circular>
+              <div class="md-default-theme md-accent md-hue-1 md-fg md-padding">
+                <var:string label:value="Authenticating"/>
+              </div>
+            </div>
+
+            <!-- Logged in -->
+            <div layout="column" layout-align="center center"
+                 ng-switch-when="logged">
+              <md-icon class="md-accent md-hue-1 sg-icon--large">done</md-icon>
+              <div class="md-default-theme md-accent md-hue-1 md-fg md-padding">
+                <var:string label:value="Success"/>
+              </div>
+            </div>
+
+            <!-- Error -->
+            <div layout="column" layout-align="center center"
+                 ng-switch-when="error">
+              <md-icon class="md-accent md-hue-1 sg-icon--large">error</md-icon>
+              <div class="md-default-theme md-accent md-hue-1 md-fg md-padding">
+                {{app.errorMessage}}
+              </div>
+              <md-button sg-ripple-click="loginContent"><var:string label:value="Retry"/></md-button>
+            </div>
+
+          </sg-ripple-content>
         </div>
       </div>
     </md-content>
