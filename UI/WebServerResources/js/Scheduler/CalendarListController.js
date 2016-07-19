@@ -92,6 +92,7 @@
           Calendar.$deleteComponents(components).then(function() {
             $rootScope.$emit('calendars:list');
           });
+	   vm.mode.multiple = 0;
         });
     }
 

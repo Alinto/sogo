@@ -261,7 +261,10 @@
         fn = this.c_org;
       }
       else if (this.emails && this.emails.length > 0) {
-        fn = _.find(this.emails, function(i) { return i.value !== ''; }).value;
+	 var name = _.find(this.emails, function(i) { return i.value !== ''; });
+	 if (name) {
+	    fn = name.value;
+	 }
       }
       else if (this.c_cn && this.c_cn.length > 0) {
         fn = this.c_cn;

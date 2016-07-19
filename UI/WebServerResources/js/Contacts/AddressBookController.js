@@ -60,6 +60,7 @@
           var selectedCards = _.filter(vm.selectedFolder.$cards, function(card) { return card.selected; });
           vm.selectedFolder.$deleteCards(selectedCards);
           delete vm.selectedFolder.selectedCard;
+	   vm.mode.multiple = 0;
         });
     }
 
