@@ -134,6 +134,7 @@
 = "You cannot remove nor unsubscribe from your personal addressbook.";
 "Are you sure you want to delete the selected contacts?"
 = "Are you sure you want to delete the selected contacts?";
+"Are you sure you want to delete the card of %{0}?" = "Are you sure you want to delete the card of %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "You cannot delete the card of \"%{0}\".";
 "You cannot subscribe to a folder that you own!"
