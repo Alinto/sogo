@@ -6,6 +6,7 @@ $sg-login-width: grid-step(5);
   md-content {
     // Keep content centered
     margin: auto;
+    overflow: hidden;
 
     .sg-logo img {
       width: grid-step(5);
