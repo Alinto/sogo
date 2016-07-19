@@ -135,7 +135,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       // otherwise it'll prevent WP8 phones from sync'ing. See #3028 for details.
       o = [o activeSyncRepresentationInContext: context];
 
-      if ([[context valueForKey: @"ASProtocolVersion"] isEqualToString: @"2.5"])
+      if ([[context objectForKey: @"ASProtocolVersion"] isEqualToString: @"2.5"])
         {
           [s appendFormat: @"<Body xmlns=\"Tasks:\">%@</Body>", o];
           [s appendString: @"<BodyTruncated xmlns=\"Tasks:\">0</BodyTruncated>"];
@@ -169,7 +169,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [self setSummary: o];
 
   // FIXME: merge with iCalEvent
-  if ([[context valueForKey: @"ASProtocolVersion"] isEqualToString: @"2.5"])
+  if ([[context objectForKey: @"ASProtocolVersion"] isEqualToString: @"2.5"])
     {
       if ((o = [theValues objectForKey: @"Body"]))
         [self setComment: o];
