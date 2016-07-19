@@ -58,8 +58,10 @@
         .then(function() {
           // User confirmed the deletion
           var selectedCards = _.filter(vm.selectedFolder.$cards, function(card) { return card.selected; });
-          vm.selectedFolder.$deleteCards(selectedCards);
-          delete vm.selectedFolder.selectedCard;
+          vm.selectedFolder.$deleteCards(selectedCards).then(function() {
+            if (!vm.selectedFolder.selectedCard)
+              $state.go('app.addressbook');
+          });
         });
     }
 

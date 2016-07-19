@@ -6,6 +6,9 @@ Enhancements
  - [web] don't allow to send the message while an upload is in progress
  - [web] notify when successfuly copied or moved some messages
 
+Bug fixes
+ - [web] fixed refresh of addressbook when deleting one or many cards
+
 3.1.4 (2016-07-12)
 ------------------
 

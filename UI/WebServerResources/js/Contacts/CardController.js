@@ -91,7 +91,7 @@
       }
     }
     function close() {
-      $state.go('app.addressbook', { addressbookId: AddressBook.selectedFolder.id }).then(function() {
+      $state.go('app.addressbook').then(function() {
         vm.card = null;
         delete AddressBook.selectedFolder.selectedCard;
       });
@@ -118,12 +118,8 @@
                      { ok: l('Delete') })
         .then(function() {
           // User confirmed the deletion
-          card.$delete()
+          AddressBook.selectedFolder.$deleteCards([card])
             .then(function() {
-              // Remove card from addressbook
-              AddressBook.selectedFolder.$cards = _.reject(AddressBook.selectedFolder.$cards, function(o) {
-                return o.id == card.id;
-              });
               close();
             }, function(data, status) {
               Dialog.alert(l('Warning'), l('An error occured while deleting the card "%{0}".',

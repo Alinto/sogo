@@ -564,9 +564,21 @@
         ids = _.map(cards, function(card) { return card.id; });
     
     return AddressBook.$$resource.post(this.id, 'batchDelete', {uids: ids}).then(function() {
-      _this.$cards = _.differenceBy(_this.$cards, cards, 'id');
-      _.forEach(cards, function(card) {
-        delete _this.idsMap[card.id];
+      // Remove cards from $cards and idsMap
+      _.forEachRight(_this.$cards, function(card, index) {
+        var selectedIndex = _.findIndex(ids, function(id) {
+          return card.id == id;
+        });
+        if (selectedIndex > -1) {
+          ids.splice(selectedIndex, 1);
+          delete _this.idsMap[card.id];
+          if (_this.isSelectedCard(card.id))
+            delete _this.selectedCard;
+          _this.$cards.splice(index, 1);
+        }
+        else {
+          _this.idsMap[card.id] -= ids.length;
+        }
       });
     });
   };
