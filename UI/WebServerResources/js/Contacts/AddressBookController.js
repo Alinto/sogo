@@ -59,6 +59,7 @@
           // User confirmed the deletion
           var selectedCards = _.filter(vm.selectedFolder.$cards, function(card) { return card.selected; });
           vm.selectedFolder.$deleteCards(selectedCards).then(function() {
+            vm.mode.multiple = 0;
             if (!vm.selectedFolder.selectedCard)
               $state.go('app.addressbook');
           });

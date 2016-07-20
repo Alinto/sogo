@@ -90,6 +90,7 @@
             return component.selected;
           });
           Calendar.$deleteComponents(components).then(function() {
+            vm.mode.multiple = 0;
             $rootScope.$emit('calendars:list');
           });
         });
