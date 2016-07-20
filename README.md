@@ -53,6 +53,7 @@ SOGo and its associated components are available in various languages. The follo
 * Norwegian (Bokmål) - Jan Ivar Karlsen
 * Norwegian (Nynorsk) - Altibox
 * Polish - Paweł Bogusławski
+* Portuguese - Eduardo Crispim
 * Russian - Alex Kabakaev
 * Slovak - Martin Pastor
 * Slovenian - Jens Riecken
