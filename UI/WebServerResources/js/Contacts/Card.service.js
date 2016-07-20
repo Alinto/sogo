@@ -246,7 +246,7 @@
   };
 
   Card.prototype.$fullname = function(options) {
-    var fn = this.c_cn || '', html = options && options.html, names;
+    var fn = this.c_cn || '', html = options && options.html, email, names;
     if (fn.length === 0) {
       names = [];
       if (this.c_givenname && this.c_givenname.length > 0)
@@ -261,10 +261,9 @@
         fn = this.c_org;
       }
       else if (this.emails && this.emails.length > 0) {
-        fn = _.find(this.emails, function(i) { return i.value !== ''; }).value;
-      }
-      else if (this.c_cn && this.c_cn.length > 0) {
-        fn = this.c_cn;
+        email = _.find(this.emails, function(i) { return i.value !== ''; });
+        if (email)
+          fn = email.value;
       }
     }
 
