@@ -1,6 +1,8 @@
 /// icon.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
+$icon-badge-size: 2 * $baseline-grid;
+
 // TODO: encode font in base64 to include it in the CSS
 // perl -MMIME::Base64 -0777 -ne 'print encode_base64($_, "")' < fonts/MaterialIcons-Regular.woff
 
@@ -52,6 +54,19 @@ md-icon {
     position: absolute;
     right: $mg * 3;
     transform: rotate(-15deg);
+  }
+  &.sg-icon--large {
+    font-size: $sg-md-grid-pitch;
+    font-size: 6 * $baseline-grid;
+  }
+  &.sg-icon--badge {
+    border-radius: 50%;
+    font-size: $icon-badge-size;
+    min-height: $icon-badge-size;
+    min-width: $icon-badge-size;
+    position: absolute;
+    right: ($icon-size - $icon-badge-size) / 2;
+    top: ($icon-size - $icon-badge-size) / 2;
   }
   &.md-rotate-45 {
     transform: rotate(45deg);

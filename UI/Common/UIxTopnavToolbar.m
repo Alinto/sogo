@@ -18,6 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
+
+#import <SOGo/SOGoSystemDefaults.h>
+#import <SOGo/SOGoUser.h>
+
 #import "UIxTopnavToolbar.h"
 
 @implementation UIxTopnavToolbar
@@ -46,6 +51,15 @@
 - (NSString *) navButtonClick
 {
   return navButtonClick;
+}
+
+- (BOOL) userHasVacationEnabled
+{
+  NSDictionary *vacationOptions;
+
+  vacationOptions = [[[context activeUser] userDefaults] vacationOptions];
+
+  return (vacationOptions && [[vacationOptions objectForKey: @"enabled"] boolValue]);
 }
 
 @end

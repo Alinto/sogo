@@ -5,6 +5,7 @@ Enhancements
  - [web] improve action progress when login in or sending a message (#3765, #3761)
  - [web] don't allow to send the message while an upload is in progress
  - [web] notify when successfuly copied or moved some messages
+ - [web] restored indicator in the top banner when a vacation message (auto-reply) is active
 
 Bug fixes
  - [web] fixed refresh of addressbook when deleting one or many cards

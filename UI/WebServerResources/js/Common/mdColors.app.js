@@ -34,17 +34,17 @@
       return result;
     }
 
-    var fgDefault = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-fg']) + ' { color:{{value}};}'),
-        bgDefault = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-bg']) + ' { background-color:{{value}};}'),
-        bdrDefault = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-bdr']) + ' { border-color:{{value}};}'),
-        fgDefaultHue = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{hue}}','.md-fg']) + ' { color:{{value}};}'),
-        bgDefaultHue = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{hue}}','.md-bg']) + ' { background-color:{{value}};}'),
-        fgColor = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{palette}}','.md-fg']) + ' { color:{{value}};}'),
-        bgColor = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{palette}}','.md-bg']) + ' { background-color:{{value}}; color:{{contrast}}; }'),
-        bdrColor = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{palette}}','.md-bdr']) + ' { border-color:{{value}};}'),
-        fgHue = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{palette}}.md-{{hue}}','.md-fg']) + ' { color:{{value}};}'),
-        bgHue = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{palette}}.md-{{hue}}','.md-bg']) + ' { background-color:{{value}};}'),
-        customSheet = getStyleSheet(),
+    var fgDefault    = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-fg'])                              + ' { color:{{value}};}'),
+        bgDefault    = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-bg'])                              + ' { background-color:{{value}};}'),
+        bdrDefault   = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-bdr'])                             + ' { border-color:{{value}};}'),
+        fgDefaultHue = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{hue}}','.md-fg'])                + ' { color:{{value}};}'),
+        bgDefaultHue = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{hue}}','.md-bg'])                + ' { background-color:{{value}};}'),
+        fgColor      = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{palette}}','.md-fg'])            + ' { color:{{value}};}'),
+        bgColor      = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{palette}}','.md-bg'])            + ' { background-color:{{value}}; color:{{contrast}} !important; }'),
+        bdrColor     = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{palette}}','.md-bdr'])           + ' { border-color:{{value}};}'),
+        fgHue        = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{palette}}.md-{{hue}}','.md-fg']) + ' { color:{{value}};}'),
+        bgHue        = $interpolate(buildCssSelectors(['.md-{{theme}}-theme','.md-{{palette}}.md-{{hue}}','.md-bg']) + ' { background-color:{{value}};}'),
+        customSheet  = getStyleSheet(),
         index = 0;
 
     // Clear out old rules from stylesheet
