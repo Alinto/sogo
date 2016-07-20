@@ -9,6 +9,7 @@ Enhancements
 Bug fixes
  - [web] fixed refresh of addressbook when deleting one or many cards
  - [web] reset multiple-selection mode after deleting cards, events or tasks
+ - [web] fixed exception when moving tasks to a different calendar
 
 3.1.4 (2016-07-12)
 ------------------
