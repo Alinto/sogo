@@ -96,6 +96,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSString.h>
+#import <Mailer/SOGoMailNamespace.h>
 
 #include "iCalEvent+ActiveSync.h"
 #include "iCalToDo+ActiveSync.h"
@@ -161,7 +162,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSNumber *processIdentifier, *processIdentifierInCache;
   SOGoCacheGCSObject *o;
   NSDictionary *values;
-  NSString *key;
+  NSString *key, *pkey;
+  NSArray *a;
 
   if ([theFolderKey hasPrefix: @"folder"])
     key = [NSString stringWithFormat: @"SyncRequest+mail/%@", [theFolderKey substringFromIndex: 6]];
@@ -172,7 +174,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   processIdentifierInCache = [[self globalMetadataForDevice] objectForKey: key];
 
   // Don't update the cache if another request is processing the same collection.
-  if (!([processIdentifierInCache isEqual: processIdentifier]))
+  // I case of a merged folder we have to check personal folder's lock.
+  a = [key componentsSeparatedByString: @"/"];
+  pkey = [NSString stringWithFormat: @"%@/personal", [a objectAtIndex:0]];
+
+  if (!([processIdentifierInCache isEqual: processIdentifier] || [[[self globalMetadataForDevice] objectForKey: pkey] isEqual: processIdentifier]))
     {
       if (debugOn)
         [self logWithFormat: @"EAS - We lost our lock - discard folder cache update %@ %@ <> %@", key, processIdentifierInCache, processIdentifier];
@@ -191,13 +197,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [[o properties] removeObjectForKey: @"SyncKey"];
   [[o properties] removeObjectForKey: @"SyncCache"];
   [[o properties] removeObjectForKey: @"DateCache"];
+  [[o properties] removeObjectForKey: @"UidCache"];
   [[o properties] removeObjectForKey: @"MoreAvailable"];
+  [[o properties] removeObjectForKey: @"FolderPermissions"];
   [[o properties] removeObjectForKey: @"BodyPreferenceType"];
   [[o properties] removeObjectForKey: @"SupportedElements"];
   [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
   [[o properties] removeObjectForKey: @"InitialLoadSequence"];
   [[o properties] removeObjectForKey: @"FirstIdInCache"];
   [[o properties] removeObjectForKey: @"LastIdInCache"];
+  [[o properties] removeObjectForKey: @"MergedFoldersSyncKeys"];
+  [[o properties] removeObjectForKey: @"MergedFolder"];
+  [[o properties] removeObjectForKey: @"CleanoutDate"];
 
   [[o properties] addEntriesFromDictionary: values];
   [o save];
@@ -285,8 +296,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                       withType: (SOGoMicrosoftActiveSyncFolderType) theFolderType
                       inBuffer: (NSMutableString *) theBuffer
 {
-  NSMutableDictionary *folderMetadata, *dateCache, *syncCache, *allValues;
-  NSString *clientId, *serverId;
+  NSMutableDictionary *folderMetadata, *dateCache, *syncCache, *uidCache, *allValues;
+  NSString *clientId, *serverId, *easId;
   NSArray *additions;
   
   id anAddition, sogoObject, o;
@@ -364,23 +375,54 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           [sogoObject setIsNew: is_new];
           [sogoObject saveComponent: o];
           
-          // Everything is fine, lets generate our response
-          [theBuffer appendString: @"<Add>"];
-          [theBuffer appendFormat: @"<ClientId>%@</ClientId>", clientId];
-          [theBuffer appendFormat: @"<ServerId>%@</ServerId>", serverId];
-          [theBuffer appendFormat: @"<Status>%d</Status>", 1];
-          [theBuffer appendString: @"</Add>"];
-
           // Update syncCache
           folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: theCollection withType: theFolderType]];
 
           syncCache = [folderMetadata objectForKey: @"SyncCache"];
           dateCache = [folderMetadata objectForKey: @"DateCache"];
+          uidCache = [folderMetadata objectForKey: @"UidCache"];
+
+          if (uidCache)
+            {
+              if (is_new && [serverId length] > 64)
+                {
+                  easId = [theCollection globallyUniqueObjectId];
+                  [uidCache setObject: easId forKey: serverId];
+                  if (debugOn)
+                    [self logWithFormat: @"EAS - Generated new easId: %@ for serverId: %@", easId, serverId];
+                }
+              else
+                {
+                  easId = [uidCache objectForKey: serverId];
+                  if (easId)
+                    {
+                      if (debugOn)
+                        [self logWithFormat: @"EAS - Reuse easId: %@ for serverId: %@", easId, serverId];
+                    }
+                  else
+                    {
+                      if (debugOn)
+                        [self logWithFormat: @"EAS - Use original serverId: %@ %@", serverId, easId];
+
+                      easId = serverId;
+                    }
+                }
+            }
+          else
+            easId = serverId;
 
           [syncCache setObject: [NSString stringWithFormat:@"%f", [[sogoObject lastModified] timeIntervalSince1970]] forKey: serverId];
           [dateCache setObject: [NSCalendarDate date]  forKey: serverId];
 
           [self _setFolderMetadata: folderMetadata forKey: [self _getNameInCache: theCollection withType: theFolderType]];
+
+          // Everything is fine, lets generate our response
+          [theBuffer appendString: @"<Add>"];
+          [theBuffer appendFormat: @"<ClientId>%@</ClientId>", clientId];
+          [theBuffer appendFormat: @"<ServerId>%@</ServerId>", easId];
+          [theBuffer appendFormat: @"<Status>%d</Status>", 1];
+          [theBuffer appendString: @"</Add>"];
+
         }
     }
 }
@@ -427,10 +469,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                          inBuffer: (NSMutableString *) theBuffer
 {
   NSDictionary *allChanges;
-  NSString *serverId;
-  NSArray *changes;
+  NSString *serverId, *easId, *origServerId, *mergedFolder;
+  NSArray *changes, *a;
   id aChange, o, sogoObject;
-  NSMutableDictionary *folderMetadata, *syncCache;
+  NSMutableDictionary *folderMetadata, *syncCache, *uidCache;
 
   int i;
 
@@ -440,13 +482,49 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: theCollection withType: theFolderType]];
       syncCache = [folderMetadata objectForKey: @"SyncCache"];
+      uidCache = [folderMetadata objectForKey: @"UidCache"];
 
       for (i = 0; i < [changes count]; i++)
         {
           aChange = [changes objectAtIndex: i];
           
-          serverId = [[(id)[aChange getElementsByTagName: @"ServerId"] lastObject] textValue];
+          origServerId = [[(id)[aChange getElementsByTagName: @"ServerId"] lastObject] textValue];
+          easId = origServerId;
+
+          a = [origServerId componentsSeparatedByString: @"{+}"];
+          if ([a count] > 1)
+            {
+              easId  = [a objectAtIndex: 1];
+              mergedFolder = [a objectAtIndex: 0];
+
+              // Make sure that the change goes to the target folder and not to personal.
+              if ([[theCollection nameInContainer] isEqualToString: @"personal"])
+                {
+                  if (debugOn)
+                    [self logWithFormat: @"EAS - Change - Target folder %@, easId %@", mergedFolder, easId];
+
+                  [self processSyncChangeCommand: theDocumentElement
+                                    inCollection: [self collectionFromId: mergedFolder  type: theFolderType]
+                                        withType: theFolderType
+                                        inBuffer: theBuffer];
+
+                  continue;
+                }
+             }
+
+          if (debugOn)
+            [self logWithFormat: @"EAS - Change - Process change for folder %@ easId %@", [theCollection nameInContainer],easId];
+
           allChanges = [[(id)[aChange getElementsByTagName: @"ApplicationData"]  lastObject] applicationData];
+
+          if (uidCache && (serverId = [[uidCache allKeysForObject: easId] objectAtIndex: 0]))
+            {
+              if (debugOn)
+                [self logWithFormat: @"EAS - Found serverId: %@ for easId: %@", serverId, easId];
+
+            }
+          else
+            serverId = easId;
 
           // Fetch the object and apply the changes
           sogoObject = [theCollection lookupName: [serverId sanitizedServerIdWithType: theFolderType]
@@ -456,7 +534,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           // Object was removed inbetween sync/commands?
           if ([sogoObject isKindOfClass: [NSException class]])
             {
-              // FIXME - return status == 8
+              [theBuffer appendString: @"<Change>"];
+              [theBuffer appendFormat: @"<ServerId>%@</ServerId>", origServerId];
+              [theBuffer appendFormat: @"<Status>%d</Status>", 8];
+              [theBuffer appendString: @"</Change>"];
               continue;
             }
           
@@ -512,7 +593,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
           [theBuffer appendString: @"<Change>"];
-          [theBuffer appendFormat: @"<ServerId>%@</ServerId>", serverId];
+          [theBuffer appendFormat: @"<ServerId>%@</ServerId>", origServerId];
           [theBuffer appendFormat: @"<Status>%d</Status>", 1];
           [theBuffer appendString: @"</Change>"];
         }
@@ -551,8 +632,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
 
   id aDelete, sogoObject, value;
-  NSArray *deletions;
-  NSString *serverId;
+  NSArray *deletions, *a;
+  NSString *serverId, *easId, *origServerId, *mergedFolder;
 
   BOOL deletesAsMoves, useTrash;
   int i;
@@ -561,6 +642,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   if ([deletions count])
     {
+      NSMutableDictionary *folderMetadata, *dateCache, *syncCache, *uidCache;
+      folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: theCollection withType: theFolderType]];
+
+      syncCache = [folderMetadata objectForKey: @"SyncCache"];
+      dateCache = [folderMetadata objectForKey: @"DateCache"];
+      uidCache = [folderMetadata objectForKey: @"UidCache"];
+
       // From the documention, if DeletesAsMoves is missing, we must assume it's a YES.
       // See https://msdn.microsoft.com/en-us/library/gg675480(v=exchg.80).aspx for all details.
       value = [theDocumentElement getElementsByTagName: @"DeletesAsMoves"];
@@ -574,8 +662,41 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         {
           aDelete = [deletions objectAtIndex: i];
           
-          serverId = [[(id)[aDelete getElementsByTagName: @"ServerId"] lastObject] textValue];
+          origServerId = [[(id)[aDelete getElementsByTagName: @"ServerId"] lastObject] textValue];
+          easId = origServerId;
+
+          a = [origServerId componentsSeparatedByString: @"{+}"];
+          if ([a count] > 1)
+            {
+              easId  = [a objectAtIndex: 1];
+              mergedFolder = [a objectAtIndex: 0];
+
+              // Make sure that the delete goes to the target folder and not to personal.
+              if ([[theCollection nameInContainer] isEqualToString: @"personal"])
+                {
+                  if (debugOn)
+                    [self logWithFormat: @"EAS - Delete - Target folder %@, easId %@", mergedFolder, easId];
+
+                  [self processSyncDeleteCommand: theDocumentElement
+                                    inCollection: [self collectionFromId: mergedFolder  type: theFolderType]
+                                        withType: theFolderType
+                                        inBuffer: theBuffer];
+
+                  continue;
+                }
+             }
+
+         if (debugOn)
+           [self logWithFormat: @"EAS - Delete - Process delete for folder %@ easId %@", [theCollection nameInContainer],easId];
           
+          if (uidCache && (serverId = [[uidCache allKeysForObject: easId] objectAtIndex: 0]))
+            {
+              if (debugOn)
+                [self logWithFormat: @"EAS - Found serverId: %@ for easId: %@", serverId, easId];
+            }
+          else
+            serverId = easId;
+
           sogoObject = [theCollection lookupName: [serverId sanitizedServerIdWithType: theFolderType]
                                        inContext: context
                                          acquire: NO];
@@ -592,24 +713,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 }
               else
                 [sogoObject delete];
-            }
 
-          [theBuffer appendString: @"<Delete>"];
-          [theBuffer appendFormat: @"<ServerId>%@</ServerId>", serverId];
-          [theBuffer appendFormat: @"<Status>%d</Status>", 1];
-          [theBuffer appendString: @"</Delete>"];
+              [syncCache removeObjectForKey: serverId];
+              [dateCache removeObjectForKey: serverId];
+              //[uidCache removeObjectForKey: serverId];
+              [self _setFolderMetadata: folderMetadata forKey: [self _getNameInCache: theCollection withType: theFolderType]];
 
-          // update syncCache
-          NSMutableDictionary *folderMetadata, *dateCache, *syncCache;
-          folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: theCollection withType: theFolderType]];
-
-          syncCache = [folderMetadata objectForKey: @"SyncCache"];
-          dateCache = [folderMetadata objectForKey: @"DateCache"];
-
-          [syncCache removeObjectForKey: serverId];
-          [dateCache removeObjectForKey: serverId];
-
-          [self _setFolderMetadata: folderMetadata forKey: [self _getNameInCache: theCollection withType: theFolderType]];
+              [theBuffer appendString: @"<Delete>"];
+              [theBuffer appendFormat: @"<ServerId>%@</ServerId>", origServerId];
+              [theBuffer appendFormat: @"<Status>%d</Status>", 1];
+              [theBuffer appendString: @"</Delete>"];
+           }
         }
     }
 }
@@ -662,8 +776,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                       inBuffer: (NSMutableString *) theBuffer
                  lastServerKey: (NSString **) theLastServerKey
                defaultInterval: (unsigned int) theDefaultInterval
+                  mergeFolders: (BOOL) theMergeFolder
 {
-  NSMutableDictionary *folderMetadata, *dateCache, *syncCache;
+  NSMutableDictionary *folderMetadata, *dateCache, *syncCache, *uidCache;
   NSString *davCollectionTagToStore;
   NSAutoreleasePool *pool;
   NSMutableString *s;
@@ -681,6 +796,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       [folderMetadata setObject: [NSMutableDictionary dictionary]  forKey: @"SyncCache"];
       [folderMetadata setObject: [NSMutableDictionary dictionary]  forKey: @"DateCache"];
+      if (theFolderType != ActiveSyncMailFolder)
+        {
+          [folderMetadata setObject: [NSCalendarDate date] forKey: @"CleanoutDate"];
+          [folderMetadata setObject: [NSMutableDictionary dictionary]  forKey: @"UidCache"];
+        }
     }
   else if ([folderMetadata objectForKey: @"SyncKey"] && !([theSyncKey isEqualToString: [folderMetadata objectForKey: @"SyncKey"]]))
     {
@@ -692,6 +812,32 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   syncCache = [folderMetadata objectForKey: @"SyncCache"];
   dateCache = [folderMetadata objectForKey: @"DateCache"];
+  uidCache = [folderMetadata objectForKey: @"UidCache"];
+
+  if (!cleanup_needed && -[[folderMetadata objectForKey: @"CleanoutDate"] timeIntervalSinceNow] > 3600)
+    {
+      NSArray *allKeys;
+      NSString *key;
+
+      if (debugOn)
+        [self logWithFormat: @"EAS - Cleanout UidCache of folder %@", [theCollection nameInContainer]];
+
+      allKeys = [uidCache allKeys];
+      for (i = 0; i < [allKeys count]; i++)
+        {
+          key = [allKeys objectAtIndex: i];
+          if (![syncCache objectForKey:key] && ![syncCache objectForKey:key])
+            {
+              if (debugOn)
+                [self logWithFormat: @"EAS - Delete UidCache entry %@", key];
+
+              [uidCache removeObjectForKey: key];
+            }
+        }
+
+      [folderMetadata setObject: [NSCalendarDate date] forKey: @"CleanoutDate"];
+      [self _setFolderMetadata: folderMetadata forKey: [self _getNameInCache: theCollection withType: theFolderType]];
+    }
 
   if ((theFolderType == ActiveSyncMailFolder || theFolderType == ActiveSyncEventFolder || theFolderType == ActiveSyncTaskFolder) && 
       (cleanup_needed ||
@@ -743,6 +889,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
                   // Now we are save to remove the dateCache entry.
                   [dateCache removeObjectForKey: key];
+                  //[uidCache removeObjectForKey: key];
                 }
             }
           
@@ -781,7 +928,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     case ActiveSyncTaskFolder:
       {
         id sogoObject, componentObject;
-        NSString *uid, *component_name;
+        NSString *uid, *easId, *component_name;
         NSDictionary *component;
         NSArray *allComponents;
 
@@ -860,7 +1007,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                         [syncCache removeObjectForKey: uid];
                         [dateCache removeObjectForKey: uid];
                       }
-                    else 
+                    else
                       {
                         if (debugOn)
                           [self logWithFormat: @"EAS - Cache cleanup: CHANGE %@", uid];
@@ -901,13 +1048,49 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               }
             
             uid = [[component objectForKey: @"c_name"] sanitizedServerIdWithType: theFolderType];
+
+            if (uidCache)
+              {
+                easId = [uidCache objectForKey: uid];
+
+                if (!easId)
+                  {
+                    if ([uid length] > 64)
+                      {
+                        easId = [theCollection globallyUniqueObjectId];
+                        [uidCache setObject: easId forKey: uid];
+
+                        if (debugOn)
+                          [self logWithFormat: @"EAS - Generated new easId: %@ for serverId: %@", easId, uid];
+                      }
+                    else
+                      {
+                        if (debugOn)
+                          [self logWithFormat: @"EAS - Use original serverId: %@ %@", uid, easId];
+
+                        easId = uid;
+                      }
+                  }
+                else
+                  {
+                    if (debugOn)
+                      [self logWithFormat: @"EAS - Reuse easId: %@ for serverId: %@", easId, uid];
+                  }
+              }
+            else
+              easId = uid;
             
             if (deleted)
               {
                 if ([syncCache objectForKey: uid])
                   {
                     [s appendString: @"<Delete xmlns=\"AirSync:\">"];
-                    [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
+
+                    if (![[theCollection nameInContainer] isEqualToString: @"personal"] && theMergeFolder)
+                      [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@{+}%@</ServerId>", [theCollection nameInContainer], easId];
+                    else
+                      [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", easId];
+
                     [s appendString: @"</Delete>"];
 
                     [syncCache removeObjectForKey: uid];
@@ -960,7 +1143,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 else
                   [s appendString: @"<Add xmlns=\"AirSync:\">"];
                 
-                [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
+                if (![[theCollection nameInContainer] isEqualToString: @"personal"] && theMergeFolder)
+                    [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@{+}%@</ServerId>", [theCollection nameInContainer], easId];
+                else
+                    [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", easId];
+
                 [s appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
                 
                 [s appendString: [componentObject activeSyncRepresentationInContext: context]];
@@ -1497,6 +1684,27 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   folderKey = [self _getNameInCache: collection withType: folderType];
   folderMetadata = [self _folderMetadataForKey: folderKey];
 
+  if (![folderMetadata count])
+    {
+      if (debugOn)
+       [self logWithFormat: @"EAS - processSyncCollection: no folderMetadata found: %@", [collection nameInContainer]];
+
+      // We request foldersync to initialize the missing metadata.
+      // We skip root-folders for shared mailboxes (shared and shared/jdoe@example.com).
+      if (![collection isKindOfClass: [SOGoMailNamespace class]])
+        {
+          [theBuffer appendString: @"<Collection>"];
+          [theBuffer appendFormat: @"<SyncKey>%@</SyncKey>", syncKey];
+          [theBuffer appendFormat: @"<CollectionId>%@</CollectionId>", collectionId];
+          [theBuffer appendFormat: @"<Status>%d</Status>", 12];
+          [theBuffer appendString: @"</Collection>"];
+
+          *changeDetected = YES;
+        }
+
+      return;
+    }
+
   // We check for a window size, default to 100 if not specfied or out of bounds
   windowSize = [[[(id)[theDocumentElement getElementsByTagName: @"WindowSize"] lastObject] textValue] intValue];
   
@@ -1677,10 +1885,214 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                    withFilterType: [NSCalendarDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]]
                          inBuffer: changeBuffer
                     lastServerKey: &lastServerKey
-                  defaultInterval: [[SOGoSystemDefaults sharedSystemDefaults] maximumSyncInterval]];
+                  defaultInterval: [[SOGoSystemDefaults sharedSystemDefaults] maximumSyncInterval]
+                     mergeFolders: NO];
     }
 
   folderMetadata = [self _folderMetadataForKey: folderKey];
+
+  // We only check for changes in other folders if we got nothing back from personal folder and
+  // MergedFolder is set (sogo-tool manage-eas mergeVCard).
+  if (getChanges && !first_sync &&
+      ([[collection nameInContainer] isEqualToString: @"personal"]) &&
+      ([folderMetadata objectForKey: @"MergedFolder"]))
+    {
+      NSArray *unsortedArray;
+      NSMutableDictionary *mergedFolderMetadata, *mergedFoldersSyncKeys;
+      NSString *mergedFolderSyncKey, *component_name, *mfLastServerKey;
+      id mfCollection;
+      BOOL cacheUpdateNeeded;
+
+      mfLastServerKey = nil;
+      cacheUpdateNeeded=NO;
+
+      if (folderType == ActiveSyncContactFolder)
+        component_name = @"vcard";
+      else if (folderType == ActiveSyncEventFolder)
+        component_name = @"vevent";
+      else
+        component_name = @"vtodo";
+
+      mergedFoldersSyncKeys = [folderMetadata objectForKey: @"MergedFoldersSyncKeys"];
+
+      // Initialize if MergedFoldersSyncKeys doesn't exists.
+      // We user MergedFoldersSyncKeys to store the SyncKey for merged folders:
+      // MergedFoldersSyncKeys = { 1447166580 = {"vcard/34B2-543AB980-D-DB9ECF0" = 1447157519; "vcard/5DE4-5640BC80-3-37E3EE00" = 1447166074; }
+      //                           1447166638 = {"vcard/34B2-543AB980-D-DB9ECF0" = 1447157519; "vcard/5DE4-5640BC80-3-37E3EE00" = 1447166074; } }
+      if (!mergedFoldersSyncKeys || [syncKey isEqualToString: @"-1"])
+        {
+          [folderMetadata setObject: [NSMutableDictionary dictionaryWithObject: [NSMutableDictionary dictionary] forKey: syncKey]
+                                                                        forKey: @"MergedFoldersSyncKeys"];
+           mergedFoldersSyncKeys = [folderMetadata objectForKey: @"MergedFoldersSyncKeys"];
+
+           cacheUpdateNeeded=YES;
+        }
+
+      // Copy the MergedFoldersSyncKeys entry. Later we update this entry with new SyncKeys if there are changes.
+      if (![syncKey isEqualToString: [folderMetadata objectForKey: @"SyncKey"]])
+        {
+          [mergedFoldersSyncKeys setObject: [mergedFoldersSyncKeys objectForKey: syncKey] forKey: [folderMetadata objectForKey: @"SyncKey"]];
+          cacheUpdateNeeded=YES;
+        }
+
+      // We only keep 5 entries in MergedFoldersSyncKeys.
+      unsortedArray = [mergedFoldersSyncKeys allKeys];
+      if ([unsortedArray count] > 5)
+         [mergedFoldersSyncKeys removeObjectForKey: [[unsortedArray sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0]];
+
+      // Don't check for changes in other folders if personal folder has changes.
+      if (![changeBuffer length])
+        {
+          NSArray *foldersInCache;
+          SOGoCacheGCSObject *o;
+          NSString *folderName, *realCollectionId;
+          NSArray *a, *folderNames;
+          SOGoMicrosoftActiveSyncFolderType mergedFolderType;
+
+          o = [SOGoCacheGCSObject objectWithName: @"0" inContainer: nil];
+          [o setObjectType: ActiveSyncFolderCacheObject];
+          [o setTableUrl: folderTableURL];
+
+          foldersInCache =  [o cacheEntriesForDeviceId: [context objectForKey: @"DeviceId"] newerThanVersion: -1];
+
+          // Add folders to MergedFoldersSyncKeys.
+          for (i = 0; i < [foldersInCache count]; i++)
+            {
+               a = [[foldersInCache objectAtIndex: i] componentsSeparatedByString: @"+"];
+               folderName = [a objectAtIndex: 1];
+
+               if (![folderName hasPrefix: component_name] || [folderName hasSuffix: @"/personal"])
+                 continue;
+
+               mergedFolderSyncKey = [[mergedFoldersSyncKeys objectForKey: [folderMetadata objectForKey: @"SyncKey"]] objectForKey: folderName ];
+
+               if (!mergedFolderSyncKey)
+                 {
+                   realCollectionId = [folderName realCollectionIdWithFolderType: &mergedFolderType];
+                   mfCollection = [self collectionFromId: realCollectionId  type: mergedFolderType];
+
+                   // Cache-entry still exists but folder doesn't exists or synchronize flag is not set.
+                   // We ignore the folder and wait for foldersync to do the cleanup.
+                   if (!(mfCollection && [mfCollection synchronize]))
+                     {
+                       if (debugOn)
+                         [self logWithFormat: @"EAS - Folder %@ not found. Ignoring ...", folderName];
+
+                       continue;
+                     }
+
+                   mergedFolderMetadata = [self _folderMetadataForKey: folderName];
+
+                   if (debugOn)
+                     [self logWithFormat: @"EAS - Add folder %@ for merging into personal folder", folderName];
+
+                   // Initialize MergedFoldersSyncKeys entry. e.g. "vcard/34B2-543AB980-D-DB9ECF0" = -1
+                   [[mergedFoldersSyncKeys objectForKey: [folderMetadata objectForKey: @"SyncKey"]] setObject: @"-1" forKey: folderName];
+                   cacheUpdateNeeded = YES;
+
+                   // Flag folder as a merged folder.
+                   if (![[mergedFolderMetadata objectForKey: @"MergedFolder"] isEqualToString: @"2"])
+                     {
+                       [mergedFolderMetadata setObject: @"1" forKey: @"MergedFolder"];
+                       [self _setFolderMetadata: mergedFolderMetadata forKey: folderName];
+                     }
+                }
+            }
+
+          // Check merged folders for changes.
+          folderNames = [[mergedFoldersSyncKeys objectForKey: [folderMetadata objectForKey: @"SyncKey"]] allKeys];
+          for (i = 0; i < [folderNames count]; i++)
+            {
+              folderName = [folderNames objectAtIndex: i];
+              realCollectionId = [folderName realCollectionIdWithFolderType: &mergedFolderType];
+              mfCollection = [self collectionFromId: realCollectionId  type: mergedFolderType];
+
+              if (!(mfCollection && [mfCollection synchronize]))
+                {
+                  if (debugOn)
+                    [self logWithFormat: @"EAS - Folder %@ not found. Reset peronal folder to cleanup", folderName];
+
+                  davCollectionTag = @"0";
+                  *changeDetected = YES;
+                  status = 3;
+
+                  // Reset personal folder - Cleanup metadata of personal folder.
+                 [folderMetadata removeObjectForKey: @"SyncKey"];
+                 [folderMetadata removeObjectForKey: @"SyncCache"];
+                 [folderMetadata removeObjectForKey: @"DateCache"];
+                 [folderMetadata removeObjectForKey: @"UidCache"];
+                 [folderMetadata removeObjectForKey: @"MoreAvailable"];
+                 [folderMetadata removeObjectForKey: @"CleanoutDate"];
+
+                 [self _setFolderMetadata: folderMetadata forKey: folderKey];
+                 break;
+               }
+
+              if (debugOn)
+                [self logWithFormat: @"EAS - Merging folder %@ into personal folder", folderName];
+
+              mergedFolderSyncKey = [[mergedFoldersSyncKeys objectForKey: [folderMetadata objectForKey: @"SyncKey"]] objectForKey: folderName ];
+
+              [self processSyncGetChanges: theDocumentElement
+                             inCollection: mfCollection
+                           withWindowSize: windowSize
+                  withMaxSyncResponseSize: theMaxSyncResponseSize
+                              withSyncKey: mergedFolderSyncKey
+                           withFolderType: folderType
+                           withFilterType: [NSCalendarDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]]
+                                 inBuffer: changeBuffer
+                            lastServerKey: &mfLastServerKey
+                          defaultInterval: [[SOGoSystemDefaults sharedSystemDefaults] maximumSyncInterval]
+                             mergeFolders: YES];
+
+              mergedFolderMetadata = [self _folderMetadataForKey: folderName];
+
+              if ([changeBuffer length] || [commandsBuffer length])
+                {
+                  if (mfLastServerKey)
+                     mergedFolderSyncKey = mfLastServerKey;
+                  else
+                   {
+                     mergedFolderSyncKey = [mergedFolderMetadata objectForKey: @"SyncKey"];
+
+                     if (!mergedFolderSyncKey)
+                       mergedFolderSyncKey = [mfCollection davCollectionTag];
+                   }
+
+                  *changeDetected = YES;
+                }
+              else
+                {
+                  // Make sure that client is updated with the right syncKey. - This keeps vtodo's and vevent's syncKey in sync.
+                  syncKeyInCache = [mergedFolderMetadata  objectForKey: @"SyncKey"];
+                  if (syncKeyInCache && !([mergedFolderSyncKey isEqualToString:syncKeyInCache]) && !first_sync)
+                    {
+                      mergedFolderSyncKey = syncKeyInCache;
+                      *changeDetected = YES;
+                    }
+                }
+
+              // Update MergedFoldersSyncKeys with new SyncKey.
+              [[mergedFoldersSyncKeys objectForKey: [folderMetadata objectForKey: @"SyncKey"]] setObject: mergedFolderSyncKey forKey: folderName];
+
+              if (*changeDetected)
+                {
+                  // Set MoreAvailable to make sure we come back and check remaining folders.
+                  [folderMetadata setObject: [NSNumber numberWithBool: YES]  forKey: @"MoreAvailable"];
+
+                  break;
+                }
+              else if ([folderMetadata objectForKey: @"MoreAvailable"])
+                {
+                  [folderMetadata removeObjectForKey: @"MoreAvailable"];
+                  cacheUpdateNeeded = YES;
+                }
+            }
+       } // end if
+
+       if (*changeDetected || cacheUpdateNeeded)
+         [self _setFolderMetadata: folderMetadata forKey: folderKey];
+     }
 
   // If we got any changes or if we have applied any commands
   // let's regenerate our SyncKey based on the collection tag.
