@@ -18,15 +18,15 @@
 // using "Breakpoint" (https://github.com/at-import/breakpoint)
 @mixin at($breakpoint) {
   $min_idx: index($slicer-breakpoint-names, $breakpoint);
-  $min: nth($slicer-breakpoints, $min_idx) + 1;
-  $max: nth($slicer-breakpoints, $min_idx + 1);
+  $min: nth($slicer-breakpoints, $min_idx);
+  $max: nth($slicer-breakpoints, $min_idx + 1) - 1;
   @include breakpoint($min $max) {
     @content;
   }
 }
 @mixin from($breakpoint) {
   $min_idx: index($slicer-breakpoint-names, $breakpoint);
-  $min: nth($slicer-breakpoints, $min_idx + 1);
+  $min: nth($slicer-breakpoints, $min_idx);
   @include breakpoint($min) {
     @content;
   }

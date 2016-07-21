@@ -64,6 +64,24 @@ $touch-zone: $touch-zone-width;
 // angular-material share breakpoint values between sass and js files (/core/constant.js)
 // we might consider using a sass library to import values as json single source for both
 
+/**
+ *  Breakpoint:   0                    600px       960px     1024px        1280px
+ *                ├───────────────────┼─────────┼─────────┼───────────┼─────────>
+ *  Slice  :                xs           ·    sm    ·    md    ·     lg      .    xl
+ *                ·                      ·          ·          ·             ·
+ *                ·                      ·          ·  at(md)  ·             ·
+ *                ·                      ·          ├─────────┤             ·
+ *                ·                      ·          ·          ·             ·
+ *                ·                      ·          · from(md) ·             ·
+ *                ·                      ·          ├───────────────────────────────>
+ *                ·                      ·                     ·             ·
+ *                ·                      ·            to(md)   ·             ·
+ *                ├─────────────────────────────────────────┤           ·
+ *                                       ·                                   ·
+ *                                       ·         between(sm, lg)           ·
+ *                                       ├───────────────────────────────┤
+ */
+
 $layout-breakpoint-xs:     600px !default;
 $layout-breakpoint-sm:     960px !default;
 $layout-breakpoint-md:     1280px !default;

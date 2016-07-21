@@ -683,7 +683,7 @@
             </md-fab-actions>
           </md-fab-speed-dial>
         </div>
-        <div id="detailView" class="view-detail hide show-gt-md md-default-theme md-background md-bg md-hue-2"
+        <div id="detailView" class="view-detail hide show-gt-xs md-default-theme md-background md-bg md-hue-2"
              layout="column" ui-view="calendarView">
           <!-- calendar view -->
         </div>
