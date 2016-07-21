@@ -81,6 +81,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
@@ -98,6 +99,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Mailer/SOGoMailObject+Draft.h>
 #import <Mailer/SOGoSentFolder.h>
 #import <Mailer/NSString+Mail.h>
+#import <Mailer/SOGoSentFolder.h>
 
 #import <Foundation/NSString.h>
 
@@ -134,6 +136,9 @@ void handle_eas_terminate(int signum)
 
 - (NSMutableDictionary *) _folderMetadataForKey: (NSString *) theFolderKey;
 - (void) _setFolderMetadata: (NSDictionary *) theFolderMetadata forKey: (NSString *) theFolderKey;
+- (void) _setOrUnsetSyncRequest: (BOOL) set
+                       collections: (NSArray *) collections;
+
 
 @end
 
@@ -856,7 +861,7 @@ void handle_eas_terminate(int signum)
          if ([key rangeOfString: @"+folder" options: NSCaseInsensitiveSearch].location != NSNotFound) 
            [cachedGUIDs setObject: [NSString stringWithFormat: @"folder%@", [[o properties] objectForKey: @"displayName"]] //  e.g. CDB648DDBC5040F8AC90792383DBBBAA+folderINBOX
                            forKey: [key substringFromIndex: [key rangeOfString: @"+"].location+1]];
-         else 
+         else
            [cachedGUIDs setObject: [key substringFromIndex: [key rangeOfString: @"+"].location+1]   //  e.g. CDB648DDBC5040F8AC90792383DBBBAA+vcard/personal
                            forKey: [key substringFromIndex: [key rangeOfString: @"+"].location+1]];
        }
@@ -899,11 +904,25 @@ void handle_eas_terminate(int signum)
              if ([cKey rangeOfString: @"/"].location != NSNotFound) 
                currentFolder = [[[[context activeUser] homeFolderInContext: context] lookupName: folderType inContext: context acquire: NO]
                                                             lookupName: [cKey substringFromIndex: [cKey rangeOfString: @"/"].location+1]  inContext: context acquire: NO];
+             else
+               currentFolder = nil;
 
              // We skip personal GCS folders - we always want to synchronize these
              if ([currentFolder isKindOfClass: [SOGoGCSFolder class]] &&
                  [[currentFolder nameInContainer] isEqualToString: @"personal"])
                continue;
+
+             // We remove the folder from device but keep the cache entry,
+             // otherwise the user would see duplication objects, one in personal folder and one in the merged folder.
+             //    MergedFolder=1 - Folder need to be removed from device.
+             //    MergedFolder=2 - Folder has been removed from device; i.e. <Delete> has been sent already.
+             if ([[[o properties] objectForKey: @"MergedFolder"] isEqualToString: @"1"])
+               {
+		 [commands appendFormat: @"<Delete><ServerId>%@</ServerId></Delete>", [cKey stringByEscapingURL] ];
+		 command_count++;
+		 [[o properties] setObject: @"2" forKey: @"MergedFolder"];
+		 [o save];
+	       }
 
              // Remove the folder from device if it doesn't exist, we don't want to sync it, or it doesn't have the proper permissions
              if (!currentFolder ||
@@ -915,10 +934,16 @@ void handle_eas_terminate(int signum)
                                onObject: currentFolder
                               inContext: context])
                {
-                 [commands appendFormat: @"<Delete><ServerId>%@</ServerId></Delete>", [cKey stringByEscapingURL] ];
-                 command_count++;
+                 // Don't send a delete when MergedFoler is set, we have done it above.
+                 // Windows Phones don't like when a <Delete>-folder is sent twice.
+                 if (![[[o properties] objectForKey: @"MergedFolder"] isEqualToString: @"2"])
+                   {
+                     [commands appendFormat: @"<Delete><ServerId>%@</ServerId></Delete>", [cKey stringByEscapingURL] ];
+                     command_count++;
+                   }
                  [o destroy];
                }
+
            }
        }
    }
@@ -1010,6 +1035,7 @@ void handle_eas_terminate(int signum)
          [[o properties] removeObjectForKey: @"SyncKey"];
          [[o properties] removeObjectForKey: @"SyncCache"];
          [[o properties] removeObjectForKey: @"DateCache"];
+         [[o properties] removeObjectForKey: @"UidCache"];
          [[o properties] removeObjectForKey: @"MoreAvailable"];
          [[o properties] removeObjectForKey: @"BodyPreferenceType"];
          [[o properties] removeObjectForKey: @"SupportedElements"];
@@ -1017,6 +1043,9 @@ void handle_eas_terminate(int signum)
          [[o properties] removeObjectForKey: @"InitialLoadSequence"];
          [[o properties] removeObjectForKey: @"FirstIdInCache"];
          [[o properties] removeObjectForKey: @"LastIdInCache"];
+         [[o properties] removeObjectForKey: @"MergedFoldersSyncKeys"];
+         [[o properties] removeObjectForKey: @"MergedFolder"];
+         [[o properties] removeObjectForKey: @"CleanoutDate"];
 
          [o save];
               
@@ -1075,7 +1104,7 @@ void handle_eas_terminate(int signum)
          operation = @"Add";
        else  if (![[[o properties ]  objectForKey: @"displayName"] isEqualToString:  [[folders objectAtIndex:fi] displayName]])
          operation = @"Update";
-       else 
+       else
          operation = nil;
           
        if (operation)
@@ -1111,6 +1140,7 @@ void handle_eas_terminate(int signum)
                    [[o properties] removeObjectForKey: @"SyncKey"];
                    [[o properties] removeObjectForKey: @"SyncCache"];
                    [[o properties] removeObjectForKey: @"DateCache"];
+                   [[o properties] removeObjectForKey: @"UidCache"];
                    [[o properties] removeObjectForKey: @"MoreAvailable"];
                    [[o properties] removeObjectForKey: @"BodyPreferenceType"];
                    [[o properties] removeObjectForKey: @"SupportedElements"];
@@ -1118,6 +1148,9 @@ void handle_eas_terminate(int signum)
                    [[o properties] removeObjectForKey: @"InitialLoadSequence"];
                    [[o properties] removeObjectForKey: @"FirstIdInCache"];
                    [[o properties] removeObjectForKey: @"LastIdInCache"];
+                   [[o properties] removeObjectForKey: @"MergedFoldersSyncKeys"];
+                   [[o properties] removeObjectForKey: @"MergedFolder"];
+                   [[o properties] removeObjectForKey: @"CleanoutDate"];
                  }
 
                [o save];
@@ -1138,6 +1171,7 @@ void handle_eas_terminate(int signum)
                    [[o properties] removeObjectForKey: @"SyncKey"];
                    [[o properties] removeObjectForKey: @"SyncCache"];
                    [[o properties] removeObjectForKey: @"DateCache"];
+                   [[o properties] removeObjectForKey: @"UidCache"];
                    [[o properties] removeObjectForKey: @"MoreAvailable"];
                    [[o properties] removeObjectForKey: @"BodyPreferenceType"];
                    [[o properties] removeObjectForKey: @"SupportedElements"];
@@ -1145,6 +1179,9 @@ void handle_eas_terminate(int signum)
                    [[o properties] removeObjectForKey: @"InitialLoadSequence"];
                    [[o properties] removeObjectForKey: @"FirstIdInCache"];
                    [[o properties] removeObjectForKey: @"LastIdInCache"];
+                   [[o properties] removeObjectForKey: @"MergedFoldersSyncKeys"];
+                   [[o properties] removeObjectForKey: @"MergedFolder"];
+                   [[o properties] removeObjectForKey: @"CleanoutDate"];
                  }
 
                [o save];
@@ -1612,10 +1649,11 @@ void handle_eas_terminate(int signum)
 - (void) processMeetingResponse: (id <DOMElement>) theDocumentElement
                      inResponse: (WOResponse *) theResponse
 {
-  NSString *realCollectionId, *requestId, *participationStatus, *calendarId;
+  NSString *realCollectionId, *requestId, *easRequestId, *participationStatus, *calendarId;
   SOGoAppointmentObject *appointmentObject;
   SOGoMailObject *mailObject;
-  NSMutableString *s;
+  NSMutableDictionary *uidCache, *folderMetadata;
+  NSMutableString *s, *nameInCache;
   NSData *d;
 
   id collection;
@@ -1630,7 +1668,7 @@ void handle_eas_terminate(int signum)
   realCollectionId = [[[(id)[theDocumentElement getElementsByTagName: @"CollectionId"] lastObject] textValue] realCollectionIdWithFolderType: &folderType];
   realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
   userResponse = [[[(id)[theDocumentElement getElementsByTagName: @"UserResponse"] lastObject] textValue] intValue];
-  requestId = [[(id)[theDocumentElement getElementsByTagName: @"RequestId"] lastObject] textValue];  
+  easRequestId = [[(id)[theDocumentElement getElementsByTagName: @"RequestId"] lastObject] textValue];
   appointmentObject = nil;
   calendarId = nil;
 
@@ -1649,10 +1687,35 @@ void handle_eas_terminate(int signum)
   if (folderType == ActiveSyncEventFolder)
     {
       collection = [[context activeUser] personalCalendarFolderInContext: context];
+
+      nameInCache = [NSString stringWithFormat: @"vevent/%@", [collection nameInContainer]];
+      folderMetadata = [self _folderMetadataForKey: nameInCache];
+
+      uidCache = [folderMetadata objectForKey: @"UidCache"];
+      if (uidCache)
+        {
+          requestId = [[uidCache allKeysForObject: easRequestId] objectAtIndex: 0];
+
+          if (requestId)
+            {
+              if (debugOn)
+                [self logWithFormat: @"EAS - Found requestId: %@ for easRequestId: %@", requestId, easRequestId];
+            }
+          else
+            {
+              if (debugOn)
+                [self logWithFormat: @"EAS - Use original requestId: %@", easRequestId];
+
+              requestId = easRequestId;
+            }
+        }
+      else
+        requestId = easRequestId;
+
       appointmentObject = [collection lookupName: [requestId sanitizedServerIdWithType: ActiveSyncEventFolder]
                                        inContext: context
                                          acquire: NO];
-      calendarId = requestId;
+      calendarId = easRequestId;
       
       // Object not found, let's fallback on the INBOX folder
       if ([appointmentObject isKindOfClass: [NSException class]])
@@ -1672,7 +1735,7 @@ void handle_eas_terminate(int signum)
       // We fetch the calendar information based on the email (requestId) in the user's INBOX (or elsewhere)
       //
       // FIXME: that won't work too well for external invitations...
-      mailObject = [collection lookupName: requestId
+      mailObject = [collection lookupName: easRequestId
                                 inContext: context
                                   acquire: 0];
       
@@ -1687,6 +1750,12 @@ void handle_eas_terminate(int signum)
 
           // Fetch the SOGoAppointmentObject
           collection = [[context activeUser] personalCalendarFolderInContext: context];
+          nameInCache = [NSString stringWithFormat: @"vevent/%@", [collection nameInContainer]];
+
+          [self _setOrUnsetSyncRequest: YES  collections: [NSArray arrayWithObject: nameInCache]];
+          folderMetadata = [self _folderMetadataForKey: nameInCache];
+          uidCache = [folderMetadata objectForKey: @"UidCache"];
+
           appointmentObject = [collection lookupName: [NSString stringWithFormat: @"%@.ics", [event uid]]
                                            inContext: context
                                              acquire: NO];
@@ -1698,6 +1767,27 @@ void handle_eas_terminate(int signum)
                                                                   inContainer: collection];
               [appointmentObject saveComponent: event];
            }
+
+          if (uidCache && [calendarId length] > 64)
+            {
+              calendarId  = [uidCache objectForKey: [event uid]];
+
+              if (![calendarId length])
+                {
+                  calendarId = [collection globallyUniqueObjectId];
+                  [uidCache setObject: calendarId forKey: [event uid]];
+
+                  [self _setFolderMetadata: folderMetadata forKey: nameInCache];
+
+                  if (debugOn)
+                    [self logWithFormat: @"EAS - Generated new calendarId: %@ for serverId: %@", calendarId, [event uid]];
+                }
+              else
+                {
+                  if (debugOn)
+                    [self logWithFormat: @"EAS - Reuse calendarId: %@ for serverId: %@", calendarId, [event uid]];
+                }
+            }
         }
     }
      
@@ -1721,7 +1811,7 @@ void handle_eas_terminate(int signum)
       [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
       [s appendString: @"<MeetingResponse xmlns=\"MeetingResponse:\">"];
       [s appendString: @"<Result>"];
-      [s appendFormat: @"<RequestId>%@</RequestId>", requestId];
+      [s appendFormat: @"<RequestId>%@</RequestId>", easRequestId];
       [s appendFormat: @"<CalendarId>%@</CalendarId>", calendarId];
       [s appendFormat: @"<Status>%d</Status>", status];
       [s appendString: @"</Result>"];
@@ -1737,7 +1827,7 @@ void handle_eas_terminate(int signum)
       [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
       [s appendString: @"<MeetingResponse xmlns=\"MeetingResponse:\">"];
       [s appendString: @"<Result>"];
-      [s appendFormat: @"<RequestId>%@</RequestId>", requestId];
+      [s appendFormat: @"<RequestId>%@</RequestId>", easRequestId];
       [s appendFormat: @"<Status>%d</Status>", 2];
       [s appendString: @"</Result>"];
       [s appendString: @"</MeetingResponse>"];
@@ -1762,8 +1852,8 @@ void handle_eas_terminate(int signum)
 - (void) processMoveItems: (id <DOMElement>) theDocumentElement
                inResponse: (WOResponse *) theResponse
 {
-  NSString *srcMessageId, *srcFolderId, *dstFolderId, *dstMessageId, *nameInCache, *currentFolder;
-  NSMutableDictionary *folderMetadata, *prevSuccessfulMoveItemsOps, *newSuccessfulMoveItemsOps;
+  NSString *srcMessageId, *srcFolderId, *dstFolderId, *dstMessageId, *srcNameInCache, *dstNameInCache, *currentSrcFolder, *currentDstFolder;
+  NSMutableDictionary *srcFolderMetadata, *dstFolderMetadata, *prevSuccessfulMoveItemsOps, *newSuccessfulMoveItemsOps;
   SOGoMicrosoftActiveSyncFolderType srcFolderType, dstFolderType;
   id <DOMElement> aMoveOperation;
   NSArray *moveOperations;
@@ -1772,12 +1862,17 @@ void handle_eas_terminate(int signum)
   NSData *d; 
   int i;
 
+  currentSrcFolder = nil;
+  currentDstFolder = nil;
+
   moveOperations = (id)[theDocumentElement getElementsByTagName: @"Move"];
 
   newSuccessfulMoveItemsOps = [NSMutableDictionary dictionary];
   prevSuccessfulMoveItemsOps = nil;
-  folderMetadata = nil;
-  currentFolder = nil;
+  srcFolderMetadata = nil;
+  dstFolderMetadata = nil;
+  currentSrcFolder = nil;
+  currentDstFolder = nil;
 
   s = [NSMutableString string];
 
@@ -1793,18 +1888,33 @@ void handle_eas_terminate(int signum)
       srcFolderId = [[[(id)[aMoveOperation getElementsByTagName: @"SrcFldId"] lastObject] textValue] realCollectionIdWithFolderType: &srcFolderType];
       dstFolderId = [[[(id)[aMoveOperation getElementsByTagName: @"DstFldId"] lastObject] textValue] realCollectionIdWithFolderType: &dstFolderType];
 
+      [self _setOrUnsetSyncRequest: YES  collections: [NSArray arrayWithObjects:
+                             [[[(id)[aMoveOperation getElementsByTagName: @"SrcFldId"] lastObject] textValue] stringByUnescapingURL],
+                             [[[(id)[aMoveOperation getElementsByTagName: @"DstFldId"] lastObject] textValue] stringByUnescapingURL], nil ]];
+
       if (srcFolderType == ActiveSyncMailFolder)
-        nameInCache = [NSString stringWithFormat: @"folder%@", [[[[(id)[aMoveOperation getElementsByTagName: @"SrcFldId"] lastObject] textValue] stringByUnescapingURL] substringFromIndex: 5]];
+        srcNameInCache = [NSString stringWithFormat: @"folder%@", [[[[(id)[aMoveOperation getElementsByTagName: @"SrcFldId"] lastObject] textValue] stringByUnescapingURL] substringFromIndex: 5]];
       else
-        nameInCache = [[[(id)[aMoveOperation getElementsByTagName: @"SrcFldId"] lastObject] textValue] stringByUnescapingURL];
+        srcNameInCache = [[[(id)[aMoveOperation getElementsByTagName: @"SrcFldId"] lastObject] textValue] stringByUnescapingURL];
       
-      if (![nameInCache isEqualToString: currentFolder])
+      if (![srcNameInCache isEqualToString: currentSrcFolder])
         {
-          folderMetadata = [self _folderMetadataForKey: nameInCache];
-          prevSuccessfulMoveItemsOps = [folderMetadata objectForKey: @"SuccessfulMoveItemsOps"];
-          currentFolder = nameInCache;
+          srcFolderMetadata = [self _folderMetadataForKey: srcNameInCache];
+          prevSuccessfulMoveItemsOps = [srcFolderMetadata objectForKey: @"SuccessfulMoveItemsOps"];
+          currentSrcFolder = srcNameInCache;
         }
-      
+
+      if (dstFolderType == ActiveSyncMailFolder)
+        dstNameInCache = [NSString stringWithFormat: @"folder%@", [[[[(id)[aMoveOperation getElementsByTagName: @"DstFldId"] lastObject] textValue] stringByUnescapingURL] substringFromIndex: 5]];
+      else
+        dstNameInCache = [[[(id)[aMoveOperation getElementsByTagName: @"DstFldId"] lastObject] textValue] stringByUnescapingURL];
+
+      if (![dstNameInCache isEqualToString: currentDstFolder])
+        {
+          dstFolderMetadata = [self _folderMetadataForKey: dstNameInCache];
+          currentDstFolder = dstNameInCache;
+        }
+
       [s appendString: @"<Response>"];
 
       if (srcFolderType == ActiveSyncMailFolder && dstFolderType == ActiveSyncMailFolder)
@@ -1909,14 +2019,44 @@ void handle_eas_terminate(int signum)
         {
           id srcCollection, dstCollection, srcSogoObject, dstSogoObject;
           NSArray *elements;
-          NSString *newUID;
+          NSString *newUID, *origSrcMessageId;
+          NSMutableDictionary *srcUidCache, *dstUidCache, *dstSyncCache;
           NSException *ex;
 
           unsigned int count, max;
 
           srcCollection = [self collectionFromId: srcFolderId  type: srcFolderType];
+
+          if ([srcCollection isKindOfClass: [NSException class]])
+            {
+              [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
+              [s appendFormat: @"<Status>%d</Status>", 1];
+              continue;
+            }
+
           dstCollection = [self collectionFromId: dstFolderId  type: srcFolderType];
-          
+
+          if ([dstCollection isKindOfClass: [NSException class]])
+            {
+              [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
+              [s appendFormat: @"<Status>%d</Status>", 2];
+              continue;
+            }
+
+          origSrcMessageId = srcMessageId;
+          srcUidCache = [srcFolderMetadata objectForKey: @"UidCache"];
+          dstUidCache = [dstFolderMetadata objectForKey: @"UidCache"];
+          dstSyncCache = [dstFolderMetadata objectForKey: @"SyncCache"];
+
+          if (srcUidCache)
+            {
+              srcMessageId = [[srcUidCache allKeysForObject: origSrcMessageId] objectAtIndex: 0];
+              if (debugOn)
+                [self logWithFormat: @"EAS - Found serverId: %@ for easId: %@", srcMessageId, origSrcMessageId];
+            }
+          else
+            srcMessageId = origSrcMessageId;
+
           srcSogoObject = [srcCollection lookupName: [srcMessageId sanitizedServerIdWithType: srcFolderType]
                                           inContext: context
                                             acquire: NO];
@@ -1924,7 +2064,8 @@ void handle_eas_terminate(int signum)
           sm = [SoSecurityManager sharedSecurityManager];
           if (![sm validatePermission: SoPerm_DeleteObjects
                              onObject: srcCollection
-                            inContext: context])
+                            inContext: context] &&
+              ![srcSogoObject isKindOfClass: [NSException class]])
             {
               if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
                                  onObject: dstCollection
@@ -1942,7 +2083,18 @@ void handle_eas_terminate(int signum)
                   if (!ex)
                     {
                       ex = [srcSogoObject delete];
-                      [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
+
+                      if (dstUidCache)
+                        {
+                          [dstUidCache setObject: newUID forKey: newUID];
+
+                          if (debugOn)
+                            [self logWithFormat: @"EAS - Saved new easId: %@ for serverId: %@", newUID, newUID];
+                        }
+
+                      [dstSyncCache setObject: [dstFolderMetadata objectForKey: @"SyncKey"]  forKey: newUID];
+
+                      [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
                       [s appendFormat: @"<DstMsgId>%@</DstMsgId>", newUID];
                       [s appendFormat: @"<Status>%d</Status>", 3];
 
@@ -1954,36 +2106,45 @@ void handle_eas_terminate(int signum)
                       if ([prevSuccessfulMoveItemsOps objectForKey: srcMessageId])
                         {
                           // Move failed but we can recover the dstMessageId from previous request
-                          [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
+                          [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
                           [s appendFormat: @"<DstMsgId>%@</DstMsgId>", [prevSuccessfulMoveItemsOps objectForKey: srcMessageId] ];
                           [s appendFormat: @"<Status>%d</Status>", 3];
                           [newSuccessfulMoveItemsOps setObject: [prevSuccessfulMoveItemsOps objectForKey: srcMessageId]  forKey: srcMessageId];
+
+                          if (dstUidCache)
+                            {
+                              [dstUidCache setObject: newUID forKey: newUID];
+
+                              if (debugOn)
+                                [self logWithFormat: @"EAS - Saved new easId: %@ for serverId: %@", newUID, newUID];
+                            }
                         }
                       else
                         {
-                          [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
+                          [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
                           [s appendFormat: @"<Status>%d</Status>", 1];
                         }
                     }
                 } 
-              else 
+              else
                 {
-                  [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
+                  [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
                   [s appendFormat: @"<Status>%d</Status>", 2];
                 }
             }
           else
             {
-              [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
+              [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
               [s appendFormat: @"<Status>%d</Status>", 1];
             }
         }
       
       [s appendString: @"</Response>"];
 
-      [folderMetadata removeObjectForKey: @"SuccessfulMoveItemsOps"];
-      [folderMetadata setObject: newSuccessfulMoveItemsOps forKey: @"SuccessfulMoveItemsOps"];
-      [self _setFolderMetadata: folderMetadata forKey: nameInCache];
+      [srcFolderMetadata removeObjectForKey: @"SuccessfulMoveItemsOps"];
+      [srcFolderMetadata setObject: newSuccessfulMoveItemsOps forKey: @"SuccessfulMoveItemsOps"];
+      [self _setFolderMetadata: srcFolderMetadata forKey: srcNameInCache];
+      [self _setFolderMetadata: dstFolderMetadata forKey: dstNameInCache];
     }
   
   [s appendString: @"</MoveItems>"];
@@ -2161,7 +2322,7 @@ void handle_eas_terminate(int signum)
 
           if (folderType == ActiveSyncMailFolder)
               folderMetadata = [self _folderMetadataForKey: [NSString stringWithFormat: @"folder%@", [[collectionId stringByUnescapingURL] substringFromIndex:5]]];
-          else 
+          else
               folderMetadata = [self _folderMetadataForKey: [collectionId stringByUnescapingURL]];
 
           collection = [self collectionFromId: realCollectionId  type: folderType];
@@ -3215,7 +3376,7 @@ void handle_eas_terminate(int signum)
                         textPart = apart;
                     }
                 }
-              else 
+              else
                 {
                   if ([[[part contentType] type] isEqualToString: @"text"] && [[[part contentType] subType] isEqualToString: @"html"])
                     htmlPart = part;
@@ -3248,7 +3409,7 @@ void handle_eas_terminate(int signum)
           charset = [[htmlPart contentType] valueOfParameter: @"charset"];
           isHTML = YES;
         } 
-      else 
+      else
         {
           bodyFromSmartForward = [textPart body];
           charset = [[textPart contentType] valueOfParameter: @"charset"];
@@ -3565,7 +3726,7 @@ void handle_eas_terminate(int signum)
   if (([cmdName rangeOfString: @"ItemOperations" options: NSCaseInsensitiveSearch].location != NSNotFound) &&
       ([[theRequest headerForKey: @"MS-ASAcceptMultiPart"] isEqualToString:@"T"] || [[theRequest uri] acceptsMultiPart]))
     [theResponse setHeader: @"application/vnd.ms-sync.multipart"  forKey: @"Content-Type"];
-  else 
+  else
     [theResponse setHeader: @"application/vnd.ms-sync.wbxml"  forKey: @"Content-Type"];
 
   [self performSelector: aSelector  withObject: documentElement  withObject: theResponse];
