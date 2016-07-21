@@ -14,6 +14,7 @@ Bug fixes
  - [web] fixed refresh of addressbook when deleting one or many cards
  - [web] reset multiple-selection mode after deleting cards, events or tasks
  - [web] fixed exception when moving tasks to a different calendar
+ - [web] fixed printing of long mail (#3731)
  - [eas] fixed long GUID issue preventing sometimes synchronisation (#3460)
 
 3.1.4 (2016-07-12)
