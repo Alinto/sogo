@@ -1,6 +1,9 @@
 3.1.5 (2016-MM-DD)
 ------------------
 
+New features
+ - [eas] added folder merging capabilities
+
 Enhancements
  - [web] improve action progress when login in or sending a message (#3765, #3761)
  - [web] don't allow to send the message while an upload is in progress
@@ -11,6 +14,7 @@ Bug fixes
  - [web] fixed refresh of addressbook when deleting one or many cards
  - [web] reset multiple-selection mode after deleting cards, events or tasks
  - [web] fixed exception when moving tasks to a different calendar
+ - [eas] fixed long GUID issue preventing sometimes synchronisation (#3460)
 
 3.1.4 (2016-07-12)
 ------------------
