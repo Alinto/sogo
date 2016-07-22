@@ -257,7 +257,7 @@ $quarter_height: 10px;
     opacity: 0.9; // When events from a same calendar overlap, it creates a border to help distinguish the events
     outline: none;
     user-select: none;
-    transition: $swift-linear;
+    //transition: $swift-linear;
     $i: 0;
     @while $i <= 96 { // number of 15-minutes blocks in a day
       &.starts#{$i} { top: $quarter_height * $i; }
