@@ -25,13 +25,10 @@
       },
       controller: sgCalendarScrollViewController,
       link: function(scope, element, attrs, controller) {
-        var view, scrollView, type, lastScroll, days, deregisterDragStart, deregisterDragStop;
+        var view, type, deregisterDragStart, deregisterDragStop;
 
         view = null;
-        scrollView = element[0];
         type = scope.type; // multiday, multiday-allday, monthly, unknown?
-        lastScroll = 0;
-        days = null;
 
         // Listen to dragstart and dragend events
         deregisterDragStart = $rootScope.$on('calendar:dragstart', onDragStart);
@@ -44,30 +41,17 @@
         scope.$on('$destroy', function() {
           deregisterDragStart();
           deregisterDragStop();
-          element.off('mouseover', updateFromPointerHandler);
-          angular.element($window).off('resize', updateCoordinates);
+          if (view) {
+            element.off('mouseover', view.updateFromPointerHandler);
+            angular.element($window).off('resize', view.updateCoordinates);
+          }
         });
 
         function initView() {
-          var quarterHeight;
-
-          // Quarter height doesn't change if window is resize; compute it only once
-          quarterHeight = getQuarterHeight();
-
-          view = {
-            type: type,
-            quarterHeight: quarterHeight,
-            scrollStep: 6 * quarterHeight,
-            dayNumbers: getDayNumbers(),
-            maxX: getMaxColumns(),
-
-            // Expose a reference of the view element
-            element: scrollView
-          };
+          view = new sgScrollView(element, type);
 
           // Compute coordinates of view element; recompute it on window resize
-          angular.element($window).on('resize', updateCoordinates);
-          updateCoordinates();
+          angular.element($window).on('resize', view.updateCoordinates);
 
           if (type != 'monthly')
             // Scroll to the day start hour defined in the user's defaults
@@ -76,135 +60,163 @@
               if (Preferences.defaults.SOGoDayStartTime) {
                 time = Preferences.defaults.SOGoDayStartTime.split(':');
                 hourCell = document.getElementById('hour' + parseInt(time[0]));
-                quartersOffset = parseInt(time[1]) * quarterHeight;
-                scrollView.scrollTop = hourCell.offsetTop + quartersOffset;
+                quartersOffset = parseInt(time[1]) * view.quarterHeight;
+                view.element.scrollTop = hourCell.offsetTop + quartersOffset;
               }
             });
         }
 
-        function getQuarterHeight() {
-          var hour0, hour23, height = null;
-
-          hour0 = document.getElementById('hour0');
-          hour23 = document.getElementById('hour23');
-          if (hour0 && hour23)
-            height = ((hour23.offsetTop - hour0.offsetTop) / (23 * 4));
-
-          return height;
-        }
-
-        function getDayDimensions(viewLeft) {
-          var width, height, leftOffset, topOffset, nodes, domRect, tileHeader;
-
-          height = width = leftOffset = topOffset = 0;
-          nodes = scrollView.getElementsByClassName('day');
-
-          if (nodes.length > 0) {
-            domRect = nodes[0].getBoundingClientRect();
-            height = domRect.height;
-            width = domRect.width;
-            leftOffset = domRect.left - viewLeft;
-            tileHeader = nodes[0].getElementsByClassName('sg-calendar-tile-header');
-            if (tileHeader.length > 0)
-              topOffset = tileHeader[0].clientHeight;
-          }
-
-          return { height: height, width: width, offset: { left: leftOffset, top: topOffset } };
-        }
-
-        function getDayNumbers() {
-          var viewType = null, isMultiColumn, days, total, sum;
-
-          if (scrollView.attributes['sg-view'])
-            viewType = scrollView.attributes['sg-view'].value;
-          isMultiColumn = (viewType == 'multicolumndayview');
-          days = scrollView.getElementsByTagName('sg-calendar-day');
-
-          return _.map(days, function(element, index) {
-            if (isMultiColumn)
-              return index;
-            else
-              return parseInt(element.attributes['sg-day-number'].value);
-          });
-        }
-
-        function getMaxColumns() {
-          var mdGridList, max = 0;
-
-          if (type == 'monthly') {
-            mdGridList = scrollView.getElementsByTagName('md-grid-list')[0];
-            max = parseInt(mdGridList.attributes['md-cols'].value) - 1;
-          }
-          else {
-            max = scrollView.getElementsByClassName('day').length - 1;
-          }
-
-          return max;
-        }
-
-        // View has been resized;
-        // Compute the view's origins (x, y), a day's dimensions and left margin.
-        function updateCoordinates() {
-          var domRect, dayDimensions;
-
-          domRect = scrollView.getBoundingClientRect();
-          dayDimensions = getDayDimensions(domRect.left);
-
-          angular.extend(view, {
-            coordinates: {
-              x: domRect.left,
-              y: domRect.top
-            },
-            dayHeight: dayDimensions.height,
-            dayWidth: dayDimensions.width,
-            daysOffset: dayDimensions.offset.left,
-            topOffset: dayDimensions.offset.top
-          });
-        }
-
         function onDragStart() {
-          element.on('mouseover', updateFromPointerHandler);
-          updateFromPointerHandler();
+          if (view) {
+            element.on('mouseover', view.updateFromPointerHandler);
+            view.updateCoordinates();
+            view.updateFromPointerHandler();
+          }
         }
 
         function onDragEnd() {
-          element.off('mouseover', updateFromPointerHandler);
+          element.off('mouseover', view.updateFromPointerHandler);
           Calendar.$view = null;
         }
 
-        // From SOGoScrollController.updateFromPointerHandler
-        function updateFromPointerHandler() {
-          var scrollStep, pointerHandler, pointerCoordinates, now, scrollY, minY, delta;
+        /**
+         * sgScrollView
+         */
+        function sgScrollView($element, type) {
+          this.$element = $element;
+          this.element = $element[0];
+          this.type = type;
+          this.quarterHeight = this.getQuarterHeight();
+          this.scrollStep = 6 * this.quarterHeight;
+          this.dayNumbers = this.getDayNumbers();
+          this.maxX = this.getMaxColumns();
 
-          pointerHandler = Component.$ghost.pointerHandler;
-          if (view && pointerHandler) {
-            scrollStep = view.scrollStep;
-            pointerCoordinates = pointerHandler.getContainerBasedCoordinates(view);
+          this.updateCoordinates();
+        }
 
-            if (pointerCoordinates) {
-              // Pointer is inside view; Adjust scrollbar if necessary
-              Calendar.$view = view;
-              now = new Date().getTime();
-              if (!lastScroll || now > lastScroll + 100) {
-                lastScroll = now;
-                scrollY = pointerCoordinates.y - scrollStep;
-                if (scrollY < 0) {
-                  minY = -scrollView.scrollTop;
-                  if (scrollY < minY)
-                    scrollY = minY;
-                  scrollView.scrollTop += scrollY;
-                }
-                else {
-                  scrollY = pointerCoordinates.y + scrollStep;
-                  delta = scrollY - scrollView.clientHeight;
-                  if (delta > 0) {
-                    scrollView.scrollTop += delta;
+        sgScrollView.prototype = {
+
+
+          getQuarterHeight: function() {
+            var hour0, hour23, height = null;
+
+            hour0 = document.getElementById('hour0');
+            hour23 = document.getElementById('hour23');
+            if (hour0 && hour23)
+              height = ((hour23.offsetTop - hour0.offsetTop) / (23 * 4));
+
+            return height;
+          },
+
+
+          getDayDimensions: function(viewLeft) {
+            var width, height, leftOffset, topOffset, nodes, domRect, tileHeader;
+
+            height = width = leftOffset = topOffset = 0;
+            nodes = this.element.getElementsByClassName('day');
+
+            if (nodes.length > 0) {
+              domRect = nodes[0].getBoundingClientRect();
+              height = domRect.height;
+              width = domRect.width;
+              leftOffset = domRect.left - viewLeft;
+              tileHeader = nodes[0].getElementsByClassName('sg-calendar-tile-header');
+              if (tileHeader.length > 0)
+                topOffset = tileHeader[0].clientHeight;
+            }
+
+            return { height: height, width: width, offset: { left: leftOffset, top: topOffset } };
+          },
+
+
+          getDayNumbers: function() {
+            var viewType = null, isMultiColumn, days, total, sum;
+
+            if (this.element.attributes['sg-view'])
+              viewType = this.element.attributes['sg-view'].value;
+            isMultiColumn = (viewType == 'multicolumndayview');
+            days = this.element.getElementsByTagName('sg-calendar-day');
+
+            return _.map(days, function(el, index) {
+              if (isMultiColumn)
+                return index;
+              else
+                return parseInt(el.attributes['sg-day-number'].value);
+            });
+          },
+
+
+          getMaxColumns: function() {
+            var mdGridList, max = 0;
+
+            if (this.type == 'monthly') {
+              mdGridList = this.element.getElementsByTagName('md-grid-list')[0];
+              max = parseInt(mdGridList.attributes['md-cols'].value) - 1;
+            }
+            else {
+              max = this.element.getElementsByClassName('day').length - 1;
+            }
+
+            return max;
+          },
+
+          // View has been resized;
+          // Compute the view's origins (x, y), a day's dimensions and left margin.
+          updateCoordinates: function() {
+            var domRect, dayDimensions;
+
+            domRect = this.element.getBoundingClientRect();
+            dayDimensions = this.getDayDimensions(domRect.left);
+
+            angular.extend(this, {
+              coordinates: {
+                x: domRect.left,
+                y: domRect.top
+              },
+              dayHeight: dayDimensions.height,
+              dayWidth: dayDimensions.width,
+              daysOffset: dayDimensions.offset.left,
+              topOffset: dayDimensions.offset.top
+            });
+          },
+
+
+          // From SOGoScrollController.updateFromPointerHandler
+          updateFromPointerHandler: function() {
+            var scrollStep, pointerHandler, pointerCoordinates, now, scrollY, minY, delta;
+
+            pointerHandler = Component.$ghost.pointerHandler;
+            if (this.coordinates && pointerHandler) {
+              scrollStep = this.scrollStep;
+              pointerCoordinates = pointerHandler.getContainerBasedCoordinates(this);
+
+              if (pointerCoordinates) {
+                // Pointer is inside view; Adjust scrollbar if necessary
+                Calendar.$view = this;
+                now = new Date().getTime();
+                if (!this.lastScroll || now > this.lastScroll + 100) {
+                  this.lastScroll = now;
+                  scrollY = pointerCoordinates.y - scrollStep;
+                  if (scrollY < 0) {
+                    minY = -this.element.scrollTop;
+                    if (scrollY < minY)
+                      scrollY = minY;
+                    this.element.scrollTop += scrollY;
+                  }
+                  else {
+                    scrollY = pointerCoordinates.y + scrollStep;
+                    delta = scrollY - this.element.clientHeight;
+                    if (delta > 0) {
+                      this.element.scrollTop += delta;
+                    }
                   }
                 }
               }
             }
           }
-        }
+
+
+        };
       }
     };
   }
@@ -212,7 +224,7 @@
   sgCalendarScrollViewController.$inject = ['$scope'];
   function sgCalendarScrollViewController($scope) {
     // Expose the view type to the controller
-    // See sgCalendarDayBlockGhost
+    // See sgCalendarGhost directive
     this.type = $scope.type;
   }
 
