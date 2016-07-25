@@ -81,7 +81,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
   SOGoCacheGCSObject *o;
   NSNumber *processIdentifier;
-  NSString *key;
+  NSString *key, *collectionId;;
   int i;
 
   processIdentifier = [NSNumber numberWithInt: [[NSProcessInfo processInfo] processIdentifier]];
@@ -101,7 +101,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       for (i = 0; i < [collections count]; i++)
         {
-          key = [NSString stringWithFormat: @"SyncRequest+%@", [[[(id)[[collections objectAtIndex: i] getElementsByTagName: @"CollectionId"] lastObject] textValue] stringByUnescapingURL]];
+          if ([[collections objectAtIndex: i] isKindOfClass: [NSString class]])
+            collectionId = [collections objectAtIndex: i];
+          else
+            collectionId = [[[(id)[[collections objectAtIndex: i] getElementsByTagName: @"CollectionId"] lastObject] textValue] stringByUnescapingURL];
+
+          key = [NSString stringWithFormat: @"SyncRequest+%@", collectionId];
+
           [[o properties] setObject: processIdentifier forKey: key];
         }
     }
@@ -110,7 +116,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [[o properties] removeObjectForKey: @"SyncRequest"];
       for (i = 0; i < [collections count]; i++)
         {
-          key = [NSString stringWithFormat: @"SyncRequest+%@", [[[(id)[[collections objectAtIndex: i] getElementsByTagName: @"CollectionId"] lastObject] textValue] stringByUnescapingURL]];
+          if ([[collections objectAtIndex: i] isKindOfClass: [NSString class]])
+            collectionId = [collections objectAtIndex: i];
+          else
+            collectionId = [[[(id)[[collections objectAtIndex: i] getElementsByTagName: @"CollectionId"] lastObject] textValue] stringByUnescapingURL];
+
+          key = [NSString stringWithFormat: @"SyncRequest+%@", collectionId];
+
           [[o properties] removeObjectForKey: key];
         }
     }
