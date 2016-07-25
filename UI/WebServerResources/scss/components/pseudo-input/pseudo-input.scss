@@ -40,11 +40,18 @@
   font-weight: $sg-font-regular;
   line-height: $sg-line-height-1;
   transform: scale($input-label-float-scale);
+}
+
+.pseudo-input-label {
   @include rtl(transform-origin, left top, right top);
 }
 
 .button-label {
   @include rtl(transform-origin, left center, right center);
+}
+
+.button-label--right {
+  @include rtl(transform-origin, right center, left center);
 }
 
 .pseudo-input-label--no-margin,

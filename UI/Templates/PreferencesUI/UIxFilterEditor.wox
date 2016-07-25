@@ -94,7 +94,7 @@
           </div>
 
           <div layout="row" layout-align="end center">
-            <label class="button-label"><var:string label:value="Add a condition"/></label>
+            <label class="button-label button-label--right"><var:string label:value="Add a condition"/></label>
             <md-button class="md-icon-button" type="button"
                        ng-click="filterEditor.addMailFilterRule($event)">
               <md-icon>add_circle</md-icon>
@@ -172,7 +172,7 @@
           </div>
 
           <div layout="row" layout-align="end center">
-            <label class="button-label"><var:string label:value="Add an action"/></label>
+            <label class="button-label button-label--right"><var:string label:value="Add an action"/></label>
             <md-button class="md-icon-button" type="button"
                        ng-click="filterEditor.addMailFilterAction($event)">
               <md-icon>add_circle</md-icon>
