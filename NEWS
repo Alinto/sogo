@@ -17,6 +17,7 @@ Bug fixes
  - [web] fixed exception when moving tasks to a different calendar
  - [web] fixed printing of long mail (#3731)
  - [web] fixed position of ghost block when creating an event from DnD
+ - [web] fixed avatar image in autocompletion
  - [eas] fixed long GUID issue preventing sometimes synchronisation (#3460)
 
 3.1.4 (2016-07-12)

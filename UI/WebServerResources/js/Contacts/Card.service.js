@@ -136,6 +136,8 @@
    * @param {object} data - attributes of card
    */
   Card.prototype.init = function(data, partial) {
+    var _this = this;
+
     this.refs = [];
     this.categories = [];
     this.c_screenname = null;
@@ -145,7 +147,11 @@
     if (!this.$$email)
       this.$$email = this.$preferredEmail(partial);
     if (!this.$$image)
-      this.$$image = this.image || Card.$Preferences.avatar(this.$$email, 32, {no_404: true});
+      this.$$image = this.image;
+    if (!this.$$image)
+      Card.$Preferences.avatar(this.$$email, 32, {no_404: true}).then(function(url) {
+        _this.$$image = url;
+      });
     if (this.isgroup)
       this.c_component = 'vlist';
     this.$loaded = angular.isDefined(this.c_name)? Card.STATUS.LOADED : Card.STATUS.NOT_LOADED;
