@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2014 Inverse inc.
+  Copyright (C) 2007-2016 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -63,6 +63,7 @@
 
 #import "NSData+Mail.h"
 #import "NSString+Mail.h"
+#import "SOGoDraftsFolder.h"
 #import "SOGoMailAccount.h"
 #import "SOGoMailObject+Draft.h"
 #import "SOGoSentFolder.h"
@@ -1970,8 +1971,16 @@ static NSString    *userAgent      = nil;
         }
     }
 
-  if (!error && ![dd mailKeepDraftsAfterSend])
-    [self delete];
+  // Expunge Drafts mailbox if
+  //  - message was sent and saved to Sent mailbox if necessary;
+  //  - SOGoMailKeepDraftsAfterSend is not set;
+  //  - draft is successfully deleted;
+  //  - drafts mailbox exists.
+  if (!error &&
+      ![dd mailKeepDraftsAfterSend] &&
+      ![self delete] &&
+      [imap4 doesMailboxExistAtURL: [container imap4URL]])
+    [(SOGoDraftsFolder *) container expunge];
 
   return error;
 }

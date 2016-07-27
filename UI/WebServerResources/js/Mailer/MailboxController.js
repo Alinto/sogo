@@ -6,11 +6,11 @@
   /**
    * @ngInject
    */
-  MailboxController.$inject = ['$window', '$timeout', '$q', '$state', '$mdDialog', '$mdToast', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
-  function MailboxController($window, $timeout, $q, $state, $mdDialog, $mdToast, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, focus, Dialog, Account, Mailbox) {
+  MailboxController.$inject = ['$window', '$scope', '$timeout', '$q', '$state', '$mdDialog', '$mdToast', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
+  function MailboxController($window, $scope, $timeout, $q, $state, $mdDialog, $mdToast, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, focus, Dialog, Account, Mailbox) {
     var vm = this, messageDialog = null;
 
-    // Expose controller
+    // Expose controller for eventual popup windows
     $window.$mailboxController = vm;
 
     stateMailbox.selectFolder();
@@ -35,6 +35,16 @@
     vm.markSelectedMessagesAsUnread = markSelectedMessagesAsUnread;
     vm.selectAll = selectAll;
     vm.unselectMessages = unselectMessages;
+
+    // Expunge mailbox when leaving the Mail module
+    angular.element($window).on('beforeunload', _compactBeforeUnload);
+    $scope.$on('$destroy', function() {
+      angular.element($window).off('beforeunload', _compactBeforeUnload);
+    });
+
+    function _compactBeforeUnload(event) {
+      return vm.selectedFolder.$compact();
+    }
 
     function sort(field) {
       vm.selectedFolder.$filter({ sort: field });

@@ -10,6 +10,7 @@ Enhancements
  - [web] notify when successfuly copied or moved some messages
  - [web] restored indicator in the top banner when a vacation message (auto-reply) is active
  - [web] removed animation when dragging an event to speed up rendering
+ - [web] expunge drafts mailbox when a draft is sent and deleted
 
 Bug fixes
  - [web] fixed refresh of addressbook when deleting one or many cards
@@ -18,6 +19,7 @@ Bug fixes
  - [web] fixed printing of long mail (#3731)
  - [web] fixed position of ghost block when creating an event from DnD
  - [web] fixed avatar image in autocompletion
+ - [web] restored expunge of current mailbox when leaving the Mail module
  - [eas] fixed long GUID issue preventing sometimes synchronisation (#3460)
 
 3.1.4 (2016-07-12)
