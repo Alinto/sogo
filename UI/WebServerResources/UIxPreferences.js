@@ -1,3 +1,5 @@
+/* -*- Mode: javascript; indent-tabs-mode: nil; js-indent-level: 4; -*- */
+
 var filters = [];
 var mailAccounts = null;
 var dialogs = {};
@@ -887,8 +889,11 @@ function displayAccountSignature(mailAccount) {
                     ? mailAccount["identities"][0]
                     : {} );
     var value = identity["signature"];
-    if (value && value.length > 0)
-        value = value.stripTags().unescapeHTML().replace(/^[ \n\r]*/, "");
+    var element;
+    if (value && value.length > 0) {
+        element = new Element('div').update(value);
+        value = element.allTextContent().unescapeHTML().replace(/^[ \n\r]*/, "");
+    }
     if (value && value.length > 0) {
         if (value.length < 30) {
             actSignatureValue = value;

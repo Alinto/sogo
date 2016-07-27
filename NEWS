@@ -9,6 +9,7 @@ Enhancements
 
 Bug fixes
  - [eas] fixed long GUID issue preventing sometimes synchronisation (#3460)
+ - [web] improved extraction of HTML signature in Preferences module
 
 2.3.13 (2016-07-06)
 -------------------
