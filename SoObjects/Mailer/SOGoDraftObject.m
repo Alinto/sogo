@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2014 Inverse inc.
+  Copyright (C) 2007-2016 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -15,7 +15,7 @@
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
@@ -73,6 +73,7 @@
 
 #import "NSData+Mail.h"
 #import "NSString+Mail.h"
+#import "SOGoDraftsFolder.h"
 #import "SOGoMailAccount.h"
 #import "SOGoMailFolder.h"
 #import "SOGoMailObject.h"
@@ -1979,8 +1980,16 @@ static NSString    *userAgent      = nil;
         }
     }
 
-  if (!error && ![dd mailKeepDraftsAfterSend])
-    [self delete];
+  // Expunge Drafts mailbox if
+  //  - message was sent and saved to Sent mailbox if necessary;
+  //  - SOGoMailKeepDraftsAfterSend is not set;
+  //  - draft is successfully deleted;
+  //  - drafts mailbox exists.
+  if (!error &&
+      ![dd mailKeepDraftsAfterSend] &&
+      ![self delete] &&
+      [imap4 doesMailboxExistAtURL: [container imap4URL]])
+    [(SOGoDraftsFolder *) container expunge];
 
   return error;
 }

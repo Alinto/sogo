@@ -5,6 +5,7 @@ New features
  - [eas] added folder merging capabilities
 
 Enhancements
+ - [web] expunge drafts mailbox when a draft is sent and deleted
 
 Bug fixes
  - [eas] fixed long GUID issue preventing sometimes synchronisation (#3460)
