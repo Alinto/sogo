@@ -11,6 +11,7 @@ Enhancements
  - [web] restored indicator in the top banner when a vacation message (auto-reply) is active
  - [web] removed animation when dragging an event to speed up rendering
  - [web] expunge drafts mailbox when a draft is sent and deleted
+ - [web] actions of Sieve filters are now sortable
 
 Bug fixes
  - [web] fixed refresh of addressbook when deleting one or many cards

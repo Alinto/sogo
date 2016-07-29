@@ -674,11 +674,10 @@
           <md-tab id="mailFiltersTab"
                   aria-controls="mailFiltersTab-content"
                   label:label="Filters">
-            <md-content role="tabpanel" aria-labelledby="mailFiltersView"
-                 id="mailFiltersView-content">
+            <md-content role="tabpanel" aria-labelledby="mailFiltersView">
               <div class="sg-list-sortable"
                    ng-model="app.preferences.defaults.SOGoSieveFilters"
-                   as-sortable="{ scrollableContainer: '#mailFiltersView-content', containment: '.sg-list-sortable', containerPositioning: 'relative', orderChanged: preferencesForm.$setDirty }">
+                   as-sortable="{ scrollableContainer: '.sg-list-sortable', containment: '.sg-list-sortable', containerPositioning: 'relative', orderChanged: preferencesForm.$setDirty }">
                 <div layout="row" layout-align="start center"
                      ng-repeat="item in app.preferences.defaults.SOGoSieveFilters"
                      as-sortable-item="as-sortable-item">

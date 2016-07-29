@@ -239,7 +239,8 @@ div.md-tile-left {
  * 1. We hide sortable handles when not inside a .sg-list-sortable;
  * 2. Elements wih the class .sg-list-sortable-hide are hidden when the list is
  *    currently sortable;
- * 3. Dragged element is highligh with a whiteframe.
+ * 3. Dragged element is highligh with a whiteframe. We constraint the movement
+ *    vertically; it also eliminates a flicker when dragging starts.
  *
  * See https://github.com/a5hik/ng-sortable
  */
@@ -261,6 +262,7 @@ div.md-tile-left {
 }
 
 .sg-list-sortable {
+  position: relative;
   .as-sortable-item-handle {
     cursor: move;
     display: block; /* [1] */
@@ -272,6 +274,7 @@ div.md-tile-left {
 
 .as-sortable-drag { /* [3] */
   @extend .md-whiteframe-1dp;
+  left: 0 !important;
   background-color: rgba(255,255,255,0.4);
   position: absolute;
   pointer-events: none;
