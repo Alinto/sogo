@@ -128,7 +128,7 @@
                   <md-icon>remove_circle</md-icon>
                 </md-button>
                 <md-input-container flex="20">
-                  <md-select ng-model="email.type | last" label:placeholder="Type">
+                  <md-select ng-model="email.type" label:placeholder="Type">
                     <md-option ng-repeat="type in ::editor.allEmailTypes" ng-value="type">{{ type }}</md-option>
                   </md-select>
                 </md-input-container>
