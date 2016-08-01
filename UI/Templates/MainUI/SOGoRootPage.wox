@@ -51,13 +51,6 @@
               <input type="password" ng-model="app.creds.password" ng-required="true"/>
             </md-input-container>
 
-            <!-- CONNECT BUTTON -->
-            <div layout="row" layout-align="end center">
-              <md-button type="submit" ng-disabled='app.loginForm.$invalid' sg-ripple-click="loginContent">
-                <var:string label:value="Connect"/>
-              </md-button>
-            </div>
-
             <!-- LANGUAGES SELECT -->
             <div layout="row" layout-align="start end">
               <md-icon>language</md-icon>
@@ -94,14 +87,23 @@
                 <var:string label:value="Remember username"/>
               </md-switch>
             </div>
+
+            <!-- CONNECT BUTTON -->
+            <div layout="row" layout-align="space-between center">
+              <md-button class="md-icon-button"
+                         label:aria-label="About"
+                         ng-click="app.showAbout()">
+                <md-icon>info</md-icon>
+              </md-button>
+              <md-button class="md-fab md-accent md-hue-2" type="submit"
+                         label:aria-label="Connect"
+                         ng-disabled='app.loginForm.$invalid' sg-ripple-click="loginContent">
+                <md-icon>arrow_forward</md-icon>
+              </md-button>
+            </div>
+
           </form>
-          <div layout="row" layout-align="end end" ng-cloak="ng-cloak">
-            <md-button class="md-icon-button"
-                       label:aria-label="About"
-                       ng-click="app.showAbout()">
-              <md-icon class="md-fg">info</md-icon>
-            </md-button>
-          </div>
+
           <sg-ripple class="md-default-theme md-accent md-bg"
                      ng-class="{ 'md-warn': app.loginState == 'error' }"><!-- ripple background --></sg-ripple>
           <sg-ripple-content class="md-flex ng-hide"
