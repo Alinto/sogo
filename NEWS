@@ -21,6 +21,7 @@ Bug fixes
  - [web] fixed position of ghost block when creating an event from DnD
  - [web] fixed avatar image in autocompletion
  - [web] restored expunge of current mailbox when leaving the Mail module
+ - [web] added support for multiple description values in LDAP entries (#3750)
  - [eas] fixed long GUID issue preventing sometimes synchronisation (#3460)
 
 3.1.4 (2016-07-12)

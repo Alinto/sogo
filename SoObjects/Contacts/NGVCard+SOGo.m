@@ -1,6 +1,6 @@
 /* NGVCard+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2015 Inverse inc.
+ * Copyright (C) 2009-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -339,7 +339,11 @@ convention:
     setSingleValue: [ldifRecord objectForKey: @"c_info"]
             forKey: @""];
 
-  [self setNote: [ldifRecord objectForKey: @"description"]];
+  o = [ldifRecord objectForKey: @"description"];
+  if ([o isKindOfClass: [NSArray class]])
+    [self setNotes: o];
+  else
+    [self setNote: o];
 
   o = [ldifRecord objectForKey: @"vcardcategories"];
 
@@ -849,6 +853,40 @@ convention:
     }
 
   return date;
+}
+
+- (void) setNotes: (NSArray *) newNotes
+{
+  NSUInteger count, max;
+
+  max = [newNotes count];
+  for (count = 0; count < max; count++)
+    {
+      [self addChildWithTag: @"note"
+                      types: nil
+                singleValue: [newNotes objectAtIndex: count]];
+    }
+}
+
+
+- (NSArray *) notes
+{
+  NSArray *notes;
+  NSMutableArray *flattenedNotes;
+  NSString *note;
+  NSUInteger count, max;
+
+  notes = [self childrenWithTag: @"note"];
+  max = [notes count];
+  flattenedNotes = [NSMutableArray arrayWithCapacity: max];
+
+  for (count = 0; count < max; count++)
+    {
+      note = [[notes objectAtIndex: count] flattenedValuesForKey: @""];
+      [flattenedNotes addObject: note];
+    }
+
+  return flattenedNotes;
 }
 
 - (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent

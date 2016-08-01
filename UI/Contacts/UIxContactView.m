@@ -705,22 +705,27 @@
 //   return [self _cardStringWithLabel: @"Timezone:" value: [card tz]];
 // }
 
-- (NSString *) note
+- (NSArray *) notes
 {
+  NSMutableArray *notes;
   NSString *note;
+  NSUInteger count, max;
 
-  note = [card note];
-  if (note)
+  notes = [NSMutableArray arrayWithArray: [card notes]];
+  max = [notes count];
+  for (count = 0; count < max; count++)
     {
+      note = [notes objectAtIndex: count];
       note = [note stringByEscapingHTMLString];
       note = [note stringByReplacingString: @"\r\n"
                    withString: @"<br />"];
       note = [note stringByReplacingString: @"\n"
                    withString: @"<br />"];
+
+      [notes replaceObjectAtIndex: count withObject: note];
     }
 
-  return note;
-  //return [self _cardStringWithLabel: @"Note:" value: note];
+  return notes;
 }
 
 /* hrefs */
@@ -785,7 +790,7 @@
  * @apiSuccess (Success 200) {String} [c_fn]               Fullname
  * @apiSuccess (Success 200) {String} [c_screenname]       Screen Name (X-AIM for now)
  * @apiSuccess (Success 200) {String} [tz]                 Timezone
- * @apiSuccess (Success 200) {String} [note]               Note
+ * @apiSuccess (Success 200) {String} [notes]              Notes
  * @apiSuccess (Success 200) {String[]} allCategories      All available categories
  * @apiSuccess (Success 200) {Object[]} [categories]       Categories assigned to the card
  * @apiSuccess (Success 200) {String} categories.value     Category name
@@ -853,31 +858,21 @@
   if (o) [data setObject: o forKey: @"nickname"];
   o = [card title];
   if ([o length] > 0)
-    {
-      [data setObject: o forKey: @"title"];
-    }
+    [data setObject: o forKey: @"title"];
   o = [card role];
   if ([o length] > 0)
-    {
-      [data setObject: o forKey: @"role"];
-    }
+    [data setObject: o forKey: @"role"];
   o = [self orgUnits];
   if ([o count] > 0)
-    {
-      [data setObject: o forKey: @"orgUnits"];
-    }
+    [data setObject: o forKey: @"orgUnits"];
   o = [card workCompany];
   if ([o length] > 0)
-    {
-      [data setObject: o forKey: @"c_org"];
-    }
+    [data setObject: o forKey: @"c_org"];
 
   o = [card birthday];
   if (o)
-    {
-      [data setObject: [o descriptionWithCalendarFormat: @"%Y-%m-%d"]
+    [data setObject: [o descriptionWithCalendarFormat: @"%Y-%m-%d"]
                forKey: @"birthday"];
-    }
 
   o = [card tz];
   if (o) [data setObject: o forKey: @"tz"];
@@ -893,8 +888,8 @@
   o = [self urls];
   if ([o count]) [data setObject: o forKey: @"urls"];
 
-  o = [self note];
-  if (o) [data setObject: o forKey: @"note"];
+  o = [self notes];
+  if (o) [data setObject: o forKey: @"notes"];
   o = [self _fetchAndCombineCategoriesList];
   if (o) [data setObject: o forKey: @"allCategories"];
   if ([contact hasPhoto])

@@ -140,6 +140,7 @@
 
     this.refs = [];
     this.categories = [];
+    this.notes = [this.note];
     this.c_screenname = null;
     angular.extend(this, data);
     if (!this.$$fullname)
