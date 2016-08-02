@@ -577,34 +577,34 @@
               <md-list class="sg-section-list"
                        ng-class="{ 'sg-list-selectable': list.mode.multiple }">
                 <md-list-item ng-repeat="event in list.component.$events"
-                              aria-label="{{event.c_title}}"
+                              aria-label="{{::event.c_title}}"
                               ng-click="list.openEvent($event, event)">
                   <div class="md-secondary sg-avatar-selectable"
                        label:aria-label="Toggle item"
                        ng-class="[event.getClassName('fg'), { 'sg-avatar-selected' : event.selected }]"
                        ng-click="list.toggleComponentSelection($event, event)">
                     <div class="sg-color-chip"
-                         ng-class="event.getClassName('bg')"><!-- calendar color --></div>
+                         ng-class="::event.getClassName('bg')"><!-- calendar color --></div>
                   </div>
                   <div class="sg-category"
-                       ng-repeat="category in event.categories | limitTo:5"
-                       ng-class="'bg-category' + category"
-                       ng-style="{ left: ($index * 3) + 'px' }"><!-- calendar color --></div>
+                       ng-repeat="category in ::event.categories | limitTo:5"
+                       ng-class="::'bg-category' + category"
+                       ng-style="::{ left: ($index * 3) + 'px' }"><!-- calendar color --></div>
                   <div class="sg-tile-content">
                     <div class="sg-md-subhead">
                       <div>
-                        <span ng-show="event.c_priority" class="sg-priority">{{event.c_priority}}</span>
-                        {{event.c_title}}
+                        <span ng-show="::event.c_priority" class="sg-priority">{{::event.c_priority}}</span>
+                        {{::event.c_title}}
                       </div>
                     </div>
                     <div class="sg-md-body">
-                      <div>{{event.c_location}}</div>
-                      <div class="sg-tile-date" ng-bind="event.formatted_startdate"><!-- start --></div>
+                      <div>{{::event.c_location}}</div>
+                      <div class="sg-tile-date" ng-bind="::event.formatted_startdate"><!-- start --></div>
                     </div>
                   </div>
                   <div class="sg-tile-icons">
-                    <md-icon ng-show="event.c_iscycle">repeat</md-icon>
-                    <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
+                    <md-icon ng-show="::event.c_iscycle">repeat</md-icon>
+                    <md-icon ng-show="::event.c_nextalarm">alarm</md-icon>
                   </div>
                   <md-divider><!-- divider --></md-divider>
                 </md-list-item>
@@ -619,37 +619,37 @@
               <md-subheader>
                 <span>{{list.filterpopup() | loc}}</span>
               </md-subheader>
-              <md-list class="sg-section-list">
+              <md-list class="sg-section-list"
+                       ng-class="{ 'sg-list-selectable': list.mode.multiple }">
                 <md-list-item ng-repeat="task in list.component.$tasks"
+                              aria-label="{{::task.c_title}}"
                               ng-click="list.openTask($event, task)">
-                  <div class="md-secondary"
+                  <div class="md-secondary sg-avatar-selectable"
                        label:aria-label="Toggle item"
-                       ng-click="list.toggleComponentSelection($event, task)"
-                       ng-switch="task.selected">
-                    <div class="md-avatar sg-avatar-selected"
-                         ng-switch-when="true"><!-- selected avatar --></div>
-                    <div class="sg-color-chip" ng-class="task.getClassName('bg')"
-                         ng-switch-when="false"><!-- calendar color --></div>
+                       ng-class="[task.getClassName('fg'), { 'sg-avatar-selected' : task.selected }]"
+                       ng-click="list.toggleComponentSelection($event, task)">
+                    <div class="sg-color-chip"
+                         ng-class="::task.getClassName('bg')"><!-- calendar color --></div>
                   </div>
                   <div class="sg-category"
-                       ng-repeat="category in task.categories | limitTo:5"
-                       ng-class="'bg-category' + category"
-                       ng-style="{ left: ($index * 3) + 'px' }"><!-- calendar color --></div>
+                       ng-repeat="category in ::task.categories | limitTo:5"
+                       ng-class="::'bg-category' + category"
+                       ng-style="::{ left: ($index * 3) + 'px' }"><!-- calendar color --></div>
                   <div class="sg-tile-content">
                     <div class="sg-md-subhead">
                       <div>
-                        <span ng-show="task.c_priority" class="sg-priority">{{task.c_priority}}</span>
-                        {{task.c_title}}
+                        <span ng-show="::task.c_priority" class="sg-priority">{{::task.c_priority}}</span>
+                        {{::task.c_title}}
                       </div>
                     </div>
                     <div class="sg-md-body">
                       <div><!-- spacer --></div>
-                      <div>{{task.formatted_enddate}}</div>
+                      <div>{{::task.formatted_enddate}}</div>
                     </div>
                   </div>
                   <div class="sg-tile-icons">
-                    <md-icon ng-show="task.c_iscycle">repeat</md-icon>
-                    <md-icon ng-show="event.c_nextalarm">alarm</md-icon>
+                    <md-icon ng-show="::task.c_iscycle">repeat</md-icon>
+                    <md-icon ng-show="::event.c_nextalarm">alarm</md-icon>
                   </div>
                   <md-divider><!-- divider --></md-divider>
                 </md-list-item>
