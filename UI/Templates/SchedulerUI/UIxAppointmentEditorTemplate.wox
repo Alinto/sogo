@@ -61,14 +61,14 @@
               <span md-highlight-text="editor.categories.searchText">{{category}}</span>
             </md-autocomplete>
           </md-chips>
-          <div layout="row" layout-align="space-between center" layout-wrap="layout-wrap">
+          <div layout="row" layout-align="space-between end" layout-wrap="layout-wrap">
             <!-- classification -->
             <md-radio-group layout="row"
                             ng-model="editor.component.classification">
-              <md-radio-button value="public">
+              <md-radio-button class="sg-padded--right" value="public">
                 <var:string label:value="label_Public"/>
               </md-radio-button>
-              <md-radio-button value="confidential">
+              <md-radio-button class="sg-padded--right" value="confidential">
                 <var:string label:value="label_Confidential"/>
               </md-radio-button>
               <md-radio-button value="private">
