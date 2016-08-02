@@ -267,6 +267,7 @@
 "Operation failed" = "Operation failed";
 "Quota" = "Quota:";
 "quotasFormat" = "%{0}% used on %{1} MB";
+"Unable to move/delete folder." = "Unable to move/delete folder.";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Are you sure you want to delete the selected messages?";
