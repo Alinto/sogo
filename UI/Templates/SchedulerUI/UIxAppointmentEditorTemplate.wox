@@ -63,7 +63,8 @@
           </md-chips>
           <div layout="row" layout-align="space-between end" layout-wrap="layout-wrap">
             <!-- classification -->
-            <md-radio-group layout="row"
+            <md-radio-group class="sg-padded--top"
+                            layout="row"
                             ng-model="editor.component.classification">
               <md-radio-button class="sg-padded--right" value="public">
                 <var:string label:value="label_Public"/>
@@ -103,6 +104,9 @@
           <!-- attach urls -->
           <div class="attr" ng-repeat="attach in editor.component.attachUrls">
             <div layout="row" layout-align="start center">
+              <md-button class="md-icon-button" type="button" ng-click="editor.component.deleteAttachUrl($index)">
+                <md-icon>remove_circle</md-icon>
+              </md-button>
               <md-input-container class="md-block md-flex">
                 <label>
                   <var:string label:value="URL"/>
@@ -110,9 +114,6 @@
                 <input type="url" ng-model="attach.value"
                        sg-focus-on="attachUrl_{{$index}}"/>
               </md-input-container>
-              <md-button class="md-icon-button" type="button" ng-click="editor.component.deleteAttachUrl($index)">
-                <md-icon>remove_circle</md-icon>
-              </md-button>
             </div>
           </div>
           <div layout="row" layout-align="start center">

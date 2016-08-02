@@ -57,7 +57,8 @@
           </md-chips>
           <div layout="row" layout-align="space-between end" layout-wrap="layout-wrap">
             <!-- classification -->
-            <md-radio-group layout="row"
+            <md-radio-group class="sg-padded--top"
+                            layout="row"
                             ng-model="editor.component.classification">
               <md-radio-button class="sg-padded--right" value="public">
                 <var:string label:value="label_Public"/>
@@ -86,7 +87,10 @@
           </div>
           <!-- attach urls -->
           <div class="attr" ng-repeat="attach in editor.component.attachUrls">
-            <div layout="row" layout-align="center end">
+            <div layout="row" layout-align="start center">
+              <md-button class="md-icon-button" type="button" ng-click="editor.component.deleteAttachUrl($index)">
+                <md-icon>remove_circle</md-icon>
+              </md-button>
               <md-input-container class="md-block md-flex">
                 <label>
                   <var:string label:value="URL"/>
@@ -94,9 +98,6 @@
                 <input type="text" ng-model="attach.value"
                        sg-focus-on="attachUrl_{{$index}}"/>
               </md-input-container>
-              <md-button class="md-icon-button" type="button" ng-click="editor.component.deleteAttachUrl($index)">
-                <md-icon>remove_circle</md-icon>
-              </md-button>
             </div>
           </div>
           <div class="md-layout-margin" layout="row" layout-align="start center">
@@ -116,14 +117,14 @@
               <label class="pseudo-input-label"><var:string label:value="From"/></label>
             </div>
             <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
+              <md-button class="md-icon-button" type="button" ng-click="editor.component.$deleteStartDate()">
+                <md-icon>remove_circle</md-icon>
+              </md-button>
               <md-datepicker ng-model="editor.component.start"
                              ng-change="editor.updateStartTime()"
                              label:md-placeholder="From"> <!-- date picker--></md-datepicker>
               <sg-timepicker ng-model="editor.component.start"
                              ng-change="editor.adjustStartTime()"><!-- time picker --></sg-timepicker>
-              <md-button class="md-icon-button" type="button" ng-click="editor.component.$deleteStartDate()">
-                <md-icon>remove_circle</md-icon>
-              </md-button>
             </div>
           </div>
           <div class="md-layout-margin" layout="row" layout-align="start center" ng-hide="editor.component.start">
@@ -138,14 +139,14 @@
               <label class="pseudo-input-label"><var:string label:value="Due"/></label>
             </div>
             <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
+              <md-button class="md-icon-button" type="button" ng-click="editor.component.$deleteDueDate()">
+                <md-icon>remove_circle</md-icon>
+              </md-button>
               <md-datepicker ng-model="editor.component.due"
                              ng-change="editor.updateDueTime()"
                              label:md-placeholder="Due"><!-- date picker--></md-datepicker>
               <sg-timepicker ng-model="editor.component.due"
                              ng-change="editor.adjustDueTime()"><!-- time picker --></sg-timepicker>
-              <md-button class="md-icon-button" type="button" ng-click="editor.component.$deleteDueDate()">
-                <md-icon>remove_circle</md-icon>
-              </md-button>
             </div>
           </div>
           <div class="md-layout-margin" layout="row" layout-align="start center" ng-hide="editor.component.due">
@@ -177,7 +178,7 @@
                        min="0"
                        max="100"
                        label:aria-label="% complete"><!-- slider --></md-slider>
-            <div flex="30">{{editor.component.percentComplete}} <var:string label:value="% complete"/></div>
+            <div flex="50" class="sg-padded--left">{{editor.component.percentComplete}} <var:string label:value="% complete"/></div>
           </div>
         </div>
 
