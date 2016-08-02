@@ -31,8 +31,9 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Component constructor
    */
-  Component.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Preferences', 'Card', 'Gravatar', 'Resource', function($q, $timeout, $log, Settings, Preferences, Card, Gravatar, Resource) {
+  Component.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgComponent_STATUS', 'Preferences', 'Card', 'Gravatar', 'Resource', function($q, $timeout, $log, Settings, Component_STATUS, Preferences, Card, Gravatar, Resource) {
     angular.extend(Component, {
+      STATUS: Component_STATUS,
       $q: $q,
       $timeout: $timeout,
       $log: $log,
@@ -87,6 +88,13 @@
     angular.module('SOGo.SchedulerUI', ['SOGo.Common']);
   }
   angular.module('SOGo.SchedulerUI')
+    .constant('sgComponent_STATUS', {
+      NOT_LOADED:      0,
+      DELAYED_LOADING: 1,
+      LOADING:         2,
+      LOADED:          3,
+      DELAYED_MS:      300
+    })
     .factory('Component', Component.$factory);
 
   /**
@@ -127,6 +135,16 @@
         Component.$refreshTimeout = Component.$timeout(f, refreshViewCheck.timeInterval()*1000);
       }
     });
+  };
+
+  /**
+   * @function $isLoading
+   * @memberof Component
+   * @returns true if the components list is still being retrieved from server after a specific delay
+   * @see sgMessage_STATUS
+   */
+  Component.$isLoading = function() {
+    return Component.$loaded == Component.STATUS.LOADING;
   };
 
   /**
@@ -398,6 +416,13 @@
     var _this = this,
         components = [];
 
+    // Components list is not loaded yet
+    Component.$loaded = Component.STATUS.DELAYED_LOADING;
+    Component.$timeout(function() {
+      if (Component.$loaded != Component.STATUS.LOADED)
+        Component.$loaded = Component.STATUS.LOADING;
+    }, Component.STATUS.DELAYED_MS);
+
     return futureComponentData.then(function(data) {
       return Component.$timeout(function() {
         var fields = _.invokeMap(data.fields, 'toLowerCase');
@@ -421,6 +446,8 @@
 
         // Save the list of components to the object model
         Component['$' + type] = components;
+
+        Component.$loaded = Component.STATUS.LOADED;
 
         return components;
       });

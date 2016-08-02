@@ -12,6 +12,7 @@ Enhancements
  - [web] removed animation when dragging an event to speed up rendering
  - [web] expunge drafts mailbox when a draft is sent and deleted
  - [web] actions of Sieve filters are now sortable
+ - [web] show progress indicator when refreshing events/tasks lists
 
 Bug fixes
  - [web] fixed refresh of addressbook when deleting one or many cards

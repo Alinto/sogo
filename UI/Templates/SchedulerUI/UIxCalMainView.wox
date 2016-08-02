@@ -660,6 +660,12 @@
             </md-tab>
           </md-tabs>
         </md-content>
+        <div class="sg-progress-circular-floating"
+             ng-show="list.component.$isLoading()">
+          <md-progress-circular class="md-accent"
+                                md-mode="indeterminate"
+                                md-diameter="32"><!-- mailbox loading progress --></md-progress-circular>
+        </div>
         <md-fab-speed-dial
              class="md-fling md-fab-bottom-right"
              md-direction="up" md-open="false"
