@@ -22,7 +22,7 @@
 
     function link(scope, element, attrs, calendarDayCtrl) {
       if (scope.block) {
-        if (scope.block.component.editable) {
+        if (scope.block.component.editable && !scope.block.userState) {
           // Add dragging grips to existing event block
           initGrips();
         }

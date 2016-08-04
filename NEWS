@@ -23,6 +23,7 @@ Bug fixes
  - [web] fixed avatar image in autocompletion
  - [web] restored expunge of current mailbox when leaving the Mail module
  - [web] added support for multiple description values in LDAP entries (#3750)
+ - [web] don't allow drag'n'drop of invitations
  - [eas] fixed long GUID issue preventing sometimes synchronisation (#3460)
  - [core] fixing sogo-tool backup with multi-domain configuration but domain-less logins
  - [core] during event scheduling, use 409 instead of 403 so Lightning doesn't fail silently
