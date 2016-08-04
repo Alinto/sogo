@@ -569,7 +569,7 @@
                         [user cn], @"Cn",
                         [user systemEmail], @"SystemEmail"], nil;
               reason = [values keysWithFormat: [self labelForKey: @"Cannot access resource: \"%{Cn} %{SystemEmail}\""]];
-              return [NSException exceptionWithHTTPStatus:403 reason: reason];
+              return [NSException exceptionWithHTTPStatus:409 reason: reason];
             }
           
           fbInfo = [NSMutableArray arrayWithArray: [folder fetchFreeBusyInfosFrom: start
@@ -676,7 +676,7 @@
                   
                   reason = [values keysWithFormat: [self labelForKey: @"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}."]];
                   
-                  return [NSException exceptionWithHTTPStatus: 403
+                  return [NSException exceptionWithHTTPStatus: 409
                                                        reason: reason];
                 }
             }
@@ -1469,14 +1469,14 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               if (delegatedUid)
                 delegatedUser = [SOGoUser userWithLogin: delegatedUid];
               if (delegatedUser != nil && [event userIsOrganizer: delegatedUser])
-                ex = [NSException exceptionWithHTTPStatus: 403
+                ex = [NSException exceptionWithHTTPStatus: 409
                                                    reason: @"delegate is organizer"];
               if ([event isAttendee: [[delegate email] rfc822Email]])
-                ex = [NSException exceptionWithHTTPStatus: 403
+                ex = [NSException exceptionWithHTTPStatus: 409
                                                    reason: @"delegate is a participant"];
               else if ([SOGoGroup groupWithEmail: [[delegate email] rfc822Email]
                                         inDomain: [ownerUser domain]])
-                ex = [NSException exceptionWithHTTPStatus: 403
+                ex = [NSException exceptionWithHTTPStatus: 409
                                                    reason: @"delegate is a group"];
             }
           if (ex == nil)
@@ -1962,7 +1962,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       // TODO: send out a no-uid-conflict (DAV:href) xml element (rfc4791 section 5.3.2.1)
       if ([container resourceNameForEventUID: eventUID])
         {
-          return [NSException exceptionWithHTTPStatus: 403
+          return [NSException exceptionWithHTTPStatus: 409
                                                reason: [NSString stringWithFormat: @"Event UID already in use. (%@)", eventUID]];
         }
      
@@ -2170,9 +2170,9 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                 }
               
               // We first check of the sequences are alright. We don't accept attendees
-              // accepting "old" invitations. If that's the case, we return a 403
+              // accepting "old" invitations. If that's the case, we return a 409
               if ([[newEvent sequence] intValue] < [[oldEvent sequence] intValue])
-                return [NSException exceptionWithHTTPStatus: 403
+                return [NSException exceptionWithHTTPStatus: 409
                                                      reason: @"sequences don't match"];
               
               // Remove the RSVP attribute, as an action from the attendee
