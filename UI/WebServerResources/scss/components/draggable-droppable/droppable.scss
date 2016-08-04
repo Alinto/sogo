@@ -1,0 +1,7 @@
+/// droppable.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
+
+.sg-droppable-over {
+  @extend .md-whiteframe-3dp;
+  background-color: #fff;
+  cursor: pointer;
+}

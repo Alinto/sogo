@@ -1,0 +1,29 @@
+/// draggable.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
+
+sg-draggable-helper {
+  min-width: $icon-button-width;
+  min-height: $icon-button-width;
+  position: absolute;
+  top: -200px;
+  left: -200px;
+  z-index: $z-index-toast + 1;
+  &.sg-draggable-helper--copy md-icon {
+    color: rgba(0,0,0,0.34);
+    text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.54);
+  }
+  md-icon {
+    margin: $icon-button-margin;
+  }
+  sg-draggable-helper-counter {
+    border-radius: 50%;
+    font-size: 13px;
+    line-height: $icon-badge-size;
+    min-height: $icon-badge-size;
+    min-width: $icon-badge-size;
+    position: absolute;
+    text-align: center;
+    right: ($icon-size - $icon-badge-size) / 2;
+    top: ($icon-size - $icon-badge-size) / 2;
+  }
+}
+
