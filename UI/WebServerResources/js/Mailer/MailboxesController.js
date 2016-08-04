@@ -29,6 +29,8 @@
     vm.metadataForFolder = metadataForFolder;
     vm.setFolderAs = setFolderAs;
     vm.refreshUnseenCount = refreshUnseenCount;
+    vm.isDroppableFolder = isDroppableFolder;
+    vm.dragSelectedMessages = dragSelectedMessages;
 
     // Advanced search options
     vm.showingAdvancedSearch = false;
@@ -51,6 +53,8 @@
       match: 'AND',
       params: []
     };
+
+    vm.refreshUnseenCount();
 
     function showAdvancedSearch(path) {
       vm.showingAdvancedSearch = true;
@@ -354,11 +358,44 @@
       });
     }
 
-    vm.refreshUnseenCount();
+    function isDroppableFolder(srcFolder, dstFolder) {
+      return (dstFolder.id != srcFolder.id) && !dstFolder.isNoSelect();
+    }
+
+    function dragSelectedMessages(srcFolder, dstFolder, mode) {
+      var dstId, messages, uids, clearMessageView, promise, success;
+
+      dstId = '/' + dstFolder.id;
+      messages = srcFolder.$selectedMessages();
+      if (messages.length === 0)
+        messages = [srcFolder.$selectedMessage()];
+      uids = _.map(messages, 'uid');
+      clearMessageView = (srcFolder.selectedMessage && uids.indexOf(srcFolder.selectedMessage) >= 0);
+
+      if (mode == 'copy') {
+        promise = srcFolder.$copyMessages(messages, dstId);
+        success = l('%{0} message(s) copied', messages.length);
+      }
+      else {
+        promise = srcFolder.$moveMessages(messages, dstId);
+        success = l('%{0} message(s) moved', messages.length);
+      }
+
+      promise.then(function() {
+        if (clearMessageView)
+          $state.go('mail.account.mailbox');
+        $mdToast.show(
+          $mdToast.simple()
+            .content(success)
+            .position('top right')
+            .hideDelay(2000));
+      });
+    }
+
   }
 
   angular
-    .module('SOGo.MailerUI')  
-    .controller('MailboxesController', MailboxesController);                                    
+    .module('SOGo.MailerUI')
+    .controller('MailboxesController', MailboxesController);
 })();
 

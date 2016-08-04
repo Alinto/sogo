@@ -260,14 +260,17 @@
       </md-subheader>
       <md-virtual-repeat-container class="md-flex" md-top-index="mailbox.selectedFolder.$topIndex">
         <md-list class="sg-section-list"
-                 ng-class="{ 'sg-list-selectable': mailbox.mode.multiple }">
+                 ng-class="{ 'sg-list-selectable': mailbox.mode.multiple }"
+                 sg-draggable="mailbox.selectedFolder"
+                 sg-drag-start="mailbox.selectedFolder.hasSelectedMessage() || mailbox.selectedFolder.$selectedCount()"
+                 sg-drag-count="mailbox.selectedFolder.$selectedCount()">
           <md-list-item
+              aria-label="{{currentMessage.subject}}"
               ng-class="{'md-default-theme md-accent md-bg md-hue-2': mailbox.selectedFolder.isSelectedMessage(currentMessage.uid, currentMessage.$mailbox.path),
                           unread: !currentMessage.isread}"
               md-virtual-repeat="currentMessage in mailbox.service.selectedFolder"
               md-on-demand="md-on-demand" md-item-size="56"
-              ng-click="mailbox.selectMessage(currentMessage)"
-              aria-label="{{currentMessage.subject}}">
+              ng-click="mailbox.selectMessage(currentMessage)">
             <div class="md-secondary sg-avatar-selectable"
                  label:aria-label="Select Message"
                  ng-class="{ 'sg-avatar-selected': currentMessage.selected }"

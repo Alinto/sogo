@@ -8,7 +8,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:jsFiles="Common.js, Preferences.services.js, Contacts.services.js, Scheduler.services.js, Mailer.js, Mailer.services.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/angular-file-upload.min.js, vendor/FileSaver.min.js">
+    const:jsFiles="vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, Common.js, Preferences.services.js, Contacts.services.js, Scheduler.services.js, Mailer.js, Mailer.services.js, vendor/angular-file-upload.min.js, vendor/FileSaver.min.js">
   <script type="text/javascript">
     var mailAccounts = <var:string value="mailAccounts" const:escapeHTML="NO" />;
     var userNames = <var:string value="userNames" const:escapeHTML="NO" />;
@@ -26,6 +26,11 @@
         layout="row" layout-fill="layout-fill"
         ui-view="mailboxes"
         ng-controller="navController"><!-- mailboxes list --></main>
+
+  <sg-draggable-helper>
+    <md-icon>email</md-icon>
+    <sg-draggable-helper-counter class="md-default-theme md-warn md-hue-1 md-bg"><!-- count --></sg-draggable-helper-counter>
+  </sg-draggable-helper>
 
   <script type="text/ng-template" id="UIxMailMainFrame">
 
@@ -70,7 +75,9 @@
             <md-list>
               <md-list-item md-virtual-repeat="folder in account" md-item-size="48" md-on-demand="md-on-demand"
                             class="md-clickable md-default-theme md-background md-hue-1"
-                            ng-class="{'md-bg': folder.id == app.service.selectedFolder.id}">
+                            ng-class="{'md-bg': folder.id == app.service.selectedFolder.id}"
+                            sg-droppable="app.isDroppableFolder(dragFolder, folder)"
+                            sg-drop="app.dragSelectedMessages(dragFolder, folder, dragMode)">
                 <div ng-class="'sg-child-level-' + folder.level">
                   <md-icon class="ng-hide"
                            ng-hide="folder.children.length">{{app.metadataForFolder(folder).icon}}</md-icon>

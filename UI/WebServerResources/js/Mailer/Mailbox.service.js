@@ -244,12 +244,24 @@
   /**
    * @function isSelectedMessage
    * @memberof Mailbox.prototype
-   * @desc Check if the specified message is selected.
+   * @desc Check if the specified message is displayed in the detailed view.
    * @param {string} messageId
-   * @returns true if the specified message is selected
+   * @returns true if the specified message is displayed
    */
   Mailbox.prototype.isSelectedMessage = function(messageId) {
     return this.selectedMessage == messageId;
+  };
+
+  /**
+   * @function $selectedMessage
+   * @memberof Mailbox.prototype
+   * @desc Return the currently visible message.
+   * @returns a Message instance or undefined if no message is displayed
+   */
+  Mailbox.prototype.$selectedMessage = function() {
+    var _this = this;
+
+    return _.find(this.$messages, function(message) { return message.uid == _this.selectedMessage; });
   };
 
   /**
@@ -408,6 +420,16 @@
    */
   Mailbox.prototype.isNoInferiors = function() {
     return this.flags.indexOf('noinferiors') >= 0;
+  };
+
+  /**
+   * @function isNoSelect
+   * @memberof Mailbox.prototype
+   * @desc Checks if the mailbox can be selected
+   * @returns true if the mailbox can not be selected
+   */
+  Mailbox.prototype.isNoSelect = function() {
+    return this.flags.indexOf('noselect') >= 0;
   };
 
   /**
