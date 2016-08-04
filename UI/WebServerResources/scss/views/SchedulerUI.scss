@@ -265,10 +265,6 @@ $quarter_height: 10px;
       $i: $i + 1;
     }
 
-    &--notransition {
-      transition: none;
-    }
-
     &--ghost {
       opacity: 1;
       left: $block_margin;
