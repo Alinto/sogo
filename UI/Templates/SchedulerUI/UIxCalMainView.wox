@@ -740,8 +740,8 @@
     <md-dialog flex="60" flex-xs="100">
       <md-dialog-content class="md-dialog-content"
                          ng-show="$AttendeeConflictDialogController.conflictError.attendee_email">
-        <h2 class="md-title"><var:string label:value="Warning"/></h2>
-        <p><var:string label:value="A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"/></p>
+        <h2 class="md-title">{{ ::'Warning' | loc }}</h2>
+        <p>{{ ::'A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?' | loc }}</p>
         <md-list>
           <md-list-item>
             <md-icon>person</md-icon> {{$AttendeeConflictDialogController.conflictError.attendee_name}} ({{$AttendeeConflictDialogController.conflictError.attendee_email}})
@@ -761,7 +761,7 @@
       </md-dialog-content>
       <md-dialog-content class="md-dialog-content"
                          ng-show="$AttendeeConflictDialogController.conflictError.reject">
-        <h2 class="md-title"><var:string label:value="Warning"/></h2>
+        <h2 class="md-title">{{ ::'Warning' | loc }}</h2>
         <p>{{$AttendeeConflictDialogController.conflictError.reject}}</p>
       </md-dialog-content>
       <md-dialog-actions>
