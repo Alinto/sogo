@@ -431,7 +431,7 @@
   destinationFolder = [data objectForKey: @"folder"];
   response = nil;
 
-  if ([uids count] > 0)
+  if ([uids count] > 0 && destinationFolder)
     {
       response = [co copyUIDs: uids  toFolder: destinationFolder inContext: context];
       if (!response)
@@ -445,6 +445,12 @@
             }
           else
             response = [self responseWithStatus: 200];
+        }
+      else
+        {
+          data = [NSDictionary dictionaryWithObject: [(NSException *)response reason]
+                                             forKey: @"message"];
+          response = [self responseWithStatus: 500 andJSONRepresentation: data];
         }
     }
   else
@@ -477,7 +483,7 @@
   destinationFolder = [data objectForKey: @"folder"];
   response = nil;
 
-  if ([uids count] > 0)
+  if ([uids count] > 0 && destinationFolder)
     {
       response = [co moveUIDs: uids  toFolder: destinationFolder inContext: context];
       if (!response)
@@ -501,10 +507,16 @@
             }
           response = [self responseWith204];
         }
+      else
+        {
+          data = [NSDictionary dictionaryWithObject: [(NSException *)response reason]
+                                             forKey: @"message"];
+          response = [self responseWithStatus: 500 andJSONRepresentation: data];
+        }
     }
   else
     {
-      data = [NSDictionary dictionaryWithObject: [self labelForKey: @"Error moving messages." inContext: context]
+      data = [NSDictionary dictionaryWithObject: @"Error 'uids' and/or 'folder' parameters."
                                          forKey: @"message"];
       response = [self responseWithStatus: 500 andJSONRepresentation: data];
     }
