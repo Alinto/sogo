@@ -1,6 +1,6 @@
 /* SOGoToolBackup.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2015 Inverse inc.
+ * Copyright (C) 2009-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -141,7 +141,6 @@
 
   lm = [SOGoUserManager sharedUserManager];
   pool = [[NSAutoreleasePool alloc] init];
-  
 
   max = [users count];
   user = [users objectAtIndex: 0];
@@ -194,7 +193,27 @@
       if (infos)
 	[allUsers addObject: infos];
       else
-	NSLog (@"user '%@' unknown", user);
+	{
+	  // We haven't found the user based on the GCS table name
+	  // Let's try to strip the domain part and search again.
+	  // This can happen when using SOGoEnableDomainBasedUID (YES)
+	  // but login in SOGo using a UID without domain (DomainLessLogin gets set)
+	  NSRange r;
+
+	  r = [user rangeOfString: @"@"];
+
+	  if (r.location != NSNotFound)
+	    {
+	      user = [user substringToIndex: r.location];
+	      infos = [lm contactInfosForUserWithUIDorEmail: user];
+	      if (infos)
+		[allUsers addObject: infos];
+	      else
+		NSLog (@"user '%@' unknown", user);
+	    }
+	  else
+	    NSLog (@"user '%@' unknown", user);
+	}
     }
   [allUsers autorelease];
 
@@ -426,7 +445,6 @@
 
   if ([sd enableDomainBasedUID] && [gcsUID rangeOfString: @"@"].location == NSNotFound)
     gcsUID = [NSString stringWithFormat: @"%@@%@", gcsUID, [theUser objectForKey: @"c_domain"]];
-
 
   return ([self extractUserFolders: gcsUID
                         intoRecord: userRecord]
