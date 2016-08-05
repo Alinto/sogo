@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  AddressBookController.$inject = ['$scope', '$q', '$window', '$state', '$timeout', '$mdDialog', 'Account', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook'];
-  function AddressBookController($scope, $q, $window, $state, $timeout, $mdDialog, Account, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
+  AddressBookController.$inject = ['$scope', '$q', '$window', '$state', '$timeout', '$mdDialog', '$mdToast', 'Account', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook'];
+  function AddressBookController($scope, $q, $window, $state, $timeout, $mdDialog, $mdToast, Account, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
     var vm = this;
 
     AddressBook.selectedFolder = stateAddressbook;
@@ -20,6 +20,7 @@
     vm.unselectCards = unselectCards;
     vm.confirmDeleteSelectedCards = confirmDeleteSelectedCards;
     vm.copySelectedCards = copySelectedCards;
+    vm.moveSelectedCards = moveSelectedCards;
     vm.selectAll = selectAll;
     vm.sort = sort;
     vm.sortedBy = sortedBy;
@@ -66,11 +67,58 @@
         });
     }
 
-    function copySelectedCards(folder) {
-      var selectedCards = _.filter(vm.selectedFolder.$cards, function(card) { return card.selected; });
-      vm.selectedFolder.$copyCards(selectedCards, folder).then(function() {
-        // TODO: refresh target addressbook?
+    /**
+     * @see AddressBooksController.dragSelectedCards
+     */
+    function _selectedCardsOperation(operation, dstId) {
+      var srcFolder, allCards, cards, ids, clearCardView, promise, success;
+
+      srcFolder = vm.selectedFolder;
+      clearCardView = false;
+      allCards = srcFolder.$selectedCards();
+      cards = _.filter(allCards, function(card) {
+        return card.$isCard();
       });
+
+      if (cards.length != allCards.length)
+        $mdToast.show(
+          $mdToast.simple()
+            .content(l("Lists can't be moved or copied."))
+            .position('top right')
+            .hideDelay(2000));
+
+      if (cards.length) {
+        if (operation == 'copy') {
+          promise = srcFolder.$copyCards(cards, dstId);
+          success = l('%{0} card(s) copied', cards.length);
+        }
+        else {
+          promise = srcFolder.$moveCards(cards, dstId);
+          success = l('%{0} card(s) moved', cards.length);
+          // Check if currently displayed card will be moved
+          ids = _.map(cards, 'id');
+          clearCardView = (srcFolder.selectedCard && ids.indexOf(srcFolder.selectedCard) >= 0);
+        }
+
+        // Show success toast when action succeeds
+        promise.then(function() {
+          if (clearCardView)
+            $state.go('app.addressbook');
+          $mdToast.show(
+            $mdToast.simple()
+              .content(success)
+              .position('top right')
+              .hideDelay(2000));
+        });
+      }
+    }
+
+    function copySelectedCards(folder) {
+      _selectedCardsOperation('copy', folder);
+    }
+
+    function moveSelectedCards(folder) {
+      _selectedCardsOperation('move', folder);
     }
 
     function selectAll() {

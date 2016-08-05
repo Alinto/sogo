@@ -41,20 +41,28 @@
 "Move To" = "Move To";
 "Copy To" = "Copy To";
 "Add to" = "Add to";
+
 /* Subheader of empty addressbook */
 "No contact" = "No contact";
+
 /* Subheader of system addressbook */
 "Start a search to browse this address book" = "Start a search to browse this address book";
+
 /* Number of contacts in addressbook; string is prefixed by number */
 "contacts" = "contacts";
+
 /* No contact matching search criteria */
 "No matching contact" = "No matching contact";
+
 /* Number of contacts matching search criteria; string is prefixed by number */
 "matching contacts" = "matching contacts";
+
 /* Number of selected contacts in list */
 "selected" = "selected";
+
 /* Empty right pane */
 "No contact selected" = "No contact selected";
+
 /* Tooltips */
 "Create a new address book card" = "Create a new address book card";
 "Create a new list" = "Create a new list";
@@ -95,9 +103,11 @@
 "Work" = "Work";
 "Mobile" = "Mobile";
 "Pager" = "Pager";
+
 /* categories */
 "contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
 "New category" = "New category";
+
 /* adresses */
 "Title" = "Title";
 "Service" = "Service";
@@ -141,6 +151,7 @@
 = "You cannot subscribe to a folder that you own.";
 "Unable to subscribe to that folder!"
 = "Unable to subscribe to that folder.";
+
 /* acls */
 "Access rights to" = "Access rights to";
 "For user" = "For user";
@@ -159,11 +170,15 @@
 "The selected contact has no email address."
 = "The selected contact has no email address.";
 "Please select a contact." = "Please select a contact.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} card(s) copied";
+"%{0} card(s) moved" = "%{0} card(s) moved";
 "SoAccessDeniedException" = "You cannot write to this address book.";
 "Forbidden" = "You cannot write to this address book.";
 "Invalid Contact" = "The selected contact no longer exists.";
 "Unknown Destination Folder" = "The chosen destination address book no longer exists.";
+
 /* Lists */
 "List details" = "List details";
 "List name" = "List name";
@@ -176,6 +191,8 @@
 "Export" = "Export";
 "Export Address Book..." = "Export Address Book...";
 "View Raw Source" = "View Raw Source";
+
+/* Import */
 "Import Cards" = "Import Cards";
 "Select a vCard or LDIF file." = "Select a vCard or LDIF file.";
 "Upload" = "Upload";
@@ -185,6 +202,7 @@
 "No card was imported." = "No card was imported.";
 "A total of %{0} cards were imported in the addressbook." = "A total of %{0} cards were imported in the addressbook.";
 "Reload" = "Reload";
+
 /* Properties window */
 "Address Book Name" = "Address Book Name";
 "Links to this Address Book" = "Links to this Address Book";

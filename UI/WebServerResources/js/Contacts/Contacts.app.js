@@ -110,7 +110,7 @@
       return addressbook.id == $stateParams.addressbookId;
     });
     if (addressbook) {
-      addressbook.selectedCard = false;
+      delete addressbook.selectedCard;
       addressbook.$reload();
       return addressbook;
     }

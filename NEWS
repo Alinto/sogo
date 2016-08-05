@@ -3,6 +3,7 @@
 
 New features
  - [web] drag'n'drop of messages in the Mail module (#3497, #3586, #3734, #3788)
+ - [web] drag'n'drop of cards in the AddressBook module
  - [eas] added folder merging capabilities
 
 Enhancements

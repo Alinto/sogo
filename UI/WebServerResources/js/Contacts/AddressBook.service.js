@@ -338,6 +338,16 @@
   };
 
   /**
+   * @function hasSelectedMessage
+   * @memberof AddressBook.prototype
+   * @desc Check if a card is selected.
+   * @returns true if the a card is selected
+   */
+  AddressBook.prototype.hasSelectedCard = function() {
+    return angular.isDefined(this.selectedCard);
+  };
+
+  /**
    * @function isSelectedCard
    * @memberof AddressBook.prototype
    * @desc Check if the specified card is selected.
@@ -345,7 +355,29 @@
    * @returns true if the specified card is selected
    */
   AddressBook.prototype.isSelectedCard = function(cardId) {
-    return this.selectedCard == cardId;
+    return this.hasSelectedCard() && this.selectedCard == cardId;
+  };
+
+  /**
+   * @function $selectedCard
+   * @memberof AddressBook.prototype
+   * @desc Return the currently visible card.
+   * @returns a Card instance or undefined if no card is displayed
+   */
+  AddressBook.prototype.$selectedCard = function() {
+    var _this = this;
+
+    return _.find(this.$cards, function(card) { return card.id == _this.selectedCard; });
+  };
+
+  /**
+   * @function $selectedCards
+   * @memberof AddressBook.prototype
+   * @desc Return the cards selected by the user.
+   * @returns Card instances
+   */
+  AddressBook.prototype.$selectedCards = function() {
+    return _.filter(this.$cards, function(card) { return card.selected; });
   };
 
   /**
@@ -554,6 +586,33 @@
   };
 
   /**
+   * @function $_deleteCards
+   * @memberof AddressBook.prototype
+   * @desc Delete multiple cards from AddressBook object.
+   * @param {string[]} ids - the cards ids
+   */
+  AddressBook.prototype.$_deleteCards = function(ids) {
+    var _this = this;
+
+    // Remove cards from $cards and idsMap
+    _.forEachRight(this.$cards, function(card, index) {
+      var selectedIndex = _.findIndex(ids, function(id) {
+        return card.id == id;
+      });
+      if (selectedIndex > -1) {
+        ids.splice(selectedIndex, 1);
+        delete _this.idsMap[card.id];
+        if (_this.isSelectedCard(card.id))
+          delete _this.selectedCard;
+        _this.$cards.splice(index, 1);
+      }
+      else {
+        _this.idsMap[card.id] -= ids.length;
+      }
+    });
+  };
+
+  /**
    * @function $deleteCards
    * @memberof AddressBook.prototype
    * @desc Delete multiple cards from addressbook.
@@ -561,25 +620,10 @@
    */
   AddressBook.prototype.$deleteCards = function(cards) {
     var _this = this,
-        ids = _.map(cards, function(card) { return card.id; });
+        ids = _.map(cards, 'id');
     
     return AddressBook.$$resource.post(this.id, 'batchDelete', {uids: ids}).then(function() {
-      // Remove cards from $cards and idsMap
-      _.forEachRight(_this.$cards, function(card, index) {
-        var selectedIndex = _.findIndex(ids, function(id) {
-          return card.id == id;
-        });
-        if (selectedIndex > -1) {
-          ids.splice(selectedIndex, 1);
-          delete _this.idsMap[card.id];
-          if (_this.isSelectedCard(card.id))
-            delete _this.selectedCard;
-          _this.$cards.splice(index, 1);
-        }
-        else {
-          _this.idsMap[card.id] -= ids.length;
-        }
-      });
+      _this.$_deleteCards(ids);
     });
   };
 
@@ -590,8 +634,26 @@
    * @return a promise of the HTTP operation
    */
   AddressBook.prototype.$copyCards = function(cards, folder) {
-    var uids = _.map(cards, function(card) { return card.id; });
+    var uids = _.map(cards, 'id');
     return AddressBook.$$resource.post(this.id, 'copy', {uids: uids, folder: folder});
+  };
+
+  /**
+   * @function $moveCards
+   * @memberof AddressBook.prototype
+   * @desc Move multiple cards from the current addressbook to a target one
+   * @param {object[]} cards - instances of Card object
+   * @param {string} folder - the destination folder id
+   * @return a promise of the HTTP operation
+   */
+  AddressBook.prototype.$moveCards = function(cards, folder) {
+    var _this = this, uids;
+
+    uids = _.map(cards, 'id');
+    return AddressBook.$$resource.post(this.id, 'move', {uids: uids, folder: folder})
+      .then(function() {
+        return _this.$_deleteCards(uids);
+      });
   };
 
   /**

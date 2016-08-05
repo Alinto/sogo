@@ -23,6 +23,8 @@
     vm.showProperties = showProperties;
     vm.share = share;
     vm.subscribeToFolder = subscribeToFolder;
+    vm.isDroppableFolder = isDroppableFolder;
+    vm.dragSelectedCards = dragSelectedCards;
 
     function select($event, folder) {
       if ($state.params.addressbookId != folder.id &&
@@ -214,7 +216,7 @@
           addressbook: addressbook
         }
       });
-      
+
       /**
        * @ngInject
        */
@@ -301,6 +303,58 @@
              .hideDelay(3000));
       });
     }
+
+    function isDroppableFolder(srcFolder, dstFolder) {
+      return (dstFolder.id != srcFolder.id) && (dstFolder.isOwned || dstFolder.acls.objectCreator);
+    }
+
+    /**
+     * @see AddressBookController._selectedCardsOperation
+     */
+    function dragSelectedCards(srcFolder, dstFolder, mode) {
+      var dstId, cards, ids, clearCardView, promise, success;
+
+      dstId = dstFolder.id;
+      clearCardView = false;
+      cards = srcFolder.$selectedCards();
+      if (cards.length === 0)
+        cards = [srcFolder.$selectedCard()];
+
+      if (_.find(cards, function(card) {
+        return card.$isList();
+      })) {
+        $mdToast.show(
+          $mdToast.simple()
+            .content(l("Lists can't be moved or copied."))
+            .position('top right')
+            .hideDelay(2000));
+        return;
+      }
+
+      if (mode == 'copy') {
+        promise = srcFolder.$copyCards(cards, dstId);
+        success = l('%{0} card(s) copied', cards.length);
+      }
+      else {
+        promise = srcFolder.$moveCards(cards, dstId);
+        success = l('%{0} card(s) moved', cards.length);
+        // Check if currently displayed card will be moved
+        ids = _.map(cards, 'id');
+        clearCardView = (srcFolder.selectedCard && ids.indexOf(srcFolder.selectedCard) >= 0);
+      }
+
+      // Show success toast when action succeeds
+      promise.then(function() {
+        if (clearCardView)
+          $state.go('app.addressbook');
+        $mdToast.show(
+          $mdToast.simple()
+            .content(success)
+            .position('top right')
+            .hideDelay(2000));
+      });
+    }
+
   }
 
   angular
