@@ -966,12 +966,16 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                   withTimeZone: (NSTimeZone *) tz
                        toArray: (NSMutableArray *) ma
 {
+  NGCalendarDateRange *recurrenceIdRange;
   NSCalendarDate *recurrenceId;
   NSMutableDictionary *newRecord;
   NGCalendarDateRange *newRecordRange;
   NSComparisonResult compare;
-  int recordIndex, secondsOffsetFromGMT;
   NSNumber *dateSecs;
+  id master;
+
+  int recordIndex, secondsOffsetFromGMT;
+  NSTimeInterval delta;
 
   newRecord = nil;
   recurrenceId = [component recurrenceId];
@@ -993,16 +997,19 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       [recurrenceId setTimeZone: tz];
     }
 
-  compare = [[dateRange startDate] compare: recurrenceId];
-  if ((compare == NSOrderedAscending || compare == NSOrderedSame) &&
-      [[dateRange endDate] compare: recurrenceId] == NSOrderedDescending)
+  master = [[[component parent] events] objectAtIndex: 0];
+  delta = [[master endDate] timeIntervalSinceDate: [master startDate]];
+  recurrenceIdRange = [NGCalendarDateRange calendarDateRangeWithStartDate: recurrenceId
+								  endDate: [recurrenceId dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds: delta]];
+  if ([dateRange doesIntersectWithDateRange: recurrenceIdRange])
     {
       // The recurrence exception intersects with the date range;
       // find the occurence and replace it with the new record
       recordIndex = [self _indexOfRecordMatchingDate: recurrenceId inArray: ma];
       if (recordIndex > -1)
 	{
-          if ([dateRange containsDate: [component startDate]])
+          if ([dateRange containsDate: [component startDate]] ||
+	      [dateRange containsDate: [component endDate]])
             {
               // We must pass nil to :container here in order to avoid re-entrancy issues.
               newRecord = [self _fixupRecord: [component quickRecordFromContent: nil  container: nil]];

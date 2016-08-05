@@ -557,13 +557,9 @@
           reason = [values keysWithFormat: [self labelForKey: @"Cannot access resource: \"%{Cn} %{SystemEmail}\""]];
           return [NSException exceptionWithHTTPStatus:409 reason: reason];
         }
-          
+
       fbInfo = [NSMutableArray arrayWithArray: [folder fetchFreeBusyInfosFrom: start
-                                                                               to: end]];
-          
-      // We first remove any occurences in the freebusy that corresponds to the
-      // current event. We do this to avoid raising a conflict if we move a 1 hour
-      // meeting from 12:00-13:00 to 12:15-13:15. We would overlap on ourself otherwise.
+									   to: end]];
       //
       // We must also check here for repetitive events that don't overlap our event.
       // We remove all events that don't overlap. The events here are already
@@ -592,13 +588,14 @@
           range = [NGCalendarDateRange calendarDateRangeWithStartDate: rangeStartDate
                                                               endDate: rangeEndDate];
 
-          // We remove the freebusy entries corresponding to the actual event being modified
+	  // We first remove any occurences in the freebusy that corresponds to the
+	  // current event. We do this to avoid raising a conflict if we move a 1 hour
+	  // meeting from 12:00-13:00 to 12:15-13:15. We would overlap on ourself otherwise.
           if ([[[fbInfo objectAtIndex: i] objectForKey: @"c_uid"] compare: [theEvent uid]] == NSOrderedSame)
             {
               [fbInfo removeObjectAtIndex: i];
               continue;
             }
-              
           // No need to check if the event isn't recurrent here as it's handled correctly
           // when we compute the "end" date.
           if ([allOccurences count])
@@ -613,7 +610,6 @@
                       break;
                     }
                 }
-
               if (must_delete)
                 [fbInfo removeObjectAtIndex: i];
             }
