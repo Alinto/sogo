@@ -4,7 +4,7 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
-  <md-dialog flex="40" flex-sm="80" flex-xs="100">
+  <md-dialog flex="40" flex-md="60" flex-sm="80" flex-xs="100">
     <md-toolbar ng-class="editor.component.getClassName('bg')">
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">event</md-icon>
