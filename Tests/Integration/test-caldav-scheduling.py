@@ -400,8 +400,8 @@ class CalDAVSchedulingTest(unittest.TestCase):
         attendee.partstat_param = "NEEDS-ACTION"
         attendee.value = self.res_no_ob_email
 
-        # put the event - should trigger a 403
-        self._putEvent(self.client, "%s%s" % (self.user_calendar, ob_ics_name), event, exp_status=403)
+        # put the event - should trigger a 409
+        self._putEvent(self.client, "%s%s" % (self.user_calendar, ob_ics_name), event, exp_status=409)
 
     def testResourceCanOverbook(self):
         """ try to overbook a resource - multiplebookings=0"""
@@ -515,7 +515,7 @@ class CalDAVSchedulingTest(unittest.TestCase):
         attendee.partstat_param = "NEEDS-ACTION"
         attendee.value = self.res_no_ob_email
         # should fail
-        self._putEvent(self.attendee1_client, "%s%s" % (self.attendee1_calendar, overlap_ics_name), event, exp_status=403)
+        self._putEvent(self.attendee1_client, "%s%s" % (self.attendee1_calendar, overlap_ics_name), event, exp_status=409)
 
         # 3. Create recurring event which _doesn't_ overlap the first event
         #    (should be OK, used to fail pre1.3.17)
@@ -528,12 +528,12 @@ class CalDAVSchedulingTest(unittest.TestCase):
         self._putEvent(self.client, "%s%s" % (self.user_calendar, nooverlap_recurring_ics_name), nooverlap_event)
 
         # 4. Create recurring event overlapping the previous recurring event
-        #    should fail
+        #    should fail with a 409
         nstartdate = nooverlap_event.vevent.dtstart.value + datetime.timedelta(0, 300)
         nooverlap_event.vevent.dtstart.value = nstartdate
         nooverlap_event.vevent.dtend.value = nstartdate + datetime.timedelta(0, 3600)
         nooverlap_event.vevent.uid.value = "recurring - overlap"
-        self._putEvent(self.client, "%s%s" % (self.user_calendar, overlap_recurring_ics_name), nooverlap_event, exp_status=403)
+        self._putEvent(self.client, "%s%s" % (self.user_calendar, overlap_recurring_ics_name), nooverlap_event, exp_status=409)
 
 
     def testRruleExceptionInvitationDance(self):
@@ -813,8 +813,8 @@ class CalDAVSchedulingTest(unittest.TestCase):
 
 	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event)
 
-        # PUT the same event with a new filename - should trigger a 403
-	self._putEvent(self.client, "%s%s" % (self.user_calendar, conflict_ics_name), event, exp_status=403)
+        # PUT the same event with a new filename - should trigger a 409
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, conflict_ics_name), event, exp_status=409)
 
     def testInvitationDelegation(self):
         """ invitation delegation """
