@@ -312,47 +312,48 @@
      * @see AddressBookController._selectedCardsOperation
      */
     function dragSelectedCards(srcFolder, dstFolder, mode) {
-      var dstId, cards, ids, clearCardView, promise, success;
+      var dstId, allCards, cards, ids, clearCardView, promise, success;
 
       dstId = dstFolder.id;
       clearCardView = false;
-      cards = srcFolder.$selectedCards();
-      if (cards.length === 0)
-        cards = [srcFolder.$selectedCard()];
+      allCards = srcFolder.$selectedCards();
+      if (allCards.length === 0)
+        allCards = [srcFolder.$selectedCard()];
+      cards = _.filter(allCards, function(card) {
+        return card.$isCard();
+      });
 
-      if (_.find(cards, function(card) {
-        return card.$isList();
-      })) {
+      if (cards.length != allCards.length)
         $mdToast.show(
           $mdToast.simple()
             .content(l("Lists can't be moved or copied."))
             .position('top right')
             .hideDelay(2000));
-        return;
-      }
 
-      if (mode == 'copy') {
-        promise = srcFolder.$copyCards(cards, dstId);
-        success = l('%{0} card(s) copied', cards.length);
-      }
-      else {
-        promise = srcFolder.$moveCards(cards, dstId);
-        success = l('%{0} card(s) moved', cards.length);
-        // Check if currently displayed card will be moved
-        ids = _.map(cards, 'id');
-        clearCardView = (srcFolder.selectedCard && ids.indexOf(srcFolder.selectedCard) >= 0);
-      }
+      if (cards.length) {
+        if (mode == 'copy') {
+          promise = srcFolder.$copyCards(cards, dstId);
+          success = l('%{0} card(s) copied', cards.length);
+        }
+        else {
+          promise = srcFolder.$moveCards(cards, dstId);
+          success = l('%{0} card(s) moved', cards.length);
+          // Check if currently displayed card will be moved
+          ids = _.map(cards, 'id');
+          clearCardView = (srcFolder.selectedCard && ids.indexOf(srcFolder.selectedCard) >= 0);
+        }
 
-      // Show success toast when action succeeds
-      promise.then(function() {
-        if (clearCardView)
-          $state.go('app.addressbook');
-        $mdToast.show(
-          $mdToast.simple()
-            .content(success)
-            .position('top right')
-            .hideDelay(2000));
-      });
+        // Show success toast when action succeeds
+        promise.then(function() {
+          if (clearCardView)
+            $state.go('app.addressbook');
+          $mdToast.show(
+            $mdToast.simple()
+              .content(success)
+              .position('top right')
+              .hideDelay(2000));
+        });
+      }
     }
 
   }
