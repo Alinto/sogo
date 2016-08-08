@@ -170,8 +170,8 @@ supported by SOGo:
 
 * Red Hat Enterprise Linux (RHEL) Server 5, 6 and 7
 * Community ENTerprise Operating System (CentOS) 5, 6 and 7
-* Debian GNU/Linux 6.0 (Squeeze) to 8.0 (Jessie)
-* Ubuntu 12.04 (Precise) to 14.04 (Trusty)
+* Debian GNU/Linux 6.0 (Squeeze), 7.0 (Wheezy) and 8.0 (Jessie)
+* Ubuntu 12.04 (Precise), 14.04 (Trusty) and 16.04 (Xenial)
 
 Make sure the required components are started automatically at boot time
 and that they are running before proceeding with the SOGo configuration.
@@ -201,6 +201,11 @@ should apply to all supported operating systems.
 Software Downloads
 ~~~~~~~~~~~~~~~~~~
 
+[NOTE]
+In order to access the production builds, you need a proper support contract
+from https://sogo.nu/support/index_new.html#support-plans[Inverse]. Continue
+with the configuration once you received your username and password.
+
 SOGo can be installed using the `yum` utility. To do so, first create
 the `/etc/yum.repos.d/inverse.repo` configuration file with the following
 content:
@@ -208,17 +213,32 @@ content:
 ----
 [SOGo]
 name=Inverse SOGo Repository
-baseurl=http://inverse.ca/rhel-v3/7/$basearch
-gpgcheck=0
+baseurl=https://<username>:<password>@packages.inverse.ca/SOGo/release/3/rhel/7/$basearch
+gpgcheck=1
 ----
 
-Some of the softwares on which SOGo depends are available from the
-repository of RepoForge (previously known as RPMforge). To add RepoForge
-to your packages sources, download and install the appropriate RPM
-package from http://packages.sw.be/rpmforge-release/.
-Also make sure you enabled the "rpmforge-extras" repository.
+[NOTE]
+Any non-URL safe characters in username/password must be URL-encoded.  For
+example, if your password is `so%go`, you must set the value in your
+configuration file to `so%25go` - where `%` is encoded to `%25`.
 
-For more information on using RepoForge, visit http://repoforge.org/use/.
+Inverse signs its RPM packages with its GPG key. Integrity verification happens
+all by itself on package installation, all you need to do is first import the
+key into your rpm keychain:
+
+----
+rpm --import "https://pgp.mit.edu/pks/lookup?op=get&search=0xCB2D3A2AA0030E2C"
+----
+
+Some of the softwares on which SOGo depends are available from the repository
+"Extra Packages for Enterprise Linux" (EPEL). To add EPEL to your packages
+sources, install the following package:
+
+----
+rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+----
+
+For more information on EPEL, visit http://fedoraproject.org/wiki/EPEL/.
 
 Software Installation
 ~~~~~~~~~~~~~~~~~~~~~
@@ -888,7 +908,7 @@ source:
 
 [cols="^3,>47,50a"]
 |=======================================================================
-.34+|D <|SOGoUserSources
+.36+|D <|SOGoUserSources
 |Parameter used to set the LDAP and/or SQL sources used for
 authentication and global address books. Multiple sources can be
 specified as an array of dictionaries. A dictionary that defines an LDAP
