@@ -667,9 +667,9 @@
                                 md-diameter="32"><!-- mailbox loading progress --></md-progress-circular>
         </div>
         <md-fab-speed-dial
-             class="md-fling md-fab-bottom-right"
-             md-direction="up" md-open="false"
-             ng-cloak="ng-cloak">
+             class="md-scale md-fab-bottom-right"
+             ng-cloak="ng-cloak"
+             md-direction="up">
             <md-fab-trigger>
               <md-button class="md-fab md-accent" label:aria-label="New Event">
                 <md-icon>add</md-icon>

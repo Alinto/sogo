@@ -476,10 +476,10 @@
                                   md-diameter="32"><!-- progress --></md-progress-circular>
           </div>
           <md-fab-speed-dial
-             class="md-fling md-fab-bottom-right"
-             md-direction="up" md-open="false"
-             ng-cloak="ng-cloak"
-             ng-show="addressbook.selectedFolder.isOwned || addressbook.selectedFolder.acls.objectCreator">
+              class="md-scale md-fab-bottom-right"
+              ng-cloak="ng-cloak"
+              md-direction="up"
+              ng-show="addressbook.selectedFolder.isOwned || addressbook.selectedFolder.acls.objectCreator">
             <md-fab-trigger>
               <md-button class="md-fab md-accent" label:aria-label="New Contact">
                 <md-icon>add</md-icon>
