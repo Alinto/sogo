@@ -138,7 +138,7 @@
 }
 
 - (SOGoAppointmentObject *) _lookupEvent: (NSString *) eventUID
-				                          forUID: (NSString *) uid
+				  forUID: (NSString *) uid
 {
   SOGoAppointmentFolder *folder;
   SOGoAppointmentObject *object;
@@ -2122,6 +2122,26 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 
           if (userIsOrganizer)
             {
+	      // We check ACLs of the 'organizer' - in case someone forges the SENT-BY
+	      NSString *uid;
+
+	      uid = [[oldEvent organizer] uidInContext: context];
+
+	      if ([[[context activeUser] login] caseInsensitiveCompare: uid] != NSOrderedSame)
+		{
+		  SOGoAppointmentObject *organizerObject;
+
+		  organizerObject = [self _lookupEvent: [oldEvent uid] forUID: uid];
+		  roles = [[context activeUser] rolesForObject: organizerObject
+						     inContext: context];
+
+		  if (![roles containsObject: @"ComponentModifier"])
+		    {
+		      return [NSException exceptionWithHTTPStatus: 409
+							   reason: @"Not allowed to perform this action. Wrong SENT-BY being used regarding access rights on organizer's calendar."];
+		    }
+		}
+
               // A RECCURENCE-ID was removed
               if (!newEvent && oldEvent)
                 [self prepareDeleteOccurence: oldEvent];
