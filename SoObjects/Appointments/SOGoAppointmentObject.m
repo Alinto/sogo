@@ -2127,7 +2127,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 
 	      uid = [[oldEvent organizer] uidInContext: context];
 
-	      if ([[[context activeUser] login] caseInsensitiveCompare: uid] != NSOrderedSame)
+	      if (uid && [[[context activeUser] login] caseInsensitiveCompare: uid] != NSOrderedSame)
 		{
 		  SOGoAppointmentObject *organizerObject;
 
