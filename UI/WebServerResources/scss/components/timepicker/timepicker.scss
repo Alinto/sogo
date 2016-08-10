@@ -1,4 +1,4 @@
-/** Styles for sgTimePane. */
+/// timepicker.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
 $sg-time-pane-cell-size: 40px;
 $sg-time-width: (12 * $sg-time-pane-cell-size) + (2 * $md-calendar-side-padding);
@@ -211,7 +211,7 @@ sg-timepicker[disabled] {
   }
 
   .md-icon-button + .sg-timepicker-input-container {
-    @include rtl-prop(margin-left, margin-right, -$md-datepicker-button-gap);
+    @include rtl-prop(margin-left, margin-right, $md-datepicker-button-gap, auto);
   }
 
   .sg-timepicker-input,
@@ -222,7 +222,7 @@ sg-timepicker[disabled] {
   // This needs some extra specificity in order to override
   // the focused/invalid border colors.
   input.sg-timepicker-input {
-    @include rtl-prop(margin-left, margin-right, 24px);
+    @include rtl-prop(margin-left, margin-right, 24px, auto);
     height: $md-datepicker-input-mask-height;
     border-bottom-color: transparent;
   }
