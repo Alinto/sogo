@@ -276,7 +276,7 @@
 "%{0} message(s) copied" = "%{0} message(s) copied";
 
 /* Notification on the number of messages successfuly movied */
-"%{0} message(s) copied" = "%{0} message(s) moved";
+"%{0} message(s) moved" = "%{0} message(s) moved";
 
 "Please select a message." = "Please select a message.";
 "Please select a message to print." = "Please select a message to print.";
