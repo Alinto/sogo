@@ -46,7 +46,14 @@ module.exports = function(grunt) {
         options: {
           map: true,
           processors: [
-            require('autoprefixer')({browsers: '> 1%, last 2 versions, last 3 Firefox versions'})
+            // See angular-material/gulp/util.js
+            require('autoprefixer')({browsers: [
+              'last 2 versions',
+              'not ie <= 10',
+              'not ie_mob <= 10',
+              'last 4 Android versions',
+              'Safari >= 8'
+            ]})
           ]
           // We may consider using css grace (https://github.com/cssdream/cssgrace) for larger support
         },
