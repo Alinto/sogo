@@ -112,12 +112,12 @@
 "Cancel" = "Cancelar";
 "Reset" = "Limpar";
 "Save" = "Salvar";
-"show_rejected_apts" = "Exibir apontamentos rejeitados";
+"show_rejected_apts" = "Exibir compromissos rejeitados";
 "hide_rejected_apts" = "Ocultar compromissos rejeitados";
 
 /* Schedule */
 "Schedule" = "Agenda";
-"No appointments found" = "Apontamentos não encontrados";
+"No appointments found" = "Nenhum compromisso encontrado";
 "Meetings proposed by you" = "Reuniões propostas por você";
 "Meetings proposed to you" = "Reuniões propostas para você";
 "sched_startDateFormat" = "%d/%m %H:%M";
@@ -125,7 +125,7 @@
 "accept" = "Aceitar";
 "decline" = "Declinar";
 "more attendees" = "Mais Participantes";
-"Hide already accepted and rejected appointments" = "Ocultar apontamentos já aceitos e rejeitados";
+"Hide already accepted and rejected appointments" = "Ocultar compromissos já aceitos ou rejeitados";
 "Show already accepted and rejected appointments" = "Exibir compromissos já aceitos e rejeitados";
 
 /* Print view */
@@ -223,7 +223,7 @@
 "Search" = "Pesquisar";
 "Search attendees" = "Pesquisar participantes";
 "Search resources" = "Pesquisar recursos";
-"Search appointments" = "Pesquisar apontamentos";
+"Search appointments" = "Pesquisar compromissos";
 "All day Event" = "Evento diário";
 "check for conflicts" = "Checar conflitos";
 "URL" = "URL";
@@ -370,9 +370,9 @@
 "Show Time as Free" = "Exibir Hora como Livre";
 
 /* email notifications */
-"Send Appointment Notifications" = "Enviar Notificações de Apontamento";
+"Send Appointment Notifications" = "Enviar Notificação de Compromisso";
 "From" = "De";
-"To" = "Para";
+"To" = "Até";
 
 /* validation errors */
 validate_notitle           = "Nenhum título informado, continue?";
@@ -445,10 +445,10 @@ validate_endbeforestart    = "A data que você informou ocorre antes da data ini
 "Between" = "Entre";
 "and" = "e";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "Existe um conflito de tempo com um ou mais participantes.\nGostaria de manter as configurações atuais?";
+= "Existe um conflito de horários com um ou mais participantes.\nAinda assim, gostaria de manter as configurações atuais?";
 
 /* events list */
-"Due" = "Vencido";
+"Due" = "Até";
 "(Private Event)" = "(Evento Privado)";
 vevent_class0 = "(Evento Público)";
 vevent_class1 = "(Evento Privado)";
@@ -506,7 +506,7 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "monthFieldInvalid" = "Por favor, especifique um valor numérico no campo Mes(es), maior ou igual a 1.";
 "monthDayFieldInvalid" = "Por favor, especifique um valor numéricio no campo Dia do Mes, maior ou igual a 1.";
 "yearFieldInvalid" = "Por favor, especifique um valor numéricio no campo Ano(s), maior ou igual a 1.";
-"appointmentFieldInvalid" = "Por favor, especifique um valor numéricio no campo Apontamento(s) maior ou igual a 1.";
+"appointmentFieldInvalid" = "Por favor, especifique um valor numéricio no campo Compromisso(s) maior ou igual a 1.";
 "recurrenceUnsupported" = "Este tipo de recorrência não é suportado.";
 "Please specify a calendar name." = "Por favor, especifique um nome de calendário.";
 "tagNotDefined" = "Você deve especificar um dispositivo se deseja sincronizar este calendário.";
@@ -554,8 +554,8 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "More options" = "Mais opções";
 "Delete This Occurrence" = "Apagar esta Ocorrência";
 "Delete All Occurrences" = "Apagar todas as Ocorrências";
-"Add From" = "Adicionar Para";
-"Add Due" = "Adicionar Vencimento";
+"Add From" = "Início";
+"Add Due" = "Fim";
 "Import" = "Importar";
 "Rename" = "Renomear";
 "Import Calendar" = "Importar Calendário";

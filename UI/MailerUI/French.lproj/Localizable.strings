@@ -267,9 +267,16 @@
 "Operation failed" = "L'opération a échoué.";
 "Quota" = "Quota";
 "quotasFormat" = "%{0}% utilisé sur %{1} MO";
+"Unable to move/delete folder." = "Impossible de déplacer ou supprimer le dossier.";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Voulez-vous vraiment supprimer les messages sélectionnés?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} message(s) copié(s)";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) copied" = "%{0} message(s) copié(s)";
 
 "Please select a message." = "Veuillez sélectionner un message.";
 "Please select a message to print." = "Veuillez sélectionner un message à imprimer.";
@@ -305,7 +312,12 @@
 "Error while uploading the file \"%{0}\":" = "Une erreur est survenue lors du téléversement du fichier « %{0} » :";
 "There is an active file upload. Closing the window will interrupt it." = "Un transfert est actif. La fermeture de la fenêtre causera son interruption.";
 
-/* Message sending */
+/* Appears while sending the message */
+"Sending" = "Envoi en cours";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Envoyé";
+
 "cannot send message: (smtp) all recipients discarded" = "Le message n'a pas pu être envoyé car aucune adresse n'est valide.";
 "cannot send message (smtp) - recipients discarded" = "Le message n'a pas pu être envoyé car les adresses suivantes sont invalides";
 "cannot send message: (smtp) error when connecting" = "Le message n'a pas pu être envoyé: une erreur est survenue en tentant de rejoindre le serveur SMTP.";

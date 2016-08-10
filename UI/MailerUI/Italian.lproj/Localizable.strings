@@ -267,9 +267,16 @@
 "Operation failed" = "Operazione non riuscita";
 "Quota" = "Spazio usato";
 "quotasFormat" = "%{0}% usato su %{1} MB";
+"Unable to move/delete folder." = "Impossibile spostare/cancellare la cartella.";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Sei sicuro di voler cancellare il messaggio selezionato?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} messaggi copiati";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) copied" = "%{0} messaggi copiati";
 
 "Please select a message." = "Per favore seleziona un messaggio.";
 "Please select a message to print." = "Per favore seleziona un messaggio da stampare.";
@@ -305,7 +312,12 @@
 "Error while uploading the file \"%{0}\":" = "Errore durante l'upload del file \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Caricamento in corso. Chiudendo la finestra verrà interrotto.";
 
-/* Message sending */
+/* Appears while sending the message */
+"Sending" = "Invio";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Inviato";
+
 "cannot send message: (smtp) all recipients discarded" = "Impossibile inviare il messaggio: tutti i destinatari non sono validi.";
 "cannot send message (smtp) - recipients discarded" = "Impossibile inviare il messaggio. Il seguente indirizzo non è valido";
 "cannot send message: (smtp) error when connecting" = "Impossibile inviare il messaggio: si è verificato un errore durante la connessione al server SMTP.";

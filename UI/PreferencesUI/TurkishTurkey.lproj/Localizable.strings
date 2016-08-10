@@ -320,8 +320,8 @@
 "Send a reject message" = "Reddedildi iletisi gönder";
 "Send a vacation message" = "Tatil iletisi gönder";
 "Stop processing filter rules" = "Süzgeç kurallarının işlenmesini durdur";
-"is under" = "den küçük";
-"is over" = "den büyük";
+"is under" = "küçükse";
+"is over" = "büyükse";
 "is" = "şuna eşitse";
 "is not" = "şuna eşit değilse";
 "contains" = "şunu içeriyorsa";

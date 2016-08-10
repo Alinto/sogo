@@ -157,7 +157,7 @@
 /* Tree */
 "SentFolderName"   = "Enviados";
 "TrashFolderName"  = "Lixeira";
-"InboxFolderName"  = "Entrada";
+"InboxFolderName"  = "Caixa de Entrada";
 "DraftsFolderName" = "Rascunhos";
 "JunkFolderName" = "Lixo Eletrônico";
 "SieveFolderName"  = "Filtros";
@@ -267,9 +267,16 @@
 "Operation failed" = "Falha na Operação";
 "Quota" = "Quota:";
 "quotasFormat" = "%{0}% usado em %{1} MB";
+"Unable to move/delete folder." = "Não foi possível mover/deletar esta pasta";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Tem certeza que quer excluir a mensagem selecionada?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} mensagem(ns) copiadas";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) copied" = "%{0} mensagem(ns) copiadas";
 
 "Please select a message." = "Por favor, selecione uma mensagem.";
 "Please select a message to print." = "Por favor, selecione a mensagem para imprimir.";
@@ -305,7 +312,12 @@
 "Error while uploading the file \"%{0}\":" = "Erro ao carregar o arquivo \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Este arquivo está sendo carregado. Fechando a janela irá interromper o processo.";
 
-/* Message sending */
+/* Appears while sending the message */
+"Sending" = "Enviando";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Enviado";
+
 "cannot send message: (smtp) all recipients discarded" = "Não é possível enviar a mensagem: todos os destinatários são inválidos.";
 "cannot send message (smtp) - recipients discarded" = "Não é possível enviar a mensagem. Os seguintes endereços estão inválidos";
 "cannot send message: (smtp) error when connecting" = "Não é possível enviar a mensagem: erro ao conectar ao servidor SMTP.";

@@ -43,7 +43,7 @@
 "Email addresses (separated by commas)" = "Endereço de e-mail (separado por vírgulas)";
 "Add default email addresses" = "Adicionar endereço de e-mail padrão";
 "Days between responses" = "Dias entre respostas";
-"Do not send responses to mailing lists" = "Não envie respostas para lista de e-mails";
+"Do not send responses to mailing lists" = "Não envie respostas para listas de e-mails";
 "Enable auto reply on" = "Habilitar resposta automática em";
 "Disable auto reply on" = "Desativar resposta automática em";
 "Always send vacation message response" = "Sempre enviar resposta de mensagem de férias";
@@ -67,7 +67,7 @@
 "Long Date Format" = "Formato da Data (Longo)";
 "Time Format" = "Formato da Hora";
 "default" = "Padrão";
-"Default Module" = "Modulo Padrão";
+"Default Module" = "Módulo Padrão";
 "Save" = "Salvar";
 "shortDateFmt_0" = "%d-%b-%y";
 "shortDateFmt_1" = "%d-%m-%y";
@@ -128,7 +128,7 @@
 "Default calendar" = "Calendário Padrão";
 "selectedCalendar" = "Calendário selecionado";
 "personalCalendar" = "Calendário pessoal";
-"firstCalendar" = "Calendário habilizado pela primeira vez";
+"firstCalendar" = "Primeiro calendário selecionado";
 "reminder_NONE" = "Não lembrar";
 "reminder_5_MINUTES_BEFORE" = "5 minutos";
 "reminder_10_MINUTES_BEFORE" = "10 minutos";
