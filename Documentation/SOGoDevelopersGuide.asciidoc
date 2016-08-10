@@ -153,10 +153,12 @@ Building frontend
 * Install grunt
 
     npm install -g grunt-cli
+    npm install -g bower
 
 * Generate JavaScript files
 
     cd UI/WebServerResources
+    npm install
     grunt build
 
 Version Control
