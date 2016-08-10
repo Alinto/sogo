@@ -18,6 +18,7 @@ $sg-login-width: grid-step(5);
     }
 
     // Overwrite Chrome autofill yellow background
+    // http://stackoverflow.com/questions/2781549/removing-input-background-colour-for-chrome-autocomplete
     @-webkit-keyframes autofill {
       to {
         background: transparent;

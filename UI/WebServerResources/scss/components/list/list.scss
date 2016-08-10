@@ -304,7 +304,7 @@ div.md-tile-left {
   }
 }
 
-.md-avatar:before,
+.md-avatar::before,
 .md-avatar md-icon,
 sg-avatar-image md-icon,
 sg-avatar-image .material-icons {
@@ -313,12 +313,12 @@ sg-avatar-image .material-icons {
   font-size: $sg-avatar-width;
 }
 .sg-avatar-list {
-  &:before {
+  &::before {
     content: "\e7ef"; // group
   }
 }
 .sg-avatar-public {
-  &:before {
+  &::before {
     content: "\e80b"; // public
   }
 }
@@ -340,13 +340,13 @@ sg-avatar-image img {
   font-family: 'Material Icons';
   font-size: $sg-avatar-width;
   height: 100%;
-  &:before {
+  &::before {
     color: inherit;
     content: "\e835"; // check box outline
     font-size: $icon-size;
     margin: 0 ($sg-avatar-width - $icon-size)/2;
   }
-  &.sg-avatar-selected:before {
+  &.sg-avatar-selected::before {
     content: "\e834"; // check box
   }
 

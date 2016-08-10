@@ -75,7 +75,7 @@ $listView-width: grid-step(6) !global;
     width: 100%;
     min-width: 100%;
   }
-  @include at(sm){
+  @include at(sm) {
     @include flex-col($breakpoint: sm, $nb: 6, $grow: 1, $shrink: 1);
     min-width: ($pitch * 3);
   }
@@ -92,7 +92,7 @@ $listView-width: grid-step(6) !global;
     > md-card {
       // Make sure the card is visible and its content scrollable
       overflow: hidden;
-      min-width: 100%;
+      //min-width: 100%;
       min-height: 0;
     }
   }
