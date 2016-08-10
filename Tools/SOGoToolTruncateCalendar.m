@@ -114,15 +114,24 @@
 - (BOOL) truncateEntriesFromFolder: (GCSFolder *) folder
 			 usingDate: (NSCalendarDate *) date
 {
-  NSArray *fields, *records;
+  NSMutableArray *records;
   EOQualifier *qualifier;
+  NSArray *fields;
   NSString *qs;
   BOOL rc;
 
+  records = [NSMutableArray array];
   fields = [NSArray arrayWithObjects: @"c_name", nil];
+
+  // We fetch non-repetitive events
   qs = [NSString stringWithFormat: @"c_enddate <= %d AND c_iscycle == 0 AND c_component == 'vevent'", (int)[date timeIntervalSince1970]];
   qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
-  records = [folder fetchFields: fields matchingQualifier: qualifier];
+  [records addObjectsFromArray: [folder fetchFields: fields matchingQualifier: qualifier]];
+
+  // We fetch repetitive events with a cycle end date
+  qs = [NSString stringWithFormat: @"c_cycleenddate <= %d AND c_iscycle == 1 AND c_component == 'vevent'", (int)[date timeIntervalSince1970]];
+  qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
+  [records addObjectsFromArray: [folder fetchFields: fields matchingQualifier: qualifier]];
 
   if (records)
     {
@@ -189,10 +198,9 @@
   // in the default timezone.
   s = [NSString stringWithFormat: @"%@ GMT", date];  
   d = [NSCalendarDate dateWithString: s  calendarFormat: @"%Y-%m-%dT%H:%M:%S %Z"];
-
-  
   fom = [GCSFolderManager defaultFolderManager];
-  if (fom)
+
+  if (d && fom)
     rc = [self processFolder: folder
 		      ofUser: username
 			date: d
