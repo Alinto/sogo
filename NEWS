@@ -1,4 +1,4 @@
-3.1.5 (2016-MM-DD)
+3.1.5 (2016-08-10)
 ------------------
 
 New features
@@ -15,6 +15,7 @@ Enhancements
  - [web] expunge drafts mailbox when a draft is sent and deleted
  - [web] actions of Sieve filters are now sortable
  - [web] show progress indicator when refreshing events/tasks lists
+ - [web] updated CKEditor to version 4.5.10
 
 Bug fixes
  - [web] fixed refresh of addressbook when deleting one or many cards
