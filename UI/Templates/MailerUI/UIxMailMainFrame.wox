@@ -15,13 +15,6 @@
     var unseenCountFolders = <var:string value="unseenCountFolders" const:escapeHTML="NO" />;
   </script>
 
-  <!--
-      MAIN CONTENT ROW
-      Content of the application view injected injected in the element below
-      MUST be the first html element after body
-      SHOULD be a main tag
-      Templates script tag wrappers go next
-  -->
   <main class="view"
         layout="row" layout-fill="layout-fill"
         ui-view="mailboxes"
