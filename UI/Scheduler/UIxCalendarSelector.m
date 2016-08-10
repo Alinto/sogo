@@ -296,7 +296,7 @@ _intValueFromHex (NSString *hexString)
 }
 
 /**
- * @api {get} /so/:username/Calendar/:calendarId/calendarslist Get calendars
+ * @api {get} /so/:username/Calendar/calendarslist Get calendars
  * @apiVersion 1.0.0
  * @apiName GetCalendarsList
  * @apiGroup Calendar
