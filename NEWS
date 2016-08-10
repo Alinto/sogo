@@ -9,7 +9,7 @@ New features
 Enhancements
  - [web] improve action progress when login in or sending a message (#3765, #3761)
  - [web] don't allow to send the message while an upload is in progress
- - [web] notify when successfuly copied or moved some messages
+ - [web] notify when successfully copied or moved some messages
  - [web] restored indicator in the top banner when a vacation message (auto-reply) is active
  - [web] removed animation when dragging an event to speed up rendering
  - [web] expunge drafts mailbox when a draft is sent and deleted
