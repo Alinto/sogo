@@ -120,7 +120,7 @@
   BOOL rc;
 
   fields = [NSArray arrayWithObjects: @"c_name", nil];
-  qs = [NSString stringWithFormat: @"c_enddate <= %d c_iscycle == 0 AND c_component == 'vevent'", (int)[date timeIntervalSince1970]];
+  qs = [NSString stringWithFormat: @"c_enddate <= %d AND c_iscycle == 0 AND c_component == 'vevent'", (int)[date timeIntervalSince1970]];
   qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
   records = [folder fetchFields: fields matchingQualifier: qualifier];
 
