@@ -13,7 +13,9 @@
     this.defaults = {};
     this.settings = {};
 
-    this.defaultsPromise = Preferences.$$resource.fetch("jsonDefaults").then(function(data) {
+    this.defaultsPromise = Preferences.$$resource.fetch("jsonDefaults").then(function(response) {
+      var data = response || {};
+
       // We swap $key -> _$key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
       var labels = _.fromPairs(_.map(data.SOGoMailLabelsColors, function(value, key) {
         if (key.charAt(0) == '$')
