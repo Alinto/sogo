@@ -41,6 +41,7 @@
      = "Qualquer pessoa na Internet será capaz de acessar seu catálogo de endereços \"% {0}\", mesmo se não tiver uma conta no sistema. Esta informação pode ser tornar pública na Internet?";
 "Give Access" = "Conceder Acesso";
 "Keep Private" = "Manter Privado";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Não foi possível inscrever-se nesta pasta!";
@@ -76,16 +77,19 @@
 "45 minutes" = "45 minutos";
 "1 hour" = "1 hora";
 "1 day" = "1 dia";
+
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Cancelar";
 "Yes" = "Sim";
 "No" = "Não";
+
 /* alarms */
 "Reminder" = "Lembrete";
 "Start" = "Inicio";
 "Due Date" = "Data";
 "Location" = "Localização";
+
 /* mail labels */
 "Important" = "Importante";
 "Work" = "Trabalho";
@@ -104,6 +108,15 @@
 "Loading" = "Carregando";
 "No such user." = "Usuário não existe.";
 "You cannot (un)subscribe to a folder that you own!" = "Você não pode (des)inscrever uma pasta que você é dono!";
+
+/* Authentication username */
+"Username" = "Usuário";
+
+/* Authentication password */
+"Password" = "Senha";
+
+/* Authentication failed */
+"Wrong username or password." = "Usuário ou Senha Inválido.";
 
 /* Error message display bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Digite pelo menos %{minimumSearchLength} caracteres";

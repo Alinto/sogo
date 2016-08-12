@@ -267,9 +267,16 @@
 "Operation failed" = "Operation failed";
 "Quota" = "Quota:";
 "quotasFormat" = "%{0}% used on %{1} MB";
+"Unable to move/delete folder." = "Unable to move/delete folder.";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Are you sure you want to delete the selected messages?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} message(s) copied";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} message(s) moved";
 
 "Please select a message." = "Please select a message.";
 "Please select a message to print." = "Please select a message to print.";
@@ -305,7 +312,12 @@
 "Error while uploading the file \"%{0}\":" = "Error while uploading the file \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "There is an active file upload. Closing the window will interrupt it.";
 
-/* Message sending */
+/* Appears while sending the message */
+"Sending" = "Sending";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Sent";
+
 "cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
 "cannot send message (smtp) - recipients discarded" = "Cannot send message. The following addresses are invalid";
 "cannot send message: (smtp) error when connecting" = "Cannot send message: error when connecting to the SMTP server.";

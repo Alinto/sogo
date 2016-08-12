@@ -267,9 +267,16 @@
 "Operation failed" = "İşlem başarısiz oldu";
 "Quota" = "Kota:";
 "quotasFormat" = "%{0}%  kullanılıyor, toplam %{1} MB";
+"Unable to move/delete folder." = "Klasör taşınamıyor/silinemiyor.";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Seçili iletileri silmek istediğinizden emin misiniz?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} ileti kopyalandı";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} ileti taşındı";
 
 "Please select a message." = "Lütfen bir ileti seçin.";
 "Please select a message to print." = "Lütfen yazdırılacak iletiyi seçin.";
@@ -305,7 +312,12 @@
 "Error while uploading the file \"%{0}\":" = " \"%{0}\" dosyasını yüklerken hata oluştu:";
 "There is an active file upload. Closing the window will interrupt it." = "Devam eden bir dosya yükleme işlemi var. Pencereyi kapanırsa yükleme işlemi duracak.";
 
-/* Message sending */
+/* Appears while sending the message */
+"Sending" = "Gönderiliyor";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Gönderildi";
+
 "cannot send message: (smtp) all recipients discarded" = "İleti gönderilemiyor: tüm alıcılar geçersiz.";
 "cannot send message (smtp) - recipients discarded" = "İleti gönderilemiyor. Şu adresler geçersiz";
 "cannot send message: (smtp) error when connecting" = "İleti gönderilemiyor: SMTP sunucusuna erişirken hata ile karşılaşıldı.";

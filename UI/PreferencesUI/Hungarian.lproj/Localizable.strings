@@ -36,11 +36,15 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Automatikus távollét üzenet engedélyezése";
+"Enable custom auto reply subject" = "Válaszüzenet tárgya módosítható";
+"Auto reply subject" = "Válaszüzenet tárgya";
+"You can write ${subject} to insert the original subject" = "Használhatja a ${subject} változót az eredeti tárgy beillesztéséhez";
 "Auto reply message" = "Automatikus válasz minden feladónak csak egy alkalommal";
 "Email addresses (separated by commas)" = "Email címek (vesszővel elválasztva)";
 "Add default email addresses" = "Saját email címek hozzáadása";
 "Days between responses" = "Válaszok között eltelt napok száma";
 "Do not send responses to mailing lists" = "Levelező listákra válasz mellőzése";
+"Enable auto reply on" = "Automatikus válasz engedélyezése";
 "Disable auto reply on" = "Automatikus válasz tiltása";
 "Always send vacation message response" = "Mindig küldjön távollét üzenet választ";
 "Please specify your message and your email addresses for which you want to enable auto reply."

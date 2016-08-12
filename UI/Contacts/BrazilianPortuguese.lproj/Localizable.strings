@@ -73,7 +73,7 @@
 "New List" = "Nova Lista";
 "Edit" = "Editar";
 "Properties" = "Propriedades";
-"Sharing..." = "Localizando...";
+"Sharing..." = "Compartilhamento...";
 "Write" = "Escrever";
 "Delete" = "Apagar";
 "Instant Message" = "Mensagem Instantânea";
@@ -199,10 +199,6 @@
 "Back" = "Voltar";
 "Select All" = "Selecionar Tudo";
 "Copy contacts" = "Copiar contatos";
-
-/* Notification on the number of messages successfully copied */
-"%{0} cards copied" = "%{0} cartões copiados";
-
 "More messages options" = "Mais opções de mensagens";
 "New Contact" = "Novo Contato";
 "Close" = "Fechar";

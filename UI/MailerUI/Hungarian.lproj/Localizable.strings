@@ -242,7 +242,7 @@
 "Thread As Read" = "Olvasott témacsoportonként";
 "As Read By Date..." = "Olvasás dátuma szerint...";
 "All Read" = "Mindet olvasottként";
-"Flag" = "Csillagozottként";
+"Flag" = "Csillag hozzáadása";
 "As Junk" = "Szemétként";
 "As Not Junk" = "Nem szemétként";
 "Run Junk Mail Controls" = "Levélszemétgyűjtő futtatása";
@@ -267,9 +267,16 @@
 "Operation failed" = "A művelet megszakadt";
 "Quota" = "Tárhely:";
 "quotasFormat" = "Felhasznált: %{0}%,összes: %{1} MB";
+"Unable to move/delete folder." = "Nem lehet mappát átmozgatni/törölni .";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Biztosan törölni kívánja a kijelölt üzeneteket?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} üzenet másolva";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) copied" = "%{0} üzenet másolva";
 
 "Please select a message." = "Kérem válasszon egy üzenetet.";
 "Please select a message to print." = "Kérem válasszon ki egy üzenetet a nyomtatáshoz.";
@@ -305,7 +312,12 @@
 "Error while uploading the file \"%{0}\":" = "Hiba történt a \"%{0}\" állomány feltöltésekor:";
 "There is an active file upload. Closing the window will interrupt it." = "Állomány feltöltés folyamatban. Az ablak bezárása megszakítja ezt a folyamatot.";
 
-/* Message sending */
+/* Appears while sending the message */
+"Sending" = "Küldés";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Elküldve";
+
 "cannot send message: (smtp) all recipients discarded" = "Az üzenetet nem lehetett elküldeni: az összes címzett érvénytelen.";
 "cannot send message (smtp) - recipients discarded" = "Az üzenetet nem lehetett elküldeni: az alábbi címzettek érvénytelenek";
 "cannot send message: (smtp) error when connecting" = "Az üzenetet nem lehetett elküldeni: hiba az SMTP kiszolgálóhoz történő csatlakozáskor.";

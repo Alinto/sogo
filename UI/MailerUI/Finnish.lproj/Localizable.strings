@@ -141,7 +141,7 @@
 "Date"          = "Päiväys";
 "View"          = "Näytä";
 "All"           = "Kaikki";
-"No message"    = "Ei viestiä";
+"No message"    = "Ei viestejä";
 "messages"      = "viestit";
 "Yesterday"     = "Eilen";
 "first"         = "Ensimmäinen";
@@ -267,9 +267,16 @@
 "Operation failed" = "Toiminto epäonnistui";
 "Quota" = "Kokorajoitus:";
 "quotasFormat" = "%{0}% käytetty %{1} Mt:sta";
+"Unable to move/delete folder." = "Hakemiston siirto/poisto ei onnistu.";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Haluatko varmasti poistaa valitut viestit?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} viesti(ä) kopioitu";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} viesti(ä) siirretty";
 
 "Please select a message." = "Ole hyvä ja valitse viesti.";
 "Please select a message to print." = "Ole hyvä ja valitse tulostettava viesti.";
@@ -305,7 +312,12 @@
 "Error while uploading the file \"%{0}\":" = "Virhe tiedoston \"%{0}\" latauksessa: ";
 "There is an active file upload. Closing the window will interrupt it." = "Tiedoston lataus on käynnissä. Ikkunan sulkeminen pysäyttää latauksen.";
 
-/* Message sending */
+/* Appears while sending the message */
+"Sending" = "Lähettää";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Lähetetty";
+
 "cannot send message: (smtp) all recipients discarded" = "Viestiä ei voi lähettää: kaikki vastaanottajat ovat virheellisiä.";
 "cannot send message (smtp) - recipients discarded" = "Viestiä ei voi lähettää: seuraavat osoitteet ovat virheellisiä";
 "cannot send message: (smtp) error when connecting" = "Viestiä ei voi lähettää: virhe yhdistettäessä SMTP -palvelimeen.";

@@ -3,6 +3,18 @@
 "Close" = "Fechar";
 "Preferences saved" = "Preferências salvas";
 
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Mudanças não salvas";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Você deseja salvar as mudanças feitas na configuração?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Salvar";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Não Salvar";
+
 /* tabs */
 "General" = "Geral";
 "Calendar Options" = "Calendário";
@@ -24,11 +36,15 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Habilitar auto resposta de férias";
+"Enable custom auto reply subject" = "Habilitar assunto customizado para auto resposta";
+"Auto reply subject" = "Auto Responder somente uma vez a cada remetente com o sequinte assunto";
+"You can write ${subject} to insert the original subject" = "Você pode escrever ${subject} para inserir o assunto original";
 "Auto reply message" = "Auto Responder somente uma vez a cada remetente com o seguinte texto";
 "Email addresses (separated by commas)" = "Endereço de e-mail (separado por vírgulas)";
 "Add default email addresses" = "Adicionar endereço de e-mail padrão";
 "Days between responses" = "Dias entre respostas";
-"Do not send responses to mailing lists" = "Não envie respostas para lista de e-mails";
+"Do not send responses to mailing lists" = "Não envie respostas para listas de e-mails";
+"Enable auto reply on" = "Habilitar resposta automática em";
 "Disable auto reply on" = "Desativar resposta automática em";
 "Always send vacation message response" = "Sempre enviar resposta de mensagem de férias";
 "Please specify your message and your email addresses for which you want to enable auto reply."
@@ -51,7 +67,7 @@
 "Long Date Format" = "Formato da Data (Longo)";
 "Time Format" = "Formato da Hora";
 "default" = "Padrão";
-"Default Module" = "Modulo Padrão";
+"Default Module" = "Módulo Padrão";
 "Save" = "Salvar";
 "shortDateFmt_0" = "%d-%b-%y";
 "shortDateFmt_1" = "%d-%m-%y";
@@ -87,11 +103,15 @@
 "timeFmt_3" = "";
 "timeFmt_4" = "";
 
+/* Timezone autocompletion */
+"No matches found." = "Nenhuma ocorrência encontrada.";
+
 /* calendar */
 "Week begins on" = "A Semana começa em";
 "Day start time" = "O Dia começa as";
 "Day end time" = "O Dia termina as";
 "Day start time must be prior to day end time." = "Dia de inicio deve ser anterior ao dia de fim.";
+"Week days to display" = "Dias da semana para exibir";
 "Show time as busy outside working hours" = "Exibir horas como ocupadas quando fora do horário de serviço";
 "First week of year" = "Primeira semana do ano";
 "Enable reminders for Calendar items" = "Habilitar lembretes para os itens do Calendário";
@@ -108,7 +128,7 @@
 "Default calendar" = "Calendário Padrão";
 "selectedCalendar" = "Calendário selecionado";
 "personalCalendar" = "Calendário pessoal";
-"firstCalendar" = "Calendário habilizado pela primeira vez";
+"firstCalendar" = "Primeiro calendário selecionado";
 "reminder_NONE" = "Não lembrar";
 "reminder_5_MINUTES_BEFORE" = "5 minutos";
 "reminder_10_MINUTES_BEFORE" = "10 minutos";
@@ -127,6 +147,7 @@
 "Labels" = "Etiquetas";
 "Label" = "Etiqueta";
 "Show subscribed mailboxes only" = "Exibir somente caixas de correio inscritas";
+"Synchronize only default mail folders (EAS)" = "Sincronizar somente pastas de email padrão (EAS)";
 "Sort messages by threads" = "Ordenar mensagens por tópicos";
 "When sending mail, add unknown recipients to my" = "Ao enviar e-mail, adicionar destinatários desconhecidos ao meu";
 "Address Book" = "Catálogo";
@@ -142,6 +163,10 @@
 "Compose messages in" = "Escrever mensagens em";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Texto puro";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Tamanho de fonte padrão";
+
 "Display remote inline images" = "Exibir imagens remotas";
 "displayremoteinlineimages_never" = "Nunca";
 "displayremoteinlineimages_always" = "Sempre";
@@ -211,7 +236,6 @@
 "Catalan" = "Català";
 "ChineseTaiwan" = "Chinese (Taiwan)";
 "Croatian" = "Hrvatski";
-"Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -223,19 +247,22 @@
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
 "Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
-"BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
-"Slovak" = "Eslovaco";
-"Slovenian" = "Esloveno";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
 "Refresh View" = "Atualizar a Visualização";
 "refreshview_manually" = "Manualmente";
 "refreshview_every_minute" = "A cada minuto";
@@ -342,6 +369,7 @@
 "TLS" = "TLS";
 
 /* Avatars */
+"Use Gravatar" = "Usar Gravatar";
 "Alternate Avatar" = "Avatar Alternativo";
 "none" =  "Nenhum";
 "identicon" = "Ícone ";
