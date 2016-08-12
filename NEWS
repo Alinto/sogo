@@ -6,6 +6,7 @@ New features
 
 Enhancements
  - [web] expunge drafts mailbox when a draft is sent and deleted
+ - [web] updated CKEditor to version 4.5.10
 
 Bug fixes
  - [eas] fixed long GUID issue preventing sometimes synchronisation (#3460)
