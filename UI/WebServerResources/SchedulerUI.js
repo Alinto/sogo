@@ -1,3 +1,5 @@
+/* -*- Mode: javascript; indent-tabs-mode: nil; js-indent-level: 4; -*- */
+
 var eventListFilter = 'view_today';
 var taskListFilter = 'view_today';
 
@@ -2000,6 +2002,13 @@ function newBaseEventDIV(eventRep, event, eventText) {
         eventCell.observe("selectstart", listRowMouseDownHandler);
         eventCell.observe("click", onCalendarSelectEvent);
         eventCell.observe("dblclick", Event.stop);
+    }
+    else if (event[3] == 0) {
+        // Event is cancelled
+        eventCell.observe("mousedown", listRowMouseDownHandler);
+        eventCell.observe("click", onCalendarSelectEvent);
+        eventCell.observe("click", onViewEvent);
+        innerDiv.addClassName('cancelled');
     }
     else {
         // Status field is defined -- user can read event

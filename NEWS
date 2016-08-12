@@ -6,6 +6,7 @@ New features
 
 Enhancements
  - [web] expunge drafts mailbox when a draft is sent and deleted
+ - [web] style cancelled events in Calendar module (#2800)
  - [web] updated CKEditor to version 4.5.10
 
 Bug fixes

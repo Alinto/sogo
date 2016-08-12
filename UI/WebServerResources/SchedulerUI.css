@@ -1365,6 +1365,9 @@ DIV.eventInside.declined
 { -moz-opacity: 0.4;
   opacity: 0.4; }
 
+DIV.eventInside.cancelled .text
+{ text-decoration: line-through; }
+
 /* event DnD */
 DIV.event DIV.topDragGrip,
 DIV.event DIV.bottomDragGrip
