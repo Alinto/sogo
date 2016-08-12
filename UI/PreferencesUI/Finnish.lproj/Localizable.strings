@@ -63,8 +63,8 @@
 
 /* d & t */
 "Current Time Zone" = "Nykyinen aikavyöhyke";
-"Short Date Format" = "Lyhyt ajan esitysmuoto";
-"Long Date Format" = "Pitkä ajan esitysmuoto";
+"Short Date Format" = "Lyhyt päivämäärän esitysmuoto";
+"Long Date Format" = "Pitkä päivämäärän esitysmuoto";
 "Time Format" = "Ajan esitysmuoto";
 "default" = "Oletus";
 "Default Module" = "Oletusmoduli";
@@ -121,7 +121,7 @@
 "firstWeekOfYear_First4DayWeek" = "Ensimmäinen nelipäiväinen viikko";
 "firstWeekOfYear_FirstFullWeek" = "Ensimmäinen täysi viikko";
 "Prevent from being invited to appointments" = "Estä tapaamiskutsut";
-"White list for appointment invitations" = "Valkoinen lista kalenterikutsuille";
+"White list for appointment invitations" = "Valkoinen lista tapaamiskutsuille";
 "Contacts Names" = "Yhteystietojen Nimet";
 
 /* Default Calendar */
@@ -130,17 +130,17 @@
 "personalCalendar" = "Henkilökohtainen kalenteri";
 "firstCalendar" = "Ensimmäinen käyttöönotettu kalenteri";
 "reminder_NONE" = "Ei muistutusta";
-"reminder_5_MINUTES_BEFORE" = "5 minuuttia";
-"reminder_10_MINUTES_BEFORE" = "10 minuuttia";
-"reminder_15_MINUTES_BEFORE" = "15 minuuttia";
-"reminder_30_MINUTES_BEFORE" = "30 minuuttia";
+"reminder_5_MINUTES_BEFORE" = "5 minuuttia ennen";
+"reminder_10_MINUTES_BEFORE" = "10 minuuttia ennen";
+"reminder_15_MINUTES_BEFORE" = "15 minuuttia ennen";
+"reminder_30_MINUTES_BEFORE" = "30 minuuttia ennen";
 "reminder_45_MINUTES_BEFORE" = "45 minuuttia ennen";
-"reminder_1_HOUR_BEFORE" = "1 tunti";
-"reminder_2_HOURS_BEFORE" = "2 tuntia";
-"reminder_5_HOURS_BEFORE" = "5 tuntia";
-"reminder_15_HOURS_BEFORE" = "15 tuntia";
-"reminder_1_DAY_BEFORE" = "1 päivä";
-"reminder_2_DAYS_BEFORE" = "2 päivää";
+"reminder_1_HOUR_BEFORE" = "1 tunti ennen";
+"reminder_2_HOURS_BEFORE" = "2 tuntia ennen";
+"reminder_5_HOURS_BEFORE" = "5 tuntia ennen";
+"reminder_15_HOURS_BEFORE" = "15 tuntia ennen";
+"reminder_1_DAY_BEFORE" = "1 päivä ennen";
+"reminder_2_DAYS_BEFORE" = "2 päivää ennen";
 "reminder_1_WEEK_BEFORE" = "Viikkoa ennen";
 
 /* Mailer */
