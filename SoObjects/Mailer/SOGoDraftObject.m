@@ -58,6 +58,7 @@
 
 #import <NGCards/NGVCard.h>
 
+#import <Contacts/SOGoContactFolder.h>
 #import <Contacts/SOGoContactFolders.h>
 #import <Contacts/SOGoContactGCSEntry.h>
 
@@ -1823,7 +1824,6 @@ static NSString    *userAgent      = nil;
 //
 //
 //
-/*
 - (NSException *) sendMail
 {
   SOGoUserDefaults *ud;
@@ -1838,7 +1838,7 @@ static NSString    *userAgent      = nil;
       SOGoContactGCSEntry *newContact;
       NGMailAddress *parsedRecipient;
       NGMailAddressParser *parser;
-      SOGoContactFolder *folder;
+      SOGoFolder <SOGoContactFolder> *folder;
       NGVCard *card;
  
       int i;
@@ -1885,7 +1885,6 @@ static NSString    *userAgent      = nil;
     }
   return [self sendMailAndCopyToSent: YES];
 }
-*/
 
 //
 //

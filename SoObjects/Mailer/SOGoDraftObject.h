@@ -114,7 +114,7 @@
 - (NSArray *) allBareRecipients;
 
 - (NSException *) delete;
-/* - (NSException *) sendMail; */
+- (NSException *) sendMail;
 - (NSException *) sendMailAndCopyToSent: (BOOL) copyToSent; /* default: YES */
 - (NSException *) save;
 

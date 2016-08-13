@@ -276,7 +276,7 @@
 "%{0} message(s) copied" = "%{0} viesti(ä) kopioitu";
 
 /* Notification on the number of messages successfuly movied */
-"%{0} message(s) copied" = "%{0} viesti(ä) kopioitu";
+"%{0} message(s) moved" = "%{0} viesti(ä) siirretty";
 
 "Please select a message." = "Ole hyvä ja valitse viesti.";
 "Please select a message to print." = "Ole hyvä ja valitse tulostettava viesti.";

@@ -276,7 +276,7 @@
 "%{0} message(s) copied" = "Skopiowano %{0} wiadomości";
 
 /* Notification on the number of messages successfuly movied */
-"%{0} message(s) copied" = "Skopiowano %{0} wiadomości";
+"%{0} message(s) moved" = "Przeniesiono %{0} wiadomości";
 
 "Please select a message." = "Zaznacz wiadomość.";
 "Please select a message to print." = "Zaznacz wiadomość do drukowania.";

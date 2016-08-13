@@ -276,7 +276,7 @@
 "%{0} message(s) copied" = "%{0} ileti kopyalandı";
 
 /* Notification on the number of messages successfuly movied */
-"%{0} message(s) copied" = "%{0} ileti kopyalandı";
+"%{0} message(s) moved" = "%{0} ileti taşındı";
 
 "Please select a message." = "Lütfen bir ileti seçin.";
 "Please select a message to print." = "Lütfen yazdırılacak iletiyi seçin.";
