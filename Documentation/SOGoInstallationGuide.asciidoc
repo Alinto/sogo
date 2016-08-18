@@ -907,7 +907,8 @@ table.
 
 |MailFieldNames
 |An array of fields that returns the user's email addresses (defaults to
-`mail` when unset).
+`mail` when unset). Note that SOGo will always automatically strip the
+protocol value from the attribute if the attribute name is `proxyAddresses`.
 
 |SearchFieldNames
 |An array of fields to to match against the search string when filtering
