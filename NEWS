@@ -9,6 +9,7 @@ Enhancements
 
 Bug fixes
  - [web] restored functionality to save unknown recipient emails to address book on send
+ - [core] strip protocol value from proxyAddresses attribute (#3182)
 
 3.1.5 (2016-08-10)
 ------------------
