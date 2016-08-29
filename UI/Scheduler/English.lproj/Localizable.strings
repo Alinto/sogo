@@ -379,6 +379,8 @@ validate_notitle           = "No title is set, continue?";
 validate_invalid_startdate = "Incorrect startdate field!";
 validate_invalid_enddate   = "Incorrect enddate field!";
 validate_endbeforestart    = "The end date that you entered occurs before the start date.";
+validate_untilbeforeend    = "The recurrence must end after the first occurrence.";
+
 "Events" = "Events";
 "Tasks" = "Tasks";
 "Show completed tasks" = "Show completed tasks";

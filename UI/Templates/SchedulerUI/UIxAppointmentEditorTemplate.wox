@@ -214,9 +214,15 @@
               <label><var:string label:value="times"/></label>
               <input type="number" label:aria-label="times" ng-model="editor.component.repeat.count"/>
             </md-input-container>
-            <md-datepicker ng-show="editor.component.repeat.end == 'until'"
-                           ng-model="editor.component.repeat.until"
-                           label:md-placeholder="On Date"><!-- date picker --></md-datepicker>
+            <md-input-container ng-show="editor.component.repeat.end == 'until'">
+              <md-datepicker name="repeat_until"
+                             ng-model="editor.component.repeat.until"
+                             md-min-date="editor.component.end"
+                             label:md-placeholder="On Date"><!-- date picker --></md-datepicker>
+              <div ng-messages="eventForm.repeat_until.$error">
+                <div ng-message="mindate"><var:string label:value="validate_untilbeforeend"/></div>
+              </div>
+            </md-input-container>
           </div>
         </div>
         <!-- attendees -->
@@ -296,7 +302,7 @@
           <var:string label:value="Reset"/>
         </md-button>
         <md-button class="md-primary" type="submit"
-                   ng-disabled="editor.eventForm.$invalid">
+                   ng-disabled="eventForm.$invalid">
           <var:string label:value="Save"/>
         </md-button>
       </md-dialog-actions>
