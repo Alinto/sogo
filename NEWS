@@ -9,6 +9,7 @@ Enhancements
 
 Bug fixes
  - [eas] properly generate the BusyStatus for normal events
+ - [eas] properly escape all email and address fields
  - [web] restored functionality to save unknown recipient emails to address book on send
  - [core] strip protocol value from proxyAddresses attribute (#3182)
 
