@@ -9,6 +9,7 @@ Enhancements
 
 Bug fixes
  - [eas] properly generate the BusyStatus for normal events
+ - [eas] properly escape all email and address fields
  - [core] strip protocol value from proxyAddresses attribute (#3182)
 
 2.3.14 (2016-08-17)
