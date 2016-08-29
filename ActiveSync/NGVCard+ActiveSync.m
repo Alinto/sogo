@@ -142,7 +142,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [s appendFormat: @"<JobTitle xmlns=\"Contacts:\">%@</JobTitle>", [o activeSyncRepresentationInContext: context]];
   
   if ((o = [self preferredEMail])) 
-    [s appendFormat: @"<Email1Address xmlns=\"Contacts:\">%@</Email1Address>", o];
+    [s appendFormat: @"<Email1Address xmlns=\"Contacts:\">%@</Email1Address>", [o activeSyncRepresentationInContext: context]];
   
   
   // Secondary email addresses (2 and 3)
@@ -152,7 +152,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       o = [[emails objectAtIndex: i] flattenedValuesForKey: @""];
       
-      [s appendFormat: @"<Email%dAddress xmlns=\"Contacts:\">%@</Email%dAddress>", i+2, o, i+2];
+      [s appendFormat: @"<Email%dAddress xmlns=\"Contacts:\">%@</Email%dAddress>", i+2, [o activeSyncRepresentationInContext: context], i+2];
 
       if (i == 1)
         break;
@@ -185,10 +185,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       a = [NSMutableString string];
       
       if ((o = [homeAdr flattenedValueAtIndex: 2  forKey: @""]))
-        [a appendString: o];
+        [a appendString: [o activeSyncRepresentationInContext: context]];
 
       if ((o = [homeAdr flattenedValueAtIndex: 1  forKey: @""]) && [o length])
-        [a appendFormat: @"\n%@", o];
+        [a appendFormat: @"\n%@", [o activeSyncRepresentationInContext: context]];
       
       [s appendFormat: @"<HomeStreet xmlns=\"Contacts:\">%@</HomeStreet>", [a activeSyncRepresentationInContext: context]];
 
@@ -216,10 +216,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       a = [NSMutableString string];
       
       if ((o = [workAdr flattenedValueAtIndex: 2  forKey: @""]))
-        [a appendString: o];
+        [a appendString: [o activeSyncRepresentationInContext: context]];
 
       if ((o = [workAdr flattenedValueAtIndex: 1  forKey: @""]) && [o length])
-        [a appendFormat: @"\n%@", o];
+        [a appendFormat: @"\n%@", [o activeSyncRepresentationInContext: context]];
 
       [s appendFormat: @"<BusinessStreet xmlns=\"Contacts:\">%@</BusinessStreet>", [a activeSyncRepresentationInContext: context]];
       
