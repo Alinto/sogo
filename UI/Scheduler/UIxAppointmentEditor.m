@@ -362,15 +362,17 @@
   return result;
 }
 
-- (void) _adjustRecurrentRules
+- (NSException *) _adjustRecurrentRules
 {
   iCalRecurrenceRule *rule;
   NSEnumerator *rules;
+  NSException *ex;
   NSCalendarDate *untilDate;
   SOGoUserDefaults *ud;
   NSTimeZone *timeZone;
   
   rules = [[event recurrenceRules] objectEnumerator];
+  ex = nil;
   ud = [[context activeUser] userDefaults];
   timeZone = [ud timeZone];
 
@@ -379,22 +381,33 @@
       untilDate = [rule untilDate];
       if (untilDate)
         {
-          // The until date must match the time of the end date
-          NSCalendarDate *date;
+          if ([untilDate compare: [event endDate]] == NSOrderedAscending)
+            {
+              ex = [NSException exceptionWithHTTPStatus: 500
+                                                 reason: [self labelForKey: @"validate_untilbeforeend"]];
+              break;
+            }
+          else
+            {
+              // The until date must match the time of the end date
+              NSCalendarDate *date;
 
-          date = [[event endDate] copy];
-          [date setTimeZone: timeZone];
-          [untilDate setTimeZone: timeZone];
-          untilDate = [untilDate dateByAddingYears:0
-                                 months:0
-                                 days:0
-                                 hours:[date hourOfDay]
-                                 minutes:[date minuteOfHour]
-                                 seconds:0];
-          [rule setUntilDate: untilDate];
-          [date release];
+              date = [[event endDate] copy];
+              [date setTimeZone: timeZone];
+              [untilDate setTimeZone: timeZone];
+              untilDate = [untilDate dateByAddingYears:0
+                                                months:0
+                                                  days:0
+                                                 hours:[date hourOfDay]
+                                               minutes:[date minuteOfHour]
+                                               seconds:0];
+              [rule setUntilDate: untilDate];
+              [date release];
+            }
         }
     }
+
+  return ex;
 }
 
 //
@@ -544,47 +557,50 @@
   ex = nil;
 
   if ([event hasRecurrenceRules])
-    [self _adjustRecurrentRules];
+    ex = [self _adjustRecurrentRules];
 
-  if ([co isNew])
+  if (!ex)
     {
-      if (componentCalendar
-          && ![[componentCalendar ocsPath]
-                isEqualToString: [previousCalendar ocsPath]])
+      if ([co isNew])
         {
-          // New event in a different calendar -- make sure the user can
-          // write to the selected calendar since the rights were verified
-          // on the calendar specified in the URL, not on the selected
-          // calendar of the popup menu.
-          if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                   onObject: componentCalendar
-                   inContext: context])
-            co = [componentCalendar lookupName: [co nameInContainer]
-                                    inContext: context
-                                    acquire: NO];
-        }
-      
-      // Save the event.
-      ex = [co saveComponent: event];
-    }
-  else
-    {
-      // The event was modified -- save it.
-      ex = [co saveComponent: event];
-
-      if (componentCalendar
-          && ![[componentCalendar ocsPath]
-                isEqualToString: [previousCalendar ocsPath]])
-        {
-          // The event was moved to a different calendar.
-          if (![sm validatePermission: SoPerm_DeleteObjects
-                   onObject: previousCalendar
-                   inContext: context])
+          if (componentCalendar
+              && ![[componentCalendar ocsPath]
+                    isEqualToString: [previousCalendar ocsPath]])
             {
+              // New event in a different calendar -- make sure the user can
+              // write to the selected calendar since the rights were verified
+              // on the calendar specified in the URL, not on the selected
+              // calendar of the popup menu.
               if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                       onObject: componentCalendar
-                       inContext: context])
-                ex = [co moveToFolder: componentCalendar];
+                                 onObject: componentCalendar
+                                inContext: context])
+                co = [componentCalendar lookupName: [co nameInContainer]
+                                         inContext: context
+                                           acquire: NO];
+            }
+      
+          // Save the event.
+          ex = [co saveComponent: event];
+        }
+      else
+        {
+          // The event was modified -- save it.
+          ex = [co saveComponent: event];
+
+          if (componentCalendar
+              && ![[componentCalendar ocsPath]
+                    isEqualToString: [previousCalendar ocsPath]])
+            {
+              // The event was moved to a different calendar.
+              if (![sm validatePermission: SoPerm_DeleteObjects
+                                 onObject: previousCalendar
+                                inContext: context])
+                {
+                  if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+                                     onObject: componentCalendar
+                                    inContext: context])
+                    ex = [co moveToFolder: componentCalendar];
+                }
             }
         }
     }

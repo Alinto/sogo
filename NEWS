@@ -5,7 +5,7 @@ New features
  -
 
 Enhancements
- -
+ - [web] don't allow a recurrence rule to end before the first occurrence
 
 Bug fixes
  - [eas] properly generate the BusyStatus for normal events
