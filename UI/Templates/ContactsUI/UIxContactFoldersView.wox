@@ -461,10 +461,10 @@
                     <!-- list avatar -->
                   </div>
                 </div>
-                <div class="sg-progress-linear-bottom">
+                <div class="sg-progress-linear-bottom"
+                     ng-show="currentCard.$isLoading()">
                   <md-progress-linear class="md-accent"
-                                      md-mode="indeterminate"
-                                      ng-disabled="!currentCard.$isLoading()"><!-- progress --></md-progress-linear>
+                                      md-mode="indeterminate"><!-- progress --></md-progress-linear>
                 </div>
               </md-list-item>
             </md-list>
