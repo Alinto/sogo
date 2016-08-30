@@ -92,7 +92,7 @@
                   </sg-avatar-image>
                   <div class="md-list-item-text">
                     <h3>
-                      <a ui-sref="app.addressbook.card.view({addressbookId: editor.currentFolder.id, cardId: ref.reference})">{{ ref.$fullname() }}</a>
+                      <a ui-sref="app.addressbook.card.view({cardId: ref.reference})">{{ ref.$fullname() }}</a>
                     </h3>
                     <h4 ng-show="ref.$preferredEmail()">
                       <a href="#" ng-bind="ref.$preferredEmail()"
