@@ -723,7 +723,7 @@
         <md-progress-circular class="md-accent"
                               md-mode="determinate"
                               md-diameter="20px"
-                              ng-show="$CalendarImportDialogController.uploader.isUploading"
+                              ng-disabled="!$CalendarImportDialogController.uploader.isUploading"
                               ng-value="$CalendarImportDialogController.uploader.progress"><!-- progress --></md-progress-circular>
         <label class="md-button" for="file-input" ng-hide="$CalendarImportDialogController.uploader.isUploading">
           <span><var:string label:value="Upload"/></span>

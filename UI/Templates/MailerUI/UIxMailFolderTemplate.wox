@@ -309,7 +309,7 @@
             <div class="sg-progress-linear-bottom">
               <md-progress-linear class="md-accent"
                                   md-mode="indeterminate"
-                                  ng-show="currentMessage.$isLoading()"><!-- message loading progress --></md-progress-linear>
+                                  ng-disabled="!currentMessage.$isLoading()"><!-- message loading progress --></md-progress-linear>
             </div>
           </md-list-item>
         </md-list>

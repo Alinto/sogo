@@ -464,7 +464,7 @@
                 <div class="sg-progress-linear-bottom">
                   <md-progress-linear class="md-accent"
                                       md-mode="indeterminate"
-                                      ng-show="currentCard.$isLoading()"><!-- progress --></md-progress-linear>
+                                      ng-disabled="!currentCard.$isLoading()"><!-- progress --></md-progress-linear>
                 </div>
               </md-list-item>
             </md-list>
@@ -542,7 +542,7 @@
         <md-progress-circular class="md-accent"
                               md-mode="determinate"
                               md-diameter="20px"
-                              ng-show="$CardsImportDialogController.uploader.isUploading"
+                              ng-disabled="!$CardsImportDialogController.uploader.isUploading"
                               ng-value="$CardsImportDialogController.uploader.progress"><!-- progress --></md-progress-circular>
         <label class="md-button" for="file-input" ng-hide="$CardsImportDialogController.uploader.isUploading">
           <span><var:string label:value="Upload"/></span>
