@@ -209,7 +209,12 @@
     var _this = this,
         action = 'saveAsContact';
 
-    if (this.c_component == 'vlist') action = 'saveAsList';
+    if (this.c_component == 'vlist') {
+      action = 'saveAsList';
+      _.forEach(this.refs, function(ref) {
+        ref.reference = ref.id;
+      });
+    }
 
     return Card.$$resource.save([this.pid, this.id || '_new_'].join('/'),
                                 this.$omit(),
