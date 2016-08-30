@@ -136,8 +136,8 @@
   /**
    * @ngInject
    */
-  configure.$inject = ['$logProvider', '$compileProvider', '$httpProvider', '$mdThemingProvider'];
-  function configure($logProvider, $compileProvider, $httpProvider, $mdThemingProvider) {
+  configure.$inject = ['$logProvider', '$compileProvider', '$httpProvider', '$mdThemingProvider', '$mdAriaProvider'];
+  function configure($logProvider, $compileProvider, $httpProvider, $mdThemingProvider, $mdAriaProvider) {
     // Accent palette
     $mdThemingProvider.definePalette('sogo-green', {
       '50': 'eaf5e9',
@@ -225,12 +225,16 @@
       // Disable debug data
       $logProvider.debugEnabled(false);
       $compileProvider.debugInfoEnabled(false);
+      $mdAriaProvider.disableWarnings();
     }
 
     $httpProvider.interceptors.push('AuthInterceptor');
     $httpProvider.interceptors.push('ErrorInterceptor');
   }
 
+  /**
+   * @ngInject
+   */
   AuthInterceptor.$inject = ['$window', '$q'];
   function AuthInterceptor($window, $q) {
     return {
