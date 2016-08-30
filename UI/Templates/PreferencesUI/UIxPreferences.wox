@@ -555,10 +555,12 @@
 
             <div layout="row" layout-align="start center" flex="50" flex-xs="100">
               <md-checkbox
-                  class="md-align-top-left" ng-model="app.preferences.defaults.SOGoMailAddOutgoingAddresses"
+                  class="md-align-top-left"
+                  ng-model="app.preferences.defaults.SOGoMailAddOutgoingAddresses"
                   ng-true-value="1"
                   ng-false-value="0"
-                  label:arial-label="When sending mail, add unknown recipients to my">
+                  label:aria-label="When sending mail, add unknown recipients to my">
+                <!-- SOGoMailAddOutgoingAddresses -->
               </md-checkbox>
 
               <md-input-container class="md-block md-flex">
@@ -687,13 +689,15 @@
                   </md-button>
                   <md-checkbox
                       style="margin-bottom: 0;"
+                      label:aria-label="Enable filter"
                       ng-model="app.preferences.defaults.SOGoSieveFilters[$index].active"
                       ng-true-value="1"
                       ng-false-value="0">
                     <!-- active or not-->
                   </md-checkbox>
                   <md-input-container class="md-flex">
-	            <input type="text" ng-model="app.preferences.defaults.SOGoSieveFilters[$index].name"/>
+	            <input type="text" label:aria-label="Filter name"
+                           ng-model="app.preferences.defaults.SOGoSieveFilters[$index].name"/>
                   </md-input-container>
                   <md-button class="sg-icon-button" type="button"
                              ng-click="app.editMailFilter($event, $index, preferencesForm)"

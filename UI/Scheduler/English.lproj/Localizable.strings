@@ -366,6 +366,15 @@
 "zoom_50" = "50%";
 "zoom_25" = "25%";
 
+/* Arial label for reminder units */
+"Reminder units" = "Reminder units";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Reminder position";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Reminder relation";
+
 /* transparency */
 "Show Time as Free" = "Show Time as Free";
 

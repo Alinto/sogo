@@ -147,7 +147,8 @@
     </md-dialog-content>
     <md-dialog-actions>
       <md-button type="button" ng-click="$AccountDialogController.cancel()"><var:string label:value="Cancel"/></md-button>
-      <md-button ng-disabled="accountForm.$invalid"
+      <md-button aria-label="{{::'OK' | loc}}"
+                 ng-disabled="accountForm.$invalid"
                  ng-click="$AccountDialogController.save()"
                  ng-bind="::'OK' | loc"><!-- OK --></md-button>
     </md-dialog-actions>

@@ -194,7 +194,7 @@
         <md-list-item>
           <md-icon>insert_invitation</md-icon>
           <md-input-container>
-            <md-select ng-model="editor.component.reply">
+            <md-select label:aria-label="Reply" ng-model="editor.component.reply">
               <var:foreach list="replyList" item="item">
                 <md-option var:value="item">
                   <var:string value="itemReplyText"/>
@@ -226,9 +226,12 @@
         </md-list-item>
         <!-- reminder -->
         <md-list-item ng-show="editor.component.userHasRSVP">
-          <md-checkbox ng-model="editor.component.$hasAlarm"
-                       label:aria-label="Reminder"><!-- reminder --></md-checkbox>
-          <p><var:string label:value="Reminder"/></p>
+          <md-icon>alarm</md-icon>
+          <p>
+            <md-checkbox style="margin-bottom: 0"
+                         ng-model="editor.component.$hasAlarm"
+                         label:aria-label="Reminder"><var:string label:value="Reminder"/></md-checkbox>
+          </p>
         </md-list-item>
       </md-list>
       <div class="sg-inset" ng-show="editor.component.userHasRSVP">
@@ -262,12 +265,14 @@
         <md-menu-content>
           <md-menu-item>
             <md-button class="md-warn"
+                       label:aria-label="Delete This Occurrence"
                        ng-click="editor.deleteOccurrence()">
               <md-icon>repeat_one</md-icon> <var:string label:value="Delete This Occurrence"/>
             </md-button>
           </md-menu-item>
           <md-menu-item>
             <md-button class="md-warn"
+                       label:aria-label="Delete All Occurrences"
                        ng-click="editor.deleteAllOccurrences()">
               <md-icon>repeat</md-icon> <var:string label:value="Delete All Occurrences"/>
             </md-button>
@@ -283,12 +288,14 @@
         </md-button>
         <md-menu-content>
           <md-menu-item>
-            <md-button type="button" ng-click="editor.edit()">
+            <md-button type="button" label:aria-label="Edit This Occurrence"
+                       ng-click="editor.edit()">
               <md-icon>repeat_one</md-icon> <var:string label:value="Edit This Occurrence"/>
             </md-button>
           </md-menu-item>
           <md-menu-item>
-            <md-button type="button" ng-click="editor.editAllOccurrences()">
+            <md-button type="button" label:aria-label="Edit All Occurrences"
+                       ng-click="editor.editAllOccurrences()">
               <md-icon>repeat</md-icon> <var:string label:value="Edit All Occurrences"/>
             </md-button>
           </md-menu-item>
@@ -303,7 +310,9 @@
         <var:string label:value="Delete"/>
       </md-button>
       <div class="md-flex"><!-- spacer --></div>
-      <md-button type="button" ng-click="editor.reply()">
+      <md-button type="button"
+                 label:aria-label="Update"
+                 ng-click="editor.reply()">
         <var:string label:value="Update"/>
       </md-button>
     </md-dialog-actions>
@@ -319,12 +328,14 @@
         <md-menu-content>
           <md-menu-item>
             <md-button class="md-warn"
+                       label:aria-label="Delete This Occurrence"
                        ng-click="editor.deleteOccurrence()">
               <md-icon>repeat_one</md-icon> <var:string label:value="Delete This Occurrence"/>
             </md-button>
           </md-menu-item>
           <md-menu-item>
             <md-button class="md-warn"
+                       label:aria-label="Delete All Occurrences"
                        ng-click="editor.deleteAllOccurrences()">
               <md-icon>repeat</md-icon> <var:string label:value="Delete All Occurrences"/>
             </md-button>
@@ -340,12 +351,16 @@
         </md-button>
         <md-menu-content>
           <md-menu-item>
-            <md-button type="button" ng-click="editor.reply()">
+            <md-button type="button"
+                       label:aria-label="Update This Occurrence"
+                       ng-click="editor.reply()">
               <md-icon>repeat_one</md-icon> <var:string label:value="Update This Occurrence"/>
             </md-button>
           </md-menu-item>
           <md-menu-item>
-            <md-button type="button" ng-click="editor.replyAllOccurrences()">
+            <md-button type="button"
+                       label:arial-label="Update All Occurrences"
+                       ng-click="editor.replyAllOccurrences()">
               <md-icon>repeat</md-icon> <var:string label:value="Update All Occurrences"/>
             </md-button>
           </md-menu-item>

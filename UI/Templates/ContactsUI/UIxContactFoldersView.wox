@@ -50,6 +50,7 @@
             <md-list-item ng-repeat="folder in app.service.$addressbooks track by folder.id"
                           ng-click="app.select($event, folder)"
                           ng-dblclick="app.edit(folder)"
+                          aria-label="{{::folder.name}}"
                           ui-sref="app.addressbook({addressbookId: folder.id})"
                           ui-sref-active="md-default-theme md-background md-bg md-hue-1"
                           sg-droppable="app.isDroppableFolder(dragFolder, folder)"
@@ -443,6 +444,7 @@
                 </div>
                 <div class="sg-tile-icons"><!-- spacer --></div>
                 <div class="md-secondary sg-avatar-selectable"
+                     label:aria-label="Toggle item"
                      ng-class="{ 'sg-avatar-selected': currentCard.selected }"
                      ng-click="addressbook.toggleCardSelection($event, currentCard)">
                   <!-- <div class="md-avatar sg-avatar-selected" -->
@@ -450,10 +452,11 @@
                     <!-- selected avatar -->
                   <!-- </div> -->
                   <sg-avatar-image
-                     ng-if="currentCard.$isCard()"
-                     sg-email="currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query.value)"
-                     sg-src="currentCard.photoURL"
-                     size="40">
+                      aria-disabled="true"
+                      ng-if="currentCard.$isCard()"
+                      sg-email="currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query.value)"
+                      sg-src="currentCard.photoURL"
+                      size="40">
                     <!-- contact avatar -->
                   </sg-avatar-image>
                   <div class="md-avatar sg-avatar-list"
