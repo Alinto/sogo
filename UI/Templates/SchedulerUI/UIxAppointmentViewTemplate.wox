@@ -168,7 +168,7 @@
               <label class="pseudo-input-label"><var:string label:value="Attendees"/></label>
               <!-- md-contact-chips don't support "readonly", so we build them using md-chips
                    in readonly mode and a template similar to the one of md-contact-chips -->
-              <md-chips class="md-contact-chips sg-readonly"
+              <md-chips class="md-contact-chips sg-readonly sg-with-secondary"
                         ng-model="::editor.component.attendees"
                         readonly="true">
                 <md-chip-template>
@@ -179,7 +179,7 @@
                     <a href="#"
                        ng-click="editor.newMessageWithRecipient($event, $chip.name, $chip.email)">{{$chip.name}}</a>
                   </div>
-                  <md-icon ng-class="'icon-' + $chip.partstat"><!-- partstat --></md-icon>
+                  <md-icon class="sg-secondary" ng-class="'icon-' + $chip.partstat"><!-- partstat --></md-icon>
                 </md-chip-template>
               </md-chips>
             </div>

@@ -55,6 +55,15 @@ md-chips {
   }
 }
 
+// Adjust space around secondary element in contact chip.
+// Used for attendees participation status icon (UIxAppointmentViewTemplate.wox)
+.md-contact-chips.sg-with-secondary .md-chips md-chip {
+  padding-right: 0;
+  .sg-secondary {
+    margin-right: $baseline-grid;
+  }
+}
+
 // Enlarge the default autocompletion menu
 .sg-chips-autocomplete,
 .sg-chips-autocomplete input {
