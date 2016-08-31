@@ -126,7 +126,7 @@
                  ng-switch-when="logged">
               <md-icon class="md-accent md-hue-1 sg-icon--large">done</md-icon>
               <div class="md-default-theme md-accent md-hue-1 md-fg md-padding">
-                <var:string label:value="Success"/>
+                <var:string label:value="Welcome"/> {{app.cn}}
               </div>
             </div>
 

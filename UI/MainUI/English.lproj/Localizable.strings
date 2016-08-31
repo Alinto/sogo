@@ -11,7 +11,7 @@
 "Authenticating" = "Authenticating";
 
 /* Appears when authentication succeeds */
-"Success" = "Success";
+"Welcome" = "Welcome";
 
 "Authentication Failed" = "Authentication Failed";
 "Wrong username or password." = "Wrong username or password.";

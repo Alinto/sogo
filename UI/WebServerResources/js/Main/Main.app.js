@@ -25,15 +25,16 @@
     function login() {
       vm.loginState = 'authenticating';
       Authentication.login(vm.creds)
-        .then(function(url) {
+        .then(function(data) {
           vm.loginState = 'logged';
+          vm.cn = data.cn;
 
           // Let the user see the succesfull message before reloading the page
           $timeout(function() {
-            if (window.location.href === url)
+            if (window.location.href === data.url)
               window.location.reload(true);
             else
-              window.location.href = url;
+              window.location.href = data.url;
           }, 1000);
         }, function(msg) {
           vm.loginState = 'error';

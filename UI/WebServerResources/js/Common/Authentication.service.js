@@ -120,7 +120,7 @@
                   //showPasswordDialog('expiration', createPasswordExpirationDialog, data['expire']);
                 }
                 else {
-                  d.resolve(redirectUrl(username, domain));
+                  d.resolve({ cn: data.cn, url: redirectUrl(username, domain) });
                 }
               }
               else {
