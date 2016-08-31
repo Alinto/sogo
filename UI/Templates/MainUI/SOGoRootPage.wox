@@ -97,7 +97,7 @@
               </md-button>
               <md-button class="md-fab md-accent md-hue-2" type="submit"
                          label:aria-label="Connect"
-                         ng-disabled='app.loginForm.$invalid' sg-ripple-click="loginContent">
+                         ng-disabled="loginForm.$invalid" sg-ripple-click="loginContent">
                 <md-icon>arrow_forward</md-icon>
               </md-button>
             </div>
