@@ -732,10 +732,8 @@
    */
   Mailbox.prototype.$reset = function() {
     var _this = this;
-    angular.forEach(this, function(value, key) {
-      if (key != 'constructor' && key != 'children' && key[0] != '$') {
-        delete _this[key];
-      }
+    angular.forEach(this.$shadowData, function(value, key) {
+      delete _this[key];
     });
     angular.extend(this, this.$shadowData);
     this.$shadowData = this.$omit();
@@ -759,6 +757,7 @@
       Mailbox.$log.error(JSON.stringify(response.data, undefined, 2));
       // Restore previous version
       _this.$reset();
+      return response.data;
     });
   };
 
@@ -779,7 +778,18 @@
    * @return an object literal copy of the Mailbox instance
    */
   Mailbox.prototype.$omit = function() {
-    return { name: this.name };
+    var mailbox = {};
+    angular.forEach(this, function(value, key) {
+      if (key != 'constructor' &&
+          key != 'children' &&
+          key != 'headers' &&
+          key != 'uids' &&
+          key != 'uidsMap' &&
+          key[0] != '$') {
+        mailbox[key] = value;
+      }
+    });
+    return mailbox;
   };
 
   /**
