@@ -12,9 +12,7 @@
   <var:if condition="hideFrame" const:negate="YES">
     <html const:xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" const:lang="en">
       <head>
-        <title>
-          <var:string value="title" />
-        </title>
+        <title var:sg-default="title"><var:string value="title"/></title>
         <meta name="hideFrame" var:content="hideFrame" />
         <meta name="description" content="SOGo Web Interface" />
         <meta name="author" content="Inverse inc." />

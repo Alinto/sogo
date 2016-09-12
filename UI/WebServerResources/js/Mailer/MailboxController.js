@@ -8,7 +8,8 @@
    */
   MailboxController.$inject = ['$window', '$scope', '$timeout', '$q', '$state', '$mdDialog', '$mdToast', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
   function MailboxController($window, $scope, $timeout, $q, $state, $mdDialog, $mdToast, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, focus, Dialog, Account, Mailbox) {
-    var vm = this, messageDialog = null;
+    var vm = this, messageDialog = null,
+        defaultWindowTitle = angular.element($window.document).find('title').attr('sg-default') || "SOGo";
 
     // Expose controller for eventual popup windows
     $window.$mailboxController = vm;
@@ -40,6 +41,15 @@
     angular.element($window).on('beforeunload', _compactBeforeUnload);
     $scope.$on('$destroy', function() {
       angular.element($window).off('beforeunload', _compactBeforeUnload);
+    });
+
+    // Update window's title with unseen messages count of selected mailbox
+    $scope.$watch(function() { return vm.selectedFolder.unseenCount; }, function(unseenCount) {
+      var title = defaultWindowTitle + ' - ';
+      if (unseenCount)
+        title += '(' + unseenCount + ') ';
+      title += vm.selectedFolder.name;
+      $window.document.title = title;
     });
 
     function _compactBeforeUnload(event) {

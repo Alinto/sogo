@@ -8,6 +8,7 @@ Enhancements
  - [web] don't allow a recurrence rule to end before the first occurrence
  - [web] updated Angular Material to version 1.1.0
  - [web] show user's name upon successful login
+ - [web] inserted unseen messages count and mailbox name in browser's window title
 
 Bug fixes
  - [eas] properly generate the BusyStatus for normal events
