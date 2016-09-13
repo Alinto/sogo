@@ -16,6 +16,7 @@ Bug fixes
  - [web] restored functionality to save unknown recipient emails to address book on send
  - [web] fixed ripple blocking the form when submitting no values (#3808)
  - [web] fixed error handling when renaming a mailbox
+ - [web] handle binary content transfer encoding when displaying mails
  - [core] strip protocol value from proxyAddresses attribute (#3182)
 
 3.1.5 (2016-08-10)
