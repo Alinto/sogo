@@ -2048,9 +2048,8 @@ void handle_eas_terminate(int signum)
           dstUidCache = [dstFolderMetadata objectForKey: @"UidCache"];
           dstSyncCache = [dstFolderMetadata objectForKey: @"SyncCache"];
 
-          if (srcUidCache)
+          if (srcUidCache && (srcMessageId = [[srcUidCache allKeysForObject: origSrcMessageId] objectAtIndex: 0]))
             {
-              srcMessageId = [[srcUidCache allKeysForObject: origSrcMessageId] objectAtIndex: 0];
               if (debugOn)
                 [self logWithFormat: @"EAS - Found serverId: %@ for easId: %@", srcMessageId, origSrcMessageId];
             }
