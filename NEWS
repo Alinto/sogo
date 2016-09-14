@@ -10,6 +10,7 @@ Enhancements
 Bug fixes
  - [eas] properly generate the BusyStatus for normal events
  - [eas] properly escape all email and address fields
+ - [eas] properly generate yearly rrule
  - [core] strip protocol value from proxyAddresses attribute (#3182)
  - [web] handle binary content transfer encoding when displaying mails
 
