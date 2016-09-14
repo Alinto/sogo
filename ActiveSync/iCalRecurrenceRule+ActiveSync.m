@@ -176,7 +176,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             }
         }
       else
-        type = 5;
+        {
+          type = 5;
+          [s appendFormat: @"<Recurrence_DayOfMonth xmlns=\"Calendar:\">%d</Recurrence_DayOfMonth>",
+             (int)[[[self parent] startDate] dayOfMonth]];
+          [s appendFormat: @"<Recurrence_MonthOfYear xmlns=\"Calendar:\">%d</Recurrence_MonthOfYear>",
+             (int)[[[self parent] startDate] monthOfYear]];
+
+        }
     }
   
   [s appendFormat: @"<Recurrence_Type xmlns=\"Calendar:\">%d</Recurrence_Type>", type];
