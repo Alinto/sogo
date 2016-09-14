@@ -743,42 +743,62 @@
   return response;
 }
 
-#warning here should be done what should be done: IMAP subscription
-- (WOResponse *) _subscriptionStubAction
+// - (WOResponse *) _subscriptionStubAction
+// {
+//   NSString *mailInvitationParam, *mailInvitationURL;
+//   WOResponse *response;
+//   SOGoMailFolder *clientObject;
+
+//   mailInvitationParam
+//     = [[context request] formValueForKey: @"mail-invitation"];
+//   if ([mailInvitationParam boolValue])
+//     {
+//       clientObject = [self clientObject];
+//       mailInvitationURL
+// 	= [[clientObject soURLToBaseContainerForCurrentUser]
+// 	    absoluteString];
+//       response = [self responseWithStatus: 302];
+//       [response setHeader: mailInvitationURL
+// 		forKey: @"location"];
+//     }
+//   else
+//     {
+//       response = [self responseWithStatus: 500];
+//       [response appendContentString: @"How did you end up here?"];
+//     }
+
+//   return response;
+// }
+
+- (WOResponse *) _subscribeOrUnsubscribeAction: (BOOL) subscribing
 {
-  NSString *mailInvitationParam, *mailInvitationURL;
+  NGImap4Client *client;
   WOResponse *response;
-  SOGoMailFolder *clientObject;
+  SOGoMailFolder *co;
+  NSDictionary *d;
 
-  mailInvitationParam
-    = [[context request] formValueForKey: @"mail-invitation"];
-  if ([mailInvitationParam boolValue])
-    {
-      clientObject = [self clientObject];
-      mailInvitationURL
-	= [[clientObject soURLToBaseContainerForCurrentUser]
-	    absoluteString];
-      response = [self responseWithStatus: 302];
-      [response setHeader: mailInvitationURL
-		forKey: @"location"];
-    }
+  co = [self clientObject];
+  client = [[co imap4Connection] client];
+
+  if (subscribing)
+    d = [client subscribe: [[co imap4URL] path]];
   else
-    {
-      response = [self responseWithStatus: 500];
-      [response appendContentString: @"How did you end up here?"];
-    }
+    d = [client unsubscribe: [[co imap4URL] path]];
 
-  return response;
+  if ([[[[d objectForKey: @"RawResponse"] objectForKey: @"ResponseResult"] objectForKey: @"result"] isEqualToString: @"ok"])
+    return [self responseWith204];
+
+  return [self responseWithStatus: 200];
 }
 
 - (WOResponse *) subscribeAction
 {
-  return [self _subscriptionStubAction];
+  return [self _subscribeOrUnsubscribeAction: YES];
 }
 
 - (WOResponse *) unsubscribeAction
 {
-  return [self _subscriptionStubAction];
+  return [self _subscribeOrUnsubscribeAction: NO];
 }
 
 - (WOResponse *) addOrRemoveLabelAction

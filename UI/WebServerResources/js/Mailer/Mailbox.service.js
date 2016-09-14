@@ -84,7 +84,10 @@
   Mailbox.$find = function(account) {
     var path, futureMailboxData;
 
-    futureMailboxData = this.$$resource.fetch(account.id.toString(), 'view');
+    if (account.fetchAll)
+      futureMailboxData = this.$$resource.fetch(account.id.toString(), 'viewAll');
+    else
+      futureMailboxData = this.$$resource.fetch(account.id.toString(), 'view');
 
     return Mailbox.$unwrapCollection(account, futureMailboxData); // a collection of mailboxes
   };
@@ -890,4 +893,15 @@
     });
   };
 
+  /**
+   * @function $toggleSubscribe
+   * @memberof Mailbox.prototype
+   * @desc Subscribe or unsubscribe to a mailbox
+   */
+  Mailbox.prototype.$toggleSubscribe = function() {
+    if (this.subscribed)
+      return Mailbox.$$resource.post(this.id, 'subscribe');
+
+    return Mailbox.$$resource.post(this.id, 'unsubscribe');
+    };
 })();

@@ -15,6 +15,7 @@
     vm.service = Mailbox;
     vm.accounts = stateAccounts;
     vm.toggleAccountState = toggleAccountState;
+    vm.subscribe = subscribe;
     vm.newFolder = newFolder;
     vm.delegate = delegate;
     vm.editFolder = editFolder;
@@ -53,6 +54,10 @@
       match: 'AND',
       params: []
     };
+
+    Preferences.ready().then(function() {
+      vm.showSubscribedOnly = Preferences.defaults.SOGoMailShowSubscribedFoldersOnly;
+    });
 
     vm.refreshUnseenCount();
 
@@ -144,6 +149,40 @@
       $timeout(function() {
         angular.element($window).triggerHandler('resize');
       }, 150);
+    }
+
+    function subscribe(account) {
+      $mdDialog.show({
+        templateUrl: account.id + '/subscribe',
+        controller: SubscriptionsDialogController,
+        controllerAs: 'subscriptions',
+        clickOutsideToClose: true,
+        escapeToClose: true,
+        locals: {
+          srcApp: vm,
+          srcAccount: account
+        }
+      }).finally(function() {
+          account.$getMailboxes({reload: true});
+      });
+
+      /**
+       * @ngInject
+       */
+      SubscriptionsDialogController.$inject = ['$scope', '$mdDialog', 'srcApp', 'srcAccount'];
+      function SubscriptionsDialogController($scope, $mdDialog, srcApp, srcAccount) {
+        var vm = this;
+
+        vm.app = srcApp;
+        vm.account = new Account({id: srcAccount.id,
+                                  name: srcAccount.name},
+                                 true);
+        vm.close = close;
+
+        function close() {
+          $mdDialog.cancel();
+        }
+      }
     }
 
     function newFolder(parentFolder) {
@@ -305,19 +344,19 @@
 
     function metadataForFolder(folder) {
       if (folder.type == 'inbox')
-        return {name: folder.name, icon:'inbox'};
+        return {name: folder.name, icon:'inbox', special: true};
       else if (folder.type == 'draft')
-        return {name: l('DraftsFolderName'), icon: 'drafts'};
+        return {name: l('DraftsFolderName'), icon: 'drafts', special: true};
       else if (folder.type == 'sent')
-        return {name: l('SentFolderName'), icon: 'send'};
+        return {name: l('SentFolderName'), icon: 'send', special: true};
       else if (folder.type == 'trash')
-        return {name: l('TrashFolderName'), icon: 'delete'};
+        return {name: l('TrashFolderName'), icon: 'delete', special: true};
       else if (folder.type == 'junk')
-        return {name: l('JunkFolderName'), icon: 'thumb_down'};
+        return {name: l('JunkFolderName'), icon: 'thumb_down', special: true};
       else if (folder.type == 'additional')
-        return {name: folder.name, icon: 'folder_shared'};
+        return {name: folder.name, icon: 'folder_shared', special: true};
 
-      return {name: folder.name, icon: 'folder_open'};
+      return {name: folder.name, icon: 'folder_open', special: false};
     }
 
     function setFolderAs(folder, type) {

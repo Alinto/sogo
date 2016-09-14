@@ -1,5 +1,4 @@
 /*
-  Copyright (C) 2004-2005 SKYRIX Software AG
   Copyright (C) 2007-2016 Inverse inc.
 
   This file is part of SOGo.
@@ -24,7 +23,6 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
-
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -73,6 +71,7 @@ static NSString *inboxFolderName = @"INBOX";
       identities = nil;
       otherUsersFolderName = nil;
       sharedFoldersName = nil;
+      subscribedFolders = nil;
     }
 
   return self;
@@ -88,10 +87,9 @@ static NSString *inboxFolderName = @"INBOX";
   [identities release];
   [otherUsersFolderName release];
   [sharedFoldersName release];
+  [subscribedFolders release];
   [super dealloc];  
 }
-
-/* listing the available folders */
 
 - (BOOL) isInDraftsFolder
 {
@@ -115,8 +113,6 @@ static NSString *inboxFolderName = @"INBOX";
         [folders addObjectUniquely: newFolder];
     }
 }
-
-/* namespaces */
 
 - (void) _appendNamespaces: (NSMutableArray *) folders
 {
@@ -342,30 +338,45 @@ static NSString *inboxFolderName = @"INBOX";
 //
 //
 //
-- (NSArray *) allFolderPaths
+- (NSArray *) allFolderPaths: (SOGoMailListingMode) theListingMode
 {
   NSMutableArray *folderPaths, *namespaces;
   NSArray *folders, *mainFolders;
-  SOGoUserDefaults *ud;
   NSString *namespace;
 
   BOOL subscribedOnly;
   int count, max;
 
-  ud = [[context activeUser] userDefaults];
-  subscribedOnly = [ud mailShowSubscribedFoldersOnly];
+  if (theListingMode == SOGoMailStandardListing)
+      subscribedOnly = [[[context activeUser] userDefaults] mailShowSubscribedFoldersOnly];
+  else
+    {
+      subscribedOnly = NO;
+      DESTROY(subscribedFolders);
+      subscribedFolders = [[NSMutableDictionary alloc] init];
+      folders = [[self imap4Connection] allFoldersForURL: [self imap4URL]
+				   onlySubscribedFolders: YES];
+      max = [folders count];
+      for (count = 0; count < max; count++)
+	{
+	  [subscribedFolders setObject: [NSNull null]
+				forKey: [folders objectAtIndex: count]];
+	}
+      [[self imap4Connection] flushFolderHierarchyCache];
+    }
 
   mainFolders = [[NSArray arrayWithObjects:
 			    [self inboxFolderNameInContext: context],
 			  [self draftsFolderNameInContext: context],
 			  [self sentFolderNameInContext: context],
 			  [self trashFolderNameInContext: context],
-                          [self junkFolderNameInContext: context],
-			  nil] stringsWithFormat: @"/%@"];
+			  [self junkFolderNameInContext: context],
+		    nil] stringsWithFormat: @"/%@"];
   folders = [[self imap4Connection] allFoldersForURL: [self imap4URL]
-                               onlySubscribedFolders: subscribedOnly];
+			       onlySubscribedFolders: subscribedOnly];
   folderPaths = [folders mutableCopy];
   [folderPaths autorelease];
+
   [folderPaths removeObjectsInArray: mainFolders];
   namespaces = [NSMutableArray arrayWithCapacity: 10];
   [self _appendNamespaces: namespaces];
@@ -441,6 +452,9 @@ static NSString *inboxFolderName = @"INBOX";
   return folderType;
 }
 
+//
+//
+//
 - (NSMutableDictionary *) _insertFolder: (NSString *) folderPath
                             foldersList: (NSMutableArray *) theFolders
 {
@@ -449,8 +463,9 @@ static NSString *inboxFolderName = @"INBOX";
   NSMutableDictionary *currentFolder, *parentFolder, *folder;
   NSString *currentFolderName, *currentPath, *fullName, *folderType;
   SOGoUserManager *userManager;
+
+  BOOL last, isOtherUsersFolder, parentIsOtherUsersFolder, isSubscribed;
   int i, j, count;
-  BOOL last, isOtherUsersFolder, parentIsOtherUsersFolder;
 
   parentFolder = nil;
   parentIsOtherUsersFolder = NO;
@@ -469,13 +484,9 @@ static NSString *inboxFolderName = @"INBOX";
       // Search for the current path in the children of the parent folder.
       // For the first iteration, take the parent folder passed as argument.
       if (parentFolder)
-        {
-          folders = [parentFolder objectForKey: @"children"];
-        }
+	folders = [parentFolder objectForKey: @"children"];
       else
-        {
-          folders = theFolders;
-        }
+	folders = theFolders;
 
       for (j = 0; j < [folders count]; j++)
         {
@@ -485,10 +496,9 @@ static NSString *inboxFolderName = @"INBOX";
               folder = currentFolder;
               // Make sure all branches are ready to receive children
               if (!last && ![folder objectForKey: @"children"])
-                {
                   [folder setObject: [NSMutableArray array] forKey: @"children"];
-                }
-              break;
+
+	      break;
             }
         }
 
@@ -496,18 +506,13 @@ static NSString *inboxFolderName = @"INBOX";
       currentFolderName = [[pathComponents objectAtIndex: i] stringByDecodingImap4FolderName];
       if (otherUsersFolderName
           && [currentFolderName caseInsensitiveCompare: otherUsersFolderName] == NSOrderedSame)
-        {
-          isOtherUsersFolder = YES;
-        }
+	isOtherUsersFolder = YES;
       else
-        {
-          isOtherUsersFolder = NO;
-        }
+	isOtherUsersFolder = NO;
 
       if (folder == nil)
         {
           // Folder was not found; create it and add it to the folders list
-
           if (parentIsOtherUsersFolder)
             {
               // Parent folder is the "Other users" folder; translate the user's mailbox name
@@ -519,14 +524,10 @@ static NSString *inboxFolderName = @"INBOX";
 		currentFolderName = fullName;
             }
           else if (isOtherUsersFolder)
-            {
-              currentFolderName = [self labelForKey: @"OtherUsersFolderName"];
-            }
+	    currentFolderName = [self labelForKey: @"OtherUsersFolderName"];
           else if (sharedFoldersName
                    && [currentFolderName caseInsensitiveCompare: sharedFoldersName] == NSOrderedSame)
-            {
-              currentFolderName = [self labelForKey: @"SharedFoldersName"];
-            }
+	    currentFolderName = [self labelForKey: @"SharedFoldersName"];
 
           flags = [NSMutableArray array];;
 
@@ -536,13 +537,19 @@ static NSString *inboxFolderName = @"INBOX";
           else
             folderType = @"additional";
 
+	  if ([subscribedFolders objectForKey: folderPath])
+	    isSubscribed = YES;
+	  else
+	    isSubscribed = NO;
+
           folder = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                           currentPath, @"path",
-                                        folderType, @"type",
-                                        currentFolderName, @"name",
-                                        [NSMutableArray array], @"children",
-                                        flags, @"flags",
-                                        nil];
+                                          folderType, @"type",
+                                          currentFolderName, @"name",
+                                          [NSMutableArray array], @"children",
+					  flags, @"flags",
+					  [NSNumber numberWithBool: isSubscribed], @"subscribed",
+					  nil];
           // Either add this new folder to its parent or the list of root folders
           [folders addObject: folder];
         }
@@ -557,7 +564,7 @@ static NSString *inboxFolderName = @"INBOX";
 //
 // Return a tree representation of the mailboxes
 //
-- (NSArray *) allFoldersMetadata
+- (NSArray *) allFoldersMetadata: (SOGoMailListingMode) theListingMode
 {
   NSString *currentFolder;
   NSMutableArray *folders;
@@ -565,7 +572,7 @@ static NSString *inboxFolderName = @"INBOX";
   NSAutoreleasePool *pool;
   NSArray *allFolderPaths;
 
-  allFolderPaths = [self allFolderPaths];
+  allFolderPaths = [self allFolderPaths: theListingMode];
   rawFolders = [allFolderPaths objectEnumerator];
   folders = [NSMutableArray array];
 
@@ -587,8 +594,6 @@ static NSString *inboxFolderName = @"INBOX";
   return folders;
 }
 
-
-/* IMAP4 */
 - (NSDictionary *) _mailAccount
 {
   NSDictionary *mailAccount;
@@ -761,7 +766,7 @@ static NSString *inboxFolderName = @"INBOX";
                            [self trashFolderNameInContext: context],
                      nil] stringsWithFormat: @"/%@"];
   else
-    folderList = [self allFolderPaths];
+    folderList = [self allFolderPaths: SOGoMailStandardListing];
 
   folders = [NSMutableDictionary dictionary];
 

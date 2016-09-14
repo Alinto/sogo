@@ -813,7 +813,7 @@ void handle_eas_terminate(int signum)
     }
 
   allFoldersMetadata = [NSMutableArray array];
-  [self _flattenFolders: [accountFolder allFoldersMetadata]  into: allFoldersMetadata  parent: nil parentType: nil];
+  [self _flattenFolders: [accountFolder allFoldersMetadata: SOGoMailStandardListing]  into: allFoldersMetadata  parent: nil parentType: nil];
   
   // Get GUIDs of folder (IMAP)
   // e.g. {folderINBOX = folder6b93c528176f1151c7260000aef6df92}

@@ -227,7 +227,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
   prefix = [self absoluteImap4Name];
 
-  result = [[self mailAccountFolder] allFolderPaths];
+  result = [[self mailAccountFolder] allFolderPaths: SOGoMailStandardListing];
   folderNames = [result objectEnumerator];
   while ((currentFolderName = [folderNames nextObject]))
     if ([currentFolderName hasPrefix: prefix])

@@ -400,6 +400,15 @@
           actionClass = "UIxMailAccountActions";
           actionName = "listMailboxes";
         };
+        viewAll = {
+          protectedBy = "View";
+          actionClass = "UIxMailAccountActions";
+          actionName = "listAllMailboxes";
+        };
+        subscribe = {
+          protectedBy = "Access Contents Information";
+          pageName    = "UIxMailFolderSubscriptions";
+        };
         createFolder = {
           protectedBy = "View";
           actionClass = "UIxMailFolderActions";

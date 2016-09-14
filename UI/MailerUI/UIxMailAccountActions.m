@@ -46,14 +46,33 @@
 
   co = [self clientObject];
 
-  folders = [co allFoldersMetadata];
+  folders = [co allFoldersMetadata: SOGoMailStandardListing];
 
   data = [NSDictionary dictionaryWithObjectsAndKeys:
                          folders, @"mailboxes",
                        [co getInboxQuota], @"quotas",
                        nil];
 
-  return [self responseWithStatus: 200 andJSONRepresentation: data];
+  return [self responseWithStatus: 200
+	    andJSONRepresentation: data];
+}
+
+- (WOResponse *) listAllMailboxesAction
+{
+  SOGoMailAccount *co;
+  NSArray *folders;
+  NSDictionary *data;
+
+  co = [self clientObject];
+
+  folders = [co allFoldersMetadata: SOGoMailSubscriptionsManagementListing];
+
+  data = [NSDictionary dictionaryWithObjectsAndKeys:
+                         folders, @"mailboxes",
+                       nil];
+
+  return [self responseWithStatus: 200
+	    andJSONRepresentation: data];
 }
 
 /* compose */

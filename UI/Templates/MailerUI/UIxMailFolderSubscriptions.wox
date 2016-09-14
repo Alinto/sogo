@@ -1,0 +1,50 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:label="OGo:label"
+    >
+  <md-dialog flex="50" flex-sm="80" flex-xs="100">
+
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <md-icon class="material-icons sg-icon-toolbar-bg">folder</md-icon>
+        <div class="pseudo-input-container md-flex">
+          <label class="pseudo-input-label"><var:string label:value="Manage Subscriptions"/></label>
+          <div class="sg-md-title">{{subscriptions.account.name}}</div>
+        </div>
+        <md-button class="md-icon-button" ng-click="subscriptions.close()">
+          <md-icon aria-label="Close dialog">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content class="md-dialog-content" layout="column">
+      <md-list>
+        <md-list-item ng-repeat="folder in subscriptions.account.$flattenMailboxes({all: true })"
+		      md-item-size="48"
+		      ng-hide="subscriptions.app.metadataForFolder(folder).special">
+          <div ng-class="'sg-child-level-' + folder.level">
+            <md-icon>{{subscriptions.app.metadataForFolder(folder).icon}}</md-icon>
+          </div>
+          <p class="sg-item-name">
+            {{subscriptions.app.metadataForFolder(folder).name}}
+          </p>
+	  <md-checkbox class="md-secondary"
+		       ng-model="folder.subscribed"
+		       ng-click="folder.$toggleSubscribe()"
+		       ng-true-value="1"
+		       ng-false-value="0">
+	  </md-checkbox>
+        </md-list-item>
+      </md-list>
+    </md-dialog-content>
+
+    <md-dialog-actions>
+      <md-button type="button" ng-click="subscriptions.close()"><var:string label:value="Close"/></md-button>
+    </md-dialog-actions>
+
+  </md-dialog>
+</container>

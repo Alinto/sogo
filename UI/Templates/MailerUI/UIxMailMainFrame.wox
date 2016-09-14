@@ -40,21 +40,35 @@
           <md-list>
             <md-list-item ng-click="app.toggleAccountState(account)">
               <div class="sg-no-wrap">{{account.name}}</div>
-              <div class="md-flex"><!-- spacer --></div>
-              <md-button class="md-icon-button md-secondary"
-                         ng-show="account.id == 0"
-                         label:aria-label="Delegation..."
-                         ng-click="app.delegate(account)">
-                <md-tooltip md-delay="300"><var:string label:value="Delegation..."/></md-tooltip>
-                <md-icon>people</md-icon>
-              </md-button>
-              <md-button class="md-icon-button md-secondary"
-                         label:aria-label="New Folder..."
-                         ng-click="app.newFolder(account)">
-                <md-tooltip md-delay="300"><var:string label:value="New Folder..."/></md-tooltip>
-                <md-icon>add_circle_outline</md-icon>
-              </md-button>
-            </md-list-item>
+	      <md-menu class="md-secondary">
+		<md-icon label:aria-label="Options"
+			 ng-click="$mdOpenMenu($event)"
+			 md-menu-origin="md-menu-origin">more_vert</md-icon>
+		<md-menu-content width="3">
+                  <md-menu-item ng-show="account.id == 0">
+		    <md-button
+			label:aria-label="Delegation..."
+			ng-click="app.delegate(account)">
+		      <var:string label:value="Delegation..."/>
+		    </md-button>
+                  </md-menu-item>
+		  <md-menu-item ng-show="app.showSubscribedOnly == 1">
+		    <md-button
+			label:aria-label="Subscribe..."
+			ng-click="app.subscribe(account)">
+		      <var:string label:value="Subscribe..."/>
+		    </md-button>
+		  </md-menu-item>
+		  <md-menu-item>
+		    <md-button
+			label:aria-label="New Folder..."
+			ng-click="app.newFolder(account)">
+		      <var:string label:value="New Folder..."/>
+		    </md-button>
+		  </md-menu-item>
+		</md-menu-content>
+	      </md-menu>
+	    </md-list-item>
           </md-list>
           <div class="sg-quota ng-hide" ng-show="account.$quota">
             <md-progress-linear md-mode="determinate"

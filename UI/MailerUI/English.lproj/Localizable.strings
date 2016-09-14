@@ -362,3 +362,6 @@
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Search scope";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Manage Subscriptions";
