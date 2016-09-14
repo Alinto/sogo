@@ -1,0 +1,122 @@
+/* this file is in UTF-8 format! */
+
+/* toolbars */
+"Save" = "Сачувај";
+"Close" = "Затвори";
+"Edit User Rights" = "Измени права корисника";
+"Home" = "Почетна";
+"Calendar" = "Календар";
+"Address Book"	= "Адресар";
+"Mail" = "Пошта";
+"Preferences" = "Подешавање";
+"Administration" = "Администрација";
+"Disconnect" = "Прекини";
+"Toggle Menu" = "Искључи мени";
+"Right Administration" = "Администрација права";
+"Log Console (dev.)" = "Конзола дневника (раз.)";
+"User" = "Корисник";
+"Vacation message is enabled" = "Омогућена је порука за Одмор";
+"Help" = "Помоћ";
+"noJavascriptError" = "SOGo захтева Javascript за рад. Молимо да се уверите да је ова опција доступна и омогућена у подешавањима вашег прегледача.";
+"noJavascriptRetry" = "Покушај поново";
+"Owner" = "Власник";
+"Publish the Free/Busy information" = "Објави информацију Слободан/Заузет";
+"Add..." = "Додај...";
+"Remove" = "Уклони...";
+"Subscribe User" = "Претплати корисника";
+"Any Authenticated User" = "Било који аутентификовани корисник";
+"Public Access" = "Јавни приступ";
+"Any user not listed above" = "Било који корисник који није излистан изнад";
+"Anybody accessing this resource from the public area" = "Било ко може да приступи овом ресурсу са јавне зоне";
+"Sorry, the user rights can not be configured for that object." = "Жао нам је, права корисника не могу бити подешена за овај објекат.";
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Сваки корисник са налогом на овом систему моћи ће да приступи вашем поштанском сандучету \"%{0}\". Да ли сте сигурни да верујете свима?";
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "Сваки корисник са налогом на овом систему моћи ће да приступи вашем календару \"%{0}\". Да ли сте сигурни да верујете свима?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Потенцијално би свако на интернету могао да приступи вашем календару \"%{0}\", чак и ако немају налог на овом систему. Да ли је ова информација погодна за јавни интернет?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Сваки корисник са налогом на овом систему моћи ће да приступи вашем адресару \"%{0}\". Да ли сте сигурни да верујете свима?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Потенцијално би свако на интернету могао да приступи вашем адресару \"%{0}\", чак и ако немају налог на овом систему. Да ли је ова информација погодна за јавни интернет?";
+"Give Access" = "Додели приступ";
+"Keep Private" = "Задржи приватним";
+
+/* generic.js */
+"Unable to subscribe to that folder!"
+	= "Не могу да се претплатим на тај директоријум!";
+"You cannot subscribe to a folder that you own!"
+      	= "Не можете се претплатити на директоијум чији сте власник!";
+"Unable to unsubscribe from that folder!"
+	= "Не могу да се одјавим са овог директоријума!";
+"You cannot unsubscribe from a folder that you own!"
+      	= "Не можете да се одјавите са директоријума чији сте власник!";
+"Unable to rename that folder!" = "Не могу да преименујем овај директоријум!";
+"You have already subscribed to that folder!"
+     	= "Већ сте претплаћени на овај директоријум!";
+"The user rights cannot be edited for this object!"
+        = "Права корисника не могу бити измењена за овај објекат!";
+"A folder by that name already exists." = "Директоријум са тим именом већ постоји.";
+"You cannot create a list in a shared address book." 
+        = "Не можете креирати листу у дељеном адресару.";
+"Warning" = "Упозорење";
+"Can't contact server" = "Десила се грешка приликом контактирања сервера. Молимо покушајте касније.";
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "Није вам дозвољено да приступите овом модулу или овом систему. Моломо да контактирате вашег систем администратора.";
+"You don't have the required privileges to perform the operation."
+= "Немате захтевана овлашћења да извршите ову операцију.";
+"noEmailForDelegation" = "Морате навести адресу коме желите да делегирате позивницу.";
+"delegate is organizer" = "Делегирали сте организатору. Молимо наведите неког другог за делегирање.";
+"delegate is a participant" = "Делегирали сте већ постојећем учеснику.";
+"delegate is a group" = "Наведена адреса представља групу. Можете само делегирати једној особи.";
+"Snooze for " = "Одложи за";
+"5 minutes" = "5 минута";
+"10 minutes" = "10 минута";
+"15 minutes" = "15 минута";
+"30 minutes" = "30 минута";
+"45 minutes" = "45 минута";
+"1 hour" = "1 сат";
+"1 day" = "1 дан";
+
+/* common buttons */
+"OK" = "У реду";
+"Cancel" = "Откажи";
+"Yes" = "Да";
+"No" = "Не";
+
+/* alarms */
+"Reminder" = "Подсетник";
+"Start" = "Почетак";
+"Due Date" = "Рок";
+"Location" = "Локација";
+
+/* mail labels */
+"Important" = "Важно";
+"Work" = "Посао";
+"Personal" = "Лично";
+"To Do" = "Урадити";
+"Later" = "Касније";
+"a2_Sunday" = "Не";
+"a2_Monday" = "По";
+"a2_Tuesday" = "Ут";
+"a2_Wednesday" = "Ср";
+"a2_Thursday" = "Че";
+"a2_Friday" = "Пе";
+"a2_Saturday" = "Су";
+"Access Rights" = "Права приступа";
+"Add User" = "Додај корисника";
+"Loading" = "Учитавање";
+"No such user." = "Нема таквог корисника.";
+"You cannot (un)subscribe to a folder that you own!" = "Не можете се претплатити(одјавити) из директоријума чији сте власник!";
+
+/* Authentication username */
+"Username" = "Корисничко име";
+
+/* Authentication password */
+"Password" = "Лозинка";
+
+/* Authentication failed */
+"Wrong username or password." = "Погрешно корисничко име и лозинка.";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Унестите најмање %{minimumSearchLength} карактера";

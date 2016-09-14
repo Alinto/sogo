@@ -43,7 +43,7 @@
     SOGoSupportedLanguages = ( "Arabic", "Basque", "BrazilianPortuguese", "Catalan", "ChineseTaiwan", "Croatian",
                                "Czech", "Danish", "Dutch", "English", "Finnish", "French", "German", "Hungarian",
                                "Icelandic", "Italian", "Lithuanian", "Macedonian", "NorwegianBokmal",
-                               "NorwegianNynorsk", "Polish", "Portuguese", "Russian", "Slovak", "Slovenian",
+                               "NorwegianNynorsk", "Polish", "Portuguese", "Russian", "Serbian", "Slovak", "Slovenian",
                                "SpanishArgentina", "SpanishSpain", "Swedish", "TurkishTurkey", "Ukrainian", "Welsh" );
 
     SOGoTimeZone = "UTC";
