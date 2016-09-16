@@ -167,7 +167,7 @@
 //
 //
 //
-- (id <WOActionResults>) connectAction
+- (WOResponse *) connectAction
 {
   WOResponse *response;
   WORequest *request;
@@ -212,12 +212,6 @@
 
       [self logWithFormat: @"successful login from '%@' for user '%@' - expire = %d  grace = %d", remoteHost, username, expire, grace];
       
-      json = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithInt: expire], @"expire",
-                                [NSNumber numberWithInt: grace], @"grace", nil];
-      
-      response = [self responseWithStatus: 200
-		       andJSONRepresentation: json];
-
       // We get the proper username for cookie creation. If we are using a multidomain
       // environment with SOGoEnableDomainBasedUID, we could have to append the domain
       // to the username. Also when SOGoEnableDomainBasedUID is enabled, we could be in
@@ -227,6 +221,16 @@
         {
           username = [[SOGoUserManager sharedUserManager] getUIDForEmail: username];
         }
+
+      loggedInUser = [SOGoUser userWithLogin: username];
+
+      json = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [loggedInUser cn], @"cn",
+                                [NSNumber numberWithInt: expire], @"expire",
+                                [NSNumber numberWithInt: grace], @"grace", nil];
+
+      response = [self responseWithStatus: 200
+                    andJSONRepresentation: json];
 
       authCookie = [auth cookieWithUsername: username
                                 andPassword: password
@@ -242,7 +246,6 @@
 
       supportedLanguages = [[SOGoSystemDefaults sharedSystemDefaults]
                              supportedLanguages];
-      loggedInUser = [SOGoUser userWithLogin: username];
       [context setActiveUser: loggedInUser];
       if (language && [supportedLanguages containsObject: language])
 	{
