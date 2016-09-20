@@ -21,6 +21,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1" />
         <link href="mailto:support@inverse.ca" rev="made" />
         <link rel="shortcut icon" var:href="siteFavicon" type="image/x-icon" />
+        <var:if condition="isUIxDebugEnabled" const:negate="YES">
+          <link type="text/css" rel="stylesheet" rsrc:href="css/theme-default.css" />
+        </var:if>
         <link type="text/css" rel="stylesheet" rsrc:href="css/styles.css" />
         <var:if condition="hasPageSpecificCSS">
           <link type="text/css" rel="stylesheet" var:href="pageCSSURL"/>

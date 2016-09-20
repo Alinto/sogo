@@ -222,10 +222,15 @@
       });
 
     if (!DebugEnabled) {
-      // Disable debug data
+      // Disable debugging information
       $logProvider.debugEnabled(false);
       $compileProvider.debugInfoEnabled(false);
+      // Disable warnings
       $mdAriaProvider.disableWarnings();
+      // Disable theme generation but keep definition in config (required by mdColors)
+      $mdThemingProvider.generateThemesOnDemand(true);
+      // Disable theming completely
+      //$mdThemingProvider.disableTheming();
     }
 
     $httpProvider.interceptors.push('AuthInterceptor');
