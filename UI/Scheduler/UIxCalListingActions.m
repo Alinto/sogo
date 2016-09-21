@@ -77,7 +77,7 @@ static NSArray *tasksFields = nil;
   {
     eventsFields = [NSArray arrayWithObjects: @"c_name", @"c_folder",
                     @"calendarName",
-                    @"c_status", @"c_isopaque", @"c_title", @"c_startdate",
+                    @"c_status", @"c_isopaque", @"c_title", @"c_startdate", @"startHour",
                     @"c_enddate", @"c_location", @"c_isallday",
                     @"c_classification", @"c_category", @"c_priority",
                     @"c_partmails", @"c_partstates", @"c_owner",
@@ -541,6 +541,9 @@ static NSArray *tasksFields = nil;
                 [newInfo setObject: [NSString stringWithFormat: @"occurence%@", recurrenceTime]
                             forKey: @"c_recurrence_id"];
 
+              // Add the formatted starting hour
+              [self _addStartHour: newInfo];
+
               // Possible improvement: only call _fixDates if event is recurrent
 	      // or the view range span a daylight saving time change
               [self _fixDates: newInfo];
@@ -866,19 +869,32 @@ static inline void _feedBlockWithDayBasedData (NSMutableDictionary *block, unsig
             forKey: @"length"];
 }
 
-static inline void _feedBlockWithMonthBasedData (NSMutableDictionary *block, unsigned int start,
-                                                 NSTimeZone *userTimeZone,
-                                                 SOGoDateFormatter *dateFormatter)
+// static inline void _feedBlockWithMonthBasedData (NSMutableDictionary *block, unsigned int start,
+//                                                  NSTimeZone *userTimeZone,
+//                                                  SOGoDateFormatter *dateFormatter)
+// {
+//   NSCalendarDate *eventStartDate;
+//   NSString *startHour;
+  
+//   eventStartDate = [NSCalendarDate dateWithTimeIntervalSince1970: start];
+//   [eventStartDate setTimeZone: userTimeZone];
+//   startHour = [dateFormatter formattedTime: eventStartDate];
+//   [block setObject: startHour forKey: @"starthour"];
+//   [block setObject: [NSNumber numberWithUnsignedInt: start]
+//             forKey: @"start"];
+// }
+
+- (void) _addStartHour: (NSMutableDictionary *) theRecord
 {
   NSCalendarDate *eventStartDate;
   NSString *startHour;
-  
-  eventStartDate = [NSCalendarDate dateWithTimeIntervalSince1970: start];
-  [eventStartDate setTimeZone: userTimeZone];
-  startHour = [dateFormatter formattedTime: eventStartDate];
-  [block setObject: startHour forKey: @"starthour"];
-  [block setObject: [NSNumber numberWithUnsignedInt: start]
-            forKey: @"start"];
+
+  eventStartDate = [theRecord objectForKey: @"startDate"];
+  if (eventStartDate)
+    {
+      startHour = [dateFormatter formattedTime: eventStartDate];
+      [theRecord setObject: startHour forKey: @"startHour"];
+    }
 }
 
 - (NSMutableDictionary *) _eventBlockWithStart: (unsigned int) start
@@ -894,8 +910,8 @@ static inline void _feedBlockWithMonthBasedData (NSMutableDictionary *block, uns
   
   if (dayBasedView)
     _feedBlockWithDayBasedData (block, start, end, dayStart);
-  else
-    _feedBlockWithMonthBasedData (block, start, userTimeZone, dateFormatter);
+  // else
+  //   _feedBlockWithMonthBasedData (block, start, userTimeZone, dateFormatter);
   [block setObject: number forKey: @"nbr"];
   if (recurrenceTime)
     [block setObject: [NSNumber numberWithInt: recurrenceTime]
@@ -1312,11 +1328,11 @@ _computeBlocksPosition (NSArray *blocks)
  * @apiSuccess (Success 200) {Number} events.ownerIsOrganizer    1 if owner is also the organizer
  * @apiSuccess (Success 200) {Object[]} blocks
  * @apiSuccess (Success 200) {Number} blocks.nbr
- * @apiSuccess (Success 200) {Number} blocks.start
- * @apiSuccess (Success 200) {Number} blocks.position
- * @apiSuccess (Success 200) {Number} blocks.length
- * @apiSuccess (Success 200) {Number} blocks.siblings
- * @apiSuccess (Success 200) {Number} blocks.realSiblings
+ * @apiSuccess (Success 200) {Number} [blocks.start]             Day-based views only
+ * @apiSuccess (Success 200) {Number} [blocks.position]          Day-based views only
+ * @apiSuccess (Success 200) {Number} [blocks.length]            Day-based views only
+ * @apiSuccess (Success 200) {Number} [blocks.siblings]          Day-based views only
+ * @apiSuccess (Success 200) {Number} [blocks.realSiblings]      Day-based views only
  * @apiSuccess (Success 200) {Object[]} allDayBlocks
  * @apiSuccess (Success 200) {Number} allDayBlocks.nbr
  * @apiSuccess (Success 200) {Number} allDayBlocks.start

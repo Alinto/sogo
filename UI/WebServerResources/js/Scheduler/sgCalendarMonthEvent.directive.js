@@ -35,7 +35,7 @@
         //    Add a class while dragging
         '     ng-class="{\'sg-event--dragging\': block.dragging}"',
         '     ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
-        '  <span class="secondary" ng-if="'+p+'!block.component.c_isallday">{{ '+p+'block.starthour }}</span>',
+        '  <span class="secondary" ng-if="'+p+'(!block.component.c_isallday && block.isFirst)">{{ '+p+'block.component.startHour }}</span>',
         //     Priority
         '  <span ng-show="'+p+'block.component.c_priority" class="sg-priority">{{'+p+'block.component.c_priority}}</span>',
         // Summary

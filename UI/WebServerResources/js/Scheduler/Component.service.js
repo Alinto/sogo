@@ -325,6 +325,7 @@
       associateComponent = function(block) {
         this[block.nbr].blocks.push(block); // Associate block to component
         block.component = this[block.nbr];  // Associate component to block
+        block.isFirst = (this[block.nbr].blocks.length == 1);
       };
 
       Component.$views = [];

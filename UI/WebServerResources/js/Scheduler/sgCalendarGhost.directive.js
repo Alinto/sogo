@@ -83,7 +83,7 @@
 
       function updateGhost() {
         // From SOGoEventDragGhostController._updateGhosts
-        var showGhost, isRelative, currentDay,
+        var showGhost, isRelative, isAllDay, currentDay,
             start, duration, durationLeft, maxDuration;
 
         showGhost = false;
@@ -92,6 +92,7 @@
           // The view of the dragging block is the scrolling view of this ghost block
 
           isRelative   = scrollViewCtrl.type === 'multiday-allday';
+          isAllDay     = scope.block.component.c_isallday;
           currentDay   = scope.block.pointerHandler.currentEventCoordinates.dayNumber;
           start        = scope.block.pointerHandler.currentEventCoordinates.start;
           durationLeft = scope.block.pointerHandler.currentEventCoordinates.duration;
@@ -114,8 +115,9 @@
             // This ghost block (day) is the first of the dragging event
             showGhost = true;
             if (!isRelative) {
-              // Show start hour and set the vertical position
-              scope.block.startHour = getStartTime(start);
+              if (!isAllDay)
+                // Show start hour and set the vertical position
+                scope.block.startHour = getStartTime(start);
               // Set the height
               if (Calendar.$view.quarterHeight) {
                 iElement.css('top', (start * Calendar.$view.quarterHeight) + 'px');
@@ -127,6 +129,7 @@
             iElement.removeClass('fg-folder' + scope.block.component.pid);
             iElement.removeClass('sg-event--ghost--last');
             iElement.addClass('sg-event--ghost--first');
+            scope.block.isFirst = true;
           }
 
           durationLeft -= duration;
@@ -161,7 +164,7 @@
             if (isRelative) {
               iElement.addClass('sg-event--ghost--last');
             }
-            else {
+            else if (!isAllDay) {
               // Set the end date
               scope.block.endHour = getEndTime(start, duration);
             }
