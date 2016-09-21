@@ -2683,31 +2683,23 @@ void handle_eas_terminate(int signum)
 //  </Store>
 // </Search>
 //
-- (void) processSearch: (id <DOMElement>) theDocumentElement
-            inResponse: (WOResponse *) theResponse
+- (void) processSearchGAL: (id <DOMElement>) theDocumentElement
+              inResponse: (WOResponse *) theResponse
 {
   SOGoContactSourceFolder *currentFolder;
   NSArray *allKeys, *allContacts, *mails;
   NSDictionary *systemSources, *contact;
-  NSString *name, *query, *current_mail;
   SOGoContactFolders *contactFolders;
+  NSString *current_mail, *query;
   SOGoUserFolder *userFolder;
+
   NSMutableString *s;
   NSData *d;
   id o;
 
   int i, j, total;
-            
-  name = [[(id)[theDocumentElement getElementsByTagName: @"Name"] lastObject] textValue];
+
   query = [[(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject] textValue];
-  
-  // FIXME: for now, we only search in the GAL
-  if (![name isEqualToString: @"GAL"])
-    {
-      [theResponse setStatus: 500];
-      return;
-    }
-    
 
   userFolder = [[context activeUser] homeFolderInContext: context];
   contactFolders = [userFolder privateContacts: @"Contacts"  inContext: context];
@@ -2802,6 +2794,183 @@ void handle_eas_terminate(int signum)
   d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
   
   [theResponse setContent: d];
+}
+
+- (EOQualifier *) _qualifierFromMailboxSearchQuery: (id <DOMElement>) theDocumentElement
+{
+  id <DOMElement> *andElement, *freeTextElement, *greaterThanElement;
+
+  andElement = [[theDocumentElement getElementsByTagName: @"And"] lastObject];
+  if (andElement)
+    {
+      EOQualifier *qualifier, *fetchQualifier, *notDeleted, *greaterThanQualifier;
+      NSString *query;
+      id o;
+
+      freeTextElement = [[andElement getElementsByTagName: @"FreeText"] lastObject];
+      query = [freeTextElement textValue];
+      greaterThanQualifier = nil;
+
+      if (!query)
+	return nil;
+
+      // We check for the date ranges - we only support the GreaterThan since
+      // the IMAP protocol is limited in this regard
+      greaterThanElement = [[andElement getElementsByTagName: @"GreaterThan"] lastObject];
+      if (greaterThanElement && [[greaterThanElement getElementsByTagName: @"DateReceived"] lastObject])
+	{
+	  o = [[[greaterThanElement getElementsByTagName: @"Value"] lastObject] textValue];
+	  greaterThanQualifier = [EOQualifier qualifierWithQualifierFormat:
+						@"(DATE >= %@)", [o calendarDate]];
+	}
+
+      notDeleted = [EOQualifier qualifierWithQualifierFormat: @"(not (flags = %@))", @"deleted"];
+      qualifier = [EOQualifier qualifierWithQualifierFormat: [NSString stringWithFormat: @"(%@ doesContain: '%@')", @"subject", query]];
+      fetchQualifier = [[EOAndQualifier alloc] initWithQualifiers: notDeleted, qualifier, greaterThanQualifier, nil];
+
+      return [fetchQualifier autorelease];
+    }
+
+  return nil;
+}
+
+//
+// <!DOCTYPE ActiveSync PUBLIC "-//MICROSOFT//DTD ActiveSync//EN" "http://www.microsoft.com/">
+// <Search xmlns="Search:">
+//  <Store>
+//   <Name>Mailbox</Name>
+//   <Query>
+//    <And>
+//     <CollectionId xmlns="AirSync:">mail%2Fsogo_7f53_1c63c93c_1</CollectionId>
+//     <FreeText>aaa;bbb;09/12/2016-09/19/2016;ccc;ddd;</FreeText>
+//     <GreaterThan>
+//      <DateReceived xmlns="Email:"/>
+//      <Value>2015-09-19T04:00:00.000Z</Value>
+//     </GreaterThan>
+//     <LessThan>
+//      <DateReceived xmlns="Email:"/>
+//      <Value>2016-09-19T14:26:00.000Z</Value>
+//     </LessThan>
+//    </And>
+//   </Query>
+//   <Options>
+//    <RebuildResults/>
+//    <Range>0-99</Range>
+//    <BodyPreference xmlns="AirSyncBase:">
+//     <Type>1</Type>
+//     <TruncationSize>51200</TruncationSize>
+//    </BodyPreference>
+//    <MIMESupport xmlns="AirSync:">2</MIMESupport>
+//    <RightsManagementSupport xmlns="RightsManagement:">1</RightsManagementSupport>
+//   </Options>
+//  </Store>
+// </Search>
+//
+- (void) processSearchMailbox: (id <DOMElement>) theDocumentElement
+		   inResponse: (WOResponse *) theResponse
+{
+  NSString *folderId, *realCollectionId, *itemId;
+  SOGoMailAccounts *accountsFolder;
+  SOGoMailAccount *accountFolder;
+  SOGoMailFolder *currentFolder;
+  SOGoMailObject *mailObject;
+  SOGoUserFolder *userFolder;
+  EOQualifier *qualifier;
+  NSArray *sortedUIDs;
+  NSMutableString *s;
+  NSData *d;
+
+  SOGoMicrosoftActiveSyncFolderType folderType;
+  int i, total;
+
+  // FIXME: support more than one CollectionId tag + DeepTraversal
+  folderId = [[[[(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject] getElementsByTagName: @"CollectionId"] lastObject] textValue];
+  realCollectionId = [folderId realCollectionIdWithFolderType: &folderType];
+  realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
+
+  userFolder = [[context activeUser] homeFolderInContext: context];
+  accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
+  accountFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
+  currentFolder = [accountFolder lookupName: [NSString stringWithFormat: @"folder%@", realCollectionId]
+				  inContext: context
+				    acquire: NO];
+
+  // We build the qualifier and we launch our search operation
+  qualifier = [self _qualifierFromMailboxSearchQuery: [(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject]];
+
+  if (!qualifier)
+    {
+      [theResponse setStatus: 500];
+      return;
+    }
+
+  sortedUIDs = [currentFolder fetchUIDsMatchingQualifier: qualifier
+					    sortOrdering: @"REVERSE ARRIVAL"
+						threaded: NO];
+
+  // Prepare the response
+  s = [NSMutableString string];
+
+  [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+  [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+  [s appendString: @"<Search xmlns=\"Search:\">"];
+  [s appendFormat: @"<Status>1</Status>"];
+  [s appendFormat: @"<Response>"];
+  [s appendFormat: @"<Store>"];
+  [s appendFormat: @"<Status>1</Status>"];
+
+  total = [sortedUIDs count];
+  for (i = 0; i < total; i++)
+    {
+      [s appendString: @"<Result xmlns=\"Search:\">"];
+      [s appendString: @"<Properties>"];
+      itemId = [[sortedUIDs objectAtIndex: i] stringValue];
+      mailObject = [currentFolder lookupName: itemId  inContext: context  acquire: NO];
+
+      if ([mailObject isKindOfClass: [NSException class]])
+	continue;
+
+      [s appendFormat: [mailObject activeSyncRepresentationInContext: context]];
+      [s appendString: @"</Properties>"];
+      [s appendFormat: @"</Result>"];
+    }
+
+  [s appendFormat: @"<Range>0-%d</Range>", total-1];
+  [s appendFormat: @"<Total>%d</Total>", total];
+  [s appendString: @"</Store>"];
+  [s appendString: @"</Response>"];
+  [s appendString: @"</Search>"];
+
+  d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+
+  [theResponse setContent: d];
+}
+
+//
+// We support EAS Search on the GAL and Mailbox.
+//
+// We do NOT support it on the DocumentLibrary.
+//
+- (void) processSearch: (id <DOMElement>) theDocumentElement
+            inResponse: (WOResponse *) theResponse
+{
+  NSString *name;
+
+  name = [[(id)[theDocumentElement getElementsByTagName: @"Name"] lastObject] textValue];
+
+  if ([name isEqualToString: @"GAL"])
+    {
+      return [self processSearchGAL: theDocumentElement
+			 inResponse: theResponse];
+    }
+  else if ([name isEqualToString: @"Mailbox"])
+    {
+      return [self processSearchMailbox: theDocumentElement
+			     inResponse: theResponse];
+    }
+
+  [theResponse setStatus: 500];
+  return;
 }
 
 //
