@@ -1666,8 +1666,10 @@ repository.
 authentication usernames (defaults to `c_uid` when unset).
 
 |MailFieldNames (optional)
-|Aan array of fields that specifies the column names that hold
+|An array of fields that specifies the column names that hold
 additional email addresses (beside the `mail` column) for each user.
+Values must be unique and not appear in more than one column.
+Space-separated values allowed in all *additional* columns (besides in `mail`).
 
 |IMAPHostFieldName (optional)
 |The field that returns the IMAP hostname for the user.
