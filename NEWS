@@ -3,6 +3,7 @@
 
 New features
  - [web] added IMAP folder subscriptions management (#255)
+ - [eas] initial support for server-side mailbox search operations
 
 Enhancements
  - [web] don't allow a recurrence rule to end before the first occurrence
