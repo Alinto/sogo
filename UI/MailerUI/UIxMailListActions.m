@@ -364,9 +364,9 @@
 
   request = [context request];
   urlParams = [[request contentAsString] objectFromJSONString];
-  sortingAttributes = [urlParams objectForKey:@"sortingAttributes"];
-  sort = [[sortingAttributes objectForKey:@"sort"] uppercaseString];
-  asc = [[sortingAttributes objectForKey:@"asc"] boolValue];
+  sortingAttributes = [urlParams objectForKey: @"sortingAttributes"];
+  sort = [[sortingAttributes objectForKey: @"sort"] uppercaseString];
+  asc = [[sortingAttributes objectForKey: @"asc"] boolValue];
 
   activeUser = [context activeUser];
   module = @"Mail";
@@ -391,7 +391,7 @@
 	      moduleSettings = [NSMutableDictionary dictionary];
 	      [us setObject: moduleSettings forKey: module];
 	    }
-	  [moduleSettings setObject: [NSArray arrayWithObjects: [sort lowercaseString], [NSString stringWithFormat: @"%d", (asc?1:0)], nil]
+	  [moduleSettings setObject: [NSArray arrayWithObjects: [sort lowercaseString], [NSString stringWithFormat: @"%d", (asc ? 1 : 0)], nil]
 			     forKey: @"SortingState"];
 	  [us synchronize];
 	}
@@ -439,7 +439,7 @@
         searchArray = [NSMutableArray arrayWithCapacity: nbFilters];
         sortingAttributes = [content objectForKey: @"sortingAttributes"];
         if (sortingAttributes)
-          match = [sortingAttributes objectForKey :@"match"]; // AND, OR
+          match = [sortingAttributes objectForKey: @"match"]; // AND, OR
         for (i = 0; i < nbFilters; i++)
           {
             filter = [filters objectAtIndex:i];
@@ -549,7 +549,7 @@
           NSArray *currentThread;
 
           currentFirst = (first && ecount == 0) || (i == 0  && count > 0) || (count > 0 && previousLevel < 0);
-          currentLevel = (first && ecount == 0)? 0 : (count > 0? count : -1);
+          currentLevel = (first && ecount == 0) ? 0 : (count > 0 ? count : -1);
           currentThread = [NSArray arrayWithObjects: t,
                             [NSNumber numberWithInt: currentLevel],
                             [NSNumber numberWithInt: currentFirst], nil];
