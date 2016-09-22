@@ -826,7 +826,7 @@ void handle_eas_terminate(int signum)
       [o setObjectType: ActiveSyncFolderCacheObject];
       [o setTableUrl: folderTableURL];
 
-      foldersInCache =  [o cacheEntriesForDeviceId: [context objectForKey: @"DeviceId"] newerThanVersion: -1];
+      foldersInCache = [o cacheEntriesForDeviceId: [context objectForKey: @"DeviceId"] newerThanVersion: -1];
 
       // get guids of folders stored in cache
       for (i = 0; i < [foldersInCache count]; i++)
@@ -2887,6 +2887,7 @@ void handle_eas_terminate(int signum)
 		   inResponse: (WOResponse *) theResponse
 {
   NSString *folderId, *realCollectionId, *itemId;
+  NSMutableArray *folderIdentifiers;
   SOGoMailAccounts *accountsFolder;
   SOGoMailAccount *accountFolder;
   SOGoMailFolder *currentFolder;
@@ -2898,19 +2899,7 @@ void handle_eas_terminate(int signum)
   NSData *d;
 
   SOGoMicrosoftActiveSyncFolderType folderType;
-  int i, total;
-
-  // FIXME: support more than one CollectionId tag + DeepTraversal
-  folderId = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject] getElementsByTagName: @"CollectionId"] lastObject] textValue];
-  realCollectionId = [folderId realCollectionIdWithFolderType: &folderType];
-  realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
-
-  userFolder = [[context activeUser] homeFolderInContext: context];
-  accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
-  accountFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
-  currentFolder = [accountFolder lookupName: [NSString stringWithFormat: @"folder%@", realCollectionId]
-				  inContext: context
-				    acquire: NO];
+  int i, j, total;
 
   // We build the qualifier and we launch our search operation
   qualifier = [self _qualifierFromMailboxSearchQuery: [(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject]];
@@ -2921,13 +2910,45 @@ void handle_eas_terminate(int signum)
       return;
     }
 
-  sortedUIDs = [currentFolder fetchUIDsMatchingQualifier: qualifier
-					    sortOrdering: @"REVERSE ARRIVAL"
-						threaded: NO];
+  // FIXME: support more than one CollectionId tag + DeepTraversal
+  folderId = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject] getElementsByTagName: @"CollectionId"] lastObject] textValue];
+  folderIdentifiers = [NSMutableArray array];
+
+  // Android 6 will send search requests with no collection ID - so we search in all folders.
+  if (!folderId)
+    {
+      NSArray *foldersInCache;
+      SOGoCacheGCSObject *o;
+      NSString *prefix;
+
+      o = [SOGoCacheGCSObject objectWithName: @"0" inContainer: nil];
+      [o setObjectType: ActiveSyncFolderCacheObject];
+      [o setTableUrl: folderTableURL];
+
+      foldersInCache = [o cacheEntriesForDeviceId: [context objectForKey: @"DeviceId"] newerThanVersion: -1];
+      prefix = [NSString stringWithFormat: @"/%@+folder", [context objectForKey: @"DeviceId"]];
+
+      for (i = 0; i < [foldersInCache count]; i++)
+	{
+	  folderId = [foldersInCache objectAtIndex: i];
+	  if ([folderId hasPrefix: prefix])
+	    {
+	      folderId = [NSString stringWithFormat: @"mail/%@", [folderId substringFromIndex: [prefix length]]];
+	      [folderIdentifiers addObject: folderId];
+	    }
+	}
+    }
+  else
+    {
+      [folderIdentifiers addObject: folderId];
+    }
+
+  userFolder = [[context activeUser] homeFolderInContext: context];
+  accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
+  accountFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
 
   // Prepare the response
   s = [NSMutableString string];
-
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
   [s appendString: @"<Search xmlns=\"Search:\">"];
@@ -2936,22 +2957,36 @@ void handle_eas_terminate(int signum)
   [s appendFormat: @"<Store>"];
   [s appendFormat: @"<Status>1</Status>"];
 
-  total = [sortedUIDs count];
-  for (i = 0; i < total; i++)
+  for (i = 0; i < [folderIdentifiers count]; i++)
     {
-      itemId = [[sortedUIDs objectAtIndex: i] stringValue];
-      mailObject = [currentFolder lookupName: itemId  inContext: context  acquire: NO];
+      folderId = [folderIdentifiers objectAtIndex: i];
+      realCollectionId = [folderId realCollectionIdWithFolderType: &folderType];
+      realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
 
-      if ([mailObject isKindOfClass: [NSException class]])
-	continue;
+      currentFolder = [accountFolder lookupName: [NSString stringWithFormat: @"folder%@", realCollectionId]
+				      inContext: context
+					acquire: NO];
 
-      [s appendString: @"<Result xmlns=\"Search:\">"];
-      [s appendFormat: @"<LongId>%@+%@</LongId>", folderId, itemId];
-      [s appendFormat: @"<CollectionId xmlns=\"AirSyncBase:\">%@</CollectionId>", folderId];
-      [s appendString: @"<Properties>"];
-      [s appendFormat: [mailObject activeSyncRepresentationInContext: context]];
-      [s appendString: @"</Properties>"];
-      [s appendFormat: @"</Result>"];
+      sortedUIDs = [currentFolder fetchUIDsMatchingQualifier: qualifier
+						sortOrdering: @"REVERSE ARRIVAL"
+						    threaded: NO];
+      total = [sortedUIDs count];
+      for (j = 0; j < total; j++)
+	{
+	  itemId = [[sortedUIDs objectAtIndex: j] stringValue];
+	  mailObject = [currentFolder lookupName: itemId  inContext: context  acquire: NO];
+
+	  if ([mailObject isKindOfClass: [NSException class]])
+	    continue;
+
+	  [s appendString: @"<Result xmlns=\"Search:\">"];
+	  [s appendFormat: @"<LongId>%@+%@</LongId>", folderId, itemId];
+	  [s appendFormat: @"<CollectionId xmlns=\"AirSyncBase:\">%@</CollectionId>", folderId];
+	  [s appendString: @"<Properties>"];
+	  [s appendFormat: [mailObject activeSyncRepresentationInContext: context]];
+	  [s appendString: @"</Properties>"];
+	  [s appendFormat: @"</Result>"];
+	}
     }
 
   [s appendFormat: @"<Range>0-%d</Range>",(total ? total-1 : 0)];
