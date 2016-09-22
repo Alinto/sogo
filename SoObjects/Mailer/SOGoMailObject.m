@@ -84,6 +84,18 @@ static BOOL debugSoParts       = NO;
     }
 }
 
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      headers = nil;
+      headerPart = nil;
+      coreInfos = nil;
+    }
+
+  return self;
+}
+
 - (void) dealloc
 {
   [headers    release];
