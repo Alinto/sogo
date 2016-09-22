@@ -672,12 +672,8 @@
     this.$futureMessageData = futureMessageData.then(function(data) {
       // Calling $timeout will force Angular to refresh the view
       if (_this.isread === 0) {
-        Message.$$resource.fetch(_this.$absolutePath(), 'markMessageRead').then(function() {
-          Message.$timeout(function() {
-            _this.isread = true;
-            _this.$mailbox.unseenCount--;
-          });
-        });
+        _this.isread = true;
+        _this.$mailbox.unseenCount--;
       }
       return Message.$timeout(function() {
         angular.extend(_this, data);

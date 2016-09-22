@@ -278,6 +278,9 @@ static NSString *mailETag = nil;
                             andJSONRepresentation: data];
     }
 
+  // Mark message as read
+  [co addFlags: @"seen"];
+
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                        [self attachmentAttrs], @"attachmentAttrs",
                        [self shouldAskReceipt], @"shouldAskReceipt",
