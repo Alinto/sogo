@@ -115,7 +115,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @implementation SOGoActiveSyncDispatcher (Sync)
 
 - (void) _setOrUnsetSyncRequest: (BOOL) set
-                       collections: (NSArray *) collections
+		    collections: (NSArray *) collections
 {
   SOGoCacheGCSObject *o;
   NSNumber *processIdentifier;

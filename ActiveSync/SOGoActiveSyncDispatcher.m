@@ -290,8 +290,6 @@ void handle_eas_terminate(int signum)
   return theIdToTranslate;
 }
 
-
-
 //
 //
 //
@@ -2798,17 +2796,17 @@ void handle_eas_terminate(int signum)
 
 - (EOQualifier *) _qualifierFromMailboxSearchQuery: (id <DOMElement>) theDocumentElement
 {
-  id <DOMElement> *andElement, *freeTextElement, *greaterThanElement;
+  id <DOMElement> andElement, freeTextElement, greaterThanElement;
 
-  andElement = [[theDocumentElement getElementsByTagName: @"And"] lastObject];
+  andElement = [(id)[theDocumentElement getElementsByTagName: @"And"] lastObject];
   if (andElement)
     {
       EOQualifier *qualifier, *fetchQualifier, *notDeleted, *greaterThanQualifier;
       NSString *query;
       id o;
 
-      freeTextElement = [[andElement getElementsByTagName: @"FreeText"] lastObject];
-      query = [freeTextElement textValue];
+      freeTextElement = [(id)[andElement getElementsByTagName: @"FreeText"] lastObject];
+      query = [(id)freeTextElement textValue];
       greaterThanQualifier = nil;
 
       if (!query)
@@ -2816,10 +2814,10 @@ void handle_eas_terminate(int signum)
 
       // We check for the date ranges - we only support the GreaterThan since
       // the IMAP protocol is limited in this regard
-      greaterThanElement = [[andElement getElementsByTagName: @"GreaterThan"] lastObject];
-      if (greaterThanElement && [[greaterThanElement getElementsByTagName: @"DateReceived"] lastObject])
+      greaterThanElement = [(id)[andElement getElementsByTagName: @"GreaterThan"] lastObject];
+      if (greaterThanElement && [(id)[greaterThanElement getElementsByTagName: @"DateReceived"] lastObject])
 	{
-	  o = [[[greaterThanElement getElementsByTagName: @"Value"] lastObject] textValue];
+	  o = [[(id)[greaterThanElement getElementsByTagName: @"Value"] lastObject] textValue];
 	  greaterThanQualifier = [EOQualifier qualifierWithQualifierFormat:
 						@"(DATE >= %@)", [o calendarDate]];
 	}
@@ -2884,7 +2882,7 @@ void handle_eas_terminate(int signum)
   int i, total;
 
   // FIXME: support more than one CollectionId tag + DeepTraversal
-  folderId = [[[[(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject] getElementsByTagName: @"CollectionId"] lastObject] textValue];
+  folderId = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject] getElementsByTagName: @"CollectionId"] lastObject] textValue];
   realCollectionId = [folderId realCollectionIdWithFolderType: &folderType];
   realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
 
@@ -2923,6 +2921,7 @@ void handle_eas_terminate(int signum)
   for (i = 0; i < total; i++)
     {
       [s appendString: @"<Result xmlns=\"Search:\">"];
+      [s appendFormat: @"<CollectionId xmlns=\"AirSyncBase:\">%@</CollectionId>", folderId];
       [s appendString: @"<Properties>"];
       itemId = [[sortedUIDs objectAtIndex: i] stringValue];
       mailObject = [currentFolder lookupName: itemId  inContext: context  acquire: NO];
