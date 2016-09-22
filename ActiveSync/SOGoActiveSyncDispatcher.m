@@ -2940,17 +2940,15 @@ void handle_eas_terminate(int signum)
   for (i = 0; i < total; i++)
     {
       itemId = [[sortedUIDs objectAtIndex: i] stringValue];
-
-      [s appendString: @"<Result xmlns=\"Search:\">"];
-      [s appendFormat: @"<LongId>%@+%@</LongId>", folderId, itemId];
-      [s appendFormat: @"<CollectionId xmlns=\"AirSyncBase:\">%@</CollectionId>", folderId];
-      [s appendString: @"<Properties>"];
-
       mailObject = [currentFolder lookupName: itemId  inContext: context  acquire: NO];
 
       if ([mailObject isKindOfClass: [NSException class]])
 	continue;
 
+      [s appendString: @"<Result xmlns=\"Search:\">"];
+      [s appendFormat: @"<LongId>%@+%@</LongId>", folderId, itemId];
+      [s appendFormat: @"<CollectionId xmlns=\"AirSyncBase:\">%@</CollectionId>", folderId];
+      [s appendString: @"<Properties>"];
       [s appendFormat: [mailObject activeSyncRepresentationInContext: context]];
       [s appendString: @"</Properties>"];
       [s appendFormat: @"</Result>"];
