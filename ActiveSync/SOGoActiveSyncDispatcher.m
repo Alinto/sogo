@@ -1390,13 +1390,13 @@ void handle_eas_terminate(int signum)
                     inResponse: (WOResponse *) theResponse
 {
   NSString *fileReference, *realCollectionId, *serverId, *bodyPreferenceType, *mimeSupport, *collectionId;
-  NSMutableString *s;
   NSArray *fetchRequests;
-  id aFetch;
+  NSMutableString *s;
   NSData *d;
-  int i;
+  id aFetch;
 
   SOGoMicrosoftActiveSyncFolderType folderType;
+  int i;
 
   s = [NSMutableString string];
 
@@ -1423,6 +1423,20 @@ void handle_eas_terminate(int signum)
           aFetch = [fetchRequests objectAtIndex: i];
           fileReference = [[[(id)[aFetch getElementsByTagName: @"FileReference"] lastObject] textValue] stringByUnescapingURL];
           collectionId = [[(id)[theDocumentElement getElementsByTagName: @"CollectionId"] lastObject] textValue];
+	  serverId = nil;
+
+	  // We might not have a CollectionId in our request if the ItemOperation (Fetch) is for getting
+	  // Search results with a LongId. Apple iOS does that.
+	  if (!collectionId)
+	    {
+	      NSString *longId;
+	      NSRange r;
+
+	      longId = [[(id)[theDocumentElement getElementsByTagName: @"LongId"] lastObject] textValue];
+	      r = [longId rangeOfString: @"+"  options: NSBackwardsSearch];
+	      collectionId = [longId substringToIndex: r.location];
+	      serverId = [longId substringFromIndex: r.location+1];
+	    }
 
           // its either a itemOperation to fetch an attachment or an email
           if ([fileReference length])
@@ -1500,7 +1514,12 @@ void handle_eas_terminate(int signum)
                 {
                   // fetch mail
                   realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
-                  serverId = [[(id)[theDocumentElement getElementsByTagName: @"ServerId"] lastObject] textValue];
+
+		  // ServerId might have been set if LongId was defined in the initial request. If not, it is
+		  // a normal ItemOperations (Fetch) to get a complete email
+		  if (!serverId)
+		    serverId = [[(id)[theDocumentElement getElementsByTagName: @"ServerId"] lastObject] textValue];
+
                   bodyPreferenceType = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"BodyPreference"] lastObject] getElementsByTagName: @"Type"] lastObject] textValue];
                   [context setObject: bodyPreferenceType  forKey: @"BodyPreferenceType"];
                   mimeSupport = [[(id)[theDocumentElement getElementsByTagName: @"MIMESupport"] lastObject] textValue];
@@ -2789,7 +2808,7 @@ void handle_eas_terminate(int signum)
         }        
     }
   
-  [s appendFormat: @"<Range>0-%d</Range>", total-1];
+  [s appendFormat: @"<Range>0-%d</Range>", (total ? total-1 : 0)];
   [s appendFormat: @"<Total>%d</Total>", total];
   [s appendString: @"</Store>"];
   [s appendString: @"</Response>"];
@@ -2926,10 +2945,13 @@ void handle_eas_terminate(int signum)
   total = [sortedUIDs count];
   for (i = 0; i < total; i++)
     {
+      itemId = [[sortedUIDs objectAtIndex: i] stringValue];
+
       [s appendString: @"<Result xmlns=\"Search:\">"];
+      [s appendFormat: @"<LongId>%@+%@</LongId>", folderId, itemId];
       [s appendFormat: @"<CollectionId xmlns=\"AirSyncBase:\">%@</CollectionId>", folderId];
       [s appendString: @"<Properties>"];
-      itemId = [[sortedUIDs objectAtIndex: i] stringValue];
+
       mailObject = [currentFolder lookupName: itemId  inContext: context  acquire: NO];
 
       if ([mailObject isKindOfClass: [NSException class]])
@@ -2940,7 +2962,7 @@ void handle_eas_terminate(int signum)
       [s appendFormat: @"</Result>"];
     }
 
-  [s appendFormat: @"<Range>0-%d</Range>", total-1];
+  [s appendFormat: @"<Range>0-%d</Range>",(total ? total-1 : 0)];
   [s appendFormat: @"<Total>%d</Total>", total];
   [s appendString: @"</Store>"];
   [s appendString: @"</Response>"];
