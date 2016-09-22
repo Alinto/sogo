@@ -1464,7 +1464,7 @@ URL could be set to something like:
 `postgresql://sogo:sogo@localhost:5432/sogo/sogo_alarms_folder`
 
 |S |OCSStoreURL
-|Parameter used to set the database URL so that SOGo can use to start
+|Parameter used to set the database URL so that SOGo can use to store
 all content data. You must also set `OCSAclURL` and `OCSCacheFolderURL`
 if you set this parameter. Using these parameters will allow SOGo to use
 a total of nine database tables - and prevent SOGo from creating three
@@ -1474,7 +1474,7 @@ For PostgresSQL, set the database URL to something like:
 `postgresql://sogo:@localhost:5432/sogo/sogo_store`.
 
 |S |OCSAclURL
-|Parameter used to set the database URL so that SOGo can use to start
+|Parameter used to set the database URL so that SOGo can use to store
 all ACL data. You must also set `OCSStoreURL` and `OCSCacheFolderURL`
 if you set this parameter.
 
@@ -1482,7 +1482,7 @@ For PostgresSQL, set the database URL to something like:
 `postgresql://sogo:@localhost:5432/sogo/sogo_acl`.
 
 |S |OCSCacheFolderURL
-|Parameter used to set the database URL so that SOGo can use to start
+|Parameter used to set the database URL so that SOGo can use to store
 all cache data. You must also set `OCSStoreURL` and `OCSAclURL`
 if you set this parameter.
 
