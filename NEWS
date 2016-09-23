@@ -11,6 +11,7 @@ Enhancements
  - [web] show user's name upon successful login
  - [web] inserted unseen messages count and mailbox name in browser's window title
  - [web] added Serbian (sr) translation - thanks to Bogdanović Bojan
+ - [eas] propagate message submission errors to EAS clients (#3774) 
 
 Bug fixes
  - [eas] properly generate the BusyStatus for normal events
