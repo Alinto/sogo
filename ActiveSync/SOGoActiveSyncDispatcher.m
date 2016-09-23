@@ -3234,8 +3234,28 @@ void handle_eas_terminate(int signum)
 
   if (error)
     {
-      [theResponse setStatus: 500];
-      [theResponse appendContentString: @"FATAL ERROR occured during SendMail"];
+      if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 14.0)
+        {
+          NSMutableString *s;
+          NSData *d;
+
+          s = [NSMutableString string];
+
+          [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+          [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+          [s appendString: @"<SendMail xmlns=\"ComposeMail:\">"];
+          [s appendString: @"<Status>120</Status>"];
+          [s appendString: @"</SendMail>"];
+
+           d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+
+           [theResponse setContent: d];
+        }
+      else
+        {
+          [theResponse setStatus: 500];
+          [theResponse appendContentString: @"FATAL ERROR occured during SendMail"];
+        }
     }
 }
 
@@ -3742,8 +3762,28 @@ void handle_eas_terminate(int signum)
       
       if (error)
         {
-          [theResponse setStatus: 500];
-          [theResponse appendContentString: @"FATAL ERROR occured during SmartForward"];
+          if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 14.0)
+            {
+              NSMutableString *s;
+              NSData *d;
+
+              s = [NSMutableString string];
+
+              [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+              [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+              [s appendFormat: @"<%@ xmlns=\"ComposeMail:\">", (isSmartForward) ? @"SmartForward" : @"SmartReply"];
+              [s appendString: @"<Status>120</Status>"];
+              [s appendFormat: @"</%@>", (isSmartForward) ? @"SmartForward" : @"SmartReply"];
+
+              d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+
+              [theResponse setContent: d];
+            }
+          else
+            {
+              [theResponse setStatus: 500];
+              [theResponse appendContentString: @"FATAL ERROR occured during SmartForward"];
+            }
         }
       else if (!isSmartForward)
         {
@@ -3951,7 +3991,7 @@ void handle_eas_terminate(int signum)
   [theResponse setHeader: @"Sync,SendMail,SmartForward,SmartReply,GetAttachment,GetHierarchy,CreateCollection,DeleteCollection,MoveCollection,FolderSync,FolderCreate,FolderDelete,FolderUpdate,MoveItems,GetItemEstimate,MeetingResponse,Search,Settings,Ping,ItemOperations,ResolveRecipients,ValidateCert"  forKey: @"MS-ASProtocolCommands"];
   [theResponse setHeader: @"2.5,12.0,12.1,14.0,14.1"  forKey: @"MS-ASProtocolVersions"];
 
-  if (debugOn && [[theResponse headerForKey: @"Content-Type"] isEqualToString:@"application/vnd.ms-sync.wbxml"] && [[theResponse content] length])
+  if (debugOn && [[theResponse headerForKey: @"Content-Type"] isEqualToString:@"application/vnd.ms-sync.wbxml"] && [[theResponse content] length] && !([(WOResponse *)theResponse status] == 500))
     [self logWithFormat: @"EAS - response for device %@: %@", [context objectForKey: @"DeviceId"], [[[NSString alloc] initWithData: [[theResponse content] wbxml2xml] encoding: NSUTF8StringEncoding] autorelease]];
 
   RELEASE(context);
