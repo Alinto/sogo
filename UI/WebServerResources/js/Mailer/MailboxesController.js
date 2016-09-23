@@ -1,4 +1,4 @@
-/* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+/* -*- Mode: js; indent-tabs-mode: nil; js-indent-level: 2; -*- */
 
 (function() {
   'use strict';
@@ -366,7 +366,7 @@
     }
 
     function refreshUnseenCount() {
-      var unseenCountFolders = window.unseenCountFolders;
+      var unseenCountFolders = $window.unseenCountFolders;
 
       _.forEach(vm.accounts, function(account) {
 

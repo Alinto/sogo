@@ -357,7 +357,9 @@
             }
           }
         };
-    _visit(this.parts);
+
+    if (this.parts)
+      _visit(this.parts);
 
     return parts;
   };
