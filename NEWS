@@ -5,7 +5,7 @@ New features
  - [eas] initial support for server-side mailbox search operations
 
 Enhancements
- -
+ - [eas] propagate message submission errors to EAS clients (#3774)
 
 Bug fixes
  -
