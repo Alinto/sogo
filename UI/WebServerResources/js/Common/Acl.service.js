@@ -125,6 +125,7 @@
     return acls.then(function() {
       var i = _.indexOf(_.map(_this.users, 'uid'), uid);
       if (i >= 0) {
+        _this.users[i].$shadowRights = null;
         _this.users.splice(i, 1);
       }
     });

@@ -256,7 +256,7 @@
           _this.rights[key] = 0;
       });
     }
-    else {
+    else if (this.$shadowRights) {
       // Restore initial rights
       this.rights = angular.copy(this.$shadowRights);
     }
