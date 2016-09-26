@@ -25,6 +25,7 @@ Bug fixes
  - [core] strip protocol value from proxyAddresses attribute (#3182)
  - [core] we now search in all domain sources for Apple Calendar
  - [core] properly handle groups in Apple Calendar's delegation
+ - [core] fixed caching expiration of ACLs assigned to LDAP groups (#2867)
 
 3.1.5 (2016-08-10)
 ------------------
