@@ -23,6 +23,8 @@ Bug fixes
  - [web] fixed error handling when renaming a mailbox
  - [web] handle binary content transfer encoding when displaying mails
  - [core] strip protocol value from proxyAddresses attribute (#3182)
+ - [core] we now search in all domain sources for Apple Calendar
+ - [core] properly handle groups in Apple Calendar's delegation
 
 3.1.5 (2016-08-10)
 ------------------
