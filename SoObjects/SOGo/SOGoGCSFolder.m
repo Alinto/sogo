@@ -1865,9 +1865,9 @@ static NSArray *childRecordFields = nil;
 - (void) setRoles: (NSArray *) roles
           forUser: (NSString *) uid
 {
-  return [self    setRoles: roles
-                   forUser: uid
-           forObjectAtPath: [self pathArrayToFolder]];
+  return [self setRoles: roles
+		forUser: uid
+	       forObjectAtPath: [self pathArrayToFolder]];
 }
 
 - (void) removeAclsForUsers: (NSArray *) users
