@@ -42,6 +42,7 @@
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
+#import <SOGo/SOGoUserManager.h>
 
 #import "SOGo+DAV.h"
 
@@ -365,31 +366,26 @@
     withEmailAddressSetMatching: (NSString *) value
                       inContext: (WOContext *) localContext
 {
-  id <SOGoSource> authenticationSource;
-  SOGoUser *activeUser;
+  SOGoUserManager *um;
   NSArray *records;
   NSUInteger count, max;
   NSString *uid;
   SOGoUserFolder *collection;
 
-  activeUser = [localContext activeUser];
-  if ([activeUser respondsToSelector: @selector (authenticationSource)])
+  um = [SOGoUserManager sharedUserManager];
+  records = [um fetchUsersMatching: value
+			  inDomain: [[localContext activeUser] domain]];
+
+  max = [records count];
+  for (count = 0; count < max; count++)
     {
-      authenticationSource = [[localContext activeUser] authenticationSource];
-      records = [authenticationSource
-                  fetchContactsMatching: value
-                               inDomain: [activeUser domain]];
-      max = [records count];
-      for (count = 0; count < max; count++)
-        {
-          uid = [[records objectAtIndex: count] objectForKey: @"c_uid"];
-          if ([uid length] > 0)
-            {
-              collection = [[SOGoUser userWithLogin: uid]
+      uid = [[records objectAtIndex: count] objectForKey: @"c_uid"];
+      if ([uid length] > 0)
+	{
+	  collection = [[SOGoUser userWithLogin: uid]
                              homeFolderInContext: localContext];
-              [collections addObject: collection];
-            }
-        }
+	  [collections addObject: collection];
+	}
     }
 }
 
@@ -585,7 +581,6 @@
                              @"addressbook", @"calendar-access",
                              @"calendar-schedule", @"calendar-auto-schedule",
                              @"calendar-proxy",
-
                              @"calendar-query-extended",
                              @"extended-mkcol",
                              @"calendarserver-principal-property-search",
