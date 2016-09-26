@@ -8,7 +8,8 @@ Enhancements
  - [eas] propagate message submission errors to EAS clients (#3774)
 
 Bug fixes
- -
+ - [core] we now search in all domain sources for Apple Calendar
+ - [core] properly handle groups in Apple Calendar's delegation
 
 2.3.15 (2016-09-14)
 ------------------
