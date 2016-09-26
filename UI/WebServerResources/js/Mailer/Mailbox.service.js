@@ -268,6 +268,16 @@
   };
 
   /**
+   * @function $selectedMessageIndex
+   * @memberof Mailbox.prototype
+   * @desc Return the index of the currently visible message.
+   * @returns a number or undefined if no message is selected
+   */
+  Mailbox.prototype.$selectedMessageIndex = function() {
+    return this.uidsMap[this.selectedMessage];
+  };
+
+  /**
    * @function hasSelectedMessage
    * @memberof Mailbox.prototype
    * @desc Check if a message is selected.
