@@ -22,6 +22,7 @@ Bug fixes
  - [eas] properly escape all email and address fields
  - [eas] properly generate yearly rrule
  - [core] strip protocol value from proxyAddresses attribute (#3182)
+ - [core] fixed caching expiration of ACLs assigned to LDAP groups (#2867)
  - [web] handle binary content transfer encoding when displaying mails
 
 2.3.14 (2016-08-17)
