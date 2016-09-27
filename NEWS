@@ -8,6 +8,7 @@ Enhancements
  - [eas] propagate message submission errors to EAS clients (#3774)
 
 Bug fixes
+ - [web] correctly set percent-complete for tasks from the list view (#3197)
  - [core] we now search in all domain sources for Apple Calendar
  - [core] properly handle groups in Apple Calendar's delegation
 

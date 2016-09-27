@@ -577,12 +577,17 @@
     {
       newStatus = [self queryParameterForKey: @"status"];
       if ([newStatus intValue])
-	[todo setCompleted: [NSCalendarDate date]];
+	{
+	  // -setCompleted will also set the status to "COMPLETED"
+	  [todo setCompleted: [NSCalendarDate date]];
+	  [todo setPercentComplete: @"100"];
+
+	}
       else
 	{
+	  // -setCompleted will also set the status to "IN-PROCESS"
 	  [todo setCompleted: nil];
 	  [todo setPercentComplete: @"0"];
-	  [todo setStatus: @"IN-PROCESS"];
 	}
       [[self clientObject] saveComponent: todo];
     }
