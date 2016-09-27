@@ -184,6 +184,10 @@
 {
   NSException *ex;
 
+  // We make sure new cards always have a UID - see #3819
+  if (![[newCard uid] length])
+    [newCard setUid: [self globallyUniqueObjectId]];
+
   ex = [super saveComponent: newCard baseVersion: newVersion];
   [card release];
   card = nil;
