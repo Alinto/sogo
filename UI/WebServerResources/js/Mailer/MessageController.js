@@ -39,6 +39,8 @@
     vm.convertToEvent = convertToEvent;
     vm.convertToTask = convertToTask;
 
+    _registerHotkeys(hotkeys);
+
     // One-way refresh of the parent window when modifying the message from a popup window.
     if ($window.opener) {
       // Update the message flags. The message must be displayed in the parent window.
@@ -100,8 +102,6 @@
       });
     });
 
-    _registerHotkeys(hotkeys);
-
 
     function _registerHotkeys(keys) {
       keys.push(sgHotkeys.createHotkey({
@@ -114,7 +114,7 @@
       }));
 
       // Register the hotkeys
-      _.forEach(hotkeys, function(key) {
+      _.forEach(keys, function(key) {
         sgHotkeys.registerHotkey(key);
       });
     }

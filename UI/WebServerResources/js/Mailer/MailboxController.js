@@ -15,8 +15,6 @@
     // Expose controller for eventual popup windows
     $window.$mailboxController = vm;
 
-    stateMailbox.selectFolder();
-
     vm.service = Mailbox;
     vm.accounts = stateAccounts;
     vm.account = stateAccount;
@@ -38,6 +36,11 @@
     vm.selectAll = selectAll;
     vm.unselectMessages = unselectMessages;
 
+
+    stateMailbox.selectFolder();
+
+    _registerHotkeys(hotkeys);
+
     // Expunge mailbox when leaving the Mail module
     angular.element($window).on('beforeunload', _compactBeforeUnload);
     $scope.$on('$destroy', function() {
@@ -57,45 +60,55 @@
       $window.document.title = title;
     });
 
-    _registerHotkeys(hotkeys);
-
 
     function _registerHotkeys(keys) {
       keys.push(sgHotkeys.createHotkey({
-        key: 'c',
+        key: l('hotkey_search'),
+        description: l('Search'),
+        callback: searchMode
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_compose'),
+        description: l('Write a new message'),
         callback: newMessage
       }));
       keys.push(sgHotkeys.createHotkey({
         key: 'space',
+        description: l('Toggle item'),
         callback: toggleMessageSelection
       }));
       keys.push(sgHotkeys.createHotkey({
         key: 'up',
+        description: l('View next item'),
         callback: _nextMessage,
         preventInClass: ['sg-mail-part']
       }));
       keys.push(sgHotkeys.createHotkey({
         key: 'down',
+        description: l('View previous item'),
         callback: _previousMessage,
         preventInClass: ['sg-mail-part']
       }));
       keys.push(sgHotkeys.createHotkey({
         key: 'shift+up',
+        description: l('Add next item to selection'),
         callback: _addNextMessageToSelection,
         preventInClass: ['sg-mail-part']
       }));
       keys.push(sgHotkeys.createHotkey({
         key: 'shift+down',
+        description: l('Add previous item to selection'),
         callback: _addPreviousMessageToSelection,
         preventInClass: ['sg-mail-part']
       }));
       keys.push(sgHotkeys.createHotkey({
         key: 'backspace',
+        description: l('Delete selected message or folder'),
         callback: confirmDeleteSelectedMessages
       }));
 
       // Register the hotkeys
-      _.forEach(hotkeys, function(key) {
+      _.forEach(keys, function(key) {
         sgHotkeys.registerHotkey(key);
       });
     }
@@ -169,6 +182,9 @@
       if (index > -1)
         selectMessage(vm.selectedFolder.$messages[index]);
 
+      if (vm.selectedFolder.$topIndex > 0)
+        vm.selectedFolder.$topIndex--;
+
       $event.preventDefault();
 
       return index;
@@ -190,6 +206,9 @@
         selectMessage(vm.selectedFolder.$messages[index]);
       else
         index = -1;
+
+      if (vm.selectedFolder.$topIndex < vm.selectedFolder.getLength())
+        vm.selectedFolder.$topIndex++;
 
       $event.preventDefault();
 
@@ -284,10 +303,10 @@
     function confirmDeleteSelectedMessages($event) {
       var selectedMessages = vm.selectedFolder.$selectedMessages();
 
-      if (_.size(selectedMessages) > 0)
-        Dialog.confirm(l('Warning'),
-                       l('Are you sure you want to delete the selected messages?'),
-                       { ok: l('Delete') })
+      if (messageDialog === null && _.size(selectedMessages) > 0)
+        messageDialog = Dialog.confirm(l('Warning'),
+                                       l('Are you sure you want to delete the selected messages?'),
+                                       { ok: l('Delete') })
         .then(function() {
           var deleteSelectedMessage = vm.selectedFolder.hasSelectedMessage();
           vm.selectedFolder.$deleteMessages(selectedMessages).then(function(index) {
@@ -302,6 +321,9 @@
               _unselectMessage(deleteSelectedMessage, index);
             }
           });
+        })
+        .finally(function() {
+          messageDialog = null;
         });
 
       $event.preventDefault();

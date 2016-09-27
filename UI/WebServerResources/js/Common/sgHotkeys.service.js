@@ -3,7 +3,7 @@
 (function() {
   /* jshint validthis: true */
   'use strict';
-  
+
   /**
    * $sgHotkeys - A service to associate keyboard shortcuts to actions.
    * @memberof SOGo.Common
@@ -18,7 +18,6 @@
     // Source : http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
     //          http://unixpapa.com/js/key.html
     // Date: Oct 02, 2015.
-    //var KEY_CODES = this.KEY_CODES = {
     var KEY_CODES = {
       8: 'backspace',
       9: 'tab',
@@ -70,6 +69,10 @@
       122: 'f11',
       123: 'f12'
     };
+    // Char-code values for characters that require a key combinations
+    var CHAR_CODES = {
+      63: '?'
+    };
 
     this.$get = getService;
 
@@ -87,11 +90,16 @@
       var HotKey = function(params) {
         this.id = params.id || guid();
         this.key = params.key;
+        this.description = params.description || null;
         this.context = params.context || null;
         this.callback = params.callback;
         this.preventInClass = params.preventInClass;
         this.args = params.args;
         this.onKeyUp = false;
+
+        if (this.key.length > 1)
+          // Automatically translate common hotkeys
+          this.lkey = l('key_' + this.key);
       };
 
       HotKey.prototype.clone = function() {
@@ -114,10 +122,11 @@
         /**
          * Keybindings are ignored by default when coming from a form input field.
          */
-        this._preventIn = ['INPUT', 'SELECT', 'MD-SELECT', 'TEXTAREA'];
-        
+        this._preventIn = ['INPUT', 'BUTTON', 'SELECT', 'TEXTAREA'];
+
         this._onKeydown = this._onKeydown.bind(this);
         this._onKeyup = this._onKeyup.bind(this);
+        this._onKeypress = this._onKeypress.bind(this);
 
         this.initialize();
       };
@@ -126,8 +135,17 @@
        * Binds Keydown, Keyup with the window object
        */
       Hotkeys.prototype.initialize = function() {
+        this.registerHotkey(
+          this.createHotkey({
+            key: '?',
+            description: l('Show or hide this help'),
+            callback: this._toggleCheatSheet.bind(this)
+          })
+        );
+
         $window.addEventListener('keydown', this._onKeydown, true);
         $window.addEventListener('keyup', this._onKeyup, true);
+        $window.addEventListener('keypress', this._onKeypress, true);
       };
 
       /**
@@ -173,6 +191,20 @@
         var keyString = this.keyStringFromEvent(event);
         if (this._hotkeysUp[keyString]) {
           this._invokeHotkeyHandlers(this._hotkeysUp[keyString], keyString);
+        }
+      };
+
+      /**
+       * Keypress Event Handler
+       * @private
+       */
+      Hotkeys.prototype._onKeypress = function(event) {
+        var charCode, keyString;
+
+        charCode = event.keyCode || event.which;
+        keyString = CHAR_CODES[charCode];
+        if (keyString && this._hotkeys[keyString]) {
+          this._invokeHotkeyHandlers(event, keyString, this._hotkeys[keyString]);
         }
       };
 
@@ -360,12 +392,62 @@
         return Boolean(~key.indexOf(eventHotkey));
       };
 
+      /**
+       *  Build and display (or hide) the hotkeys cheat sheet
+       *
+       * If a hotkey is registered multiple times, only the description of the first registered
+       * hotkey is displayed.
+       */
+      Hotkeys.prototype._toggleCheatSheet = function() {
+        var _this = this;
+
+        if (this._cheatSheet) {
+          Hotkeys.$modal.hide();
+          this._cheatSheet = null;
+        }
+        else {
+          this._cheatSheet = Hotkeys.$modal
+            .show({
+              clickOutsideToClose: true,
+              escapeToClose: true,
+              template: [
+                '<md-dialog>',
+                '  <md-dialog-content>',
+                '    <md-list>',
+                '      <md-list-item ng-repeat="(hotkey, keys) in hotkeys">',
+                '        <div class="sg-hotkey-container">',
+                '          <sg-hotkey>{{keys[0].lkey || hotkey}}</sg-hotkey>',
+                '        </div>',
+                '        {{keys[0].description}}',
+                '      </md-list-item>',
+                '    </md-list>',
+                '  </md-dialog-content>',
+                '</md-dialog>'
+              ].join(''),
+              controller: CheatSheetController,
+              locals: {
+                hotkeys: _this._hotkeys
+              }
+            });
+        }
+
+        CheatSheetController.$inject = ['$scope', 'hotkeys'];
+        function CheatSheetController($scope, hotkeys) {
+          $scope.hotkeys = hotkeys;
+          $scope.closeDialog = function() {
+            Hotkeys.$modal.hide();
+          };
+        }
+      };
+
       return Hotkeys;
     }
   }
 
-  sgHotkeys.$inject = ['$sgHotkeys'];
-  function sgHotkeys($sgHotkeys) {
+  sgHotkeys.$inject = ['$mdDialog', '$sgHotkeys'];
+  function sgHotkeys($mdDialog, $sgHotkeys) {
+    angular.extend($sgHotkeys, { $modal: $mdDialog });
+
     return new $sgHotkeys();
   }
 

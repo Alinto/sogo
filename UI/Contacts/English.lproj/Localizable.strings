@@ -253,3 +253,9 @@
 
 /* Aria label for avatar button to select and unselect a card */
 "Toggle item" = "Toggle item";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

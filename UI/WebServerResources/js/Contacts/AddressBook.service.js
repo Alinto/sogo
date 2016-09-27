@@ -212,7 +212,7 @@
       this.$$cards = [];
     }
     this.idsMap = {};
-    this.$cards = []; // TODO Keep the "selected" state of cards
+    this.$cards = [];
     // Extend instance with all attributes of data except headers
     angular.forEach(data, function(value, key) {
       if (key != 'headers' && key != 'cards') {
@@ -368,6 +368,16 @@
     var _this = this;
 
     return _.find(this.$cards, function(card) { return card.id == _this.selectedCard; });
+  };
+
+  /**
+   * @function $selectedCardIndex
+   * @memberof AddressBook.prototype
+   * @desc Return the index of the currently visible card.
+   * @returns a number or undefined if no card is selected
+   */
+  AddressBook.prototype.$selectedCardIndex = function() {
+    return _.indexOf(_.map(this.$cards, 'id'), this.selectedCard);
   };
 
   /**

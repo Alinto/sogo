@@ -7,9 +7,9 @@
    * Controller to view and edit a card
    * @ngInject
    */
-  CardController.$inject = ['$scope', '$timeout', '$window', '$mdDialog', 'AddressBook', 'Card', 'Dialog', 'sgFocus', '$state', '$stateParams', 'stateCard'];
-  function CardController($scope, $timeout, $window, $mdDialog, AddressBook, Card, Dialog, focus, $state, $stateParams, stateCard) {
-    var vm = this;
+  CardController.$inject = ['$scope', '$timeout', '$window', '$mdDialog', 'AddressBook', 'Card', 'Dialog', 'sgHotkeys', 'sgFocus', '$state', '$stateParams', 'stateCard'];
+  function CardController($scope, $timeout, $window, $mdDialog, AddressBook, Card, Dialog, sgHotkeys, focus, $state, $stateParams, stateCard) {
+    var vm = this, hotkeys = [];
 
     vm.card = stateCard;
 
@@ -36,6 +36,34 @@
     vm.confirmDelete = confirmDelete;
     vm.toggleRawSource = toggleRawSource;
     vm.showRawSource = false;
+
+
+    _registerHotkeys(hotkeys);
+
+    $scope.$on('$destroy', function() {
+      // Deregister hotkeys
+      _.forEach(hotkeys, function(key) {
+        sgHotkeys.deregisterHotkey(key);
+      });
+    });
+
+
+    function _registerHotkeys(keys) {
+      keys.push(sgHotkeys.createHotkey({
+        key: 'backspace',
+        description: l('Delete'),
+        callback: function($event) {
+          if (vm.currentFolder.$selectedCount() === 0)
+            confirmDelete();
+          $event.preventDefault();
+        }
+      }));
+
+      // Register the hotkeys
+      _.forEach(keys, function(key) {
+        sgHotkeys.registerHotkey(key);
+      });
+    }
 
     function transformCategory(input) {
       if (angular.isString(input))
@@ -112,7 +140,9 @@
         $state.go('app.addressbook.card.view', { cardId: vm.card.id });
       }
     }
-    function confirmDelete(card) {
+    function confirmDelete() {
+      var card = stateCard;
+
       Dialog.confirm(l('Warning'),
                      l('Are you sure you want to delete the card of %{0}?', '<b>' + card.$fullname() + '</b>'),
                      { ok: l('Delete') })

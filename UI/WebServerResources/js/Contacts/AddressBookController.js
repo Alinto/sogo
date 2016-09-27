@@ -6,9 +6,9 @@
   /**
    * @ngInject
    */
-  AddressBookController.$inject = ['$scope', '$q', '$window', '$state', '$timeout', '$mdDialog', '$mdToast', 'Account', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'stateAddressbooks', 'stateAddressbook'];
-  function AddressBookController($scope, $q, $window, $state, $timeout, $mdDialog, $mdToast, Account, Card, AddressBook, Dialog, Settings, stateAddressbooks, stateAddressbook) {
-    var vm = this;
+  AddressBookController.$inject = ['$scope', '$q', '$window', '$state', '$timeout', '$mdDialog', '$mdToast', 'Account', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'sgHotkeys', 'stateAddressbooks', 'stateAddressbook'];
+  function AddressBookController($scope, $q, $window, $state, $timeout, $mdDialog, $mdToast, Account, Card, AddressBook, Dialog, Settings, sgHotkeys, stateAddressbooks, stateAddressbook) {
+    var vm = this, hotkeys = [];
 
     AddressBook.selectedFolder = stateAddressbook;
 
@@ -29,12 +29,72 @@
     vm.newMessageWithSelectedCards = newMessageWithSelectedCards;
     vm.newMessageWithRecipient = newMessageWithRecipient;
     vm.mode = { search: false, multiple: 0 };
-    
+
+
+    _registerHotkeys(hotkeys);
+
+    $scope.$on('$destroy', function() {
+      // Deregister hotkeys
+      _.forEach(hotkeys, function(key) {
+        sgHotkeys.deregisterHotkey(key);
+      });
+    });
+
+
+    function _registerHotkeys(keys) {
+      keys.push(sgHotkeys.createHotkey({
+        key: l('key_create_card'),
+        description: l('Create a new address book card'),
+        callback: angular.bind(vm, newComponent, 'card')
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: l('key_create_list'),
+        description: l('Create a new list'),
+        callback: angular.bind(vm, newComponent, 'list')
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: 'space',
+        description: l('Toggle item'),
+        callback: toggleCardSelection
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: 'up',
+        description: l('View next item'),
+        callback: _nextCard
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: 'down',
+        description: l('View previous item'),
+        callback: _previousCard
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: 'shift+up',
+        description: l('Add next item to selection'),
+        callback: _addNextCardToSelection
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: 'shift+down',
+        description: l('Add previous item to selection'),
+        callback: _addPreviousCardToSelection
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: 'backspace',
+        description: l('Delete selected card or address book'),
+        callback: confirmDeleteSelectedCards
+      }));
+
+      // Register the hotkeys
+      _.forEach(keys, function(key) {
+        sgHotkeys.registerHotkey(key);
+      });
+    }
+
     function selectCard(card) {
       $state.go('app.addressbook.card.view', {cardId: card.id});
     }
-    
+
     function toggleCardSelection($event, card) {
+      if (!card) card = vm.selectedFolder.$selectedCard();
       card.selected = !card.selected;
       vm.mode.multiple += card.selected? 1 : -1;
       $event.preventDefault();
@@ -51,20 +111,92 @@
       });
       vm.mode.multiple = 0;
     }
-    
-    function confirmDeleteSelectedCards() {
-      Dialog.confirm(l('Warning'),
-                     l('Are you sure you want to delete the selected contacts?'),
-                     { ok: l('Delete') })
+
+    /**
+     * User has pressed up arrow key
+     */
+    function _nextCard($event) {
+      var index = vm.selectedFolder.$selectedCardIndex();
+
+      if (angular.isDefined(index))
+        index--;
+      else
+        // No message is selected, show oldest message
+        index = vm.selectedFolder.$cards.length() - 1;
+
+      if (index > -1)
+        selectCard(vm.selectedFolder.$cards[index]);
+
+      if (vm.selectedFolder.$topIndex > 0)
+        vm.selectedFolder.$topIndex--;
+
+      $event.preventDefault();
+
+      return index;
+    }
+
+    /**
+     * User has pressed the down arrow key
+     */
+    function _previousCard($event) {
+      var index = vm.selectedFolder.$selectedCardIndex();
+
+      if (angular.isDefined(index))
+        index++;
+      else
+        // No message is selected, show newest
+        index = 0;
+
+      if (index < vm.selectedFolder.$cards.length)
+        selectCard(vm.selectedFolder.$cards[index]);
+      else
+        index = -1;
+
+      if (vm.selectedFolder.$topIndex < vm.selectedFolder.$cards.length)
+        vm.selectedFolder.$topIndex++;
+
+      $event.preventDefault();
+
+      return index;
+    }
+
+    function _addNextCardToSelection($event) {
+      var index;
+
+      if (vm.selectedFolder.hasSelectedCard()) {
+        index = _nextCard($event);
+        if (index >= 0)
+          toggleCardSelection($event, vm.selectedFolder.$cards[index]);
+      }
+    }
+
+    function _addPreviousCardToSelection($event) {
+      var index;
+
+      if (vm.selectedFolder.hasSelectedCard()) {
+        index = _previousCard($event);
+        if (index >= 0)
+          toggleCardSelection($event, vm.selectedFolder.$cards[index]);
+      }
+    }
+
+    function confirmDeleteSelectedCards($event) {
+      var selectedCards = vm.selectedFolder.$selectedCards();
+
+      if (_.size(selectedCards) > 0)
+        Dialog.confirm(l('Warning'),
+                       l('Are you sure you want to delete the selected contacts?'),
+                       { ok: l('Delete') })
         .then(function() {
           // User confirmed the deletion
-          var selectedCards = _.filter(vm.selectedFolder.$cards, function(card) { return card.selected; });
           vm.selectedFolder.$deleteCards(selectedCards).then(function() {
             vm.mode.multiple = 0;
             if (!vm.selectedFolder.selectedCard)
               $state.go('app.addressbook');
           });
         });
+
+      $event.preventDefault();
     }
 
     /**
@@ -214,6 +346,6 @@
   }
 
   angular
-    .module('SOGo.ContactsUI')  
-    .controller('AddressBookController', AddressBookController);                                    
+    .module('SOGo.ContactsUI')
+    .controller('AddressBookController', AddressBookController);
 })();

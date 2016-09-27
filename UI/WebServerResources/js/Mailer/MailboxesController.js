@@ -6,11 +6,12 @@
   /**
    * @ngInject
    */
-  MailboxesController.$inject = ['$state', '$timeout', '$window', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'sgConstant', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
-  function MailboxesController($state, $timeout, $window, $mdDialog, $mdToast, $mdMedia, $mdSidenav, sgConstant, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
+  MailboxesController.$inject = ['$scope', '$state', '$timeout', '$window', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'sgConstant', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'sgHotkeys', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
+  function MailboxesController($scope, $state, $timeout, $window, $mdDialog, $mdToast, $mdMedia, $mdSidenav, sgConstant, focus, encodeUriFilter, Dialog, Settings, sgHotkeys, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
     var vm = this,
         account,
-        mailbox;
+        mailbox,
+        hotkeys = [];
 
     vm.service = Mailbox;
     vm.accounts = stateAccounts;
@@ -55,11 +56,38 @@
       params: []
     };
 
+
     Preferences.ready().then(function() {
       vm.showSubscribedOnly = Preferences.defaults.SOGoMailShowSubscribedFoldersOnly;
     });
 
     vm.refreshUnseenCount();
+
+    _registerHotkeys(hotkeys);
+
+    $scope.$on('$destroy', function() {
+      // Deregister hotkeys
+      _.forEach(hotkeys, function(key) {
+        sgHotkeys.deregisterHotkey(key);
+      });
+    });
+
+
+    function _registerHotkeys(keys) {
+      keys.push(sgHotkeys.createHotkey({
+        key: 'backspace',
+        description: l('Delete selected message or folder'),
+        callback: function() {
+          if (Mailbox.selectedFolder && !Mailbox.selectedFolder.hasSelectedMessage())
+            confirmDelete(Mailbox.selectedFolder);
+        }
+      }));
+
+      // Register the hotkeys
+      _.forEach(keys, function(key) {
+        sgHotkeys.registerHotkey(key);
+      });
+    }
 
     function showAdvancedSearch(path) {
       vm.showingAdvancedSearch = true;

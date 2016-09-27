@@ -6,9 +6,9 @@
   /**
    * @ngInject
    */
-  CalendarListController.$inject = ['$rootScope', '$timeout', '$state', '$mdDialog', 'Dialog', 'Preferences', 'Calendar', 'Component'];
-  function CalendarListController($rootScope, $timeout, $state, $mdDialog, Dialog, Preferences, Calendar, Component) {
-    var vm = this;
+  CalendarListController.$inject = ['$rootScope', '$scope', '$timeout', '$state', '$mdDialog', 'sgHotkeys', 'sgFocus', 'Dialog', 'Preferences', 'Calendar', 'Component'];
+  function CalendarListController($rootScope, $scope, $timeout, $state, $mdDialog, sgHotkeys, focus, Dialog, Preferences, Calendar, Component) {
+    var vm = this, hotkeys = [];
 
     vm.component = Component;
     vm.componentType = 'events';
@@ -16,6 +16,7 @@
     vm.selectComponentType = selectComponentType;
     vm.unselectComponents = unselectComponents;
     vm.selectAll = selectAll;
+    vm.searchMode = searchMode;
     vm.toggleComponentSelection = toggleComponentSelection;
     vm.confirmDeleteSelectedComponents = confirmDeleteSelectedComponents;
     vm.openEvent = openEvent;
@@ -29,6 +30,9 @@
     vm.reload = reload;
     vm.cancelSearch = cancelSearch;
     vm.mode = { search: false, multiple: 0 };
+
+
+    _registerHotkeys(hotkeys);
 
     // Select list based on user's settings
     Preferences.ready().then(function() {
@@ -47,6 +51,39 @@
 
     // Update the component being dragged
     $rootScope.$on('calendar:dragend', updateComponentFromGhost);
+
+    $scope.$on('$destroy', function() {
+      // Deregister hotkeys
+      _.forEach(hotkeys, function(key) {
+        sgHotkeys.deregisterHotkey(key);
+      });
+    });
+
+
+    function _registerHotkeys(keys) {
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_search'),
+        description: l('Search'),
+        callback: searchMode
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_create_event'),
+        description: l('Create a new event'),
+        callback: newComponent,
+        args: 'appointment'
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_create_task'),
+        description: l('Create a new task'),
+        callback: newComponent,
+        args: 'task'
+      }));
+
+      // Register the hotkeys
+      _.forEach(keys, function(key) {
+        sgHotkeys.registerHotkey(key);
+      });
+    }
 
     // Switch between components tabs
     function selectComponentType(type, options) {
@@ -78,6 +115,11 @@
       vm.mode.multiple += component.selected? 1 : -1;
       $event.preventDefault();
       $event.stopPropagation();
+    }
+
+    function searchMode() {
+      vm.mode.search = true;
+      focus('search');
     }
 
     function confirmDeleteSelectedComponents() {
@@ -317,7 +359,7 @@
       Component.$filter(vm.componentType, { value: '' });
     }
   }
-  
+
   angular
     .module('SOGo.SchedulerUI')
     .controller('CalendarListController', CalendarListController);

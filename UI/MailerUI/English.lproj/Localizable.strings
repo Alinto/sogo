@@ -366,3 +366,6 @@
 
 /* Subscriptions Dialog */
 "Manage Subscriptions" = "Manage Subscriptions";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";

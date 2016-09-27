@@ -33,17 +33,17 @@
       </md-button>
       <a class="md-icon-button md-button"
          label:aria-label="Day"
-         ng-click="calendar.changeView('day')"><md-icon>view_day</md-icon></a>
+         ng-click="calendar.changeView($event, 'day')"><md-icon>view_day</md-icon></a>
       <a class="md-icon-button md-button"
          label:aria-label="Week"
-         ng-click="calendar.changeView('week')"><md-icon>view_week</md-icon></a>
+         ng-click="calendar.changeView($event, 'week')"><md-icon>view_week</md-icon></a>
       <a class="md-icon-button md-button"
          label:aria-label="Month"
          ng-disabled="true"
-         ng-click="calendar.changeView('month')"><md-icon>view_module</md-icon></a>
+         ng-click="calendar.changeView($event, 'month')"><md-icon>view_module</md-icon></a>
       <a class="md-icon-button md-button"
          label:aria-label="Multicolumn Day View"
-         ng-click="calendar.changeView('multicolumnday')"><md-icon>view_array</md-icon></a>
+         ng-click="calendar.changeView($event, 'multicolumnday')"><md-icon>view_array</md-icon></a>
     </md-card-actions>
 
     <md-toolbar class="monthView">

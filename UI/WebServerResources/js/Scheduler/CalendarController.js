@@ -6,9 +6,9 @@
   /**
    * @ngInject
    */
-  CalendarController.$inject = ['$scope', '$rootScope', '$state', '$stateParams', 'Calendar', 'Component', 'Preferences', 'stateEventsBlocks'];
-  function CalendarController($scope, $rootScope, $state, $stateParams, Calendar, Component, Preferences, stateEventsBlocks) {
-    var vm = this, deregisterCalendarsList;
+  CalendarController.$inject = ['$scope', '$rootScope', '$state', '$stateParams', 'sgHotkeys', 'Calendar', 'Component', 'Preferences', 'stateEventsBlocks'];
+  function CalendarController($scope, $rootScope, $state, $stateParams, sgHotkeys, Calendar, Component, Preferences, stateEventsBlocks) {
+    var vm = this, deregisterCalendarsList, hotkeys = [];
 
     // Make the toolbar state of all-day events persistent
     if (angular.isUndefined(CalendarController.expandedAllDays))
@@ -21,6 +21,9 @@
     vm.changeDate = changeDate;
     vm.changeView = changeView;
 
+
+    _registerHotkeys(hotkeys);
+
     Preferences.ready().then(function() {
       _formatDate(vm.selectedDate);
     });
@@ -28,8 +31,84 @@
     // Refresh current view when the list of calendars is modified
     deregisterCalendarsList = $rootScope.$on('calendars:list', updateView);
 
-    // Destroy event listener when the controller is being deactivated
-    $scope.$on('$destroy', deregisterCalendarsList);
+    $scope.$on('$destroy', function() {
+      // Destroy event listener when the controller is being deactivated
+      deregisterCalendarsList();
+      // Deregister hotkeys
+      _.forEach(hotkeys, function(key) {
+        sgHotkeys.deregisterHotkey(key);
+      });
+    });
+
+
+    function _registerHotkeys(keys) {
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_today'),
+        description: l('Today'),
+        callback: changeDate,
+        args: new Date()
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_dayview'),
+        description: l('Day'),
+        callback: changeView,
+        args: 'day'
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_weekview'),
+        description: l('Week'),
+        callback: changeView,
+        args: 'week'
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_monthview'),
+        description: l('Month'),
+        callback: changeView,
+        args: 'month'
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_multicolumndayview'),
+        description: l('Multicolumn Day View'),
+        callback: changeView,
+        args: 'multicolumnday'
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: 'left',
+        description: l('Move backward'),
+        callback: _goToPeriod,
+        args: -1
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: 'right',
+        description: l('Move forward'),
+        callback: _goToPeriod,
+        args: +1
+      }));
+
+      // Register the hotkeys
+      _.forEach(keys, function(key) {
+        sgHotkeys.registerHotkey(key);
+      });
+    }
+
+
+    function _goToPeriod($event, direction) {
+      var date;
+
+      if ($stateParams.view == 'week') {
+        date = vm.selectedDate.beginOfWeek(Preferences.defaults.SOGoFirstDayOfWeek).addDays(7 * direction);
+      }
+      else if ($stateParams.view == 'month') {
+        date = vm.selectedDate;
+        date.setDate(1);
+        date.setMonth(date.getMonth() + direction);
+      }
+      else {
+        date = vm.selectedDate.addDays(direction);
+      }
+
+      changeDate($event, date);
+    }
 
     function _formatDate(date) {
       if ($stateParams.view == 'month') {
@@ -75,7 +154,7 @@
     }
 
     // Change calendar's view
-    function changeView(view) {
+    function changeView($event, view) {
       $state.go('calendars.view', { view: view });
     }
 }

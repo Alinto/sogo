@@ -6,9 +6,9 @@
   /**
    * @ngInject
    */
-  AddressBooksController.$inject = ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$window', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'FileUploader', 'sgConstant', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'User', 'stateAddressbooks'];
-  function AddressBooksController($state, $scope, $rootScope, $stateParams, $timeout, $window, $mdDialog, $mdToast, $mdMedia, $mdSidenav, FileUploader, sgConstant, focus, Card, AddressBook, Dialog, Settings, User, stateAddressbooks) {
-    var vm = this;
+  AddressBooksController.$inject = ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$window', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'FileUploader', 'sgConstant', 'sgHotkeys', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'User', 'stateAddressbooks'];
+  function AddressBooksController($state, $scope, $rootScope, $stateParams, $timeout, $window, $mdDialog, $mdToast, $mdMedia, $mdSidenav, FileUploader, sgConstant, sgHotkeys, focus, Card, AddressBook, Dialog, Settings, User, stateAddressbooks) {
+    var vm = this, hotkeys = [];
 
     vm.activeUser = Settings.activeUser;
     vm.service = AddressBook;
@@ -25,6 +25,33 @@
     vm.subscribeToFolder = subscribeToFolder;
     vm.isDroppableFolder = isDroppableFolder;
     vm.dragSelectedCards = dragSelectedCards;
+
+
+    _registerHotkeys(hotkeys);
+
+    $scope.$on('$destroy', function() {
+      // Deregister hotkeys
+      _.forEach(hotkeys, function(key) {
+        sgHotkeys.deregisterHotkey(key);
+      });
+    });
+
+
+    function _registerHotkeys(keys) {
+      keys.push(sgHotkeys.createHotkey({
+        key: 'backspace',
+        description: l('Delete selected card or address book'),
+        callback: function() {
+          if (AddressBook.selectedFolder && !AddressBook.selectedFolder.hasSelectedCard())
+            confirmDelete();
+        }
+      }));
+
+      // Register the hotkeys
+      _.forEach(keys, function(key) {
+        sgHotkeys.registerHotkey(key);
+      });
+    }
 
     function select($event, folder) {
       if ($state.params.addressbookId != folder.id &&
@@ -109,10 +136,12 @@
             return true;
           })
           .catch(function(response) {
-            var message = response.data.message || response.statusText;
-            Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
-                           vm.service.selectedFolder.name),
-                        message);
+            if (response) {
+              var message = response.data.message || response.statusText;
+              Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
+                             vm.service.selectedFolder.name),
+                           message);
+            }
           });
       }
     }

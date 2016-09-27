@@ -348,7 +348,7 @@
           <!-- sort/filter mode (default) -->
           <div class="md-toolbar-tools" layout="row" ng-hide="list.mode.search">
             <md-button class="sg-icon-button" label:aria-label="Search"
-                       ng-click="list.mode.search = true">
+                       ng-click="list.searchMode()">
               <md-icon>search</md-icon>
             </md-button>
             <div class="md-flex"><!-- spacer --></div>
@@ -530,7 +530,8 @@
               <md-icon>arrow_back</md-icon>
             </md-button>
             <md-input-container class="md-flex" md-no-float="md-no-float">
-              <input name="folderSearch" type="search" var:minlength="minimumSearchLength" label:placeholder="Search"/>
+              <input name="folderSearch" type="search" var:minlength="minimumSearchLength" label:placeholder="Search"
+                     sg-focus-on="search"/>
               <div ng-messages="searchForm.folderSearch.$error" ng-show="searchForm.folderSearch.$dirty">
                 <div ng-message="minlength"><var:string value="minimumSearchLengthLabel"/></div>
               </div>
