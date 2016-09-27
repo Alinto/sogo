@@ -13,6 +13,7 @@ Enhancements
  - [web] inserted unseen messages count and mailbox name in browser's window title
  - [web] disable JavaScript theme generation when SOGoUIxDebugEnabled is set to NO
  - [web] added Serbian (sr) translation - thanks to Bogdanović Bojan
+ - [web] added sort by arrival date in Mail module (#708)
  - [eas] propagate message submission errors to EAS clients (#3774) 
 
 Bug fixes
