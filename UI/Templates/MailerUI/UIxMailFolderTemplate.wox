@@ -100,6 +100,12 @@
                   <!-- size --></md-icon> <var:string label:value="Size"/>
               </md-button>
             </md-menu-item>
+	    <md-menu-item>
+              <md-button ng-click="mailbox.sort('arrival')">
+                <md-icon ng-class="{ 'icon-check': mailbox.sortedBy('arrival') }">
+                  <!-- order received --></md-icon> <var:string label:value="Order Received"/>
+              </md-button>
+            </md-menu-item>
             <md-menu-divider> <!-- divider --></md-menu-divider>
             <md-menu-item>
               <sg-checkmark
