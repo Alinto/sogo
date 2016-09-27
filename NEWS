@@ -11,6 +11,7 @@ Bug fixes
  - [web] correctly set percent-complete for tasks from the list view (#3197)
  - [core] we now search in all domain sources for Apple Calendar
  - [core] properly handle groups in Apple Calendar's delegation
+ - [core] make sure new cards always have a UID (#3819)
 
 2.3.15 (2016-09-14)
 ------------------
