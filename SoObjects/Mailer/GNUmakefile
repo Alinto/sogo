@@ -88,7 +88,9 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailPortugueseForward.wo \
 	SOGoMailPortugueseReply.wo \
 	SOGoMailRussianForward.wo \
+	SOGoMailSerbianForward.wo \
 	SOGoMailRussianReply.wo \
+	SOGoMailSerbianReply.wo \
 	SOGoMailSlovakForward.wo \
 	SOGoMailSlovakReply.wo \
 	SOGoMailSlovenianForward.wo \

@@ -276,7 +276,7 @@
 "%{0} message(s) copied" = "%{0} mensagem(ns) copiadas";
 
 /* Notification on the number of messages successfuly movied */
-"%{0} message(s) copied" = "%{0} mensagem(ns) copiadas";
+"%{0} message(s) moved" = "%{0} mensagem(ns) movidas";
 
 "Please select a message." = "Por favor, selecione uma mensagem.";
 "Please select a message to print." = "Por favor, selecione a mensagem para imprimir.";
@@ -334,7 +334,7 @@
 "No" = "No";
 "Location" = "Localização";
 "Rename" = "Renomear";
-"Compact" = "Compacto";
+"Compact" = "Compactar";
 "Export" = "Exportar";
 "Set as Drafts" = "Definir como Rascunho";
 "Set as Sent" = "Definir como Enviado";
@@ -362,3 +362,9 @@
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Escopo de pesquisa";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Gerenciar Inscrições";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";

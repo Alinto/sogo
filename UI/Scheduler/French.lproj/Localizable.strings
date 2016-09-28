@@ -366,6 +366,15 @@
 "zoom_50" = "50%";
 "zoom_25" = "25%";
 
+/* Arial label for reminder units */
+"Reminder units" = "Unités du rappel";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Position du rappel";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Relation du rappel";
+
 /* transparency */
 "Show Time as Free" = "Affiché comme disponible";
 
@@ -379,6 +388,8 @@ validate_notitle           = "Le titre n'est pas rempli. Continuer quand-même ?
 validate_invalid_startdate = "La date de début est invalide !";
 validate_invalid_enddate   = "La date de fin est invalide !";
 validate_endbeforestart    = "La date de fin est avant la date de début.";
+validate_untilbeforeend    = "La répétition doit se terminer après la première occurrence.";
+
 "Events" = "Événements";
 "Tasks" = "Tâches";
 "Show completed tasks" = "Afficher les tâches accomplies";
@@ -569,3 +580,24 @@ vtodo_class2 = "(Tâche confidentielle)";
 
 /* Aria label for scope of search on events or tasks */
 "Search scope" = "Étendue";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

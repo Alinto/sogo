@@ -344,6 +344,7 @@
 "Set as Junk" = "Set as Junk";
 
 "Sort" = "Sort";
+"Order Received" = "Order Received";
 "Descending Order" = "Descending Order";
 "Back" = "Back";
 "Copy messages" = "Copy messages";
@@ -362,3 +363,9 @@
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Search scope";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Manage Subscriptions";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";

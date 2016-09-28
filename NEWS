@@ -7,6 +7,7 @@ New features
 Enhancements
  - [eas] propagate message submission errors to EAS clients (#3774)
  - [web] updated CKEditor to version 4.5.11
+ - [web] added Serbian (sr) translation - thanks to Bogdanović Bojan
 
 Bug fixes
  - [web] correctly set percent-complete for tasks from the list view (#3197)

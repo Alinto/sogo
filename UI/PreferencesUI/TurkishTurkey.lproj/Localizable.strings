@@ -18,15 +18,15 @@
 /* tabs */
 "General" = "Genel";
 "Calendar Options" = "Takvim Seçenekleri";
-"Contacts Options" = "Kişiler Seçenekleri";
+"Contacts Options" = "Adres Seçenekleri";
 "Mail Options" = "E-posta Seçenekleri";
 "IMAP Accounts" = "IMAP Hesapları";
 "Vacation" = "Tatil";
 "Forward" = "İlet";
 "Password" = "Şifre";
 "Categories" = "Kategoriler";
-"Appointments invitations" = "Buluşma davetleri";
-"Name" = "Ad ve Soyad";
+"Appointments invitations" = "Randevu davetleri";
+"Name" = "İsim";
 "Color" = "Renk";
 "Add" = "Ekle";
 "Delete" = "Sil";
@@ -120,8 +120,8 @@
 "firstWeekOfYear_January1" = "1 Ocak'da başlar";
 "firstWeekOfYear_First4DayWeek" = "İlk 4-günlük haftadır";
 "firstWeekOfYear_FirstFullWeek" = "İlk tam haftadır";
-"Prevent from being invited to appointments" = "Buluşmalara davet almayı engelle";
-"White list for appointment invitations" = "Buluşma daveti beyaz listesi";
+"Prevent from being invited to appointments" = "Randevulara davet almayı engelle";
+"White list for appointment invitations" = "Randevu daveti beyaz listesi";
 "Contacts Names" = "Kişi İsimleri";
 
 /* Default Calendar */
@@ -152,14 +152,14 @@
 "When sending mail, add unknown recipients to my" = "İleti gönderirken, kayıtlı olmayan alıcıları aşağıdaki adres defterime ekle";
 "Address Book" = "Adres Defteri";
 "Forward messages" = "Başkasına İletilen e-postayı";
-"messageforward_inline" = "Gövde Metinine Ekle";
+"messageforward_inline" = "İletinin İçine Ekle";
 "messageforward_attached" = "Dosya Olarak Ekle";
 "When replying to a message" = "İletiyi yanıtlarken";
-"replyplacement_above" = "Yanıtımı alıntı metnin üzerinde başlat";
-"replyplacement_below" = "Yanıtımı alıntı metnin altında başlat";
+"replyplacement_above" = "Yanıtımı orjinal yazının üzerinde başlat";
+"replyplacement_below" = "Yanıtımı orjinal yazının altında başlat";
 "And place my signature" = "Ve imzamı";
 "signatureplacement_above" = "yanıtımın altına yerleştir";
-"signatureplacement_below" = "alıntı metnin altına yerleştir";
+"signatureplacement_below" = "yazının altına yerleştir";
 "Compose messages in" = "İleti formatı";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Düz metin";
@@ -217,7 +217,7 @@
 "Add Contact Category" = "Kişi Kategorisi Ekle";
 "Remove Contact Category" = "Kişi Kategorisi Çıkar";
 "category_none" = "Hiç biri";
-"calendar_category_labels" = "Yıldönümü,Doğum Günü,İş,Aramalar,Müşteriler,Rekabet,Müşteri,Favoriler,Takip,Hediyelik Eşya,Tatiller,Fikirler,Toplantı,Sorunlar,Çeşitli,Kişisel,Projeler,Bayram,Durum,Tedarikçi,Seyahat,Tatil";
+"calendar_category_labels" = "Yıl dönümü,Doğum günü,İş,Aramalar,Müşteriler,Rakip,Müşteri,Favoriler,Takip et,Hediyelik eşya,Tatiller,Fikirler,Toplantı,Sorunlar,Çeşitli,Kişisel,Projeler,Bayram,Durum,Tedarikçi,Seyahat,Tatil";
 
 /* Default module */
 "Calendar" = "Takvim";
@@ -254,6 +254,7 @@
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
+"Serbian" = "Српски";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
@@ -279,7 +280,7 @@
 "Allow return receipts for some messages" = "Bazı iletiler için alındı bildirimi gönder";
 "If I'm not in the To or Cc of the message" = "Eğer alıcı veya karbon kopya alanında değilsem";
 "If the sender is outside my domain" = "Eğer gönderen adresi alan adımın dışında ise";
-"In all other cases" = "diğer tüm koşullarda";
+"In all other cases" = "diğer her koşullarda";
 "Never send" = "Hiç bir zaman gönderme";
 "Always send" = "Her zaman gönder";
 "Ask me" = "Sor";
@@ -292,16 +293,19 @@
 "Connection error" = "İletişim hatası";
 "Service temporarily unavailable" = "Hizmet geçici olarak verilemiyor";
 
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Süzgeçi Etkinleştir";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Süzgeç adı";
 /* Button label */
 "Add a condition" = "Bir koşul ekle";
 /* Button label */
 "Add an action" = "Eylem ekle";
-"For incoming messages that" = "Gelen iletiler";
-"match all of the following rules" = "aşağıdaki tüm kurallarla eşleşiyorsa";
-"match any of the following rules" = "aşağıdaki kurallardan biriyle eşleşiyorsa";
-"match all messages" = "tüm iletilerle eşleşiyorsa";
+"For incoming messages that" = "Gelen ileti";
+"match all of the following rules" = "aşağıdaki kuralların hepsiyle eşleşiyorsa";
+"match any of the following rules" = "aşağıdaki kurallardan sadece biriyle eşleşiyorsa";
+"match all messages" = "için her koşulda";
 "Perform these actions" = "Şu eylemleri gerçekleştir";
 "Untitled Filter" = "Başlıksız Süzgeç";
 "Subject" = "Konu";
@@ -316,7 +320,7 @@
 "Discard the message" = "İletiyi reddet";
 "File the message in" = "Şurada dosyala";
 "Keep the message" = "İletiyi tut";
-"Forward the message to" = "E-postayı Şuraya ilet";
+"Forward the message to" = "E-posta şu adrese ilet";
 "Send a reject message" = "Reddedildi iletisi gönder";
 "Send a vacation message" = "Tatil iletisi gönder";
 "Stop processing filter rules" = "Süzgeç kurallarının işlenmesini durdur";
@@ -335,7 +339,7 @@
 "Seen" = "Görülmüş";
 "Deleted" = "Silinmiş";
 "Answered" = "Yanıtlanmış";
-"Flagged" = "Bayraklı";
+"Flagged" = "Yıldızlı";
 "Junk" = "İstenmeyen";
 "Not Junk" = "İstenen";
 

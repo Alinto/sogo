@@ -105,6 +105,9 @@
 @interface SOGoMailRussianReply : SOGoMailReply
 @end
 
+@interface SOGoMailSerbianReply : SOGoMailReply
+@end
+
 @interface SOGoMailSlovakReply : SOGoMailReply
 @end
 

@@ -9,7 +9,7 @@
 "ACLs_title" = "Kullanıcı klasörleri Erişim Denetim Listeleri yönetimi";
 /* Modules descriptions */
 "ACLs_description" = "<p> Erişim Denetim Listesi yönetim modülü, her kullanıcı için Takvim ve Adres defterlerinin EDL'lerin değiştirilmesini sağlar. </p><p>Bir kullanıcı klasörünün EDL'sini değiştirmek için, pencerenin üst kısmındaki arama alanına kullanıcının adını yazın ve ilgili klasöre çift tıklayın.</p>";
-"Name or Email" = "Ad Soyad veya E-posta";
+"Name or Email" = "İsim veya E-posta";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "yetkileri düzenlemek için bir arama başlatın";
 /* Rights module: Empty search result */

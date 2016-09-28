@@ -254,6 +254,7 @@
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
+"Serbian" = "Српски";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
@@ -291,6 +292,9 @@
 "Move Down" = "Abaisser";
 "Connection error" = "Erreur de connexion";
 "Service temporarily unavailable" = "Service momentanément indisponible";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Activer le filtre";
 
 /* Filters - UIxFilterEditor */
 "Filter name" = "Nom du filtre";
