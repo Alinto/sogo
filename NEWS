@@ -3,7 +3,7 @@
 
 New features
  - [web] added IMAP folder subscriptions management (#255)
- - [web] keyboard shortcuts
+ - [web] keyboard shortcuts (#1711, #1467, #3817)
  - [eas] initial support for server-side mailbox search operations
 
 Enhancements
@@ -14,6 +14,7 @@ Enhancements
  - [web] disable JavaScript theme generation when SOGoUIxDebugEnabled is set to NO
  - [web] added Serbian (sr) translation - thanks to Bogdanović Bojan
  - [web] added sort by arrival date in Mail module (#708)
+ - [web] updated CKEditor to version 4.5.11
  - [eas] propagate message submission errors to EAS clients (#3774) 
 
 Bug fixes
