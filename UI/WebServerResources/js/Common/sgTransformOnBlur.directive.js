@@ -8,9 +8,10 @@
    * sgTransformOnBlur - A directive to extend md-chips so the text of the input
    * field is converted to a chip when the field is loosing focus.
    *
-   * See issue on github:
+   * See issues on github:
    *
-   *   https://github.com/angular/material/issues/3364
+   *    https://github.com/angular/material/issues/3364 (md-add-on-blur)
+   *    https://github.com/angular/material/issues/9582
    *
    * Code is extracted from "MdChipsCtrl.prototype.onInputBlur" in controller:
    *
@@ -41,13 +42,25 @@
 
         this.inputHasFocus = false;
         appendFcn = (function() {
-          var chipBuffer = this.getChipBuffer();
-          if ((this.hasAutocomplete && this.requireMatch) || !chipBuffer || chipBuffer === "") return;
-          this.appendChip(chipBuffer);
-          this.resetChipBuffer();
+          var chipBuffer = this.getChipBuffer().trim();
+
+          // Update the custom chip validators.
+          this.validateModel();
+
+          var isModelValid = this.ngModelCtrl.$valid;
+
+          if (this.userInputNgModelCtrl) {
+            isModelValid &= this.userInputNgModelCtrl.$valid;
+          }
+
+          // Only append the chip and reset the chip buffer if the chips and input ngModel is valid.
+          if (chipBuffer && isModelValid) {
+            this.appendChip(chipBuffer);
+            this.resetChipBuffer();
+          }
         }).bind(this);
 
-        if (this.hasAutocomplete) {
+        if (this.autocompleteCtrl) {
           mouseUpActions.push(appendFcn);
           $window.addEventListener('click', function(event){
             while (mouseUpActions.length > 0) {
