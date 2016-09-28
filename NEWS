@@ -29,6 +29,7 @@ Bug fixes
  - [core] properly handle groups in Apple Calendar's delegation
  - [core] fixed caching expiration of ACLs assigned to LDAP groups (#2867)
  - [core] make sure new cards always have a UID (#3819)
+ - [core] fixed default TRANSP value when creating event
 
 3.1.5 (2016-08-10)
 ------------------

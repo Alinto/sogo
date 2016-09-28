@@ -362,8 +362,10 @@
     aptEndDate = [self dateFromString: o inContext: context];
 
   o = [data objectForKey: @"isTransparent"];
-  if ([o isKindOfClass: [NSNumber class]])
-    [self setTransparency: ([o boolValue]? @"TRANSPARENT" : @"OPAQUE")];
+  if ([o isKindOfClass: [NSNumber class]] && [o boolValue])
+    [self setTransparency: @"TRANSPARENT"];
+  else
+    [self setTransparency: @"OPAQUE"];
 
   isAllDay = [[data objectForKey: @"isAllDay"] boolValue];
 
