@@ -362,3 +362,9 @@
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Étendue de la recherche";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Abonnements";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";

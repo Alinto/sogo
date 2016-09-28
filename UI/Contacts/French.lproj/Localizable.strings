@@ -41,20 +41,28 @@
 "Move To" = "Déplacer vers";
 "Copy To" = "Copier vers";
 "Add to" = "Ajouter à";
+
 /* Subheader of empty addressbook */
 "No contact" = "Aucun contact";
+
 /* Subheader of system addressbook */
 "Start a search to browse this address book" = "Effectuez une recherche pour naviguer dans ce carnet";
+
 /* Number of contacts in addressbook; string is prefixed by number */
 "contacts" = "contacts";
+
 /* No contact matching search criteria */
 "No matching contact" = "Aucun contact retourné";
+
 /* Number of contacts matching search criteria; string is prefixed by number */
 "matching contacts" = "contacts retournés";
+
 /* Number of selected contacts in list */
 "selected" = "sélectionné(s)";
+
 /* Empty right pane */
 "No contact selected" = "Aucun contact sélectionné";
+
 /* Tooltips */
 "Create a new address book card" = "Créer une nouvelle fiche";
 "Create a new list" = "Créer une nouvelle liste de diffusion";
@@ -95,9 +103,11 @@
 "Work" = "Travail";
 "Mobile" = "Portable";
 "Pager" = "Téléavertisseur";
+
 /* categories */
 "contacts_category_labels" = "Ami, Client, Collègue, Concurrent, Famille, Fournisseur, Partenaire d'affaire, Presse, VIP";
 "New category" = "Nouvelle catégorie";
+
 /* adresses */
 "Title" = "Fonction ";
 "Service" = "Service";
@@ -134,12 +144,14 @@
 = "Vous ne pouvez pas supprimer ni vous désabonner de votre carnet personnel.";
 "Are you sure you want to delete the selected contacts?"
 = "Voulez-vous vraiment supprimer les contacts sélectionnés ?";
+"Are you sure you want to delete the card of %{0}?" = "Voulez-vous vraiment supprimer la fiche de %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "Vous ne pouvez pas supprimer la fiche de \"%{0}\".";
 "You cannot subscribe to a folder that you own!"
 = "Vous ne pouvez pas vous inscrire à un dossier qui vous appartient.";
 "Unable to subscribe to that folder!"
 = "Impossible de vous inscrire à ce dossier.";
+
 /* acls */
 "Access rights to" = "Droits d'accès à";
 "For user" = "Pour l'utilisateur";
@@ -158,11 +170,15 @@
 "The selected contact has no email address."
 = "Cette personne n'a pas d'adresse courriel.";
 "Please select a contact." = "Veuillez sélectionner un contact.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} fiche(s) copiée(s)";
+"%{0} card(s) moved" = "%{0} fiche(s) déplacée(s)";
 "SoAccessDeniedException" = "Vous ne pouvez pas ajouter de fiches à ce carnet.";
 "Forbidden" = "Vous ne pouvez pas ajouter de fiches à ce carnet.";
 "Invalid Contact" = "La fiche sélectionnée n'existe plus.";
 "Unknown Destination Folder" = "Le carnet d'adresses choisi n'existe plus.";
+
 /* Lists */
 "List details" = "Détails";
 "List name" = "Liste";
@@ -175,6 +191,8 @@
 "Export" = "Exporter";
 "Export Address Book..." = "Exporter le carnet d'adresses...";
 "View Raw Source" = "Afficher le contenu original";
+
+/* Import */
 "Import Cards" = "Importer des contacts";
 "Select a vCard or LDIF file." = "Sélectionner un fichier LDIF ou vCard.";
 "Upload" = "Ajouter";
@@ -184,6 +202,7 @@
 "No card was imported." = "Aucun contact n'a été importé.";
 "A total of %{0} cards were imported in the addressbook." = "Un total de %{0} contacts ont été importés dans le carnet.";
 "Reload" = "Actualiser";
+
 /* Properties window */
 "Address Book Name" = "Nom";
 "Links to this Address Book" = "Liens vers ce carnet";
@@ -231,3 +250,12 @@
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Étendue de la recherche";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Basculer la sélection";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

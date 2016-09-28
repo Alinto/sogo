@@ -9,9 +9,9 @@ organized_by_you = "tarafınızdan düzenlendi";
 you_are_an_attendee = "siz bir katılımcısınız";
 add_info_text = "iMIP 'ADD' istekleri SOGo tarafından henüz desteklenmiyor.";
 publish_info_text = "Gönderici sizi ekteki etkinlik hakında bilgilendiriyor.";
-cancel_info_text = "Davetiniz veya tüm etkinlik iptal edildi.";
+cancel_info_text = "Sizin davetiniz veya tüm etkinlik iptal edildi.";
 request_info_no_attendee = "katılımcılara bir toplantı teklif ediyor. Bu iletiyi bilgilendirme amacıyla aldınız, siz iştirakçi olarak eklenmediniz.";
-Appointment = "Buluşma";
+Appointment = "Randevu";
 "Status Update" = "Durum Güncellemesi";
 was = "önceden";
 
