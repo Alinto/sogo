@@ -434,6 +434,9 @@
               locals: {
                 hotkeys: _this._hotkeys
               }
+            })
+            .finally(function() {
+              _this._cheatSheet = null;
             });
         }
 
