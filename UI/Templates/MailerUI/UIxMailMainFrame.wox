@@ -251,7 +251,7 @@
         <md-chips class="md-flex"
                   ng-model="app.search.params"
                   md-transform-chip="app.newSearchParam($chip)"
-                  md-add-on-blur="true">
+                  sg-transform-on-blur="sg-transform-on-blur">
           <input sg-focus-on="advancedSearch" type="text"
                  ng-disabled="app.currentSearchParam.length == 0"
                  sg-placeholder="app.search.options[app.currentSearchParam]"/>
