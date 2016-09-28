@@ -27,7 +27,7 @@
     <sg-folder-stylesheet
          ng-repeat="calendar in app.service.$findAll()"
          ng-model="calendar"><!-- stylesheet --></sg-folder-stylesheet>
-    <!-- calendars colors -->
+    <!-- categories colors -->
     <sg-category-stylesheet
          ng-repeat="category in app.categories"
          ng-model="category"><!-- stylesheet --></sg-category-stylesheet>
