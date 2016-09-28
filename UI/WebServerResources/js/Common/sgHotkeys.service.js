@@ -124,6 +124,11 @@
          */
         this._preventIn = ['INPUT', 'BUTTON', 'SELECT', 'TEXTAREA'];
 
+        /**
+         * Keybindings are ignored by default when coming from special elements
+         */
+        this._preventInClass = ['md-chip-content'];
+
         this._onKeydown = this._onKeydown.bind(this);
         this._onKeyup = this._onKeyup.bind(this);
         this._onKeypress = this._onKeypress.bind(this);
@@ -162,6 +167,7 @@
               target = event.target || event.srcElement,
               nodeName = target.nodeName.toUpperCase();
           if (!_.includes(this._preventIn, nodeName) &&
+              _.intersection(target.classList, this._preventInClass).length === 0 &&
               _.intersection(target.classList, hotkey.preventInClass).length === 0) {
             try {
               hotkey.callback.call(hotkey.context, event, hotkey.args);
