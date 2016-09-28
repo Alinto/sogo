@@ -121,7 +121,7 @@
                 <md-icon>remove_circle</md-icon>
               </md-button>
               <md-datepicker ng-model="editor.component.start"
-                             ng-change="editor.updateStartTime()"
+                             ng-change="editor.adjustStartTime()"
                              label:md-placeholder="From"> <!-- date picker--></md-datepicker>
               <sg-timepicker ng-model="editor.component.start"
                              ng-change="editor.adjustStartTime()"><!-- time picker --></sg-timepicker>
@@ -143,7 +143,7 @@
                 <md-icon>remove_circle</md-icon>
               </md-button>
               <md-datepicker ng-model="editor.component.due"
-                             ng-change="editor.updateDueTime()"
+                             ng-change="editor.adjustDueTime()"
                              label:md-placeholder="Due"><!-- date picker--></md-datepicker>
               <sg-timepicker ng-model="editor.component.due"
                              ng-change="editor.adjustDueTime()"><!-- time picker --></sg-timepicker>

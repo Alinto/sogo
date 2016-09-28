@@ -237,11 +237,8 @@
     vm.addDueDate = addDueDate;
 
     // Synchronize start and end dates
-    vm.updateStartTime = updateStartTime;
     vm.adjustStartTime = adjustStartTime;
-    vm.updateEndTime = updateEndTime;
     vm.adjustEndTime = adjustEndTime;
-    vm.updateDueTime = updateDueTime;
     vm.adjustDueTime = adjustDueTime;
 
     if (vm.component.start)
@@ -356,12 +353,6 @@
       oldDueDate = new Date(vm.component.due.getTime());
     }
 
-    function updateStartTime() {
-      // When using the datepicker, the time is reset to 00:00; restore it
-      vm.component.start.addMinutes(oldStartDate.getHours() * 60 + oldStartDate.getMinutes());
-      adjustStartTime();
-    }
-
     function adjustStartTime() {
       if (vm.component.start) {
         // Preserve the delta between the start and end dates
@@ -379,12 +370,6 @@
       }
     }
 
-    function updateEndTime() {
-      // When using the datepicker, the time is reset to 00:00; restore it
-      vm.component.end.addMinutes(oldEndDate.getHours() * 60 + oldEndDate.getMinutes());
-      adjustEndTime();
-    }
-
     function adjustEndTime() {
       if (vm.component.end) {
         // The end date must be after the start date
@@ -400,12 +385,6 @@
           updateFreeBusy();
         }
       }
-    }
-
-    function updateDueTime() {
-      // When using the datepicker, the time is reset to 00:00; restore it
-      vm.component.due.addMinutes(oldDueDate.getHours() * 60 + oldDueDate.getMinutes());
-      adjustDueTime();
     }
 
     function adjustDueTime() {

@@ -153,7 +153,7 @@
               </div>
               <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
                 <md-datepicker ng-model="editor.component.start"
-                               ng-change="editor.updateStartTime()"
+                               ng-change="editor.adjustStartTime()"
                                label:md-placeholder="From"><!-- date picker --></md-datepicker>
                 <sg-timepicker ng-model="editor.component.start"
                                ng-change="editor.adjustStartTime()"
@@ -166,7 +166,7 @@
               </div>
               <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
                 <md-datepicker ng-model="editor.component.end"
-                               ng-change="editor.updateEndTime()"
+                               ng-change="editor.adjustEndTime()"
                                label:md-placeholder="To"><!-- date picker --></md-datepicker>
                 <sg-timepicker ng-model="editor.component.end"
                                ng-change="editor.adjustEndTime()"
