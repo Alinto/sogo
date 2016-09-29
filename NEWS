@@ -21,6 +21,7 @@ Bug fixes
  - [eas] properly generate the BusyStatus for normal events
  - [eas] properly escape all email and address fields
  - [eas] properly generate yearly rrule
+ - [eas] make sure we don't sleep for too long when EAS processes need interruption
  - [web] restored functionality to save unknown recipient emails to address book on send
  - [web] fixed ripple blocking the form when submitting no values (#3808)
  - [web] fixed error handling when renaming a mailbox
