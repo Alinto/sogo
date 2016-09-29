@@ -2242,7 +2242,7 @@ void handle_eas_terminate(int signum)
   defaults = [SOGoSystemDefaults sharedSystemDefaults];
   defaultInterval = [defaults maximumPingInterval];
   internalInterval = [defaults internalSyncInterval];
-  sleepInterval = (internalInterval < 5) ? internalInterval : 5;
+  sleepInterval = (internalInterval < 5) ? 5 : internalInterval;
 
   if (theDocumentElement)
     heartbeatInterval = [[[(id)[theDocumentElement getElementsByTagName: @"HeartbeatInterval"] lastObject] textValue] intValue];
@@ -2383,8 +2383,16 @@ void handle_eas_terminate(int signum)
                 }
               else
                 {
+		  int t;
+
                   [self logWithFormat: @"Sleeping %d seconds while detecting changes in Ping...", internalInterval-total_sleep];
-                  sleep(sleepInterval);
+
+		  for (t = 0; t < sleepInterval; t++)
+		    {
+		      if (easShouldTerminate)
+			break;
+		      sleep(1);
+		    }
                   total_sleep += sleepInterval;
                 }
             }
