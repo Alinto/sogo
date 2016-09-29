@@ -2393,8 +2393,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 }
               else
                 {
+		  int t;
+
                   [self logWithFormat: @"Sleeping %d seconds while detecting changes in Sync...", internalInterval-total_sleep];
-                  sleep(sleepInterval);
+
+		  for (t = 0; t < sleepInterval; t++)
+		    {
+		      if ([self easShouldTerminate])
+			break;
+		      sleep(1);
+		    }
                   total_sleep += sleepInterval;
                 }
             }
