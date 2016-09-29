@@ -25,10 +25,15 @@
       },
       controller: sgCalendarScrollViewController,
       link: function(scope, element, attrs, controller) {
-        var view, type;
+        var view, type, isMultiColumn = false;
 
         view = null;
         type = scope.type; // multiday, multiday-allday, monthly, unknown?
+        isMultiColumn = (element.attr('sg-view') == 'multicolumndayview');
+
+        // Expose isMultiColumn in the controller
+        // See sgNowLine directive
+        controller.isMultiColumn = isMultiColumn;
 
         // Update the "view" object literal once the Angular template has been transformed
         $timeout(initView);
@@ -54,6 +59,10 @@
                 view.element.scrollTop = hourCell.offsetTop + quartersOffset;
               }
             });
+
+          // Expose quarter height to the controller
+          // See sgNowLine directive
+          controller.quarterHeight = view.quarterHeight;
         }
 
         /**
@@ -133,11 +142,8 @@
 
 
           getDayNumbers: function() {
-            var viewType = null, isMultiColumn, days, total, sum;
+            var viewType = null, days, total, sum;
 
-            if (this.element.attributes['sg-view'])
-              viewType = this.element.attributes['sg-view'].value;
-            isMultiColumn = (viewType == 'multicolumndayview');
             days = this.element.getElementsByTagName('sg-calendar-day');
 
             return _.map(days, function(el, index) {

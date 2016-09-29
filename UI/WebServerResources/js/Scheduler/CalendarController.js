@@ -1,6 +1,7 @@
 /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 
 (function() {
+  /* jshint loopfunc: true */
   'use strict';
 
   /**
@@ -132,16 +133,32 @@
     }
 
     function updateView() {
+      // The list of calendars has changed; update the views
       // See stateEventsBlocks in Scheduler.app.js
       Component.$eventsBlocksForView($stateParams.view, $stateParams.day.asDate()).then(function(data) {
-        vm.views = data;
-        _.forEach(vm.views, function(view) {
+        var i, j, view;
+        for (i = 0; i < data.length; i++) {
+          view = data[i];
+          if (vm.views[i]) {
+            _.forEach(view.allDayBlocks, function(blocks, day) {
+              vm.views[i].allDayBlocks[day] = blocks;
+            });
+            _.forEach(view.blocks, function(blocks, day) {
+              vm.views[i].blocks[day] = blocks;
+            });
+          }
+          else {
+            vm.views[i] = view;
+          }
           if (view.id) {
             // Note: this can't be done in Component service since it would make Component dependent on
             // the Calendar service and create a circular dependency
-            view.calendar = new Calendar({ id: view.id, name: view.calendarName });
+            vm.views[i].calendar = new Calendar({ id: view.id, name: view.calendarName });
           }
-        });
+        }
+        // Remove previous views
+        for (j = vm.views.length; j >= i; j--)
+          vm.views.splice(j, 1);
       });
     }
 

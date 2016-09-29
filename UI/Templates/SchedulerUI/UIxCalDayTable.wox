@@ -98,7 +98,7 @@
 
       <!-- The quarters grid -->
       <div class="daysView">
-        <div class="days">
+        <div class="days sg-now-line">
           <var:foreach list="daysToDisplay" item="currentTableDay">
             <sg-calendar-day var:class="dayClasses"
                              var:id="currentDayId"

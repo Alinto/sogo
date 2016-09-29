@@ -240,6 +240,16 @@ $quarter_height: 10px;
     position: relative;
   }
 
+  // The "now" line that overlaps the current day in day/week/multicolumn views
+  sg-now-line {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: red;
+    z-index: $z-index-view + 1;
+  }
+
   // Events from editable calendars are draggable
   .sg-draggable-calendar-block,
   .sg-event--ghost {
