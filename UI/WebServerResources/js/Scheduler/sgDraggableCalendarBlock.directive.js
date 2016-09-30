@@ -45,6 +45,9 @@
         var component, dayIndex, blockIndex, isFirstBlock, isLastBlock,
             dragGrip, leftGrip, rightGrip, topGrip, bottomGrip;
 
+        // Don't show grips for blocks of less than 45 minutes
+        if (scope.block.length < 3) return;
+
         component = scope.block.component;
         dayIndex = scope.block.dayIndex;
         blockIndex = _.findIndex(component.blocks, ['dayIndex', dayIndex]);

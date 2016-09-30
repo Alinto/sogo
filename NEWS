@@ -27,6 +27,7 @@ Bug fixes
  - [web] fixed ripple blocking the form when submitting no values (#3808)
  - [web] fixed error handling when renaming a mailbox
  - [web] handle binary content transfer encoding when displaying mails
+ - [web] removed resize grips to short events (#3771)
  - [core] strip protocol value from proxyAddresses attribute (#3182)
  - [core] we now search in all domain sources for Apple Calendar
  - [core] properly handle groups in Apple Calendar's delegation
