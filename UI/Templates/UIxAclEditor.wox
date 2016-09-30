@@ -46,7 +46,7 @@
           </md-item-template>
         </md-autocomplete>
       </div>
-      <md-card ng-repeat="user in acl.users track by user.uid | orderBy:['userClass', 'displayName']"
+      <md-card ng-repeat="user in acl.users | orderBy:['userClass', 'cn']"
                class="sg-collapsed"
                ng-class="{ 'sg-expanded': user.uid == acl.selectedUid }">
         <a class="md-flex md-button" ng-click="acl.selectUser(user, $event)">
