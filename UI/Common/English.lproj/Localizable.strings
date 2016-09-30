@@ -121,6 +121,9 @@
 /* Error message display bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Enter at least %{minimumSearchLength} characters";
 
+/* Toggle visibility (ex: mail account in left navigation menu) */
+"Toggle visibility" = "Toggle visibility";
+
 /* Question mark shows list of hotkeys */
 "Show or hide this help" = "Show or hide this help";
 

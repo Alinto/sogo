@@ -38,7 +38,8 @@
                  ng-repeat="account in ::app.accounts track by account.id"
                  ng-class="{ 'md-flex': account.$expanded }">
           <md-list>
-            <md-list-item ng-click="app.toggleAccountState(account)">
+            <md-list-item aria-label="{{ ::'Toggle visibility' | loc }}"
+                          ng-click="app.toggleAccountState(account)">
               <div class="sg-no-wrap">{{account.name}}</div>
 	      <md-menu class="md-secondary">
 		<md-icon label:aria-label="Options"
