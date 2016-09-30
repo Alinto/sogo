@@ -372,3 +372,6 @@
 
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "f";

@@ -105,6 +105,10 @@
 
     function _registerHotkeys(keys) {
       keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_flag'),
+        callback: angular.bind(stateMessage, stateMessage.toggleFlag)
+      }));
+      keys.push(sgHotkeys.createHotkey({
         key: 'backspace',
         callback: function($event) {
           if (vm.mailbox.$selectedCount() === 0)
