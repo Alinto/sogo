@@ -25,7 +25,7 @@
           <md-button class="sg-icon-button"
                      label:aria-label="Delete"
                      ng-show="editor.currentFolder.acls.objectEraser"
-                     ng-click="editor.confirmDelete(editor.card)">
+                     ng-click="editor.confirmDelete()">
             <md-tooltip><var:string label:value="Delete"/></md-tooltip>
             <md-icon>delete</md-icon>
           </md-button>
