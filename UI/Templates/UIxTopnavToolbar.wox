@@ -5,7 +5,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
 
-  <div class="sg-toolbar-group-1" layout="row">
+  <div class="md-toolbar-tools sg-toolbar-group-1" layout="row">
     <md-button ng-click="toggleLeft()"
                class="md-icon-button hide show-gt-md"
                label:aria-label="Toggle Menu"
@@ -25,8 +25,7 @@
     </div>
     <p class="sg-md-display-3 sg-date-today hide show-gt-md" ng-bind="currentDay.day"><!-- day --></p>
   </div>
-
-  <div class="sg-toolbar-group-last" layout="row" layout-align="center center">
+  <div class="md-toolbar-tools sg-toolbar-group-last" layout="row" layout-align="end center">
     <div layout="row" layout-align="space-around start">
       <md-button class="md-icon-button"
                  ng-show="activeUser.path.calendar.length"
