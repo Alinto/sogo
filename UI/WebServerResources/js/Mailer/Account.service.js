@@ -8,7 +8,7 @@
    * @constructor
    * @param {object} futureAccountData
    */
-    function Account(futureAccountData, fetchAll) {
+    function Account(futureAccountData) {
     // Data is immediately available
     if (typeof futureAccountData.then !== 'function') {
       angular.extend(this, futureAccountData);
@@ -23,14 +23,6 @@
     else {
       // The promise will be unwrapped first
       //this.$unwrap(futureAccountData);
-    }
-
-    this.fetchAll = false;
-
-    // Check if we're displaying the IMAP subscription management dialog
-    if (angular.isDefined(fetchAll) && fetchAll) {
-      this.fetchAll = true;
-      this.$getMailboxes();
     }
   }
 

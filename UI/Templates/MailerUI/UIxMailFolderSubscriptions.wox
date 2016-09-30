@@ -22,15 +22,20 @@
     </md-toolbar>
 
     <md-dialog-content class="md-dialog-content" layout="column">
+      <div layout="row" layout-align="center center"
+           ng-if="subscriptions.loading">
+        <md-progress-circular class="md-accent"
+                              md-mode="indeterminate"><!-- progress --></md-progress-circular>
+      </div>
       <md-list>
-        <md-list-item ng-repeat="folder in subscriptions.account.$flattenMailboxes({all: true })"
+        <md-list-item ng-repeat="folder in subscriptions.account.$flattenMailboxes({all: true }) | filter:subscriptions.filter"
 		      md-item-size="48"
-		      ng-hide="subscriptions.app.metadataForFolder(folder).special">
+		      ng-hide="subscriptions.metadataForFolder(folder).special">
           <div ng-class="'sg-child-level-' + folder.level">
-            <md-icon>{{subscriptions.app.metadataForFolder(folder).icon}}</md-icon>
+            <md-icon>{{subscriptions.metadataForFolder(folder).icon}}</md-icon>
           </div>
           <p class="sg-item-name">
-            {{subscriptions.app.metadataForFolder(folder).name}}
+            {{subscriptions.metadataForFolder(folder).name}}
           </p>
 	  <md-checkbox class="md-secondary"
 		       ng-model="folder.subscribed"
@@ -42,8 +47,11 @@
       </md-list>
     </md-dialog-content>
 
-    <md-dialog-actions>
-      <md-button type="button" ng-click="subscriptions.close()"><var:string label:value="Close"/></md-button>
+    <md-dialog-actions ng-hide="subscriptions.loading">
+      <md-input-container class="md-flex" md-no-float="md-no-float">
+        <md-icon>search</md-icon>
+        <input ng-model="subscriptions.filter.name" type="search" label:placeholder="Filter"/>
+      </md-input-container>
     </md-dialog-actions>
 
   </md-dialog>

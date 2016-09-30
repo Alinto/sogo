@@ -187,7 +187,7 @@
         clickOutsideToClose: true,
         escapeToClose: true,
         locals: {
-          srcApp: vm,
+          metadataForFolder: metadataForFolder,
           srcAccount: account
         }
       }).finally(function() {
@@ -197,15 +197,24 @@
       /**
        * @ngInject
        */
-      SubscriptionsDialogController.$inject = ['$scope', '$mdDialog', 'srcApp', 'srcAccount'];
-      function SubscriptionsDialogController($scope, $mdDialog, srcApp, srcAccount) {
+      SubscriptionsDialogController.$inject = ['$scope', '$mdDialog', 'metadataForFolder', 'srcAccount'];
+      function SubscriptionsDialogController($scope, $mdDialog, metadataForFolder, srcAccount) {
         var vm = this;
 
-        vm.app = srcApp;
-        vm.account = new Account({id: srcAccount.id,
-                                  name: srcAccount.name},
-                                 true);
+        vm.loading = true;
+        vm.filter = { name: '' };
+        vm.metadataForFolder = metadataForFolder;
+        vm.account = new Account({
+          id: srcAccount.id,
+          name: srcAccount.name
+        });
         vm.close = close;
+
+
+        vm.account.$getMailboxes().then(function() {
+          vm.loading = false;
+        });
+
 
         function close() {
           $mdDialog.cancel();
