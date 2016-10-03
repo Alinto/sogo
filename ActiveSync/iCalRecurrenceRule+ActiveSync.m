@@ -37,10 +37,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalByDayMask.h>
 
+#import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalTimeZone.h>
+
 #import "NSCalendarDate+ActiveSync.h"
 #import "NSDate+ActiveSync.h"
 
 @implementation iCalRecurrenceRule (ActiveSync)
+
+- (NSCalendarDate *) _adjustedStartDate
+{
+  iCalTimeZone *timeZone;
+
+  timeZone = [(iCalDateTime *)[[self parent] firstChildWithTag: @"dtstart"] timeZone];
+  if (timeZone)
+    return [timeZone computedDateForDate: [[self parent] startDate]];
+  else
+    return [[self parent] startDate];
+}
 
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
@@ -90,7 +104,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         {
           // No byDayMask, we take the event's start date to compute the DayOfWeek
           // 0 == Sunday, 6 == Saturday
-          v = (1 << [[[self parent] startDate] dayOfWeek]);
+          v = (1 << [[self _adjustedStartDate] dayOfWeek]);
         }
 
       [s appendFormat: @"<Recurrence_DayOfWeek xmlns=\"Calendar:\">%d</Recurrence_DayOfWeek>", v];
@@ -139,8 +153,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         {
           // Simple reccurrence rule of type "Monthly"
           type = 2;
-          [s appendFormat: @"<Recurrence_DayOfMonth xmlns=\"Calendar:\">%d</Recurrence_DayOfMonth>",
-             (int)[[[self parent] startDate] dayOfMonth]];
+          [s appendFormat: @"<Recurrence_DayOfMonth xmlns=\"Calendar:\">%d</Recurrence_DayOfMonth>", [[self _adjustedStartDate] dayOfMonth]];
         }
     }
   else if ([self frequency] == iCalRecurrenceFrequenceYearly)
@@ -178,10 +191,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       else
         {
           type = 5;
-          [s appendFormat: @"<Recurrence_DayOfMonth xmlns=\"Calendar:\">%d</Recurrence_DayOfMonth>",
-             (int)[[[self parent] startDate] dayOfMonth]];
-          [s appendFormat: @"<Recurrence_MonthOfYear xmlns=\"Calendar:\">%d</Recurrence_MonthOfYear>",
-             (int)[[[self parent] startDate] monthOfYear]];
+          [s appendFormat: @"<Recurrence_DayOfMonth xmlns=\"Calendar:\">%d</Recurrence_DayOfMonth>", [[self _adjustedStartDate] dayOfMonth]];
+          [s appendFormat: @"<Recurrence_MonthOfYear xmlns=\"Calendar:\">%d</Recurrence_MonthOfYear>", [[self _adjustedStartDate] monthOfYear]]; 
 
         }
     }
