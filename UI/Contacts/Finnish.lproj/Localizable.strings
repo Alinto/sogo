@@ -41,20 +41,28 @@
 "Move To" = "Siirrä";
 "Copy To" = "Kopioi";
 "Add to" = "Lisää";
+
 /* Subheader of empty addressbook */
 "No contact" = "Ei yhteystietoa";
+
 /* Subheader of system addressbook */
 "Start a search to browse this address book" = "Aloita haku tästä osoitekirjasta";
+
 /* Number of contacts in addressbook; string is prefixed by number */
 "contacts" = "yhteystietoa";
+
 /* No contact matching search criteria */
 "No matching contact" = "Ei vastaavaa yhteystietoa";
+
 /* Number of contacts matching search criteria; string is prefixed by number */
 "matching contacts" = "vastaavaa yhteystietoa";
+
 /* Number of selected contacts in list */
 "selected" = "valittu";
+
 /* Empty right pane */
 "No contact selected" = "Ei valittua yhteystietoa";
+
 /* Tooltips */
 "Create a new address book card" = "Luo uusi osoitekirjakortti";
 "Create a new list" = "Luo uusi lista";
@@ -95,9 +103,11 @@
 "Work" = "Työ";
 "Mobile" = "GSM";
 "Pager" = "Hakulaite";
+
 /* categories */
 "contacts_category_labels" = "Kollega, Kilpailija, Asiakas, Ystävä, Perhe, Liikekummpani, Palveluntarjoaja, Lehdistö, VIP";
 "New category" = "Uusi kategoria";
+
 /* adresses */
 "Title" = "Titteli";
 "Service" = "Palvelu";
@@ -134,12 +144,14 @@
 = "et voi poistaa tai lopettaa henkilökohtaisen osoitekirjasi tilausta.";
 "Are you sure you want to delete the selected contacts?"
 = "Haluatko varmasti poistaa valitut yhteystiedot?";
+"Are you sure you want to delete the card of %{0}?" = "Oletko varma että haluat poistaa osoitekortin %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "Et voi poistaa \"%{0}\"n korttia.";
 "You cannot subscribe to a folder that you own!"
 = "Et voi tilata omistamaasi kansiota.";
 "Unable to subscribe to that folder!"
 = "Kansioon kirjautuminen ei onnistu.";
+
 /* acls */
 "Access rights to" = "Pääsyoikeudet";
 "For user" = "Käyttäjälle";
@@ -158,11 +170,15 @@
 "The selected contact has no email address."
 = "Valitulla yhteystiedolla ei ole sähköpostiosoitetta.";
 "Please select a contact." = "Ole hyvä ja valitse yhteystieto.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} osoitekortti(a) kopioitu";
+"%{0} card(s) moved" = "%{0} osoitekortti(a) siirretty";
 "SoAccessDeniedException" = "Et voi kirjoittaa tähän osoitekirjaan.";
 "Forbidden" = "Et voi kirjoittaa tähän osoitekirjaan.";
 "Invalid Contact" = "Valittua yhteystietoa ei enää ole. ";
 "Unknown Destination Folder" = "Valittua kohdeosoitekirjaa ei enää ole.";
+
 /* Lists */
 "List details" = "Luettelon tiedot";
 "List name" = "Luettelon nimi";
@@ -175,6 +191,8 @@
 "Export" = "Vie";
 "Export Address Book..." = "Vie osoitekirja...";
 "View Raw Source" = "Näytä lähdekoodi";
+
+/* Import */
 "Import Cards" = "Tuo kortteja";
 "Select a vCard or LDIF file." = "Valitse vCard tai LDIF tiedosto.";
 "Upload" = "Lataa";
@@ -184,6 +202,7 @@
 "No card was imported." = "Yhtään korttia ei tuotu.";
 "A total of %{0} cards were imported in the addressbook." = "Yhteensä %{0} korttia tuotu osoitekirjaan.";
 "Reload" = "Päivitä";
+
 /* Properties window */
 "Address Book Name" = "Osoitekirjan nimi";
 "Links to this Address Book" = "Linkit tähän osoitekirjaan";
@@ -231,3 +250,12 @@
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Hakualue";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Kohteen valinta";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

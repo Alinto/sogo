@@ -120,3 +120,54 @@
 
 /* Error message display bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Syötä vähintään %{minimumSearchLength} merkkiä";
+
+/* Toggle visibility (ex: mail account in left navigation menu) */
+"Toggle visibility" = "Vaihda näkyvyyttä";
+
+/* Question mark shows list of hotkeys */
+"Show or hide this help" = "Näytä tai piilota tämä apu";
+
+/* Space key */
+"key_space" = "space";
+
+/* Up arrow key */
+"key_up" = "↑";
+
+/* Down arrow key */
+"key_down" = "↓";
+
+/* Left arrow key */
+"key_left" = "←";
+
+/* Right arrow key */
+"key_right" = "→";
+
+/* Shift and up arrow combo keys */
+"key_shift+up" = "shift + ↑";
+
+/* Shift and down arrow combo keys */
+"key_shift+down" = "shift + ↓";
+
+/* Backspace key */
+"key_backspace" = "backspace";
+
+/* Hotkey to start a search */
+"hotkey_search" = "s";
+
+/* Hotkey description to select next list item */
+"View next item" = "Näytä seuraava kohde";
+
+/* Hotkey description to select previous list item */
+"View previous item" = "Näytä edellinen kohde";
+
+/* Hotkey description to add next list item to selection */
+"Add next item to selection" = "Lisää seuraava kohde valintaan";
+
+/* Hotkey description to add previous list item to selection */
+"Add previous item to selection" = "Lisää edellinen kohde valintaan";
+
+/* Hotkey description to move backward in current view */
+"Move backward" = "Siirry taaksepäin";
+
+/* Hotkey description to move forward in current view */
+"Move forward" = "Siirry eteenpäin";

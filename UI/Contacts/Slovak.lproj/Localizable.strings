@@ -21,6 +21,7 @@
 "HomePhone" = "Telefón domov";
 "Lastname" = "Priezvysko";
 "Location" = "Umiestnenie";
+"Add a category" = "Pridať kategóriu";
 "MobilePhone" = "Telefón mobil";
 "Name" = "Meno";
 "OfficePhone" = "Telefón kancelária";
@@ -40,6 +41,28 @@
 "Move To" = "Presuň do";
 "Copy To" = "Kopíruj do";
 "Add to" = "Pridaj do";
+
+/* Subheader of empty addressbook */
+"No contact" = "Žiadny kontakt";
+
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Začnite hľadanie pre prehľadávanie tohto adresára";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "kontakty";
+
+/* No contact matching search criteria */
+"No matching contact" = "Nezhoduje sa žiadny kontakt";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "zhodujúce sa kontakty";
+
+/* Number of selected contacts in list */
+"selected" = "zvolené";
+
+/* Empty right pane */
+"No contact selected" = "Žiadny vybraný kontakt";
+
 /* Tooltips */
 "Create a new address book card" = "Vytvor novú vizitku";
 "Create a new list" = "Vytvor nový zoznam";
@@ -80,9 +103,11 @@
 "Work" = "Do práce";
 "Mobile" = "Mobil";
 "Pager" = "Pager";
+
 /* categories */
 "contacts_category_labels" = "Kolega, Konkurent, Zákazník, Priateľ, Rodina, Obchodný partner, Dodávateľ, Novinár, VIP";
 "New category" = "Nová kategória";
+
 /* adresses */
 "Title" = "Názov";
 "Service" = "Služba";
@@ -93,7 +118,6 @@
 "ZIP_Postal Code" = "Poštové smerové číslo";
 "Country" = "Krajina";
 "Web Page" = "WWW stránka";
-"Work" = "Práca";
 "Other Infos" = "Ostatné informácie";
 "Note" = "Poznámky";
 "Timezone" = "Časová zóna";
@@ -107,21 +131,27 @@
 "New Addressbook..." = "Nový adresár...";
 "Subscribe to an Addressbook..." = "Odoberať adresár...";
 "Remove the selected Addressbook" = "Odstráň označený adresár";
+"Subscribe to a shared folder" = "Odoberať zdielaný priečinok";
+"Search User" = "Hľadať užívatela";
 "Name of the Address Book" = "Názov adresára";
 "Are you sure you want to delete the selected address book?"
 = "Ste si istý že chcete odstrániť označený adresár?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Naozaj chcete odstrániť adresár \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "Nemôžete odstrániť ani zrušiť odber verejného adresára.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Nemôžete odstrániť ani zrušiť odber súkromného adresára.";
 "Are you sure you want to delete the selected contacts?"
 = "Ste si istý že chcete odstrániť označené kontakty?";
+"Are you sure you want to delete the card of %{0}?" = "Naozaj chcete odstrániť kontakt %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "Nemôžete odstrániť vizitku \"%{0}\".";
 "You cannot subscribe to a folder that you own!"
 = "Nemôžete sa prihlásiť na odber svojej vlastnej zložky.";
 "Unable to subscribe to that folder!"
 = "Nedá sa prihlásiť na odber tejto zložky.";
+
 /* acls */
 "Access rights to" = "Prístupové práva pre";
 "For user" = "Pre užívateľa";
@@ -140,11 +170,15 @@
 "The selected contact has no email address."
 = "Vybraný kontakt nemá žiadny email.";
 "Please select a contact." = "Prosím vyberte kontakt.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} kontakt(ov) skopírovaných";
+"%{0} card(s) moved" = "%{0} kontakt(ov) presunutých";
 "SoAccessDeniedException" = "Nemôžete písať do tohoto adresára.";
 "Forbidden" = "Nemôžete písať do tohoto adresára.";
 "Invalid Contact" = "Zvolený kontakt už neexistuje.";
 "Unknown Destination Folder" = "Vybraný adresár už neexistuje.";
+
 /* Lists */
 "List details" = "Detaily zoznamu";
 "List name" = "Meno zoznamu";
@@ -157,6 +191,8 @@
 "Export" = "Export";
 "Export Address Book..." = "Exportuj adresár...";
 "View Raw Source" = "Zobraziť surový zdroj";
+
+/* Import */
 "Import Cards" = "Importuj vizitky";
 "Select a vCard or LDIF file." = "Vyber vCard alebo LDIF súbor.";
 "Upload" = "Nahraj";
@@ -166,8 +202,60 @@
 "No card was imported." = "Žiadne vizitky neboli importované";
 "A total of %{0} cards were imported in the addressbook." = "Dokopy bolo do adresára importovaných %{0} vizitiek.";
 "Reload" = "Znovu načítaj";
+
 /* Properties window */
-"Address Book Name:" = "Meno adresára";
+"Address Book Name" = "Meno adresára";
 "Links to this Address Book" = "Odkazy k tomuto adresáru";
 "Authenticated User Access" = "Prístup pre overeného užívateľa";
 "CardDAV URL" = "CardDAV url";
+"Options" = "Možnosti";
+"Rename" = "Premenovať";
+"Subscriptions" = "Odoberania";
+"Global Addressbooks" = "Globálny adresár";
+"Search" = "Vyhľadať";
+"Sort" = "Zoraď";
+"Descending Order" = "Zoradiť zostupne";
+"Back" = "Späť";
+"Select All" = "Vybrať všetko";
+"Copy contacts" = "Kopírovať kontakty";
+"More messages options" = "Viac možností správ";
+"New Contact" = "Nový kontakt";
+"Close" = "Zatvoriť";
+"More contact options" = "Viac možností kontaktov";
+"Organization Unit" = "Organizačná jednotka";
+"Add Organizational Unit" = "Pridaj organizačná jednotku";
+"Type" = "Typ";
+"Email Address" = "E-mailová adresa";
+"New Email Address" = "Nová e-mailová adresa";
+"New Phone Number" = "Nové telefónne číslo";
+"URL" = "URL";
+"New URL" = "Nové URL";
+"street" = "ulica";
+"Postoffice" = "Pošta";
+"Region" = "Región";
+"Postal Code" = "Poštové smerové číslo";
+"New Address" = "Nová adresa";
+"Reset" = "Resetuj";
+"Description" = "Popis";
+"Add Member" = "Pridaj člena";
+"Subscribe" = "Pridaj odber";
+"Add Birthday" = "Pridaj narodeniny";
+"Import" = "Importuj";
+"More options" = "Viac možností";
+"Role" = "Rola";
+"Add Screen Name" = "Pridaj zobrazované meno";
+"Synchronization" = "Synchronizácia";
+"Synchronize" = "Synchronizuj";
+"Sucessfully subscribed to address book" = "Potvrdený odber adresára";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Rozsah vyhľadávania";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Prepnúť položku";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

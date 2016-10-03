@@ -344,6 +344,7 @@
 "Set as Junk" = "Постави као непожељно";
 
 "Sort" = "Поређај";
+"Order Received" = "Примљено захтева";
 "Descending Order" = "Опадајући ред";
 "Back" = "Назад";
 "Copy messages" = "Копирај поруке";
@@ -362,3 +363,15 @@
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Претражи опсег";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Управљај претплатама";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Филтер";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "ф";

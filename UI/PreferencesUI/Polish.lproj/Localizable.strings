@@ -293,6 +293,9 @@
 "Connection error" = "Błąd połączenia";
 "Service temporarily unavailable" = "Usługa chwilowo niedostępna";
 
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Włącz filtr";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Nazwa filtra";
 /* Button label */
