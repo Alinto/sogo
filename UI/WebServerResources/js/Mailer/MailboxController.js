@@ -173,17 +173,19 @@
     function _nextMessage($event) {
       var index = vm.selectedFolder.$selectedMessageIndex();
 
-      if (angular.isDefined(index))
+      if (angular.isDefined(index)) {
         index--;
-      else
+        if (vm.selectedFolder.$topIndex > 0)
+          vm.selectedFolder.$topIndex--;
+      }
+      else {
         // No message is selected, show oldest message
         index = vm.selectedFolder.getLength() - 1;
+        vm.selectedFolder.$topIndex = vm.selectedFolder.getLength();
+      }
 
       if (index > -1)
         selectMessage(vm.selectedFolder.$messages[index]);
-
-      if (vm.selectedFolder.$topIndex > 0)
-        vm.selectedFolder.$topIndex--;
 
       $event.preventDefault();
 
@@ -196,8 +198,11 @@
     function _previousMessage($event) {
       var index = vm.selectedFolder.$selectedMessageIndex();
 
-      if (angular.isDefined(index))
+      if (angular.isDefined(index)) {
         index++;
+        if (vm.selectedFolder.$topIndex < vm.selectedFolder.getLength())
+          vm.selectedFolder.$topIndex++;
+      }
       else
         // No message is selected, show newest
         index = 0;
@@ -206,9 +211,6 @@
         selectMessage(vm.selectedFolder.$messages[index]);
       else
         index = -1;
-
-      if (vm.selectedFolder.$topIndex < vm.selectedFolder.getLength())
-        vm.selectedFolder.$topIndex++;
 
       $event.preventDefault();
 

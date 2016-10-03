@@ -118,17 +118,19 @@
     function _nextCard($event) {
       var index = vm.selectedFolder.$selectedCardIndex();
 
-      if (angular.isDefined(index))
+      if (angular.isDefined(index)) {
         index--;
-      else
+        if (vm.selectedFolder.$topIndex > 0)
+          vm.selectedFolder.$topIndex--;
+      }
+      else {
         // No message is selected, show oldest message
         index = vm.selectedFolder.$cards.length() - 1;
+        vm.selectedFolder.$topIndex = vm.selectedFolder.getLength();
+      }
 
       if (index > -1)
         selectCard(vm.selectedFolder.$cards[index]);
-
-      if (vm.selectedFolder.$topIndex > 0)
-        vm.selectedFolder.$topIndex--;
 
       $event.preventDefault();
 
@@ -141,8 +143,11 @@
     function _previousCard($event) {
       var index = vm.selectedFolder.$selectedCardIndex();
 
-      if (angular.isDefined(index))
+      if (angular.isDefined(index)) {
         index++;
+        if (vm.selectedFolder.$topIndex < vm.selectedFolder.$cards.length)
+          vm.selectedFolder.$topIndex++;
+      }
       else
         // No message is selected, show newest
         index = 0;
@@ -151,9 +156,6 @@
         selectCard(vm.selectedFolder.$cards[index]);
       else
         index = -1;
-
-      if (vm.selectedFolder.$topIndex < vm.selectedFolder.$cards.length)
-        vm.selectedFolder.$topIndex++;
 
       $event.preventDefault();
 
