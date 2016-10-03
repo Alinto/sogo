@@ -1670,10 +1670,9 @@ static NSArray *reminderValues = nil;
           value = [[identity objectForKey: @"email"]
                     stringByTrimmingSpaces];
 
-          /* We make sure that the "custom" value is different from the values
-             returned by the user directory service. */
-          if ([value length] == 0
-              || [[user allEmails] containsObject: value])
+          /* We make sure that the "custom" value is different from the system email */
+          if ([value length] == 0)
+            || [[user systemEmail] isEqualToString: value])
             value = nil;
           [userDefaults setMailCustomEmail: value];
 

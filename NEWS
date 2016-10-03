@@ -5,7 +5,7 @@ New features
  -
 
 Enhancements
- -
+ - [web] allow custom email address to be one of the user's profile (#3551)
 
 Bug fixes
  - [eas] make sure we don't sleep for too long when EAS processes need interruption

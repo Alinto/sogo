@@ -607,11 +607,11 @@
     *encryption, *scheme, *action, *query, *customEmail, *defaultEmail, *sieveServer;
   NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts;
   NSNumber *port;
-  NSMutableArray *identities;
-  NSArray *mails;
+  NSMutableArray *identities, *mails;
   NSURL *url, *cUrl;
   unsigned int count, max, default_identity;
   NSInteger defaultPort;
+  NSUInteger index;
 
   [self userDefaults];
 
@@ -692,7 +692,7 @@
   defaultEmail = [NSString stringWithFormat: @"%@@%@", [self loginInDomain], [self domain]];
   default_identity = 0;
   identities = [NSMutableArray new];
-  mails = [self allEmails];
+  mails = [NSMutableArray arrayWithArray: [self allEmails]];
   [mailAccount setObject: [mails objectAtIndex: 0] forKey: @"name"];
 
   replyTo = [_defaults mailReplyTo];
@@ -709,6 +709,17 @@
         {
           if ([customEmail length] == 0)
             customEmail = [mails objectAtIndex: 0];
+          else if ([fullName length] == 0)
+            {
+              // Custom email but default fullname; if the custom email is
+              // one of the user's emails, remove the duplicated entry
+              index = [mails indexOfObject: customEmail];
+              if (index != NSNotFound)
+                {
+                  [mails removeObjectAtIndex: index];
+                  max--;
+                }
+            }
 
           if ([fullName length] == 0)
             {
