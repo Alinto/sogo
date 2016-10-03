@@ -1,9 +1,9 @@
-3.1.6 (2016-MM-DD)
+3.2.0 (2016-10-03)
 ------------------
 
 New features
  - [web] added IMAP folder subscriptions management (#255)
- - [web] keyboard shortcuts (#1711, #1467, #3817)
+ - [web] keyboard hotkeys (#1711, #1467, #3817)
  - [eas] initial support for server-side mailbox search operations
 
 Enhancements
