@@ -23,6 +23,7 @@ Bug fixes
  - [eas] properly escape all email and address fields
  - [eas] properly generate yearly rrule
  - [eas] make sure we don't sleep for too long when EAS processes need interruption
+ - [eas] fixed recurring events with timezones for EAS (#3822)
  - [web] restored functionality to save unknown recipient emails to address book on send
  - [web] fixed ripple blocking the form when submitting no values (#3808)
  - [web] fixed error handling when renaming a mailbox
