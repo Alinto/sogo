@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  AddressBookController.$inject = ['$scope', '$q', '$window', '$state', '$timeout', '$mdDialog', '$mdToast', 'Account', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'sgHotkeys', 'stateAddressbooks', 'stateAddressbook'];
-  function AddressBookController($scope, $q, $window, $state, $timeout, $mdDialog, $mdToast, Account, Card, AddressBook, Dialog, Settings, sgHotkeys, stateAddressbooks, stateAddressbook) {
+  AddressBookController.$inject = ['$scope', '$q', '$window', '$state', '$timeout', '$mdDialog', '$mdToast', 'Account', 'Card', 'AddressBook', 'sgFocus', 'Dialog', 'sgSettings', 'sgHotkeys', 'stateAddressbooks', 'stateAddressbook'];
+  function AddressBookController($scope, $q, $window, $state, $timeout, $mdDialog, $mdToast, Account, Card, AddressBook, focus, Dialog, Settings, sgHotkeys, stateAddressbooks, stateAddressbook) {
     var vm = this, hotkeys = [];
 
     AddressBook.selectedFolder = stateAddressbook;
@@ -24,6 +24,7 @@
     vm.selectAll = selectAll;
     vm.sort = sort;
     vm.sortedBy = sortedBy;
+    vm.searchMode = searchMode;
     vm.cancelSearch = cancelSearch;
     vm.newMessage = newMessage;
     vm.newMessageWithSelectedCards = newMessageWithSelectedCards;
@@ -42,6 +43,11 @@
 
 
     function _registerHotkeys(keys) {
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_search'),
+        description: l('Search'),
+        callback: searchMode
+      }));
       keys.push(sgHotkeys.createHotkey({
         key: l('key_create_card'),
         description: l('Create a new address book card'),
@@ -268,6 +274,11 @@
 
     function sortedBy(field) {
       return AddressBook.$query.sort == field;
+    }
+
+    function searchMode() {
+      vm.mode.search = true;
+      focus('search');
     }
 
     function cancelSearch() {
