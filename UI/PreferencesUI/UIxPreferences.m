@@ -1671,8 +1671,8 @@ static NSArray *reminderValues = nil;
                     stringByTrimmingSpaces];
 
           /* We make sure that the "custom" value is different from the system email */
-          if ([value length] == 0)
-            || [[user systemEmail] isEqualToString: value])
+          if ([value length] == 0
+              || [[user systemEmail] isEqualToString: value])
             value = nil;
           [userDefaults setMailCustomEmail: value];
 
