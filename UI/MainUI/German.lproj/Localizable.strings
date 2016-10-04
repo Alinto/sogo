@@ -6,6 +6,8 @@
 "Domain" = "Domain";
 "Remember username" = "Benutzername merken";
 "Connect" = "Anmelden";
+"Authenticating" = "Sie werden authentifiziert...";
+"Welcome" = "Willkommen,";
 "Authentication Failed" = "Authentifizierung fehlgeschlagen";
 "Wrong username or password." = "Falscher Benutzername oder falsches Passwort";
 "cookiesNotEnabled" = "Anmeldung an SOGo ist nicht möglich, da Cookies in Ihrem Browser deaktiviert sind. Bitte aktivieren Sie Cookies in Ihrem Browser und versuchen Sie es erneut.";
