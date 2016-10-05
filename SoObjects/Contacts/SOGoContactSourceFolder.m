@@ -38,6 +38,7 @@
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/WOResponse+SOGo.h>
 
+#import "NSArray+Contacts.h"
 #import "SOGoContactFolders.h"
 #import "SOGoContactGCSFolder.h"
 #import "SOGoContactLDIFEntry.h"

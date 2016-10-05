@@ -21,6 +21,7 @@ Contacts_OBJC_FILES =			\
 	SOGoUserFolder+Contacts.m	\
 	SOGoContactEntryPhoto.m		\
 	\
+	NSArray+Contacts.m		\
 	NSDictionary+LDIF.m		\
 	NSString+LDIF.m
 
