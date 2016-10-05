@@ -28,8 +28,8 @@
 {
   id firstObject, otherFirstObject;
 
-  firstObject = [self objectAtIndex: 0];
-  otherFirstObject = [otherRecord objectAtIndex: 0];
+  firstObject      = [self count] > 0 ? [self objectAtIndex: 0] : nil;
+  otherFirstObject = [otherRecord count] > 0 ? [otherRecord objectAtIndex: 0] : nil;
 
   return [firstObject compareCaseInsensitiveAscending: otherFirstObject];
 }
