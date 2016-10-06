@@ -6,6 +6,7 @@ New features
 
 Enhancements
  - [web] allow custom email address to be one of the user's profile (#3551)
+ - [web] the left column of the attendees editor is resizable (not supported in IE) (#1479, #3667)
 
 Bug fixes
  - [eas] make sure we don't sleep for too long when EAS processes need interruption

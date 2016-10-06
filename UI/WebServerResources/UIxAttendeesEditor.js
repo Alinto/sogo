@@ -1666,6 +1666,12 @@ function onFreeBusyLoadHandler() {
     Event.observe(window, "resize", onWindowResize);
     $$('TABLE#freeBusy TD.freeBusyData DIV').first().observe("scroll", onScroll);
     scrollToEvent();
+
+    // Recompute dimensions of attendees cell (left size) and freebusy data cell (right size)
+    // when the attendees cell is resized.
+    new ResizeSensor($('freeBusyAttendees').parentNode, function() {
+            onWindowResize(null);
+    });
 }
 
 document.observe("dom:loaded", onFreeBusyLoadHandler);

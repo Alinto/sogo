@@ -40,12 +40,18 @@ TABLE#freeBusy TH
   border: 0px;
   vertical-align: top; }
 
-TABLE#freeBusy TD.freeBusyHeader DIV,
-TABLE#freeBusy TD.freeBusyAttendees DIV
+TABLE#freeBusy TD.freeBusyHeader DIV
 { overflow: hidden; }
+
+TABLE#freeBusy TD.freeBusyAttendees DIV
+{ overflow-x: auto; }
 
 TABLE#freeBusy TD.freeBusyData DIV
 { overflow: scroll; }
+
+TABLE#freeBusyAttendees {
+  width: 100%;
+}
 
 TABLE#freeBusyAttendees TD.attendeeStatus
 { width: 24px;
@@ -144,16 +150,20 @@ TABLE#freeBusyAttendees TD
 TABLE#freeBusyData TR.futureData TD
 { border-left: none; }
 
-TABLE#freeBusy TD.freeBusyAttendees DIV
-{ width: 16em; }
+TABLE#freeBusy TD.freeBusyAttendees > DIV
+{ min-width: 16em;
+  resize: horizontal; /* NOTE: unsupported property in IE */ }
 
 TABLE#freeBusyAttendees TD.attendees INPUT
 { background-image: url("abcard.png");
   background-repeat: no-repeat;
   background-position: 4px center;
   border: 0px;
-  width: 12em;
-  padding-left: 24px; }
+  box-sizing: border-box;
+  display: table-cell;
+  margin: 0;
+  padding: 6px 0 6px 24px;
+  width: 100%; }
 
 TABLE#freeBusyAttendees TR.futureAttendee INPUT
 { background-image: none;

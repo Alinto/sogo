@@ -11,7 +11,7 @@
   const:toolbar="none"
   const:popup="YES"
   const:cssFiles="datepicker.css,SOGoTimePicker.css"
-  const:jsFiles="datepicker.js,SOGoTimePicker.js">
+  const:jsFiles="datepicker.js,SOGoTimePicker.js,ResizeSensor.js">
   <div class="popupMenu" id="attendeesMenu">
     <ul><!-- space --></ul>
   </div>
