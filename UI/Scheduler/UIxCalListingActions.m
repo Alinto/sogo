@@ -455,10 +455,13 @@ static NSArray *tasksFields = nil;
 
           while ((newInfo = [currentInfos nextObject]))
             {
-              // Skip components that appear on disabled weekdays
-              weekDay = iCalWeekDayString[[[newInfo objectForKey: @"startDate"] dayOfWeek]];
-              if ([enabledWeekDays count] && ![enabledWeekDays containsObject: weekDay])
-                continue;
+              if ([newInfo objectForKey: @"startDate"])
+                {
+                  weekDay = iCalWeekDayString[[[newInfo objectForKey: @"startDate"] dayOfWeek]];
+                  if ([enabledWeekDays count] && ![enabledWeekDays containsObject: weekDay])
+                    // Skip components that appear on disabled weekdays
+                    continue;
+                }
 
               if ([fields containsObject: @"viewable"])
                 {

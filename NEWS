@@ -1,3 +1,10 @@
+3.2.1 (2016-10-DD)
+------------------
+
+Bug fixes
+ - [web] fixed tasks list when some weekdays are disabled
+
+
 3.2.0 (2016-10-03)
 ------------------
 
