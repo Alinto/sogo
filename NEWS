@@ -1,6 +1,9 @@
 3.2.1 (2016-10-DD)
 ------------------
 
+Enhancements
+ - [web] updated Angular to version 1.5.8
+
 Bug fixes
  - [web] fixed tasks list when some weekdays are disabled
 
