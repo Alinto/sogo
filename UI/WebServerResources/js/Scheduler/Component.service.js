@@ -31,12 +31,13 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Component constructor
    */
-  Component.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'sgComponent_STATUS', 'Preferences', 'Card', 'Gravatar', 'Resource', function($q, $timeout, $log, Settings, Component_STATUS, Preferences, Card, Gravatar, Resource) {
+  Component.$factory = ['$q', '$timeout', '$log', '$rootScope', 'sgSettings', 'sgComponent_STATUS', 'Preferences', 'Card', 'Gravatar', 'Resource', function($q, $timeout, $log, $rootScope, Settings, Component_STATUS, Preferences, Card, Gravatar, Resource) {
     angular.extend(Component, {
       STATUS: Component_STATUS,
       $q: $q,
       $timeout: $timeout,
       $log: $log,
+      $rootScope: $rootScope,
       $Preferences: Preferences,
       $Card: Card,
       $gravatar: Gravatar,
@@ -119,7 +120,8 @@
   /**
    * @function $startRefreshTimeout
    * @memberof Component
-   * @desc Starts the refresh timeout for the current selected component type, for all calendars
+   * @desc Starts the refresh timeout for the current selected list (events or tasks) and
+   * current view.
    */
   Component.$startRefreshTimeout = function(type) {
     var _this = this;
@@ -131,7 +133,7 @@
       // Restart the refresh timer, if needed
       var refreshViewCheck = Component.$Preferences.defaults.SOGoRefreshViewCheck;
       if (refreshViewCheck && refreshViewCheck != 'manually') {
-        var f = angular.bind(_this, Component.$filter, type);
+        var f = angular.bind(Component.$rootScope, Component.$rootScope.$emit, 'calendars:list');
         Component.$refreshTimeout = Component.$timeout(f, refreshViewCheck.timeInterval()*1000);
       }
     });
@@ -194,8 +196,8 @@
                                                    angular.extend(_this[queryKey], _this.$query));
 
       // Invalidate cached results of other type if $query has changed
-      otherType = (type == 'tasks')? '$events' : '$tasks';
       if (dirty) {
+        otherType = (type == 'tasks')? '$events' : '$tasks';
         delete Component[otherType];
         Component.$log.debug('force reload of ' + otherType);
       }

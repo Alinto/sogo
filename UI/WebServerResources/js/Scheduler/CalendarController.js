@@ -111,6 +111,12 @@
       changeDate($event, date);
     }
 
+    /**
+     * Format a date according to the current view.
+     * - Day/Multicolumn: name of weekday
+     * - Week: week number
+     * - Month: name of month
+     */
     function _formatDate(date) {
       if ($stateParams.view == 'month') {
         date.setDate(1);

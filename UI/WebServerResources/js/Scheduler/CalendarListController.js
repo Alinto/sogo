@@ -41,7 +41,7 @@
         vm.selectedList = 1;
         type = 'tasks';
       }
-      selectComponentType(type, { reload: true });
+      selectComponentType(type, { reload: true }); // fetch events/tasks lists
     });
 
     // Refresh current list when the list of calendars is modified

@@ -6,6 +6,7 @@ Enhancements
 
 Bug fixes
  - [web] fixed tasks list when some weekdays are disabled
+ - [web] fixed automatic refresh of calendar view
 
 
 3.2.0 (2016-10-03)
