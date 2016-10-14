@@ -8,6 +8,7 @@ Enhancements
 Bug fixes
  - [web] fixed tasks list when some weekdays are disabled
  - [web] fixed automatic refresh of calendar view
+ - [web] respect SOGoSearchMinimumWordLength in contacts list editor
 
 
 3.2.0 (2016-10-03)
