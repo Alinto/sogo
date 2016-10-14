@@ -893,24 +893,35 @@
                   <md-checkbox
                       ng-model="app.preferences.defaults.Vacation.startDateEnabled"
                       ng-true-value="1"
-                      ng-false-value="0">
+                      ng-false-value="0"
+                      ng-change="app.updateVacationStartDate()">
                     <var:string label:value="Enable auto reply on" />
                   </md-checkbox>
-                  <md-datepicker
+                  <md-input-container>
+                    <md-datepicker
                       ng-disabled="app.preferences.defaults.Vacation.startDateEnabled == 0"
-                      ng-model="app.preferences.defaults.Vacation.startDate"><!-- datepicker --></md-datepicker>
+                      ng-model="app.preferences.defaults.Vacation.startDate"
+                      ng-change="app.updateVacationStartDate()"
+                      md-min-date="::app.tomorrow"
+                      md-max-date="app.vacationEndDate"><!-- datepicker --></md-datepicker>
+                  </md-input-container>
                 </div>
 
-                <div layout="row">
+                <div>
                   <md-checkbox
                       ng-model="app.preferences.defaults.Vacation.endDateEnabled"
                       ng-true-value="1"
-                      ng-false-value="0">
+                      ng-false-value="0"
+                      ng-change="app.updateVacationEndDate()">
                     <var:string label:value="Disable auto reply on" />
                   </md-checkbox>
+                  <md-input-container>
                   <md-datepicker
                       ng-disabled="app.preferences.defaults.Vacation.endDateEnabled == 0"
-                      ng-model="app.preferences.defaults.Vacation.endDate"><!-- datepicker --></md-datepicker>
+                      ng-model="app.preferences.defaults.Vacation.endDate"
+                      ng-change="app.updateVacationEndDate()"
+                      md-min-date="app.vacationStartDate"><!-- datepicker --></md-datepicker>
+                  </md-input-container>
                 </div>
 
                 <div>

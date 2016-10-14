@@ -9,7 +9,7 @@
    */
   PreferencesController.$inject = ['$q', '$window', '$state', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgFocus', 'Dialog', 'User', 'Account', 'statePreferences', 'Authentication'];
   function PreferencesController($q, $window, $state, $mdMedia, $mdSidenav, $mdDialog, $mdToast, focus, Dialog, User, Account, statePreferences, Authentication) {
-    var vm = this, account, mailboxes = [];
+    var vm = this, account, mailboxes = [], today = new Date();
 
     vm.preferences = statePreferences;
     vm.passwords = { newPassword: null, newPasswordConfirmation: null };
@@ -38,6 +38,9 @@
     vm.timeZonesListFilter = timeZonesListFilter;
     vm.timeZonesSearchText = '';
     vm.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
+    vm.tomorrow = today.addDays(1);
+    vm.updateVacationStartDate = updateVacationStartDate;
+    vm.updateVacationEndDate = updateVacationEndDate;
 
     // Fetch a flatten version of the mailboxes list of the main account (0)
     // This list will be forwarded to the Sieve filter controller
@@ -55,6 +58,8 @@
     statePreferences.ready().then(function() {
       if (statePreferences.defaults.SOGoAlternateAvatar)
         User.$alternateAvatar = statePreferences.defaults.SOGoAlternateAvatar;
+      updateVacationStartDate();
+      updateVacationEndDate();
     });
 
     function go(module, form) {
@@ -282,7 +287,7 @@
       domains = [];
 
       // We do some sanity checks
-      if (window.forwardConstraints > 0 &&
+      if ($window.forwardConstraints > 0 &&
           angular.isDefined(vm.preferences.defaults.Forward) &&
           vm.preferences.defaults.Forward.enabled &&
           angular.isDefined(vm.preferences.defaults.Forward.forwardAddress)) {
@@ -290,7 +295,7 @@
         addresses = vm.preferences.defaults.Forward.forwardAddress.split(",");
 
         // We first extract the list of 'known domains' to SOGo
-        defaultAddresses = window.defaultEmailAddresses.split(/, */);
+        defaultAddresses = $window.defaultEmailAddresses.split(/, */);
 
         _.forEach(defaultAddresses, function(adr) {
           var domain = adr.split("@")[1];
@@ -302,11 +307,11 @@
         // We check if we're allowed or not to forward based on the domain defaults
         for (i = 0; i < addresses.length && sendForm; i++) {
           domain = addresses[i].split("@")[1].toLowerCase();
-          if (domains.indexOf(domain) < 0 && window.forwardConstraints == 1) {
+          if (domains.indexOf(domain) < 0 && $window.forwardConstraints == 1) {
             Dialog.alert(l('Error'), l("You are not allowed to forward your messages to an external email address."));
             sendForm = false;
           }
-          else if (domains.indexOf(domain) >= 0 && window.forwardConstraints == 2) {
+          else if (domains.indexOf(domain) >= 0 && $window.forwardConstraints == 2) {
             Dialog.alert(l('Error'), l("You are not allowed to forward your messages to an internal email address."));
             sendForm = false;
           }
@@ -365,6 +370,24 @@
       return _.filter(vm.timeZonesList, function(value) {
         return value.toUpperCase().indexOf(filter.toUpperCase()) >= 0;
       });
+    }
+
+    function updateVacationStartDate() {
+      if (statePreferences.defaults &&
+          statePreferences.defaults.Vacation &&
+          statePreferences.defaults.Vacation.startDateEnabled)
+        vm.vacationStartDate = statePreferences.defaults.Vacation.startDate;
+      else
+        vm.vacationStartDate = vm.tomorrow;
+    }
+
+    function updateVacationEndDate() {
+      if (statePreferences.defaults &&
+          statePreferences.defaults.Vacation &&
+          statePreferences.defaults.Vacation.endDateEnabled)
+        vm.vacationEndDate = statePreferences.defaults.Vacation.endDate;
+      else
+        vm.vacationEndDate = undefined;
     }
   }
 
