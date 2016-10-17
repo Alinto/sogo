@@ -721,11 +721,22 @@
         <p><var:string label:value="Select an ICS file."/></p>
       </md-dialog-content>
       <md-dialog-actions>
-        <md-progress-circular class="md-accent"
-                              md-mode="determinate"
-                              md-diameter="20px"
-                              ng-disabled="!$CalendarImportDialogController.uploader.isUploading"
-                              ng-value="$CalendarImportDialogController.uploader.progress"><!-- progress --></md-progress-circular>
+        <div layout="row" layout-align="space-around" class="md-flex"
+             ng-if="$CalendarImportDialogController.uploader.isUploading">
+          <md-progress-circular class="md-accent"
+                                md-mode="determinate"
+                                md-diameter="25"
+                                ng-if="$CalendarImportDialogController.uploader.progress != 100"
+                                value="{{$CalendarImportDialogController.uploader.progress}}">
+            <!-- while uploading -->
+          </md-progress-circular>
+          <md-progress-circular class="md-warn"
+                                md-mode="indeterminate"
+                                md-diameter="25"
+                                ng-if="$CalendarImportDialogController.uploader.progress == 100">
+            <!-- while waiting for server's response -->
+          </md-progress-circular>
+        </div>
         <label class="md-button" for="file-input" ng-hide="$CalendarImportDialogController.uploader.isUploading">
           <span><var:string label:value="Upload"/></span>
         </label>

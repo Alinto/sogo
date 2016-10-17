@@ -339,7 +339,7 @@
             </md-button>
             <md-button class="sg-icon-button"
                        ng-show="addressbook.selectedFolder.acls.objectEraser"
-                       ng-click="addressbook.confirmDeleteSelectedCards()">
+                       ng-click="addressbook.confirmDeleteSelectedCards($event)">
               <md-icon>delete</md-icon>
             </md-button>
             <md-menu>
@@ -542,11 +542,22 @@
         <p><var:string label:value="Select a vCard or LDIF file."/></p>
       </md-dialog-content>
       <md-dialog-actions>
-        <md-progress-circular class="md-accent"
-                              md-mode="determinate"
-                              md-diameter="20px"
-                              ng-disabled="!$CardsImportDialogController.uploader.isUploading"
-                              ng-value="$CardsImportDialogController.uploader.progress"><!-- progress --></md-progress-circular>
+        <div layout="row" layout-align="space-around" class="md-flex"
+             ng-if="$CardsImportDialogController.uploader.isUploading">
+          <md-progress-circular class="md-accent"
+                                md-mode="determinate"
+                                md-diameter="25"
+                                ng-if="$CardsImportDialogController.uploader.progress != 100"
+                                value="{{$CardsImportDialogController.uploader.progress}}">
+            <!-- while uploading -->
+          </md-progress-circular>
+          <md-progress-circular class="md-warn"
+                                md-mode="indeterminate"
+                                md-diameter="25"
+                                ng-if="$CardsImportDialogController.uploader.progress == 100">
+            <!-- while waiting for server's response -->
+          </md-progress-circular>
+        </div>
         <label class="md-button" for="file-input" ng-hide="$CardsImportDialogController.uploader.isUploading">
           <span><var:string label:value="Upload"/></span>
         </label>
