@@ -11,6 +11,7 @@ Bug fixes
  - [web] respect SOGoSearchMinimumWordLength in contacts list editor
  - [web] improved memory usage when importing very large address books
  - [web] fixed progress indicator while importing cards or events and tasks
+ - [web] improved detection of changes in CKEditor (#3839)
  - [core] only consider SMTP addresses for AD's proxyAddresses (#3842)
 
 

@@ -60,7 +60,7 @@
         }
 
         ck = CKEDITOR.replace(elm[0], options);
-        ck.on('pasteState', function() {
+        ck.on('change', function() {
           $scope.$apply(function() {
             ngModel.$setViewValue(ck.getData());
           });
