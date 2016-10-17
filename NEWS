@@ -12,6 +12,7 @@ Bug fixes
  - [web] improved memory usage when importing very large address books
  - [web] fixed progress indicator while importing cards or events and tasks
  - [web] improved detection of changes in CKEditor (#3839)
+ - [web] fixed vCard generation for tags with no type (#3826)
  - [core] only consider SMTP addresses for AD's proxyAddresses (#3842)
 
 

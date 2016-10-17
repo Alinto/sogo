@@ -202,9 +202,13 @@ convention:
   list = [allValues objectEnumerator];
   while ((value = [list nextObject]))
     {
-      element = [CardElement simpleElementWithTag: elementTag
-                                       singleType: type
-                                            value: value];
+      if ([type length])
+        element = [CardElement simpleElementWithTag: elementTag
+                                         singleType: type
+                                              value: value];
+      else
+        element = [CardElement simpleElementWithTag: elementTag
+                                              value: value];
       [self addChild: element];
     }
 }
