@@ -926,9 +926,12 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 	    {
 	      ldapValue = [allValues objectAtIndex: i];
 	      r = [ldapValue rangeOfString: @":"];
+
 	      if (r.length)
 		{
-		  [emails addObject: [ldapValue substringFromIndex: r.location+1]];
+		  // We only keep "smtp" ones
+		  if ([[ldapValue lowercaseString] hasPrefix: @"smtp"])
+		    [emails addObject: [ldapValue substringFromIndex: r.location+1]];
 		}
 	      else
 		[emails addObject: ldapValue];
