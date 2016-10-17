@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2006-2014 Inverse inc.
+  Copyright (C) 2006-2016 Inverse inc.
 
   This file is part of SOGo
 
@@ -57,7 +56,6 @@
 
 - (id <WOActionResults>) exportAction
 {
-  WORequest *request;
   WOResponse *response;
   NSArray *contactsId;
   NSEnumerator *uids;
@@ -67,7 +65,6 @@
   NSMutableString *content;
 
   content = [NSMutableString string];
-  request = [context request];
   sourceFolder = [self clientObject];
   contactsId = [[[[context request] contentAsString] objectFromJSONString] objectForKey: @"uids"];
 
@@ -245,17 +242,21 @@
 
 - (int) importVcardData: (NSString *) vcardData
 {
+  NSAutoreleasePool *pool;
   NSArray *allCards;
-  int rc;
+  int rc, count;
 
   rc = 0;
+
+  pool = [[NSAutoreleasePool alloc] init];
   allCards = [NGVCard parseFromSource: vcardData];
 
-  if (allCards && [allCards count])
+  count = [allCards count];
+  if (allCards && count)
     {
       int i;
 
-      for (i = 0; i < [allCards count]; i++)
+      for (i = 0; i < count; i++)
 	{
 	  if (![self importVcard: [allCards objectAtIndex: i]])
 	    {
@@ -267,18 +268,23 @@
 	}
     }
 
+  RELEASE(pool);
+
   return rc;
 }
 
 - (BOOL) importVcard: (NGVCard *) card
 {
-  NSString *uid;
   SOGoContactGCSFolder *folder;
   SOGoContactGCSEntry *contact;
+  NSAutoreleasePool *pool;
+  NSString *uid;
+
   BOOL rc = NO;
 
   if (card)
     {
+      pool = [[NSAutoreleasePool alloc] init];
       folder = [self clientObject];
       uid = [folder globallyUniqueObjectId];
 
@@ -291,6 +297,7 @@
       [contact saveComponent: card];
       
       rc = YES;
+      RELEASE(pool);
     }
 
   return rc;

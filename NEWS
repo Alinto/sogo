@@ -9,6 +9,7 @@ Bug fixes
  - [web] fixed tasks list when some weekdays are disabled
  - [web] fixed automatic refresh of calendar view
  - [web] respect SOGoSearchMinimumWordLength in contacts list editor
+ - [web] improve memory usage when importing very large address books
 
 
 3.2.0 (2016-10-03)
