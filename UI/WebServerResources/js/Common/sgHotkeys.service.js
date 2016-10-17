@@ -71,6 +71,7 @@
     };
     // Char-code values for characters that require a key combinations
     var CHAR_CODES = {
+      42: '*',
       63: '?'
     };
 
@@ -272,6 +273,8 @@
               ret = callbackArray.splice(i, 1);
             }
           }
+          if (callbackArray.length === 0)
+            delete this._hotkeys[hotkey.key];
         }
         return ret;
       };
