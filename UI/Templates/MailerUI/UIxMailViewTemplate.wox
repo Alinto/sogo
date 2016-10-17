@@ -24,7 +24,7 @@
             <md-icon>close</md-icon>
           </md-button>
           <div class="md-flex"><!-- spacer --></div>
-          <md-button class="sg-icon-button" label:aria-label="flagged" ng-click="viewer.message.toggleFlag()">
+          <md-button class="sg-icon-button" label:aria-label="Flagged" ng-click="viewer.message.toggleFlag()">
             <md-icon ng-class="{'icon-star md-accent md-hue-2': viewer.message.isflagged,
                                'icon-star-border': !viewer.message.isflagged}"><!-- flag --></md-icon>
           </md-button>

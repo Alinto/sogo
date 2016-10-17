@@ -39,6 +39,7 @@
     vm.convertToEvent = convertToEvent;
     vm.convertToTask = convertToTask;
 
+
     _registerHotkeys(hotkeys);
 
     // One-way refresh of the parent window when modifying the message from a popup window.
@@ -105,7 +106,23 @@
 
     function _registerHotkeys(keys) {
       keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_reply'),
+        description: l('Reply to the message'),
+        callback: reply
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_replyall'),
+        description: l('Reply to sender and all recipients'),
+        callback: replyAll
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_forward'),
+        description: l('Forward selected message'),
+        callback: forward
+      }));
+      keys.push(sgHotkeys.createHotkey({
         key: l('hotkey_flag'),
+        description: l('Flagged'),
         callback: angular.bind(stateMessage, stateMessage.toggleFlag)
       }));
       keys.push(sgHotkeys.createHotkey({

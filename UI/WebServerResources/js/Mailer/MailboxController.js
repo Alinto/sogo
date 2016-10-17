@@ -73,6 +73,11 @@
         callback: newMessage
       }));
       keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_junk'),
+        description: l('Mark the selected messages as junk'),
+        callback: markOrUnMarkMessagesAsJunk
+      }));
+      keys.push(sgHotkeys.createHotkey({
         key: 'space',
         description: l('Toggle item'),
         callback: toggleMessageSelection
@@ -334,6 +339,8 @@
     function markOrUnMarkMessagesAsJunk() {
       var moveSelectedMessage = vm.selectedFolder.hasSelectedMessage();
       var selectedMessages = vm.selectedFolder.$selectedMessages();
+      if (_.size(selectedMessages) === 0 && moveSelectedMessage)
+        selectedMessages = [vm.selectedFolder.$selectedMessage()];
       if (_.size(selectedMessages) > 0)
         vm.selectedFolder.$markOrUnMarkMessagesAsJunk(selectedMessages).then(function() {
           var dstFolder = '/' + vm.account.id + '/folderINBOX';

@@ -373,5 +373,17 @@
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
 
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
 /* Hotkey to flag a message */
-"hotkey_flag" = "f";
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";
