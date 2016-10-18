@@ -738,6 +738,55 @@ void handle_eas_terminate(int signum)
     [theResponse setContent: d];
 }
 
+//
+//
+//
+- (void) _fixMissingParent: (NSArray *) theFolders
+                    into: (NSMutableArray *) theTarget
+{
+  NSString *folderPath;
+  NSMutableDictionary *folder;
+  int i, ii, iii;
+  BOOL found;
+
+  for (i = 0; i < [theFolders count]; i++)
+    {
+      folder = [[theFolders objectAtIndex: i] mutableCopy];
+
+      if (![folder objectForKey: @"parent"] && [[[folder objectForKey: @"path"] pathComponents] count] > 2)
+        {
+          found = NO;
+          folderPath = [folder objectForKey: @"path"];
+
+          for (ii = 0; ii < [[folderPath pathComponents] count] && !found; ii++)
+             {
+               folderPath = [folderPath stringByDeletingLastPathComponent];
+
+               for (iii = 0; iii < [theFolders count]; iii++)
+                 {
+                   if ([[[theFolders objectAtIndex: iii] objectForKey: @"path"] isEqualToString: folderPath])
+                     {
+                       [folder setObject: [[[folder objectForKey: @"displayName"] substringFromIndex:
+                                               [[[theFolders objectAtIndex: iii] objectForKey: @"displayName"] length]+1]
+                                             stringByReplacingString:@"/" withString:@"."] forKey: @"displayName"];
+
+                       [folder setObject: folderPath forKey: @"parent"];
+
+                       found = YES;
+
+                       break;
+                     }
+                 }
+             }
+
+            if (!found )
+              [folder setObject: [[[folder objectForKey: @"displayName"] substringFromIndex: 1]
+                 stringByReplacingString:@"/" withString:@"."] forKey: @"displayName"];
+        }
+
+      [theTarget addObject: folder];
+    }
+}
 
 //
 // <?xml version="1.0"?>
@@ -751,9 +800,9 @@ void handle_eas_terminate(int signum)
 {
   NSString *key, *cKey, *nkey, *name, *serverId, *parentId, *nameInCache, *personalFolderName, *syncKey, *folderType, *operation;
   NSMutableDictionary *cachedGUIDs, *metadata;
-  NSMutableArray *folders, *processedFolders;
+  NSMutableArray *folders, *processedFolders, *allFoldersMetadata;
   NSDictionary *folderMetadata, *imapGUIDs;
-  NSArray *allFoldersMetadata, *allKeys;
+  NSArray *allKeys;
   SOGoMailAccounts *accountsFolder;
   SOGoMailAccount *accountFolder;
   NSMutableString *s, *commands;
@@ -808,7 +857,8 @@ void handle_eas_terminate(int signum)
       [self _ensureFolder: (SOGoMailFolder *)[accountFolder trashFolderInContext: context]];
     }
 
-  allFoldersMetadata = [accountFolder allFoldersMetadata];
+  allFoldersMetadata = [NSMutableArray array];
+  [self _fixMissingParent: [accountFolder allFoldersMetadata] into: allFoldersMetadata];
   
   // Get GUIDs of folder (IMAP)
   // e.g. {folderINBOX = folder6b93c528176f1151c7260000aef6df92}
