@@ -894,15 +894,15 @@
                       ng-model="app.preferences.defaults.Vacation.startDateEnabled"
                       ng-true-value="1"
                       ng-false-value="0"
-                      ng-change="app.updateVacationStartDate()">
+                      ng-change="app.updateVacationDates()">
                     <var:string label:value="Enable auto reply on" />
                   </md-checkbox>
                   <md-input-container>
                     <md-datepicker
                       ng-disabled="app.preferences.defaults.Vacation.startDateEnabled == 0"
                       ng-model="app.preferences.defaults.Vacation.startDate"
-                      ng-change="app.updateVacationStartDate()"
-                      md-min-date="::app.tomorrow"
+                      ng-change="app.updateVacationDates()"
+                      md-min-date="app.vacationStartDateMin"
                       md-max-date="app.vacationEndDate"><!-- datepicker --></md-datepicker>
                   </md-input-container>
                 </div>
@@ -912,14 +912,14 @@
                       ng-model="app.preferences.defaults.Vacation.endDateEnabled"
                       ng-true-value="1"
                       ng-false-value="0"
-                      ng-change="app.updateVacationEndDate()">
+                      ng-change="app.updateVacationDates()">
                     <var:string label:value="Disable auto reply on" />
                   </md-checkbox>
                   <md-input-container>
                   <md-datepicker
                       ng-disabled="app.preferences.defaults.Vacation.endDateEnabled == 0"
                       ng-model="app.preferences.defaults.Vacation.endDate"
-                      ng-change="app.updateVacationEndDate()"
+                      ng-change="app.updateVacationDates()"
                       md-min-date="app.vacationStartDate"><!-- datepicker --></md-datepicker>
                   </md-input-container>
                 </div>

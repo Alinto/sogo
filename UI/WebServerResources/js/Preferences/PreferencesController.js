@@ -9,7 +9,7 @@
    */
   PreferencesController.$inject = ['$q', '$window', '$state', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgFocus', 'Dialog', 'User', 'Account', 'statePreferences', 'Authentication'];
   function PreferencesController($q, $window, $state, $mdMedia, $mdSidenav, $mdDialog, $mdToast, focus, Dialog, User, Account, statePreferences, Authentication) {
-    var vm = this, account, mailboxes = [], today = new Date();
+    var vm = this, account, mailboxes = [], today = new Date(), tomorrow = today.addDays(1);
 
     vm.preferences = statePreferences;
     vm.passwords = { newPassword: null, newPasswordConfirmation: null };
@@ -38,9 +38,7 @@
     vm.timeZonesListFilter = timeZonesListFilter;
     vm.timeZonesSearchText = '';
     vm.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
-    vm.tomorrow = today.addDays(1);
-    vm.updateVacationStartDate = updateVacationStartDate;
-    vm.updateVacationEndDate = updateVacationEndDate;
+    vm.updateVacationDates = updateVacationDates;
 
     // Fetch a flatten version of the mailboxes list of the main account (0)
     // This list will be forwarded to the Sieve filter controller
@@ -58,8 +56,7 @@
     statePreferences.ready().then(function() {
       if (statePreferences.defaults.SOGoAlternateAvatar)
         User.$alternateAvatar = statePreferences.defaults.SOGoAlternateAvatar;
-      updateVacationStartDate();
-      updateVacationEndDate();
+      updateVacationDates();
     });
 
     function go(module, form) {
@@ -372,22 +369,33 @@
       });
     }
 
-    function updateVacationStartDate() {
+    function updateVacationDates() {
       if (statePreferences.defaults &&
           statePreferences.defaults.Vacation &&
-          statePreferences.defaults.Vacation.startDateEnabled)
-        vm.vacationStartDate = statePreferences.defaults.Vacation.startDate;
-      else
-        vm.vacationStartDate = vm.tomorrow;
-    }
+          statePreferences.defaults.Vacation.enabled) {
 
-    function updateVacationEndDate() {
-      if (statePreferences.defaults &&
-          statePreferences.defaults.Vacation &&
-          statePreferences.defaults.Vacation.endDateEnabled)
-        vm.vacationEndDate = statePreferences.defaults.Vacation.endDate;
-      else
+        // Determine minimum dates
+        vm.vacationStartDateMin = undefined;
+        if (statePreferences.defaults.Vacation.startDateEnabled) {
+          vm.vacationStartDateMin = tomorrow;
+          vm.vacationStartDate = statePreferences.defaults.Vacation.startDate;
+        }
+        else if (statePreferences.defaults.Vacation.endDateEnabled)
+          vm.vacationStartDate = tomorrow;
+        else
+          vm.vacationStartDate = undefined;
+
+        // Determine maximum value of start date
+        if (statePreferences.defaults.Vacation.endDateEnabled)
+          vm.vacationEndDate = statePreferences.defaults.Vacation.endDate;
+        else
+          vm.vacationEndDate = undefined;
+      }
+      else {
+        vm.vacationStartDateMin = undefined;
+        vm.vacationStartDate = undefined;
         vm.vacationEndDate = undefined;
+      }
     }
   }
 
