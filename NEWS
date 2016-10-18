@@ -15,7 +15,7 @@ Bug fixes
  - [web] fixed vCard generation for tags with no type (#3826)
  - [eas] improve handling of email folders without a parent
  - [core] only consider SMTP addresses for AD's proxyAddresses (#3842)
- - [core] sogo-tool manageeas now works with single store mode
+ - [core] sogo-tool manage-eas now works with single store mode
 
 
 3.2.0 (2016-10-03)
