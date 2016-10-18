@@ -14,6 +14,7 @@ Bug fixes
  - [web] improved detection of changes in CKEditor (#3839)
  - [web] fixed vCard generation for tags with no type (#3826)
  - [core] only consider SMTP addresses for AD's proxyAddresses (#3842)
+ - [core] sogo-tool manageeas now works with single store mode
 
 
 3.2.0 (2016-10-03)
