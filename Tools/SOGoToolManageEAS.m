@@ -150,6 +150,7 @@ NSURL *folderTableURL;
   NSMutableArray *parts;
   NSArray *entries;
   id cacheEntry;
+  WOContext *localContext;
 
   SOGoManageEASCommand cmd;
   int i, max;
@@ -170,6 +171,9 @@ NSURL *folderTableURL;
 
       if (![user loginInDomain])
         return NO;
+
+      localContext = [WOContext context];
+      [localContext setActiveUser: user];
 
       urlString = [[user domainDefaults] folderInfoURL];
       parts = [[urlString componentsSeparatedByString: @"/"]
@@ -197,6 +201,7 @@ NSURL *folderTableURL;
         case ManageEASListDevices:
           oc = [SOGoCacheGCSObject objectWithName: @"0" inContainer: nil];
           [oc setObjectType: ActiveSyncGlobalCacheObject];
+          [oc setContext: localContext];
 
           [oc setTableUrl: folderTableURL];
           entries = [oc cacheEntriesForDeviceId: nil newerThanVersion: -1];
@@ -219,6 +224,7 @@ NSURL *folderTableURL;
 
               oc = [SOGoCacheGCSObject objectWithName: @"0" inContainer: nil];
               [oc setObjectType: ActiveSyncFolderCacheObject];
+              [oc setContext: localContext];
 
               [oc setTableUrl: folderTableURL];
               entries = [oc cacheEntriesForDeviceId: deviceId newerThanVersion: -1];
@@ -230,6 +236,7 @@ NSURL *folderTableURL;
 
                   foc = [SOGoCacheGCSObject objectWithName: [cacheEntry substringFromIndex: 1] inContainer: nil];
                   [foc setObjectType: ActiveSyncFolderCacheObject];
+                  [foc setContext: localContext];
                   [foc setTableUrl: folderTableURL];
 
                   [foc reloadIfNeeded];
@@ -259,6 +266,7 @@ NSURL *folderTableURL;
               deviceId = [sanitizedArguments objectAtIndex: 2];
               oc = [SOGoCacheGCSObject objectWithName: deviceId inContainer: nil];
               [oc setObjectType: ActiveSyncGlobalCacheObject];
+              [oc setContext: localContext];
               [oc setTableUrl: folderTableURL];
 
               [oc reloadIfNeeded];
@@ -294,6 +302,7 @@ NSURL *folderTableURL;
 
               oc = [SOGoCacheGCSObject objectWithName: deviceId inContainer: nil];
               [oc setObjectType: ActiveSyncFolderCacheObject];
+              [oc setContext: localContext];
               [oc setTableUrl: folderTableURL];
 
               [oc reloadIfNeeded];
@@ -351,6 +360,7 @@ NSURL *folderTableURL;
 
               oc = [SOGoCacheGCSObject objectWithName: @"0" inContainer: nil];
               [oc setObjectType: ActiveSyncFolderCacheObject];
+              [oc setContext: localContext];
 
               [oc setTableUrl: folderTableURL];
               entries = [oc cacheEntriesForDeviceId: deviceId newerThanVersion: -1];
@@ -367,6 +377,7 @@ NSURL *folderTableURL;
 
                       foc = [SOGoCacheGCSObject objectWithName: [cacheEntry substringFromIndex: 1] inContainer: nil];
                       [foc setObjectType: ActiveSyncFolderCacheObject];
+                      [foc setContext: localContext];
                       [foc setTableUrl: folderTableURL];
 
                       [foc reloadIfNeeded];
