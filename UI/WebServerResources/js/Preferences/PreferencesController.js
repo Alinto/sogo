@@ -9,7 +9,7 @@
    */
   PreferencesController.$inject = ['$q', '$window', '$state', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgFocus', 'Dialog', 'User', 'Account', 'statePreferences', 'Authentication'];
   function PreferencesController($q, $window, $state, $mdMedia, $mdSidenav, $mdDialog, $mdToast, focus, Dialog, User, Account, statePreferences, Authentication) {
-    var vm = this, account, mailboxes = [], today = new Date(), tomorrow = today.addDays(1);
+    var vm = this, account, mailboxes = [], today = new Date(), tomorrow = today.beginOfDay().addDays(1);
 
     vm.preferences = statePreferences;
     vm.passwords = { newPassword: null, newPasswordConfirmation: null };
@@ -39,6 +39,11 @@
     vm.timeZonesSearchText = '';
     vm.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
     vm.updateVacationDates = updateVacationDates;
+    vm.toggleVacationStartDate = toggleVacationStartDate;
+    vm.toggleVacationEndDate = toggleVacationEndDate;
+    vm.validateVacationStartDate = validateVacationStartDate;
+    vm.validateVacationEndDate = validateVacationEndDate;
+
 
     // Fetch a flatten version of the mailboxes list of the main account (0)
     // This list will be forwarded to the Sieve filter controller
@@ -370,32 +375,78 @@
     }
 
     function updateVacationDates() {
-      if (statePreferences.defaults &&
-          statePreferences.defaults.Vacation &&
-          statePreferences.defaults.Vacation.enabled) {
+      var d = vm.preferences.defaults;
 
-        // Determine minimum dates
-        vm.vacationStartDateMin = undefined;
-        if (statePreferences.defaults.Vacation.startDateEnabled) {
-          vm.vacationStartDateMin = tomorrow;
-          vm.vacationStartDate = statePreferences.defaults.Vacation.startDate;
+      if (d &&
+          d.Vacation &&
+          d.Vacation.enabled) {
+        toggleVacationStartDate();
+        toggleVacationEndDate();
+      }
+    }
+
+    function toggleVacationStartDate() {
+      var v;
+
+      v = vm.preferences.defaults.Vacation;
+
+      if (v.startDateEnabled) {
+        // Enabling the start date
+        if (v.endDateEnabled && v.startDate.getTime() > v.endDate.getTime()) {
+          v.startDate = new Date(v.endDate.getTime());
+          v.startDate.addDays(-1);
         }
-        else if (statePreferences.defaults.Vacation.endDateEnabled)
-          vm.vacationStartDate = tomorrow;
-        else
-          vm.vacationStartDate = undefined;
+        if (v.startDate.getTime() < tomorrow.getTime()) {
+          v.startDate = new Date(tomorrow.getTime());
+        }
+      }
+    }
 
-        // Determine maximum value of start date
-        if (statePreferences.defaults.Vacation.endDateEnabled)
-          vm.vacationEndDate = statePreferences.defaults.Vacation.endDate;
-        else
-          vm.vacationEndDate = undefined;
+    function toggleVacationEndDate() {
+      var v;
+
+      v = vm.preferences.defaults.Vacation;
+
+      if (v.endDateEnabled) {
+        // Enabling the end date
+        if (v.startDateEnabled && v.endDate.getTime() < v.startDate.getTime()) {
+          v.endDate = new Date(v.startDate.getTime());
+          v.endDate.addDays(1);
+        }
+        else if (v.endDate.getTime() < tomorrow.getTime()) {
+          v.endDate = new Date(tomorrow.getTime());
+        }
       }
-      else {
-        vm.vacationStartDateMin = undefined;
-        vm.vacationStartDate = undefined;
-        vm.vacationEndDate = undefined;
+    }
+
+    function validateVacationStartDate(date) {
+      var d = vm.preferences.defaults, r = true;
+      if (d &&
+          d.Vacation &&
+          d.Vacation.enabled) {
+        if (d.Vacation.startDateEnabled) {
+          r = (!d.Vacation.endDateEnabled ||
+               date.getTime() < d.Vacation.endDate.getTime()) &&
+            date.getTime() >= tomorrow.getTime();
+        }
       }
+
+      return r;
+    }
+
+    function validateVacationEndDate(date) {
+      var d = vm.preferences.defaults, r = true;
+      if (d &&
+          d.Vacation &&
+          d.Vacation.enabled) {
+        if (d.Vacation.endDateEnabled) {
+          r = (!d.Vacation.startDateEnabled ||
+               date.getTime() > d.Vacation.startDate.getTime()) &&
+            date.getTime() >= tomorrow.getTime();
+        }
+      }
+
+      return r;
     }
   }
 
