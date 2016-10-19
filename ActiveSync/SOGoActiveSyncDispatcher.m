@@ -718,8 +718,8 @@ void handle_eas_terminate(int signum)
 
 - (void) _flattenFolders: (NSArray *) theFolders
                     into: (NSMutableArray *) theTarget
-                  parent: (NSString *) theParent
-              parentType: (NSString *) theParentType
+                  parent: (NSDictionary *) theParent
+          existingParent: (NSString *) theExistingParent
 {
   NSArray *o;
   int i;
@@ -728,16 +728,30 @@ void handle_eas_terminate(int signum)
 
   for (i = 0; i < [theFolders count]; i++)
     {
-      if (theParent && ![theParentType isEqualToString: @"additional"])
-        [[theFolders objectAtIndex: i] setObject: theParent  forKey: @"parent"];
-
-      if ([theParentType isEqualToString: @"additional"])
-        [[theFolders objectAtIndex: i] setObject: [[theFolders objectAtIndex: i] objectForKey: @"path"]  forKey: @"name"];
+      if ([theParent objectForKey: @"path"] && ![[theParent objectForKey: @"type"] isEqualToString: @"additional"])
+        {
+          [[theFolders objectAtIndex: i] setObject: [theParent objectForKey: @"path"]  forKey: @"parent"];
+          theExistingParent = [theParent objectForKey: @"path"];
+        }
+      else if (theExistingParent)
+        {
+          [[theFolders objectAtIndex: i] setObject: theExistingParent forKey: @"parent"];
+          [[theFolders objectAtIndex: i] setObject:
+                 [[[[theFolders objectAtIndex: i] objectForKey: @"path"] substringFromIndex: [theExistingParent length]+1]stringByReplacingOccurrencesOfString:@"/" withString:@"."]
+             forKey: @"name"];
+        }
+      else if (![[[theFolders objectAtIndex: i] objectForKey: @"type"] isEqualToString: @"otherUsers"] &&
+               ![[[theFolders objectAtIndex: i] objectForKey: @"type"] isEqualToString: @"shared"])
+        {
+          [[theFolders objectAtIndex: i] setObject:
+                 [[[theFolders objectAtIndex: i] objectForKey: @"path"] stringByReplacingOccurrencesOfString:@"/" withString:@"."]
+             forKey: @"name"];
+        }
 
       o = [[theFolders objectAtIndex: i] objectForKey: @"children"];
 
       if (o)
-        [self _flattenFolders: o  into: theTarget  parent: [[theFolders objectAtIndex: i] objectForKey: @"path"] parentType: [[theFolders objectAtIndex: i] objectForKey: @"type"]];
+        [self _flattenFolders: o  into: theTarget  parent: [theFolders objectAtIndex: i] existingParent: theExistingParent];
     }
 }
 
@@ -811,7 +825,7 @@ void handle_eas_terminate(int signum)
     }
 
   allFoldersMetadata = [NSMutableArray array];
-  [self _flattenFolders: [accountFolder allFoldersMetadata: SOGoMailStandardListing]  into: allFoldersMetadata  parent: nil parentType: nil];
+  [self _flattenFolders: [accountFolder allFoldersMetadata: SOGoMailStandardListing]  into: allFoldersMetadata  parent: nil existingParent: nil];
   
   // Get GUIDs of folder (IMAP)
   // e.g. {folderINBOX = folder6b93c528176f1151c7260000aef6df92}

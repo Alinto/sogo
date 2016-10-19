@@ -22,6 +22,7 @@
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 #import <Foundation/NSProcessInfo.h>
+#import <Foundation/NSCalendarDate.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 
@@ -67,7 +68,8 @@ NSURL *folderTableURL;
 }
 
 - (void) _setOrUnsetSyncRequest: (BOOL) set
-                       collections: (NSArray *) collections
+                    collections: (NSArray *) collections
+                        context: (WOContext *) theContext
 {
   SOGoCacheGCSObject *o;
   NSNumber *processIdentifier;
@@ -80,6 +82,7 @@ NSURL *folderTableURL;
   o = [SOGoCacheGCSObject objectWithName: [[[collections objectAtIndex: 0] componentsSeparatedByString: @"+"] objectAtIndex: 0]  inContainer: nil  useCache: NO];
   [o setObjectType: ActiveSyncGlobalCacheObject];
   [o setTableUrl: folderTableURL];
+  [o setContext: theContext];
   [o reloadIfNeeded];
 
   if (set)
@@ -319,7 +322,7 @@ NSURL *folderTableURL;
                 }
               else
                {
-                 [self _setOrUnsetSyncRequest: YES  collections: [NSArray arrayWithObject: deviceId]];
+                 [self _setOrUnsetSyncRequest: YES  collections: [NSArray arrayWithObject: deviceId] context: localContext];
 
                  [[oc properties] removeObjectForKey: @"SyncKey"];
                  [[oc properties] removeObjectForKey: @"SyncCache"];
@@ -385,7 +388,7 @@ NSURL *folderTableURL;
                       if ([foc isNew])
                         continue;
 
-                      [self _setOrUnsetSyncRequest: YES  collections: [NSArray arrayWithObject: [cacheEntry substringFromIndex: 1]]];
+                      [self _setOrUnsetSyncRequest: YES  collections: [NSArray arrayWithObject: [cacheEntry substringFromIndex: 1]] context: localContext];
 
                       if (![[cacheEntry substringFromIndex: 1] hasPrefix: [NSString stringWithFormat: @"%@+%@/personal", deviceId, folderType]] &&
                           [[sanitizedArguments objectAtIndex: 3] isEqualToString: @"NO"] &&
