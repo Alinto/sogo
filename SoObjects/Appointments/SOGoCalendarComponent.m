@@ -935,6 +935,14 @@
   NSData *bodyData;
   SOGoDomainDefaults *dd;
 
+  // We never send IMIP reply when the "initiator" is Outlook 2013/2016 over
+  // the EAS protocol. That is because Outlook will always issue a SendMail command
+  // with the meeting's response (ie., IMIP message with METHOD:REPLY) so there's
+  // no need to send it twice. Moreover, Outlook users can also choose to NOT send
+  // the IMIP messsage at all, so SOGo won't send one without user's consent
+  if ([[context objectForKey: @"DeviceType"] isEqualToString: @"WindowsOutlook15"])
+    return;
+
   dd = [from domainDefaults];
   if ([dd appointmentSendEMailNotifications] && [event isStillRelevant])
     {

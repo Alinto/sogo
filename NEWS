@@ -12,6 +12,7 @@ Bug fixes
  - [eas] make sure we don't sleep for too long when EAS processes need interruption
  - [eas] fixed recurring events with timezones for EAS (#3822)
  - [eas] improve handling of email folders without a parent
+ - [eas] never send IMIP reply when the "initiator" is Outlook 2013/2016 
  - [core] only consider SMTP addresses for AD's proxyAddresses (#3842)
 
 2.3.16 (2016-09-28)
