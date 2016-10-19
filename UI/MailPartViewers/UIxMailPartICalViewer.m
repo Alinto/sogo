@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2015 Inverse inc.
+  Copyright (C) 2006-2016 Inverse inc.
 
   This file is part of SOGo.
 
@@ -400,6 +400,17 @@
 }
 
 /* derived fields */
+- (BOOL) hasOrganizer
+{
+  iCalPerson *organizer;
+
+  organizer = [[self authorativeEvent] organizer];
+
+  if ([organizer isVoid])
+    return NO;
+
+  return YES;
+}
 
 - (NSString *) organizerDisplayName
 {
@@ -407,10 +418,7 @@
   NSString *value;
 
   organizer = [[self authorativeEvent] organizer];
-  if ([organizer isVoid])
-    value = @"[todo: no organizer set, use 'from']";
-  else
-    value = [self _personForDisplay: organizer];
+  value = [self _personForDisplay: organizer];
 
   return value;
 }

@@ -233,12 +233,14 @@
 
 
         <!-- EVENT'S METADATA (time, organizer, attendees, etc.) -->
-        <div class="pseudo-input-container">
-          <label class="pseudo-input-label"><var:string label:value="Organizer"/></label>
-          <div>
-            <var:string value="organizerDisplayName"/>
+	<var:if condition="hasOrganizer" const:value="true">
+          <div class="pseudo-input-container">
+            <label class="pseudo-input-label"><var:string label:value="Organizer"/></label>
+            <div>
+              <var:string value="organizerDisplayName"/>
+            </div>
           </div>
-        </div>
+	</var:if>
 
         <div class="pseudo-input-container">
           <label class="pseudo-input-label"><var:string label:value="Time"/></label>
