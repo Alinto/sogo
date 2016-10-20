@@ -705,28 +705,28 @@
 //   return [self _cardStringWithLabel: @"Timezone:" value: [card tz]];
 // }
 
-- (NSArray *) notes
-{
-  NSMutableArray *notes;
-  NSString *note;
-  NSUInteger count, max;
+// - (NSArray *) notes
+// {
+//   NSMutableArray *notes;
+//   NSString *note;
+//   NSUInteger count, max;
 
-  notes = [NSMutableArray arrayWithArray: [card notes]];
-  max = [notes count];
-  for (count = 0; count < max; count++)
-    {
-      note = [notes objectAtIndex: count];
-      note = [note stringByEscapingHTMLString];
-      note = [note stringByReplacingString: @"\r\n"
-                   withString: @"<br />"];
-      note = [note stringByReplacingString: @"\n"
-                   withString: @"<br />"];
+//   notes = [NSMutableArray arrayWithArray: [card notes]];
+//   max = [notes count];
+//   for (count = 0; count < max; count++)
+//     {
+//       note = [notes objectAtIndex: count];
+//       note = [note stringByEscapingHTMLString];
+//       note = [note stringByReplacingString: @"\r\n"
+//                    withString: @"<br />"];
+//       note = [note stringByReplacingString: @"\n"
+//                    withString: @"<br />"];
 
-      [notes replaceObjectAtIndex: count withObject: note];
-    }
+//       [notes replaceObjectAtIndex: count withObject: note];
+//     }
 
-  return notes;
-}
+//   return notes;
+// }
 
 /* hrefs */
 
@@ -888,7 +888,7 @@
   o = [self urls];
   if ([o count]) [data setObject: o forKey: @"urls"];
 
-  o = [self notes];
+  o = [card notes];
   if (o) [data setObject: o forKey: @"notes"];
   o = [self _fetchAndCombineCategoriesList];
   if (o) [data setObject: o forKey: @"allCategories"];

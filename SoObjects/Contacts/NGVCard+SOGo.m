@@ -861,8 +861,11 @@ convention:
 
 - (void) setNotes: (NSArray *) newNotes
 {
+  NSArray *elements;
   NSUInteger count, max;
 
+  elements = [self childrenWithTag: @"note"];
+  [self removeChildren: elements];
   max = [newNotes count];
   for (count = 0; count < max; count++)
     {

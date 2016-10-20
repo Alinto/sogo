@@ -140,7 +140,6 @@
 
     this.refs = [];
     this.categories = [];
-    this.notes = [this.note];
     this.c_screenname = null;
     angular.extend(this, data);
     if (!this.$$fullname)
@@ -155,6 +154,25 @@
       });
     if (this.isgroup)
       this.c_component = 'vlist';
+    if (this.notes && this.notes.length)
+      this.notes = _.map(this.notes, function(note) { return { 'value': note }; });
+    else
+      this.notes = [ { value: '' } ];
+    // Instanciate Card objects for list members
+    angular.forEach(this.refs, function(o, i) {
+      if (o.email) o.emails = [{value: o.email}];
+      o.id = o.reference;
+      _this.refs[i] = new Card(o);
+    });
+    // Instanciate date object of birthday
+    if (this.birthday) {
+      Card.$Preferences.ready().then(function() {
+        var dlp = Card.$Preferences.$mdDateLocaleProvider;
+        _this.birthday = _this.birthday.parseDate(dlp, '%Y-%m-%d');
+        _this.$birthday = dlp.formatDate(_this.birthday);
+      });
+    }
+
     this.$loaded = angular.isDefined(this.c_name)? Card.STATUS.LOADED : Card.STATUS.NOT_LOADED;
 
     // An empty attribute to trick md-autocomplete when adding attendees from the appointment editor
@@ -497,12 +515,7 @@
         delete _this[key];
       }
     });
-    angular.extend(this, this.$shadowData);
-    // Reinstanciate Card objects for list members
-    angular.forEach(this.refs, function(o, i) {
-      if (o.email) o.emails = [{value: o.email}];
-      _this.refs[i] = new Card(o);
-    });
+    this.init(this.$shadowData);
     this.$shadowData = this.$omit(true);
   };
 
@@ -547,19 +560,6 @@
     // Expose the promise
     this.$futureCardData = futureCardData.then(function(data) {
       _this.init(data);
-      // Instanciate Card objects for list members
-      angular.forEach(_this.refs, function(o, i) {
-        if (o.email) o.emails = [{value: o.email}];
-        o.id = o.reference;
-        _this.refs[i] = new Card(o);
-      });
-      if (_this.birthday) {
-        Card.$Preferences.ready().then(function() {
-          var dlp = Card.$Preferences.$mdDateLocaleProvider;
-          _this.birthday = _this.birthday.parseDate(dlp, '%Y-%m-%d');
-          _this.$birthday = dlp.formatDate(_this.birthday);
-        });
-      }
       // Mark card as loaded
       _this.$loaded = Card.STATUS.LOADED;
       // Make a copy of the data for an eventual reset
@@ -601,6 +601,10 @@
       else
         card.birthday = '';
     }
+
+    // We flatten the notes to an array of strings
+    if (this.notes)
+      card.notes = _.map(this.notes, 'value');
 
     return card;
   };

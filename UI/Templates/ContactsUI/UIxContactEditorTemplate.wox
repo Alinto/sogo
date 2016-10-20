@@ -337,9 +337,10 @@
           </div>
 
           <!-- note -->
-          <md-input-container class="md-block md-flex">
+          <md-input-container class="md-block md-flex"
+                              ng-repeat="note in editor.card.notes">
             <label><var:string label:value="Note"/></label>
-            <textarea ng-model="editor.card.note"><!-- note --></textarea>
+            <textarea ng-model="note.value"><!-- note --></textarea>
           </md-input-container>
         </form>
 

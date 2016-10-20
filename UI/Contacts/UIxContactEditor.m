@@ -476,7 +476,7 @@ static Class SOGoContactGCSEntryK = Nil;
         }
   }
 
-  [card setNote: [attributes objectForKey: @"note"]];
+  [card setNotes: [attributes objectForKey: @"notes"]];
 
   if ([[attributes objectForKey: @"categories"] isKindOfClass: [NSArray class]])
     {
