@@ -1823,6 +1823,10 @@ static NSArray *childRecordFields = nil;
   SOGoGroup *group;
 
   objectPath = [objectPathArray componentsJoinedByString: @"/"];
+
+  // We make sure we don't get unescaped uid - like foo%40bar.com
+  // or for groups - like %40team
+  uid = [uid stringByUnescapingURL];
   aUID = uid;
   if (![uid hasPrefix: @"@"])
     {
