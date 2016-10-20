@@ -1,8 +1,5 @@
-2.3.17 (2016-10-XX)
+2.3.17 (2016-10-20)
 -------------------
-
-New features
- -
 
 Enhancements
  - [web] allow custom email address to be one of the user's profile (#3551)
