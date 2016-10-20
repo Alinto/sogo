@@ -46,12 +46,15 @@
         else {
           data.Vacation.startDateEnabled = 0;
           data.Vacation.startDate = new Date();
+          data.Vacation.startDate = data.Vacation.startDate.beginOfDay();
+          data.Vacation.startDate.addDays(1);
         }
         if (data.Vacation.endDate)
           data.Vacation.endDate = new Date(parseInt(data.Vacation.endDate) * 1000);
         else {
           data.Vacation.endDateEnabled = 0;
-          data.Vacation.endDate = new Date();
+          data.Vacation.endDate = new Date(data.Vacation.startDate.getTime());
+          data.Vacation.endDate.addDays(1);
         }
         if (data.Vacation.autoReplyEmailAddresses && data.Vacation.autoReplyEmailAddresses.length)
           data.Vacation.autoReplyEmailAddresses = data.Vacation.autoReplyEmailAddresses.join(",");
