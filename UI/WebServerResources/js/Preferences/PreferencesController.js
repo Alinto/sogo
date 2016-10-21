@@ -115,19 +115,22 @@
       vm.preferences.defaults.AuxiliaryMailAccounts.push({});
 
       account = _.last(vm.preferences.defaults.AuxiliaryMailAccounts);
-      account.name = l("New account");
-      account.identities = [
-        {
-          fullName: "",
-          email: ""
-        }
-      ];
-      account.receipts = {
-        receiptAction: "ignore",
-        receiptNonRecipientAction: "ignore",
-        receiptOutsideDomainAction: "ignore",
-        receiptAnyAction: "ignore"
-      };
+      angular.extend(account,
+                     {
+                       name: "",
+                       identities: [
+                         {
+                           fullName: "",
+                           email: ""
+                         }
+                       ],
+                       receipts: {
+                         receiptAction: "ignore",
+                         receiptNonRecipientAction: "ignore",
+                         receiptOutsideDomainAction: "ignore",
+                         receiptAnyAction: "ignore"
+                       }
+                     });
 
       $mdDialog.show({
         controller: 'AccountDialogController',
@@ -142,6 +145,8 @@
         }
       }).then(function() {
         form.$setDirty();
+      }).catch(function() {
+        vm.preferences.defaults.AuxiliaryMailAccounts.pop();
       });
     }
 
@@ -173,6 +178,7 @@
       // See $omit() in the Preferences services for real key generation
       var key = '_$$' + guid();
       vm.preferences.defaults.SOGoMailLabelsColors[key] =  ["New label", "#aaa"];
+      focus('mailLabel_' + (_.size(vm.preferences.defaults.SOGoMailLabelsColors) - 1));
       form.$setDirty();
     }
 

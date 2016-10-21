@@ -739,7 +739,8 @@
                 <md-input-container class="md-block md-flex">
 	          <input type="text"
                          label:aria-label="Label"
-                         ng-model="value[0]"/>
+                         ng-model="value[0]"
+                         sg-focus-on="mailLabel_{{$index}}"/>
                 </md-input-container>
                 <md-button class="md-icon-button" type="button"
                            layout="row" layout-align="end center"
