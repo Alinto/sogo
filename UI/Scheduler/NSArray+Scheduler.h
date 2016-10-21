@@ -58,15 +58,16 @@
 #define taskClassificationIndex     6
 #define taskLocationIndex           7
 #define taskCategoryIndex           8
-#define taskEditableIndex           9
-#define taskErasableIndex          10
-#define taskPriorityIndex          11
-#define taskOwnerIndex             12
-#define taskIsCycleIndex           13
-#define taskNextAlarmIndex         14
-#define taskRecurrenceIdIndex      15
-#define taskIsExceptionIndex       16
-#define taskDescriptionIndex       17
+#define taskViewableIndex           9
+#define taskEditableIndex          10
+#define taskErasableIndex          11
+#define taskPriorityIndex          12
+#define taskOwnerIndex             13
+#define taskIsCycleIndex           14
+#define taskNextAlarmIndex         15
+#define taskRecurrenceIdIndex      16
+#define taskIsExceptionIndex       17
+#define taskDescriptionIndex       18
 
 @interface NSArray (SOGoEventComparison)
 
