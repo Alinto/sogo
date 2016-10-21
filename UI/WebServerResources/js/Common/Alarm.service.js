@@ -66,7 +66,7 @@
           '<md-toast>',
           '  <div class="md-toast-content">',
           '    <md-input-container>',
-          '      <label style="color: white;">' + data.summary + '</label>',
+          '      <label style="color: white;">{{ summary }}</label>',
           '      <md-select ng-model="reminder">',
           '       <md-option value=5>',
                     l('5 minutes'),
@@ -109,8 +109,9 @@
       /**
        * @ngInject
        */
-      AlarmController.$inject = ['scope', '$mdToast', 'url'];
-      function AlarmController(scope, $mdToast, url) {
+      AlarmController.$inject = ['scope', '$sanitize', '$mdToast', 'url'];
+      function AlarmController(scope, $sanitize, $mdToast, url) {
+        scope.summary = $sanitize(data.summary);
         scope.reminder = '10';
         scope.cancel = function() {
           $mdToast.hide();
