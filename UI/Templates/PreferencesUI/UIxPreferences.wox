@@ -498,7 +498,7 @@
             <div layout="row" layout-align="end center">
               <md-button type="button"
                          label:aria-label="Add Contact Category"
-                         ng-click="app.addContactCategory()">
+                         ng-click="app.addContactCategory(preferencesForm)">
                 <var:string label:value="Add Contact Category"/>
               </md-button>
             </div>
