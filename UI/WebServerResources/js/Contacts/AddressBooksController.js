@@ -70,8 +70,8 @@
     }
 
     function newAddressbook() {
-      Dialog.prompt(l('New addressbook'),
-                    l('Name of new addressbook'))
+      Dialog.prompt(l('New Addressbook...'),
+                    l('Name of the Address Book'))
         .then(function(name) {
           var addressbook = new AddressBook(
             {

@@ -250,6 +250,7 @@
       </div>
       <div class="md-toolbar-tools">
         <md-chips class="md-flex"
+                  ng-show="app.search.params.length != 0 || app.currentSearchParam"
                   ng-model="app.search.params"
                   md-transform-chip="app.newSearchParam($chip)"
                   sg-transform-on-blur="sg-transform-on-blur">

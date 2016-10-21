@@ -43,12 +43,12 @@
     vm.hideAdvancedSearch = hideAdvancedSearch;
     vm.toggleAdvancedSearch = toggleAdvancedSearch;
     vm.search = {
-      options: {'': l('Select a criteria'),
+      options: {'': '',  // no placeholder when no criteria is active
                 subject: l('Enter Subject'),
-                from: l('Enter From'),
-                to: l('Enter To'),
-                cc: l('Enter Cc'),
-                body: l('Enter Body')
+                from:    l('Enter From'),
+                to:      l('Enter To'),
+                cc:      l('Enter Cc'),
+                body:    l('Enter Body')
                },
       mailbox: 'INBOX',
       subfolders: 1,
@@ -223,8 +223,8 @@
     }
 
     function newFolder(parentFolder) {
-      Dialog.prompt(l('New folder'),
-                    l('Enter the new name of your folder :'))
+      Dialog.prompt(l('New Folder...'),
+                    l('Enter the new name of your folder'))
         .then(function(name) {
           parentFolder.$newMailbox(parentFolder.id, name)
             .then(function() {
