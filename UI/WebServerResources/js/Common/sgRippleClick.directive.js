@@ -68,7 +68,11 @@
 
         // Register listener
         element.on('click', listener);
-        
+
+        scope.$on('$destroy', function() {
+          element.off('click', listener);
+        });
+
         function listener(event) {
           var coordinates;
 
