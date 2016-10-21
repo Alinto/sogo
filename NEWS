@@ -1,3 +1,9 @@
+2.3.18 (2016-11-DD)
+-------------------
+
+Bug fixes
+ - [web] fixed support for recurrent tasks
+
 2.3.17 (2016-10-20)
 -------------------
 

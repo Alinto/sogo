@@ -869,16 +869,22 @@ static Class iCalEventK = nil;
     }
   [record setObject: dateSecs forKey: @"c_recurrence_id"];
 
-  date = [theCycle endDate];
-  if (theEventTimeZone)
+  date = [record valueForKey: @"c_enddate"];
+  if ([date isNotNull])
     {
-      secondsOffsetFromGMT = (int) [[theEventTimeZone periodForDate: date] secondsOffsetFromGMT];
-      date = [date dateByAddingYears: 0 months: 0 days: 0 hours: 0 minutes: 0 seconds: -secondsOffsetFromGMT];
+      date = [theCycle endDate];
+      if (theEventTimeZone)
+        {
+          secondsOffsetFromGMT = (int) [[theEventTimeZone periodForDate: date] secondsOffsetFromGMT];
+          date = [date dateByAddingYears: 0 months: 0 days: 0 hours: 0 minutes: 0 seconds: -secondsOffsetFromGMT];
+        }
+      [date setTimeZone: timeZone];
+      [record setObject: date forKey: @"endDate"];
+      dateSecs = [NSNumber numberWithInt: [date timeIntervalSince1970]];
+      [record setObject: dateSecs forKey: @"c_enddate"];
     }
-  [date setTimeZone: timeZone];
-  [record setObject: date forKey: @"endDate"];
-  dateSecs = [NSNumber numberWithInt: [date timeIntervalSince1970]];
-  [record setObject: dateSecs forKey: @"c_enddate"];
+  else
+    [record removeObjectForKey: @"endDate"];
   
   return record;
 }
@@ -980,7 +986,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                        toArray: (NSMutableArray *) ma
 {
   NGCalendarDateRange *recurrenceIdRange;
-  NSCalendarDate *recurrenceId;
+  NSCalendarDate *recurrenceId, *masterEndDate, *endDate;
   NSMutableDictionary *newRecord;
   NGCalendarDateRange *newRecordRange;
   NSComparisonResult compare;
@@ -1010,8 +1016,20 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       [recurrenceId setTimeZone: tz];
     }
 
-  master = [[[component parent] events] objectAtIndex: 0];
-  delta = [[master endDate] timeIntervalSinceDate: [master startDate]];
+  if ([component isKindOfClass: [iCalEvent class]])
+    {
+      master = [[[component parent] events] objectAtIndex: 0];
+      masterEndDate = [master endDate];
+      endDate = [component endDate];
+    }
+  else
+    {
+      master = [[[component parent] todos] objectAtIndex: 0];
+      masterEndDate = [master due];
+      endDate = [component due];
+    }
+
+  delta = [masterEndDate timeIntervalSinceDate: [master startDate]];
   recurrenceIdRange = [NGCalendarDateRange calendarDateRangeWithStartDate: recurrenceId
 								  endDate: [recurrenceId dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds: delta]];
   if ([dateRange doesIntersectWithDateRange: recurrenceIdRange])
@@ -1022,7 +1040,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       if (recordIndex > -1)
 	{
           if ([dateRange containsDate: [component startDate]] ||
-	      [dateRange containsDate: [component endDate]])
+	      [dateRange containsDate: endDate])
 	    {
               // We must pass nil to :container here in order to avoid re-entrancy issues.
               newRecord = [self _fixupRecord: [component quickRecordFromContent: nil  container: nil]];

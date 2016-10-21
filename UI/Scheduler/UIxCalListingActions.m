@@ -99,7 +99,8 @@ static NSArray *tasksFields = nil;
                    @"c_status", @"c_title", @"c_enddate",
                    @"c_classification", @"c_location", @"c_category",
                    @"editable", @"erasable",
-                   @"c_priority", @"c_owner", @"c_recurrence_id", @"isException", @"c_description", nil];
+                   @"c_priority", @"c_owner",
+                   @"c_recurrence_id", @"isException", @"c_description", nil];
     [tasksFields retain];
   }
 }
@@ -313,7 +314,7 @@ static NSArray *tasksFields = nil;
   NSMutableDictionary *newInfo;
   NSMutableArray *infos, *newInfoForComponent, *quickInfos, *allInfos, *quickInfosName;
   NSNull *marker;
-  NSString *owner, *role, *calendarName, *filters, *iCalString;
+  NSString *owner, *role, *calendarName, *iCalString;
   NSRange match;
   iCalCalendar *calendar;
   iCalEntityObject *master;
@@ -1072,7 +1073,6 @@ _computeBlocksPosition (NSArray *blocks)
   NSString *fUID;
   NSNumber *isActive;
   unsigned int count, foldersCount;
-  int max=0, i;
   
   co = [self clientObject];
   folders = [co subFolders];
@@ -1218,14 +1218,12 @@ _computeBlocksPosition (NSArray *blocks)
   BOOL showCompleted;
   int statusCode;
   int startSecs;
-  int endsSecs;
   
   filteredTasks = [NSMutableArray array];
   
   [self _setupContext];
   
   startSecs = (unsigned int) [startDate timeIntervalSince1970];
-  endsSecs = (unsigned int) [endDate timeIntervalSince1970];
   tasksView = [request formValueForKey: @"filterpopup"];
   
 #warning see TODO in SchedulerUI.js about "setud"
@@ -1242,11 +1240,11 @@ _computeBlocksPosition (NSArray *blocks)
   
   while ((task = [tasks nextObject]))
   {
-    statusCode = [[task objectAtIndex: 3] intValue];
+    statusCode = [[task objectAtIndex: taskStatusIndex] intValue];
     if (statusCode != 1 || showCompleted)
     {
       filteredTask = [NSMutableArray arrayWithArray: task];
-      endDateStamp = [[task objectAtIndex: 5] intValue];
+      endDateStamp = [[task objectAtIndex: taskEndDateIndex] intValue];
       statusFlag = [self _getStatusClassForStatusCode: statusCode
                                       andEndDateStamp: endDateStamp];
       [filteredTask addObject: statusFlag];
@@ -1258,15 +1256,19 @@ _computeBlocksPosition (NSArray *blocks)
            [tasksView isEqualToString:@"view_next7"]  ||
            [tasksView isEqualToString:@"view_next14"] ||
            [tasksView isEqualToString:@"view_next31"] ||
-           [tasksView isEqualToString:@"view_thismonth"]) && ((endDateStamp <= endsSecs) && (endDateStamp >= startSecs)))
+           [tasksView isEqualToString:@"view_thismonth"]) &&
+          (endDateStamp == 0 || endDateStamp >= startSecs))
         [filteredTasks addObject: filteredTask];
       else if ([tasksView isEqualToString:@"view_all"])
         [filteredTasks addObject: filteredTask];
-      else if (([tasksView isEqualToString:@"view_overdue"]) && ([[filteredTask objectAtIndex:15] isEqualToString:@"overdue"]))
+      else if (([tasksView isEqualToString:@"view_overdue"]) &&
+               ([[filteredTask objectAtIndex:taskStatusFlagIndex] isEqualToString:@"overdue"]))
         [filteredTasks addObject: filteredTask];
-      else if ([tasksView isEqualToString:@"view_incomplete"] && (![[filteredTask objectAtIndex:15] isEqualToString:@"completed"]))
+      else if ([tasksView isEqualToString:@"view_incomplete"] &&
+               (![[filteredTask objectAtIndex:taskStatusFlagIndex] isEqualToString:@"completed"]))
         [filteredTasks addObject: filteredTask];
-      else if ([tasksView isEqualToString:@"view_not_started"] && ([[[filteredTask objectAtIndex:3] stringValue] isEqualToString:@"0"]))
+      else if ([tasksView isEqualToString:@"view_not_started"] &&
+               ([[[filteredTask objectAtIndex:taskStatusIndex] stringValue] isEqualToString:@"0"]))
         [filteredTasks addObject: filteredTask];
     }
   }
