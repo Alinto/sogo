@@ -1,6 +1,6 @@
 /* UIxTaskEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoTaskObject.h>
+#import <Appointments/SOGoTaskOccurence.h>
 
 #import "UIxComponentEditor.h"
 #import "UIxTaskEditor.h"
@@ -325,6 +326,8 @@
 
   todo = [self todo];
   co = [self clientObject];
+  if ([co isKindOfClass: [SOGoTaskOccurence class]])
+    co = [co container];
   previousCalendar = [co container];
   sm = [SoSecurityManager sharedSecurityManager];
 
@@ -493,7 +496,6 @@
   NSCalendarDate *startDate, *dueDate, *completedDate;
   NSTimeZone *timeZone;
   SOGoCalendarComponent *co;
-  SOGoAppointmentFolder *thisFolder;
   SOGoUserDefaults *ud;
   iCalAlarm *anAlarm;
   iCalToDo *todo;
@@ -503,7 +505,6 @@
   todo = [self todo];
 
   co = [self clientObject];
-  thisFolder = [co container];
 
   ud = [[context activeUser] userDefaults];
   timeZone = [ud timeZone];
@@ -533,7 +534,7 @@
       iCalToDo *master;
 
       master = todo;
-      [thisFolder findEntityForClosestAlarm: &todo
+      [componentCalendar findEntityForClosestAlarm: &todo
                                    timezone: timeZone
                                   startDate: &startDate
                                     endDate: &dueDate];
@@ -556,12 +557,21 @@
     }
   
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                         [co nameInContainer], @"id",
-                       [thisFolder nameInContainer], @"pid",
-                       [thisFolder displayName], @"calendar",
+                       [componentCalendar nameInContainer], @"pid",
+                       [componentCalendar displayName], @"calendar",
                        [NSNumber numberWithBool: [self isReadOnly]], @"isReadOnly",
                        [self alarm], @"alarm",
 		       nil];
+
+  if ([self isChildOccurrence])
+    {
+      [data setObject: [[co container] nameInContainer] forKey: @"id"];
+      [data setObject: [co nameInContainer] forKey: @"occurrenceId"];
+    }
+  else
+    {
+      [data setObject: [co nameInContainer] forKey: @"id"];
+    }
 
   if (startDate)
     {

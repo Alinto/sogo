@@ -1562,7 +1562,6 @@ _computeBlocksPosition (NSArray *blocks)
   BOOL showCompleted;
   int statusCode;
   int startSecs;
-  int endsSecs;
 
   filteredTasks = [NSMutableArray array];
   
@@ -1571,7 +1570,6 @@ _computeBlocksPosition (NSArray *blocks)
   [self saveSortValue: @"TasksSortingState"];
   
   startSecs = (unsigned int) [startDate timeIntervalSince1970];
-  endsSecs = (unsigned int) [endDate timeIntervalSince1970];
   tasksView = [request formValueForKey: @"filterpopup"];
   
   showCompleted = [[request formValueForKey: @"show_completed"] intValue];
@@ -1602,15 +1600,19 @@ _computeBlocksPosition (NSArray *blocks)
            [tasksView isEqualToString:@"view_next7"]  ||
            [tasksView isEqualToString:@"view_next14"] ||
            [tasksView isEqualToString:@"view_next31"] ||
-           [tasksView isEqualToString:@"view_thismonth"]) && ((endDateStamp <= endsSecs) && (endDateStamp >= startSecs)))
+           [tasksView isEqualToString:@"view_thismonth"]) &&
+          (endDateStamp == 0 || endDateStamp >= startSecs))
         [filteredTasks addObject: filteredTask];
       else if ([tasksView isEqualToString:@"view_all"])
         [filteredTasks addObject: filteredTask];
-      else if (([tasksView isEqualToString:@"view_overdue"]) && ([[filteredTask objectAtIndex:18] isEqualToString:@"overdue"]))
+      else if (([tasksView isEqualToString:@"view_overdue"]) &&
+               ([[filteredTask objectAtIndex:taskStatusFlagIndex] isEqualToString:@"overdue"]))
         [filteredTasks addObject: filteredTask];
-      else if ([tasksView isEqualToString:@"view_incomplete"] && (![[filteredTask objectAtIndex:18] isEqualToString:@"completed"]))
+      else if ([tasksView isEqualToString:@"view_incomplete"] &&
+               (![[filteredTask objectAtIndex:taskStatusFlagIndex] isEqualToString:@"completed"]))
         [filteredTasks addObject: filteredTask];
-      else if ([tasksView isEqualToString:@"view_not_started"] && ([[[filteredTask objectAtIndex:taskStatusIndex] stringValue] isEqualToString:@"0"]))
+      else if ([tasksView isEqualToString:@"view_not_started"] &&
+               ([[[filteredTask objectAtIndex:taskStatusIndex] stringValue] isEqualToString:@"0"]))
         [filteredTasks addObject: filteredTask];
     }
   }

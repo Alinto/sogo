@@ -15,6 +15,7 @@ Bug fixes
  - [web] fixed vCard generation for tags with no type (#3826)
  - [web] only show the organizer field of an IMIP REPLY if one is defined
  - [web] fixed saving the note of a card (#3849)
+ - [web] fixed support for recurrent tasks
  - [eas] improve handling of email folders without a parent
  - [eas] never send IMIP reply when the "initiator" is Outlook 2013/2016
  - [core] only consider SMTP addresses for AD's proxyAddresses (#3842)

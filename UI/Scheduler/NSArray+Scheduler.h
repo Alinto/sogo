@@ -68,6 +68,7 @@
 #define taskRecurrenceIdIndex      16
 #define taskIsExceptionIndex       17
 #define taskDescriptionIndex       18
+#define taskStatusFlagIndex        19
 
 @interface NSArray (SOGoEventComparison)
 
