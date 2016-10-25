@@ -32,15 +32,45 @@
 
 - (NSArray *) mailDelegators
 {
-  NSDictionary *mailSettings;
-  NSArray *mailDelegators;
+  BOOL dirty;
+  NSDictionary *mailSettings, *delegatorSettings;
+  NSArray *mailDelegators, *delegates;
+  NSMutableArray *validMailDelegators;
+  NSString *delegatorLogin;
+  SOGoUser *delegatorUser;
+  unsigned int max, count;
 
+  dirty = NO;
+  validMailDelegators = [NSMutableArray array];
   mailSettings = [[self userSettings] objectForKey: @"Mail"];
   mailDelegators = [mailSettings objectForKey: @"DelegateFrom"];
-  if (!mailDelegators)
-    mailDelegators = [NSArray array];
+  if (mailDelegators)
+    {
+      max = [mailDelegators count];
+      for (count = 0; count < max; count++)
+        {
+          // 1. Verify if delegator is valid
+          delegatorLogin = [mailDelegators objectAtIndex: count];
+          delegatorUser = [SOGoUser userWithLogin: delegatorLogin];
+          if (delegatorUser)
+            {
+              // 2. Verify if delegator still delegates to user
+              delegatorSettings = [[delegatorUser userSettings] objectForKey: @"Mail"];
+              delegates = [delegatorSettings objectForKey: @"DelegateTo"];
+              if ([delegates containsObject: [self login]])
+                [validMailDelegators addObject: delegatorLogin];
+              else
+                dirty = YES;
+            }
+          else
+            dirty = YES;
+        }
+    }
 
-  return mailDelegators;
+  if (dirty)
+    [self _setMailDelegators: validMailDelegators];
+
+  return validMailDelegators;
 }
 
 - (void) _setMailDelegators: (NSArray *) newDelegators

@@ -3,6 +3,7 @@
 
 Bug fixes
  - [web] fixed support for recurrent tasks
+ - [web] improved validation of mail account delegators
 
 2.3.17 (2016-10-20)
 -------------------
@@ -37,7 +38,7 @@ Bug fixes
  - [core] make sure new cards always have a UID (#3819)
 
 2.3.15 (2016-09-14)
-------------------
+-------------------
 
 Enhancements
  - [web] don't allow a recurrence rule to end before the first occurrence
