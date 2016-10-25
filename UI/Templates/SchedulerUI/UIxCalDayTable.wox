@@ -125,7 +125,6 @@
                     sg-calendar-ghost="sg-calendar-ghost"
                     sg-block="list.component.$ghost"><!-- drag ghost --></sg-calendar-day-block>
               </div>
-              <div class="events"><!-- space --></div>
             </sg-calendar-day>
           </var:foreach>
         </div>
