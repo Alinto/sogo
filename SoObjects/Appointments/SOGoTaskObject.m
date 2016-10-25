@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2006-2014 Inverse inc.
-  Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2006-2016 Inverse inc.
 
   This file is part of SOGo.
 
@@ -21,25 +20,17 @@
 */
 
 #import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSDate.h>
-#import <Foundation/NSException.h>
 
+#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalToDo.h>
-#import <NGCards/iCalEventChanges.h>
-#import <NGCards/iCalPerson.h>
-#import <SOGo/SOGoUserManager.h>
-
-#import <SoObjects/SOGo/SOGoMailer.h>
 
 #import "iCalCalendar+SOGo.h"
 #import "NSArray+Appointments.h"
-#import "SOGoAptMailNotification.h"
-#import "SOGoAppointmentFolder.h"
 #import "SOGoTaskOccurence.h"
 
 #import "SOGoTaskObject.h"

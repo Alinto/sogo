@@ -1,7 +1,6 @@
 /*
 
-  Copyright (C) 2006-2014 Inverse inc.
-  Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2006-2016 Inverse inc.
 
   This file is part of SOGo.
 
@@ -25,24 +24,6 @@
 #define __Appointments_SOGoTaskObject_H__
 
 #import "SOGoCalendarComponent.h"
-
-/*
-  SOGoTaskObject
-  
-  Represents a single task. This SOPE controller object manages all the
-  attendee storages (that is, it might store into multiple folders for meeting
-  tasks!).
-
-  Note: SOGoTaskObject do not need to exist yet. They can also be "new"
-        tasks with an externally generated unique key.
-*/
-
-@class NSArray;
-@class NSException;
-@class NSString;
-
-@class iCalToDo;
-@class iCalCalendar;
 
 @interface SOGoTaskObject : SOGoCalendarComponent
 
