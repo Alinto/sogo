@@ -437,8 +437,11 @@
           '</md-button>',
           '<div class="md-default-theme sg-timepicker-input-container" ',
           '     ng-class="{\'sg-timepicker-focused\': ctrl.isFocused}">',
-          '  <input class="sg-timepicker-input" aria-haspopup="true" ',
+          '  <input class="sg-timepicker-input" ',
           (ariaLabelValue ? 'aria-label="' + ariaLabelValue + '" ' : ''),
+          '         aria-haspopup="true"',
+          '         aria-expanded="{{ctrl.isTimeOpen}}" ',
+          '         aria-owns="{{::ctrl.timePaneId}}"',
           '         ng-focus="ctrl.setFocused(true)" ng-blur="ctrl.setFocused(false)">',
           '  <md-button type="button" md-no-ink ',
           '             class="sg-timepicker-triangle-button md-icon-button" ',
@@ -448,7 +451,7 @@
           '  </md-button>',
           '</div>',
           // This pane will be detached from here and re-attached to the document body.
-          '<div class="sg-timepicker-time-pane md-whiteframe-z1">',
+          '<div class="sg-timepicker-time-pane md-whiteframe-z1" id="{{::ctrl.timePaneId}}">',
           '  <div class="sg-timepicker-input-mask">',
           '    <div class="sg-timepicker-input-mask-opaque"></div>',
           // '                md-colors="::{\'box-shadow\': \'default-background-hue-1\'}"></div>', // using mdColors
@@ -524,16 +527,19 @@
    */
   var TIME_PANE_WIDTH = { GTXS: 510 + 20, XS: 274 + 20 };
 
+  /** Used for checking whether the current user agent is on iOS or Android. */
+  var IS_MOBILE_REGEX = /ipad|iphone|ipod|android/i;
+
   /**
    * Controller for sg-timepicker.
    *
    * ngInject @constructor
    */
   TimePickerCtrl.$inject = ['$scope', '$element', '$attrs', '$window', '$mdConstant',
-                            '$mdTheming', '$mdUtil', '$mdDateLocale', '$$mdDateUtil', '$$rAF', '$mdGesture',
+                            '$mdTheming', '$mdUtil', '$mdDateLocale', '$$mdDateUtil', '$$rAF',
                             '$mdMedia'];
   function TimePickerCtrl($scope, $element, $attrs, $window, $mdConstant,
-                          $mdTheming, $mdUtil, $mdDateLocale, $$mdDateUtil, $$rAF, $mdGesture,
+                          $mdTheming, $mdUtil, $mdDateLocale, $$mdDateUtil, $$rAF,
                           $mdMedia) {
     /** @final */
     this.$window = $window;
@@ -625,7 +631,7 @@
     this.timePaneOpenedFrom = null;
 
     /** @type {String} Unique id for the time pane. */
-    this.timePane.id = 'sg-time-pane' + $mdUtil.nextUid();
+    this.timePaneId = 'sg-time-pane' + $mdUtil.nextUid();
 
     /** Pre-bound click handler is saved so that the event listener can be removed. */
     this.bodyClickHandler = angular.bind(this, this.handleBodyClick);
@@ -635,7 +641,9 @@
      * the resize event doesn't make sense on mobile and can have a negative impact since it
      * triggers whenever the browser zooms in on a focused input.
      */
-    this.windowEventName = ($mdGesture.isIos || $mdGesture.isAndroid) ? 'orientationchange' : 'resize';
+    this.windowEventName = IS_MOBILE_REGEX.test(
+      navigator.userAgent || navigator.vendor || window.opera
+    ) ? 'orientationchange' : 'resize';
 
     /** Pre-bound close handler so that the event listener can be removed. */
     this.windowEventHandler = $mdUtil.debounce(angular.bind(this, this.closeTimePane), 100);
