@@ -154,9 +154,9 @@
       });
     if (this.isgroup)
       this.c_component = 'vlist';
-    if (this.notes && this.notes.length)
-      this.notes = _.map(this.notes, function(note) { return { 'value': note }; });
-    else
+    if (data.notes && data.notes.length)
+      this.notes = _.map(data.notes, function(note) { return { 'value': note }; });
+    else if (!this.notes)
       this.notes = [ { value: '' } ];
     // Instanciate Card objects for list members
     angular.forEach(this.refs, function(o, i) {
