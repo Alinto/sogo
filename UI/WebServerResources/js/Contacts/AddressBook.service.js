@@ -481,7 +481,7 @@
         var futureData = AddressBook.$$resource.fetch(addressbookId, 'view', query);
 
         if (dry) {
-          futureData.then(function(response) {
+          return futureData.then(function(response) {
             var results, headers, card, index, fields, idFieldIndex,
                 cards = _this.$$cards,
                 compareIds = function(card) {
@@ -539,13 +539,12 @@
               }
             });
 
-            _this.$isLoading = false;
             return cards;
           });
         }
         else {
           // Unwrap promise and instantiate or extend Cards objets
-          _this.$unwrap(futureData);
+          return _this.$unwrap(futureData);
         }
       });
     });

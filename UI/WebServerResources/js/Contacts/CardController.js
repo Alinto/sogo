@@ -7,9 +7,9 @@
    * Controller to view and edit a card
    * @ngInject
    */
-  CardController.$inject = ['$scope', '$timeout', '$window', '$mdDialog', 'AddressBook', 'Card', 'Dialog', 'sgHotkeys', 'sgFocus', '$state', '$stateParams', 'stateCard'];
-  function CardController($scope, $timeout, $window, $mdDialog, AddressBook, Card, Dialog, sgHotkeys, focus, $state, $stateParams, stateCard) {
-    var vm = this, hotkeys = [], minSearchLength;
+  CardController.$inject = ['$scope', '$timeout', '$window', '$mdDialog', 'sgSettings', 'AddressBook', 'Card', 'Dialog', 'sgHotkeys', 'sgFocus', '$state', '$stateParams', 'stateCard'];
+  function CardController($scope, $timeout, $window, $mdDialog, sgSettings, AddressBook, Card, Dialog, sgHotkeys, focus, $state, $stateParams, stateCard) {
+    var vm = this, hotkeys = [];
 
     vm.card = stateCard;
 
@@ -36,8 +36,6 @@
     vm.confirmDelete = confirmDelete;
     vm.toggleRawSource = toggleRawSource;
     vm.showRawSource = false;
-
-    minSearchLength = angular.isNumber($window.minimumSearchLength)? $window.minimumSearchLength : 2;
 
 
     _registerHotkeys(hotkeys);
@@ -100,11 +98,12 @@
       focus('address_' + i);
     }
     function userFilter($query, excludedCards) {
-      if ($query.length < minSearchLength)
+      if ($query.length < sgSettings.minimumSearchLength())
         return [];
 
-      AddressBook.selectedFolder.$filter($query, {dry: true, excludeLists: true}, excludedCards);
-      return AddressBook.selectedFolder.$$cards;
+      return AddressBook.selectedFolder.$filter($query, {dry: true, excludeLists: true}, excludedCards).then(function(cards) {
+        return cards;
+      });
     }
     function save(form) {
       if (form.$valid) {

@@ -375,7 +375,6 @@
             <md-contact-chips
                 class="sg-chips-autocomplete"
                 ng-model="editor.card.refs"
-                ng-model-options="{ debounce: { default: 500 } }"
                 md-contacts="editor.userFilter($query, editor.card.refs)"
                 md-contact-name="$$fullname"
                 md-contact-image="$$image"
