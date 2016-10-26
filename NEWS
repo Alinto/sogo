@@ -18,6 +18,7 @@ Bug fixes
  - [web] fixed support for recurrent tasks
  - [web] improved validation of mail account delegators
  - [web] fixed auto-completion of list members (#3870)
+ - [web] added missing options to subscribed addressbooks (#3850)
  - [eas] improve handling of email folders without a parent
  - [eas] never send IMIP reply when the "initiator" is Outlook 2013/2016
  - [core] only consider SMTP addresses for AD's proxyAddresses (#3842)
