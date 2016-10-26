@@ -634,8 +634,9 @@
   NSUInteger index;
 
   [self userDefaults];
+  [self userSettings];
 
-  mailSettings = [[self userSettings] objectForKey: @"Mail"];
+  mailSettings = [_settings objectForKey: @"Mail"];
   mailAccount = [NSMutableDictionary new];
 
   // 1. login
@@ -800,18 +801,43 @@
       delegators = [mailSettings objectForKey: @"DelegateFrom"];
       if (delegators)
         {
-          NSDictionary *delegatorAccount;
-          SOGoUser *delegator;
+          BOOL dirty;
+          NSDictionary *delegatorAccount, *delegatorSettings;
+          NSMutableArray *validDelegators;
+          NSString *delegatorLogin;
+          SOGoUser *delegatorUser;
 
+          dirty = NO;
+          validDelegators = [NSMutableArray array];
           max = [delegators count];
           for (count = 0; count < max; count++)
             {
-              delegator = [SOGoUser userWithLogin: [delegators objectAtIndex: count]];
-              if (delegator)
+              // 1. Verify if delegator is valid
+              delegatorLogin = [delegators objectAtIndex: count];
+              delegatorUser = [SOGoUser userWithLogin: delegatorLogin];
+              if (delegatorUser)
                 {
-                  delegatorAccount = [[delegator mailAccountsWithDelegatedIdentities: NO] objectAtIndex: 0];
-                  [identities addObjectsFromArray: [delegatorAccount objectForKey: @"identities"]];
+                  // 2. Verify if delegator still delegates to user
+                  delegatorSettings = [[delegatorUser userSettings] objectForKey: @"Mail"];
+                  delegates = [delegatorSettings objectForKey: @"DelegateTo"];
+                  if ([delegates containsObject: [self login]])
+                    {
+                      [validDelegators addObject: delegatorLogin];
+                      delegatorAccount = [[delegatorUser mailAccountsWithDelegatedIdentities: NO] objectAtIndex: 0];
+                      [identities addObjectsFromArray: [delegatorAccount objectForKey: @"identities"]];
+                    }
+                  else
+                    dirty = YES;
                 }
+              else
+                dirty = YES;
+            }
+
+          if (dirty)
+            {
+              [mailSettings setObject: validDelegators
+                               forKey: @"DelegateFrom"];
+              [_settings synchronize];
             }
         }
     }
