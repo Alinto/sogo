@@ -22,7 +22,7 @@
 "Mail Options" = "Опции за електронската пошта";
 "IMAP Accounts" = "IMAP сметки";
 "Vacation" = "Одмор";
-"Forward" = "Напред";
+"Forward" = "Препрати";
 "Password" = "Лозинка";
 "Categories" = "Категории";
 "Appointments invitations" = "Покани за состаноци";
@@ -36,7 +36,7 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Овозможи автоматски одговор поради одмор";
-"Enable custom auto reply subject" = "Овозможи прилагодлива тема на автоматски одговор";
+"Enable custom auto reply subject" = "Овозможи прилагодлив автоматски одговор";
 "Auto reply subject" = "Тема за автоматски одговор";
 "You can write ${subject} to insert the original subject" = "Можете да напишете ${subject} за да ја уфрлите оригиналната тема";
 "Auto reply message" = "Порака за автоматски одговор";
@@ -107,7 +107,7 @@
 "No matches found." = "Не се пронајдени совпаѓања.";
 
 /* calendar */
-"Week begins on" = "Неделата запонува на";
+"Week begins on" = "Неделата започнува со";
 "Day start time" = "Почетен датум";
 "Day end time" = "Краен датум";
 "Day start time must be prior to day end time." = "Почетокот мора да биде пред завршетокот (денови).";
@@ -146,6 +146,7 @@
 /* Mailer */
 "Labels" = "Лабели";
 "Label" = "Лабела";
+"New label" = "Нова лабела";
 "Show subscribed mailboxes only" = "Прикажи ги само претплатените поштенски сандачиња";
 "Synchronize only default mail folders (EAS)" = "Синхронизирај ги само основните папки за пошта (EAS)";
 "Sort messages by threads" = "Сортирај ги пораките според конверзацијата";
@@ -212,12 +213,13 @@
 /* Event+task categories */
 "Calendar Category" = "Категорија на календарот";
 "Add Calendar Category" = "Додади категорија во календарот";
+"New category" = "Нова категорија";
 "Remove Calendar Category" = "Отстрани категорија од календарот";
 "Contact Category" = "Категорија на контакти";
 "Add Contact Category" = "Додади категорија на контакти";
 "Remove Contact Category" = "Отстрани категорија на контакти";
 "category_none" = "Ниту еден";
-"calendar_category_labels" = "Годишница,Роденден,Деловно,Повици,Clients,Конкуренција,Корисник,Фаворити,Да се следи,Подарок,Празници,Идеи,Состаноци,Проблеми,Разно,Лични,Проекти,Јавни празници,Статус,Добавувачи,Патување,Одмор";
+"calendar_category_labels" = "Годишница,Роденден,Деловно,Повици,Клиенти,Конкуренција,Корисник,Фаворити,Да се следи,Подарок,Празници,Идеи,Состаноци,Проблеми,Разно,Лични,Проекти,Јавни празници,Статус,Добавувачи,Патување,Одмор";
 
 /* Default module */
 "Calendar" = "Календар";
@@ -292,6 +294,9 @@
 "Move Down" = "Сини го долу";
 "Connection error" = "Грешка при поврзување";
 "Service temporarily unavailable" = "Услугата е привремено недостапна";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Овозможи го филтерот";
 
 /* Filters - UIxFilterEditor */
 "Filter name" = "Име на филтерот";

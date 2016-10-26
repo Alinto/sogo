@@ -374,4 +374,13 @@
 "hotkey_compose" = "w";
 
 /* Hotkey to flag a message */
-"hotkey_flag" = "ф";
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

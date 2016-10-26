@@ -41,20 +41,28 @@
 "Move To" = "Áthelyezés";
 "Copy To" = "Másolás";
 "Add to" = "Add to";
+
 /* Subheader of empty addressbook */
 "No contact" = "Nincs kapcsolat";
+
 /* Subheader of system addressbook */
 "Start a search to browse this address book" = "Indítson egy keresést a címjegyzék tallózásához.";
+
 /* Number of contacts in addressbook; string is prefixed by number */
 "contacts" = "kapcsolat";
+
 /* No contact matching search criteria */
 "No matching contact" = "Nincs megfelelő kapcsolat";
+
 /* Number of contacts matching search criteria; string is prefixed by number */
 "matching contacts" = "megfelelő kapcsolat";
+
 /* Number of selected contacts in list */
 "selected" = "kijelölt";
+
 /* Empty right pane */
 "No contact selected" = "Nincs kijelölt kapcsolat";
+
 /* Tooltips */
 "Create a new address book card" = "Új névjegykártya készítése";
 "Create a new list" = "Új csoportlista készítése";
@@ -95,9 +103,11 @@
 "Work" = "Munkahely";
 "Mobile" = "Mobil";
 "Pager" = "Személyhívó";
+
 /* categories */
 "contacts_category_labels" = "Munkatárs, Versenytárs, Felhasználó, Barát, Család, Üzleti partner, Szolgáltató, Sajtó, VIP";
 "New category" = "Új kategória";
+
 /* adresses */
 "Title" = "Cím";
 "Service" = "Szolgáltatás";
@@ -134,12 +144,14 @@
 = "Nem lehet törölni vagy leiratkozni a személyes címjegyzékről.";
 "Are you sure you want to delete the selected contacts?"
 = "Biztosan törli a kijelölt kapcsolatokat?";
+"Are you sure you want to delete the card of %{0}?" = "Biztosan törli ezt a névjegyet: %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "Az alábbi névjegy nem törölhető:  \"%{0}\".";
 "You cannot subscribe to a folder that you own!"
 = "Saját tulajdonú mappára nem lehet feliratkozni.";
 "Unable to subscribe to that folder!"
 = "Erre a mappára nem lehet feliratkozni.";
+
 /* acls */
 "Access rights to" = "Hozzáférés az alábbiaknak:";
 "For user" = "Felhasználónak";
@@ -158,11 +170,15 @@
 "The selected contact has no email address."
 = "A kiválasztott kapcsolat nem rendelkezik email címmel.";
 "Please select a contact." = "Kérem válasszon egy kapcsolatot.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} névjegy másolva";
+"%{0} card(s) moved" = "%{0} névjegy átmozgatva";
 "SoAccessDeniedException" = "Ön nem írhat ebbe a címjegyzékbe.";
 "Forbidden" = "Ön nem írhat ebbe a címjegyzékbe.";
 "Invalid Contact" = "A kijelölt kapcsolat már nem létezik.";
 "Unknown Destination Folder" = "A kijelölt címjegyzék már nem elérhető.";
+
 /* Lists */
 "List details" = "Lista részletek";
 "List name" = "Lista név";
@@ -175,6 +191,8 @@
 "Export" = "Exportálás";
 "Export Address Book..." = "Címjegyzék exportálása...";
 "View Raw Source" = "Forrás megtekintése";
+
+/* Import */
 "Import Cards" = "Névjegyek importálása";
 "Select a vCard or LDIF file." = "Válasszon LDIF vagy vCard állományt.";
 "Upload" = "Feltöltés";
@@ -184,6 +202,7 @@
 "No card was imported." = "Névjegy nem került importálásra.";
 "A total of %{0} cards were imported in the addressbook." = "Az összes %{0} névjegy importálástra került a címjegyzékbe.";
 "Reload" = "Újratöltés";
+
 /* Properties window */
 "Address Book Name" = "Címjegyzék neve";
 "Links to this Address Book" = "Hivatkozások erre a címjegyzékre";
@@ -231,3 +250,12 @@
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Keresés hatóköre";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Elem összecsukása";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

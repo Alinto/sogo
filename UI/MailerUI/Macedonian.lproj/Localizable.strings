@@ -270,13 +270,13 @@
 "Unable to move/delete folder." = "Не е можно да ја префрлите/избришете папката.";
 
 /* Confirmation message when deleting multiple messages */
-"Are you sure you want to delete the selected messages?" = "Дали сте сигуни дека сакате да ги избришете селектираните пораки?";
+"Are you sure you want to delete the selected messages?" = "Дали сте сигурни дека сакате да ги избришете селектираните пораки?";
 
 /* Notification on the number of messages successfuly copied */
 "%{0} message(s) copied" = "%{0} порака(и) се ископирани";
 
 /* Notification on the number of messages successfuly movied */
-"%{0} message(s) copied" = "%{0} порака(и) се ископирани";
+"%{0} message(s) moved" = "%{0} порака(и) се префрлени";
 
 "Please select a message." = "Одберете порака.";
 "Please select a message to print." = "Одберете ја пораката што ќе се печати.";
@@ -344,6 +344,7 @@
 "Set as Junk" = "Постави како отпад";
 
 "Sort" = "Сортирај";
+"Order Received" = "Редослед на примени";
 "Descending Order" = "Опаѓачки редослед";
 "Back" = "Назад";
 "Copy messages" = "Копирај ја пораката";
@@ -362,3 +363,24 @@
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Предмет на пребарување";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Уреди ја претплатата";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Филтер";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

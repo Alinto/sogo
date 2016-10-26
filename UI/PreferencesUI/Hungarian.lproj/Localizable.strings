@@ -146,6 +146,7 @@
 /* Mailer */
 "Labels" = "Címkék";
 "Label" = "Címke";
+"New label" = "Új címke";
 "Show subscribed mailboxes only" = "Csak azon fiókok mutatása, amelyre feliratkozott";
 "Synchronize only default mail folders (EAS)" = "Csak az alapértelmezett levelezési mappák szinkronizálása (EAS)";
 "Sort messages by threads" = "Üzenetek beszélgetések szerinti rendezése";
@@ -212,6 +213,7 @@
 /* Event+task categories */
 "Calendar Category" = "Naptár kategória";
 "Add Calendar Category" = "Naptár kategória hozzáadása";
+"New category" = "Új kategória";
 "Remove Calendar Category" = "Naptár kategória eltávolítása";
 "Contact Category" = "Kapcsolat kategória";
 "Add Contact Category" = "Kapcsolat kategória hozzáadása";
@@ -292,6 +294,9 @@
 "Move Down" = "Mozgatás le";
 "Connection error" = "Kapcsolódási hiba";
 "Service temporarily unavailable" = "A szolgáltatás átmenetileg nem érhető el";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Szűrő engedélyezése";
 
 /* Filters - UIxFilterEditor */
 "Filter name" = "Szűrő neve";

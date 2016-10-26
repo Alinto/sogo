@@ -32,7 +32,7 @@
 "Create a new message" = "Yeni ileti oluştur";
 "Go to address book" = "Adres defterine git";
 "Reply to the message" = "İletiyi yanıtla";
-"Reply to sender and all recipients" = "Göndereni ve diğer tüm alıcıları yanıtla";
+"Reply to sender and all recipients" = "Göndereni ve alıcıların hepsini yanıtla";
 "Forward selected message" = "E-postayı başkasına ilet";
 "Delete selected message or folder" = "Seçili ileti veya klasörü sil";
 "Print this message" = "İletiyi yazdır";
@@ -194,7 +194,7 @@
 
 /* Use This Folder menu */
 "Sent Messages" = "Gönderilmiş İletiler";
-"Drafts" = "Taslaklar";
+"Drafts" = "Taslak İletiler";
 "Deleted Messages" = "Silinmiş İletiler";
 "Junk Messages" = "İstenmeyen İletiler";
 
@@ -239,7 +239,7 @@
 
 /* Mark popup menu */
 "As Read" = "Okunmuş";
-"Thread As Read" = "Okunmuşları Zincirleme Sırala";
+"Thread As Read" = "Okundukça Diz";
 "As Read By Date..." = "Okunma Tarihi...";
 "All Read" = "Hepsi Okunmuş";
 "Flag" = "Yıldız";
@@ -259,7 +259,7 @@
 "Please specify at least one filter" = "Lütfen en az bir süzgeç belirtin";
 
 /* Folder operations */
-"Name" = "İsim";
+"Name" = "Tam İsim";
 "Enter the new name of your folder"
  ="Yeni klasörünüzün adını yazın";
 "Do you really want to move this folder into the trash ?"
@@ -344,6 +344,7 @@
 "Set as Junk" = "İstenmeyen olarak belirle";
 
 "Sort" = "Sıralandır";
+"Order Received" = "Alınan Tarih";
 "Descending Order" = "Azalan Sıralama";
 "Back" = "Geri";
 "Copy messages" = "İletileri kopyala";
@@ -366,5 +367,20 @@
 /* Subscriptions Dialog */
 "Manage Subscriptions" = "Abonelikleri Yönet";
 
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Süzgeç";
+
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

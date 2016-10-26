@@ -144,8 +144,9 @@
 "reminder_1_WEEK_BEFORE" = "1 týden";
 
 /* Mailer */
-"Labels" = "Značky";
-"Label" = "Označkovat";
+"Labels" = "Štítky";
+"Label" = "Štítek";
+"New label" = "Nový štítek";
 "Show subscribed mailboxes only" = "Ukázat pouze odebírané mailové schránky";
 "Synchronize only default mail folders (EAS)" = "Synchronizovat pouze standartní poštovní složky (EAS)";
 "Sort messages by threads" = "Třídit zprávy podle souvislostí";
@@ -212,6 +213,7 @@
 /* Event+task categories */
 "Calendar Category" = "Kategorie kalendáře";
 "Add Calendar Category" = "Přidat kategorii kalendáře";
+"New category" = "Nová kategorie";
 "Remove Calendar Category" = "Odstranit kategorii kalendáře";
 "Contact Category" = "Kategorie kontaktu";
 "Add Contact Category" = "Přidat kategorii kontaktu";
@@ -327,7 +329,7 @@
 "is under" = "je menší než";
 "is over" = "je větší než";
 "is" = "je rovno";
-"is not" = "is not";
+"is not" = "není";
 "contains" = "obsahuje";
 "does not contain" = "neobsahuje";
 "matches" = "odpovídá";

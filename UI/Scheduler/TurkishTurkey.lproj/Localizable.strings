@@ -150,7 +150,7 @@
 "Start" = "Başlangıç";
 "End" = "Bitiş";
 "Due Date" = "Son Tarih";
-"Name" = "İsim";
+"Name" = "Tam İsim";
 "Email" = "E-posta";
 "Status" = "Durum";
 "% complete" = "% tamamlandı";
@@ -304,7 +304,7 @@
 "Year(s)" = "Yıl";
 
 /* [Event recurrence editor] Ex: Every first Sunday _of_ April */
-"cycle_of" = "-";
+"cycle_of" = "döngü";
 "No end date" = "Bitiş tarihi yok";
 "Create" = "Sadece";
 "appointment(s)" = "randevu";
@@ -454,7 +454,7 @@ validate_untilbeforeend    = "Tekrar bitiş tarihi ilk tekrar tarihinden sonra o
 "Work days only" = "Sadece çalışma günleri";
 "The whole day" = "Tam gün";
 "Between" = ":";
-"and" = "-";
+"and" = "ve";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Bir ya da daha fazla katılımcı ile zaman çakışması var.\nYine de mevcut düzenlemeyi tutmak ister misiniz?";
 

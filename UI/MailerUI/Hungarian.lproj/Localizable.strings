@@ -276,7 +276,7 @@
 "%{0} message(s) copied" = "%{0} üzenet másolva";
 
 /* Notification on the number of messages successfuly movied */
-"%{0} message(s) copied" = "%{0} üzenet másolva";
+"%{0} message(s) moved" = "%{0} üzenet átmozgatva";
 
 "Please select a message." = "Kérem válasszon egy üzenetet.";
 "Please select a message to print." = "Kérem válasszon ki egy üzenetet a nyomtatáshoz.";
@@ -344,6 +344,7 @@
 "Set as Junk" = "Levélszemétnek jelöl";
 
 "Sort" = "Rendezés";
+"Order Received" = "Megrendelés beérkezett";
 "Descending Order" = "Csökkenő sorrend";
 "Back" = "Vissza";
 "Copy messages" = "Üzenetek másolása";
@@ -362,3 +363,24 @@
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Keresés hatóköre";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Feliratkozások kezelése";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Szűrő";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";
