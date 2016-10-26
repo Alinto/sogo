@@ -1059,11 +1059,9 @@ static NSString *inboxFolderName = @"INBOX";
         {
           currentDelegate = [oldDelegates objectAtIndex: count];
           delegateUser = [SOGoUser userWithLogin: currentDelegate];
+          [delegates removeObject: currentDelegate];
           if (delegateUser)
-            {
-              [delegates removeObject: currentDelegate];
-              [delegateUser removeMailDelegator: owner];
-            }
+            [delegateUser removeMailDelegator: owner];
         }
       
       [self _setDelegates: delegates];
