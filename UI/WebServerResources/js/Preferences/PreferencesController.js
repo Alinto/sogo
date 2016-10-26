@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  PreferencesController.$inject = ['$q', '$window', '$state', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgFocus', 'Dialog', 'User', 'Account', 'statePreferences', 'Authentication'];
-  function PreferencesController($q, $window, $state, $mdMedia, $mdSidenav, $mdDialog, $mdToast, focus, Dialog, User, Account, statePreferences, Authentication) {
+  PreferencesController.$inject = ['$q', '$window', '$state', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgSettings', 'sgFocus', 'Dialog', 'User', 'Account', 'statePreferences', 'Authentication'];
+  function PreferencesController($q, $window, $state, $mdMedia, $mdSidenav, $mdDialog, $mdToast, sgSettings, focus, Dialog, User, Account, statePreferences, Authentication) {
     var vm = this, account, mailboxes = [], today = new Date(), tomorrow = today.beginOfDay().addDays(1);
 
     vm.preferences = statePreferences;
@@ -244,6 +244,9 @@
     }
 
     function userFilter(search, excludedUsers) {
+      if (search.length < sgSettings.minimumSearchLength())
+        return [];
+
       return User.$filter(search, excludedUsers).then(function(users) {
         // Set users avatars
         _.forEach(users, function(user) {

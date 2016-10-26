@@ -34,6 +34,9 @@
           return settings[param];
         else
           return settings;
+      },
+      minimumSearchLength: function() {
+        return angular.isNumber(minimumSearchLength)? minimumSearchLength : 2;
       }
     })
 
