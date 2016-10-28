@@ -209,8 +209,8 @@
   /**
    * @ngInject
    */
-  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$mdDialog', 'User', 'Calendar', 'Component', 'AddressBook', 'Card', 'Alarm', 'stateComponent'];
-  function ComponentEditorController($rootScope, $scope, $log, $timeout, $mdDialog, User, Calendar, Component, AddressBook, Card, Alarm, stateComponent) {
+  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$mdDialog', 'User', 'CalendarSettings', 'Calendar', 'Component', 'AddressBook', 'Card', 'Alarm', 'stateComponent'];
+  function ComponentEditorController($rootScope, $scope, $log, $timeout, $mdDialog, User, CalendarSettings, Calendar, Component, AddressBook, Card, Alarm, stateComponent) {
     var vm = this, component, oldStartDate, oldEndDate, oldDueDate;
 
     vm.service = Calendar;
@@ -306,7 +306,7 @@
             $mdDialog.hide();
             Alarm.getAlarms();
           }, function(response) {
-            if (response.status == 403 &&
+            if (response.status == CalendarSettings.ConflictHTTPErrorCode &&
                 response.data && response.data.message &&
                 angular.isObject(response.data.message))
               vm.attendeeConflictError = response.data.message;

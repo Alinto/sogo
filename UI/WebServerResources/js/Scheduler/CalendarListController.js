@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  CalendarListController.$inject = ['$rootScope', '$scope', '$timeout', '$state', '$mdDialog', 'sgHotkeys', 'sgFocus', 'Dialog', 'Preferences', 'Calendar', 'Component'];
-  function CalendarListController($rootScope, $scope, $timeout, $state, $mdDialog, sgHotkeys, focus, Dialog, Preferences, Calendar, Component) {
+  CalendarListController.$inject = ['$rootScope', '$scope', '$timeout', '$state', '$mdDialog', 'sgHotkeys', 'sgFocus', 'Dialog', 'Preferences', 'CalendarSettings', 'Calendar', 'Component'];
+  function CalendarListController($rootScope, $scope, $timeout, $state, $mdDialog, sgHotkeys, focus, Dialog, Preferences, CalendarSettings, Calendar, Component) {
     var vm = this, hotkeys = [];
 
     vm.component = Component;
@@ -291,7 +291,7 @@
       }
 
       function onComponentAdjustError(response, component, params) {
-        if (response.status == 403 &&
+        if (response.status == CalendarSettings.ConflictHTTPErrorCode &&
             response.data && response.data.message && angular.isObject(response.data.message)) {
           $mdDialog.show({
             parent: angular.element(document.body),
