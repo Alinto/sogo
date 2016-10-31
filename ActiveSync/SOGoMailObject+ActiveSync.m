@@ -1291,6 +1291,13 @@ struct GlobalObjectId {
         [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[[self inReplyTo] dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];
       else if ([[self messageId] length] > 0)
         [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[[self messageId] dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];
+
+      if ([self replied])
+        [s appendFormat: @"<LastVerbExecuted xmlns=\"Email2:\">%d</LastVerbExecuted>", 1];
+      else if ([self forwarded])
+        [s appendFormat: @"<LastVerbExecuted xmlns=\"Email2:\">%d</LastVerbExecuted>", 3];
+      else
+        [s appendFormat: @"<LastVerbExecuted xmlns=\"Email2:\">%d</LastVerbExecuted>", 0];
     }
 
   // FIXME - support these in the future
