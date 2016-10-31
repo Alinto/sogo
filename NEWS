@@ -1,6 +1,10 @@
 2.3.18 (2016-11-DD)
 -------------------
 
+Enhancements
+ - [eas] initial support for recurring tasks EAS
+ - [eas] now support replied/forwarded flags using EAS (#3796)
+
 Bug fixes
  - [web] fixed support for recurrent tasks
  - [web] improved validation of mail account delegators
