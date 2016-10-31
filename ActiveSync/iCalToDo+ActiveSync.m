@@ -45,7 +45,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "NSDate+ActiveSync.h"
 #include "NSString+ActiveSync.h"
-
+#include "iCalRecurrenceRule+ActiveSync.h"
 
 @implementation iCalToDo (ActiveSync)
 
@@ -80,6 +80,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [s appendFormat: @"<DueDate xmlns=\"Tasks:\">%@</DueDate>", [o activeSyncRepresentationInContext: context]];
       [s appendFormat: @"<UTCDueDate xmlns=\"Tasks:\">%@</UTCDueDate>", [o activeSyncRepresentationInContext: context]];
     }
+
+  // Recurrence rules
+  if ([self isRecurrent])
+    [s appendString: [[[self recurrenceRules] lastObject] activeSyncRepresentationInContext: context]];
   
   // Importance
   o = [self priority];
@@ -247,6 +251,29 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
 
     }
+
+  // Recurrence
+  if ((o = [theValues objectForKey: @"Recurrence"]) && !([[o objectForKey: @"Recurrence_DeadOccur"] intValue]))
+    {
+      iCalRecurrenceRule *rule;
+
+      rule = [[iCalRecurrenceRule alloc] init];
+      [self setRecurrenceRules: [NSArray arrayWithObject: rule]];
+      RELEASE(rule);
+
+      [rule takeActiveSyncValues: o  inContext: context];
+
+      if (!([theValues objectForKey: @"StartDate"]))
+        {
+          iCalDateTime *start;
+
+          start = (iCalDateTime *) [self uniqueChildWithTag: @"dtstart"];
+
+          [start setTimeZone: tz];
+          [start setDate: [[o objectForKey: @"Recurrence_Start"] calendarDate]];
+        }
+    }
+
 }
 
 @end
