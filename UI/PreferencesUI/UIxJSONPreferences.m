@@ -356,10 +356,6 @@ static SoProduct *preferencesProduct = nil;
       [values setObject: vacation forKey: @"Vacation"];
     }
 
-  // Don't expose SOGoRememberLastModule;
-  // User can edit SOGoLoginModule but SOGoRememberLastModule is managed internally.
-  [values removeObjectForKey: @"SOGoRememberLastModule"];
-
   return [self responseWithStatus: 200 andJSONRepresentation: values];
 }
 

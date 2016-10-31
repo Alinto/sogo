@@ -2183,6 +2183,7 @@ static NSArray *reminderValues = nil;
       NSArray *allKeys, *accounts;
       NSDictionary *newLabels;
       NSString *name;
+      id loginModule;
 
       int i;
 
@@ -2190,7 +2191,14 @@ static NSArray *reminderValues = nil;
       v = [[v mutableCopy] autorelease];
 
       if ([[v objectForKey: @"SOGoLoginModule"] isEqualToString: @"Last"])
-        [v setObject: [NSNumber numberWithBool: YES]  forKey: @"SOGoRememberLastModule"];
+        {
+          [v setObject: [NSNumber numberWithBool: YES]  forKey: @"SOGoRememberLastModule"];
+          loginModule = [[[user userDefaults] source] objectForKey: @"SOGoLoginModule"];
+          if (loginModule)
+            [v setObject: loginModule forKey: @"SOGoLoginModule"];
+          else
+            [v removeObjectForKey: @"SOGoLoginModule"];
+        }
       else
         [v setObject: [NSNumber numberWithBool: NO]  forKey: @"SOGoRememberLastModule"];
 

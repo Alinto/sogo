@@ -25,6 +25,9 @@
 
       data.SOGoMailLabelsColors = labels;
 
+      if (data.SOGoRememberLastModule)
+        data.SOGoLoginModule = "Last";
+
       // Mail editor autosave is a number of minutes or 0 if disabled
       data.SOGoMailAutoSave = parseInt(data.SOGoMailAutoSave) || 0;
 
