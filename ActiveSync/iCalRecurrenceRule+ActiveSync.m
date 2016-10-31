@@ -35,6 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSString.h>
 
 #import <NGCards/iCalEvent.h>
+#import <NGCards/iCalToDo.h>
 #import <NGCards/iCalByDayMask.h>
 
 #import <NGCards/iCalDateTime.h>
@@ -59,11 +60,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   NSMutableString *s;
+  NSString *t;
   int type;
 
   s = [NSMutableString string];
-  
-  [s appendString: @"<Recurrence xmlns=\"Calendar:\">"];
+
+  if ([[self parent] isKindOfClass: [iCalToDo class]])
+    t = @"Tasks";
+  else
+    t = @"Calendar";
+
+  [s appendFormat: @"<Recurrence xmlns=\"%@:\">", t];
 
   // 0 -> daily, 1 -> weekly, 2 -> montly, 5 -> yearly
   type = 0;
@@ -75,11 +82,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       // 1 -> sunday, 2 -> monday, 4 -> tuesday, 8 -> wednesday, 16 -> thursday, 32 -> friday, 64 -> saturday, 127 -> last day of month (montly or yearl recurrences only)
       if ([[self byDayMask] isWeekDays])
         {
-          [s appendFormat: @"<Recurrence_DayOfWeek xmlns=\"Calendar:\">%d</Recurrence_DayOfWeek>", (2|4|8|16|32)];
+          [s appendFormat: @"<Recurrence_DayOfWeek xmlns=\"%@:\">%d</Recurrence_DayOfWeek>", t, (2|4|8|16|32)];
         }
       else
         {
-          [s appendFormat: @"<Recurrence_Interval xmlns=\"Calendar:\">%d</Recurrence_Interval>", [self repeatInterval]]; 
+          [s appendFormat: @"<Recurrence_Interval xmlns=\"%@:\">%d</Recurrence_Interval>", t, [self repeatInterval]];
         }
     }
   else if ([self frequency] == iCalRecurrenceFrequenceWeekly)
@@ -107,8 +114,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           v = (1 << [[self _adjustedStartDate] dayOfWeek]);
         }
 
-      [s appendFormat: @"<Recurrence_DayOfWeek xmlns=\"Calendar:\">%d</Recurrence_DayOfWeek>", v];
-      [s appendFormat: @"<Recurrence_Interval xmlns=\"Calendar:\">%d</Recurrence_Interval>", [self repeatInterval]]; 
+      [s appendFormat: @"<Recurrence_DayOfWeek xmlns=\"%@:\">%d</Recurrence_DayOfWeek>", t, v];
+      [s appendFormat: @"<Recurrence_Interval xmlns=\"%@:\">%d</Recurrence_Interval>", t, [self repeatInterval]];
     }
   else if ([self frequency] == iCalRecurrenceFrequenceMonthly)
     {
@@ -125,8 +132,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           if (firstOccurrence < 0)
             firstOccurrence = 5;
 
-          [s appendFormat: @"<Recurrence_DayOfWeek xmlns=\"Calendar:\">%d</Recurrence_DayOfWeek>", (1 << [dm firstDay])];          
-          [s appendFormat: @"<Recurrence_WeekOfMonth xmlns=\"Calendar:\">%d</Recurrence_WeekOfMonth>", firstOccurrence];
+          [s appendFormat: @"<Recurrence_DayOfWeek xmlns=\"%@:\">%d</Recurrence_DayOfWeek>", t, (1 << [dm firstDay])];
+          [s appendFormat: @"<Recurrence_WeekOfMonth xmlns=\"%@:\">%d</Recurrence_WeekOfMonth>", t, firstOccurrence];
         }
       else if ([[self byMonthDay] count])
         {
@@ -140,8 +147,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               iCalByDayMask *dm;
           
               dm = [self byDayMask];
-              [s appendFormat: @"<Recurrence_DayOfWeek xmlns=\"Calendar:\">%d</Recurrence_DayOfWeek>", (1 << [dm firstDay])];
-              [s appendFormat: @"<Recurrence_WeekOfMonth xmlns=\"Calendar:\">%d</Recurrence_WeekOfMonth>", 5];
+              [s appendFormat: @"<Recurrence_DayOfWeek xmlns=\"%@:\">%d</Recurrence_DayOfWeek>", t, (1 << [dm firstDay])];
+              [s appendFormat: @"<Recurrence_WeekOfMonth xmlns=\"%@:\">%d</Recurrence_WeekOfMonth>", t, 5];
             }
           else
             {
@@ -153,7 +160,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         {
           // Simple reccurrence rule of type "Monthly"
           type = 2;
-          [s appendFormat: @"<Recurrence_DayOfMonth xmlns=\"Calendar:\">%d</Recurrence_DayOfMonth>", [[self _adjustedStartDate] dayOfMonth]];
+          [s appendFormat: @"<Recurrence_DayOfMonth xmlns=\"%@:\">%d</Recurrence_DayOfMonth>", t, [[self _adjustedStartDate] dayOfMonth]];
         }
     }
   else if ([self frequency] == iCalRecurrenceFrequenceYearly)
@@ -172,38 +179,39 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               if (firstOccurrence < 0)
                 firstOccurrence = 5;
               
-              [s appendFormat: @"<Recurrence_DayOfWeek xmlns=\"Calendar:\">%d</Recurrence_DayOfWeek>", (1 << [dm firstDay])];
-              [s appendFormat: @"<Recurrence_WeekOfMonth xmlns=\"Calendar:\">%d</Recurrence_WeekOfMonth>", firstOccurrence];
-              [s appendFormat: @"<Recurrence_MonthOfYear xmlns=\"Calendar:\">%@</Recurrence_MonthOfYear>",
+              [s appendFormat: @"<Recurrence_DayOfWeek xmlns=\"%@:\">%d</Recurrence_DayOfWeek>", t, (1 << [dm firstDay])];
+              [s appendFormat: @"<Recurrence_WeekOfMonth xmlns=\"%@:\">%d</Recurrence_WeekOfMonth>", t, firstOccurrence];
+              [s appendFormat: @"<Recurrence_MonthOfYear xmlns=\"%@:\">%@</Recurrence_MonthOfYear>", t,
                  [self flattenedValuesForKey: @"bymonth"]];
             }
           else
             {
               type = 5; // Yearly
               
-              [s appendFormat: @"<Recurrence_DayOfMonth xmlns=\"Calendar:\">%@</Recurrence_DayOfMonth>",
+              [s appendFormat: @"<Recurrence_DayOfMonth xmlns=\"%@:\">%@</Recurrence_DayOfMonth>", t,
                  [self flattenedValuesForKey: @"bymonthday"]];
               
-              [s appendFormat: @"<Recurrence_MonthOfYear xmlns=\"Calendar:\">%@</Recurrence_MonthOfYear>",
+              [s appendFormat: @"<Recurrence_MonthOfYear xmlns=\"%@:\">%@</Recurrence_MonthOfYear>", t,
                  [self flattenedValuesForKey: @"bymonth"]];
             }
         }
       else
         {
           type = 5;
-          [s appendFormat: @"<Recurrence_DayOfMonth xmlns=\"Calendar:\">%d</Recurrence_DayOfMonth>", [[self _adjustedStartDate] dayOfMonth]];
-          [s appendFormat: @"<Recurrence_MonthOfYear xmlns=\"Calendar:\">%d</Recurrence_MonthOfYear>", [[self _adjustedStartDate] monthOfYear]]; 
-
+          [s appendFormat: @"<Recurrence_DayOfMonth xmlns=\"%@:\">%d</Recurrence_DayOfMonth>", t, [[self _adjustedStartDate] dayOfMonth]];
+          [s appendFormat: @"<Recurrence_MonthOfYear xmlns=\"%@:\">%d</Recurrence_MonthOfYear>", t, [[self _adjustedStartDate] monthOfYear]];
         }
     }
   
-  [s appendFormat: @"<Recurrence_Type xmlns=\"Calendar:\">%d</Recurrence_Type>", type];
+  [s appendFormat: @"<Recurrence_Type xmlns=\"%@:\">%d</Recurrence_Type>", t, type];
+
+  if ([[self parent] isKindOfClass: [iCalToDo class]])
+    [s appendFormat: @"<Recurrence_Start xmlns=\"%@:\">%@</Recurrence_Start>", t, [[[self parent] startDate] activeSyncRepresentationInContext: context]];
 
   // Occurrences / Until
-  //[s appendFormat: @"<Recurrence_Occurrences xmlns=\"Calendar:\">%d</Recurrence_Occurrences>", 5];
   if ([self repeatCount])
     {
-      [s appendFormat: @"<Recurrence_Occurrences xmlns=\"Calendar:\">%@</Recurrence_Occurrences>",
+      [s appendFormat: @"<Recurrence_Occurrences xmlns=\"%@:\">%@</Recurrence_Occurrences>", t,
          [self flattenedValuesForKey: @"count"]];
     }
   else if ([self untilDate])
@@ -214,10 +222,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       //ud = [[context activeUser] userDefaults];
       //[date setTimeZone: [ud timeZone]];
       
-      [s appendFormat: @"<Recurrence_Until xmlns=\"Calendar:\">%@</Recurrence_Until>",
+      [s appendFormat: @"<Recurrence_Until xmlns=\"%@:\">%@</Recurrence_Until>", t,
          [date activeSyncRepresentationWithoutSeparatorsInContext: context]];
     }  
-
 
   [s appendString: @"</Recurrence>"];
 
