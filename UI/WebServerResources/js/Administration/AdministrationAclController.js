@@ -90,7 +90,7 @@
         $mdToast.show(
           $mdToast.simple()
             .content(l('ACLs saved'))
-            .position('top right')
+            .position('bottom right')
             .hideDelay(3000)
         );
         // Close acls on small devices
