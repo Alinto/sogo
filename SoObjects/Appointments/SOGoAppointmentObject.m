@@ -890,12 +890,13 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                             toAttendees: addedAttendees
                                withType: @"calendar:invitation"];
     }
-      
-      [self sendReceiptEmailForObject: newEvent
-                       addedAttendees: addedAttendees
-                     deletedAttendees: deletedAttendees
-                     updatedAttendees: updatedAttendees
-                            operation: EventUpdated];
+
+  if ([changes hasChanges])
+    [self sendReceiptEmailForObject: newEvent
+                     addedAttendees: addedAttendees
+                   deletedAttendees: deletedAttendees
+                   updatedAttendees: updatedAttendees
+                          operation: EventUpdated];
 
   return nil;
 }
