@@ -311,7 +311,7 @@
       var selectedMessages = vm.selectedFolder.$selectedMessages();
 
       if (messageDialog === null && _.size(selectedMessages) > 0)
-        messageDialog = Dialog.confirm(l('Warning'),
+        messageDialog = Dialog.confirm(l('Confirmation'),
                                        l('Are you sure you want to delete the selected messages?'),
                                        { ok: l('Delete') })
         .then(function() {

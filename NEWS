@@ -3,6 +3,7 @@
 
 Enhancements
  - [web] add constraints to start/end dates of automatic responder (#3841)
+ - [web] allow a mailbox to be deleted immediately (#3875)
  - [web] updated Angular to version 1.5.8
  - [eas] initial support for recurring tasks EAS
  - [eas] now support replied/forwarded flags using EAS (#3796)

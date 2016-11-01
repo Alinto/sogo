@@ -344,14 +344,26 @@
     }
 
     function confirmDelete(folder) {
-      Dialog.confirm(l('Confirmation'), l('Do you really want to move this folder into the trash ?'))
+      Dialog.confirm(l('Warning'),
+                     l('Do you really want to move this folder into the trash ?'),
+                     { ok: l('Delete') })
         .then(function() {
           folder.$delete()
             .then(function() {
               $state.go('mail.account.inbox');
-            }, function(data, status) {
-              Dialog.alert(l('An error occured while deleting the mailbox "%{0}".', folder.name),
-                           l(data.error));
+            }, function(response) {
+              Dialog.confirm(l('Warning'),
+                             l('The mailbox could not be moved to the trash folder. Would you like to delete it immediately?'),
+                             { ok: l('Delete') })
+              .then(function() {
+                folder.$delete({ withoutTrash: true })
+                  .then(function() {
+                    $state.go('mail.account.inbox');
+                  }, function(response) {
+                    Dialog.alert(l('An error occured while deleting the mailbox "%{0}".', folder.name),
+                                 l(response.error));
+                  });
+              });
             });
         });
     }

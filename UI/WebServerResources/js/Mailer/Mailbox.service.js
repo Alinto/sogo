@@ -620,12 +620,13 @@
    * @function $delete
    * @memberof Mailbox.prototype
    * @desc Delete the mailbox from the server
+   * @param {object} [options] - additional options (use {withoutTrash: true} to delete immediately)
    * @returns a promise of the HTTP operation
    */
-  Mailbox.prototype.$delete = function() {
+  Mailbox.prototype.$delete = function(options) {
     var _this = this;
 
-    return Mailbox.$$resource.remove(this.id)
+    return Mailbox.$$resource.post(this.id, 'delete', options)
       .then(function() {
         _this.$account.$getMailboxes({reload: true});
         return true;
@@ -674,6 +675,7 @@
    * @function $deleteMessages
    * @memberof Mailbox.prototype
    * @desc Delete multiple messages from mailbox.
+   * @param {object} [options] - additional options (use {withoutTrash: true} to delete immediately)
    * @return a promise of the HTTP operation
    */
   Mailbox.prototype.$deleteMessages = function(messages, options) {
