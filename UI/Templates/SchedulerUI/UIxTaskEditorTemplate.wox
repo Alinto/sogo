@@ -55,7 +55,7 @@
               <span md-highlight-text="editor.categories.searchText">{{category}}</span>
             </md-autocomplete>
           </md-chips>
-          <div layout="row" layout-align="space-between end" layout-wrap="layout-wrap">
+          <div layout="row" layout-align="space-between center" layout-wrap="layout-wrap">
             <!-- classification -->
             <md-radio-group class="sg-padded--top"
                             layout="row"
@@ -86,7 +86,7 @@
             </div>
           </div>
           <!-- attach urls -->
-          <div class="attr" ng-repeat="attach in editor.component.attachUrls">
+          <div ng-repeat="attach in editor.component.attachUrls">
             <div layout="row" layout-align="start center">
               <md-button class="md-icon-button" type="button" ng-click="editor.component.deleteAttachUrl($index)">
                 <md-icon>remove_circle</md-icon>
@@ -100,7 +100,7 @@
               </md-input-container>
             </div>
           </div>
-          <div class="md-layout-margin" layout="row" layout-align="start center">
+          <div layout="row" layout-align="start center">
             <md-button class="md-icon-button" type="button" ng-click="editor.addAttachUrl($event)">
               <md-icon>add_circle</md-icon>
             </md-button>

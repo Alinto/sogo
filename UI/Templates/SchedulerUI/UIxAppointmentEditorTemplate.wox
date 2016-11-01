@@ -61,7 +61,7 @@
               <span md-highlight-text="editor.categories.searchText">{{category}}</span>
             </md-autocomplete>
           </md-chips>
-          <div layout="row" layout-align="space-between end" layout-wrap="layout-wrap">
+          <div layout="row" layout-align="space-between center" layout-wrap="layout-wrap">
             <!-- classification -->
             <md-radio-group class="sg-padded--top"
                             layout="row"
@@ -92,7 +92,6 @@
             </div>
           </div>
           <!-- send appointment notifications -->
-          <md-input-container>
           <md-checkbox
               ng-model="editor.component.sendAppointmentNotifications"
               ng-true-value="1"
@@ -100,9 +99,8 @@
               label:aria-label="Send Appointment Notifications">
             <var:string label:value="Send Appointment Notifications"/>
           </md-checkbox>
-          </md-input-container>
           <!-- attach urls -->
-          <div class="attr" ng-repeat="attach in editor.component.attachUrls">
+          <div ng-repeat="attach in editor.component.attachUrls">
             <div layout="row" layout-align="start center">
               <md-button class="md-icon-button" type="button" ng-click="editor.component.deleteAttachUrl($index)">
                 <md-icon>remove_circle</md-icon>
@@ -229,17 +227,17 @@
         <div class="sg-form-section">
           <div layout="row" layout-align="start center">
             <md-icon>search</md-icon>
-            <md-autocomplete class="md-flex"
-                             label:md-floating-label="Invite Attendees"
-                             md-selected-item="attendeeToAdd"
-                             md-search-text="editor.searchText"
-                             md-selected-item-change="editor.addAttendee(card)"
-                             md-items="card in editor.cardFilter(editor.searchText)"
-                             md-item-text="card.empty"
-                             var:md-min-length="minimumSearchLength"
-                             md-delay="300"
-                             md-no-cache="true"
-                             sg-enter="editor.addAttendee(editor.searchText)">
+            <md-autocomplete
+                class="md-flex"
+                label:md-floating-label="Invite Attendees"
+                md-search-text="editor.searchText"
+                md-selected-item-change="editor.addAttendee(card)"
+                md-items="card in editor.cardFilter(editor.searchText)"
+                md-item-text="card.empty"
+                var:md-min-length="minimumSearchLength"
+                md-delay="300"
+                md-no-cache="true"
+                sg-enter="editor.addAttendee(editor.searchText)">
               <md-item-template>
                 <div class="md-contact-suggestion">
                   <span class="md-contact-name"

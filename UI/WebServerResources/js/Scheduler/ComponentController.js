@@ -42,8 +42,7 @@
 
     // Autocomplete cards for attendees
     function cardFilter($query) {
-      AddressBook.$filterAll($query);
-      return AddressBook.$cards;
+      return AddressBook.$filterAll($query);
     }
 
     function newMessageWithAllRecipients($event) {
