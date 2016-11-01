@@ -18,7 +18,8 @@ Bug fixes
  - [web] fixed vCard generation for tags with no type (#3826)
  - [web] only show the organizer field of an IMIP REPLY if one is defined
  - [web] fixed saving the note of a card (#3849)
- - [web] fixed support for recurrent tasks
+ - [web] fixed support for recurrent tasks (#3864)
+ - [web] restored support for alarms in tasks
  - [web] improved validation of mail account delegators
  - [web] fixed auto-completion of list members (#3870)
  - [web] added missing options to subscribed addressbooks (#3850)

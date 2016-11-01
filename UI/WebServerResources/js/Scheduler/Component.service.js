@@ -1129,7 +1129,7 @@
     else if (this.repeat.frequency && this.repeat.frequency != 'never') {
       component.repeat = { frequency: this.repeat.frequency };
     }
-    if (this.repeat.frequency) {
+    if (component.startDate && this.repeat.frequency) {
       if (this.repeat.end == 'until' && this.repeat.until)
         component.repeat.until = this.repeat.until.stringWithSeparator('-');
       else if (this.repeat.end == 'count' && this.repeat.count)
@@ -1150,7 +1150,7 @@
       delete component.completedDate;
 
     // Verify alarm
-    if (this.$hasAlarm) {
+    if (component.startDate && this.$hasAlarm) {
       if (this.alarm.action && this.alarm.action == 'email' &&
           !(this.attendees && this.attendees.length > 0)) {
         // No attendees; email reminder must be sent to organizer only

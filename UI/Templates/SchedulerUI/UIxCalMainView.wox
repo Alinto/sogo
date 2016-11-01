@@ -661,7 +661,7 @@
                     </div>
                     <div class="sg-tile-icons">
                       <md-icon ng-show="::task.c_iscycle">repeat</md-icon>
-                      <md-icon ng-show="::event.c_nextalarm">alarm</md-icon>
+                      <md-icon ng-show="::task.c_nextalarm">alarm</md-icon>
                     </div>
                     <md-divider><!-- divider --></md-divider>
                   </md-list-item>
