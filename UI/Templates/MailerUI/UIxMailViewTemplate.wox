@@ -65,7 +65,7 @@
             <md-icon>open_in_new</md-icon>
           </md-button>
           <md-menu>
-            <md-button label:aria-label="More mail options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
+            <md-button label:aria-label="More mail options" class="sg-icon-button" ng-click="$mdMenu.open($event)">
               <md-icon>more_vert</md-icon>
             </md-button>
             <md-menu-content width="4">

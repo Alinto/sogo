@@ -43,7 +43,7 @@
               <div class="sg-no-wrap">{{account.name}}</div>
 	      <md-menu class="md-secondary">
 		<md-icon label:aria-label="Options"
-			 ng-click="$mdOpenMenu($event)"
+			 ng-click="$mdMenu.open($event)"
 			 md-menu-origin="md-menu-origin">more_vert</md-icon>
 		<md-menu-content width="3">
                   <md-menu-item ng-show="account.id == 0">
@@ -115,7 +115,7 @@
                 <md-menu class="ng-hide"
                          ng-show="app.service.selectedFolder.id == folder.id">
                   <md-icon label:aria-label="Options"
-                           ng-click="$mdOpenMenu($event)"
+                           ng-click="$mdMenu.open($event)"
                            md-menu-origin="md-menu-origin">more_vert</md-icon>
                   <md-menu-content width="3">
                     <md-menu-item>

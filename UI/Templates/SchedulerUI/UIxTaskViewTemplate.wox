@@ -18,7 +18,7 @@
           <md-icon ng-repeat="i in ::editor.component.priority | range">star</md-icon>
         </div>
         <md-menu>
-          <md-button label:aria-label="More options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
+          <md-button label:aria-label="More options" class="sg-icon-button" ng-click="$mdMenu.open($event)">
             <md-icon>more_vert</md-icon>
           </md-button>
           <md-menu-content>
@@ -123,7 +123,7 @@
       <md-menu>
         <md-button class="md-warn"
                    label:aria-label="Delete Task"
-                   ng-click="$mdOpenMenu()"
+                   ng-click="$mdMenu.open()"
                    md-menu-origin="md-menu-origin">
           <var:string label:value="Delete"/> <md-icon>arrow_drop_down</md-icon>
         </md-button>
@@ -147,7 +147,7 @@
       <div class="md-flex"><!-- spacer --></div>
       <md-menu>
         <md-button label:aria-label="Edit"
-                   ng-click="$mdOpenMenu()"
+                   ng-click="$mdMenu.open()"
                    md-menu-origin="md-menu-origin">
           <var:string label:value="Edit"/> <md-icon>arrow_drop_down</md-icon>
         </md-button>

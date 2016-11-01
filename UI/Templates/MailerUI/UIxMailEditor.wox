@@ -166,7 +166,7 @@
             <md-button class="sg-icon-button " ng-show="editor.hideCc" ng-click="editor.hideCc = false">Cc</md-button>
             <md-button class="sg-icon-button " ng-show="editor.hideBcc" ng-click="editor.hideBcc = false">Bcc</md-button>
             <md-menu>
-              <md-button label:aria-label="More mail options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
+              <md-button label:aria-label="More mail options" class="sg-icon-button" ng-click="$mdMenu.open($event)">
                 <md-icon>more_vert</md-icon>
               </md-button>
               <md-menu-content width="4">

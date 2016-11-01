@@ -30,7 +30,7 @@
             <md-icon>delete</md-icon>
           </md-button>
           <md-menu ng-hide="editor.currentFolder.isRemote">
-            <md-button label:aria-label="More options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
+            <md-button label:aria-label="More options" class="sg-icon-button" ng-click="$mdMenu.open($event)">
               <md-icon>more_vert</md-icon>
             </md-button>
             <md-menu-content>

@@ -24,7 +24,7 @@
           </md-select>
         </md-input-container>
         <md-menu>
-          <md-button class="sg-icon-button" label:aria-label="More search options" ng-click="$mdOpenMenu()">
+          <md-button class="sg-icon-button" label:aria-label="More search options" ng-click="$mdMenu.open()">
             <md-icon>settings</md-icon>
           </md-button>
           <md-menu-content>
@@ -72,7 +72,7 @@
            ng-click="mailbox.searchMode()">{{mailbox.selectedFolder.name}}</a>
         <md-menu>
           <md-button class="sg-icon-button" label:aria-label="Sort"
-                     ng-click="$mdOpenMenu()">
+                     ng-click="$mdMenu.open()">
             <md-icon>sort</md-icon>
           </md-button>
           <md-menu-content>
@@ -172,7 +172,7 @@
           <md-icon ng-hide="mailbox.service.selectedFolder.type != 'junk'">thumb_up</md-icon>
         </md-button>
         <md-menu>
-          <md-button class="sg-icon-button" label:aria-label="More messages options" ng-click="$mdOpenMenu()">
+          <md-button class="sg-icon-button" label:aria-label="More messages options" ng-click="$mdMenu.open()">
             <md-icon>more_vert</md-icon>
           </md-button>
           <md-menu-content width="2">
@@ -193,14 +193,14 @@
             </md-menu-item>
             <md-menu-item>
               <md-menu>
-                <md-button label:aria-label="Copy To" ng-click="$mdOpenMenu($event)">
+                <md-button label:aria-label="Copy To" ng-click="$mdMenu.open($event)">
                   <var:string label:value="Copy To"/>
                 </md-button>
                 <md-menu-content width="4">
                   <div ng-repeat="account in mailbox.accounts track by account.id">
                     <md-menu-item>
                       <md-menu>
-                        <md-button class="md-primary" ng-click="$mdOpenMenu($event)">{{account.name}}</md-button>
+                        <md-button class="md-primary" ng-click="$mdMenu.open($event)">{{account.name}}</md-button>
                         <md-menu-content class="md-dense" width="4">
                           <div ng-repeat="folder in
                                           account.$flattenMailboxes({ all: true })
@@ -222,14 +222,14 @@
             </md-menu-item>
             <md-menu-item>
               <md-menu>
-                <md-button label:aria-label="Move To" ng-click="$mdOpenMenu($event)">
+                <md-button label:aria-label="Move To" ng-click="$mdMenu.open($event)">
                   <var:string label:value="Move To"/>
                 </md-button>
                 <md-menu-content width="4">
                   <div ng-repeat="account in mailbox.accounts track by account.id">
                     <md-menu-item>
                       <md-menu>
-                        <md-button class="md-primary" ng-click="$mdOpenMenu($event)">{{account.name}}</md-button>
+                        <md-button class="md-primary" ng-click="$mdMenu.open($event)">{{account.name}}</md-button>
                         <md-menu-content class="md-dense" width="4">
                           <div ng-repeat="folder in
                                           account.$flattenMailboxes({ all: true })

@@ -84,7 +84,7 @@
               </md-button>
               <md-menu class="md-secondary sg-list-sortable-hide" label:aria-label="Options">
                 <md-button class="md-icon-button" label:aria-label="Options"
-                           ng-click="$mdOpenMenu()"
+                           ng-click="$mdMenu.open()"
                            md-menu-origin="md-menu-origin">
                   <md-icon>more_vert</md-icon>
                 </md-button>
@@ -190,7 +190,7 @@
               </md-button>
               <md-menu class="md-secondary sg-list-sortable-hide" label:aria-label="Options">
                 <md-button class="md-icon-button" label:aria-label="Options"
-                           ng-click="$mdOpenMenu()"
+                           ng-click="$mdMenu.open()"
                            md-menu-origin="md-menu-origin">
                   <md-icon>more_vert</md-icon>
                 </md-button>
@@ -285,7 +285,7 @@
               </md-button>
               <md-menu class="md-secondary sg-list-sortable-hide" label:aria-label="Options">
                 <md-button class="md-icon-button" label:aria-label="Options"
-                           ng-click="$mdOpenMenu()"
+                           ng-click="$mdMenu.open()"
                            md-menu-origin="md-menu-origin">
                   <md-icon>more_vert</md-icon>
                 </md-button>
@@ -365,7 +365,7 @@
               <div class="md-flex"><!-- spacer --></div>
               <md-menu>
                 <md-button class="sg-icon-button" label:aria-label="Filter"
-                           ng-click="$mdOpenMenu()">
+                           ng-click="$mdMenu.open()">
                   <md-icon>filter_list</md-icon>
                 </md-button>
                 <md-menu-content width="4">
@@ -447,7 +447,7 @@
               </md-menu>
               <md-menu>
                 <md-button class="sg-icon-button" label:aria-label="Sort"
-                           ng-click="$mdOpenMenu()">
+                           ng-click="$mdMenu.open()">
                   <md-icon>sort</md-icon>
                 </md-button>
                 <md-menu-content width="4">
