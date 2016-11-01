@@ -367,7 +367,7 @@
 "zoom_25" = "25%";
 
 /* Arial label for reminder units */
-"Reminder units" = "Emlékleztető egységek";
+"Reminder units" = "Emlékeztető egységek";
 
 /* Aria label for reminder time position (after or before) */
 "Reminder position" = "Emlékeztető pozíció";
