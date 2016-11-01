@@ -676,11 +676,14 @@
    * @desc Delete multiple messages from mailbox.
    * @return a promise of the HTTP operation
    */
-  Mailbox.prototype.$deleteMessages = function(messages) {
-    var _this = this, uids;
+  Mailbox.prototype.$deleteMessages = function(messages, options) {
+    var _this = this, uids, data;
 
     uids = _.map(messages, 'uid');
-    return Mailbox.$$resource.post(this.id, 'batchDelete', {uids: uids})
+    data = { uids: uids };
+    if (options) angular.extend(data, options);
+
+    return Mailbox.$$resource.post(this.id, 'batchDelete', data)
       .then(function(data) {
         // Update inbox quota
         if (data.quotas)

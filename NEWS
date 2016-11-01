@@ -22,6 +22,7 @@ Bug fixes
  - [web] fixed auto-completion of list members (#3870)
  - [web] added missing options to subscribed addressbooks (#3850)
  - [web] fixed resource conflict error handling (403 vs 409 HTTP code)
+ - [web] restored immediate deletion of messages (without moving them to the trash)
  - [eas] improve handling of email folders without a parent
  - [eas] never send IMIP reply when the "initiator" is Outlook 2013/2016
  - [core] only consider SMTP addresses for AD's proxyAddresses (#3842)

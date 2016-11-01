@@ -164,7 +164,7 @@
           <md-tooltip md-direction="bottom"><var:string label:value="Select All"/></md-tooltip>
           <md-icon>select_all</md-icon>
         </md-button>
-        <md-button class="sg-icon-button" ng-click="mailbox.confirmDeleteSelectedMessages()">
+        <md-button class="sg-icon-button" ng-click="mailbox.confirmDeleteSelectedMessages($event)">
           <md-icon>delete</md-icon>
         </md-button>
         <md-button class="sg-icon-button" ng-click="mailbox.markOrUnMarkMessagesAsJunk()">

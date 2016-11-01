@@ -268,9 +268,9 @@
         return [vm.selectedFolder];
     }
 
+    // Unselect current message and cleverly load the next message.
+    // This function must not be called in virtual mode.
     function _unselectMessage(message, index) {
-      // Unselect current message and cleverly load the next message.
-      // This function must not be called in virtual mode.
       var nextMessage, previousMessage, nextIndex = index;
       vm.mode.multiple = vm.selectedFolder.$selectedCount();
       if (message) {
@@ -327,6 +327,24 @@
               // In normal mode, we immediately unselect the selected message.
               _unselectMessage(deleteSelectedMessage, index);
             }
+          }, function(response) {
+            messageDialog = Dialog.confirm(l('Warning'),
+                                           l('The messages could not be moved to the trash folder. Would you like to delete them immediately?'),
+                                           { ok: l('Delete') })
+              .then(function() {
+                vm.selectedFolder.$deleteMessages(selectedMessages, { withoutTrash: true }).then(function(index) {
+                  if (Mailbox.$virtualMode) {
+                    // When performing an advanced search, we refresh the view if the selected message
+                    // was deleted, but only once all promises have completed.
+                    if (deleteSelectedMessage)
+                      $state.go('mail.account.virtualMailbox');
+                  }
+                  else {
+                    // In normal mode, we immediately unselect the selected message.
+                    _unselectMessage(deleteSelectedMessage, index);
+                  }
+                });
+              });
           });
         })
         .finally(function() {
