@@ -1,22 +1,25 @@
 To updated the timezone files:
 
-1- get the vzic or tzurl tool from http://code.google.com/p/tzurl/source/checkout and compile it
-   (update the Makefile to use PRODUCT_ID = -//Inverse inc.//NONSGML Olson 2012j//EN)
+1- get the vzic tool from https://github.com/libical/vzic
 
-2- get the zone files, for example:
-  
+2- update the Makefile
+
+  PRODUCT_ID = -//Inverse inc.//NONSGML IANA 2016h//EN
+  TZID_PREFIX =
+
+3- get the zone files, for example:
+
   mkdir /tmp/zones
   cd /tmp/zones
-  wget http://www.iana.org/time-zones/repository/releases/tzdata2014i.tar.gz
-  tar -zxvf tzdata2014i.tar.gz 
+  wget http://www.iana.org/time-zones/repository/releases/tzdata2016h.tar.gz
+  tar -zxvf tzdata2016h.tar.gz
 
-3- run the conversion tool
+4- compile and run the conversion tool
 
-  vzic --olson-dir /tmp/zones/ --output-dir SOGo/SOPE/NGCards/TimeZones/
-  cd SOGo/SOPE/NGCards/TimeZones/
+  make -B
+  ./vzic --olson-dir /tmp/zones --output-dir ../SOGo/SOPE/NGCards/TimeZones/
+
+5- cleanup
+
+  cd ../SOGo/SOPE/NGCards/TimeZones/
   rm -f zones.h zones.tab
-
-4- if necessary, adjust the PRODID:
-
-  find . -name "*.ics" | xargs -ti sed -i s/'My Organization\/\/NONSGML My Product'/'Inverse inc.\/\/NONSGML SOGo'/ {}
-  find . -name "*.ics" | xargs -ti sed -i s/'\/myorganization.org\/20120508_1\/'// {}
