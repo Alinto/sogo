@@ -146,6 +146,7 @@
 /* Mailer */
 "Labels" = "Étiquettes";
 "Label" = "Étiquette";
+"New label" = "Nouvelle étiquette";
 "Show subscribed mailboxes only" = "Afficher seulement les abonnements";
 "Synchronize only default mail folders (EAS)" = "Synchroniser uniquement les boîtes principales (EAS)";
 "Sort messages by threads" = "Grouper les discussions";
@@ -212,6 +213,7 @@
 /* Event+task categories */
 "Calendar Category" = "Catégorie de calendrier";
 "Add Calendar Category" = "Ajouter une catégorie";
+"New category" = "Nouvelle catégorie";
 "Remove Calendar Category" = "Supprimer une catégorie";
 "Contact Category" = "Catégorie de contact";
 "Add Contact Category" = "Ajouter une catégorie";

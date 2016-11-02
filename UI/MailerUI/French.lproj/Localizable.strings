@@ -269,6 +269,10 @@
 "quotasFormat" = "%{0}% utilisé sur %{1} MO";
 "Unable to move/delete folder." = "Impossible de déplacer ou supprimer le dossier.";
 
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "La boîte ne peut être déplacée dans la corbeille. Voulez-vous la supprimer immédiatement?";
+
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Voulez-vous vraiment supprimer les messages sélectionnés?";
 
@@ -373,5 +377,17 @@
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
 
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "i";
+
 /* Hotkey to flag a message */
-"hotkey_flag" = "d";
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

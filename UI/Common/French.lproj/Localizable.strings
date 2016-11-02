@@ -128,7 +128,7 @@
 "Show or hide this help" = "Afficher ou cache cette aide";
 
 /* Space key */
-"key_space" = "space";
+"key_space" = "espace";
 
 /* Up arrow key */
 "key_up" = "↑";
@@ -143,13 +143,13 @@
 "key_right" = "→";
 
 /* Shift and up arrow combo keys */
-"key_shift+up" = "shift + ↑";
+"key_shift+up" = "maj. + ↑";
 
 /* Shift and down arrow combo keys */
-"key_shift+down" = "shift + ↓";
+"key_shift+down" = "maj. + ↓";
 
 /* Backspace key */
-"key_backspace" = "backspace";
+"key_backspace" = "⌫";
 
 /* Hotkey to start a search */
 "hotkey_search" = "s";

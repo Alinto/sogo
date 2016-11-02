@@ -269,6 +269,10 @@
 "quotasFormat" = "Felhasznált: %{0}%,összes: %{1} MB";
 "Unable to move/delete folder." = "Nem lehet mappát átmozgatni/törölni .";
 
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "A postafiók nem mozgatható át a Törölt elemek mappába. Szeretné végleg törölni?";
+
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Biztosan törölni kívánja a kijelölt üzeneteket?";
 
@@ -372,6 +376,9 @@
 
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
 
 /* Hotkey to flag a message */
 "hotkey_flag" = "*";
