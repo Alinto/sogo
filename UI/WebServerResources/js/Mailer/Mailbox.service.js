@@ -40,7 +40,7 @@
       $Message: Message,
       $$Acl: Acl,
       $Preferences: Preferences,
-      $query: { sort: 'date', asc: 0 },
+      $query: { sort: 'arrival', asc: 0 }, // The default sort must match [UIxMailListActions defaultSortKey]
       selectedFolder: null,
       $refreshTimeout: null,
       $virtualMode: false,

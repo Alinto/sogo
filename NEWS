@@ -1,3 +1,9 @@
+3.2.2 (2016-11-DD)
+------------------
+
+Bug fixes
+ - [web] fixed mail settings persistence when sorting by arrival date
+
 3.2.1 (2016-11-02)
 ------------------
 
