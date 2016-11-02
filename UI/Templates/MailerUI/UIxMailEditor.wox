@@ -64,7 +64,7 @@
                     md-search-text="editor.autocomplete.to.searchText"
                     md-selected-item="editor.autocomplete.to.selected"
                     md-items="user in editor.contactFilter(editor.autocomplete.to.searchText)"
-                    md-min-length="3"
+                    var:md-min-length="minimumSearchLength"
                     md-delay="150"
                     md-no-cache="true"
                     label:placeholder="Add a recipient">
