@@ -1,6 +1,6 @@
 /* SOGoEMailAlarmsManager.m - this file is part of SOGo
  *
- * Copyright (C) 2010-2014 Inverse inc.
+ * Copyright (C) 2010-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,86 +35,10 @@
 #import <GDLContentStore/GCSFolderManager.h>
 
 #import "SOGoAppointmentFolder.h"
+#import "SOGoAppointmentFolders.h"
 #import "SOGoCalendarComponent.h"
 
 #import "SOGoEMailAlarmsManager.h"
-
-@interface iCalEntityObject (SOGoAlarmsExtension)
-
-- (void) findSoonerEMailAlarmAfterDate: (NSCalendarDate *) refDate
-                               inAlarm: (iCalAlarm **) alarm;
-
-@end
-
-@interface iCalCalendar (SOGoAlarmsExtension)
-
-- (void) findSoonerEMailAlarmAfterDate: (NSCalendarDate *) refDate
-                               inAlarm: (iCalAlarm **) alarm;
-
-@end
-
-@implementation iCalEntityObject (SOGoAlarmsExtension)
-
-- (void) findSoonerEMailAlarmAfterDate: (NSCalendarDate *) refDate
-                               inAlarm: (iCalAlarm **) alarm
-{
-  int count, max;
-  NSArray *alarms;
-  iCalAlarm *currentAlarm;
-  NSString *action;
-  NSCalendarDate *soonerDate, *testDate;
-
-  soonerDate = [*alarm nextAlarmDate];
-
-  alarms = [self alarms];
-  max = [alarms count];
-  for (count = 0; count < max; count++)
-    {
-      currentAlarm = [alarms objectAtIndex: count];
-      action = [[currentAlarm action] uppercaseString];
-      if ([action isEqualToString: @"EMAIL"])
-        {
-          testDate = [currentAlarm nextAlarmDate];
-          if (testDate
-              && [refDate earlierDate: testDate] == refDate
-              && (!soonerDate
-                  || [soonerDate earlierDate: testDate] == testDate))
-            {
-              *alarm = currentAlarm;
-              soonerDate = testDate;
-            }
-        }
-    }
-}
-
-@end
-
-@implementation iCalCalendar (SOGoAlarmsExtension)
-
-- (void) findSoonerEMailAlarmAfterDate: (NSCalendarDate *) refDate
-                               inAlarm: (iCalAlarm **) alarm
-{
-  int count, max;
-  iCalEntityObject *child;
-  BOOL done;
-
-  /* Here we only search for email alarms in the first event. This
-     should be fixed sometime. */
-  done = NO;
-  max = [children count];
-  for (count = 0; !done && count < max; count++)
-    {
-      child = [children objectAtIndex: count];
-      if ([child isKindOfClass: [iCalEvent class]]
-          || [child isKindOfClass: [iCalToDo class]])
-        {
-          [child findSoonerEMailAlarmAfterDate: refDate inAlarm: alarm];
-          done = YES;
-        }
-    }
-}
-
-@end
 
 @implementation SOGoEMailAlarmsManager
 
@@ -128,50 +52,11 @@
   return sharedEMailAlarmsManager;
 }
 
-- (void) _writeAlarmCoordinates: (iCalAlarm *) alarm
-                  fromComponent: (SOGoCalendarComponent *) component
-{
-  GCSAlarmsFolder *af;
-  NSString *path, *cname;
-  iCalEntityObject *entity;
-  int alarmNbr;
-
-  af = [[GCSFolderManager defaultFolderManager] alarmsFolder];
-
-  path = [[component container] ocsPath];
-  cname = [component nameInContainer];
-  if (alarm)
-    {
-      entity = [alarm parent];
-      alarmNbr = [[entity alarms] indexOfObject: alarm];
-
-      [af writeRecordForEntryWithCName: cname
-                      inCalendarAtPath: path
-                                forUID: [entity uid]
-                          recurrenceId: [entity recurrenceId]
-                           alarmNumber: [NSNumber numberWithInt: alarmNbr]
-                          andAlarmDate: [alarm nextAlarmDate]];
-    }
-  else
-    [af deleteRecordForEntryWithCName: cname
-                     inCalendarAtPath: path];
-}
-
-- (void) handleAlarmsInCalendar: (iCalCalendar *) calendar
-                  fromComponent: (SOGoCalendarComponent *) component
-{
-  iCalAlarm *alarm;
-  NSCalendarDate *now;
-
-  now = [NSCalendarDate calendarDate];
-
-  alarm = nil;
-  [calendar findSoonerEMailAlarmAfterDate: now
-                                  inAlarm: &alarm];
-  [self _writeAlarmCoordinates: alarm
-                 fromComponent: component];
-}
-
+//
+// This method is called SOGoCalendarCompoent: -prepareDelete when
+// a component is being deleted. We of course remove all associated
+// when an event or task is being deleted.
+//
 - (void) deleteAlarmsFromComponent: (SOGoCalendarComponent *) component
 {
   GCSAlarmsFolder *af;
@@ -246,19 +131,52 @@
     *owner = [parts objectAtIndex: 2];
 }
 
+- (void) _extractContainer: (NSString **) container
+		  fromPath: (NSString *) path
+{
+  NSArray *parts;
+
+  parts = [path componentsSeparatedByString: @"/"];
+  if ([parts count] > 4)
+    *container = [parts objectAtIndex: 4];
+}
+
+- (SOGoAppointmentFolder *) _lookupContainerMatchingRecord: (NSDictionary *) record
+{
+  SOGoAppointmentFolders *folders;
+  NSString *container, *owner;
+  SOGoUserFolder *userFolder;
+  SOGoUser *user;
+  WOContext *context;
+
+  [self _extractOwner: &owner  fromPath: [record objectForKey: @"c_path"]];
+  [self _extractContainer: &container  fromPath: [record objectForKey: @"c_path"]];
+  user = [SOGoUser userWithLogin: owner];
+  userFolder = [SOGoUserFolder objectWithName: owner  inContainer: nil];
+  context = [WOContext context];
+  [context setActiveUser: user];
+  folders = [userFolder lookupName: @"Calendar"
+			 inContext: context
+			   acquire: NO];
+
+  return [folders lookupName: container
+		   inContext: context
+		     acquire: NO];
+}
+
 - (iCalAlarm *) _lookupAlarmMatchingRecord: (NSDictionary *) record
                                  withOwner: (NSString **) owner
+                                withEntity: (iCalEntityObject **) entity
 {
   iCalCalendar *calendar;
-  iCalEntityObject *entity;
   iCalAlarm *alarm;
   NSArray *alarms;
   int alarmNbr;
 
   calendar = [self _lookupCalendarMatchingRecord: record];
-  entity = [self _lookupEntityMatchingRecord: record inCalendar: calendar];
+  *entity = [self _lookupEntityMatchingRecord: record inCalendar: calendar];
   alarmNbr = [[record objectForKey: @"c_alarm_number"] intValue];
-  alarms = [entity alarms];
+  alarms = [*entity alarms];
   if (alarmNbr < [alarms count])
     {
       alarm = [alarms objectAtIndex: alarmNbr];
@@ -276,8 +194,10 @@
 
 - (NSArray *) scheduledAlarmsFromDate: (NSCalendarDate *) fromDate
                                toDate: (NSCalendarDate *) toDate
-                           withOwners: (NSMutableArray **) owners
+			 withMetadata: (NSMutableArray *) metadata
 {
+  SOGoAppointmentFolder *container;
+  iCalEntityObject *entity;
   GCSAlarmsFolder *af;
   iCalAlarm *alarm;
   NSMutableArray *alarms;
@@ -290,31 +210,25 @@
   records = [af recordsForEntriesFromDate: fromDate toDate: toDate];
   max = [records count];
   alarms = [NSMutableArray arrayWithCapacity: max];
-  if (owners)
-    *owners = [NSMutableArray arrayWithCapacity: max];
   for (count = 0; count < max; count++)
     {
       record = [records objectAtIndex: count];
       alarm = [self _lookupAlarmMatchingRecord: record
-                                     withOwner: &owner];
+                                     withOwner: &owner
+				    withEntity: &entity];
       if (alarm)
         {
+	  container = [self _lookupContainerMatchingRecord: record];
           [alarms addObject: alarm];
-          if (owners)
-            [*owners addObject: owner];
+	  [metadata addObject: [NSDictionary dictionaryWithObjectsAndKeys: owner, @"owner",
+					     record, @"record",
+					     container, @"container",
+					     entity, @"entity",
+					     nil]];
         }
     }
 
   return alarms;  
-}
-
-- (void) deleteAlarmsUntilDate: (NSCalendarDate *) untilDate
-{
-  GCSAlarmsFolder *af;
-
-  af = [[GCSFolderManager defaultFolderManager] alarmsFolder];
-  
-  [af deleteRecordsForEntriesUntilDate: untilDate];
 }
 
 @end

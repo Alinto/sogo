@@ -1,8 +1,6 @@
 /* GCSAlarmsFolder.h - this file is part of $PROJECT_NAME_HERE$
  *
- * Copyright (C) 2010 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2010-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,8 +57,6 @@
 
 - (void) deleteRecordForEntryWithCName: (NSString *) cname
                       inCalendarAtPath: (NSString *) path;
-
-- (void) deleteRecordsForEntriesUntilDate: (NSCalendarDate *) date;
 
 @end
 

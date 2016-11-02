@@ -1017,7 +1017,21 @@ andAttribute: (EOAttribute *)_attribute
 	      || *_baseVersion == [storedVersion unsignedIntValue])
 	    {
 	      /* extract quick info */
-              quickRow = [theComponent performSelector: @selector(quickRecordFromContent:container:)  withObject: _content  withObject: theContainer];
+	      NSMethodSignature *aSignature;
+	      NSInvocation *anInvocation;
+	      SEL aSelector;
+
+	      aSelector = @selector(quickRecordFromContent:container:nameInContainer:);
+	      aSignature = [[theComponent class] instanceMethodSignatureForSelector: aSelector];
+	      anInvocation = [NSInvocation invocationWithMethodSignature:aSignature];
+	      [anInvocation setSelector: aSelector];
+	      [anInvocation setTarget: theComponent];
+	      [anInvocation setArgument:&_content  atIndex: 2];
+	      [anInvocation setArgument:&theContainer  atIndex: 3];
+	      [anInvocation setArgument:&_name atIndex: 4];
+	      [anInvocation invoke];
+	      [anInvocation getReturnValue: &quickRow];
+
 	      if (quickRow)
 		{
 		  [quickRow setObject:_name forKey:@"c_name"];

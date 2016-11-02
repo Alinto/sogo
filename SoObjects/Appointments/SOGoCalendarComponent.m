@@ -683,15 +683,6 @@
 	newUid = [newUid substringToIndex: [newUid length]-4];
       [newObject setUid: newUid];
     }
-
-  if ([[SOGoSystemDefaults sharedSystemDefaults] enableEMailAlarms])
-    {
-      SOGoEMailAlarmsManager *eaMgr;
-      
-      eaMgr = [SOGoEMailAlarmsManager sharedEMailAlarmsManager];
-      [eaMgr handleAlarmsInCalendar: [newObject parent]
-	     fromComponent: self];
-    }
 }
 
 - (NSException *) saveCalendar: (iCalCalendar *) newCalendar
@@ -1459,23 +1450,6 @@
   return nil;
 }
 
-- (id) PUTAction: (WOContext *) localContext
-{
-  if ([[SOGoSystemDefaults sharedSystemDefaults] enableEMailAlarms])
-    {
-      SOGoEMailAlarmsManager *eaMgr;
-      iCalCalendar *putCalendar;
-      WORequest *rq;
-
-      rq = [localContext request];
-      putCalendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
-      eaMgr = [SOGoEMailAlarmsManager sharedEMailAlarmsManager];
-      [eaMgr handleAlarmsInCalendar: putCalendar
-                      fromComponent: self];
-    }
-
-  return [super PUTAction: localContext];
-}
 
 // /* Overriding this method dramatically speeds up PROPFIND request, but may
 //    otherwise be a bad idea... Wait and see. */

@@ -898,6 +898,7 @@ convention:
 
 - (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
                                        container: (id) theContainer
+				 nameInContainer: (NSString *) nameInContainer
 {
   NSMutableDictionary *fields;
   CardElement *element;

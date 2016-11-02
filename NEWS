@@ -1,6 +1,9 @@
 3.2.2 (2016-11-DD)
 ------------------
 
+New features
+ - [core] support repetitive email alarms on tasks and events (#1053)
+
 Bug fixes
  - [web] fixed mail settings persistence when sorting by arrival date
 

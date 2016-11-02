@@ -954,7 +954,7 @@ static Class iCalEventK = nil;
   // alarm defined.
   if ([[component alarms] count])
     {
-      alarm = [component firstDisplayOrAudioAlarm];   
+      alarm = [component firstSupportedAlarm];
       [row setObject: [NSNumber numberWithInt: [[alarm nextAlarmDate] timeIntervalSince1970]]
               forKey: @"c_nextalarm"];
     }
@@ -1030,7 +1030,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	      (endDate && [dateRange containsDate: endDate]))
 	    {
               // We must pass nil to :container here in order to avoid re-entrancy issues.
-              newRecord = [self _fixupRecord: [component quickRecordFromContent: nil  container: nil]];
+              newRecord = [self _fixupRecord: [component quickRecordFromContent: nil  container: nil  nameInContainer: nil]];
               [ma replaceObjectAtIndex: recordIndex withObject: newRecord];
             }
           else
@@ -1047,7 +1047,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       // The recurrence id of the exception is outside the date range;
       // simply add the exception to the records array.
       // We must pass nil to :container here in order to avoid re-entrancy issues.
-      newRecord = [self _fixupRecord: [component quickRecordFromContent: nil  container: nil]];
+      newRecord = [self _fixupRecord: [component quickRecordFromContent: nil  container: nil  nameInContainer: nil]];
       if ([newRecord objectForKey: @"startDate"] && [newRecord objectForKey: @"endDate"]) {
         newRecordRange = [NGCalendarDateRange
                            calendarDateRangeWithStartDate: [newRecord objectForKey: @"startDate"]

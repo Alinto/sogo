@@ -1,6 +1,6 @@
 /* iCalEntityObject+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,9 @@
 #import <Foundation/NSValue.h>
 #import <Foundation/NSTimeZone.h>
 
+#import <GDLContentStore/GCSAlarmsFolder.h>
+#import <GDLContentStore/GCSFolderManager.h>
+
 #import <NGCards/iCalTrigger.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
 #import <NGCards/NSString+NGCards.h>
@@ -37,6 +40,7 @@
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoSource.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserManager.h>
@@ -554,6 +558,7 @@ NSNumber *iCalDistantFutureNumber = nil;
 
 - (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
                                        container: (id) theContainer
+				 nameInContainer: (NSString *) nameInContainer
 {
   [self subclassResponsibility: _cmd];
 
@@ -612,7 +617,6 @@ NSNumber *iCalDistantFutureNumber = nil;
     }
 
   return createdByData;
-;
 }
 
 //
@@ -659,10 +663,45 @@ NSNumber *iCalDistantFutureNumber = nil;
   return nil;
 }
 
+- (iCalAlarm *) firstEmailAlarm
+{
+  iCalAlarm *anAlarm;
+  NSArray *alarms;
+  int i;
+
+  alarms = [self alarms];
+
+  for (i = 0; i < [alarms count]; i++)
+    {
+      anAlarm = [[self alarms] objectAtIndex: i];
+
+      if ([[anAlarm action] caseInsensitiveCompare: @"EMAIL"] == NSOrderedSame)
+        return anAlarm;
+    }
+
+  return nil;
+}
+
+
+
 - (void) updateNextAlarmDateInRow: (NSMutableDictionary *) row
                      forContainer: (id) theContainer
+		  nameInContainer: (NSString *) nameInContainer
 {
   NSCalendarDate *nextAlarmDate;
+  GCSAlarmsFolder *af;
+  NSString *path;
+
+  if ([[SOGoSystemDefaults sharedSystemDefaults] enableEMailAlarms])
+    {
+      af = [[GCSFolderManager defaultFolderManager] alarmsFolder];
+      path = [theContainer ocsPath];
+    }
+  else
+    {
+      af = nil;
+      path = nil;
+    }
 
   nextAlarmDate = nil;
 
@@ -680,7 +719,7 @@ NSNumber *iCalDistantFutureNumber = nil;
       if (![(id)self isRecurrent])
         {
           anAlarm = [self firstDisplayOrAudioAlarm];
-          if (anAlarm)
+          if ((anAlarm = [self firstDisplayOrAudioAlarm]))
             {
               webstatus = [[anAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
               if (!webstatus
@@ -688,10 +727,27 @@ NSNumber *iCalDistantFutureNumber = nil;
                       != NSOrderedSame))
                 nextAlarmDate = [anAlarm nextAlarmDate];
             }
-          else
-            {
-              // TODO: handle email alarms here
-            }
+	  else if ((anAlarm = [self firstEmailAlarm]) && af)
+	    {
+	      nextAlarmDate = [anAlarm nextAlarmDate];
+
+	      // The email alarm is too old, let's just remove it
+	      if ([nextAlarmDate earlierDate: [NSDate date]] == nextAlarmDate)
+		nextAlarmDate = nil;
+	      else
+		{
+		  int alarmNbr;
+
+		  alarmNbr = [[self alarms] indexOfObject: anAlarm];
+
+		  [af writeRecordForEntryWithCName: nameInContainer
+				  inCalendarAtPath: path
+					    forUID: [self uid]
+				      recurrenceId: nil
+				       alarmNumber: [NSNumber numberWithInt: alarmNbr]
+				      andAlarmDate: nextAlarmDate];
+		}
+	    }
         }
       // Recurring event/task
       else
@@ -765,22 +821,30 @@ NSNumber *iCalDistantFutureNumber = nil;
 
                       if ([[o alarms] count])
                         {
-                          anAlarm = [self firstDisplayOrAudioAlarm];
-                          if (anAlarm)
+			  if ((anAlarm = [self firstDisplayOrAudioAlarm]))
                             {
                               webstatus = [[anAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
                               if (!webstatus
                                   || ([webstatus caseInsensitiveCompare: @"TRIGGERED"]
                                       != NSOrderedSame))
-
                                 v = delta;
                               nextAlarmDate = [NSDate dateWithTimeIntervalSince1970: [[[alarms objectAtIndex: i] objectForKey: @"c_nextalarm"] intValue]];
                             }
-                          else
-                            {
-                              // TODO: handle email alarms here
-                            }
-                        }
+			  else if ((anAlarm = [self firstEmailAlarm]) && af)
+			    {
+			      int alarmNbr;
+
+			      nextAlarmDate = [NSDate dateWithTimeIntervalSince1970: [[[alarms objectAtIndex: i] objectForKey: @"c_nextalarm"] intValue]];
+			      alarmNbr = [[self alarms] indexOfObject: anAlarm];
+
+			      [af writeRecordForEntryWithCName: nameInContainer
+					      inCalendarAtPath: path
+							forUID: [self uid]
+						  recurrenceId: [self recurrenceId]
+						   alarmNumber: [NSNumber numberWithInt: alarmNbr]
+						  andAlarmDate: nextAlarmDate];
+			    }
+			}
                     }
                 } // for ( ... )
             } // if (theContainer)
@@ -791,7 +855,14 @@ NSNumber *iCalDistantFutureNumber = nil;
     [row setObject: [NSNumber numberWithInt: [nextAlarmDate timeIntervalSince1970]]
             forKey: @"c_nextalarm"];
   else
-    [row setObject: [NSNumber numberWithInt: 0] forKey: @"c_nextalarm"];
+    {
+      [row setObject: [NSNumber numberWithInt: 0] forKey: @"c_nextalarm"];
+
+      // Delete old email alarms
+      if (af)
+	[af deleteRecordForEntryWithCName: nameInContainer
+			 inCalendarAtPath: [theContainer ocsPath]];
+    }
 }
 
 @end

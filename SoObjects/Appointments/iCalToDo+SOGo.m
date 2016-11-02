@@ -220,6 +220,7 @@
 
 - (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
                                        container: (id) theContainer
+				 nameInContainer: (NSString *) nameInContainer
 {
   NSMutableDictionary *row;
   NSCalendarDate *startDate, *dueDate, *completed;
@@ -350,7 +351,7 @@
   [partstates release];
 
   /* handle alarms */
-  [self updateNextAlarmDateInRow: row  forContainer: theContainer];
+  [self updateNextAlarmDateInRow: row  forContainer: theContainer  nameInContainer: nameInContainer];
 
   categories = [self categories];
   if ([categories count] > 0)
