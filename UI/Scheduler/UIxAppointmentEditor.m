@@ -693,7 +693,7 @@
   [eventEndDate setTimeZone: timeZone];
 
   // resetAlarm=yes is set only when we are about to show the alarm popup in the Web
-  // interface of SOGo. See generic.js for details. snoozeAlarm=X is called when the
+  // interface of SOGo. See Alarm.service.js for details. snoozeAlarm=X is called when the
   // user clicks on "Snooze for" X minutes, when the popup is being displayed.
   // If either is set, we must find the right alarm.
   resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];
