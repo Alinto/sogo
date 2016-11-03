@@ -2848,7 +2848,7 @@ void handle_eas_terminate(int signum)
   andElement = [(id)[theDocumentElement getElementsByTagName: @"And"] lastObject];
   if (andElement)
     {
-      EOQualifier *qualifier, *fetchQualifier, *notDeleted, *greaterThanQualifier;
+      EOQualifier *subjectQualifier, *senderQualifier, *fetchQualifier, *notDeleted, *greaterThanQualifier, *orQualifier;
       NSString *query;
       id o;
 
@@ -2870,8 +2870,12 @@ void handle_eas_terminate(int signum)
 	}
 
       notDeleted = [EOQualifier qualifierWithQualifierFormat: @"(not (flags = %@))", @"deleted"];
-      qualifier = [EOQualifier qualifierWithQualifierFormat: [NSString stringWithFormat: @"(%@ doesContain: '%@')", @"subject", query]];
-      fetchQualifier = [[EOAndQualifier alloc] initWithQualifiers: notDeleted, qualifier, greaterThanQualifier, nil];
+      subjectQualifier = [EOQualifier qualifierWithQualifierFormat: [NSString stringWithFormat: @"(%@ doesContain: '%@')", @"subject", query]];
+      senderQualifier = [EOQualifier qualifierWithQualifierFormat: [NSString stringWithFormat: @"(%@ doesContain: '%@')", @"from", query]];
+
+      orQualifier = [[EOOrQualifier alloc] initWithQualifiers: subjectQualifier, senderQualifier, nil];
+
+      fetchQualifier = [[EOAndQualifier alloc] initWithQualifiers: notDeleted, orQualifier, greaterThanQualifier, nil];
 
       return [fetchQualifier autorelease];
     }
