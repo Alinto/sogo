@@ -4,6 +4,7 @@
 Enhancements
  - [eas] initial support for recurring tasks EAS
  - [eas] now support replied/forwarded flags using EAS (#3796)
+ - [eas] now also search on senders when using EAS Search ops
 
 Bug fixes
  - [web] fixed support for recurrent tasks
