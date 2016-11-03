@@ -579,7 +579,8 @@
       this.repeat.end = 'count';
     else if (this.repeat.until) {
       this.repeat.end = 'until';
-      this.repeat.until = Component.$parseDate(this.repeat.until, { no_time: true });
+      if (angular.isString(this.repeat.until))
+        this.repeat.until = Component.$parseDate(this.repeat.until, { no_time: true });
     }
     else
       this.repeat.end = 'never';
