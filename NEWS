@@ -9,6 +9,7 @@ Enhancements
 
 Bug fixes
  - [web] fixed mail settings persistence when sorting by arrival date
+ - [core] fixed condition in weekly recurrence calculator
 
 3.2.1 (2016-11-02)
 ------------------

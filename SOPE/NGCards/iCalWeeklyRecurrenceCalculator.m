@@ -125,16 +125,16 @@
       while ([currentStartDate compare: endDate] == NSOrderedAscending ||
 	     [currentStartDate compare: endDate] == NSOrderedSame)
 	{
+          currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
 	  if ([startDate compare: currentStartDate] == NSOrderedAscending ||
-	      [startDate compare: currentStartDate] == NSOrderedSame)
+	      [startDate compare: currentStartDate] == NSOrderedSame ||
+              [startDate compare: currentEndDate] == NSOrderedAscending)
 	    {
 	      NGCalendarDateRange *r;
 	      
-	      currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
 	      r = [NGCalendarDateRange calendarDateRangeWithStartDate: currentStartDate
 				       endDate: currentEndDate];
-	      if ([_r containsDateRange: r])
-		[ranges addObject: r];
+              [ranges addObject: r];
 	    }
 	  i++;
 	  currentStartDate = [firStart dateByAddingYears: 0
