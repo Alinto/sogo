@@ -552,7 +552,7 @@ static NSArray *reminderValues = nil;
   alarmData = nil;
   if ([component hasAlarms])
     {
-      anAlarm = [component firstDisplayOrAudioAlarm];
+      anAlarm = [component firstSupportedAlarm];
       trigger = [anAlarm trigger];
       if (![[trigger valueType] length] || [[trigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame)
         {
