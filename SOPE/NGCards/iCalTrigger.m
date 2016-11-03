@@ -65,6 +65,8 @@
       [[self valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame)
     {
       relation = [[self relationType] uppercaseString];
+      if (![relation length])
+        relation = @"START";
       duration = [self flattenedValuesForKey: @""];
       i = 0;
       c = [duration characterAtIndex: i];
