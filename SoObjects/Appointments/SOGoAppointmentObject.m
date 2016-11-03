@@ -891,7 +891,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                                withType: @"calendar:invitation"];
     }
 
-  if ([changes hasChanges])
+  if ([changes hasMajorChanges])
     [self sendReceiptEmailForObject: newEvent
                      addedAttendees: addedAttendees
                    deletedAttendees: deletedAttendees
@@ -2275,11 +2275,13 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
         } // if ([[newEvent attendees] count] || [[oldEvent attendees] count])
       else
         {
-          [self sendReceiptEmailForObject: newEvent
-                           addedAttendees: nil
-                         deletedAttendees: nil
-                         updatedAttendees: nil
-                                operation: EventUpdated];
+          changes = [iCalEventChanges changesFromEvent: oldEvent  toEvent: newEvent];
+          if ([changes hasMajorChanges])
+            [self sendReceiptEmailForObject: newEvent
+                             addedAttendees: nil
+                           deletedAttendees: nil
+                           updatedAttendees: nil
+                                  operation: EventUpdated];
         }
     }  // else of if (isNew) ...
       
