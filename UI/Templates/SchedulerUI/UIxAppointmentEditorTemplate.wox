@@ -272,7 +272,7 @@
                 <md-icon ng-class="'icon-' + $chip.partstat"><!-- partstat --></md-icon>
                 <md-icon class="sg-chip-remove"
                          label:aria-label="Delete"
-                         ng-click="editor.removeAttendee($chip)">close</md-icon>
+                         ng-click="editor.removeAttendee($chip, eventForm)">close</md-icon>
               </md-chip-template>
             </md-chips>
             <div class="ng-hide attendees" ng-show="editor.showAttendeesEditor">

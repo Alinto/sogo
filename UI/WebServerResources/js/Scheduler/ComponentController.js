@@ -282,10 +282,11 @@
       }
     }
 
-    function removeAttendee(attendee) {
+    function removeAttendee(attendee, form) {
       vm.component.deleteAttendee(attendee);
       if (vm.component.attendees.length === 0)
         vm.showAttendeesEditor = false;
+      form.$setDirty();
     }
 
     function priorityLevel() {
