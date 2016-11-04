@@ -177,15 +177,15 @@
       NSCalendarDate *date;
 
       date = [self lastPossibleRecurrenceStartDate];
-      if (!date)
-	{
-	  /* this could also be *nil*, but in the end it makes the fetchspecs
-	     more complex - thus we set it to a "reasonable" distant future */
-	  date = iCalDistantFuture;
-	}
+      if (date)
+        date = [date addTimeInterval: [self durationAsTimeInterval]];
+      else
+        /* this could also be *nil*, but in the end it makes the fetchspecs
+           more complex - thus we set it to a "reasonable" distant future */
+        date = iCalDistantFuture;
       [row setObject: [self quickRecordDateAsNumber: date
-			    withOffset: 0 forAllDay: NO]
-	   forKey: @"c_cycleenddate"];
+                                         withOffset: 0 forAllDay: NO]
+              forKey: @"c_cycleenddate"];
       [row setObject: [self cycleInfo] forKey: @"c_cycleinfo"];
     }
 

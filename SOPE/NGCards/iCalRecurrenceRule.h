@@ -97,6 +97,7 @@ extern NSString *iCalWeekDayString[];
 
 /* count and untilDate are mutually exclusive */
 
+- (BOOL) hasRepeatCount;
 - (void) setRepeatCount: (int) _repeatCount;
 - (int) repeatCount;
 

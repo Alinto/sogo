@@ -403,6 +403,11 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
   return [[self flattenedValuesForKey: @"count"] intValue];
 }
 
+- (BOOL) hasRepeatCount
+{
+  return [[self flattenedValuesForKey: @"count"] length] > 0;
+}
+
 - (void) setCount: (NSString *) _count
 {
   [self setSingleValue: _count forKey: @"count"];

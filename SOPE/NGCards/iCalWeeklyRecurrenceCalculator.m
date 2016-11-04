@@ -68,6 +68,7 @@
   long i, repeatCount, count;
   unsigned interval;
   iCalByDayMask *dayMask;
+  BOOL hasRepeatCount;
 
   [self logWithFormat: @"Weekly %@", rrule];
 
@@ -76,6 +77,7 @@
   endDate = [_r endDate];
   dayMask = nil;
   repeatCount = 0;
+  hasRepeatCount = [rrule hasRepeatCount];
 
   if ([endDate compare: firStart] == NSOrderedAscending)
     // Range ends before first occurrence
@@ -113,7 +115,7 @@
             return nil;
           if ([lastDate compare: endDate] == NSOrderedAscending)
             // Range ends after last occurence; adjust end date
-            endDate = lastDate;
+            endDate = [lastDate addTimeInterval: [firstRange duration]];
         }
     }
 
@@ -129,9 +131,7 @@
              [currentStartDate compare: endDate] == NSOrderedSame)
         {
           currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
-          if ([startDate compare: currentStartDate] == NSOrderedAscending ||
-              [startDate compare: currentStartDate] == NSOrderedSame ||
-              [startDate compare: currentEndDate] == NSOrderedAscending)
+          if ([startDate compare: currentEndDate] == NSOrderedAscending)
             {
               NGCalendarDateRange *r;
 
@@ -156,9 +156,9 @@
           BOOL isRecurrence = NO;
           NSInteger week;
 
-          if (repeatCount > 0 ||
-              [startDate compare: currentStartDate] == NSOrderedAscending ||
-              [startDate compare: currentStartDate] == NSOrderedSame)
+          currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
+          if (hasRepeatCount ||
+              [startDate compare: currentEndDate] == NSOrderedAscending)
             {
               // If the rule count is defined, stop once the count is reached.
               if ([currentStartDate compare: firStart] == NSOrderedSame)
@@ -181,10 +181,8 @@
                   count++;
                   if (repeatCount > 0 && count > repeatCount)
                     break;
-                  currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
                   r = [NGCalendarDateRange calendarDateRangeWithStartDate: currentStartDate
                                                                   endDate: currentEndDate];
-
                   if ([_r doesIntersectWithDateRange: r])
                     {
                       [ranges addObject: r];
