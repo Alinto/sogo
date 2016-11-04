@@ -1114,7 +1114,7 @@
     component.completedDate = component.completed ? component.completed.format(dlp, '%Y-%m-%d') : '';
 
     // Update recurrence definition depending on selections
-    if (this.$hasCustomRepeat) {
+    if (this.hasCustomRepeat()) {
       if (this.repeat.frequency == 'monthly' && this.repeat.month.type && this.repeat.month.type == 'byday' ||
           this.repeat.frequency == 'yearly' && this.repeat.year.byday) {
         // BYDAY mask for a monthly or yearly recurrence
@@ -1130,7 +1130,7 @@
     else if (this.repeat.frequency && this.repeat.frequency != 'never') {
       component.repeat = { frequency: this.repeat.frequency };
     }
-    if (component.startDate && this.repeat.frequency) {
+    if (component.startDate && this.repeat.frequency && this.repeat.frequency != 'never') {
       if (this.repeat.end == 'until' && this.repeat.until)
         component.repeat.until = this.repeat.until.stringWithSeparator('-');
       else if (this.repeat.end == 'count' && this.repeat.count)

@@ -192,13 +192,14 @@
               <md-icon ng-class="{'md-rotate-45': editor.showRecurrenceEditor}">add</md-icon>
             </md-button>
           </div>
-          <div ng-show="editor.showRecurrenceEditor" flex-offset="5">
+          <div flex-offset="5"
+               ng-show="editor.showRecurrenceEditor">
             <var:component className="UIxRecurrenceEditor" />
           </div>
           <!-- end repeat -->
-          <div layout="row">
-            <md-input-container class="md-block" flex="50" flex-xs="100"
-                                ng-show="editor.component.repeat.frequency != 'never'">
+          <div layout="row"
+               ng-show="editor.component.repeat.frequency != 'never'">
+            <md-input-container class="md-block" flex="50" flex-xs="100">
               <label><var:string label:value="End Repeat"/></label>
               <md-select ng-model="editor.component.repeat.end"
                          ng-disabled="editor.component.occurrenceId">
@@ -293,14 +294,16 @@
       </md-dialog-content>
       <!-- cancel/reset/save -->
       <md-dialog-actions ng-hide="editor.attendeeConflictError">
-        <md-button type="button" ng-click="editor.cancel()">
+        <md-button type="button" ng-click="editor.cancel(eventForm)">
           <var:string label:value="Cancel"/>
         </md-button>
-        <md-button type="button" ng-click="editor.component.$reset()">
+        <md-button type="button"
+                   ng-disabled="eventForm.$pristine"
+                   ng-click="editor.reset(eventForm)">
           <var:string label:value="Reset"/>
         </md-button>
         <md-button class="md-primary" type="submit"
-                   ng-disabled="eventForm.$invalid">
+                   ng-disabled="eventForm.$pristine || eventForm.$invalid || eventForm.$submitted">
           <var:string label:value="Save"/>
         </md-button>
       </md-dialog-actions>
@@ -308,9 +311,9 @@
       <!-- attendee availability conflict -->
       <md-dialog-content class="md-default-theme md-bg md-warn md-padding sg-dialog-message ng-hide"
                          ng-show="editor.attendeeConflictError.conflicts">
-        <div layout="row">
-          <div class="md-flex sg-padded--bottom"><var:string label:value="A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"/></div>
-          <md-button class="md-icon-button" ng-click="editor.attendeeConflictError = false">
+        <div layout="row" layout-align="space-between start" layout-fill="layout-fill">
+          <div class="sg-padded--bottom" ng-bind-html="::'A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?' | loc | ln2br "><!-- warning --></div>
+          <md-button class="md-icon-button" ng-click="editor.edit(eventForm)">
             <md-icon label:aria-label="Close">close</md-icon>
           </md-button>
         </div>
@@ -332,11 +335,11 @@
         </div>
       </md-dialog-content>
       <md-dialog-actions ng-show="editor.attendeeConflictError.conflicts">
-        <md-button type="button" ng-click="editor.cancel()">
+        <md-button type="button" ng-click="editor.cancel(eventForm)">
           <var:string label:value="Cancel"/>
         </md-button>
         <md-button type="button"
-                   ng-click="editor.attendeeConflictError = false">
+                   ng-click="editor.edit(eventForm)">
           <var:string label:value="Edit"/>
         </md-button>
         <md-button class="md-warn" type="button"
@@ -350,16 +353,16 @@
       <md-dialog-content class="md-default-theme md-bg md-warn md-padding sg-dialog-message ng-hide" layout="row"
                          ng-show="editor.attendeeConflictError.reject">
         <div class="md-flex">{{editor.attendeeConflictError.reject}}</div>
-        <md-button class="md-icon-button" ng-click="editor.attendeeConflictError = false">
+        <md-button class="md-icon-button" ng-click="editor.edit(eventForm)">
           <md-icon label:aria-label="Close">close</md-icon>
         </md-button>
       </md-dialog-content>
       <md-dialog-actions ng-show="editor.attendeeConflictError.reject">
-        <md-button type="button" ng-click="editor.cancel()">
+        <md-button type="button" ng-click="editor.cancel(eventForm)">
           <var:string label:value="Cancel"/>
         </md-button>
         <md-button type="button"
-                   ng-click="editor.attendeeConflictError = false">
+                   ng-click="editor.edit(eventForm)">
           <var:string label:value="Edit"/>
         </md-button>
       </md-dialog-actions>

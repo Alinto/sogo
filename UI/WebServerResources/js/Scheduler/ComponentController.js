@@ -225,7 +225,9 @@
     vm.removeAttendee = removeAttendee;
     vm.addAttachUrl = addAttachUrl;
     vm.priorityLevel = priorityLevel;
+    vm.reset = reset;
     vm.cancel = cancel;
+    vm.edit = edit;
     vm.save = save;
     vm.attendeeConflictError = false;
     vm.attendeesEditor = {
@@ -302,24 +304,33 @@
         vm.component.$save(options)
           .then(function(data) {
             $rootScope.$emit('calendars:list');
-            $mdDialog.hide();
             Alarm.getAlarms();
+            $mdDialog.hide();
           }, function(response) {
-            if (response.status == CalendarSettings.ConflictHTTPErrorCode &&
-                response.data && response.data.message &&
-                angular.isObject(response.data.message))
+            if (response.status == CalendarSettings.ConflictHTTPErrorCode)
               vm.attendeeConflictError = response.data.message;
           });
       }
     }
 
-    function cancel() {
+    function reset(form) {
       vm.component.$reset();
+      form.$setPristine();
+    }
+
+    function cancel(form) {
+      reset(form);
       if (vm.component.isNew) {
         // Cancelling the creation of a component
         vm.component = null;
       }
       $mdDialog.cancel();
+    }
+
+    function edit(form) {
+      vm.attendeeConflictError = false;
+      form.$setPristine();
+      form.$setDirty();
     }
 
     function getDays() {
