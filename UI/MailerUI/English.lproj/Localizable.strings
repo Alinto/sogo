@@ -354,6 +354,7 @@
 "Copy messages" = "Copy messages";
 "More messages options" = "More messages options";
 "Mark as Unread" = "Mark as Unread";
+"Mark as Read" = "Mark as Read";
 "Closing Window ..." = "Closing Window ...";
 "Tried to send too many mails. Please wait." = "Tried to send too many mails. Please wait.";
 "View Mail" = "View Mail";

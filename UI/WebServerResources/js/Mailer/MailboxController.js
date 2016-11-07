@@ -33,6 +33,7 @@
     vm.moveSelectedMessages = moveSelectedMessages;
     vm.markSelectedMessagesAsFlagged = markSelectedMessagesAsFlagged;
     vm.markSelectedMessagesAsUnread = markSelectedMessagesAsUnread;
+    vm.markSelectedMessagesAsRead = markSelectedMessagesAsRead;
     vm.selectAll = selectAll;
     vm.unselectMessages = unselectMessages;
 
@@ -448,13 +449,28 @@
 
     function markSelectedMessagesAsUnread() {
       var selectedMessages = vm.selectedFolder.$selectedMessages();
-      if (_.size(selectedMessages) > 0)
+      if (_.size(selectedMessages) > 0) {
         vm.selectedFolder.$flagMessages(selectedMessages, 'seen', 'remove').then(function(messages) {
           _.forEach(messages, function(message) {
+            if (message.isread)
+              message.$mailbox.unseenCount++;
             message.isread = false;
-            message.$mailbox.unseenCount++;
           });
         });
+      }
+    }
+
+    function markSelectedMessagesAsRead() {
+      var selectedMessages = vm.selectedFolder.$selectedMessages();
+      if (_.size(selectedMessages) > 0) {
+        vm.selectedFolder.$flagMessages(selectedMessages, 'seen', 'add').then(function(messages) {
+          _.forEach(messages, function(message) {
+            if (!message.isread)
+              message.$mailbox.unseenCount--;
+            message.isread = true;
+          });
+        });
+      }
     }
 
   }

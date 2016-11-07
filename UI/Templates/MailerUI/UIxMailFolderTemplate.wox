@@ -187,6 +187,11 @@
               </md-button>
             </md-menu-item>
             <md-menu-item>
+              <md-button ng-click="mailbox.markSelectedMessagesAsRead()">
+                <var:string label:value="Mark as Read"/>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
               <md-button ng-click="mailbox.selectedFolder.saveSelectedMessages()">
                 <var:string label:value="Save As..."/>
               </md-button>

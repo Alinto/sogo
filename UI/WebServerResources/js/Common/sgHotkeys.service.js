@@ -123,12 +123,12 @@
         /**
          * Keybindings are ignored by default when coming from a form input field.
          */
-        this._preventIn = ['INPUT', 'SELECT', 'TEXTAREA'];
+        this._preventIn = ['INPUT', 'SELECT', 'TEXTAREA', 'MD-OPTION'];
 
         /**
          * Keybindings are ignored by default when coming from special elements
          */
-        this._preventInClass = ['md-focused', 'md-chip-content'];
+        this._preventInClass = ['md-chip-content'];
 
         this._onKeydown = this._onKeydown.bind(this);
         this._onKeyup = this._onKeyup.bind(this);
