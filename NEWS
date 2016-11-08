@@ -9,6 +9,7 @@ Enhancements
 
 Bug fixes
  - [core] fixed condition in weekly recurrence calculator
+ - [core] always send IMIP messages using UTF-8
  - [web] fixed support for recurrent tasks
  - [web] improved validation of mail account delegators
 
