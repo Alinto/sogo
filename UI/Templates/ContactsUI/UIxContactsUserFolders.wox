@@ -40,12 +40,11 @@
         <md-button ng-click="subscribe.selectUser($index)">
           <div layout="row" layout-align="start center" class="md-flex">
             <span class="card-picture" ng-switch="user.isGroup">
-              <div ng-switch-when="0">
-                <sg-avatar-image class="md-avatar"
-                                 sg-email="user.c_email"
-                                 size="40"><!-- avatar --></sg-avatar-image>
-              </div>
-              <div ng-switch-when="1" class="sg-list-avatar"><!-- normal-group --></div>
+              <sg-avatar-image class="md-avatar"
+                               ng-switch-when="0"
+                               sg-email="user.c_email"
+                               size="40"><!-- avatar --></sg-avatar-image>
+              <div ng-switch-when="1" class="md-avatar sg-avatar-list"><!-- list avatar --></div>
             </span>
             <div class="sg-tile-content">
               <div class="sg-md-subhead"><div>{{user.cn}}</div></div>
