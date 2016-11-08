@@ -751,16 +751,8 @@
 
   parent = [object parent];
   iCalString = [NSString stringWithFormat: @"%@\r\n", [parent versitString]];
-  if ([iCalString canBeConvertedToEncoding: NSISOLatin1StringEncoding])
-    {
-      objectData = [iCalString dataUsingEncoding: NSISOLatin1StringEncoding];
-      charset = @"ISO-8859-1";
-    }
-  else
-    {
-      objectData = [iCalString dataUsingEncoding: NSUTF8StringEncoding];
-      charset = @"UTF-8";
-    }
+  objectData = [iCalString dataUsingEncoding: NSUTF8StringEncoding];
+  charset = @"UTF-8";
 
   header = [NSString stringWithFormat: @"text/calendar; method=%@;"
                      @" charset=\"%@\"",
