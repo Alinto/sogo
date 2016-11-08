@@ -11,8 +11,8 @@ To updated the timezone files:
 
   mkdir /tmp/zones
   cd /tmp/zones
-  wget http://www.iana.org/time-zones/repository/releases/tzdata2016h.tar.gz
-  tar -zxvf tzdata2016h.tar.gz
+  wget http://www.iana.org/time-zones/repository/releases/tzdata2016i.tar.gz
+  tar -zxvf tzdata2016i.tar.gz
 
 4- compile and run the conversion tool
 

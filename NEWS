@@ -5,6 +5,7 @@ New features
  - [core] support repetitive email alarms on tasks and events (#1053)
 
 Enhancements
+ - [core] updated time zones to version 2016i
  - [eas] now also search on senders when using EAS Search ops
  - [web] allow multiple messages to be marked as seen (#3873)
 
