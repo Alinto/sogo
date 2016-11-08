@@ -10,6 +10,7 @@ Enhancements
 
 Bug fixes
  - [core] fixed condition in weekly recurrence calculator
+ - [core] always send IMIP messages using UTF-8
  - [web] fixed mail settings persistence when sorting by arrival date
  - [web] disable submit button while saving an event or a task (#3880)
  - [web] fixed computation of week number
