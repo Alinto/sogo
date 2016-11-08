@@ -2515,9 +2515,29 @@ function onMenuDeleteFolder(event) {
     showConfirmDialog(_("Confirmation"),
                       _("Do you really want to move this folder into the trash ?"),
                       function(event) {
-                          triggerAjaxRequest(urlstr, folderOperationCallback, errorLabel);
+                          triggerAjaxRequest(urlstr, deleteFolderCallback, errorLabel);
                           disposeDialog();
                       });
+}
+
+function deleteFolderCallback(http) {
+  if (http.readyState == 4 && isHttpStatus204(http.status)) {
+    folderOperationCallback(http);
+  }
+  else {
+    var errorLabel = http.callbackData;
+    showConfirmDialog(
+      _("Warning"),
+      _("The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"),
+      // Yes -- Delete immediately
+      function() {
+        var folderID = document.menuTarget.getAttribute("dataname");
+        var url = URLForFolderID(folderID) + "/delete?withoutTrash=1";
+        triggerAjaxRequest(url, folderOperationCallback, errorLabel);
+        disposeDialog();
+      }
+    );
+  }
 }
 
 function onMenuMarkFolderRead(event) {
