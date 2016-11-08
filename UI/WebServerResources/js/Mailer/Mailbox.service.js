@@ -81,10 +81,10 @@
    * @return a promise of the HTTP operation
    * @see {@link Account.$getMailboxes}
    */
-  Mailbox.$find = function(account) {
+  Mailbox.$find = function(account, options) {
     var path, futureMailboxData;
 
-    if (account.fetchAll)
+    if (options && options.all)
       futureMailboxData = this.$$resource.fetch(account.id.toString(), 'viewAll');
     else
       futureMailboxData = this.$$resource.fetch(account.id.toString(), 'view');
@@ -909,14 +909,14 @@
   };
 
   /**
-   * @function $toggleSubscribe
+   * @function $updateSubscribe
    * @memberof Mailbox.prototype
-   * @desc Subscribe or unsubscribe to a mailbox
+   * @desc Update mailbox subscription state with server.
    */
-  Mailbox.prototype.$toggleSubscribe = function() {
-    if (this.subscribed)
-      return Mailbox.$$resource.post(this.id, 'subscribe');
+  Mailbox.prototype.$updateSubscribe = function() {
+    var action = this.subscribed? 'subscribe' : 'unsubscribe';
 
-    return Mailbox.$$resource.post(this.id, 'unsubscribe');
-    };
+    Mailbox.$$resource.post(this.id, action);
+  };
+
 })();

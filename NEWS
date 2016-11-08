@@ -14,6 +14,7 @@ Bug fixes
  - [web] fixed mail settings persistence when sorting by arrival date
  - [web] disable submit button while saving an event or a task (#3880)
  - [web] fixed computation of week number
+ - [web] fixed and improved IMAP folder subscriptions manager (#3865)
 
 3.2.1 (2016-11-02)
 ------------------

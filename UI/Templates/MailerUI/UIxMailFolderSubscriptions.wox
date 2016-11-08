@@ -28,9 +28,9 @@
                               md-mode="indeterminate"><!-- progress --></md-progress-circular>
       </div>
       <md-list>
-        <md-list-item ng-repeat="folder in subscriptions.account.$flattenMailboxes({all: true }) | filter:subscriptions.filter"
-		      md-item-size="48"
-		      ng-hide="subscriptions.metadataForFolder(folder).special">
+        <md-list-item
+            ng-repeat="folder in subscriptions.account.$flattenMailboxes({all: true}) | filter:subscriptions.filter"
+	    md-item-size="48">
           <div ng-class="'sg-child-level-' + folder.level">
             <md-icon>{{subscriptions.metadataForFolder(folder).icon}}</md-icon>
           </div>
@@ -38,11 +38,11 @@
             {{subscriptions.metadataForFolder(folder).name}}
           </p>
 	  <md-checkbox class="md-secondary"
+                       ng-disabled="subscriptions.metadataForFolder(folder).special"
 		       ng-model="folder.subscribed"
-		       ng-click="folder.$toggleSubscribe()"
+                       ng-change="folder.$updateSubscribe()"
 		       ng-true-value="1"
-		       ng-false-value="0">
-	  </md-checkbox>
+		       ng-false-value="0"><!-- subscribed --></md-checkbox>
         </md-list-item>
       </md-list>
     </md-dialog-content>

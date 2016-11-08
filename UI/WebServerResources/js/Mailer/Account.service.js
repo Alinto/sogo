@@ -131,7 +131,7 @@
       return Account.$q.when(this.$mailboxes);
     }
     else {
-      return Account.$Mailbox.$find(this).then(function(data) {
+      return Account.$Mailbox.$find(this, options).then(function(data) {
         _this.$mailboxes = data;
         _this.$expanded = false;
 

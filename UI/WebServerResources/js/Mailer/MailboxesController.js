@@ -210,11 +210,9 @@
         });
         vm.close = close;
 
-
-        vm.account.$getMailboxes().then(function() {
+        vm.account.$getMailboxes({ reload: true, all: true }).then(function() {
           vm.loading = false;
         });
-
 
         function close() {
           $mdDialog.cancel();
