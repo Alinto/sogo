@@ -1,6 +1,6 @@
 /* UIxContactFoldersView.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2014 Inverse inc.
+ * Copyright (C) 2006-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -274,7 +274,7 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
   return [[SOGoSystemDefaults sharedSystemDefaults] enablePublicAccess];
 }
 
-- (NSString *) contactFolders
+- (NSArray *) contactFolders
 {
   SOGoContactFolders *folderContainer;
   NSMutableDictionary *urls, *acls;
@@ -347,7 +347,38 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
       [foldersAttrs addObject: folderAttrs];
     }
   
-  return [foldersAttrs jsonRepresentation];
+  return foldersAttrs;
+}
+
+/**
+ * @api {get} /so/:username/Contacts/addressbooksList Get address books
+ * @apiVersion 1.0.0
+ * @apiName GetAddressbooksList
+ * @apiGroup Contacts
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Contacts/addressbooksList
+ *
+ * @apiSuccess (Success 200) {Object[]} addressbooks                List of address books
+ * @apiSuccess (Success 200) {String} addressbooks.id               AddressBook ID
+ * @apiSuccess (Success 200) {String} addressbooks.name             Human readable name
+ * @apiSuccess (Success 200) {String} addressbooks.owner            User ID of owner
+ * @apiSuccess (Success 200) {Number} addressbooks.synchronize      1 if address book must be synchronized in EAS
+ * @apiSuccess (Success 200) {Number} addressbooks.listRequiresDot  1 if listing requires a search
+ * @apiSuccess (Success 200) {Number} addressbooks.isRemote         1 if address book is a global source
+ * @apiSuccess (Success 200) {Object[]} urls                        URLs to this address book
+ * @apiSuccess (Success 200) {String} [urls.cardDavURL]             CardDAV URL
+ * @apiSuccess (Success 200) {String} [urls.publicCardDavURL]       Public CardDAV URL
+ */
+- (WOResponse *) addressbooksListAction
+{
+  NSDictionary *data;
+  WOResponse *response;
+
+  data = [NSDictionary dictionaryWithObject: [self contactFolders]
+                                     forKey: @"addressbooks"];
+  response = [self responseWithStatus: 200 andJSONRepresentation: data];
+
+  return response;
 }
 
 // - (NSString *) currentContactFolderId

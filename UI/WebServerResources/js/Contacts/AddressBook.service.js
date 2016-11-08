@@ -200,6 +200,31 @@
   };
 
   /**
+   * @memberof AddressBook
+   * @desc Reload the list of known addressbooks.
+   */
+  AddressBook.$reloadAll = function() {
+    var _this = this;
+
+    return AddressBook.$$resource.fetch('addressbooksList').then(function(data) {
+      _.forEach(data.addressbooks, function(addressbookData) {
+        var group, addressbook;
+
+        if (addressbookData.isRemote)
+          group = _this.$remotes;
+        else if (addressbookData.owner != AddressBook.activeUser.login)
+          group = _this.$subscriptions;
+        else
+          group = _this.$addressbooks;
+
+        addressbook = _.find(group, function(o) { return o.id == addressbookData.id; });
+        if (addressbook)
+          addressbook.init(addressbookData);
+      });
+    });
+  };
+
+  /**
    * @function init
    * @memberof AddressBook.prototype
    * @desc Extend instance with new data and compute additional attributes.

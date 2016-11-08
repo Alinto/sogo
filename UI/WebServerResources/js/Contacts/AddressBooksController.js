@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  AddressBooksController.$inject = ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$window', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'FileUploader', 'sgConstant', 'sgHotkeys', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'User', 'stateAddressbooks'];
-  function AddressBooksController($state, $scope, $rootScope, $stateParams, $timeout, $window, $mdDialog, $mdToast, $mdMedia, $mdSidenav, FileUploader, sgConstant, sgHotkeys, focus, Card, AddressBook, Dialog, Settings, User, stateAddressbooks) {
+  AddressBooksController.$inject = ['$q', '$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$window', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'FileUploader', 'sgConstant', 'sgHotkeys', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'User', 'stateAddressbooks'];
+  function AddressBooksController($q, $state, $scope, $rootScope, $stateParams, $timeout, $window, $mdDialog, $mdToast, $mdMedia, $mdSidenav, FileUploader, sgConstant, sgHotkeys, focus, Card, AddressBook, Dialog, Settings, User, stateAddressbooks) {
     var vm = this, hotkeys = [];
 
     vm.activeUser = Settings.activeUser;
@@ -234,16 +234,24 @@
     }
 
     function showLinks(addressbook) {
-      $mdDialog.show({
-        parent: angular.element(document.body),
-        clickOutsideToClose: true,
-        escapeToClose: true,
-        templateUrl: addressbook.id + '/links',
-        controller: LinksDialogController,
-        controllerAs: 'links',
-        locals: {
-          addressbook: addressbook
-        }
+      var promise;
+      if (addressbook.urls)
+        promise = $q.when();
+      else
+        // Refresh list of addressbooks to fetch links associated to addressbook
+        promise = AddressBook.$reloadAll();
+      promise.then(function() {
+        $mdDialog.show({
+          parent: angular.element(document.body),
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          templateUrl: addressbook.id + '/links',
+          controller: LinksDialogController,
+          controllerAs: 'links',
+          locals: {
+            addressbook: addressbook
+          }
+        });
       });
 
       /**

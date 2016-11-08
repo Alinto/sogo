@@ -11,7 +11,7 @@
     const:userDefaultsKeys="SOGoContactsCategories"
     const:jsFiles="vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, Common.js, Preferences.services.js, Mailer.services.js, Contacts.js, Contacts.services.js, vendor/angular-file-upload.min.js, vendor/FileSaver.min.js">
   <script type="text/javascript">
-    var contactFolders = <var:string value="contactFolders" const:escapeHTML="NO" />;
+    var contactFolders = <var:string value="contactFolders.jsonRepresentation" const:escapeHTML="NO" />;
   </script>
 
   <main class="view"
