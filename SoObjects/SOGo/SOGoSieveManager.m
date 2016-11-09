@@ -1,6 +1,6 @@
 /* SOGoSieveManager.m - this file is part of SOGo
  *
- * Copyright (C) 2010-2015 Inverse inc.
+ * Copyright (C) 2010-2016 Inverse inc.
  *
  * Author: Inverse <info@inverse.ca>
  *
@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
@@ -783,6 +784,7 @@ static NSString *sieveScriptName = @"sogo";
   NGSieveClient *client;
   NSString *filterScript, *v;
   BOOL b;
+  unsigned int now;
 
   dd = [user domainDefaults];
   if (!([dd sieveScriptsEnabled] || [dd vacationEnabled] || [dd forwardEnabled]))
@@ -830,8 +832,10 @@ static NSString *sieveScriptName = @"sogo";
   // We handle vacation messages.
   // See http://ietfreport.isoc.org/idref/draft-ietf-sieve-vacation/
   values = [ud vacationOptions];
+  now = [[NSCalendarDate calendarDate] timeIntervalSince1970];
 
-  if (values && [[values objectForKey: @"enabled"] boolValue])
+  if (values && [[values objectForKey: @"enabled"] boolValue] &&
+      (![values objectForKey: @"startDateEnabled"] || [[values objectForKey: @"startDate"] intValue] < now))
     {
       NSMutableString *vacation_script;
       NSArray *addresses;

@@ -16,6 +16,7 @@ Bug fixes
  - [web] disable submit button while saving an event or a task (#3880)
  - [web] fixed computation of week number
  - [web] fixed and improved IMAP folder subscriptions manager (#3865)
+ - [web] fixed Sieve script activation when vacation start date is in the future (#3885)
 
 3.2.1 (2016-11-02)
 ------------------
