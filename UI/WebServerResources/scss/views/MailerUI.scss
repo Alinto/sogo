@@ -98,6 +98,23 @@ md-sidenav {
           }
         }
       }
+      // Hide the label (which contains an icon) if the checkbox is enabled ..
+      .md-label {
+        display: none;
+      }
+      // .. but show the label and hide the checkbox when disabled (no children)
+      &[disabled] {
+        .md-container {
+          width: 0;
+          &:after {
+            content: '';
+          }
+        }
+        .md-label {
+          display: inline-block;
+          margin-left: 0;
+        }
+      }
     }
   }
   .sg-item-name {
