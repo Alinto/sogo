@@ -50,9 +50,14 @@
    */
   sgAvatarImageController.$inject = ['$scope', '$element', '$http', '$q', 'Preferences', 'Gravatar'];
   function sgAvatarImageController($scope, $element, $http, $q, Preferences, Gravatar) {
-    var vm;
+    var vm, toggleZoomFcn;
 
     vm = this;
+
+    $scope.$on('$destroy', function() {
+      if (toggleZoomFcn)
+        $element.off('click', toggleZoomFcn);
+    });
 
     // Wait on user's defaults
     Preferences.ready().then(function() {
@@ -75,6 +80,7 @@
           // Set image URL and save the associated email address
           vm.url = src;
           vm.urlEmail = '' + vm.email;
+          configureZoomableAvatar();
           hideGenericAvatar();
         }
       });
@@ -110,6 +116,15 @@
       vm.genericImg.addClass('ng-hide');
       vm.img.removeClass('ng-hide');
     }
+
+    function configureZoomableAvatar() {
+      $element.addClass('sg-avatar-image--zoomable');
+      toggleZoomFcn = function() {
+        $element.toggleClass('sg-avatar-image--zoom');
+      };
+      $element.on('click', toggleZoomFcn);
+    }
+
   }
 
   angular

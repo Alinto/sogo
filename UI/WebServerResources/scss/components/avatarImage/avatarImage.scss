@@ -1,0 +1,29 @@
+/// avatarImage.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
+
+$avatar-image-transition: $swift-ease-out;
+
+.sg-avatar-image {
+  &--zoomable {
+    cursor: pointer;
+    img {
+      @extend .md-whiteframe-1dp;
+      transition: $avatar-image-transition;
+    }
+    &:hover {
+      img {
+        @extend .md-whiteframe-3dp;
+      }
+    }
+  }
+  &--zoom {
+    height: auto;
+    max-width: 50%;
+    width: auto;
+    img {
+      border-radius: 0;
+      height: auto;
+      transition: $avatar-image-transition;
+      width: 100%;
+    }
+  }
+}
