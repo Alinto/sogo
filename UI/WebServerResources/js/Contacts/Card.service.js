@@ -156,7 +156,7 @@
       this.c_component = 'vlist';
     if (data.notes && data.notes.length)
       this.notes = _.map(data.notes, function(note) { return { 'value': note }; });
-    else if (!this.notes)
+    else if (!this.notes || !this.notes.length)
       this.notes = [ { value: '' } ];
     // Instanciate Card objects for list members
     angular.forEach(this.refs, function(o, i) {
