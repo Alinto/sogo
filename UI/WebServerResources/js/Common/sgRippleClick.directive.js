@@ -91,7 +91,7 @@
 
           if (content.classList.contains('ng-hide')) {
             // Show ripple
-            angular.element(container).css({ 'overflow': 'hidden' });
+            angular.element(container).css({ 'overflow': 'hidden', 'position': 'relative' });
             angular.element(content).css({ top: container.scrollTop + 'px' });
             $timeout(function() {
               // Wait until next digest for CSS animation to work
@@ -117,7 +117,7 @@
             content.classList.add('ng-hide');
             // Restore overflow of container once the animation is completed
             $timeout(function() {
-              angular.element(container).css({ 'overflow': '' });
+              angular.element(container).css({ 'overflow': '', 'position': '' });
             }, 800);
           }
         }
