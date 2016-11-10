@@ -50,8 +50,9 @@ $listView-width: grid-step(6) !global;
 }
 
 .view-list {
-  z-index: ($z-index-view - 1);
   min-width: ($listView-width - ($pitch * 2));
+  transition: $swift-ease-out;
+  z-index: ($z-index-view - 1);
 
   // With Material, when a button inside a md-list uses the class md-secondary, it is moved inside a container
   // on the right side of the list item. Since we define the avatar as the secondary button, we must move it to
@@ -84,9 +85,26 @@ $listView-width: grid-step(6) !global;
   }
 }
 
+.view-list--close {
+  transform: translateX(-100%);
+
+  @include at(sm) {
+    $cols: map-get($base-grid-total-columns, sm);
+    $colWidth: ((100 / $cols) * -6vw);
+    margin-right: $colWidth;
+  }
+  @include from(md) {
+    $cols: map-get($base-grid-total-columns, md);
+    $colWidth: ((100 / $cols) * -6vw);
+    margin-right: $colWidth;
+  }
+}
+
 .view-detail {
-  z-index: $z-index-view;
+  flex: 1 1 auto;
+  margin: 0;
   overflow: hidden;
+  z-index: $z-index-view;
 
   .sg-face, .sg-back {
     > md-card {
@@ -155,11 +173,6 @@ $listView-width: grid-step(6) !global;
     }
   }
 
-  @include at(sm) {
-    @include flex-col(sm, 10);
-    margin: 0;
-  }
-
   // No animation on medium to large screens
   @include from(sm) {
     .md-static {
@@ -193,11 +206,6 @@ $listView-width: grid-step(6) !global;
 //        }
 //      }
     }
-  }
-
-  @include from(md) {
-    flex: 1 1 auto;
-    margin: 0;
   }
 
   // Flippable view card, used to show raw source of cards and messages

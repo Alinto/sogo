@@ -16,6 +16,7 @@
     $scope.activeUser = sgSettings.activeUser();
     $scope.baseURL = sgSettings.baseURL();
     $scope.leftIsClose = !$mdMedia(sgConstant['gt-md']);
+    $scope.centerIsClose = false;
 
     // Show current day in top bar
     $scope.currentDay = window.currentDay;
@@ -51,6 +52,9 @@
         .then(function () {
           $log.debug("toggle right is done");
         });
+    };
+    $scope.toggleCenter = function() {
+      $scope.centerIsClose = !$scope.centerIsClose;
     };
     // $scope.openBottomSheet = function() {
     //   $mdBottomSheet.show({

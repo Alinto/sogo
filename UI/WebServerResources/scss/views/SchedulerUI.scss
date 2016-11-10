@@ -37,13 +37,11 @@ $quarter_height: 10px;
     }
   }
 
-  .view-detail {
-    @include at(sm) {
-      @include flex-col($breakpoint: sm, $nb: 10);
-    }
+  .view-list--close {
     @include from(md) {
-      flex: 1 1 auto;
-      margin: 0;
+      $cols: map-get($base-grid-total-columns, md);
+      $colWidth: ((100 / $cols) * -5vw);
+      margin-right: $colWidth;
     }
   }
 

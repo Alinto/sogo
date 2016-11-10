@@ -3,6 +3,7 @@
 
 New features
  - [core] support repetitive email alarms on tasks and events (#1053)
+ - [web] allow to hide center column on large screens
 
 Enhancements
  - [core] updated time zones to version 2016i

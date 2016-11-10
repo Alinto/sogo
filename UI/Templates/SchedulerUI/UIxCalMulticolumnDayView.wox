@@ -9,6 +9,12 @@
 
   <md-card>
     <md-card-actions flex-none="flex-none" layout="row" layout-align="start center">
+      <md-button ng-click="toggleCenter()"
+                 class="md-icon-button md-primary md-hue-1 hide show-gt-xs"
+                 aria-hidden="true">
+        <md-icon class="icon-fullscreen"
+                 ng-class="{ 'icon-fullscreen-exit': centerIsClose }"><!-- fullscreen --></md-icon>
+      </md-button>
       <md-button class="md-icon-button"
                  var:aria-label="yesterdayName"
                  var:date="prevDayQueryParameters.day"
@@ -25,7 +31,13 @@
                      ng-change="calendar.changeDate($event, calendar.selectedDate)"
                      sg-datepicker-readonly-input="true"><!-- date picker --></md-datepicker>
       <div class="md-flex"><!-- spacer --></div>
-      <md-button label:aria-label="Today"
+      <md-button class="md-icon-button hide-gt-sm" label:aria-label="Today"
+                 var:date="todayQueryParameters.day"
+                 ng-click="calendar.changeDate($event)"
+                 md-no-ink="md-no-ink">
+        <md-icon>arrow_downward</md-icon>
+      </md-button>
+      <md-button class="hide show-gt-sm" label:aria-label="Today"
                  var:date="todayQueryParameters.day"
                  ng-click="calendar.changeDate($event)"
                  md-no-ink="md-no-ink">

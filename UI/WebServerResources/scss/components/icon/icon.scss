@@ -109,6 +109,12 @@ md-icon {
   &.icon-expand-more:before {
     content: "\e5cf";
   }
+  &.icon-fullscreen:before {
+    content: "\e5d0";
+  }
+  &.icon-fullscreen-exit:before {
+    content: "\e5d1";
+  }
   &.icon-needs-action:before,
   &.icon-help:before {
     content: "\e887";

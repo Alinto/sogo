@@ -353,7 +353,7 @@
       </md-toolbar>
       <div layout="row" class="md-flex">
 
-        <div class="view-list" layout="column">
+        <div class="view-list" layout="column" ng-class="{'view-list--close': centerIsClose}">
           <md-toolbar class="md-accent md-hue-1" flex-none="flex-none"
                       ng-hide="list.mode.multiple">
             <!-- sort/filter mode (default) -->

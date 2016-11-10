@@ -9,6 +9,12 @@
     <div class="sg-face" layout="column" layout-fill="layout-fill">
       <md-card>
         <md-card-actions flex-none="flex-none" layout="row" layout-align="end center">
+          <md-button ng-click="toggleCenter()"
+                     class="md-icon-button md-primary md-hue-1 hide show-gt-xs"
+                     aria-hidden="true">
+            <md-icon class="icon-fullscreen"
+                     ng-class="{ 'icon-fullscreen-exit': centerIsClose }"><!-- fullscreen --></md-icon>
+          </md-button>
           <md-button class="sg-icon-button hide-gt-xs"
                      label:aria-label="Close"
                      ng-click="editor.close()">

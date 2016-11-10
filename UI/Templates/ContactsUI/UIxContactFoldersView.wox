@@ -235,7 +235,7 @@
 
     <div layout="row" class="md-flex">
 
-      <div class="view-list" layout="column">
+      <div class="view-list" layout="column" ng-class="{'view-list--close': centerIsClose}">
 
         <!-- single-selection toolbar -->
         <md-toolbar class="md-accent md-hue-1"
