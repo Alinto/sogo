@@ -128,7 +128,7 @@
     {
       decodedData = [NSData decodeDataFromHexString: pass];
 
-      if(decodedData == nil)
+      if (decodedData == nil)
         {
           decodedData = [NSData data];
         }
@@ -140,10 +140,10 @@
           pass = [pass lowercaseString];
        }
     }
-  else if(encoding == encBase64)
+  else if (encoding == encBase64)
     {
       decodedData = [pass dataByDecodingBase64];
-      if(decodedData == nil)
+      if (decodedData == nil)
         {
           decodedData = [NSData data];
         }
@@ -157,14 +157,16 @@
 
   // encrypt self with the salt an compare the results
   selfCrypted = [self asCryptedPassUsingScheme: scheme
-                           withSalt: salt
-                           andEncoding: encoding];
+				      withSalt: salt
+				   andEncoding: encoding];
+
   // return always false when there was a problem
   if (selfCrypted == nil)
     return NO;
 
   if ([selfCrypted isEqualToString: pass] == YES)
     return YES;
+
   return NO;
 }
 
