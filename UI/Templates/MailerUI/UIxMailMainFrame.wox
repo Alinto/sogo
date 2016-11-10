@@ -100,7 +100,7 @@
                    ng-click="app.selectFolder($event, account, folder)"
                    ng-dblclick="app.editFolder(folder)"
                    ng-show="app.editMode != folder.path">
-                  {{app.metadataForFolder(folder).name}} -- {{folder.type}}
+                  {{app.metadataForFolder(folder).name}}
                   <span class="sg-counter-badge ng-hide" ng-show="folder.unseenCount">{{folder.unseenCount}}</span>
                 </p>
                 <md-input-container class="md-flex ng-hide"
