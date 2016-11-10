@@ -237,14 +237,14 @@
               </span>
               <a ng-href="{{$chip.inlineUrl}}" target="_new">{{$chip.file.name}}</a>
               <md-icon ng-class="{ 'md-warn': $chip.isUploading }"
-                       ng-click="editor.removeAttachment($chip)">close</md-icon>
+                       ng-click="editor.removeAttachment($chip, 'fileInput')">close</md-icon>
             </md-chip-template>
           </md-chips>
-          <label class="md-button md-icon-button" for="file-input">
+          <label class="md-button md-icon-button" for="fileInput">
             <md-icon>attach_file</md-icon>
             <!-- <span><var:string label:value="Attach"/></span> -->
           </label>
-          <input id="file-input" name="file-input" type="file" class="ng-hide"
+          <input id="fileInput" name="fileInput" type="file" class="ng-hide"
                  nv-file-select="nv-file-select"
                  uploader="editor.uploader"/>
           <!--

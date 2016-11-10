@@ -134,13 +134,18 @@
         }
     }
 
-    function removeAttachment(item) {
+    function removeAttachment(item, id) {
       if (item.isUploading)
         vm.uploader.cancelItem(item);
       else {
         vm.message.$deleteAttachment(item.file.name);
         item.remove();
       }
+      // Hack to allow adding the same file again
+      // See https://github.com/nervgh/angular-file-upload/issues/671
+      var element = $window.document.getElementById(id);
+      if (element)
+        angular.element(element).prop('value', null);
     }
 
     function cancel() {
