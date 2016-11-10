@@ -84,6 +84,11 @@
         callback: toggleMessageSelection
       }));
       keys.push(sgHotkeys.createHotkey({
+        key: 'shift+space',
+        description: l('Toggle range of items'),
+        callback: toggleMessageSelection
+      }));
+      keys.push(sgHotkeys.createHotkey({
         key: 'up',
         description: l('View next item'),
         callback: _nextMessage,
@@ -251,9 +256,37 @@
     }
 
     function toggleMessageSelection($event, message) {
-      if (!message) message = vm.selectedFolder.$selectedMessage();
+      var folder = vm.selectedFolder,
+          selectedIndex, nextSelectedIndex, i;
+
+      if (!message)
+        message = folder.$selectedMessage();
       message.selected = !message.selected;
       vm.mode.multiple += message.selected? 1 : -1;
+
+      // Select closest range of messages when shift key is pressed
+      if ($event.shiftKey && folder.$selectedCount() > 1) {
+        selectedIndex = folder.uidsMap[message.uid];
+        // Search for next selected message above
+        nextSelectedIndex = selectedIndex - 2;
+        while (nextSelectedIndex >= 0 &&
+               !folder.$messages[nextSelectedIndex].selected)
+          nextSelectedIndex--;
+        if (nextSelectedIndex < 0) {
+          // Search for next selected message bellow
+          nextSelectedIndex = selectedIndex + 2;
+          while (nextSelectedIndex < folder.getLength() &&
+                 !folder.$messages[nextSelectedIndex].selected)
+            nextSelectedIndex++;
+        }
+        if (nextSelectedIndex >= 0 && nextSelectedIndex < folder.getLength()) {
+          for (i = Math.min(selectedIndex, nextSelectedIndex);
+               i <= Math.max(selectedIndex, nextSelectedIndex);
+               i++)
+            folder.$messages[i].selected = true;
+        }
+      }
+
       $event.preventDefault();
       $event.stopPropagation();
     }

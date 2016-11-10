@@ -64,6 +64,11 @@
         callback: toggleCardSelection
       }));
       keys.push(sgHotkeys.createHotkey({
+        key: 'shift+space',
+        description: l('Toggle range of items'),
+        callback: toggleCardSelection
+      }));
+      keys.push(sgHotkeys.createHotkey({
         key: 'up',
         description: l('View next item'),
         callback: _nextCard
@@ -100,9 +105,37 @@
     }
 
     function toggleCardSelection($event, card) {
-      if (!card) card = vm.selectedFolder.$selectedCard();
+      var folder = vm.selectedFolder,
+          selectedIndex, nextSelectedIndex, i;
+
+      if (!card)
+        card = folder.$selectedCard();
       card.selected = !card.selected;
       vm.mode.multiple += card.selected? 1 : -1;
+
+      // Select closest range of cards when shift key is pressed
+      if ($event.shiftKey && folder.$selectedCount() > 1) {
+        selectedIndex = folder.idsMap[card.id];
+        // Search for next selected card above
+        nextSelectedIndex = selectedIndex - 2;
+        while (nextSelectedIndex >= 0 &&
+               !folder.$cards[nextSelectedIndex].selected)
+          nextSelectedIndex--;
+        if (nextSelectedIndex < 0) {
+          // Search for next selected card bellow
+          nextSelectedIndex = selectedIndex + 2;
+          while (nextSelectedIndex < folder.getLength() &&
+                 !folder.$cards[nextSelectedIndex].selected)
+            nextSelectedIndex++;
+        }
+        if (nextSelectedIndex >= 0 && nextSelectedIndex < folder.getLength()) {
+          for (i = Math.min(selectedIndex, nextSelectedIndex);
+               i <= Math.max(selectedIndex, nextSelectedIndex);
+               i++)
+            folder.$cards[i].selected = true;
+        }
+      }
+
       $event.preventDefault();
       $event.stopPropagation();
     }
@@ -130,7 +163,7 @@
           vm.selectedFolder.$topIndex--;
       }
       else {
-        // No message is selected, show oldest message
+        // No card is selected, show oldest card
         index = vm.selectedFolder.$cards.length() - 1;
         vm.selectedFolder.$topIndex = vm.selectedFolder.getLength();
       }
@@ -155,7 +188,7 @@
           vm.selectedFolder.$topIndex++;
       }
       else
-        // No message is selected, show newest
+        // No card is selected, show newest
         index = 0;
 
       if (index < vm.selectedFolder.$cards.length)
