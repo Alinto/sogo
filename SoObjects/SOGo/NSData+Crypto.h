@@ -1,7 +1,7 @@
 /* NSData+Crypto.h - this file is part of SOGo
  *
  * Copyright (C) 2012 Nicolas Höft
- * Copyright (C) 2012-2015 Inverse inc.
+ * Copyright (C) 2012-2016 Inverse inc.
  *
  * Author: Nicolas Höft
  *         Inverse inc.
@@ -44,6 +44,8 @@
 - (NSData *) asSSHA256UsingSalt: (NSData *) theSalt;
 - (NSData *) asSHA512;
 - (NSData *) asSSHA512UsingSalt: (NSData *) theSalt;
+- (NSData *) asSHA256CryptUsingSalt: (NSData *) theSalt;
+- (NSData *) asSHA512CryptUsingSalt: (NSData *) theSalt;
 - (NSData *) asCramMD5;
 
 - (NSData *) asCryptUsingSalt: (NSData *) theSalt;

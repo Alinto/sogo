@@ -1,7 +1,7 @@
 /* NSString+Crypto.h - this file is part of SOGo
  *
  * Copyright (C) 2012 Nicolas Höft
- * Copyright (C) 2012-2015 Inverse inc.
+ * Copyright (C) 2012-2016 Inverse inc.
  *
  * Author: Nicolas Höft
  *         Inverse inc.

@@ -1018,9 +1018,9 @@ be specified as a LDAP Extension in the LDAP URL (e.g.
 without Password Policies enabled.
 
 Possible values are: `none`, `plain`, `crypt`, `md5`, `md5-crypt`,
-`smd5`, `cram-md5` and `sha`, `sha256`, `sha512` and its ssha (e.g.
-`ssha` or `ssha256`) variants (plus setting of the encoding with `.b64`
-or `.hex`).
+`sha256-crypt` and `sha512-crypt`, `smd5`, `cram-md5` and `sha`, `sha256`,
+`sha512` and its ssha (e.g. `ssha` or `ssha256`) variants
+(plus setting of the encoding with `.b64` or `.hex`).
 
 For a more detailed description see
 http://wiki.dovecot.org/Authentication/PasswordSchemes.
@@ -1028,6 +1028,9 @@ http://wiki.dovecot.org/Authentication/PasswordSchemes.
 Note that `cram-md5` is not actually using cram-md5 (due to the lack of
 challenge-response mechanism), its just saving the intermediate MD5
 context as Dovecot stores in its database.
+
+Also note that `sha256-crypt` and `sha512-crypt` requires that your
+operating system supports glibc 2.7 or more recent.
 
 |canAuthenticate
 |If set to `YES`, this LDAP source is used for authentication
