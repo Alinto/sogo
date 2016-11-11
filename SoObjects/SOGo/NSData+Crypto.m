@@ -604,7 +604,7 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
     }
   cryptString = [[NSString alloc] initWithData: self  encoding: NSUTF8StringEncoding];
 
-  saltData = [NSMutableData dataWithData: [magic dataUsingEncoding: NSUTF8StringEncoding]];
+  saltData = [NSMutableData dataWithData: [[NSString stringWithFormat:@"$@$", magic] dataUsingEncoding: NSUTF8StringEncoding]];
   [saltData appendData: theSalt];
 
   // Terminate with "$"
