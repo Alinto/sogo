@@ -873,7 +873,8 @@
               email: ref.$preferredEmail(),
               role: 'req-participant',
               partstat: 'needs-action',
-              uid: ref.c_uid
+              uid: ref.c_uid,
+              $avatarIcon: 'person',
             };
             if (!_.find(_this.attendees, function(o) {
               return o.email == attendee.email;
@@ -896,7 +897,8 @@
           email: card.$preferredEmail(),
           role: 'req-participant',
           partstat: 'needs-action',
-          uid: card.c_uid
+          uid: card.c_uid,
+          $avatarIcon: card.$avatarIcon
         };
         if (!_.find(this.attendees, function(o) {
           return o.email == attendee.email;

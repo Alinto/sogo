@@ -463,22 +463,10 @@
                      label:aria-label="Toggle item"
                      ng-class="{ 'sg-avatar-selected': currentCard.selected }"
                      ng-click="addressbook.toggleCardSelection($event, currentCard)">
-                  <!-- <div class="md-avatar sg-avatar-selected" -->
-                  <!--      ng-if="currentCard.selected"> -->
-                    <!-- selected avatar -->
-                  <!-- </div> -->
                   <sg-avatar-image
-                      aria-disabled="true"
-                      ng-if="currentCard.$isCard()"
                       sg-email="currentCard.$preferredEmail(addressbook.selectedFolder.constructor.$query.value)"
                       sg-src="currentCard.photoURL"
-                      size="40">
-                    <!-- contact avatar -->
-                  </sg-avatar-image>
-                  <div class="md-avatar sg-avatar-list"
-                       ng-show="currentCard.$isList()">
-                    <!-- list avatar -->
-                  </div>
+                      size="40">{{ currentCard.$avatarIcon }}</sg-avatar-image>
                 </div>
                 <div class="sg-progress-linear-bottom"
                      ng-show="currentCard.$isLoading()">

@@ -16,7 +16,7 @@
           <!-- from -->
           <sg-avatar-image class="hide-xs"
                            sg-email="editor.message.editable.from"
-                           size="32"><!-- avatar --></sg-avatar-image>
+                           size="32">person</sg-avatar-image>
           <md-input-container class="sg-no-wrap">
             <label><var:string label:value="From"/></label>
             <md-select name="from"

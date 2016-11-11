@@ -81,17 +81,11 @@
             <div ng-repeat="user in app.users">
               <md-list-item ng-class="{ 'sg-collapsed': user.uid != app.selectedUser.uid,
                                       'sg-expanded': user.uid == app.selectedUser.uid }"
-                            ng-click="app.selectUser($index)">
+                            ng-click="app.selectUser($index)"
+                            aria-label="{{::user.c_email}}">
                 <sg-avatar-image class="md-avatar"
-                                 ng-if="::user.isGroup === 0"
                                  sg-email="::user.c_email"
-                                 size="40">
-                  <!-- contact avatar -->
-                </sg-avatar-image>
-                <div class="sg-list-avatar"
-                     ng-show="::user.isGroup">
-                  <!-- list avatar -->
-                </div>
+                                 size="40">{{::user.$avatarIcon}}</sg-avatar-image>
                 <div class="sg-tile-content">
                   <div class="sg-md-subhead">
                     <div>{{::user.cn}}</div>

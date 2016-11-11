@@ -6,11 +6,11 @@
 
   /**
    * sgAvatarImage - An avatar directive that returns un img element with either a local URL (if sg-src is specified)
-   * or a Gravatar URL built from the Gravatar factory (using sg-email).
+   * or a Gravatar URL built from the Gravatar factory (using sg-email). The element's content must return the name of the generic icon to be used (usually 'person' or 'group').
    * Based on http://blog.lingohub.com/2014/08/better-ux-with-angularjs-directives/.
    * @memberof SOGo.Common
    * @example:
-     <sg-avatar-image sg-email="test@email.com" size="50"></sg-avatar-image>
+     <sg-avatar-image sg-email="test@email.com" size="50">person</sg-avatar-image>
   */
   function sgAvatarImage() {
     return {
@@ -21,8 +21,9 @@
         email: '=sgEmail',
         src: '=sgSrc'
       },
+      transclude: true,
       template: [
-        '<md-icon>person</md-icon>',                     // the generic icon
+        '<md-icon ng-transclude></md-icon>',             // the generic icon
         '<img class="ng-hide" ng-src="{{vm.url}}" />'    // the gravatar or local image
       ].join(''),
       link: link,

@@ -114,6 +114,7 @@
       this.$$shortFormat = this.$shortFormat();
     if (!this.$$image)
       this.$$image = this.image;
+    this.$avatarIcon = (this.$isGroup() || this.$isSpecial()) ? 'group' : 'person';
     // NOTE: We can't assign a Gravatar at this stage since we would need the Preferences module
     // which already depend on the User module.
 
@@ -173,6 +174,15 @@
       });
     }
     return deferred.promise;
+  };
+
+  /**
+   * @function $isGroup
+   * @memberof User.prototype
+   * @return true if the user actually represents a group of users
+   */
+  User.prototype.$isGroup = function() {
+    return this.isGroup || this.userClass && this.userClass == 'normal-group';
   };
 
   /**

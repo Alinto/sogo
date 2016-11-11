@@ -127,9 +127,7 @@
                 <div layout="row" layout-align="start center">
                   <sg-avatar-image class="md-tile-left"
                                    sg-email="viewer.message.from[0].email"
-                                   size="40">
-                    <!-- contact avatar -->
-                  </sg-avatar-image>
+                                   size="40">person</sg-avatar-image>
                   <div class="md-list-item-text">
                     <span>{{ viewer.message.from[0].name }}</span><br/>
                     <a href="#" class="md-caption"

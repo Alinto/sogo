@@ -154,6 +154,7 @@
       });
     if (this.isgroup)
       this.c_component = 'vlist';
+    this.$avatarIcon = this.$isList()? 'group' : 'person';
     if (data.notes && data.notes.length)
       this.notes = _.map(data.notes, function(note) { return { 'value': note }; });
     else if (!this.notes || !this.notes.length)

@@ -57,15 +57,10 @@
         </md-card-actions>
         <md-card-content>
           <header class="msg-header">
-            <div ng-show="editor.card.c_component == 'vcard'">
-              <sg-avatar-image class="md-avatar md-tile-left"
-                               sg-email="editor.card.$preferredEmail()"
-                               sg-src="editor.card.photoURL"
-                               size="40"><!-- avatar --></sg-avatar-image>
-            </div>
-            <div class="md-tile-left md-avatar sg-avatar-list" ng-show="editor.card.$isList()">
-              <!--list avatar-->
-            </div>
+            <sg-avatar-image class="md-avatar md-tile-left"
+                             sg-email="editor.card.$preferredEmail()"
+                             sg-src="editor.card.photoURL"
+                             size="40">{{ editor.card.$avatarIcon }}</sg-avatar-image>
             <div class="msg-header-content">
               <h1 class="sg-md-display-2--thin" ng-bind-html="editor.card.$fullname({html: true})"><!-- fullname --></h1>
               <h6 class="sg-md-display-2-subheader--thin">{{editor.card.$description()}}</h6>
@@ -93,9 +88,7 @@
                 <md-list-item class="md-2-line" ng-repeat="ref in editor.card.refs track by ref.reference">
                   <sg-avatar-image class="md-tile-left"
                                    sg-email="ref.$preferredEmail()"
-                                   size="48">
-                    <!-- contact avatar -->
-                  </sg-avatar-image>
+                                   size="48">person</sg-avatar-image>
                   <div class="md-list-item-text">
                     <h3>
                       <a ui-sref="app.addressbook.card.view({cardId: ref.reference})">{{ ref.$fullname() }}</a>
