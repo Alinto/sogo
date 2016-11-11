@@ -1509,6 +1509,7 @@ void handle_eas_terminate(int signum)
                   if ([[theResponse headerForKey: @"Content-Type"] isEqualToString:@"application/vnd.ms-sync.multipart"])
                     {
                       NSData *d;
+
                       d = [currentBodyPart fetchBLOBWithPeek: YES];
 
                       [s appendFormat: @"<Part>%d</Part>", i+1];
@@ -1518,9 +1519,15 @@ void handle_eas_terminate(int signum)
                   else
                     {
                       NSString *a;
+
                       a = [[currentBodyPart fetchBLOBWithPeek: YES] activeSyncRepresentationInContext: context];
 
-                      [s appendFormat: @"<Range>0-%d</Range>", [a length]-1];
+                      // Don't send Range when not included in the request. Sending it will cause issue on iOS 10
+		      // when downloading attachments. iOS 10 will first report an error upon the first download
+		      // and then, it'll work. This makes it work the first time the attachment is downlaoded.
+                      if  ([[[(id)[aFetch getElementsByTagName: @"Range"] lastObject] textValue] length])
+			[s appendFormat: @"<Range>0-%d</Range>", [a length]-1];
+
                       [s appendFormat: @"<Data>%@</Data>", a];
                     }
                 }
