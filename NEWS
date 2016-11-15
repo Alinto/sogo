@@ -2,6 +2,7 @@
 -------------------
 
 Enhancements
+ - [core] added sha256-crypt and sha512-crypt password support
  - [core] updated time zones to version 2016h
  - [eas] initial support for recurring tasks EAS
  - [eas] now support replied/forwarded flags using EAS (#3796)
