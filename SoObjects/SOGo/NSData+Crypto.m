@@ -607,7 +607,7 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
     }
   cryptString = [[NSString alloc] initWithData: self  encoding: NSUTF8StringEncoding];
 
-  saltData = [NSMutableData dataWithData: [[NSString stringWithFormat:@"$@$", magic] dataUsingEncoding: NSUTF8StringEncoding]];
+  saltData = [NSMutableData dataWithData: [[NSString stringWithFormat:@"$%@$", magic] dataUsingEncoding: NSUTF8StringEncoding]];
   [saltData appendData: theSalt];
 
   // Terminate with "$"
@@ -709,25 +709,35 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
       // the crypt() function is able to extract it by itself
       r = NSMakeRange(0, len);
     }
-  else if ([theScheme caseInsensitiveCompare: @"md5-crypt"] == NSOrderedSame)
+  else if ([theScheme caseInsensitiveCompare: @"md5-crypt"] == NSOrderedSame ||
+	   [theScheme caseInsensitiveCompare: @"sha256-crypt"] == NSOrderedSame ||
+	   [theScheme caseInsensitiveCompare: @"sha512-crypt"] == NSOrderedSame)
     {
-      // md5 crypt is generated the following "$1$<salt>$<encrypted pass>"
+      // md5-crypt is generated the following "$1$<salt>$<encrypted pass>"
+      // sha256-crypt is generated the following "$5$<salt>$<encrypted pass>"
+      // sha512-crypt is generated the following "$6$<salt>$<encrypted pass>"
       NSString *cryptString;
       NSArray *cryptParts;
-      cryptString = [NSString stringWithUTF8String: [self bytes] ];
+
+      cryptString = [[NSString alloc] initWithData: self  encoding: NSUTF8StringEncoding];
+      AUTORELEASE(cryptString);
+
       cryptParts = [cryptString componentsSeparatedByString: @"$"];
       // correct number of elements (first one is an empty string)
       if ([cryptParts count] != 4)
         {
           return [NSData data];
         }
-      // second is the identifier of md5-crypt
-      else if( [[cryptParts objectAtIndex: 1] caseInsensitiveCompare: @"1"] != NSOrderedSame )
+      // second is the identifier of md5-crypt/sha256-crypt or sha512-crypt
+      else if ([[cryptParts objectAtIndex: 1] caseInsensitiveCompare: @"1"] == NSOrderedSame ||
+	       [[cryptParts objectAtIndex: 1] caseInsensitiveCompare: @"5"] == NSOrderedSame ||
+	       [[cryptParts objectAtIndex: 1] caseInsensitiveCompare: @"6"] == NSOrderedSame)
         {
-          return [NSData data];
-        }
-       // third is the salt; convert it to NSData
-       return [[cryptParts objectAtIndex: 2] dataUsingEncoding: NSUTF8StringEncoding];
+	  // third is the salt; convert it to NSData
+	  return [[cryptParts objectAtIndex: 2] dataUsingEncoding: NSUTF8StringEncoding];
+	}
+      // nothing good
+      return [NSData data];
     }
   else if ([theScheme caseInsensitiveCompare: @"ssha"] == NSOrderedSame)
     {
