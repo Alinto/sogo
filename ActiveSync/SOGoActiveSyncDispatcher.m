@@ -97,7 +97,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserManager.h>
-#import <SOGo/SOGoUserSettings.h>
 #import <SOGo/GCSSpecialQueries+SOGoCacheObject.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/WORequest+SOGo.h>

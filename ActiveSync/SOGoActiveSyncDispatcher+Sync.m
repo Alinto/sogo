@@ -75,7 +75,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoCacheGCSObject.h>
 
 #import <Appointments/iCalEntityObject+SOGo.h>
