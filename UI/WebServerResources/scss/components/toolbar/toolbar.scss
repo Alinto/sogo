@@ -85,6 +85,7 @@ hgroup {
   justify-content: space-between;
   &-1 {
     order: 1;
+    flex: 1 1 0;
     max-width: $listView-width;
   }
   &-2 {
