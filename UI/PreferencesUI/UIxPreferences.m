@@ -1622,6 +1622,14 @@ static NSArray *reminderValues = nil;
            userCanChangePassword];
 }
 
+//
+// Used wox by template
+//
+- (NSString *) sieveFolderEncoding
+{
+  return [[SOGoSystemDefaults sharedSystemDefaults] sieveFolderEncoding];
+}
+
 // - (NSString *) localeCode
 // {
 //   // WARNING : NSLocaleCode is not defined in <Foundation/NSUserDefaults.h>

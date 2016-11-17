@@ -12,7 +12,8 @@
     var vm = this,
         sieveCapabilities = $window.sieveCapabilities,
         forwardEnabled = $window.forwardEnabled,
-        vacationEnabled = $window.vacationEnabled;
+        vacationEnabled = $window.vacationEnabled,
+        sieveFolderPathAttribute = ($window.sieveFolderEncoding == "UTF-8") ? "name" : "path";
 
     vm.filter = filter;
     vm.mailboxes = mailboxes;
@@ -49,6 +50,12 @@
 
     //if (vacationEnabled)
     //  vm.methodLabels.vacation = l("Send a vacation message");
+
+    vm.mailboxes = _.map(mailboxes, function(mailbox) {
+      return { level: mailbox.level,
+               name: mailbox.name,
+               path: mailbox[sieveFolderPathAttribute] };
+    });
 
     if (sieveCapabilities.indexOf("reject") > -1)
       vm.methodLabels.reject = l("Send a reject message");

@@ -20,6 +20,7 @@ Bug fixes
  - [web] fixed and improved IMAP folder subscriptions manager (#3865)
  - [web] fixed Sieve script activation when vacation start date is in the future (#3885)
  - [web] fixed moving a component without the proper rights (#3889)
+ - [web] restored Sieve folder encoding support (#3904)
 
 3.2.1 (2016-11-02)
 ------------------

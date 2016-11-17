@@ -21,6 +21,7 @@
     var defaultEmailAddresses = '<var:string value="defaultEmailAddresses" const:escapeHTML="NO"/>';
     var forwardConstraints = <var:string value="forwardConstraints" const:escapeHTML="NO"/>;
     var sieveCapabilities = <var:string value="sieveCapabilities" const:escapeHTML="NO"/>;
+    var sieveFolderEncoding = <var:string value="sieveFolderEncoding.doubleQuotedString"/>;
   </script>
 
   <script type="text/ng-template" id="preferences.html">
