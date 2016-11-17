@@ -221,11 +221,6 @@
                       <var:string label:value="Unsubscribe Calendar"/>
                     </md-button>
                   </md-menu-item>
-                  <md-menu-item>
-                    <md-button ng-click="app.exportCalendar(calendar)">
-                      <var:string label:value="Export"/>
-                    </md-button>
-                  </md-menu-item>
                   <md-menu-divider><!-- divider --></md-menu-divider>
                   <md-menu-item>
                     <md-button ng-click="app.showLinks(calendar)">
