@@ -31,9 +31,9 @@ md-list-item {
   }
 
   // Fix for md-menu visibility when set as a secondary action in a list item
-  &._md-button-wrap > div.md-button:first-child > .md-button:first-child {
-    z-index: $z-index-sidenav - 2;
-  }
+//  &._md-button-wrap > div.md-button:first-child > .md-button:first-child {
+//    z-index: $z-index-sidenav - 2;
+//  }
   .md-secondary-container {
     z-index: $z-index-sidenav - 1;
   }

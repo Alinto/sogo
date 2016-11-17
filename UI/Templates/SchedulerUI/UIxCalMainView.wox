@@ -696,8 +696,10 @@
             </md-fab-actions>
           </md-fab-speed-dial>
         </div>
-        <div id="detailView" class="view-detail hide show-gt-xs md-default-theme md-background md-bg md-hue-2"
-             layout="column" ui-view="calendarView">
+        <div id="detailView" class="view-detail hide show-gt-xs"
+             layout="column"
+             md-colors="::{backgroundColor: 'default-background-200'}"
+             ui-view="calendarView">
           <!-- calendar view -->
         </div>
       </div>

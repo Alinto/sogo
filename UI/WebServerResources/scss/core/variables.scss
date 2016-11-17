@@ -1,12 +1,5 @@
 /// variables.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
-// Include rem function from angular-material/src/core/style/variables.scss
-// ------------------------------------------------------------------------
-@function rem($multiplier) {
-  $font-size: 10px;
-  @return $multiplier * $font-size;
-}
-
 // palettes import -
 // ------------------------------------------------------------------------------
 // fixme : consolidate all settings and imports in a decent 'settings' file
@@ -22,6 +15,11 @@
 // ------------------------------
 $font-family: 'Fira sans', 'Helvetica Neue', sans-serif !default;
 $font-size:   10px;
+
+//-- Must be defined before $font-size.
+@function rem($multiplier) {
+  @return $multiplier * $font-size;
+}
 
 $display-4-font-size-base: rem(11.20) !default;
 $display-3-font-size-base: rem(5.600) !default;
@@ -168,14 +166,15 @@ $z-index-toast: 105 !default;
 $z-index-tooltip: 100 !default;
 $z-index-menu: 100 !default;
 $z-index-calendar-pane: 100 !default;
-$z-index-select: 90 !default;
+//$z-index-select: 90 !default;
+$z-index-select: 106 !default;
 $z-index-dialog: 80 !default;
 $z-index-bottom-sheet: 70 !default;
 $z-index-scroll-mask: 65 !default;
 $z-index-scroll-mask-bar: 65 !default;
 $z-index-sidenav: 60 !default;
 $z-index-backdrop: 50 !default;
-$z-index-fab: 60 !default;
+$z-index-fab: 20 !default;
 $z-index-progress-circular: 2 !default; // Used to fix animation bug in Chrome
 $z-index-toolbar: 10 !default;
 $z-index-view: 9;
@@ -212,6 +211,7 @@ $material-leave: all $material-leave-duration $material-leave-timing-function;
 $button-fab-width: rem(5.600) !default;
 $button-fab-height: rem(5.600) !default;
 $button-fab-padding: rem(1.60) !default;
+
 
 // Shared Checkbox variables
 $checkbox-width: 20px !default;
