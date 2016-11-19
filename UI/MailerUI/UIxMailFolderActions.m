@@ -270,7 +270,6 @@
         {
           connection = [co imap4Connection];
           destURL = [self _trashedURLOfFolder: srcURL withObject: co];
-          connection = [co imap4Connection];
           inbox = [[co mailAccountFolder] inboxFolderInContext: context];
           [[connection client] select: [inbox absoluteImap4Name]];
 
