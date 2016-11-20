@@ -43,7 +43,7 @@
             <md-input-container class="md-block">
               <label><var:string label:value="Username"/></label>
               <md-icon>person</md-icon>
-              <input autocapitalize="off" type="text" ng-model="app.creds.username" ng-required="true"/>
+              <input autocorrect="off" autocapitalize="off" type="text" ng-model="app.creds.username" ng-required="true"/>
             </md-input-container>
             <md-input-container class="md-block">
               <label><var:string label:value="Password"/></label>
