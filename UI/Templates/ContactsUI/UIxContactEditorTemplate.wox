@@ -22,12 +22,14 @@
         </md-button>
         <md-button class="md-icon-button"
                    label:aria-label="Reset"
-                   ng-click="editor.reset()">
+                   ng-click="editor.reset(contactForm)">
           <md-icon>undo</md-icon>
         </md-button>
         <md-button class="md-icon-button"
                    label:aria-label="Save"
-                   ng-click="editor.save(editor.card.$isCard()?cardForm:listForm)">
+                   type="submit"
+                   ng-disabled="contactForm.$pristine || contactForm.$invalid || contactForm.$submitted"
+                   ng-click="editor.save(contactForm)">
           <md-icon>save</md-icon>
         </md-button>
       </md-card-actions>
@@ -36,358 +38,363 @@
           <h1 class="sg-md-display-2--thin" ng-bind-html="editor.card.$fullname()"><!-- fullname --></h1>
           <h6 class="sg-md-display-2-subheader--thin">{{editor.card.$description()}}</h6>
         </hgroup>
-        
-        <!-- contact editor -->
-        <form class="md-inline-form" name="cardForm" ng-show="editor.card.$isCard()" ng-submit="editor.save(cardForm)">
-          <md-input-container class="md-block md-flex">
-            <var:entity const:name="nbsp"/>
-            <label>
-              <var:string label:value="Display"/>
-            </label>
-            <input type="text" ng-maxlength="30" ng-model="editor.card.c_cn"/>
-          </md-input-container>
-          <div id="contact-identification" class="sg-fieldset" layout="row" layout-xs="column">
-            <md-input-container flex="40" flex-xs="100">
-              <label>
-                <var:string label:value="Firstname"/>
-              </label>
-              <input type="text" ng-model="editor.card.c_givenname"/>
-            </md-input-container>
-            <md-input-container flex="40" flex-xs="100">
-              <label>
-                <var:string label:value="Lastname"/>
-              </label>
-              <input type="text" ng-model="editor.card.c_sn"/>
-            </md-input-container>
-            <md-input-container flex="20" flex-xs="100">
-              <label>
-                <var:string label:value="Nickname"/>
-              </label>
-              <input type="text" ng-model="editor.card.nickname"/>
-            </md-input-container>
-          </div>
 
-          <div id="contact-identification" class="sg-fieldset" layout="row" layout-xs="column">
-            <md-input-container flex="40" flex-xs="100">
-              <label>
-                <var:string label:value="Organization"/>
-              </label>
-              <input type="text" ng-model="editor.card.c_org"/>
-            </md-input-container>
-            <md-input-container flex="40" flex-xs="100">
-              <label>
-                <var:string label:value="Title"/>
-              </label>
-              <input type="text" ng-model="editor.card.title"/>
-            </md-input-container>
-            <md-input-container flex="20" flex-xs="100">
-              <label>
-                <var:string label:value="Role"/>
-              </label>
-              <input type="text" ng-model="editor.card.role"/>
-            </md-input-container>
-          </div>
+        <form class="md-inline-form" name="contactForm"
+              ng-submit="editor.save(contactForm)">
 
-          <!-- org units -->
-          <div class="attr" ng-repeat="unit in editor.card.orgUnits">
-            <div layout="row" layout-align="start center">
-              <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('orgUnits', $index)">
-                <md-icon>remove_circle</md-icon>
-              </md-button>
-              <md-input-container class="md-flex">
+          <!-- contact editor -->
+          <div ng-if="editor.card.$isCard()">
+            <md-input-container class="md-block md-flex">
+              <var:entity const:name="nbsp"/>
+              <label>
+                <var:string label:value="Display"/>
+              </label>
+              <input type="text" ng-maxlength="30" ng-model="editor.card.c_cn"/>
+            </md-input-container>
+
+            <div id="contact-identification" class="sg-fieldset" layout="row" layout-xs="column">
+              <md-input-container flex="40" flex-xs="100">
                 <label>
-                  <var:string label:value="Organization Unit"/>
+                  <var:string label:value="Firstname"/>
                 </label>
-                <input type="text" ng-model="unit.value"
-                       sg-focus-on="orgUnit_{{$index}}"/>
+                <input type="text" ng-model="editor.card.c_givenname"/>
+              </md-input-container>
+              <md-input-container flex="40" flex-xs="100">
+                <label>
+                  <var:string label:value="Lastname"/>
+                </label>
+                <input type="text" ng-model="editor.card.c_sn"/>
+              </md-input-container>
+              <md-input-container flex="20" flex-xs="100">
+                <label>
+                  <var:string label:value="Nickname"/>
+                </label>
+                <input type="text" ng-model="editor.card.nickname"/>
               </md-input-container>
             </div>
-          </div>
-          <div class="md-layout-margin" layout="row" layout-align="start center">
-            <md-button class="md-icon-button" type="button" ng-click="editor.addOrgUnit($event)">
-              <md-icon>add_circle</md-icon>
-            </md-button>
-            <label class="button-label">
-              <var:string label:value="Add Organizational Unit"/>
-            </label>
-          </div>
 
-          <!-- categories -->
-          <md-chips ng-model="editor.card.categories"
-                    md-transform-chip="editor.transformCategory($chip)">
-            <md-chip-template>{{$chip.value}}</md-chip-template>
-            <md-autocomplete
-                md-selected-item="editor.categories.selected"
-                md-search-text="editor.categories.searchText"
-                md-items="category in editor.card.constructor.filterCategories(editor.categories.searchText)"
-                md-min-length="0"
-                label:placeholder="Add a category">
-              <span md-highlight-text="editor.categories.searchText">{{category.value}}</span>
-            </md-autocomplete>
-          </md-chips>
+            <div id="contact-identification" class="sg-fieldset" layout="row" layout-xs="column">
+              <md-input-container flex="40" flex-xs="100">
+                <label>
+                  <var:string label:value="Organization"/>
+                </label>
+                <input type="text" ng-model="editor.card.c_org"/>
+              </md-input-container>
+              <md-input-container flex="40" flex-xs="100">
+                <label>
+                  <var:string label:value="Title"/>
+                </label>
+                <input type="text" ng-model="editor.card.title"/>
+              </md-input-container>
+              <md-input-container flex="20" flex-xs="100">
+                <label>
+                  <var:string label:value="Role"/>
+                </label>
+                <input type="text" ng-model="editor.card.role"/>
+              </md-input-container>
+            </div>
 
-          <!-- emails -->
-          <div class="section">
-            <div class="attr" ng-repeat="email in editor.card.emails">
+            <!-- org units -->
+            <div class="attr" ng-repeat="unit in editor.card.orgUnits">
               <div layout="row" layout-align="start center">
-                <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('emails', $index)">
+                <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('orgUnits', $index)">
                   <md-icon>remove_circle</md-icon>
                 </md-button>
-                <md-input-container flex="20">
-                  <md-select ng-model="email.type" label:placeholder="Type">
-                    <md-option ng-repeat="type in ::editor.allEmailTypes" ng-value="type">{{ type }}</md-option>
-                  </md-select>
-                </md-input-container>
                 <md-input-container class="md-flex">
                   <label>
-                    <var:string label:value="Email Address"/>
+                    <var:string label:value="Organization Unit"/>
                   </label>
-                  <input type="email" ng-model="email.value"
-                         sg-focus-on="email_{{$index}}"/>
+                  <input type="text" ng-model="unit.value"
+                         sg-focus-on="orgUnit_{{$index}}"/>
                 </md-input-container>
               </div>
             </div>
             <div class="md-layout-margin" layout="row" layout-align="start center">
-              <md-button class="md-icon-button" type="button" ng-click="editor.addEmail()">
+              <md-button class="md-icon-button" type="button" ng-click="editor.addOrgUnit($event)">
                 <md-icon>add_circle</md-icon>
               </md-button>
               <label class="button-label">
-                <var:string label:value="New Email Address"/>
+                <var:string label:value="Add Organizational Unit"/>
               </label>
             </div>
-          </div>
 
-          <!-- screenname -->
-          <div class="section">
-            <div layout="row" layout-align="start center" ng-show="editor.card.c_screenname != null">
-              <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('c_screenname', -1)">
-                <md-icon>remove_circle</md-icon>
-              </md-button>
-              <md-input-container class="md-flex">
-                <label>
-                  <var:string label:value="Screen Name"/>
-                </label>
-                <input type="text" ng-model="editor.card.c_screenname"/>
-              </md-input-container>
-            </div>
-            <div class="md-layout-margin" layout="row" layout-align="start center" ng-show="editor.card.c_screenname == null">
-              <md-button class="md-icon-button" type="button" ng-click="editor.addScreenName($event)">
-                <md-icon>add_circle</md-icon>
-              </md-button>
-              <label class="button-label">
-                <var:string label:value="Add Screen Name"/>
-              </label>
-            </div>
-          </div>
+            <!-- categories -->
+            <md-chips ng-model="editor.card.categories"
+                      md-transform-chip="editor.transformCategory($chip)">
+              <md-chip-template>{{$chip.value}}</md-chip-template>
+              <md-autocomplete
+                  md-selected-item="editor.categories.selected"
+                  md-search-text="editor.categories.searchText"
+                  md-items="category in editor.card.constructor.filterCategories(editor.categories.searchText)"
+                  md-min-length="0"
+                  label:placeholder="Add a category">
+                <span md-highlight-text="editor.categories.searchText">{{category.value}}</span>
+              </md-autocomplete>
+            </md-chips>
 
-          <!-- birthday -->
-          <div class="section">
-            <div layout="row" layout-align="start end" ng-show="editor.card.birthday">
-              <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('birthday', -1)">
-                <md-icon>remove_circle</md-icon>
-              </md-button>
-              <div class="pseudo-input-container">
-                <label class="pseudo-input-label">
-                  <var:string label:value="Birthday"/>
+            <!-- emails -->
+            <div class="section">
+              <div class="attr" ng-repeat="email in editor.card.emails">
+                <div layout="row" layout-align="start center">
+                  <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('emails', $index)">
+                    <md-icon>remove_circle</md-icon>
+                  </md-button>
+                  <md-input-container flex="20">
+                    <md-select ng-model="email.type" label:placeholder="Type">
+                      <md-option ng-repeat="type in ::editor.allEmailTypes" ng-value="type">{{ type }}</md-option>
+                    </md-select>
+                  </md-input-container>
+                  <md-input-container class="md-flex">
+                    <label>
+                      <var:string label:value="Email Address"/>
+                    </label>
+                    <input type="email" ng-model="email.value"
+                           sg-focus-on="email_{{$index}}"/>
+                  </md-input-container>
+                </div>
+              </div>
+              <div class="md-layout-margin" layout="row" layout-align="start center">
+                <md-button class="md-icon-button" type="button" ng-click="editor.addEmail()">
+                  <md-icon>add_circle</md-icon>
+                </md-button>
+                <label class="button-label">
+                  <var:string label:value="New Email Address"/>
                 </label>
-                <md-datepicker class="pseudo-input-field"
-                               ng-model="editor.card.birthday"><!-- birthday --></md-datepicker>
               </div>
             </div>
-            <div class="md-layout-margin" layout="row" layout-align="start center" ng-hide="editor.card.birthday">
-              <md-button class="md-icon-button" type="button" ng-click="editor.addBirthday()">
-                <md-icon>add_circle</md-icon>
-              </md-button>
-              <label class="button-label">
-                <var:string label:value="Add Birthday"/>
-              </label>
-            </div>
-          </div>
 
-          <!-- phones -->
-          <div class="section">
-            <div class="attr" ng-repeat="phone in editor.card.phones">
-              <div layout="row" layout-align="start center">
-                <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('phones', $index)">
+            <!-- screenname -->
+            <div class="section">
+              <div layout="row" layout-align="start center" ng-show="editor.card.c_screenname != null">
+                <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('c_screenname', -1)">
                   <md-icon>remove_circle</md-icon>
                 </md-button>
-                <md-input-container flex="20">
-                  <md-select ng-model="phone.type" label:placeholder="Type">
-                    <md-option ng-repeat="type in ::editor.allTelTypes" ng-value="type">{{ type }}</md-option>
-                  </md-select>
-                </md-input-container>
                 <md-input-container class="md-flex">
                   <label>
-                    <var:string label:value="Phone Number"/>
+                    <var:string label:value="Screen Name"/>
                   </label>
-                  <input type="text" ng-model="phone.value"
-                         sg-focus-on="phone_{{$index}}"/>
+                  <input type="text" ng-model="editor.card.c_screenname"/>
                 </md-input-container>
               </div>
-            </div>
-            <div layout="row" layout-align="start center">
-              <md-button class="md-icon-button" type="button" ng-click="editor.addPhone()">
-                <md-icon>add_circle</md-icon>
-              </md-button>
-              <label class="button-label">
-                <var:string label:value="New Phone Number"/>
-              </label>
-            </div>
-          </div>
-
-          <!-- urls -->
-          <div class="section">
-            <div class="attr" ng-repeat="url in editor.card.urls">
-              <div layout="row" layout-align="start center">
-                <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('urls', $index)">
-                  <md-icon>remove_circle</md-icon>
+              <div class="md-layout-margin" layout="row" layout-align="start center" ng-show="editor.card.c_screenname == null">
+                <md-button class="md-icon-button" type="button" ng-click="editor.addScreenName($event)">
+                  <md-icon>add_circle</md-icon>
                 </md-button>
-                <md-input-container flex="20">
-                  <md-select ng-model="url.type" label:placeholder="Type">
-                    <md-option ng-repeat="type in ::editor.allUrlTypes" ng-value="type">{{ type }}</md-option>
-                  </md-select>
-                </md-input-container>
-                <md-input-container class="md-flex">
-                  <label>
-                    <var:string label:value="URL"/>
-                  </label>
-                  <input type="url" ng-model="url.value" sg-focus-on="url_{{$index}}"/>
-                </md-input-container>
+                <label class="button-label">
+                  <var:string label:value="Add Screen Name"/>
+                </label>
               </div>
             </div>
-            <div class="md-layout-margin" layout="row" layout-align="start center">
-              <md-button class="md-icon-button" type="button" ng-click="editor.addUrl()">
-                <md-icon>add_circle</md-icon>
-              </md-button>
-              <label class="button-label">
-                <var:string label:value="New URL"/>
-              </label>
-            </div>
-          </div>
 
-          <!-- addresses -->
-          <div class="section">
-            <div class="attr" ng-repeat="address in editor.card.addresses">
-              <div layout="row" layout-align="start center">
-                <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('addresses', $index)">
+            <!-- birthday -->
+            <div class="section">
+              <div layout="row" layout-align="start end" ng-show="editor.card.birthday">
+                <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('birthday', -1)">
                   <md-icon>remove_circle</md-icon>
                 </md-button>
-                <div class="md-flex" layout="column">
-                  <div layout="row">
-                    <md-input-container flex="20">
-                      <md-select ng-model="address.type" label:placeholder="Type">
-                        <md-option ng-repeat="type in ::editor.allAddressTypes" ng-value="type">{{ type }}</md-option>
-                      </md-select>
-                    </md-input-container>
-                    <md-input-container class="md-flex">
-                      <label>
-                        <var:string label:value="street"/>
-                      </label>
-                      <input type="text" ng-model="address.street"
-                             sg-focus-on="address_{{$index}}"/>
-                    </md-input-container>
-                  </div>
-                  <div layout="row">
-                    <md-input-container flex="20">
-                      <label>
-                        <var:string label:value="Postoffice"/>
-                      </label>
-                      <input type="text" ng-model="address.postoffice"/>
-                    </md-input-container>
-                    <md-input-container class="md-flex">
-                      <label>
-                        <var:string label:value="street (continued)"/>
-                      </label>
-                      <input type="text" ng-model="address.street2"/>
-                    </md-input-container>
-                  </div>
-                  <div layout="row">
-                    <md-input-container flex="50" flex-xs="100">
-                      <label>
-                        <var:string label:value="City"/>
-                      </label>
-                      <input type="text" ng-model="address.locality"/>
-                    </md-input-container>
-                    <md-input-container flex="50" flex-xs="100">
-                      <label>
-                        <var:string label:value="Region"/>
-                      </label>
-                      <input type="text" ng-model="address.region"/>
-                    </md-input-container>
-                  </div>
-                  <div layout="row" layout-align="start center">
-                    <md-input-container flex="50" flex-xs="100">
-                      <label>
-                        <var:string label:value="Country"/>
-                      </label>
-                      <input type="text" ng-model="address.country"/>
-                    </md-input-container>
-                    <md-input-container class="md-flex">
-                      <label>
-                        <var:string label:value="Postal Code"/>
-                      </label>
-                      <input type="text" ng-model="address.postalcode"/>
-                    </md-input-container>
+                <div class="pseudo-input-container">
+                  <label class="pseudo-input-label">
+                    <var:string label:value="Birthday"/>
+                  </label>
+                  <md-datepicker class="pseudo-input-field"
+                                 ng-model="editor.card.birthday"><!-- birthday --></md-datepicker>
+                </div>
+              </div>
+              <div class="md-layout-margin" layout="row" layout-align="start center" ng-hide="editor.card.birthday">
+                <md-button class="md-icon-button" type="button" ng-click="editor.addBirthday()">
+                  <md-icon>add_circle</md-icon>
+                </md-button>
+                <label class="button-label">
+                  <var:string label:value="Add Birthday"/>
+                </label>
+              </div>
+            </div>
+
+            <!-- phones -->
+            <div class="section">
+              <div class="attr" ng-repeat="phone in editor.card.phones">
+                <div layout="row" layout-align="start center">
+                  <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('phones', $index)">
+                    <md-icon>remove_circle</md-icon>
+                  </md-button>
+                  <md-input-container flex="20">
+                    <md-select ng-model="phone.type" label:placeholder="Type">
+                      <md-option ng-repeat="type in ::editor.allTelTypes" ng-value="type">{{ type }}</md-option>
+                    </md-select>
+                  </md-input-container>
+                  <md-input-container class="md-flex">
+                    <label>
+                      <var:string label:value="Phone Number"/>
+                    </label>
+                    <input type="text" ng-model="phone.value"
+                           sg-focus-on="phone_{{$index}}"/>
+                  </md-input-container>
+                </div>
+              </div>
+              <div layout="row" layout-align="start center">
+                <md-button class="md-icon-button" type="button" ng-click="editor.addPhone()">
+                  <md-icon>add_circle</md-icon>
+                </md-button>
+                <label class="button-label">
+                  <var:string label:value="New Phone Number"/>
+                </label>
+              </div>
+            </div>
+
+            <!-- urls -->
+            <div class="section">
+              <div class="attr" ng-repeat="url in editor.card.urls">
+                <div layout="row" layout-align="start center">
+                  <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('urls', $index)">
+                    <md-icon>remove_circle</md-icon>
+                  </md-button>
+                  <md-input-container flex="20">
+                    <md-select ng-model="url.type" label:placeholder="Type">
+                      <md-option ng-repeat="type in ::editor.allUrlTypes" ng-value="type">{{ type }}</md-option>
+                    </md-select>
+                  </md-input-container>
+                  <md-input-container class="md-flex">
+                    <label>
+                      <var:string label:value="URL"/>
+                    </label>
+                    <input type="url" ng-model="url.value" sg-focus-on="url_{{$index}}"/>
+                  </md-input-container>
+                </div>
+              </div>
+              <div class="md-layout-margin" layout="row" layout-align="start center">
+                <md-button class="md-icon-button" type="button" ng-click="editor.addUrl()">
+                  <md-icon>add_circle</md-icon>
+                </md-button>
+                <label class="button-label">
+                  <var:string label:value="New URL"/>
+                </label>
+              </div>
+            </div>
+
+            <!-- addresses -->
+            <div class="section">
+              <div class="attr" ng-repeat="address in editor.card.addresses">
+                <div layout="row" layout-align="start center">
+                  <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('addresses', $index)">
+                    <md-icon>remove_circle</md-icon>
+                  </md-button>
+                  <div class="md-flex" layout="column">
+                    <div layout="row">
+                      <md-input-container flex="20">
+                        <md-select ng-model="address.type" label:placeholder="Type">
+                          <md-option ng-repeat="type in ::editor.allAddressTypes" ng-value="type">{{ type }}</md-option>
+                        </md-select>
+                      </md-input-container>
+                      <md-input-container class="md-flex">
+                        <label>
+                          <var:string label:value="street"/>
+                        </label>
+                        <input type="text" ng-model="address.street"
+                               sg-focus-on="address_{{$index}}"/>
+                      </md-input-container>
+                    </div>
+                    <div layout="row">
+                      <md-input-container flex="20">
+                        <label>
+                          <var:string label:value="Postoffice"/>
+                        </label>
+                        <input type="text" ng-model="address.postoffice"/>
+                      </md-input-container>
+                      <md-input-container class="md-flex">
+                        <label>
+                          <var:string label:value="street (continued)"/>
+                        </label>
+                        <input type="text" ng-model="address.street2"/>
+                      </md-input-container>
+                    </div>
+                    <div layout="row">
+                      <md-input-container flex="50" flex-xs="100">
+                        <label>
+                          <var:string label:value="City"/>
+                        </label>
+                        <input type="text" ng-model="address.locality"/>
+                      </md-input-container>
+                      <md-input-container flex="50" flex-xs="100">
+                        <label>
+                          <var:string label:value="Region"/>
+                        </label>
+                        <input type="text" ng-model="address.region"/>
+                      </md-input-container>
+                    </div>
+                    <div layout="row" layout-align="start center">
+                      <md-input-container flex="50" flex-xs="100">
+                        <label>
+                          <var:string label:value="Country"/>
+                        </label>
+                        <input type="text" ng-model="address.country"/>
+                      </md-input-container>
+                      <md-input-container class="md-flex">
+                        <label>
+                          <var:string label:value="Postal Code"/>
+                        </label>
+                        <input type="text" ng-model="address.postalcode"/>
+                      </md-input-container>
+                    </div>
                   </div>
                 </div>
               </div>
+              <div class="md-layout-margin" layout="row" layout-align="start center">
+                <md-button class="md-icon-button" type="button" ng-click="editor.addAddress()">
+                  <md-icon>add_circle</md-icon>
+                </md-button>
+                <label class="button-label">
+                  <var:string label:value="New Address"/>
+                </label>
+              </div>
             </div>
-            <div class="md-layout-margin" layout="row" layout-align="start center">
-              <md-button class="md-icon-button" type="button" ng-click="editor.addAddress()">
-                <md-icon>add_circle</md-icon>
-              </md-button>
-              <label class="button-label">
-                <var:string label:value="New Address"/>
-              </label>
-            </div>
+
+            <!-- note -->
+            <md-input-container class="md-block md-flex"
+                                ng-repeat="note in editor.card.notes">
+              <label><var:string label:value="Note"/></label>
+              <textarea ng-model="note.value"><!-- note --></textarea>
+            </md-input-container>
           </div>
 
-          <!-- note -->
-          <md-input-container class="md-block md-flex"
-                              ng-repeat="note in editor.card.notes">
-            <label><var:string label:value="Note"/></label>
-            <textarea ng-model="note.value"><!-- note --></textarea>
-          </md-input-container>
-        </form>
+          <!-- list editor -->
+          <div ng-if="editor.card.$isList()">
+            <md-input-container>
+              <label>
+                <var:string label:value="Display"/>
+              </label>
+              <input type="text" ng-maxlength="30" ng-model="editor.card.c_cn"/>
+            </md-input-container>
 
-        <!-- list editor -->
-        <form name="listForm" ng-show="editor.card.$isList()" ng-submit="editor.save(listForm)">
-          <md-input-container>
-            <label>
-              <var:string label:value="Display"/>
-            </label>
-            <input type="text" ng-maxlength="30" ng-model="editor.card.c_cn"/>
-          </md-input-container>
-          
-          <md-input-container>
-            <label>
-              <var:string label:value="Nickname"/>
-            </label>
-            <input type="text" ng-maxlength="30" ng-model="editor.card.nickname"/>
-          </md-input-container>
+            <md-input-container>
+              <label>
+                <var:string label:value="Nickname"/>
+              </label>
+              <input type="text" ng-maxlength="30" ng-model="editor.card.nickname"/>
+            </md-input-container>
 
-          <md-input-container>
-            <label>
-              <var:string label:value="Description"/>
-            </label>
-            <textarea ng-model="editor.card.description"><!-- note --></textarea>
-          </md-input-container>
-          
-          <!-- list members -->
-          <div class="pseudo-input-container">
-            <label class="pseudo-input-label">
-              <var:string label:value="Members"/>
-            </label>
-            <md-contact-chips
-                class="sg-chips-autocomplete"
-                ng-model="editor.card.refs"
-                md-contacts="editor.userFilter($query, editor.card.refs)"
-                md-contact-name="$$fullname"
-                md-contact-image="$$image"
-                md-contact-email="$$email"
-                md-require-match="true"
-                filter-selected="false"
-                label:placeholder="Add Member"><!-- members --></md-contact-chips>
+            <md-input-container>
+              <label>
+                <var:string label:value="Description"/>
+              </label>
+              <textarea ng-model="editor.card.description"><!-- note --></textarea>
+            </md-input-container>
+
+            <!-- list members -->
+            <div class="pseudo-input-container">
+              <label class="pseudo-input-label">
+                <var:string label:value="Members"/>
+              </label>
+              <md-contact-chips
+                  class="sg-chips-autocomplete"
+                  ng-model="editor.card.refs"
+                  md-contacts="editor.userFilter($query, editor.card.refs)"
+                  md-contact-name="$$fullname"
+                  md-contact-image="$$image"
+                  md-contact-email="$$email"
+                  md-require-match="true"
+                  filter-selected="false"
+                  label:placeholder="Add Member"><!-- members --></md-contact-chips>
+            </div>
           </div>
         </form>
       </md-card-content>

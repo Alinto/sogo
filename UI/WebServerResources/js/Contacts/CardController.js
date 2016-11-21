@@ -128,8 +128,9 @@
         delete AddressBook.selectedFolder.selectedCard;
       });
     }
-    function reset() {
+    function reset(form) {
       vm.card.$reset();
+      form.$setPristine();
     }
     function cancel() {
       vm.card.$reset();
