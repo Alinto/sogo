@@ -76,6 +76,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoCacheGCSObject.h>
+#import <SOGo/SOGoPermissions.h>
 
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/SOGoAppointmentObject.h>
@@ -309,7 +310,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
   NSMutableDictionary *folderMetadata, *dateCache, *syncCache, *uidCache, *allValues;
   NSString *clientId, *serverId, *easId;
-  NSArray *additions;
+  NSArray *additions, *roles;
   
   id anAddition, sogoObject, o;
   BOOL is_new;
@@ -333,6 +334,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 serverId = [NSString stringWithFormat: @"%@.vcf", [theCollection globallyUniqueObjectId]];
                 sogoObject = [[SOGoContactGCSEntry alloc] initWithName: serverId
                                                            inContainer: theCollection];
+		[sogoObject autorelease];
                 o = [sogoObject vCard];
               }
               break;
@@ -356,6 +358,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   {
                     sogoObject = [[SOGoAppointmentObject alloc] initWithName: [serverId sanitizedServerIdWithType: theFolderType]
                                                                  inContainer: theCollection];
+		    [sogoObject autorelease];
                     o = [sogoObject component: YES secure: NO];
                   }
                 else
@@ -370,6 +373,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 serverId = [NSString stringWithFormat: @"%@.ics", [theCollection globallyUniqueObjectId]];
                 sogoObject = [[SOGoTaskObject alloc] initWithName: serverId
                                                       inContainer: theCollection];
+		[sogoObject autorelease];
                 o = [sogoObject component: YES secure: NO];
               }
               break;
@@ -381,11 +385,28 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 abort();
               }
             }
-          
-          [o takeActiveSyncValues: allValues  inContext: context];
-          [sogoObject setIsNew: is_new];
-          [sogoObject saveComponent: o];
-          
+
+          roles = [theCollection aclsForUser: [[context activeUser] login]];
+
+          if (![roles containsObject: SOGoRole_ObjectCreator] && ![[sogoObject ownerInContext: context] isEqualToString: [[context activeUser] login]])
+            {
+              // This will trigger a delete-command to remove the component without proper permission.
+	      // FIXME: ultimately, we need to find a better way to create a phantom object in the user's calendar
+	      // and delete it to keep the transactional process in shape. We could also create a deleted one right way
+	      // We strip any attendees from the values as we don't want to send bogus invitation emails
+	      [allValues removeObjectForKey: @"Attendees"];
+	      [o takeActiveSyncValues: allValues  inContext: context];
+	      [sogoObject setIsNew: YES];
+              [sogoObject saveComponent: o];
+              [sogoObject delete];
+            }
+          else
+            {
+              [o takeActiveSyncValues: allValues  inContext: context];
+              [sogoObject setIsNew: is_new];
+              [sogoObject saveComponent: o];
+            }
+
           // Update syncCache
           folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: theCollection withType: theFolderType]];
 
@@ -424,6 +445,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
           [syncCache setObject: [NSString stringWithFormat:@"%f", [[sogoObject lastModified] timeIntervalSince1970]] forKey: serverId];
           [dateCache setObject: [NSCalendarDate date]  forKey: serverId];
+
+          // make sure to pickup the delete immediately if we don't have proper permission to add
+          if (![roles containsObject: SOGoRole_ObjectCreator] && ![[sogoObject ownerInContext: context] isEqualToString: [[context activeUser] login]])
+            [folderMetadata setObject: [NSNumber numberWithBool: YES]  forKey: @"MoreAvailable"];
 
           [self _setFolderMetadata: folderMetadata forKey: [self _getNameInCache: theCollection withType: theFolderType]];
 
@@ -481,7 +506,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
   NSDictionary *allChanges;
   NSString *serverId, *easId, *origServerId, *mergedFolder;
-  NSArray *changes, *a;
+  NSArray *changes, *a, *roles;
   id aChange, o, sogoObject;
   NSMutableDictionary *folderMetadata, *syncCache, *uidCache;
 
@@ -532,7 +557,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             {
               if (debugOn)
                 [self logWithFormat: @"EAS - Found serverId: %@ for easId: %@", serverId, easId];
-
             }
           else
             serverId = easId;
@@ -556,32 +580,60 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             {
             case ActiveSyncContactFolder:
               {
-                o = [sogoObject vCard];
-                [o takeActiveSyncValues: allChanges  inContext: context];
-                [sogoObject saveComponent: o];
+                roles = [sogoObject aclsForUser:[[context activeUser] login]];
+		o = [sogoObject vCard];
 
-                if ([syncCache objectForKey: serverId])
-                  [syncCache setObject: [NSString stringWithFormat:@"%f", [[sogoObject lastModified] timeIntervalSince1970]] forKey: serverId];
+		 // Don't update the component without proper permission
+                if (([roles containsObject: SOGoRole_ObjectEditor] || [[sogoObject ownerInContext: context] isEqualToString: [[context activeUser] login]]))
+		  {
+		    [o takeActiveSyncValues: allChanges  inContext: context];
+		    [sogoObject saveComponent: o];
+
+		    if ([syncCache objectForKey: serverId])
+		      [syncCache setObject: [NSString stringWithFormat: @"%f", [[sogoObject lastModified] timeIntervalSince1970]]  forKey: serverId];
+		  }
+		// Trigger a change-command to override client changes since we don't have permissions
+		else
+		  [sogoObject touch];
               }
               break;
             case ActiveSyncEventFolder:
             case ActiveSyncTaskFolder:
               {
+                roles = [sogoObject aclsForUser:[[context activeUser] login]];
+
                 o = [sogoObject component: NO  secure: NO];
 
                 if (theFolderType == ActiveSyncEventFolder &&
                     [(iCalEvent *)o userIsAttendee: [context activeUser]])
                   {
-                    [o changeParticipationStatus: allChanges  inContext: context  component: sogoObject];
+		    // Don't update the component without proper permission
+		    if ([roles containsObject: SOGoCalendarRole_ComponentResponder] || [[sogoObject ownerInContext: context] isEqualToString: [[context activeUser] login]])
+		      {
+			[o changeParticipationStatus: allChanges  inContext: context  component: sogoObject];
+
+			if ([syncCache objectForKey: serverId])
+			  [syncCache setObject: [NSString stringWithFormat: @"%f", [[sogoObject lastModified] timeIntervalSince1970]]  forKey: serverId];
+		      }
+		    // Trigger a change-command to override client changes since we don't have permissions
+		    else
+		      [sogoObject touch];
                   }
                 else
                   {
-                    [o takeActiveSyncValues: allChanges  inContext: context];
-                    [sogoObject saveComponent: o];
-                  }
+                    // Don't update the component without proper permission
+                    if ([roles containsObject: SOGoCalendarRole_ComponentModifier] || [[sogoObject ownerInContext: context] isEqualToString: [[context activeUser] login]])
+		      {
+			[o takeActiveSyncValues: allChanges  inContext: context];
+			[sogoObject saveComponent: o];
 
-                if ([syncCache objectForKey: serverId])
-                  [syncCache setObject: [NSString stringWithFormat:@"%f", [[sogoObject lastModified] timeIntervalSince1970]] forKey: serverId];
+			if ([syncCache objectForKey: serverId])
+			  [syncCache setObject: [NSString stringWithFormat: @"%f", [[sogoObject lastModified] timeIntervalSince1970]]  forKey: serverId];
+		      }
+		    // Trigger a change-command to override client changes since we don't have permissions
+		    else
+		      [sogoObject touch];
+		  }
               }
               break;
             case ActiveSyncMailFolder:
@@ -596,12 +648,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 modseq = [[[result objectForKey: @"RawResponse"] objectForKey: @"fetch"] objectForKey: @"modseq"];
 
                 if (modseq && [syncCache objectForKey: serverId])
-                  [syncCache setObject: [modseq stringValue] forKey: serverId];
+                  [syncCache setObject: [modseq stringValue]  forKey: serverId];
               }
             }
 
           [self _setFolderMetadata: folderMetadata  forKey: [self _getNameInCache: theCollection withType: theFolderType]];
-
 
           [theBuffer appendString: @"<Change>"];
           [theBuffer appendFormat: @"<ServerId>%@</ServerId>", origServerId];
@@ -641,10 +692,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                          withType: (SOGoMicrosoftActiveSyncFolderType) theFolderType
                          inBuffer: (NSMutableString *) theBuffer
 {
-
-  id aDelete, sogoObject, value;
-  NSArray *deletions, *a;
   NSString *serverId, *easId, *origServerId, *mergedFolder;
+  NSArray *deletions, *a, *roles;
+  id aDelete, sogoObject, value;
 
   BOOL deletesAsMoves, useTrash;
   int i;
@@ -653,11 +703,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   if ([deletions count])
     {
-      NSMutableDictionary *folderMetadata, *dateCache, *syncCache, *uidCache;
+      NSMutableDictionary *folderMetadata, *uidCache;
       folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: theCollection withType: theFolderType]];
 
-      syncCache = [folderMetadata objectForKey: @"SyncCache"];
-      dateCache = [folderMetadata objectForKey: @"DateCache"];
       uidCache = [folderMetadata objectForKey: @"UidCache"];
 
       // From the documention, if DeletesAsMoves is missing, we must assume it's a YES.
@@ -714,21 +762,43 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
           if (![sogoObject isKindOfClass: [NSException class]])
             {
-              // FIXME: handle errors here
-              if (deletesAsMoves && theFolderType == ActiveSyncMailFolder)
-                [(SOGoMailFolder *)[sogoObject container] deleteUIDs: [NSArray arrayWithObjects: serverId, nil] useTrashFolder: &useTrash inContext: context];
-              else if (theFolderType == ActiveSyncEventFolder || theFolderType == ActiveSyncTaskFolder)
-                {
-                  [sogoObject prepareDelete];
-                  [sogoObject delete];
-                }
-              else
-                [sogoObject delete];
+              // Remove the cache entry. If the delete fails due to permission issues we do a fake update to trigger
+              // an add-command.
+              NSMutableDictionary *folderMetadata, *dateCache, *syncCache;
+              folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: theCollection withType: theFolderType]];
+
+              syncCache = [folderMetadata objectForKey: @"SyncCache"];
+              dateCache = [folderMetadata objectForKey: @"DateCache"];
 
               [syncCache removeObjectForKey: serverId];
               [dateCache removeObjectForKey: serverId];
-              //[uidCache removeObjectForKey: serverId];
+
               [self _setFolderMetadata: folderMetadata forKey: [self _getNameInCache: theCollection withType: theFolderType]];
+
+              // FIXME: handle errors here
+              if (deletesAsMoves && theFolderType == ActiveSyncMailFolder)
+		{
+		  [(SOGoMailFolder *)[sogoObject container] deleteUIDs: [NSArray arrayWithObjects: serverId, nil] useTrashFolder: &useTrash inContext: context];
+		}
+              else if (theFolderType == ActiveSyncEventFolder || theFolderType == ActiveSyncTaskFolder || theFolderType == ActiveSyncContactFolder)
+                {
+                  roles = [theCollection aclsForUser:[[context activeUser] login]];
+
+		  // We check ACLs on the collection and not on the SOGo object itself, as the add/delete rights are on the collection itself
+		  if (![roles containsObject: SOGoRole_ObjectEraser] || ![[sogoObject ownerInContext: context] isEqualToString: [[context activeUser] login]])
+                    {
+                      // This will trigger an add-command to re-add the component to the client
+		      [sogoObject touch];
+                    }
+                  else
+                    {
+                      if (!(theFolderType == ActiveSyncContactFolder))
+                        [sogoObject prepareDelete];
+                      [sogoObject delete];
+                    }
+                }
+              else
+                [sogoObject delete];
 
               [theBuffer appendString: @"<Delete>"];
               [theBuffer appendFormat: @"<ServerId>%@</ServerId>", origServerId];
@@ -1028,7 +1098,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                       }
                   }
               }
-          }
+          } // if (cleanup_needed) ...
 
         return_count = 0;
 	component = nil;
@@ -1121,8 +1191,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     continue;
                   }
                 
-                return_count++;
-                
 	        sogoObject = [theCollection lookupName: [uid sanitizedServerIdWithType: theFolderType]
                                              inContext: context
                                                acquire: 0];
@@ -1130,9 +1198,33 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 if (theFolderType == ActiveSyncContactFolder)
                   componentObject = [sogoObject vCard];
                 else
-                  componentObject = [sogoObject component: NO  secure: NO];
+                  componentObject = [sogoObject component: NO  secure: YES];
 
                 [syncCache setObject: [component objectForKey: @"c_lastmodified"] forKey: uid];
+
+                // We have got a null componentObject, i.e. we have no permission to view the calendar entry.
+                // For updated calendar entries we have to remove it from the client and for new entries we just ignore them.
+                if (!componentObject)
+                  {
+                    if (updated)
+                      {
+                        [s appendString: @"<Delete xmlns=\"AirSync:\">"];
+
+                        if (![[theCollection nameInContainer] isEqualToString: @"personal"] && theMergeFolder)
+                          [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@{+}%@</ServerId>", [theCollection nameInContainer], easId];
+                        else
+                          [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", easId];
+
+                        [s appendString: @"</Delete>"];
+
+                        [syncCache removeObjectForKey: uid];
+                        [dateCache removeObjectForKey: uid];
+                        return_count++;
+                      }
+
+                    DESTROY(pool);
+                    continue;
+                  }
 
                 // No need to set dateCache for Contacts
                 if ((theFolderType == ActiveSyncEventFolder || theFolderType == ActiveSyncTaskFolder))
@@ -1740,6 +1832,31 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   
   first_sync = NO;
 
+  // We check if the folder permissions have changed since the last sync. If so, we simply clear the cached data
+  // and a "full sync" will be issued by the EAS client as it'll repull all elements from the collection.
+  // We don't need to check for contact folder. Either it has View_object or it will be removed by FolderSync.
+  if ((folderType == ActiveSyncEventFolder || folderType == ActiveSyncTaskFolder) && ![[collection ownerInContext: context] isEqualToString: [[context activeUser] login]])
+    {
+      NSArray *folderRoles, *folderRolesInCache;
+
+      folderRoles = [collection aclsForUser: [[context activeUser] login]];
+      folderRolesInCache = [folderMetadata objectForKey: @"FolderPermissions"];
+      if (![folderRoles isEqualToArray: folderRolesInCache])
+        {
+          if (debugOn)
+            [self logWithFormat: @"EAS - Folder permission change: %@ (%@ <> %@). Refresh folder", [collection nameInContainer], folderRoles, folderRolesInCache];
+
+          // Cleanup metadata
+          [folderMetadata removeObjectForKey: @"SyncKey"];
+          [folderMetadata removeObjectForKey: @"SyncCache"];
+          [folderMetadata removeObjectForKey: @"DateCache"];
+          [folderMetadata removeObjectForKey: @"MoreAvailable"];
+
+          [folderMetadata setObject: folderRoles forKey: @"FolderPermissions"];
+          [self _setFolderMetadata: folderMetadata forKey: folderKey];
+        }
+    }
+
   if ([syncKey isEqualToString: @"0"])
     {
       davCollectionTag = @"-1";
@@ -1878,7 +1995,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       // Windows phones don't like empty Responses tags - such as: <Responses></Responses>.
       // We only generate this tag when there is a response
       if (processed && [s length])
-        [commandsBuffer appendFormat: @"<Responses>%@</Responses>", s];
+        {
+          [commandsBuffer appendFormat: @"<Responses>%@</Responses>", s];
+          getChanges = NO;
+        }
     }
 
 
@@ -2021,7 +2141,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               if (!(mfCollection && [mfCollection synchronize]))
                 {
                   if (debugOn)
-                    [self logWithFormat: @"EAS - Folder %@ not found. Reset peronal folder to cleanup", folderName];
+                    [self logWithFormat: @"EAS - Folder %@ not found. Reset personal folder to cleanup", folderName];
 
                   davCollectionTag = @"0";
                   *changeDetected = YES;
@@ -2038,6 +2158,35 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                  [self _setFolderMetadata: folderMetadata forKey: folderKey];
                  break;
                }
+
+              // Here we don't need to check for contact folder. Either it has View_object or it will be removed by folersync.
+              if ((folderType == ActiveSyncEventFolder || folderType == ActiveSyncTaskFolder) && ![[mfCollection ownerInContext: context] isEqualToString: [[context activeUser] login]])
+                {
+                  NSArray *folderRoles, *folderRolesInCache;
+
+                  folderRoles = [mfCollection aclsForUser: [[context activeUser] login]];
+                  folderRolesInCache = [folderMetadata objectForKey: @"FolderPermissions"];
+
+                  if (![folderRoles isEqualToArray: folderRolesInCache])
+                    {
+                      if (debugOn)
+                        [self logWithFormat: @"EAS - Folder permission change: %@ (%@ <> %@). Refresh folder", [collection nameInContainer], folderRoles, folderRolesInCache];
+
+                      davCollectionTag = @"0";
+                      *changeDetected = YES;
+
+                      status = 3;
+                      // Cleanup metadata
+                      [folderMetadata removeObjectForKey: @"SyncKey"];
+                      [folderMetadata removeObjectForKey: @"SyncCache"];
+                      [folderMetadata removeObjectForKey: @"DateCache"];
+                      [folderMetadata removeObjectForKey: @"MoreAvailable"];
+
+                      [folderMetadata setObject: folderRoles  forKey: @"FolderPermissions"];
+                      [self _setFolderMetadata: folderMetadata  forKey: folderKey];
+                      break;
+                    }
+                }
 
               if (debugOn)
                 [self logWithFormat: @"EAS - Merging folder %@ into personal folder", folderName];
@@ -2099,7 +2248,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   cacheUpdateNeeded = YES;
                 }
             }
-       } // end if
+	} // if (![changeBuffer length]) ...
 
        if (*changeDetected || cacheUpdateNeeded)
          [self _setFolderMetadata: folderMetadata forKey: folderKey];
