@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2014 Inverse inc.
+  Copyright (C) 2006-2016 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -260,16 +260,17 @@
   NSException *ex;
   
   // TODO: add precondition check? (or add DELETEAction?)
-  
-  if ((folder = [container ocsFolder]) == nil) {
-    [self errorWithFormat:@"Did not find folder of content object."];
-    return nil;
-  }
-  
-  if ((ex = [folder deleteContentWithName:[self nameInContainer]])) {
-    [self errorWithFormat:@"delete failed: %@", ex];
-    return ex;
-  }
+  if ((folder = [container ocsFolder]) == nil)
+    {
+      [self errorWithFormat: @"Did not find folder of content object."];
+      return nil;
+    }
+
+  if ((ex = [folder deleteContentWithName:[self nameInContainer]]))
+    {
+      [self errorWithFormat:@"delete failed: %@", ex];
+      return ex;
+    }
 
   [container removeChildRecordWithName: nameInContainer];
   [[SOGoCache sharedCache] unregisterObjectWithName: nameInContainer
@@ -278,24 +279,36 @@
   return nil;
 }
 
+- (NSException *) touch
+{
+  NSCalendarDate *now;
+  GCSFolder *folder;
+  NSException *ex;
+
+  if ((folder = [container ocsFolder]) == nil)
+    {
+      [self errorWithFormat: @"Did not find folder of content object."];
+      return nil;
+    }
+
+  if ((ex = [folder touchContentWithName: nameInContainer]))
+    {
+      [self errorWithFormat: @"touch failed: %@", ex];
+      return ex;
+    }
+
+  now = [NSCalendarDate calendarDate];
+  ASSIGN(lastModified, now);
+
+  [container removeChildRecordWithName: nameInContainer];
+  [[SOGoCache sharedCache] unregisterObjectWithName: nameInContainer
+                                        inContainer: container];
+
+  return nil;
+}
+
+
 /* actions */
-
-// - (id) lookupName:
-// {
-//   SoSelectorInvocation *invocation;
-//   NSString *name;
-
-//   name = [NSString stringWithFormat: @"%@:", [_key davMethodToObjC]];
-
-//   invocation = [[SoSelectorInvocation alloc]
-//                  initWithSelectorNamed: name
-//                  addContextParameter: YES];
-//   [invocation autorelease];
-
-//   return invocation;
-
-// }
-
 - (id) PUTAction: (WOContext *) _ctx
 {
   WORequest *rq;

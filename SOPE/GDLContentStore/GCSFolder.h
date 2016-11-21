@@ -123,6 +123,7 @@
 
 - (NSException *) deleteContentWithName: (NSString *) _name;
 - (NSException *) deleteAllContent;
+- (NSException *) touchContentWithName: (NSString *) _name;
 
 - (NSException *) deleteFolder;
 
