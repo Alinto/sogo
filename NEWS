@@ -4,6 +4,7 @@
 New features
  - [core] support repetitive email alarms on tasks and events (#1053)
  - [web] allow to hide center column on large screens
+ - [eas] relaxed permission requirements for subscription synchronizations (#3118 and #3180)
 
 Enhancements
  - [core] added sha256-crypt and sha512-crypt password support

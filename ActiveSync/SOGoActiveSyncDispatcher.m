@@ -82,6 +82,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoPermissions.h>
 
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
@@ -138,7 +139,7 @@ void handle_eas_terminate(int signum)
 - (void) _setFolderMetadata: (NSDictionary *) theFolderMetadata forKey: (NSString *) theFolderKey;
 - (void) _setOrUnsetSyncRequest: (BOOL) set
                        collections: (NSArray *) collections;
-
+- (NSString *) _getNameInCache: (id) theCollection withType: (SOGoMicrosoftActiveSyncFolderType) theFolderType;
 
 @end
 
@@ -773,19 +774,18 @@ void handle_eas_terminate(int signum)
   SOGoMailAccount *accountFolder;
   NSMutableString *s, *commands;
   SOGoUserFolder *userFolder;
-  SoSecurityManager *sm;
+  NSArray *allKeys, *roles;
   SOGoCacheGCSObject *o;
-  NSArray *allKeys;
   id currentFolder;
   NSData *d;
 
   int status, command_count, i, type, fi, count;
   BOOL first_sync;
 
-  sm = [SoSecurityManager sharedSecurityManager];
   metadata = [self globalMetadataForDevice];
   syncKey = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
   s = [NSMutableString string];
+  personalFolderName = [[[context activeUser] personalCalendarFolderInContext: context] nameInContainer];
 
   first_sync = NO;
   status = 1;
@@ -936,15 +936,8 @@ void handle_eas_terminate(int signum)
 		 [o save];
 	       }
 
-             // Remove the folder from device if it doesn't exist, we don't want to sync it, or it doesn't have the proper permissions
-             if (!currentFolder ||
-                 ![currentFolder synchronize] ||
-                 [sm validatePermission: SoPerm_DeleteObjects
-                               onObject: currentFolder
-                              inContext: context] ||
-                 [sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                               onObject: currentFolder
-                              inContext: context])
+             // Remove the folder from device if it doesn't exist, or don't want to sync it.
+             if (!currentFolder || !([currentFolder synchronize]))
                {
                  // Don't send a delete when MergedFoler is set, we have done it above.
                  // Windows Phones don't like when a <Delete>-folder is sent twice.
@@ -956,6 +949,22 @@ void handle_eas_terminate(int signum)
                  [o destroy];
                }
 
+             // Remove the folder from device if it is a contact folder and we have no SOGoRole_ObjectViewer.
+             if ([currentFolder isKindOfClass: [SOGoContactGCSFolder class]] && ![[currentFolder ownerInContext: context] isEqualToString: [[context activeUser] login]])
+               {
+                 roles = [currentFolder aclsForUser: [[context activeUser] login]];
+                 if (![roles containsObject: SOGoRole_ObjectViewer])
+                   {
+                     // Don't send a delete when MergedFoler is set, we have done it above.
+                     // Windows Phones don't like when a <Delete>-folder is sent twice.
+                     if (![[[o properties] objectForKey: @"MergedFolder"] isEqualToString: @"2"])
+                       {
+                         [commands appendFormat: @"<Delete><ServerId>%@</ServerId></Delete>", [cKey stringByEscapingURL] ];
+                         command_count++;
+                       }
+                     [o destroy];
+                   }
+               }
            }
        }
    }
@@ -1063,16 +1072,17 @@ void handle_eas_terminate(int signum)
               
          command_count++;
        }
-    }
+   }
 
-    personalFolderName = [[[context activeUser] personalCalendarFolderInContext: context] nameInContainer];
-    folders = [[[[[context activeUser] homeFolderInContext: context] lookupName: @"Calendar" inContext: context acquire: NO] subFolders] mutableCopy];
-    [folders autorelease];
+  // We get the list of subscribed calendars
+  folders = [[[[[context activeUser] homeFolderInContext: context] lookupName: @"Calendar" inContext: context acquire: NO] subFolders] mutableCopy];
+  [folders autorelease];
 
-    [folders addObjectsFromArray: [[[[context activeUser] homeFolderInContext: context] lookupName: @"Contacts" inContext: context acquire: NO] subFolders]];
+  // We get the list of subscribed address books
+  [folders addObjectsFromArray: [[[[context activeUser] homeFolderInContext: context] lookupName: @"Contacts" inContext: context acquire: NO] subFolders]];
 
     // We remove all the folders that aren't GCS-ones, that we don't want to synchronize and
-    // the ones without write/delete permissions.
+    // contact folder without SOGoRole_ObjectViewer.
     count = [folders count]-1;
     for (; count >= 0; count--)
      {
@@ -1084,15 +1094,17 @@ void handle_eas_terminate(int signum)
          continue;
 
        if (![currentFolder isKindOfClass: [SOGoGCSFolder class]] ||
-           ![currentFolder synchronize] ||
-           [sm validatePermission: SoPerm_DeleteObjects
-                         onObject: currentFolder
-                        inContext: context] ||
-           [sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                         onObject: currentFolder
-                        inContext: context])
+           ![currentFolder synchronize])
          {
            [folders removeObjectAtIndex: count];
+         }
+
+       // Remove the folder from the device if it is a contact folder and we have no SOGoRole_ObjectViewer access right.
+       if ([currentFolder isKindOfClass: [SOGoContactGCSFolder class]] && ![[currentFolder ownerInContext: context] isEqualToString: [[context activeUser] login]])
+         {
+           roles = [currentFolder aclsForUser: [[context activeUser] login]];
+           if (![roles containsObject: SOGoRole_ObjectViewer])
+             [folders removeObjectAtIndex: count];
          }
      }
 
@@ -1100,10 +1112,10 @@ void handle_eas_terminate(int signum)
 
     for (fi = 0; fi <= count ; fi++)
      {
-       if ([[folders objectAtIndex:fi] isKindOfClass: [SOGoAppointmentFolder class]]) 
-         name = [NSString stringWithFormat: @"vevent/%@", [[folders objectAtIndex:fi] nameInContainer]];
+       if ([[folders objectAtIndex: fi] isKindOfClass: [SOGoAppointmentFolder class]])
+         name = [NSString stringWithFormat: @"vevent/%@", [[folders objectAtIndex: fi] nameInContainer]];
        else
-         name = [NSString stringWithFormat: @"vcard/%@", [[folders objectAtIndex:fi] nameInContainer]];
+         name = [NSString stringWithFormat: @"vcard/%@", [[folders objectAtIndex: fi] nameInContainer]];
           
        key = [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], name];
        o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
@@ -1112,9 +1124,9 @@ void handle_eas_terminate(int signum)
        [o reloadIfNeeded];
 
        // Decide between add and change
-       if (![[o properties ]  objectForKey: @"displayName"] || first_sync)
+       if (![[o properties ] objectForKey: @"displayName"] || first_sync)
          operation = @"Add";
-       else  if (![[[o properties ]  objectForKey: @"displayName"] isEqualToString:  [[folders objectAtIndex:fi] displayName]])
+       else if (![[[o properties ] objectForKey: @"displayName"] isEqualToString: [[folders objectAtIndex:fi] displayName]])
          operation = @"Update";
        else
          operation = nil;
@@ -1129,7 +1141,7 @@ void handle_eas_terminate(int signum)
 
                command_count++;
 
-               [[o properties ]  setObject:  [[folders objectAtIndex:fi] displayName]  forKey: @"displayName"];
+               [[o properties ] setObject: [[folders objectAtIndex:fi] displayName]  forKey: @"displayName"];
                [o save];
 
                name = [NSString stringWithFormat: @"vtodo/%@", [[folders objectAtIndex:fi] nameInContainer]];
@@ -1895,7 +1907,6 @@ void handle_eas_terminate(int signum)
   SOGoMicrosoftActiveSyncFolderType srcFolderType, dstFolderType;
   id <DOMElement> aMoveOperation;
   NSArray *moveOperations;
-  SoSecurityManager *sm;
   NSMutableString *s;
   NSData *d; 
   int i;
@@ -2051,14 +2062,13 @@ void handle_eas_terminate(int signum)
               // Save dstMessageId in cache - it will help to recover if the request fails before the response can be sent to client
               [newSuccessfulMoveItemsOps setObject: dstMessageId  forKey: srcMessageId];
             }
-
         }
       else
         {
           id srcCollection, dstCollection, srcSogoObject, dstSogoObject;
-          NSArray *elements;
+          NSArray *elements, *srcObjectRoles, *dstObjectRoles;
           NSString *newUID, *origSrcMessageId;
-          NSMutableDictionary *srcUidCache, *dstUidCache, *dstSyncCache;
+          NSMutableDictionary *srcUidCache, *dstUidCache, *srcSyncCache, *srcDateCache, *dstSyncCache;
           NSException *ex;
 
           unsigned int count, max;
@@ -2098,81 +2108,92 @@ void handle_eas_terminate(int signum)
                                           inContext: context
                                             acquire: NO];
           
-          sm = [SoSecurityManager sharedSecurityManager];
-          if (![sm validatePermission: SoPerm_DeleteObjects
-                             onObject: srcCollection
-                            inContext: context] &&
-              ![srcSogoObject isKindOfClass: [NSException class]])
+          if (![srcSogoObject isKindOfClass: [NSException class]])
             {
-              if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                                 onObject: dstCollection
-                                inContext: context])
+              newUID = [srcSogoObject globallyUniqueObjectId];
+              dstSogoObject = [[SOGoAppointmentObject alloc] initWithName: [newUID sanitizedServerIdWithType: srcFolderType]
+                                                               inContainer: dstCollection];
+
+              dstObjectRoles = [dstSogoObject aclsForUser: [[context activeUser] login]];
+              srcObjectRoles = [srcSogoObject aclsForUser: [[context activeUser] login]];
+
+              if (([dstObjectRoles containsObject: SOGoRole_ObjectCreator] || [[dstSogoObject ownerInContext: context] isEqualToString: [[context activeUser] login]]) &&
+                  ([srcObjectRoles containsObject: SOGoRole_ObjectEraser] || [[srcSogoObject ownerInContext: context] isEqualToString: [[context activeUser] login]]))
                 {
-                  newUID = [srcSogoObject globallyUniqueObjectId];
-                  dstSogoObject = [[SOGoAppointmentObject alloc] initWithName: [newUID sanitizedServerIdWithType: srcFolderType]
-                                                                  inContainer: dstCollection];
                   elements = [[srcSogoObject calendar: NO secure: NO] allObjects];
                   max = [elements count];
                   for (count = 0; count < max; count++)
                     [[elements objectAtIndex: count] setUid: newUID];
                   
                   ex = [dstSogoObject saveCalendar: [srcSogoObject calendar: NO secure: NO]];
-                  if (!ex)
-                    {
-                      ex = [srcSogoObject delete];
-
-                      if (dstUidCache)
-                        {
-                          [dstUidCache setObject: newUID forKey: newUID];
-
-                          if (debugOn)
-                            [self logWithFormat: @"EAS - Saved new easId: %@ for serverId: %@", newUID, newUID];
-                        }
-
-                      [dstSyncCache setObject: [dstFolderMetadata objectForKey: @"SyncKey"]  forKey: newUID];
-
-                      [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
-                      [s appendFormat: @"<DstMsgId>%@</DstMsgId>", newUID];
-                      [s appendFormat: @"<Status>%d</Status>", 3];
-
-                      // Save dstMessageId in cache - it will help to recover if the request fails before the response can be sent to client
-                      [newSuccessfulMoveItemsOps setObject: newUID  forKey: srcMessageId];
-                    } 
-                  else
-                    {
-                      if ([prevSuccessfulMoveItemsOps objectForKey: srcMessageId])
-                        {
-                          // Move failed but we can recover the dstMessageId from previous request
-                          [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
-                          [s appendFormat: @"<DstMsgId>%@</DstMsgId>", [prevSuccessfulMoveItemsOps objectForKey: srcMessageId] ];
-                          [s appendFormat: @"<Status>%d</Status>", 3];
-                          [newSuccessfulMoveItemsOps setObject: [prevSuccessfulMoveItemsOps objectForKey: srcMessageId]  forKey: srcMessageId];
-
-                          if (dstUidCache)
-                            {
-                              [dstUidCache setObject: newUID forKey: newUID];
-
-                              if (debugOn)
-                                [self logWithFormat: @"EAS - Saved new easId: %@ for serverId: %@", newUID, newUID];
-                            }
-                        }
-                      else
-                        {
-                          [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
-                          [s appendFormat: @"<Status>%d</Status>", 1];
-                        }
-                    }
-                } 
+                }
               else
                 {
-                  [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
-                  [s appendFormat: @"<Status>%d</Status>", 2];
+                  if (debugOn)
+                    [self logWithFormat: @"EAS - MoveItem failed due to missing permissions: srcMessageId: %@ dstMessageId: %@", srcMessageId, newUID];
+
+                  // Make sure that the entry gets re-added to the source folder.
+                  srcSyncCache = [srcFolderMetadata objectForKey: @"SyncCache"];
+                  srcDateCache = [srcFolderMetadata objectForKey: @"DateCache"];
+                  [srcSyncCache removeObjectForKey: srcMessageId];
+                  [srcDateCache removeObjectForKey: srcMessageId];
+
+                  // Make sure that the entry gets removed from the destination folder.
+                  [dstSyncCache setObject: [dstFolderMetadata objectForKey: @"SyncKey"]  forKey: newUID];
+                  ex = [dstSogoObject saveCalendar: [srcSogoObject calendar: NO secure: YES]];
+                  ex = [dstSogoObject delete];
                 }
+            }
+
+
+          if (!ex && ![srcSogoObject isKindOfClass: [NSException class]])
+            {
+              if (([dstObjectRoles containsObject: SOGoRole_ObjectCreator] || [[dstSogoObject ownerInContext: context] isEqualToString: [[context activeUser] login]]) &&
+                  ([srcObjectRoles containsObject: SOGoRole_ObjectEraser] || [[srcSogoObject ownerInContext: context] isEqualToString: [[context activeUser] login]]))
+                ex = [srcSogoObject delete];
+              else
+                ex = [srcSogoObject touch]; // make sure to include the object in next sync.
+
+              if (dstUidCache)
+                {
+                  [dstUidCache setObject: newUID forKey: newUID];
+
+                  if (debugOn)
+                    [self logWithFormat: @"EAS - Saved new easId: %@ for serverId: %@", newUID, newUID];
+                }
+
+              [dstSyncCache setObject: [dstFolderMetadata objectForKey: @"SyncKey"]  forKey: newUID];
+
+              [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
+              [s appendFormat: @"<DstMsgId>%@</DstMsgId>", newUID];
+              [s appendFormat: @"<Status>%d</Status>", 3];
+
+              // Save dstMessageId in cache - it will help to recover if the request fails before the response can be sent to client
+              [newSuccessfulMoveItemsOps setObject: newUID  forKey: srcMessageId];
             }
           else
             {
-              [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
-              [s appendFormat: @"<Status>%d</Status>", 1];
+              if ([prevSuccessfulMoveItemsOps objectForKey: srcMessageId])
+                {
+                  // Move failed but we can recover the dstMessageId from previous request
+                  [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
+                  [s appendFormat: @"<DstMsgId>%@</DstMsgId>", [prevSuccessfulMoveItemsOps objectForKey: srcMessageId] ];
+                  [s appendFormat: @"<Status>%d</Status>", 3];
+                  [newSuccessfulMoveItemsOps setObject: [prevSuccessfulMoveItemsOps objectForKey: srcMessageId]  forKey: srcMessageId];
+
+                  if (dstUidCache)
+                    {
+                      [dstUidCache setObject: newUID forKey: newUID];
+
+                      if (debugOn)
+                        [self logWithFormat: @"EAS - Saved new easId: %@ for serverId: %@", newUID, newUID];
+                    }
+                }
+              else
+                {
+                  [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
+                  [s appendFormat: @"<Status>%d</Status>", 1];
+                }
             }
         }
       
