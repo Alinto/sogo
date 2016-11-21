@@ -9,14 +9,15 @@
   /**
    * @ngInject
    */
-  navController.$inject =  ['$rootScope', '$scope', '$timeout', '$interval', '$http', '$window', '$mdSidenav', '$mdToast', '$mdMedia', '$log', 'sgConstant', 'sgSettings', 'Alarm'];
-  function navController($rootScope, $scope, $timeout, $interval, $http, $window, $mdSidenav, $mdToast, $mdMedia, $log, sgConstant, sgSettings, Alarm) {
+  navController.$inject =  ['$rootScope', '$scope', '$timeout', '$interval', '$http', '$window', '$mdSidenav', '$mdToast', '$mdMedia', '$log', 'sgConstant', 'sgSettings', 'Resource', 'Alarm'];
+  function navController($rootScope, $scope, $timeout, $interval, $http, $window, $mdSidenav, $mdToast, $mdMedia, $log, sgConstant, sgSettings, Resource, Alarm) {
+    var resource = new Resource(sgSettings.baseURL(), sgSettings.activeUser());
 
     $scope.isPopup = sgSettings.isPopup;
     $scope.activeUser = sgSettings.activeUser();
     $scope.baseURL = sgSettings.baseURL();
     $scope.leftIsClose = !$mdMedia(sgConstant['gt-md']);
-    $scope.centerIsClose = false;
+    $scope.centerIsClose = !!$window.centerIsClose;
 
     // Show current day in top bar
     $scope.currentDay = window.currentDay;
@@ -53,8 +54,10 @@
           $log.debug("toggle right is done");
         });
     };
-    $scope.toggleCenter = function() {
+    $scope.toggleCenter = function(options) {
       $scope.centerIsClose = !$scope.centerIsClose;
+      if (options && options.save)
+        resource.post(null, 'saveListState', { state: $scope.centerIsClose? 'collapse' : 'rise' });
     };
     // $scope.openBottomSheet = function() {
     //   $mdBottomSheet.show({

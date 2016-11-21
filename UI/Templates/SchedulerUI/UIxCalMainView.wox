@@ -14,6 +14,7 @@
     var dayStartHour = <var:string value="dayStartHour"/>;
     var currentView = '<var:string value="currentView"/>';
     var localeCode = '<var:string value="localeCode" />';
+    var centerIsClose = <var:string value="listIsCollapsed.jsonRepresentation" />;
   </script>
   <var:component className="UIxCalendarSelector" />
 
@@ -348,7 +349,9 @@
       </md-toolbar>
       <div layout="row" class="md-flex">
 
-        <div class="view-list" layout="column" ng-class="{'view-list--close': centerIsClose}">
+        <div class="view-list ng-hide" layout="column"
+             ng-show="list.selectedList >= 0"
+             ng-class="{'view-list--close': centerIsClose}">
           <md-toolbar class="md-accent md-hue-1" flex-none="flex-none"
                       ng-hide="list.mode.multiple">
             <!-- sort/filter mode (default) -->

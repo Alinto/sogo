@@ -278,12 +278,14 @@
 - (WOResponse *) saveListStateAction
 {
   WORequest *request;
+  NSDictionary *params;
   NSString *state;
 
   [self _setupContext];
   request = [context request];
+  params = [[request contentAsString] objectFromJSONString];
 
-  state = [request formValueForKey: @"state"];
+  state = [params objectForKey: @"state"];
   [moduleSettings setObject: state
                      forKey: @"ListState"];
   [us synchronize];
@@ -291,14 +293,14 @@
   return [self responseWithStatus: 204];
 }
 
-- (NSString *) listStateStyle
+- (BOOL) listIsCollapsed
 {
   NSString *state;
 
   [self _setupContext];
   state = [moduleSettings objectForKey: @"ListState"];
 
-  return (state && [state compare: @"collapse"] == NSOrderedSame)? @"display: none;" : @"";
+  return (state && [state compare: @"collapse"] == NSOrderedSame);
 }
 
 - (WOResponse *) saveFoldersOrderAction

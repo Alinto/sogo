@@ -9,7 +9,7 @@
 
   <md-card>
     <md-card-actions flex-none="flex-none" layout="row" layout-align="start center">
-      <md-button ng-click="toggleCenter()"
+      <md-button ng-click="toggleCenter({save: true})"
                  class="md-icon-button md-primary md-hue-1 hide show-gt-xs"
                  aria-hidden="true">
         <md-icon class="icon-fullscreen"
