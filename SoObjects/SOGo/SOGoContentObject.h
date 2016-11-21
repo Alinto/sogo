@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2004 SKYRIX Software AG
-  Copyright (C) 2005-2014 Inverse inc.
+  Copyright (C) 2006-2016 Inverse inc.
+  Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
 
@@ -74,6 +74,7 @@
 - (NSException *) copyToFolder: (SOGoGCSFolder *) newFolder;
 - (NSException *) moveToFolder: (SOGoGCSFolder *) newFolder;
 - (NSException *) delete;
+- (NSException *) touch;
 
 /* DAV support */
 

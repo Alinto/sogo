@@ -1100,7 +1100,7 @@ andAttribute: (EOAttribute *)_attribute
   return error;
 }
 
-- (NSException *)deleteContentWithName:(NSString *)_name {
+- (NSException *) deleteContentWithName:(NSString *)_name {
   EOAdaptorChannel *storeChannel, *quickChannel;
   EOAdaptorContext *adaptorCtx;
   NSException *error;
@@ -1108,7 +1108,6 @@ andAttribute: (EOAttribute *)_attribute
   NSCalendarDate *nowDate;
   
   /* check preconditions */
-  
   if (_name == nil) {
     return [NSException exceptionWithName:@"GCSDeleteException"
 			reason:@"no content filename was provided"
@@ -1235,6 +1234,58 @@ andAttribute: (EOAttribute *)_attribute
     }
 
     return error;
+}
+
+- (NSException *) touchContentWithName: (NSString *) _name
+{
+  NSString *touchSql, *table;
+  EOAdaptorContext *adaptorCtx;
+  EOAdaptorChannel *channel;
+  EOAttribute *attribute;
+  NSCalendarDate *nowDate;
+
+  if (_name == nil)
+      return [NSException exceptionWithName: @"GCSDeleteException"
+				     reason: @"no content filename was provided"
+				   userInfo: nil];
+
+  channel = [self acquireStoreChannel];
+
+  if ((channel = [self acquireStoreChannel]) == nil)
+    {
+      [self errorWithFormat:@"could not open storage channel!"];
+      return nil;
+    }
+
+  adaptorCtx = [channel adaptorContext];
+  [adaptorCtx beginTransaction];
+
+  table = [self storeTableName];
+  attribute = [self _attributeForColumn: @"c_name"];
+  nowDate = [NSCalendarDate date];
+
+  if ([GCSFolderManager singleStoreMode])
+    touchSql = [NSString stringWithFormat: @"UPDATE %@ SET c_lastmodified = %u WHERE c_name = %@ AND c_folder_id = %@",
+			 table,
+			 (unsigned int) [nowDate timeIntervalSince1970],
+		    [self _formatRowValue: _name
+			      withAdaptor: [adaptorCtx adaptor]
+			     andAttribute: attribute],
+			 folderId];
+  else
+    touchSql = [NSString stringWithFormat: @"UPDATE %@ SET c_lastmodified = %u WHERE c_name = %@",
+			 table,
+			 (unsigned int) [nowDate timeIntervalSince1970],
+		    [self _formatRowValue: _name
+			      withAdaptor: [adaptorCtx adaptor]
+			     andAttribute: attribute]];
+
+  [channel evaluateExpressionX: touchSql];
+
+  [[channel adaptorContext] commitTransaction];
+  [self releaseChannel: channel];
+
+  return nil;
 }
 
 - (NSException *)deleteFolder {
