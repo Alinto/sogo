@@ -1264,21 +1264,12 @@ andAttribute: (EOAttribute *)_attribute
   attribute = [self _attributeForColumn: @"c_name"];
   nowDate = [NSCalendarDate date];
 
-  if ([GCSFolderManager singleStoreMode])
-    touchSql = [NSString stringWithFormat: @"UPDATE %@ SET c_lastmodified = %u WHERE c_name = %@ AND c_folder_id = %@",
-			 table,
-			 (unsigned int) [nowDate timeIntervalSince1970],
-		    [self _formatRowValue: _name
-			      withAdaptor: [adaptorCtx adaptor]
-			     andAttribute: attribute],
-			 folderId];
-  else
-    touchSql = [NSString stringWithFormat: @"UPDATE %@ SET c_lastmodified = %u WHERE c_name = %@",
-			 table,
-			 (unsigned int) [nowDate timeIntervalSince1970],
-		    [self _formatRowValue: _name
-			      withAdaptor: [adaptorCtx adaptor]
-			     andAttribute: attribute]];
+  touchSql = [NSString stringWithFormat: @"UPDATE %@ SET c_lastmodified = %u WHERE c_name = %@",
+		 table,
+		 (unsigned int) [nowDate timeIntervalSince1970],
+	    [self _formatRowValue: _name
+		      withAdaptor: [adaptorCtx adaptor]
+		     andAttribute: attribute]];
 
   [channel evaluateExpressionX: touchSql];
 
