@@ -802,7 +802,6 @@ void handle_eas_terminate(int signum)
   NSMutableDictionary *cachedGUIDs, *metadata;
   NSMutableArray *folders, *processedFolders, *allFoldersMetadata;
   NSDictionary *folderMetadata, *imapGUIDs;
-  NSArray *allKeys;
   SOGoMailAccounts *accountsFolder;
   SOGoMailAccount *accountFolder;
   NSMutableString *s, *commands;
