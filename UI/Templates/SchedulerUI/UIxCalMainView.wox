@@ -57,11 +57,11 @@
                    as-sortable="app.sortableCalendars" is-disabled="!app.sortableMode">
             <md-list-item ng-repeat="calendar in app.service.$calendars | filter:app.filter"
                           as-sortable-item="as-sortable-item">
-              <md-checkbox ng-model="calendar.active"
-                           ng-class="calendar.getClassName('checkbox')"
-                           ng-true-value="1"
-                           ng-false-value="0"
-                           label:aria-label="Enable"><!-- enable --></md-checkbox>
+              <md-switch ng-model="calendar.active"
+                         ng-class="calendar.getClassName('md-switch')"
+                         ng-true-value="1"
+                         ng-false-value="0"
+                         label:aria-label="Enable"><!-- enable --></md-switch>
               <p class="sg-item-name"
                  ng-dblclick="app.editFolder(calendar)"
                  ng-show="app.editMode != calendar.id">
@@ -162,12 +162,11 @@
                    as-sortable="app.sortableCalendars" is-disabled="!app.sortableMode">
             <md-list-item ng-repeat="calendar in app.service.$subscriptions | filter:app.filter"
                           as-sortable-item="as-sortable-item">
-              <md-checkbox ng-model="calendar.active"
-                           ng-class="calendar.getClassName('checkbox')"
+              <md-switch ng-model="calendar.active"
+                           ng-class="calendar.getClassName('md-switch')"
                            ng-true-value="1"
                            ng-false-value="0"
-                           label:aria-label="Enable"><!-- enable -->
-              </md-checkbox>
+                           label:aria-label="Enable"><!-- enable --></md-switch>
               <p class="sg-item-name"
                  ng-dblclick="app.editFolder(calendar)"
                  ng-show="app.editMode != calendar.id">
@@ -250,11 +249,11 @@
                    as-sortable="app.sortableCalendars" is-disabled="!app.sortableMode">
             <md-list-item ng-repeat="calendar in app.service.$webcalendars | filter:app.filter"
                           as-sortable-item="as-sortable-item">
-              <md-checkbox ng-model="calendar.active"
-                           ng-class="calendar.getClassName('checkbox')"
+              <md-switch ng-model="calendar.active"
+                           ng-class="calendar.getClassName('md-switch')"
                            ng-true-value="1"
                            ng-false-value="0"
-                           label:aria-label="Enable"><!-- enable --></md-checkbox>
+                           label:aria-label="Enable"><!-- enable --></md-switch>
               <p class="sg-item-name"
                  ng-dblclick="app.editFolder(calendar)"
                  ng-show="app.editMode != calendar.id">

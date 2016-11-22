@@ -11,6 +11,7 @@ Enhancements
  - [core] updated time zones to version 2016i
  - [eas] now also search on senders when using EAS Search ops
  - [web] allow multiple messages to be marked as seen (#3873)
+ - [web] use switches instead of checkboxes in Calendars module
 
 Bug fixes
  - [core] fixed condition in weekly recurrence calculator
