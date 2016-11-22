@@ -39,7 +39,7 @@
                            'sg-expanded': user.uid == subscribe.selectedUser.uid }">
         <md-button ng-click="subscribe.selectUser($index)">
           <div layout="row" layout-align="start center" class="md-flex">
-            <sg-avatar-image class="md-avatar"
+            <sg-avatar-image class="md-avatar md-tile-left"
                              sg-email="user.c_email"
                              size="40">{{ user.$avatarIcon }}</sg-avatar-image>
             <div class="sg-tile-content">
@@ -56,8 +56,8 @@
           </div>
           <div layout="row" layout-align="start center" layout-fill="true"
                ng-repeat="folder in user.$$folders">
-            <md-icon ng-class="{'icon-contacts': folder.type == 'Contact',
-                               'icon-event': folder.type == 'Appointment'}"><!--icon--></md-icon>
+            <md-icon ng-class="{ 'icon-contacts': folder.type == 'Contact',
+                                 'icon-event': folder.type == 'Appointment' }"><!--icon--></md-icon>
             <p class="sg-padded--left md-flex">{{folder.displayName}}</p>
             <md-button class="md-raised"
                        ng-click="subscribe.selectFolder(folder)"><var:string label:value="Subscribe"/></md-button>
@@ -87,9 +87,9 @@
             </md-list-item>
             <md-list-item layout="row" layout-fill="true"
                           ng-repeat="folder in user.$$folders">
-              <md-icon ng-class="{'icon-contacts': folder.type == 'Contact',
-                                  'icon-event': folder.type == 'Appointment'}"><!--icon--></md-icon>
-                <p class="md-flex sg-item-name">{{folder.displayName}}</p>
+              <md-icon ng-class="{ 'icon-contacts': folder.type == 'Contact',
+                                   'icon-event': folder.type == 'Appointment' }"><!--icon--></md-icon>
+              <p class="md-flex sg-item-name">{{folder.displayName}}</p>
               <md-button
                   class="md-raised"
                   ng-click="subscribe.selectFolder(folder)"><var:string label:value="Subscribe"/></md-button>
