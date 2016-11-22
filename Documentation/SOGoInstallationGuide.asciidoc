@@ -2485,7 +2485,7 @@ as keys for the the `domains` dictionary.
 |Parameter used to set domains visible among themselves. This parameter
 is an array of arrays.
 
-Example: `SOGoDomainsVisibility = ((acme, coyote));`
+Example: `SOGoDomainsVisibility = ( (acme, coyote) );`
 
 Defaults to an empty array, which means domains are isolated from each
 other.
