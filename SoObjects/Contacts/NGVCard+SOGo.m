@@ -21,6 +21,7 @@
 
 #import <Foundation/NSTimeZone.h>
 
+#import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSNull+misc.h>
 
 #import <NGCards/NSArray+NGCards.h>
@@ -357,6 +358,10 @@ convention:
     [self setCategories: o];
   else
     [self setCategories: [o componentsSeparatedByString: @","]];
+
+  // Photo
+  if ([ldifRecord objectForKey: @"photo"])
+    [self setPhoto: [[ldifRecord objectForKey: @"photo"] stringByEncodingBase64]];
 
   [self cleanupEmptyChildren];
 }

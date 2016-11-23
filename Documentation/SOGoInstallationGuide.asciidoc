@@ -1232,6 +1232,7 @@ mapping = {
 2+h|Other
 |Birthday |birthyear-birthmonth-birthday
 |Note |description
+|Photo |photo
 |===
 
 Authenticating using C.A.S.

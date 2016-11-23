@@ -1211,7 +1211,6 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
     {
       ldapConnection = [self _ldapConnection];
       qualifier = [self _qualifierForFilter: match];
-      // attributes = [self _searchAttributes];
       attributes = [NSArray arrayWithObject: @"*"];
 
       if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
@@ -1237,10 +1236,9 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 - (NGLdapEntry *) _lookupLDAPEntry: (EOQualifier *) qualifier
 {
   NGLdapConnection *ldapConnection;
-  NSArray *attributes;
   NSEnumerator *entries;
+  NSArray *attributes;
 
-  // attributes = [self _searchAttributes];
   ldapConnection = [self _ldapConnection];
   attributes = [NSArray arrayWithObject: @"*"];
 
