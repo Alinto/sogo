@@ -1,4 +1,5 @@
 2.3.18 (2016-11-DD)
+-------------------
 
 New features
  - [eas] relaxed permission requirements for subscription synchronizations (#3118 and #3180)
