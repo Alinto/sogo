@@ -106,7 +106,7 @@
 "Access Rights" = "Droits d'accès";
 "Add User" = "Ajouter un utilisateur";
 "Loading" = "Chargement";
-"No such user." = "Aucun utilisateur.";
+"No such user." = "Aucun utilisateur trouvé.";
 "You cannot (un)subscribe to a folder that you own!" = "Vous ne pouvez pas vous (dés)abonner à vos propres dossiers!";
 
 /* Authentication username */

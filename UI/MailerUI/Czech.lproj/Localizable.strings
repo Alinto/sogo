@@ -40,7 +40,7 @@
 "Attachment" = "Příloha";
 "Unread" = "Nepřečtené";
 "Flagged" = "Oštítkované";
-"Search multiple mailboxes" = "Hledat ve zprávách";
+"Search multiple mailboxes" = "Prohledat více poštovních schránek";
 
 /* Main Frame  */
 "Home"                 = "Domů"; 
@@ -62,7 +62,7 @@
 "No message selected" = "Nebyla vybrána žádná zpráva";
 
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
-"No mailbox selected" = "Nebyl vybrán žádný mailbox";
+"No mailbox selected" = "Nebyla vybrána žádná poštovní schránka";
 
 /* Mailbox actions */
 /* Compact Folder success message */
@@ -269,6 +269,10 @@
 "quotasFormat" = "%{0}% využito z %{1} MB";
 "Unable to move/delete folder." = "Složku není možné přesunout/smazat.";
 
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Poštovní schránka nemůže být přesunuta do koše. Chcete ju smazat trvale?";
+
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Opravdu chcete smazat označené zprávy?";
 
@@ -350,6 +354,7 @@
 "Copy messages" = "Kopírovat zprávy";
 "More messages options" = "Další možnosti zpráv";
 "Mark as Unread" = "Označit jako nepřečtené";
+"Mark as Read" = "Označit jako přečtené";
 "Closing Window ..." = "Zavření okna ...";
 "Tried to send too many mails. Please wait." = "Pokus odeslat příliš mnoho zpráv. Prosím čekejte.";
 "View Mail" = "Zobrazení pošty";
@@ -372,6 +377,9 @@
 
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
 
 /* Hotkey to flag a message */
 "hotkey_flag" = "*";

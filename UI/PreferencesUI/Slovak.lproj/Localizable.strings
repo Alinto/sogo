@@ -318,12 +318,28 @@
 "Size (Kb)" = "Vľkosť (Kb)";
 "Header" = "Hlavička";
 "Body" = "Telo";
-"Flag the message with" = "Nasledujúce správy označ zástavkou";
+"Flag the message with" = "Oštítkuj správu ako";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Štítok";
+
 "Discard the message" = "Zahoď správu";
 "File the message in" = "Súbor správy v";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Poštová schránka";
+
 "Keep the message" = "Ponechaj správu";
 "Forward the message to" = "Prepošli správu";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "Email";
+
 "Send a reject message" = "Pošli odmietnutie";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Správa";
+
 "Send a vacation message" = "Odošli správu o dovolenke";
 "Stop processing filter rules" = "Zastav spracovávanie filtrovacích pravidiel";
 "is under" = "je pod";
@@ -341,7 +357,7 @@
 "Seen" = "Videné";
 "Deleted" = "Vymazané";
 "Answered" = "Odpovedané";
-"Flagged" = "Označené zástavkou";
+"Flagged" = "Oštítkované";
 "Junk" = "Spam";
 "Not Junk" = "Nie je Spam";
 

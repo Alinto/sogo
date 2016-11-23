@@ -15,6 +15,7 @@
 
 "Authentication Failed" = "A hitelesítés nem sikerült";
 "Wrong username or password." = "Hibás felhasználónév vagy jelszó.";
+"Retry" = "Újra";
 "cookiesNotEnabled" = "Nem tud bejelentkezni, mivel a böngészőjében a cookie-k ki vannak kapcsolva. Kérem engedélyezze a cookie-kat a böngészője beállításaiban, majd próbálja újra.";
 "browserNotCompatible" = "A böngészője nem támogatja ennek az oldalnak a megjelnítését. Javasoljuk a Firefox használatát. Kattintson az alábbi hivatkozásra a legújabb verzió letöltéséhez.";
 "alternativeBrowsers" = "További megoldásként az alábbi, kompatibilis böngészőket használhatja";

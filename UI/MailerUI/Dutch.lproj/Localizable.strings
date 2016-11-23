@@ -267,9 +267,20 @@
 "Operation failed" = "Bewerking mislukt.";
 "Quota" = "Quotum:";
 "quotasFormat" = "%{0}% van %{1} MB gebruikt";
+"Unable to move/delete folder." = "Het is niet mogelijk deze map te verplaatsen/verwijderen.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Deze mailbox kon niet worden verplaatst naar de prullenbak. Wilt u deze direct verwijderen?";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Weet u zeker dat u de geselecteerde berichten wilt verwijderen?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} bericht(en) gekopieerd";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} bericht(en) verplaatst";
 
 "Please select a message." = "Selecteer een bericht.";
 "Please select a message to print." = "Selecteer een bericht om af te drukken.";
@@ -305,7 +316,12 @@
 "Error while uploading the file \"%{0}\":" = "Fout bij uploaden van bestand \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Een bestandsupload is actief. Sluiten van het venster zal hem onderbreken.";
 
-/* Message sending */
+/* Appears while sending the message */
+"Sending" = "Verzenden";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Verzonden";
+
 "cannot send message: (smtp) all recipients discarded" = "Kan bericht niet versturen: alle ontvangers zijn ongeldig.";
 "cannot send message (smtp) - recipients discarded" = "Kan bericht niet versturen: de volgende adressen zijn ongeldig";
 "cannot send message: (smtp) error when connecting" = "Kan bericht niet versturen: fout bij verbinden met de SMTP server.";
@@ -332,11 +348,13 @@
 "Set as Junk" = "Als Ongewenst instellen";
 
 "Sort" = "Sorteren";
+"Order Received" = "Opdracht ontvangen";
 "Descending Order" = "Aflopende volgorde";
 "Back" = "Terug";
 "Copy messages" = "Kopieer berichten";
 "More messages options" = "Meer berichtopties";
 "Mark as Unread" = "Als ongelezen markeren";
+"Mark as Read" = "Markeren als gelezen";
 "Closing Window ..." = "Venster sluiten ...";
 "Tried to send too many mails. Please wait." = "Geprobeerd teveel berichten te versturen. Even geduld alstublieft.";
 "View Mail" = "Bekijk mail";
@@ -350,3 +368,27 @@
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Zoekbereik";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Beheer abonnementen";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filter";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

@@ -15,6 +15,7 @@
 
 "Authentication Failed" = "Overenie zlyhalo";
 "Wrong username or password." = "Nesprávne uživateľské meno alebo heslo.";
+"Retry" = "Opakovať";
 "cookiesNotEnabled" = "Nemôžete sa prihlásiť, pretože vo svojom prehliadači máte zakázané cookies. Prosím povoľte cookies vo vašom prehliadači a skúste to znova.";
 "browserNotCompatible" = "Zistili sme že Váš prehliadač nie je našou stránkou  momentálne podporovaný. Odporúčame používať Firefox. Kliknite na odkaz nižšie a stiahnite si aktuálnu verziu tohoto prehliadača";
 "alternativeBrowsers" = "Prípadne môžete tiež použiť nasledujúce kompatibilné prehliadače";

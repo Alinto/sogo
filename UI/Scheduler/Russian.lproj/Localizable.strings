@@ -366,6 +366,15 @@
 "zoom_50" = "50%";
 "zoom_25" = "25%";
 
+/* Arial label for reminder units */
+"Reminder units" = "Единицы времени напоминания";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Положение напоминания";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Зависимость напоминания";
+
 /* transparency */
 "Show Time as Free" = "Отображать время как свободное";
 
@@ -379,6 +388,8 @@ validate_notitle           = "Нет названия. Продолжить?";
 validate_invalid_startdate = "Неверная дата начала!";
 validate_invalid_enddate   = "Неверная дата конца!";
 validate_endbeforestart    = "Дата начала позже даты конца";
+validate_untilbeforeend    = "Повторение должно заканчиваться после первого появления.";
+
 "Events" = "События";
 "Tasks" = "Задачи";
 "Show completed tasks" = "Показать выполненные задачи";
@@ -554,7 +565,7 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "More options" = "Больше опций";
 "Delete This Occurrence" = "Удалить это появление";
 "Delete All Occurrences" = "Удалить все появления";
-"Add From" = "Добавить От";
+"Add From" = "Добавить поле начала";
 "Add Due" = "Добавить Сделать к сроку";
 "Import" = "Импорт";
 "Rename" = "Переименовать";
@@ -569,3 +580,24 @@ vtodo_class2 = "(Конфиденциальное задание)";
 
 /* Aria label for scope of search on events or tasks */
 "Search scope" = "Поиск по типу";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

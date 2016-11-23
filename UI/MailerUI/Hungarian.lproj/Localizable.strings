@@ -354,6 +354,7 @@
 "Copy messages" = "Üzenetek másolása";
 "More messages options" = "További üzenet tulajdonságok";
 "Mark as Unread" = "Megelölés olvasatlanként";
+"Mark as Read" = "Megjelölés olvasottként";
 "Closing Window ..." = "Ablak bezárása ...";
 "Tried to send too many mails. Please wait." = "Túl sok üzenetet próbál elküldeni. Kérem várjon.";
 "View Mail" = "Üzenet megtekintése";

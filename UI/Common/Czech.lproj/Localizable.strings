@@ -18,7 +18,7 @@
 "Vacation message is enabled" = "Odpověď v nepřítomnosti je zapnuta";
 "Help" = "Nápověda";
 "noJavascriptError" = "SOGo vyžaduje JavaScript. Ujistěte se prosím, že je povolen a aktivován v rámci nastavení Vašeho prohlížeče.";
-"noJavascriptRetry" = "Znovu";
+"noJavascriptRetry" = "Opakovat";
 "Owner" = "Vlastník";
 "Publish the Free/Busy information" = "Zveřejni informace o Volno/Není volno";
 "Add..." = "Přidat...";

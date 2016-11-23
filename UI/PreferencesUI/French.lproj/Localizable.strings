@@ -319,11 +319,27 @@
 "Header" = "En-tête";
 "Body" = "Contenu";
 "Flag the message with" = "Marquer le message comme";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Drapeau";
+
 "Discard the message" = "Annuler le message";
 "File the message in" = "Placer le message dans";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Boîte";
+
 "Keep the message" = "Conserver le message";
 "Forward the message to" = "Faire suivre le message à";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "Email";
+
 "Send a reject message" = "Refuser le message avec ce texte";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Message";
+
 "Send a vacation message" = "Envoyer un message d'absence";
 "Stop processing filter rules" = "Cessez le filtrage";
 "is under" = "est sous";

@@ -41,20 +41,28 @@
 "Move To" = "Переместить в";
 "Copy To" = "Копировать";
 "Add to" = "Добавить в";
+
 /* Subheader of empty addressbook */
 "No contact" = "Нет контакта";
+
 /* Subheader of system addressbook */
 "Start a search to browse this address book" = "Запустить поиск для просмотра этой адресной книги";
+
 /* Number of contacts in addressbook; string is prefixed by number */
 "contacts" = "контакты";
+
 /* No contact matching search criteria */
 "No matching contact" = "нет соответствующего контакта";
+
 /* Number of contacts matching search criteria; string is prefixed by number */
 "matching contacts" = "соответствующие контакты";
+
 /* Number of selected contacts in list */
 "selected" = "выбран";
+
 /* Empty right pane */
 "No contact selected" = "контакт не выбран";
+
 /* Tooltips */
 "Create a new address book card" = "Создать новую запись в адресной книге";
 "Create a new list" = "Cоздать новый список";
@@ -95,9 +103,11 @@
 "Work" = "Рабочий";
 "Mobile" = "Мобильный";
 "Pager" = "Пейджер";
+
 /* categories */
 "contacts_category_labels" = "Коллега, Конкурент, Клиент, Друг, Семья, Партнер, Поставщик, Пресса, VIP";
 "New category" = "Новые категории";
+
 /* adresses */
 "Title" = "Должность";
 "Service" = "Сервис";
@@ -134,12 +144,14 @@
 = "Вы не можете ни удалить, ни отписатся от личной адресной книги.";
 "Are you sure you want to delete the selected contacts?"
 = "Вы уверены, что вы хотите удалить выбранные контакты?";
+"Are you sure you want to delete the card of %{0}?" = "Вы уверены, что хотите удалить карточку %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "Вы не можете удалить запись \"%{0}\".";
 "You cannot subscribe to a folder that you own!"
 = "Вы не можете подписаться на папку, которой владеете.";
 "Unable to subscribe to that folder!"
 = "Невозможно подписаться на эту папку.";
+
 /* acls */
 "Access rights to" = "Права доступа к";
 "For user" = "Для пользователя";
@@ -158,11 +170,15 @@
 "The selected contact has no email address."
 = "Выбранный контакт не имеет адреса электронной почты.";
 "Please select a contact." = "Пожалуйста, выберите контакт.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} карточка(ек) скопирована(о)";
+"%{0} card(s) moved" = "%{0} карточка(ек) перемещена(о)";
 "SoAccessDeniedException" = "Вы не можете писать в эту адресную книгу.";
 "Forbidden" = "Вы не можете писать в эту адресную книгу.";
 "Invalid Contact" = "Выбранный контакт более не существует.";
 "Unknown Destination Folder" = "Выбранная адресная книга более не существует.";
+
 /* Lists */
 "List details" = "Подробности списка";
 "List name" = "Имя списка";
@@ -175,6 +191,8 @@
 "Export" = "Экспорт";
 "Export Address Book..." = "Экспорт адресной книги...";
 "View Raw Source" = "Посмотреть исходный код";
+
+/* Import */
 "Import Cards" = "Импорт контактов";
 "Select a vCard or LDIF file." = "Выберите файл vCard или LDIF.";
 "Upload" = "Загрузить";
@@ -184,6 +202,7 @@
 "No card was imported." = "Записи не были импортированы.";
 "A total of %{0} cards were imported in the addressbook." = "Всего %{0} записей было импортировано в адресную книгу.";
 "Reload" = "Обновить";
+
 /* Properties window */
 "Address Book Name" = "Название адресной книги";
 "Links to this Address Book" = "Ссылки на эту адресную книгу";
@@ -231,3 +250,12 @@
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Область поиска";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Сменить выделение";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

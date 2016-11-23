@@ -39,7 +39,7 @@
 "Stop the current transfer" = "Zastav prebiehajúci presun";
 "Attachment" = "Príloha";
 "Unread" = "Neprečítané";
-"Flagged" = "Označené zástavkou";
+"Flagged" = "Oštítkované";
 "Search multiple mailboxes" = "Prehľadať viaceré poštové schránky";
 
 /* Main Frame  */
@@ -77,7 +77,7 @@
 "List and see this folder" = "Zoraď a zobraz tento priečinok";
 "Read mails from this folder" = "Čitať maile z tejto zložky";
 "Mark mails read and unread" = "Označ maily ako prečítané a neprečítané";
-"Modify the flags of the mails in this folder" = "Uprav zástavky mailov v tejto zložke";
+"Modify the flags of the mails in this folder" = "Upraviť mailové štítky v tejto zložke";
 "Insert, copy and move mails into this folder" = "Vlož, kopíruj a presuň maile do tejto zložky";
 "Post mails" = "Zverejni maily";
 "Add subfolders to this folder" = "Pridať podadresáre pre tento adresár";
@@ -131,7 +131,7 @@
 "read"    = "čítať";
 "unread"  = "prečítané";
 "deleted" = "zmazané";
-"flagged" = "označené";
+"flagged" = "oštítkované";
 
 /* MailListView */
 "Sender" = "Odosielateľ";
@@ -242,7 +242,7 @@
 "Thread As Read" = "Konverzáciu ako prečítanú";
 "As Read By Date..." = "Prečítané dátumom...";
 "All Read" = "Prečítať všetko";
-"Flag" = "Označ zástavkou";
+"Flag" = "Oštítkovať";
 "As Junk" = "Ako SPAM";
 "As Not Junk" = "Ako nie SPAM";
 "Run Junk Mail Controls" = "Spusti kontrolu SPAMu";
@@ -268,6 +268,10 @@
 "Quota" = "Kvóta:";
 "quotasFormat" = "%{0}% použité z %{1} MB";
 "Unable to move/delete folder." = "Nemožno presunúť/vymazať zložku.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Poštová schránka nemôže byť presunutá do koša. Chcete ju vymazať okamžite?";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Ste si istý že chcete odstrániť označené správy?";
@@ -350,6 +354,7 @@
 "Copy messages" = "Kopírovať správy";
 "More messages options" = "Viac možností správ";
 "Mark as Unread" = "Označ ako neprečítané";
+"Mark as Read" = "Označiť ako prečítané";
 "Closing Window ..." = "Okno sa zatvára ...";
 "Tried to send too many mails. Please wait." = "Pokúsili ste sa odoslať príliš vela e-mailov. Prosím čakajte.";
 "View Mail" = "Zobraziť E-mail";
@@ -372,6 +377,9 @@
 
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
 
 /* Hotkey to flag a message */
 "hotkey_flag" = "*";

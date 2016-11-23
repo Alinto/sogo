@@ -25,7 +25,7 @@
 "Forward" = "İlet";
 "Password" = "Şifre";
 "Categories" = "Kategoriler";
-"Appointments invitations" = "Randevu davetleri";
+"Appointments invitations" = "Çalışma davetleri";
 "Name" = "Tam İsim";
 "Color" = "Renk";
 "Add" = "Ekle";
@@ -120,8 +120,8 @@
 "firstWeekOfYear_January1" = "1 Ocak'da başlar";
 "firstWeekOfYear_First4DayWeek" = "İlk 4-günlük haftadır";
 "firstWeekOfYear_FirstFullWeek" = "İlk tam haftadır";
-"Prevent from being invited to appointments" = "Randevulara davet almayı engelle";
-"White list for appointment invitations" = "Randevu daveti beyaz listesi";
+"Prevent from being invited to appointments" = "Çalışma davet almayı engelle";
+"White list for appointment invitations" = "Çalışma daveti beyaz listesi";
 "Contacts Names" = "Kişi İsimleri";
 
 /* Default Calendar */
@@ -319,11 +319,27 @@
 "Header" = "Başlık";
 "Body" = "Gövde";
 "Flag the message with" = "İletiye şu bayrağı ekle";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Yıldız";
+
 "Discard the message" = "İletiyi reddet";
 "File the message in" = "Şurada dosyala";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Posta Kutusu";
+
 "Keep the message" = "İletiyi tut";
 "Forward the message to" = "E-posta şu adrese ilet";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "E-posta";
+
 "Send a reject message" = "Reddedildi iletisi gönder";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "İleti";
+
 "Send a vacation message" = "Tatil iletisi gönder";
 "Stop processing filter rules" = "Süzgeç kurallarının işlenmesini durdur";
 "is under" = "küçükse";

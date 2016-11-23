@@ -147,7 +147,7 @@
 "Labels" = "Štítky";
 "Label" = "Štítek";
 "New label" = "Nový štítek";
-"Show subscribed mailboxes only" = "Ukázat pouze odebírané mailové schránky";
+"Show subscribed mailboxes only" = "Ukázat pouze odebírané poštovní schránky";
 "Synchronize only default mail folders (EAS)" = "Synchronizovat pouze standartní poštovní složky (EAS)";
 "Sort messages by threads" = "Třídit zprávy podle souvislostí";
 "When sending mail, add unknown recipients to my" = "Automaticky přidávat odchozí e-mailovou adresu do složky:";
@@ -318,12 +318,28 @@
 "Size (Kb)" = "Velikost (Kb)";
 "Header" = "Hlavička";
 "Body" = "Tělo";
-"Flag the message with" = "Označ zprávu jako";
+"Flag the message with" = "Oštítkuj zprávu jako";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Štítek";
+
 "Discard the message" = "Odstraň zprávu";
 "File the message in" = "Ulož zprávu do složky";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Poštovní schránka";
+
 "Keep the message" = "Zprávu ponechej";
 "Forward the message to" = "Přepošli zprávu na";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "E-mailová adresa";
+
 "Send a reject message" = "Pošli zprávu s odmítnutím";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Zpráva";
+
 "Send a vacation message" = "Pošli odpověď v nepřítomnosti";
 "Stop processing filter rules" = "Ukonči zpracování";
 "is under" = "je menší než";

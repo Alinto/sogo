@@ -15,6 +15,7 @@
 
 "Authentication Failed" = "Logowanie nie powiodło się";
 "Wrong username or password." = "Zła nazwa użytkownika lub hasło.";
+"Retry" = "Ponów";
 "cookiesNotEnabled" = "Nie możesz się zalogować ponieważ twoja przeglądarka ma zablokowaną obsługę ciasteczek (cookies). Włącz obsługę ciasteczek w ustawieniach twojej przeglądarki i spróbuj ponownie.";
 "browserNotCompatible" = "Używasz przeglądarki WWW, która nie jest obecnie obsługiwana przez tę stronę. Rekomendowaną przeglądarką jest Firefox. Kliknij poniższy odnośnik aby pobrać najnowszą wersję tej przeglądarki.";
 "alternativeBrowsers" = "Alternatywnie możesz także używać następujących przeglądarek";
