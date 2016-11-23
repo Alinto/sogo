@@ -1517,11 +1517,12 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   path = [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]];
 
   if ([self         _path: path
-           isInNamespaces: [mailAccount otherUsersFolderNamespaces]]
-      || [self         _path: path
-              isInNamespaces: [mailAccount sharedFolderNamespaces]])
+           isInNamespaces: [mailAccount otherUsersFolderNamespaces]] ||
+      [self         _path: path
+           isInNamespaces: [mailAccount sharedFolderNamespaces]])
     [acls addObject: SOGoRole_ObjectViewer];
   else
+    // Inside user's namespace, automatically owner
     [acls addObject: SoRole_Owner];
 
   return acls;
@@ -1534,23 +1535,22 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
   userLogin = [[context activeUser] login];
   if ([uid isEqualToString: userLogin])
+    // Login user wants her ACLs
     acls = [self _sharesACLs];
   else
+    // Login user wants the ACLs of another user
     acls = [NSMutableArray array];
 
-  if ([owner isEqualToString: userLogin])
-    {
-      if (!mailboxACL)
-        [self _readMailboxACL];
+  if (!mailboxACL)
+    [self _readMailboxACL];
 
-      if ([mailboxACL isKindOfClass: [NSDictionary class]])
-        {
-          userAcls = [mailboxACL objectForKey: uid];
-          if (!([userAcls length] || [uid isEqualToString: defaultUserID]))
-            userAcls = [mailboxACL objectForKey: defaultUserID];
-          if ([userAcls length])
-            [acls addObjectsFromArray: [self _imapAclsToSOGoAcls: userAcls]];
-        }
+  if ([mailboxACL isKindOfClass: [NSDictionary class]])
+    {
+      userAcls = [mailboxACL objectForKey: uid];
+      if (!([userAcls length] || [uid isEqualToString: defaultUserID]))
+        userAcls = [mailboxACL objectForKey: defaultUserID];
+      if ([userAcls length])
+        [acls addObjectsFromArray: [self _imapAclsToSOGoAcls: userAcls]];
     }
 
   return acls;
