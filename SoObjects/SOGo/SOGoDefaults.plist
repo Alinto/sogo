@@ -104,7 +104,7 @@
     SOGoTrashFolderName = "Trash";
     SOGoJunkFolderName = "Junk";
     SOGoMailComposeMessageType = "html";
-    SOGoMailComposeFontSize = 0;
+    SOGoMailComposeFontSize = "0";
     SOGoMailDisplayRemoteInlineImages = "never";
 
     SOGoMailAutoSave = "5";
