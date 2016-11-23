@@ -1,5 +1,4 @@
 2.3.18 (2016-11-DD)
--------------------
 
 New features
  - [eas] relaxed permission requirements for subscription synchronizations (#3118 and #3180)
@@ -17,6 +16,7 @@ Bug fixes
  - [web] fixed support for recurrent tasks
  - [web] improved validation of mail account delegators
  - [web] allow edition of a mailbox rights when user can administer mailbox
+ - [web] restore attributes when rewriting base64-encoded img tags (#3814)
 
 2.3.17 (2016-10-20)
 -------------------

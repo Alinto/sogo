@@ -296,7 +296,7 @@
           //
           if ([value length] > 5 && [[value substringToIndex: 5] caseInsensitiveCompare: @"data:"] == NSOrderedSame)
             {
-              NSString *uniqueId, *mimeType, *encoding;
+              NSString *uniqueId, *mimeType, *encoding, *attrName;
               NGMimeBodyPart *bodyPart;
               NGMutableHashMap *map;
               NSData *data;
@@ -351,8 +351,21 @@
               [body release];
           
               [images addObject: bodyPart];
+
+              [result appendFormat: @"<img src=\"cid:%@\" type=\"%@\"", uniqueId, mimeType];
+
+              // Restore img attributes
+              for (i = 0; i < [attributes count]; i++)
+                {
+                  attrName = [[attributes rawNameAtIndex: i] lowercaseString];
+                  if (![attrName isEqualToString: @"src"] && ![attrName isEqualToString: @"type"])
+                    {
+                      value = [attributes valueAtIndex: i];
+                      [result appendFormat: @" %@=\"%@\"", attrName, value];
+                    }
+                }
           
-              [result appendFormat: @"<img src=\"cid:%@\" type=\"%@\"/>", uniqueId, mimeType];
+              [result appendString: @"/>"];
             }
         }
       else if (voidTags)
