@@ -9,6 +9,7 @@ Enhancements
 
 Bug fixes
  - [web] restore attributes when rewriting base64-encoded img tags (#3814)
+ - [eas] fixed EAS delete operation
 
 3.2.2 (2016-11-23)
 ------------------
