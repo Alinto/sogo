@@ -12,7 +12,7 @@
 </var:if>
 
 <var:if condition="isBody">
-<var:string value="currentUserName" const:escapeHTML="NO"/> erlaubt Ihnen nicht mehr den Zugang zu seinem Order <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName"/><var:string const:value='"' const:escapeHTML="NO"/>.
+<var:string value="currentUserName" const:escapeHTML="NO"/> erlaubt Ihnen nicht mehr den Zugang zu seinem Order <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/>.
 <!--
 Folgende URL erlaubt Ihnen, das Abonnement für diesen Ordner sofort zu beenden:
     <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES
