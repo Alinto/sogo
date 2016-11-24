@@ -748,7 +748,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   roles = [theCollection aclsForUser:[[context activeUser] login]];
 
 		  // We check ACLs on the collection and not on the SOGo object itself, as the add/delete rights are on the collection itself
-		  if (![roles containsObject: SOGoRole_ObjectEraser] || ![[sogoObject ownerInContext: context] isEqualToString: [[context activeUser] login]])
+                  if (![roles containsObject: SOGoRole_ObjectEraser] && ![[sogoObject ownerInContext: context] isEqualToString: [[context activeUser] login]])
                     {
                       // This will trigger an add-command to re-add the component to the client
 		      [sogoObject touch];
