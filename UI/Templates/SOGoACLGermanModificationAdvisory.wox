@@ -12,7 +12,7 @@
 </var:if>
 
 <var:if condition="isBody">
-<var:string value="currentUserName" const:escapeHTML="NO"/> hat Ihre Zugangsberechtigungen für seinen Ordner <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName"/><var:string const:value='"' const:escapeHTML="NO"/> geändert.
+<var:string value="currentUserName" const:escapeHTML="NO"/> hat Ihre Zugangsberechtigungen für seinen Ordner <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> geändert.
 <!--
 Folgende URL erlaubt Ihnen, diesen Ordner sofort zu abonnieren:
     <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES
