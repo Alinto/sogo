@@ -231,7 +231,7 @@
                                          type, classification]
                     inContext: context];
 
-  tags = [NSArray arrayWithObjects: @"DTSTAMP", @"DTSTART", @"DTEND", @"DUE", @"EXDATE", @"EXRULE", @"RRULE", nil];
+  tags = [NSArray arrayWithObjects: @"DTSTAMP", @"DTSTART", @"DTEND", @"DUE", @"EXDATE", @"EXRULE", @"RRULE", @"RECURRENCE-ID", nil];
   uid = [[component uid] asCryptedPassUsingScheme: @"ssha256"
                                          withSalt: [[settings userSalt] dataUsingEncoding: NSASCIIStringEncoding]
                                       andEncoding: encHex];
