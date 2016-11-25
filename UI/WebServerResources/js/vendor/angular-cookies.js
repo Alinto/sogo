@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.5.8
+ * @license AngularJS v1.5.9
  * (c) 2010-2016 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -28,7 +28,7 @@ angular.module('ngCookies', ['ng']).
    * @description
    * Use `$cookiesProvider` to change the default behavior of the {@link ngCookies.$cookies $cookies} service.
    * */
-   provider('$cookies', [function $CookiesProvider() {
+   provider('$cookies', [/** @this */function $CookiesProvider() {
     /**
      * @ngdoc property
      * @name $cookiesProvider#defaults
@@ -299,9 +299,9 @@ function $$CookieWriter($document, $log, $browser) {
     // - 4096 bytes per cookie
     var cookieLength = str.length + 1;
     if (cookieLength > 4096) {
-      $log.warn("Cookie '" + name +
-        "' possibly not set or overflowed because it was too large (" +
-        cookieLength + " > 4096 bytes)!");
+      $log.warn('Cookie \'' + name +
+        '\' possibly not set or overflowed because it was too large (' +
+        cookieLength + ' > 4096 bytes)!');
     }
 
     return str;
@@ -314,7 +314,7 @@ function $$CookieWriter($document, $log, $browser) {
 
 $$CookieWriter.$inject = ['$document', '$log', '$browser'];
 
-angular.module('ngCookies').provider('$$cookieWriter', function $$CookieWriterProvider() {
+angular.module('ngCookies').provider('$$cookieWriter', /** @this */ function $$CookieWriterProvider() {
   this.$get = $$CookieWriter;
 });
 

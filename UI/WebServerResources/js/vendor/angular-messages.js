@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.5.8
+ * @license AngularJS v1.5.9
  * (c) 2010-2016 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -352,7 +352,7 @@ angular.module('ngMessages', [], function initAngularHelpers() {
     return {
       require: 'ngMessages',
       restrict: 'AE',
-      controller: ['$element', '$scope', '$attrs', function($element, $scope, $attrs) {
+      controller: ['$element', '$scope', '$attrs', function NgMessagesCtrl($element, $scope, $attrs) {
         var ctrl = this;
         var latestKey = 0;
         var nextAttachId = 0;
@@ -412,9 +412,11 @@ angular.module('ngMessages', [], function initAngularHelpers() {
             messageCtrl.detach();
           });
 
-          unmatchedMessages.length !== totalMessages
-              ? $animate.setClass($element, ACTIVE_CLASS, INACTIVE_CLASS)
-              : $animate.setClass($element, INACTIVE_CLASS, ACTIVE_CLASS);
+          if (unmatchedMessages.length !== totalMessages) {
+            $animate.setClass($element, ACTIVE_CLASS, INACTIVE_CLASS);
+          } else {
+            $animate.setClass($element, INACTIVE_CLASS, ACTIVE_CLASS);
+          }
         };
 
         $scope.$watchCollection($attrs.ngMessages || $attrs['for'], ctrl.render);
@@ -430,8 +432,8 @@ angular.module('ngMessages', [], function initAngularHelpers() {
           if (!renderLater) {
             renderLater = true;
             $scope.$evalAsync(function() {
-              if (renderLater) {
-                cachedCollection && ctrl.render(cachedCollection);
+              if (renderLater && cachedCollection) {
+                ctrl.render(cachedCollection);
               }
             });
           }
