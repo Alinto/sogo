@@ -1,11 +1,12 @@
-3.2.3 (2016-12-DD)
+3.2.3 (2016-11-25)
 ------------------
 
 New features
- - [core] added photo support for LDAP-based address books (#747/#2184)
+ - [core] added photo support for LDAP-based address books (#747, #2184)
 
 Enhancements
  - [web] updated CKEditor to version 4.6.0
+ - [web] updated Angular to version 1.5.9
 
 Bug fixes
  - [web] restore attributes when rewriting base64-encoded img tags (#3814)
@@ -18,7 +19,7 @@ Bug fixes
 New features
  - [core] support repetitive email alarms on tasks and events (#1053)
  - [web] allow to hide center column on large screens (#3861)
- - [eas] relaxed permission requirements for subscription synchronizations (#3118 and #3180)
+ - [eas] relaxed permission requirements for subscription synchronizations (#3118, #3180)
 
 Enhancements
  - [core] added sha256-crypt and sha512-crypt password support
