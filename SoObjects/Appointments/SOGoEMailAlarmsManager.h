@@ -32,10 +32,6 @@
 
 + (id) sharedEMailAlarmsManager;
 
-/* PUT */
-- (void) handleAlarmsInCalendar: (iCalCalendar *) calendar
-                  fromComponent: (SOGoCalendarComponent *) component;
-
 /* DELETE */
 - (void) deleteAlarmsFromComponent: (SOGoCalendarComponent *) component;
 

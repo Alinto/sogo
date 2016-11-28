@@ -25,6 +25,8 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <NGObjWeb/WOContext+SoObjects.h>
+
 #import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalEvent.h>
@@ -33,6 +35,9 @@
 #import <GDLContentStore/GCSAlarmsFolder.h>
 #import <GDLContentStore/GCSFolder.h>
 #import <GDLContentStore/GCSFolderManager.h>
+
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserFolder.h>
 
 #import "SOGoAppointmentFolder.h"
 #import "SOGoAppointmentFolders.h"

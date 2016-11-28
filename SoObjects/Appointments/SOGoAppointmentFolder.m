@@ -976,7 +976,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSCalendarDate *recurrenceId, *masterEndDate, *endDate;
   NSMutableDictionary *newRecord;
   NGCalendarDateRange *newRecordRange;
-  NSComparisonResult compare;
   NSNumber *dateSecs;
   id master;
 

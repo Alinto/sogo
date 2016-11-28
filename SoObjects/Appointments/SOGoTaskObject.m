@@ -21,6 +21,7 @@
 
 #import <Foundation/NSCalendarDate.h>
 
+#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
