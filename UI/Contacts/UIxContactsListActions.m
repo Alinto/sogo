@@ -79,10 +79,18 @@
 {
   NSString *s;
   WORequest *rq;
-  
+  static NSArray *sortKeys = nil;
+
+  if (!sortKeys)
+    {
+      sortKeys = [NSArray arrayWithObjects: @"c_cn", @"c_sn", @"c_givenname", @"c_mail",
+                          @"c_screenname", @"c_o", @"c_telephonenumber", nil];
+      [sortKeys retain];
+    }
+
   rq = [context request];
   s = [rq formValueForKey: @"sort"];
-  if (![s length])
+  if (![s length] || ![sortKeys containsObject: s])
     s = [self defaultSortKey];
 
   return s;
@@ -98,7 +106,8 @@
   ascending = [[context request] formValueForKey: @"asc"];
 
   if ([sort length])
-    { 
+    {
+      sort = [self sortKey];
       us = [[context activeUser] userSettings];
       contactSettings = [us objectForKey: @"Contact"];
       // Must create if it doesn't exist
