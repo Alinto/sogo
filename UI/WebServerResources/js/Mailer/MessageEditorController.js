@@ -93,25 +93,31 @@
      */
     function $parentControllers() {
       var originMessage, ctrls = {};
-      if ($window.opener) {
-        if ($window.opener.$mailboxController) {
-          if ($window.opener.$mailboxController.selectedFolder.type == 'draft') {
-            ctrls.draftMailboxCtrl = $window.opener.$mailboxController;
-            if ($window.opener.$messageController &&
-                $window.opener.$messageController.message.uid == stateMessage.uid) {
-              // The draft is opened in the parent window
-              ctrls.draftMessageCtrl = $window.opener.$messageController;
+
+      try {
+        if ($window.opener) {
+          if ('$mailboxController' in $window.opener &&
+              'selectedFolder' in $window.opener.$mailboxController) {
+            if ($window.opener.$mailboxController.selectedFolder.type == 'draft') {
+              ctrls.draftMailboxCtrl = $window.opener.$mailboxController;
+              if ('$messageController' in $window.opener &&
+                  $window.opener.$messageController.message.uid == stateMessage.uid) {
+                // The draft is opened in the parent window
+                ctrls.draftMessageCtrl = $window.opener.$messageController;
+              }
             }
-          }
-          else if (stateMessage.origin) {
-            originMessage = stateMessage.origin.message;
-            if ($window.opener.$mailboxController.selectedFolder.$id() == originMessage.$mailbox.$id()) {
-              // The message mailbox is opened in the parent window
-              ctrls.originMailboxCtrl = $window.opener.$mailboxController;
+            else if (stateMessage.origin) {
+              originMessage = stateMessage.origin.message;
+              if ($window.opener.$mailboxController.selectedFolder.$id() == originMessage.$mailbox.$id()) {
+                // The message mailbox is opened in the parent window
+                ctrls.originMailboxCtrl = $window.opener.$mailboxController;
+              }
             }
           }
         }
       }
+      catch (e) {}
+
       return ctrls;
     }
 
