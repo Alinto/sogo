@@ -112,12 +112,12 @@
 "Cancel" = "İptal";
 "Reset" = "Öntanımlı";
 "Save" = "Kaydet";
-"show_rejected_apts" = "Reddedilen randevuları göster";
-"hide_rejected_apts" = "Reddedilen randevuları gizle";
+"show_rejected_apts" = "Reddedilen çalışmaları göster";
+"hide_rejected_apts" = "Reddedilen çalışmaları gizle";
 
 /* Schedule */
 "Schedule" = "İş Programı";
-"No appointments found" = "Randevu bulunamadı";
+"No appointments found" = "Çalışma bulunamadı";
 "Meetings proposed by you" = "Sizin tarafınızdan teklif edilen toplantılar";
 "Meetings proposed to you" = "Size teklif edilen toplantılar";
 "sched_startDateFormat" = "%d/%m %H:%M";
@@ -125,8 +125,8 @@
 "accept" = "Kabul et";
 "decline" = "Reddet";
 "more attendees" = "Diğer katılımcılar";
-"Hide already accepted and rejected appointments" = "Kabul edilmiş ve reddedilmiş randevuları gizle";
-"Show already accepted and rejected appointments" = "Kabul edilmiş ve reddedilmiş randevuları göster";
+"Hide already accepted and rejected appointments" = "Kabul edilmiş ve reddedilmiş çalışmaları gizle";
+"Show already accepted and rejected appointments" = "Kabul edilmiş ve reddedilmiş çalışma göster";
 
 /* Print view */
 "LIST" = "Liste";
@@ -143,14 +143,14 @@
 "Backgrounds" = "Arkaplan";
 
 /* Appointments */
-"Appointment viewer" = "Randevu Gösterici";
-"Appointment editor" = "Randevu Düzenleyici";
-"Appointment proposal" = "Randevu Teklifi";
-"Appointment on" = "Randevu";
+"Appointment viewer" = "Çalışma Görüntüleyici";
+"Appointment editor" = "Çalışma Düzenleyici";
+"Appointment proposal" = "Çalışma Teklifi";
+"Appointment on" = "Çalışma";
 "Start" = "Başlangıç";
 "End" = "Bitiş";
 "Due Date" = "Son Tarih";
-"Name" = "İsim";
+"Name" = "Tam İsim";
 "Email" = "E-posta";
 "Status" = "Durum";
 "% complete" = "% tamamlandı";
@@ -189,7 +189,7 @@
 
 /* text used in overviews and tooltips */
 "empty title" = "Boş başlık";
-"private appointment" = "Kişisel randevu";
+"private appointment" = "Kişisel çalışma";
 "Change..." = "Değiştir...";
 
 /* Appointments (participation state) */
@@ -223,7 +223,7 @@
 "Search" = "Arama";
 "Search attendees" = "Katılımcıları ara";
 "Search resources" = "Kaynakları ara";
-"Search appointments" = "Randevuları ara";
+"Search appointments" = "Çalışmaları ara";
 "All day Event" = "Tam gün süren Etkinlik";
 "check for conflicts" = "Çakışmaları denetle";
 "URL" = "URL";
@@ -304,10 +304,10 @@
 "Year(s)" = "Yıl";
 
 /* [Event recurrence editor] Ex: Every first Sunday _of_ April */
-"cycle_of" = "-";
+"cycle_of" = "döngü";
 "No end date" = "Bitiş tarihi yok";
 "Create" = "Sadece";
-"appointment(s)" = "randevu";
+"appointment(s)" = "çalışma";
 "Repeat until" = "Şu Tarihe Kadar Tekrar Et";
 "End Repeat" = "Tekrar Bitişi";
 "Never" = "Hiç bir zaman";
@@ -379,7 +379,7 @@
 "Show Time as Free" = "Bu Zaman Aralığını Serbest Olarak Göster";
 
 /* email notifications */
-"Send Appointment Notifications" = "Randevu Bildirimi Gönder";
+"Send Appointment Notifications" = "Çalışma Bildirimi Gönder";
 "From" = "Başlangıç";
 "To" = "Bitiş";
 
@@ -454,7 +454,7 @@ validate_untilbeforeend    = "Tekrar bitiş tarihi ilk tekrar tarihinden sonra o
 "Work days only" = "Sadece çalışma günleri";
 "The whole day" = "Tam gün";
 "Between" = ":";
-"and" = "-";
+"and" = "ve";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Bir ya da daha fazla katılımcı ile zaman çakışması var.\nYine de mevcut düzenlemeyi tutmak ister misiniz?";
 
@@ -517,7 +517,7 @@ vtodo_class2 = "(Gizli görev)";
 "monthFieldInvalid" = "Lütfen Ay alanına 1 veya daha büyük bir sayısal değer belirleyin.";
 "monthDayFieldInvalid" = "Lütfen ayın günü alanında 1 veya daha büyük bir sayısal değer belirleyin.";
 "yearFieldInvalid" = "Lütfen Yıl alanına 1 veya daha büyük bir sayısal değer belirleyin.";
-"appointmentFieldInvalid" = "Lütfen Randevu alanına 1 veya daha büyük bir sayısal değer belirleyin.";
+"appointmentFieldInvalid" = "Lütfen Çalışma alanına 1 veya daha büyük bir sayısal değer belirleyin.";
 "recurrenceUnsupported" = "Bu tip tekrar şimdilik desteklenmiyor.";
 "Please specify a calendar name." = "Lütfen bir takvim adı belirtin.";
 "tagNotDefined" = "Bu takvimi eşitlemek istiyorsanız bir etiket belirtmelisiniz.";
@@ -529,7 +529,7 @@ vtodo_class2 = "(Gizli görev)";
 "EventCopyError" = "Kopyalama başarısız oldu. Lütfen başka bir takvimi kopyalamayı deneyin.";
 "Please select at least one calendar" = "Lütfen en az bir takvim seçin";
 "Open Task..." = "Görev Aç...";
-"Mark Completed" = "Tamamlanmış olarak İşaretle";
+"Mark Completed" = "Tamamlananları İşaretle";
 "Delete Task" = "Görevi Sil";
 "Delete Event" = "Etkinliği Sil";
 "Copy event to my calendar" = "Etkinliği takvimime kopyala";
@@ -559,7 +559,7 @@ vtodo_class2 = "(Gizli görev)";
 "Back" = "Geri";
 "Day" = "Gün";
 "Month" = "Ay";
-"New Appointment" = "Yeni  Randevu";
+"New Appointment" = "Yeni  Çalışma";
 "filters" = "süzgeçler";
 "Today" = "Bugün";
 "More options" = "Daha fazla seçenek";

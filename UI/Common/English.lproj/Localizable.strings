@@ -121,11 +121,20 @@
 /* Error message display bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Enter at least %{minimumSearchLength} characters";
 
+/* Toggle visibility (ex: mail account in left navigation menu) */
+"Toggle visibility" = "Toggle visibility";
+
+/* Toggle multiple items at the same time (hotkeys cheatsheet) */
+"Toggle range of items" = "Toggle range of items";
+
 /* Question mark shows list of hotkeys */
 "Show or hide this help" = "Show or hide this help";
 
 /* Space key */
 "key_space" = "space";
+
+/* Shift and space key */
+"key_shift+space" = "shift + space";
 
 /* Up arrow key */
 "key_up" = "↑";

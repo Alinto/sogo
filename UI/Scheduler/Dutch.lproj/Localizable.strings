@@ -366,6 +366,15 @@
 "zoom_50" = "50%";
 "zoom_25" = "25%";
 
+/* Arial label for reminder units */
+"Reminder units" = "Herinnering";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Positie herinnering";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Herinnering relatie";
+
 /* transparency */
 "Show Time as Free" = "Toon tijd als vrij";
 
@@ -379,6 +388,8 @@ validate_notitle           = "U heeft geen titel opgegeven. Wilt u doorgaan?";
 validate_invalid_startdate = "Ongeldige begindatum!";
 validate_invalid_enddate   = "Ongeldige einddatum!";
 validate_endbeforestart    = "De gekozen einddatum is voor de begindatum.";
+validate_untilbeforeend    = "De herhaling moet eindigen nadat deze eenmaal is voorgekomen.";
+
 "Events" = "Afspraken";
 "Tasks" = "Taken";
 "Show completed tasks" = "Voltooide taken weergeven";
@@ -569,3 +580,24 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 
 /* Aria label for scope of search on events or tasks */
 "Search scope" = "Zoekbereik";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

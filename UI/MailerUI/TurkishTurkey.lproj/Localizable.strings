@@ -32,7 +32,7 @@
 "Create a new message" = "Yeni ileti oluştur";
 "Go to address book" = "Adres defterine git";
 "Reply to the message" = "İletiyi yanıtla";
-"Reply to sender and all recipients" = "Göndereni ve diğer tüm alıcıları yanıtla";
+"Reply to sender and all recipients" = "Göndereni ve alıcıların hepsini yanıtla";
 "Forward selected message" = "E-postayı başkasına ilet";
 "Delete selected message or folder" = "Seçili ileti veya klasörü sil";
 "Print this message" = "İletiyi yazdır";
@@ -76,7 +76,7 @@
 "Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
 "List and see this folder" = "Klasörü listele ve görüntüle";
 "Read mails from this folder" = "Klasördeki iletileri okur";
-"Mark mails read and unread" = "İletileri okumuş ve okunmamış olarak işaretler";
+"Mark mails read and unread" = "Okumuş ve okunmamış iletileri işaretle";
 "Modify the flags of the mails in this folder" = "Bu klasördeki iletilerin yıldızlarını değiştirir";
 "Insert, copy and move mails into this folder" = "İletiler bu klasöre yerleştirir, kopyalar ve taşır";
 "Post mails" = "İletileri postalar";
@@ -150,8 +150,8 @@
 "last"          = "En son";
 "msgnumber_to"  = "alıcı";
 "msgnumber_of"  = "den";
-"Mark Unread" = "Okunmamış olarak işaretle";
-"Mark Read"   = "Okunmuş olarak işaretle";
+"Mark Unread" = "Okunmamışları İşaretle";
+"Mark Read"   = "Okunmuşları İşaretle";
 "Untitled" = "Başlıksız";
 
 /* Tree */
@@ -194,7 +194,7 @@
 
 /* Use This Folder menu */
 "Sent Messages" = "Gönderilmiş İletiler";
-"Drafts" = "Taslaklar";
+"Drafts" = "Taslak İletiler";
 "Deleted Messages" = "Silinmiş İletiler";
 "Junk Messages" = "İstenmeyen İletiler";
 
@@ -220,8 +220,8 @@
 "Print..." = "Yazdır...";
 "Delete Message" = "İletiyi Sil";
 "Delete Selected Messages" = "Seçili İletileri Sil";
-"Mark the selected messages as junk" = "Seçili İletileri İstenmeyen Olarak İşaretle";
-"Mark the selected messages as not junk" = "Seçili İletileri İstenen Olarak İşaretle";
+"Mark the selected messages as junk" = "Seçili iletileri istenmeyen olarak işaretle";
+"Mark the selected messages as not junk" = "Seçili iletileri istenen olarak işaretle";
 
 /* Text appended to the recipients list when there are too many recipients */
 "and %{0} more..." = "ve %{0} daha...";
@@ -239,7 +239,7 @@
 
 /* Mark popup menu */
 "As Read" = "Okunmuş";
-"Thread As Read" = "Okunmuşları Zincirleme Sırala";
+"Thread As Read" = "Okundukça Diz";
 "As Read By Date..." = "Okunma Tarihi...";
 "All Read" = "Hepsi Okunmuş";
 "Flag" = "Yıldız";
@@ -259,7 +259,7 @@
 "Please specify at least one filter" = "Lütfen en az bir süzgeç belirtin";
 
 /* Folder operations */
-"Name" = "İsim";
+"Name" = "Tam İsim";
 "Enter the new name of your folder"
  ="Yeni klasörünüzün adını yazın";
 "Do you really want to move this folder into the trash ?"
@@ -268,6 +268,10 @@
 "Quota" = "Kota:";
 "quotasFormat" = "%{0}%  kullanılıyor, toplam %{1} MB";
 "Unable to move/delete folder." = "Klasör taşınamıyor/silinemiyor.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "E-posta klasörü çöp kutusuna taşınamıyor. Klasörü hemen silmek ister misiniz?";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Seçili iletileri silmek istediğinizden emin misiniz?";
@@ -300,7 +304,7 @@
 
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
-= "İletileri çöp kutusuna taşımak mümkün değil. İletileri hemen silmek ister misiniz?";
+= "İletiler çöp kutusuna taşınamıyor. Bu iletileri hemen silmek ister misiniz?";
 
 /* Message editing */
 "error_missingsubject" = "İletiye bir konu başlığı yazılmadı. İletiyi konusuz olarak göndermek istediğinizden emin misiniz?";
@@ -344,11 +348,13 @@
 "Set as Junk" = "İstenmeyen olarak belirle";
 
 "Sort" = "Sıralandır";
+"Order Received" = "Alınan Tarih";
 "Descending Order" = "Azalan Sıralama";
 "Back" = "Geri";
 "Copy messages" = "İletileri kopyala";
 "More messages options" = "Diğer ileti seçenekleri";
-"Mark as Unread" = "Okunmamış olarak işaretle";
+"Mark as Unread" = "Okunmamış olarak İşaretle";
+"Mark as Read" = "Okunmuş olarak İşaretle";
 "Closing Window ..." = "Pencere Kapatılıyor ...";
 "Tried to send too many mails. Please wait." = "Çok fazla ileti gönderilmeye çalışıldı. Lütfen bekleyin.";
 "View Mail" = "İletiyi Görüntüle";
@@ -366,5 +372,23 @@
 /* Subscriptions Dialog */
 "Manage Subscriptions" = "Abonelikleri Yönet";
 
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Süzgeç";
+
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

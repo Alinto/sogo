@@ -106,7 +106,7 @@
 "Access Rights" = "Droits d'accès";
 "Add User" = "Ajouter un utilisateur";
 "Loading" = "Chargement";
-"No such user." = "Aucun utilisateur.";
+"No such user." = "Aucun utilisateur trouvé.";
 "You cannot (un)subscribe to a folder that you own!" = "Vous ne pouvez pas vous (dés)abonner à vos propres dossiers!";
 
 /* Authentication username */
@@ -121,11 +121,14 @@
 /* Error message display bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Entrez au moins %{minimumSearchLength} caractères";
 
+/* Toggle visibility (ex: mail account in left navigation menu) */
+"Toggle visibility" = "Basculer l'affichage";
+
 /* Question mark shows list of hotkeys */
 "Show or hide this help" = "Afficher ou cache cette aide";
 
 /* Space key */
-"key_space" = "space";
+"key_space" = "espace";
 
 /* Up arrow key */
 "key_up" = "↑";
@@ -140,13 +143,13 @@
 "key_right" = "→";
 
 /* Shift and up arrow combo keys */
-"key_shift+up" = "shift + ↑";
+"key_shift+up" = "maj. + ↑";
 
 /* Shift and down arrow combo keys */
-"key_shift+down" = "shift + ↓";
+"key_shift+down" = "maj. + ↓";
 
 /* Backspace key */
-"key_backspace" = "backspace";
+"key_backspace" = "⌫";
 
 /* Hotkey to start a search */
 "hotkey_search" = "s";

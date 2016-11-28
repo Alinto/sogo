@@ -15,6 +15,7 @@
 
 "Authentication Failed" = "Kullanıcı Kimliği Doğrulanamadı";
 "Wrong username or password." = "Kullanıcı adı veya şifre yanlış.";
+"Retry" = "Yeniden deneyin";
 "cookiesNotEnabled" = "Giriş yapamıyorsunuz çünkü tarayıcınızdaki çerezler engellenmiş. Lütfen tarayıcınızın ayarlarında çerezleri etkinleştirip, tekrar deneyin.";
 "browserNotCompatible" = "Tarayıcı sürümünüzün bu sitede henüz desteklenmediğini tespit ettik.  Tavsiyemiz Firefox kullanmanız. Bu tarayıcının son sürümünü indirmek için aşağıdaki bağlantıya tıklayın.";
 "alternativeBrowsers" = "Diğer bir seçenek olarak, aşağıdaki uyumlu tarayıcıları da kullanabilirsiniz";

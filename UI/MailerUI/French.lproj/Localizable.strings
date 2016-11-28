@@ -269,6 +269,10 @@
 "quotasFormat" = "%{0}% utilisé sur %{1} MO";
 "Unable to move/delete folder." = "Impossible de déplacer ou supprimer le dossier.";
 
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "La boîte ne peut être déplacée dans la corbeille. Voulez-vous la supprimer immédiatement?";
+
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Voulez-vous vraiment supprimer les messages sélectionnés?";
 
@@ -344,11 +348,13 @@
 "Set as Junk" = "Utiliser pour les messages indésirables";
 
 "Sort" = "Trier";
+"Order Received" = "Date de réception";
 "Descending Order" = "Ordre descendant";
 "Back" = "Retour";
 "Copy messages" = "Copier les messages";
 "More messages options" = "Options messages avancées";
 "Mark as Unread" = "Marquer comme non-lu";
+"Mark as Read" = "Marquer comme lu";
 "Closing Window ..." = "Fermer la fenêtre...";
 "Tried to send too many mails. Please wait." = "Vous avez envoyé trop de courriels. Veillez patienter.";
 "View Mail" = "Voir le courriel";
@@ -366,5 +372,23 @@
 /* Subscriptions Dialog */
 "Manage Subscriptions" = "Abonnements";
 
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filtrer";
+
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "i";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

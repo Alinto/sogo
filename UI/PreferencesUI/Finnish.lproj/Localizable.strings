@@ -293,6 +293,9 @@
 "Connection error" = "Yhteysvirhe";
 "Service temporarily unavailable" = "Palvelu tilapäisesti pois käytöstä";
 
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Ota suodatin käyttöön";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Suodattimen nimi";
 /* Button label */

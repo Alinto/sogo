@@ -121,6 +121,9 @@
 /* Error message display bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "En az %{minimumSearchLength} harf girin";
 
+/* Toggle visibility (ex: mail account in left navigation menu) */
+"Toggle visibility" = "Görünürlük geçişi";
+
 /* Question mark shows list of hotkeys */
 "Show or hide this help" = "Bu yardımı gizle veya göster";
 

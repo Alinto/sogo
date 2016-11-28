@@ -41,20 +41,28 @@
 "Move To" = "Префрли во ";
 "Copy To" = "Копирај во";
 "Add to" = "Додади во";
+
 /* Subheader of empty addressbook */
 "No contact" = "Нема контакт";
+
 /* Subheader of system addressbook */
 "Start a search to browse this address book" = "Започни пребарување на овој адресар";
+
 /* Number of contacts in addressbook; string is prefixed by number */
 "contacts" = "контакти";
+
 /* No contact matching search criteria */
 "No matching contact" = "Не е пронајден контакт кој се совпаѓа";
+
 /* Number of contacts matching search criteria; string is prefixed by number */
 "matching contacts" = "Контакти кои се совпаѓаат";
+
 /* Number of selected contacts in list */
 "selected" = "одбрани";
+
 /* Empty right pane */
 "No contact selected" = "Не е одбран контакт";
+
 /* Tooltips */
 "Create a new address book card" = "Креирај нова адесна картичка";
 "Create a new list" = "Креирај нова листа";
@@ -95,9 +103,11 @@
 "Work" = "Работа";
 "Mobile" = "Мобилен";
 "Pager" = "Пејџер";
+
 /* categories */
 "contacts_category_labels" = "Колега, конкурент, клиент, пријател, фамилија, деловен партнер, провајдер, новинар, ВИП";
 "New category" = "Нова категорија";
+
 /* adresses */
 "Title" = "Наслов";
 "Service" = "Сервис";
@@ -134,12 +144,14 @@
 = "Не можете да се изземете или отпишете од вашиот личен адресар.";
 "Are you sure you want to delete the selected contacts?"
 = "Дали сте сигурни дека сакате да ги избришете одбраните контакти?";
+"Are you sure you want to delete the card of %{0}?" = "Дали сте сигурни дека сакате да ја избришете картичката на %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "Не можете да ја избришете картичката на \"%{0}\".";
 "You cannot subscribe to a folder that you own!"
 = "Не можете да се претплатите на папката која е ваша.";
 "Unable to subscribe to that folder!"
 = "Не е можно да се претплатите на оваа папка.";
+
 /* acls */
 "Access rights to" = "Пристапни права за";
 "For user" = "За корисникот";
@@ -158,11 +170,15 @@
 "The selected contact has no email address."
 = "Одбраниот контакт нема електронска адреса.";
 "Please select a contact." = "Одберете контакт.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} картичка(и) се ископирани";
+"%{0} card(s) moved" = "%{0} картичка(и) се префрлени";
 "SoAccessDeniedException" = "Не можете да запишувате во овој адресар.";
 "Forbidden" = "Не можете да запишувате во овој адресар.";
 "Invalid Contact" = "Одбраниот контакт повеќе не постои.";
 "Unknown Destination Folder" = "Одбраниот адресар повеќе не постои како одредница.";
+
 /* Lists */
 "List details" = "Детали за листата";
 "List name" = "Име на листата";
@@ -173,8 +189,10 @@
 "Add" = "Додади";
 "Lists can't be moved or copied." = "Листите не можат да бидат префрлени или копирани.";
 "Export" = "Извези";
-"Export Address Book..." = "Извеси го адресарот...";
+"Export Address Book..." = "Извези го адресарот...";
 "View Raw Source" = "Види го сировиот извор";
+
+/* Import */
 "Import Cards" = "Увези ја картичката";
 "Select a vCard or LDIF file." = "Одбери vCard или LDIF датотека.";
 "Upload" = "Префрли";
@@ -184,6 +202,7 @@
 "No card was imported." = "Ниту една картичка не е увезена.";
 "A total of %{0} cards were imported in the addressbook." = "Во адресарот се увезени вкупно %{0} картички.";
 "Reload" = "Обнови";
+
 /* Properties window */
 "Address Book Name" = "Име на адресарот";
 "Links to this Address Book" = "Линк кон оваа адресна книга";
@@ -231,3 +250,12 @@
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Предмет на пребарување";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Промени ја поставката";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

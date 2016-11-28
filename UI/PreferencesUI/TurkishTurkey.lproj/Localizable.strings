@@ -25,8 +25,8 @@
 "Forward" = "İlet";
 "Password" = "Şifre";
 "Categories" = "Kategoriler";
-"Appointments invitations" = "Randevu davetleri";
-"Name" = "İsim";
+"Appointments invitations" = "Çalışma davetleri";
+"Name" = "Tam İsim";
 "Color" = "Renk";
 "Add" = "Ekle";
 "Delete" = "Sil";
@@ -120,8 +120,8 @@
 "firstWeekOfYear_January1" = "1 Ocak'da başlar";
 "firstWeekOfYear_First4DayWeek" = "İlk 4-günlük haftadır";
 "firstWeekOfYear_FirstFullWeek" = "İlk tam haftadır";
-"Prevent from being invited to appointments" = "Randevulara davet almayı engelle";
-"White list for appointment invitations" = "Randevu daveti beyaz listesi";
+"Prevent from being invited to appointments" = "Çalışma davet almayı engelle";
+"White list for appointment invitations" = "Çalışma daveti beyaz listesi";
 "Contacts Names" = "Kişi İsimleri";
 
 /* Default Calendar */
@@ -146,9 +146,10 @@
 /* Mailer */
 "Labels" = "Etiketler";
 "Label" = "Etiket";
+"New label" = "Yeni etiket";
 "Show subscribed mailboxes only" = "Sadece üye olunan e-posta klasörlerini göster";
 "Synchronize only default mail folders (EAS)" = "Sadece varsayılan e-posta klasörlerini eşitle (EAS)";
-"Sort messages by threads" = "İlişkili iletileri zincirleme sırala";
+"Sort messages by threads" = "İletileri diziler halinde sırala";
 "When sending mail, add unknown recipients to my" = "İleti gönderirken, kayıtlı olmayan alıcıları aşağıdaki adres defterime ekle";
 "Address Book" = "Adres Defteri";
 "Forward messages" = "Başkasına İletilen e-postayı";
@@ -212,6 +213,7 @@
 /* Event+task categories */
 "Calendar Category" = "Takvim Kategorisi";
 "Add Calendar Category" = "Takvim Kategorisi Ekle";
+"New category" = "Yeni Kategori";
 "Remove Calendar Category" = "Takvim Kategorisi Çıkar";
 "Contact Category" = "Kişi Kategorisi";
 "Add Contact Category" = "Kişi Kategorisi Ekle";
@@ -317,11 +319,27 @@
 "Header" = "Başlık";
 "Body" = "Gövde";
 "Flag the message with" = "İletiye şu bayrağı ekle";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Yıldız";
+
 "Discard the message" = "İletiyi reddet";
 "File the message in" = "Şurada dosyala";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Posta Kutusu";
+
 "Keep the message" = "İletiyi tut";
 "Forward the message to" = "E-posta şu adrese ilet";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "E-posta";
+
 "Send a reject message" = "Reddedildi iletisi gönder";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "İleti";
+
 "Send a vacation message" = "Tatil iletisi gönder";
 "Stop processing filter rules" = "Süzgeç kurallarının işlenmesini durdur";
 "is under" = "küçükse";

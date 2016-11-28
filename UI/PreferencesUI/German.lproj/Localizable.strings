@@ -146,6 +146,7 @@
 /* Mailer */
 "Labels" = "Bezeichnungen";
 "Label" = "Schlagwort";
+"New label" = "Neue Bezeichnung";
 "Show subscribed mailboxes only" = "Nur abonnierte Ordner anzeigen";
 "Synchronize only default mail folders (EAS)" = "Nur Standard-Mail-Ordner synchronisieren (EAS)";
 "Sort messages by threads" = "Nachrichten nach Thema sortieren";
@@ -212,6 +213,7 @@
 /* Event+task categories */
 "Calendar Category" = "Kalenderkategorie";
 "Add Calendar Category" = "Kalenderkategorie hinzufügen";
+"New category" = "Neue Kathegorie";
 "Remove Calendar Category" = "Kalenderkategorie entfernen";
 "Contact Category" = "Kontaktkategorie";
 "Add Contact Category" = "Kontaktkategorie hinzufügen";
@@ -293,6 +295,9 @@
 "Connection error" = "Verbindungsfehler";
 "Service temporarily unavailable" = "Dienst vorübergehend nicht verfügbar";
 
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Filter aktivieren";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Filtername";
 /* Button label */
@@ -314,11 +319,27 @@
 "Header" = "Header";
 "Body" = "Inhalt";
 "Flag the message with" = "Markiere die Nachricht als";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Markierung";
+
 "Discard the message" = "Verwerfe die Nachricht";
 "File the message in" = "Verschiebe die Nachricht nach";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Postfach";
+
 "Keep the message" = "Behalte die Nachricht";
 "Forward the message to" = "Weiterleiten der Nachricht an";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "E-Mail-Adresse";
+
 "Send a reject message" = "Sende eine Ablehnungsnachricht";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Nachricht";
+
 "Send a vacation message" = "Sende eine Abwesenheitsnachricht";
 "Stop processing filter rules" = "Beende die Filterverarbeitung";
 "is under" = "ist kleiner";

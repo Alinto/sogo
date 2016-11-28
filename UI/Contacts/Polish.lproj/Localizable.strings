@@ -41,20 +41,28 @@
 "Move To" = "Przenieś do";
 "Copy To" = "Kopiuj do";
 "Add to" = "Dodaj do";
+
 /* Subheader of empty addressbook */
 "No contact" = "Brak kontaktów";
+
 /* Subheader of system addressbook */
 "Start a search to browse this address book" = "Aby przeglądnąć książkę adresową, rozpocznij wyszukiwanie";
+
 /* Number of contacts in addressbook; string is prefixed by number */
 "contacts" = "kontaktów";
+
 /* No contact matching search criteria */
 "No matching contact" = "Żaden kontakt nie pasuje";
+
 /* Number of contacts matching search criteria; string is prefixed by number */
 "matching contacts" = "pasujących kontaktów";
+
 /* Number of selected contacts in list */
 "selected" = "wybranych";
+
 /* Empty right pane */
 "No contact selected" = "Nie wybrano kontaktów";
+
 /* Tooltips */
 "Create a new address book card" = "Utwórz nowy kontakt w książce adresowej";
 "Create a new list" = "Utwórz nową listę";
@@ -95,9 +103,11 @@
 "Work" = "Praca";
 "Mobile" = "Telefon kom.";
 "Pager" = "Pager";
+
 /* categories */
 "contacts_category_labels" = "Kolega, Konkurencja, Klient, Przyjaciel, Rodzina, Biznes, Dostawca, Prasa, VIP";
 "New category" = "Nowa kategoria";
+
 /* adresses */
 "Title" = "Tytuł";
 "Service" = "Usługa";
@@ -134,12 +144,14 @@
 = "Nie możesz usunąć ani zrezygnować z subskrypbji osobistej książki adresowej.";
 "Are you sure you want to delete the selected contacts?"
 = "Czy na pewno chcesz skasować zaznaczone kontakty?";
+"Are you sure you want to delete the card of %{0}?" = "Na pewno chcesz usunąć kartę \"%{0}\"?";
 "You cannot delete the card of \"%{0}\"."
 = "Nie możesz skasować kontaktu do \"%{0}\".";
 "You cannot subscribe to a folder that you own!"
 = "Nie możesz zrezygnować z subskrypcji foldera, którego jesteś właścicielem.";
 "Unable to subscribe to that folder!"
 = "Nie można włączyć subskrypcji tego foldera.";
+
 /* acls */
 "Access rights to" = "Uprawnienia dla";
 "For user" = "Dla użytkownika";
@@ -158,11 +170,15 @@
 "The selected contact has no email address."
 = "Wskazany kontakt nie ma adresu e-mail.";
 "Please select a contact." = "Zaznacz kontakt.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "Skopiowano %{0} kart";
+"%{0} card(s) moved" = "Przeniesiono %{0} kart";
 "SoAccessDeniedException" = "Nie masz prawa zapisu do tej książki adresowej.";
 "Forbidden" = "Nie masz prawa zapisu do tej książki adresowej.";
 "Invalid Contact" = "Wskazany kontakt już nie istnieje.";
 "Unknown Destination Folder" = "Wybrana docelowa książka adresowa już nie istnieje.";
+
 /* Lists */
 "List details" = "Szczegóły listy";
 "List name" = "Nazwa listy";
@@ -175,6 +191,8 @@
 "Export" = "Eksport";
 "Export Address Book..." = "Eksportuj książkę adresową";
 "View Raw Source" = "Obejrzyj źródło";
+
+/* Import */
 "Import Cards" = "Importuj kontakty";
 "Select a vCard or LDIF file." = "Wskaż plik vCard lub LDIF.";
 "Upload" = "Wyślij";
@@ -184,6 +202,7 @@
 "No card was imported." = "Nie zaimportowano żadnego kontaktu.";
 "A total of %{0} cards were imported in the addressbook." = "Liczba wszystkich kontaktów zaimportowanych do książki adresowej: %{0}.";
 "Reload" = "Przeładuj";
+
 /* Properties window */
 "Address Book Name" = "Nazwa książki adresowej";
 "Links to this Address Book" = "Linki do tej książki adresowej";
@@ -231,3 +250,12 @@
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Zakres wyszukiwania";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Odwróć wskazanie";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

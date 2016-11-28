@@ -6,8 +6,16 @@
 "Domain" = "Domena";
 "Remember username" = "Pamiętaj nazwę użytkownika";
 "Connect" = "Zaloguj";
+
+/* Appears while authentication is in progress */
+"Authenticating" = "Logowanie";
+
+/* Appears when authentication succeeds */
+"Welcome" = "Witaj";
+
 "Authentication Failed" = "Logowanie nie powiodło się";
 "Wrong username or password." = "Zła nazwa użytkownika lub hasło.";
+"Retry" = "Ponów";
 "cookiesNotEnabled" = "Nie możesz się zalogować ponieważ twoja przeglądarka ma zablokowaną obsługę ciasteczek (cookies). Włącz obsługę ciasteczek w ustawieniach twojej przeglądarki i spróbuj ponownie.";
 "browserNotCompatible" = "Używasz przeglądarki WWW, która nie jest obecnie obsługiwana przez tę stronę. Rekomendowaną przeglądarką jest Firefox. Kliknij poniższy odnośnik aby pobrać najnowszą wersję tej przeglądarki.";
 "alternativeBrowsers" = "Alternatywnie możesz także używać następujących przeglądarek";
@@ -47,6 +55,7 @@
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
 "About" = "O programie";
 "AboutBox" = "SOGo, opracowane przez Inverse, jest bogato wyposażonym serwerem dla grup roboczych, w którym szczególną uwagę zwrócono na prostotę obsługi i skalowalność.<br/><br/>⏎SOGo udostępnia rozbudowany interfejs WWW, oparty na technologii AJAX i wspierający różne aplikacje pocztowe poprzez standardowe protokoły takie jak CalDAV i CardDAV.<br/><br/>⏎SOGo udostępnione jest na licencji <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> w wersji 2 lub nowszej, a niektóre fragmenty na licencji GNU LGPL w wersji 2. To jest wolne oprogramowanie - możesz je dowolnie modyfikować oraz rozpowszechniać. Oprogramowanie to NIE MA GWARANCJI, w zakresie dopuszczalnym przez prawo.<br/><br/>⏎ W poszukiwaniu pomocy technicznej sprawdź <a href=\"http://www.sogo.nu/en/support/community.html\">tą stronę</a>.";
 "Your account was locked due to too many failed attempts." = "Twoje konto zostało zablokowane wkutek zbyt wielu nieudanych prób logowania.";

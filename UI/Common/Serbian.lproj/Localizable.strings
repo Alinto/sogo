@@ -120,3 +120,54 @@
 
 /* Error message display bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Унестите најмање %{minimumSearchLength} карактера";
+
+/* Toggle visibility (ex: mail account in left navigation menu) */
+"Toggle visibility" = "Искључи видљивост";
+
+/* Question mark shows list of hotkeys */
+"Show or hide this help" = "Прокажи или сакри помоћ";
+
+/* Space key */
+"key_space" = "space";
+
+/* Up arrow key */
+"key_up" = "↑";
+
+/* Down arrow key */
+"key_down" = "↓";
+
+/* Left arrow key */
+"key_left" = "←";
+
+/* Right arrow key */
+"key_right" = "→";
+
+/* Shift and up arrow combo keys */
+"key_shift+up" = "shift + ↑";
+
+/* Shift and down arrow combo keys */
+"key_shift+down" = "shift + ↓";
+
+/* Backspace key */
+"key_backspace" = "backspace";
+
+/* Hotkey to start a search */
+"hotkey_search" = "s";
+
+/* Hotkey description to select next list item */
+"View next item" = "Погледај следећу ставку";
+
+/* Hotkey description to select previous list item */
+"View previous item" = "Погледај претходну ставку";
+
+/* Hotkey description to add next list item to selection */
+"Add next item to selection" = "Додај следећу ставку у одабрано";
+
+/* Hotkey description to add previous list item to selection */
+"Add previous item to selection" = "Додај претходну ставку у одабрано";
+
+/* Hotkey description to move backward in current view */
+"Move backward" = "Помери уназад";
+
+/* Hotkey description to move forward in current view */
+"Move forward" = "Помери унапред";

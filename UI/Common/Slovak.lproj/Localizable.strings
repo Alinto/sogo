@@ -11,6 +11,7 @@
 "Preferences" = "Predvoľby";
 "Administration" = "Správa";
 "Disconnect" = "Odpojiť";
+"Toggle Menu" = "Prepnúť menu";
 "Right Administration" = "Administrácia práv";
 "Log Console (dev.)" = "Log konzola (vývoj)";
 "User" = "Užívateľ";
@@ -29,7 +30,7 @@
 "Anybody accessing this resource from the public area" = "Každý, kto prístupuje k tomuto zdroju z verejného priestoru";
 "Sorry, the user rights can not be configured for that object." = "Je nám ľúto, užívateľské práva nie je možné konfigurovať pre daný objekt.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
-     = "Ktorýkoľvek užívateľ tohoto systému bude môcť vidieť Vašu emailovú shránku \"%{0}\". Ste si istý že veríte všetkým užívateľom?";
+     = "Ktorýkoľvek užívateľ tohoto systému bude môcť vidieť Vašu zložku \"%{0}\". Ste si istý, že veríte všetkým užívateľom?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
      = "Ktorýkoľvek užívateľ tohoto systému bude môcť vidieť Váš kalendár \"%{0}\". Ste si istý že veríte všetkým užívateľom?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
@@ -40,6 +41,7 @@
      = "Potencionálne ktokoľvek na internete bude môcť vidieť Váš adresár \"%{0}\", napriek tomu že nemá účet v tomto systéme. Sú tieto informácie vhodné pre verejnosť?";
 "Give Access" = "Daj prístup";
 "Keep Private" = "Nechaj súkromné";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Nedá sa prihlásiť k odberu tejto zložky!";
@@ -58,6 +60,7 @@
 "You cannot create a list in a shared address book." 
         = "Nemôžete vytvoriť zoznam v zdieľanom adresári.";
 "Warning" = "Varovanie";
+"Can't contact server" = "Pri kontaktovaní servera nastala chyba. Skúste to neskôr, prosím.";
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Nemate dovolený prístup k tomuto modulu alebo tento systém. Obráťte sa na správcu systému.";
 "You don't have the required privileges to perform the operation."
@@ -73,17 +76,21 @@
 "30 minutes" = "30 minút";
 "45 minutes" = "45 minút";
 "1 hour" = "1 hodinu";
+"1 day" = "1 deň";
+
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Zrušiť";
 "Yes" = "Áno";
 "No" = "Nie";
+
 /* alarms */
 "Reminder" = "Pripomienka";
 "Start" = "Štart";
 "Due Date" = "Splatnosť";
 "Location" = "Umiestnenie";
-/* Mail labels */
+
+/* mail labels */
 "Important" = "Dôležité";
 "Work" = "Pracovné";
 "Personal" = "Osobné";
@@ -96,3 +103,71 @@
 "a2_Thursday" = "Št";
 "a2_Friday" = "Pi";
 "a2_Saturday" = "So";
+"Access Rights" = "Prístupové práva";
+"Add User" = "Pridať užívateľa";
+"Loading" = "Spúštanie";
+"No such user." = "Spomenutý užívateľ neexistuje.";
+"You cannot (un)subscribe to a folder that you own!" = "Nemôžete sa prihlásiť (odhlásiť) na odber svojej vlastnej zložky!";
+
+/* Authentication username */
+"Username" = "Užívateľské meno";
+
+/* Authentication password */
+"Password" = "Heslo";
+
+/* Authentication failed */
+"Wrong username or password." = "Nesprávne uživateľské meno alebo heslo.";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Vložte minimálne %{minimumSearchLength} znakov";
+
+/* Toggle visibility (ex: mail account in left navigation menu) */
+"Toggle visibility" = "Prepnúť zobrazenie";
+
+/* Question mark shows list of hotkeys */
+"Show or hide this help" = "Zobraziť alebo skryť túto nápovedu";
+
+/* Space key */
+"key_space" = "space";
+
+/* Up arrow key */
+"key_up" = "↑";
+
+/* Down arrow key */
+"key_down" = "↓";
+
+/* Left arrow key */
+"key_left" = "←";
+
+/* Right arrow key */
+"key_right" = "→";
+
+/* Shift and up arrow combo keys */
+"key_shift+up" = "shift + ↑";
+
+/* Shift and down arrow combo keys */
+"key_shift+down" = "shift + ↓";
+
+/* Backspace key */
+"key_backspace" = "backspace";
+
+/* Hotkey to start a search */
+"hotkey_search" = "s";
+
+/* Hotkey description to select next list item */
+"View next item" = "Zobraziť nasledujúcu položku";
+
+/* Hotkey description to select previous list item */
+"View previous item" = "Zobraziť predošlú položku";
+
+/* Hotkey description to add next list item to selection */
+"Add next item to selection" = "Pridať nasledujúcu položku do výberu";
+
+/* Hotkey description to add previous list item to selection */
+"Add previous item to selection" = "Pridať predošlú položku do výberu";
+
+/* Hotkey description to move backward in current view */
+"Move backward" = "Posun späť";
+
+/* Hotkey description to move forward in current view */
+"Move forward" = "Posun vpred";

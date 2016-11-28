@@ -146,6 +146,7 @@
 /* Mailer */
 "Labels" = "Labels";
 "Label" = "Label";
+"New label" = "New label";
 "Show subscribed mailboxes only" = "Show subscribed mailboxes only";
 "Synchronize only default mail folders (EAS)" = "Synchronize only default mail folders (EAS)";
 "Sort messages by threads" = "Sort messages by threads";
@@ -212,6 +213,7 @@
 /* Event+task categories */
 "Calendar Category" = "Calendar Category";
 "Add Calendar Category" = "Add Calendar Category";
+"New category" = "New category";
 "Remove Calendar Category" = "Remove Calendar Category";
 "Contact Category" = "Contact Category";
 "Add Contact Category" = "Add Contact Category";
@@ -317,11 +319,27 @@
 "Header" = "Header";
 "Body" = "Body";
 "Flag the message with" = "Flag the message with";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Flag";
+
 "Discard the message" = "Discard the message";
 "File the message in" = "File the message in";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Mailbox";
+
 "Keep the message" = "Keep the message";
 "Forward the message to" = "Forward the message to";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "Email";
+
 "Send a reject message" = "Send a reject message";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Message";
+
 "Send a vacation message" = "Send a vacation message";
 "Stop processing filter rules" = "Stop processing filter rules";
 "is under" = "is under";

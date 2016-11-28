@@ -35,9 +35,9 @@ vtodo_class2 = "(Gizli görev)";
 = "%{Organizer} %{SentByText}şu etkinliği iptal etti: %{Summary}.\n\nBaşlangıç: %{StartDate} saat %{StartTime}\nBitiş: %{EndDate} saat %{EndTime}\nTanım: %{Description}";
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
-= "%{OldStartDate} tarihli \"%{Summary}\" randevu değişti.";
+= "\"%{Summary}\" isimli, %{OldStartDate} tarihli çalışma değişti";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= "%{OldStartDate} tarihli ve %{OldStartTime} saatli \"%{Summary}\" randevu değişti";
+= "\"%{Summary}\" isimli, %{OldStartDate} tarihli ve %{OldStartTime} saatli çalışma değişti";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
 = "\"%{Summary}\" buluşmasının şu özellikleri değişti:";
 "Please accept or decline those changes."

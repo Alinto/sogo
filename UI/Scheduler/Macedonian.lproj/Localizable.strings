@@ -29,7 +29,7 @@
 /* Week */
 "Week" = "Недела";
 "this week" = "оваа недела";
-"Week %d" = "Недела %d";
+"Week %d" = "%d Недела";
 "Previous Week" = "Претходната недела";
 "Next Week" = "Следната недела";
 
@@ -258,7 +258,7 @@
 /* status type */
 "status_" = "Не е специфицирано";
 "status_NOT-SPECIFIED" = "Не е специфицирано";
-"status_TENTATIVE" = "Можеби";
+"status_TENTATIVE" = "Не е сигурно";
 "status_CONFIRMED" = "Потврдено";
 "status_CANCELLED" = "Откажано";
 "status_NEEDS-ACTION" = "Треба активност";
@@ -352,7 +352,7 @@
 "reminder_WEEKS" = "недели";
 "reminder_BEFORE" = "пред";
 "reminder_AFTER" = "по";
-"reminder_START" = "настанот понува";
+"reminder_START" = "настанот почнува";
 "reminder_END" = "настанот завршува";
 "Reminder Details" = "Детали за потсетникот";
 "Choose a Reminder Action" = "Одбери активност на потсетување";
@@ -365,6 +365,15 @@
 "zoom_100" = "100%";
 "zoom_50" = "50%";
 "zoom_25" = "25%";
+
+/* Arial label for reminder units */
+"Reminder units" = "Единици за потсетник";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Позиција на потсетникот";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Релација на потсетникот";
 
 /* transparency */
 "Show Time as Free" = "Прикажи го времето како слободно";
@@ -379,6 +388,8 @@ validate_notitle           = "Нема наслов, да продолжам?";
 validate_invalid_startdate = "Некоректно поле за почетен датум!";
 validate_invalid_enddate   = "Некоректно поле за краен датум!";
 validate_endbeforestart    = "Внесениот краен датум е пред почетниот датум.";
+validate_untilbeforeend    = "Повторувањето мора да заврши по првото појавување.";
+
 "Events" = "Настани";
 "Tasks" = "Задачи";
 "Show completed tasks" = "Прикажи ги завршените задачи";
@@ -427,7 +438,7 @@ validate_endbeforestart    = "Внесениот краен датум е пре
 "Needs action" = "Треба активност";
 "Accepted" = "Прифатено";
 "Declined" = "Одбиено";
-"Tentative" = "Неодредено";
+"Tentative" = "Не е сигурно";
 "Free" = "Слободно";
 "Busy" = "Зафатено";
 "Maybe busy" = "Можеби зафатено";
@@ -510,7 +521,7 @@ vtodo_class2 = "(Доверлива задача)";
 "recurrenceUnsupported" = "Овој тип на повторувања моментално не е поддржана.";
 "Please specify a calendar name." = "Определете име на календарот.";
 "tagNotDefined" = "Морате да специфицирате таг ако сакате да го синхранизира овој календар.";
-"tagAlreadyExists" = "Тагот кој го зинесовте е веќе асоциран со друг календар.";
+"tagAlreadyExists" = "Тагот кој го внесовте е веќе асоциран со друг календар.";
 "tagHasChanged" = "Ако го проените тагот на вашиот календар, ќе треба да ги превчитате податоците на вашиот мобилен уред.\nДа продолжам?";
 "tagWasAdded" = "Ако сакате да г синхронизирате овој календар, ќе треба да ги превчитате податоците на вашиот мобилен уред.\nДа продолжам?";
 "tagWasRemoved" = "Ако го отстраните овој календар од синхронизација ќе треба да ги превчитате податоците на вашиот мобилен уред.\nДа продолжам?";
@@ -568,4 +579,25 @@ vtodo_class2 = "(Доверлива задача)";
 "Toggle item" = "Промени ја поставката";
 
 /* Aria label for scope of search on events or tasks */
-"Search scope" = "Предмет на пребарување";
+"Search scope" = "Опсег на пребарување";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

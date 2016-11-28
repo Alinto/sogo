@@ -11,13 +11,14 @@
 "Preferences" = "Předvolby";
 "Administration" = "Administrace";
 "Disconnect" = "Odhlásit";
+"Toggle Menu" = "Místní nabídka";
 "Right Administration" = "Administrace";
 "Log Console (dev.)" = "Konzole (dev.)";
 "User" = "Uživatel";
 "Vacation message is enabled" = "Odpověď v nepřítomnosti je zapnuta";
 "Help" = "Nápověda";
 "noJavascriptError" = "SOGo vyžaduje JavaScript. Ujistěte se prosím, že je povolen a aktivován v rámci nastavení Vašeho prohlížeče.";
-"noJavascriptRetry" = "Znovu";
+"noJavascriptRetry" = "Opakovat";
 "Owner" = "Vlastník";
 "Publish the Free/Busy information" = "Zveřejni informace o Volno/Není volno";
 "Add..." = "Přidat...";
@@ -40,6 +41,7 @@
      = "Potenciálně kdokoliv v Internetu bude mít přístup k vašemu adresáři \"%{0}\", i když není uživatelem tohoto systému. Jsou tyto informace vhodné pro veřejný Internet?";
 "Give Access" = "Umožnit přístup";
 "Keep Private" = "Ponechat soukromým";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Není možné se přihlásit k odebírání této složky!";
@@ -75,16 +77,19 @@
 "45 minutes" = "45 minut";
 "1 hour" = "1 hodinu";
 "1 day" = "1 den";
+
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Storno";
 "Yes" = "Ano";
 "No" = "Ne";
+
 /* alarms */
 "Reminder" = "Upomínka";
 "Start" = "Začátek";
 "Due Date" = "Do dne";
 "Location" = "Místo";
+
 /* mail labels */
 "Important" = "Důležitý";
 "Work" = "Pracovní";
@@ -98,3 +103,71 @@
 "a2_Thursday" = "Čt";
 "a2_Friday" = "Pá";
 "a2_Saturday" = "So";
+"Access Rights" = "Přístupová práva";
+"Add User" = "Přidat uživatele";
+"Loading" = "Nahrávání";
+"No such user." = "Uživatel neexistuje.";
+"You cannot (un)subscribe to a folder that you own!" = "Nemůžete (přestat)odebírat složku, kterou vlastníte!";
+
+/* Authentication username */
+"Username" = "Uživatelské jméno";
+
+/* Authentication password */
+"Password" = "Heslo";
+
+/* Authentication failed */
+"Wrong username or password." = "Špatné uživatelské jméno nebo heslo.";
+
+/* Error message display bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Zadejte alespoň %{minimumSearchLength} znaků";
+
+/* Toggle visibility (ex: mail account in left navigation menu) */
+"Toggle visibility" = "Přepnout zobrazení";
+
+/* Question mark shows list of hotkeys */
+"Show or hide this help" = "Zobrazit nebo skrýt tuto nápovědu";
+
+/* Space key */
+"key_space" = "space";
+
+/* Up arrow key */
+"key_up" = "↑";
+
+/* Down arrow key */
+"key_down" = "↓";
+
+/* Left arrow key */
+"key_left" = "←";
+
+/* Right arrow key */
+"key_right" = "→";
+
+/* Shift and up arrow combo keys */
+"key_shift+up" = "shift + ↑";
+
+/* Shift and down arrow combo keys */
+"key_shift+down" = "shift + ↓";
+
+/* Backspace key */
+"key_backspace" = "backspace";
+
+/* Hotkey to start a search */
+"hotkey_search" = "s";
+
+/* Hotkey description to select next list item */
+"View next item" = "Zobrazit následující položku";
+
+/* Hotkey description to select previous list item */
+"View previous item" = "Zobrazit předchozí položku";
+
+/* Hotkey description to add next list item to selection */
+"Add next item to selection" = "Přidat následující položku do výběru";
+
+/* Hotkey description to add previous list item to selection */
+"Add previous item to selection" = "Přidat předchozí položku do výběru";
+
+/* Hotkey description to move backward in current view */
+"Move backward" = "Posun zpět";
+
+/* Hotkey description to move forward in current view */
+"Move forward" = "Posun vpřed";

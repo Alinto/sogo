@@ -269,6 +269,10 @@
 "quotasFormat" = "użyte %{0}% z %{1} MB";
 "Unable to move/delete folder." = "Nie można przenieść/usunąć folderu.";
 
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Folder nie może zostać przeniesiony do kosza. Czy chcesz go teraz skasować?";
+
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Czy na pewno chcesz usunąć wskazane wiadomości?";
 
@@ -344,11 +348,13 @@
 "Set as Junk" = "Oznacz jako spam";
 
 "Sort" = "Sortuj";
+"Order Received" = "Odebrano polecenie";
 "Descending Order" = "Kolejność malejąca";
 "Back" = "Wstecz";
 "Copy messages" = "Kopiuj wiadomości";
 "More messages options" = "Więcej opcji wiadomości";
 "Mark as Unread" = "Oznacz jako nie przeczytany";
+"Mark as Read" = "Oznacz jako przeczytane";
 "Closing Window ..." = "Zamykanie okna";
 "Tried to send too many mails. Please wait." = "Próbowano wysłać zbyt wiele e-maili. Proszę czekać.";
 "View Mail" = "Pokaż e-mail";
@@ -362,3 +368,27 @@
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Zakres wyszukiwania";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Zarządzaj subskrypcjami";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filtr";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

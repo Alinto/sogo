@@ -146,6 +146,7 @@
 /* Mailer */
 "Labels" = "Ознаке";
 "Label" = "Ознака";
+"New label" = "Нова ознака";
 "Show subscribed mailboxes only" = "Прикажи само преплаћене поштанске сандучиће";
 "Synchronize only default mail folders (EAS)" = "Синхронизуј само подразумеване поштанске директоријуме (ЕАС)";
 "Sort messages by threads" = "Сортирај поруке по темама";
@@ -212,6 +213,7 @@
 /* Event+task categories */
 "Calendar Category" = "Категорија календара";
 "Add Calendar Category" = "Додај категорију календара";
+"New category" = "Нова категорија";
 "Remove Calendar Category" = "Уклони категорију календара";
 "Contact Category" = "Категорија контакта";
 "Add Contact Category" = "Додај категорију контакта";

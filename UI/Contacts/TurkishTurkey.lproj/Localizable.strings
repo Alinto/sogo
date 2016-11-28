@@ -23,7 +23,7 @@
 "Location" = "Konum";
 "Add a category" = "Bir kategori ekle";
 "MobilePhone" = "CepTelefonu";
-"Name" = "İsim";
+"Name" = "Tam İsim";
 "OfficePhone" = "OfisTelefonu";
 "Organization" = "Organizasyon";
 "Work Phone" = "İş Telefonu";
@@ -246,7 +246,7 @@
 "Add Screen Name" = "Görünen İsim Ekle";
 "Synchronization" = "Eşitleme";
 "Synchronize" = "Eşitle";
-"Sucessfully subscribed to address book" = "Adres defterine başarıyla abone";
+"Sucessfully subscribed to address book" = "Adres defterine başarıyla üye olundu";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Arama kapsamı";
