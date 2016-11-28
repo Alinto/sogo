@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  CalendarListController.$inject = ['$rootScope', '$scope', '$timeout', '$state', '$mdDialog', 'sgHotkeys', 'sgFocus', 'Dialog', 'Preferences', 'CalendarSettings', 'Calendar', 'Component'];
-  function CalendarListController($rootScope, $scope, $timeout, $state, $mdDialog, sgHotkeys, focus, Dialog, Preferences, CalendarSettings, Calendar, Component) {
+  CalendarListController.$inject = ['$rootScope', '$scope', '$timeout', '$state', '$mdDialog', 'sgHotkeys', 'sgFocus', 'Dialog', 'Preferences', 'CalendarSettings', 'Calendar', 'Component', 'Alarm'];
+  function CalendarListController($rootScope, $scope, $timeout, $state, $mdDialog, sgHotkeys, focus, Dialog, Preferences, CalendarSettings, Calendar, Component, Alarm) {
     var vm = this, hotkeys = [];
 
     vm.component = Component;
@@ -231,6 +231,7 @@
           // Immediately perform the adjustments
           component.$adjust(params).then(function() {
             $rootScope.$emit('calendars:list');
+            Alarm.getAlarms();
           }, function(response) {
             onComponentAdjustError(response, component, params);
           }).finally(function() {
