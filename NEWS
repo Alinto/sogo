@@ -1,3 +1,9 @@
+2.3.19 (2016-12-DD)
+-------------------
+
+Enhancements
+ - [core] added handling of BYSETPOS for BYDAY in recurrence rules
+
 2.3.18 (2016-11-28)
 -------------------
 
