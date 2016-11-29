@@ -140,7 +140,7 @@ NSNumber *iCalDistantFutureNumber = nil;
                                             [currentAttendee rfc822Email], @"email",
                                           ([[currentAttendee cnWithoutQuotes] length] ? [currentAttendee cnWithoutQuotes] : [currentAttendee rfc822Email]) , @"name",
                                           nil];
-      if ((uid = [currentAttendee uid]))
+      if ((uid = [currentAttendee uidInContext: context]))
         {
           [attendeeData setObject: uid forKey: @"uid"];
         }
@@ -156,12 +156,12 @@ NSNumber *iCalDistantFutureNumber = nil;
               if ([source conformsToProtocol: @protocol (SOGoDNSource)] &&
                   [[(NSObject <SOGoDNSource>*) source MSExchangeHostname] length])
                 {
-                  uid = [NSString stringWithFormat: @"%@:%@", [[context activeUser] login],
-                          [contactData valueForKey: @"c_uid"]];
-                  [attendeeData setObject: uid forKey: @"uid"];
+                  [attendeeData setObject: [NSNumber numberWithInt: 1] forKey: @"isMSExchange"];
+                  [attendeeData setObject: [contactData valueForKey: @"c_uid"] forKey: @"uid"];
                 }
             }
         }
+
       [attendeeData setObject: [[currentAttendee partStat] lowercaseString] forKey: @"partstat"];
       [attendeeData setObject: [[currentAttendee role] lowercaseString] forKey: @"role"];
       if ([[currentAttendee delegatedTo] length])

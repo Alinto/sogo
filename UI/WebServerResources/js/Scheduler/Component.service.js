@@ -618,8 +618,14 @@
     //   this.organizer.$image = Component.$gravatar(this.organizer.email, 32);
     // }
 
-    // Load freebusy of attendees
-    this.updateFreeBusy();
+    if (this.attendees) {
+      _.forEach(this.attendees, function(attendee) {
+        attendee.image = Component.$gravatar(attendee.email, 32);
+      });
+
+      // Load freebusy of attendees
+      this.updateFreeBusy();
+    }
 
     this.selected = false;
   };
@@ -774,7 +780,6 @@
 
     if (this.attendees) {
       _.forEach(this.attendees, function(attendee) {
-        attendee.image = Component.$gravatar(attendee.email, 32);
         _this.updateFreeBusyAttendee(attendee);
       });
     }
@@ -800,21 +805,37 @@
    * @param {Object} card - an Card object instance of the attendee
    */
   Component.prototype.updateFreeBusyAttendee = function(attendee) {
-    var params, url, days;
+    var resource, uid, params, days;
+
     if (attendee.uid) {
+      uid = attendee.uid;
+      if (attendee.domain)
+        uid += '@' + attendee.domain;
       params =
         {
           sday: this.start.getDayString(),
           eday: this.end.getDayString()
         };
-      url = ['..', '..', attendee.uid, 'freebusy.ifb'];
+
+      if (attendee.isMSExchange) {
+        // Attendee is not a local user, but her freebusy data is available from an external MS Exchange server;
+        // we query /SOGo/so/<login_user>/freebusy.ifb/ajaxRead?uid=<uid>
+        resource = Component.$$resource.userResource();
+        params.uid = uid;
+      }
+      else {
+        // Attendee is a user;
+        // web query /SOGo/so/<uid>/freebusy.ifb/ajaxRead
+        resource = Component.$$resource.userResource(uid);
+      }
+
       days = _.map(this.start.daysUpTo(this.end), function(day) { return day.getDayString(); });
 
       if (angular.isUndefined(attendee.freebusy))
         attendee.freebusy = {};
 
       // Fetch FreeBusy information
-      Component.$$resource.fetch(url.join('/'), 'ajaxRead', params).then(function(data) {
+      resource.fetch('freebusy.ifb', 'ajaxRead', params).then(function(data) {
         _.forEach(days, function(day) {
           var hour;
 
@@ -893,11 +914,13 @@
       else {
         // Single contact
         attendee = {
+          uid: card.c_uid,
+          domain: card.c_domain,
+          isMSExchange: card.ismsexchange,
           name: card.c_cn,
           email: card.$preferredEmail(),
           role: 'req-participant',
           partstat: 'needs-action',
-          uid: card.c_uid,
           $avatarIcon: card.$avatarIcon
         };
         if (!_.find(this.attendees, function(o) {

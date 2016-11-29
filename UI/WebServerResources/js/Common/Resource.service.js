@@ -49,7 +49,9 @@
    */
   Resource.prototype.userResource = function(uid) {
     var path = _.compact(this._activeUser.folderURL.split('/'));
-    path.splice(path.length - 1, 1, escape(uid));
+
+    if (uid)
+      path.splice(path.length - 1, 1, escape(uid));
 
     return new Resource(this._http, this._q, '/' + path.join('/'), this._activeUser);
   };
