@@ -1,6 +1,9 @@
 3.2.4 (2016-12-DD)
 ------------------
 
+Enhancements
+ - [core] added handling of BYSETPOS for BYDAY in recurrence rules
+
 Bug fixes
  - [web] fixed JavaScript exception when SOGo is launched from an external link (#3900)
  - [web] restored fetching of freebusy information of MS Exchange contacts
