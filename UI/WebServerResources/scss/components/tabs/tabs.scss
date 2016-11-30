@@ -1,1 +1,10 @@
 @import 'extends';
+
+/**
+ * This is a fix to make the tab resized to the surrounding md-content when
+ * its content is too large. Initially observed with events and tasks lists
+ * in the Calendar module and Angular Material 1.1.1.
+ */
+md-tab-content > div {
+  overflow: hidden;
+}
