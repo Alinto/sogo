@@ -466,7 +466,7 @@
                         <!-- selected --></md-icon> <var:string label:value="Calendar"/>
                     </md-button>
                   </md-menu-item>
-                  <md-menu-item ng-if="list.componentType == 'events'">
+                  <md-menu-item>
                     <md-button ng-click="list.sort('start')">
                       <md-icon ng-class="{ 'icon-check': list.sortedBy('start') }">
                         <!-- selected --></md-icon> <var:string label:value="Start"/>

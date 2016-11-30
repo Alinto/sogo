@@ -54,21 +54,22 @@
 #define taskCalendarNameIndex       2
 #define taskStatusIndex             3
 #define taskTitleIndex              4
-#define taskEndDateIndex            5
-#define taskClassificationIndex     6
-#define taskLocationIndex           7
-#define taskCategoryIndex           8
-#define taskViewableIndex           9
-#define taskEditableIndex          10
-#define taskErasableIndex          11
-#define taskPriorityIndex          12
-#define taskOwnerIndex             13
-#define taskIsCycleIndex           14
-#define taskNextAlarmIndex         15
-#define taskRecurrenceIdIndex      16
-#define taskIsExceptionIndex       17
-#define taskDescriptionIndex       18
-#define taskStatusFlagIndex        19
+#define taskStartDateIndex          5
+#define taskEndDateIndex            6
+#define taskClassificationIndex     7
+#define taskLocationIndex           8
+#define taskCategoryIndex           9
+#define taskViewableIndex          10
+#define taskEditableIndex          11
+#define taskErasableIndex          12
+#define taskPriorityIndex          13
+#define taskOwnerIndex             14
+#define taskIsCycleIndex           15
+#define taskNextAlarmIndex         16
+#define taskRecurrenceIdIndex      17
+#define taskIsExceptionIndex       18
+#define taskDescriptionIndex       19
+#define taskStatusFlagIndex        20
 
 @interface NSArray (SOGoEventComparison)
 
@@ -80,7 +81,8 @@
 - (NSComparisonResult) compareTasksAscending: (NSArray *) otherTask;
 - (NSComparisonResult) compareTasksPriorityAscending: (NSArray *) otherTask;
 - (NSComparisonResult) compareTasksTitleAscending: (NSArray *) otherTask;
-- (NSComparisonResult) compareTasksEndAscending: (NSArray *) otherTask;
+- (NSComparisonResult) compareTasksStartDateAscending: (NSArray *) otherTask;
+- (NSComparisonResult) compareTasksEndDateAscending: (NSArray *) otherTask;
 - (NSComparisonResult) compareTasksLocationAscending: (NSArray *) otherTask;
 - (NSComparisonResult) compareTasksCategoryAscending: (NSArray *) otherTask;
 - (NSComparisonResult) compareTasksCalendarNameAscending: (NSArray *) otherTask;

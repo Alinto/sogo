@@ -90,7 +90,7 @@ static NSArray *tasksFields = nil;
   {
     tasksFields = [NSArray arrayWithObjects: @"c_name", @"c_folder",
                    @"calendarName",
-                   @"c_status", @"c_title", @"c_enddate",
+                   @"c_status", @"c_title", @"c_startdate", @"c_enddate",
                    @"c_classification", @"c_location", @"c_category",
                    @"viewable", @"editable", @"erasable",
                    @"c_priority", @"c_owner",
@@ -1595,7 +1595,6 @@ _computeBlocksPosition (NSArray *blocks)
                                                       forAllDay: NO]];
       else
         [filteredTask addObject: [NSNull null]];
-      
       if (([tasksView isEqualToString:@"view_today"]  ||
            [tasksView isEqualToString:@"view_next7"]  ||
            [tasksView isEqualToString:@"view_next14"] ||
@@ -1621,8 +1620,10 @@ _computeBlocksPosition (NSArray *blocks)
     [filteredTasks sortUsingSelector: @selector (compareTasksTitleAscending:)];
   else if ([sort isEqualToString: @"priority"])
     [filteredTasks sortUsingSelector: @selector (compareTasksPriorityAscending:)];
+  else if ([sort isEqualToString: @"start"])
+    [filteredTasks sortUsingSelector: @selector (compareTasksStartDateAscending:)];
   else if ([sort isEqualToString: @"end"])
-    [filteredTasks sortUsingSelector: @selector (compareTasksEndAscending:)];
+    [filteredTasks sortUsingSelector: @selector (compareTasksEndDateAscending:)];
   else if ([sort isEqualToString: @"location"])
     [filteredTasks sortUsingSelector: @selector (compareTasksLocationAscending:)];
   else if ([sort isEqualToString: @"category"])

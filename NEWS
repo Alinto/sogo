@@ -3,6 +3,7 @@
 
 Enhancements
  - [core] added handling of BYSETPOS for BYDAY in recurrence rules
+ - [web] added sort by start date for tasks (#3840)
 
 Bug fixes
  - [web] fixed JavaScript exception when SOGo is launched from an external link (#3900)
