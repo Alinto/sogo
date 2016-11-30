@@ -68,7 +68,7 @@ static GCSStringFormatter *stringFormatter = nil;
 + (void) initialize
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  
+
   debugOn         = [ud boolForKey:@"GCSFolderDebugEnabled"];
   doLogStore      = [ud boolForKey:@"GCSFolderStoreDebugEnabled"];
 
@@ -91,7 +91,7 @@ static GCSStringFormatter *stringFormatter = nil;
   NSEnumerator *fields;
   GCSFieldInfo *field;
   NSString *fieldName;
-  
+
   if ((self = [super init])) {
     folderManager  = [_fm    retain];
     folderInfo     = [_ftype retain];
@@ -114,7 +114,7 @@ static GCSStringFormatter *stringFormatter = nil;
 	if (![fieldName isEqualToString: @"c_name"])
           [contentFieldNames addObject: fieldName];
       }
-    
+
     folderId       = [_folderId copy];
     folderName     = [[_path lastPathComponent] copy];
     path           = [_path   copy];
@@ -124,7 +124,7 @@ static GCSStringFormatter *stringFormatter = nil;
     folderTypeName = [_ftname copy];
 
     ofFlags.requiresFolderSelect = 0;
-    ofFlags.sameTableForQuick = 
+    ofFlags.sameTableForQuick =
       [location isEqualTo:quickLocation] ? 1 : 0;
   }
   return self;
@@ -133,7 +133,7 @@ static GCSStringFormatter *stringFormatter = nil;
 - (id) init
 {
   return [self initWithPath:nil primaryKey:nil
-	       folderTypeName:nil folderType:nil 
+	       folderTypeName:nil folderType:nil
 	       location:nil quickLocation:nil
                aclLocation:nil
 	       folderManager:nil];
@@ -271,13 +271,13 @@ static GCSStringFormatter *stringFormatter = nil;
   NSDictionary *ui;
 
   ui = [NSDictionary dictionaryWithObjectsAndKeys:
-		       [NSNumber numberWithUnsignedInt:_base],  
+		       [NSNumber numberWithUnsignedInt:_base],
 		       @"GCSExpectedVersion",
 		       [NSNumber numberWithUnsignedInt:_store],
 		       @"GCSStoredVersion",
   		       self, @"GCSFolder",
 		       nil];
-  
+
   return [NSException exceptionWithName:@"GCSVersionMismatch"
 		      reason:@"Transaction conflict during a GCS modification."
 		      userInfo:ui];
@@ -369,7 +369,7 @@ static GCSStringFormatter *stringFormatter = nil;
 		   requirement: (GCSTableRequirement) requirement
 {
   NSString *selectedFields;
-  
+
   if (requirement == bothTableRequired && [fields containsObject: @"c_name"])
     selectedFields = [self _dottedFields: fields];
   else
@@ -381,7 +381,7 @@ static GCSStringFormatter *stringFormatter = nil;
 - (NSString *) _sqlForQualifier: (EOQualifier *) qualifier
 {
   NSMutableString *ms;
-  
+
   if (qualifier)
     {
       ms = [NSMutableString stringWithCapacity:32];
@@ -399,7 +399,7 @@ static GCSStringFormatter *stringFormatter = nil;
 
   if ((count = [_so count]) == 0)
     return nil;
-  
+
   sql = [NSMutableString stringWithCapacity:(count * 16)];
   for (i = 0; i < count; i++) {
     EOSortOrdering *so;
@@ -409,9 +409,9 @@ static GCSStringFormatter *stringFormatter = nil;
     so     = [_so objectAtIndex:i];
     sel    = [so selector];
     column = [so key];
-    
+
     if (i > 0) [sql appendString:@", "];
-    
+
     if (sel_eq(sel, EOCompareAscending)) {
       [sql appendString:column];
       [sql appendString:@" ASC"];
@@ -558,21 +558,21 @@ static GCSStringFormatter *stringFormatter = nil;
       error = [channel evaluateExpressionX:sql];
       if (error)
 	{
-	  [self errorWithFormat:@"%s: cannot execute quick-fetch SQL '%@': %@", 
+	  [self errorWithFormat:@"%s: cannot execute quick-fetch SQL '%@': %@",
 		__PRETTY_FUNCTION__, sql, error];
 	  results = nil;
 	}
       else
 	{
 	  /* fetch results */
-  
+
 	  results = [NSMutableArray arrayWithCapacity: 64];
 	  attrs = [channel describeResults: NO /* do not beautify names */];
 	  while ((row = [channel fetchAttributes: attrs withZone: NULL]))
 	    [results addObject: row];
 
 	  /* release channels */
-  
+
 	}
       [self releaseChannel: channel];
 //         NSLog(@"/running query");
@@ -582,7 +582,7 @@ static GCSStringFormatter *stringFormatter = nil;
       [self errorWithFormat:@" could not open storage channel!"];
       results = nil;
     }
-  
+
   return results;
 }
 
@@ -764,7 +764,7 @@ andAttribute: (EOAttribute *)_attribute
   EOAttribute *attribute;
   id value;
   unsigned i, count;
-  
+
   if (_row == nil || _table == nil)
     return nil;
 
@@ -774,7 +774,7 @@ andAttribute: (EOAttribute *)_attribute
   [sql appendString:@"UPDATE "];
   [sql appendString:_table];
   [sql appendString:@" SET "];
-  
+
   for (i = 0, count = [keys count]; i < count; i++) {
     fieldName = [keys objectAtIndex:i];
 
@@ -823,7 +823,7 @@ andAttribute: (EOAttribute *)_attribute
 {
   EOAttribute *attribute;
   EOEntity *entity;
-  
+
   entity = AUTORELEASE([[EOEntity alloc] init]);
   [entity setName: _name];
   [entity setExternalName: _name];
@@ -841,7 +841,7 @@ andAttribute: (EOAttribute *)_attribute
   EOAttribute *attribute;
   EOEntity *entity;
 
-  entity = [self _entityWithName: [self storeTableName]];  
+  entity = [self _entityWithName: [self storeTableName]];
 
   attribute = AUTORELEASE([[EOAttribute alloc] init]);
   [attribute setName: @"c_version"];
@@ -873,7 +873,7 @@ andAttribute: (EOAttribute *)_attribute
 
 - (EOSQLQualifier *) _qualifierUsingWhereColumn:(NSString *)_colname
 				      isEqualTo:(id)_value
-				      andColumn:(NSString *)_colname2 
+				      andColumn:(NSString *)_colname2
 				      isEqualTo:(id)_value2
 					 entity: (EOEntity *)_entity
                                     withAdaptor: (EOAdaptor *)_adaptor
@@ -970,7 +970,7 @@ andAttribute: (EOAttribute *)_attribute
   NSArray *rows;
   NSException         *error;
 
-  /* check preconditions */  
+  /* check preconditions */
   if (_name)
     {
       if (_content)
@@ -979,10 +979,10 @@ andAttribute: (EOAttribute *)_attribute
 	  error   = nil;
 	  nowDate = [NSCalendarDate date];
 	  now     = [NSNumber numberWithUnsignedInt:[nowDate timeIntervalSince1970]];
-  
+
 	  if (doLogStore)
 	    [self logWithFormat:@"should store content: '%@'\n%@", _name, _content];
-  
+
 	  rows = [self fetchFields: [NSArray arrayWithObjects:
 					       @"c_version",
 					     @"c_deleted",
@@ -1035,16 +1035,16 @@ andAttribute: (EOAttribute *)_attribute
 	      if (quickRow)
 		{
 		  [quickRow setObject:_name forKey:@"c_name"];
-  
+
 		  if (doLogStore)
 		    [self logWithFormat:@"  store quick: %@", quickRow];
-  
+
 		  /* make content row */
 		  contentRow = [NSMutableDictionary dictionaryWithCapacity:16];
-  
+
 		  if (ofFlags.sameTableForQuick)
 		    [contentRow addEntriesFromDictionary:quickRow];
-  
+
 		  [contentRow setObject:_name forKey:@"c_name"];
 		  [contentRow setObject:now forKey:@"c_lastmodified"];
 		  if (isNewRecord)
@@ -1058,7 +1058,7 @@ andAttribute: (EOAttribute *)_attribute
 				  [NSNumber numberWithInt:([storedVersion intValue] + 1)]
 				forKey:@"c_version"];
 		  [contentRow setObject:_content forKey:@"c_content"];
-  
+
 		  /* open channels */
 		  storeChannel = [self acquireStoreChannel];
 		  if (storeChannel)
@@ -1080,14 +1080,14 @@ andAttribute: (EOAttribute *)_attribute
 		      /* we check if we can call directly methods on our adaptor
 			 channel delegate. If not, we generate SQL ourself since it'll
 			 be a little bit faster and less complex than using GDL to do so */
-		      hasInsertDelegate = [[storeChannel delegate] 
+		      hasInsertDelegate = [[storeChannel delegate]
 					    respondsToSelector: @selector(adaptorChannel:willInsertRow:forEntity:)];
 		      hasUpdateDelegate = [[storeChannel delegate]
 					    respondsToSelector: @selector(adaptorChannel:willUpdateRow:describedByQualifier:)];
 
 		      [[quickChannel adaptorContext] beginTransaction];
 		      [[storeChannel adaptorContext] beginTransaction];
-  
+
 		      quickTableEntity = [self _quickTableEntity];
 		      storeTableEntity = [self _storeTableEntity];
 
@@ -1097,10 +1097,10 @@ andAttribute: (EOAttribute *)_attribute
 			    error = (hasInsertDelegate
 				     ? [quickChannel insertRowX: quickRow forEntity: quickTableEntity]
 				     : [quickChannel
-					 evaluateExpressionX: [self _generateInsertStatementForRow: quickRow 
+					 evaluateExpressionX: [self _generateInsertStatementForRow: quickRow
                                                                     adaptor: [[quickChannel adaptorContext] adaptor]
 								    tableName: [self quickTableName]]]);
-			  
+
 			  if (!error)
 			    error = (hasInsertDelegate
 				     ? [storeChannel insertRowX: contentRow forEntity: storeTableEntity]
@@ -1138,7 +1138,7 @@ andAttribute: (EOAttribute *)_attribute
 										andColumn: (*_baseVersion != 0 ? (id)@"c_version" : (id)nil)
 										isEqualTo: (*_baseVersion != 0 ? [NSNumber numberWithUnsignedInt: *_baseVersion] : (NSNumber *)nil)]]);
 		      }
-  
+
 		      if (error)
 			{
 			  [[storeChannel adaptorContext] rollbackTransaction];
@@ -1193,19 +1193,19 @@ andAttribute: (EOAttribute *)_attribute
   NSException *error;
   NSString *delsql;
   NSCalendarDate *nowDate;
-  
+
   /* check preconditions */
   if (_name == nil) {
     return [NSException exceptionWithName:@"GCSDeleteException"
 			reason:@"no content filename was provided"
 			userInfo:nil];
   }
-  
+
   if (doLogStore)
     [self logWithFormat:@"should delete content: '%@'", _name];
-  
+
   /* open channels */
-  
+
   if ((storeChannel = [self acquireStoreChannel]) == nil) {
     [self errorWithFormat:@"could not open storage channel!"];
     return nil;
@@ -1242,7 +1242,7 @@ andAttribute: (EOAttribute *)_attribute
     delsql = [delsql stringByAppendingFormat:@" AND c_folder_id = %@", folderId];
   if ((error = [storeChannel evaluateExpressionX:delsql]) != nil) {
     [self errorWithFormat:
-	    @"%s: cannot delete content '%@': %@", 
+	    @"%s: cannot delete content '%@': %@",
 	  __PRETTY_FUNCTION__, delsql, error];
   }
   else if (!ofFlags.sameTableForQuick) {
@@ -1256,19 +1256,19 @@ andAttribute: (EOAttribute *)_attribute
       delsql = [delsql stringByAppendingFormat:@" AND c_folder_id = %@", folderId];
     if ((error = [quickChannel evaluateExpressionX:delsql]) != nil) {
       [self errorWithFormat:
-	      @"%s: cannot delete quick row '%@': %@", 
+	      @"%s: cannot delete quick row '%@': %@",
 	    __PRETTY_FUNCTION__, delsql, error];
-      /* 
+      /*
 	 Note: we now have a "broken" record, needs to be periodically GCed by
 	       a script!
       */
     }
   }
-  
+
   /* release channels and return */
   [adaptorCtx commitTransaction];
   [self releaseChannel:storeChannel];
-  
+
   if (!ofFlags.sameTableForQuick) {
     [[quickChannel adaptorContext] commitTransaction];
     [self releaseChannel:quickChannel];
@@ -1307,7 +1307,7 @@ andAttribute: (EOAttribute *)_attribute
       query = [NSString stringWithFormat: @"DELETE FROM %@", [self storeTableName]];
     error = [storeChannel evaluateExpressionX:query];
     if (error)
-      [self errorWithFormat: @"%s: cannot delete content '%@': %@", 
+      [self errorWithFormat: @"%s: cannot delete content '%@': %@",
         __PRETTY_FUNCTION__, query, error];
     else if (!ofFlags.sameTableForQuick) {
       /* content row deleted, now delete the quick row */
@@ -1317,7 +1317,7 @@ andAttribute: (EOAttribute *)_attribute
         query = [NSString stringWithFormat: @"DELETE FROM %@", [self quickTableName]];
       error = [quickChannel evaluateExpressionX: query];
       if (error)
-        [self errorWithFormat: @"%s: cannot delete quick row '%@': %@", 
+        [self errorWithFormat: @"%s: cannot delete quick row '%@': %@",
               __PRETTY_FUNCTION__, query, error];
     }
 
@@ -1331,6 +1331,49 @@ andAttribute: (EOAttribute *)_attribute
     }
 
     return error;
+}
+
+- (NSException *) purgeDeletedRecordsBefore: (unsigned int) days
+{
+  NSString *delSql, *table;
+  EOAdaptorContext *adaptorCtx;
+  EOAdaptorChannel *channel;
+  NSCalendarDate *nowDate;
+  unsigned int delta;
+
+  channel = [self acquireStoreChannel];
+
+  if ((channel = [self acquireStoreChannel]) == nil)
+    return [NSException exceptionWithName: @"GCSChannelException"
+                                   reason: @"could not open storage channel!"
+                                 userInfo: nil];
+
+  adaptorCtx = [channel adaptorContext];
+  [adaptorCtx beginTransaction];
+
+  table = [self storeTableName];
+  nowDate = [NSCalendarDate date];
+  delta = days * 24 * 60 * 60;
+  if (delta > [nowDate timeIntervalSince1970])
+    return [NSException exceptionWithName: @"GCSArgumentException"
+                                   reason: @"number of days is too high!"
+                                 userInfo: nil];
+  delta = [nowDate timeIntervalSince1970] - delta;
+
+  if ([GCSFolderManager singleStoreMode])
+    delSql = [NSString stringWithFormat: @"DELETE FROM %@"
+                       @" WHERE c_folder_id = %@ AND c_deleted = 1 AND c_lastmodified < %u",
+                       table, folderId, delta];
+  else
+    delSql = [NSString stringWithFormat: @"DELETE FROM %@"
+                       @" WHERE c_deleted = 1 AND c_lastmodified < %u",
+                       table, delta];
+  [channel evaluateExpressionX: delSql];
+
+  [[channel adaptorContext] commitTransaction];
+  [self releaseChannel: channel];
+
+  return nil;
 }
 
 - (NSException *) touchContentWithName: (NSString *) _name
@@ -1389,14 +1432,14 @@ andAttribute: (EOAttribute *)_attribute
   EOAdaptorChannel *channel;
   NSString *delsql;
   NSString *table;
-  
+
   /* open channels */
-  
+
   if ((channel = [self acquireStoreChannel]) == nil) {
     [self errorWithFormat:@"could not open channel!"];
     return nil;
   }
-  
+
   /* delete rows */
   [[channel adaptorContext] beginTransaction];
   table = [self storeTableName];
@@ -1423,7 +1466,7 @@ andAttribute: (EOAttribute *)_attribute
       delsql = [@"DROP TABLE  " stringByAppendingString: table];
     [channel evaluateExpressionX:delsql];
   }
-  
+
   [[channel adaptorContext] commitTransaction];
   [self releaseChannel:channel];
 
@@ -1437,7 +1480,7 @@ andAttribute: (EOAttribute *)_attribute
   EOAdaptorChannel *quickChannel;
   EOAdaptorContext *adaptorCtx;
   NSException *error;
-  
+
   quickChannel = [self acquireQuickChannel];
   adaptorCtx = [quickChannel adaptorContext];
   [adaptorCtx beginTransaction];
@@ -1500,15 +1543,15 @@ andAttribute: (EOAttribute *)_attribute
   NSArray          *attrs;
   NSMutableArray   *results;
   NSDictionary     *row;
-  
+
   qualifier     = [_fs qualifier];
   sortOrderings = [_fs sortOrderings];
-  
+
 #if 0
   [self logWithFormat:@"FETCH: %@", _flds];
   [self logWithFormat:@"  MATCH: %@", _q];
 #endif
-  
+
   /* generate SQL */
 
   sql = [NSMutableString stringWithCapacity:256];
@@ -1536,34 +1579,34 @@ andAttribute: (EOAttribute *)_attribute
   [sql appendString:@" LIMIT "]; // count
   [sql appendString:@" OFFSET "]; // index from 0
 #endif
-  
+
   /* open channel */
 
   if ((channel = [self acquireAclChannel]) == nil) {
     [self errorWithFormat:@"could not open acl channel!"];
     return nil;
   }
-  
+
   /* run SQL */
 
   if ((error = [channel evaluateExpressionX:sql]) != nil) {
-    [self errorWithFormat:@"%s: cannot execute acl-fetch SQL '%@': %@", 
+    [self errorWithFormat:@"%s: cannot execute acl-fetch SQL '%@': %@",
 	    __PRETTY_FUNCTION__, sql, error];
     [self releaseChannel:channel];
     return nil;
   }
-  
+
   /* fetch results */
-  
+
   results = [NSMutableArray arrayWithCapacity:64];
   attrs   = [channel describeResults:NO /* do not beautify names */];
   while ((row = [channel fetchAttributes:attrs withZone:NULL]) != nil)
     [results addObject:row];
-  
+
   /* release channels */
-  
+
   [self releaseChannel: channel];
-  
+
   return results;
 }
 
@@ -1602,7 +1645,7 @@ andAttribute: (EOAttribute *)_attribute
   NSException      *error;
   NSMutableString  *sql;
   NSString *qSql;
-  
+
   sql = [NSMutableString stringWithCapacity:256];
   [sql appendString:@"DELETE FROM "];
   [sql appendString:[self aclTableName]];
@@ -1620,16 +1663,16 @@ andAttribute: (EOAttribute *)_attribute
     [self errorWithFormat:@"could not open acl channel!"];
     return;
   }
-  
+
   /* run SQL */
   [[channel adaptorContext] beginTransaction];
   if ((error = [channel evaluateExpressionX:sql]) != nil) {
-    [self errorWithFormat:@"%s: cannot execute acl-fetch SQL '%@': %@", 
+    [self errorWithFormat:@"%s: cannot execute acl-fetch SQL '%@': %@",
           __PRETTY_FUNCTION__, sql, error];
     [self releaseChannel:channel];
     return;
   }
-  
+
   [[channel adaptorContext] commitTransaction];
   [self releaseChannel:channel];
 }
@@ -1666,13 +1709,62 @@ andAttribute: (EOAttribute *)_attribute
     {
       error = [channel evaluateExpressionX: sqlString];
       if (error)
-	[self errorWithFormat: @"%s: cannot execute SQL '%@': %@", 
+	[self errorWithFormat: @"%s: cannot execute SQL '%@': %@",
 	      __PRETTY_FUNCTION__, sqlString, error];
       else
 	{
 	  attrs = [channel describeResults: NO];
 	  row = [channel fetchAttributes: attrs withZone: NULL];
-	  count = [[row objectForKey: @"cnt"] unsignedIntValue];
+	  count = [[row objectForKey: @"CNT"] unsignedIntValue];
+	  [channel cancelFetch];
+	}
+      [self releaseChannel: channel];
+    }
+
+  return count;
+}
+
+- (unsigned int) recordsCountDeletedBefore: (unsigned int) days
+{
+  EOAdaptorChannel *channel;
+  NSArray *attrs;
+  NSCalendarDate *nowDate;
+  NSDictionary *row;
+  NSException *error;
+  NSMutableString  *sqlString;
+  unsigned int delta, count;
+
+  count = 0;
+  nowDate = [NSCalendarDate date];
+  delta = days * 24 * 60 * 60;
+  if (delta < [nowDate timeIntervalSince1970])
+    delta = [nowDate timeIntervalSince1970] - delta;
+  else
+    delta = 0;
+
+  if ([GCSFolderManager singleStoreMode])
+    sqlString = [NSMutableString stringWithFormat:
+                                   @"SELECT COUNT(*) AS CNT FROM %@"
+                                 @" WHERE c_folder_id = %@ AND c_lastmodified < %u AND c_deleted = 1",
+                                 [self storeTableName], folderId, delta];
+  else
+    sqlString = [NSMutableString stringWithFormat:
+                                   @"SELECT COUNT(*) AS CNT FROM %@"
+                                 @" WHERE c_lastmodified < %u AND c_deleted = 1",
+                                 [self storeTableName], delta];
+
+  channel = [self acquireStoreChannel];
+  if (channel)
+    {
+      error = [channel evaluateExpressionX: sqlString];
+      if (error)
+	[self errorWithFormat: @"%s: cannot execute SQL '%@': %@",
+	      __PRETTY_FUNCTION__, sqlString, error];
+      else
+	{
+	  attrs = [channel describeResults: NO];
+	  row = [channel fetchAttributes: attrs withZone: NULL];
+	  count = [[row objectForKey: @"CNT"] unsignedIntValue];
 	  [channel cancelFetch];
 	}
       [self releaseChannel: channel];
@@ -1716,7 +1808,7 @@ andAttribute: (EOAttribute *)_attribute
 - (NSString *)description {
   NSMutableString *ms;
   id tmp;
-  
+
   ms = [NSMutableString stringWithCapacity:256];
   [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
 
@@ -1729,7 +1821,7 @@ andAttribute: (EOAttribute *)_attribute
   if ((tmp = [self folderTypeName])) [ms appendFormat:@" type=%@", tmp];
   if ((tmp = [self location]))
     [ms appendFormat:@" loc=%@", [tmp absoluteString]];
-  
+
   [ms appendString:@">"];
   return ms;
 }

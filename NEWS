@@ -1,6 +1,9 @@
 3.2.4 (2016-12-DD)
 ------------------
 
+New features
+ - [core] new sogo-tool cleanup user feature
+
 Enhancements
  - [core] added handling of BYSETPOS for BYDAY in recurrence rules
  - [web] added sort by start date for tasks (#3840)
