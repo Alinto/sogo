@@ -242,6 +242,10 @@ convention:
   [self addElementWithTag: @"email"
                    ofType: @"work"
                 withValue: [ldifRecord objectForKey: @"c_emails"]];
+  // When importing an LDIF file, add the default mail attribute
+  [self addElementWithTag: @"email"
+                   ofType: @"work"
+                withValue: [ldifRecord objectForKey: @"mail"]];
   homeMail = [self elementWithTag: @"email" ofType: @"home"];
   [homeMail setSingleValue: [ldifRecord objectForKey: @"mozillasecondemail"] forKey: @""];
   [[self uniqueChildWithTag: @"x-mozilla-html"]
