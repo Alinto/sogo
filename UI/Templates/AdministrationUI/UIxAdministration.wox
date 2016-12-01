@@ -14,12 +14,14 @@
   <main class="view"
         layout="row" layout-fill="layout-fill"
         ui-view="administration"
-        ng-controller="navController">
-    <!-- administration -->
-  </main>
+        ng-controller="navController"><!-- administration --></main>
 
   <script type="text/ng-template" id="administration.html">
-    <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
+
+    <!-- Sidenav -->
+    <md-sidenav class="md-sidenav-left md-whiteframe-z1" layout="column"
+                md-component-id="left" md-is-locked-open="isGtMedium"
+                ng-class="{ 'sg-close': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content class="md-flex" layout="column" md-scroll-y="md-scroll-y"
                   md-colors="::{ backgroundColor: 'default-background-300' }">
