@@ -4,6 +4,9 @@
 Enhancements
  - [core] added handling of BYSETPOS for BYDAY in recurrence rules
 
+Bug fixes
+ - [eas] properly escape all GAL responses (#3923)
+
 2.3.18 (2016-11-28)
 -------------------
 
