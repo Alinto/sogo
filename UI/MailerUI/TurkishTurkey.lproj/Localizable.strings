@@ -2,7 +2,7 @@
 
 /* Icon's label */
 "Create"      = "Oluştur";
-"Empty Trash" = "Çöp Kutusunu Boşalt";
+"Empty Trash" = "Çöp Klasörünü Boşalt";
 "Delete"      = "Sil";
 "Expunge"     = "Silip At";
 "Forward"     = "İlet";
@@ -68,7 +68,7 @@
 /* Compact Folder success message */
 "Folder compacted" = "Klasör sıkıştırıldı";
 /* Empty Trash success message */
-"Trash emptied" = "Çöp Kutusu boşaltıldı";
+"Trash emptied" = "Çöp boşaltıldı";
 
 /* acls */
 "Access rights to" = "Klasörün erişim yetkileri";
@@ -76,7 +76,7 @@
 "Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
 "List and see this folder" = "Klasörü listele ve görüntüle";
 "Read mails from this folder" = "Klasördeki iletileri okur";
-"Mark mails read and unread" = "Okumuş ve okunmamış iletileri işaretle";
+"Mark mails read and unread" = "Okumuş ve okunmamış iletileri işaretler";
 "Modify the flags of the mails in this folder" = "Bu klasördeki iletilerin yıldızlarını değiştirir";
 "Insert, copy and move mails into this folder" = "İletiler bu klasöre yerleştirir, kopyalar ve taşır";
 "Post mails" = "İletileri postalar";
@@ -141,7 +141,7 @@
 "Date"          = "Tarih";
 "View"          = "Görüntüle";
 "All"           = "Hepsi";
-"No message"    = "İleti yok";
+"No message"    = "Klasör boş";
 "messages"      = "ileti";
 "Yesterday"     = "Dün";
 "first"         = "İlk";
@@ -156,8 +156,8 @@
 
 /* Tree */
 "SentFolderName"   = "Gönderilmiş";
-"TrashFolderName"  = "Çöp Kutusu";
-"InboxFolderName"  = "Gelen Kutusu";
+"TrashFolderName"  = "Çöp";
+"InboxFolderName"  = "Gelen";
 "DraftsFolderName" = "Taslaklar";
 "JunkFolderName" = "İstenmeyen";
 "SieveFolderName"  = "Süzgeçler";
@@ -190,11 +190,11 @@
 "Use This Folder For" = "Bu Klasörü Şunun İçin Kullan";
 "Get Messages for Account" = "Hesaptaki İletileri Al";
 "Properties..." = "Özellikler...";
-"Delegation..." = "Temsilci Atama...";
+"Delegation..." = "Yetkili Tayini...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Gönderilmiş İletiler";
-"Drafts" = "Taslak İletiler";
+"Drafts" = "Taslaklar";
 "Deleted Messages" = "Silinmiş İletiler";
 "Junk Messages" = "İstenmeyen İletiler";
 
@@ -263,7 +263,7 @@
 "Enter the new name of your folder"
  ="Yeni klasörünüzün adını yazın";
 "Do you really want to move this folder into the trash ?"
- = "Bu klasörü çöp kutusuna taşımak istediğinizden emin misiniz?";
+ = "Bu klasörü çöpe taşımak istediğinizden emin misiniz?";
 "Operation failed" = "İşlem başarısiz oldu";
 "Quota" = "Kota:";
 "quotasFormat" = "%{0}%  kullanılıyor, toplam %{1} MB";
@@ -271,7 +271,7 @@
 
 /* Alternative operation when folder cannot be deleted */
 "The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
-= "E-posta klasörü çöp kutusuna taşınamıyor. Klasörü hemen silmek ister misiniz?";
+= "Klasör çöpe taşınamıyor. Klasörü hemen silmek ister misiniz?";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Seçili iletileri silmek istediğinizden emin misiniz?";
@@ -293,7 +293,7 @@
 "The folder could not be deleted."
 = "Klasör silinemiyor.";
 "The trash could not be emptied."
-= "Çöp Kutusu boşaltılamıyor.";
+= "Çöp boşaltılamıyor.";
 "The folder functionality could not be changed."
 = "Klasörün işlevi değişitirilemiyor.";
 "You need to choose a non-virtual folder!" = "Sanal olmayan bir klasör seçmelisiniz.";
@@ -304,7 +304,7 @@
 
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
-= "İletiler çöp kutusuna taşınamıyor. Bu iletileri hemen silmek ister misiniz?";
+= "İletiler çöpe taşınamıyor. Bu iletileri hemen silmek ister misiniz?";
 
 /* Message editing */
 "error_missingsubject" = "İletiye bir konu başlığı yazılmadı. İletiyi konusuz olarak göndermek istediğinizden emin misiniz?";
@@ -329,7 +329,7 @@
 /* Contacts list in mail editor */
 "Email" = "E-posta";
 "More mail options" = "Diğer e-posta seçenekleri";
-"Delegation" = "Temsilci Atama";
+"Delegation" = "Yetkili Tayini";
 "Add User" = "Kullanıcı Ekleyin";
 "Add a tag" = "Etiket ekle";
 "reply" = "yanıtla";
@@ -340,12 +340,12 @@
 "Rename" = "Yeniden Adlandır";
 "Compact" = "Sıkıştır";
 "Export" = "Dışarı Aktar";
-"Set as Drafts" = "Taslaklar olarak tanımla";
-"Set as Sent" = "Gönderilmiş olarak tanımla";
-"Set as Trash" = "Çöp Kutusu olarak tanımla";
+"Set as Drafts" = "Taslaklar klasörü olarak tanımla";
+"Set as Sent" = "Gönderilmiş klasörü olarak tanımla";
+"Set as Trash" = "Çöp klasörü olarak tanımla";
 
 /* Set the folder as the one holding Junk mails */
-"Set as Junk" = "İstenmeyen olarak belirle";
+"Set as Junk" = "İstenmeyen klasörü olarak tanımla";
 
 "Sort" = "Sıralandır";
 "Order Received" = "Alınan Tarih";

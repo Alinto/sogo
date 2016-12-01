@@ -319,11 +319,27 @@
 "Header" = "Заглавје";
 "Body" = "Тело";
 "Flag the message with" = "Означи ја пораката со";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Ознака";
+
 "Discard the message" = "Отфрли ја поракта";
 "File the message in" = "Смести ја пораката во";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Поштенско сандаче";
+
 "Keep the message" = "Зачувај ја пораката";
 "Forward the message to" = "Препратија пораката до";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "Електронска пошта";
+
 "Send a reject message" = "Испрати порака за отфрлање";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Порака";
+
 "Send a vacation message" = "Испрати автоматска порака кога си на одмор";
 "Stop processing filter rules" = "Запри го процесирањето на правилата за филтрирање";
 "is under" = "е под";

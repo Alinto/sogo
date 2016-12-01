@@ -269,6 +269,10 @@
 "quotasFormat" = "%{0}% искоришћено од %{1} МБ";
 "Unable to move/delete folder." = "Не могу да преместим/обришем директоријум.";
 
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Поруке не могу бити премештене у директоријум канте. Да ли желите да их одмах обришете?";
+
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Да ли сте сигурни да желите да обришете одабране поруке?";
 
@@ -350,6 +354,7 @@
 "Copy messages" = "Копирај поруке";
 "More messages options" = "Више опција порука";
 "Mark as Unread" = "Означи као непрочитано";
+"Mark as Read" = "Означи као прочитано";
 "Closing Window ..." = "Затварам прозор...";
 "Tried to send too many mails. Please wait." = "Покушавам да пошаљем превише поште. Молимо сачекајте.";
 "View Mail" = "Види пошту";
@@ -372,6 +377,9 @@
 
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
 
 /* Hotkey to flag a message */
 "hotkey_flag" = "*";
