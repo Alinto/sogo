@@ -57,7 +57,7 @@
     }
 
     function userFilter($query) {
-      return User.$filter($query, stateFolder.$acl.users, { dry: true });
+      return User.$filter($query, stateFolder.$acl.users, { dry: true, uid: vm.user.uid });
     }
 
     function removeUser(user) {

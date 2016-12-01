@@ -535,14 +535,14 @@
 {
   NSString *uid;
   NSDictionary *contact;
-  NSString *contactInfo, *login;
+  NSString *contactInfo, *owner;
   NSMutableArray *jsonResponse;
   NSMutableDictionary *jsonLine;
   NSArray *allUsers;
   int count, max;
   BOOL activeUserIsInDomain;
 
-  login = [[context activeUser] login];
+  owner = [[self clientObject] ownerInContext: context];
   activeUserIsInDomain = ([domain length] == 0 || [[[context activeUser] domain] isEqualToString: domain]);
 
   // We sort our array - this is pretty useful for the Web
@@ -556,8 +556,8 @@
       contact = [allUsers objectAtIndex: count];
       uid = [contact objectForKey: @"c_uid"];
 
-      // We do NOT return the current authenticated user
-      if (!activeUserIsInDomain || ![uid isEqualToString: login])
+      // We do NOT return the owner from which the search is performed
+      if (!activeUserIsInDomain || ![uid isEqualToString: owner])
         {
           jsonLine = [NSMutableDictionary dictionary];
           if ([domain length])

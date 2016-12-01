@@ -1,3 +1,9 @@
+3.2.5 (2016-12-DD)
+------------------
+
+Bug fixes
+ - [web] fixed confusion between owner and active user in ACLs management of Administration module
+
 3.2.4 (2016-12-01)
 ------------------
 

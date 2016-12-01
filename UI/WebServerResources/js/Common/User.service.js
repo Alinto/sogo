@@ -43,7 +43,7 @@
    * @return a promise of an array of matching User objects
    */
   User.$filter = function(search, excludedUsers, options) {
-    var _this = this, param = {search: search};
+    var _this = this, resource = User.$$resource, param = {search: search};
 
     if (!options || !options.dry) {
       if (!search) {
@@ -57,8 +57,11 @@
       }
       User.$query = search;
     }
+    else if (options && options.uid) {
+      resource = User.$$resource.userResource(options.uid);
+    }
 
-    return User.$$resource.fetch(null, 'usersSearch', param).then(function(response) {
+    return resource.fetch(null, 'usersSearch', param).then(function(response) {
       var results, index, user, users,
           compareUids = function(data) {
             return this.uid == data.uid;
