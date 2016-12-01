@@ -77,9 +77,9 @@
 - (void) usage
 {
   fprintf (stderr, "cleanup [days] [user]...\n\n"
-	   "           days       the age of deleted records to purge in days\n"
-	   "           user       the user to purge the records or ALL for everybody\n\n"
-	   "Example:   sogo-tool cleanup jdoe\n");
+           "           days       the age of deleted records to purge in days\n"
+           "           user       the user to purge the records or ALL for everybody\n\n"
+           "Example:   sogo-tool cleanup jdoe\n");
 }
 
 - (BOOL) fetchUserIDs: (NSArray *) users
@@ -110,24 +110,24 @@
       folderLocation = [fm folderInfoLocation];
       fc = [cm acquireOpenChannelForURL: folderLocation];
       if (fc)
-	{
-	  allSqlUsers = [NSMutableArray new];
-	  sql = [NSString stringWithFormat: @"SELECT DISTINCT c_path2 FROM %@",
+        {
+          allSqlUsers = [NSMutableArray new];
+          sql = [NSString stringWithFormat: @"SELECT DISTINCT c_path2 FROM %@",
                           [folderLocation gcsTableName]];
-	  [fc evaluateExpressionX: sql];
-	  attrs = [fc describeResults: NO];
-	  while ((infos = [fc fetchAttributes: attrs withZone: NULL]))
-	    {
-	      user = [infos objectForKey: @"c_path2"];
-	      if (user)
-		[allSqlUsers addObject: user];
-	    }
-	  [cm releaseChannel: fc];
+          [fc evaluateExpressionX: sql];
+          attrs = [fc describeResults: NO];
+          while ((infos = [fc fetchAttributes: attrs withZone: NULL]))
+            {
+              user = [infos objectForKey: @"c_path2"];
+              if (user)
+                [allSqlUsers addObject: user];
+            }
+          [cm releaseChannel: fc];
 
-	  users = allSqlUsers;
-	  max = [users count];
+          users = allSqlUsers;
+          max = [users count];
           [allSqlUsers autorelease];
-	}
+        }
     }
 
   pool = [[NSAutoreleasePool alloc] init];
@@ -135,37 +135,37 @@
   for (count = 0; count < max; count++)
     {
       if (count > 0 && count%100 == 0)
-	{
-	  DESTROY(pool);
-	  pool = [[NSAutoreleasePool alloc] init];
-	}
+        {
+          DESTROY(pool);
+          pool = [[NSAutoreleasePool alloc] init];
+        }
 
       user = [users objectAtIndex: count];
       infos = [lm contactInfosForUserWithUIDorEmail: user];
       if (infos)
-	[allUsers addObject: infos];
+        [allUsers addObject: infos];
       else
-	{
-	  // We haven't found the user based on the GCS table name
-	  // Let's try to strip the domain part and search again.
-	  // This can happen when using SOGoEnableDomainBasedUID (YES)
-	  // but login in SOGo using a UID without domain (DomainLessLogin gets set)
-	  NSRange r;
+        {
+          // We haven't found the user based on the GCS table name
+          // Let's try to strip the domain part and search again.
+          // This can happen when using SOGoEnableDomainBasedUID (YES)
+          // but login in SOGo using a UID without domain (DomainLessLogin gets set)
+          NSRange r;
 
-	  r = [user rangeOfString: @"@"];
+          r = [user rangeOfString: @"@"];
 
-	  if (r.location != NSNotFound)
-	    {
-	      user = [user substringToIndex: r.location];
-	      infos = [lm contactInfosForUserWithUIDorEmail: user];
-	      if (infos)
-		[allUsers addObject: infos];
-	      else
-		NSLog (@"user '%@' unknown", user);
-	    }
-	  else
-	    NSLog (@"user '%@' unknown", user);
-	}
+          if (r.location != NSNotFound)
+            {
+              user = [user substringToIndex: r.location];
+              infos = [lm contactInfosForUserWithUIDorEmail: user];
+              if (infos)
+                [allUsers addObject: infos];
+              else
+                NSLog (@"user '%@' unknown", user);
+            }
+          else
+            NSLog (@"user '%@' unknown", user);
+        }
     }
   [allUsers autorelease];
 
@@ -216,7 +216,7 @@
     {
       NSLog(@"Unable to purge records of folder %@", folder);
       rc = NO;
-   }
+    }
   else
     {
       NSLog(@"Purged %u records from folder %@", count, folder);
