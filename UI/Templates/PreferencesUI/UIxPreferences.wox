@@ -839,6 +839,7 @@
                   <md-input-container class="md-block md-flex">
                     <label><var:string label:value="Auto reply subject"/></label>
                     <input type="text"
+                           ng-required="app.preferences.defaults.Vacation.customSubjectEnabled"
                            ng-disabled="!app.preferences.defaults.Vacation.customSubjectEnabled"
                            ng-model="app.preferences.defaults.Vacation.customSubject"/>
                     <div class="sg-hint" ng-show="app.sieveVariablesCapability">

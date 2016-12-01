@@ -345,7 +345,7 @@ static SoProduct *preferencesProduct = nil;
 
   // Add the domain's default vacation subject if user has not specified a custom subject
   vacationOptions = [defaults vacationOptions];
-  if (![vacationOptions objectForKey: @"customSubject"] && [domainDefaults vacationDefaultSubject])
+  if (![[vacationOptions objectForKey: @"customSubject"] length] && [domainDefaults vacationDefaultSubject])
     {
       if (vacationOptions)
         vacation = [NSMutableDictionary dictionaryWithDictionary: vacationOptions];
