@@ -12,6 +12,7 @@ Bug fixes
  - [web] fixed JavaScript exception when SOGo is launched from an external link (#3900)
  - [web] restored fetching of freebusy information of MS Exchange contacts
  - [web] fixed mail attribute when importing an LDIF file (#3878)
+ - [web] don't save empty custom auto-reply subject
  - [web] fixed detection of session expiration
  - [eas] properly escape all GAL responses (#3923)
 
