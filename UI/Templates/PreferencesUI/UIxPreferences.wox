@@ -31,8 +31,10 @@
                 md-component-id="left" md-is-locked-open="isGtMedium"
                 ng-class="{ 'sg-close': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
-      <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
-          <md-subheader>{{ ::'Preferences' | loc }}</md-subheader>
+      <md-content md-scroll-y="md-scroll-y" class="md-flex"
+                  md-colors="::{ backgroundColor: 'default-background-300' }">
+        <md-subheader
+            md-colors="::{background: 'default-background-300'}">{{ ::'Preferences' | loc }}</md-subheader>
         <md-list>
           <md-list-item ng-click="app.go('general', preferencesForm)"
                         ng-disabled="preferencesForm.$invalid"
