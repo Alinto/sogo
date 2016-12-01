@@ -137,7 +137,6 @@
   int count, max;
 
   lm = [SOGoUserManager sharedUserManager];
-  pool = [[NSAutoreleasePool alloc] init];
 
   max = [users count];
   user = [users objectAtIndex: 0];
@@ -173,9 +172,11 @@
 
 	  users = allSqlUsers;
 	  max = [users count];
+          [allSqlUsers autorelease];
 	}
     }
 
+  pool = [[NSAutoreleasePool alloc] init];
   allUsers = [NSMutableArray new];
   for (count = 0; count < max; count++)
     {

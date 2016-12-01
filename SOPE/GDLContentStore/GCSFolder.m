@@ -1690,11 +1690,11 @@ andAttribute: (EOAttribute *)_attribute
 
   if ([GCSFolderManager singleStoreMode])
     sqlString = [NSMutableString stringWithFormat:
-                                   @"SELECT COUNT(*) AS CNT FROM %@ WHERE c_folder_id = %@",
+                                   @"SELECT COUNT(*) AS cnt FROM %@ WHERE c_folder_id = %@",
                                  [self storeTableName], folderId];
   else
     sqlString = [NSMutableString stringWithFormat:
-                                   @"SELECT COUNT(*) AS CNT FROM %@",
+                                   @"SELECT COUNT(*) AS cnt FROM %@",
                                  [self storeTableName]];
   if (excludeDeleted)
     {
@@ -1715,7 +1715,7 @@ andAttribute: (EOAttribute *)_attribute
 	{
 	  attrs = [channel describeResults: NO];
 	  row = [channel fetchAttributes: attrs withZone: NULL];
-	  count = [[row objectForKey: @"CNT"] unsignedIntValue];
+	  count = [[row objectForKey: @"cnt"] unsignedIntValue];
 	  [channel cancelFetch];
 	}
       [self releaseChannel: channel];
@@ -1744,12 +1744,12 @@ andAttribute: (EOAttribute *)_attribute
 
   if ([GCSFolderManager singleStoreMode])
     sqlString = [NSMutableString stringWithFormat:
-                                   @"SELECT COUNT(*) AS CNT FROM %@"
+                                   @"SELECT COUNT(*) AS cnt FROM %@"
                                  @" WHERE c_folder_id = %@ AND c_lastmodified < %u AND c_deleted = 1",
                                  [self storeTableName], folderId, delta];
   else
     sqlString = [NSMutableString stringWithFormat:
-                                   @"SELECT COUNT(*) AS CNT FROM %@"
+                                   @"SELECT COUNT(*) AS cnt FROM %@"
                                  @" WHERE c_lastmodified < %u AND c_deleted = 1",
                                  [self storeTableName], delta];
 
@@ -1764,7 +1764,7 @@ andAttribute: (EOAttribute *)_attribute
 	{
 	  attrs = [channel describeResults: NO];
 	  row = [channel fetchAttributes: attrs withZone: NULL];
-	  count = [[row objectForKey: @"CNT"] unsignedIntValue];
+	  count = [[row objectForKey: @"cnt"] unsignedIntValue];
 	  [channel cancelFetch];
 	}
       [self releaseChannel: channel];
