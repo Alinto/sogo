@@ -243,7 +243,7 @@
       response: function(response) {
         // When expecting JSON but receiving HTML, assume session has expired and reload page
         if (response && /^application\/json/.test(response.config.headers.Accept) &&
-            /^<!DOCTYPE html>/.test(response.data)) {
+            /^[\n\r ]*<!DOCTYPE html>/.test(response.data)) {
           $window.location.reload(true);
           return $q.reject();
         }
