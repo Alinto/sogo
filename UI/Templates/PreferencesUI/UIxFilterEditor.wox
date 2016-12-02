@@ -146,7 +146,7 @@
             <md-input-container class="md-block" flex="50" ng-if="action.method == 'fileinto'">
               <label><var:string label:value="Mailbox"/></label>
               <md-select ng-model="action.argument" required="required">
-                <md-option ng-value="item.path" ng-repeat="item in filterEditor.mailboxes">
+                <md-option ng-value="item.sievePath" ng-repeat="item in filterEditor.mailboxes">
                   <div ng-class="'sg-child-level-' + item.level">
                     {{ item.name }}
                   </div>

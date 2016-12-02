@@ -4,6 +4,7 @@
 Bug fixes
  - [web] fixed confusion between owner and active user in ACLs management of Administration module
  - [web] fixed JavaScript exception after renaming an address book
+ - [web] fixed Sieve folder encoding support (#3904)
 
 3.2.4 (2016-12-01)
 ------------------

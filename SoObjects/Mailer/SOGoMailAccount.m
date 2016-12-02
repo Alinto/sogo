@@ -37,6 +37,7 @@
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoAuthenticator.h>
 #import <SOGo/SOGoDomainDefaults.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoSieveManager.h>
@@ -62,6 +63,7 @@ static NSString *inboxFolderName = @"INBOX";
 {
   if ((self = [super init]))
     {
+      NSString *sieveFolderEncoding = [[SOGoSystemDefaults sharedSystemDefaults] sieveFolderEncoding];
       inboxFolder = nil;
       draftsFolder = nil;
       sentFolder = nil;
@@ -72,6 +74,7 @@ static NSString *inboxFolderName = @"INBOX";
       otherUsersFolderName = nil;
       sharedFoldersName = nil;
       subscribedFolders = nil;
+      sieveFolderUTF8Encoding = [sieveFolderEncoding isEqualToString: @"UTF-8"];
     }
 
   return self;
@@ -461,7 +464,7 @@ static NSString *inboxFolderName = @"INBOX";
   NSArray *pathComponents;
   NSMutableArray *folders, *flags;
   NSMutableDictionary *currentFolder, *parentFolder, *folder;
-  NSString *currentFolderName, *currentPath, *fullName, *folderType;
+  NSString *currentFolderName, *currentPath, *sievePath, *fullName, *folderType;
   SOGoUserManager *userManager;
 
   BOOL last, isOtherUsersFolder, parentIsOtherUsersFolder, isSubscribed;
@@ -550,6 +553,13 @@ static NSString *inboxFolderName = @"INBOX";
 					  flags, @"flags",
 					  [NSNumber numberWithBool: isSubscribed], @"subscribed",
 					  nil];
+
+          if (sieveFolderUTF8Encoding)
+            sievePath = [folderPath stringByDecodingImap4FolderName];
+          else
+            sievePath = folderPath;
+          [folder setObject: [sievePath substringFromIndex: 1] forKey: @"sievePath"];
+
           // Either add this new folder to its parent or the list of root folders
           [folders addObject: folder];
         }

@@ -67,6 +67,7 @@ typedef enum {
   NSString *otherUsersFolderName;
   NSString *sharedFoldersName;
   NSMutableDictionary *subscribedFolders;
+  BOOL sieveFolderUTF8Encoding;
 }
 
 - (SOGoIMAPAclStyle) imapAclStyle;
