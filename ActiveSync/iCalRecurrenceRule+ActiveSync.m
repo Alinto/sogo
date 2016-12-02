@@ -134,6 +134,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
           [s appendFormat: @"<Recurrence_DayOfWeek xmlns=\"%@:\">%d</Recurrence_DayOfWeek>", t, (1 << [dm firstDay])];
           [s appendFormat: @"<Recurrence_WeekOfMonth xmlns=\"%@:\">%d</Recurrence_WeekOfMonth>", t, firstOccurrence];
+	  [s appendFormat: @"<Recurrence_Interval xmlns=\"%@:\">%d</Recurrence_Interval>", t, [self repeatInterval]];
         }
       else if ([[self byMonthDay] count])
         {
@@ -149,6 +150,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               dm = [self byDayMask];
               [s appendFormat: @"<Recurrence_DayOfWeek xmlns=\"%@:\">%d</Recurrence_DayOfWeek>", t, (1 << [dm firstDay])];
               [s appendFormat: @"<Recurrence_WeekOfMonth xmlns=\"%@:\">%d</Recurrence_WeekOfMonth>", t, 5];
+	      [s appendFormat: @"<Recurrence_Interval xmlns=\"%@:\">%d</Recurrence_Interval>", t, [self repeatInterval]];
             }
           else
             {
