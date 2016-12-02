@@ -583,10 +583,14 @@
    * @returns a promise of the HTTP operation
    */
   AddressBook.prototype.$rename = function(name) {
-    var i = _.indexOf(_.map(AddressBook.$addressbooks, 'id'), this.id);
+    var i, list;
+
+    list = this.isSubscription? AddressBook.$subscriptions : AddressBook.$addressbooks;
+    i = _.indexOf(_.map(list, 'id'), this.id);
     this.name = name;
-    AddressBook.$addressbooks.splice(i, 1);
+    list.splice(i, 1);
     AddressBook.$add(this);
+
     return this.$save();
   };
 
@@ -848,7 +852,10 @@
     var addressbook = {};
     angular.forEach(this, function(value, key) {
       if (key != 'constructor' &&
+          key != 'acls' &&
           key != 'ids' &&
+          key != 'idsMap' &&
+          key != 'urls' &&
           key[0] != '$') {
         addressbook[key] = value;
       }
