@@ -137,10 +137,23 @@
 - (NGImap4Connection *) _createIMAP4Connection
 {
   NGImap4ConnectionManager *manager;
-  NSString *password;
   NGImap4Connection *newConnection;
+  NSString *password;
+  NSHost *host;
 
   [self imap4URL];
+
+  // We first check if we're trying to establish an IMAP connection to localhost
+  // for an account number greater than 0 (default account). We prevent that
+  // for security reasons if admins use an IMAP trust.
+  host = [NSHost hostWithName: [[self imap4URL] host]];
+  if (![[[self mailAccountFolder] nameInContainer] isEqualToString: @"0"] &&
+      [[host address] isEqualToString: @"127.0.0.1"])
+    {
+      [self errorWithFormat: @"Trying to use localhost for additional IMAP account - aborting."];
+      return nil;
+    }
+
   manager = [self mailManager];
   password = [self imap4PasswordRenewed: NO];
   if (password)
@@ -217,8 +230,8 @@
       if (!imap4)
         {
           imap4 = [self _createIMAP4Connection];
-          [sogoCache registerIMAP4Connection: imap4
-                                      forKey: cacheKey];
+	  [sogoCache registerIMAP4Connection: imap4
+				      forKey: cacheKey];
         }
       [imap4 retain];
     }
