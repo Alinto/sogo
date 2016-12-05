@@ -18,6 +18,7 @@
     vm.customFromIsReadonly = customFromIsReadonly;
     vm.cancel = cancel;
     vm.save = save;
+    vm.hostnameRE = accountId > 0 ? /^(?!(127\.0\.0\.1|localhost(?:\.localdomain)?)$)/ : /./;
 
     if (!vm.account.encryption)
       vm.account.encryption = "none";

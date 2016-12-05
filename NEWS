@@ -1,6 +1,9 @@
 3.2.5 (2016-12-DD)
 ------------------
 
+Enhancements
+ - [web] prevent using localhost on additional IMAP accounts
+
 Bug fixes
  - [web] fixed confusion between owner and active user in ACLs management of Administration module
  - [web] fixed JavaScript exception after renaming an address book

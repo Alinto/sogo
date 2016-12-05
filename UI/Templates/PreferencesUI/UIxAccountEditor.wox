@@ -27,9 +27,13 @@
         <div layout="row">
           <md-input-container class="md-block md-flex">
             <label><var:string label:value="Server Name"/></label>
-            <input type="text" required="required"
+            <input name="serverName" type="text" required="required"
+                   ng-pattern="$AccountDialogController.hostnameRE"
                    ng-disabled="$AccountDialogController.accountId == 0"
                    ng-model="$AccountDialogController.account.serverName"/>
+            <div ng-messages="accountForm.serverName.$error" role="alert">
+              <div ng-message="pattern"><var:string label:value="Specify a hostname other than the local host"/></div>
+            </div>
           </md-input-container>
 
           <md-input-container class="md-block" flex="30">
