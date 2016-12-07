@@ -217,6 +217,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Convert To Task";
 
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Download all attachments";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "attachments";
+
 "Print..." = "Print...";
 "Delete Message" = "Delete Message";
 "Delete Selected Messages" = "Delete Selected Messages";

@@ -659,7 +659,7 @@
   AddressBook.prototype.$deleteCards = function(cards) {
     var _this = this,
         ids = _.map(cards, 'id');
-    
+
     return AddressBook.$$resource.post(this.id, 'batchDelete', {uids: ids}).then(function() {
       _this.$_deleteCards(ids);
     });
@@ -713,14 +713,19 @@
    * @returns a promise of the HTTP operation
    */
   AddressBook.prototype.exportCards = function(selectedOnly) {
-    var selectedUIDs;
+    var data = null, options, selectedCards;
+
+    options = {
+      type: 'application/octet-stream',
+      filename: this.name + '.ldif'
+    };
 
     if (selectedOnly) {
-      var selectedCards = _.filter(this.$cards, function(card) { return card.selected; });
-      selectedUIDs = _.map(selectedCards, 'id');
+      selectedCards = _.filter(this.$cards, function(card) { return card.selected; });
+      data = { uids: _.map(selectedCards, 'id') };
     }
 
-    return AddressBook.$$resource.download(this.id, 'export', (angular.isDefined(selectedUIDs) ? {uids: selectedUIDs} : null), {type: 'application/octet-stream'});
+    return AddressBook.$$resource.download(this.id, 'export', data, options);
   };
 
   /**

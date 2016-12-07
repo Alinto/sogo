@@ -530,7 +530,14 @@
    * @returns a promise of the HTTP operation
    */
   Calendar.prototype.export = function() {
-    return Calendar.$$resource.download(this.id + '.ics', 'export', null, {type: 'application/octet-stream'});
+    var options;
+
+    options = {
+      type: 'application/octet-stream',
+      filename: this.name + '.ics'
+    };
+
+    return Calendar.$$resource.download(this.id + '.ics', 'export', null, options);
   };
 
   /**

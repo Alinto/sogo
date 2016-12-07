@@ -84,8 +84,14 @@
               </md-menu-item>
               <md-menu-item>
                 <md-button label:aria-label="Save As..."
-                           ng-click="viewer.message.saveMessage()">
+                           ng-click="viewer.message.download()">
                   <var:string label:value="Save As..."/>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item ng-show="::viewer.message.attachmentAttrs.length">
+                <md-button label:aria-label="Download all attachments"
+                           ng-click="viewer.message.downloadAttachments()">
+                  <var:string label:value="Download all attachments"/>
                 </md-button>
               </md-menu-item>
               <md-menu-item>

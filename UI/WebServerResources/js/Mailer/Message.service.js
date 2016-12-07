@@ -444,9 +444,9 @@
    * @function $imipAction
    * @memberof Message.prototype
    * @desc Perform IMIP actions on the current message.
-   * @param {string} path - the path of the IMIP calendar part 
+   * @param {string} path - the path of the IMIP calendar part
    * @param {string} action - the the IMIP action to perform
-   * @param {object} data - the delegation info 
+   * @param {object} data - the delegation info
    */
   Message.prototype.$imipAction = function(path, action, data) {
     var _this = this;
@@ -657,7 +657,7 @@
   /**
    * @function $unwrap
    * @memberof Message.prototype
-   * @desc Unwrap a promise. 
+   * @desc Unwrap a promise.
    * @param {promise} futureMessageData - a promise of some of the Message's data
    */
   Message.prototype.$unwrap = function(futureMessageData) {
@@ -708,17 +708,32 @@
   };
 
   /**
-   * @function saveMessage
+   * @function download
    * @memberof Message.prototype
    * @desc Download the current message
    * @returns a promise of the HTTP operation
    */
-  Message.prototype.saveMessage = function() {
-    var selectedUIDs;
+  Message.prototype.download = function() {
+    var data, options;
 
-    selectedUIDs = [ this.uid ];
+    data = { uids: [this.uid] };
+    options = { filename: this.subject + '.zip' };
 
-    return Message.$$resource.download(this.$mailbox.id, 'saveMessages', {uids: selectedUIDs});
+    return Message.$$resource.download(this.$mailbox.id, 'saveMessages', data, options);
+  };
+
+  /**
+   * @function downloadAttachments
+   * @memberof Message.prototype
+   * @desc Download an archive of all attachments
+   * @returns a promise of the HTTP operation
+   */
+  Message.prototype.downloadAttachments = function() {
+    var options;
+
+    options = { filename: l('attachments') + "-" + this.uid + ".zip" };
+
+    return Message.$$resource.download(this.$absolutePath(), 'archiveAttachments', null, options);
   };
 
 })();

@@ -598,10 +598,12 @@
    * @returns a promise of the HTTP operation
    */
   Mailbox.prototype.saveSelectedMessages = function() {
-    var selectedMessages, selectedUIDs;
+    var data, options, selectedMessages, selectedUIDs;
 
     selectedMessages = _.filter(this.$messages, function(message) { return message.selected; });
     selectedUIDs = _.map(selectedMessages, 'uid');
+    data = { uids: selectedUIDs };
+    options = { filename: l('Saved Messages.zip') };
 
     return Mailbox.$$resource.download(this.id, 'saveMessages', {uids: selectedUIDs});
   };
@@ -613,7 +615,11 @@
    * @returns a promise of the HTTP operation
    */
   Mailbox.prototype.exportFolder = function() {
-    return Mailbox.$$resource.download(this.id, 'exportFolder');
+    var options;
+
+    options = { filename: this.name + '.zip' };
+
+    return Mailbox.$$resource.download(this.id, 'exportFolder', null, options);
   };
 
   /**
@@ -742,7 +748,7 @@
         return _this.$_deleteMessages(uids, messages);
       });
   };
-  
+
   /**
    * @function $reset
    * @memberof Mailbox.prototype

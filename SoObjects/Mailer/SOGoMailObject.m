@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2014 Inverse inc.
+  Copyright (C) 2007-2016 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -20,6 +20,7 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSTask.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
@@ -27,6 +28,7 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NGHashMap.h>
+#import <NGExtensions/NSFileManager+Extensions.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+Encoding.h>
@@ -38,7 +40,9 @@
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
@@ -122,10 +126,10 @@ static BOOL debugSoParts       = NO;
 - (NSString *) keyExtensionForPart: (id) _partInfo
 {
   NSString *mt, *st;
-  
+
   if (_partInfo == nil)
     return nil;
-  
+
   mt = [_partInfo valueForKey: @"type"];
   st = [[_partInfo valueForKey: @"subtype"] lowercaseString];
   if ([mt isEqualToString: @"text"]) {
@@ -140,7 +144,7 @@ static BOOL debugSoParts       = NO;
     if ([st isEqualToString: @"pgp-signature"])
       return @".asc";
   }
-  
+
   return nil;
 }
 
@@ -149,18 +153,18 @@ static BOOL debugSoParts       = NO;
   NSMutableArray *ma;
   NSArray *parts;
   unsigned i, count;
-  
+
   parts = [[self bodyStructure] valueForKey: @"parts"];
-  if (![parts isNotNull]) 
+  if (![parts isNotNull])
     return nil;
   if ((count = [parts count]) == 0)
     return nil;
-  
+
   for (i = 0, ma = nil; i < count; i++) {
     NSString *key, *ext;
     id   part;
     BOOL hasParts;
-    
+
     part     = [parts objectAtIndex:i];
     hasParts = [part valueForKey: @"parts"] != nil ? YES:NO;
     if ((hasParts && !_withParts) || (_withParts && !hasParts))
@@ -168,7 +172,7 @@ static BOOL debugSoParts       = NO;
 
     if (ma == nil)
       ma = [NSMutableArray arrayWithCapacity:count - i];
-    
+
     ext = [self keyExtensionForPart:part];
     key = [[NSString alloc] initWithFormat: @"%d%@", i + 1, ((id)ext?(id)ext: (id)@"")];
     [ma addObject:key];
@@ -204,15 +208,15 @@ static BOOL debugSoParts       = NO;
 {
   static NSArray *existsKey = nil;
   id msgs;
-  
+
   if (coreInfos != nil) /* if we have coreinfos, we can use them */
     return [coreInfos isNotNull];
-  
+
   /* otherwise fetch something really simple */
-  
+
   if (existsKey == nil) /* we use size, other suggestions? */
     existsKey = [[NSArray alloc] initWithObjects: @"RFC822.SIZE", nil];
-  
+
   msgs = [self fetchParts:existsKey]; // returns dict
   msgs = [msgs valueForKey: @"fetch"];
   return [msgs count] > 0 ? YES : NO;
@@ -229,7 +233,7 @@ static BOOL debugSoParts       = NO;
       if (heavyDebug)
 	[self logWithFormat: @"M: %@", msgs];
       msgs = [msgs valueForKey: @"fetch"];
-      
+
       // We MUST honor untagged IMAP responses here otherwise we could
       // return really borken and nasty results.
       if ([msgs count] > 0)
@@ -237,7 +241,7 @@ static BOOL debugSoParts       = NO;
 	  for (i = 0; i < [msgs count]; i++)
 	    {
 	      coreInfos = [msgs objectAtIndex: i];
-	      
+
 	      if ([[coreInfos objectForKey: @"uid"] intValue] == [[self nameInContainer] intValue])
 		break;
 
@@ -337,13 +341,13 @@ static BOOL debugSoParts       = NO;
 {
   NGMimeMessageParser *parser;
   NSData *data;
-  
+
   if (headerPart != nil)
     return [headerPart isNotNull] ? headerPart : nil;
-  
+
   if ([(data = [self mailHeaderData]) length] == 0)
     return nil;
-  
+
   // TODO: do we need to set some delegate method which stops parsing the body?
   parser = [[NGMimeMessageParser alloc] init];
   headerPart = [[parser parsePartFromData:data] retain];
@@ -372,21 +376,21 @@ static BOOL debugSoParts       = NO;
 
   if (![_path isNotNull])
     return nil;
-  
+
   if ((info = [self bodyStructure]) == nil) {
     [self errorWithFormat: @"got no body part structure!"];
     return nil;
   }
 
   /* ensure array argument */
-  
+
   if ([_path isKindOfClass:[NSString class]]) {
     if ([_path length] == 0 || [_path isEqualToString: @"text"])
       return info;
-    
+
     _path = [_path componentsSeparatedByString: @"."];
   }
-  
+
   // deal with mails of type text/calendar
   if ([[[info valueForKey: @"type"] lowercaseString] isEqualToString: @"text"] &&
       [[[info valueForKey: @"subtype"] lowercaseString] isEqualToString: @"calendar"])
@@ -399,12 +403,12 @@ static BOOL debugSoParts       = NO;
   if ([[[info valueForKey: @"type"] lowercaseString] isEqualToString: @"application"])
     return info;
 
-  /* 
-     For each path component, eg 1,1,3 
-     
+  /*
+     For each path component, eg 1,1,3
+
      Remember that we need special processing for message/rfc822 which maps the
      namespace of multiparts directly into the main namespace.
-     
+
      TODO(hh): no I don't remember, please explain in more detail!
   */
   pe = [_path objectEnumerator];
@@ -412,7 +416,7 @@ static BOOL debugSoParts       = NO;
     unsigned idx;
     NSArray  *parts;
     NSString *mt;
-    
+
     [self debugWithFormat: @"check PATH: %@", p];
     idx = [p intValue] - 1;
 
@@ -421,7 +425,7 @@ static BOOL debugSoParts       = NO;
     if ([mt isEqualToString: @"message"]) {
       /* we have special behaviour for message types */
       id body;
-      
+
       if ((body = [info valueForKey: @"body"]) != nil) {
 	mt = [body valueForKey: @"type"];
 	if ([mt isEqualToString: @"multipart"])
@@ -430,10 +434,10 @@ static BOOL debugSoParts       = NO;
 	  parts = [NSArray arrayWithObject:body];
       }
     }
-    
+
     if (idx >= [parts count]) {
       [self errorWithFormat:
-	      @"body part index out of bounds(idx=%d vs count=%d): %@", 
+	      @"body part index out of bounds(idx=%d vs count=%d): %@",
               (idx + 1), [parts count], info];
       return nil;
     }
@@ -448,40 +452,40 @@ static BOOL debugSoParts       = NO;
 {
   NSData *content;
   id     result, fullResult;
-  
+
   // We avoid using RFC822 here as the part name as it'll flag the message as Seen
   fullResult = [self fetchParts: [NSArray arrayWithObject: @"BODY.PEEK[]"]];
   if (fullResult == nil)
     return nil;
-  
+
   if ([fullResult isKindOfClass: [NSException class]])
     return fullResult;
-  
+
   /* extract fetch result */
-  
+
   result = [fullResult valueForKey: @"fetch"];
   if (![result isKindOfClass:[NSArray class]]) {
     [self logWithFormat:
-	    @"ERROR: unexpected IMAP4 result (missing 'fetch'): %@", 
+	    @"ERROR: unexpected IMAP4 result (missing 'fetch'): %@",
 	    fullResult];
     return [NSException exceptionWithHTTPStatus:500 /* server error */
 			reason: @"unexpected IMAP4 result"];
   }
   if ([result count] == 0)
     return nil;
-  
+
   result = [result objectAtIndex:0];
-  
+
   /* extract message */
-  
+
   if ((content = [[result valueForKey: @"body[]"] valueForKey: @"data"]) == nil) {
     [self logWithFormat:
-	    @"ERROR: unexpected IMAP4 result (missing 'message'): %@", 
+	    @"ERROR: unexpected IMAP4 result (missing 'message'): %@",
 	    result];
     return [NSException exceptionWithHTTPStatus:500 /* server error */
 			reason: @"unexpected IMAP4 result"];
   }
-  
+
   return [[content copy] autorelease];
 }
 
@@ -507,7 +511,7 @@ static BOOL debugSoParts       = NO;
 	    [s autorelease];
 	  else
 	    [self logWithFormat:
-		    @"ERROR: could not convert data of length %d to string", 
+		    @"ERROR: could not convert data of length %d to string",
 		  [content length]];
 	}
       else
@@ -529,11 +533,11 @@ static BOOL debugSoParts       = NO;
                            withPeek: (BOOL) withPeek
                     parentMultipart: (NSString *) parentMPart
 {
-  /* 
+  /*
      This is used to collect the set of IMAP4 fetch-keys required to fetch
      the basic parts of the body structure. That is, to fetch all parts which
      are displayed 'inline' in a single IMAP4 fetch.
-     
+
      The method calls itself recursively to walk the body structure.
   */
   NSArray *parts;
@@ -555,7 +559,7 @@ static BOOL debugSoParts       = NO;
     multipart = mimeType;
   else
     multipart = parentMPart;
-  
+
   if ([types containsObject: mimeType])
     {
       if ([p length] > 0)
@@ -581,9 +585,9 @@ static BOOL debugSoParts       = NO;
       sp = (([p length] > 0)
 	    ? (id)[p stringByAppendingFormat: @".%d", i + 1]
 	    : (id)[NSString stringWithFormat: @"%d", i + 1]);
-      
+
       childInfo = [parts objectAtIndex: i];
-      
+
       [self addRequiredKeysOfStructure: childInfo
                                   path: sp
                                toArray: keys
@@ -591,7 +595,7 @@ static BOOL debugSoParts       = NO;
                               withPeek: withPeek
                        parentMultipart: multipart];
     }
-      
+
   /* check body */
   body = [info objectForKey: @"body"];
   if (body)
@@ -651,7 +655,7 @@ static BOOL debugSoParts       = NO;
 
   [self addRequiredKeysOfStructure: [self bodyStructure]
                               path: @""
-                           toArray: ma 
+                           toArray: ma
                      acceptedTypes: types
                           withPeek: YES];
 
@@ -665,7 +669,7 @@ static BOOL debugSoParts       = NO;
   unsigned i, count;
   NSArray *results;
   id result;
-  
+
   [self debugWithFormat: @"fetch keys: %@", _fetchKeys];
 
   result = [self fetchParts: [_fetchKeys objectsForKey: @"key"
@@ -681,7 +685,7 @@ static BOOL debugSoParts       = NO;
   for (i = 0; i < count; i++) {
     NSString *key;
     NSData   *data;
-    
+
     key  = [[_fetchKeys objectAtIndex:i] objectForKey: @"key"];
 
     // We'll ask for the body.peek[] but SOPE returns us body[] responses
@@ -689,19 +693,19 @@ static BOOL debugSoParts       = NO;
     if ([key hasPrefix: @"body.peek["])
       key = [NSString stringWithFormat: @"body[%@", [key substringFromIndex: 10]];
 
-    data = [(NSDictionary *)[(NSDictionary *)result objectForKey:key] 
+    data = [(NSDictionary *)[(NSDictionary *)result objectForKey:key]
 			    objectForKey: @"data"];
-    
+
     if (![data isNotNull]) {
       [self errorWithFormat: @"got no data for key: %@", key];
       continue;
     }
-    
+
     if ([key isEqualToString: @"body[text]"])
       key = @""; // see key collector for explanation (TODO: where?)
     else if ([key hasPrefix: @"body["]) {
       NSRange r;
-      
+
       key = [key substringFromIndex:5];
       r   = [key rangeOfString: @"]"];
       if (r.length > 0)
@@ -913,13 +917,167 @@ static BOOL debugSoParts       = NO;
   return keys;
 }
 
+/**
+ * Returns an array of dictionaries with the following keys:
+ * - encoding
+ * - filename
+ * - mimetype
+ * - path
+ * - size
+ * - url
+ * - urlAsAttachment
+ * - body (NSData)
+ */
+- (NSArray *) fetchFileAttachments
+{
+  unsigned int count, max;
+  NGHashMap *response;
+  NSArray *parts, *paths; //, *bodies;
+  NSData *body;
+  NSDictionary *fetch, *currentInfo, *currentBody;
+  NSMutableArray *attachments;
+  NSMutableDictionary *currentAttachment;
+  NSString *currentPath;
+
+  parts = [self fetchFileAttachmentKeys];
+  max = [parts count];
+  attachments = [NSMutableArray arrayWithCapacity: max];
+  if (max > 0)
+    {
+      paths = [parts keysWithFormat: @"BODY[%{path}]"];
+      response = [[self fetchParts: paths] objectForKey: @"RawResponse"];
+      fetch = [response objectForKey: @"fetch"];
+      for (count = 0; count < max; count++)
+	{
+	  currentInfo = [parts objectAtIndex: count];
+          currentPath = [[paths objectAtIndex: count] lowercaseString];
+          currentBody = [fetch objectForKey: currentPath];
+
+          if (currentBody)
+            {
+              body = [currentBody objectForKey: @"data"];
+              body = [body bodyDataFromEncoding: [currentInfo objectForKey: @"encoding"]];
+            }
+          else
+            body = [NSData data];
+
+          currentAttachment = [NSMutableDictionary dictionaryWithDictionary: currentInfo];
+          [currentAttachment setObject: body forKey: @"body"];
+          [attachments addObject: currentAttachment];
+	}
+    }
+
+  return attachments;
+}
+
+- (WOResponse *) archiveAllFilesinArchiveNamed: (NSString *) archiveName
+{
+  NSArray *attachments;
+  NSData *body, *zipContent;
+  NSDictionary *currentAttachment;
+  NSException *error;
+  NSFileManager *fm;
+  NSMutableArray *zipTaskArguments;
+  NSString *spoolPath, *name, *fileName, *baseName, *extension, *zipPath, *qpFileName;
+  NSTask *zipTask;
+  SOGoMailFolder *folder;
+  WOResponse *response;
+  unsigned int max, count;
+
+  if (!archiveName)
+    archiveName = @"attachments.zip";
+
+  folder = [self container];
+  spoolPath = [folder userSpoolFolderPath];
+
+  if (![folder ensureSpoolFolderPath])
+    {
+      [self errorWithFormat: @"spool directory '%@' doesn't exist", spoolPath];
+      error = [NSException exceptionWithHTTPStatus: 500
+                                            reason: @"spool directory does not exist"];
+      return (WOResponse *)error;
+  }
+
+  // Prepare execution of zip
+  zipPath = [[SOGoSystemDefaults sharedSystemDefaults] zipPath];
+  fm = [NSFileManager defaultManager];
+  if (![fm fileExistsAtPath: zipPath])
+    {
+      error = [NSException exceptionWithHTTPStatus: 500
+                                            reason: @"zip not available"];
+      return (WOResponse *)error;
+    }
+
+  zipTask = [[NSTask alloc] init];
+  [zipTask setCurrentDirectoryPath: spoolPath];
+  [zipTask setLaunchPath: zipPath];
+
+  zipTaskArguments = [NSMutableArray arrayWithObjects: nil];
+  [zipTaskArguments addObject: @"attachments.zip"];
+
+  // Fetch attachments and write them on disk
+  attachments = [self fetchFileAttachments];
+  max = [attachments count];
+  for (count = 0; count < max; count++)
+    {
+      currentAttachment = [attachments objectAtIndex: count];
+      body = [currentAttachment objectForKey: @"body"];
+      name = [[currentAttachment objectForKey: @"filename"] asSafeFilename];
+
+      fileName = [NSString stringWithFormat:@"%@/%@", spoolPath, name];
+      [body writeToFile: fileName atomically: YES];
+
+      [zipTaskArguments addObject: name];
+    }
+
+  // Zip files
+  [zipTask setArguments: zipTaskArguments];
+  [zipTask launch];
+  [zipTask waitUntilExit];
+  [zipTask release];
+  zipContent = [[NSData alloc] initWithContentsOfFile:
+                           [NSString stringWithFormat: @"%@/attachments.zip", spoolPath]];
+
+  // Delete attachments from disk
+  max = [zipTaskArguments count];
+  for (count = 0; count < max; count++)
+    {
+      fileName = [zipTaskArguments objectAtIndex: count];
+      [fm removeFileAtPath:
+            [NSString stringWithFormat: @"%@/%@", spoolPath, fileName] handler: nil];
+    }
+
+  // Prepare response
+  response = [context response];
+  baseName = [archiveName stringByDeletingPathExtension];
+  extension = [archiveName pathExtension];
+  if ([extension length] > 0)
+    extension = [@"." stringByAppendingString: extension];
+  else
+    extension = @"";
+
+  qpFileName = [NSString stringWithFormat: @"%@%@",
+                         [baseName asQPSubjectString: @"utf-8"], extension];
+  [response setHeader: [NSString stringWithFormat: @"application/zip;"
+                                 @" name=\"%@\"", qpFileName]
+               forKey: @"content-type"];
+  [response setHeader: [NSString stringWithFormat: @"attachment; filename=\"%@\"",
+                                 qpFileName]
+               forKey: @"Content-Disposition"];
+  [response setContent: zipContent];
+
+  [zipContent release];
+
+  return response;
+}
+
 /* convert parts to strings */
 - (NSString *) stringForData: (NSData *) _data
 		    partInfo: (NSDictionary *) _info
 {
   NSString *charset, *s;
   NSData *mailData;
-  
+
   if ([_data isNotNull])
     {
       mailData
@@ -934,13 +1092,13 @@ static BOOL debugSoParts       = NO;
 	{
 	  s = [NSString stringWithData: mailData usingEncodingNamed: charset];
 	}
-      
+
       // If it has failed, we try at least using UTF-8. Normally, this can NOT fail.
       // Unfortunately, it seems to fail under GNUstep so we try latin1 if that's
       // the case
       if (!s)
 	s = [[[NSString alloc] initWithData: mailData encoding: NSUTF8StringEncoding] autorelease];
-      
+
       if (!s)
 	s = [[[NSString alloc] initWithData: mailData encoding: NSISOLatin1StringEncoding] autorelease];
     }
@@ -975,17 +1133,17 @@ static BOOL debugSoParts       = NO;
   /*
     The fetched parts are NSData objects, this method converts them into
     NSString objects based on the information inside the bodystructure.
-    
+
     The fetch-keys are body fetch-keys like: body[text] or body[1.2.3].
     The keys in the result dictionary are "" for 'text' and 1.2.3 for parts.
   */
   NSDictionary *datas;
-  
+
   if ((datas = [self fetchPlainTextParts:_fetchKeys]) == nil)
     return nil;
   if ([datas isKindOfClass:[NSException class]])
     return datas;
-  
+
   return [self stringifyTextParts:datas];
 }
 
@@ -1065,13 +1223,13 @@ static BOOL debugSoParts       = NO;
 	  acquire: (BOOL) _flag
 {
   id obj;
-  
+
   /* first check attributes directly bound to the application */
   if ((obj = [super lookupName:_key inContext:_ctx acquire:NO]) != nil)
     return obj;
-  
+
   /* lookup body part */
-  
+
   if ([self isBodyPartKey:_key]) {
     if ((obj = [self lookupImap4BodyPartKey:_key inContext:_ctx]) != nil) {
       if (debugSoParts)
@@ -1087,7 +1245,7 @@ static BOOL debugSoParts       = NO;
       [obj setAsAttachment];
       return obj;
     }
-  
+
   /* return 404 to stop acquisition */
   return [NSException exceptionWithHTTPStatus:404 /* Not Found */
 		      reason: @"Did not find mail method or part-reference!"];
@@ -1131,7 +1289,7 @@ static BOOL debugSoParts       = NO;
 				newName: (NSString *) _name
 			      inContext: (id)_ctx
 {
-  /* 
+  /*
      Note: this is special because we create SOGoMailObject's even if they do
            not exist (for performance reasons).
 
@@ -1181,7 +1339,7 @@ static BOOL debugSoParts       = NO;
   NSException *error;
   WOResponse  *r;
   NSData      *content;
-  
+
   if ((error = [self matchesRequestConditionInContext:_ctx]) != nil) {
     /* check whether the mail still exists */
     if (![self doesMailExist]) {
@@ -1190,7 +1348,7 @@ static BOOL debugSoParts       = NO;
     }
     return error; /* return 304 or 416 */
   }
-  
+
   content = [self content];
   if ([content isKindOfClass:[NSException class]])
     return content;
@@ -1198,7 +1356,7 @@ static BOOL debugSoParts       = NO;
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */
 			reason: @"did not find IMAP4 message"];
   }
-  
+
   r = [(WOContext *)_ctx response];
   [r setHeader: @"message/rfc822" forKey: @"content-type"];
   [r setContent:content];
@@ -1257,19 +1415,19 @@ static BOOL debugSoParts       = NO;
 	     inContext: _ctx])
     {
       /* b) mark deleted */
-  
+
       error = [[self imap4Connection] markURLDeleted: [self imap4URL]];
       if (error != nil) return error;
 
       [self flushMailCaches];
     }
-  
+
   return nil;
 }
 
 - (NSException *) delete
 {
-  /* 
+  /*
      Note: delete is different to DELETEAction: for mails! The 'delete' runs
            either flags a message as deleted or moves it to the Trash while
 	   the DELETEAction: really deletes a message (by flagging it as
@@ -1279,7 +1437,7 @@ static BOOL debugSoParts       = NO;
   NSException *error;
 
   // TODO: check for safe HTTP method
-  
+
   error = [[self imap4Connection] markURLDeleted:[self imap4URL]];
   return error;
 }
@@ -1287,15 +1445,15 @@ static BOOL debugSoParts       = NO;
 - (id) DELETEAction: (id) _ctx
 {
   NSException *error;
-  
+
   // TODO: ensure safe HTTP method
-  
+
   error = [[self imap4Connection] markURLDeleted:[self imap4URL]];
   if (error != nil) return error;
-  
+
   error = [[self imap4Connection] expungeAtURL:[[self container] imap4URL]];
   if (error != nil) return error; // TODO: unflag as deleted?
-  
+
   return [NSNumber numberWithBool:YES]; /* delete was successful */
 }
 
@@ -1304,20 +1462,20 @@ static BOOL debugSoParts       = NO;
 - (BOOL) isMailingListMail
 {
   NSDictionary *h;
-  
+
   if ((h = [self mailHeaders]) == nil)
     return NO;
-  
+
   return [[h objectForKey: @"list-id"] isNotEmpty];
 }
 
 - (BOOL) isVirusScanned
 {
   NSDictionary *h;
-  
+
   if ((h = [self mailHeaders]) == nil)
     return NO;
-  
+
   if (![[h objectForKey: @"x-virus-status"]  isNotEmpty]) return NO;
   if (![[h objectForKey: @"x-virus-scanned"] isNotEmpty]) return NO;
   return YES;
@@ -1329,10 +1487,10 @@ static BOOL debugSoParts       = NO;
   /* Note: not very tolerant on embedded commands and <> */
   // TODO: does not really belong here, should be a header-field-parser
   NSRange r;
-  
+
   if (![_value isNotEmpty])
     return nil;
-  
+
   if ([_value isKindOfClass:[NSArray class]]) {
     NSEnumerator *e;
     id value;
@@ -1344,10 +1502,10 @@ static BOOL debugSoParts       = NO;
     }
     return nil;
   }
-  
+
   if (![_value isKindOfClass:[NSString class]])
     return nil;
-  
+
   /* check for commas in string values */
   r = [_value rangeOfString: @","];
   if (r.length > 0) {
@@ -1358,7 +1516,7 @@ static BOOL debugSoParts       = NO;
   /* value qualifies */
   if (![(NSString *)_value hasPrefix:_prefix])
     return nil;
-  
+
   /* unquote */
   if ([_value characterAtIndex:0] == '<') {
     r = [_value rangeOfString: @">"];
@@ -1456,7 +1614,7 @@ static BOOL debugSoParts       = NO;
   if (property)
     {
       parts = [NSArray arrayWithObject: property];
-      
+
       msgs = [self fetchParts: parts];
       msgs = [msgs valueForKey: @"fetch"];
       if ([msgs count]) {
@@ -1512,7 +1670,7 @@ static BOOL debugSoParts       = NO;
 // date already exists, but this one is the correct format
 - (NSString *) davDate
 {
-  return [[self date] rfc822DateString]; 
+  return [[self date] rfc822DateString];
 }
 
 - (BOOL) hasAttachment
@@ -1597,12 +1755,12 @@ static BOOL debugSoParts       = NO;
   if ([fetch count])
     {
       data = [fetch objectForKey: @"header"];
-      value = [[NSString alloc] initWithData: data 
+      value = [[NSString alloc] initWithData: data
                                     encoding: NSUTF8StringEncoding];
       range = [value rangeOfString: @"received:"
                            options: NSCaseInsensitiveSearch
                              range: NSMakeRange (10, [value length] - 11)];
-      if (range.length 
+      if (range.length
           && range.location < [value length]
           && range.length < [value length])
         {

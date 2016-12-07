@@ -1,4 +1,5 @@
 /*
+  Copyright (C) 2009-2016 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
@@ -47,6 +48,8 @@
 
 @class NGImap4Envelope;
 @class NGImap4EnvelopeAddress;
+
+@class WOResponse;
 
 NSArray *SOGoMailCoreInfoKeys;
 
@@ -107,6 +110,8 @@ NSArray *SOGoMailCoreInfoKeys;
 - (BOOL) hasAttachment;
 - (NSDictionary *) fetchFileAttachmentIds;
 - (NSArray *) fetchFileAttachmentKeys;
+- (NSArray *) fetchFileAttachments;
+- (WOResponse *) archiveAllFilesinArchiveNamed: (NSString *) archiveName;
 
 /* flags */
 

@@ -312,6 +312,18 @@ static NSString *mailETag = nil;
   return response;
 }
 
+- (id <WOActionResults>) archiveAttachmentsAction
+{
+  NSString *name;
+  SOGoMailObject *co;
+
+  co = [self clientObject];
+  name = [NSString stringWithFormat: @"%@-%@.zip",
+                  [self labelForKey: @"attachments"], [co nameInContainer]];
+
+  return [co archiveAllFilesinArchiveNamed: name];
+}
+
 /* MDN */
 
 - (BOOL) _userHasEMail: (NSString *) email

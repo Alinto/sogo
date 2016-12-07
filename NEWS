@@ -1,6 +1,9 @@
 3.2.5 (2016-12-DD)
 ------------------
 
+New features
+ - [web] download attachments of a message as a zip archive
+
 Enhancements
  - [web] prevent using localhost on additional IMAP accounts
 

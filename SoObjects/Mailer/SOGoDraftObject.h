@@ -97,7 +97,6 @@
 /* attachments */
 
 - (NSArray *) fetchAttachmentAttrs;
-- (BOOL) isValidAttachmentName: (NSString *) _name;
 - (NGMimeBodyPart *) bodyPartForAttachmentWithName: (NSString *) _name;
 - (NSString *) pathToAttachmentWithName: (NSString *) _name;
 - (NSException *) saveAttachment: (NSData *) _attach

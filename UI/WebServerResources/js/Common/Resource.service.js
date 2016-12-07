@@ -192,14 +192,21 @@
       },
       responseType: 'arraybuffer',
       cache: false,
-      transformResponse: function (data, headers) {
+      transformResponse: function (data, headers, status) {
         var fileName, result, blob = null;
 
+        if (status < 200 || status > 299) {
+          throw new Error('Bad gateway');
+        }
         if (data) {
           blob = new Blob([data], { type: type });
         }
-        fileName = getFileNameFromHeader(headers('content-disposition'));
-
+        if (options && options.filename) {
+          fileName = options.filename;
+        }
+        else {
+          getFileNameFromHeader(headers('content-disposition'));
+        }
         if (!saveAs) {
           throw new Error('To use Resource.download, FileSaver.js must be loaded.');
         }

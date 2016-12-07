@@ -48,11 +48,11 @@
 @interface _SOGoHTMLContentHandler : NSObject <SaxContentHandler, SaxLexicalHandler>
 {
   NSMutableArray *images;
-  
+
   NSArray *ignoreContentTags;
   NSArray *specialTreatmentTags;
   NSArray *voidTags;
-  
+
   BOOL ignoreContent;
   BOOL orderedList;
   BOOL unorderedList;
@@ -300,7 +300,7 @@
               i = [value indexOf: ';'];
               j = [value indexOf: ';' fromIndex: i+1];
               k = [value indexOf: ','];
-          
+
               // We try to get the MIME type
               mimeType = nil;
 
@@ -314,7 +314,7 @@
               // We might get a stupid value. We discard anything that doesn't have a / in it
               if ([mimeType indexOf: '/'] < 0)
                 mimeType = @"image/jpeg";
-          
+
               // We check and skip the charset
               if (j < i)
                 j = i;
@@ -335,14 +335,14 @@
               [map setObject: [NSString stringWithFormat: @"inline; filename=\"%@\"", uniqueId]  forKey: @"content-disposition"];
               [map setObject: [NSString stringWithFormat: @"%@; name=\"%@\"", mimeType, uniqueId]  forKey: @"content-type"];
               [map setObject: [NSString stringWithFormat: @"<%@>", uniqueId]  forKey: @"content-id"];
-                    
-                    
+
+
               body = [[NGMimeFileData alloc] initWithBytes: [data bytes]  length: [data length]];
 
               bodyPart = [[[NGMimeBodyPart alloc] initWithHeader:map] autorelease];
               [bodyPart setBody: body];
               [body release];
-          
+
               [images addObject: bodyPart];
 
               [result appendFormat: @"<img src=\"cid:%@\" type=\"%@\"", uniqueId, mimeType];
@@ -357,7 +357,7 @@
                       [result appendFormat: @" %@=\"%@\"", attrName, value];
                     }
                 }
-          
+
               [result appendString: @"/>"];
             }
         }
@@ -656,19 +656,19 @@ convertChars (const char *oldString, unsigned int oldLength,
       fromIndex: (int) start
 {
   int i, len;
-  
+
   len = [self length];
-  
+
   if (start < 0 || start >= len)
     start = 0;
-  
+
   for (i = start; i < len; i++)
     {
       if ([self characterAtIndex: i] == _c) return i;
     }
 
   return -1;
-  
+
 }
 
 - (int) indexOf: (unichar) _c
@@ -684,8 +684,30 @@ convertChars (const char *oldString, unsigned int oldLength,
                      decodedHeader];
   if (!decodedHeader)
     decodedHeader = self;
-  
+
   return decodedHeader;
+}
+
+- (NSString *) asSafeFilename
+{
+  NSRange r;
+  NSMutableString *safeName;
+
+  r = [self rangeOfString: @"\\"
+                  options: NSBackwardsSearch];
+  if (r.length > 0)
+    safeName = [NSMutableString stringWithString: [self substringFromIndex: r.location + 1]];
+  else
+    safeName = [NSMutableString stringWithString: self];
+  [safeName replaceString: @"/" withString: @"_"];
+
+  if ([self isEqualToString: @"."])
+    return @"_";
+
+  if ([self isEqualToString: @".."])
+    return @"__";
+
+  return safeName;
 }
 
 @end

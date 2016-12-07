@@ -269,11 +269,15 @@
    * @returns a promise of the HTTP operation
    */
   Card.prototype.export = function() {
-    var selectedIDs;
+    var data, options;
 
-    selectedIDs = [ this.id ];
+    data = { uids: [ this.id ] };
+    options = {
+      type: 'application/octet-stream',
+      filename: this.$$fullname + '.ldif'
+    };
 
-    return Card.$$resource.download(this.pid, 'export', {uids: selectedIDs}, {type: 'application/octet-stream'});
+    return Card.$$resource.download(this.pid, 'export', data, options);
   };
 
   Card.prototype.$fullname = function(options) {
