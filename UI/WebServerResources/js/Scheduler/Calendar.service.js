@@ -84,7 +84,7 @@
    */
   Calendar.$add = function(calendar) {
     // Insert new calendar at proper index
-    var list, sibling, i;
+    var list, sibling;
 
     if (calendar.isWebCalendar)
       list = this.$webcalendars;
@@ -93,13 +93,15 @@
     else
       list = this.$calendars;
 
-    sibling = _.find(list, function(o) {
+    sibling = _.findIndex(list, function(o, i) {
+      console.debug(i + ': "' + o.id + '".localeCompare("' + calendar.name + '") = ' + o.name.localeCompare(calendar.name));
       return (calendar.id == 'personal' ||
-              (o.id != 'personal' &&
-               o.name.localeCompare(calendar.name) === 1));
+              (o.id != 'personal' && o.name.localeCompare(calendar.name) > 0));
     });
-    i = sibling ? _.indexOf(_.map(list, 'id'), sibling.id) : 1;
-    list.splice(i, 0, calendar);
+    if (sibling < 0)
+      list.push(calendar);
+    else
+      list.splice(sibling, 0, calendar);
 
     this.$Preferences.ready().then(function() {
       if (Calendar.$Preferences.settings.Calendar.FoldersOrder)
