@@ -3,6 +3,7 @@
 
 Enhancements
  - [core] added handling of BYSETPOS for BYDAY in recurrence rules
+ - [web] update jQuery to version 1.12.4 and jQuery UI to version 1.11.4
 
 Bug fixes
  - [eas] properly escape all GAL responses (#3923)
