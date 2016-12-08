@@ -125,7 +125,7 @@
             <var:string value="productLocalizableStrings" const:escapeHTML="NO"/></script>
           
           <script type="text/javascript" rsrc:src="prototype.js"><!-- space --></script>
-          <script type="text/javascript" rsrc:src="jquery.js"><!-- space --></script>
+          <script type="text/javascript" rsrc:src="jquery.min.js"><!-- space --></script>
           <script>jQuery.noConflict();</script>
           <script type="text/javascript" rsrc:src="tablekit.js"><!-- space --></script>
           <script type="text/javascript" rsrc:src="tablekit-trueresize.js"><!-- space --></script>

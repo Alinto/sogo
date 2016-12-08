@@ -9,7 +9,7 @@
   className="UIxPageFrame"
   const:userDefaultsKeys="SOGoRefreshViewCheck, SOGoCalendarCategoriesColors,SOGoDefaultCalendar"
   const:userSettingsKeys="Calendar,ShowCompletedTasks"
-  const:jsFiles="SchedulerUIDnD.js,jquery-ui.js"
+  const:jsFiles="SchedulerUIDnD.js,jquery-ui.min.js"
   title="title">
   <script type="text/javascript">
     var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;

@@ -11,7 +11,7 @@
   title="panelTitle"
   const:popup="YES"
   const:userDefaultsKeys="SOGoMailComposeMessageType,SOGoMailReplyPlacement,SOGoMailSignature,SOGoMailAutoSave,SOGoDraftsFolderName"
-  const:jsFiles="UIxMailToSelection.js,ckeditor/ckeditor.js,SOGoAutoCompletion.js,ContactsUI.js,jquery-ui.js,jquery.fileupload.js,jquery.iframe-transport.js"
+  const:jsFiles="UIxMailToSelection.js,ckeditor/ckeditor.js,SOGoAutoCompletion.js,ContactsUI.js,jquery-ui.min.js,jquery.fileupload.js,jquery.iframe-transport.js"
   const:cssFiles="jquery.fileupload.css">
   <script type="text/javascript">
     var mailIsReply = <var:string value="isMailReply"/>;
