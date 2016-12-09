@@ -688,8 +688,9 @@ static int cssEscapingCount;
 
 - (NSString *) asSafeSQLString
 {
-  return [[self stringByReplacingString: @"\\" withString: @"\\\\"]
-           stringByReplacingString: @"'" withString: @"\\'"];
+  return [[[self stringByReplacingString: @"\\" withString: @"\\\\"]
+           stringByReplacingString: @"'" withString: @"\\'"]
+	   stringByReplacingString: @"\%" withString: @"\\%"];
 }
 
 - (NSUInteger) countOccurrencesOfString: (NSString *) substring
