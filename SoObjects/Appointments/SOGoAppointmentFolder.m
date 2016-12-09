@@ -709,7 +709,7 @@ static Class iCalEventK = nil;
   if ([title length])
     [baseWhere
       addObject: [NSString stringWithFormat: @"c_title isCaseInsensitiveLike: '%%%@%%'",
-                           [title stringByReplacingString: @"'"  withString: @"\\'\\'"]]];
+                           [title asSafeSQLString]]];
 
   if (component)
     {
@@ -1450,14 +1450,14 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
               if ([filters isEqualToString:@"title_Category_Location"] || [filters isEqualToString:@"entireContent"])
                 {
                   [baseWhere addObject: [NSString stringWithFormat: @"(c_title isCaseInsensitiveLike: '%%%@%%' OR c_category isCaseInsensitiveLike: '%%%@%%' OR c_location isCaseInsensitiveLike: '%%%@%%')",
-                                                  [title stringByReplacingString: @"'"  withString: @"\\'\\'"],
-                                                  [title stringByReplacingString: @"'"  withString: @"\\'\\'"],
-                                                  [title stringByReplacingString: @"'"  withString: @"\\'\\'"]]];
+                                                  [title asSafeSQLString],
+                                                  [title asSafeSQLString],
+                                                  [title asSafeSQLString]]];
                 }
             }
           else
             [baseWhere addObject: [NSString stringWithFormat: @"c_title isCaseInsensitiveLike: '%%%@%%'",
-                                            [title stringByReplacingString: @"'"  withString: @"\\'\\'"]]];
+                                            [title asSafeSQLString]]];
         }
       
       /* prepare mandatory fields */
@@ -2610,7 +2610,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   if (uid && folder)
     {
       qualifier = [EOQualifier qualifierWithQualifierFormat: @"c_uid = %@",
-			       uid];
+			       [uid asSafeSQLString]];
       records = [folder fetchFields: nameFields matchingQualifier: qualifier];
       count = [records count];
       if (count)
