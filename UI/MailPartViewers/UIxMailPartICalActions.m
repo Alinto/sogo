@@ -234,20 +234,20 @@
 - (WOResponse *) _changePartStatusAction: (NSString *) newStatus
                             withDelegate: (iCalPerson *) delegate
 {
-  WOResponse *response;
   SOGoAppointmentObject *eventObject;
+  WOResponse *response;
   iCalEvent *chosenEvent;
+  iCalAlarm *alarm;
 
   chosenEvent = [self _setupChosenEventAndEventObject: &eventObject];
   if (chosenEvent)
     {
+      // For invitations, we take the organizers's alarm to start with
+      alarm = [[chosenEvent alarms] lastObject];      
       response = (WOResponse*)[eventObject changeParticipationStatus: newStatus
 							withDelegate: delegate
-                                                               alarm: nil
+                                                               alarm: alarm
 						     forRecurrenceId: [chosenEvent recurrenceId]];
-//      if (ex)
-//	response = ex; //[self responseWithStatus: 500];
-//      else
       if (!response)
 	response = [self responseWith204];
     }
