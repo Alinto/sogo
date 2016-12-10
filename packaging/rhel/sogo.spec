@@ -38,7 +38,7 @@ Prefix:       /usr
 AutoReqProv:  off
 Requires:     gnustep-base >= 1.23, sope%{sope_major_version}%{sope_minor_version}-core, httpd, sope%{sope_major_version}%{sope_minor_version}-core, sope%{sope_major_version}%{sope_minor_version}-appserver, sope%{sope_major_version}%{sope_minor_version}-ldap, sope%{sope_major_version}%{sope_minor_version}-cards >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-sbjson, libmemcached, memcached, tmpwatch, zip
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}
-BuildRequires:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{sope_minor_version}-appserver-devel sope%{sope_major_version}%{sope_minor_version}-core-devel sope%{sope_major_version}%{sope_minor_version}-ldap-devel sope%{sope_major_version}%{sope_minor_version}-mime-devel sope%{sope_major_version}%{sope_minor_version}-xml-devel sope%{sope_major_version}%{sope_minor_version}-gdl1-devel sope%{sope_major_version}%{sope_minor_version}-sbjson-devel libmemcached-devel sed %{?oc_build_depends}
+BuildRequires:  gcc-objc gnustep-base gnustep-base-devel gnustep-make sope%{sope_major_version}%{sope_minor_version}-appserver-devel sope%{sope_major_version}%{sope_minor_version}-core-devel sope%{sope_major_version}%{sope_minor_version}-ldap-devel sope%{sope_major_version}%{sope_minor_version}-mime-devel sope%{sope_major_version}%{sope_minor_version}-xml-devel sope%{sope_major_version}%{sope_minor_version}-gdl1-devel sope%{sope_major_version}%{sope_minor_version}-sbjson-devel libmemcached-devel sed %{?oc_build_depends} openldap-devel libcurl-devel
 
 
 # Required by MS Exchange freebusy lookups
@@ -243,8 +243,8 @@ install -d ${RPM_BUILD_ROOT}/var/lib/sogo
 install -d ${RPM_BUILD_ROOT}/var/log/sogo
 install -d ${RPM_BUILD_ROOT}/var/run/sogo
 install -d ${RPM_BUILD_ROOT}/var/spool/sogo
-install -d -m 750 -o %sogo_user -g %sogo_user ${RPM_BUILD_ROOT}/etc/sogo
-install -m 640 -o %sogo_user -g %sogo_user Scripts/sogo.conf ${RPM_BUILD_ROOT}/etc/sogo/
+install -d -m 750 ${RPM_BUILD_ROOT}/etc/sogo
+install -m 640 Scripts/sogo.conf ${RPM_BUILD_ROOT}/etc/sogo/
 #install -m 755 Scripts/openchange_user_cleanup ${RPM_BUILD_ROOT}/%{_sbindir}
 cat Apache/SOGo.conf | sed -e "s@/lib/@/%{_lib}/@g" > ${RPM_BUILD_ROOT}/etc/httpd/conf.d/SOGo.conf
 install -m 600 Scripts/sogo.cron ${RPM_BUILD_ROOT}/etc/cron.d/sogo
