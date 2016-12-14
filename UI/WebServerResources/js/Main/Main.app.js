@@ -9,11 +9,15 @@
   /**
    * @ngInject
    */
-  LoginController.$inject = ['$scope', '$timeout', 'Dialog', '$mdDialog', 'Authentication'];
-  function LoginController($scope, $timeout, Dialog, $mdDialog, Authentication) {
+  LoginController.$inject = ['$scope', '$window', '$timeout', 'Dialog', '$mdDialog', 'Authentication'];
+  function LoginController($scope, $window, $timeout, Dialog, $mdDialog, Authentication) {
     var vm = this;
 
-    vm.creds = { username: cookieUsername, password: null };
+    vm.creds = {
+      username: $window.cookieUsername,
+      password: null,
+      rememberLogin: angular.isDefined($window.cookieUsername) && $window.cookieUsername.length > 0
+    };
     vm.login = login;
     vm.loginState = false;
     vm.showAbout = showAbout;
@@ -31,10 +35,10 @@
 
           // Let the user see the succesfull message before reloading the page
           $timeout(function() {
-            if (window.location.href === data.url)
-              window.location.reload(true);
+            if ($window.location.href === data.url)
+              $window.location.reload(true);
             else
-              window.location.href = data.url;
+              $window.location.href = data.url;
           }, 1000);
         }, function(msg) {
           vm.loginState = 'error';
