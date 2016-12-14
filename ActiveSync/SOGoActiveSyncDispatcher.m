@@ -947,6 +947,7 @@ void handle_eas_terminate(int signum)
                      command_count++;
                    }
                  [o destroy];
+                 continue;
                }
 
              // Remove the folder from device if it is a contact folder and we have no SOGoRole_ObjectViewer.
@@ -1097,6 +1098,7 @@ void handle_eas_terminate(int signum)
            ![currentFolder synchronize])
          {
            [folders removeObjectAtIndex: count];
+           continue;
          }
 
        // Remove the folder from the device if it is a contact folder and we have no SOGoRole_ObjectViewer access right.
