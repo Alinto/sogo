@@ -6,6 +6,7 @@ New features
 
 Enhancements
  - [web] prevent using localhost on additional IMAP accounts
+ - [web] renamed buttons of alarm toast (#3945)
 
 Bug fixes
  - [web] fixed confusion between owner and active user in ACLs management of Administration module

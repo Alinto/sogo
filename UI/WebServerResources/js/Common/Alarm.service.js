@@ -94,11 +94,11 @@
           '           </md-option>',
           '         </md-select>',
           '        </md-input-container>',
-          '        <md-button ng-click="cancel()">',
-                     l('Cancel'),
+          '        <md-button ng-click="snooze()">',
+                     l('Snooze'),
           '        </md-button>',
-          '        <md-button ng-click="ok()">',
-                     l('Ok'),
+          '        <md-button ng-click="close()">',
+                     l('Close'),
           '        </md-button>',
           '      </div>',
           '    </div>',
@@ -118,10 +118,10 @@
       function AlarmController(scope, $mdToast, url) {
         scope.summary = data.summary;
         scope.reminder = '10';
-        scope.cancel = function() {
+        scope.close = function() {
           $mdToast.hide();
         };
-        scope.ok = function() {
+        scope.snooze = function() {
           _this.$$resource.fetch(url, 'view?snoozeAlarm=' + scope.reminder);
           $mdToast.hide();
         };

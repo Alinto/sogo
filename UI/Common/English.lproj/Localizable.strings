@@ -69,14 +69,6 @@
 "delegate is organizer" = "The delegate is the organizer. Please specify a different delegate.";
 "delegate is a participant" = "The delegate is already a participant.";
 "delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
-"Snooze for " = "Snooze for ";
-"5 minutes" = "5 minutes";
-"10 minutes" = "10 minutes";
-"15 minutes" = "15 minutes";
-"30 minutes" = "30 minutes";
-"45 minutes" = "45 minutes";
-"1 hour" = "1 hour";
-"1 day" = "1 day";
 
 /* common buttons */
 "OK" = "OK";
@@ -89,6 +81,15 @@
 "Start" = "Start";
 "Due Date" = "Due Date";
 "Location" = "Location";
+"Snooze" = "Snooze";
+"Snooze for " = "Snooze for ";
+"5 minutes" = "5 minutes";
+"10 minutes" = "10 minutes";
+"15 minutes" = "15 minutes";
+"30 minutes" = "30 minutes";
+"45 minutes" = "45 minutes";
+"1 hour" = "1 hour";
+"1 day" = "1 day";
 
 /* mail labels */
 "Important" = "Important";
