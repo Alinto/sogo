@@ -6,6 +6,7 @@ Enhancements
  - [web] update jQuery to version 1.12.4 and jQuery UI to version 1.11.4
 
 Bug fixes
+ - [core] honor blocking wrong login attemps within time interval (#2850)
  - [eas] properly escape all GAL responses (#3923)
  - [eas] properly skip folders we don't want to synchronize (#3943)
 
