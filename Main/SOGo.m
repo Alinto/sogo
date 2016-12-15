@@ -35,6 +35,7 @@
 #import <GDLContentStore/GCSAlarmsFolder.h>
 #import <GDLContentStore/GCSSessionsFolder.h>
 
+#import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest+So.h>
@@ -369,8 +370,12 @@ static BOOL debugLeaks;
              "GET" if no method was provided in the query path.
           */
           if ([_key length] > 0 && ![_key isEqualToString:@"favicon.ico"])
-            obj = [self lookupUser: _key inContext: _ctx];
-        }
+            {
+              obj = [self lookupUser: _key inContext: _ctx];
+              if (!obj)
+		obj = [self lookupUser: @"anonymous" inContext: _ctx];
+            }
+       }
     }
   else
     obj = nil;
