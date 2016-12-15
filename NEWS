@@ -9,6 +9,7 @@ Enhancements
  - [web] renamed buttons of alarm toast (#3945)
 
 Bug fixes
+ - [core] honor blocking wrong login attemps within time interval (#2850)
  - [web] fixed confusion between owner and active user in ACLs management of Administration module
  - [web] fixed JavaScript exception after renaming an address book
  - [web] fixed Sieve folder encoding support (#3904)
