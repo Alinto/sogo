@@ -338,6 +338,10 @@
       [newRecord setObject: data forKey: @"contactInfo"];
     }
 
+  // photo => hasPhoto
+  data = [oldRecord objectForKey: @"photo"];
+  [newRecord setObject: [NSNumber numberWithInt: [data length] ? 1 : 0] forKey: @"hasPhoto"];
+
   recordSource = [oldRecord objectForKey: @"source"];
   if ([recordSource conformsToProtocol: @protocol (SOGoDNSource)] &&
       [[(NSObject <SOGoDNSource>*) recordSource MSExchangeHostname] length])

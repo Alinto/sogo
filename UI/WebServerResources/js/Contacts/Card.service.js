@@ -152,6 +152,8 @@
       Card.$Preferences.avatar(this.$$email, 32, {no_404: true}).then(function(url) {
         _this.$$image = url;
       });
+    if (this.hasphoto)
+      this.photoURL = Card.$$resource.path(this.pid, this.id, 'photo');
     if (this.isgroup)
       this.c_component = 'vlist';
     this.$avatarIcon = this.$isList()? 'group' : 'person';

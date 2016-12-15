@@ -57,6 +57,21 @@
   };
 
   /**
+   * @function path
+   * @memberof Resource.prototype
+   * @desc Create a URL of the resource context with any number of additional segments
+   * @return an absolute URL
+   */
+  Resource.prototype.path = function() {
+    var path = [this._path];
+
+    if (arguments.length > 0)
+      Array.prototype.push.apply(path, Array.prototype.slice.call(arguments));
+
+    return path.join('/');
+  };
+
+  /**
    * @function fetch
    * @memberof Resource.prototype
    * @desc Fetch resource using a specific folder, action and/or parameters.
