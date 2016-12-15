@@ -505,6 +505,8 @@ static memcached_st *handle = NULL;
         {
           [d setObject: [NSNumber numberWithUnsignedInt: [[NSCalendarDate date] timeIntervalSince1970]] forKey: @"InitialDate"];
         }
+
+      [d setObject: [NSNumber numberWithUnsignedInt: [[NSCalendarDate date] timeIntervalSince1970]] forKey: @"LastRequestDate"];
       
       [d setObject: count  forKey: @"FailedCount"];
       [self _cacheValues: [d jsonRepresentation]
