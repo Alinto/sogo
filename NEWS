@@ -17,6 +17,7 @@ Bug fixes
  - [web] fixed ordering of calendars when renaming or adding a calendar (#3931)
  - [web] use the organizer's alarm by default when accepting IMIP messages (#3934)
  - [web] switch on "Remember username" when cookie username is set
+ - [web] return login page for unknown users (#2135)
  - [eas] properly skip folders we don't want to synchronize (#3943)
 
 3.2.4 (2016-12-01)
