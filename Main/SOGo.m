@@ -421,7 +421,7 @@ static BOOL debugLeaks;
           if ([_key length] > 0 && ![_key isEqualToString:@"favicon.ico"])
             {
               obj = [self lookupUser: _key inContext: _ctx];
-              if (!obj)
+              if (!obj && ![_key isEqualToString: @"public"])
 		obj = [self lookupUser: @"anonymous" inContext: _ctx];
             }
        }
