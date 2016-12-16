@@ -372,6 +372,48 @@
 //
 //
 //
+- (BOOL) _shouldScheduleEvent: (iCalPerson *) thePerson
+{
+  NSArray *userAgents;
+  NSString *v;
+  BOOL b;
+  int i;
+
+  b = YES;
+
+  if (thePerson && (v = [thePerson value: 0  ofAttribute: @"SCHEDULE-AGENT"]))
+    {
+      if ([v caseInsensitiveCompare: @"NONE"] == NSOrderedSame ||
+          [v caseInsensitiveCompare: @"CLIENT"] == NSOrderedSame)
+        b = NO;
+    }
+
+  //
+  // If we have to deal with Thunderbird/Lightning, we always send invitation
+  // reponses, as Lightning v2.6 (at least this version) sets SCHEDULE-AGENT
+  // to NONE/CLIENT when responding to an external invitation received by
+  // SOGo - so no invitation responses are ever sent by Lightning. See
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=865726 and
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=997784
+  //
+  userAgents = [[context request] headersForKey: @"User-Agent"];
+
+  for (i = 0; i < [userAgents count]; i++)
+    {
+      if ([[userAgents objectAtIndex: i] rangeOfString: @"Thunderbird"].location != NSNotFound &&
+          [[userAgents objectAtIndex: i] rangeOfString: @"Lightning"].location != NSNotFound)
+        {
+          b = YES;
+          break;
+        }
+    }
+
+  return b;
+}
+
+//
+//
+//
 - (void) _handleSequenceUpdateInEvent: (iCalEvent *) newEvent
 		    ignoringAttendees: (NSArray *) attendees
 		         fromOldEvent: (iCalEvent *) oldEvent
@@ -394,11 +436,12 @@
                           owner: owner];
     }
 
-  [self sendEMailUsingTemplateNamed: @"Update"
-                          forObject: [newEvent itipEntryWithMethod: @"request"]
-                     previousObject: oldEvent
-                        toAttendees: updateAttendees
-                           withType: @"calendar:invitation-update"];
+  if ([self _shouldScheduleEvent: [newEvent organizer]])
+    [self sendEMailUsingTemplateNamed: @"Update"
+			    forObject: [newEvent itipEntryWithMethod: @"request"]
+		       previousObject: oldEvent
+			  toAttendees: updateAttendees
+			     withType: @"calendar:invitation-update"];
 }
 
 // This method scans the list of attendees.
@@ -823,11 +866,12 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
     {
       [self _handleRemovedUsers: deletedAttendees
                withRecurrenceId: [newEvent recurrenceId]];
-      [self sendEMailUsingTemplateNamed: @"Deletion"
-                              forObject: [newEvent itipEntryWithMethod: @"cancel"]
-                         previousObject: oldEvent
-                            toAttendees: deletedAttendees
-                               withType: @"calendar:cancellation"];
+      if ([self _shouldScheduleEvent: [newEvent organizer]])
+	[self sendEMailUsingTemplateNamed: @"Deletion"
+				forObject: [newEvent itipEntryWithMethod: @"cancel"]
+			   previousObject: oldEvent
+			      toAttendees: deletedAttendees
+				 withType: @"calendar:cancellation"];
     }
   
   if ((ex = [self _handleAttendeesConflicts: [newEvent attendees] forEvent: newEvent  force: forceSave]))
@@ -883,12 +927,13 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       // Send an invitation to new attendees
       if ((ex = [self _handleAddedUsers: addedAttendees fromEvent: newEvent  force: forceSave]))
         return ex;
-      
-      [self sendEMailUsingTemplateNamed: @"Invitation"
-                              forObject: [newEvent itipEntryWithMethod: @"request"]
-                         previousObject: oldEvent
-                            toAttendees: addedAttendees
-                               withType: @"calendar:invitation"];
+
+      if ([self _shouldScheduleEvent: [newEvent organizer]])
+	[self sendEMailUsingTemplateNamed: @"Invitation"
+				forObject: [newEvent itipEntryWithMethod: @"request"]
+			   previousObject: oldEvent
+			      toAttendees: addedAttendees
+				 withType: @"calendar:invitation"];
     }
 
   if ([changes hasMajorChanges])
@@ -962,11 +1007,12 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       
       if ([attendees count])
         {
-          [self sendEMailUsingTemplateNamed: @"Invitation"
-                                  forObject: [newEvent itipEntryWithMethod: @"request"]
-                             previousObject: nil
-                                toAttendees: attendees
-                                   withType: @"calendar:invitation"];
+	  if ([self _shouldScheduleEvent: [newEvent organizer]])
+	    [self sendEMailUsingTemplateNamed: @"Invitation"
+				    forObject: [newEvent itipEntryWithMethod: @"request"]
+			       previousObject: nil
+				  toAttendees: attendees
+				     withType: @"calendar:invitation"];
         }
       
       [self sendReceiptEmailForObject: newEvent
@@ -1166,19 +1212,17 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                      statusChange: (NSString *) newStatus
                           inEvent: (iCalEvent *) event
 {
+  iCalPerson *otherAttendee, *otherDelegate;
   NSString *currentStatus, *organizerUID;
   SOGoUser *ownerUser, *currentUser;
+  NSString *delegateEmail;
   NSException *ex;
 
-  ex = nil;
+  BOOL addDelegate, removeDelegate;
 
   currentStatus = [attendee partStat];
-
-  iCalPerson *otherAttendee, *otherDelegate;
-  NSString *delegateEmail;
-  BOOL addDelegate, removeDelegate;
-  
   otherAttendee = attendee;
+  ex = nil;
   
   delegateEmail = [otherAttendee delegatedTo];
   if ([delegateEmail length])
@@ -1189,7 +1233,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   else
     otherDelegate = nil;
   
-  /* We handle the addition/deletion of delegate users */
+  // We handle the addition/deletion of delegate users
   addDelegate = NO;
   removeDelegate = NO;
   if (delegate)
@@ -1272,12 +1316,13 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               else
                 otherDelegate = nil;
             }
-          
-          [self sendEMailUsingTemplateNamed: @"Deletion"
-                                  forObject: [event itipEntryWithMethod: @"cancel"]
-                             previousObject: nil
-                                toAttendees: delegates
-                                   withType: @"calendar:cancellation"];
+
+	  if ([self _shouldScheduleEvent: [event organizer]])
+	    [self sendEMailUsingTemplateNamed: @"Deletion"
+				    forObject: [event itipEntryWithMethod: @"cancel"]
+			       previousObject: nil
+				  toAttendees: delegates
+				     withType: @"calendar:cancellation"];
         } // if (removeDelegate)
       
       if (addDelegate)
@@ -1291,12 +1336,13 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
             [self _addOrUpdateEvent: event
                              forUID: delegatedUID
                               owner: [theOwnerUser login]];
-          
-          [self sendEMailUsingTemplateNamed: @"Invitation"
-                                  forObject: [event itipEntryWithMethod: @"request"]
-                             previousObject: nil
-                                toAttendees: delegates
-                                   withType: @"calendar:invitation"];
+
+	  if ([self _shouldScheduleEvent: [event organizer]])
+	    [self sendEMailUsingTemplateNamed: @"Invitation"
+				    forObject: [event itipEntryWithMethod: @"request"]
+			       previousObject: nil
+				  toAttendees: delegates
+				     withType: @"calendar:invitation"];
         } // if (addDelegate)
       
       // If the current user isn't the organizer of the event
@@ -1477,9 +1523,9 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       // within the repeating vEvent.
       recurrenceTime = [NSString stringWithFormat: @"%f", [_recurrenceId timeIntervalSince1970]];
       event = (iCalEvent*)[self lookupOccurrence: recurrenceTime];
-      
+
+      // If no occurence found, create one
       if (event == nil)
-        // If no occurence found, create one
         event = (iCalEvent*)[self newOccurenceWithID: recurrenceTime];
     }
   else
@@ -1558,50 +1604,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   return ex;
 }
 
-
-//
-//
-//
-- (BOOL) _shouldScheduleEvent: (iCalPerson *) theOrganizer
-{
-  NSArray *userAgents;
-  NSString *v;
-  BOOL b;
-  int i;
- 
-  b = YES;
-
-  if (theOrganizer && (v = [theOrganizer value: 0  ofAttribute: @"SCHEDULE-AGENT"]))
-    {
-      if ([v caseInsensitiveCompare: @"NONE"] == NSOrderedSame ||
-          [v caseInsensitiveCompare: @"CLIENT"] == NSOrderedSame)
-        b = NO;
-    }
-  
-  //
-  // If we have to deal with Thunderbird/Lightning, we always send invitation
-  // reponses, as Lightning v2.6 (at least this version) sets SCHEDULE-AGENT
-  // to NONE/CLIENT when responding to an external invitation received by
-  // SOGo - so no invitation responses are ever sent by Lightning. See
-  // https://bugzilla.mozilla.org/show_bug.cgi?id=865726 and
-  // https://bugzilla.mozilla.org/show_bug.cgi?id=997784
-  //
-  userAgents = [[context request] headersForKey: @"User-Agent"];
-  
-  for (i = 0; i < [userAgents count]; i++)
-    {
-      if ([[userAgents objectAtIndex: i] rangeOfString: @"Thunderbird"].location != NSNotFound &&
-          [[userAgents objectAtIndex: i] rangeOfString: @"Lightning"].location != NSNotFound)
-        {
-          b = YES;
-          break;
-        }
-    }
-
-  return b;
-}
-
-
 //
 //
 //
@@ -1613,13 +1615,9 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   iCalEvent *event;
   BOOL send_receipt;
 
-  
   ownerUser = [SOGoUser userWithLogin: owner];
   event = [self component: NO secure: NO];
   send_receipt = YES;
-
-  if (![self _shouldScheduleEvent: [event organizer]])
-    return;
 
   if (occurence == nil)
     {
@@ -1646,11 +1644,13 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           // and send them an email.
           [self _handleRemovedUsers: attendees
                    withRecurrenceId: recurrenceId];
-          [self sendEMailUsingTemplateNamed: @"Deletion"
-                                  forObject: [occurence itipEntryWithMethod: @"cancel"]
-                             previousObject: nil
-                                toAttendees: attendees
-                                   withType: @"calendar:cancellation"];
+
+	  if ([self _shouldScheduleEvent: [event organizer]])
+	    [self sendEMailUsingTemplateNamed: @"Deletion"
+				    forObject: [occurence itipEntryWithMethod: @"cancel"]
+			       previousObject: nil
+				  toAttendees: attendees
+				     withType: @"calendar:cancellation"];
         }
     }
   else if ([occurence userIsAttendee: ownerUser])
@@ -1664,12 +1664,12 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       send_receipt = NO;
     }
       
-      if (send_receipt)
-        [self sendReceiptEmailForObject: event
-                         addedAttendees: nil
-                       deletedAttendees: nil
-                       updatedAttendees: nil
-                              operation: EventDeleted];
+  if (send_receipt)
+    [self sendReceiptEmailForObject: event
+		     addedAttendees: nil
+		   deletedAttendees: nil
+		   updatedAttendees: nil
+			  operation: EventDeleted];
 }
 
 - (NSException *) prepareDelete
@@ -1984,13 +1984,10 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       iCalEvent *event;
       NSArray *attendees;
       NSString *eventUID;
-      BOOL scheduling;
-
-      attendees = nil;
 
       event = [[calendar events] objectAtIndex: 0];
       eventUID = [event uid];
-      scheduling = [self _shouldScheduleEvent: [event organizer]];
+      attendees = nil;
 
       // make sure eventUID doesn't conflict with an existing event -  see bug #1853
       // TODO: send out a no-uid-conflict (DAV:href) xml element (rfc4791 section 5.3.2.1)
@@ -2003,34 +2000,35 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       //
       // New event and we're the organizer -- send invitation to all attendees
       //
-      if (scheduling && [event userIsOrganizer: ownerUser])
-      {
-        attendees = [event attendeesWithoutUser: ownerUser];
-        if ([attendees count])
-          {
-            if ((ex = [self _handleAddedUsers: attendees fromEvent: event  force: YES]))
-              return ex;
-            else
-              {
-                // We might have auto-accepted resources here. If that's the
-                // case, let's regenerate the versitstring and replace the
-                // one from the request.
-                [rq setContent: [[[event parent] versitString] dataUsingEncoding: [rq contentEncoding]]];
-              }
-            
-            [self sendEMailUsingTemplateNamed: @"Invitation"
-                                    forObject: [event itipEntryWithMethod: @"request"]
-                               previousObject: nil
-                                  toAttendees: attendees
-                                     withType: @"calendar:invitation"];
-          }
-      }
+      if ([event userIsOrganizer: ownerUser])
+	{
+	  attendees = [event attendeesWithoutUser: ownerUser];
+	  if ([attendees count])
+	    {
+	      if ((ex = [self _handleAddedUsers: attendees fromEvent: event  force: YES]))
+		return ex;
+	      else
+		{
+		  // We might have auto-accepted resources here. If that's the
+		  // case, let's regenerate the versitstring and replace the
+		  // one from the request.
+		  [rq setContent: [[[event parent] versitString] dataUsingEncoding: [rq contentEncoding]]];
+		}
+
+	      if ([self _shouldScheduleEvent: [event organizer]])
+		[self sendEMailUsingTemplateNamed: @"Invitation"
+					forObject: [event itipEntryWithMethod: @"request"]
+				   previousObject: nil
+				      toAttendees: attendees
+					 withType: @"calendar:invitation"];
+	    }
+	}
       //
       // We aren't the organizer but we're an attendee. That can happen when
       // we receive an external invitation (IMIP/ITIP) and we accept it
       // from a CUA - it gets added to a specific CalDAV calendar using a PUT
       //
-      else if (scheduling && [event userIsAttendee: ownerUser])
+      else if ([event userIsAttendee: ownerUser] && [self _shouldScheduleEvent: [event userAsAttendee: ownerUser]])
         {
           [self sendIMIPReplyForEvent: event
                                  from: ownerUser
