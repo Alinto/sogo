@@ -10,6 +10,7 @@ Bug fixes
  - [web] return login page for unknown users (#2135)
  - [eas] properly escape all GAL responses (#3923)
  - [eas] properly skip folders we don't want to synchronize (#3943)
+ - [eas] fixed 30 mins freebusy offset with S Planner
 
 2.3.18 (2016-11-28)
 -------------------
