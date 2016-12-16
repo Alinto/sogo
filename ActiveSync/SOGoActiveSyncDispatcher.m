@@ -2653,6 +2653,7 @@ void handle_eas_terminate(int signum)
       NSData *d;
 
       unsigned int startdate, enddate, increments;
+      NGCalendarDateRange *r1, *r2;
       char c;
 
       startDate = [[[(id)[theDocumentElement getElementsByTagName: @"StartTime"] lastObject] textValue] calendarDate];
@@ -2699,17 +2700,13 @@ void handle_eas_terminate(int signum)
               folder = [user personalCalendarFolderInContext: context];
               freebusy = [folder fetchFreeBusyInfosFrom: startDate  to: endDate];
               
-
-              NGCalendarDateRange *r1, *r2;
-              
-              for (j = 1; j <= increments; j++)
+              for (j = 0; j < increments; j++)
                 {
                   c = '0';
                   
                   r1  =  [NGCalendarDateRange calendarDateRangeWithStartDate: [NSDate dateWithTimeIntervalSince1970: (startdate+j*30*60)]
                                                                      endDate: [NSDate dateWithTimeIntervalSince1970: (startdate+j*30*60 + 30)]];
-                  
-                  
+
                   for (k = 0; k < [freebusy count]; k++)
                     {
                       
@@ -2727,11 +2724,8 @@ void handle_eas_terminate(int signum)
                   [s appendFormat: @"%c", c];
                 }
 
-             
               [s appendString: @"</MergedFreeBusy>"];
               [s appendString: @"</Availability>"];
-
-
               [s appendString: @"</Recipient>"];
               [s appendString: @"</Response>"];
             }
