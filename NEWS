@@ -19,6 +19,7 @@ Bug fixes
  - [web] switch on "Remember username" when cookie username is set
  - [web] return login page for unknown users (#2135)
  - [eas] properly skip folders we don't want to synchronize (#3943)
+ - [eas] fixed 30 mins freebusy offset with S Planner
 
 3.2.4 (2016-12-01)
 ------------------
