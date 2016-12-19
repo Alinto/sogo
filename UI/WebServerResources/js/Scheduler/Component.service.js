@@ -622,10 +622,10 @@
       _.forEach(this.attendees, function(attendee) {
         attendee.image = Component.$gravatar(attendee.email, 32);
       });
-
-      // Load freebusy of attendees
-      this.updateFreeBusy();
     }
+
+    // Load freebusy of attendees
+    this.updateFreeBusy();
 
     this.selected = false;
   };
