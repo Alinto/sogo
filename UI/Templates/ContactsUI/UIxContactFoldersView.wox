@@ -150,7 +150,7 @@
 		<md-tooltip md-delay="2000">{{folder.name}}</md-tooltip>
 	      </p>
               <md-input-container class="md-flex"
-                                  ng-show="app.editMode==folder.id">
+                                  ng-show="app.editMode == folder.id">
                 <input class="sg-item-name" type="text"
                        label:aria-label="Name of the Address Book"
                        ng-model="folder.name"
@@ -161,7 +161,7 @@
                        sg-escape="app.revertEditing(folder)"/>
               </md-input-container>
               <md-menu class="md-secondary"
-                       ng-show="app.service.selectedFolder.id==folder.id">
+                       ng-show="app.service.selectedFolder.id == folder.id">
                 <md-icon label:aria-label="Options"
                          ng-click="$mdMenu.open()"
                          md-menu-origin="md-menu-origin">more_vert</md-icon>

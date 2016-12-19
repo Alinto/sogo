@@ -312,6 +312,7 @@
           </md-list>
         </section>
       </md-content>
+      <!-- Bottom filter + reorder toolbar -->
       <md-toolbar class="sg-toolbar-multiple sg-toolbar-tools--dense">
         <div class="md-toolbar-tools sg-toolbar-tools--dense"
              md-colors="::{backgroundColor: 'background-500'}"

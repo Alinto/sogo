@@ -83,7 +83,9 @@
 	    </var:if>
             
             <div layout="row" layout-align="center center">
-              <md-switch class="md-accent md-hue-2" ng-model="app.creds.rememberLogin" label:arial-label="Remember username">
+              <md-switch class="md-accent md-hue-2"
+                         ng-model="app.creds.rememberLogin"
+                         label:arial-label="Remember username">
                 <var:string label:value="Remember username"/>
               </md-switch>
             </div>

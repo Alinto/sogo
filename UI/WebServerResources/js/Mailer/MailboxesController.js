@@ -391,19 +391,19 @@
 
     function metadataForFolder(folder) {
       if (folder.type == 'inbox')
-        return {name: folder.name, icon:'inbox', special: true};
+        return {name: folder.name,           icon:'inbox',          special: true};
       else if (folder.type == 'draft')
-        return {name: l('DraftsFolderName'), icon: 'drafts', special: true};
+        return {name: l('DraftsFolderName'), icon: 'drafts',        special: true};
       else if (folder.type == 'sent')
-        return {name: l('SentFolderName'), icon: 'send', special: true};
+        return {name: l('SentFolderName'),   icon: 'send',          special: true};
       else if (folder.type == 'trash')
-        return {name: l('TrashFolderName'), icon: 'delete', special: true};
+        return {name: l('TrashFolderName'),  icon: 'delete',        special: true};
       else if (folder.type == 'junk')
-        return {name: l('JunkFolderName'), icon: 'thumb_down', special: true};
+        return {name: l('JunkFolderName'),   icon: 'thumb_down',    special: true};
       else if (folder.type == 'additional')
-        return {name: folder.name, icon: 'folder_shared', special: true};
+        return {name: folder.name,           icon: 'folder_shared', special: true};
 
-      return {name: folder.name, icon: 'folder_open', special: false};
+      return {name: folder.name,             icon: 'folder_open',   special: false};
     }
 
     function setFolderAs(folder, type) {
