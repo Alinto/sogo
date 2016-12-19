@@ -826,7 +826,8 @@
                 <var:string label:value="Enable vacation auto reply"/>
               </md-checkbox>
 
-              <div class="md-inline-form" layout="column" flex-offset="5" ng-show="app.preferences.defaults.Vacation.enabled == 1">
+              <div class="md-inline-form" layout="column" flex-offset="5"
+                   ng-if="app.preferences.defaults.Vacation.enabled == 1">
 
                 <div layout="row">
                   <md-checkbox

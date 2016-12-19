@@ -20,6 +20,7 @@ Bug fixes
  - [web] switch on "Remember username" when cookie username is set
  - [web] return login page for unknown users (#2135)
  - [web] fixed saving monthly recurrence rule with "by day" condition (#3948)
+ - [web] fixed display of message content when enabling auto-reply (#3940)
  - [eas] properly skip folders we don't want to synchronize (#3943)
  - [eas] fixed 30 mins freebusy offset with S Planner
 
