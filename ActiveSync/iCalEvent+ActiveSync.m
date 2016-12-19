@@ -609,7 +609,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
   
   // Recurrence
-  if ((o = [theValues objectForKey: @"Recurrence"]))
+  if ((o = [theValues objectForKey: @"Recurrence"]) && [o isKindOfClass: [NSDictionary class]])
     {
       iCalRecurrenceRule *rule;
       
