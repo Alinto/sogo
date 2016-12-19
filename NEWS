@@ -21,6 +21,7 @@ Bug fixes
  - [web] return login page for unknown users (#2135)
  - [web] fixed saving monthly recurrence rule with "by day" condition (#3948)
  - [web] fixed display of message content when enabling auto-reply (#3940)
+ - [web] don't allow to create lists in a remote address book (not yet supported)
  - [eas] properly skip folders we don't want to synchronize (#3943)
  - [eas] fixed 30 mins freebusy offset with S Planner
 

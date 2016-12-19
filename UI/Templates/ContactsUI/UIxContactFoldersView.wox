@@ -499,6 +499,7 @@
                 <md-icon>person</md-icon>
               </md-button>
               <md-button var:aria-label="List" class="md-fab md-raised md-mini"
+                         ng-hide="addressbook.selectedFolder.isRemote"
                          ng-click="addressbook.newComponent('list')">
                 <md-tooltip md-direction="left"><var:string label:value="Create a new list"/></md-tooltip>
                 <md-icon>group</md-icon>
