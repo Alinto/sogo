@@ -19,6 +19,7 @@ Bug fixes
  - [web] use the organizer's alarm by default when accepting IMIP messages (#3934)
  - [web] switch on "Remember username" when cookie username is set
  - [web] return login page for unknown users (#2135)
+ - [web] fixed saving monthly recurrence rule with "by day" condition (#3948)
  - [eas] properly skip folders we don't want to synchronize (#3943)
  - [eas] fixed 30 mins freebusy offset with S Planner
 

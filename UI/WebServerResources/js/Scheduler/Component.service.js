@@ -641,7 +641,8 @@
         (this.repeat.interval > 1 ||
          this.repeat.days && this.repeat.days.length > 0 ||
          this.repeat.monthdays && this.repeat.monthdays.length > 0 ||
-         this.repeat.months && this.repeat.months.length > 0);
+         this.repeat.months && this.repeat.months.length > 0 ||
+         this.repeat.month && this.repeat.month.day);
     return b;
   };
 
