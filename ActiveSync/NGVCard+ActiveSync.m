@@ -190,7 +190,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       if ((o = [homeAdr flattenedValueAtIndex: 1  forKey: @""]) && [o length])
         [a appendFormat: @"\n%@", [o activeSyncRepresentationInContext: context]];
       
-      [s appendFormat: @"<HomeStreet xmlns=\"Contacts:\">%@</HomeStreet>", [a activeSyncRepresentationInContext: context]];
+      [s appendFormat: @"<HomeStreet xmlns=\"Contacts:\">%@</HomeStreet>", a];
 
       if ((o = [homeAdr flattenedValueAtIndex: 3  forKey: @""]))
         [s appendFormat: @"<HomeCity xmlns=\"Contacts:\">%@</HomeCity>", [o activeSyncRepresentationInContext: context]];
@@ -221,7 +221,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       if ((o = [workAdr flattenedValueAtIndex: 1  forKey: @""]) && [o length])
         [a appendFormat: @"\n%@", [o activeSyncRepresentationInContext: context]];
 
-      [s appendFormat: @"<BusinessStreet xmlns=\"Contacts:\">%@</BusinessStreet>", [a activeSyncRepresentationInContext: context]];
+      [s appendFormat: @"<BusinessStreet xmlns=\"Contacts:\">%@</BusinessStreet>", a];
       
       if ((o = [workAdr flattenedValueAtIndex: 3  forKey: @""]))
         [s appendFormat: @"<BusinessCity xmlns=\"Contacts:\">%@</BusinessCity>", [o activeSyncRepresentationInContext: context]];
