@@ -846,8 +846,11 @@ static Class NSNullK;
     {
       currentSource = [_sources objectForKey: sourceID];
 
+      // Use the provided domain during the lookup. If none is defined, use the source's one
+      // so if there's a match based on the source's domain, the user ID will be associated
+      // to the right source.
       userEntry = [currentSource lookupContactEntryWithUIDorEmail: theUID
-                                                         inDomain: theDomain];
+                                                         inDomain: (theDomain ? theDomain : [currentSource domain])];
       if (userEntry)
         {
           [theCurrentUser setObject: sourceID forKey: @"SOGoSource"];
