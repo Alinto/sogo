@@ -7,6 +7,7 @@ Enhancements
 
 Bug fixes
  - [core] honor blocking wrong login attemps within time interval (#2850)
+ - [core] use source's domain when none defined and trying to match users (#3523)
  - [web] return login page for unknown users (#2135)
  - [eas] properly escape all GAL responses (#3923)
  - [eas] properly skip folders we don't want to synchronize (#3943)
