@@ -43,9 +43,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalTimeZone.h>
 
+#import <Appointments/iCalEntityObject+SOGo.h>
+
 #include "NSDate+ActiveSync.h"
 #include "NSString+ActiveSync.h"
 #include "iCalRecurrenceRule+ActiveSync.h"
+#include "iCalAlarm+ActiveSync.h"
 
 @implementation iCalToDo (ActiveSync)
 
@@ -95,8 +98,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     v = 1;
   [s appendFormat: @"<Importance xmlns=\"Tasks:\">%d</Importance>", v];
                     
-  // Reminder - FIXME
-  [s appendFormat: @"<ReminderSet xmlns=\"Tasks:\">%d</ReminderSet>", 0];
+  // Reminder
+  if ([self hasAlarms])
+    {
+      iCalAlarm *alarm;
+
+      alarm = [self firstDisplayOrAudioAlarm];
+      [s appendFormat: @"<ReminderSet xmlns=\"Tasks:\">%d</ReminderSet>", 1];
+      [s appendString: [alarm activeSyncRepresentationInContext: context]];
+    }
+  else
+    {
+      [s appendFormat: @"<ReminderSet xmlns=\"Tasks:\">%d</ReminderSet>", 0];
+    }
   
   // Sensitivity
   if ([[self accessClass] isEqualToString: @"PRIVATE"])
@@ -145,7 +159,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           [s appendString: @"</Body>"];
         }
     }
-  
+
   return s;
 }
 
@@ -249,6 +263,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   if ((o = [theValues objectForKey: @"ReminderTime"]))
     {
+      iCalAlarm *alarm;
+
+      alarm = [[iCalAlarm alloc] init];
+      [alarm takeActiveSyncValues: theValues  inContext: context];
+
+      [self removeAllAlarms];
+      [self addToAlarms: alarm];
+      RELEASE(alarm);
 
     }
 
