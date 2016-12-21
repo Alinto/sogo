@@ -24,6 +24,7 @@ Bug fixes
  - [web] fixed display of message content when enabling auto-reply (#3940)
  - [web] don't allow to create lists in a remote address book (not yet supported)
  - [web] fixed attached links in task viewer (#3963)
+ - [web] avoid duplicate mail entries in contact of LDAP-based address book (#3941)
  - [eas] properly skip folders we don't want to synchronize (#3943)
  - [eas] fixed 30 mins freebusy offset with S Planner
  - [eas] now correctly handles reminders on tasks (#3964)

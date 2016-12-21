@@ -40,6 +40,7 @@
 
 - (NSString *) workCompany;
 - (NSString *) fullName;
+- (NSArray *) emails;
 - (NSArray *) secondaryEmails;
 
 - (NSString *) workPhone;
