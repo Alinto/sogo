@@ -39,6 +39,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalTrigger.h>
+#import <NGCards/NSCalendarDate+NGCards.h>
+
+#include "NSDate+ActiveSync.h"
 
 @implementation iCalAlarm (ActiveSync)
 
@@ -56,9 +59,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       nextAlarmDate = [self nextAlarmDate];
       delta = (int)(([[(iCalEvent *)parent startDate] timeIntervalSince1970] - [nextAlarmDate timeIntervalSince1970])/60);
       
-      // don't send negative reminder - not supported
-      if (delta > 0)
-        [s appendFormat: @"<Reminder xmlns=\"Calendar:\">%d</Reminder>", (int)delta];
+      if ([parent isKindOfClass: [iCalEvent class]])
+        {
+          // don't send negative reminder - not supported
+          if (delta > 0)
+            [s appendFormat: @"<Reminder xmlns=\"Calendar:\">%d</Reminder>", (int)delta];
+        }
+      else
+        {
+          [s appendFormat: @"<ReminderTime xmlns=\"Task:\">%@</ReminderTime>", [nextAlarmDate activeSyncRepresentationInContext: context]];
+        }
     }
   
   return s;
@@ -70,36 +80,46 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   iCalTrigger *trigger;
   id o;
 
-  o = [theValues objectForKey: @"Reminder"];
-
-  // Outlook: if reminder is set to 0 minutes before start save it as 1 minute since -> 0 minutes in not accepted by SOGo
-  if ([o isEqualToString: @"0"]) 
-    o = @"1";
-  
-  trigger = [iCalTrigger elementWithTag: @"TRIGGER"];
-  [trigger setValueType: @"DURATION"];
-  [self setTrigger: trigger];
-  [self setAction: @"DISPLAY"];
-
-  // SOGo web ui only supports 1w but not 2w (custom reminder only supports min/hours/days)
-  // 1week = -P1W
-  // 2weeks > -PxD
-  // xdays > -PxD
-  // xhours -> -PTxH
-  // xmin -> -PTxM
-  if  ([o intValue] == 10080)
-    [trigger setSingleValue: [NSString stringWithFormat: @"-P1W" ] forKey: @""];
-  else
+  if ((o = [theValues objectForKey: @"Reminder"]))
     {
-      if (([o intValue] % 1440) == 0)
-        [trigger setSingleValue: [NSString stringWithFormat: @"-P%dD", ([o intValue] / 1440)]  forKey: @""];
+      // Outlook: if reminder is set to 0 minutes before starttime, save it as 1 minute since -> 0 minutes in not accepted by SOGo
+      if ([o isEqualToString: @"0"])
+        o = @"1";
+
+      trigger = [iCalTrigger elementWithTag: @"TRIGGER"];
+      [trigger setValueType: @"DURATION"];
+      [self setTrigger: trigger];
+      [self setAction: @"DISPLAY"];
+
+      // SOGo web ui only supports 1w but not 2w (custom reminder only supports min/hours/days)
+      // 1week = -P1W
+      // 2weeks > -PxD
+      // xdays > -PxD
+      // xhours -> -PTxH
+      // xmin -> -PTxM
+      if  ([o intValue] == 10080)
+        [trigger setSingleValue: [NSString stringWithFormat: @"-P1W" ] forKey: @""];
       else
         {
-          if (([o intValue] % 60) == 0)
-            [trigger setSingleValue: [NSString stringWithFormat: @"-PT%dH", ([o intValue] / 60)]  forKey: @""];
+          if (([o intValue] % 1440) == 0)
+            [trigger setSingleValue: [NSString stringWithFormat: @"-P%dD", ([o intValue] / 1440)]  forKey: @""];
           else
-            [trigger setSingleValue: [NSString stringWithFormat: @"-PT%@M", o]  forKey: @""];
+            {
+              if (([o intValue] % 60) == 0)
+                [trigger setSingleValue: [NSString stringWithFormat: @"-PT%dH", ([o intValue] / 60)]  forKey: @""];
+              else
+                [trigger setSingleValue: [NSString stringWithFormat: @"-PT%@M", o]  forKey: @""];
+            }
         }
+    }
+  else if ((o = [theValues objectForKey: @"ReminderTime"]))
+    {
+      o = [o calendarDate];
+      trigger = [iCalTrigger elementWithTag: @"TRIGGER"];
+      [trigger setValueType: @"DATE-TIME"];
+      [trigger setSingleValue: [NSString stringWithFormat: @"%@Z", [o iCalFormattedDateTimeString]] forKey: @""];
+      [self setTrigger: trigger];
+      [self setAction: @"DISPLAY"];
     }
 }
 
