@@ -367,7 +367,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             {
               [o takeActiveSyncValues: allValues  inContext: context];
               [sogoObject setIsNew: is_new];
-              [sogoObject saveComponent: o];
+
+              if (theFolderType == ActiveSyncEventFolder)
+                [sogoObject saveComponent: o force: YES];
+              else
+                [sogoObject saveComponent: o];
+
             }
 
           // Update syncCache
@@ -588,7 +593,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     if ([roles containsObject: SOGoCalendarRole_ComponentModifier] || [[sogoObject ownerInContext: context] isEqualToString: [[context activeUser] login]])
 		      {
 			[o takeActiveSyncValues: allChanges  inContext: context];
-			[sogoObject saveComponent: o];
+
+                        if (theFolderType == ActiveSyncEventFolder)
+                          [sogoObject saveComponent: o force: YES];
+                        else
+                          [sogoObject saveComponent: o];
 
 			if ([syncCache objectForKey: serverId])
 			  [syncCache setObject: [NSString stringWithFormat: @"%f", [[sogoObject lastModified] timeIntervalSince1970]]  forKey: serverId];
