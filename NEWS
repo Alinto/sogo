@@ -26,6 +26,7 @@ Bug fixes
  - [web] fixed attached links in task viewer (#3963)
  - [eas] properly skip folders we don't want to synchronize (#3943)
  - [eas] fixed 30 mins freebusy offset with S Planner
+ - [eas] now correctly handles reminders on tasks (#3964)
 
 3.2.4 (2016-12-01)
 ------------------
