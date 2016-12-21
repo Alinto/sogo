@@ -3150,6 +3150,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
         }
     }
 
+  // If the UID isn't ending with the ".ics" extension, let's add it to avoid
+  // confusing broken CalDAV client (like Nokia N9 and Korganizer) that relies
+  // on this (see #2308)
+  if (![[uid lowercaseString] hasSuffix: @".ics"])
+    uid = [NSString stringWithFormat: @"%@.ics", uid];
+
   object = [SOGoAppointmentObject objectWithName: uid
                                     inContainer: self];
   [object setIsNew: YES];
@@ -3313,8 +3319,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                                   timezone: timezone]))
             {
               imported++;
-              [uids setValue: uid
-                      forKey: originalUid];
+              [uids setValue: uid  forKey: originalUid];
             }
         }
       
