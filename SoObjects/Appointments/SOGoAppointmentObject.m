@@ -374,10 +374,10 @@
 //
 - (BOOL) _shouldScheduleEvent: (iCalPerson *) thePerson
 {
-  NSArray *userAgents;
+  //NSArray *userAgents;
   NSString *v;
   BOOL b;
-  int i;
+  //int i;
 
   b = YES;
 
