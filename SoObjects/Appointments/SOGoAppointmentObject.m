@@ -396,6 +396,9 @@
   // https://bugzilla.mozilla.org/show_bug.cgi?id=865726 and
   // https://bugzilla.mozilla.org/show_bug.cgi?id=997784
   //
+  // This code has been disabled - see 0003274.
+  //
+#if 0
   userAgents = [[context request] headersForKey: @"User-Agent"];
 
   for (i = 0; i < [userAgents count]; i++)
@@ -407,6 +410,7 @@
           break;
         }
     }
+#endif
 
   return b;
 }
