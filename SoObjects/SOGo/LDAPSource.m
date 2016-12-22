@@ -1314,12 +1314,19 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 {
   NGLdapConnection *ldapConnection;
   NGLdapEntry *entry;
+  EOQualifier *qualifier;
   NSString *login;
   
   login = nil;
+  qualifier = nil;
 
   ldapConnection = [self _ldapConnection];
+
+  if (_filter)
+    qualifier = [EOQualifier qualifierWithQualifierFormat: _filter];
+
   entry = [ldapConnection entryAtDN: theDN
+			  qualifier: qualifier
                          attributes: [NSArray arrayWithObject: UIDField]];
   if (entry)
     login = [[entry attributeWithName: UIDField] stringValueAtIndex: 0];
