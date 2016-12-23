@@ -14,6 +14,7 @@ Bug fixes
  - [eas] properly skip folders we don't want to synchronize (#3943)
  - [eas] fixed 30 mins freebusy offset with S Planner
  - [eas] now correctly handles reminders on tasks (#3964)
+ - [eas] do not decode from hex the event's UID (#3965)
 
 2.3.18 (2016-11-28)
 -------------------
