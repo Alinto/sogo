@@ -163,7 +163,7 @@ struct GlobalObjectId {
   const char *bytes;
 
   uid = [event uid];
-  uidAsASCII = [uid decodeFromHexidecimal];
+  uidAsASCII = [uid dataUsingEncoding: NSASCIIStringEncoding];
   newGlobalId = (struct GlobalObjectId*)calloc(sizeof(uint8_t), sizeof(struct GlobalObjectId) + 0x0c + [uidAsASCII length]);
 
   prefix = @"040000008200e00074c5b7101a82e008";
