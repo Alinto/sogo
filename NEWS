@@ -13,6 +13,7 @@ Bug fixes
  - [core] honor blocking wrong login attemps within time interval (#2850)
  - [core] better support for RFC 6638 (schedule-agent)
  - [core] use source's domain when none defined and trying to match users (#3523)
+ - [core] handle delegation with no SENT-BY set (#3368)
  - [web] fixed confusion between owner and active user in ACLs management of Administration module
  - [web] fixed JavaScript exception after renaming an address book
  - [web] fixed Sieve folder encoding support (#3904)
