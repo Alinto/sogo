@@ -31,6 +31,7 @@ Bug fixes
  - [eas] fixed 30 mins freebusy offset with S Planner
  - [eas] now correctly handles reminders on tasks (#3964)
  - [eas] always force save events creation over EAS (#3958)
+ - [eas] do not decode from hex the event's UID (#3965)
 
 3.2.4 (2016-12-01)
 ------------------
