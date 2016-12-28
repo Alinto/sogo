@@ -4,6 +4,7 @@
 Enhancements
  - [core] added handling of BYSETPOS for BYDAY in recurrence rules
  - [web] update jQuery to version 1.12.4 and jQuery UI to version 1.11.4
+ - [web] added SOGoMaximumMessageSizeLimit to limit webmail message size
 
 Bug fixes
  - [core] honor blocking wrong login attemps within time interval (#2850)
