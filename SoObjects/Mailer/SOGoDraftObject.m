@@ -65,6 +65,7 @@
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoSystemDefaults.h>
 
 #import <NGCards/NGVCard.h>
 
@@ -650,6 +651,12 @@ static NSString    *userAgent      = nil;
 
   error = nil;
   message = [self mimeMessageAsData];
+
+  if (!message)
+    {
+      error = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+					    reason: @"message too big"];
+    }
 
   client = [[self imap4Connection] client];
 
@@ -1440,18 +1447,27 @@ static NSString    *userAgent      = nil;
 }
 
 //
-//
+// returns nil on error
 //
 - (NSArray *) bodyPartsForAllAttachments
 {
-  /* returns nil on error */
-  NSArray  *attrs;
-  unsigned i, count;
   NGMimeBodyPart *bodyPart;
   NSMutableArray *bodyParts;
+  NSArray  *attrs;
+  unsigned i, count, size, limit;
 
   attrs = [self fetchAttachmentAttrs];
   count = [attrs count];
+  size = 0;
+
+  // We first check if we don't go over our message size limit
+  limit = [[SOGoSystemDefaults sharedSystemDefaults] maximumMessageSizeLimit] * 1024;
+  for (i = 0; i < count; i++)
+    size += [[[attrs objectAtIndex: i] objectForKey: @"size"] intValue];
+
+  if (limit && size > limit)
+    return nil;
+
   bodyParts = [NSMutableArray arrayWithCapacity: count];
 
   for (i = 0; i < count; i++)
@@ -1509,13 +1525,9 @@ static NSString    *userAgent      = nil;
   mBody = [[NGMimeMultipartBody alloc] initWithPart: message];
   
   if (!isHTML)
-    {
-      part = [self bodyPartForText];
-    }
+    part = [self bodyPartForText];
   else
-    {
-      part = [self mimeMultipartAlternative];
-    }
+    part = [self mimeMultipartAlternative];
 
   [mBody addBodyPart: part];
 
@@ -1717,8 +1729,10 @@ static NSString    *userAgent      = nil;
 {
   NSMutableArray *bodyParts;
   NGMimeMessage *message;
+  NSArray *allBodyParts;
   NGMutableHashMap *map;
   NSString *newText;
+
   BOOL has_inline_images;
 
   message = nil;
@@ -1740,8 +1754,12 @@ static NSString    *userAgent      = nil;
   if (map)
     {
       //[self debugWithFormat: @"MIME Envelope: %@", map];
-      
-      [bodyParts addObjectsFromArray: [self bodyPartsForAllAttachments]];
+      allBodyParts = [self bodyPartsForAllAttachments];
+
+      if (!allBodyParts)
+	return nil;
+
+      [bodyParts addObjectsFromArray: allBodyParts];
       
       //[self debugWithFormat: @"attachments: %@", bodyParts];
       
@@ -1782,10 +1800,19 @@ static NSString    *userAgent      = nil;
 - (NSData *) mimeMessageAsData
 {
   NGMimeMessageGenerator *generator;
+  NGMimeMessage *mimeMessage;
   NSData *message;
 
   generator = [NGMimeMessageGenerator new];
-  message = [generator generateMimeFromPart: [self mimeMessageWithHeaders: nil  excluding: nil  extractingImages: NO]];
+  mimeMessage = [self mimeMessageWithHeaders: nil  excluding: nil  extractingImages: NO];
+
+  if (!mimeMessage)
+    {
+      [generator release];
+      return nil;
+    }
+
+  message = [generator generateMimeFromPart: mimeMessage];
   [generator release];
 
   return message;
