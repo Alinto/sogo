@@ -90,7 +90,7 @@ LABEL.calendarName
 }
 
 DIV#attendeesMenu
-{ overflow: auto; }
+{ overflow: auto; max-height: 300px; }
 
 DIV.fakeTextArea
 { overflow: auto;

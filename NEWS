@@ -12,6 +12,7 @@ Bug fixes
  - [core] properly honor the "include in freebusy" setting (#3354)
  - [web] return login page for unknown users (#2135)
  - [web] append ics file extension when importing events (#2308)
+ - [web] set a max-height so we can scroll in the attendees list (#3666)
  - [eas] properly escape all GAL responses (#3923)
  - [eas] properly skip folders we don't want to synchronize (#3943)
  - [eas] fixed 30 mins freebusy offset with S Planner
