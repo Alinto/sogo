@@ -70,11 +70,11 @@
 
       <var:foreach list="personalContactInfos" item="currentContact">
         <tr var:class="currentContactClasses"
-          var:categories="currentContact.c_categories"
-          var:id="currentContact.c_name"
-          var:contactname="currentContact.c_cn">
-          <td class="displayName" var:title="currentContact.c_cn"><var:string value="currentContact.c_cn" const:escapeHTML="YES" /></td>
-          <td var:title="currentContact.c_mail"><var:string value="currentContact.c_mail"/></td>
+          var:categories="currentContact.c_categories.safeStringByEscapingXMLString"
+          var:id="currentContact.c_name.asCSSIdentifier"
+          var:contactname="currentContact.c_cn.safeStringByEscapingXMLString">
+          <td class="displayName" var:title="currentContact.c_cn.safeStringByEscapingXMLString"><var:string value="currentContact.c_cn" const:escapeHTML="YES" /></td>
+          <td var:title="currentContact.c_mail.safeStringByEscapingXMLString"><var:string value="currentContact.c_mail"/></td>
         </tr>
       </var:foreach>
 
