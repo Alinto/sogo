@@ -9,6 +9,7 @@ Enhancements
  - [web] renamed buttons of alarm toast (#3945)
  - [web] load photos of LDAP-based address books in contacts list (#3942)
  - [web] added SOGoMaximumMessageSizeLimit to limit webmail message size
+ - [web] added photo support for LDIF import (#1084)
 
 Bug fixes
  - [core] honor blocking wrong login attemps within time interval (#2850)
