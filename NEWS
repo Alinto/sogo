@@ -14,6 +14,7 @@ Bug fixes
  - [web] return login page for unknown users (#2135)
  - [web] append ics file extension when importing events (#2308)
  - [web] set a max-height so we can scroll in the attendees list (#3666)
+ - [web] set a max-height so we can scroll in the attachments list (#3413)
  - [web] handle URI in vCard photos (#2683)
  - [eas] properly escape all GAL responses (#3923)
  - [eas] properly skip folders we don't want to synchronize (#3943)
