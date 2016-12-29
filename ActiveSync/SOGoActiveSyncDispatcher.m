@@ -4018,14 +4018,15 @@ void handle_eas_terminate(int signum)
         }
       
       xml = [NSString stringWithFormat: @"<?xml version=\"1.0\"?><!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\"><%@ xmlns=\"ComposeMail:\"><SaveInSentItems/><MIME>%@</MIME></%@>", cmdName, [s stringByEncodingBase64], cmdName];
-
-
-      
       d = [xml dataUsingEncoding: NSASCIIStringEncoding];
     }
   else
     {
-      d = [[theRequest content] wbxml2xml];
+      // Handle empty Ping request, no need to try decoding the WBXML blob here
+      if ([[theRequest content] length])
+	d = [[theRequest content] wbxml2xml];
+      else
+	d = nil;
     }
   
   documentElement = nil;
