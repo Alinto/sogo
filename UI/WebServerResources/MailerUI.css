@@ -895,3 +895,6 @@ A#iCalendarDeleteFromCalendar
 A#iCalendarAddToCalendar
 { border-left: 2px solid #E6E7E6;
   margin-left: 5px;}
+
+DIV#attachmentsMenu
+{ overflow: auto; max-height: 300px; }
