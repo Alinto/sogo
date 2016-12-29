@@ -49,8 +49,17 @@
 
 #import "UIxContactFolderActions.h"
 
+static NSArray *photoTags = nil;
+
 @implementation UIxContactFolderActions
 
++ (void) initialize
+{
+  if (!photoTags)
+    {
+      photoTags = [[NSArray alloc] initWithObjects: @"jpegphoto", @"photo", @"thumbnailphoto", nil];
+    }
+}
 
 /* actions */
 
@@ -146,18 +155,20 @@
 
 - (int) importLdifData: (NSString *) ldifData
 {
-  SOGoContactGCSFolder *folder;
-  NSString *key, *value;
   NSArray *ldifContacts, *lines, *components;
+  SOGoContactGCSFolder *folder;
   NSMutableDictionary *entry;
+  NSString *key, *uid;
   NGVCard *vCard;
-  NSString *uid;
-  int i,j,count,linesCount;
-  int rc = 0;
+  id value;
+
+  int i, j, count, linesCount;
+  int rc;
 
   folder = [self clientObject];
   ldifContacts = [ldifData componentsSeparatedByString: @"\ndn"];
   count = [ldifContacts count];
+  rc = 0;
 
   for (i = 0; i < count; i++)
     {
@@ -220,8 +231,16 @@
           if ([key hasSuffix: @":"])
             {
               key = [key substringToIndex: [key length] - 1];
-              value = [value stringByDecodingBase64];
+	      if ([photoTags containsObject: key])
+		value = [value dataByDecodingBase64];
+	      else
+		value = [value stringByDecodingBase64];
             }
+
+	  // Standard key recognized in NGCards
+	  if ([photoTags containsObject: key])
+	    key = @"photo";
+
           [entry setValue: value forKey: key];
         }
 
