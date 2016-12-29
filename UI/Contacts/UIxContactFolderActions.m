@@ -155,13 +155,16 @@ static NSArray *photoTags = nil;
 
 - (int) importLdifData: (NSString *) ldifData
 {
-  NSArray *ldifContacts, *lines, *components;
+  NSMutableDictionary *entry, *encodedEntry;
+  SOGoContactLDIFEntry *ldifEntry;
+  NSArray *ldifContacts, *lines;
   SOGoContactGCSFolder *folder;
-  NSMutableDictionary *entry;
-  NSString *key, *uid;
+  NSEnumerator *keyEnumerator;
+  NSString *key, *uid, *line;
   NGVCard *vCard;
   id value;
 
+  NSRange r;
   int i, j, count, linesCount;
   int rc;
 
@@ -172,9 +175,6 @@ static NSArray *photoTags = nil;
 
   for (i = 0; i < count; i++)
     {
-      SOGoContactLDIFEntry *ldifEntry;
-      NSEnumerator *keyEnumerator;
-      NSMutableDictionary *encodedEntry;
       encodedEntry = [NSMutableDictionary dictionary];
       lines = [[ldifContacts objectAtIndex: i] 
                componentsSeparatedByString: @"\n"];
@@ -183,7 +183,6 @@ static NSArray *photoTags = nil;
       linesCount = [lines count];
       for (j = 0; j < linesCount; j++)
         {
-          NSString *line;
           line = [lines objectAtIndex: j];
 
           /* skip embedded comment lines */
@@ -199,17 +198,17 @@ static NSArray *photoTags = nil;
               if (key != NULL)
                 {
                   value = [[encodedEntry valueForKey: key]
-                           stringByAppendingString: [line substringFromIndex: 1]];
+			    stringByAppendingString: [line substringFromIndex: 1]];
                   [encodedEntry setValue: value forKey: key];
                 }
               continue;
             }
 
-          components = [line componentsSeparatedByString: @": "];
-          if ([components count] == 2)
+          r = [line rangeOfString: @": "];
+	  if (r.location != NSNotFound)
             {
-              key = [[components objectAtIndex: 0] lowercaseString];
-              value = [components objectAtIndex: 1];
+              key = [[line substringToIndex: r.location] lowercaseString];
+              value = [line substringFromIndex: NSMaxRange(r)];
 
               if ([key length] == 0)
                 key = @"dn";
