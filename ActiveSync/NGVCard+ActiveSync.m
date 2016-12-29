@@ -83,7 +83,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   NSArray *emails, *addresses, *categories, *elements;
-  CardElement *n, *homeAdr, *workAdr;
+  NSMutableArray *other_addresses;
+  CardElement *n, *homeAdr, *workAdr, *otherAdr;
   NSMutableString *s, *a;
   NSString *url;
   id o;
@@ -232,6 +233,39 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         [s appendFormat: @"<BusinessCountry xmlns=\"Contacts:\">%@</BusinessCountry>", [o activeSyncRepresentationInContext: context]];
     }
 
+
+  // Other Address
+
+  other_addresses = [[self childrenWithTag: @"adr"] mutableCopy];
+  [other_addresses removeObjectsInArray: [self childrenWithTag: @"adr" andAttribute: @"type" havingValue: @"work"]];
+  [other_addresses removeObjectsInArray: [self childrenWithTag: @"adr" andAttribute: @"type" havingValue: @"home"]];
+
+  if ([other_addresses count])
+    {
+      otherAdr = [other_addresses objectAtIndex: 0];
+      a = [NSMutableString string];
+
+      if ((o = [otherAdr flattenedValueAtIndex: 2  forKey: @""]))
+        [a appendString: [o activeSyncRepresentationInContext: context]];
+
+      if ((o = [otherAdr flattenedValueAtIndex: 1  forKey: @""]) && [o length])
+        [a appendFormat: @"\n%@", [o activeSyncRepresentationInContext: context]];
+
+      [s appendFormat: @"<OtherStreet xmlns=\"Contacts:\">%@</OtherStreet>", a];
+
+      if ((o = [otherAdr flattenedValueAtIndex: 3  forKey: @""]))
+        [s appendFormat: @"<OtherCity xmlns=\"Contacts:\">%@</OtherCity>", [o activeSyncRepresentationInContext: context]];
+
+      if ((o = [otherAdr flattenedValueAtIndex: 4  forKey: @""]))
+        [s appendFormat: @"<OtherState xmlns=\"Contacts:\">%@</OtherState>", [o activeSyncRepresentationInContext: context]];
+
+      if ((o = [otherAdr flattenedValueAtIndex: 5  forKey: @""]))
+        [s appendFormat: @"<OtherPostalCode xmlns=\"Contacts:\">%@</OtherPostalCode>", [o activeSyncRepresentationInContext: context]];
+
+      if ((o = [otherAdr flattenedValueAtIndex: 6  forKey: @""]))
+        [s appendFormat: @"<OtherCountry xmlns=\"Contacts:\">%@</OtherCountry>", [o activeSyncRepresentationInContext: context]];
+    }
+
   // Other, less important fields
   if ((o = [self birthday]))
     {
@@ -267,7 +301,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     inContext: (WOContext *) context
 {
   CardElement *element;
-  NSMutableArray *addressLines;
+  NSMutableArray *addressLines, *other_addresses;
   id o;
   
   // Contact's note
@@ -395,6 +429,63 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if ((o = [theValues objectForKey: @"HomeCountry"]) || ![self _isGhosted: @"HomeCountry" inContext: context])
     {
       [element setSingleValue: [theValues objectForKey: @"HomeCountry"]
+                      atIndex: 6 forKey: @""];
+    }
+
+   // OtherCountry
+   //
+
+  other_addresses = [[self childrenWithTag: @"adr"] mutableCopy];
+  [other_addresses removeObjectsInArray: [self childrenWithTag: @"adr" andAttribute: @"type" havingValue: @"work"]];
+  [other_addresses removeObjectsInArray: [self childrenWithTag: @"adr" andAttribute: @"type" havingValue: @"home"]];
+
+  if ([other_addresses count])
+    element = [other_addresses objectAtIndex: 0];
+  else
+    {
+      element = [CardElement elementWithTag: @"adr"];
+      [self addChild: element];
+    }
+
+  if ((o = [theValues objectForKey: @"OtherStreet"]) || ![self _isGhosted: @"OtherStreet" inContext: context])
+    {
+      addressLines = [NSMutableArray arrayWithArray: [o componentsSeparatedByString: @"\n"]];
+
+      [element setSingleValue: @""
+                       atIndex: 1 forKey: @""];
+      [element setSingleValue: [addressLines count] ? [addressLines objectAtIndex: 0] : @""
+                       atIndex: 2 forKey: @""];
+
+      // Extended address line. If there are more then 2 address lines we add them to the extended address line.
+      if ([addressLines count] > 1)
+        {
+          [addressLines removeObjectAtIndex: 0];
+          [element setSingleValue: [addressLines componentsJoinedByString: @" "]
+                          atIndex: 1 forKey: @""];
+        }
+    }
+
+  if ((o = [theValues objectForKey: @"OtherCity"]) || ![self _isGhosted: @"OtherCity" inContext: context])
+    {
+      [element setSingleValue: [theValues objectForKey: @"OtherCity"]
+                      atIndex: 3 forKey: @""];
+    }
+
+  if ((o = [theValues objectForKey: @"OtherState"]) || ![self _isGhosted: @"OtherState" inContext: context])
+    {
+      [element setSingleValue: [theValues objectForKey: @"OtherState"]
+                      atIndex: 4 forKey: @""];
+    }
+
+  if ((o = [theValues objectForKey: @"OtherPostalCode"]) || ![self _isGhosted: @"OtherPostalCode" inContext: context])
+    {
+      [element setSingleValue: [theValues objectForKey: @"OtherPostalCode"]
+                      atIndex: 5 forKey: @""];
+    }
+
+  if ((o = [theValues objectForKey: @"OtherCountry"]) || ![self _isGhosted: @"OtherCountry" inContext: context])
+    {
+      [element setSingleValue: [theValues objectForKey: @"OtherCountry"]
                       atIndex: 6 forKey: @""];
     }
 
