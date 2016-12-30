@@ -861,7 +861,7 @@ NSNumber *iCalDistantFutureNumber = nil;
       [row setObject: [NSNumber numberWithInt: 0] forKey: @"c_nextalarm"];
 
       // Delete old email alarms
-      if (alarm_number >= 0)
+      if (!nextAlarmDate && alarm_number >= 0)
 	[af deleteRecordForEntryWithCName: nameInContainer
 			 inCalendarAtPath: [theContainer ocsPath]];
     }
