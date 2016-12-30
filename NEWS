@@ -11,6 +11,7 @@ Bug fixes
  - [core] honor blocking wrong login attemps within time interval (#2850)
  - [core] use source's domain when none defined and trying to match users (#3523)
  - [core] properly honor the "include in freebusy" setting (#3354)
+ - [core] fix events in floating time during CalDAV's PUT operation (#2865)
  - [web] return login page for unknown users (#2135)
  - [web] append ics file extension when importing events (#2308)
  - [web] set a max-height so we can scroll in the attendees list (#3666)
