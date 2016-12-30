@@ -3167,6 +3167,28 @@ void handle_eas_terminate(int signum)
 }
 
 //
+// See https://msdn.microsoft.com/en-us/library/ee218647(v=exchg.80).aspx
+// for valid status codes.
+//
+- (NSData *) _sendMailErrorResponseWithStatus: (int) status
+{
+  NSMutableString *s;
+  NSData *d;
+
+  s = [NSMutableString string];
+
+  [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+  [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+  [s appendString: @"<SendMail xmlns=\"ComposeMail:\">"];
+  [s appendFormat: @"<Status>%d</Status>", status];
+  [s appendString: @"</SendMail>"];
+
+  d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+
+  return d;
+}
+
+//
 //
 //
 - (void) processSendMail: (id <DOMElement>) theDocumentElement
@@ -3295,20 +3317,7 @@ void handle_eas_terminate(int signum)
     {
       if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 14.0)
         {
-          NSMutableString *s;
-          NSData *d;
-
-          s = [NSMutableString string];
-
-          [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
-          [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
-          [s appendString: @"<SendMail xmlns=\"ComposeMail:\">"];
-          [s appendString: @"<Status>120</Status>"];
-          [s appendString: @"</SendMail>"];
-
-           d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
-
-           [theResponse setContent: d];
+	  [theResponse setContent: [self _sendMailErrorResponseWithStatus: 120]];
         }
       else
         {
@@ -4007,9 +4016,17 @@ void handle_eas_terminate(int signum)
 
   if (!d)
     {
+      // If we got no data in the SendMail request, that means SOPE rejected it because of the WOMaxUploadSize.
+      // We generate here the proper failed response for SendMail
+      if ([cmdName caseInsensitiveCompare: @"SendMail"] == NSOrderedSame)
+	{
+	  [theResponse setHeader: @"application/vnd.ms-sync.wbxml"  forKey: @"Content-Type"];
+	  [theResponse setContent: [self _sendMailErrorResponseWithStatus: 122]];
+	  goto return_response;
+	}
       // We check if it's a Ping command with no body.
       // See http://msdn.microsoft.com/en-us/library/ee200913(v=exchg.80).aspx for details      
-      if ([cmdName caseInsensitiveCompare: @"Ping"] != NSOrderedSame && [cmdName caseInsensitiveCompare: @"GetAttachment"] != NSOrderedSame && [cmdName caseInsensitiveCompare: @"Sync"] != NSOrderedSame)
+      else if ([cmdName caseInsensitiveCompare: @"Ping"] != NSOrderedSame && [cmdName caseInsensitiveCompare: @"GetAttachment"] != NSOrderedSame && [cmdName caseInsensitiveCompare: @"Sync"] != NSOrderedSame)
         {
           RELEASE(context);
           RELEASE(pool);
@@ -4047,6 +4064,7 @@ void handle_eas_terminate(int signum)
 
   [self performSelector: aSelector  withObject: documentElement  withObject: theResponse];
 
+ return_response:
   [theResponse setHeader: @"14.1"  forKey: @"MS-Server-ActiveSync"];
   [theResponse setHeader: @"Sync,SendMail,SmartForward,SmartReply,GetAttachment,GetHierarchy,CreateCollection,DeleteCollection,MoveCollection,FolderSync,FolderCreate,FolderDelete,FolderUpdate,MoveItems,GetItemEstimate,MeetingResponse,Search,Settings,Ping,ItemOperations,ResolveRecipients,ValidateCert"  forKey: @"MS-ASProtocolCommands"];
   [theResponse setHeader: @"2.5,12.0,12.1,14.0,14.1"  forKey: @"MS-ASProtocolVersions"];
