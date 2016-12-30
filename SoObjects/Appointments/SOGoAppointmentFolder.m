@@ -3328,7 +3328,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	      else
 		{
 		  // If the start date is a "floating time", let's use the user's timezone
-		  // during the import for both the start and end dates.
+		  // during the import for both the start and end dates. This is similar
+		  // to what we do in SOGoAppointmentObject: -_adjustFloatingTimeInRequestCalendar:
 		  NSString *s;
 		  
 		  s = [[startDate valuesAtIndex: 0 forKey: @""] objectAtIndex: 0];
