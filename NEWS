@@ -38,6 +38,7 @@ Bug fixes
  - [eas] always force save events creation over EAS (#3958)
  - [eas] do not decode from hex the event's UID (#3965)
  - [eas] add support for "other addresses" (#3966)
+ - [eas] provide correct response status when sending too big mails (#3956)
 
 3.2.4 (2016-12-01)
 ------------------
