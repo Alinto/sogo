@@ -493,7 +493,7 @@ static NSArray *tasksFields = nil;
               for (i = 0; i < count; i++)
                 {
                   currentInfo = [newInfoForComponent objectAtIndex: i];
-                  if (![currentInfo isEqual:[NSNull null]] && [currentInfo respondsToSelector: @selector (stringByEscapingHTMLString)])
+                  if ([currentInfo respondsToSelector: @selector (stringByEscapingHTMLString)])
                     [newInfoForComponent replaceObjectAtIndex: i withObject: [currentInfo stringByEscapingHTMLString]];
                 }
               [infos addObject: newInfoForComponent];
