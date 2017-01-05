@@ -114,6 +114,7 @@
 
 - (NSString *) bias
 {
+#if 0
   NSTimeZone *userTimeZone;
   NSInteger secs;
 
@@ -121,6 +122,9 @@
   secs = [userTimeZone secondsFromGMT];
 
   return [NSString stringWithFormat: @"%i", (secs/60)];
+#else
+  return @"0";
+#endif
 }
 
 @end
