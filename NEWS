@@ -34,6 +34,7 @@ Bug fixes
  - [web] append ics file extension when importing events (#2308)
  - [web] handle URI in vCard photos (#2683)
  - [web] handle semicolon in values during LDIF import (#1760)
+ - [web] fixed computation of week number (#3973, #3976)
  - [eas] properly skip folders we don't want to synchronize (#3943)
  - [eas] fixed 30 mins freebusy offset with S Planner
  - [eas] now correctly handles reminders on tasks (#3964)

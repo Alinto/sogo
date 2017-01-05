@@ -326,6 +326,22 @@ Date.prototype.beginOfDay = function() {
 };
 
 /**
+ * See [SOGoUser dayOfWeekForDate:]
+ */
+Date.prototype.dayOfWeek = function(localeProvider) {
+  var offset, baseDayOfWeek, dayOfWeek;
+
+  offset = localeProvider.firstDayOfWeek;
+  baseDayOfWeek = this.getDay();
+  if (offset > baseDayOfWeek)
+    baseDayOfWeek += 7;
+
+  dayOfWeek = baseDayOfWeek - offset;
+
+  return dayOfWeek;
+};
+
+/**
  * See [SOGoUser firstWeekOfYearForDate:]
  */
 Date.prototype.firstWeekOfYearForDate = function(localeProvider) {
@@ -336,10 +352,10 @@ Date.prototype.firstWeekOfYearForDate = function(localeProvider) {
   januaryFirst = new Date(this.getTime());
   januaryFirst.setMonth(0);
   januaryFirst.setDate(1);
-  dayOfWeek = januaryFirst.getDay();
+  dayOfWeek = januaryFirst.dayOfWeek(localeProvider);
 
   if (firstWeekRule == 'First4DayWeek') {
-    if ((dayOfWeek + localeProvider.firstDayOfWeek) % 7 < 4)
+    if (dayOfWeek < 4)
       firstWeek = januaryFirst.beginOfWeek(localeProvider.firstDayOfWeek);
     else
       firstWeek = januaryFirst.addDays(7).beginOfWeek(localeProvider.firstDayOfWeek);
