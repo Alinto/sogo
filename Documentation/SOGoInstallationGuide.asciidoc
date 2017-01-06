@@ -391,12 +391,12 @@ internet connection could be killed prematurely.
 |Parameter used to set the maximum allowed size for content being
 sent to SOGo using a PUT or a POST call. This can also limit the file
 attachment size being uploaded to SOGo when composing a mail. The
-value is in kilobyte. By default, the value is 0, or disabled so no
+value is in kilobytes. By default, the value is 0, or disabled so no
 limit will be set.
 
 |S |SOGoMaximumMessageSizeLimit
 |Parameter used to set the maximum allowed email message size when
-composing a mail. The value is in kilobyte. By default, the value is 0,
+composing a mail. The value is in kilobytes. By default, the value is 0,
 or disabled so no limit will be set.
 
 |S |SxVMemLimit
