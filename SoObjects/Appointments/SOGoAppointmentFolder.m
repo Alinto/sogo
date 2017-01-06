@@ -30,6 +30,7 @@
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject+SoDAV.h>
+#import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOMessage.h>
 #import <NGObjWeb/WORequest.h>
@@ -995,7 +996,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSCalendarDate *recurrenceId, *masterEndDate, *endDate;
   NSMutableDictionary *newRecord;
   NGCalendarDateRange *newRecordRange;
-  NSComparisonResult compare;
   NSNumber *dateSecs;
   id master;
 
@@ -1026,13 +1026,13 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       master = [[[component parent] events] objectAtIndex: 0];
       masterEndDate = [master endDate];
-      endDate = [component endDate];
+      endDate = [(iCalEvent*) component endDate];
     }
   else
     {
       master = [[[component parent] todos] objectAtIndex: 0];
       masterEndDate = [master due];
-      endDate = [component due];
+      endDate = [(iCalToDo*) component due];
     }
 
   delta = [masterEndDate timeIntervalSinceDate: [master startDate]];
@@ -1046,7 +1046,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       if (recordIndex > -1)
 	{
           if ([dateRange containsDate: [component startDate]] ||
-	      [dateRange containsDate: endDate])
+	      (endDate && [dateRange containsDate: endDate]))
 	    {
               // We must pass nil to :container here in order to avoid re-entrancy issues.
               newRecord = [self _fixupRecord: [component quickRecordFromContent: nil  container: nil]];
