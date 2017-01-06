@@ -1,3 +1,5 @@
+/* -*- Mode: javascript; indent-tabs-mode: nil; js-indent-level: 4; -*- */
+
 /* generic.js - this file is part of SOGo
 
    Copyright (C) 2006-2014 Inverse
@@ -460,12 +462,13 @@ function getContrastingTextColor(bgColor) {
 }
 
 function triggerAjaxRequest(url, callback, userdata, content, headers, attempt) {
-    var http = createHTTPClient();
+    var http = createHTTPClient(),
+        method = (content? 'POST' : 'GET');
     if (http) {
         activeAjaxRequests++;
         document.animTimer = setTimeout("checkAjaxRequestsState();", 250);
 
-        http.open("POST", url, true);
+        http.open(method, url, true);
         http.url = url;
         http.paramHeaders = headers;
         http.content = content;
