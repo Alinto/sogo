@@ -724,7 +724,7 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
 
       cryptParts = [cryptString componentsSeparatedByString: @"$"];
       // correct number of elements (first one is an empty string)
-      if ([cryptParts count] != 4)
+      if ([cryptParts count] < 4)
         {
           return [NSData data];
         }
@@ -734,7 +734,16 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
 	       [[cryptParts objectAtIndex: 1] caseInsensitiveCompare: @"6"] == NSOrderedSame)
         {
 	  // third is the salt; convert it to NSData
-	  return [[cryptParts objectAtIndex: 2] dataUsingEncoding: NSUTF8StringEncoding];
+	  if ([cryptParts count] == 4)
+	    return [[cryptParts objectAtIndex: 2] dataUsingEncoding: NSUTF8StringEncoding];
+	  else
+	    {
+	      NSString *saltWithRounds;
+
+	      saltWithRounds = [NSString stringWithFormat: @"%@$%@", [cryptParts objectAtIndex: 2], [cryptParts objectAtIndex: 3]]; 
+
+	      return [saltWithRounds dataUsingEncoding: NSUTF8StringEncoding];
+	    }
 	}
       // nothing good
       return [NSData data];
