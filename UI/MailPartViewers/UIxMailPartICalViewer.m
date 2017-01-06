@@ -43,6 +43,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserManager.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentObject.h>
@@ -470,29 +471,65 @@
   return currentUser;
 }
 
-- (iCalPerson *) storedReplyAttendee
+- (iCalPerson *) _attendeeFromMailSenderInEvent: (iCalEvent *) e
 {
-  /*
-    TODO: since an attendee can have multiple email addresses, maybe we
-    should translate the email to an internal uid and then retrieve
-    all emails addresses for matching the participant.
- 
-    Note: -findAttendeeWithEmail: does not parse the email!
-  */
-  iCalEvent *e;
+  NSString *baseEmail;
   iCalPerson *p;
 
-  p = nil;
- 
-  e = [self storedEvent];
-  if (e)
+  baseEmail = [self replySenderBaseEMail];
+
+  /*
+    Note: -findAttendeeWithEmail: does not parse the email!
+  */
+  p = [e findAttendeeWithEmail: baseEmail];
+  if (!p)
+    p = [e findAttendeeWithEmail:[self replySenderEMail]];
+
+  // We haven't found it yet, let's look in the identities
+  // associated to this user
+  if (!p)
     {
-      p = [e findAttendeeWithEmail: [self replySenderBaseEMail]];
-      if (!p)
-	p = [e findAttendeeWithEmail:[self replySenderEMail]];
+      SOGoUserManager *sm;
+      NSString *uid;
+
+      sm = [SOGoUserManager sharedUserManager];
+      uid = [sm getUIDForEmail: [self replySenderBaseEMail]];
+
+      if (uid)
+	{
+	  NSArray *allEmails;
+	  NSString *email;
+	  SOGoUser *u;
+	  int i;
+
+	  u = [SOGoUser userWithLogin: uid];
+	  allEmails = [u allEmails];
+	  for (i = 0; i < [allEmails count]; i++)
+	    {
+	      email = [allEmails objectAtIndex: i];
+	      if ([email caseInsensitiveCompare: baseEmail] == NSOrderedSame)
+		continue;
+
+	      p = [e findAttendeeWithEmail: email];
+
+	      if (p)
+		break;
+	    }
+	}
     }
 
   return p;
+}
+
+- (iCalPerson *) storedReplyAttendee
+{
+  iCalEvent *e;
+
+  e = [self storedEvent];
+  if (e)
+    return [self _attendeeFromMailSenderInEvent: e];
+
+  return nil;
 }
 
 - (BOOL) isReplySenderAnAttendee
@@ -502,15 +539,7 @@
 
 - (iCalPerson *) _emailParticipantWithEvent: (iCalEvent *) event
 {
-  NSString *emailFrom;
-  SOGoMailObject *mailObject;
-  NGImap4EnvelopeAddress *address;
-
-  mailObject = [[self clientObject] mailObject];
-  address = [[mailObject fromEnvelopeAddresses] objectAtIndex: 0];
-  emailFrom = [address baseEMail];
-
-  return [event findAttendeeWithEmail: emailFrom];
+  return [self _attendeeFromMailSenderInEvent: event];
 }
 
 - (BOOL) hasSenderStatusChanged
