@@ -884,6 +884,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           [self setAttendees: attendees];
         }
     }
+
+  [self setLastModified: [NSCalendarDate calendarDate]];
 }
 
 - (void) changeParticipationStatus: (NSDictionary *) theValues
