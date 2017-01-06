@@ -5,6 +5,7 @@ New features
  - [web] download attachments of a message as a zip archive
 
 Enhancements
+ - [core] improved IMIP handling from Exchange/Outlook clients
  - [web] prevent using localhost on additional IMAP accounts
  - [web] renamed buttons of alarm toast (#3945)
  - [web] load photos of LDAP-based address books in contacts list (#3942)
