@@ -647,6 +647,7 @@ static NSString    *userAgent      = nil;
     {
       error = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
 					    reason: @"message too big"];
+      return error;
     }
 
   client = [[self imap4Connection] client];
