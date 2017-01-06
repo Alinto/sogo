@@ -475,9 +475,8 @@ static NSArray *childRecordFields = nil;
   davURL = [self realDavURL];
   newPath = [NSMutableArray arrayWithArray: [[davURL path] componentsSeparatedByString: @"/"]];
   [newPath insertObject: @"public" atIndex: 3];
-  davURL = [[NSURL alloc] initWithScheme: [davURL scheme]
-				    host: [davURL host]
-				    path: [newPath componentsJoinedByString: @"/"]];
+  davURL = [NSURL URLWithString: [newPath componentsJoinedByString: @"/"]
+                  relativeToURL: davURL];
 
   return davURL;
 }
@@ -500,10 +499,7 @@ static NSArray *childRecordFields = nil;
                        [container nameInContainer],
                        [self realNameInContainer]];
       currentDavURL = [self davURL];
-      realDavURL = [[NSURL alloc] initWithScheme: [currentDavURL scheme]
-                                            host: [currentDavURL host]
-                                            path: path];
-      [realDavURL autorelease];
+      realDavURL = [NSURL URLWithString: path relativeToURL: currentDavURL];
     }
   else
     realDavURL = [self davURL];
