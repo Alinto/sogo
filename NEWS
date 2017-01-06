@@ -39,6 +39,7 @@ Bug fixes
  - [web] fixed computation of week number (#3973, #3976)
  - [web] fixed saving of inactive calendars (#3862, #3980)
  - [web] fixed public URLs to Calendars (#3974)
+ - [web] fixed hotkeys in Mail module when a dialog is active (#3983)
  - [eas] properly skip folders we don't want to synchronize (#3943)
  - [eas] fixed 30 mins freebusy offset with S Planner
  - [eas] now correctly handles reminders on tasks (#3964)

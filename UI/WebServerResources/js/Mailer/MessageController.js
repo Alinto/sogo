@@ -8,7 +8,7 @@
    */
   MessageController.$inject = ['$window', '$scope', '$state', '$mdMedia', '$mdDialog', 'sgConstant', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'sgHotkeys', 'encodeUriFilter', 'sgSettings', 'sgFocus', 'Dialog', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message'];
   function MessageController($window, $scope, $state, $mdMedia, $mdDialog, sgConstant, stateAccounts, stateAccount, stateMailbox, stateMessage, sgHotkeys, encodeUriFilter, sgSettings, focus, Dialog, Calendar, Component, Account, Mailbox, Message) {
-    var vm = this, messageDialog = null, popupWindow = null, hotkeys = [];
+    var vm = this, popupWindow = null, hotkeys = [];
 
     // Expose controller
     $window.$messageController = vm;
@@ -38,7 +38,6 @@
     vm.print = print;
     vm.convertToEvent = convertToEvent;
     vm.convertToTask = convertToTask;
-
 
     _registerHotkeys(hotkeys);
 
@@ -104,34 +103,51 @@
     });
 
 
+    /**
+     * To keep track of the currently active dialog, we share a common variable with the parent controller.
+     */
+    function _messageDialog() {
+      if (arguments.length > 0)
+        $scope.mailbox.messageDialog = arguments[0];
+      return $scope.mailbox.messageDialog;
+    }
+
+    function _unlessInDialog(callback) {
+      return function() {
+        // Check if a dialog is opened either from the current controller or the parent controller
+        if (_messageDialog() === null)
+          return callback.apply(vm, arguments);
+      };
+    }
+
     function _registerHotkeys(keys) {
       keys.push(sgHotkeys.createHotkey({
         key: l('hotkey_reply'),
         description: l('Reply to the message'),
-        callback: reply
+        callback: _unlessInDialog(reply)
       }));
       keys.push(sgHotkeys.createHotkey({
         key: l('hotkey_replyall'),
         description: l('Reply to sender and all recipients'),
-        callback: replyAll
+        callback: _unlessInDialog(replyAll)
       }));
       keys.push(sgHotkeys.createHotkey({
         key: l('hotkey_forward'),
         description: l('Forward selected message'),
-        callback: forward
+        callback: _unlessInDialog(forward)
       }));
       keys.push(sgHotkeys.createHotkey({
         key: l('hotkey_flag'),
         description: l('Flagged'),
-        callback: angular.bind(stateMessage, stateMessage.toggleFlag)
+        callback: _unlessInDialog(angular.bind(stateMessage, stateMessage.toggleFlag))
       }));
       keys.push(sgHotkeys.createHotkey({
         key: 'backspace',
-        callback: function($event) {
+        callback: _unlessInDialog(function($event) {
           if (vm.mailbox.$selectedCount() === 0)
             deleteMessage();
           $event.preventDefault();
-        }
+        })
       }));
 
       // Register the hotkeys
@@ -261,9 +277,10 @@
     }
 
     function showMailEditor($event, message) {
-      if (messageDialog === null) {
-        messageDialog = $mdDialog
-          .show({
+      if (_messageDialog() === null) {
+        _messageDialog(
+          $mdDialog
+            .show({
             parent: angular.element(document.body),
             targetEvent: $event,
             clickOutsideToClose: false,
@@ -277,9 +294,10 @@
             }
           })
           .finally(function() {
-            messageDialog = null;
+            _messageDialog(null);
             closePopup();
-          });
+          })
+        );
       }
     }
 

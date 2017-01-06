@@ -8,7 +8,7 @@
    */
   MailboxController.$inject = ['$window', '$scope', '$timeout', '$q', '$state', '$mdDialog', '$mdToast', 'stateAccounts', 'stateAccount', 'stateMailbox', 'sgHotkeys', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
   function MailboxController($window, $scope, $timeout, $q, $state, $mdDialog, $mdToast, stateAccounts, stateAccount, stateMailbox, sgHotkeys, encodeUriFilter, focus, Dialog, Account, Mailbox) {
-    var vm = this, messageDialog = null,
+    var vm = this,
         defaultWindowTitle = angular.element($window.document).find('title').attr('sg-default') || "SOGo",
         hotkeys = [];
 
@@ -20,6 +20,7 @@
     vm.account = stateAccount;
     vm.selectedFolder = stateMailbox;
     vm.selectMessage = selectMessage;
+    vm.messageDialog = null; // also access from Message controller
     vm.toggleMessageSelection = toggleMessageSelection;
     vm.sort = sort;
     vm.sortedBy = sortedBy;
@@ -71,7 +72,10 @@
       keys.push(sgHotkeys.createHotkey({
         key: l('hotkey_compose'),
         description: l('Write a new message'),
-        callback: newMessage
+        callback: function($event) {
+          if (vm.messageDialog === null)
+            newMessage($event);
+        }
       }));
       keys.push(sgHotkeys.createHotkey({
         key: l('hotkey_junk'),
@@ -155,9 +159,9 @@
     function newMessage($event) {
       var message;
 
-      if (messageDialog === null) {
+      if (vm.messageDialog === null) {
         message = vm.account.$newMessage();
-        messageDialog = $mdDialog
+        vm.messageDialog = $mdDialog
           .show({
             parent: angular.element(document.body),
             targetEvent: $event,
@@ -173,7 +177,7 @@
             }
           })
           .finally(function() {
-            messageDialog = null;
+            vm.messageDialog = null;
           });
       }
     }
@@ -344,8 +348,8 @@
     function confirmDeleteSelectedMessages($event) {
       var selectedMessages = vm.selectedFolder.$selectedMessages();
 
-      if (messageDialog === null && _.size(selectedMessages) > 0)
-        messageDialog = Dialog.confirm(l('Confirmation'),
+      if (vm.messageDialog === null && _.size(selectedMessages) > 0)
+        vm.messageDialog = Dialog.confirm(l('Confirmation'),
                                        l('Are you sure you want to delete the selected messages?'),
                                        { ok: l('Delete') })
         .then(function() {
@@ -362,7 +366,7 @@
               _unselectMessage(deleteSelectedMessage, index);
             }
           }, function(response) {
-            messageDialog = Dialog.confirm(l('Warning'),
+            vm.messageDialog = Dialog.confirm(l('Warning'),
                                            l('The messages could not be moved to the trash folder. Would you like to delete them immediately?'),
                                            { ok: l('Delete') })
               .then(function() {
@@ -382,7 +386,7 @@
           });
         })
         .finally(function() {
-          messageDialog = null;
+          vm.messageDialog = null;
         });
 
       $event.preventDefault();
