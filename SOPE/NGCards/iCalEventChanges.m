@@ -141,7 +141,7 @@
     [updatedProperties addObject:@"accessClass"];
   if(!IS_EQUAL([_from sequence], [_to sequence], isEqualToNumber:))
     [updatedProperties addObject:@"sequence"];
-  if(!IS_EQUAL([_from organizer], [_to organizer], isEqual:))
+  if(!IS_EQUAL([[_from organizer] rfc822Email], [[_to organizer] rfc822Email], isEqual:))
     [updatedProperties addObject:@"organizer"];
   if(!IS_EQUAL([_from recurrenceRules], [_to recurrenceRules], isEqual:))
     [updatedProperties addObject:@"rrule"];
