@@ -41,6 +41,7 @@
 #import <Appointments/SOGoAppointmentFolders.h>
 #import <Mailer/SOGoMailObject.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSString+Utilities.h>
 #import <Mailer/SOGoMailBodyPart.h>
 
@@ -380,15 +381,50 @@
 
 - (iCalPerson *) _emailParticipantWithEvent: (iCalEvent *) event
 {
-  NSString *emailFrom;
-  SOGoMailObject *mailObject;
   NGImap4EnvelopeAddress *address;
+  SOGoMailObject *mailObject;
+  NSString *emailFrom;
+  iCalPerson *p;
 
   mailObject = [[self clientObject] mailObject];
   address = [[mailObject fromEnvelopeAddresses] objectAtIndex: 0];
   emailFrom = [address baseEMail];
+  p = [event findAttendeeWithEmail: emailFrom];
 
-  return [event findAttendeeWithEmail: emailFrom];
+  // We haven't found it yet, let's look in the identities
+  // associated to this user
+  if (!p)
+    {
+      SOGoUserManager *sm;
+      NSString *uid;
+
+      sm = [SOGoUserManager sharedUserManager];
+      uid = [sm getUIDForEmail: emailFrom];
+
+      if (uid)
+	{
+	  NSArray *allEmails;
+	  NSString *email;
+	  SOGoUser *u;
+	  int i;
+
+	  u = [SOGoUser userWithLogin: uid];
+	  allEmails = [u allEmails];
+	  for (i = 0; i < [allEmails count]; i++)
+	    {
+	      email = [allEmails objectAtIndex: i];
+	      if ([email caseInsensitiveCompare: emailFrom] == NSOrderedSame)
+		continue;
+
+	      p = [event findAttendeeWithEmail: email];
+
+	      if (p)
+		break;
+	    }
+	}
+    }
+
+  return p;
 }
 
 - (BOOL) _updateParticipantStatusInEvent: (iCalEvent *) calendarEvent
