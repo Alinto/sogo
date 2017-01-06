@@ -108,9 +108,9 @@ extern NSString *iCalWeekDayString[];
 
 /* parse complete iCal RRULE */
 
-- (void) setRrule: (NSString *) _rrule; // TODO: weird name? (better: RRule?)
+- (void) setRrule: (NSString *) _rrule;
 
-- (NSString *) iCalRepresentationForWeekDay: (iCalWeekDay) _weekDay;;
+- (NSString *) iCalRepresentationForWeekDay: (iCalWeekDay) _weekDay;
 
 @end
 
