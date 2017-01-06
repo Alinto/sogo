@@ -661,10 +661,9 @@ static NSArray *infoKeys = nil;
 {
   NSDictionary *d;
 
-  d = [NSDictionary dictionaryWithObjectsAndKeys: msg, @"textStatus", nil];
+  d = [NSDictionary dictionaryWithObjectsAndKeys: msg, @"message", nil];
 
-  return [self responseWithStatus: 500
-                        andString: [d jsonRepresentation]];
+  return [self responseWithStatus: 500 andJSONRepresentation: d];
 }
 
 /* attachment helper */
