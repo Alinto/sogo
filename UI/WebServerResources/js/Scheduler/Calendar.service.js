@@ -94,7 +94,6 @@
       list = this.$calendars;
 
     sibling = _.findIndex(list, function(o, i) {
-      console.debug(i + ': "' + o.id + '".localeCompare("' + calendar.name + '") = ' + o.name.localeCompare(calendar.name));
       return (calendar.id == 'personal' ||
               (o.id != 'personal' && o.name.localeCompare(calendar.name) > 0));
     });
@@ -323,6 +322,24 @@
     });
 
     return Calendar.$q.all(promises);
+  };
+
+  /**
+   * @function saveFoldersActivation
+   * @memberof Calendar
+   * @desc Save to the user's settings the activation state of the calendars
+   * @param {string[]} folders - the folders IDs
+   * @returns a promise of the HTTP operation
+   */
+  Calendar.saveFoldersActivation = function(ids) {
+    var request = {};
+
+    _.forEach(ids, function(id) {
+      var calendar = Calendar.$get(id);
+      request[calendar.id] = calendar.active;
+    });
+
+    return Calendar.$$resource.post(null, 'saveFoldersActivation', request);
   };
 
   /**

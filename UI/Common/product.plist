@@ -78,6 +78,11 @@
           actionClass = "UIxParentFolderActions";
           actionName = "createFolder";
         };
+        saveFoldersActivation = {
+          protectedBy = "Change Images And Files";
+          actionClass = "UIxParentFolderActions";
+          actionName = "saveFoldersActivation";
+        };
       };
     };
     SOGoFolder = {
