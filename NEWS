@@ -20,6 +20,7 @@ Bug fixes
  - [core] properly honor the "include in freebusy" setting (#3354)
  - [core] properly save next email alarm in the database (#3949)
  - [core] fix events in floating time during CalDAV's PUT operation (#2865)
+ - [core] handle rounds in sha512-crypt password hashes
  - [web] fixed confusion between owner and active user in ACLs management of Administration module
  - [web] fixed JavaScript exception after renaming an address book
  - [web] fixed Sieve folder encoding support (#3904)
