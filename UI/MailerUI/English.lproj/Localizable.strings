@@ -321,6 +321,7 @@
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Error while uploading the file \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "There is an active file upload. Closing the window will interrupt it.";
+"Message is too big" = "Message is too big";
 
 /* Appears while sending the message */
 "Sending" = "Sending";

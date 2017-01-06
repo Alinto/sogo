@@ -646,7 +646,7 @@ static NSString    *userAgent      = nil;
   if (!message)
     {
       error = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
-					    reason: @"message too big"];
+					    reason: @"Message is too big"];
       return error;
     }
 

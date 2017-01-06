@@ -52,9 +52,11 @@
       onErrorItem: function(item, response, status, headers) {
         $mdToast.show(
           $mdToast.simple()
-            .content(l('Error while uploading the file \"%{0}\":', item.file.name))
+            .content(l('Error while uploading the file \"%{0}\":', item.file.name) +
+                     ' ' + (response.message? l(response.message) : ''))
             .position('top right')
-            .hideDelay(3000));
+            .action(l('OK'))
+            .hideDelay(false));
         this.removeFromQueue(item);
         //console.debug(item); console.debug('error = ' + JSON.stringify(response, undefined, 2));
       }
