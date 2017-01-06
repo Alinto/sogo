@@ -557,41 +557,49 @@ static NSArray *tasksFields = nil;
   WOResponse *response;
   unsigned int browserTime, laterTime;
   
-  // We look for alarms in the next 48 hours
   browserTime = [[[context request] formValueForKey: @"browserTime"] intValue];
-  laterTime = browserTime + 60*60*48;
-  clientObject = [self clientObject];
-  allAlarms = [NSMutableArray array];
-  
-  folders = [[clientObject subFolders] objectEnumerator];
-  while ((currentFolder = [folders nextObject]))
+
+  if (browserTime)
     {
-      if ([currentFolder isActive] && [currentFolder showCalendarAlarms])
+      // We look for alarms in the next 48 hours
+      laterTime = browserTime + 60*60*48;
+      clientObject = [self clientObject];
+      allAlarms = [NSMutableArray array];
+
+      folders = [[clientObject subFolders] objectEnumerator];
+      while ((currentFolder = [folders nextObject]))
         {
-          NSDictionary *entry;
-          NSArray *alarms;
-          int i;
-          
-          alarms = [currentFolder fetchAlarmInfosFrom: [NSNumber numberWithInt: browserTime]
-                                                   to: [NSNumber numberWithInt: laterTime]];
-          
-          for (i = 0; i < [alarms count]; i++)
+          if ([currentFolder isActive] && [currentFolder showCalendarAlarms])
             {
-              entry = [alarms objectAtIndex: i];
+              NSDictionary *entry;
+              NSArray *alarms;
+              int i;
+          
+              alarms = [currentFolder fetchAlarmInfosFrom: [NSNumber numberWithInt: browserTime]
+                                                       to: [NSNumber numberWithInt: laterTime]];
+          
+              for (i = 0; i < [alarms count]; i++)
+                {
+                  entry = [alarms objectAtIndex: i];
               
-              [allAlarms addObject: [NSArray arrayWithObjects:
-                                               [currentFolder nameInContainer],
-                                          [entry objectForKey: @"c_name"],
-                                          [entry objectForKey: @"c_nextalarm"],
-                                             nil]];
+                  [allAlarms addObject: [NSArray arrayWithObjects:
+                                                   [currentFolder nameInContainer],
+                                              [entry objectForKey: @"c_name"],
+                                              [entry objectForKey: @"c_nextalarm"],
+                                                 nil]];
+                }
             }
         }
+
+      response = [self responseWithStatus: 200];
+      [response appendContentString: [allAlarms jsonRepresentation]];
     }
-  
-  
-  response = [self responseWithStatus: 200];
-  [response appendContentString: [allAlarms jsonRepresentation]];
-  
+  else
+    {
+      response = (WOResponse *) [NSException exceptionWithHTTPStatus: 400
+                                                              reason: @"missing 'browserTime' parameter"];
+    }
+
   return response;
 }
 
