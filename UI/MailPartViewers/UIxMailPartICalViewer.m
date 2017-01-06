@@ -480,7 +480,7 @@
       NSString *uid;
 
       sm = [SOGoUserManager sharedUserManager];
-      uid = [sm getUIDForEmail: [self replySenderBaseEMail]];
+      uid = [sm getUIDForEmail: baseEmail];
 
       if (uid)
 	{
