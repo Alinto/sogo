@@ -42,9 +42,9 @@
 "Auto reply message" = "Message de réponse automatique";
 "Email addresses (separated by commas)" = "Adresses courriels (séparées par des virgules)";
 "Add default email addresses" = "Ajouter les adresses par défaut";
-"Days between responses" = "Nombre de jours entre réponses";
+"Days between responses" = "Nombre de jours entre les réponses d'absence";
 "Do not send responses to mailing lists" = "Ne pas envoyer les réponses aux listes de diffusion";
-"Enable auto reply on" = "Activer la réponse automatique le";
+"Enable auto reply on" = "Débuter la réponse automatique le";
 "Disable auto reply on" = "Désactiver la réponse automatique le";
 "Always send vacation message response" = "Toujours envoyer le message de vacances prolongées";
 "Please specify your message and your email addresses for which you want to enable auto reply."
@@ -194,6 +194,7 @@
 "Please enter your signature below" = "Introduisez votre signature ci-dessous";
 "Please specify a valid sender address." = "Veuillez définir une adresse d'expédition valide.";
 "Please specify a valid reply-to address." = "Veuillez définir une adresse de retour valide.";
+"Specify a hostname other than the local host" = "Veuillez utiliser un nom d'hôte autre que l'hôte local";
 
 /* Additional Parameters */
 "Additional Parameters" = "Paramètres supplémentaires";

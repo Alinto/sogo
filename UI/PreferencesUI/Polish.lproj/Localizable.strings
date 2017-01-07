@@ -194,6 +194,7 @@
 "Please enter your signature below" = "Wprowadź swoją sygnaturę";
 "Please specify a valid sender address." = "Wprowadź poprawny adres nadawcy.";
 "Please specify a valid reply-to address." = "Wprowadź poprawny adres \"Odpowiedź do\"";
+"Specify a hostname other than the local host" = "Podaj nazwę serwera inną niż host lokalny";
 
 /* Additional Parameters */
 "Additional Parameters" = "Dodatkowe parametry";
