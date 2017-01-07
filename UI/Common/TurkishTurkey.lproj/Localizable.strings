@@ -65,10 +65,10 @@
 = "Bu modül veya sisteme erişim yetkiniz yok. Lütfen, sistem yöneticisiyle iletişime geçin.";
 "You don't have the required privileges to perform the operation."
 = "Bu işlemi gerçekleştirmek için gereken yetkilere sahip değilsiniz.";
-"noEmailForDelegation" = "Davetinize temsilci atayacağınız adresleri belirtmelisiniz.";
-"delegate is organizer" = "Temsilci etkinliği düzenleyen kişidir. Lütfen başka bir temsilci seçin. ";
-"delegate is a participant" = "Temsilci zaten bu etkinliğe katılıyor.";
-"delegate is a group" = "Belirtilen adres bir gruba denk geliyor. Sadece bir kişiyi temsilci atayabilirsiniz.";
+"noEmailForDelegation" = "Davetinize vekil atayacağınız kişinin adresini belirtmelisiniz.";
+"delegate is organizer" = "Vekil edilen kişi etkinliği düzenleyen kişidir. Lütfen başka bir vekil belirleyin edin. ";
+"delegate is a participant" = "Vekil edilen kişi zaten bu etkinliğe katılıyor.";
+"delegate is a group" = "Belirtilen adres bir gruba denk geliyor. Sadece bir kişiyi vekil tayin edebilirsiniz.";
 "Snooze for " = "Beklenecek süre";
 "5 minutes" = "5 dakika";
 "10 minutes" = "10 dakika";

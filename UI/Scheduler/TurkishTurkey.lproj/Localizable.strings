@@ -59,7 +59,7 @@
 "Properties" = "Özellikler";
 "Done" = "Tamam";
 "An error occurred while importing calendar." = "Takvimi içeri aktarırken bir hata oluştu.";
-"No event was imported." = "İçeri etkinlik aktarılmadı.";
+"No event was imported." = "İçeri hiç bir etkinlik aktarılmadı.";
 "A total of %{0} events were imported in the calendar." = "Toplam %{0} etkinlik takvime aktarıldı.";
 "Compose E-Mail to All Attendees" = "Tüm Katılımcılara İleti Yaz";
 "Compose E-Mail to Undecided Attendees" = "Karar Vermemiş Katılımcılara İleti Yaz";
@@ -117,7 +117,7 @@
 
 /* Schedule */
 "Schedule" = "İş Programı";
-"No appointments found" = "Çalışma bulunamadı";
+"No appointments found" = "Hiç bir çalışma bulunamadı";
 "Meetings proposed by you" = "Sizin tarafınızdan teklif edilen toplantılar";
 "Meetings proposed to you" = "Size teklif edilen toplantılar";
 "sched_startDateFormat" = "%d/%m %H:%M";
@@ -178,7 +178,7 @@
 "Target" = "Hedef";
 "attributes" = "özellikler";
 "attendees" = "katılımcılar";
-"delegated from" = "tarafından temsilci atandı";
+"delegated from" = "vekil tayin eden";
 
 /* checkbox title */
 "is private" = "kişisel mi";
@@ -197,7 +197,7 @@
 "partStat_ACCEPTED" = "Katılacağım";
 "partStat_DECLINED" = "Katılmayacağım";
 "partStat_TENTATIVE" = "Katılabilirim";
-"partStat_DELEGATED" = "Temsilci atıyorum";
+"partStat_DELEGATED" = "Vekil atıyorum";
 "partStat_OTHER" = "Diğer";
 
 /* Appointments (error messages) */
@@ -253,7 +253,7 @@
 "PRIVATE_vevent" = "Kişisel Etkinlik";
 "PUBLIC_vtodo" = "Herkese Açık Görev";
 "CONFIDENTIAL_vtodo" = "Gizli Görev";
-"PRIVATE_vtodo" = "Kişisel görev";
+"PRIVATE_vtodo" = "Kişisel Görev";
 
 /* status type */
 "status_" = "Belirlenmemiş";
@@ -549,7 +549,7 @@ vtodo_class2 = "(Gizli görev)";
 "Custom date range" = "Özel tarih aralığı";
 "Select starting date" = "Başlangıç tarihini seçin";
 "Select ending date" = "Bitiş tarihini seçin";
-"Delegated to" = "Temsilci";
+"Delegated to" = "Vekil";
 "Keep sending me updates" = "Güncellemeleri bana göndermeye devam et";
 "OK" = "TAMAM";
 "Confidential" = "Gizli";

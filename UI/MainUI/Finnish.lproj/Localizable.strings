@@ -15,6 +15,7 @@
 
 "Authentication Failed" = "Tunnistautuminen epäonnistui";
 "Wrong username or password." = "Väärä käyttäjätunnus tai salasana.";
+"Retry" = "Yritä uudelleen";
 "cookiesNotEnabled" = "Et voi kirjautua koska selaimesi evästeet eivät ole käytössä. Salli evästeet selaimen asetuksista ja yritä uudelleen.";
 "browserNotCompatible" = "Olemme havainneet että selaimesi versiota ei tällä hetkellä tueta tällä sivustolla. Suosituksemme on käyttää Firefoxia. Napsauta alla olevaa linkkiä ladataksesi uusimman version tästä selaimesta.";
 "alternativeBrowsers" = "Vaihtoehtoisesti voit myös käyttää seuraavia yhteensopivia selaimia";
