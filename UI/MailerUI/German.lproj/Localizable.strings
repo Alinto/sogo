@@ -217,6 +217,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "In Aufgabe umwandeln";
 
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Alle Anhänge herunterladen";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "Anhänge";
+
 "Print..." = "Drucken...";
 "Delete Message" = "Nachricht löschen";
 "Delete Selected Messages" = "Gewählte Nachricht(en) löschen";
@@ -315,6 +321,7 @@
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Fehler beim Hochladen der Datei \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Es wird gerade eine Datei hochgeladen. Das Schließen des Fensters wird dies abbrechen.";
+"Message is too big" = "Nachricht ist zu groß";
 
 /* Appears while sending the message */
 "Sending" = "Sende";

@@ -146,6 +146,7 @@
 /* Mailer */
 "Labels" = "Otsikot";
 "Label" = "Otsikoi";
+"New label" = "Uusi otsikko";
 "Show subscribed mailboxes only" = "Näytä vain tilatut sähköpostikansiot";
 "Synchronize only default mail folders (EAS)" = "Synkronoi vain oletus sähköpostikansiot (EAS)";
 "Sort messages by threads" = "Järjestä viestit ketjuiksi";
@@ -212,6 +213,7 @@
 /* Event+task categories */
 "Calendar Category" = "Kalenteriryhmä";
 "Add Calendar Category" = "Lisää kalenteriryhmä";
+"New category" = "Uusi kategoria";
 "Remove Calendar Category" = "Poista kalenteriryhmä";
 "Contact Category" = "Yhteystietoryhmä";
 "Add Contact Category" = "Lisää yhteystietoryhmä";
@@ -317,11 +319,27 @@
 "Header" = "Otsikko";
 "Body" = "Runko";
 "Flag the message with" = "Merkitse viesti";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Lippu";
+
 "Discard the message" = "Hylkää viesti";
 "File the message in" = "Arkistoi viesti";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Postilaatikko";
+
 "Keep the message" = "Pidä viesti";
 "Forward the message to" = "Lähetä viesti edelleen";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "Sähköposti";
+
 "Send a reject message" = "Lähetä hylkäysviesti";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Viesti";
+
 "Send a vacation message" = "Lähetä lomaviesti";
 "Stop processing filter rules" = "Pysäytä suodatinsääntöjen suoritus";
 "is under" = "on alle";

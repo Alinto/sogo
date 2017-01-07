@@ -194,6 +194,7 @@
 "Please enter your signature below" = "Please enter your signature below";
 "Please specify a valid sender address." = "Please specify a valid sender address.";
 "Please specify a valid reply-to address." = "Please specify a valid reply-to address.";
+"Specify a hostname other than the local host" = "Specify a hostname other than the local host";
 
 /* Additional Parameters */
 "Additional Parameters" = "Additional Parameters";

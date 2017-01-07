@@ -112,7 +112,7 @@
 "Day end time" = "Günün bitiş saati";
 "Day start time must be prior to day end time." = "Günün başlangıç saati, günün bitiş saatinden önce olmalı.";
 "Week days to display" = "Gösterilen günler";
-"Show time as busy outside working hours" = "Çalışma saati dışındaki saatleri meşgul olarak göster";
+"Show time as busy outside working hours" = "Mesai saati haricindeki zamanı meşgul olarak göster";
 "First week of year" = "Yılın ilk haftası";
 "Enable reminders for Calendar items" = "Takvim ögeleri için hatırlatıcıları etkinleştir";
 "Play a sound when a reminder comes due" = "Hatırlatma zamanı geldiğinde sesli olarak uyar";
@@ -120,8 +120,8 @@
 "firstWeekOfYear_January1" = "1 Ocak'da başlar";
 "firstWeekOfYear_First4DayWeek" = "İlk 4-günlük haftadır";
 "firstWeekOfYear_FirstFullWeek" = "İlk tam haftadır";
-"Prevent from being invited to appointments" = "Çalışma davet almayı engelle";
-"White list for appointment invitations" = "Çalışma daveti beyaz listesi";
+"Prevent from being invited to appointments" = "Çalışma daveti almayı engelle";
+"White list for appointment invitations" = "Çalışma davetleri beyaz listesi";
 "Contacts Names" = "Kişi İsimleri";
 
 /* Default Calendar */

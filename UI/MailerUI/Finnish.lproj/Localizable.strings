@@ -269,6 +269,10 @@
 "quotasFormat" = "%{0}% käytetty %{1} Mt:sta";
 "Unable to move/delete folder." = "Hakemiston siirto/poisto ei onnistu.";
 
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Postilaatikon vienti roskakoriin epäonniestui. Haluatko poistaa sen välittömästi?";
+
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Haluatko varmasti poistaa valitut viestit?";
 
@@ -350,6 +354,7 @@
 "Copy messages" = "Kopioi viestit";
 "More messages options" = "Lisää viestiasetuksia";
 "Mark as Unread" = "Merkitse lukemattomaksi";
+"Mark as Read" = "Merkitse luetuksi";
 "Closing Window ..." = "Ikkuna sulkeutuu...";
 "Tried to send too many mails. Please wait." = "Yritetty lähettää liian monta viestiä. Ole hyvä ja odota.";
 "View Mail" = "Näytä viesti";
@@ -373,5 +378,17 @@
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
 
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
 /* Hotkey to flag a message */
-"hotkey_flag" = "f";
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

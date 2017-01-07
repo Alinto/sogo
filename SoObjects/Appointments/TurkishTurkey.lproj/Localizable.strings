@@ -35,9 +35,9 @@ vtodo_class2 = "(Gizli görev)";
 = "%{Organizer} %{SentByText}şu etkinliği iptal etti: %{Summary}.\n\nBaşlangıç: %{StartDate} saat %{StartTime}\nBitiş: %{EndDate} saat %{EndTime}\nTanım: %{Description}";
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
-= "\"%{Summary}\" isimli, %{OldStartDate} tarihli çalışma değişti";
+= "%{OldStartDate} tarihindeki \"%{Summary}\" çalışması değişti";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= "\"%{Summary}\" isimli, %{OldStartDate} tarihli ve %{OldStartTime} saatli çalışma değişti";
+= " %{OldStartDate} tarihli ve %{OldStartTime} başlangıç saatli \"%{Summary}\" çalışması değişti";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
 = "\"%{Summary}\" buluşmasının şu özellikleri değişti:";
 "Please accept or decline those changes."
@@ -45,16 +45,16 @@ vtodo_class2 = "(Gizli görev)";
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Davet kabul edilidi: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Davet Geri Çevrildi: \"%{Summary}\"";
-"Delegated invitation: \"%{Summary}\"" = "Temsilci atanmış davet: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Vekalet edilen davet: \"%{Summary}\"";
 "Not yet decided on invitation: \"%{Summary}\"" = "Davet hakkında henüz karar verilmedi: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}etkinlik davetinizi kabul etti.";
 "%{Attendee} %{SentByText}has declined your event invitation."
 = "%{Attendee} %{SentByText}davetinizi reddetti.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
-= "%{Attendee} %{SentByText} davete temsilci atadı: %{Delegate} ";
+= "%{Attendee} %{SentByText} tarafından %{Delegate} davete vekil olarak atadı.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}henüz etkinlik davetinizle ilgili kararını vermedi.";
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Kaynağa ulaşılamıyor: \"%{Cn} %{SystemEmail}\"";
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "\"%{Cn} %{SystemEmail}\" kanağı için maksimum eşzamanlı kayıt adedine (%{NumberOfSimultaneousBookings}) ulaşıldı. Çakışan  \"%{EventTitle}\" etkinlik, %{StartDate} tarihinde başlıyor.";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "\"%{Cn} %{SystemEmail}\" kaynağı için maksimum eşzamanlı kayıt adedine (%{NumberOfSimultaneousBookings}) ulaşıldı. Çakışan  \"%{EventTitle}\" etkinlik, %{StartDate} tarihinde başlıyor.";
