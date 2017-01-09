@@ -115,7 +115,7 @@ static BOOL debugLeaks;
   vMemSizeLimit = [defaults vmemLimit];
   if (vMemSizeLimit > 0)
     [self logWithFormat: @"vmem size check enabled: shutting down app when "
-          @"vmem > %d MB", vMemSizeLimit];
+          @"vmem > %d MB. Currently at %d MB", vMemSizeLimit, [[NSProcessInfo processInfo] virtualMemorySize]/1048576];
 
   /* SoClass security declarations */
   sInfo = [self soClassSecurityInfo];
