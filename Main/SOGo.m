@@ -147,6 +147,8 @@ static BOOL debugLeaks;
 
   /* load products */
   [[SOGoProductLoader productLoader] loadAllProducts: YES];
+  if (vMemSizeLimit > 0)
+    [self logWithFormat: @"All products loaded - current memory usage at %d MB", [[NSProcessInfo processInfo] virtualMemorySize]/1048576];
 }
 
 - (id) init
