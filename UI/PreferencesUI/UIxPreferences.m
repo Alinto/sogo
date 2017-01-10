@@ -1827,6 +1827,15 @@ static NSArray *reminderValues = nil;
   return [self labelForKey: item];
 }
 
+- (NSDictionary *) languageLocale
+{
+  WOResourceManager *rm;
+
+  rm = [self pageResourceManager];
+
+  return [rm localeForLanguageNamed: item];
+}
+
 //
 // Used by wox template
 //
