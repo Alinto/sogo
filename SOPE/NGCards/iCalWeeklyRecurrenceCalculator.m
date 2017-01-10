@@ -70,7 +70,7 @@
   iCalByDayMask *dayMask;
   BOOL hasRepeatCount;
 
-  [self logWithFormat: @"Weekly %@", rrule];
+  //[self logWithFormat: @"Recurrence rule is %@", rrule];
 
   firStart = [firstRange startDate];
   startDate = [_r startDate];

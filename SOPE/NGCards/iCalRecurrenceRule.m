@@ -921,4 +921,28 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
   return isEqual;
 }
 
+- (NSString *) description
+{
+  NSMutableString *str;
+
+  str = [NSMutableString stringWithString: [self flattenedValuesForKey: @"freq"]];
+
+  if ([self repeatInterval] > 1)
+    [str appendFormat: @" interval of %i", [self repeatInterval]];
+  if ([self repeatCount])
+    [str appendFormat: @" for %i times", [self repeatCount]];
+  if ([self untilDate])
+    [str appendFormat: @" until %@", [self untilDate]];
+  if ([[self valuesAtIndex: 0 forKey: @"bymonthday"] count])
+    [str appendFormat: @" BYMONTHDAY:%@", [self flattenedValuesForKey: @"bymonthday"]];
+  if ([[self valuesAtIndex: 0 forKey: @"byday"] count])
+    [str appendFormat: @" BYDAY:%@", [self flattenedValuesForKey: @"byday"]];
+  if ([[self valuesAtIndex: 0 forKey: @"bymonth"] count])
+    [str appendFormat: @" BYMONTH:%@", [self flattenedValuesForKey: @"bymonth"]];
+  if ([[self valuesAtIndex: 0 forKey: @"bysetpos"] count])
+    [str appendFormat: @" BYSETPOS:%@", [self flattenedValuesForKey: @"bysetpos"]];
+
+  return str;
+}
+
 @end /* iCalRecurrenceRule */
