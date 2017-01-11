@@ -213,6 +213,20 @@ static NSString *mailETag = nil;
   viewer = [[context mailRenderingContext] viewerForBodyInfo: info];
   [viewer setBodyInfo: info];
 
+  NSMutableDictionary *attachmentIds;
+  NSDictionary *attributes;
+  unsigned int count, max;
+
+  max = [[self attachmentAttrs] count];
+  attachmentIds = [NSMutableDictionary dictionaryWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      attributes = [[self attachmentAttrs] objectAtIndex: count];
+      [attachmentIds setObject: [attributes objectForKey: @"url"]
+                        forKey: [attributes objectForKey: @"filename"]];
+    }
+  [viewer setAttachmentIds: attachmentIds];
+
   return viewer;
 }
 

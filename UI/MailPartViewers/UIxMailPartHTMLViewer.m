@@ -609,8 +609,7 @@ static NSData* _sanitizeContent(NSData *theData)
                   value = [_attributes valueAtIndex: count];
                   if ([value hasPrefix: @"cid:"])
                     {
-                      cid = [NSString stringWithFormat: @"<%@>",
-                             [value substringFromIndex: 4]];
+                      cid = [value substringFromIndex: 4];
                       value = [attachmentIds objectForKey: cid];
                       skipAttribute = (value == nil);
                     }
@@ -920,7 +919,7 @@ static NSData* _sanitizeContent(NSData *theData)
              createXMLReaderForMimeType: @"text/html"];
 
   handler = [_UIxHTMLMailContentHandler new];
-  [handler setAttachmentIds: [mail fetchFileAttachmentIds]];
+  [handler setAttachmentIds: attachmentIds];
 
   // We check if we got an unsupported charset. If so
   // we convert everything to UTF-16{LE,BE} so it passes
@@ -1047,7 +1046,7 @@ static NSData* _sanitizeContent(NSData *theData)
     encoding = @"us-ascii";
 
   handler = [_UIxHTMLMailContentHandler new];
-  [handler setAttachmentIds: [mail fetchFileAttachmentIds]];
+  [handler setAttachmentIds: attachmentIds];
 
   // We check if we got an unsupported charset. If so
   // we convert everything to UTF-16{LE,BE} so it passes

@@ -42,6 +42,16 @@
 
 @implementation UIxMailPartViewer
 
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      attachmentIds = nil;
+    }
+
+  return self;
+}
+
 - (void) dealloc
 {
   [flatContent release];
@@ -151,6 +161,11 @@
                        type, @"contentType",
                        [[self generateResponse] contentAsString], @"content",
                        nil];
+}
+
+- (void) setAttachmentIds: (NSDictionary *) newAttachmentIds
+{
+  attachmentIds = newAttachmentIds;
 }
 
 - (NSData *) content
