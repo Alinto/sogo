@@ -933,6 +933,9 @@
   /* get WOApplication instance */
   app = [WOApplication application];
 
+  /* remove all alarms to avoid bug #3925 */
+  [event removeAllAlarms];
+
   /* construct message content */
   p = [app pageWithName: @"SOGoAptMailICalReply"  inContext: context];
   [p setApt: (iCalEvent *) event];
