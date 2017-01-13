@@ -215,6 +215,7 @@ static NSString *mailETag = nil;
 
   NSMutableDictionary *attachmentIds;
   NSDictionary *attributes;
+  NSString *filename;
   unsigned int count, max;
 
   max = [[self attachmentAttrs] count];
@@ -222,8 +223,12 @@ static NSString *mailETag = nil;
   for (count = 0; count < max; count++)
     {
       attributes = [[self attachmentAttrs] objectAtIndex: count];
+      filename = [NSString stringWithFormat: @"<%@>", [attributes objectForKey: @"filename"]];
       [attachmentIds setObject: [attributes objectForKey: @"url"]
-                        forKey: [attributes objectForKey: @"filename"]];
+                        forKey: filename];
+      if ([[attributes objectForKey: @"bodyId"] length])
+        [attachmentIds setObject: [attributes objectForKey: @"url"]
+                          forKey: [attributes objectForKey: @"bodyId"]];
     }
   [viewer setAttachmentIds: attachmentIds];
 

@@ -609,7 +609,8 @@ static NSData* _sanitizeContent(NSData *theData)
                   value = [_attributes valueAtIndex: count];
                   if ([value hasPrefix: @"cid:"])
                     {
-                      cid = [value substringFromIndex: 4];
+                      cid = [NSString stringWithFormat: @"<%@>",
+                             [value substringFromIndex: 4]];
                       value = [attachmentIds objectForKey: cid];
                       skipAttribute = (value == nil);
                     }

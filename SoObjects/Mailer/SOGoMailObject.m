@@ -840,6 +840,7 @@ static BOOL debugSoParts       = NO;
                                   path, @"path",
                                   [part objectForKey: @"encoding"], @"encoding",
                                   [part objectForKey:@ "size"], @"size",
+                                  [part objectForKey: @"bodyId"], @"bodyId",
                                   [NSString stringWithFormat: @"%@/%@", prefix, filenameURL], @"url",
                                   [NSString stringWithFormat: @"%@/asAttachment/%@", prefix, filenameURL], @"urlAsAttachment",
                                   nil];
