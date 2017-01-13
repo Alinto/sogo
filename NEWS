@@ -5,6 +5,7 @@ Enhancements
  - [web] show locale codes beside language names in Preferences module
 
 Bug fixes
+ - [core] remove all alarms before sending IMIP replies (#3925)
  - [web] fixed rendering of forwared HTML message with inline images (#3981)
 
 3.2.5 (2017-01-10)
