@@ -23,6 +23,7 @@ CKEDITOR.editorConfig = function( config ) {
   config.tabSpaces = 4;
   config.allowedContent = true; // don't filter tags
   config.entities = false;
+  //config.uploadUrl = '/uploader/upload.php';
 
   // Disables the built-in words spell checker if browser provides one. Defaults to true.
   // http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-disableNativeSpellChecker

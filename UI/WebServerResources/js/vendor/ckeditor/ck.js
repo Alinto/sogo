@@ -59,11 +59,26 @@
           options.scayt_sLang = locale;
         }
 
+        // The Upload Image plugin requires a remote URL to be defined even though we won't use it
+        options.imageUploadUrl = '/SOGo/';
+
         ck = CKEDITOR.replace(elm[0], options);
+
+        // Update the model whenever the content changes
         ck.on('change', function() {
           $scope.$apply(function() {
             ngModel.$setViewValue(ck.getData());
           });
+        });
+
+        // Intercept the request when an image is pasted, keep an inline base64 version only.
+        ck.on('fileUploadRequest', function(event) {
+          var data, img;
+          data = event.data.fileLoader.data;
+          img = ck.document.createElement('img');
+          img.setAttribute('src', data);
+          ck.insertElement(img);
+          event.cancel();
         });
 
         ngModel.$render = function(value) {
