@@ -618,7 +618,10 @@
       if (content)
 	ASSIGN (originalCalendar, [iCalCalendar parseSingleFromSource: content]);
       else
-	[self warnWithFormat: @"content not available, we will crash"];
+	{
+	  [self warnWithFormat: @"content not available, we don't update the event"];
+	  return;
+	}
     }
 
   oldMaster = (iCalRepeatableEntityObject *)
