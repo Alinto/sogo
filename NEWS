@@ -1,3 +1,9 @@
+2.3.20 (2017-XX-XX)
+-------------------
+
+Bug fixes
+ - [core] remove all alarms before sending IMIP replies (#3925)
+
 2.3.19 (2017-01-09)
 -------------------
 
