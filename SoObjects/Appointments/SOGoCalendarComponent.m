@@ -935,6 +935,9 @@
   if ([[context objectForKey: @"DeviceType"] isEqualToString: @"WindowsOutlook15"])
     return;
 
+  // remove all alarms to avoid bug #3925
+  [event removeAllAlarms];
+
   dd = [from domainDefaults];
   if ([dd appointmentSendEMailNotifications] && [event isStillRelevant])
     {
