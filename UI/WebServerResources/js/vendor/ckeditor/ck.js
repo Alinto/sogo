@@ -71,6 +71,15 @@
           });
         });
 
+        ck.on('paste', function(event) {
+          var html;
+          if (event.data.type == 'html') {
+            html = event.data.dataValue;
+            // Remove images to avoid ghost image in Firefox; images will be handled by the Image Upload plugin
+            event.data.dataValue = html.replace(/<img( [^>]*)?>/gi, '');
+          }
+        });
+
         // Intercept the request when an image is pasted, keep an inline base64 version only.
         ck.on('fileUploadRequest', function(event) {
           var data, img;

@@ -7,6 +7,7 @@ Enhancements
 Bug fixes
  - [core] remove all alarms before sending IMIP replies (#3925)
  - [web] fixed rendering of forwared HTML message with inline images (#3981)
+ - [web] fixed pasting images in CKEditor using Chrome (#3986)
 
 3.2.5 (2017-01-10)
 ------------------
