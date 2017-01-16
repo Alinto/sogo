@@ -259,6 +259,7 @@ $quarter_height: 10px;
     font-size: $sg-font-size-2;
     font-weight: $sg-font-medium;
     border-radius: $block_radius;
+    //overflow: hidden;
     position: absolute;
     left: 0;
     right: 0;
@@ -371,11 +372,11 @@ $quarter_height: 10px;
     &:hover {
       .dragGrip {
         &-top, &-bottom {
-          display: block;
+          opacity: 1;
           cursor: ns-resize;
         }
         &-left, &-right {
-          display: block;
+          opacity: 1;
           cursor: ew-resize;
         }
       }
@@ -383,7 +384,7 @@ $quarter_height: 10px;
 
     .dragGrip {
       &-top, &-bottom, &-left, &-right {
-        display: none;
+        opacity: 0;
         position: absolute;
       }
 

@@ -3,6 +3,7 @@
 
 Enhancements
  - [web] show locale codes beside language names in Preferences module
+ - [web] fixed visual glitches in Month view with Firefox
 
 Bug fixes
  - [core] remove all alarms before sending IMIP replies (#3925)

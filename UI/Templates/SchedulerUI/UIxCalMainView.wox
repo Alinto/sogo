@@ -337,7 +337,8 @@
     </md-sidenav>
 
     <!-- Main section -->
-    <section layout="column" layout-fill="layout-fill"
+    <section class="view-main"
+             layout="column"
              ng-controller="CalendarListController as list">
       <md-toolbar class="toolbar-main" flex-none="flex-none" layout="row" layout-align="space-between center">
         <var:component className="UIxTopnavToolbar"/>
