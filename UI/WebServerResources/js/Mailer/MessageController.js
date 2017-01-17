@@ -107,9 +107,12 @@
      * To keep track of the currently active dialog, we share a common variable with the parent controller.
      */
     function _messageDialog() {
-      if (arguments.length > 0)
-        $scope.mailbox.messageDialog = arguments[0];
-      return $scope.mailbox.messageDialog;
+      if ($scope.mailbox) {
+        if (arguments.length > 0)
+          $scope.mailbox.messageDialog = arguments[0];
+        return $scope.mailbox.messageDialog;
+      }
+      return null;
     }
 
     function _unlessInDialog(callback) {
@@ -331,7 +334,7 @@
 
     function openPopup() {
       var url = [sgSettings.baseURL(),
-                 'UIxMailPopupView#/Mail',
+                 'UIxMailPopupView#!/Mail',
                  vm.message.accountId,
                  // The double-encoding is necessary
                  encodeUriFilter(encodeUriFilter(vm.message.$mailbox.path)),
