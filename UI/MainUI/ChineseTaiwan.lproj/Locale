@@ -1,7 +1,7 @@
 /* ChineseTaiwan */
 {
   NSLanguageName = "ChineseTaiwan";
-  NSFormalName = "ChineseTaiwan";
+  NSFormalName = "正體中文";
   NSLocaleCode = "zh"; /* ISO 639-1 */
   NSLanguageCode = "zho"; /* ISO 639-2 */
   NSParentContext = "";
