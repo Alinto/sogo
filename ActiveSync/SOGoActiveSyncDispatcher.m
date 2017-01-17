@@ -43,6 +43,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGObjWeb/WOCoreApplication.h>
 
 #import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalEvent.h>
+#import <NGCards/iCalPerson.h>
 
 #import <NGExtensions/NGBase64Coding.h>
 
@@ -59,8 +61,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeFileData.h>
-#import <NGMime/NGMimeMultipartBody.h>
 #import <NGMime/NGMimeType.h>
+#import <NGMime/NGMimeMultipartBody.h>
+#import <NGMime/NGConcreteMimeType.h>
 #import <NGMail/NGMimeMessageParser.h>
 #import <NGMail/NGMimeMessageGenerator.h>
 
@@ -3201,6 +3204,7 @@ void handle_eas_terminate(int signum)
   NSData *new_from_header;
   NSDictionary *identity;
   NSString *fullName, *email;
+  NGMimeType *contentType;
   NSArray *from;
 
   const char *bytes;
@@ -3215,6 +3219,40 @@ void handle_eas_terminate(int signum)
   parser = [[NGMimeMessageParser alloc] init];
   message = [parser parsePartFromData: data];
   RELEASE(parser);
+
+  // If an EAS client is trying to send an invitation email (request or response), we make sure to
+  // remove all attendees that have NO email addresses. Outlook 2016 (and likely other EAS clients)
+  // do that when sending IMIP only to "newly added or deleted attendees" - existing attendees have
+  // their email addresses stripped, while keeping the display name value.
+  contentType = [message contentType];
+
+  if ([contentType isKindOfClass: [NGConcreteTextMimeType class]] &&
+      [[[message contentType] subType] caseInsensitiveCompare: @"calendar"] == NSOrderedSame &&
+      ([[(NGConcreteTextMimeType *)[message contentType] method] caseInsensitiveCompare: @"request"] == NSOrderedSame ||
+       [[(NGConcreteTextMimeType *)[message contentType] method] caseInsensitiveCompare: @"reply"] == NSOrderedSame))
+    {
+      NGMimeMessageGenerator *generator;
+      iCalCalendar *calendar;
+      iCalPerson *attendee;
+      NSArray *attendees;
+      iCalEvent *event;
+
+      calendar = [iCalCalendar parseSingleFromSource: [message body]];
+      event = [[calendar events] lastObject];
+      attendees = [event attendees];
+
+      for (i = [attendees count]-1; i >= 0; i--)
+	{
+	  attendee = [attendees objectAtIndex: i];
+	  if (![attendee rfc822Email] || [[attendee rfc822Email] caseInsensitiveCompare: @"nomail"] == NSOrderedSame)
+	    [event removeFromAttendees: attendee];
+	}
+
+      // We regenerate the data to use
+      [message setBody: [[calendar versitString] dataUsingEncoding: NSUTF8StringEncoding]];
+      generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
+      data = [NSMutableData dataWithData: [generator generateMimeFromPart: message]];
+    }
 
   from = [message headersForKey: @"from"];
 
