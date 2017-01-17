@@ -35,11 +35,11 @@
 "contacts_category_labels" = "Ami, Client, Collègue, Concurrent, Famille, Fournisseur, Partenaire d'affaire, Presse, VIP";
 
 /* vacation (auto-reply) */
-"Enable vacation auto reply" = "Activer message d'absence prolongée";
+"Enable vacation auto reply" = "Activer les réponses automatiques d'absence prolongée";
 "Enable custom auto reply subject" = "Activer un sujet personnalisé";
-"Auto reply subject" = "Sujet personnalisé";
-"You can write ${subject} to insert the original subject" = "Inscrivez ${subject} pour insérer le sujet original";
-"Auto reply message" = "Message de réponse automatique";
+"Auto reply subject" = "Modifier le sujet de la réponse automatique";
+"You can write ${subject} to insert the original subject" = "Inscrire ${subject} pour insérer le sujet original";
+"Auto reply message" = "Contenu de la réponse automatique";
 "Email addresses (separated by commas)" = "Adresses courriels (séparées par des virgules)";
 "Add default email addresses" = "Ajouter les adresses par défaut";
 "Days between responses" = "Nombre de jours entre les réponses d'absence";

@@ -218,7 +218,7 @@
 "Convert To Task" = "Convertir en tâche";
 
 /* Message view "more" menu: download all attachments as a zip archive */
-"Download all attachments" = "Télécharger toutes les pièces jointes";
+"Download all attachments" = "Télécharger les pièces jointes";
 
 /* Filename prefix when downloading all attachments as a zip archive */
 "attachments" = "pièces-jointes";
