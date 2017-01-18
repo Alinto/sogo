@@ -506,7 +506,7 @@ SOGoSAML2LogoutEnabled must be set to YES. If unset, the user will be
 redirected to a blank page.
 
 |D |SOGoTimeZone
-|Parameter used to set a default time zone for users. The default
+|Mandatory parameter used to set a default time zone for users. The default
 timezone is set to UTC. The Olson database is a standard database that
 takes all the time zones around the world into account and represents
 them along with their history. On GNU/Linux systems, time zone
