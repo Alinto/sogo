@@ -6,6 +6,7 @@ Enhancements
  - [web] fixed visual glitches in Month view with Firefox
  - [web] mail editor can now be expanded horizontally and automatically expands vertically
  - [web] compose a new message inline or in a popup window
+ - [web] allow to select multiple files when uploading attachments (#3999)
 
 Bug fixes
  - [core] remove all alarms before sending IMIP replies (#3925)

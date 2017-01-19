@@ -260,7 +260,7 @@
             <md-icon>attach_file</md-icon>
             <!-- <span><var:string label:value="Attach"/></span> -->
           </label>
-          <input id="fileInput" name="fileInput" type="file" class="ng-hide"
+          <input id="fileInput" class="ng-hide" name="fileInput" type="file" multiple="multiple"
                  nv-file-select="nv-file-select"
                  uploader="editor.uploader"/>
           <!--
