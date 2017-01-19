@@ -133,16 +133,19 @@ size_t curl_body_function_freebusy(void *ptr, size_t size, size_t nmemb, void *i
           curl_easy_setopt(curl, CURLOPT_POSTFIELDS, [rawRequest UTF8String]);
           //curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, curlHeaderFunction);
           //curl_easy_setopt(curl, CURLOPT_HEADER, 1);
+          curl_easy_setopt(curl, CURLOPT_TIMEOUT, 20L);
           curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
           curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
           curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curl_body_function_freebusy);
           curl_easy_setopt(curl, CURLOPT_WRITEDATA, self);
           curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, &error);
+          error[0] = 0;
 
           // Perform SOAP request
           rc = curl_easy_perform(curl);
-          if (rc != 0)
-            [self errorWithFormat: @"CURL error while accessing %@ (%d): ", url, rc, [NSString stringWithCString: error]];
+          if (rc != CURLE_OK)
+            [self errorWithFormat: @"CURL error while accessing %@ (%d): %@", url, rc,
+                  [NSString stringWithCString: strlen(error) ? error : curl_easy_strerror(rc)]];
           curl_easy_cleanup(curl);
           curl_slist_free_all(headerlist);
         
