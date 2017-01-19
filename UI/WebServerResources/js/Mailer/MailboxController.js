@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MailboxController.$inject = ['$window', '$scope', '$timeout', '$q', '$state', '$mdDialog', '$mdToast', 'stateAccounts', 'stateAccount', 'stateMailbox', 'sgHotkeys', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
-  function MailboxController($window, $scope, $timeout, $q, $state, $mdDialog, $mdToast, stateAccounts, stateAccount, stateMailbox, sgHotkeys, encodeUriFilter, focus, Dialog, Account, Mailbox) {
+  MailboxController.$inject = ['$window', '$scope', '$timeout', '$q', '$state', '$mdDialog', '$mdToast', 'stateAccounts', 'stateAccount', 'stateMailbox', 'sgHotkeys', 'encodeUriFilter', 'sgSettings', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
+  function MailboxController($window, $scope, $timeout, $q, $state, $mdDialog, $mdToast, stateAccounts, stateAccount, stateMailbox, sgHotkeys, encodeUriFilter, sgSettings, focus, Dialog, Account, Mailbox) {
     var vm = this,
         defaultWindowTitle = angular.element($window.document).find('title').attr('sg-default') || "SOGo",
         hotkeys = [];
@@ -156,30 +156,57 @@
       });
     }
 
-    function newMessage($event) {
+    function newMessage($event, inPopup) {
       var message;
 
       if (vm.messageDialog === null) {
-        message = vm.account.$newMessage();
-        vm.messageDialog = $mdDialog
-          .show({
-            parent: angular.element(document.body),
-            targetEvent: $event,
-            clickOutsideToClose: false,
-            escapeToClose: false,
-            templateUrl: 'UIxMailEditor',
-            controller: 'MessageEditorController',
-            controllerAs: 'editor',
-            locals: {
-              stateAccount: vm.account,
-              stateMessage: message,
-              stateRecipients: []
-            }
-          })
-          .finally(function() {
-            vm.messageDialog = null;
-          });
+        if (inPopup)
+          _newMessageInPopup();
+        else {
+          message = vm.account.$newMessage();
+          vm.messageDialog = $mdDialog
+            .show({
+              parent: angular.element(document.body),
+              targetEvent: $event,
+              clickOutsideToClose: false,
+              escapeToClose: false,
+              templateUrl: 'UIxMailEditor',
+              controller: 'MessageEditorController',
+              controllerAs: 'editor',
+              locals: {
+                stateAccount: vm.account,
+                stateMessage: message
+              }
+            })
+            .finally(function() {
+              vm.messageDialog = null;
+            });
+        }
       }
+    }
+
+    function _newMessageInPopup() {
+      var url = [sgSettings.baseURL(),
+                 'UIxMailPopupView#!/Mail',
+                 vm.account.id,
+                 // The double-encoding is necessary
+                 encodeUriFilter(encodeUriFilter(vm.selectedFolder.path)),
+                 'new']
+          .join('/'),
+          wId = vm.selectedFolder.$id() + '/' + Math.random(0, 1000);
+      console.debug(url);
+      $window.open(url, wId,
+                   ["width=680",
+                    "height=520",
+                    "resizable=1",
+                    "scrollbars=1",
+                    "toolbar=0",
+                    "location=0",
+                    "directories=0",
+                    "status=0",
+                    "menubar=0",
+                    "copyhistory=0"]
+                   .join(','));
     }
 
     /**

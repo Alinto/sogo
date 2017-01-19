@@ -12,7 +12,8 @@
              nv-file-drop="nv-file-drop"
              nv-file-over="nv-file-over"
              over-class="sg-over-dropzone"
-             uploader="editor.uploader">
+             uploader="editor.uploader"
+             ng-controller="navController">
     <form name="messageForm">
       <md-toolbar>
         <div class="md-toolbar-tools">
@@ -231,7 +232,7 @@
         <md-input-container class="md-block sg-mail-editor-content">
           <textarea name="content" var:class="editorClass"
                     ck-locale="editor.localeCode"
-                    rows="10"
+                    rows="9"
                     ng-model="editor.message.editable.text"
                     md-no-resize="md-no-resize"
                     md-detect-hidden="md-detect-hidden" />

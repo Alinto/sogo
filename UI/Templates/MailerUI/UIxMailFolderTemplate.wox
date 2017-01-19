@@ -336,6 +336,28 @@
                  ng-click="mailbox.newMessage($event)">
         <md-icon>edit</md-icon>
       </md-button>
+      <md-fab-speed-dial
+        class="md-scale md-fab-bottom-right"
+        ng-cloak="ng-cloak"
+        md-direction="up">
+        <md-fab-trigger>
+          <md-button class="md-fab md-accent" label:aria-label="Write a new message">
+            <md-icon>edit</md-icon>
+          </md-button>
+        </md-fab-trigger>
+        <md-fab-actions>
+          <md-button class="md-fab md-raised md-mini" var:aria-label="Write a new message"
+                     ng-click="mailbox.newMessage($event)">
+            <md-tooltip md-direction="left"><var:string label:value="Write a new message"/></md-tooltip>
+            <md-icon>open_in_browser</md-icon>
+          </md-button>
+          <md-button class="md-fab md-raised md-mini" var:aria-label="Write a message in new window"
+                     ng-click="mailbox.newMessage($event, true)">
+            <md-tooltip md-direction="left"><var:string label:value="Write a message in new window"/></md-tooltip>
+            <md-icon>open_in_new</md-icon>
+          </md-button>
+        </md-fab-actions>
+      </md-fab-speed-dial>
     </md-content>
   </div>
 

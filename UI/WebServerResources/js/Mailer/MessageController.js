@@ -284,22 +284,22 @@
         _messageDialog(
           $mdDialog
             .show({
-            parent: angular.element(document.body),
-            targetEvent: $event,
-            clickOutsideToClose: false,
-            escapeToClose: false,
-            templateUrl: 'UIxMailEditor',
-            controller: 'MessageEditorController',
-            controllerAs: 'editor',
-            locals: {
-              stateAccount: vm.account,
-              stateMessage: message
-            }
-          })
-          .finally(function() {
-            _messageDialog(null);
-            closePopup();
-          })
+              parent: angular.element(document.body),
+              targetEvent: $event,
+              clickOutsideToClose: false,
+              escapeToClose: false,
+              templateUrl: 'UIxMailEditor',
+              controller: 'MessageEditorController',
+              controllerAs: 'editor',
+              locals: {
+                stateAccount: vm.account,
+                stateMessage: message
+              }
+            })
+            .finally(function() {
+              _messageDialog(null);
+              closePopup();
+            })
         );
       }
     }

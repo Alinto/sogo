@@ -215,8 +215,8 @@
   /**
    * @ngInject
    */
-  MessageEditorControllerPopup.$inject = ['$window', '$mdDialog', 'stateAccounts', 'stateMessage'];
-  function MessageEditorControllerPopup($window, $mdDialog, stateAccounts, stateMessage) {
+  MessageEditorControllerPopup.$inject = ['$window', '$mdDialog', 'stateAccount', 'stateMessage'];
+  function MessageEditorControllerPopup($window, $mdDialog, stateAccount, stateMessage) {
     $mdDialog
       .show({
         hasBackdrop: false,
@@ -227,9 +227,8 @@
         controller: 'MessageEditorController',
         controllerAs: 'editor',
         locals: {
-          stateAccounts: stateAccounts,
-          stateMessage: stateMessage,
-          stateRecipients: []
+          stateAccount: stateAccount,
+          stateMessage: stateMessage
         }
       })
       .finally(function() {
