@@ -59,6 +59,11 @@
   }
 }
 
+// Vertical buttons in header area of mail composer dialog
+.msg-header-buttons {
+  margin-right: -$baseline-grid;
+}
+
 .msg-body {
   padding-top: $mg;
 }
@@ -257,4 +262,14 @@ md-sidenav {
       cursor: pointer;
     }
   }
+}
+
+// Message body container of mail composer dialog
+.sg-mail-editor-content {
+  margin-bottom: 0;
+}
+
+// Attachments list in bottom actions section of mail composer dialog
+.sg-mail-editor-attachments {
+  margin-top: -$baseline-grid;
 }

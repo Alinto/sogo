@@ -8,27 +8,30 @@
    */
   MessageEditorController.$inject = ['$scope', '$window', '$stateParams', '$mdConstant', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccount', 'stateMessage', 'encodeUriFilter', '$timeout', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
   function MessageEditorController($scope, $window, $stateParams, $mdConstant, $mdDialog, $mdToast, FileUploader, stateAccount, stateMessage, encodeUriFilter, $timeout, Dialog, AddressBook, Card, Preferences) {
-    var vm = this;
+    var vm = this, hotkeys = [];
 
     vm.addRecipient = addRecipient;
     vm.autocomplete = {to: {}, cc: {}, bcc: {}};
     vm.autosave = null;
     vm.autosaveDrafts = autosaveDrafts;
-    vm.hideCc = (stateMessage.editable.cc.length === 0);
-    vm.hideBcc = (stateMessage.editable.bcc.length === 0);
     vm.cancel = cancel;
-    vm.save = save;
-    vm.send = send;
-    vm.sendState = false;
-    vm.removeAttachment = removeAttachment;
     vm.contactFilter = contactFilter;
+    vm.isFullscreen = false;
+    vm.hideBcc = (stateMessage.editable.bcc.length === 0);
+    vm.hideCc = (stateMessage.editable.cc.length === 0);
     vm.identities = _.map(stateAccount.identities, 'full');
+    vm.message = stateMessage;
     vm.recipientSeparatorKeys = [
       $mdConstant.KEY_CODE.ENTER,
       $mdConstant.KEY_CODE.TAB,
       $mdConstant.KEY_CODE.COMMA,
       $mdConstant.KEY_CODE.SEMICOLON
     ];
+    vm.removeAttachment = removeAttachment;
+    vm.save = save;
+    vm.send = send;
+    vm.sendState = false;
+    vm.toggleFullscreen = toggleFullscreen;
     vm.uploader = new FileUploader({
       url: stateMessage.$absolutePath({asDraft: true}) + '/save',
       autoUpload: true,
@@ -224,6 +227,10 @@
         vm.sendState = 'error';
         vm.errorMessage = response.data? response.data.message : response.statusText;
       });
+    }
+
+    function toggleFullscreen() {
+      vm.isFullscreen = !vm.isFullscreen;
     }
 
     function contactFilter($query) {

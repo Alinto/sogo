@@ -5,7 +5,10 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
 
-  <md-dialog id="mailEditor" class="sg-mail-editor" flex="80" flex-sm="90" flex-xs="100"
+  <md-dialog id="mailEditor" class="sg-mail-editor"
+             flex="{{ editor.isFullscreen?    100 : 60 }}"
+             flex-sm="{{ editor.isFullscreen? 100 : 90 }}"
+             flex-xs="100"
              nv-file-drop="nv-file-drop"
              nv-file-over="nv-file-over"
              over-class="sg-over-dropzone"
@@ -13,6 +16,14 @@
     <form name="messageForm">
       <md-toolbar>
         <div class="md-toolbar-tools">
+          <!-- expand dialog -->
+          <md-button ng-click="editor.toggleFullscreen()"
+                     class="md-icon-button md-primary md-hue-1 hide show-gt-xs"
+                     aria-hidden="true"
+                     ng-if="!isPopup">
+            <md-icon class="icon-fullscreen"
+                     ng-class="{ 'icon-fullscreen-exit': editor.isFullscreen }"><!-- fullscreen --></md-icon>
+          </md-button>
           <!-- from -->
           <sg-avatar-image class="hide-xs"
                            sg-email="editor.message.editable.from"
@@ -162,7 +173,7 @@
           </div>
 
           <!-- toolbar to show cc/bcc/attachment fields -->
-          <div layout="column" layout-align="start end">
+          <div class="msg-header-buttons" layout="column" layout-align="start end">
             <md-button class="sg-icon-button " ng-show="editor.hideCc" ng-click="editor.hideCc = false">Cc</md-button>
             <md-button class="sg-icon-button " ng-show="editor.hideBcc" ng-click="editor.hideBcc = false">Bcc</md-button>
             <md-menu>
@@ -217,15 +228,18 @@
         </header>
 
         <!-- MESSAGE CONTENT -->
-        <div var:class="editorClass">
+        <md-input-container class="md-block sg-mail-editor-content">
           <textarea name="content" var:class="editorClass"
                     ck-locale="editor.localeCode"
-                    ng-model="editor.message.editable.text"/>
-        </div>
+                    rows="10"
+                    ng-model="editor.message.editable.text"
+                    md-no-resize="md-no-resize"
+                    md-detect-hidden="md-detect-hidden" />
+        </md-input-container>
       </md-dialog-content>
 
       <!-- ATTACHMENTS -->
-      <md-dialog-actions>
+      <md-dialog-actions class="sg-mail-editor-attachments">
         <div layout="row" layout-align="space-between center" layout-fill="layout-fill">
           <!-- Attachments -->
           <md-chips ng-model="editor.uploader.queue"
@@ -255,6 +269,7 @@
         </div>
       </md-dialog-actions>
     </form>
+
     <sg-ripple class="md-default-theme md-accent md-bg"
                ng-class="{ 'md-warn': editor.sendState == 'error' }"><!-- ripple background --></sg-ripple>
     <sg-ripple-content class="md-default-theme md-accent md-hue-1 md-fg md-flex ng-hide"
