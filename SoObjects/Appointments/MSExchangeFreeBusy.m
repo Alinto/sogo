@@ -139,7 +139,6 @@ size_t curl_body_function_freebusy(void *ptr, size_t size, size_t nmemb, void *i
           curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curl_body_function_freebusy);
           curl_easy_setopt(curl, CURLOPT_WRITEDATA, self);
           curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, &error);
-          error[0] = 0;
 
           // Perform SOAP request
           rc = curl_easy_perform(curl);
