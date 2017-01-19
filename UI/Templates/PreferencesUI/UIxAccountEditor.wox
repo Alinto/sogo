@@ -122,10 +122,11 @@
           <label class="pseudo-input-label"><var:string label:value="Signature"/></label>
           <textarea class="ck-editor"
                     ck-locale="$AccountDialogController.defaults.LocaleCode"
-                    ck-options="{ 'height': '70px',
+                    ck-options="{ 'autoGrow_minHeight': 70,
                                   'toolbar': [['Bold', 'Italic', '-', 'Link',
                                              'Font','FontSize','-','TextColor',
                                              'BGColor']] }"
+                    ck-margin="8px"
                     ng-model="$AccountDialogController.account.identities[0].signature"><!-- signature --></textarea>
         </div>
 

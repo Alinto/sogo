@@ -232,6 +232,7 @@
         <md-input-container class="md-block sg-mail-editor-content">
           <textarea name="content" var:class="editorClass"
                     ck-locale="editor.localeCode"
+                    ck-margin="16px"
                     rows="9"
                     ng-model="editor.message.editable.text"
                     md-no-resize="md-no-resize"

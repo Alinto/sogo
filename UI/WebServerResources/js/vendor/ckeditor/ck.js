@@ -40,7 +40,7 @@
       },
 
       link: function($scope, elm, attr, ngModel) {
-        var ck, options = {}, locale;
+        var ck, options = {}, locale, margin;
         if (!ngModel) {
           return;
         }
@@ -59,10 +59,19 @@
           options.scayt_sLang = locale;
         }
 
+        if (attr.ckMargin) {
+          // Set the margin of the iframe editable content
+          margin = attr.ckMargin;
+          CKEDITOR.addCss('.cke_editable { margin-top: ' + margin +
+                          '; margin-left: ' + margin +
+                          '; margin-right: ' + margin + '; }');
+        }
+
         // The Upload Image plugin requires a remote URL to be defined even though we won't use it
         options.imageUploadUrl = '/SOGo/';
 
         ck = CKEDITOR.replace(elm[0], options);
+
 
         // Update the model whenever the content changes
         ck.on('change', function() {

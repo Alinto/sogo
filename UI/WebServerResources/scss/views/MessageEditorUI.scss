@@ -1,38 +1,7 @@
 /// MessageEditorUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
-// [id=messageEditor] {
-//   //width: (13 * $pitch + $mg); // 13 cols + 1margin for scrollbar
-//   @include from(lg) {
-//     @include flex-col(lg, 11, 1, 1);
-//   }
-//   @include at(md) {
-//     @include flex-col(md, 10, 1, 1);
-//   }
-//   margin: 0 auto;
-//   overflow: auto;
-//   height: 100%;
-//   background-color: sg-color($sogoPaper, 50);
-//   transform: translateY(-1 * $pitch);
-//   z-index: 40;
-//   box-shadow: $whiteframe-shadow-z1;
-// }
-.buttonsToolbar {
-  padding: $mg 0;
-  button {
-    min-width: 5em;
-    margin: 1em 0 1em 1em;
-  }
-}
-// CKE is overqualifying... let's use an ID
-#cke_content,
-textarea.ck-editor {
-  margin-top: $mg;
-}
 // Plain text editor
-div.plain-text {
-  padding: 0 $mg $mg;
-  textarea {
-    width: 100%;
-    min-height: grid-step(3);
-  }
+md-input-container .md-input.plain-text {
+  padding-left: $mg;
+  padding-right: $mg;
 }
