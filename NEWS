@@ -1,6 +1,9 @@
 3.2.6 (2017-02-DD)
 ------------------
 
+New features
+ - [web] use "date" extension of Sieve to enable/disable vacation auto-reply (#1530, #1949)
+
 Enhancements
  - [web] show locale codes beside language names in Preferences module
  - [web] fixed visual glitches in Month view with Firefox
