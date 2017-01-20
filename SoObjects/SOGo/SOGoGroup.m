@@ -293,7 +293,7 @@
               
               if (user)
                 {
-                  [logins addObject: login];
+                  [logins addObject: [user loginInDomain]];
                   [_members addObject: user];
                 }
               [pool release];
