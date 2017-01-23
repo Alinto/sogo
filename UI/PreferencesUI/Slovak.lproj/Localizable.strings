@@ -194,6 +194,7 @@
 "Please enter your signature below" = "Prosím vložte svoj podpis nižšie";
 "Please specify a valid sender address." = "Prosím zvoľte platnú adresu odosielateľa";
 "Please specify a valid reply-to address." = "Prosím zvoľte platnú adresu pre odpoveď.";
+"Specify a hostname other than the local host" = "Zadajte iné doménové meno ako local host";
 
 /* Additional Parameters */
 "Additional Parameters" = "Dalšie parametre";

@@ -153,8 +153,8 @@
 = "Bu klasöre üye olunamıyor.";
 
 /* acls */
-"Access rights to" = "Adres defterinin erişim yetkileri";
-"For user" = "Aşağıdaki kullanıcı için";
+"Access rights to" = "Adres defteri";
+"For user" = "Erişen";
 "Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
 "Public Access" = "Herkese Açık Erişim";
 "This person can add cards to this addressbook."

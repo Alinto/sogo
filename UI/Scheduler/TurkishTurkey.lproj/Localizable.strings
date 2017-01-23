@@ -72,22 +72,22 @@
 "Forbidden" = "Yasaklanmış";
 
 /* acls */
-"Access rights to" = "Takvimin erişim yetkileri";
-"For user" = "Aşağıdaki kullanıcı için";
+"Access rights to" = "Takvim";
+"For user" = "Erişen";
 "Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
 "Public Access" = "Herkese Açık Erişim";
 "label_Public" = "Herkese Açık";
 "label_Private" = "Kişisel";
 "label_Confidential" = "Gizli";
-"label_Viewer" = "Hepsini Görüntüle";
+"label_Viewer" = "Hepsini Görüntüler";
 "label_DAndTViewer" = "Günü ve Saati Görüntüler";
-"label_Modifier" = "Değiştir";
-"label_Responder" = "Yanıtlanan Kişi";
+"label_Modifier" = "Değiştirir";
+"label_Responder" = "Yanıtlar";
 "label_None" = "Hiç biri";
 "View All" = "Hepsini Görüntüler";
 "View the Date & Time" = "Günü ve Saati Görüntüler";
 "Modify" = "Değiştirir";
-"Respond To" = "Yanıtlanan Kişi";
+"Respond To" = "Yanıtlar";
 "None" = "Hiç biri";
 "This person can create objects in my calendar."
 = "Bu kişi bu takvimimde öge oluşturabilir.";
@@ -100,7 +100,7 @@
 "New calendar" = "Yeni Takvim";
 "Name of the Calendar" = "Takvimin Adı";
 "new" = "Yeni";
-"Print view" = "Yazdırma görünümü";
+"Print view" = "Yazdırma Görünümü";
 "edit" = "Düzenle";
 "delete" = "Sil";
 "proposal" = "Teklif";

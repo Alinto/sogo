@@ -53,7 +53,13 @@
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Vitajte v SOGo Mailer. Použite zoznam zložiek vľavo na prehliadanie Vášho emailového účtu!";
 "Read messages"       = "Čítať správu";
+
+/* Tooltip for fab button */
 "Write a new message" = "Nápísať správu";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Napísať správu v novom okne";
+
 "Share" = "Zdielať";
 "Account" = "Účet";
 "Shared Account" = "Zdielaný účet";
@@ -217,6 +223,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Zmeniť na úlohu";
 
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Stiahnuť všetky prílohy";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "prílohy";
+
 "Print..." = "Tlačiť";
 "Delete Message" = "Zmazať správu";
 "Delete Selected Messages" = "Zmazať vybrané správy";
@@ -315,6 +327,7 @@
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Nastala chyba počas nahrávania súboru \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Práve prebieha nahrávanie súboru. Zatvorením okna nahrávanie prerušíte.";
+"Message is too big" = "Správa je príliš veľká";
 
 /* Appears while sending the message */
 "Sending" = "Odosielam správu";

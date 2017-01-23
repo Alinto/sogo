@@ -53,7 +53,13 @@
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "SOGo Postalayıcısına hoş geldiniz. E-posta hesaplarınızı görmek için soldaki klasör ağacını kullanın!";
 "Read messages"       = "İletileri oku";
+
+/* Tooltip for fab button */
 "Write a new message" = "Yeni ileti yaz";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Yeni pencerede bir ileti yaz";
+
 "Share" = "Paylaşım";
 "Account" = "Hesap";
 "Shared Account" = "Paylaşılan Hesap";
@@ -96,7 +102,7 @@
 "To"            = "Alıcı";
 "Cc"            = "Karbon Kopya";
 "Bcc"           = "Gizli Karbon Kopya";
-"Reply-To"	    = "Yanıtlama adresi";
+"Reply-To"	    = "Yanıt adresi";
 "Add address"   = "Adresleri ekle";
 "Body"          = "Gövde";
 "Open" = "Aç";
@@ -111,7 +117,7 @@
 "bcc"           = "Gizli Karbon Kopya";
 "Add a recipient" = "Bir alıcı ekleyin";
 "Edit Draft..." = "Taslağı Düzenle...";
-"Load Images" = "Resimleri yükle";
+"Load Images" = "Resimleri göster";
 "Return Receipt" = "Alındı Raporu";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Bu iletiyi gönderen kişi, iletiyi okuduğunuzdan haberdar olmak istedi. Gönderene alındı raporu yollamak ister misiniz?";
 "Return Receipt (displayed) - %@"= "Alındı Raporu (görüntülendi) - %@";
@@ -155,10 +161,10 @@
 "Untitled" = "Başlıksız";
 
 /* Tree */
-"SentFolderName"   = "Gönderilmiş";
+"SentFolderName"   = "Giden";
 "TrashFolderName"  = "Çöp";
 "InboxFolderName"  = "Gelen";
-"DraftsFolderName" = "Taslaklar";
+"DraftsFolderName" = "Taslak";
 "JunkFolderName" = "İstenmeyen";
 "SieveFolderName"  = "Süzgeçler";
 "Folders"          = "Klasörler"; /* title line */
@@ -193,8 +199,8 @@
 "Delegation..." = "Yetkili Tayini...";
 
 /* Use This Folder menu */
-"Sent Messages" = "Gönderilmiş İletiler";
-"Drafts" = "Taslaklar";
+"Sent Messages" = "Giden İletiler";
+"Drafts" = "Taslak";
 "Deleted Messages" = "Silinmiş İletiler";
 "Junk Messages" = "İstenmeyen İletiler";
 
@@ -216,6 +222,12 @@
 
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Göreve Dönüştür";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Tüm eklentileri indir";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "eklentiler";
 
 "Print..." = "Yazdır...";
 "Delete Message" = "İletiyi Sil";
@@ -284,7 +296,7 @@
 
 "Please select a message." = "Lütfen bir ileti seçin.";
 "Please select a message to print." = "Lütfen yazdırılacak iletiyi seçin.";
-"Please select only one message to print." = "Lütfen yazdırmak için sadece bir ileti seçin.";
+"Please select only one message to print." = "Yazdırmak için lütfen sadece bir ileti seçin.";
 "The message you have selected doesn't exist anymore." = "Seçtiğiniz ileti artık mevcut değil.";
 "The folder with name \"%{0}\" could not be created."
 = "\"%{0}\" adındaki klasör oluşturulamıyor.";
@@ -315,6 +327,7 @@
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = " \"%{0}\" dosyasını yüklerken hata oluştu:";
 "There is an active file upload. Closing the window will interrupt it." = "Devam eden bir dosya yükleme işlemi var. Pencereyi kapanırsa yükleme işlemi duracak.";
+"Message is too big" = "İleti çok büyük";
 
 /* Appears while sending the message */
 "Sending" = "Gönderiliyor";
@@ -340,8 +353,8 @@
 "Rename" = "Yeniden Adlandır";
 "Compact" = "Sıkıştır";
 "Export" = "Dışarı Aktar";
-"Set as Drafts" = "Taslaklar klasörü olarak tanımla";
-"Set as Sent" = "Gönderilmiş klasörü olarak tanımla";
+"Set as Drafts" = "Taslak klasörü olarak tanımla";
+"Set as Sent" = "Giden klasörü olarak tanımla";
 "Set as Trash" = "Çöp klasörü olarak tanımla";
 
 /* Set the folder as the one holding Junk mails */

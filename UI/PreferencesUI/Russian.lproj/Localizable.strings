@@ -194,6 +194,7 @@
 "Please enter your signature below" = "Введите Вашу подпись ниже";
 "Please specify a valid sender address." = "Пожалуйста, укажите правильный адрес отправителя.";
 "Please specify a valid reply-to address." = "Пожалуйста, укажите правильный адрес для ответа.";
+"Specify a hostname other than the local host" = "Укажите имя хоста, отличное от localhost";
 
 /* Additional Parameters */
 "Additional Parameters" = "Дополнительные параметры";

@@ -53,7 +53,13 @@
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Bienvenue dans votre webmail. Utilisez l'arborescence sur votre gauche pour parcourir vos boites mails.";
 "Read messages"       = "Lire les messages";
+
+/* Tooltip for fab button */
 "Write a new message" = "Écrire un nouveau message";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Écrire un message dans une nouvelle fenêtre";
+
 "Share" = "Partage";
 "Account" = "Compte";
 "Shared Account" = "Compte partagé";
