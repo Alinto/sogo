@@ -9,7 +9,7 @@ import utilities
 import webdavlib
 
 sieve_simple_vacation="""require ["vacation"];\r\nvacation :days %(days)d :addresses ["%(mailaddr)s"] text:\r\n%(vacation_msg)s\r\n.\r\n;\r\n"""
-sieve_vacation_ignoreLists="""require ["vacation"];\r\nif allof ( not exists ["list-help", "list-unsubscribe", "list-subscribe", "list-owner", "list-post", "list-archive", "list-id", "Mailing-List"], not header :comparator "i;ascii-casemap" :is "Precedence" ["list", "bulk", "junk"], not header :comparator "i;ascii-casemap" :matches "To" "Multiple recipients of*" ) {vacation :days %(days)d :addresses ["%(mailaddr)s"] text:\r\n%(vacation_msg)s\r\n.\r\n;\r\n}\r\n"""
+sieve_vacation_ignoreLists="""require ["vacation"];\r\nif allof ( not exists ["list-help", "list-unsubscribe", "list-subscribe", "list-owner", "list-post", "list-archive", "list-id", "Mailing-List"], not header :comparator "i;ascii-casemap" :is "Precedence" ["list", "bulk", "junk"], not header :comparator "i;ascii-casemap" :matches "To" "Multiple recipients of*" ) { vacation :days %(days)d :addresses ["%(mailaddr)s"] text:\r\n%(vacation_msg)s\r\n.\r\n;\r\n}\r\n"""
 sieve_simple_forward="""redirect "%(redirect_mailaddr)s";\r\n"""
 sieve_forward_keep="""redirect "%(redirect_mailaddr)s";\r\nkeep;\r\n"""
 sieve_simple_filter="""require ["fileinto"];\r\nif anyof (header :contains "subject" "%(subject)s") {\r\n    fileinto "%(folderName)s";\r\n}\r\n"""
@@ -54,7 +54,7 @@ class sieveTest(unittest.TestCase):
 
       for (script, isActive) in sieveScriptList:
           if (script == "sogo"):
-	      sieveFoundsogo=1
+              sieveFoundsogo=1
 	      self.assertEqual(isActive, True, "sogo sieve script is not active!")
 	      (ret, createdSieveScript) = self.ms.getscript(script)
               self.assertEqual(ret, "OK", "Couldn't get sogo sieve script")
