@@ -269,6 +269,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processSyncAddCommand: (id <DOMElement>) theDocumentElement
                   inCollection: (id) theCollection
                       withType: (SOGoMicrosoftActiveSyncFolderType) theFolderType
+		objectsToTouch: (NSMutableArray *) objectsToTouch
                       inBuffer: (NSMutableString *) theBuffer
 {
   NSMutableDictionary *folderMetadata, *dateCache, *syncCache, *uidCache, *allValues;
@@ -280,6 +281,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   int i;
 
   additions = (id)[theDocumentElement getElementsByTagName: @"Add"];
+
   if ([additions count])
     {
       for (i = 0; i < [additions count]; i++)
@@ -375,6 +377,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
             }
 
+	  if ([sogoObject isKindOfClass: [SOGoAppointmentObject class]] && [sogoObject resourceHasAutoAccepted])
+	    [objectsToTouch addObject: sogoObject];
+
           // Update syncCache
           folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: theCollection withType: theFolderType]];
 
@@ -426,7 +431,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           [theBuffer appendFormat: @"<ServerId>%@</ServerId>", easId];
           [theBuffer appendFormat: @"<Status>%d</Status>", 1];
           [theBuffer appendString: @"</Add>"];
-
         }
     }
 }
@@ -470,7 +474,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processSyncChangeCommand: (id <DOMElement>) theDocumentElement
                      inCollection: (id) theCollection
                          withType: (SOGoMicrosoftActiveSyncFolderType) theFolderType
-                         inBuffer: (NSMutableString *) theBuffer
+		   objectsToTouch: (NSMutableArray *) objectsToTouch
+			 inBuffer: (NSMutableString *) theBuffer
 {
   NSDictionary *allChanges;
   NSString *serverId, *easId, *origServerId, *mergedFolder;
@@ -510,6 +515,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   [self processSyncChangeCommand: theDocumentElement
                                     inCollection: [self collectionFromId: mergedFolder  type: theFolderType]
                                         withType: theFolderType
+				  objectsToTouch: objectsToTouch
                                         inBuffer: theBuffer];
 
                   continue;
@@ -595,7 +601,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			[o takeActiveSyncValues: allChanges  inContext: context];
 
                         if (theFolderType == ActiveSyncEventFolder)
-                          [sogoObject saveComponent: o force: YES];
+			  {
+			    [sogoObject saveComponent: o force: YES];
+			    if ([sogoObject resourceHasAutoAccepted])
+			      [objectsToTouch addObject: sogoObject];
+			  }
                         else
                           [sogoObject saveComponent: o];
 
@@ -1646,6 +1656,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 inCollection: (id) theCollection
                     withType: (SOGoMicrosoftActiveSyncFolderType) theFolderType
                     inBuffer: (NSMutableString *) theBuffer
+	      objectsToTouch: (NSMutableArray *) objectsToTouch
                    processed: (BOOL *) processed
 {
   id <DOMElement> aCommand, element;
@@ -1674,6 +1685,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   [self processSyncAddCommand: element
                                  inCollection: theCollection
                                      withType: theFolderType
+			       objectsToTouch: objectsToTouch
                                      inBuffer: theBuffer];
                   *processed = YES;
                 }
@@ -1683,6 +1695,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   [self processSyncChangeCommand: element
                                     inCollection: theCollection
                                         withType: theFolderType
+				  objectsToTouch: objectsToTouch
                                         inBuffer: theBuffer];
                   *processed = YES;
                 }
@@ -1720,7 +1733,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
   NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType, *mimeSupport, *mimeTruncation, *filterType, *lastServerKey, *syncKeyInCache, *folderKey;
   NSMutableDictionary *folderMetadata, *folderOptions;
-  NSMutableArray *supportedElements, *supportedElementNames;
+  NSMutableArray *supportedElements, *supportedElementNames, *objectsToTouch;
   NSMutableString *changeBuffer, *commandsBuffer;
   id collection, value;
 
@@ -1950,6 +1963,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   //
   // We process the commands from the request
   //
+  objectsToTouch = [NSMutableArray array];
+
   if (!first_sync)
     {
       NSMutableString *s;
@@ -1962,6 +1977,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                    inCollection: collection
                        withType: folderType
                        inBuffer: s
+		 objectsToTouch: objectsToTouch
                       processed: &processed];
 
       // Windows phones don't like empty Responses tags - such as: <Responses></Responses>.
@@ -2280,6 +2296,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [theBuffer appendString: changeBuffer];
 
   [theBuffer appendString: @"</Collection>"];
+
+  // We touch objects (likely only SOGoAppointmentObjects for now) that might have been changed
+  // by the server and that we want the EAS client to re-pull. For example, that's the case for
+  // auto-accepted events by resources
+  for (i = 0; i < [objectsToTouch count]; i++)
+    {
+      sleep(1);
+      [[objectsToTouch objectAtIndex: i] touch];
+    }
 }
 
 //

@@ -550,7 +550,9 @@
   NSEnumerator *enumerator;
   NSString *currentUID;
   SOGoUser *user, *currentUser;
-  
+
+  _resourceHasAutoAccepted = NO;
+
   // Build a list of the attendees uids
   attendees = [NSMutableArray arrayWithCapacity: [theAttendees count]];
   enumerator = [theAttendees objectEnumerator];
@@ -690,6 +692,7 @@
                     {
                       [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
                       [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
+		      _resourceHasAutoAccepted = YES;
                     }
                 }
               else
@@ -760,6 +763,7 @@
           // set the resource as one!
           [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
           [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
+	  _resourceHasAutoAccepted = YES;
         }
     } // if ([user isResource]) ...
 
@@ -2423,6 +2427,11 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
     }
       
   return response;
+}
+
+- (BOOL) resourceHasAutoAccepted
+{
+  return _resourceHasAutoAccepted;
 }
 
 @end /* SOGoAppointmentObject */
