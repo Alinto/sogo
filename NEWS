@@ -15,6 +15,8 @@ Bug fixes
  - [core] remove all alarms before sending IMIP replies (#3925)
  - [web] fixed rendering of forwared HTML message with inline images (#3981)
  - [web] fixed pasting images in CKEditor using Chrome (#3986)
+ - [eas] make sure we trigger a download of service-side changed events
+ - [eas] now strip attendees with no email during MeetingResponse calls
 
 3.2.5 (2017-01-10)
 ------------------
