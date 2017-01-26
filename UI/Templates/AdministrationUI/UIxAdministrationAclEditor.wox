@@ -80,12 +80,12 @@
                                  size="40">{{ user.$avatarIcon }}</sg-avatar-image>
               </span>
               <div class="sg-tile-content">
-                <div class="sg-md-subhead"><div>{{user.cn}}</div></div>
+                <div class="sg-md-subhead"><div>{{user.$fullname()}}</div></div>
                 <div class="sg-md-body"><div>{{user.c_email}}</div></div>
               </div>
 	      <md-button class="md-icon-button md-secondary" type="button"
                          ng-click="acl.selectAllRights(user)"
-                         ng-hide="user.uid != acl.selectedUid || user.$isSpecial()">
+                         ng-hide="!acl.showRights(user) || user.$isSpecial()">
                 <md-icon>select_all</md-icon>
               </md-button>
               <md-button class="md-icon-button" type="button"
@@ -95,7 +95,7 @@
               </md-button>
             </div>
           </a>
-          <md-card-content id="AccessRightList" ng-show="user.uid == acl.selectedUid">
+          <md-card-content id="AccessRightList" ng-show="acl.showRights(user)">
             <var:if condition="canSubscribeUsers">
               <md-checkbox ng-model="user.isSubscribed"
                            label:arial-label="Subscribe User"

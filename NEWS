@@ -1,3 +1,12 @@
+3.2.7 (2017-01-DD)
+------------------
+
+Enhancements
+ - [web] improved ACLs handling of inactive users
+
+Bug fixes
+ - [core] fixed "include in freebusy" (reverts #3354)
+
 3.2.6 (2017-01-23)
 ------------------
 

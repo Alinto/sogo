@@ -18,6 +18,7 @@
     vm.selectedUid = null;
     vm.selectUser = selectUser;
     vm.selectAllRights = selectAllRights;
+    vm.showRights = showRights;
     vm.removeUser = removeUser;
     vm.getTemplate = getTemplate;
     vm.close = close;
@@ -54,6 +55,10 @@
         vm.selectedUser = user;
         vm.selectedUser.$rights();
       }
+    }
+
+    function showRights(user) {
+      return vm.selectedUid == user.uid && user.rights;
     }
 
     function userFilter($query) {

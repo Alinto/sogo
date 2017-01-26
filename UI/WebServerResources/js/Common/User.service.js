@@ -126,12 +126,21 @@
   };
 
   /**
+   * @function $fullname
+   * @memberof User.prototype
+   * @return a string representing the fullname
+   */
+  User.prototype.$fullname = function() {
+    return this.cn || this.uid;
+  };
+
+  /**
    * @function $shortFormat
    * @memberof User.prototype
    * @return the fullname along with the email address
    */
   User.prototype.$shortFormat = function(options) {
-    var fullname = this.cn || this.c_email;
+    var fullname = this.$fullname();
     var email = this.c_email;
     var no_email = options && options.email === false;
     if (!no_email && email && fullname != email) {

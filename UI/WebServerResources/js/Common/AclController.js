@@ -24,6 +24,7 @@
     vm.addUser = addUser;
     vm.selectAllRights = selectAllRights;
     vm.selectUser = selectUser;
+    vm.showRights = showRights;
     vm.confirmation = { showing: false,
                         message: ''};
 
@@ -85,6 +86,10 @@
         vm.selectedUser = user;
         vm.selectedUser.$rights();
       }
+    }
+
+    function showRights(user) {
+      return vm.selectedUid == user.uid && user.rights;
     }
   }
 
