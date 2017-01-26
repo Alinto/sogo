@@ -364,10 +364,29 @@
               </md-button>
               <md-menu-content width="3">
                 <md-menu-item>
-                  <md-button ng-click="addressbook.newMessageWithSelectedCards($event)">
-                    <var:string label:value="Write"/>
-                  </md-button>
-                </md-menu-item>
+                  <md-menu>
+                    <md-button label:aria-label="Write" ng-click="$mdMenu.open($event)">
+                      <var:string label:value="Write"/>
+                    </md-button>
+                    <md-menu-content class="md-dense" width="3">
+                      <md-menu-item>
+                        <md-button ng-click="addressbook.newMessageWithSelectedCards($event, 0)">
+                          <var:string label:value="To"/>
+                        </md-button>
+                      </md-menu-item>
+                      <md-menu-item>
+                        <md-button ng-click="addressbook.newMessageWithSelectedCards($event, 1)">
+                          <var:string label:value="CC"/>
+                        </md-button>
+                      </md-menu-item>
+                      <md-menu-item>
+                        <md-button ng-click="addressbook.newMessageWithSelectedCards($event, 2)">
+                          <var:string label:value="BCC"/>
+                        </md-button>
+                      </md-menu-item>
+                    </md-menu-content>
+                  </md-menu>
+                </md-menu-item>                
                 <md-menu-item ng-hide="addressbook.selectedFolder.isRemote">
                   <md-button ng-click="addressbook.selectedFolder.exportCards(true)">
                     <var:string label:value="Export"/>
