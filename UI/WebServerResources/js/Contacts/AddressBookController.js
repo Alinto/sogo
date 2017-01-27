@@ -330,16 +330,9 @@
         // list before proceeding with message's creation
         account.$getMailboxes().then(function(mailboxes) {
           account.$newMessage().then(function(message) {
-            switch(recipientsField) {
-              case 0:
-                angular.extend(message.editable, { to: recipients });
-                break;
-              case 1:
-                angular.extend(message.editable, { cc: recipients });
-                break;
-              case 2:
-                angular.extend(message.editable, { bcc: recipients });
-            }            
+            var headerField = {};
+            headerField[recipientsField] = recipients;
+            angular.extend(message.editable, { headerField });
             $mdDialog.show({
               parent: angular.element(document.body),
               targetEvent: $event,
@@ -360,7 +353,7 @@
 
     function newMessageWithRecipient($event, recipient, fn) {
       var recipients = [fn + ' <' + recipient + '>'];
-      vm.newMessage($event, recipients, 0);
+      vm.newMessage($event, recipients, 'to');
       $event.stopPropagation();
       $event.preventDefault();
     }
