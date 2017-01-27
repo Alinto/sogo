@@ -126,10 +126,17 @@
                                            [self currentUserClass], @"userClass",
                                            [NSNumber numberWithBool: [self currentUserIsSubscribed]], @"isSubscribed",
                                            nil];
-                  if ((info = [currentUserInfos objectForKey: @"cn"]) && [info length])
-                    [userData setObject: info forKey: @"cn"];
-                  if ((info = [currentUserInfos objectForKey: @"c_email"]) && [info length])
-                    [userData setObject: info forKey: @"c_email"];
+                  if ([currentUserInfos count] == 0)
+                    {
+                      [userData setObject: [NSNumber numberWithBool: YES] forKey: @"inactive"];
+                    }
+                  else
+                    {
+                      if ((info = [currentUserInfos objectForKey: @"cn"]) && [info length])
+                        [userData setObject: info forKey: @"cn"];
+                      if ((info = [currentUserInfos objectForKey: @"c_email"]) && [info length])
+                        [userData setObject: info forKey: @"c_email"];
+                    }
                   [users setObject: userData forKey: currentUID];
             }
         }

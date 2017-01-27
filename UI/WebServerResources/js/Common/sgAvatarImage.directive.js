@@ -12,7 +12,8 @@
    * @example:
      <sg-avatar-image sg-email="test@email.com" size="50">person</sg-avatar-image>
   */
-  function sgAvatarImage() {
+  sgAvatarImage.$inject = ['$parse'];
+  function sgAvatarImage($parse) {
     return {
       restrict: 'AE',
       scope: {},
@@ -23,27 +24,44 @@
       },
       transclude: true,
       template: [
-        '<md-icon ng-transclude></md-icon>',             // the generic icon
-        '<img class="ng-hide" ng-src="{{vm.url}}" />'    // the gravatar or local image
+        '<div class="sg-icon-badge-container">',
+        '  <md-icon ng-transclude></md-icon>',                              // the generic icon
+        '  <md-icon class="md-warn sg-icon--badge sg-icon--badge-bottom"',
+        '           style="display: none">not_interested</md-icon>',        // the inactive badge (if disabled)
+        '  <img class="ng-hide" ng-src="{{vm.url}}">',                      // the gravatar or local image
+        '</div>'
       ].join(''),
       link: link,
       controller: 'sgAvatarImageController',
       controllerAs: 'vm'
     };
-  }
 
-  function link(scope, element, attrs, controller) {
-    var imgElement = element.find('img'),
-        mdIconElement = element.find('md-icon');
+    function link(scope, element, attrs, controller) {
+      var imgElement = element.find('img'),
+          mdIcons = element.find('md-icon'),
+          mdIconElement = angular.element(mdIcons[0]),
+          mdBadgeElement = angular.element(mdIcons[1]),
+          deregisterWatcher;
 
-    if (attrs.size) {
-      imgElement.attr('width', attrs.size);
-      imgElement.attr('height', attrs.size);
-      mdIconElement.css('font-size', attrs.size + 'px');
+      if (attrs.size) {
+        imgElement.attr('width', attrs.size);
+        imgElement.attr('height', attrs.size);
+        mdIconElement.css('font-size', attrs.size + 'px');
+        mdBadgeElement.css('font-size', parseInt(attrs.size*0.4) + 'px');
+      }
+
+      if (angular.isDefined(attrs.ngDisabled)) {
+        deregisterWatcher = scope.$watch(attrs.ngDisabled, function(isDisabled) {
+          if (attrs.disabled) {
+            mdBadgeElement.css({ display: 'block' });
+          }
+          deregisterWatcher(); // watch once
+        });
+      }
+
+      controller.img = imgElement;
+      controller.genericImg = mdIconElement;
     }
-
-    controller.img = imgElement;
-    controller.genericImg = mdIconElement;
   }
 
   /**

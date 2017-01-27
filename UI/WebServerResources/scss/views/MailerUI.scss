@@ -97,7 +97,7 @@ md-sidenav {
           content: "\e2c8";
         }
         .md-icon {
-          background-color: initial;
+          background-color: initial !important;
           &:after {
             border-style: none;
           }
