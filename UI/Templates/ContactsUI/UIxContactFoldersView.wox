@@ -370,17 +370,17 @@
                     </md-button>
                     <md-menu-content class="md-dense" width="3">
                       <md-menu-item>
-                        <md-button ng-click="addressbook.newMessageWithSelectedCards($event, 0)">
+                        <md-button ng-click="addressbook.newMessageWithSelectedCards($event, 'to')">
                           <var:string label:value="To"/>
                         </md-button>
                       </md-menu-item>
                       <md-menu-item>
-                        <md-button ng-click="addressbook.newMessageWithSelectedCards($event, 1)">
+                        <md-button ng-click="addressbook.newMessageWithSelectedCards($event, 'cc')">
                           <var:string label:value="CC"/>
                         </md-button>
                       </md-menu-item>
                       <md-menu-item>
-                        <md-button ng-click="addressbook.newMessageWithSelectedCards($event, 2)">
+                        <md-button ng-click="addressbook.newMessageWithSelectedCards($event, 'bcc')">
                           <var:string label:value="BCC"/>
                         </md-button>
                       </md-menu-item>
