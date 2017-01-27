@@ -1,0 +1,407 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "צור";
+"Empty Trash" = "רוקן פח אשפה";
+"Delete"      = "מחק";
+"Expunge"     = "טהר";
+"Forward"     = "העבר";
+"Get Mail"    = "קבל מייל";
+"Junk"        = "זבל";
+"Not junk"    = "לא זבל";
+"Reply"       = "השב";
+"Reply All"   = "השב לכולם";
+"Print"       = "הדפס";
+"Stop"        = "עצור";
+"Write"       = "כתוב";
+"Search"      = "חפש";
+"Send" = "שלח";
+"Contacts" = "אנשי קשר";
+"Attach" = "צרף קובץ";
+"Save" = "שמור";
+"Options" = "אפשרויות";
+"Close" = "סגור";
+"Size" = "גודל";
+
+/* Tooltips */
+"Send this message now" = "שלח הודעה זו עכשיו";
+"Select a recipient from an Address Book" = "בחר כתובת מאנשי הקשר";
+"Include an attachment" = "כלול קובץ מצורף";
+"Save this message" = "שמור הודעה זו";
+"Get new messages" = "קבל הודעות חדשות";
+"Create a new message" = "כתוב הודעה חדשה";
+"Go to address book" = "עבור לאנשי הקשר";
+"Reply to the message" = "השב להודעה זו";
+"Reply to sender and all recipients" = "השב לשולח ולכל המקבלים";
+"Forward selected message" = "העבר הודעה";
+"Delete selected message or folder" = "מחק הודעה או תיקייה נבחרת";
+"Print this message" = "הדפס הודעה";
+"Stop the current transfer" = "עצור העברה";
+"Attachment" = "קובץ מצורף";
+"Unread" = "לא נקרא";
+"Flagged" = "מסומן";
+"Search multiple mailboxes" = "חפש במספר תיבות דואר";
+
+/* Main Frame  */
+"Home"                 = "בית"; 
+"Calendar"             = "לוח שנה";
+"Addressbook"          = "אנשי קשר";
+"Mail"                 = "מייל";
+"Right Administration" = "אפשרויות ניהול";
+"Help" = "עזרה";
+
+/* Mail account main windows */
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "ברוך הבא לדואר סוגו. השתמש בעץ התיקיות משמאל לצפייה בתיבות הדואר שלך";
+"Read messages"       = "קרא הודעות";
+
+/* Tooltip for fab button */
+"Write a new message" = "כתוב הודעה חדשה";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "כתוב הודעה בחלון";
+
+"Share" = "שתף";
+"Account" = "חשבון";
+"Shared Account" = "חשבון משותף";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "לא נבחרה הודעה";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "לא נבחר תא דואר";
+
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "התיקייה נדחסה";
+/* Empty Trash success message */
+"Trash emptied" = "האשפה נמחקה";
+
+/* acls */
+"Access rights to" = "מתן גישה ל";
+"For user" = "למשתמש";
+"Any Authenticated User" = "כל משתמש מאומת";
+"List and see this folder" = "פרוס וצפה בתיקייה";
+"Read mails from this folder" = "קרא מיילים מתיקייה";
+"Mark mails read and unread" = "סמן מיילים כנקראו ולא נקראו";
+"Modify the flags of the mails in this folder" = "שנה את דגלי המיילים בתיקייה";
+"Insert, copy and move mails into this folder" = "צור, העבר והעתק מיילים לתיקייה";
+"Post mails" = "פרסם מיילים";
+"Add subfolders to this folder" = "הוסף תת תיקייה לתיקייה";
+"Remove this folder" = "מחק תיקייה";
+"Erase mails from this folder" = "מחק מיילים מתיקייה";
+"Expunge this folder" = "טהר תיקייה";
+"Export This Folder" = "ייצא תיקייה";
+"Modify the acl of this folder" = "שנה את רשימת הגישה לתיקייה";
+"Saved Messages.zip" = "שמור הודעות בפורמט zip";
+"Update" = "עדכן";
+"Cancel" = "בטל";
+
+/* Mail edition */
+"From"          = "מאת";
+"Subject"       = "נושא";
+"To"            = "אל";
+"Cc"            = "העתק למכותב";
+"Bcc"           = "העתק חסוי";
+"Reply-To"	    = "השב ל";
+"Add address"   = "הוסף כתובת";
+"Body"          = "גוף ההודעה";
+"Open" = "פתח";
+"Select All" = "בחר הכל";
+"Select Message" = "בחר הודעה";
+"Attach Web Page..." = "צרף עמוד אינטרנט";
+"file" = "קובץ";
+"files" = "קבצים";
+"Save all" = "שמור הכל";
+"to"            = "אל";
+"cc"            = "העתק למכותב";
+"bcc"           = "העתק חסוי";
+"Add a recipient" = "הוסף מכותב";
+"Edit Draft..." = "ערוך טיוטה";
+"Load Images" = "טען תמונות";
+"Return Receipt" = "אישור מסירה";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "מחבר ההודעה ביקש אישור קריאה. האם ברצונך ליידע אותו?";
+"Return Receipt (displayed) - %@"= "אישור מסירה (מוצג) - %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "זהו דואר חוזר עבור הודעה ששלחת ל %@.\n\nהערה: הדואר החוזר לידיעה בלבד, אין שום ערבון שההודעה אכן נקרא והובנה על ידי המקבל.";
+"Priority" = "דחיפות";
+"highest" = "גבוהה ביותר";
+"high" = "גבוהה";
+"normal" = "רגילה";
+"low" = "נמוכה";
+"lowest" = "הכי נמוכה";
+"This mail is being sent from an unsecure network!" = "מייל זה נשלח מרשת לא מאובטחת!";
+"Address Book" = "אנשי קשר";
+"Search For" = "חפש את";
+
+/* Popup "show" */
+"all"     = "כולם";
+"read"    = "נקרא";
+"unread"  = "לא נקרא";
+"deleted" = "נמחק";
+"flagged" = "מסומן";
+
+/* MailListView */
+"Sender" = "שולח";
+"Subject or Sender" = "כותרת או שולח";
+"To or Cc" = "אל או העתק";
+"Entire Message" = "כל ההודעה";
+"Date"          = "תאריך";
+"View"          = "צפה";
+"All"           = "כולם";
+"No message"    = "אין הודעות";
+"messages"      = "הודעות";
+"Yesterday"     = "אתמול";
+"first"         = "ראשון";
+"previous"      = "הקודם";
+"next"          = "הבא";
+"last"          = "אחרון";
+"msgnumber_to"  = "אל";
+"msgnumber_of"  = "מתוך";
+"Mark Unread" = "סמן כלא נקרא";
+"Mark Read"   = "סמן כנקרא";
+"Untitled" = "ללא כותרת";
+
+/* Tree */
+"SentFolderName"   = "נשלח";
+"TrashFolderName"  = "אשפה";
+"InboxFolderName"  = "תא דואר נכנס";
+"DraftsFolderName" = "טיוטות";
+"JunkFolderName" = "זבל";
+"SieveFolderName"  = "מסננים";
+"Folders"          = "תיקיות"; /* title line */
+
+/* MailMoveToPopUp */
+"MoveTo"        = "העבר &hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "הוסף לאנשי הקשר";
+"Compose Mail To" = "כתוב הודעה ל";
+"Create Filter From Message..." = "צור מסנן מהודעה...";
+
+/* Image Popup menu */
+"Save Image" = "שמור תמונה";
+"Save Attachment" = "שמור קובץ מצורף";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "פתח בחלון חדש";
+"Copy Folder Location" = "העתק נתיב תיקייה";
+"Subscribe..." = "הירשם...";
+"Mark Folder Read" = "סמן תיקייה כנקרא";
+"New Folder..." = "תיקייה חדשה...";
+"Compact This Folder" = "דחוס תיקייה";
+"Search Messages..." = "חפש הודעות...";
+"Sharing..." = "משתף...";
+"New Subfolder..." = "תת תיקייה חדשה...";
+"Rename Folder..." = "שנה שם לתיקייה...";
+"Delete Folder" = "מחק תיקייה";
+"Use This Folder For" = "השתמש בתיקייה עבור";
+"Get Messages for Account" = "קבל הודעות עבור חשבון";
+"Properties..." = "מאפיינים...";
+"Delegation..." = "מתן גישה...";
+
+/* Use This Folder menu */
+"Sent Messages" = "הודעות שנשלחו";
+"Drafts" = "טיוטות";
+"Deleted Messages" = "הודעות מחוקות";
+"Junk Messages" = "הודעות זבל";
+
+/* Message list popup menu */
+"Open Message In New Window" = "פתח הודעה בחלון חדש";
+"Reply to Sender Only" = "השב לשולח בלבד";
+"Reply to All" = "השב לכולם";
+"Edit As New..." = "ערוך כחדש...";
+"Move To" = "העבר ל";
+"Copy To" = "העתק ל";
+"Label" = "תווית";
+"Mark" = "סמן";
+"Save As..." = "שמור בשם...";
+"Print Preview" = "תצוגת הדפסה";
+"View Message Source" = "צפה במקור הודעה";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "המר לארוע";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "המר למשימה";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "הורד את כל הקבצים המצורפים";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "קבצים מצורפים";
+
+"Print..." = "הדפס...";
+"Delete Message" = "מחק הודעה";
+"Delete Selected Messages" = "מחק הודעות מסומנות";
+"Mark the selected messages as junk" = "סמן הודעות כזבל";
+"Mark the selected messages as not junk" = "סמן הודעות כלא זבל";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "ו %{0} יותר...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "הסתר";
+
+/* Number of selected messages in list */
+"selected" = "מסומנים";
+
+"This Folder" = "התיקייה הזו";
+
+/* Label popup menu */
+"None" = "ללא";
+
+/* Mark popup menu */
+"As Read" = "כנקרא";
+"Thread As Read" = "אשכול כנקרא";
+"As Read By Date..." = "כנקרא לפי תאריך...";
+"All Read" = "הכל נקרא";
+"Flag" = "סמן";
+"As Junk" = "כזבל";
+"As Not Junk" = "לא כזבל";
+"Run Junk Mail Controls" = "הרץ שליטה בדואר זבל";
+"Search messages in" = "חפש הודעות ב";
+"Search" = "חפש";
+"Search subfolders" = "חפש תתי תיקיות";
+"Match any of the following" = "התאם מההבאים";
+"Match all of the following" = "התאם את כל ההבאים";
+"contains" = "מכיל";
+"does not contain" = "לא כולל";
+"No matches found" = "לא נמצאו תוצאות";
+"results found" = "נמצאו תוצאות";
+"result found" = "נמצאה תוצאה";
+"Please specify at least one filter" = "בחר מסנן אחד לפחות";
+
+/* Folder operations */
+"Name" = "שם";
+"Enter the new name of your folder"
+ ="הכנס שם חדש לתיקייה";
+"Do you really want to move this folder into the trash ?"
+ = "האם ברצונך להעביר תיקייה זו לאשפה?";
+"Operation failed" = "הפעולה נכשלה";
+"Quota" = "מכסה:";
+"quotasFormat" = "%{0}% משתמש ב {1}% מ\"ב";
+"Unable to move/delete folder." = "לא ניתן להזיז/למחוק את התיקיה";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "לא ניתן להעביר הודעות אלו לאשפה. האם ברצונך למחוק אותן באופן מיידי?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "האם ברצונך למחוק הודעות מסומנות?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "{0}% הודעות הועתקו";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "{0}% הודעות הועברו";
+
+"Please select a message." = "נא לבחור הודעה.";
+"Please select a message to print." = "בחר הודעה להדפסה.";
+"Please select only one message to print." = "בחר הודעה אחת בלבד להדפסה.";
+"The message you have selected doesn't exist anymore." = "ההודעה שבחרת לא קיימת יותר.";
+"The folder with name \"%{0}\" could not be created."
+= "לא ניתן ליצור תיקייב בשם \"{0}%\".";
+"This folder could not be renamed to \"%{0}\"."
+= "לא ניתן לשנות את שם התיקייה ל \"{0}%\".";
+"The folder could not be deleted."
+= "לא ניתן למחוק תיקייה.";
+"The trash could not be emptied."
+= "לא ניתן לרוקן אשפה.";
+"The folder functionality could not be changed."
+= "הפונקציונאליות של תיקייה זו לא ניתנת לשינוי.";
+"You need to choose a non-virtual folder!" = "עלייך לבחור תיקייה לא וירטואלית!";
+"Moving a message into its own folder is impossible!"
+= "לא ניתן להעביר הודעה לתיקיית המקור שלה!";
+"Copying a message into its own folder is impossible!"
+= "לא ניתן להעתיק הודעה לתיקיית המקור שלה!";
+
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "לא ניתן להעביר הודעות אלו לאשפה. האם ברצונך למחוק אותן באופן מיידי?";
+
+/* Message editing */
+"error_missingsubject" = "אין כותרת להודעה. האם לשלוח אותה בכל זאת?";
+"error_missingrecipients" = "בחר איש קשר אחד לפחות.";
+"Send Anyway" = "שלח בכל זאת";
+"Error while saving the draft" = "שגיאה בעת שמירת הטיוטה";
+
+/* Error when uploading a file attachment */
+"Error while uploading the file \"%{0}\":" = "שגיאה בעת העלאת הקובץ \"%{0}\".";
+"There is an active file upload. Closing the window will interrupt it." = "ישנו תהליך פעיל של העלאת קובץ. סגירת החלון תפסיק את התהליך.";
+"Message is too big" = "ההודעה גדולה מידי";
+
+/* Appears while sending the message */
+"Sending" = "שולח";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "נשלח";
+
+"cannot send message: (smtp) all recipients discarded" = "לא ניתן לשלוח הודעה, הנמענים לא תקינים.";
+"cannot send message (smtp) - recipients discarded" = "לא ניתן לשלוח הודעה. הכתובות הבאות לא תקינות";
+"cannot send message: (smtp) error when connecting" = "לא ניתן לשלוח הודעה: שגיאה בהתחברות לשרת SMTP.";
+
+/* Contacts list in mail editor */
+"Email" = "אימייל";
+"More mail options" = "אפשרויות מייל נוספות";
+"Delegation" = "מתן גישה";
+"Add User" = "הוסף משתמש";
+"Add a tag" = "הוסף תווית";
+"reply" = "השב";
+"Edit" = "ערוך";
+"Yes" = "כן";
+"No" = "לא";
+"Location" = "מיקום";
+"Rename" = "שנה שם";
+"Compact" = "דחוס";
+"Export" = "יצוא";
+"Set as Drafts" = "סמן כטיוטה";
+"Set as Sent" = "סמן כנשלח";
+"Set as Trash" = "סמן כאשפה";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "סמן כזבל";
+
+"Sort" = "סדר";
+"Order Received" = "סדר הודעות שהתקבלו";
+"Descending Order" = "סדר יורד";
+"Back" = "חזרה";
+"Copy messages" = "העתק הודעות";
+"More messages options" = "אפשרויות מייל נוספות";
+"Mark as Unread" = "סמן כלא נקרא";
+"Mark as Read" = "סמן כנקרא";
+"Closing Window ..." = "סוגר חלון...";
+"Tried to send too many mails. Please wait." = "יותר מדיי מיילים בשליחה. אנא המתן.";
+"View Mail" = "צפה במייל";
+"This message contains external images." = "הודעה זו כוללת תמונות חיצוניות.";
+"Expanded" = "מורחב";
+"Add a Criteria" = "הוסף קריטריונים";
+"More search options" = "אפשרויות חיפוש נוספות";
+"Your email has been saved" = "המייל שלך נשמר";
+"Your email has been sent" = "המייל שלך נשלח";
+"Folder compacted" = "התיקייה נדחסה";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "היקף חיפוש";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "ניהול מנויים";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "סינון";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

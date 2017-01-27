@@ -1,0 +1,60 @@
+"Inviting the following persons is prohibited:" = "לא ניתן להזמין את אנשי הקשר הבאים: ";
+"Personal Calendar" = "לוח שנה אישי";
+vevent_class0 = "(אירוע פומבי)";
+vevent_class1 = "(אירוע פרטי)";
+vevent_class2 = "(אירוע סודי)";
+
+vtodo_class0 = "(משימה פומבית)";
+vtodo_class1 = "(משימה פרטית)";
+vtodo_class2 = "(משימה סודית)";
+/* Receipts */
+"The event \"%{Summary}\" was created" = "האירוע \"{Summary}%\" נוצר";
+"The event \"%{Summary}\" was deleted" = "האירוע \"{Summary}%\" נמחק";
+"The event \"%{Summary}\" was updated" = "האירוע \"{Summary}%\" עודכן";
+"The following attendees(s) were notified" = "המשתתפים הבאים קיבלו התראה";
+"The following attendees(s) were added" = "המשתתפים הבאים הוספו";
+"The following attendees(s) were removed" = "המשתתפים הבאים הוסרו";
+/* IMIP messages */
+"calendar_label" = "לוח שנה";
+"startDate_label" = "התחלה";
+"endDate_label" = "סיום";
+"due_label" = "תאריך להגשה";
+"location_label" = "מיקום";
+"summary_label" = "תקציר";
+"comment_label" = "הערה";
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "הזמנה לאירוע: \"{Summary}%\"";
+"(sent by %{SentBy}) " = "(מאת {SentBy}%)";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "{Organizer}% {SentByText}% הוזמנתם ל {Summary}%.\n\nהתחלה: {StartDate}%\nסיום: {EndDate}%\nתאור: {Description}%";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "{Organizer}% {SentByText}% הוזמנתם ל {Summary}%.\n\nהתחלה: {StartDate}% ב {StartTime}%\nסיום: {EndDate}% ב {EndTime}%\nתאור: {Description}%";
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "אירוע מבוטל: \"{Summary}%\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "{Organizer}% {SentByText}% ביטלו את האירוע: {Summary}%.\n\nהתחלה: {StartDate}%\nסיום: {EndDate}%\nתאור: {Description}%";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "{Organizer}% {SentByText}% ביטלו את האירוע: {Summary}%.\n\nהתחלה: {StartDate}% ב {StartTime}%\nסיום: {EndDate}% ב {EndTime}%\nתאור: {Description}%";
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "הפגישה \"{Summary}%\" עבור {OldStartDate}% שונתה";
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "הפגישה \"{Summary}%\" עבור {OldStartDate}% ב {OldStartTime}% השתנתה";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "הפרמטרים הבאים השתנו בפגישה \"{Summary}%\":";
+"Please accept or decline those changes."
+= "נא לאשר או לבטל את השינויים";
+/* Reply */
+"Accepted invitation: \"%{Summary}\"" = "הזמנה אושרה: \"{Summary}%\"";
+"Declined invitation: \"%{Summary}\"" = "הזמנה נדחתה: \"{Summary}%\"";
+"Delegated invitation: \"%{Summary}\"" = "הזמנה הואצלה: \"{Summary}%\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "טרם הוחלט לגבי הזמנה: \"{Summary}%\"";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "{Attendee}% {SentByText}% אישר את הזמנתך.";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "{Attendee}% {SentByText}% דחה את הזמנתך.";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "{Attendee}% {SentByText}% ההזמנה הואצלה ל {Delegate}%.";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "{Attendee}% {SentByText}% טרם הוחלט לגבי הזמנתך.";
+/* Resources */
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "לא ניתן לגשת למשאב: \"{Cn}% {SystemEmail}%\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "כמות מקסימלית של הזמנות בו זמנית ({NumberOfSimultaneousBookings}%) עבור המשאב \"{Cn}% {SystemEmail}%\". קיימת התנגשות באירוע \"{EventTitle}%\", המתחיל ב {StartDate}%.";

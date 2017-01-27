@@ -45,6 +45,7 @@ SOGo and its associated components are available in various languages. The follo
 * [fi] Finnish - Kari Salmu
 * [fr] French - [Inverse](http://www.inverse.ca/)
 * [de] German - Alexander Greiner-Baer
+* [he] Hebrew - Raz Aidlitz
 * [hu] Hungarian - Sándor Kuti
 * [is] Icelandic - Anna Jonna Armannsdottir
 * [it] Italian - Alessio Fattorini
