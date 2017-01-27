@@ -45,17 +45,19 @@
     vm.validateVacationEndDate = validateVacationEndDate;
 
 
-    // Fetch a flatten version of the mailboxes list of the main account (0)
-    // This list will be forwarded to the Sieve filter controller
-    account = new Account({ id: 0 });
-    account.$getMailboxes().then(function() {
-      var allMailboxes = account.$flattenMailboxes({all: true}),
-          index = -1,
-          length = allMailboxes.length;
-      while (++index < length) {
-        mailboxes.push(allMailboxes[index]);
-      }
-    });
+    if (sgSettings.activeUser('path').mail) {
+      // Fetch a flatten version of the mailboxes list of the main account (0)
+      // This list will be forwarded to the Sieve filter controller
+      account = new Account({ id: 0 });
+      account.$getMailboxes().then(function() {
+        var allMailboxes = account.$flattenMailboxes({all: true}),
+            index = -1,
+            length = allMailboxes.length;
+        while (++index < length) {
+          mailboxes.push(allMailboxes[index]);
+        }
+      });
+    }
 
     // Set alternate avatar in User service
     statePreferences.ready().then(function() {

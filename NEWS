@@ -4,6 +4,9 @@
 Enhancements
  - [web] added Hebrew (he) translation - thanks to Raz Aidlitz
 
+Bug fixes
+ - [web] saving the preferences was not possible when Mail module is disabled
+
 3.2.6a (2017-01-26)
 -------------------
 
