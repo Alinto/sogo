@@ -330,9 +330,7 @@
         // list before proceeding with message's creation
         account.$getMailboxes().then(function(mailboxes) {
           account.$newMessage().then(function(message) {
-            var headerField = {};
-            headerField[recipientsField] = recipients;
-            angular.extend(message.editable, { headerField });
+            message.editable[recipientsField] = recipients;
             $mdDialog.show({
               parent: angular.element(document.body),
               targetEvent: $event,
