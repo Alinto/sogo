@@ -837,9 +837,9 @@ static NSString *sieveScriptName = @"sogo";
   now = [[NSCalendarDate calendarDate] timeIntervalSince1970];
 
   if (values && [[values objectForKey: @"enabled"] boolValue] &&
-      (![values objectForKey: @"startDateEnabled"] ||
+      (![[values objectForKey: @"startDateEnabled"] boolValue] ||
        dateCapability || [[values objectForKey: @"startDate"] intValue] < now) &&
-      (![values objectForKey: @"endDateEnabled"] ||
+      (![[values objectForKey: @"endDateEnabled"] boolValue] ||
        dateCapability || [[values objectForKey: @"endDate"] intValue] > now))
     {
       NSCalendarDate *startDate, *endDate;
