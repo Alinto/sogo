@@ -376,12 +376,12 @@
                       </md-menu-item>
                       <md-menu-item>
                         <md-button ng-click="addressbook.newMessageWithSelectedCards($event, 'cc')">
-                          <var:string label:value="CC"/>
+                          <var:string label:value="Carbon Copy (Cc)"/>
                         </md-button>
                       </md-menu-item>
                       <md-menu-item>
                         <md-button ng-click="addressbook.newMessageWithSelectedCards($event, 'bcc')">
-                          <var:string label:value="BCC"/>
+                          <var:string label:value="Blind Carbon Copy (Bcc)"/>
                         </md-button>
                       </md-menu-item>
                     </md-menu-content>
