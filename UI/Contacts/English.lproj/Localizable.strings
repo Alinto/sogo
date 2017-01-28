@@ -41,6 +41,9 @@
 "Move To" = "Move To";
 "Copy To" = "Copy To";
 "Add to" = "Add to";
+"To" = "To";
+"CC" = "Carbon Copy (Cc)";
+"BCC" = "Blind Carbon Copy (Bcc)";
 
 /* Subheader of empty addressbook */
 "No contact" = "No contact";
