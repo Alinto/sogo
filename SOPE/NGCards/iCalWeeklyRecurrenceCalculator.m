@@ -186,7 +186,7 @@
                   if ([_r doesIntersectWithDateRange: r])
                     {
                       [ranges addObject: r];
-                      [self logWithFormat: @"Add range %@ - %@", [r startDate], [r endDate]];
+                      // [self logWithFormat: @"Add range %@ - %@", [r startDate], [r endDate]];
                     }
                 }
             }
