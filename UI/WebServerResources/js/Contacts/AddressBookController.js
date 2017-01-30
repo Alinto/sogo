@@ -319,7 +319,7 @@
       vm.selectedFolder.$filter('');
     }
 
-    function newMessage($event, recipients) {
+    function newMessage($event, recipients, recipientsField) {
       Account.$findAll().then(function(accounts) {
         var account = _.find(accounts, function(o) {
           if (o.id === 0)
@@ -330,7 +330,7 @@
         // list before proceeding with message's creation
         account.$getMailboxes().then(function(mailboxes) {
           account.$newMessage().then(function(message) {
-            angular.extend(message.editable, { to: recipients });
+            message.editable[recipientsField] = recipients;
             $mdDialog.show({
               parent: angular.element(document.body),
               targetEvent: $event,
@@ -351,12 +351,12 @@
 
     function newMessageWithRecipient($event, recipient, fn) {
       var recipients = [fn + ' <' + recipient + '>'];
-      vm.newMessage($event, recipients);
+      vm.newMessage($event, recipients, 'to');
       $event.stopPropagation();
       $event.preventDefault();
     }
 
-    function newMessageWithSelectedCards($event) {
+    function newMessageWithSelectedCards($event, recipientsField) {
       var selectedCards = _.filter(vm.selectedFolder.$cards, function(card) { return card.selected; });
       var promises = [], recipients = [];
 
@@ -386,7 +386,7 @@
       $q.all(promises).then(function() {
         recipients = _.uniq(recipients);
         if (recipients.length)
-          vm.newMessage($event, recipients);
+          vm.newMessage($event, recipients, recipientsField);
       });
     }
   }
