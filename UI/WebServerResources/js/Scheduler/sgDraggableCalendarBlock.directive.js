@@ -81,9 +81,19 @@
       }
 
       function onDragDetect(ev) {
-        var dragMode, pointerHandler;
+        var dragMode, pointerHandler, hasVerticalScrollbar, rect;
 
         ev.stopPropagation();
+
+        hasVerticalScrollbar = ev.target.scrollHeight > ev.target.clientHeight + 1;
+
+        if (hasVerticalScrollbar) {
+          // Check if mouse click is inside scrollbar
+          rect = ev.target.getBoundingClientRect();
+          scrollableZone = rect.left + rect.width - 18;
+          if (ev.pageX > scrollableZone)
+            return;
+        }
 
         dragMode = 'move-event';
 
