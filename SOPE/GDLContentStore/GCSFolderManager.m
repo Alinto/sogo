@@ -784,7 +784,7 @@ static BOOL       _singleStoreMode           = NO;
   return result;
 }
 
-- (GCSFolder *) folderAtPath: (NSString *) _path
+- (NSDictionary *) recordAtPath: (NSString *) _path
 {
   NSMutableString *sql;
   NSArray      *fnames, *records;
@@ -841,8 +841,13 @@ static BOOL       _singleStoreMode           = NO;
     [self debugWithFormat:@"found no record for path: '%@'", _path];
     return nil;
   }
-  
-  return [self folderForRecord:record];
+
+  return record;
+}
+
+- (GCSFolder *) folderAtPath: (NSString *) _path
+{
+  return [self folderForRecord: [self recordAtPath: _path]];
 }
 
 - (NSString *) baseTableNameWithUID: (NSString *) _uid
