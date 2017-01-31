@@ -439,7 +439,23 @@ static NSArray *childRecordFields = nil;
 
 - (GCSFolder *) ocsFolderForPath: (NSString *) _path
 {
-  return [[self folderManager] folderAtPath: _path];
+  NSDictionary *record;
+  SOGoCache *cache;
+
+  cache = [SOGoCache sharedCache];
+  record = [[cache valueForKey: _path] objectFromJSONString];
+
+  if (!record)
+    {
+      record = [[self folderManager] recordAtPath: _path];
+
+      if (!record)
+	return nil;
+
+      [cache setValue: [record jsonRepresentation]  forKey: _path];
+    }
+
+  return [[self folderManager] folderForRecord: record];
 }
 
 - (BOOL) folderIsMandatory
@@ -590,6 +606,7 @@ static NSArray *childRecordFields = nil;
       [self removeFolderSettings: moduleSettings
                    withReference: [self folderReference]];
       [us synchronize];
+      [[SOGoCache sharedCache] removeValueForKey: ocsPath];
 
       if ([[context request] handledByDefaultHandler])
         [self sendFolderAdvisoryTemplate: @"Removal"];
