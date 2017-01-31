@@ -471,10 +471,17 @@ static NSArray *childRecordFields = nil;
 {
   NSMutableArray *newPath;
   NSURL *davURL;
+  unsigned int max, count;
 
   davURL = [self realDavURL];
   newPath = [NSMutableArray arrayWithArray: [[davURL path] componentsSeparatedByString: @"/"]];
   [newPath insertObject: @"public" atIndex: 3];
+
+  max = [newPath count];
+  for (count = 0; count < max; count++)
+    [newPath replaceObjectAtIndex: count
+                       withObject: [[newPath objectAtIndex: count] stringByEscapingURL]];
+
   davURL = [NSURL URLWithString: [newPath componentsJoinedByString: @"/"]
                   relativeToURL: davURL];
 
@@ -495,9 +502,9 @@ static NSArray *childRecordFields = nil;
         publicParticle = @"";
       path = [NSString stringWithFormat: @"/%@/dav%@/%@/%@/%@/",
                        appName, publicParticle,
-                       [self ownerInContext: nil],
-                       [container nameInContainer],
-                       [self realNameInContainer]];
+                       [[self ownerInContext: nil] stringByEscapingURL],
+                       [[container nameInContainer] stringByEscapingURL],
+                       [[self realNameInContainer] stringByEscapingURL]];
       currentDavURL = [self davURL];
       realDavURL = [NSURL URLWithString: path relativeToURL: currentDavURL];
     }
