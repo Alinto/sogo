@@ -3983,6 +3983,14 @@ void handle_eas_terminate(int signum)
 
   // Get the device ID, device type and "stash" them
   deviceId = [[theRequest uri] deviceId];
+
+  if ([deviceId isEqualToString: @"Unknown"])
+    {
+      [(WOResponse *)theResponse setStatus: 500];
+      [self logWithFormat: @"EAS - No device id provided, ignoring request."];
+      return nil;
+    }
+
   [context setObject: deviceId  forKey: @"DeviceId"];
   [context setObject: [[theRequest uri] deviceType]  forKey: @"DeviceType"];
   [context setObject: [[theRequest uri] attachmentName]  forKey: @"AttachmentName"];
