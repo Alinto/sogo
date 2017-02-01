@@ -1028,7 +1028,7 @@ static BOOL debugSoParts       = NO;
       fileName = [NSString stringWithFormat:@"%@/%@", spoolPath, name];
       [body writeToFile: fileName atomically: YES];
 
-      [zipTaskArguments addObject: name];
+      [zipTaskArguments addObject: [NSString stringWithFormat: @"./%@", name]];
     }
 
   // Zip files
