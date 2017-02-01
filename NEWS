@@ -8,6 +8,7 @@ Bug fixes
  - [web] saving the preferences was not possible when Mail module is disabled
  - [web] ignore mouse events in scrollbars of Month view (#3990)
  - [web] fixed public URL with special characters (#3993)
+ - [eas] improved EAS parameters parsing (#4003)
 
 3.2.6a (2017-01-26)
 -------------------
