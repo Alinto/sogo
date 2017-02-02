@@ -160,14 +160,22 @@
 //@include responsive-columns('md', 'at');
 //@include responsive-columns('lg', 'from');
 
-// Utility to implement a specific one without extending
-// todo: include error handling
-
-@mixin flex-col($breakpoint, $nb, $grow: 1, $shrink: 1) {
+/**
+ * Return a column width according to a breakpoint grid
+ */
+@function col-width($breakpoint, $nb) {
    $cols: map-get($base-grid-total-columns, $breakpoint);
-   $colWidth: ((100 / $cols) * 1vw);
-     max-width: ($colWidth * $nb);
-     flex: $grow $shrink ($colWidth * $nb);
+   @return ((100 / $cols) * $nb * 1vw);
+}
+
+/**
+ * Style a column according to a breakpoint grid
+ */
+@mixin flex-col($breakpoint, $nb, $grow: 1, $shrink: 1) {
+  $cols: map-get($base-grid-total-columns, $breakpoint);
+  $colWidth: ((100 / $cols) * 1vw);
+  max-width: ($colWidth * $nb);
+  flex: $grow $shrink ($colWidth * $nb);
 }
 
 // Rows are included in padded containers, margins are used for vertical spacing

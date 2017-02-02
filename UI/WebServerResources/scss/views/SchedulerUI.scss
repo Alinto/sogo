@@ -16,7 +16,8 @@ $quarter_height: 10px;
 [ui-view=calendars] {
 
   // Decrease width of middle column (list of events and tasks)
-  $listView-width: grid-step(4) !global;
+  //$listView-width: grid-step(4) !global;
+  $listView-width: grid-step(4);
   //$detailView-width: grid-step(10) !global;
 
   .view-list {
@@ -39,9 +40,37 @@ $quarter_height: 10px;
 
   .view-list--close {
     @include from(md) {
-      $cols: map-get($base-grid-total-columns, md);
-      $colWidth: ((100 / $cols) * -5vw);
-      margin-right: $colWidth;
+      $colWidth: col-width($breakpoint: md, $nb: 5);
+      margin-right: $colWidth * -1;
+    }
+  }
+
+  /**
+   * Redefine fab button since center column width is different.
+   * See button.scss
+   */
+  md-fab-speed-dial.sg-fab-bottom-center {
+    @include at(md) {
+      // sidenav is hidden, center list can be closed
+      right: col-width($breakpoint: md, $nb: 15) + 2vw;
+      &.sg-center-close {
+        left: ($button-fab-width - $button-fab-padding)/2;
+        right: auto;
+      }
+    }
+    @include from(lg) {
+      // both sidenav and center list can be closed
+      right: col-width($breakpoint: lg, $nb: 11) + 2vw;
+      &.sg-sidenav-close {
+        right: col-width($breakpoint: lg, $nb: 15) + 2vw;
+      }
+      &.sg-center-close {
+        right: col-width($breakpoint: lg, $nb: 14) + 2vw;
+      }
+      &.sg-sidenav-close.sg-center-close {
+        left: ($button-fab-width - $button-fab-padding)/2;
+        right: auto;
+      }
     }
   }
 

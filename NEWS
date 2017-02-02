@@ -9,6 +9,7 @@ Bug fixes
  - [web] ignore mouse events in scrollbars of Month view (#3990)
  - [web] fixed public URL with special characters (#3993)
  - [eas] improved EAS parameters parsing (#4003)
+ - [web] keep the fab button visible when the center list is hidden
 
 3.2.6a (2017-01-26)
 -------------------

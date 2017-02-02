@@ -677,29 +677,32 @@
                                   md-mode="indeterminate"
                                   md-diameter="32"><!-- mailbox loading progress --></md-progress-circular>
           </div>
-          <md-fab-speed-dial
-              class="md-scale md-fab-bottom-right"
-              ng-cloak="ng-cloak"
-              md-direction="up">
-            <md-fab-trigger>
-              <md-button class="md-fab md-accent" label:aria-label="New Event">
-                <md-icon>add</md-icon>
-              </md-button>
-            </md-fab-trigger>
-            <md-fab-actions>
-              <md-button var:aria-label="Create a new event" class="md-fab md-raised md-mini"
-                         ng-click="list.newComponent($event, 'appointment')">
-                <md-tooltip md-direction="left"><var:string label:value="Create a new event"/></md-tooltip>
-                <md-icon>event</md-icon>
-              </md-button>
-              <md-button var:aria-label="Create a new task" class="md-fab md-raised md-mini"
-                         ng-click="list.newComponent($event, 'task')">
-                <md-tooltip md-direction="left"><var:string label:value="Create a new task"/></md-tooltip>
-                <md-icon>assignment_turned_in</md-icon>
-              </md-button>
-            </md-fab-actions>
-          </md-fab-speed-dial>
         </div>
+
+        <md-fab-speed-dial
+            class="md-scale sg-fab-bottom-center"
+            ng-class="{ 'sg-sidenav-close': leftIsClose, 'sg-center-close': centerIsClose }"
+            ng-cloak="ng-cloak"
+            md-direction="up">
+          <md-fab-trigger>
+            <md-button class="md-fab md-accent" label:aria-label="New Event">
+              <md-icon>add</md-icon>
+            </md-button>
+          </md-fab-trigger>
+          <md-fab-actions>
+            <md-button var:aria-label="Create a new event" class="md-fab md-raised md-mini"
+                       ng-click="list.newComponent($event, 'appointment')">
+              <md-tooltip md-direction="left"><var:string label:value="Create a new event"/></md-tooltip>
+              <md-icon>event</md-icon>
+            </md-button>
+            <md-button var:aria-label="Create a new task" class="md-fab md-raised md-mini"
+                       ng-click="list.newComponent($event, 'task')">
+              <md-tooltip md-direction="left"><var:string label:value="Create a new task"/></md-tooltip>
+              <md-icon>assignment_turned_in</md-icon>
+            </md-button>
+          </md-fab-actions>
+        </md-fab-speed-dial>
+
         <div id="detailView" class="view-detail hide show-gt-xs"
              layout="column"
              md-colors="::{backgroundColor: 'default-background-200'}"

@@ -45,7 +45,7 @@ body {
 // ----------------------------------------------------------------------------
 
 // Variables
-$listView-width: grid-step(6) !global;
+//$listView-width: grid-step(6) !global;
 //$detailView-width: grid-step(8) !global;
 
 [class|="view"] {
@@ -93,14 +93,12 @@ $listView-width: grid-step(6) !global;
   transform: translateX(-100%);
 
   @include at(sm) {
-    $cols: map-get($base-grid-total-columns, sm);
-    $colWidth: ((100 / $cols) * -6vw);
-    margin-right: $colWidth;
+    $colWidth: col-width($breakpoint: sm, $nb: 6);
+    margin-right: $colWidth * -1;
   }
   @include from(md) {
-    $cols: map-get($base-grid-total-columns, md);
-    $colWidth: ((100 / $cols) * -6vw);
-    margin-right: $colWidth;
+    $colWidth: col-width($breakpoint: md, $nb: 6);
+    margin-right: $colWidth * -1;
   }
 }
 
