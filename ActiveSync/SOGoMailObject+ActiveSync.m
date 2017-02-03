@@ -944,7 +944,7 @@ struct GlobalObjectId {
       else if ([method isEqualToString: @"COUNTER"])
         className = @"IPM.Schedule.Meeting.Resp.Tent";
       else if ([method isEqualToString: @"CANCEL"])
-        className = @"IPM.Schedule.Meeting.Cancelled";
+        className = @"IPM.Schedule.Meeting.Canceled";
       else
         className = @"IPM.Appointment";
       

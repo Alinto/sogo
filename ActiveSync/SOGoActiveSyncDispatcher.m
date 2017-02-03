@@ -1820,10 +1820,7 @@ void handle_eas_terminate(int signum)
             {
               appointmentObject = [[SOGoAppointmentObject alloc] initWithName: [NSString stringWithFormat: @"%@.ics", [event uid]]
                                                                   inContainer: collection];
-              if (folderType == ActiveSyncEventFolder)
-                [appointmentObject saveComponent: event force: YES];
-              else
-                [appointmentObject saveComponent: event];
+              [appointmentObject saveComponent: event force: YES];
            }
 
           if (uidCache && [calendarId length] > 64)
