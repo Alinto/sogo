@@ -20,6 +20,7 @@ $(SOGO_TOOL)_OBJC_FILES += \
 	SOGoToolRemove.m \
 	SOGoToolRemoveDoubles.m \
 	SOGoToolRenameUser.m \
+	SOGoToolCheckupUser.m \
 	SOGoToolCleanupUser.m \
 	SOGoToolRestore.m \
 	SOGoToolCreateFolder.m \
