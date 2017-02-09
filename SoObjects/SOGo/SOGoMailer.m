@@ -35,6 +35,111 @@
 
 #import "SOGoMailer.h"
 
+//
+// Useful extension that comes from Pantomime which is also
+// released under the LGPL. We should eventually merge
+// this with the same category found in SOPE's NGSmtpClient.m
+// or simply drop sope-mime in favor of Pantomime
+//
+@interface NSMutableData (DataCleanupExtension)
+
+- (unichar) characterAtIndex: (int) theIndex;
+- (NSRange) rangeOfCString: (const char *) theCString;
+- (NSRange) rangeOfCString: (const char *) theCString
+		  options: (unsigned int) theOptions
+		    range: (NSRange) theRange;
+@end
+
+@implementation NSMutableData (DataCleanupExtension)
+
+- (unichar) characterAtIndex: (int) theIndex
+{
+  const char *bytes;
+  int i, len;
+
+  len = [self length];
+
+  if (len == 0 || theIndex >= len)
+    {
+      [[NSException exceptionWithName: NSRangeException
+                    reason: @"Index out of range."
+                    userInfo: nil] raise];
+
+      return (unichar)0;
+    }
+
+  bytes = [self bytes];
+
+  for (i = 0; i < theIndex; i++)
+    {
+      bytes++;
+    }
+
+  return (unichar)*bytes;
+}
+
+- (NSRange) rangeOfCString: (const char *) theCString
+{
+  return [self rangeOfCString: theCString
+	       options: 0
+	       range: NSMakeRange(0,[self length])];
+}
+
+-(NSRange) rangeOfCString: (const char *) theCString
+		  options: (unsigned int) theOptions
+		    range: (NSRange) theRange
+{
+  const char *b, *bytes;
+  int i, len, slen;
+
+  if (!theCString)
+    {
+      return NSMakeRange(NSNotFound,0);
+    }
+
+  bytes = [self bytes];
+  len = [self length];
+  slen = strlen(theCString);
+
+  b = bytes;
+
+  if (len > theRange.location + theRange.length)
+    {
+      len = theRange.location + theRange.length;
+    }
+
+  if (theOptions == NSCaseInsensitiveSearch)
+    {
+      i = theRange.location;
+      b += i;
+
+      for (; i <= len-slen; i++, b++)
+	{
+	  if (!strncasecmp(theCString,b,slen))
+	    {
+	      return NSMakeRange(i,slen);
+	    }
+	}
+    }
+  else
+    {
+      i = theRange.location;
+      b += i;
+
+      for (; i <= len-slen; i++, b++)
+	{
+	  if (!memcmp(theCString,b,slen))
+	    {
+	      return NSMakeRange(i,slen);
+	    }
+	}
+    }
+
+  return NSMakeRange(NSNotFound,0);
+}
+
+@end
+
 @implementation SOGoMailer
 
 + (SOGoMailer *) mailerWithDomainDefaults: (SOGoDomainDefaults *) dd
@@ -236,12 +341,50 @@
 			      reason: @"cannot send message: no sender set"];
       else
 	{
+	  NSMutableData *cleaned_message;
+	  NSRange r1;
+	  unsigned int limit;
+
+	  //
+	  // We now look for the Bcc: header. If it is present, we remove it.
+	  // Some servers, like qmail, do not remove it automatically.
+	  //
+#warning FIXME - we should fix the case issue when we switch to Pantomime
+	  cleaned_message = [NSMutableData dataWithData: data];
+
+	  // We search only in the headers so we start at 0 until
+	  // we find \r\n\r\n, which is the headers delimiter
+	  r1 = [cleaned_message rangeOfCString: "\r\n\r\n"];
+	  limit = r1.location-1;
+	  r1 = [cleaned_message rangeOfCString: "\r\nBcc: "
+				       options: 0
+					 range: NSMakeRange(0,limit)];
+
+	  if (r1.location != NSNotFound)
+	    {
+	      // We search for the first \r\n AFTER the Bcc: header and
+	      // replace the whole thing with \r\n.
+	      unsigned int i;
+
+	      for (i = r1.location+7; i < limit; i++)
+		{
+		  if ([cleaned_message characterAtIndex: i] == '\r' &&
+		      (i+1 < limit && [cleaned_message characterAtIndex: i+1] == '\n') &&
+		      (i+2 < limit && !isspace([cleaned_message characterAtIndex: i+2])))
+		    break;
+		}
+
+	      [cleaned_message replaceBytesInRange: NSMakeRange(r1.location, i-r1.location)
+					 withBytes: NULL
+					    length: 0];
+	    }
+
 	  if ([mailingMechanism isEqualToString: @"sendmail"])
-	    result = [self _sendmailSendData: data
+	    result = [self _sendmailSendData: cleaned_message
 			   toRecipients: recipients
 			   sender: [sender pureEMailAddress]];
 	  else
-	    result = [self _smtpSendData: data
+	    result = [self _smtpSendData: cleaned_message
                             toRecipients: recipients
                                   sender: [sender pureEMailAddress]
                        withAuthenticator: authenticator
