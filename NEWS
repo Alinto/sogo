@@ -2,6 +2,7 @@
 -------------------
 
 New features
+ - [core] new sogo-tool checkup command to make sure user's data is sane 
  - [web] use "date" extension of Sieve to enable/disable vacation auto-reply (#1530, #1949)
 
 Bug fixes
