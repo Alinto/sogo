@@ -13,6 +13,7 @@ Bug fixes
  - [web] ignore mouse events in scrollbars of Month view (#3990)
  - [web] fixed public URL with special characters (#3993)
  - [web] keep the fab button visible when the center list is hidden
+ - [web] localized mail, phone, url and address types (#4030)
  - [eas] improved EAS parameters parsing (#4003)
  - [eas] properly handle canceled appointments
 

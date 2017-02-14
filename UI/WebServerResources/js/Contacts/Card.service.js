@@ -161,6 +161,12 @@
       this.notes = _.map(data.notes, function(note) { return { 'value': note }; });
     else if (!this.notes || !this.notes.length)
       this.notes = [ { value: '' } ];
+    // Lowercase the type of specific fields
+    angular.forEach(['addresses', 'phones', 'urls'], function(key) {
+      angular.forEach(_this[key], function(o) {
+        if (o.type) o.type = o.type.toLowerCase();
+      });
+    });
     // Instanciate Card objects for list members
     angular.forEach(this.refs, function(o, i) {
       if (o.email) o.emails = [{value: o.email}];

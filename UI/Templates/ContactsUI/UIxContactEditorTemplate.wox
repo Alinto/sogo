@@ -141,7 +141,7 @@
                   </md-button>
                   <md-input-container flex="20">
                     <md-select ng-model="email.type" label:placeholder="Type">
-                      <md-option ng-repeat="type in ::editor.allEmailTypes" ng-value="type">{{ type }}</md-option>
+                      <md-option ng-repeat="type in ::editor.allEmailTypes" ng-value="type">{{ type.capitalize() | loc }}</md-option>
                     </md-select>
                   </md-input-container>
                   <md-input-container class="md-flex">
@@ -219,7 +219,7 @@
                   </md-button>
                   <md-input-container flex="20">
                     <md-select ng-model="phone.type" label:placeholder="Type">
-                      <md-option ng-repeat="type in ::editor.allTelTypes" ng-value="type">{{ type }}</md-option>
+                      <md-option ng-repeat="type in ::editor.allTelTypes" ng-value="type">{{ type.capitalize() | loc }}</md-option>
                     </md-select>
                   </md-input-container>
                   <md-input-container class="md-flex">
@@ -250,7 +250,7 @@
                   </md-button>
                   <md-input-container flex="20">
                     <md-select ng-model="url.type" label:placeholder="Type">
-                      <md-option ng-repeat="type in ::editor.allUrlTypes" ng-value="type">{{ type }}</md-option>
+                      <md-option ng-repeat="type in ::editor.allUrlTypes" ng-value="type">{{ type.capitalize() | loc }}</md-option>
                     </md-select>
                   </md-input-container>
                   <md-input-container class="md-flex">
@@ -282,7 +282,7 @@
                     <div layout="row">
                       <md-input-container flex="20">
                         <md-select ng-model="address.type" label:placeholder="Type">
-                          <md-option ng-repeat="type in ::editor.allAddressTypes" ng-value="type">{{ type }}</md-option>
+                          <md-option ng-repeat="type in ::editor.allAddressTypes" ng-value="type">{{ type.capitalize() | loc }}</md-option>
                         </md-select>
                       </md-input-container>
                       <md-input-container class="md-flex">

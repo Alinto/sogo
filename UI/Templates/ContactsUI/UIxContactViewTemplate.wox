@@ -104,7 +104,7 @@
 
             <div class="section" ng-show="editor.card.emails.length > 0">
               <div class="pseudo-input-container" ng-repeat="email in editor.card.emails">
-                <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{email.type}}</label>
+                <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{email.type.capitalize() | loc}}</label>
                 <div class="pseudo-input-field">
                   <a href="#" ng-bind="email.value"
                      ng-click="addressbook.newMessageWithRecipient($event, email.value, editor.card.$fullname())"><!-- recipient --></a>
@@ -121,7 +121,7 @@
 
             <div class="section" ng-show="editor.card.phones.length > 0">
               <div class="pseudo-input-container" ng-repeat="phone in editor.card.phones">
-                <label class="pseudo-input-label">{{phone.type}}</label>
+                <label class="pseudo-input-label">{{phone.type.capitalize() | loc}}</label>
                 <div class="pseudo-input-field">
                   <a href="tel:{{phone.value}}">{{phone.value}}</a>
                 </div>
@@ -130,7 +130,7 @@
 
             <div class="section" ng-show="editor.card.urls">
               <div class="pseudo-input-container" ng-repeat="url in editor.card.urls">
-                <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{url.type}}</label>
+                <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{url.type.capitalize() | loc}}</label>
                 <div class="pseudo-input-field">
                   <a href="#" target="_new" ng-href="{{url.value}}">{{url.value}}</a>
                 </div>
@@ -139,7 +139,7 @@
 
             <div class="section" ng-show="editor.card.addresses">
               <div class="pseudo-input-container" ng-repeat="address in editor.card.addresses">
-                <label class="pseudo-input-label">{{address.type}}</label>
+                <label class="pseudo-input-label">{{address.type.capitalize() | loc}}</label>
                 <div class="pseudo-input-field">
                   <div sg-address="address"><!-- address --></div>
                 </div>
