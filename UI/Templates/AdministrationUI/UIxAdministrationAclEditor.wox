@@ -6,7 +6,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-  <div layout="column" layout-fill="layout-fill">
+  <div layout-fill="layout-fill">
     <md-card>
       <md-toolbar class="hide show-xs" flex-none="flex-none">
         <div class="md-toolbar-tools">
