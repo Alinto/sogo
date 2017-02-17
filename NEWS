@@ -1,3 +1,17 @@
+3.2.8 (2017-03-XX)
+------------------
+
+New features
+ -
+
+Enhancements
+ -
+
+Bug fixes
+ - [web] fix ACL editor in admin module for Safari (#4036) 
+ - [web] fix function call when removing contact category (#4039)
+
+
 3.2.7 (2017-02-14)
 ------------------
 
