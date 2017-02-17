@@ -491,7 +491,7 @@
                 </md-input-container>
                 <md-button type="button" class="sg-icon-button"
                            label:aria-label="Remove Contact Category"
-                           ng-click="app.removeContactCategory($index)">
+                           ng-click="app.removeContactCategory($index, preferencesForm)">
                   <md-icon>remove_circle</md-icon>
                 </md-button>
               </md-list-item>
