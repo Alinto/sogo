@@ -8,8 +8,9 @@ Enhancements
  -
 
 Bug fixes
- - [web] fix ACL editor in admin module for Safari (#4036) 
- - [web] fix function call when removing contact category (#4039)
+ - [web] fixed ACL editor in admin module for Safari (#4036)
+ - [web] fixed function call when removing contact category (#4039)
+ - [web] localized inbox label (#4040)
 
 
 3.2.7 (2017-02-14)

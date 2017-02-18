@@ -391,7 +391,7 @@
 
     function metadataForFolder(folder) {
       if (folder.type == 'inbox')
-        return {name: folder.name,           icon:'inbox',          special: true};
+        return {name: l('InboxFolderName'),  icon:'inbox',          special: true};
       else if (folder.type == 'draft')
         return {name: l('DraftsFolderName'), icon: 'drafts',        special: true};
       else if (folder.type == 'sent')
