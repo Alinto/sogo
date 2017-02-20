@@ -115,6 +115,7 @@ static memcached_st *handle = NULL;
             {
               memcached_behavior_set(handle, MEMCACHED_BEHAVIOR_BINARY_PROTOCOL, 1);
 	      memcached_behavior_set(handle, MEMCACHED_BEHAVIOR_TCP_NODELAY, 1);
+	      memcached_behavior_set(handle, MEMCACHED_BEHAVIOR_RETRY_TIMEOUT, 5);
 
               sd = [SOGoSystemDefaults sharedSystemDefaults];
 	      
