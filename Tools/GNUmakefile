@@ -25,6 +25,7 @@ $(SOGO_TOOL)_OBJC_FILES += \
 	SOGoToolRestore.m \
 	SOGoToolCreateFolder.m \
 	SOGoToolUserPreferences.m \
+	SOGoToolManageACL.m \
 	SOGoToolManageEAS.m \
 	SOGoToolTruncateCalendar.m
 TOOL_NAME += $(SOGO_TOOL)
