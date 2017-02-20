@@ -43,6 +43,7 @@
 @interface SOGoToolCheckup : SOGoTool
 {
   NSArray *usersToCheckup;
+  BOOL delete;
 }
 
 @end
@@ -64,6 +65,7 @@
   if ((self = [super init]))
     {
       usersToCheckup = nil;
+      delete = NO;
     }
 
   return self;
@@ -77,8 +79,9 @@
 
 - (void) usage
 {
-  fprintf (stderr, "checkup [user]...\n\n"
-           "           user       the user to purge the records or ALL for everybody\n\n"
+  fprintf (stderr, "checkup [-d] user...\n\n"
+	   "           -d         delete the corrupted records\n"
+           "           user       the user to check the records or ALL for everybody\n\n"
            "Example:   sogo-tool checkup jdoe\n");
 }
 
@@ -181,8 +184,9 @@
   int max;
 
   max = [arguments count];
-  if (max == 1)
+  if (max > 0 && max < 3)
     {
+      delete = (max == 2);
       rc = [self fetchUserIDs: arguments];
     }
   else
@@ -226,6 +230,8 @@
 	      [[content substringFromIndex: [content length]-13] caseInsensitiveCompare: @"END:VCALENDAR"] != NSOrderedSame)
 	    {
 	      NSLog(@"Corrupted calendar item (missing tags) in path %@ with c_name = %@", folder, c_name);
+	      if (delete)
+		[gcsFolder deleteContentWithName: c_name];
 	      rc = NO;
 	    }
 	  else
@@ -234,6 +240,8 @@
 	      if (!calendar)
 		{
 		  NSLog(@"Corrupted calendar item (unparsable) in path %@ with c_name = %@", folder, c_name);
+		  if (delete)
+		    [gcsFolder deleteContentWithName: c_name];
 		  rc = NO;
 		}
 	    }
@@ -247,6 +255,8 @@
 	  if (!card)
 	    {
 	       NSLog(@"Corrupted card item (unparsable) in path %@ with c_name = %@", folder, c_name);
+	       if (delete)
+		 [gcsFolder deleteContentWithName: c_name];
 	       rc = NO;
 	    }
 	}
