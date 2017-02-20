@@ -89,18 +89,18 @@
                 <div class="sg-child-level-0"
                      ng-class="'sg-child-level-' + folder.level">
                   <md-checkbox class="sg-folder"
-                               ng-class="app.metadataForFolder(folder).icon"
+                               ng-class="folder.$icon"
                                label:aria-label="Expanded"
                                ng-model="folder.$expanded"
                                ng-disabled="folder.children.length == 0"
                                ng-change="account.$flattenMailboxes({ reload: true, saveState: true })">
-                  <md-icon>{{app.metadataForFolder(folder).icon}}</md-icon></md-checkbox>
+                  <md-icon>{{folder.$icon}}</md-icon></md-checkbox>
                 </div>
                 <p class="sg-item-name ng-hide"
                    ng-click="app.selectFolder($event, account, folder)"
                    ng-dblclick="app.editFolder(folder)"
                    ng-show="app.editMode != folder.path">
-                  {{app.metadataForFolder(folder).name}}
+                  {{folder.$displayName}}
                   <span class="sg-counter-badge ng-hide" ng-show="folder.unseenCount">{{folder.unseenCount}}</span>
                 </p>
                 <md-input-container class="md-flex ng-hide"

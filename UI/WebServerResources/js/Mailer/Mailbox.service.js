@@ -157,16 +157,47 @@
    */
   Mailbox.prototype.init = function(data) {
     var _this = this;
-    this.$isLoading = true;
-    this.$messages = [];
-    this.uidsMap = {};
+    if (angular.isUndefined(this.$messages)) {
+      this.$isLoading = true;
+      this.$messages = [];
+      this.uidsMap = {};
+    }
     angular.extend(this, data);
     if (this.path) {
       this.id = this.$id();
       this.$acl = new Mailbox.$$Acl('Mail/' + this.id);
     }
+    this.$displayName = this.name;
     if (this.type) {
       this.$isEditable = this.isEditable();
+      this.$isSpecial = true;
+      if (this.type == 'inbox') {
+        this.$displayName = l('InboxFolderName');
+        this.$icon = 'inbox';
+      }
+      else if (this.type == 'draft') {
+        this.$displayName = l('DraftsFolderName');
+        this.$icon = 'drafts';
+      }
+      else if (this.type == 'sent') {
+        this.$displayName = l('SentFolderName');
+        this.$icon = 'send';
+      }
+      else if (this.type == 'trash') {
+        this.$displayName = l('TrashFolderName');
+        this.$icon = 'delete';
+      }
+      else if (this.type == 'junk') {
+        this.$displayName = l('JunkFolderName');
+        this.$icon = 'thumb_down';
+      }
+      else if (this.type == 'additional') {
+        this.$icon = 'folder_shared';
+      }
+      else {
+        this.$isSpecial = false;
+        this.$icon = 'folder_open';
+      }
     }
     this.$isNoInferiors = this.isNoInferiors();
     if (angular.isUndefined(this.$shadowData)) {

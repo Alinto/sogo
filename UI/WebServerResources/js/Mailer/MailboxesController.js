@@ -28,7 +28,6 @@
     vm.confirmDelete = confirmDelete;
     vm.markFolderRead = markFolderRead;
     vm.share = share;
-    vm.metadataForFolder = metadataForFolder;
     vm.setFolderAs = setFolderAs;
     vm.refreshUnseenCount = refreshUnseenCount;
     vm.isDroppableFolder = isDroppableFolder;
@@ -187,7 +186,6 @@
         clickOutsideToClose: true,
         escapeToClose: true,
         locals: {
-          metadataForFolder: metadataForFolder,
           srcAccount: account
         }
       }).finally(function() {
@@ -197,13 +195,12 @@
       /**
        * @ngInject
        */
-      SubscriptionsDialogController.$inject = ['$scope', '$mdDialog', 'metadataForFolder', 'srcAccount'];
-      function SubscriptionsDialogController($scope, $mdDialog, metadataForFolder, srcAccount) {
+      SubscriptionsDialogController.$inject = ['$scope', '$mdDialog', 'srcAccount'];
+      function SubscriptionsDialogController($scope, $mdDialog, srcAccount) {
         var vm = this;
 
         vm.loading = true;
         vm.filter = { name: '' };
-        vm.metadataForFolder = metadataForFolder;
         vm.account = new Account({
           id: srcAccount.id,
           name: srcAccount.name
@@ -388,23 +385,6 @@
         });
       });
     } // share
-
-    function metadataForFolder(folder) {
-      if (folder.type == 'inbox')
-        return {name: l('InboxFolderName'),  icon:'inbox',          special: true};
-      else if (folder.type == 'draft')
-        return {name: l('DraftsFolderName'), icon: 'drafts',        special: true};
-      else if (folder.type == 'sent')
-        return {name: l('SentFolderName'),   icon: 'send',          special: true};
-      else if (folder.type == 'trash')
-        return {name: l('TrashFolderName'),  icon: 'delete',        special: true};
-      else if (folder.type == 'junk')
-        return {name: l('JunkFolderName'),   icon: 'thumb_down',    special: true};
-      else if (folder.type == 'additional')
-        return {name: folder.name,           icon: 'folder_shared', special: true};
-
-      return {name: folder.name,             icon: 'folder_open',   special: false};
-    }
 
     function setFolderAs(folder, type) {
       folder.$setFolderAs(type).then(function() {

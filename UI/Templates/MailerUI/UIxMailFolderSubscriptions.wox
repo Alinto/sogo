@@ -32,13 +32,13 @@
             ng-repeat="folder in subscriptions.account.$flattenMailboxes({all: true}) | filter:subscriptions.filter"
 	    md-item-size="48">
           <div ng-class="'sg-child-level-' + folder.level">
-            <md-icon>{{subscriptions.metadataForFolder(folder).icon}}</md-icon>
+            <md-icon>{{folder.$icon}}</md-icon>
           </div>
           <p class="sg-item-name">
-            {{subscriptions.metadataForFolder(folder).name}}
+            {{folder.$displayName}}
           </p>
 	  <md-checkbox class="md-secondary"
-                       ng-disabled="subscriptions.metadataForFolder(folder).special"
+                       ng-disabled="folder.$isSpecial"
 		       ng-model="folder.subscribed"
                        ng-change="folder.$updateSubscribe()"
 		       ng-true-value="1"

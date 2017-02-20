@@ -58,7 +58,7 @@
       var title = defaultWindowTitle + ' - ';
       if (unseenCount)
         title += '(' + unseenCount + ') ';
-      title += vm.selectedFolder.name;
+      title += vm.selectedFolder.$displayName;
       $window.document.title = title;
     });
 

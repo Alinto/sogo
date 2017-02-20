@@ -10,8 +10,7 @@ Enhancements
 Bug fixes
  - [web] fixed ACL editor in admin module for Safari (#4036)
  - [web] fixed function call when removing contact category (#4039)
- - [web] localized inbox label (#4040)
-
+ - [web] localized mailbox names everywhere (#4040, #4041)
 
 3.2.7 (2017-02-14)
 ------------------

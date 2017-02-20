@@ -19,7 +19,7 @@
                                   app.accounts[0].$flattenMailboxes()
                                   track by folder.path"
                        ng-value="folder.path">
-              <span ng-class="'sg-child-level-' + folder.level">{{folder.name}}</span>
+              <span ng-class="'sg-child-level-' + folder.level">{{folder.$displayName}}</span>
             </md-option>
           </md-select>
         </md-input-container>
@@ -69,7 +69,7 @@
           <md-icon>search</md-icon>
         </md-button>
         <a href="javascript:void(0)" class="sg-folder-name"
-           ng-click="mailbox.searchMode()">{{mailbox.selectedFolder.name}}</a>
+           ng-click="mailbox.searchMode()">{{mailbox.selectedFolder.$displayName}}</a>
         <md-menu>
           <md-button class="sg-icon-button" label:aria-label="Sort"
                      ng-click="$mdMenu.open()">
@@ -214,7 +214,7 @@
                               <md-button class="sg-no-wrap"
                                          ng-disabled="mailbox.service.selectedFolder.id == folder.id"
                                          ng-click="mailbox.copySelectedMessages(folder.id)">
-                                <span ng-class="'sg-child-level-' + folder.level">{{folder.name}}</span>
+                                <span ng-class="'sg-child-level-' + folder.level">{{folder.$displayName}}</span>
                               </md-button>
                             </md-menu-item>
                           </div>
@@ -243,7 +243,7 @@
                               <md-button class="sg-no-wrap"
                                          ng-disabled="mailbox.service.selectedFolder.id == folder.id"
                                          ng-click="mailbox.moveSelectedMessages(folder.id)">
-                                <span ng-class="'sg-child-level-' + folder.level">{{folder.name}}</span>
+                                <span ng-class="'sg-child-level-' + folder.level">{{folder.$displayName}}</span>
                               </md-button>
                             </md-menu-item>
                           </div>
@@ -297,7 +297,7 @@
               <div class="sg-md-subhead">
                 <div>
                   <span class="sg-label-outline ng-hide"
-                        ng-show="mailbox.service.$virtualMode">{{currentMessage.$mailbox.name}}</span>
+                        ng-show="mailbox.service.$virtualMode">{{currentMessage.$mailbox.$displayName}}</span>
                   <md-icon class="ng-hide"
                            ng-show="currentMessage.priority.level == 1 ||
                                     currentMessage.priority.level == 2"
