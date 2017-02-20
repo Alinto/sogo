@@ -11,6 +11,7 @@ Bug fixes
  - [web] fixed ACL editor in admin module for Safari (#4036)
  - [web] fixed function call when removing contact category (#4039)
  - [web] localized mailbox names everywhere (#4040, #4041)
+ - [web] hide fab button when printing (#4038)
 
 3.2.7 (2017-02-14)
 ------------------
