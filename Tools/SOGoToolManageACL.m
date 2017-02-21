@@ -152,34 +152,143 @@ typedef enum
   return rc;
 }
 
+- (NSArray *) _fetchUserIDs
+{
+  NSMutableArray *allUsers, *allSQLUsers;
+  NSAutoreleasePool *pool;
+  SOGoUserManager *lm;
+  NSDictionary *infos;
+  NSString *u;
+
+  int count, max;
+
+  lm = [SOGoUserManager sharedUserManager];
+  allSQLUsers = [[NSMutableArray alloc] init];
+  allUsers = [[NSMutableArray alloc] init];
+
+  if ([user isEqualToString: @"ALL"])
+    {
+      GCSChannelManager *cm;
+      NSURL *folderLocation;
+      GCSFolderManager *fm;
+      EOAdaptorChannel *fc;
+      NSArray *attrs;
+      NSString *sql;
+
+      fm = [GCSFolderManager defaultFolderManager];
+      cm = [fm channelManager];
+      folderLocation = [fm folderInfoLocation];
+      fc = [cm acquireOpenChannelForURL: folderLocation];
+      if (fc)
+        {
+          allSQLUsers = [NSMutableArray new];
+          sql = [NSString stringWithFormat: @"SELECT DISTINCT c_path2 FROM %@",
+                          [folderLocation gcsTableName]];
+          [fc evaluateExpressionX: sql];
+          attrs = [fc describeResults: NO];
+          while ((infos = [fc fetchAttributes: attrs withZone: NULL]))
+            {
+              u = [infos objectForKey: @"c_path2"];
+              if (u)
+                [allSQLUsers addObject: u];
+            }
+          [cm releaseChannel: fc];
+        }
+
+      // We add our system users
+      [allSQLUsers addObject: @"<default>"];
+
+      if ([[SOGoSystemDefaults sharedSystemDefaults] enablePublicAccess])
+	      [allSQLUsers addObject: @"anonymous"];
+    }
+  else
+    [allSQLUsers addObject: user];
+
+  pool = [[NSAutoreleasePool alloc] init];
+  max = [allSQLUsers count];
+
+  for (count = 0; count < max; count++)
+    {
+      if (count > 0 && count%100 == 0)
+        {
+          DESTROY(pool);
+          pool = [[NSAutoreleasePool alloc] init];
+        }
+
+      u = [allSQLUsers objectAtIndex: count];
+
+      // We skip lookup for our 'system users' and the owner
+      if ([u isEqualToString: @"anonymous"] || [u isEqualToString: @"<default>"] || [u isEqualToString: owner])
+	continue;
+
+      infos = [lm contactInfosForUserWithUIDorEmail: u];
+      if (infos)
+        [allUsers addObject: [infos objectForKey: @"c_uid"]];
+      else
+        {
+          // We haven't found the user based on the GCS table name
+          // Let's try to strip the domain part and search again.
+          // This can happen when using SOGoEnableDomainBasedUID (YES)
+          // but login in SOGo using a UID without domain (DomainLessLogin gets set)
+          NSRange r;
+
+          r = [u rangeOfString: @"@"];
+
+          if (r.location != NSNotFound)
+            {
+              u = [u substringToIndex: r.location];
+              infos = [lm contactInfosForUserWithUIDorEmail: u];
+              if (infos)
+                [allUsers addObject: [infos objectForKey: @"c_uid"]];
+              else
+                NSLog (@"user '%@' unknown", u);
+            }
+          else
+            NSLog (@"user '%@' unknown", u);
+        }
+    }
+
+  DESTROY(pool);
+  RELEASE(allSQLUsers);
+
+  return AUTORELEASE(allUsers);
+}
+
+
 - (void) addACLForUser: (NSString *) theUser
                 folder: (GCSFolder *) theFolder
 {
-  NSString *currentRole, *SQL, *path;
+  NSString *currentRole, *SQL, *path, *u;
   EOAdaptorChannel *channel;
-  int i;
+  NSArray *allUsers;
+  int i, j;
 
   channel = [theFolder acquireAclChannel];
   path = [NSString stringWithFormat: @"%@/%@", owner, folder];
+  allUsers = [self _fetchUserIDs];
 
-  for (i = 0; i < [rights count]; i++)
+  for (i = 0; i < [allUsers count]; i++)
     {
-      currentRole = [rights objectAtIndex: i];
-      if ([GCSFolderManager singleStoreMode])
-        SQL = [NSString stringWithFormat: @"INSERT INTO %@"
-                        @" (c_object, c_uid, c_role, c_folder_id)"
-                        @" VALUES ('/%@', '%@', '%@', %@)",
-                        [theFolder aclTableName],
-                        path, user, currentRole, [theFolder folderId]];
-      else
-        SQL = [NSString stringWithFormat: @"INSERT INTO %@"
-                        @" (c_object, c_uid, c_role)"
-                        @" VALUES ('/%@', '%@', '%@')",
-                        [theFolder aclTableName],
-                        path, user, currentRole];
-      [channel evaluateExpressionX: SQL];
+      u = [allUsers objectAtIndex: i];
+      NSLog(@"Settings rights for user %@", u);
+      for (j = 0; j < [rights count]; j++)
+	{
+	  currentRole = [rights objectAtIndex: j];
+	  if ([GCSFolderManager singleStoreMode])
+	    SQL = [NSString stringWithFormat: @"INSERT INTO %@"
+			    @" (c_object, c_uid, c_role, c_folder_id)"
+			    @" VALUES ('/%@', '%@', '%@', %@)",
+			    [theFolder aclTableName],
+			    path, u, currentRole, [theFolder folderId]];
+	  else
+	    SQL = [NSString stringWithFormat: @"INSERT INTO %@"
+			    @" (c_object, c_uid, c_role)"
+			    @" VALUES ('/%@', '%@', '%@')",
+			    [theFolder aclTableName],
+			    path, u, currentRole];
+	  [channel evaluateExpressionX: SQL];
+	}
     }
-
 }
 
 - (void) getACLForUser: (NSString *) theUser
@@ -231,12 +340,13 @@ typedef enum
   NSString *qs, *path;
 
   if ([theUser isEqualToString: @"ALL"])
-    qualifier = nil;
+    qs = [NSString stringWithFormat: @"c_uid LIKE '\%'", theUser];
   else
     {
       qs = [NSString stringWithFormat: @"c_uid = '%@'", theUser];
-      qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
     }
+
+  qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
   
   [theFolder deleteAclMatchingQualifier: qualifier];
 
@@ -261,14 +371,22 @@ typedef enum
   fm = [GCSFolderManager defaultFolderManager];
   f = [fm folderAtPath: [NSString stringWithFormat: @"/Users/%@/%@", owner, folder]];
 
-  if (command == ManageACLGet)
-    [self getACLForUser: user  folder: f];
-  else if (command == ManageACLRemove)
-    [self removeACLForUser: user  folder: f];
-  else if (command == ManageACLAdd)
-    [self addACLForUser: user  folder: f];
+  if (!f)
+    {
+      NSLog(@"No folder %@ found for user %@", folder, owner);
+      rc = NO;
+    }
   else
-    [self usage];
+    {
+      if (command == ManageACLGet)
+	[self getACLForUser: user  folder: f];
+      else if (command == ManageACLRemove)
+	[self removeACLForUser: user  folder: f];
+      else if (command == ManageACLAdd)
+	[self addACLForUser: user  folder: f];
+      else
+	[self usage];
+    }
 
   [pool release];
 
