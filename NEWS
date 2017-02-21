@@ -2,7 +2,7 @@
 ------------------
 
 New features
- -
+ - [core] new sogo-tool manage-acl command to manage calendar/address book ACLs
 
 Enhancements
  -
