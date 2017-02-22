@@ -107,7 +107,7 @@ typedef enum
 	   "           folder     the folder - Calendar/<ID> or Contacst/<ID>\n"
 	   "           user       the user to get/set rights for - 'ALL', '<default>', 'anonymous' are supported\n"
            "           rights     rights to add\n\n"
-           "Example:   sogo-tool get jdoe Calendar/personal\n\n"
+           "Example:   sogo-tool manage-acl get jdoe Calendar/personal\n\n"
            "Note:      You can add only one access right at the time. To set them all at once,\n"
            "           invoke 'remove' first to remove them all.\n\n");
 }
@@ -199,7 +199,7 @@ typedef enum
       [allSQLUsers addObject: @"<default>"];
 
       if ([[SOGoSystemDefaults sharedSystemDefaults] enablePublicAccess])
-	      [allSQLUsers addObject: @"anonymous"];
+	[allSQLUsers addObject: @"anonymous"];
     }
   else
     [allSQLUsers addObject: user];
@@ -217,8 +217,15 @@ typedef enum
 
       u = [allSQLUsers objectAtIndex: count];
 
-      // We skip lookup for our 'system users' and the owner
-      if ([u isEqualToString: @"anonymous"] || [u isEqualToString: @"<default>"] || [u isEqualToString: owner])
+      // We skip lookup for our 'system users' but keep them to set ACLs
+      if ([u isEqualToString: @"anonymous"] || [u isEqualToString: @"<default>"])
+	{
+	  [allUsers addObject: u];
+	  continue;
+	}
+
+      // Skip the owner
+      if ([u isEqualToString: owner])
 	continue;
 
       infos = [lm contactInfosForUserWithUIDorEmail: u];
