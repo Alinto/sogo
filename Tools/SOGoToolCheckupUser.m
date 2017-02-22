@@ -184,9 +184,13 @@
   int max;
 
   max = [arguments count];
-  if (max > 0 && max < 3)
+  if (max > 0)
     {
-      delete = (max == 2);
+      delete = [[arguments objectAtIndex: 0] isEqualToString: @"-d"];
+
+      if (delete && max > 1)
+	arguments = RETAIN([arguments subarrayWithRange: NSMakeRange(1, max-1)]);
+
       rc = [self fetchUserIDs: arguments];
     }
   else
@@ -272,6 +276,7 @@
   int count, max;
   NSString *basePath, *folder;
 
+  NSLog(@"Checking folders of user %@", uid);
   fm = [GCSFolderManager defaultFolderManager];
   basePath = [NSString stringWithFormat: @"/Users/%@", uid];
   folders = [fm listSubFoldersAtPath: basePath recursive: YES];
@@ -279,7 +284,6 @@
   for (count = 0; count < max; count++)
     {
       folder = [NSString stringWithFormat: @"%@/%@", basePath, [folders objectAtIndex: count]];
-      //NSLog (@"folder %d: %@", count, folder);
       [self checkupFolder: folder withFM: fm];
     }
 
