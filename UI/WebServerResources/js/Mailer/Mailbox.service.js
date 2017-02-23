@@ -157,7 +157,7 @@
    */
   Mailbox.prototype.init = function(data) {
     var _this = this;
-    if (angular.isUndefined(this.$messages)) {
+    if (data.headers) {
       this.$isLoading = true;
       this.$messages = [];
       this.uidsMap = {};
@@ -525,9 +525,8 @@
     i = _.indexOf(_.map(children, 'id'), this.id);
 
     return this.$save().then(function(data) {
-      var sibling;
-      angular.extend(_this, data); // update the path attribute
-      _this.id = _this.$id();
+      var sibling, oldPath = _this.path;
+      _this.init(data); // update the path and id
 
       // Move mailbox among its siblings according to its new name
       children.splice(i, 1);
@@ -542,6 +541,17 @@
         i = children.length;
       }
       children.splice(i, 0, _this);
+
+      // Update the path and id of children
+      var pathRE = new RegExp('^' + oldPath);
+      var _updateChildren = function(mailbox) {
+        _.forEach(mailbox.children, function(child) {
+          child.path = child.path.replace(pathRE, _this.path);
+          child.id = child.$id();
+          _updateChildren(child);
+        });
+      };
+      _updateChildren(_this);
     });
   };
 
@@ -869,7 +879,7 @@
         _this.init(data);
 
         if (_this.uids) {
-          Mailbox.$log.debug('unwrapping ' + data.uids.length + ' messages');
+          Mailbox.$log.debug('unwrapping ' + _this.uids.length + ' messages');
 
           // First entry of 'headers' are keys
           headers = _.invokeMap(_this.headers[0], 'toLowerCase');
