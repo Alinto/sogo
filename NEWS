@@ -12,6 +12,7 @@ Bug fixes
  - [web] fixed function call when removing contact category (#4039)
  - [web] localized mailbox names everywhere (#4040, #4041)
  - [web] hide fab button when printing (#4038)
+ - [web] SOGoCalendarWeekdays must now be defined before saving preferences
 
 3.2.7 (2017-02-14)
 ------------------
