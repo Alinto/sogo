@@ -303,7 +303,7 @@
           <var:string label:value="Reset"/>
         </md-button>
         <md-button class="md-primary" type="submit"
-                   ng-disabled="eventForm.$pristine || eventForm.$invalid || eventForm.$submitted">
+                   ng-disabled="eventForm.$invalid || eventForm.$submitted">
           <var:string label:value="Save"/>
         </md-button>
       </md-dialog-actions>

@@ -122,8 +122,8 @@
 
       c.$reply().then(function() {
         $rootScope.$emit('calendars:list');
-        $mdDialog.hide();
         Alarm.getAlarms();
+        $mdDialog.hide();
       });
     }
 
@@ -217,6 +217,7 @@
     vm.categories = {};
     vm.showRecurrenceEditor = vm.component.$hasCustomRepeat;
     vm.toggleRecurrenceEditor = toggleRecurrenceEditor;
+    vm.recurrenceMonthDaysAreRequired = recurrenceMonthDaysAreRequired;
     vm.showAttendeesEditor = false;
     vm.toggleAttendeesEditor = toggleAttendeesEditor;
     //vm.searchText = null;
@@ -261,6 +262,11 @@
 
     function toggleAttendeesEditor() {
       vm.showAttendeesEditor = !vm.showAttendeesEditor;
+    }
+
+    function recurrenceMonthDaysAreRequired() {
+      return vm.component.repeat.frequency == 'monthly' &&
+        vm.component.repeat.month.type == 'bymonthday';
     }
 
     // Autocomplete cards for attendees
@@ -308,8 +314,11 @@
             Alarm.getAlarms();
             $mdDialog.hide();
           }, function(response) {
-            if (response.status == CalendarSettings.ConflictHTTPErrorCode)
+            if (response.status == CalendarSettings.ConflictHTTPErrorCode &&
+                _.isObject(response.data.message))
               vm.attendeeConflictError = response.data.message;
+            else
+              edit(form);
           });
       }
     }

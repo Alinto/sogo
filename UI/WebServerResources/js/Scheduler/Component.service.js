@@ -565,11 +565,15 @@
       this.repeat.frequency = 'never';
     if (angular.isUndefined(this.repeat.interval))
       this.repeat.interval = 1;
-    if (angular.isUndefined(this.repeat.month))
-      this.repeat.month = { occurrence: '1', day: 'SU', type: 'bymonthday' };
     if (angular.isUndefined(this.repeat.monthdays))
       // TODO: initialize this.repeat.monthdays with month day of start date
       this.repeat.monthdays = [];
+    else if (this.repeat.monthdays.length > 0)
+      this.repeat.month = { type: 'bymonthday' };
+    if (angular.isUndefined(this.repeat.month))
+      this.repeat.month = {};
+    if (angular.isUndefined(this.repeat.month.occurrence))
+      angular.extend(this.repeat.month, { occurrence: '1', day: 'SU' });
     if (angular.isUndefined(this.repeat.months))
       // TODO: initialize this.repeat.months with month of start date
       this.repeat.months = [];
@@ -607,7 +611,7 @@
         _this.sendAppointmentNotifications = Component.$Preferences.defaults.SOGoAppointmentSendEMailNotifications;
       });
     }
-    else {
+    else if (angular.isUndefined(data.$hasAlarm)) {
       this.$hasAlarm = angular.isDefined(data.alarm);
     }
 
@@ -639,10 +643,10 @@
   Component.prototype.hasCustomRepeat = function() {
     var b = angular.isDefined(this.repeat) &&
         (this.repeat.interval > 1 ||
-         this.repeat.days && this.repeat.days.length > 0 ||
-         this.repeat.monthdays && this.repeat.monthdays.length > 0 ||
-         this.repeat.months && this.repeat.months.length > 0 ||
-         this.repeat.month && this.repeat.month.day);
+         angular.isDefined(this.repeat.days) && this.repeat.days.length > 0 ||
+         angular.isDefined(this.repeat.monthdays) && this.repeat.monthdays.length > 0 ||
+         angular.isDefined(this.repeat.months) && this.repeat.months.length > 0 ||
+         angular.isDefined(this.repeat.month) && angular.isDefined(this.repeat.month.type));
     return b;
   };
 
@@ -1257,7 +1261,7 @@
     var component = {};
     angular.forEach(this, function(value, key) {
       if (key != 'constructor' &&
-          key[0] != '$' &&
+          (key == '$hasAlarm' || key[0] != '$') &&
           key != 'blocks') {
         component[key] = angular.copy(value);
       }
