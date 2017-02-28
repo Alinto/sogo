@@ -5,7 +5,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
   <md-dialog flex="60" flex-sm="80" flex-xs="100">
-    <form name="eventForm" ng-submit="editor.save(eventForm)">
+    <form name="eventForm" class="md-inline-form" ng-submit="editor.save(eventForm)">
       <md-toolbar ng-class="editor.component.getClassName('bg')">
         <div class="md-toolbar-tools">
           <md-icon class="material-icons sg-icon-toolbar-bg">event</md-icon>
@@ -149,7 +149,7 @@
               <div class="pseudo-input-container">
                 <label class="pseudo-input-label"><var:string label:value="From"/></label>
               </div>
-              <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
+              <div layout="row" layout-align="start end" layout-wrap="layout-wrap">
                 <md-datepicker ng-model="editor.component.start"
                                ng-change="editor.adjustStartTime()"
                                label:md-placeholder="From"><!-- date picker --></md-datepicker>
@@ -162,7 +162,7 @@
               <div class="pseudo-input-container">
                 <label class="pseudo-input-label"><var:string label:value="To"/></label>
               </div>
-              <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
+              <div layout="row" layout-align="start end" layout-wrap="layout-wrap">
                 <md-datepicker ng-model="editor.component.end"
                                ng-change="editor.adjustEndTime()"
                                label:md-placeholder="To"><!-- date picker --></md-datepicker>
