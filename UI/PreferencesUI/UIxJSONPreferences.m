@@ -283,6 +283,9 @@ static SoProduct *preferencesProduct = nil;
   if (![[defaults source] objectForKey: @"SOGoMailDisplayRemoteInlineImages"])
     [[defaults source] setObject: [defaults mailDisplayRemoteInlineImages] forKey: @"SOGoMailDisplayRemoteInlineImages"];
 
+  if (![[defaults source] objectForKey: @"SOGoMailAutoSave"])
+    [[defaults source] setObject: [defaults mailAutoSave] forKey: @"SOGoMailAutoSave"];
+
   // Populate default mail labels, based on the user's preferred language
   if (![[defaults source] objectForKey: @"SOGoMailLabelsColors"])
     {
