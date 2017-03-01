@@ -255,15 +255,39 @@
   /**
    * @ngInject
    */
-  ErrorInterceptor.$inject = ['$rootScope', '$q'];
-  function ErrorInterceptor($rootScope, $q) {
+  ErrorInterceptor.$inject = ['$rootScope', '$q', '$injector'];
+  function ErrorInterceptor($rootScope, $q, $injector) {
     return {
       responseError: function(rejection) {
-        if (/^application\/json/.test(rejection.config.headers.Accept)) {
-          // Broadcast the response error
-          $rootScope.$broadcast('http:Error', rejection);
-        }
-        return $q.reject(rejection);
+          // Handle CAS ticket renewal
+          if (rejection.status == -1) {
+              var iframe = angular.element('<iframe type="hidden" src="' + UserFolderURL + 'recover"></iframe>');
+              iframe.on('load', function() {
+                  var $http = $injector.get('$http');
+
+                  if (rejection.config.method == 'GET') {
+                      return $http({
+                          method: 'GET',
+                          url: rejection.config.url
+                      });
+                  }
+                  else if (rejection.config.method == 'POST') {
+                      return $http({
+                          method: 'POST',
+                          url: rejection.config.url,
+                          data: rejection.data
+                      });
+                  }
+              });
+              document.body.appendChild(iframe[0]);
+          }
+          else {
+              if (/^application\/json/.test(rejection.config.headers.Accept)) {
+                  // Broadcast the response error
+                  $rootScope.$broadcast('http:Error', rejection);
+              }
+              return $q.reject(rejection);
+          }
       }
     };
   }
