@@ -259,38 +259,27 @@
   function ErrorInterceptor($rootScope, $q, $injector) {
     return {
       responseError: function(rejection) {
-          // Handle CAS ticket renewal (TODO: add check on usesCASAuthentication)
-          if (rejection.status == -1) {
-              var deferred = $q.defer();
-              var iframe = angular.element('<iframe class="ng-hide" src="' + UserFolderURL + 'recover"></iframe>');
-
-              iframe.on('load', function() {
-                  var $http = $injector.get('$http');
-
-                  if (rejection.config.method == 'GET') {
-                      $http({
-                          method: 'GET',
-                          url: rejection.config.url
-                      }).then(deferred.resolve, deferred.reject);
-                  }
-                  else if (rejection.config.method == 'POST') {
-                      $http({
-                          method: 'POST',
-                          url: rejection.config.url,
-                          data: rejection.config.data
-                      }).then(deferred.resolve, deferred.reject);
-                  }
-              });
-              document.body.appendChild(iframe[0]);
-              return deferred.promise;
+        var deferred, iframe;
+        // Handle CAS ticket renewal (TODO: add check on usesCASAuthentication)
+        if (rejection.status == -1) {
+          deferred = $q.defer();
+          iframe = angular.element('<iframe class="ng-hide" src="' + UserFolderURL + 'recover"></iframe>');
+          iframe.on('load', function() {
+            // Once the browser has followed the redirection, send the initial request
+            var $http = $injector.get('$http');
+            $http(rejection.config).then(deferred.resolve, deferred.reject);
+            iframe.remove();
+          });
+          document.body.appendChild(iframe[0]);
+          return deferred.promise;
+        }
+        else {
+          if (/^application\/json/.test(rejection.config.headers.Accept)) {
+            // Broadcast the response error
+            $rootScope.$broadcast('http:Error', rejection);
           }
-          else {
-              if (/^application\/json/.test(rejection.config.headers.Accept)) {
-                  // Broadcast the response error
-                  $rootScope.$broadcast('http:Error', rejection);
-              }
-              return $q.reject(rejection);
-          }
+          return $q.reject(rejection);
+        }
       }
     };
   }
