@@ -259,27 +259,30 @@
   function ErrorInterceptor($rootScope, $q, $injector) {
     return {
       responseError: function(rejection) {
-          // Handle CAS ticket renewal
+          // Handle CAS ticket renewal (TODO: add check on usesCASAuthentication)
           if (rejection.status == -1) {
-              var iframe = angular.element('<iframe type="hidden" src="' + UserFolderURL + 'recover"></iframe>');
+              var deferred = $q.defer();
+              var iframe = angular.element('<iframe class="ng-hide" src="' + UserFolderURL + 'recover"></iframe>');
+
               iframe.on('load', function() {
                   var $http = $injector.get('$http');
 
                   if (rejection.config.method == 'GET') {
-                      return $http({
+                      $http({
                           method: 'GET',
                           url: rejection.config.url
-                      });
+                      }).then(deferred.resolve, deferred.reject);
                   }
                   else if (rejection.config.method == 'POST') {
-                      return $http({
+                      $http({
                           method: 'POST',
                           url: rejection.config.url,
-                          data: rejection.data
-                      });
+                          data: rejection.config.data
+                      }).then(deferred.resolve, deferred.reject);
                   }
               });
               document.body.appendChild(iframe[0]);
+              return deferred.promise;
           }
           else {
               if (/^application\/json/.test(rejection.config.headers.Accept)) {
