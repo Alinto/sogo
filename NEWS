@@ -13,6 +13,7 @@ Bug fixes
  - [web] localized mailbox names everywhere (#4040, #4041)
  - [web] hide fab button when printing (#4038)
  - [web] SOGoCalendarWeekdays must now be defined before saving preferences
+ - [web] fixed CAS session timeout handling during XHR requests (#1456)
 
 3.2.7 (2017-02-14)
 ------------------
