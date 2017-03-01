@@ -260,26 +260,26 @@
     return {
       responseError: function(rejection) {
         var deferred, iframe;
-        // Handle CAS ticket renewal (TODO: add check on usesCASAuthentication)
-        if (rejection.status == -1) {
-          deferred = $q.defer();
-          iframe = angular.element('<iframe class="ng-hide" src="' + UserFolderURL + 'recover"></iframe>');
-          iframe.on('load', function() {
-            // Once the browser has followed the redirection, send the initial request
-            var $http = $injector.get('$http');
-            $http(rejection.config).then(deferred.resolve, deferred.reject);
-            iframe.remove();
-          });
-          document.body.appendChild(iframe[0]);
-          return deferred.promise;
-        }
-        else {
-          if (/^application\/json/.test(rejection.config.headers.Accept)) {
+        if (/^application\/json/.test(rejection.config.headers.Accept)) {
+          // Handle CAS ticket renewal (TODO: add check on usesCASAuthentication)
+          if (rejection.status == -1) {
+            deferred = $q.defer();
+            iframe = angular.element('<iframe class="ng-hide" src="' + UserFolderURL + 'recover"></iframe>');
+            iframe.on('load', function() {
+              // Once the browser has followed the redirection, send the initial request
+              var $http = $injector.get('$http');
+              $http(rejection.config).then(deferred.resolve, deferred.reject);
+              iframe.remove();
+            });
+            document.body.appendChild(iframe[0]);
+            return deferred.promise;
+          }
+          else {
             // Broadcast the response error
             $rootScope.$broadcast('http:Error', rejection);
           }
-          return $q.reject(rejection);
         }
+        return $q.reject(rejection);
       }
     };
   }
