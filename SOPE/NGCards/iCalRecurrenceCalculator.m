@@ -161,10 +161,12 @@ static Class yearlyCalcClass  = Nil;
 
 + (NSArray *) _dates: (NSArray *) dateList
 	 withinRange: (NGCalendarDateRange *) limits
+    startingWithDate: (NGCalendarDateRange *) first
 {
   NSMutableArray *newDates;
   NSEnumerator *dates;
   NSCalendarDate *currentDate;
+  NGCalendarDateRange *currentRange;
 
   newDates = [NSMutableArray array];
 
@@ -173,7 +175,10 @@ static Class yearlyCalcClass  = Nil;
     {
       if ([currentDate isKindOfClass: NSStringClass])
 	currentDate = [(NSString *) currentDate asCalendarDate];
-      if ([limits containsDate: currentDate])
+
+      currentRange = [NGCalendarDateRange calendarDateRangeWithStartDate: currentDate
+								 endDate: [currentDate dateByAddingYears: 0 months: 0 days: 0 hours: 0 minutes: 0 seconds: [first duration]]];
+      if ([limits doesIntersectWithDateRange: currentRange])
 	[newDates addObject: currentDate];
     }
 
@@ -191,7 +196,7 @@ static Class yearlyCalcClass  = Nil;
   unsigned int count, maxRanges;
   NSComparisonResult compare;
 
-  dates = [[self _dates: exdates withinRange: limits] objectEnumerator];
+  dates = [[self _dates: exdates withinRange: limits  startingWithDate: first] objectEnumerator];
   while ((currentDate = [dates nextObject]))
     {
       maxRanges = [ranges count];

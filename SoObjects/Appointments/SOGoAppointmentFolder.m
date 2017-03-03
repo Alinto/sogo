@@ -1299,17 +1299,13 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   NSMutableArray *ma;
   NSDictionary *row;
-  NSCalendarDate *rangeEndDate;
   unsigned int count, max;
 
   max = [_records count];
   ma = [NSMutableArray arrayWithCapacity: max];
 
-  // Adjust the range so it ends at midnight. This is necessary when calculating
-  // recurrences of all-day events.
-  rangeEndDate = [[_r endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:1];
   _r = [NGCalendarDateRange calendarDateRangeWithStartDate: [_r startDate]
-						   endDate: rangeEndDate];
+						   endDate: [_r endDate]];
 
   for (count = 0; count < max; count++)
     {
