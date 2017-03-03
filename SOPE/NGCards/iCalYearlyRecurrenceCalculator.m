@@ -191,7 +191,7 @@
 		      for (k = 0; k < [rangesInMonth count] && (repeatCount == 0 || count < repeatCount); k++) {
 			//NSLog(@"*** YEARLY found %@ (count = %i)", [[rangesInMonth objectAtIndex: k] startDate], count);
 			count++;
-			if ([_r containsDateRange: [rangesInMonth objectAtIndex: k]])
+			if ([_r doesIntersectWithDateRange: [rangesInMonth objectAtIndex: k]])
 			  {
 			    [ranges addObject: [rangesInMonth objectAtIndex: k]];
 			    //NSLog(@"*** YEARLY adding %@ (count = %i)", [[rangesInMonth objectAtIndex: k] startDate], count);
@@ -215,7 +215,7 @@
 	      end = [start addTimeInterval: [firstRange duration]];
 	      r = [NGCalendarDateRange calendarDateRangeWithStartDate: start
 							      endDate: end];
-	      if ([_r containsDateRange: r] && (repeatCount == 0 || count < repeatCount))
+	      if ([_r doesIntersectWithDateRange: r] && (repeatCount == 0 || count < repeatCount))
 		{
 		  [ranges addObject: r];
 		  count++;
