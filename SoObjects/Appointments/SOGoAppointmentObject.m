@@ -1991,6 +1991,21 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 }
 
 //
+// Let's check if our CalDAV client has sent us a broken SENT-BY. When Lightning is identity-aware,
+// it'll stupidly send something like this:
+// ORGANIZER;RSVP=TRUE;CN=John Doe;PARTSTAT=ACCEPTED;ROLE=CHAIR;SENT-BY="mail
+// to:mailto:sogo3@example.com":mailto:sogo1@example.com
+//
+- (void) _fixupSentByForPerson: (iCalPerson *) person
+{
+  NSString *sentBy;
+
+  sentBy = [person sentBy];
+  if ([sentBy hasPrefix: @"mailto:"])
+    [person setSentBy: [sentBy substringFromIndex: 7]];
+}
+
+//
 // This method is meant to be the common point of any save operation from web
 // and DAV requests, as well as from code making use of SOGo as a library
 // (OpenChange)
@@ -2067,7 +2082,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       // broken CalDAV client that aren't identity-aware will create the event in Annie's calendar
       // and set Bob as the organizer. We fix this for them. See #3368 for details.
       if (!userIsOrganizer &&
-	  [[context activeUser] hasEmail:  [[event organizer] rfc822Email]])
+	  [[context activeUser] hasEmail: [[event organizer] rfc822Email]])
 	{
 	  [[event organizer] setCn: [ownerUser cn]];
 	  [[event organizer] setEmail: [[ownerUser allEmails] objectAtIndex: 0]];
@@ -2080,6 +2095,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 	  attendees = [event attendeesWithoutUser: ownerUser];
 	  if ([attendees count])
 	    {
+	      [self _fixupSentByForPerson: [event organizer]];
+
 	      if ((ex = [self _handleAddedUsers: attendees fromEvent: event  force: YES]))
 		return ex;
 	      else
@@ -2224,7 +2241,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 	  // broken CalDAV client that aren't identity-aware will create the event in Annie's calendar
 	  // and set Bob as the organizer. We fix this for them.  See #3368 for details.
 	  if (!userIsOrganizer &&
-	      [[context activeUser] hasEmail:  [[newEvent organizer] rfc822Email]])
+	      [[context activeUser] hasEmail: [[newEvent organizer] rfc822Email]])
 	    {
 	      [[newEvent organizer] setCn: [ownerUser cn]];
 	      [[newEvent organizer] setEmail: [[ownerUser allEmails] objectAtIndex: 0]];
@@ -2243,6 +2260,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
             {
 	      // We check ACLs of the 'organizer' - in case someone forges the SENT-BY
 	      NSString *uid;
+
+	      [self _fixupSentByForPerson: [newEvent organizer]];
 
 	      uid = [[oldEvent organizer] uidInContext: context];
 
