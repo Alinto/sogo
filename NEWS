@@ -6,6 +6,7 @@ New features
 
 Enhancements
  - [web] constrain event/task reminder to a positive number
+ - [web] display year in day and week views
 
 Bug fixes
  - [core] handle broken CalDAV clients sending bogus SENT-BY (#3992)
