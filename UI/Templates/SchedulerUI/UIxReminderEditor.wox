@@ -6,7 +6,7 @@
     xmlns:label="OGo:label">
   <div layout="row" layout-wrap="layout-wrap">
     <md-input-container class="md-input-number">
-      <input type="number" label:aria-label="quantity" ng-model="editor.component.alarm.quantity"/>
+      <input type="number" min="0" label:aria-label="quantity" ng-model="editor.component.alarm.quantity"/>
     </md-input-container>
     <md-input-container>
       <md-select label:aria-label="Reminder units" ng-model="editor.component.alarm.unit">
