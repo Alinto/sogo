@@ -8,6 +8,7 @@ New features
 
 Bug fixes
  - [core] remove all alarms before sending IMIP replies (#3925)
+ - [core] fixed handling of exdates and proper intersection for fbinfo (#4051)
  - [eas] improved EAS parameters parsing (#4003)
  - [eas] properly handle canceled appointments
 
