@@ -78,7 +78,7 @@
                 <label>
                   <var:string label:value="Organization"/>
                 </label>
-                <input type="text" ng-model="editor.card.c_org"/>
+                <input type="text" ng-model="editor.card.org"/>
               </md-input-container>
               <md-input-container flex="40" flex-xs="100">
                 <label>
@@ -94,23 +94,23 @@
               </md-input-container>
             </div>
 
-            <!-- org units -->
-            <div class="attr" ng-repeat="unit in editor.card.orgUnits">
+            <!-- other orgs -->
+            <div class="attr" ng-repeat="org in editor.card.orgs">
               <div layout="row" layout-align="start center">
-                <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('orgUnits', $index)">
+                <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('orgs', $index)">
                   <md-icon>remove_circle</md-icon>
                 </md-button>
                 <md-input-container class="md-flex">
                   <label>
                     <var:string label:value="Organization Unit"/>
                   </label>
-                  <input type="text" ng-model="unit.value"
-                         sg-focus-on="orgUnit_{{$index}}"/>
+                  <input type="text" ng-model="org.value"
+                         sg-focus-on="org_{{$index}}"/>
                 </md-input-container>
               </div>
             </div>
             <div class="md-layout-margin" layout="row" layout-align="start center">
-              <md-button class="md-icon-button" type="button" ng-click="editor.addOrgUnit($event)">
+              <md-button class="md-icon-button" type="button" ng-click="editor.addOrg($event)">
                 <md-icon>add_circle</md-icon>
               </md-button>
               <label class="button-label">

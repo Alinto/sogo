@@ -1,18 +1,18 @@
 /*
-  Copyright (C) 2005-2016 Inverse inc.
+  Copyright (C) 2005-2017 Inverse inc.
 
   This file is part of SOGo.
- 
+
   SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
- 
+
   SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
- 
+
   You should have received a copy of the GNU Lesser General Public
   License along with OGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
@@ -69,7 +69,7 @@
   categoryLabels = [[self labelForKey: @"contacts_category_labels"] componentsSeparatedByString: @","];
   if (!categoryLabels)
     categoryLabels = [NSArray array];
-  
+
   return [categoryLabels trimmedComponents];
 }
 
@@ -99,33 +99,6 @@
     }
 
   return cats;
-}
-
-- (NSArray *) orgUnits
-{
-  NSMutableArray *orgUnits;
-  NSArray *values;
-  CardElement *org;
-  NSString *service;
-  NSUInteger count, max;
-
-  org = [card org];
-  values = [org valuesForKey: @""];
-  max = [values count];
-  if (max > 1)
-    {
-      orgUnits = [NSMutableArray arrayWithCapacity: max];
-      for (count = 1; count < max; count++)
-        {
-          service = [org flattenedValueAtIndex: count forKey: @""];
-          if ([service length] > 0)
-            [orgUnits addObject: [NSDictionary dictionaryWithObject: service forKey: @"value"]];
-        }
-    }
-  else
-    orgUnits = nil;
-
-  return orgUnits;
 }
 
 - (NSArray *) categories
@@ -267,9 +240,13 @@
  * @apiSuccess (Success 200) {String} [nickname]           Nickname
  * @apiSuccess (Success 200) {String} [c_sn]               Lastname
  * @apiSuccess (Success 200) {String} [c_fn]               Fullname
+ * @apiSuccess (Success 200) {String} [title]              Title
+ * @apiSuccess (Success 200) {String} [role]               Role
  * @apiSuccess (Success 200) {String} [c_screenname]       Screen Name (X-AIM for now)
  * @apiSuccess (Success 200) {String} [tz]                 Timezone
- * @apiSuccess (Success 200) {String} [notes]              Notes
+ * @apiSuccess (Success 200) {String} [org]                Main organization
+ * @apiSuccess (Success 200) {String[]} [orgs]             Additional organizations
+ * @apiSuccess (Success 200) {String[]} [notes]            Notes
  * @apiSuccess (Success 200) {String[]} allCategories      All available categories
  * @apiSuccess (Success 200) {Object[]} [categories]       Categories assigned to the card
  * @apiSuccess (Success 200) {String} categories.value     Category name
@@ -297,6 +274,7 @@
   id <WOActionResults> result;
   id o;
   SOGoObject <SOGoContactObject> *contact;
+  NSArray *values;
   NSMutableDictionary *data;
 
   contact = [self clientObject];
@@ -341,12 +319,13 @@
   o = [card role];
   if ([o length] > 0)
     [data setObject: o forKey: @"role"];
-  o = [self orgUnits];
-  if ([o count] > 0)
-    [data setObject: o forKey: @"orgUnits"];
-  o = [card workCompany];
-  if ([o length] > 0)
-    [data setObject: o forKey: @"c_org"];
+  values = [card organizations];
+  if ([values count])
+    {
+      [data setObject: [values objectAtIndex: 0] forKey: @"org"];
+      if ([values count] > 1)
+        [data setObject: [values subarrayWithRange: NSMakeRange(1, [values count] - 1)] forKey: @"orgs"];
+    }
 
   o = [card birthday];
   if (o)
@@ -376,7 +355,7 @@
 
   result = [self responseWithStatus: 200
                           andString: [data jsonRepresentation]];
-  
+
   return result;
 }
 

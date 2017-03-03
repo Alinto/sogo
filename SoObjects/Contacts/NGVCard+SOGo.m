@@ -261,9 +261,9 @@ convention:
   NSInteger year, yearOfToday, month, day;
   CardElement *element;
   NSCalendarDate *now;
-  NSArray *units;
-  NSString *fn, *ou;
-  id o;
+  NSMutableArray *units;
+  NSString *fn;
+  id o, ou;
 
   [self setNWithFamily: [ldifRecord objectForKey: @"sn"]
                  given: [ldifRecord objectForKey: @"givenname"]
@@ -306,13 +306,17 @@ convention:
 
   ou = [ldifRecord objectForKey: @"ou"];
   if ([ou isKindOfClass: [NSArray class]])
-    units = [NSArray arrayWithArray: (NSArray *)ou];
+    units = [NSMutableArray arrayWithArray: (NSArray *)ou];
   else if (ou)
-    units = [NSArray arrayWithObject: ou];
+    units = [NSMutableArray arrayWithObject: ou];
   else
-    units = nil;
-  [self setOrg: [ldifRecord objectForKey: @"o"]
-         units: units];
+    units = [NSMutableArray array];
+  o = [ldifRecord objectForKey: @"o"];
+  if ([o isKindOfClass: [NSArray class]])
+    [units addObjectsFromArray: (NSArray *)o];
+  else if (ou)
+    [units addObject: o];
+  [self setOrganizations: units];
 
   [self _setPhoneValues: ldifRecord];
   [self _setEmails: ldifRecord];
@@ -710,6 +714,53 @@ convention:
     company = nil;
 
   return company;
+}
+
+- (void) setOrganizations: (NSArray *) newOrganizations
+{
+  CardElement *org;
+  NSArray *elements;
+  NSUInteger count, max;
+
+  // First remove all current org properties
+  elements = [self childrenWithTag: @"org"];
+  [self removeChildren: elements];
+
+  org = [self uniqueChildWithTag: @"org"];
+  max = [newOrganizations count];
+  for (count = 0; count < max; count++)
+    {
+      [org setSingleValue: [newOrganizations objectAtIndex: count]
+                  atIndex: count forKey: @""];
+    }
+}
+
+- (NSArray *) organizations
+{
+  CardElement *org;
+  NSArray *organizations;
+  NSEnumerator *orgs;
+  NSMutableArray *flattenedOrganizations;
+  NSString *value;
+  NSUInteger count, max;
+
+  // Get all org properties
+  orgs = [[self childrenWithTag: @"org"] objectEnumerator];
+  flattenedOrganizations = [NSMutableArray array];
+  while ((org = [orgs nextObject]))
+    {
+      // Get all values of each org property
+      organizations = [org valuesForKey: @""];
+      max = [organizations count];
+      for (count = 0; count < max; count++)
+        {
+          value = [[organizations objectAtIndex: count] lastObject];
+          if ([value length])
+            [flattenedOrganizations addObject: value];
+        }
+    }
+
+  return flattenedOrganizations;
 }
 
 - (NSString *) fullName

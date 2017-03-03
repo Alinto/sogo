@@ -16,6 +16,7 @@ Bug fixes
  - [web] SOGoCalendarWeekdays must now be defined before saving preferences
  - [web] fixed CAS session timeout handling during XHR requests (#1456)
  - [web] exposed default value of SOGoMailAutoSave (#4053)
+ - [web] fixed handling of contact organizations (#4028)
 
 3.2.7 (2017-02-14)
 ------------------

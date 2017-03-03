@@ -21,7 +21,7 @@
     vm.categories = {};
     vm.userFilterResults = [];
     vm.transformCategory = transformCategory;
-    vm.addOrgUnit = addOrgUnit;
+    vm.addOrg = addOrg;
     vm.addBirthday = addBirthday;
     vm.addScreenName = addScreenName;
     vm.addEmail = addEmail;
@@ -71,9 +71,9 @@
       else
         return input;
     }
-    function addOrgUnit() {
-      var i = vm.card.$addOrgUnit('');
-      focus('orgUnit_' + i);
+    function addOrg() {
+      var i = vm.card.$addOrg({ value: '' });
+      focus('org_' + i);
     }
     function addBirthday() {
       vm.card.birthday = new Date();

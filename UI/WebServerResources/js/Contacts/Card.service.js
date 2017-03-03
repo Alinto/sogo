@@ -157,6 +157,8 @@
     if (this.isgroup)
       this.c_component = 'vlist';
     this.$avatarIcon = this.$isList()? 'group' : 'person';
+    if (data.orgs && data.orgs.length)
+      this.orgs = _.map(data.orgs, function(org) { return { 'value': org }; });
     if (data.notes && data.notes.length)
       this.notes = _.map(data.notes, function(note) { return { 'value': note }; });
     else if (!this.notes || !this.notes.length)
@@ -300,8 +302,8 @@
         names.push(this.c_sn);
       if (names.length > 0)
         fn = names.join(' ');
-      else if (this.c_org && this.c_org.length > 0) {
-        fn = this.c_org;
+      else if (this.org && this.org.length > 0) {
+        fn = this.org;
       }
       else if (this.emails && this.emails.length > 0) {
         email = _.find(this.emails, function(i) { return i.value !== ''; });
@@ -317,12 +319,8 @@
     var description = [];
     if (this.title) description.push(this.title);
     if (this.role) description.push(this.role);
-    if (this.orgUnits && this.orgUnits.length > 0)
-      _.forEach(this.orgUnits, function(unit) {
-        if (unit.value !== '')
-          description.push(unit.value);
-      });
-    if (this.c_org) description.push(this.c_org);
+    if (this.org) description.push(this.org);
+    if (this.orgs) description = _.concat(description, _.map(this.orgs, 'value'));
     if (this.description) description.push(this.description);
 
     return description.join(', ');
@@ -391,20 +389,14 @@
     return this.c_component == 'vlist' && condition;
   };
 
-  Card.prototype.$addOrgUnit = function(orgUnit) {
-    if (angular.isUndefined(this.orgUnits)) {
-      this.orgUnits = [{value: orgUnit}];
+  Card.prototype.$addOrg = function(org) {
+    if (angular.isUndefined(this.orgs)) {
+      this.orgs = [org];
     }
-    else {
-      for (var i = 0; i < this.orgUnits.length; i++) {
-        if (this.orgUnits[i].value == orgUnit) {
-          break;
-        }
-      }
-      if (i == this.orgUnits.length)
-        this.orgUnits.push({value: orgUnit});
+    else if (org != this.org && !_.includes(this.orgs, org)) {
+      this.orgs.push(org);
     }
-    return this.orgUnits.length - 1;
+    return this.orgs.length - 1;
   };
 
   // Card.prototype.$addCategory = function(category) {
@@ -614,6 +606,10 @@
       else
         card.birthday = '';
     }
+
+    // We flatten the organizations to an array of strings
+    if (this.orgs)
+      card.orgs = _.map(this.orgs, 'value');
 
     // We flatten the notes to an array of strings
     if (this.notes)

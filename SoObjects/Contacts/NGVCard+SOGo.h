@@ -1,6 +1,6 @@
 /* NGVCard+SOGo.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2016 Inverse inc.
+ * Copyright (C) 2009-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,6 +42,9 @@
 - (NSString *) fullName;
 - (NSArray *) emails;
 - (NSArray *) secondaryEmails;
+
+- (void) setOrganizations: (NSArray *) newOrganizations;
+- (NSArray *) organizations;
 
 - (NSString *) workPhone;
 - (NSString *) homePhone;
