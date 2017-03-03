@@ -19,6 +19,7 @@ Bug fixes
  - [web] fixed CAS session timeout handling during XHR requests (#1456)
  - [web] exposed default value of SOGoMailAutoSave (#4053)
  - [web] fixed handling of contact organizations (#4028)
+ - [web] fixed handling of attachments in mail editor (#4058, #4063)
 
 3.2.7 (2017-02-14)
 ------------------

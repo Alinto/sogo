@@ -157,7 +157,7 @@
    */
   Mailbox.prototype.init = function(data) {
     var _this = this;
-    if (data.headers) {
+    if (angular.isUndefined(this.uidsMap) || data.headers) {
       this.$isLoading = true;
       this.$messages = [];
       this.uidsMap = {};
