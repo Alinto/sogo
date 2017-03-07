@@ -1775,7 +1775,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 {
   NSArray *allEvents;
   iCalEvent *event;
-  NSUInteger i;
+  NSUInteger i, j;
 
   allEvents = [rqCalendar events];
 
@@ -1808,12 +1808,27 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           if (uid)
             {
               NSDictionary *defaultIdentity;
+	      NSArray *allAttendees;
+	      iCalPerson *attendee;
               SOGoUser *organizer;
+
 
               organizer = [SOGoUser userWithLogin: uid];
               defaultIdentity = [organizer defaultIdentity];
               [[event organizer] setCn: [defaultIdentity objectForKey: @"fullName"]];
               [[event organizer] setEmail: [defaultIdentity objectForKey: @"email"]];
+
+	      // We now check if one of the attendee is also the organizer. If so,
+	      // we remove it. See bug #3905 (https://sogo.nu/bugs/view.php?id=3905)
+	      // for more details. This is a Calendar app bug on Apple Yosemite.
+	      allAttendees = [event attendees];
+
+	      for (j = [allAttendees count]-1; j >= 0; j--)
+		{
+		  attendee = [allAttendees objectAtIndex: j];
+		  if ([organizer hasEmail: [attendee rfc822Email]])
+		    [event removeFromAttendees: attendee];
+		}
             }
         }
     }
@@ -1981,9 +1996,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
         [self _decomposeGroupsInRequestCalendar: calendar];
       
       if ([[ownerUser domainDefaults] iPhoneForceAllDayTransparency] && [rq isIPhone])
-        {
-          [self _adjustTransparencyInRequestCalendar: calendar];
-        }
+	[self _adjustTransparencyInRequestCalendar: calendar];
       
       [self _adjustEventsInRequestCalendar: calendar];
       [self adjustClassificationInRequestCalendar: calendar];
