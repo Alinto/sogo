@@ -22,6 +22,7 @@ Bug fixes
  - [web] fixed handling of contact organizations (#4028)
  - [web] fixed handling of attachments in mail editor (#4058, #4063)
  - [web] fixed saving draft outside Mail module (#4071)
+ - [web] fixed SCAYT automatic language selection in HTML editor
 
 3.2.7 (2017-02-14)
 ------------------

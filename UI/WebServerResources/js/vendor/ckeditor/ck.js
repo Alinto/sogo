@@ -56,7 +56,16 @@
         if (attr.ckLocale) {
           locale = $parse(attr.ckLocale)($scope);
           options.language = locale;
-          options.scayt_sLang = locale;
+
+          // Pickup the first matching language supported by SCAYT
+          // See http://docs.ckeditor.com/#!/guide/dev_howtos_scayt
+          options.scayt_sLang = _.find(['en_US', 'en_GB', 'pt_BR', 'da_DK', 'nl_NL', 'en_CA', 'fi_FI', 'fr_FR', 'fr_CA', 'de_DE', 'el_GR', 'it_IT', 'nb_NO', 'pt_PT', 'es_ES', 'sv_SE'], function(sLang) {
+            return sLang.lastIndexOf(locale, 0) == 0;
+          }) || 'en_US';
+
+          // Disable caching of the language
+          // See https://github.com/WebSpellChecker/ckeditor-plugin-scayt/issues/126
+          options.scayt_disableOptionsStorage = 'lang';
         }
 
         if (attr.ckMargin) {
