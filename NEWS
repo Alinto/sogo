@@ -20,6 +20,7 @@ Bug fixes
  - [web] exposed default value of SOGoMailAutoSave (#4053)
  - [web] fixed handling of contact organizations (#4028)
  - [web] fixed handling of attachments in mail editor (#4058, #4063)
+ - [web] fixed saving draft outside Mail module (#4071)
 
 3.2.7 (2017-02-14)
 ------------------

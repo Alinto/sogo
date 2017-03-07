@@ -33,7 +33,7 @@
     vm.sendState = false;
     vm.toggleFullscreen = toggleFullscreen;
     vm.uploader = new FileUploader({
-      url: stateMessage.$absolutePath({asDraft: true}) + '/save',
+      url: stateMessage.$absolutePath({asDraft: true, withResourcePath: true}) + '/save',
       autoUpload: true,
       alias: 'attachments',
       removeAfterUpload: false,

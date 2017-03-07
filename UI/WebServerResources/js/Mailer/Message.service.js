@@ -129,6 +129,9 @@
     if (options && options.asDraft && this.draftId) {
       id = buildPath() + '/' + this.draftId; // add draft ID
     }
+    if (options && options.withResourcePath) {
+      id = Message.$$resource.path(id); // return absolute URL
+    }
 
     return id;
   };
