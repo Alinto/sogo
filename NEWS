@@ -11,6 +11,7 @@ Enhancements
 Bug fixes
  - [core] handle broken CalDAV clients sending bogus SENT-BY (#3992)
  - [core] fixed handling of exdates and proper intersection for fbinfo (#4051)
+ - [core] remove attendees that have the same identity as the organizer (#3905)
  - [web] fixed ACL editor in admin module for Safari (#4036)
  - [web] fixed function call when removing contact category (#4039)
  - [web] localized mailbox names everywhere (#4040, #4041)
