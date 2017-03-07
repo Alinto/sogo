@@ -2285,6 +2285,22 @@ function _disposeDialog() {
     }
 }
 
+// Pickup the first matching language supported by SCAYT
+// See http://docs.ckeditor.com/#!/guide/dev_howtos_scayt
+function scaytLang(locale) {
+    var i, langs, lang;
+
+    langs = ['en_US', 'en_GB', 'pt_BR', 'da_DK', 'nl_NL', 'en_CA', 'fi_FI', 'fr_FR', 'fr_CA', 'de_DE', 'el_GR', 'it_IT', 'nb_NO', 'pt_PT', 'es_ES', 'sv_SE'];
+    lang = 'en_US';
+    for (i = 0; i < langs.length; i++)
+        if (langs[i].lastIndexOf(locale, 0) == 0) {
+            lang = langs[i];
+            break;
+        }
+
+    return lang;
+}
+
 function readCookie(name) {
     var foundCookie = null;
 

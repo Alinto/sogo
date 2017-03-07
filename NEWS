@@ -12,6 +12,7 @@ Bug fixes
  - [core] remove attendees that have the same identity as the organizer (#3905)
  - [eas] improved EAS parameters parsing (#4003)
  - [eas] properly handle canceled appointments
+ - [web] fixed SCAYT automatic language selection in HTML editor
 
 2.3.19 (2017-01-09)
 -------------------

@@ -533,7 +533,8 @@ function initMailEditor() {
         CKEDITOR.replace('text',
                          {
                              language : localeCode,
-			     scayt_sLang : localeCode
+                             scayt_disableOptionsStorage : 'lang',
+                             scayt_sLang : scaytLang(localeCode)
                           }
                          );
         CKEDITOR.on('instanceReady', function(event) {
