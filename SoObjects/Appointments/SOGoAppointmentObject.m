@@ -1817,7 +1817,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 {
   NSArray *allEvents;
   iCalEvent *event;
-  NSUInteger i, j;
+  NSUInteger i;
+  int j;
 
   allEvents = [rqCalendar events];
 
