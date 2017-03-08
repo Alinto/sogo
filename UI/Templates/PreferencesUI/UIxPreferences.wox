@@ -849,7 +849,7 @@
                   </md-input-container>
                 </div>
 
-                <md-input-container class="md-block md-flex">
+                <md-input-container class="md-block md-flex md-input-has-placeholder">
                   <label><var:string label:value="Auto reply message"/></label>
                   <var:if condition="vacationHeader.length">
                     <p class="text-preview" md-colors="::{color: 'default-background-600'}"><var:string value="vacationHeader"/></p>
