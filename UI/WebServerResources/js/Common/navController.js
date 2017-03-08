@@ -109,7 +109,10 @@
     // Listen to HTTP errors broadcasted from HTTP interceptor
     $rootScope.$on('http:Error', onHttpError);
 
-    Alarm.getAlarms();
+    if (sgSettings.activeUser('path').calendar) {
+      // Fetch Calendar alarms
+      Alarm.getAlarms();
+    }
   }
 
   angular.module('SOGo.Common')
