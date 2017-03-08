@@ -356,9 +356,17 @@
 	  // we find \r\n\r\n, which is the headers delimiter
 	  r1 = [cleaned_message rangeOfCString: "\r\n\r\n"];
 	  limit = r1.location-1;
-	  r1 = [cleaned_message rangeOfCString: "\r\nBcc: "
+
+	  // We check if the mail actually *starts* with the Bcc: header
+	  r1 = [cleaned_message rangeOfCString: "Bcc: "
 				       options: 0
-					 range: NSMakeRange(0,limit)];
+					 range: NSMakeRange(0,5)];
+
+	  // It does not, let's search in the entire headers
+	  if (r1.location == NSNotFound)
+	    r1 = [cleaned_message rangeOfCString: "\r\nBcc: "
+					 options: 0
+					   range: NSMakeRange(0,limit)];
 
 	  if (r1.location != NSNotFound)
 	    {
@@ -374,7 +382,7 @@
 		    break;
 		}
 
-	      [cleaned_message replaceBytesInRange: NSMakeRange(r1.location, i-r1.location)
+	      [cleaned_message replaceBytesInRange: NSMakeRange(r1.location, i-r1.location+2)
 					 withBytes: NULL
 					    length: 0];
 	    }
