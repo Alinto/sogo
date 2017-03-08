@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.6.2
+ * @license AngularJS v1.6.3
  * (c) 2010-2017 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -3553,6 +3553,10 @@ var ngAnimateSwapDirective = ['$animate', '$rootScope', function($animate, $root
  *   /&#42; As of 1.4.4, this must always be set: it signals ngAnimate
  *     to not accidentally inherit a delay property from another CSS class &#42;/
  *   transition-duration: 0s;
+ *
+ *   /&#42; if you are using animations instead of transitions you should configure as follows:
+ *     animation-delay: 0.1s;
+ *     animation-duration: 0s; &#42;/
  * }
  * .my-animation.ng-enter.ng-enter-active {
  *   /&#42; standard transition styles &#42;/
@@ -4132,6 +4136,7 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
   isFunction  = angular.isFunction;
   isElement   = angular.isElement;
 })
+  .info({ angularVersion: '1.6.3' })
   .directive('ngAnimateSwap', ngAnimateSwapDirective)
 
   .directive('ngAnimateChildren', $$AnimateChildrenDirective)
