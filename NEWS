@@ -13,6 +13,7 @@ Bug fixes
  - [eas] improved EAS parameters parsing (#4003)
  - [eas] properly handle canceled appointments
  - [web] fixed SCAYT automatic language selection in HTML editor
+ - [web] prevent 304 HTTP status code for Ajax requests on IE (#4066)
 
 2.3.19 (2017-01-09)
 -------------------

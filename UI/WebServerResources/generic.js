@@ -468,6 +468,15 @@ function triggerAjaxRequest(url, callback, userdata, content, headers, attempt) 
         activeAjaxRequests++;
         document.animTimer = setTimeout("checkAjaxRequestsState();", 250);
 
+        if (Prototype.Browser.IE) {
+            // Prevent 304 HTTP status code from the server
+            if (url.indexOf('?') >= 0)
+                url += '&';
+            else
+                url += '?';
+            url += 'nc=' + Math.random();
+        }
+
         http.open(method, url, true);
         http.url = url;
         http.paramHeaders = headers;
