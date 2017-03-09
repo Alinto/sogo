@@ -2,7 +2,7 @@
 
 /* Icon's label */
 "Create"      = "Oluştur";
-"Empty Trash" = "Çöp Klasörünü Boşalt";
+"Empty Trash" = "Çöpü Boşalt";
 "Delete"      = "Sil";
 "Expunge"     = "Silip At";
 "Forward"     = "İlet";
@@ -65,10 +65,10 @@
 "Shared Account" = "Paylaşılan Hesap";
 
 /* A mailbox is selected, but no message (only shown on large screens) */
-"No message selected" = "Seçili bir ileti yok";
+"No message selected" = "Seçili ileti yok";
 
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
-"No mailbox selected" = "Seçili bir e-posta klasörü yok";
+"No mailbox selected" = "Seçili e-posta klasörü yok";
 
 /* Mailbox actions */
 /* Compact Folder success message */
@@ -260,9 +260,9 @@
 "Run Junk Mail Controls" = "İstenmeyen İleti Denetimi Yap";
 "Search messages in" = "Aranacak klasör";
 "Search" = "Ara";
-"Search subfolders" = "Alt klasörlerde ara";
-"Match any of the following" = "ifadelerden herhangi birini ara";
-"Match all of the following" = "ifadelerin bütününü  ara";
+"Search subfolders" = "Alt klasörleri ara";
+"Match any of the following" = "kelimelerden herhangi birini ara";
+"Match all of the following" = "ifadenin bütününü  ara";
 "contains" = "içeren";
 "does not contain" = "içermeyen";
 "No matches found" = "Eşleşme bulunamadı";
@@ -319,7 +319,7 @@
 = "İletiler çöpe taşınamıyor. Bu iletileri hemen silmek ister misiniz?";
 
 /* Message editing */
-"error_missingsubject" = "İletiye bir konu başlığı yazılmadı. İletiyi konusuz olarak göndermek istediğinizden emin misiniz?";
+"error_missingsubject" = "İletiye konu başlığı yazılmadı. İletiyi konusuz olarak göndermek istediğinizden emin misiniz?";
 "error_missingrecipients" = "Lütfen en az bir alıcı belirtin.";
 "Send Anyway" = "Yinede Gönder";
 "Error while saving the draft" = "Taslağı kaydederken hata oluştu";
@@ -361,7 +361,7 @@
 "Set as Junk" = "İstenmeyen klasörü olarak tanımla";
 
 "Sort" = "Sıralandır";
-"Order Received" = "Alınan Tarih";
+"Order Received" = "Alındığı Tarih";
 "Descending Order" = "Azalan Sıralama";
 "Back" = "Geri";
 "Copy messages" = "İletileri kopyala";

@@ -79,7 +79,7 @@
 /* alarms */
 "Reminder" = "Hatırlatıcı";
 "Start" = "Başlangıç";
-"Due Date" = "Son Tarih";
+"Due Date" = "Kapanış Tarihi";
 "Location" = "Konum";
 "Snooze" = "Ertele";
 "Snooze for " = "Beklenecek süre";

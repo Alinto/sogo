@@ -52,16 +52,16 @@
 "contacts" = "kişi";
 
 /* No contact matching search criteria */
-"No matching contact" = "Eşleşen bir kişi yok";
+"No matching contact" = "Eşleşen kişi yok";
 
 /* Number of contacts matching search criteria; string is prefixed by number */
 "matching contacts" = "eşleşen kişiler";
 
 /* Number of selected contacts in list */
-"selected" = "seçili";
+"selected" = "kişi seçildi";
 
 /* Empty right pane */
-"No contact selected" = "Seçili bir kişi yok";
+"No contact selected" = "Seçili kişi yok";
 
 /* Tooltips */
 "Create a new address book card" = "Yeni adres kartı oluştur";
@@ -175,7 +175,7 @@
 "%{0} card(s) copied" = "%{0} kart kopyalandı";
 "%{0} card(s) moved" = "%{0} kart taşındı";
 "SoAccessDeniedException" = "Bu adres defterine yazamazsınız.";
-"Forbidden" = "Bu adres defterine yazamazsınız.";
+"Forbidden" = "Yetki aşımı";
 "Invalid Contact" = "Seçili kişi artık mevcut değil.";
 "Unknown Destination Folder" = "Seçilen hedef adres defteri artık mevcut değil.";
 
@@ -199,7 +199,7 @@
 "Uploading" = "Yükleniyor";
 "Done" = "Tamam";
 "An error occured while importing contacts." = "Adresleri içeri aktarırken bir hata oluştu.";
-"No card was imported." = "Hiç bir kart içeri aktarılmadı.";
+"No card was imported." = "İçeri kart aktarılmadı.";
 "A total of %{0} cards were imported in the addressbook." = "Toplam %{0} kart adres defterinine aktarıldı.";
 "Reload" = "Tazele";
 

@@ -44,8 +44,8 @@
 "Add default email addresses" = "Varsayılan e-posta adresi ekle";
 "Days between responses" = "Yanıtlar arasındaki gün sayısı";
 "Do not send responses to mailing lists" = "Yanıtları e-posta listelerine gönderme";
-"Enable auto reply on" = "Otomatik yanıtı şu tarihlerde etkinleştir";
-"Disable auto reply on" = "Otomatik yanıtı şu tarihlerde devre dışı bırak";
+"Enable auto reply on" = "Otomatik yanıt başlangıç tarihi";
+"Disable auto reply on" = "Otomatik yanıt bitiş tarihi";
 "Always send vacation message response" = "Her zaman tatil yanıtı iletisi gönder";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Lütfen otomatik yanıtı etkinleştireceğiniz e-posta adreslerini ve yanıt iletinizi belirleyin.";
@@ -55,7 +55,7 @@
 
 /* forward messages */
 "Forward incoming messages" = "Gelen e-postaları iletirken";
-"Keep a copy" = "Bir kopyasını tut";
+"Keep a copy" = "Bir kopyasını sakla";
 "Please specify an address to which you want to forward your messages."
 = "Lütfen e-postaların iletileceği adresi beilrtin.";
 "You are not allowed to forward your messages to an external email address." = "E-postalarınızı sistem dışındaki bir adrese iletme izniniz yok.";
@@ -112,7 +112,7 @@
 "Day end time" = "Günün bitiş saati";
 "Day start time must be prior to day end time." = "Günün başlangıç saati, günün bitiş saatinden önce olmalı.";
 "Week days to display" = "Gösterilen günler";
-"Show time as busy outside working hours" = "Mesai saati haricindeki zamanı meşgul olarak göster";
+"Show time as busy outside working hours" = "Mesai dışındaki saatleri meşgul olarak göster";
 "First week of year" = "Yılın ilk haftası";
 "Enable reminders for Calendar items" = "Takvim ögeleri için hatırlatıcıları etkinleştir";
 "Play a sound when a reminder comes due" = "Hatırlatma zamanı geldiğinde sesli olarak uyar";
@@ -150,7 +150,7 @@
 "Show subscribed mailboxes only" = "Sadece üye olunan e-posta klasörlerini göster";
 "Synchronize only default mail folders (EAS)" = "Sadece varsayılan e-posta klasörlerini eşitle (EAS)";
 "Sort messages by threads" = "İletileri diziler halinde sırala";
-"When sending mail, add unknown recipients to my" = "Gönderilen iletideki alıcıları aşağıdaki defterime ekle";
+"When sending mail, add unknown recipients to my" = "Gönderilen iletide bulunan yeni kişileri, aşağıdaki defterime ekle";
 "Address Book" = "Adres Defteri";
 "Forward messages" = "Başkasına İletilen e-postayı";
 "messageforward_inline" = "İletinin İçine Ekle";
@@ -160,18 +160,18 @@
 "replyplacement_below" = "Yanıtımı asıl yazının altında başlat";
 "And place my signature" = "Ve imzamı";
 "signatureplacement_above" = "yanıtımın altına yerleştir";
-"signatureplacement_below" = "yazının altına yerleştir";
+"signatureplacement_below" = "asıl yazının altına yerleştir";
 "Compose messages in" = "İleti formatı";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Düz metin";
 
 /* Base font size for messages composed in HTML */
-"Default font size" = "Varsayılan yazı tipi boyutu";
+"Default font size" = "Varsayılan yazı büyüklüğü";
 
 "Display remote inline images" = "İletiye gömülü harici resimleri";
 "displayremoteinlineimages_never" = "Gösterme";
 "displayremoteinlineimages_always" = "Göster";
-"Auto save every" = "Yazılan iletinin otomatik kaydedilme aralığı";
+"Auto save every" = "Yazdığım iletinin otomatik kaydedilme aralığı";
 "minutes" = "dakika";
 
 /* Contact */
@@ -281,10 +281,10 @@
 /* Return receipts */
 "When I receive a request for a return receipt" = "Alındı bildirim isteği aldığımda";
 "Never send a return receipt" = "Gönderme";
-"Allow return receipts for some messages" = "Aşağıdaki durumlarda alındı bildirimi gönder";
-"If I'm not in the To or Cc of the message" = "Eğer alıcı veya karbon kopya alanında değilsem";
+"Allow return receipts for some messages" = "Aşağıdaki koşullarda alındı bildirimi gönder";
+"If I'm not in the To or Cc of the message" = "Gelen iletinin alıcı veya karbon kopya alanında değilsem";
 "If the sender is outside my domain" = "Eğer gönderen adresi alan adımın dışında ise";
-"In all other cases" = "diğer her koşullarda";
+"In all other cases" = "Diğer her koşulda";
 "Never send" = "Gönderme";
 "Always send" = "Gönder";
 "Ask me" = "Sor";
@@ -309,7 +309,7 @@
 "For incoming messages that" = "Gelen ileti";
 "match all of the following rules" = "aşağıdaki kuralların hepsiyle eşleşiyorsa";
 "match any of the following rules" = "aşağıdaki kurallardan sadece biriyle eşleşiyorsa";
-"match all messages" = "için her koşulda";
+"match all messages" = "her ileti için";
 "Perform these actions" = "Şu eylemleri gerçekleştir";
 "Untitled Filter" = "Başlıksız Süzgeç";
 "Subject" = "Konu";
@@ -326,12 +326,12 @@
 "Flag" = "Yıldız";
 
 "Discard the message" = "İletiyi reddet";
-"File the message in" = "Şurada dosyala";
+"File the message in" = "Şurada kaydet";
 
 /* Select field label of "file message" mail filter action */
 "Mailbox" = "Posta Kutusu";
 
-"Keep the message" = "İletiyi tut";
+"Keep the message" = "İletiyi sakla";
 "Forward the message to" = "E-posta şu adrese ilet";
 
 /* Input field label of "forward" mail filter action */
@@ -343,7 +343,7 @@
 "Message" = "İleti";
 
 "Send a vacation message" = "Tatil iletisi gönder";
-"Stop processing filter rules" = "Süzgeç kurallarının işlenmesini durdur";
+"Stop processing filter rules" = "Süzgeç kurallarını işlenmeyi durdur";
 "is under" = "küçükse";
 "is over" = "büyükse";
 "is" = "şuna eşitse";
