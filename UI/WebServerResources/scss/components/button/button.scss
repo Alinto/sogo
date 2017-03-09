@@ -6,6 +6,16 @@ md-sidenav md-list .md-button {
 }
 
 /**
+ * Overlap fab button by half its height downward
+ */
+.md-button.md-fab-overlap-bottom {
+  &.md-fab-bottom-right,
+  &.md-fab-bottom-left {
+    bottom: -(($button-fab-width + $button-fab-padding)/2);
+  }
+}
+
+/**
  * Keep main fab button visible and either at the bottom right of the list
  * view or at the bottom left of the detail view
  *
