@@ -403,8 +403,12 @@ static BOOL debugLeaks;
 - (WOResponse *) handleException: (NSException *) _exc
                        inContext: (WOContext *) _ctx
 {
-  printf("EXCEPTION: %s\n", [[_exc description] cString]);
-  abort();
+  WOResponse *resp;
+
+  NSLog(@"EXCEPTION: %s\n", [[_exc description] cString]);
+  resp = [WOResponse responseWithRequest: [_ctx request]];
+  [resp setStatus: 501];
+  return resp;
 }
 
 /* runtime maintenance */
