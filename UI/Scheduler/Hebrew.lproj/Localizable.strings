@@ -1,0 +1,603 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+"Create a new event" = "צור ארוע חדש";
+"Create a new task" = "צור משימה חדשה";
+"Edit this event or task" = "ערוך משימה או אירוע";
+"Print the current calendar view" = "הדפס תצוגת לוח שנה נוכחית";
+"Delete this event or task" = "מחק אירוע או משימה";
+"Go to today" = "עבור להיום";
+"Switch to day view" = "החלף לתצוגה יומית";
+"Switch to week view" = "החלף לתצוגת שבועית";
+"Switch to month view" = "החלף לתצוגת חודשית";
+"Switch to multi-columns day view" = "החלף לתצוגה יומית עם עמודות מרובות";
+"Reload all calendars" = "טען מחדש לוחות שנה";
+
+/* Tabs */
+"Date" = "תאריך";
+"Calendars" = "לוחות שנה";
+"No events for selected criteria" = "אין אירועים עבור הקריטריון הנבחר";
+"No tasks for selected criteria" = "אין משימות עבור הקריטריון הנבחר";
+
+/* Day */
+"DayOfTheMonth" = "יום בחודש";
+"dayLabelFormat" = "%m/%d/%Y";
+"today" = "היום";
+"Previous Day" = "יום קודם";
+"Next Day" = "יום הבא";
+
+/* Week */
+"Week" = "שבוע";
+"this week" = "השבוע";
+"Week %d" = "שבוע %d";
+"Previous Week" = "שבוע קודם";
+"Next Week" = "שבוע הבא";
+
+/* Month */
+"this month" = "החודש";
+"Previous Month" = "חודש קודם";
+"Next Month" = "חודש הבא";
+
+/* Year */
+"this year" = "השנה";
+
+/* Menu */
+"Calendar" = "לוח שנה";
+"Contacts" = "אנשי קשר";
+"New Calendar..." = "לוח שנה חדש...";
+"Delete Calendar" = "מחיקת לוח שנה...";
+"Unsubscribe Calendar" = "בטל מנוי ללוח שנה";
+"Sharing..." = "שיתוף...";
+"Export Calendar..." = "יצוא לוח שנה";
+"Import Events..." = "יבוא אירועים";
+"Import Events" = "יבוא לוח שנה";
+"Select an iCalendar file (.ics)." = "בחר קובץ iCalender (.ics)";
+"Upload" = "להעלות";
+"Uploading" = "העלאה";
+"Publish Calendar..." = "לוח שנה ציבורי";
+"Reload Remote Calendars" = "טען מחדש לוחות שנה";
+"Properties" = "מאפיינים...";
+"Done" = "בוצע";
+"An error occurred while importing calendar." = "אירעה שגיאה במהלך יבוא לוח שנה";
+"No event was imported." = "לא הובא ארוע";
+"A total of %{0} events were imported in the calendar." = "סה\"כ {0}% ארועים הובאו ללוח שנה";
+"Compose E-Mail to All Attendees" = "צור אימייל לכל המשתתפים";
+"Compose E-Mail to Undecided Attendees" = "צור אימייל לכל המשתתפים שטרם החליטו";
+
+/* Folders */
+"Personal calendar" = "לוח שנה אישי";
+
+/* Misc */
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "אסור";
+
+/* acls */
+"Access rights to" = "מתן גישה ל";
+"For user" = "למשתמש";
+"Any Authenticated User" = "כל משתמש מאומת";
+"Public Access" = "גישה ציבורית";
+"label_Public" = "ציבורי";
+"label_Private" = "פרטי";
+"label_Confidential" = "שמור";
+"label_Viewer" = "הצג הכל";
+"label_DAndTViewer" = "הצג תאריך ושעה";
+"label_Modifier" = "שנה";
+"label_Responder" = "השב ל";
+"label_None" = "ללא";
+"View All" = "הצג הכל";
+"View the Date & Time" = "הצג תאריך ושעה";
+"Modify" = "שנה";
+"Respond To" = "השב ל";
+"None" = "ללא";
+"This person can create objects in my calendar."
+= "המשתמש הנ\"ל יכול ליצור אובייקטים בלוח השנה שלי.";
+"This person can erase objects from my calendar."
+= "המשתמש הנ\"ל יכול למחוק אובייקטים בלוח השנה שלי.";
+
+/* Button Titles */
+"Subscribe to a Calendar..." = "הירשם ללוח שנה";
+"Remove the selected Calendar" = "מחק את לוח השנה הנבחר";
+"New calendar" = "לוח שנה חדש";
+"Name of the Calendar" = "שם לוח השנה";
+"new" = "חדש";
+"Print view" = "תצוגת הדפסה";
+"edit" = "ערוך";
+"delete" = "מחק";
+"proposal" = "הצעה";
+"Save and Close" = "שמור וסגור";
+"Close" = "סגור";
+"Invite Attendees" = "הזמן משתתפים";
+"Attach" = "צרף";
+"Update" = "עדכן";
+"Cancel" = "ביטול";
+"Reset" = "איפוס";
+"Save" = "שמור";
+"show_rejected_apts" = "הצג פגישות דחויות";
+"hide_rejected_apts" = "הסתר פגישות דחויות";
+
+/* Schedule */
+"Schedule" = "לוח זמנים";
+"No appointments found" = "לא נמצאו פגישות";
+"Meetings proposed by you" = "פגישות המוצעות על ידך";
+"Meetings proposed to you" = "פגישות המוצעות לך";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "פעולה";
+"accept" = "אישור";
+"decline" = "דחיה";
+"more attendees" = "יותר משתתפים";
+"Hide already accepted and rejected appointments" = "הסתר פגישות שכבר אושרו ו/או נדחו";
+"Show already accepted and rejected appointments" = "הצג פגישות שכבר אושרו ו/או נדחו";
+
+/* Print view */
+"LIST" = "רשימה";
+"Print Settings" = "הגדרות הדפסה";
+"Title" = "כותרת";
+"Layout" = "מערך";
+"What to Print" = "מה להדפיס";
+"Options" = "אפשרויות";
+"Tasks with no due date" = "משימות ללא תאריך הגשה";
+"Display working hours only" = "הצד שעות פעילות בלבד";
+"Completed tasks" = "משימות הושלמו";
+"Display events and tasks colors" = "הצג צבעי אירועים ומשימות";
+"Borders" = "תחומים";
+"Backgrounds" = "רקעים";
+
+/* Appointments */
+"Appointment viewer" = "צפייה בפגישות";
+"Appointment editor" = "עורך פגישות";
+"Appointment proposal" = "הצעת פגישה";
+"Appointment on" = "פגישה ב";
+"Start" = "התחלה";
+"End" = "סיום";
+"Due Date" = "תאריך להגשה";
+"Name" = "שם";
+"Email" = "אימייל";
+"Status" = "סטטוס";
+"% complete" = "הושלם";
+"Location" = "מיקום";
+"Add a category" = "הוספץ קטגוריה";
+"Priority" = "דחיפות";
+"Privacy" = "פרטי";
+"Cycle" = "מחזור";
+"Cycle End" = "סוף מחזור";
+"Categories" = "קטגוריות";
+"Classification" = "סיווג";
+"Duration" = "משך זמן";
+"Attendees" = "משתתפים";
+"Resources" = "משאבים";
+"Organizer" = "מארגן";
+"Description" = "תיאור";
+"Document" = "מסמך";
+"Category" = "קטגוריה";
+"Repeat" = "לחזור על";
+"Reminder" = "תזכורת";
+"General" = "כללי";
+"Reply" = "השב";
+"Created by" = "נוצר ע\"י";
+"You are invited to participate" = "הוזמנת להשתתף";
+"Target" = "מטרה";
+"attributes" = "נתונים";
+"attendees" = "משתתפים";
+"delegated from" = "הואצל מ";
+
+/* checkbox title */
+"is private" = "פרטי";
+
+/* classification */
+"Public" = "ציבורי";
+"Private" = "פרטי";
+
+/* text used in overviews and tooltips */
+"empty title" = "כותרת ריקה";
+"private appointment" = "אירוע פרטי";
+"Change..." = "שינוי";
+
+/* Appointments (participation state) */
+"partStat_NEEDS-ACTION" = "אאשר מאוחר יותר";
+"partStat_ACCEPTED" = "אני משתתף";
+"partStat_DECLINED" = "אני לא משתתף";
+"partStat_TENTATIVE" = "אני עלול להשתתף";
+"partStat_DELEGATED" = "אני מאציל";
+"partStat_OTHER" = "אחר";
+
+/* Appointments (error messages) */
+"Conflicts found!" = "נמצאו קונפליקטים!";
+"Invalid iCal data!" = "נתוני iCal שגויים!";
+"Could not create iCal data!" = "לא ניתן ליצור נתוני iCal!";
+
+/* Searching */
+"view_all" = "כולם";
+"view_today" = "היום";
+"view_next7" = "בעוד 7 ימים";
+"view_next14" = "בעוד 14 ימים";
+"view_next31" = "בעוד 31 ימים";
+"view_thismonth" = "החודש";
+"view_future" = "כל האירועים העתידיים";
+"view_selectedday" = "יום נבחר";
+"view_not_started" = "משימות טשר טרם התחילו";
+"view_overdue" = "משימות באיחור";
+"view_incomplete" = "משימות שלא הושלמו";
+"View" = "צפה";
+"Title, category or location" = "כותרת, קטגוריה או מיקום";
+"Entire content" = "כלל התוכן";
+"Search" = "חיפוש";
+"Search attendees" = "חיפוש משתתפים";
+"Search resources" = "חיפוש משאבים";
+"Search appointments" = "חיפוש פגישות";
+"All day Event" = "אירוע באורך יום שלם";
+"check for conflicts" = "בדיקת קונפליקטים";
+"URL" = "URL";
+"newAttendee" = "הוספת משתתף";
+
+/* calendar modes */
+"Overview" = "סקירה כללית";
+"Chart" = "טבלה";
+"List" = "רשימה";
+"Columns" = "עמודות";
+
+/* Priorities */
+"prio_0" = "לא צויין";
+"prio_1" = "גבוהה";
+"prio_2" = "גבוהה";
+"prio_3" = "גבוהה";
+"prio_4" = "גבוהה";
+"prio_5" = "רגילה";
+"prio_6" = "נמוכה";
+"prio_7" = "נמוכה";
+"prio_8" = "נמוכה";
+"prio_9" = "נמוכה";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "אירוע ציבורי";
+"CONFIDENTIAL_vevent" = "אירוע סודי";
+"PRIVATE_vevent" = "אירוע פרטי";
+"PUBLIC_vtodo" = "משימה ציבורית";
+"CONFIDENTIAL_vtodo" = "משימה סודית";
+"PRIVATE_vtodo" = "משימה פרטית";
+
+/* status type */
+"status_" = "לא צויין";
+"status_NOT-SPECIFIED" = "לא צויין";
+"status_TENTATIVE" = "זמני";
+"status_CONFIRMED" = "אישור";
+"status_CANCELLED" = "בטל";
+"status_NEEDS-ACTION" = "דרושה פעולה";
+"status_IN-PROCESS" = "בתהליך";
+"status_COMPLETED" = "הושלם ב";
+
+/* Priority level */
+"low" = "נמוך";
+
+/* Priority level */
+"normal" = "רגיל";
+
+/* Priority level */
+"high" = "גבוהה";
+
+/* Cycles */
+"cycle_once" = "פעם בתקופה";
+"cycle_daily" = "מחזור_יומי";
+"cycle_weekly" = "מחזור_שבועי";
+"cycle_2weeks" = "מחזור_שבועיים";
+"cycle_4weeks" = "מחזור_4_שבועות";
+"cycle_monthly" = "מחזור_חודשי";
+"cycle_weekday" = "מחזור_יום_חול";
+"cycle_yearly" = "מחזור_שנתי";
+"cycle_end_never" = "מחזור_ללא_סוף";
+"cycle_end_until" = "מחזור_עד_הסוף";
+"Recurrence pattern" = "תבנית מחזוריות";
+"Range of recurrence" = "טווך מחזוריות";
+"Daily" = "כל יום";
+"Multi-Columns" = "עמודות-מרובות";
+"Weekly" = "כל שבוע";
+"Monthly" = "כל חודש";
+"Yearly" = "כל שנה";
+"Every" = "כל";
+"Days" = "ימים";
+"Week(s)" = "שבוע";
+"On" = "על";
+"Month(s)" = "חודש(ים)";
+
+/* [Event recurrence editor] Ex: _The_ first Sunday */
+"The" = "ה";
+"Recur on day(s)" = "לחזור ביום(ימים)";
+"Year(s)" = "שנה(שנים)";
+
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
+"cycle_of" = "מתוך";
+"No end date" = "ללא תאריך סיום";
+"Create" = "צור";
+"appointment(s)" = "פגישה(פגישות)";
+"Repeat until" = "חזור עד";
+"End Repeat" = "סיים חזרה";
+"Never" = "אף פעם";
+"After" = "לאחר";
+"On Date" = "בתאריך";
+"times" = "זמנים";
+"First" = "ראשון";
+"Second" = "שניות";
+"Third" = "שלישי";
+"Fourth" = "רביעי";
+"Fift" = "חמישי";
+"Last" = "אחרון";
+
+/* Appointment categories */
+"category_none" = "ללא";
+"category_labels" = "יום השנה,יום הולדת,עסקים,קריאות,לקוחות,מתחרים,צרכן,מועדפים,מעקב,מתנות,חגים,רעיונות,פגישות,נושאים,שונות,פרטי,פרוייקטים,חגים ציבוריים,סטטוס,ספקים,נסיעות,חופשה";
+"repeat_NEVER" = "לא חוזר";
+"repeat_DAILY" = "כל יום";
+"repeat_WEEKLY" = "שבועי";
+"repeat_BI-WEEKLY" = "דו-שבועי";
+"repeat_EVERY WEEKDAY" = "כל יום חול";
+"repeat_MONTHLY" = "כל חודש";
+"repeat_YEARLY" = "כל שנה";
+"repeat_CUSTOM" = "מותאם אישית...";
+"reminder_NONE" = "ללא תזכורת";
+"reminder_5_MINUTES_BEFORE" = "5 דקות לפני";
+"reminder_10_MINUTES_BEFORE" = "10 דקות לפני";
+"reminder_15_MINUTES_BEFORE" = "15 דקות לפני";
+"reminder_30_MINUTES_BEFORE" = "30 דקות לפני";
+"reminder_45_MINUTES_BEFORE" = "45 דקות לפני";
+"reminder_1_HOUR_BEFORE" = "שעה לפני";
+"reminder_2_HOURS_BEFORE" = "שעתיים לפני";
+"reminder_5_HOURS_BEFORE" = "5 שעות לפני";
+"reminder_15_HOURS_BEFORE" = "15 שעות לפני";
+"reminder_1_DAY_BEFORE" = "יום לפני";
+"reminder_2_DAYS_BEFORE" = "יומיים לפני";
+"reminder_1_WEEK_BEFORE" = "שבוע לפני";
+"reminder_CUSTOM" = "מותאם אישית...";
+"reminder_MINUTES" = "דקות";
+"reminder_HOURS" = "שעות";
+"reminder_DAYS" = "ימים";
+"reminder_WEEKS" = "שבועות";
+"reminder_BEFORE" = "לפני";
+"reminder_AFTER" = "אחרי";
+"reminder_START" = "התחלת האירוע";
+"reminder_END" = "סיום האירוע";
+"Reminder Details" = "פרטי תזכורת";
+"Choose a Reminder Action" = "בחר פעולה עבור תזכורת";
+"Show an Alert" = "הצג התראה";
+"Send an E-mail" = "שליחת אימייל";
+"Email Organizer" = "מארגן אימיילים";
+"Email Attendees" = "שלח אימייל למשתתפים";
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* Arial label for reminder units */
+"Reminder units" = "יחידות תזכורת";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "עמדת תזכורת";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "יחוס תזכורת";
+
+/* transparency */
+"Show Time as Free" = "הצג זמן כפנוי";
+
+/* email notifications */
+"Send Appointment Notifications" = "שלח התראות על פגישה";
+"From" = "מאת";
+"To" = "עבור";
+
+/* validation errors */
+validate_notitle           = "לא נבחרה כותרת, להמשיך ללא?";
+validate_invalid_startdate = "תאריך התחלה שגויה";
+validate_invalid_enddate   = "תאריך סיום שגויה";
+validate_endbeforestart    = "תאריך הסיום שהזנת מתקיימת לפני תאריך התחלה";
+validate_untilbeforeend    = "חזרה חייבת להיגמר לאחר ההתרחשות הראשונה";
+
+"Events" = "אירועים";
+"Tasks" = "משימות";
+"Show completed tasks" = "הצג משימות שהושלמו";
+
+/* tabs */
+"Task" = "משימה";
+"Event" = "אירוע";
+"Recurrence" = "מחזוריות";
+
+/* toolbar */
+"New Event" = "אירוע חדש";
+"New Task" = "משימה חדשה";
+"Edit" = "ערוך";
+"Delete" = "מחק";
+"Go to Today" = "עבור להיום";
+"Day View" = "צפיית יום";
+"Week View" = "צפיית שבוע";
+"Month View" = "צפיית חודש";
+"Reload" = "טען מחדש";
+
+/* Number of selected components in events or tasks list */
+"selected" = "מסומנים";
+"eventPartStatModificationError" = "שינוי סטטוס השתתפותך לא הצליח";
+
+/* menu */
+"New Event..." = "אירוע חדש...";
+"New Task..." = "משימה חדשה...";
+"Edit Selected Event..." = "ערוך אירוע נבחר...";
+"Delete Selected Event" = "מחק אירוע נבחר";
+"Select All" = "בחר הכל";
+"Workweek days only" = "ימי עבודה בלבד";
+"Tasks in View" = "משימות מוצגות";
+"eventDeleteConfirmation" = "האירוע(ים) הבא(ים) ימחקו:";
+"taskDeleteConfirmation" = "המשימה(ות) הבאה(ות) ימחקו:";
+"Would you like to continue?" = "האם ברצונך להמשיך?";
+"You cannot remove nor unsubscribe from your personal calendar."
+= "לא ניתן להסיר או למחוק הרשמה עבור לוח שנה האישי שלך.";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "האם ברצונך למחוק את לוח השנה \"%{0}\"?";
+
+/* Legend */
+"Participant" = "משתתף";
+"Optional Participant" = "משתתף אופציונלי";
+"Non Participant" = "לא משתתף";
+"Chair" = "מושב";
+"Needs action" = "דרושה פעולה";
+"Accepted" = "מאשר";
+"Declined" = "דחיה";
+"Tentative" = "זמני";
+"Free" = "חינם";
+"Busy" = "עסוק";
+"Maybe busy" = "אולי עסוק";
+"No free-busy information" = "אין מידע לגבי סטטוס פנוי/לא פנוי";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot" = "הצעת משבצת זמן";
+"Zoom" = "זום";
+"Previous slot" = "משבצת קודמת";
+"Next slot" = "משבצת הבאה";
+"Previous hour" = "שעה קודמת";
+"Next hour" = "שעה הבאה";
+"Work days only" = "ימי עבודה בלבד";
+"The whole day" = "כל היום";
+"Between" = "ביניהם";
+"and" = "ו";
+"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
+= "קיימת התנגשות זמנים עם משתתף אחד או יותר\nהאם ברצונך לשמור את ההגדרות הנוכחיות בכל זאת?";
+
+/* events list */
+"Due" = "מגיע";
+"(Private Event)" = "(אירוע פרטי)";
+vevent_class0 = "(אירוע ציבורי)";
+vevent_class1 = "(אירוע פרטי)";
+vevent_class2 = "(אירוע סודי)";
+
+/* tasks list */
+"Descending Order" = "סדר יורד";
+vtodo_class0 = "(משימה ציבורית)";
+vtodo_class1 = "(משימה פרטית)";
+vtodo_class2 = "(משימה סודית)";
+"closeThisWindowMessage" = "תודה רבה! כעת ניתן לסגור חלון זה או לצפות ב";
+"Multicolumn Day View" = "רב-עמודות צפייה ביום";
+"Please select an event or a task." = "נא לבחור אירוע או משימה.";
+"editRepeatingItem" = "הפריט בעריכה הינו פריט החוזר על עצמו. האם ברצונך לערוך את כל הפריטים או רק את הפריט הנבחר?";
+"button_thisOccurrenceOnly" = "אירוע זה בלבד";
+"button_allOccurrences" = "כל האירועים";
+"Edit This Occurrence" = "ערוך אירוע זה";
+"Edit All Occurrences" = "ערוך את כל האירועים";
+"Update This Occurrence" = "עדכון אירוע זה";
+"Update All Occurrences" = "עדכן את כל האירועים";
+
+/* Properties dialog */
+"Color" = "צבע";
+"Include in free-busy" = "הוסף לפנוי-לא פנוי";
+"Synchronization" = "סינכרון";
+"Synchronize" = "לסנכרן";
+"Tag" = "תגית";
+"Display" = "הצגה";
+"Show alarms" = "הצג התראות";
+"Show tasks" = "הצג משימות";
+"Notifications" = "עדכונים";
+"Receive a mail when I modify my calendar" = "קבל אימייל כאשר אני עורך את לוח השנה שלי";
+"Receive a mail when someone else modifies my calendar" = "קבל אימייל כאשר גורם אחר עורך את לוח השנה שלי";
+"When I modify my calendar, send a mail to" = "כאשר אני עורך את לוח השנה שלי, שלח מייל ל";
+"Email Address" = "כתובת אימייל";
+"Export" = "יצוא";
+
+
+/* Show only the calendar for which the menu is displayed */ 
+"Show Only This Calendar" = "הצג רק את הלוח שנה הזה";
+
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "הצג את כל הלוחות שנה";
+
+"Links to this Calendar" = "קישורים לרישמת אנשי קשר";
+"Authenticated User Access" = "גישת משתמשים מאומתים";
+"CalDAV URL" = "CalDAV URL";
+"WebDAV ICS URL" = "WebDAV ICS URL";
+"WebDAV XML URL" = "WebDAV XML URL";
+
+/* Error messages */
+"dayFieldInvalid" = "נא לציין מספר ימים גדול או שווה ל-1.";
+"weekFieldInvalid" = "נא לציין מספר שבועות גדול או שווה ל-1.";
+"monthFieldInvalid" = "נא לציין מספר חודשים גדול או שווה ל-1.";
+"monthDayFieldInvalid" = "נא לציין מספר יום בחודש גדול או שווה ל-1.";
+"yearFieldInvalid" = "נא לציין מספר שנים גדול או שווה ל-1.";
+"appointmentFieldInvalid" = "נא לציין מספר פגישות גדול או שווה ל-1.";
+"recurrenceUnsupported" = "סוג מחזוריות זה אינו נתמך כעת.";
+"Please specify a calendar name." = "נא לציין שם לוח שנה";
+"tagNotDefined" = "יש לציין תגית על מנת לסנכרן את לוח השנה.";
+"tagAlreadyExists" = "התגית הנבחרת בשימוש על ידי לוח שנה אחר.";
+"tagHasChanged" = "אם תשנו את תגית לוח השנה, יהיה צורך בטעינה מחדש של המידע במכשיר הסלולרי.\nהמשך?";
+"tagWasAdded" = "אם תרצו לסנכרן את הלוח שנה הנבחר, יהיה צורך בטעינה מחדש של המידע במכשיר הסלולרי.\nהמשך?";
+"tagWasRemoved" = "אם תרצו להסיר מסנכרון את הלוח שנה הנבחר, יהיה צורך בטעינה מחדש של המידע במכשיר הסלולרי.\nהמשך?";
+"DestinationCalendarError" = "לוח שנה המקור והיעד זהים. נא להעתיק ללוח שנה אחר.";
+"EventCopyError" = "ההעתקה נכשלה. נא להעתיק ללוח שנה אחר.";
+"Please select at least one calendar" = "בחר לפחות לוח שנה אחד";
+"Open Task..." = "פתיחת משימה";
+"Mark Completed" = "סימון הושלם";
+"Delete Task" = "מחק משימה";
+"Delete Event" = "מחק אירוע";
+"Copy event to my calendar" = "העתק אירוע ללוח השנה שלי";
+"View Raw Source" = "צפייה בקוד מקור";
+"Subscriptions" = "מנויים";
+"Subscribe to a shared folder" = "הירשם לתיקייה משותפת";
+"Subscribe to a web calendar..." = "הירשם ללוח שנה";
+"URL of the Calendar" = "כתובת האתר של לוח השנה";
+"Web Calendar" = "לוח שנה אינטרנטי";
+"Web Calendars" = "לוחות שנה אינטרנטים";
+"Reload on login" = "רענן התחברות";
+"Invalid number." = "מספר לא מזוהה";
+"Please identify yourself to %{0}" = "נא להזדהות בפני %{0}";
+"quantity" = "כמות";
+"Current view" = "תצוגה נוכחית";
+"Selected events and tasks" = "בחירת אירועים ומשימות";
+"Custom date range" = "טווח תאריכים מותאם אישית";
+"Select starting date" = "בחר תאריך התחלה";
+"Select ending date" = "בחר תאריך סיום";
+"Delegated to" = "הואצל ל";
+"Keep sending me updates" = "המשך לשלוח עדכונים";
+"OK" = "אוקיי";
+"Confidential" = "משימה סודית";
+"Enable" = "לאפשר";
+"Filter" = "סינון";
+"Sort" = "מיון";
+"Back" = "חזרה";
+"Day" = "יום";
+"Month" = "חודש";
+"New Appointment" = "פגישה חדשה";
+"filters" = "מסננים";
+"Today" = "היום";
+"More options" = "אפשרויות נוספות";
+"Delete This Occurrence" = "מחק אירוע זה";
+"Delete All Occurrences" = "מחק על האירועים";
+"Add From" = "הוסף משתמש";
+"Add Due" = "הוסף הגשה";
+"Import" = "יבוא";
+"Rename" = "שנה שם";
+"Import Calendar" = "יצוא לוח שנה";
+"Select an ICS file." = "בחר vCard או קובץ LDIF.";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "מנוי לרשימת אנשי קשר נרשם בהצלחה";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "הצג/הסתר פריט";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "היקף חיפוש";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

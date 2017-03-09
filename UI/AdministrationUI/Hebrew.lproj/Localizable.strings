@@ -1,0 +1,26 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "עזרה";
+"Close" = "סגור";
+"Modules" = "מודולים";
+/* Modules short names */
+"ACLs" = "רשימות בקרת גישה";
+/* Modules titles */
+"ACLs_title" = "תקיות משתמשים בניהול רשימות בקרת גישה";
+/* Modules descriptions */
+"ACLs_description" = "<p>מודול האדמיניסטראציה ברשימת בקרת גישה מאפשרת שינוי לרשימות בקרת הגישה ללוח השנה ואנשי הקשר לכל משתמש.<p/>\n<p>לעריכת רשימת בקרת הגישה עבור תקייה של משתמש, יש להקליד את שם המשתמש בשדה החיפוש בחלקו העליון של החלון ולהקליק פעמיים על התקייה הרצויה<p/>";
+"Name or Email" = "שם או כתובת אימייל";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "חיפוש לעריכת הרשאות";
+/* Rights module: Empty search result */
+"No matching user" = "לא נמצאו תוצאות";
+/* Rights module: no selection */
+"No resource selected" = "לא נבחר משאב";
+"Add User" = "הוסף משתמש";
+"Subscribe User" = "רישום משתמש";
+"Rights" = "הרשאות";
+"Search Users" = "חיפוש משתמשים";
+"users found" = "נמצאו תוצאות";
+"No resource" = "לא קיים משאב";
+"Any Authenticated User" = "כל משתמש מאומת";
+"Public Access" = "נקודת גישה פתוחה";

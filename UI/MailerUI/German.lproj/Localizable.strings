@@ -53,7 +53,13 @@
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Willkommen zum SOGo Mailer. Verwenden Sie den Ordnerbaum auf der linken Seite, um in Ihrem E-Mail-Konto zu stöbern!";
 "Read messages"       = "Nachrichten lesen";
+
+/* Tooltip for fab button */
 "Write a new message" = "Eine neue Nachricht schreiben";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Nachricht in einem neuen Fenster schreiben";
+
 "Share" = "Benutzerrechte";
 "Account" = "Konto";
 "Shared Account" = "Gemeinsames Konto";
@@ -286,7 +292,7 @@
 "%{0} message(s) copied" = "%{0} Nachrichten kopiert";
 
 /* Notification on the number of messages successfuly movied */
-"%{0} message(s) moved" = "%{0} Nachrichten verschoben";
+"%{0} message(s) moved" = "%{0} Nachricht(en) verschoben";
 
 "Please select a message." = "Sie müssen eine Nachricht auswählen.";
 "Please select a message to print." = "Sie müssen eine Nachricht zum Drucken auswählen.";

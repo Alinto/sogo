@@ -175,7 +175,7 @@
 "%{0} card(s) copied" = "Skopiowano %{0} kart";
 "%{0} card(s) moved" = "Przeniesiono %{0} kart";
 "SoAccessDeniedException" = "Nie masz prawa zapisu do tej książki adresowej.";
-"Forbidden" = "Nie masz prawa zapisu do tej książki adresowej.";
+"Forbidden" = "Zabronione";
 "Invalid Contact" = "Wskazany kontakt już nie istnieje.";
 "Unknown Destination Folder" = "Wybrana docelowa książka adresowa już nie istnieje.";
 

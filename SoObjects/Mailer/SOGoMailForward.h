@@ -76,6 +76,9 @@
 @interface SOGoMailGermanForward : SOGoMailForward
 @end
 
+@interface SOGoMailHebrewForward : SOGoMailForward
+@end
+
 @interface SOGoMailHungarianForward : SOGoMailForward
 @end
 

@@ -41,6 +41,9 @@
 "Move To" = "Move To";
 "Copy To" = "Copy To";
 "Add to" = "Add to";
+"To" = "To";
+"Carbon Copy (Cc)" = "Carbon Copy (Cc)";
+"Blind Carbon Copy (Bcc)" = "Blind Carbon Copy (Bcc)";
 
 /* Subheader of empty addressbook */
 "No contact" = "No contact";
@@ -175,7 +178,7 @@
 "%{0} card(s) copied" = "%{0} card(s) copied";
 "%{0} card(s) moved" = "%{0} card(s) moved";
 "SoAccessDeniedException" = "You cannot write to this address book.";
-"Forbidden" = "You cannot write to this address book.";
+"Forbidden" = "Forbidden";
 "Invalid Contact" = "The selected contact no longer exists.";
 "Unknown Destination Folder" = "The chosen destination address book no longer exists.";
 

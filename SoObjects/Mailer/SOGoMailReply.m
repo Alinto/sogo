@@ -123,6 +123,9 @@
 @implementation SOGoMailGermanReply
 @end
 
+@implementation SOGoMailHebrewReply
+@end
+
 @implementation SOGoMailHungarianReply
 @end
 

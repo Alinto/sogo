@@ -287,6 +287,9 @@
 @implementation SOGoMailGermanForward
 @end
 
+@implementation SOGoMailHebrewForward
+@end
+
 @implementation SOGoMailHungarianForward
 @end
 
