@@ -37,7 +37,8 @@ module.exports = function(grunt) {
       },
       target: {
         files: {
-          'css/styles.css': 'scss/styles.scss'
+          'css/styles.css': 'scss/styles.scss',
+          'css/no-animation.css': 'scss/core/no-animation.scss'
         },
       },
     },
@@ -47,17 +48,18 @@ module.exports = function(grunt) {
           map: true,
           processors: [
             // See angular-material/gulp/util.js
-            require('autoprefixer')({browsers: [
-              'last 2 versions',
-              'not ie <= 10',
-              'not ie_mob <= 10',
-              'last 4 Android versions',
-              'Safari >= 8'
-            ]})
+            require('autoprefixer')({
+              browsers: [
+                'last 2 versions',
+                'not ie <= 10',
+                'not ie_mob <= 10',
+                'last 4 Android versions',
+                'Safari >= 8'
+              ]
+            })
           ]
-          // We may consider using css grace (https://github.com/cssdream/cssgrace) for larger support
         },
-        src: 'css/styles.css'
+        src: ['css/styles.css', 'css/no-animation.css']
       }
     },
     cssmin: {
@@ -66,7 +68,8 @@ module.exports = function(grunt) {
       },
       target: {
         files: {
-          'css/styles.css': 'css/styles.css'
+          'css/styles.css': 'css/styles.css',
+          'css/no-animation.css': 'css/no-animation.css'
         }
       }
     },

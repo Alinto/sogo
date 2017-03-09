@@ -6,7 +6,8 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
-    xmlns:label="OGo:label">
+    xmlns:label="OGo:label"
+    xmlns:bool="OGo:bool">
 
   <var:string var:value="doctype" const:escapeHTML="NO" />
   <var:if condition="hideFrame" const:negate="YES">
@@ -31,9 +32,12 @@
         <var:foreach list="additionalCSSFiles" item="item">
           <link type="text/css" rel="stylesheet" var:href="item"/>
         </var:foreach>
+        <var:if-ie>
+          <link type="text/css" rel="stylesheet" rsrc:href="css/no-animation.css"/>
+        </var:if-ie>
       </head>
 
-      <body var:ng-app="angularModule" var:class="bodyClasses">
+      <body var:class="bodyClasses" var:ng-app="angularModule" bool:md-no-ink="disableInk">
 
         <noscript>
           <div layout="column" layout-align="center center" layout-fill="layout-fill">
