@@ -6,6 +6,9 @@ New features
  - [core] new sogo-tool manage-acl command to manage calendar/address book ACLs
  - [web] use "date" extension of Sieve to enable/disable vacation auto-reply (#1530, #1949)
 
+Enhancements
+ - [web] updated CKEditor to version 4.6.2
+
 Bug fixes
  - [core] remove all alarms before sending IMIP replies (#3925)
  - [core] fixed handling of exdates and proper intersection for fbinfo (#4051)
