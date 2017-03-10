@@ -64,4 +64,11 @@
       </md-list-item>
     </md-list>
   </md-content>
+  <!-- freebusy caption -->
+  <div layout="row" layout-align="end center">
+    <div class="quarter"><div class="busy sg-color-chip"><!-- busy --></div></div>
+    <label class="md-caption"><var:string label:value="Busy"/></label>
+    <div class="quarter"><div class="sg-no-freebusy sg-color-sample"><!-- no fb --></div></div>
+    <label class="md-caption"><var:string label:value="No free-busy information"/></label>
+  </div>
 </container>

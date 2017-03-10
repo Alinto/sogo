@@ -712,27 +712,44 @@ $quarter_height: 10px;
     flex-grow: 0;
     flex-basis: 16px; // hour's width
     align-items: stretch;
-    &.sg-no-freebusy {
-      background-color: sg-color($sogoPaper, 200);
-      background-image: repeating-linear-gradient(-45deg,
-                                                  rgb(255,255,255),
-                                                  rgb(255,255,255) 2px,
-                                                  transparent 2px,
-                                                  transparent 4px);
-      opacity: 0.5;
-    }
+  }
+  .sg-no-freebusy {
+    background-color: sg-color($sogoPaper, 200);
+    background-image: repeating-linear-gradient(-45deg,
+                                                rgb(255,255,255),
+                                                rgb(255,255,255) 2px,
+                                                transparent 2px,
+                                                transparent 4px);
+    opacity: 0.5;
   }
   .quarter {
     min-width: 4px;
     display: flex;
     align-items: stretch;
-    .busy {
-      margin: 8px 0;
-      min-width: 4px;
-      background-color: sg-color($sogoPaper, 600);
-    }
-    &.event {
-      background-color: sg-color($sogoBlue, 300);
-    }
+  }
+  .event {
+    background-color: sg-color($sogoBlue, 300);
+  }
+  .busy {
+    margin: 8px 0;
+    min-width: 4px;
+    background-color: sg-color($sogoPaper, 600);
+  }
+
+  .sg-color-sample {
+    border-radius: 2px;
+    border-width: 0;
+    width: $baseline-grid*2;
+    height: $baseline-grid*2;
+    margin: 0 $baseline-grid 0 $baseline-grid*2;
+    padding: 0;
+  }
+  .sg-color-chip {
+    border-radius: 50%;
+    border-width: 0;
+    width: $baseline-grid;
+    height: $baseline-grid;
+    margin: 0 $baseline-grid 0 $baseline-grid*2;
   }
 }
+
