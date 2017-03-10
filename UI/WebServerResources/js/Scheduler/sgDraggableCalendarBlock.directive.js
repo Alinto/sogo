@@ -81,7 +81,7 @@
       }
 
       function onDragDetect(ev) {
-        var dragMode, pointerHandler, hasVerticalScrollbar, rect;
+        var dragMode, pointerHandler, hasVerticalScrollbar, rect, scrollableZone;
 
         ev.stopPropagation();
 
