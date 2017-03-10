@@ -618,7 +618,10 @@
       if (content)
 	ASSIGN (originalCalendar, [iCalCalendar parseSingleFromSource: content]);
       else
-	[self warnWithFormat: @"content not available, we will crash"];
+	{
+	  [self warnWithFormat: @"content not available, we don't update the event"];
+	  return;
+	}
     }
 
   oldMaster = (iCalRepeatableEntityObject *)
@@ -935,6 +938,9 @@
   if ([[context objectForKey: @"DeviceType"] isEqualToString: @"WindowsOutlook15"])
     return;
 
+  // remove all alarms to avoid bug #3925
+  [event removeAllAlarms];
+
   dd = [from domainDefaults];
   if ([dd appointmentSendEMailNotifications] && [event isStillRelevant])
     {
@@ -1231,12 +1237,31 @@
 
 - (NSException *) moveToFolder: (SOGoGCSFolder *) newFolder
 {
+  SOGoCalendarComponent *newComponent;
   NSException *ex;
+  id o;
 
-  ex = [self copyToFolder: newFolder];
+  // Lookup to see if the event exists in the target calendar. During a MOVE, we do
+  // keep the ID of the event intact.
+  o = [newFolder lookupName: [self nameInContainer]
+		  inContext: context
+		    acquire: NO];
 
-  if (!ex)
-    ex = [self delete];
+  if ([o isKindOfClass: [NSException class]])
+    {
+      newComponent = [[self class] objectWithName: [self nameInContainer]
+				      inContainer: newFolder];
+
+      ex = [newComponent saveCalendar: [self calendar: NO secure: NO]];
+
+      if (!ex)
+	ex = [self delete];
+    }
+  else
+    {
+      ex = [NSException exceptionWithHTTPStatus: 409
+					 reason: @"Target exists - MOVE disallowed."];
+    }
 
   return ex;
 }

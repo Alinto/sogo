@@ -1,0 +1,261 @@
+/* this file is in UTF-8 format! */
+
+"Contact" = "איש קשר";
+"Address" = "כתובת";
+"Photos" = "תמונות";
+"Other" = "אחר";
+"Address Books" = "אנשי קשר";
+"Addressbook" = "אנשי קשר";
+"Addresses" = "כתובות";
+"Update" = "עדכון";
+"Cancel" = "ביטול";
+"Common" = "משותף";
+"Contact editor" = "עריכת איש קשר";
+"Contact viewer" = "צפייה באיש קשר";
+"Email" = "אימייל";
+"Screen Name" = "שם מוצג";
+"Extended" = "מורחב";
+"Fax" = "פקס";
+"Firstname" = "שם פרטי";
+"Home" = "בית";
+"HomePhone" = "טלפון בבית";
+"Lastname" = "שם משפחה";
+"Location" = "מיקום";
+"Add a category" = "הוספץ קטגוריה";
+"MobilePhone" = "מספר טלפון נייד";
+"Name" = "שם";
+"OfficePhone" = "טלפון במשרד";
+"Organization" = "אירגון";
+"Work Phone" = "מספר טלפון בעבודה";
+"Phone" = "מספר טלפון";
+"Phones" = "מספרי טלפון";
+"Postal" = "מיקוד";
+"Save" = "שמירה";
+"Internet" = "אינטרנט";
+"Unit" = "יחידה";
+"delete" = "מחיקה";
+"edit" = "עריכה";
+"invalidemailwarn" = "כתובת אימייל שגויה";
+"new" = "חדש";
+"Preferred Phone" = "מספר טלפון מועדף";
+"Move To" = "העבר ל";
+"Copy To" = "העתק ל";
+"Add to" = "הוסף ל";
+
+/* Subheader of empty addressbook */
+"No contact" = "אין איש קשר";
+
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "החל חיפוש באנשי קשר";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "אשני קשר";
+
+/* No contact matching search criteria */
+"No matching contact" = "לא נמצאו אנשי קשר";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "נמצאו אנשי קשר";
+
+/* Number of selected contacts in list */
+"selected" = "נבחר";
+
+/* Empty right pane */
+"No contact selected" = "לא נבחר איש קשר";
+
+/* Tooltips */
+"Create a new address book card" = "יצירת כרטיסיית איש קשר";
+"Create a new list" = "יצירת רשימה חדשה";
+"Edit the selected card" = "עריכת כרטיסייה נבחרת";
+"Send a mail message" = "שליחת אימייל";
+"Delete selected card or address book" = "מחיקה של כרטיסייה נבחרת או אנשי קשר";
+"Reload all contacts" = "טען מחדש את אנשי הקשר";
+"htmlMailFormat_UNKNOWN" = "לא ידוע";
+"htmlMailFormat_FALSE" = "טקסט רגיל";
+"htmlMailFormat_TRUE" = "HTML";
+"Name or Email" = "שם או כתובת אימייל";
+"Category" = "קטגוריה";
+"Personal Addressbook" = "אנשי קשר אישיים";
+"Search in Addressbook" = "חיפוש באנשי קשר";
+"New Card" = "כרטיסייה חדשה";
+"New List" = "רשימה חדשה";
+"Edit" = "עריכה";
+"Properties" = "ערכים";
+"Sharing..." = "שיתוף";
+"Write" = "כתיבה";
+"Delete" = "מחיקה";
+"Instant Message" = "הודעה מיידית";
+"Add..." = "הוספה";
+"Remove" = "הסרה";
+"Please wait..." = "נא להמתין";
+"No possible subscription" = "אין מנוי אפשרי";
+"Preferred" = "מועדף";
+"Display" = "הצגה";
+"Display Name" = "שם תצוגה";
+"Additional Email" = "כתובת אימייל נוספת";
+"Phone Number" = "מספר טלפון";
+"Prefers to receive messages formatted as" = "מעדיף לקבל הודעות בפורמט הבא";
+"Categories" = "קטגוריות";
+"First" = "ראשון";
+"Last" = "אחרון";
+"Nickname" = "כינוי";
+"Telephone" = "טלפון";
+"Work" = "עבודה";
+"Mobile" = "נייד";
+"Pager" = "ביפר";
+
+/* categories */
+"contacts_category_labels" = "עמית, מתחרה, לקוח, חבר, משפחה, שותף עסקי, ספק, עיתונות, VIP";
+"New category" = "קטגוריה חדשה";
+
+/* adresses */
+"Title" = "כותרת";
+"Service" = "שרות";
+"Company" = "חברה";
+"Department" = "מחלקה";
+"City" = "עיר";
+"State_Province" = "מדינה/מחוז";
+"ZIP_Postal Code" = "מיקוד";
+"Country" = "מדינה";
+"Web Page" = "אתר אינטרנט";
+"Other Infos" = "מידע נוסף";
+"Note" = "הערה";
+"Timezone" = "אזור זמן";
+"Birthday" = "יום הולדת";
+"Birthday (yyyy-mm-dd)" = "יום הולדת (dd-mm-yyyy)";
+"Freebusy URL" = "פנוי/עסוק URL";
+"Add as..." = "הוסף כ";
+"Recipient" = "מקבל";
+"Carbon Copy" = "העתק";
+"Blind Carbon Copy" = "עותק מוסתר";
+"New Addressbook..." = "רשימת אנשי קשר חדשה";
+"Subscribe to an Addressbook..." = "הירשם לרשימת אנשי קשר";
+"Remove the selected Addressbook" = "הסר את רישמת אנשי קשר הנבחרת";
+"Subscribe to a shared folder" = "הירשם לתיקייה משותפת";
+"Search User" = "חפש משתמש";
+"Name of the Address Book" = "שם הרשימת אנשי קשר";
+"Are you sure you want to delete the selected address book?"
+= "האם ברצונך למחוק את את רשימת אנשי הקשר הנבחרת?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "האם ברצונך למחוק את רישמת אנשי הקשר \"{0}%\"?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "לא ניתן להסיר או לבטל הרשמה לרישמת אנשי קשר פומבית.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "לא ניתן להסיר או לבטל הרשמה מרישמת אנשי קשר האישית.";
+"Are you sure you want to delete the selected contacts?"
+= "האם ברצונך למחוק את אנשי הקשר הנבחרים?";
+"Are you sure you want to delete the card of %{0}?" = "האם ברצונך למחור את הכרטיסייה {0}%?";
+"You cannot delete the card of \"%{0}\"."
+= "לא ניתן למחוק את הכרטיסייה \"{0}%\".";
+"You cannot subscribe to a folder that you own!"
+= "לא ניתן להירשם לתיקייה בבעלותך.";
+"Unable to subscribe to that folder!"
+= "לא ניתן להירשם לתקייה הזו.";
+
+/* acls */
+"Access rights to" = "הרשאות גישה ל";
+"For user" = "עבור משתמש";
+"Any Authenticated User" = "כל משתמש מאומת";
+"Public Access" = "גישה פומבית";
+"This person can add cards to this addressbook."
+= "המשתמש הנ\"ל יכול להוסיף כרטיסיות ברשימת אנשי קשר הזו.";
+"This person can edit the cards of this addressbook."
+= "המשתמש הנ\"ל יכול לערוך כרטיסיות ברשימת אנשי קשר הזו.";
+"This person can list the content of this addressbook."
+= "המשתמש הנ\"ל יכול ליצור רשימות ברשימת אנשי קשר הזו.";
+"This person can read the cards of this addressbook."
+= "המשתמש הנ\"ל יכול לקרוא כרטיסיות ברשימת אנשי קשר הזו.";
+"This person can erase cards from this addressbook."
+= "המשתמש הנ\"ל יכול למחוק כרטיסיות ברשימת אנשי קשר הזו.";
+"The selected contact has no email address."
+= "אין כתובת אימייל באיש קשר הנבחר.";
+"Please select a contact." = "נא לבחור איש קשר.";
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "{0}% כרטיסיות הועתקו";
+"%{0} card(s) moved" = "{0}% כרטיסיות הועברו";
+"SoAccessDeniedException" = "אין אפשרות לכתוב ברשימת אנשי קשר זו.";
+"Forbidden" = "אין אפשרות לכתוב ברשימת אנשי קשר זו.";
+"Invalid Contact" = "איש הקשר הנבחר אינו קיים עוד.";
+"Unknown Destination Folder" = "רשימת אנשי קשר נבחרת אינה קיימת עוד.";
+
+/* Lists */
+"List details" = "הצג פרטים";
+"List name" = "הצג שם";
+"List nickname" = "הצג כינוי";
+"List description" = "הצג תאור";
+"Members" = "חברים";
+"Contacts" = "אנשי קשר";
+"Add" = "הוספה";
+"Lists can't be moved or copied." = "לא ניתן להעתיק או להעביר רשימות.";
+"Export" = "יצוא";
+"Export Address Book..." = "יצוא אנשי קשר";
+"View Raw Source" = "צפייה בקוד מקור";
+
+/* Import */
+"Import Cards" = "יבוא כרטיסיות";
+"Select a vCard or LDIF file." = "בחר vCard או קובץ LDIF.";
+"Upload" = "להעלות";
+"Uploading" = "העלאה";
+"Done" = "הסתיים בהצלחה";
+"An error occured while importing contacts." = "אירעה שגיאה במהלך יבוא אנשי קשר.";
+"No card was imported." = "לא הובאה כרטיסייה";
+"A total of %{0} cards were imported in the addressbook." = "סה\"כ {0}% כרטיסיות הובאו לרשימת אנשי קשר.";
+"Reload" = "טען מחדש";
+
+/* Properties window */
+"Address Book Name" = "שם רשימת אנשי קשר";
+"Links to this Address Book" = "קישורים לרישמת אנשי קשר";
+"Authenticated User Access" = "גישת משתמשים מאומתים";
+"CardDAV URL" = "CardDAV URL";
+"Options" = "אפשרויות";
+"Rename" = "שינוי שם";
+"Subscriptions" = "מנויים";
+"Global Addressbooks" = "רישמות אנשי קשר גלובליים";
+"Search" = "חיפוש";
+"Sort" = "מיון";
+"Descending Order" = "סדר יורד";
+"Back" = "חזרה";
+"Select All" = "בחר הכל";
+"Copy contacts" = "העתקת אנשי קשר";
+"More messages options" = "אפשרויות הודעה נוספות";
+"New Contact" = "איש קשר חדש";
+"Close" = "סגירה";
+"More contact options" = "אפשרויות איש קשר נוספות";
+"Organization Unit" = "יחידה אירגונית";
+"Add Organizational Unit" = "הוספת יחידות אירגוניות";
+"Type" = "סוג";
+"Email Address" = "כתובת אימייל";
+"New Email Address" = "כתובת אימייל חדשה";
+"New Phone Number" = "מספר טלפון חדש";
+"URL" = "כתובת URL";
+"New URL" = "כתובת URL חדשה";
+"street" = "רחוב";
+"Postoffice" = "דואר";
+"Region" = "אזור";
+"Postal Code" = "מיקוד";
+"New Address" = "כתובת חדשה";
+"Reset" = "איפוס";
+"Description" = "תאור";
+"Add Member" = "הוספת חבר";
+"Subscribe" = "הרשמה";
+"Add Birthday" = "הוספת יום הולדת";
+"Import" = "יבוא";
+"More options" = "אפשרויות נוספות";
+"Role" = "תפקיד";
+"Add Screen Name" = "הוספת שם תצוגה";
+"Synchronization" = "סינכרון";
+"Synchronize" = "סינכרון";
+"Sucessfully subscribed to address book" = "מנוי לרשימת אנשי קשר נרשם בהצלחה";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "תווך חיפוש";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "הצג/הסתר פריט";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

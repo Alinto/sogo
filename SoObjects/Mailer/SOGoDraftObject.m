@@ -1928,15 +1928,11 @@ static NSString    *userAgent      = nil;
 //
 - (NSException *) sendMailAndCopyToSent: (BOOL) copyToSent
 {
-  NSMutableData *cleaned_message;
   SOGoMailFolder *sentFolder;
   SOGoDomainDefaults *dd;
   NSURL *sourceIMAP4URL;
   NSException *error;
   NSData *message;
-  NSRange r1;
-
-  unsigned int limit;
 
   // We strip the BCC fields prior sending any mails
   NGMimeMessageGenerator *generator;
@@ -1944,43 +1940,9 @@ static NSString    *userAgent      = nil;
   generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
   message = [generator generateMimeFromPart: [self mimeMessage]];
 
-  //
-  // We now look for the Bcc: header. If it is present, we remove it.
-  // Some servers, like qmail, do not remove it automatically.
-  //
-#warning FIXME - we should fix the case issue when we switch to Pantomime
-  cleaned_message = [NSMutableData dataWithData: message];
-
-  // We search only in the headers so we start at 0 until
-  // we find \r\n\r\n, which is the headers delimiter
-  r1 = [cleaned_message rangeOfCString: "\r\n\r\n"];
-  limit = r1.location-1;
-  r1 = [cleaned_message rangeOfCString: "\r\nbcc: "
-                               options: 0
-                                 range: NSMakeRange(0,limit)];
-      
-  if (r1.location != NSNotFound)
-    {
-      // We search for the first \r\n AFTER the Bcc: header and
-      // replace the whole thing with \r\n.
-      unsigned int i;
-
-      for (i = r1.location+7; i < limit; i++)
-        {
-          if ([cleaned_message characterAtIndex: i] == '\r' &&
-              (i+1 < limit && [cleaned_message characterAtIndex: i+1] == '\n') &&
-              (i+2 < limit && !isspace([cleaned_message characterAtIndex: i+2])))
-            break;
-        }
-
-      [cleaned_message replaceBytesInRange: NSMakeRange(r1.location, i-r1.location)
-                                 withBytes: NULL
-                                    length: 0];
-    }
-
   dd = [[context activeUser] domainDefaults];
   error = [[SOGoMailer mailerWithDomainDefaults: dd]
-                  sendMailData: cleaned_message
+                  sendMailData: message
                   toRecipients: [self allBareRecipients]
                         sender: [self sender]
              withAuthenticator: [self authenticatorInContext: context]

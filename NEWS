@@ -1,3 +1,24 @@
+2.3.20 (2017-03-10)
+-------------------
+
+New features
+ - [core] new sogo-tool checkup command to make sure user's data is sane 
+ - [core] new sogo-tool manage-acl command to manage calendar/address book ACLs
+ - [web] use "date" extension of Sieve to enable/disable vacation auto-reply (#1530, #1949)
+
+Enhancements
+ - [web] added Hebrew (he) translation - thanks to Raz Aidlitz
+ - [web] updated CKEditor to version 4.6.2
+
+Bug fixes
+ - [core] remove all alarms before sending IMIP replies (#3925)
+ - [core] fixed handling of exdates and proper intersection for fbinfo (#4051)
+ - [core] remove attendees that have the same identity as the organizer (#3905)
+ - [eas] improved EAS parameters parsing (#4003)
+ - [eas] properly handle canceled appointments
+ - [web] fixed SCAYT automatic language selection in HTML editor
+ - [web] prevent 304 HTTP status code for Ajax requests on IE (#4066)
+
 2.3.19 (2017-01-09)
 -------------------
 

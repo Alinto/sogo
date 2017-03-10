@@ -148,7 +148,7 @@
 "Label" = "Schlagwort";
 "New label" = "Neue Bezeichnung";
 "Show subscribed mailboxes only" = "Nur abonnierte Ordner anzeigen";
-"Synchronize only default mail folders (EAS)" = "Nur Standard-Mail-Ordner synchronisieren (EAS)";
+"Synchronize only default mail folders (EAS)" = "Nur Standard-E-Mail-Ordner synchronisieren (EAS)";
 "Sort messages by threads" = "Nachrichten nach Thema sortieren";
 "When sending mail, add unknown recipients to my" = "Unbekannte Empfänger meiner E-Mails hinzufügen zu";
 "Address Book" = "Adressbuch";
@@ -246,6 +246,7 @@
 "Finnish" = "Suomi";
 "French" = "Français";
 "German" = "Deutsch";
+"Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";

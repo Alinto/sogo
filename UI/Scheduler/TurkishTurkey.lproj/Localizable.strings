@@ -16,8 +16,8 @@
 /* Tabs */
 "Date" = "Tarih";
 "Calendars" = "Takvimler";
-"No events for selected criteria" = "Seçili kriterde bir etkinlik yok";
-"No tasks for selected criteria" = "Seçili kriterde bir görev yok";
+"No events for selected criteria" = "Seçili özellikte etkinlik yok";
+"No tasks for selected criteria" = "Seçili özellikte görev yok";
 
 /* Day */
 "DayOfTheMonth" = "Ayın günü";
@@ -69,25 +69,25 @@
 
 /* Misc */
 "OpenGroupware.org" = "OpenGroupware.org";
-"Forbidden" = "Yasaklanmış";
+"Forbidden" = "Yetki aşımı";
 
 /* acls */
-"Access rights to" = "Takvimin erişim yetkileri";
-"For user" = "Aşağıdaki kullanıcı için";
+"Access rights to" = "Takvim";
+"For user" = "Erişen";
 "Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
 "Public Access" = "Herkese Açık Erişim";
 "label_Public" = "Herkese Açık";
 "label_Private" = "Kişisel";
 "label_Confidential" = "Gizli";
-"label_Viewer" = "Hepsini Görüntüle";
+"label_Viewer" = "Hepsini Görüntüler";
 "label_DAndTViewer" = "Günü ve Saati Görüntüler";
-"label_Modifier" = "Değiştir";
-"label_Responder" = "Yanıtlanan Kişi";
+"label_Modifier" = "Değiştirir";
+"label_Responder" = "Yanıtlar";
 "label_None" = "Hiç biri";
 "View All" = "Hepsini Görüntüler";
 "View the Date & Time" = "Günü ve Saati Görüntüler";
 "Modify" = "Değiştirir";
-"Respond To" = "Yanıtlanan Kişi";
+"Respond To" = "Yanıtlar";
 "None" = "Hiç biri";
 "This person can create objects in my calendar."
 = "Bu kişi bu takvimimde öge oluşturabilir.";
@@ -100,7 +100,7 @@
 "New calendar" = "Yeni Takvim";
 "Name of the Calendar" = "Takvimin Adı";
 "new" = "Yeni";
-"Print view" = "Yazdırma görünümü";
+"Print view" = "Yazdırma Görünümü";
 "edit" = "Düzenle";
 "delete" = "Sil";
 "proposal" = "Teklif";
@@ -135,7 +135,7 @@
 "Layout" = "Düzen";
 "What to Print" = "Yazdırılacak";
 "Options" = "Seçenekler";
-"Tasks with no due date" = "Son günü olmayan görevler";
+"Tasks with no due date" = "Kapanış tarihi olmayan görevler";
 "Display working hours only" = "Sadece çalışma saatlerini göster";
 "Completed tasks" = "Tamamlanmış Görevler";
 "Display events and tasks colors" = "Etkinlik ve görev renklerini göster";
@@ -149,7 +149,7 @@
 "Appointment on" = "Çalışma";
 "Start" = "Başlangıç";
 "End" = "Bitiş";
-"Due Date" = "Son Tarih";
+"Due Date" = "Kapanış Tarihi";
 "Name" = "Tam İsim";
 "Email" = "E-posta";
 "Status" = "Durum";
@@ -215,7 +215,7 @@
 "view_future" = "İleri Tarihteki Her Etkinlik";
 "view_selectedday" = "Seçili Gün";
 "view_not_started" = "Başlamamış görevler";
-"view_overdue" = "Süresi geçmiş görevler";
+"view_overdue" = "Kapanış tarihi geçmiş görevler";
 "view_incomplete" = "Tamamlanmamış görevler";
 "View" = "Görüntüle";
 "Title, category or location" = "Başlık, sınıf veya konum";
@@ -236,7 +236,7 @@
 "Columns" = "Sütunlar";
 
 /* Priorities */
-"prio_0" = "Belirlenmemiş";
+"prio_0" = "Belirtilmemiş";
 "prio_1" = "Yüksek";
 "prio_2" = "Yüksek";
 "prio_3" = "Yüksek";
@@ -256,14 +256,14 @@
 "PRIVATE_vtodo" = "Kişisel Görev";
 
 /* status type */
-"status_" = "Belirlenmemiş";
-"status_NOT-SPECIFIED" = "Belirlenmemiş";
+"status_" = "Belirtilmemiş";
+"status_NOT-SPECIFIED" = "Belirtilmemiş";
 "status_TENTATIVE" = "Geçici";
 "status_CONFIRMED" = "Onaylandi";
 "status_CANCELLED" = "İptal edildi";
 "status_NEEDS-ACTION" = "Eylem Gerekli";
 "status_IN-PROCESS" = "Devam ediyor";
-"status_COMPLETED" = "Şu tarihte tamamlandı";
+"status_COMPLETED" = "Tamamlandığı tarih";
 
 /* Priority level */
 "low" = "düşük";
@@ -352,8 +352,8 @@
 "reminder_WEEKS" = "hafta";
 "reminder_BEFORE" = "önce";
 "reminder_AFTER" = "sonra";
-"reminder_START" = "etkinlik başlangıcından";
-"reminder_END" = "etkinlik bitişinden";
+"reminder_START" = "başlar";
+"reminder_END" = "biter";
 "Reminder Details" = "Hatırlatıcı Ayrıntıları";
 "Choose a Reminder Action" = "Bir Hatırlatıcı Eylemi Seçin";
 "Show an Alert" = "Bir Uyarı Göster";
@@ -456,10 +456,10 @@ validate_untilbeforeend    = "Tekrar bitiş tarihi ilk tekrar tarihinden sonra o
 "Between" = ":";
 "and" = "ve";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "Bir ya da daha fazla katılımcı ile zaman çakışması var.\nYine de mevcut düzenlemeyi tutmak ister misiniz?";
+= "Bir ya da daha fazla katılımcı ile zaman çakışması var.\nYine de mevcut düzenlemeyi devam ettirmek ister misiniz?";
 
 /* events list */
-"Due" = "Son Tarih";
+"Due" = "Kapanış Tarihi";
 "(Private Event)" = "(Kişisel Etkinlik)";
 vevent_class0 = "(Herkese açık etkinlik)";
 vevent_class1 = "(Kişisel etkinlik)";
@@ -491,9 +491,9 @@ vtodo_class2 = "(Gizli görev)";
 "Show alarms" = "Uyarıları göster";
 "Show tasks" = "Görevleri göster";
 "Notifications" = "Bildirimler";
-"Receive a mail when I modify my calendar" = "Takvimimi değiştirdiğimde bir ileti al";
-"Receive a mail when someone else modifies my calendar" = "Başka biri  takvimimi değiştirdiğinde ileti al";
-"When I modify my calendar, send a mail to" = "Bir takvimi değiştirdiğimde, aşağıdaki kişiye ileti gönder";
+"Receive a mail when I modify my calendar" = "Takvimimi değiştirdiğimde bir ileti alır";
+"Receive a mail when someone else modifies my calendar" = "Başka biri  takvimimi değiştirdiğinde ileti alır";
+"When I modify my calendar, send a mail to" = "Bir takvimi değiştirdiğimde, aşağıdaki kişiye ileti gönderir";
 "Email Address" = "E-posta Adresi";
 "Export" = "Dışarı Aktar";
 
@@ -526,7 +526,7 @@ vtodo_class2 = "(Gizli görev)";
 "tagWasAdded" = "Eğer bu takvimi eşitlemek isterseniz, taşınabilir cihazınızda verileri tazelemeniz gerekir.\nDevam etmek istiyor musunuz?";
 "tagWasRemoved" = "Eğer bu takvimin eşitleme işlemini kaldırırsanız, taşınabilir cihazınızda verileri tazelemeniz gerekir.\nDevam etmek istiyor musunuz?";
 "DestinationCalendarError" = "Kaynak ve hedef takvimler aynı. Lütfen farklı bir takvime kopyalamayı deneyin.";
-"EventCopyError" = "Kopyalama başarısız oldu. Lütfen başka bir takvimi kopyalamayı deneyin.";
+"EventCopyError" = "Kopyalama başarısız oldu. Lütfen başka bir takvime kopyalamayı deneyin.";
 "Please select at least one calendar" = "Lütfen en az bir takvim seçin";
 "Open Task..." = "Görev Aç...";
 "Mark Completed" = "Tamamlananları İşaretle";
@@ -566,7 +566,7 @@ vtodo_class2 = "(Gizli görev)";
 "Delete This Occurrence" = "Bu Tekrarı Sil";
 "Delete All Occurrences" = "Tüm Tekrarları Sil";
 "Add From" = "Başlangıç Tarihi Ekle";
-"Add Due" = "Son Tarih Ekle";
+"Add Due" = "Kapanış Tarihi Ekle";
 "Import" = "İçeri Aktar";
 "Rename" = "Yeniden Adlandır";
 "Import Calendar" = "Takvimi İçeri Aktar";

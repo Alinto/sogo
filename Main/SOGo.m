@@ -124,7 +124,7 @@ static BOOL debugLeaks;
   vMemSizeLimit = [defaults vmemLimit];
   if (vMemSizeLimit > 0)
     [self logWithFormat: @"vmem size check enabled: shutting down app when "
-          @"vmem > %d MB", vMemSizeLimit];
+          @"vmem > %d MB. Currently at %d MB", vMemSizeLimit, [[NSProcessInfo processInfo] virtualMemorySize]/1048576];
 
   /* SoClass security declarations */
   sInfo = [self soClassSecurityInfo];
@@ -147,6 +147,8 @@ static BOOL debugLeaks;
 
   /* load products */
   [[SOGoProductLoader productLoader] loadAllProducts: YES];
+  if (vMemSizeLimit > 0)
+    [self logWithFormat: @"All products loaded - current memory usage at %d MB", [[NSProcessInfo processInfo] virtualMemorySize]/1048576];
 }
 
 - (id) init
@@ -401,8 +403,12 @@ static BOOL debugLeaks;
 - (WOResponse *) handleException: (NSException *) _exc
                        inContext: (WOContext *) _ctx
 {
-  printf("EXCEPTION: %s\n", [[_exc description] cString]);
-  abort();
+  WOResponse *resp;
+
+  NSLog(@"EXCEPTION: %s\n", [[_exc description] cString]);
+  resp = [WOResponse responseWithRequest: [_ctx request]];
+  [resp setStatus: 501];
+  return resp;
 }
 
 /* runtime maintenance */

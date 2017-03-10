@@ -267,6 +267,12 @@
 @implementation SOGoFolderGermanRemovalAdvisory
 @end
 
+@implementation SOGoFolderHebrewAdditionAdvisory
+@end
+
+@implementation SOGoFolderHebrewRemovalAdvisory
+@end
+
 @implementation SOGoFolderHungarianAdditionAdvisory
 @end
 

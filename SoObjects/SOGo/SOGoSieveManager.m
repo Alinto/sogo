@@ -1,6 +1,6 @@
 /* SOGoSieveManager.m - this file is part of SOGo
  *
- * Copyright (C) 2010-2015 Inverse inc.
+ * Copyright (C) 2010-2017 Inverse inc.
  *
  * Author: Inverse <info@inverse.ca>
  *
@@ -20,9 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
@@ -366,7 +364,7 @@ static NSString *sieveScriptName = @"sogo";
     }
   else
     scriptError = @"Rule lacks a 'value' parameter";
-  
+
   return (scriptError == nil);
 }
 
@@ -784,7 +782,8 @@ static NSString *sieveScriptName = @"sogo";
   SOGoDomainDefaults *dd;
   NGSieveClient *client;
   NSString *filterScript, *v;
-  BOOL b;
+  BOOL b, dateCapability;
+  unsigned int now;
 
   dd = [user domainDefaults];
   if (!([dd sieveScriptsEnabled] || [dd vacationEnabled] || [dd forwardEnabled]))
@@ -797,7 +796,7 @@ static NSString *sieveScriptName = @"sogo";
   if (!client)
     return NO;
 
-  // We adjust the "methodRequirements" based on the server's 
+  // We adjust the "methodRequirements" based on the server's
   // capabilities. Cyrus exposes "imapflags" while Dovecot (and
   // potentially others) expose "imap4flags" as specified in RFC5332
   if ([client hasCapability: @"imap4flags"])
@@ -806,7 +805,9 @@ static NSString *sieveScriptName = @"sogo";
       [methodRequirements setObject: @"imap4flags"  forKey: @"removeflag"];
       [methodRequirements setObject: @"imap4flags"  forKey: @"flag"];
     }
-  
+
+  dateCapability = [client hasCapability: @"date"] && [client hasCapability: @"relational"];
+
   //
   // Now let's generate the script
   //
@@ -832,16 +833,24 @@ static NSString *sieveScriptName = @"sogo";
   // We handle vacation messages.
   // See http://ietfreport.isoc.org/idref/draft-ietf-sieve-vacation/
   values = [ud vacationOptions];
+  now = [[NSCalendarDate calendarDate] timeIntervalSince1970];
 
-  if (values && [[values objectForKey: @"enabled"] boolValue])
+  if (values && [[values objectForKey: @"enabled"] boolValue] &&
+      (![[values objectForKey: @"startDateEnabled"] boolValue] ||
+       dateCapability || [[values objectForKey: @"startDate"] intValue] < now) &&
+      (![[values objectForKey: @"endDateEnabled"] boolValue] ||
+       dateCapability || [[values objectForKey: @"endDate"] intValue] > now))
     {
+      NSCalendarDate *startDate, *endDate;
+      NSMutableArray *allConditions;
       NSMutableString *vacation_script;
       NSArray *addresses;
       NSString *text;
-      
+
       BOOL ignore, alwaysSend;
       int days, i;
-      
+
+      allConditions = [NSMutableArray array];
       days = [[values objectForKey: @"daysBetweenResponse"] intValue];
       addresses = [values objectForKey: @"autoReplyEmailAddresses"];
       alwaysSend = [[values objectForKey: @"alwaysSend"] boolValue];
@@ -853,32 +862,64 @@ static NSString *sieveScriptName = @"sogo";
         days = 7;
 
       vacation_script = [NSMutableString string];
-      
+
       [req addObjectUniquely: @"vacation"];
 
       // Skip mailing lists
       if (ignore)
-        [vacation_script appendString: @"if allof ( not exists [\"list-help\", \"list-unsubscribe\", \"list-subscribe\", \"list-owner\", \"list-post\", \"list-archive\", \"list-id\", \"Mailing-List\"], not header :comparator \"i;ascii-casemap\" :is \"Precedence\" [\"list\", \"bulk\", \"junk\"], not header :comparator \"i;ascii-casemap\" :matches \"To\" \"Multiple recipients of*\" ) {"];
-      
+        {
+          [allConditions addObject: @"not exists [\"list-help\", \"list-unsubscribe\", \"list-subscribe\", \"list-owner\", \"list-post\", \"list-archive\", \"list-id\", \"Mailing-List\"]"];
+          [allConditions addObject: @"not header :comparator \"i;ascii-casemap\" :is \"Precedence\" [\"list\", \"bulk\", \"junk\"]"];
+          [allConditions addObject: @"not header :comparator \"i;ascii-casemap\" :matches \"To\" \"Multiple recipients of*\""];
+        }
+
+      // Start date of auto-reply
+      if ([[values objectForKey: @"startDateEnabled"] boolValue] && dateCapability)
+        {
+          [req addObjectUniquely: @"date"];
+          [req addObjectUniquely: @"relational"];
+          startDate = [NSCalendarDate dateWithTimeIntervalSince1970:
+                                              [[values objectForKey: @"startDate"] intValue]];
+          [allConditions addObject: [NSString stringWithFormat: @"currentdate :value \"ge\" \"date\" \"%@\"",
+                                              [startDate descriptionWithCalendarFormat: @"%Y-%m-%d"]]];
+        }
+
+      // End date of auto-reply
+      if ([[values objectForKey: @"endDateEnabled"] boolValue] && dateCapability)
+        {
+          [req addObjectUniquely: @"date"];
+          [req addObjectUniquely: @"relational"];
+          endDate = [NSCalendarDate dateWithTimeIntervalSince1970:
+                                              [[values objectForKey: @"endDate"] intValue]];
+          [allConditions addObject: [NSString stringWithFormat: @"currentdate :value \"le\" \"date\" \"%@\"",
+                                              [endDate descriptionWithCalendarFormat: @"%Y-%m-%d"]]];
+        }
+
+      // Apply conditions
+      if ([allConditions count])
+        [vacation_script appendFormat: @"if allof ( %@ ) { ",
+                         [allConditions componentsJoinedByString: @", "]];
+
       [vacation_script appendFormat: @"vacation :days %d :addresses [", days];
 
       for (i = 0; i < [addresses count]; i++)
         {
           [vacation_script appendFormat: @"\"%@\"", [addresses objectAtIndex: i]];
-	  
+
           if (i == [addresses count]-1)
             [vacation_script appendString: @"] "];
           else
             [vacation_script appendString: @", "];
         }
-      
+
       [vacation_script appendFormat: @"text:\r\n%@\r\n.\r\n;\r\n", text];
-      
-      if (ignore)
+
+      // Closing bracket of conditions
+      if ([allConditions count])
         [vacation_script appendString: @"}\r\n"];
 
       //
-      // See http://sogo.nu/bugs/view.php?id=2332 for details
+      // See https://sogo.nu/bugs/view.php?id=2332 for details
       //
       if (alwaysSend)
         [script insertString: vacation_script  atIndex: 0];
@@ -896,7 +937,7 @@ static NSString *sieveScriptName = @"sogo";
       int i;
 
       b = YES;
-      
+
       addresses = [values objectForKey: @"forwardAddress"];
       if ([addresses isKindOfClass: [NSString class]])
         addresses = [NSArray arrayWithObject: addresses];
@@ -907,11 +948,11 @@ static NSString *sieveScriptName = @"sogo";
           if (v && [v length] > 0)
             [script appendFormat: @"redirect \"%@\";\r\n", v];
         }
-      
+
       if ([[values objectForKey: @"keepCopy"] boolValue])
         [script appendString: @"keep;\r\n"];
     }
-  
+
   if ([req count])
     {
       header = [NSString stringWithFormat: @"require [\"%@\"];\r\n",
@@ -925,7 +966,7 @@ static NSString *sieveScriptName = @"sogo";
   result = [client setActiveScript: @""];
   // We delete the existing Sieve script
   result = [client deleteScript: sieveScriptName];
-  
+
   if (![[result valueForKey:@"result"] boolValue]) {
     [self logWithFormat: @"WARNING: Could not delete Sieve script - continuing...: %@", result];
   }
@@ -935,13 +976,13 @@ static NSString *sieveScriptName = @"sogo";
   if (b && [script length])
     {
       result = [client putScript: sieveScriptName  script: script];
-      
+
       if (![[result valueForKey:@"result"] boolValue]) {
         [self logWithFormat: @"Could not upload Sieve script: %@", result];
-        [client closeConnection];	
+        [client closeConnection];
         return NO;
       }
-      
+
       result = [client setActiveScript: sieveScriptName];
       if (![[result valueForKey:@"result"] boolValue]) {
         [self logWithFormat: @"Could not enable Sieve script: %@", result];

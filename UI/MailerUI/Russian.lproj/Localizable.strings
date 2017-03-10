@@ -53,7 +53,13 @@
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Добро пожаловать в почту SOGo! Для просмотра сообщений воспользуйтесь деревом папок слева.";
 "Read messages"       = "Читать сообщения";
+
+/* Tooltip for fab button */
 "Write a new message" = "Составить новое сообщение";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Составить сообщение в новом окне";
+
 "Share" = "Совместное использование";
 "Account" = "Пользователь";
 "Shared Account" = "Общая учетная запись";
@@ -217,6 +223,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Преобразовать в задание";
 
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Загрузить все вложения";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "вложения";
+
 "Print..." = "Печать...";
 "Delete Message" = "Удалить сообщение";
 "Delete Selected Messages" = "Удалить выделенные сообщения";
@@ -315,6 +327,7 @@
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Ошибка при загрузке файла \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Сейчас выполняется загрузка файла. Закрытие окна прервет её.";
+"Message is too big" = "Слишком большое сообщение";
 
 /* Appears while sending the message */
 "Sending" = "Отправляется";

@@ -21,9 +21,11 @@ $(SOGO_TOOL)_OBJC_FILES += \
 	SOGoToolRemove.m \
 	SOGoToolRemoveDoubles.m \
 	SOGoToolRenameUser.m \
+	SOGoToolCheckupUser.m \
 	SOGoToolRestore.m \
 	SOGoToolCreateFolder.m \
 	SOGoToolUserPreferences.m \
+	SOGoToolManageACL.m \
 	SOGoToolManageEAS.m \
 	SOGoToolTruncateCalendar.m
 TOOL_NAME += $(SOGO_TOOL)

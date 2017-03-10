@@ -715,7 +715,8 @@ function onMailIdentitySignatureClick(event) {
                                               'BGColor'], ['Source']
                                             ],
                                    language: localeCode,
-                                   scayt_sLang: localeCode });
+                                   scayt_disableOptionsStorage : 'lang',
+                                   scayt_sLang : scaytLang(localeCode) });
             }
         }
         dialog.mailAccount = this.mailAccount;

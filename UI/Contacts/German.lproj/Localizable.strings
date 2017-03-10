@@ -175,7 +175,7 @@
 "%{0} card(s) copied" = "%{0} Karte(n) kopiert";
 "%{0} card(s) moved" = "%{0} Karte(n) verschoben";
 "SoAccessDeniedException" = "Sie können nicht in dieses Adressbuch schreiben.";
-"Forbidden" = "Sie können nicht in dieses Adressbuch schreiben.";
+"Forbidden" = "Verboten";
 "Invalid Contact" = "Der gewählte Kontakt existiert nicht mehr.";
 "Unknown Destination Folder" = "Das gewählte Ziel-Adressbuch existiert nicht mehr.";
 

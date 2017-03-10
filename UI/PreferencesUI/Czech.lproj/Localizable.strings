@@ -194,6 +194,7 @@
 "Please enter your signature below" = "Text podpisu";
 "Please specify a valid sender address." = "Prosím zadejte správnou adresu odesílatele.";
 "Please specify a valid reply-to address." = "Prosím zadejte správnou adresu pro odpověď.";
+"Specify a hostname other than the local host" = "Zadefinujte jiné doménové jméno než local host";
 
 /* Additional Parameters */
 "Additional Parameters" = "Dodatečné parametry";
@@ -245,6 +246,7 @@
 "Finnish" = "Suomi";
 "French" = "Français";
 "German" = "Deutsch";
+"Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";

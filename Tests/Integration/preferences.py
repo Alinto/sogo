@@ -11,7 +11,7 @@ import sogoLogin
 # must be kept in sync with SoObjects/SOGo/SOGoDefaults.plist
 # this should probably be fetched magically...
 SOGoSupportedLanguages = [ "Arabic", "Basque", "Catalan", "ChineseTaiwan", "Croatian", "Czech", "Dutch", "Danish", "Welsh", "English", "Finnish",
-                           "SpanishSpain", "SpanishArgentina", "French", "German",
+                           "SpanishSpain", "SpanishArgentina", "French", "German", "Hebrew",
                            "Icelandic", "Italian", "Lithuanian", "Macedonian", "Hungarian", "Portuguese", "BrazilianPortuguese",
                            "NorwegianBokmal", "NorwegianNynorsk", "Polish", "Russian", "Serbian", "Slovak",
                            "Slovenian", "Swedish", "TurkishTurkey", "Ukrainian" ];

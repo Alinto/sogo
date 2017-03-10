@@ -114,7 +114,9 @@ static memcached_st *handle = NULL;
           if (handle)
             {
               memcached_behavior_set(handle, MEMCACHED_BEHAVIOR_BINARY_PROTOCOL, 1);
- 
+	      memcached_behavior_set(handle, MEMCACHED_BEHAVIOR_TCP_NODELAY, 1);
+	      memcached_behavior_set(handle, MEMCACHED_BEHAVIOR_RETRY_TIMEOUT, 5);
+
               sd = [SOGoSystemDefaults sharedSystemDefaults];
 	      
 	      // We define the default value for cleaning up cached users'
