@@ -218,7 +218,7 @@
     vm.showRecurrenceEditor = vm.component.$hasCustomRepeat;
     vm.toggleRecurrenceEditor = toggleRecurrenceEditor;
     vm.recurrenceMonthDaysAreRequired = recurrenceMonthDaysAreRequired;
-    vm.showAttendeesEditor = false;
+    vm.showAttendeesEditor = vm.component.attendees && vm.component.attendees.length;
     vm.toggleAttendeesEditor = toggleAttendeesEditor;
     //vm.searchText = null;
     vm.cardFilter = cardFilter;
@@ -276,15 +276,18 @@
     }
 
     function addAttendee(card) {
+      var automaticallyExapand = (!vm.component.attendees || vm.component.attendees.length === 0);
       if (angular.isString(card)) {
         // User pressed "Enter" in search field, adding a non-matching card
         if (card.isValidEmail()) {
           vm.component.addAttendee(new Card({ emails: [{ value: card }] }));
+          vm.showAttendeesEditor |= automaticallyExapand;
           vm.searchText = '';
         }
       }
       else {
         vm.component.addAttendee(card);
+        vm.showAttendeesEditor |= automaticallyExapand;
       }
     }
 
