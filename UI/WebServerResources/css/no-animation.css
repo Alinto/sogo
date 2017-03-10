@@ -1,0 +1,306 @@
+/**
+ * Disable transitions and drop shadows for improved performance in some browsers.
+ * It is generated as an optional and distinct CSS file.
+ *
+ * See https://github.com/angular/material/issues/8329
+ */
+/** Disable tab-contents **/
+md-tabs.md-dynamic-height {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+md-tab-content.md-right:not(.md-active) {
+  -webkit-animation: none;
+          animation: none; }
+
+md-tab-content.md-left:not(.md-active) {
+  -webkit-animation: none;
+          animation: none; }
+
+md-tab-content.md-left:not(.md-active) *,
+md-tab-content.md-right:not(.md-active) * {
+  -webkit-transition: none !important;
+  transition: none !important;
+  -webkit-transition-duration: 0ms !important;
+          transition-duration: 0ms !important;
+  -webkit-transition-delay: 0ms !important;
+          transition-delay: 0ms !important; }
+
+md-tab-content.md-right,
+md-tab-content.md-left {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+.md-tab {
+  -webkit-transition: none !important;
+  transition: none !important;
+  -webkit-transition-duration: 0ms !important;
+          transition-duration: 0ms !important;
+  -webkit-transition-delay: 0ms !important;
+          transition-delay: 0ms !important; }
+
+md-tab-content {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+md-ink-bar.md-right,
+md-ink-bar.md-left {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+/** Disable backdrop transition */
+md-backdrop {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+/** Disable slider animation for thumbs **/
+md-slider .md-focus-thumb {
+  -webkit-transition: none !important;
+  transition: none !important;
+  -webkit-transition-duration: 0ms !important;
+          transition-duration: 0ms !important;
+  -webkit-transition-delay: 0ms !important;
+          transition-delay: 0ms !important;
+  -webkit-animation: none !important;
+          animation: none !important; }
+
+md-slider ._md-thumb {
+  -webkit-transition: none !important;
+  transition: none !important;
+  -webkit-transition-duration: 0ms !important;
+          transition-duration: 0ms !important;
+  -webkit-transition-delay: 0ms !important;
+          transition-delay: 0ms !important; }
+
+md-option {
+  -webkit-transition: none !important;
+  transition: none !important;
+  -webkit-transition-duration: 0ms !important;
+          transition-duration: 0ms !important;
+  -webkit-transition-delay: 0ms !important;
+          transition-delay: 0ms !important; }
+
+/** Disable dialogs **/
+md-dialog.md-transition-out,
+md-dialog.md-transition-out .md-input,
+md-dialog.md-transition-out md-input-container.md-input-has-value label,
+md-dialog.md-transition-out md-input-container.md-input-has-value label:not(.md-no-float),
+md-dialog.md-transition-out md-icon, md-dialog.md-transition-in,
+md-dialog.md-transition-in .md-input,
+md-dialog.md-transition-in md-input-container.md-input-has-value label,
+md-dialog.md-transition-in md-input-container.md-input-has-value label:not(.md-no-float),
+md-dialog.md-transition-in md-icon,
+md-dialog md-toolbar,
+md-dialog md-toolbar .md-input,
+md-dialog md-toolbar md-input-container.md-input-has-value label,
+md-dialog md-toolbar md-input-container.md-input-has-value label:not(.md-no-float),
+md-dialog md-toolbar md-icon {
+  -webkit-transition: none !important;
+  transition: none !important;
+  -webkit-transition-duration: 0ms !important;
+          transition-duration: 0ms !important;
+  -webkit-transition-delay: 0ms !important;
+          transition-delay: 0ms !important; }
+
+/** Disable cards **/
+md-card.sg-collapsed,
+md-card.sg-expanded {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+/** Disable ripple **/
+.md-ripple,
+.md-ripple-container,
+sg-ripple {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+.md-ripple.md-ripple-remove {
+  -webkit-animation: none !important;
+          animation: none !important; }
+
+/** Disable progress bar **/
+.sg-progress-circular-floating {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+/** Disable checkbox **/
+md-checkbox ._md-icon {
+  -webkit-transition: none !important;
+  transition: none !important;
+  -webkit-transition-duration: 0ms !important;
+          transition-duration: 0ms !important;
+  -webkit-transition-delay: 0ms !important;
+          transition-delay: 0ms !important; }
+
+/** Disable radio **/
+md-radio-button .md-on,
+md-radio-button .md-off {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+.md-container::before {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+/** Disable buttons **/
+.md-button,
+.md-button.md-fab {
+  -webkit-transition: none !important;
+  transition: none !important;
+  -webkit-transition-duration: 0ms !important;
+          transition-duration: 0ms !important;
+  -webkit-transition-delay: 0ms !important;
+          transition-delay: 0ms !important; }
+
+/** Disable grid list **/
+md-grid-tile {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+/** Disable icons **/
+md-icon,
+.md-icon {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+/** Disable fading labels **/
+md-input-container label {
+  -webkit-transition: none !important;
+  transition: none !important;
+  -webkit-transition-duration: 0ms !important;
+          transition-duration: 0ms !important;
+  -webkit-transition-delay: 0ms !important;
+          transition-delay: 0ms !important; }
+
+/** Disable slider **/
+md-slider .md-thumb,
+md-slider .md-thumb-container,
+md-slider .md-sign,
+md-slider .md-sign::after,
+md-slider .md-focus-ring,
+md-slider .md-track-fill {
+  -webkit-transition: none !important;
+  transition: none !important;
+  -webkit-transition-duration: 0ms !important;
+          transition-duration: 0ms !important;
+  -webkit-transition-delay: 0ms !important;
+          transition-delay: 0ms !important; }
+
+md-input-container .md-char-counter, md-input-container .md-input-message-animation {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+/** Disable tooltips **/
+.md-tooltip {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+/** Disable fab translation **/
+md-fab-speed-dial.sg-fab-bottom-center {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+md-fab-speed-dial.md-scale .md-fab-action-item {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+/** Disable dropdown animations */
+md-select-menu,
+md-select-menu md-content {
+  -webkit-transition: none !important;
+  transition: none !important;
+  -webkit-transition-duration: 0ms !important;
+          transition-duration: 0ms !important;
+  -webkit-transition-delay: 0ms !important;
+          transition-delay: 0ms !important; }
+
+.md-select-menu-container.md-leave {
+  -webkit-transition: none !important;
+  transition: none !important;
+  -webkit-transition-duration: 0ms !important;
+          transition-duration: 0ms !important;
+  -webkit-transition-delay: 0ms !important;
+          transition-delay: 0ms !important; }
+
+.md-open-menu-container.md-active,
+.md-open-menu-container.md-active > md-menu-content > * {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+/** Disable datepicker and timepicker **/
+.md-datepicker-calendar-pane,
+.sg-timepicker-time-pane {
+  -webkit-transition: none !important;
+  transition: none !important;
+  -webkit-transition-delay: 0ms !important;
+          transition-delay: 0ms !important; }
+
+.md-datepicker-calendar,
+.md-datepicker-calendar-pane .md-calendar,
+.sg-timepicker-time,
+.sg-timepicker-time-pane .md-calendar {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+/** Disable views translations **/
+.view-list,
+.view-list--close,
+.view-detail {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+.md-sidenav-left,
+.md-sidenav-left .md-clickable {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+/** Disable custom rules **/
+.attendees {
+  -webkit-transition: none !important;
+  transition: none !important;
+  -webkit-transition-delay: 0ms !important;
+          transition-delay: 0ms !important; }
+
+.attendees-chips md-chips-wrap {
+  -webkit-transition: none !important;
+  transition: none !important; }
+
+.sg-reversible {
+  -webkit-transition: none !important;
+  transition: none !important;
+  position: relative; }
+
+.sg-reversible.sg-flip,
+.sg-reversible .sg-face,
+.sg-reversible .sg-back {
+  position: relative;
+  -webkit-transform: none !important;
+          transform: none !important; }
+
+.sg-reversible .sg-back,
+.sg-reversible.sg-flip .sg-face {
+  display: none; }
+
+.sg-reversible.sg-flip .sg-back {
+  display: block; }
+
+md-card {
+  border: 1px solid rgba(0, 0, 0, 0.14) !important;
+  box-shadow: none !important; }
+
+md-dialog {
+  border: 1px solid rgba(0, 0, 0, 0.14) !important;
+  box-shadow: none !important; }
+
+md-select-menu {
+  border: 1px solid rgba(0, 0, 0, 0.14) !important;
+  box-shadow: none !important; }
+
+.md-button.md-raised {
+  border: 1px solid rgba(0, 0, 0, 0.14) !important;
+  box-shadow: none !important; }
+
+md-toast .md-toast-content {
+  box-shadow: none !important; }
+/*# sourceMappingURL=no-animation.css.map */
