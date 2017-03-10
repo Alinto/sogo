@@ -171,6 +171,7 @@
 
       if (baseComponent) {
         component = baseComponent;
+        component.updateFreeBusy();
       }
       else {
         component = new Component({ pid: Calendar.$defaultCalendar(), type: type });
