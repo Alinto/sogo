@@ -266,7 +266,12 @@
   NSComparisonResult result;
 
   selfCategory = [self objectAtIndex: taskCategoryIndex];
+  if ([selfCategory isKindOfClass: [NSArray class]])
+    selfCategory = [(id)selfCategory lastObject];
+
   otherCategory = [otherTask objectAtIndex: taskCategoryIndex];
+  if ([otherCategory isKindOfClass: [NSArray class]])
+    otherCategory = [(id)otherCategory lastObject];
 
   if ([selfCategory isNotNull] && [otherCategory isNotNull])
     result = [selfCategory caseInsensitiveCompare: otherCategory];
