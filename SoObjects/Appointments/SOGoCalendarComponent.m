@@ -579,17 +579,6 @@
 		[allAttendees addObject: person];
 	    }
 	}
-      else
-	{
-	  // We remove any attendees matching the organizer. Apple iCal will do that when
-	  // you invite someone. It'll add the organizer in the attendee list, which will
-	  // confuse itself!
-	  if ([[currentAttendee rfc822Email] caseInsensitiveCompare: organizerEmail] == NSOrderedSame)
-	    {
-	      [allAttendees removeObject: currentAttendee];
-	      eventWasModified = YES;
-	    }
-	}
       
       j++;
     } // while (currentAttendee ...
