@@ -161,23 +161,23 @@
                         <var:string label:value="Search"/>
                       </md-button>
                     </md-menu-item>
-                    <md-menu-divider ng-show="folder.type == 'folder'"><!-- divider --></md-menu-divider>
+                    <md-menu-divider ng-show="folder.$canFolderAs()"><!-- divider --></md-menu-divider>
                     <md-menu-item ng-show="folder.type == 'folder'">
                       <md-button type="button" ng-click="app.setFolderAs(folder, 'Drafts')">
                         <var:string label:value="Set as Drafts"/>
                       </md-button>
                     </md-menu-item>
-                    <md-menu-item ng-show="folder.type == 'folder'">
+                    <md-menu-item ng-show="folder.$canFolderAs()">
                       <md-button type="button" ng-click="app.setFolderAs(folder, 'Sent')">
                         <var:string label:value="Set as Sent"/>
                       </md-button>
                     </md-menu-item>
-                    <md-menu-item ng-show="folder.type == 'folder'">
+                    <md-menu-item ng-show="folder.$canFolderAs()">
                       <md-button type="button" ng-click="app.setFolderAs(folder, 'Trash')">
                         <var:string label:value="Set as Trash"/>
                       </md-button>
                     </md-menu-item>
-                    <md-menu-item ng-show="folder.type == 'folder'">
+                    <md-menu-item ng-show="folder.$canFolderAs()">
                       <md-button type="button" ng-click="app.setFolderAs(folder, 'Junk')">
                         <var:string label:value="Set as Junk"/>
                       </md-button>

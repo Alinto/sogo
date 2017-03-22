@@ -572,6 +572,16 @@
   };
 
   /**
+   * @function $canFolderAs
+   * @memberof Mailbox.prototype
+   * @desc Check if the folder can be set as Drafts/Sent/Trash
+   * @returns true if folder is eligible
+   */
+  Mailbox.prototype.$canFolderAs = function() {
+    return this.type == 'folder' && this.level === 0;
+  };
+
+  /**
    * @function $setFolderAs
    * @memberof Mailbox.prototype
    * @desc Set a folder as Drafts/Sent/Trash
