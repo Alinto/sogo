@@ -253,10 +253,14 @@
     function addRecipient(contact, field) {
       var recipients, recipient, list;
 
-      if (angular.isString(contact))
-        return contact;
-
       recipients = vm.message.editable[field];
+
+      if (angular.isString(contact)) {
+        _.forEach(contact.split(/[,;]/), function(address) {
+          recipients.push(address);
+        });
+        return null;
+      }
 
       if (contact.$isList({expandable: true})) {
         // If the list's members were already fetch, use them

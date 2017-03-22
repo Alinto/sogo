@@ -7,6 +7,7 @@ New features
 Enhancements
  - [web] constrain event/task reminder to a positive number
  - [web] display year in day and week views
+ - [web] split string on comma and semicolon when pasting multiple addresses (#4097)
 
 Bug fixes
  - [core] handle broken CalDAV clients sending bogus SENT-BY (#3992)
