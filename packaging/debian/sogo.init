@@ -63,9 +63,9 @@ case "$1" in
 	log_daemon_msg "Starting $DESC" "$NAME"
 
         # Enforce directory existence and permissions
-        install -o $USER -g $USER -m 755 -d /var/run/$NAME
-        install -o $USER -g $USER -m 750 -d /var/spool/$NAME
-        install -o $USER -g $USER -m 750 -d /var/log/$NAME
+        install -o $USER -g $USER -m 775 -d /var/run/$NAME
+        install -o $USER -g $USER -m 770 -d /var/spool/$NAME
+        install -o $USER -g $USER -m 770 -d /var/log/$NAME
 
 	if ! start-stop-daemon -c $USER --quiet --start --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS 
 	then
