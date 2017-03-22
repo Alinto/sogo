@@ -22,8 +22,15 @@
           return ['_' + key, value];
         return [key, value];
       }));
-
       data.SOGoMailLabelsColors = labels;
+
+      _.forEach(data.SOGoSieveFilters, function(filter) {
+        _.forEach(filter.actions, function(action) {
+          if (action.method == 'addflag' &&
+              action.argument.charAt(0) == '$')
+            action.argument = '_' + action.argument;
+        });
+      });
 
       if (data.SOGoRememberLastModule)
         data.SOGoLoginModule = "Last";
@@ -260,8 +267,16 @@
       }
       return [key, value];
     }));
-
     preferences.defaults.SOGoMailLabelsColors = labels;
+
+    _.forEach(preferences.defaults.SOGoSieveFilters, function(filter) {
+      _.forEach(filter.actions, function(action) {
+        if (action.method == 'addflag' &&
+            action.argument.charAt(0) == '_' &&
+            action.argument.charAt(1) == '$')
+          action.argument = action.argument.substring(1);
+      });
+    });
 
     if (!preferences.defaults.SOGoMailComposeFontSizeEnabled)
       preferences.defaults.SOGoMailComposeFontSize = 0;
