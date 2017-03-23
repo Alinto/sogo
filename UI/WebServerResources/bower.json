@@ -10,7 +10,7 @@
     "angular-sanitize": "1.6.x",
     "angular-ui-router": "latest",
     "angular-file-upload": "latest",
-    "angular-material": "1.1.1-master-2c9a5cc",
+    "angular-material": "1.1.3-master-e3f9772",
     "file-saver.js": "latest",
     "lodash": "latest",
     "ng-sortable": "latest",
