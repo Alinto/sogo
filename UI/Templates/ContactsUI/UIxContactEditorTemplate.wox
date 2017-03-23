@@ -97,7 +97,7 @@
             <!-- other orgs -->
             <div class="attr" ng-repeat="org in editor.card.orgs">
               <div layout="row" layout-align="start center">
-                <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('orgs', $index)">
+                <md-button class="md-icon-button" type="button" ng-click="editor.removeAttribute(contactForm, 'orgs', $index)">
                   <md-icon>remove_circle</md-icon>
                 </md-button>
                 <md-input-container class="md-flex">
@@ -136,7 +136,7 @@
             <div class="section">
               <div class="attr" ng-repeat="email in editor.card.emails">
                 <div layout="row" layout-align="start center">
-                  <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('emails', $index)">
+                  <md-button class="md-icon-button" type="button" ng-click="editor.removeAttribute(contactForm, 'emails', $index)">
                     <md-icon>remove_circle</md-icon>
                   </md-button>
                   <md-input-container flex="20">
@@ -166,7 +166,7 @@
             <!-- screenname -->
             <div class="section">
               <div layout="row" layout-align="start center" ng-show="editor.card.c_screenname != null">
-                <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('c_screenname', -1)">
+                <md-button class="md-icon-button" type="button" ng-click="editor.removeAttribute(contactForm, 'c_screenname', -1)">
                   <md-icon>remove_circle</md-icon>
                 </md-button>
                 <md-input-container class="md-flex">
@@ -189,7 +189,7 @@
             <!-- birthday -->
             <div class="section">
               <div layout="row" layout-align="start end" ng-show="editor.card.birthday">
-                <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('birthday', -1)">
+                <md-button class="md-icon-button" type="button" ng-click="editor.removeAttribute(contactForm, 'birthday', -1)">
                   <md-icon>remove_circle</md-icon>
                 </md-button>
                 <div class="pseudo-input-container">
@@ -214,7 +214,7 @@
             <div class="section">
               <div class="attr" ng-repeat="phone in editor.card.phones">
                 <div layout="row" layout-align="start center">
-                  <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('phones', $index)">
+                  <md-button class="md-icon-button" type="button" ng-click="editor.removeAttribute(contactForm, 'phones', $index)">
                     <md-icon>remove_circle</md-icon>
                   </md-button>
                   <md-input-container flex="20">
@@ -245,7 +245,7 @@
             <div class="section">
               <div class="attr" ng-repeat="url in editor.card.urls">
                 <div layout="row" layout-align="start center">
-                  <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('urls', $index)">
+                  <md-button class="md-icon-button" type="button" ng-click="editor.removeAttribute(contactForm, 'urls', $index)">
                     <md-icon>remove_circle</md-icon>
                   </md-button>
                   <md-input-container flex="20">
@@ -275,7 +275,7 @@
             <div class="section">
               <div class="attr" ng-repeat="address in editor.card.addresses">
                 <div layout="row" layout-align="start center">
-                  <md-button class="md-icon-button" type="button" ng-click="editor.card.$delete('addresses', $index)">
+                  <md-button class="md-icon-button" type="button" ng-click="editor.removeAttribute(contactForm, 'addresses', $index)">
                     <md-icon>remove_circle</md-icon>
                   </md-button>
                   <div class="md-flex" layout="column">

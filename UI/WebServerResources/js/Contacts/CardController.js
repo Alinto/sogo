@@ -21,6 +21,7 @@
     vm.categories = {};
     vm.userFilterResults = [];
     vm.transformCategory = transformCategory;
+    vm.removeAttribute = removeAttribute;
     vm.addOrg = addOrg;
     vm.addBirthday = addBirthday;
     vm.addScreenName = addScreenName;
@@ -70,6 +71,10 @@
         return { value: input };
       else
         return input;
+    }
+    function removeAttribute(form, attribute, index) {
+      vm.card.$delete(attribute, index);
+      form.$setDirty();
     }
     function addOrg() {
       var i = vm.card.$addOrg({ value: '' });

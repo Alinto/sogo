@@ -8,7 +8,7 @@ Enhancements
  - [web] constrain event/task reminder to a positive number
  - [web] display year in day and week views
  - [web] split string on comma and semicolon when pasting multiple addresses (#4097)
- - [web] restrict Draft/Sent/Trash/Junk mailboxes to the top level (#6963)
+ - [web] restrict Draft/Sent/Trash/Junk mailboxes to the top level
 
 Bug fixes
  - [core] handle broken CalDAV clients sending bogus SENT-BY (#3992)
@@ -27,6 +27,8 @@ Bug fixes
  - [web] fixed SCAYT automatic language selection in HTML editor
  - [web] fixed task sorting on multiple categories
  - [web] fixed sanitisation of flags in Sieve filters (#4087)
+ - [web] fixed missing CC or BCC when specified before sending message (#3944)
+ - [web] enabled Save button after deleting attributes from a card (#4095)
  - [eas] fixed opacity in EAS freebusy (#4033)
 
 3.2.7 (2017-02-14)
