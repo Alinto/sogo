@@ -29,7 +29,7 @@
             tile,
             ngModelCtrl,
             i,
-            modelDays,
+            modelDays = [],
             modelAttr,
             toggleClass;
 
