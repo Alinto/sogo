@@ -259,6 +259,9 @@ static SoProduct *preferencesProduct = nil;
       [defaults setContactsCategories: categoryLabels];
     }
 
+  if (![[defaults source] objectForKey: @"SOGoMailAddOutgoingAddresses"])
+    [[defaults source] setObject: [NSNumber numberWithBool: [defaults mailAddOutgoingAddresses]] forKey: @"SOGoMailAddOutgoingAddresses"];
+
   //
   // Default Mail preferences
   //

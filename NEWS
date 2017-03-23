@@ -21,6 +21,7 @@ Bug fixes
  - [web] SOGoCalendarWeekdays must now be defined before saving preferences
  - [web] fixed CAS session timeout handling during XHR requests (#1456)
  - [web] exposed default value of SOGoMailAutoSave (#4053)
+ - [web] exposed default value of SOGoMailAddOutgoingAddresses (#4064)
  - [web] fixed handling of contact organizations (#4028)
  - [web] fixed handling of attachments in mail editor (#4058, #4063)
  - [web] fixed saving draft outside Mail module (#4071)
