@@ -316,10 +316,6 @@
         componentData.hour = start.getHourString();
         componentData.blocks = [];
         component = new Component(componentData);
-        // Filter out categories for which there's no associated color
-        component.categories = _.filter(component.categories, function(name) {
-          return Component.$Preferences.defaults.SOGoCalendarCategoriesColors[name];
-        });
         objects.push(component);
         return objects;
       };
@@ -437,10 +433,6 @@
         _.reduce(data[type], function(components, componentData, i) {
           var data = _.zipObject(fields, componentData), component;
           component = new Component(data);
-          // Filter out categories for which there's no associated color
-          component.categories = _.filter(component.categories, function(name) {
-            return Component.$Preferences.defaults.SOGoCalendarCategoriesColors[name];
-          });
           components.push(component);
           return components;
         }, components);
@@ -539,8 +531,15 @@
     else if (this.type == 'task')
       this.completed = new Date();
 
-    if (this.c_category)
-      this.categories = _.invokeMap(this.c_category, 'asCSSIdentifier');
+    if (this.c_category) {
+      // c_category is only defined in list mode (when calling $filter)
+      Component.$Preferences.ready().then(function() {
+        // Filter out categories for which there's no associated color
+        _this.categories = _.invokeMap(_.filter(_this.c_category, function(name) {
+          return Component.$Preferences.defaults.SOGoCalendarCategoriesColors[name];
+        }), 'asCSSIdentifier');
+      });
+    }
 
     // Parse recurrence rule definition and initialize default values
     this.$isRecurrent = angular.isDefined(data.repeat);

@@ -30,6 +30,7 @@ Bug fixes
  - [web] fixed missing CC or BCC when specified before sending message (#3944)
  - [web] enabled Save button after deleting attributes from a card (#4095)
  - [web] don't show Copy To and Move To menu options when user has a single address book
+ - [web] fixed display of category colors in events and tasks lists
  - [eas] fixed opacity in EAS freebusy (#4033)
 
 3.2.7 (2017-02-14)
