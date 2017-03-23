@@ -55,7 +55,7 @@
         <md-grid-list md-cols="7" md-row-height="2em" md-gutter="0.5em"
                       flex="50" flex-sm="80" flex-xs="100"
                       ng-model="editor.component.repeat.monthdays"
-                      ng-required="editor.component.repeat.month.type == 'bymonthday'"
+                      ng-required="editor.recurrenceMonthDaysAreRequired()"
                       sg-toggle-grid="sg-toggle-grid">
           <md-grid-tile value="1">1</md-grid-tile>
           <md-grid-tile value="2">2</md-grid-tile>

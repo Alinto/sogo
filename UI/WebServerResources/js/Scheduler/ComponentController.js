@@ -265,7 +265,8 @@
     }
 
     function recurrenceMonthDaysAreRequired() {
-      return vm.component.repeat.frequency == 'monthly' &&
+      return vm.component &&
+        vm.component.repeat.frequency == 'monthly' &&
         vm.component.repeat.month.type == 'bymonthday';
     }
 
