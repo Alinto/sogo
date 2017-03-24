@@ -1850,16 +1850,14 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           uid = [[event organizer] uidInContext: context];
           if (uid)
             {
+	      iCalPerson *attendee, *organizer;
               NSDictionary *defaultIdentity;
 	      NSArray *allAttendees;
-	      iCalPerson *attendee;
-              SOGoUser *organizer;
 
-
-              organizer = [SOGoUser userWithLogin: uid];
-              defaultIdentity = [organizer defaultIdentity];
-              [[event organizer] setCn: [defaultIdentity objectForKey: @"fullName"]];
-              [[event organizer] setEmail: [defaultIdentity objectForKey: @"email"]];
+              defaultIdentity = [[SOGoUser userWithLogin: uid] defaultIdentity];
+	      organizer = [[event organizer] copy];
+              [organizer setCn: [defaultIdentity objectForKey: @"fullName"]];
+              [organizer setEmail: [defaultIdentity objectForKey: @"email"]];
 
 	      // We now check if one of the attendee is also the organizer. If so,
 	      // we remove it. See bug #3905 (https://sogo.nu/bugs/view.php?id=3905)
@@ -1872,6 +1870,10 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 		  if ([organizer hasEmail: [attendee rfc822Email]])
 		    [event removeFromAttendees: attendee];
 		}
+
+	      // We reset the organizer
+	      [event setOrganizer: organizer];
+	      RELEASE(organizer);
             }
         }
     }
