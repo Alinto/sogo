@@ -194,6 +194,7 @@
 "Please enter your signature below" = "Ole hyvä ja syötä allekirjoituksesi alle";
 "Please specify a valid sender address." = "Ole hyvä ja syötä kelvollinen lähettäjäosoite";
 "Please specify a valid reply-to address." = "Ole hyvä ja syötä kelvollinen vastausosoite";
+"Specify a hostname other than the local host" = "Määritä muu kuin paikallinen palvelinosoite";
 
 /* Additional Parameters */
 "Additional Parameters" = "Lisäparametrit";
