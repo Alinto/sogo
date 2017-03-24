@@ -1810,9 +1810,11 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
             {
 	      iCalPerson *attendee, *organizer;
               NSDictionary *defaultIdentity;
+	      SOGoUser *organizerUser;
 	      NSArray *allAttendees;
 
-              defaultIdentity = [[SOGoUser userWithLogin: uid] defaultIdentity];
+	      organizerUser = [SOGoUser userWithLogin: uid];
+              defaultIdentity = [organizerUser defaultIdentity];
 	      organizer = [[event organizer] copy];
               [organizer setCn: [defaultIdentity objectForKey: @"fullName"]];
               [organizer setEmail: [defaultIdentity objectForKey: @"email"]];
@@ -1825,7 +1827,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 	      for (j = [allAttendees count]-1; j >= 0; j--)
 		{
 		  attendee = [allAttendees objectAtIndex: j];
-		  if ([organizer hasEmail: [attendee rfc822Email]])
+		  if ([organizerUser hasEmail: [attendee rfc822Email]])
 		    [event removeFromAttendees: attendee];
 		}
 
