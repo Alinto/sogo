@@ -1197,6 +1197,36 @@
   return uids;
 }
 
+- (NSException *) _copyComponent: (iCalCalendar *) calendar
+                        toFolder: (SOGoGCSFolder *) newFolder
+                       updateUID: (BOOL) updateUID
+{
+  NSString *newUID;
+  SOGoCalendarComponent *newComponent;
+
+  if (updateUID)
+    {
+      NSArray *elements;
+      unsigned int count, max;
+
+      newUID = [self globallyUniqueObjectId];
+      elements = [calendar allObjects];
+      max = [elements count];
+      for (count = 0; count < max; count++)
+        [[elements objectAtIndex: count] setUid: newUID];
+    }
+  else
+    {
+      newUID = [[[calendar allObjects] objectAtIndex: 0] uid];
+    }
+
+  newComponent = [[self class] objectWithName:
+				 [NSString stringWithFormat: @"%@.ics", newUID]
+			       inContainer: newFolder];
+
+  return [newComponent saveCalendar: calendar];
+}
+
 - (NSException *) copyToFolder: (SOGoGCSFolder *) newFolder
 {
   return [self copyComponent: [self calendar: NO secure: NO]
@@ -1206,51 +1236,21 @@
 - (NSException *) copyComponent: (iCalCalendar *) calendar
 		       toFolder: (SOGoGCSFolder *) newFolder
 {
-  NSArray *elements;
-  NSString *newUID;
-  unsigned int count, max;
-  SOGoCalendarComponent *newComponent;
-
-  newUID = [self globallyUniqueObjectId];
-  elements = [calendar allObjects];
-  max = [elements count];
-  for (count = 0; count < max; count++)
-    [[elements objectAtIndex: count] setUid: newUID];
-
-  newComponent = [[self class] objectWithName:
-				 [NSString stringWithFormat: @"%@.ics", newUID]
-			       inContainer: newFolder];
-
-  return [newComponent saveCalendar: calendar];
+  return [self _copyComponent: calendar
+                     toFolder: newFolder
+                    updateUID: YES];
 }
 
 - (NSException *) moveToFolder: (SOGoGCSFolder *) newFolder
 {
-  SOGoCalendarComponent *newComponent;
   NSException *ex;
-  id o;
 
-  // Lookup to see if the event exists in the target calendar. During a MOVE, we do
-  // keep the ID of the event intact.
-  o = [newFolder lookupName: [self nameInContainer]
-		  inContext: context
-		    acquire: NO];
+  ex = [self _copyComponent: [self calendar: NO secure: NO]
+                   toFolder: newFolder
+                  updateUID: NO];
 
-  if ([o isKindOfClass: [NSException class]])
-    {
-      newComponent = [[self class] objectWithName: [self nameInContainer]
-				      inContainer: newFolder];
-
-      ex = [newComponent saveCalendar: [self calendar: NO secure: NO]];
-
-      if (!ex)
-	ex = [self delete];
-    }
-  else
-    {
-      ex = [NSException exceptionWithHTTPStatus: 409
-					 reason: @"Target exists - MOVE disallowed."];
-    }
+  if (!ex)
+    ex = [self delete];
 
   return ex;
 }

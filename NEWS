@@ -2,6 +2,7 @@
 -------------------
 
 Bug fixes
+ - [core] fixed calendar component move across collections (#4116)
  - [eas] fixed opacity in EAS freebusy (#4033)
 
 2.3.20 (2017-03-10)
