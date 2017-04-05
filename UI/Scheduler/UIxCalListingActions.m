@@ -315,6 +315,7 @@ static NSArray *tasksFields = nil;
 {
   NSArray *mails, *states;
   NSMutableArray *statesDescription;
+  NSString *description;
   iCalPersonPartStat stat;
   NSUInteger count, max;
 
@@ -336,7 +337,9 @@ static NSArray *tasksFields = nil;
       for (count = 0; count < max; count++)
         {
           stat = (states ? [[states objectAtIndex: count] intValue] : 0);
-          [statesDescription addObject: [[iCalPerson descriptionForParticipationStatus: stat] lowercaseString]];
+          description = [iCalPerson descriptionForParticipationStatus: stat];
+          if (description == nil) description = @"";
+          [statesDescription addObject: [description lowercaseString]];
         }
 
       if (max > 0)
