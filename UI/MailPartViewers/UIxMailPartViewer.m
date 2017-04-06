@@ -340,12 +340,21 @@
 
 - (NSString *) pathToAttachmentFromMessage
 {
+  NSMutableArray *parts;
   SOGoMailBodyPart *bodyPart;
 
   bodyPart = [self clientPart];
-
   if ([bodyPart isKindOfClass: [SOGoMailBodyPart class]])
-    return [NSString stringWithFormat: @"%@/%@", [bodyPart nameInContainer], [self _filenameForAttachment: bodyPart]];
+    {
+      parts = [NSMutableArray arrayWithObject: [self _filenameForAttachment: bodyPart]];
+      do
+        {
+          [parts insertObject: [bodyPart nameInContainer] atIndex: 0];
+          bodyPart = [bodyPart container];
+        }
+      while ([bodyPart isKindOfClass: [SOGoMailBodyPart class]]);
+      return [parts componentsJoinedByString: @"/"];
+    }
 
   return @"0";
 }
