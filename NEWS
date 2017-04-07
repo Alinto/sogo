@@ -10,6 +10,7 @@ Enhancements
 Bug fixes
  - [web] fixed attachment path when inside multiple body parts
  - [core] cherry-picked comma escaping fix from v2 (#3296)
+ - [core] fix sogo-tool restore potentially crashing on corrupted data (#4048)
  - [eas] set reply/forwarded flags when ReplaceMime is set (#4133)
 
 3.2.8 (2017-03-24)
