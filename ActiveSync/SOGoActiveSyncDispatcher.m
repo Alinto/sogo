@@ -3541,10 +3541,14 @@ void handle_eas_terminate(int signum)
 {
   NSString *folderId, *itemId, *realCollectionId;
   SOGoMicrosoftActiveSyncFolderType folderType;
+  SOGoMailAccounts *accountsFolder;
+  SOGoMailFolder *currentFolder;
+  SOGoUserFolder *userFolder;
+  SOGoMailObject *mailObject;
   SOGoUserDefaults *ud;
 
   BOOL htmlComposition, isHTML;
-  id value;
+  id value, currentCollection;
   
   isHTML = NO;
   ud = [[context activeUser] userDefaults];
@@ -3570,23 +3574,31 @@ void handle_eas_terminate(int signum)
 
   value = [theDocumentElement getElementsByTagName: @"ReplaceMime"];
 
+  // We fetch the mail object from the server
+  userFolder = [[context activeUser] homeFolderInContext: context];
+  accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
+  currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
+
+  currentCollection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", realCollectionId]
+				      inContext: context
+					acquire: NO];
+
+  mailObject = [currentCollection lookupName: itemId  inContext: context  acquire: NO];
+
   // ReplaceMime IS specified so we must NOT use the server copy
   // but rather take the data as-is from the client.
   if ([value count])
     {
-      [self processSendMail: theDocumentElement
-                 inResponse: theResponse];
+      [self processSendMail: theDocumentElement  inResponse: theResponse];
+      if (!isSmartForward)
+	[mailObject addFlags: @"Answered"];
+      else
+	[mailObject addFlags: @"$Forwarded"];
       return;
     }
   
   if (folderType == ActiveSyncMailFolder)
     {
-      SOGoMailAccounts *accountsFolder;
-      SOGoMailFolder *currentFolder;
-      SOGoUserFolder *userFolder;
-      SOGoMailObject *mailObject;
-      id currentCollection;
-
       NGMimeMessage *messageFromSmartForward, *messageToSend;
       NGMimeMessageParser *parser;
       NSData *data;
@@ -3604,16 +3616,6 @@ void handle_eas_terminate(int signum)
       NSDictionary *identity;
 
       int a;
-
-      userFolder = [[context activeUser] homeFolderInContext: context];
-      accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
-      currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
-      
-      currentCollection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", realCollectionId]
-                                          inContext: context
-                                            acquire: NO];
-
-      mailObject = [currentCollection lookupName: itemId  inContext: context  acquire: NO];
 
       parser = [[NGMimeMessageParser alloc] init];
       data = [[[[(id)[theDocumentElement getElementsByTagName: @"MIME"] lastObject] textValue] stringByDecodingBase64] dataUsingEncoding: NSUTF8StringEncoding];
