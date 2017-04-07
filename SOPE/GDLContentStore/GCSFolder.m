@@ -1021,6 +1021,7 @@ andAttribute: (EOAttribute *)_attribute
 	      NSInvocation *anInvocation;
 	      SEL aSelector;
 
+	      quickRow = nil;
 	      aSelector = @selector(quickRecordFromContent:container:nameInContainer:);
 	      aSignature = [[theComponent class] instanceMethodSignatureForSelector: aSelector];
 	      anInvocation = [NSInvocation invocationWithMethodSignature:aSignature];
