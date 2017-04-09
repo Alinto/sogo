@@ -106,6 +106,8 @@ static Class NSStringK;
       listRequiresDot = YES;
 
       searchAttributes = nil;
+      LDAPLookupFields = [NSArray arrayWithObject: @"*"];
+      [LDAPLookupFields retain];
       passwordPolicy = NO;
       updateSambaNTLMPasswords = NO;
 
@@ -150,6 +152,7 @@ static Class NSStringK;
   [modulesConstraints release];
   [_scope release];
   [searchAttributes release];
+  [LDAPLookupFields release];
   [domain release];
   [kindField release];
   [multipleBookingsField release];
@@ -191,6 +194,7 @@ static Class NSStringK;
        IMAPLoginField: [udSource objectForKey: @"IMAPLoginFieldName"]
        SieveHostField: [udSource objectForKey: @"SieveHostFieldName"]
            bindFields: [udSource objectForKey: @"bindFields"]
+     LDAPLookupFields: [udSource objectForKey: @"LDAPLookupFields"]
             kindField: [udSource objectForKey: @"KindFieldName"]
             andMultipleBookingsField: [udSource objectForKey: @"MultipleBookingsFieldName"]];
 
@@ -313,6 +317,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
     IMAPLoginField: (NSString *) newIMAPLoginField
     SieveHostField: (NSString *) newSieveHostField
         bindFields: (id) newBindFields
+  LDAPLookupFields: (NSArray *) newLDAPLookupFields
          kindField: (NSString *) newKindField
   andMultipleBookingsField: (NSString *) newMultipleBookingsField
 {
@@ -358,6 +363,8 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
           ASSIGN(bindFields, [newBindFields componentsSeparatedByString: @","]);
         }
     }
+  if (newLDAPLookupFields)
+    ASSIGN(LDAPLookupFields, newLDAPLookupFields);
   if (newKindField)
     ASSIGN(kindField, [newKindField lowercaseString]);
   if (newMultipleBookingsField)
@@ -1203,7 +1210,6 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   NSEnumerator *entries;
   NSMutableArray *contacts;
   EOQualifier *qualifier;
-  NSArray *attributes;
 
   contacts = [NSMutableArray array];
 
@@ -1211,20 +1217,19 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
     {
       ldapConnection = [self _ldapConnection];
       qualifier = [self _qualifierForFilter: match];
-      attributes = [NSArray arrayWithObject: @"*"];
 
       if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
         entries = [ldapConnection baseSearchAtBaseDN: baseDN
                                            qualifier: qualifier
-                                          attributes: attributes];
+                                          attributes: LDAPLookupFields];
       else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
         entries = [ldapConnection flatSearchAtBaseDN: baseDN
                                            qualifier: qualifier
-                                          attributes: attributes];
+                                          attributes: LDAPLookupFields];
       else /* we do it like before */ 
         entries = [ldapConnection deepSearchAtBaseDN: baseDN
                                            qualifier: qualifier
-                                          attributes: attributes];
+                                          attributes: LDAPLookupFields];
       while ((currentEntry = [entries nextObject]))
         [contacts addObject:
                     [self _convertLDAPEntryToContact: currentEntry]];
@@ -1237,23 +1242,21 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 {
   NGLdapConnection *ldapConnection;
   NSEnumerator *entries;
-  NSArray *attributes;
 
   ldapConnection = [self _ldapConnection];
-  attributes = [NSArray arrayWithObject: @"*"];
 
   if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
     entries = [ldapConnection baseSearchAtBaseDN: baseDN
                                        qualifier: qualifier
-                                      attributes: attributes];
+                                      attributes: LDAPLookupFields];
   else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
     entries = [ldapConnection flatSearchAtBaseDN: baseDN
                                        qualifier: qualifier
-                                      attributes: attributes];
+                                      attributes: LDAPLookupFields];
   else
     entries = [ldapConnection deepSearchAtBaseDN: baseDN
                                        qualifier: qualifier
-                                      attributes: attributes];
+                                      attributes: LDAPLookupFields];
 
   return [entries nextObject];
 }
@@ -1742,6 +1745,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
 		  IMAPLoginField: nil
 		  SieveHostField: nil
 		 bindFields: nil
+	LDAPLookupFields: nil
 		  kindField: nil
 		  andMultipleBookingsField: nil];
               [ab setListRequiresDot: NO];
