@@ -35,7 +35,7 @@
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
-#include <dlinklist.h>
+#include "samba-dlinklist.h"
 
 @implementation MAPIStoreGCSBaseContext
 
@@ -102,7 +102,7 @@
               context->main_folder = [nameInContainer isEqualToString: @"personal"];
               context->role = [self MAPIContextRole];
               context->tag = "tag";
-              DLIST_ADD_END (firstContext, context, void);
+              DLIST_ADD_END (firstContext, context);
             }
         }
     }

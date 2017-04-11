@@ -37,7 +37,7 @@
 #import "MAPIApplication.h"
 #import "MAPIStoreMailContext.h"
 
-#include <dlinklist.h>
+#include "samba-dlinklist.h"
 #undef DEBUG
 #include <mapistore/mapistore.h>
 
@@ -143,7 +143,7 @@ MakeDisplayFolderName (NSString *folderName)
       context->main_folder = true;
       context->role = role[count];
       context->tag = "tag";
-      DLIST_ADD_END (firstContext, context, void);
+      DLIST_ADD_END (firstContext, context);
     }
 
   /* FIXME: Flush any cache before retrieving the hierarchy */
@@ -182,7 +182,7 @@ MakeDisplayFolderName (NSString *folderName)
       context->main_folder = false;
       context->role = MAPISTORE_MAIL_ROLE;
       context->tag = "tag";
-      DLIST_ADD_END (firstContext, context, void);
+      DLIST_ADD_END (firstContext, context);
     }
 
   return firstContext;

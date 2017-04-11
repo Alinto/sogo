@@ -30,7 +30,7 @@
 
 #undef DEBUG
 #include <inttypes.h>
-#include <dlinklist.h>
+#include "samba-dlinklist.h"
 #include <mapistore/mapistore.h>
 
 @implementation MAPIStoreFallbackContext
@@ -68,7 +68,7 @@
   context->role = MAPISTORE_FALLBACK_ROLE;
   context->tag = "tag";
 
-  DLIST_ADD_END (firstContext, context, void);
+  DLIST_ADD_END (firstContext, context);
 
   /* Maybe emsmdbp_provisioning should be fixed in order to only take the uri
      returned above to avoid deleting its entries... */
@@ -91,7 +91,7 @@
       context->main_folder = false;
       context->role = MAPISTORE_FALLBACK_ROLE;
       context->tag = "tag";
-      DLIST_ADD_END (firstContext, context, void);
+      DLIST_ADD_END (firstContext, context);
     }
 
   return firstContext;

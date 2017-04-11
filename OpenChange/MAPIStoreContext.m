@@ -50,7 +50,7 @@
 #import "MAPIStoreContext.h"
 
 #undef DEBUG
-#include <dlinklist.h>
+#include "samba-dlinklist.h"
 #include <stdbool.h>
 #include <gen_ndr/exchange.h>
 #include <util/attr.h>
@@ -123,7 +123,7 @@ static NSMutableDictionary *contextClassMapping;
                                      withIndexing: indexing
                                          inMemCtx: memCtx];
       if (current)
-        DLIST_CONCATENATE(list, current, void);
+        DLIST_CONCATENATE(list, current);
     }
 
   return list;
