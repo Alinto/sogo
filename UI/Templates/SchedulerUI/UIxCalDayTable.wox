@@ -28,7 +28,10 @@
               <var:if condition="currentTableDay.isToday" const:negate="YES">
                 <div class="sg-md-display-2--thin md-default-theme md-fg md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></div>
               </var:if>
-              <div class="md-default-theme md-fg md-primary md-hue-2"><var:string value="labelForMonth"/></div>
+              <div class="md-default-theme md-fg md-primary md-hue-2">
+                <var:string value="labelForMonth"/>
+                <span class="md-default-theme md-fg md-primary md-hue-1"><var:string value="currentYear"/></span>
+              </div>
             </var:if>
 
             <!-- Day view header -->
@@ -39,7 +42,10 @@
               <var:if condition="currentTableDay.isToday" const:negate="YES">
                 <div class="sg-md-display-4 md-default-theme md-fg md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></div>
               </var:if>
-              <div class="md-default-theme md-fg md-primary md-hue-2"><var:string value="labelForMonth"/></div>
+              <div class="md-default-theme md-fg md-primary md-hue-2">
+                <var:string value="labelForMonth"/><br/>
+                <span class="md-default-theme md-fg md-primary md-hue-1"><var:string value="currentTableDay.yearOfCommonEra"/></span>
+              </div>
             </var:if>
           </div>
         </var:foreach>
@@ -98,7 +104,7 @@
 
       <!-- The quarters grid -->
       <div class="daysView">
-        <div class="days">
+        <div class="days sg-now-line">
           <var:foreach list="daysToDisplay" item="currentTableDay">
             <sg-calendar-day var:class="dayClasses"
                              var:id="currentDayId"
@@ -125,7 +131,6 @@
                     sg-calendar-ghost="sg-calendar-ghost"
                     sg-block="list.component.$ghost"><!-- drag ghost --></sg-calendar-day-block>
               </div>
-              <div class="events"><!-- space --></div>
             </sg-calendar-day>
           </var:foreach>
         </div>

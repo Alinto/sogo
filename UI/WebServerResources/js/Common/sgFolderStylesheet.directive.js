@@ -65,6 +65,16 @@
         '  .checkbox-folder{{ cssCtrl.ngModel.id }}.md-checked .md-icon:after {',
         '    border-color: {{ cssCtrl.contrast(cssCtrl.ngModel.color) }} !important;',
         '  }',
+        /* Switch color */
+        '  .md-switch-folder{{ cssCtrl.ngModel.id }}.md-checked .md-thumb {',
+        '    background-color: {{ cssCtrl.ngModel.color }} !important;',
+        '  }',
+        '  .md-switch-folder{{ cssCtrl.ngModel.id }}.md-checked .md-bar {',
+        '    background-color: {{ cssCtrl.transparent(cssCtrl.ngModel.color, "0.5") }} !important;',
+        '  }',
+        '  .md-switch-folder{{ cssCtrl.ngModel.id }} .md-bar {',
+        '    background-color: {{ cssCtrl.transparent(cssCtrl.ngModel.color, "0.3") }} !important;',
+        '  }',
         '</style>'
       ].join('')
     };
@@ -73,6 +83,11 @@
       var vm = this;
 
       vm.contrast = contrast; // defined in Common/utils.js
+      vm.transparent = function(hex, ratio) {
+        var color = hexToRgb(hex);
+
+        return ['rgba(' + color.r, color.g, color.b, ratio + ')'].join(',');
+      };
     }
   }
 

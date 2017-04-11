@@ -15,15 +15,13 @@
 @import 'core/functions';
 @import 'core/angular';
 
-/* Local overrides from angular-material src */
-// fixme : refactor all this to meet our practices
+// Original angular-material core style and services
 // ------------------------------------------------------------------------------
 @import 'core/mixins';
 @import 'core/layout-attributes';
 @import 'core/structure';
 @import 'core/layout';
 @import 'core/typography';
-@import 'core/print';
 
 // Original angular-material components
 // ------------------------------------------------------------------------------
@@ -42,12 +40,12 @@
 //@import 'components/fabActions/fabActions';
 @import 'components/fabSpeedDial/fabSpeedDial';
 //@import 'components/fabToolbar/fabToolbar';
-//@import 'components/fabTrigger/fabTrigger';
 @import 'components/gridList/grid-list';
 @import 'components/icon/icon';
 @import 'components/input/input';
 @import 'components/list/list';
 @import 'components/menu/menu';
+@import 'components/panel/panel';
 @import 'components/progressCircular/progress-circular';
 @import 'components/progressLinear/progress-linear';
 @import 'components/radioButton/radio-button';
@@ -66,18 +64,15 @@
 @import 'components/whiteframe/whiteframe';
 
 // Inverse components
+@import 'components/avatarImage/avatarImage';
+@import 'components/draggable-droppable/draggable';
+@import 'components/draggable-droppable/droppable';
+@import 'components/hotkeys/hotkeys';
 @import 'components/ripple/ripple';
 @import 'components/timepicker/timepicker';
-
-// @import '../angular-material/src/core/style/color-palette';
-
-// COMPONENTS
-// todo : configure manual and glob imports
 @import 'components/pseudo-input/pseudo-input';
 @import 'views/view';
-
-// Make sure this is last to override anything else
-//@import 'shame';
+@import 'core/print';
 
 // dev-tools - NOT FOR PRODUCTION
 // ------------------------------------------------------------------------------

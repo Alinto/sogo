@@ -63,7 +63,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (int) _attendeeStatus: (iCalPerson *) attendee
 {
   int  attendee_status;
-  
+
   attendee_status = 5;
   if ([[attendee partStat] caseInsensitiveCompare: @"ACCEPTED"] == NSOrderedSame)
     attendee_status = 3;
@@ -74,6 +74,29 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   return attendee_status;
 }
+
+//
+// Possible values are:
+// 0  Free
+// 1  Tentative
+// 2  Busy
+// 3  Out of Office
+// 4  Working elsewhere
+//
+- (int) _busyStatus: (iCalPerson *) attendee
+{
+  int  attendee_status;
+
+  attendee_status = 2;
+
+  if ([[attendee partStat] caseInsensitiveCompare: @"DECLINED"] == NSOrderedSame)
+    attendee_status = 0;
+  else if ([[attendee partStat] caseInsensitiveCompare: @"TENTATIVE"] == NSOrderedSame)
+    attendee_status = 1;
+
+  return attendee_status;
+}
+
 
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
@@ -183,7 +206,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
    else
     {
-      meetingStatus = 0;  // appointment
+      meetingStatus = 0;  // The event is an appointment, which has no attendees.
     }
   
   // This depends on the 'NEEDS-ACTION' parameter.
@@ -204,7 +227,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [s appendFormat: @"<DisallowNewTimeProposal xmlns=\"Calendar:\">%d</DisallowNewTimeProposal>", 1];
       
       // BusyStatus -- http://msdn.microsoft.com/en-us/library/ee202290(v=exchg.80).aspx
-      [s appendFormat: @"<BusyStatus xmlns=\"Calendar:\">%d</BusyStatus>", 2];
+      [s appendFormat: @"<BusyStatus xmlns=\"Calendar:\">%d</BusyStatus>",  [self _busyStatus: attendee]];
+    }
+  else
+    {
+      // If it's a normal event (i.e. with no organizer/attendee) or we are the organizer of an event
+      // invitation, we set the busy status depending on TRANSP.
+      [s appendFormat: @"<BusyStatus xmlns=\"Calendar:\">%d</BusyStatus>", (([self isOpaque]) ? 2 : 0)];
     }
 
   [s appendFormat: @"<MeetingStatus xmlns=\"Calendar:\">%d</MeetingStatus>", meetingStatus];
@@ -445,7 +474,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   //
   if ((o = [theValues objectForKey: @"BusyStatus"]))
     {
-      [o intValue];
+      if ([o boolValue])
+        [self setTransparency: @"OPAQUE"];
+      else
+        [self setTransparency: @"TRANSPARENT"];
     }
 
   //
@@ -573,7 +605,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
   
   // Recurrence
-  if ((o = [theValues objectForKey: @"Recurrence"]))
+  if ((o = [theValues objectForKey: @"Recurrence"]) && [o isKindOfClass: [NSDictionary class]])
     {
       iCalRecurrenceRule *rule;
       
@@ -855,6 +887,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           [self setAttendees: attendees];
         }
     }
+
+  [self setLastModified: [NSCalendarDate calendarDate]];
 }
 
 - (void) changeParticipationStatus: (NSDictionary *) theValues

@@ -51,10 +51,10 @@
         [aString appendString: @","];
       subValue = [self objectAtIndex: count];
 
-      /* We MUST quote attribute values that have a ":" in them
+      /* We MUST quote attribute values that have a ":" or "," in them
          and that not already quoted */
       if (asAttributes && [subValue length] > 2
-          && [subValue rangeOfString: @":"].length
+          && ([subValue rangeOfString: @":"].length || [subValue rangeOfString: @","].length)
           && [subValue characterAtIndex: 0] != '"'
           && ![subValue hasSuffix: @"\""])
         subValue = [NSString stringWithFormat: @"\"%@\"", subValue];

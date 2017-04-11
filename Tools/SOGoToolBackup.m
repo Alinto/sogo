@@ -1,6 +1,6 @@
 /* SOGoToolBackup.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2015 Inverse inc.
+ * Copyright (C) 2009-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -94,9 +94,9 @@
 - (void) usage
 {
   fprintf (stderr, "backup directory ALL|user1 [user2] ...\n\n"
-	   "           directory  the target directory where backup files will be stored\n"
-	   "           user       the user of whom to save the data or ALL for everybody\n\n"
-	   "Example:   sogo-tool backup /tmp/foo ALL\n");
+           "           directory  the target directory where backup files will be stored\n"
+           "           user       the user of whom to save the data or ALL for everybody\n\n"
+           "Example:   sogo-tool backup /tmp/foo ALL\n");
 }
 
 - (BOOL) checkDirectory
@@ -137,8 +137,6 @@
   int count, max;
 
   lm = [SOGoUserManager sharedUserManager];
-  pool = [[NSAutoreleasePool alloc] init];
-  
 
   max = [users count];
   user = [users objectAtIndex: 0];
@@ -157,41 +155,63 @@
       folderLocation = [fm folderInfoLocation];
       fc = [cm acquireOpenChannelForURL: folderLocation];
       if (fc)
-	{
-	  allSqlUsers = [NSMutableArray new];
-	  sql
-	    = [NSString stringWithFormat: @"SELECT DISTINCT c_path2 FROM %@",
-			[folderLocation gcsTableName]];
-	  [fc evaluateExpressionX: sql];
-	  attrs = [fc describeResults: NO];
-	  while ((infos = [fc fetchAttributes: attrs withZone: NULL]))
-	    {
-	      user = [infos objectForKey: @"c_path2"];
-	      if (user)
-		[allSqlUsers addObject: user];
-	    }
-	  [cm releaseChannel: fc];
+        {
+          allSqlUsers = [NSMutableArray new];
+          sql
+            = [NSString stringWithFormat: @"SELECT DISTINCT c_path2 FROM %@",
+                        [folderLocation gcsTableName]];
+          [fc evaluateExpressionX: sql];
+          attrs = [fc describeResults: NO];
+          while ((infos = [fc fetchAttributes: attrs withZone: NULL]))
+            {
+              user = [infos objectForKey: @"c_path2"];
+              if (user)
+                [allSqlUsers addObject: user];
+            }
+          [cm releaseChannel: fc];
 
-	  users = allSqlUsers;
-	  max = [users count];
-	}
+          users = allSqlUsers;
+          max = [users count];
+          [allSqlUsers autorelease];
+        }
     }
 
+  pool = [[NSAutoreleasePool alloc] init];
   allUsers = [NSMutableArray new];
   for (count = 0; count < max; count++)
     {
       if (count > 0 && count%100 == 0)
-	{
-	  DESTROY(pool);
-	  pool = [[NSAutoreleasePool alloc] init];
-	}
+        {
+          DESTROY(pool);
+          pool = [[NSAutoreleasePool alloc] init];
+        }
       
       user = [users objectAtIndex: count];
       infos = [lm contactInfosForUserWithUIDorEmail: user];
       if (infos)
-	[allUsers addObject: infos];
+        [allUsers addObject: infos];
       else
-	NSLog (@"user '%@' unknown", user);
+        {
+          // We haven't found the user based on the GCS table name
+          // Let's try to strip the domain part and search again.
+          // This can happen when using SOGoEnableDomainBasedUID (YES)
+          // but login in SOGo using a UID without domain (DomainLessLogin gets set)
+          NSRange r;
+
+          r = [user rangeOfString: @"@"];
+
+          if (r.location != NSNotFound)
+            {
+              user = [user substringToIndex: r.location];
+              infos = [lm contactInfosForUserWithUIDorEmail: user];
+              if (infos)
+                [allUsers addObject: infos];
+              else
+                NSLog (@"user '%@' unknown", user);
+            }
+          else
+            NSLog (@"user '%@' unknown", user);
+        }
     }
   [allUsers autorelease];
 
@@ -242,9 +262,9 @@
   if (fc)
     {
       sql
-	= [NSString stringWithFormat: (@"SELECT c_foldername FROM %@"
-				       @" WHERE c_path = '%@'"),
-		    [folderLocation gcsTableName], folder];
+        = [NSString stringWithFormat: (@"SELECT c_foldername FROM %@"
+                                       @" WHERE c_path = '%@'"),
+                    [folderLocation gcsTableName], folder];
       [fc evaluateExpressionX: sql];
       attrs = [fc describeResults: NO];
       row = [fc fetchAttributes: attrs withZone: NULL];
@@ -322,7 +342,7 @@
                       forKey: @"acl"];
       [folderRecord setObject: tableRecord forKey: folder];
       rc = YES;
-   }
+    }
   else
     {
       NSLog(@"Unable to extract records for folder %@", folder);
@@ -379,11 +399,11 @@
       currentSource = [lm sourceWithID: sourceID];
       userEntry = [currentSource lookupContactEntry: uid inDomain: domain];
       if (userEntry)
-	{
+        {
           [userRecord setObject: [userEntry ldifRecordAsString]
                          forKey: @"ldif_record"];
           done = YES;
-	}
+        }
     }
 
   return YES;
@@ -423,7 +443,6 @@
 
   if ([sd enableDomainBasedUID] && [gcsUID rangeOfString: @"@"].location == NSNotFound)
     gcsUID = [NSString stringWithFormat: @"%@@%@", gcsUID, [theUser objectForKey: @"c_domain"]];
-
 
   return ([self extractUserFolders: gcsUID
                         intoRecord: userRecord]

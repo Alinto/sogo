@@ -424,7 +424,23 @@ static NSArray *childRecordFields = nil;
 
 - (GCSFolder *) ocsFolderForPath: (NSString *) _path
 {
-  return [[self folderManager] folderAtPath: _path];
+  NSDictionary *record;
+  SOGoCache *cache;
+
+  cache = [SOGoCache sharedCache];
+  record = [[cache valueForKey: _path] objectFromJSONString];
+
+  if (!record)
+    {
+      record = [[self folderManager] recordAtPath: _path];
+
+      if (!record)
+	return nil;
+
+      [cache setValue: [record jsonRepresentation]  forKey: _path];
+    }
+
+  return [[self folderManager] folderForRecord: record];
 }
 
 - (BOOL) folderIsMandatory
@@ -471,13 +487,19 @@ static NSArray *childRecordFields = nil;
 {
   NSMutableArray *newPath;
   NSURL *davURL;
+  unsigned int max, count;
 
   davURL = [self realDavURL];
   newPath = [NSMutableArray arrayWithArray: [[davURL path] componentsSeparatedByString: @"/"]];
   [newPath insertObject: @"public" atIndex: 3];
-  davURL = [[NSURL alloc] initWithScheme: [davURL scheme]
-				    host: [davURL host]
-				    path: [newPath componentsJoinedByString: @"/"]];
+
+  max = [newPath count];
+  for (count = 0; count < max; count++)
+    [newPath replaceObjectAtIndex: count
+                       withObject: [[newPath objectAtIndex: count] stringByEscapingURL]];
+
+  davURL = [NSURL URLWithString: [newPath componentsJoinedByString: @"/"]
+                  relativeToURL: davURL];
 
   return davURL;
 }
@@ -496,14 +518,11 @@ static NSArray *childRecordFields = nil;
         publicParticle = @"";
       path = [NSString stringWithFormat: @"/%@/dav%@/%@/%@/%@/",
                        appName, publicParticle,
-                       [self ownerInContext: nil],
-                       [container nameInContainer],
-                       [self realNameInContainer]];
+                       [[self ownerInContext: nil] stringByEscapingURL],
+                       [[container nameInContainer] stringByEscapingURL],
+                       [[self realNameInContainer] stringByEscapingURL]];
       currentDavURL = [self davURL];
-      realDavURL = [[NSURL alloc] initWithScheme: [currentDavURL scheme]
-                                            host: [currentDavURL host]
-                                            path: path];
-      [realDavURL autorelease];
+      realDavURL = [NSURL URLWithString: path relativeToURL: currentDavURL];
     }
   else
     realDavURL = [self davURL];
@@ -575,6 +594,7 @@ static NSArray *childRecordFields = nil;
       [self removeFolderSettings: moduleSettings
                    withReference: [self folderReference]];
       [us synchronize];
+      [[SOGoCache sharedCache] removeValueForKey: ocsPath];
 
       if ([[context request] handledByDefaultHandler])
         [self sendFolderAdvisoryTemplate: @"Removal"];
@@ -1725,7 +1745,7 @@ static NSArray *childRecordFields = nil;
 {
   EOQualifier *qualifier;
   NSString *uid, *uids, *qs, *objectPath, *domain;
-  NSMutableArray *usersAndGroups;
+  NSMutableArray *usersAndGroups, *groupsMembers;
   NSMutableDictionary *aclsForObject;
   SOGoGroup *group;
   unsigned int i;
@@ -1734,23 +1754,40 @@ static NSArray *childRecordFields = nil;
     {
       domain = [[context activeUser] domain];
       usersAndGroups = [NSMutableArray arrayWithArray: users];
+      groupsMembers = [NSMutableArray array];
       for (i = 0; i < [usersAndGroups count]; i++)
         {
           uid = [usersAndGroups objectAtIndex: i];
           if (![uid hasPrefix: @"@"])
             {
-              // Prefix the UID with the character "@" when dealing with a group
               group = [SOGoGroup groupWithIdentifier: uid inDomain: domain];
               if (group)
-                [usersAndGroups replaceObjectAtIndex: i
-                                          withObject: [NSString stringWithFormat: @"@%@", uid]];
+                {
+                  NSArray *members;
+                  SOGoUser *user;
+                  unsigned int j;
+
+                  // Fetch members to remove them from the cache along the group
+                  members = [group members];
+                  for (j = 0; j < [members count]; j++)
+                    {
+                      user = [members objectAtIndex: j];
+                      [groupsMembers addObject: [user login]];
+                    }
+
+                  // Prefix the UID with the character "@" when dealing with a group
+                  [usersAndGroups replaceObjectAtIndex: i
+                                            withObject: [NSString stringWithFormat: @"@%@", uid]];
+                }
             }
         }
       objectPath = [objectPathArray componentsJoinedByString: @"/"];
       aclsForObject = [[SOGoCache sharedCache] aclsForPath: objectPath];
       if (aclsForObject)
 	{
+          // Remove users, groups and groups members from the cache
 	  [aclsForObject removeObjectsForKeys: usersAndGroups];
+	  [aclsForObject removeObjectsForKeys: groupsMembers];
 	  [[SOGoCache sharedCache] setACLs: aclsForObject
 				   forPath: objectPath];
 	}
@@ -1805,6 +1842,11 @@ static NSArray *childRecordFields = nil;
   NSMutableArray *newRoles;
   SOGoGroup *group;
 
+  objectPath = [objectPathArray componentsJoinedByString: @"/"];
+
+  // We make sure we don't get unescaped uid - like foo%40bar.com
+  // or for groups - like %40team
+  uid = [uid stringByUnescapingURL];
   aUID = uid;
   if (![uid hasPrefix: @"@"])
     {
@@ -1812,7 +1854,12 @@ static NSArray *childRecordFields = nil;
       domain = [[context activeUser] domain];
       group = [SOGoGroup groupWithIdentifier: uid inDomain: domain];
       if (group)
-        aUID = [NSString stringWithFormat: @"@%@", uid];
+        {
+          aUID = [NSString stringWithFormat: @"@%@", uid];
+          // Remove all roles when defining ACLs for a group
+          [[SOGoCache sharedCache] setACLs: nil
+                                   forPath: objectPath];
+        }
     }
   [self removeAclsForUsers: [NSArray arrayWithObject: aUID]
            forObjectAtPath: objectPathArray];
@@ -1823,12 +1870,11 @@ static NSArray *childRecordFields = nil;
   [newRoles removeObject: SOGoRole_PublicUser];
   [newRoles removeObject: SOGoRole_AuthorizedSubscriber];
   [newRoles removeObject: SOGoRole_None];
-  objectPath = [objectPathArray componentsJoinedByString: @"/"];
   
   if (![newRoles count])
     [newRoles addObject: SOGoRole_None];
 
-  [self _cacheRoles: newRoles forUser: uid
+  [self _cacheRoles: newRoles forUser: aUID
 	      forObjectAtPath: objectPath];
 
   [self _commitRoles: newRoles forUID: aUID forObject: objectPath];
@@ -1865,9 +1911,9 @@ static NSArray *childRecordFields = nil;
 - (void) setRoles: (NSArray *) roles
           forUser: (NSString *) uid
 {
-  return [self    setRoles: roles
-                   forUser: uid
-           forObjectAtPath: [self pathArrayToFolder]];
+  return [self setRoles: roles
+		forUser: uid
+	       forObjectAtPath: [self pathArrayToFolder]];
 }
 
 - (void) removeAclsForUsers: (NSArray *) users

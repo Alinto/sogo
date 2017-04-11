@@ -8,7 +8,7 @@
    * @constructor
    * @param {object} futureAccountData
    */
-  function Account(futureAccountData) {
+    function Account(futureAccountData) {
     // Data is immediately available
     if (typeof futureAccountData.then !== 'function') {
       angular.extend(this, futureAccountData);
@@ -131,7 +131,7 @@
       return Account.$q.when(this.$mailboxes);
     }
     else {
-      return Account.$Mailbox.$find(this).then(function(data) {
+      return Account.$Mailbox.$find(this, options).then(function(data) {
         _this.$mailboxes = data;
         _this.$expanded = false;
 

@@ -1,0 +1,394 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Креирај";
+"Empty Trash" = "Испразни канту";
+"Delete"      = "Обриши";
+"Expunge"     = "Избриши";
+"Forward"     = "Проследи";
+"Get Mail"    = "Преузми пошту";
+"Junk"        = "Нежељено";
+"Not junk"    = "Није нежељено";
+"Reply"       = "Одговори";
+"Reply All"   = "Одговори свима";
+"Print"       = "Штампај";
+"Stop"        = "Заустави";
+"Write"       = "Писање";
+"Search"      = "Претрага";
+"Send" = "Пошаљи";
+"Contacts" = "Контакти";
+"Attach" = "Приложи";
+"Save" = "Сачувај";
+"Options" = "Опције";
+"Close" = "Затвори";
+"Size" = "Величина";
+
+/* Tooltips */
+"Send this message now" = "Пошаљи ову поруку сада";
+"Select a recipient from an Address Book" = "Одабери примаоца из адресара";
+"Include an attachment" = "Укључи прилог";
+"Save this message" = "Сачувај ову поруку";
+"Get new messages" = "Преузми нове поруке";
+"Create a new message" = "Креирај нову поруку";
+"Go to address book" = "Иди у адресар";
+"Reply to the message" = "Одговори на поруку";
+"Reply to sender and all recipients" = "Одговори пошињаоцу и свим примаоцима";
+"Forward selected message" = "Проследи одабрану поруку";
+"Delete selected message or folder" = "Обриши одабрану поруку или директоријум";
+"Print this message" = "Одштампај ову поруку";
+"Stop the current transfer" = "Заусти тренутни пренос";
+"Attachment" = "Прилог";
+"Unread" = "Непрочитано";
+"Flagged" = "Означено заставицом";
+"Search multiple mailboxes" = "Претражи више поштанских сандучића";
+
+/* Main Frame  */
+"Home"                 = "Почетна"; 
+"Calendar"             = "Календар";
+"Addressbook"          = "Адресар";
+"Mail"                 = "Пошта";
+"Right Administration" = "Администрација права";
+"Help" = "Помоћ";
+
+/* Mail account main windows */
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Добродошли у SOGo Пошту. Користите стабло директоријума са леве стране да претражите ваше поштанске налоге!";
+"Read messages"       = "Прочитај поруке";
+"Write a new message" = "Напиши нову поруку";
+"Share" = "Дели";
+"Account" = "Налог";
+"Shared Account" = "Дељени налог";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "Нема одабране поруке";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "Нема одабраног поштанског сандучета";
+
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Директоријум је сабијен";
+/* Empty Trash success message */
+"Trash emptied" = "Канта за отпатке је испражњена";
+
+/* acls */
+"Access rights to" = "Права приступа у";
+"For user" = "За корисника";
+"Any Authenticated User" = "Било који аутентификовани корисник";
+"List and see this folder" = "Прикажи и погледај овај директоријум";
+"Read mails from this folder" = "Прочитај пошту из овог директоријума";
+"Mark mails read and unread" = "Означи пошту прочитаном или непрочитаном";
+"Modify the flags of the mails in this folder" = "Измени заставице поште у овом директоријуму";
+"Insert, copy and move mails into this folder" = "Убаци, копирај или премести пошту у овај директоријум";
+"Post mails" = "Пошаљи пошту";
+"Add subfolders to this folder" = "Додај поддиректоријуме овом директоријуму";
+"Remove this folder" = "Уклони овај директоријум";
+"Erase mails from this folder" = "Обриши пошту из овог директоријума";
+"Expunge this folder" = "Очисти овај директоријум";
+"Export This Folder" = "Извези овај директоријум";
+"Modify the acl of this folder" = "Измени АЦЛ овог директоријума";
+"Saved Messages.zip" = "Сачуване Поруке.zip";
+"Update" = "Ажурирај";
+"Cancel" = "Откажи";
+
+/* Mail edition */
+"From"          = "Од";
+"Subject"       = "Тема";
+"To"            = "За";
+"Cc"            = "Цц";
+"Bcc"           = "Бцц";
+"Reply-To"	    = "Одговори";
+"Add address"   = "Додај адресу";
+"Body"          = "Тело";
+"Open" = "Отвори";
+"Select All" = "Одабери све";
+"Select Message" = "Одабери поруку";
+"Attach Web Page..." = "Приложи Веб страницу...";
+"file" = "документ";
+"files" = "документа";
+"Save all" = "Сачувај све";
+"to"            = "За";
+"cc"            = "Цц";
+"bcc"           = "Бцц";
+"Add a recipient" = "Додај примаоца";
+"Edit Draft..." = "Измени нацрт...";
+"Load Images" = "Учитај слике";
+"Return Receipt" = "Потврда о пријему";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Пошиљалац ове поруке је питао да буде обавештен када прочитате ову поруку. Да ли желите да обавестите пошиљаоца?";
+"Return Receipt (displayed) - %@"= "Потврда о пријему (приказана) - %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Ово је Потврда о пријему за пошту коју сте послали %@.\n\nБелешка: Ова потврда о пријему је само потврда да је порука приказана на рачунару примаоца. Нема гаранције да је прималац прочитао поруку или разумео садржај поруке.";
+"Priority" = "Приоритет";
+"highest" = "Највиши";
+"high" = "Висок";
+"normal" = "Нормалан";
+"low" = "Низак";
+"lowest" = "Најнижи";
+"This mail is being sent from an unsecure network!" = "Ова порука је послата са несигурне мреже!";
+"Address Book" = "Адресар";
+"Search For" = "Претражи";
+
+/* Popup "show" */
+"all"     = "све";
+"read"    = "прочитано";
+"unread"  = "непрочитано";
+"deleted" = "обрисано";
+"flagged" = "означено заставицом";
+
+/* MailListView */
+"Sender" = "Пошиљалац";
+"Subject or Sender" = "Тема или Пошиљалац";
+"To or Cc" = "За или Цц";
+"Entire Message" = "Комплетна порука";
+"Date"          = "Датум";
+"View"          = "Преглед";
+"All"           = "Све";
+"No message"    = "Нема порука";
+"messages"      = "поруке";
+"Yesterday"     = "Јуче";
+"first"         = "Прва";
+"previous"      = "Претходна";
+"next"          = "Следећа";
+"last"          = "Последња";
+"msgnumber_to"  = "за";
+"msgnumber_of"  = "од";
+"Mark Unread" = "Обележи непрочитано";
+"Mark Read"   = "Обележи прочитано";
+"Untitled" = "Без наслова";
+
+/* Tree */
+"SentFolderName"   = "Послато";
+"TrashFolderName"  = "Канта";
+"InboxFolderName"  = "Примљене";
+"DraftsFolderName" = "Недовршене";
+"JunkFolderName" = "Непожељне";
+"SieveFolderName"  = "Филтери";
+"Folders"          = "Директоријуми"; /* title line */
+
+/* MailMoveToPopUp */
+"MoveTo"        = "Премести у &hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Додај у адресар...";
+"Compose Mail To" = "Састави поруку за";
+"Create Filter From Message..." = "Креирај филтер од поруке...";
+
+/* Image Popup menu */
+"Save Image" = "Сачувај слику";
+"Save Attachment" = "Сачувај прилог";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Отовори у новом прозору поште";
+"Copy Folder Location" = "Умножи локацију директоријума";
+"Subscribe..." = "Пртплати се";
+"Mark Folder Read" = "Означи директоријум прочитан";
+"New Folder..." = "Нови директоријум...";
+"Compact This Folder" = "Компресуј овај директоријум";
+"Search Messages..." = "Претражи поруке...";
+"Sharing..." = "Дељење...";
+"New Subfolder..." = "Нови поддиректоријум...";
+"Rename Folder..." = "Преименуј директоријум...";
+"Delete Folder" = "Обриши директоријум...";
+"Use This Folder For" = "Користи овај директоријум за";
+"Get Messages for Account" = "Преузми поруке за налог";
+"Properties..." = "Својства...";
+"Delegation..." = "Делегирање...";
+
+/* Use This Folder menu */
+"Sent Messages" = "Послате поруке...";
+"Drafts" = "Недовршене";
+"Deleted Messages" = "Обрисане поруке";
+"Junk Messages" = "Непожељне поруке";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Отвори поруке у новом прозору";
+"Reply to Sender Only" = "Одговори само пошиљаоцу";
+"Reply to All" = "Одговори свима";
+"Edit As New..." = "Измени као нову...";
+"Move To" = "Премести у";
+"Copy To" = "Копирај у";
+"Label" = "Ознака";
+"Mark" = "Обележи";
+"Save As..." = "Сачувај као...";
+"Print Preview" = "Преглед пре штампања";
+"View Message Source" = "Погледај извнорни код поруке";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Претвори у догађај";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Претвори у задатак";
+
+"Print..." = "Штампај...";
+"Delete Message" = "Обриши поруку";
+"Delete Selected Messages" = "Обриши одабране поруке";
+"Mark the selected messages as junk" = "Обележи одабране поруке као непожељне";
+"Mark the selected messages as not junk" = "Обележи одабране поруке као пожељне";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "и %{0} још...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "Сакриј";
+
+/* Number of selected messages in list */
+"selected" = "изабрано";
+
+"This Folder" = "Овај директоријум";
+
+/* Label popup menu */
+"None" = "Ништа";
+
+/* Mark popup menu */
+"As Read" = "Као прочитано";
+"Thread As Read" = "Тема као прочитана";
+"As Read By Date..." = "Као прочизтан датума...";
+"All Read" = "Све прочитано";
+"Flag" = "Заставица";
+"As Junk" = "Као непожељно";
+"As Not Junk" = "Као пожељно";
+"Run Junk Mail Controls" = "Покрени контроле непожељне поште";
+"Search messages in" = "Претражи поруке у";
+"Search" = "Претрага";
+"Search subfolders" = "Претражи поддиректоријуме";
+"Match any of the following" = "Подудари са било чим од следећег";
+"Match all of the following" = "Подудари са свим од следећег";
+"contains" = "садржи";
+"does not contain" = "не садржи";
+"No matches found" = "Нема пронађених подударања";
+"results found" = "пронађени резултати";
+"result found" = "пронађени резултат";
+"Please specify at least one filter" = "Молимо наведите барем један филтер";
+
+/* Folder operations */
+"Name" = "Име";
+"Enter the new name of your folder"
+ ="Унесите име вашег директоријума";
+"Do you really want to move this folder into the trash ?"
+ = "Да ли заиста желите да померите овај директоријум у канту?";
+"Operation failed" = "Операција није успела";
+"Quota" = "Квота:";
+"quotasFormat" = "%{0}% искоришћено од %{1} МБ";
+"Unable to move/delete folder." = "Не могу да преместим/обришем директоријум.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Поруке не могу бити премештене у директоријум канте. Да ли желите да их одмах обришете?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "Да ли сте сигурни да желите да обришете одабране поруке?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} порука(е) прекопирано";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} порука(е) премештено";
+
+"Please select a message." = "Молимо одаберите поруку.";
+"Please select a message to print." = "Молимо одаберите поруку за штампање.";
+"Please select only one message to print." = "Молимо одаберите само једну поруку за штампање.";
+"The message you have selected doesn't exist anymore." = "Порука коју сте одабрали више не постоји.";
+"The folder with name \"%{0}\" could not be created."
+= "Директоријум са именом \"%{0}\" не може бити креиран.";
+"This folder could not be renamed to \"%{0}\"."
+= "Овај директоријум не може бити преименован у \"%{0}\".";
+"The folder could not be deleted."
+= "Директоријум не може бити обрисан.";
+"The trash could not be emptied."
+= "Канта не може бити испражњена.";
+"The folder functionality could not be changed."
+= "Функционалност директоријума не може бити промењена.";
+"You need to choose a non-virtual folder!" = "Морате одабрати директоријум који није виртуелни!";
+"Moving a message into its own folder is impossible!"
+= "Премештање порука у сопствени директоријум није могуће!";
+"Copying a message into its own folder is impossible!"
+= "Копирање порука у сопствени директоријум није могуће!";
+
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "Поруке не могу бити премештене у директоријум канте. Да ли желите да их одмах обришете?";
+
+/* Message editing */
+"error_missingsubject" = "Порука нема тему. Да ли сте сигурни да желите да је пошаљете?";
+"error_missingrecipients" = "Молимо наведите барем једног примаоца.";
+"Send Anyway" = "Свеједно пошаљи";
+"Error while saving the draft" = "Грешка при чувању недовршене поруке";
+
+/* Error when uploading a file attachment */
+"Error while uploading the file \"%{0}\":" = "Грешка при отпремаљу документа \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "У току је отпремање документа. Ако затворите прозор прекинућете отпремање.";
+
+/* Appears while sending the message */
+"Sending" = "Слање";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Послато";
+
+"cannot send message: (smtp) all recipients discarded" = "Не могу послати поруку: ни један прималац није валидан.";
+"cannot send message (smtp) - recipients discarded" = "Не могу послати поруку. Следеће адресе нису валидне";
+"cannot send message: (smtp) error when connecting" = "Не могу послати поруку: грешка при повезивању на СМТП сервер.";
+
+/* Contacts list in mail editor */
+"Email" = "Епошта";
+"More mail options" = "Више опција поште";
+"Delegation" = "Делегирање";
+"Add User" = "Додај корисника";
+"Add a tag" = "Додај ознаку";
+"reply" = "одговори";
+"Edit" = "Измени";
+"Yes" = "Да";
+"No" = "Не";
+"Location" = "Локација";
+"Rename" = "Преименуј";
+"Compact" = "Компресуј";
+"Export" = "Извези";
+"Set as Drafts" = "Постави као недовршено";
+"Set as Sent" = "Постави као послато";
+"Set as Trash" = "Постави као канта";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "Постави као непожељно";
+
+"Sort" = "Поређај";
+"Order Received" = "Примљено захтева";
+"Descending Order" = "Опадајући ред";
+"Back" = "Назад";
+"Copy messages" = "Копирај поруке";
+"More messages options" = "Више опција порука";
+"Mark as Unread" = "Означи као непрочитано";
+"Mark as Read" = "Означи као прочитано";
+"Closing Window ..." = "Затварам прозор...";
+"Tried to send too many mails. Please wait." = "Покушавам да пошаљем превише поште. Молимо сачекајте.";
+"View Mail" = "Види пошту";
+"This message contains external images." = "Ова порука садржи спољне слике.";
+"Expanded" = "Проширено";
+"Add a Criteria" = "Додај критеријум";
+"More search options" = "Више опција претраге";
+"Your email has been saved" = "Ваше еписмо је сачувано";
+"Your email has been sent" = "Ваше еписмо је послато";
+"Folder compacted" = "Директоријум је сабијен";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Претражи опсег";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Управљај претплатама";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Филтер";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

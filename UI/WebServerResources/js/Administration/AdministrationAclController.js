@@ -18,6 +18,7 @@
     vm.selectedUid = null;
     vm.selectUser = selectUser;
     vm.selectAllRights = selectAllRights;
+    vm.showRights = showRights;
     vm.removeUser = removeUser;
     vm.getTemplate = getTemplate;
     vm.close = close;
@@ -56,8 +57,12 @@
       }
     }
 
+    function showRights(user) {
+      return vm.selectedUid == user.uid && user.rights;
+    }
+
     function userFilter($query) {
-      return User.$filter($query, stateFolder.$acl.users, { dry: true });
+      return User.$filter($query, stateFolder.$acl.users, { dry: true, uid: vm.user.uid });
     }
 
     function removeUser(user) {
@@ -90,7 +95,7 @@
         $mdToast.show(
           $mdToast.simple()
             .content(l('ACLs saved'))
-            .position('top right')
+            .position('bottom right')
             .hideDelay(3000)
         );
         // Close acls on small devices

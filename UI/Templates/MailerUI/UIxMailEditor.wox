@@ -5,18 +5,30 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
 
-  <md-dialog id="mailEditor" class="sg-mail-editor" flex="80" flex-sm="90" flex-xs="100"
+  <md-dialog id="mailEditor" class="sg-mail-editor"
+             flex="{{ editor.isFullscreen?    100 : 60 }}"
+             flex-sm="{{ editor.isFullscreen? 100 : 90 }}"
+             flex-xs="100"
              nv-file-drop="nv-file-drop"
              nv-file-over="nv-file-over"
              over-class="sg-over-dropzone"
-             uploader="editor.uploader">
+             uploader="editor.uploader"
+             ng-controller="navController">
     <form name="messageForm">
       <md-toolbar>
         <div class="md-toolbar-tools">
+          <!-- expand dialog -->
+          <md-button ng-click="editor.toggleFullscreen()"
+                     class="md-icon-button md-primary md-hue-1 hide show-gt-xs"
+                     aria-hidden="true"
+                     ng-if="!isPopup">
+            <md-icon class="icon-fullscreen"
+                     ng-class="{ 'icon-fullscreen-exit': editor.isFullscreen }"><!-- fullscreen --></md-icon>
+          </md-button>
           <!-- from -->
           <sg-avatar-image class="hide-xs"
                            sg-email="editor.message.editable.from"
-                           size="32"><!-- avatar --></sg-avatar-image>
+                           size="32">person</sg-avatar-image>
           <md-input-container class="sg-no-wrap">
             <label><var:string label:value="From"/></label>
             <md-select name="from"
@@ -26,7 +38,7 @@
           </md-input-container>
           <div flex="flex"><!-- spacer --></div>
           <md-button class="sg-icon-button" ng-click="editor.send()"
-                     ng-disabled="!(editor.message.editable.to.length > 0 || editor.message.editable.cc.length > 0 || editor.message.editable.bcc.length > 0) || editor.uploader.isUploading || messageForm.$invalid"
+                     ng-disabled="!(editor.message.editable.to.length > 0 || editor.message.editable.cc.length > 0 || editor.message.editable.bcc.length > 0) || editor.uploader.isUploading || messageForm.$invalid || messageForm.$submitted"
                      sg-ripple-click="mailEditor">
             <md-icon>send</md-icon>
           </md-button>
@@ -57,14 +69,14 @@
               <md-chips ng-model="editor.message.editable.to"
                         md-separator-keys="editor.recipientSeparatorKeys"
                         md-transform-chip="editor.addRecipient($chip, 'to')"
-                        sg-transform-on-blur="sg-transform-on-blur">
+                        md-add-on-blur="true">
                 <md-autocomplete
                     class="sg-chips-autocomplete"
                     md-autofocus="true"
                     md-search-text="editor.autocomplete.to.searchText"
                     md-selected-item="editor.autocomplete.to.selected"
                     md-items="user in editor.contactFilter(editor.autocomplete.to.searchText)"
-                    md-min-length="3"
+                    var:md-min-length="minimumSearchLength"
                     md-delay="150"
                     md-no-cache="true"
                     label:placeholder="Add a recipient">
@@ -91,7 +103,7 @@
               <md-chips ng-model="editor.message.editable.cc"
                         md-separator-keys="editor.recipientSeparatorKeys"
                         md-transform-chip="editor.addRecipient($chip, 'cc')"
-                        sg-transform-on-blur="sg-transform-on-blur">
+                        md-add-on-blur="true">
                 <md-autocomplete
                     class="sg-chips-autocomplete"
                     md-search-text="editor.autocomplete.cc.searchText"
@@ -124,7 +136,7 @@
               <md-chips ng-model="editor.message.editable.bcc"
                         md-separator-keys="editor.recipientSeparatorKeys"
                         md-transform-chip="editor.addRecipient($chip, 'bcc')"
-                        sg-transform-on-blur="sg-transform-on-blur">
+                        md-add-on-blur="true">
                 <md-autocomplete
                     class="sg-chips-autocomplete"
                     md-selected-item="editor.autocomplete.bcc.selected"
@@ -162,11 +174,11 @@
           </div>
 
           <!-- toolbar to show cc/bcc/attachment fields -->
-          <div layout="column" layout-align="start end">
+          <div class="msg-header-buttons" layout="column" layout-align="start end">
             <md-button class="sg-icon-button " ng-show="editor.hideCc" ng-click="editor.hideCc = false">Cc</md-button>
             <md-button class="sg-icon-button " ng-show="editor.hideBcc" ng-click="editor.hideBcc = false">Bcc</md-button>
             <md-menu>
-              <md-button label:aria-label="More mail options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
+              <md-button label:aria-label="More mail options" class="sg-icon-button" ng-click="$mdMenu.open($event)">
                 <md-icon>more_vert</md-icon>
               </md-button>
               <md-menu-content width="4">
@@ -217,15 +229,19 @@
         </header>
 
         <!-- MESSAGE CONTENT -->
-        <div var:class="editorClass">
+        <md-input-container class="md-block sg-mail-editor-content">
           <textarea name="content" var:class="editorClass"
                     ck-locale="editor.localeCode"
-                    ng-model="editor.message.editable.text"/>
-        </div>
+                    ck-margin="16px"
+                    rows="9"
+                    ng-model="editor.message.editable.text"
+                    md-no-resize="md-no-resize"
+                    md-detect-hidden="md-detect-hidden" />
+        </md-input-container>
       </md-dialog-content>
 
       <!-- ATTACHMENTS -->
-      <md-dialog-actions>
+      <md-dialog-actions class="sg-mail-editor-attachments">
         <div layout="row" layout-align="space-between center" layout-fill="layout-fill">
           <!-- Attachments -->
           <md-chips ng-model="editor.uploader.queue"
@@ -237,14 +253,14 @@
               </span>
               <a ng-href="{{$chip.inlineUrl}}" target="_new">{{$chip.file.name}}</a>
               <md-icon ng-class="{ 'md-warn': $chip.isUploading }"
-                       ng-click="editor.removeAttachment($chip)">close</md-icon>
+                       ng-click="editor.removeAttachment($chip, 'fileInput')">close</md-icon>
             </md-chip-template>
           </md-chips>
-          <label class="md-button md-icon-button" for="file-input">
+          <label class="md-button md-icon-button" for="fileInput">
             <md-icon>attach_file</md-icon>
             <!-- <span><var:string label:value="Attach"/></span> -->
           </label>
-          <input id="file-input" name="file-input" type="file" class="ng-hide"
+          <input id="fileInput" class="ng-hide" name="fileInput" type="file" multiple="multiple"
                  nv-file-select="nv-file-select"
                  uploader="editor.uploader"/>
           <!--
@@ -255,6 +271,7 @@
         </div>
       </md-dialog-actions>
     </form>
+
     <sg-ripple class="md-default-theme md-accent md-bg"
                ng-class="{ 'md-warn': editor.sendState == 'error' }"><!-- ripple background --></sg-ripple>
     <sg-ripple-content class="md-default-theme md-accent md-hue-1 md-fg md-flex ng-hide"

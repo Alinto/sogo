@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2006-2014 Inverse inc.
+  Copyright (C) 2006-2016 Inverse inc.
 
   This file is part of SOGo
 
@@ -50,14 +49,22 @@
 
 #import "UIxContactFolderActions.h"
 
+static NSArray *photoTags = nil;
+
 @implementation UIxContactFolderActions
 
++ (void) initialize
+{
+  if (!photoTags)
+    {
+      photoTags = [[NSArray alloc] initWithObjects: @"jpegphoto", @"photo", @"thumbnailphoto", nil];
+    }
+}
 
 /* actions */
 
 - (id <WOActionResults>) exportAction
 {
-  WORequest *request;
   WOResponse *response;
   NSArray *contactsId;
   NSEnumerator *uids;
@@ -67,7 +74,6 @@
   NSMutableString *content;
 
   content = [NSMutableString string];
-  request = [context request];
   sourceFolder = [self clientObject];
   contactsId = [[[[context request] contentAsString] objectFromJSONString] objectForKey: @"uids"];
 
@@ -149,24 +155,26 @@
 
 - (int) importLdifData: (NSString *) ldifData
 {
+  NSMutableDictionary *entry, *encodedEntry;
+  SOGoContactLDIFEntry *ldifEntry;
+  NSArray *ldifContacts, *lines;
   SOGoContactGCSFolder *folder;
-  NSString *key, *value;
-  NSArray *ldifContacts, *lines, *components;
-  NSMutableDictionary *entry;
+  NSEnumerator *keyEnumerator;
+  NSString *key, *uid, *line;
   NGVCard *vCard;
-  NSString *uid;
-  int i,j,count,linesCount;
-  int rc = 0;
+  id value;
+
+  NSRange r;
+  int i, j, count, linesCount;
+  int rc;
 
   folder = [self clientObject];
   ldifContacts = [ldifData componentsSeparatedByString: @"\ndn"];
   count = [ldifContacts count];
+  rc = 0;
 
   for (i = 0; i < count; i++)
     {
-      SOGoContactLDIFEntry *ldifEntry;
-      NSEnumerator *keyEnumerator;
-      NSMutableDictionary *encodedEntry;
       encodedEntry = [NSMutableDictionary dictionary];
       lines = [[ldifContacts objectAtIndex: i] 
                componentsSeparatedByString: @"\n"];
@@ -175,7 +183,6 @@
       linesCount = [lines count];
       for (j = 0; j < linesCount; j++)
         {
-          NSString *line;
           line = [lines objectAtIndex: j];
 
           /* skip embedded comment lines */
@@ -191,17 +198,17 @@
               if (key != NULL)
                 {
                   value = [[encodedEntry valueForKey: key]
-                           stringByAppendingString: [line substringFromIndex: 1]];
+			    stringByAppendingString: [line substringFromIndex: 1]];
                   [encodedEntry setValue: value forKey: key];
                 }
               continue;
             }
 
-          components = [line componentsSeparatedByString: @": "];
-          if ([components count] == 2)
+          r = [line rangeOfString: @": "];
+	  if (r.location != NSNotFound)
             {
-              key = [[components objectAtIndex: 0] lowercaseString];
-              value = [components objectAtIndex: 1];
+              key = [[line substringToIndex: r.location] lowercaseString];
+              value = [line substringFromIndex: NSMaxRange(r)];
 
               if ([key length] == 0)
                 key = @"dn";
@@ -223,8 +230,16 @@
           if ([key hasSuffix: @":"])
             {
               key = [key substringToIndex: [key length] - 1];
-              value = [value stringByDecodingBase64];
+	      if ([photoTags containsObject: key])
+		value = [value dataByDecodingBase64];
+	      else
+		value = [value stringByDecodingBase64];
             }
+
+	  // Standard key recognized in NGCards
+	  if ([photoTags containsObject: key])
+	    key = @"photo";
+
           [entry setValue: value forKey: key];
         }
 
@@ -245,17 +260,21 @@
 
 - (int) importVcardData: (NSString *) vcardData
 {
+  NSAutoreleasePool *pool;
   NSArray *allCards;
-  int rc;
+  int rc, count;
 
   rc = 0;
+
+  pool = [[NSAutoreleasePool alloc] init];
   allCards = [NGVCard parseFromSource: vcardData];
 
-  if (allCards && [allCards count])
+  count = [allCards count];
+  if (allCards && count)
     {
       int i;
 
-      for (i = 0; i < [allCards count]; i++)
+      for (i = 0; i < count; i++)
 	{
 	  if (![self importVcard: [allCards objectAtIndex: i]])
 	    {
@@ -267,18 +286,23 @@
 	}
     }
 
+  RELEASE(pool);
+
   return rc;
 }
 
 - (BOOL) importVcard: (NGVCard *) card
 {
-  NSString *uid;
   SOGoContactGCSFolder *folder;
   SOGoContactGCSEntry *contact;
+  NSAutoreleasePool *pool;
+  NSString *uid;
+
   BOOL rc = NO;
 
   if (card)
     {
+      pool = [[NSAutoreleasePool alloc] init];
       folder = [self clientObject];
       uid = [folder globallyUniqueObjectId];
 
@@ -291,6 +315,7 @@
       [contact saveComponent: card];
       
       rc = YES;
+      RELEASE(pool);
     }
 
   return rc;

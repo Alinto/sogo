@@ -30,8 +30,10 @@
                 md-component-id="left" md-is-locked-open="isGtMedium"
                 ng-class="{ 'sg-close': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
-      <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
-          <md-subheader>{{ ::'Preferences' | loc }}</md-subheader>
+      <md-content md-scroll-y="md-scroll-y" class="md-flex"
+                  md-colors="::{ backgroundColor: 'default-background-300' }">
+        <md-subheader
+            md-colors="::{background: 'default-background-300'}">{{ ::'Preferences' | loc }}</md-subheader>
         <md-list>
           <md-list-item ng-click="app.go('general', preferencesForm)"
                         ng-disabled="preferencesForm.$invalid"
@@ -114,7 +116,7 @@
                            ng-change="app.onLanguageChange(preferencesForm)">
                   <var:foreach list="languages" item="item">
                     <md-option var:value="item">
-                      <var:string value="languageText"/>
+                      <var:string value="languageText"/> <small md-colors="::{ color: 'default-background-500'}"><var:string value="languageLocale.NSLocaleCode"/></small>
                     </md-option>
                   </var:foreach>
                 </md-select>
@@ -309,6 +311,7 @@
                 <md-grid-list md-cols="7" md-row-height="2em" md-gutter="0.5em"
                               flex="50" flex-sm="80" flex-xs="100"
                               ng-model="app.preferences.defaults.SOGoCalendarWeekdays"
+                              ng-required="true"
                               sg-toggle-grid="sg-toggle-grid">
                   <var:foreach list="shortWeekDaysList" item="item">
                     <md-grid-tile var:value="valueForWeekDay"><var:string value="item"/></md-grid-tile>
@@ -489,7 +492,7 @@
                 </md-input-container>
                 <md-button type="button" class="sg-icon-button"
                            label:aria-label="Remove Contact Category"
-                           ng-click="app.removeContactCategory($index)">
+                           ng-click="app.removeContactCategory($index, preferencesForm)">
                   <md-icon>remove_circle</md-icon>
                 </md-button>
               </md-list-item>
@@ -498,7 +501,7 @@
             <div layout="row" layout-align="end center">
               <md-button type="button"
                          label:aria-label="Add Contact Category"
-                         ng-click="app.addContactCategory()">
+                         ng-click="app.addContactCategory(preferencesForm)">
                 <var:string label:value="Add Contact Category"/>
               </md-button>
             </div>
@@ -555,10 +558,12 @@
 
             <div layout="row" layout-align="start center" flex="50" flex-xs="100">
               <md-checkbox
-                  class="md-align-top-left" ng-model="app.preferences.defaults.SOGoMailAddOutgoingAddresses"
+                  class="md-align-top-left"
+                  ng-model="app.preferences.defaults.SOGoMailAddOutgoingAddresses"
                   ng-true-value="1"
                   ng-false-value="0"
-                  label:arial-label="When sending mail, add unknown recipients to my">
+                  label:aria-label="When sending mail, add unknown recipients to my">
+                <!-- SOGoMailAddOutgoingAddresses -->
               </md-checkbox>
 
               <md-input-container class="md-block md-flex">
@@ -674,11 +679,10 @@
           <md-tab id="mailFiltersTab"
                   aria-controls="mailFiltersTab-content"
                   label:label="Filters">
-            <md-content role="tabpanel" aria-labelledby="mailFiltersView"
-                 id="mailFiltersView-content">
+            <md-content role="tabpanel" aria-labelledby="mailFiltersView">
               <div class="sg-list-sortable"
                    ng-model="app.preferences.defaults.SOGoSieveFilters"
-                   as-sortable="{ scrollableContainer: '#mailFiltersView-content', containment: '.sg-list-sortable', containerPositioning: 'relative', orderChanged: preferencesForm.$setDirty }">
+                   as-sortable="{ scrollableContainer: '.sg-list-sortable', containment: '.sg-list-sortable', containerPositioning: 'relative', orderChanged: preferencesForm.$setDirty }">
                 <div layout="row" layout-align="start center"
                      ng-repeat="item in app.preferences.defaults.SOGoSieveFilters"
                      as-sortable-item="as-sortable-item">
@@ -688,13 +692,15 @@
                   </md-button>
                   <md-checkbox
                       style="margin-bottom: 0;"
+                      label:aria-label="Enable filter"
                       ng-model="app.preferences.defaults.SOGoSieveFilters[$index].active"
                       ng-true-value="1"
                       ng-false-value="0">
                     <!-- active or not-->
                   </md-checkbox>
                   <md-input-container class="md-flex">
-	            <input type="text" ng-model="app.preferences.defaults.SOGoSieveFilters[$index].name"/>
+	            <input type="text" label:aria-label="Filter name"
+                           ng-model="app.preferences.defaults.SOGoSieveFilters[$index].name"/>
                   </md-input-container>
                   <md-button class="sg-icon-button" type="button"
                              ng-click="app.editMailFilter($event, $index, preferencesForm)"
@@ -736,7 +742,8 @@
                 <md-input-container class="md-block md-flex">
 	          <input type="text"
                          label:aria-label="Label"
-                         ng-model="value[0]"/>
+                         ng-model="value[0]"
+                         sg-focus-on="mailLabel_{{$index}}"/>
                 </md-input-container>
                 <md-button class="md-icon-button" type="button"
                            layout="row" layout-align="end center"
@@ -815,11 +822,13 @@
                   ng-model="app.preferences.defaults.Vacation.enabled"
                   ng-true-value="1"
                   ng-false-value="0"
+                  ng-change="app.updateVacationDates()"
                   label:aria-label="Enable vacation auto reply">
                 <var:string label:value="Enable vacation auto reply"/>
               </md-checkbox>
 
-              <div class="md-inline-form" layout="column" flex-offset="5" ng-show="app.preferences.defaults.Vacation.enabled == 1">
+              <div class="md-inline-form" layout="column" flex-offset="5"
+                   ng-if="app.preferences.defaults.Vacation.enabled == 1">
 
                 <div layout="row">
                   <md-checkbox
@@ -831,6 +840,7 @@
                   <md-input-container class="md-block md-flex">
                     <label><var:string label:value="Auto reply subject"/></label>
                     <input type="text"
+                           ng-required="app.preferences.defaults.Vacation.customSubjectEnabled"
                            ng-disabled="!app.preferences.defaults.Vacation.customSubjectEnabled"
                            ng-model="app.preferences.defaults.Vacation.customSubject"/>
                     <div class="sg-hint" ng-show="app.sieveVariablesCapability">
@@ -839,7 +849,7 @@
                   </md-input-container>
                 </div>
 
-                <md-input-container class="md-block md-flex">
+                <md-input-container class="md-block md-flex md-input-has-placeholder">
                   <label><var:string label:value="Auto reply message"/></label>
                   <var:if condition="vacationHeader.length">
                     <p class="text-preview" md-colors="::{color: 'default-background-600'}"><var:string value="vacationHeader"/></p>
@@ -890,24 +900,36 @@
                   <md-checkbox
                       ng-model="app.preferences.defaults.Vacation.startDateEnabled"
                       ng-true-value="1"
-                      ng-false-value="0">
+                      ng-false-value="0"
+                      ng-change="app.toggleVacationStartDate()">
                     <var:string label:value="Enable auto reply on" />
                   </md-checkbox>
-                  <md-datepicker
-                      ng-disabled="app.preferences.defaults.Vacation.startDateEnabled == 0"
-                      ng-model="app.preferences.defaults.Vacation.startDate"><!-- datepicker --></md-datepicker>
+                  <md-input-container>
+                    <md-datepicker
+                        name="vacationStartDate"
+                        ng-disabled="!app.preferences.defaults.Vacation.startDateEnabled"
+                        ng-model="app.preferences.defaults.Vacation.startDate"
+                        md-date-filter="app.validateVacationStartDate"
+                        sg-reset-on-disabled="sg-reset-on-disabled"><!-- datepicker --></md-datepicker>
+                  </md-input-container>
                 </div>
 
-                <div layout="row">
+                <div>
                   <md-checkbox
                       ng-model="app.preferences.defaults.Vacation.endDateEnabled"
                       ng-true-value="1"
-                      ng-false-value="0">
+                      ng-false-value="0"
+                      ng-change="app.toggleVacationEndDate()">
                     <var:string label:value="Disable auto reply on" />
                   </md-checkbox>
-                  <md-datepicker
-                      ng-disabled="app.preferences.defaults.Vacation.endDateEnabled == 0"
-                      ng-model="app.preferences.defaults.Vacation.endDate"><!-- datepicker --></md-datepicker>
+                  <md-input-container>
+                    <md-datepicker
+                        name="vacationEndDate"
+                        ng-disabled="!app.preferences.defaults.Vacation.endDateEnabled"
+                        ng-model="app.preferences.defaults.Vacation.endDate"
+                        md-date-filter="app.validateVacationEndDate"
+                        sg-reset-on-disabled="sg-reset-on-disabled"><!-- datepicker --></md-datepicker>
+                  </md-input-container>
                 </div>
 
                 <div>

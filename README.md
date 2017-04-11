@@ -32,36 +32,38 @@ Please refer to the [FAQ](http://sogo.nu/support/faq.html) for [compilation inst
 
 SOGo and its associated components are available in various languages. The following list describes the official translations alongside their maintainers :
 
-* English - [Inverse inc.](http://www.inverse.ca/)
-* Arabic - Anass Ahmed
-* Basque - Gorka Gonzalez
-* Brazilian Portuguese - Alexandre Marcilio
-* Catalan - Hector M. Rulot Segovia
-* Chinese (Taiwan)
-* Croatian - Jens Riecken
-* Czech - Šimon Halamásek
-* Danish (Denmark) - Altibox
-* Dutch - Roel van Os
-* Finnish - Kari Salmu
-* French - [Inverse](http://www.inverse.ca/)
-* German - Alexander Greiner-Baer
-* Hungarian - Sándor Kuti
-* Icelandic - Anna Jonna Armannsdottir
-* Italian - Alessio Fattorini
-* Lithuanian - Mantas Liobė
-* Macedonian - Miroslav Jovanovic
-* Norwegian (Bokmål) - Jan Ivar Karlsen
-* Norwegian (Nynorsk) - Altibox
-* Polish - Paweł Bogusławski
-* Portuguese - Eduardo Crispim
-* Russian - Alex Kabakaev
-* Slovak - Martin Pastor
-* Slovenian - Jens Riecken
-* Spanish (Argentina) - Federico Alberto Sayd
-* Spanish (Spain) - Dominique Couot
-* Swedish - Peter Johansson
-* Turkish (Turkey) - Sinan Kurşunoğlu
-* Ukrainian - Oleksa Stasevych
-* Welsh - Iona Bailey
+* [en] English - [Inverse inc.](http://www.inverse.ca/)
+* [ar] Arabic - Anass Ahmed
+* [eu] Basque - Gorka Gonzalez
+* [pr_BR] Brazilian Portuguese - Alexandre Marcilio
+* [ca] Catalan - Hector M. Rulot Segovia
+* [zh_TW] Chinese (Taiwan)
+* [hr_HR] Croatian - Jens Riecken
+* [cs] Czech - Šimon Halamásek
+* [da_DK] Danish (Denmark) - Altibox
+* [nl] Dutch - Roel van Os
+* [fi] Finnish - Kari Salmu
+* [fr] French - [Inverse](http://www.inverse.ca/)
+* [de] German - Alexander Greiner-Baer
+* [he] Hebrew - Raz Aidlitz
+* [hu] Hungarian - Sándor Kuti
+* [is] Icelandic - Anna Jonna Armannsdottir
+* [it] Italian - Alessio Fattorini
+* [lt] Lithuanian - Mantas Liobė
+* [mk_MK] Macedonian - Miroslav Jovanovic
+* [nb_NO] Norwegian (Bokmål) - Jan Ivar Karlsen
+* [nn_NO] Norwegian (Nynorsk) - Altibox
+* [pl] Polish - Paweł Bogusławski
+* [pt] Portuguese - Eduardo Crispim
+* [ru] Russian - Alex Kabakaev
+* [sr] Serbian - Bogdanović Bojan
+* [sk] Slovak - Martin Pastor
+* [sl_SI] Slovenian - Jens Riecken
+* [es_AR] Spanish (Argentina) - Federico Alberto Sayd
+* [es_ES] Spanish (Spain) - Dominique Couot
+* [sv] Swedish - Peter Johansson
+* [tr_TR] Turkish (Turkey) - Sinan Kurşunoğlu
+* [uk] Ukrainian - Oleksa Stasevych
+* [cy] Welsh - Iona Bailey
  
 If you would like to translate the software in an other language, please consult the [FAQ](http://sogo.nu/support/faq/article/how-to-translate-sogo-in-another-language-2.html). You can also subscribe to the SOGo i18n mailing list to follow string additions or changes. To subscribe to i18n@sogo.nu, send an email to i18n-request@sogo.nu with SUBSCRIBE i18n as the subject. Archived posts are [available online](https://inverse.ca/sogo/lists/arc/i18n).

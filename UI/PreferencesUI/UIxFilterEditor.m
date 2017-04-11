@@ -111,9 +111,4 @@
   return [labels jsonRepresentation];
 }
 
-- (NSString *) sieveFolderEncoding
-{
-  return [[SOGoSystemDefaults sharedSystemDefaults] sieveFolderEncoding];
-}
-
 @end

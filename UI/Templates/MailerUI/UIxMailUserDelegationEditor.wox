@@ -52,7 +52,7 @@
           <div layout="row" layout-align="start center" class="md-flex card-picture">
             <sg-avatar-image class="md-avatar"
                              sg-email="user.c_email"
-                             size="40"><!-- avatar --></sg-avatar-image>
+                             size="40">person</sg-avatar-image>
             <div class="sg-tile-content">
               <div class="sg-md-subhead"><div>{{user.cn}}</div></div>
               <div class="sg-md-body"><div>{{user.c_email}}</div></div>

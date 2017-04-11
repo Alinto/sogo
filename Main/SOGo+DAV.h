@@ -1,8 +1,6 @@
 /* SOGo+DAV.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2010-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +29,6 @@
 @interface SOGo (SOGoWebDAVExtensions)
 
 - (WOResponse *) davPrincipalMatch: (WOContext *) localContext;
-// - (WOResponse *) davPrincipalPropertySearch: (WOContext *) localContext;
 - (WOResponse *) davPrincipalSearchPropertySet: (WOContext *) localContext;
 
 @end

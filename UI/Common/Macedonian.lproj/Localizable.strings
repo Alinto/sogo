@@ -8,7 +8,7 @@
 "Calendar" = "Календар";
 "Address Book"	= "Адресна книга";
 "Mail" = "Електронска пошта";
-"Preferences" = "Подесувања";
+"Preferences" = "Нагодувања";
 "Administration" = "Администрација";
 "Disconnect" = "Излези";
 "Toggle Menu" = "Промени го менито";
@@ -17,7 +17,7 @@
 "User" = "Корисник";
 "Vacation message is enabled" = "Пораката за отсатност е активна";
 "Help" = "Помош";
-"noJavascriptError" = "SOGo бара Javascript за да работи. Бидете сигурни дека оваа поција е овозможена и активирана во вашиот прелистувач.";
+"noJavascriptError" = "SOGo бара Javascript за да работи. Бидете сигурни дека оваа опција е овозможена и активирана во вашиот прелистувач.";
 "noJavascriptRetry" = "Обиди се повторно";
 "Owner" = "Сопственик";
 "Publish the Free/Busy information" = "Публикувај ја информацијата за слободното/зафатено време";
@@ -25,8 +25,8 @@
 "Remove" = "Отстрани";
 "Subscribe User" = "Запиши го корисникот";
 "Any Authenticated User" = "Било кој автентициран корисник";
-"Public Access" = "јавен достап";
-"Any user not listed above" = "Било кој корисник кој не долу излистан";
+"Public Access" = "јавен пристап";
+"Any user not listed above" = "Било кој корисник кој не е долу излистан";
 "Anybody accessing this resource from the public area" = "Било кој може да го пристапи ресурсот од јавната мрежа";
 "Sorry, the user rights can not be configured for that object." = "Жалам, корисничките привилегии не можат да се конфигурираат за овој објект.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
@@ -120,3 +120,54 @@
 
 /* Error message display bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Внесете барем %{minimumSearchLength} карактери";
+
+/* Toggle visibility (ex: mail account in left navigation menu) */
+"Toggle visibility" = "Промени ја видливоста";
+
+/* Question mark shows list of hotkeys */
+"Show or hide this help" = "Прикажи или сокриј ја оваа помош";
+
+/* Space key */
+"key_space" = "space";
+
+/* Up arrow key */
+"key_up" = "↑";
+
+/* Down arrow key */
+"key_down" = "↓";
+
+/* Left arrow key */
+"key_left" = "←";
+
+/* Right arrow key */
+"key_right" = "→";
+
+/* Shift and up arrow combo keys */
+"key_shift+up" = "shift + ↑";
+
+/* Shift and down arrow combo keys */
+"key_shift+down" = "shift + ↓";
+
+/* Backspace key */
+"key_backspace" = "backspace";
+
+/* Hotkey to start a search */
+"hotkey_search" = "s";
+
+/* Hotkey description to select next list item */
+"View next item" = "Види го следниот предмет";
+
+/* Hotkey description to select previous list item */
+"View previous item" = "Види го претходниот предмет";
+
+/* Hotkey description to add next list item to selection */
+"Add next item to selection" = "Додади го следниот предмет кон селекцијата";
+
+/* Hotkey description to add previous list item to selection */
+"Add previous item to selection" = "Додади го претходниот предмет ко селекцијата";
+
+/* Hotkey description to move backward in current view */
+"Move backward" = "Врати се назад";
+
+/* Hotkey description to move forward in current view */
+"Move forward" = "Оди напред";

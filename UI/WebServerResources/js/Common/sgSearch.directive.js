@@ -100,10 +100,7 @@
    */
   sgSearchController.$inject = ['$window', '$scope', '$element'];
   function sgSearchController($window, $scope, $element) {
-    var vm = this, minLength;
-
-    // Domain's defaults
-    minLength = angular.isNumber($window.minimumSearchLength)? $window.minimumSearchLength : 2;
+    var vm = this;
 
     // Controller variables
     vm.searchText = null;

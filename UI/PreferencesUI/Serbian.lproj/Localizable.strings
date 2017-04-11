@@ -1,0 +1,401 @@
+/* toolbar */
+"Save and Close" = "Сачувај и затвори";
+"Close" = "Затвори";
+"Preferences saved" = "Подешавање сачувано";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Несачуване измене";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Да ли желите да сачувате измене направљене у конфигурацији?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Сачувај";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Немој чувати";
+
+/* tabs */
+"General" = "Опште";
+"Calendar Options" = "Опције календара";
+"Contacts Options" = "Опције контаката";
+"Mail Options" = "Опције поште";
+"IMAP Accounts" = "ИПАМ налози";
+"Vacation" = "Одмор";
+"Forward" = "Проследи";
+"Password" = "Лозинка";
+"Categories" = "Категорије";
+"Appointments invitations" = "Позивнице за састанке";
+"Name" = "Име";
+"Color" = "Боја";
+"Add" = "Додај";
+"Delete" = "Обриши";
+
+/* contacts categories */
+"contacts_category_labels" = "Колега, Конкурент, Клијент, Пријатељ, Породица, Пословни Партнер, Провајдер, Новинар, ВИП";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Омогући аутоматски одговор за време одмора";
+"Enable custom auto reply subject" = "Омогући прилагођену тему аутоматског одговора";
+"Auto reply subject" = "Тема аутоматског одговора";
+"You can write ${subject} to insert the original subject" = "Можете написати ${subject} да га уметнете оригиналну тему";
+"Auto reply message" = "Порука аутоматског одговора";
+"Email addresses (separated by commas)" = "Адресе епоште (одвојене зарезима)";
+"Add default email addresses" = "Додај подразумевану адресу епоште";
+"Days between responses" = "Дани између одговора";
+"Do not send responses to mailing lists" = "Не одговарај на поштанске листе";
+"Enable auto reply on" = "Омогући аутоматски одговор ";
+"Disable auto reply on" = "Онемогући аутоматски одговор ";
+"Always send vacation message response" = "Увек пошаљи поруку аутоматског одговора за време одмора";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Молимо наведите вашу поруку и вашу адресу епоште за коју желите да омогућите аутомаски одговор.";
+"Your vacation message must not end with a single dot on a line." = "Ваша порука за време одмора не сме да се завршава само са тачком у реду.";
+"End date of your auto reply must be in the future."
+= "Датум завршетка вашег аутоматског одговора мора бити у будућности.";
+
+/* forward messages */
+"Forward incoming messages" = "Проследите долазне поруке";
+"Keep a copy" = "Задржите копију";
+"Please specify an address to which you want to forward your messages."
+= "Молимо наведите адресу на коју желите да прослеђујете ваше поруке.";
+"You are not allowed to forward your messages to an external email address." = "Није вам дозвољено да прослеђујете ваше поруке на спољну адресу епоште.";
+"You are not allowed to forward your messages to an internal email address." = "Није вам дозвољено да прослеђујете ваше поруке на интерну адресу епоште.";
+
+/* d & t */
+"Current Time Zone" = "Тренутна временска зона";
+"Short Date Format" = "Кратки формат датума";
+"Long Date Format" = "Дуги формат датума";
+"Time Format" = "Формат времена";
+"default" = "Подразумевано";
+"Default Module" = "Подразумевани модул";
+"Save" = "Сачувај";
+"shortDateFmt_0" = "%d-%b-%y";
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "";
+   
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "Нема пронађених подударања";
+
+/* calendar */
+"Week begins on" = "Недеља почиње";
+"Day start time" = "Почетно време дана";
+"Day end time" = "Завршно време дана";
+"Day start time must be prior to day end time." = "Почетно време дана мора бити пре завршног времена дана.";
+"Week days to display" = "Дани у недељи за приказивање";
+"Show time as busy outside working hours" = "Прикажи време као заузето ван радног времена";
+"First week of year" = "Прва недеља године";
+"Enable reminders for Calendar items" = "Омогући подсетнике за ставке у календару";
+"Play a sound when a reminder comes due" = "Пусти звук када подесетник доспева";
+"Default reminder" = "Подразумевани подсетник";
+"firstWeekOfYear_January1" = "Почиње 1. јануара";
+"firstWeekOfYear_First4DayWeek" = "Прва 4 дана у недељи";
+"firstWeekOfYear_FirstFullWeek" = "Прва комплетна недеља";
+"Prevent from being invited to appointments" = "Спречите позиве на састанке";
+"White list for appointment invitations" = "Бела листа позивница на састанке";
+"Contacts Names" = "Имена контаката";
+
+/* Default Calendar */
+"Default calendar" = "Подразумевани календар";
+"selectedCalendar" = "Одабрани календар";
+"personalCalendar" = "Лични календар";
+"firstCalendar" = "Први омогућени календар";
+"reminder_NONE" = "Нема подсетника";
+"reminder_5_MINUTES_BEFORE" = "5 минута пре";
+"reminder_10_MINUTES_BEFORE" = "10 минута пре";
+"reminder_15_MINUTES_BEFORE" = "15 минута пре";
+"reminder_30_MINUTES_BEFORE" = "30 минута пре";
+"reminder_45_MINUTES_BEFORE" = "45 минута пре";
+"reminder_1_HOUR_BEFORE" = "1 сат пре";
+"reminder_2_HOURS_BEFORE" = "2 сата пре";
+"reminder_5_HOURS_BEFORE" = "5 сати пре";
+"reminder_15_HOURS_BEFORE" = "15 сати пре";
+"reminder_1_DAY_BEFORE" = "1 дан пре";
+"reminder_2_DAYS_BEFORE" = "2 дана пре";
+"reminder_1_WEEK_BEFORE" = "1 недеља пре";
+
+/* Mailer */
+"Labels" = "Ознаке";
+"Label" = "Ознака";
+"New label" = "Нова ознака";
+"Show subscribed mailboxes only" = "Прикажи само преплаћене поштанске сандучиће";
+"Synchronize only default mail folders (EAS)" = "Синхронизуј само подразумеване поштанске директоријуме (ЕАС)";
+"Sort messages by threads" = "Сортирај поруке по темама";
+"When sending mail, add unknown recipients to my" = "Када шаљеш пошту, додај непознатог примаоца у мој";
+"Address Book" = "Адресар";
+"Forward messages" = "Проследи поруке";
+"messageforward_inline" = "У реду";
+"messageforward_attached" = "Као прилог";
+"When replying to a message" = "Када одговараш на поруку";
+"replyplacement_above" = "Започни мој одговор изнад цитата";
+"replyplacement_below" = "Започни мој одговор испод цитата";
+"And place my signature" = "И додај мој потпис";
+"signatureplacement_above" = "испод мог одговора";
+"signatureplacement_below" = "испод цитата";
+"Compose messages in" = "Састави поруку као";
+"composemessagestype_html" = "ХТМЛ";
+"composemessagestype_text" = "Обичан текст";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Подразуевана величина фонта";
+
+"Display remote inline images" = "Прикажи удаљене слике у реду";
+"displayremoteinlineimages_never" = "Никада";
+"displayremoteinlineimages_always" = "Увек";
+"Auto save every" = "Аутоматски сачувај на сваких";
+"minutes" = "минута";
+
+/* Contact */
+"Personal Address Book" = "Лични адресар";
+"Collected Address Book" = "Прикупљени адресар";
+
+/* IMAP Accounts */
+"Mail Account" = "Поштански налог";
+"New Mail Account" = "Нови поштански налог";
+"Server Name" = "Име сервера";
+"Port" = "Порт";
+"Encryption" = "Енкрипција";
+"None" = "Нема";
+"User Name" = "Корисничко име";
+"Full Name" = "Име и презиме";
+"Email" = "Епошта";
+"Reply To Email" = "Одговори на еписмо";
+"Signature" = "Потпис";
+"(Click to create)" = "(Кликни да креираш)";
+"Please enter your signature below" = "Молимо унесите ваш потпис испод";
+"Please specify a valid sender address." = "Молимо наведите валидну адресу пошиљаоца.";
+"Please specify a valid reply-to address." = "Молимо наведите валидну адресу за одговор.";
+
+/* Additional Parameters */
+"Additional Parameters" = "Додатни параметри";
+
+/* password */
+"New password" = "Нова лозинка";
+"Confirmation" = "Потврда";
+"Change" = "Измени";
+
+/* Event+task classifications */
+"Default events classification" = "Подразумевана класификација догађаја";
+"Default tasks classification" = "Подразумевана класификација задатака";
+"PUBLIC_item" = "Јавно";
+"CONFIDENTIAL_item" = "Поверљиво";
+"PRIVATE_item" = "Приватно";
+
+/* Event+task categories */
+"Calendar Category" = "Категорија календара";
+"Add Calendar Category" = "Додај категорију календара";
+"New category" = "Нова категорија";
+"Remove Calendar Category" = "Уклони категорију календара";
+"Contact Category" = "Категорија контакта";
+"Add Contact Category" = "Додај категорију контакта";
+"Remove Contact Category" = "Уклони категорију контакта";
+"category_none" = "Нема";
+"calendar_category_labels" = "Годишњица,Рођендан,Посао,Позиви,Клијенти,Конкуренција,Потрошач,Омиљено,Прати,Поклони,Празници,Идеје,Састанци,Питања,Остало,Лично,Пројекти,Јавни Празник,Статус,Добављачи,Путовање,Одмор";
+
+/* Default module */
+"Calendar" = "Календар";
+"Contacts" = "Адресар";
+"Mail" = "Пошта";
+"Last" = "Последње коришћено";
+"Default Module " = "Подразумевани модул";
+"SOGo Version" = "SOGo Верзија";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Сачувај подешавања и учитај страницу сада?";
+"Language" = "Језик";
+"choose" = "Изабери ...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"Refresh View" = "Освежи приказ";
+"refreshview_manually" = "Ручно";
+"refreshview_every_minute" = "Сваког минута";
+"refreshview_every_2_minutes" = "Свака 2 минута";
+"refreshview_every_5_minutes" = "Сваких 5 минута";
+"refreshview_every_10_minutes" = "Сваких 10 минута";
+"refreshview_every_20_minutes" = "Сваких 20 минута";
+"refreshview_every_30_minutes" = "Сваких 30 минута";
+"refreshview_once_per_hour" = "Сваки сат";
+
+/* Return receipts */
+"When I receive a request for a return receipt" = "Када добијем захтев за потврдом о пријему";
+"Never send a return receipt" = "Никад не шаљи потврду о пријему";
+"Allow return receipts for some messages" = "Дозволи потврду о пријему за неке поруке";
+"If I'm not in the To or Cc of the message" = "Ако нисам у За и Цц поруке";
+"If the sender is outside my domain" = "Ако је пошиљалац ван мог домена";
+"In all other cases" = "У свим другим случајевима";
+"Never send" = "Никад не шаљи";
+"Always send" = "Увек шаљи";
+"Ask me" = "Питај ме";
+
+/* Filters - UIxPreferences */
+"Filters" = "Филтери";
+"Active" = "Активни";
+"Move Up" = "Помери на горе";
+"Move Down" = "Помери на доле";
+"Connection error" = "Грешка у повезивању";
+"Service temporarily unavailable" = "Сервис је привремено недоступан";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Омогући филтер";
+
+/* Filters - UIxFilterEditor */
+"Filter name" = "Име филтера";
+/* Button label */
+"Add a condition" = "Додај услов";
+/* Button label */
+"Add an action" = "Додај акцију";
+"For incoming messages that" = "За примљене пруке које";
+"match all of the following rules" = "које се подударају са свим следећим правилима";
+"match any of the following rules" = "које се подударају са било којим од следећих правила";
+"match all messages" = "подудари све поруке";
+"Perform these actions" = "Уради следеће акције";
+"Untitled Filter" = "Неименовани филтер";
+"Subject" = "Тема";
+"From" = "Од";
+"To" = "За";
+"Cc" = "Цц";
+"To or Cc" = "За или Цц";
+"Size (Kb)" = "Величина (Кб)";
+"Header" = "Заглавље";
+"Body" = "Тело";
+"Flag the message with" = "Означи поруку следећом заставицом";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Заставица";
+
+"Discard the message" = "Одбаци поруку";
+"File the message in" = "Стави поруку у";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Поштанско сандуче";
+
+"Keep the message" = "Сачувај поруку";
+"Forward the message to" = "Проследи поруку";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "Епошта";
+
+"Send a reject message" = "Пошаљи поруку одбијања";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Порука";
+
+"Send a vacation message" = "Пошаљи поруку за одмор";
+"Stop processing filter rules" = "Заустави обраду правила филтера";
+"is under" = "је испод";
+"is over" = "је изнад";
+"is" = "је";
+"is not" = "није";
+"contains" = "садржи";
+"does not contain" = "не садржи";
+"matches" = "подудара се";
+"does not match" = "не подудара се";
+"matches regex" = "подудара се са регуларним изразом";
+"does not match regex" = "не подудара се са регуларним изразом";
+/* Placeholder for the value field of a condition */
+"Value" = "Вредност";
+"Seen" = "Погледано";
+"Deleted" = "Обрисано";
+"Answered" = "Одговорено";
+"Flagged" = "Означено заставицом";
+"Junk" = "Непожељно";
+"Not Junk" = "Није непожељно";
+
+/* Password policy */
+"The password was changed successfully." = "Лозинка је успешно промењена.";
+"Password must not be empty." = "Поље за лозинку не сме бити празно.";
+"The passwords do not match. Please try again." = "Лозинке се не подударају. Молимо покушајте поново.";
+"Password change failed" = "Неуспешна промена лозинке";
+"Password change failed - Permission denied" = "Неуспешна промена лозинке - Дозвола одбијена";
+"Password change failed - Insufficient password quality" = "Неуспешна промена лозинке - Недовољно квалитетна лозинка";
+"Password change failed - Password is too short" = "Неуспешна промена лозинке - Лозинка је превише кратка";
+"Password change failed - Password is too young" = "Неуспешна промена лозинке - Лозинка је превише свежа";
+"Password change failed - Password is in history" = "Неуспешна промена лозинке - Лозинка је већ коришћена";
+"Unhandled policy error: %{0}" = "Необрађена грешка полисе: %{0}";
+"Unhandled error response" = "Необрађени одзив грешке";
+"Password change is not supported." = "Промена лозинке није подржана.";
+"Unhandled HTTP error code: %{0}" = "Необрађена грешка ХТТП кода: %{0}";
+"Cancel" = "Откажи";
+"Invitations" = "Позивнице";
+"Edit Filter" = "Измени филтер";
+"Delete Filter" = "Обриши филтер";
+"Create Filter" = "Креирај филтер";
+"Delete Label" = "Обриши ознаку";
+"Create Label" = "Креирај ознаку";
+"Accounts" = "Налози";
+"Edit Account" = "Измени налог";
+"Delete Account" = "Обриши налог";
+"Create Account" = "Креирај налог";
+"Account Name" = "Име налога";
+"SSL" = "ССЛ";
+"TLS" = "ТЛС";
+
+/* Avatars */
+"Use Gravatar" = "Користи Граватар";
+"Alternate Avatar" = "Алтернативни аватар";
+"none" =  "Ништа";
+"identicon" = "Идентикон";
+"monsterid" = "Чудовиште";
+"wavatar" = "Вејватар";
+"retro" = "Ретро";

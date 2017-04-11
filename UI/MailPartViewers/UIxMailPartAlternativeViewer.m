@@ -168,6 +168,7 @@
       viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
       [viewer setBodyInfo: info];
       [viewer setPartPath: [self childPartPath]];
+      [viewer setAttachmentIds: attachmentIds];
       [renderedParts addObject: [viewer renderedPart]];
     }
 

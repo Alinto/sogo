@@ -63,8 +63,8 @@
 
 /* d & t */
 "Current Time Zone" = "Nykyinen aikavyöhyke";
-"Short Date Format" = "Lyhyt ajan esitysmuoto";
-"Long Date Format" = "Pitkä ajan esitysmuoto";
+"Short Date Format" = "Lyhyt päivämäärän esitysmuoto";
+"Long Date Format" = "Pitkä päivämäärän esitysmuoto";
 "Time Format" = "Ajan esitysmuoto";
 "default" = "Oletus";
 "Default Module" = "Oletusmoduli";
@@ -121,7 +121,7 @@
 "firstWeekOfYear_First4DayWeek" = "Ensimmäinen nelipäiväinen viikko";
 "firstWeekOfYear_FirstFullWeek" = "Ensimmäinen täysi viikko";
 "Prevent from being invited to appointments" = "Estä tapaamiskutsut";
-"White list for appointment invitations" = "Valkoinen lista kalenterikutsuille";
+"White list for appointment invitations" = "Valkoinen lista tapaamiskutsuille";
 "Contacts Names" = "Yhteystietojen Nimet";
 
 /* Default Calendar */
@@ -130,22 +130,23 @@
 "personalCalendar" = "Henkilökohtainen kalenteri";
 "firstCalendar" = "Ensimmäinen käyttöönotettu kalenteri";
 "reminder_NONE" = "Ei muistutusta";
-"reminder_5_MINUTES_BEFORE" = "5 minuuttia";
-"reminder_10_MINUTES_BEFORE" = "10 minuuttia";
-"reminder_15_MINUTES_BEFORE" = "15 minuuttia";
-"reminder_30_MINUTES_BEFORE" = "30 minuuttia";
+"reminder_5_MINUTES_BEFORE" = "5 minuuttia ennen";
+"reminder_10_MINUTES_BEFORE" = "10 minuuttia ennen";
+"reminder_15_MINUTES_BEFORE" = "15 minuuttia ennen";
+"reminder_30_MINUTES_BEFORE" = "30 minuuttia ennen";
 "reminder_45_MINUTES_BEFORE" = "45 minuuttia ennen";
-"reminder_1_HOUR_BEFORE" = "1 tunti";
-"reminder_2_HOURS_BEFORE" = "2 tuntia";
-"reminder_5_HOURS_BEFORE" = "5 tuntia";
-"reminder_15_HOURS_BEFORE" = "15 tuntia";
-"reminder_1_DAY_BEFORE" = "1 päivä";
-"reminder_2_DAYS_BEFORE" = "2 päivää";
+"reminder_1_HOUR_BEFORE" = "1 tunti ennen";
+"reminder_2_HOURS_BEFORE" = "2 tuntia ennen";
+"reminder_5_HOURS_BEFORE" = "5 tuntia ennen";
+"reminder_15_HOURS_BEFORE" = "15 tuntia ennen";
+"reminder_1_DAY_BEFORE" = "1 päivä ennen";
+"reminder_2_DAYS_BEFORE" = "2 päivää ennen";
 "reminder_1_WEEK_BEFORE" = "Viikkoa ennen";
 
 /* Mailer */
 "Labels" = "Otsikot";
 "Label" = "Otsikoi";
+"New label" = "Uusi otsikko";
 "Show subscribed mailboxes only" = "Näytä vain tilatut sähköpostikansiot";
 "Synchronize only default mail folders (EAS)" = "Synkronoi vain oletus sähköpostikansiot (EAS)";
 "Sort messages by threads" = "Järjestä viestit ketjuiksi";
@@ -193,6 +194,7 @@
 "Please enter your signature below" = "Ole hyvä ja syötä allekirjoituksesi alle";
 "Please specify a valid sender address." = "Ole hyvä ja syötä kelvollinen lähettäjäosoite";
 "Please specify a valid reply-to address." = "Ole hyvä ja syötä kelvollinen vastausosoite";
+"Specify a hostname other than the local host" = "Määritä muu kuin paikallinen palvelinosoite";
 
 /* Additional Parameters */
 "Additional Parameters" = "Lisäparametrit";
@@ -212,6 +214,7 @@
 /* Event+task categories */
 "Calendar Category" = "Kalenteriryhmä";
 "Add Calendar Category" = "Lisää kalenteriryhmä";
+"New category" = "Uusi kategoria";
 "Remove Calendar Category" = "Poista kalenteriryhmä";
 "Contact Category" = "Yhteystietoryhmä";
 "Add Contact Category" = "Lisää yhteystietoryhmä";
@@ -243,6 +246,7 @@
 "Finnish" = "Suomi";
 "French" = "Français";
 "German" = "Deutsch";
+"Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
@@ -254,6 +258,7 @@
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
+"Serbian" = "Српски";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
@@ -292,6 +297,9 @@
 "Connection error" = "Yhteysvirhe";
 "Service temporarily unavailable" = "Palvelu tilapäisesti pois käytöstä";
 
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Ota suodatin käyttöön";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Suodattimen nimi";
 /* Button label */
@@ -313,11 +321,27 @@
 "Header" = "Otsikko";
 "Body" = "Runko";
 "Flag the message with" = "Merkitse viesti";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Lippu";
+
 "Discard the message" = "Hylkää viesti";
 "File the message in" = "Arkistoi viesti";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Postilaatikko";
+
 "Keep the message" = "Pidä viesti";
 "Forward the message to" = "Lähetä viesti edelleen";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "Sähköposti";
+
 "Send a reject message" = "Lähetä hylkäysviesti";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Viesti";
+
 "Send a vacation message" = "Lähetä lomaviesti";
 "Stop processing filter rules" = "Pysäytä suodatinsääntöjen suoritus";
 "is under" = "on alle";

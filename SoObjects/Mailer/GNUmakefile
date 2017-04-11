@@ -69,6 +69,8 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailCroatianReply.wo \
 	SOGoMailGermanForward.wo \
 	SOGoMailGermanReply.wo \
+	SOGoMailHebrewForward.wo \
+	SOGoMailHebrewReply.wo \
 	SOGoMailHungarianForward.wo \
 	SOGoMailHungarianReply.wo \
 	SOGoMailIcelandicForward.wo \
@@ -88,7 +90,9 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailPortugueseForward.wo \
 	SOGoMailPortugueseReply.wo \
 	SOGoMailRussianForward.wo \
+	SOGoMailSerbianForward.wo \
 	SOGoMailRussianReply.wo \
+	SOGoMailSerbianReply.wo \
 	SOGoMailSlovakForward.wo \
 	SOGoMailSlovakReply.wo \
 	SOGoMailSlovenianForward.wo \

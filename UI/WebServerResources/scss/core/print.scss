@@ -16,6 +16,7 @@
   md-autocomplete,
   md-sidenav,
   md-card-actions,
+  md-fab-speed-dial,
   .md-open-menu-container,
   .md-chip-remove-container,
   .toolbar-main,
@@ -30,7 +31,8 @@
   // Horizontal flex layout must be ignored for element that could spawn multiple pages
   .view[layout="row"],
   section > div[layout="row"],
-  .msg-body > div[layout="row"] {
+  .msg-body > [layout="row"],
+  .mailer_mailcontent[layout="row"] {
     display: block !important;
     max-height: none !important;
     position: relative !important;

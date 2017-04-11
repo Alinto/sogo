@@ -8,29 +8,32 @@
    */
   MessageEditorController.$inject = ['$scope', '$window', '$stateParams', '$mdConstant', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccount', 'stateMessage', 'encodeUriFilter', '$timeout', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
   function MessageEditorController($scope, $window, $stateParams, $mdConstant, $mdDialog, $mdToast, FileUploader, stateAccount, stateMessage, encodeUriFilter, $timeout, Dialog, AddressBook, Card, Preferences) {
-    var vm = this;
+    var vm = this, hotkeys = [];
 
     vm.addRecipient = addRecipient;
     vm.autocomplete = {to: {}, cc: {}, bcc: {}};
     vm.autosave = null;
     vm.autosaveDrafts = autosaveDrafts;
-    vm.hideCc = (stateMessage.editable.cc.length === 0);
-    vm.hideBcc = (stateMessage.editable.bcc.length === 0);
     vm.cancel = cancel;
-    vm.save = save;
-    vm.send = send;
-    vm.sendState = false;
-    vm.removeAttachment = removeAttachment;
     vm.contactFilter = contactFilter;
+    vm.isFullscreen = false;
+    vm.hideBcc = (stateMessage.editable.bcc.length === 0);
+    vm.hideCc = (stateMessage.editable.cc.length === 0);
     vm.identities = _.map(stateAccount.identities, 'full');
+    vm.message = stateMessage;
     vm.recipientSeparatorKeys = [
       $mdConstant.KEY_CODE.ENTER,
       $mdConstant.KEY_CODE.TAB,
       $mdConstant.KEY_CODE.COMMA,
       $mdConstant.KEY_CODE.SEMICOLON
     ];
+    vm.removeAttachment = removeAttachment;
+    vm.save = save;
+    vm.send = send;
+    vm.sendState = false;
+    vm.toggleFullscreen = toggleFullscreen;
     vm.uploader = new FileUploader({
-      url: stateMessage.$absolutePath({asDraft: true}) + '/save',
+      url: stateMessage.$absolutePath({asDraft: true, withResourcePath: true}) + '/save',
       autoUpload: true,
       alias: 'attachments',
       removeAfterUpload: false,
@@ -52,9 +55,11 @@
       onErrorItem: function(item, response, status, headers) {
         $mdToast.show(
           $mdToast.simple()
-            .content(l('Error while uploading the file \"%{0}\":', item.file.name))
+            .content(l('Error while uploading the file \"%{0}\":', item.file.name) +
+                     ' ' + (response.message? l(response.message) : ''))
             .position('top right')
-            .hideDelay(3000));
+            .action(l('OK'))
+            .hideDelay(false));
         this.removeFromQueue(item);
         //console.debug(item); console.debug('error = ' + JSON.stringify(response, undefined, 2));
       }
@@ -93,25 +98,31 @@
      */
     function $parentControllers() {
       var originMessage, ctrls = {};
-      if ($window.opener) {
-        if ($window.opener.$mailboxController) {
-          if ($window.opener.$mailboxController.selectedFolder.type == 'draft') {
-            ctrls.draftMailboxCtrl = $window.opener.$mailboxController;
-            if ($window.opener.$messageController &&
-                $window.opener.$messageController.message.uid == stateMessage.uid) {
-              // The draft is opened in the parent window
-              ctrls.draftMessageCtrl = $window.opener.$messageController;
+
+      try {
+        if ($window.opener) {
+          if ('$mailboxController' in $window.opener &&
+              'selectedFolder' in $window.opener.$mailboxController) {
+            if ($window.opener.$mailboxController.selectedFolder.type == 'draft') {
+              ctrls.draftMailboxCtrl = $window.opener.$mailboxController;
+              if ('$messageController' in $window.opener &&
+                  $window.opener.$messageController.message.uid == stateMessage.uid) {
+                // The draft is opened in the parent window
+                ctrls.draftMessageCtrl = $window.opener.$messageController;
+              }
             }
-          }
-          else if (stateMessage.origin) {
-            originMessage = stateMessage.origin.message;
-            if ($window.opener.$mailboxController.selectedFolder.$id() == originMessage.$mailbox.$id()) {
-              // The message mailbox is opened in the parent window
-              ctrls.originMailboxCtrl = $window.opener.$mailboxController;
+            else if (stateMessage.origin) {
+              originMessage = stateMessage.origin.message;
+              if ($window.opener.$mailboxController.selectedFolder.$id() == originMessage.$mailbox.$id()) {
+                // The message mailbox is opened in the parent window
+                ctrls.originMailboxCtrl = $window.opener.$mailboxController;
+              }
             }
           }
         }
       }
+      catch (e) {}
+
       return ctrls;
     }
 
@@ -134,13 +145,18 @@
         }
     }
 
-    function removeAttachment(item) {
+    function removeAttachment(item, id) {
       if (item.isUploading)
         vm.uploader.cancelItem(item);
       else {
         vm.message.$deleteAttachment(item.file.name);
         item.remove();
       }
+      // Hack to allow adding the same file again
+      // See https://github.com/nervgh/angular-file-upload/issues/671
+      var element = $window.document.getElementById(id);
+      if (element)
+        angular.element(element).prop('value', null);
     }
 
     function cancel() {
@@ -213,6 +229,10 @@
       });
     }
 
+    function toggleFullscreen() {
+      vm.isFullscreen = !vm.isFullscreen;
+    }
+
     function contactFilter($query) {
       return AddressBook.$filterAll($query).then(function(cards) {
         // Divide the matching cards by email addresses so the user can select
@@ -233,10 +253,14 @@
     function addRecipient(contact, field) {
       var recipients, recipient, list;
 
-      if (angular.isString(contact))
-        return contact;
-
       recipients = vm.message.editable[field];
+
+      if (angular.isString(contact)) {
+        _.forEach(contact.split(/[,;]/), function(address) {
+          recipients.push(address);
+        });
+        return null;
+      }
 
       if (contact.$isList({expandable: true})) {
         // If the list's members were already fetch, use them

@@ -123,7 +123,7 @@ struct SYSTEMTIME {
   //uint16_t wStandardYear;
   struct SYSTEMTIME stStandardDate;
   //uint16_t wDaylightYear;
-  struct SYSTEMTIME stDaylightDate;
+  struct SYSTEMTIME stDaylightDate = {0,0,0,0,0,0,0,0};
 
   char standardName[64], daylightName[64];
 
@@ -139,13 +139,17 @@ struct SYSTEMTIME {
 
   period = [self _mostRecentPeriodWithName: @"DAYLIGHT"];  
   if (!period)
-    stStandardDate.wMonth = 0;
-
-  lDaylightBias = (uint32_t) -([period secondsOffsetFromGMT] / 60) - lBias;
-  [period _fillTZDate: &stDaylightDate];
-  //wStandardYear = stStandardDate.wYear;
-  //wDaylightYear = stDaylightDate.wYear;
-
+    {
+      stStandardDate.wMonth = 0;
+      lDaylightBias = 0;
+    }
+  else
+    {
+      lDaylightBias = (uint32_t) -([period secondsOffsetFromGMT] / 60) - lBias;
+      [period _fillTZDate: &stDaylightDate];
+      //wStandardYear = stStandardDate.wYear;
+      //wDaylightYear = stDaylightDate.wYear;
+    }
 
   // We build the timezone
   [bytes appendBytes: &lBias  length: 4];

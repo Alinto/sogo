@@ -75,6 +75,9 @@
 @interface SOGoMailGermanReply : SOGoMailReply
 @end
 
+@interface SOGoMailHebrewReply : SOGoMailReply
+@end
+
 @interface SOGoMailHungarianReply : SOGoMailReply
 @end
 
@@ -103,6 +106,9 @@
 @end
 
 @interface SOGoMailRussianReply : SOGoMailReply
+@end
+
+@interface SOGoMailSerbianReply : SOGoMailReply
 @end
 
 @interface SOGoMailSlovakReply : SOGoMailReply

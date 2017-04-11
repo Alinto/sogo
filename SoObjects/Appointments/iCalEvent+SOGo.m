@@ -68,6 +68,7 @@
 //
 - (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
                                        container: (id) theContainer
+				 nameInContainer: (NSString *) nameInContainer
 {
   NSMutableDictionary *row;
   NSCalendarDate *startDate, *endDate;
@@ -176,15 +177,15 @@
       NSCalendarDate *date;
 
       date = [self lastPossibleRecurrenceStartDate];
-      if (!date)
-	{
-	  /* this could also be *nil*, but in the end it makes the fetchspecs
-	     more complex - thus we set it to a "reasonable" distant future */
-	  date = iCalDistantFuture;
-	}
+      if (date)
+        date = [date addTimeInterval: [self durationAsTimeInterval]];
+      else
+        /* this could also be *nil*, but in the end it makes the fetchspecs
+           more complex - thus we set it to a "reasonable" distant future */
+        date = iCalDistantFuture;
       [row setObject: [self quickRecordDateAsNumber: date
-			    withOffset: 0 forAllDay: NO]
-	   forKey: @"c_cycleenddate"];
+                                         withOffset: 0 forAllDay: NO]
+              forKey: @"c_cycleenddate"];
       [row setObject: [self cycleInfo] forKey: @"c_cycleinfo"];
     }
 
@@ -240,7 +241,7 @@
   [partstates release];
 
   /* handle alarms */
-  [self updateNextAlarmDateInRow: row  forContainer: theContainer];
+  [self updateNextAlarmDateInRow: row  forContainer: theContainer  nameInContainer: nameInContainer];
 
   /* handle categories */
   categories = [self categories];
@@ -362,8 +363,10 @@
     aptEndDate = [self dateFromString: o inContext: context];
 
   o = [data objectForKey: @"isTransparent"];
-  if ([o isKindOfClass: [NSNumber class]])
-    [self setTransparency: ([o boolValue]? @"TRANSPARENT" : @"OPAQUE")];
+  if ([o isKindOfClass: [NSNumber class]] && [o boolValue])
+    [self setTransparency: @"TRANSPARENT"];
+  else
+    [self setTransparency: @"OPAQUE"];
 
   isAllDay = [[data objectForKey: @"isAllDay"] boolValue];
 

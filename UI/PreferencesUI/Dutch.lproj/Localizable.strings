@@ -146,6 +146,7 @@
 /* Mailer */
 "Labels" = "Labels";
 "Label" = "Labelen";
+"New label" = "Nieuwe label";
 "Show subscribed mailboxes only" = "Toon alleen geabonneerde postvakken";
 "Synchronize only default mail folders (EAS)" = "Alleen standaard e-mailmappen synchroniseren (EAS)";
 "Sort messages by threads" = "Berichten sorteren op threads";
@@ -193,6 +194,7 @@
 "Please enter your signature below" = "Stel de ondertekening hieronder op";
 "Please specify a valid sender address." = "Geef alstublieft een geldig afzendadres aan.";
 "Please specify a valid reply-to address." = "Geef alstublieft een geldig antwoordadres aan.";
+"Specify a hostname other than the local host" = "Geef een hostname anders dan de locale hostname op";
 
 /* Additional Parameters */
 "Additional Parameters" = "Extra Parameters";
@@ -212,6 +214,7 @@
 /* Event+task categories */
 "Calendar Category" = "Agendacategorie";
 "Add Calendar Category" = "Agendacategorie toevoegen";
+"New category" = "Nieuwe categorie";
 "Remove Calendar Category" = "Agendacategorie verwijderen";
 "Contact Category" = "Contactcategorie";
 "Add Contact Category" = "Contactcategorie toevoegen";
@@ -243,6 +246,7 @@
 "Finnish" = "Suomi";
 "French" = "Français";
 "German" = "Deutsch";
+"Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
@@ -254,6 +258,7 @@
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
+"Serbian" = "Српски";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
@@ -292,6 +297,9 @@
 "Connection error" = "Verbindingsfout";
 "Service temporarily unavailable" = "Dienst tijdelijk niet beschikbaar";
 
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Filter inschakelen";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Filternaam";
 /* Button label */
@@ -313,11 +321,27 @@
 "Header" = "Header";
 "Body" = "Inhoud";
 "Flag the message with" = "Markeer het bericht met";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Markeren";
+
 "Discard the message" = "Het bericht verwijderen";
 "File the message in" = "Verplaats het bericht naar";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Mailbox";
+
 "Keep the message" = "Bewaar het bericht";
 "Forward the message to" = "Stuur het bericht door naar";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "E-mail";
+
 "Send a reject message" = "Stuur een weigeringsbericht";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Bericht";
+
 "Send a vacation message" = "Stuur een automatisch bericht bij afwezigheid";
 "Stop processing filter rules" = "Stop de filterbewerkingen";
 "is under" = "is kleiner dan";

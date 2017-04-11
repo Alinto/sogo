@@ -25,13 +25,13 @@ md-sidenav {
   }
 }
 
-// MAIN SIDENAV, actually to the left
-// ----------------------------------------------------------------------------
-
 // Mailboxes tree
-$i: 1;
+$i: 0;
 @while $i < 12 {
-  .sg-child-level-#{$i} { padding-left: $mg * $i; }
+  .sg-child-level-#{$i} {
+    max-height: 24px;
+    padding-left: $mg * $i;
+  }
   $i: $i + 1;
 }
 
@@ -40,5 +40,6 @@ $i: 1;
   md-checkbox {
     margin-right: $bl * 2;
     max-width: 24px;
+    min-height: 24px;
   }
 }

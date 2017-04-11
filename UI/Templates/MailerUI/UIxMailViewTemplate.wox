@@ -11,6 +11,13 @@
     <div class="sg-face" layout="column" layout-fill="layout-fill">
       <md-card>
         <md-card-actions flex-none="flex-none" layout="row" layout-align="end center">
+          <md-button ng-click="toggleCenter()"
+                     class="md-icon-button md-primary md-hue-1 hide show-gt-xs"
+                     aria-hidden="true"
+                     ng-if="!isPopup">
+            <md-icon class="icon-fullscreen"
+                     ng-class="{ 'icon-fullscreen-exit': centerIsClose }"><!-- fullscreen --></md-icon>
+          </md-button>
           <md-button class="md-icon-button"
                      ng-if="isPopup"
                      label:aria-label="Close"
@@ -24,8 +31,8 @@
             <md-icon>close</md-icon>
           </md-button>
           <div class="md-flex"><!-- spacer --></div>
-          <md-button class="sg-icon-button" label:aria-label="flagged" ng-click="viewer.message.toggleFlag()">
-            <md-icon ng-class="{'icon-star': viewer.message.isflagged,
+          <md-button class="sg-icon-button" label:aria-label="Flagged" ng-click="viewer.message.toggleFlag()">
+            <md-icon ng-class="{'icon-star md-accent md-hue-2': viewer.message.isflagged,
                                'icon-star-border': !viewer.message.isflagged}"><!-- flag --></md-icon>
           </md-button>
           <md-button class="sg-icon-button"
@@ -65,7 +72,7 @@
             <md-icon>open_in_new</md-icon>
           </md-button>
           <md-menu>
-            <md-button label:aria-label="More mail options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
+            <md-button label:aria-label="More mail options" class="sg-icon-button" ng-click="$mdMenu.open($event)">
               <md-icon>more_vert</md-icon>
             </md-button>
             <md-menu-content width="4">
@@ -77,8 +84,14 @@
               </md-menu-item>
               <md-menu-item>
                 <md-button label:aria-label="Save As..."
-                           ng-click="viewer.message.saveMessage()">
+                           ng-click="viewer.message.download()">
                   <var:string label:value="Save As..."/>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item ng-show="::viewer.message.attachmentAttrs.length">
+                <md-button label:aria-label="Download all attachments"
+                           ng-click="viewer.message.downloadAttachments()">
+                  <var:string label:value="Download all attachments"/>
                 </md-button>
               </md-menu-item>
               <md-menu-item>
@@ -120,9 +133,7 @@
                 <div layout="row" layout-align="start center">
                   <sg-avatar-image class="md-tile-left"
                                    sg-email="viewer.message.from[0].email"
-                                   size="40">
-                    <!-- contact avatar -->
-                  </sg-avatar-image>
+                                   size="40">person</sg-avatar-image>
                   <div class="md-list-item-text">
                     <span>{{ viewer.message.from[0].name }}</span><br/>
                     <a href="#" class="md-caption"

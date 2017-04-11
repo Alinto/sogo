@@ -83,18 +83,16 @@
 
       function updateGhost() {
         // From SOGoEventDragGhostController._updateGhosts
-        var showGhost, isRelative, currentDay, wasOtherBlock,
-            start, duration, durationLeft, maxDuration, enableTransition;
+        var showGhost, isRelative, isAllDay, currentDay,
+            start, duration, durationLeft, maxDuration;
 
         showGhost = false;
-        enableTransition = function() {
-          iElement.removeClass('sg-event--notransition');
-        };
 
         if (Calendar.$view && Calendar.$view.type == scrollViewCtrl.type) {
           // The view of the dragging block is the scrolling view of this ghost block
 
           isRelative   = scrollViewCtrl.type === 'multiday-allday';
+          isAllDay     = scope.block.component.c_isallday;
           currentDay   = scope.block.pointerHandler.currentEventCoordinates.dayNumber;
           start        = scope.block.pointerHandler.currentEventCoordinates.start;
           durationLeft = scope.block.pointerHandler.currentEventCoordinates.duration;
@@ -117,11 +115,9 @@
             // This ghost block (day) is the first of the dragging event
             showGhost = true;
             if (!isRelative) {
-              // Show start hour and set the vertical position
-              scope.block.startHour = getStartTime(start);
-              wasOtherBlock = parseInt(iElement.css('top')) === 0;
-              if (wasOtherBlock)
-                iElement.addClass('sg-event--notransition');
+              if (!isAllDay)
+                // Show start hour and set the vertical position
+                scope.block.startHour = getStartTime(start);
               // Set the height
               if (Calendar.$view.quarterHeight) {
                 iElement.css('top', (start * Calendar.$view.quarterHeight) + 'px');
@@ -129,12 +125,11 @@
               }
               else
                 iElement.css('top', Calendar.$view.topOffset + 'px');
-              if (wasOtherBlock)
-                $timeout(enableTransition);
             }
             iElement.removeClass('fg-folder' + scope.block.component.pid);
             iElement.removeClass('sg-event--ghost--last');
             iElement.addClass('sg-event--ghost--first');
+            scope.block.isFirst = true;
           }
 
           durationLeft -= duration;
@@ -149,15 +144,10 @@
               // The dragging event overlaps this current ghost's day
               showGhost = true;
               if (!isRelative) {
-                wasOtherBlock = parseInt(iElement.css('top')) !== 0;
-                if (wasOtherBlock)
-                  iElement.addClass('sg-event--notransition');
                 iElement.css('top', Calendar.$view.topOffset + 'px');
                 // Set the height
                 if (Calendar.$view.quarterHeight)
                   iElement.css('height', (duration * Calendar.$view.quarterHeight) + 'px');
-                if (wasOtherBlock)
-                  $timeout(enableTransition);
               }
               iElement.removeClass('sg-event--ghost--first');
               iElement.removeClass('sg-event--ghost--last');
@@ -174,7 +164,7 @@
             if (isRelative) {
               iElement.addClass('sg-event--ghost--last');
             }
-            else {
+            else if (!isAllDay) {
               // Set the end date
               scope.block.endHour = getEndTime(start, duration);
             }

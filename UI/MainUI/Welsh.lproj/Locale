@@ -2,8 +2,8 @@
 {
   NSLanguageName = "Welsh";
   NSFormalName = "Welsh";
-  NSLocaleCode = "en"; /* ISO 639-1 */
-  NSLanguageCode = "eng"; /* ISO 639-2 */
+  NSLocaleCode = "cy"; /* ISO 639-1 */
+  NSLanguageCode = "cym"; /* ISO 639-2 */
   NSParentContext = "";
 
   NSAMPMDesignation = (AM, PM);

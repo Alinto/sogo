@@ -274,7 +274,8 @@ static BOOL debugOn = NO;
       else if ([enc isEqualToString: @"quoted-printable"])
 	data = [data dataByDecodingQuotedPrintableTransferEncoding];
       else if ([enc isEqualToString: @"7bit"]
-	       || [enc isEqualToString: @"8bit"])
+	       || [enc isEqualToString: @"8bit"]
+	       || [enc isEqualToString: @"binary"])
 	; /* keep data as is */ // TODO: do we need to change encodings?
       else
 	{

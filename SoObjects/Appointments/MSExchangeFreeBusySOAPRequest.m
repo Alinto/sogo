@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2012 Inverse inc.
+  Copyright (C) 2012-2016 Inverse inc.
 
   This file is part of SOGo.
 
@@ -28,6 +28,8 @@
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "MSExchangeFreeBusySOAPRequest.h"
 
@@ -108,6 +110,21 @@
 - (NSString *) interval
 {
   return [NSString stringWithFormat: @"%i", interval];
+}
+
+- (NSString *) bias
+{
+#if 0
+  NSTimeZone *userTimeZone;
+  NSInteger secs;
+
+  userTimeZone = [[[context activeUser] userDefaults] timeZone];
+  secs = [userTimeZone secondsFromGMT];
+
+  return [NSString stringWithFormat: @"%i", (secs/60)];
+#else
+  return @"0";
+#endif
 }
 
 @end

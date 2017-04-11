@@ -21,6 +21,7 @@
 
 #import <Foundation/NSCalendarDate.h>
 
+#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -84,20 +85,23 @@
 
   newOccurence = (iCalToDo *) [super newOccurenceWithID: theRecurrenceID];
   date = [newOccurence recurrenceId];
+  [newOccurence setStartDate: date];
 
   master = [self component: NO secure: NO];
-  firstDate = [master startDate];
 
-  interval = [[master due]
-               timeIntervalSinceDate: (NSDate *)firstDate];
+  if ([master due])
+    {
+      firstDate = [master startDate];
+      interval = [[master due]
+                   timeIntervalSinceDate: (NSDate *)firstDate];
   
-  [newOccurence setStartDate: date];
-  [newOccurence setDue: [date addYear: 0
-                                month: 0
-                                  day: 0
-                                 hour: 0
-                               minute: 0
-                               second: interval]];
+      [newOccurence setDue: [date addYear: 0
+                                    month: 0
+                                      day: 0
+                                     hour: 0
+                                   minute: 0
+                                   second: interval]];
+    }
 
   return newOccurence;
 }

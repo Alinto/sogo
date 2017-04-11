@@ -1,15 +1,309 @@
-3.1.5 (2016-MM-DD)
+3.2.9 (2017-04-XX)
 ------------------
 
 New features
+ -
+
+Enhancements
+ -
+
+Bug fixes
+ - [web] fixed attachment path when inside multiple body parts
+ - [core] cherry-picked comma escaping fix from v2 (#3296)
+ - [core] fix sogo-tool restore potentially crashing on corrupted data (#4048)
+ - [eas] set reply/forwarded flags when ReplaceMime is set (#4133)
+ - [eas] remove alarms over EAS if we don't want them (#4059)
+
+3.2.8 (2017-03-24)
+------------------
+
+New features
+ - [core] new sogo-tool manage-acl command to manage calendar/address book ACLs
+
+Enhancements
+ - [web] constrain event/task reminder to a positive number
+ - [web] display year in day and week views
+ - [web] split string on comma and semicolon when pasting multiple addresses (#4097)
+ - [web] restrict Draft/Sent/Trash/Junk mailboxes to the top level
+ - [web] animations are automatically disabled under IE11
+ - [web] updated Angular Material to version 1.1.3
+
+Bug fixes
+ - [core] handle broken CalDAV clients sending bogus SENT-BY (#3992)
+ - [core] fixed handling of exdates and proper intersection for fbinfo (#4051)
+ - [core] remove attendees that have the same identity as the organizer (#3905)
+ - [web] fixed ACL editor in admin module for Safari (#4036)
+ - [web] fixed function call when removing contact category (#4039)
+ - [web] localized mailbox names everywhere (#4040, #4041)
+ - [web] hide fab button when printing (#4038)
+ - [web] SOGoCalendarWeekdays must now be defined before saving preferences
+ - [web] fixed CAS session timeout handling during XHR requests (#1456)
+ - [web] exposed default value of SOGoMailAutoSave (#4053)
+ - [web] exposed default value of SOGoMailAddOutgoingAddresses (#4064)
+ - [web] fixed handling of contact organizations (#4028)
+ - [web] fixed handling of attachments in mail editor (#4058, #4063)
+ - [web] fixed saving draft outside Mail module (#4071)
+ - [web] fixed SCAYT automatic language selection in HTML editor
+ - [web] fixed task sorting on multiple categories
+ - [web] fixed sanitisation of flags in Sieve filters (#4087)
+ - [web] fixed missing CC or BCC when specified before sending message (#3944)
+ - [web] enabled Save button after deleting attributes from a card (#4095)
+ - [web] don't show Copy To and Move To menu options when user has a single address book
+ - [web] fixed display of category colors in events and tasks lists
+ - [eas] fixed opacity in EAS freebusy (#4033)
+
+3.2.7 (2017-02-14)
+------------------
+
+New features
+ - [core] new sogo-tool checkup command to make sure user's data is sane
+
+Enhancements
+ - [web] added Hebrew (he) translation - thanks to Raz Aidlitz
+
+Bug fixes
+ - [core] generalized the bcc handling code 
+ - [web] saving the preferences was not possible when Mail module is disabled
+ - [web] ignore mouse events in scrollbars of Month view (#3990)
+ - [web] fixed public URL with special characters (#3993)
+ - [web] keep the fab button visible when the center list is hidden
+ - [web] localized mail, phone, url and address types (#4030)
+ - [eas] improved EAS parameters parsing (#4003)
+ - [eas] properly handle canceled appointments
+
+3.2.6a (2017-01-26)
+-------------------
+
+Bug fixes
+ - [core] fixed "include in freebusy" (reverts #3354)
+ - [web] improved ACLs handling of inactive users
+
+3.2.6 (2017-01-23)
+------------------
+
+Enhancements
+ - [web] show locale codes beside language names in Preferences module
+ - [web] fixed visual glitches in Month view with Firefox
+ - [web] mail editor can now be expanded horizontally and automatically expands vertically
+ - [web] compose a new message inline or in a popup window
+ - [web] allow to select multiple files when uploading attachments (#3999)
+ - [web] use "date" extension of Sieve to enable/disable vacation auto-reply (#1530, #1949)
+ - [web] updated Angular to version 1.6.1
+ - [web] updated CKEditor to version 4.6.2
+
+Bug fixes
+ - [core] remove all alarms before sending IMIP replies (#3925)
+ - [web] fixed rendering of forwared HTML message with inline images (#3981)
+ - [web] fixed pasting images in CKEditor using Chrome (#3986)
+ - [eas] make sure we trigger a download of service-side changed events
+ - [eas] now strip attendees with no email during MeetingResponse calls
+
+3.2.5 (2017-01-10)
+------------------
+
+New features
+ - [web] download attachments of a message as a zip archive
+
+Enhancements
+ - [core] improved IMIP handling from Exchange/Outlook clients
+ - [web] prevent using localhost on additional IMAP accounts
+ - [web] renamed buttons of alarm toast (#3945)
+ - [web] load photos of LDAP-based address books in contacts list (#3942)
+ - [web] added SOGoMaximumMessageSizeLimit to limit webmail message size
+ - [web] added photo support for LDIF import (#1084)
+ - [web] updated CKEditor to version 4.6.1
+
+Bug fixes
+ - [core] honor blocking wrong login attempts within time interval (#2850)
+ - [core] better support for RFC 6638 (schedule-agent)
+ - [core] use source's domain when none defined and trying to match users (#3523)
+ - [core] handle delegation with no SENT-BY set (#3368)
+ - [core] properly honor the "include in freebusy" setting (#3354)
+ - [core] properly save next email alarm in the database (#3949)
+ - [core] fix events in floating time during CalDAV's PUT operation (#2865)
+ - [core] handle rounds in sha512-crypt password hashes
+ - [web] fixed confusion between owner and active user in ACLs management of Administration module
+ - [web] fixed JavaScript exception after renaming an address book
+ - [web] fixed Sieve folder encoding support (#3904)
+ - [web] fixed ordering of calendars when renaming or adding a calendar (#3931)
+ - [web] use the organizer's alarm by default when accepting IMIP messages (#3934)
+ - [web] switch on "Remember username" when cookie username is set
+ - [web] return login page for unknown users (#2135)
+ - [web] fixed saving monthly recurrence rule with "by day" condition (#3948)
+ - [web] fixed display of message content when enabling auto-reply (#3940)
+ - [web] don't allow to create lists in a remote address book (not yet supported)
+ - [web] fixed attached links in task viewer (#3963)
+ - [web] avoid duplicate mail entries in contact of LDAP-based address book (#3941)
+ - [web] append ics file extension when importing events (#2308)
+ - [web] handle URI in vCard photos (#2683)
+ - [web] handle semicolon in values during LDIF import (#1760)
+ - [web] fixed computation of week number (#3973, #3976)
+ - [web] fixed saving of inactive calendars (#3862, #3980)
+ - [web] fixed public URLs to Calendars (#3974)
+ - [web] fixed hotkeys in Mail module when a dialog is active (#3983)
+ - [eas] properly skip folders we don't want to synchronize (#3943)
+ - [eas] fixed 30 mins freebusy offset with S Planner
+ - [eas] now correctly handles reminders on tasks (#3964)
+ - [eas] always force save events creation over EAS (#3958)
+ - [eas] do not decode from hex the event's UID (#3965)
+ - [eas] add support for "other addresses" (#3966)
+ - [eas] provide correct response status when sending too big mails (#3956)
+
+3.2.4 (2016-12-01)
+------------------
+
+New features
+ - [core] new sogo-tool cleanup user feature
+
+Enhancements
+ - [core] added handling of BYSETPOS for BYDAY in recurrence rules
+ - [web] added sort by start date for tasks (#3840)
+
+Bug fixes
+ - [web] fixed JavaScript exception when SOGo is launched from an external link (#3900)
+ - [web] restored fetching of freebusy information of MS Exchange contacts
+ - [web] fixed mail attribute when importing an LDIF file (#3878)
+ - [web] don't save empty custom auto-reply subject
+ - [web] fixed detection of session expiration
+ - [eas] properly escape all GAL responses (#3923)
+
+3.2.3 (2016-11-25)
+------------------
+
+New features
+ - [core] added photo support for LDAP-based address books (#747, #2184)
+
+Enhancements
+ - [web] updated CKEditor to version 4.6.0
+ - [web] updated Angular to version 1.5.9
+
+Bug fixes
+ - [web] restore attributes when rewriting base64-encoded img tags (#3814)
+ - [web] improve alarms dialog (#3909)
+ - [eas] fixed EAS delete operation
+
+3.2.2 (2016-11-23)
+------------------
+
+New features
+ - [core] support repetitive email alarms on tasks and events (#1053)
+ - [web] allow to hide center column on large screens (#3861)
+ - [eas] relaxed permission requirements for subscription synchronizations (#3118, #3180)
+
+Enhancements
+ - [core] added sha256-crypt and sha512-crypt password support
+ - [core] updated time zones to version 2016i
+ - [eas] now also search on senders when using EAS Search ops
+ - [web] allow multiple messages to be marked as seen (#3873)
+ - [web] use switches instead of checkboxes in Calendars module
+
+Bug fixes
+ - [core] fixed condition in weekly recurrence calculator
+ - [core] always send IMIP messages using UTF-8
+ - [web] fixed mail settings persistence when sorting by arrival date
+ - [web] disable submit button while saving an event or a task (#3880)
+ - [web] disable submit button while saving a contact
+ - [web] fixed computation of week number
+ - [web] fixed and improved IMAP folder subscriptions manager (#3865)
+ - [web] fixed Sieve script activation when vacation start date is in the future (#3885)
+ - [web] fixed moving a component without the proper rights (#3889)
+ - [web] restored Sieve folder encoding support (#3904)
+ - [web] allow edition of a mailbox rights when user can administer mailbox
+
+3.2.1 (2016-11-02)
+------------------
+
+Enhancements
+ - [web] add constraints to start/end dates of automatic responder (#3841)
+ - [web] allow a mailbox to be deleted immediately (#3875)
+ - [web] updated Angular to version 1.5.8
+ - [eas] initial support for recurring tasks EAS
+ - [eas] now support replied/forwarded flags using EAS (#3796)
+ - [core] updated time zones to version 2016h
+
+Bug fixes
+ - [web] fixed tasks list when some weekdays are disabled
+ - [web] fixed automatic refresh of calendar view
+ - [web] respect SOGoSearchMinimumWordLength in contacts list editor
+ - [web] improved memory usage when importing very large address books
+ - [web] fixed progress indicator while importing cards or events and tasks
+ - [web] improved detection of changes in CKEditor (#3839)
+ - [web] fixed vCard generation for tags with no type (#3826)
+ - [web] only show the organizer field of an IMIP REPLY if one is defined
+ - [web] fixed saving the note of a card (#3849)
+ - [web] fixed support for recurrent tasks (#3864)
+ - [web] restored support for alarms in tasks
+ - [web] improved validation of mail account delegators
+ - [web] fixed auto-completion of list members (#3870)
+ - [web] added missing options to subscribed addressbooks (#3850)
+ - [web] added missing options to subscribed calendars (#3863)
+ - [web] fixed resource conflict error handling (403 vs 409 HTTP code) (#3837)
+ - [web] restored immediate deletion of messages (without moving them to the trash)
+ - [web] avoid mail notifications on superfluous event changes (#3790)
+ - [web] CKEditor: added the pastefromexcel plugin (#3854)
+ - [eas] improve handling of email folders without a parent
+ - [eas] never send IMIP reply when the "initiator" is Outlook 2013/2016
+ - [core] only consider SMTP addresses for AD's proxyAddresses (#3842)
+ - [core] sogo-tool manage-eas now works with single store mode
+
+
+3.2.0 (2016-10-03)
+------------------
+
+New features
+ - [web] added IMAP folder subscriptions management (#255)
+ - [web] keyboard hotkeys (#1711, #1467, #3817)
+ - [eas] initial support for server-side mailbox search operations
+
+Enhancements
+ - [web] don't allow a recurrence rule to end before the first occurrence
+ - [web] updated Angular Material to version 1.1.1
+ - [web] show user's name upon successful login
+ - [web] inserted unseen messages count and mailbox name in browser's window title
+ - [web] disable JavaScript theme generation when SOGoUIxDebugEnabled is set to NO
+ - [web] added Serbian (sr) translation - thanks to Bogdanović Bojan
+ - [web] added sort by arrival date in Mail module (#708)
+ - [web] restored "now" line in Calendar module
+ - [web] updated CKEditor to version 4.5.11
+ - [web] allow custom email address to be one of the user's profile (#3551)
+ - [eas] propagate message submission errors to EAS clients (#3774) 
+
+Bug fixes
+ - [eas] properly generate the BusyStatus for normal events
+ - [eas] properly escape all email and address fields
+ - [eas] properly generate yearly rrule
+ - [eas] make sure we don't sleep for too long when EAS processes need interruption
+ - [eas] fixed recurring events with timezones for EAS (#3822)
+ - [web] restored functionality to save unknown recipient emails to address book on send
+ - [web] fixed ripple blocking the form when submitting no values (#3808)
+ - [web] fixed error handling when renaming a mailbox
+ - [web] handle binary content transfer encoding when displaying mails
+ - [web] removed resize grips to short events (#3771)
+ - [core] strip protocol value from proxyAddresses attribute (#3182)
+ - [core] we now search in all domain sources for Apple Calendar
+ - [core] properly handle groups in Apple Calendar's delegation
+ - [core] fixed caching expiration of ACLs assigned to LDAP groups (#2867)
+ - [core] make sure new cards always have a UID (#3819)
+ - [core] fixed default TRANSP value when creating event
+
+3.1.5 (2016-08-10)
+------------------
+
+New features
+ - [web] drag'n'drop of messages in the Mail module (#3497, #3586, #3734, #3788)
+ - [web] drag'n'drop of cards in the AddressBook module
  - [eas] added folder merging capabilities
 
 Enhancements
  - [web] improve action progress when login in or sending a message (#3765, #3761)
  - [web] don't allow to send the message while an upload is in progress
- - [web] notify when successfuly copied or moved some messages
+ - [web] notify when successfully copied or moved some messages
  - [web] restored indicator in the top banner when a vacation message (auto-reply) is active
  - [web] removed animation when dragging an event to speed up rendering
+ - [web] expunge drafts mailbox when a draft is sent and deleted
+ - [web] actions of Sieve filters are now sortable
+ - [web] show progress indicator when refreshing events/tasks lists
+ - [web] updated CKEditor to version 4.5.10
 
 Bug fixes
  - [web] fixed refresh of addressbook when deleting one or many cards
@@ -18,7 +312,14 @@ Bug fixes
  - [web] fixed printing of long mail (#3731)
  - [web] fixed position of ghost block when creating an event from DnD
  - [web] fixed avatar image in autocompletion
+ - [web] restored expunge of current mailbox when leaving the Mail module
+ - [web] added support for multiple description values in LDAP entries (#3750)
+ - [web] don't allow drag'n'drop of invitations
  - [eas] fixed long GUID issue preventing sometimes synchronisation (#3460)
+ - [core] fixing sogo-tool backup with multi-domain configuration but domain-less logins
+ - [core] during event scheduling, use 409 instead of 403 so Lightning doesn't fail silently
+ - [core] correctly calculate recurrence exceptions when not overlapping the recurrence id
+ - [core] prevent invalid SENT-BY handling during event invitations (#3759)
 
 3.1.4 (2016-07-12)
 ------------------

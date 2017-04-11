@@ -1,0 +1,26 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "Помоћ";
+"Close" = "Затвори";
+"Modules" = "Модули";
+/* Modules short names */
+"ACLs" = "АЦЛе";
+/* Modules titles */
+"ACLs_title" = "Управљање АЦЛма корисничких директоријума";
+/* Modules descriptions */
+"ACLs_description" = "<p>Администрациони модул Контролних Листа Приступа дозвољава вам да мењате АЦЛе за сваки кориснички Календар и Адресар.</p><p>Да измените АЦЛе корисничког директоријума, откуцајте име корисника у пољу за претрагу на врху прозора и направите дупли клик на жељени директоријум.</p>";
+"Name or Email" = "Име или Епошта";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Започните претрагу да измените права";
+/* Rights module: Empty search result */
+"No matching user" = "Нема подударајућег корисника";
+/* Rights module: no selection */
+"No resource selected" = "Нема одабраног ресурса";
+"Add User" = "Додај корисника";
+"Subscribe User" = "Претплати корисника";
+"Rights" = "Права";
+"Search Users" = "Претражи кориснике";
+"users found" = "корисници пронађени";
+"No resource" = "Нема ресурса";
+"Any Authenticated User" = "Било који аутентификовани корисник";
+"Public Access" = "Јавни приступ";

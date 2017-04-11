@@ -65,38 +65,43 @@
         template: [
           '<md-toast>',
           '  <div class="md-toast-content">',
-          '    <md-input-container>',
-          '      <label style="color: white;">' + data.summary + '</label>',
-          '      <md-select ng-model="reminder">',
-          '       <md-option value=5>',
-                    l('5 minutes'),
-          '       </md-option>',
-          '       <md-option value=10>',
-                    l('10 minutes'),
-          '       </md-option>',
-          '       <md-option value=15>',
-                    l('15 minutes'),
-          '       </md-option>',
-          '       <md-option value=30>',
-                    l('30 minutes'),
-          '       </md-option>',
-          '       <md-option value=45>',
-                    l('45 minutes'),
-          '       </md-option>',
-          '       <md-option value=60>',
-                    l('1 hour'),
-          '       </md-option>',
-          '       <md-option value=1440>',
-                    l('1 day'),
-          '       </md-option>',
-          '     </md-select>',
-          '    </md-input-container>',
-          '    <md-button ng-click="cancel()">',
-                 l('Cancel'),
-          '    </md-button>',
-          '    <md-button ng-click="ok()">',
-                 l('Ok'),
-          '    </md-button>',
+          '    <div layout="column" layout="start end">',
+          '      <p class="sg-padded--top">{{ summary }}</p>',
+          '      <div layout="row" layout-align="start center">',
+          '        <md-input-container>',
+          '          <label style="color: white">{{ "Snooze for " | loc }}</label>',
+          '          <md-select ng-model="reminder">',
+          '           <md-option value="5">',
+                        l('5 minutes'),
+          '           </md-option>',
+          '           <md-option value="10">',
+                        l('10 minutes'),
+          '           </md-option>',
+          '           <md-option value="15">',
+                        l('15 minutes'),
+          '           </md-option>',
+          '           <md-option value="30">',
+                        l('30 minutes'),
+          '           </md-option>',
+          '           <md-option value="45">',
+                        l('45 minutes'),
+          '           </md-option>',
+          '           <md-option value="60">',
+                        l('1 hour'),
+          '           </md-option>',
+          '           <md-option value="1440">',
+                        l('1 day'),
+          '           </md-option>',
+          '         </md-select>',
+          '        </md-input-container>',
+          '        <md-button ng-click="snooze()">',
+                     l('Snooze'),
+          '        </md-button>',
+          '        <md-button ng-click="close()">',
+                     l('Close'),
+          '        </md-button>',
+          '      </div>',
+          '    </div>',
           '  </div>',
           '</md-toast>'
         ].join(''),
@@ -111,11 +116,12 @@
        */
       AlarmController.$inject = ['scope', '$mdToast', 'url'];
       function AlarmController(scope, $mdToast, url) {
+        scope.summary = data.summary;
         scope.reminder = '10';
-        scope.cancel = function() {
+        scope.close = function() {
           $mdToast.hide();
         };
-        scope.ok = function() {
+        scope.snooze = function() {
           _this.$$resource.fetch(url, 'view?snoozeAlarm=' + scope.reminder);
           $mdToast.hide();
         };

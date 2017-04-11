@@ -31,11 +31,13 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Component constructor
    */
-  Component.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Preferences', 'Card', 'Gravatar', 'Resource', function($q, $timeout, $log, Settings, Preferences, Card, Gravatar, Resource) {
+  Component.$factory = ['$q', '$timeout', '$log', '$rootScope', 'sgSettings', 'sgComponent_STATUS', 'Preferences', 'Card', 'Gravatar', 'Resource', function($q, $timeout, $log, $rootScope, Settings, Component_STATUS, Preferences, Card, Gravatar, Resource) {
     angular.extend(Component, {
+      STATUS: Component_STATUS,
       $q: $q,
       $timeout: $timeout,
       $log: $log,
+      $rootScope: $rootScope,
       $Preferences: Preferences,
       $Card: Card,
       $gravatar: Gravatar,
@@ -87,6 +89,13 @@
     angular.module('SOGo.SchedulerUI', ['SOGo.Common']);
   }
   angular.module('SOGo.SchedulerUI')
+    .constant('sgComponent_STATUS', {
+      NOT_LOADED:      0,
+      DELAYED_LOADING: 1,
+      LOADING:         2,
+      LOADED:          3,
+      DELAYED_MS:      300
+    })
     .factory('Component', Component.$factory);
 
   /**
@@ -111,7 +120,8 @@
   /**
    * @function $startRefreshTimeout
    * @memberof Component
-   * @desc Starts the refresh timeout for the current selected component type, for all calendars
+   * @desc Starts the refresh timeout for the current selected list (events or tasks) and
+   * current view.
    */
   Component.$startRefreshTimeout = function(type) {
     var _this = this;
@@ -123,10 +133,20 @@
       // Restart the refresh timer, if needed
       var refreshViewCheck = Component.$Preferences.defaults.SOGoRefreshViewCheck;
       if (refreshViewCheck && refreshViewCheck != 'manually') {
-        var f = angular.bind(_this, Component.$filter, type);
+        var f = angular.bind(Component.$rootScope, Component.$rootScope.$emit, 'calendars:list');
         Component.$refreshTimeout = Component.$timeout(f, refreshViewCheck.timeInterval()*1000);
       }
     });
+  };
+
+  /**
+   * @function $isLoading
+   * @memberof Component
+   * @returns true if the components list is still being retrieved from server after a specific delay
+   * @see sgMessage_STATUS
+   */
+  Component.$isLoading = function() {
+    return Component.$loaded == Component.STATUS.LOADING;
   };
 
   /**
@@ -176,8 +196,8 @@
                                                    angular.extend(_this[queryKey], _this.$query));
 
       // Invalidate cached results of other type if $query has changed
-      otherType = (type == 'tasks')? '$events' : '$tasks';
       if (dirty) {
+        otherType = (type == 'tasks')? '$events' : '$tasks';
         delete Component[otherType];
         Component.$log.debug('force reload of ' + otherType);
       }
@@ -296,10 +316,6 @@
         componentData.hour = start.getHourString();
         componentData.blocks = [];
         component = new Component(componentData);
-        // Filter out categories for which there's no associated color
-        component.categories = _.filter(component.categories, function(name) {
-          return Component.$Preferences.defaults.SOGoCalendarCategoriesColors[name];
-        });
         objects.push(component);
         return objects;
       };
@@ -307,6 +323,7 @@
       associateComponent = function(block) {
         this[block.nbr].blocks.push(block); // Associate block to component
         block.component = this[block.nbr];  // Associate component to block
+        block.isFirst = (this[block.nbr].blocks.length == 1);
       };
 
       Component.$views = [];
@@ -398,6 +415,13 @@
     var _this = this,
         components = [];
 
+    // Components list is not loaded yet
+    Component.$loaded = Component.STATUS.DELAYED_LOADING;
+    Component.$timeout(function() {
+      if (Component.$loaded != Component.STATUS.LOADED)
+        Component.$loaded = Component.STATUS.LOADING;
+    }, Component.STATUS.DELAYED_MS);
+
     return futureComponentData.then(function(data) {
       return Component.$timeout(function() {
         var fields = _.invokeMap(data.fields, 'toLowerCase');
@@ -409,10 +433,6 @@
         _.reduce(data[type], function(components, componentData, i) {
           var data = _.zipObject(fields, componentData), component;
           component = new Component(data);
-          // Filter out categories for which there's no associated color
-          component.categories = _.filter(component.categories, function(name) {
-            return Component.$Preferences.defaults.SOGoCalendarCategoriesColors[name];
-          });
           components.push(component);
           return components;
         }, components);
@@ -421,6 +441,8 @@
 
         // Save the list of components to the object model
         Component['$' + type] = components;
+
+        Component.$loaded = Component.STATUS.LOADED;
 
         return components;
       });
@@ -509,8 +531,15 @@
     else if (this.type == 'task')
       this.completed = new Date();
 
-    if (this.c_category)
-      this.categories = _.invokeMap(this.c_category, 'asCSSIdentifier');
+    if (this.c_category) {
+      // c_category is only defined in list mode (when calling $filter)
+      Component.$Preferences.ready().then(function() {
+        // Filter out categories for which there's no associated color
+        _this.categories = _.invokeMap(_.filter(_this.c_category, function(name) {
+          return Component.$Preferences.defaults.SOGoCalendarCategoriesColors[name];
+        }), 'asCSSIdentifier');
+      });
+    }
 
     // Parse recurrence rule definition and initialize default values
     this.$isRecurrent = angular.isDefined(data.repeat);
@@ -535,11 +564,15 @@
       this.repeat.frequency = 'never';
     if (angular.isUndefined(this.repeat.interval))
       this.repeat.interval = 1;
-    if (angular.isUndefined(this.repeat.month))
-      this.repeat.month = { occurrence: '1', day: 'SU', type: 'bymonthday' };
     if (angular.isUndefined(this.repeat.monthdays))
       // TODO: initialize this.repeat.monthdays with month day of start date
       this.repeat.monthdays = [];
+    else if (this.repeat.monthdays.length > 0)
+      this.repeat.month = { type: 'bymonthday' };
+    if (angular.isUndefined(this.repeat.month))
+      this.repeat.month = {};
+    if (angular.isUndefined(this.repeat.month.occurrence))
+      angular.extend(this.repeat.month, { occurrence: '1', day: 'SU' });
     if (angular.isUndefined(this.repeat.months))
       // TODO: initialize this.repeat.months with month of start date
       this.repeat.months = [];
@@ -549,7 +582,8 @@
       this.repeat.end = 'count';
     else if (this.repeat.until) {
       this.repeat.end = 'until';
-      this.repeat.until = Component.$parseDate(this.repeat.until, { no_time: true });
+      if (angular.isString(this.repeat.until))
+        this.repeat.until = Component.$parseDate(this.repeat.until, { no_time: true });
     }
     else
       this.repeat.end = 'never';
@@ -576,7 +610,7 @@
         _this.sendAppointmentNotifications = Component.$Preferences.defaults.SOGoAppointmentSendEMailNotifications;
       });
     }
-    else {
+    else if (angular.isUndefined(data.$hasAlarm)) {
       this.$hasAlarm = angular.isDefined(data.alarm);
     }
 
@@ -586,6 +620,12 @@
     // if (this.organizer && this.organizer.email) {
     //   this.organizer.$image = Component.$gravatar(this.organizer.email, 32);
     // }
+
+    if (this.attendees) {
+      _.forEach(this.attendees, function(attendee) {
+        attendee.image = Component.$gravatar(attendee.email, 32);
+      });
+    }
 
     // Load freebusy of attendees
     this.updateFreeBusy();
@@ -602,9 +642,10 @@
   Component.prototype.hasCustomRepeat = function() {
     var b = angular.isDefined(this.repeat) &&
         (this.repeat.interval > 1 ||
-         this.repeat.days && this.repeat.days.length > 0 ||
-         this.repeat.monthdays && this.repeat.monthdays.length > 0 ||
-         this.repeat.months && this.repeat.months.length > 0);
+         angular.isDefined(this.repeat.days) && this.repeat.days.length > 0 ||
+         angular.isDefined(this.repeat.monthdays) && this.repeat.monthdays.length > 0 ||
+         angular.isDefined(this.repeat.months) && this.repeat.months.length > 0 ||
+         angular.isDefined(this.repeat.month) && angular.isDefined(this.repeat.month.type));
     return b;
   };
 
@@ -743,7 +784,6 @@
 
     if (this.attendees) {
       _.forEach(this.attendees, function(attendee) {
-        attendee.image = Component.$gravatar(attendee.email, 32);
         _this.updateFreeBusyAttendee(attendee);
       });
     }
@@ -769,21 +809,37 @@
    * @param {Object} card - an Card object instance of the attendee
    */
   Component.prototype.updateFreeBusyAttendee = function(attendee) {
-    var params, url, days;
+    var resource, uid, params, days;
+
     if (attendee.uid) {
+      uid = attendee.uid;
+      if (attendee.domain)
+        uid += '@' + attendee.domain;
       params =
         {
           sday: this.start.getDayString(),
           eday: this.end.getDayString()
         };
-      url = ['..', '..', attendee.uid, 'freebusy.ifb'];
+
+      if (attendee.isMSExchange) {
+        // Attendee is not a local user, but her freebusy data is available from an external MS Exchange server;
+        // we query /SOGo/so/<login_user>/freebusy.ifb/ajaxRead?uid=<uid>
+        resource = Component.$$resource.userResource();
+        params.uid = uid;
+      }
+      else {
+        // Attendee is a user;
+        // web query /SOGo/so/<uid>/freebusy.ifb/ajaxRead
+        resource = Component.$$resource.userResource(uid);
+      }
+
       days = _.map(this.start.daysUpTo(this.end), function(day) { return day.getDayString(); });
 
       if (angular.isUndefined(attendee.freebusy))
         attendee.freebusy = {};
 
       // Fetch FreeBusy information
-      Component.$$resource.fetch(url.join('/'), 'ajaxRead', params).then(function(data) {
+      resource.fetch('freebusy.ifb', 'ajaxRead', params).then(function(data) {
         _.forEach(days, function(day) {
           var hour;
 
@@ -842,7 +898,8 @@
               email: ref.$preferredEmail(),
               role: 'req-participant',
               partstat: 'needs-action',
-              uid: ref.c_uid
+              uid: ref.c_uid,
+              $avatarIcon: 'person',
             };
             if (!_.find(_this.attendees, function(o) {
               return o.email == attendee.email;
@@ -861,11 +918,14 @@
       else {
         // Single contact
         attendee = {
+          uid: card.c_uid,
+          domain: card.c_domain,
+          isMSExchange: card.ismsexchange,
           name: card.c_cn,
           email: card.$preferredEmail(),
           role: 'req-participant',
           partstat: 'needs-action',
-          uid: card.c_uid
+          $avatarIcon: card.$avatarIcon
         };
         if (!_.find(this.attendees, function(o) {
           return o.email == attendee.email;
@@ -1083,7 +1143,7 @@
     component.completedDate = component.completed ? component.completed.format(dlp, '%Y-%m-%d') : '';
 
     // Update recurrence definition depending on selections
-    if (this.$hasCustomRepeat) {
+    if (this.hasCustomRepeat()) {
       if (this.repeat.frequency == 'monthly' && this.repeat.month.type && this.repeat.month.type == 'byday' ||
           this.repeat.frequency == 'yearly' && this.repeat.year.byday) {
         // BYDAY mask for a monthly or yearly recurrence
@@ -1099,7 +1159,7 @@
     else if (this.repeat.frequency && this.repeat.frequency != 'never') {
       component.repeat = { frequency: this.repeat.frequency };
     }
-    if (this.repeat.frequency) {
+    if (component.startDate && this.repeat.frequency && this.repeat.frequency != 'never') {
       if (this.repeat.end == 'until' && this.repeat.until)
         component.repeat.until = this.repeat.until.stringWithSeparator('-');
       else if (this.repeat.end == 'count' && this.repeat.count)
@@ -1120,7 +1180,7 @@
       delete component.completedDate;
 
     // Verify alarm
-    if (this.$hasAlarm) {
+    if (component.startDate && this.$hasAlarm) {
       if (this.alarm.action && this.alarm.action == 'email' &&
           !(this.attendees && this.attendees.length > 0)) {
         // No attendees; email reminder must be sent to organizer only
@@ -1200,7 +1260,7 @@
     var component = {};
     angular.forEach(this, function(value, key) {
       if (key != 'constructor' &&
-          key[0] != '$' &&
+          (key == '$hasAlarm' || key[0] != '$') &&
           key != 'blocks') {
         component[key] = angular.copy(value);
       }

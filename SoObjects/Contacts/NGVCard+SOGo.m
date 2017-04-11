@@ -1,6 +1,6 @@
 /* NGVCard+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2015 Inverse inc.
+ * Copyright (C) 2009-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 #import <Foundation/NSTimeZone.h>
 
+#import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSNull+misc.h>
 
 #import <NGCards/NSArray+NGCards.h>
@@ -202,9 +203,13 @@ convention:
   list = [allValues objectEnumerator];
   while ((value = [list nextObject]))
     {
-      element = [CardElement simpleElementWithTag: elementTag
-                                       singleType: type
-                                            value: value];
+      if ([type length])
+        element = [CardElement simpleElementWithTag: elementTag
+                                         singleType: type
+                                              value: value];
+      else
+        element = [CardElement simpleElementWithTag: elementTag
+                                              value: value];
       [self addChild: element];
     }
 }
@@ -231,12 +236,19 @@ convention:
 - (void) _setEmails: (NSDictionary *) ldifRecord
 {
   CardElement *homeMail;
+  NSString* mail;
 
   // Emails from the configured mail fields of the source have already been extracted in
   // [LDAPSource _fillEmailsOfEntry:intoLDIFRecord:]
   [self addElementWithTag: @"email"
                    ofType: @"work"
                 withValue: [ldifRecord objectForKey: @"c_emails"]];
+  // When importing an LDIF file, add the default mail attribute
+  mail = [ldifRecord objectForKey: @"mail"];
+  if ([mail length] && ![[self emails] containsObject: mail])
+    [self addElementWithTag: @"email"
+                     ofType: @"work"
+                  withValue: [ldifRecord objectForKey: @"mail"]];
   homeMail = [self elementWithTag: @"email" ofType: @"home"];
   [homeMail setSingleValue: [ldifRecord objectForKey: @"mozillasecondemail"] forKey: @""];
   [[self uniqueChildWithTag: @"x-mozilla-html"]
@@ -249,9 +261,9 @@ convention:
   NSInteger year, yearOfToday, month, day;
   CardElement *element;
   NSCalendarDate *now;
-  NSArray *units;
-  NSString *fn, *ou;
-  id o;
+  NSMutableArray *units;
+  NSString *fn;
+  id o, ou;
 
   [self setNWithFamily: [ldifRecord objectForKey: @"sn"]
                  given: [ldifRecord objectForKey: @"givenname"]
@@ -294,13 +306,17 @@ convention:
 
   ou = [ldifRecord objectForKey: @"ou"];
   if ([ou isKindOfClass: [NSArray class]])
-    units = [NSArray arrayWithArray: (NSArray *)ou];
+    units = [NSMutableArray arrayWithArray: (NSArray *)ou];
   else if (ou)
-    units = [NSArray arrayWithObject: ou];
+    units = [NSMutableArray arrayWithObject: ou];
   else
-    units = nil;
-  [self setOrg: [ldifRecord objectForKey: @"o"]
-         units: units];
+    units = [NSMutableArray array];
+  o = [ldifRecord objectForKey: @"o"];
+  if ([o isKindOfClass: [NSArray class]])
+    [units addObjectsFromArray: (NSArray *)o];
+  else if (ou)
+    [units addObject: o];
+  [self setOrganizations: units];
 
   [self _setPhoneValues: ldifRecord];
   [self _setEmails: ldifRecord];
@@ -339,7 +355,11 @@ convention:
     setSingleValue: [ldifRecord objectForKey: @"c_info"]
             forKey: @""];
 
-  [self setNote: [ldifRecord objectForKey: @"description"]];
+  o = [ldifRecord objectForKey: @"description"];
+  if ([o isKindOfClass: [NSArray class]])
+    [self setNotes: o];
+  else
+    [self setNote: o];
 
   o = [ldifRecord objectForKey: @"vcardcategories"];
 
@@ -349,6 +369,10 @@ convention:
     [self setCategories: o];
   else
     [self setCategories: [o componentsSeparatedByString: @","]];
+
+  // Photo
+  if ([ldifRecord objectForKey: @"photo"])
+    [self setPhoto: [[ldifRecord objectForKey: @"photo"] stringByEncodingBase64]];
 
   [self cleanupEmptyChildren];
 }
@@ -692,6 +716,53 @@ convention:
   return company;
 }
 
+- (void) setOrganizations: (NSArray *) newOrganizations
+{
+  CardElement *org;
+  NSArray *elements;
+  NSUInteger count, max;
+
+  // First remove all current org properties
+  elements = [self childrenWithTag: @"org"];
+  [self removeChildren: elements];
+
+  org = [self uniqueChildWithTag: @"org"];
+  max = [newOrganizations count];
+  for (count = 0; count < max; count++)
+    {
+      [org setSingleValue: [newOrganizations objectAtIndex: count]
+                  atIndex: count forKey: @""];
+    }
+}
+
+- (NSArray *) organizations
+{
+  CardElement *org;
+  NSArray *organizations;
+  NSEnumerator *orgs;
+  NSMutableArray *flattenedOrganizations;
+  NSString *value;
+  NSUInteger count, max;
+
+  // Get all org properties
+  orgs = [[self childrenWithTag: @"org"] objectEnumerator];
+  flattenedOrganizations = [NSMutableArray array];
+  while ((org = [orgs nextObject]))
+    {
+      // Get all values of each org property
+      organizations = [org valuesForKey: @""];
+      max = [organizations count];
+      for (count = 0; count < max; count++)
+        {
+          value = [[organizations objectAtIndex: count] lastObject];
+          if ([value length])
+            [flattenedOrganizations addObject: value];
+        }
+    }
+
+  return flattenedOrganizations;
+}
+
 - (NSString *) fullName
 {
   CardElement *n;
@@ -851,8 +922,46 @@ convention:
   return date;
 }
 
+- (void) setNotes: (NSArray *) newNotes
+{
+  NSArray *elements;
+  NSUInteger count, max;
+
+  elements = [self childrenWithTag: @"note"];
+  [self removeChildren: elements];
+  max = [newNotes count];
+  for (count = 0; count < max; count++)
+    {
+      [self addChildWithTag: @"note"
+                      types: nil
+                singleValue: [newNotes objectAtIndex: count]];
+    }
+}
+
+
+- (NSArray *) notes
+{
+  NSArray *notes;
+  NSMutableArray *flattenedNotes;
+  NSString *note;
+  NSUInteger count, max;
+
+  notes = [self childrenWithTag: @"note"];
+  max = [notes count];
+  flattenedNotes = [NSMutableArray arrayWithCapacity: max];
+
+  for (count = 0; count < max; count++)
+    {
+      note = [[notes objectAtIndex: count] flattenedValuesForKey: @""];
+      [flattenedNotes addObject: note];
+    }
+
+  return flattenedNotes;
+}
+
 - (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
                                        container: (id) theContainer
+				 nameInContainer: (NSString *) nameInContainer
 {
   NSMutableDictionary *fields;
   CardElement *element;

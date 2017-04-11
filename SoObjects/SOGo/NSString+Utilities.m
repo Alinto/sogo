@@ -302,7 +302,8 @@ static int cssEscapingCount;
     {
       c = buf[i];
 
-      if (c == 0x9 ||
+      if (c == 0x0 ||
+	  c == 0x9 ||
           c == 0xA ||
           c == 0xD ||
           (c >= 0x20 && c <= 0xD7FF) ||
@@ -683,8 +684,9 @@ static int cssEscapingCount;
 
 - (NSString *) asSafeSQLString
 {
-  return [[self stringByReplacingString: @"\\" withString: @"\\\\"]
-           stringByReplacingString: @"'" withString: @"\\'"];
+  return [[[self stringByReplacingString: @"\\" withString: @"\\\\"]
+           stringByReplacingString: @"'" withString: @"\\'"]
+	   stringByReplacingString: @"\%" withString: @"\\%"];
 }
 
 - (NSUInteger) countOccurrencesOfString: (NSString *) substring

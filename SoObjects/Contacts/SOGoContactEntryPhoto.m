@@ -1,8 +1,6 @@
 /* SOGoContactEntryPhoto.m - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2010-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,24 +40,33 @@
 - (id) GETAction: (WOContext *) localContext
 {
   NGVCardPhoto *photo;
-  NSData     *data;
+  NSString *uri;
+  NSData *data;
   id response;
 
   photo = [self photo];
+  data = nil;
+  uri = nil;
+
   if ([photo isInline])
     data = [photo decodedContent];
-  else
-    data = [[photo flattenedValuesForKey: @""]
-             dataUsingEncoding: NSISOLatin1StringEncoding];
+  else if ([[photo value: 0 ofAttribute: @"value"] isEqualToString: @"uri"])
+    uri = [photo flattenedValuesForKey: @""];
+
   if (data)
     {
       response = [localContext response];
-
       [response setHeader: [self davContentType] forKey: @"content-type"];
       [response setHeader: [NSString stringWithFormat:@" %d",
                                      (int)[data length]]
                    forKey: @"content-length"];
       [response setContent: data];
+    }
+  else if (uri)
+    {
+      response = [localContext response];
+      [response setStatus: 302];
+      [response setHeader: uri forKey: @"location"];
     }
   else
     response = nil;

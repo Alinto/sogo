@@ -43,6 +43,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGObjWeb/WOCoreApplication.h>
 
 #import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalEvent.h>
+#import <NGCards/iCalPerson.h>
 
 #import <NGExtensions/NGBase64Coding.h>
 
@@ -59,8 +61,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeFileData.h>
-#import <NGMime/NGMimeMultipartBody.h>
 #import <NGMime/NGMimeType.h>
+#import <NGMime/NGMimeMultipartBody.h>
+#import <NGMime/NGConcreteMimeType.h>
 #import <NGMail/NGMimeMessageParser.h>
 #import <NGMail/NGMimeMessageGenerator.h>
 
@@ -82,6 +85,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoPermissions.h>
 
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
@@ -138,7 +142,7 @@ void handle_eas_terminate(int signum)
 - (void) _setFolderMetadata: (NSDictionary *) theFolderMetadata forKey: (NSString *) theFolderKey;
 - (void) _setOrUnsetSyncRequest: (BOOL) set
                        collections: (NSArray *) collections;
-
+- (NSString *) _getNameInCache: (id) theCollection withType: (SOGoMicrosoftActiveSyncFolderType) theFolderType;
 
 @end
 
@@ -266,8 +270,6 @@ void handle_eas_terminate(int signum)
   
   return theIdToTranslate;
 }
-
-
 
 //
 //
@@ -720,8 +722,8 @@ void handle_eas_terminate(int signum)
 
 - (void) _flattenFolders: (NSArray *) theFolders
                     into: (NSMutableArray *) theTarget
-                  parent: (NSString *) theParent
-              parentType: (NSString *) theParentType
+                  parent: (NSDictionary *) theParent
+          existingParent: (NSString *) theExistingParent
 {
   NSArray *o;
   int i;
@@ -730,16 +732,30 @@ void handle_eas_terminate(int signum)
 
   for (i = 0; i < [theFolders count]; i++)
     {
-      if (theParent && ![theParentType isEqualToString: @"additional"])
-        [[theFolders objectAtIndex: i] setObject: theParent  forKey: @"parent"];
-
-      if ([theParentType isEqualToString: @"additional"])
-        [[theFolders objectAtIndex: i] setObject: [[theFolders objectAtIndex: i] objectForKey: @"path"]  forKey: @"name"];
+      if ([theParent objectForKey: @"path"] && ![[theParent objectForKey: @"type"] isEqualToString: @"additional"])
+        {
+          [[theFolders objectAtIndex: i] setObject: [theParent objectForKey: @"path"]  forKey: @"parent"];
+          theExistingParent = [theParent objectForKey: @"path"];
+        }
+      else if (theExistingParent)
+        {
+          [[theFolders objectAtIndex: i] setObject: theExistingParent forKey: @"parent"];
+          [[theFolders objectAtIndex: i] setObject:
+                 [[[[theFolders objectAtIndex: i] objectForKey: @"path"] substringFromIndex: [theExistingParent length]+1]stringByReplacingOccurrencesOfString:@"/" withString:@"."]
+             forKey: @"name"];
+        }
+      else if (![[[theFolders objectAtIndex: i] objectForKey: @"type"] isEqualToString: @"otherUsers"] &&
+               ![[[theFolders objectAtIndex: i] objectForKey: @"type"] isEqualToString: @"shared"])
+        {
+          [[theFolders objectAtIndex: i] setObject:
+                 [[[theFolders objectAtIndex: i] objectForKey: @"path"] stringByReplacingOccurrencesOfString:@"/" withString:@"."]
+             forKey: @"name"];
+        }
 
       o = [[theFolders objectAtIndex: i] objectForKey: @"children"];
 
       if (o)
-        [self _flattenFolders: o  into: theTarget  parent: [[theFolders objectAtIndex: i] objectForKey: @"path"] parentType: [[theFolders objectAtIndex: i] objectForKey: @"type"]];
+        [self _flattenFolders: o  into: theTarget  parent: [theFolders objectAtIndex: i] existingParent: theExistingParent];
     }
 }
 
@@ -761,19 +777,18 @@ void handle_eas_terminate(int signum)
   SOGoMailAccount *accountFolder;
   NSMutableString *s, *commands;
   SOGoUserFolder *userFolder;
-  SoSecurityManager *sm;
+  NSArray *allKeys, *roles;
   SOGoCacheGCSObject *o;
-  NSArray *allKeys;
   id currentFolder;
   NSData *d;
 
   int status, command_count, i, type, fi, count;
   BOOL first_sync;
 
-  sm = [SoSecurityManager sharedSecurityManager];
   metadata = [self globalMetadataForDevice];
   syncKey = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
   s = [NSMutableString string];
+  personalFolderName = [[[context activeUser] personalCalendarFolderInContext: context] nameInContainer];
 
   first_sync = NO;
   status = 1;
@@ -813,7 +828,7 @@ void handle_eas_terminate(int signum)
     }
 
   allFoldersMetadata = [NSMutableArray array];
-  [self _flattenFolders: [accountFolder allFoldersMetadata]  into: allFoldersMetadata  parent: nil parentType: nil];
+  [self _flattenFolders: [accountFolder allFoldersMetadata: SOGoMailStandardListing]  into: allFoldersMetadata  parent: nil existingParent: nil];
   
   // Get GUIDs of folder (IMAP)
   // e.g. {folderINBOX = folder6b93c528176f1151c7260000aef6df92}
@@ -831,7 +846,7 @@ void handle_eas_terminate(int signum)
       [o setObjectType: ActiveSyncFolderCacheObject];
       [o setTableUrl: folderTableURL];
 
-      foldersInCache =  [o cacheEntriesForDeviceId: [context objectForKey: @"DeviceId"] newerThanVersion: -1];
+      foldersInCache = [o cacheEntriesForDeviceId: [context objectForKey: @"DeviceId"] newerThanVersion: -1];
 
       // get guids of folders stored in cache
       for (i = 0; i < [foldersInCache count]; i++)
@@ -924,15 +939,8 @@ void handle_eas_terminate(int signum)
 		 [o save];
 	       }
 
-             // Remove the folder from device if it doesn't exist, we don't want to sync it, or it doesn't have the proper permissions
-             if (!currentFolder ||
-                 ![currentFolder synchronize] ||
-                 [sm validatePermission: SoPerm_DeleteObjects
-                               onObject: currentFolder
-                              inContext: context] ||
-                 [sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                               onObject: currentFolder
-                              inContext: context])
+             // Remove the folder from device if it doesn't exist, or don't want to sync it.
+             if (!currentFolder || !([currentFolder synchronize]))
                {
                  // Don't send a delete when MergedFoler is set, we have done it above.
                  // Windows Phones don't like when a <Delete>-folder is sent twice.
@@ -942,8 +950,25 @@ void handle_eas_terminate(int signum)
                      command_count++;
                    }
                  [o destroy];
+                 continue;
                }
 
+             // Remove the folder from device if it is a contact folder and we have no SOGoRole_ObjectViewer.
+             if ([currentFolder isKindOfClass: [SOGoContactGCSFolder class]] && ![[currentFolder ownerInContext: context] isEqualToString: [[context activeUser] login]])
+               {
+                 roles = [currentFolder aclsForUser: [[context activeUser] login]];
+                 if (![roles containsObject: SOGoRole_ObjectViewer])
+                   {
+                     // Don't send a delete when MergedFoler is set, we have done it above.
+                     // Windows Phones don't like when a <Delete>-folder is sent twice.
+                     if (![[[o properties] objectForKey: @"MergedFolder"] isEqualToString: @"2"])
+                       {
+                         [commands appendFormat: @"<Delete><ServerId>%@</ServerId></Delete>", [cKey stringByEscapingURL] ];
+                         command_count++;
+                       }
+                     [o destroy];
+                   }
+               }
            }
        }
    }
@@ -1051,16 +1076,17 @@ void handle_eas_terminate(int signum)
               
          command_count++;
        }
-    }
+   }
 
-    personalFolderName = [[[context activeUser] personalCalendarFolderInContext: context] nameInContainer];
-    folders = [[[[[context activeUser] homeFolderInContext: context] lookupName: @"Calendar" inContext: context acquire: NO] subFolders] mutableCopy];
-    [folders autorelease];
+  // We get the list of subscribed calendars
+  folders = [[[[[context activeUser] homeFolderInContext: context] lookupName: @"Calendar" inContext: context acquire: NO] subFolders] mutableCopy];
+  [folders autorelease];
 
-    [folders addObjectsFromArray: [[[[context activeUser] homeFolderInContext: context] lookupName: @"Contacts" inContext: context acquire: NO] subFolders]];
+  // We get the list of subscribed address books
+  [folders addObjectsFromArray: [[[[context activeUser] homeFolderInContext: context] lookupName: @"Contacts" inContext: context acquire: NO] subFolders]];
 
     // We remove all the folders that aren't GCS-ones, that we don't want to synchronize and
-    // the ones without write/delete permissions.
+    // contact folder without SOGoRole_ObjectViewer.
     count = [folders count]-1;
     for (; count >= 0; count--)
      {
@@ -1072,15 +1098,18 @@ void handle_eas_terminate(int signum)
          continue;
 
        if (![currentFolder isKindOfClass: [SOGoGCSFolder class]] ||
-           ![currentFolder synchronize] ||
-           [sm validatePermission: SoPerm_DeleteObjects
-                         onObject: currentFolder
-                        inContext: context] ||
-           [sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                         onObject: currentFolder
-                        inContext: context])
+           ![currentFolder synchronize])
          {
            [folders removeObjectAtIndex: count];
+           continue;
+         }
+
+       // Remove the folder from the device if it is a contact folder and we have no SOGoRole_ObjectViewer access right.
+       if ([currentFolder isKindOfClass: [SOGoContactGCSFolder class]] && ![[currentFolder ownerInContext: context] isEqualToString: [[context activeUser] login]])
+         {
+           roles = [currentFolder aclsForUser: [[context activeUser] login]];
+           if (![roles containsObject: SOGoRole_ObjectViewer])
+             [folders removeObjectAtIndex: count];
          }
      }
 
@@ -1088,10 +1117,10 @@ void handle_eas_terminate(int signum)
 
     for (fi = 0; fi <= count ; fi++)
      {
-       if ([[folders objectAtIndex:fi] isKindOfClass: [SOGoAppointmentFolder class]]) 
-         name = [NSString stringWithFormat: @"vevent/%@", [[folders objectAtIndex:fi] nameInContainer]];
+       if ([[folders objectAtIndex: fi] isKindOfClass: [SOGoAppointmentFolder class]])
+         name = [NSString stringWithFormat: @"vevent/%@", [[folders objectAtIndex: fi] nameInContainer]];
        else
-         name = [NSString stringWithFormat: @"vcard/%@", [[folders objectAtIndex:fi] nameInContainer]];
+         name = [NSString stringWithFormat: @"vcard/%@", [[folders objectAtIndex: fi] nameInContainer]];
           
        key = [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], name];
        o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
@@ -1100,9 +1129,9 @@ void handle_eas_terminate(int signum)
        [o reloadIfNeeded];
 
        // Decide between add and change
-       if (![[o properties ]  objectForKey: @"displayName"] || first_sync)
+       if (![[o properties ] objectForKey: @"displayName"] || first_sync)
          operation = @"Add";
-       else  if (![[[o properties ]  objectForKey: @"displayName"] isEqualToString:  [[folders objectAtIndex:fi] displayName]])
+       else if (![[[o properties ] objectForKey: @"displayName"] isEqualToString: [[folders objectAtIndex:fi] displayName]])
          operation = @"Update";
        else
          operation = nil;
@@ -1117,7 +1146,7 @@ void handle_eas_terminate(int signum)
 
                command_count++;
 
-               [[o properties ]  setObject:  [[folders objectAtIndex:fi] displayName]  forKey: @"displayName"];
+               [[o properties ] setObject: [[folders objectAtIndex:fi] displayName]  forKey: @"displayName"];
                [o save];
 
                name = [NSString stringWithFormat: @"vtodo/%@", [[folders objectAtIndex:fi] nameInContainer]];
@@ -1392,13 +1421,13 @@ void handle_eas_terminate(int signum)
                     inResponse: (WOResponse *) theResponse
 {
   NSString *fileReference, *realCollectionId, *serverId, *bodyPreferenceType, *mimeSupport, *collectionId;
-  NSMutableString *s;
   NSArray *fetchRequests;
-  id aFetch;
+  NSMutableString *s;
   NSData *d;
-  int i;
+  id aFetch;
 
   SOGoMicrosoftActiveSyncFolderType folderType;
+  int i;
 
   s = [NSMutableString string];
 
@@ -1425,6 +1454,20 @@ void handle_eas_terminate(int signum)
           aFetch = [fetchRequests objectAtIndex: i];
           fileReference = [[[(id)[aFetch getElementsByTagName: @"FileReference"] lastObject] textValue] stringByUnescapingURL];
           collectionId = [[(id)[theDocumentElement getElementsByTagName: @"CollectionId"] lastObject] textValue];
+	  serverId = nil;
+
+	  // We might not have a CollectionId in our request if the ItemOperation (Fetch) is for getting
+	  // Search results with a LongId. Apple iOS does that.
+	  if (!collectionId)
+	    {
+	      NSString *longId;
+	      NSRange r;
+
+	      longId = [[(id)[theDocumentElement getElementsByTagName: @"LongId"] lastObject] textValue];
+	      r = [longId rangeOfString: @"+"  options: NSBackwardsSearch];
+	      collectionId = [longId substringToIndex: r.location];
+	      serverId = [longId substringFromIndex: r.location+1];
+	    }
 
           // its either a itemOperation to fetch an attachment or an email
           if ([fileReference length])
@@ -1483,6 +1526,7 @@ void handle_eas_terminate(int signum)
                   if ([[theResponse headerForKey: @"Content-Type"] isEqualToString:@"application/vnd.ms-sync.multipart"])
                     {
                       NSData *d;
+
                       d = [currentBodyPart fetchBLOBWithPeek: YES];
 
                       [s appendFormat: @"<Part>%d</Part>", i+1];
@@ -1492,9 +1536,15 @@ void handle_eas_terminate(int signum)
                   else
                     {
                       NSString *a;
+
                       a = [[currentBodyPart fetchBLOBWithPeek: YES] activeSyncRepresentationInContext: context];
 
-                      [s appendFormat: @"<Range>0-%d</Range>", [a length]-1];
+                      // Don't send Range when not included in the request. Sending it will cause issue on iOS 10
+		      // when downloading attachments. iOS 10 will first report an error upon the first download
+		      // and then, it'll work. This makes it work the first time the attachment is downlaoded.
+                      if  ([[[(id)[aFetch getElementsByTagName: @"Range"] lastObject] textValue] length])
+			[s appendFormat: @"<Range>0-%d</Range>", [a length]-1];
+
                       [s appendFormat: @"<Data>%@</Data>", a];
                     }
                 }
@@ -1502,7 +1552,12 @@ void handle_eas_terminate(int signum)
                 {
                   // fetch mail
                   realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
-                  serverId = [[(id)[theDocumentElement getElementsByTagName: @"ServerId"] lastObject] textValue];
+
+		  // ServerId might have been set if LongId was defined in the initial request. If not, it is
+		  // a normal ItemOperations (Fetch) to get a complete email
+		  if (!serverId)
+		    serverId = [[(id)[theDocumentElement getElementsByTagName: @"ServerId"] lastObject] textValue];
+
                   bodyPreferenceType = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"BodyPreference"] lastObject] getElementsByTagName: @"Type"] lastObject] textValue];
                   [context setObject: bodyPreferenceType  forKey: @"BodyPreferenceType"];
                   mimeSupport = [[(id)[theDocumentElement getElementsByTagName: @"MIMESupport"] lastObject] textValue];
@@ -1765,7 +1820,7 @@ void handle_eas_terminate(int signum)
             {
               appointmentObject = [[SOGoAppointmentObject alloc] initWithName: [NSString stringWithFormat: @"%@.ics", [event uid]]
                                                                   inContainer: collection];
-              [appointmentObject saveComponent: event];
+              [appointmentObject saveComponent: event force: YES];
            }
 
           if (uidCache && [calendarId length] > 64)
@@ -1857,7 +1912,6 @@ void handle_eas_terminate(int signum)
   SOGoMicrosoftActiveSyncFolderType srcFolderType, dstFolderType;
   id <DOMElement> aMoveOperation;
   NSArray *moveOperations;
-  SoSecurityManager *sm;
   NSMutableString *s;
   NSData *d; 
   int i;
@@ -2013,14 +2067,13 @@ void handle_eas_terminate(int signum)
               // Save dstMessageId in cache - it will help to recover if the request fails before the response can be sent to client
               [newSuccessfulMoveItemsOps setObject: dstMessageId  forKey: srcMessageId];
             }
-
         }
       else
         {
           id srcCollection, dstCollection, srcSogoObject, dstSogoObject;
-          NSArray *elements;
+          NSArray *elements, *srcObjectRoles, *dstObjectRoles;
           NSString *newUID, *origSrcMessageId;
-          NSMutableDictionary *srcUidCache, *dstUidCache, *dstSyncCache;
+          NSMutableDictionary *srcUidCache, *dstUidCache, *srcSyncCache, *srcDateCache, *dstSyncCache;
           NSException *ex;
 
           unsigned int count, max;
@@ -2048,9 +2101,8 @@ void handle_eas_terminate(int signum)
           dstUidCache = [dstFolderMetadata objectForKey: @"UidCache"];
           dstSyncCache = [dstFolderMetadata objectForKey: @"SyncCache"];
 
-          if (srcUidCache)
+          if (srcUidCache && (srcMessageId = [[srcUidCache allKeysForObject: origSrcMessageId] objectAtIndex: 0]))
             {
-              srcMessageId = [[srcUidCache allKeysForObject: origSrcMessageId] objectAtIndex: 0];
               if (debugOn)
                 [self logWithFormat: @"EAS - Found serverId: %@ for easId: %@", srcMessageId, origSrcMessageId];
             }
@@ -2061,81 +2113,92 @@ void handle_eas_terminate(int signum)
                                           inContext: context
                                             acquire: NO];
           
-          sm = [SoSecurityManager sharedSecurityManager];
-          if (![sm validatePermission: SoPerm_DeleteObjects
-                             onObject: srcCollection
-                            inContext: context] &&
-              ![srcSogoObject isKindOfClass: [NSException class]])
+          if (![srcSogoObject isKindOfClass: [NSException class]])
             {
-              if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                                 onObject: dstCollection
-                                inContext: context])
+              newUID = [srcSogoObject globallyUniqueObjectId];
+              dstSogoObject = [[SOGoAppointmentObject alloc] initWithName: [newUID sanitizedServerIdWithType: srcFolderType]
+                                                               inContainer: dstCollection];
+
+              dstObjectRoles = [dstSogoObject aclsForUser: [[context activeUser] login]];
+              srcObjectRoles = [srcSogoObject aclsForUser: [[context activeUser] login]];
+
+              if (([dstObjectRoles containsObject: SOGoRole_ObjectCreator] || [[dstSogoObject ownerInContext: context] isEqualToString: [[context activeUser] login]]) &&
+                  ([srcObjectRoles containsObject: SOGoRole_ObjectEraser] || [[srcSogoObject ownerInContext: context] isEqualToString: [[context activeUser] login]]))
                 {
-                  newUID = [srcSogoObject globallyUniqueObjectId];
-                  dstSogoObject = [[SOGoAppointmentObject alloc] initWithName: [newUID sanitizedServerIdWithType: srcFolderType]
-                                                                  inContainer: dstCollection];
                   elements = [[srcSogoObject calendar: NO secure: NO] allObjects];
                   max = [elements count];
                   for (count = 0; count < max; count++)
                     [[elements objectAtIndex: count] setUid: newUID];
                   
                   ex = [dstSogoObject saveCalendar: [srcSogoObject calendar: NO secure: NO]];
-                  if (!ex)
-                    {
-                      ex = [srcSogoObject delete];
-
-                      if (dstUidCache)
-                        {
-                          [dstUidCache setObject: newUID forKey: newUID];
-
-                          if (debugOn)
-                            [self logWithFormat: @"EAS - Saved new easId: %@ for serverId: %@", newUID, newUID];
-                        }
-
-                      [dstSyncCache setObject: [dstFolderMetadata objectForKey: @"SyncKey"]  forKey: newUID];
-
-                      [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
-                      [s appendFormat: @"<DstMsgId>%@</DstMsgId>", newUID];
-                      [s appendFormat: @"<Status>%d</Status>", 3];
-
-                      // Save dstMessageId in cache - it will help to recover if the request fails before the response can be sent to client
-                      [newSuccessfulMoveItemsOps setObject: newUID  forKey: srcMessageId];
-                    } 
-                  else
-                    {
-                      if ([prevSuccessfulMoveItemsOps objectForKey: srcMessageId])
-                        {
-                          // Move failed but we can recover the dstMessageId from previous request
-                          [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
-                          [s appendFormat: @"<DstMsgId>%@</DstMsgId>", [prevSuccessfulMoveItemsOps objectForKey: srcMessageId] ];
-                          [s appendFormat: @"<Status>%d</Status>", 3];
-                          [newSuccessfulMoveItemsOps setObject: [prevSuccessfulMoveItemsOps objectForKey: srcMessageId]  forKey: srcMessageId];
-
-                          if (dstUidCache)
-                            {
-                              [dstUidCache setObject: newUID forKey: newUID];
-
-                              if (debugOn)
-                                [self logWithFormat: @"EAS - Saved new easId: %@ for serverId: %@", newUID, newUID];
-                            }
-                        }
-                      else
-                        {
-                          [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
-                          [s appendFormat: @"<Status>%d</Status>", 1];
-                        }
-                    }
-                } 
+                }
               else
                 {
-                  [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
-                  [s appendFormat: @"<Status>%d</Status>", 2];
+                  if (debugOn)
+                    [self logWithFormat: @"EAS - MoveItem failed due to missing permissions: srcMessageId: %@ dstMessageId: %@", srcMessageId, newUID];
+
+                  // Make sure that the entry gets re-added to the source folder.
+                  srcSyncCache = [srcFolderMetadata objectForKey: @"SyncCache"];
+                  srcDateCache = [srcFolderMetadata objectForKey: @"DateCache"];
+                  [srcSyncCache removeObjectForKey: srcMessageId];
+                  [srcDateCache removeObjectForKey: srcMessageId];
+
+                  // Make sure that the entry gets removed from the destination folder.
+                  [dstSyncCache setObject: [dstFolderMetadata objectForKey: @"SyncKey"]  forKey: newUID];
+                  ex = [dstSogoObject saveCalendar: [srcSogoObject calendar: NO secure: YES]];
+                  ex = [dstSogoObject delete];
                 }
+            }
+
+
+          if (!ex && ![srcSogoObject isKindOfClass: [NSException class]])
+            {
+              if (([dstObjectRoles containsObject: SOGoRole_ObjectCreator] || [[dstSogoObject ownerInContext: context] isEqualToString: [[context activeUser] login]]) &&
+                  ([srcObjectRoles containsObject: SOGoRole_ObjectEraser] || [[srcSogoObject ownerInContext: context] isEqualToString: [[context activeUser] login]]))
+                ex = [srcSogoObject delete];
+              else
+                ex = [srcSogoObject touch]; // make sure to include the object in next sync.
+
+              if (dstUidCache)
+                {
+                  [dstUidCache setObject: newUID forKey: newUID];
+
+                  if (debugOn)
+                    [self logWithFormat: @"EAS - Saved new easId: %@ for serverId: %@", newUID, newUID];
+                }
+
+              [dstSyncCache setObject: [dstFolderMetadata objectForKey: @"SyncKey"]  forKey: newUID];
+
+              [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
+              [s appendFormat: @"<DstMsgId>%@</DstMsgId>", newUID];
+              [s appendFormat: @"<Status>%d</Status>", 3];
+
+              // Save dstMessageId in cache - it will help to recover if the request fails before the response can be sent to client
+              [newSuccessfulMoveItemsOps setObject: newUID  forKey: srcMessageId];
             }
           else
             {
-              [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
-              [s appendFormat: @"<Status>%d</Status>", 1];
+              if ([prevSuccessfulMoveItemsOps objectForKey: srcMessageId])
+                {
+                  // Move failed but we can recover the dstMessageId from previous request
+                  [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
+                  [s appendFormat: @"<DstMsgId>%@</DstMsgId>", [prevSuccessfulMoveItemsOps objectForKey: srcMessageId] ];
+                  [s appendFormat: @"<Status>%d</Status>", 3];
+                  [newSuccessfulMoveItemsOps setObject: [prevSuccessfulMoveItemsOps objectForKey: srcMessageId]  forKey: srcMessageId];
+
+                  if (dstUidCache)
+                    {
+                      [dstUidCache setObject: newUID forKey: newUID];
+
+                      if (debugOn)
+                        [self logWithFormat: @"EAS - Saved new easId: %@ for serverId: %@", newUID, newUID];
+                    }
+                }
+              else
+                {
+                  [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", origSrcMessageId];
+                  [s appendFormat: @"<Status>%d</Status>", 1];
+                }
             }
         }
       
@@ -2226,7 +2289,7 @@ void handle_eas_terminate(int signum)
   defaults = [SOGoSystemDefaults sharedSystemDefaults];
   defaultInterval = [defaults maximumPingInterval];
   internalInterval = [defaults internalSyncInterval];
-  sleepInterval = (internalInterval < 5) ? internalInterval : 5;
+  sleepInterval = (internalInterval < 5) ? 5 : internalInterval;
 
   if (theDocumentElement)
     heartbeatInterval = [[[(id)[theDocumentElement getElementsByTagName: @"HeartbeatInterval"] lastObject] textValue] intValue];
@@ -2367,8 +2430,16 @@ void handle_eas_terminate(int signum)
                 }
               else
                 {
+		  int t;
+
                   [self logWithFormat: @"Sleeping %d seconds while detecting changes in Ping...", internalInterval-total_sleep];
-                  sleep(sleepInterval);
+
+		  for (t = 0; t < sleepInterval; t++)
+		    {
+		      if (easShouldTerminate)
+			break;
+		      sleep(1);
+		    }
                   total_sleep += sleepInterval;
                 }
             }
@@ -2585,6 +2656,7 @@ void handle_eas_terminate(int signum)
       NSData *d;
 
       unsigned int startdate, enddate, increments;
+      NGCalendarDateRange *r1, *r2;
       char c;
 
       startDate = [[[(id)[theDocumentElement getElementsByTagName: @"StartTime"] lastObject] textValue] calendarDate];
@@ -2631,17 +2703,13 @@ void handle_eas_terminate(int signum)
               folder = [user personalCalendarFolderInContext: context];
               freebusy = [folder fetchFreeBusyInfosFrom: startDate  to: endDate];
               
-
-              NGCalendarDateRange *r1, *r2;
-              
-              for (j = 1; j <= increments; j++)
+              for (j = 0; j < increments; j++)
                 {
                   c = '0';
                   
                   r1  =  [NGCalendarDateRange calendarDateRangeWithStartDate: [NSDate dateWithTimeIntervalSince1970: (startdate+j*30*60)]
                                                                      endDate: [NSDate dateWithTimeIntervalSince1970: (startdate+j*30*60 + 30)]];
-                  
-                  
+
                   for (k = 0; k < [freebusy count]; k++)
                     {
                       
@@ -2659,11 +2727,8 @@ void handle_eas_terminate(int signum)
                   [s appendFormat: @"%c", c];
                 }
 
-             
               [s appendString: @"</MergedFreeBusy>"];
               [s appendString: @"</Availability>"];
-
-
               [s appendString: @"</Recipient>"];
               [s appendString: @"</Response>"];
             }
@@ -2690,31 +2755,23 @@ void handle_eas_terminate(int signum)
 //  </Store>
 // </Search>
 //
-- (void) processSearch: (id <DOMElement>) theDocumentElement
-            inResponse: (WOResponse *) theResponse
+- (void) processSearchGAL: (id <DOMElement>) theDocumentElement
+              inResponse: (WOResponse *) theResponse
 {
   SOGoContactSourceFolder *currentFolder;
   NSArray *allKeys, *allContacts, *mails;
   NSDictionary *systemSources, *contact;
-  NSString *name, *query, *current_mail;
   SOGoContactFolders *contactFolders;
+  NSString *current_mail, *query;
   SOGoUserFolder *userFolder;
+
   NSMutableString *s;
   NSData *d;
   id o;
 
   int i, j, total;
-            
-  name = [[(id)[theDocumentElement getElementsByTagName: @"Name"] lastObject] textValue];
+
   query = [[(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject] textValue];
-  
-  // FIXME: for now, we only search in the GAL
-  if (![name isEqualToString: @"GAL"])
-    {
-      [theResponse setStatus: 500];
-      return;
-    }
-    
 
   userFolder = [[context activeUser] homeFolderInContext: context];
   contactFolders = [userFolder privateContacts: @"Contacts"  inContext: context];
@@ -2768,31 +2825,31 @@ void handle_eas_terminate(int signum)
               [s appendString: @"<Properties>"];
               
               if ((o = [contact objectForKey: @"displayname"]))
-                [s appendFormat: @"<DisplayName xmlns=\"Gal:\">%@</DisplayName>", o];
+                [s appendFormat: @"<DisplayName xmlns=\"Gal:\">%@</DisplayName>", [o activeSyncRepresentationInContext: context]];
               
               if ((o = [contact objectForKey: @"title"]))
-                [s appendFormat: @"<Title xmlns=\"Gal:\">%@</Title>", o];
+                [s appendFormat: @"<Title xmlns=\"Gal:\">%@</Title>", [o activeSyncRepresentationInContext: context]];
               
               if ((o = [contact objectForKey: @"givenname"]))
-                [s appendFormat: @"<FirstName xmlns=\"Gal:\">%@</FirstName>", o];
+                [s appendFormat: @"<FirstName xmlns=\"Gal:\">%@</FirstName>", [o activeSyncRepresentationInContext: context]];
               
               if ((o = [contact objectForKey: @"sn"]))
-                [s appendFormat: @"<LastName xmlns=\"Gal:\">%@</LastName>", o];
+                [s appendFormat: @"<LastName xmlns=\"Gal:\">%@</LastName>", [o activeSyncRepresentationInContext: context]];
               
               if ([current_mail length] > 0)
                 [s appendFormat: @"<EmailAddress xmlns=\"Gal:\">%@</EmailAddress>", current_mail];
               
               if ((o = [contact objectForKey: @"telephonenumber"]))
-                [s appendFormat: @"<Phone xmlns=\"Gal:\">%@</Phone>", o];
+                [s appendFormat: @"<Phone xmlns=\"Gal:\">%@</Phone>", [o activeSyncRepresentationInContext: context]];
               
               if ((o = [contact objectForKey: @"homephone"]))
-                [s appendFormat: @"<HomePhone xmlns=\"Gal:\">%@</HomePhone>", o];
+                [s appendFormat: @"<HomePhone xmlns=\"Gal:\">%@</HomePhone>", [o activeSyncRepresentationInContext: context]];
               
               if ((o = [contact objectForKey: @"mobile"]))
-                [s appendFormat: @"<MobilePhone xmlns=\"Gal:\">%@</MobilePhone>", o];
+                [s appendFormat: @"<MobilePhone xmlns=\"Gal:\">%@</MobilePhone>", [o activeSyncRepresentationInContext: context]];
               
               if ((o = [contact objectForKey: @"o"]))
-                [s appendFormat: @"<Company xmlns=\"Gal:\">%@</Company>", o];
+                [s appendFormat: @"<Company xmlns=\"Gal:\">%@</Company>", [o activeSyncRepresentationInContext: context]];
               
               [s appendString: @"</Properties>"];
               [s appendString: @"</Result>"];
@@ -2800,7 +2857,7 @@ void handle_eas_terminate(int signum)
         }        
     }
   
-  [s appendFormat: @"<Range>0-%d</Range>", total-1];
+  [s appendFormat: @"<Range>0-%d</Range>", (total ? total-1 : 0)];
   [s appendFormat: @"<Total>%d</Total>", total];
   [s appendString: @"</Store>"];
   [s appendString: @"</Response>"];
@@ -2809,6 +2866,224 @@ void handle_eas_terminate(int signum)
   d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
   
   [theResponse setContent: d];
+}
+
+- (EOQualifier *) _qualifierFromMailboxSearchQuery: (id <DOMElement>) theDocumentElement
+{
+  id <DOMElement> andElement, freeTextElement, greaterThanElement;
+
+  andElement = [(id)[theDocumentElement getElementsByTagName: @"And"] lastObject];
+  if (andElement)
+    {
+      EOQualifier *subjectQualifier, *senderQualifier, *fetchQualifier, *notDeleted, *greaterThanQualifier, *orQualifier;
+      NSString *query;
+      id o;
+
+      freeTextElement = [(id)[andElement getElementsByTagName: @"FreeText"] lastObject];
+      query = [(id)freeTextElement textValue];
+      greaterThanQualifier = nil;
+
+      if (!query)
+	return nil;
+
+      // We check for the date ranges - we only support the GreaterThan since
+      // the IMAP protocol is limited in this regard
+      greaterThanElement = [(id)[andElement getElementsByTagName: @"GreaterThan"] lastObject];
+      if (greaterThanElement && [(id)[greaterThanElement getElementsByTagName: @"DateReceived"] lastObject])
+	{
+	  o = [[(id)[greaterThanElement getElementsByTagName: @"Value"] lastObject] textValue];
+	  greaterThanQualifier = [EOQualifier qualifierWithQualifierFormat:
+						@"(DATE >= %@)", [o calendarDate]];
+	}
+
+      notDeleted = [EOQualifier qualifierWithQualifierFormat: @"(not (flags = %@))", @"deleted"];
+      subjectQualifier = [EOQualifier qualifierWithQualifierFormat: [NSString stringWithFormat: @"(%@ doesContain: '%@')", @"subject", query]];
+      senderQualifier = [EOQualifier qualifierWithQualifierFormat: [NSString stringWithFormat: @"(%@ doesContain: '%@')", @"from", query]];
+
+      orQualifier = [[EOOrQualifier alloc] initWithQualifiers: subjectQualifier, senderQualifier, nil];
+
+      fetchQualifier = [[EOAndQualifier alloc] initWithQualifiers: notDeleted, orQualifier, greaterThanQualifier, nil];
+
+      return [fetchQualifier autorelease];
+    }
+
+  return nil;
+}
+
+//
+// <!DOCTYPE ActiveSync PUBLIC "-//MICROSOFT//DTD ActiveSync//EN" "http://www.microsoft.com/">
+// <Search xmlns="Search:">
+//  <Store>
+//   <Name>Mailbox</Name>
+//   <Query>
+//    <And>
+//     <CollectionId xmlns="AirSync:">mail%2Fsogo_7f53_1c63c93c_1</CollectionId>
+//     <FreeText>aaa;bbb;09/12/2016-09/19/2016;ccc;ddd;</FreeText>
+//     <GreaterThan>
+//      <DateReceived xmlns="Email:"/>
+//      <Value>2015-09-19T04:00:00.000Z</Value>
+//     </GreaterThan>
+//     <LessThan>
+//      <DateReceived xmlns="Email:"/>
+//      <Value>2016-09-19T14:26:00.000Z</Value>
+//     </LessThan>
+//    </And>
+//   </Query>
+//   <Options>
+//    <RebuildResults/>
+//    <Range>0-99</Range>
+//    <BodyPreference xmlns="AirSyncBase:">
+//     <Type>1</Type>
+//     <TruncationSize>51200</TruncationSize>
+//    </BodyPreference>
+//    <MIMESupport xmlns="AirSync:">2</MIMESupport>
+//    <RightsManagementSupport xmlns="RightsManagement:">1</RightsManagementSupport>
+//   </Options>
+//  </Store>
+// </Search>
+//
+- (void) processSearchMailbox: (id <DOMElement>) theDocumentElement
+		   inResponse: (WOResponse *) theResponse
+{
+  NSString *folderId, *realCollectionId, *itemId;
+  NSMutableArray *folderIdentifiers;
+  SOGoMailAccounts *accountsFolder;
+  SOGoMailAccount *accountFolder;
+  SOGoMailFolder *currentFolder;
+  SOGoMailObject *mailObject;
+  SOGoUserFolder *userFolder;
+  EOQualifier *qualifier;
+  NSArray *sortedUIDs;
+  NSMutableString *s;
+  NSData *d;
+
+  SOGoMicrosoftActiveSyncFolderType folderType;
+  int i, j, total;
+
+  // We build the qualifier and we launch our search operation
+  qualifier = [self _qualifierFromMailboxSearchQuery: [(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject]];
+
+  if (!qualifier)
+    {
+      [theResponse setStatus: 500];
+      return;
+    }
+
+  // FIXME: support more than one CollectionId tag + DeepTraversal
+  folderId = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject] getElementsByTagName: @"CollectionId"] lastObject] textValue];
+  folderIdentifiers = [NSMutableArray array];
+
+  // Android 6 will send search requests with no collection ID - so we search in all folders.
+  if (!folderId)
+    {
+      NSArray *foldersInCache;
+      SOGoCacheGCSObject *o;
+      NSString *prefix;
+
+      o = [SOGoCacheGCSObject objectWithName: @"0" inContainer: nil];
+      [o setObjectType: ActiveSyncFolderCacheObject];
+      [o setTableUrl: folderTableURL];
+
+      foldersInCache = [o cacheEntriesForDeviceId: [context objectForKey: @"DeviceId"] newerThanVersion: -1];
+      prefix = [NSString stringWithFormat: @"/%@+folder", [context objectForKey: @"DeviceId"]];
+
+      for (i = 0; i < [foldersInCache count]; i++)
+	{
+	  folderId = [foldersInCache objectAtIndex: i];
+	  if ([folderId hasPrefix: prefix])
+	    {
+	      folderId = [NSString stringWithFormat: @"mail/%@", [folderId substringFromIndex: [prefix length]]];
+	      [folderIdentifiers addObject: folderId];
+	    }
+	}
+    }
+  else
+    {
+      [folderIdentifiers addObject: folderId];
+    }
+
+  userFolder = [[context activeUser] homeFolderInContext: context];
+  accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
+  accountFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
+
+  // Prepare the response
+  s = [NSMutableString string];
+  [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+  [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+  [s appendString: @"<Search xmlns=\"Search:\">"];
+  [s appendFormat: @"<Status>1</Status>"];
+  [s appendFormat: @"<Response>"];
+  [s appendFormat: @"<Store>"];
+  [s appendFormat: @"<Status>1</Status>"];
+
+  for (i = 0; i < [folderIdentifiers count]; i++)
+    {
+      folderId = [folderIdentifiers objectAtIndex: i];
+      realCollectionId = [folderId realCollectionIdWithFolderType: &folderType];
+      realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
+
+      currentFolder = [accountFolder lookupName: [NSString stringWithFormat: @"folder%@", realCollectionId]
+				      inContext: context
+					acquire: NO];
+
+      sortedUIDs = [currentFolder fetchUIDsMatchingQualifier: qualifier
+						sortOrdering: @"REVERSE ARRIVAL"
+						    threaded: NO];
+      total = [sortedUIDs count];
+      for (j = 0; j < total; j++)
+	{
+	  itemId = [[sortedUIDs objectAtIndex: j] stringValue];
+	  mailObject = [currentFolder lookupName: itemId  inContext: context  acquire: NO];
+
+	  if ([mailObject isKindOfClass: [NSException class]])
+	    continue;
+
+	  [s appendString: @"<Result xmlns=\"Search:\">"];
+	  [s appendFormat: @"<LongId>%@+%@</LongId>", folderId, itemId];
+	  [s appendFormat: @"<CollectionId xmlns=\"AirSyncBase:\">%@</CollectionId>", folderId];
+	  [s appendString: @"<Properties>"];
+	  [s appendFormat: [mailObject activeSyncRepresentationInContext: context]];
+	  [s appendString: @"</Properties>"];
+	  [s appendFormat: @"</Result>"];
+	}
+    }
+
+  [s appendFormat: @"<Range>0-%d</Range>",(total ? total-1 : 0)];
+  [s appendFormat: @"<Total>%d</Total>", total];
+  [s appendString: @"</Store>"];
+  [s appendString: @"</Response>"];
+  [s appendString: @"</Search>"];
+
+  d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+
+  [theResponse setContent: d];
+}
+
+//
+// We support EAS Search on the GAL and Mailbox.
+//
+// We do NOT support it on the DocumentLibrary.
+//
+- (void) processSearch: (id <DOMElement>) theDocumentElement
+            inResponse: (WOResponse *) theResponse
+{
+  NSString *name;
+
+  name = [[(id)[theDocumentElement getElementsByTagName: @"Name"] lastObject] textValue];
+
+  if ([name isEqualToString: @"GAL"])
+    {
+      return [self processSearchGAL: theDocumentElement
+			 inResponse: theResponse];
+    }
+  else if ([name isEqualToString: @"Mailbox"])
+    {
+      return [self processSearchMailbox: theDocumentElement
+			     inResponse: theResponse];
+    }
+
+  [theResponse setStatus: 500];
+  return;
 }
 
 //
@@ -2892,6 +3167,28 @@ void handle_eas_terminate(int signum)
 }
 
 //
+// See https://msdn.microsoft.com/en-us/library/ee218647(v=exchg.80).aspx
+// for valid status codes.
+//
+- (NSData *) _sendMailErrorResponseWithStatus: (int) status
+{
+  NSMutableString *s;
+  NSData *d;
+
+  s = [NSMutableString string];
+
+  [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+  [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+  [s appendString: @"<SendMail xmlns=\"ComposeMail:\">"];
+  [s appendFormat: @"<Status>%d</Status>", status];
+  [s appendString: @"</SendMail>"];
+
+  d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+
+  return d;
+}
+
+//
 //
 //
 - (void) processSendMail: (id <DOMElement>) theDocumentElement
@@ -2904,6 +3201,7 @@ void handle_eas_terminate(int signum)
   NSData *new_from_header;
   NSDictionary *identity;
   NSString *fullName, *email;
+  NGMimeType *contentType;
   NSArray *from;
 
   const char *bytes;
@@ -2918,6 +3216,40 @@ void handle_eas_terminate(int signum)
   parser = [[NGMimeMessageParser alloc] init];
   message = [parser parsePartFromData: data];
   RELEASE(parser);
+
+  // If an EAS client is trying to send an invitation email (request or response), we make sure to
+  // remove all attendees that have NO email addresses. Outlook 2016 (and likely other EAS clients)
+  // do that when sending IMIP only to "newly added or deleted attendees" - existing attendees have
+  // their email addresses stripped, while keeping the display name value.
+  contentType = [message contentType];
+
+  if ([contentType isKindOfClass: [NGConcreteTextMimeType class]] &&
+      [[[message contentType] subType] caseInsensitiveCompare: @"calendar"] == NSOrderedSame &&
+      ([[(NGConcreteTextMimeType *)[message contentType] method] caseInsensitiveCompare: @"request"] == NSOrderedSame ||
+       [[(NGConcreteTextMimeType *)[message contentType] method] caseInsensitiveCompare: @"reply"] == NSOrderedSame))
+    {
+      NGMimeMessageGenerator *generator;
+      iCalCalendar *calendar;
+      iCalPerson *attendee;
+      NSArray *attendees;
+      iCalEvent *event;
+
+      calendar = [iCalCalendar parseSingleFromSource: [message body]];
+      event = [[calendar events] lastObject];
+      attendees = [event attendees];
+
+      for (i = [attendees count]-1; i >= 0; i--)
+	{
+	  attendee = [attendees objectAtIndex: i];
+	  if (![attendee rfc822Email] || [[attendee rfc822Email] caseInsensitiveCompare: @"nomail"] == NSOrderedSame)
+	    [event removeFromAttendees: attendee];
+	}
+
+      // We regenerate the data to use
+      [message setBody: [[calendar versitString] dataUsingEncoding: NSUTF8StringEncoding]];
+      generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
+      data = [NSMutableData dataWithData: [generator generateMimeFromPart: message]];
+    }
 
   from = [message headersForKey: @"from"];
 
@@ -3018,8 +3350,15 @@ void handle_eas_terminate(int signum)
 
   if (error)
     {
-      [theResponse setStatus: 500];
-      [theResponse appendContentString: @"FATAL ERROR occured during SendMail"];
+      if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 14.0)
+        {
+	  [theResponse setContent: [self _sendMailErrorResponseWithStatus: 120]];
+        }
+      else
+        {
+          [theResponse setStatus: 500];
+          [theResponse appendContentString: @"FATAL ERROR occured during SendMail"];
+        }
     }
 }
 
@@ -3202,10 +3541,14 @@ void handle_eas_terminate(int signum)
 {
   NSString *folderId, *itemId, *realCollectionId;
   SOGoMicrosoftActiveSyncFolderType folderType;
+  SOGoMailAccounts *accountsFolder;
+  SOGoMailFolder *currentFolder;
+  SOGoUserFolder *userFolder;
+  SOGoMailObject *mailObject;
   SOGoUserDefaults *ud;
 
   BOOL htmlComposition, isHTML;
-  id value;
+  id value, currentCollection;
   
   isHTML = NO;
   ud = [[context activeUser] userDefaults];
@@ -3231,23 +3574,31 @@ void handle_eas_terminate(int signum)
 
   value = [theDocumentElement getElementsByTagName: @"ReplaceMime"];
 
+  // We fetch the mail object from the server
+  userFolder = [[context activeUser] homeFolderInContext: context];
+  accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
+  currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
+
+  currentCollection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", realCollectionId]
+				      inContext: context
+					acquire: NO];
+
+  mailObject = [currentCollection lookupName: itemId  inContext: context  acquire: NO];
+
   // ReplaceMime IS specified so we must NOT use the server copy
   // but rather take the data as-is from the client.
   if ([value count])
     {
-      [self processSendMail: theDocumentElement
-                 inResponse: theResponse];
+      [self processSendMail: theDocumentElement  inResponse: theResponse];
+      if (!isSmartForward)
+	[mailObject addFlags: @"Answered"];
+      else
+	[mailObject addFlags: @"$Forwarded"];
       return;
     }
   
   if (folderType == ActiveSyncMailFolder)
     {
-      SOGoMailAccounts *accountsFolder;
-      SOGoMailFolder *currentFolder;
-      SOGoUserFolder *userFolder;
-      SOGoMailObject *mailObject;
-      id currentCollection;
-
       NGMimeMessage *messageFromSmartForward, *messageToSend;
       NGMimeMessageParser *parser;
       NSData *data;
@@ -3265,16 +3616,6 @@ void handle_eas_terminate(int signum)
       NSDictionary *identity;
 
       int a;
-
-      userFolder = [[context activeUser] homeFolderInContext: context];
-      accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
-      currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
-      
-      currentCollection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", realCollectionId]
-                                          inContext: context
-                                            acquire: NO];
-
-      mailObject = [currentCollection lookupName: itemId  inContext: context  acquire: NO];
 
       parser = [[NGMimeMessageParser alloc] init];
       data = [[[[(id)[theDocumentElement getElementsByTagName: @"MIME"] lastObject] textValue] stringByDecodingBase64] dataUsingEncoding: NSUTF8StringEncoding];
@@ -3526,8 +3867,28 @@ void handle_eas_terminate(int signum)
       
       if (error)
         {
-          [theResponse setStatus: 500];
-          [theResponse appendContentString: @"FATAL ERROR occured during SmartForward"];
+          if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 14.0)
+            {
+              NSMutableString *s;
+              NSData *d;
+
+              s = [NSMutableString string];
+
+              [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+              [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+              [s appendFormat: @"<%@ xmlns=\"ComposeMail:\">", (isSmartForward) ? @"SmartForward" : @"SmartReply"];
+              [s appendString: @"<Status>120</Status>"];
+              [s appendFormat: @"</%@>", (isSmartForward) ? @"SmartForward" : @"SmartReply"];
+
+              d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+
+              [theResponse setContent: d];
+            }
+          else
+            {
+              [theResponse setStatus: 500];
+              [theResponse appendContentString: @"FATAL ERROR occured during SmartForward"];
+            }
         }
       else if (!isSmartForward)
         {
@@ -3621,6 +3982,14 @@ void handle_eas_terminate(int signum)
 
   // Get the device ID, device type and "stash" them
   deviceId = [[theRequest uri] deviceId];
+
+  if ([deviceId isEqualToString: @"Unknown"])
+    {
+      [(WOResponse *)theResponse setStatus: 500];
+      [self logWithFormat: @"EAS - No device id provided, ignoring request."];
+      return nil;
+    }
+
   [context setObject: deviceId  forKey: @"DeviceId"];
   [context setObject: [[theRequest uri] deviceType]  forKey: @"DeviceType"];
   [context setObject: [[theRequest uri] attachmentName]  forKey: @"AttachmentName"];
@@ -3677,23 +4046,32 @@ void handle_eas_terminate(int signum)
         }
       
       xml = [NSString stringWithFormat: @"<?xml version=\"1.0\"?><!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\"><%@ xmlns=\"ComposeMail:\"><SaveInSentItems/><MIME>%@</MIME></%@>", cmdName, [s stringByEncodingBase64], cmdName];
-
-
-      
       d = [xml dataUsingEncoding: NSASCIIStringEncoding];
     }
   else
     {
-      d = [[theRequest content] wbxml2xml];
+      // Handle empty Ping request, no need to try decoding the WBXML blob here
+      if ([[theRequest content] length])
+	d = [[theRequest content] wbxml2xml];
+      else
+	d = nil;
     }
   
   documentElement = nil;
 
   if (!d)
     {
+      // If we got no data in the SendMail request, that means SOPE rejected it because of the WOMaxUploadSize.
+      // We generate here the proper failed response for SendMail
+      if ([cmdName caseInsensitiveCompare: @"SendMail"] == NSOrderedSame)
+	{
+	  [theResponse setHeader: @"application/vnd.ms-sync.wbxml"  forKey: @"Content-Type"];
+	  [theResponse setContent: [self _sendMailErrorResponseWithStatus: 122]];
+	  goto return_response;
+	}
       // We check if it's a Ping command with no body.
       // See http://msdn.microsoft.com/en-us/library/ee200913(v=exchg.80).aspx for details      
-      if ([cmdName caseInsensitiveCompare: @"Ping"] != NSOrderedSame && [cmdName caseInsensitiveCompare: @"GetAttachment"] != NSOrderedSame && [cmdName caseInsensitiveCompare: @"Sync"] != NSOrderedSame)
+      else if ([cmdName caseInsensitiveCompare: @"Ping"] != NSOrderedSame && [cmdName caseInsensitiveCompare: @"GetAttachment"] != NSOrderedSame && [cmdName caseInsensitiveCompare: @"Sync"] != NSOrderedSame)
         {
           RELEASE(context);
           RELEASE(pool);
@@ -3731,11 +4109,12 @@ void handle_eas_terminate(int signum)
 
   [self performSelector: aSelector  withObject: documentElement  withObject: theResponse];
 
+ return_response:
   [theResponse setHeader: @"14.1"  forKey: @"MS-Server-ActiveSync"];
   [theResponse setHeader: @"Sync,SendMail,SmartForward,SmartReply,GetAttachment,GetHierarchy,CreateCollection,DeleteCollection,MoveCollection,FolderSync,FolderCreate,FolderDelete,FolderUpdate,MoveItems,GetItemEstimate,MeetingResponse,Search,Settings,Ping,ItemOperations,ResolveRecipients,ValidateCert"  forKey: @"MS-ASProtocolCommands"];
   [theResponse setHeader: @"2.5,12.0,12.1,14.0,14.1"  forKey: @"MS-ASProtocolVersions"];
 
-  if (debugOn && [[theResponse headerForKey: @"Content-Type"] isEqualToString:@"application/vnd.ms-sync.wbxml"] && [[theResponse content] length])
+  if (debugOn && [[theResponse headerForKey: @"Content-Type"] isEqualToString:@"application/vnd.ms-sync.wbxml"] && [[theResponse content] length] && !([(WOResponse *)theResponse status] == 500))
     [self logWithFormat: @"EAS - response for device %@: %@", [context objectForKey: @"DeviceId"], [[[NSString alloc] initWithData: [[theResponse content] wbxml2xml] encoding: NSUTF8StringEncoding] autorelease]];
 
   RELEASE(context);

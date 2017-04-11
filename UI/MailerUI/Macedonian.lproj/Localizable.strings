@@ -77,7 +77,7 @@
 "List and see this folder" = "Излистај и погледни ја оваа папка";
 "Read mails from this folder" = "Читај ги пораките од оваа папка";
 "Mark mails read and unread" = "Означи ги пораките како прочитани и непрочитани";
-"Modify the flags of the mails in this folder" = "Промени ги знаменцата на пораките во оваа папка";
+"Modify the flags of the mails in this folder" = "Промени ги ознаките на пораките во оваа папка";
 "Insert, copy and move mails into this folder" = "Внеси, копирај и префрли пораки во оваа папка";
 "Post mails" = "Испрати пораки";
 "Add subfolders to this folder" = "Додади под папка во оваа папка";
@@ -242,7 +242,7 @@
 "Thread As Read" = "Преписката како прочитана";
 "As Read By Date..." = "Прочитано по датум...";
 "All Read" = "Сето прочитано";
-"Flag" = "Знаменце";
+"Flag" = "Ознака";
 "As Junk" = "Како отпад";
 "As Not Junk" = "Не е отпад";
 "Run Junk Mail Controls" = "Изврши ги контролите за отпад";
@@ -267,9 +267,20 @@
 "Operation failed" = "Неуспешна операција";
 "Quota" = "Квота:";
 "quotasFormat" = "%{0}% used on %{1} MB";
+"Unable to move/delete folder." = "Не е можно да ја префрлите/избришете папката.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Сандачето не може да биде преместено во кантата за ѓубре. Дали би сакале веднаш да го избришам?";
 
 /* Confirmation message when deleting multiple messages */
-"Are you sure you want to delete the selected messages?" = "Дали сте сигуни дека сакате да ги избришете селектираните пораки?";
+"Are you sure you want to delete the selected messages?" = "Дали сте сигурни дека сакате да ги избришете селектираните пораки?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} порака(и) се ископирани";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} порака(и) се префрлени";
 
 "Please select a message." = "Одберете порака.";
 "Please select a message to print." = "Одберете ја пораката што ќе се печати.";
@@ -305,7 +316,12 @@
 "Error while uploading the file \"%{0}\":" = "Грешка при прикажување на фајл \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Во тек е активно прикачување на фајл. Затварањето на прозорецот ќе го прекине прикачувањето.";
 
-/* Message sending */
+/* Appears while sending the message */
+"Sending" = "Испраќам";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Испратени";
+
 "cannot send message: (smtp) all recipients discarded" = "Не моѓам да ја пратам пораката: сите приматели се невалидни.";
 "cannot send message (smtp) - recipients discarded" = "Не можам да ја испратам пораката. Следните адреси се невалидни";
 "cannot send message: (smtp) error when connecting" = "Не можам да ја испртам пораката: грешка при поврзувањето со SMPT серверот.";
@@ -332,11 +348,13 @@
 "Set as Junk" = "Постави како отпад";
 
 "Sort" = "Сортирај";
+"Order Received" = "Редослед на примени";
 "Descending Order" = "Опаѓачки редослед";
 "Back" = "Назад";
 "Copy messages" = "Копирај ја пораката";
 "More messages options" = "Повеќе опции за пораките";
 "Mark as Unread" = "Означи како непрочитана";
+"Mark as Read" = "Означи како прочитано";
 "Closing Window ..." = "Затварање на прозорците ...";
 "Tried to send too many mails. Please wait." = "Се обидов да пратам премногу пораки. Ве молам почекајте.";
 "View Mail" = "Види пошта";
@@ -350,3 +368,27 @@
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Предмет на пребарување";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Уреди ја претплатата";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Филтер";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "ј";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

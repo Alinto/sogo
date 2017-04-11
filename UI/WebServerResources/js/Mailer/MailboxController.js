@@ -6,20 +6,21 @@
   /**
    * @ngInject
    */
-  MailboxController.$inject = ['$window', '$timeout', '$q', '$state', '$mdDialog', '$mdToast', 'stateAccounts', 'stateAccount', 'stateMailbox', 'encodeUriFilter', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
-  function MailboxController($window, $timeout, $q, $state, $mdDialog, $mdToast, stateAccounts, stateAccount, stateMailbox, encodeUriFilter, focus, Dialog, Account, Mailbox) {
-    var vm = this, messageDialog = null;
+  MailboxController.$inject = ['$window', '$scope', '$timeout', '$q', '$state', '$mdDialog', '$mdToast', 'stateAccounts', 'stateAccount', 'stateMailbox', 'sgHotkeys', 'encodeUriFilter', 'sgSettings', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
+  function MailboxController($window, $scope, $timeout, $q, $state, $mdDialog, $mdToast, stateAccounts, stateAccount, stateMailbox, sgHotkeys, encodeUriFilter, sgSettings, focus, Dialog, Account, Mailbox) {
+    var vm = this,
+        defaultWindowTitle = angular.element($window.document).find('title').attr('sg-default') || "SOGo",
+        hotkeys = [];
 
-    // Expose controller
+    // Expose controller for eventual popup windows
     $window.$mailboxController = vm;
-
-    stateMailbox.selectFolder();
 
     vm.service = Mailbox;
     vm.accounts = stateAccounts;
     vm.account = stateAccount;
     vm.selectedFolder = stateMailbox;
     vm.selectMessage = selectMessage;
+    vm.messageDialog = null; // also access from Message controller
     vm.toggleMessageSelection = toggleMessageSelection;
     vm.sort = sort;
     vm.sortedBy = sortedBy;
@@ -33,8 +34,103 @@
     vm.moveSelectedMessages = moveSelectedMessages;
     vm.markSelectedMessagesAsFlagged = markSelectedMessagesAsFlagged;
     vm.markSelectedMessagesAsUnread = markSelectedMessagesAsUnread;
+    vm.markSelectedMessagesAsRead = markSelectedMessagesAsRead;
     vm.selectAll = selectAll;
     vm.unselectMessages = unselectMessages;
+
+
+    stateMailbox.selectFolder();
+
+    _registerHotkeys(hotkeys);
+
+    // Expunge mailbox when leaving the Mail module
+    angular.element($window).on('beforeunload', _compactBeforeUnload);
+    $scope.$on('$destroy', function() {
+      angular.element($window).off('beforeunload', _compactBeforeUnload);
+      // Deregister hotkeys
+      _.forEach(hotkeys, function(key) {
+        sgHotkeys.deregisterHotkey(key);
+      });
+    });
+
+    // Update window's title with unseen messages count of selected mailbox
+    $scope.$watch(function() { return vm.selectedFolder.unseenCount; }, function(unseenCount) {
+      var title = defaultWindowTitle + ' - ';
+      if (unseenCount)
+        title += '(' + unseenCount + ') ';
+      title += vm.selectedFolder.$displayName;
+      $window.document.title = title;
+    });
+
+
+    function _registerHotkeys(keys) {
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_search'),
+        description: l('Search'),
+        callback: searchMode
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_compose'),
+        description: l('Write a new message'),
+        callback: function($event) {
+          if (vm.messageDialog === null)
+            newMessage($event);
+        }
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_junk'),
+        description: l('Mark the selected messages as junk'),
+        callback: markOrUnMarkMessagesAsJunk
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: 'space',
+        description: l('Toggle item'),
+        callback: toggleMessageSelection
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: 'shift+space',
+        description: l('Toggle range of items'),
+        callback: toggleMessageSelection
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: 'up',
+        description: l('View next item'),
+        callback: _nextMessage,
+        preventInClass: ['sg-mail-part']
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: 'down',
+        description: l('View previous item'),
+        callback: _previousMessage,
+        preventInClass: ['sg-mail-part']
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: 'shift+up',
+        description: l('Add next item to selection'),
+        callback: _addNextMessageToSelection,
+        preventInClass: ['sg-mail-part']
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: 'shift+down',
+        description: l('Add previous item to selection'),
+        callback: _addPreviousMessageToSelection,
+        preventInClass: ['sg-mail-part']
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: 'backspace',
+        description: l('Delete selected message or folder'),
+        callback: confirmDeleteSelectedMessages
+      }));
+
+      // Register the hotkeys
+      _.forEach(keys, function(key) {
+        sgHotkeys.registerHotkey(key);
+      });
+    }
+
+    function _compactBeforeUnload(event) {
+      return vm.selectedFolder.$compact();
+    }
 
     function sort(field) {
       vm.selectedFolder.$filter({ sort: field });
@@ -60,29 +156,126 @@
       });
     }
 
-    function newMessage($event) {
+    function newMessage($event, inPopup) {
       var message;
 
-      if (messageDialog === null) {
-        message = vm.account.$newMessage();
-        messageDialog = $mdDialog
-          .show({
-            parent: angular.element(document.body),
-            targetEvent: $event,
-            clickOutsideToClose: false,
-            escapeToClose: false,
-            templateUrl: 'UIxMailEditor',
-            controller: 'MessageEditorController',
-            controllerAs: 'editor',
-            locals: {
-              stateAccount: vm.account,
-              stateMessage: message,
-              stateRecipients: []
-            }
-          })
-          .finally(function() {
-            messageDialog = null;
-          });
+      if (vm.messageDialog === null) {
+        if (inPopup)
+          _newMessageInPopup();
+        else {
+          message = vm.account.$newMessage();
+          vm.messageDialog = $mdDialog
+            .show({
+              parent: angular.element(document.body),
+              targetEvent: $event,
+              clickOutsideToClose: false,
+              escapeToClose: false,
+              templateUrl: 'UIxMailEditor',
+              controller: 'MessageEditorController',
+              controllerAs: 'editor',
+              locals: {
+                stateAccount: vm.account,
+                stateMessage: message
+              }
+            })
+            .finally(function() {
+              vm.messageDialog = null;
+            });
+        }
+      }
+    }
+
+    function _newMessageInPopup() {
+      var url = [sgSettings.baseURL(),
+                 'UIxMailPopupView#!/Mail',
+                 vm.account.id,
+                 // The double-encoding is necessary
+                 encodeUriFilter(encodeUriFilter(vm.selectedFolder.path)),
+                 'new']
+          .join('/'),
+          wId = vm.selectedFolder.$id() + '/' + Math.random(0, 1000);
+      console.debug(url);
+      $window.open(url, wId,
+                   ["width=680",
+                    "height=520",
+                    "resizable=1",
+                    "scrollbars=1",
+                    "toolbar=0",
+                    "location=0",
+                    "directories=0",
+                    "status=0",
+                    "menubar=0",
+                    "copyhistory=0"]
+                   .join(','));
+    }
+
+    /**
+     * User has pressed up arrow key
+     */
+    function _nextMessage($event) {
+      var index = vm.selectedFolder.$selectedMessageIndex();
+
+      if (angular.isDefined(index)) {
+        index--;
+        if (vm.selectedFolder.$topIndex > 0)
+          vm.selectedFolder.$topIndex--;
+      }
+      else {
+        // No message is selected, show oldest message
+        index = vm.selectedFolder.getLength() - 1;
+        vm.selectedFolder.$topIndex = vm.selectedFolder.getLength();
+      }
+
+      if (index > -1)
+        selectMessage(vm.selectedFolder.$messages[index]);
+
+      $event.preventDefault();
+
+      return index;
+    }
+
+    /**
+     * User has pressed the down arrow key
+     */
+    function _previousMessage($event) {
+      var index = vm.selectedFolder.$selectedMessageIndex();
+
+      if (angular.isDefined(index)) {
+        index++;
+        if (vm.selectedFolder.$topIndex < vm.selectedFolder.getLength())
+          vm.selectedFolder.$topIndex++;
+      }
+      else
+        // No message is selected, show newest
+        index = 0;
+
+      if (index < vm.selectedFolder.getLength())
+        selectMessage(vm.selectedFolder.$messages[index]);
+      else
+        index = -1;
+
+      $event.preventDefault();
+
+      return index;
+    }
+
+    function _addNextMessageToSelection($event) {
+      var index;
+
+      if (vm.selectedFolder.hasSelectedMessage()) {
+        index = _nextMessage($event);
+        if (index >= 0)
+          toggleMessageSelection($event, vm.selectedFolder.$messages[index]);
+      }
+    }
+
+    function _addPreviousMessageToSelection($event) {
+      var index;
+
+      if (vm.selectedFolder.hasSelectedMessage()) {
+        index = _previousMessage($event);
+        if (index >= 0)
+          toggleMessageSelection($event, vm.selectedFolder.$messages[index]);
       }
     }
 
@@ -94,8 +287,37 @@
     }
 
     function toggleMessageSelection($event, message) {
+      var folder = vm.selectedFolder,
+          selectedIndex, nextSelectedIndex, i;
+
+      if (!message)
+        message = folder.$selectedMessage();
       message.selected = !message.selected;
       vm.mode.multiple += message.selected? 1 : -1;
+
+      // Select closest range of messages when shift key is pressed
+      if ($event.shiftKey && folder.$selectedCount() > 1) {
+        selectedIndex = folder.uidsMap[message.uid];
+        // Search for next selected message above
+        nextSelectedIndex = selectedIndex - 2;
+        while (nextSelectedIndex >= 0 &&
+               !folder.$messages[nextSelectedIndex].selected)
+          nextSelectedIndex--;
+        if (nextSelectedIndex < 0) {
+          // Search for next selected message bellow
+          nextSelectedIndex = selectedIndex + 2;
+          while (nextSelectedIndex < folder.getLength() &&
+                 !folder.$messages[nextSelectedIndex].selected)
+            nextSelectedIndex++;
+        }
+        if (nextSelectedIndex >= 0 && nextSelectedIndex < folder.getLength()) {
+          for (i = Math.min(selectedIndex, nextSelectedIndex);
+               i <= Math.max(selectedIndex, nextSelectedIndex);
+               i++)
+            folder.$messages[i].selected = true;
+        }
+      }
+
       $event.preventDefault();
       $event.stopPropagation();
     }
@@ -111,9 +333,9 @@
         return [vm.selectedFolder];
     }
 
+    // Unselect current message and cleverly load the next message.
+    // This function must not be called in virtual mode.
     function _unselectMessage(message, index) {
-      // Unselect current message and cleverly load the next message.
-      // This function must not be called in virtual mode.
       var nextMessage, previousMessage, nextIndex = index;
       vm.mode.multiple = vm.selectedFolder.$selectedCount();
       if (message) {
@@ -150,32 +372,58 @@
       }
     }
 
-    function confirmDeleteSelectedMessages() {
-      Dialog.confirm(l('Warning'),
-                     l('Are you sure you want to delete the selected messages?'),
-                     { ok: l('Delete') })
+    function confirmDeleteSelectedMessages($event) {
+      var selectedMessages = vm.selectedFolder.$selectedMessages();
+
+      if (vm.messageDialog === null && _.size(selectedMessages) > 0)
+        vm.messageDialog = Dialog.confirm(l('Confirmation'),
+                                       l('Are you sure you want to delete the selected messages?'),
+                                       { ok: l('Delete') })
         .then(function() {
           var deleteSelectedMessage = vm.selectedFolder.hasSelectedMessage();
-          var selectedMessages = vm.selectedFolder.$selectedMessages();
-          if (_.size(selectedMessages) > 0)
-            vm.selectedFolder.$deleteMessages(selectedMessages).then(function(index) {
-              if (Mailbox.$virtualMode) {
-                // When performing an advanced search, we refresh the view if the selected message
-                // was deleted, but only once all promises have completed.
-                if (deleteSelectedMessage)
-                  $state.go('mail.account.virtualMailbox');
-              }
-              else {
-                // In normal mode, we immediately unselect the selected message.
-                _unselectMessage(deleteSelectedMessage, index);
-              }
-            });
+          vm.selectedFolder.$deleteMessages(selectedMessages).then(function(index) {
+            if (Mailbox.$virtualMode) {
+              // When performing an advanced search, we refresh the view if the selected message
+              // was deleted, but only once all promises have completed.
+              if (deleteSelectedMessage)
+                $state.go('mail.account.virtualMailbox');
+            }
+            else {
+              // In normal mode, we immediately unselect the selected message.
+              _unselectMessage(deleteSelectedMessage, index);
+            }
+          }, function(response) {
+            vm.messageDialog = Dialog.confirm(l('Warning'),
+                                           l('The messages could not be moved to the trash folder. Would you like to delete them immediately?'),
+                                           { ok: l('Delete') })
+              .then(function() {
+                vm.selectedFolder.$deleteMessages(selectedMessages, { withoutTrash: true }).then(function(index) {
+                  if (Mailbox.$virtualMode) {
+                    // When performing an advanced search, we refresh the view if the selected message
+                    // was deleted, but only once all promises have completed.
+                    if (deleteSelectedMessage)
+                      $state.go('mail.account.virtualMailbox');
+                  }
+                  else {
+                    // In normal mode, we immediately unselect the selected message.
+                    _unselectMessage(deleteSelectedMessage, index);
+                  }
+                });
+              });
+          });
+        })
+        .finally(function() {
+          vm.messageDialog = null;
         });
+
+      $event.preventDefault();
     }
 
     function markOrUnMarkMessagesAsJunk() {
       var moveSelectedMessage = vm.selectedFolder.hasSelectedMessage();
       var selectedMessages = vm.selectedFolder.$selectedMessages();
+      if (_.size(selectedMessages) === 0 && moveSelectedMessage)
+        selectedMessages = [vm.selectedFolder.$selectedMessage()];
       if (_.size(selectedMessages) > 0)
         vm.selectedFolder.$markOrUnMarkMessagesAsJunk(selectedMessages).then(function() {
           var dstFolder = '/' + vm.account.id + '/folderINBOX';
@@ -265,13 +513,28 @@
 
     function markSelectedMessagesAsUnread() {
       var selectedMessages = vm.selectedFolder.$selectedMessages();
-      if (_.size(selectedMessages) > 0)
+      if (_.size(selectedMessages) > 0) {
         vm.selectedFolder.$flagMessages(selectedMessages, 'seen', 'remove').then(function(messages) {
           _.forEach(messages, function(message) {
+            if (message.isread)
+              message.$mailbox.unseenCount++;
             message.isread = false;
-            message.$mailbox.unseenCount++;
           });
         });
+      }
+    }
+
+    function markSelectedMessagesAsRead() {
+      var selectedMessages = vm.selectedFolder.$selectedMessages();
+      if (_.size(selectedMessages) > 0) {
+        vm.selectedFolder.$flagMessages(selectedMessages, 'seen', 'add').then(function(messages) {
+          _.forEach(messages, function(message) {
+            if (!message.isread)
+              message.$mailbox.unseenCount--;
+            message.isread = true;
+          });
+        });
+      }
     }
 
   }

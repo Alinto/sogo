@@ -20,12 +20,15 @@
 
 
 #import <NGObjWeb/NSException+HTTP.h>
-#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
 
 #import <SoObjects/SOGo/SOGoParentFolder.h>
+#import <SoObjects/SOGo/SOGoUser.h>
+#import <SoObjects/SOGo/SOGoUserSettings.h>
 
+#import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 
@@ -90,5 +93,50 @@
 
   return response;
 }
+
+- (WOResponse *) saveFoldersActivationAction
+{
+  NSDictionary *params;
+  NSEnumerator *foldersEnumerator;
+  NSMutableArray *folderSubscription;
+  NSMutableDictionary *moduleSettings;
+  NSString *baseFolder, *folderName;
+  SOGoParentFolder *clientObject;
+  SOGoUser *activeUser;
+  SOGoUserSettings *us;
+  WORequest *request;
+  BOOL makeActive;
+
+  request = [context request];
+  params = [[request contentAsString] objectFromJSONString];
+  activeUser = [context activeUser];
+  clientObject = [self clientObject];
+  baseFolder = [clientObject nameInContainer];
+  us = [activeUser userSettings];
+  moduleSettings = [us objectForKey: baseFolder];
+  if (!moduleSettings)
+    moduleSettings = [NSMutableDictionary dictionary];
+  [us setObject: moduleSettings forKey: baseFolder];
+  folderSubscription = [moduleSettings objectForKey: @"InactiveFolders"];
+  if (!folderSubscription)
+    {
+      folderSubscription = [NSMutableArray array];
+      [moduleSettings setObject: folderSubscription forKey: @"InactiveFolders"];
+    }
+
+  foldersEnumerator = [params keyEnumerator];
+  while ((folderName = [foldersEnumerator nextObject]))
+    {
+      makeActive = [[params objectForKey: folderName] boolValue];
+      if (makeActive)
+        [folderSubscription removeObject: folderName];
+      else
+        [folderSubscription addObjectUniquely: folderName];
+    }
+  [us synchronize];
+
+  return [self responseWith204];
+}
+
 
 @end

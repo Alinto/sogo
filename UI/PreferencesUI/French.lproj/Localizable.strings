@@ -35,16 +35,16 @@
 "contacts_category_labels" = "Ami, Client, Collègue, Concurrent, Famille, Fournisseur, Partenaire d'affaire, Presse, VIP";
 
 /* vacation (auto-reply) */
-"Enable vacation auto reply" = "Activer message d'absence prolongée";
+"Enable vacation auto reply" = "Activer les réponses automatiques d'absence prolongée";
 "Enable custom auto reply subject" = "Activer un sujet personnalisé";
-"Auto reply subject" = "Sujet personnalisé";
-"You can write ${subject} to insert the original subject" = "Inscrivez ${subject} pour insérer le sujet original";
-"Auto reply message" = "Message de réponse automatique";
+"Auto reply subject" = "Modifier le sujet de la réponse automatique";
+"You can write ${subject} to insert the original subject" = "Inscrire ${subject} pour insérer le sujet original";
+"Auto reply message" = "Contenu de la réponse automatique";
 "Email addresses (separated by commas)" = "Adresses courriels (séparées par des virgules)";
 "Add default email addresses" = "Ajouter les adresses par défaut";
-"Days between responses" = "Nombre de jours entre réponses";
+"Days between responses" = "Nombre de jours entre les réponses d'absence";
 "Do not send responses to mailing lists" = "Ne pas envoyer les réponses aux listes de diffusion";
-"Enable auto reply on" = "Activer la réponse automatique le";
+"Enable auto reply on" = "Débuter la réponse automatique le";
 "Disable auto reply on" = "Désactiver la réponse automatique le";
 "Always send vacation message response" = "Toujours envoyer le message de vacances prolongées";
 "Please specify your message and your email addresses for which you want to enable auto reply."
@@ -146,6 +146,7 @@
 /* Mailer */
 "Labels" = "Étiquettes";
 "Label" = "Étiquette";
+"New label" = "Nouvelle étiquette";
 "Show subscribed mailboxes only" = "Afficher seulement les abonnements";
 "Synchronize only default mail folders (EAS)" = "Synchroniser uniquement les boîtes principales (EAS)";
 "Sort messages by threads" = "Grouper les discussions";
@@ -193,6 +194,7 @@
 "Please enter your signature below" = "Introduisez votre signature ci-dessous";
 "Please specify a valid sender address." = "Veuillez définir une adresse d'expédition valide.";
 "Please specify a valid reply-to address." = "Veuillez définir une adresse de retour valide.";
+"Specify a hostname other than the local host" = "Veuillez utiliser un nom d'hôte autre que l'hôte local";
 
 /* Additional Parameters */
 "Additional Parameters" = "Paramètres supplémentaires";
@@ -212,6 +214,7 @@
 /* Event+task categories */
 "Calendar Category" = "Catégorie de calendrier";
 "Add Calendar Category" = "Ajouter une catégorie";
+"New category" = "Nouvelle catégorie";
 "Remove Calendar Category" = "Supprimer une catégorie";
 "Contact Category" = "Catégorie de contact";
 "Add Contact Category" = "Ajouter une catégorie";
@@ -243,6 +246,7 @@
 "Finnish" = "Suomi";
 "French" = "Français";
 "German" = "Deutsch";
+"Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
@@ -254,6 +258,7 @@
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
+"Serbian" = "Српски";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
@@ -292,6 +297,9 @@
 "Connection error" = "Erreur de connexion";
 "Service temporarily unavailable" = "Service momentanément indisponible";
 
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Activer le filtre";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Nom du filtre";
 /* Button label */
@@ -313,11 +321,27 @@
 "Header" = "En-tête";
 "Body" = "Contenu";
 "Flag the message with" = "Marquer le message comme";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Drapeau";
+
 "Discard the message" = "Annuler le message";
 "File the message in" = "Placer le message dans";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Boîte";
+
 "Keep the message" = "Conserver le message";
 "Forward the message to" = "Faire suivre le message à";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "Email";
+
 "Send a reject message" = "Refuser le message avec ce texte";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Message";
+
 "Send a vacation message" = "Envoyer un message d'absence";
 "Stop processing filter rules" = "Cessez le filtrage";
 "is under" = "est sous";

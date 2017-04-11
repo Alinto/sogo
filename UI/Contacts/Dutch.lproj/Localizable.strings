@@ -41,20 +41,28 @@
 "Move To" = "Verplaatsen naar";
 "Copy To" = "Kopieren naar";
 "Add to" = "Toevoegen aan";
+
 /* Subheader of empty addressbook */
 "No contact" = "Geen contactpersoon";
+
 /* Subheader of system addressbook */
 "Start a search to browse this address book" = "Begin met zoeken om in adresboek te bladeren";
+
 /* Number of contacts in addressbook; string is prefixed by number */
 "contacts" = "contactpersonen";
+
 /* No contact matching search criteria */
 "No matching contact" = "Geen overeenkomstige contactpersonen";
+
 /* Number of contacts matching search criteria; string is prefixed by number */
 "matching contacts" = "overeenkomstige contactpersonen";
+
 /* Number of selected contacts in list */
 "selected" = "geselecteerd";
+
 /* Empty right pane */
 "No contact selected" = "Geen contactpersoon geselecteerd";
+
 /* Tooltips */
 "Create a new address book card" = "Nieuwe contactpersoon aanmaken";
 "Create a new list" = "Nieuwe lijst aanmaken";
@@ -95,9 +103,11 @@
 "Work" = "Werk";
 "Mobile" = "Mobiel";
 "Pager" = "Pieper";
+
 /* categories */
 "contacts_category_labels" = "Collega, Concurrent, Klant, Vriend, Familie, Zakenpartner, Leverancier, Pers, VIP";
 "New category" = "Niewe categorie";
+
 /* adresses */
 "Title" = "Titel";
 "Service" = "Service";
@@ -134,12 +144,14 @@
 = "U kunt een persoonlijk adresboek niet verwijderen, tevens is het afmelden hiervan niet mogelijk.";
 "Are you sure you want to delete the selected contacts?"
 = "Weet u zeker dat u de geselecteerde contactpersonen wilt verwijderen?";
+"Are you sure you want to delete the card of %{0}?" = "Weet u zeker dat u de kaart van %{0} wilt verwijderen?";
 "You cannot delete the card of \"%{0}\"."
 = "U kunt da kaart van \"%{0}\" niet verwijderen.";
 "You cannot subscribe to a folder that you own!"
 = "U kunt uzelf niet abonneren op uw eigen mappen!";
 "Unable to subscribe to that folder!"
 = "Abonneren op deze map mislukt!";
+
 /* acls */
 "Access rights to" = "Toegangsrechten voor";
 "For user" = "Voor gebruiker";
@@ -158,11 +170,15 @@
 "The selected contact has no email address."
 = "De geselecteerde contactpersoon heeft geen e-mailadres.";
 "Please select a contact." = "Selecteer een contactpersoon.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} kaart(en) gekopieerd";
+"%{0} card(s) moved" = "%{0} kaart(en) verplaatst";
 "SoAccessDeniedException" = "U kunt niet naar dit adresboek schrijven.";
-"Forbidden" = "U kunt niet naar dit adresboek schrijven.";
+"Forbidden" = "Toegang geweigerd";
 "Invalid Contact" = "De geselecteerde contactpersoon bestaat niet meer.";
 "Unknown Destination Folder" = "Het geselecteerde doeladresboek bestaat niet meer.";
+
 /* Lists */
 "List details" = "Toon details";
 "List name" = "Lijst-naam";
@@ -175,6 +191,8 @@
 "Export" = "Export";
 "Export Address Book..." = "Adresboek exporteren...";
 "View Raw Source" = "Bekijk broncode";
+
+/* Import */
 "Import Cards" = "Contactgegevens importeren";
 "Select a vCard or LDIF file." = "Selecteer een LDIF of vCard bestand.";
 "Upload" = "Upload";
@@ -184,6 +202,7 @@
 "No card was imported." = "Geen contactgegevens geïmporteerd.";
 "A total of %{0} cards were imported in the addressbook." = "Een totaal van %{0} kaarten werd in het adresboek geïmporteerd.";
 "Reload" = "Herladen";
+
 /* Properties window */
 "Address Book Name" = "Naam van het adresboek";
 "Links to this Address Book" = "Koppelingen naar dit adresboek";
@@ -231,3 +250,12 @@
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Zoekbereik";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Selecteer item";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

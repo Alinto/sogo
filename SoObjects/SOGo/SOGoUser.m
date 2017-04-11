@@ -626,15 +626,17 @@
     *encryption, *scheme, *action, *query, *customEmail, *defaultEmail, *sieveServer;
   NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts, *mailSettings;
   NSNumber *port;
-  NSMutableArray *identities;
-  NSArray *mails, *delegators, *delegates;
+  NSMutableArray *identities, *mails;
+  NSArray *delegators, *delegates;
   NSURL *url, *cUrl;
   unsigned int count, max, default_identity;
   NSInteger defaultPort;
+  NSUInteger index;
 
   [self userDefaults];
+  [self userSettings];
 
-  mailSettings = [[self userSettings] objectForKey: @"Mail"];
+  mailSettings = [_settings objectForKey: @"Mail"];
   mailAccount = [NSMutableDictionary new];
 
   // 1. login
@@ -712,7 +714,7 @@
   defaultEmail = [NSString stringWithFormat: @"%@@%@", [self loginInDomain], [self domain]];
   default_identity = 0;
   identities = [NSMutableArray new];
-  mails = [self allEmails];
+  mails = [NSMutableArray arrayWithArray: [self allEmails]];
   [mailAccount setObject: [mails objectAtIndex: 0] forKey: @"name"];
 
   replyTo = [_defaults mailReplyTo];
@@ -729,6 +731,17 @@
         {
           if ([customEmail length] == 0)
             customEmail = [mails objectAtIndex: 0];
+          else if ([fullName length] == 0)
+            {
+              // Custom email but default fullname; if the custom email is
+              // one of the user's emails, remove the duplicated entry
+              index = [mails indexOfObject: customEmail];
+              if (index != NSNotFound)
+                {
+                  [mails removeObjectAtIndex: index];
+                  max--;
+                }
+            }
 
           if ([fullName length] == 0)
             {
@@ -788,18 +801,43 @@
       delegators = [mailSettings objectForKey: @"DelegateFrom"];
       if (delegators)
         {
-          NSDictionary *delegatorAccount;
-          SOGoUser *delegator;
+          BOOL dirty;
+          NSDictionary *delegatorAccount, *delegatorSettings;
+          NSMutableArray *validDelegators;
+          NSString *delegatorLogin;
+          SOGoUser *delegatorUser;
 
+          dirty = NO;
+          validDelegators = [NSMutableArray array];
           max = [delegators count];
           for (count = 0; count < max; count++)
             {
-              delegator = [SOGoUser userWithLogin: [delegators objectAtIndex: count]];
-              if (delegator)
+              // 1. Verify if delegator is valid
+              delegatorLogin = [delegators objectAtIndex: count];
+              delegatorUser = [SOGoUser userWithLogin: delegatorLogin];
+              if (delegatorUser)
                 {
-                  delegatorAccount = [[delegator mailAccountsWithDelegatedIdentities: NO] objectAtIndex: 0];
-                  [identities addObjectsFromArray: [delegatorAccount objectForKey: @"identities"]];
+                  // 2. Verify if delegator still delegates to user
+                  delegatorSettings = [[delegatorUser userSettings] objectForKey: @"Mail"];
+                  delegates = [delegatorSettings objectForKey: @"DelegateTo"];
+                  if ([delegates containsObject: [self login]])
+                    {
+                      [validDelegators addObject: delegatorLogin];
+                      delegatorAccount = [[delegatorUser mailAccountsWithDelegatedIdentities: NO] objectAtIndex: 0];
+                      [identities addObjectsFromArray: [delegatorAccount objectForKey: @"identities"]];
+                    }
+                  else
+                    dirty = YES;
                 }
+              else
+                dirty = YES;
+            }
+
+          if (dirty)
+            {
+              [mailSettings setObject: validDelegators
+                               forKey: @"DelegateFrom"];
+              [_settings synchronize];
             }
         }
     }

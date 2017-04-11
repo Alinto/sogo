@@ -8,8 +8,25 @@ $sg-login-width: grid-step(5);
     margin: auto;
     overflow: hidden;
 
-    .sg-logo img {
-      width: grid-step(5);
+    .sg-logo {
+      // Center image
+      margin: auto;
+      img {
+        height: 100%;
+        width: grid-step(5);
+      }
+    }
+
+    // Overwrite Chrome autofill yellow background
+    // http://stackoverflow.com/questions/2781549/removing-input-background-colour-for-chrome-autocomplete
+    @-webkit-keyframes autofill {
+      to {
+        background: transparent;
+      }
+    }
+    input:-webkit-autofill {
+      -webkit-animation-name: autofill;
+      -webkit-animation-fill-mode: both;
     }
 
     /**
@@ -21,8 +38,6 @@ $sg-login-width: grid-step(5);
         min-height: 100%;
       }
       .sg-logo {
-        // Center content
-        margin: auto;
         img {
           margin: auto;
           height: 100%;

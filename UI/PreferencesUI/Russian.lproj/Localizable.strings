@@ -146,6 +146,7 @@
 /* Mailer */
 "Labels" = "Метки";
 "Label" = "Метка";
+"New label" = "Новая метка";
 "Show subscribed mailboxes only" = "Показывать только почтовые ящики, на которые подписан";
 "Synchronize only default mail folders (EAS)" = "Синхронизировать только почтовые папки по умолчанию (EAS)";
 "Sort messages by threads" = "Группировать сообщения по обсуждениям";
@@ -193,6 +194,7 @@
 "Please enter your signature below" = "Введите Вашу подпись ниже";
 "Please specify a valid sender address." = "Пожалуйста, укажите правильный адрес отправителя.";
 "Please specify a valid reply-to address." = "Пожалуйста, укажите правильный адрес для ответа.";
+"Specify a hostname other than the local host" = "Укажите имя хоста, отличное от localhost";
 
 /* Additional Parameters */
 "Additional Parameters" = "Дополнительные параметры";
@@ -212,6 +214,7 @@
 /* Event+task categories */
 "Calendar Category" = "Категория календаря";
 "Add Calendar Category" = "Добавить категорию календаря";
+"New category" = "Новая категория";
 "Remove Calendar Category" = "Удалить категорию календаря";
 "Contact Category" = "Категория контактов";
 "Add Contact Category" = "Добавить категорию контактов";
@@ -243,6 +246,7 @@
 "Finnish" = "Suomi";
 "French" = "Français";
 "German" = "Deutsch";
+"Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
@@ -254,6 +258,7 @@
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
+"Serbian" = "Српски";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
@@ -292,6 +297,9 @@
 "Connection error" = "Ошибка соединения";
 "Service temporarily unavailable" = "Сервис временно недоступен";
 
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Включить фильтр";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Имя фильтра";
 /* Button label */
@@ -313,11 +321,27 @@
 "Header" = "Заголовок";
 "Body" = "Тело письма";
 "Flag the message with" = "Пометить сообщение как";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Флаг";
+
 "Discard the message" = "Удалить сообщение";
 "File the message in" = "Переместить сообщение в";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Почтовый ящик";
+
 "Keep the message" = "Оставить сообщение";
 "Forward the message to" = "Перенаправить сообщение на";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "E-mail";
+
 "Send a reject message" = "Послать сообщение об отказе";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Сообщение";
+
 "Send a vacation message" = "Послать сообщение об отпуске";
 "Stop processing filter rules" = "Остановить выполнение фильтров";
 "is under" = "менее";

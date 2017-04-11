@@ -5,10 +5,10 @@ sg-ripple {
   height: 0px;
   width: 0px;
   position: absolute;
-  transition: width 800ms linear, height 800ms linear, background-color 400ms linear;
+  transition: width 800ms linear, height 800ms linear, background-color 400ms linear 200ms;
   transform: translate(-50%, -50%);
   opacity: 1;
-  z-index: $z-index-toolbar + 1;
+  z-index: $z-index-scroll-mask;
 }
 
 sg-ripple-content {
@@ -17,5 +17,5 @@ sg-ripple-content {
   position: absolute;
   right: 0;
   top: 0;
-  z-index: $z-index-toolbar + 2;
+  z-index: $z-index-scroll-mask + 1;
 }

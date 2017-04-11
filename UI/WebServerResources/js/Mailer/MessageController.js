@@ -6,9 +6,9 @@
   /**
    * @ngInject
    */
-  MessageController.$inject = ['$window', '$scope', '$state', '$mdMedia', '$mdDialog', 'sgConstant', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'encodeUriFilter', 'sgSettings', 'sgFocus', 'Dialog', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message'];
-  function MessageController($window, $scope, $state, $mdMedia, $mdDialog, sgConstant, stateAccounts, stateAccount, stateMailbox, stateMessage, encodeUriFilter, sgSettings, focus, Dialog, Calendar, Component, Account, Mailbox, Message) {
-    var vm = this, messageDialog = null, popupWindow = null;
+  MessageController.$inject = ['$window', '$scope', '$state', '$mdMedia', '$mdDialog', 'sgConstant', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'sgHotkeys', 'encodeUriFilter', 'sgSettings', 'sgFocus', 'Dialog', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message'];
+  function MessageController($window, $scope, $state, $mdMedia, $mdDialog, sgConstant, stateAccounts, stateAccount, stateMailbox, stateMessage, sgHotkeys, encodeUriFilter, sgSettings, focus, Dialog, Calendar, Component, Account, Mailbox, Message) {
+    var vm = this, popupWindow = null, hotkeys = [];
 
     // Expose controller
     $window.$messageController = vm;
@@ -38,6 +38,8 @@
     vm.print = print;
     vm.convertToEvent = convertToEvent;
     vm.convertToTask = convertToTask;
+
+    _registerHotkeys(hotkeys);
 
     // One-way refresh of the parent window when modifying the message from a popup window.
     if ($window.opener) {
@@ -90,6 +92,70 @@
             });
           }
         }
+      });
+    }
+
+    $scope.$on('$destroy', function() {
+      // Deregister hotkeys
+      _.forEach(hotkeys, function(key) {
+        sgHotkeys.deregisterHotkey(key);
+      });
+    });
+
+
+    /**
+     * To keep track of the currently active dialog, we share a common variable with the parent controller.
+     */
+    function _messageDialog() {
+      if ($scope.mailbox) {
+        if (arguments.length > 0)
+          $scope.mailbox.messageDialog = arguments[0];
+        return $scope.mailbox.messageDialog;
+      }
+      return null;
+    }
+
+    function _unlessInDialog(callback) {
+      return function() {
+        // Check if a dialog is opened either from the current controller or the parent controller
+        if (_messageDialog() === null)
+          return callback.apply(vm, arguments);
+      };
+    }
+
+    function _registerHotkeys(keys) {
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_reply'),
+        description: l('Reply to the message'),
+        callback: _unlessInDialog(reply)
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_replyall'),
+        description: l('Reply to sender and all recipients'),
+        callback: _unlessInDialog(replyAll)
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_forward'),
+        description: l('Forward selected message'),
+        callback: _unlessInDialog(forward)
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: l('hotkey_flag'),
+        description: l('Flagged'),
+        callback: _unlessInDialog(angular.bind(stateMessage, stateMessage.toggleFlag))
+      }));
+      keys.push(sgHotkeys.createHotkey({
+        key: 'backspace',
+        callback: _unlessInDialog(function($event) {
+          if (vm.mailbox.$selectedCount() === 0)
+            deleteMessage();
+          $event.preventDefault();
+        })
+      }));
+
+      // Register the hotkeys
+      _.forEach(keys, function(key) {
+        sgHotkeys.registerHotkey(key);
       });
     }
 
@@ -214,25 +280,27 @@
     }
 
     function showMailEditor($event, message) {
-      if (messageDialog === null) {
-        messageDialog = $mdDialog
-          .show({
-            parent: angular.element(document.body),
-            targetEvent: $event,
-            clickOutsideToClose: false,
-            escapeToClose: false,
-            templateUrl: 'UIxMailEditor',
-            controller: 'MessageEditorController',
-            controllerAs: 'editor',
-            locals: {
-              stateAccount: vm.account,
-              stateMessage: message
-            }
-          })
-          .finally(function() {
-            messageDialog = null;
-            closePopup();
-          });
+      if (_messageDialog() === null) {
+        _messageDialog(
+          $mdDialog
+            .show({
+              parent: angular.element(document.body),
+              targetEvent: $event,
+              clickOutsideToClose: false,
+              escapeToClose: false,
+              templateUrl: 'UIxMailEditor',
+              controller: 'MessageEditorController',
+              controllerAs: 'editor',
+              locals: {
+                stateAccount: vm.account,
+                stateMessage: message
+              }
+            })
+            .finally(function() {
+              _messageDialog(null);
+              closePopup();
+            })
+        );
       }
     }
 
@@ -266,7 +334,7 @@
 
     function openPopup() {
       var url = [sgSettings.baseURL(),
-                 'UIxMailPopupView#/Mail',
+                 'UIxMailPopupView#!/Mail',
                  vm.message.accountId,
                  // The double-encoding is necessary
                  encodeUriFilter(encodeUriFilter(vm.message.$mailbox.path)),

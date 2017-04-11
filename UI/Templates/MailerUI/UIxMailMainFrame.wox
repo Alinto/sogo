@@ -8,24 +8,22 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:jsFiles="Common.js, Preferences.services.js, Contacts.services.js, Scheduler.services.js, Mailer.js, Mailer.services.js, vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/angular-file-upload.min.js, vendor/FileSaver.min.js">
+    const:jsFiles="vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, Common.js, Preferences.services.js, Contacts.services.js, Scheduler.services.js, Mailer.js, Mailer.services.js, vendor/angular-file-upload.min.js, vendor/FileSaver.min.js">
   <script type="text/javascript">
     var mailAccounts = <var:string value="mailAccounts" const:escapeHTML="NO" />;
     var userNames = <var:string value="userNames" const:escapeHTML="NO" />;
     var unseenCountFolders = <var:string value="unseenCountFolders" const:escapeHTML="NO" />;
   </script>
 
-  <!--
-      MAIN CONTENT ROW
-      Content of the application view injected injected in the element below
-      MUST be the first html element after body
-      SHOULD be a main tag
-      Templates script tag wrappers go next
-  -->
   <main class="view"
         layout="row" layout-fill="layout-fill"
         ui-view="mailboxes"
         ng-controller="navController"><!-- mailboxes list --></main>
+
+  <sg-draggable-helper>
+    <md-icon>email</md-icon>
+    <sg-draggable-helper-counter class="md-default-theme md-warn md-hue-1 md-bg"><!-- count --></sg-draggable-helper-counter>
+  </sg-draggable-helper>
 
   <script type="text/ng-template" id="UIxMailMainFrame">
 
@@ -40,23 +38,38 @@
                  ng-repeat="account in ::app.accounts track by account.id"
                  ng-class="{ 'md-flex': account.$expanded }">
           <md-list>
-            <md-list-item ng-click="app.toggleAccountState(account)">
+            <md-list-item aria-label="{{ ::'Toggle visibility' | loc }}"
+                          ng-click="app.toggleAccountState(account)">
               <div class="sg-no-wrap">{{account.name}}</div>
-              <div class="md-flex"><!-- spacer --></div>
-              <md-button class="md-icon-button md-secondary"
-                         ng-show="account.id == 0"
-                         label:aria-label="Delegation..."
-                         ng-click="app.delegate(account)">
-                <md-tooltip md-delay="300"><var:string label:value="Delegation..."/></md-tooltip>
-                <md-icon>people</md-icon>
-              </md-button>
-              <md-button class="md-icon-button md-secondary"
-                         label:aria-label="New Folder..."
-                         ng-click="app.newFolder(account)">
-                <md-tooltip md-delay="300"><var:string label:value="New Folder..."/></md-tooltip>
-                <md-icon>add_circle_outline</md-icon>
-              </md-button>
-            </md-list-item>
+	      <md-menu class="md-secondary">
+		<md-icon label:aria-label="Options"
+			 ng-click="$mdMenu.open($event)"
+			 md-menu-origin="md-menu-origin">more_vert</md-icon>
+		<md-menu-content width="3">
+                  <md-menu-item ng-show="account.id == 0">
+		    <md-button
+			label:aria-label="Delegation..."
+			ng-click="app.delegate(account)">
+		      <var:string label:value="Delegation..."/>
+		    </md-button>
+                  </md-menu-item>
+		  <md-menu-item ng-show="app.showSubscribedOnly == 1">
+		    <md-button
+			label:aria-label="Subscribe..."
+			ng-click="app.subscribe(account)">
+		      <var:string label:value="Subscribe..."/>
+		    </md-button>
+		  </md-menu-item>
+		  <md-menu-item>
+		    <md-button
+			label:aria-label="New Folder..."
+			ng-click="app.newFolder(account)">
+		      <var:string label:value="New Folder..."/>
+		    </md-button>
+		  </md-menu-item>
+		</md-menu-content>
+	      </md-menu>
+	    </md-list-item>
           </md-list>
           <div class="sg-quota ng-hide" ng-show="account.$quota">
             <md-progress-linear md-mode="determinate"
@@ -70,21 +83,24 @@
             <md-list>
               <md-list-item md-virtual-repeat="folder in account" md-item-size="48" md-on-demand="md-on-demand"
                             class="md-clickable md-default-theme md-background md-hue-1"
-                            ng-class="{'md-bg': folder.id == app.service.selectedFolder.id}">
-                <div ng-class="'sg-child-level-' + folder.level">
-                  <md-icon class="ng-hide"
-                           ng-hide="folder.children.length">{{app.metadataForFolder(folder).icon}}</md-icon>
-                  <md-checkbox class="sg-folder ng-hide"
+                            ng-class="{'md-bg': folder.id == app.service.selectedFolder.id}"
+                            sg-droppable="app.isDroppableFolder(dragFolder, folder)"
+                            sg-drop="app.dragSelectedMessages(dragFolder, folder, dragMode)">
+                <div class="sg-child-level-0"
+                     ng-class="'sg-child-level-' + folder.level">
+                  <md-checkbox class="sg-folder"
+                               ng-class="folder.$icon"
                                label:aria-label="Expanded"
-                               ng-show="folder.children.length"
                                ng-model="folder.$expanded"
-                               ng-change="account.$flattenMailboxes({ reload: true, saveState: true })"><!-- expanded --></md-checkbox>
+                               ng-disabled="folder.children.length == 0"
+                               ng-change="account.$flattenMailboxes({ reload: true, saveState: true })">
+                  <md-icon>{{folder.$icon}}</md-icon></md-checkbox>
                 </div>
                 <p class="sg-item-name ng-hide"
                    ng-click="app.selectFolder($event, account, folder)"
                    ng-dblclick="app.editFolder(folder)"
                    ng-show="app.editMode != folder.path">
-                  {{app.metadataForFolder(folder).name}}
+                  {{folder.$displayName}}
                   <span class="sg-counter-badge ng-hide" ng-show="folder.unseenCount">{{folder.unseenCount}}</span>
                 </p>
                 <md-input-container class="md-flex ng-hide"
@@ -100,7 +116,7 @@
                 <md-menu class="ng-hide"
                          ng-show="app.service.selectedFolder.id == folder.id">
                   <md-icon label:aria-label="Options"
-                           ng-click="$mdOpenMenu($event)"
+                           ng-click="$mdMenu.open($event)"
                            md-menu-origin="md-menu-origin">more_vert</md-icon>
                   <md-menu-content width="3">
                     <md-menu-item>
@@ -145,23 +161,23 @@
                         <var:string label:value="Search"/>
                       </md-button>
                     </md-menu-item>
-                    <md-menu-divider ng-show="folder.type == 'folder'"><!-- divider --></md-menu-divider>
+                    <md-menu-divider ng-show="folder.$canFolderAs()"><!-- divider --></md-menu-divider>
                     <md-menu-item ng-show="folder.type == 'folder'">
                       <md-button type="button" ng-click="app.setFolderAs(folder, 'Drafts')">
                         <var:string label:value="Set as Drafts"/>
                       </md-button>
                     </md-menu-item>
-                    <md-menu-item ng-show="folder.type == 'folder'">
+                    <md-menu-item ng-show="folder.$canFolderAs()">
                       <md-button type="button" ng-click="app.setFolderAs(folder, 'Sent')">
                         <var:string label:value="Set as Sent"/>
                       </md-button>
                     </md-menu-item>
-                    <md-menu-item ng-show="folder.type == 'folder'">
+                    <md-menu-item ng-show="folder.$canFolderAs()">
                       <md-button type="button" ng-click="app.setFolderAs(folder, 'Trash')">
                         <var:string label:value="Set as Trash"/>
                       </md-button>
                     </md-menu-item>
-                    <md-menu-item ng-show="folder.type == 'folder'">
+                    <md-menu-item ng-show="folder.$canFolderAs()">
                       <md-button type="button" ng-click="app.setFolderAs(folder, 'Junk')">
                         <var:string label:value="Set as Junk"/>
                       </md-button>
@@ -235,9 +251,10 @@
       </div>
       <div class="md-toolbar-tools">
         <md-chips class="md-flex"
+                  ng-show="app.search.params.length != 0 || app.currentSearchParam"
                   ng-model="app.search.params"
                   md-transform-chip="app.newSearchParam($chip)"
-                  sg-transform-on-blur="sg-transform-on-blur">
+                  md-add-on-blur="true">
           <input sg-focus-on="advancedSearch" type="text"
                  ng-disabled="app.currentSearchParam.length == 0"
                  sg-placeholder="app.search.options[app.currentSearchParam]"/>

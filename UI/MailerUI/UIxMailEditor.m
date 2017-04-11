@@ -661,10 +661,9 @@ static NSArray *infoKeys = nil;
 {
   NSDictionary *d;
 
-  d = [NSDictionary dictionaryWithObjectsAndKeys: msg, @"textStatus", nil];
+  d = [NSDictionary dictionaryWithObjectsAndKeys: msg, @"message", nil];
 
-  return [self responseWithStatus: 500
-                        andString: [d jsonRepresentation]];
+  return [self responseWithStatus: 500 andJSONRepresentation: d];
 }
 
 /* attachment helper */
@@ -864,7 +863,7 @@ static NSArray *infoKeys = nil;
     {
       error = [self validateForSend];
       if (!error)
-        error = [co sendMailAndCopyToSent: YES];
+        error = [co sendMail];
       else
 	error = [self failedToSaveFormResponse: [error reason]];
     }

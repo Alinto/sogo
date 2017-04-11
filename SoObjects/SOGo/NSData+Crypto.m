@@ -1,7 +1,7 @@
 /* NSData+Crypto.m - this file is part of SOGo
  *
  * Copyright (C) 2012 Nicolas Höft
- * Copyright (C) 2012-2015 Inverse inc.
+ * Copyright (C) 2012-2016 Inverse inc.
  * Copyright (C) 2012 Jeroen Dekkers
  *
  * Author: Nicolas Höft
@@ -236,6 +236,14 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   else if ([passwordScheme caseInsensitiveCompare: @"ssha512"] == NSOrderedSame)
     {
       return [self asSSHA512UsingSalt: theSalt];
+    }
+  else if ([passwordScheme caseInsensitiveCompare: @"sha256-crypt"] == NSOrderedSame)
+    {
+      return [self asSHA256CryptUsingSalt: theSalt];
+    }
+  else if ([passwordScheme caseInsensitiveCompare: @"sha512-crypt"] == NSOrderedSame)
+    {
+      return [self asSHA512CryptUsingSalt: theSalt];
     }
   // in case the scheme was not detected, return nil
   return nil;
@@ -578,20 +586,16 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   return smdData;
 }
 
-
-/**
- * Hash the data with CRYPT-MD5 as used in /etc/passwd nowadays. Uses crypt() function to generate it.
- *
- *
- * @param theSalt The salt to be used must not be nil, if empty, one will be generated. It must be printable characters only.
- * @return Binary data from CRYPT-MD5 hashing. On error the funciton returns nil.
- */
-- (NSData *) asMD5CryptUsingSalt: (NSData *) theSalt
+//
+// Internal hashing function using glibc's crypt() one.
+// Glibc 2.6 supports magic == 5 and 6
+//
+- (NSData *) _asCryptedUsingSalt: (NSData *) theSalt
+			   magic: (NSString *) magic
 {
-  char *buf;
+  NSString *cryptString, *saltString;
   NSMutableData *saltData;
-  NSString *cryptString;
-  NSString *saltString;
+  char *buf;
 
   if ([theSalt length] == 0)
     {
@@ -600,10 +604,10 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
     }
   cryptString = [[NSString alloc] initWithData: self  encoding: NSUTF8StringEncoding];
 
-  NSString * magic = @"$1$";
-  saltData = [NSMutableData dataWithData: [magic dataUsingEncoding: NSUTF8StringEncoding]];
+  saltData = [NSMutableData dataWithData: [[NSString stringWithFormat:@"$%@$", magic] dataUsingEncoding: NSUTF8StringEncoding]];
   [saltData appendData: theSalt];
-  // terminate with "$"
+
+  // Terminate with "$"
   [saltData appendData: [@"$" dataUsingEncoding: NSUTF8StringEncoding]];
 
   saltString = [[NSString alloc] initWithData: saltData  encoding: NSUTF8StringEncoding];
@@ -611,9 +615,44 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   buf = crypt([cryptString UTF8String], [saltString UTF8String]);
   [cryptString release];
   [saltString release];
+
   if (!buf)
     return nil;
+
   return [NSData dataWithBytes: buf length: strlen(buf)];
+}
+
+/**
+ * Hash the data with CRYPT-MD5 as used in /etc/passwd nowadays. Uses crypt() function to generate it.
+ *
+ * @param theSalt The salt to be used must not be nil, if empty, one will be generated. It must be printable characters only.
+ * @return Binary data from CRYPT-MD5 hashing. On error the funciton returns nil.
+ */
+- (NSData *) asMD5CryptUsingSalt: (NSData *) theSalt
+{
+  return [self _asCryptedUsingSalt: theSalt  magic: @"1"];
+}
+
+/**
+ * Hash the data with CRYPT-SHA256 as used in /etc/passwd nowadays. Uses crypt() function to generate it.
+ *
+ * @param theSalt The salt to be used must not be nil, if empty, one will be generated. It must be printable characters only.
+ * @return Binary data from CRYPT-SHA256 hashing. On error the funciton returns nil.
+ */
+- (NSData *) asSHA256CryptUsingSalt: (NSData *) theSalt
+{
+  return [self _asCryptedUsingSalt: theSalt  magic: @"5"];
+}
+
+/**
+ * Hash the data with CRYPT-SHA512 as used in /etc/passwd nowadays. Uses crypt() function to generate it.
+ *
+ * @param theSalt The salt to be used must not be nil, if empty, one will be generated. It must be printable characters only.
+ * @return Binary data from CRYPT-SHA512 hashing. On error the funciton returns nil.
+ */
+- (NSData *) asSHA512CryptUsingSalt: (NSData *) theSalt
+{
+  return [self _asCryptedUsingSalt: theSalt  magic: @"6"];
 }
 
 /**
@@ -667,25 +706,44 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
       // the crypt() function is able to extract it by itself
       r = NSMakeRange(0, len);
     }
-  else if ([theScheme caseInsensitiveCompare: @"md5-crypt"] == NSOrderedSame)
+  else if ([theScheme caseInsensitiveCompare: @"md5-crypt"] == NSOrderedSame ||
+	   [theScheme caseInsensitiveCompare: @"sha256-crypt"] == NSOrderedSame ||
+	   [theScheme caseInsensitiveCompare: @"sha512-crypt"] == NSOrderedSame)
     {
-      // md5 crypt is generated the following "$1$<salt>$<encrypted pass>"
+      // md5-crypt is generated the following "$1$<salt>$<encrypted pass>"
+      // sha256-crypt is generated the following "$5$<salt>$<encrypted pass>"
+      // sha512-crypt is generated the following "$6$<salt>$<encrypted pass>"
       NSString *cryptString;
       NSArray *cryptParts;
-      cryptString = [NSString stringWithUTF8String: [self bytes] ];
+
+      cryptString = [[NSString alloc] initWithData: self  encoding: NSUTF8StringEncoding];
+      AUTORELEASE(cryptString);
+
       cryptParts = [cryptString componentsSeparatedByString: @"$"];
       // correct number of elements (first one is an empty string)
-      if ([cryptParts count] != 4)
+      if ([cryptParts count] < 4)
         {
           return [NSData data];
         }
-      // second is the identifier of md5-crypt
-      else if( [[cryptParts objectAtIndex: 1] caseInsensitiveCompare: @"1"] != NSOrderedSame )
+      // second is the identifier of md5-crypt/sha256-crypt or sha512-crypt
+      else if ([[cryptParts objectAtIndex: 1] caseInsensitiveCompare: @"1"] == NSOrderedSame ||
+	       [[cryptParts objectAtIndex: 1] caseInsensitiveCompare: @"5"] == NSOrderedSame ||
+	       [[cryptParts objectAtIndex: 1] caseInsensitiveCompare: @"6"] == NSOrderedSame)
         {
-          return [NSData data];
-        }
-       // third is the salt; convert it to NSData
-       return [[cryptParts objectAtIndex: 2] dataUsingEncoding: NSUTF8StringEncoding];
+	  // third is the salt; convert it to NSData
+	  if ([cryptParts count] == 4)
+	    return [[cryptParts objectAtIndex: 2] dataUsingEncoding: NSUTF8StringEncoding];
+	  else
+	    {
+	      NSString *saltWithRounds;
+
+	      saltWithRounds = [NSString stringWithFormat: @"%@$%@", [cryptParts objectAtIndex: 2], [cryptParts objectAtIndex: 3]]; 
+
+	      return [saltWithRounds dataUsingEncoding: NSUTF8StringEncoding];
+	    }
+	}
+      // nothing good
+      return [NSData data];
     }
   else if ([theScheme caseInsensitiveCompare: @"ssha"] == NSOrderedSame)
     {

@@ -43,9 +43,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalTimeZone.h>
 
+#import <Appointments/iCalEntityObject+SOGo.h>
+
 #include "NSDate+ActiveSync.h"
 #include "NSString+ActiveSync.h"
-
+#include "iCalRecurrenceRule+ActiveSync.h"
+#include "iCalAlarm+ActiveSync.h"
 
 @implementation iCalToDo (ActiveSync)
 
@@ -80,6 +83,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [s appendFormat: @"<DueDate xmlns=\"Tasks:\">%@</DueDate>", [o activeSyncRepresentationInContext: context]];
       [s appendFormat: @"<UTCDueDate xmlns=\"Tasks:\">%@</UTCDueDate>", [o activeSyncRepresentationInContext: context]];
     }
+
+  // Recurrence rules
+  if ([self isRecurrent])
+    [s appendString: [[[self recurrenceRules] lastObject] activeSyncRepresentationInContext: context]];
   
   // Importance
   o = [self priority];
@@ -91,8 +98,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     v = 1;
   [s appendFormat: @"<Importance xmlns=\"Tasks:\">%d</Importance>", v];
                     
-  // Reminder - FIXME
-  [s appendFormat: @"<ReminderSet xmlns=\"Tasks:\">%d</ReminderSet>", 0];
+  // Reminder
+  if ([self hasAlarms])
+    {
+      iCalAlarm *alarm;
+
+      alarm = [self firstDisplayOrAudioAlarm];
+      [s appendFormat: @"<ReminderSet xmlns=\"Tasks:\">%d</ReminderSet>", 1];
+      [s appendString: [alarm activeSyncRepresentationInContext: context]];
+    }
+  else
+    {
+      [s appendFormat: @"<ReminderSet xmlns=\"Tasks:\">%d</ReminderSet>", 0];
+    }
   
   // Sensitivity
   if ([[self accessClass] isEqualToString: @"PRIVATE"])
@@ -141,7 +159,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           [s appendString: @"</Body>"];
         }
     }
-  
+
   return s;
 }
 
@@ -245,8 +263,39 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   if ((o = [theValues objectForKey: @"ReminderTime"]))
     {
+      iCalAlarm *alarm;
+
+      alarm = [[iCalAlarm alloc] init];
+      [alarm takeActiveSyncValues: theValues  inContext: context];
+
+      [self removeAllAlarms];
+      [self addToAlarms: alarm];
+      RELEASE(alarm);
 
     }
+
+  // Recurrence
+  if ((o = [theValues objectForKey: @"Recurrence"]) && !([[o objectForKey: @"Recurrence_DeadOccur"] intValue]))
+    {
+      iCalRecurrenceRule *rule;
+
+      rule = [[iCalRecurrenceRule alloc] init];
+      [self setRecurrenceRules: [NSArray arrayWithObject: rule]];
+      RELEASE(rule);
+
+      [rule takeActiveSyncValues: o  inContext: context];
+
+      if (!([theValues objectForKey: @"StartDate"]))
+        {
+          iCalDateTime *start;
+
+          start = (iCalDateTime *) [self uniqueChildWithTag: @"dtstart"];
+
+          [start setTimeZone: tz];
+          [start setDate: [[o objectForKey: @"Recurrence_Start"] calendarDate]];
+        }
+    }
+
 }
 
 @end

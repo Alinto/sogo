@@ -9,6 +9,12 @@
     <div class="sg-face" layout="column" layout-fill="layout-fill">
       <md-card>
         <md-card-actions flex-none="flex-none" layout="row" layout-align="end center">
+          <md-button ng-click="toggleCenter()"
+                     class="md-icon-button md-primary md-hue-1 hide show-gt-xs"
+                     aria-hidden="true">
+            <md-icon class="icon-fullscreen"
+                     ng-class="{ 'icon-fullscreen-exit': centerIsClose }"><!-- fullscreen --></md-icon>
+          </md-button>
           <md-button class="sg-icon-button hide-gt-xs"
                      label:aria-label="Close"
                      ng-click="editor.close()">
@@ -25,12 +31,12 @@
           <md-button class="sg-icon-button"
                      label:aria-label="Delete"
                      ng-show="editor.currentFolder.acls.objectEraser"
-                     ng-click="editor.confirmDelete(editor.card)">
+                     ng-click="editor.confirmDelete()">
             <md-tooltip><var:string label:value="Delete"/></md-tooltip>
             <md-icon>delete</md-icon>
           </md-button>
           <md-menu ng-hide="editor.currentFolder.isRemote">
-            <md-button label:aria-label="More options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
+            <md-button label:aria-label="More options" class="sg-icon-button" ng-click="$mdMenu.open($event)">
               <md-icon>more_vert</md-icon>
             </md-button>
             <md-menu-content>
@@ -51,15 +57,10 @@
         </md-card-actions>
         <md-card-content>
           <header class="msg-header">
-            <div ng-show="editor.card.c_component == 'vcard'">
-              <sg-avatar-image class="md-avatar md-tile-left"
-                               sg-email="editor.card.$preferredEmail()"
-                               sg-src="editor.card.photoURL"
-                               size="40"><!-- avatar --></sg-avatar-image>
-            </div>
-            <div class="md-tile-left md-avatar sg-avatar-list" ng-show="editor.card.$isList()">
-              <!--list avatar-->
-            </div>
+            <sg-avatar-image class="md-avatar md-tile-left"
+                             sg-email="editor.card.$preferredEmail()"
+                             sg-src="editor.card.photoURL"
+                             size="40">{{ editor.card.$avatarIcon }}</sg-avatar-image>
             <div class="msg-header-content">
               <h1 class="sg-md-display-2--thin" ng-bind-html="editor.card.$fullname({html: true})"><!-- fullname --></h1>
               <h6 class="sg-md-display-2-subheader--thin">{{editor.card.$description()}}</h6>
@@ -87,12 +88,10 @@
                 <md-list-item class="md-2-line" ng-repeat="ref in editor.card.refs track by ref.reference">
                   <sg-avatar-image class="md-tile-left"
                                    sg-email="ref.$preferredEmail()"
-                                   size="48">
-                    <!-- contact avatar -->
-                  </sg-avatar-image>
+                                   size="48">person</sg-avatar-image>
                   <div class="md-list-item-text">
                     <h3>
-                      <a ui-sref="app.addressbook.card.view({addressbookId: editor.currentFolder.id, cardId: ref.reference})">{{ ref.$fullname() }}</a>
+                      <a ui-sref="app.addressbook.card.view({cardId: ref.reference})">{{ ref.$fullname() }}</a>
                     </h3>
                     <h4 ng-show="ref.$preferredEmail()">
                       <a href="#" ng-bind="ref.$preferredEmail()"
@@ -105,7 +104,7 @@
 
             <div class="section" ng-show="editor.card.emails.length > 0">
               <div class="pseudo-input-container" ng-repeat="email in editor.card.emails">
-                <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{email.type}}</label>
+                <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{email.type.capitalize() | loc}}</label>
                 <div class="pseudo-input-field">
                   <a href="#" ng-bind="email.value"
                      ng-click="addressbook.newMessageWithRecipient($event, email.value, editor.card.$fullname())"><!-- recipient --></a>
@@ -122,7 +121,7 @@
 
             <div class="section" ng-show="editor.card.phones.length > 0">
               <div class="pseudo-input-container" ng-repeat="phone in editor.card.phones">
-                <label class="pseudo-input-label">{{phone.type}}</label>
+                <label class="pseudo-input-label">{{phone.type.capitalize() | loc}}</label>
                 <div class="pseudo-input-field">
                   <a href="tel:{{phone.value}}">{{phone.value}}</a>
                 </div>
@@ -131,7 +130,7 @@
 
             <div class="section" ng-show="editor.card.urls">
               <div class="pseudo-input-container" ng-repeat="url in editor.card.urls">
-                <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{url.type}}</label>
+                <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{url.type.capitalize() | loc}}</label>
                 <div class="pseudo-input-field">
                   <a href="#" target="_new" ng-href="{{url.value}}">{{url.value}}</a>
                 </div>
@@ -140,17 +139,19 @@
 
             <div class="section" ng-show="editor.card.addresses">
               <div class="pseudo-input-container" ng-repeat="address in editor.card.addresses">
-                <label class="pseudo-input-label">{{address.type}}</label>
+                <label class="pseudo-input-label">{{address.type.capitalize() | loc}}</label>
                 <div class="pseudo-input-field">
                   <div sg-address="address"><!-- address --></div>
                 </div>
               </div>
             </div>
 
-            <div class="pseudo-input-container" ng-show="editor.card.note">
-              <label class="pseudo-input-label"><var:string label:value="Note"/></label>
-              <div class="pseudo-input-field">
-                <div ng-bind-html="editor.card.note"><!-- note --></div>
+            <div class="section" ng-show="editor.card.notes[0].value.length">
+              <div class="pseudo-input-container" ng-repeat="note in editor.card.notes">
+                <label class="pseudo-input-label"><var:string label:value="Note"/></label>
+                <div class="pseudo-input-field">
+                  <div ng-bind-html="note.value | ln2br"><!-- note --></div>
+                </div>
               </div>
             </div>
 

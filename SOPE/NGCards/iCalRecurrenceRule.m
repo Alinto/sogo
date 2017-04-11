@@ -403,6 +403,11 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
   return [[self flattenedValuesForKey: @"count"] intValue];
 }
 
+- (BOOL) hasRepeatCount
+{
+  return [[self flattenedValuesForKey: @"count"] length] > 0;
+}
+
 - (void) setCount: (NSString *) _count
 {
   [self setSingleValue: _count forKey: @"count"];
@@ -461,9 +466,16 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
 
 - (iCalByDayMask *) byDayMask
 {
+  NSArray *setPos;
+  NSString *day;
+
   if (dayMask == nil && [[self byDay] length])
     {
-      dayMask = [iCalByDayMask byDayMaskWithRuleString: [self byDay]];
+      day = [self byDay];
+      setPos = [self bySetPos];
+      if ([setPos count])
+        day = [NSString stringWithFormat: @"%@%@", [setPos lastObject], day];
+      dayMask = [iCalByDayMask byDayMaskWithRuleString: day];
       [dayMask retain];
     }
   
@@ -907,6 +919,30 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
     isEqual = NO;
   
   return isEqual;
+}
+
+- (NSString *) description
+{
+  NSMutableString *str;
+
+  str = [NSMutableString stringWithString: [self flattenedValuesForKey: @"freq"]];
+
+  if ([self repeatInterval] > 1)
+    [str appendFormat: @" interval of %i", [self repeatInterval]];
+  if ([self repeatCount])
+    [str appendFormat: @" for %i times", [self repeatCount]];
+  if ([self untilDate])
+    [str appendFormat: @" until %@", [self untilDate]];
+  if ([[self valuesAtIndex: 0 forKey: @"bymonthday"] count])
+    [str appendFormat: @" BYMONTHDAY:%@", [self flattenedValuesForKey: @"bymonthday"]];
+  if ([[self valuesAtIndex: 0 forKey: @"byday"] count])
+    [str appendFormat: @" BYDAY:%@", [self flattenedValuesForKey: @"byday"]];
+  if ([[self valuesAtIndex: 0 forKey: @"bymonth"] count])
+    [str appendFormat: @" BYMONTH:%@", [self flattenedValuesForKey: @"bymonth"]];
+  if ([[self valuesAtIndex: 0 forKey: @"bysetpos"] count])
+    [str appendFormat: @" BYSETPOS:%@", [self flattenedValuesForKey: @"bysetpos"]];
+
+  return str;
 }
 
 @end /* iCalRecurrenceRule */

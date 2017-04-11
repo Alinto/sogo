@@ -49,9 +49,26 @@
    */
   Resource.prototype.userResource = function(uid) {
     var path = _.compact(this._activeUser.folderURL.split('/'));
-    path.splice(path.length - 1, 1, escape(uid));
+
+    if (uid)
+      path.splice(path.length - 1, 1, escape(uid));
 
     return new Resource(this._http, this._q, '/' + path.join('/'), this._activeUser);
+  };
+
+  /**
+   * @function path
+   * @memberof Resource.prototype
+   * @desc Create a URL of the resource context with any number of additional segments
+   * @return an absolute URL
+   */
+  Resource.prototype.path = function() {
+    var path = [this._path];
+
+    if (arguments.length > 0)
+      Array.prototype.push.apply(path, Array.prototype.slice.call(arguments));
+
+    return path.join('/');
   };
 
   /**
@@ -190,14 +207,21 @@
       },
       responseType: 'arraybuffer',
       cache: false,
-      transformResponse: function (data, headers) {
+      transformResponse: function (data, headers, status) {
         var fileName, result, blob = null;
 
+        if (status < 200 || status > 299) {
+          throw new Error('Bad gateway');
+        }
         if (data) {
           blob = new Blob([data], { type: type });
         }
-        fileName = getFileNameFromHeader(headers('content-disposition'));
-
+        if (options && options.filename) {
+          fileName = options.filename;
+        }
+        else {
+          getFileNameFromHeader(headers('content-disposition'));
+        }
         if (!saveAs) {
           throw new Error('To use Resource.download, FileSaver.js must be loaded.');
         }

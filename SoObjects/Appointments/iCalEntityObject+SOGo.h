@@ -1,6 +1,6 @@
 /* iCalEntityObject+SOGo.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,13 +65,15 @@ extern NSNumber *iCalDistantFutureNumber;
 			     forAllDay: (BOOL) allDay;
 
 - (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
-                                       container: (id) theContainer;
+                                       container: (id) theContainer
+				 nameInContainer: (NSString *) nameInContainer;
 
 - (iCalAlarm *) firstSupportedAlarm;
 - (iCalAlarm *) firstDisplayOrAudioAlarm;
 
 - (void) updateNextAlarmDateInRow: (NSMutableDictionary *) row
-                     forContainer: (id) theContainer;
+                     forContainer: (id) theContainer
+		  nameInContainer: (NSString *) nameInContainer;
 
 @end
 

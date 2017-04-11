@@ -45,6 +45,7 @@
 @class NSArray;
 @class NSData;
 @class NSFormatter;
+@class NSMutableDictionary;
 
 @class SOGoMailBodyPart;
 
@@ -53,6 +54,7 @@
   NSArray *partPath;
   id      bodyInfo;
   NSData  *flatContent;
+  NSDictionary *attachmentIds;
 }
 
 /* accessors */
@@ -65,6 +67,8 @@
 
 - (SOGoMailBodyPart *) clientPart;
 - (id) renderedPart;
+
+- (void) setAttachmentIds: (NSDictionary *) newAttachmentIds;
 
 - (NSData *)flatContent;
 - (NSData *)decodedFlatContent;

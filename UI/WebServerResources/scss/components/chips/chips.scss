@@ -10,7 +10,7 @@ md-chips {
         box-shadow: none;
       }
       .md-chip-content {
-        max-width: initial; // fix bug in ng-material
+        //max-width: initial; // fix bug in ng-material
       }
       // Custom 'chip remove' button used with chips in readonly mode
       .sg-chip-remove {
@@ -52,6 +52,15 @@ md-chips {
     span {
       width: 100%;
     }
+  }
+}
+
+// Adjust space around secondary element in contact chip.
+// Used for attendees participation status icon (UIxAppointmentViewTemplate.wox)
+.md-contact-chips.sg-with-secondary .md-chips md-chip {
+  padding-right: 0;
+  .sg-secondary {
+    margin-right: $baseline-grid;
   }
 }
 

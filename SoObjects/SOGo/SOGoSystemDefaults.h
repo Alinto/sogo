@@ -94,6 +94,8 @@
 - (int) maximumFailedLoginInterval;
 - (int) failedLoginBlockInterval;
 
+- (int) maximumMessageSizeLimit;
+
 - (int) maximumMessageSubmissionCount;
 - (int) maximumRecipientCount;
 - (int) maximumSubmissionInterval;

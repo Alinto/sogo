@@ -14,6 +14,7 @@
         <md-input-container class="md-block md-flex">
           <label><var:string label:value="Account Name"/></label>
           <input type="text" required="required"
+                 md-autofocus="true"
                  ng-readonly="$AccountDialogController.accountId == 0"
                  ng-model="$AccountDialogController.account.name"/>
         </md-input-container>
@@ -26,25 +27,48 @@
         <div layout="row">
           <md-input-container class="md-block md-flex">
             <label><var:string label:value="Server Name"/></label>
-            <input type="text" required="required"
+            <input name="serverName" type="text" required="required"
+                   ng-pattern="$AccountDialogController.hostnameRE"
                    ng-disabled="$AccountDialogController.accountId == 0"
                    ng-model="$AccountDialogController.account.serverName"/>
+            <div ng-messages="accountForm.serverName.$error" role="alert">
+              <div ng-message="pattern"><var:string label:value="Specify a hostname other than the local host"/></div>
+            </div>
           </md-input-container>
 
           <md-input-container class="md-block" flex="30">
             <label><var:string label:value="Port"/></label>
-            <input type="number" required="required" min="1" max="65535"
+            <input type="number" min="1" max="65535"
                    ng-disabled="$AccountDialogController.accountId == 0"
-                   ng-model="$AccountDialogController.account.port"/>
+                   ng-model="$AccountDialogController.account.port"
+                   placeholder=""
+                   sg-placeholder="$AccountDialogController.defaultPort"/>
           </md-input-container>
         </div>
 
         <md-input-container class="md-block md-input-has-value">
           <label><var:string label:value="Encryption"/></label>
           <md-radio-group ng-model="$AccountDialogController.account.encryption">
-            <md-radio-button ng-disabled="$AccountDialogController.accountId == 0" value="none" class="md-primary"><var:string label:value="None"/></md-radio-button>
-            <md-radio-button ng-disabled="$AccountDialogController.accountId == 0" value="ssl"><var:string label:value="SSL"/></md-radio-button>
-            <md-radio-button ng-disabled="$AccountDialogController.accountId == 0" value="tls"><var:string label:value="TLS"/></md-radio-button>
+            <div layout="row" layout-align="space-around">
+              <div>
+                <md-radio-button
+                    ng-click="$AccountDialogController.defaultPort = 143"
+                    ng-disabled="$AccountDialogController.accountId == 0"
+                    value="none" class="md-primary"><var:string label:value="None"/></md-radio-button>
+              </div>
+              <div>
+                <md-radio-button
+                    ng-click="$AccountDialogController.defaultPort = 993"
+                    ng-disabled="$AccountDialogController.accountId == 0"
+                    value="ssl"><var:string label:value="SSL"/></md-radio-button>
+              </div>
+              <div>
+                <md-radio-button
+                    ng-click="$AccountDialogController.defaultPort = 143"
+                    ng-disabled="$AccountDialogController.accountId == 0"
+                    value="tls"><var:string label:value="TLS"/></md-radio-button>
+              </div>
+            </div>
           </md-radio-group>
         </md-input-container>
 
@@ -98,10 +122,11 @@
           <label class="pseudo-input-label"><var:string label:value="Signature"/></label>
           <textarea class="ck-editor"
                     ck-locale="$AccountDialogController.defaults.LocaleCode"
-                    ck-options="{ 'height': '70px',
+                    ck-options="{ 'autoGrow_minHeight': 70,
                                   'toolbar': [['Bold', 'Italic', '-', 'Link',
                                              'Font','FontSize','-','TextColor',
                                              'BGColor']] }"
+                    ck-margin="8px"
                     ng-model="$AccountDialogController.account.identities[0].signature"><!-- signature --></textarea>
         </div>
 
@@ -147,7 +172,8 @@
     </md-dialog-content>
     <md-dialog-actions>
       <md-button type="button" ng-click="$AccountDialogController.cancel()"><var:string label:value="Cancel"/></md-button>
-      <md-button ng-disabled="accountForm.$invalid"
+      <md-button aria-label="{{::'OK' | loc}}"
+                 ng-disabled="accountForm.$invalid"
                  ng-click="$AccountDialogController.save()"
                  ng-bind="::'OK' | loc"><!-- OK --></md-button>
     </md-dialog-actions>

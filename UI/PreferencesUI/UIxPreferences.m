@@ -1827,6 +1827,15 @@ static NSArray *reminderValues = nil;
   return [self labelForKey: item];
 }
 
+- (NSDictionary *) languageLocale
+{
+  WOResourceManager *rm;
+
+  rm = [self pageResourceManager];
+
+  return [rm localeForLanguageNamed: item];
+}
+
 //
 // Used by wox template
 //
@@ -1860,10 +1869,9 @@ static NSArray *reminderValues = nil;
           value = [[identity objectForKey: @"email"]
                     stringByTrimmingSpaces];
 
-          /* We make sure that the "custom" value is different from the values
-             returned by the user directory service. */
+          /* We make sure that the "custom" value is different from the system email */
           if ([value length] == 0
-              || [[user allEmails] containsObject: value])
+              || [[user systemEmail] isEqualToString: value])
             value = nil;
 
           if (value)
@@ -2184,6 +2192,7 @@ static NSArray *reminderValues = nil;
       NSArray *allKeys, *accounts;
       NSDictionary *newLabels;
       NSString *name;
+      id loginModule;
 
       int i;
 
@@ -2191,7 +2200,14 @@ static NSArray *reminderValues = nil;
       v = [[v mutableCopy] autorelease];
 
       if ([[v objectForKey: @"SOGoLoginModule"] isEqualToString: @"Last"])
-        [v setObject: [NSNumber numberWithBool: YES]  forKey: @"SOGoRememberLastModule"];
+        {
+          [v setObject: [NSNumber numberWithBool: YES]  forKey: @"SOGoRememberLastModule"];
+          loginModule = [[[user userDefaults] source] objectForKey: @"SOGoLoginModule"];
+          if (loginModule)
+            [v setObject: loginModule forKey: @"SOGoLoginModule"];
+          else
+            [v removeObjectForKey: @"SOGoLoginModule"];
+        }
       else
         [v setObject: [NSNumber numberWithBool: NO]  forKey: @"SOGoRememberLastModule"];
 

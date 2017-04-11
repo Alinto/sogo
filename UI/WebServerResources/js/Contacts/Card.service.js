@@ -152,8 +152,38 @@
       Card.$Preferences.avatar(this.$$email, 32, {no_404: true}).then(function(url) {
         _this.$$image = url;
       });
+    if (this.hasphoto)
+      this.photoURL = Card.$$resource.path(this.pid, this.id, 'photo');
     if (this.isgroup)
       this.c_component = 'vlist';
+    this.$avatarIcon = this.$isList()? 'group' : 'person';
+    if (data.orgs && data.orgs.length)
+      this.orgs = _.map(data.orgs, function(org) { return { 'value': org }; });
+    if (data.notes && data.notes.length)
+      this.notes = _.map(data.notes, function(note) { return { 'value': note }; });
+    else if (!this.notes || !this.notes.length)
+      this.notes = [ { value: '' } ];
+    // Lowercase the type of specific fields
+    angular.forEach(['addresses', 'phones', 'urls'], function(key) {
+      angular.forEach(_this[key], function(o) {
+        if (o.type) o.type = o.type.toLowerCase();
+      });
+    });
+    // Instanciate Card objects for list members
+    angular.forEach(this.refs, function(o, i) {
+      if (o.email) o.emails = [{value: o.email}];
+      o.id = o.reference;
+      _this.refs[i] = new Card(o);
+    });
+    // Instanciate date object of birthday
+    if (this.birthday) {
+      Card.$Preferences.ready().then(function() {
+        var dlp = Card.$Preferences.$mdDateLocaleProvider;
+        _this.birthday = _this.birthday.parseDate(dlp, '%Y-%m-%d');
+        _this.$birthday = dlp.formatDate(_this.birthday);
+      });
+    }
+
     this.$loaded = angular.isDefined(this.c_name)? Card.STATUS.LOADED : Card.STATUS.NOT_LOADED;
 
     // An empty attribute to trick md-autocomplete when adding attendees from the appointment editor
@@ -208,7 +238,12 @@
     var _this = this,
         action = 'saveAsContact';
 
-    if (this.c_component == 'vlist') action = 'saveAsList';
+    if (this.c_component == 'vlist') {
+      action = 'saveAsList';
+      _.forEach(this.refs, function(ref) {
+        ref.reference = ref.id;
+      });
+    }
 
     return Card.$$resource.save([this.pid, this.id || '_new_'].join('/'),
                                 this.$omit(),
@@ -244,11 +279,15 @@
    * @returns a promise of the HTTP operation
    */
   Card.prototype.export = function() {
-    var selectedIDs;
+    var data, options;
 
-    selectedIDs = [ this.id ];
+    data = { uids: [ this.id ] };
+    options = {
+      type: 'application/octet-stream',
+      filename: this.$$fullname + '.ldif'
+    };
 
-    return Card.$$resource.download(this.pid, 'export', {uids: selectedIDs}, {type: 'application/octet-stream'});
+    return Card.$$resource.download(this.pid, 'export', data, options);
   };
 
   Card.prototype.$fullname = function(options) {
@@ -263,8 +302,8 @@
         names.push(this.c_sn);
       if (names.length > 0)
         fn = names.join(' ');
-      else if (this.c_org && this.c_org.length > 0) {
-        fn = this.c_org;
+      else if (this.org && this.org.length > 0) {
+        fn = this.org;
       }
       else if (this.emails && this.emails.length > 0) {
         email = _.find(this.emails, function(i) { return i.value !== ''; });
@@ -280,12 +319,8 @@
     var description = [];
     if (this.title) description.push(this.title);
     if (this.role) description.push(this.role);
-    if (this.orgUnits && this.orgUnits.length > 0)
-      _.forEach(this.orgUnits, function(unit) {
-        if (unit.value !== '')
-          description.push(unit.value);
-      });
-    if (this.c_org) description.push(this.c_org);
+    if (this.org) description.push(this.org);
+    if (this.orgs) description = _.concat(description, _.map(this.orgs, 'value'));
     if (this.description) description.push(this.description);
 
     return description.join(', ');
@@ -354,20 +389,14 @@
     return this.c_component == 'vlist' && condition;
   };
 
-  Card.prototype.$addOrgUnit = function(orgUnit) {
-    if (angular.isUndefined(this.orgUnits)) {
-      this.orgUnits = [{value: orgUnit}];
+  Card.prototype.$addOrg = function(org) {
+    if (angular.isUndefined(this.orgs)) {
+      this.orgs = [org];
     }
-    else {
-      for (var i = 0; i < this.orgUnits.length; i++) {
-        if (this.orgUnits[i].value == orgUnit) {
-          break;
-        }
-      }
-      if (i == this.orgUnits.length)
-        this.orgUnits.push({value: orgUnit});
+    else if (org != this.org && !_.includes(this.orgs, org)) {
+      this.orgs.push(org);
     }
-    return this.orgUnits.length - 1;
+    return this.orgs.length - 1;
   };
 
   // Card.prototype.$addCategory = function(category) {
@@ -491,12 +520,7 @@
         delete _this[key];
       }
     });
-    angular.extend(this, this.$shadowData);
-    // Reinstanciate Card objects for list members
-    angular.forEach(this.refs, function(o, i) {
-      if (o.email) o.emails = [{value: o.email}];
-      _this.refs[i] = new Card(o);
-    });
+    this.init(this.$shadowData);
     this.$shadowData = this.$omit(true);
   };
 
@@ -541,19 +565,6 @@
     // Expose the promise
     this.$futureCardData = futureCardData.then(function(data) {
       _this.init(data);
-      // Instanciate Card objects for list members
-      angular.forEach(_this.refs, function(o, i) {
-        if (o.email) o.emails = [{value: o.email}];
-        o.id = o.reference;
-        _this.refs[i] = new Card(o);
-      });
-      if (_this.birthday) {
-        Card.$Preferences.ready().then(function() {
-          var dlp = Card.$Preferences.$mdDateLocaleProvider;
-          _this.birthday = _this.birthday.parseDate(dlp, '%Y-%m-%d');
-          _this.$birthday = dlp.formatDate(_this.birthday);
-        });
-      }
       // Mark card as loaded
       _this.$loaded = Card.STATUS.LOADED;
       // Make a copy of the data for an eventual reset
@@ -595,6 +606,14 @@
       else
         card.birthday = '';
     }
+
+    // We flatten the organizations to an array of strings
+    if (this.orgs)
+      card.orgs = _.map(this.orgs, 'value');
+
+    // We flatten the notes to an array of strings
+    if (this.notes)
+      card.notes = _.map(this.notes, 'value');
 
     return card;
   };

@@ -170,8 +170,8 @@ supported by SOGo:
 
 * Red Hat Enterprise Linux (RHEL) Server 5, 6 and 7
 * Community ENTerprise Operating System (CentOS) 5, 6 and 7
-* Debian GNU/Linux 6.0 (Squeeze) to 8.0 (Jessie)
-* Ubuntu 12.04 (Precise) to 14.04 (Trusty)
+* Debian GNU/Linux 6.0 (Squeeze), 7.0 (Wheezy) and 8.0 (Jessie)
+* Ubuntu 12.04 (Precise), 14.04 (Trusty) and 16.04 (Xenial)
 
 Make sure the required components are started automatically at boot time
 and that they are running before proceeding with the SOGo configuration.
@@ -201,6 +201,11 @@ should apply to all supported operating systems.
 Software Downloads
 ~~~~~~~~~~~~~~~~~~
 
+[NOTE]
+In order to access the production builds, you need a proper support contract
+from https://sogo.nu/support/index_new.html#support-plans[Inverse]. Continue
+with the configuration once you received your username and password.
+
 SOGo can be installed using the `yum` utility. To do so, first create
 the `/etc/yum.repos.d/inverse.repo` configuration file with the following
 content:
@@ -208,17 +213,32 @@ content:
 ----
 [SOGo]
 name=Inverse SOGo Repository
-baseurl=http://inverse.ca/rhel-v3/7/$basearch
-gpgcheck=0
+baseurl=https://<username>:<password>@packages.inverse.ca/SOGo/release/3/rhel/7/$basearch
+gpgcheck=1
 ----
 
-Some of the softwares on which SOGo depends are available from the
-repository of RepoForge (previously known as RPMforge). To add RepoForge
-to your packages sources, download and install the appropriate RPM
-package from http://packages.sw.be/rpmforge-release/.
-Also make sure you enabled the "rpmforge-extras" repository.
+[NOTE]
+Any non-URL safe characters in username/password must be URL-encoded.  For
+example, if your password is `so%go`, you must set the value in your
+configuration file to `so%25go` - where `%` is encoded to `%25`.
 
-For more information on using RepoForge, visit http://repoforge.org/use/.
+Inverse signs its RPM packages with its GPG key. Integrity verification happens
+all by itself on package installation, all you need to do is first import the
+key into your rpm keychain:
+
+----
+rpm --import "https://pgp.mit.edu/pks/lookup?op=get&search=0xCB2D3A2AA0030E2C"
+----
+
+Some of the softwares on which SOGo depends are available from the repository
+"Extra Packages for Enterprise Linux" (EPEL). To add EPEL to your packages
+sources, install the following package:
+
+----
+rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+----
+
+For more information on EPEL, visit http://fedoraproject.org/wiki/EPEL/.
 
 Software Installation
 ~~~~~~~~~~~~~~~~~~~~~
@@ -371,8 +391,13 @@ internet connection could be killed prematurely.
 |Parameter used to set the maximum allowed size for content being
 sent to SOGo using a PUT or a POST call. This can also limit the file
 attachment size being uploaded to SOGo when composing a mail. The
-value is in kilobyte. By default, the value is 0, or disabled so no
+value is in kilobytes. By default, the value is 0, or disabled so no
 limit will be set.
+
+|S |SOGoMaximumMessageSizeLimit
+|Parameter used to set the maximum allowed email message size when
+composing a mail. The value is in kilobytes. By default, the value is 0,
+or disabled so no limit will be set.
 
 |S |SxVMemLimit
 |Parameter used to set the maximum amount of memory (in
@@ -481,7 +506,7 @@ SOGoSAML2LogoutEnabled must be set to YES. If unset, the user will be
 redirected to a blank page.
 
 |D |SOGoTimeZone
-|Parameter used to set a default time zone for users. The default
+|Mandatory parameter used to set a default time zone for users. The default
 timezone is set to UTC. The Olson database is a standard database that
 takes all the time zones around the world into account and represents
 them along with their history. On GNU/Linux systems, time zone
@@ -888,7 +913,7 @@ source:
 
 [cols="^3,>47,50a"]
 |=======================================================================
-.34+|D <|SOGoUserSources
+.36+|D <|SOGoUserSources
 |Parameter used to set the LDAP and/or SQL sources used for
 authentication and global address books. Multiple sources can be
 specified as an array of dictionaries. A dictionary that defines an LDAP
@@ -917,7 +942,8 @@ table.
 
 |MailFieldNames
 |An array of fields that returns the user's email addresses (defaults to
-`mail` when unset).
+`mail` when unset). Note that SOGo will always automatically strip the
+protocol value from the attribute if the attribute name is `proxyAddresses`.
 
 |SearchFieldNames
 |An array of fields to to match against the search string when filtering
@@ -1027,9 +1053,9 @@ be specified as a LDAP Extension in the LDAP URL (e.g.
 without Password Policies enabled.
 
 Possible values are: `none`, `plain`, `crypt`, `md5`, `md5-crypt`,
-`smd5`, `cram-md5` and `sha`, `sha256`, `sha512` and its ssha (e.g.
-`ssha` or `ssha256`) variants (plus setting of the encoding with `.b64`
-or `.hex`).
+`sha256-crypt` and `sha512-crypt`, `smd5`, `cram-md5` and `sha`, `sha256`,
+`sha512` and its ssha (e.g. `ssha` or `ssha256`) variants
+(plus setting of the encoding with `.b64` or `.hex`).
 
 For a more detailed description see
 http://wiki.dovecot.org/Authentication/PasswordSchemes.
@@ -1037,6 +1063,9 @@ http://wiki.dovecot.org/Authentication/PasswordSchemes.
 Note that `cram-md5` is not actually using cram-md5 (due to the lack of
 challenge-response mechanism), its just saving the intermediate MD5
 context as Dovecot stores in its database.
+
+Also note that `sha256-crypt` and `sha512-crypt` requires that your
+operating system supports glibc 2.7 or more recent.
 
 |canAuthenticate
 |If set to `YES`, this LDAP source is used for authentication
@@ -1208,6 +1237,7 @@ mapping = {
 2+h|Other
 |Birthday |birthyear-birthmonth-birthday
 |Note |description
+|Photo |photo
 |===
 
 Authenticating using C.A.S.
@@ -1443,7 +1473,7 @@ URL could be set to something like:
 `postgresql://sogo:sogo@localhost:5432/sogo/sogo_alarms_folder`
 
 |S |OCSStoreURL
-|Parameter used to set the database URL so that SOGo can use to start
+|Parameter used to set the database URL so that SOGo can use to store
 all content data. You must also set `OCSAclURL` and `OCSCacheFolderURL`
 if you set this parameter. Using these parameters will allow SOGo to use
 a total of nine database tables - and prevent SOGo from creating three
@@ -1453,7 +1483,7 @@ For PostgresSQL, set the database URL to something like:
 `postgresql://sogo:@localhost:5432/sogo/sogo_store`.
 
 |S |OCSAclURL
-|Parameter used to set the database URL so that SOGo can use to start
+|Parameter used to set the database URL so that SOGo can use to store
 all ACL data. You must also set `OCSStoreURL` and `OCSCacheFolderURL`
 if you set this parameter.
 
@@ -1461,7 +1491,7 @@ For PostgresSQL, set the database URL to something like:
 `postgresql://sogo:@localhost:5432/sogo/sogo_acl`.
 
 |S |OCSCacheFolderURL
-|Parameter used to set the database URL so that SOGo can use to start
+|Parameter used to set the database URL so that SOGo can use to store
 all cache data. You must also set `OCSStoreURL` and `OCSAclURL`
 if you set this parameter.
 
@@ -1645,8 +1675,10 @@ repository.
 authentication usernames (defaults to `c_uid` when unset).
 
 |MailFieldNames (optional)
-|Aan array of fields that specifies the column names that hold
+|An array of fields that specifies the column names that hold
 additional email addresses (beside the `mail` column) for each user.
+Values must be unique and not appear in more than one column.
+Space-separated values allowed in all *additional* columns (besides in `mail`).
 
 |IMAPHostFieldName (optional)
 |The field that returns the IMAP hostname for the user.
@@ -2459,7 +2491,7 @@ as keys for the the `domains` dictionary.
 |Parameter used to set domains visible among themselves. This parameter
 is an array of arrays.
 
-Example: `SOGoDomainsVisibility = ((acme, coyote));`
+Example: `SOGoDomainsVisibility = ( (acme, coyote) );`
 
 Defaults to an empty array, which means domains are isolated from each
 other.

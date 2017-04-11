@@ -4,7 +4,7 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
-  <md-dialog flex="40" flex-sm="80" flex-xs="100">
+  <md-dialog flex="40" flex-md="60" flex-sm="80" flex-xs="100">
     <md-toolbar ng-class="editor.component.getClassName('bg')">
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">assignment_turned_in</md-icon>
@@ -18,7 +18,7 @@
           <md-icon ng-repeat="i in ::editor.component.priority | range">star</md-icon>
         </div>
         <md-menu>
-          <md-button label:aria-label="More options" class="sg-icon-button" ng-click="$mdOpenMenu($event)">
+          <md-button label:aria-label="More options" class="sg-icon-button" ng-click="$mdMenu.open($event)">
             <md-icon>more_vert</md-icon>
           </md-button>
           <md-menu-content>
@@ -85,7 +85,7 @@
         <!-- attach urls -->
         <md-list-item  ng-repeat="url in ::editor.component.attachUrls">
           <md-icon>link</md-icon>
-          <p><a ng-href="url.value" target="_new">{{url.value}}</a></p>
+          <p><a ng-href="{{url.value}}" target="_new">{{url.value}}</a></p>
         </md-list-item>
         <!-- comment -->
         <md-list-item ng-show="editor.component.comment">
@@ -104,38 +104,68 @@
         </md-list-item>
       </md-list>
     </md-dialog-content>
-    <!-- edit -->
+
+    <!-- actions -->
+
+    <!-- editable but not recurrent -->
     <md-dialog-actions ng-show="editor.component.isEditable()">
       <md-button class="md-warn" label:aria-label="Delete Task"
-                 ng-show="editor.component.isEditable() || editor.component.isInvitation()"
                  ng-click="editor.deleteAllOccurrences()">
         <var:string label:value="Delete"/>
       </md-button>
-      <md-menu ng-show="editor.component.isEditableOccurrence() || editor.component.isInvitationOccurrence()">
-        <md-button class="md-warn" label:aria-label="Delete Task"
-                   ng-click="$mdOpenMenu()"
+      <div class="md-flex"><!-- spacer --></div>
+      <md-button ng-click="editor.edit()">
+        <var:string label:value="Edit"/>
+      </md-button>
+    </md-dialog-actions>
+    <!-- editable and recurrent -->
+    <md-dialog-actions ng-show="editor.component.isEditableOccurrence()">
+      <md-menu>
+        <md-button class="md-warn"
+                   label:aria-label="Delete Task"
+                   ng-click="$mdMenu.open()"
                    md-menu-origin="md-menu-origin">
-          <var:string label:value="Delete"/><md-icon>arrow_drop_down</md-icon>
+          <var:string label:value="Delete"/> <md-icon>arrow_drop_down</md-icon>
         </md-button>
         <md-menu-content>
           <md-menu-item>
             <md-button class="md-warn"
+                       label:aria-label="Delete This Occurrence"
                        ng-click="editor.deleteOccurrence()">
-              <var:string label:value="Delete This Occurrence"/>
+              <md-icon>repeat_one</md-icon> <var:string label:value="Delete This Occurrence"/>
             </md-button>
           </md-menu-item>
           <md-menu-item>
             <md-button class="md-warn"
+                       label:aria-label="Delete All Occurrences"
                        ng-click="editor.deleteAllOccurrences()">
-              <var:string label:value="Delete All Occurrences"/>
+              <md-icon>repeat</md-icon> <var:string label:value="Delete All Occurrences"/>
             </md-button>
           </md-menu-item>
         </md-menu-content>
       </md-menu>
       <div class="md-flex"><!-- spacer --></div>
-      <md-button ng-click="editor.edit()">
-        <var:string label:value="Edit"/>
-      </md-button>
+      <md-menu>
+        <md-button label:aria-label="Edit"
+                   ng-click="$mdMenu.open()"
+                   md-menu-origin="md-menu-origin">
+          <var:string label:value="Edit"/> <md-icon>arrow_drop_down</md-icon>
+        </md-button>
+        <md-menu-content>
+          <md-menu-item>
+            <md-button type="button" label:aria-label="Edit This Occurrence"
+                       ng-click="editor.edit()">
+              <md-icon>repeat_one</md-icon> <var:string label:value="Edit This Occurrence"/>
+            </md-button>
+          </md-menu-item>
+          <md-menu-item>
+            <md-button type="button" label:aria-label="Edit All Occurrences"
+                       ng-click="editor.editAllOccurrences()">
+              <md-icon>repeat</md-icon> <var:string label:value="Edit All Occurrences"/>
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
     </md-dialog-actions>
   </md-dialog>
 </container>

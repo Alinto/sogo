@@ -121,7 +121,7 @@ static NSArray *folderListingFields = nil;
   NSString *component;
   Class objectClass;
 
-  qualifier = [EOQualifier qualifierWithQualifierFormat:@"c_name = %@", name];
+  qualifier = [EOQualifier qualifierWithQualifierFormat: @"c_name = %@", [name asSafeSQLString]];
   records = [[self ocsFolder] fetchFields: [NSArray arrayWithObject: @"c_component"]
                               matchingQualifier: qualifier];
 
@@ -190,8 +190,7 @@ static NSArray *folderListingFields = nil;
 
   if ([filter length] > 0)
     {
-      filter = [[filter stringByReplacingString: @"\\"  withString: @"\\\\"]
-                     stringByReplacingString: @"'"  withString: @"\\'\\'"];
+      filter = [filter asSafeSQLString];
       if ([criteria isEqualToString: @"name_or_address"])
         qs = [NSString stringWithFormat:
                          @"(c_sn isCaseInsensitiveLike: '%%%@%%') OR "
@@ -338,8 +337,7 @@ static NSArray *folderListingFields = nil;
  
   if (aName && [aName length] > 0)
     {
-      aName = [[aName stringByReplacingString: @"\\"  withString: @"\\\\"]
-                 stringByReplacingString: @"'"  withString: @"\\'\\'"];
+      aName = [aName asSafeSQLString];
       qs = [NSString stringWithFormat: @"(c_name='%@')", aName];
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
       dbRecords = [[self ocsFolder] fetchFields: folderListingFields

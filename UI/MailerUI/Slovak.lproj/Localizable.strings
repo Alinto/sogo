@@ -8,11 +8,13 @@
 "Forward"     = "Preposlať";
 "Get Mail"    = "Prijať";
 "Junk"        = "Spam";
+"Not junk"    = "Nie je SPAM";
 "Reply"       = "Odpovedať";
 "Reply All"   = "Odpovedať všetkým";
 "Print"       = "Tlačiť";
 "Stop"        = "Stop";
 "Write"       = "Písať";
+"Search"      = "Vyhľadať";
 "Send" = "Poslať";
 "Contacts" = "Kontakty";
 "Attach" = "Príloha";
@@ -20,6 +22,7 @@
 "Options" = "Voľby";
 "Close" = "Zavrieť";
 "Size" = "Veľkosť";
+
 /* Tooltips */
 "Send this message now" = "Poslať správu";
 "Select a recipient from an Address Book" = "Vyberte príjemcu z adresára";
@@ -32,12 +35,13 @@
 "Reply to sender and all recipients" = "Odpovedať odosielateľovi a všetkým príjemcom";
 "Forward selected message" = "Prepošli označené správy";
 "Delete selected message or folder" = "Odstráň označenú správu alebo priečinok";
-"Mark the selected messages as junk" = "Označ vybrané správy ako spam";
 "Print this message" = "Vytlačiť správu";
 "Stop the current transfer" = "Zastav prebiehajúci presun";
 "Attachment" = "Príloha";
 "Unread" = "Neprečítané";
-"Flagged" = "Označené zástavkou";
+"Flagged" = "Oštítkované";
+"Search multiple mailboxes" = "Prehľadať viaceré poštové schránky";
+
 /* Main Frame  */
 "Home"                 = "Domov"; 
 "Calendar"             = "Kalendár";
@@ -45,13 +49,33 @@
 "Mail"                 = "Pošta";
 "Right Administration" = "Administrácia práv";
 "Help" = "Pomoc";
+
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Vitajte v SOGo Mailer. Použite zoznam zložiek vľavo na prehliadanie Vášho emailového účtu!";
 "Read messages"       = "Čítať správu";
+
+/* Tooltip for fab button */
 "Write a new message" = "Nápísať správu";
-"Share: " = "Zdielať";
-"Account: " = "Účet";
-"Shared Account: " = "Zdielať účet";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Napísať správu v novom okne";
+
+"Share" = "Zdielať";
+"Account" = "Účet";
+"Shared Account" = "Zdielaný účet";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "Nebola vybraná žiadna správa";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "Nebola vybraná žiadna schránka";
+
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Priečinok bol zmenšený";
+/* Empty Trash success message */
+"Trash emptied" = "Kôš bol vyprázdnený";
+
 /* acls */
 "Access rights to" = "Pristupové práva k";
 "For user" = "Pre užívateľa";
@@ -59,7 +83,7 @@
 "List and see this folder" = "Zoraď a zobraz tento priečinok";
 "Read mails from this folder" = "Čitať maile z tejto zložky";
 "Mark mails read and unread" = "Označ maily ako prečítané a neprečítané";
-"Modify the flags of the mails in this folder" = "Uprav zástavky mailov v tejto zložke";
+"Modify the flags of the mails in this folder" = "Upraviť mailové štítky v tejto zložke";
 "Insert, copy and move mails into this folder" = "Vlož, kopíruj a presuň maile do tejto zložky";
 "Post mails" = "Zverejni maily";
 "Add subfolders to this folder" = "Pridať podadresáre pre tento adresár";
@@ -71,16 +95,19 @@
 "Saved Messages.zip" = "Uložené Správy.zip";
 "Update" = "Aktualizuj";
 "Cancel" = "Zrušiť";
+
 /* Mail edition */
 "From"          = "Od";
 "Subject"       = "Predmet";
 "To"            = "Pre";
 "Cc"            = "Kópia";
 "Bcc"           = "Skrytá kópia";
-"Reply-To"	= "Odpovedz odosielateľovi";
+"Reply-To"	    = "Odpovedz odosielateľovi";
 "Add address"   = "Pridať adresu";
+"Body"          = "Telo";
 "Open" = "Otvoriť";
 "Select All" = "Vyber všetko";
+"Select Message" = "Zvoľte správu";
 "Attach Web Page..." = "Prilož WWW stránku...";
 "file" = "súbor";
 "files" = "súbory";
@@ -88,10 +115,11 @@
 "to"            = "Pre";
 "cc"            = "Kópia";
 "bcc"           = "Skrytá kópia";
+"Add a recipient" = "Pridať príjemcu";
 "Edit Draft..." = "Uprav rozpísané...";
 "Load Images" = "Nahraj obrázky";
 "Return Receipt" = "Notifikácia o doručení";
-"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Odosielateľ tejto správy by chcel byť informovaný o jej prečítaní. Checete informovať odosielateľa?";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Odosielateľ tejto správy si vyžiadal notifikáciu o prečítaní tejto správy. Prajete si odoslať notifikáciu o prečítaní?";
 "Return Receipt (displayed) - %@"= "Notifikácia o doručení (zobrazená) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Toto je potvrdenie o prečítaní ku správe, ktorú ste poslali pre %@.⏎ ⏎ Poznámka: Potvrdenie o prijatí znamená iba to, že sa správa zobrazila na počítači adresáta. Nie je ale zaručené, že adresát správu čítal a porozumel jej obsahu.";
 "Priority" = "Priorita";
@@ -103,12 +131,14 @@
 "This mail is being sent from an unsecure network!" = "Tento email bude odoslaný z nezabezpečenej siete!";
 "Address Book" = "Adresár";
 "Search For" = "Hľadať v";
+
 /* Popup "show" */
 "all"     = "všetko";
 "read"    = "čítať";
 "unread"  = "prečítané";
 "deleted" = "zmazané";
-"flagged" = "označené";
+"flagged" = "oštítkované";
+
 /* MailListView */
 "Sender" = "Odosielateľ";
 "Subject or Sender" = "Predmet alebo Odosielateľ";
@@ -119,6 +149,7 @@
 "All"           = "Všetko";
 "No message"    = "Žiadna správa";
 "messages"      = "správa";
+"Yesterday"     = "Včera";
 "first"         = "Prvá";
 "previous"      = "Predošlá";
 "next"          = "Ďalšia";
@@ -128,22 +159,28 @@
 "Mark Unread" = "Označ ako neprečítané";
 "Mark Read"   = "Označ ako prečítané";
 "Untitled" = "Bez mena";
+
 /* Tree */
 "SentFolderName"   = "Odoslané";
 "TrashFolderName"  = "Kôš";
 "InboxFolderName"  = "Prijaté";
 "DraftsFolderName" = "Koncepty";
+"JunkFolderName" = "Spam";
 "SieveFolderName"  = "Filtre";
 "Folders"          = "Adresáre"; /* title line */
+
 /* MailMoveToPopUp */
 "MoveTo"        = "Presuň &hellip;";
+
 /* Address Popup menu */
 "Add to Address Book..." = "Pridaj do adresára...";
 "Compose Mail To" = "Napísať mail pre";
 "Create Filter From Message..." = "Vytvoriť filter zo správy...";
+
 /* Image Popup menu */
 "Save Image" = "Uložiť obrázok";
 "Save Attachment" = "Uložiť prílohu";
+
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Otvoriť v novom okne";
 "Copy Folder Location" = "Kopírovať adresu priečinka";
@@ -160,10 +197,13 @@
 "Get Messages for Account" = "Prijať správy na účet";
 "Properties..." = "Vlastnosti";
 "Delegation..." = "Delegácia ...";
+
 /* Use This Folder menu */
 "Sent Messages" = "Poslať Správu";
 "Drafts" = "Koncepty";
 "Deleted Messages" = "Zmazať správy";
+"Junk Messages" = "Nevyžiadané správy";
+
 /* Message list popup menu */
 "Open Message In New Window" = "Otvoriť správu v novom okne";
 "Reply to Sender Only" = "Odpovedať len odosielateľovi";
@@ -176,30 +216,84 @@
 "Save As..." = "Uložiť ako...";
 "Print Preview" = "Náhľad pred tlačou";
 "View Message Source" = "Ukázať zdroj správy";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Zmeniť na udalosť";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Zmeniť na úlohu";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Stiahnuť všetky prílohy";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "prílohy";
+
 "Print..." = "Tlačiť";
 "Delete Message" = "Zmazať správu";
 "Delete Selected Messages" = "Zmazať vybrané správy";
+"Mark the selected messages as junk" = "Označ vybrané správy ako spam";
+"Mark the selected messages as not junk" = "Vybrané správy nie sú nevyžiadaná pošta";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "a %{0} viac...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "Skryť";
+
+/* Number of selected messages in list */
+"selected" = "vybrané";
+
 "This Folder" = "Adresár";
+
 /* Label popup menu */
 "None" = "Žiaden";
+
 /* Mark popup menu */
 "As Read" = "Prečítané";
 "Thread As Read" = "Konverzáciu ako prečítanú";
 "As Read By Date..." = "Prečítané dátumom...";
 "All Read" = "Prečítať všetko";
-"Flag" = "Označ zástavkou";
+"Flag" = "Oštítkovať";
 "As Junk" = "Ako SPAM";
 "As Not Junk" = "Ako nie SPAM";
 "Run Junk Mail Controls" = "Spusti kontrolu SPAMu";
+"Search messages in" = "Prehľadať správy v";
+"Search" = "Vyhľadať";
+"Search subfolders" = "Prehľadať podadresár";
+"Match any of the following" = "Zodpovedá ktorémukoľvek z nasledujúceho";
+"Match all of the following" = "Zodpovedá všetkému nasledujúcemu";
+"contains" = "obsahuje";
+"does not contain" = "neobsahuje";
+"No matches found" = "Neboli nájdené žiadne zhody";
+"results found" = "nájdené výsledky";
+"result found" = "nájdený výsledok";
+"Please specify at least one filter" = "Prosím zvoľte aspoň jeden filter";
+
 /* Folder operations */
 "Name" = "Meno";
 "Enter the new name of your folder"
- = "Zadajte nové meno adresára";
+ ="Zadajte nové meno adresára";
 "Do you really want to move this folder into the trash ?"
  = "Skutočne chcete presunúť tento priečinok do koša?";
 "Operation failed" = "Operácia zlyhala";
 "Quota" = "Kvóta:";
 "quotasFormat" = "%{0}% použité z %{1} MB";
+"Unable to move/delete folder." = "Nemožno presunúť/vymazať zložku.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Poštová schránka nemôže byť presunutá do koša. Chcete ju vymazať okamžite?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "Ste si istý že chcete odstrániť označené správy?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} správ(a) skopírovaných";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} správ(a) presunutých";
+
 "Please select a message." = "Prsím vyberte správu";
 "Please select a message to print." = "Prosím vyberte správu ktorú chcete tlačiť.";
 "Please select only one message to print." = "Prosím vyberte iba jednu správu ktorú chcete tlačiť.";
@@ -219,19 +313,95 @@
 = "Presunúť správu do jej vlastného priečinka sa nedá!";
 "Copying a message into its own folder is impossible!"
 = "Kopírovať správu do jej vlastného priečinka sa nedá!";
+
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
 = "Správy nemôžu byť presunuté do koša. Chcete ich vymazať okamžite?";
+
 /* Message editing */
 "error_missingsubject" = "Správa nemá žiadny predmet. Skutočne ju checete odoslať?";
 "error_missingrecipients" = "Prosím zvoľte aspoň jedného príjemcu.";
 "Send Anyway" = "Poslať napriek tomu";
 "Error while saving the draft" = "Počas ukladania konceptu nastala chyba";
+
+/* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Nastala chyba počas nahrávania súboru \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Práve prebieha nahrávanie súboru. Zatvorením okna nahrávanie prerušíte.";
-/* Message sending */
+"Message is too big" = "Správa je príliš veľká";
+
+/* Appears while sending the message */
+"Sending" = "Odosielam správu";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Odoslané";
+
 "cannot send message: (smtp) all recipients discarded" = "Správa sa nedá odoslať: žiadny príjemca nie je platný.";
 "cannot send message (smtp) - recipients discarded" = "Správa sa nedá odoslať: Nasledujúci príjemcovia nemajú platnú adresu";
 "cannot send message: (smtp) error when connecting" = "Správa sa nedá odoslať: chyba pri pripájaní na SMTP server.";
+
 /* Contacts list in mail editor */
 "Email" = "Email";
+"More mail options" = "Viac možností pošty";
+"Delegation" = "Delegácia";
+"Add User" = "Pridať užívateľa";
+"Add a tag" = "Pridaj štítok";
+"reply" = "odpovedať";
+"Edit" = "Upraviť";
+"Yes" = "Áno";
+"No" = "Nie";
+"Location" = "Umiestnenie";
+"Rename" = "Premenovať";
+"Compact" = "Zmenšiť";
+"Export" = "Exportovať";
+"Set as Drafts" = "Označ ako koncepty";
+"Set as Sent" = "Označ ako odoslané";
+"Set as Trash" = "Označ do koša";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "Označ ako SPAM";
+
+"Sort" = "Zoraď";
+"Order Received" = "Poradie prijatia";
+"Descending Order" = "Zostupné poradie";
+"Back" = "Späť";
+"Copy messages" = "Kopírovať správy";
+"More messages options" = "Viac možností správ";
+"Mark as Unread" = "Označ ako neprečítané";
+"Mark as Read" = "Označiť ako prečítané";
+"Closing Window ..." = "Okno sa zatvára ...";
+"Tried to send too many mails. Please wait." = "Pokúsili ste sa odoslať príliš vela e-mailov. Prosím čakajte.";
+"View Mail" = "Zobraziť E-mail";
+"This message contains external images." = "Táto správa obsahuje externé obrázky";
+"Expanded" = "Rozšírené";
+"Add a Criteria" = "Pridať kritérium";
+"More search options" = "Viac možností vyhľadávania";
+"Your email has been saved" = "Váš email bol uložený";
+"Your email has been sent" = "Váš email bol odoslaný";
+"Folder compacted" = "Priečinok bol zmenšený";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Rozsah vyhľadávania";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Správa odberu zložiek";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filter";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

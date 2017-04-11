@@ -55,6 +55,7 @@
         <md-grid-list md-cols="7" md-row-height="2em" md-gutter="0.5em"
                       flex="50" flex-sm="80" flex-xs="100"
                       ng-model="editor.component.repeat.monthdays"
+                      ng-required="editor.recurrenceMonthDaysAreRequired()"
                       sg-toggle-grid="sg-toggle-grid">
           <md-grid-tile value="1">1</md-grid-tile>
           <md-grid-tile value="2">2</md-grid-tile>
@@ -93,20 +94,16 @@
         <md-radio-button value="byday">
           <var:string label:value="The"/>
         </md-radio-button>
-        <md-input-container>
-          <md-select ng-model="editor.component.repeat.month.occurrence">
-            <var:foreach list="monthlyRepeatList" item="item">
-              <md-option var:value="valueForMonthlyRepeat"><var:string value="itemText"/></md-option>
-            </var:foreach>
-          </md-select>
-        </md-input-container>
-        <md-input-container>
-          <md-select ng-model="editor.component.repeat.month.day">
-            <var:foreach list="monthlyDayList" item="item">
-              <md-option var:value="valueForMonthlyDay"><var:string value="item"/></md-option>
-            </var:foreach>
-          </md-select>
-        </md-input-container>
+        <md-select ng-model="editor.component.repeat.month.occurrence">
+          <var:foreach list="monthlyRepeatList" item="item">
+            <md-option var:value="valueForMonthlyRepeat"><var:string value="itemText"/></md-option>
+          </var:foreach>
+        </md-select>
+        <md-select ng-model="editor.component.repeat.month.day">
+          <var:foreach list="monthlyDayList" item="item">
+            <md-option var:value="valueForMonthlyDay"><var:string value="item"/></md-option>
+          </var:foreach>
+        </md-select>
       </div>
     </md-radio-group>
   </div>
@@ -131,7 +128,7 @@
       </md-grid-list>
     </div>
     <div layout="row" layout-align="start center">
-      <md-checkbox ng-model="editor.component.repeat.year.byday">
+      <md-checkbox class="sg-checkbox--with-select" ng-model="editor.component.repeat.year.byday">
         <var:string label:value="The"/>
       </md-checkbox>
       <md-select ng-model="editor.component.repeat.month.occurrence">

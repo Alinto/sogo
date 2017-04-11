@@ -19,13 +19,13 @@ vtodo_class2 = "(Доверлива задача)";
 "startDate_label" = "Почеток:";
 "endDate_label" = "Крај:";
 "due_label" = "Краен датум:";
-"location_label" = "Локација:";
+"location_label" = "Локација";
 "summary_label" = "Резиме:";
 "comment_label" = "Коментар:";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Покана за настанот: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(испратено од %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}ве покани на %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}ве покани на %{Summary}.\n\nПочеток: %{StartDate}\nКрај: %{EndDate}\nОпис: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}ве покани на %{Summary}.\n\nПочеток: %{StartDate} во %{StartTime}\nКрај: %{EndDate} во %{EndTime}\nОпис: %{Description}";
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Настанот е откажан: \"%{Summary}\"";

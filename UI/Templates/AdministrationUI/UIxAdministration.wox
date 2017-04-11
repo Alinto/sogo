@@ -14,14 +14,17 @@
   <main class="view"
         layout="row" layout-fill="layout-fill"
         ui-view="administration"
-        ng-controller="navController">
-    <!-- administration -->
-  </main>
+        ng-controller="navController"><!-- administration --></main>
 
   <script type="text/ng-template" id="administration.html">
-    <md-sidenav id="left-sidenav" class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
+
+    <!-- Sidenav -->
+    <md-sidenav class="md-sidenav-left md-whiteframe-z1" layout="column"
+                md-component-id="left" md-is-locked-open="isGtMedium"
+                ng-class="{ 'sg-close': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
-      <md-content md-scroll-y="md-scroll-y" class="md-flex md-hue-2">
+      <md-content class="md-flex" layout="column" md-scroll-y="md-scroll-y"
+                  md-colors="::{ backgroundColor: 'default-background-300' }">
         <md-list>
           <md-list-item ng-click="app.go('rights')"
                         ui-sref="administration.rights"
@@ -80,17 +83,11 @@
             <div ng-repeat="user in app.users">
               <md-list-item ng-class="{ 'sg-collapsed': user.uid != app.selectedUser.uid,
                                       'sg-expanded': user.uid == app.selectedUser.uid }"
-                            ng-click="app.selectUser($index)">
+                            ng-click="app.selectUser($index)"
+                            aria-label="{{::user.c_email}}">
                 <sg-avatar-image class="md-avatar"
-                                 ng-if="::user.isGroup === 0"
                                  sg-email="::user.c_email"
-                                 size="40">
-                  <!-- contact avatar -->
-                </sg-avatar-image>
-                <div class="sg-list-avatar"
-                     ng-show="::user.isGroup">
-                  <!-- list avatar -->
-                </div>
+                                 size="40">{{::user.$avatarIcon}}</sg-avatar-image>
                 <div class="sg-tile-content">
                   <div class="sg-md-subhead">
                     <div>{{::user.cn}}</div>
@@ -123,13 +120,16 @@
         </md-content>
       </div>
 
-      <div id="detailView" class="view-detail md-default-theme md-background md-bg md-hue-1"
+      <div id="detailView" class="view-detail"
            layout="column" layout-align="start center"
            ng-class="{ 'sg-close': !app.selectedUser.selectedFolder }"
+           md-colors="::{backgroundColor: 'default-background-200'}"
            ui-view="acl">
-        <md-content class="hide-xs md-flex md-hue-1"
+        <md-content class="hide show-gt-md md-flex"
+                    md-colors="::{backgroundColor: 'default-background-200'}"
                     layout="column" layout-align="center center" layout-fill="layout-fill">
-          <div class="md-default-theme md-background md-fg md-hue-3 sg-md-title"><var:string label:value="No resource selected"/></div>
+          <div class="sg-md-title"
+               md-colors="::{color: 'default-background-500'}"><var:string label:value="No resource selected"/></div>
         </md-content>
       </div>
 

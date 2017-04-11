@@ -1,6 +1,19 @@
 /* toolbar */
 "Save and Close" = "Uložit a zavřít";
 "Close" = "Zavřít";
+"Preferences saved" = "Předvolby uloženy";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Neuložené změny";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Chcete uložit vykonané konfigurační změny?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Uložit";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Neuložit";
 
 /* tabs */
 "General" = "Obecný";
@@ -17,15 +30,21 @@
 "Color" = "Barva";
 "Add" = "Přidat";
 "Delete" = "Smazat";
+
 /* contacts categories */
 "contacts_category_labels" = "Kolega, Konkurent, Zákazník, Přítel, Rodina, Obchodní partner, Dodavatel, Tisk, VIP";
+
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Zapnout odpovědi v nepřítomnosti";
-"Auto reply message" ="Zpráva zasílaná v nepřítomnosti";
-"Email addresses (separated by commas)" ="Emailové adresy (oddělené čárkami)";
+"Enable custom auto reply subject" = "Povolit vlastní předmět odpovědi v nepřítomnosti";
+"Auto reply subject" = "Předmět odpovědi v nepřítomnosti";
+"You can write ${subject} to insert the original subject" = "Napište ${subject} pro vložení originálního předmětu zprávy";
+"Auto reply message" = "Zpráva zasílaná v nepřítomnosti";
+"Email addresses (separated by commas)" = "Emailové adresy (oddělené čárkami)";
 "Add default email addresses" = "Přidat základní emailové adresy";
-"Days between responses" ="Počet dnů mezi odpověďmi";
+"Days between responses" = "Počet dnů mezi odpověďmi";
 "Do not send responses to mailing lists" = "Neposílat odpovědi do konferencí";
+"Enable auto reply on" = "Zapnout odpovědi v nepřítomnosti";
 "Disable auto reply on" = "Automatické odpovědi vypnout dne";
 "Always send vacation message response" = "Vždy posílat zprávu v nepřítomnosti";
 "Please specify your message and your email addresses for which you want to enable auto reply."
@@ -33,6 +52,7 @@
 "Your vacation message must not end with a single dot on a line." = "Vaše zpráva v nepřítomnosti nesmí končit samotnou tečkou na řádce.";
 "End date of your auto reply must be in the future."
 = "Datum ukončení vaší automatické odpovědi musí být v budoucnosti.";
+
 /* forward messages */
 "Forward incoming messages" = "Přeposílat příchozí zprávy";
 "Keep a copy" = "Ponechat kopii";
@@ -40,12 +60,15 @@
 = "Prosím zadejte adresu, na kterou chcete své zprávy přeposílat.";
 "You are not allowed to forward your messages to an external email address." = "Nemáte povoleno přeposílání Vašich zpráv na externí emailovou adresu.";
 "You are not allowed to forward your messages to an internal email address." = "Nemáte povoleno přeposílání Vašich zpráv na interní emailovou adresu.";
+
 /* d & t */
-"Current Time Zone" ="Současné časové pásmo";
-"Short Date Format" ="Krátký formát data";
-"Long Date Format" ="Dlouhý formát data";
-"Time Format" ="Formát času";
+"Current Time Zone" = "Současné časové pásmo";
+"Short Date Format" = "Krátký formát data";
+"Long Date Format" = "Dlouhý formát data";
+"Time Format" = "Formát času";
 "default" = "výchozí";
+"Default Module" = "Výchozí modul";
+"Save" = "Uložit";
 "shortDateFmt_0" = "%d-%b-%y";
 "shortDateFmt_1" = "%d-%m-%y";
 "shortDateFmt_2" = "%d/%m/%y";
@@ -79,24 +102,30 @@
 "timeFmt_2" = "";
 "timeFmt_3" = "";
 "timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "Nebylo nalezeno nic.";
+
 /* calendar */
-"Week begins on" ="Týden začíná v";
-"Day start time" ="Začátek dne";
-"Day end time" ="Konec dne";
+"Week begins on" = "Týden začíná v";
+"Day start time" = "Začátek dne";
+"Day end time" = "Konec dne";
 "Day start time must be prior to day end time." = "Čas Začátek dne musí předcházet času Konec dne.";
+"Week days to display" = "Zobrazované dny";
 "Show time as busy outside working hours" = "Čas mimo pracovní dobu zobrazovat jako obsazený";
-"First week of year" ="První týden roku";
+"First week of year" = "První týden roku";
 "Enable reminders for Calendar items" = "Povolit upozornění pro události v kalendáři";
 "Play a sound when a reminder comes due" = "Při upozornění přehrát zvuk";
-"Default reminder" ="Výchozí upozornění";
+"Default reminder" = "Výchozí upozornění";
 "firstWeekOfYear_January1" = "Začíná 1. ledna";
 "firstWeekOfYear_First4DayWeek" = "První 4-denní týden";
 "firstWeekOfYear_FirstFullWeek" = "První celý týden";
 "Prevent from being invited to appointments" = "Blokovat budoucí pozvání na schůzky";
 "White list for appointment invitations" = "Seznam povolených pro pozvání na schůzky";
 "Contacts Names" = "Jména kontaktů";
+
 /* Default Calendar */
-"Default calendar" ="Výchozí kalendář";
+"Default calendar" = "Výchozí kalendář";
 "selectedCalendar" = "Zvolený kalendář";
 "personalCalendar" = "Osobní kalendář";
 "firstCalendar" = "První kalendář";
@@ -113,12 +142,16 @@
 "reminder_1_DAY_BEFORE" = "1 den";
 "reminder_2_DAYS_BEFORE" = "2 dny";
 "reminder_1_WEEK_BEFORE" = "1 týden";
+
 /* Mailer */
-"Labels" = "Značky";
-"Label" = "Označkovat";
-"Show subscribed mailboxes only" = "Ukázat pouze odebírané mailové schránky";
+"Labels" = "Štítky";
+"Label" = "Štítek";
+"New label" = "Nový štítek";
+"Show subscribed mailboxes only" = "Ukázat pouze odebírané poštovní schránky";
+"Synchronize only default mail folders (EAS)" = "Synchronizovat pouze standartní poštovní složky (EAS)";
 "Sort messages by threads" = "Třídit zprávy podle souvislostí";
 "When sending mail, add unknown recipients to my" = "Automaticky přidávat odchozí e-mailovou adresu do složky:";
+"Address Book" = "Adresář";
 "Forward messages" = "Přeposlat zprávy";
 "messageforward_inline" = "Do řady";
 "messageforward_attached" = "Jako přílohu";
@@ -131,15 +164,22 @@
 "Compose messages in" = "Vytvářet zprávy ve formátu";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Prostý text";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Výchozí velikost písma";
+
 "Display remote inline images" = "Zobrazit vzdálené inline obrázky";
 "displayremoteinlineimages_never" = "Nikdy";
 "displayremoteinlineimages_always" = "Vždy";
 "Auto save every" = "Automaticky uložit každých";
 "minutes" = "minut";
+
 /* Contact */
 "Personal Address Book" = "Osobní kontakty";
 "Collected Address Book" = "Sebrané kontakty";
+
 /* IMAP Accounts */
+"Mail Account" = "Poštovní účet";
 "New Mail Account" = "Nový poštovní účet";
 "Server Name" = "Adresa serveru";
 "Port" = "Port";
@@ -154,35 +194,50 @@
 "Please enter your signature below" = "Text podpisu";
 "Please specify a valid sender address." = "Prosím zadejte správnou adresu odesílatele.";
 "Please specify a valid reply-to address." = "Prosím zadejte správnou adresu pro odpověď.";
+"Specify a hostname other than the local host" = "Zadefinujte jiné doménové jméno než local host";
+
 /* Additional Parameters */
 "Additional Parameters" = "Dodatečné parametry";
+
 /* password */
 "New password" = "Nové heslo";
 "Confirmation" = "Potvrzení";
 "Change" = "Změnit";
+
 /* Event+task classifications */
-"Default events classification" ="Výchozí druh události";
-"Default tasks classification" ="Výchozí druh úkolu";
+"Default events classification" = "Výchozí druh události";
+"Default tasks classification" = "Výchozí druh úkolu";
 "PUBLIC_item" = "Veřejné";
 "CONFIDENTIAL_item" = "Důvěrné";
 "PRIVATE_item" = "Soukromé";
+
 /* Event+task categories */
+"Calendar Category" = "Kategorie kalendáře";
+"Add Calendar Category" = "Přidat kategorii kalendáře";
+"New category" = "Nová kategorie";
+"Remove Calendar Category" = "Odstranit kategorii kalendáře";
+"Contact Category" = "Kategorie kontaktu";
+"Add Contact Category" = "Přidat kategorii kontaktu";
+"Remove Contact Category" = "Odstranit kategorii kontaktu";
 "category_none" = "Žádný";
 "calendar_category_labels" = "Výročí,Narozeniny,Obchod,Hovory,Klienti,Soutěže,Zákazník,Oblíbené,Sledování,Dárky,Volno,Nápady,Meeting,Problémy,Různé,Osobní,Projekty,Veřejné prázdniny,Stav,Dodavatelé,Cesta,Dovolená";
+
 /* Default module */
 "Calendar" = "Kalendář";
 "Contacts" = "Adresář";
 "Mail" = "Pošta";
 "Last" = "Naposledy použitý";
 "Default Module " = "Výchozí modul";
-"SOGo Version" ="SOGo verze";
-"Language" ="Jazyk";
+"SOGo Version" = "SOGo verze";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Uložit předvolby a obnovit stránku?";
+"Language" = "Jazyk";
 "choose" = "Vybrat ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseTaiwan" = "Chinese (Taiwan)";
-"Croatian" = "Hrvatski";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -191,6 +246,7 @@
 "Finnish" = "Suomi";
 "French" = "Français";
 "German" = "Deutsch";
+"Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
@@ -198,10 +254,11 @@
 "Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
-"BrazilianPortuguese" = "Portugues brasileiro";
 "Polish" = "Polski";
 "Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
+"Serbian" = "Српски";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
@@ -210,7 +267,8 @@
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
-"Refresh View" ="Aktualizace zobrazení";
+
+"Refresh View" = "Aktualizace zobrazení";
 "refreshview_manually" = "Manuálně";
 "refreshview_every_minute" = "Každou minutu";
 "refreshview_every_2_minutes" = "Každé 2 minuty";
@@ -219,6 +277,7 @@
 "refreshview_every_20_minutes" = "Každých 20 minut";
 "refreshview_every_30_minutes" = "Každých 30 minut";
 "refreshview_once_per_hour" = "Jednou za hodinu";
+
 /* Return receipts */
 "When I receive a request for a return receipt" = "Pokud zpráva obsahuje žádost potvrzení o přečtení";
 "Never send a return receipt" = "Nikdy neodeslat potvrzení o přečtení";
@@ -229,6 +288,7 @@
 "Never send" = "Nikdy neodeslat";
 "Always send" = "Vždy odeslat";
 "Ask me" = "Zeptat se";
+
 /* Filters - UIxPreferences */
 "Filters" = "Třídění";
 "Active" = "Aktivní";
@@ -236,8 +296,16 @@
 "Move Down" = "Posunout dolů";
 "Connection error" = "Chyba spojení";
 "Service temporarily unavailable" = "Služba dočasně nedostupná";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Povolit filtr";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Jméno filtru";
+/* Button label */
+"Add a condition" = "Přidat podmínku";
+/* Button label */
+"Add an action" = "Přidat akci";
 "For incoming messages that" = "Pro příchozí zprávy, které";
 "match all of the following rules" = "odpovídají všem následujícím pravidlům";
 "match any of the following rules" = "odpovídají některému z následujících pravidel";
@@ -252,30 +320,49 @@
 "Size (Kb)" = "Velikost (Kb)";
 "Header" = "Hlavička";
 "Body" = "Tělo";
-"Flag the message with" = "Označ zprávu jako";
+"Flag the message with" = "Oštítkuj zprávu jako";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Štítek";
+
 "Discard the message" = "Odstraň zprávu";
 "File the message in" = "Ulož zprávu do složky";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Poštovní schránka";
+
 "Keep the message" = "Zprávu ponechej";
 "Forward the message to" = "Přepošli zprávu na";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "E-mailová adresa";
+
 "Send a reject message" = "Pošli zprávu s odmítnutím";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Zpráva";
+
 "Send a vacation message" = "Pošli odpověď v nepřítomnosti";
 "Stop processing filter rules" = "Ukonči zpracování";
 "is under" = "je menší než";
 "is over" = "je větší než";
 "is" = "je rovno";
-"is not" = "is not";
+"is not" = "není";
 "contains" = "obsahuje";
 "does not contain" = "neobsahuje";
 "matches" = "odpovídá";
 "does not match" = "neodpovídá";
 "matches regex" = "odpovídá regulárnímu výrazu";
 "does not match regex" = "neodpovídá regulárnímu výrazu";
+/* Placeholder for the value field of a condition */
+"Value" = "Hodnota";
 "Seen" = "Přečtené";
 "Deleted" = "Smazané";
 "Answered" = "Odpovězené";
 "Flagged" = "Oštítkované";
 "Junk" = "Nevyžádané";
 "Not Junk" = "Jako vyžádané";
+
 /* Password policy */
 "The password was changed successfully." = "Heslo bylo úspěšně změněno.";
 "Password must not be empty." = "Heslo nesmí být prázdné.";
@@ -290,3 +377,26 @@
 "Unhandled error response" = "Neošetřená chyba";
 "Password change is not supported." = "Změna hesla není podporována.";
 "Unhandled HTTP error code: %{0}" = "Neošetřený HTTP chybový kód: %{0}";
+"Cancel" = "Storno";
+"Invitations" = "Pozvánky";
+"Edit Filter" = "Upravit filtr";
+"Delete Filter" = "Smazat filtr";
+"Create Filter" = "Vytvořit filtr";
+"Delete Label" = "Smazat štítek";
+"Create Label" = "Vytvořit štítek";
+"Accounts" = "Účty";
+"Edit Account" = "Upravit účet";
+"Delete Account" = "Smazat účet";
+"Create Account" = "Vytvořit účet";
+"Account Name" = "Název účtu";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "Použít Gravatar";
+"Alternate Avatar" = "Alternativní Avatar";
+"none" =  "Žádný";
+"identicon" = "Ikona";
+"monsterid" = "Monster";
+"wavatar" = "Wavatar";
+"retro" = "Retro";

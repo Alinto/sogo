@@ -38,6 +38,7 @@
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/WOResponse+SOGo.h>
 
+#import "NSArray+Contacts.h"
 #import "SOGoContactFolders.h"
 #import "SOGoContactGCSFolder.h"
 #import "SOGoContactLDIFEntry.h"
@@ -336,6 +337,10 @@
       [newRecord setObject: data forKey: @"note"];
       [newRecord setObject: data forKey: @"contactInfo"];
     }
+
+  // photo => hasPhoto
+  data = [oldRecord objectForKey: @"photo"];
+  [newRecord setObject: [NSNumber numberWithInt: [data length] ? 1 : 0] forKey: @"hasPhoto"];
 
   recordSource = [oldRecord objectForKey: @"source"];
   if ([recordSource conformsToProtocol: @protocol (SOGoDNSource)] &&

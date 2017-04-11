@@ -906,7 +906,32 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
     {
       allValues = [[ldapEntry attributeWithName: currentFieldName]
                     allStringValues];
-      [emails addObjectsFromArray: allValues];
+
+      // Special case handling for Microsoft Active Directory. proxyAddresses
+      // is generally prefixed with smtp: - if we find this (or any value preceeding
+      // the semi-colon), we strip it. See https://msdn.microsoft.com/en-us/library/ms679424(v=vs.85).aspx
+      if ([currentFieldName caseInsensitiveCompare: @"proxyAddresses"] == NSOrderedSame)
+	{
+	  NSRange r;
+	  int i;
+
+	  for (i = 0; i < [allValues count]; i++)
+	    {
+	      ldapValue = [allValues objectAtIndex: i];
+	      r = [ldapValue rangeOfString: @":"];
+
+	      if (r.length)
+		{
+		  // We only keep "smtp" ones
+		  if ([[ldapValue lowercaseString] hasPrefix: @"smtp"])
+		    [emails addObject: [ldapValue substringFromIndex: r.location+1]];
+		}
+	      else
+		[emails addObject: ldapValue];
+	    }
+	}
+      else
+	[emails addObjectsFromArray: allValues];
     }
   [ldifRecord setObject: emails forKey: @"c_emails"];
   [emails release];
@@ -1186,7 +1211,6 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
     {
       ldapConnection = [self _ldapConnection];
       qualifier = [self _qualifierForFilter: match];
-      // attributes = [self _searchAttributes];
       attributes = [NSArray arrayWithObject: @"*"];
 
       if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
@@ -1212,10 +1236,9 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 - (NGLdapEntry *) _lookupLDAPEntry: (EOQualifier *) qualifier
 {
   NGLdapConnection *ldapConnection;
-  NSArray *attributes;
   NSEnumerator *entries;
+  NSArray *attributes;
 
-  // attributes = [self _searchAttributes];
   ldapConnection = [self _ldapConnection];
   attributes = [NSArray arrayWithObject: @"*"];
 
@@ -1282,12 +1305,19 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 {
   NGLdapConnection *ldapConnection;
   NGLdapEntry *entry;
+  EOQualifier *qualifier;
   NSString *login;
   
   login = nil;
+  qualifier = nil;
 
   ldapConnection = [self _ldapConnection];
+
+  if (_filter)
+    qualifier = [EOQualifier qualifierWithQualifierFormat: _filter];
+
   entry = [ldapConnection entryAtDN: theDN
+			  qualifier: qualifier
                          attributes: [NSArray arrayWithObject: UIDField]];
   if (entry)
     login = [[entry attributeWithName: UIDField] stringValueAtIndex: 0];
@@ -1695,25 +1725,25 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
               ab = [LDAPSource new];
               [ab setSourceID: [sourceRec objectForKey: @"ou"]];
               [ab setDisplayName: [sourceRec objectForKey: @"description"]];
-              [ab          setBindDN: bindDN
-                            password: password
-                            hostname: hostname
-                                port: [NSString stringWithFormat: @"%d", port]
-                          encryption: encryption
-                   bindAsCurrentUser: [NSString stringWithFormat: @"%d", NO]];
-              [ab                     setBaseDN: [entry dn]
-                                        IDField: @"cn"
-                                        CNField: @"displayName"
-                                       UIDField: @"cn"
-                                     mailFields: nil
-                                   searchFields: nil
-                             groupObjectClasses: nil
-                                  IMAPHostField: nil
-                                 IMAPLoginField: nil
-                                 SieveHostField: nil
-                                     bindFields: nil
-                                      kindField: nil
-                       andMultipleBookingsField: nil];
+              [ab setBindDN: bindDN
+		   password: password
+		   hostname: hostname
+		       port: [NSString stringWithFormat: @"%d", port]
+		 encryption: encryption
+		  bindAsCurrentUser: [NSString stringWithFormat: @"%d", NO]];
+              [ab setBaseDN: [entry dn]
+		    IDField: @"cn"
+		    CNField: @"displayName"
+		   UIDField: @"cn"
+		 mailFields: nil
+		  searchFields: nil
+		  groupObjectClasses: nil
+		  IMAPHostField: nil
+		  IMAPLoginField: nil
+		  SieveHostField: nil
+		 bindFields: nil
+		  kindField: nil
+		  andMultipleBookingsField: nil];
               [ab setListRequiresDot: NO];
               [ab setModifiers: modifier];
               [sources addObject: ab];

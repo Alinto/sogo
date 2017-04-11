@@ -305,6 +305,15 @@
   return [NSNumber numberWithInt: [currentTableHour intValue]];
 }
 
+- (NSString *) currentYear
+{
+  if (([currentTableDay dayOfMonth] == 1 && [currentTableDay monthOfYear] == 1) ||
+      [daysToDisplay indexOfObject: currentTableDay] == 0)
+    return [NSString stringWithFormat: @"%i", [currentTableDay yearOfCommonEra]];
+
+  return nil;
+}
+
 - (NSString *) labelForDay
 {
   return [weekDays objectAtIndex: [currentTableDay dayOfWeek]];

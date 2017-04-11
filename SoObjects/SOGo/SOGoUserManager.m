@@ -531,9 +531,9 @@ static Class NSNullK;
               grace: (int *) _grace
            useCache: (BOOL) useCache
 {
+  NSString *dictPassword, *username, *jsonUser;
   NSMutableDictionary *currentUser;
   NSDictionary *failedCount;
-  NSString *dictPassword, *username, *jsonUser;
   SOGoSystemDefaults *sd;
   BOOL checkOK;
 
@@ -573,23 +573,25 @@ static Class NSNullK;
   failedCount = [[SOGoCache sharedCache] failedCountForLogin: username];
   if (failedCount)
     {
-      unsigned int current_time, start_time, delta, block_time;
+      unsigned int current_time, last_request_time, start_time, delta_start, delta_last_request, block_time;
 
       current_time = [[NSCalendarDate date] timeIntervalSince1970];
       start_time = [[failedCount objectForKey: @"InitialDate"] unsignedIntValue];
-      delta = current_time - start_time;
+      last_request_time = [[failedCount objectForKey: @"LastRequestDate"] unsignedIntValue];
+      delta_start = current_time - start_time;
+      delta_last_request = current_time - last_request_time;
 
       block_time = [sd failedLoginBlockInterval];
 
       if ([[failedCount objectForKey: @"FailedCount"] intValue] >= [sd maximumFailedLoginCount] &&
-          delta >= [sd maximumFailedLoginInterval] &&
-          delta <= block_time )
+          delta_last_request >= [sd maximumFailedLoginInterval] &&
+          delta_start <= block_time )
         {
           *_perr = PolicyAccountLocked;
           return NO;
         }
 
-      if (delta > block_time)
+      if (delta_start > block_time)
         {
           [[SOGoCache sharedCache] setFailedCount: 0
                                          forLogin: username];
@@ -832,8 +834,11 @@ static Class NSNullK;
     {
       currentSource = [_sources objectForKey: sourceID];
 
+      // Use the provided domain during the lookup. If none is defined, use the source's one
+      // so if there's a match based on the source's domain, the user ID will be associated
+      // to the right source.
       userEntry = [currentSource lookupContactEntryWithUIDorEmail: theUID
-                                                         inDomain: theDomain];
+                                                         inDomain: (theDomain ? theDomain : [currentSource domain])];
       if (userEntry)
         {
           [theCurrentUser setObject: sourceID forKey: @"SOGoSource"];

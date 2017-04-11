@@ -31,9 +31,9 @@ md-list-item {
   }
 
   // Fix for md-menu visibility when set as a secondary action in a list item
-  &._md-button-wrap > div.md-button:first-child > .md-button:first-child {
-    z-index: $z-index-sidenav - 2;
-  }
+//  &._md-button-wrap > div.md-button:first-child > .md-button:first-child {
+//    z-index: $z-index-sidenav - 2;
+//  }
   .md-secondary-container {
     z-index: $z-index-sidenav - 1;
   }
@@ -239,7 +239,8 @@ div.md-tile-left {
  * 1. We hide sortable handles when not inside a .sg-list-sortable;
  * 2. Elements wih the class .sg-list-sortable-hide are hidden when the list is
  *    currently sortable;
- * 3. Dragged element is highligh with a whiteframe.
+ * 3. Dragged element is highligh with a whiteframe. We constraint the movement
+ *    vertically; it also eliminates a flicker when dragging starts.
  *
  * See https://github.com/a5hik/ng-sortable
  */
@@ -261,6 +262,7 @@ div.md-tile-left {
 }
 
 .sg-list-sortable {
+  position: relative;
   .as-sortable-item-handle {
     cursor: move;
     display: block; /* [1] */
@@ -272,6 +274,7 @@ div.md-tile-left {
 
 .as-sortable-drag { /* [3] */
   @extend .md-whiteframe-1dp;
+  left: 0 !important;
   background-color: rgba(255,255,255,0.4);
   position: absolute;
   pointer-events: none;
@@ -301,7 +304,7 @@ div.md-tile-left {
   }
 }
 
-.md-avatar:before,
+.md-avatar::before,
 .md-avatar md-icon,
 sg-avatar-image md-icon,
 sg-avatar-image .material-icons {
@@ -310,12 +313,12 @@ sg-avatar-image .material-icons {
   font-size: $sg-avatar-width;
 }
 .sg-avatar-list {
-  &:before {
+  &::before {
     content: "\e7ef"; // group
   }
 }
 .sg-avatar-public {
-  &:before {
+  &::before {
     content: "\e80b"; // public
   }
 }
@@ -337,13 +340,13 @@ sg-avatar-image img {
   font-family: 'Material Icons';
   font-size: $sg-avatar-width;
   height: 100%;
-  &:before {
+  &::before {
     color: inherit;
     content: "\e835"; // check box outline
     font-size: $icon-size;
     margin: 0 ($sg-avatar-width - $icon-size)/2;
   }
-  &.sg-avatar-selected:before {
+  &.sg-avatar-selected::before {
     content: "\e834"; // check box
   }
 

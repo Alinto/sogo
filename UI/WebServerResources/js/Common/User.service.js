@@ -43,7 +43,7 @@
    * @return a promise of an array of matching User objects
    */
   User.$filter = function(search, excludedUsers, options) {
-    var _this = this, param = {search: search};
+    var _this = this, resource = User.$$resource, param = {search: search};
 
     if (!options || !options.dry) {
       if (!search) {
@@ -57,8 +57,11 @@
       }
       User.$query = search;
     }
+    else if (options && options.uid) {
+      resource = User.$$resource.userResource(options.uid);
+    }
 
-    return User.$$resource.fetch(null, 'usersSearch', param).then(function(response) {
+    return resource.fetch(null, 'usersSearch', param).then(function(response) {
       var results, index, user, users,
           compareUids = function(data) {
             return this.uid == data.uid;
@@ -114,6 +117,7 @@
       this.$$shortFormat = this.$shortFormat();
     if (!this.$$image)
       this.$$image = this.image;
+    this.$avatarIcon = (this.$isGroup() || this.$isSpecial()) ? 'group' : 'person';
     // NOTE: We can't assign a Gravatar at this stage since we would need the Preferences module
     // which already depend on the User module.
 
@@ -122,12 +126,21 @@
   };
 
   /**
+   * @function $fullname
+   * @memberof User.prototype
+   * @return a string representing the fullname
+   */
+  User.prototype.$fullname = function() {
+    return this.cn || this.uid;
+  };
+
+  /**
    * @function $shortFormat
    * @memberof User.prototype
    * @return the fullname along with the email address
    */
   User.prototype.$shortFormat = function(options) {
-    var fullname = this.cn || this.c_email;
+    var fullname = this.$fullname();
     var email = this.c_email;
     var no_email = options && options.email === false;
     if (!no_email && email && fullname != email) {
@@ -173,6 +186,15 @@
       });
     }
     return deferred.promise;
+  };
+
+  /**
+   * @function $isGroup
+   * @memberof User.prototype
+   * @return true if the user actually represents a group of users
+   */
+  User.prototype.$isGroup = function() {
+    return this.isGroup || this.userClass && this.userClass == 'normal-group';
   };
 
   /**
@@ -256,7 +278,7 @@
           _this.rights[key] = 0;
       });
     }
-    else {
+    else if (this.$shadowRights) {
       // Restore initial rights
       this.rights = angular.copy(this.$shadowRights);
     }

@@ -1,6 +1,6 @@
 /**
  * @license Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.html or http://ckeditor.com/license
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
 CKEDITOR.editorConfig = function( config ) {
@@ -22,6 +22,13 @@ CKEDITOR.editorConfig = function( config ) {
   config.enterMode = CKEDITOR.ENTER_BR;
   config.tabSpaces = 4;
   config.allowedContent = true; // don't filter tags
+  config.entities = false;
+
+  // Configure autogrow
+  // http://docs.ckeditor.com/#!/guide/dev_autogrow
+  config.autoGrow_onStartup = true;
+  config.autoGrow_minHeight = 300;
+  config.autoGrow_bottomSpace = 0;
 
   // Disables the built-in words spell checker if browser provides one. Defaults to true.
   // http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-disableNativeSpellChecker

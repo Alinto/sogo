@@ -233,12 +233,14 @@
 
 
         <!-- EVENT'S METADATA (time, organizer, attendees, etc.) -->
-        <div class="pseudo-input-container">
-          <label class="pseudo-input-label"><var:string label:value="Organizer"/></label>
-          <div>
-            <var:string value="organizerDisplayName"/>
+	<var:if condition="hasOrganizer" const:value="true">
+          <div class="pseudo-input-container">
+            <label class="pseudo-input-label"><var:string label:value="Organizer"/></label>
+            <div>
+              <var:string value="organizerDisplayName"/>
+            </div>
           </div>
-        </div>
+	</var:if>
 
         <div class="pseudo-input-container">
           <label class="pseudo-input-label"><var:string label:value="Time"/></label>
@@ -258,7 +260,7 @@
                       readonly="true">
               <md-chip-template>
                 <div class="md-contact-avatar">
-                  <sg-avatar-image sg-email="$chip.email" size="32"><!-- avatar --></sg-avatar-image>
+                  <sg-avatar-image sg-email="$chip.email" size="32">person</sg-avatar-image>
                 </div>
                 <div class="md-contact-name">{{$chip.name}}</div>
                 <md-icon ng-class="'icon-' + $chip.partstat"><!-- partstat --></md-icon>

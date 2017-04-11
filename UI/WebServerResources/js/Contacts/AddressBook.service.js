@@ -200,6 +200,31 @@
   };
 
   /**
+   * @memberof AddressBook
+   * @desc Reload the list of known addressbooks.
+   */
+  AddressBook.$reloadAll = function() {
+    var _this = this;
+
+    return AddressBook.$$resource.fetch('addressbooksList').then(function(data) {
+      _.forEach(data.addressbooks, function(addressbookData) {
+        var group, addressbook;
+
+        if (addressbookData.isRemote)
+          group = _this.$remotes;
+        else if (addressbookData.owner != AddressBook.activeUser.login)
+          group = _this.$subscriptions;
+        else
+          group = _this.$addressbooks;
+
+        addressbook = _.find(group, function(o) { return o.id == addressbookData.id; });
+        if (addressbook)
+          addressbook.init(addressbookData);
+      });
+    });
+  };
+
+  /**
    * @function init
    * @memberof AddressBook.prototype
    * @desc Extend instance with new data and compute additional attributes.
@@ -212,7 +237,7 @@
       this.$$cards = [];
     }
     this.idsMap = {};
-    this.$cards = []; // TODO Keep the "selected" state of cards
+    this.$cards = [];
     // Extend instance with all attributes of data except headers
     angular.forEach(data, function(value, key) {
       if (key != 'headers' && key != 'cards') {
@@ -338,6 +363,16 @@
   };
 
   /**
+   * @function hasSelectedMessage
+   * @memberof AddressBook.prototype
+   * @desc Check if a card is selected.
+   * @returns true if the a card is selected
+   */
+  AddressBook.prototype.hasSelectedCard = function() {
+    return angular.isDefined(this.selectedCard);
+  };
+
+  /**
    * @function isSelectedCard
    * @memberof AddressBook.prototype
    * @desc Check if the specified card is selected.
@@ -345,7 +380,39 @@
    * @returns true if the specified card is selected
    */
   AddressBook.prototype.isSelectedCard = function(cardId) {
-    return this.selectedCard == cardId;
+    return this.hasSelectedCard() && this.selectedCard == cardId;
+  };
+
+  /**
+   * @function $selectedCard
+   * @memberof AddressBook.prototype
+   * @desc Return the currently visible card.
+   * @returns a Card instance or undefined if no card is displayed
+   */
+  AddressBook.prototype.$selectedCard = function() {
+    var _this = this;
+
+    return _.find(this.$cards, function(card) { return card.id == _this.selectedCard; });
+  };
+
+  /**
+   * @function $selectedCardIndex
+   * @memberof AddressBook.prototype
+   * @desc Return the index of the currently visible card.
+   * @returns a number or undefined if no card is selected
+   */
+  AddressBook.prototype.$selectedCardIndex = function() {
+    return _.indexOf(_.map(this.$cards, 'id'), this.selectedCard);
+  };
+
+  /**
+   * @function $selectedCards
+   * @memberof AddressBook.prototype
+   * @desc Return the cards selected by the user.
+   * @returns Card instances
+   */
+  AddressBook.prototype.$selectedCards = function() {
+    return _.filter(this.$cards, function(card) { return card.selected; });
   };
 
   /**
@@ -439,7 +506,7 @@
         var futureData = AddressBook.$$resource.fetch(addressbookId, 'view', query);
 
         if (dry) {
-          futureData.then(function(response) {
+          return futureData.then(function(response) {
             var results, headers, card, index, fields, idFieldIndex,
                 cards = _this.$$cards,
                 compareIds = function(card) {
@@ -497,13 +564,12 @@
               }
             });
 
-            _this.$isLoading = false;
             return cards;
           });
         }
         else {
           // Unwrap promise and instantiate or extend Cards objets
-          _this.$unwrap(futureData);
+          return _this.$unwrap(futureData);
         }
       });
     });
@@ -517,10 +583,14 @@
    * @returns a promise of the HTTP operation
    */
   AddressBook.prototype.$rename = function(name) {
-    var i = _.indexOf(_.map(AddressBook.$addressbooks, 'id'), this.id);
+    var i, list;
+
+    list = this.isSubscription? AddressBook.$subscriptions : AddressBook.$addressbooks;
+    i = _.indexOf(_.map(list, 'id'), this.id);
     this.name = name;
-    AddressBook.$addressbooks.splice(i, 1);
+    list.splice(i, 1);
     AddressBook.$add(this);
+
     return this.$save();
   };
 
@@ -554,6 +624,33 @@
   };
 
   /**
+   * @function $_deleteCards
+   * @memberof AddressBook.prototype
+   * @desc Delete multiple cards from AddressBook object.
+   * @param {string[]} ids - the cards ids
+   */
+  AddressBook.prototype.$_deleteCards = function(ids) {
+    var _this = this;
+
+    // Remove cards from $cards and idsMap
+    _.forEachRight(this.$cards, function(card, index) {
+      var selectedIndex = _.findIndex(ids, function(id) {
+        return card.id == id;
+      });
+      if (selectedIndex > -1) {
+        ids.splice(selectedIndex, 1);
+        delete _this.idsMap[card.id];
+        if (_this.isSelectedCard(card.id))
+          delete _this.selectedCard;
+        _this.$cards.splice(index, 1);
+      }
+      else {
+        _this.idsMap[card.id] -= ids.length;
+      }
+    });
+  };
+
+  /**
    * @function $deleteCards
    * @memberof AddressBook.prototype
    * @desc Delete multiple cards from addressbook.
@@ -561,25 +658,10 @@
    */
   AddressBook.prototype.$deleteCards = function(cards) {
     var _this = this,
-        ids = _.map(cards, function(card) { return card.id; });
-    
+        ids = _.map(cards, 'id');
+
     return AddressBook.$$resource.post(this.id, 'batchDelete', {uids: ids}).then(function() {
-      // Remove cards from $cards and idsMap
-      _.forEachRight(_this.$cards, function(card, index) {
-        var selectedIndex = _.findIndex(ids, function(id) {
-          return card.id == id;
-        });
-        if (selectedIndex > -1) {
-          ids.splice(selectedIndex, 1);
-          delete _this.idsMap[card.id];
-          if (_this.isSelectedCard(card.id))
-            delete _this.selectedCard;
-          _this.$cards.splice(index, 1);
-        }
-        else {
-          _this.idsMap[card.id] -= ids.length;
-        }
-      });
+      _this.$_deleteCards(ids);
     });
   };
 
@@ -590,8 +672,26 @@
    * @return a promise of the HTTP operation
    */
   AddressBook.prototype.$copyCards = function(cards, folder) {
-    var uids = _.map(cards, function(card) { return card.id; });
+    var uids = _.map(cards, 'id');
     return AddressBook.$$resource.post(this.id, 'copy', {uids: uids, folder: folder});
+  };
+
+  /**
+   * @function $moveCards
+   * @memberof AddressBook.prototype
+   * @desc Move multiple cards from the current addressbook to a target one
+   * @param {object[]} cards - instances of Card object
+   * @param {string} folder - the destination folder id
+   * @return a promise of the HTTP operation
+   */
+  AddressBook.prototype.$moveCards = function(cards, folder) {
+    var _this = this, uids;
+
+    uids = _.map(cards, 'id');
+    return AddressBook.$$resource.post(this.id, 'move', {uids: uids, folder: folder})
+      .then(function() {
+        return _this.$_deleteCards(uids);
+      });
   };
 
   /**
@@ -613,14 +713,19 @@
    * @returns a promise of the HTTP operation
    */
   AddressBook.prototype.exportCards = function(selectedOnly) {
-    var selectedUIDs;
+    var data = null, options, selectedCards;
+
+    options = {
+      type: 'application/octet-stream',
+      filename: this.name + '.ldif'
+    };
 
     if (selectedOnly) {
-      var selectedCards = _.filter(this.$cards, function(card) { return card.selected; });
-      selectedUIDs = _.map(selectedCards, 'id');
+      selectedCards = _.filter(this.$cards, function(card) { return card.selected; });
+      data = { uids: _.map(selectedCards, 'id') };
     }
 
-    return AddressBook.$$resource.download(this.id, 'export', (angular.isDefined(selectedUIDs) ? {uids: selectedUIDs} : null), {type: 'application/octet-stream'});
+    return AddressBook.$$resource.download(this.id, 'export', data, options);
   };
 
   /**
@@ -752,7 +857,10 @@
     var addressbook = {};
     angular.forEach(this, function(value, key) {
       if (key != 'constructor' &&
+          key != 'acls' &&
           key != 'ids' &&
+          key != 'idsMap' &&
+          key != 'urls' &&
           key[0] != '$') {
         addressbook[key] = value;
       }

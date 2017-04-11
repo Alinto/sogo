@@ -118,6 +118,11 @@ http://trochette.github.io/Angular-Design-Patterns-Best-Practices/
 * Move business logic into models and share them.
 * Keep it simple, separate server interaction and error handling from the model. That way model only handle data processing and code is easier to maintain.
 
+Controllers
+^^^^^^^^^^^
+
+* Functions not exposed in the controller must be prefixed with an underscore.
+
 SASS/CSS
 ~~~~~~~~
 
@@ -133,11 +138,6 @@ SASS/CSS
 A `@mixin` is like a stamp: it creates a duplicated version of the property block (optionally) with arguments provided. An `@extend` appends the element you are extending to the property block. It is your "yes, and ___" statement.
 
 * For documentation, we follow http://sassdoc.com/[SassDoc] annotations.
-* We need the SASS files of Angular Material to build our CSS. The git repository of Angular Material is included as a submodule of SOGo:
-
-    git submodule init
-    git submodule update
-
 * FlexBox compatibility http://caniuse.com/#feat=flexbox
 
 Fonts
@@ -153,10 +153,18 @@ Building frontend
 * Install grunt
 
     npm install -g grunt-cli
+    npm install -g bower
 
-* Generate JavaScript files
+* We need the SASS files of Angular Material to build our CSS. The git repository of Angular Material is included as a submodule of SOGo:
+
+    git submodule init
+    git submodule update
+
+* Generate the JavaScript and CSS files
 
     cd UI/WebServerResources
+    npm install
+    bower install
     grunt build
 
 Version Control

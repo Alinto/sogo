@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2005-2015 Inverse inc.
+  Copyright (C) 2005-2017 Inverse inc.
 
   This file is part of SOGo
 
@@ -339,7 +339,7 @@ static Class SOGoContactGCSEntryK = Nil;
 {
   CardElement *element;
   NSArray *elements, *values;
-  NSMutableArray *units, *categories;
+  NSMutableArray *orgs, *categories;
   NSCalendarDate *date;
   id o;
   unsigned int i, year, month, day;
@@ -398,27 +398,13 @@ static Class SOGoContactGCSEntryK = Nil;
         }
     }
 
-  if ([[attributes objectForKey: @"orgUnits"] isKindOfClass: [NSArray class]])
-    {
-      elements = [card childrenWithTag: @"org"];
-      [card removeChildren: elements];
-      values = [attributes objectForKey: @"orgUnits"];
-      units = [NSMutableArray arrayWithCapacity: [values count]];
-      for (i = 0; i < [values count]; i++)
-        {
-          o = [values objectAtIndex: i];
-          if ([o isKindOfClass: [NSDictionary class]])
-            {
-              [units addObject: [o objectForKey: @"value"]];
-            }
-        }
-    }
+  if ([[attributes objectForKey: @"orgs"] isKindOfClass: [NSArray class]])
+    orgs = [NSMutableArray arrayWithArray: [attributes objectForKey: @"orgs"]];
   else
-    {
-      units = nil;
-    }
-  [card setOrg: [attributes objectForKey: @"c_org"]
-         units: units];
+    orgs = [NSMutableArray array];
+  if ([[attributes objectForKey: @"org"] length])
+    [orgs insertObject: [attributes objectForKey: @"org"] atIndex: 0];
+  [card setOrganizations: orgs];
 
   elements = [card childrenWithTag: @"tel"];
   [card removeChildren: elements];
@@ -476,7 +462,7 @@ static Class SOGoContactGCSEntryK = Nil;
         }
   }
 
-  [card setNote: [attributes objectForKey: @"note"]];
+  [card setNotes: [attributes objectForKey: @"notes"]];
 
   if ([[attributes objectForKey: @"categories"] isKindOfClass: [NSArray class]])
     {
@@ -520,7 +506,9 @@ static Class SOGoContactGCSEntryK = Nil;
  * @apiParam {String} c_cn                 Fullname
  * @apiParam {String} c_screenname         Screen Name (X-AIM for now)
  * @apiParam {String} tz                   Timezone
- * @apiParam {String} note                 Note
+ * @apiParam {String} org                  Main organization
+ * @apiParam {String[]} orgs               Additional organizations
+ * @apiParam {String[]} notes              Notes
  * @apiParam {String[]} allCategories      All available categories
  * @apiParam {Object[]} categories         Categories assigned to the card
  * @apiParam {String} categories.value     Category name

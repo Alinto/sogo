@@ -19,8 +19,6 @@ UI/WebServerResources/.bowerrc
 UI/WebServerResources/.sass-cache/
 UI/WebServerResources/bower_components/
 UI/WebServerResources/css/
-UI/WebServerResources/css/styles.css
-UI/WebServerResources/css/styles.css.map
 UI/WebServerResources/js/*.js
 UI/WebServerResources/js/*.js.map
 UI/WebServerResources/js/vendor/*.js

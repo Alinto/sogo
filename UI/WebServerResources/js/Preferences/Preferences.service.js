@@ -13,15 +13,27 @@
     this.defaults = {};
     this.settings = {};
 
-    this.defaultsPromise = Preferences.$$resource.fetch("jsonDefaults").then(function(data) {
+    this.defaultsPromise = Preferences.$$resource.fetch("jsonDefaults").then(function(response) {
+      var data = response || {};
+
       // We swap $key -> _$key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
       var labels = _.fromPairs(_.map(data.SOGoMailLabelsColors, function(value, key) {
         if (key.charAt(0) == '$')
           return ['_' + key, value];
         return [key, value];
       }));
-
       data.SOGoMailLabelsColors = labels;
+
+      _.forEach(data.SOGoSieveFilters, function(filter) {
+        _.forEach(filter.actions, function(action) {
+          if (action.method == 'addflag' &&
+              action.argument.charAt(0) == '$')
+            action.argument = '_' + action.argument;
+        });
+      });
+
+      if (data.SOGoRememberLastModule)
+        data.SOGoLoginModule = "Last";
 
       // Mail editor autosave is a number of minutes or 0 if disabled
       data.SOGoMailAutoSave = parseInt(data.SOGoMailAutoSave) || 0;
@@ -44,12 +56,15 @@
         else {
           data.Vacation.startDateEnabled = 0;
           data.Vacation.startDate = new Date();
+          data.Vacation.startDate = data.Vacation.startDate.beginOfDay();
+          data.Vacation.startDate.addDays(1);
         }
         if (data.Vacation.endDate)
           data.Vacation.endDate = new Date(parseInt(data.Vacation.endDate) * 1000);
         else {
           data.Vacation.endDateEnabled = 0;
-          data.Vacation.endDate = new Date();
+          data.Vacation.endDate = new Date(data.Vacation.startDate.getTime());
+          data.Vacation.endDate.addDays(1);
         }
         if (data.Vacation.autoReplyEmailAddresses && data.Vacation.autoReplyEmailAddresses.length)
           data.Vacation.autoReplyEmailAddresses = data.Vacation.autoReplyEmailAddresses.join(",");
@@ -252,8 +267,16 @@
       }
       return [key, value];
     }));
-
     preferences.defaults.SOGoMailLabelsColors = labels;
+
+    _.forEach(preferences.defaults.SOGoSieveFilters, function(filter) {
+      _.forEach(filter.actions, function(action) {
+        if (action.method == 'addflag' &&
+            action.argument.charAt(0) == '_' &&
+            action.argument.charAt(1) == '$')
+          action.argument = action.argument.substring(1);
+      });
+    });
 
     if (!preferences.defaults.SOGoMailComposeFontSizeEnabled)
       preferences.defaults.SOGoMailComposeFontSize = 0;

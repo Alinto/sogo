@@ -278,7 +278,7 @@
           actionName  = "copy";
         };
         move = {
-          protectedBy = "ViewAllComponent";
+          protectedBy = "Delete Object";
           actionClass = "UIxAppointmentActions";
           actionName  = "move";
         };

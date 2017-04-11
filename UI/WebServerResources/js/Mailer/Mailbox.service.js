@@ -40,7 +40,7 @@
       $Message: Message,
       $$Acl: Acl,
       $Preferences: Preferences,
-      $query: { sort: 'date', asc: 0 },
+      $query: { sort: 'arrival', asc: 0 }, // The default sort must match [UIxMailListActions defaultSortKey]
       selectedFolder: null,
       $refreshTimeout: null,
       $virtualMode: false,
@@ -81,10 +81,13 @@
    * @return a promise of the HTTP operation
    * @see {@link Account.$getMailboxes}
    */
-  Mailbox.$find = function(account) {
+  Mailbox.$find = function(account, options) {
     var path, futureMailboxData;
 
-    futureMailboxData = this.$$resource.fetch(account.id.toString(), 'view');
+    if (options && options.all)
+      futureMailboxData = this.$$resource.fetch(account.id.toString(), 'viewAll');
+    else
+      futureMailboxData = this.$$resource.fetch(account.id.toString(), 'view');
 
     return Mailbox.$unwrapCollection(account, futureMailboxData); // a collection of mailboxes
   };
@@ -154,16 +157,47 @@
    */
   Mailbox.prototype.init = function(data) {
     var _this = this;
-    this.$isLoading = true;
-    this.$messages = [];
-    this.uidsMap = {};
+    if (angular.isUndefined(this.uidsMap) || data.headers) {
+      this.$isLoading = true;
+      this.$messages = [];
+      this.uidsMap = {};
+    }
     angular.extend(this, data);
     if (this.path) {
       this.id = this.$id();
       this.$acl = new Mailbox.$$Acl('Mail/' + this.id);
     }
+    this.$displayName = this.name;
     if (this.type) {
       this.$isEditable = this.isEditable();
+      this.$isSpecial = true;
+      if (this.type == 'inbox') {
+        this.$displayName = l('InboxFolderName');
+        this.$icon = 'inbox';
+      }
+      else if (this.type == 'draft') {
+        this.$displayName = l('DraftsFolderName');
+        this.$icon = 'drafts';
+      }
+      else if (this.type == 'sent') {
+        this.$displayName = l('SentFolderName');
+        this.$icon = 'send';
+      }
+      else if (this.type == 'trash') {
+        this.$displayName = l('TrashFolderName');
+        this.$icon = 'delete';
+      }
+      else if (this.type == 'junk') {
+        this.$displayName = l('JunkFolderName');
+        this.$icon = 'thumb_down';
+      }
+      else if (this.type == 'additional') {
+        this.$icon = 'folder_shared';
+      }
+      else {
+        this.$isSpecial = false;
+        this.$icon = 'folder_open';
+      }
     }
     this.$isNoInferiors = this.isNoInferiors();
     if (angular.isUndefined(this.$shadowData)) {
@@ -244,12 +278,34 @@
   /**
    * @function isSelectedMessage
    * @memberof Mailbox.prototype
-   * @desc Check if the specified message is selected.
+   * @desc Check if the specified message is displayed in the detailed view.
    * @param {string} messageId
-   * @returns true if the specified message is selected
+   * @returns true if the specified message is displayed
    */
   Mailbox.prototype.isSelectedMessage = function(messageId) {
     return this.selectedMessage == messageId;
+  };
+
+  /**
+   * @function $selectedMessage
+   * @memberof Mailbox.prototype
+   * @desc Return the currently visible message.
+   * @returns a Message instance or undefined if no message is displayed
+   */
+  Mailbox.prototype.$selectedMessage = function() {
+    var _this = this;
+
+    return _.find(this.$messages, function(message) { return message.uid == _this.selectedMessage; });
+  };
+
+  /**
+   * @function $selectedMessageIndex
+   * @memberof Mailbox.prototype
+   * @desc Return the index of the currently visible message.
+   * @returns a number or undefined if no message is selected
+   */
+  Mailbox.prototype.$selectedMessageIndex = function() {
+    return this.uidsMap[this.selectedMessage];
   };
 
   /**
@@ -411,6 +467,16 @@
   };
 
   /**
+   * @function isNoSelect
+   * @memberof Mailbox.prototype
+   * @desc Checks if the mailbox can be selected
+   * @returns true if the mailbox can not be selected
+   */
+  Mailbox.prototype.isNoSelect = function() {
+    return this.flags.indexOf('noselect') >= 0;
+  };
+
+  /**
    * @function $rename
    * @memberof AddressBook.prototype
    * @desc Rename the addressbook and keep the list sorted
@@ -459,9 +525,8 @@
     i = _.indexOf(_.map(children, 'id'), this.id);
 
     return this.$save().then(function(data) {
-      var sibling;
-      angular.extend(_this, data); // update the path attribute
-      _this.id = _this.$id();
+      var sibling, oldPath = _this.path;
+      _this.init(data); // update the path and id
 
       // Move mailbox among its siblings according to its new name
       children.splice(i, 1);
@@ -476,6 +541,17 @@
         i = children.length;
       }
       children.splice(i, 0, _this);
+
+      // Update the path and id of children
+      var pathRE = new RegExp('^' + oldPath);
+      var _updateChildren = function(mailbox) {
+        _.forEach(mailbox.children, function(child) {
+          child.path = child.path.replace(pathRE, _this.path);
+          child.id = child.$id();
+          _updateChildren(child);
+        });
+      };
+      _updateChildren(_this);
     });
   };
 
@@ -493,6 +569,16 @@
         if (data.quotas)
           _this.$account.updateQuota(data.quotas);
       });
+  };
+
+  /**
+   * @function $canFolderAs
+   * @memberof Mailbox.prototype
+   * @desc Check if the folder can be set as Drafts/Sent/Trash
+   * @returns true if folder is eligible
+   */
+  Mailbox.prototype.$canFolderAs = function() {
+    return this.type == 'folder' && this.level === 0;
   };
 
   /**
@@ -563,10 +649,12 @@
    * @returns a promise of the HTTP operation
    */
   Mailbox.prototype.saveSelectedMessages = function() {
-    var selectedMessages, selectedUIDs;
+    var data, options, selectedMessages, selectedUIDs;
 
     selectedMessages = _.filter(this.$messages, function(message) { return message.selected; });
     selectedUIDs = _.map(selectedMessages, 'uid');
+    data = { uids: selectedUIDs };
+    options = { filename: l('Saved Messages.zip') };
 
     return Mailbox.$$resource.download(this.id, 'saveMessages', {uids: selectedUIDs});
   };
@@ -578,19 +666,24 @@
    * @returns a promise of the HTTP operation
    */
   Mailbox.prototype.exportFolder = function() {
-    return Mailbox.$$resource.download(this.id, 'exportFolder');
+    var options;
+
+    options = { filename: this.name + '.zip' };
+
+    return Mailbox.$$resource.download(this.id, 'exportFolder', null, options);
   };
 
   /**
    * @function $delete
    * @memberof Mailbox.prototype
    * @desc Delete the mailbox from the server
+   * @param {object} [options] - additional options (use {withoutTrash: true} to delete immediately)
    * @returns a promise of the HTTP operation
    */
-  Mailbox.prototype.$delete = function() {
+  Mailbox.prototype.$delete = function(options) {
     var _this = this;
 
-    return Mailbox.$$resource.remove(this.id)
+    return Mailbox.$$resource.post(this.id, 'delete', options)
       .then(function() {
         _this.$account.$getMailboxes({reload: true});
         return true;
@@ -639,13 +732,17 @@
    * @function $deleteMessages
    * @memberof Mailbox.prototype
    * @desc Delete multiple messages from mailbox.
+   * @param {object} [options] - additional options (use {withoutTrash: true} to delete immediately)
    * @return a promise of the HTTP operation
    */
-  Mailbox.prototype.$deleteMessages = function(messages) {
-    var _this = this, uids;
+  Mailbox.prototype.$deleteMessages = function(messages, options) {
+    var _this = this, uids, data;
 
     uids = _.map(messages, 'uid');
-    return Mailbox.$$resource.post(this.id, 'batchDelete', {uids: uids})
+    data = { uids: uids };
+    if (options) angular.extend(data, options);
+
+    return Mailbox.$$resource.post(this.id, 'batchDelete', data)
       .then(function(data) {
         // Update inbox quota
         if (data.quotas)
@@ -702,7 +799,7 @@
         return _this.$_deleteMessages(uids, messages);
       });
   };
-  
+
   /**
    * @function $reset
    * @memberof Mailbox.prototype
@@ -710,10 +807,8 @@
    */
   Mailbox.prototype.$reset = function() {
     var _this = this;
-    angular.forEach(this, function(value, key) {
-      if (key != 'constructor' && key != 'children' && key[0] != '$') {
-        delete _this[key];
-      }
+    angular.forEach(this.$shadowData, function(value, key) {
+      delete _this[key];
     });
     angular.extend(this, this.$shadowData);
     this.$shadowData = this.$omit();
@@ -737,6 +832,7 @@
       Mailbox.$log.error(JSON.stringify(response.data, undefined, 2));
       // Restore previous version
       _this.$reset();
+      return response.data;
     });
   };
 
@@ -757,7 +853,18 @@
    * @return an object literal copy of the Mailbox instance
    */
   Mailbox.prototype.$omit = function() {
-    return { name: this.name };
+    var mailbox = {};
+    angular.forEach(this, function(value, key) {
+      if (key != 'constructor' &&
+          key != 'children' &&
+          key != 'headers' &&
+          key != 'uids' &&
+          key != 'uidsMap' &&
+          key[0] != '$') {
+        mailbox[key] = value;
+      }
+    });
+    return mailbox;
   };
 
   /**
@@ -782,7 +889,7 @@
         _this.init(data);
 
         if (_this.uids) {
-          Mailbox.$log.debug('unwrapping ' + data.uids.length + ' messages');
+          Mailbox.$log.debug('unwrapping ' + _this.uids.length + ' messages');
 
           // First entry of 'headers' are keys
           headers = _.invokeMap(_this.headers[0], 'toLowerCase');
@@ -856,6 +963,17 @@
         }
       });
     });
+  };
+
+  /**
+   * @function $updateSubscribe
+   * @memberof Mailbox.prototype
+   * @desc Update mailbox subscription state with server.
+   */
+  Mailbox.prototype.$updateSubscribe = function() {
+    var action = this.subscribed? 'subscribe' : 'unsubscribe';
+
+    Mailbox.$$resource.post(this.id, action);
   };
 
 })();

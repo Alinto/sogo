@@ -589,6 +589,15 @@
 
 /* browser/os identification */
 
+- (BOOL) disableInk
+{
+  WEClientCapabilities *cc;
+
+  cc = [[context request] clientCapabilities];
+
+  return [[cc userAgentType] isEqualToString: @"IE"];
+}
+
 - (BOOL) isCompatibleBrowser
 {
   WEClientCapabilities *cc;

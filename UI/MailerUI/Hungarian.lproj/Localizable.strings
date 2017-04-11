@@ -267,9 +267,20 @@
 "Operation failed" = "A művelet megszakadt";
 "Quota" = "Tárhely:";
 "quotasFormat" = "Felhasznált: %{0}%,összes: %{1} MB";
+"Unable to move/delete folder." = "Nem lehet mappát átmozgatni/törölni .";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "A postafiók nem mozgatható át a Törölt elemek mappába. Szeretné végleg törölni?";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Biztosan törölni kívánja a kijelölt üzeneteket?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} üzenet másolva";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} üzenet átmozgatva";
 
 "Please select a message." = "Kérem válasszon egy üzenetet.";
 "Please select a message to print." = "Kérem válasszon ki egy üzenetet a nyomtatáshoz.";
@@ -305,7 +316,12 @@
 "Error while uploading the file \"%{0}\":" = "Hiba történt a \"%{0}\" állomány feltöltésekor:";
 "There is an active file upload. Closing the window will interrupt it." = "Állomány feltöltés folyamatban. Az ablak bezárása megszakítja ezt a folyamatot.";
 
-/* Message sending */
+/* Appears while sending the message */
+"Sending" = "Küldés";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Elküldve";
+
 "cannot send message: (smtp) all recipients discarded" = "Az üzenetet nem lehetett elküldeni: az összes címzett érvénytelen.";
 "cannot send message (smtp) - recipients discarded" = "Az üzenetet nem lehetett elküldeni: az alábbi címzettek érvénytelenek";
 "cannot send message: (smtp) error when connecting" = "Az üzenetet nem lehetett elküldeni: hiba az SMTP kiszolgálóhoz történő csatlakozáskor.";
@@ -332,11 +348,13 @@
 "Set as Junk" = "Levélszemétnek jelöl";
 
 "Sort" = "Rendezés";
+"Order Received" = "Megrendelés beérkezett";
 "Descending Order" = "Csökkenő sorrend";
 "Back" = "Vissza";
 "Copy messages" = "Üzenetek másolása";
 "More messages options" = "További üzenet tulajdonságok";
 "Mark as Unread" = "Megelölés olvasatlanként";
+"Mark as Read" = "Megjelölés olvasottként";
 "Closing Window ..." = "Ablak bezárása ...";
 "Tried to send too many mails. Please wait." = "Túl sok üzenetet próbál elküldeni. Kérem várjon.";
 "View Mail" = "Üzenet megtekintése";
@@ -350,3 +368,27 @@
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Keresés hatóköre";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Feliratkozások kezelése";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Szűrő";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

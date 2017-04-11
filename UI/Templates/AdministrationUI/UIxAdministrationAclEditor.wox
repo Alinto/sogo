@@ -6,7 +6,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-  <div layout="column" layout-fill="layout-fill">
+  <div layout-fill="layout-fill">
     <md-card>
       <md-toolbar class="hide show-xs" flex-none="flex-none">
         <div class="md-toolbar-tools">
@@ -25,10 +25,8 @@
       <md-toolbar flex-none="flex-none">
         <div layout="row">
           <sg-avatar-image class="md-tile-left"
-                           ng-show="acl.user.isGroup === 0"
                            sg-email="::acl.user.c_email"
-                           size="40"><!-- avatar --></sg-avatar-image>
-          <div class="sg-list-avatar" ng-show="acl.user.isGroup"><!--list avatar--></div>
+                           size="40">{{acl.user.$avatarIcon}}</sg-avatar-image>
           <div class="msg-header-content">
             <h1 ng-class="{ 'sg-md-display-2--thin': isGtMedium,
                             'sg-md-title': !isGtMedium }">{{::acl.user.cn}}</h1>
@@ -76,22 +74,18 @@
                  ng-class="{ 'sg-expanded': user.uid == acl.selectedUid }">
           <a class="md-flex md-button" ng-click="acl.selectUser(user, $event)">
             <div layout="row" layout-align="start center">
-              <span class="card-picture" ng-switch="user.userClass">
-                <div ng-switch-when="normal-user">
-                  <sg-avatar-image class="md-avatar"
-                                   sg-email="user.c_email"
-                                   size="40"><!-- avatar --></sg-avatar-image>
-                </div>
-                <div ng-switch-when="normal-group" class="md-avatar sg-avatar-list"><!-- normal-group --></div>
-                <div ng-switch-when="public-user" class="md-avatar sg-avatar-list"><!-- public-user --></div>
+              <span class="card-picture">
+                <sg-avatar-image class="md-avatar"
+                                 sg-email="user.c_email"
+                                 size="40">{{ user.$avatarIcon }}</sg-avatar-image>
               </span>
               <div class="sg-tile-content">
-                <div class="sg-md-subhead"><div>{{user.cn}}</div></div>
+                <div class="sg-md-subhead"><div>{{user.$fullname()}}</div></div>
                 <div class="sg-md-body"><div>{{user.c_email}}</div></div>
               </div>
 	      <md-button class="md-icon-button md-secondary" type="button"
                          ng-click="acl.selectAllRights(user)"
-                         ng-hide="user.uid != acl.selectedUid || user.$isSpecial()">
+                         ng-hide="!acl.showRights(user) || user.$isSpecial()">
                 <md-icon>select_all</md-icon>
               </md-button>
               <md-button class="md-icon-button" type="button"
@@ -101,7 +95,7 @@
               </md-button>
             </div>
           </a>
-          <md-card-content id="AccessRightList" ng-show="user.uid == acl.selectedUid">
+          <md-card-content id="AccessRightList" ng-show="acl.showRights(user)">
             <var:if condition="canSubscribeUsers">
               <md-checkbox ng-model="user.isSubscribed"
                            label:arial-label="Subscribe User"

@@ -581,6 +581,14 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
 //
 //
 //
+- (int) maximumMessageSizeLimit
+{
+  return [self integerForKey: @"SOGoMaximumMessageSizeLimit"];
+}
+
+//
+//
+//
 - (int) maximumMessageSubmissionCount
 {
   return [self integerForKey: @"SOGoMaximumMessageSubmissionCount"];

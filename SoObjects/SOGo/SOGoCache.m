@@ -104,7 +104,9 @@ static memcached_st *handle = NULL;
           if (handle)
             {
               memcached_behavior_set(handle, MEMCACHED_BEHAVIOR_BINARY_PROTOCOL, 1);
- 
+	      memcached_behavior_set(handle, MEMCACHED_BEHAVIOR_TCP_NODELAY, 1);
+	      memcached_behavior_set(handle, MEMCACHED_BEHAVIOR_RETRY_TIMEOUT, 5);
+
               sd = [SOGoSystemDefaults sharedSystemDefaults];
 	      
 	      // We define the default value for cleaning up cached users'
@@ -505,6 +507,8 @@ static memcached_st *handle = NULL;
         {
           [d setObject: [NSNumber numberWithUnsignedInt: [[NSCalendarDate date] timeIntervalSince1970]] forKey: @"InitialDate"];
         }
+
+      [d setObject: [NSNumber numberWithUnsignedInt: [[NSCalendarDate date] timeIntervalSince1970]] forKey: @"LastRequestDate"];
       
       [d setObject: count  forKey: @"FailedCount"];
       [self _cacheValues: [d jsonRepresentation]

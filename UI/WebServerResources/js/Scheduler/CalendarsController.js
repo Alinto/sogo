@@ -58,7 +58,7 @@
         );
       },
       function(newList, oldList) {
-        var commonList, ids, promises;
+        var commonList, ids, promise;
 
         // Identify which calendar has changed
         commonList = _.intersectionBy(newList, oldList, 'id');
@@ -66,17 +66,14 @@
           var oldObject = _.find(oldList, { id: o.id });
           return !_.isEqual(o, oldObject);
         }), 'id');
-        promises = [];
+        promise = Calendar.$q.when();
 
         if (ids.length > 0) {
           $log.debug(ids.join(', ') + ' changed');
-          _.forEach(ids, function(id) {
-            var calendar = Calendar.$get(id);
-            promises.push(calendar.$setActivation());
-          });
+          promise = Calendar.saveFoldersActivation(ids);
         }
-        if (promises.length > 0 || commonList.length != newList.length || commonList.length != oldList.length)
-          Calendar.$q.all(promises).then(function() {
+        if (ids.length > 0 || commonList.length != newList.length || commonList.length != oldList.length)
+          promise.then(function() {
             $rootScope.$emit('calendars:list');
           });
       },

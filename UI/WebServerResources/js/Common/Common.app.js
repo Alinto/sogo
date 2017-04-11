@@ -34,6 +34,9 @@
           return settings[param];
         else
           return settings;
+      },
+      minimumSearchLength: function() {
+        return angular.isNumber(minimumSearchLength)? minimumSearchLength : 2;
       }
     })
 
@@ -136,8 +139,8 @@
   /**
    * @ngInject
    */
-  configure.$inject = ['$logProvider', '$compileProvider', '$httpProvider', '$mdThemingProvider'];
-  function configure($logProvider, $compileProvider, $httpProvider, $mdThemingProvider) {
+  configure.$inject = ['$logProvider', '$compileProvider', '$httpProvider', '$mdThemingProvider', '$mdAriaProvider'];
+  function configure($logProvider, $compileProvider, $httpProvider, $mdThemingProvider, $mdAriaProvider) {
     // Accent palette
     $mdThemingProvider.definePalette('sogo-green', {
       '50': 'eaf5e9',
@@ -151,7 +154,7 @@
       '800': '367d2e',
       '900': '225e1b',
       // 'A100': 'b9f6ca',
-      'A100': 'fafafa', // assigned to md-hue-1
+      'A100': 'fafafa', // assigned to md-hue-1, equivalent to grey-50 (default background palette)
       'A200': '69f0ae',
       'A400': '00e676',
       'A700': '00c853',
@@ -210,34 +213,37 @@
       .accentPalette('sogo-green', {
         'default': '500',
         // 'hue-1': '200',
-        'hue-1': 'A100', // background-50
+        'hue-1': 'A100', // grey-50
         'hue-2': '300',
         'hue-3': 'A700'
-      })
-      .backgroundPalette('grey', {
-        'default': '50',
-        'hue-1': '200',
-        'hue-2': '300',
-        'hue-3': '500'
       });
 
     if (!DebugEnabled) {
-      // Disable debug data
+      // Disable debugging information
       $logProvider.debugEnabled(false);
       $compileProvider.debugInfoEnabled(false);
+      // Disable warnings
+      $mdAriaProvider.disableWarnings();
+      // Disable theme generation but keep definition in config (required by mdColors)
+      $mdThemingProvider.generateThemesOnDemand(true);
+      // Disable theming completely
+      //$mdThemingProvider.disableTheming();
     }
 
     $httpProvider.interceptors.push('AuthInterceptor');
     $httpProvider.interceptors.push('ErrorInterceptor');
   }
 
+  /**
+   * @ngInject
+   */
   AuthInterceptor.$inject = ['$window', '$q'];
   function AuthInterceptor($window, $q) {
     return {
       response: function(response) {
         // When expecting JSON but receiving HTML, assume session has expired and reload page
         if (response && /^application\/json/.test(response.config.headers.Accept) &&
-            /^<!DOCTYPE html>/.test(response.data)) {
+            /^[\n\r ]*<!DOCTYPE html>/.test(response.data)) {
           $window.location.reload(true);
           return $q.reject();
         }
@@ -249,13 +255,29 @@
   /**
    * @ngInject
    */
-  ErrorInterceptor.$inject = ['$rootScope', '$q'];
-  function ErrorInterceptor($rootScope, $q) {
+  ErrorInterceptor.$inject = ['$rootScope', '$q', '$injector'];
+  function ErrorInterceptor($rootScope, $q, $injector) {
     return {
       responseError: function(rejection) {
+        var deferred, iframe;
         if (/^application\/json/.test(rejection.config.headers.Accept)) {
-          // Broadcast the response error
-          $rootScope.$broadcast('http:Error', rejection);
+          // Handle CAS ticket renewal (TODO: add check on usesCASAuthentication)
+          if (rejection.status == -1) {
+            deferred = $q.defer();
+            iframe = angular.element('<iframe class="ng-hide" src="' + UserFolderURL + 'recover"></iframe>');
+            iframe.on('load', function() {
+              // Once the browser has followed the redirection, send the initial request
+              var $http = $injector.get('$http');
+              $http(rejection.config).then(deferred.resolve, deferred.reject);
+              iframe.remove();
+            });
+            document.body.appendChild(iframe[0]);
+            return deferred.promise;
+          }
+          else {
+            // Broadcast the response error
+            $rootScope.$broadcast('http:Error', rejection);
+          }
         }
         return $q.reject(rejection);
       }

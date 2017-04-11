@@ -6,15 +6,14 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:rsrc="OGo:url"
-    xmlns:label="OGo:label">
+    xmlns:label="OGo:label"
+    xmlns:bool="OGo:bool">
 
   <var:string var:value="doctype" const:escapeHTML="NO" />
   <var:if condition="hideFrame" const:negate="YES">
     <html const:xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" const:lang="en">
       <head>
-        <title>
-          <var:string value="title" />
-        </title>
+        <title var:sg-default="title"><var:string value="title"/></title>
         <meta name="hideFrame" var:content="hideFrame" />
         <meta name="description" content="SOGo Web Interface" />
         <meta name="author" content="Inverse inc." />
@@ -23,6 +22,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1" />
         <link href="mailto:support@inverse.ca" rev="made" />
         <link rel="shortcut icon" var:href="siteFavicon" type="image/x-icon" />
+        <var:if condition="isUIxDebugEnabled" const:negate="YES">
+          <link type="text/css" rel="stylesheet" rsrc:href="css/theme-default.css" />
+        </var:if>
         <link type="text/css" rel="stylesheet" rsrc:href="css/styles.css" />
         <var:if condition="hasPageSpecificCSS">
           <link type="text/css" rel="stylesheet" var:href="pageCSSURL"/>
@@ -30,9 +32,12 @@
         <var:foreach list="additionalCSSFiles" item="item">
           <link type="text/css" rel="stylesheet" var:href="item"/>
         </var:foreach>
+        <var:if-ie>
+          <link type="text/css" rel="stylesheet" rsrc:href="css/no-animation.css"/>
+        </var:if-ie>
       </head>
 
-      <body var:ng-app="angularModule" var:class="bodyClasses">
+      <body var:class="bodyClasses" var:ng-app="angularModule" bool:md-no-ink="disableInk">
 
         <noscript>
           <div layout="column" layout-align="center center" layout-fill="layout-fill">

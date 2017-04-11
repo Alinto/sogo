@@ -163,7 +163,7 @@ struct GlobalObjectId {
   const char *bytes;
 
   uid = [event uid];
-  uidAsASCII = [uid decodeFromHexidecimal];
+  uidAsASCII = [uid dataUsingEncoding: NSASCIIStringEncoding];
   newGlobalId = (struct GlobalObjectId*)calloc(sizeof(uint8_t), sizeof(struct GlobalObjectId) + 0x0c + [uidAsASCII length]);
 
   prefix = @"040000008200e00074c5b7101a82e008";
@@ -726,12 +726,53 @@ struct GlobalObjectId {
 //
 //
 //
-- (iCalCalendar *) calendarFromIMIPMessage
+- (iCalCalendar *) _calendarFromParts: (NSArray *) parts
+			       parent: (id) parent
 {
   NSDictionary *part;
+  id bodyPart;
+  int i;
+
+  for (i = 0; i < [parts count]; i++)
+    {
+      part = [parts objectAtIndex: i];
+      bodyPart = [parent lookupImap4BodyPartKey: [NSString stringWithFormat: @"%d", i+1]
+				      inContext: self->context];
+
+      if ([[part objectForKey: @"type"] isEqualToString: @"text"] &&
+	  [[part objectForKey: @"subtype"] isEqualToString: @"calendar"])
+	{
+	  if (bodyPart)
+	    {
+	      iCalCalendar *calendar;
+	      NSData *calendarData;
+
+	      calendarData = [bodyPart fetchBLOBWithPeek: YES];
+	      calendar = nil;
+
+	      NS_DURING
+		calendar = [iCalCalendar parseSingleFromSource: calendarData];
+	      NS_HANDLER
+		calendar = nil;
+	      NS_ENDHANDLER
+
+	      return calendar;
+	    }
+	}
+      else if ([[part objectForKey: @"type"] isEqualToString: @"multipart"])
+	return [self _calendarFromParts: [part objectForKey: @"parts"]  parent: bodyPart];
+    }
+
+  return nil;
+}
+
+//
+//
+//
+- (iCalCalendar *) calendarFromIMIPMessage
+{
   NSString *type, *subtype;
   NSArray *parts;
-  int i;
 
   type = [[[self bodyStructure] valueForKey: @"type"] lowercaseString];
   subtype = [[[self bodyStructure] valueForKey: @"subtype"] lowercaseString];
@@ -764,38 +805,7 @@ struct GlobalObjectId {
   parts = [[self bodyStructure] objectForKey: @"parts"];
 
   if ([parts count] > 1)
-    {
-      for (i = 0; i < [parts count]; i++)
-        {
-          part = [parts objectAtIndex: i];
-          
-          if ([[part objectForKey: @"type"] isEqualToString: @"text"] &&
-              [[part objectForKey: @"subtype"] isEqualToString: @"calendar"])
-            {
-              id bodyPart;
-
-              bodyPart = [self lookupImap4BodyPartKey: [NSString stringWithFormat: @"%d", i+1]
-                                            inContext: self->context];
-
-              if (bodyPart)
-                {
-                  iCalCalendar *calendar;
-                  NSData *calendarData;
-                  
-                  calendarData = [bodyPart fetchBLOBWithPeek: YES];
-                  calendar = nil;
-
-                  NS_DURING
-                    calendar = [iCalCalendar parseSingleFromSource: calendarData];
-                  NS_HANDLER
-                    calendar = nil;
-                  NS_ENDHANDLER
-
-                  return calendar;
-                }
-            }
-        }
-    }
+    return [self _calendarFromParts: parts  parent: self];
 
   return nil;
 }
@@ -934,7 +944,7 @@ struct GlobalObjectId {
       else if ([method isEqualToString: @"COUNTER"])
         className = @"IPM.Schedule.Meeting.Resp.Tent";
       else if ([method isEqualToString: @"CANCEL"])
-        className = @"IPM.Schedule.Meeting.Cancelled";
+        className = @"IPM.Schedule.Meeting.Canceled";
       else
         className = @"IPM.Appointment";
       
@@ -1291,6 +1301,13 @@ struct GlobalObjectId {
         [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[[self inReplyTo] dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];
       else if ([[self messageId] length] > 0)
         [s appendFormat: @"<ConversationId xmlns=\"Email2:\">%@</ConversationId>", [[[self messageId] dataUsingEncoding: NSUTF8StringEncoding] activeSyncRepresentationInContext: context]];
+
+      if ([self replied])
+        [s appendFormat: @"<LastVerbExecuted xmlns=\"Email2:\">%d</LastVerbExecuted>", 1];
+      else if ([self forwarded])
+        [s appendFormat: @"<LastVerbExecuted xmlns=\"Email2:\">%d</LastVerbExecuted>", 3];
+      else
+        [s appendFormat: @"<LastVerbExecuted xmlns=\"Email2:\">%d</LastVerbExecuted>", 0];
     }
 
   // FIXME - support these in the future

@@ -146,6 +146,7 @@
 /* Mailer */
 "Labels" = "Címkék";
 "Label" = "Címke";
+"New label" = "Új címke";
 "Show subscribed mailboxes only" = "Csak azon fiókok mutatása, amelyre feliratkozott";
 "Synchronize only default mail folders (EAS)" = "Csak az alapértelmezett levelezési mappák szinkronizálása (EAS)";
 "Sort messages by threads" = "Üzenetek beszélgetések szerinti rendezése";
@@ -212,6 +213,7 @@
 /* Event+task categories */
 "Calendar Category" = "Naptár kategória";
 "Add Calendar Category" = "Naptár kategória hozzáadása";
+"New category" = "Új kategória";
 "Remove Calendar Category" = "Naptár kategória eltávolítása";
 "Contact Category" = "Kapcsolat kategória";
 "Add Contact Category" = "Kapcsolat kategória hozzáadása";
@@ -243,6 +245,7 @@
 "Finnish" = "Suomi";
 "French" = "Français";
 "German" = "Deutsch";
+"Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
@@ -254,6 +257,7 @@
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
+"Serbian" = "Српски";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
@@ -292,6 +296,9 @@
 "Connection error" = "Kapcsolódási hiba";
 "Service temporarily unavailable" = "A szolgáltatás átmenetileg nem érhető el";
 
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Szűrő engedélyezése";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Szűrő neve";
 /* Button label */
@@ -313,11 +320,27 @@
 "Header" = "Fejléc";
 "Body" = "Levéltörzs";
 "Flag the message with" = "Üzenet címkézése ezzel";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Csillag hozzáadása";
+
 "Discard the message" = "Üzenet eldobása";
 "File the message in" = "Az üzenet alábbi mappába helyezése";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Postafiók";
+
 "Keep the message" = "Üzenet megtartása";
 "Forward the message to" = "Üzenet továbbítása erre a címre";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "Email cím";
+
 "Send a reject message" = "Elutasító üzenet küldése";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Üzenet";
+
 "Send a vacation message" = "Távollét üzenet küldése";
 "Stop processing filter rules" = "Szűrő szabályok feldolgozásának befejezése";
 "is under" = "kisebb, mint";

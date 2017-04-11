@@ -1,0 +1,402 @@
+/* toolbar */
+"Save and Close" = "שמור וסגור";
+"Close" = "סגור";
+"Preferences saved" = "העדפות נשמרו";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "שינויים לא שמורים";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "האם ברצונך לשמור את השינוים שבוצעו בהגדרות?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "שמירה";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "ביטול שמירה";
+
+/* tabs */
+"General" = "כללי";
+"Calendar Options" = "הגדרות לוח שנה";
+"Contacts Options" = "הגדרות אנשי קשר";
+"Mail Options" = "הגדרות מייל";
+"IMAP Accounts" = "חשבונות IMAP";
+"Vacation" = "חופשה";
+"Forward" = "העברה";
+"Password" = "סיסמה";
+"Categories" = "קטגוריות";
+"Appointments invitations" = "הזמנות לפגישות";
+"Name" = "שם";
+"Color" = "צבע";
+"Add" = "הוספה";
+"Delete" = "מחיקה";
+
+/* contacts categories */
+"contacts_category_labels" = "שותף, מתחרה, לקוח, חבר, משפחה, שותף עסקי, ספק, עיתונות, VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "אפשר תשובת חופשה אוטומתית";
+"Enable custom auto reply subject" = "אפשר כתורת תשובה אוטומתית מותאמת אישית";
+"Auto reply subject" = "כותרת תשובה אוטומתית";
+"You can write ${subject} to insert the original subject" = "ניתן לכתוב {subject}$ על מנת להזין לתוכן המקורי";
+"Auto reply message" = "הודעת תשובה אוטומתית";
+"Email addresses (separated by commas)" = "כתובת אימייל (מופרדות באמצעות פסיק)";
+"Add default email addresses" = "הוסף כתובת אימייל כברירת מחדל";
+"Days between responses" = "ימים בין תשובות";
+"Do not send responses to mailing lists" = "לא להשיב לרשימות תפוצה";
+"Enable auto reply on" = "אפשר תשובה אוטומתית";
+"Disable auto reply on" = "בטל תשובה אוטומתית";
+"Always send vacation message response" = "תמיד להשיב בעזרת הודעת חופשה";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "אנא ציינו את הודעתכם וכתובת האימייל שלכם עבורם תרצו לאפשר תשובות אוטומתיות.";
+"Your vacation message must not end with a single dot on a line." = "הודעת החופשה אינה יכולה להיסתיים בנקודה אחת בשורה.";
+"End date of your auto reply must be in the future."
+= "תאריך הסיום של תשובות אוטומתיות חייב להיות בעתיד.";
+
+/* forward messages */
+"Forward incoming messages" = "הפנייה של הודעות נכנסות";
+"Keep a copy" = "שמירת עותק";
+"Please specify an address to which you want to forward your messages."
+= "אנא ציינו כתובת אליה ברצונכם להפנות הודעות.";
+"You are not allowed to forward your messages to an external email address." = "לא ניתן להפנות הודעות לכתובת אימייל חיצונית.";
+"You are not allowed to forward your messages to an internal email address." = "לא ניתן להפנות הודעות לכתובת אימייל פנימית.";
+
+/* d & t */
+"Current Time Zone" = "אזור זמן נוכחי";
+"Short Date Format" = "פורמט תאריך מקוצר";
+"Long Date Format" = "פורמט תאריך מלא";
+"Time Format" = "פורמט זמן";
+"default" = "ברירת מחדל";
+"Default Module" = "מודול ברירת מחדל";
+"Save" = "שמירה";
+"shortDateFmt_0" = "%d-%b-%y";
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "";
+   
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "לא נמצאו תוצאות.";
+
+/* calendar */
+"Week begins on" = "שבוע מתחיל ב";
+"Day start time" = "זמן תחילת יום";
+"Day end time" = "זמן סיום יום";
+"Day start time must be prior to day end time." = "זמן תחילת יום חייב להיות לפני זמן סיום יום.";
+"Week days to display" = "ימי השבוע לתצוגה";
+"Show time as busy outside working hours" = "הצג זמן כ\"עסוק\" מעבר לשעות העבודה";
+"First week of year" = "שבוע ראשון בשנה";
+"Enable reminders for Calendar items" = "אפשר תזכורות עבור פריטים בלוח השנה";
+"Play a sound when a reminder comes due" = "נגן צליל כאשר תזכורת מגיעה";
+"Default reminder" = "תזכורת ברירת מחדל";
+"firstWeekOfYear_January1" = "מתחיל ב-1 בינואר";
+"firstWeekOfYear_First4DayWeek" = "שבוע של 4 ימים ראשון";
+"firstWeekOfYear_FirstFullWeek" = "שבוע מלא ראשון";
+"Prevent from being invited to appointments" = "הימנע מהזמנות לאירועים";
+"White list for appointment invitations" = "אפשר הזמנות לאירועים";
+"Contacts Names" = "שמות אנשי קשר";
+
+/* Default Calendar */
+"Default calendar" = "לוח שנה ברירת מחדל";
+"selectedCalendar" = "לוח שנה נבחר";
+"personalCalendar" = "לוח שנה אישי";
+"firstCalendar" = "לוח שנה מאופשר ראשון";
+"reminder_NONE" = "אין תזכורת";
+"reminder_5_MINUTES_BEFORE" = "5 דקות לפני";
+"reminder_10_MINUTES_BEFORE" = "10 דקות לפני";
+"reminder_15_MINUTES_BEFORE" = "15 דקות לפני";
+"reminder_30_MINUTES_BEFORE" = "30 דקות לפני";
+"reminder_45_MINUTES_BEFORE" = "45 דקות לפני";
+"reminder_1_HOUR_BEFORE" = "שעה לפני";
+"reminder_2_HOURS_BEFORE" = "שעתיים לפני";
+"reminder_5_HOURS_BEFORE" = "5 שעות לפני";
+"reminder_15_HOURS_BEFORE" = "15 שעות לפני";
+"reminder_1_DAY_BEFORE" = "יום לפני";
+"reminder_2_DAYS_BEFORE" = "יומיים לפני";
+"reminder_1_WEEK_BEFORE" = "שבוע לפני";
+
+/* Mailer */
+"Labels" = "תגיות";
+"Label" = "תגית";
+"New label" = "תגית חדשה";
+"Show subscribed mailboxes only" = "הצגת תיבות מייל מנויות בלבד";
+"Synchronize only default mail folders (EAS)" = "סינכרון תיקיות מייל ברירת מחדל בלבד (EAS)";
+"Sort messages by threads" = "סידור הודעות לפי אשכולות";
+"When sending mail, add unknown recipients to my" = "בשליחת מייל, הוסף מקבלים לא מוכרים ל";
+"Address Book" = "רשימת אנשי קשר";
+"Forward messages" = "העבר הודעות";
+"messageforward_inline" = "בשורה";
+"messageforward_attached" = "כקובץ מצורף";
+"When replying to a message" = "כאשר משיבים להודעה";
+"replyplacement_above" = "החל תשובה מעל הציטוט";
+"replyplacement_below" = "החל תשובה מתחת לציטוט";
+"And place my signature" = "והוסף את חתימתי";
+"signatureplacement_above" = "מתחת לתשובתי";
+"signatureplacement_below" = "מתחת לציטוט";
+"Compose messages in" = "כתוב הודעות ב";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "טקסט רגיל";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "ברירת מחדל גודל גופן";
+
+"Display remote inline images" = "הצג תמונות מרוחקות בשורה";
+"displayremoteinlineimages_never" = "אף פעם";
+"displayremoteinlineimages_always" = "תמיד";
+"Auto save every" = "שמירה אוטומתית בכל";
+"minutes" = "דקות";
+
+/* Contact */
+"Personal Address Book" = "רשימת אנשי קשר אישית";
+"Collected Address Book" = "רישמת אנשי קשר מאוסף";
+
+/* IMAP Accounts */
+"Mail Account" = "חשבון מייל";
+"New Mail Account" = "חשבון מייל חדש";
+"Server Name" = "שם שרת";
+"Port" = "יציאה";
+"Encryption" = "הצפנה";
+"None" = "ללא";
+"User Name" = "שם משתמש";
+"Full Name" = "שם מלא";
+"Email" = "אימייל";
+"Reply To Email" = "השב לאימייל";
+"Signature" = "חתימה";
+"(Click to create)" = "(לחץ ליצירה)";
+"Please enter your signature below" = "נא להזין את חתימתך מתחת";
+"Please specify a valid sender address." = "נא לציין כתובת שולח תקינה.";
+"Please specify a valid reply-to address." = "נא לציין כתובת לתשובה תקינה.";
+"Specify a hostname other than the local host" = "הגדר שם מארח שונה ממארח מקומי";
+
+/* Additional Parameters */
+"Additional Parameters" = "פרמטרים נוספים";
+
+/* password */
+"New password" = "סיסמה חדשה";
+"Confirmation" = "אישור";
+"Change" = "שינוי";
+
+/* Event+task classifications */
+"Default events classification" = "הגדרת אירועים ברירת מחדל";
+"Default tasks classification" = "הגדרת משימות ברירת מחדל";
+"PUBLIC_item" = "ציבורי";
+"CONFIDENTIAL_item" = "שמור";
+"PRIVATE_item" = "פרטי";
+
+/* Event+task categories */
+"Calendar Category" = "קטגוריית לוח שנה";
+"Add Calendar Category" = "הוספת קטגוריית לוח שנה";
+"New category" = "קטגוריה חדשה";
+"Remove Calendar Category" = "הסרת קטגוריה מלוח השנה";
+"Contact Category" = "קטגוריית איש קשר";
+"Add Contact Category" = "הוספת קטגוריית איש קשר";
+"Remove Contact Category" = "הסרת קטגוריית איש קשר";
+"category_none" = "ללא";
+"calendar_category_labels" = "יום השנה,יום הולדת,עסקים,קריאות,לקוחות,מתחרים,צרכן,מועדפים,מעקב,מתנות,חגים,רעיונות,פגישות,נושאים,שונות,פרטי,פרוייקטים,חגים ציבוריים,סטטוס,ספקים,נסיעות,חופשה";
+
+/* Default module */
+"Calendar" = "לוח שנה";
+"Contacts" = "אנשי קשר";
+"Mail" = "מייל";
+"Last" = "אחרון בשימוש";
+"Default Module " = "מודול ברירת מחדל";
+"SOGo Version" = "גרסת SOGo";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "לשמור העדפות ולטעון מחדש את הדף כעת?";
+"Language" = "שפה";
+"choose" = "בחר ...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"Refresh View" = "רענון תצוגה";
+"refreshview_manually" = "ידני";
+"refreshview_every_minute" = "כל דקה";
+"refreshview_every_2_minutes" = "כל 2 דקות";
+"refreshview_every_5_minutes" = "כל 5 דקות";
+"refreshview_every_10_minutes" = "כל 10 דקות";
+"refreshview_every_20_minutes" = "כל 20 דקות";
+"refreshview_every_30_minutes" = "כל 30 דקות";
+"refreshview_once_per_hour" = "פעם בשעה";
+
+/* Return receipts */
+"When I receive a request for a return receipt" = "כאשר מתקבלת בקשה עבור אישור מסירה";
+"Never send a return receipt" = "לעולם לא לשלוח אישור מסירה";
+"Allow return receipts for some messages" = "אפשר אישור מסירה עבור חלק מההודעות";
+"If I'm not in the To or Cc of the message" = "אם לא סומנתם כמקבל או העתק בהודעה";
+"If the sender is outside my domain" = "אם השולח מחוץ לדומיין";
+"In all other cases" = "בכל מקרה אחר";
+"Never send" = "לעולם לא לשלוח";
+"Always send" = "תמיד לשלוח";
+"Ask me" = "שאל אותי";
+
+/* Filters - UIxPreferences */
+"Filters" = "פילטרים";
+"Active" = "פעיל";
+"Move Up" = "להזיז למעלה";
+"Move Down" = "להזיז למטה";
+"Connection error" = "תקלת התחברות";
+"Service temporarily unavailable" = "שרות לא זמין זמנית";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "אפשר פילטר";
+
+/* Filters - UIxFilterEditor */
+"Filter name" = "שם הפילטר";
+/* Button label */
+"Add a condition" = "הוסף תנאי";
+/* Button label */
+"Add an action" = "הוסף פעולה";
+"For incoming messages that" = "עבור הודעות נכנסות ש";
+"match all of the following rules" = "התאמה של כל החוקים הבאים";
+"match any of the following rules" = "התאמה לאחת מהחוקים הבאים";
+"match all messages" = "התאמה של כל ההודעות";
+"Perform these actions" = "בצע פעולות אלו";
+"Untitled Filter" = "פילטר ללא שם";
+"Subject" = "נושא";
+"From" = "מאת";
+"To" = "עבור";
+"Cc" = "העתק";
+"To or Cc" = "עבור או העתק";
+"Size (Kb)" = "גודל (ק\"ב)";
+"Header" = "כותרת";
+"Body" = "גוף ההודעה";
+"Flag the message with" = "סמן הודעה בעזרת";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "סמן";
+
+"Discard the message" = "להשליך את ההודעה";
+"File the message in" = "לתייק הודעה ב";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "תיבת מייל";
+
+"Keep the message" = "שמור את ההודעה";
+"Forward the message to" = "העבר את ההודעה ל";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "אימייל";
+
+"Send a reject message" = "שלח הודעת דחייה";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "הודעה";
+
+"Send a vacation message" = "שלח הודעת חופשה";
+"Stop processing filter rules" = "בטל פעולת פילטרים";
+"is under" = "מתחת ל";
+"is over" = "מעל ל";
+"is" = "זה";
+"is not" = "זה לא";
+"contains" = "מכיל";
+"does not contain" = "לא כולל";
+"matches" = "תואם";
+"does not match" = "לא תואם";
+"matches regex" = "תואם ל-regex";
+"does not match regex" = "לא תואם ל-regex";
+/* Placeholder for the value field of a condition */
+"Value" = "ערך";
+"Seen" = "נראה";
+"Deleted" = "נמחק";
+"Answered" = "הושב";
+"Flagged" = "מסומן";
+"Junk" = "זבל";
+"Not Junk" = "לא זבל";
+
+/* Password policy */
+"The password was changed successfully." = "הסיסמה שונתה בהצלחה.";
+"Password must not be empty." = "סיסמה לא יכולה להיות ריקה.";
+"The passwords do not match. Please try again." = "הסיסמאות אינן תואמות. נסו שנית.";
+"Password change failed" = "שינוי סיסמה נכשל";
+"Password change failed - Permission denied" = "שינוי סיסמה נכשל - ההראשה נדחתה";
+"Password change failed - Insufficient password quality" = "שינוי סיסמה נכשל - הסיסמה אינה איכותית מספיק";
+"Password change failed - Password is too short" = "שינוי סיסמה נכשל - הסיסמה קצרה מדי";
+"Password change failed - Password is too young" = "שינוי סיסמה נכשל - הסיסמה צעירה מדי";
+"Password change failed - Password is in history" = "שינוי סיסמה נכשל - הסיסמה הייתה בשימוש בעבר";
+"Unhandled policy error: %{0}" = "שגיאת מדיניות לא מטופלת: {0}%";
+"Unhandled error response" = "תגובת שגיאה לא מטופלת";
+"Password change is not supported." = "שינוי סיסמה אינו נתמך.";
+"Unhandled HTTP error code: %{0}" = "שגיאת HTTP לא מטופלת מספר: {0}%";
+"Cancel" = "ביטול";
+"Invitations" = "הזמנות";
+"Edit Filter" = "עריכת פילטר";
+"Delete Filter" = "מחיקת פילטר";
+"Create Filter" = "יצירת פילטר";
+"Delete Label" = "מחיקת תגית";
+"Create Label" = "יצירת תגית";
+"Accounts" = "חשבונות";
+"Edit Account" = "עריכת חשבון";
+"Delete Account" = "מחיקת חשבון";
+"Create Account" = "יצירת חשבון";
+"Account Name" = "שם חשבון";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "שימוש ב- Gravatar";
+"Alternate Avatar" = "תמונת פרופיל משנית";
+"none" =  "ללא";
+"identicon" = "Ident Icon";
+"monsterid" = "Monster";
+"wavatar" = "Wavatar";
+"retro" = "Retro";

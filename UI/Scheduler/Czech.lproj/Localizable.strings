@@ -9,30 +9,38 @@
 "Go to today" = "Přejde na dnešní den";
 "Switch to day view" = "Přepnout na denní zobrazení";
 "Switch to week view" = "Přepnout na týdenní zobrazení";
-"Switch to multi-columns day view" = "Přepnout na vícesloupkové denní zobrazení";
 "Switch to month view" = "Přepnout na měsíční zobrazení";
+"Switch to multi-columns day view" = "Přepnout na vícesloupkové denní zobrazení";
 "Reload all calendars" = "Aktualizovat všechny kalendáře";
+
 /* Tabs */
 "Date" = "Datum";
 "Calendars" = "Kalendáře";
+"No events for selected criteria" = "Zadaným kritériím nevyhověly žádné události";
+"No tasks for selected criteria" = "Zadaným kritériím nevyhověly žádné úkoly";
+
 /* Day */
 "DayOfTheMonth" = "DayOfTheMonth";
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "Dnes";
 "Previous Day" = "Předchozí den";
 "Next Day" = "Následující den";
+
 /* Week */
 "Week" = "Týden";
 "this week" = "tento týden";
 "Week %d" = "Týden %d";
 "Previous Week" = "Předchozí týden";
 "Next Week" = "Následující týden";
+
 /* Month */
 "this month" = "tento měsíc";
 "Previous Month" = "Předchozí měsíc";
 "Next Month" = "Následující měsíc";
+
 /* Year */
 "this year" = "letos";
+
 /* Menu */
 "Calendar" = "Kalendář";
 "Contacts" = "Kontakty";
@@ -55,11 +63,14 @@
 "A total of %{0} events were imported in the calendar." = "Do kalendáře bylo importováno %{0} událostí.";
 "Compose E-Mail to All Attendees" = "Vytvořit e-mail pro všechny účastníky";
 "Compose E-Mail to Undecided Attendees" = "Vytvořit e-mail pro nerozhodnuté účastníky";
+
 /* Folders */
 "Personal calendar" = "Osobní kalendář";
+
 /* Misc */
 "OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Zakázaná";
+
 /* acls */
 "Access rights to" = "Přístupová práva k";
 "For user" = "Pro uživatele";
@@ -82,9 +93,11 @@
 = "Tato osoba může vytvářet objekty v mém kalendáři.";
 "This person can erase objects from my calendar."
 = "Tato osoba může mazat objekty z mého kalendáře.";
+
 /* Button Titles */
 "Subscribe to a Calendar..." = "Odebírat kalendář...";
 "Remove the selected Calendar" = "Smazat zvolený kalendář";
+"New calendar" = "Nový kalendář";
 "Name of the Calendar" = "Název kalendáře";
 "new" = "Nový";
 "Print view" = "Tisk";
@@ -97,8 +110,11 @@
 "Attach" = "Připojit";
 "Update" = "Aktualizace";
 "Cancel" = "Storno";
+"Reset" = "Obnovit";
+"Save" = "Uložit";
 "show_rejected_apts" = "Ukázat odmítnuté schůzky";
 "hide_rejected_apts" = "Skrýt odmítnuté schůzky";
+
 /* Schedule */
 "Schedule" = "Plán";
 "No appointments found" = "Nenalezeny žádné schůzky";
@@ -111,6 +127,7 @@
 "more attendees" = "Více účastníků";
 "Hide already accepted and rejected appointments" = "Skrýt již přijaté a odmítnuté schůzky";
 "Show already accepted and rejected appointments" = "Zobrazit již přijaté a odmítnuté  schůzky";
+
 /* Print view */
 "LIST" = "Seznam";
 "Print Settings" = "Nastavení tisku";
@@ -124,6 +141,7 @@
 "Display events and tasks colors" = "Zobrazit barvy událostí a úkolů";
 "Borders" = "Okraje";
 "Backgrounds" = "Pozadí";
+
 /* Appointments */
 "Appointment viewer" = "Zobrazit schůzky";
 "Appointment editor" = "Editovat schůzky";
@@ -137,6 +155,7 @@
 "Status" = "Status";
 "% complete" = "% hotovo";
 "Location" = "Místo";
+"Add a category" = "Přidat kategorii";
 "Priority" = "Priorita";
 "Privacy" = "Soukromí";
 "Cycle" = "Cyklus opakování";
@@ -155,19 +174,24 @@
 "General" = "Obecný";
 "Reply" = "Odpověď";
 "Created by" = "Vytvořeno";
-"Target:" = "Vložte adresu webové stránky nebo dokumentu.";
+"You are invited to participate" = "Jste pozván k účasti";
+"Target" = "Cíl";
 "attributes" = "atributy";
 "attendees" = "účastníci";
 "delegated from" = "delegováno od";
+
 /* checkbox title */
 "is private" = "je soukromý/á";
+
 /* classification */
 "Public" = "Veřejný";
 "Private" = "Soukromý";
+
 /* text used in overviews and tooltips */
 "empty title" = "Prázdný název";
 "private appointment" = "Soukromá schůzka";
 "Change..." = "Změnit...";
+
 /* Appointments (participation state) */
 "partStat_NEEDS-ACTION" = "Potvrdím později";
 "partStat_ACCEPTED" = "Zúčastním se";
@@ -175,10 +199,12 @@
 "partStat_TENTATIVE" = "Nezávazně";
 "partStat_DELEGATED" = "Deleguji";
 "partStat_OTHER" = "Ostatní";
+
 /* Appointments (error messages) */
 "Conflicts found!" = "Nalezeno překrývání";
 "Invalid iCal data!" = "Neplatná iCal data";
 "Could not create iCal data!" = "Nebylo možné vytvořit iCal data!";
+
 /* Searching */
 "view_all" = "Všechna";
 "view_today" = "Dnešní události";
@@ -200,13 +226,15 @@
 "Search appointments" = "Vyhledat schůzky";
 "All day Event" = "Celodenní událost";
 "check for conflicts" = "Zkontrolovat překrývání";
-"Browse URL" = "Prozkoumat URL";
+"URL" = "URL";
 "newAttendee" = "Přidat účastníka";
+
 /* calendar modes */
 "Overview" = "Přehled";
 "Chart" = "Tabulka";
 "List" = "Seznam";
 "Columns" = "Sloupy";
+
 /* Priorities */
 "prio_0" = "Nespecifikovaná";
 "prio_1" = "Vysoká";
@@ -218,6 +246,7 @@
 "prio_7" = "Nízká";
 "prio_8" = "Nízká";
 "prio_9" = "Nízká";
+
 /* access classes (privacy) */
 "PUBLIC_vevent" = "Veřejná událost";
 "CONFIDENTIAL_vevent" = "Důvěrná událost";
@@ -225,6 +254,7 @@
 "PUBLIC_vtodo" = "Veřejný úkol";
 "CONFIDENTIAL_vtodo" = "Důvěrný úkol";
 "PRIVATE_vtodo" = "Osobní úkol";
+
 /* status type */
 "status_" = "Nespecifikovaný";
 "status_NOT-SPECIFIED" = "Nespecifikovaný";
@@ -234,6 +264,16 @@
 "status_NEEDS-ACTION" = "Vyžaduje akci";
 "status_IN-PROCESS" = "Probíhající";
 "status_COMPLETED" = "Hotov";
+
+/* Priority level */
+"low" = "nízká";
+
+/* Priority level */
+"normal" = "normální";
+
+/* Priority level */
+"high" = "vysoká";
+
 /* Cycles */
 "cycle_once" = "cyklus_jednou";
 "cycle_daily" = "cyklus_denně";
@@ -248,6 +288,7 @@
 "Recurrence pattern" = "Vzor opakování";
 "Range of recurrence" = "Rozsah opakování";
 "Daily" = "Denní";
+"Multi-Columns" = "Více-Sloupové";
 "Weekly" = "Týdenní";
 "Monthly" = "Měsíční";
 "Yearly" = "Roční";
@@ -256,22 +297,30 @@
 "Week(s)" = "Týdnů";
 "On" = "V";
 "Month(s)" = "Měsíců";
+
 /* [Event recurrence editor] Ex: _The_ first Sunday */
 "The" = "The";
 "Recur on day(s)" = "Opakovat ve dnech";
 "Year(s)" = "rocích";
+
 /* [Event recurrence editor] Ex: Every first Sunday _of_ April */
 "cycle_of" = "of";
 "No end date" = "Bez data konce";
 "Create" = "Vytvořit";
 "appointment(s)" = "schůzku/y";
 "Repeat until" = "Opakovat do";
+"End Repeat" = "Ukončení opakování";
+"Never" = "Nikdy";
+"After" = "Po";
+"On Date" = "Dne";
+"times" = "krát";
 "First" = "První";
 "Second" = "Druhý";
 "Third" = "Třetí";
 "Fourth" = "Čtvrtý";
 "Fift" = "Pátý";
 "Last" = "Poslední";
+
 /* Appointment categories */
 "category_none" = "Žádný";
 "category_labels" = "Výročí,Narozeniny,Obchod,Hovory,Klienti,Soutěže,Zákazník,Oblíbené,Sledování,Dárky,Volno,Nápady,Meeting,Problémy,Různé,Osobní,Projekty,Veřejné prázdniny,Stav,Dodavatelé,Cesta,Dovolená";
@@ -300,6 +349,7 @@
 "reminder_MINUTES" = "minuty";
 "reminder_HOURS" = "hodiny";
 "reminder_DAYS" = "dny";
+"reminder_WEEKS" = "týdnů";
 "reminder_BEFORE" = "před";
 "reminder_AFTER" = "po";
 "reminder_START" = "začátku/em události";
@@ -315,22 +365,40 @@
 "zoom_100" = "100%";
 "zoom_50" = "50%";
 "zoom_25" = "25%";
+
+/* Arial label for reminder units */
+"Reminder units" = "Jednotky připomenutí";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Pozice připomenutí";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Vztah připomenutí";
+
 /* transparency */
 "Show Time as Free" = "Čas zobrazit jako volný";
+
 /* email notifications */
 "Send Appointment Notifications" = "Poslat pozvání na schůzku";
+"From" = "Začátek";
+"To" = "Do";
+
 /* validation errors */
 validate_notitle           = "Název nebyl nastaven, pokračovat?";
 validate_invalid_startdate = "Chybné datum začátku!";
 validate_invalid_enddate   = "Chybné datum konce!";
 validate_endbeforestart    = "Zadané datum konce je před začátkem události.";
+validate_untilbeforeend    = "Opakování musí skončit po prvním výskytu.";
+
 "Events" = "Události";
 "Tasks" = "Úkoly";
 "Show completed tasks" = "Zobrazit dokončené úkoly";
+
 /* tabs */
 "Task" = "Úkol";
 "Event" = "Událost";
 "Recurrence" = "Opakování";
+
 /* toolbar */
 "New Event" = "Nová událost";
 "New Task" = "Nový úkol";
@@ -341,7 +409,11 @@ validate_endbeforestart    = "Zadané datum konce je před začátkem události.
 "Week View" = "Týden";
 "Month View" = "Měsíc";
 "Reload" = "Aktualizovat";
+
+/* Number of selected components in events or tasks list */
+"selected" = "vybráno";
 "eventPartStatModificationError" = "Status Vaší účasti nemohl být změněn.";
+
 /* menu */
 "New Event..." = "Nová událost...";
 "New Task..." = "Nový úkol...";
@@ -357,6 +429,7 @@ validate_endbeforestart    = "Zadané datum konce je před začátkem události.
 = "Nemůžete odebrat nebo se odhlásit z odebírání svého vlastního kalendáře.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Opravdu chcete smazat kalendář \"%{0}\"?";
+
 /* Legend */
 "Participant" = "Účastník";
 "Optional Participant" = "Nepovinný účastník";
@@ -370,8 +443,9 @@ validate_endbeforestart    = "Zadané datum konce je před začátkem události.
 "Busy" = "Není volno";
 "Maybe busy" = "Možná není volno";
 "No free-busy information" = "Bez informací";
+
 /* FreeBusy panel buttons and labels */
-"Suggest time slot:" = "Navrhnout čas";
+"Suggest time slot" = "Navrhnout čas";
 "Zoom" = "Přiblížit";
 "Previous slot" = "Předchozí místo";
 "Next slot" = "Následující místo";
@@ -383,11 +457,16 @@ validate_endbeforestart    = "Zadané datum konce je před začátkem události.
 "and" = "a";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
 = "Mezi účastníky dochází k časovému konfliktu.\nPonecháte současné nastavení i přesto?";
-/* apt list */
+
+/* events list */
+"Due" = "Splnění";
 "(Private Event)" = "(Soukromá událost)";
 vevent_class0 = "(Veřejná událost)";
 vevent_class1 = "(Soukromá událost)";
 vevent_class2 = "(Důvěrná událost)";
+
+/* tasks list */
+"Descending Order" = "Sestupně";
 vtodo_class0 = "(Veřejný úkol)";
 vtodo_class1 = "(Soukromý úkol)";
 vtodo_class2 = "(Důvěrný úkol)";
@@ -397,6 +476,11 @@ vtodo_class2 = "(Důvěrný úkol)";
 "editRepeatingItem" = "Položka, kterou upravujete, se opakuje. Chcete opravit veškerá opakování nebo pouze tuto?";
 "button_thisOccurrenceOnly" = "Pouze toto opakování";
 "button_allOccurrences" = "Všechna opakování";
+"Edit This Occurrence" = "Upravit toto opakování";
+"Edit All Occurrences" = "Upravit všechna opakování";
+"Update This Occurrence" = "Aktualizovat toto opakování";
+"Update All Occurrences" = "Aktualizovat všechna opakování";
+
 /* Properties dialog */
 "Color" = "Barva";
 "Include in free-busy" = "Zahrnout do obsazeného času (free-busy)";
@@ -410,11 +494,23 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Receive a mail when I modify my calendar" = "Obdržet zprávu když upravím svůj kalendář";
 "Receive a mail when someone else modifies my calendar" = "Obdržet zprávu když někdo jiný upraví můj kalendář";
 "When I modify my calendar, send a mail to" = "Když upravím svůj kalendář, poslat zprávu na";
+"Email Address" = "E-mail";
+"Export" = "Exportovat";
+
+
+/* Show only the calendar for which the menu is displayed */ 
+"Show Only This Calendar" = "Zobrazit jenom tento kalendář";
+
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "Zobrazit všechny kalendáře";
+
 "Links to this Calendar" = "Odkazy na tento kalendář";
 "Authenticated User Access" = "Přístup pro ověřené uživatele";
 "CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
+
 /* Error messages */
 "dayFieldInvalid" = "V políčku Dny zadejte číselnou hodnotu větší nebo rovnu 1.";
 "weekFieldInvalid" = "V políčku Týden zadejte číselnou hodnotu větší nebo rovnu 1.";
@@ -430,7 +526,7 @@ vtodo_class2 = "(Důvěrný úkol)";
 "tagWasAdded" = "Chcete-li synchronizovat tento kalendář, budete muset znovu načíst data do svého mobilního zařízení.\nPokračovat?";
 "tagWasRemoved" = "Odstraníte-li u tohoto kalendáře synchronizaci, budete muset znovu načíst data do svého mobilního zařízení.\nPokračovat?";
 "DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
-"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
+"EventCopyError" = "Kopírování selhalo. Zkuste prosím zkopírovat do jiného kalendáře.";
 "Please select at least one calendar" = "Prosím zvolte alespoň jeden kalendář";
 "Open Task..." = "Otevřít úkol...";
 "Mark Completed" = "Označit jako dokončené";
@@ -438,9 +534,70 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Delete Event" = "Smazat událost";
 "Copy event to my calendar" = "Copy event to my calendar";
 "View Raw Source" = "Zobrazit surový zdroj";
+"Subscriptions" = "Odebírání";
+"Subscribe to a shared folder" = "Odebírat sdílenou složku";
 "Subscribe to a web calendar..." = "Odebírat vzdálený kalendář na webu";
 "URL of the Calendar" = "Adresa vzdáleného kalendáře na webu";
 "Web Calendar" = "Vzdálený kalendář na webu";
+"Web Calendars" = "Vzdálené kalendáře na webu";
 "Reload on login" = "Aktualizovat při přihlášení";
 "Invalid number." = "Invalid number.";
 "Please identify yourself to %{0}" = "Identifikujte se na %{0}";
+"quantity" = "počet";
+"Current view" = "Současné zobrazení";
+"Selected events and tasks" = "Vybrané události a úkoly";
+"Custom date range" = "Vlastní časové období";
+"Select starting date" = "Vybrat datum začátku";
+"Select ending date" = "Vybrat datum ukončení";
+"Delegated to" = "Delegováno na ";
+"Keep sending me updates" = "Zasílat aktualizace";
+"OK" = "OK";
+"Confidential" = "Důvěrné";
+"Enable" = "Zapnout";
+"Filter" = "Filtr";
+"Sort" = "Setřídit";
+"Back" = "Zpět";
+"Day" = "Den";
+"Month" = "Měsíc";
+"New Appointment" = "Nová schůzka";
+"filters" = "filtry";
+"Today" = "Dnes";
+"More options" = "Více možností";
+"Delete This Occurrence" = "Smazat toto opakování";
+"Delete All Occurrences" = "Smazat všechna opakování";
+"Add From" = "Přidat Začátek";
+"Add Due" = "Přidat Splnění";
+"Import" = "Importovat";
+"Rename" = "Přejmenovat";
+"Import Calendar" = "Importovat kalendář";
+"Select an ICS file." = "Vybrat ICS soubor.";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "Přihlášení k odebírání kalendáře proběhlo úspěšně";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Přepnout položku";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Rozsah vyhledávání";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

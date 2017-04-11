@@ -6,11 +6,19 @@
 "Domain" = "Домејн";
 "Remember username" = "Запомни го корисничкото име";
 "Connect" = "Поврзи се";
+
+/* Appears while authentication is in progress */
+"Authenticating" = "Автентифицирам";
+
+/* Appears when authentication succeeds */
+"Welcome" = "Добро дојдовте";
+
 "Authentication Failed" = "Неуспешна автентификација";
 "Wrong username or password." = "Погрешно корисничко име или лозинка.";
+"Retry" = "Обиди се повторно";
 "cookiesNotEnabled" = "Не можете да се најавите поради тоа што колачињата на вашиот прелистувач не се активирани. Ве молиме да ги овозможите колачињата во опциите на вашиот прелистувач и да се обидете повторно.";
 "browserNotCompatible" = "Забележивме дека вашиот прелистувач во моментов не е поддржан од овој сајт. Наша препорака е да користите Firefox. Клинете врз овој линк да ја преземете последната верзија на овој прелистувач.";
-"alternativeBrowsers" = "Како алтернатива исто така можете да користите еден оф компатибилните прелистувачи";
+"alternativeBrowsers" = "Како алтернатива исто така можете да користите еден од компатибилните прелистувачи";
 "alternativeBrowserSafari" = "Како крајна можност, можете исто така да го користите Safari.";
 "Download" = "Преземи";
 "Language" = "Јазик";
@@ -27,6 +35,7 @@
 "Finnish" = "Suomi";
 "French" = "Français";
 "German" = "Deutsch";
+"Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
@@ -38,6 +47,7 @@
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
+"Serbian" = "Српски";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
@@ -46,6 +56,7 @@
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
 "About" = "За";
 "AboutBox" = "Развиено од Inverse, SOGo е комплетен групвер сервер со фокус на скалабилност и едноставност.<br/><br/>\nSOGo овозможува богат AJAX-базиран Web интерфејс и поддржува повеќе нативни клиенти користејќи стандардни протоколи како на пример CalDAV и CardDAV.<br/><br/>\nSOGo е дистрибуиран под <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> верзија 2 или подоцнежна и делови се дистрибуиирани под GNU LGPL version 2. Ова е бесплатен софтвер: вие сте слободни да го менувате и редистрибуирате. Нема гаранција, до ниво дозволено со закон.<br/><br/>\nПогледни <a href=\"http://www.sogo.nu/en/support/community.html\">ја страницава</a> за разни можности на поддршка.";
 "Your account was locked due to too many failed attempts." = "Вашиот налог е блокиран поради премногу погрешни обиди.";

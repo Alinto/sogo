@@ -1,0 +1,300 @@
+/// no-animation.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
+
+/**
+ * Disable transitions and drop shadows for improved performance in some browsers.
+ * It is generated as an optional and distinct CSS file.
+ *
+ * See https://github.com/angular/material/issues/8329
+ */
+
+//--------------------------------
+// DISABLE ANIMATIONS
+//--------------------------------
+
+/** Disable tab-contents **/
+md-tabs.md-dynamic-height {
+  transition: none !important;
+}
+
+md-tab-content.md-right:not(.md-active) {
+  animation: none;
+}
+
+md-tab-content.md-left:not(.md-active) {
+  animation: none;
+}
+
+md-tab-content.md-left:not(.md-active) *,
+md-tab-content.md-right:not(.md-active) * {
+  transition: none !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+}
+
+md-tab-content.md-right,
+md-tab-content.md-left {
+  transition: none !important;
+}
+
+.md-tab {
+  transition: none !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+}
+
+md-tab-content {
+  transition: none !important;
+}
+
+md-ink-bar.md-right,
+md-ink-bar.md-left {
+  transition: none !important;
+}
+
+/** Disable backdrop transition */
+md-backdrop {
+  transition: none !important;
+}
+
+/** Disable slider animation for thumbs **/
+md-slider .md-focus-thumb {
+  transition: none !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+  animation: none !important;
+}
+
+md-slider ._md-thumb{
+  transition: none !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+}
+
+md-option {
+  transition: none !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+}
+
+/** Disable dialogs **/
+md-dialog {
+  &.md-transition-out,
+  &.md-transition-in,
+  md-toolbar {
+    &,
+    .md-input,
+    md-input-container.md-input-has-value label,
+    md-input-container.md-input-has-value label:not(.md-no-float),
+    md-icon {
+      transition: none !important;
+      transition-duration: 0ms !important;
+      transition-delay: 0ms !important;
+    }
+  }
+}
+
+/** Disable cards **/
+md-card.sg-collapsed,
+md-card.sg-expanded {
+  transition: none !important;
+}
+
+/** Disable ripple **/
+.md-ripple,
+.md-ripple-container,
+sg-ripple {
+  transition: none !important;
+}
+
+.md-ripple.md-ripple-remove {
+  animation: none !important;
+}
+
+/** Disable progress bar **/
+.sg-progress-circular-floating {
+  transition: none !important;
+}
+
+/** Disable checkbox **/
+md-checkbox ._md-icon {
+  transition: none !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+}
+
+/** Disable radio **/
+md-radio-button {
+  .md-on,
+  .md-off {
+    transition: none !important;
+  }
+}
+
+.md-container::before {
+  transition: none !important;
+}
+
+/** Disable buttons **/
+.md-button,
+.md-button.md-fab {
+  transition: none !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+}
+
+/** Disable grid list **/
+md-grid-tile {
+  transition: none !important;
+}
+
+/** Disable icons **/
+md-icon,
+.md-icon {
+  transition: none !important;
+}
+
+/** Disable fading labels **/
+md-input-container label {
+  transition: none !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+}
+
+/** Disable slider **/
+md-slider {
+  .md-thumb,
+  .md-thumb-container, //, ._md-focus-ring, ._md-track-fill, ._md-thumb {
+  .md-sign,
+  .md-sign::after,
+  .md-focus-ring,
+  .md-track-fill {
+    transition: none !important;
+    transition-duration: 0ms !important;
+    transition-delay: 0ms !important;
+  }
+}
+
+md-input-container .md-char-counter, md-input-container .md-input-message-animation {
+  transition: none !important;
+}
+
+/** Disable tooltips **/
+.md-tooltip {
+  transition: none !important;
+}
+
+/** Disable fab translation **/
+md-fab-speed-dial.sg-fab-bottom-center {
+  transition: none !important;
+}
+
+md-fab-speed-dial.md-scale .md-fab-action-item {
+  transition: none !important;
+}
+
+/** Disable dropdown animations */
+md-select-menu,
+md-select-menu md-content {
+  transition: none !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+}
+
+.md-select-menu-container.md-leave {
+  transition: none !important;
+  transition-duration: 0ms !important;
+  transition-delay: 0ms !important;
+}
+
+.md-open-menu-container.md-active,
+.md-open-menu-container.md-active > md-menu-content > * {
+  transition: none !important;
+}
+
+/** Disable datepicker and timepicker **/
+.md-datepicker-calendar-pane,
+.sg-timepicker-time-pane {
+  transition: none !important;
+  transition-delay: 0ms !important;
+}
+
+.md-datepicker-calendar,
+.md-datepicker-calendar-pane .md-calendar,
+.sg-timepicker-time,
+.sg-timepicker-time-pane .md-calendar {
+  transition: none !important;
+}
+
+/** Disable views translations **/
+.view-list,
+.view-list--close,
+.view-detail {
+  transition: none !important;
+}
+
+.md-sidenav-left,
+.md-sidenav-left .md-clickable {
+  transition: none !important;
+}
+
+/** Disable custom rules **/
+.attendees {
+  transition: none !important;
+  transition-delay: 0ms !important;
+}
+.attendees-chips md-chips-wrap {
+  transition: none !important;
+}
+
+//--------------------------------
+// DISABLE FLIPPING EFFECT
+//--------------------------------
+
+.sg-reversible {
+  transition: none !important;
+  position: relative;
+}
+
+.sg-reversible.sg-flip,
+.sg-reversible .sg-face,
+.sg-reversible .sg-back {
+  position: relative;
+  transform: none !important;
+}
+
+.sg-reversible .sg-back,
+.sg-reversible.sg-flip .sg-face {
+  display: none;
+}
+
+.sg-reversible.sg-flip .sg-back {
+  display: block;
+}
+
+//--------------------------------
+// DISABLE BOX SHADOWS
+//--------------------------------
+
+md-card {
+  border: 1px solid rgba(0, 0, 0, .14) !important;
+  box-shadow: none !important;
+}
+
+md-dialog {
+  border: 1px solid rgba(0, 0, 0, .14) !important;
+  box-shadow: none !important;
+}
+
+md-select-menu {
+  border: 1px solid rgba(0, 0, 0, .14) !important;
+  box-shadow: none !important;
+}
+
+.md-button.md-raised {
+  border: 1px solid rgba(0, 0, 0, .14) !important;
+  box-shadow: none !important;
+}
+
+md-toast .md-toast-content {
+  box-shadow: none !important;
+}

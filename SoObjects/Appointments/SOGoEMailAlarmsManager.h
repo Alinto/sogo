@@ -1,6 +1,6 @@
 /* SOGoEMailAlarmsManager.h - this file is part of SOGo
  *
- * Copyright (C) 2010-2014 Inverse inc.
+ * Copyright (C) 2010-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,18 +32,13 @@
 
 + (id) sharedEMailAlarmsManager;
 
-/* PUT */
-- (void) handleAlarmsInCalendar: (iCalCalendar *) calendar
-                  fromComponent: (SOGoCalendarComponent *) component;
-
 /* DELETE */
 - (void) deleteAlarmsFromComponent: (SOGoCalendarComponent *) component;
 
 /* fetch and cleanup */
 - (NSArray *) scheduledAlarmsFromDate: (NSCalendarDate *) fromDate
                                toDate: (NSCalendarDate *) toDate
-                           withOwners: (NSMutableArray **) owners;
-- (void) deleteAlarmsUntilDate: (NSCalendarDate *) untilDate;
+			 withMetadata: (NSMutableArray *) metadata;
 
 @end
 

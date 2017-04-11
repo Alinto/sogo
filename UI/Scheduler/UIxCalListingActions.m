@@ -77,7 +77,7 @@ static NSArray *tasksFields = nil;
   {
     eventsFields = [NSArray arrayWithObjects: @"c_name", @"c_folder",
                     @"calendarName",
-                    @"c_status", @"c_isopaque", @"c_title", @"c_startdate",
+                    @"c_status", @"c_isopaque", @"c_title", @"c_startdate", @"startHour",
                     @"c_enddate", @"c_location", @"c_isallday",
                     @"c_classification", @"c_category", @"c_priority",
                     @"c_partmails", @"c_partstates", @"c_owner",
@@ -90,7 +90,7 @@ static NSArray *tasksFields = nil;
   {
     tasksFields = [NSArray arrayWithObjects: @"c_name", @"c_folder",
                    @"calendarName",
-                   @"c_status", @"c_title", @"c_enddate",
+                   @"c_status", @"c_title", @"c_startdate", @"c_enddate",
                    @"c_classification", @"c_location", @"c_category",
                    @"viewable", @"editable", @"erasable",
                    @"c_priority", @"c_owner",
@@ -315,6 +315,7 @@ static NSArray *tasksFields = nil;
 {
   NSArray *mails, *states;
   NSMutableArray *statesDescription;
+  NSString *description;
   iCalPersonPartStat stat;
   NSUInteger count, max;
 
@@ -336,7 +337,9 @@ static NSArray *tasksFields = nil;
       for (count = 0; count < max; count++)
         {
           stat = (states ? [[states objectAtIndex: count] intValue] : 0);
-          [statesDescription addObject: [[iCalPerson descriptionForParticipationStatus: stat] lowercaseString]];
+          description = [iCalPerson descriptionForParticipationStatus: stat];
+          if (description == nil) description = @"";
+          [statesDescription addObject: [description lowercaseString]];
         }
 
       if (max > 0)
@@ -455,10 +458,13 @@ static NSArray *tasksFields = nil;
 
           while ((newInfo = [currentInfos nextObject]))
             {
-              // Skip components that appear on disabled weekdays
-              weekDay = iCalWeekDayString[[[newInfo objectForKey: @"startDate"] dayOfWeek]];
-              if ([enabledWeekDays count] && ![enabledWeekDays containsObject: weekDay])
-                continue;
+              if ([newInfo objectForKey: @"startDate"])
+                {
+                  weekDay = iCalWeekDayString[[[newInfo objectForKey: @"startDate"] dayOfWeek]];
+                  if ([enabledWeekDays count] && ![enabledWeekDays containsObject: weekDay])
+                    // Skip components that appear on disabled weekdays
+                    continue;
+                }
 
               if ([fields containsObject: @"viewable"])
                 {
@@ -540,6 +546,9 @@ static NSArray *tasksFields = nil;
               if ((recurrenceTime = [newInfo objectForKey: @"c_recurrence_id"]))
                 [newInfo setObject: [NSString stringWithFormat: @"occurence%@", recurrenceTime]
                             forKey: @"c_recurrence_id"];
+
+              // Add the formatted starting hour
+              [self _addStartHour: newInfo];
 
               // Possible improvement: only call _fixDates if event is recurrent
 	      // or the view range span a daylight saving time change
@@ -866,19 +875,32 @@ static inline void _feedBlockWithDayBasedData (NSMutableDictionary *block, unsig
             forKey: @"length"];
 }
 
-static inline void _feedBlockWithMonthBasedData (NSMutableDictionary *block, unsigned int start,
-                                                 NSTimeZone *userTimeZone,
-                                                 SOGoDateFormatter *dateFormatter)
+// static inline void _feedBlockWithMonthBasedData (NSMutableDictionary *block, unsigned int start,
+//                                                  NSTimeZone *userTimeZone,
+//                                                  SOGoDateFormatter *dateFormatter)
+// {
+//   NSCalendarDate *eventStartDate;
+//   NSString *startHour;
+  
+//   eventStartDate = [NSCalendarDate dateWithTimeIntervalSince1970: start];
+//   [eventStartDate setTimeZone: userTimeZone];
+//   startHour = [dateFormatter formattedTime: eventStartDate];
+//   [block setObject: startHour forKey: @"starthour"];
+//   [block setObject: [NSNumber numberWithUnsignedInt: start]
+//             forKey: @"start"];
+// }
+
+- (void) _addStartHour: (NSMutableDictionary *) theRecord
 {
   NSCalendarDate *eventStartDate;
   NSString *startHour;
-  
-  eventStartDate = [NSCalendarDate dateWithTimeIntervalSince1970: start];
-  [eventStartDate setTimeZone: userTimeZone];
-  startHour = [dateFormatter formattedTime: eventStartDate];
-  [block setObject: startHour forKey: @"starthour"];
-  [block setObject: [NSNumber numberWithUnsignedInt: start]
-            forKey: @"start"];
+
+  eventStartDate = [theRecord objectForKey: @"startDate"];
+  if (eventStartDate)
+    {
+      startHour = [dateFormatter formattedTime: eventStartDate];
+      [theRecord setObject: startHour forKey: @"startHour"];
+    }
 }
 
 - (NSMutableDictionary *) _eventBlockWithStart: (unsigned int) start
@@ -894,8 +916,8 @@ static inline void _feedBlockWithMonthBasedData (NSMutableDictionary *block, uns
   
   if (dayBasedView)
     _feedBlockWithDayBasedData (block, start, end, dayStart);
-  else
-    _feedBlockWithMonthBasedData (block, start, userTimeZone, dateFormatter);
+  // else
+  //   _feedBlockWithMonthBasedData (block, start, userTimeZone, dateFormatter);
   [block setObject: number forKey: @"nbr"];
   if (recurrenceTime)
     [block setObject: [NSNumber numberWithInt: recurrenceTime]
@@ -1312,11 +1334,11 @@ _computeBlocksPosition (NSArray *blocks)
  * @apiSuccess (Success 200) {Number} events.ownerIsOrganizer    1 if owner is also the organizer
  * @apiSuccess (Success 200) {Object[]} blocks
  * @apiSuccess (Success 200) {Number} blocks.nbr
- * @apiSuccess (Success 200) {Number} blocks.start
- * @apiSuccess (Success 200) {Number} blocks.position
- * @apiSuccess (Success 200) {Number} blocks.length
- * @apiSuccess (Success 200) {Number} blocks.siblings
- * @apiSuccess (Success 200) {Number} blocks.realSiblings
+ * @apiSuccess (Success 200) {Number} [blocks.start]             Day-based views only
+ * @apiSuccess (Success 200) {Number} [blocks.position]          Day-based views only
+ * @apiSuccess (Success 200) {Number} [blocks.length]            Day-based views only
+ * @apiSuccess (Success 200) {Number} [blocks.siblings]          Day-based views only
+ * @apiSuccess (Success 200) {Number} [blocks.realSiblings]      Day-based views only
  * @apiSuccess (Success 200) {Object[]} allDayBlocks
  * @apiSuccess (Success 200) {Number} allDayBlocks.nbr
  * @apiSuccess (Success 200) {Number} allDayBlocks.start
@@ -1543,7 +1565,6 @@ _computeBlocksPosition (NSArray *blocks)
   BOOL showCompleted;
   int statusCode;
   int startSecs;
-  int endsSecs;
 
   filteredTasks = [NSMutableArray array];
   
@@ -1552,7 +1573,6 @@ _computeBlocksPosition (NSArray *blocks)
   [self saveSortValue: @"TasksSortingState"];
   
   startSecs = (unsigned int) [startDate timeIntervalSince1970];
-  endsSecs = (unsigned int) [endDate timeIntervalSince1970];
   tasksView = [request formValueForKey: @"filterpopup"];
   
   showCompleted = [[request formValueForKey: @"show_completed"] intValue];
@@ -1578,20 +1598,23 @@ _computeBlocksPosition (NSArray *blocks)
                                                       forAllDay: NO]];
       else
         [filteredTask addObject: [NSNull null]];
-      
       if (([tasksView isEqualToString:@"view_today"]  ||
            [tasksView isEqualToString:@"view_next7"]  ||
            [tasksView isEqualToString:@"view_next14"] ||
            [tasksView isEqualToString:@"view_next31"] ||
-           [tasksView isEqualToString:@"view_thismonth"]) && ((endDateStamp <= endsSecs) && (endDateStamp >= startSecs)))
+           [tasksView isEqualToString:@"view_thismonth"]) &&
+          (endDateStamp == 0 || endDateStamp >= startSecs))
         [filteredTasks addObject: filteredTask];
       else if ([tasksView isEqualToString:@"view_all"])
         [filteredTasks addObject: filteredTask];
-      else if (([tasksView isEqualToString:@"view_overdue"]) && ([[filteredTask objectAtIndex:18] isEqualToString:@"overdue"]))
+      else if (([tasksView isEqualToString:@"view_overdue"]) &&
+               ([[filteredTask objectAtIndex:taskStatusFlagIndex] isEqualToString:@"overdue"]))
         [filteredTasks addObject: filteredTask];
-      else if ([tasksView isEqualToString:@"view_incomplete"] && (![[filteredTask objectAtIndex:18] isEqualToString:@"completed"]))
+      else if ([tasksView isEqualToString:@"view_incomplete"] &&
+               (![[filteredTask objectAtIndex:taskStatusFlagIndex] isEqualToString:@"completed"]))
         [filteredTasks addObject: filteredTask];
-      else if ([tasksView isEqualToString:@"view_not_started"] && ([[[filteredTask objectAtIndex:taskStatusIndex] stringValue] isEqualToString:@"0"]))
+      else if ([tasksView isEqualToString:@"view_not_started"] &&
+               ([[[filteredTask objectAtIndex:taskStatusIndex] stringValue] isEqualToString:@"0"]))
         [filteredTasks addObject: filteredTask];
     }
   }
@@ -1600,8 +1623,10 @@ _computeBlocksPosition (NSArray *blocks)
     [filteredTasks sortUsingSelector: @selector (compareTasksTitleAscending:)];
   else if ([sort isEqualToString: @"priority"])
     [filteredTasks sortUsingSelector: @selector (compareTasksPriorityAscending:)];
+  else if ([sort isEqualToString: @"start"])
+    [filteredTasks sortUsingSelector: @selector (compareTasksStartDateAscending:)];
   else if ([sort isEqualToString: @"end"])
-    [filteredTasks sortUsingSelector: @selector (compareTasksEndAscending:)];
+    [filteredTasks sortUsingSelector: @selector (compareTasksEndDateAscending:)];
   else if ([sort isEqualToString: @"location"])
     [filteredTasks sortUsingSelector: @selector (compareTasksLocationAscending:)];
   else if ([sort isEqualToString: @"category"])

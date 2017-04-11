@@ -23,7 +23,7 @@
 "Location" = "Konum";
 "Add a category" = "Bir kategori ekle";
 "MobilePhone" = "CepTelefonu";
-"Name" = "Ad ve Soyad";
+"Name" = "Tam İsim";
 "OfficePhone" = "OfisTelefonu";
 "Organization" = "Organizasyon";
 "Work Phone" = "İş Telefonu";
@@ -39,33 +39,41 @@
 "new" = "yeni";
 "Preferred Phone" = "Tercih Edilen Telefon";
 "Move To" = "Taşı";
-"Copy To" = "Şuraya Kopyala";
-"Add to" = "Şuraya Ekle";
+"Copy To" = "Kopyala";
+"Add to" = "Ekle";
+
 /* Subheader of empty addressbook */
 "No contact" = "Adres defteri boş";
+
 /* Subheader of system addressbook */
 "Start a search to browse this address book" = "Bu adres defterini taramak için bir arama başlatın";
+
 /* Number of contacts in addressbook; string is prefixed by number */
 "contacts" = "kişi";
+
 /* No contact matching search criteria */
 "No matching contact" = "Eşleşen kişi yok";
+
 /* Number of contacts matching search criteria; string is prefixed by number */
 "matching contacts" = "eşleşen kişiler";
+
 /* Number of selected contacts in list */
-"selected" = "seçili";
+"selected" = "kişi seçildi";
+
 /* Empty right pane */
-"No contact selected" = "Seçili bir kişi yok";
+"No contact selected" = "Seçili kişi yok";
+
 /* Tooltips */
-"Create a new address book card" = "Yeni adres defteri kartı oluştur";
-"Create a new list" = "Yeni liste oluştu";
+"Create a new address book card" = "Yeni adres kartı oluştur";
+"Create a new list" = "Yeni liste oluştur";
 "Edit the selected card" = "Seçili kartı düzenle";
 "Send a mail message" = "Bir e-posta iletisi gönder";
 "Delete selected card or address book" = "Seçili kartı veya adres defterini sil";
-"Reload all contacts" = "Tüm kişileri tazele";
+"Reload all contacts" = "Adresleri tazele";
 "htmlMailFormat_UNKNOWN" = "Bilinmiyor";
 "htmlMailFormat_FALSE" = "Düz Metin";
 "htmlMailFormat_TRUE" = "HTML";
-"Name or Email" = "Ad Soyad veya E-posta";
+"Name or Email" = "İsim veya E-posta";
 "Category" = "Kategori";
 "Personal Addressbook" = "Kişisel Adres Defteri";
 "Search in Addressbook" = "Adres Defterinde Ara";
@@ -82,12 +90,12 @@
 "Please wait..." = "Lütfen bekleyin...";
 "No possible subscription" = "Mümkün olan bir üyelik yok";
 "Preferred" = "Tercih edilen";
-"Display" = "Görünen";
+"Display" = "Görünen İsim";
 "Display Name" = "Görünen İsim";
 "Additional Email" = "Diğer E-posta";
 "Phone Number" = "Telefon Numarası";
 "Prefers to receive messages formatted as" = "Almayı tercih ettiği ileti formatı";
-"Categories" = "Kategoriler";
+"Categories" = "Kategori";
 "First" = "İlk";
 "Last" = "Son";
 "Nickname" = "Takma ad";
@@ -95,9 +103,11 @@
 "Work" = "İş";
 "Mobile" = "Cep";
 "Pager" = "Çağrı cihazı";
+
 /* categories */
 "contacts_category_labels" = "Meslektaş, Rakip, Müşteri, Arkadaş, Aile, İş Ortağı, Tedarikçi, Basın, VIP";
 "New category" = "Yeni kategori";
+
 /* adresses */
 "Title" = "Ünvan";
 "Service" = "Servis";
@@ -134,15 +144,17 @@
 = "Kişisel adres defterinizden çıkamaz ve üyeliğinizi kaldıramazsınız.";
 "Are you sure you want to delete the selected contacts?"
 = "Seçili kişileri silmek istediğinizden emin misiniz?";
+"Are you sure you want to delete the card of %{0}?" = "%{0} kartını silmek istediğinizden emin misiniz?";
 "You cannot delete the card of \"%{0}\"."
 = "\"%{0}\" kartını silemezsiniz.";
 "You cannot subscribe to a folder that you own!"
 = "Size ait bir klasöre üye olamazsınız.";
 "Unable to subscribe to that folder!"
 = "Bu klasöre üye olunamıyor.";
+
 /* acls */
-"Access rights to" = "Aşağıdaki adres defterine erişim yetkileri";
-"For user" = "Aşağıdaki kullanıcı için";
+"Access rights to" = "Adres defteri";
+"For user" = "Erişen";
 "Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
 "Public Access" = "Herkese Açık Erişim";
 "This person can add cards to this addressbook."
@@ -158,32 +170,39 @@
 "The selected contact has no email address."
 = "Seçili kişinin e-posta adresi yok.";
 "Please select a contact." = "Lütfen bir kişi seçin.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} kart kopyalandı";
+"%{0} card(s) moved" = "%{0} kart taşındı";
 "SoAccessDeniedException" = "Bu adres defterine yazamazsınız.";
-"Forbidden" = "Bu adres defterine yazamazsınız.";
+"Forbidden" = "Yetki aşımı";
 "Invalid Contact" = "Seçili kişi artık mevcut değil.";
 "Unknown Destination Folder" = "Seçilen hedef adres defteri artık mevcut değil.";
+
 /* Lists */
 "List details" = "Ayrıntıları listele";
 "List name" = "Liste adı";
-"List nickname" = "Listenin takma adı";
+"List nickname" = "Liste takma adı";
 "List description" = "Liste tanımı";
 "Members" = "Üyeler";
-"Contacts" = "Kişiler";
+"Contacts" = "Adresler";
 "Add" = "Ekle";
 "Lists can't be moved or copied." = "Listeler taşınamaz ve kopyalanamaz.";
 "Export" = "Dışarı Aktar";
 "Export Address Book..." = "Adres Defterini Dışarı Aktar...";
 "View Raw Source" = "Kaynak Kodunu Görüntüle";
+
+/* Import */
 "Import Cards" = "Kartları İçeri Aktar";
 "Select a vCard or LDIF file." = "Bir vCard veya LDIF dosyası seçin.";
 "Upload" = "Yükle";
 "Uploading" = "Yükleniyor";
 "Done" = "Tamam";
-"An error occured while importing contacts." = "Kişileri içeri aktarırken bir hata oluştu.";
-"No card was imported." = "Hiç bir kart içeri aktarılmadı.";
+"An error occured while importing contacts." = "Adresleri içeri aktarırken bir hata oluştu.";
+"No card was imported." = "İçeri kart aktarılmadı.";
 "A total of %{0} cards were imported in the addressbook." = "Toplam %{0} kart adres defterinine aktarıldı.";
 "Reload" = "Tazele";
+
 /* Properties window */
 "Address Book Name" = "Adres Defteri Adı";
 "Links to this Address Book" = "Adres Defteri Bağlantıları";
@@ -227,7 +246,16 @@
 "Add Screen Name" = "Görünen İsim Ekle";
 "Synchronization" = "Eşitleme";
 "Synchronize" = "Eşitle";
-"Sucessfully subscribed to address book" = "Adres defterine başarıyla abone";
+"Sucessfully subscribed to address book" = "Adres defterine başarıyla üye olundu";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Arama kapsamı";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Ögede Geçiş Yap";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

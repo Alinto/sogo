@@ -124,14 +124,14 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
   url = [NSURL URLWithString: location];
   if (url)
     {
-      curl_global_init (CURL_GLOBAL_SSL);
-      curl = curl_easy_init ();
+      curl_global_init(CURL_GLOBAL_SSL);
+      curl = curl_easy_init();
       if (curl)
         {
-          curl_easy_setopt (curl, CURLOPT_URL, [location UTF8String]);
-          curl_easy_setopt (curl, CURLOPT_SSL_VERIFYPEER, 0L);
-          curl_easy_setopt (curl, CURLOPT_SSL_VERIFYHOST, 0L);
-          curl_easy_setopt (curl, CURLOPT_TIMEOUT, 60L);
+          curl_easy_setopt(curl, CURLOPT_URL, [location UTF8String]);
+          curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+          curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+          curl_easy_setopt(curl, CURLOPT_TIMEOUT, 20L);
           curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 
           authInfos = [self _loadAuthData];
@@ -145,17 +145,17 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
 	  /* buffering ivar, no need to retain/release */
 	  buffer = [NSMutableData data];
 
-          curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, curl_body_function);
+          curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curl_body_function);
           curl_easy_setopt(curl, CURLOPT_WRITEDATA, buffer);
 
           error[0] = 0;
-          curl_easy_setopt (curl, CURLOPT_ERRORBUFFER, &error);
+          curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, &error);
       
           // Perform SOAP request
-          rc = curl_easy_perform (curl);
-          if (rc == 0)
+          rc = curl_easy_perform(curl);
+          if (rc == CURLE_OK)
             {
-              curl_easy_getinfo (curl, CURLINFO_RESPONSE_CODE, &status);
+              curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &status);
               [result setObject: [NSNumber numberWithUnsignedInt: status]
                          forKey: @"status"];
               [self logWithFormat: @"Load web calendar %@ (%i)", location, status];
@@ -188,7 +188,11 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
                 [result setObject: @"http-error" forKey: @"error"];
             }
           else
-            [result setObject: @"bad-url" forKey: @"error"];
+            {
+              [self errorWithFormat: @"CURL error while accessing %@ (%d): %@", location, rc,
+                    [NSString stringWithCString: strlen(error) ? error : curl_easy_strerror(rc)]];
+              [result setObject: @"bad-url" forKey: @"error"];
+            }
           curl_easy_cleanup (curl);
         }
     }

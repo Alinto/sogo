@@ -259,6 +259,9 @@ static SoProduct *preferencesProduct = nil;
       [defaults setContactsCategories: categoryLabels];
     }
 
+  if (![[defaults source] objectForKey: @"SOGoMailAddOutgoingAddresses"])
+    [[defaults source] setObject: [NSNumber numberWithBool: [defaults mailAddOutgoingAddresses]] forKey: @"SOGoMailAddOutgoingAddresses"];
+
   //
   // Default Mail preferences
   //
@@ -282,6 +285,9 @@ static SoProduct *preferencesProduct = nil;
 
   if (![[defaults source] objectForKey: @"SOGoMailDisplayRemoteInlineImages"])
     [[defaults source] setObject: [defaults mailDisplayRemoteInlineImages] forKey: @"SOGoMailDisplayRemoteInlineImages"];
+
+  if (![[defaults source] objectForKey: @"SOGoMailAutoSave"])
+    [[defaults source] setObject: [defaults mailAutoSave] forKey: @"SOGoMailAutoSave"];
 
   // Populate default mail labels, based on the user's preferred language
   if (![[defaults source] objectForKey: @"SOGoMailLabelsColors"])
@@ -345,7 +351,7 @@ static SoProduct *preferencesProduct = nil;
 
   // Add the domain's default vacation subject if user has not specified a custom subject
   vacationOptions = [defaults vacationOptions];
-  if (![vacationOptions objectForKey: @"customSubject"] && [domainDefaults vacationDefaultSubject])
+  if (![[vacationOptions objectForKey: @"customSubject"] length] && [domainDefaults vacationDefaultSubject])
     {
       if (vacationOptions)
         vacation = [NSMutableDictionary dictionaryWithDictionary: vacationOptions];
@@ -355,10 +361,6 @@ static SoProduct *preferencesProduct = nil;
       [vacation setObject: [domainDefaults vacationDefaultSubject] forKey: @"customSubject"];
       [values setObject: vacation forKey: @"Vacation"];
     }
-
-  // Don't expose SOGoRememberLastModule;
-  // User can edit SOGoLoginModule but SOGoRememberLastModule is managed internally.
-  [values removeObjectForKey: @"SOGoRememberLastModule"];
 
   return [self responseWithStatus: 200 andJSONRepresentation: values];
 }

@@ -1,4 +1,4 @@
-/** Styles for sgTimePane. */
+/// timepicker.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
 $sg-time-pane-cell-size: 40px;
 $sg-time-width: (12 * $sg-time-pane-cell-size) + (2 * $md-calendar-side-padding);
@@ -113,10 +113,10 @@ sg-timepicker {
   @extend .md-datepicker-input-container;
 
   // From datePicker-theme.scss
-  border-bottom-color: $colorGrey300; // {{background-300}}
+  border-bottom-color: $colorGrey300; // {{foreground-4}}
 
   &.sg-timepicker-focused {
-    border-bottom-color: sg-color($sogoBlue, 500); // {{primary-500}}
+    border-bottom-color: sg-color($sogoBlue, 900); // {{primary-color}}
     border-bottom-width: 2px;
   }
 
@@ -136,6 +136,10 @@ sg-timepicker {
 
   // From datePicker-theme.css
   border-color: rgb(224,224,224);
+
+  &.md-pane-open {
+    transform: scale(1);
+  }
 }
 
 // Portion of the floating panel that sits, invisibly, on top of the input.
@@ -143,8 +147,10 @@ sg-timepicker {
   @extend .md-datepicker-input-mask;
 }
 
+// From datepicker-theme.scss
 .sg-timepicker-input-mask-opaque {
-  @extend .md-datepicker-input-mask-opaque;
+  box-shadow: 0 0 0 9999px rgb(238,238,238)
+  //  @extend .md-datepicker-input-mask-opaque;
 }
 
 // The time portion of the floating pane (vs. the input mask).
@@ -159,7 +165,7 @@ sg-timepicker {
     opacity: 1;
   }
 
-  sg-time:focus {
+  sg-time-pane:focus {
     outline: none;
   }
 }
@@ -202,28 +208,12 @@ sg-timepicker[disabled] {
   overflow: hidden;
 
   .sg-timepicker-input-container {
-    // The negative bottom margin prevents the content around the datepicker
-    // from jumping when it gets opened.
-    margin-bottom: -$md-datepicker-border-bottom-gap;
-
     // From datePicker-theme.scss
     background: $colorGrey200; //'{{background-hue-1}}';
   }
 
-  .md-icon-button + .sg-timepicker-input-container {
-    @include rtl-prop(margin-left, margin-right, -$md-datepicker-button-gap);
-  }
-
-  .sg-timepicker-input,
-  label:not(.md-no-float):not(._md-container-ignore) {
-    margin-bottom: -$md-datepicker-border-bottom-gap;
-  }
-
-  // This needs some extra specificity in order to override
-  // the focused/invalid border colors.
-  input.sg-timepicker-input {
-    @include rtl-prop(margin-left, margin-right, 24px);
-    height: $md-datepicker-input-mask-height;
+  .sg-timepicker-input-container,
+  input.md-input {
     border-bottom-color: transparent;
   }
 
@@ -234,7 +224,7 @@ sg-timepicker[disabled] {
   }
 
   .sg-timepicker-icon {
-    color: sg-color($sogoBlue, 500); //'{{primary-500}}';
+    color: sg-color($sogoBlue, 900); //'{{primary-color}}';
   }
 }
 

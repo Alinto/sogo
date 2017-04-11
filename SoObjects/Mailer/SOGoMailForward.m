@@ -287,6 +287,9 @@
 @implementation SOGoMailGermanForward
 @end
 
+@implementation SOGoMailHebrewForward
+@end
+
 @implementation SOGoMailHungarianForward
 @end
 
@@ -315,6 +318,9 @@
 @end
 
 @implementation SOGoMailRussianForward
+@end
+
+@implementation SOGoMailSerbianForward
 @end
 
 @implementation SOGoMailSlovakForward

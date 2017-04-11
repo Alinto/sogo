@@ -80,7 +80,8 @@
 }
 
 - (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
-                                       container: (id) theContainer
+				       container: (id) theContainer
+				 nameInContainer: (NSString *) nameInContainer
 {
   CardGroup *element;
   NSArray *elements;
@@ -97,7 +98,7 @@
       element = nil;
     }
 
-  return [(id)element quickRecordFromContent: theContent  container: theContainer];
+  return [(id)element quickRecordFromContent: theContent  container: theContainer  nameInContainer: nameInContainer];
 }
 
 @end

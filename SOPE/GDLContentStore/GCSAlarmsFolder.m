@@ -1,6 +1,6 @@
 /* GCSAlarmsFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2010-2014 Inverse inc.
+ * Copyright (C) 2010-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -394,38 +394,6 @@ static NSString *alarmsFolderURLString = nil;
                                          qualifierFormat:
                                             @"c_path='%@' AND c_name='%@'",
                                           path, cname];
-      [qualifier autorelease];
-      [context beginTransaction];
-      error = [tc deleteRowsDescribedByQualifierX: qualifier];
-      if (error)
-        {
-          [context rollbackTransaction];
-          [self errorWithFormat:@"%s: cannot delete record: %@", 
-                __PRETTY_FUNCTION__, error];
-        }
-      else
-        [context commitTransaction];
-      [self _releaseChannel: tc];
-    }
-}
-
-- (void) deleteRecordsForEntriesUntilDate: (NSCalendarDate *) date
-{
-  EOAdaptorChannel *tc;
-  EOAdaptorContext *context;
-  EOEntity *entity;
-  EOSQLQualifier *qualifier;
-  NSException *error;
-
-  tc = [self _acquireStoreChannel];
-  if (tc)
-    {
-      context = [tc adaptorContext];
-      entity = [self _storeTableEntityForChannel: tc];
-      qualifier = [[EOSQLQualifier alloc] initWithEntity: entity
-                                         qualifierFormat:
-                                            @"c_alarm_date <= %d",
-                                          (int) [date timeIntervalSince1970]];
       [qualifier autorelease];
       [context beginTransaction];
       error = [tc deleteRowsDescribedByQualifierX: qualifier];

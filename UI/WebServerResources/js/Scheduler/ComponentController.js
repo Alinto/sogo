@@ -42,8 +42,7 @@
 
     // Autocomplete cards for attendees
     function cardFilter($query) {
-      AddressBook.$filterAll($query);
-      return AddressBook.$cards;
+      return AddressBook.$filterAll($query);
     }
 
     function newMessageWithAllRecipients($event) {
@@ -123,8 +122,8 @@
 
       c.$reply().then(function() {
         $rootScope.$emit('calendars:list');
-        $mdDialog.hide();
         Alarm.getAlarms();
+        $mdDialog.hide();
       });
     }
 
@@ -209,8 +208,8 @@
   /**
    * @ngInject
    */
-  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$mdDialog', 'User', 'Calendar', 'Component', 'AddressBook', 'Card', 'Alarm', 'stateComponent'];
-  function ComponentEditorController($rootScope, $scope, $log, $timeout, $mdDialog, User, Calendar, Component, AddressBook, Card, Alarm, stateComponent) {
+  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$mdDialog', 'User', 'CalendarSettings', 'Calendar', 'Component', 'AddressBook', 'Card', 'Alarm', 'stateComponent'];
+  function ComponentEditorController($rootScope, $scope, $log, $timeout, $mdDialog, User, CalendarSettings, Calendar, Component, AddressBook, Card, Alarm, stateComponent) {
     var vm = this, component, oldStartDate, oldEndDate, oldDueDate;
 
     vm.service = Calendar;
@@ -218,7 +217,8 @@
     vm.categories = {};
     vm.showRecurrenceEditor = vm.component.$hasCustomRepeat;
     vm.toggleRecurrenceEditor = toggleRecurrenceEditor;
-    vm.showAttendeesEditor = false;
+    vm.recurrenceMonthDaysAreRequired = recurrenceMonthDaysAreRequired;
+    vm.showAttendeesEditor = vm.component.attendees && vm.component.attendees.length;
     vm.toggleAttendeesEditor = toggleAttendeesEditor;
     //vm.searchText = null;
     vm.cardFilter = cardFilter;
@@ -226,7 +226,9 @@
     vm.removeAttendee = removeAttendee;
     vm.addAttachUrl = addAttachUrl;
     vm.priorityLevel = priorityLevel;
+    vm.reset = reset;
     vm.cancel = cancel;
+    vm.edit = edit;
     vm.save = save;
     vm.attendeeConflictError = false;
     vm.attendeesEditor = {
@@ -237,11 +239,8 @@
     vm.addDueDate = addDueDate;
 
     // Synchronize start and end dates
-    vm.updateStartTime = updateStartTime;
     vm.adjustStartTime = adjustStartTime;
-    vm.updateEndTime = updateEndTime;
     vm.adjustEndTime = adjustEndTime;
-    vm.updateDueTime = updateDueTime;
     vm.adjustDueTime = adjustDueTime;
 
     if (vm.component.start)
@@ -265,6 +264,12 @@
       vm.showAttendeesEditor = !vm.showAttendeesEditor;
     }
 
+    function recurrenceMonthDaysAreRequired() {
+      return vm.component &&
+        vm.component.repeat.frequency == 'monthly' &&
+        vm.component.repeat.month.type == 'bymonthday';
+    }
+
     // Autocomplete cards for attendees
     function cardFilter($query) {
       AddressBook.$filterAll($query);
@@ -272,22 +277,26 @@
     }
 
     function addAttendee(card) {
+      var automaticallyExapand = (!vm.component.attendees || vm.component.attendees.length === 0);
       if (angular.isString(card)) {
         // User pressed "Enter" in search field, adding a non-matching card
         if (card.isValidEmail()) {
           vm.component.addAttendee(new Card({ emails: [{ value: card }] }));
+          vm.showAttendeesEditor |= automaticallyExapand;
           vm.searchText = '';
         }
       }
       else {
         vm.component.addAttendee(card);
+        vm.showAttendeesEditor |= automaticallyExapand;
       }
     }
 
-    function removeAttendee(attendee) {
+    function removeAttendee(attendee, form) {
       vm.component.deleteAttendee(attendee);
       if (vm.component.attendees.length === 0)
         vm.showAttendeesEditor = false;
+      form.$setDirty();
     }
 
     function priorityLevel() {
@@ -306,24 +315,36 @@
         vm.component.$save(options)
           .then(function(data) {
             $rootScope.$emit('calendars:list');
-            $mdDialog.hide();
             Alarm.getAlarms();
+            $mdDialog.hide();
           }, function(response) {
-            if (response.status == 403 &&
-                response.data && response.data.message &&
-                angular.isObject(response.data.message))
+            if (response.status == CalendarSettings.ConflictHTTPErrorCode &&
+                _.isObject(response.data.message))
               vm.attendeeConflictError = response.data.message;
+            else
+              edit(form);
           });
       }
     }
 
-    function cancel() {
+    function reset(form) {
       vm.component.$reset();
+      form.$setPristine();
+    }
+
+    function cancel(form) {
+      reset(form);
       if (vm.component.isNew) {
         // Cancelling the creation of a component
         vm.component = null;
       }
       $mdDialog.cancel();
+    }
+
+    function edit(form) {
+      vm.attendeeConflictError = false;
+      form.$setPristine();
+      form.$setDirty();
     }
 
     function getDays() {
@@ -356,12 +377,6 @@
       oldDueDate = new Date(vm.component.due.getTime());
     }
 
-    function updateStartTime() {
-      // When using the datepicker, the time is reset to 00:00; restore it
-      vm.component.start.addMinutes(oldStartDate.getHours() * 60 + oldStartDate.getMinutes());
-      adjustStartTime();
-    }
-
     function adjustStartTime() {
       if (vm.component.start) {
         // Preserve the delta between the start and end dates
@@ -379,12 +394,6 @@
       }
     }
 
-    function updateEndTime() {
-      // When using the datepicker, the time is reset to 00:00; restore it
-      vm.component.end.addMinutes(oldEndDate.getHours() * 60 + oldEndDate.getMinutes());
-      adjustEndTime();
-    }
-
     function adjustEndTime() {
       if (vm.component.end) {
         // The end date must be after the start date
@@ -400,12 +409,6 @@
           updateFreeBusy();
         }
       }
-    }
-
-    function updateDueTime() {
-      // When using the datepicker, the time is reset to 00:00; restore it
-      vm.component.due.addMinutes(oldDueDate.getHours() * 60 + oldDueDate.getMinutes());
-      adjustDueTime();
     }
 
     function adjustDueTime() {

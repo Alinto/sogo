@@ -68,6 +68,10 @@ md-icon {
     right: ($icon-size - $icon-badge-size) / 2;
     top: ($icon-size - $icon-badge-size) / 2;
   }
+  &.sg-icon--badge-bottom {
+    bottom: ($icon-size - $icon-badge-size) / 2;
+    top: auto;
+  }
   &.md-rotate-45 {
     transform: rotate(45deg);
   }
@@ -109,6 +113,12 @@ md-icon {
   &.icon-expand-more:before {
     content: "\e5cf";
   }
+  &.icon-fullscreen:before {
+    content: "\e5d0";
+  }
+  &.icon-fullscreen-exit:before {
+    content: "\e5d1";
+  }
   &.icon-needs-action:before,
   &.icon-help:before {
     content: "\e887";
@@ -148,6 +158,10 @@ md-icon {
   &.icon-vpn-key:before {
     content: "\e0da";
   }
+}
+
+.sg-icon-badge-container {
+  position: relative;
 }
 
 // Message flag

@@ -3,6 +3,11 @@ serverVersion: WOString {
   escapeHTML = NO;
 }
 
+bias: WOString {
+  value = bias;
+  escapeHTML = NO;
+}
+
 address: WOString {
   value = address;
   escapeHTML = NO;

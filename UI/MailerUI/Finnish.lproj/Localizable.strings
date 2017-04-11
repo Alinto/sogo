@@ -53,7 +53,13 @@
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Tervetuloa SOGo Sähköpostiin. Käytä vasemmanpuoleista hakupuuta sähköpostitiliesi selaamiseen.";
 "Read messages"       = "Luetut viestit";
+
+/* Tooltip for fab button */
 "Write a new message" = "Kirjoita uusi viesti";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Kirjoita viesti uudessa ikkunassa";
+
 "Share" = "Jaa";
 "Account" = "Tili";
 "Shared Account" = "Jaettu tili";
@@ -141,7 +147,7 @@
 "Date"          = "Päiväys";
 "View"          = "Näytä";
 "All"           = "Kaikki";
-"No message"    = "Ei viestiä";
+"No message"    = "Ei viestejä";
 "messages"      = "viestit";
 "Yesterday"     = "Eilen";
 "first"         = "Ensimmäinen";
@@ -217,6 +223,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Muunna tehtäväksi";
 
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Lataa kaikki liitteet";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "liitteet";
+
 "Print..." = "Tulosta...";
 "Delete Message" = "Poista viesti";
 "Delete Selected Messages" = "Poista valitut viestit";
@@ -267,9 +279,20 @@
 "Operation failed" = "Toiminto epäonnistui";
 "Quota" = "Kokorajoitus:";
 "quotasFormat" = "%{0}% käytetty %{1} Mt:sta";
+"Unable to move/delete folder." = "Hakemiston siirto/poisto ei onnistu.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Postilaatikon vienti roskakoriin epäonniestui. Haluatko poistaa sen välittömästi?";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Haluatko varmasti poistaa valitut viestit?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} viesti(ä) kopioitu";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} viesti(ä) siirretty";
 
 "Please select a message." = "Ole hyvä ja valitse viesti.";
 "Please select a message to print." = "Ole hyvä ja valitse tulostettava viesti.";
@@ -304,8 +327,14 @@
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Virhe tiedoston \"%{0}\" latauksessa: ";
 "There is an active file upload. Closing the window will interrupt it." = "Tiedoston lataus on käynnissä. Ikkunan sulkeminen pysäyttää latauksen.";
+"Message is too big" = "Viesti on liian iso";
 
-/* Message sending */
+/* Appears while sending the message */
+"Sending" = "Lähettää";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Lähetetty";
+
 "cannot send message: (smtp) all recipients discarded" = "Viestiä ei voi lähettää: kaikki vastaanottajat ovat virheellisiä.";
 "cannot send message (smtp) - recipients discarded" = "Viestiä ei voi lähettää: seuraavat osoitteet ovat virheellisiä";
 "cannot send message: (smtp) error when connecting" = "Viestiä ei voi lähettää: virhe yhdistettäessä SMTP -palvelimeen.";
@@ -332,11 +361,13 @@
 "Set as Junk" = "Merkitse roskaksi";
 
 "Sort" = "Järjestä";
+"Order Received" = "Tilaus vastaanotettu";
 "Descending Order" = "Laskeva järjestys";
 "Back" = "Takaisin";
 "Copy messages" = "Kopioi viestit";
 "More messages options" = "Lisää viestiasetuksia";
 "Mark as Unread" = "Merkitse lukemattomaksi";
+"Mark as Read" = "Merkitse luetuksi";
 "Closing Window ..." = "Ikkuna sulkeutuu...";
 "Tried to send too many mails. Please wait." = "Yritetty lähettää liian monta viestiä. Ole hyvä ja odota.";
 "View Mail" = "Näytä viesti";
@@ -350,3 +381,27 @@
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Hakualue";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Hallitse tilauksia";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Suodatin";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

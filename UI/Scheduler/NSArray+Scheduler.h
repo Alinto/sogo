@@ -30,22 +30,23 @@
 #define eventIsOpaqueIndex          4
 #define eventTitleIndex             5
 #define eventStartDateIndex         6
-#define eventEndDateIndex           7
-#define eventLocationIndex          8
-#define eventIsAllDayIndex          9
-#define eventClassificationIndex   10
-#define eventCategoryIndex         11
-#define eventPriorityIndex         12
-#define eventPartMailsIndex        13
-#define eventPartStatesIndex       14
-#define eventOwnerIndex            15
-#define eventIsCycleIndex          16
-#define eventNextAlarmIndex        17
-#define eventRecurrenceIdIndex     18
-#define eventIsExceptionIndex      19
-#define eventEditableIndex         20
-#define eventErasableIndex         21
-#define eventOwnerIsOrganizerIndex 22
+#define eventStartHourIndex         7
+#define eventEndDateIndex           8
+#define eventLocationIndex          9
+#define eventIsAllDayIndex         10
+#define eventClassificationIndex   11
+#define eventCategoryIndex         12
+#define eventPriorityIndex         13
+#define eventPartMailsIndex        14
+#define eventPartStatesIndex       15
+#define eventOwnerIndex            16
+#define eventIsCycleIndex          17
+#define eventNextAlarmIndex        18
+#define eventRecurrenceIdIndex     19
+#define eventIsExceptionIndex      20
+#define eventEditableIndex         21
+#define eventErasableIndex         22
+#define eventOwnerIsOrganizerIndex 23
 
 // See [UIxCalListingActions initialize]
 #define taskNameIndex               0
@@ -53,19 +54,22 @@
 #define taskCalendarNameIndex       2
 #define taskStatusIndex             3
 #define taskTitleIndex              4
-#define taskEndDateIndex            5
-#define taskClassificationIndex     6
-#define taskLocationIndex           7
-#define taskCategoryIndex           8
-#define taskEditableIndex           9
-#define taskErasableIndex          10
-#define taskPriorityIndex          11
-#define taskOwnerIndex             12
-#define taskIsCycleIndex           13
-#define taskNextAlarmIndex         14
-#define taskRecurrenceIdIndex      15
-#define taskIsExceptionIndex       16
-#define taskDescriptionIndex       17
+#define taskStartDateIndex          5
+#define taskEndDateIndex            6
+#define taskClassificationIndex     7
+#define taskLocationIndex           8
+#define taskCategoryIndex           9
+#define taskViewableIndex          10
+#define taskEditableIndex          11
+#define taskErasableIndex          12
+#define taskPriorityIndex          13
+#define taskOwnerIndex             14
+#define taskIsCycleIndex           15
+#define taskNextAlarmIndex         16
+#define taskRecurrenceIdIndex      17
+#define taskIsExceptionIndex       18
+#define taskDescriptionIndex       19
+#define taskStatusFlagIndex        20
 
 @interface NSArray (SOGoEventComparison)
 
@@ -77,7 +81,8 @@
 - (NSComparisonResult) compareTasksAscending: (NSArray *) otherTask;
 - (NSComparisonResult) compareTasksPriorityAscending: (NSArray *) otherTask;
 - (NSComparisonResult) compareTasksTitleAscending: (NSArray *) otherTask;
-- (NSComparisonResult) compareTasksEndAscending: (NSArray *) otherTask;
+- (NSComparisonResult) compareTasksStartDateAscending: (NSArray *) otherTask;
+- (NSComparisonResult) compareTasksEndDateAscending: (NSArray *) otherTask;
 - (NSComparisonResult) compareTasksLocationAscending: (NSArray *) otherTask;
 - (NSComparisonResult) compareTasksCategoryAscending: (NSArray *) otherTask;
 - (NSComparisonResult) compareTasksCalendarNameAscending: (NSArray *) otherTask;

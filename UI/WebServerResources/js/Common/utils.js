@@ -325,6 +325,25 @@ Date.prototype.beginOfDay = function() {
     return beginOfDay;
 };
 
+/**
+ * See [SOGoUser dayOfWeekForDate:]
+ */
+Date.prototype.dayOfWeek = function(localeProvider) {
+  var offset, baseDayOfWeek, dayOfWeek;
+
+  offset = localeProvider.firstDayOfWeek;
+  baseDayOfWeek = this.getDay();
+  if (offset > baseDayOfWeek)
+    baseDayOfWeek += 7;
+
+  dayOfWeek = baseDayOfWeek - offset;
+
+  return dayOfWeek;
+};
+
+/**
+ * See [SOGoUser firstWeekOfYearForDate:]
+ */
 Date.prototype.firstWeekOfYearForDate = function(localeProvider) {
   var firstWeekRule, dayOfWeek, januaryFirst, firstWeek;
 
@@ -333,10 +352,10 @@ Date.prototype.firstWeekOfYearForDate = function(localeProvider) {
   januaryFirst = new Date(this.getTime());
   januaryFirst.setMonth(0);
   januaryFirst.setDate(1);
-  dayOfWeek = januaryFirst.getDay();
+  dayOfWeek = januaryFirst.dayOfWeek(localeProvider);
 
   if (firstWeekRule == 'First4DayWeek') {
-    if ((dayOfWeek + localeProvider.firstDayOfWeek) % 7 < 4)
+    if (dayOfWeek < 4)
       firstWeek = januaryFirst.beginOfWeek(localeProvider.firstDayOfWeek);
     else
       firstWeek = januaryFirst.addDays(7).beginOfWeek(localeProvider.firstDayOfWeek);
@@ -354,19 +373,24 @@ Date.prototype.firstWeekOfYearForDate = function(localeProvider) {
   return firstWeek;
 };
 
+/**
+ * See [SOGoUser weekNumberForDate:]
+ */
 Date.prototype.getWeek = function(localeProvider) {
-  var firstWeek, previousWeek, weekNumber;
+  var firstWeek, previousWeek, weekNumber, clone;
 
-  firstWeek = this.firstWeekOfYearForDate(localeProvider);
-  if (firstWeek.getTime() < this.getTime()) {
-    weekNumber = 1 + Math.floor((this.getTime() - firstWeek.getTime()) / (86400000 * 7));
+  clone = new Date(this.getTime());
+  clone.addDays(6);
+  firstWeek = clone.firstWeekOfYearForDate(localeProvider);
+  if (firstWeek.getTime() < clone.getTime()) {
+    weekNumber = 1 + Math.floor((clone.getTime() - firstWeek.getTime()) / (86400000 * 7));
   }
   else
     {
       // Date is within the last week of the previous year;
       // Compute the previous week number to find the week number of the requested date.
       // The number will either be 52 or 53.
-      previousWeek = new Date(this.getTime());
+      previousWeek = new Date(clone.getTime());
       previousWeek.addDays(-7);
       firstWeek = previousWeek.firstWeekOfYearForDate(localeProvider);
       weekNumber = 2 + Math.floor((previousWeek.getTime() - firstWeek.getTime()) / (86400000 * 7));

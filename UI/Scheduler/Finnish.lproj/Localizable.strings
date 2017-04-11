@@ -366,12 +366,21 @@
 "zoom_50" = "50%";
 "zoom_25" = "25%";
 
+/* Arial label for reminder units */
+"Reminder units" = "Muistuttaja yksiköt";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Muistuttajan ajankohta";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Muistuttajan liittyminen";
+
 /* transparency */
 "Show Time as Free" = "Näytä aika vapaana";
 
 /* email notifications */
 "Send Appointment Notifications" = "Lähetä tapaamismuistutukset";
-"From" = "Keneltä";
+"From" = "Aloitusaika";
 "To" = "Kenelle";
 
 /* validation errors */
@@ -379,6 +388,8 @@ validate_notitle           = "Otsikkoa ei ole asetettu, jatka?";
 validate_invalid_startdate = "Virheellinen alkupäiväkenttä!";
 validate_invalid_enddate   = "Virheellinen loppupäiväkenttä!";
 validate_endbeforestart    = "Syöttämäsi loppupäivä on ennen alkupäivää.";
+validate_untilbeforeend    = "Uusitun tapahtuman on päätyttävä ensimmäisen tapahtuman jälkeen.";
+
 "Events" = "Tapahtumat";
 "Tasks" = "Tehtävät";
 "Show completed tasks" = "Näytä valmistuneet tehtävät";
@@ -515,7 +526,7 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "tagWasAdded" = "Mobiililaitteesi kalenteritiedot on päivitettävä mikäli muutat kalenterisi tägiä.⏎ Jatketaanko?";
 "tagWasRemoved" = "Mobiililaitteesi kalenteritiedot on päivitettävä mikäli haluat poistaa tämän kalenterin synkronoinnista.⏎ Jatketaanko?";
 "DestinationCalendarError" = "Lähde- ja kohdekalenterit ovat samoja. Ole hyvä ja yritä kopiointia toiseen kalenteriin.";
-"EventCopyError" = "Kopiointi epäonnistui. Ole hyvä ja yritä kopiointia toiseen kalenteriin.";
+"EventCopyError" = "Kopiointi epäonnistui. Yritä kopiointia toiseen kalenteriin. ";
 "Please select at least one calendar" = "Ole hyvä ja valitse ainakin yksi kalenteri";
 "Open Task..." = "Avaa tehtävä...";
 "Mark Completed" = "Merkitse valmistuneeksi";
@@ -554,7 +565,7 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "More options" = "Lisää valintoja";
 "Delete This Occurrence" = "Poista tämä tapahtuma";
 "Delete All Occurrences" = "Poista kaikki tapahtumat";
-"Add From" = "Lisää lähettäjä";
+"Add From" = "Lisää aloitusaika";
 "Add Due" = "Lisää määräaika";
 "Import" = "Tuo";
 "Rename" = "Nimeä uudelleen";
@@ -569,3 +580,24 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 
 /* Aria label for scope of search on events or tasks */
 "Search scope" = "Hakualue";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

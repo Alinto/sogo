@@ -78,7 +78,7 @@
  */
 - (NSDictionary *) attributesInContext: (WOContext *) context
 {
-  NSArray *allEvents, *rules;
+  NSArray *allComponents, *rules;
   NSCalendarDate *untilDate;
   NSMutableDictionary *data, *repeat;
   NSString *frequency;
@@ -93,8 +93,11 @@
     {
       // If the component is an occurrence of a recurrent component,
       // consider the recurrence rules of the master component.
-      allEvents = [[self parent] events];
-      masterComponent = [allEvents objectAtIndex: 0];
+      if ([self isKindOfClass: [iCalEvent class]])
+        allComponents = [[self parent] events];
+      else
+        allComponents = [[self parent] todos];
+      masterComponent = [allComponents objectAtIndex: 0];
       rules = [masterComponent recurrenceRules];
     }
   else

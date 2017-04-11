@@ -148,6 +148,10 @@ static NSArray *easCommandParameters = nil;
       const char* qs_bytes;
 
       queryString = [[components objectAtIndex: 0] dataByDecodingBase64];
+
+      if (![queryString length])
+        return nil;
+
       qs_bytes = (const char*)[queryString bytes];
 
       return [NSString stringWithFormat:@"%.1f", (float)((uint8_t)qs_bytes[0]/10)];
@@ -196,6 +200,11 @@ static NSArray *easCommandParameters = nil;
 
       // Command code, 1 byte, ie.: cmd=
       cmd_code = qs_bytes[1];
+
+      // Check whether the command code is within the known range.
+      if (cmd_code < 0 || cmd_code > 22)
+        return nil;
+
       [components addObject: [NSString stringWithFormat: @"cmd=%@", [easCommandCodes objectAtIndex: cmd_code]]];
 
       // Device ID length and Device ID (variable)

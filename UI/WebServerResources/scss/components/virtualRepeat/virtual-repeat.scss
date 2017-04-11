@@ -1,11 +1,11 @@
 /// virtualRepeater.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
-md-virtual-repeat-container {
-  md-list {
-    // Fix weird scroll behavior when reaching bottom of list
-    // See https://github.com/angular/material/issues/4169
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-}
+//.md-virtual-repeat-container {
+//  md-list {
+//    // Fix weird scroll behavior when reaching bottom of list
+//    // See https://github.com/angular/material/issues/4169
+//    padding-top: 0;
+//    padding-bottom: 0;
+//  }
+//}

@@ -1,4 +1,4 @@
-/* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+/* -*- Mode: js; indent-tabs-mode: nil; js-indent-level: 2; -*- */
 
 (function() {
   'use strict';
@@ -6,15 +6,17 @@
   /**
    * @ngInject
    */
-  MailboxesController.$inject = ['$state', '$timeout', '$window', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'sgConstant', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
-  function MailboxesController($state, $timeout, $window, $mdDialog, $mdToast, $mdMedia, $mdSidenav, sgConstant, focus, encodeUriFilter, Dialog, Settings, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
+  MailboxesController.$inject = ['$scope', '$state', '$timeout', '$window', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'sgConstant', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'sgHotkeys', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
+  function MailboxesController($scope, $state, $timeout, $window, $mdDialog, $mdToast, $mdMedia, $mdSidenav, sgConstant, focus, encodeUriFilter, Dialog, Settings, sgHotkeys, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
     var vm = this,
         account,
-        mailbox;
+        mailbox,
+        hotkeys = [];
 
     vm.service = Mailbox;
     vm.accounts = stateAccounts;
     vm.toggleAccountState = toggleAccountState;
+    vm.subscribe = subscribe;
     vm.newFolder = newFolder;
     vm.delegate = delegate;
     vm.editFolder = editFolder;
@@ -26,9 +28,10 @@
     vm.confirmDelete = confirmDelete;
     vm.markFolderRead = markFolderRead;
     vm.share = share;
-    vm.metadataForFolder = metadataForFolder;
     vm.setFolderAs = setFolderAs;
     vm.refreshUnseenCount = refreshUnseenCount;
+    vm.isDroppableFolder = isDroppableFolder;
+    vm.dragSelectedMessages = dragSelectedMessages;
 
     // Advanced search options
     vm.showingAdvancedSearch = false;
@@ -39,18 +42,51 @@
     vm.hideAdvancedSearch = hideAdvancedSearch;
     vm.toggleAdvancedSearch = toggleAdvancedSearch;
     vm.search = {
-      options: {'': l('Select a criteria'),
+      options: {'': '',  // no placeholder when no criteria is active
                 subject: l('Enter Subject'),
-                from: l('Enter From'),
-                to: l('Enter To'),
-                cc: l('Enter Cc'),
-                body: l('Enter Body')
+                from:    l('Enter From'),
+                to:      l('Enter To'),
+                cc:      l('Enter Cc'),
+                body:    l('Enter Body')
                },
       mailbox: 'INBOX',
       subfolders: 1,
       match: 'AND',
       params: []
     };
+
+
+    Preferences.ready().then(function() {
+      vm.showSubscribedOnly = Preferences.defaults.SOGoMailShowSubscribedFoldersOnly;
+    });
+
+    vm.refreshUnseenCount();
+
+    _registerHotkeys(hotkeys);
+
+    $scope.$on('$destroy', function() {
+      // Deregister hotkeys
+      _.forEach(hotkeys, function(key) {
+        sgHotkeys.deregisterHotkey(key);
+      });
+    });
+
+
+    function _registerHotkeys(keys) {
+      keys.push(sgHotkeys.createHotkey({
+        key: 'backspace',
+        description: l('Delete selected message or folder'),
+        callback: function() {
+          if (Mailbox.selectedFolder && !Mailbox.selectedFolder.hasSelectedMessage())
+            confirmDelete(Mailbox.selectedFolder);
+        }
+      }));
+
+      // Register the hotkeys
+      _.forEach(keys, function(key) {
+        sgHotkeys.registerHotkey(key);
+      });
+    }
 
     function showAdvancedSearch(path) {
       vm.showingAdvancedSearch = true;
@@ -142,9 +178,48 @@
       }, 150);
     }
 
+    function subscribe(account) {
+      $mdDialog.show({
+        templateUrl: account.id + '/subscribe',
+        controller: SubscriptionsDialogController,
+        controllerAs: 'subscriptions',
+        clickOutsideToClose: true,
+        escapeToClose: true,
+        locals: {
+          srcAccount: account
+        }
+      }).finally(function() {
+          account.$getMailboxes({reload: true});
+      });
+
+      /**
+       * @ngInject
+       */
+      SubscriptionsDialogController.$inject = ['$scope', '$mdDialog', 'srcAccount'];
+      function SubscriptionsDialogController($scope, $mdDialog, srcAccount) {
+        var vm = this;
+
+        vm.loading = true;
+        vm.filter = { name: '' };
+        vm.account = new Account({
+          id: srcAccount.id,
+          name: srcAccount.name
+        });
+        vm.close = close;
+
+        vm.account.$getMailboxes({ reload: true, all: true }).then(function() {
+          vm.loading = false;
+        });
+
+        function close() {
+          $mdDialog.cancel();
+        }
+      }
+    }
+
     function newFolder(parentFolder) {
-      Dialog.prompt(l('New folder'),
-                    l('Enter the new name of your folder :'))
+      Dialog.prompt(l('New Folder...'),
+                    l('Enter the new name of your folder'))
         .then(function(name) {
           parentFolder.$newMailbox(parentFolder.id, name)
             .then(function() {
@@ -264,14 +339,26 @@
     }
 
     function confirmDelete(folder) {
-      Dialog.confirm(l('Confirmation'), l('Do you really want to move this folder into the trash ?'))
+      Dialog.confirm(l('Warning'),
+                     l('Do you really want to move this folder into the trash ?'),
+                     { ok: l('Delete') })
         .then(function() {
           folder.$delete()
             .then(function() {
               $state.go('mail.account.inbox');
-            }, function(data, status) {
-              Dialog.alert(l('An error occured while deleting the mailbox "%{0}".', folder.name),
-                           l(data.error));
+            }, function(response) {
+              Dialog.confirm(l('Warning'),
+                             l('The mailbox could not be moved to the trash folder. Would you like to delete it immediately?'),
+                             { ok: l('Delete') })
+              .then(function() {
+                folder.$delete({ withoutTrash: true })
+                  .then(function() {
+                    $state.go('mail.account.inbox');
+                  }, function(response) {
+                    Dialog.alert(l('An error occured while deleting the mailbox "%{0}".', folder.name),
+                                 l(response.error));
+                  });
+              });
             });
         });
     }
@@ -299,23 +386,6 @@
       });
     } // share
 
-    function metadataForFolder(folder) {
-      if (folder.type == 'inbox')
-        return {name: folder.name, icon:'inbox'};
-      else if (folder.type == 'draft')
-        return {name: l('DraftsFolderName'), icon: 'drafts'};
-      else if (folder.type == 'sent')
-        return {name: l('SentFolderName'), icon: 'send'};
-      else if (folder.type == 'trash')
-        return {name: l('TrashFolderName'), icon: 'delete'};
-      else if (folder.type == 'junk')
-        return {name: l('JunkFolderName'), icon: 'thumb_down'};
-      else if (folder.type == 'additional')
-        return {name: folder.name, icon: 'folder_shared'};
-
-      return {name: folder.name, icon: 'folder_open'};
-    }
-
     function setFolderAs(folder, type) {
       folder.$setFolderAs(type).then(function() {
         folder.$account.$getMailboxes({reload: true});
@@ -323,7 +393,7 @@
     }
 
     function refreshUnseenCount() {
-      var unseenCountFolders = window.unseenCountFolders;
+      var unseenCountFolders = $window.unseenCountFolders;
 
       _.forEach(vm.accounts, function(account) {
 
@@ -354,11 +424,44 @@
       });
     }
 
-    vm.refreshUnseenCount();
+    function isDroppableFolder(srcFolder, dstFolder) {
+      return (dstFolder.id != srcFolder.id) && !dstFolder.isNoSelect();
+    }
+
+    function dragSelectedMessages(srcFolder, dstFolder, mode) {
+      var dstId, messages, uids, clearMessageView, promise, success;
+
+      dstId = '/' + dstFolder.id;
+      messages = srcFolder.$selectedMessages();
+      if (messages.length === 0)
+        messages = [srcFolder.$selectedMessage()];
+      uids = _.map(messages, 'uid');
+      clearMessageView = (srcFolder.selectedMessage && uids.indexOf(srcFolder.selectedMessage) >= 0);
+
+      if (mode == 'copy') {
+        promise = srcFolder.$copyMessages(messages, dstId);
+        success = l('%{0} message(s) copied', messages.length);
+      }
+      else {
+        promise = srcFolder.$moveMessages(messages, dstId);
+        success = l('%{0} message(s) moved', messages.length);
+      }
+
+      promise.then(function() {
+        if (clearMessageView)
+          $state.go('mail.account.mailbox');
+        $mdToast.show(
+          $mdToast.simple()
+            .content(success)
+            .position('top right')
+            .hideDelay(2000));
+      });
+    }
+
   }
 
   angular
-    .module('SOGo.MailerUI')  
-    .controller('MailboxesController', MailboxesController);                                    
+    .module('SOGo.MailerUI')
+    .controller('MailboxesController', MailboxesController);
 })();
 

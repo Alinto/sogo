@@ -15,25 +15,29 @@
                   ng-model="editor.event.repeat.days"
                   sg-toggle-grid sg-toggle-grid-attr="day">..</md-grid-list>
   */
-  sgToggleGrid.$inject = ['$parse', '$mdUtil'];
-  function sgToggleGrid($parse, $mdUtil) {
+  sgToggleGrid.$inject = ['$parse', '$mdUtil', '$mdColors'];
+  function sgToggleGrid($parse, $mdUtil, $mdColors) {
     return {
       restrict: 'A',
-      require: '?ngModel',
+      require: ['mdGridList', '?ngModel'],
       compile: compile
     };
 
     function compile(tElement, tAttrs) {
-      return function postLink(scope, element, attr, ngModelCtrl) {
+      return function postLink(scope, element, attr, controllers) {
         var tiles = tElement.find('md-grid-tile'),
             tile,
+            ngModelCtrl,
             i,
-            modelDays,
+            modelDays = [],
             modelAttr,
             toggleClass;
 
-        ngModelCtrl = ngModelCtrl || $mdUtil.fakeNgModel();
+        ngModelCtrl = controllers[1] || $mdUtil.fakeNgModel();
         ngModelCtrl.$render = render;
+        ngModelCtrl.$isEmpty = function(value) {
+          return !value || value.length === 0;
+        };
 
         toggleClass = function() {
           // Toggle class on click event and call toggle function
@@ -63,6 +67,24 @@
               tile.addClass('sg-active');
             }
           });
+          ngModelCtrl.$validate();
+          setInvalid(ngModelCtrl.$invalid);
+        }
+
+        function setInvalid(invalid) {
+          var label = element.parent().children()[0];
+          if (invalid) {
+            element.addClass('sg-toggle-grid-invalid');
+            if (label.tagName == 'LABEL') {
+              label.style.color = $mdColors.getThemeColor('warn');
+            }
+          }
+          else {
+            element.removeClass('sg-toggle-grid-invalid');
+            if (label.tagName == 'LABEL') {
+              label.style.color = '';
+            }
+          }
         }
 
         function toggle(day) {
@@ -87,6 +109,8 @@
           scope.$apply(function() {
             ngModelCtrl.$setViewValue(modelDays);
             ngModelCtrl.$setDirty();
+            ngModelCtrl.$validate();
+            setInvalid(ngModelCtrl.$invalid);
           });
         }
       };

@@ -366,6 +366,15 @@
 "zoom_50" = "50%";
 "zoom_25" = "25%";
 
+/* Arial label for reminder units */
+"Reminder units" = "Jednostki przypomnienia";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Pozycja przypomnienia";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Relacja przypomnienia";
+
 /* transparency */
 "Show Time as Free" = "Pokaż czas jako wolny";
 
@@ -379,6 +388,8 @@ validate_notitle           = "Nie podano tytułu, kontynuować?";
 validate_invalid_startdate = "Niepoprawna wartość w polu daty początkowej!";
 validate_invalid_enddate   = "Niepoprawna wartość w polu daty końcowej!";
 validate_endbeforestart    = "Podana data końca jest wcześniejsza niż data początku.";
+validate_untilbeforeend    = "Zapętlenie musi zakończyć się po pierwszym wystąpieniu.";
+
 "Events" = "Wydarzenia";
 "Tasks" = "Zadania";
 "Show completed tasks" = "Pokaż ukończone zadania";
@@ -515,7 +526,7 @@ vtodo_class2 = "(Zadanie poufne)";
 "tagWasAdded" = "Jeśli chesz synchronizować ten kalendarz, będziesz musiał(a) przeładować dane na swoim urządzeniu mobilnym.\nKontynuować?";
 "tagWasRemoved" = "Jeśli usuniesz ten kalendarz z synchronizacji, będziesz musiał(a) przeładować dane na swoim urządzeniu mobilnym.\nKontynuować?";
 "DestinationCalendarError" = "Chcesz kopiować do tego samego kalendarza. Musisz wybrać inny kalendarz.";
-"EventCopyError" = "Kopiowanie nie udało się. Wybierz inny kalendarz.";
+"EventCopyError" = "Kopiowanie nie udało się. Spróbuj skopiować do innego kalendarza.";
 "Please select at least one calendar" = "Wybierz co najmniej jeden kalendarz";
 "Open Task..." = "Otwórz zadanie";
 "Mark Completed" = "Oznacz jako ukończone";
@@ -569,3 +580,24 @@ vtodo_class2 = "(Zadanie poufne)";
 
 /* Aria label for scope of search on events or tasks */
 "Search scope" = "Zakres wyszukiwania";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

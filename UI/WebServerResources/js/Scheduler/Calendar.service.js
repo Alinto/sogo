@@ -51,8 +51,9 @@
   }
   angular.module('SOGo.SchedulerUI')
     .value('CalendarSettings', {
-      EventDragDayLength: 24 * 4,   // hour quarters
-      EventDragHorizontalOffset: 3  // pixels
+      EventDragDayLength:          24 * 4,   // hour quarters
+      EventDragHorizontalOffset:   3,        // pixels
+      ConflictHTTPErrorCode:       409
     })
     .factory('Calendar', Calendar.$factory);
 
@@ -83,7 +84,7 @@
    */
   Calendar.$add = function(calendar) {
     // Insert new calendar at proper index
-    var list, sibling, i;
+    var list, sibling;
 
     if (calendar.isWebCalendar)
       list = this.$webcalendars;
@@ -92,22 +93,22 @@
     else
       list = this.$calendars;
 
-    sibling = _.find(list, function(o) {
+    sibling = _.findIndex(list, function(o, i) {
       return (calendar.id == 'personal' ||
-              (o.id != 'personal' &&
-               o.name.localeCompare(calendar.name) === 1));
+              (o.id != 'personal' && o.name.localeCompare(calendar.name) > 0));
     });
-    i = sibling ? _.indexOf(_.map(list, 'id'), sibling.id) : 1;
-    list.splice(i, 0, calendar);
+    if (sibling < 0)
+      list.push(calendar);
+    else
+      list.splice(sibling, 0, calendar);
 
     this.$Preferences.ready().then(function() {
       if (Calendar.$Preferences.settings.Calendar.FoldersOrder)
         // Save list order
-        Calendar.saveFoldersOrder(_.flatMap(Calendar.$findAll(), 'id')).then(function() {
-          // Refresh list of calendars to fetch links associated to new calendar
-          Calendar.$reloadAll();
-        });
+        Calendar.saveFoldersOrder(_.flatMap(Calendar.$findAll(), 'id'));
     });
+    // Refresh list of calendars to fetch links associated to new calendar
+    Calendar.$reloadAll();
   };
 
   /**
@@ -165,7 +166,7 @@
 
         if (calendarData.isWebCalendar)
           group = _this.$webcalendars;
-        else if (calendarData.isSubscription)
+        else if (calendarData.owner != Calendar.activeUser.login)
           group = _this.$subscriptions;
         else
           group = _this.$calendars;
@@ -321,6 +322,24 @@
     });
 
     return Calendar.$q.all(promises);
+  };
+
+  /**
+   * @function saveFoldersActivation
+   * @memberof Calendar
+   * @desc Save to the user's settings the activation state of the calendars
+   * @param {string[]} folders - the folders IDs
+   * @returns a promise of the HTTP operation
+   */
+  Calendar.saveFoldersActivation = function(ids) {
+    var request = {};
+
+    _.forEach(ids, function(id) {
+      var calendar = Calendar.$get(id);
+      request[calendar.id] = calendar.active;
+    });
+
+    return Calendar.$$resource.post(null, 'saveFoldersActivation', request);
   };
 
   /**
@@ -530,7 +549,14 @@
    * @returns a promise of the HTTP operation
    */
   Calendar.prototype.export = function() {
-    return Calendar.$$resource.download(this.id + '.ics', 'export', null, {type: 'application/octet-stream'});
+    var options;
+
+    options = {
+      type: 'application/octet-stream',
+      filename: this.name + '.ics'
+    };
+
+    return Calendar.$$resource.download(this.id + '.ics', 'export', null, options);
   };
 
   /**

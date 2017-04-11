@@ -53,7 +53,13 @@
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!";
 "Read messages"       = "Read messages";
+
+/* Tooltip for fab button */
 "Write a new message" = "Write a new message";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Write a message in new window";
+
 "Share" = "Share";
 "Account" = "Account";
 "Shared Account" = "Shared Account";
@@ -63,6 +69,8 @@
 
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "No mailbox selected";
+
+"An error occured while communicating with the mail server" = "An error occured while communicating with the mail server";
 
 /* Mailbox actions */
 /* Compact Folder success message */
@@ -217,6 +225,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Convert To Task";
 
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Download all attachments";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "attachments";
+
 "Print..." = "Print...";
 "Delete Message" = "Delete Message";
 "Delete Selected Messages" = "Delete Selected Messages";
@@ -267,6 +281,11 @@
 "Operation failed" = "Operation failed";
 "Quota" = "Quota:";
 "quotasFormat" = "%{0}% used on %{1} MB";
+"Unable to move/delete folder." = "Unable to move/delete folder.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "The mailbox could not be moved to the trash folder. Would you like to delete it immediately?";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Are you sure you want to delete the selected messages?";
@@ -275,7 +294,7 @@
 "%{0} message(s) copied" = "%{0} message(s) copied";
 
 /* Notification on the number of messages successfuly movied */
-"%{0} message(s) copied" = "%{0} message(s) moved";
+"%{0} message(s) moved" = "%{0} message(s) moved";
 
 "Please select a message." = "Please select a message.";
 "Please select a message to print." = "Please select a message to print.";
@@ -310,6 +329,7 @@
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Error while uploading the file \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "There is an active file upload. Closing the window will interrupt it.";
+"Message is too big" = "Message is too big";
 
 /* Appears while sending the message */
 "Sending" = "Sending";
@@ -343,11 +363,13 @@
 "Set as Junk" = "Set as Junk";
 
 "Sort" = "Sort";
+"Order Received" = "Order Received";
 "Descending Order" = "Descending Order";
 "Back" = "Back";
 "Copy messages" = "Copy messages";
 "More messages options" = "More messages options";
 "Mark as Unread" = "Mark as Unread";
+"Mark as Read" = "Mark as Read";
 "Closing Window ..." = "Closing Window ...";
 "Tried to send too many mails. Please wait." = "Tried to send too many mails. Please wait.";
 "View Mail" = "View Mail";
@@ -361,3 +383,27 @@
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Search scope";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Manage Subscriptions";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filter";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

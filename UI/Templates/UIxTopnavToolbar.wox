@@ -5,7 +5,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
 
-  <div class="sg-toolbar-group-1" layout="row">
+  <div class="md-toolbar-tools sg-toolbar-group-1" layout="row">
     <md-button ng-click="toggleLeft()"
                class="md-icon-button hide show-gt-md"
                label:aria-label="Toggle Menu"
@@ -25,60 +25,57 @@
     </div>
     <p class="sg-md-display-3 sg-date-today hide show-gt-md" ng-bind="currentDay.day"><!-- day --></p>
   </div>
-
-  <div class="sg-toolbar-group-last" layout="row" layout-align="center center">
-    <div layout="row" layout-align="space-around start">
-      <md-button class="md-icon-button"
-                 ng-show="activeUser.path.calendar.length"
-                 ng-disabled="baseURL.endsWith('/Calendar/')"
-                 var:ng-click="navButtonClick"
-                 ng-href="{{activeUser.path.calendar}}">
-        <md-tooltip><var:string label:value="Calendar"/></md-tooltip>
-        <md-icon>event</md-icon>
-      </md-button>
-      <md-button class="md-icon-button"
-                 ng-disabled="baseURL.endsWith('/Contacts/')"
-                 var:ng-click="navButtonClick"
-                 ng-href="{{activeUser.path.contacts}}">
-        <md-icon>contacts</md-icon>
-        <md-tooltip><var:string label:value="Address Book"/></md-tooltip>
-      </md-button>
-      <md-button class="md-icon-button"
-                 ng-show="activeUser.path.mail.length"
-                 ng-disabled="baseURL.endsWith('/Mail/')"
-                 var:ng-click="navButtonClick"
-                 ng-href="{{activeUser.path.mail}}">
-        <md-icon>email</md-icon>
-        <var:if condition="userHasVacationEnabled">
-          <md-icon class="md-default-theme md-warn md-bg sg-icon--badge" label:aria-label="Vacation message is enabled">forward</md-icon>
-        </var:if>
-        <md-tooltip><var:string label:value="Mail"/></md-tooltip>
-      </md-button>
-      <md-button class="md-icon-button"
-                 ng-disabled="baseURL.endsWith('/Administration/')"
-                 ng-show="activeUser.isSuperUser"
-                 var:ng-click="navButtonClick"
-                 ng-href="{{activeUser.path.administration}}">
-        <md-icon>settings_applications</md-icon>
-        <md-tooltip><var:string label:value="Administration"/></md-tooltip>
-      </md-button>
-      <div class="hide-xs" style="width: 40px"
-           ng-show="activeUser.path.logoff.length"><!-- divider --></div>
-      <md-button class="md-icon-button"
-                 ng-show="activeUser.path.help.length"
-                 ng-href="{{activeUser.path.help}}"
-                 target="_blank">
-        <md-icon>help_outline</md-icon>
-        <md-tooltip><var:string label:value="Help"/></md-tooltip>
-      </md-button>
-      <md-button class="md-icon-button"
-                 ng-show="activeUser.path.logoff.length"
-                 var:ng-click="navButtonClick"
-                 ng-href="{{activeUser.path.logoff}}">
-        <md-icon>settings_power</md-icon>
-        <md-tooltip><var:string label:value="Disconnect"/></md-tooltip>
-      </md-button>
-    </div>
+  <div class="md-toolbar-tools sg-toolbar-group-last" layout="row" layout-align="end center">
+    <md-button class="md-icon-button"
+               ng-show="activeUser.path.calendar.length"
+               ng-disabled="baseURL.endsWith('/Calendar/')"
+               var:ng-click="navButtonClick"
+               ng-href="{{activeUser.path.calendar}}">
+      <md-tooltip><var:string label:value="Calendar"/></md-tooltip>
+      <md-icon>event</md-icon>
+    </md-button>
+    <md-button class="md-icon-button"
+               ng-disabled="baseURL.endsWith('/Contacts/')"
+               var:ng-click="navButtonClick"
+               ng-href="{{activeUser.path.contacts}}">
+      <md-icon>contacts</md-icon>
+      <md-tooltip><var:string label:value="Address Book"/></md-tooltip>
+    </md-button>
+    <md-button class="md-icon-button"
+               ng-show="activeUser.path.mail.length"
+               ng-disabled="baseURL.endsWith('/Mail/')"
+               var:ng-click="navButtonClick"
+               ng-href="{{activeUser.path.mail}}">
+      <md-icon>email</md-icon>
+      <var:if condition="userHasVacationEnabled">
+        <md-icon class="md-default-theme md-warn md-bg sg-icon--badge" label:aria-label="Vacation message is enabled">forward</md-icon>
+      </var:if>
+      <md-tooltip><var:string label:value="Mail"/></md-tooltip>
+    </md-button>
+    <md-button class="md-icon-button"
+               ng-disabled="baseURL.endsWith('/Administration/')"
+               ng-show="activeUser.isSuperUser"
+               var:ng-click="navButtonClick"
+               ng-href="{{activeUser.path.administration}}">
+      <md-icon>settings_applications</md-icon>
+      <md-tooltip><var:string label:value="Administration"/></md-tooltip>
+    </md-button>
+    <div class="hide-xs" style="width: 40px"
+         ng-show="activeUser.path.logoff.length"><!-- divider --></div>
+    <md-button class="md-icon-button"
+               ng-show="activeUser.path.help.length"
+               ng-href="{{activeUser.path.help}}"
+               target="_blank">
+      <md-icon>help_outline</md-icon>
+      <md-tooltip><var:string label:value="Help"/></md-tooltip>
+    </md-button>
+    <md-button class="md-icon-button"
+               ng-show="activeUser.path.logoff.length"
+               var:ng-click="navButtonClick"
+               ng-href="{{activeUser.path.logoff}}">
+      <md-icon>settings_power</md-icon>
+      <md-tooltip><var:string label:value="Disconnect"/></md-tooltip>
+    </md-button>
   </div>
 
 </container>

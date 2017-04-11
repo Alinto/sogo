@@ -26,7 +26,6 @@
     <md-dialog-content class="sg-has-form-sections">
       <script type="text/javascript">
         var filterId = '<var:string value="filterId"/>';
-        var sieveFolderEncoding = '<var:string value="sieveFolderEncoding"/>';
         var mailTags = <var:string value="labels" const:escapeHTML="NO"/>;
       </script>
 
@@ -51,7 +50,7 @@
         </div>
 
         <!-- CONDITIONS -->
-        <div layout="column">
+        <div layout="column" ng-hide="filterEditor.filter.match == 'allmessages'">
           <div id="filterRules"><!-- empty --></div>
           <div layout="row" layout-align="start center"
                ng-repeat="rule in filterEditor.filter.rules">
@@ -108,8 +107,16 @@
         <div layout="column">
           <p><var:string label:value="Perform these actions"/></p>
           <div id="filterActions"><!-- empty --></div>
+          <div class="sg-list-sortable"
+               ng-model="filterEditor.filter.actions"
+               as-sortable="{ containment: '.sg-list-sortable', containerPositioning: 'relative' }">
           <div layout="row" layout-align="start center"
-               ng-repeat="action in filterEditor.filter.actions">
+               ng-repeat="action in filterEditor.filter.actions"
+               as-sortable-item="as-sortable-item">
+            <md-button class="md-icon-button" md-no-ink="md-no-ink"
+                       as-sortable-item-handle="as-sortable-item-handle">
+              <md-icon class="sg-sortable-grip">drag_handle</md-icon>
+            </md-button>
 
             <md-input-container class="md-block md-flex">
               <md-select ng-model="action.method">
@@ -139,7 +146,7 @@
             <md-input-container class="md-block" flex="50" ng-if="action.method == 'fileinto'">
               <label><var:string label:value="Mailbox"/></label>
               <md-select ng-model="action.argument" required="required">
-                <md-option ng-value="item.path" ng-repeat="item in filterEditor.mailboxes">
+                <md-option ng-value="item.sievePath" ng-repeat="item in filterEditor.mailboxes">
                   <div ng-class="'sg-child-level-' + item.level">
                     {{ item.name }}
                   </div>
@@ -157,7 +164,7 @@
                 <md-option value="flagged"><var:string label:value="Flagged"/></md-option>
                 <md-option value="junk"><var:string label:value="Junk"/></md-option>
                 <md-option value="not_junk"><var:string label:value="Not Junk"/></md-option>
-                <md-option ng-value="key" ng-repeat="(key, value) in labels">{{ value[0] }}</md-option>
+                <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.labels">{{ value[0] }}</md-option>
               </md-select>
             </md-input-container>
 
@@ -169,6 +176,7 @@
               <md-icon>remove_circle</md-icon>
             </md-button>
 
+          </div>
           </div>
 
           <div layout="row" layout-align="end center">

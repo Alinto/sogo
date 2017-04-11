@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2009-2014 Inverse inc.
-  Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2009-2016 Inverse inc.
 
   This file is part of SOGo.
 
@@ -35,6 +34,7 @@
 */
 
 @class NSArray;
+@class NSMutableDictionary;
 @class NSMutableArray;
 @class NSString;
 
@@ -50,6 +50,11 @@ typedef enum {
   rfc4314
 } SOGoIMAPAclStyle;
 
+typedef enum {
+  SOGoMailStandardListing = 0,
+  SOGoMailSubscriptionsManagementListing = 1
+} SOGoMailListingMode;
+
 @interface SOGoMailAccount : SOGoMailBaseObject
 {
   SOGoMailFolder *inboxFolder;
@@ -61,6 +66,8 @@ typedef enum {
   NSMutableArray *identities;
   NSString *otherUsersFolderName;
   NSString *sharedFoldersName;
+  NSMutableDictionary *subscribedFolders;
+  BOOL sieveFolderUTF8Encoding;
 }
 
 - (SOGoIMAPAclStyle) imapAclStyle;
@@ -83,8 +90,8 @@ typedef enum {
 /* folder pathes */
 - (NSArray *) toManyRelationshipKeysWithNamespaces: (BOOL) withNSs;
 
-- (NSArray *) allFolderPaths;
-- (NSArray *) allFoldersMetadata;
+- (NSArray *) allFolderPaths: (SOGoMailListingMode) theListingMode;
+- (NSArray *) allFoldersMetadata: (SOGoMailListingMode) theListingMode;
 
 - (NSDictionary *) imapFolderGUIDs;
 

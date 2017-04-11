@@ -36,6 +36,9 @@
 #import "SOGoCalendarComponent.h"
 
 @interface SOGoAppointmentObject : SOGoCalendarComponent
+{
+  BOOL _resourceHasAutoAccepted;
+}
 
 - (NSException *) changeParticipationStatus: (NSString *) status
                                withDelegate: (iCalPerson *) delegate
@@ -56,6 +59,8 @@
 
 - (NSException *) updateContentWithCalendar: (iCalCalendar *) calendar
                                 fromRequest: (WORequest *) rq;
+
+- (BOOL) resourceHasAutoAccepted;
 
 @end
 

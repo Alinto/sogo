@@ -22,7 +22,7 @@
 
     function link(scope, element, attrs, calendarDayCtrl) {
       if (scope.block) {
-        if (scope.block.component.editable) {
+        if (scope.block.component.editable && !scope.block.userState) {
           // Add dragging grips to existing event block
           initGrips();
         }
@@ -44,6 +44,9 @@
       function initGrips() {
         var component, dayIndex, blockIndex, isFirstBlock, isLastBlock,
             dragGrip, leftGrip, rightGrip, topGrip, bottomGrip;
+
+        // Don't show grips for blocks of less than 45 minutes
+        if (scope.block.length < 3) return;
 
         component = scope.block.component;
         dayIndex = scope.block.dayIndex;
@@ -78,9 +81,19 @@
       }
 
       function onDragDetect(ev) {
-        var dragMode, pointerHandler;
+        var dragMode, pointerHandler, hasVerticalScrollbar, rect, scrollableZone;
 
         ev.stopPropagation();
+
+        hasVerticalScrollbar = ev.target.scrollHeight > ev.target.clientHeight + 1;
+
+        if (hasVerticalScrollbar) {
+          // Check if mouse click is inside scrollbar
+          rect = ev.target.getBoundingClientRect();
+          scrollableZone = rect.left + rect.width - 18;
+          if (ev.pageX > scrollableZone)
+            return;
+        }
 
         dragMode = 'move-event';
 

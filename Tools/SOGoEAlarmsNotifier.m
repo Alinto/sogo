@@ -1,6 +1,6 @@
 /* SOGoEAlarmsNotifier.m - this file is part of SOGo
  *
- * Copyright (C) 2011-2014 Inverse inc.
+ * Copyright (C) 2011-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,12 +31,13 @@
 
 #import <NGCards/iCalAlarm.h>
 
-#import "SOGo/SOGoCredentialsFile.h"
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoCredentialsFile.h>
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoUser.h>
+#import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/iCalPerson+SOGo.h>
 #import <Appointments/SOGoEMailAlarmsManager.h>
 
@@ -179,12 +180,15 @@
 
 - (BOOL) run
 {
-  SOGoEMailAlarmsManager *eaMgr;
-  SOGoCredentialsFile *cf;
   NSCalendarDate *startDate, *toDate;
-  NSArray *alarms;
-  NSMutableArray *owners;
+  SOGoEMailAlarmsManager *eaMgr;
+  NSMutableArray *metadata;
+  iCalEntityObject *entity;
+  SOGoCredentialsFile *cf;
   NSString *credsFilename;
+  NSDictionary *d;
+  NSArray *alarms;
+
   int count, max;
 
   if ([[NSUserDefaults standardUserDefaults] stringForKey: @"h"])
@@ -211,6 +215,7 @@
   eaMgr = [NSClassFromString (@"SOGoEMailAlarmsManager")
                              sharedEMailAlarmsManager];
 
+  metadata = [[NSMutableArray alloc] init];
   startDate = [NSCalendarDate calendarDate];
   toDate = [startDate addYear: 0 month: 0 day: 0
                          hour: 0 minute: 0
@@ -219,13 +224,26 @@
                                                       hour: 0 minute: -5
                                                     second: 0]
                                    toDate: toDate
-                               withOwners: &owners];
+                               withMetadata: metadata];
   max = [alarms count];
   for (count = 0; count < max; count++)
     [self _processAlarm: [alarms objectAtIndex: count]
-              withOwner: [owners objectAtIndex: count]];
+              withOwner: [[metadata objectAtIndex: count] objectForKey: @"owner"]];
 
-  [eaMgr deleteAlarmsUntilDate: toDate];
+  // We now update the next alarm date (if any, for recurring
+  // events or tasks for example). This will also delete any emai
+  // alarms that are no longer relevant
+  max = [metadata count];
+
+  for (count = 0; count < max; count++)
+    {
+      d = [metadata objectAtIndex: count];
+      entity = [d objectForKey: @"entity"];
+      [entity quickRecordFromContent: nil
+			   container: [d objectForKey: @"container"]
+		     nameInContainer: [[d objectForKey: @"record"] objectForKey: @"c_name"]];
+    }
+
 
   return YES;
 }

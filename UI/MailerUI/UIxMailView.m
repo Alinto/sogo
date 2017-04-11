@@ -213,6 +213,25 @@ static NSString *mailETag = nil;
   viewer = [[context mailRenderingContext] viewerForBodyInfo: info];
   [viewer setBodyInfo: info];
 
+  NSMutableDictionary *attachmentIds;
+  NSDictionary *attributes;
+  NSString *filename;
+  unsigned int count, max;
+
+  max = [[self attachmentAttrs] count];
+  attachmentIds = [NSMutableDictionary dictionaryWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      attributes = [[self attachmentAttrs] objectAtIndex: count];
+      filename = [NSString stringWithFormat: @"<%@>", [attributes objectForKey: @"filename"]];
+      [attachmentIds setObject: [attributes objectForKey: @"url"]
+                        forKey: filename];
+      if ([[attributes objectForKey: @"bodyId"] length])
+        [attachmentIds setObject: [attributes objectForKey: @"url"]
+                          forKey: [attributes objectForKey: @"bodyId"]];
+    }
+  [viewer setAttachmentIds: attachmentIds];
+
   return viewer;
 }
 
@@ -299,6 +318,9 @@ static NSString *mailETag = nil;
   if ((addresses = [addressFormatter dictionariesForArray: [co replyToEnvelopeAddresses]]))
     [data setObject: addresses forKey: @"reply-to"];
 
+  // Mark message as read
+  [co addFlags: @"seen"];
+
   response = [self responseWithStatus: 200
                 andJSONRepresentation: data];
 
@@ -307,6 +329,18 @@ static NSString *mailETag = nil;
   [[context popMailRenderingContext] reset];
 
   return response;
+}
+
+- (id <WOActionResults>) archiveAttachmentsAction
+{
+  NSString *name;
+  SOGoMailObject *co;
+
+  co = [self clientObject];
+  name = [NSString stringWithFormat: @"%@-%@.zip",
+                  [self labelForKey: @"attachments"], [co nameInContainer]];
+
+  return [co archiveAllFilesinArchiveNamed: name];
 }
 
 /* MDN */

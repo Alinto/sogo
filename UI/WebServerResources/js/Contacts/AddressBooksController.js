@@ -6,9 +6,9 @@
   /**
    * @ngInject
    */
-  AddressBooksController.$inject = ['$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$window', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'FileUploader', 'sgConstant', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'User', 'stateAddressbooks'];
-  function AddressBooksController($state, $scope, $rootScope, $stateParams, $timeout, $window, $mdDialog, $mdToast, $mdMedia, $mdSidenav, FileUploader, sgConstant, focus, Card, AddressBook, Dialog, Settings, User, stateAddressbooks) {
-    var vm = this;
+  AddressBooksController.$inject = ['$q', '$state', '$scope', '$rootScope', '$stateParams', '$timeout', '$window', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'FileUploader', 'sgConstant', 'sgHotkeys', 'sgFocus', 'Card', 'AddressBook', 'Dialog', 'sgSettings', 'User', 'stateAddressbooks'];
+  function AddressBooksController($q, $state, $scope, $rootScope, $stateParams, $timeout, $window, $mdDialog, $mdToast, $mdMedia, $mdSidenav, FileUploader, sgConstant, sgHotkeys, focus, Card, AddressBook, Dialog, Settings, User, stateAddressbooks) {
+    var vm = this, hotkeys = [];
 
     vm.activeUser = Settings.activeUser;
     vm.service = AddressBook;
@@ -23,6 +23,35 @@
     vm.showProperties = showProperties;
     vm.share = share;
     vm.subscribeToFolder = subscribeToFolder;
+    vm.isDroppableFolder = isDroppableFolder;
+    vm.dragSelectedCards = dragSelectedCards;
+
+
+    _registerHotkeys(hotkeys);
+
+    $scope.$on('$destroy', function() {
+      // Deregister hotkeys
+      _.forEach(hotkeys, function(key) {
+        sgHotkeys.deregisterHotkey(key);
+      });
+    });
+
+
+    function _registerHotkeys(keys) {
+      keys.push(sgHotkeys.createHotkey({
+        key: 'backspace',
+        description: l('Delete selected card or address book'),
+        callback: function() {
+          if (AddressBook.selectedFolder && !AddressBook.selectedFolder.hasSelectedCard())
+            confirmDelete();
+        }
+      }));
+
+      // Register the hotkeys
+      _.forEach(keys, function(key) {
+        sgHotkeys.registerHotkey(key);
+      });
+    }
 
     function select($event, folder) {
       if ($state.params.addressbookId != folder.id &&
@@ -41,8 +70,8 @@
     }
 
     function newAddressbook() {
-      Dialog.prompt(l('New addressbook'),
-                    l('Name of new addressbook'))
+      Dialog.prompt(l('New Addressbook...'),
+                    l('Name of the Address Book'))
         .then(function(name) {
           var addressbook = new AddressBook(
             {
@@ -107,10 +136,12 @@
             return true;
           })
           .catch(function(response) {
-            var message = response.data.message || response.statusText;
-            Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
-                           vm.service.selectedFolder.name),
-                        message);
+            if (response) {
+              var message = response.data.message || response.statusText;
+              Dialog.alert(l('An error occured while deleting the addressbook "%{0}".',
+                             vm.service.selectedFolder.name),
+                           message);
+            }
           });
       }
     }
@@ -203,18 +234,26 @@
     }
 
     function showLinks(addressbook) {
-      $mdDialog.show({
-        parent: angular.element(document.body),
-        clickOutsideToClose: true,
-        escapeToClose: true,
-        templateUrl: addressbook.id + '/links',
-        controller: LinksDialogController,
-        controllerAs: 'links',
-        locals: {
-          addressbook: addressbook
-        }
+      var promise;
+      if (addressbook.urls)
+        promise = $q.when();
+      else
+        // Refresh list of addressbooks to fetch links associated to addressbook
+        promise = AddressBook.$reloadAll();
+      promise.then(function() {
+        $mdDialog.show({
+          parent: angular.element(document.body),
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          templateUrl: addressbook.id + '/links',
+          controller: LinksDialogController,
+          controllerAs: 'links',
+          locals: {
+            addressbook: addressbook
+          }
+        });
       });
-      
+
       /**
        * @ngInject
        */
@@ -301,6 +340,59 @@
              .hideDelay(3000));
       });
     }
+
+    function isDroppableFolder(srcFolder, dstFolder) {
+      return (dstFolder.id != srcFolder.id) && (dstFolder.isOwned || dstFolder.acls.objectCreator);
+    }
+
+    /**
+     * @see AddressBookController._selectedCardsOperation
+     */
+    function dragSelectedCards(srcFolder, dstFolder, mode) {
+      var dstId, allCards, cards, ids, clearCardView, promise, success;
+
+      dstId = dstFolder.id;
+      clearCardView = false;
+      allCards = srcFolder.$selectedCards();
+      if (allCards.length === 0)
+        allCards = [srcFolder.$selectedCard()];
+      cards = _.filter(allCards, function(card) {
+        return card.$isCard();
+      });
+
+      if (cards.length != allCards.length)
+        $mdToast.show(
+          $mdToast.simple()
+            .content(l("Lists can't be moved or copied."))
+            .position('top right')
+            .hideDelay(2000));
+
+      if (cards.length) {
+        if (mode == 'copy') {
+          promise = srcFolder.$copyCards(cards, dstId);
+          success = l('%{0} card(s) copied', cards.length);
+        }
+        else {
+          promise = srcFolder.$moveCards(cards, dstId);
+          success = l('%{0} card(s) moved', cards.length);
+          // Check if currently displayed card will be moved
+          ids = _.map(cards, 'id');
+          clearCardView = (srcFolder.selectedCard && ids.indexOf(srcFolder.selectedCard) >= 0);
+        }
+
+        // Show success toast when action succeeds
+        promise.then(function() {
+          if (clearCardView)
+            $state.go('app.addressbook');
+          $mdToast.show(
+            $mdToast.simple()
+              .content(success)
+              .position('top right')
+              .hideDelay(2000));
+        });
+      }
+    }
+
   }
 
   angular

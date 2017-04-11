@@ -40,11 +40,41 @@
 
     SOGoLoginModule = "Mail";
     SOGoLanguage = "English";
-    SOGoSupportedLanguages = ( "Arabic", "Basque", "BrazilianPortuguese", "Catalan", "ChineseTaiwan", "Croatian",
-                               "Czech", "Danish", "Dutch", "English", "Finnish", "French", "German", "Hungarian",
-                               "Icelandic", "Italian", "Lithuanian", "Macedonian", "NorwegianBokmal",
-                               "NorwegianNynorsk", "Polish", "Portuguese", "Russian", "Slovak", "Slovenian",
-                               "SpanishArgentina", "SpanishSpain", "Swedish", "TurkishTurkey", "Ukrainian", "Welsh" );
+    SOGoSupportedLanguages = (
+        "Arabic",
+        "Basque",
+        "BrazilianPortuguese",
+        "Catalan",
+        "ChineseTaiwan",
+        "Croatian",
+        "Czech",
+        "Danish",
+        "Dutch",
+        "English",
+        "Finnish",
+        "French",
+        "German",
+        "Hebrew",
+        "Hungarian",
+        "Icelandic",
+        "Italian",
+        "Lithuanian",
+        "Macedonian",
+        "NorwegianBokmal",
+        "NorwegianNynorsk",
+        "Polish",
+        "Portuguese",
+        "Russian",
+        "Serbian",
+        "Slovak",
+        "Slovenian",
+        "SpanishArgentina",
+        "SpanishSpain",
+        "Swedish",
+        "TurkishTurkey",
+        "Ukrainian",
+        "Welsh"
+    );
 
     SOGoTimeZone = "UTC";
     SOGoDayStartTime = "8";
@@ -75,7 +105,7 @@
     SOGoTrashFolderName = "Trash";
     SOGoJunkFolderName = "Junk";
     SOGoMailComposeMessageType = "html";
-    SOGoMailComposeFontSize = 0;
+    SOGoMailComposeFontSize = "0";
     SOGoMailDisplayRemoteInlineImages = "never";
 
     SOGoMailAutoSave = "5";
@@ -99,31 +129,54 @@
         $label5 = ("Later", "#993399");
     };
 
-    SOGoCalendarCategories = ("Customer", "Calls", "Favorites", "Meeting", "Ideas", "Miscellaneous", "Birthday", "Anniversary", "Vacation", "Travel", "Projects", "Suppliers", "Gifts", "Clients", "Issues", "Business", "Holidays", "Personal", "Status", "Competition", "Follow up", "Public Holiday");
+    SOGoCalendarCategories = (
+        "Customer",
+        "Calls",
+        "Favorites",
+        "Meeting",
+        "Ideas",
+        "Miscellaneous",
+        "Birthday",
+        "Anniversary",
+        "Vacation",
+        "Travel",
+        "Projects",
+        "Suppliers",
+        "Gifts",
+        "Clients",
+        "Issues",
+        "Business",
+        "Holidays",
+        "Personal",
+        "Status",
+        "Competition",
+        "Follow up",
+        "Public Holiday"
+    );
 
     SOGoCalendarCategoriesColors = {
-      "Customer" = "#CCCCCC";
-      "Calls" = "#FFCC33";
-      "Favorites" = "#CCCCCC";
-      "Meeting" = "#CCCCCC";
-      "Ideas" = "#CCCCCC";
-      "Miscellaneous" = "#CCCCCC";
-      "Birthday" = "#CCCCCC";
-      "Anniversary" = "#CCCCCC";
-      "Vacation" = "#CCCCCC";
-      "Travel" = "#CCCCCC";
-      "Projects" = "#CCCCCC";
-      "Suppliers" = "#CCCCCC";
-      "Gifts" = "#CCCCCC";
-      "Clients" = "#CCCCCC";
-      "Issues" = "#CCCCCC";
-      "Business" = "#CCCCCC";
-      "Holidays" = "#CCCCCC";
-      "Personal" = "#CCCCCC";
-      "Status" = "#CCCCCC";
-      "Competition" = "#CCCCCC";
-      "Follow up" = "#CCCCCC";
-      "Public Holiday" = "#CCCCCC";
+        "Customer" = "#CCCCCC";
+        "Calls" = "#FFCC33";
+        "Favorites" = "#CCCCCC";
+        "Meeting" = "#CCCCCC";
+        "Ideas" = "#CCCCCC";
+        "Miscellaneous" = "#CCCCCC";
+        "Birthday" = "#CCCCCC";
+        "Anniversary" = "#CCCCCC";
+        "Vacation" = "#CCCCCC";
+        "Travel" = "#CCCCCC";
+        "Projects" = "#CCCCCC";
+        "Suppliers" = "#CCCCCC";
+        "Gifts" = "#CCCCCC";
+        "Clients" = "#CCCCCC";
+        "Issues" = "#CCCCCC";
+        "Business" = "#CCCCCC";
+        "Holidays" = "#CCCCCC";
+        "Personal" = "#CCCCCC";
+        "Status" = "#CCCCCC";
+        "Competition" = "#CCCCCC";
+        "Follow up" = "#CCCCCC";
+        "Public Holiday" = "#CCCCCC";
     };
 
     SOGoSubscriptionFolderFormat = "%{FolderName} (%{UserName} <%{Email}>)";

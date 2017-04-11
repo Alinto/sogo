@@ -232,7 +232,7 @@
                                          type, classification]
                     inContext: context];
 
-  tags = [NSArray arrayWithObjects: @"DTSTAMP", @"DTSTART", @"DTEND", @"DUE", @"EXDATE", @"EXRULE", @"RRULE", nil];
+  tags = [NSArray arrayWithObjects: @"DTSTAMP", @"DTSTART", @"DTEND", @"DUE", @"EXDATE", @"EXRULE", @"RRULE", @"RECURRENCE-ID", nil];
   uid = [[component uid] asCryptedPassUsingScheme: @"ssha256"
                                          withSalt: [[settings userSalt] dataUsingEncoding: NSASCIIStringEncoding]
                                       andEncoding: encHex];
@@ -580,17 +580,6 @@
 		[allAttendees addObject: person];
 	    }
 	}
-      else
-	{
-	  // We remove any attendees matching the organizer. Apple iCal will do that when
-	  // you invite someone. It'll add the organizer in the attendee list, which will
-	  // confuse itself!
-	  if ([[currentAttendee rfc822Email] caseInsensitiveCompare: organizerEmail] == NSOrderedSame)
-	    {
-	      [allAttendees removeObject: currentAttendee];
-	      eventWasModified = YES;
-	    }
-	}
       
       j++;
     } // while (currentAttendee ...
@@ -619,7 +608,10 @@
       if (content)
 	ASSIGN (originalCalendar, [iCalCalendar parseSingleFromSource: content]);
       else
-	[self warnWithFormat: @"content not available, we will crash"];
+	{
+	  [self warnWithFormat: @"content not available, we don't update the event"];
+	  return;
+	}
     }
 
   oldMaster = (iCalRepeatableEntityObject *)
@@ -682,15 +674,6 @@
       if ([newUid hasSuffix: @".ics"])
 	newUid = [newUid substringToIndex: [newUid length]-4];
       [newObject setUid: newUid];
-    }
-
-  if ([[SOGoSystemDefaults sharedSystemDefaults] enableEMailAlarms])
-    {
-      SOGoEMailAlarmsManager *eaMgr;
-      
-      eaMgr = [SOGoEMailAlarmsManager sharedEMailAlarmsManager];
-      [eaMgr handleAlarmsInCalendar: [newObject parent]
-	     fromComponent: self];
     }
 }
 
@@ -758,16 +741,8 @@
 
   parent = [object parent];
   iCalString = [NSString stringWithFormat: @"%@\r\n", [parent versitString]];
-  if ([iCalString canBeConvertedToEncoding: NSISOLatin1StringEncoding])
-    {
-      objectData = [iCalString dataUsingEncoding: NSISOLatin1StringEncoding];
-      charset = @"ISO-8859-1";
-    }
-  else
-    {
-      objectData = [iCalString dataUsingEncoding: NSUTF8StringEncoding];
-      charset = @"UTF-8";
-    }
+  objectData = [iCalString dataUsingEncoding: NSUTF8StringEncoding];
+  charset = @"UTF-8";
 
   header = [NSString stringWithFormat: @"text/calendar; method=%@;"
                      @" charset=\"%@\"",
@@ -809,6 +784,14 @@
 
   // If defined, we return immediately. When not defined, we send the notifications correctly
   if ([object firstChildWithTag: @"X-SOGo-Send-Appointment-Notifications"])
+    return;
+
+  // We never send IMIP inivitaton/deletion/update when the "initiator" is Outlook 2013/2016 over
+  // the EAS protocol. That is because Outlook will always issue a SendMail command
+  // with the meeting details (ie., IMIP message with METHOD:REQUEST) so there's
+  // no need to send it twice. Moreover, Outlook users can also choose to NOT send
+  // the IMIP messsage at all, so SOGo won't send one without user's consent
+  if ([[context objectForKey: @"DeviceType"] isEqualToString: @"WindowsOutlook15"])
     return;
 
   ownerUser = [SOGoUser userWithLogin: owner];
@@ -950,6 +933,9 @@
   /* get WOApplication instance */
   app = [WOApplication application];
 
+  /* remove all alarms to avoid bug #3925 */
+  [event removeAllAlarms];
+
   /* construct message content */
   p = [app pageWithName: @"SOGoAptMailICalReply"  inContext: context];
   [p setApt: (iCalEvent *) event];
@@ -1030,6 +1016,14 @@
 			    to: (iCalPerson *) recipient
 {
   SOGoDomainDefaults *dd;
+
+  // We never send IMIP reply when the "initiator" is Outlook 2013/2016 over
+  // the EAS protocol. That is because Outlook will always issue a SendMail command
+  // with the meeting's response (ie., IMIP message with METHOD:REPLY) so there's
+  // no need to send it twice. Moreover, Outlook users can also choose to NOT send
+  // the IMIP messsage at all, so SOGo won't send one without user's consent
+  if ([[context objectForKey: @"DeviceType"] isEqualToString: @"WindowsOutlook15"])
+    return;
 
   dd = [from domainDefaults];
   if ([dd appointmentSendEMailNotifications] && [event isStillRelevant])
@@ -1451,23 +1445,6 @@
   return nil;
 }
 
-- (id) PUTAction: (WOContext *) localContext
-{
-  if ([[SOGoSystemDefaults sharedSystemDefaults] enableEMailAlarms])
-    {
-      SOGoEMailAlarmsManager *eaMgr;
-      iCalCalendar *putCalendar;
-      WORequest *rq;
-
-      rq = [localContext request];
-      putCalendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
-      eaMgr = [SOGoEMailAlarmsManager sharedEMailAlarmsManager];
-      [eaMgr handleAlarmsInCalendar: putCalendar
-                      fromComponent: self];
-    }
-
-  return [super PUTAction: localContext];
-}
 
 // /* Overriding this method dramatically speeds up PROPFIND request, but may
 //    otherwise be a bad idea... Wait and see. */

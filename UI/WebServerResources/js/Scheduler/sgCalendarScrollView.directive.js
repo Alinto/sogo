@@ -25,33 +25,28 @@
       },
       controller: sgCalendarScrollViewController,
       link: function(scope, element, attrs, controller) {
-        var view, type, deregisterDragStart, deregisterDragStop;
+        var view, type, isMultiColumn = false;
 
         view = null;
         type = scope.type; // multiday, multiday-allday, monthly, unknown?
+        isMultiColumn = (element.attr('sg-view') == 'multicolumndayview');
 
-        // Listen to dragstart and dragend events
-        deregisterDragStart = $rootScope.$on('calendar:dragstart', onDragStart);
-        deregisterDragStop = $rootScope.$on('calendar:dragend', onDragEnd);
+        // Expose isMultiColumn in the controller
+        // See sgNowLine directive
+        controller.isMultiColumn = isMultiColumn;
 
         // Update the "view" object literal once the Angular template has been transformed
         $timeout(initView);
 
         // Deregister listeners when destroying the view
         scope.$on('$destroy', function() {
-          deregisterDragStart();
-          deregisterDragStop();
           if (view) {
-            element.off('mouseover', view.updateFromPointerHandler);
-            angular.element($window).off('resize', view.updateCoordinates);
+            view.$destroy();
           }
         });
 
         function initView() {
           view = new sgScrollView(element, type);
-
-          // Compute coordinates of view element; recompute it on window resize
-          angular.element($window).on('resize', view.updateCoordinates);
 
           if (type != 'monthly')
             // Scroll to the day start hour defined in the user's defaults
@@ -64,19 +59,10 @@
                 view.element.scrollTop = hourCell.offsetTop + quartersOffset;
               }
             });
-        }
 
-        function onDragStart() {
-          if (view) {
-            element.on('mouseover', view.updateFromPointerHandler);
-            view.updateCoordinates();
-            view.updateFromPointerHandler();
-          }
-        }
-
-        function onDragEnd() {
-          element.off('mouseover', view.updateFromPointerHandler);
-          Calendar.$view = null;
+          // Expose quarter height to the controller
+          // See sgNowLine directive
+          controller.quarterHeight = view.quarterHeight;
         }
 
         /**
@@ -91,11 +77,37 @@
           this.dayNumbers = this.getDayNumbers();
           this.maxX = this.getMaxColumns();
 
+          // Listen to dragstart and dragend events
+          this.deregisterDragStart = $rootScope.$on('calendar:dragstart', angular.bind(this, this.onDragStart));
+          this.deregisterDragStop = $rootScope.$on('calendar:dragend', angular.bind(this, this.onDragEnd));
+
+          this.bindedUpdateCoordinates = angular.bind(this, this.updateCoordinates);
+          this.bindedUpdateFromPointerHandler = angular.bind(this, this.updateFromPointerHandler);
+
+          // Compute coordinates of view element; recompute it on window resize
           this.updateCoordinates();
+          angular.element($window).on('resize', this.bindedUpdateCoordinates);
         }
 
         sgScrollView.prototype = {
 
+          $destroy: function() {
+            this.deregisterDragStart();
+            this.deregisterDragStop();
+            this.$element.off('mousemove', this.bindedUpdateFromPointerHandler);
+            angular.element($window).off('resize', this.bindedUpdateCoordinates);
+          },
+
+          onDragStart: function() {
+            this.$element.on('mousemove', this.bindedUpdateFromPointerHandler);
+            this.updateCoordinates();
+            this.updateFromPointerHandler();
+          },
+
+          onDragEnd: function() {
+            this.$element.off('mousemove', this.bindedUpdateFromPointerHandler);
+            Calendar.$view = null;
+          },
 
           getQuarterHeight: function() {
             var hour0, hour23, height = null;
@@ -130,11 +142,8 @@
 
 
           getDayNumbers: function() {
-            var viewType = null, isMultiColumn, days, total, sum;
+            var viewType = null, days, total, sum;
 
-            if (this.element.attributes['sg-view'])
-              viewType = this.element.attributes['sg-view'].value;
-            isMultiColumn = (viewType == 'multicolumndayview');
             days = this.element.getElementsByTagName('sg-calendar-day');
 
             return _.map(days, function(el, index) {
@@ -183,11 +192,10 @@
 
           // From SOGoScrollController.updateFromPointerHandler
           updateFromPointerHandler: function() {
-            var scrollStep, pointerHandler, pointerCoordinates, now, scrollY, minY, delta;
+            var pointerHandler, pointerCoordinates, now, scrollY, minY, delta;
 
             pointerHandler = Component.$ghost.pointerHandler;
             if (this.coordinates && pointerHandler) {
-              scrollStep = this.scrollStep;
               pointerCoordinates = pointerHandler.getContainerBasedCoordinates(this);
 
               if (pointerCoordinates) {
@@ -196,7 +204,7 @@
                 now = new Date().getTime();
                 if (!this.lastScroll || now > this.lastScroll + 100) {
                   this.lastScroll = now;
-                  scrollY = pointerCoordinates.y - scrollStep;
+                  scrollY = pointerCoordinates.y - this.scrollStep;
                   if (scrollY < 0) {
                     minY = -this.element.scrollTop;
                     if (scrollY < minY)
@@ -204,7 +212,7 @@
                     this.element.scrollTop += scrollY;
                   }
                   else {
-                    scrollY = pointerCoordinates.y + scrollStep;
+                    scrollY = pointerCoordinates.y + this.scrollStep;
                     delta = scrollY - this.element.clientHeight;
                     if (delta > 0) {
                       this.element.scrollTop += delta;

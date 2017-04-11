@@ -1,10 +1,14 @@
 (function() {
   'use strict';
 
+  /**
+   * This section is inspired from angular-material/src/components/datepicker/js/calendar.js
+   */
+
   angular
     .module('SOGo.Common')
     .directive('sgTimePane', timePaneDirective);
-  
+
   function timePaneDirective() {
     return {
       template: [
@@ -58,37 +62,83 @@
           throw Error('sg-timepicker should not be placed inside md-input-container.');
         }
 
-        var timePaneElement = element;
-        sgTimePaneCtrl.configureNgModel(ngModelCtrl, sgTimePaneCtrl, timePaneElement);
+        sgTimePaneCtrl.configureNgModel(ngModelCtrl, sgTimePaneCtrl);
       }
     };
   }
 
-  /** Class applied to the selected hour or minute cell/. */
-  var SELECTED_TIME_CLASS = 'sg-time-selected';
-
-  /** Class applied to the focused hour or minute cell/. */
-  var FOCUSED_TIME_CLASS = 'md-focus';
-
   /** Next identifier for calendar instance. */
-  var nextTimePaneUniqueId = 0;
+  var nextUniqueId = 0;
 
-  function TimePaneCtrl($element, $attrs, $scope, $animate, $q, $mdConstant,
-                        $mdTheming, $$mdDateUtil, $mdDateLocale, $mdInkRipple, $mdUtil) {
+  /**
+   * Controller for the sgTimePane component.
+   * @ngInject @constructor
+   */
+  TimePaneCtrl.$inject = ['$element', '$scope', '$$mdDateUtil', '$mdUtil',
+                          '$mdConstant', '$mdTheming', '$$rAF', '$attrs', '$mdDateLocale'];
+  function TimePaneCtrl($element, $scope, $$mdDateUtil, $mdUtil,
+                        $mdConstant, $mdTheming, $$rAF, $attrs, $mdDateLocale) {
+
     var m;
-    this.$scope = $scope;
+
+    $mdTheming($element);
+
+    /** @final {!angular.JQLite} */
     this.$element = $element;
-    this.timePaneElement = $element[0].querySelector('.sg-time-pane');
-    this.$animate = $animate;
-    this.$q = $q;
-    this.$mdInkRipple = $mdInkRipple;
-    this.$mdUtil = $mdUtil;
-    this.keyCode = $mdConstant.KEY_CODE;
+
+    /** @final {!angular.Scope} */
+    this.$scope = $scope;
+
+    /** @final */
     this.dateUtil = $$mdDateUtil;
-    this.id = nextTimePaneUniqueId++;
+
+    /** @final */
+    this.$mdUtil = $mdUtil;
+
+    /** @final */
+    this.keyCode = $mdConstant.KEY_CODE;
+
+    /** @final */
+    this.$$rAF = $$rAF;
+
+    this.timePaneElement = $element[0].querySelector('.sg-time-pane');
+
+    // this.$q = $q;
+
+    /** @type {!angular.NgModelController} */
     this.ngModelCtrl = null;
-    this.selectedTime = null;
+
+    /** @type {String} Class applied to the selected hour or minute cell. */
+    this.SELECTED_TIME_CLASS = 'sg-time-selected';
+
+    /** @type {String} Class applied to the focused hour or minute cell. */
+    this.FOCUSED_TIME_CLASS = 'md-focus';
+
+    /** @final {number} Unique ID for this time pane instance. */
+    this.id = nextUniqueId++;
+
+    /**
+     * The date that is currently focused or showing in the calendar. This will initially be set
+     * to the ng-model value if set, otherwise to today. It will be updated as the user navigates
+     * to other months. The cell corresponding to the displayDate does not necesarily always have
+     * focus in the document (such as for cases when the user is scrolling the calendar).
+     * @type {Date}
+     */
     this.displayTime = null;
+
+    /**
+     * The selected date. Keep track of this separately from the ng-model value so that we
+     * can know, when the ng-model value changes, what the previous value was before it's updated
+     * in the component's UI.
+     *
+     * @type {Date}
+     */
+    this.selectedTime = null;
+
+    /**
+     * Used to toggle initialize the root element in the next digest.
+     * @type {Boolean}
+     */
     this.isInitialized = false;
 
     $scope.hours=[];
@@ -139,6 +189,9 @@
       }
     };
 
+    // Unless the user specifies so, the calendar should not be a tab stop.
+    // This is necessary because ngAria might add a tabindex to anything with an ng-model
+    // (based on whether or not the user has turned that particular feature on/off).
     if (!$attrs.tabindex) {
       $element.attr('tabindex', '-1');
     }
@@ -153,7 +206,7 @@
     $scope.hourClickHandler = this.hourClickHandler;
 
     this.minuteClickHandler = function(displayVal) {
-      //remove leading ':'
+      // Remove leading ':'
       var val = displayVal.substr(1);
       var updated = new Date(self.displayTime);
       updated.setMinutes(Number(val));
@@ -161,102 +214,110 @@
     };
     $scope.minuteClickHandler = this.minuteClickHandler;
 
-    this.attachTimePaneEventListeners();
+    var boundKeyHandler = angular.bind(this, this.handleKeyEvent);
+
+    // Bind the keydown handler to the body, in order to handle cases where the focused
+    // element gets removed from the DOM and stops propagating click events.
+    angular.element(document.body).on('keydown', boundKeyHandler);
+
+    $scope.$on('$destroy', function() {
+      angular.element(document.body).off('keydown', boundKeyHandler);
+    });
   }
-  TimePaneCtrl.$inject = ["$element", "$attrs", "$scope", "$animate", "$q", "$mdConstant", "$mdTheming", "$$mdDateUtil", "$mdDateLocale", "$mdInkRipple", "$mdUtil"];
 
-  TimePaneCtrl.prototype.configureNgModel = function(ngModelCtrl, sgTimePaneCtrl, timePaneElement) {
-    this.ngModelCtrl = ngModelCtrl;
-
+  /**
+   * Sets up the controller's reference to ngModelController.
+   * @param {!angular.NgModelController} ngModelCtrl
+   */
+  TimePaneCtrl.prototype.configureNgModel = function(ngModelCtrl, sgTimePaneCtrl) {
     var self = this;
+
+    // self.displayTime = new Date(self.$viewValue);
+
+    self.ngModelCtrl = ngModelCtrl;
+
+    self.$mdUtil.nextTick(function() {
+      self.isInitialized = true;
+    });
+
     ngModelCtrl.$render = function() {
-      self.changeSelectedTime(self.ngModelCtrl.$viewValue, sgTimePaneCtrl, timePaneElement);
+      var date = this.$viewValue;
+      self.$mdUtil.nextTick(function() {
+        self.changeSelectedTime(date, sgTimePaneCtrl);
+      });
     };
   };
 
   /**
    * Change the selected date in the time (ngModel value has already been changed).
    */
-  TimePaneCtrl.prototype.changeSelectedTime = function(date, sgTimePaneCtrl, timePaneElement) {
+  TimePaneCtrl.prototype.changeSelectedTime = function(date, sgTimePaneCtrl) {
     var self = this;
     var previousSelectedTime = this.selectedTime;
+
     this.selectedTime = date;
-    this.changeDisplayTime(date).then(function() {
+    this.displayTime = new Date(date);
 
-      // Remove the selected class from the previously selected date, if any.
-      if (previousSelectedTime) {
-        var prevH = previousSelectedTime.getHours();
-        var prevHCell = document.getElementById('tp-'+sgTimePaneCtrl.id+'-hour-'+prevH);
-        if (prevHCell) {
-          prevHCell.classList.remove(SELECTED_TIME_CLASS);
-          prevHCell.setAttribute('aria-selected', 'false');
-        }
-        var prevM = previousSelectedTime.getMinutes();
-        var prevMCell = document.getElementById('tp-'+sgTimePaneCtrl.id+'-minute-'+prevM);
-        if (prevMCell) {
-          prevMCell.classList.remove(SELECTED_TIME_CLASS);
-          prevMCell.setAttribute('aria-selected', 'false');
-        }
-        var prevM5Cell = document.getElementById('tp-'+sgTimePaneCtrl.id+'-minute5-'+prevM);
-        if (prevM5Cell) {
-          prevM5Cell.classList.remove(SELECTED_TIME_CLASS);
-          prevM5Cell.setAttribute('aria-selected', 'false');
-        }
+    // Remove the selected class from the previously selected date, if any.
+    if (previousSelectedTime) {
+      var prevH = previousSelectedTime.getHours();
+      var prevHCell = document.getElementById('tp-'+sgTimePaneCtrl.id+'-hour-'+prevH);
+      if (prevHCell) {
+        prevHCell.classList.remove(this.SELECTED_TIME_CLASS);
+        prevHCell.setAttribute('aria-selected', 'false');
       }
+      var prevM = previousSelectedTime.getMinutes();
+      var prevMCell = document.getElementById('tp-'+sgTimePaneCtrl.id+'-minute-'+prevM);
+      if (prevMCell) {
+        prevMCell.classList.remove(this.SELECTED_TIME_CLASS);
+        prevMCell.setAttribute('aria-selected', 'false');
+      }
+      var prevM5Cell = document.getElementById('tp-'+sgTimePaneCtrl.id+'-minute5-'+prevM);
+      if (prevM5Cell) {
+        prevM5Cell.classList.remove(this.SELECTED_TIME_CLASS);
+        prevM5Cell.setAttribute('aria-selected', 'false');
+      }
+    }
 
-      // Apply the select class to the new selected date if it is set.
-      if (date) {
-        var newH = date.getHours();
-        var mCell, hCell = document.getElementById('tp-'+sgTimePaneCtrl.id+'-hour-'+newH);
-        if (hCell) {
-          hCell.classList.add(SELECTED_TIME_CLASS);
-          hCell.setAttribute('aria-selected', 'true');
-        }
-        var newM = date.getMinutes();
-        if (newM % 5 === 0) {
-          sgTimePaneCtrl.$scope.show5min = true;
-          mCell = document.getElementById('tp-'+sgTimePaneCtrl.id+'-minute5-'+newM);
-          if (mCell) {
-            mCell.classList.add(SELECTED_TIME_CLASS);
-            mCell.setAttribute('aria-selected', 'true');
-          }
-        }
-        else {
-          sgTimePaneCtrl.$scope.show5min = false;
-        }
-        mCell = document.getElementById('tp-'+sgTimePaneCtrl.id+'-minute-'+newM);
+    // Apply the select class to the new selected date if it is set.
+    if (date) {
+      var newH = date.getHours();
+      var mCell, hCell = document.getElementById('tp-'+sgTimePaneCtrl.id+'-hour-'+newH);
+      if (hCell) {
+        hCell.classList.add(this.SELECTED_TIME_CLASS);
+        hCell.setAttribute('aria-selected', 'true');
+      }
+      var newM = date.getMinutes();
+      if (newM % 5 === 0) {
+        sgTimePaneCtrl.$scope.show5min = true;
+        mCell = document.getElementById('tp-'+sgTimePaneCtrl.id+'-minute5-'+newM);
         if (mCell) {
-          mCell.classList.add(SELECTED_TIME_CLASS);
+          mCell.classList.add(this.SELECTED_TIME_CLASS);
           mCell.setAttribute('aria-selected', 'true');
         }
-
       }
-    });
-  };
-
-  TimePaneCtrl.prototype.changeDisplayTime = function(date) {
-    var d = new Date(date);
-    if (!this.isInitialized) {
-      this.buildInitialTimePaneDisplay();
-      return this.$q.when();
+      else {
+        sgTimePaneCtrl.$scope.show5min = false;
+      }
+      mCell = document.getElementById('tp-'+sgTimePaneCtrl.id+'-minute-'+newM);
+      if (mCell) {
+        mCell.classList.add(this.SELECTED_TIME_CLASS);
+        mCell.setAttribute('aria-selected', 'true');
+      }
     }
-    if (!this.dateUtil.isValidDate(d)) {
-      return this.$q.when();
-    }
-
-    this.displayTime = d;
-
-    return this.$q.when();
-  };
-  TimePaneCtrl.prototype.buildInitialTimePaneDisplay = function() {
-    this.displayTime = this.selectedTime || this.today;
-    this.isInitialized = true;
   };
 
-  TimePaneCtrl.prototype.attachTimePaneEventListeners = function() {
-    // Keyboard interaction.
-    this.$element.on('keydown', angular.bind(this, this.handleKeyEvent));
+  /**
+   * Sets the ng-model value for the time pane and emits a change event.
+   * @param {Date} date
+   */
+  TimePaneCtrl.prototype.setNgModelValue = function(date, mode) {
+    this.$scope.$emit('sg-time-pane-change', { date: date, changed: mode });
+    this.ngModelCtrl.$setViewValue(date);
+    this.ngModelCtrl.$render();
+    return date;
   };
+
 
   /*** User input handling ***/
 
@@ -304,32 +365,22 @@
   };
 
   /**
-   * Sets the ng-model value for the time pane and emits a change event.
-   * @param {Date} date
-   */
-  TimePaneCtrl.prototype.setNgModelValue = function(date, mode) {
-    this.$scope.$emit('sg-time-pane-change', {date:date, changed:mode});
-    this.ngModelCtrl.$setViewValue(date);
-    this.ngModelCtrl.$render();
-  };
-
-  /**
    * Focus the cell corresponding to the given date.
-   * @param {Date=} opt_date
+   * @param {Date=} opt_date The date to be focused.
    */
   TimePaneCtrl.prototype.focus = function(opt_date, sgTimePaneCtrl) {
     var date = opt_date || this.selectedTime || this.today;
 
     var previousFocus = this.timePaneElement.querySelector('.md-focus');
     if (previousFocus) {
-      previousFocus.classList.remove(FOCUSED_TIME_CLASS);
+      previousFocus.classList.remove(this.FOCUSED_TIME_CLASS);
     }
 
     if (date) {
       var newH = date.getHours();
       var hCell = document.getElementById('tp-'+sgTimePaneCtrl.id+'-hour-'+newH);
       if (hCell) {
-        hCell.classList.add(FOCUSED_TIME_CLASS);
+        hCell.classList.add(this.FOCUSED_TIME_CLASS);
         hCell.focus();
       }
     }
@@ -338,7 +389,11 @@
 
 (function() {
   'use strict';
-  
+
+  /**
+   * This section is inspired from angular-material/src/components/datepicker/js/datepickerDirective.js
+   */
+
   angular.module('SOGo.Common')
     .directive('sgTimepicker', timePickerDirective);
 
@@ -349,7 +404,9 @@
    *
    * @param {Date} ng-model The component's model. Expects a JavaScript Date object.
    * @param {expression=} ng-change Expression evaluated when the model value changes.
-   * @param {boolean=} disabled Whether the timepicker is disabled.
+   * @param {String=} md-placeholder The time input placeholder value.
+   * @param {boolean=} ng-disabled Whether the timepicker is disabled.
+   * @param {boolean=} ng-required Whether a value is required for the timepicker.
    *
    * @description
    * `<sg-timepicker>` is a component used to select a single time.
@@ -362,41 +419,51 @@
    * </hljs>
    *
    */
-  function timePickerDirective() {
+
+  timePickerDirective.$inject = ['$mdUtil', '$mdAria'];
+  function timePickerDirective($mdUtil, $mdAria) {
     return {
-      template: [
+      template: function(tElement, tAttrs) {
         // Buttons are not in the tab order because users can open the hours pane via keyboard
         // interaction on the text input, and multiple tab stops for one component (picker)
         // may be confusing.
-        '<md-button class="sg-timepicker-button md-icon-button" type="button" ',
-        '           tabindex="-1" aria-hidden="true" ',
-        '           ng-click="ctrl.openTimePane($event)">',
-        '  <md-icon class="sg-timepicker-icon">access_time</md-icon>',
-        '</md-button>',
-        '<div class="md-default-theme sg-timepicker-input-container" ',
-        '     ng-class="{\'sg-timepicker-focused\': ctrl.isFocused}">',
-        '  <input class="sg-timepicker-input" aria-haspopup="true" ',
-        '         ng-focus="ctrl.setFocused(true)" ng-blur="ctrl.setFocused(false)">',
-        '  <md-button type="button" md-no-ink ',
-        '             class="sg-timepicker-triangle-button md-icon-button" ',
-        '             ng-click="ctrl.openTimePane($event)" ',
-        '             aria-label="{{::ctrl.dateLocale.msgOpenCalendar}}">',
-        '    <div class="sg-timepicker-expand-triangle"></div>',
-        '  </md-button>',
-        '</div>',
-        // This pane will be detached from here and re-attached to the document body.
-        '<div class="sg-timepicker-time-pane md-whiteframe-z1">',
-        '  <div class="sg-timepicker-input-mask">',
-        '    <div class="sg-timepicker-input-mask-opaque"',
-        '                md-colors="::{background: \'default-background-hue-1\'}"></div>', // using mdColors
-        '  </div>',
-        '  <div class="sg-timepicker-time" md-colors="::{background: \'default-background-A100\'}">',
-        '    <sg-time-pane role="dialog" aria-label="{{::ctrl.dateLocale.msgCalendar}}" ',
-        '                  ng-model="ctrl.time" ng-if="ctrl.isTimeOpen"></sg-time-pane>',
-        '  </div>',
-        '</div>'
-      ].join(''),
-      require: ['ngModel', 'sgTimepicker'],
+        var ariaLabelValue = tAttrs.ariaLabel || tAttrs.mdPlaceholder;
+
+        return [
+          '<md-button class="sg-timepicker-button md-icon-button" type="button" ',
+          '           tabindex="-1" aria-hidden="true" ',
+          '           ng-click="ctrl.openTimePane($event)">',
+          '  <md-icon class="sg-timepicker-icon">access_time</md-icon>',
+          '</md-button>',
+          '<div class="md-default-theme sg-timepicker-input-container" ',
+          '     ng-class="{\'sg-timepicker-focused\': ctrl.isFocused}">',
+          '  <input class="sg-timepicker-input" ',
+          (ariaLabelValue ? 'aria-label="' + ariaLabelValue + '" ' : ''),
+          '         aria-haspopup="true"',
+          '         aria-expanded="{{ctrl.isTimeOpen}}" ',
+          '         aria-owns="{{::ctrl.timePaneId}}"',
+          '         ng-focus="ctrl.setFocused(true)" ng-blur="ctrl.setFocused(false)">',
+          '  <md-button type="button" md-no-ink ',
+          '             class="sg-timepicker-triangle-button md-icon-button" ',
+          '             ng-click="ctrl.openTimePane($event)" ',
+          '             aria-label="{{::ctrl.dateLocale.msgOpenCalendar}}">',
+          '    <div class="sg-timepicker-expand-triangle"></div>',
+          '  </md-button>',
+          '</div>',
+          // This pane will be detached from here and re-attached to the document body.
+          '<div class="sg-timepicker-time-pane md-whiteframe-z1" id="{{::ctrl.timePaneId}}">',
+          '  <div class="sg-timepicker-input-mask">',
+          '    <div class="sg-timepicker-input-mask-opaque"></div>',
+          // '                md-colors="::{\'box-shadow\': \'default-background-hue-1\'}"></div>', // using mdColors
+          '  </div>',
+          '  <div class="sg-timepicker-time" md-colors="::{background: \'default-background-A100\'}">',
+          '    <sg-time-pane role="dialog" aria-label="{{::ctrl.dateLocale.msgCalendar}}" ',
+          '                  ng-model="ctrl.time" ng-if="ctrl.isTimeOpen"></sg-time-pane>',
+          '  </div>',
+          '</div>'
+        ].join('');
+      },
+      require: ['ngModel', 'sgTimepicker', '?^form'],
       scope: {
         placeholder: '@mdPlaceholder'
       },
@@ -406,8 +473,23 @@
       link: function(scope, element, attr, controllers) {
         var ngModelCtrl = controllers[0];
         var mdTimePickerCtrl = controllers[1];
+        var parentForm = controllers[2];
+        var mdNoAsterisk = $mdUtil.parseAttributeBoolean(attr.mdNoAsterisk);
 
         mdTimePickerCtrl.configureNgModel(ngModelCtrl);
+
+        // TODO: shall we check ^mdInputContainer?
+        if (parentForm) {
+          // If invalid, highlights the input when the parent form is submitted.
+          var parentSubmittedWatcher = scope.$watch(function() {
+            return parentForm.$submitted;
+          }, function(isSubmitted) {
+            if (isSubmitted) {
+              mdTimePickerCtrl.updateErrorState();
+              parentSubmittedWatcher();
+            }
+          });
+        }
       }
     };
   }
@@ -417,6 +499,9 @@
 
   /** Class applied to the container if the date is invalid. */
   var INVALID_CLASS = 'sg-timepicker-invalid';
+
+  /** Class applied to the timepicker when it's open. */
+  var OPEN_CLASS = 'sg-timepicker-open';
 
   /** Default time in ms to debounce input event by. */
   var DEFAULT_DEBOUNCE_INTERVAL = 500;
@@ -442,21 +527,20 @@
    */
   var TIME_PANE_WIDTH = { GTXS: 510 + 20, XS: 274 + 20 };
 
+  /** Used for checking whether the current user agent is on iOS or Android. */
+  var IS_MOBILE_REGEX = /ipad|iphone|ipod|android/i;
+
   /**
    * Controller for sg-timepicker.
    *
    * ngInject @constructor
    */
-  TimePickerCtrl.$inject = ["$scope", "$element", "$attrs", "$compile", "$timeout", "$window",
-                            "$mdConstant", "$mdMedia", "$mdTheming", "$mdUtil", "$mdDateLocale", "$$mdDateUtil", "$$rAF"];
-  function TimePickerCtrl($scope, $element, $attrs, $compile, $timeout, $window,
-                          $mdConstant, $mdMedia, $mdTheming, $mdUtil, $mdDateLocale, $$mdDateUtil, $$rAF) {
-    /** @final */
-    this.$compile = $compile;
-
-    /** @final */
-    this.$timeout = $timeout;
-
+  TimePickerCtrl.$inject = ['$scope', '$element', '$attrs', '$window', '$mdConstant',
+                            '$mdTheming', '$mdUtil', '$mdDateLocale', '$$mdDateUtil', '$$rAF',
+                            '$mdMedia'];
+  function TimePickerCtrl($scope, $element, $attrs, $window, $mdConstant,
+                          $mdTheming, $mdUtil, $mdDateLocale, $$mdDateUtil, $$rAF,
+                          $mdMedia) {
     /** @final */
     this.$window = $window;
 
@@ -469,14 +553,23 @@
     /** @final */
     this.$mdConstant = $mdConstant;
 
-    /** @final */
-    this.$mdMedia = $mdMedia;
-
     /* @final */
     this.$mdUtil = $mdUtil;
 
     /** @final */
     this.$$rAF = $$rAF;
+
+    /** @final */
+    this.$mdMedia = $mdMedia;
+
+    /**
+     * The root document element. This is used for attaching a top-level click handler to
+     * close the calendar panel when a click outside said panel occurs. We use `documentElement`
+     * instead of body because, when scrolling is disabled, some browsers consider the body element
+     * to be completely off the screen and propagate events directly to the html element.
+     * @type {!angular.JQLite}
+     */
+    this.documentElement = angular.element(document.documentElement);
 
     /** @type {!angular.NgModelController} */
     this.ngModelCtrl = null;
@@ -484,11 +577,11 @@
     /** @type {HTMLInputElement} */
     this.inputElement = $element[0].querySelector('input');
 
-    /** @type {HTMLElement} */
-    this.inputContainer = $element[0].querySelector('.sg-timepicker-input-container');
-
     /** @final {!angular.JQLite} */
     this.ngInputElement = angular.element(this.inputElement);
+
+    /** @type {HTMLElement} */
+    this.inputContainer = $element[0].querySelector('.sg-timepicker-input-container');
 
     /** @type {HTMLElement} Floating time pane. */
     this.timePane = $element[0].querySelector('.sg-timepicker-time-pane');
@@ -500,7 +593,7 @@
      * Element covering everything but the input in the top of the floating calendar pane.
      * @type {HTMLElement}
      */
-    this.inputMask = $element[0].querySelector('.sg-timepicker-input-mask-opaque');
+    this.inputMask = angular.element($element[0].querySelector('.sg-timepicker-input-mask-opaque'));
 
     /** @final {!angular.JQLite} */
     this.$element = $element;
@@ -524,6 +617,12 @@
     /** @type {boolean} Whether the date-picker's calendar pane is open. */
     this.isTimeOpen = false;
 
+    /** @type {boolean} Whether the calendar should open when the input is focused. */
+    // this.openOnFocus = $attrs.hasOwnProperty('mdOpenOnFocus');
+
+    /** @final */
+    // this.mdInputContainer = null;
+
     /**
      * Element from which the calendar pane was opened. Keep track of this so that we can return
      * focus to it when the pane is closed.
@@ -531,28 +630,52 @@
      */
     this.timePaneOpenedFrom = null;
 
-    this.timePane.id = 'sg-time-pane' + $mdUtil.nextUid();
-
-    $mdTheming($element);
+    /** @type {String} Unique id for the time pane. */
+    this.timePaneId = 'sg-time-pane' + $mdUtil.nextUid();
 
     /** Pre-bound click handler is saved so that the event listener can be removed. */
     this.bodyClickHandler = angular.bind(this, this.handleBodyClick);
 
-    /** Pre-bound resize handler so that the event listener can be removed. */
-    this.windowResizeHandler = $mdUtil.debounce(angular.bind(this, this.closeTimePane), 100);
+    /**
+     * Name of the event that will trigger a close. Necessary to sniff the browser, because
+     * the resize event doesn't make sense on mobile and can have a negative impact since it
+     * triggers whenever the browser zooms in on a focused input.
+     */
+    this.windowEventName = IS_MOBILE_REGEX.test(
+      navigator.userAgent || navigator.vendor || window.opera
+    ) ? 'orientationchange' : 'resize';
 
-    // Unless the user specifies so, the datepicker should not be a tab stop.
+    /** Pre-bound close handler so that the event listener can be removed. */
+    this.windowEventHandler = $mdUtil.debounce(angular.bind(this, this.closeTimePane), 100);
+
+    /** Pre-bound handler for the window blur event. Allows for it to be removed later. */
+    this.windowBlurHandler = angular.bind(this, this.handleWindowBlur);
+
+    /** @type {Number} Extra margin for the left side of the floating calendar pane. */
+    this.leftMargin = 20;
+
+    /** @type {Number} Extra margin for the top of the floating calendar. Gets determined on the first open. */
+    this.topMargin = null;
+
+    // Unless the user specifies so, the timepicker should not be a tab stop.
     // This is necessary because ngAria might add a tabindex to anything with an ng-model
     // (based on whether or not the user has turned that particular feature on/off).
-    if (!$attrs.tabindex) {
-      $element.attr('tabindex', '-1');
+    if ($attrs.tabindex) {
+      this.ngInputElement.attr('tabindex', $attrs.tabindex);
+      $attrs.$set('tabindex', null);
+    } else {
+      $attrs.$set('tabindex', '-1');
     }
+
+    $mdTheming($element);
+    $mdTheming(angular.element(this.timePane));
 
     this.installPropertyInterceptors();
     this.attachChangeListeners();
     this.attachInteractionListeners();
 
     var self = this;
+
     $scope.$on('$destroy', function() {
       self.detachTimePane();
     });
@@ -560,15 +683,15 @@
 
   /**
    * Sets up the controller's reference to ngModelController.
-   * @param {!angular.NgModelController} ngModelCtrl
+   * @param {!angular.NgModelController} ngModelCtrl Instance of the ngModel controller.
    */
   TimePickerCtrl.prototype.configureNgModel = function(ngModelCtrl) {
     this.ngModelCtrl = ngModelCtrl;
 
     var self = this;
-    ngModelCtrl.$render = function() {
-      var value = self.ngModelCtrl.$viewValue;
 
+    // Responds to external changes to the model value.
+    self.ngModelCtrl.$formatters.push(function(value) {
       if (value && !(value instanceof Date)) {
         throw Error('The ng-model for sg-timepicker must be a Date instance. ' +
                     'Currently the model is a: ' + (typeof value));
@@ -578,7 +701,12 @@
       self.inputElement.value = self.dateLocale.formatTime(value);
       self.resizeInputElement();
       self.updateErrorState();
-    };
+
+      return value;
+    });
+
+    // Responds to external error state changes (e.g. ng-required based on another input).
+    ngModelCtrl.$viewChangeListeners.unshift(angular.bind(this, this.updateErrorState));
   };
 
   /**
@@ -602,8 +730,11 @@
     });
 
     self.ngInputElement.on('input', angular.bind(self, self.resizeInputElement));
+
+    var debounceInterval = angular.isDefined(this.debounceInterval) ?
+        this.debounceInterval : DEFAULT_DEBOUNCE_INTERVAL;
     self.ngInputElement.on('input', self.$mdUtil.debounce(self.handleInputEvent,
-                                                DEFAULT_DEBOUNCE_INTERVAL, self));
+                                                          debounceInterval, self));
   };
 
   /** Attach event listeners for user interaction. */
@@ -636,6 +767,7 @@
       // The expression is to be evaluated against the directive element's scope and not
       // the directive's isolate scope.
       var scope = this.$scope.$parent;
+
       if (scope) {
         scope.$watch(this.$attrs.ngDisabled, function(isDisabled) {
           self.setDisabled(isDisabled);
@@ -656,7 +788,10 @@
   TimePickerCtrl.prototype.setDisabled = function(isDisabled) {
     this.isDisabled = isDisabled;
     this.inputElement.disabled = isDisabled;
-    this.timeButton.disabled = isDisabled;
+
+    if (this.timeButton) {
+      this.timeButton.disabled = isDisabled;
+    }
   };
 
   /**
@@ -732,30 +867,50 @@
   /** Position and attach the floating calendar to the document. */
   TimePickerCtrl.prototype.attachTimePane = function() {
     var timePane = this.timePane;
-    this.$element.addClass('sg-timepicker-open');
+    var body = document.body;
+
+    timePane.style.transform = '';
+    this.$element.addClass(OPEN_CLASS);
+    // this.mdInputContainer && this.mdInputContainer.element.addClass(OPEN_CLASS);
+    angular.element(body).addClass('md-datepicker-is-showing');
 
     var elementRect = this.inputContainer.getBoundingClientRect();
-    var bodyRect = document.body.getBoundingClientRect();
+    var bodyRect = body.getBoundingClientRect();
+
+    if (!this.topMargin || this.topMargin < 0) {
+      this.topMargin = (this.inputMask.parent().prop('clientHeight') - this.ngInputElement.prop('clientHeight')) / 2;
+    }
 
     // Check to see if the calendar pane would go off the screen. If so, adjust position
     // accordingly to keep it within the viewport.
-    var paneTop = elementRect.top - bodyRect.top;
-    var paneLeft = elementRect.left - bodyRect.left;
+    var paneTop = elementRect.top - bodyRect.top - this.topMargin;
+    var paneLeft = elementRect.left - bodyRect.left - this.leftMargin;
 
     // If ng-material has disabled body scrolling (for example, if a dialog is open),
     // then it's possible that the already-scrolled body has a negative top/left. In this case,
     // we want to treat the "real" top as (0 - bodyRect.top). In a normal scrolling situation,
     // though, the top of the viewport should just be the body's scroll position.
-    var viewportTop = (bodyRect.top < 0 && document.body.scrollTop === 0) ?
+    var viewportTop = (bodyRect.top < 0 && body.scrollTop === 0) ?
         -bodyRect.top :
         document.body.scrollTop;
 
-    var viewportLeft = (bodyRect.left < 0 && document.body.scrollLeft === 0) ?
+    var viewportLeft = (bodyRect.left < 0 && body.scrollLeft === 0) ?
         -bodyRect.left :
         document.body.scrollLeft;
 
     var viewportBottom = viewportTop + this.$window.innerHeight;
     var viewportRight = viewportLeft + this.$window.innerWidth;
+
+    // Creates an overlay with a hole the same size as element. We remove a pixel or two
+    // on each end to make it overlap slightly. The overlay's background is added in
+    // the theme in the form of a box-shadow with a huge spread.
+    this.inputMask.css({
+      position: 'absolute',
+      left: this.leftMargin + 'px',
+      top: this.topMargin + 'px',
+      width: (elementRect.width - 1) + 'px',
+      height: (elementRect.height - 2) + 'px'
+    });
 
     // If the right edge of the pane would be off the screen and shifting it left by the
     // difference would not go past the left edge of the screen. If the time pane is too
@@ -770,6 +925,7 @@
         var scale = this.$window.innerWidth / paneWidth;
         timePane.style.transform = 'scale(' + scale + ')';
       }
+
       timePane.classList.add('sg-timepicker-pos-adjusted');
     }
 
@@ -787,12 +943,6 @@
     timePane.style.top = paneTop + 'px';
     document.body.appendChild(timePane);
 
-    // The top of the calendar pane is a transparent box that shows the text input underneath.
-    // Since the pane is floating, though, the page underneath the pane *adjacent* to the input is
-    // also shown unless we cover it up. The inputMask does this by filling up the remaining space
-    // based on the width of the input.
-    this.inputMask.style.left = elementRect.width + 'px';
-
     // Add CSS class after one frame to trigger open animation.
     this.$$rAF(function() {
       timePane.classList.add('md-pane-open');
@@ -801,7 +951,9 @@
 
   /** Detach the floating time pane from the document. */
   TimePickerCtrl.prototype.detachTimePane = function() {
-    this.$element.removeClass('sg-timepicker-open');
+    this.$element.removeClass(OPEN_CLASS);
+    //this.mdInputContainer && this.mdInputContainer.element.removeClass(OPEN_CLASS);
+    angular.element(document.body).removeClass('md-datepicker-is-showing');
     this.timePane.classList.remove('md-pane-open');
     this.timePane.classList.remove('md-timepicker-pos-adjusted');
 
@@ -824,8 +976,6 @@
     if (!this.isTimeOpen && !this.isDisabled) {
       this.isTimeOpen = true;
       this.timePaneOpenedFrom = event.target;
-      this.attachTimePane();
-      //this.focusTime();
 
       // Because the time pane is attached directly to the body, it is possible that the
       // rest of the component (input, etc) is in a different scrolling container, such as
@@ -834,29 +984,40 @@
       // also matches the native behavior for things like `<select>` on Mac and Windows.
       this.$mdUtil.disableScrollAround(this.timePane);
 
+      this.attachTimePane();
+      //this.focusTime();
+      this.evalAttr('ngFocus');
+
       // Attach click listener inside of a timeout because, if this open call was triggered by a
       // click, we don't want it to be immediately propogated up to the body and handled.
       var self = this;
       this.$mdUtil.nextTick(function() {
-        document.body.addEventListener('click', self.bodyClickHandler);
+        // Use 'touchstart` in addition to click in order to work on iOS Safari, where click
+        // events aren't propogated under most circumstances.
+        // See http://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
+        self.documentElement.on('click touchstart', self.bodyClickHandler);
       }, false);
 
-      window.addEventListener('resize', this.windowResizeHandler);
+      window.addEventListener(this.windowEventName, this.windowEventHandler);
     }
   };
 
   /** Close the floating time pane. */
   TimePickerCtrl.prototype.closeTimePane = function() {
     if (this.isTimeOpen) {
-      this.detachTimePane();
-      this.isTimeOpen = false;
-      this.timePaneOpenedFrom.focus();
-      this.timePaneOpenedFrom = null;
+      var self = this;
 
-      this.ngModelCtrl.$setTouched();
+      self.detachTimePane();
+      self.ngModelCtrl.$setTouched();
+      self.evalAttr('ngBlur');
 
-      document.body.removeEventListener('click', this.bodyClickHandler);
-      window.removeEventListener('resize', this.windowResizeHandler);
+      self.documentElement.off('click touchstart', self.bodyClickHandler);
+      window.removeEventListener(self.windowEventName, self.windowEventHandler);
+
+      self.timePaneOpenedFrom.focus();
+      self.timePaneOpenedFrom = null;
+
+      self.isTimeOpen = false;
     }
   };
 
@@ -883,6 +1044,9 @@
     if (!isFocused) {
       this.ngModelCtrl.$setTouched();
     }
+
+    this.evalAttr(isFocused ? 'ngFocus' : 'ngBlur');
+
     this.isFocused = isFocused;
   };
 
@@ -893,13 +1057,32 @@
    */
   TimePickerCtrl.prototype.handleBodyClick = function(event) {
     if (this.isTimeOpen) {
-      // TODO(jelbourn): way want to also include the md-datepicker itself in this check.
       var isInTime = this.$mdUtil.getClosest(event.target, 'sg-time-pane');
+
       if (!isInTime) {
         this.closeTimePane();
       }
 
       this.$scope.$digest();
+    }
+  };
+
+  /**
+   * Handles the event when the user navigates away from the current tab. Keeps track of
+   * whether the input was focused when the event happened, in order to prevent the time pane
+   * from re-opening.
+   */
+  TimePickerCtrl.prototype.handleWindowBlur = function() {
+    this.inputFocusedOnWindowBlur = document.activeElement === this.inputElement;
+  };
+
+  /**
+   * Evaluates an attribute expression against the parent scope.
+   * @param {String} attr Name of the attribute to be evaluated.
+   */
+  TimePickerCtrl.prototype.evalAttr = function(attr) {
+    if (this.$attrs[attr]) {
+      this.$scope.$parent.$eval(this.$attrs[attr]);
     }
   };
 })();

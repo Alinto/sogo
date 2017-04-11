@@ -244,6 +244,11 @@
           pageName    = "UIxMailView";
           actionName = "sendMDN";
         };
+        archiveAttachments = {
+          protectedBy = "View";
+          pageName    = "UIxMailView";
+          actionName = "archiveAttachments";
+        };
         viewsource = {
           protectedBy = "View";
           actionClass = "UIxMailSourceView";
@@ -399,6 +404,15 @@
           protectedBy = "View";
           actionClass = "UIxMailAccountActions";
           actionName = "listMailboxes";
+        };
+        viewAll = {
+          protectedBy = "View";
+          actionClass = "UIxMailAccountActions";
+          actionName = "listAllMailboxes";
+        };
+        subscribe = {
+          protectedBy = "Access Contents Information";
+          pageName    = "UIxMailFolderSubscriptions";
         };
         createFolder = {
           protectedBy = "View";

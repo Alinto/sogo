@@ -43,8 +43,8 @@
         '       ng-click="clickBlock({clickEvent: $event, clickComponent: block.component})">',
         //   Categories color stripes
         '    <div class="sg-category" ng-repeat="category in '+p+'block.component.categories"',
-        '         ng-class="\'bg-category\' + category"',
-        '         ng-style="{ right: ($index * 3) + \'px\' }"></div>',
+        '         ng-class="'+p+'(\'bg-category\' + category)"',
+        '         ng-style="'+p+'{ right: ($index * 3) + \'px\' }"></div>',
         '    <div class="text">',
         //     Priority
         '      <span ng-show="'+p+'block.component.c_priority" class="sg-priority">{{'+p+'block.component.c_priority}}</span>',

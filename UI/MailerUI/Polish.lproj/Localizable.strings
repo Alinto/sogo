@@ -53,7 +53,13 @@
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Witaj w programie SOGo Mailer. Używaj drzewa folderów po lewej stronie by przeglądać swoje konta pocztowe!";
 "Read messages"       = "Wiadomości przeczytane";
+
+/* Tooltip for fab button */
 "Write a new message" = "Napisz nową wiadomość";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Utwórz wiadomość w nowym oknie";
+
 "Share" = "Udostępnianie";
 "Account" = "Konto";
 "Shared Account" = "Udostępnione konto";
@@ -217,6 +223,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Zamień na zadanie";
 
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Pobierz wszystkie załączniki";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "załączniki";
+
 "Print..." = "Drukuj...";
 "Delete Message" = "Usuń wiadomość";
 "Delete Selected Messages" = "Usuń zaznaczone wiadomości";
@@ -267,9 +279,20 @@
 "Operation failed" = "Operacja nie powiodła się";
 "Quota" = "Limit:";
 "quotasFormat" = "użyte %{0}% z %{1} MB";
+"Unable to move/delete folder." = "Nie można przenieść/usunąć folderu.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Folder nie może zostać przeniesiony do kosza. Czy chcesz go teraz skasować?";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Czy na pewno chcesz usunąć wskazane wiadomości?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "Skopiowano %{0} wiadomości";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "Przeniesiono %{0} wiadomości";
 
 "Please select a message." = "Zaznacz wiadomość.";
 "Please select a message to print." = "Zaznacz wiadomość do drukowania.";
@@ -304,8 +327,14 @@
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Błąd w trakcie wysyłania pliku \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Trwa przesyłanie pliku. Zamknięcie okna przerwie tą transmisję.";
+"Message is too big" = "Wiadomość jest zbyt duża";
 
-/* Message sending */
+/* Appears while sending the message */
+"Sending" = "Wysyłanie";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Wysłano";
+
 "cannot send message: (smtp) all recipients discarded" = "Nie można wysłać wiadomości - wszyscy odbiorcy zostali odrzuceni.";
 "cannot send message (smtp) - recipients discarded" = "Nie można wysłać wiadomości - poniżsi odbiorcy zostali odrzuceni";
 "cannot send message: (smtp) error when connecting" = "Nie można wysłać wiadomości - błąd połączenia z serwerem SMTP";
@@ -332,11 +361,13 @@
 "Set as Junk" = "Oznacz jako spam";
 
 "Sort" = "Sortuj";
+"Order Received" = "Odebrano polecenie";
 "Descending Order" = "Kolejność malejąca";
 "Back" = "Wstecz";
 "Copy messages" = "Kopiuj wiadomości";
 "More messages options" = "Więcej opcji wiadomości";
 "Mark as Unread" = "Oznacz jako nie przeczytany";
+"Mark as Read" = "Oznacz jako przeczytane";
 "Closing Window ..." = "Zamykanie okna";
 "Tried to send too many mails. Please wait." = "Próbowano wysłać zbyt wiele e-maili. Proszę czekać.";
 "View Mail" = "Pokaż e-mail";
@@ -350,3 +381,27 @@
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Zakres wyszukiwania";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Zarządzaj subskrypcjami";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filtr";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

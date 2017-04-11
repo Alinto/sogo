@@ -5,7 +5,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
   <md-dialog flex="60" flex-sm="80" flex-xs="100">
-    <form name="eventForm" ng-submit="editor.save(eventForm)">
+    <form name="eventForm" class="md-inline-form" ng-submit="editor.save(eventForm)">
       <md-toolbar ng-class="editor.component.getClassName('bg')">
         <div class="md-toolbar-tools">
           <md-icon class="material-icons sg-icon-toolbar-bg">event</md-icon>
@@ -63,12 +63,13 @@
           </md-chips>
           <div layout="row" layout-align="space-between center" layout-wrap="layout-wrap">
             <!-- classification -->
-            <md-radio-group layout="row"
+            <md-radio-group class="sg-padded--top"
+                            layout="row"
                             ng-model="editor.component.classification">
-              <md-radio-button value="public">
+              <md-radio-button class="sg-padded--right" value="public">
                 <var:string label:value="label_Public"/>
               </md-radio-button>
-              <md-radio-button value="confidential">
+              <md-radio-button class="sg-padded--right" value="confidential">
                 <var:string label:value="label_Confidential"/>
               </md-radio-button>
               <md-radio-button value="private">
@@ -91,7 +92,6 @@
             </div>
           </div>
           <!-- send appointment notifications -->
-          <md-input-container>
           <md-checkbox
               ng-model="editor.component.sendAppointmentNotifications"
               ng-true-value="1"
@@ -99,10 +99,12 @@
               label:aria-label="Send Appointment Notifications">
             <var:string label:value="Send Appointment Notifications"/>
           </md-checkbox>
-          </md-input-container>
           <!-- attach urls -->
-          <div class="attr" ng-repeat="attach in editor.component.attachUrls">
+          <div ng-repeat="attach in editor.component.attachUrls">
             <div layout="row" layout-align="start center">
+              <md-button class="md-icon-button" type="button" ng-click="editor.component.deleteAttachUrl($index)">
+                <md-icon>remove_circle</md-icon>
+              </md-button>
               <md-input-container class="md-block md-flex">
                 <label>
                   <var:string label:value="URL"/>
@@ -110,9 +112,6 @@
                 <input type="url" ng-model="attach.value"
                        sg-focus-on="attachUrl_{{$index}}"/>
               </md-input-container>
-              <md-button class="md-icon-button" type="button" ng-click="editor.component.deleteAttachUrl($index)">
-                <md-icon>remove_circle</md-icon>
-              </md-button>
             </div>
           </div>
           <div layout="row" layout-align="start center">
@@ -150,9 +149,9 @@
               <div class="pseudo-input-container">
                 <label class="pseudo-input-label"><var:string label:value="From"/></label>
               </div>
-              <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
+              <div layout="row" layout-align="start end" layout-wrap="layout-wrap">
                 <md-datepicker ng-model="editor.component.start"
-                               ng-change="editor.updateStartTime()"
+                               ng-change="editor.adjustStartTime()"
                                label:md-placeholder="From"><!-- date picker --></md-datepicker>
                 <sg-timepicker ng-model="editor.component.start"
                                ng-change="editor.adjustStartTime()"
@@ -163,9 +162,9 @@
               <div class="pseudo-input-container">
                 <label class="pseudo-input-label"><var:string label:value="To"/></label>
               </div>
-              <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
+              <div layout="row" layout-align="start end" layout-wrap="layout-wrap">
                 <md-datepicker ng-model="editor.component.end"
-                               ng-change="editor.updateEndTime()"
+                               ng-change="editor.adjustEndTime()"
                                label:md-placeholder="To"><!-- date picker --></md-datepicker>
                 <sg-timepicker ng-model="editor.component.end"
                                ng-change="editor.adjustEndTime()"
@@ -193,13 +192,14 @@
               <md-icon ng-class="{'md-rotate-45': editor.showRecurrenceEditor}">add</md-icon>
             </md-button>
           </div>
-          <div ng-show="editor.showRecurrenceEditor" flex-offset="5">
+          <div flex-offset="5"
+               ng-show="editor.showRecurrenceEditor">
             <var:component className="UIxRecurrenceEditor" />
           </div>
           <!-- end repeat -->
-          <div layout="row">
-            <md-input-container class="md-block" flex="50" flex-xs="100"
-                                ng-show="editor.component.repeat.frequency != 'never'">
+          <div layout="row"
+               ng-show="editor.component.repeat.frequency != 'never'">
+            <md-input-container class="md-block" flex="50" flex-xs="100">
               <label><var:string label:value="End Repeat"/></label>
               <md-select ng-model="editor.component.repeat.end"
                          ng-disabled="editor.component.occurrenceId">
@@ -213,26 +213,32 @@
               <label><var:string label:value="times"/></label>
               <input type="number" label:aria-label="times" ng-model="editor.component.repeat.count"/>
             </md-input-container>
-            <md-datepicker ng-show="editor.component.repeat.end == 'until'"
-                           ng-model="editor.component.repeat.until"
-                           label:md-placeholder="On Date"><!-- date picker --></md-datepicker>
+            <md-input-container ng-show="editor.component.repeat.end == 'until'">
+              <md-datepicker name="repeat_until"
+                             ng-model="editor.component.repeat.until"
+                             md-min-date="editor.component.end"
+                             label:md-placeholder="On Date"><!-- date picker --></md-datepicker>
+              <div ng-messages="eventForm.repeat_until.$error">
+                <div ng-message="mindate"><var:string label:value="validate_untilbeforeend"/></div>
+              </div>
+            </md-input-container>
           </div>
         </div>
         <!-- attendees -->
         <div class="sg-form-section">
           <div layout="row" layout-align="start center">
             <md-icon>search</md-icon>
-            <md-autocomplete class="md-flex"
-                             label:md-floating-label="Invite Attendees"
-                             md-selected-item="attendeeToAdd"
-                             md-search-text="editor.searchText"
-                             md-selected-item-change="editor.addAttendee(card)"
-                             md-items="card in editor.cardFilter(editor.searchText)"
-                             md-item-text="card.empty"
-                             var:md-min-length="minimumSearchLength"
-                             md-delay="300"
-                             md-no-cache="true"
-                             sg-enter="editor.addAttendee(editor.searchText)">
+            <md-autocomplete
+                class="md-flex"
+                label:md-floating-label="Invite Attendees"
+                md-search-text="editor.searchText"
+                md-selected-item-change="editor.addAttendee(card)"
+                md-items="card in editor.cardFilter(editor.searchText)"
+                md-item-text="card.empty"
+                var:md-min-length="minimumSearchLength"
+                md-delay="300"
+                md-no-cache="true"
+                sg-enter="editor.addAttendee(editor.searchText)">
               <md-item-template>
                 <div class="md-contact-suggestion">
                   <span class="md-contact-name"
@@ -260,13 +266,13 @@
                       readonly="true">
               <md-chip-template>
                 <div class="md-contact-avatar">
-                  <sg-avatar-image sg-email="$chip.email" size="32"><!-- avatar --></sg-avatar-image>
+                  <sg-avatar-image sg-email="$chip.email" size="32">person</sg-avatar-image>
                 </div>
                 <div class="md-contact-name">{{$chip.name || $chip.email}}</div>
                 <md-icon ng-class="'icon-' + $chip.partstat"><!-- partstat --></md-icon>
                 <md-icon class="sg-chip-remove"
                          label:aria-label="Delete"
-                         ng-click="editor.removeAttendee($chip)">close</md-icon>
+                         ng-click="editor.removeAttendee($chip, eventForm)">close</md-icon>
               </md-chip-template>
             </md-chips>
             <div class="ng-hide attendees" ng-show="editor.showAttendeesEditor">
@@ -288,14 +294,16 @@
       </md-dialog-content>
       <!-- cancel/reset/save -->
       <md-dialog-actions ng-hide="editor.attendeeConflictError">
-        <md-button type="button" ng-click="editor.cancel()">
+        <md-button type="button" ng-click="editor.cancel(eventForm)">
           <var:string label:value="Cancel"/>
         </md-button>
-        <md-button type="button" ng-click="editor.component.$reset()">
+        <md-button type="button"
+                   ng-disabled="eventForm.$pristine"
+                   ng-click="editor.reset(eventForm)">
           <var:string label:value="Reset"/>
         </md-button>
         <md-button class="md-primary" type="submit"
-                   ng-disabled="editor.eventForm.$invalid">
+                   ng-disabled="eventForm.$invalid || eventForm.$submitted">
           <var:string label:value="Save"/>
         </md-button>
       </md-dialog-actions>
@@ -303,9 +311,9 @@
       <!-- attendee availability conflict -->
       <md-dialog-content class="md-default-theme md-bg md-warn md-padding sg-dialog-message ng-hide"
                          ng-show="editor.attendeeConflictError.conflicts">
-        <div layout="row">
-          <div class="md-flex sg-padded--bottom"><var:string label:value="A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"/></div>
-          <md-button class="md-icon-button" ng-click="editor.attendeeConflictError = false">
+        <div layout="row" layout-align="space-between start" layout-fill="layout-fill">
+          <div class="sg-padded--bottom" ng-bind-html="::'A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?' | loc | ln2br "><!-- warning --></div>
+          <md-button class="md-icon-button" ng-click="editor.edit(eventForm)">
             <md-icon label:aria-label="Close">close</md-icon>
           </md-button>
         </div>
@@ -327,11 +335,11 @@
         </div>
       </md-dialog-content>
       <md-dialog-actions ng-show="editor.attendeeConflictError.conflicts">
-        <md-button type="button" ng-click="editor.cancel()">
+        <md-button type="button" ng-click="editor.cancel(eventForm)">
           <var:string label:value="Cancel"/>
         </md-button>
         <md-button type="button"
-                   ng-click="editor.attendeeConflictError = false">
+                   ng-click="editor.edit(eventForm)">
           <var:string label:value="Edit"/>
         </md-button>
         <md-button class="md-warn" type="button"
@@ -345,16 +353,16 @@
       <md-dialog-content class="md-default-theme md-bg md-warn md-padding sg-dialog-message ng-hide" layout="row"
                          ng-show="editor.attendeeConflictError.reject">
         <div class="md-flex">{{editor.attendeeConflictError.reject}}</div>
-        <md-button class="md-icon-button" ng-click="editor.attendeeConflictError = false">
+        <md-button class="md-icon-button" ng-click="editor.edit(eventForm)">
           <md-icon label:aria-label="Close">close</md-icon>
         </md-button>
       </md-dialog-content>
       <md-dialog-actions ng-show="editor.attendeeConflictError.reject">
-        <md-button type="button" ng-click="editor.cancel()">
+        <md-button type="button" ng-click="editor.cancel(eventForm)">
           <var:string label:value="Cancel"/>
         </md-button>
         <md-button type="button"
-                   ng-click="editor.attendeeConflictError = false">
+                   ng-click="editor.edit(eventForm)">
           <var:string label:value="Edit"/>
         </md-button>
       </md-dialog-actions>

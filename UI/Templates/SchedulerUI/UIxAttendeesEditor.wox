@@ -17,18 +17,18 @@
         <div class="md-tile-left"><!-- empty --></div>
       </md-list-item>
       <md-list-item ng-repeat="currentAttendee in editor.component.attendees track by currentAttendee.email">
+        <md-button class="md-icon-button"
+                   label:aria-label="Delete"
+                   ng-click="editor.removeAttendee(currentAttendee, eventForm)">
+          <md-icon>remove_circle</md-icon>
+        </md-button>
         <sg-avatar-image class="md-avatar"
                          sg-email="currentAttendee.email"
-                         size="40"><!-- avatar --></sg-avatar-image>
+                         size="40">person</sg-avatar-image>
         <div class="sg-tile-content">
           <div class="sg-md-subhead"><div>{{currentAttendee.name}}</div></div>
           <div class="sg-md-body"><div>{{currentAttendee.email}}</div></div>
         </div>
-        <md-button class="md-icon-button"
-                   label:aria-label="Delete"
-                   ng-click="editor.removeAttendee(currentAttendee)">
-          <md-icon>close</md-icon>
-        </md-button>
         <md-divider><!-- divider --></md-divider>
       </md-list-item>
     </md-list>
@@ -64,4 +64,11 @@
       </md-list-item>
     </md-list>
   </md-content>
+  <!-- freebusy caption -->
+  <div layout="row" layout-align="end center">
+    <div class="quarter"><div class="busy sg-color-chip"><!-- busy --></div></div>
+    <label class="md-caption"><var:string label:value="Busy"/></label>
+    <div class="quarter"><div class="sg-no-freebusy sg-color-sample"><!-- no fb --></div></div>
+    <label class="md-caption"><var:string label:value="No free-busy information"/></label>
+  </div>
 </container>

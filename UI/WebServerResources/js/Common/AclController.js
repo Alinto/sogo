@@ -24,6 +24,7 @@
     vm.addUser = addUser;
     vm.selectAllRights = selectAllRights;
     vm.selectUser = selectUser;
+    vm.showRights = showRights;
     vm.confirmation = { showing: false,
                         message: ''};
 
@@ -83,8 +84,13 @@
       else {
         vm.selectedUid = user.uid;
         vm.selectedUser = user;
-        vm.selectedUser.$rights();
+        if (!user.inactive)
+          vm.selectedUser.$rights();
       }
+    }
+
+    function showRights(user) {
+      return vm.selectedUid == user.uid && !user.inactive;
     }
   }
 

@@ -123,6 +123,8 @@
 
 - (NSException *) deleteContentWithName: (NSString *) _name;
 - (NSException *) deleteAllContent;
+- (NSException *) purgeDeletedRecordsBefore: (unsigned int) days;
+- (NSException *) touchContentWithName: (NSString *) _name;
 
 - (NSException *) deleteFolder;
 
@@ -143,6 +145,7 @@
 - (void) deleteAclWithSpecification: (EOFetchSpecification *) _fs;
 
 - (unsigned int) recordsCountByExcludingDeleted: (BOOL) includeDeleted;
+- (unsigned int) recordsCountDeletedBefore: (unsigned int) days;
 
 - (NSCalendarDate *) lastModificationDate;
 

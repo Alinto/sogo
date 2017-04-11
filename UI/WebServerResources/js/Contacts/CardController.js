@@ -7,9 +7,9 @@
    * Controller to view and edit a card
    * @ngInject
    */
-  CardController.$inject = ['$scope', '$timeout', '$window', '$mdDialog', 'AddressBook', 'Card', 'Dialog', 'sgFocus', '$state', '$stateParams', 'stateCard'];
-  function CardController($scope, $timeout, $window, $mdDialog, AddressBook, Card, Dialog, focus, $state, $stateParams, stateCard) {
-    var vm = this;
+  CardController.$inject = ['$scope', '$timeout', '$window', '$mdDialog', 'sgSettings', 'AddressBook', 'Card', 'Dialog', 'sgHotkeys', 'sgFocus', '$state', '$stateParams', 'stateCard'];
+  function CardController($scope, $timeout, $window, $mdDialog, sgSettings, AddressBook, Card, Dialog, sgHotkeys, focus, $state, $stateParams, stateCard) {
+    var vm = this, hotkeys = [];
 
     vm.card = stateCard;
 
@@ -21,7 +21,8 @@
     vm.categories = {};
     vm.userFilterResults = [];
     vm.transformCategory = transformCategory;
-    vm.addOrgUnit = addOrgUnit;
+    vm.removeAttribute = removeAttribute;
+    vm.addOrg = addOrg;
     vm.addBirthday = addBirthday;
     vm.addScreenName = addScreenName;
     vm.addEmail = addEmail;
@@ -37,15 +38,47 @@
     vm.toggleRawSource = toggleRawSource;
     vm.showRawSource = false;
 
+
+    _registerHotkeys(hotkeys);
+
+    $scope.$on('$destroy', function() {
+      // Deregister hotkeys
+      _.forEach(hotkeys, function(key) {
+        sgHotkeys.deregisterHotkey(key);
+      });
+    });
+
+
+    function _registerHotkeys(keys) {
+      keys.push(sgHotkeys.createHotkey({
+        key: 'backspace',
+        description: l('Delete'),
+        callback: function($event) {
+          if (vm.currentFolder.$selectedCount() === 0)
+            confirmDelete();
+          $event.preventDefault();
+        }
+      }));
+
+      // Register the hotkeys
+      _.forEach(keys, function(key) {
+        sgHotkeys.registerHotkey(key);
+      });
+    }
+
     function transformCategory(input) {
       if (angular.isString(input))
         return { value: input };
       else
         return input;
     }
-    function addOrgUnit() {
-      var i = vm.card.$addOrgUnit('');
-      focus('orgUnit_' + i);
+    function removeAttribute(form, attribute, index) {
+      vm.card.$delete(attribute, index);
+      form.$setDirty();
+    }
+    function addOrg() {
+      var i = vm.card.$addOrg({ value: '' });
+      focus('org_' + i);
     }
     function addBirthday() {
       vm.card.birthday = new Date();
@@ -70,8 +103,12 @@
       focus('address_' + i);
     }
     function userFilter($query, excludedCards) {
-      AddressBook.selectedFolder.$filter($query, {dry: true, excludeLists: true}, excludedCards);
-      return AddressBook.selectedFolder.$$cards;
+      if ($query.length < sgSettings.minimumSearchLength())
+        return [];
+
+      return AddressBook.selectedFolder.$filter($query, {dry: true, excludeLists: true}, excludedCards).then(function(cards) {
+        return cards;
+      });
     }
     function save(form) {
       if (form.$valid) {
@@ -96,8 +133,9 @@
         delete AddressBook.selectedFolder.selectedCard;
       });
     }
-    function reset() {
+    function reset(form) {
       vm.card.$reset();
+      form.$setPristine();
     }
     function cancel() {
       vm.card.$reset();
@@ -112,7 +150,9 @@
         $state.go('app.addressbook.card.view', { cardId: vm.card.id });
       }
     }
-    function confirmDelete(card) {
+    function confirmDelete() {
+      var card = stateCard;
+
       Dialog.confirm(l('Warning'),
                      l('Are you sure you want to delete the card of %{0}?', '<b>' + card.$fullname() + '</b>'),
                      { ok: l('Delete') })

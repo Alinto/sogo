@@ -7,9 +7,9 @@
   /**
    * @ngInject
    */
-  PreferencesController.$inject = ['$q', '$window', '$state', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgFocus', 'Dialog', 'User', 'Account', 'statePreferences', 'Authentication'];
-  function PreferencesController($q, $window, $state, $mdMedia, $mdSidenav, $mdDialog, $mdToast, focus, Dialog, User, Account, statePreferences, Authentication) {
-    var vm = this, account, mailboxes = [];
+  PreferencesController.$inject = ['$q', '$window', '$state', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgSettings', 'sgFocus', 'Dialog', 'User', 'Account', 'statePreferences', 'Authentication'];
+  function PreferencesController($q, $window, $state, $mdMedia, $mdSidenav, $mdDialog, $mdToast, sgSettings, focus, Dialog, User, Account, statePreferences, Authentication) {
+    var vm = this, account, mailboxes = [], today = new Date(), tomorrow = today.beginOfDay().addDays(1);
 
     vm.preferences = statePreferences;
     vm.passwords = { newPassword: null, newPasswordConfirmation: null };
@@ -38,23 +38,32 @@
     vm.timeZonesListFilter = timeZonesListFilter;
     vm.timeZonesSearchText = '';
     vm.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
+    vm.updateVacationDates = updateVacationDates;
+    vm.toggleVacationStartDate = toggleVacationStartDate;
+    vm.toggleVacationEndDate = toggleVacationEndDate;
+    vm.validateVacationStartDate = validateVacationStartDate;
+    vm.validateVacationEndDate = validateVacationEndDate;
 
-    // Fetch a flatten version of the mailboxes list of the main account (0)
-    // This list will be forwarded to the Sieve filter controller
-    account = new Account({ id: 0 });
-    account.$getMailboxes().then(function() {
-      var allMailboxes = account.$flattenMailboxes({all: true}),
-          index = -1,
-          length = allMailboxes.length;
-      while (++index < length) {
-        mailboxes.push(allMailboxes[index]);
-      }
-    });
+
+    if (sgSettings.activeUser('path').mail) {
+      // Fetch a flatten version of the mailboxes list of the main account (0)
+      // This list will be forwarded to the Sieve filter controller
+      account = new Account({ id: 0 });
+      account.$getMailboxes().then(function() {
+        var allMailboxes = account.$flattenMailboxes({all: true}),
+            index = -1,
+            length = allMailboxes.length;
+        while (++index < length) {
+          mailboxes.push(allMailboxes[index]);
+        }
+      });
+    }
 
     // Set alternate avatar in User service
     statePreferences.ready().then(function() {
       if (statePreferences.defaults.SOGoAlternateAvatar)
         User.$alternateAvatar = statePreferences.defaults.SOGoAlternateAvatar;
+      updateVacationDates();
     });
 
     function go(module, form) {
@@ -108,19 +117,22 @@
       vm.preferences.defaults.AuxiliaryMailAccounts.push({});
 
       account = _.last(vm.preferences.defaults.AuxiliaryMailAccounts);
-      account.name = l("New account");
-      account.identities = [
-        {
-          fullName: "",
-          email: ""
-        }
-      ];
-      account.receipts = {
-        receiptAction: "ignore",
-        receiptNonRecipientAction: "ignore",
-        receiptOutsideDomainAction: "ignore",
-        receiptAnyAction: "ignore"
-      };
+      angular.extend(account,
+                     {
+                       name: "",
+                       identities: [
+                         {
+                           fullName: "",
+                           email: ""
+                         }
+                       ],
+                       receipts: {
+                         receiptAction: "ignore",
+                         receiptNonRecipientAction: "ignore",
+                         receiptOutsideDomainAction: "ignore",
+                         receiptAnyAction: "ignore"
+                       }
+                     });
 
       $mdDialog.show({
         controller: 'AccountDialogController',
@@ -135,6 +147,8 @@
         }
       }).then(function() {
         form.$setDirty();
+      }).catch(function() {
+        vm.preferences.defaults.AuxiliaryMailAccounts.pop();
       });
     }
 
@@ -166,6 +180,7 @@
       // See $omit() in the Preferences services for real key generation
       var key = '_$$' + guid();
       vm.preferences.defaults.SOGoMailLabelsColors[key] =  ["New label", "#aaa"];
+      focus('mailLabel_' + (_.size(vm.preferences.defaults.SOGoMailLabelsColors) - 1));
       form.$setDirty();
     }
 
@@ -231,6 +246,9 @@
     }
 
     function userFilter(search, excludedUsers) {
+      if (search.length < sgSettings.minimumSearchLength())
+        return [];
+
       return User.$filter(search, excludedUsers).then(function(users) {
         // Set users avatars
         _.forEach(users, function(user) {
@@ -282,7 +300,7 @@
       domains = [];
 
       // We do some sanity checks
-      if (window.forwardConstraints > 0 &&
+      if ($window.forwardConstraints > 0 &&
           angular.isDefined(vm.preferences.defaults.Forward) &&
           vm.preferences.defaults.Forward.enabled &&
           angular.isDefined(vm.preferences.defaults.Forward.forwardAddress)) {
@@ -290,7 +308,7 @@
         addresses = vm.preferences.defaults.Forward.forwardAddress.split(",");
 
         // We first extract the list of 'known domains' to SOGo
-        defaultAddresses = window.defaultEmailAddresses.split(/, */);
+        defaultAddresses = $window.defaultEmailAddresses.split(/, */);
 
         _.forEach(defaultAddresses, function(adr) {
           var domain = adr.split("@")[1];
@@ -302,11 +320,11 @@
         // We check if we're allowed or not to forward based on the domain defaults
         for (i = 0; i < addresses.length && sendForm; i++) {
           domain = addresses[i].split("@")[1].toLowerCase();
-          if (domains.indexOf(domain) < 0 && window.forwardConstraints == 1) {
+          if (domains.indexOf(domain) < 0 && $window.forwardConstraints == 1) {
             Dialog.alert(l('Error'), l("You are not allowed to forward your messages to an external email address."));
             sendForm = false;
           }
-          else if (domains.indexOf(domain) >= 0 && window.forwardConstraints == 2) {
+          else if (domains.indexOf(domain) >= 0 && $window.forwardConstraints == 2) {
             Dialog.alert(l('Error'), l("You are not allowed to forward your messages to an internal email address."));
             sendForm = false;
           }
@@ -365,6 +383,81 @@
       return _.filter(vm.timeZonesList, function(value) {
         return value.toUpperCase().indexOf(filter.toUpperCase()) >= 0;
       });
+    }
+
+    function updateVacationDates() {
+      var d = vm.preferences.defaults;
+
+      if (d &&
+          d.Vacation &&
+          d.Vacation.enabled) {
+        toggleVacationStartDate();
+        toggleVacationEndDate();
+      }
+    }
+
+    function toggleVacationStartDate() {
+      var v;
+
+      v = vm.preferences.defaults.Vacation;
+
+      if (v.startDateEnabled) {
+        // Enabling the start date
+        if (v.endDateEnabled && v.startDate.getTime() > v.endDate.getTime()) {
+          v.startDate = new Date(v.endDate.getTime());
+          v.startDate.addDays(-1);
+        }
+        if (v.startDate.getTime() < tomorrow.getTime()) {
+          v.startDate = new Date(tomorrow.getTime());
+        }
+      }
+    }
+
+    function toggleVacationEndDate() {
+      var v;
+
+      v = vm.preferences.defaults.Vacation;
+
+      if (v.endDateEnabled) {
+        // Enabling the end date
+        if (v.startDateEnabled && v.endDate.getTime() < v.startDate.getTime()) {
+          v.endDate = new Date(v.startDate.getTime());
+          v.endDate.addDays(1);
+        }
+        else if (v.endDate.getTime() < tomorrow.getTime()) {
+          v.endDate = new Date(tomorrow.getTime());
+        }
+      }
+    }
+
+    function validateVacationStartDate(date) {
+      var d = vm.preferences.defaults, r = true;
+      if (d &&
+          d.Vacation &&
+          d.Vacation.enabled) {
+        if (d.Vacation.startDateEnabled) {
+          r = (!d.Vacation.endDateEnabled ||
+               date.getTime() < d.Vacation.endDate.getTime()) &&
+            date.getTime() >= tomorrow.getTime();
+        }
+      }
+
+      return r;
+    }
+
+    function validateVacationEndDate(date) {
+      var d = vm.preferences.defaults, r = true;
+      if (d &&
+          d.Vacation &&
+          d.Vacation.enabled) {
+        if (d.Vacation.endDateEnabled) {
+          r = (!d.Vacation.startDateEnabled ||
+               date.getTime() > d.Vacation.startDate.getTime()) &&
+            date.getTime() >= tomorrow.getTime();
+        }
+      }
+
+      return r;
     }
   }
 

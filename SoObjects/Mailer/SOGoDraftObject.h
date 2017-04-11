@@ -97,7 +97,6 @@
 /* attachments */
 
 - (NSArray *) fetchAttachmentAttrs;
-- (BOOL) isValidAttachmentName: (NSString *) _name;
 - (NGMimeBodyPart *) bodyPartForAttachmentWithName: (NSString *) _name;
 - (NSString *) pathToAttachmentWithName: (NSString *) _name;
 - (NSException *) saveAttachment: (NSData *) _attach
@@ -114,7 +113,7 @@
 - (NSArray *) allBareRecipients;
 
 - (NSException *) delete;
-/* - (NSException *) sendMail; */
+- (NSException *) sendMail;
 - (NSException *) sendMailAndCopyToSent: (BOOL) copyToSent; /* default: YES */
 - (NSException *) save;
 

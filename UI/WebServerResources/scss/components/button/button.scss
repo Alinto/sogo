@@ -5,10 +5,93 @@ md-sidenav md-list .md-button {
   font-weight: normal;
 }
 
+/**
+ * Overlap fab button by half its height downward
+ */
 .md-button.md-fab-overlap-bottom {
   &.md-fab-bottom-right,
   &.md-fab-bottom-left {
     bottom: -(($button-fab-width + $button-fab-padding)/2);
+  }
+}
+
+/**
+ * Keep main fab button visible and either at the bottom right of the list
+ * view or at the bottom left of the detail view
+ *
+ *     Three-pane view (full view):
+ *
+ *     +------+-------+--------------+
+ *     |    x |       | x            |
+ *     |      |       |              |
+ *     |      |       |              |
+ *     |      |       |              |
+ *     |      |    (*)|              |
+ *     +------+-------+--------------+
+ *
+ *     Sidenav closed:
+ *
+ *     +-------+--------------+
+ *     |=      | x            |
+ *     |       |              |
+ *     |       |              |
+ *     |       |              |
+ *     |    (*)|              |
+ *     +-------+--------------+
+ *
+ *     Detail view expanded (list view closed):
+ *
+ *     +------+--------------+
+ *     |    x | +            |
+ *     |      |              |
+ *     |      |              |
+ *     |      |              |
+ *     |      |(*)           |
+ *     +------+--------------+
+ *
+ *     Sidenav closed and detail view expanded:
+ *
+ *     +--------------+
+ *     | +            |
+ *     |              |
+ *     |              |
+ *     |              |
+ *     |(*)           |
+ *     +--------------+
+ *
+ */
+md-fab-speed-dial.sg-fab-bottom-center {
+  position: absolute;
+  bottom: ($button-fab-height - $button-fab-padding)/2;
+  left: auto;
+  right: ($button-fab-width - $button-fab-padding)/2;
+  top: auto;
+  transition: $swift-ease-out;
+  @include at(sm) {
+    right: col-width($breakpoint: sm, $nb: 10) + 2vw;
+    &.sg-center-close {
+      left: ($button-fab-width - $button-fab-padding)/2;
+      right: auto;
+    }
+  }
+  @include at(md) {
+    // sidenav is hidden, center list can be closed
+    right: col-width($breakpoint: md, $nb: 14) + 2vw;
+    &.sg-center-close {
+      left: ($button-fab-width - $button-fab-padding)/2;
+      right: auto;
+    }
+  }
+  @include from(lg) {
+    // both sidenav and center list can be closed
+    right: col-width($breakpoint: lg, $nb: 10) + 2vw;
+    &.sg-sidenav-close, &.sg-center-close {
+      right: col-width($breakpoint: lg, $nb: 14) + 2vw;
+    }
+    &.sg-sidenav-close.sg-center-close {
+      left: ($button-fab-width - $button-fab-padding)/2;
+      right: auto;
+    }
   }
 }
 

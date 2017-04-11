@@ -28,6 +28,7 @@
 
 #include <libxml/encoding.h>
 
+#import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
 #import <SoObjects/Mailer/SOGoMailBodyPart.h>
 
@@ -908,6 +909,8 @@ static NSData* _sanitizeContent(NSData *theData)
   NSObject <SaxXMLReader> *parser;
   NSData *preparsedContent;
   SOGoMailObject *mail;
+  NSString *s;
+
   xmlCharEncoding enc;
 
   mail = [self clientObject];
@@ -917,7 +920,7 @@ static NSData* _sanitizeContent(NSData *theData)
              createXMLReaderForMimeType: @"text/html"];
 
   handler = [_UIxHTMLMailContentHandler new];
-  [handler setAttachmentIds: [mail fetchFileAttachmentIds]];
+  [handler setAttachmentIds: attachmentIds];
 
   // We check if we got an unsupported charset. If so
   // we convert everything to UTF-16{LE,BE} so it passes
@@ -926,8 +929,6 @@ static NSData* _sanitizeContent(NSData *theData)
   enc = [self _xmlCharEncoding];
   if (enc == XML_CHAR_ENCODING_ERROR)
     {
-      NSString *s;
-
       s = [NSString stringWithData: preparsedContent
 		    usingEncodingNamed: [[bodyInfo objectForKey:@"parameterList"]
 					  objectForKey: @"charset"]];
@@ -952,6 +953,14 @@ static NSData* _sanitizeContent(NSData *theData)
       preparsedContent = [s dataUsingEncoding: NSUTF16LittleEndianStringEncoding];
       enc = XML_CHAR_ENCODING_UTF16LE;
 #endif
+    }
+
+  // Let's sanitize the string to make sure libxml doesn't go havoc
+  if (enc == XML_CHAR_ENCODING_UTF8)
+    {
+      s = [[NSString alloc] initWithData: preparsedContent  encoding: NSUTF8StringEncoding];
+      preparsedContent = [[s safeString] dataUsingEncoding: NSUTF8StringEncoding];
+      RELEASE(s);
     }
 
   [handler setContentEncoding: enc];
@@ -1038,7 +1047,7 @@ static NSData* _sanitizeContent(NSData *theData)
     encoding = @"us-ascii";
 
   handler = [_UIxHTMLMailContentHandler new];
-  [handler setAttachmentIds: [mail fetchFileAttachmentIds]];
+  [handler setAttachmentIds: attachmentIds];
 
   // We check if we got an unsupported charset. If so
   // we convert everything to UTF-16{LE,BE} so it passes

@@ -1,6 +1,6 @@
 /* SOGoContactLDIFEntry.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2014 Inverse inc.
+ * Copyright (C) 2006-2016 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #import <SOGo/SOGoPermissions.h>
 
 #import "NGVCard+SOGo.h"
+#import "SOGoContactEntryPhoto.h"
 #import "SOGoContactGCSEntry.h"
 #import "SOGoContactLDIFEntry.h"
 #import "SOGoContactSourceFolder.h"
@@ -141,7 +142,7 @@
 
 - (BOOL) hasPhoto
 {
-  return NO;
+  return ([ldifEntry objectForKey: @"photo"] != nil);
 }
 
 - (NSString *) davEntityTag
@@ -225,6 +226,27 @@
 				    inContainer: newFolder];
 
   return [newContact saveComponent: newCard];
+}
+
+- (id) lookupName: (NSString *) lookupName
+        inContext: (id) localContext
+          acquire: (BOOL) acquire
+{
+  id obj;
+
+  if ([lookupName isEqualToString: @"photo"])
+    {
+      if ([self hasPhoto])
+        obj = [SOGoContactEntryPhoto objectWithName: lookupName
+                                        inContainer: self];
+      else
+        obj = nil;
+    }
+  else
+    obj = [super lookupName: lookupName inContext: localContext
+                    acquire: acquire];
+
+  return obj;
 }
 
 @end

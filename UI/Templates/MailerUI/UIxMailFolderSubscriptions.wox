@@ -1,0 +1,58 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:const="http://www.skyrix.com/od/constant"
+    xmlns:label="OGo:label"
+    >
+  <md-dialog flex="50" flex-sm="80" flex-xs="100">
+
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <md-icon class="material-icons sg-icon-toolbar-bg">folder</md-icon>
+        <div class="pseudo-input-container md-flex">
+          <label class="pseudo-input-label"><var:string label:value="Manage Subscriptions"/></label>
+          <div class="sg-md-title">{{subscriptions.account.name}}</div>
+        </div>
+        <md-button class="md-icon-button" ng-click="subscriptions.close()">
+          <md-icon aria-label="Close dialog">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content class="md-dialog-content" layout="column">
+      <div layout="row" layout-align="center center"
+           ng-if="subscriptions.loading">
+        <md-progress-circular class="md-accent"
+                              md-mode="indeterminate"><!-- progress --></md-progress-circular>
+      </div>
+      <md-list>
+        <md-list-item
+            ng-repeat="folder in subscriptions.account.$flattenMailboxes({all: true}) | filter:subscriptions.filter"
+	    md-item-size="48">
+          <div ng-class="'sg-child-level-' + folder.level">
+            <md-icon>{{folder.$icon}}</md-icon>
+          </div>
+          <p class="sg-item-name">
+            {{folder.$displayName}}
+          </p>
+	  <md-checkbox class="md-secondary"
+                       ng-disabled="folder.$isSpecial"
+		       ng-model="folder.subscribed"
+                       ng-change="folder.$updateSubscribe()"
+		       ng-true-value="1"
+		       ng-false-value="0"><!-- subscribed --></md-checkbox>
+        </md-list-item>
+      </md-list>
+    </md-dialog-content>
+
+    <md-dialog-actions ng-hide="subscriptions.loading">
+      <md-input-container class="md-flex" md-no-float="md-no-float">
+        <md-icon>search</md-icon>
+        <input ng-model="subscriptions.filter.name" type="search" label:placeholder="Filter"/>
+      </md-input-container>
+    </md-dialog-actions>
+
+  </md-dialog>
+</container>
