@@ -17,7 +17,8 @@
     $scope.activeUser = sgSettings.activeUser();
     $scope.baseURL = sgSettings.baseURL();
     $scope.leftIsClose = !$mdMedia(sgConstant['gt-md']);
-    $scope.centerIsClose = !!$window.centerIsClose;
+    // Don't hide the center list when on a small device
+    $scope.centerIsClose = !!$window.centerIsClose && !$scope.leftIsClose;
 
     // Show current day in top bar
     $scope.currentDay = window.currentDay;
