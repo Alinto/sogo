@@ -213,9 +213,12 @@
    */
   onEnterInbox.$inject = ['$window', '$state', 'encodeUriFilter', 'stateAccount'];
   function onEnterInbox($window, $state, encodeUriFilter, stateAccount) {
-    $window.location.hash = $state.href('mail.account.mailbox',
-                                        {accountId: stateAccount.id,
-                                         mailboxId: encodeUriFilter(stateAccount.$mailboxes[0].path)});
+    if (stateAccount.$mailboxes.length > 0)
+      $window.location.hash = $state.href('mail.account.mailbox',
+                                          {accountId: stateAccount.id,
+                                           mailboxId: encodeUriFilter(stateAccount.$mailboxes[0].path)});
+    else
+      $state.go('mail');
   }
 
   /**
@@ -314,15 +317,14 @@
   /**
    * @ngInject
    */
-  runBlock.$inject = ['$rootScope', '$log', '$state'];
-  function runBlock($rootScope, $log, $state) {
+  runBlock.$inject = ['$rootScope', '$log', '$state', 'Mailbox'];
+  function runBlock($rootScope, $log, $state, Mailbox) {
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       $log.error(error);
       event.preventDefault();
-      if (toState.name != 'mail.account.inbox')
-        $state.go('mail.account.inbox');
-      else
-        $state.go('mail');
+      // Unselect everything
+      Mailbox.selectedFolder = false;
+      $state.go('mail');
     });
     $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
       $log.error(event, current, previous, rejection);

@@ -671,6 +671,9 @@
       headers = [self getHeadersForUIDs: [a subarrayWithRange: r]
                                inFolder: folder];
 
+      if (headers == nil)
+        return nil;
+
       [data setObject: headers forKey: @"headers"];
     }
 
@@ -764,7 +767,15 @@
   data = [self getUIDsInFolder: folder
                    withHeaders: !noHeaders];
 
-  response = [self responseWithStatus: 200 andJSONRepresentation: data];
+  if (data != nil)
+    response = [self responseWithStatus: 200 andJSONRepresentation: data];
+  else
+    {
+      data = [NSDictionary dictionaryWithObjectsAndKeys:
+                             @"An error occured while communicating with the mail server", @"message", nil];
+      response = [self responseWithStatus: 500 /* Error */
+                    andJSONRepresentation: data];
+    }
 
   return response;
 }
@@ -785,6 +796,8 @@
   // Fetch headers
   msgs = (NSDictionary *)[mailFolder fetchUIDs: uids
 					 parts: [self fetchKeys]];
+  if (msgs == nil)
+    return nil;
 
   msgsList = [[msgs objectForKey: @"fetch"] objectEnumerator];
   [self setMessage: [msgsList nextObject]];
@@ -905,8 +918,16 @@
   uids = [data objectForKey: @"uids"];
   headers = [self getHeadersForUIDs: uids
 			   inFolder: [self clientObject]];
-  response = [self responseWithStatus: 200
-                andJSONRepresentation: headers];
+  if (headers)
+    response = [self responseWithStatus: 200
+                  andJSONRepresentation: headers];
+  else
+    {
+      data = [NSDictionary dictionaryWithObjectsAndKeys:
+                             @"An error occured while communicating with the mail server", @"message", nil];
+      response = [self responseWithStatus: 500 /* Error */
+                    andJSONRepresentation: data];
+    }
 
   return response;
 }
