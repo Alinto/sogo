@@ -865,7 +865,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               person = [iCalPerson elementWithTag: @"attendee"];
               [person setCn: [attendee objectForKey: @"Attendee_Name"]];
               [person setEmail: [attendee objectForKey: @"Attendee_Email"]];
-              
+
               status = [[attendee objectForKey: @"Attendee_Status"] intValue];
               
               switch (status)
@@ -882,7 +882,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 case 0:
                 case 5:
                 default:
-                  [person setPartStat: @"NEEDS-ACTION"];
+		  {
+		    [person setPartStat: @"NEEDS-ACTION"];
+		    [person setRsvp: @"TRUE"];
+		  }
                   break;
                 }
               
