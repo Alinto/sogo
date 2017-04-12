@@ -788,6 +788,15 @@
   if ([object firstChildWithTag: @"X-SOGo-Send-Appointment-Notifications"])
     return;
 
+  // We never send IMIP inivitaton/deletion/update when the "initiator" is an EAS client.
+  // That is because Outlook, iOS and Android will always issue a SendMail command
+  // with the meeting details (ie., IMIP message with METHOD:REQUEST) so there's
+  // no need to send it twice. Moreover, Outlook users can also choose to NOT send
+  // the IMIP messsage at all, so SOGo won't send one without user's consent
+  if ([[[context request] requestHandlerKey] isEqualToString: @"Microsoft-Server-ActiveSync"])
+    return;
+
+
   ownerUser = [SOGoUser userWithLogin: owner];
   dd = [ownerUser domainDefaults];
   if ([dd appointmentSendEMailNotifications] && [object isStillRelevant])
