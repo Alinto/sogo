@@ -1,6 +1,9 @@
 2.3.21 (2017-XX-XX)
 -------------------
 
+Enhancements
+ - [core] improved event initation for all day events (#4145)
+
 Bug fixes
  - [core] fixed calendar component move across collections (#4116)
  - [eas] fixed opacity in EAS freebusy (#4033)
