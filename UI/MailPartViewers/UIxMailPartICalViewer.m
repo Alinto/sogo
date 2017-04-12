@@ -221,19 +221,17 @@
   return [[self dateFormatter] formattedTime: [self endCalendarDate]];
 }
 
-- (BOOL) isEndDateOnSameDay
-{
-  NSCalendarDate *aDate;
-  if ([[self inEvent] isAllDay])
-    aDate = [[self endCalendarDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:-1];
-  else
-    aDate = [self endCalendarDate];
-  return [[self startCalendarDate] isDateOnSameDay: aDate];
-}
-
 - (NSTimeInterval) duration
 {
   return [[self endCalendarDate] timeIntervalSinceDate:[self startCalendarDate]];
+}
+
+- (BOOL) isEndDateOnSameDay
+{
+  if ([[self inEvent] isAllDay])
+    return [self duration] <= 86400;
+
+  return [[self startCalendarDate] isDateOnSameDay: [self endCalendarDate]];
 }
 
 /* calendar folder support */
