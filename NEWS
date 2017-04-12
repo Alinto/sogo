@@ -5,7 +5,7 @@ New features
  - [core] email alarms now have pretty formatting (#805)
 
 Enhancements
- -
+ - [core] improved event initation for all day events (#4145)
 
 Bug fixes
  - [web] fixed attachment path when inside multiple body parts
