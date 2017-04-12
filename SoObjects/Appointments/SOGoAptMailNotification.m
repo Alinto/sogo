@@ -24,6 +24,8 @@
 #import <Foundation/NSTimeZone.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOResponse.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/iCalEvent.h>
 
@@ -180,6 +182,19 @@
     }
   
   return sentByText;
+}
+
+- (NSTimeInterval) duration
+{
+  return [[self newEndDate] timeIntervalSinceDate:[self newStartDate]];
+}
+
+- (BOOL) isEndDateOnSameDay
+{
+  if ([[self apt] isAllDay])
+    return ([self duration] <= 86400);
+
+  return [[self newStartDate] isDateOnSameDay: [self newEndDate]];
 }
 
 - (NSString *) formattedAptStartDate
