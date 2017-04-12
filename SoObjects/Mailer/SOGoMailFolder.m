@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2009-2014 Inverse inc.
+  Copyright (C) 2009-2017 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -295,15 +295,15 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   return filenames;
 }
 
-- (NSException *) renameTo: (NSString *) newName
+- (NSException *) renameTo: (NSString *) theNewName
 {
   NSException *error;
   SOGoMailFolder *inbox;
   NSURL *destURL;
-  NSString *path;
+  NSString *path, *newName;
   NGImap4Client *client;
 
-  if ([newName length] > 0)
+  if ([theNewName length] > 0)
     {
       [self imap4URL];
 
@@ -318,17 +318,19 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
           if (![path hasSuffix: @"/"])
             path = [path stringByAppendingString: @"/"];
 
+          newName = [theNewName stringByEncodingImap4FolderName];
+
 	  // If new name contains the path - dont't need to add
           if ([newName rangeOfString: @"/"].location == NSNotFound)
             destURL = [[NSURL alloc] initWithScheme: [imap4URL scheme]
                                                host: [imap4URL host]
                                                path: [NSString stringWithFormat: @"%@%@",
-                                                               path, [newName stringByEncodingImap4FolderName]]];
+                                                               path, newName]];
           else
             destURL = [[NSURL alloc] initWithScheme: [imap4URL scheme]
                                                host: [imap4URL host]
                                                path: [NSString stringWithFormat: @"%@",
-                                                               [newName stringByEncodingImap4FolderName]]];
+                                                               newName]];
           [destURL autorelease];
           error = [imap4 moveMailboxAtURL: imap4URL
                                     toURL: destURL];

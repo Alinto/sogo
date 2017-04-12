@@ -1,6 +1,6 @@
 /* UIxMailFolderActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2016 Inverse inc.
+ * Copyright (C) 2007-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
 
@@ -106,6 +107,7 @@
  * @apiParam {String} name Name of the mailbox
  *
  * @apiSuccess (Success 200) {String} path  New mailbox path relative to account
+ * @apiSuccess (Success 200) {String} sievePath  New mailbox path relative to account for Sieve script usage
  * @apiError   (Error 500) {Object} error   The error message
  */
 - (WOResponse *) renameFolderAction
@@ -115,7 +117,8 @@
   WORequest *request;
   WOResponse *response;
   NSException *error;
-  NSString *newFolderName, *newFolderPath, *currentMailbox, *currentAccount, *keyForMsgUIDs, *newKeyForMsgUIDs;
+  NSString *newFolderName, *newFolderPath, *sievePath, *currentMailbox, *currentAccount,
+    *keyForMsgUIDs, *newKeyForMsgUIDs;
   NSMutableDictionary *params, *moduleSettings, *threadsCollapsed, *message;
   NSArray *values;
 
@@ -164,8 +167,15 @@
                 }
             }
           newFolderPath = [[[co imap4URL] path] substringFromIndex: 1]; // remove slash at beginning of path
-          message = [NSDictionary dictionaryWithObject: newFolderPath
-                                                forKey: @"path"];
+
+          NSString *sieveFolderEncoding = [[SOGoSystemDefaults sharedSystemDefaults] sieveFolderEncoding];
+          if ([sieveFolderEncoding isEqualToString: @"UTF-8"])
+            sievePath = [newFolderPath stringByDecodingImap4FolderName];
+          else
+            sievePath = newFolderPath;
+
+          message = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    newFolderPath, @"path", sievePath, @"sievePath", nil];
           response = [self responseWithStatus: 200 andJSONRepresentation: message];
         }
     }
