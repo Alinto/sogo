@@ -13,6 +13,8 @@ Bug fixes
  - [core] fix sogo-tool restore potentially crashing on corrupted data (#4048)
  - [eas] set reply/forwarded flags when ReplaceMime is set (#4133)
  - [eas] remove alarms over EAS if we don't want them (#4059)
+ - [eas] correctly set RSVP on event invitations
+ - [eas] avoid sending IMIP request/update messages for all EAS clients (#4022)
 
 3.2.8 (2017-03-24)
 ------------------
