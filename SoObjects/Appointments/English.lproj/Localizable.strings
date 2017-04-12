@@ -22,6 +22,8 @@ vtodo_class2 = "(Confidential task)";
 "location_label" = "Location";
 "summary_label" = "Summary";
 "comment_label" = "Comment";
+"organizer_label" = "Organizer";
+"attendee_label" = "Attendee";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Event Invitation: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(sent by %{SentBy}) ";

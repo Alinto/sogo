@@ -1,0 +1,74 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+  <head>
+    <style type="text/css">
+th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; font-size: 12px; line-height: 18px; }
+    </style>
+  </head>
+  <body>
+    <table cellpadding="2" cellspacing="2" border="0" style="width: 100%; max-width: 600px;">
+      <tr>
+        <th></th>
+        <td><h1 style="font-size: 18px; font-weight: normal; padding-bottom: 9px; border-bottom: 1px solid #ccc;" class="ng-hide"><var:string
+          value="aptSummary" const:escapeHTML="NO"/></h1></td>
+      </tr>
+      <var:if condition="calendarName.length"
+      ><tr>
+        <th align="right" style="font-weight: bold;"><var:string label:value="calendar_label" const:escapeHTML="NO"/></th>
+        <td><var:string value="calendarName" const:escapeHTML="NO"/></td>
+      </tr></var:if>
+      <var:if condition="apt.location.length"
+      ><tr>
+        <th align="right" style="font-weight: bold;"><var:string label:value="location_label" const:escapeHTML="NO"/></th>
+        <td><var:string value="apt.location" const:escapeHTML="NO"/></td>
+      </tr></var:if>
+      <tr>
+        <th align="right" style="font-weight: bold;"><var:string label:value="startDate_label" const:escapeHTML="NO"/></th>
+        <td><var:string value="aptStartDate" const:escapeHTML="NO"/></td>
+      </tr>
+      <tr>
+        <th align="right" style="font-weight: bold;"><var:string label:value="endDate_label" const:escapeHTML="NO"/></th>
+        <td><var:string value="aptEndDate" const:escapeHTML="NO"/></td>
+      </tr>
+      <var:if condition="apt.comment.length"
+      ><tr>
+        <th align="right" style="font-weight: bold;"><var:string label:value="comment_label" const:escapeHTML="NO"/></th>
+        <td><var:string value="apt.comment" const:escapeHTML="NO"/></td>
+      </tr>
+      </var:if>
+
+      <var:if condition="attendees.count"
+      ><tr></tr><tr>
+        <th align="right" style="font-weight: bold;"><var:string label:value="organizer_label" const:escapeHTML="NO"/></th>
+        <var:if condition="organizer.cn">
+        <td><a var:href="organizer.email"><var:string value="organizer.cn" const:escapeHTML="NO"/></a></td>
+        </var:if>
+        <var:if condition="organizer.cn" const:negate="YES">
+        <td><a var:href="organizer.email"><var:string value="organizer.rfc822Email" const:escapeHTML="NO"/></a></td>
+        </var:if>
+      </tr>
+
+      <tr>
+      <th align="right" style="font-weight: bold;"><var:string label:value="attendee_label" const:escapeHTML="NO"/></th>
+      <var:foreach list="attendees" item="currentRecipient">
+        <var:if condition="currentRecipient.cn">
+        <td><a var:href="currentRecipient.email"><var:string value="currentRecipient.cn" const:escapeHTML="NO"/></a></td>
+        </var:if>
+        <var:if condition="currentRecipient.cn" const:negate="YES">
+        <td><a var:href="currentRecipient.email"><var:string value="currentRecipient.rfc822Email" const:escapeHTML="NO"/></a></td>
+        </var:if>
+        <tr></tr><th align="right"></th>
+      </var:foreach>
+      </tr>
+      </var:if>
+
+    </table>
+  </body>
+</html>

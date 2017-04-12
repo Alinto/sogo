@@ -30,6 +30,7 @@
 #import <NGMail/NGMimeMessage.h>
 
 #import <NGCards/iCalAlarm.h>
+#import <NGCards/iCalEvent.h>
 
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSString+Utilities.h>
@@ -37,9 +38,19 @@
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserManager.h>
+#import <SOGo/NSDictionary+Utilities.m>
+#import <SOGo/NSObject+Utilities.h>
+#import <SOGo/SOGoUserFolder.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/iCalPerson+SOGo.h>
 #import <Appointments/SOGoEMailAlarmsManager.h>
+#import <Appointments/SOGoAppointmentFolder.h>
+
+#import <NGObjWeb/WOApplication.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <Appointments/SOGoAptMailReminder.h>
+#import <WEExtensions/WEResourceManager.h>
 
 #import "SOGoEAlarmsNotifier.h"
 
@@ -81,14 +92,14 @@
 
 - (NGMutableHashMap *) _headersForAlarm: (iCalAlarm *) alarm
                               withOwner: (SOGoUser *) owner
+                            withSubject: (NSString *) subject
 {
   NGMutableHashMap *headers;
-  NSString *dateString, *subject, *fullName, *email;
+  NSString *dateString, *fullName, *email;
   NSDictionary *identity;
 
   headers = [NGMutableHashMap hashMap];
 
-  subject = [[alarm summary] asQPSubjectString: @"utf-8"];
   [headers addObject: subject forKey: @"Subject"];
   dateString = [[NSCalendarDate date] rfc822DateString];
   [headers addObject: dateString forKey: @"Date"];
@@ -96,11 +107,11 @@
   [headers addObject: @"SOGo Alarms Notifier/1.0" forKey: @"User-Agent"];
   [headers addObject: @"high" forKey: @"Importance"];
   [headers addObject: @"1" forKey: @"X-Priority"];
-  [headers setObject: @"text/plain; charset=\"utf-8\"" forKey: @"Content-Type"];
+  [headers setObject: @"text/html; charset=\"utf-8\"" forKey: @"Content-Type"];
   [headers setObject: @"quoted-printable" forKey: @"Content-Transfer-Encoding"];
 
   identity = [owner primaryIdentity];
-  fullName = [[identity objectForKey: @"fullName"] asQPSubjectString: @"utf-8"];
+  fullName = [identity objectForKey: @"fullName"];
   if ([fullName length])
     email = [NSString stringWithFormat: @"%@ <%@>", fullName,
                 [identity objectForKey: @"email"]];
@@ -140,20 +151,63 @@
 
 - (void) _processAlarm: (iCalAlarm *) alarm
              withOwner: (NSString *) ownerId
+      andContainerPath: (NSString *) containerPath
 {
   NGMutableHashMap *headers;
-  NSArray *attendees;
+  NSArray *attendees, *parts;
   NSData *content, *qpContent;
   int count, max;
   SOGoMailer *mailer;
-  NSString *from;
+  NSString *from, *subject;
   SOGoUser *owner;
+
+  WOContext *localContext;
+  WOApplication *app;
+  SOGoAptMailReminder *p;
+  NSString *pageName;
+  WOResourceManager *rm;
+
+  SOGoAppointmentFolders *folders;
+  SOGoAppointmentFolder *folder;
+  SOGoUserFolder *userFolder;
+
 
   owner = [SOGoUser userWithLogin: ownerId];
   mailer = [SOGoMailer mailerWithDomainDefaults: [owner domainDefaults]];
 
-  headers = [self _headersForAlarm: alarm withOwner: owner];
-  content = [[alarm comment] dataUsingEncoding: NSUTF8StringEncoding];
+  localContext = [WOContext context];
+  [localContext setActiveUser: owner];
+  app = [[WOApplication alloc] initWithName: @"SOGo"];
+
+  rm = [[WEResourceManager alloc] init];
+  [app setResourceManager:rm];
+  [rm release];
+  [app _setCurrentContext:localContext];
+
+  userFolder = [[localContext activeUser] homeFolderInContext: localContext ];
+  folders = [userFolder privateCalendars: @"Calendar"
+                         inContext: localContext];
+
+  pageName = [NSString stringWithFormat: @"SOGoAptMail%@", @"Reminder"];
+
+  p = [app pageWithName: pageName inContext: localContext];
+
+  parts = [containerPath componentsSeparatedByString: @"/"];
+  if ([parts count] > 4)
+    {
+      folder = [folders lookupName: [parts objectAtIndex: 4]
+                         inContext: localContext
+                           acquire: NO];
+      [p setCalendarName: [folder displayName]];
+    }
+
+  [p setApt: [alarm parent]];
+  [p setAttendees: [[alarm parent] attendees]];
+
+  content = [[p getBody] dataUsingEncoding: NSUTF8StringEncoding];
+  subject = [p getSubject];
+
+  headers = [self _headersForAlarm: alarm withOwner: owner withSubject: subject];
   qpContent = [content dataByEncodingQuotedPrintable];
   from = [[owner primaryIdentity] objectForKey: @"email"];
 
@@ -191,6 +245,8 @@
 
   int count, max;
 
+  [[SOGoProductLoader productLoader] loadAllProducts: YES];
+
   if ([[NSUserDefaults standardUserDefaults] stringForKey: @"h"])
     {
       [self usage];
@@ -209,9 +265,6 @@
       [staticAuthenticator retain];
     }
 
-  [[SOGoProductLoader productLoader]
-    loadProducts: [NSArray arrayWithObject: @"Appointments.SOGo"]];
-
   eaMgr = [NSClassFromString (@"SOGoEMailAlarmsManager")
                              sharedEMailAlarmsManager];
 
@@ -225,10 +278,12 @@
                                                     second: 0]
                                    toDate: toDate
                                withMetadata: metadata];
+
   max = [alarms count];
   for (count = 0; count < max; count++)
     [self _processAlarm: [alarms objectAtIndex: count]
-              withOwner: [[metadata objectAtIndex: count] objectForKey: @"owner"]];
+              withOwner: [[metadata objectAtIndex: count] objectForKey: @"owner"]
+       andContainerPath: [[[metadata objectAtIndex: count] objectForKey: @"record"] objectForKey: @"c_path"]];
 
   // We now update the next alarm date (if any, for recurring
   // events or tasks for example). This will also delete any emai
