@@ -40,22 +40,23 @@
       <md-radio-button value="email">
         <var:string label:value="Send an E-mail"/>
       </md-radio-button>
+      <div layout="row" flex-offset="5"
+           ng-show="editor.component.canRemindAttendeesByEmail()">
+        <md-checkbox ng-model="editor.component.alarm.organizer"
+                     ng-true-value="1"
+                     ng-false-value="0"
+                     label:aria-label="Email Organizer">
+          <var:string label:value="Email Organizer"/>
+        </md-checkbox>
+        <var:entity const:name="nbsp" />
+        <md-checkbox ng-model="editor.component.alarm.attendees"
+                     ng-true-value="1"
+                     ng-false-value="0"
+                     label:aria-label="Email Attendees">
+          <var:string label:value="Email Attendees"/>
+        </md-checkbox>
+      </div>
     </md-radio-group>
-    <div layout="row" flex-offset="5"
-         ng-show="editor.component.canRemindAttendeesByEmail()">
-      <md-checkbox ng-model="editor.component.alarm.organizer"
-                   ng-true-value="1"
-                   ng-false-value="0"
-                   label:aria-label="Email Organizer">
-        <var:string label:value="Email Organizer"/>
-      </md-checkbox>
-      <md-checkbox ng-model="editor.component.alarm.attendees"
-                   ng-true-value="1"
-                   ng-false-value="0"
-                   label:aria-label="Email Attendees">
-        <var:string label:value="Email Attendees"/>
-      </md-checkbox>
-    </div>
   </var:if>
 
 </container>

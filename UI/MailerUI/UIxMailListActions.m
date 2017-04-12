@@ -654,6 +654,8 @@
 
   // Retrieve messages UIDs using form parameters "sort" and "asc"
   uids = [self getSortedUIDsInFolder: folder];
+  if (uids == nil)
+    return nil;
   
   // Get rid of the extra parenthesis
    // uids = [[[[uids stringValue] stringByReplacingOccurrencesOfString:@"(" withString:@""] stringByReplacingOccurrencesOfString:@")" withString:@""] componentsSeparatedByString:@","];
@@ -670,10 +672,6 @@
       r = NSMakeRange(0, count);
       headers = [self getHeadersForUIDs: [a subarrayWithRange: r]
                                inFolder: folder];
-
-      if (headers == nil)
-        return nil;
-
       [data setObject: headers forKey: @"headers"];
     }
 
@@ -796,8 +794,6 @@
   // Fetch headers
   msgs = (NSDictionary *)[mailFolder fetchUIDs: uids
 					 parts: [self fetchKeys]];
-  if (msgs == nil)
-    return nil;
 
   msgsList = [[msgs objectForKey: @"fetch"] objectEnumerator];
   [self setMessage: [msgsList nextObject]];

@@ -43,6 +43,7 @@ Appointments_OBJC_FILES = \
 	SOGoAptMailICalReply.m		\
 	SOGoAptMailUpdate.m		\
 	SOGoAptMailReceipt.m		\
+	SOGoAptMailReminder.m		\
 	\
 	SOGoEMailAlarmsManager.m	\
 	\
