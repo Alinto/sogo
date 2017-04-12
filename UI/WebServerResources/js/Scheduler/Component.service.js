@@ -690,16 +690,6 @@
   };
 
   /**
-   * @function isReadOnly
-   * @memberof Component.prototype
-   * @desc Check if the component is not editable and not an invitation
-   * @returns true or false
-   */
-  Component.prototype.isReadOnly = function() {
-    return (this.isReadOnly && !this.userHasRSVP);
-  };
-
-  /**
    * @function enablePercentComplete
    * @memberof Component.prototype
    * @desc Check if the percent completion should be enabled with respect to the
