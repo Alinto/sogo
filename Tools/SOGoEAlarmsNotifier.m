@@ -131,7 +131,7 @@
   NGMimeMessage *message;
   NSString *to, *headerTo, *attendeeName;
 
-  attendeeName = [[attendee cnWithoutQuotes] asQPSubjectString: @"utf-8"];
+  attendeeName = [attendee cnWithoutQuotes];
   if ([attendeeName length])
     headerTo = [NSString stringWithFormat: @"%@ <%@>", attendeeName,
                          [attendee rfc822Email]];
