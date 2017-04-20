@@ -6,6 +6,7 @@ Enhancements
 
 Bug fixes
  - [core] fixed calendar component move across collections (#4116)
+ - [core] handle properly mails using windows-1255 charset (#4124)
  - [eas] fixed opacity in EAS freebusy (#4033)
  - [eas] set reply/forwarded flags when ReplaceMime is set (#4133)
  - [eas] remove alarms over EAS if we don't want them (#4059)
