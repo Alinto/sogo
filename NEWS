@@ -13,6 +13,7 @@ Bug fixes
  - [core] cherry-picked comma escaping fix from v2 (#3296)
  - [core] fix sogo-tool restore potentially crashing on corrupted data (#4048)
  - [core] handle properly mails using windows-1255 charset (#4124)
+ - [core] fixed email reminders sent multiple times (#4100)
  - [eas] set reply/forwarded flags when ReplaceMime is set (#4133)
  - [eas] remove alarms over EAS if we don't want them (#4059)
  - [eas] correctly set RSVP on event invitations

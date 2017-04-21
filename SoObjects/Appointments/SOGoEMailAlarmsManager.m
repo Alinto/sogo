@@ -149,24 +149,23 @@
 - (SOGoAppointmentFolder *) _lookupContainerMatchingRecord: (NSDictionary *) record
 {
   SOGoAppointmentFolders *folders;
+  SOGoAppointmentFolder *calendar;
   NSString *container, *owner;
-  SOGoUserFolder *userFolder;
   SOGoUser *user;
   WOContext *context;
 
   [self _extractOwner: &owner  fromPath: [record objectForKey: @"c_path"]];
   [self _extractContainer: &container  fromPath: [record objectForKey: @"c_path"]];
   user = [SOGoUser userWithLogin: owner];
-  userFolder = [SOGoUserFolder objectWithName: owner  inContainer: nil];
+
   context = [WOContext context];
   [context setActiveUser: user];
-  folders = [userFolder lookupName: @"Calendar"
-			 inContext: context
-			   acquire: NO];
 
-  return [folders lookupName: container
-		   inContext: context
-		     acquire: NO];
+  folders = [user calendarsFolderInContext: context];
+
+  calendar = [folders lookupPersonalFolder: container  ignoringRights: YES];
+
+  return calendar;
 }
 
 - (iCalAlarm *) _lookupAlarmMatchingRecord: (NSDictionary *) record

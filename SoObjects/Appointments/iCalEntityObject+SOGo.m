@@ -692,7 +692,7 @@ NSNumber *iCalDistantFutureNumber = nil;
   GCSAlarmsFolder *af;
   NSString *path;
 
-  int alarm_number;
+  int email_alarm_number;
 
   if ([[SOGoSystemDefaults sharedSystemDefaults] enableEMailAlarms])
     {
@@ -706,7 +706,7 @@ NSNumber *iCalDistantFutureNumber = nil;
     }
 
   nextAlarmDate = nil;
-  alarm_number = -1;
+  email_alarm_number = -1;
 
   if ([self hasAlarms])
     {
@@ -733,19 +733,18 @@ NSNumber *iCalDistantFutureNumber = nil;
 	  else if ((anAlarm = [self firstEmailAlarm]) && af)
 	    {
 	      nextAlarmDate = [anAlarm nextAlarmDate];
+	      email_alarm_number = [[self alarms] indexOfObject: anAlarm];
 
 	      // The email alarm is too old, let's just remove it
 	      if ([nextAlarmDate earlierDate: [NSDate date]] == nextAlarmDate)
 		nextAlarmDate = nil;
 	      else
 		{
-		  alarm_number = [[self alarms] indexOfObject: anAlarm];
-
 		  [af writeRecordForEntryWithCName: nameInContainer
 				  inCalendarAtPath: path
 					    forUID: [self uid]
 				      recurrenceId: nil
-				       alarmNumber: [NSNumber numberWithInt: alarm_number]
+				       alarmNumber: [NSNumber numberWithInt: email_alarm_number]
 				      andAlarmDate: nextAlarmDate];
 		}
 	    }
@@ -834,13 +833,13 @@ NSNumber *iCalDistantFutureNumber = nil;
 			  else if ((anAlarm = [self firstEmailAlarm]) && af)
 			    {
 			      nextAlarmDate = [NSDate dateWithTimeIntervalSince1970: [[[alarms objectAtIndex: i] objectForKey: @"c_nextalarm"] intValue]];
-			      alarm_number = [[self alarms] indexOfObject: anAlarm];
+			      email_alarm_number = [[self alarms] indexOfObject: anAlarm];
 
 			      [af writeRecordForEntryWithCName: nameInContainer
 					      inCalendarAtPath: path
 							forUID: [self uid]
 						  recurrenceId: [self recurrenceId]
-						   alarmNumber: [NSNumber numberWithInt: alarm_number]
+						   alarmNumber: [NSNumber numberWithInt: email_alarm_number]
 						  andAlarmDate: nextAlarmDate];
 			    }
 			}
@@ -850,8 +849,8 @@ NSNumber *iCalDistantFutureNumber = nil;
         }
     }
 
-  // Don't update c_nextalarm in the quick table if it's an email alarm
-  if ([nextAlarmDate isNotNull] && alarm_number < 0)
+  // Don't update c_nextalarm in the quick table if it's not na email alarm
+  if ([nextAlarmDate isNotNull] && email_alarm_number < 0)
     {
       [row setObject: [NSNumber numberWithInt: [nextAlarmDate timeIntervalSince1970]]
 	      forKey: @"c_nextalarm"];
@@ -861,7 +860,7 @@ NSNumber *iCalDistantFutureNumber = nil;
       [row setObject: [NSNumber numberWithInt: 0] forKey: @"c_nextalarm"];
 
       // Delete old email alarms
-      if (!nextAlarmDate && alarm_number >= 0)
+      if (!nextAlarmDate && email_alarm_number >= 0)
 	[af deleteRecordForEntryWithCName: nameInContainer
 			 inCalendarAtPath: [theContainer ocsPath]];
     }
