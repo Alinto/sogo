@@ -1,6 +1,6 @@
 /* CardElement.h - this file is part of SOPE
  *
- * Copyright (C) 2006-2014 Inverse inc.
+ * Copyright (C) 2006-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@
 - (NSMutableDictionary *) values;
 
 /* ELEM:...;value1,value2,...;... */
-- (void) setValues: (NSMutableArray *) newValues
+- (void) setValues: (id) newValues
            atIndex: (NSUInteger) idx
             forKey: (NSString *) key;
 

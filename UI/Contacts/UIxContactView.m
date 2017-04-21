@@ -165,16 +165,17 @@
 
 - (NSArray *) deliveryAddresses
 {
-  NSMutableArray *addresses;
-  NSMutableDictionary *address;
-  NSArray *elements;
   NSString *type, *postoffice, *street, *street2, *locality, *region, *postalcode, *country;
+  NSMutableDictionary *address;
+  NSMutableArray *addresses;
+  NSArray *elements;
   CardElement *adr;
+
   NSUInteger count, max;
 
   elements = [card childrenWithTag: @"adr"];
-  //values = [org valuesForKey: @""];
   max = [elements count];
+
   if (max > 0)
     {
       addresses = [NSMutableArray arrayWithCapacity: max];
@@ -189,7 +190,8 @@
           region     = [adr flattenedValueAtIndex: 4 forKey: @""];
           postalcode = [adr flattenedValueAtIndex: 5 forKey: @""];
           country    = [adr flattenedValueAtIndex: 6 forKey: @""];
-          address = [NSMutableDictionary dictionaryWithObject: type forKey: @"type"];
+
+          address = [NSMutableDictionary dictionaryWithObject: type  forKey: @"type"];
           if (postoffice) [address setObject: postoffice forKey: @"postoffice"];
           if (street2)    [address setObject: street2 forKey: @"street2"];
           if (street)     [address setObject: street forKey: @"street"];

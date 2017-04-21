@@ -277,32 +277,32 @@ convention:
   [self setFn: fn];
 
   element = [self elementWithTag: @"adr" ofType: @"home"];
-  [element setSingleValue: [ldifRecord objectForKey: @"mozillahomestreet2"]
-                  atIndex: 1 forKey: @""];
-  [element setSingleValue: [ldifRecord objectForKey: @"mozillahomestreet"]
-                  atIndex: 2 forKey: @""];
-  [element setSingleValue: [ldifRecord objectForKey: @"mozillahomelocalityname"]
-                  atIndex: 3 forKey: @""];
-  [element setSingleValue: [ldifRecord objectForKey: @"mozillahomestate"]
-                  atIndex: 4 forKey: @""];
-  [element setSingleValue: [ldifRecord objectForKey: @"mozillahomepostalcode"]
-                  atIndex: 5 forKey: @""];
-  [element setSingleValue: [ldifRecord objectForKey: @"mozillahomecountryname"]
-                  atIndex: 6 forKey: @""];
+  [element setValues: [ldifRecord objectForKey: @"mozillahomestreet2"]
+	     atIndex: 1 forKey: @""];
+  [element setValues: [ldifRecord objectForKey: @"mozillahomestreet"]
+	     atIndex: 2 forKey: @""];
+  [element setValues: [ldifRecord objectForKey: @"mozillahomelocalityname"]
+	     atIndex: 3 forKey: @""];
+  [element setValues: [ldifRecord objectForKey: @"mozillahomestate"]
+	     atIndex: 4 forKey: @""];
+  [element setValues: [ldifRecord objectForKey: @"mozillahomepostalcode"]
+	     atIndex: 5 forKey: @""];
+  [element setValues: [ldifRecord objectForKey: @"mozillahomecountryname"]
+	     atIndex: 6 forKey: @""];
 
   element = [self elementWithTag: @"adr" ofType: @"work"];
-  [element setSingleValue: [ldifRecord objectForKey: @"mozillaworkstreet2"]
-                  atIndex: 1 forKey: @""];
-  [element setSingleValue: [ldifRecord objectForKey: @"street"]
-                  atIndex: 2 forKey: @""];
-  [element setSingleValue: [ldifRecord objectForKey: @"l"]
-                  atIndex: 3 forKey: @""];
-  [element setSingleValue: [ldifRecord objectForKey: @"st"]
-                  atIndex: 4 forKey: @""];
-  [element setSingleValue: [ldifRecord objectForKey: @"postalcode"]
-                  atIndex: 5 forKey: @""];
-  [element setSingleValue: [ldifRecord objectForKey: @"c"]
-                  atIndex: 6 forKey: @""];
+  [element setValues: [ldifRecord objectForKey: @"mozillaworkstreet2"]
+	     atIndex: 1 forKey: @""];
+  [element setValues: [ldifRecord objectForKey: @"street"]
+	     atIndex: 2 forKey: @""];
+  [element setValues: [ldifRecord objectForKey: @"l"]
+	     atIndex: 3 forKey: @""];
+  [element setValues: [ldifRecord objectForKey: @"st"]
+	     atIndex: 4 forKey: @""];
+  [element setValues: [ldifRecord objectForKey: @"postalcode"]
+	     atIndex: 5 forKey: @""];
+  [element setValues: [ldifRecord objectForKey: @"c"]
+	     atIndex: 6 forKey: @""];
 
   ou = [ldifRecord objectForKey: @"ou"];
   if ([ou isKindOfClass: [NSArray class]])
@@ -321,13 +321,13 @@ convention:
   [self _setPhoneValues: ldifRecord];
   [self _setEmails: ldifRecord];
   [[self elementWithTag: @"url" ofType: @"home"]
-    setSingleValue: [ldifRecord objectForKey: @"mozillahomeurl"] forKey: @""];
+    setValues: [ldifRecord objectForKey: @"mozillahomeurl"] forKey: @""];
   [[self elementWithTag: @"url" ofType: @"work"]
-    setSingleValue: [ldifRecord objectForKey: @"mozillaworkurl"] forKey: @""];
+    setValues: [ldifRecord objectForKey: @"mozillaworkurl"] forKey: @""];
 
   [[self uniqueChildWithTag: @"x-aim"]
-    setSingleValue: [ldifRecord objectForKey: @"nsaimid"]
-            forKey: @""];
+    setValues: [ldifRecord objectForKey: @"nsaimid"]
+       forKey: @""];
 
   now = [NSCalendarDate date];
   year = [[ldifRecord objectForKey: @"birthyear"] intValue];
