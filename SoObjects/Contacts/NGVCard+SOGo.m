@@ -314,19 +314,20 @@ convention:
   o = [ldifRecord objectForKey: @"o"];
   if ([o isKindOfClass: [NSArray class]])
     [units addObjectsFromArray: (NSArray *)o];
-  else if (ou)
+  else if (o)
     [units addObject: o];
   [self setOrganizations: units];
 
   [self _setPhoneValues: ldifRecord];
   [self _setEmails: ldifRecord];
   [[self elementWithTag: @"url" ofType: @"home"]
-    setValues: [ldifRecord objectForKey: @"mozillahomeurl"] forKey: @""];
+    setValues: [ldifRecord objectForKey: @"mozillahomeurl"] atIndex: 0  forKey: @""];
   [[self elementWithTag: @"url" ofType: @"work"]
-    setValues: [ldifRecord objectForKey: @"mozillaworkurl"] forKey: @""];
+    setValues: [ldifRecord objectForKey: @"mozillaworkurl"] atIndex: 0  forKey: @""];
 
   [[self uniqueChildWithTag: @"x-aim"]
     setValues: [ldifRecord objectForKey: @"nsaimid"]
+      atIndex: 0
        forKey: @""];
 
   now = [NSCalendarDate date];

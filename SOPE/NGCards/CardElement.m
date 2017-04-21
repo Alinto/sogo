@@ -136,7 +136,7 @@
 {
   NSMutableArray *oldValues, *subValues;
 
-  if ([newValues isKindOfClass: [NSString class]])
+  if (newValues && [newValues isKindOfClass: [NSString class]])
     return [self setSingleValue: (NSString *)newValues
 			atIndex: idx
 			 forKey: key];
