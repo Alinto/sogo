@@ -699,4 +699,19 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return v;
 }
 
+//
+// See https://msdn.microsoft.com/en-us/library/gg672032(v=exchg.80).aspx
+//
+- (int) maximumPictureSize
+{
+  int v;
+
+  v = [self integerForKey: @"SOGoMaximumPictureSize"];
+
+  if (!v)
+    v = 102400;
+
+  return v;
+}
+
 @end
