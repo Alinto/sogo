@@ -238,7 +238,7 @@ sources, install the following package:
 rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 ----
 
-SOGo relies on the GNUstep packages provided by Inverse and must not used the
+SOGo relies on the GNUstep packages provided by Inverse and must not use the
 packages from EPEL. Adjust the repository definition to exclude those packages:
 
 ----
