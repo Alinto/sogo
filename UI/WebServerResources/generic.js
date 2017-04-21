@@ -468,8 +468,8 @@ function triggerAjaxRequest(url, callback, userdata, content, headers, attempt) 
         activeAjaxRequests++;
         document.animTimer = setTimeout("checkAjaxRequestsState();", 250);
 
-        if (Prototype.Browser.IE) {
-            // Prevent 304 HTTP status code from the server
+        if (navigator.userAgent.include('Trident')) {
+            // Prevent 304 HTTP status code from the server with IE
             if (url.indexOf('?') >= 0)
                 url += '&';
             else
