@@ -7,6 +7,7 @@ New features
 Enhancements
  - [core] improved event initation for all day events (#4145)
  - [web] improved interface refresh time with external IMAP accounts
+ - [eas] added photo support for GAL search operations
 
 Bug fixes
  - [web] fixed attachment path when inside multiple body parts
