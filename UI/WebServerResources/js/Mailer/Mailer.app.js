@@ -146,16 +146,21 @@
   /**
    * @ngInject
    */
-  stateAccounts.$inject = ['$q', 'Account'];
-  function stateAccounts($q, Account) {
-    var accounts = Account.$findAll(window.mailAccounts),
+  stateAccounts.$inject = ['$window', '$q', 'Account'];
+  function stateAccounts($window, $q, Account) {
+    var accounts = Account.$findAll($window.mailAccounts),
         promises = [];
     // Fetch list of mailboxes for each account
     angular.forEach(accounts, function(account, i) {
       var mailboxes = account.$getMailboxes();
-      promises.push(mailboxes.then(function(objects) {
-        return account;
-      }));
+      if (i === 0)
+        // Make sure we have the list of mailboxes of the first account
+        promises.push(mailboxes.then(function(objects) {
+          return account;
+        }));
+      else
+        // Don't wait for external accounts
+        promises.push(account);
     });
     return $q.all(promises);
   }
