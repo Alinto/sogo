@@ -3,6 +3,7 @@
 
 Enhancements
  - [core] improved event initation for all day events (#4145)
+ - [eas] added photo support for GAL search operations
 
 Bug fixes
  - [core] fixed calendar component move across collections (#4116)
