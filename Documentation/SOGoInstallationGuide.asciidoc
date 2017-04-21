@@ -2726,6 +2726,12 @@ have unexpected behaviour with various ActiveSync clients.
 EAS command.
 
 Defaults to `NO`, which means no logging is performed.
+
+|S |SOGoMaximumPictureSize
+|Parameter used to overwrite the maximum number of bytes returned in the picture
+for EAS Search operations in the GAL.
+
+If not set, it defaults to `102400` bytes, or 100 KB.
 |=======================================================================
 
 Please be aware of the following limitations:

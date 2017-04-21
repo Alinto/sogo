@@ -111,6 +111,7 @@
 - (int) internalSyncInterval;
 - (int) maximumSyncWindowSize;
 - (int) maximumSyncResponseSize;
+- (int) maximumPictureSize;
 
 @end
 
