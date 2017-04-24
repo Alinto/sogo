@@ -22,6 +22,8 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "location_label" = "Ort";
 "summary_label" = "Zusammenfassung:";
 "comment_label" = "Kommentar:";
+"organizer_label" = "Organisator";
+"attendee_label" = "Teilnehmer";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Termineinladung: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(gesendet von %{SentBy}) ";
