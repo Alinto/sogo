@@ -311,6 +311,8 @@
           fn = email.value;
       }
     }
+    if (this.contactinfo)
+      fn += ' (' + this.contactinfo.split("\n").join("; ") + ')';
 
     return fn;
   };

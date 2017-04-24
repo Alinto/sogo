@@ -131,7 +131,12 @@
    * @return a string representing the fullname
    */
   User.prototype.$fullname = function() {
-    return this.cn || this.uid;
+    var fullname = this.cn || this.uid;
+
+    if (this.c_info)
+      fullname += ' (' + this.c_info.split("\n").join("; ") + ')';
+
+    return fullname;
   };
 
   /**

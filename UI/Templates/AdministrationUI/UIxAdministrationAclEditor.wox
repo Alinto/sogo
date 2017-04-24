@@ -61,7 +61,7 @@
               <span class="md-contact-suggestion">
                 <span class="md-contact-name"
                       md-highlight-text="acl.searchText"
-                      md-highlight-flags="^i">{{user.cn}}</span>
+                      md-highlight-flags="^i">{{ user.$fullname() }}</span>
                 <span class="md-contact-email"
                       md-highlight-text="acl.searchText"
                       md-highlight-flags="^i">{{user.c_email}}</span>
