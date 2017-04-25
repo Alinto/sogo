@@ -236,19 +236,40 @@ convention:
 - (void) _setEmails: (NSDictionary *) ldifRecord
 {
   CardElement *homeMail;
-  NSString* mail;
+  NSArray *emails;
+  NSEnumerator *mailList;
+  id mail;
 
   // Emails from the configured mail fields of the source have already been extracted in
   // [LDAPSource _fillEmailsOfEntry:intoLDIFRecord:]
   [self addElementWithTag: @"email"
                    ofType: @"work"
                 withValue: [ldifRecord objectForKey: @"c_emails"]];
+
   // When importing an LDIF file, add the default mail attribute
   mail = [ldifRecord objectForKey: @"mail"];
-  if ([mail length] && ![[self emails] containsObject: mail])
-    [self addElementWithTag: @"email"
-                     ofType: @"work"
-                  withValue: [ldifRecord objectForKey: @"mail"]];
+  if (mail)
+    {
+      emails = [self emails];
+      if ([mail isKindOfClass: [NSArray class]])
+        {
+          mailList = [(NSArray *)mail objectEnumerator];
+          while ((mail = [mailList nextObject]))
+            {
+              if ([mail length] && ![emails containsObject: mail])
+                [self addElementWithTag: @"email"
+                                 ofType: @"work"
+                              withValue: mail];
+            }
+        }
+      else if ([mail length] && ![emails containsObject: mail])
+        {
+          [self addElementWithTag: @"email"
+                           ofType: @"work"
+                        withValue: mail];
+        }
+    }
+
   homeMail = [self elementWithTag: @"email" ofType: @"home"];
   [homeMail setSingleValue: [ldifRecord objectForKey: @"mozillasecondemail"] forKey: @""];
   [[self uniqueChildWithTag: @"x-mozilla-html"]

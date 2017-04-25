@@ -25,6 +25,7 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGCards/NSDictionary+NGCards.h>
 
 #import "SOGoUser.h"
 #import "SOGoUserDefaults.h"
@@ -74,14 +75,15 @@
  */
 - (NSString *) jsonRepresentation
 {
-  NSString *v;
+  id v;
   NSMutableDictionary *attrs;
 
   attrs = [NSMutableDictionary dictionary];
 
-  v = [self value: 0 ofAttribute: @"type"];
-  if ([v length])
-    [attrs setObject: v
+  v = [[self attributes] objectForCaseInsensitiveKey: @"type"];
+  if (v && [v isKindOfClass: [NSArray class]] && [v count])
+    // We can have multiple types, but we only return the first one
+    [attrs setObject: [v objectAtIndex: 0]
               forKey: @"type"];
   [attrs setObject: [self flattenedValuesForKey: @""]
             forKey: @"value"];
