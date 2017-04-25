@@ -1,6 +1,6 @@
 /* SOGoUserDefaults.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2016 Inverse inc.
+ * Copyright (C) 2009-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -494,7 +494,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self stringArrayForKey: @"SOGoMailListViewColumnsOrder"];
 }
 
-- (void) setSelectedAddressBook:(NSString *) newValue
+- (void) setSelectedAddressBook: (NSString *) newValue
 {
   [self setObject: newValue forKey: @"SOGoSelectedAddressBook"];
 }
@@ -527,6 +527,19 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 - (NSString *) alternateAvatar
 {
   return [self stringForKey: @"SOGoAlternateAvatar"];
+}
+
+- (void) setAnimationMode: (NSString *) newValue
+{
+  if ([newValue isEqualToString: @"normal"] ||
+      [newValue isEqualToString: @"limited"] ||
+      [newValue isEqualToString: @"none"])
+    [self setObject: newValue forKey: @"SOGoAnimationMode"];
+}
+
+- (NSString *) animationMode
+{
+  return [self stringForKey: @"SOGoAnimationMode"];
 }
 
 - (void) setMailComposeMessageType: (NSString *) newValue

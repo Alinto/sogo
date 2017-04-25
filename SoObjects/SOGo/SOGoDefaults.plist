@@ -87,6 +87,7 @@
     SOGoExternalAvatarsEnabled = YES;
     SOGoGravatarEnabled = NO;
     SOGoAlternateAvatar = "none";
+    SOGoAnimationMode = "normal";
 
     SOGoIMAPServer = "localhost";
     SOGoMailDomain = "localhost";

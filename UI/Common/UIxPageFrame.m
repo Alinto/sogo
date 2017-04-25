@@ -39,16 +39,27 @@
 
 - (id) init
 {
+
   if ((self = [super init]))
     {
+      NSString *filename;
+      SOGoUserDefaults *ud;
+
       item = nil;
       title = nil;
       toolbar = nil;
       udKeys = nil;
       usKeys = nil;
       additionalJSFiles = nil;
-      additionalCSSFiles = nil;
+      additionalCSSFiles = [NSMutableArray new];
       systemAdditionalJSFiles = nil;
+
+      ud = [[context activeUser] userDefaults];
+      if ([[ud animationMode] isEqualToString: @"none"])
+        {
+          filename = [self urlForResourceFilename: @"css/no-animation.css"];
+          [additionalCSSFiles addObject: filename];
+        }
     }
 
   return self;
@@ -335,9 +346,6 @@
   NSEnumerator *cssFiles;
   NSString *currentFile, *filename;
 
-  [additionalCSSFiles release];
-  additionalCSSFiles = [NSMutableArray new];
-
   cssFiles = [[newCSSFiles componentsSeparatedByString: @","] objectEnumerator];
   while ((currentFile = [cssFiles nextObject]))
     {
@@ -587,15 +595,20 @@
   return [self _dictionaryWithKeys: usKeys fromSource: us];
 }
 
+
 /* browser/os identification */
 
 - (BOOL) disableInk
 {
+  SOGoUserDefaults *ud;
   WEClientCapabilities *cc;
 
+  ud = [[context activeUser] userDefaults];
   cc = [[context request] clientCapabilities];
 
-  return [[cc userAgentType] isEqualToString: @"IE"];
+  return [[cc userAgentType] isEqualToString: @"IE"] ||
+    [[ud animationMode] isEqualToString: @"limited"] ||
+    [[ud animationMode] isEqualToString: @"none"];
 }
 
 - (BOOL) isCompatibleBrowser

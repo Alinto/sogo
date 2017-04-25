@@ -219,6 +219,16 @@
               </md-input-container>
             </div>
             </var:if>
+
+            <md-input-container class="md-block md-input-has-value">
+              <label><var:string label:value="Animation Level"/></label>
+              <md-radio-group ng-model="app.preferences.defaults.SOGoAnimationMode">
+                <md-radio-button value="normal"><var:string label:value="animation_NORMAL"/></md-radio-button>
+                <md-radio-button value="limited"><var:string label:value="animation_LIMITED"/></md-radio-button>
+                <md-radio-button value="none"><var:string label:value="animation_NONE"/></md-radio-button>
+              </md-radio-group>
+            </md-input-container>
+
           </div>
         </md-content>
       </md-tab>

@@ -1,6 +1,6 @@
 /* SOGoUserDefaults.h - this file is part of SOGo
  *
- * Copyright (C) 2011-2016 Inverse inc.
+ * Copyright (C) 2011-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -129,6 +129,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (BOOL) gravatarEnabled;
 - (void) setAlternateAvatar: (NSString *) newValue;
 - (NSString *) alternateAvatar;
+
+- (void) setAnimationMode: (NSString *) newValue;
+- (NSString *) animationMode;
 
 - (void) setMailComposeMessageType: (NSString *) newValue;
 - (NSString *) mailComposeMessageType;
