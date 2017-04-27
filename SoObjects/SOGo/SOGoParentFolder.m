@@ -1,6 +1,6 @@
 /* SOGoParentFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2015 Inverse inc.
+ * Copyright (C) 2006-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -316,6 +316,12 @@ static SoSecurityManager *sm = nil;
   id o;
   int i;
   BOOL dirty;
+
+  if (!subscribedSubFolders)
+    subscribedSubFolders = [NSMutableDictionary new];
+
+  if (!subFolderClass)
+    subFolderClass = [[self class] subFolderClass];
 
   error = nil; /* we ignore non-DB errors at this time... */
   dirty = NO;
