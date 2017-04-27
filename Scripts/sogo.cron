@@ -12,7 +12,7 @@
 # Email alarms - runs every minutes
 # If you need to use SMTP AUTH for outgoing mails, specify credentials to use
 # with '-p /path/to/credentialsFile' (same format as the sieve credentials)
-#* * * * *      sogo	/usr/sbin/sogo-ealarms-notify
+#* * * * *      sogo	/usr/sbin/sogo-ealarms-notify > /dev/null 2>&1
 
 # Daily backups
 #   - writes to ~sogo/backups/ by default
