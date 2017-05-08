@@ -400,3 +400,11 @@
 "monsterid" = "Monster";
 "wavatar" = "Wavatar";
 "retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Poziom animacji";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normalny";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Ograniczony";
+"animation_NONE" = "Bez animacji";
