@@ -255,14 +255,14 @@
   /**
    * @ngInject
    */
-  ErrorInterceptor.$inject = ['$rootScope', '$q', '$injector'];
-  function ErrorInterceptor($rootScope, $q, $injector) {
+  ErrorInterceptor.$inject = ['$rootScope', '$window', '$q', '$injector'];
+  function ErrorInterceptor($rootScope, $window, $q, $injector) {
     return {
       responseError: function(rejection) {
         var deferred, iframe;
         if (/^application\/json/.test(rejection.config.headers.Accept)) {
-          // Handle CAS ticket renewal (TODO: add check on usesCASAuthentication)
-          if (rejection.status == -1) {
+          // Handle CAS ticket renewal
+          if ($window.usesCASAuthentication && rejection.status == -1) {
             deferred = $q.defer();
             iframe = angular.element('<iframe class="ng-hide" src="' + UserFolderURL + 'recover"></iframe>');
             iframe.on('load', function() {
