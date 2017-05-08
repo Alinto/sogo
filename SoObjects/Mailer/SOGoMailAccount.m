@@ -1092,13 +1092,20 @@ static NSString *inboxFolderName = @"INBOX";
 
 - (void) _setDelegates: (NSArray *) newDelegates
 {
+  NSMutableDictionary *mailSettings;
   SOGoUser *ownerUser;
   SOGoUserSettings *settings;
 
   ownerUser = [SOGoUser userWithLogin: [self ownerInContext: context]];
   settings = [ownerUser userSettings];
-  [[settings objectForKey: @"Mail"] setObject: newDelegates
-                                       forKey: @"DelegateTo"];
+  mailSettings = [settings objectForKey: @"Mail"];
+  if (!mailSettings)
+    {
+      mailSettings = [NSMutableDictionary dictionaryWithCapacity: 1];
+      [settings setObject: mailSettings forKey: @"Mail"];
+    }
+  [mailSettings setObject: newDelegates
+                   forKey: @"DelegateTo"];
   [settings synchronize];
 }
 

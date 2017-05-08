@@ -45,11 +45,18 @@
 
 - (void) _setMailDelegators: (NSArray *) newDelegators
 {
+  NSMutableDictionary *mailSettings;
   SOGoUserSettings *settings;
 
   settings = [self userSettings];
-  [[settings objectForKey: @"Mail"] setObject: newDelegators
-                                       forKey: @"DelegateFrom"];
+  mailSettings = [settings objectForKey: @"Mail"];
+  if (!mailSettings)
+    {
+      mailSettings = [NSMutableDictionary dictionaryWithCapacity: 1];
+      [settings setObject: mailSettings forKey: @"Mail"];
+    }
+  [mailSettings setObject: newDelegators
+                   forKey: @"DelegateFrom"];
   [settings synchronize];
 }
 
