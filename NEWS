@@ -21,6 +21,7 @@ Bug fixes
  - [core] fixed email reminders sent multiple times (#4100)
  - [core] fixed LDIF to vCard conversion for non-handled multi-value attributes (#4086)
  - [core] properly honor the "include in freebusy" setting (#3354)
+ - [core] make sure to use crypt scheme when encoding md5/sha256/sha512 (#4137)
  - [eas] set reply/forwarded flags when ReplaceMime is set (#4133)
  - [eas] remove alarms over EAS if we don't want them (#4059)
  - [eas] correctly set RSVP on event invitations
