@@ -197,6 +197,13 @@
       return nil;
     }
 
+  if ([_userPasswordAlgorithm caseInsensitiveCompare: @"md5-crypt"] == NSOrderedSame ||
+      [_userPasswordAlgorithm caseInsensitiveCompare: @"sha256-crypt"] == NSOrderedSame ||
+      [_userPasswordAlgorithm caseInsensitiveCompare: @"sha512-crypt"] == NSOrderedSame)
+    {
+      _userPasswordAlgorithm = @"crypt";
+    }
+
   if (_prependPasswordScheme)
     result = [NSString stringWithFormat: @"{%@}%@", _userPasswordAlgorithm, pass];
   else
