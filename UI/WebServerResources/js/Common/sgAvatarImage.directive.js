@@ -12,8 +12,7 @@
    * @example:
      <sg-avatar-image sg-email="test@email.com" size="50">person</sg-avatar-image>
   */
-  sgAvatarImage.$inject = ['$parse'];
-  function sgAvatarImage($parse) {
+  function sgAvatarImage() {
     return {
       restrict: 'AE',
       scope: {},

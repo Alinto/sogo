@@ -89,8 +89,6 @@
 
         // Start dragging on mousedown
         onDragDetect: function(ev) {
-          var dragMode, pointerHandler;
-
           ev.stopPropagation();
 
           if (!this.dragStart || this.dragStart(scope)) {

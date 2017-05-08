@@ -88,7 +88,7 @@
     function edit(folder) {
       if (!folder.isRemote) {
         vm.editMode = folder.id;
-        vm.originalAddressbook = angular.extend({}, folder.$omit());
+        vm.originalAddressbook = folder.$omit();
         focus('addressBookName_' + folder.id);
       }
     }
