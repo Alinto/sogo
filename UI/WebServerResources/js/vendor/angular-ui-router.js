@@ -1,6 +1,10 @@
 /**
  * State-based routing for AngularJS 1.x
- * @version v1.0.1
+ * NOTICE: This monolithic bundle also bundles the @uirouter/core code.
+ *         This causes it to be incompatible with plugins that depend on @uirouter/core.
+ *         We recommend switching to the ui-router-core.js and ui-router-angularjs.js bundles instead.
+ *         For more information, see http://ui-router.github.io/blog/angular-ui-router-umd-bundles
+ * @version v1.0.3
  * @link https://ui-router.github.io
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -642,10 +646,9 @@ function ancestors(first, second) {
 }
 /**
  * Return a copy of the object only containing the whitelisted properties.
-
- * @example
- * ```
  *
+ * #### Example:
+ * ```
  * var foo = { a: 1, b: 2, c: 3 };
  * var ab = pick(foo, ['a', 'b']); // { a: 1, b: 2 }
  * ```
@@ -653,11 +656,13 @@ function ancestors(first, second) {
  * @param propNames an Array of strings, which are the whitelisted property names
  */
 function pick(obj, propNames) {
-    var copy = {};
-    // propNames.forEach(prop => { if (obj.hasOwnProperty(prop)) copy[prop] = obj[prop] });
-    propNames.forEach(function (prop$$1) { if (isDefined(obj[prop$$1]))
-        copy[prop$$1] = obj[prop$$1]; });
-    return copy;
+    var objCopy = {};
+    for (var prop_1 in obj) {
+        if (propNames.indexOf(prop_1) !== -1) {
+            objCopy[prop_1] = obj[prop_1];
+        }
+    }
+    return objCopy;
 }
 /**
  * Return a copy of the object omitting the blacklisted properties.
@@ -8041,7 +8046,9 @@ var TemplateFactory = (function () {
             return null;
         if (this._useHttp) {
             return this.$http.get(url, { cache: this.$templateCache, headers: { Accept: 'text/html' } })
-                .then(function (response) { return response.data; });
+                .then(function (response) {
+                return response.data;
+            });
         }
         return this.$templateRequest(url);
     };
@@ -8093,19 +8100,24 @@ var TemplateFactory = (function () {
         bindings = bindings || {};
         // Bind once prefix
         var prefix = ng.version.minor >= 3 ? "::" : "";
+        // Convert to kebob name. Add x- prefix if the string starts with `x-` or `data-`
+        var kebob = function (camelCase) {
+            var kebobed = kebobString(camelCase);
+            return /^(x|data)-/.exec(kebobed) ? "x-" + kebobed : kebobed;
+        };
         var attributeTpl = function (input) {
             var name = input.name, type = input.type;
-            var attrName = kebobString(name);
+            var attrName = kebob(name);
             // If the ui-view has an attribute which matches a binding on the routed component
             // then pass that attribute through to the routed component template.
             // Prefer ui-view wired mappings to resolve data, unless the resolve was explicitly bound using `bindings:`
             if (uiView.attr(attrName) && !bindings[name])
-                return "x-" + attrName + "='" + uiView.attr(attrName) + "'";
+                return attrName + "='" + uiView.attr(attrName) + "'";
             var resolveName = bindings[name] || name;
             // Pre-evaluate the expression for "@" bindings by enclosing in {{ }}
             // some-attr="{{ ::$resolve.someResolveName }}"
             if (type === '@')
-                return "x-" + attrName + "='{{" + prefix + "$resolve." + resolveName + "}}'";
+                return attrName + "='{{" + prefix + "$resolve." + resolveName + "}}'";
             // Wire "&" callbacks to resolves that return a callback function
             // Get the result of the resolve (should be a function) and annotate it to get its arguments.
             // some-attr="$resolve.someResolveResultName(foo, bar)"
@@ -8115,16 +8127,13 @@ var TemplateFactory = (function () {
                 var args = fn && services.$injector.annotate(fn) || [];
                 // account for array style injection, i.e., ['foo', function(foo) {}]
                 var arrayIdxStr = isArray(fn) ? "[" + (fn.length - 1) + "]" : '';
-                return "x-" + attrName + "='$resolve." + resolveName + arrayIdxStr + "(" + args.join(",") + ")'";
+                return attrName + "='$resolve." + resolveName + arrayIdxStr + "(" + args.join(",") + ")'";
             }
             // some-attr="::$resolve.someResolveName"
-            return "x-" + attrName + "='" + prefix + "$resolve." + resolveName + "'";
+            return attrName + "='" + prefix + "$resolve." + resolveName + "'";
         };
         var attrs = getComponentBindings(component).map(attributeTpl).join(" ");
-        var kebobName = kebobString(component);
-        if (/^(x|data)-/.exec(kebobName)) {
-            kebobName = "x-" + kebobName;
-        }
+        var kebobName = kebob(component);
         return "<" + kebobName + " " + attrs + "></" + kebobName + ">";
     };
     
