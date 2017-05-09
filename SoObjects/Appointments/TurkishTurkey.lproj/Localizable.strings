@@ -11,33 +11,37 @@ vtodo_class2 = "(Gizli görev)";
 "The event \"%{Summary}\" was created" = "\"%{Summary}\" etkinliği oluşturuldu";
 "The event \"%{Summary}\" was deleted" = "\"%{Summary}\" etkinliği silindi";
 "The event \"%{Summary}\" was updated" = "\"%{Summary}\" etkinliği güncellendi";
-"The following attendees(s) were notified" = "Şu katılımcı(lar) haberdar edilidi";
+"The following attendees(s) were notified" = "Şu katılımcı(lar) bilgilendirildi";
 "The following attendees(s) were added" = "Şu katılımcılar eklendi";
 "The following attendees(s) were removed" = "Şu katılımcılar çıkarıldı";
 /* IMIP messages */
 "calendar_label" = "Takvim";
 "startDate_label" = "Başlangıç";
 "endDate_label" = "Bitiş";
+"time_label" = "Saat";
+"to_label" = "alıcı";
 "due_label" = "Kapanış Tarihi";
 "location_label" = "Konum";
 "summary_label" = "Özet";
 "comment_label" = "Açıklama";
+"organizer_label" = "Düzenleyen";
+"attendee_label" = "Katılımcı";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Etkinlik Daveti: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(%{SentBy} tarafından gönderilidi) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}sizi %{Summary} etkinliğine davet etti.\n\nBaşlangıç: %{StartDate}\nBitiş: %{EndDate}\nTanım: %{Description}";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}sizi %{Summary} etkinliğine davet etti.\n\nBaşlangıç: %{StartDate} saat %{StartTime}\nBitiş: %{EndDate} saat %{EndTime}\nTanım: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} sizi %{Summary} etkinliğine davet etti.\n\nBaşlangıç Tarihi: %{StartDate} saat %{StartTime}\nBitiş Tarihi: %{EndDate} saat %{EndTime}\nAçıklama: %{Description}";
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Etkinlik İptal Edildi: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}şu etkiliği iptal etti: %{Summary}.\n\nBaşlangıç: %{StartDate}\nBitiş: %{EndDate}\nTanım: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText}şu etkinliği iptal etti: %{Summary}.\n\nBaşlangıç: %{StartDate} saat %{StartTime}\nBitiş: %{EndDate} saat %{EndTime}\nTanım: %{Description}";
+= "%{Organizer} %{SentByText} %{Summary} etkinliğini iptal etti.\n\nBaşlangıç Tarihi: %{StartDate} saat %{StartTime}\nBitiş Tarihi: %{EndDate} saat %{EndTime}\nAçıklama: %{Description}";
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "%{OldStartDate} tarihindeki \"%{Summary}\" çalışması değişti";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= " %{OldStartDate} tarihli ve %{OldStartTime} başlangıç saatli \"%{Summary}\" çalışması değişti";
+= " %{OldStartDate} tarihli ve %{OldStartTime} başlangıç saatli \"%{Summary}\" çalışması değiştirildi";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
 = "\"%{Summary}\" buluşmasının şu özellikleri değişti:";
 "Please accept or decline those changes."

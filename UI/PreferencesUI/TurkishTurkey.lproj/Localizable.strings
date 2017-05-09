@@ -108,9 +108,9 @@
 
 /* calendar */
 "Week begins on" = "Haftanın ilk günü";
-"Day start time" = "Günün başlangıç saati";
-"Day end time" = "Günün bitiş saati";
-"Day start time must be prior to day end time." = "Günün başlangıç saati, günün bitiş saatinden önce olmalı.";
+"Day start time" = "Gün başlangıç saati";
+"Day end time" = "Gün bitiş saati";
+"Day start time must be prior to day end time." = "Gün başlangıç saati, gün bitiş saatinden önce olmalı.";
 "Week days to display" = "Gösterilen günler";
 "Show time as busy outside working hours" = "Mesai dışındaki saatleri meşgul olarak göster";
 "First week of year" = "Yılın ilk haftası";
@@ -400,3 +400,11 @@
 "monsterid" = "Canavar";
 "wavatar" = "Wavatar";
 "retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Animasyon Seviyesi";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normal";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Sınırlı";
+"animation_NONE" = "Yok";
