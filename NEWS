@@ -1,11 +1,11 @@
-3.2.9 (2017-04-XX)
+3.2.9 (2017-05-09)
 ------------------
 
 New features
  - [core] email alarms now have pretty formatting (#805)
 
 Enhancements
- - [core] improved event initation for all day events (#4145)
+ - [core] improved event invitation for all day events (#4145)
  - [web] improved interface refresh time with external IMAP accounts
  - [eas] added photo support for GAL search operations
 
