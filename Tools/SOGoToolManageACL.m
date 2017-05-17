@@ -35,11 +35,16 @@
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoGCSFolder.h>
+#import <SOGo/SOGoParentFolder.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoSystemDefaults.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/NGVCard.h>
+
+#import <NGObjWeb/WOContext+SoObjects.h>
 
 #import "SOGoTool.h"
 
@@ -49,6 +54,8 @@ typedef enum
   ManageACLGet = 0,
   ManageACLAdd = 1,
   ManageACLRemove = 2,
+  ManageACLSubscribe = 3,
+  ManageACLUnsubscribe = 3,
 } SOGoManageACLCommand;
 
 @interface SOGoToolManageACL : SOGoTool
@@ -99,14 +106,16 @@ typedef enum
 
 - (void) usage
 {
-  fprintf (stderr, "manage-acl get|add|remove owner folder user <rights>\n\n"
-	   "           get        get ACL information of folder for user\n"
-	   "           add        add ACL information of folder for user\n"
-	   "           remove     remove all ACL information of folder for user\n"
-           "           owner      the user owning the folder\n"
-	   "           folder     the folder - Calendar/<ID> or Contacst/<ID>\n"
-	   "           user       the user to get/set rights for - 'ALL', '<default>', 'anonymous' are supported\n"
-           "           rights     rights to add\n\n"
+  fprintf (stderr, "manage-acl get|add|remove|subscribe|unsubscribe owner folder user <rights>\n\n"
+	   "           get          get ACL information of folder for user\n"
+	   "           add          add ACL information of folder for user\n"
+	   "           remove       remove all ACL information of folder for user\n"
+	   "           subscribe    subscribe user to owner's folder\n"
+	   "           unsubscribe  unsubscribe user to owner's folder\n"
+           "           owner        the user owning the folder\n"
+	   "           folder       the folder - Calendar/<ID> or Contacst/<ID>\n"
+	   "           user         the user to get/set rights for - 'ALL', '<default>', 'anonymous' are supported\n"
+           "           rights       rights to add\n\n"
            "Example:   sogo-tool manage-acl get jdoe Calendar/personal\n\n"
            "Note:      You can add only one access right at the time. To set them all at once,\n"
            "           invoke 'remove' first to remove them all.\n\n");
@@ -131,6 +140,10 @@ typedef enum
 	}
       else if ([s isEqualToString: @"remove"])
 	command = ManageACLRemove;
+      else if ([s isEqualToString: @"subscribe"])
+	command = ManageACLSubscribe;
+      else if ([s isEqualToString: @"unsubscribe"])
+	command = ManageACLUnsubscribe;
       else
 	{
 	  [self usage];
@@ -349,9 +362,7 @@ typedef enum
   if ([theUser isEqualToString: @"ALL"])
     qs = [NSString stringWithFormat: @"c_uid LIKE '\%'", theUser];
   else
-    {
-      qs = [NSString stringWithFormat: @"c_uid = '%@'", theUser];
-    }
+    qs = [NSString stringWithFormat: @"c_uid = '%@'", theUser];
 
   qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
   
@@ -361,6 +372,30 @@ typedef enum
   path = [[[[theFolder path] pathComponents] subarrayWithRange: NSMakeRange(2,3)] componentsJoinedByString: @"/"];
   [[SOGoCache sharedCache] setACLs: nil
 			   forPath: path];
+}
+
+- (void) subscribeOrUnsubscribeUser: (NSString *) theUser
+			   toFolder: (GCSFolder *) theFolder
+			   reallyDo: (BOOL) reallyDo
+{
+  SOGoParentFolder *parentFolder;
+  SOGoUserFolder *userFolder;
+  SOGoGCSFolder *gcsFolder;
+  WOContext *localContext;
+  NSArray *components;
+
+  localContext = [WOContext context];
+  [localContext setActiveUser: [SOGoUser userWithLogin: owner]];
+  userFolder = [SOGoUserFolder objectWithName: owner inContainer: nil];
+  components = [folder componentsSeparatedByString: @"/"];
+  parentFolder = [userFolder lookupName: [components objectAtIndex: 0]
+			      inContext: localContext
+				acquire: NO];
+
+  gcsFolder = [parentFolder lookupPersonalFolder: [components objectAtIndex: 1]
+				  ignoringRights: YES];
+
+  [gcsFolder subscribeUserOrGroup: user  reallyDo: YES  response: nil];
 }
 
 - (BOOL) proceed
@@ -391,6 +426,10 @@ typedef enum
 	[self removeACLForUser: user  folder: f];
       else if (command == ManageACLAdd)
 	[self addACLForUser: user  folder: f];
+      else if (command == ManageACLSubscribe)
+	[self subscribeOrUnsubscribeUser: user  toFolder: f  reallyDo: YES];
+      else if (command == ManageACLUnsubscribe)
+	[self subscribeOrUnsubscribeUser: user  toFolder: f  reallyDo: NO];
       else
 	[self usage];
     }

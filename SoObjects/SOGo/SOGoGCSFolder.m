@@ -373,7 +373,9 @@ static NSArray *childRecordFields = nil;
       dd = [[context activeUser] domainDefaults];
       displayNameFormat = [dd subscriptionFolderFormat];
 
-      name = [folderSubscriptionValues keysWithFormat: displayNameFormat];
+      // Use a format only if it was defined by the user
+      if (displayNameFormat)
+	name = [folderSubscriptionValues keysWithFormat: displayNameFormat];
     }
 
   return name;
