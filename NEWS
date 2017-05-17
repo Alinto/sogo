@@ -3,6 +3,7 @@
 
 Enhancements
  - [core] improved event initation for all day events (#4145)
+ - [core] now possible to {un}subscribe to folders using sogo-tool
  - [eas] added photo support for GAL search operations
 
 Bug fixes
