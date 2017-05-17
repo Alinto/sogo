@@ -395,7 +395,7 @@ typedef enum
   gcsFolder = [parentFolder lookupPersonalFolder: [components objectAtIndex: 1]
 				  ignoringRights: YES];
 
-  [gcsFolder subscribeUserOrGroup: user  reallyDo: YES  response: nil];
+  [gcsFolder subscribeUserOrGroup: user  reallyDo: reallyDo  response: nil];
 }
 
 - (BOOL) proceed
