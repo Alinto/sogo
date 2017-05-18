@@ -55,11 +55,11 @@
               <sg-avatar-image class="md-avatar"
                                sg-email="user.c_email"
                                ng-disabled="user.inactive"
-                               size="40">{{ user.$avatarIcon }}</sg-avatar-image>
+                               size="40">{{ ::user.$avatarIcon }}</sg-avatar-image>
             </div>
             <div class="sg-tile-content">
-              <div class="sg-md-subhead"><div>{{user.$fullname()}}</div></div>
-              <div class="sg-md-body"><div>{{user.c_email}}</div></div>
+              <div class="sg-md-subhead"><div ng-bind="::user.$fullname()"><!-- username --></div></div>
+              <div class="sg-md-body"><div ng-bind="::user.c_email"><!-- email --></div></div>
             </div>
 	    <md-button class="md-icon-button md-secondary" type="button"
                        ng-click="acl.selectAllRights(user)"
@@ -102,7 +102,7 @@
 
     <md-dialog-content class="md-default-theme md-bg md-warn md-padding sg-dialog-message ng-hide"
                        ng-show="acl.confirmation.showing">
-      <div>{{acl.confirmation.message}}</div>
+      <div ng-bind="acl.confirmation.message"><!-- message --></div>
     </md-dialog-content>
     <md-dialog-actions ng-show="acl.confirmation.showing">
       <md-button ng-click="acl.selectedUser.$resetRights(true); acl.confirmation.showing = false">

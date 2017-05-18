@@ -6,16 +6,16 @@
     xmlns:label="OGo:label">
   <md-toolbar class="sg-padded md-hue-2 md-tall" flex-none="flex-none">
     <sg-avatar-image class="md-tile-left"
-                     sg-email="activeUser.email"
+                     sg-email="::activeUser.email"
                      size="40">person</sg-avatar-image>
     <div layout="row" layout-align="space-between center">
       <div style="overflow: hidden">
-        <p class="sg-md-title sg-no-wrap">{{activeUser.identification}}</p>
-        <p class="md-caption sg-no-wrap">{{activeUser.email}}</p>
+        <p class="sg-md-title sg-no-wrap" ng-bind="::activeUser.identification"><!-- username --></p>
+        <p class="md-caption sg-no-wrap" ng-bind="::activeUser.email"><!-- email --></p>
       </div>
       <md-button class="md-icon-button"
-                 ng-hide="baseURL.endsWith('/Preferences')"
-                 ng-href="{{activeUser.path.preferences}}">
+                 ng-hide="::baseURL.endsWith('/Preferences')"
+                 ng-href="{{::activeUser.path.preferences}}">
         <md-icon>settings</md-icon>
         <md-tooltip><var:string label:value="Preferences"/></md-tooltip>
       </md-button>
