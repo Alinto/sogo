@@ -44,6 +44,7 @@
       selectedFolder: null,
       $refreshTimeout: null,
       $virtualMode: false,
+      $virtualPath: false,
       PRELOAD: PRELOAD
     });
     // Initialize sort parameters from user's settings
@@ -477,6 +478,16 @@
   };
 
   /**
+   * @function getClassName
+   * @memberof Mailbox.prototype
+   * @desc Not used but defined because it is called from UIxAclEditor.wox.
+   * @returns a string representing the foreground CSS class name
+   */
+  Mailbox.prototype.getClassName = function(base) {
+    return false;
+  };
+
+  /**
    * @function $rename
    * @memberof AddressBook.prototype
    * @desc Rename the addressbook and keep the list sorted
@@ -623,7 +634,14 @@
    * @returns a promise of the HTTP operation
    */
   Mailbox.prototype.$markAsRead = function() {
-    return Mailbox.$$resource.post(this.id, 'markRead');
+    var _this = this;
+
+    return Mailbox.$$resource.post(this.id, 'markRead').then(function() {
+      _this.unseenCount = 0;
+      _.forEach(_this.$messages, function(message) {
+        message.isread = true;
+      });
+    });
   };
 
   /**
@@ -931,6 +949,7 @@
     }, function(data) {
       angular.extend(_this, data);
       _this.isError = true;
+      _this.$isLoading = false;
       deferred.reject();
     });
 

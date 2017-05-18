@@ -6,70 +6,47 @@
   /**
    * @ngInject
    */
-  MailboxesController.$inject = ['$scope', '$state', '$timeout', '$window', '$mdDialog', '$mdToast', '$mdMedia', '$mdSidenav', 'sgConstant', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'sgHotkeys', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
-  function MailboxesController($scope, $state, $timeout, $window, $mdDialog, $mdToast, $mdMedia, $mdSidenav, sgConstant, focus, encodeUriFilter, Dialog, Settings, sgHotkeys, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
+  MailboxesController.$inject = ['$scope', '$state', '$transitions', '$timeout', '$window', '$mdDialog', '$mdToast', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'sgHotkeys', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
+  function MailboxesController($scope, $state, $transitions, $timeout, $window, $mdDialog, $mdToast, focus, encodeUriFilter, Dialog, Settings, sgHotkeys, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
     var vm = this,
         account,
         mailbox,
         hotkeys = [];
 
-    vm.service = Mailbox;
-    vm.accounts = stateAccounts;
-    vm.toggleAccountState = toggleAccountState;
-    vm.subscribe = subscribe;
-    vm.newFolder = newFolder;
-    vm.delegate = delegate;
-    vm.editFolder = editFolder;
-    vm.revertEditing = revertEditing;
-    vm.selectFolder = selectFolder;
-    vm.saveFolder = saveFolder;
-    vm.compactFolder = compactFolder;
-    vm.emptyTrashFolder = emptyTrashFolder;
-    vm.confirmDelete = confirmDelete;
-    vm.markFolderRead = markFolderRead;
-    vm.share = share;
-    vm.setFolderAs = setFolderAs;
-    vm.refreshUnseenCount = refreshUnseenCount;
-    vm.isDroppableFolder = isDroppableFolder;
-    vm.dragSelectedMessages = dragSelectedMessages;
+    this.$onInit = function () {
+      this.service = Mailbox;
+      this.accounts = stateAccounts;
 
-    // Advanced search options
-    vm.showingAdvancedSearch = false;
-    vm.currentSearchParam = '';
-    vm.addSearchParam = addSearchParam;
-    vm.newSearchParam = newSearchParam;
-    vm.showAdvancedSearch = showAdvancedSearch;
-    vm.hideAdvancedSearch = hideAdvancedSearch;
-    vm.toggleAdvancedSearch = toggleAdvancedSearch;
-    vm.search = {
-      options: {'': '',  // no placeholder when no criteria is active
-                subject: l('Enter Subject'),
-                from:    l('Enter From'),
-                to:      l('Enter To'),
-                cc:      l('Enter Cc'),
-                body:    l('Enter Body')
-               },
-      mailbox: 'INBOX',
-      subfolders: 1,
-      match: 'AND',
-      params: []
-    };
+      // Advanced search options
+      this.currentSearchParam = '';
+      this.search = {
+        options: {'': '',  // no placeholder when no criteria is active
+                  subject: l('Enter Subject'),
+                  from:    l('Enter From'),
+                  to:      l('Enter To'),
+                  cc:      l('Enter Cc'),
+                  body:    l('Enter Body')
+                 },
+        subfolders: 1,
+        match: 'AND',
+        params: []
+      };
 
-
-    Preferences.ready().then(function() {
-      vm.showSubscribedOnly = Preferences.defaults.SOGoMailShowSubscribedFoldersOnly;
-    });
-
-    vm.refreshUnseenCount();
-
-    _registerHotkeys(hotkeys);
-
-    $scope.$on('$destroy', function() {
-      // Deregister hotkeys
-      _.forEach(hotkeys, function(key) {
-        sgHotkeys.deregisterHotkey(key);
+      Preferences.ready().then(function() {
+        vm.showSubscribedOnly = Preferences.defaults.SOGoMailShowSubscribedFoldersOnly;
       });
-    });
+
+      this.refreshUnseenCount();
+
+      _registerHotkeys(hotkeys);
+
+      $scope.$on('$destroy', function() {
+        // Deregister hotkeys
+        _.forEach(hotkeys, function(key) {
+          sgHotkeys.deregisterHotkey(key);
+        });
+      });
+    };
 
 
     function _registerHotkeys(keys) {
@@ -88,24 +65,16 @@
       });
     }
 
-    function showAdvancedSearch(path) {
-      vm.showingAdvancedSearch = true;
-      vm.search.mailbox = path;
-      // Close sidenav on small devices
-      if (!$mdMedia(sgConstant['gt-md']))
-        $mdSidenav('left').close();
-    }
-
-    function hideAdvancedSearch() {
-      vm.showingAdvancedSearch = false;
+    this.hideAdvancedSearch = function() {
+      vm.service.$virtualPath = false;
       vm.service.$virtualMode = false;
 
       account = vm.accounts[0];
       mailbox = vm.searchPreviousMailbox;
       $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(mailbox.path) });
-    }
+    };
 
-    function toggleAdvancedSearch() {
+    this.toggleAdvancedSearch = function() {
       if (Mailbox.selectedFolder.$isLoading) {
         // Stop search
         vm.virtualMailbox.stopSearch();
@@ -133,8 +102,8 @@
         Mailbox.selectedFolder = vm.virtualMailbox;
         Mailbox.$virtualMode = true;
 
-        if (angular.isDefined(vm.search.mailbox)) {
-          root = vm.accounts[0].$getMailboxByPath(vm.search.mailbox);
+        if (angular.isDefined(Mailbox.$virtualPath)) {
+          root = vm.accounts[0].$getMailboxByPath(Mailbox.$virtualPath);
           mailboxes.push(root);
           if (vm.search.subfolders && root.children.length)
             _visit(root.children);
@@ -145,17 +114,18 @@
 
         vm.virtualMailbox.setMailboxes(mailboxes);
         vm.virtualMailbox.startSearch(vm.search.match, vm.search.params);
-        $state.go('mail.account.virtualMailbox', { accountId: vm.accounts[0].id });
+        if ($state.$current.name != 'mail.account.virtualMailbox')
+          $state.go('mail.account.virtualMailbox', { accountId: vm.accounts[0].id });
       }
-    }
+    };
 
-    function addSearchParam(v) {
+    this.addSearchParam = function(v) {
       vm.currentSearchParam = v;
       focus('advancedSearch');
       return false;
-    }
+    };
 
-    function newSearchParam(pattern) {
+    this.newSearchParam = function(pattern) {
       if (pattern.length && vm.currentSearchParam.length) {
         var n = 0, searchParam = vm.currentSearchParam;
         if (pattern.startsWith("!")) {
@@ -165,9 +135,9 @@
         vm.currentSearchParam = '';
         return { searchBy: searchParam, searchInput: pattern, negative: n };
       }
-    }
+    };
 
-    function toggleAccountState(account) {
+    this.toggleAccountState = function (account) {
       account.$expanded = !account.$expanded;
       account.$flattenMailboxes({ reload: true, saveState: true });
       // Fire a window resize to recompute the virtual-repeater.
@@ -176,9 +146,9 @@
       $timeout(function() {
         angular.element($window).triggerHandler('resize');
       }, 150);
-    }
+    };
 
-    function subscribe(account) {
+    this.subscribe = function(account) {
       $mdDialog.show({
         templateUrl: account.id + '/subscribe',
         controller: SubscriptionsDialogController,
@@ -212,12 +182,12 @@
         });
 
         function close() {
-          $mdDialog.cancel();
+          $mdDialog.hide();
         }
       }
-    }
+    };
 
-    function newFolder(parentFolder) {
+    this.newFolder = function(parentFolder) {
       Dialog.prompt(l('New Folder...'),
                     l('Enter the new name of your folder'))
         .then(function(name) {
@@ -229,9 +199,9 @@
                            l(data.error));
             });
         });
-    }
+    };
 
-    function delegate(account) {
+    this.delegate = function(account) {
       $mdDialog.show({
         templateUrl: account.id + '/delegation', // UI/Templates/MailerUI/UIxMailUserDelegation.wox
         controller: MailboxDelegationController,
@@ -285,114 +255,9 @@
           }
         }
       }
-    } // delegate
+    }; // delegate
 
-    function editFolder(folder) {
-      vm.editMode = folder.path;
-      focus('mailboxName_' + folder.path);
-    }
-
-    function revertEditing(folder) {
-      folder.$reset();
-      vm.editMode = false;
-    }
-
-    function selectFolder($event, account, folder) {
-      if (vm.editMode == folder.path)
-        return;
-      vm.editMode = false;
-      vm.showingAdvancedSearch = false;
-      vm.service.$virtualMode = false;
-      // Close sidenav on small devices
-      if (!$mdMedia(sgConstant['gt-md']))
-        $mdSidenav('left').close();
-      $state.go('mail.account.mailbox', { accountId: account.id, mailboxId: encodeUriFilter(folder.path) });
-      $event.stopPropagation();
-      $event.preventDefault();
-    }
-
-    function saveFolder(folder) {
-      folder.$rename()
-        .then(function(data) {
-          vm.editMode = false;
-        });
-    }
-
-    function compactFolder(folder) {
-      folder.$compact().then(function() {
-        $mdToast.show(
-          $mdToast.simple()
-            .content(l('Folder compacted'))
-            .position('top right')
-            .hideDelay(3000));
-      });
-    }
-
-    function emptyTrashFolder(folder) {
-      folder.$emptyTrash().then(function() {
-        $mdToast.show(
-          $mdToast.simple()
-            .content(l('Trash emptied'))
-            .position('top right')
-            .hideDelay(3000));
-      });
-    }
-
-    function confirmDelete(folder) {
-      Dialog.confirm(l('Warning'),
-                     l('Do you really want to move this folder into the trash ?'),
-                     { ok: l('Delete') })
-        .then(function() {
-          folder.$delete()
-            .then(function() {
-              $state.go('mail.account.inbox');
-            }, function(response) {
-              Dialog.confirm(l('Warning'),
-                             l('The mailbox could not be moved to the trash folder. Would you like to delete it immediately?'),
-                             { ok: l('Delete') })
-              .then(function() {
-                folder.$delete({ withoutTrash: true })
-                  .then(function() {
-                    $state.go('mail.account.inbox');
-                  }, function(response) {
-                    Dialog.alert(l('An error occured while deleting the mailbox "%{0}".', folder.name),
-                                 l(response.error));
-                  });
-              });
-            });
-        });
-    }
-
-    function markFolderRead(folder) {
-      folder.$markAsRead();
-    }
-
-    function share(folder) {
-      // Fetch list of ACL users
-      folder.$acl.$users().then(function() {
-        // Show ACL editor
-        $mdDialog.show({
-          templateUrl: folder.id + '/UIxAclEditor', // UI/Templates/UIxAclEditor.wox
-          controller: 'AclController', // from the ng module SOGo.Common
-          controllerAs: 'acl',
-          clickOutsideToClose: true,
-          escapeToClose: true,
-          locals: {
-            usersWithACL: folder.$acl.users,
-            User: User,
-            folder: folder
-          }
-        });
-      });
-    } // share
-
-    function setFolderAs(folder, type) {
-      folder.$setFolderAs(type).then(function() {
-        folder.$account.$getMailboxes({reload: true});
-      });
-    }
-
-    function refreshUnseenCount() {
+    this.refreshUnseenCount = function() {
       var unseenCountFolders = $window.unseenCountFolders;
 
       _.forEach(vm.accounts, function(account) {
@@ -422,13 +287,13 @@
         if (refreshViewCheck && refreshViewCheck != 'manually')
           $timeout(vm.refreshUnseenCount, refreshViewCheck.timeInterval()*1000);
       });
-    }
+    };
 
-    function isDroppableFolder(srcFolder, dstFolder) {
+    this.isDroppableFolder = function(srcFolder, dstFolder) {
       return (dstFolder.id != srcFolder.id) && !dstFolder.isNoSelect();
-    }
+    };
 
-    function dragSelectedMessages(srcFolder, dstFolder, mode) {
+    this.dragSelectedMessages = function(srcFolder, dstFolder, mode) {
       var dstId, messages, uids, clearMessageView, promise, success;
 
       dstId = '/' + dstFolder.id;
@@ -456,7 +321,7 @@
             .position('top right')
             .hideDelay(2000));
       });
-    }
+    };
 
   }
 

@@ -206,35 +206,53 @@
 
     if (mailbox) {
       mailbox.$topIndex = 0;
+      mailbox.selectFolder();
       return mailbox;
     }
     else
       // Mailbox not found
-      return $state.go('mail.account.inbox');
+      return $q.reject("Mailbox doesn't exist");
   }
 
   /**
    * @ngInject
    */
-  onEnterInbox.$inject = ['$window', '$state', 'encodeUriFilter', 'stateAccount'];
-  function onEnterInbox($window, $state, encodeUriFilter, stateAccount) {
-    if (stateAccount.$mailboxes.length > 0)
-      $window.location.hash = $state.href('mail.account.mailbox',
-                                          {accountId: stateAccount.id,
-                                           mailboxId: encodeUriFilter(stateAccount.$mailboxes[0].path)});
-    else
-      $state.go('mail');
+  onEnterInbox.$inject = ['$transition$', 'encodeUriFilter', 'Mailbox'];
+  function onEnterInbox($transition, encodeUriFilter, Mailbox) {
+    var stateAccountPromise = $transition.injector().getAsync('stateAccount');
+    return stateAccountPromise.then(function(stateAccount) {
+      if (stateAccount.$mailboxes.length > 0) {
+        return $transition.router.stateService.target('mail.account.mailbox', {
+          accountId: stateAccount.id,
+          mailboxId: encodeUriFilter(stateAccount.$mailboxes[0].path)
+        });
+      }
+      else {
+        Mailbox.selectedFolder = false;
+        return $transition.router.stateService.target('mail');
+      }
+    });
   }
 
   /**
    * @ngInject
    */
-  stateMessages.$inject = ['Mailbox', 'stateMailbox'];
-  function stateMessages(Mailbox, stateMailbox) {
+  stateMessages.$inject = ['$q', '$state', 'Mailbox', 'stateMailbox'];
+  function stateMessages($q, $state, Mailbox, stateMailbox) {
+    var promise;
+
     if (Mailbox.$virtualMode)
       return [];
 
-    return stateMailbox.$filter();
+    if (stateMailbox)
+      promise = stateMailbox.$filter().catch(function() {
+        // Mailbox not found
+        return $q.reject('Mailbox not found');
+      });
+    else
+      promise = $q.reject("Mailbox doesn't exist");
+
+    return promise;
   }
 
   /**
@@ -314,25 +332,21 @@
   /**
    * @ngInject
    */
-  // stateContent.$inject = ['stateMessage'];
-  // function stateContent(stateMessage) {
-  //   return stateMessage.$editableContent();
-  // }
-
-  /**
-   * @ngInject
-   */
-  runBlock.$inject = ['$rootScope', '$log', '$state', 'Mailbox'];
-  function runBlock($rootScope, $log, $state, Mailbox) {
-    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-      $log.error(error);
-      event.preventDefault();
-      // Unselect everything
-      Mailbox.selectedFolder = false;
-      $state.go('mail');
-    });
-    $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
-      $log.error(event, current, previous, rejection);
+  runBlock.$inject = ['$window', '$transitions', '$log', '$state', 'Mailbox'];
+  function runBlock($window, $transitions, $log, $state, Mailbox) {
+    if (!$window.DebugEnabled)
+      $state.defaultErrorHandler(function() {
+        // Don't report any state error
+      });
+    $transitions.onError({ to: 'mail.**' }, function(transition) {
+      if (transition.to().name != 'mail' &&
+          !transition.ignored() &&
+          transition.error().message.indexOf('superseded') < 0) {
+        $log.error('transition error to ' + transition.to().name);
+        // Unselect everything
+        Mailbox.selectedFolder = false;
+        $state.go('mail');
+      }
     });
   }
 

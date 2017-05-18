@@ -1,5 +1,9 @@
 /// MailerUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
+.sg-mailbox-list-item:not(.sg-selected) .md-menu {
+  display: none;
+}
+
 .view-list {
   // Overwrite style from list.scss to make some place for .sg-tile-icons
   md-list-item._md-button-wrap > div.md-button:first-child {
@@ -83,7 +87,7 @@ md-sidenav {
         color: rgba(0,0,0,0.54);
         font-family: 'Material Icons';
         font-size: 24px;
-        content: "\e2c7";
+        content: "\e2c7"; // folder
         top: -4px;
         left: 0px;
         width: 1em;
@@ -94,7 +98,7 @@ md-sidenav {
       }
       &.md-checked {
         .md-container:after {
-          content: "\e2c8";
+          content: "\e2c8"; // folder open
         }
         .md-icon {
           background-color: initial !important;
