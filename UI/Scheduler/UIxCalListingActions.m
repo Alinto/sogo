@@ -46,6 +46,7 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/WOResourceManager+SOGo.h>
+#import <Appointments/iCalToDo+SOGo.h>
 #import <Appointments/SOGoAppointmentFolders.h>
 #import <Appointments/SOGoWebAppointmentFolder.h>
 
@@ -1593,6 +1594,8 @@ _computeBlocksPosition (NSArray *blocks)
       statusFlag = [self _getStatusClassForStatusCode: statusCode
                                       andEndDateStamp: endDateStamp];
       [filteredTask addObject: statusFlag];
+      statusFlag = [iCalToDo statusForCode: statusCode];
+      [filteredTask replaceObjectAtIndex: taskStatusIndex withObject: statusFlag];
       if (endDateStamp > 0)
         [filteredTask addObject: [self _formattedDateForSeconds: endDateStamp
                                                       forAllDay: NO]];

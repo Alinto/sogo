@@ -698,7 +698,7 @@
    */
   Component.prototype.enablePercentComplete = function() {
     return (this.type == 'task' &&
-            this.status != 'not-specified' &&
+            this.percentComplete > 0 &&
             this.status != 'cancelled');
   };
 

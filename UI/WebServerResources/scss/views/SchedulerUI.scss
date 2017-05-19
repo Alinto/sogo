@@ -647,6 +647,12 @@ $quarter_height: 10px;
   }
 }
 
+/* Tasks list */
+
+.cancelled .sg-md-subhead {
+  text-decoration: line-through;
+}
+
 /* Attendees dialog Editor */
 .attendees {
   max-height: ($list-item-height * 20); // show a maximum of 20 attendees

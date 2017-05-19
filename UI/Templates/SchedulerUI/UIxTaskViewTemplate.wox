@@ -79,8 +79,16 @@
           <p>{{editor.component.localizedCompletedDate}} {{editor.component.localizedCompletedTime}}</p>
         </md-list-item>
         <md-list-item ng-show="editor.component.enablePercentComplete()">
-          <md-icon>call_made</md-icon>
+          <md-icon>timelapse</md-icon>
           <p>{{editor.component.percentComplete}} %</p>
+        </md-list-item>
+        <md-list-item ng-show="editor.component.status == 'cancelled'">
+          <md-icon>close</md-icon>
+          <p><var:string label:value="status_CANCELLED"/></p>
+        </md-list-item>
+        <md-list-item ng-show="editor.component.status == 'needs-action'">
+          <md-icon>error_outline</md-icon>
+          <p><var:string label:value="status_NEEDS-ACTION"/></p>
         </md-list-item>
         <!-- attach urls -->
         <md-list-item  ng-repeat="url in ::editor.component.attachUrls">

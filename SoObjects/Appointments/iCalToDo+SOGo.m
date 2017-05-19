@@ -1,6 +1,6 @@
 /* iCalToDot+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2016 Inverse inc.
+ * Copyright (C) 2008-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,6 +42,20 @@
 #import "iCalToDo+SOGo.h"
 
 @implementation iCalToDo (SOGoExtensions)
+
++ (NSString *) statusForCode: (int) statusCode
+{
+  if (statusCode == taskStatusCompleted)
+    return @"completed";
+  else if (statusCode == taskStatusInProcess)
+    return @"in-process";
+  else if (statusCode == taskStatusCancelled)
+    return @"cancelled";
+  else if (statusCode == taskStatusNeedsAction)
+    return @"needs-action";
+
+  return @"";
+}
 
 - (NSDictionary *) attributesInContext: (WOContext *) context
 {
@@ -305,19 +319,21 @@
 
   if (completed || [status isNotNull])
     {
-      code = 0; /* NEEDS-ACTION */
+      code = 0;
       if (completed || [status isEqualToString: @"COMPLETED"])
-	code = 1;
+	code = taskStatusCompleted;
       else if ([status isEqualToString: @"IN-PROCESS"])
-	code = 2;
+	code = taskStatusInProcess;
       else if ([status isEqualToString: @"CANCELLED"])
-	code = 3;
+	code = taskStatusCancelled;
+      else if ([status isEqualToString: @"NEEDS-ACTION"])
+	code = taskStatusNeedsAction;
       [row setObject: [NSNumber numberWithInt: code] forKey: @"c_status"];
     }
   else
     {
       /* confirmed by default */
-      [row setObject:[NSNumber numberWithInt:1] forKey: @"c_status"];
+      [row setObject: [NSNumber numberWithInt: 0] forKey: @"c_status"];
     }
 
   [row setObject: [NSNumber numberWithUnsignedInt: accessClass]

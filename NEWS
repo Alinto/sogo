@@ -6,6 +6,8 @@ New features
 
 Enhancements
  - [core] now possible to {un}subscribe to folders using sogo-tool
+ - [web] AngularJS optimizations in Mail module
+ - [web] improve display of tasks status
 
 Bug fixes
  - [web] respect SOGoLanguage and SOGoSupportedLanguages (#4169)
