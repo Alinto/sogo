@@ -208,8 +208,8 @@
   /**
    * @ngInject
    */
-  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$mdDialog', 'User', 'CalendarSettings', 'Calendar', 'Component', 'AddressBook', 'Card', 'Alarm', 'stateComponent'];
-  function ComponentEditorController($rootScope, $scope, $log, $timeout, $mdDialog, User, CalendarSettings, Calendar, Component, AddressBook, Card, Alarm, stateComponent) {
+  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$mdDialog', 'sgFocus', 'User', 'CalendarSettings', 'Calendar', 'Component', 'AddressBook', 'Card', 'Alarm', 'stateComponent'];
+  function ComponentEditorController($rootScope, $scope, $log, $timeout, $mdDialog, focus, User, CalendarSettings, Calendar, Component, AddressBook, Card, Alarm, stateComponent) {
     var vm = this, component, oldStartDate, oldEndDate, oldDueDate;
 
     vm.service = Calendar;
