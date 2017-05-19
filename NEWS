@@ -8,7 +8,7 @@ Enhancements
  - [core] now possible to {un}subscribe to folders using sogo-tool
 
 Bug fixes
- -
+ - [web] respect SOGoLanguage and SOGoSupportedLanguages (#4169)
 
 3.2.9 (2017-05-09)
 ------------------

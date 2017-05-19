@@ -13,20 +13,21 @@
   function LoginController($scope, $window, $timeout, Dialog, $mdDialog, Authentication) {
     var vm = this;
 
-    vm.creds = {
-      username: $window.cookieUsername,
-      password: null,
-      rememberLogin: angular.isDefined($window.cookieUsername) && $window.cookieUsername.length > 0
+    this.$onInit = function() {
+      this.creds = {
+        username: $window.cookieUsername,
+        password: null,
+        language: $window.language,
+        rememberLogin: angular.isDefined($window.cookieUsername) && $window.cookieUsername.length > 0
+      };
+      this.loginState = false;
+
+      // Show login once everything is initialized
+      this.showLogin = false;
+      $timeout(function() { vm.showLogin = true; }, 100);
     };
-    vm.login = login;
-    vm.loginState = false;
-    vm.showAbout = showAbout;
 
-    // Show login once everything is initialized
-    vm.showLogin = false;
-    $timeout(function() { vm.showLogin = true; }, 100);
-
-    function login() {
+    this.login = function() {
       vm.loginState = 'authenticating';
       Authentication.login(vm.creds)
         .then(function(data) {
@@ -45,9 +46,9 @@
           vm.errorMessage = msg.error;
         });
       return false;
-    }
+    };
 
-    function showAbout($event) {
+    this.showAbout = function($event) {
       $mdDialog.show({
         targetEvent: $event,
         templateUrl: 'aboutBox.html',
@@ -60,7 +61,12 @@
           $mdDialog.hide();
         };
       }
-    }
+    };
+
+    this.changeLanguage = function($event) {
+      // Reload page
+      $window.location.href = ApplicationBaseURL + 'login?language=' + this.creds.language;
+    };
   }
 
   angular

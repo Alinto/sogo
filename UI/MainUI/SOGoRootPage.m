@@ -72,6 +72,11 @@
 
 /* accessors */
 
+- (NSString *) modulePath
+{
+  return @"";
+}
+
 //- (NSString *) connectURL
 //{
 //  return [NSString stringWithFormat: @"%@/connect", [self applicationPath]];
@@ -523,6 +528,11 @@
 - (id) item
 {
   return item;
+}
+
+- (NSString *) language
+{
+  return [[context resourceLookupLanguages] objectAtIndex: 0];
 }
 
 - (NSArray *) languages

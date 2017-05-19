@@ -22,6 +22,7 @@
 #import <NGObjWeb/WORequest.h>
 
 #import "SOGoDomainDefaults.h"
+#import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
 
 #import "WOContext+SOGo.h"
@@ -31,14 +32,21 @@
 - (NSArray *) resourceLookupLanguages
 {
   NSMutableArray *languages;
-  NSArray *browserLanguages;
+  NSArray *browserLanguages, *supportedLanguages;
+  SOGoSystemDefaults *sd;
   SOGoUser *user;
   NSString *language, *theme;
-  
+
   languages = [NSMutableArray array];
   user = [self activeUser];
-  theme = [[self request] formValueForKey: @"theme"];
 
+  // Retrieve language parameter
+  language = [[self request] formValueForKey: @"language"];
+  if ([language length] > 0)
+      [languages addObject: language];
+
+  // Retrieve theme argument
+  theme = [[self request] formValueForKey: @"theme"];
   if ([theme length] > 0)
     {
       if ([theme hasSuffix: @"/"])
@@ -52,18 +60,28 @@
 
   if (!user || [[user login] isEqualToString: @"anonymous"])
     {
+      // Use browser's languages
       browserLanguages = [[self request] browserLanguages];
       [languages addObjectsFromArray: browserLanguages];
     }
   else
     {
+      // Use user's language or domain's language
       language = [[user userDefaults] language];
       [languages addObject: language];
       language = [[user domainDefaults] language];
       [languages addObject: language];
     }
 
-  return languages;
+  // Return the first language matching a supported language or the SOGoLanguage
+  // default if none is matching.
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  supportedLanguages = [sd supportedLanguages];
+  language = [languages firstObjectCommonWithArray: supportedLanguages];
+  if (!(language && [language isKindOfClass: [NSString class]]))
+    language = [sd stringForKey: @"SOGoLanguage"];
+
+  return [NSArray arrayWithObject: language];
 }
 
 @end

@@ -11,6 +11,7 @@
     >
   <script type="text/javascript">
     var cookieUsername = '<var:string var:value="cookieUsername" const:escapeHTML="NO"/>';
+    var language = '<var:string var:value="language" const:escapeHTML="NO"/>';
   </script>
 
   <!--
@@ -56,7 +57,7 @@
               <md-icon>language</md-icon>
               <md-input-container class="md-flex">
                 <label><var:string label:value="choose"/></label>
-                <md-select ng-model="app.creds.language">
+                <md-select ng-model="app.creds.language" ng-change="app.changeLanguage($event)">
                   <var:foreach list="languages" item="item">
                     <md-option var:value="item">
                       <var:string value="languageText"/>
