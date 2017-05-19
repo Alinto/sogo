@@ -7,7 +7,7 @@
 # Session cleanup - runs every minute
 #   - Ajust the nbMinutes parameter to suit your needs
 # Example: Sessions without activity since 60 minutes will be dropped:
-#* * * * *      sogo	/usr/sbin/sogo-tool expire-sessions 60
+#* * * * *      sogo	/usr/sbin/sogo-tool expire-sessions 60 > /dev/null 2>&1
 
 # Email alarms - runs every minutes
 # If you need to use SMTP AUTH for outgoing mails, specify credentials to use
