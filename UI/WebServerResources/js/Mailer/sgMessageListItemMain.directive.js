@@ -14,9 +14,6 @@
       require: '^^sgMessageListItem',
       scope: {},
       template: [
-        '<div class="sg-category"',
-        '     ng-repeat="tag in $ctrl.message.flags | limitTo:5"',
-        '     ng-style="{ \'background-color\': $ctrl.service.$tags[tag][1], left: ($index * 3) + \'px\' }"><!-- tags --></div>',
         '<div class="sg-tile-content">',
         '  <div class="sg-md-subhead">',
         '    <div>',
@@ -57,8 +54,8 @@
   /**
    * @ngInject
    */
-  sgMessageListItemMainController.$inject = ['$scope', '$element', '$parse', '$state', '$mdToast', 'Mailbox', 'Message', 'encodeUriFilter'];
-  function sgMessageListItemMainController($scope, $element, $parse, $state, $mdToast, Mailbox, Message, encodeUriFilter) {
+  sgMessageListItemMainController.$inject = ['$scope', '$element', '$parse', '$state', '$mdUtil', '$mdToast', 'Mailbox', 'Message', 'encodeUriFilter'];
+  function sgMessageListItemMainController($scope, $element, $parse, $state, $mdUtil, $mdToast, Mailbox, Message, encodeUriFilter) {
     var $ctrl = this;
 
     this.$postLink = function () {
@@ -113,15 +110,20 @@
       this.parentController.onUpdate = function () {
         var i;
         $ctrl.message = $ctrl.parentController.message;
-        console.debug('onUpdate ' + $ctrl.message.uid);
 
         // Flags
-        for (i = 0; i < $ctrl.message.flags && i < 5; i++) {
+        var flagElements = $mdUtil.nodesToArray($element[0].querySelectorAll('.sg-category'));
+        _.forEach(flagElements, function(flagElement) {
+          $element[0].removeChild(flagElement);
+        });
+        for (i = 0; i < $ctrl.message.flags.length && i < 5; i++) {
           var tag = $ctrl.message.flags[i];
-          var flagElement = angular.element('<div class="sg-category"></div>');
-          flagElement.css('left', (i*3) + 'px');
-          flagElement.css('background-color', $ctrl.service.$tags[tag][1]);
-          $element.prepend(flagElement);
+          if ($ctrl.service.$tags[tag]) {
+            var flagElement = angular.element('<div class="sg-category"></div>');
+            flagElement.css('left', (i*3) + 'px');
+            flagElement.css('background-color', $ctrl.service.$tags[tag][1]);
+            $element.prepend(flagElement);
+          }
         }
 
         // Mailbox name when in virtual mode
