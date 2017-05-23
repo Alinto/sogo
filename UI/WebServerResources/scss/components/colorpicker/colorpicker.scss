@@ -1,0 +1,30 @@
+/// colorpicker.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
+
+$colorpicker-size: 25px;
+
+.sg-color-picker-panel {
+
+  div {
+    line-height: 0;
+    cursor: pointer;
+  }
+
+  span {
+    display: inline-block;
+    height: $colorpicker-size;
+    transition: transform .2s;
+    width: $colorpicker-size;
+    z-index: $z-index-menu;
+
+    &:not(.selected):hover {
+      outline: 0;
+      transform: scale(1.3, 1.3);
+      z-index: $z-index-menu + 1;
+    }
+
+    md-icon {
+      float: left;
+    }
+  }
+
+}

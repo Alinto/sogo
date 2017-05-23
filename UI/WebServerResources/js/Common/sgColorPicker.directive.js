@@ -7,71 +7,127 @@
   /*
    * sgColorPicker - Color picker widget
    * @restrict element
-   * @param {function} sgOnSelect - the function to call when clicking on a color.
-   *        One variable is available: color.
    * @ngInject
    * @example:
 
-     <sg-color-picker sg-on-select="properties.calendar.color = color"></sg-color-picker>
+     <sg-color-picker ng-model="properties.calendar.color"></sg-color-picker>
   */
   function sgColorPicker() {
     return {
       restrict: 'E',
       require: 'ngModel',
       template: [
-        '<md-menu>',
         '  <md-button class="md-icon-button"',
         '             label:aria-label="Options"',
-        '             ng-style="{ \'background-color\': sgColor }"',
-        '             ng-click="$mdOpenMenu()"',
-        '             md-menu-origin="md-menu-origin">',
-        '    <md-icon ng-style="{ color: sgIconColor }">color_lens</md-icon>',
-        '  </md-button>',
-        '  <md-menu-content width="3">',
-        '    <md-content class="md-padding">',
-        '      <md-grid-list class="sg-color-picker" md-cols="7" md-row-height="1:1" md-gutter="0.5em">',
-        '        <md-grid-tile ng-repeat="color in ::sgColors track by $index"',
-        '                      ng-style="::{ \'background-color\': color }"',
-        '                      ng-class="::{ selected: color == sgColor }"',
-        '                      ng-click="setColor($event, color)"><md-icon ng-style="::{ color: color }">check_box</md-icon></md-grid-tile>',
-        '      </md-grid-list>',
-        '    </md-content>',
-        '  </md-menu-content>',
-        '</md-menu>'
+        '             ng-click="$ctrl.showPicker($event)">',
+        '    <md-icon>format_color_fill</md-icon>',
+        '  </md-button>'
       ].join(''),
-      replace: true,
       controller: sgColorPickerController,
-      link: link
+      controllerAs: '$ctrl'
     };
-
-    function link(scope, iElement, iAttr, ngModelController) {
-      // Expose ng-model value to scope
-      ngModelController.$render = function() {
-        scope.sgColor = ngModelController.$viewValue;
-        scope.sgIconColor = contrast(ngModelController.$viewValue);
-      };
-    }
   }
-  
+
   /**
    * @ngInject
    */
-  sgColorPickerController.$inject = ['$scope', '$element', 'sgColors'];
-  function sgColorPickerController($scope, $element, sgColors) {
-    var ngModelController = $element.controller('ngModel');
+  sgColorPickerController.$inject = ['$scope', '$element', '$mdPanel', 'sgColors'];
+  function sgColorPickerController($scope, $element, $mdPanel, sgColors) {
+    var $ctrl, ngModelController, color;
 
-    $scope.sgColors = sgColors.selection;
-    $scope.setColor = function(event, color) {
-      if (event) {
-        _.forEach(event.currentTarget.parentElement.children, function(tile) {
-          tile.classList.remove('selected');
-        });
-        event.currentTarget.classList.add('selected');
+    this.$onInit = function() {
+      $ctrl = this;
+      ngModelController = $element.controller('ngModel');
+    };
+
+    this.$postLink = function() {
+      this.buttonIcon = $element.find('md-icon');
+      ngModelController.$render = function() {
+        updateColor(ngModelController.$viewValue);
+      };
+    };
+
+    function updateColor(newColor) {
+      color = newColor;
+      $ctrl.buttonIcon.css('color', color);
+    }
+
+    this.showPicker = function($event) {
+      var panelPosition = $mdPanel.newPanelPosition()
+          .relativeTo($ctrl.buttonIcon)
+          .addPanelPosition(
+            $mdPanel.xPosition.ALIGN_START,
+            $mdPanel.yPosition.ALIGN_TOPS
+          );
+
+      var panelAnimation = $mdPanel.newPanelAnimation()
+          .openFrom($ctrl.buttonIcon)
+          .duration(100)
+          .withAnimation($mdPanel.animation.FADE);
+
+      // Build grid with 7 colors per row
+      var columns = [];
+      var column = '';
+      for (var i = 0; i < sgColors.selection.length; i++) {
+        var currentColor = sgColors.selection[i];
+        var currentContrastColor = contrast(currentColor);
+        var selected = (currentColor == color);
+        if (i % 7 === 0) {
+          if (column.length) columns.push(column);
+          column = '';
+        }
+        column += '<span ';
+        if (selected)
+          column += 'class="selected" ';
+        column += 'style="background-color: ' + currentColor + '" ng-click="$menuCtrl.setColor($event, \'' + currentColor + '\')">';
+        if (selected)
+          column += '<md-icon class="icon-check" style="color: ' + currentContrastColor + '"></md-icon>';
+        column += '</span>';
       }
-      // Update scope value and ng-model
-      $scope.sgColor = color;
-      $scope.sgIconColor = contrast(color);
-      ngModelController.$setViewValue(color);
+
+      var config = {
+        attachTo: angular.element(document.body),
+        bindToController: true,
+        controller: MenuController,
+        controllerAs: '$menuCtrl',
+        position: panelPosition,
+        animation: panelAnimation,
+        targetEvent: $event,
+        template: [
+          '<div class="sg-color-picker-panel" md-whiteframe="3">',
+          '  <div>' + columns.join('</div><div>') + '</div>',
+          '</div>'
+        ].join(''),
+        trapFocus: true,
+        clickOutsideToClose: true,
+        escapeToClose: true,
+        focusOnOpen: true
+      };
+
+      $mdPanel.open(config)
+        .then(function(panelRef) {
+          // Automatically close panel when clicking inside of it
+          panelRef.panelEl.one('click', function() {
+            panelRef.close();
+          });
+        });
+
+      MenuController.$inject = ['mdPanelRef', '$state', '$mdDialog', 'User'];
+      function MenuController(mdPanelRef, $state, $mdDialog, User) {
+        var $menuCtrl = this;
+
+        this.setColor = function(event, color) {
+          if (event) {
+            _.forEach(event.currentTarget.parentElement.children, function(tile) {
+              tile.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+          }
+          // Update scope value and ng-model
+          updateColor(color);
+          ngModelController.$setViewValue(color);
+        };
+      }
     };
   }
 
