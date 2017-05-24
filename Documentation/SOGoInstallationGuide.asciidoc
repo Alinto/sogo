@@ -1854,7 +1854,7 @@ URL, such as:
 
 [options="compact"]
 * `imaps://localhost:993`
-* `imaps://localhost:143/?tls=YES`
+* `imap://localhost:143/?tls=YES`
 
 |D |SOGoSieveServer
 |Parameter used to set the DNS name or IP address of the Sieve
