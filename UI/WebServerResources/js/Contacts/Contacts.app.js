@@ -133,19 +133,19 @@
    */
   stateCard.$inject = ['$state', '$stateParams', 'stateAddressbook'];
   function stateCard($state, $stateParams, stateAddressbook) {
-    var card;
+    return stateAddressbook.$futureAddressBookData.then(function() {
+      var card = _.find(stateAddressbook.$cards, function(cardObject) {
+        return (cardObject.id == $stateParams.cardId);
+      });
 
-    card = _.find(stateAddressbook.$cards, function(cardObject) {
-      return (cardObject.id == $stateParams.cardId);
+      if (card) {
+        return card.$reload();
+      }
+      else {
+        // Card not found
+        $state.go('app.addressbook');
+      }
     });
-
-    if (card) {
-      return card.$reload();
-    }
-    else {
-      // Card not found
-      $state.go('app.addressbook');
-    }
   }
 
   /**
