@@ -175,7 +175,7 @@
 - (void) setReferences: (NSArray *) references
 {
   NSDictionary *values;
-  NSArray *initialReferences;
+  NSArray *initialReferences, *emails;
   NSDictionary *currentReference;
   NSString *uid, *workMail, *fn, *newUID;
   int i, count;
@@ -212,9 +212,11 @@
 	      values = [folder lookupContactWithName: uid];
 	      if (values)
 		{
+                  emails = [[values objectForKey: @"c_mail"] componentsSeparatedByString: @","];
 		  cardReference = [NGVCardReference elementWithTag: @"card"];
 		  [cardReference setFn: [values objectForKey: @"c_cn"]];
-		  [cardReference setEmail: [values objectForKey: @"c_mail"]];
+                  if ([emails count])
+                    [cardReference setEmail: [emails objectAtIndex: 0]];
 		  [cardReference setReference: uid];
 
 		  [list addCardReference: cardReference];

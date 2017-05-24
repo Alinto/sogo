@@ -12,6 +12,7 @@ Enhancements
 
 Bug fixes
  - [web] respect SOGoLanguage and SOGoSupportedLanguages (#4169)
+ - [web] fixed adding list members with multiple email addresses
 
 3.2.9 (2017-05-09)
 ------------------
