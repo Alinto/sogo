@@ -58,7 +58,7 @@ $sg-login-width: grid-step(5);
     /**
      * On larger screen, we dispose the logo and login form as a row.
      */
-    @include from(md) {
+    @include from(lg) {
       &.ng-hide {
         .sg-logo img {
           opacity: 0;

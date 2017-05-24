@@ -13,6 +13,7 @@ Enhancements
 Bug fixes
  - [web] respect SOGoLanguage and SOGoSupportedLanguages (#4169)
  - [web] fixed adding list members with multiple email addresses
+ - [web] fixed responsive condition of login page (960px to 1023px)
 
 3.2.9 (2017-05-09)
 ------------------
