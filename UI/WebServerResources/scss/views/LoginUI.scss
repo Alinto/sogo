@@ -89,4 +89,9 @@ $sg-login-width: grid-step(5);
       }
     } // from(md)
   }
+  @include to(md) {
+    .sg-logo, .sg-login {
+      max-width: 100%;
+    }
+  }
 }
