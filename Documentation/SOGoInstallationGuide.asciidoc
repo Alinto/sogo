@@ -919,9 +919,9 @@ would be:
 The following table describes the possible parameters related to a LDAP
 source:
 
-[cols="^3,>47,50a"]
+[cols="3,47a,50"]
 |=======================================================================
-.36+|D <|SOGoUserSources
+.36+^|D |SOGoUserSources
 |Parameter used to set the LDAP and/or SQL sources used for
 authentication and global address books. Multiple sources can be
 specified as an array of dictionaries. A dictionary that defines an LDAP
@@ -1610,9 +1610,9 @@ configuration is very similar to LDAP-based authentication.
 The following table describes all the possible parameters related to a
 SQL source:
 
-[cols="3,47,50a"]
+[cols="3,47a,50"]
 |=======================================================================
-.18+|D |SOGoUserSources
+.18+^|D |SOGoUserSources
 |Parameter used to set the SQL and/or LDAP sources used for
 authentication and global address books. Multiple sources can be
 specified as an array of dictionaries. A dictionary that defines a SQL
