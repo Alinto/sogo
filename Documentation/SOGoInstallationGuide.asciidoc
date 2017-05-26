@@ -1442,11 +1442,11 @@ settings:
 
 ----
 SOGoProfileURL =
-    "postgresql://sogo:sogo@localhost:5432/sogo/sogo_user_profile";
+    "postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_user_profile";
 OCSFolderInfoURL =
-    "postgresql://sogo:sogo@localhost:5432/sogo/sogo_folder_info";
+    "postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_folder_info";
 OCSSessionsFolderURL =
-    "postgresql://sogo:sogo@localhost:5432/sogo/sogo_sessions_folder";
+    "postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_sessions_folder";
 ----
 
 The following table describes the parameters that were set:
@@ -1458,27 +1458,27 @@ The following table describes the parameters that were set:
 profiles.
 
 For MySQL, set the database URL to something like:
-`mysql://sogo:sogo@localhost:3306/sogo/sogo_user_profile`.
+`mysql://sogo:sogo@127.0.0.1:3306/sogo/sogo_user_profile`.
 
 |S |OCSFolderInfoURL
 |Parameter used to set the database URL so that SOGo can retrieve the
 location of user folders (address books and calendars).
 
 For Oracle, set the database URL to something like:
-`oracle://sogo:sogo@localhost:1526/sogo/sogo_folder_info`.
+`oracle://sogo:sogo@127.0.0.1:1526/sogo/sogo_folder_info`.
 
 |S |OCSSessionsFolderURL
 |Parameter used to set the database URL so that SOGo can store and
 retrieve secured user sessions information. For PostgreSQL, the database
 URL could be set to something like:
-`postgresql://sogo:sogo@localhost:5432/sogo/sogo_sessions_folder`.
+`postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_sessions_folder`.
 
 |S |OCSEMailAlarmsFolderURL
 |Parameter used to set the database URL for email-based alarms (that can
 be set on events and tasks). This parameter is relevant only if
 _SOGoEnableEMailAlarms_ is set to `YES`. For PostgreSQL, the database
 URL could be set to something like:
-`postgresql://sogo:sogo@localhost:5432/sogo/sogo_alarms_folder`
+`postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_alarms_folder`
 
 |S |OCSStoreURL
 |Parameter used to set the database URL so that SOGo can use to store
@@ -1488,7 +1488,7 @@ a total of nine database tables - and prevent SOGo from creating three
 database tables per collection.
 
 For PostgresSQL, set the database URL to something like:
-`postgresql://sogo:@localhost:5432/sogo/sogo_store`.
+`postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_store`.
 
 |S |OCSAclURL
 |Parameter used to set the database URL so that SOGo can use to store
@@ -1496,7 +1496,7 @@ all ACL data. You must also set `OCSStoreURL` and `OCSCacheFolderURL`
 if you set this parameter.
 
 For PostgresSQL, set the database URL to something like:
-`postgresql://sogo:@localhost:5432/sogo/sogo_acl`.
+`postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_acl`.
 
 |S |OCSCacheFolderURL
 |Parameter used to set the database URL so that SOGo can use to store
@@ -1504,7 +1504,7 @@ all cache data. You must also set `OCSStoreURL` and `OCSAclURL`
 if you set this parameter.
 
 For PostgresSQL, set the database URL to something like:
-`postgresql://sogo:@localhost:5432/sogo/sogo_cache_folder`.
+`postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_cache_folder`.
 
 See the "EMail reminders" section in this document for more information.
 |=======================================================================
@@ -1853,17 +1853,17 @@ used by SOGo. You can also use SSL or TLS by providing a value using an
 URL, such as:
 
 [options="compact"]
-* `imaps://localhost:993`
-* `imap://localhost:143/?tls=YES`
+* `imaps://127.0.0.1:993`
+* `imap://127.0.0.1:143/?tls=YES`
 
 |D |SOGoSieveServer
 |Parameter used to set the DNS name or IP address of the Sieve
 (managesieve) server used by SOGo. You must use an URL such as:
 
 [options="compact"]
-* `sieve://localhost`
-* `sieve://localhost:2000`
-* `sieve://localhost:2000/?tls=YES`
+* `sieve://127.0.0.1`
+* `sieve://127.0.0.1:2000`
+* `sieve://127.0.0.1:2000/?tls=YES`
 
 Note that TLS is supported but SSL is not.
 
@@ -2368,11 +2368,11 @@ like this:
 ----
 {
     SOGoProfileURL =
-        "postgresql://sogo:sogo@localhost:5432/sogo/sogo_user_profile";
+        "postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_user_profile";
     OCSFolderInfoURL =
-        "postgresql://sogo:sogo@localhost:5432/sogo/sogo_folder_info";
+        "postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_folder_info";
     OCSSessionsFolderURL =
-        "postgresql://sogo:sogo@localhost:5432/sogo/sogo_sessions_folder";
+        "postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_sessions_folder";
     SOGoAppointmentSendEMailNotifications = YES;
     SOGoCalendarDefaultRoles = (
         PublicViewer,
@@ -2381,7 +2381,7 @@ like this:
     SOGoLanguage = English;
     SOGoTimeZone = America/Montreal;
     SOGoMailDomain = acme.com;
-    SOGoIMAPServer = localhost;
+    SOGoIMAPServer = 127.0.0.1;
     SOGoDraftsFolderName = Drafts;
     SOGoSentFolderName = Sent;
     SOGoTrashFolderName = Trash;
@@ -2399,7 +2399,7 @@ like this:
             bindPassword = qwerty;
             canAuthenticate = YES;
             displayName = "Shared Addresses";
-            hostname = localhost;
+            hostname = 127.0.0.1;
             id = public;
             isAddressBook = YES;
             port = 389;
@@ -2435,7 +2435,7 @@ coyote.com):
                     bindPassword = qwerty;
                     canAuthenticate = YES;
                     displayName = "Shared Addresses";
-                    hostname = localhost;
+                    hostname = 127.0.0.1;
                     id = public_acme;
                     isAddressBook = YES;
                     port = 389;
@@ -2456,7 +2456,7 @@ coyote.com):
                     bindPassword = qwerty;
                     canAuthenticate = YES;
                     displayName = "Shared Addresses";
-                    hostname = localhost;
+                    hostname = 127.0.0.1;
                     id = public_coyote;
                     isAddressBook = YES;
                     port = 389;
@@ -2626,7 +2626,7 @@ Load the LDIF file inside your LDAP server using the following command:
 Finally, set the password (to the value `qwerty`) of the SOGo
 administrative account using the following command:
 
- ldappasswd -h localhost -x -w qwerty -D cn=Manager,dc=acme,dc=com uid=sogo,ou=users,dc=acme,dc=com -s qwerty
+ ldappasswd -h 127.0.0.1 -x -w qwerty -D cn=Manager,dc=acme,dc=com uid=sogo,ou=users,dc=acme,dc=com -s qwerty
 
 Creating a User Account
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -2654,7 +2654,7 @@ Load the LDIF file inside your LDAP server using the following command:
 Finally, set the password (to the value `qwerty`) of the SOGo
 administrative account using the following command:
 
- ldappasswd -h localhost -x -w qwerty -D cn=Manager,dc=acme,dc=com uid=jdoe,ou=users,dc=acme,dc=com -s qwerty
+ ldappasswd -h 127.0.0.1 -x -w qwerty -D cn=Manager,dc=acme,dc=com uid=jdoe,ou=users,dc=acme,dc=com -s qwerty
 
 As an alternative to using command-line tools, you can also use LDAP
 editors such as _Luma_ or _Apache Directory Studio_ to make your work
@@ -2873,7 +2873,7 @@ SOGo Web Interface
 
 To acces the SOGo Web Interface, point your Web browser, which is
 running from the same server where SOGo was installed, to the following
-URL: http://localhost/SOGo.
+URL: http://127.0.0.1/SOGo.
 
 Log in using the "jdoe" user and the "qwerty" password. The underlying
 database tables will automatically be created by SOGo.
@@ -2908,7 +2908,7 @@ To access your personal address book:
 * Choose File > New > Remote Address Book.
 * Enter a significant name for your calendar in the Name field.
 * Type the following URL in the URL field:
-`http://localhost/SOGo/dav/jdoe/Contacts/personal/`
+`http://127.0.0.1/SOGo/dav/jdoe/Contacts/personal/`
 * Click on OK.
 
 To access your personal calendar:
@@ -2918,7 +2918,7 @@ To access your personal calendar:
 * Select On the Network and click on Continue.
 * Select CalDAV.
 * Type the following URL in the URL field:
-`http://localhost/SOGo/dav/jdoe/Calendar/personal/`
+`http://127.0.0.1/SOGo/dav/jdoe/Calendar/personal/`
 * Click on Continue.
 
 Apple iCal
@@ -2929,7 +2929,7 @@ Apple iCal can also be used as a client application for SOGo.
 To configure it so it works with SOGo, create a new account and specify,
 as the Account URL, an URL such as:
 
-http://localhost/SOGo/dav/jdoe/
+http://127.0.0.1/SOGo/dav/jdoe/
 
 Note that the trailing slash is important for Apple iCal 3.
 
@@ -2984,7 +2984,7 @@ any mobile devices that support Microsoft ActiveSync. Microsoft Outlook
 2013 is also supported.
 
 The Microsoft ActiveSync server URL is generally something
-like: `http://localhost/Microsoft-Server-ActiveSync`.
+like: `http://127.0.0.1/Microsoft-Server-ActiveSync`.
 
 Upgrading
 ---------
