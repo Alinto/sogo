@@ -1,0 +1,63 @@
+/// imagegallery.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
+
+$imagegallery_thumbnail_size: 100px;
+
+body.sg-image-gallery-backdrop .md-panel._md-opaque-enter {
+  opacity: .88;
+}
+
+sg-image-gallery,
+sg-image-gallery md-icon {
+  color: white;
+}
+
+sg-image-gallery {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  [role="button"] {
+    cursor: pointer;
+  }
+  .sg-image {
+    max-height: 80vh;
+    max-width: 90vh;
+  }
+  .sg-image-thumbnails {
+    align-self: center;
+    display: flex;
+    max-width: 100%;
+    overflow: hidden;
+    overflow-x: auto;
+  }
+  .sg-image-thumbnail {
+    position: relative;
+    width: $imagegallery_thumbnail_size;
+    height: $imagegallery_thumbnail_size;
+    margin: 1em 2em 1em 0;
+    min-width: $imagegallery_thumbnail_size;
+    overflow: hidden;
+    img {
+      position: absolute;
+      left: 50%;
+      opacity: 0.8;
+      top: 50%;
+      height: 100%;
+      width: auto;
+      transform: translate(-50%,-50%);
+      transition: opacity $material-enter-duration $material-enter-timing-function;
+      &:hover {
+        opacity: 1.0;
+      }
+      &.portrait {
+        height: auto;
+        width: 100%;
+      }
+      &.sg-hide {
+        opacity: 0;
+        transition: opacity $material-enter-duration $material-enter-timing-function;
+      }
+    }
+  }
+}

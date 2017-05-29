@@ -6,12 +6,15 @@
   /**
    * @ngInject
    */
-  MessageController.$inject = ['$window', '$scope', '$state', '$mdMedia', '$mdDialog', 'sgConstant', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'sgHotkeys', 'encodeUriFilter', 'sgSettings', 'sgFocus', 'Dialog', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message'];
-  function MessageController($window, $scope, $state, $mdMedia, $mdDialog, sgConstant, stateAccounts, stateAccount, stateMailbox, stateMessage, sgHotkeys, encodeUriFilter, sgSettings, focus, Dialog, Calendar, Component, Account, Mailbox, Message) {
+  MessageController.$inject = ['$window', '$scope', '$state', '$mdMedia', '$mdDialog', 'sgConstant', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'sgHotkeys', 'encodeUriFilter', 'sgSettings', 'ImageGallery', 'sgFocus', 'Dialog', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message'];
+  function MessageController($window, $scope, $state, $mdMedia, $mdDialog, sgConstant, stateAccounts, stateAccount, stateMailbox, stateMessage, sgHotkeys, encodeUriFilter, sgSettings, ImageGallery, focus, Dialog, Calendar, Component, Account, Mailbox, Message) {
     var vm = this, popupWindow = null, hotkeys = [];
 
     // Expose controller
     $window.$messageController = vm;
+
+    // Initialize image gallery service
+    ImageGallery.setMessage(stateMessage);
 
     vm.$state = $state;
     vm.accounts = stateAccounts;
@@ -424,8 +427,8 @@
       });
     }
   }
-  
+
   angular
-    .module('SOGo.MailerUI')  
-    .controller('MessageController', MessageController);                                    
+    .module('SOGo.MailerUI')
+    .controller('MessageController', MessageController);
 })();

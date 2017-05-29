@@ -211,6 +211,10 @@ md-sidenav {
   max-width: 100%;
 }
 
+.sg-attachment-name {
+  word-break: break-word;
+}
+
 .sg-attachment-size {
   @extend .md-caption;
   padding-left: $baseline-grid;

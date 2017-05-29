@@ -6,7 +6,7 @@
   xmlns:label="OGo:label">
   <md-card>
     <md-card-content>
-      <p class="md-caption" var:title="filenameForDisplay">
+      <p class="md-caption sg-attachment-name" var:title="filenameForDisplay">
         <var:if condition="preferredPathExtension.length"><span class="sg-label-outline"><var:string value="preferredPathExtension"/></span></var:if>
         <var:string value="filenameForDisplay"/>
       </p>

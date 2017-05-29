@@ -267,7 +267,7 @@
                   <div class="md-flex sg-mail-part"
                        ng-if="::part.compile"
                        sg-compile="part.content"
-                       sg-zoomable-image="sg-zoomable-image"><!-- angular-friendly msg --></div>
+                       sg-zoomable-image="$index"><!-- angular-friendly msg --></div>
                 </div>
               </div>
             </div>
