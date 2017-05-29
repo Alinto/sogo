@@ -1,27 +1,6 @@
 @import "extends";
 
-// sgColorPicker directive
-.sg-color-picker {
-  md-grid-tile {
-    border-radius: 25%;
-    &:hover:not(.selected),
-    &:active:not(.selected) {
-      cursor: pointer;
-      transform: scale(1.5);
-    }
-    &.selected {
-      background-color: transparent !important;
-      transform: scale(1.3);
-      md-icon {
-        display: inline-block;
-        margin: 0;
-      }
-    }
-    md-icon {
-      display: none;
-    }
-  }
-}
+$sg-grid-border-width-focused: 2px;
 
 // sgToggleGrid directive
 [sg-toggle-grid] {
