@@ -52,8 +52,8 @@
   /**
    * @ngInject
    */
-  sgMailboxListItemController.$inject = ['$scope', '$element', '$compile', '$state', '$mdToast', '$mdPanel', '$mdMedia', '$mdSidenav', 'sgConstant', 'Dialog', 'Mailbox', 'encodeUriFilter'];
-  function sgMailboxListItemController($scope, $element, $compile, $state, $mdToast, $mdPanel, $mdMedia, $mdSidenav, sgConstant, Dialog, Mailbox, encodeUriFilter) {
+  sgMailboxListItemController.$inject = ['$scope', '$element', '$state', '$mdToast', '$mdPanel', '$mdMedia', '$mdSidenav', 'sgConstant', 'Dialog', 'Mailbox', 'encodeUriFilter'];
+  function sgMailboxListItemController($scope, $element, $state, $mdToast, $mdPanel, $mdMedia, $mdSidenav, sgConstant, Dialog, Mailbox, encodeUriFilter) {
     var $ctrl = this;
 
 
