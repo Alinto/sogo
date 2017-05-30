@@ -1,0 +1,264 @@
+/* this file is in UTF-8 format! */
+
+"Contact" = "Kontakts";
+"Address" = "Adrese";
+"Photos" = "Fotoattēli";
+"Other" = "Cits";
+"Address Books" = "Adrešu grāmatas";
+"Addressbook" = "Adrešu grāmata";
+"Addresses" = "Adreses";
+"Update" = "Atjaunināt";
+"Cancel" = "Atcelt";
+"Common" = "Kopīgs";
+"Contact editor" = "Kontaktpersonu redaktors";
+"Contact viewer" = "Kontaktpersona skatītājs";
+"Email" = "E-pasts";
+"Screen Name" = "Ekrāna vārds";
+"Extended" = "Paplašināts";
+"Fax" = "Fax";
+"Firstname" = "Vārds";
+"Home" = "Mājas";
+"HomePhone" = "Mājas tālrunis";
+"Lastname" = "Uzvārds";
+"Location" = "Vieta";
+"Add a category" = "Pievienot kategorijai";
+"MobilePhone" = "Mobilais tālrunis";
+"Name" = "Nosaukums";
+"OfficePhone" = "Darba tālrunis";
+"Organization" = "Organizācija";
+"Work Phone" = "Tālrunis darbā";
+"Phone" = "Tālrunis";
+"Phones" = "Tālruņi";
+"Postal" = "Pasts";
+"Save" = "Saglabāt";
+"Internet" = "Internets";
+"Unit" = "Vienība";
+"delete" = "dzēst";
+"edit" = "labot";
+"invalidemailwarn" = "Norādītā e-pasta adrese ir nederīga";
+"new" = "jauns";
+"Preferred Phone" = "Vēlamais tālrunis";
+"Move To" = "Pārvietot uz";
+"Copy To" = "Kopēt uz";
+"Add to" = "Pievienot";
+"To" = "Kam";
+"Carbon Copy (Cc)" = "Kopija (Cc)";
+"Blind Carbon Copy (Bcc)" = "Diskrētā kopija (Bcc)";
+
+/* Subheader of empty addressbook */
+"No contact" = "Nav kontaktpersonas";
+
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Sākt meklēt, lai pārlūkotu šo adrešu grāmatu";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "kontakti";
+
+/* No contact matching search criteria */
+"No matching contact" = "Neviens atbilstošs kontakts";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "atbilstoši kontakti";
+
+/* Number of selected contacts in list */
+"selected" = "atlasīts";
+
+/* Empty right pane */
+"No contact selected" = "Nav atlasīta neviena kontaktpersona";
+
+/* Tooltips */
+"Create a new address book card" = "Izveidot jaunu adrešu grāmatas kartiņu";
+"Create a new list" = "Izveidot jaunu sarakstu";
+"Edit the selected card" = "Rediģēt atlasīto kartiņu";
+"Send a mail message" = "Nosūtīt e-pasta ziņojumu";
+"Delete selected card or address book" = "Dzēst izvēlēto kartiņu vai adrešu grāmatu";
+"Reload all contacts" = "Pārlādēt visus kontaktus";
+"htmlMailFormat_UNKNOWN" = "Nezināms";
+"htmlMailFormat_FALSE" = "Plain Text";
+"htmlMailFormat_TRUE" = "HTML";
+"Name or Email" = "Vārds vai e-pasts";
+"Category" = "Kategorija";
+"Personal Addressbook" = "Personiskā adrešu grāmata";
+"Search in Addressbook" = "Meklēt adrešu grāmatā";
+"New Card" = "Jauna kartiņa";
+"New List" = "Jauns saraksts";
+"Edit" = "Labot";
+"Properties" = "Rekvizīti";
+"Sharing..." = "Koplieto...";
+"Write" = "Rakstīt";
+"Delete" = "Dzēst";
+"Instant Message" = "Tūlītējais ziņojums";
+"Add..." = "Pievienot...";
+"Remove" = "Noņemt";
+"Please wait..." = "Lūdzu, uzgaidiet...";
+"No possible subscription" = "Nav iespējams abonēt";
+"Preferred" = "Vēlamais";
+"Display" = "Rādīt";
+"Display Name" = "Parādāmais nosaukums";
+"Additional Email" = "Papildu e-pasts";
+"Phone Number" = "Tālruņa numurs";
+"Prefers to receive messages formatted as" = "Vēlas saņemt ziņojumus formātā";
+"Categories" = "Kategorijas";
+"First" = "Vārds";
+"Last" = "Uzvārds";
+"Nickname" = "Iesauka";
+"Telephone" = "Tālrunis";
+"Work" = "Darbs";
+"Mobile" = "Mobilais";
+"Pager" = "Peidžeris";
+
+/* categories */
+"contacts_category_labels" = "Kolēģi, konkurenti, klienti, draugi, ģimene, biznesa partneri, piegādātāji, Prese, VIP";
+"New category" = "Jauna kategorija";
+
+/* adresses */
+"Title" = "Nosaukums";
+"Service" = "Pakalpojums";
+"Company" = "Uzņēmums";
+"Department" = "Departaments";
+"City" = "Pilsēta";
+"State_Province" = "Štats / province";
+"ZIP_Postal Code" = "ZIP/Pasta indekss";
+"Country" = "Valsts";
+"Web Page" = "Interneta lappuse";
+"Other Infos" = "Cita informācija";
+"Note" = "Piezīme";
+"Timezone" = "Laika josla";
+"Birthday" = "Dzimšanas diena";
+"Birthday (yyyy-mm-dd)" = "Dzimšanas diena (yyyy-mm-dd)";
+"Freebusy URL" = "Aizņemtības URL";
+"Add as..." = "Pievienot kā...";
+"Recipient" = "Adresāts";
+"Carbon Copy" = "Kopija";
+"Blind Carbon Copy" = "Diskrētā kopija";
+"New Addressbook..." = "Jauna adrešu grāmata...";
+"Subscribe to an Addressbook..." = "Parakstīties uz adrešu grāmatu...";
+"Remove the selected Addressbook" = "Noņemt atlasīto adrešu katalogu";
+"Subscribe to a shared folder" = "Parakstīties uz koplietojamu mapi";
+"Search User" = "Meklēt lietotāju";
+"Name of the Address Book" = "Adrešu grāmatas nosaukums";
+"Are you sure you want to delete the selected address book?"
+= "Vai tiešām vēlaties izdzēst atlasīto adrešu grāmatu?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Vai tiešām vēlaties dzēst adrešu grāmatu \"%{0}\"?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "Nevar noņemt nedz atteikties no publiskā adrešu kataloga.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "Jūs nevarat noņemt abonementu, no jūsu personiskās adrešu grāmatas.";
+"Are you sure you want to delete the selected contacts?"
+= "Vai tiešām vēlaties izdzēst atlasītās kontaktpersonas?";
+"Are you sure you want to delete the card of %{0}?" = "Vai tiešām vēlaties izdzēst šo kartiņu %{0}?";
+"You cannot delete the card of \"%{0}\"."
+= "Nevar dzēst kartiņu \"%{0}\".";
+"You cannot subscribe to a folder that you own!"
+= "Jūs nevarat abonēt mapi, kas jums pieder.";
+"Unable to subscribe to that folder!"
+= "Nevar parakstīties uz šo mapi.";
+
+/* acls */
+"Access rights to" = "Piekļuves tiesības";
+"For user" = "Lietotājam";
+"Any Authenticated User" = "Visi autentificētie lietotāji";
+"Public Access" = "Publiska piekļuve";
+"This person can add cards to this addressbook."
+= "Šī persona var pievienot ierakstus adrešu katalogā.";
+"This person can edit the cards of this addressbook."
+= "Šī persona var rediģēt ierakstus adrešu katalogā.";
+"This person can list the content of this addressbook."
+= "Šī persona var skatīt adrešu grāmatas saturu.";
+"This person can read the cards of this addressbook."
+= "Šīs personas var lasīt ierakstus no adrešu kataloga.";
+"This person can erase cards from this addressbook."
+= "Šī persona var dzēst ierakstus no adrešu kataloga.";
+"The selected contact has no email address."
+= "Izvēlētajam kontaktam nav e-pasta adreses.";
+"Please select a contact." = "Lūdzu, atlasiet kontaktpersonu.";
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} kartiņa(s) ir nokopēta/s";
+"%{0} card(s) moved" = "%{0} kartiņa(s) ir pārvietota/s";
+"SoAccessDeniedException" = "Jūs nevarat rakstīt adrešu grāmatā.";
+"Forbidden" = "Aizliegts";
+"Invalid Contact" = "Atlasītā kontaktpersona vairs nepastāv.";
+"Unknown Destination Folder" = "Izvēlētais adresāts adrešu grāmatā vairs nepastāv.";
+
+/* Lists */
+"List details" = "Saraksta detaļas";
+"List name" = "Saraksta nosaukums";
+"List nickname" = "Saraksta segvārds";
+"List description" = "Saraksta apraksts";
+"Members" = "Locekļi";
+"Contacts" = "Kontakti";
+"Add" = "Pievienot";
+"Lists can't be moved or copied." = "Sarakstus nevar pārvietot vai kopēt.";
+"Export" = "Eksportēt";
+"Export Address Book..." = "Eksportēt adrešu grāmatu...";
+"View Raw Source" = "Apskatīt RAW avotu";
+
+/* Import */
+"Import Cards" = "Importēt kartiņas";
+"Select a vCard or LDIF file." = "Izvēlieties vCard vai LDIF failu";
+"Upload" = "Augšupielādēt";
+"Uploading" = "Augšupielāde";
+"Done" = "Darīts";
+"An error occured while importing contacts." = "Importējot kontaktpersonas radās kļūda.";
+"No card was imported." = "Nav kartiņa importēta.";
+"A total of %{0} cards were imported in the addressbook." = "Kopumā no % {0} kartiņas tika importētas adrešu grāmatā.";
+"Reload" = "Pārlādēt";
+
+/* Properties window */
+"Address Book Name" = "Adrešu grāmatas nosaukums";
+"Links to this Address Book" = "Saites uz šo adrešu grāmatu";
+"Authenticated User Access" = "Autentificēto lietotāju piekļuve";
+"CardDAV URL" = "CardDAV URL";
+"Options" = "Opcijas";
+"Rename" = "Pārdēvēt";
+"Subscriptions" = "Abonementi";
+"Global Addressbooks" = "Globāla adrešu grāmata";
+"Search" = "Meklēšana";
+"Sort" = "Kārtot";
+"Descending Order" = "Dilstoša secība";
+"Back" = "Atpakaļ";
+"Select All" = "Atlasīt visu";
+"Copy contacts" = "Kopēt kontaktus";
+"More messages options" = "Vairāk ziņojumu opciju";
+"New Contact" = "Jauns kontakts";
+"Close" = "Aizvērt";
+"More contact options" = "Vairāk kontaktu iespējas";
+"Organization Unit" = "Organizācijas vienība";
+"Add Organizational Unit" = "Pievienot organizācijas vienību";
+"Type" = "Tips";
+"Email Address" = "E-pasta adrese";
+"New Email Address" = "Jauna e-pasta adrese";
+"New Phone Number" = "Jauns tālruņa numurs";
+"URL" = "URL";
+"New URL" = "Jauns URL";
+"street" = "iela";
+"Postoffice" = "Pasts";
+"Region" = "Reģions";
+"Postal Code" = "Pasta indekss";
+"New Address" = "Jauna adrese";
+"Reset" = "Atiestatīt";
+"Description" = "Apraksts";
+"Add Member" = "Pievienot dalībnieku";
+"Subscribe" = "Abonēt";
+"Add Birthday" = "Pievienot dzimšanas dienu";
+"Import" = "Importēt";
+"More options" = "Papildu opcijas";
+"Role" = "Loma";
+"Add Screen Name" = "Pievienot ekrāna vārdu";
+"Synchronization" = "Sinhronizācija";
+"Synchronize" = "Sinhronizēt";
+"Sucessfully subscribed to address book" = "Sekmīgi abonējis adrešu grāmatu";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Meklēšanas tvērums";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Pārslēgt vienumu";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

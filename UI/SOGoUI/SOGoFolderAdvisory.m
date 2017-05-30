@@ -291,6 +291,18 @@
 @implementation SOGoFolderItalianRemovalAdvisory
 @end
 
+@implementation SOGoFolderLatvianAdditionAdvisory
+@end
+
+@implementation SOGoFolderLatvianRemovalAdvisory
+@end
+
+@implementation SOGoFolderLithuanianAdditionAdvisory
+@end
+
+@implementation SOGoFolderLithuanianRemovalAdvisory
+@end
+
 @implementation SOGoFolderNorwegianBokmalAdditionAdvisory
 @end
 

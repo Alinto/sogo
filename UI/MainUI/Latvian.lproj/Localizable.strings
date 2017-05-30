@@ -1,0 +1,95 @@
+/* this file is in UTF-8 format! */
+
+"title" = "SOGo";
+"Username" = "Lietotājvārds";
+"Password" = "Parole";
+"Domain" = "Domēns";
+"Remember username" = "Atcerēties lietotājvārdu";
+"Connect" = "Savienot";
+
+/* Appears while authentication is in progress */
+"Authenticating" = "Autentificēšana";
+
+/* Appears when authentication succeeds */
+"Welcome" = "Sveicināti";
+
+"Authentication Failed" = "Autentifikācija neizdevās";
+"Wrong username or password." = "Nepareizs lietotājvārds vai parole.";
+"Retry" = "Mēģināt vēlreiz";
+"cookiesNotEnabled" = "Jūs nevarat pieteikties, jo jūsu pārlūkprogrammas sīkfaili ir atspējoti. Lūdzu, iespējojiet sīkfailus savā pārlūkprogrammas iestatījumos un mēģiniet vēlreiz.";
+"browserNotCompatible" = "Mēs esam noteikuši, ka jūsu pārlūkprogrammas versija pašlaik netiek atbalstīta šajā vietnē. Mūsu ieteikums ir izmantot Firefox. Noklikšķiniet uz tālāk norādītās saites, lai lejupielādētu visjaunāko šīs pārlūkprogrammas versiju.";
+"alternativeBrowsers" = "Alternatīvi var izmantot arī šādas saderīgas pārlūkprogrammas";
+"alternativeBrowserSafari" = "Alternatīvi, jūs varat arī izmantot Safari.";
+"Download" = "Lejupielādēt";
+"Language" = "Valoda";
+"choose" = "Izvēlieties...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"Latvian" = "Latvijas";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"About" = "Par";
+"AboutBox" = "SOGo izstrādātās inversā, bezmaksas grupprogrammatūras serveris ar uzsvaru uz mērogojamību un vienkāršību.<br/><br/>\nAJAX-based sniedz bagātu SOGo Web interfeisu un atbalsta vairāki klienti, izmantojot standarta protokolus CalDAV un CardDAV.<br/><br/>\nSOGo tiek izplatīts saskaņā ar <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> versiju 2 vai jaunāku un detaļas tiek izplatītas saskaņā ar GNU LGPL versiju 2. Šī ir bezmaksas programmatūra: tu vari to mainīt un izplatīt. Nav NEKĀDAS GARANTIJAS, likums to atļauj.<br/><br/>\nSkatīt <a href=\"http://www.sogo.nu/en/support/community.html\">šo lapu</a> par dažādām atbalsta iespējām.";
+"Your account was locked due to too many failed attempts." = "Jūsu konts ir bloķēts, jo tika veikti pārāk daudz nesekmīgu mēģinājumu.";
+"Your account was locked due to an expired password." = "Jūsu konts ir bloķēts, jo ir beidzies paroles derīguma termiņš.";
+"Login failed due to unhandled error case" = "Pieteikšanās neizdevās nezināmas kļūdas dēļ";
+"Change your Password" = "Mainīt paroli";
+"The password was changed successfully." = "Parole sekmīgi nomainīta.";
+"Your password has expired, please enter a new one below" = "Jūsu paroles derīguma termiņš ir beidzies, lūdzu, ievadiet jaunu";
+"Password must not be empty." = "Parole nedrīkst būt tukša.";
+"The passwords do not match. Please try again." = "Paroles nesakrīt. Lūdzu, mēģiniet vēlreiz.";
+"Password Grace Period" = "Paroles derīguma periods";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Jums ir % {0} pieteikšanās atlikušas pirms jūsu konts tiks bloķēts. Lūdzu, nomainiet savu paroli preferenču logā.";
+"Password about to expire" = "Paroles derīguma termiņa beigas";
+"Your password is going to expire in %{0} %{1}." = "Jūsu paroles termiņš beidzas %{0} %{1}.";
+"days" = "dienas";
+"hours" = "stundas";
+"minutes" = "minūtes";
+"seconds" = "sekundes";
+"Password change failed" = "Paroles maiņa neizdevās";
+"Password change failed - Permission denied" = "Paroles maiņa neizdevās - Atļauja liegta";
+"Password change failed - Insufficient password quality" = "Paroles maiņa neizdevās - Nepietiekama paroles kvalitāte";
+"Password change failed - Password is too short" = "Paroles maiņa neizdevās - parole ir pārāk īsa";
+"Password change failed - Password is too young" = "Paroles maiņa neizdevās - parole ir pārāk maza, jauna";
+"Password change failed - Password is in history" = "Paroles maiņa neizdevās - parole atrodas vēsturē";
+"Unhandled policy error: %{0}" = "Neapstrādāta politikas kļūda: %{0}";
+"Unhandled error response" = "Neapstrādāta kļūda";
+"Password change is not supported." = "Paroles maiņa nav atbalstīta.";
+"Unhandled HTTP error code: %{0}" = "Neparedzēts HTTP kļūdas kods: %{0}";
+"New password" = "Jauna parole";
+"Confirmation" = "Apstiprinājums";
+"Cancel" = "Atcelt";
+"Please wait..." = "Lūdzu, uzgaidiet...";
+"Close" = "Aizvērt";
+"Missing search parameter" = "Trūkst meklēšanas parametru";
+"Missing type parameter" = "Trūkst tipa parametru";

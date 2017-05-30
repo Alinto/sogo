@@ -10,6 +10,7 @@ Enhancements
  - [web] AngularJS optimization of color picker
  - [web] improve display of tasks status
  - [web] added custom fields support from Thunderbird's address book
+ - [web] added Latvian (lv) translation - thanks to Juris Balandis
 
 Bug fixes
  - [web] respect SOGoLanguage and SOGoSupportedLanguages (#4169)
