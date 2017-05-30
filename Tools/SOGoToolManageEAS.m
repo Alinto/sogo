@@ -112,7 +112,7 @@ NSURL *folderTableURL;
 
 - (void) usage
 {
-  fprintf (stderr, "manage-eas listdevices|resetdevice|resetfolder|mergevcard|mergevevent user <devinceId | folderId> <YES | NO>\n\n"
+  fprintf (stderr, "manage-eas listdevices|resetdevice|resetfolder|mergevcard|mergevevent user <deviceId | folderId> <YES | NO>\n\n"
            "     user              the user of whom to reset the whole device or a single folder\n"
            "  Examples:\n"
            "       sogo-tool manage-eas listdevices janedoe\n"
