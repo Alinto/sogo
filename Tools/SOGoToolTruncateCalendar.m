@@ -214,7 +214,7 @@
 - (void) usage
 {
   fprintf (stderr, "Usage: truncate-calendar USER FOLDER DATE\n\n"
-	   "         USER       the owner of the contact folder\n"
+	   "         USER       the owner of the calendar folder\n"
 	   "         FOLDER     the id of the folder to clean up\n"
 	   "         DATE       UTC datetime - non-recurring events older than this date will be removed (ex: \"2016-06-27T17:38:56\")\n\n");
 }
