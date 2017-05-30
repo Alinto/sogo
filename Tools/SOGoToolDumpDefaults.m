@@ -67,8 +67,8 @@
 
 - (NSString *) processDefaults: (BOOL)allDefaults
 {
-  NSUserDefaults *ud;
   NSDictionary *defaultsDict;
+  NSUserDefaults *ud;
   NSData *plistData;
 
   ud = [NSUserDefaults standardUserDefaults];
@@ -82,6 +82,9 @@
       /* grab only the sogod domain */
       defaultsDict = [ud persistentDomainForName: @"sogod"];
     }
+
+  if (!defaultsDict)
+    return @"No defaults found. Try to use -f.";
 
   plistData = [NSPropertyListSerialization dataFromPropertyList: (id) defaultsDict
                                          format: NSPropertyListOpenStepFormat
