@@ -13,6 +13,7 @@ Bug fixes
  - [core] properly honor the "include in freebusy" setting (#3354)
  - [core] make sure to use crypt scheme when encoding md5/sha256/sha512 (#4137)
  - [core] newly subscribed calendars are excluded from freebusy (#3354)
+ - [core] strip cr during LDIF import process (#4172)
  - [web] fixed mail delegation of pristine user accounts (#4160)
  - [eas] fixed opacity in EAS freebusy (#4033)
  - [eas] set reply/forwarded flags when ReplaceMime is set (#4133)
