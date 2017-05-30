@@ -420,6 +420,93 @@ static Class iCalEventK = nil;
                     inCategory: @"FolderShowTasks"];    
 }
 
+- (BOOL) subscribeUserOrGroup: (NSString *) theIdentifier
+		     reallyDo: (BOOL) reallyDo
+                     response: (WOResponse *) theResponse
+{
+  NSMutableDictionary *moduleSettings, *folderShowAlarms, *freeBusyExclusions;
+  NSString *subscriptionPointer;
+  NSMutableArray *allUsers;
+  SOGoUserSettings *us;
+  NSDictionary *dict;
+  SOGoUser *sogoUser;
+  BOOL rc;
+  int i;
+
+  rc = [super subscribeUserOrGroup: theIdentifier reallyDo: reallyDo response: theResponse];
+
+  if (rc)
+    {
+      dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: theIdentifier];
+
+      if ([[dict objectForKey: @"isGroup"] boolValue])
+        {
+          SOGoGroup *aGroup;
+
+          aGroup = [SOGoGroup groupWithIdentifier: theIdentifier
+                                         inDomain: [[context activeUser] domain]];
+          allUsers = [NSMutableArray arrayWithArray: [aGroup members]];
+
+          // We remove the active user from the group (if present) in order to
+          // not subscribe him to their own resource!
+          [allUsers removeObject: [context activeUser]];
+        }
+      else
+        {
+          sogoUser = [SOGoUser userWithLogin: theIdentifier roles: nil];
+
+          if (sogoUser)
+            allUsers = [NSArray arrayWithObject: sogoUser];
+          else
+            allUsers = [NSArray array];
+        }
+
+      for (i = 0; i < [allUsers count]; i++)
+        {
+          sogoUser = [allUsers objectAtIndex: i];
+          us = [sogoUser userSettings];
+          moduleSettings = [us objectForKey: [container nameInContainer]];
+          if (!(moduleSettings
+                && [moduleSettings isKindOfClass: [NSMutableDictionary class]]))
+            {
+              moduleSettings = [NSMutableDictionary dictionary];
+              [us setObject: moduleSettings forKey: [container nameInContainer]];
+            }
+
+          subscriptionPointer = [self folderReference];
+
+          folderShowAlarms = [moduleSettings objectForKey: @"FolderShowAlarms"];
+          freeBusyExclusions = [moduleSettings objectForKey: @"FreeBusyExclusions"];
+
+          if (reallyDo)
+            {
+              if (!(folderShowAlarms
+                    && [folderShowAlarms isKindOfClass: [NSMutableDictionary class]]))
+                {
+                  folderShowAlarms = [NSMutableDictionary dictionary];
+                  [moduleSettings setObject: folderShowAlarms
+                                     forKey: @"FolderShowAlarms"];
+                }
+
+              // By default, we disable alarms on subscribed calendars
+              [folderShowAlarms setObject: [NSNumber numberWithBool: NO]
+                                   forKey: subscriptionPointer];
+            }
+          else
+            {
+              [folderShowAlarms removeObjectForKey: subscriptionPointer];
+              [freeBusyExclusions removeObjectForKey: subscriptionPointer];
+            }
+
+          [us synchronize];
+
+          rc = YES;
+        }
+    }
+
+  return rc;
+}
+
 //
 // If the user is the owner of the calendar, by default we include the freebusy information.
 //
@@ -447,9 +534,16 @@ static Class iCalEventK = nil;
       = [self folderPropertyValueInCategory: @"FreeBusyExclusions"
 				    forUser: [SOGoUser userWithLogin: ownerInContext]];
 
-  // We haven't included/excluded freebusy info, let's INCLUDE it.
+  // User has not setting for freebusy inclusion/exclusion,
+  //   * include it if it's a personal folder;
+  //   * exclude it if it's a subscription.
   if (!excludeFromFreeBusy)
-    return YES;
+    {
+      if ([self isSubscription])
+        return NO;
+      else
+        return YES;
+    }
 
   return ![excludeFromFreeBusy boolValue];
 }
