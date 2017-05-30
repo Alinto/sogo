@@ -146,6 +146,33 @@
               </div>
             </div>
 
+	    <div class="section" ng-show="editor.card.customFields">
+              <div class="pseudo-input-container" ng-show="editor.card.customFields['1']">
+                <label class="pseudo-input-label"><var:string label:value="Custom 1"/></label>
+		<div class="pseudo-input-field">
+                  <span>{{editor.card.customFields['1']}}</span>
+		</div>
+              </div>
+	      <div class="pseudo-input-container" ng-show="editor.card.customFields['2']">
+                <label class="pseudo-input-label"><var:string label:value="Custom 2"/></label>
+		<div class="pseudo-input-field">
+                  <span>{{editor.card.customFields['2']}}</span>
+		</div>
+              </div>
+	      <div class="pseudo-input-container" ng-show="editor.card.customFields['3']">
+                <label class="pseudo-input-label"><var:string label:value="Custom 3"/></label>
+		<div class="pseudo-input-field">
+                  <span>{{editor.card.customFields['3']}}</span>
+		</div>
+              </div>
+	      <div class="pseudo-input-container" ng-show="editor.card.customFields['4']">
+                <label class="pseudo-input-label"><var:string label:value="Custom 4"/></label>
+		<div class="pseudo-input-field">
+                  <span>{{editor.card.customFields['4']}}</span>
+		</div>
+              </div>
+            </div>
+
             <div class="section" ng-show="editor.card.notes[0].value.length">
               <div class="pseudo-input-container" ng-repeat="note in editor.card.notes">
                 <label class="pseudo-input-label"><var:string label:value="Note"/></label>

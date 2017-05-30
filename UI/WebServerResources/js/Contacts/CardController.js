@@ -29,6 +29,9 @@
     vm.addPhone = addPhone;
     vm.addUrl = addUrl;
     vm.addAddress = addAddress;
+    vm.canAddCustomField = canAddCustomField;
+    vm.addCustomField = addCustomField;
+    vm.deleteCustomField = deleteCustomField;
     vm.userFilter = userFilter;
     vm.save = save;
     vm.close = close;
@@ -97,6 +100,20 @@
     function addUrl() {
       var i = vm.card.$addUrl('', '');
       focus('url_' + i);
+    }
+    function canAddCustomField() {
+      return _.keys(stateCard.customFields).length < 4;
+    }
+    function addCustomField() {
+      if (!angular.isDefined(vm.card.customFields))
+        vm.card.customFields = {};
+
+      // Find the first 'available' custom field
+      var availableKeys = _.pullAll(['1', '2', '3', '4'], _.keys(stateCard.customFields));
+      vm.card.customFields[availableKeys[0]] = "";
+    }
+    function deleteCustomField(key) {
+      delete vm.card.customFields[key];
     }
     function addAddress() {
       var i = vm.card.$addAddress('', '', '', '', '', '', '', '');

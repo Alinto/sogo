@@ -337,11 +337,13 @@ static Class SOGoContactGCSEntryK = Nil;
 
 - (void) setAttributes: (NSDictionary *) attributes
 {
-  CardElement *element;
-  NSArray *elements, *values;
   NSMutableArray *orgs, *categories;
+  NSDictionary *customFields;
+  NSArray *elements, *values;
   NSCalendarDate *date;
+  CardElement *element;
   id o;
+
   unsigned int i, year, month, day;
 
   [card setNWithFamily: [attributes objectForKey: @"c_sn"]
@@ -483,6 +485,38 @@ static Class SOGoContactGCSEntryK = Nil;
             }
         }
       [card setCategories: categories];
+    }
+
+  customFields = [attributes objectForKey: @"customFields"];
+  if (customFields && [customFields isKindOfClass: [NSDictionary class]])
+    {
+      if ((o = [customFields objectForKey: @"1"]))
+        {
+          elements = [card childrenWithTag: @"custom1"];
+          [card removeChildren: elements];
+          [card addElementWithTag: @"custom1"  ofType: nil  withValue: o];
+        }
+
+      if ((o = [customFields objectForKey: @"2"]))
+        {
+          elements = [card childrenWithTag: @"custom2"];
+          [card removeChildren: elements];
+          [card addElementWithTag: @"custom2"  ofType: nil  withValue: o];
+        }
+
+      if ((o = [customFields objectForKey: @"3"]))
+        {
+          elements = [card childrenWithTag: @"custom3"];
+          [card removeChildren: elements];
+          [card addElementWithTag: @"custom1"  ofType: nil  withValue: o];
+        }
+
+      if ((o = [customFields objectForKey: @"4"]))
+        {
+          elements = [card childrenWithTag: @"custom4"];
+          [card removeChildren: elements];
+          [card addElementWithTag: @"custom1"  ofType: nil  withValue: o];
+        }
     }
 
   [card cleanupEmptyChildren];

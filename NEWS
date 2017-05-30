@@ -9,6 +9,7 @@ Enhancements
  - [web] AngularJS optimizations in Mail module
  - [web] AngularJS optimization of color picker
  - [web] improve display of tasks status
+ - [web] added custom fields support from Thunderbird's address book
 
 Bug fixes
  - [web] respect SOGoLanguage and SOGoSupportedLanguages (#4169)

@@ -348,6 +348,38 @@
               </div>
             </div>
 
+	    <!-- custom fields -->
+            <div class="section">
+              <div class="attr" ng-repeat="(key, value) in editor.card.customFields">
+                <div layout="row" layout-align="start center">
+                  <md-button class="md-icon-button" type="button" ng-click="editor.deleteCustomField(key)">
+                    <md-icon>remove_circle</md-icon>
+                  </md-button>
+                  <md-input-container flex="20">
+                     <label>
+                       <var:string label:value="Type"/>
+                     </label>
+                     <input type="text" readonly="readonly" ng-value="key"/>
+                  </md-input-container>
+                  <md-input-container class="md-flex">
+                    <label>
+                      <var:string label:value="Custom Value"/>
+                    </label>
+                    <input type="text" ng-model="editor.card.customFields[key]"/>
+                  </md-input-container>
+                </div>
+              </div>
+              <div class="md-layout-margin" layout="row"
+                   layout-align="start center" ng-show="editor.canAddCustomField()">
+                <md-button class="md-icon-button" type="button" ng-click="editor.addCustomField()">
+                  <md-icon>add_circle</md-icon>
+                </md-button>
+                <label class="button-label">
+                  <var:string label:value="New Custom Value"/>
+                </label>
+              </div>
+            </div>
+
             <!-- note -->
             <md-input-container class="md-block md-flex"
                                 ng-repeat="note in editor.card.notes">

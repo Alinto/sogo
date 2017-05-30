@@ -270,14 +270,15 @@
  * @apiSuccess (Success 200) {Object[]} [urls]             URLs
  * @apiSuccess (Success 200) {String} urls.type            Type (e.g., personal or work)
  * @apiSuccess (Success 200) {String} urls.value           URL
+ * @apiSuccess (Success 200) {Object[]} customFields       Custom fields from Thunderbird
  */
 - (id <WOActionResults>) dataAction
 {
-  id <WOActionResults> result;
-  id o;
+  NSMutableDictionary *customFields, *data;
   SOGoObject <SOGoContactObject> *contact;
+  id <WOActionResults> result;
   NSArray *values;
-  NSMutableDictionary *data;
+  id o;
 
   contact = [self clientObject];
   card = [contact vCard];
@@ -354,6 +355,23 @@
   if (o) [data setObject: o forKey: @"allCategories"];
   if ([contact hasPhoto])
     [data setObject: [self photoURL] forKey: @"photoURL"];
+
+  // Custom fields from Thunderbird
+  customFields = [NSMutableDictionary dictionary];
+  if ((o = [[card uniqueChildWithTag: @"custom1"] flattenedValuesForKey: @""]) && [o length])
+    [customFields setObject: o  forKey: @"1"];
+
+  if ((o = [[card uniqueChildWithTag: @"custom2"] flattenedValuesForKey: @""]) && [o length]) 
+    [customFields setObject: o  forKey: @"2"];
+
+  if ((o = [[card uniqueChildWithTag: @"custom3"] flattenedValuesForKey: @""]) && [o length])
+    [customFields setObject: o  forKey: @"3"];
+
+  if ((o = [[card uniqueChildWithTag: @"custom4"] flattenedValuesForKey: @""]) && [o length])
+    [customFields setObject: o  forKey: @"4"];
+
+  if ([customFields count])
+    [data setObject: customFields  forKey: @"customFields"];
 
   result = [self responseWithStatus: 200
                           andString: [data jsonRepresentation]];
