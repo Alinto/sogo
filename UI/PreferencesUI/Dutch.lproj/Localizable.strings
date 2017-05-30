@@ -194,6 +194,7 @@
 "Please enter your signature below" = "Stel de ondertekening hieronder op";
 "Please specify a valid sender address." = "Geef alstublieft een geldig afzendadres aan.";
 "Please specify a valid reply-to address." = "Geef alstublieft een geldig antwoordadres aan.";
+"Specify a hostname other than the local host" = "Geef een hostname anders dan de locale hostname op";
 
 /* Additional Parameters */
 "Additional Parameters" = "Extra Parameters";
@@ -249,6 +250,7 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
+"Latvian" = "Latvijas";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";

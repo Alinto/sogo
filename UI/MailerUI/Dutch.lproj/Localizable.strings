@@ -53,7 +53,13 @@
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Welkom bij de SOGo Mailer. Gebruik de mappenlijst aan de linkerkant om door uw e-mailaccounts te bladeren.";
 "Read messages"       = "Gelezen berichten";
+
+/* Tooltip for fab button */
 "Write a new message" = "Een nieuw bericht opstellen";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Bericht maken in een nieuw scherm";
+
 "Share" = "Delen";
 "Account" = "Account";
 "Shared Account" = "Gedeeld account";
@@ -217,6 +223,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Omzetten naar taak";
 
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Download alle bijlagen";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "bijlagen";
+
 "Print..." = "Afdrukken...";
 "Delete Message" = "Bericht verwijderen";
 "Delete Selected Messages" = "Geselecteerde berichten verwijderen";
@@ -315,6 +327,7 @@
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Fout bij uploaden van bestand \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Een bestandsupload is actief. Sluiten van het venster zal hem onderbreken.";
+"Message is too big" = "Bericht is te groot";
 
 /* Appears while sending the message */
 "Sending" = "Verzenden";

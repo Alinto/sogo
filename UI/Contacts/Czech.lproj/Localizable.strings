@@ -175,7 +175,7 @@
 "%{0} card(s) copied" = "%{0} kontakt(ů) zkopírováno";
 "%{0} card(s) moved" = "%{0} kontakt(ů) přesunuto";
 "SoAccessDeniedException" = "Nemůžete zapisovat do tohoto adresáře.";
-"Forbidden" = "Nemůžete zapisovat do tohoto adresáře.";
+"Forbidden" = "Zakázané";
 "Invalid Contact" = "Označený kontakt již neexistuje.";
 "Unknown Destination Folder" = "Zvolený cílový adresář již neexistuje.";
 

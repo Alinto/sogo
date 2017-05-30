@@ -16,7 +16,7 @@ Appointment = "Çalışma";
 was = "önceden";
 
 Organizer = "Düzenleyen";
-Time = "Zaman";
+Time = "Saat";
 Attendees = "Katılımcılar";
 request_info = "sizi toplantıya katılmaya davet ediyor. ";
 "Add to calendar" = "Takvime ekle";

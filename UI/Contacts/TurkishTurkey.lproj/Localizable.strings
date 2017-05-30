@@ -41,6 +41,9 @@
 "Move To" = "Taşı";
 "Copy To" = "Kopyala";
 "Add to" = "Ekle";
+"To" = "Alıcı";
+"Carbon Copy (Cc)" = "Karbon Kopya (Cc)";
+"Blind Carbon Copy (Bcc)" = "Gizli Karbon Kopya (Bcc)";
 
 /* Subheader of empty addressbook */
 "No contact" = "Adres defteri boş";

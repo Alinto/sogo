@@ -6,6 +6,7 @@ Enhancements
  - [core] now possible to {un}subscribe to folders using sogo-tool
  - [eas] added photo support for GAL search operations
  - [web] added custom fields support from Thunderbird's address book
+ - [web] added Latvian (lv) translation - thanks to Juris Balandis
 
 Bug fixes
  - [core] fixed calendar component move across collections (#4116)

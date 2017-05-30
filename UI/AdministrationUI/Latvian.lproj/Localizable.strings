@@ -1,0 +1,26 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "Palīdzība";
+"Close" = "Aizvērt";
+"Modules" = "Moduļi";
+/* Modules short names */
+"ACLs" = "ACLs";
+/* Modules titles */
+"ACLs_title" = "Lietotāju mapes ACLs pārvaldība";
+/* Modules descriptions */
+"ACLs_description" = "<p>Access Control Lists administrēšanas modulis ļauj mainīt ACL lietotāja kalendāru un adrešu grāmatu.</p> <p>Lai modificētu ACL lietotāja mapi ierakstiet lietotāja vārdu meklēšanas laukā loga augšdaļā un veiciet dubultklikšķi uz vajadzīgās mapes.</p>";
+"Name or Email" = "Vārds vai e-pasts";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Sākt meklēšanu, lai rediģētu tiesības";
+/* Rights module: Empty search result */
+"No matching user" = "Neviens atbilstošs lietotājs";
+/* Rights module: no selection */
+"No resource selected" = "Nav atlasīts resurss";
+"Add User" = "Pievienot lietotāju";
+"Subscribe User" = "Abonēt lietotāju";
+"Rights" = "Tiesības";
+"Search Users" = "Meklēt lietotājus";
+"users found" = "atrasti lietotāji";
+"No resource" = "Nav resursu";
+"Any Authenticated User" = "Visi autentificētie lietotāji";
+"Public Access" = "Publiska piekļuve";

@@ -175,7 +175,7 @@
 "%{0} card(s) copied" = "%{0} osoitekortti(a) kopioitu";
 "%{0} card(s) moved" = "%{0} osoitekortti(a) siirretty";
 "SoAccessDeniedException" = "Et voi kirjoittaa tähän osoitekirjaan.";
-"Forbidden" = "Et voi kirjoittaa tähän osoitekirjaan.";
+"Forbidden" = "Kielletty";
 "Invalid Contact" = "Valittua yhteystietoa ei enää ole. ";
 "Unknown Destination Folder" = "Valittua kohdeosoitekirjaa ei enää ole.";
 

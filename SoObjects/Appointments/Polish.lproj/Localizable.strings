@@ -18,10 +18,14 @@ vtodo_class2 = "(Zadanie poufne)";
 "calendar_label" = "Kalendarz";
 "startDate_label" = "Początek";
 "endDate_label" = "Koniec";
+"time_label" = "Data";
+"to_label" = "do";
 "due_label" = "Termin";
 "location_label" = "Miejsce";
 "summary_label" = "Podsumowanie";
 "comment_label" = "Komentarz";
+"organizer_label" = "Organizator";
+"attendee_label" = "Uczestnik";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Zaproszenie na wydarzenie: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(wysłane przez %{SentBy}) ";

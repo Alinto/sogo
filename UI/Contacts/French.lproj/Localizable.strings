@@ -41,6 +41,9 @@
 "Move To" = "Déplacer vers";
 "Copy To" = "Copier vers";
 "Add to" = "Ajouter à";
+"To" = "Destinataire";
+"Carbon Copy (Cc)" = "Copie carbone";
+"Blind Carbon Copy (Bcc)" = "C. carbone cachée";
 
 /* Subheader of empty addressbook */
 "No contact" = "Aucun contact";

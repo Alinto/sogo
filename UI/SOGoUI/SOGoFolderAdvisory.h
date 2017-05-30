@@ -119,6 +119,18 @@
 @interface SOGoFolderItalianRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
+@interface SOGoFolderLatvianAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderLatvianRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
+@interface SOGoFolderLithuanianAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderLithuanianRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
 @interface SOGoFolderNorwegianBokmalAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 
