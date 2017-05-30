@@ -165,7 +165,7 @@ static NSArray *photoTags = nil;
   id value;
 
   NSRange r;
-  int i, j, count, linesCount;
+  int i, j, count, linesCount, len;
   int rc;
 
   folder = [self clientObject];
@@ -184,6 +184,11 @@ static NSArray *photoTags = nil;
       for (j = 0; j < linesCount; j++)
         {
           line = [lines objectAtIndex: j];
+          len = [line length];
+
+          /* we check for trailing \r and we strip them */
+          if (len && [line characterAtIndex: len-1] == '\r')
+            line = [line substringToIndex: len-1];
 
           /* skip embedded comment lines */
           if ([line hasPrefix: @"#"])
