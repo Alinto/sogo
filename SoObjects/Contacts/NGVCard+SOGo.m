@@ -217,9 +217,9 @@ convention:
 - (void) updateFromLDIFRecord: (NSDictionary *) ldifRecord
 {
   NSInteger year, yearOfToday, month, day;
+  NSArray *units, *elements;
   CardElement *element;
   NSCalendarDate *now;
-  NSArray *units;
   NSString *fn, *ou;
   id o;
 
@@ -319,6 +319,43 @@ convention:
     [self setCategories: o];
   else
     [self setCategories: [o componentsSeparatedByString: @","]];
+
+  // Custom fields from Thunderbird
+  if ((o = [ldifRecord objectForKey: @"custom1"]))
+    {
+      elements = [self childrenWithTag: @"custom1"];
+      [self removeChildren: elements];
+
+      if ([o length])
+        [self addElementWithTag: @"custom1"  ofType: nil  withValue: o];
+    }
+
+  if ((o = [ldifRecord objectForKey: @"custom2"]))
+    {
+      elements = [self childrenWithTag: @"custom2"];
+      [self removeChildren: elements];
+
+      if ([o length])
+        [self addElementWithTag: @"custom2"  ofType: nil  withValue: o];
+    }
+
+  if ((o = [ldifRecord objectForKey: @"custom3"]))
+    {
+      elements = [self childrenWithTag: @"custom3"];
+      [self removeChildren: elements];
+
+      if ([o length])
+        [self addElementWithTag: @"custom3"  ofType: nil  withValue: o];
+    }
+
+  if ((o = [ldifRecord objectForKey: @"custom4"]))
+    {
+      elements = [self childrenWithTag: @"custom4"];
+      [self removeChildren: elements];
+
+      if ([o length])
+        [self addElementWithTag: @"custom4"  ofType: nil  withValue: o];
+    }
 
   [self cleanupEmptyChildren];
 }
@@ -646,6 +683,19 @@ convention:
     dn = @"";
   [ldifRecord setObject: dn forKey: @"dn"];
 
+  // Custom fields from Thunderbird
+  if ((stringValue = [[self uniqueChildWithTag: @"custom1"] flattenedValuesForKey: @""]) && [stringValue length])
+    [ldifRecord setObject: stringValue  forKey: @"custom1"];
+
+  if ((stringValue = [[self uniqueChildWithTag: @"custom2"] flattenedValuesForKey: @""]) && [stringValue length])
+    [ldifRecord setObject: stringValue  forKey: @"custom2"];
+
+  if ((stringValue = [[self uniqueChildWithTag: @"custom3"] flattenedValuesForKey: @""]) && [stringValue length])
+    [ldifRecord setObject: stringValue  forKey: @"custom3"];
+
+  if ((stringValue = [[self uniqueChildWithTag: @"custom4"] flattenedValuesForKey: @""]) && [stringValue length])
+    [ldifRecord setObject: stringValue  forKey: @"custom4"];
+
   return ldifRecord;
 }
 
@@ -869,6 +919,35 @@ convention:
   [fields setObject: @"vcard" forKey: @"c_component"];
 
   return fields;
+}
+
+- (void) addElementWithTag: (NSString *) elementTag
+                    ofType: (NSString *) type
+                 withValue: (id) value
+{
+  NSArray *allValues;
+  NSEnumerator *list;
+  CardElement *element;
+
+  // value is either an array or a string
+  if ([value isKindOfClass: [NSString class]])
+    allValues = [NSArray arrayWithObject: value];
+  else
+    allValues = value;
+
+  // Add all values as separate elements
+  list = [allValues objectEnumerator];
+  while ((value = [list nextObject]))
+    {
+      if ([type length])
+        element = [CardElement simpleElementWithTag: elementTag
+                                         singleType: type
+                                              value: value];
+      else
+        element = [CardElement simpleElementWithTag: elementTag
+                                              value: value];
+      [self addChild: element];
+    }
 }
 
 @end /* NGVCard */

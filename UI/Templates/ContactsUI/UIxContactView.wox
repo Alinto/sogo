@@ -48,6 +48,10 @@
         <dl class="dl-horizontal">
           <var:string value="bday" escapeHTML="NO"
           /><var:string value="tz" escapeHTML="NO"
+          /><var:string value="custom1" escapeHTML="NO"
+          /><var:string value="custom2" escapeHTML="NO"
+          /><var:string value="custom3" escapeHTML="NO"
+          /><var:string value="custom4" escapeHTML="NO"
           /><var:string value="note" escapeHTML="NO"
           />
         </dl>

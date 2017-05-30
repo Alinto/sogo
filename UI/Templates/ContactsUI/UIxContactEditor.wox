@@ -377,6 +377,42 @@
                 </div>
               </td>
             </tr>
+            <tr>
+              <td>
+                <label><var:string label:value="Custom 1"
+                    />
+                  <input type="text" class="textField" name="custom1"
+                    id="nsaimid" var:value="ldifRecord.custom1"
+                    /></label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label><var:string label:value="Custom 2"
+                    />
+                  <input type="text" class="textField" name="custom2"
+                    id="nsaimid" var:value="ldifRecord.custom2"
+                    /></label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label><var:string label:value="Custom 3"
+                    />
+                  <input type="text" class="textField" name="custom3"
+                    id="nsaimid" var:value="ldifRecord.custom3"
+                    /></label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label><var:string label:value="Custom 4"
+                    />
+                  <input type="text" class="textField" name="custom4"
+                    id="nsaimid" var:value="ldifRecord.custom4"
+                    /></label>
+              </td>
+            </tr> 
            <tr>
               <td>
                 <label><var:string label:value="Note" /></label>
