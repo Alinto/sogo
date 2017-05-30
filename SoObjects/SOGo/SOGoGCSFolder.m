@@ -970,8 +970,12 @@ static NSArray *childRecordFields = nil;
 
       folderSubscription = [moduleSettings objectForKey: @"SubscribedFolders"];
       subscriptionPointer = [self folderReference];
-      
+
+      // We used to set "show alarms" for any type of folder, so we remove it
+      // here and let the subclass handle it (SOGoAppointmentFolder).
       folderShowAlarms = [moduleSettings objectForKey: @"FolderShowAlarms"];
+      if (folderShowAlarms)
+        [folderShowAlarms removeObjectForKey: subscriptionPointer];
 
       if (reallyDo)
         {
@@ -983,30 +987,17 @@ static NSArray *childRecordFields = nil;
                                  forKey: @"SubscribedFolders"];
             }
 
-	  if (!(folderShowAlarms
-                && [folderShowAlarms isKindOfClass: [NSMutableDictionary class]]))
-            {
-              folderShowAlarms = [NSMutableDictionary dictionary];
-              [moduleSettings setObject: folderShowAlarms
-                                 forKey: @"FolderShowAlarms"];
-            }
-
           [self setFolderPropertyValue: [self _displayNameFromSubscriber]
                             inCategory: @"FolderDisplayNames"
                               settings: us];
 
           [folderSubscription addObjectUniquely: subscriptionPointer];
-	  
-	  // By default, we disable alarms on subscribed calendars
-	  [folderShowAlarms setObject: [NSNumber numberWithBool: NO]
-			       forKey: subscriptionPointer];
         }
       else
         {
           [self removeFolderSettings: moduleSettings
                        withReference: subscriptionPointer];
           [folderSubscription removeObject: subscriptionPointer];
-	  [folderShowAlarms removeObjectForKey: subscriptionPointer];
 	}
 
       [us synchronize];
