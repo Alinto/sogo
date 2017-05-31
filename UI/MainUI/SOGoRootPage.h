@@ -31,6 +31,8 @@
   NSString *cookieLogin;
 }
 
+- (NSArray *) languages;
+
 @end
 
 #endif /* SOGOROOTPAGE_H */

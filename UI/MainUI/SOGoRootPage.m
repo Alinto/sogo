@@ -521,6 +521,16 @@
   return item;
 }
 
+- (BOOL) hasManyLanguages
+{
+  return [[self languages] count] > 1;
+}
+
+- (NSString *) language
+{
+  return [[context resourceLookupLanguages] objectAtIndex: 0];
+}
+
 - (NSArray *) languages
 {
   return [[SOGoSystemDefaults sharedSystemDefaults] supportedLanguages];

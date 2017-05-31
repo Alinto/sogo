@@ -38,6 +38,7 @@
     SOGoEnableDomainBasedUID = NO;
 
     SOGoLoginModule = "Mail";
+    WODefaultLanguages = ();
     SOGoLanguage = "English";
     SOGoSupportedLanguages = (
         "Arabic",

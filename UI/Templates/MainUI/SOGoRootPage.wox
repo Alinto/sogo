@@ -42,20 +42,22 @@
 	    <label><var:string label:value="Password"/><br/>
 	    <input class="textField" id="password"
 		   name="password" type="password" var:value="password" /></label>
+            <var:if condition="hasManyLanguages">
 	    <label><var:string label:value="Language"/><br/>
 	    <var:popup const:id="language" const:name="language"
 		       list="languages"
 		       item="item"
 		       var:value="item"
+		       var:selection="language"
 		       string="languageText"
 		       label:noSelectionString="choose"
 		       /></label>
+            </var:if>
             <var:if condition="hasLoginDomains">
 	    <label><var:string label:value="Domain"/><br/>
 	    <var:popup const:id="domain" const:name="domain"
 		       list="loginDomains"
 		       item="item"
-		       var:selection="item"
 		       var:value="item"
 		       string="item"
 		       /></label>
