@@ -21,9 +21,12 @@
 #ifndef UIXJSONPREFERENCES_H
 #define UIXJSONPREFERENCES_H
 
-#import <UI/SOGoUI/SOGoDirectAction.h>
+#import <SOGoUI/UIxComponent.h>
 
-@interface UIxJSONPreferences : SOGoDirectAction
+@interface UIxJSONPreferences : UIxComponent
+
+- (NSString *) jsonDefaults;
+- (NSString *) jsonSettings;
 
 @end
 

@@ -36,6 +36,7 @@
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoUserProfile.h>
 #import <SOGo/WOResourceManager+SOGo.h>
+#import <SOGoUI/UIxComponent.h>
 #import <Mailer/SOGoMailLabel.h>
 
 #import "UIxJSONPreferences.h"
@@ -72,12 +73,17 @@ static SoProduct *preferencesProduct = nil;
 
 - (WOResponse *) jsonDefaultsAction
 {
+  return [self responseWithStatus: 200
+                        andString: [self jsonDefaults]];
+}
+
+- (NSString *) jsonDefaults
+{
   NSMutableDictionary *values, *account, *vacation;
   SOGoUserDefaults *defaults;
   SOGoDomainDefaults *domainDefaults;
   NSMutableArray *accounts;
   NSDictionary *categoryLabels, *vacationOptions;
-  NSDictionary *locale;
 
   if (!preferencesProduct)
     {
@@ -329,7 +335,6 @@ static SoProduct *preferencesProduct = nil;
              forKey: @"SOGoAppointmentSendEMailNotifications"];
 
   // Add locale code (used by CK Editor)
-  locale = [[preferencesProduct resourceManager] localeForLanguageNamed: [defaults language]];
   [values setObject: [locale objectForKey: @"NSLocaleCode"] forKey: @"LocaleCode"];
   [values setObject: [NSDictionary dictionaryWithObjectsAndKeys:
                                            [locale objectForKey: @"NSMonthNameArray"], @"months",
@@ -365,10 +370,16 @@ static SoProduct *preferencesProduct = nil;
       [values setObject: vacation forKey: @"Vacation"];
     }
 
-  return [self responseWithStatus: 200 andJSONRepresentation: values];
+  return [values jsonRepresentation];
 }
 
 - (WOResponse *) jsonSettingsAction
+{
+  return [self responseWithStatus: 200
+                        andString: [self jsonSettings]];
+}
+
+- (NSString *) jsonSettings
 {
   SOGoUserSettings *settings;
   id v;
@@ -396,7 +407,7 @@ static SoProduct *preferencesProduct = nil;
   if (![settings objectForKey: @"Mail"])
     [settings setObject: [NSMutableDictionary dictionary]  forKey: @"Mail"];
 
-  return [self responseWithStatus: 200 andJSONRepresentation: [[settings source] values]];
+  return [[[settings source] values] jsonRepresentation];
 }
 
 @end

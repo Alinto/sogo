@@ -3,10 +3,12 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant">
+
   <script id="UserDefaults" type="text/json">
     <var:string value="jsonDefaults" const:escapeHTML="NO"/>
   </script>
   <script id="UserSettings" type="text/json">
     <var:string value="jsonSettings" const:escapeHTML="NO"/>
   </script>
+
 </container>
