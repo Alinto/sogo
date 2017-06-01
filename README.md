@@ -49,6 +49,7 @@ SOGo and its associated components are available in various languages. The follo
 * [hu] Hungarian - Sándor Kuti
 * [is] Icelandic - Anna Jonna Armannsdottir
 * [it] Italian - Alessio Fattorini
+* [lv] Latvian - Juris Balandis
 * [lt] Lithuanian - Mantas Liobė
 * [mk_MK] Macedonian - Miroslav Jovanovic
 * [nb_NO] Norwegian (Bokmål) - Jan Ivar Karlsen
