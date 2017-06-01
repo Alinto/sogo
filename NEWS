@@ -1,11 +1,12 @@
-2.3.21 (2017-XX-XX)
+2.3.21 (2017-06-01)
 -------------------
 
 Enhancements
- - [core] improved event initation for all day events (#4145)
+ - [core] improved event invitation for all day events (#4145)
  - [core] now possible to {un}subscribe to folders using sogo-tool
  - [eas] added photo support for GAL search operations
  - [web] added custom fields support from Thunderbird's address book
+ - [web] updated CKEditor to version 4.7.0
  - [web] added Latvian (lv) translation - thanks to Juris Balandis
 
 Bug fixes
