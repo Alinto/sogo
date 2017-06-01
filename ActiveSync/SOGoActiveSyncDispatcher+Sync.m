@@ -331,8 +331,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 // the case, let's just update it. This can happen if for example, an iOS based device receives the
                 // invitation email and choses "Add to calendar" BEFORE actually syncing the calendar. That would
                 // create a duplicate on the server.
-                if ([allValues objectForKey: @"UID"])
-                  serverId = [allValues objectForKey: @"UID"];
+                if ([allValues objectForKey: ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 16.0) ? @"ClientUid" : @"UID"])
+                  serverId = [allValues objectForKey: ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 16.0) ? @"ClientUid" : @"UID"];
                 else
                   serverId = [theCollection globallyUniqueObjectId];
                                 
@@ -367,9 +367,33 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             case ActiveSyncMailFolder:
             default:
               {
-                // FIXME - what to do?
-                [self errorWithFormat: @"Fatal error occured - tried to call -processSyncAddCommand: ... on a mail folder. We abort."];
-                abort();
+                 // Support SMS to Exchange eMail sync.
+                 NSString *serverId;
+                 sogoObject = [SOGoMailObject objectWithName: @"Mail" inContainer: theCollection];
+                 serverId = [sogoObject storeMail: allValues  inContext: context];
+                 if (serverId)
+                   {
+                     // Everything is fine, lets generate our response
+                     // serverId = clientId - There is no furhter processing after adding the SMS to the inbox.
+                     [theBuffer appendString: @"<Add>"];
+                     [theBuffer appendFormat: @"<ClientId>%@</ClientId>", clientId];
+                     [theBuffer appendFormat: @"<ServerId>%@</ServerId>", serverId];
+                     [theBuffer appendFormat: @"<Status>%d</Status>", 1];
+                     [theBuffer appendString: @"</Add>"];
+
+                     folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: theCollection withType: theFolderType]];
+                     syncCache = [folderMetadata objectForKey: @"SyncCache"];
+                     [syncCache setObject: @"0" forKey: serverId];
+                     [self _setFolderMetadata: folderMetadata  forKey: [self _getNameInCache: theCollection withType: theFolderType]];
+
+                     continue;
+                   }
+                 else
+                   {
+                     // FIXME - what to do?
+                     [self errorWithFormat: @"Fatal error occured - tried to call -processSyncAddCommand: ... on a mail folder. We abort."];
+                     abort();
+                   }
               }
             }
 

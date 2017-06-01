@@ -42,6 +42,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) context;
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
                     inContext: (WOContext *) context;
+- (NSString *) storeMail: (NSDictionary *) theValues
+               inContext: (WOContext *) _context;
 
 @end
 

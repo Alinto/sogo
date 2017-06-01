@@ -244,7 +244,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   // Location
   if ([[self location] length])
-    [s appendFormat: @"<Location xmlns=\"Calendar:\">%@</Location>", [[self location] activeSyncRepresentationInContext: context]];
+    {
+      if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 16.0)
+        [s appendFormat: @"<Location xmlns=\"AirSyncBase:\"><DisplayName>%@</DisplayName></Location>", [[self location] activeSyncRepresentationInContext: context]];
+      else
+         [s appendFormat: @"<Location xmlns=\"Calendar:\">%@</Location>", [[self location] activeSyncRepresentationInContext: context]];
+    }
   
   // Importance - NOT SUPPORTED - DO NOT ENABLE
   //o = [self priority];
@@ -451,7 +456,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   occurences = [NSMutableArray arrayWithArray: [[self parent] events]];
 
-  if ((o = [theValues objectForKey: @"UID"]))
+  if ((o = [theValues objectForKey: ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 16.0) ? @"ClientUid" : @"UID"]))
     [self setUid: o];
     
   // FIXME: merge with iCalToDo
@@ -530,8 +535,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         [self setComment: o];
     }
 
-  if ((o = [theValues objectForKey: @"Location"]))
+  if ([[context objectForKey: @"ASProtocolVersion"] floatValue] < 16.0 && (o = [theValues objectForKey: @"Location"]))
     [self setLocation: o];
+  else if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 16.0 && (o = [theValues objectForKey: @"Location"]) && [o isKindOfClass: [NSDictionary class]])
+    [self setLocation: [o objectForKey: @"DisplayName"]];
 
   deltasecs = 0;
   start = nil;
@@ -582,7 +589,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       // Ignore the alarm for now
     }
-  else if ((o = [theValues objectForKey: @"Reminder"]))
+  else if ((o = [theValues objectForKey: @"Reminder"]) && [o length])
     {           
       // NOTE: Outlook sends a 15 min reminder (18 hour for allday) if no reminder is specified  
       // although no default reminder is defined (File -> Options -> Clendar -> Calendar Options - > Default Reminders)
@@ -833,7 +840,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
     }
   
-
   // Attendees - we don't touch the values if we're an attendee. This is gonna
   // be done automatically by the ActiveSync client when invoking MeetingResponse.
   if (![self userIsAttendee: [context activeUser]])
