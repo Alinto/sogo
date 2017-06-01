@@ -78,11 +78,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/SOGoCacheGCSObject.h>
 #import <SOGo/SOGoPermissions.h>
 
+#import <NGCards/iCalCalendar.h>
+
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
 #import <Appointments/SOGoTaskObject.h>
+#import <Appointments/SOGoAppointmentFolder.h>
 
 #import <Contacts/SOGoContactGCSEntry.h>
 #import <Contacts/SOGoContactGCSFolder.h>
@@ -264,7 +267,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   return nameInCache;
 }
 
+- (void) _removeAllAlarmsFromCalendar: (iCalCalendar *) theCalendar
+{
+  NSArray *allComponents;
+  iCalEntityObject *currentComponent;
+  NSUInteger count, max;
 
+  if (debugOn)
+   [self logWithFormat: @"EAS - Remove all alarms"];
+
+  allComponents = [theCalendar allObjects];
+
+  max = [allComponents count];
+  for (count = 0; count < max; count++)
+    {
+      currentComponent = [allComponents objectAtIndex: count];
+      if ([currentComponent isKindOfClass: [iCalEvent class]] ||
+          [currentComponent isKindOfClass: [iCalToDo class]])
+        [currentComponent removeAllAlarms];
+    }
+}
 
 //
 // <?xml version="1.0"?>
@@ -1239,6 +1261,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                       d = [NSCalendarDate distantFuture];
 
                     [dateCache setObject: d forKey: uid];
+
+                    if (!([theCollection showCalendarAlarms]))
+                      [self _removeAllAlarmsFromCalendar: [componentObject parent]];
                   }
                 
                 if (updated)
@@ -1599,7 +1624,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     [s appendString: [mailObject activeSyncRepresentationInContext: context]];
                     [s appendString: @"</ApplicationData>"];
                     [s appendString: @"</Add>"];
-                    
+
                     [syncCache setObject: [aCacheObject sequence]  forKey: [aCacheObject uid]];
                     [dateCache setObject: [NSCalendarDate date]  forKey: [aCacheObject uid]];
 

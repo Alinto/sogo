@@ -369,9 +369,13 @@
 
 	  // It does not, let's search in the entire headers
 	  if (r1.location == NSNotFound)
-	    r1 = [cleaned_message rangeOfCString: "\r\nBcc: "
-					 options: 0
-					   range: NSMakeRange(0,limit)];
+	    {
+	      r1 = [cleaned_message rangeOfCString: "\r\nBcc: "
+					   options: 0
+					     range: NSMakeRange(0,limit)];
+	      if (r1.location != NSNotFound)
+		r1.location += 2;
+	    }
 
 	  if (r1.location != NSNotFound)
 	    {

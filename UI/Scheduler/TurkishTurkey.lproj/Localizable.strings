@@ -80,12 +80,12 @@
 "label_Private" = "Kişisel";
 "label_Confidential" = "Gizli";
 "label_Viewer" = "Hepsini Görüntüler";
-"label_DAndTViewer" = "Günü ve Saati Görüntüler";
+"label_DAndTViewer" = "Gün ve Saati Görüntüler";
 "label_Modifier" = "Değiştirir";
 "label_Responder" = "Yanıtlar";
 "label_None" = "Hiç biri";
 "View All" = "Hepsini Görüntüler";
-"View the Date & Time" = "Günü ve Saati Görüntüler";
+"View the Date & Time" = "Gün ve Saati Görüntüler";
 "Modify" = "Değiştirir";
 "Respond To" = "Yanıtlar";
 "None" = "Hiç biri";
@@ -445,7 +445,7 @@ validate_untilbeforeend    = "Tekrar bitiş tarihi ilk tekrar tarihinden sonra o
 "No free-busy information" = "serbest-meşgul bilgisi yok";
 
 /* FreeBusy panel buttons and labels */
-"Suggest time slot" = "Önerilen saat aralığı";
+"Suggest time slot" = "Saat aralığı önerin";
 "Zoom" = "Zoom";
 "Previous slot" = "Önceki aralık";
 "Next slot" = "Sonraki aralık";
@@ -456,7 +456,7 @@ validate_untilbeforeend    = "Tekrar bitiş tarihi ilk tekrar tarihinden sonra o
 "Between" = ":";
 "and" = "ve";
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "Bir ya da daha fazla katılımcı ile zaman çakışması var.\nYine de mevcut düzenlemeyi devam ettirmek ister misiniz?";
+= "Bir ya da daha fazla katılımcı ile saat çakışması var.\nYine de mevcut düzenlemeye devam etmek ister misiniz?";
 
 /* events list */
 "Due" = "Kapanış Tarihi";

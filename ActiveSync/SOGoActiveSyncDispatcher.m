@@ -2785,7 +2785,7 @@ void handle_eas_terminate(int signum)
               inResponse: (WOResponse *) theResponse
 {
   SOGoContactSourceFolder *currentFolder;
-  NSArray *allKeys, *allContacts, *mails;
+  NSArray *allKeys, *allContacts, *mails, *a;
   NSDictionary *systemSources, *contact;
   SOGoContactFolders *contactFolders;
   NSString *current_mail, *query;
@@ -2795,7 +2795,10 @@ void handle_eas_terminate(int signum)
   NSData *d;
   id o;
 
-  int i, j, total;
+  int i, j, t, v, total, minResult, maxResult, maxSize, maxPictures;
+  BOOL withPhoto;
+
+  withPhoto = NO;
 
   query = [[(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject] textValue];
 
@@ -2803,6 +2806,33 @@ void handle_eas_terminate(int signum)
   contactFolders = [userFolder privateContacts: @"Contacts"  inContext: context];
   systemSources = [contactFolders systemSources];
   allKeys = [systemSources allKeys];
+
+  // We check for the maximum number of results to return.
+  a = [[[(id)[theDocumentElement getElementsByTagName: @"Range"] lastObject] textValue] componentsSeparatedByString: @"-"];
+  minResult = [[a objectAtIndex: 0] intValue];
+  maxResult = [[a objectAtIndex: 1] intValue];
+
+  if (maxResult == 0)
+    maxResult = 99;
+
+  if ((o = [(id)[[(id)[theDocumentElement getElementsByTagName: @"Options"] lastObject] getElementsByTagName: @"Picture"] lastObject]))
+    {
+      withPhoto = YES;
+
+      // We check for a MaxSize, default to 102400.
+      maxSize = [[[(id)[o getElementsByTagName: @"MaxSize"] lastObject] textValue] intValue];
+
+      // We check if we must overwrite the maxSize with a system preference. This can be useful
+      // if we don't want to have pictures in the response.
+      if ((v = [[SOGoSystemDefaults sharedSystemDefaults] maximumPictureSize]))
+        maxSize = v;
+
+      // We check for a MaxPictures, default to 99.
+      maxPictures = [[[(id)[o getElementsByTagName: @"MaxPictures"] lastObject] textValue] intValue];
+
+      if (maxPictures == 0)
+        maxPictures = 99;
+    }
 
   s = [NSMutableString string];
 
@@ -2825,7 +2855,7 @@ void handle_eas_terminate(int signum)
                                                    ordering: NSOrderedAscending
                                                    inDomain: [[context activeUser] domain]];
 
-      for (j = 0; j < [allContacts count]; j++)
+      for (j = minResult; (j < [allContacts count] && j < maxResult) ; j++)
         {          
           contact = [allContacts objectAtIndex: j];
           
@@ -2843,9 +2873,9 @@ void handle_eas_terminate(int signum)
           else
             mails = [NSArray arrayWithObjects: o ? o : @"", nil];
 
-          for (total = 0; total < [mails count]; total++)
+          for (t = 0; t < [mails count]; t++)
             {
-              current_mail = [mails objectAtIndex: total];
+              current_mail = [mails objectAtIndex: t];
               
               [s appendString: @"<Result xmlns=\"Search:\">"];
               [s appendString: @"<Properties>"];
@@ -2863,7 +2893,7 @@ void handle_eas_terminate(int signum)
                 [s appendFormat: @"<LastName xmlns=\"Gal:\">%@</LastName>", [o activeSyncRepresentationInContext: context]];
               
               if ([current_mail length] > 0)
-                [s appendFormat: @"<EmailAddress xmlns=\"Gal:\">%@</EmailAddress>", current_mail];
+                [s appendFormat: @"<EmailAddress xmlns=\"Gal:\">%@</EmailAddress>", [current_mail activeSyncRepresentationInContext: context]];
               
               if ((o = [contact objectForKey: @"telephonenumber"]))
                 [s appendFormat: @"<Phone xmlns=\"Gal:\">%@</Phone>", [o activeSyncRepresentationInContext: context]];
@@ -2876,9 +2906,27 @@ void handle_eas_terminate(int signum)
               
               if ((o = [contact objectForKey: @"o"]))
                 [s appendFormat: @"<Company xmlns=\"Gal:\">%@</Company>", [o activeSyncRepresentationInContext: context]];
-              
+
+              if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 14.1 && withPhoto)
+                {
+                  o = [contact objectForKey: @"photo"];
+                  if (o && [o length] <= maxSize && total < maxPictures)
+                    {
+                      [s appendString: @"<Picture xmlns=\"Gal:\"><Status>1</Status><Data>"];
+                      [s appendString: [o activeSyncRepresentationInContext: context]];
+                      [s appendString: @"</Data></Picture>"];
+                    }
+                  else if (!o)
+                    [s appendString: @"<Picture xmlns=\"Gal:\"><Status>173</Status></Picture>"];
+                  else if ([o length] > maxSize)
+                    [s appendString: @"<Picture xmlns=\"Gal:\"><Status>174</Status></Picture>"];
+                  else if (total >= maxPictures)
+                    [s appendString: @"<Picture xmlns=\"Gal:\"><Status>175</Status></Picture>"];
+                }
+
               [s appendString: @"</Properties>"];
               [s appendString: @"</Result>"];
+              total++;
             }
         }        
     }
@@ -3532,10 +3580,14 @@ void handle_eas_terminate(int signum)
 {
   NSString *folderId, *itemId, *realCollectionId;
   SOGoMicrosoftActiveSyncFolderType folderType;
+  SOGoMailAccounts *accountsFolder;
+  SOGoMailFolder *currentFolder;
+  SOGoUserFolder *userFolder;
+  SOGoMailObject *mailObject;
   SOGoUserDefaults *ud;
 
   BOOL htmlComposition, isHTML;
-  id value;
+  id value, currentCollection;
   
   isHTML = NO;
   ud = [[context activeUser] userDefaults];
@@ -3561,23 +3613,31 @@ void handle_eas_terminate(int signum)
 
   value = [theDocumentElement getElementsByTagName: @"ReplaceMime"];
 
+  // We fetch the mail object from the server
+  userFolder = [[context activeUser] homeFolderInContext: context];
+  accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
+  currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
+
+  currentCollection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", realCollectionId]
+				      inContext: context
+					acquire: NO];
+
+  mailObject = [currentCollection lookupName: itemId  inContext: context  acquire: NO];
+
   // ReplaceMime IS specified so we must NOT use the server copy
   // but rather take the data as-is from the client.
   if ([value count])
     {
-      [self processSendMail: theDocumentElement
-                 inResponse: theResponse];
+      [self processSendMail: theDocumentElement  inResponse: theResponse];
+      if (!isSmartForward)
+	[mailObject addFlags: @"Answered"];
+      else
+	[mailObject addFlags: @"$Forwarded"];
       return;
     }
   
   if (folderType == ActiveSyncMailFolder)
     {
-      SOGoMailAccounts *accountsFolder;
-      SOGoMailFolder *currentFolder;
-      SOGoUserFolder *userFolder;
-      SOGoMailObject *mailObject;
-      id currentCollection;
-
       NGMimeMessage *messageFromSmartForward, *messageToSend;
       NGMimeMessageParser *parser;
       NSData *data;
@@ -3595,16 +3655,6 @@ void handle_eas_terminate(int signum)
       NSDictionary *identity;
 
       int a;
-
-      userFolder = [[context activeUser] homeFolderInContext: context];
-      accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
-      currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
-      
-      currentCollection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", realCollectionId]
-                                          inContext: context
-                                            acquire: NO];
-
-      mailObject = [currentCollection lookupName: itemId  inContext: context  acquire: NO];
 
       parser = [[NGMimeMessageParser alloc] init];
       data = [[[[(id)[theDocumentElement getElementsByTagName: @"MIME"] lastObject] textValue] stringByDecodingBase64] dataUsingEncoding: NSUTF8StringEncoding];

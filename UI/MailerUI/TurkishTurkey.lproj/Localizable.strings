@@ -58,7 +58,7 @@
 "Write a new message" = "Yeni ileti yaz";
 
 /* Tooltip for fab button */
-"Write a message in new window" = "Yeni pencerede bir ileti yaz";
+"Write a message in new window" = "Yeni pencerede ileti yaz";
 
 "Share" = "Paylaşım";
 "Account" = "Hesap";
@@ -69,6 +69,8 @@
 
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Seçili e-posta klasörü yok";
+
+"An error occured while communicating with the mail server" = "E-posta sunucusu ile iletişime geçerken bir hata oluştu";
 
 /* Mailbox actions */
 /* Compact Folder success message */

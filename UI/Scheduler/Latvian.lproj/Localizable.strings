@@ -1,0 +1,603 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+"Create a new event" = "Izveidot jaunu notikumu";
+"Create a new task" = "Izveidot jaunu uzdevumu";
+"Edit this event or task" = "Rediģēt šo notikumu vai uzdevumu";
+"Print the current calendar view" = "Drukāt pašreizējā kalendāra skatu";
+"Delete this event or task" = "Dzēst šo pasākumu vai uzdevumu";
+"Go to today" = "Pāriet uz šodienu";
+"Switch to day view" = "Pārslēgties uz dienas skatu";
+"Switch to week view" = "Pārslēgties uz nedēļas skatu";
+"Switch to month view" = "Pārslēgties uz mēneša skatu";
+"Switch to multi-columns day view" = "Pārslēgties uz multi-kolonnu dienas skatu ";
+"Reload all calendars" = "Pārlādēt visus kalendārus";
+
+/* Tabs */
+"Date" = "Datums";
+"Calendars" = "Kalendāri";
+"No events for selected criteria" = "Nav notikumu pēc izvēlētajiem kritērijiem";
+"No tasks for selected criteria" = "Nav uzdevumu pēc izvēlētajiem kritērijiem";
+
+/* Day */
+"DayOfTheMonth" = "Mēneša diena";
+"dayLabelFormat" = "%m/%d/%Y";
+"today" = "Šodien";
+"Previous Day" = "Iepriekšējā diena";
+"Next Day" = "Nākamā diena";
+
+/* Week */
+"Week" = "Nedēļa";
+"this week" = "šonedēļ";
+"Week %d" = "Nedēļa %d";
+"Previous Week" = "Iepriekšējā nedēļa";
+"Next Week" = "Nākamā nedēļa";
+
+/* Month */
+"this month" = "šis mēnesis";
+"Previous Month" = "Iepriekšējais mēnesis";
+"Next Month" = "Nākamais mēnesis";
+
+/* Year */
+"this year" = "šogad";
+
+/* Menu */
+"Calendar" = "Kalendārs";
+"Contacts" = "Kontakti";
+"New Calendar..." = "Jauns kalendārs...";
+"Delete Calendar" = "Dzēst kalendāru...";
+"Unsubscribe Calendar" = "Atcelt abonēšanu kalendāram";
+"Sharing..." = "Koplieto...";
+"Export Calendar..." = "Eksportēt kalendāru...";
+"Import Events..." = "Importēt notikumus...";
+"Import Events" = "Importēt notikumus";
+"Select an iCalendar file (.ics)." = "Izvēlieties iCalendar failu (.ics).";
+"Upload" = "Augšupielādēt";
+"Uploading" = "Augšupielāde";
+"Publish Calendar..." = "Publicēt kalendāru...";
+"Reload Remote Calendars" = "Pārlādēt attālos kalendārus";
+"Properties" = "Rekvizīti";
+"Done" = "Darīts";
+"An error occurred while importing calendar." = "Radās kļūda, importējot kalendāru.";
+"No event was imported." = "Nav notikumi importēti.";
+"A total of %{0} events were imported in the calendar." = "Kopumā no %{0} notikumiem tika importēti kalendārā.";
+"Compose E-Mail to All Attendees" = "Rakstīt e-pastu visiem dalībniekiem";
+"Compose E-Mail to Undecided Attendees" = "Rakstīt e-pastu iespējamajiem dalībniekiem";
+
+/* Folders */
+"Personal calendar" = "Personiskais kalendārs";
+
+/* Misc */
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "Aizliegts";
+
+/* acls */
+"Access rights to" = "Piekļuves tiesības";
+"For user" = "Lietotājam";
+"Any Authenticated User" = "Visi autentificētie lietotāji";
+"Public Access" = "Publiska piekļuve";
+"label_Public" = "Publisks";
+"label_Private" = "Privāts";
+"label_Confidential" = "Konfidenciāli";
+"label_Viewer" = "Skatīt visu";
+"label_DAndTViewer" = "Datuma un laika apskate";
+"label_Modifier" = "Modificēt";
+"label_Responder" = "Atbildēt uz";
+"label_None" = "Neviens";
+"View All" = "Skatīt visu";
+"View the Date & Time" = "Datuma un laika apskate";
+"Modify" = "Modificēt";
+"Respond To" = "Atbildēt uz";
+"None" = "Neviens";
+"This person can create objects in my calendar."
+= "Šī persona var izveidot ierakstus manā kalendārā.";
+"This person can erase objects from my calendar."
+= "Šī persona var izdzēst ierakstus no mana kalendāra.";
+
+/* Button Titles */
+"Subscribe to a Calendar..." = "Abonēt kalendāru...";
+"Remove the selected Calendar" = "Noņemt atlasīto kalendāru";
+"New calendar" = "Jauns kalendārs";
+"Name of the Calendar" = "Kalendāra nosaukums";
+"new" = "Jauns";
+"Print view" = "Drukas skats";
+"edit" = "Labot";
+"delete" = "Dzēst";
+"proposal" = "Priekšlikums";
+"Save and Close" = "Saglabāt un aizvērt";
+"Close" = "Aizvērt";
+"Invite Attendees" = "Uzaicināt dalībniekus";
+"Attach" = "Pievienot";
+"Update" = "Atjaunināt";
+"Cancel" = "Atcelt";
+"Reset" = "Atiestatīt";
+"Save" = "Saglabāt";
+"show_rejected_apts" = "Rādīt noraidītās tikšanās";
+"hide_rejected_apts" = "Paslēpt noraidītās tikšanās";
+
+/* Schedule */
+"Schedule" = "Grafiks";
+"No appointments found" = "Nav atrastas tikšanās";
+"Meetings proposed by you" = "Jūsu ierosinātā tikšanās";
+"Meetings proposed to you" = "Tev ierosinātas sanāksmes";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "Darbība";
+"accept" = "Akceptēt";
+"decline" = "Noraidīt";
+"more attendees" = "Vairāk dalībnieki";
+"Hide already accepted and rejected appointments" = "Paslēpt akceptētās un noraidītās tikšanās";
+"Show already accepted and rejected appointments" = "Rādīt akceptētās un noraidītās tikšanās";
+
+/* Print view */
+"LIST" = "Sarakts";
+"Print Settings" = "Drukas iestatījumi";
+"Title" = "Nosaukums";
+"Layout" = "Izkārtojums";
+"What to Print" = "Ko drukāt";
+"Options" = "Opcijas";
+"Tasks with no due date" = "Uzdevumi bez izpildes datuma";
+"Display working hours only" = "Rādīt tikai darba laiku";
+"Completed tasks" = "Pabeigtie uzdevumi";
+"Display events and tasks colors" = "Rādīt notikumus un uzdevumus krāsas";
+"Borders" = "Robežas";
+"Backgrounds" = "Foni";
+
+/* Appointments */
+"Appointment viewer" = "Tikšanās skatītājs";
+"Appointment editor" = "Tikšanās redaktors";
+"Appointment proposal" = "Tikšanās ierosinātājs";
+"Appointment on" = "Tikšanās";
+"Start" = "Sākums";
+"End" = "Beigas";
+"Due Date" = "Izpildes datums";
+"Name" = "Nosaukums";
+"Email" = "E-pasts";
+"Status" = "Statuss";
+"% complete" = "% pabeigts";
+"Location" = "Vieta";
+"Add a category" = "Pievienot kategorijai";
+"Priority" = "Prioritāte";
+"Privacy" = "Konfidencialitāte";
+"Cycle" = "Cikls";
+"Cycle End" = "Cikla beigas";
+"Categories" = "Kategorijas";
+"Classification" = "Klasifikācija";
+"Duration" = "Ilgums";
+"Attendees" = "Dalībnieki";
+"Resources" = "Resursi";
+"Organizer" = "Organizētājs";
+"Description" = "Apraksts";
+"Document" = "Dokuments";
+"Category" = "Kategorija";
+"Repeat" = "Atkārtot";
+"Reminder" = "Atgādinājums";
+"General" = "Vispārīgi";
+"Reply" = "Atbildēt";
+"Created by" = "Izveidots";
+"You are invited to participate" = "Jūs tiekat uzaicināts piedalīties";
+"Target" = "Mērķis";
+"attributes" = "atribūti";
+"attendees" = "dalībnieki";
+"delegated from" = "deleģēts no";
+
+/* checkbox title */
+"is private" = "ir privāts";
+
+/* classification */
+"Public" = "Publisks";
+"Private" = "Privāts";
+
+/* text used in overviews and tooltips */
+"empty title" = "Tukšs virsraksts";
+"private appointment" = "Privāta tikšanās";
+"Change..." = "Mainīt...";
+
+/* Appointments (participation state) */
+"partStat_NEEDS-ACTION" = "Es apstiprināšu vēlāk";
+"partStat_ACCEPTED" = "Es piedalīšos";
+"partStat_DECLINED" = "Es nepiedalīšos";
+"partStat_TENTATIVE" = "Es piedalīšos";
+"partStat_DELEGATED" = "Es deleģēju";
+"partStat_OTHER" = "Cits";
+
+/* Appointments (error messages) */
+"Conflicts found!" = "Atrasts konflikts!";
+"Invalid iCal data!" = "Nederīgi iCal dati!";
+"Could not create iCal data!" = "Nevarēja izveidot iCal datus!";
+
+/* Searching */
+"view_all" = "Viss";
+"view_today" = "Šodien";
+"view_next7" = "Nākamās 7 dienas";
+"view_next14" = "Nākamās 14 dienas";
+"view_next31" = "Nākamās 31 diena";
+"view_thismonth" = "Šis mēnesis";
+"view_future" = "Visi nākotnes notikumi";
+"view_selectedday" = "Izvēlētā diena";
+"view_not_started" = "Neuzsāktie uzdevumi";
+"view_overdue" = "Nokavētie uzdevumi";
+"view_incomplete" = "Nepabeigtie uzdevumi";
+"View" = "Skatīt";
+"Title, category or location" = "Virsraksts, kategorija vai atrašanās vieta";
+"Entire content" = "Viss saturs";
+"Search" = "Meklēt";
+"Search attendees" = "Meklēt dalībnieku";
+"Search resources" = "Meklēt resursu";
+"Search appointments" = "Meklēt tikšanos ";
+"All day Event" = "Visas dienas notikums";
+"check for conflicts" = "Pārbaudi, vai nav konfliktu";
+"URL" = "URL";
+"newAttendee" = "Pievienot dalībnieku";
+
+/* calendar modes */
+"Overview" = "Pārskats";
+"Chart" = "Tabula";
+"List" = "Sarakts";
+"Columns" = "Kolonnas";
+
+/* Priorities */
+"prio_0" = "Nav norādīts";
+"prio_1" = "Augsts";
+"prio_2" = "Augsts";
+"prio_3" = "Augsts";
+"prio_4" = "Augsts";
+"prio_5" = "Normāls";
+"prio_6" = "Zems";
+"prio_7" = "Zems";
+"prio_8" = "Zems";
+"prio_9" = "Zems";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "Publisks notikums";
+"CONFIDENTIAL_vevent" = "Konfidenciāls notikums";
+"PRIVATE_vevent" = "Privāts notikums";
+"PUBLIC_vtodo" = "Publisks uzdevums";
+"CONFIDENTIAL_vtodo" = "Konfidenciāls uzdevums";
+"PRIVATE_vtodo" = "Privāts uzdevums";
+
+/* status type */
+"status_" = "Nav norādīts";
+"status_NOT-SPECIFIED" = "Nav norādīts";
+"status_TENTATIVE" = "Varbūtējs";
+"status_CONFIRMED" = "Apstiprināts";
+"status_CANCELLED" = "Atcelts";
+"status_NEEDS-ACTION" = "Nepieciešama darbība";
+"status_IN-PROCESS" = "Procesā";
+"status_COMPLETED" = "Pabeigts";
+
+/* Priority level */
+"low" = "zems";
+
+/* Priority level */
+"normal" = "normāls";
+
+/* Priority level */
+"high" = "augsts";
+
+/* Cycles */
+"cycle_once" = "cikls - vienreiz";
+"cycle_daily" = "cikls - ikdienas";
+"cycle_weekly" = "cikls - nedēļa";
+"cycle_2weeks" = "cikls - 2 nedēļas";
+"cycle_4weeks" = "cikls - 4 nedēļas";
+"cycle_monthly" = "mēneša cikls";
+"cycle_weekday" = "nedēļas dienu cikls";
+"cycle_yearly" = "gada cikls";
+"cycle_end_never" = "cikls nebeidzas nekad";
+"cycle_end_until" = "cikla beigas, līdz";
+"Recurrence pattern" = "Atkārtošanās veids";
+"Range of recurrence" = "Atkārtošanās diapazons";
+"Daily" = "Ikdienas";
+"Multi-Columns" = "Multi-kolonnas";
+"Weekly" = "Iknedēļas";
+"Monthly" = "Ikmēneša";
+"Yearly" = "Ik gadu";
+"Every" = "Katrs";
+"Days" = "Dienas";
+"Week(s)" = "Nedēļa(s)";
+"On" = "Uz";
+"Month(s)" = "Mēnesis(ši)";
+
+/* [Event recurrence editor] Ex: _The_ first Sunday */
+"The" = "...";
+"Recur on day(s)" = "Atkārtojas dienā(s)";
+"Year(s)" = "Gads(i)";
+
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
+"cycle_of" = "no";
+"No end date" = "Bez beigu datuma";
+"Create" = "Izveidot";
+"appointment(s)" = "tikšanā(s)";
+"Repeat until" = "Atkārtot līdz";
+"End Repeat" = "Atkārtošanas beigas";
+"Never" = "Nekad";
+"After" = "Pēc";
+"On Date" = "Datumā";
+"times" = "reizes";
+"First" = "Pirmais";
+"Second" = "Otrais";
+"Third" = "Trešais";
+"Fourth" = "Ceturtais";
+"Fift" = "Piektais";
+"Last" = "Pēdējais";
+
+/* Appointment categories */
+"category_none" = "Neviens";
+"category_labels" = "Gadadienas, Dzimšanas dienas, Bizness, Zvani, Klienti, Konkurence,  Izlase, Sekošana, Dāvanas, Brīvdienas, Idejas, Sapulces, Jautājumi, Dažādi, Personīgi, Projekti, Valsts svētki, Statusi, Piegādātāji, Ceļojumi, Atvaļinājumi";
+"repeat_NEVER" = "Neatkārto";
+"repeat_DAILY" = "Ikdienas";
+"repeat_WEEKLY" = "Iknedēļas";
+"repeat_BI-WEEKLY" = "Ik pēc divām nedēļām";
+"repeat_EVERY WEEKDAY" = "Katru darbdienu";
+"repeat_MONTHLY" = "Ikmēneša";
+"repeat_YEARLY" = "Ik gadu";
+"repeat_CUSTOM" = "Pielāgots...";
+"reminder_NONE" = "Nav atgādinājumu";
+"reminder_5_MINUTES_BEFORE" = "pirms 5 minūtēm";
+"reminder_10_MINUTES_BEFORE" = "pirms 10 minūtēm";
+"reminder_15_MINUTES_BEFORE" = "pirms 15 minūtēm";
+"reminder_30_MINUTES_BEFORE" = "pirms 30 minūtēm";
+"reminder_45_MINUTES_BEFORE" = "pirms 45 minūtēm";
+"reminder_1_HOUR_BEFORE" = "pirms 1 stundas";
+"reminder_2_HOURS_BEFORE" = "pirms 2 stundām";
+"reminder_5_HOURS_BEFORE" = "pirms 5 stundām";
+"reminder_15_HOURS_BEFORE" = "pirms 15 stundām";
+"reminder_1_DAY_BEFORE" = "pirms 1 dienas";
+"reminder_2_DAYS_BEFORE" = "pirms 2 dienām";
+"reminder_1_WEEK_BEFORE" = "pirms 1 nedēļas";
+"reminder_CUSTOM" = "Pielāgots...";
+"reminder_MINUTES" = "minūtes";
+"reminder_HOURS" = "stundas";
+"reminder_DAYS" = "dienas";
+"reminder_WEEKS" = "nedēļas";
+"reminder_BEFORE" = "pirms";
+"reminder_AFTER" = "pēc";
+"reminder_START" = "notikums sākas";
+"reminder_END" = "notikums beidzas";
+"Reminder Details" = "Atgādinājuma dati";
+"Choose a Reminder Action" = "Izvēlieties Atgādinājuma darbību";
+"Show an Alert" = "Rādīt brīdinājumu";
+"Send an E-mail" = "Nosūtīt e-pastu";
+"Email Organizer" = "E-pasta organizēšana";
+"Email Attendees" = "E-pasta dalībnieki";
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* Arial label for reminder units */
+"Reminder units" = "Atgādinājuma vienības";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Atgādinājuma pozīcija";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Atgādinājuma attiecība";
+
+/* transparency */
+"Show Time as Free" = "Rādīt laiku, kā brīvs";
+
+/* email notifications */
+"Send Appointment Notifications" = "Sūta tikšanās paziņojumus";
+"From" = "No";
+"To" = "Kam";
+
+/* validation errors */
+validate_notitle           = "Nav nosaukuma, turpināt?";
+validate_invalid_startdate = "Nepareizs sākuma datuma lauks!";
+validate_invalid_enddate   = "Nepareizs beigu datuma lauks!";
+validate_endbeforestart    = "Ievadītais beigu datums ir pirms sākuma datuma.";
+validate_untilbeforeend    = "Atkārtošanās ir jāpārtrauc pēc pirmā gadījuma.";
+
+"Events" = "Notikumi";
+"Tasks" = "Uzdevumi";
+"Show completed tasks" = "Rādīt pabeigtos uzdevumus";
+
+/* tabs */
+"Task" = "Uzdevums";
+"Event" = "Notikums";
+"Recurrence" = "Atkārtošanās";
+
+/* toolbar */
+"New Event" = "Jauns notikums";
+"New Task" = "Jauns uzdevums";
+"Edit" = "Labot";
+"Delete" = "Dzēst";
+"Go to Today" = "Pāriet uz šodienu";
+"Day View" = "Dienas skats";
+"Week View" = "Nedēļas skats";
+"Month View" = "Mēneša skats";
+"Reload" = "Pārlādēt";
+
+/* Number of selected components in events or tasks list */
+"selected" = "atlasīts";
+"eventPartStatModificationError" = "Jūsu dalības statusu nevar mainīt.";
+
+/* menu */
+"New Event..." = "Jauns notikums...";
+"New Task..." = "Jauna uzdevuma...";
+"Edit Selected Event..." = "Rediģēt atlasīto notikumu...";
+"Delete Selected Event" = "Dzēst atlasīto notikumu";
+"Select All" = "Atlasīt visu";
+"Workweek days only" = "Tikai darba nedēļu dienas";
+"Tasks in View" = "Uzdevumu skats";
+"eventDeleteConfirmation" = "Sekojošais notikums(i) tiks izdzēsts:";
+"taskDeleteConfirmation" = "Sekojošais uzdevums(i) tiks izdzēsts:";
+"Would you like to continue?" = "Vai vēlaties turpināt?";
+"You cannot remove nor unsubscribe from your personal calendar."
+= "Jūs nevarat noņemt vai atteikties no jūsu personiskā kalendāra.";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "Vai tiešām vēlaties dzēst kalendāru \"%{0}\"?";
+
+/* Legend */
+"Participant" = "Dalībnieks";
+"Optional Participant" = "Neobligāts dalībnieks";
+"Non Participant" = "Nav dalībnieks";
+"Chair" = "Katedra";
+"Needs action" = "Nepieciešama darbība";
+"Accepted" = "Akceptēts";
+"Declined" = "Noraidījis";
+"Tentative" = "Varbūtējs";
+"Free" = "Brīvs";
+"Busy" = "Aizņemts";
+"Maybe busy" = "Varbūt aizņemts";
+"No free-busy information" = "Nav Brīvs / Aizņemts informācijas";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot" = "Ieteikt laika sprauga";
+"Zoom" = "Tālummaiņa";
+"Previous slot" = "Iepriekšējā sprauga";
+"Next slot" = "Nākamā sprauga";
+"Previous hour" = "Iepriekšējā stunda";
+"Next hour" = "Nākamo stundu";
+"Work days only" = "Tikai darba dienās";
+"The whole day" = "Visa diena";
+"Between" = "Starp";
+"and" = "un";
+"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
+= "Laika konflikts ar vienu vai vairākiem dalībniekiem.\nVai vēlaties saglabāt pašreizējos iestatījumus jebkurā gadījumā?";
+
+/* events list */
+"Due" = "Paredzēts";
+"(Private Event)" = "(Privāts notikums)";
+vevent_class0 = "(Publisks notikums)";
+vevent_class1 = "(Privāts notikums)";
+vevent_class2 = "(Konfidenciāls notikums)";
+
+/* tasks list */
+"Descending Order" = "Dilstoša secība";
+vtodo_class0 = "(Publisks uzdevums)";
+vtodo_class1 = "(Privāts uzdevums)";
+vtodo_class2 = "(Konfidenciāls uzdevums)";
+"closeThisWindowMessage" = "Paldies! Tagad varat aizvērt šo logu, vai skatīt savu";
+"Multicolumn Day View" = "Daudzkolonnu dienas skats";
+"Please select an event or a task." = "Lūdzu, atlasiet notikumu vai uzdevumu.";
+"editRepeatingItem" = "Vienums, kuru rediģējat, atkārtojas. Vai vēlaties labot visus vai tikai šo vienu gadījumu?";
+"button_thisOccurrenceOnly" = "Tikai šis notikums";
+"button_allOccurrences" = "Visi notikumi";
+"Edit This Occurrence" = "Rediģēt šo notikumu";
+"Edit All Occurrences" = "Rediģēt visus notikumus";
+"Update This Occurrence" = "Atjaunināt šo notikumu";
+"Update All Occurrences" = "Atjaunināt visus notikumus";
+
+/* Properties dialog */
+"Color" = "Krāsa";
+"Include in free-busy" = "Iekļaut brīvs-aizņemts";
+"Synchronization" = "Sinhronizācija";
+"Synchronize" = "Sinhronizēt";
+"Tag" = "Birka";
+"Display" = "Rādīt";
+"Show alarms" = "Rādīt brīdinājumus";
+"Show tasks" = "Rādīt uzdevumus";
+"Notifications" = "Paziņojumi";
+"Receive a mail when I modify my calendar" = "Saņemt pastu, kad es laboju savu kalendāru";
+"Receive a mail when someone else modifies my calendar" = "Saņemt pastu, ja kāds cits labo manu kalendāru";
+"When I modify my calendar, send a mail to" = "Kad es laboju savu kalendāru, nosūtiet e-pastu uz";
+"Email Address" = "E-pasta adrese";
+"Export" = "Eksportēt";
+
+
+/* Show only the calendar for which the menu is displayed */
+"Show Only This Calendar" = "Rādīt tikai šo kalendāru";
+
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "Rādīt visus kalendārus";
+
+"Links to this Calendar" = "Saites uz šo kalendāru";
+"Authenticated User Access" = "Autentificēto lietotāju piekļuve";
+"CalDAV URL" = "CalDAV URL ";
+"WebDAV ICS URL" = "WebDAV ICS URL";
+"WebDAV XML URL" = "WebDAV XML URL";
+
+/* Error messages */
+"dayFieldInvalid" = "Lūdzu, DIENAS laukā norādiet skaitlisko vērtību kas lielāka vai vienāda ar 1.";
+"weekFieldInvalid" = "Lūdzu, NEDĒĻA(S) laukā norādiet skaitlisko vērtību kas lielāka vai vienāda ar 1.";
+"monthFieldInvalid" = "Lūdzu, MĒNESIS(ŠU) laukā norādiet skaitlisko vērtību kas lielāka vai vienāda ar 1.";
+"monthDayFieldInvalid" = "Lūdzu, norādiet skaitlisku vērtību mēneša dienu laukā kas ir lielāka vai vienāda ar 1.";
+"yearFieldInvalid" = "Lūdzu, norādiet skaitlisku vērtību GADA(U) laukā kas ir lielāka vai vienāda ar 1.";
+"appointmentFieldInvalid" = "Lūdzu, norādiet skaitlisku vērtību TIKŠANĀ(S) laukā kas ir lielāka vai vienāda ar 1.";
+"recurrenceUnsupported" = "Šāda veida atkārtošanās pašlaik netiek atbalstīts.";
+"Please specify a calendar name." = "Lūdzu, norādiet kalendāra nosaukumu.";
+"tagNotDefined" = "Jums jānorāda birka, ja jūs vēlaties, lai sinhronizētu šo kalendāru.";
+"tagAlreadyExists" = "Norādītā birka jau ir saistīta ar citu kalendāru.";
+"tagHasChanged" = "Ja vēlaties mainīt kalendāra birku, jums vajadzēs atkārtoti ielādēt datus no mobilās ierīces.\nTurpināt?";
+"tagWasAdded" = "Ja vēlaties sinhronizēt kalendāru, jums vajadzēs atkārtoti ielādēt datus no mobilās ierīces.\nTurpināt?";
+"tagWasRemoved" = "Ja noņemsit šī kalendāra sinhronizāciju, jums vajadzēs atkārtoti ielādēt datus no mobilās ierīces.\nTurpināt?";
+"DestinationCalendarError" = "Avota un mērķa kalendāri ir vienādi. Lūdzu, mēģiniet kopēt uz citu kalendāru.";
+"EventCopyError" = "Kopija neizdevās. Lūdzu, mēģiniet kopēt uz citu kalendāru.";
+"Please select at least one calendar" = "Lūdzu, atlasiet vismaz vienu kalendāru";
+"Open Task..." = "Atveriet uzdevumu...";
+"Mark Completed" = "Zīme \"Pabeigts\"";
+"Delete Task" = "Dzēst uzdevumu";
+"Delete Event" = "Dzēst notikumu";
+"Copy event to my calendar" = "Kopēt manā kalendārā notikumu";
+"View Raw Source" = "Apskatīt RAW avotu";
+"Subscriptions" = "Abonementi";
+"Subscribe to a shared folder" = "Parakstīties uz koplietojamu mapi";
+"Subscribe to a web calendar..." = "Abonēt Web kalendāru...";
+"URL of the Calendar" = "Kalendāra URL";
+"Web Calendar" = "Web kalendārs";
+"Web Calendars" = "Web kalendāri";
+"Reload on login" = "Pārlādēt pieteikšanās laikā";
+"Invalid number." = "Nederīgs skaitlis.";
+"Please identify yourself to %{0}" = "Lūdzu, iepazīstiniet sevi ar %{0}";
+"quantity" = "daudzums";
+"Current view" = "Pašreizējais skats";
+"Selected events and tasks" = "Izvēlētie notikumi un uzdevumi";
+"Custom date range" = "Pielāgots datuma diapazons";
+"Select starting date" = "Izvēlieties sākuma datumu";
+"Select ending date" = "Atlasiet beigu datumu";
+"Delegated to" = "Deleģēt";
+"Keep sending me updates" = "Turpiniet sūtīt man atjauninājumus";
+"OK" = "OK";
+"Confidential" = "Konfidenciāli";
+"Enable" = "Iespējot";
+"Filter" = "Filtrs";
+"Sort" = "Kārtot";
+"Back" = "Atpakaļ";
+"Day" = "Diena";
+"Month" = "Mēnesis";
+"New Appointment" = "Jauna tikšanās";
+"filters" = "filtri";
+"Today" = "Šodien";
+"More options" = "Papildu opcijas";
+"Delete This Occurrence" = "Dzēst šo notikumu";
+"Delete All Occurrences" = "Dzēst visus notikumus";
+"Add From" = "Pievienot No";
+"Add Due" = "Pievienot paredzamu";
+"Import" = "Importēt";
+"Rename" = "Pārdēvēt";
+"Import Calendar" = "Importēt kalendāru";
+"Select an ICS file." = "Atlasiet ICS failu.";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "Veiksmīgi abonējis kalendāru";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Pārslēgt vienumu";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Meklēšanas tvērums";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

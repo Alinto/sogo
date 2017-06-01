@@ -1,0 +1,183 @@
+/* this file is in UTF-8 format! */
+
+/* toolbars */
+"Save" = "Saglabāt";
+"Close" = "Aizvērt";
+"Edit User Rights" = "Rediģēt lietotāja tiesības";
+"Home" = "Sākums";
+"Calendar" = "Kalendārs";
+"Address Book" = "Adrešu grāmata";
+"Mail" = "E-pasts";
+"Preferences" = "Preferences";
+"Administration" = "Administrēšana";
+"Disconnect" = "Atvienot";
+"Toggle Menu" = "Pārslēgt izvēlni";
+"Right Administration" = "Tiesību administrēšana";
+"Log Console (dev.)" = "Log konsole (dev.)";
+"User" = "Lietotājs";
+"Vacation message is enabled" = "Atvaļinājuma ziņa ir iespējota";
+"Help" = "Palīdzība";
+"noJavascriptError" = "SOGo prasa Javascript, lai palaistu. Lūdzu, pārliecinieties, vai šī opcija ir aktivizēta un pieejama, pārlūkprogrammas iestatījumos.";
+"noJavascriptRetry" = "Mēģināt vēlreiz";
+"Owner" = "Īpašnieks";
+"Publish the Free/Busy information" = "Publicēt informāciju Brīvs / Aizņemts ";
+"Add..." = "Pievienot...";
+"Remove" = "Noņemt";
+"Subscribe User" = "Abonēt lietotāju";
+"Any Authenticated User" = "Visi autentificētie lietotāji";
+"Public Access" = "Publiska piekļuve";
+"Any user not listed above" = "Jebkurš lietotājs, kas nav iepriekš minētas";
+"Anybody accessing this resource from the public area" = "Ikviena piekļuvei šim resursam publiskajā zonā";
+"Sorry, the user rights can not be configured for that object." = "Atvainojiet, lietotāja tiesības nevar konfigurēt šo objektu.";
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Jebkurš lietotājs, kuram ir konts šajā sistēmā varēs piekļūt jūsu pastkastei \"%{0}\". Vai esat pārliecināts, ka uzticaties viņiem visiem?";
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
+     = "Jebkurš lietotājs, kuram ir konts šajā sistēmā varēs piekļūt jūsu kalendāram \"%{0}\". Vai esat pārliecināts, ka uzticaties viņiem visiem?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Potenciāli ikviens interneta lietotājs varēs piekļūt jūsu kalendāram \"%{0}\", pat ja tiem nav konta šajā sistēmā. Vai šī informācija ir piemērota publiskajam internetam?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Jebkurš lietotājs, kuram ir konts šajā sistēmā varēs piekļūt jūsu adrešu grāmatai \"%{0}\". Vai esat pārliecināts, ka uzticaties viņiem visiem?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Potenciāli ikviens interneta lietotājs varēs piekļūt jūsu adrešu grāmatai \"%{0}\", pat ja tiem nav konta šajā sistēmā. Vai šī informācija ir piemērota publiskajam internetam?";
+"Give Access" = "Dot piekļuvi";
+"Keep Private" = "Turēt privātu";
+
+/* generic.js */
+"Unable to subscribe to that folder!"
+        = "Nevar pierakstīties uz šo mapi!";
+"You cannot subscribe to a folder that you own!"
+        = "Jūs nevarat abonēt mapi, kas tev pieder!";
+"Unable to unsubscribe from that folder!"
+        = "Nevar atcelt šīs mapes abonēšanu !";
+"You cannot unsubscribe from a folder that you own!"
+        = "Nevar atcelt abonēšanu mapei, kas tev pieder!";
+"Unable to rename that folder!" = "Nevar pārdēvēt šo mapi!";
+"You have already subscribed to that folder!"
+        = "Jūs jau esat abonējis šo mapi!";
+"The user rights cannot be edited for this object!"
+        = "Lietotāja tiesības, nevar rediģēt, šo objektu!";
+"A folder by that name already exists." = "Mape ar šādu nosaukumu jau pastāv.";
+"You cannot create a list in a shared address book."
+        = "Nevar izveidot sarakstu koplietojamā adrešu grāmatā.";
+"Warning" = "Brīdinājums";
+"Can't contact server" = "Radās kļūda, sazinoties ar serveri. Lūdzu, vēlāk mēģiniet vēlreiz.";
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "Jums nav atļaujas piekļūt šim modulim vai sistēmai. Lūdzu, sazinieties ar sistēmas administratoru.";
+"You don't have the required privileges to perform the operation."
+= "Jums nav nepieciešamo tiesību, lai veiktu šo darbību.";
+"noEmailForDelegation" = "Norādiet adresi, uz kuru vēlaties deleģēt jūsu uzaicinājumu.";
+"delegate is organizer" = "Delegāts ir organizators. Lūdzu, norādiet citu pārstāvi.";
+"delegate is a participant" = "Delegāts ir jau dalībnieks.";
+"delegate is a group" = "Norādītā adrese sakrīt ar grupu. Var tikai deleģēt unikāla persona.";
+
+/* common buttons */
+"OK" = "OK";
+"Cancel" = "Atcelt";
+"Yes" = "Jā";
+"No" = "Nē";
+
+/* alarms */
+"Reminder" = "Atgādinājums";
+"Start" = "Sākums";
+"Due Date" = "Izpildes datums";
+"Location" = "Vieta";
+"Snooze" = "Atlikt";
+"Snooze for " = "Atlikt uz";
+"5 minutes" = "5 minūtes";
+"10 minutes" = "10 minūtes";
+"15 minutes" = "15 minūtes";
+"30 minutes" = "30 minūtes";
+"45 minutes" = "45 minūtes";
+"1 hour" = "1 stunda";
+"1 day" = "1 diena";
+
+/* mail labels */
+"Important" = "Svarīgs";
+"Work" = "Darbs";
+"Personal" = "Personisks";
+"To Do" = "Uzdevums";
+"Later" = "Vēlāk";
+"a2_Sunday" = "Sv";
+"a2_Monday" = "Pr";
+"a2_Tuesday" = "Ot";
+"a2_Wednesday" = "Tr";
+"a2_Thursday" = "Ce";
+"a2_Friday" = "Pi";
+"a2_Saturday" = "Se";
+"Access Rights" = "Piekļuves tiesības";
+"Add User" = "Pievienot lietotāju";
+"Loading" = "Ielādēšana";
+"No such user." = "Nav šādu lietotāju.";
+"You cannot (un)subscribe to a folder that you own!" = "Nevar (ne) abonēt mapi, kas tev pieder!";
+
+/* Authentication username */
+"Username" = "Lietotājvārds";
+
+/* Authentication password */
+"Password" = "Parole";
+
+/* Authentication failed */
+"Wrong username or password." = "Nepareizs lietotājvārds vai parole.";
+
+/* Error message displayed bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Jāievada vismaz %{minimumSearchLength} rakstzīmes";
+
+/* Error message displayed when a file upload exceeds WOMaxUploadSize */
+"File size upload limit reached" = "Sasniegts augšupielādes faila lielums";
+
+/* Toggle visibility (ex: mail account in left navigation menu) */
+"Toggle visibility" = "Pārslēgt redzamību";
+
+/* Toggle multiple items at the same time (hotkeys cheatsheet) */
+"Toggle range of items" = "Pārslēgt vienību diapazonu";
+
+/* Question mark shows list of hotkeys */
+"Show or hide this help" = "Parādīt vai paslēpt šo palīdzība";
+
+/* Space key */
+"key_space" = "space";
+
+/* Shift and space key */
+"key_shift+space" = "shift + space";
+
+/* Up arrow key */
+"key_up" = "↑";
+
+/* Down arrow key */
+"key_down" = "↓";
+
+/* Left arrow key */
+"key_left" = "←";
+
+/* Right arrow key */
+"key_right" = "→";
+
+/* Shift and up arrow combo keys */
+"key_shift+up" = "shift + ↑";
+
+/* Shift and down arrow combo keys */
+"key_shift+down" = "shift + ↓";
+
+/* Backspace key */
+"key_backspace" = "backspace";
+
+/* Hotkey to start a search */
+"hotkey_search" = "s";
+
+/* Hotkey description to select next list item */
+"View next item" = "Apskatīt nākamo punktu";
+
+/* Hotkey description to select previous list item */
+"View previous item" = "Skatīt iepriekšējo punktu";
+
+/* Hotkey description to add next list item to selection */
+"Add next item to selection" = "Pievienot nākamo vienību atlasei";
+
+/* Hotkey description to add previous list item to selection */
+"Add previous item to selection" = "Pievienot iepriekšējo vienību atlasei";
+
+/* Hotkey description to move backward in current view */
+"Move backward" = "Atpakaļ";
+
+/* Hotkey description to move forward in current view */
+"Move forward" = "Uz priekšu";

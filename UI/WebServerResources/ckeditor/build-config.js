@@ -13,10 +13,10 @@
  * (1) http://ckeditor.com/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) http://ckeditor.com/builder/5ea8a26bac20cc12a1d2d251da095b34
+ * (2) http://ckeditor.com/builder/c20c45ae67ac54b36e05993dd5899e98
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) http://ckeditor.com/builder/download/5ea8a26bac20cc12a1d2d251da095b34
+ * (3) http://ckeditor.com/builder/download/c20c45ae67ac54b36e05993dd5899e98
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -28,25 +28,27 @@ var CKBUILDER_CONFIG = {
 	skin: 'minimalist',
 	preset: 'basic',
 	ignore: [
-		'.bender',
-		'bender.js',
-		'bender-err.log',
-		'bender-out.log',
-		'dev',
 		'.DS_Store',
+		'.bender',
 		'.editorconfig',
 		'.gitattributes',
 		'.gitignore',
-		'gruntfile.js',
 		'.idea',
 		'.jscsrc',
 		'.jshintignore',
 		'.jshintrc',
-		'less',
 		'.mailmap',
+		'.travis.yml',
+		'README.md',
+		'bender-err.log',
+		'bender-out.log',
+		'bender.ci.js',
+		'bender.js',
+		'dev',
+		'gruntfile.js',
+		'less',
 		'node_modules',
 		'package.json',
-		'README.md',
 		'tests'
 	],
 	plugins : {
@@ -108,11 +110,13 @@ var CKBUILDER_CONFIG = {
 		'eu' : 1,
 		'fi' : 1,
 		'fr' : 1,
+		'he' : 1,
 		'hr' : 1,
 		'hu' : 1,
 		'is' : 1,
 		'it' : 1,
 		'lt' : 1,
+		'lv' : 1,
 		'mk' : 1,
 		'nb' : 1,
 		'nl' : 1,

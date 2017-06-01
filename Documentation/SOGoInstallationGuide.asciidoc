@@ -18,13 +18,13 @@ About this Guide
 
 This guide will walk you through the installation and configuration of
 the SOGo solution. It also covers the installation and configuration of
-SOGo ActiveSync support – the solution used to synchronize mobile
+SOGo ActiveSync support - the solution used to synchronize mobile
 devices with SOGo.
 
 The instructions are based on version {release_version} of SOGo.
 
 The latest version of this guide is available
-at http://www.sogo.nu/downloads/documentation.html.
+at http://sogo.nu/downloads/documentation.html.
 
 Introduction
 ------------
@@ -50,8 +50,7 @@ the SOGo Connector and the SOGo Integrator
 device, or Outlook 2013
 
 SOGo is developed by a community of developers located mainly in North
-America and Europe. More information can be found
-at http://www.sogo.nu/
+America and Europe. More information can be found at http://sogo.nu/
 
 Architecture and Compatibility
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -202,6 +201,11 @@ should apply to all supported operating systems.
 Software Downloads
 ~~~~~~~~~~~~~~~~~~
 
+[NOTE]
+In order to access the production builds, you need a proper support contract
+from https://sogo.nu/support/index_new.html#support-plans[Inverse]. Continue
+with the configuration once you received your username and password.
+
 SOGo can be installed using the `yum` utility. To do so, first create
 the `/etc/yum.repos.d/inverse.repo` configuration file with the following
 content:
@@ -209,17 +213,22 @@ content:
 ----
 [SOGo]
 name=Inverse SOGo Repository
-baseurl=http://inverse.ca/downloads/SOGo/RHEL6/$basearch
+baseurl=https://<username>:<password>@packages.inverse.ca/SOGo/release/2/rhel/6/$basearch
 gpgcheck=0
 ----
 
-Some of the softwares on which SOGo depends are available from the
-repository of RepoForge (previously known as RPMforge). To add RepoForge
-to your packages sources, download and install the appropriate RPM
-package from http://packages.sw.be/rpmforge-release/.
-Also make sure you enabled the "rpmforge-extras" repository.
+[NOTE]
+Any non-URL safe characters in username/password must be URL-encoded.  For
+example, if your password is `so%go`, you must set the value in your
+configuration file to `so%25go` - where `%` is encoded to `%25`.
 
-For more information on using RepoForge, visit http://repoforge.org/use/.
+Inverse signs its RPM packages with its GPG key. Integrity verification happens
+all by itself on package installation, all you need to do is first import the
+key into your rpm keychain:
+
+----
+rpm --import "https://pgp.mit.edu/pks/lookup?op=get&search=0xCB2D3A2AA0030E2C"
+----
 
 Software Installation
 ~~~~~~~~~~~~~~~~~~~~~
@@ -504,8 +513,8 @@ In our example, we set the default domain to `acme.com`.
 meeting participants. Possible values are:
 
 [options="compact"]
-* `YES` – to send notifications
-* `NO` – to not send notifications
+* `YES` - to send notifications
+* `NO` - to not send notifications
 
 Defaults to `NO` when unset.
 
@@ -578,6 +587,8 @@ for SOGo. Possible values are:
 * `Basque`
 * `BrazilianPortuguese`
 * `Catalan`
+* `ChineseTaiwan`
+* `Croatian`
 * `Czech`
 * `Danish`
 * `Dutch`
@@ -588,14 +599,19 @@ for SOGo. Possible values are:
 * `Hungarian`
 * `Icelandic`
 * `Italian`
+* `Lithuanian`
+* `Macedonian`
 * `NorwegianBokmal`
 * `NorwegianNynorsk`
 * `Polish`
+* `Portuguese`
 * `Russian`
 * `Slovak`
-* `SpanishSpain`
+* `Slovenian`
 * `SpanishArgentina`
+* `SpanishSpain`
 * `Swedish`
+* `TurkishTurkey`
 * `Ukrainian`
 * `Welsh`
 
@@ -604,8 +620,8 @@ for SOGo. Possible values are:
 someone changes his/her own calendar. Possible values are:
 
 [options="compact"]
-- `YES` – to send notifications
-- `NO` – to not send notifications
+- `YES` - to send notifications
+- `NO` - to not send notifications
 
 Defaults to `NO` when unset. User can overwrite this from the calendar
 properties window.
@@ -616,8 +632,8 @@ modification is being done to his/her own calendar by someone else.
 Possible values are:
 
 [options="compact"]
-* `YES` – to send notifications
-* `NO` – to not send notifications
+* `YES` - to send notifications
+* `NO` - to not send notifications
 
 Defaults to `NO` when unset. User can overwrite this from the calendar
 properties window.
@@ -640,8 +656,8 @@ requiring not authentication) their calendars and address books.
 Possible values are:
 
 [options="compact"]
-* `YES` – to allow them
-* `NO` – to prevent them from doing so
+* `YES` - to allow them
+* `NO` - to prevent them from doing so
 
 Defaults to `NO` when unset.
 
@@ -652,8 +668,8 @@ SOGo.
 Possible values are:
 
 [options="compact"]
-* `YES` – to allow them
-* `NO` – to prevent them from doing so
+* `YES` - to allow them
+* `NO` - to prevent them from doing so
 
 Defaults to `NO` when unset.
 
@@ -683,7 +699,7 @@ Defaults to `NO` when unset.
 string (attendee completion, address book search, etc.) prior triggering
 the server-side search operation.
 
-Defaults to `2` when unset – which means a search operation will be
+Defaults to `2` when unset - which means a search operation will be
 triggered on the 3rd typed character.
 
 |S |SOGoMaximumFailedLoginCount
@@ -888,7 +904,7 @@ source can contain the following values:
 |The type of this user source, set to ldap` for an LDAP source.
 
 |id
-|The identification name of the LDAP repository. This must be unique –
+|The identification name of the LDAP repository. This must be unique -
 even when using multiple domains.
 
 |CNFieldName
@@ -955,8 +971,8 @@ be marked as busy the first time it is booked.
 EOQualifier. The following operators are supported:
 
 [options="compact"]
-* `<>` – inequality operator
-* `=` – equality operator
+* `<>` - inequality operator
+* `=` - equality operator
 
 Multiple qualifiers can be joined by using `OR` and `AND`, they can also
 be grouped together by using parenthesis. Attribute values should be
@@ -1374,9 +1390,9 @@ SOGoProfileURL =
 Create the database user and schema using the following commands:
 
 ----
-su – postgres
-createuser --no-superuser --no-createdb –-no-createrole \
-	–-encrypted --pwprompt sogo
+su - postgres
+createuser --no-superuser --no-createdb --no-createrole \
+	--encrypted --pwprompt sogo
 (specify “sogo” as password)
 createdb -O sogo sogo
 ----
@@ -1477,7 +1493,7 @@ source can contain the following values:
 |The type of this user source, set to `sql` for a SQL source.
 
 |id
-|The identification name of the SQL repository. This must be unique –
+|The identification name of the SQL repository. This must be unique -
 even when using multiple domains.
 
 |viewURL
@@ -1485,9 +1501,9 @@ even when using multiple domains.
 present. Required columns are:
 
 [options="compact"]
-* `c_uid`: will be used for authentication – it's a username or
+* `c_uid`: will be used for authentication - it's a username or
   username@domain.tld
-* `c_name`: will be used to uniquely identify entries – which can be
+* `c_name`: will be used to uniquely identify entries - which can be
   identical to `c_uid`
 * `c_password`: password of the user, plain text, crypt, md5 or sha
   encoded 
@@ -1593,14 +1609,14 @@ SOGoUserSources =
 
 Certain database columns must be present in the view/table, such as:
 
-* `c_uid` – will be used for authentication – it's the username
+* `c_uid` - will be used for authentication - it's the username
 or username@domain.tld
-* `c_name` – which can be identical to `c_uid` – will be used to
+* `c_name` - which can be identical to `c_uid` - will be used to
   uniquely identify entries
-* `c_password` – password of the user, plain-text, md5 or sha encoded
+* `c_password` - password of the user, plain-text, md5 or sha encoded
   for now
-* `c_cn` – the user's common name – such as "John Doe"
-* `mail` – the user's mail address
+* `c_cn` - the user's common name - such as "John Doe"
+* `mail` - the user's mail address
 
 Note that groups are currently not supported for SQL-based
 authentication sources.
@@ -1620,8 +1636,8 @@ The following table describes the related parameters.
 are:
 
 [options="compact"]
-* `sendmail` – to use the sendmail binary
-* `smtp` – to use the SMTP protocol
+* `sendmail` - to use the sendmail binary
+* `smtp` - to use the SMTP protocol
 
 |D |SOGoSMTPServer
 |The DNS name or IP address of the SMTP server used when
@@ -2545,6 +2561,12 @@ have unexpected behaviour with various ActiveSync clients.
 EAS command.
 
 Defaults to `NO`, which means no logging is performed.
+
+|S |SOGoMaximumPictureSize
+|Parameter used to overwrite the maximum number of bytes returned in the picture
+for EAS Search operations in the GAL.
+
+If not set, it defaults to `102400` bytes, or 100 KB.
 |=======================================================================
 
 Please be aware of the following limitations:

@@ -1,0 +1,411 @@
+/* toolbar */
+"Save and Close" = "Saglabāt un aizvērt";
+"Close" = "Aizvērt";
+"Preferences saved" = "Preferences saglabātas";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Nesaglabātas izmaiņas";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Vai vēlaties saglabāt izmaiņas, kas veiktas konfigurācijā?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Saglabāt";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Nesaglabāt";
+
+/* tabs */
+"General" = "Vispārīgi";
+"Calendar Options" = "Kalendāra opcijas";
+"Contacts Options" = "Kontaktu opcijas";
+"Mail Options" = "Pasta opcijas";
+"IMAP Accounts" = "IMAP konti";
+"Vacation" = "Atvaļinājums";
+"Forward" = "Pārsūtīt";
+"Password" = "Parole";
+"Categories" = "Kategorijas";
+"Appointments invitations" = "Tikšanās uzaicinājums";
+"Name" = "Nosaukums";
+"Color" = "Krāsa";
+"Add" = "Pievienot";
+"Delete" = "Dzēst";
+
+/* contacts categories */
+"contacts_category_labels" = "Kolēģi, konkurenti, klienti, draugi, ģimene, biznesa partneri, piegādātāji, Prese, VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Iespējot automātisku atvaļinājuma atbildi";
+"Enable custom auto reply subject" = "Iespējot pielāgotu automātisko atbildi";
+"Auto reply subject" = "Automātiskā atbilde";
+"You can write ${subject} to insert the original subject" = "Varat rakstīt ${subject} ievietot sākotnējo tēmu";
+"Auto reply message" = "Automātiskās atbildes ziņa";
+"Email addresses (separated by commas)" = "E-pasta adreses (atdalītas ar komatu)";
+"Add default email addresses" = "Pievienot noklusējuma e-pasta adreses";
+"Days between responses" = "Dienas starp atbildēm";
+"Do not send responses to mailing lists" = "Nesūtīt automātiskās atbildes adresātu sarakstam";
+"Enable auto reply on" = "Ieslēgt automātisko atbildi";
+"Disable auto reply on" = "Izslēgt automātisko atbildi";
+"Always send vacation message response" = "Vienmēr sūtīt atvaļinājuma atbildes ziņojumu";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Lūdzu, norādiet ziņojuma adresātu un e-pasta adreses, kuras vēlaties iespējot automātisko atbildi.";
+"Your vacation message must not end with a single dot on a line." = "Jūsu atvaļinājums ziņa nedrīkst beigties ar vienu punktiņu līnijā.";
+"End date of your auto reply must be in the future."
+= "Jūsu automātiskās atbildes beigu datumam ir jābūt nākotnē.";
+
+/* forward messages */
+"Forward incoming messages" = "Pārsūtīt ienākošos ziņojumus";
+"Keep a copy" = "Paturēt kopiju";
+"Please specify an address to which you want to forward your messages."
+= "Lūdzu, norādiet adresi, uz kuru vēlaties pārsūtīt ziņojumu.";
+"You are not allowed to forward your messages to an external email address." = "Jums nav atļauts pārsūtīt ziņojumus uz ārēju e-pasta adresi.";
+"You are not allowed to forward your messages to an internal email address." = "Jums nav atļauts nosūtīt savus ziņojumus iekšējai e-pasta adresei.";
+
+/* d & t */
+"Current Time Zone" = "Pašreizējā laika josla";
+"Short Date Format" = "Īsais datuma formāts";
+"Long Date Format" = "Garais datuma formāts";
+"Time Format" = "Datuma formāts";
+"default" = "Noklusējuma";
+"Default Module" = "Noklusējuma modulis";
+"Save" = "Saglabāt";
+"shortDateFmt_0" = "%d-%b-%y";
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "";
+
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "Nav atrasta neviena atbilstība.";
+
+/* calendar */
+"Week begins on" = "Nedēļa sākas ar";
+"Day start time" = "Dienas sākuma laiks";
+"Day end time" = "Dienas beigu laiks";
+"Day start time must be prior to day end time." = "Dienas sākuma laikam jābūt pirms dienas beigu laika.";
+"Week days to display" = "Nedēļas dienas parādīšana";
+"Show time as busy outside working hours" = "Rādīt, ārpus darba laiku, kā aizņemts";
+"First week of year" = "Gada pirmā nedēļa";
+"Enable reminders for Calendar items" = "Iespējot atgādinājumus par kalendāra ierakstiem";
+"Play a sound when a reminder comes due" = "Atskaņot skaņu, kad atgādinājums stājas spēkā";
+"Default reminder" = "Noklusējuma atgādinājums";
+"firstWeekOfYear_January1" = "Sākums 1. janvārī";
+"firstWeekOfYear_First4DayWeek" = "Pirmās nedēļas 4 dienas";
+"firstWeekOfYear_FirstFullWeek" = "Pirmā pilnā nedēļa";
+"Prevent from being invited to appointments" = "Izvairītos no aicinājuma uz tikšanos";
+"White list for appointment invitations" = "Tikšanās uzaicinājumu baltais saraksts";
+"Contacts Names" = "Kontaktu nosaukumi";
+
+/* Default Calendar */
+"Default calendar" = "Noklusējuma kalendārs";
+"selectedCalendar" = "Atlasītajam kalendāram";
+"personalCalendar" = "Personiskais kalendārs";
+"firstCalendar" = "Vispirms iespējot kalendāru";
+"reminder_NONE" = "Nav atgādinājumu";
+"reminder_5_MINUTES_BEFORE" = "pirms 5 minūtēm";
+"reminder_10_MINUTES_BEFORE" = "pirms 10 minūtēm";
+"reminder_15_MINUTES_BEFORE" = "pirms 15 minūtēm";
+"reminder_30_MINUTES_BEFORE" = "pirms 30 minūtēm";
+"reminder_45_MINUTES_BEFORE" = "pirms 45 minūtēm";
+"reminder_1_HOUR_BEFORE" = "pirms 1 stundas";
+"reminder_2_HOURS_BEFORE" = "pirms 2 stundām";
+"reminder_5_HOURS_BEFORE" = "pirms 5 stundām";
+"reminder_15_HOURS_BEFORE" = "pirms 15 stundām";
+"reminder_1_DAY_BEFORE" = "pirms 1 dienas";
+"reminder_2_DAYS_BEFORE" = "pirms 2 dienām";
+"reminder_1_WEEK_BEFORE" = "pirms 1 nedēļas";
+
+/* Mailer */
+"Labels" = "Etiķetes";
+"Label" = "Etiķete";
+"New label" = "Jauna etiķete";
+"Show subscribed mailboxes only" = "Rādīt tikai abonētajām pastkastēm";
+"Synchronize only default mail folders (EAS)" = "Sinhronizēt tikai noklusējuma pasta mapes (EAS)";
+"Sort messages by threads" = "Kārtot ziņojumus pēc pavedieniem";
+"When sending mail, add unknown recipients to my" = "Sūtot e-pastu, pievienojiet nezināmos adresātus manai";
+"Address Book" = "Adrešu grāmata";
+"Forward messages" = "Pārsūtīt ziņojumus";
+"messageforward_inline" = "Rindā";
+"messageforward_attached" = "Kā pielikumu";
+"When replying to a message" = "Atbildot uz ziņojumu";
+"replyplacement_above" = "Sākt savu atbildi virs citāta";
+"replyplacement_below" = "Sākt savu atbildi zem citāta";
+"And place my signature" = "Un ievietot manu parakstu";
+"signatureplacement_above" = "zem manas atbildes";
+"signatureplacement_below" = "zem citāta";
+"Compose messages in" = "Rakstīt ziņojumus";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Vienkāršs teksts";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Noklusējuma fonta lielums";
+
+"Display remote inline images" = "Attēlot attāli iekļautos attēlus";
+"displayremoteinlineimages_never" = "Nekad";
+"displayremoteinlineimages_always" = "Vienmēr";
+"Auto save every" = "Automātiski saglabāt ik pēc";
+"minutes" = "minūtes";
+
+/* Contact */
+"Personal Address Book" = "Personiskā adrešu grāmata";
+"Collected Address Book" = "Savāktā adrešu grāmata";
+
+/* IMAP Accounts */
+"Mail Account" = "E-pasta konts";
+"New Mail Account" = "Jauns e-pasta konts";
+"Server Name" = "Servera nosaukums";
+"Port" = "Ports";
+"Encryption" = "Šifrēšana";
+"None" = "Neviens";
+"User Name" = "Lietotāja vārds";
+"Full Name" = "Pilns vārds";
+"Email" = "E-pasts";
+"Reply To Email" = "Atbildēt uz e-pastu";
+"Signature" = "Paraksts";
+"(Click to create)" = "(Noklikšķiniet, lai izveidotu)";
+"Please enter your signature below" = "Lūdzu, ievadiet savu parakstu zem";
+"Please specify a valid sender address." = "Lūdzu, norādiet derīgu sūtītāja adresi.";
+"Please specify a valid reply-to address." = "Lūdzu, norādiet derīgu atbildēt-uz adresi.";
+"Specify a hostname other than the local host" = "Jānorāda resursdatora nosaukums, izņemot vietējo resursdatoru";
+
+/* Additional Parameters */
+"Additional Parameters" = "Papildu parametri";
+
+/* password */
+"New password" = "Jauna parole";
+"Confirmation" = "Apstiprinājums";
+"Change" = "Mainīt";
+
+/* Event+task classifications */
+"Default events classification" = "Noklusējuma notikumu klasifikācija";
+"Default tasks classification" = "Noklusējuma uzdevumu klasifikācija";
+"PUBLIC_item" = "Publisks";
+"CONFIDENTIAL_item" = "Konfidenciāli";
+"PRIVATE_item" = "Privāts";
+
+/* Event+task categories */
+"Calendar Category" = "Kalendāra kategorija";
+"Add Calendar Category" = "Pievienot kalendāra kategorijai";
+"New category" = "Jauna kategorija";
+"Remove Calendar Category" = "Noņemiet kalendāra kategorijas";
+"Contact Category" = "Kontaktu kategorijas";
+"Add Contact Category" = "Pievienot kontaktpersonu kategorijas";
+"Remove Contact Category" = "Noņemt kontaktpersonu kategorijas";
+"category_none" = "Neviens";
+"calendar_category_labels" = "Gadadienas, Dzimšanas dienas, Bizness, Zvani, Klienti, Konkurence,  Izlase, Sekošana, Dāvanas, Brīvdienas, Idejas, Sapulces, Jautājumi, Dažādi, Personīgi, Projekti, Valsts svētki, Statusi, Piegādātāji, Ceļojumi, Atvaļinājumi";
+
+/* Default module */
+"Calendar" = "Kalendārs";
+"Contacts" = "Adrešu grāmata";
+"Mail" = "E-pasts";
+"Last" = "Pēdējais lietotais";
+"Default Module " = "Standarta modulis";
+"SOGo Version" = "SOGo versija";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Saglabāt preferences un pārlādēt lapu tūlīt?";
+"Language" = "Valoda";
+"choose" = "Izvēlieties...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Catalan" = "Català";
+"ChineseTaiwan" = "Chinese (Taiwan)";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"Latvian" = "Latvijas";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"Refresh View" = "Atsvaidzināt skatu";
+"refreshview_manually" = "Manuāli";
+"refreshview_every_minute" = "Katru minūti";
+"refreshview_every_2_minutes" = "Ik pēc 2 minūtēm";
+"refreshview_every_5_minutes" = "Ik pēc 5 minūtēm";
+"refreshview_every_10_minutes" = "Ik pēc 10 minūtēm";
+"refreshview_every_20_minutes" = "Ik pēc 20 minūtēm";
+"refreshview_every_30_minutes" = "Ik pēc 30 minūtēm";
+"refreshview_once_per_hour" = "Reizi stundā";
+
+/* Return receipts */
+"When I receive a request for a return receipt" = "Kad saņemu pieprasījuma par saņemšanu";
+"Never send a return receipt" = "Nekad nosūtīt atskaites par saņemšanu";
+"Allow return receipts for some messages" = "Ļaut atskaites par saņemšanu dažiem ziņojumiem";
+"If I'm not in the To or Cc of the message" = "Ja es neesmu ziņojuma lodziņā Kam vai Kopija";
+"If the sender is outside my domain" = "Ja sūtītājs ir ārpus mana domēna";
+"In all other cases" = "Visos pārējos gadījumos";
+"Never send" = "Nekad nesūtīt";
+"Always send" = "Vienmēr sūtīt";
+"Ask me" = "Jautāt man";
+
+/* Filters - UIxPreferences */
+"Filters" = "Filtri";
+"Active" = "Aktīvs";
+"Move Up" = "Pārvietot augšup";
+"Move Down" = "Pārvietot lejup";
+"Connection error" = "Savienojuma kļūda";
+"Service temporarily unavailable" = "Pakalpojums īslaicīgi nav pieejams";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Iespējot filtru";
+
+/* Filters - UIxFilterEditor */
+"Filter name" = "Filtra nosaukums";
+/* Button label */
+"Add a condition" = "Pievienot nosacījums";
+/* Button label */
+"Add an action" = "Darbības pievienošana";
+"For incoming messages that" = "Ienākošajiem ziņojumiem, kuri";
+"match all of the following rules" = "atbilst visiem noteikumiem";
+"match any of the following rules" = "atbilst jebkuram noteikumam";
+"match all messages" = "atbilst visas ziņas";
+"Perform these actions" = "Veiciet šīs darbības";
+"Untitled Filter" = "Nenosaukta filtrs";
+"Subject" = "Temats";
+"From" = "No";
+"To" = "Kam";
+"Cc" = "Kopija";
+"To or Cc" = "Kam vai Kopija";
+"Size (Kb)" = "Izmērs (Kb)";
+"Header" = "Galvene";
+"Body" = "Korpuss";
+"Flag the message with" = "Ziņojums ar karodziņu";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Karogs";
+
+"Discard the message" = "Atcelt ziņojumu";
+"File the message in" = "Ziņojumu fails";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Pastkaste";
+
+"Keep the message" = "Saglabāt ziņojumu";
+"Forward the message to" = "Pārsūtīt ziņu";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "E-pasts";
+
+"Send a reject message" = "Nosūtīt noraidīšanas ziņu";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Ziņojums";
+
+"Send a vacation message" = "Sūtīt atvaļinājuma ziņu";
+"Stop processing filter rules" = "Apturēt filtru noteikumu apstrādi";
+"is under" = "ir zem";
+"is over" = "ir virs";
+"is" = "ir";
+"is not" = "nav";
+"contains" = "satur";
+"does not contain" = "nesatur";
+"matches" = "atbilstības";
+"does not match" = "neatbilst";
+"matches regex" = "regulāra izteiksme sakrīt";
+"does not match regex" = "regulāra izteiksme neatbilst";
+/* Placeholder for the value field of a condition */
+"Value" = "Vērtība";
+"Seen" = "Redzējis";
+"Deleted" = "Izdzēsts";
+"Answered" = "Atbildēts";
+"Flagged" = "Ar karodziņu";
+"Junk" = "Nevēlams";
+"Not Junk" = "Nav nevēlams";
+
+/* Password policy */
+"The password was changed successfully." = "Parole sekmīgi nomainīta.";
+"Password must not be empty." = "Parole nedrīkst būt tukša.";
+"The passwords do not match. Please try again." = "Paroles nesakrīt. Lūdzu, mēģiniet vēlreiz.";
+"Password change failed" = "Paroles maiņa neizdevās";
+"Password change failed - Permission denied" = "Paroles maiņa neizdevās - Atļauja liegta";
+"Password change failed - Insufficient password quality" = "Paroles maiņa neizdevās - Nepietiekama paroles kvalitāte";
+"Password change failed - Password is too short" = "Paroles maiņa neizdevās - parole ir pārāk īsa";
+"Password change failed - Password is too young" = "Paroles maiņa neizdevās - parole ir pārāk maza, jauna";
+"Password change failed - Password is in history" = "Paroles maiņa neizdevās - parole atrodas vēsturē";
+"Unhandled policy error: %{0}" = "Neapstrādāta politikas kļūda: %{0}";
+"Unhandled error response" = "Neapstrādāta kļūda";
+"Password change is not supported." = "Paroles maiņa nav atbalstīta.";
+"Unhandled HTTP error code: %{0}" = "Neparedzēts HTTP kļūdas kods: %{0}";
+"Cancel" = "Atcelt";
+"Invitations" = "Uzaicinājumi";
+"Edit Filter" = "Rediģēt filtru";
+"Delete Filter" = "Dzēst filtru";
+"Create Filter" = "Izveidot filtru";
+"Delete Label" = "Dzēst etiķeti";
+"Create Label" = "Izveidot etiķeti";
+"Accounts" = "Konti";
+"Edit Account" = "Rediģēt kontu";
+"Delete Account" = "Dzēst kontu";
+"Create Account" = "Izveidot kontu";
+"Account Name" = "Konta nosaukums";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "Izmantojiet Gravatar";
+"Alternate Avatar" = "Alternatīvais avatārs";
+"none" =  "Neviens";
+"identicon" = "Idect. ikona";
+"monsterid" = "Monster";
+"wavatar" = "Wavatar";
+"retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Animācijas līmenis";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normāls";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Ierobežota";
+"animation_NONE" = "Neviens";

@@ -24,6 +24,15 @@ function initLogin() {
                 event.stop() });
     }
 
+    var language = $("language");
+    if (language)
+        language.on("change", function(event) {
+                var value = $("language").value;
+                if (value != "WONoSelectionString")
+                    // Reload page
+                    window.location.href = ApplicationBaseURL + '/login?language=' + value;
+            });
+
     var submit = $("submit");
     submit.observe("click", onLoginClick);
 

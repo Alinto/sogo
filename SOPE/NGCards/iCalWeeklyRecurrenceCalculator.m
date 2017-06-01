@@ -71,7 +71,7 @@
   iCalByDayMask *dayMask;
   BOOL hasRepeatCount;
 
-  [self logWithFormat: @"Weekly %@", rrule];
+  // [self logWithFormat: @"Weekly %@", rrule];
 
   firStart = [firstRange startDate];
   startDate = [_r startDate];
@@ -187,7 +187,7 @@
                   if ([_r doesIntersectWithDateRange: r])
                     {
                       [ranges addObject: r];
-                      [self logWithFormat: @"Add range %@ - %@", [r startDate], [r endDate]];
+                      // [self logWithFormat: @"Add range %@ - %@", [r startDate], [r endDate]];
                     }
                 }
             }

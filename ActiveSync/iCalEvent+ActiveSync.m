@@ -238,9 +238,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
   else
     {
-      // If it's a normal event (ie, with no organizer/attendee) or we are the organizer to an event
-      // invitation, we set the busy status to 2 (Busy)
-      [s appendFormat: @"<BusyStatus xmlns=\"Calendar:\">%d</BusyStatus>", 2];
+      // If it's a normal event (i.e. with no organizer/attendee) or we are the organizer of an event
+      // invitation, we set the busy status depending on TRANSP.
+      [s appendFormat: @"<BusyStatus xmlns=\"Calendar:\">%d</BusyStatus>", (([self isOpaque]) ? 2 : 0)];
     }
 
   [s appendFormat: @"<MeetingStatus xmlns=\"Calendar:\">%d</MeetingStatus>", meetingStatus];
@@ -481,7 +481,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   //
   if ((o = [theValues objectForKey: @"BusyStatus"]))
     {
-      [o intValue];
+      if ([o boolValue])
+        [self setTransparency: @"OPAQUE"];
+      else
+        [self setTransparency: @"TRANSPARENT"];
     }
 
   //
@@ -862,7 +865,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               person = [iCalPerson elementWithTag: @"attendee"];
               [person setCn: [attendee objectForKey: @"Attendee_Name"]];
               [person setEmail: [attendee objectForKey: @"Attendee_Email"]];
-              
+
               status = [[attendee objectForKey: @"Attendee_Status"] intValue];
               
               switch (status)
@@ -879,7 +882,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 case 0:
                 case 5:
                 default:
-                  [person setPartStat: @"NEEDS-ACTION"];
+		  {
+		    [person setPartStat: @"NEEDS-ACTION"];
+		    [person setRsvp: @"TRUE"];
+		  }
                   break;
                 }
               

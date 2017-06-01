@@ -317,6 +317,7 @@
                                   to: (NSCalendarDate *) endDate
 {
   SOGoAppointmentFolder *calFolder;
+  SOGoAppointmentFolders *calFolders;
   SOGoUser *user;
   SOGoUserDefaults *ud;
   NSArray *folders;
@@ -326,9 +327,12 @@
 
   infos = [NSMutableArray array];
 
-  folders = [[container lookupName: @"Calendar"
-			inContext: context
-			acquire: NO] subFolders];
+  calFolders = [container lookupName: @"Calendar"
+                           inContext: context
+                             acquire: NO];
+  [calFolders appendSubscribedSources];
+  folders = [calFolders subFolders];
+
   max = [folders count];
   for (count = 0; count < max; count++)
     {

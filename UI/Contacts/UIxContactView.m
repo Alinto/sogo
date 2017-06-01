@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004 SKYRIX Software AG
-  Copyright (C) 2005-2015 Inverse inc.
+  Copyright (C) 2005-2017 Inverse inc.
 
   This file is part of SOGo.
  
@@ -573,11 +573,55 @@
   return [self _urlOfType: @"work"];
 }
 
+- (NSString *) custom1
+{
+  NSString *value;
+
+  value = [[card uniqueChildWithTag: @"custom1"] flattenedValuesForKey: @""];
+  value = [value stringByEscapingHTMLString];
+
+  return [self _cardStringWithLabel: @"Custom 1" value: value];
+}
+
+- (NSString *) custom2
+{
+  NSString *value;
+
+  value = [[card uniqueChildWithTag: @"custom2"] flattenedValuesForKey: @""];
+  value = [value stringByEscapingHTMLString];
+
+  return [self _cardStringWithLabel: @"Custom 2" value: value];
+}
+
+- (NSString *) custom3
+{
+  NSString *value;
+
+  value = [[card uniqueChildWithTag: @"custom3"] flattenedValuesForKey: @""];
+  value = [value stringByEscapingHTMLString];
+
+  return [self _cardStringWithLabel: @"Custom 3" value: value];
+}
+
+- (NSString *) custom4
+{
+  NSString *value;
+
+  value = [[card uniqueChildWithTag: @"custom4"] flattenedValuesForKey: @""];
+  value = [value stringByEscapingHTMLString];
+
+  return [self _cardStringWithLabel: @"Custom 4" value: value];
+}
+
 - (BOOL) hasOtherInfos
 {
   return ([[card note] length] > 0
           || [[card bday] length] > 0
-          || [[card tz] length] > 0);
+          || [[card tz] length] > 0
+          || [[[card uniqueChildWithTag: @"custom1"] flattenedValuesForKey: @""] length] > 0
+          || [[[card uniqueChildWithTag: @"custom1"] flattenedValuesForKey: @""] length] > 0
+          || [[[card uniqueChildWithTag: @"custom1"] flattenedValuesForKey: @""] length] > 0
+          || [[[card uniqueChildWithTag: @"custom1"] flattenedValuesForKey: @""] length] > 0);
 }
 
 - (NSString *) bday

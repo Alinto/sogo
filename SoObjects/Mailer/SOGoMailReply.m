@@ -135,6 +135,9 @@
 @implementation SOGoMailItalianReply
 @end
 
+@implementation SOGoMailLatvianReply
+@end
+
 @implementation SOGoMailLithuanianReply
 @end
 

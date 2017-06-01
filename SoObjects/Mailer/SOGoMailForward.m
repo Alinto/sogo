@@ -299,6 +299,9 @@
 @implementation SOGoMailItalianForward
 @end
 
+@implementation SOGoMailLatvianForward
+@end
+
 @implementation SOGoMailLithuanianForward
 @end
 

@@ -1,0 +1,64 @@
+"Inviting the following persons is prohibited:" = "Šo personu uzaicināšana ir aizliegta:";
+"Personal Calendar" = "Personiskais kalendārs";
+vevent_class0 = "(Publisks notikums)";
+vevent_class1 = "(Privāts notikums)";
+vevent_class2 = "(Konfidenciāls notikums)";
+
+vtodo_class0 = "(Publisks uzdevums)";
+vtodo_class1 = "(Privāts uzdevums)";
+vtodo_class2 = "(Konfidenciāls uzdevums)";
+/* Receipts */
+"The event \"%{Summary}\" was created" = "Notikums \"%{Summary}\" ir izveidots";
+"The event \"%{Summary}\" was deleted" = "Notikums \"%{Summary}\" ir dzēsts";
+"The event \"%{Summary}\" was updated" = "Notikums \"%{Summary}\" ir atjaunināts";
+"The following attendees(s) were notified" = "Paziņojums nosūtīts šiem dalībniekiem";
+"The following attendees(s) were added" = "Pievienoti šādi dalībnieki";
+"The following attendees(s) were removed" = "Dzēsti šādi dalībnieki";
+/* IMIP messages */
+"calendar_label" = "Kalendārs";
+"startDate_label" = "Sākums";
+"endDate_label" = "Beigas";
+"time_label" = "Laiks";
+"to_label" = "kam";
+"due_label" = "Gala termiņš";
+"location_label" = "Vieta";
+"summary_label" = "Kopsavilkums";
+"comment_label" = "Komentārs";
+"organizer_label" = "Organizētājs";
+"attendee_label" = "Dalībnieks";
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "Pasākuma ielūgums: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(sūtīja %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} ielūdza Jūs uz %{Summary}.\n\nSākums: %{StartDate}\nBeigas: %{EndDate}\nApraksts: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} ielūdza Jūs uz %{Summary}.\n\nSākums: %{StartDate} %{StartTime}\nBeigas: %{EndDate} %{EndTime}\nApraksts: %{Description}";
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "Atcelts pasākums: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} atcēla notikumu: %{Summary}.\n\nSākums: %{StartDate}\nBeigas: %{EndDate}\nApraksts: %{Description}";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} atcēla notikumu: %{Summary}.\n\nSākums: %{StartDate} %{StartTime}\nBeigas: %{EndDate} %{EndTime}\nApraksts: %{Description}";
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "Tikšanās \"%{Summary}\" %{OldStartDate} ir mainīta";
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "Tikšanās \"%{Summary}\" %{OldStartDate} %{OldStartTime} ir mainīta";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "Plānotā tikšanās \"%{Summary}\" ir mainīta, ir veiktas šādas izmaiņas:";
+"Please accept or decline those changes."
+= "Lūdzu pieņemt vai noraidīt šīs izmaiņas.";
+/* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Akceptēt uzaicinājumu: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Noraidīt uzaicinājumu: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Deleģēt uzaicinājumu: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Vēl nav izlemts par uzaicinājumu: \"%{Summary}\"";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "%{Attendee} %{SentByText}ir akceptējis uzaicinājumu piedalīties pasākumā.";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "%{Attendee} %{SentByText} ir noraidījis jūsu uzaicinājumu piedalīties pasākumā.";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText} deleģējusi uzaicinājumu %{Delegate}.";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText} vēl nav izlemts par jūsu uzaicinājumu piedalīties pasākumā.";
+/* Resources */
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Nevar piekļūt resursiem: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Maksimālais skaits vienlaicīgām rezervācijām (%{NumberOfSimultaneousBookings}) sasniedza resursu \"%{Cn} %{SystemEmail}\". Strīdu notikums ir \"%{EventTitle}\", un sākas %{StartDate}.";

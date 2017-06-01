@@ -579,17 +579,6 @@
 		[allAttendees addObject: person];
 	    }
 	}
-      else
-	{
-	  // We remove any attendees matching the organizer. Apple iCal will do that when
-	  // you invite someone. It'll add the organizer in the attendee list, which will
-	  // confuse itself!
-	  if ([[currentAttendee rfc822Email] caseInsensitiveCompare: organizerEmail] == NSOrderedSame)
-	    {
-	      [allAttendees removeObject: currentAttendee];
-	      eventWasModified = YES;
-	    }
-	}
       
       j++;
     } // while (currentAttendee ...
@@ -798,6 +787,15 @@
   // If defined, we return immediately. When not defined, we send the notifications correctly
   if ([object firstChildWithTag: @"X-SOGo-Send-Appointment-Notifications"])
     return;
+
+  // We never send IMIP inivitaton/deletion/update when the "initiator" is an EAS client.
+  // That is because Outlook, iOS and Android will always issue a SendMail command
+  // with the meeting details (ie., IMIP message with METHOD:REQUEST) so there's
+  // no need to send it twice. Moreover, Outlook users can also choose to NOT send
+  // the IMIP messsage at all, so SOGo won't send one without user's consent
+  if ([[[context request] requestHandlerKey] isEqualToString: @"Microsoft-Server-ActiveSync"])
+    return;
+
 
   ownerUser = [SOGoUser userWithLogin: owner];
   dd = [ownerUser domainDefaults];
@@ -1208,6 +1206,36 @@
   return uids;
 }
 
+- (NSException *) _copyComponent: (iCalCalendar *) calendar
+                        toFolder: (SOGoGCSFolder *) newFolder
+                       updateUID: (BOOL) updateUID
+{
+  NSString *newUID;
+  SOGoCalendarComponent *newComponent;
+
+  if (updateUID)
+    {
+      NSArray *elements;
+      unsigned int count, max;
+
+      newUID = [self globallyUniqueObjectId];
+      elements = [calendar allObjects];
+      max = [elements count];
+      for (count = 0; count < max; count++)
+        [[elements objectAtIndex: count] setUid: newUID];
+    }
+  else
+    {
+      newUID = [[[calendar allObjects] objectAtIndex: 0] uid];
+    }
+
+  newComponent = [[self class] objectWithName:
+				 [NSString stringWithFormat: @"%@.ics", newUID]
+			       inContainer: newFolder];
+
+  return [newComponent saveCalendar: calendar];
+}
+
 - (NSException *) copyToFolder: (SOGoGCSFolder *) newFolder
 {
   return [self copyComponent: [self calendar: NO secure: NO]
@@ -1217,51 +1245,21 @@
 - (NSException *) copyComponent: (iCalCalendar *) calendar
 		       toFolder: (SOGoGCSFolder *) newFolder
 {
-  NSArray *elements;
-  NSString *newUID;
-  unsigned int count, max;
-  SOGoCalendarComponent *newComponent;
-
-  newUID = [self globallyUniqueObjectId];
-  elements = [calendar allObjects];
-  max = [elements count];
-  for (count = 0; count < max; count++)
-    [[elements objectAtIndex: count] setUid: newUID];
-
-  newComponent = [[self class] objectWithName:
-				 [NSString stringWithFormat: @"%@.ics", newUID]
-			       inContainer: newFolder];
-
-  return [newComponent saveCalendar: calendar];
+  return [self _copyComponent: calendar
+                     toFolder: newFolder
+                    updateUID: YES];
 }
 
 - (NSException *) moveToFolder: (SOGoGCSFolder *) newFolder
 {
-  SOGoCalendarComponent *newComponent;
   NSException *ex;
-  id o;
 
-  // Lookup to see if the event exists in the target calendar. During a MOVE, we do
-  // keep the ID of the event intact.
-  o = [newFolder lookupName: [self nameInContainer]
-		  inContext: context
-		    acquire: NO];
+  ex = [self _copyComponent: [self calendar: NO secure: NO]
+                   toFolder: newFolder
+                  updateUID: NO];
 
-  if ([o isKindOfClass: [NSException class]])
-    {
-      newComponent = [[self class] objectWithName: [self nameInContainer]
-				      inContainer: newFolder];
-
-      ex = [newComponent saveCalendar: [self calendar: NO secure: NO]];
-
-      if (!ex)
-	ex = [self delete];
-    }
-  else
-    {
-      ex = [NSException exceptionWithHTTPStatus: 409
-					 reason: @"Target exists - MOVE disallowed."];
-    }
+  if (!ex)
+    ex = [self delete];
 
   return ex;
 }

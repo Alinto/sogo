@@ -175,7 +175,7 @@
 "%{0} card(s) copied" = "%{0} kaart(en) gekopieerd";
 "%{0} card(s) moved" = "%{0} kaart(en) verplaatst";
 "SoAccessDeniedException" = "U kunt niet naar dit adresboek schrijven.";
-"Forbidden" = "U kunt niet naar dit adresboek schrijven.";
+"Forbidden" = "Toegang geweigerd";
 "Invalid Contact" = "De geselecteerde contactpersoon bestaat niet meer.";
 "Unknown Destination Folder" = "Het geselecteerde doeladresboek bestaat niet meer.";
 

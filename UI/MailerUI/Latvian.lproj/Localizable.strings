@@ -1,0 +1,409 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Izveidot";
+"Empty Trash" = "Tukša atkritne";
+"Delete"      = "Dzēst";
+"Expunge"     = "Izdzēst";
+"Forward"     = "Pārsūtīt";
+"Get Mail"    = "Saņemt e-pastu";
+"Junk"        = "Nevēlams";
+"Not junk"    = "Nav nevēlams";
+"Reply"       = "Atbildēt";
+"Reply All"   = "Atbildēt visiem";
+"Print"       = "Drukāt";
+"Stop"        = "Stop";
+"Write"       = "Rakstīt";
+"Search"      = "Meklēt";
+"Send" = "Sūtīt";
+"Contacts" = "Kontakti";
+"Attach" = "Pievienot";
+"Save" = "Saglabāt";
+"Options" = "Opcijas";
+"Close" = "Aizvērt";
+"Size" = "Izmērs";
+
+/* Tooltips */
+"Send this message now" = "Sūtīt šo ziņojumu tūlīt";
+"Select a recipient from an Address Book" = "Izvēlieties adresātu no adrešu grāmatas";
+"Include an attachment" = "Pielikuma iekļaušana";
+"Save this message" = "Saglabāt šo ziņojumu";
+"Get new messages" = "Jaunu ziņojumu saņemšana";
+"Create a new message" = "Izveidot jaunu ziņu";
+"Go to address book" = "Atveriet adrešu grāmatu";
+"Reply to the message" = "Atbildēt uz ziņu";
+"Reply to sender and all recipients" = "Atbildēt sūtītājam un visiem adresātiem";
+"Forward selected message" = "Pārsūtīt izvēlēto ziņu";
+"Delete selected message or folder" = "Izdzēsiet izvēlēto ziņu vai mapi";
+"Print this message" = "Drukāt šo ziņojumu";
+"Stop the current transfer" = "Apturēt pašreizējo pārraidi";
+"Attachment" = "Pielikums";
+"Unread" = "Nelasīts";
+"Flagged" = "Ar karodziņu";
+"Search multiple mailboxes" = "Vairāku pastkastu meklēšana";
+
+/* Main Frame  */
+"Home"                 = "Sākums";
+"Calendar"             = "Kalendārs";
+"Addressbook"          = "Adrešu grāmata";
+"Mail"                 = "E-pasts";
+"Right Administration" = "Tiesību administrēšana";
+"Help" = "Palīdzība";
+
+/* Mail account main windows */
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Esiet sveicināts SOGo Mailer. Izmantojiet mapes koku par kreisi, lai pārlūkotu jūsu pasta kontus!";
+"Read messages"       = "Lasīt ziņas";
+
+/* Tooltip for fab button */
+"Write a new message" = "Rakstīt jaunu ziņu";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Rakstīt ziņojumu jaunā logā";
+
+"Share" = "Koplietot";
+"Account" = "Konts";
+"Shared Account" = "Kopējs konts";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "Nav izvēlēta ziņa";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "Neviena pastkaste nav atlasīta";
+
+"An error occured while communicating with the mail server" = "Radās kļūda, sazinoties ar serveri";
+
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Mape saspiesta";
+/* Empty Trash success message */
+"Trash emptied" = "Atkritne iztukšota";
+
+/* acls */
+"Access rights to" = "Piekļuves tiesības";
+"For user" = "Lietotājam";
+"Any Authenticated User" = "Visi autentificētie lietotāji";
+"List and see this folder" = "Attēlot un skatīt šo mapi";
+"Read mails from this folder" = "Lasīt pastu no šīs mapes";
+"Mark mails read and unread" = "Atzīmēt lasītās un nelasītās ziņas";
+"Modify the flags of the mails in this folder" = "Modificēt e-pasta karogus šajā mapē";
+"Insert, copy and move mails into this folder" = "Ievietot, kopēt un pārvietot pasta ziņas šajā mapē";
+"Post mails" = "Pasta ziņas";
+"Add subfolders to this folder" = "Pievienot mapei apakšmapes";
+"Remove this folder" = "Noņemt šo mapi";
+"Erase mails from this folder" = "Dzēst pastu no šīs mapes";
+"Expunge this folder" = "Izdzēst šo mapi";
+"Export This Folder" = "Eksportēt šo mapi";
+"Modify the acl of this folder" = "Mainīt šīs mapes ACL";
+"Saved Messages.zip" = "Saglabāts Ziņas*.zip";
+"Update" = "Atjaunināt";
+"Cancel" = "Atcelt";
+
+/* Mail edition */
+"From"          = "No";
+"Subject"       = "Temats";
+"To"            = "Kam";
+"Cc"            = "Kopija";
+"Bcc"           = "Diskrētā kopija";
+"Reply-To"	    = "Atbildēt uz";
+"Add address"   = "Pievienot adresi";
+"Body"          = "Korpuss";
+"Open" = "Atvērt";
+"Select All" = "Atlasīt visu";
+"Select Message" = "Izvēlieties ziņojumu";
+"Attach Web Page..." = "Pievienot tīmekļa lapu...";
+"file" = "fails";
+"files" = "faili";
+"Save all" = "Saglabāt visu";
+"to"            = "Kam";
+"cc"            = "Cc";
+"bcc"           = "Bcc";
+"Add a recipient" = "Pievienot adresātu";
+"Edit Draft..." = "Melnraksta rediģēšana...";
+"Load Images" = "Ielādēt attēlus";
+"Return Receipt" = "Saņemšanas paziņojums";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Šī ziņojuma nosūtītājs ir pieprasījis, lai tiktu paziņots, kad izlasīsiet šo ziņojumu. Vai vēlaties apstiprināt ?";
+"Return Receipt (displayed) - %@"= "Saņemšanas paziņojums (parādīts) - %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Šis ir saņemšanas paziņojums e-pastam ko jūs nosūtījāt %@.\n\nPiezīme: šī ziņojuma saņemšanas paziņojums tikai apstiprināts, ka ziņojums tika parādīts adresāta datorā. Bet nav garantijas, ka adresāts ir izlasījis un sapratis šo ziņojumu saturu.";
+"Priority" = "Prioritāte";
+"highest" = "Augstākā";
+"high" = "Augsts";
+"normal" = "Normāls";
+"low" = "Zems";
+"lowest" = "Zemākā";
+"This mail is being sent from an unsecure network!" = "Šis e-pasta ziņojums tiek sūtīts no nedroša tīkla!";
+"Address Book" = "Adrešu grāmata";
+"Search For" = "Meklēt";
+
+/* Popup "show" */
+"all"     = "visi";
+"read"    = "lasīts";
+"unread"  = "nelasīts";
+"deleted" = "dzēsts";
+"flagged" = "ar karodziņu";
+
+/* MailListView */
+"Sender" = "Sūtītājs";
+"Subject or Sender" = "Tēma vai sūtītājs";
+"To or Cc" = "Kam vai Kopija";
+"Entire Message" = "Visu ziņojumu";
+"Date"          = "Datums";
+"View"          = "Skatīt";
+"All"           = "Viss";
+"No message"    = "Ziņu nav";
+"messages"      = "ziņojumi";
+"Yesterday"     = "Vakar";
+"first"         = "Pirmais";
+"previous"      = "Iepriekšējais";
+"next"          = "Nākamais";
+"last"          = "Pēdējais";
+"msgnumber_to"  = "kam";
+"msgnumber_of"  = "no";
+"Mark Unread" = "Atzīmēt kā nelasītu";
+"Mark Read"   = "Atzīmēt kā lasītu";
+"Untitled" = "Nenosaukts";
+
+/* Tree */
+"SentFolderName"   = "Sūtīt";
+"TrashFolderName"  = "Atkritne";
+"InboxFolderName"  = "Iesūtne";
+"DraftsFolderName" = "Melnraksti";
+"JunkFolderName" = "Nevēlams";
+"SieveFolderName"  = "Filtri";
+"Folders"          = "Mapes"; /* title line */
+
+/* MailMoveToPopUp */
+"MoveTo"        = "Pārvietot &hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "... pievienot adrešu grāmatai";
+"Compose Mail To" = "Rakstīt pastu";
+"Create Filter From Message..." = "Izveidot filtru no ziņojuma...";
+
+/* Image Popup menu */
+"Save Image" = "Saglabāt attēlu";
+"Save Attachment" = "Saglabāt pielikumu";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Atvērt jaunā epasta logā";
+"Copy Folder Location" = "Kopēt mapes atrašanās vietu";
+"Subscribe..." = "Abonēt...";
+"Mark Folder Read" = "Atzīmēt mapi kā lasītu";
+"New Folder..." = "Jauna mape...";
+"Compact This Folder" = "Saspiest šo mapi";
+"Search Messages..." = "Ziņu meklēšana...";
+"Sharing..." = "Koplieto...";
+"New Subfolder..." = "Jauna apakšmape...";
+"Rename Folder..." = "Pārdēvēt mapi...";
+"Delete Folder" = "Dzēst mapi";
+"Use This Folder For" = "Lietojiet šo mapi";
+"Get Messages for Account" = "Saņemt ziņojumus kontam";
+"Properties..." = "Rekvizīti...";
+"Delegation..." = "Deleģēšana...";
+
+/* Use This Folder menu */
+"Sent Messages" = "Nosūtīt ziņojumus";
+"Drafts" = "Melnraksti";
+"Deleted Messages" = "Dzēst ziņojumus";
+"Junk Messages" = "Nevēlamā e-pasta ziņojumi";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Atvērt ziņu jaunā logā";
+"Reply to Sender Only" = "Atbildēt tikai sūtītājam";
+"Reply to All" = "Atbildēt visiem";
+"Edit As New..." = "Labot kā jaunu...";
+"Move To" = "Pārvietot uz";
+"Copy To" = "Kopēt uz";
+"Label" = "Etiķete";
+"Mark" = "Atzīmēt";
+"Save As..." = "Saglabāt kā...";
+"Print Preview" = "Drukas priekšskatījums";
+"View Message Source" = "Skatīt ziņojuma avotu";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Pārvērst par notikumu";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Pārvērst par uzdevumu";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Lejupielādēt visus pielikumus";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "pielikumi";
+
+"Print..." = "Drukāt...";
+"Delete Message" = "Dzēst ziņojumu";
+"Delete Selected Messages" = "Izdzēst atlasītos ziņojumus";
+"Mark the selected messages as junk" = "Atzīmēt atlasīto ziņojumu kā nevēlamu";
+"Mark the selected messages as not junk" = "Atzīmēt atlasīto ziņojumu kā vēlamu";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "un %{0} vairāk...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "Paslēpt";
+
+/* Number of selected messages in list */
+"selected" = "atlasīts";
+
+"This Folder" = "Šī mape";
+
+/* Label popup menu */
+"None" = "Neviens";
+
+/* Mark popup menu */
+"As Read" = "Kā lasītu";
+"Thread As Read" = "Pavedienu kā lasītu";
+"As Read By Date..." = "Kā lasīts pēc datuma...";
+"All Read" = "Visi izlasītie";
+"Flag" = "Karogs";
+"As Junk" = "Kā nevēlamu";
+"As Not Junk" = "Kā vēlamu";
+"Run Junk Mail Controls" = "Palaist Mēstuļu kontroli";
+"Search messages in" = "Meklēt ziņu";
+"Search" = "Meklēt";
+"Search subfolders" = "Meklēt apakšmapēs";
+"Match any of the following" = "Atbilst jebkuram no ";
+"Match all of the following" = "Atbilst viss no";
+"contains" = "satur";
+"does not contain" = "nesatur";
+"No matches found" = "Nav atrasta neviena atbilstība";
+"results found" = "atrastie rezultāti";
+"result found" = "atrastie rezultāti";
+"Please specify at least one filter" = "Lūdzu, norādiet vismaz vienu filtru";
+
+/* Folder operations */
+"Name" = "Vārds";
+"Enter the new name of your folder"
+ ="Ievadiet jaunu mapes nosaukumu";
+"Do you really want to move this folder into the trash ?"
+ = "Vai tiešām vēlaties šo mapi pārvietot uz atkritni?";
+"Operation failed" = "Darbība neizdevās";
+"Quota" = "Kvota:";
+"quotasFormat" = "%{0}% izmantoti no %{1} MB";
+"Unable to move/delete folder." = "Nevar pārvietot vai dzēst mapi.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Pastkasti nevarēja pārvietot uz atkritni. Vai vēlaties dzēst to tūlīt?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "Vai tiešām vēlaties izdzēst atlasītos ziņojumus?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} ziņojums(i) nokopēts";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} ziņojumus(i) pārvietots";
+
+"Please select a message." = "Izvēlieties ziņu.";
+"Please select a message to print." = "Izvēlieties ziņu, lai to varētu izdrukāt.";
+"Please select only one message to print." = "Lūdzu, izvēlieties tikai vienu ziņu, lai drukātu.";
+"The message you have selected doesn't exist anymore." = "Atlasītais ziņojums vairs neeksistē.";
+"The folder with name \"%{0}\" could not be created."
+= "Mapi ar nosaukumu \"%{0}\" nevar izveidot.";
+"This folder could not be renamed to \"%{0}\"."
+= "Šo mapi nevar pārdēvēt par \"%{0}\".";
+"The folder could not be deleted."
+= "Mapi nevarēja dzēst.";
+"The trash could not be emptied."
+= "Atkritni nevar iztukšot.";
+"The folder functionality could not be changed."
+= "Mapes funkciju nevar mainīt.";
+"You need to choose a non-virtual folder!" = "Ir jāizvēlas non-virtual mape!";
+"Moving a message into its own folder is impossible!"
+= "Ziņas pārvietošana uz savu mapi nav iespējama!";
+"Copying a message into its own folder is impossible!"
+= "Kopēt ziņu uz savu mapi nav iespējams!";
+
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "Ziņas nevarēja pārvietot uz atkritni. Vai vēlaties dzēst tās tūlīt?";
+
+/* Message editing */
+"error_missingsubject" = "Šim ziņojumam nav tēmas. Vai tiešām vēlaties to nosūtīt?";
+"error_missingrecipients" = "Lūdzu, norādiet vismaz vienu adresātu.";
+"Send Anyway" = "Tomēr nosūtīt";
+"Error while saving the draft" = "Melnraksta saglabāšanas kļūda";
+
+/* Error when uploading a file attachment */
+"Error while uploading the file \"%{0}\":" = "Kļūda, augšupielādējot failu \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "Ir aktīva failu augšupielāde. Loga aizvēršana pārtrauc to.";
+"Message is too big" = "Ziņojums ir pārāk liels.";
+
+/* Appears while sending the message */
+"Sending" = "Sūtīšana";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Sūtīt";
+
+"cannot send message: (smtp) all recipients discarded" = "Nevar nosūtīt ziņu: visi adresāti ir nederīgi.";
+"cannot send message (smtp) - recipients discarded" = "Nevar nosūtīt ziņu. Šī adrese ir nederīga";
+"cannot send message: (smtp) error when connecting" = "Nevar nosūtīt ziņu: kļūda, veidojot savienojumu ar SMTP serveri.";
+
+/* Contacts list in mail editor */
+"Email" = "E-pasts";
+"More mail options" = "Papildus e-pasta opcijas";
+"Delegation" = "Deleģēšana";
+"Add User" = "Pievienot lietotāju";
+"Add a tag" = "Pievienot birku";
+"reply" = "atbildēt";
+"Edit" = "Labot";
+"Yes" = "Jā";
+"No" = "Nē";
+"Location" = "Vieta";
+"Rename" = "Pārdēvēt";
+"Compact" = "Kompakts";
+"Export" = "Eksportēt";
+"Set as Drafts" = "Iestatīt kā projektu";
+"Set as Sent" = "Iestatīt kā nosūtīts";
+"Set as Trash" = "Iestatīt kā drazu";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "Iestatīt kā nevēlamu";
+
+"Sort" = "Kārtot";
+"Order Received" = "Saņemšanas apstiprinājums";
+"Descending Order" = "Dilstoša secība";
+"Back" = "Atpakaļ";
+"Copy messages" = "Kopēt ziņojumus";
+"More messages options" = "Vairāk ziņojumu opcijas";
+"Mark as Unread" = "Atzīmēt kā nelasītu";
+"Mark as Read" = "Atzīmēt kā lasītu";
+"Closing Window ..." = "... loga aizvēršana";
+"Tried to send too many mails. Please wait." = "Mēģinājāt nosūtīt pārāk daudz e-pastu. Lūdzu, uzgaidiet.";
+"View Mail" = "Skatīt pastu";
+"This message contains external images." = "Šis ziņojums satur ārējos attēlus.";
+"Expanded" = "Izvērsts";
+"Add a Criteria" = "Pievienot kritēriju";
+"More search options" = "Papildu meklēšanas opcijas";
+"Your email has been saved" = "Jūsu e-pasts ir saglabāts";
+"Your email has been sent" = "Jūsu e-pasts ir nosūtīts";
+"Folder compacted" = "Mape saspiesta";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Meklēšanas joma";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Pārvaldīt abonementus";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filtrs";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";
