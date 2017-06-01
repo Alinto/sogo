@@ -12,6 +12,7 @@ Enhancements
  - [web] added custom fields support from Thunderbird's address book
  - [web] added Latvian (lv) translation - thanks to Juris Balandis
  - [web] expose user's defaults and settings inline
+ - [web] can now discard incoming mails during vacation
 
 Bug fixes
  - [web] respect SOGoLanguage and SOGoSupportedLanguages (#4169)

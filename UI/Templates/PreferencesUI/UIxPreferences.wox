@@ -951,6 +951,15 @@
                   </md-checkbox>
                 </div>
 
+                <div>
+                  <md-checkbox
+                      ng-model="app.preferences.defaults.Vacation.discardMails"
+                      ng-true-value="1"
+                      ng-false-value="0">
+                    <var:string label:value="Discard incoming mails during vacation"/>
+                  </md-checkbox>
+                </div>
+
               </div>
             </div>
           </md-tab>

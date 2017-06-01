@@ -831,8 +831,10 @@ static NSString *sieveScriptName = @"sogo";
       return NO;
     }
 
+  //
   // We handle vacation messages.
   // See http://ietfreport.isoc.org/idref/draft-ietf-sieve-vacation/
+  //
   values = [ud vacationOptions];
   now = [[NSCalendarDate calendarDate] timeIntervalSince1970];
 
@@ -849,13 +851,14 @@ static NSString *sieveScriptName = @"sogo";
       NSString *text, *templateFilePath, *customSubject;
       SOGoTextTemplateFile *templateFile;
 
-      BOOL ignore, alwaysSend, useCustomSubject;
+      BOOL ignore, alwaysSend, useCustomSubject, discardMails;
       int days, i;
 
       allConditions = [NSMutableArray array];
       days = [[values objectForKey: @"daysBetweenResponse"] intValue];
       addresses = [values objectForKey: @"autoReplyEmailAddresses"];
       alwaysSend = [[values objectForKey: @"alwaysSend"] boolValue];
+      discardMails = [[values objectForKey: @"discardMails"] boolValue];
       ignore = [[values objectForKey: @"ignoreLists"] boolValue];
       useCustomSubject = [[values objectForKey: @"customSubjectEnabled"] boolValue];
       customSubject = [values objectForKey: @"customSubject"];
@@ -961,6 +964,10 @@ static NSString *sieveScriptName = @"sogo";
       // Closing bracket of conditions
       if ([allConditions count])
         [vacation_script appendString: @"}\r\n"];
+
+      // Should we discard incoming mails during vacation?
+      if (discardMails)
+        [vacation_script appendString: @"discard;\r\n"];
 
       //
       // See https://sogo.nu/bugs/view.php?id=2332 for details
