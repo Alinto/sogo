@@ -3,6 +3,7 @@
 
 New features
  - [web] new images viewer in Mail module
+ - [eas] initial EAS v16 and email drafts support
 
 Enhancements
  - [core] now possible to {un}subscribe to folders using sogo-tool
