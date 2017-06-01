@@ -102,11 +102,9 @@
     else
       list.splice(sibling, 0, calendar);
 
-    this.$Preferences.ready().then(function() {
-      if (Calendar.$Preferences.settings.Calendar.FoldersOrder)
-        // Save list order
-        Calendar.saveFoldersOrder(_.flatMap(Calendar.$findAll(), 'id'));
-    });
+    if (Calendar.$Preferences.settings.Calendar.FoldersOrder)
+      // Save list order
+      Calendar.saveFoldersOrder(_.flatMap(Calendar.$findAll(), 'id'));
     // Refresh list of calendars to fetch links associated to new calendar
     Calendar.$reloadAll();
   };

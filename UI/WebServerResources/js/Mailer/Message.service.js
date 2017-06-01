@@ -48,16 +48,15 @@
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Mail', Settings.activeUser()),
       $avatar: angular.bind(Preferences, Preferences.avatar)
     });
+
     // Initialize tags form user's defaults
-    Preferences.ready().then(function() {
-      if (Preferences.defaults.SOGoMailLabelsColors) {
-        Message.$tags = Preferences.defaults.SOGoMailLabelsColors;
-      }
-      if (Preferences.defaults.SOGoMailDisplayRemoteInlineImages &&
-          Preferences.defaults.SOGoMailDisplayRemoteInlineImages == 'always') {
-        Message.$displayRemoteInlineImages = true;
-      }
-    });
+    if (Preferences.defaults.SOGoMailLabelsColors) {
+      Message.$tags = Preferences.defaults.SOGoMailLabelsColors;
+    }
+    if (Preferences.defaults.SOGoMailDisplayRemoteInlineImages &&
+        Preferences.defaults.SOGoMailDisplayRemoteInlineImages == 'always') {
+      Message.$displayRemoteInlineImages = true;
+    }
 
     return Message; // return constructor
   }];

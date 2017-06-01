@@ -32,9 +32,7 @@
         params: []
       };
 
-      Preferences.ready().then(function() {
-        vm.showSubscribedOnly = Preferences.defaults.SOGoMailShowSubscribedFoldersOnly;
-      });
+      this.showSubscribedOnly = Preferences.defaults.SOGoMailShowSubscribedFoldersOnly;
 
       this.refreshUnseenCount();
 
@@ -258,7 +256,7 @@
     }; // delegate
 
     this.refreshUnseenCount = function() {
-      var unseenCountFolders = $window.unseenCountFolders;
+      var unseenCountFolders = $window.unseenCountFolders, refreshViewCheck;
 
       _.forEach(vm.accounts, function(account) {
 
@@ -282,11 +280,9 @@
         });
       });
 
-      Preferences.ready().then(function() {
-        var refreshViewCheck = Preferences.defaults.SOGoRefreshViewCheck;
-        if (refreshViewCheck && refreshViewCheck != 'manually')
-          $timeout(vm.refreshUnseenCount, refreshViewCheck.timeInterval()*1000);
-      });
+      refreshViewCheck = Preferences.defaults.SOGoRefreshViewCheck;
+      if (refreshViewCheck && refreshViewCheck != 'manually')
+        $timeout(vm.refreshUnseenCount, refreshViewCheck.timeInterval()*1000);
     };
 
     this.isDroppableFolder = function(srcFolder, dstFolder) {

@@ -48,12 +48,10 @@
       PRELOAD: PRELOAD
     });
     // Initialize sort parameters from user's settings
-    Preferences.ready().then(function() {
-      if (Preferences.settings.Mail.SortingState) {
-        Mailbox.$query.sort = Preferences.settings.Mail.SortingState[0];
-        Mailbox.$query.asc = parseInt(Preferences.settings.Mail.SortingState[1]);
-      }
-    });
+    if (Preferences.settings.Mail.SortingState) {
+      Mailbox.$query.sort = Preferences.settings.Mail.SortingState[0];
+      Mailbox.$query.asc = parseInt(Preferences.settings.Mail.SortingState[1]);
+    }
 
     return Mailbox; // return constructor
   }];
@@ -343,46 +341,43 @@
       _this.$isLoading = true;
     });
 
-    return Mailbox.$Preferences.ready().then(function() {
+    if (Mailbox.$refreshTimeout)
+      Mailbox.$timeout.cancel(Mailbox.$refreshTimeout);
 
-      if (Mailbox.$refreshTimeout)
-        Mailbox.$timeout.cancel(Mailbox.$refreshTimeout);
+    if (sortingAttributes)
+      // Sorting preferences are common to all mailboxes
+      angular.extend(Mailbox.$query, sortingAttributes);
 
-      if (sortingAttributes)
-        // Sorting preferences are common to all mailboxes
-        angular.extend(Mailbox.$query, sortingAttributes);
-
-      angular.extend(options, { sortingAttributes: Mailbox.$query });
-      if (angular.isDefined(filters)) {
-        options.filters = _.reject(filters, function(filter) {
-          return !filter.searchInput || filter.searchInput.length === 0;
-        });
-        // Decompose filters that match two fields
-        _.forEach(options.filters, function(filter) {
-          var secondFilter,
-              match = filter.searchBy.match(/(\w+)_or_(\w+)/);
-          if (match) {
-            options.sortingAttributes.match = 'OR';
-            filter.searchBy = match[1];
-            secondFilter = angular.copy(filter);
-            secondFilter.searchBy = match[2];
-            options.filters.push(secondFilter);
-          }
-        });
-      }
-
-      // Restart the refresh timer, if needed
-      if (!Mailbox.$virtualMode) {
-        var refreshViewCheck = Mailbox.$Preferences.defaults.SOGoRefreshViewCheck;
-        if (refreshViewCheck && refreshViewCheck != 'manually') {
-          var f = angular.bind(_this, Mailbox.prototype.$filter, null, filters);
-          Mailbox.$refreshTimeout = Mailbox.$timeout(f, refreshViewCheck.timeInterval()*1000);
+    angular.extend(options, { sortingAttributes: Mailbox.$query });
+    if (angular.isDefined(filters)) {
+      options.filters = _.reject(filters, function(filter) {
+        return !filter.searchInput || filter.searchInput.length === 0;
+      });
+      // Decompose filters that match two fields
+      _.forEach(options.filters, function(filter) {
+        var secondFilter,
+            match = filter.searchBy.match(/(\w+)_or_(\w+)/);
+        if (match) {
+          options.sortingAttributes.match = 'OR';
+          filter.searchBy = match[1];
+          secondFilter = angular.copy(filter);
+          secondFilter.searchBy = match[2];
+          options.filters.push(secondFilter);
         }
-      }
+      });
+    }
 
-      var futureMailboxData = Mailbox.$$resource.post(_this.id, 'view', options);
-      return _this.$unwrap(futureMailboxData);
-    });
+    // Restart the refresh timer, if needed
+    if (!Mailbox.$virtualMode) {
+      var refreshViewCheck = Mailbox.$Preferences.defaults.SOGoRefreshViewCheck;
+      if (refreshViewCheck && refreshViewCheck != 'manually') {
+        var f = angular.bind(this, Mailbox.prototype.$filter, null, filters);
+        Mailbox.$refreshTimeout = Mailbox.$timeout(f, refreshViewCheck.timeInterval()*1000);
+      }
+    }
+
+    var futureMailboxData = Mailbox.$$resource.post(this.id, 'view', options);
+    return this.$unwrap(futureMailboxData);
   };
 
   /**

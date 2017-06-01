@@ -23,23 +23,23 @@
     vm.changeView = changeView;
 
 
-    _registerHotkeys(hotkeys);
+    this.$onInit = function() {
+      _registerHotkeys(hotkeys);
 
-    Preferences.ready().then(function() {
       _formatDate(vm.selectedDate);
-    });
 
-    // Refresh current view when the list of calendars is modified
-    deregisterCalendarsList = $rootScope.$on('calendars:list', updateView);
+      // Refresh current view when the list of calendars is modified
+      deregisterCalendarsList = $rootScope.$on('calendars:list', updateView);
 
-    $scope.$on('$destroy', function() {
-      // Destroy event listener when the controller is being deactivated
-      deregisterCalendarsList();
-      // Deregister hotkeys
-      _.forEach(hotkeys, function(key) {
-        sgHotkeys.deregisterHotkey(key);
+      $scope.$on('$destroy', function() {
+        // Destroy event listener when the controller is being deactivated
+        deregisterCalendarsList();
+        // Deregister hotkeys
+        _.forEach(hotkeys, function(key) {
+          sgHotkeys.deregisterHotkey(key);
+        });
       });
-    });
+    };
 
 
     function _registerHotkeys(keys) {

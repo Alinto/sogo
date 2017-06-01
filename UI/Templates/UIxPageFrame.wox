@@ -58,16 +58,6 @@
               <iframe width="100%" height="100%" src="/SOGo/loading"><!-- space --></iframe>
             </div>
           </var:if>
-          <script type="text/javascript">
-            <var:if condition="shortUserNameForDisplay" const:value="anonymous" const:negate="YES">
-              <var:if condition="hasUserSettingsKeys">
-                var UserSettings =<var:string value="userSettings" const:escapeHTML="NO" />;
-              </var:if>
-              <var:if condition="hasUserDefaultsKeys">
-                var UserDefaults = <var:string value="userDefaults" const:escapeHTML="NO" />;
-              </var:if>
-            </var:if>
-          </script>
 
           <!-- MAIN CONTENT ROW -->
           <var:component-content />
@@ -131,9 +121,14 @@
 
             // This is the equivalent of an AJAX call to /SOGo/so/_UserLogin_/date
             var currentDay = <var:string value="currentDayDescription" const:escapeHTML="NO"/>;
+
             <var:string value="commonLocalizableStrings" const:escapeHTML="NO" />
             <var:string value="productLocalizableStrings" const:escapeHTML="NO" />
           </script>
+
+          <var:if condition="shortUserNameForDisplay" const:value="anonymous" const:negate="YES">
+            <var:component className="UIxJSONPreferences"/>
+          </var:if>
 
           <!-- JAVASCRIPT IMPORTS -->
           <script type="text/javascript" rsrc:src="js/vendor/lodash.min.js"><!-- space --></script>

@@ -8,7 +8,7 @@
    */
   CalendarListController.$inject = ['$rootScope', '$scope', '$timeout', '$state', '$mdDialog', 'sgHotkeys', 'sgFocus', 'Dialog', 'Preferences', 'CalendarSettings', 'Calendar', 'Component', 'Alarm'];
   function CalendarListController($rootScope, $scope, $timeout, $state, $mdDialog, sgHotkeys, focus, Dialog, Preferences, CalendarSettings, Calendar, Component, Alarm) {
-    var vm = this, hotkeys = [];
+    var vm = this, hotkeys = [], type;
 
     vm.component = Component;
     vm.componentType = 'events';
@@ -32,32 +32,32 @@
     vm.mode = { search: false, multiple: 0 };
 
 
-    _registerHotkeys(hotkeys);
+    this.$onInit = function() {
+      _registerHotkeys(hotkeys);
 
-    // Select list based on user's settings
-    Preferences.ready().then(function() {
-      var type = 'events';
+      // Select list based on user's settings
+      type = 'events';
       if (Preferences.settings.Calendar.SelectedList == 'tasksListView') {
         vm.selectedList = 1;
         type = 'tasks';
       }
       selectComponentType(type, { reload: true }); // fetch events/tasks lists
-    });
 
-    // Refresh current list when the list of calendars is modified
-    $rootScope.$on('calendars:list', function() {
-      Component.$filter(vm.componentType, { reload: true });
-    });
-
-    // Update the component being dragged
-    $rootScope.$on('calendar:dragend', updateComponentFromGhost);
-
-    $scope.$on('$destroy', function() {
-      // Deregister hotkeys
-      _.forEach(hotkeys, function(key) {
-        sgHotkeys.deregisterHotkey(key);
+      // Refresh current list when the list of calendars is modified
+      $rootScope.$on('calendars:list', function() {
+        Component.$filter(vm.componentType, { reload: true });
       });
-    });
+
+      // Update the component being dragged
+      $rootScope.$on('calendar:dragend', updateComponentFromGhost);
+
+      $scope.$on('$destroy', function() {
+        // Deregister hotkeys
+        _.forEach(hotkeys, function(key) {
+          sgHotkeys.deregisterHotkey(key);
+        });
+      });
+    };
 
 
     function _registerHotkeys(keys) {

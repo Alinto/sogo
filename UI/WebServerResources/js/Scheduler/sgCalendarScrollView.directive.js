@@ -48,17 +48,16 @@
         function initView() {
           view = new sgScrollView(element, type);
 
-          if (type != 'monthly')
+          if (type != 'monthly') {
             // Scroll to the day start hour defined in the user's defaults
-            Preferences.ready().then(function() {
-              var time, hourCell, quartersOffset;
-              if (Preferences.defaults.SOGoDayStartTime) {
-                time = Preferences.defaults.SOGoDayStartTime.split(':');
-                hourCell = document.getElementById('hour' + parseInt(time[0]));
-                quartersOffset = parseInt(time[1]) * view.quarterHeight;
-                view.element.scrollTop = hourCell.offsetTop + quartersOffset;
-              }
-            });
+            var time, hourCell, quartersOffset;
+            if (Preferences.defaults.SOGoDayStartTime) {
+              time = Preferences.defaults.SOGoDayStartTime.split(':');
+              hourCell = document.getElementById('hour' + parseInt(time[0]));
+              quartersOffset = parseInt(time[1]) * view.quarterHeight;
+              view.element.scrollTop = hourCell.offsetTop + quartersOffset;
+            }
+          }
 
           // Expose quarter height to the controller
           // See sgNowLine directive

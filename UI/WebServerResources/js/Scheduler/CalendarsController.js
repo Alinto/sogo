@@ -38,47 +38,47 @@
       accept: _sortableAccept
     };
 
-    Preferences.ready().then(function() {
+    this.$onInit = function() {
       vm.categories = _.map(Preferences.defaults.SOGoCalendarCategories, function(name) {
         return { id: name.asCSSIdentifier(),
                  name: name,
                  color: Preferences.defaults.SOGoCalendarCategoriesColors[name]
                };
       });
-    });
 
-    // Dispatch the event named 'calendars:list' when a calendar is activated or deactivated or
-    // when the color of a calendar is changed
-    $scope.$watch(
-      function() {
-        return _.union(
-          _.map(Calendar.$calendars, function(o) { return _.pick(o, ['id', 'active', 'color']); }),
-          _.map(Calendar.$subscriptions, function(o) { return _.pick(o, ['id', 'active', 'color']); }),
-          _.map(Calendar.$webcalendars, function(o) { return _.pick(o, ['id', 'active', 'color']); })
-        );
-      },
-      function(newList, oldList) {
-        var commonList, ids, promise;
+      // Dispatch the event named 'calendars:list' when a calendar is activated or deactivated or
+      // when the color of a calendar is changed
+      $scope.$watch(
+        function() {
+          return _.union(
+            _.map(Calendar.$calendars, function(o) { return _.pick(o, ['id', 'active', 'color']); }),
+            _.map(Calendar.$subscriptions, function(o) { return _.pick(o, ['id', 'active', 'color']); }),
+            _.map(Calendar.$webcalendars, function(o) { return _.pick(o, ['id', 'active', 'color']); })
+          );
+        },
+        function(newList, oldList) {
+          var commonList, ids, promise;
 
-        // Identify which calendar has changed
-        commonList = _.intersectionBy(newList, oldList, 'id');
-        ids = _.map(_.filter(commonList, function(o) {
-          var oldObject = _.find(oldList, { id: o.id });
-          return !_.isEqual(o, oldObject);
-        }), 'id');
-        promise = Calendar.$q.when();
+          // Identify which calendar has changed
+          commonList = _.intersectionBy(newList, oldList, 'id');
+          ids = _.map(_.filter(commonList, function(o) {
+            var oldObject = _.find(oldList, { id: o.id });
+            return !_.isEqual(o, oldObject);
+          }), 'id');
+          promise = Calendar.$q.when();
 
-        if (ids.length > 0) {
-          $log.debug(ids.join(', ') + ' changed');
-          promise = Calendar.saveFoldersActivation(ids);
-        }
-        if (ids.length > 0 || commonList.length != newList.length || commonList.length != oldList.length)
-          promise.then(function() {
-            $rootScope.$emit('calendars:list');
-          });
-      },
-      true // compare for object equality
-    );
+          if (ids.length > 0) {
+            $log.debug(ids.join(', ') + ' changed');
+            promise = Calendar.saveFoldersActivation(ids);
+          }
+          if (ids.length > 0 || commonList.length != newList.length || commonList.length != oldList.length)
+            promise.then(function() {
+              $rootScope.$emit('calendars:list');
+            });
+        },
+        true // compare for object equality
+      );
+    };
 
     /**
      * Only allow to sort items within the same list.

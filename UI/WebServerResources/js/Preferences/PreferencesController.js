@@ -7,11 +7,11 @@
   /**
    * @ngInject
    */
-  PreferencesController.$inject = ['$q', '$window', '$state', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgSettings', 'sgFocus', 'Dialog', 'User', 'Account', 'statePreferences', 'Authentication'];
-  function PreferencesController($q, $window, $state, $mdMedia, $mdSidenav, $mdDialog, $mdToast, sgSettings, focus, Dialog, User, Account, statePreferences, Authentication) {
+  PreferencesController.$inject = ['$q', '$window', '$state', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgSettings', 'sgFocus', 'Dialog', 'User', 'Account', 'Preferences', 'Authentication'];
+  function PreferencesController($q, $window, $state, $mdMedia, $mdSidenav, $mdDialog, $mdToast, sgSettings, focus, Dialog, User, Account, Preferences, Authentication) {
     var vm = this, account, mailboxes = [], today = new Date(), tomorrow = today.beginOfDay().addDays(1);
 
-    vm.preferences = statePreferences;
+    vm.preferences = Preferences;
     vm.passwords = { newPassword: null, newPasswordConfirmation: null };
 
     vm.go = go;
@@ -60,11 +60,9 @@
     }
 
     // Set alternate avatar in User service
-    statePreferences.ready().then(function() {
-      if (statePreferences.defaults.SOGoAlternateAvatar)
-        User.$alternateAvatar = statePreferences.defaults.SOGoAlternateAvatar;
-      updateVacationDates();
-    });
+    if (Preferences.defaults.SOGoAlternateAvatar)
+      User.$alternateAvatar = Preferences.defaults.SOGoAlternateAvatar;
+    updateVacationDates();
 
     function go(module, form) {
       if (form.$valid) {

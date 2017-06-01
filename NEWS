@@ -11,6 +11,7 @@ Enhancements
  - [web] improve display of tasks status
  - [web] added custom fields support from Thunderbird's address book
  - [web] added Latvian (lv) translation - thanks to Juris Balandis
+ - [web] expose user's defaults and settings inline
 
 Bug fixes
  - [web] respect SOGoLanguage and SOGoSupportedLanguages (#4169)

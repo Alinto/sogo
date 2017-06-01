@@ -8,13 +8,19 @@
    * @constructor
    */
   function Preferences() {
-    var _this = this;
+    var _this = this, defaultsElement, settingsElement, data;
 
     this.defaults = {};
     this.settings = {};
 
-    this.defaultsPromise = Preferences.$$resource.fetch("jsonDefaults").then(function(response) {
-      var data = response || {};
+    defaultsElement = Preferences.$document[0].getElementById('UserDefaults');
+    if (defaultsElement) {
+      try {
+        data = angular.fromJson(defaultsElement.textContent || defaultsElement.innerHTML);
+      } catch (e) {
+        Preferences.$log.error("Can't parse user's defaults: " + e.message);
+        data = {};
+      }
 
       // We swap $key -> _$key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
       var labels = _.fromPairs(_.map(data.SOGoMailLabelsColors, function(value, key) {
@@ -117,22 +123,28 @@
       _this.$mdDateLocaleProvider.msgCalendar = l('Calender');
       _this.$mdDateLocaleProvider.msgOpenCalendar = l('Open Calendar');
       _this.$mdDateLocaleProvider.parseDate = function(dateString) {
-        return dateString? dateString.parseDate(_this.$mdDateLocaleProvider, data.SOGoShortDateFormat) : new Date(NaN);
+        return dateString? dateString.parseDate(_this.$mdDateLocaleProvider, _this.defaults.SOGoShortDateFormat) : new Date(NaN);
       };
       _this.$mdDateLocaleProvider.formatDate = function(date) {
-        return date? date.format(_this.$mdDateLocaleProvider, date.$dateFormat || data.SOGoShortDateFormat) : '';
+        return date? date.format(_this.$mdDateLocaleProvider, date.$dateFormat || _this.defaults.SOGoShortDateFormat) : '';
       };
       _this.$mdDateLocaleProvider.parseTime = function(timeString) {
-        return timeString? timeString.parseDate(_this.$mdDateLocaleProvider, data.SOGoTimeFormat) : new Date(NaN);
+        return timeString? timeString.parseDate(_this.$mdDateLocaleProvider, _this.defaults.SOGoTimeFormat) : new Date(NaN);
       };
       _this.$mdDateLocaleProvider.formatTime = function(date) {
-        return date? date.format(_this.$mdDateLocaleProvider, data.SOGoTimeFormat) : '';
+        return date? date.format(_this.$mdDateLocaleProvider, _this.defaults.SOGoTimeFormat) : '';
       };
+    }
 
-      return _this.defaults;
-    });
+    settingsElement = Preferences.$document[0].getElementById('UserSettings');
+    if (settingsElement) {
+      try {
+        data = angular.fromJson(settingsElement.textContent || settingsElement.innerHTML);
+      } catch (e) {
+        Preferences.$log.error("Can't parse user's settings: " + e.message);
+        data = {};
+      }
 
-    this.settingsPromise = Preferences.$$resource.fetch("jsonSettings").then(function(data) {
       // We convert our PreventInvitationsWhitelist hash into a array of user
       if (data.Calendar) {
         if (data.Calendar.PreventInvitationsWhitelist) {
@@ -140,9 +152,7 @@
             var match = /^(.+)\s<(\S+)>$/.exec(value),
                 user = new Preferences.$User({uid: key, cn: match[1], c_email: match[2]});
             if (!user.$$image)
-              _this.avatar(user.c_email, 32, {no_404: true}).then(function(url) {
-                user.$$image = url;
-              });
+              user.$$image = _this.avatar(user.c_email, 32, {no_404: true});
             return user;
           });
         }
@@ -151,9 +161,7 @@
       }
 
       angular.extend(_this.settings, data);
-
-      return _this.settings;
-    });
+    }
   }
 
   /**
@@ -161,8 +169,9 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Preferences constructor
    */
-  Preferences.$factory = ['$q', '$timeout', '$log', '$mdDateLocale', 'sgSettings', 'Gravatar', 'Resource', 'User', function($q, $timeout, $log, $mdDateLocaleProvider, Settings, Gravatar, Resource, User) {
+  Preferences.$factory = ['$document', '$q', '$timeout', '$log', '$mdDateLocale', 'sgSettings', 'Gravatar', 'Resource', 'User', function($document, $q, $timeout, $log, $mdDateLocaleProvider, Settings, Gravatar, Resource, User) {
     angular.extend(Preferences, {
+      $document: $document,
       $q: $q,
       $timeout: $timeout,
       $log: $log,
@@ -195,7 +204,8 @@
    * @return a combined promise
    */
   Preferences.prototype.ready = function() {
-    return Preferences.$q.all([this.defaultsPromise, this.settingsPromise]);
+    Preferences.$log.warn('Preferences.ready is deprecated -- access settings/defaults directly.');
+    return Preferences.$q.when(true);
   };
 
   /**
@@ -206,16 +216,14 @@
    */
   Preferences.prototype.avatar = function(email, size, options) {
     var _this = this;
-    return this.ready().then(function() {
-      var alternate_avatar = _this.defaults.SOGoAlternateAvatar, url;
-      if (_this.defaults.SOGoGravatarEnabled)
-        url = Preferences.$gravatar(email, size, alternate_avatar, options);
-      else
-        url = [Preferences.$resourcesURL, 'img', 'ic_person_grey_24px.svg'].join('/');
-      if (options && options.dstObject && options.dstAttr)
-        options.dstObject[options.dstAttr] = url;
-      return url;
-    });
+    var alternate_avatar = _this.defaults.SOGoAlternateAvatar, url;
+    if (_this.defaults.SOGoGravatarEnabled)
+      url = Preferences.$gravatar(email, size, alternate_avatar, options);
+    else
+      url = [Preferences.$resourcesURL, 'img', 'ic_person_grey_24px.svg'].join('/');
+    if (options && options.dstObject && options.dstAttr)
+      options.dstObject[options.dstAttr] = url;
+    return url;
   };
 
   /**
@@ -285,12 +293,16 @@
     if (preferences.defaults.Vacation) {
       if (preferences.defaults.Vacation.startDateEnabled)
         preferences.defaults.Vacation.startDate = preferences.defaults.Vacation.startDate.getTime()/1000;
-      else
+      else {
+        delete preferences.defaults.Vacation.startDateEnabled;
         preferences.defaults.Vacation.startDate = 0;
+      }
       if (preferences.defaults.Vacation.endDateEnabled)
         preferences.defaults.Vacation.endDate = preferences.defaults.Vacation.endDate.getTime()/1000;
-      else
+      else {
+        delete preferences.defaults.Vacation.endDateEnabled;
         preferences.defaults.Vacation.endDate = 0;
+      }
 
       if (preferences.defaults.Vacation.autoReplyEmailAddresses)
         preferences.defaults.Vacation.autoReplyEmailAddresses = _.filter(preferences.defaults.Vacation.autoReplyEmailAddresses.split(","), function(v) { return v.length; });

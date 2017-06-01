@@ -22,9 +22,6 @@
             controller: 'PreferencesController',
             controllerAs: 'app'
           }
-        },
-        resolve: {
-          statePreferences: statePreferences
         }
       })
       .state('preferences.general', {
@@ -64,13 +61,6 @@
     $urlRouterProvider.otherwise('/general');
   }
 
-  /**
-   * @ngInject
-   */
-  statePreferences.$inject = ['Preferences'];
-  function statePreferences(Preferences) {
-    return Preferences;
-  }
 
   /**
    * @ngInject

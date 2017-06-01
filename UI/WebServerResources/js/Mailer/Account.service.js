@@ -136,31 +136,29 @@
         _this.$expanded = false;
 
         // Set expanded folders from user's settings
-        Account.$Preferences.ready().then(function() {
-          var expandedFolders,
-              _visit = function(mailboxes) {
-                _.forEach(mailboxes, function(o) {
-                  o.$expanded = (expandedFolders.indexOf('/' + o.id) >= 0);
-                  if (o.children && o.children.length > 0) {
-                    _visit(o.children);
-                  }
-                });
-              };
-          if (Account.$Preferences.settings.Mail.ExpandedFolders) {
-            if (angular.isString(Account.$Preferences.settings.Mail.ExpandedFolders))
-              // Backward compatibility support
-              expandedFolders = angular.fromJson(Account.$Preferences.settings.Mail.ExpandedFolders);
-            else
-              expandedFolders = Account.$Preferences.settings.Mail.ExpandedFolders;
-            _this.$expanded = (expandedFolders.indexOf('/' + _this.id) >= 0);
-            if (expandedFolders.length > 0) {
-              _visit(_this.$mailboxes);
-            }
+        var expandedFolders,
+            _visit = function(mailboxes) {
+              _.forEach(mailboxes, function(o) {
+                o.$expanded = (expandedFolders.indexOf('/' + o.id) >= 0);
+                if (o.children && o.children.length > 0) {
+                  _visit(o.children);
+                }
+              });
+            };
+        if (Account.$Preferences.settings.Mail.ExpandedFolders) {
+          if (angular.isString(Account.$Preferences.settings.Mail.ExpandedFolders))
+            // Backward compatibility support
+            expandedFolders = angular.fromJson(Account.$Preferences.settings.Mail.ExpandedFolders);
+          else
+            expandedFolders = Account.$Preferences.settings.Mail.ExpandedFolders;
+          _this.$expanded = (expandedFolders.indexOf('/' + _this.id) >= 0);
+          if (expandedFolders.length > 0) {
+            _visit(_this.$mailboxes);
           }
-          if (Account.$accounts)
-            _this.$expanded |= (Account.$accounts.length == 1); // Always expand single account
-          _this.$flattenMailboxes({reload: true});
-        });
+        }
+        if (Account.$accounts)
+          _this.$expanded |= (Account.$accounts.length == 1); // Always expand single account
+        _this.$flattenMailboxes({reload: true});
 
         return _this.$mailboxes;
       });

@@ -77,18 +77,15 @@
         $element.off('click', toggleZoomFcn);
     });
 
-    // Wait on user's defaults
-    Preferences.ready().then(function() {
-      $scope.$watch(function() { return vm.email; }, function(email, old) {
-        if (email && vm.urlEmail != email) {
-          // Email has changed or doesn't match the current URL (this happens when using md-virtual-repeat)
-          showGenericAvatar();
-          if (Preferences.defaults.SOGoGravatarEnabled)
-            getGravatar(email);
-        }
-        else if (!email)
-          showGenericAvatar();
-      });
+    $scope.$watch(function() { return vm.email; }, function(email, old) {
+      if (email && vm.urlEmail != email) {
+        // Email has changed or doesn't match the current URL (this happens when using md-virtual-repeat)
+        showGenericAvatar();
+        if (Preferences.defaults.SOGoGravatarEnabled)
+          getGravatar(email);
+      }
+      else if (!email)
+        showGenericAvatar();
     });
 
     // If sg-src is defined, watch the expression for the URL of a local image

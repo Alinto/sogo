@@ -49,12 +49,11 @@
       $refreshTimeout: null
     });
     // Initialize sort parameters from user's settings
-    Preferences.ready().then(function() {
-      if (Preferences.settings.Contact.SortingState) {
-        AddressBook.$query.sort = Preferences.settings.Contact.SortingState[0];
-        AddressBook.$query.asc = parseInt(Preferences.settings.Contact.SortingState[1]);
-      }
-    });
+    if (Preferences.settings.Contact.SortingState) {
+      AddressBook.$query.sort = Preferences.settings.Contact.SortingState[0];
+      AddressBook.$query.asc = parseInt(Preferences.settings.Contact.SortingState[1]);
+    }
+
     return AddressBook; // return constructor
   }];
 
@@ -437,19 +436,15 @@
    * @desc Starts the refresh timeout for the current selected address book
    */
   AddressBook.prototype.$startRefreshTimeout = function() {
-    var _this = this;
-
     if (AddressBook.$refreshTimeout)
       AddressBook.$timeout.cancel(AddressBook.$refreshTimeout);
 
-    AddressBook.$Preferences.ready().then(function() {
-      // Restart the refresh timer, if needed
-      var refreshViewCheck = AddressBook.$Preferences.defaults.SOGoRefreshViewCheck;
-      if (refreshViewCheck && refreshViewCheck != 'manually') {
-        var f = angular.bind(_this, AddressBook.prototype.$reload);
-        AddressBook.$refreshTimeout = AddressBook.$timeout(f, refreshViewCheck.timeInterval()*1000);
-      }
-    });
+    // Restart the refresh timer, if needed
+    var refreshViewCheck = AddressBook.$Preferences.defaults.SOGoRefreshViewCheck;
+    if (refreshViewCheck && refreshViewCheck != 'manually') {
+      var f = angular.bind(this, AddressBook.prototype.$reload);
+      AddressBook.$refreshTimeout = AddressBook.$timeout(f, refreshViewCheck.timeInterval()*1000);
+    }
   };
 
   /**
@@ -487,91 +482,89 @@
       if (!this.isRemote) query.partial = 1;
     }
 
-    return AddressBook.$Preferences.ready().then(function() {
-      if (options) {
-        angular.extend(query, options);
-        if (dry) {
-          if (!search) {
-            // No query specified
-            _this.$$cards = [];
-            return AddressBook.$q.when(_this.$$cards);
-          }
+    if (options) {
+      angular.extend(query, options);
+      if (dry) {
+        if (!search) {
+          // No query specified
+          _this.$$cards = [];
+          return AddressBook.$q.when(_this.$$cards);
         }
       }
+    }
 
-      if (angular.isDefined(search))
-        query.value = search;
+    if (angular.isDefined(search))
+      query.value = search;
 
-      return _this.$id().then(function(addressbookId) {
-        var futureData = AddressBook.$$resource.fetch(addressbookId, 'view', query);
+    return _this.$id().then(function(addressbookId) {
+      var futureData = AddressBook.$$resource.fetch(addressbookId, 'view', query);
 
-        if (dry) {
-          return futureData.then(function(response) {
-            var results, headers, card, index, fields, idFieldIndex,
-                cards = _this.$$cards,
-                compareIds = function(card) {
-                  return this == card.id;
-                };
+      if (dry) {
+        return futureData.then(function(response) {
+          var results, headers, card, index, fields, idFieldIndex,
+              cards = _this.$$cards,
+              compareIds = function(card) {
+                return this == card.id;
+              };
 
-            if (response.headers) {
-              // First entry of 'headers' are keys
-              fields = _.invokeMap(response.headers[0], 'toLowerCase');
-              idFieldIndex = fields.indexOf('id');
-              response.headers.splice(0, 1);
+          if (response.headers) {
+            // First entry of 'headers' are keys
+            fields = _.invokeMap(response.headers[0], 'toLowerCase');
+            idFieldIndex = fields.indexOf('id');
+            response.headers.splice(0, 1);
+          }
+
+          if (excludedCards)
+            // Remove excluded cards from results
+            results = _.filter(response.ids, function(id) {
+              return _.isUndefined(_.find(excludedCards, _.bind(compareIds, id)));
+            });
+          else
+            results = response.ids;
+
+          // Remove cards that no longer match the search query
+          for (index = cards.length - 1; index >= 0; index--) {
+            card = cards[index];
+            if (_.isUndefined(_.find(results, _.bind(compareIds, card.id)))) {
+              cards.splice(index, 1);
             }
+          }
 
-            if (excludedCards)
-              // Remove excluded cards from results
-              results = _.filter(response.ids, function(id) {
-                return _.isUndefined(_.find(excludedCards, _.bind(compareIds, id)));
-              });
-            else
-              results = response.ids;
-
-            // Remove cards that no longer match the search query
-            for (index = cards.length - 1; index >= 0; index--) {
-              card = cards[index];
-              if (_.isUndefined(_.find(results, _.bind(compareIds, card.id)))) {
-                cards.splice(index, 1);
-              }
+          // Add new cards matching the search query
+          _.forEach(results, function(cardId, index) {
+            if (_.isUndefined(_.find(cards, _.bind(compareIds, cardId)))) {
+              var data = { pid: addressbookId, id: cardId };
+              var card = new AddressBook.$Card(data, search);
+              cards.splice(index, 0, card);
             }
-
-            // Add new cards matching the search query
-            _.forEach(results, function(cardId, index) {
-              if (_.isUndefined(_.find(cards, _.bind(compareIds, cardId)))) {
-                var data = { pid: addressbookId, id: cardId };
-                var card = new AddressBook.$Card(data, search);
-                cards.splice(index, 0, card);
-              }
-            });
-
-            // Respect the order of the results
-            _.forEach(results, function(cardId, index) {
-              var oldIndex, removedCards;
-              if (cards[index].id != cardId) {
-                oldIndex = _.findIndex(cards, _.bind(compareIds, cardId));
-                removedCards = cards.splice(oldIndex, 1);
-                cards.splice(index, 0, removedCards[0]);
-              }
-            });
-
-            // Extend Card objects with received headers
-            _.forEach(response.headers, function(data) {
-              var card, index = _.findIndex(cards, _.bind(compareIds, data[idFieldIndex]));
-              if (index > -1) {
-                card = _.zipObject(fields, data);
-                cards[index].init(card, search);
-              }
-            });
-
-            return cards;
           });
-        }
-        else {
-          // Unwrap promise and instantiate or extend Cards objets
-          return _this.$unwrap(futureData);
-        }
-      });
+
+          // Respect the order of the results
+          _.forEach(results, function(cardId, index) {
+            var oldIndex, removedCards;
+            if (cards[index].id != cardId) {
+              oldIndex = _.findIndex(cards, _.bind(compareIds, cardId));
+              removedCards = cards.splice(oldIndex, 1);
+              cards.splice(index, 0, removedCards[0]);
+            }
+          });
+
+          // Extend Card objects with received headers
+          _.forEach(response.headers, function(data) {
+            var card, index = _.findIndex(cards, _.bind(compareIds, data[idFieldIndex]));
+            if (index > -1) {
+              card = _.zipObject(fields, data);
+              cards[index].init(card, search);
+            }
+          });
+
+          return cards;
+        });
+      }
+      else {
+        // Unwrap promise and instantiate or extend Cards objets
+        return _this.$unwrap(futureData);
+      }
     });
   };
 

@@ -116,26 +116,24 @@
     });
     if ($location.url().length === 0) {
       // Restore user's last view
-      Preferences.ready().then(function() {
-        var url = '/calendar/',
-            view = /(.+)view/.exec(Preferences.settings.Calendar.View);
-        if (view)
-          url += view[1];
-        else
-          url += 'week';
-        // Append today's date or next enabled weekday
-        var now = new Date();
-        if (Preferences.defaults.SOGoCalendarWeekdays) {
-          var weekDays = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
-          var weekDay = weekDays[now.getDay()];
-          while (Preferences.defaults.SOGoCalendarWeekdays.indexOf(weekDay) < 0) {
-            now.addDays(1);
-            weekDay = weekDays[now.getDay()];
-          }
+      var url = '/calendar/',
+          view = /(.+)view/.exec(Preferences.settings.Calendar.View);
+      if (view)
+        url += view[1];
+      else
+        url += 'week';
+      // Append today's date or next enabled weekday
+      var now = new Date();
+      if (Preferences.defaults.SOGoCalendarWeekdays) {
+        var weekDays = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
+        var weekDay = weekDays[now.getDay()];
+        while (Preferences.defaults.SOGoCalendarWeekdays.indexOf(weekDay) < 0) {
+          now.addDays(1);
+          weekDay = weekDays[now.getDay()];
         }
-        url += '/' + now.getDayString();
-        $location.replace().url(url);
-      });
+      }
+      url += '/' + now.getDayString();
+      $location.replace().url(url);
     }
   }
 

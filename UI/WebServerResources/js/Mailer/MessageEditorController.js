@@ -65,6 +65,13 @@
       }
     });
 
+    // Read user's defaults
+    if (Preferences.defaults.SOGoMailAutoSave)
+      // Enable auto-save of draft
+      vm.autosave = $timeout(vm.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
+    // Set the locale of CKEditor
+    vm.localeCode = Preferences.defaults.LocaleCode;
+
     // Destroy file uploader when the controller is being deactivated
     $scope.$on('$destroy', function() { vm.uploader.destroy(); });
 
@@ -297,14 +304,6 @@
         vm.autosave = $timeout(vm.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
     }
 
-    // Read user's defaults
-    Preferences.ready().then(function() {
-      if (Preferences.defaults.SOGoMailAutoSave)
-        // Enable auto-save of draft
-        vm.autosave = $timeout(vm.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
-      // Set the locale of CKEditor
-      vm.localeCode = Preferences.defaults.LocaleCode;
-    });
   }
 
   SendMessageToastController.$inject = ['$scope', '$mdToast'];

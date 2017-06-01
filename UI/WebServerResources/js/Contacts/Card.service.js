@@ -46,13 +46,11 @@
       $Preferences: Preferences
     });
     // Initialize categories from user's defaults
-    Preferences.ready().then(function() {
-      if (Preferences.defaults.SOGoContactsCategories) {
-        Card.$categories = Preferences.defaults.SOGoContactsCategories;
-      }
-      if (Preferences.defaults.SOGoAlternateAvatar)
-        Card.$alternateAvatar = Preferences.defaults.SOGoAlternateAvatar;
-    });
+    if (Preferences.defaults.SOGoContactsCategories) {
+      Card.$categories = Preferences.defaults.SOGoContactsCategories;
+    }
+    if (Preferences.defaults.SOGoAlternateAvatar)
+      Card.$alternateAvatar = Preferences.defaults.SOGoAlternateAvatar;
 
     return Card; // return constructor
   }];
@@ -149,9 +147,7 @@
     if (!this.$$image)
       this.$$image = this.image;
     if (!this.$$image)
-      Card.$Preferences.avatar(this.$$email, 32, {no_404: true}).then(function(url) {
-        _this.$$image = url;
-      });
+      this.$$image = Card.$Preferences.avatar(this.$$email, 32, {no_404: true});
     if (this.hasphoto)
       this.photoURL = Card.$$resource.path(this.pid, this.id, 'photo');
     if (this.isgroup)
@@ -177,11 +173,9 @@
     });
     // Instanciate date object of birthday
     if (this.birthday) {
-      Card.$Preferences.ready().then(function() {
-        var dlp = Card.$Preferences.$mdDateLocaleProvider;
-        _this.birthday = _this.birthday.parseDate(dlp, '%Y-%m-%d');
-        _this.$birthday = dlp.formatDate(_this.birthday);
-      });
+      var dlp = Card.$Preferences.$mdDateLocaleProvider;
+      this.birthday = this.birthday.parseDate(dlp, '%Y-%m-%d');
+      this.$birthday = dlp.formatDate(this.birthday);
     }
 
     this.$loaded = angular.isDefined(this.c_name)? Card.STATUS.LOADED : Card.STATUS.NOT_LOADED;

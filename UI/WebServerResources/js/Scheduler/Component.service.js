@@ -52,28 +52,26 @@
       $refreshTimeout: null,
       $ghost: {}
     });
-    Preferences.ready().then(function() {
-      // Initialize filter parameters from user's settings
-      if (Preferences.settings.Calendar.EventsFilterState)
-        Component.$queryEvents.filterpopup = Preferences.settings.Calendar.EventsFilterState;
-      if (Preferences.settings.Calendar.TasksFilterState)
-        Component.$queryTasks.filterpopup = Preferences.settings.Calendar.TasksFilterState;
-      if (Preferences.settings.Calendar.EventsSortingState) {
-        Component.$queryEvents.sort = Preferences.settings.Calendar.EventsSortingState[0];
-        Component.$queryEvents.asc = parseInt(Preferences.settings.Calendar.EventsSortingState[1]);
-      }
-      if (Preferences.settings.Calendar.TasksSortingState) {
-        Component.$queryTasks.sort = Preferences.settings.Calendar.TasksSortingState[0];
-        Component.$queryTasks.asc = parseInt(Preferences.settings.Calendar.TasksSortingState[1]);
-      }
-      Component.$queryTasks.show_completed = parseInt(Preferences.settings.ShowCompletedTasks);
-      // Initialize categories from user's defaults
-      Component.$categories = Preferences.defaults.SOGoCalendarCategoriesColors;
-      // Initialize time format from user's defaults
-      if (Preferences.defaults.SOGoTimeFormat) {
-        Component.timeFormat = Preferences.defaults.SOGoTimeFormat;
-      }
-    });
+    // Initialize filter parameters from user's settings
+    if (Preferences.settings.Calendar.EventsFilterState)
+      Component.$queryEvents.filterpopup = Preferences.settings.Calendar.EventsFilterState;
+    if (Preferences.settings.Calendar.TasksFilterState)
+      Component.$queryTasks.filterpopup = Preferences.settings.Calendar.TasksFilterState;
+    if (Preferences.settings.Calendar.EventsSortingState) {
+      Component.$queryEvents.sort = Preferences.settings.Calendar.EventsSortingState[0];
+      Component.$queryEvents.asc = parseInt(Preferences.settings.Calendar.EventsSortingState[1]);
+    }
+    if (Preferences.settings.Calendar.TasksSortingState) {
+      Component.$queryTasks.sort = Preferences.settings.Calendar.TasksSortingState[0];
+      Component.$queryTasks.asc = parseInt(Preferences.settings.Calendar.TasksSortingState[1]);
+    }
+    Component.$queryTasks.show_completed = parseInt(Preferences.settings.ShowCompletedTasks);
+    // Initialize categories from user's defaults
+    Component.$categories = Preferences.defaults.SOGoCalendarCategoriesColors;
+    // Initialize time format from user's defaults
+    if (Preferences.defaults.SOGoTimeFormat) {
+      Component.timeFormat = Preferences.defaults.SOGoTimeFormat;
+    }
 
     return Component; // return constructor
   }];
@@ -124,19 +122,15 @@
    * current view.
    */
   Component.$startRefreshTimeout = function(type) {
-    var _this = this;
-
     if (Component.$refreshTimeout)
       Component.$timeout.cancel(Component.$refreshTimeout);
 
-    Component.$Preferences.ready().then(function() {
-      // Restart the refresh timer, if needed
-      var refreshViewCheck = Component.$Preferences.defaults.SOGoRefreshViewCheck;
-      if (refreshViewCheck && refreshViewCheck != 'manually') {
-        var f = angular.bind(Component.$rootScope, Component.$rootScope.$emit, 'calendars:list');
-        Component.$refreshTimeout = Component.$timeout(f, refreshViewCheck.timeInterval()*1000);
-      }
-    });
+    // Restart the refresh timer, if needed
+    var refreshViewCheck = Component.$Preferences.defaults.SOGoRefreshViewCheck;
+    if (refreshViewCheck && refreshViewCheck != 'manually') {
+      var f = angular.bind(Component.$rootScope, Component.$rootScope.$emit, 'calendars:list');
+      Component.$refreshTimeout = Component.$timeout(f, refreshViewCheck.timeInterval()*1000);
+    }
   };
 
   /**
@@ -166,44 +160,41 @@
         queryKey = '$query' + type.capitalize(),
         params = {
           day: '' + year + (month < 10?'0':'') + month + (day < 10?'0':'') + day,
-        };
+        },
+        futureComponentData,
+        dirty = false,
+        otherType;
 
     Component.$startRefreshTimeout(type);
 
-    return this.$Preferences.ready().then(function() {
-      var futureComponentData,
-          dirty = false,
-          otherType;
+    angular.extend(this.$query, params);
 
-      angular.extend(_this.$query, params);
+    if (options) {
+      _.forEach(_.keys(options), function(key) {
+        // Query parameters common to events and tasks are compared
+        dirty |= (_this.$query[key] && options[key] != Component.$query[key]);
+        if (key == 'reload' && options[key])
+          dirty = true;
+        // Update either the common parameters or the type-specific parameters
+        else if (angular.isDefined(_this.$query[key]))
+          _this.$query[key] = options[key];
+        else
+          _this[queryKey][key] = options[key];
+      });
+    }
 
-      if (options) {
-        _.forEach(_.keys(options), function(key) {
-          // Query parameters common to events and tasks are compared
-          dirty |= (_this.$query[key] && options[key] != Component.$query[key]);
-          if (key == 'reload' && options[key])
-            dirty = true;
-          // Update either the common parameters or the type-specific parameters
-          else if (angular.isDefined(_this.$query[key]))
-            _this.$query[key] = options[key];
-          else
-            _this[queryKey][key] = options[key];
-        });
-      }
+    // Perform query with both common and type-specific parameters
+    futureComponentData = this.$$resource.fetch(null, type + 'list',
+                                                angular.extend(this[queryKey], this.$query));
 
-      // Perform query with both common and type-specific parameters
-      futureComponentData = _this.$$resource.fetch(null, type + 'list',
-                                                   angular.extend(_this[queryKey], _this.$query));
+    // Invalidate cached results of other type if $query has changed
+    if (dirty) {
+      otherType = (type == 'tasks')? '$events' : '$tasks';
+      delete Component[otherType];
+      Component.$log.debug('force reload of ' + otherType);
+    }
 
-      // Invalidate cached results of other type if $query has changed
-      if (dirty) {
-        otherType = (type == 'tasks')? '$events' : '$tasks';
-        delete Component[otherType];
-        Component.$log.debug('force reload of ' + otherType);
-      }
-
-      return _this.$unwrapCollection(type, futureComponentData);
-    });
+    return this.$unwrapCollection(type, futureComponentData);
   };
 
   /**
@@ -256,40 +247,36 @@
    * @returns a promise of a collection of objects describing the events blocks
    */
   Component.$eventsBlocksForView = function(view, date) {
-    var _this = this;
+    var firstDayOfWeek, viewAction, startDate, endDate, params;
 
-    return Component.$Preferences.ready().then(function(data) {
-      var firstDayOfWeek, viewAction, startDate, endDate, params;
-      firstDayOfWeek = Component.$Preferences.defaults.SOGoFirstDayOfWeek;
-
-      if (view == 'day') {
-        viewAction = 'dayView';
-        startDate = endDate = date;
-      }
-      else if (view == 'multicolumnday') {
-        viewAction = 'multicolumndayView';
-        startDate = endDate = date;
-      }
-      else if (view == 'week') {
-        viewAction = 'weekView';
-        startDate = date.beginOfWeek(firstDayOfWeek);
-        endDate = new Date();
-        endDate.setTime(startDate.getTime());
-        endDate.addDays(6);
-      }
-      else if (view == 'month') {
-        viewAction = 'monthView';
-        startDate = date;
-        startDate.setDate(1);
-        startDate = startDate.beginOfWeek(firstDayOfWeek);
-        endDate = new Date();
-        endDate.setTime(date.getTime());
-        endDate.setMonth(endDate.getMonth() + 1);
-        endDate.addDays(-1);
-        endDate = endDate.endOfWeek(firstDayOfWeek);
-      }
-      return _this.$eventsBlocks(viewAction, startDate, endDate);
-    });
+    firstDayOfWeek = Component.$Preferences.defaults.SOGoFirstDayOfWeek;
+    if (view == 'day') {
+      viewAction = 'dayView';
+      startDate = endDate = date;
+    }
+    else if (view == 'multicolumnday') {
+      viewAction = 'multicolumndayView';
+      startDate = endDate = date;
+    }
+    else if (view == 'week') {
+      viewAction = 'weekView';
+      startDate = date.beginOfWeek(firstDayOfWeek);
+      endDate = new Date();
+      endDate.setTime(startDate.getTime());
+      endDate.addDays(6);
+    }
+    else if (view == 'month') {
+      viewAction = 'monthView';
+      startDate = date;
+      startDate.setDate(1);
+      startDate = startDate.beginOfWeek(firstDayOfWeek);
+      endDate = new Date();
+      endDate.setTime(date.getTime());
+      endDate.setMonth(endDate.getMonth() + 1);
+      endDate.addDays(-1);
+      endDate = endDate.endOfWeek(firstDayOfWeek);
+    }
+    return this.$eventsBlocks(viewAction, startDate, endDate);
   };
 
   /**
@@ -533,12 +520,10 @@
 
     if (this.c_category) {
       // c_category is only defined in list mode (when calling $filter)
-      Component.$Preferences.ready().then(function() {
-        // Filter out categories for which there's no associated color
-        _this.categories = _.invokeMap(_.filter(_this.c_category, function(name) {
-          return Component.$Preferences.defaults.SOGoCalendarCategoriesColors[name];
-        }), 'asCSSIdentifier');
-      });
+      // Filter out categories for which there's no associated color
+      this.categories = _.invokeMap(_.filter(this.c_category, function(name) {
+        return Component.$Preferences.defaults.SOGoCalendarCategoriesColors[name];
+      }), 'asCSSIdentifier');
     }
 
     // Parse recurrence rule definition and initialize default values
@@ -591,24 +576,22 @@
 
     if (this.isNew) {
       // Set default values
-      Component.$Preferences.ready().then(function() {
-        var type = (_this.type == 'appointment')? 'Events' : 'Tasks';
+      var type = (this.type == 'appointment')? 'Events' : 'Tasks';
 
-        // Set default classification
-        _this.classification = Component.$Preferences.defaults['SOGoCalendar' + type + 'DefaultClassification'].toLowerCase();
+      // Set default classification
+      this.classification = Component.$Preferences.defaults['SOGoCalendar' + type + 'DefaultClassification'].toLowerCase();
 
-        // Set default alarm
-        var units = { M: 'MINUTES', H: 'HOURS', D: 'DAYS', W: 'WEEKS' };
-        var match = /-PT?([0-9]+)([MHDW])/.exec(Component.$Preferences.defaults.SOGoCalendarDefaultReminder);
-        if (match) {
-          _this.$hasAlarm = true;
-          _this.alarm.quantity = parseInt(match[1]);
-          _this.alarm.unit = units[match[2]];
-        }
+      // Set default alarm
+      var units = { M: 'MINUTES', H: 'HOURS', D: 'DAYS', W: 'WEEKS' };
+      var match = /-PT?([0-9]+)([MHDW])/.exec(Component.$Preferences.defaults.SOGoCalendarDefaultReminder);
+      if (match) {
+        this.$hasAlarm = true;
+        this.alarm.quantity = parseInt(match[1]);
+        this.alarm.unit = units[match[2]];
+      }
 
-        // Set notitifications
-        _this.sendAppointmentNotifications = Component.$Preferences.defaults.SOGoAppointmentSendEMailNotifications;
-      });
+      // Set notitifications
+      this.sendAppointmentNotifications = Component.$Preferences.defaults.SOGoAppointmentSendEMailNotifications;
     }
     else if (angular.isUndefined(data.$hasAlarm)) {
       this.$hasAlarm = angular.isDefined(data.alarm);
