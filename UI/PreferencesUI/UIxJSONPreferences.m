@@ -354,7 +354,8 @@ static SoProduct *preferencesProduct = nil;
                                         @"ignore", @"receiptAnyAction", nil]
                   forKey:  @"receipts"];
     }
-  [accounts insertObject: account  atIndex: 0];
+  if (account)
+    [accounts insertObject: account  atIndex: 0];
   [values setObject: accounts  forKey: @"AuxiliaryMailAccounts"];
 
   // Add the domain's default vacation subject if user has not specified a custom subject
