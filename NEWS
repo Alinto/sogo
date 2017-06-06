@@ -4,6 +4,9 @@
 New features
  - [eas] initial EAS v16 and email drafts support
 
+Bug fixes
+ - [web] use the organizer's alarm by default when accepting IMIP messages (#3934)
+
 2.3.21 (2017-06-01)
 -------------------
 
