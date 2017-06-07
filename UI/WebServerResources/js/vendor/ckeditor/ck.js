@@ -53,6 +53,8 @@
         if (attr.ckOptions)
           options = angular.fromJson(attr.ckOptions.replace(/'/g, "\""));
 
+        options.entities = false;
+
         if (attr.ckLocale) {
           locale = $parse(attr.ckLocale)($scope);
           options.language = locale;
