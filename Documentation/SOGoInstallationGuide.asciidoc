@@ -47,7 +47,7 @@ and the data of Mozilla Thunderbird and Lightning
 the SOGo Connector and the SOGo Integrator
 * Native compatibility for Microsoft Outlook 2003, 2007, 2010, and 2013
 * Two-way synchronization support with any Microsoft ActiveSync-capable
-device, or Outlook 2013
+device, or Outlook 2013/2016
 
 SOGo is developed by a community of developers located mainly in North
 America and Europe. More information can be found at http://sogo.nu/
@@ -2571,9 +2571,9 @@ If not set, it defaults to `102400` bytes, or 100 KB.
 
 Please be aware of the following limitations:
 
-* Outlook 2013 does not search the GAL. One possible alternative
+* Outlook 2013/2016 does not search the GAL. One possible alternative
 solution is to configure Outlook to use a LDAP server (over SSL) with
-authentication. Outlook 2013 also does not seem to support multiple
+authentication. Outlook 2013/2016 also does not seem to support multiple
 address books over ActiveSync.
 * To successfully synchronize Outlook email categories, a corresponding
 mail label (Preferences->Mail Options) has to be created manually in SOGo
@@ -2589,9 +2589,9 @@ to handle many clients. Make sure you tune your SOGo server when having
 lots of ActiveSync clients.
 * Repetitive events with occurrences exceptions are currently not
 supported.
-* Outlook 2013 Autodiscovery is currently not supported.
-* Outlook 2013 freebusy lookups are supported using the Internet
-Free/Busy feature of Outlook 2013. Please
+* Outlook 2013/2016 Autodiscovery is currently not supported.
+* Outlook 2013/2016 freebusy lookups are supported using the Internet
+Free/Busy feature of Outlook 2013/2016. Please
 see http://support.microsoft.com/kb/291621 for configuration
 instructions. On the SOGo side, _SOGoEnablePublicAccess_ must be set to
 `YES` and the URL to use must be of the following format: 
@@ -2600,6 +2600,9 @@ instructions. On the SOGo side, _SOGoEnablePublicAccess_ must be set to
 need to adjust the word size of your IMAP server. In Dovecot, the parameter
 to increase is "imap_max_line_length" while under Cyrus IMAP Server, the
 parameter is "maxword". We suggest a buffer of 2MB.
+* If you are using MySQL, make sure you set "max_allowed_packet" to a large value
+since the EAS cache size can be large for mailboxes with thousands of messages.
+A 64M or even 128M value is recommended.
 
 In order to use the SOGo ActiveSync support code in production
 environments, you need to get a proper usage license from Microsoft.
