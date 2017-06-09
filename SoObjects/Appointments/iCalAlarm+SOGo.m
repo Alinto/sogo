@@ -1,6 +1,6 @@
 /* iCalAlarm+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2015 Inverse inc.
+ * Copyright (C) 2015-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,6 +123,26 @@
     }
   
   return AUTORELEASE(anAlarm);
+}
+
+- (BOOL) userIsAttendee: (SOGoUser *) user
+{
+  NSEnumerator *attendees;
+  iCalPerson *currentAttendee;
+  BOOL isAttendee;
+
+  isAttendee = NO;
+
+  attendees = [[self attendees] objectEnumerator];
+  currentAttendee = [attendees nextObject];
+  while (!isAttendee
+	 && currentAttendee)
+    if ([user hasEmail: [currentAttendee rfc822Email]])
+      isAttendee = YES;
+    else
+      currentAttendee = [attendees nextObject];
+
+  return isAttendee;
 }
 
 @end

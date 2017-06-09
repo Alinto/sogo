@@ -124,28 +124,22 @@
 
 - (void) _sendMessageWithHeaders: (NGMutableHashMap *) headers
                          content: (NSData *) content
-                      toAttendee: (iCalPerson *) attendee
-                            from: (NSString *) from
+                              to: (NSDictionary *) to
                       withMailer: (SOGoMailer *) mailer
 {
   NGMimeMessage *message;
-  NSString *to, *headerTo, *attendeeName;
+  NSString *headerTo;
 
-  attendeeName = [attendee cnWithoutQuotes];
-  if ([attendeeName length])
-    headerTo = [NSString stringWithFormat: @"%@ <%@>", attendeeName,
-                         [attendee rfc822Email]];
-  else
-    headerTo = [attendee rfc822Email];
+  headerTo = [NSString stringWithFormat: @"%@ <%@>", [to objectForKey: @"fullName"],
+                       [to objectForKey: @"email"]];
   [headers setObject: headerTo forKey: @"To"];
   [headers setObject: [self _messageID] forKey: @"Message-Id"];
   message = [NGMimeMessage messageWithHeader: headers];
   [message setBody: content];
-  to = [attendee rfc822Email];
 
   [mailer sendMimePart: message
-          toRecipients: [NSArray arrayWithObject: to]
-                sender: from
+          toRecipients: [NSArray arrayWithObject: [to objectForKey: @"email"]]
+                sender: [to objectForKey: @"email"]
      withAuthenticator: staticAuthenticator inContext: nil];
 }
 
@@ -154,11 +148,10 @@
       andContainerPath: (NSString *) containerPath
 {
   NGMutableHashMap *headers;
-  NSArray *attendees, *parts;
+  NSArray *parts;
   NSData *content, *qpContent;
-  int count, max;
   SOGoMailer *mailer;
-  NSString *from, *subject;
+  NSString *subject;
   SOGoUser *owner;
 
   WOContext *localContext;
@@ -171,7 +164,6 @@
   SOGoAppointmentFolder *folder;
   SOGoUserFolder *userFolder;
 
-
   owner = [SOGoUser userWithLogin: ownerId];
   mailer = [SOGoMailer mailerWithDomainDefaults: [owner domainDefaults]];
 
@@ -180,13 +172,13 @@
   app = [[WOApplication alloc] initWithName: @"SOGo"];
 
   rm = [[WEResourceManager alloc] init];
-  [app setResourceManager:rm];
+  [app setResourceManager: rm];
   [rm release];
   [app _setCurrentContext:localContext];
 
   userFolder = [[localContext activeUser] homeFolderInContext: localContext ];
   folders = [userFolder privateCalendars: @"Calendar"
-                         inContext: localContext];
+                               inContext: localContext];
 
   pageName = [NSString stringWithFormat: @"SOGoAptMail%@", @"Reminder"];
 
@@ -209,16 +201,10 @@
 
   headers = [self _headersForAlarm: alarm withOwner: owner withSubject: subject];
   qpContent = [content dataByEncodingQuotedPrintable];
-  from = [[owner primaryIdentity] objectForKey: @"email"];
-
-  attendees = [alarm attendees];
-  max = [attendees count];
-  for (count = 0; count < max; count++)
-    [self _sendMessageWithHeaders: headers
-                          content: qpContent
-                       toAttendee: [attendees objectAtIndex: count]
-                             from: from
-                       withMailer: mailer];
+  [self _sendMessageWithHeaders: headers
+                        content: qpContent
+                             to: [owner primaryIdentity]
+                     withMailer: mailer];
 }
 
 - (void) usage

@@ -690,6 +690,7 @@ NSNumber *iCalDistantFutureNumber = nil;
 {
   NSCalendarDate *nextAlarmDate;
   GCSAlarmsFolder *af;
+  SOGoUser *alarmOwner;
   NSString *path;
 
   int email_alarm_number;
@@ -698,11 +699,13 @@ NSNumber *iCalDistantFutureNumber = nil;
     {
       af = [[GCSFolderManager defaultFolderManager] alarmsFolder];
       path = [theContainer ocsPath];
+      alarmOwner = [SOGoUser userWithLogin: [[path componentsSeparatedByString: @"/"] objectAtIndex: 2]];
     }
   else
     {
       af = nil;
       path = nil;
+      alarmOwner = nil;
     }
 
   nextAlarmDate = nil;
@@ -736,7 +739,8 @@ NSNumber *iCalDistantFutureNumber = nil;
 	      email_alarm_number = [[self alarms] indexOfObject: anAlarm];
 
 	      // The email alarm is too old, let's just remove it
-	      if ([nextAlarmDate earlierDate: [NSDate date]] == nextAlarmDate)
+	      if ([nextAlarmDate earlierDate: [NSDate date]] == nextAlarmDate ||
+                  ![anAlarm userIsAttendee: alarmOwner])
 		nextAlarmDate = nil;
 	      else
 		{
@@ -831,17 +835,21 @@ NSNumber *iCalDistantFutureNumber = nil;
                               nextAlarmDate = [NSDate dateWithTimeIntervalSince1970: [[[alarms objectAtIndex: i] objectForKey: @"c_nextalarm"] intValue]];
                             }
 			  else if ((anAlarm = [self firstEmailAlarm]) && af)
+
 			    {
 			      nextAlarmDate = [NSDate dateWithTimeIntervalSince1970: [[[alarms objectAtIndex: i] objectForKey: @"c_nextalarm"] intValue]];
 			      email_alarm_number = [[self alarms] indexOfObject: anAlarm];
 
-			      [af writeRecordForEntryWithCName: nameInContainer
-					      inCalendarAtPath: path
-							forUID: [self uid]
-						  recurrenceId: [self recurrenceId]
-						   alarmNumber: [NSNumber numberWithInt: email_alarm_number]
-						  andAlarmDate: nextAlarmDate];
-			    }
+                              if ([anAlarm userIsAttendee: alarmOwner])
+                                [af writeRecordForEntryWithCName: nameInContainer
+                                                inCalendarAtPath: path
+                                                          forUID: [self uid]
+                                                    recurrenceId: [self recurrenceId]
+                                                     alarmNumber: [NSNumber numberWithInt: email_alarm_number]
+                                                    andAlarmDate: nextAlarmDate];
+                              else
+                                nextAlarmDate = nil;
+                            }
 			}
                     }
                 } // for ( ... )

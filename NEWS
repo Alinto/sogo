@@ -21,6 +21,7 @@ Bug fixes
  - [web] fixed responsive condition of login page (960px to 1023px)
  - [core] newly subscribed calendars are excluded from freebusy (#3354)
  - [core] strip cr during LDIF import process (#4172)
+ - [core] email alarms are sent too many times (#4100)
 
 3.2.9 (2017-05-09)
 ------------------
