@@ -1439,66 +1439,70 @@ struct GlobalObjectId {
 }
 
 - (NSString *) storeMail: (NSDictionary *) theValues
-                 inContext: (WOContext *) _context
+               inContext: (WOContext *) _context
 {
-  int bodyType;
-  NGImap4Client *client;
-  NSData *message_data;
-  NSString *folder, *s;
-  id o, result;
+  NSString *dateReceived, *folder, *s;
+  NGMimeMessageGenerator *generator;
+  NGMimeMessage *bounceMessage;
   NSDictionary *identity;
   NGMutableHashMap *map;
-  NGMimeMessage *bounceMessage;
-  NGMimeMessageGenerator *generator;
-  NSString *email, *dateReceived;
+  NGImap4Client *client;
+  NSData *message_data;
+
+  id o, result;
+  int bodyType;
 
   identity = [[context activeUser] primaryIdentity];
-  email = [identity objectForKey: @"email"];
-
-
+  message_data = nil;
   bodyType = 1;
 
   if ((o = [[theValues objectForKey: @"Body"] objectForKey: @"Type"]))
-    {
-      bodyType = [o intValue];
-    }
+    bodyType = [o intValue];
 
   if (bodyType == 4)
     {
       s = [[theValues objectForKey: @"Body"] objectForKey: @"Data"];
-      message_data = [ s dataUsingEncoding: NSUTF8StringEncoding];
+      message_data = [s dataUsingEncoding: NSUTF8StringEncoding];
     }
 
-  if (bodyType == 1)
+  if (bodyType == 1 || bodyType == 2)
     {
       map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
 
-      [map setObject: [NSString stringWithFormat: @"%@ <%@>", [theValues objectForKey: @"From"], email]  forKey: @"from"];
-      [map setObject: [NSString stringWithFormat: @"%@ <%@>", [theValues objectForKey: @"To"], email]  forKey: @"to"];
-      [map setObject: [NSString stringWithFormat: @"SMS: %@", [theValues objectForKey: @"From"]]  forKey: @"subject"];
+      [map setObject: [NSString stringWithFormat: @"%@ <%@>", [identity objectForKey: @"fullName"], [identity objectForKey: @"email"]]  forKey: @"from"];
+      if ((o = [theValues objectForKey: @"To"]))
+          [map setObject: o  forKey: @"to"];
 
+      if ((o = [theValues objectForKey: @"Subject"]))
+        [map setObject: o  forKey: @"subject"];
+
+      o = [[theValues objectForKey: @"DateReceived"] calendarDate];
+
+      if (!o)
+        o = [NSCalendarDate date];
 
 #if GNUSTEP_BASE_MINOR_VERSION < 21
-      dateReceived = [[[theValues objectForKey: @"DateReceived"]  calendarDate] descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"
-                                      timeZone: [NSTimeZone timeZoneWithName: @"GMT"]
-                                        locale: nil];
+      dateReceived = [o descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"
+                                             timeZone: [NSTimeZone timeZoneWithName: @"GMT"]
+                                               locale: nil];
 #else
-      dateReceived = [[[theValues objectForKey: @"DateReceived"]  calendarDate] descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"
-                                      timeZone: [NSTimeZone timeZoneWithName: @"GMT"]
-                                        locale: [NSDictionary dictionaryWithObjectsAndKeys:
-                                                            [NSArray arrayWithObjects: @"Jan", @"Feb", @"Mar", @"Apr",
-                                                                                      @"May", @"Jun", @"Jul", @"Aug",
-                                                                                       @"Sep", @"Oct", @"Nov", @"Dec", nil],
-                                                               @"NSShortMonthNameArray",
-                                                            [NSArray arrayWithObjects: @"Sun", @"Mon", @"Tue", @"Wed", @"Thu",
-                                                                                       @"Fri", @"Sat", nil],
-                                                               @"NSShortWeekDayNameArray",
-                                                            nil]];
+      dateReceived = [o descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"
+                                             timeZone: [NSTimeZone timeZoneWithName: @"GMT"]
+                                               locale: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                                        [NSArray arrayWithObjects: @"Jan", @"Feb", @"Mar", @"Apr",
+                                                                                 @"May", @"Jun", @"Jul", @"Aug",
+                                                                                 @"Sep", @"Oct", @"Nov", @"Dec", nil],
+                                                                     @"NSShortMonthNameArray",
+                                                                        [NSArray arrayWithObjects: @"Sun", @"Mon", @"Tue", @"Wed", @"Thu",
+                                                                                 @"Fri", @"Sat", nil],
+                                                                     @"NSShortWeekDayNameArray",
+                                                                     nil]];
 #endif
 
       [map setObject: dateReceived forKey: @"date"];
       [map setObject: [NSString generateMessageID] forKey: @"message-id"];
-      [map setObject: @"text/plain; charset=utf-8" forKey: @"content-type"];
+      [map setObject: (bodyType == 1 ? @"text/plain; charset=utf-8" : @"text/html; charset=utf-8")
+              forKey: @"content-type"];
       [map setObject: @"quoted-printable" forKey: @"content-transfer-encoding"];
 
       bounceMessage = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
@@ -1509,22 +1513,26 @@ struct GlobalObjectId {
       message_data = [generator generateMimeFromPart: bounceMessage];
     }
 
-  client = [[self imap4Connection] client];
-
-  if (![imap4 doesMailboxExistAtURL: [container imap4URL]])
+  if (message_data)
     {
-      [[self imap4Connection] createMailbox: [[self imap4Connection] imap4FolderNameForURL: [container imap4URL]]
-                                      atURL: [[self mailAccountFolder] imap4URL]];
-      [imap4 flushFolderHierarchyCache];
+      client = [[self imap4Connection] client];
+
+      if (![imap4 doesMailboxExistAtURL: [container imap4URL]])
+        {
+          [[self imap4Connection] createMailbox: [[self imap4Connection] imap4FolderNameForURL: [container imap4URL]]
+                                          atURL: [[self mailAccountFolder] imap4URL]];
+          [imap4 flushFolderHierarchyCache];
+        }
+
+      folder = [imap4 imap4FolderNameForURL: [container imap4URL]];
+
+      result = [client append: message_data
+                     toFolder: folder
+                    withFlags: [NSArray arrayWithObjects: @"draft", nil]];
+
+      if ([[result objectForKey: @"result"] boolValue])
+        return [NSString stringWithFormat: @"%d", [self IMAP4IDFromAppendResult: result]];
     }
-
-  folder = [imap4 imap4FolderNameForURL: [container imap4URL]];
-
-  result = [client append: message_data toFolder: folder
-                withFlags: [NSArray arrayWithObjects: @"draft", nil]];
-
-  if ([[result objectForKey: @"result"] boolValue])
-    return [NSString stringWithFormat: @"%d", [self IMAP4IDFromAppendResult: result]];
 
   return nil;
 }
