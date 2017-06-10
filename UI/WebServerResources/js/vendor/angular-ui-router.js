@@ -4,7 +4,7 @@
  *         This causes it to be incompatible with plugins that depend on @uirouter/core.
  *         We recommend switching to the ui-router-core.js and ui-router-angularjs.js bundles instead.
  *         For more information, see http://ui-router.github.io/blog/angular-ui-router-umd-bundles
- * @version v1.0.3
+ * @version v1.0.4
  * @link https://ui-router.github.io
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -13,6 +13,9 @@
     typeof define === 'function' && define.amd ? define(['exports', 'angular'], factory) :
     (factory((global['@uirouter/angularjs'] = global['@uirouter/angularjs'] || {}),global.angular));
 }(this, (function (exports,ng_from_import) { 'use strict';
+
+var ng_from_global = angular;
+var ng = (ng_from_import && ng_from_import.module) ? ng_from_import : ng_from_global;
 
 /**
  * Higher order functions
@@ -3509,8 +3512,11 @@ var Transition = (function () {
         var state = this.$to();
         if (state.self.abstract)
             return "Cannot transition to abstract state '" + state.name + "'";
-        if (!Param.validates(state.parameters(), this.params()))
-            return "Param values not valid for state '" + state.name + "'";
+        var paramDefs = state.parameters(), values$$1 = this.params();
+        var invalidParams = paramDefs.filter(function (param) { return !param.validates(values$$1[param.id]); });
+        if (invalidParams.length) {
+            return "Param values not valid for state '" + state.name + "'. Invalid params: [ " + invalidParams.map(function (param) { return param.id; }).join(', ') + " ]";
+        }
         if (this.success === false)
             return this._error;
     };
@@ -7865,9 +7871,6 @@ var index$1 = Object.freeze({
 	UIRouterPluginBase: UIRouterPluginBase
 });
 
-var ng_from_global = angular;
-var ng = (ng_from_import && ng_from_import.module) ? ng_from_import : ng_from_global;
-
 function getNg1ViewConfigFactory() {
     var templateFactory = null;
     return function (path, view) {
@@ -9327,7 +9330,7 @@ uiSrefActive = ['$state', '$stateParams', '$interpolate', '$uiRouter',
                         return deregister;
                     };
                     function updateAfterTransition(trans) {
-                        trans.promise.then(update);
+                        trans.promise.then(update, noop$1);
                     }
                     $scope.$on('$stateChangeSuccess', update);
                     $scope.$on('$destroy', $uiRouter.transitionService.onStart({}, updateAfterTransition));
@@ -9851,8 +9854,15 @@ ng.module('ui.router.state').provider('$uiViewScroll', $ViewScrollProvider);
  */ /** */
 var index = "ui.router";
 
-exports.core = index$1;
 exports['default'] = index;
+exports.core = index$1;
+exports.watchDigests = watchDigests;
+exports.getLocals = getLocals;
+exports.getNg1ViewConfigFactory = getNg1ViewConfigFactory;
+exports.ng1ViewsBuilder = ng1ViewsBuilder;
+exports.Ng1ViewConfig = Ng1ViewConfig;
+exports.StateProvider = StateProvider;
+exports.UrlRouterProvider = UrlRouterProvider;
 exports.fromJson = fromJson;
 exports.toJson = toJson;
 exports.copy = copy;
@@ -10006,13 +10016,6 @@ exports.hashLocationPlugin = hashLocationPlugin;
 exports.pushStateLocationPlugin = pushStateLocationPlugin;
 exports.memoryLocationPlugin = memoryLocationPlugin;
 exports.UIRouterPluginBase = UIRouterPluginBase;
-exports.watchDigests = watchDigests;
-exports.getLocals = getLocals;
-exports.getNg1ViewConfigFactory = getNg1ViewConfigFactory;
-exports.ng1ViewsBuilder = ng1ViewsBuilder;
-exports.Ng1ViewConfig = Ng1ViewConfig;
-exports.StateProvider = StateProvider;
-exports.UrlRouterProvider = UrlRouterProvider;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
