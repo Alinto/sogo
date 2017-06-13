@@ -10,7 +10,7 @@
        ng-show="editor.component.repeat.frequency == 'daily'">
     <var:string label:value="Every"/>
     <md-input-container class="md-input-number">
-      <input type="number" label:aria-label="Every" ng-model="editor.component.repeat.interval"/>
+      <input type="number" min="1" label:aria-label="Every" ng-model="editor.component.repeat.interval"/>
     </md-input-container>
     <var:string label:value="Days"/>
   </div>
@@ -20,7 +20,7 @@
     <div layout="row" layout-align="start center">
       <var:string label:value="Every"/>
       <md-input-container class="md-input-number">
-        <input type="number" label:aria-label="Every" ng-model="editor.component.repeat.interval"/>
+        <input type="number" min="1" label:aria-label="Every" ng-model="editor.component.repeat.interval"/>
       </md-input-container>
       <var:string label:value="Week(s)"/>
     </div>
@@ -43,7 +43,7 @@
     <div layout="row" layout-align="start center">
       <var:string label:value="Every"/>
       <md-input-container class="md-input-number">
-        <input type="number" label:aria-label="Every" ng-model="editor.component.repeat.interval"/>
+        <input type="number" min="1" label:aria-label="Every" ng-model="editor.component.repeat.interval"/>
       </md-input-container>
       <var:string label:value="Month(s)"/>
     </div>
@@ -113,7 +113,7 @@
     <div layout="row" layout-align="start center">
       <var:string label:value="Every"/>
       <md-input-container class="md-input-number">
-        <input type="number" label:aria-label="Every" ng-model="editor.component.repeat.interval"/>
+        <input type="number" min="1" label:aria-label="Every" ng-model="editor.component.repeat.interval"/>
       </md-input-container>
       <var:string label:value="Year(s)"/>
     </div>

@@ -219,7 +219,7 @@
             <md-input-container class="md-block md-input-number"
                                 ng-show="editor.component.repeat.end == 'count'">
               <label><var:string label:value="times"/></label>
-              <input type="number" label:aria-label="times" ng-model="editor.component.repeat.count"/>
+              <input type="number" min="1" label:aria-label="times" ng-model="editor.component.repeat.count"/>
             </md-input-container>
             <md-input-container ng-show="editor.component.repeat.end == 'until'">
               <md-datepicker name="repeat_until"
