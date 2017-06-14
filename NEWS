@@ -14,6 +14,7 @@ Enhancements
  - [web] added Latvian (lv) translation - thanks to Juris Balandis
  - [web] expose user's defaults and settings inline
  - [web] can now discard incoming mails during vacation
+ - [web] support both backspace and delete keys in Mail and Contacts modules
 
 Bug fixes
  - [web] respect SOGoLanguage and SOGoSupportedLanguages (#4169)

@@ -38,14 +38,16 @@
 
 
     function _registerHotkeys(keys) {
-      keys.push(sgHotkeys.createHotkey({
-        key: 'backspace',
-        description: l('Delete selected card or address book'),
-        callback: function() {
-          if (AddressBook.selectedFolder && !AddressBook.selectedFolder.hasSelectedCard())
-            confirmDelete();
-        }
-      }));
+      _.forEach(['backspace', 'delete'], function(hotkey) {
+        keys.push(sgHotkeys.createHotkey({
+          key: hotkey,
+          description: l('Delete selected card or address book'),
+          callback: function() {
+            if (AddressBook.selectedFolder && !AddressBook.selectedFolder.hasSelectedCard())
+              confirmDelete();
+          }
+        }));
+      });
 
       // Register the hotkeys
       _.forEach(keys, function(key) {

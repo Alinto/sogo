@@ -48,14 +48,16 @@
 
 
     function _registerHotkeys(keys) {
-      keys.push(sgHotkeys.createHotkey({
-        key: 'backspace',
-        description: l('Delete selected message or folder'),
-        callback: function() {
-          if (Mailbox.selectedFolderController && Mailbox.selectedFolder && !Mailbox.selectedFolder.hasSelectedMessage())
-            Mailbox.selectedFolderController.confirmDelete(Mailbox.selectedFolder);
-        }
-      }));
+      _.forEach(['backspace', 'delete'], function(hotkey) {
+        keys.push(sgHotkeys.createHotkey({
+          key: hotkey,
+          description: l('Delete selected message or folder'),
+          callback: function() {
+            if (Mailbox.selectedFolderController && Mailbox.selectedFolder && !Mailbox.selectedFolder.hasSelectedMessage())
+              Mailbox.selectedFolderController.confirmDelete(Mailbox.selectedFolder);
+          }
+        }));
+      });
 
       // Register the hotkeys
       _.forEach(keys, function(key) {

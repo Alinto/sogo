@@ -147,14 +147,16 @@
         description: l('Flagged'),
         callback: _unlessInDialog(angular.bind(stateMessage, stateMessage.toggleFlag))
       }));
-      keys.push(sgHotkeys.createHotkey({
-        key: 'backspace',
-        callback: _unlessInDialog(function($event) {
-          if (vm.mailbox.$selectedCount() === 0)
-            deleteMessage();
-          $event.preventDefault();
-        })
-      }));
+      _.forEach(['backspace', 'delete'], function(hotkey) {
+        keys.push(sgHotkeys.createHotkey({
+          key: hotkey,
+          callback: _unlessInDialog(function($event) {
+            if (vm.mailbox.$selectedCount() === 0)
+              deleteMessage();
+            $event.preventDefault();
+          }),
+        }));
+      });
 
       // Register the hotkeys
       _.forEach(keys, function(key) {

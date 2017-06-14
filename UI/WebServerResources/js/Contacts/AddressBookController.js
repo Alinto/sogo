@@ -88,11 +88,13 @@
         description: l('Add previous item to selection'),
         callback: _addPreviousCardToSelection
       }));
-      keys.push(sgHotkeys.createHotkey({
-        key: 'backspace',
-        description: l('Delete selected card or address book'),
-        callback: confirmDeleteSelectedCards
-      }));
+      _.forEach(['backspace', 'delete'], function(hotkey) {
+        keys.push(sgHotkeys.createHotkey({
+          key: hotkey,
+          description: l('Delete selected card or address book'),
+          callback: confirmDeleteSelectedCards
+        }));
+      });
 
       // Register the hotkeys
       _.forEach(keys, function(key) {

@@ -99,11 +99,13 @@
         callback: _addPreviousMessageToSelection,
         preventInClass: ['sg-mail-part']
       }));
-      keys.push(sgHotkeys.createHotkey({
-        key: 'backspace',
-        description: l('Delete selected message or folder'),
-        callback: vm.confirmDeleteSelectedMessages
-      }));
+      _.forEach(['backspace', 'delete'], function(hotkey) {
+        keys.push(sgHotkeys.createHotkey({
+          key: hotkey,
+          description: l('Delete selected message or folder'),
+          callback: vm.confirmDeleteSelectedMessages
+        }));
+      });
 
       // Register the hotkeys
       _.forEach(keys, function(key) {

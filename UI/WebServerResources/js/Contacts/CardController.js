@@ -53,15 +53,17 @@
 
 
     function _registerHotkeys(keys) {
-      keys.push(sgHotkeys.createHotkey({
-        key: 'backspace',
-        description: l('Delete'),
-        callback: function($event) {
-          if (vm.currentFolder.$selectedCount() === 0)
-            confirmDelete();
-          $event.preventDefault();
-        }
-      }));
+      _.forEach(['backspace', 'delete'], function(hotkey) {
+        keys.push(sgHotkeys.createHotkey({
+          key: hotkey,
+          description: l('Delete'),
+          callback: function($event) {
+            if (vm.currentFolder.$selectedCount() === 0)
+              confirmDelete();
+            $event.preventDefault();
+          }
+        }));
+      });
 
       // Register the hotkeys
       _.forEach(keys, function(key) {
