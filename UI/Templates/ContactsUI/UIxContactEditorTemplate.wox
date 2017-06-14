@@ -45,7 +45,6 @@
           <!-- contact editor -->
           <div ng-if="editor.card.$isCard()">
             <md-input-container class="md-block md-flex">
-              <var:entity const:name="nbsp"/>
               <label>
                 <var:string label:value="Display"/>
               </label>
