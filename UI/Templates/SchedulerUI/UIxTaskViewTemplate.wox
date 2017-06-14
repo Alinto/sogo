@@ -96,9 +96,9 @@
           <p><a ng-href="{{url.value}}" target="_new">{{url.value}}</a></p>
         </md-list-item>
         <!-- comment -->
-        <md-list-item ng-show="editor.component.comment">
+        <md-list-item ng-show="::editor.component.comment">
           <md-icon>mode_comment</md-icon>
-          <p>{{::editor.component.comment}}</p>
+          <p ng-bind-html="::editor.component.comment | txt2html"></p>
         </md-list-item>
         <!-- repeat -->
         <md-list-item ng-show="editor.component.$isRecurrent">

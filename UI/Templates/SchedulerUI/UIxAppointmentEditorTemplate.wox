@@ -312,7 +312,7 @@
       <md-dialog-content class="md-default-theme md-bg md-warn md-padding sg-dialog-message ng-hide"
                          ng-show="editor.attendeeConflictError.conflicts">
         <div layout="row" layout-align="space-between start" layout-fill="layout-fill">
-          <div class="sg-padded--bottom" ng-bind-html="::'A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?' | loc | ln2br "><!-- warning --></div>
+          <div class="sg-padded--bottom" ng-bind-html="::'A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?' | loc | txt2html"><!-- warning --></div>
           <md-button class="md-icon-button" ng-click="editor.edit(eventForm)">
             <md-icon label:aria-label="Close">close</md-icon>
           </md-button>

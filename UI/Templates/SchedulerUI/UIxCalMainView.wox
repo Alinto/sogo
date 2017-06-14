@@ -772,7 +772,7 @@
       <md-dialog-content class="md-dialog-content"
                          ng-show="$AttendeeConflictDialogController.conflictError.attendee_email">
         <h2 class="md-title">{{ ::'Warning' | loc }}</h2>
-        <p ng-bind-html="::'A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?' | loc | ln2br"><!-- warning --></p>
+        <p ng-bind-html="::'A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?' | loc | txt2html"><!-- warning --></p>
         <md-list>
           <md-list-item>
             <md-icon>person</md-icon> {{$AttendeeConflictDialogController.conflictError.attendee_name}} ({{$AttendeeConflictDialogController.conflictError.attendee_email}})

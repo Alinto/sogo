@@ -177,7 +177,7 @@
               <div class="pseudo-input-container" ng-repeat="note in editor.card.notes">
                 <label class="pseudo-input-label"><var:string label:value="Note"/></label>
                 <div class="pseudo-input-field">
-                  <div ng-bind-html="note.value | ln2br"><!-- note --></div>
+                  <div ng-bind-html="::note.value | txt2html"><!-- note --></div>
                 </div>
               </div>
             </div>
