@@ -37,6 +37,7 @@
 
     // Called from a sgMailboxListItem controller
     this.selectFolder = function (mailboxController) {
+      Mailbox.selectedFolderController = mailboxController;
       if (Mailbox.selectedFolder !== null) {
         var selectedMailboxCtrl = _.find(mailboxes, function(ctrl) {
           return ctrl.mailbox.id == Mailbox.selectedFolder.id;

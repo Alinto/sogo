@@ -74,7 +74,7 @@
 
       // Check if router's state has selected a mailbox
       if (Mailbox.selectedFolder !== null && Mailbox.selectedFolder.id == this.mailbox.id) {
-        this.selectFolder();
+        this.accountController.selectFolder(this);
       }
     };
 
@@ -145,6 +145,32 @@
     };
 
 
+    this.confirmDelete = function() {
+      Dialog.confirm(l('Warning'),
+                     l('Do you really want to move this folder into the trash ?'),
+                     { ok: l('Delete') })
+        .then(function() {
+          $ctrl.mailbox.$delete()
+            .then(function() {
+              $state.go('mail.account.inbox');
+            }, function(response) {
+              Dialog.confirm(l('Warning'),
+                             l('The mailbox could not be moved to the trash folder. Would you like to delete it immediately?'),
+                             { ok: l('Delete') })
+                .then(function() {
+                  $ctrl.mailbox.$delete({ withoutTrash: true })
+                    .then(function() {
+                      $state.go('mail.account.inbox');
+                    }, function(response) {
+                      Dialog.alert(l('An error occured while deleting the mailbox "%{0}".', $ctrl.mailbox.name),
+                                   l(response.error));
+                    });
+                });
+            });
+        });
+    };
+
+
     this.showMenu = function($event) {
       var panelPosition = $mdPanel.newPanelPosition()
           .relativeTo(this.moreOptionsButton)
@@ -162,7 +188,8 @@
         attachTo: angular.element(document.body),
         locals: {
           itemCtrl: this,
-          folder: this.mailbox
+          folder: this.mailbox,
+          confirmDelete: this.confirmDelete
         },
         bindToController: true,
         controller: MenuController,
@@ -229,31 +256,6 @@
                 .position('top right')
                 .hideDelay(3000));
           });
-        };
-
-        this.confirmDelete = function() {
-          Dialog.confirm(l('Warning'),
-                         l('Do you really want to move this folder into the trash ?'),
-                         { ok: l('Delete') })
-            .then(function() {
-              $menuCtrl.folder.$delete()
-                .then(function() {
-                  $state.go('mail.account.inbox');
-                }, function(response) {
-                  Dialog.confirm(l('Warning'),
-                                 l('The mailbox could not be moved to the trash folder. Would you like to delete it immediately?'),
-                                 { ok: l('Delete') })
-                    .then(function() {
-                      $menuCtrl.folder.$delete({ withoutTrash: true })
-                        .then(function() {
-                          $state.go('mail.account.inbox');
-                        }, function(response) {
-                          Dialog.alert(l('An error occured while deleting the mailbox "%{0}".', $menuCtrl.folder.name),
-                                       l(response.error));
-                        });
-                    });
-                });
-            });
         };
 
         this.showAdvancedSearch = function() {

@@ -52,8 +52,8 @@
         key: 'backspace',
         description: l('Delete selected message or folder'),
         callback: function() {
-          if (Mailbox.selectedFolder && !Mailbox.selectedFolder.hasSelectedMessage())
-            confirmDelete(Mailbox.selectedFolder);
+          if (Mailbox.selectedFolderController && Mailbox.selectedFolder && !Mailbox.selectedFolder.hasSelectedMessage())
+            Mailbox.selectedFolderController.confirmDelete(Mailbox.selectedFolder);
         }
       }));
 
