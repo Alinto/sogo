@@ -6,6 +6,7 @@ New features
 
 Bug fixes
  - [web] use the organizer's alarm by default when accepting IMIP messages (#3934)
+ - [eas] don't include task folders if we hide them in SOGo (#4164)
 
 2.3.21 (2017-06-01)
 -------------------
