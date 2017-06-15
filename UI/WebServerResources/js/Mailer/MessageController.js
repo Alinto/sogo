@@ -10,100 +10,89 @@
   function MessageController($window, $scope, $state, $mdMedia, $mdDialog, sgConstant, stateAccounts, stateAccount, stateMailbox, stateMessage, sgHotkeys, encodeUriFilter, sgSettings, ImageGallery, focus, Dialog, Calendar, Component, Account, Mailbox, Message) {
     var vm = this, popupWindow = null, hotkeys = [];
 
-    // Expose controller
-    $window.$messageController = vm;
+    this.$onInit = function() {
+      // Expose controller
+      $window.$messageController = vm;
 
-    // Initialize image gallery service
-    ImageGallery.setMessage(stateMessage);
+      // Initialize image gallery service
+      ImageGallery.setMessage(stateMessage);
 
-    vm.$state = $state;
-    vm.accounts = stateAccounts;
-    vm.account = stateAccount;
-    vm.mailbox = stateMailbox;
-    vm.message = stateMessage;
-    vm.service = Message;
-    vm.tags = { searchText: '', selected: '' };
-    vm.showFlags = stateMessage.flags && stateMessage.flags.length > 0;
-    vm.$showDetailedRecipients = false;
-    vm.toggleDetailedRecipients = toggleDetailedRecipients;
-    vm.filterMailtoLinks = filterMailtoLinks;
-    vm.deleteMessage = deleteMessage;
-    vm.close = close;
-    vm.reply = reply;
-    vm.replyAll = replyAll;
-    vm.forward = forward;
-    vm.edit = edit;
-    vm.openPopup = openPopup;
-    vm.closePopup = closePopup;
-    vm.newMessage = newMessage;
-    vm.toggleRawSource = toggleRawSource;
-    vm.showRawSource = false;
-    vm.print = print;
-    vm.convertToEvent = convertToEvent;
-    vm.convertToTask = convertToTask;
+      this.$state = $state;
+      this.accounts = stateAccounts;
+      this.account = stateAccount;
+      this.mailbox = stateMailbox;
+      this.message = stateMessage;
+      this.service = Message;
+      this.tags = { searchText: '', selected: '' };
+      this.showFlags = stateMessage.flags && stateMessage.flags.length > 0;
+      this.$showDetailedRecipients = false;
 
-    _registerHotkeys(hotkeys);
+      vm.showRawSource = false;
 
-    // One-way refresh of the parent window when modifying the message from a popup window.
-    if ($window.opener) {
-      // Update the message flags. The message must be displayed in the parent window.
-      $scope.$watchCollection(function() { return vm.message.flags; }, function(newTags, oldTags) {
-        var ctrls;
-        if (newTags || oldTags) {
-          ctrls = $parentControllers();
-          if (ctrls.messageCtrl) {
-            ctrls.messageCtrl.service.$timeout(function() {
-              ctrls.messageCtrl.showFlags = true;
-              ctrls.messageCtrl.message.flags = newTags;
+      _registerHotkeys(hotkeys);
+
+      // One-way refresh of the parent window when modifying the message from a popup window.
+      if ($window.opener) {
+        // Update the message flags. The message must be displayed in the parent window.
+        $scope.$watchCollection(function() { return vm.message.flags; }, function(newTags, oldTags) {
+          var ctrls;
+          if (newTags || oldTags) {
+            ctrls = $parentControllers();
+            if (ctrls.messageCtrl) {
+              ctrls.messageCtrl.service.$timeout(function() {
+                ctrls.messageCtrl.showFlags = true;
+                ctrls.messageCtrl.message.flags = newTags;
+              });
+            }
+          }
+        });
+        // Update the "isflagged" (star icon) of the message. The mailbox must be displayed in the parent window.
+        $scope.$watch(function() { return vm.message.isflagged; }, function(isflagged, wasflagged) {
+          var ctrls = $parentControllers();
+          if (ctrls.mailboxCtrl) {
+            ctrls.mailboxCtrl.service.$timeout(function() {
+              var message = _.find(ctrls.mailboxCtrl.selectedFolder.$messages, { uid: vm.message.uid });
+              message.isflagged = isflagged;
             });
           }
-        }
-      });
-      // Update the "isflagged" (star icon) of the message. The mailbox must be displayed in the parent window.
-      $scope.$watch(function() { return vm.message.isflagged; }, function(isflagged, wasflagged) {
-        var ctrls = $parentControllers();
-        if (ctrls.mailboxCtrl) {
-          ctrls.mailboxCtrl.service.$timeout(function() {
-            var message = _.find(ctrls.mailboxCtrl.selectedFolder.$messages, { uid: vm.message.uid });
-            message.isflagged = isflagged;
-          });
-        }
-      });
-    }
-    else {
-      // Flatten new tags when coming from the predefined list of tags (Message.$tags) and
-      // sync tags with server when adding or removing a tag.
-      $scope.$watchCollection(function() { return vm.message.flags; }, function(_newTags, _oldTags) {
-        var newTags, oldTags, tags;
-        if (_newTags || _oldTags) {
-          newTags = _newTags || [];
-          oldTags = _oldTags || [];
-          _.forEach(newTags, function(tag, i) {
-            if (angular.isObject(tag))
-              newTags[i] = tag.name;
-          });
-          if (newTags.length > oldTags.length) {
-            tags = _.difference(newTags, oldTags);
-            _.forEach(tags, function(tag) {
-              vm.message.addTag(tag);
+        });
+      }
+      else {
+        // Flatten new tags when coming from the predefined list of tags (Message.$tags) and
+        // sync tags with server when adding or removing a tag.
+        $scope.$watchCollection(function() { return vm.message.flags; }, function(_newTags, _oldTags) {
+          var newTags, oldTags, tags;
+          if (_newTags || _oldTags) {
+            newTags = _newTags || [];
+            oldTags = _oldTags || [];
+            _.forEach(newTags, function(tag, i) {
+              if (angular.isObject(tag))
+                newTags[i] = tag.name;
             });
+            if (newTags.length > oldTags.length) {
+              tags = _.difference(newTags, oldTags);
+              _.forEach(tags, function(tag) {
+                vm.message.addTag(tag);
+              });
+            }
+            else if (newTags.length < oldTags.length) {
+              tags = _.difference(oldTags, newTags);
+              _.forEach(tags, function(tag) {
+                vm.message.removeTag(tag);
+              });
+            }
           }
-          else if (newTags.length < oldTags.length) {
-            tags = _.difference(oldTags, newTags);
-            _.forEach(tags, function(tag) {
-              vm.message.removeTag(tag);
-            });
-          }
-        }
-      });
-    }
+        });
+      }
 
-    $scope.$on('$destroy', function() {
-      // Deregister hotkeys
-      _.forEach(hotkeys, function(key) {
-        sgHotkeys.deregisterHotkey(key);
+      $scope.$on('$destroy', function() {
+        // Deregister hotkeys
+        _.forEach(hotkeys, function(key) {
+          sgHotkeys.deregisterHotkey(key);
+        });
       });
-    });
+
+    }; // $onInit
 
 
     /**
@@ -130,17 +119,17 @@
       keys.push(sgHotkeys.createHotkey({
         key: l('hotkey_reply'),
         description: l('Reply to the message'),
-        callback: _unlessInDialog(reply)
+        callback: _unlessInDialog(angular.bind(vm, vm.reply))
       }));
       keys.push(sgHotkeys.createHotkey({
         key: l('hotkey_replyall'),
         description: l('Reply to sender and all recipients'),
-        callback: _unlessInDialog(replyAll)
+        callback: _unlessInDialog(angular.bind(vm, vm.replyAll))
       }));
       keys.push(sgHotkeys.createHotkey({
         key: l('hotkey_forward'),
         description: l('Forward selected message'),
-        callback: _unlessInDialog(forward)
+        callback: _unlessInDialog(angular.bind(vm, vm.forward))
       }));
       keys.push(sgHotkeys.createHotkey({
         key: l('hotkey_flag'),
@@ -152,7 +141,7 @@
           key: hotkey,
           callback: _unlessInDialog(function($event) {
             if (vm.mailbox.$selectedCount() === 0)
-              deleteMessage();
+              vm.deleteMessage();
             $event.preventDefault();
           }),
         }));
@@ -187,13 +176,18 @@
       return ctrls;
     }
 
-    function toggleDetailedRecipients($event) {
-      vm.$showDetailedRecipients = !vm.$showDetailedRecipients;
+    this.addFlags = function($event) {
+      this.showFlags = true;
+      focus("flags");
+    };
+
+    this.toggleDetailedRecipients = function($event) {
+      this.$showDetailedRecipients = !this.$showDetailedRecipients;
       $event.stopPropagation();
       $event.preventDefault();
-    }
+    };
 
-    function filterMailtoLinks($event) {
+    this.filterMailtoLinks = function($event) {
       var href, match, to, cc, bcc, subject, body, data;
       if ($event.target.tagName == 'A' && 'href' in $event.target.attributes) {
         href = $event.target.attributes.href.value;
@@ -222,9 +216,9 @@
           newMessage($event, data); // will stop event propagation
         }
       }
-    }
+    };
 
-    function deleteMessage() {
+    this.deleteMessage = function() {
       var mailbox, message, state, nextMessage, previousMessage,
           parentCtrls = $parentControllers();
 
@@ -280,11 +274,11 @@
           }
           catch (error) {}
         }
-        closePopup();
+        vm.closePopup();
       });
-    }
+    };
 
-    function showMailEditor($event, message) {
+    function _showMailEditor($event, message) {
       if (_messageDialog() === null) {
         _messageDialog(
           $mdDialog
@@ -303,49 +297,49 @@
             })
             .finally(function() {
               _messageDialog(null);
-              closePopup();
+              vm.closePopup();
             })
         );
       }
     }
 
-    function close() {
+    this.close = function() {
       $state.go('mail.account.mailbox').then(function() {
         vm.message = null;
         delete stateMailbox.selectedMessage;
       });
-    }
+    };
 
-    function reply($event) {
-      var message = vm.message.$reply();
-      showMailEditor($event, message);
-    }
+    this.reply = function($event) {
+      var message = this.message.$reply();
+      _showMailEditor($event, message);
+    };
 
-    function replyAll($event) {
-      var message = vm.message.$replyAll();
-      showMailEditor($event, message);
-    }
+    this.replyAll = function($event) {
+      var message = this.message.$replyAll();
+      _showMailEditor($event, message);
+    };
 
-    function forward($event) {
-      var message = vm.message.$forward();
-      showMailEditor($event, message);
-    }
+    this.forward = function($event) {
+      var message = this.message.$forward();
+      _showMailEditor($event, message);
+    };
 
-    function edit($event) {
-      vm.message.$editableContent().then(function() {
-        showMailEditor($event, vm.message);
+    this.edit = function($event) {
+      this.message.$editableContent().then(function() {
+        _showMailEditor($event, vm.message);
       });
-    }
+    };
 
-    function openPopup() {
+    this.openPopup = function() {
       var url = [sgSettings.baseURL(),
                  'UIxMailPopupView#!/Mail',
-                 vm.message.accountId,
+                 this.message.accountId,
                  // The double-encoding is necessary
-                 encodeUriFilter(encodeUriFilter(vm.message.$mailbox.path)),
-                 vm.message.uid]
+                 encodeUriFilter(encodeUriFilter(this.message.$mailbox.path)),
+                 this.message.uid]
           .join('/'),
-          wId = vm.message.$absolutePath();
+          wId = this.message.$absolutePath();
       popupWindow = $window.open(url, wId,
                                  ["width=680",
                                   "height=520",
@@ -358,47 +352,47 @@
                                   "menubar=0",
                                   "copyhistory=0"]
                                  .join(','));
-    }
+    };
 
-    function closePopup() {
+    this.closePopup = function() {
       if ($window.opener)
         $window.close();
-    }
+    };
 
-    function newMessage($event, editableContent) {
-      vm.account.$newMessage().then(function(message) {
+    this.newMessage = function($event, editableContent) {
+      this.account.$newMessage().then(function(message) {
         angular.extend(message.editable, editableContent);
-        showMailEditor($event, message);
+        _showMailEditor($event, message);
       });
       $event.stopPropagation();
       $event.preventDefault();
-    }
+    };
 
-    function toggleRawSource($event) {
-      if (!vm.showRawSource && !vm.message.$rawSource) {
-        Message.$$resource.post(vm.message.id, "viewsource").then(function(data) {
+    this.toggleRawSource = function($event) {
+      if (!this.showRawSource && !this.message.$rawSource) {
+        Message.$$resource.post(this.message.id, "viewsource").then(function(data) {
           vm.message.$rawSource = data;
           vm.showRawSource = true;
         });
       }
       else {
-        vm.showRawSource = !vm.showRawSource;
+        this.showRawSource = !this.showRawSource;
       }
-    }
+    };
 
-    function print($event) {
+    this.print = function($event) {
       $window.print();
-    }
+    };
 
-    function convertToEvent($event) {
-      return convertToComponent($event, 'appointment');
-    }
+    this.convertToEvent = function($event) {
+      return _convertToComponent($event, 'appointment');
+    };
 
-    function convertToTask($event) {
-      return convertToComponent($event, 'task');
-    }
+    this.convertToTask = function($event) {
+      return _convertToComponent($event, 'task');
+    };
 
-    function convertToComponent($event, type) {
+    function _convertToComponent($event, type) {
       vm.message.$plainContent().then(function(data) {
         var componentData = {
           pid: Calendar.$defaultCalendar(),

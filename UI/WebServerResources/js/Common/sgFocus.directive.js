@@ -18,7 +18,8 @@
       scope.$on('sgFocusOn', function(e, name) {
         if (name === attr.sgFocusOn) {
           elem[0].focus();
-          elem[0].select();
+          if (typeof elem[0].select == 'function')
+            elem[0].select();
         }
       });
     };

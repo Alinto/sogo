@@ -78,7 +78,7 @@
             <md-menu-content width="4">
               <md-menu-item ng-hide="viewer.showFlags">
                 <md-button label:aria-label="Add a tag"
-                           ng-click="viewer.showFlags = true">
+                           ng-click="viewer.addFlags()">
                   <var:string label:value="Add a tag"/>
                 </md-button>
               </md-menu-item>
@@ -180,6 +180,7 @@
           </div>
           <div class="sg-padded hide-xs" ng-show="viewer.showFlags">
             <md-chips class="sg-readonly"
+                      sg-focus-on="flags"
                       ng-model="viewer.message.flags">
               <md-chip-template>
                 <span class="sg-chip-color">
@@ -195,10 +196,9 @@
                 <md-item-template>
                   <div layout="row" layout-align="start center">
                     <div class="sg-color-chip"
-                         ng-style="{'background-color': tag.color}"><!-- color --></div>
+                         ng-style="{ 'background-color': tag.color }"><!-- color --></div>
                     <div md-highlight-text="viewer.tags.searchText"
-                         md-highlight-flags="^i"
-                         ng-bind="tag.description"><!-- description --></div>
+                         md-highlight-flags="^i">{{ tag.description }}</div>
                   </div>
                 </md-item-template>
               </md-autocomplete>
