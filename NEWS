@@ -25,6 +25,7 @@ Bug fixes
  - [core] newly subscribed calendars are excluded from freebusy (#3354)
  - [core] strip cr during LDIF import process (#4172)
  - [core] email alarms are sent too many times (#4100)
+ - [eas] don't include task folders if we hide them in SOGo (#4164)
 
 3.2.9 (2017-05-09)
 ------------------
