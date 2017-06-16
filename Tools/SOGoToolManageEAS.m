@@ -1,6 +1,6 @@
 /* SOGoToolManageEAS.m - this file is part of SOGo
  *
- * Copyright (C) 2014 Inverse inc.
+ * Copyright (C) 2014-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ typedef enum
   ManageEASListDevices = 0,
   ManageEASListFolders = 2,
   ManageEASResetDevice = 3,
-  ManageEASRestFolder = 4,
+  ManageEASResetFolder = 4,
   ManageEASVCard = 5,
   ManageEASVEvent = 6,
 } SOGoManageEASCommand;
@@ -52,10 +52,6 @@ typedef enum
 @implementation SOGoToolManageEAS
 
 NSURL *folderTableURL;
-
-+ (void) initialize
-{
-}
 
 + (NSString *) command
 {
@@ -112,7 +108,13 @@ NSURL *folderTableURL;
 
 - (void) usage
 {
-  fprintf (stderr, "manage-eas listdevices|resetdevice|resetfolder|mergevcard|mergevevent user <deviceId | folderId> <YES | NO>\n\n"
+  fprintf (stderr, "manage-eas listdevices|listfolders|resetdevice|resetfolder|mergevcard|mergevevent user <deviceId | folderId> <YES | NO>\n\n"
+           "     listdevices       list the devices belonging to user\n"
+           "     listfolders       list all folders of deviceId for user\n"
+           "     resetdevice       force deviceId of user to resync everything\n"
+           "     resetfolder       force folderId of user to resync everything\n"
+           "     mergevcard        merge/un-merge all addressbooks into one for deviceId of user\n"
+           "     mergevevent       merge/un-merge all calendars into one for deviceId of user\n"
            "     user              the user of whom to reset the whole device or a single folder\n"
            "  Examples:\n"
            "       sogo-tool manage-eas listdevices janedoe\n"
@@ -135,7 +137,7 @@ NSURL *folderTableURL;
       else if  ([theString caseInsensitiveCompare: @"resetdevice"] == NSOrderedSame)
         return ManageEASResetDevice;
       else if ([theString caseInsensitiveCompare: @"resetfolder"] == NSOrderedSame)
-        return ManageEASRestFolder;
+        return ManageEASResetFolder;
       else if ([theString caseInsensitiveCompare: @"mergevcard"] == NSOrderedSame)
         return ManageEASVCard;
       else if ([theString caseInsensitiveCompare: @"mergevevent"] == NSOrderedSame)
@@ -147,7 +149,7 @@ NSURL *folderTableURL;
 
 - (BOOL) run
 {
-  NSString *urlString, *deviceId, *userId;
+  NSString *urlString, *deviceId, *folderId, *userId;
   NSMutableString *ocFSTableName;
   SOGoCacheGCSObject *oc, *foc;
   NSMutableArray *parts;
@@ -292,18 +294,13 @@ NSURL *folderTableURL;
 
           break;
 
-        case ManageEASRestFolder:
+        case ManageEASResetFolder:
           if (max > 2)
             {
               /* value specified on command line */
-              deviceId = [sanitizedArguments objectAtIndex: 2];
+              folderId = [sanitizedArguments objectAtIndex: 2];
 
-              //if ([deviceId rangeOfString: @"+"].location == NSNotFound) {
-              //   fprintf(stderr, "ERROR: Deviceid invalid folder \"%@\" not found\n", deviceId);
-              //   return rc;
-              //}
-
-              oc = [SOGoCacheGCSObject objectWithName: deviceId inContainer: nil];
+              oc = [SOGoCacheGCSObject objectWithName: folderId inContainer: nil];
               [oc setObjectType: ActiveSyncFolderCacheObject];
               [oc setContext: localContext];
               [oc setTableUrl: folderTableURL];
@@ -311,18 +308,18 @@ NSURL *folderTableURL;
               [oc reloadIfNeeded];
 
               if ([oc isNew]) {
-                fprintf(stderr, "ERROR: Folder with ID \"%s\" not found\n", [deviceId UTF8String]);
+                fprintf(stderr, "ERROR: Folder with ID \"%s\" not found\n", [folderId UTF8String]);
                 return rc;
               }
 
-              if ((![deviceId hasSuffix: @"/personal"]) && [[oc properties] objectForKey: @"MergedFolder"])
+              if ((![folderId hasSuffix: @"/personal"]) && [[oc properties] objectForKey: @"MergedFolder"])
                 {
                   fprintf(stderr, "ERROR: MergedFolder = true; only personal folder can be reset");
                   return rc;
                 }
               else
                {
-                 [self _setOrUnsetSyncRequest: YES  collections: [NSArray arrayWithObject: deviceId] context: localContext];
+                 [self _setOrUnsetSyncRequest: YES  collections: [NSArray arrayWithObject: folderId] context: localContext];
 
                  [[oc properties] removeObjectForKey: @"SyncKey"];
                  [[oc properties] removeObjectForKey: @"SyncCache"];

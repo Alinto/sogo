@@ -1,8 +1,6 @@
 /* SOGoToolDumpDefaults.m - this file is part of SOGo
  *
- * Copyright (C) 2012 Inverse inc.
- *
- * Author: Jean Raby <jraby@inverse.ca>
+ * Copyright (C) 2012-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,17 +30,13 @@
 
 @implementation SOGoToolDumpDefaults
 
-+ (void) initialize
-{
-}
-
 + (NSString *) command
 {
   return @"dump-defaults";
 }
 + (NSString *) description
 {
-  return @"Prints the sogod GNUstep domain configuration as a property list";
+  return @"prints the sogod GNUstep domain configuration as a property list";
 }
 
 - (void) usage
