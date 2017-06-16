@@ -92,8 +92,13 @@
     }
 
     function hasRulesAndActions() {
-      return vm.filter.rules && vm.filter.rules.length > 0 &&
-        vm.filter.actions && vm.filter.actions.length > 0;
+      var requirements = [ vm.filter.actions ];
+      if (vm.filter.match != 'allmessages')
+        // When matching all messages, no rules are required
+        requirements.push(vm.filter.rules);
+      return _.every(requirements, function(a) {
+        return a && a.length > 0;
+      });
     }
     
     function save(form) {
