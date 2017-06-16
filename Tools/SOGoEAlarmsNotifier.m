@@ -46,6 +46,7 @@
 #import <Appointments/iCalPerson+SOGo.h>
 #import <Appointments/SOGoEMailAlarmsManager.h>
 #import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoAppointmentFolders.h>
 
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
