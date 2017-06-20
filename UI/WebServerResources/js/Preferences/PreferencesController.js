@@ -11,110 +11,86 @@
   function PreferencesController($q, $window, $state, $mdMedia, $mdSidenav, $mdDialog, $mdToast, sgSettings, focus, Dialog, User, Account, Preferences, Authentication) {
     var vm = this, account, mailboxes = [], today = new Date(), tomorrow = today.beginOfDay().addDays(1);
 
-    vm.preferences = Preferences;
-    vm.passwords = { newPassword: null, newPasswordConfirmation: null };
-
-    vm.go = go;
-    vm.onLanguageChange = onLanguageChange;
-    vm.addCalendarCategory = addCalendarCategory;
-    vm.removeCalendarCategory = removeCalendarCategory;
-    vm.addContactCategory = addContactCategory;
-    vm.removeContactCategory = removeContactCategory;
-    vm.addMailAccount = addMailAccount;
-    vm.editMailAccount = editMailAccount;
-    vm.removeMailAccount = removeMailAccount;
-    vm.addMailLabel = addMailLabel;
-    vm.removeMailLabel = removeMailLabel;
-    vm.addMailFilter = addMailFilter;
-    vm.editMailFilter = editMailFilter;
-    vm.removeMailFilter = removeMailFilter;
-    vm.addDefaultEmailAddresses = addDefaultEmailAddresses;
-    vm.userFilter = userFilter;
-    vm.confirmChanges = confirmChanges;
-    vm.save = save;
-    vm.canChangePassword = canChangePassword;
-    vm.changePassword = changePassword;
-    vm.timeZonesList = window.timeZonesList;
-    vm.timeZonesListFilter = timeZonesListFilter;
-    vm.timeZonesSearchText = '';
-    vm.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
-    vm.updateVacationDates = updateVacationDates;
-    vm.toggleVacationStartDate = toggleVacationStartDate;
-    vm.toggleVacationEndDate = toggleVacationEndDate;
-    vm.validateVacationStartDate = validateVacationStartDate;
-    vm.validateVacationEndDate = validateVacationEndDate;
+    this.$onInit = function() {
+      this.preferences = Preferences;
+      this.passwords = { newPassword: null, newPasswordConfirmation: null };
+      this.timeZonesSearchText = '';
+      this.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
 
 
-    if (sgSettings.activeUser('path').mail) {
-      // Fetch a flatten version of the mailboxes list of the main account (0)
-      // This list will be forwarded to the Sieve filter controller
-      account = new Account({ id: 0 });
-      account.$getMailboxes().then(function() {
-        var allMailboxes = account.$flattenMailboxes({all: true}),
-            index = -1,
-            length = allMailboxes.length;
-        while (++index < length) {
-          mailboxes.push(allMailboxes[index]);
-        }
-      });
-    }
+      if (sgSettings.activeUser('path').mail) {
+        // Fetch a flatten version of the mailboxes list of the main account (0)
+        // This list will be forwarded to the Sieve filter controller
+        account = new Account({ id: 0 });
+        account.$getMailboxes().then(function() {
+          var allMailboxes = account.$flattenMailboxes({all: true}),
+              index = -1,
+              length = allMailboxes.length;
+          while (++index < length) {
+            mailboxes.push(allMailboxes[index]);
+          }
+        });
+      }
 
-    // Set alternate avatar in User service
-    if (Preferences.defaults.SOGoAlternateAvatar)
-      User.$alternateAvatar = Preferences.defaults.SOGoAlternateAvatar;
-    updateVacationDates();
+      // Set alternate avatar in User service
+      if (Preferences.defaults.SOGoAlternateAvatar)
+        User.$alternateAvatar = Preferences.defaults.SOGoAlternateAvatar;
 
-    function go(module, form) {
+      this.updateVacationDates();
+    };
+
+    this.go = function(module, form) {
       if (form.$valid) {
         // Close sidenav on small devices
         if ($mdMedia('xs'))
           $mdSidenav('left').close();
         $state.go('preferences.' + module);
       }
-    }
+    };
 
-    function onLanguageChange(form) {
-      Dialog.confirm(l('Warning'),
-                     l('Save preferences and reload page now?'),
-                     {ok: l('Yes'), cancel: l('No')})
+    this.onLanguageChange = function(form) {
+      if (form.$valid)
+        Dialog.confirm(l('Warning'),
+                       l('Save preferences and reload page now?'),
+                       {ok: l('Yes'), cancel: l('No')})
         .then(function() {
-          save(form, { quick: true }).then(function() {
+          vm.save(form, { quick: true }).then(function() {
             $window.location.reload(true);
           });
         });
-    }
+    };
 
-    function addCalendarCategory(form) {
-      vm.preferences.defaults.SOGoCalendarCategoriesColors["New category"] = "#aaa";
-      vm.preferences.defaults.SOGoCalendarCategories.push("New category");
-      focus('calendarCategory_' + (vm.preferences.defaults.SOGoCalendarCategories.length - 1));
+    this.addCalendarCategory = function(form) {
+      this.preferences.defaults.SOGoCalendarCategoriesColors["New category"] = "#aaa";
+      this.preferences.defaults.SOGoCalendarCategories.push("New category");
+      focus('calendarCategory_' + (this.preferences.defaults.SOGoCalendarCategories.length - 1));
       form.$setDirty();
-    }
+    };
 
-    function removeCalendarCategory(index, form) {
-      var key = vm.preferences.defaults.SOGoCalendarCategories[index];
-      vm.preferences.defaults.SOGoCalendarCategories.splice(index, 1);
-      delete vm.preferences.defaults.SOGoCalendarCategoriesColors[key];
+    this.removeCalendarCategory = function(index, form) {
+      var key = this.preferences.defaults.SOGoCalendarCategories[index];
+      this.preferences.defaults.SOGoCalendarCategories.splice(index, 1);
+      delete this.preferences.defaults.SOGoCalendarCategoriesColors[key];
       form.$setDirty();
-    }
+    };
 
-    function addContactCategory(form) {
-      vm.preferences.defaults.SOGoContactsCategories.push("");
-      focus('contactCategory_' + (vm.preferences.defaults.SOGoContactsCategories.length - 1));
+    this.addContactCategory = function(form) {
+      this.preferences.defaults.SOGoContactsCategories.push("");
+      focus('contactCategory_' + (this.preferences.defaults.SOGoContactsCategories.length - 1));
       form.$setDirty();
-    }
+    };
 
-    function removeContactCategory(index, form) {
-      vm.preferences.defaults.SOGoContactsCategories.splice(index, 1);
+    this.removeContactCategory = function(index, form) {
+      this.preferences.defaults.SOGoContactsCategories.splice(index, 1);
       form.$setDirty();
-    }
+    };
 
-    function addMailAccount(ev, form) {
+    this.addMailAccount = function(ev, form) {
       var account;
 
-      vm.preferences.defaults.AuxiliaryMailAccounts.push({});
+      this.preferences.defaults.AuxiliaryMailAccounts.push({});
 
-      account = _.last(vm.preferences.defaults.AuxiliaryMailAccounts);
+      account = _.last(this.preferences.defaults.AuxiliaryMailAccounts);
       angular.extend(account,
                      {
                        name: "",
@@ -138,56 +114,56 @@
         templateUrl: 'editAccount?account=new',
         targetEvent: ev,
         locals: {
-          defaults: vm.preferences.defaults,
+          defaults: this.preferences.defaults,
           account: account,
-          accountId: (vm.preferences.defaults.AuxiliaryMailAccounts.length-1),
-          mailCustomFromEnabled: window.mailCustomFromEnabled
+          accountId: (this.preferences.defaults.AuxiliaryMailAccounts.length-1),
+          mailCustomFromEnabled: $window.mailCustomFromEnabled
         }
       }).then(function() {
         form.$setDirty();
       }).catch(function() {
         vm.preferences.defaults.AuxiliaryMailAccounts.pop();
       });
-    }
+    };
 
-    function editMailAccount(event, index, form) {
-      var account = vm.preferences.defaults.AuxiliaryMailAccounts[index];
+    this.editMailAccount = function(event, index, form) {
+      var account = this.preferences.defaults.AuxiliaryMailAccounts[index];
       $mdDialog.show({
         controller: 'AccountDialogController',
         controllerAs: '$AccountDialogController',
         templateUrl: 'editAccount?account=' + index,
         targetEvent: event,
         locals: {
-          defaults: vm.preferences.defaults,
+          defaults: this.preferences.defaults,
           account: account,
           accountId: index,
-          mailCustomFromEnabled: window.mailCustomFromEnabled
+          mailCustomFromEnabled: $window.mailCustomFromEnabled
         }
       }).then(function() {
         vm.preferences.defaults.AuxiliaryMailAccounts[index] = account;
         form.$setDirty();
       });
-    }
+    };
 
-    function removeMailAccount(index, form) {
-      vm.preferences.defaults.AuxiliaryMailAccounts.splice(index, 1);
+    this.removeMailAccount = function(index, form) {
+      this.preferences.defaults.AuxiliaryMailAccounts.splice(index, 1);
       form.$setDirty();
-    }
+    };
     
-    function addMailLabel(form) {
+    this.addMailLabel = function(form) {
       // See $omit() in the Preferences services for real key generation
       var key = '_$$' + guid();
-      vm.preferences.defaults.SOGoMailLabelsColors[key] =  ["New label", "#aaa"];
-      focus('mailLabel_' + (_.size(vm.preferences.defaults.SOGoMailLabelsColors) - 1));
+      this.preferences.defaults.SOGoMailLabelsColors[key] =  ["New label", "#aaa"];
+      focus('mailLabel_' + (_.size(this.preferences.defaults.SOGoMailLabelsColors) - 1));
       form.$setDirty();
-    }
+    };
 
-    function removeMailLabel(key, form) {
-      delete vm.preferences.defaults.SOGoMailLabelsColors[key];
+    this.removeMailLabel = function(key, form) {
+      delete this.preferences.defaults.SOGoMailLabelsColors[key];
       form.$setDirty();
-    }
+    };
 
-    function addMailFilter(ev, form) {
+    this.addMailFilter = function(ev, form) {
       var filter = { match: 'all' };
 
       $mdDialog.show({
@@ -198,7 +174,7 @@
         locals: {
           filter: filter,
           mailboxes: mailboxes,
-          labels: vm.preferences.defaults.SOGoMailLabelsColors
+          labels: this.preferences.defaults.SOGoMailLabelsColors
         }
       }).then(function() {
         if (!vm.preferences.defaults.SOGoSieveFilters)
@@ -206,10 +182,10 @@
         vm.preferences.defaults.SOGoSieveFilters.push(filter);
         form.$setDirty();
       });
-    }
+    };
     
-    function editMailFilter(ev, index, form) {
-      var filter = angular.copy(vm.preferences.defaults.SOGoSieveFilters[index]);
+    this.editMailFilter = function(ev, index, form) {
+      var filter = angular.copy(this.preferences.defaults.SOGoSieveFilters[index]);
       
       $mdDialog.show({
         templateUrl: 'editFilter?filter=' + index,
@@ -219,31 +195,31 @@
         locals: {
           filter: filter,
           mailboxes: mailboxes,
-          labels: vm.preferences.defaults.SOGoMailLabelsColors
+          labels: this.preferences.defaults.SOGoMailLabelsColors
         }
       }).then(function() {
         vm.preferences.defaults.SOGoSieveFilters[index] = filter;
         form.$setDirty();
       });
-    }
+    };
 
-    function removeMailFilter(index, form) {
-      vm.preferences.defaults.SOGoSieveFilters.splice(index, 1);
+    this.removeMailFilter = function(index, form) {
+      this.preferences.defaults.SOGoSieveFilters.splice(index, 1);
       form.$setDirty();
-    }
+    };
 
-    function addDefaultEmailAddresses(form) {
+    this.addDefaultEmailAddresses = function(form) {
       var v = [];
 
-      if (angular.isDefined(vm.preferences.defaults.Vacation.autoReplyEmailAddresses)) {
-        v = vm.preferences.defaults.Vacation.autoReplyEmailAddresses.split(',');
+      if (angular.isDefined(this.preferences.defaults.Vacation.autoReplyEmailAddresses)) {
+        v = this.preferences.defaults.Vacation.autoReplyEmailAddresses.split(',');
       }
 
-      vm.preferences.defaults.Vacation.autoReplyEmailAddresses = (_.union(window.defaultEmailAddresses.split(','), v)).join(',');
+      this.preferences.defaults.Vacation.autoReplyEmailAddresses = (_.union($window.defaultEmailAddresses.split(','), v)).join(',');
       form.$setDirty();
-    }
+    };
 
-    function userFilter(search, excludedUsers) {
+    this.userFilter = function(search, excludedUsers) {
       if (search.length < sgSettings.minimumSearchLength())
         return [];
 
@@ -261,12 +237,12 @@
         });
         return users;
       });
-    }
+    };
 
-    function confirmChanges($event, form) {
+    this.confirmChanges = function($event, form) {
       var target;
 
-      if (form.$dirty) {
+      if (form.$dirty && $form.$valid) {
         // Stop default action
         $event.preventDefault();
         $event.stopPropagation();
@@ -281,7 +257,7 @@
                        { ok: l('Save'), cancel: l('Don\'t Save') })
         .then(function() {
           // Save & follow link
-          save(form, { quick: true }).then(function() {
+          vm.save(form, { quick: true }).then(function() {
             $window.location = target.href;
           });
         }, function() {
@@ -289,9 +265,9 @@
           $window.location = target.href;
         });
       }
-    }
+    };
 
-    function save(form, options) {
+    this.save = function(form, options) {
       var i, sendForm, addresses, defaultAddresses, domains, domain;
 
       sendForm = true;
@@ -299,11 +275,11 @@
 
       // We do some sanity checks
       if ($window.forwardConstraints > 0 &&
-          angular.isDefined(vm.preferences.defaults.Forward) &&
-          vm.preferences.defaults.Forward.enabled &&
-          angular.isDefined(vm.preferences.defaults.Forward.forwardAddress)) {
+          angular.isDefined(this.preferences.defaults.Forward) &&
+          this.preferences.defaults.Forward.enabled &&
+          angular.isDefined(this.preferences.defaults.Forward.forwardAddress)) {
 
-        addresses = vm.preferences.defaults.Forward.forwardAddress.split(",");
+        addresses = this.preferences.defaults.Forward.forwardAddress.split(",");
 
         // We first extract the list of 'known domains' to SOGo
         defaultAddresses = $window.defaultEmailAddresses.split(/, */);
@@ -330,7 +306,7 @@
       }
 
       if (sendForm)
-        return vm.preferences.$save().then(function(data) {
+        return this.preferences.$save().then(function(data) {
           if (!options || !options.quick) {
             $mdToast.show(
               $mdToast.simple()
@@ -342,19 +318,19 @@
         });
 
       return $q.reject();
-    }
+    };
 
-    function canChangePassword() {
-      if (vm.passwords.newPassword && vm.passwords.newPassword.length > 0 &&
-          vm.passwords.newPasswordConfirmation && vm.passwords.newPasswordConfirmation.length &&
-          vm.passwords.newPassword == vm.passwords.newPasswordConfirmation)
+    this.canChangePassword = function() {
+      if (this.passwords.newPassword && this.passwords.newPassword.length > 0 &&
+          this.passwords.newPasswordConfirmation && this.passwords.newPasswordConfirmation.length &&
+          this.passwords.newPassword == this.passwords.newPasswordConfirmation)
         return true;
 
       return false;
-    }
+    };
     
-    function changePassword() {
-      Authentication.changePassword(vm.passwords.newPassword).then(function() {
+    this.changePassword = function() {
+      Authentication.changePassword(this.passwords.newPassword).then(function() {
         var alert = $mdDialog.alert({
           title: l('Password'),
           content: l('The password was changed successfully.'),
@@ -375,29 +351,29 @@
             alert = undefined;
           });
       });
-    }
+    };
 
-    function timeZonesListFilter(filter) {
-      return _.filter(vm.timeZonesList, function(value) {
+    this.timeZonesListFilter = function(filter) {
+      return _.filter(this.timeZonesList, function(value) {
         return value.toUpperCase().indexOf(filter.toUpperCase()) >= 0;
       });
-    }
+    };
 
-    function updateVacationDates() {
-      var d = vm.preferences.defaults;
+    this.updateVacationDates = function() {
+      var d = this.preferences.defaults;
 
       if (d &&
           d.Vacation &&
           d.Vacation.enabled) {
-        toggleVacationStartDate();
-        toggleVacationEndDate();
+        this.toggleVacationStartDate();
+        this.toggleVacationEndDate();
       }
-    }
+    };
 
-    function toggleVacationStartDate() {
+    this.toggleVacationStartDate = function() {
       var v;
 
-      v = vm.preferences.defaults.Vacation;
+      v = this.preferences.defaults.Vacation;
 
       if (v.startDateEnabled) {
         // Enabling the start date
@@ -409,12 +385,12 @@
           v.startDate = new Date(tomorrow.getTime());
         }
       }
-    }
+    };
 
-    function toggleVacationEndDate() {
+    this.toggleVacationEndDate = function() {
       var v;
 
-      v = vm.preferences.defaults.Vacation;
+      v = this.preferences.defaults.Vacation;
 
       if (v.endDateEnabled) {
         // Enabling the end date
@@ -426,9 +402,9 @@
           v.endDate = new Date(tomorrow.getTime());
         }
       }
-    }
+    };
 
-    function validateVacationStartDate(date) {
+    this.validateVacationStartDate = function(date) {
       var d = vm.preferences.defaults, r = true;
       if (d &&
           d.Vacation &&
@@ -441,9 +417,9 @@
       }
 
       return r;
-    }
+    };
 
-    function validateVacationEndDate(date) {
+    this.validateVacationEndDate = function(date) {
       var d = vm.preferences.defaults, r = true;
       if (d &&
           d.Vacation &&
@@ -456,7 +432,7 @@
       }
 
       return r;
-    }
+    };
   }
 
   angular
