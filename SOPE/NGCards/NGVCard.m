@@ -458,12 +458,22 @@
   elements = [self childrenWithTag: aTag];
   if (elements && [elements count] > 0)
     {
+      // First element of type "pref"
       prefElements = [elements cardElementsWithAttribute: @"type"
                                havingValue: @"pref"];
       if (prefElements && [prefElements count] > 0)
         element = [prefElements objectAtIndex: 0];
       else
-        element = [elements objectAtIndex: 0];
+        {
+          // First element of type "work"
+          prefElements = [elements cardElementsWithAttribute: @"type"
+                                                 havingValue: @"work"];
+          if (prefElements && [prefElements count] > 0)
+            element = [prefElements objectAtIndex: 0];
+          else
+            // Fallback
+            element = [elements objectAtIndex: 0];
+        }
     }
   else
     element = nil;
