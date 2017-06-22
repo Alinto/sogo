@@ -432,7 +432,9 @@ static NSArray *childRecordFields = nil;
   cache = [SOGoCache sharedCache];
   record = [[cache valueForKey: _path] objectFromJSONString];
 
-  if (!record)
+  // We check if we got a cache miss or a potentially bogus
+  // entry from the cache
+  if (!record || ![record objectForKey: @"c_folder_type"])
     {
       record = [[self folderManager] recordAtPath: _path];
 
