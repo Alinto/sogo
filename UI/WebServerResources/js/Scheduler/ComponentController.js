@@ -14,6 +14,7 @@
     vm.service = Component;
     vm.component = stateComponent;
     vm.close = close;
+    vm.highPriority = highPriority;
     vm.cardFilter = cardFilter;
     vm.newMessageWithAllRecipients = newMessageWithAllRecipients;
     vm.newMessageWithRecipient = newMessageWithRecipient;
@@ -27,17 +28,17 @@
     vm.copySelectedComponent = copySelectedComponent;
     vm.moveSelectedComponent = moveSelectedComponent;
 
-    // Load all attributes of component
-    if (angular.isUndefined(vm.component.$futureComponentData)) {
-      component = Calendar.$get(vm.component.pid).$getComponent(vm.component.id, vm.component.occurrenceId);
-      component.$futureComponentData.then(function() {
-        vm.component = component;
-        vm.organizer = [vm.component.organizer];
-      });
-    }
+    // Put organizer in an array to display it as an mdChip
+    vm.organizer = [stateComponent.organizer];
 
     function close() {
       $mdDialog.hide();
+    }
+
+    function highPriority() {
+      return (vm.component &&
+              vm.component.priority &&
+              vm.component.priority < 5);
     }
 
     // Autocomplete cards for attendees
@@ -302,11 +303,11 @@
     function priorityLevel() {
       if (vm.component && vm.component.priority) {
         if (vm.component.priority > 5)
-          return l('low');
+          return l('low');                   // 6-7-8-9
         else if (vm.component.priority > 4)
-          return l('normal');
+          return l('normal');                // 5
         else
-          return l('high');
+          return l('high');                  // 1-2-3-4
       }
     }
 

@@ -65,9 +65,9 @@
               <p class="sg-item-name"
                  ng-dblclick="app.editFolder(calendar)"
                  ng-show="app.editMode != calendar.id">
-                {{calendar.name}}
-                <md-tooltip md-delay="1000" md-autohide="true">{{calendar.name}}</md-tooltip>
-                <span class="sg-counter-badge" ng-show="calendar.activeTasks">{{calendar.activeTasks}}</span>
+                <span ng-bind="calendar.name"><!-- name --></span>
+                <md-tooltip md-delay="1000" md-autohide="true" ng-bind="calendar.name"><!-- tooltip --></md-tooltip>
+                <span class="sg-counter-badge" ng-show="calendar.activeTasks" ng-bind="calendar.activeTasks"><!-- active tasks count --></span>
               </p>
               <md-input-container class="md-flex"
                                   ng-show="app.editMode == calendar.id">
@@ -75,7 +75,7 @@
                        label:aria-label="Name of the Calendar"
                        ng-model="calendar.name"
                        ng-blur="app.renameFolder(calendar)"
-                       sg-focus-on="calendarName_{{calendar.id}}"
+                       sg-focus-on="calendarName_{{::calendar.id}}"
                        sg-enter="app.renameFolder(calendar)"
                        sg-escape="app.revertEditing(calendar)"/>
               </md-input-container>
@@ -170,9 +170,9 @@
               <p class="sg-item-name"
                  ng-dblclick="app.editFolder(calendar)"
                  ng-show="app.editMode != calendar.id">
-                {{calendar.name}}
-                <md-tooltip md-delay="1000" md-autohide="true">{{calendar.name}}</md-tooltip>
-                <span class="sg-counter-badge" ng-show="calendar.activeTasks">{{calendar.activeTasks}}</span>
+                <span ng-bind="calendar.name"><!-- name --></span>
+                <md-tooltip md-delay="1000" md-autohide="true" ng-bind="calendar.name"><!-- tooltip --></md-tooltip>
+                <span class="sg-counter-badge" ng-show="calendar.activeTasks" ng-bind="calendar.activeTasks"><!-- active tasks count --></span>
               </p>
               <md-input-container class="md-flex"
                                   ng-show="app.editMode == calendar.id">
@@ -180,7 +180,7 @@
                        label:aria-label="Name of the Calendar"
                        ng-model="calendar.name"
                        ng-blur="app.renameFolder(calendar)"
-                       sg-focus-on="calendarName_{{calendar.id}}"
+                       sg-focus-on="calendarName_{{::calendar.id}}"
                        sg-enter="app.renameFolder(calendar)"
                        sg-escape="app.revertEditing(calendar)"/>
               </md-input-container>
@@ -259,10 +259,10 @@
                  ng-show="app.editMode != calendar.id">
                 <span class="ng-hide" ng-show="calendar.$error">
                   <md-icon class="md-warn">warning</md-icon>
-                  <md-tooltip>{{ calendar.$error }}</md-tooltip>
+                  <md-tooltip ng-bind="calendar.$error"><!-- error as a tooltip --></md-tooltip>
                 </span>
-                <md-tooltip md-delay="1000" md-autohide="true">{{calendar.name}}</md-tooltip>
-                {{calendar.name}}
+                <md-tooltip md-delay="1000" md-autohide="true" ng-bind="calendar.name"><!-- tooltip --></md-tooltip>
+                <span ng-bind="calendar.name"><!-- name --></span>
               </p>
               <md-input-container class="md-flex"
                                   ng-show="app.editMode == calendar.id">
@@ -342,11 +342,6 @@
              ng-controller="CalendarListController as list">
       <md-toolbar class="toolbar-main" flex-none="flex-none" layout="row" layout-align="space-between center">
         <var:component className="UIxTopnavToolbar"/>
-        <!-- <div class="sg-toolbar-group-2">
-             <md-button class="sg-icon-button" label:aria-label="Search">
-             <md-icon>search</md-icon>
-             </md-button>
-             </div> -->
       </md-toolbar>
       <div layout="row" class="md-flex">
 
@@ -562,7 +557,7 @@
               <md-button class="sg-icon-button" ng-click="list.unselectComponents()">
                 <md-icon>arrow_back</md-icon>
               </md-button>
-              <label>{{list.component.$selectedCount()}} <var:string label:value="selected"/></label>
+              <label><span ng-bind="list.component.$selectedCount()"><!-- count --></span> <var:string label:value="selected"/></label>
               <div class="md-flex"><!-- spacer --></div>
               <md-button class="sg-icon-button" ng-click="list.selectAll()">
                 <md-tooltip md-direction="left"><var:string label:value="Select All"/></md-tooltip>
@@ -583,7 +578,7 @@
               <md-tab label:label="Events"
                       md-on-select="list.selectComponentType('events')">
                 <md-subheader>
-                  <span>{{list.filterpopup() | loc}}</span>
+                  <span ng-bind="list.filterpopup() | loc"><!-- active filter --></span>
                 </md-subheader>
                 <md-list class="sg-section-list"
                          ng-class="{ 'sg-list-selectable': list.mode.multiple }">
@@ -604,12 +599,12 @@
                     <div class="sg-tile-content">
                       <div class="sg-md-subhead">
                         <div>
-                          <span ng-show="::event.c_priority" class="sg-priority">{{::event.c_priority}}</span>
-                          {{::event.c_title}}
+                          <span ng-show="::event.c_priority" class="sg-priority" ng-bind="::event.c_priority"><!-- priority --></span>
+                          <span ng-bind="::event.c_title"><!-- title --></span>
                         </div>
                       </div>
                       <div class="sg-md-body">
-                        <div>{{::event.c_location}}</div>
+                        <div ng-bind="::event.c_location"><!-- location --></div>
                         <div class="sg-tile-date" ng-bind="::event.formatted_startdate"><!-- start --></div>
                       </div>
                     </div>

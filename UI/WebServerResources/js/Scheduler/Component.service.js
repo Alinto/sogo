@@ -673,6 +673,19 @@
   };
 
   /**
+   * @function showPercentComplete
+   * @memberof Component.prototype
+   * @desc Check if the percent completion should be displayed with respect to the
+   *       component's type and status.
+   * @returns true if the percent completion should be displayed
+   */
+  Component.prototype.showPercentComplete = function() {
+    return (this.type == 'task' &&
+            this.percentComplete > 0 &&
+            this.status != 'cancelled');
+  };
+
+  /**
    * @function enablePercentComplete
    * @memberof Component.prototype
    * @desc Check if the percent completion should be enabled with respect to the
@@ -681,7 +694,7 @@
    */
   Component.prototype.enablePercentComplete = function() {
     return (this.type == 'task' &&
-            this.percentComplete > 0 &&
+            this.status != 'not-specified' &&
             this.status != 'cancelled');
   };
 

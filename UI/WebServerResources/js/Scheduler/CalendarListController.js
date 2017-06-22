@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  CalendarListController.$inject = ['$rootScope', '$scope', '$timeout', '$state', '$mdDialog', 'sgHotkeys', 'sgFocus', 'Dialog', 'Preferences', 'CalendarSettings', 'Calendar', 'Component', 'Alarm'];
-  function CalendarListController($rootScope, $scope, $timeout, $state, $mdDialog, sgHotkeys, focus, Dialog, Preferences, CalendarSettings, Calendar, Component, Alarm) {
+  CalendarListController.$inject = ['$rootScope', '$scope', '$q', '$timeout', '$state', '$mdDialog', 'sgHotkeys', 'sgFocus', 'Dialog', 'Preferences', 'CalendarSettings', 'Calendar', 'Component', 'Alarm'];
+  function CalendarListController($rootScope, $scope, $q, $timeout, $state, $mdDialog, sgHotkeys, focus, Dialog, Preferences, CalendarSettings, Calendar, Component, Alarm) {
     var vm = this, hotkeys = [], type;
 
     vm.component = Component;
@@ -148,20 +148,30 @@
 
     function openComponent($event, component, type) {
       if (component.viewable) {
-        // UI/Templates/SchedulerUI/UIxAppointmentViewTemplate.wox or
-        // UI/Templates/SchedulerUI/UIxTaskViewTemplate.wox
-        var templateUrl = 'UIx' + type.capitalize() + 'ViewTemplate';
-        $mdDialog.show({
-          parent: angular.element(document.body),
-          targetEvent: $event,
-          clickOutsideToClose: true,
-          escapeToClose: true,
-          templateUrl: templateUrl,
-          controller: 'ComponentController',
-          controllerAs: 'editor',
-          locals: {
-            stateComponent: component
-          }
+        var promise = $q.when();
+
+        // Load component before opening dialog
+        if (angular.isUndefined(component.$futureComponentData)) {
+          component = Calendar.$get(component.pid).$getComponent(component.id, component.occurrenceId);
+          promise = component.$futureComponentData;
+        }
+
+        promise.then(function() {
+          // UI/Templates/SchedulerUI/UIxAppointmentViewTemplate.wox or
+          // UI/Templates/SchedulerUI/UIxTaskViewTemplate.wox
+          var templateUrl = 'UIx' + type.capitalize() + 'ViewTemplate';
+          $mdDialog.show({
+            parent: angular.element(document.body),
+            targetEvent: $event,
+            clickOutsideToClose: true,
+            escapeToClose: true,
+            templateUrl: templateUrl,
+            controller: 'ComponentController',
+            controllerAs: 'editor',
+            locals: {
+              stateComponent: component
+            }
+          });
         });
       }
     }

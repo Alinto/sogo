@@ -5,17 +5,17 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
   <md-dialog flex="40" flex-md="60" flex-sm="80" flex-xs="100">
-    <md-toolbar ng-class="editor.component.getClassName('bg')">
+    <md-toolbar ng-class="::editor.component.getClassName('bg')">
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">assignment_turned_in</md-icon>
         <div class="sg-md-title md-flex">
           <!-- classification -->
-          <md-icon ng-if="editor.component.classification == 'confidential'">visibility_off</md-icon>
-          <md-icon ng-if="editor.component.classification == 'private'">vpn_key</md-icon>
-          <!-- summary -->
-          {{::editor.component.summary}}
+          <md-icon ng-if="::editor.component.classification == 'confidential'">visibility_off</md-icon>
+          <md-icon ng-if="::editor.component.classification == 'private'">vpn_key</md-icon>
           <!-- priority -->
-          <md-icon ng-repeat="i in ::editor.component.priority | range">star</md-icon>
+          <md-icon ng-if="::editor.highPriority()">priority_high</md-icon>
+          <!-- summary -->
+          <span ng-bind="::editor.component.summary"><!-- summary --></span>
         </div>
         <md-menu>
           <md-button label:aria-label="More options" class="sg-icon-button" ng-click="$mdMenu.open($event)">
@@ -38,77 +38,77 @@
     <md-dialog-content>
       <md-list>
         <!-- categories -->
-        <md-list-item ng-show="editor.component.categories.length > 0">
+        <md-list-item ng-show="::(editor.component.categories.length > 0)">
           <md-chips class="sg-readonly" ng-model="::editor.component.categories" readonly="true">
             <md-chip-template>
               <span class="sg-chip-color" style="z-index: 1">
                 <span ng-style="{ 'background-color': editor.service.$categories[$chip] }"><!-- color --></span>
               </span>
-              <span>{{$chip}}</span>
+              <span ng-bind="$chip"><!-- category --></span>
             </md-chip-template>
           </md-chips>
         </md-list-item>
         <!-- location -->
-        <md-list-item ng-show="editor.component.location">
+        <md-list-item ng-show="::editor.component.location">
           <md-icon>place</md-icon>
-          <p>{{::editor.component.location}}</p>
+          <p ng-bind="::editor.component.location"><!-- location --></p>
         </md-list-item>
         <!-- calendar -->
         <md-list-item>
           <md-icon>event</md-icon>
-          <p>{{editor.component.calendar}}</p>
+          <p ng-bind="::editor.component.calendar"><!-- calendar --></p>
         </md-list-item>
         <!-- start/due dates -->
         <md-list-item ng-class="{ 'md-2-line': editor.component.isAllDay, 'md-3-line': !editor.component.isAllDay }"
-                      ng-show="editor.component.startDate || editor.component.dueDate">
+                      ng-show="::(editor.component.startDate || editor.component.dueDate)">
           <md-icon>access_time</md-icon>
-          <div class="md-list-item-text" ng-show="editor.component.startDate">
+          <div class="md-list-item-text" ng-show="::editor.component.startDate">
             <label class="pseudo-input-label"><var:string label:value="Start"/></label>
-            <h3>{{::editor.component.localizedStartDate}}</h3>
-            <h3 ng-hide="editor.component.isAllDay"> {{::editor.component.localizedStartTime}}</h3>
+            <h3 ng-bind="::editor.component.localizedStartDate"><!-- start date --></h3>
+            <h3 ng-hide="editor.component.isAllDay" ng-bind="::editor.component.localizedStartTime"><!-- start time --></h3>
           </div>
-          <div class="md-list-item-text" ng-show="editor.component.dueDate">
+          <div class="md-list-item-text" ng-show="::editor.component.dueDate">
             <label class="pseudo-input-label"><var:string label:value="Due Date"/></label>
-            <h3>{{::editor.component.localizedDueDate}}</h3>
-            <h3 ng-hide="editor.component.isAllDay">{{::editor.component.localizedDueTime}}</h3>
+            <h3 ng-bind="::editor.component.localizedDueDate"><!-- due date --></h3>
+            <h3 ng-hide="::editor.component.isAllDay" ng-bind="::editor.component.localizedDueTime"><!-- due time --></h3>
           </div>
         </md-list-item>
         <!-- status -->
-        <md-list-item ng-show="editor.component.status == 'completed'">
+        <md-list-item ng-show="::(editor.component.status == 'completed')">
           <md-icon>check</md-icon>
-          <p>{{editor.component.localizedCompletedDate}} {{editor.component.localizedCompletedTime}}</p>
+          <p>{{::editor.component.localizedCompletedDate}} {{::editor.component.localizedCompletedTime}}</p>
         </md-list-item>
-        <md-list-item ng-show="editor.component.enablePercentComplete()">
+        <md-list-item ng-show="::editor.component.showPercentComplete()">
           <md-icon>timelapse</md-icon>
-          <p>{{editor.component.percentComplete}} %</p>
+          <p>{{::editor.component.percentComplete}} %</p>
         </md-list-item>
-        <md-list-item ng-show="editor.component.status == 'cancelled'">
+        <md-list-item ng-show="::(editor.component.status == 'cancelled')">
           <md-icon>close</md-icon>
           <p><var:string label:value="status_CANCELLED"/></p>
         </md-list-item>
-        <md-list-item ng-show="editor.component.status == 'needs-action'">
+        <md-list-item ng-show="::(editor.component.status == 'needs-action')">
           <md-icon>error_outline</md-icon>
           <p><var:string label:value="status_NEEDS-ACTION"/></p>
         </md-list-item>
         <!-- attach urls -->
         <md-list-item  ng-repeat="url in ::editor.component.attachUrls">
           <md-icon>link</md-icon>
-          <p><a ng-href="{{url.value}}" target="_new">{{url.value}}</a></p>
+          <p><a ng-href="{{::url.value}}" target="_new" ng-bind="::url.value"><!-- link --></a></p>
         </md-list-item>
         <!-- comment -->
         <md-list-item ng-show="::editor.component.comment">
           <md-icon>mode_comment</md-icon>
-          <p ng-bind-html="::editor.component.comment | txt2html"></p>
+          <p ng-bind-html="::editor.component.comment | txt2html"><!-- comment --></p>
         </md-list-item>
         <!-- repeat -->
-        <md-list-item ng-show="editor.component.$isRecurrent">
+        <md-list-item ng-show="::editor.component.$isRecurrent">
           <md-icon>repeat</md-icon>
-          <p>{{editor.component.repeatDescription()}}</p>
+          <p ng-bind="::editor.component.repeatDescription()"><!-- repeat --></p>
         </md-list-item>
         <!-- reminder -->
-        <md-list-item ng-show="editor.component.$hasAlarm">
+        <md-list-item ng-show="::editor.component.$hasAlarm">
           <md-icon>alarm_on</md-icon>
-          <p>{{editor.component.alarmDescription()}}</p>
+          <p ng-bind="::editor.component.alarmDescription()"><!-- alarm --></p>
         </md-list-item>
       </md-list>
     </md-dialog-content>
@@ -116,7 +116,7 @@
     <!-- actions -->
 
     <!-- editable but not recurrent -->
-    <md-dialog-actions ng-show="editor.component.isEditable()">
+    <md-dialog-actions ng-show="::editor.component.isEditable()">
       <md-button class="md-warn" label:aria-label="Delete Task"
                  ng-click="editor.deleteAllOccurrences()">
         <var:string label:value="Delete"/>
@@ -127,7 +127,7 @@
       </md-button>
     </md-dialog-actions>
     <!-- editable and recurrent -->
-    <md-dialog-actions ng-show="editor.component.isEditableOccurrence()">
+    <md-dialog-actions ng-show="::editor.component.isEditableOccurrence()">
       <md-menu>
         <md-button class="md-warn"
                    label:aria-label="Delete Task"
