@@ -310,7 +310,7 @@ static SoSecurityManager *sm = nil;
   NSMutableDictionary *folderDisplayNames;
   NSMutableArray *subscribedReferences;
   SOGoUserSettings *settings;
-  NSString *currentKey;
+  NSString *activeUser, *currentKey;
   SOGoUser *ownerUser;
   NSException *error;
   id o;
@@ -326,6 +326,7 @@ static SoSecurityManager *sm = nil;
   error = nil; /* we ignore non-DB errors at this time... */
   dirty = NO;
 
+  activeUser = [[context activeUser] login];
   ownerUser = [SOGoUser userWithLogin: owner];
   settings = [ownerUser userSettings];
 
@@ -346,7 +347,9 @@ static SoSecurityManager *sm = nil;
 	  // remove it from the current list.
 	  [subscribedReferences removeObject: currentKey];
 	  [folderDisplayNames removeObjectForKey: currentKey];
-	  dirty = YES;
+          if ([owner isEqualToString: activeUser])
+            // Synchronize settings only if the subscription is owned by the active user
+            dirty = YES;
 	}
     }
   
