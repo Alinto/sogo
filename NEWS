@@ -8,6 +8,7 @@ Bug fixes
  - [web] use the organizer's alarm by default when accepting IMIP messages (#3934)
  - [eas] don't include task folders if we hide them in SOGo (#4164)
  - [core] not using cleaned data when sending mails (#4199)
+ - [core] don't update subscriptions when owner is not the active user (#3988)
 
 2.3.21 (2017-06-01)
 -------------------
