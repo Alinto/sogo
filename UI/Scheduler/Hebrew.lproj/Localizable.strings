@@ -74,7 +74,7 @@
 /* acls */
 "Access rights to" = "מתן גישה ל";
 "For user" = "למשתמש";
-"Any Authenticated User" = "כל משתמש מאומת";
+"Any Authenticated User" = "כל משתמש מורשה";
 "Public Access" = "גישה ציבורית";
 "label_Public" = "ציבורי";
 "label_Private" = "פרטי";
@@ -155,7 +155,7 @@
 "Status" = "סטטוס";
 "% complete" = "הושלם";
 "Location" = "מיקום";
-"Add a category" = "הוספץ קטגוריה";
+"Add a category" = "הוספת קטגוריה";
 "Priority" = "דחיפות";
 "Privacy" = "פרטי";
 "Cycle" = "מחזור";
@@ -526,7 +526,7 @@ vtodo_class2 = "(משימה סודית)";
 "tagWasAdded" = "אם תרצו לסנכרן את הלוח שנה הנבחר, יהיה צורך בטעינה מחדש של המידע במכשיר הסלולרי.\nהמשך?";
 "tagWasRemoved" = "אם תרצו להסיר מסנכרון את הלוח שנה הנבחר, יהיה צורך בטעינה מחדש של המידע במכשיר הסלולרי.\nהמשך?";
 "DestinationCalendarError" = "לוח שנה המקור והיעד זהים. נא להעתיק ללוח שנה אחר.";
-"EventCopyError" = "ההעתקה נכשלה. נא להעתיק ללוח שנה אחר.";
+"EventCopyError" = "פעולת ההעתקה נכשלה.אנא נסה להעתיק ללוח שנה אחר.";
 "Please select at least one calendar" = "בחר לפחות לוח שנה אחד";
 "Open Task..." = "פתיחת משימה";
 "Mark Completed" = "סימון הושלם";

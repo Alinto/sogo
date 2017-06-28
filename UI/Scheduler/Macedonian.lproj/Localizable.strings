@@ -505,7 +505,7 @@ vtodo_class2 = "(Доверлива задача)";
 /* Show all calendar (personal, subscriptions and web) */
 "Show All Calendars" = "Прикажи ги сите календари";
 
-"Links to this Calendar" = "Линкво кон овој календар";
+"Links to this Calendar" = "Линк кон овој календар";
 "Authenticated User Access" = "Авторизиран кориснички пристап";
 "CalDAV URL" = "CalDAV URL:";
 "WebDAV ICS URL" = "WebDAV ICS URL";
@@ -526,7 +526,7 @@ vtodo_class2 = "(Доверлива задача)";
 "tagWasAdded" = "Ако сакате да г синхронизирате овој календар, ќе треба да ги превчитате податоците на вашиот мобилен уред.\nДа продолжам?";
 "tagWasRemoved" = "Ако го отстраните овој календар од синхронизација ќе треба да ги превчитате податоците на вашиот мобилен уред.\nДа продолжам?";
 "DestinationCalendarError" = "Изворниот и целниот календар се исти. Обидете се да копирате во друг календар.";
-"EventCopyError" = "Кориањето е неуспешно. Обидете се да копирате во друг календар.";
+"EventCopyError" = "Копирањето беше неуспешно. Обидете се да копирате во друг календар.";
 "Please select at least one calendar" = "Одберете барем еден календар.";
 "Open Task..." = "Отворена задача...";
 "Mark Completed" = "Означи завршени";

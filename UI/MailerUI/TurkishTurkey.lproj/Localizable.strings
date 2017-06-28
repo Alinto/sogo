@@ -3,7 +3,7 @@
 /* Icon's label */
 "Create"      = "Oluştur";
 "Empty Trash" = "Çöpü Boşalt";
-"Delete"      = "Sil";
+"Delete"      = "SİL";
 "Expunge"     = "Silip At";
 "Forward"     = "İlet";
 "Get Mail"    = "İletileri Al";
@@ -65,7 +65,7 @@
 "Shared Account" = "Paylaşılan Hesap";
 
 /* A mailbox is selected, but no message (only shown on large screens) */
-"No message selected" = "Seçili ileti yok";
+"No message selected" = "İleti seçilmemiş";
 
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Seçili e-posta klasörü yok";

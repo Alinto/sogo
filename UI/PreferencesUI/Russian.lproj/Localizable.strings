@@ -250,7 +250,7 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
-"Latvian" = "Latvijas";
+"Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
@@ -401,3 +401,11 @@
 "monsterid" = "Монстр";
 "wavatar" = "Ваватар";
 "retro" = "Ретро";
+
+/* Animation Level */
+"Animation Level" = "Уровень анимации";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Обычный";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Ограниченный";
+"animation_NONE" = "Нет";

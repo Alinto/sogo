@@ -247,6 +247,12 @@
 "More options" = "Papildu opcijas";
 "Role" = "Loma";
 "Add Screen Name" = "Pievienot ekrāna vārdu";
+"Custom 1" = "Pielāgots 1";
+"Custom 2" = "Pielāgots 2";
+"Custom 3" = "Pielāgots 3";
+"Custom 4" = "Pielāgots 4";
+"Custom Value" = "Pielāgota vērtība";
+"New Custom Value" = "Jauna pielāgota vērtība";
 "Synchronization" = "Sinhronizācija";
 "Synchronize" = "Sinhronizēt";
 "Sucessfully subscribed to address book" = "Sekmīgi abonējis adrešu grāmatu";

@@ -53,7 +53,13 @@
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Üdvözöljük a SOGo levelező rendszerben. A baloldali fában tallózhat a levelező fiókjai között.";
 "Read messages"       = "Üzenetek olvasása";
+
+/* Tooltip for fab button */
 "Write a new message" = "Új üzenet írása";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Üzenet írása új ablakban";
+
 "Share" = "Megosztás";
 "Account" = "Fiók";
 "Shared Account" = "Megosztott fiók";
@@ -63,6 +69,8 @@
 
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Nincs kijelölt postafiók";
+
+"An error occured while communicating with the mail server" = "Hiba történt a levelező kiszolgálóval történő kapcsolattartás során";
 
 /* Mailbox actions */
 /* Compact Folder success message */
@@ -217,6 +225,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Feladatnak konvertál";
 
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Összes melléklet letöltése";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "mellekletek";
+
 "Print..." = "Nyomtatás...";
 "Delete Message" = "Üzenet törlése";
 "Delete Selected Messages" = "Kiválasztott üzenetek törlése";
@@ -315,6 +329,7 @@
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Hiba történt a \"%{0}\" állomány feltöltésekor:";
 "There is an active file upload. Closing the window will interrupt it." = "Állomány feltöltés folyamatban. Az ablak bezárása megszakítja ezt a folyamatot.";
+"Message is too big" = "Az üzenet túl nagy";
 
 /* Appears while sending the message */
 "Sending" = "Küldés";
