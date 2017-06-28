@@ -22,6 +22,7 @@ Bug fixes
  - [web] respect SOGoLanguage and SOGoSupportedLanguages (#4169)
  - [web] fixed adding list members with multiple email addresses
  - [web] fixed responsive condition of login page (960px to 1023px)
+ - [web] don't throw errors when accessing nonexistent special mailboxes (#4177)
  - [core] newly subscribed calendars are excluded from freebusy (#3354)
  - [core] don't update subscriptions when owner is not the active user (#3988)
  - [core] strip cr during LDIF import process (#4172)

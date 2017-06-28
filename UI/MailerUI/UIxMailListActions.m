@@ -767,6 +767,10 @@
 
   if (data != nil)
     response = [self responseWithStatus: 200 andJSONRepresentation: data];
+  else if ([folder isSpecialFolder])
+    {
+      response = [self responseWithStatus: 204];
+    }
   else
     {
       data = [NSDictionary dictionaryWithObjectsAndKeys:

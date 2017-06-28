@@ -714,9 +714,17 @@
   error = [co expunge];
   if (error)
     {
-      data = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to expunge folder." inContext: context]
-                                         forKey: @"message"];
-      response = [self responseWithStatus: 500 andJSONRepresentation: data];
+      if ([co isSpecialFolder])
+        {
+          // Special folder probably doesn't exist; ignore error.
+          response = [self responseWithStatus: 204];
+        }
+      else
+        {
+          data = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to expunge folder." inContext: context]
+                                             forKey: @"message"];
+          response = [self responseWithStatus: 500 andJSONRepresentation: data];
+        }
     }
   else
     {
@@ -730,7 +738,7 @@
           response = [self responseWithStatus: 200 andJSONRepresentation: data];
         }
       else
-        response = [self responseWithStatus: 200];
+        response = [self responseWithStatus: 204];
     }
 
   return response;
