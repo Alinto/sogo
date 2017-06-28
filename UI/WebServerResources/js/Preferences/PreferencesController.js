@@ -14,6 +14,7 @@
     this.$onInit = function() {
       this.preferences = Preferences;
       this.passwords = { newPassword: null, newPasswordConfirmation: null };
+      this.timeZonesList = $window.timeZonesList;
       this.timeZonesSearchText = '';
       this.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
 
