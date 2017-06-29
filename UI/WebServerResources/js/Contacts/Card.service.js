@@ -492,16 +492,20 @@
   Card.prototype.explode = function() {
     var _this = this, cards = [], data;
 
-    if (this.emails.length > 1) {
-      data = this.$omit();
-      _.forEach(this.emails, function(email) {
-        var card = new Card(angular.extend({}, data, {emails: [email]}));
-        cards.push(card);
-      });
-      return cards;
+    if (this.emails) {
+      if (this.emails.length > 1) {
+        data = this.$omit();
+        _.forEach(this.emails, function(email) {
+          var card = new Card(angular.extend({}, data, {emails: [email]}));
+          cards.push(card);
+        });
+        return cards;
+      }
+      else
+        return [this];
     }
-    else
-      return [this];
+
+    return [];
   };
 
   /**
