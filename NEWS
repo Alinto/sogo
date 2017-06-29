@@ -17,6 +17,7 @@ Enhancements
  - [web] can now discard incoming mails during vacation
  - [web] support both backspace and delete keys in Mail and Contacts modules
  - [web] improved display of appointment/task comments and card notes
+ - [web] updated Angular Material to version 1.1.4
 
 Bug fixes
  - [web] respect SOGoLanguage and SOGoSupportedLanguages (#4169)
