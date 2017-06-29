@@ -2751,17 +2751,18 @@ To access your personal calendar:
 `http://localhost/SOGo/dav/jdoe/Calendar/personal/`
 * Click on Continue.
 
-Apple iCal
-~~~~~~~~~~
+Apple Calendar and iOS
+~~~~~~~~~~~~~~~~~~~~~~
 
-Apple iCal can also be used as a client application for SOGo.
+Apple Calendar and Mac OS X and the calendar application on iOS can also be used
+as a client application for SOGo.
 
-To configure it so it works with SOGo, create a new account and specify,
+To configure the application so it works with SOGo, create a new account and specify,
 as the Account URL, an URL such as:
 
 http://localhost/SOGo/dav/jdoe/
 
-Note that the trailing slash is important for Apple iCal 3.
+Note that the trailing slash is important for the old Apple iCal 3 application.
 
 Apple AddressBook
 ~~~~~~~~~~~~~~~~~
