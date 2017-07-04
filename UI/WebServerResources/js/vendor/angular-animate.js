@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.6.4
+ * @license AngularJS v1.6.5
  * (c) 2010-2017 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -2294,14 +2294,17 @@ var $$AnimateQueueProvider = ['$animateProvider', /** @this */ function($animate
 
     var callbackRegistry = Object.create(null);
 
-    // remember that the classNameFilter is set during the provider/config
-    // stage therefore we can optimize here and setup a helper function
+    // remember that the `customFilter`/`classNameFilter` are set during the
+    // provider/config stage therefore we can optimize here and setup helper functions
+    var customFilter = $animateProvider.customFilter();
     var classNameFilter = $animateProvider.classNameFilter();
-    var isAnimatableClassName = !classNameFilter
-              ? function() { return true; }
-              : function(className) {
-                return classNameFilter.test(className);
-              };
+    var returnTrue = function() { return true; };
+
+    var isAnimatableByFilter = customFilter || returnTrue;
+    var isAnimatableClassName = !classNameFilter ? returnTrue : function(node, options) {
+      var className = [node.getAttribute('class'), options.addClass, options.removeClass].join(' ');
+      return classNameFilter.test(className);
+    };
 
     var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
 
@@ -2479,16 +2482,13 @@ var $$AnimateQueueProvider = ['$animateProvider', /** @this */ function($animate
         options.to = null;
       }
 
-      // there are situations where a directive issues an animation for
-      // a jqLite wrapper that contains only comment nodes... If this
-      // happens then there is no way we can perform an animation
-      if (!node) {
-        close();
-        return runner;
-      }
-
-      var className = [node.getAttribute('class'), options.addClass, options.removeClass].join(' ');
-      if (!isAnimatableClassName(className)) {
+      // If animations are hard-disabled for the whole application there is no need to continue.
+      // There are also situations where a directive issues an animation for a jqLite wrapper that
+      // contains only comment nodes. In this case, there is no way we can perform an animation.
+      if (!animationsEnabled ||
+          !node ||
+          !isAnimatableByFilter(node, event, initialOptions) ||
+          !isAnimatableClassName(node, options)) {
         close();
         return runner;
       }
@@ -2497,12 +2497,11 @@ var $$AnimateQueueProvider = ['$animateProvider', /** @this */ function($animate
 
       var documentHidden = $$isDocumentHidden();
 
-      // this is a hard disable of all animations for the application or on
-      // the element itself, therefore  there is no need to continue further
-      // past this point if not enabled
+      // This is a hard disable of all animations the element itself, therefore  there is no need to
+      // continue further past this point if not enabled
       // Animations are also disabled if the document is currently hidden (page is not visible
       // to the user), because browsers slow down or do not flush calls to requestAnimationFrame
-      var skipAnimations = !animationsEnabled || documentHidden || disabledElementsLookup.get(node);
+      var skipAnimations = documentHidden || disabledElementsLookup.get(node);
       var existingAnimation = (!skipAnimations && activeAnimationsLookup.get(node)) || {};
       var hasExistingAnimation = !!existingAnimation.state;
 
@@ -4136,7 +4135,7 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
   isFunction  = angular.isFunction;
   isElement   = angular.isElement;
 })
-  .info({ angularVersion: '1.6.4' })
+  .info({ angularVersion: '1.6.5' })
   .directive('ngAnimateSwap', ngAnimateSwapDirective)
 
   .directive('ngAnimateChildren', $$AnimateChildrenDirective)
