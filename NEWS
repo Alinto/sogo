@@ -29,6 +29,7 @@ Bug fixes
  - [core] don't update subscriptions when owner is not the active user (#3988)
  - [core] strip cr during LDIF import process (#4172)
  - [core] email alarms are sent too many times (#4100)
+ - [core] enable S/MIME even when using GNU TLS (#4201)
  - [eas] don't include task folders if we hide them in SOGo (#4164)
 
 3.2.9 (2017-05-09)
