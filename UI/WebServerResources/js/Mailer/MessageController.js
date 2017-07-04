@@ -213,7 +213,7 @@
             if (match)
               data[param] = [decodeURIComponent(match[1])];
           });
-          newMessage($event, data); // will stop event propagation
+          this.newMessage($event, data); // will stop event propagation
         }
       }
     };
