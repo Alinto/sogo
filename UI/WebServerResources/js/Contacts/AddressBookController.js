@@ -10,63 +10,50 @@
   function AddressBookController($scope, $q, $window, $state, $timeout, $mdDialog, $mdToast, Account, Card, AddressBook, focus, Dialog, Settings, sgHotkeys, stateAddressbooks, stateAddressbook) {
     var vm = this, hotkeys = [];
 
-    AddressBook.selectedFolder = stateAddressbook;
+    this.$onInit = function() {
+      AddressBook.selectedFolder = stateAddressbook;
 
-    vm.service = AddressBook;
-    vm.selectedFolder = stateAddressbook;
-    vm.selectCard = selectCard;
-    vm.toggleCardSelection = toggleCardSelection;
-    vm.newComponent = newComponent;
-    vm.unselectCards = unselectCards;
-    vm.confirmDeleteSelectedCards = confirmDeleteSelectedCards;
-    vm.copySelectedCards = copySelectedCards;
-    vm.moveSelectedCards = moveSelectedCards;
-    vm.selectAll = selectAll;
-    vm.sort = sort;
-    vm.sortedBy = sortedBy;
-    vm.searchMode = searchMode;
-    vm.cancelSearch = cancelSearch;
-    vm.newMessage = newMessage;
-    vm.newMessageWithSelectedCards = newMessageWithSelectedCards;
-    vm.newMessageWithRecipient = newMessageWithRecipient;
-    vm.mode = { search: false, multiple: 0 };
+      this.service = AddressBook;
+      this.selectedFolder = stateAddressbook;
+      this.mode = { search: false, multiple: 0 };
 
 
-    _registerHotkeys(hotkeys);
+      _registerHotkeys(hotkeys);
 
-    $scope.$on('$destroy', function() {
-      // Deregister hotkeys
-      _.forEach(hotkeys, function(key) {
-        sgHotkeys.deregisterHotkey(key);
+      $scope.$on('$destroy', function() {
+        // Deregister hotkeys
+        _.forEach(hotkeys, function(key) {
+          sgHotkeys.deregisterHotkey(key);
+        });
       });
-    });
+    };
 
 
     function _registerHotkeys(keys) {
       keys.push(sgHotkeys.createHotkey({
         key: l('hotkey_search'),
         description: l('Search'),
-        callback: searchMode
+        callback: angular.bind(vm, vm.searchMode)
       }));
       keys.push(sgHotkeys.createHotkey({
         key: l('key_create_card'),
         description: l('Create a new address book card'),
-        callback: angular.bind(vm, newComponent, 'card')
+        callback: angular.bind(vm, vm.newComponent, 'card')
       }));
       keys.push(sgHotkeys.createHotkey({
         key: l('key_create_list'),
         description: l('Create a new list'),
-        callback: angular.bind(vm, newComponent, 'list')
+        callback: angular.bind(vm, vm.newComponent, 'list')
       }));
       keys.push(sgHotkeys.createHotkey({
         key: 'space',
         description: l('Toggle item'),
-        callback: toggleCardSelection
+        callback: angular.bind(vm, vm.toggleCardSelection)
       }));
       keys.push(sgHotkeys.createHotkey({
         key: 'shift+space',
         description: l('Toggle range of items'),
-        callback: toggleCardSelection
+        callback: angular.bind(vm, vm.toggleCardSelection)
       }));
       keys.push(sgHotkeys.createHotkey({
         key: 'up',
@@ -92,7 +79,7 @@
         keys.push(sgHotkeys.createHotkey({
           key: hotkey,
           description: l('Delete selected card or address book'),
-          callback: confirmDeleteSelectedCards
+          callback: angular.bind(vm, vm.confirmDeleteSelectedCards)
         }));
       });
 
@@ -102,18 +89,18 @@
       });
     }
 
-    function selectCard(card) {
+    this.selectCard = function(card) {
       $state.go('app.addressbook.card.view', {cardId: card.id});
-    }
+    };
 
-    function toggleCardSelection($event, card) {
-      var folder = vm.selectedFolder,
+    this.toggleCardSelection = function($event, card) {
+      var folder = this.selectedFolder,
           selectedIndex, nextSelectedIndex, i;
 
       if (!card)
         card = folder.$selectedCard();
       card.selected = !card.selected;
-      vm.mode.multiple += card.selected? 1 : -1;
+      this.mode.multiple += card.selected? 1 : -1;
 
       // Select closest range of cards when shift key is pressed
       if ($event.shiftKey && folder.$selectedCount() > 1) {
@@ -140,18 +127,18 @@
 
       $event.preventDefault();
       $event.stopPropagation();
-    }
+    };
 
-    function newComponent(type) {
+    this.newComponent = function(type) {
       $state.go('app.addressbook.new', { contactType: type });
-    }
+    };
 
-    function unselectCards() {
-      _.forEach(vm.selectedFolder.$cards, function(card) {
+    this.unselectCards = function() {
+      _.forEach(this.selectedFolder.$cards, function(card) {
         card.selected = false;
       });
-      vm.mode.multiple = 0;
-    }
+      this.mode.multiple = 0;
+    };
 
     /**
      * User has pressed up arrow key
@@ -171,7 +158,7 @@
       }
 
       if (index > -1)
-        selectCard(vm.selectedFolder.$cards[index]);
+        vm.selectCard(vm.selectedFolder.$cards[index]);
 
       $event.preventDefault();
 
@@ -194,7 +181,7 @@
         index = 0;
 
       if (index < vm.selectedFolder.$cards.length)
-        selectCard(vm.selectedFolder.$cards[index]);
+        vm.selectCard(vm.selectedFolder.$cards[index]);
       else
         index = -1;
 
@@ -223,8 +210,8 @@
       }
     }
 
-    function confirmDeleteSelectedCards($event) {
-      var selectedCards = vm.selectedFolder.$selectedCards();
+    this.confirmDeleteSelectedCards = function($event) {
+      var selectedCards = this.selectedFolder.$selectedCards();
 
       if (_.size(selectedCards) > 0)
         Dialog.confirm(l('Warning'),
@@ -240,7 +227,7 @@
         });
 
       $event.preventDefault();
-    }
+    };
 
     /**
      * @see AddressBooksController.dragSelectedCards
@@ -288,40 +275,40 @@
       }
     }
 
-    function copySelectedCards(folder) {
+    this.copySelectedCards = function(folder) {
       _selectedCardsOperation('copy', folder);
-    }
+    };
 
-    function moveSelectedCards(folder) {
+    this.moveSelectedCards = function(folder) {
       _selectedCardsOperation('move', folder);
-    }
+    };
 
-    function selectAll() {
-      _.forEach(vm.selectedFolder.$cards, function(card) {
+    this.selectAll = function() {
+      _.forEach(this.selectedFolder.$cards, function(card) {
         card.selected = true;
       });
-      vm.mode.multiple = vm.selectedFolder.$cards.length;
-    }
+      this.mode.multiple = this.selectedFolder.$cards.length;
+    };
 
-    function sort(field) {
-      vm.selectedFolder.$filter('', { sort: field });
-    }
+    this.sort = function(field) {
+      this.selectedFolder.$filter('', { sort: field });
+    };
 
-    function sortedBy(field) {
+    this.sortedBy = function(field) {
       return AddressBook.$query.sort == field;
-    }
+    };
 
-    function searchMode() {
+    this.searchMode = function() {
       vm.mode.search = true;
       focus('search');
-    }
+    };
 
-    function cancelSearch() {
-      vm.mode.search = false;
-      vm.selectedFolder.$filter('');
-    }
+    this.cancelSearch = function() {
+      this.mode.search = false;
+      this.selectedFolder.$filter('');
+    };
 
-    function newMessage($event, recipients, recipientsField) {
+    this.newMessage = function($event, recipients, recipientsField) {
       Account.$findAll().then(function(accounts) {
         var account = _.find(accounts, function(o) {
           if (o.id === 0)
@@ -349,17 +336,17 @@
           });
         });
       });
-    }
+    };
 
-    function newMessageWithRecipient($event, recipient, fn) {
+    this.newMessageWithRecipient = function($event, recipient, fn) {
       var recipients = [fn + ' <' + recipient + '>'];
-      vm.newMessage($event, recipients, 'to');
+      this.newMessage($event, recipients, 'to');
       $event.stopPropagation();
       $event.preventDefault();
-    }
+    };
 
-    function newMessageWithSelectedCards($event, recipientsField) {
-      var selectedCards = _.filter(vm.selectedFolder.$cards, function(card) { return card.selected; });
+    this.newMessageWithSelectedCards = function($event, recipientsField) {
+      var selectedCards = _.filter(this.selectedFolder.$cards, function(card) { return card.selected; });
       var promises = [], recipients = [];
 
       _.forEach(selectedCards, function(card) {
@@ -390,7 +377,44 @@
         if (recipients.length)
           vm.newMessage($event, recipients, recipientsField);
       });
-    }
+    };
+
+    this.newListWithSelectedCards = function() {
+      var selectedCards = _.filter(this.selectedFolder.$cards, function(card) { return card.selected; });
+      var promises = [], refs = [];
+
+      _.forEach(selectedCards, function(card) {
+        if (card.$isList({expandable: true})) {
+          // If the list's members were already fetch, use them
+          if (angular.isDefined(card.refs) && card.refs.length) {
+            _.forEach(card.refs, function(ref) {
+              if (ref.email.length)
+                refs.push(ref);
+            });
+          }
+          else {
+            promises.push(card.$reload().then(function(card) {
+              _.forEach(card.refs, function(ref) {
+                if (ref.email.length)
+                  refs.push(ref);
+              });
+            }));
+          }
+        }
+        else if (card.$$email && card.$$email.length) {
+          refs.push(card);
+        }
+      });
+
+      $q.all(promises).then(function() {
+        refs = _.uniqBy(_.map(refs, function(o) {
+          return { reference: o.id || o.reference, email: o.$$email || o.email };
+        }), 'reference');
+        if (refs.length)
+          $state.go('app.addressbook.new', { contactType: 'list', refs: refs });
+      });
+    };
+
   }
 
   angular

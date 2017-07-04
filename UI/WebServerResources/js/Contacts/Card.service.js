@@ -136,8 +136,10 @@
   Card.prototype.init = function(data, partial) {
     var _this = this;
 
-    this.refs = [];
-    this.categories = [];
+    if (angular.isUndefined(this.refs))
+      this.refs = [];
+    if (angular.isUndefined(this.categories))
+      this.categories = [];
     this.c_screenname = null;
     angular.extend(this, data);
     if (!this.$$fullname)

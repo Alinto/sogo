@@ -43,6 +43,9 @@
       })
       .state('app.addressbook.new', {
         url: '/{contactType:(?:card|list)}/new',
+        params: {
+          refs: { array: true }
+        },
         views: {
           card: {
             templateUrl: 'UIxContactEditorTemplate', // UI/Templates/Contacts/UIxContactEditorTemplate.wox
@@ -123,7 +126,7 @@
   stateNewCard.$inject = ['$stateParams', 'stateAddressbook', 'Card'];
   function stateNewCard($stateParams, stateAddressbook, Card) {
     var tag = 'v' + $stateParams.contactType,
-        card = new Card({ pid: $stateParams.addressbookId, c_component: tag });
+        card = new Card({ pid: $stateParams.addressbookId, c_component: tag, refs: $stateParams.refs });
     stateAddressbook.selectedCard = true;
     return card;
   }

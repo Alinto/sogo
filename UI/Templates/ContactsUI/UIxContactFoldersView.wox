@@ -387,6 +387,11 @@
                   </md-menu>
                 </md-menu-item>                
                 <md-menu-item ng-hide="addressbook.selectedFolder.isRemote">
+                  <md-button ng-click="addressbook.newListWithSelectedCards()">
+                    <var:string label:value="Create a new list"/>
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item ng-hide="addressbook.selectedFolder.isRemote">
                   <md-button ng-click="addressbook.selectedFolder.exportCards(true)">
                     <var:string label:value="Export"/>
                   </md-button>

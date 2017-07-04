@@ -3,6 +3,7 @@
 
 New features
  - [web] new images viewer in Mail module
+ - [web] create list from selected cards (#3561)
  - [eas] initial EAS v16 and email drafts support
  - [core] load-testing scripts to evaluate SOGo performance
 
