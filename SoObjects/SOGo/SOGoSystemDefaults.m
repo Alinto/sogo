@@ -591,12 +591,26 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
 //
 - (int) maximumMessageSubmissionCount
 {
-  return [self integerForKey: @"SOGoMaximumMessageSubmissionCount"];
+  NSUInteger v;
+
+  v = [self integerForKey: @"SOGoMaximumMessageSubmissionCount"];
+
+  if (!v)
+    return NSUIntegerMax;
+
+  return v;
 }
 
 - (int) maximumRecipientCount
 {
-  return [self integerForKey: @"SOGoMaximumRecipientCount"];
+  NSUInteger v;
+
+  v = [self integerForKey: @"SOGoMaximumRecipientCount"];
+
+  if (!v)
+    return NSUIntegerMax;
+
+  return v;
 }
 
 - (int) maximumSubmissionInterval

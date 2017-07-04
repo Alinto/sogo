@@ -816,7 +816,7 @@ static NSArray *infoKeys = nil;
   SOGoSystemDefaults *dd;
   id <WOActionResults> response;
 
-  int messages_count, recipients_count;
+  NSUInteger messages_count, recipients_count;
 
   messageSubmissions = [[SOGoCache sharedCache] messageSubmissionsCountForLogin: [[context activeUser] login]];
   dd = [SOGoSystemDefaults sharedSystemDefaults];
