@@ -21,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <stdio.h>
-#ifdef HAVE_OPENSSL
+#if defined(HAVE_OPENSSL) || defined(HAVE_GNUTLS)
 #include <openssl/bio.h>
 #include <openssl/err.h>
 #include <openssl/pkcs7.h>
@@ -37,7 +36,8 @@
 
 @implementation UIxMailPartSignedViewer : UIxMailPartMixedViewer
 
-#ifdef HAVE_OPENSSL
+
+#if defined(HAVE_OPENSSL) || defined(HAVE_GNUTLS)
 - (BOOL) supportsSMIME
 {
   return YES;
