@@ -232,7 +232,7 @@
 
   int count, max;
 
-  [[SOGoProductLoader productLoader] loadAllProducts: YES];
+  [[SOGoProductLoader productLoader] loadAllProducts: NO];
 
   if ([[NSUserDefaults standardUserDefaults] stringForKey: @"h"])
     {
