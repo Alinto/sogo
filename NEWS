@@ -10,6 +10,7 @@ Bug fixes
  - [core] not using cleaned data when sending mails (#4199)
  - [core] don't update subscriptions when owner is not the active user (#3988)
  - [core] enable S/MIME even when using GNU TLS (#4201)
+ - [core] silence verbose output for sogo-ealarms-notify (#4170)
 
 2.3.21 (2017-06-01)
 -------------------
