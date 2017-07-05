@@ -19,6 +19,7 @@ Enhancements
  - [web] support both backspace and delete keys in Mail and Contacts modules
  - [web] improved display of appointment/task comments and card notes
  - [web] updated Angular Material to version 1.1.4
+ - [web] updated CKEditor to version 4.7.1
 
 Bug fixes
  - [web] respect SOGoLanguage and SOGoSupportedLanguages (#4169)
