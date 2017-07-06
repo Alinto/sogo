@@ -508,14 +508,14 @@ static Class SOGoContactGCSEntryK = Nil;
         {
           elements = [card childrenWithTag: @"custom3"];
           [card removeChildren: elements];
-          [card addElementWithTag: @"custom1"  ofType: nil  withValue: o];
+          [card addElementWithTag: @"custom3"  ofType: nil  withValue: o];
         }
 
       if ((o = [customFields objectForKey: @"4"]))
         {
           elements = [card childrenWithTag: @"custom4"];
           [card removeChildren: elements];
-          [card addElementWithTag: @"custom1"  ofType: nil  withValue: o];
+          [card addElementWithTag: @"custom4"  ofType: nil  withValue: o];
         }
     }
 
