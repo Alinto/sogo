@@ -1158,7 +1158,14 @@ static NSString    *userAgent      = nil;
     name = [name substringFromIndex: r.location + 1];
 
   if (![self isValidAttachmentName: name])
-    return [self invalidAttachmentNameError: name];
+    {
+      if ([name rangeOfString: @"/"].length)
+        {
+          name = [name stringByReplacingOccurrencesOfString: @"/"  withString: @"-"];
+        }
+      else
+        return [self invalidAttachmentNameError: name];
+    }
   
   p = [self pathToAttachmentWithName: name];
   if (![_attach writeToFile: p atomically: YES])
