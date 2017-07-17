@@ -1,3 +1,4 @@
+"Inviting the following persons is prohibited:" = "Ni chaniateir gwahodd y personau canlynol:";
 "Personal Calendar" = "Calendr Personol";
 vevent_class0 = "(Digwyddiad cyhoeddus)";
 vevent_class1 = "(Digwyddiad preifat)";
@@ -7,48 +8,57 @@ vtodo_class0 = "(Tasg gyhoeddus)";
 vtodo_class1 = "(Tasg breifat)";
 vtodo_class2 = "(Tasg gyfrinachol)";
 /* Receipts */
-"Title:" = "Title:";
-"Start:" = "Start:";
-"End:" = "End:";
-"Receipt: users invited to a meeting" = "Receipt: users invited to a meeting";
-"You have invited the following attendees(s):" = "You have invited the following attendees(s):";
-"... to attend the following event:" = "... to attend the following event:";
-"Receipt: invitation updated" = "Receipt: invitation updated";
-"The following attendees(s):" = "The following attendees(s):";
-"... have been notified of the changes to the following event:" = "... have been notified of the changes to the following event:";
-"Receipt: attendees removed from an event" = "Receipt: attendees removed from an event";
-"You have removed the following attendees(s):" = "You have removed the following attendees(s):";
-"... from the following event:" = "... from the following event:";
+"The event \"%{Summary}\" was created" = "Crëwyd y digwyddiad \"%{Summary}\"";
+"The event \"%{Summary}\" was deleted" = "Dilëwyd y digwyddiad \"%{Summary}\"";
+"The event \"%{Summary}\" was updated" = "Diweddarwyd y digwyddiad \"%{Summary}\"";
+"The following attendees(s) were notified" = "Hysbyswyd y mynychwr/mynychwyr canlynol";
+"The following attendees(s) were added" = "Ychwanegwyd y mynychwr/mynychwyr canlynol";
+"The following attendees(s) were removed" = "Dilëwyd y mynychwr/mynychwyr canlynol";
 /* IMIP messages */
-"startDate_label" = "Start";
-"endDate_label" = "End";
-"due_label" = "Due Date:";
-"location_label" = "Location";
-"summary_label" = "Summary:";
-"comment_label" = "Comment:";
+"calendar_label" = "Calendr";
+"startDate_label" = "Dechrau";
+"endDate_label" = "Diwedd";
+"time_label" = "Amser";
+"to_label" = "at";
+"due_label" = "Dyddiad Disgwyliedig";
+"location_label" = "Lleoliad";
+"summary_label" = "Crynodeb";
+"comment_label" = "Sylw";
+"organizer_label" = "Trefnydd";
+"attendee_label" = "Mynychwr";
 /* Invitation */
-"Event Invitation: \"%{Summary}\"" = "Event Invitation: \"%{Summary}\"";
-"(sent by %{SentBy}) " = "(anfon gan %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+"Event Invitation: \"%{Summary}\"" = "Gwahoddiad i Ddigwyddiad: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(anfonwyd gan %{SentBy})";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "Mae %{Organizer} %{SentByText}wedi eich gwahodd i %{Summary}.\n\nDechrau: %{StartDate}\nDiwedd: %{EndDate}\nDisgrifiad: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "Mae %{Organizer} %{SentByText}wedi eich gwahodd i %{Summary}.\n\nDechrau: %{StartDate} am %{StartTime}\nDiwedd: %{EndDate} am %{EndTime}\nDisgrifiad: %{Description}";
 /* Deletion */
-"Event Cancelled: \"%{Summary}\"" = "Event Cancelled: \"%{Summary}\"";
+"Event Cancelled: \"%{Summary}\"" = "Digwyddiad wedi'i Ganslo: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "Mae %{Organizer} %{SentByText}wedi canslo'r digwyddiad hwn: %{Summary}.\n\nDechrau: %{StartDate}\nDiwedd: %{EndDate}\nDisgrifiad: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+= "Mae %{Organizer} %{SentByText}wedi canslo'r digwyddiad hwn: %{Summary}.\n\nDechrau: %{StartDate} am %{StartTime}\nDiwedd: %{EndDate} am %{EndTime}\nDisgrifiad: %{Description}";
 /* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "Mae'r apwyntiad \"%{Summary}\" ar gyfer %{OldStartDate} wedi newid";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed";
+= "Mae'r apwyntiad \"%{Summary}\" ar gyfer %{OldStartDate} am %{OldStartTime} wedi newid";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
-= "The following parameters have changed in the \"%{Summary}\" meeting:";
+= "Mae'r paramedrau canlynol wedi newid yng nghyfarfod \"%{Summary}\":";
 "Please accept or decline those changes."
-= "Please accept or decline those changes.";
+= "Derbyniwch neu gwrthodwch y newidiadau hynny.";
 /* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Wedi derbyn y gwahoddiad: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Wedi gwrthod y gwahoddiad: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Wedi dirprwyo'r gwahoddiad: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Heb benderfynu ar y gwahoddiad eto: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
-= "%{Attendee} %{SentByText}wedi derbyn.";
+= "Mae %{Attendee} %{SentByText}wedi derbyn eich gwahoddiad.";
 "%{Attendee} %{SentByText}has declined your event invitation."
-= "%{Attendee} %{SentByText}wedi gwrthod.";
+= "Mae %{Attendee} %{SentByText}wedi gwrthod eich gwahoddiad.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
-= "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}.";
+= "Mae %{Attendee} %{SentByText}wedi dirprwyo eich gwahoddiad i %{Delegate}";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
-= "%{Attendee} %{SentByText}heb benderfynu ar eich gwahoddiad eto.";
+= "Dydy %{Attendee} %{SentByText}ddim wedi penderfynu ar eich gwahoddiad eto.";
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Methu cael mynediad at adnodd: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Wedi cyrraedd uchafswm nifer yr achebion sy'n bosib ar yr un pryd (%{NumberOfSimultaneousBookings}) ar gyfer adnodd \"%{Cn} %{SystemEmail}\". Y digwyddiad sy'n cyd-daro yw \"%{EventTitle}\", sy'n dechrau ar %{StartDate}.";
