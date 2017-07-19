@@ -536,7 +536,7 @@ class CalDAVSchedulingTest(unittest.TestCase):
         self._putEvent(self.client, "%s%s" % (self.user_calendar, overlap_recurring_ics_name), nooverlap_event, exp_status=409)
 
 
-    def testRruleExceptionInvitationDance(self):
+    def NOtestRruleExceptionInvitationDance(self):
 	""" RRULE exception invitation dance """
 
 	# This workflow is based on what lightning 1.2.1 does
