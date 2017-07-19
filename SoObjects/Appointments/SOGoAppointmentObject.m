@@ -171,9 +171,13 @@
 }
 
 //
+// This method will *ONLY* add or update event information in attendees' calendars.
+// It will NOT touch to the organizer calendar in anyway. This method is meant
+// to reflect changes in attendees' calendars when the organizer makes changes
+// to the event.
 //
-//
-- (void) _addOrUpdateEvent: (iCalEvent *) theEvent
+- (void) _addOrUpdateEvent: (iCalEvent *) newEvent
+                  oldEvent: (iCalEvent *) oldEvent
                     forUID: (NSString *) theUID
                      owner: (NSString *) theOwner
 {
@@ -183,56 +187,84 @@
       iCalCalendar *iCalendarToSave;
       
       iCalendarToSave = nil;
-      attendeeObject = [self _lookupEvent: [theEvent uid] forUID: theUID];
-      
-      // We must add an occurence to a non-existing event. We have
-      // to handle this with care, as in the postCalDAVEventRequestTo:from:
-      if ([attendeeObject isNew] && [theEvent recurrenceId])
+      attendeeObject = [self _lookupEvent: [newEvent uid] forUID: theUID];
+
+      if ([newEvent recurrenceId])
         {
-          iCalEvent *ownerEvent;
-          iCalPerson *person;
-          SOGoUser *user;
-          
-          // We check if the attendee that was added to a single occurence is
-          // present in the master component. If not, we add it with a participation
-          // status set to "DECLINED".
-          ownerEvent = [[[theEvent parent] events] objectAtIndex: 0];
-          user = [SOGoUser userWithLogin: theUID];
-          if (![ownerEvent userAsAttendee: user])
+          // We must add an occurence to a non-existing event.
+          if ([attendeeObject isNew])
             {
-              // Update the master event in the owner's calendar with the
-              // status of the new attendee set as "DECLINED".
-              person = [iCalPerson elementWithTag: @"attendee"];
-              [person setCn: [user cn]];
-              [person setEmail: [[user allEmails] objectAtIndex: 0]];
-              [person setParticipationStatus: iCalPersonPartStatDeclined];
-              [person setRsvp: @"TRUE"];
-              [person setRole: @"REQ-PARTICIPANT"];
-              [ownerEvent addToAttendees: person];
+              iCalEvent *ownerEvent;
+              SOGoUser *user;
+              // We check if the attendee that was added to a single occurence is
+              // present in the master component. If not, we add it with a participation
+              // status set to "DECLINED".
+              ownerEvent = [[[newEvent parent] events] objectAtIndex: 0];
+              user = [SOGoUser userWithLogin: theUID];
+
+              if (![ownerEvent userAsAttendee: user])
+                {
+                  iCalendarToSave = [[[newEvent parent] mutableCopy] autorelease];
+                  [iCalendarToSave removeChildren: [iCalendarToSave childrenWithTag: @"vevent"]];
+                  [iCalendarToSave addChild: [[newEvent copy] autorelease]];
+                }
+            }
+          else
+            {
+              // Only update this occurrence in attendee's calendar
+              // TODO : when updating the master event, handle exception dates
+              // in attendee's calendar (add exception dates and remove matching
+              // occurrences) -- see _updateRecurrenceIDsWithEvent:
+              NSCalendarDate *currentId;
+              NSArray *occurences;
+              iCalEvent *occurence;
+              int max, count;
+
+              iCalendarToSave = [attendeeObject calendar: NO  secure: NO];
+
+              // If recurrenceId is defined, remove the occurence from
+              // the repeating event. If a recurrenceId is defined in the
+              // new event, let's make sure we don't already have one in
+              // the calendar alright. If so, also remove it.
+              if ([oldEvent recurrenceId] || [newEvent recurrenceId])
+                {
+                  // FIXME: use  _eventFromRecurrenceId:...
+                  occurences = [iCalendarToSave events];
+                  max = [occurences count];
+                  count = 0;
+                  while (count < max)
+                    {
+                      occurence = [occurences objectAtIndex: count];
+                      currentId = ([oldEvent recurrenceId] ? [oldEvent recurrenceId]: [newEvent recurrenceId]);
+                      if (currentId && [[occurence recurrenceId] compare: currentId] == NSOrderedSame)
+                        {
+                          [[iCalendarToSave children] removeObject: occurence];
+                          break;
+                        }
+                      count++;
+                    }
+                }
               
-              iCalendarToSave = [ownerEvent parent];
+              [iCalendarToSave addChild: [[newEvent copy] autorelease]];
             }
         }
       else
         {
-          // TODO : if [theEvent recurrenceId], only update this occurrence
-          // in attendee's calendar
-          
-          // TODO : when updating the master event, handle exception dates
-          // in attendee's calendar (add exception dates and remove matching
-          // occurrences) -- see _updateRecurrenceIDsWithEvent:
-          
-          iCalendarToSave = [theEvent parent];
+          iCalendarToSave = [newEvent parent];
         }
-      
+
       // Save the event in the attendee's calendar
       if (iCalendarToSave)
         [attendeeObject saveCalendar: iCalendarToSave];
     }
 }
 
+
 //
-//
+// This method will *ONLY* delete event information in attendees' calendars.
+// It will NOT touch to the organizer calendar in anyway. This method is meant
+// to reflect changes in attendees' calendars when the organizer makes changes
+// to the event.
 //
 - (void) _removeEventFromUID: (NSString *) theUID
                        owner: (NSString *) theOwner
@@ -251,14 +283,16 @@
       
       // Invitations are always written to the personal folder; it's not necessay
       // to look into all folders of the user
+      // FIXME: why look only in the personal calendar here?
       folder = [[SOGoUser userWithLogin: theUID]
                 personalCalendarFolderInContext: context];
       object = [folder lookupName: nameInContainer
-                        inContext: context acquire: NO];
+                        inContext: context
+                          acquire: NO];
       if (![object isKindOfClass: [NSException class]])
         {
           if (recurrenceId == nil)
-          [object delete];
+            [object delete];
           else
             {
               calendar = [object calendar: NO secure: NO];
@@ -267,7 +301,7 @@
               // the repeating event.
               occurences = [calendar events];
               max = [occurences count];
-              count = 1;
+              count = 0;
               while (count < max)
                 {
                   currentOccurence = [occurences objectAtIndex: count];
@@ -290,6 +324,8 @@
               [object saveCalendar: calendar];
             }
         }
+      else
+        [self errorWithFormat: @"Unable to find event with UID %@ in %@'s calendar - skipping delete operation", nameInContainer, theUID];
     }
 }
 
@@ -310,7 +346,7 @@
       if (currentUID)
         [self _removeEventFromUID: currentUID
                             owner: owner
-	      withRecurrenceId: recurrenceId];
+                 withRecurrenceId: recurrenceId];
     }
 }
 
@@ -436,6 +472,7 @@
       currentUID = [currentAttendee uidInContext: context];
       if (currentUID)
         [self _addOrUpdateEvent: newEvent
+                       oldEvent: oldEvent
                          forUID: currentUID
                           owner: owner];
     }
@@ -794,6 +831,7 @@
       currentUID = [currentAttendee uidInContext: context];
       if (currentUID)
       [self _addOrUpdateEvent: newEvent
+                     oldEvent: nil
                        forUID: currentUID
                         owner: owner];
     }
@@ -826,12 +864,10 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       e = [events objectAtIndex: i];
       if ([e recurrenceId])
         for (j = 0; j < [theAttendees count]; j++) {
-          if (shouldAdd) {
+          if (shouldAdd)
             [e addToAttendees: [theAttendees objectAtIndex: j]];
-          }
-          else {
+          else
             [e removeFromAttendees: [theAttendees objectAtIndex: j]];
-          }
         }
     }
 }
@@ -924,6 +960,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               currentUID = [currentAttendee uidInContext: context];
               if (currentUID)
                 [self _addOrUpdateEvent: newEvent
+                               oldEvent: oldEvent
                                  forUID: currentUID
                                   owner: owner];
             }
@@ -959,7 +996,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 //                                        |                      |
 // [saveComponent:]---> _handleAddedUsers:fromEvent: <-+         |
 //       |                                             |         v
-//       +------------> _handleUpdatedEvent:fromOldEvent: ---> _addOrUpdateEvent:forUID:owner:  <-----------+
+//       +------------> _handleUpdatedEvent:fromOldEvent: ---> _addOrUpdateEvent:oldEvent:forUID:owner:  <-----------+
 //                               |           |                   ^                                          |
 //                               v           v                   |                                          |
 //  _handleRemovedUsers:withRecurrenceId:  _handleSequenceUpdateInEvent:ignoringAttendees:fromOldEvent:     |
@@ -1342,6 +1379,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           if (delegatedUID)
             // Delegate attendee is a local user; add event to their calendar
             [self _addOrUpdateEvent: event
+                           oldEvent: nil
                              forUID: delegatedUID
                               owner: [theOwnerUser login]];
 
@@ -1636,15 +1674,29 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   else
     // Retrieve this occurence ID.
     recurrenceId = [occurence recurrenceId];
-  
-  if ([event userIsOrganizer: ownerUser])
+
+  if ([occurence userIsAttendee: ownerUser])
+    {
+      // The current user deletes the occurence; let the organizer know that
+      // the user has declined this occurence.
+      [self changeParticipationStatus: @"DECLINED"
+                         withDelegate: nil
+                                alarm: nil
+                      forRecurrenceId: recurrenceId];
+      send_receipt = NO;
+    }
+  else
     {
       // The organizer deletes an occurence.
       currentUser = [context activeUser];
-      attendees = [occurence attendeesWithoutUser: currentUser];
+
+      if (recurrenceId)
+        attendees = [occurence attendeesWithoutUser: currentUser];
+      else
+        attendees = [[event parent] attendeesWithoutUser: currentUser];
       
-      if (![attendees count] && event != occurence)
-        attendees = [event attendeesWithoutUser: currentUser];
+      //if (![attendees count] && event != occurence)
+      //attendees = [event attendeesWithoutUser: currentUser];
       
       if ([attendees count])
         {
@@ -1661,17 +1713,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 				     withType: @"calendar:cancellation"];
         }
     }
-  else if ([occurence userIsAttendee: ownerUser])
-    {
-      // The current user deletes the occurence; let the organizer know that
-      // the user has declined this occurence.
-      [self changeParticipationStatus: @"DECLINED"
-                         withDelegate: nil
-                                alarm: nil
-                      forRecurrenceId: recurrenceId];
-      send_receipt = NO;
-    }
-      
+
   if (send_receipt)
     [self sendReceiptEmailForObject: event
 		     addedAttendees: nil

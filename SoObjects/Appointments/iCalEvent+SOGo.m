@@ -126,7 +126,7 @@
   boolTmp = ((isAllDay) ? 1 : 0);
   [row setObject: [NSNumber numberWithInt: boolTmp]
        forKey: @"c_isallday"];
-  boolTmp = (([self isRecurrent]) ? 1 : 0);
+  boolTmp = ((([self isRecurrent] || [self recurrenceId])) ? 1 : 0);
   [row setObject: [NSNumber numberWithInt: boolTmp]
        forKey: @"c_iscycle"];
   boolTmp = (([self isOpaque]) ? 1 : 0);

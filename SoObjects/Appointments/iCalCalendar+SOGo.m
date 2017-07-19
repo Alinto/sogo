@@ -1,6 +1,6 @@
 /* iCalCalendar+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2012-2014 Inverse inc
+ * Copyright (C) 2012-2017 Inverse inc
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,12 +20,16 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSValue.h>
 #import <Foundation/NSString.h>
 
+#import <NGCards/iCalEvent.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
 
 #import "iCalCalendar+SOGo.h"
 #import "iCalEntityObject+SOGo.h"
+#import "NSArray+Appointments.h"
 
 @implementation iCalCalendar (SOGoExtensions)
 
@@ -45,9 +49,10 @@
   /* master occurrence */
   component = [components objectAtIndex: 0];
 
-  if ([component hasRecurrenceRules])
+  if ([component hasRecurrenceRules] || [component recurrenceId])
     {
-      count = 1; // skip master event
+      // Skip the master event if required
+      count = ([component recurrenceId] ? 0 : 1);
       while (!occurrence && count < max)
 	{
 	  component = [components objectAtIndex: count];
@@ -99,6 +104,65 @@
     }
 
   return [(id)element quickRecordFromContent: theContent  container: theContainer  nameInContainer: nameInContainer];
+}
+
+- (NSArray *) quickRecordsFromContent: (NSString *) theContent
+                            container: (id) theContainer
+                      nameInContainer: (NSString *) nameInContainer
+{
+  NSCalendarDate *recurrenceId;
+  NSMutableDictionary *record;
+  NSMutableArray *allRecords;
+  NSNumber *dateSecs;
+  NSArray *elements;
+
+  int i;
+
+  allRecords = [NSMutableArray array];
+
+  // FIXME: what about tasks?
+  elements = [self events];
+
+  for (i = 0; i < [elements count]; i++)
+    {
+      record = [(id)[elements objectAtIndex: i] quickRecordFromContent: theContent  container: theContainer  nameInContainer: nameInContainer];
+      recurrenceId = [[elements objectAtIndex: i] recurrenceId];
+      dateSecs = [NSNumber numberWithDouble: [recurrenceId timeIntervalSince1970]];
+
+      [record setObject: nameInContainer  forKey: @"c_name"];
+      [record setObject: dateSecs forKey: @"c_recurrence_id"];
+
+      [allRecords addObject: record];
+    }
+
+  return allRecords;
+}
+
+- (NSArray *) attendeesWithoutUser: (SOGoUser *) user
+{
+  NSMutableArray *allAttendees;
+  NSArray *events, *attendees;
+  iCalPerson *attendee;
+  iCalEvent *event;
+
+  int i, j;
+
+  allAttendees = [NSMutableArray array];
+  events = [self events];
+
+  for (i = 0; i < [events count]; i++)
+    {
+      event = [events objectAtIndex: i];
+      attendees = [event attendees];
+      for (j = 0; j < [attendees count]; j++)
+        {
+          attendee = [attendees objectAtIndex: j];
+          [allAttendees removePerson: attendee];
+          [allAttendees addObject: attendee];
+        }
+    }
+
+  return allAttendees;
 }
 
 @end

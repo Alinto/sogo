@@ -804,14 +804,16 @@
 	  /* sender */
 	  shortSenderEmail = [[object organizer] rfc822Email];
 	  if ([shortSenderEmail length])
-            {
-              senderEmail = [[object organizer] mailAddress];
-            }
+            senderEmail = [[object organizer] mailAddress];
           else
             {
               shortSenderEmail = [[previousObject organizer] rfc822Email];
               senderEmail = [[previousObject organizer] mailAddress];
             }
+
+          // No organizer, grab the event's owner
+          if (![senderEmail length])
+            senderEmail = shortSenderEmail = [[ownerUser defaultIdentity] objectForKey: @"email"];
 
           /* calendar part */
           eventBodyPart = [self _bodyPartForICalObject: object];

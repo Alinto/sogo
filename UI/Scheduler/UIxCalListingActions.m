@@ -265,8 +265,8 @@ static NSArray *tasksFields = nil;
   NSString *aDateField;
   int daylightOffset;
   unsigned int count;
-  static NSString *fields[] = { @"startDate", @"c_startdate",
-    @"endDate", @"c_enddate" };
+
+  static NSString *fields[] = { @"startDate", @"c_startdate", @"endDate", @"c_enddate" };
   
   /* WARNING: This condition has been put and removed many times, please leave
    it. Here is the story...

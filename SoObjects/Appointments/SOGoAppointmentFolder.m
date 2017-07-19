@@ -1233,8 +1233,15 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   content = [theRecord objectForKey: @"c_cycleinfo"];
   if (![content isNotNull])
     {
-      [self errorWithFormat:@"cyclic record doesn't have cycleinfo -> %@",
-	    theRecord];
+      // If c_iscycle is set but c_cycleinfo is null, that means we're dealing with a vcalendar that
+      // contains ONLY one or more vevent with recurrence-id set for each of them. This can happen if
+      // an organizer invites an attendee only to one or many occurences of a repetitive event.
+      iCalCalendar *c;
+
+      c = [iCalCalendar parseSingleFromSource: [theRecord objectForKey: @"c_content"]];
+      [theRecords addObjectsFromArray: [self _fixupRecords: [c quickRecordsFromContent: [theRecord objectForKey: @"c_content"]
+                                                                             container: nil
+                                                                       nameInContainer: [theRecord objectForKey: @"c_name"]]]];
       return;
     }
 
