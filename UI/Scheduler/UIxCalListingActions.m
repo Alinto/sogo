@@ -615,7 +615,7 @@ static NSArray *tasksFields = nil;
         return dayOfWeek;
       else
         // With the past 7 days
-        return [NSString stringWithFormat: [self labelForKey: @"last %@" inContext: context], dayOfWeek];
+        return [NSString stringWithFormat: [self labelForKey: @"Last %@" inContext: context], dayOfWeek];
     }
   else
     {

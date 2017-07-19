@@ -64,6 +64,18 @@
 "Compose E-Mail to All Attendees" = "Compose E-Mail to All Attendees";
 "Compose E-Mail to Undecided Attendees" = "Compose E-Mail to Undecided Attendees";
 
+/* Relative dates */
+"Yesterday" = "Yesterday";
+"Today" = "Today";
+"Tomorrow" = "Tomorrow";
+"Last Sunday" = "Last Sunday";
+"Last Monday" = "Last Monday";
+"Last Tuesday" = "Last Tuesday";
+"Last Wednesday" = "Last Wednesday";
+"Last Thursday" = "Last Thursday";
+"Last Friday" = "Last Friday";
+"Last Saturday" = "Last Saturday";
+
 /* Folders */
 "Personal calendar" = "Personal calendar";
 
