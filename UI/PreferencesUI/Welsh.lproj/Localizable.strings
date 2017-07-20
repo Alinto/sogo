@@ -1,43 +1,75 @@
 /* toolbar */
-"Save and Close" = "Cadw a Cau";
+"Save and Close" = "Cadw a Chau";
 "Close" = "Cau";
+"Preferences saved" = "Cadwyd dewisiadau";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Newidiadau heb eu cadw";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Hoffech chi gadw'r newidiadau a wnaed i'r ffurfweddiad?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Cadw";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Peidio Cadw";
 
 /* tabs */
 "General" = "Cyffredinol";
-"Calendar Options" = "Opsiynau Calendr";
-"Contacts Options" = "Contacts Options";
-"Mail Options" = "Opsiynau Ebost";
-"IMAP Accounts" = "IMAP Accounts";
-"Vacation" = "Vacation";
-"Forward" = "Forward";
+"Calendar Options" = "Dewisiadau Calendr";
+"Contacts Options" = "Dewisiadau Cysylltiadau";
+"Mail Options" = "Dewisiadau E-bost";
+"IMAP Accounts" = "Cyfrifon IMAP";
+"Vacation" = "Gwyliau";
+"Forward" = "Anfon ymlaen";
 "Password" = "Cyfrinair";
-"Categories" = "Categories";
-"Name" = "Name";
-"Color" = "Color";
-"Add" = "Add";
-"Delete" = "Delete";
+"Categories" = "Categorïau";
+"Appointments invitations" = "Gwahoddiadau apwyntiadau";
+"Name" = "Enw";
+"Color" = "Lliw";
+"Add" = "Ychwanegu";
+"Delete" = "Dileu";
+
 /* contacts categories */
-"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
+"contacts_category_labels" = "Cydweithiwr, Cystadleuydd, Cwsmer, Ffrind, Teulu, Partner Busnes, Darparwr, Y Wasg, Pwysigyn";
+
 /* vacation (auto-reply) */
-"Enable vacation auto reply" = "Enable vacation auto reply";
-"Auto reply message" ="Ymateb Awtomatig unwaith yn unig i pob anfonwr gyda'r testun canlynol";
-"Email addresses (separated by commas)" ="Email addresses (separated by commas)";
-"Add default email addresses" = "Add default email addresses";
-"Days between responses" ="Days between responses";
-"Do not send responses to mailing lists" = "Do not send responses to mailing lists";
+"Enable vacation auto reply" = "Galluogi ymateb awtomatig gwyliau";
+"Enable custom auto reply subject" = "Galluogi pwnc ymateb awtomatig personol";
+"Auto reply subject" = "Pwnc ymateb awtomatig";
+"You can write ${subject} to insert the original subject" = "Gallwch ysgrifennu ${subject} i fewnosod y pwnc gwreiddiol";
+"Auto reply message" = "Ymateb awtomatig";
+"Email addresses (separated by commas)" = "Cyfeiriadau e-bost (wedi'u gwahanu gyda choma)";
+"Add default email addresses" = "Ychwanegu cyfeiriadau e-bost diofyn";
+"Days between responses" = "Diwrnodau rhwng ymatebion";
+"Do not send responses to mailing lists" = "Peidio anfon ymatebion i restrau postio";
+"Enable auto reply on" = "Galluogi ateb awtomatig ymlaen";
+"Disable auto reply on" = "Analluogi ateb awtomatig ymlaen";
+"Always send vacation message response" = "Anfon ymateb gwyliau bob amser";
+"Discard incoming mails during vacation" = "Taflu e-byst sy'n dod i mewn yn ystod gwyliau";
 "Please specify your message and your email addresses for which you want to enable auto reply."
-= "Please specify your message and your email addresses for which you want to enable auto reply.";
+= "Nodwch eich neges a'r cyfeiriad e-bost yr hoffech alluogi ymateb awtomatig ar ei gyfer.";
+"Your vacation message must not end with a single dot on a line." = "All eich neges gwyliau ddim gorffen gydag un dot ar linell.";
+"End date of your auto reply must be in the future."
+= "Rhaid i ddyddiad gorffen eich ymateb awtomatig fod yn y dyfodol.";
+
 /* forward messages */
-"Forward incoming messages" = "Forward incoming messages";
-"Keep a copy" = "Keep a copy";
+"Forward incoming messages" = "Negeseuon sy'n dod i mewn i gael eu hanfon ymlaen";
+"Keep a copy" = "Cadw copi";
 "Please specify an address to which you want to forward your messages."
-= "Please specify an address to which you want to forward your messages.";
+= "Nodwch gyfeiriad yr hoffech anfon eich negeseuon ymlaen iddo.";
+"You are not allowed to forward your messages to an external email address." = "Chewch chi ddim anfon eich negeseuon ymlaen i gyfeiriad e-bost allanol.";
+"You are not allowed to forward your messages to an internal email address." = "Chewch chi ddim anfon eich negeseuon ymlaen i gyfeiriad e-bost mewnol.";
+
 /* d & t */
-"Current Time Zone" ="Amser Cyfredol";
-"Short Date Format" ="Dyddiad fformat byr";
-"Long Date Format" ="Dyddiad fformat hir";
-"Time Format" ="Fformat amser";
-"default" = "Default";
+"Current Time Zone" = "Cylchfa Amser Bresennol";
+"Short Date Format" = "Dyddiad fformat byr";
+"Long Date Format" = "Dyddiad fformat hir";
+"Time Format" = "Fformat amser";
+"default" = "Diofyn";
+"Default Module" = "Modiwl Diofyn";
+"Save" = "Cadw";
 "shortDateFmt_0" = "%d-%b-%y";
 "shortDateFmt_1" = "%d-%m-%y";
 "shortDateFmt_2" = "%d/%m/%y";
@@ -60,103 +92,157 @@
 "longDateFmt_2" = "%A, %d %B, %Y";
 "longDateFmt_3" = "%d %B, %Y";
 "longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
 "timeFmt_0" = "%I:%M %p";
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "Heb ganfod cyfatebion";
+
 /* calendar */
-"Week begins on" ="wythnos yn dechrau";
-"Day start time" ="Amser dechrau'r diwrnod";
-"Day end time" ="Amser diwedd y dydd";
-"Day start time must be prior to day end time." = "Day start time must be prior to day end time.";
-"First week of year" ="Wythnos cyntaf y flwyddyn";
-"Enable reminders for Calendar items" = "Galluogu atgoffa ar gyfer eitemau calendr";
-"Play a sound when a reminder comes due"
-= "Chwarae swn pan fydd amser atgoffa";
-"Default reminder" ="Atgoffa gwreiddiol";
+"Week begins on" = "Wythnos yn dechrau";
+"Day start time" = "Amser dechrau'r diwrnod";
+"Day end time" = "Amser diwedd y diwrnod";
+"Day start time must be prior to day end time." = "Rhaid i amser dechrau'r diwrnod fod cyn amser diwedd y diwrnod.";
+"Week days to display" = "Diwrnodau'r wythnos i'w dangos";
+"Show time as busy outside working hours" = "Dangos amser fel prysur y tu allan i oriau gwaith";
+"First week of year" = "Wythnos gynta'r flwyddyn";
+"Enable reminders for Calendar items" = "Galluogi atgoffebau ar gyfer eitemau calendr";
+"Play a sound when a reminder comes due" = "Chwarae sain pan fydd yn amser atgoffa";
+"Default reminder" = "Atgoffeb ddiofyn";
 "firstWeekOfYear_January1" = "Dechrau ar Ionawr 1";
-"firstWeekOfYear_First4DayWeek" = "First 4-day week";
-"firstWeekOfYear_FirstFullWeek" = "Wythnos cyntaf llawn";
+"firstWeekOfYear_First4DayWeek" = "Wythnos 4-diwrnod gyntaf";
+"firstWeekOfYear_FirstFullWeek" = "Wythnos gyntaf lawn";
+"Prevent from being invited to appointments" = "Atal rhag cael gwahoddiadau i apwyntiadau";
+"White list for appointment invitations" = "Rhestr wen ar gyfer gwahoddiadau i apwyntiadau";
+"Contacts Names" = "Enwau Cysylltiadau";
+
 /* Default Calendar */
-"Default calendar" ="Default calendar";
-"selectedCalendar" = "Selected calendar";
-"personalCalendar" = "Personal calendar";
-"firstCalendar" = "First enabled calendar";
-"reminder_5_MINUTES_BEFORE" = "5 munud";
-"reminder_10_MINUTES_BEFORE" = "10 munud";
-"reminder_15_MINUTES_BEFORE" = "15 munud";
-"reminder_30_MINUTES_BEFORE" = "30 munud";
-"reminder_1_HOUR_BEFORE" = "1 awr";
-"reminder_2_HOURS_BEFORE" = "2 awr";
-"reminder_5_HOURS_BEFORE"= "5 awr";
-"reminder_15_HOURS_BEFORE"= "15 awr";
-"reminder_1_DAY_BEFORE" = "1 diwrnod";
-"reminder_2_DAYS_BEFORE" = "2 ddiwrnod";
+"Default calendar" = "Calendr diofyn";
+"selectedCalendar" = "Calendr a ddewiswyd";
+"personalCalendar" = "Calendr personol";
+"firstCalendar" = "Calendr cyntaf a alluogwyd";
+"reminder_NONE" = "Dim atgoffeb";
+"reminder_5_MINUTES_BEFORE" = "5 munud ymlaen llaw";
+"reminder_10_MINUTES_BEFORE" = "10 munud ymlaen llaw";
+"reminder_15_MINUTES_BEFORE" = "15 munud ymlaen llaw";
+"reminder_30_MINUTES_BEFORE" = "30 munud ymlaen llaw";
+"reminder_45_MINUTES_BEFORE" = "45 munud ymlaen llaw";
+"reminder_1_HOUR_BEFORE" = "1 awr ymlaen llaw";
+"reminder_2_HOURS_BEFORE" = "2 awr ymlaen llaw";
+"reminder_5_HOURS_BEFORE" = "5 awr ymlaen llaw";
+"reminder_15_HOURS_BEFORE" = "15 awr ymlaen llaw";
+"reminder_1_DAY_BEFORE" = "Diwrnod ymlaen llaw";
+"reminder_2_DAYS_BEFORE" = "Deuddydd ymlaen llaw";
+"reminder_1_WEEK_BEFORE" = "Wythnos ymlaen llaw";
+
 /* Mailer */
+"Labels" = "Labeli";
 "Label" = "Label";
-"Show subscribed mailboxes only" = "Show subscribed mailboxes only";
-"Sort messages by threads" = "Sort messages by threads";
-"Check for new mail" = "Chwilio am ebost newydd";
-"refreshview_manually" = "Corfforol";
-"refreshview_every_minute" = "Pob munud";
-"refreshview_every_2_minutes" = "Pob 2 munud";
-"refreshview_every_5_minutes" = "Pob 5 munud";
-"refreshview_every_10_minutes" = "Pob 10 munud";
-"refreshview_every_20_minutes" = "Pob 20 munud";
-"refreshview_every_30_minutes" = "Pob 30 munud";
-"refreshview_once_per_hour" = "Unwaith pob awr";
-"Forward messages" = "Blaenyrru negeseuon";
-"messageforward_inline" = "Mewn llinell";
+"New label" = "Label newydd";
+"Show subscribed mailboxes only" = "Dangos blychau derbyn y tanysgrifiwyd iddynt yn unig";
+"Synchronize only default mail folders (EAS)" = "Cysoni ffolderi e-byst diofyn yn unig (EAS)";
+"Sort messages by threads" = "Trefnu negeseuon yn ôl edefynnau";
+"When sending mail, add unknown recipients to my" = "Wrth anfon e-bost, ychwanegu derbynyddion anhysbys i fy";
+"Address Book" = "Llyfr Cyfeiriadau";
+"Forward messages" = "Anfon negeseuon ymlaen";
+"messageforward_inline" = "Mewnol";
 "messageforward_attached" = "Fel Atodiad";
-"replyplacement_above" = "Dechrau fy ymateb uwchben y dyfynnod";
-"replyplacement_below" = "Dechrau fy ymateb o dan y dyfynnod";
-"And place my signature" = "A rhowch fy llofnod";
+"When replying to a message" = "Wrth ymateb i neges";
+"replyplacement_above" = "Dechrau fy ymateb uwchben y dyfyniad";
+"replyplacement_below" = "Dechrau fy ymateb o dan y dyfyniad";
+"And place my signature" = "A rhoi fy llofnod";
 "signatureplacement_above" = "o dan fy ymateb";
-"signatureplacement_below" = "o dan y dyfynnod";
-"Compose messages in" = "Compose messages in";
+"signatureplacement_below" = "o dan y dyfyniad";
+"Compose messages in" = "Cyfansoddi negeseuon mewn";
 "composemessagestype_html" = "HTML";
-"composemessagestype_text" = "Plain text";
+"composemessagestype_text" = "Testun plaen";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Maint ffont diofyn";
+
+"Display remote inline images" = "Dangos delweddau mewnol pell";
+"displayremoteinlineimages_never" = "Byth";
+"displayremoteinlineimages_always" = "Bob amser";
+"Auto save every" = "Cadw'n awtomatig bob";
+"minutes" = "munudau";
+
+/* Contact */
+"Personal Address Book" = "Llyfr Cyfeiriadau Personol";
+"Collected Address Book" = "Llyfr Cyfeiriadau a Gasglwyd";
+
 /* IMAP Accounts */
-"New Mail Account" = "New Mail Account";
-"Server Name" = "Server Name";
-"Port" = "Port";
-"User Name" = "User Name";
-"Full Name" = "Full Name";
-"Email" = "Email";
+"Mail Account" = "Cyfrif E-bost";
+"New Mail Account" = "Cyfrif E-bost Newydd";
+"Server Name" = "Enw Gweinydd";
+"Port" = "Porth";
+"Encryption" = "Amgryptiad";
+"None" = "Dim";
+"User Name" = "Enw Defnyddiwr";
+"Full Name" = "Enw Llawn";
+"Email" = "E-bost";
+"Reply To Email" = "Ymateb i E-bost";
 "Signature" = "Llofnod";
-"(Click to create)" = "(Click to create)";
-"Please enter your signature below" = "Please enter your signature below";
+"(Click to create)" = "(Cliciwch i greu)";
+"Please enter your signature below" = "Rhowch eich llofnod isod";
+"Please specify a valid sender address." = "Nodwch gyfeiriad e-bost dilys.";
+"Please specify a valid reply-to address." = "Nodwch gyfeiriad e-bost ymateb dilys.";
+"Specify a hostname other than the local host" = "Nodwch enw gwesteiwr heblaw'r gwesteiwr lleol";
+
 /* Additional Parameters */
-"Additional Parameters" = "Additional Parameters";
+"Additional Parameters" = "Paramedrau Ychwanegol";
+
 /* password */
-"New password" = "New password";
-"Confirmation" = "Confirmation";
-"Change" = "Change";
+"New password" = "Cyfrinair newydd";
+"Confirmation" = "Cadarnhau";
+"Change" = "Newid";
+
 /* Event+task classifications */
-"Default events classification" ="Default events classification";
-"Default tasks classification" ="Default tasks classification";
-"PUBLIC_item" = "Public";
-"CONFIDENTIAL_item" = "Confidential";
-"PRIVATE_item" = "Private";
+"Default events classification" = "Dosbarthiad digwyddiadau diofyn";
+"Default tasks classification" = "Dosbarthiad tasgau diofyn";
+"PUBLIC_item" = "Cyhoeddus";
+"CONFIDENTIAL_item" = "Cyfrinachol";
+"PRIVATE_item" = "Preifat";
+
 /* Event+task categories */
+"Calendar Category" = "Categori Calendr";
+"Add Calendar Category" = "Ychwanegu Categori Calendr";
+"New category" = "Categori newydd";
+"Remove Calendar Category" = "Dileu Categori Calendr";
+"Contact Category" = "Categori Cysylltiadau";
+"Add Contact Category" = "Ychwanegu Categori Cysylltiadau";
+"Remove Contact Category" = "Dileu Categori Cysylltiadau";
 "category_none" = "Dim";
-"calendar_category_labels" = "Amrywiol,Anrhegion,Busnes,Canlyniadau,Clientau,Cwsmer,Cyflenwyr,Cystadleuaeth,Dilyn lan,Ffefrynnau,Galwadau,Gwyliau,Meeting,Gwyliau Cyhoeddus,Penblwydd,Personol,Projectau,Statws,Syniadau,Teithio";
+"calendar_category_labels" = "Amrywiol,Anrhegion,Busnes,Canlyniadau,Cleientiaid,Cwsmer,Cyflenwyr,Cystadleuaeth,Dilyn lan,Ffefrynnau,Galwadau,Gwyliau,Cyfarfod,Gwyliau Cyhoeddus,Pen-blwydd,Personol,Prosiectau,Statws,Syniadau,Teithio";
+
 /* Default module */
-"Calendar" = "Calendar";
-"Contacts" = "Address Book";
-"Mail" = "Mail";
-"Last" = "Last used";
-"Default Module " = "Default module";
-"Language" ="Iaith";
+"Calendar" = "Calendr";
+"Contacts" = "Llyfr Cyfeiriadau";
+"Mail" = "E-bost";
+"Last" = "Defnyddiwyd ddiwethaf";
+"Default Module " = "Modiwl Diofyn";
+"SOGo Version" = "Fersiwn SOGo";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Cadw dewisiadau ac ail-lwytho'r dudalen nawr?";
+"Language" = "Iaith";
 "choose" = "Dewis ...";
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
-"ChineseTaiwan" = "Chinese (Taiwan)";
-"Croatian" = "Hrvatski";
+"ChineseTaiwan" = "Tsieineeg (Taiwan)";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
-"Dutch" = "Nederlands";
+"Dutch" = "Yr Iseldiroedd";
 "English" = "English";
 "Finnish" = "Suomi";
 "French" = "Français";
@@ -165,14 +251,14 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
-"Latvian" = "Latvijas";
+"Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
-"BrazilianPortuguese" = "Português brasileiro";
 "Polish" = "Polski";
 "Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Serbian" = "Српски";
 "Slovak" = "Slovensky";
@@ -183,73 +269,144 @@
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
+"Refresh View" = "Adnewyddu'r Wedd";
+"refreshview_manually" = "Corfforol";
+"refreshview_every_minute" = "Bob munud";
+"refreshview_every_2_minutes" = "Bob 2 funud";
+"refreshview_every_5_minutes" = "Bob 5 munud";
+"refreshview_every_10_minutes" = "Bob 10 munud";
+"refreshview_every_20_minutes" = "Bob 20 munud";
+"refreshview_every_30_minutes" = "Bob 30 munud";
+"refreshview_once_per_hour" = "Unwaith bob awr";
+
 /* Return receipts */
-"When I receive a request for a return receipt" = "When I receive a request for a return receipt";
-"Never send a return receipt" = "Never send a return receipt";
-"Allow return receipts for some messages" = "Allow return receipts for some messages";
-"If I'm not in the To or Cc of the message" = "If I'm not in the To or Cc of the message";
-"If the sender is outside my domain" = "If the sender is outside my domain";
-"In all other cases" = "In all other cases";
-"Never send" = "Never send";
-"Always send" = "Always send";
-"Ask me" = "Ask me";
+"When I receive a request for a return receipt" = "Pan fydda i'n cael cais am dderbynneb derbyn";
+"Never send a return receipt" = "Peidio byth ag anfon derbynneb derbyn";
+"Allow return receipts for some messages" = "Caniatáu derbynneb derbyn ar gyfer rhai negeseuon";
+"If I'm not in the To or Cc of the message" = "Os nad ydw i ym maes At na maes Copi y neges";
+"If the sender is outside my domain" = "Os yw'r anfonwr y tu allan i fy mharth";
+"In all other cases" = "Ym mhob achos arall";
+"Never send" = "Peidio anfon byth";
+"Always send" = "Anfon bob amser";
+"Ask me" = "Gofynnwch i fi";
+
 /* Filters - UIxPreferences */
-"Filters" = "Filters";
-"Active" = "Active";
-"Move Up" = "Move Up";
-"Move Down" = "Move Down";
+"Filters" = "Hidlau";
+"Active" = "Gweithredol";
+"Move Up" = "Symud i Fyny";
+"Move Down" = "Symud i Lawr";
+"Connection error" = "Gwall cysylltu";
+"Service temporarily unavailable" = "Gwasanaeth ddim ar gael dros dro";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Galluogi hidl";
+
 /* Filters - UIxFilterEditor */
-"Filter name" = "Filter name";
-"For incoming messages that" = "For incoming messages that";
-"match all of the following rules" = "match all of the following rules";
-"match any of the following rules" = "match any of the following rules";
-"match all messages" = "match all messages";
-"Perform these actions" = "Perform these actions";
-"Subject" = "Subject";
-"From" = "From";
-"To" = "To";
+"Filter name" = "Enw hidl";
+/* Button label */
+"Add a condition" = "Ychwanegu amod";
+/* Button label */
+"Add an action" = "Ychwanegu gweithred";
+"For incoming messages that" = "Ar gyfer negeseuon yn dod i mewn sydd";
+"match all of the following rules" = "cydweddu â'r rheolau canlynol i gyd";
+"match any of the following rules" = "cydweddu ag unrhyw un o'r rheolau canlynol";
+"match all messages" = "cydweddu pob neges";
+"Perform these actions" = "Gwneud hyn";
+"Untitled Filter" = "Hidl heb deitl";
+"Subject" = "Pwnc";
+"From" = "Oddi wrth";
+"To" = "At";
 "Cc" = "Cc";
-"To or Cc" = "To or Cc";
-"Size (Kb)" = "Size (Kb)";
-"Header" = "Header";
-"Flag the message with" = "Flag the message with";
-"Discard the message" = "Discard the message";
-"File the message in" = "File the message in";
-"Keep the message" = "Keep the message";
-"Forward the message to" = "Forward the message to";
-"Send a reject message" = "Send a reject message";
-"Send a vacation message" = "Send a vacation message";
-"Stop processing filter rules" = "Stop processing filter rules";
-"is under" = "is under";
-"is over" = "is over";
-"is" = "is";
-"is not" = "is not";
-"contains" = "contains";
-"does not contain" = "does not contain";
-"matches" = "matches";
-"does not match" = "does not match";
-"matches regex" = "matches regex";
-"does not match regex" = "does not match regex";
-"Seen" = "Seen";
-"Deleted" = "Deleted";
-"Answered" = "Answered";
-"Flagged" = "Flagged";
-"Junk" = "Junk";
-"Not Junk" = "Not Junk";
-"Label 1" = "Label 1";
-"Label 2" = "Label 2";
-"Label 3" = "Label 3";
-"Label 4" = "Label 4";
-"Label 5" = "Label 5";
-"Password must not be empty." = "Le mot de passe ne doit pas être vide.";
-"The passwords do not match. Please try again." = "Les mots de passe ne sont pas identiques. Essayez de nouveau.";
-"Password change failed" = "Échec au changement";
-"Password change failed - Permission denied" = "Échec au changement - mauvaises permissions";
-"Password change failed - Insufficient password quality" = "Échec au changement - qualité insuffisante";
-"Password change failed - Password is too short" = "Échec au changement - mot de passe trop court";
-"Password change failed - Password is too young" = "Échec au changement - mot de passe trop récent";
-"Password change failed - Password is in history" = "Échec au changement - mot de passe dans l'historique";
-"Unhandled policy error: %{0}" = "Erreur inconnue pour le ppolicy: %{0}";
-"Unhandled error response" = "Erreur inconnue";
-"Password change is not supported." = "Changement de mot de passe non-supporté.";
-"Unhandled HTTP error code: %{0}" = "Code HTTP non-géré: %{0}";
+"To or Cc" = "At neu Cc";
+"Size (Kb)" = "Maint (Kb)";
+"Header" = "Pennyn";
+"Body" = "Corff";
+"Flag the message with" = "Fflagio'r neges gyda";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Fflag";
+
+"Discard the message" = "Dileu neges";
+"File the message in" = "Symud y neges i";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Blwch Derbyn";
+
+"Keep the message" = "Cadw'r neges";
+"Forward the message to" = "Anfon y neges ymlaen i";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "E-bost";
+
+"Send a reject message" = "Anfon neges gwrthod";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Neges";
+
+"Send a vacation message" = "Anfon neges gwyliau";
+"Stop processing filter rules" = "Stopio gweithredu rheolau hidlo";
+"is under" = "yn llai na";
+"is over" = "yn fwy na";
+"is" = "yn";
+"is not" = "nid yw'n";
+"contains" = "yn cynnwys";
+"does not contain" = "nid yw'n cynnwys";
+"matches" = "yn cyfateb";
+"does not match" = "ddim yn cyfateb";
+"matches regex" = "yn cyfateb regex";
+"does not match regex" = "ddim yn cyfateb regex";
+/* Placeholder for the value field of a condition */
+"Value" = "Gwerth";
+"Seen" = "Gwelwyd";
+"Deleted" = "Dilëwyd";
+"Answered" = "Atebwyd";
+"Flagged" = "Fflagiwyd";
+"Junk" = "Sothach";
+"Not Junk" = "Ddim yn Sothach";
+
+/* Password policy */
+"The password was changed successfully." = "Newidiwyd y cyfrinair yn llwyddiannus.";
+"Password must not be empty." = "All y cyfrinair ddim bod yn wag.";
+"The passwords do not match. Please try again." = "Dydy'r cyfrineiriau ddim yn cyfateb. Rhowch gynnig arall arni.";
+"Password change failed" = "Methodd y newid cyfrinair.";
+"Password change failed - Permission denied" = "Methodd y newid cyfrinair - Dim caniatâd";
+"Password change failed - Insufficient password quality" = "Methodd y newid cyfrinair - Cyfrinair yn rhy wan";
+"Password change failed - Password is too short" = "Methodd y newid cyfrinair - Cyfrinair yn rhy fyr";
+"Password change failed - Password is too young" = "Methodd y newid cyfrinair - Cyfrinair yn rhy ifanc";
+"Password change failed - Password is in history" = "Methodd y newid cyfrinair - Cyfrinair yn yr hanes";
+"Unhandled policy error: %{0}" = "Gwall polisi heb fodd ei drin: %{0}";
+"Unhandled error response" = "Ymateb gwall heb fodd ei drin";
+"Password change is not supported." = "Dim cefnogaeth i newid cyfrinair.";
+"Unhandled HTTP error code: %{0}" = "Gwall polisi heb fodd ei drin: %{0}";
+"Cancel" = "Canslo";
+"Invitations" = "Gwahoddiadau";
+"Edit Filter" = "Golygu Hidl";
+"Delete Filter" = "Dileu Hidl";
+"Create Filter" = "Creu Hidl";
+"Delete Label" = "Dileu Label";
+"Create Label" = "Creu Label";
+"Accounts" = "Cyfrifon";
+"Edit Account" = "Golygu Cyfrif";
+"Delete Account" = "Dileu Cyfrif";
+"Create Account" = "Creu Cyfrif";
+"Account Name" = "Enw Cyfrif";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "Defnyddio Gravatar";
+"Alternate Avatar" = "Afatar Amgen";
+"none" =  "Dim";
+"identicon" = "Identicon";
+"monsterid" = "Anghenfil";
+"wavatar" = "Wavatar";
+"retro" = "Hen Ffasiwn";
+
+/* Animation Level */
+"Animation Level" = "Modd Animeiddiad";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normal";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Cyfyngedig";
+"animation_NONE" = "Dim";

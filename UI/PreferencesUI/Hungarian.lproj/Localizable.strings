@@ -194,6 +194,7 @@
 "Please enter your signature below" = "Kérem itt adja meg az aláírását";
 "Please specify a valid sender address." = "Egy érvényes feladó címet adjon meg.";
 "Please specify a valid reply-to address." = "Egy érvényes válaszcímet adjon meg.";
+"Specify a hostname other than the local host" = "A helyi géptől eltérő gépnevet adjon meg";
 
 /* Additional Parameters */
 "Additional Parameters" = "További beállítások";
@@ -249,7 +250,7 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
-"Latvian" = "Latvijas";
+"Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
@@ -400,3 +401,11 @@
 "monsterid" = "Szörny";
 "wavatar" = "Wavatar";
 "retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Animáció szintje";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normál";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Korlátozott";
+"animation_NONE" = "Nincs";

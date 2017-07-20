@@ -18,10 +18,14 @@ vtodo_class2 = "(משימה סודית)";
 "calendar_label" = "לוח שנה";
 "startDate_label" = "התחלה";
 "endDate_label" = "סיום";
+"time_label" = "זמן";
+"to_label" = "עבור";
 "due_label" = "תאריך להגשה";
 "location_label" = "מיקום";
 "summary_label" = "תקציר";
 "comment_label" = "הערה";
+"organizer_label" = "מארגן";
+"attendee_label" = "משתתפים";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "הזמנה לאירוע: \"{Summary}%\"";
 "(sent by %{SentBy}) " = "(מאת {SentBy}%)";

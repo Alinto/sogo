@@ -53,7 +53,13 @@
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Добредојдовте на СОГо мејлерот. Користете го дрвото со папки на левата страна за да се движите низ вашите сметки за пошта!";
 "Read messages"       = "Читај пораки";
+
+/* Tooltip for fab button */
 "Write a new message" = "Напиши нова порака";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Напиши порака во нов прозорец";
+
 "Share" = "Дели";
 "Account" = "Сметка";
 "Shared Account" = "Делена сметка";
@@ -63,6 +69,8 @@
 
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Нема одбрано сандаче";
+
+"An error occured while communicating with the mail server" = "Се случи грешка при комуникација со серверот за електронска пошта";
 
 /* Mailbox actions */
 /* Compact Folder success message */
@@ -217,6 +225,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Конвертирај во задача";
 
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Преземи ги сите прилози";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "прилози";
+
 "Print..." = "Отпечати...";
 "Delete Message" = "Избриши порака";
 "Delete Selected Messages" = "Избриши ги означените пораки";
@@ -315,6 +329,7 @@
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Грешка при прикажување на фајл \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Во тек е активно прикачување на фајл. Затварањето на прозорецот ќе го прекине прикачувањето.";
+"Message is too big" = "Пораката е преголема";
 
 /* Appears while sending the message */
 "Sending" = "Испраќам";

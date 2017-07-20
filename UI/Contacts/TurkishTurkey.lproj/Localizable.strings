@@ -64,7 +64,7 @@
 "selected" = "kişi seçildi";
 
 /* Empty right pane */
-"No contact selected" = "Seçili kişi yok";
+"No contact selected" = "Kişi seçilmemiş";
 
 /* Tooltips */
 "Create a new address book card" = "Yeni adres kartı oluştur";
@@ -86,10 +86,10 @@
 "Properties" = "Özellikler";
 "Sharing..." = "Paylaşım...";
 "Write" = "Yaz";
-"Delete" = "Sil";
+"Delete" = "SİL";
 "Instant Message" = "Anlık İleti";
 "Add..." = "Ekle...";
-"Remove" = "Sil";
+"Remove" = "Çıkart";
 "Please wait..." = "Lütfen bekleyin...";
 "No possible subscription" = "Mümkün olan bir üyelik yok";
 "Preferred" = "Tercih edilen";
@@ -247,6 +247,12 @@
 "More options" = "Diğer seçenekler";
 "Role" = "Görev";
 "Add Screen Name" = "Görünen İsim Ekle";
+"Custom 1" = "Özel 1";
+"Custom 2" = "Özel 2";
+"Custom 3" = "Özel 3";
+"Custom 4" = "Özel 4";
+"Custom Value" = "Özel Değer";
+"New Custom Value" = "Yeni Özel Değer";
 "Synchronization" = "Eşitleme";
 "Synchronize" = "Eşitle";
 "Sucessfully subscribed to address book" = "Adres defterine başarıyla üye olundu";

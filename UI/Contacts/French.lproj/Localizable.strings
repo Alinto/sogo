@@ -247,6 +247,12 @@
 "More options" = "Options supplémentaires";
 "Role" = "Rôle";
 "Add Screen Name" = "Ajouter un surnom";
+"Custom 1" = "Autre 1";
+"Custom 2" = "Autre 2";
+"Custom 3" = "Autre 3";
+"Custom 4" = "Autre 4";
+"Custom Value" = "Valeur";
+"New Custom Value" = "Ajouter un champs personnalisé";
 "Synchronization" = "Synchronisation";
 "Synchronize" = "Synchroniser";
 "Sucessfully subscribed to address book" = "Abonnement au carnet d'adresses complété";

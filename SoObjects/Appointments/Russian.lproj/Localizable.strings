@@ -18,10 +18,14 @@ vtodo_class2 = "(Конфиденциальная задача)";
 "calendar_label" = "Календарь";
 "startDate_label" = "Начало";
 "endDate_label" = "Конец";
+"time_label" = "Время";
+"to_label" = "кому";
 "due_label" = "Должно быть готово к:";
 "location_label" = "Местонахождение";
 "summary_label" = "Краткое содержание:";
 "comment_label" = "Комментарий";
+"organizer_label" = "Организатор";
+"attendee_label" = "Участник";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Приглашение на мероприятие: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(послал %{SentBy}) ";

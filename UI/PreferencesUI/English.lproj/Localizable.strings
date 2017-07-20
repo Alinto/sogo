@@ -47,6 +47,7 @@
 "Enable auto reply on" = "Enable auto reply on";
 "Disable auto reply on" = "Disable auto reply on";
 "Always send vacation message response" = "Always send vacation message response";
+"Discard incoming mails during vacation" = "Discard incoming mails during vacation";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Please specify your message and your email addresses for which you want to enable auto reply.";
 "Your vacation message must not end with a single dot on a line." = "Your vacation message must not end with a single dot on a line.";
@@ -250,7 +251,7 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
-"Latvian" = "Latvijas";
+"Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";

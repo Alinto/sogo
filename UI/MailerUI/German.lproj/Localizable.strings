@@ -70,6 +70,8 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Keine Mailbox ausgewählt";
 
+"An error occured while communicating with the mail server" = "Bei der Kommunikation mit dem E-Mail-Server ist ein Fehler aufgetreten";
+
 /* Mailbox actions */
 /* Compact Folder success message */
 "Folder compacted" = "Ordner komprimiert";
