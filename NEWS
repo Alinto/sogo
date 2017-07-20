@@ -1,8 +1,11 @@
-2.3.22 (2017-XX-XX)
+2.3.22 (2017-07-20)
 -------------------
 
 New features
  - [eas] initial EAS v16 and email drafts support
+
+Enhancements
+ - [web] updated CKEditor to version 4.7.1
 
 Bug fixes
  - [web] use the organizer's alarm by default when accepting IMIP messages (#3934)
