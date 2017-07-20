@@ -29,7 +29,7 @@
 "Name" = "Tam İsim";
 "Color" = "Renk";
 "Add" = "Ekle";
-"Delete" = "Sil";
+"Delete" = "SİL";
 
 /* contacts categories */
 "contacts_category_labels" = "Meslektaş, Rakip, Müşteri, Arkadaş, Aile, İş Ortağı, Tedarikçi, Basın, VIP";
@@ -250,7 +250,7 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
-"Latvian" = "Latvijas";
+"Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";

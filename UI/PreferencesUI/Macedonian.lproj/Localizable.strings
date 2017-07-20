@@ -194,6 +194,7 @@
 "Please enter your signature below" = "Внесете го долу вашиот потпис";
 "Please specify a valid sender address." = "Обезбедете валидна адреса на испраќачот.";
 "Please specify a valid reply-to address." = "Обезбедете валидна електронска адреса за “одговори на“.";
+"Specify a hostname other than the local host" = "Дефинирај hostname различен од local host";
 
 /* Additional Parameters */
 "Additional Parameters" = "Дополнителни параметри";
@@ -249,7 +250,7 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
-"Latvian" = "Latvijas";
+"Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
 "Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
@@ -400,3 +401,11 @@
 "monsterid" = "Чудовиште";
 "wavatar" = "Wavatar";
 "retro" = "Ретро";
+
+/* Animation Level */
+"Animation Level" = "Ниво на анимација";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Нормално";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Ограничено";
+"animation_NONE" = "Никакво";

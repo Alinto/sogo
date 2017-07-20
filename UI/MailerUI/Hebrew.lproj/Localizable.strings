@@ -70,6 +70,8 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "לא נבחר תא דואר";
 
+"An error occured while communicating with the mail server" = "התקבלה שגיאה בהתחברות לשרת. נסו שנית מאוחר יותר.";
+
 /* Mailbox actions */
 /* Compact Folder success message */
 "Folder compacted" = "התיקייה נדחסה";
@@ -79,7 +81,7 @@
 /* acls */
 "Access rights to" = "מתן גישה ל";
 "For user" = "למשתמש";
-"Any Authenticated User" = "כל משתמש מאומת";
+"Any Authenticated User" = "כל משתמש מורשה";
 "List and see this folder" = "פרוס וצפה בתיקייה";
 "Read mails from this folder" = "קרא מיילים מתיקייה";
 "Mark mails read and unread" = "סמן מיילים כנקראו ולא נקראו";
@@ -189,7 +191,7 @@
 "New Folder..." = "תיקייה חדשה...";
 "Compact This Folder" = "דחוס תיקייה";
 "Search Messages..." = "חפש הודעות...";
-"Sharing..." = "משתף...";
+"Sharing..." = "שיתוף...";
 "New Subfolder..." = "תת תיקייה חדשה...";
 "Rename Folder..." = "שנה שם לתיקייה...";
 "Delete Folder" = "מחק תיקייה";
@@ -351,7 +353,7 @@
 "No" = "לא";
 "Location" = "מיקום";
 "Rename" = "שנה שם";
-"Compact" = "דחוס";
+"Compact" = "דחיסת הודעות";
 "Export" = "יצוא";
 "Set as Drafts" = "סמן כטיוטה";
 "Set as Sent" = "סמן כנשלח";

@@ -397,11 +397,11 @@
 	    }
 
 	  if ([mailingMechanism isEqualToString: @"sendmail"])
-	    result = [self _sendmailSendData: data
+	    result = [self _sendmailSendData: cleaned_message
 			   toRecipients: recipients
 			   sender: [sender pureEMailAddress]];
 	  else
-	    result = [self _smtpSendData: data
+	    result = [self _smtpSendData: cleaned_message
                             toRecipients: recipients
                                   sender: [sender pureEMailAddress]
                        withAuthenticator: authenticator

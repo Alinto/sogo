@@ -121,9 +121,9 @@
     </xsl:choose>
   </xsl:template>
   <xsl:template name="next.itemsymbol">
-    <xsl:param name="itemsymbol" select="'default'"/>
+    <xsl:param name="itemsymbol" select="'square'"/>
     <xsl:choose>
-      <xsl:otherwise>square</xsl:otherwise>
+      <xsl:when test="$itemsymbol='square'">square</xsl:when>
     </xsl:choose>
   </xsl:template>
 

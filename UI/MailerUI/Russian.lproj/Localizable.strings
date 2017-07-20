@@ -70,6 +70,8 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Не выбрано ни одной папки";
 
+"An error occured while communicating with the mail server" = "Произошла ошибка при обращении к почтовому серверу.";
+
 /* Mailbox actions */
 /* Compact Folder success message */
 "Folder compacted" = "Папка сжата";

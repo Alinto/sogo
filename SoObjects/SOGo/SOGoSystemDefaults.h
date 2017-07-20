@@ -94,8 +94,8 @@
 
 - (int) maximumMessageSizeLimit;
 
-- (int) maximumMessageSubmissionCount;
-- (int) maximumRecipientCount;
+- (NSUInteger) maximumMessageSubmissionCount;
+- (NSUInteger) maximumRecipientCount;
 - (int) maximumSubmissionInterval;
 - (int) messageSubmissionBlockInterval;
 

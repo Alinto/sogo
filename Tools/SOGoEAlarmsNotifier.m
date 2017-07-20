@@ -196,6 +196,8 @@
   NSString *credsFilename;
   int count, max;
 
+  [[SOGoProductLoader productLoader] loadAllProducts: NO];
+
   if ([[NSUserDefaults standardUserDefaults] stringForKey: @"h"])
     {
       [self usage];

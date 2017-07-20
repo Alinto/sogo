@@ -1177,38 +1177,45 @@ void handle_eas_terminate(int signum)
 
                name = [NSString stringWithFormat: @"vtodo/%@", [[folders objectAtIndex:fi] nameInContainer]];
                type = ([[[folders objectAtIndex:fi] nameInContainer] isEqualToString: personalFolderName] ? 7 : 15);
-               [commands appendFormat: @"<%@><ServerId>%@</ServerId><ParentId>%@</ParentId><DisplayName>%@</DisplayName><Type>%d</Type></%@>", operation,
-                   [name stringByEscapingURL], @"0", [[[folders objectAtIndex:fi] displayName] activeSyncRepresentationInContext: context], type, operation];
 
-               command_count++;
-               key = [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], name];
-
-               o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
-               [o setObjectType: ActiveSyncFolderCacheObject];
-               [o setTableUrl: [self folderTableURL]];
-               [o reloadIfNeeded];
-               [[o properties ]  setObject:  [[folders objectAtIndex:fi] displayName]  forKey: @"displayName"];
-
-               if ([operation isEqualToString: @"Add"])
+               // We always sync the "Default Tasks folder" (7). For "User-created Tasks folder" (15), we check if we include it in
+               // the sync process by checking if "Show tasks" is enabled. If not, we skip the folder entirely.
+               if (type == 7 ||
+                   (type == 15 && [[folders objectAtIndex: fi] showCalendarTasks]))
                  {
-                   // clean cache content to avoid stale data
-                   [[o properties] removeObjectForKey: @"SyncKey"];
-                   [[o properties] removeObjectForKey: @"SyncCache"];
-                   [[o properties] removeObjectForKey: @"DateCache"];
-                   [[o properties] removeObjectForKey: @"UidCache"];
-                   [[o properties] removeObjectForKey: @"MoreAvailable"];
-                   [[o properties] removeObjectForKey: @"BodyPreferenceType"];
-                   [[o properties] removeObjectForKey: @"SupportedElements"];
-                   [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
-                   [[o properties] removeObjectForKey: @"InitialLoadSequence"];
-                   [[o properties] removeObjectForKey: @"FirstIdInCache"];
-                   [[o properties] removeObjectForKey: @"LastIdInCache"];
-                   [[o properties] removeObjectForKey: @"MergedFoldersSyncKeys"];
-                   [[o properties] removeObjectForKey: @"MergedFolder"];
-                   [[o properties] removeObjectForKey: @"CleanoutDate"];
-                 }
+                   [commands appendFormat: @"<%@><ServerId>%@</ServerId><ParentId>%@</ParentId><DisplayName>%@</DisplayName><Type>%d</Type></%@>", operation,
+                             [name stringByEscapingURL], @"0", [[[folders objectAtIndex:fi] displayName] activeSyncRepresentationInContext: context], type, operation];
 
-               [o save];
+                   command_count++;
+
+                   key = [NSString stringWithFormat: @"%@+%@", [context objectForKey: @"DeviceId"], name];
+                   o = [SOGoCacheGCSObject objectWithName: key  inContainer: nil];
+                   [o setObjectType: ActiveSyncFolderCacheObject];
+                   [o setTableUrl: [self folderTableURL]];
+                   [o reloadIfNeeded];
+                   [[o properties ]  setObject:  [[folders objectAtIndex:fi] displayName]  forKey: @"displayName"];
+
+                   if ([operation isEqualToString: @"Add"])
+                     {
+                       // clean cache content to avoid stale data
+                       [[o properties] removeObjectForKey: @"SyncKey"];
+                       [[o properties] removeObjectForKey: @"SyncCache"];
+                       [[o properties] removeObjectForKey: @"DateCache"];
+                       [[o properties] removeObjectForKey: @"UidCache"];
+                       [[o properties] removeObjectForKey: @"MoreAvailable"];
+                       [[o properties] removeObjectForKey: @"BodyPreferenceType"];
+                       [[o properties] removeObjectForKey: @"SupportedElements"];
+                       [[o properties] removeObjectForKey: @"SuccessfulMoveItemsOps"];
+                       [[o properties] removeObjectForKey: @"InitialLoadSequence"];
+                       [[o properties] removeObjectForKey: @"FirstIdInCache"];
+                       [[o properties] removeObjectForKey: @"LastIdInCache"];
+                       [[o properties] removeObjectForKey: @"MergedFoldersSyncKeys"];
+                       [[o properties] removeObjectForKey: @"MergedFolder"];
+                       [[o properties] removeObjectForKey: @"CleanoutDate"];
+                     }
+
+                   [o save];
+                 }
              } 
            else if ([[folders objectAtIndex:fi] isKindOfClass: [SOGoContactGCSFolder class]])
              {
@@ -1241,8 +1248,8 @@ void handle_eas_terminate(int signum)
 
                [o save];
              }
-         }
-     }
+         } // if (operation)
+     } // for (fi = 0; fi <= count ; fi++)
 
   
   // set a new syncKey if there are folder changes

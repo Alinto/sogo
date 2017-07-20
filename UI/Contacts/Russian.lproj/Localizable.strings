@@ -41,6 +41,9 @@
 "Move To" = "Переместить в";
 "Copy To" = "Копировать";
 "Add to" = "Добавить в";
+"To" = "Кому";
+"Carbon Copy (Cc)" = "Копия (Cc)";
+"Blind Carbon Copy (Bcc)" = "Скрытая копия (Bcc)";
 
 /* Subheader of empty addressbook */
 "No contact" = "Нет контакта";
@@ -175,7 +178,7 @@
 "%{0} card(s) copied" = "%{0} карточка(ек) скопирована(о)";
 "%{0} card(s) moved" = "%{0} карточка(ек) перемещена(о)";
 "SoAccessDeniedException" = "Вы не можете писать в эту адресную книгу.";
-"Forbidden" = "Вы не можете писать в эту адресную книгу.";
+"Forbidden" = "Запрещено";
 "Invalid Contact" = "Выбранный контакт более не существует.";
 "Unknown Destination Folder" = "Выбранная адресная книга более не существует.";
 
@@ -244,6 +247,12 @@
 "More options" = "Больше опций";
 "Role" = "Роль";
 "Add Screen Name" = "Добавить имя экрана";
+"Custom 1" = "Настраиваемое 1";
+"Custom 2" = "Настраиваемое 2";
+"Custom 3" = "Настраиваемое 3";
+"Custom 4" = "Настраиваемое 4";
+"Custom Value" = "Настраиваемое значение";
+"New Custom Value" = "Новое настраиваемое значение";
 "Synchronization" = "Синхронизация";
 "Synchronize" = "Синхронизировать";
 "Sucessfully subscribed to address book" = "Успешная подписка на адресную книгу";

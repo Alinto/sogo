@@ -48,6 +48,10 @@ typedef void (*NSUserDefaultsInitFunction) ();
 
 #define DIR_SEP "/"
 
+#ifndef NSUIntegerMax
+#define NSUIntegerMax UINTPTR_MAX
+#endif
+
 static void
 BootstrapNSUserDefaults ()
 {
@@ -576,14 +580,28 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
 //
 //
 //
-- (int) maximumMessageSubmissionCount
+- (NSUInteger) maximumMessageSubmissionCount
 {
-  return [self integerForKey: @"SOGoMaximumMessageSubmissionCount"];
+  NSUInteger v;
+
+  v = [self integerForKey: @"SOGoMaximumMessageSubmissionCount"];
+
+  if (!v)
+    return NSUIntegerMax;
+
+  return v;
 }
 
-- (int) maximumRecipientCount
+- (NSUInteger) maximumRecipientCount
 {
-  return [self integerForKey: @"SOGoMaximumRecipientCount"];
+  NSUInteger v;
+
+  v = [self integerForKey: @"SOGoMaximumRecipientCount"];
+
+  if (!v)
+    return NSUIntegerMax;
+
+  return v;
 }
 
 - (int) maximumSubmissionInterval

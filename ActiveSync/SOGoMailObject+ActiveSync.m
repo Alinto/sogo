@@ -35,6 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSCharacterSet.h>
+#import <Foundation/NSTimeZone.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
@@ -46,9 +47,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGExtensions/NGQuotedPrintableCoding.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSString+Encoding.h>
+#import <NGExtensions/NGHashMap.h>
 #import <NGImap4/NGImap4Envelope.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGImap4/NSString+Imap4.h>
+#import <NGImap4/NGImap4Connection.h>
+#import <NGImap4/NGImap4Client.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOApplication.h>
 
@@ -63,6 +67,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Mailer/SOGoMailLabel.h>
 
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserFolder.h>
 
 #include "iCalTimeZone+ActiveSync.h"
 #include "NSData+ActiveSync.h"
@@ -73,6 +78,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <Appointments/iCalPerson+SOGo.h>
 #include <Mailer/NSString+Mail.h>
 #include <Mailer/SOGoMailBodyPart.h>
+#import <Mailer/SOGoMailLabel.h>
+#import <Mailer/SOGoMailFolder.h>
+#import <Mailer/SOGoMailObject.h>
+#import <Mailer/SOGoMailAccount.h>
+#import <Mailer/SOGoMailAccounts.h>
+
 #include <SOGo/SOGoUser.h>
 #include <SOGo/NSString+Utilities.h>
 
@@ -962,7 +973,12 @@ struct GlobalObjectId {
 
       // Location
       if ([[event location] length])
-        [s appendFormat: @"<Location xmlns=\"Email:\">%@</Location>", [[event location] activeSyncRepresentationInContext: context]];
+        {
+          if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 16.0)
+            [s appendFormat: @"<Location xmlns=\"AirSyncBase:\"><DisplayName>%@</DisplayName></Location>", [[event location] activeSyncRepresentationInContext: context]];
+          else
+            [s appendFormat: @"<Location xmlns=\"Email:\">%@</Location>", [[event location] activeSyncRepresentationInContext: context]];
+        }
 
       [s appendFormat: @"<Organizer xmlns=\"Email:\">%@</Organizer>", [[[event organizer] mailAddress] activeSyncRepresentationInContext: context]];
 
@@ -1421,5 +1437,105 @@ struct GlobalObjectId {
         }
     }
 }
+
+- (NSString *) storeMail: (NSDictionary *) theValues
+               inContext: (WOContext *) _context
+{
+  NSString *dateReceived, *folder, *s;
+  NGMimeMessageGenerator *generator;
+  NGMimeMessage *bounceMessage;
+  NSDictionary *identity;
+  NGMutableHashMap *map;
+  NGImap4Client *client;
+  NSData *message_data;
+
+  id o, result;
+  int bodyType;
+
+  identity = [[context activeUser] primaryIdentity];
+  message_data = nil;
+  bodyType = 1;
+
+  if ((o = [[theValues objectForKey: @"Body"] objectForKey: @"Type"]))
+    bodyType = [o intValue];
+
+  if (bodyType == 4)
+    {
+      s = [[theValues objectForKey: @"Body"] objectForKey: @"Data"];
+      message_data = [s dataUsingEncoding: NSUTF8StringEncoding];
+    }
+
+  if (bodyType == 1 || bodyType == 2)
+    {
+      map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
+
+      [map setObject: [NSString stringWithFormat: @"%@ <%@>", [identity objectForKey: @"fullName"], [identity objectForKey: @"email"]]  forKey: @"from"];
+      if ((o = [theValues objectForKey: @"To"]))
+          [map setObject: o  forKey: @"to"];
+
+      if ((o = [theValues objectForKey: @"Subject"]))
+        [map setObject: o  forKey: @"subject"];
+
+      o = [[theValues objectForKey: @"DateReceived"] calendarDate];
+
+      if (!o)
+        o = [NSCalendarDate date];
+
+#if GNUSTEP_BASE_MINOR_VERSION < 21
+      dateReceived = [o descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"
+                                             timeZone: [NSTimeZone timeZoneWithName: @"GMT"]
+                                               locale: nil];
+#else
+      dateReceived = [o descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"
+                                             timeZone: [NSTimeZone timeZoneWithName: @"GMT"]
+                                               locale: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                                        [NSArray arrayWithObjects: @"Jan", @"Feb", @"Mar", @"Apr",
+                                                                                 @"May", @"Jun", @"Jul", @"Aug",
+                                                                                 @"Sep", @"Oct", @"Nov", @"Dec", nil],
+                                                                     @"NSShortMonthNameArray",
+                                                                        [NSArray arrayWithObjects: @"Sun", @"Mon", @"Tue", @"Wed", @"Thu",
+                                                                                 @"Fri", @"Sat", nil],
+                                                                     @"NSShortWeekDayNameArray",
+                                                                     nil]];
+#endif
+
+      [map setObject: dateReceived forKey: @"date"];
+      [map setObject: [NSString generateMessageID] forKey: @"message-id"];
+      [map setObject: (bodyType == 1 ? @"text/plain; charset=utf-8" : @"text/html; charset=utf-8")
+              forKey: @"content-type"];
+      [map setObject: @"quoted-printable" forKey: @"content-transfer-encoding"];
+
+      bounceMessage = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
+
+      [bounceMessage setBody: [[NSString stringWithFormat: @"%@", [[theValues objectForKey: @"Body"] objectForKey: @"Data"] ] dataUsingEncoding: NSUTF8StringEncoding]];
+
+      generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
+      message_data = [generator generateMimeFromPart: bounceMessage];
+    }
+
+  if (message_data)
+    {
+      client = [[self imap4Connection] client];
+
+      if (![imap4 doesMailboxExistAtURL: [container imap4URL]])
+        {
+          [[self imap4Connection] createMailbox: [[self imap4Connection] imap4FolderNameForURL: [container imap4URL]]
+                                          atURL: [[self mailAccountFolder] imap4URL]];
+          [imap4 flushFolderHierarchyCache];
+        }
+
+      folder = [imap4 imap4FolderNameForURL: [container imap4URL]];
+
+      result = [client append: message_data
+                     toFolder: folder
+                    withFlags: [NSArray arrayWithObjects: @"draft", nil]];
+
+      if ([[result objectForKey: @"result"] boolValue])
+        return [NSString stringWithFormat: @"%d", [self IMAP4IDFromAppendResult: result]];
+    }
+
+  return nil;
+}
+
 
 @end

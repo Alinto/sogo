@@ -24,6 +24,12 @@ CKEDITOR.editorConfig = function( config ) {
   config.allowedContent = true; // don't filter tags
   config.entities = false;
 
+  // Configure autogrow
+  // http://docs.ckeditor.com/#!/guide/dev_autogrow
+  config.autoGrow_onStartup = true;
+  config.autoGrow_minHeight = 300;
+  config.autoGrow_bottomSpace = 0;
+
   // Disables the built-in words spell checker if browser provides one. Defaults to true.
   // http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-disableNativeSpellChecker
   //config.disableNativeSpellChecker = false;

@@ -8,7 +8,7 @@
 "Calendar" = "לוח שנה";
 "Address Book"	= "אנשי קשר";
 "Mail" = "מייל";
-"Preferences" = "מועדפים";
+"Preferences" = "העדפות";
 "Administration" = "אפשרויות ניהול";
 "Disconnect" = "התנתקות";
 "Toggle Menu" = "פתח/סגור תפריט";
@@ -24,7 +24,7 @@
 "Add..." = "הוספה";
 "Remove" = "הסרה";
 "Subscribe User" = "רישום משתמש";
-"Any Authenticated User" = "כל משתמש מאומת";
+"Any Authenticated User" = "כל משתמש מורשה";
 "Public Access" = "נקודת גישה פתוחה";
 "Any user not listed above" = "כל משתמש לא מפורט לעיל";
 "Anybody accessing this resource from the public area" = "כל הניגש למשאב זה מאזור פומבי";

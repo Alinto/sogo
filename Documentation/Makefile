@@ -2,7 +2,8 @@ all: $(patsubst %.asciidoc,%.pdf,$(wildcard *.asciidoc))
 
 %.pdf : %.asciidoc
 	asciidoc -a docinfo1 -b docbook -d book -o $<.docbook $<
-	fop -c fonts/fop-config.xml -xsl docbook/xsl/sogo-fo.xsl -xml $<.docbook -pdf $@
+	xsltproc -o $<.fo docbook/xsl/sogo-fo.xsl $<.docbook
+	fop -c fonts/fop-config.xml $<.fo -pdf $@
 
 clean:
-	rm *.asciidoc.docbook *.pdf
+	rm -f *.asciidoc.fo *.asciidoc.docbook *.pdf

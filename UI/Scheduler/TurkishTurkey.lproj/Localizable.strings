@@ -102,7 +102,7 @@
 "new" = "Yeni";
 "Print view" = "Yazdırma Görünümü";
 "edit" = "Düzenle";
-"delete" = "Sil";
+"delete" = "SİL";
 "proposal" = "Teklif";
 "Save and Close" = "Kaydet ve Kapat";
 "Close" = "Kapat";
@@ -403,7 +403,7 @@ validate_untilbeforeend    = "Tekrar bitiş tarihi ilk tekrar tarihinden sonra o
 "New Event" = "Yeni Etkinlik";
 "New Task" = "Yeni Görev";
 "Edit" = "Düzenle";
-"Delete" = "Sil";
+"Delete" = "SİL";
 "Go to Today" = "Bugüne Git";
 "Day View" = "Günlük Görünüm";
 "Week View" = "Haftalık Görünüm";

@@ -18,10 +18,14 @@ vtodo_class2 = "(Доверлива задача)";
 "calendar_label" = "Календар:";
 "startDate_label" = "Почеток:";
 "endDate_label" = "Крај:";
+"time_label" = "Време";
+"to_label" = "до";
 "due_label" = "Краен датум:";
 "location_label" = "Локација";
 "summary_label" = "Резиме:";
 "comment_label" = "Коментар:";
+"organizer_label" = "Организатор";
+"attendee_label" = "Учесник";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Покана за настанот: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(испратено од %{SentBy}) ";

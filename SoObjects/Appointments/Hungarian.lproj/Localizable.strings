@@ -18,10 +18,14 @@ vtodo_class2 = "(Bizalmas feladat)";
 "calendar_label" = "Naptár";
 "startDate_label" = "Kezdete";
 "endDate_label" = "Vége";
+"time_label" = "Idő";
+"to_label" = "-";
 "due_label" = "Lejárat napja:";
 "location_label" = "Hely";
 "summary_label" = "Összegzés:";
 "comment_label" = "Megjegyzés:";
+"organizer_label" = "Szervező";
+"attendee_label" = "Résztvevő";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Meghívás eseményre: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(%{SentBy} által elküldve) ";
