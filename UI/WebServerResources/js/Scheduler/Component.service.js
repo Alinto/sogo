@@ -31,13 +31,15 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Component constructor
    */
-  Component.$factory = ['$q', '$timeout', '$log', '$rootScope', 'sgSettings', 'sgComponent_STATUS', 'Preferences', 'Card', 'Gravatar', 'Resource', function($q, $timeout, $log, $rootScope, Settings, Component_STATUS, Preferences, Card, Gravatar, Resource) {
+  Component.$factory = ['$q', '$timeout', '$log', '$rootScope', 'sgSettings', 'sgComponent_STATUS', 'Preferences', 'User', 'Card', 'Gravatar', 'Resource', function($q, $timeout, $log, $rootScope, Settings, Component_STATUS, Preferences, User, Card, Gravatar, Resource) {
     angular.extend(Component, {
       STATUS: Component_STATUS,
       $q: $q,
       $timeout: $timeout,
       $log: $log,
       $rootScope: $rootScope,
+      $settings: Settings,
+      $User: User,
       $Preferences: Preferences,
       $Card: Card,
       $gravatar: Gravatar,
@@ -616,6 +618,39 @@
     this.selected = false;
   };
 
+
+  /**
+   * @function initOrganizer
+   * @memberof Component.prototype
+   * @desc Extend instance with organizer including her freebusy information.
+   * @param {object} calendar - Calendar instance associated to current component
+   */
+  Component.prototype.initOrganizer = function(calendar) {
+    var _this = this, promise;
+    if (calendar && calendar.isSubscription) {
+      promise = Component.$User.$filter(calendar.owner).then(function(results) {
+        var owner = results[0];
+        _this.organizer = {
+          uid: owner.uid,
+          name: owner.cn,
+          email: owner.c_email
+        };
+      });
+    }
+    else {
+      this.organizer = {
+        uid: Component.$settings.activeUser('login'),
+        name: Component.$settings.activeUser('identification'),
+        email: Component.$settings.activeUser('email')
+      };
+      promise = Component.$q.when();
+    }
+    // Fetch organizer's freebusy
+    promise.then(function() {
+      _this.updateFreeBusyAttendee(_this.organizer);
+    });
+  };
+
   /**
    * @function hasCustomRepeat
    * @memberof Component.prototype
@@ -769,6 +804,8 @@
     this.freebusy = this.updateFreeBusyCoverage();
 
     if (this.attendees) {
+      if (this.organizer)
+        this.updateFreeBusyAttendee(this.organizer);
       _.forEach(this.attendees, function(attendee) {
         _this.updateFreeBusyAttendee(attendee);
       });
@@ -871,9 +908,13 @@
    * @desc Add an attendee and fetch his freebusy info.
    * @param {Object} card - an Card object instance to be added to the attendees list
    */
-  Component.prototype.addAttendee = function(card) {
+  Component.prototype.addAttendee = function(card, options) {
     var _this = this, attendee, list, url, params;
     if (card) {
+      if (!this.attendees || (options && options.organizerCalendar)) {
+        // No attendee yet; initialize the organizer
+        this.initOrganizer(options? options.organizerCalendar : undefined);
+      }
       if (card.$isList({expandable: true})) {
         // Decompose list members
         list = Component.$Card.$find(card.container, card.c_name);

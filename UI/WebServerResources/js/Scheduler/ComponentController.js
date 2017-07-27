@@ -222,6 +222,7 @@
     vm.showAttendeesEditor = vm.component.attendees && vm.component.attendees.length;
     vm.toggleAttendeesEditor = toggleAttendeesEditor;
     //vm.searchText = null;
+    vm.changeCalendar = changeCalendar;
     vm.cardFilter = cardFilter;
     vm.addAttendee = addAttendee;
     vm.removeAttendee = removeAttendee;
@@ -271,6 +272,12 @@
         vm.component.repeat.month.type == 'bymonthday';
     }
 
+    function changeCalendar() {
+      var updateRequired = (vm.component.attendees && vm.component.attendees.length > 0);
+      if (updateRequired)
+        vm.component.initOrganizer(Calendar.$get(vm.component.destinationCalendar));
+    }
+
     // Autocomplete cards for attendees
     function cardFilter($query) {
       AddressBook.$filterAll($query);
@@ -278,18 +285,20 @@
     }
 
     function addAttendee(card) {
-      var automaticallyExapand = (!vm.component.attendees || vm.component.attendees.length === 0);
+      var initOrganizer = (!vm.component.attendees || vm.component.attendees.length === 0),
+          destinationCalendar = Calendar.$get(vm.component.destinationCalendar),
+          options = initOrganizer? { organizerCalendar: destinationCalendar } : {};
       if (angular.isString(card)) {
         // User pressed "Enter" in search field, adding a non-matching card
         if (card.isValidEmail()) {
-          vm.component.addAttendee(new Card({ emails: [{ value: card }] }));
-          vm.showAttendeesEditor |= automaticallyExapand;
+          vm.component.addAttendee(new Card({ emails: [{ value: card }] }), options);
+          vm.showAttendeesEditor |= initOrganizer;
           vm.searchText = '';
         }
       }
       else {
-        vm.component.addAttendee(card);
-        vm.showAttendeesEditor |= automaticallyExapand;
+        vm.component.addAttendee(card, options);
+        vm.showAttendeesEditor |= initOrganizer;
       }
     }
 

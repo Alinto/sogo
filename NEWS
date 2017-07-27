@@ -3,6 +3,7 @@
 
 New features
  - [core] can now invite attendees to exceptions only (#2561)
+ - [web] display freebusy information of owner in appointment editor
 
 Enhancements
  -

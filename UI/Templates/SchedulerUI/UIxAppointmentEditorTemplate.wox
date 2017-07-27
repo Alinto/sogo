@@ -33,7 +33,8 @@
             <!-- calendar -->
             <md-input-container flex="50" flex-xs="100">
               <label><var:string label:value="Calendar"/></label>
-              <md-select ng-model="editor.component.destinationCalendar">
+              <md-select ng-model="editor.component.destinationCalendar"
+                         ng-change="editor.changeCalendar()">
                 <md-option ng-repeat="calendar in editor.service.$findAll(null, true)"
                            ng-value="calendar.id">{{calendar.name}}</md-option>
               </md-select>
