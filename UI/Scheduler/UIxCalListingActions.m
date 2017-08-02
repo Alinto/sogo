@@ -115,6 +115,7 @@ static NSArray *tasksFields = nil;
     user = [[self context] activeUser];
     ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
     ASSIGN (userTimeZone, [[user userDefaults] timeZone]);
+    [now setTimeZone: userTimeZone];
     dayBasedView = NO;
     currentView = nil;
     ASSIGN (enabledWeekDays, [[user userDefaults] calendarWeekdays]);
@@ -153,23 +154,20 @@ static NSArray *tasksFields = nil;
   }
   else if ([popupValue isEqualToString: @"view_next7"])
   {
-    newDate = [NSCalendarDate calendarDate];
-    [newDate setTimeZone: userTZ];
-    startDate = [newDate beginOfDay];
+    startDate = [NSCalendarDate calendarDate];
+    [startDate setTimeZone: userTZ];
     endDate = [[startDate dateByAddingYears: 0 months: 0 days: 6] endOfDay];
   }
   else if ([popupValue isEqualToString: @"view_next14"])
   {
-    newDate = [NSCalendarDate calendarDate];
-    [newDate setTimeZone: userTZ];
-    startDate = [newDate beginOfDay];
+    startDate = [NSCalendarDate calendarDate];
+    [startDate setTimeZone: userTZ];
     endDate = [[startDate dateByAddingYears: 0 months: 0 days: 13] endOfDay];
   }
   else if ([popupValue isEqualToString: @"view_next31"])
   {
-    newDate = [NSCalendarDate calendarDate];
-    [newDate setTimeZone: userTZ];
-    startDate = [newDate beginOfDay];
+    startDate = [NSCalendarDate calendarDate];
+    [startDate setTimeZone: userTZ];
     endDate = [[startDate dateByAddingYears: 0 months: 0 days: 30] endOfDay];
   }
   else if ([popupValue isEqualToString: @"view_thismonth"])
@@ -181,9 +179,8 @@ static NSArray *tasksFields = nil;
   }
   else if ([popupValue isEqualToString: @"view_future"])
   {
-    newDate = [NSCalendarDate calendarDate];
-    [newDate setTimeZone: userTZ];
-    startDate = [newDate beginOfDay];
+    startDate = [NSCalendarDate calendarDate];
+    [startDate setTimeZone: userTZ];
     endDate = nil;
   }
   else if ([popupValue isEqualToString: @"view_selectedday"])
