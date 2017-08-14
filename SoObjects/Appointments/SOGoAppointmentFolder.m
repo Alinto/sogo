@@ -1228,7 +1228,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   iCalRepeatableEntityObject *component;
   iCalTimeZone *eventTimeZone;
   unsigned count, max;
-  int offset;
+  NSInteger offset;
   id tz;
 
   content = [theRecord objectForKey: @"c_cycleinfo"];
