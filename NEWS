@@ -9,7 +9,7 @@ Enhancements
  -
 
 Bug fixes
- -
+ - yearly repeating events are not shown in web calendar (#4237)
 
 3.2.10 (2017-07-05)
 -------------------
