@@ -199,13 +199,12 @@
     }
 
     function send() {
-      var ctrls = $parentControllers();
-
       vm.sendState = 'sending';
       if (vm.autosave)
         $timeout.cancel(vm.autosave);
 
       vm.message.$send().then(function(data) {
+        var ctrls = $parentControllers();
         vm.sendState = 'sent';
         if (ctrls.draftMailboxCtrl) {
           // We're sending a draft from a popup window and the draft mailbox is opened.
@@ -231,8 +230,10 @@
         // Let the user see the succesfull message before closing the dialog
         $timeout($mdDialog.hide, 1000);
       }, function(response) {
-        vm.sendState = 'error';
-        vm.errorMessage = response.data? response.data.message : response.statusText;
+        $timeout(function() {
+          vm.sendState = 'error';
+          vm.errorMessage = response.data? response.data.message : response.statusText;
+        });
       });
     }
 
