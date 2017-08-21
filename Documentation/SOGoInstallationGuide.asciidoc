@@ -2031,9 +2031,9 @@ Requires Sieve script support on the IMAP host.
 
 Defaults to `NO` when unset.
 
-When enabling this parameter, one must also enable the associated
+When enabling this parameter, one can also enable the associated
 cronjob in `/etc/cron.d/sogo` in order to activate automatic vacation
-message expiration.
+message activation/expiration. But this feature should work without it using the sieve date extension.
 
 See the _Cronjob — Vacation messages expiration_ section below for
 details.
