@@ -1480,6 +1480,8 @@ _SOGoEnableEMailAlarms_ is set to `YES`. For PostgreSQL, the database
 URL could be set to something like:
 `postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_alarms_folder`
 
+See the "EMail reminders" section in this document for more information.
+
 |S |OCSStoreURL
 |Parameter used to set the database URL so that SOGo can use to store
 all content data. You must also set `OCSAclURL` and `OCSCacheFolderURL`
@@ -1505,8 +1507,6 @@ if you set this parameter.
 
 For PostgresSQL, set the database URL to something like:
 `postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_cache_folder`.
-
-See the "EMail reminders" section in this document for more information.
 |=======================================================================
 
 
