@@ -686,7 +686,8 @@ static NSData* _sanitizeContent(NSData *theData)
               
               if (!skipAttribute)
                 [resultPart appendFormat: @" %@=\"%@\"",
-                            name, [value safeStringByEscapingXMLString: NO]];
+                            name, [value stringByReplacingString: @"\""
+                                                  withString: @""]];
             }
           
           if ([VoidTags containsObject: lowerName])
