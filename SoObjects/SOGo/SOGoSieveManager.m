@@ -961,13 +961,13 @@ static NSString *sieveScriptName = @"sogo";
 
       [vacation_script appendFormat: @"text:\r\n%@\r\n.\r\n;\r\n", text];
 
-      // Closing bracket of conditions
-      if ([allConditions count])
-        [vacation_script appendString: @"}\r\n"];
-
       // Should we discard incoming mails during vacation?
       if (discardMails)
         [vacation_script appendString: @"discard;\r\n"];
+
+      // Closing bracket of conditions
+      if ([allConditions count])
+        [vacation_script appendString: @"}\r\n"];
 
       //
       // See https://sogo.nu/bugs/view.php?id=2332 for details
