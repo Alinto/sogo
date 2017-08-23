@@ -295,7 +295,7 @@
               NSData *data;
               id body;
 
-              int i, j, k;
+              int i, j, k, len;
 
               i = [value indexOf: ';'];
               j = [value indexOf: ';' fromIndex: i+1];
@@ -326,16 +326,38 @@
                 encoding = @"base64";
 
               data = [[value substringFromIndex: k+1] dataUsingEncoding: NSASCIIStringEncoding];
+              len = [data length];
+              if ([encoding isEqualToString: @"base64"] && len > 72)
+                {
+                  NSMutableData *folded_data;
+                  unsigned char *bytes, c;
+
+                  folded_data = [NSMutableData data];
+                  bytes = (unsigned char *)[data bytes];
+
+                  for (i = 0; i < len; i++)
+                    {
+                      if (i > 0 && i % 72 == 0)
+                        {
+                          c = '\n';
+                          [folded_data appendBytes: &c  length: 1];
+                        }
+
+                      c = *bytes; bytes++;
+                      [folded_data appendBytes: &c  length: 1];
+                    }
+
+                  data = folded_data;
+                }
 
               uniqueId = [SOGoObject globallyUniqueObjectId];
 
-              map = [[[NGMutableHashMap alloc] initWithCapacity:5] autorelease];
+              map = [[[NGMutableHashMap alloc] initWithCapacity: 5] autorelease];
               [map setObject: encoding forKey: @"content-transfer-encoding"];
-              [map setObject:[NSNumber numberWithInt:[data length]] forKey: @"content-length"];
+              [map setObject:[NSNumber numberWithInt: [data length]] forKey: @"content-length"];
               [map setObject: [NSString stringWithFormat: @"inline; filename=\"%@\"", uniqueId]  forKey: @"content-disposition"];
               [map setObject: [NSString stringWithFormat: @"%@; name=\"%@\"", mimeType, uniqueId]  forKey: @"content-type"];
               [map setObject: [NSString stringWithFormat: @"<%@>", uniqueId]  forKey: @"content-id"];
-
 
               body = [[NGMimeFileData alloc] initWithBytes: [data bytes]  length: [data length]];
 

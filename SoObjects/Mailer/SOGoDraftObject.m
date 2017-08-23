@@ -1307,7 +1307,7 @@ static NSString    *userAgent      = nil;
 //
 //
 //
-- (NGMimeBodyPart *) mimeMultipartAlternative
+- (NGMimeBodyPart *) mimeMultipartAlternative: (NSArray *) extractedBodyParts
 {
   NGMimeMultipartBody *textParts;
   NGMutableHashMap *header;
@@ -1323,8 +1323,35 @@ static NSString    *userAgent      = nil;
   // Get the text part from it and add it
   [textParts addBodyPart: [self plainTextBodyPartForText]];
 
-  // Add the HTML part
-  [textParts addBodyPart: [self bodyPartForText]];
+  if ([extractedBodyParts count])
+    {
+      // Create a multipart/related part and add this.
+      // We have inline image to avoid Thunderbird bug #61815 (https://bugzilla.mozilla.org/show_bug.cgi?id=61815)
+      NGMutableHashMap *relatedHeader;
+      NGMimeBodyPart *relatedPart;
+      NGMimeMultipartBody *relatedParts;
+      int i;
+
+      relatedHeader = [NGMutableHashMap hashMap];
+      [relatedHeader addObject: MultiRelatedType forKey: @"content-type"];
+      relatedPart = [NGMimeBodyPart bodyPartWithHeader: relatedHeader];
+      relatedParts = [[NGMimeMultipartBody alloc] initWithPart: relatedPart];
+
+      [relatedParts addBodyPart: [self bodyPartForText]];
+
+      for (i = 0; i < [extractedBodyParts count]; i++)
+        {
+          [relatedParts addBodyPart: [extractedBodyParts objectAtIndex: i]];
+        }
+
+      [relatedPart setBody: relatedParts];
+      [textParts addBodyPart: relatedPart];
+    }
+  else
+    {
+      // Add the HTML part
+      [textParts addBodyPart: [self bodyPartForText]];
+    }
 
   [part setBody: textParts];
   RELEASE(textParts);
@@ -1336,7 +1363,8 @@ static NSString    *userAgent      = nil;
 //
 //
 - (NGMimeMessage *) mimeMultiPartMessageWithHeaderMap: (NGMutableHashMap *) map
-					 andBodyParts: (NSArray *) _bodyParts
+                                   extractedBodyParts: (NSArray *) extractedBodyParts
+  					 andBodyParts: (NSArray *) _bodyParts
 {
   NGMimeMessage       *message;
   NGMimeMultipartBody *mBody;
@@ -1352,7 +1380,7 @@ static NSString    *userAgent      = nil;
   if (!isHTML)
     part = [self bodyPartForText];
   else
-    part = [self mimeMultipartAlternative];
+    part = [self mimeMultipartAlternative: extractedBodyParts];
 
   [mBody addBodyPart: part];
 
@@ -1551,26 +1579,20 @@ static NSString    *userAgent      = nil;
 				 excluding: (NSArray *) _exclude
                           extractingImages: (BOOL) _extractImages
 {
-  NSMutableArray *bodyParts;
+  NSMutableArray *extractedBodyParts;
   NGMimeMessage *message;
   NSArray *allBodyParts;
   NGMutableHashMap *map;
   NSString *newText;
 
-  BOOL has_inline_images;
-
   message = nil;
-  has_inline_images = NO;
-  bodyParts = [NSMutableArray array];
+  extractedBodyParts = [NSMutableArray array];
 
   if (_extractImages)
     {
-      newText = [text htmlByExtractingImages: bodyParts];
-      if ([bodyParts count])
-        {
-          [self setText: newText];
-          has_inline_images = YES;
-        }
+      newText = [text htmlByExtractingImages: extractedBodyParts];
+      if ([extractedBodyParts count])
+        [self setText: newText];
     }
 
   map = [self mimeHeaderMapWithHeaders: _headers
@@ -1583,25 +1605,16 @@ static NSString    *userAgent      = nil;
       if (!allBodyParts)
 	return nil;
 
-      [bodyParts addObjectsFromArray: allBodyParts];
-      
       //[self debugWithFormat: @"attachments: %@", bodyParts];
 
-      if ([bodyParts count] == 0)
+      if ([extractedBodyParts count] == 0 && [allBodyParts count] == 0)
         /* no attachments */
         message = [self mimeMessageForContentWithHeaderMap: map];
       else
         {
-          // attachments, create multipart/mixed or multipart/related if
-          // we have inline image to avoid Thunderbird bug #61815 (https://bugzilla.mozilla.org/show_bug.cgi?id=61815)
-          if (has_inline_images)
-            {
-              [map removeAllObjectsForKey: @"content-type"];
-              [map addObject: MultiRelatedType forKey: @"content-type"];
-            }
-
           message = [self mimeMultiPartMessageWithHeaderMap: map
-                                               andBodyParts: bodyParts];
+                                         extractedBodyParts: extractedBodyParts
+                                               andBodyParts: allBodyParts];
 
           //[self debugWithFormat: @"message: %@", message];
         }
