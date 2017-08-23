@@ -261,10 +261,6 @@ md-sidenav {
       overflow: hidden;
     }
   }
-  md-dialog-content {
-    padding-bottom: 0;
-    padding-top: 0;
-  }
   md-chip-template {
     md-icon[ng-click] {
       cursor: pointer;
@@ -275,9 +271,34 @@ md-sidenav {
 // Message body container of mail composer dialog
 .sg-mail-editor-content {
   margin-bottom: 0;
+  .cke_chrome {
+    border-bottom: 0;
+  }
 }
 
 // Attachments list in bottom actions section of mail composer dialog
-.sg-mail-editor-attachments {
-  margin-top: -$baseline-grid;
+md-dialog .md-actions.sg-mail-editor-attachments {
+  border-top: 1px solid $colorGrayLighter;
+  overflow: auto;
+  max-height: 2 * $pitch; // = 128px (3 rows of chips)
+  md-chip {
+    max-width: 4 * $pitch; // = 256px
+  }
+  a {
+    float: left;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 18px; // leave some space for the delete (x) button
+  }
+  .md-chips md-chip .md-chip-remove {
+    position: absolute;
+    right: 0;
+  }
+  .md-icon-button {
+    // Attachment button (file upload label)
+    // Lower margins to fit the md-actions max height (52px)
+    margin-bottom: $baseline-grid/2;
+    margin-top: $baseline-grid/2;
+  }
 }

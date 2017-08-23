@@ -241,21 +241,24 @@
       </md-dialog-content>
 
       <!-- ATTACHMENTS -->
-      <md-dialog-actions class="sg-mail-editor-attachments">
-        <div layout="row" layout-align="space-between center" layout-fill="layout-fill">
-          <!-- Attachments -->
-          <md-chips ng-model="editor.uploader.queue"
-                    class="md-flex sg-readonly" readonly="true">
-            <md-chip-template>
-              <span class="sg-chip-progress" ng-show="$chip.isUploading">
-                <span class="md-default-theme md-warn md-bg"
-                      ng-style="{ width: $chip.progress + '%'}"><!-- progress --></span>
-              </span>
-              <a ng-href="{{$chip.inlineUrl}}" target="_new">{{$chip.file.name}}</a>
-              <md-icon ng-class="{ 'md-warn': $chip.isUploading }"
-                       ng-click="editor.removeAttachment($chip, 'fileInput')">close</md-icon>
-            </md-chip-template>
-          </md-chips>
+      <md-dialog-content class="md-actions sg-mail-editor-attachments"
+                         layout="row" layout-align="space-between start">
+        <!-- Attachments -->
+        <md-chips ng-model="editor.uploader.queue"
+                  class="md-flex sg-readonly" readonly="true">
+          <md-chip-template>
+            <span class="sg-chip-progress" ng-show="$chip.isUploading">
+              <span class="md-default-theme md-warn md-bg"
+                    ng-style="{ width: $chip.progress + '%'}"><!-- progress --></span>
+            </span>
+            <a ng-href="{{$chip.inlineUrl}}" target="_new">{{$chip.file.name}}</a>
+            <button class="md-icon-button md-chip-remove"
+                    ng-click="editor.removeAttachment($chip, 'fileInput')">
+              <md-icon ng-class="{ 'md-warn': $chip.isUploading }">close</md-icon>
+            </button>
+          </md-chip-template>
+        </md-chips>
+        <div class="msg-header-buttons">
           <label class="md-button md-icon-button" for="fileInput">
             <md-icon>attach_file</md-icon>
             <!-- <span><var:string label:value="Attach"/></span> -->
@@ -269,7 +272,7 @@
           -->
           <!-- multiple="multiple" -->
         </div>
-      </md-dialog-actions>
+      </md-dialog-content>
     </form>
 
     <sg-ripple class="md-default-theme md-accent md-bg"
