@@ -2013,6 +2013,19 @@ SOGo webmail interface. The parameter is an array, for example:
 
 `SOGoMailListViewColumnsOrder = (Flagged, Attachment, Priority, From, Subject, Unread, Date, Size);`
 
+|U |SOGoMailAddOutgoingAddresses
+|Parameter used to enable automatic insertion of unknown mail recipients
+in an address book. The destination address book is defined by the
+parameter _SOGoSelectedAddressBook_.
+
+Defaults to `NO` when unset.
+
+|U |SOGoSelectedAddressBook
+|Parameter used to specify the address book in which to add unknown mail
+recipients if _SOGoMailAddOutgoingAddresses_ is enabled.
+
+Defauls to `collected` when unset.
+
 |D |SOGoExternalAvatarsEnabled
 |Parameter used to enable fetching of avatars from remote services.
 
