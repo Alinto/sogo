@@ -120,8 +120,6 @@
     SOGoDefaultCalendar = "selected";
     SOGoFreeBusyDefaultInterval = ( 7, 7 );
 
-    SOGoSelectedAddressBook = "personal";
-
     SOGoSearchMinimumWordLength = 2;
 
     SOGoMailLabelsColors = {
