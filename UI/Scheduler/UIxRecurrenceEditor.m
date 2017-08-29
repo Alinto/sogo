@@ -145,22 +145,6 @@
   return text;
 }
 
-- (NSString *) idForWeekDay
-{
-  static NSArray *shortWeekDaysList = nil;
-  NSString *id;
-
-  if (!shortWeekDaysList)
-    {
-      shortWeekDaysList = [locale objectForKey: NSShortWeekDayNameArray];
-      [shortWeekDaysList retain];
-    }
-
-  id = [NSString stringWithFormat: @"weekDay%i", (int)[shortWeekDaysList indexOfObject: item]];
-
-  return id;
-}
-
 - (NSString *) labelForWeekDay
 {
   return item;
@@ -197,7 +181,7 @@
 
   i = [[self monthlyDayList] indexOfObject: item];
   if (i % 7 != i)
-    return @"";
+    return @"relative";
   else
     return iCalWeekDayString[i];
 }

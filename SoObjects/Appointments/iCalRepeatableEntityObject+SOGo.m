@@ -126,7 +126,29 @@
       if ([[rule byDay] length])
         [repeat setObject: [[rule byDayMask] asRuleArray] forKey: @"days"];
       if ([[rule byMonthDay] count])
-        [repeat setObject: [rule byMonthDay] forKey: @"monthdays"];
+        {
+          NSMutableArray *byMonthDay = [NSMutableArray arrayWithArray: [rule byMonthDay]];
+          NSMutableArray *byDay = [NSMutableArray array];
+          NSInteger i, count;
+          count = [byMonthDay count];
+          for (i = count - 1; i >= 0; i--)
+            {
+              NSString *day = [byMonthDay objectAtIndex: i];
+              if ([day intValue] < 0)
+                {
+                  // Relative BYMONTHDAY mask are moved to the "days" array
+                  [byDay addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                    @"relative", @"day",
+                                                  day, @"occurrence",
+                                                  nil]];
+                  [byMonthDay removeObjectAtIndex: i];
+                }
+            }
+          if ([byMonthDay count])
+            [repeat setObject: byMonthDay forKey: @"monthdays"];
+          if ([byDay count])
+            [repeat setObject: byDay forKey: @"days"];
+        }
       if ([[rule byMonth] count])
         [repeat setObject: [rule byMonth] forKey: @"months"];
       [data setObject: repeat forKey: @"repeat"];

@@ -1171,7 +1171,7 @@
 
     // Update recurrence definition depending on selections
     if (this.hasCustomRepeat()) {
-      if (this.repeat.frequency == 'monthly' && this.repeat.month.type && this.repeat.month.type == 'byday' ||
+      if (this.repeat.frequency == 'monthly' && this.repeat.month.type && this.repeat.month.type == 'byday' && this.repeat.month.day != 'relative' ||
           this.repeat.frequency == 'yearly' && this.repeat.year.byday) {
         // BYDAY mask for a monthly or yearly recurrence
         delete component.repeat.monthdays;
@@ -1181,6 +1181,8 @@
                this.repeat.month.type) {
         // montly recurrence by month days or yearly by month
         delete component.repeat.days;
+        if (this.repeat.month.day == 'relative')
+          component.repeat.monthdays = [this.repeat.month.occurrence];
       }
     }
     else if (this.repeat.frequency && this.repeat.frequency != 'never') {
