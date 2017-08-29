@@ -2028,9 +2028,17 @@ RANGE(2);
                 occurence = [[self repeat3] intValue] + 1;
 		if (occurence > 5)  // the first/second/third/fourth/fifth ..
 		  occurence = -1;   // the last ..
-                [theRule setSingleValue: [NSString stringWithFormat: @"%d%@",
-                                                  occurence, day]
-                                 forKey: @"byday"];
+
+                // Day of the month (last, fourth, etc.)
+                if ([[self repeat4] intValue] == 7)
+                  {
+                    [theRule setSingleValue: [NSString stringWithFormat: @"%d",occurence]
+                                     forKey: @"bymonthday"];
+                  }
+                else
+                  [theRule setSingleValue: [NSString stringWithFormat: @"%d%@",
+                                                     occurence, day]
+                                   forKey: @"byday"];
               }
             else
               {
