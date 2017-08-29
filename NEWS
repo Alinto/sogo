@@ -7,7 +7,7 @@ New features
  - [web] register SOGo as a handler for the mailto scheme (#1223)
 
 Enhancements
- -
+ - [web] follow requested URL after user authentication
 
 Bug fixes
  - [core] yearly repeating events are not shown in web calendar (#4237)

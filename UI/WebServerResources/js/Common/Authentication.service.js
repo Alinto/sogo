@@ -27,29 +27,23 @@
 
   function Authentication() {
     function redirectUrl(username, domain) {
-      var userName, address, baseAddress, altBaseAddress, parts, hostpart, protocol, newAddress;
+      var userName, address, baseAddress, parts, hostpart, protocol, newAddress;
 
       userName = username;
       if (domain)
         userName += '@' + domain.value;
       address = '' + window.location.href;
-      baseAddress = ApplicationBaseURL + '/' + encodeURIComponent(userName);
+      baseAddress = ApplicationBaseURL + encodeURIComponent(userName);
       if (baseAddress[0] == '/') {
         parts = address.split('/');
         hostpart = parts[2];
         protocol = parts[0];
         baseAddress = protocol + '//' + hostpart + baseAddress;
       }
-      parts = baseAddress.split('/');
-      parts.splice(0, 3);
-      altBaseAddress = parts.join('/');
-      if ((address.startsWith(baseAddress) || address.startsWith(altBaseAddress)) &&
-          !address.endsWith('/logoff')) {
+      if (address.startsWith(baseAddress) && !address.endsWith('/logoff'))
         newAddress = address;
-      }
-      else {
+      else
         newAddress = baseAddress;
-      }
 
       return newAddress;
     }
@@ -124,7 +118,7 @@
                 }
               }
               else {
-                d.resolve(redirectUrl(username, domain));
+                d.resolve({ url: redirectUrl(username, domain) });
               }
             }
           }, function(response) {
