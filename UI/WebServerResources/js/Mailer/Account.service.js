@@ -300,7 +300,7 @@
    * @desc Prepare a new Message object associated to the appropriate mailbox.
    * @returns a promise of the HTTP operations
    */
-  Account.prototype.$newMessage = function() {
+  Account.prototype.$newMessage = function(options) {
     var _this = this;
 
     // Query account for draft folder and draft UID
@@ -314,6 +314,8 @@
         Account.$log.debug('New message (edit): ' + JSON.stringify(data, undefined, 2));
         angular.extend(message.editable, data);
         message.isNew = true;
+        if (options && options.mailto)
+          message.$parseMailto(options.mailto);
         return message;
       });
     });

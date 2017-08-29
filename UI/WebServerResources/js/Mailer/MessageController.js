@@ -193,27 +193,8 @@
         href = $event.target.attributes.href.value;
         match = /^mailto:([^\?]+)/.exec(href);
         if (match) {
-          // Recipients
-          to = _.map(decodeURIComponent(match[1]).split(','), function(email) {
-            return '<' + email + '>';
-          });
-          data = { to: to };
-          // Subject & body
-          _.forEach(['subject', 'body'], function(param) {
-            var re = new RegExp(param + '=([^&]+)');
-            param = (param == 'body')? 'text' : param;
-            match = re.exec(href);
-            if (match)
-              data[param] = [decodeURIComponent(match[1])];
-          });
-          // Recipients
-          _.forEach(['cc', 'bcc'], function(param) {
-            var re = new RegExp(param + '=([^&]+)');
-            match = re.exec(href);
-            if (match)
-              data[param] = [decodeURIComponent(match[1])];
-          });
-          this.newMessage($event, data); // will stop event propagation
+          delete $event.target.attributes.target;
+          this.newMessage($event, href); // will stop event propagation
         }
       }
     };
@@ -359,13 +340,12 @@
         $window.close();
     };
 
-    this.newMessage = function($event, editableContent) {
-      this.account.$newMessage().then(function(message) {
-        angular.extend(message.editable, editableContent);
-        _showMailEditor($event, message);
-      });
+    this.newMessage = function($event, mailto) {
       $event.stopPropagation();
       $event.preventDefault();
+      this.account.$newMessage({ mailto: mailto }).then(function(message) {
+        _showMailEditor($event, message);
+      });
     };
 
     this.toggleRawSource = function($event) {

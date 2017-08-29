@@ -12,8 +12,7 @@
              nv-file-drop="nv-file-drop"
              nv-file-over="nv-file-over"
              over-class="sg-over-dropzone"
-             uploader="editor.uploader"
-             ng-controller="navController">
+             uploader="editor.uploader">
     <form name="messageForm">
       <md-toolbar>
         <div class="md-toolbar-tools">

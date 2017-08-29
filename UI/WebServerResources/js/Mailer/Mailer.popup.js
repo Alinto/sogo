@@ -99,27 +99,33 @@
   /**
    * @ngInject
    */
-  stateAccounts.$inject = ['$q', 'Account'];
-  function stateAccounts($q, Account) {
+  stateAccounts.$inject = ['$window', '$q', 'Account'];
+  function stateAccounts($window, $q, Account) {
     var accounts, promises = [];
 
-    if (window &&
-        window.opener &&
-        window.opener.$mailboxController) {
+    if ($window &&
+        $window.opener &&
+        $window.opener.$mailboxController) {
       // Mail accounts are available from the parent window
-      accounts = window.opener.$mailboxController.accounts;
+      accounts = $window.opener.$mailboxController.accounts;
       return $q.when(accounts);
     }
     else {
-      accounts = Account.$findAll();
-      // Fetch list of mailboxes for each account
-      angular.forEach(accounts, function(account, i) {
-        var mailboxes = account.$getMailboxes();
-        promises.push(mailboxes.then(function(objects) {
-          return account;
-        }));
+      return Account.$findAll().then(function(accounts) {
+        // Fetch list of mailboxes for each account
+        angular.forEach(accounts, function(account, i) {
+          var mailboxes = account.$getMailboxes();
+          if (i === 0)
+            // Make sure we have the list of mailboxes of the first account
+            promises.push(mailboxes.then(function(objects) {
+              return account;
+            }));
+          else
+            // Don't wait for external accounts
+            promises.push(account);
+        });
+        return $q.all(promises);
       });
-      return $q.all(promises);
     }
   }
 
@@ -136,10 +142,12 @@
   /**
    * @ngInject
    */
-  stateMailbox.$inject = ['$stateParams', 'stateAccount', 'decodeUriFilter'];
-  function stateMailbox($stateParams, stateAccount, decodeUriFilter) {
-    var mailboxId = decodeUriFilter($stateParams.mailboxId),
+  stateMailbox.$inject = ['$q', '$state', '$stateParams', 'stateAccount', 'decodeUriFilter', 'Mailbox'];
+  function stateMailbox($q, $state, $stateParams, stateAccount, decodeUriFilter, Mailbox) {
+    var mailbox,
+        mailboxId = decodeUriFilter($stateParams.mailboxId),
         _find;
+
     // Recursive find function
     _find = function(mailboxes) {
       var mailbox = _.find(mailboxes, function(o) {
@@ -154,15 +162,31 @@
       }
       return mailbox;
     };
-    return _find(stateAccount.$mailboxes);
+
+    mailbox = _find(stateAccount.$mailboxes);
+
+    if (mailbox) {
+      mailbox.$topIndex = 0;
+      mailbox.selectFolder();
+      return mailbox;
+    }
+    else
+      // Mailbox not found
+      return $q.reject("Mailbox doesn't exist");
   }
 
   /**
    * @ngInject
    */
-  stateNewMessage.$inject = ['stateAccount'];
-  function stateNewMessage(stateAccount) {
-    return stateAccount.$newMessage();
+  stateNewMessage.$inject = ['$urlService', 'stateAccount'];
+  function stateNewMessage($urlService, stateAccount) {
+    var mailto, params = $urlService.search();
+    if (params) {
+      mailto = _.find(_.keys(params), function(k) {
+        return /^mailto:/i.test(k);
+      });
+    }
+    return stateAccount.$newMessage({ mailto: mailto });
   }
 
   /**

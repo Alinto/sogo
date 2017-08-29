@@ -545,6 +545,41 @@
   };
 
   /**
+   * @function $parseMailto
+   * @memberof Message.prototype
+   * @desc Extend the editable content of the message with the
+   * information parsed from the specified "mailto:" link.
+   */
+  Message.prototype.$parseMailto = function(mailto) {
+    var to, data, match = /^mailto:([^\?]+)/.exec(mailto);
+    if (match) {
+      // Recipients
+      to = _.map(decodeURIComponent(match[1]).split(','), function(email) {
+        return '<' + email.trim() + '>';
+      });
+      data = { to: to };
+      // Subject & body
+      _.forEach(['subject', 'body'], function(param) {
+        var re = new RegExp(param + '=([^&]+)');
+        param = (param == 'body')? 'text' : param;
+        match = re.exec(mailto);
+        if (match)
+          data[param] = decodeURIComponent(match[1]);
+      });
+      // Other Recipients
+      _.forEach(['cc', 'bcc'], function(param) {
+        var re = new RegExp(param + '=([^&]+)');
+        match = re.exec(mailto);
+        if (match)
+          data[param] = _.map(decodeURIComponent(match[1]).split(','), function(email) {
+            return '<' + email.trim() + '>';
+          });
+      });
+      angular.extend(this.editable, data);
+    }
+  };
+
+  /**
    * @function $reply
    * @memberof Message.prototype
    * @desc Prepare a new Message object as a reply to the sender.

@@ -141,6 +141,12 @@
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/Mail/0/inbox');
+
+    // Try to register SOGo has an handler for mailto: links
+    if (navigator && navigator.registerProtocolHandler) {
+      var mailtoURL = window.location.origin + window.ApplicationBaseURL + 'UIxMailPopupView#!/Mail/0/INBOX/new?%s';
+      navigator.registerProtocolHandler('mailto', mailtoURL, 'SOGo');
+    }
   }
 
   /**
@@ -178,8 +184,8 @@
   /**
    * @ngInject
    */
-  stateMailbox.$inject = ['$q', '$state', '$stateParams', 'stateAccount', 'decodeUriFilter', 'Mailbox'];
-  function stateMailbox($q, $state, $stateParams, stateAccount, decodeUriFilter, Mailbox) {
+  stateMailbox.$inject = ['$q', '$stateParams', 'stateAccount', 'decodeUriFilter', 'Mailbox'];
+  function stateMailbox($q, $stateParams, stateAccount, decodeUriFilter, Mailbox) {
     var mailbox,
         mailboxId = decodeUriFilter($stateParams.mailboxId),
         _find;
