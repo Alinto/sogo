@@ -137,6 +137,8 @@ function onUserRemove(event) {
     for (var i = 0; i < nodes.length; i++) {
         var userId = nodes[i].id.unescapeHTML();
         if (userId != defaultUserID && userId != "anonymous") {
+            if ($(nodes[i]).hasClassName("normal-group"))
+                userId = '@' + userId;
             triggerAjaxRequest(baseURL + encodeURIComponent(userId), removeUserCallback,
                                nodes[i]);
         }
