@@ -2044,12 +2044,12 @@ Requires Sieve script support on the IMAP host.
 
 Defaults to `NO` when unset.
 
-When enabling this parameter, one must also enable the associated
+When enabling this parameter, one may have to also enable the associated
 cronjob in `/etc/cron.d/sogo` in order to activate automatic vacation
-message expiration.
+message activation and expiration.
 
-See the _Cronjob — Vacation messages expiration_ section below for
-details.
+See the _Cronjob — Vacation messages activation and expiration_ section
+below for details.
 
 |D |SOGoVacationDefaultSubject
 |Parameter used to define a default vacation subject if user don't specify a
@@ -2590,12 +2590,13 @@ using `-p /path/to/credFile`. This file should contain the username and
 password, separated by a colon (`username:password`)
 
 _Cronjob_ — Vacation messages activation and expiration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When vacation messages are enabled (see the parameter
-_SOGoVacationEnabled_), users can set an activation or expiration date to messages
-auto-reply. For this feature to work, you must run a _cronjob_ under the
-"sogo" user.
+_SOGoVacationEnabled_), users can set an activation or expiration date
+to messages auto-reply. For this feature to work, your Sieve server must
+implement the date extension. Otherwise, you must run a _cronjob_ under
+the "sogo" user.
 
 A commented out example should have been installed in
 `/etc/cron.d/sogo`. To work correctly this tool must login as an
