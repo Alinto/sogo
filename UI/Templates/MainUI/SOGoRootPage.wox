@@ -57,7 +57,9 @@
               <md-icon>language</md-icon>
               <md-input-container class="md-flex">
                 <label><var:string label:value="choose"/></label>
-                <md-select ng-model="app.creds.language" ng-change="app.changeLanguage($event)">
+                <md-select ng-model="app.creds.language"
+                           var:placeholder="localizedLanguage"
+                           ng-change="app.changeLanguage($event)">
                   <var:foreach list="languages" item="item">
                     <md-option var:value="item">
                       <var:string value="languageText"/>

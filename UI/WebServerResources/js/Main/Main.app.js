@@ -17,9 +17,11 @@
       this.creds = {
         username: $window.cookieUsername,
         password: null,
-        language: $window.language,
         rememberLogin: angular.isDefined($window.cookieUsername) && $window.cookieUsername.length > 0
       };
+      // Send selected language only if user has changed it
+      if (/\blanguage=/.test($window.location.search))
+        this.creds.language = $window.language;
       this.loginState = false;
 
       // Show login once everything is initialized

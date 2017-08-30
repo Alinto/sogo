@@ -535,6 +535,11 @@
   return [[context resourceLookupLanguages] objectAtIndex: 0];
 }
 
+- (NSString *) localizedLanguage
+{
+  return [self labelForKey: [self language]];
+}
+
 - (NSArray *) languages
 {
   return [[SOGoSystemDefaults sharedSystemDefaults] supportedLanguages];
