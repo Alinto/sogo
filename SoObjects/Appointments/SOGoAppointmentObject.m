@@ -225,23 +225,27 @@
               // If recurrenceId is defined, remove the occurence from
               // the repeating event. If a recurrenceId is defined in the
               // new event, let's make sure we don't already have one in
-              // the calendar alright. If so, also remove it.
+              // the calendar already. If so, also remove it.
               if ([oldEvent recurrenceId] || [newEvent recurrenceId])
                 {
                   // FIXME: use  _eventFromRecurrenceId:...
                   occurences = [iCalendarToSave events];
-                  max = [occurences count];
-                  count = 0;
-                  while (count < max)
+                  currentId = ([oldEvent recurrenceId] ? [oldEvent recurrenceId]: [newEvent recurrenceId]);
+                  if (currentId)
                     {
-                      occurence = [occurences objectAtIndex: count];
-                      currentId = ([oldEvent recurrenceId] ? [oldEvent recurrenceId]: [newEvent recurrenceId]);
-                      if (currentId && [[occurence recurrenceId] compare: currentId] == NSOrderedSame)
+                      max = [occurences count];
+                      count = 0;
+                      while (count < max)
                         {
-                          [[iCalendarToSave children] removeObject: occurence];
-                          break;
+                          occurence = [occurences objectAtIndex: count];
+                          if ([occurence recurrenceId] &&
+                              [[occurence recurrenceId] compare: currentId] == NSOrderedSame)
+                            {
+                              [iCalendarToSave removeChild: occurence];
+                              break;
+                            }
+                          count++;
                         }
-                      count++;
                     }
                 }
               
