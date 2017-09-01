@@ -14,6 +14,7 @@ Bug fixes
  - [core] increased column size of settings/defaults for MySQL (#4260)
  - [web] fixed display of error when the mail editor is in a popup
  - [web] attachments are not displayed on IOS (#4150)
+ - [web] fixed parsing of pasted email addresses from Spreadsheet (#4258)
 
 3.2.10 (2017-07-05)
 -------------------

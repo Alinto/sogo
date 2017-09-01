@@ -259,14 +259,31 @@
     }
 
     function addRecipient(contact, field) {
-      var recipients, recipient, list;
+      var recipients, recipient, list, i, address;
+      var emailRE = /([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)/i;
 
       recipients = vm.message.editable[field];
 
       if (angular.isString(contact)) {
-        _.forEach(contact.split(/[,;]/), function(address) {
+        // Examples that are handled:
+        //   Smith, John <john@smith.com>
+        //   <john@appleseed.com>;<foo@bar.com>
+        //   foo@bar.com abc@xyz.com
+        address = '';
+        for (i = 0; i < contact.length; i++) {
+          if ((contact.charCodeAt(i) == 32 ||   // space
+               contact.charCodeAt(i) == 44 ||   // ,
+               contact.charCodeAt(i) == 59) &&  // ;
+              emailRE.test(address)) {
+            recipients.push(address);
+            address = '';
+          }
+          else {
+            address += contact.charAt(i);
+          }
+        }
+        if (address)
           recipients.push(address);
-        });
         return null;
       }
 
