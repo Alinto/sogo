@@ -64,6 +64,12 @@
 "Compose E-Mail to All Attendees" = "Cyfansoddi E-bost i'r Holl Fynychwyr";
 "Compose E-Mail to Undecided Attendees" = "Cyfansoddi E-bost i bawb sydd heb benderfynu";
 
+/* Relative dates */
+"Yesterday" = "Ddoe";
+"Today" = "Heddiw";
+"Tomorrow" = "Yfory";
+"Last %@" = "%@ olaf";
+
 /* Folders */
 "Personal calendar" = "Calendr Personol";
 
