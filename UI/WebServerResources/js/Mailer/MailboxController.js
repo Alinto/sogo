@@ -117,6 +117,11 @@
       return vm.selectedFolder.$compact();
     }
 
+    this.centerIsClose = function(navController_centerIsClose) {
+      // Allow the messages list to be hidden only if a message is selected
+      return this.selectedFolder.hasSelectedMessage() && !!navController_centerIsClose;
+    };
+
     this.sort = function(field) {
       vm.selectedFolder.$filter({ sort: field });
     };

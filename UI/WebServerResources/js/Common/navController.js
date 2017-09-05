@@ -1,9 +1,7 @@
 /* -*- Mode: javascript; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 
-/**
- * @type {angular.Module}
- */
-(function () {
+(function() {
+  /* jshint validthis: true */
   'use strict';
 
   /**
@@ -13,23 +11,43 @@
   function navController($rootScope, $scope, $timeout, $interval, $http, $window, $mdSidenav, $mdToast, $mdMedia, $log, sgConstant, sgSettings, Resource, Alarm) {
     var resource = new Resource(sgSettings.baseURL(), sgSettings.activeUser());
 
-    $scope.isPopup = sgSettings.isPopup;
-    $scope.activeUser = sgSettings.activeUser();
-    $scope.baseURL = sgSettings.baseURL();
-    $scope.leftIsClose = !$mdMedia(sgConstant['gt-md']);
-    // Don't hide the center list when on a small device
-    $scope.centerIsClose = !!$window.centerIsClose && !$scope.leftIsClose;
+    this.$onInit = function() {
+      $scope.isPopup = sgSettings.isPopup;
+      $scope.activeUser = sgSettings.activeUser();
+      $scope.baseURL = sgSettings.baseURL();
+      $scope.leftIsClose = !$mdMedia(sgConstant['gt-md']);
+      // Don't hide the center list when on a small device
+      $scope.centerIsClose = !!$window.centerIsClose && !$scope.leftIsClose;
 
-    // Show current day in top bar
-    $scope.currentDay = window.currentDay;
-    $timeout(function() {
-      // Update date when day ends
-      $interval(function() {
-        $http.get('../date').then(function(data) {
-          $scope.currentDay = data;
-        });
-      }, 24 * 3600 * 1000);
-    }, window.currentDay.secondsBeforeTomorrow * 1000);
+      // Show current day in top bar
+      $scope.currentDay = window.currentDay;
+      $timeout(function() {
+        // Update date when day ends
+        $interval(function() {
+          $http.get('../date').then(function(data) {
+            $scope.currentDay = data;
+          });
+        }, 24 * 3600 * 1000);
+      }, window.currentDay.secondsBeforeTomorrow * 1000);
+
+      // Track the 1024px window width threashold
+      $scope.$watch(function() {
+        return $mdMedia(sgConstant['gt-md']);
+      }, function(newVal) {
+        $scope.isGtMedium = newVal;
+        if (newVal) {
+          $scope.leftIsClose = false;
+        }
+      });
+
+      // Listen to HTTP errors broadcasted from HTTP interceptor
+      $rootScope.$on('http:Error', onHttpError);
+
+      if (sgSettings.activeUser('path').calendar) {
+        // Fetch Calendar alarms
+        Alarm.getAlarms();
+      }
+    };
 
     $scope.toggleLeft = function() {
       if ($scope.isGtMedium) {
@@ -70,14 +88,6 @@
     //   var detail = angular.element(document.getElementById('detailView'));
     //   detail.toggleClass('sg-close');
     // };
-    $scope.$watch(function() {
-      return $mdMedia(sgConstant['gt-md']);
-    }, function(newVal) {
-      $scope.isGtMedium = newVal;
-      if (newVal) {
-        $scope.leftIsClose = false;
-      }
-    });
 
     function leftIsClose() {
       return !$mdSidenav('left').isOpen();
@@ -105,14 +115,6 @@
         });
       else
         $log.debug('untrap error');
-    }
-
-    // Listen to HTTP errors broadcasted from HTTP interceptor
-    $rootScope.$on('http:Error', onHttpError);
-
-    if (sgSettings.activeUser('path').calendar) {
-      // Fetch Calendar alarms
-      Alarm.getAlarms();
     }
   }
 

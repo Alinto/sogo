@@ -15,6 +15,7 @@ Bug fixes
  - [web] fixed display of error when the mail editor is in a popup
  - [web] attachments are not displayed on IOS (#4150)
  - [web] fixed parsing of pasted email addresses from Spreadsheet (#4258)
+ - [web] messages list not accessible when changing mailbox in expanded mail view (#4269)
 
 3.2.10 (2017-07-05)
 -------------------

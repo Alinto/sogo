@@ -3,7 +3,7 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:label="OGo:label">
-  <div class="view-list" layout="column" ng-class="{'view-list--close': centerIsClose}">
+  <div class="view-list" layout="column" ng-class="{'view-list--close': mailbox.centerIsClose(centerIsClose)}">
 
     <!-- in virtual mailbox mode -->
     <md-toolbar class="md-whiteframe-z1 md-hue-3"
