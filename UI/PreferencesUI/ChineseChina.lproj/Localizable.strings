@@ -1,0 +1,413 @@
+/* toolbar */
+"Save and Close" = "保存并关闭";
+"Close" = "关闭";
+"Preferences saved" = "首选项已保存";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "未保存的变更";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "是否保存更改的配置？";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "保存";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "不保存";
+
+/* tabs */
+"General" = "一般";
+"Calendar Options" = "日历选项";
+"Contacts Options" = "联系人选项";
+"Mail Options" = "邮件选项";
+"IMAP Accounts" = "IMAP账户";
+"Vacation" = "休假";
+"Forward" = "转发";
+"Password" = "密码";
+"Categories" = "分类";
+"Appointments invitations" = "命名邀约";
+"Name" = "名称";
+"Color" = "颜色";
+"Add" = "增加";
+"Delete" = "删除";
+
+/* contacts categories */
+"contacts_category_labels" = "同事，竞争对手，客户，朋友，家庭，工作伙伴，服务商，媒体，VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "休假自动回复";
+"Enable custom auto reply subject" = "启用自定义自动回复主题";
+"Auto reply subject" = "自动回复主题";
+"You can write ${subject} to insert the original subject" = "你可以插入${subject}到原主题？";
+"Auto reply message" = "自动回复消息";
+"Email addresses (separated by commas)" = "邮件地址(用逗号分隔)";
+"Add default email addresses" = "增加默认邮件地址";
+"Days between responses" = "回复间隔日数";
+"Do not send responses to mailing lists" = "不要回复到邮件列表";
+"Enable auto reply on" = "启用自动回复功能";
+"Disable auto reply on" = "禁用回复无效";
+"Always send vacation message response" = "总是发送休假消息回复";
+"Discard incoming mails during vacation" = "丢弃假期收到的邮件";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "请指定要自动回复的邮件内容和邮件地址。";
+"Your vacation message must not end with a single dot on a line." = "假期消息行不能以一个.结束。";
+"End date of your auto reply must be in the future."
+= "自动回复的结束日期必须在未到来的日期。";
+
+/* forward messages */
+"Forward incoming messages" = "转发收到的邮件";
+"Keep a copy" = "保留副本";
+"Please specify an address to which you want to forward your messages."
+= "请指定要转发的邮件地址。";
+"You are not allowed to forward your messages to an external email address." = "你未获准将消息转发至外部电子邮件地址。";
+"You are not allowed to forward your messages to an internal email address." = "你未获准将消息转发至内部电子邮件地址。";
+
+/* d & t */
+"Current Time Zone" = "当前时区";
+"Short Date Format" = "短日期格式";
+"Long Date Format" = "长日期格式";
+"Time Format" = "时间格式";
+"default" = "默认";
+"Default Module" = "默认模块";
+"Save" = "保存";
+"shortDateFmt_0" = "%d-%b-%y";
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "";
+
+"longDateFmt_0" = "%Y年%B%d日 %A";
+"longDateFmt_1" = "%Y年%B%d日";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "无法找到匹配项";
+
+/* calendar */
+"Week begins on" = "每周开始于";
+"Day start time" = "每日开始时间";
+"Day end time" = "每日结束时间";
+"Day start time must be prior to day end time." = "一天的开始时间必须在终止时间之前。";
+"Week days to display" = "显示工作日";
+"Show time as busy outside working hours" = "显示工作时间以外的时间为忙碌";
+"First week of year" = "每年第一周";
+"Enable reminders for Calendar items" = "启用日程提醒";
+"Play a sound when a reminder comes due" = "提醒播放声音";
+"Default reminder" = "默认提醒";
+"firstWeekOfYear_January1" = "1月1日开始";
+"firstWeekOfYear_First4DayWeek" = "第一个满4天的周";
+"firstWeekOfYear_FirstFullWeek" = "第一个完整周";
+"Prevent from being invited to appointments" = "防止被邀请";
+"White list for appointment invitations" = "行程白名单";
+"Contacts Names" = "联系人姓名";
+
+/* Default Calendar */
+"Default calendar" = "默认日程";
+"selectedCalendar" = "选中的日历";
+"personalCalendar" = "个人日历";
+"firstCalendar" = "第一个有效的日历";
+"reminder_NONE" = "无提醒";
+"reminder_5_MINUTES_BEFORE" = "提前5分钟";
+"reminder_10_MINUTES_BEFORE" = "提前10分钟";
+"reminder_15_MINUTES_BEFORE" = "提前15分钟";
+"reminder_30_MINUTES_BEFORE" = "提前30分钟";
+"reminder_45_MINUTES_BEFORE" = "提前45分钟";
+"reminder_1_HOUR_BEFORE" = "提前1小时";
+"reminder_2_HOURS_BEFORE" = "提前2小时";
+"reminder_5_HOURS_BEFORE" = "提前5小时";
+"reminder_15_HOURS_BEFORE" = "提前15小时";
+"reminder_1_DAY_BEFORE" = "提前1天";
+"reminder_2_DAYS_BEFORE" = "提前2天";
+"reminder_1_WEEK_BEFORE" = "提前1周";
+
+/* Mailer */
+"Labels" = "标签";
+"Label" = "标签";
+"New label" = "新标签";
+"Show subscribed mailboxes only" = "仅显示订阅的邮箱";
+"Synchronize only default mail folders (EAS)" = "仅同步系统默认邮箱文件夹";
+"Sort messages by threads" = "邮件按线索排序";
+"When sending mail, add unknown recipients to my" = "邮件发送时，添加未知收件人";
+"Address Book" = "通讯录";
+"Forward messages" = "发送信息";
+"messageforward_inline" = "内联";
+"messageforward_attached" = "作为附件";
+"When replying to a message" = "回复信息时";
+"replyplacement_above" = "回复内容在引用上面";
+"replyplacement_below" = "回复内容在引用下面";
+"And place my signature" = "加入签名";
+"signatureplacement_above" = "在回复下面";
+"signatureplacement_below" = "在引用下面";
+"Compose messages in" = "写内容在";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "纯文本";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "默认字体大小";
+
+"Display remote inline images" = "显示嵌入的远程图片";
+"displayremoteinlineimages_never" = "未";
+"displayremoteinlineimages_always" = "一直";
+"Auto save every" = "自动保存";
+"minutes" = "分钟";
+
+/* Contact */
+"Personal Address Book" = "个人地址簿";
+"Collected Address Book" = "收集的地址簿";
+
+/* IMAP Accounts */
+"Mail Account" = "邮箱账号";
+"New Mail Account" = "新邮件账户";
+"Server Name" = "服务器名";
+"Port" = "端口";
+"Encryption" = "加密";
+"None" = "空";
+"User Name" = "用户名";
+"Full Name" = "全名";
+"Email" = "邮件";
+"Reply To Email" = "回复邮件";
+"Signature" = "签名";
+"(Click to create)" = "(点击生成)";
+"Please enter your signature below" = "请在下面输入签名";
+"Please specify a valid sender address." = " 请指定有效的发件人地址。";
+"Please specify a valid reply-to address." = "请指定有效的回复地址。";
+"Specify a hostname other than the local host" = "指定本地主机以外的主机名";
+
+/* Additional Parameters */
+"Additional Parameters" = "附加设置";
+
+/* password */
+"New password" = "新密码";
+"Confirmation" = "确认";
+"Change" = "修改";
+
+/* Event+task classifications */
+"Default events classification" = "默认事项分类";
+"Default tasks classification" = "默认任务分类";
+"PUBLIC_item" = "公开";
+"CONFIDENTIAL_item" = "机密";
+"PRIVATE_item" = "私人";
+
+/* Event+task categories */
+"Calendar Category" = "日程类别";
+"Add Calendar Category" = "增加日程类别";
+"New category" = "新类别";
+"Remove Calendar Category" = "移除日程类别";
+"Contact Category" = "联系人类别";
+"Add Contact Category" = "增加联系人分类";
+"Remove Contact Category" = "移除联系人分类";
+"category_none" = "空";
+"calendar_category_labels" = "结婚纪念日,生日,工作,电话,客户,竞争对手,客户,收藏夹,追踪,礼物,假期,想法,会议,课题,其他,个人,项目,公众假日,状态,供应商,旅游,休假";
+
+/* Default module */
+"Calendar" = "日历";
+"Contacts" = "地址簿";
+"Mail" = "邮件";
+"Last" = "上次使用";
+"Default Module " = "默认模块";
+"SOGo Version" = "SOGo版本";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "保存优选项并立即重新加载页面";
+"Language" = "语言";
+"choose" = "选择...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"Refresh View" = "刷新视图";
+"refreshview_manually" = "手动";
+"refreshview_every_minute" = "每分钟";
+"refreshview_every_2_minutes" = "每2分钟";
+"refreshview_every_5_minutes" = "每5分钟";
+"refreshview_every_10_minutes" = "每10分钟";
+"refreshview_every_20_minutes" = "每20分钟";
+"refreshview_every_30_minutes" = "每30分钟";
+"refreshview_once_per_hour" = "每小时1次";
+
+/* Return receipts */
+"When I receive a request for a return receipt" = "当我收到回执请求时";
+"Never send a return receipt" = "不发送回执";
+"Allow return receipts for some messages" = "允许一些消息的回执";
+"If I'm not in the To or Cc of the message" = "若我不在邮件的收件人或抄送人里";
+"If the sender is outside my domain" = "若发送人不在我的域里";
+"In all other cases" = "所有其它情况";
+"Never send" = "从不发送";
+"Always send" = "始终发送";
+"Ask me" = "询问";
+
+/* Filters - UIxPreferences */
+"Filters" = "过滤";
+"Active" = "激活";
+"Move Up" = "上移";
+"Move Down" = "下移";
+"Connection error" = "连接错误";
+"Service temporarily unavailable" = "服务暂时不可用";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "启动过滤";
+
+/* Filters - UIxFilterEditor */
+"Filter name" = "过滤名称";
+/* Button label */
+"Add a condition" = "增加条件";
+/* Button label */
+"Add an action" = "增加动作";
+"For incoming messages that" = "用于将来收到的邮件时";
+"match all of the following rules" = "匹配下列所有规则";
+"match any of the following rules" = "匹配下列任一规则";
+"match all messages" = "符合所有邮件";
+"Perform these actions" = "执行这些动作";
+"Untitled Filter" = "没有标题的过滤器";
+"Subject" = "标题";
+"From" = "发件人";
+"To" = "收件人";
+"Cc" = "抄送人";
+"To or Cc" = "收件人或抄送人";
+"Size (Kb)" = "大小(Kb)";
+"Header" = "头";
+"Body" = "正文";
+"Flag the message with" = "用旗子标志信息";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "旗子标签";
+
+"Discard the message" = "丢弃邮件";
+"File the message in" = "将信息存档到";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "邮箱";
+
+"Keep the message" = "保留邮件";
+"Forward the message to" = "发送信息到";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "邮件";
+
+"Send a reject message" = "发送拒绝信息";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "信息";
+
+"Send a vacation message" = "发送休假消息";
+"Stop processing filter rules" = "终止过滤";
+"is under" = "在下面";
+"is over" = "已结束";
+"is" = "是";
+"is not" = "不是";
+"contains" = "包含";
+"does not contain" = "不包含";
+"matches" = "符合";
+"does not match" = "不符合";
+"matches regex" = "符合正则";
+"does not match regex" = "不符合正则";
+/* Placeholder for the value field of a condition */
+"Value" = "数值";
+"Seen" = "已读";
+"Deleted" = "已删除";
+"Answered" = "已回答";
+"Flagged" = "已标志";
+"Junk" = "垃圾邮件";
+"Not Junk" = "非垃圾邮件";
+
+/* Password policy */
+"The password was changed successfully." = "已成功更改口令。";
+"Password must not be empty." = "口令不能为空。";
+"The passwords do not match. Please try again." = "口令不一致。请重新输入。";
+"Password change failed" = "口令修改失败";
+"Password change failed - Permission denied" = "口令修改失败 - 没有权限";
+"Password change failed - Insufficient password quality" = "口令修改失败 - 口令不满足条件";
+"Password change failed - Password is too short" = "口令修改失败 - 口令太短";
+"Password change failed - Password is too young" = "修改口令失败-口令太短";
+"Password change failed - Password is in history" = "修改口令失败-曾用口令";
+"Unhandled policy error: %{0}" = "未知政策错误: %{0}";
+"Unhandled error response" = "返回未知错误";
+"Password change is not supported." = "不能修改口令。";
+"Unhandled HTTP error code: %{0}" = "HTTP错误代码: %{0}";
+"Cancel" = "取消";
+"Invitations" = "邀请";
+"Edit Filter" = "编辑过滤";
+"Delete Filter" = "删除过滤";
+"Create Filter" = "创建过滤";
+"Delete Label" = "删除标签";
+"Create Label" = "创建标签";
+"Accounts" = "账号";
+"Edit Account" = "编辑账号";
+"Delete Account" = "删除账号";
+"Create Account" = "创建账号";
+"Account Name" = "账号名称";
+"SSL" = "加密套接字协议层";
+"TLS" = "传输层安全";
+
+/* Avatars */
+"Use Gravatar" = "使用头像";
+"Alternate Avatar" = "更换头像";
+"none" =  "无";
+"identicon" = "标识图标";
+"monsterid" = "怪物头像";
+"wavatar" = "头像";
+"retro" = "复古头像";
+
+/* Animation Level */
+"Animation Level" = "动态图";
+/* Normal Animation Mode */
+"animation_NORMAL" = "正常";
+/* Limited Animation Mode */
+"animation_LIMITED" = "受限";
+"animation_NONE" = "无";

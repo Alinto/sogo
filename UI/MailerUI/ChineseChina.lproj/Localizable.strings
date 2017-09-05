@@ -1,0 +1,409 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "新建";
+"Empty Trash" = "清空垃圾箱";
+"Delete"      = "删除";
+"Expunge"     = "擦除";
+"Forward"     = "转发";
+"Get Mail"    = "收取邮件";
+"Junk"        = "垃圾邮件";
+"Not junk"    = "非垃圾邮件";
+"Reply"       = "回复";
+"Reply All"   = "全部回复";
+"Print"       = "打印";
+"Stop"        = "停止";
+"Write"       = "写邮件";
+"Search"      = "搜索";
+"Send" = "发送";
+"Contacts" = "联系人";
+"Attach" = "附件";
+"Save" = "保存";
+"Options" = "选项";
+"Close" = "关闭";
+"Size" = "大小";
+
+/* Tooltips */
+"Send this message now" = "立即发送";
+"Select a recipient from an Address Book" = "从通讯录选择收件人";
+"Include an attachment" = "增加附件";
+"Save this message" = "保存邮件";
+"Get new messages" = "接收新邮件";
+"Create a new message" = "新建邮件";
+"Go to address book" = "转到通讯录";
+"Reply to the message" = "回复邮件";
+"Reply to sender and all recipients" = "回复所有收件人";
+"Forward selected message" = "转发选中的邮件";
+"Delete selected message or folder" = "删除选中的邮件或目录";
+"Print this message" = "打印邮件";
+"Stop the current transfer" = "停止发送";
+"Attachment" = "附件";
+"Unread" = "未读";
+"Flagged" = "标记";
+"Search multiple mailboxes" = "搜索多个收件箱";
+
+/* Main Frame  */
+"Home"                 = " 主页";
+"Calendar"             = "日历";
+"Addressbook"          = "通讯录";
+"Mail"                 = "邮件";
+"Right Administration" = "权限管理";
+"Help" = "帮助";
+
+/* Mail account main windows */
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "欢迎使用SOGo邮件，请点击左侧目录浏览邮件账户！";
+"Read messages"       = "读取邮件";
+
+/* Tooltip for fab button */
+"Write a new message" = "撰写新邮件";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "在新窗口撰写信息";
+
+"Share" = "共享";
+"Account" = "帐号";
+"Shared Account" = "共享的帐号";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "未选择任何信息";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "未选择任何邮箱";
+
+"An error occured while communicating with the mail server" = "连接服务器发生错误";
+
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "文件夹已压缩";
+/* Empty Trash success message */
+"Trash emptied" = "垃圾箱已清空";
+
+/* acls */
+"Access rights to" = "访问权限到";
+"For user" = "给用户";
+"Any Authenticated User" = "任何认证的用户";
+"List and see this folder" = "列出并查看该目录";
+"Read mails from this folder" = "读取该目录邮件";
+"Mark mails read and unread" = "邮件标记为已读或未读";
+"Modify the flags of the mails in this folder" = "修改该目录里的邮件标记";
+"Insert, copy and move mails into this folder" = "插入，复制，转移邮件到该目录";
+"Post mails" = "发送设置";
+"Add subfolders to this folder" = "该目录下的所有子目录";
+"Remove this folder" = "删除该目录";
+"Erase mails from this folder" = "清除该目录下的邮件";
+"Expunge this folder" = "擦去该目录";
+"Export This Folder" = "导出此文件夹";
+"Modify the acl of this folder" = "更改该目录访问控制列表";
+"Saved Messages.zip" = "保存的压缩邮件";
+"Update" = "更新";
+"Cancel" = "取消";
+
+/* Mail edition */
+"From"          = "发件人";
+"Subject"       = "主题";
+"To"            = "收件人";
+"Cc"            = "抄送人";
+"Bcc"           = "密送人";
+"Reply-To"	    = "回复到";
+"Add address"   = "新增地址";
+"Body"          = "正文";
+"Open" = "打开";
+"Select All" = "全选";
+"Select Message" = "选择信息";
+"Attach Web Page..." = "添加网页...";
+"file" = "文件";
+"files" = "文件";
+"Save all" = "全部保存";
+"to"            = "收件人";
+"cc"            = "抄送人";
+"bcc"           = "密送人";
+"Add a recipient" = "新增收件人";
+"Edit Draft..." = "编辑草稿...";
+"Load Images" = "加载图片";
+"Return Receipt" = "回复回执";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "此消息的发件人要求当你阅读该消息时得到通知。你是否希望通知发件人？";
+"Return Receipt (displayed) - %@"= "回复回执(已标示)- %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "这是你发送邮件给 %@ 的回执。\n\n附注: 回执只通知邮件已收到， 并不保证收件人已经阅读内容。 ";
+"Priority" = "优先级";
+"highest" = "最高";
+"high" = "高";
+"normal" = "一般";
+"low" = "低";
+"lowest" = "最低";
+"This mail is being sent from an unsecure network!" = "这个邮件发自不安全的网络！";
+"Address Book" = "通讯录";
+"Search For" = "搜索";
+
+/* Popup "show" */
+"all"     = "全部";
+"read"    = "已读";
+"unread"  = "未读";
+"deleted" = "已删除";
+"flagged" = "已标记";
+
+/* MailListView */
+"Sender" = "发件人";
+"Subject or Sender" = "主题或发件人";
+"To or Cc" = "收件人或抄送人";
+"Entire Message" = "全部内容";
+"Date"          = "日期";
+"View"          = "查看";
+"All"           = "所有";
+"No message"    = "没有邮件";
+"messages"      = "邮件";
+"Yesterday"     = "昨天";
+"first"         = "最前面";
+"previous"      = "前一页";
+"next"          = "下一页";
+"last"          = "最后";
+"msgnumber_to"  = "收件人";
+"msgnumber_of"  = "的";
+"Mark Unread" = "标记为未读";
+"Mark Read"   = "标记为已读";
+"Untitled" = "无主题";
+
+/* Tree */
+"SentFolderName"   = "已发送";
+"TrashFolderName"  = "垃圾箱";
+"InboxFolderName"  = "收件箱";
+"DraftsFolderName" = "草稿箱";
+"JunkFolderName" = "垃圾邮件";
+"SieveFolderName"  = "过滤器";
+"Folders"          = "目录"; /* title line */
+
+/* MailMoveToPopUp */
+"MoveTo"        = "移动到";
+
+/* Address Popup menu */
+"Add to Address Book..." = "添加到通讯录...";
+"Compose Mail To" = "撰写邮件";
+"Create Filter From Message..." = "新增规则...";
+
+/* Image Popup menu */
+"Save Image" = "保存图片";
+"Save Attachment" = "保存附件";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "在新窗口打开邮件";
+"Copy Folder Location" = "复制目录位置";
+"Subscribe..." = "订阅...";
+"Mark Folder Read" = "文件夹标记已读";
+"New Folder..." = "新建目录...";
+"Compact This Folder" = "压缩该目录";
+"Search Messages..." = "搜索邮件...";
+"Sharing..." = "共享...";
+"New Subfolder..." = "新建子目录...";
+"Rename Folder..." = "修改目录名...";
+"Delete Folder" = "删除目录";
+"Use This Folder For" = "该目录用于";
+"Get Messages for Account" = "读取账户邮件";
+"Properties..." = "属性...";
+"Delegation..." = "授权...";
+
+/* Use This Folder menu */
+"Sent Messages" = "发送邮件";
+"Drafts" = "草稿";
+"Deleted Messages" = "删除邮件";
+"Junk Messages" = "垃圾信息";
+
+/* Message list popup menu */
+"Open Message In New Window" = "在新窗口打开邮件";
+"Reply to Sender Only" = "只回复发件人";
+"Reply to All" = "全部回复";
+"Edit As New..." = "编辑为新的...";
+"Move To" = "移到";
+"Copy To" = "复制到";
+"Label" = "标签";
+"Mark" = "标记";
+"Save As..." = "另存...";
+"Print Preview" = "打印预览";
+"View Message Source" = "查看邮件原文";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "转换成事件";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "转换成任务";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "下载所有的附件";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "附件";
+
+"Print..." = "打印...";
+"Delete Message" = "删除邮件";
+"Delete Selected Messages" = "删除选中邮件";
+"Mark the selected messages as junk" = "标记为垃圾邮件";
+"Mark the selected messages as not junk" = "标记已选的讯息为非垃圾讯息";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "及 %{0} 封...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "隐藏";
+
+/* Number of selected messages in list */
+"selected" = "已选";
+
+"This Folder" = "该目录";
+
+/* Label popup menu */
+"None" = "空";
+
+/* Mark popup menu */
+"As Read" = "为已读";
+"Thread As Read" = "条目为已读";
+"As Read By Date..." = "按日期已读";
+"All Read" = "全部已读";
+"Flag" = "标记";
+"As Junk" = "为垃圾邮件";
+"As Not Junk" = "为非垃圾邮件";
+"Run Junk Mail Controls" = "启动垃圾邮件控制";
+"Search messages in" = "搜索信件在";
+"Search" = "搜索";
+"Search subfolders" = "搜索子目录";
+"Match any of the following" = "符合下列任一条件";
+"Match all of the following" = "符合以下所有条件";
+"contains" = "包含";
+"does not contain" = "不包含";
+"No matches found" = "未找到符合条件的资料";
+"results found" = "搜寻结果";
+"result found" = "搜寻结果";
+"Please specify at least one filter" = "请指定至少一项过滤规则";
+
+/* Folder operations */
+"Name" = "名称";
+"Enter the new name of your folder"
+ ="输入新目录名称";
+"Do you really want to move this folder into the trash ?"
+ = "确认把该目录移到垃圾桶吗？";
+"Operation failed" = "操作失败";
+"Quota" = "使用空间";
+"quotasFormat" = "%{1} MB中已用 %{0}%";
+"Unable to move/delete folder." = "无法移动/删除目录。";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "无法将邮箱移至垃圾桶。您是否要立即删除？";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "您确定要删除已选的讯息？";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "已复製 %{0} 条信息";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "已移动 %{0} 条信息";
+
+"Please select a message." = "请选择一封邮件。";
+"Please select a message to print." = "请选择要打印的邮件。";
+"Please select only one message to print." = "请只选择一个邮件打印。";
+"The message you have selected doesn't exist anymore." = "你选中的邮件已不存在。";
+"The folder with name \"%{0}\" could not be created."
+= "无法创建名称为“％{0}”的目录。";
+"This folder could not be renamed to \"%{0}\"."
+= "该目录无法重命名为“％{0}”";
+"The folder could not be deleted."
+= "该目录不能删除。";
+"The trash could not be emptied."
+= "垃圾箱不能清空。";
+"The folder functionality could not be changed."
+= "该目录功能不能修改。";
+"You need to choose a non-virtual folder!" = "你需要选择一个非虚拟目录！";
+"Moving a message into its own folder is impossible!"
+= "不能向该目录转移邮件！";
+"Copying a message into its own folder is impossible!"
+= "不能复制邮件到原目录！";
+
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "该邮件不能移到垃圾箱目录。 是否直接删除？";
+
+/* Message editing */
+"error_missingsubject" = "该邮件没有标题。 是否发送？";
+"error_missingrecipients" = "请至少指定一个收件人。";
+"Send Anyway" = "不管怎样发送";
+"Error while saving the draft" = "保存草稿時发生错误";
+
+/* Error when uploading a file attachment */
+"Error while uploading the file \"%{0}\":" = "上传文件\"%{0}\"出错";
+"There is an active file upload. Closing the window will interrupt it." = "关闭窗口将中断当前文件上传";
+"Message is too big" = "信息太大";
+
+/* Appears while sending the message */
+"Sending" = "发送中";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "已发送";
+
+"cannot send message: (smtp) all recipients discarded" = "无法发送： 所有收件人都无效。";
+"cannot send message (smtp) - recipients discarded" = "无法发送，下列帐号无法发送";
+"cannot send message: (smtp) error when connecting" = "无法发送： SMTP服务器接续失败。";
+
+/* Contacts list in mail editor */
+"Email" = "邮件帐号";
+"More mail options" = "更多邮件选项";
+"Delegation" = "授权";
+"Add User" = "新增用户";
+"Add a tag" = "新增标签";
+"reply" = "回复";
+"Edit" = "编辑";
+"Yes" = "是";
+"No" = "否";
+"Location" = "地点";
+"Rename" = "重命名";
+"Compact" = "压缩";
+"Export" = "导出";
+"Set as Drafts" = "设为草稿";
+"Set as Sent" = "设为已发送";
+"Set as Trash" = "设为放入垃圾箱";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "设为垃圾邮件";
+
+"Sort" = "分类";
+"Order Received" = "已收到订单";
+"Descending Order" = "降序排列";
+"Back" = "返回";
+"Copy messages" = "复制信息";
+"More messages options" = "更多信息选项";
+"Mark as Unread" = "标记为未读";
+"Mark as Read" = "标记为已读";
+"Closing Window ..." = "关闭窗口中...";
+"Tried to send too many mails. Please wait." = "发送邮件达到上限。请稍候在操作。";
+"View Mail" = "查看邮件";
+"This message contains external images." = "此邮件包含外部图片";
+"Expanded" = "展开的";
+"Add a Criteria" = "新增搜索条件";
+"More search options" = "更多搜索条件";
+"Your email has been saved" = "您的电子邮件已保存";
+"Your email has been sent" = "您的电子邮件已发送";
+"Folder compacted" = "文件夹已压缩";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "搜索范围";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "管理订阅";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "筛选条件";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";
