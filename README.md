@@ -37,6 +37,7 @@ SOGo and its associated components are available in various languages. The follo
 * [eu] Basque - Gorka Gonzalez
 * [pr_BR] Brazilian Portuguese - Alexandre Marcilio
 * [ca] Catalan - Hector M. Rulot Segovia
+* [zh_CN] Chinese (China) - Thomas Kuiper
 * [zh_TW] Chinese (Taiwan)
 * [hr_HR] Croatian - Jens Riecken
 * [cs] Czech - Šimon Halamásek
