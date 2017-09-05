@@ -48,6 +48,9 @@
 @interface SOGoMailCatalanReply : SOGoMailReply
 @end
 
+@interface SOGoMailChineseChinaReply : SOGoMailReply
+@end
+
 @interface SOGoMailChineseTaiwanReply : SOGoMailReply
 @end
 

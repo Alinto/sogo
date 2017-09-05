@@ -1,0 +1,609 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+"Create a new event" = "新建事件";
+"Create a new task" = "新建任务";
+"Edit this event or task" = "编辑该事件或任务";
+"Print the current calendar view" = "打印当前日历视图";
+"Delete this event or task" = "删除该事件或任务";
+"Go to today" = "转到今天";
+"Switch to day view" = "切换按天浏览";
+"Switch to week view" = "切换按周浏览";
+"Switch to month view" = "切换按月浏览";
+"Switch to multi-columns day view" = "切换到多列日视图";
+"Reload all calendars" = "刷新所有日程";
+
+/* Tabs */
+"Date" = "日期";
+"Calendars" = "日程";
+"No events for selected criteria" = "所选条件下无事件";
+"No tasks for selected criteria" = "所选条件下无任务";
+
+/* Day */
+"DayOfTheMonth" = "该月的一天";
+"dayLabelFormat" = "%m/%d/%Y";
+"today" = "今天";
+"Previous Day" = "前一天";
+"Next Day" = "后一天";
+
+/* Week */
+"Week" = "周";
+"this week" = "本周";
+"Week %d" = "周%d";
+"Previous Week" = "前一周";
+"Next Week" = "下一周";
+
+/* Month */
+"this month" = "当月";
+"Previous Month" = "前月";
+"Next Month" = "下月";
+
+/* Year */
+"this year" = "今年";
+
+/* Menu */
+"Calendar" = "日历";
+"Contacts" = "联系人";
+"New Calendar..." = "新日程...";
+"Delete Calendar" = "删除日程...";
+"Unsubscribe Calendar" = "退订日程";
+"Sharing..." = "共享...";
+"Export Calendar..." = "导出日程...";
+"Import Events..." = "导入日程...";
+"Import Events" = "导入事件";
+"Select an iCalendar file (.ics)." = "选择 iCalendar 文件(.ics).";
+"Upload" = "上传";
+"Uploading" = "上传中";
+"Publish Calendar..." = "发布日程...";
+"Reload Remote Calendars" = "刷新远端日程";
+"Properties" = "属性";
+"Done" = "完成";
+"An error occurred while importing calendar." = "导入日程时发生错误。";
+"No event was imported." = "没有事件被导入。";
+"A total of %{0} events were imported in the calendar." = "共%{0} 个事件导入到了该日程。";
+"Compose E-Mail to All Attendees" = "起草邮件给所有出席者";
+"Compose E-Mail to Undecided Attendees" = "起草邮件给所有未定出席者";
+
+/* Relative dates */
+"Yesterday" = "昨天";
+"Today" = "今日";
+"Tomorrow" = "明天";
+"Last %@" = "之后%@";
+
+/* Folders */
+"Personal calendar" = "个人日程";
+
+/* Misc */
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "禁止";
+
+/* acls */
+"Access rights to" = "访问权限到";
+"For user" = "给用户";
+"Any Authenticated User" = "所有授权用户";
+"Public Access" = "公开访问";
+"label_Public" = "公开";
+"label_Private" = "个人";
+"label_Confidential" = "机密";
+"label_Viewer" = "查看全部";
+"label_DAndTViewer" = "查看日期和时间";
+"label_Modifier" = "修改";
+"label_Responder" = "回应";
+"label_None" = "空";
+"View All" = "查看全部";
+"View the Date & Time" = "查看日期和时间";
+"Modify" = "更新";
+"Respond To" = "返回给";
+"None" = "空";
+"This person can create objects in my calendar."
+= "他可以在我日历上建立事件";
+"This person can erase objects from my calendar."
+= "他可以在我日历上删除事件";
+
+/* Button Titles */
+"Subscribe to a Calendar..." = "订阅日程...";
+"Remove the selected Calendar" = "删除选中的日历";
+"New calendar" = "新建日历";
+"Name of the Calendar" = "日程名称";
+"new" = "新建";
+"Print view" = "预览打印";
+"edit" = "编辑";
+"delete" = "删除";
+"proposal" = "建议";
+"Save and Close" = "保存并关闭";
+"Close" = "关闭";
+"Invite Attendees" = "邀请出席者";
+"Attach" = "添加";
+"Update" = "更新";
+"Cancel" = "取消";
+"Reset" = "重置";
+"Save" = "保存";
+"show_rejected_apts" = "显示被拒绝的邀约";
+"hide_rejected_apts" = "隐藏被拒绝的邀约";
+
+/* Schedule */
+"Schedule" = "日程";
+"No appointments found" = "没有安排";
+"Meetings proposed by you" = "你计划的会议";
+"Meetings proposed to you" = "你参加的会议";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "操作";
+"accept" = "接受";
+"decline" = "拒绝";
+"more attendees" = "更多出席者";
+"Hide already accepted and rejected appointments" = "隐藏已接受或者已拒绝的邀约";
+"Show already accepted and rejected appointments" = "显示已接受或者已拒绝的邀约";
+
+/* Print view */
+"LIST" = "列表";
+"Print Settings" = "打印设定";
+"Title" = "主题";
+"Layout" = "格式";
+"What to Print" = "打印内容";
+"Options" = "选项";
+"Tasks with no due date" = "无截止日期的任务";
+"Display working hours only" = "仅显示工作时间";
+"Completed tasks" = "完成的任务";
+"Display events and tasks colors" = "显示事件和任务的颜色";
+"Borders" = "边界";
+"Backgrounds" = "背景";
+
+/* Appointments */
+"Appointment viewer" = "查看邀约";
+"Appointment editor" = "编辑邀约";
+"Appointment proposal" = "邀约安排";
+"Appointment on" = "安排在";
+"Start" = "开始";
+"End" = "结束";
+"Due Date" = "到期日";
+"Name" = "名称";
+"Email" = "邮件";
+"Status" = "状态";
+"% complete" = "%完成";
+"Location" = "地点";
+"Add a category" = "新增目录";
+"Priority" = "优先级";
+"Privacy" = "隐私";
+"Cycle" = "循环";
+"Cycle End" = "循环结束";
+"Categories" = "类别";
+"Classification" = "分类";
+"Duration" = "持续时间";
+"Attendees" = "参与者";
+"Resources" = "资源";
+"Organizer" = "发起人";
+"Description" = "说明";
+"Document" = "文件";
+"Category" = "类别";
+"Repeat" = "重复";
+"Reminder" = "提醒";
+"General" = "一般";
+"Reply" = "回复";
+"Created by" = "发起人";
+"You are invited to participate" = "您被邀请参加";
+"Target" = "目标";
+"attributes" = "属性";
+"attendees" = "参加者";
+"delegated from" = "授予的";
+
+/* checkbox title */
+"is private" = "是个人的";
+
+/* classification */
+"Public" = "公开";
+"Private" = "个人";
+
+/* text used in overviews and tooltips */
+"empty title" = "无主题";
+"private appointment" = "私人邀约";
+"Change..." = "更改...";
+
+/* Appointments (participation state) */
+"partStat_NEEDS-ACTION" = "我稍后确认";
+"partStat_ACCEPTED" = "我会参加";
+"partStat_DECLINED" = "我不参加";
+"partStat_TENTATIVE" = "我可能参加";
+"partStat_DELEGATED" = "我代表";
+"partStat_OTHER" = "其他";
+
+/* Appointments (error messages) */
+"Conflicts found!" = "发现冲突！";
+"Invalid iCal data!" = "iCal数据无效";
+"Could not create iCal data!" = "不能生成iCal数据";
+
+/* Searching */
+"view_all" = "全部";
+"view_today" = "今天";
+"view_next7" = "接下来的7天";
+"view_next14" = "接下来的14天";
+"view_next31" = "接下来的31天";
+"view_thismonth" = "本月";
+"view_future" = "全部未来事件";
+"view_selectedday" = "选中的日期";
+"view_not_started" = "尚未开始的任务";
+"view_overdue" = "逾期的任务";
+"view_incomplete" = "未完任的任务";
+"View" = "查看";
+"Title, category or location" = "主题, 类别或地点";
+"Entire content" = "全部内容";
+"Search" = "搜索";
+"Search attendees" = "搜索参加者";
+"Search resources" = "搜索资源";
+"Search appointments" = "搜索邀约";
+"All day Event" = "全天活动";
+"check for conflicts" = "冲突检查";
+"URL" = "链接";
+"newAttendee" = "增加出席者";
+
+/* calendar modes */
+"Overview" = "总览";
+"Chart" = "图表";
+"List" = "列表";
+"Columns" = "列";
+
+/* Priorities */
+"prio_0" = "未指定";
+"prio_1" = "高";
+"prio_2" = "高";
+"prio_3" = "高";
+"prio_4" = "高";
+"prio_5" = "一般";
+"prio_6" = "低";
+"prio_7" = "低";
+"prio_8" = "低";
+"prio_9" = "低";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "公开事件";
+"CONFIDENTIAL_vevent" = "保密事件";
+"PRIVATE_vevent" = "私人事件";
+"PUBLIC_vtodo" = "公开任务";
+"CONFIDENTIAL_vtodo" = "保密任务";
+"PRIVATE_vtodo" = "私人任务";
+
+/* status type */
+"status_" = "未指定";
+"status_NOT-SPECIFIED" = "未指定";
+"status_TENTATIVE" = "暂定";
+"status_CONFIRMED" = "确定";
+"status_CANCELLED" = "取消";
+"status_NEEDS-ACTION" = "需要操作";
+"status_IN-PROCESS" = "进行中";
+"status_COMPLETED" = "已完成";
+
+/* Priority level */
+"low" = "低";
+
+/* Priority level */
+"normal" = "一般";
+
+/* Priority level */
+"high" = "高";
+
+/* Cycles */
+"cycle_once" = "循环一次";
+"cycle_daily" = "每天循环";
+"cycle_weekly" = "每周循环";
+"cycle_2weeks" = "每两周循环";
+"cycle_4weeks" = "每四周循环";
+"cycle_monthly" = "每月循环";
+"cycle_weekday" = "工作日循环";
+"cycle_yearly" = "每年循环";
+"cycle_end_never" = "循环开始于";
+"cycle_end_until" = "循环结束于";
+"Recurrence pattern" = "重复模式";
+"Range of recurrence" = "重复范围";
+"Daily" = "天";
+"Multi-Columns" = "多列";
+"Weekly" = "周";
+"Monthly" = "月";
+"Yearly" = "年";
+"Every" = "每";
+"Days" = "天";
+"Week(s)" = "周";
+"On" = "在";
+"Month(s)" = "月";
+
+/* [Event recurrence editor] Ex: _The_ first Sunday */
+"The" = "该";
+"Recur on day(s)" = "重复(每天)";
+"Year(s)" = "年";
+
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
+"cycle_of" = "的";
+"No end date" = "无结束日期";
+"Create" = "新建";
+"appointment(s)" = "安排";
+"Repeat until" = "重复直到";
+"End Repeat" = "停止重复";
+"Never" = "从不";
+"After" = "之后";
+"On Date" = "日期";
+"times" = "时间";
+"First" = "首次";
+"Second" = "第二次";
+"Third" = "第三次";
+"Fourth" = "第四次";
+"Fift" = "第五次";
+"Last" = "最后";
+
+/* Appointment categories */
+"category_none" = "空";
+"category_labels" = "结婚纪念日,生日,工作,电话,客户,竞争对手,客户,收藏夹,跟进,礼物,假日,想法,会议,事件,其他,个人,项目,公众假日,状态,供应商,旅游,休假";
+"repeat_NEVER" = "不重复";
+"repeat_DAILY" = "每天";
+"repeat_WEEKLY" = "每周";
+"repeat_BI-WEEKLY" = "每两周";
+"repeat_EVERY WEEKDAY" = "每工作日";
+"repeat_MONTHLY" = "每月";
+"repeat_YEARLY" = "每年";
+"repeat_CUSTOM" = "定制...";
+"reminder_NONE" = "没有提醒";
+"reminder_5_MINUTES_BEFORE" = "5分钟前";
+"reminder_10_MINUTES_BEFORE" = "10分钟前";
+"reminder_15_MINUTES_BEFORE" = "15分钟前";
+"reminder_30_MINUTES_BEFORE" = "30分钟前";
+"reminder_45_MINUTES_BEFORE" = "45分钟前";
+"reminder_1_HOUR_BEFORE" = "1小时前";
+"reminder_2_HOURS_BEFORE" = "2小时前";
+"reminder_5_HOURS_BEFORE" = "5小时前";
+"reminder_15_HOURS_BEFORE" = "15小时前";
+"reminder_1_DAY_BEFORE" = "1天前";
+"reminder_2_DAYS_BEFORE" = "2天前";
+"reminder_1_WEEK_BEFORE" = "1周前";
+"reminder_CUSTOM" = "定制...";
+"reminder_MINUTES" = "分钟";
+"reminder_HOURS" = "小时";
+"reminder_DAYS" = "天";
+"reminder_WEEKS" = "周";
+"reminder_BEFORE" = "前";
+"reminder_AFTER" = "后";
+"reminder_START" = "事件开始";
+"reminder_END" = "事件结束";
+"Reminder Details" = "提醒具体内容";
+"Choose a Reminder Action" = "选择提醒动作";
+"Show an Alert" = "表示警告信息";
+"Send an E-mail" = "发送邮件";
+"Email Organizer" = "邮件部门";
+"Email Attendees" = "邮件参加者";
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* Arial label for reminder units */
+"Reminder units" = "提醒单位";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "提醒位置";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "提醒关係";
+
+/* transparency */
+"Show Time as Free" = "显示空闲时间";
+
+/* email notifications */
+"Send Appointment Notifications" = "发送预约通知";
+"From" = "发件人";
+"To" = "收件人";
+
+/* validation errors */
+validate_notitle           = "没有标题, 是否继续？";
+validate_invalid_startdate = "开始日期不正确";
+validate_invalid_enddate   = "结束时间不正确";
+validate_endbeforestart    = "结束日期早于开始日期。";
+validate_untilbeforeend    = "重复设定的时间必须晚于第一次开始的时间。";
+
+"Events" = "事件";
+"Tasks" = "任务";
+"Show completed tasks" = "显示所有已完成的任务";
+
+/* tabs */
+"Task" = "任务";
+"Event" = "事件";
+"Recurrence" = "重复";
+
+/* toolbar */
+"New Event" = "新事件";
+"New Task" = "新任务";
+"Edit" = "编辑";
+"Delete" = "删除";
+"Go to Today" = "显示今天";
+"Day View" = "按日查看";
+"Week View" = "按周查看";
+"Month View" = "按月查看";
+"Reload" = "刷新";
+
+/* Number of selected components in events or tasks list */
+"selected" = "选择";
+"eventPartStatModificationError" = "状态无法修改。";
+
+/* menu */
+"New Event..." = "新事件...";
+"New Task..." = "新任务...";
+"Edit Selected Event..." = "编辑所选事件";
+"Delete Selected Event" = "删除选中事件";
+"Select All" = "全选";
+"Workweek days only" = "仅工作日";
+"Tasks in View" = "任务看看器";
+"eventDeleteConfirmation" = "以下事件将被删除";
+"taskDeleteConfirmation" = "以下任务将被删除";
+"Would you like to continue?" = "是否继续？";
+"You cannot remove nor unsubscribe from your personal calendar."
+= "你不能删除或退订自己的日程。";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "确认删除%{0}\"?";
+
+/* Legend */
+"Participant" = "参与者";
+"Optional Participant" = "可选参与者";
+"Non Participant" = "非参与者";
+"Chair" = "席位";
+"Needs action" = "需要操作";
+"Accepted" = "已接受";
+"Declined" = "已拒绝";
+"Tentative" = "暂定";
+"Free" = "空闲";
+"Busy" = "忙碌";
+"Maybe busy" = "可能忙";
+"No free-busy information" = "没有忙碌的信息";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot" = "建议时段";
+"Zoom" = "缩放";
+"Previous slot" = "前一时段";
+"Next slot" = "后一时段";
+"Previous hour" = "前一小时";
+"Next hour" = "后一小时";
+"Work days only" = "只工作日";
+"The whole day" = "全天";
+"Between" = "之间：";
+"and" = "和";
+"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
+= "在参加者里有一个事件冲突。\n你要保持现在的设定吗？";
+
+/* events list */
+"Due" = "到期";
+"(Private Event)" = "(个人事件)";
+vevent_class0 = "(公开事件)";
+vevent_class1 = "(个人事件)";
+vevent_class2 = "(机密事件)";
+
+/* tasks list */
+"Descending Order" = "降序排列";
+vtodo_class0 = "(公开任务)";
+vtodo_class1 = "(个人任务)";
+vtodo_class2 = "(机密任务)";
+"closeThisWindowMessage" = "谢谢！您现在可以关闭此窗口或继续查看";
+"Multicolumn Day View" = "每日多列浏览";
+"Please select an event or a task." = "请选择一个事件或任务";
+"editRepeatingItem" = "你编辑的项目是个重复项目。您要编辑所有重复项目还是其中单独的一个？";
+"button_thisOccurrenceOnly" = "仅当前这一个";
+"button_allOccurrences" = "所有的";
+"Edit This Occurrence" = "仅编辑这个活动";
+"Edit All Occurrences" = "编辑所有的活动";
+"Update This Occurrence" = "仅更新这个活动";
+"Update All Occurrences" = "更新所有的活动";
+
+/* Properties dialog */
+"Color" = "颜色";
+"Include in free-busy" = "包含忙-闲";
+"Synchronization" = "同步";
+"Synchronize" = "同步";
+"Tag" = "标签";
+"Display" = "显示";
+"Show alarms" = "显示警告";
+"Show tasks" = "显示任务";
+"Notifications" = "提醒";
+"Receive a mail when I modify my calendar" = "修改日程时收到邮件";
+"Receive a mail when someone else modifies my calendar" = "当别人修改我的日程时收到邮件";
+"When I modify my calendar, send a mail to" = "当我修改我的日程，发送邮件通知";
+"Email Address" = "电子邮件地址";
+"Export" = "导出";
+
+
+/* Show only the calendar for which the menu is displayed */
+"Show Only This Calendar" = "仅显示此日程";
+
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "显示所有日程";
+
+"Links to this Calendar" = "链接到本日程";
+"Authenticated User Access" = "授权用户访问";
+"CalDAV URL" = "CalDAV链接";
+"WebDAV ICS URL" = "WebDAV ICS 链接";
+"WebDAV XML URL" = "WebDAV XML 链接";
+
+/* Error messages */
+"dayFieldInvalid" = "请在日期中输入1或者大于1的数字。";
+"weekFieldInvalid" = "请在(周)输入1或者大于1的数字。";
+"monthFieldInvalid" = "请在(月)输入1或者大于1的数字。";
+"monthDayFieldInvalid" = "请在月和日中输入1或者大于1的数字。";
+"yearFieldInvalid" = "请在(年)输入定1或者大于1的数字。";
+"appointmentFieldInvalid" = "请在安排的项目指定1或者大于1的数字。";
+"recurrenceUnsupported" = "目前不支持这种类型的重复。";
+"Please specify a calendar name." = "请指定日程的名称。";
+"tagNotDefined" = "同步日程时需要指定标签";
+"tagAlreadyExists" = "指定的标签已经用于其他日程。";
+"tagHasChanged" = "如果修改了日程的标签，需要在移动设备上刷新该数据。\n是否继续？";
+"tagWasAdded" = "如果同步该日程，需要在移动设备上刷新该数据。\n是否继续？";
+"tagWasRemoved" = "如果将此日程从同步中删除，需要刷新移动设备上的数据 。\n是否继续？";
+"DestinationCalendarError" = "源日程和目标日程相同。请尝试复制到其他日程。";
+"EventCopyError" = "无法复制日程。请尝试复制到另一个日程。";
+"Please select at least one calendar" = "请选择至少一个日程";
+"Open Task..." = "打开任务...";
+"Mark Completed" = "标记已完成";
+"Delete Task" = "删除任务";
+"Delete Event" = "删除事件";
+"Copy event to my calendar" = "复制事件到我的日程";
+"View Raw Source" = "查看来源";
+"Subscriptions" = "订阅";
+"Subscribe to a shared folder" = "订阅共享的资料夹";
+"Subscribe to a web calendar..." = "订阅到网页日程";
+"URL of the Calendar" = "日历链接";
+"Web Calendar" = "网页日程";
+"Web Calendars" = "网页日程";
+"Reload on login" = "重新登录";
+"Invalid number." = "无效数字。";
+"Please identify yourself to %{0}" = "请定义你自己到 %{0}";
+"quantity" = "数量";
+"Current view" = "查看当前";
+"Selected events and tasks" = "已选的事件及任务";
+"Custom date range" = "自定义日期范围";
+"Select starting date" = "选择开始时间";
+"Select ending date" = "选择结束时间";
+"Delegated to" = "委派给";
+"Keep sending me updates" = "持续发送更新";
+"OK" = "确认";
+"Confidential" = "保密";
+"Enable" = "启用";
+"Filter" = "过滤";
+"Sort" = "分类";
+"Back" = "返回";
+"Day" = "日";
+"Month" = "月";
+"New Appointment" = "新邀约";
+"filters" = "过滤器";
+"Today" = "今日";
+"More options" = "更多选项";
+"Delete This Occurrence" = "仅删除这个活动";
+"Delete All Occurrences" = "删除所有的活动";
+"Add From" = "新增开始日期/时间";
+"Add Due" = "新增结束日期/时间";
+"Import" = "导入";
+"Rename" = "重命名";
+"Import Calendar" = "导入日程";
+"Select an ICS file." = "选择一个ICS文件。";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "已成功订阅日程";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "切换项目";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "搜寻范围";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

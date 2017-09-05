@@ -1,0 +1,270 @@
+/* this file is in UTF-8 format! */
+
+"Contact" = "联系人";
+"Address" = "地址";
+"Photos" = "照片";
+"Other" = "其他";
+"Address Books" = "通讯录";
+"Addressbook" = "通讯录";
+"Addresses" = "住址";
+"Update" = "更新";
+"Cancel" = "取消";
+"Common" = "一般";
+"Contact editor" = "编辑联系人";
+"Contact viewer" = "查看联系人";
+"Email" = "邮件";
+"Screen Name" = "显示名称";
+"Extended" = "扩展";
+"Fax" = "传真";
+"Firstname" = "姓";
+"Home" = "家庭地址";
+"HomePhone" = "家庭电话";
+"Lastname" = "名字";
+"Location" = "地点";
+"Add a category" = "新增类别";
+"MobilePhone" = "手机";
+"Name" = "名字";
+"OfficePhone" = "工作电话";
+"Organization" = " 组织";
+"Work Phone" = "单位电话";
+"Phone" = "电话";
+"Phones" = "电话";
+"Postal" = "邮政编码";
+"Save" = "保存";
+"Internet" = "网络";
+"Unit" = "单位";
+"delete" = "删除";
+"edit" = "编辑";
+"invalidemailwarn" = "指定的邮件地址无效";
+"new" = "新的";
+"Preferred Phone" = "首选电话";
+"Move To" = "移到";
+"Copy To" = "复制到";
+"Add to" = "增加到";
+"To" = "收件人";
+"Carbon Copy (Cc)" = "抄送 (Cc)";
+"Blind Carbon Copy (Bcc)" = "密送 (Bcc)";
+
+/* Subheader of empty addressbook */
+"No contact" = "无联系人";
+
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "搜索该地址簿";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "联系人";
+
+/* No contact matching search criteria */
+"No matching contact" = "无联系人";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "匹配联系人";
+
+/* Number of selected contacts in list */
+"selected" = "选中";
+
+/* Empty right pane */
+"No contact selected" = "没有选择联系人";
+
+/* Tooltips */
+"Create a new address book card" = "新增名片";
+"Create a new list" = "新增列表";
+"Edit the selected card" = "编辑选中的名片";
+"Send a mail message" = "发送一个邮件";
+"Delete selected card or address book" = "删除选中的名片或通讯录";
+"Reload all contacts" = "刷新联系人";
+"htmlMailFormat_UNKNOWN" = "未知";
+"htmlMailFormat_FALSE" = "纯文本";
+"htmlMailFormat_TRUE" = "HTML";
+"Name or Email" = "名字或地址";
+"Category" = "类别";
+"Personal Addressbook" = "个人通讯录";
+"Search in Addressbook" = "搜索通讯录";
+"New Card" = "新名片";
+"New List" = "新列表";
+"Edit" = "编辑";
+"Properties" = "属性";
+"Sharing..." = "共享...";
+"Write" = "写入";
+"Delete" = "删除";
+"Instant Message" = "即时消息";
+"Add..." = "增加...";
+"Remove" = "删除";
+"Please wait..." = "请稍候...";
+"No possible subscription" = "不可以订阅";
+"Preferred" = "推荐的";
+"Display" = "显示";
+"Display Name" = "显示名称";
+"Additional Email" = "附加的邮件";
+"Phone Number" = "电话号码";
+"Prefers to receive messages formatted as" = "偏好邮件格式";
+"Categories" = "分类";
+"First" = "名";
+"Last" = "姓";
+"Nickname" = "昵称";
+"Telephone" = "电话";
+"Work" = "工作";
+"Mobile" = "手机";
+"Pager" = "传呼";
+
+/* categories */
+"contacts_category_labels" = "同事, 竞争对手, 客户, 朋友, 家庭, 工作伙伴, 供应商, 媒体, VIP";
+"New category" = "新类别";
+
+/* adresses */
+"Title" = "头衔";
+"Service" = "服务";
+"Company" = "公司";
+"Department" = "部门";
+"City" = "城市";
+"State_Province" = "州/省";
+"ZIP_Postal Code" = "ZIP/邮编";
+"Country" = "国家";
+"Web Page" = "主页";
+"Other Infos" = "其他信息";
+"Note" = "备考";
+"Timezone" = "时区";
+"Birthday" = "生日";
+"Birthday (yyyy-mm-dd)" = "生日 (yyyy-mm-dd)";
+"Freebusy URL" = "忙碌/空闲";
+"Add as..." = "新增为...";
+"Recipient" = "收件人";
+"Carbon Copy" = "副本";
+"Blind Carbon Copy" = "密件副本";
+"New Addressbook..." = "新通讯录...";
+"Subscribe to an Addressbook..." = "订阅通讯录...";
+"Remove the selected Addressbook" = "删除选中的通讯录";
+"Subscribe to a shared folder" = "订阅到共享目录";
+"Search User" = "搜索用户";
+"Name of the Address Book" = "通讯录名称";
+"Are you sure you want to delete the selected address book?"
+= "确定删除选中的通讯录吗";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "确认删除该通讯录 \"%{0}\"?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "不能从公共通讯录里删除或取消订阅。";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "不能从个人通讯录里删除或取消订阅。";
+"Are you sure you want to delete the selected contacts?"
+= "确认要删除选中的联系人吗？";
+"Are you sure you want to delete the card of %{0}?" = "您确定要删除%{0}的联系人名片?";
+"You cannot delete the card of \"%{0}\"."
+= "不能删除通讯录 \"%{0}\"。";
+"You cannot subscribe to a folder that you own!"
+= "不能退订自己的目录。";
+"Unable to subscribe to that folder!"
+= "不能订阅到该目录。";
+
+/* acls */
+"Access rights to" = "获得权限访问";
+"For user" = "给用户";
+"Any Authenticated User" = "所有授权的用户";
+"Public Access" = "公开访问";
+"This person can add cards to this addressbook."
+= "编辑该通讯录。";
+"This person can edit the cards of this addressbook."
+= "编辑这个通讯录里的内容。";
+"This person can list the content of this addressbook."
+= "查看这个通讯录的内容。";
+"This person can read the cards of this addressbook."
+= "读取通讯录的联系人。";
+"This person can erase cards from this addressbook."
+= "删除这个通讯录的联系人。";
+"The selected contact has no email address."
+= "选中的联系人没有邮件地址。";
+"Please select a contact." = "请选择联系人。";
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0}个名片被复制";
+"%{0} card(s) moved" = "%{0}个名片被移动";
+"SoAccessDeniedException" = "不能编辑该通讯录。";
+"Forbidden" = "禁止";
+"Invalid Contact" = "选中的联系人已经不存在了。";
+"Unknown Destination Folder" = "选中的目标通讯录不存在。";
+
+/* Lists */
+"List details" = "显示详细信息";
+"List name" = "显示名字";
+"List nickname" = "显示昵称";
+"List description" = "显示说明";
+"Members" = "成员";
+"Contacts" = "联系人";
+"Add" = "新增";
+"Lists can't be moved or copied." = "列表不能删除或复制。";
+"Export" = "导出";
+"Export Address Book..." = "导出通讯录...";
+"View Raw Source" = "查看源文件";
+
+/* Import */
+"Import Cards" = "导入联系人";
+"Select a vCard or LDIF file." = "选择一个 vCard 或者 LDIF 文件。";
+"Upload" = "上传";
+"Uploading" = "上传中";
+"Done" = "完成";
+"An error occured while importing contacts." = "导入联系人时发生错误。";
+"No card was imported." = "没有名片可以导入。";
+"A total of %{0} cards were imported in the addressbook." = "总共 %{0} 个名片被导入到通讯录。";
+"Reload" = "刷新";
+
+/* Properties window */
+"Address Book Name" = "通讯录名称";
+"Links to this Address Book" = "链接到此通讯录";
+"Authenticated User Access" = "授权的用户访问";
+"CardDAV URL" = "CardDAV URL";
+"Options" = "选项";
+"Rename" = "重命名";
+"Subscriptions" = "订阅";
+"Global Addressbooks" = "全球地址簿";
+"Search" = "搜索";
+"Sort" = "排序";
+"Descending Order" = "降序";
+"Back" = "返回";
+"Select All" = "全选";
+"Copy contacts" = "复制联系人";
+"More messages options" = "更多选项";
+"New Contact" = "新联系人";
+"Close" = "关闭";
+"More contact options" = "更多联系人选项";
+"Organization Unit" = "组织单位";
+"Add Organizational Unit" = "新增组织单位";
+"Type" = "类型";
+"Email Address" = "邮件地址";
+"New Email Address" = "新邮件地址";
+"New Phone Number" = "新电话号码";
+"URL" = "网址";
+"New URL" = "新网址";
+"street" = "街道";
+"Postoffice" = "邮局";
+"Region" = "地区";
+"Postal Code" = "邮编";
+"New Address" = "新地址";
+"Reset" = "重置";
+"Description" = "说明";
+"Add Member" = "增加成员";
+"Subscribe" = "订阅";
+"Add Birthday" = "添加生日";
+"Import" = "导入";
+"More options" = "更多选项";
+"Role" = "角色";
+"Add Screen Name" = "添加标示";
+"Custom 1" = "自定义 1";
+"Custom 2" = "自定义 2";
+"Custom 3" = "自定义 3";
+"Custom 4" = "自定义 4";
+"Custom Value" = "自定义值";
+"New Custom Value" = "新建自定义值";
+"Synchronization" = "同步";
+"Synchronize" = "同步";
+"Sucessfully subscribed to address book" = "已成功订阅通讯录";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "搜索范围";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "切换";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

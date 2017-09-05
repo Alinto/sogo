@@ -1,0 +1,35 @@
+/* ChineseChina (zh_CN) */
+{
+  NSLanguageName = "ChineseChina";
+  NSFormalName = "简体中文";
+  NSLocaleCode = "zh_CN"; /* ISO 639-1 */
+  NSLanguageCode = "zho"; /* ISO 639-2 */
+  NSParentContext = "";
+
+  NSAMPMDesignation = ("上午","上午");
+  NSCurrencySymbol = "元";
+  NSDateFormatString = "%A, %B %e, %Y";
+  NSDateTimeOrdering = MDYH;
+  NSDecimalDigits = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+  NSDecimalSeparator = ".";
+  NSEarlierTimeDesignations = ("之前", "剩餘", "之後", "前");
+  NSHourNameDesignations = ((0, "半夜"), (10, "早上"), (12, "中午", "午餐"), (14, "下午"), (19, "晚餐"));
+  NSInternationalCurrencyString = CNY; /* ISO 4217 */
+  NSLaterTimeDesignations = ("下一個");
+  NSMonthNameArray = ("一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月");
+  NSNextDayDesignations = ("明天");
+  NSNextNextDayDesignations = ("明日");
+  NSPriorDayDesignations = ("昨天");
+  NSShortDateFormatString = "%m/%e/%y";
+  NSShortMonthNameArray = ("一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月");
+  NSShortTimeDateFormatString = "%m/%e/%y %I:%M %p";
+  NSShortWeekDayNameArray = ("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
+  NSThisDayDesignations = ("今天", "現在");
+  NSThousandsSeparator = ",";
+  NSTimeDateFormatString = "%A, %B %e, %Y %I:%M:%S %p %Z";
+  NSTimeFormatString = "%I:%M:%S %p";
+  NSWeekDayNameArray = ("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
+  NSYearMonthWeekDesignations = ("年", "月", "周");
+  NSPositiveCurrencyFormatString = "$9,999.00";
+  NSNegativeCurrencyFormatString = "-$9,999.00";
+}

@@ -1,0 +1,64 @@
+"Inviting the following persons is prohibited:" = "禁止邀请下列人员：";
+"Personal Calendar" = "个人日程";
+vevent_class0 = "(公开事件)";
+vevent_class1 = "(私人事件)";
+vevent_class2 = "(机密事件)";
+
+vtodo_class0 = "(公开任务)";
+vtodo_class1 = "(私人任务)";
+vtodo_class2 = "(机密任务)";
+/* Receipts */
+"The event \"%{Summary}\" was created" = "事件\"%{Summary}\"已创建";
+"The event \"%{Summary}\" was deleted" = "事件\"%{Summary}\"已删除";
+"The event \"%{Summary}\" was updated" = "事件\"%{Summary}\"已更新";
+"The following attendees(s) were notified" = "已通知下列出席者";
+"The following attendees(s) were added" = "已增加下列出席者";
+"The following attendees(s) were removed" = "已删除下列出席者";
+/* IMIP messages */
+"calendar_label" = "日程";
+"startDate_label" = "开始";
+"endDate_label" = "结束";
+"time_label" = "时间";
+"to_label" = "到";
+"due_label" = "截止日期";
+"location_label" = "地点";
+"summary_label" = "主题";
+"comment_label" = "备注";
+"organizer_label" = "组织者";
+"attendee_label" = "参与者";
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "邀请事件: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(来自 %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} 邀请你到 %{Summary}.\n\n开始: %{StartDate}\n结束: %{EndDate}\n说明: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} 邀请你去 %{Summary}。\n\n开始: %{StartDate} 的 %{StartTime}\n结束: %{EndDate} 的 %{EndTime}\n说明: %{Description}";
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "事件已取消: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} 取消了安排: %{Summary}.\n\n开始: %{StartDate}\n结束: %{EndDate}\n说明: %{Description}";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} 取消了事件: %{Summary}。\n\n开始: %{StartDate} 的 %{StartTime}\n结束: %{EndDate} 的 %{EndTime}\n说明: %{Description}";
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "安排 \"%{Summary}\"  的开始时间 %{OldStartDate} 已更新";
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "安排 \"%{Summary}\" 的开始时间 %{OldStartDate} 的 %{OldStartTime} 已被更新";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "会议 \"%{Summary}\" 的下面参数已被修改:";
+"Please accept or decline those changes."
+= "请接受或拒绝这些更改。";
+/* Reply */
+"Accepted invitation: \"%{Summary}\"" = "接受的邀请: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "拒绝的邀请: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "代理的邀请: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "未处理邀请: \"%{Summary}\"";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "%{Attendee} %{SentByText} 已接受了你的邀请。";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "%{Attendee} %{SentByText} 已拒绝了你的邀请。";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText} 已把邀请委派给 %{Delegate}.";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText} 尚未决定接受事件邀请。";
+/* Resources */
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "无法获取资源: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "\"%{Cn} %{SystemEmail}\" 的同一时间的预定数达到上限 (%{NumberOfSimultaneousBookings})。 冲突事件为 \"%{EventTitle}\", 开始于 %{StartDate}。";

@@ -36,6 +36,7 @@ trans.sr = UI/MailerUI/Serbian.lproj/Localizable.strings
 trans.sv = UI/MailerUI/Swedish.lproj/Localizable.strings
 trans.tr_TR = UI/MailerUI/TurkishTurkey.lproj/Localizable.strings
 trans.uk = UI/MailerUI/Ukrainian.lproj/Localizable.strings
+trans.zh_CN = UI/MailerUI/ChineseChina.lproj/Localizable.strings
 trans.zh_TW = UI/MailerUI/ChineseTaiwan.lproj/Localizable.strings
 
 [sogo.ui-preferencesui]
@@ -73,6 +74,7 @@ trans.sr = UI/PreferencesUI/Serbian.lproj/Localizable.strings
 trans.sv = UI/PreferencesUI/Swedish.lproj/Localizable.strings
 trans.tr_TR = UI/PreferencesUI/TurkishTurkey.lproj/Localizable.strings
 trans.uk = UI/PreferencesUI/Ukrainian.lproj/Localizable.strings
+trans.zh_CN = UI/PreferencesUI/ChineseChina.lproj/Localizable.strings
 trans.zh_TW = UI/PreferencesUI/ChineseTaiwan.lproj/Localizable.strings
 
 [sogo.ui-scheduler]
@@ -110,6 +112,7 @@ trans.sr = UI/Scheduler/Serbian.lproj/Localizable.strings
 trans.sv = UI/Scheduler/Swedish.lproj/Localizable.strings
 trans.tr_TR = UI/Scheduler/TurkishTurkey.lproj/Localizable.strings
 trans.uk = UI/Scheduler/Ukrainian.lproj/Localizable.strings
+trans.zh_CN = UI/Scheduler/ChineseChina.lproj/Localizable.strings
 trans.zh_TW = UI/Scheduler/ChineseTaiwan.lproj/Localizable.strings
 
 [sogo.ui-contacts]
@@ -147,6 +150,7 @@ trans.sr = UI/Contacts/Serbian.lproj/Localizable.strings
 trans.sv = UI/Contacts/Swedish.lproj/Localizable.strings
 trans.tr_TR = UI/Contacts/TurkishTurkey.lproj/Localizable.strings
 trans.uk = UI/Contacts/Ukrainian.lproj/Localizable.strings
+trans.zh_CN = UI/Contacts/ChineseChina.lproj/Localizable.strings
 trans.zh_TW = UI/Contacts/ChineseTaiwan.lproj/Localizable.strings
 
 [sogo.ui-mainui]
@@ -184,6 +188,7 @@ trans.sr = UI/MainUI/Serbian.lproj/Localizable.strings
 trans.sv = UI/MainUI/Swedish.lproj/Localizable.strings
 trans.tr_TR = UI/MainUI/TurkishTurkey.lproj/Localizable.strings
 trans.uk = UI/MainUI/Ukrainian.lproj/Localizable.strings
+trans.zh_CN = UI/MainUI/ChineseChina.lproj/Localizable.strings
 trans.zh_TW = UI/MainUI/ChineseTaiwan.lproj/Localizable.strings
 
 [sogo.ui-common]
@@ -221,6 +226,7 @@ trans.sr = UI/Common/Serbian.lproj/Localizable.strings
 trans.sv = UI/Common/Swedish.lproj/Localizable.strings
 trans.tr_TR = UI/Common/TurkishTurkey.lproj/Localizable.strings
 trans.uk = UI/Common/Ukrainian.lproj/Localizable.strings
+trans.zh_CN = UI/Common/ChineseChina.lproj/Localizable.strings
 trans.zh_TW = UI/Common/ChineseTaiwan.lproj/Localizable.strings
 
 [sogo.ui-administrationui]
@@ -258,6 +264,7 @@ trans.sr = UI/AdministrationUI/Serbian.lproj/Localizable.strings
 trans.sv = UI/AdministrationUI/Swedish.lproj/Localizable.strings
 trans.tr_TR = UI/AdministrationUI/TurkishTurkey.lproj/Localizable.strings
 trans.uk = UI/AdministrationUI/Ukrainian.lproj/Localizable.strings
+trans.zh_CN = UI/AdministrationUI/ChineseChina.lproj/Localizable.strings
 trans.zh_TW = UI/AdministrationUI/ChineseTaiwan.lproj/Localizable.strings
 
 [sogo.soobjects-appointments]
@@ -295,6 +302,7 @@ trans.sr = SoObjects/Appointments/Serbian.lproj/Localizable.strings
 trans.sv = SoObjects/Appointments/Swedish.lproj/Localizable.strings
 trans.tr_TR = SoObjects/Appointments/TurkishTurkey.lproj/Localizable.strings
 trans.uk = SoObjects/Appointments/Ukrainian.lproj/Localizable.strings
+trans.zh_CN = SoObjects/Appointments/ChineseChina.lproj/Localizable.strings
 trans.zh_TW = SoObjects/Appointments/ChineseTaiwan.lproj/Localizable.strings
 
 [sogo.soobjects-contacts]
@@ -332,6 +340,7 @@ trans.sr = SoObjects/Contacts/Serbian.lproj/Localizable.strings
 trans.sv = SoObjects/Contacts/Swedish.lproj/Localizable.strings
 trans.tr_TR = SoObjects/Contacts/TurkishTurkey.lproj/Localizable.strings
 trans.uk = SoObjects/Contacts/Ukrainian.lproj/Localizable.strings
+trans.zh_CN = SoObjects/Contacts/ChineseChina.lproj/Localizable.strings
 trans.zh_TW = SoObjects/Contacts/ChineseTaiwan.lproj/Localizable.strings
 
 [sogo.soobjects-mailer]
@@ -369,6 +378,7 @@ trans.sr = SoObjects/Mailer/Serbian.lproj/Localizable.strings
 trans.sv = SoObjects/Mailer/Swedish.lproj/Localizable.strings
 trans.tr_TR = SoObjects/Mailer/TurkishTurkey.lproj/Localizable.strings
 trans.uk = SoObjects/Mailer/Ukrainian.lproj/Localizable.strings
+trans.zh_CN = SoObjects/Mailer/ChineseChina.lproj/Localizable.strings
 trans.zh_TW = SoObjects/Mailer/ChineseTaiwan.lproj/Localizable.strings
 
 [sogo.ui-mailpartviewers]
@@ -406,4 +416,5 @@ trans.sr = UI/MailPartViewers/Serbian.lproj/Localizable.strings
 trans.sv = UI/MailPartViewers/Swedish.lproj/Localizable.strings
 trans.tr_TR = UI/MailPartViewers/TurkishTurkey.lproj/Localizable.strings
 trans.uk = UI/MailPartViewers/Ukrainian.lproj/Localizable.strings
+trans.zh_CN = UI/MailPartViewers/ChineseChina.lproj/Localizable.strings
 trans.zh_TW = UI/MailPartViewers/ChineseTaiwan.lproj/Localizable.strings
