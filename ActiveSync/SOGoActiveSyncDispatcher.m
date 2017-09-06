@@ -741,14 +741,14 @@ void handle_eas_terminate(int signum)
         {
           [[theFolders objectAtIndex: i] setObject: theExistingParent forKey: @"parent"];
           [[theFolders objectAtIndex: i] setObject:
-                 [[[[theFolders objectAtIndex: i] objectForKey: @"path"] substringFromIndex: [theExistingParent length]+1]stringByReplacingOccurrencesOfString:@"/" withString:@"."]
+                 [[[[[theFolders objectAtIndex: i] objectForKey: @"path"] substringFromIndex: [theExistingParent length]+1]stringByReplacingOccurrencesOfString:@"/" withString:@"."] stringByDecodingImap4FolderName]
              forKey: @"name"];
         }
       else if (![[[theFolders objectAtIndex: i] objectForKey: @"type"] isEqualToString: @"otherUsers"] &&
                ![[[theFolders objectAtIndex: i] objectForKey: @"type"] isEqualToString: @"shared"])
         {
           [[theFolders objectAtIndex: i] setObject:
-                 [[[theFolders objectAtIndex: i] objectForKey: @"path"] stringByReplacingOccurrencesOfString:@"/" withString:@"."]
+                 [[[[theFolders objectAtIndex: i] objectForKey: @"path"] stringByReplacingOccurrencesOfString:@"/" withString:@"."] stringByDecodingImap4FolderName]
              forKey: @"name"];
         }
 
