@@ -381,7 +381,8 @@ static Class SOGoContactGCSEntryK = Nil;
           o = [values objectAtIndex: i];
           if ([o isKindOfClass: [NSDictionary class]])
             {
-              element = [card elementWithTag: @"adr" ofType: [o objectForKey: @"type"]];
+              element = [CardElement elementWithTag: @"adr"];
+              [element addType: [o objectForKey: @"type"]];
               [element setSingleValue: [o objectForKey: @"postoffice"]
                               atIndex: 0 forKey: @""];
               [element setSingleValue: [o objectForKey: @"street2"]
@@ -396,6 +397,7 @@ static Class SOGoContactGCSEntryK = Nil;
                               atIndex: 5 forKey: @""];
               [element setSingleValue: [o objectForKey: @"country"]
                               atIndex: 6 forKey: @""];
+              [card addChild: element];
             }
         }
     }

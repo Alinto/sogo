@@ -17,6 +17,7 @@ Bug fixes
  - [web] attachments are not displayed on IOS (#4150)
  - [web] fixed parsing of pasted email addresses from Spreadsheet (#4258)
  - [web] messages list not accessible when changing mailbox in expanded mail view (#4269)
+ - [web] only one postal address of same type is saved (#4091)
  - [eas] hebrew folders encoding problem using EAS (#4240)
 
 3.2.10 (2017-07-05)
