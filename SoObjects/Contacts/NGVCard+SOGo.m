@@ -325,18 +325,18 @@ convention:
   [element setValues: [ldifRecord objectForKey: @"c"]
 	     atIndex: 6 forKey: @""];
 
-  ou = [ldifRecord objectForKey: @"ou"];
-  if ([ou isKindOfClass: [NSArray class]])
-    units = [NSMutableArray arrayWithArray: (NSArray *)ou];
-  else if (ou)
-    units = [NSMutableArray arrayWithObject: ou];
-  else
-    units = [NSMutableArray array];
   o = [ldifRecord objectForKey: @"o"];
   if ([o isKindOfClass: [NSArray class]])
-    [units addObjectsFromArray: (NSArray *)o];
+    units = [NSMutableArray arrayWithArray: (NSArray *)o];
   else if (o)
-    [units addObject: o];
+    units = [NSMutableArray arrayWithObject: o];
+  else
+    units = [NSMutableArray array];
+  ou = [ldifRecord objectForKey: @"ou"];
+  if ([ou isKindOfClass: [NSArray class]])
+    [units addObjectsFromArray: (NSArray *)ou];
+  else if (ou)
+    [units addObject: ou];
   [self setOrganizations: units];
 
   [self _setPhoneValues: ldifRecord];
