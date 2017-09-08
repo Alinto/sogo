@@ -19,6 +19,7 @@
  */
 
 #import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSUserDefaults.h> /* for locale strings */
 
 #import <NGObjWeb/SoObjects.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -30,7 +31,9 @@
 #import <SoObjects/SOGo/NSString+Utilities.h>
 #import <SoObjects/SOGo/SOGoSession.h>
 #import <SoObjects/SOGo/SOGoSystemDefaults.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoWebAuthenticator.h>
+#import <SoObjects/SOGo/WOResourceManager+SOGo.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 
@@ -48,6 +51,31 @@ static SoProduct      *commonProduct      = nil;
       commonProduct = [[SoProduct alloc] initWithBundle:
                                [NSBundle bundleForClass: NSClassFromString(@"CommonUIProduct")]];
     }
+}
+
+- (id) initWithContext: (WOContext *)_context;
+{
+  NSString *language;
+  SOGoUserDefaults *userDefaults;
+  WOResourceManager *resMgr;
+
+  if ((self = [super initWithContext: _context]))
+    {
+      userDefaults = [[_context activeUser] userDefaults];
+      if (!userDefaults)
+        userDefaults = [SOGoSystemDefaults sharedSystemDefaults];
+      language = [userDefaults language];
+      resMgr = [[WOApplication application] resourceManager];
+      ASSIGN (locale, [resMgr localeForLanguageNamed: language]);
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [locale release];
+  [super dealloc];
 }
 
 - (WOResponse *) responseWithStatus: (unsigned int) status

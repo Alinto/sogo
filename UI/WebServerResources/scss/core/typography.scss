@@ -337,6 +337,10 @@ html p {
   line-height: $lineHeight;
   font-weight: $sg-font-regular;
 }
+.#{$md}-display-1--narrow {
+  @extend .#{$md}-display-1;
+  letter-spacing: -0.1em;
+}
 .#{$md}-display-2 {
   $lineHeight: $sg-line-height-7;
   font-size: $sg-font-size-7;

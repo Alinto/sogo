@@ -383,40 +383,39 @@
                   <span ng-bind="list.filterpopup() | loc"><!-- active filter --></span>
                 </md-subheader>
                 <md-list class="sg-section-list"
-                         ng-class="{ 'sg-list-selectable': list.mode.multiple }">
-                  <md-list-item ng-repeat="event in list.component.$events"
-                                aria-label="{{::event.c_title}}"
-                                ng-click="list.openEvent($event, event)">
-                    <div class="md-secondary sg-avatar-selectable"
-                         label:aria-label="Toggle item"
-                         ng-class="[event.getClassName('fg'), { 'sg-avatar-selected' : event.selected }]"
-                         ng-click="list.toggleComponentSelection($event, event)">
-                      <div class="sg-color-chip"
-                           ng-class="::event.getClassName('bg')"><!-- calendar color --></div>
-                    </div>
-                    <div class="sg-category"
-                         ng-repeat="category in ::event.categories | limitTo:5"
-                         ng-class="::'bg-category' + category"
-                         ng-style="::{ left: ($index * 3) + 'px' }"><!-- calendar color --></div>
-                    <div class="sg-tile-content">
-                      <div class="sg-md-subhead">
-                        <div>
-                          <span ng-show="::event.c_priority" class="sg-priority" ng-bind="::event.c_priority"><!-- priority --></span>
-                          <span ng-bind="::event.c_title"><!-- title --></span>
-                        </div>
-                      </div>
-                      <div class="sg-md-body">
-                        <div ng-bind="::event.c_location"><!-- location --></div>
-                        <div class="sg-tile-date" ng-bind="::event.formatted_startdate"><!-- start --></div>
-                      </div>
-                    </div>
-                    <div class="sg-tile-icons">
-                      <md-icon ng-show="::event.c_iscycle">repeat</md-icon>
-                      <md-icon ng-show="::event.c_nextalarm">alarm</md-icon>
-                    </div>
-                    <md-divider><!-- divider --></md-divider>
+                         ng-class="{ 'sg-list-selectable': list.mode.multiple }"
+                         ng-repeat="(key, monthData) in list.component.$events">
+                  <md-list-item aria-label="{{::monthData.month}}"
+                                md-colors="::{ color: 'default-primary-800' }">
+                    <span ng-bind="::monthData.month"><!-- month name --></span>
                   </md-list-item>
-                  <md-list-item disabled="disabled" ng-if="list.component.$events.length == 0">
+                  <md-list-item layout="row" layout-align="start start"
+                                ng-repeat="dayData in monthData.days">
+                    <div class="sg-calendar-date">
+                      <span class="sg-calendar-day sg-md-display-1--narrow"
+                            md-colors="::{ color: 'default-primary-800' }"
+                            ng-bind="::dayData.monthDay"><!-- month day --></span>
+                      <span>
+                        <div md-colors="::{ color: 'default-primary-400' }"
+                             ng-bind="::dayData.weekDay"><!-- week day --></div>
+                        <div class="md-caption"
+                             md-colors="::{ color: 'default-primary-800' }"
+                             ng-bind="::dayData.month"><!-- month --></div>
+                      </span>
+                    </div>
+                    <div class="sg-calendar-list md-flex">
+                      <sg-calendar-list-event
+                          ng-repeat="event in dayData.events"
+                          sg-component="event"
+                          sg-click="list.openEvent($event, clickComponent)">
+                        <!-- directive -->
+                      </sg-calendar-list-event>
+                      <md-divider><!-- divider --></md-divider>
+                    </div>
+                  </md-list-item>
+                </md-list>
+                <md-list ng-if="!list.component.$events">
+                  <md-list-item disabled="disabled">
                     <p class="sg-md-caption"><var:string label:value="No events for selected criteria"/></p>
                   </md-list-item>
                 </md-list>
@@ -447,8 +446,8 @@
                     <div class="sg-tile-content">
                       <div class="sg-md-subhead">
                         <div>
-                          <span ng-show="::task.c_priority" class="sg-priority">{{::task.c_priority}}</span>
-                          {{::task.c_title}}
+                          <span ng-show="::task.c_priority" class="sg-priority" ng-bind="::task.c_priority"><!-- priority --></span>
+                          <span ng-bind="::task.c_title"><!-- title --></span>
                         </div>
                       </div>
                       <div class="sg-md-body">

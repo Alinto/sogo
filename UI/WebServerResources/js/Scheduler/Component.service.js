@@ -419,12 +419,27 @@
           fields.splice(_.indexOf(fields, 'c_recurrence_id'), 1, 'occurrenceId');
 
         // Instanciate Component objects
-        _.reduce(data[type], function(components, componentData, i) {
-          var data = _.zipObject(fields, componentData), component;
-          component = new Component(data);
-          components.push(component);
-          return components;
-        }, components);
+
+        if (type == 'events') {
+          _.forEach(data[type], function(monthData, month) {
+            _.forEach(monthData.days, function(dayData, day) {
+              _.forEach(dayData.events, function(componentData, i) {
+                var data = _.zipObject(fields, componentData), component;
+                component = new Component(data);
+                dayData.events[i] = component;
+              });
+            });
+          });
+          components = data[type];
+        }
+        else if (type == 'tasks') {
+          _.reduce(data[type], function(components, componentData, i) {
+            var data = _.zipObject(fields, componentData), component;
+            component = new Component(data);
+            components.push(component);
+            return components;
+          }, components);
+        }
 
         Component.$log.debug('list of ' + type + ' ready (' + components.length + ')');
 

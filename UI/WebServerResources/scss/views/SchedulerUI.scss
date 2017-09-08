@@ -494,6 +494,43 @@ $quarter_height: 10px;
     .ghostEndHour {
       bottom: -14px;
     }
+
+  }
+
+  // Middle list view of events
+
+  .view-list {
+    .sg-calendar-date {
+      white-space: nowrap;
+      width: 72px;
+      min-width: 72px;
+      > * {
+        display: inline-block;
+      }
+    }
+    .sg-calendar-day {
+      font-weight: 200;
+      padding-right: 3px;
+    }
+    .sg-calendar-list {
+      padding-bottom: 16px;
+      md-divider {
+        margin-bottom: 8px;
+      }
+    }
+    .sg-event {
+      margin: 0 0 4px 0;
+      padding: $bl;
+      cursor: pointer;
+      position: relative;
+      .eventInside {
+        overflow: auto;
+      }
+    }
+    .text {
+      position: relative;
+      overflow: auto;
+    }
   }
 
   // Multicolumn day cell that contains the calendar name

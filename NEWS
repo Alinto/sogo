@@ -5,6 +5,7 @@ New features
  - [core] can now invite attendees to exceptions only (#2561)
  - [web] display freebusy information of owner in appointment editor
  - [web] register SOGo as a handler for the mailto scheme (#1223)
+ - [web] new events list view where events are grouped by day
 
 Enhancements
  - [web] follow requested URL after user authentication

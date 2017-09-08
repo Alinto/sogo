@@ -104,7 +104,7 @@ static NSArray *tasksFields = nil;
 - (id) initWithRequest: (WORequest *) newRequest
 {
   SOGoUser *user;
-  
+
   if ((self = [super initWithRequest: newRequest]))
   {
     componentsData = [NSMutableDictionary new];
@@ -120,7 +120,7 @@ static NSArray *tasksFields = nil;
     currentView = nil;
     ASSIGN (enabledWeekDays, [[user userDefaults] calendarWeekdays]);
   }
-  
+
   return self;
 }
 
@@ -139,7 +139,7 @@ static NSArray *tasksFields = nil;
 {
   NSCalendarDate *newDate;
   NSString *param;
-  
+
   if ([popupValue isEqualToString: @"view_today"])
   {
     newDate = [NSCalendarDate calendarDate];
@@ -204,10 +204,10 @@ static NSArray *tasksFields = nil;
 {
   SOGoUser *user;
   NSString *param;
-  
+
   user = [context activeUser];
   userLogin = [user login];
-  
+
   criteria = [request formValueForKey: @"search"];
   value = [request formValueForKey: @"value"];
   param = [request formValueForKey: @"filterpopup"];
@@ -224,7 +224,7 @@ static NSArray *tasksFields = nil;
                                                   inTimeZone: userTimeZone] beginOfDay];
       else
         startDate = nil;
-    
+
       param = [request formValueForKey: @"ed"];
       if ([param length] > 0)
         endDate = [[NSCalendarDate dateFromShortDateString: param
@@ -232,7 +232,7 @@ static NSArray *tasksFields = nil;
                                                 inTimeZone: userTimeZone] endOfDay];
       else
         endDate = nil;
-    
+
       param = [request formValueForKey: @"view"];
       currentView = param;
       dayBasedView = ![param isEqualToString: @"monthview"];
@@ -243,7 +243,7 @@ static NSArray *tasksFields = nil;
                    withType: (NSString *) type
 {
   NSString *labelKey;
-  
+
   labelKey = [NSString stringWithFormat: @"%@_class%@",
               type, [component objectForKey: @"c_classification"]];
   [component setObject: [self labelForKey: labelKey  inContext: context]
@@ -264,23 +264,23 @@ static NSArray *tasksFields = nil;
   unsigned int count;
 
   static NSString *fields[] = { @"startDate", @"c_startdate", @"endDate", @"c_enddate" };
-  
+
   /* WARNING: This condition has been put and removed many times, please leave
    it. Here is the story...
    If _fixDates: is conditional to dayBasedView, the recurrences are computed
    properly but the display time is wrong.
    If _fixDates: is non-conditional, the reverse occurs.
    If only this part of _fixDates: is conditional, both are right.
-   
+
    Regarding all day events, we need to execute this code no matter what the
    date and the view are, otherwise the event will span on two days.
-   
+
    ref bugs:
    http://www.sogo.nu/bugs/view.php?id=909
    http://www.sogo.nu/bugs/view.php?id=678
    ...
    */
-  
+
   //NSLog(@"***[UIxCalListingActions _fixDates:] %@", [theRecord objectForKey: @"c_title"]);
   if (dayBasedView || [[theRecord objectForKey: @"c_isallday"] boolValue])
   {
@@ -362,10 +362,10 @@ static NSArray *tasksFields = nil;
   SOGoAppointmentFolder *currentFolder;
   SOGoAppointmentFolders *clientObject;
   SOGoUser *ownerUser;
-  
+
   BOOL isErasable, folderIsRemote, quickInfosFlag, searchByTitleOrContent;
   int i;
-  
+
   infos = [NSMutableArray array];
   marker = [NSNull null];
   clientObject = [self clientObject];
@@ -377,7 +377,7 @@ static NSArray *tasksFields = nil;
       if ([currentFolder isActive])
         {
           folderIsRemote = [currentFolder isKindOfClass: [SOGoWebAppointmentFolder class]];
-      
+
           //
           // criteria can have the following values: "title", "title_Category_Location" and "entireContent"
           //
@@ -400,7 +400,7 @@ static NSArray *tasksFields = nil;
                                                              additionalFilters: criteria];
 
               searchByTitleOrContent = ([value length] > 0);
-        
+
               // Save the c_name in another array to compare with
               if ([quickInfos count] > 0)
                 {
@@ -409,7 +409,7 @@ static NSArray *tasksFields = nil;
                   for (i = 0; i < [quickInfos count]; i++)
                     [quickInfosName addObject:[[quickInfos objectAtIndex:i] objectForKey:@"c_name"]];
                 }
-        
+
               // Second research : Every objects except for those already in the quickInfos array
               allInfos = (NSMutableArray *)[currentFolder fetchCoreInfosFrom: startDate
                                                                           to: endDate
@@ -438,7 +438,7 @@ static NSArray *tasksFields = nil;
                       }
                   }
                 }
-        
+
               currentInfos = [quickInfos objectEnumerator];
             } // else if ([criteria isEqualToString:@"entireContent"])
           else
@@ -449,7 +449,7 @@ static NSArray *tasksFields = nil;
                                                       component: component]
                                objectEnumerator];
             }
-      
+
           owner = [currentFolder ownerInContext: context];
           ownerUser = [SOGoUser userWithLogin: owner];
           isErasable = ([owner isEqualToString: userLogin] || [[currentFolder aclsForUser: userLogin] containsObject: SOGoRole_ObjectEraser]);
@@ -511,7 +511,7 @@ static NSArray *tasksFields = nil;
                   // Identifies whether the owner is the organizer of this event.
                   NSString *c_orgmail;
                   c_orgmail = [newInfo objectForKey: @"c_orgmail"];
-          
+
                   if ([c_orgmail isKindOfClass: [NSString class]] && [ownerUser hasEmail: c_orgmail])
                     [newInfo setObject: [NSNumber numberWithInt: 1]
                                 forKey: @"ownerIsOrganizer"];
@@ -603,9 +603,6 @@ static NSArray *tasksFields = nil;
     }
   else if (abs(delta = [date dayOfCommonEra] - [now dayOfCommonEra]) < 7)
     {
-      WOResourceManager *resMgr = [[WOApplication application] resourceManager];
-      NSString *language = [[[context activeUser] userDefaults] language];
-      NSDictionary *locale = [resMgr localeForLanguageNamed: language];
       NSString *dayOfWeek = [[locale objectForKey: NSWeekDayNameArray] objectAtIndex: [date dayOfWeek]];
       if (delta < 7)
         // Wihtin the next 7 days
@@ -658,7 +655,7 @@ static NSArray *tasksFields = nil;
   laterTime = browserTime + 60*60*48;
   clientObject = [self clientObject];
   allAlarms = [NSMutableArray array];
-  
+
   folders = [[clientObject subFolders] objectEnumerator];
   while ((currentFolder = [folders nextObject]))
     {
@@ -667,14 +664,14 @@ static NSArray *tasksFields = nil;
           NSDictionary *entry;
           NSArray *alarms;
           int i;
-          
+
           alarms = [currentFolder fetchAlarmInfosFrom: [NSNumber numberWithInt: browserTime]
                                                    to: [NSNumber numberWithInt: laterTime]];
-          
+
           for (i = 0; i < [alarms count]; i++)
             {
               entry = [alarms objectAtIndex: i];
-              
+
               [allAlarms addObject: [NSArray arrayWithObjects:
                                                [currentFolder nameInContainer],
                                           [entry objectForKey: @"c_name"],
@@ -687,7 +684,7 @@ static NSArray *tasksFields = nil;
   data = [NSDictionary dictionaryWithObjectsAndKeys:
                           [NSArray arrayWithObjects: @"c_folder", @"c_name", @"c_nextalarm", nil], @"fields",
                        allAlarms, @"alarms", nil];
-  
+
   return [self _responseWithData: data];
 }
 
@@ -696,7 +693,7 @@ static NSArray *tasksFields = nil;
   NSString *filter;
   SOGoUserSettings *us;
   NSMutableDictionary *calendarSettings;
-  
+
   filter = [[context request] formValueForKey: @"filterpopup"];
   if ([filter length]
       && ![filter isEqualToString: @"view_all"]
@@ -721,7 +718,7 @@ static NSArray *tasksFields = nil;
   NSString *sort, *ascending;
   SOGoUserSettings *us;
   NSMutableDictionary *calendarSettings;
-  
+
   sort = [[context request] formValueForKey: @"sort"];
   ascending = [[context request] formValueForKey: @"asc"];
   if ([sort length])
@@ -740,6 +737,38 @@ static NSArray *tasksFields = nil;
   }
 }
 
+static inline NSString* _userStateInEvent (NSArray *event)
+{
+  unsigned int count, max;
+  NSString *state;
+  NSArray *participants, *states;
+  SOGoUser *user;
+
+  participants = nil;
+  state = nil;
+
+  participants = [event objectAtIndex: eventPartMailsIndex];
+
+  // We guard ourself against bogus value coming from the quick tables
+  if ([participants isKindOfClass: [NSArray class]])
+    {
+      states = [event objectAtIndex: eventPartStatesIndex];
+      count = 0;
+      max = [participants count];
+      user = [SOGoUser userWithLogin: [event objectAtIndex: eventOwnerIndex]
+                               roles: nil];
+      while (state == nil && count < max)
+        {
+          if ([user hasEmail: [participants objectAtIndex: count]])
+            state = [states objectAtIndex: count];
+          else
+            count++;
+        }
+    }
+
+  return state;
+}
+
 /**
  * @api {get} /so/:username/Calendar/eventslist List events
  * @apiVersion 1.0.0
@@ -755,34 +784,39 @@ static NSArray *tasksFields = nil;
  * @apiParam {String} [search]       Search field criteria. Either title_Category_Location or entireContent.
  * @apiParam {String} [value]        String to match
  *
- * @apiSuccess (Success 200) {String[]} fields                   List of fields for each event definition
- * @apiSuccess (Success 200) {String[]} events                   List of events
- * @apiSuccess (Success 200) {String} events.c_name              Event UID
- * @apiSuccess (Success 200) {String} events.c_folder            Calendar ID
- * @apiSuccess (Success 200) {String} events.calendarName        Human readable name of calendar
- * @apiSuccess (Success 200) {Number} events.c_status            0: Cancelled, 1: Normal, 2: Tentative
- * @apiSuccess (Success 200) {Number} events.c_isopaque          1 if event is opaque (not transparent)
- * @apiSuccess (Success 200) {String} events.c_title             Title
- * @apiSuccess (Success 200) {String} events.c_startdate         Epoch time of start date
- * @apiSuccess (Success 200) {String} events.c_enddate           Epoch time of end date
- * @apiSuccess (Success 200) {String} events.c_location          Event's location
- * @apiSuccess (Success 200) {Number} events.c_isallday          1 if event lasts all day
- * @apiSuccess (Success 200) {Number} events.c_classification    0: Public, 1: Private, 2: Confidential
- * @apiSuccess (Success 200) {String} events.c_category          Category
- * @apiSuccess (Success 200) {Number} events.c_priority          Priority (0 to 9)
- * @apiSuccess (Success 200) {String[]} events.c_partmails       Participants email addresses
- * @apiSuccess (Success 200) {String[]} events.c_partstates      Participants states
- * @apiSuccess (Success 200) {String} events.c_owner             Event's owner
- * @apiSuccess (Success 200) {Number} events.c_iscycle           1 if the event is cyclic/recurring
- * @apiSuccess (Success 200) {Number} events.c_nextalarm         Epoch time of next alarm
- * @apiSuccess (Success 200) {String} [events.c_recurrence_id]   Recurrence ID if event is cyclic
- * @apiSuccess (Success 200) {Number} events.isException         1 if recurrence is an exception
- * @apiSuccess (Success 200) {Number} events.viewable            1 if active user can view the event
- * @apiSuccess (Success 200) {Number} events.editable            1 if active user can edit the event
- * @apiSuccess (Success 200) {Number} events.erasable            1 if active user can erase the event
- * @apiSuccess (Success 200) {Number} events.ownerIsOrganizer    1 if owner is also the organizer
- * @apiSuccess (Success 200) {String} events.formatted_startdate Localized start date
- * @apiSuccess (Success 200) {String} events.formatted_enddate   Localized end date
+ * @apiSuccess (Success 200) {String[]} fields                                              List of fields for each event definition
+ * @apiSuccess (Success 200) {String} events.<month>.month                                  Full month and year
+ * @apiSuccess (Success 200) {Object} events.<month>.days                                   List of days
+ * @apiSuccess (Success 200) {String[]} events.<month>.days.<date>.month                    Abbreviated month name
+ * @apiSuccess (Success 200) {String[]} events.<month>.days.<date>.monthDay                 Day of month
+ * @apiSuccess (Success 200) {String[]} events.<month>.days.<date>.weekDay                  Abbreviated weeday name
+ * @apiSuccess (Success 200) {String[]} events.<month>.days.<date>.events                   List of events
+ * @apiSuccess (Success 200) {String} events.<month>.days.<date>.events.c_name              Event UID
+ * @apiSuccess (Success 200) {String} events.<month>.days.<date>.events.c_folder            Calendar ID
+ * @apiSuccess (Success 200) {String} events.<month>.days.<date>.events.calendarName        Human readable name of calendar
+ * @apiSuccess (Success 200) {Number} events.<month>.days.<date>.events.c_status            0: Cancelled, 1: Normal, 2: Tentative
+ * @apiSuccess (Success 200) {Number} events.<month>.days.<date>.events.c_isopaque          1 if event is opaque (not transparent)
+ * @apiSuccess (Success 200) {String} events.<month>.days.<date>.events.c_title             Title
+ * @apiSuccess (Success 200) {String} events.<month>.days.<date>.events.c_startdate         Epoch time of start date
+ * @apiSuccess (Success 200) {String} events.<month>.days.<date>.events.c_enddate           Epoch time of end date
+ * @apiSuccess (Success 200) {String} events.<month>.days.<date>.events.c_location          Event's location
+ * @apiSuccess (Success 200) {Number} events.<month>.days.<date>.events.c_isallday          1 if event lasts all day
+ * @apiSuccess (Success 200) {Number} events.<month>.days.<date>.events.c_classification    0: Public, 1: Private, 2: Confidential
+ * @apiSuccess (Success 200) {String} events.<month>.days.<date>.events.c_category          Category
+ * @apiSuccess (Success 200) {Number} events.<month>.days.<date>.events.c_priority          Priority (0 to 9)
+ * @apiSuccess (Success 200) {String[]} events.<month>.days.<date>.events.c_partmails       Participants email addresses
+ * @apiSuccess (Success 200) {String[]} events.<month>.days.<date>.events.c_partstates      Participants states
+ * @apiSuccess (Success 200) {String} events.<month>.days.<date>.events.c_owner             Event's owner
+ * @apiSuccess (Success 200) {Number} events.<month>.days.<date>.events.c_iscycle           1 if the event is cyclic/recurring
+ * @apiSuccess (Success 200) {Number} events.<month>.days.<date>.events.c_nextalarm         Epoch time of next alarm
+ * @apiSuccess (Success 200) {String} [events.<month>.days.<date>.events.c_recurrence_id]   Recurrence ID if event is cyclic
+ * @apiSuccess (Success 200) {Number} events.<month>.days.<date>.events.isException         1 if recurrence is an exception
+ * @apiSuccess (Success 200) {Number} events.<month>.days.<date>.events.viewable            1 if active user can view the event
+ * @apiSuccess (Success 200) {Number} events.<month>.days.<date>.events.editable            1 if active user can edit the event
+ * @apiSuccess (Success 200) {Number} events.<month>.days.<date>.events.erasable            1 if active user can erase the event
+ * @apiSuccess (Success 200) {Number} events.<month>.days.<date>.events.ownerIsOrganizer    1 if owner is also the organizer
+ * @apiSuccess (Success 200) {String} events.<month>.days.<date>.events.formatted_startdate Localized start date
+ * @apiSuccess (Success 200) {String} events.<month>.days.<date>.events.formatted_enddate   Localized end date
  */
 - (WOResponse *) eventsListAction
 {
@@ -791,15 +825,18 @@ static NSArray *tasksFields = nil;
   NSCalendarDate *date;
   NSDictionary *data;
   NSEnumerator *events;
-  NSMutableArray *fields, *newEvents, *newEvent;
-  NSString *sort, *ascending, *weekDay;
-  unsigned int interval;
+  NSMutableArray *fields, *dayEvents, *newEvent, *allDayEvents;
+  NSMutableDictionary *allEvents, *monthData, *monthEvents, *dayData;
+  NSString *sort, *ascending, *day, *weekDay, *month, *userState;
+  unsigned int interval, count, max;
+  SEL sortSelector;
 
   [self _setupContext];
   [self saveFilterValue: @"EventsFilterState"];
   [self saveSortValue: @"EventsSortingState"];
 
-  newEvents = [NSMutableArray array];
+  allEvents = [NSMutableDictionary dictionary];
+  allDayEvents = [NSMutableArray array];
   events = [[self _fetchFields: eventsFields
             forComponentOfType: @"vevent"] objectEnumerator];
   while ((oldEvent = [events nextObject]))
@@ -813,6 +850,33 @@ static NSArray *tasksFields = nil;
     if ([enabledWeekDays count] && ![enabledWeekDays containsObject: weekDay])
         continue;
 
+    month = [date descriptionWithCalendarFormat: @"%Y%m" locale: locale];
+    day = [date shortDateString];
+    if (!(monthData = [allEvents objectForKey: month]))
+      {
+        monthEvents = [NSMutableDictionary dictionary];
+        monthData = [NSMutableDictionary
+                      dictionaryWithObjectsAndKeys:
+                        [date descriptionWithCalendarFormat: @"%B %Y" locale: locale], @"month",
+                      monthEvents, @"days",
+                      nil];
+        [allEvents setObject: monthData forKey: month];
+      }
+    monthEvents = [monthData objectForKey: @"days"];
+    if (!(dayData = [monthEvents objectForKey: day]))
+      {
+        dayEvents = [NSMutableArray array];
+        [allDayEvents addObject: dayEvents];
+        dayData = [NSMutableDictionary
+                    dictionaryWithObjectsAndKeys:
+                      [date descriptionWithCalendarFormat: @"%b" locale: locale], @"month",
+                      [date descriptionWithCalendarFormat: @"%e" locale: locale], @"monthDay",
+                      [date descriptionWithCalendarFormat: @"%a" locale: locale], @"weekDay",
+                      dayEvents, @"events",
+                      nil];
+        [monthEvents setObject: dayData forKey: day];
+      }
+    dayEvents = [dayData objectForKey: @"events"];
     newEvent = [NSMutableArray arrayWithArray: oldEvent];
     isAllDay = [[oldEvent objectAtIndex: eventIsAllDayIndex] boolValue];
     [newEvent addObject: [self _formattedDateForSeconds: interval
@@ -820,31 +884,40 @@ static NSArray *tasksFields = nil;
     interval = [[oldEvent objectAtIndex: eventEndDateIndex] intValue];
     [newEvent addObject: [self _formattedDateForSeconds: interval
                                               forAllDay: isAllDay]];
-    [newEvents addObject: newEvent];
+    userState = _userStateInEvent(oldEvent);
+    if (userState != nil) [newEvent addObject: userState];
+    [dayEvents addObject: newEvent];
   }
-  
+
+  // Sort affects events of each day (but not the days)
   sort = [[context request] formValueForKey: @"sort"];
   if ([sort isEqualToString: @"title"])
-    [newEvents sortUsingSelector: @selector (compareEventsTitleAscending:)];
+    sortSelector = @selector (compareEventsTitleAscending:);
   else if ([sort isEqualToString: @"end"])
-    [newEvents sortUsingSelector: @selector (compareEventsEndDateAscending:)];
+    sortSelector =  @selector (compareEventsEndDateAscending:);
   else if ([sort isEqualToString: @"location"])
-    [newEvents sortUsingSelector: @selector (compareEventsLocationAscending:)];
+    sortSelector = @selector (compareEventsLocationAscending:);
   else if ([sort isEqualToString: @"calendarName"])
-    [newEvents sortUsingSelector: @selector (compareEventsCalendarNameAscending:)];
+    sortSelector = @selector (compareEventsCalendarNameAscending:);
   else
-    [newEvents sortUsingSelector: @selector (compareEventsStartDateAscending:)];
-  
+    sortSelector = @selector (compareEventsStartDateAscending:);
   ascending = [[context request] formValueForKey: @"asc"];
-  if (![ascending boolValue])
-    [newEvents reverseArray];
-  
+  max = [allDayEvents count];
+  for (count = 0; count < max; count++)
+    {
+      dayEvents = [allDayEvents objectAtIndex: count];
+      [dayEvents sortUsingSelector: sortSelector];
+      if (![ascending boolValue])
+        [dayEvents reverseArray];
+    }
+
   // Fields names
   fields = [NSMutableArray arrayWithArray: eventsFields];
   [fields addObject: @"formatted_startdate"];
   [fields addObject: @"formatted_enddate"];
+  [fields addObject: @"userState"];
 
-  data = [NSDictionary dictionaryWithObjectsAndKeys: fields, @"fields", newEvents, @"events", nil];
+  data = [NSDictionary dictionaryWithObjectsAndKeys: fields, @"fields", allEvents, @"events", nil];
 
   return [self _responseWithData: data];
 }
@@ -853,7 +926,7 @@ static inline void _feedBlockWithDayBasedData (NSMutableDictionary *block, unsig
                                                unsigned int end, unsigned int dayStart)
 {
   unsigned int delta, quarterStart, length, swap;
-  
+
   if (start > end)
   {
     swap = end;
@@ -879,7 +952,7 @@ static inline void _feedBlockWithDayBasedData (NSMutableDictionary *block, unsig
 // {
 //   NSCalendarDate *eventStartDate;
 //   NSString *startHour;
-  
+
 //   eventStartDate = [NSCalendarDate dateWithTimeIntervalSince1970: start];
 //   [eventStartDate setTimeZone: userTimeZone];
 //   startHour = [dateFormatter formattedTime: eventStartDate];
@@ -909,9 +982,9 @@ static inline void _feedBlockWithDayBasedData (NSMutableDictionary *block, unsig
                                      userState: (NSString *) userState
 {
   NSMutableDictionary *block;
-  
+
   block = [NSMutableDictionary dictionary];
-  
+
   if (dayBasedView)
     _feedBlockWithDayBasedData (block, start, end, dayStart);
   // else
@@ -923,40 +996,8 @@ static inline void _feedBlockWithDayBasedData (NSMutableDictionary *block, unsig
   if (userState != nil)
     [block setObject: userState
               forKey: @"userState"];
-  
+
   return block;
-}
-
-static inline NSString* _userStateInEvent (NSArray *event)
-{
-  unsigned int count, max;
-  NSString *state;
-  NSArray *participants, *states;
-  SOGoUser *user;
-  
-  participants = nil;
-  state = nil;
-  
-  participants = [event objectAtIndex: eventPartMailsIndex];
-
-  // We guard ourself against bogus value coming from the quick tables
-  if ([participants isKindOfClass: [NSArray class]])
-    {
-      states = [event objectAtIndex: eventPartStatesIndex];
-      count = 0;
-      max = [participants count];
-      user = [SOGoUser userWithLogin: [event objectAtIndex: eventOwnerIndex]
-                               roles: nil];
-      while (state == nil && count < max)
-        {
-          if ([user hasEmail: [participants objectAtIndex: count]])
-            state = [states objectAtIndex: count];
-          else
-            count++;
-        }
-    }
-  
-  return state;
 }
 
 - (void) _fillBlocks: (NSArray *) blocks
@@ -968,7 +1009,7 @@ static inline NSString* _userStateInEvent (NSArray *event)
   NSMutableArray *currentDay;
   NSMutableDictionary *eventBlock;
   NSString *userState;
-  
+
   eventStart = [[event objectAtIndex: eventStartDateIndex] intValue];
   if (eventStart < 0)
     [self errorWithFormat: @"event '%@' has negative start: %d (skipped)",
@@ -989,15 +1030,15 @@ static inline NSString* _userStateInEvent (NSArray *event)
         [self warnWithFormat: @"event '%@' has end < start: %d < %d",
               [event objectAtIndex: eventNameIndex], eventEnd, eventStart];
       }
-      
+
       startSecs = (unsigned int) [startDate timeIntervalSince1970];
       endsSecs = (unsigned int) [endDate timeIntervalSince1970];
-      
+
       if ([[event objectAtIndex: eventIsCycleIndex] boolValue])
         recurrenceTime = [[event objectAtIndex: eventRecurrenceIdIndex] unsignedIntValue];
       else
         recurrenceTime = 0;
-      
+
       currentStart = eventStart;
       if (currentStart < startSecs)
       {
@@ -1014,15 +1055,15 @@ static inline NSString* _userStateInEvent (NSArray *event)
       {
         currentDay = [blocks objectAtIndex: offset];
         currentDayStart = startSecs + dayLength * offset;
-        
+
         if (eventEnd > endsSecs)
           eventEnd = endsSecs;
-        
+
         if (eventEnd < startSecs)
           // The event doesn't end in the covered period.
           // This special case occurs with a DST change.
           return;
-        
+
         userState = _userStateInEvent(event);
         while (currentDayStart + dayLength < eventEnd)
         {
@@ -1038,14 +1079,14 @@ static inline NSString* _userStateInEvent (NSArray *event)
           offset++;
           currentDay = [blocks objectAtIndex: offset];
         }
-        
+
         computedEventEnd = eventEnd;
-        
+
         // We add 5 mins to the end date of an event if the end date
         // is equal or smaller than the event's start date.
         if (eventEnd <= currentStart)
           computedEventEnd = currentStart + (5*60);
-	      
+
         eventBlock = [self _eventBlockWithStart: currentStart
                                             end: computedEventEnd
                                          number: number
@@ -1063,7 +1104,7 @@ static inline NSString* _userStateInEvent (NSArray *event)
 {
   unsigned int count, nbrDays;
   int seconds;
-  
+
   seconds = [endDate timeIntervalSinceDate: startDate];
   if (seconds > 0)
   {
@@ -1089,11 +1130,11 @@ static inline NSString* _userStateInEvent (NSArray *event)
   NSMutableArray *currentBlock, *blocks;
   NSDictionary *currentEvent;
   unsigned int count, max, qCount, qMax, qOffset;
-  
+
   blocks = [NSMutableArray array];
-  
+
   bzero (quarters, 96 * sizeof (NSMutableArray *));
-  
+
   max = [day count];
   for (count = 0; count < max; count++)
   {
@@ -1112,7 +1153,7 @@ static inline NSString* _userStateInEvent (NSArray *event)
       [currentBlock addObject: currentEvent];
     }
   }
-  
+
   return blocks;
 }
 
@@ -1120,7 +1161,7 @@ static inline unsigned int _computeMaxBlockSiblings (NSArray *block)
 {
   unsigned int count, max, maxSiblings, siblings;
   NSNumber *nbrEvents;
-  
+
   max = [block count];
   maxSiblings = max;
   for (count = 0; count < max; count++)
@@ -1133,7 +1174,7 @@ static inline unsigned int _computeMaxBlockSiblings (NSArray *block)
         maxSiblings = siblings;
     }
   }
-  
+
   return maxSiblings;
 }
 
@@ -1142,7 +1183,7 @@ static inline void _propagateBlockSiblings (NSArray *block, NSNumber *maxSibling
   unsigned int count, max;
   NSMutableDictionary *event;
   NSNumber *realSiblings;
-  
+
   max = [block count];
   realSiblings = [NSNumber numberWithUnsignedInt: max];
   for (count = 0; count < max; count++)
@@ -1158,7 +1199,7 @@ static inline void _computeBlocksSiblings (NSArray *blocks)
 {
   NSArray *currentBlock;
   unsigned int count, max, maxSiblings;
-  
+
   max = [blocks count];
   for (count = 0; count < max; count++)
   {
@@ -1175,12 +1216,12 @@ static inline void _computeBlockPosition (NSArray *block)
   NSNumber *position;
   NSMutableDictionary *event;
   NSMutableDictionary **positions;
-  
+
   max = [block count];
   event = [block objectAtIndex: 0];
   siblings = [[event objectForKey: @"siblings"] unsignedIntValue];
   positions = NSZoneCalloc (NULL, siblings, sizeof (NSMutableDictionary *));
-  
+
   for (count = 0; count < max; count++)
   {
     event = [block objectAtIndex: count];
@@ -1197,7 +1238,7 @@ static inline void _computeBlockPosition (NSArray *block)
                 forKey: @"position"];
     }
   }
-  
+
   NSZoneFree (NULL, positions);
 }
 
@@ -1242,7 +1283,7 @@ _computeBlocksPosition (NSArray *blocks)
   NSArray *block;
   unsigned int count, max;
   //   NSMutableDictionary **positions;
-  
+
   max = [blocks count];
   for (count = 0; count < max; count++)
   {
@@ -1256,7 +1297,7 @@ _computeBlocksPosition (NSArray *blocks)
 - (void) _addBlocksWidth: (NSMutableArray *) day
 {
   NSArray *blocks;
-  
+
   blocks = [self _horizontalBlocks: day];
   _computeBlocksSiblings (blocks);
   _computeBlocksSiblings (blocks);
@@ -1273,7 +1314,7 @@ _computeBlocksPosition (NSArray *blocks)
   NSString *fUID, *fName;
   NSNumber *isActive;
   unsigned int count, foldersCount;
-  
+
   co = [self clientObject];
   folders = [co subFolders];
   foldersCount = [folders count];
@@ -1306,6 +1347,9 @@ _computeBlocksPosition (NSArray *blocks)
  * @apiParam {Number} [ed] Period end date (YYYYMMDD)
  * @apiParam {String} [view] Formatting view. Either dayview, multicolumndayview, weekview or monthview.
  *
+ * @apiSuccess (Success 200) {Object[]} days
+ * @apiSuccess (Success 200) {String} days.date
+ * @apiSuccess (Success 200) {Number} days.number
  * @apiSuccess (Success 200) {String[]} eventsFields             List of fields for each event definition
  * @apiSuccess (Success 200) {String[]} events                   List of events
  * @apiSuccess (Success 200) {String} events.c_name              Event UID
@@ -1357,7 +1401,7 @@ _computeBlocksPosition (NSArray *blocks)
   [self _setupContext];
 
   events = [self _fetchFields: eventsFields forComponentOfType: @"vevent"];
-  
+
   if ([currentView isEqualToString: @"multicolumndayview"])
   {
     calendars = (NSMutableArray *)[self _selectedCalendars];
@@ -1487,7 +1531,7 @@ _computeBlocksPosition (NSArray *blocks)
 {
   NSCalendarDate *taskDate;
   NSString *statusClass;
-  
+
   if (statusCode == 1)
     statusClass = @"completed";
   else
@@ -1509,7 +1553,7 @@ _computeBlocksPosition (NSArray *blocks)
     else
       statusClass = @"noduedate";
   }
-  
+
   return statusClass;
 }
 
@@ -1558,29 +1602,29 @@ _computeBlocksPosition (NSArray *blocks)
   SOGoUserSettings *us;
   NSEnumerator *tasks;
   NSArray *task;
-  
+
   unsigned int endDateStamp;
   BOOL showCompleted;
   int statusCode;
   int startSecs;
 
   filteredTasks = [NSMutableArray array];
-  
+
   [self _setupContext];
   [self saveFilterValue: @"TasksFilterState"];
   [self saveSortValue: @"TasksSortingState"];
-  
+
   startSecs = (unsigned int) [startDate timeIntervalSince1970];
   tasksView = [request formValueForKey: @"filterpopup"];
-  
+
   showCompleted = [[request formValueForKey: @"show_completed"] intValue];
   us = [[context activeUser] userSettings];
   [us setBool: showCompleted forKey: @"ShowCompletedTasks"];
   [us synchronize];
-  
+
   tasks = [[self _fetchFields: tasksFields
            forComponentOfType: @"vtodo"] objectEnumerator];
-  
+
   while ((task = [tasks nextObject]))
   {
     statusCode = [[task objectAtIndex: taskStatusIndex] intValue];
@@ -1635,7 +1679,7 @@ _computeBlocksPosition (NSArray *blocks)
     [filteredTasks sortUsingSelector: @selector (compareTasksCalendarNameAscending:)];
   else
     [filteredTasks sortUsingSelector: @selector (compareTasksAscending:)];
-  
+
   ascending = [[context request] formValueForKey: @"asc"];
   if (![ascending boolValue])
     [filteredTasks reverseArray];
@@ -1665,11 +1709,11 @@ _computeBlocksPosition (NSArray *blocks)
   for (i = 0; i < [folders count]; i++)
     {
       folder = [folders objectAtIndex: i];
-      
+
       [activeTasksByCalendars setObject: [folder activeTasks]
                                  forKey: [folder nameInContainer]];
   }
-  
+
   return [self _responseWithData: activeTasksByCalendars];
 }
 

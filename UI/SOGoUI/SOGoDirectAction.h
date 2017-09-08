@@ -27,6 +27,9 @@
 @class WOResponse, WOResourceManager;
 
 @interface SOGoDirectAction : WODirectAction
+{
+  NSDictionary *locale;
+}
 
 - (WOResponse *) responseWithStatus: (unsigned int) status;
 - (WOResponse *) responseWithStatus: (unsigned int) status
