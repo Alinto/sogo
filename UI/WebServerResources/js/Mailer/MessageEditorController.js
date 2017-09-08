@@ -271,7 +271,8 @@
         //   foo@bar.com abc@xyz.com
         address = '';
         for (i = 0; i < contact.length; i++) {
-          if ((contact.charCodeAt(i) == 32 ||   // space
+          if ((contact.charCodeAt(i) ==  9 ||   // tab
+               contact.charCodeAt(i) == 32 ||   // space
                contact.charCodeAt(i) == 44 ||   // ,
                contact.charCodeAt(i) == 59) &&  // ;
               emailRE.test(address)) {
