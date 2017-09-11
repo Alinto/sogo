@@ -122,9 +122,12 @@ class Carddav:
         if not self.events:
             url = "/SOGo/so/%s/Calendar/eventslist" % (self.login)
             content = self._get(url)
-            tmp_events = content['events']
             self.fields = content['fields']
-            self.events = [dict(zip(self.fields, event)) for event in tmp_events]
+            self.events = []
+            for month in content['events']
+                for day in content['events'][month]
+                    tmp_events = content['events'][month][day]
+                    self.events.extend(dict(zip(self.fields, event)) for event in tmp_events)
         return self.events
 
     def newguid(self, folderpath):
