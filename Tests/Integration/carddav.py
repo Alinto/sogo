@@ -124,9 +124,11 @@ class Carddav:
             content = self._get(url)
             self.fields = content['fields']
             self.events = []
-            for month in content['events']
-                for day in content['events'][month]
-                    tmp_events = content['events'][month][day]
+            months = content['events']
+            for month in months.keys():
+                days = months[month]['days']
+                for day in days.keys():
+                    tmp_events = days[day]['events']
                     self.events.extend(dict(zip(self.fields, event)) for event in tmp_events)
         return self.events
 
