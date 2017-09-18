@@ -149,7 +149,7 @@ String.prototype.asCSSIdentifier = function() {
     newString = newString.replace(re, escapeds[i]);
   }
 
-  newString = newString.replace(/[^a-zA-Z_\-]/g, '');
+  newString = newString.replace(/[^\x00-\x7F]/g, '');
 
   if (/^\d+/.test(newString)) {
     newString = '_' + newString;
