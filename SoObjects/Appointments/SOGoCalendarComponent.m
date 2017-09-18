@@ -1162,7 +1162,8 @@
                        inContext: context];
 	}
       
-      if ([[self container] notifyUserOnPersonalModifications])
+      if ([[self container] notifyUserOnPersonalModifications] &&
+          [[self container] notifiedUserOnPersonalModifications])
 	{
 	  id o;
 

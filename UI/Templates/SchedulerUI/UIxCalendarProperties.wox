@@ -7,89 +7,95 @@
     xmlns:label="OGo:label"
     >
   <md-dialog flex="50" flex-sm="70" flex-xs="100">
+    <form name="calendarPropertiesForm" ng-submit="properties.saveProperties(calendarPropertiesForm)">
 
-    <md-toolbar ng-class="properties.calendar.getClassName('bg')">
-      <div class="md-toolbar-tools">
-        <!-- color -->
-        <sg-color-picker ng-model="properties.calendar.color"><!-- color picker --></sg-color-picker>
-        <!-- name -->
-        <md-input-container class="md-block md-flex">
-          <label><var:string label:value="Name"/></label>
-          <input type="text"
-                 class="md-title"
-                 ng-model="properties.calendar.name"/>
-        </md-input-container>
-      </div>
-    </md-toolbar>
-
-    <md-dialog-content class="sg-has-form-sections">
-        <div class="sg-form-section" layout="column">
-      <md-checkbox
-          ng-model="properties.calendar.includeInFreeBusy"
-          ng-true-value="1"
-          ng-false-value="0">
-        <var:string label:value="Include in free-busy"/>
-      </md-checkbox>
-      <md-checkbox
-          ng-model="properties.calendar.showCalendarAlarms"
-          ng-true-value="1"
-          ng-false-value="0">
-        <var:string label:value="Show alarms"/>
-      </md-checkbox>
-      <md-checkbox
-          ng-model="properties.calendar.showCalendarTasks"
-          ng-true-value="1"
-          ng-false-value="0">
-        <var:string label:value="Show tasks"/>
-      </md-checkbox>
-      <md-checkbox
-          ng-model="properties.calendar.synchronize"
-          ng-show="!properties.calendar.isWebCalendar"
-          ng-disabled="properties.calendar.id == 'personal'"
-          ng-true-value="1"
-          ng-false-value="0">
-        <var:string label:value="Synchronize"/> (Microsoft Enterprise ActiveSync)
-      </md-checkbox>
-      <md-checkbox
-          ng-model="properties.calendar.reloadOnLogin"
-          ng-show="properties.calendar.isWebCalendar"
-          ng-true-value="1"
-          ng-false-value="0">
-        <var:string label:value="Reload on login"/>
-      </md-checkbox>
+      <md-toolbar ng-class="properties.calendar.getClassName('bg')">
+        <div class="md-toolbar-tools">
+          <!-- color -->
+          <sg-color-picker ng-model="properties.calendar.color"><!-- color picker --></sg-color-picker>
+          <!-- name -->
+          <md-input-container class="md-block md-flex">
+            <label><var:string label:value="Name"/></label>
+            <input type="text"
+                   class="md-title"
+                   ng-model="properties.calendar.name"/>
+          </md-input-container>
         </div>
-      <div class="sg-form-section" ng-hide="properties.calendar.isWebCalendar || !properties.calendar.isOwned" layout="column">
-        <md-checkbox
-            ng-model="properties.calendar.notifications.notifyOnPersonalModifications"
-            ng-true-value="1"
-            ng-false-value="0">
-          <var:string label:value="Receive a mail when I modify my calendar"/>
-        </md-checkbox>
-        <md-checkbox
-            ng-model="properties.calendar.notifications.notifyOnExternalModifications"
-            ng-true-value="1"
-            ng-false-value="0">
-          <var:string label:value="Receive a mail when someone else modifies my calendar"/>
-        </md-checkbox>
-        <md-checkbox
-            ng-model="properties.calendar.notifications.notifyUserOnPersonalModifications"
-            ng-true-value="1"
-            ng-false-value="0">
-          <var:string label:value="When I modify my calendar, send a mail to"/>
-        </md-checkbox>
-        <md-input-container flex-offset="5" md-no-float="md-no-float">
-          <input type="email"
-                 label:placeholder="Email Address"
-                 ng-model="properties.calendar.notifications.notifiedUserOnPersonalModifications"
-                 ng-disabled="!properties.calendar.notifications.notifyUserOnPersonalModifications"/>
-        </md-input-container>
-      </div>
-    </md-dialog-content>
+      </md-toolbar>
 
-    <md-dialog-actions>
-      <md-button type="button" ng-click="properties.close()"><var:string label:value="Cancel"/></md-button>
-      <md-button ng-click="properties.saveProperties()"><var:string label:value="Save"/></md-button>
-    </md-dialog-actions>
+      <md-dialog-content class="sg-has-form-sections">
+        <div class="sg-form-section" layout="column">
+          <md-checkbox
+              ng-model="properties.calendar.includeInFreeBusy"
+              ng-true-value="1"
+              ng-false-value="0">
+            <var:string label:value="Include in free-busy"/>
+          </md-checkbox>
+          <md-checkbox
+              ng-model="properties.calendar.showCalendarAlarms"
+              ng-true-value="1"
+              ng-false-value="0">
+            <var:string label:value="Show alarms"/>
+          </md-checkbox>
+          <md-checkbox
+              ng-model="properties.calendar.showCalendarTasks"
+              ng-true-value="1"
+              ng-false-value="0">
+            <var:string label:value="Show tasks"/>
+          </md-checkbox>
+          <md-checkbox
+              ng-model="properties.calendar.synchronize"
+              ng-show="!properties.calendar.isWebCalendar"
+              ng-disabled="properties.calendar.id == 'personal'"
+              ng-true-value="1"
+              ng-false-value="0">
+            <var:string label:value="Synchronize"/> (Microsoft Enterprise ActiveSync)
+          </md-checkbox>
+          <md-checkbox
+              ng-model="properties.calendar.reloadOnLogin"
+              ng-show="properties.calendar.isWebCalendar"
+              ng-true-value="1"
+              ng-false-value="0">
+            <var:string label:value="Reload on login"/>
+          </md-checkbox>
+        </div>
+        <div class="sg-form-section" ng-hide="properties.calendar.isWebCalendar || !properties.calendar.isOwned" layout="column">
+          <md-checkbox
+              ng-model="properties.calendar.notifications.notifyOnPersonalModifications"
+              ng-true-value="1"
+              ng-false-value="0">
+            <var:string label:value="Receive a mail when I modify my calendar"/>
+          </md-checkbox>
+          <md-checkbox
+              ng-model="properties.calendar.notifications.notifyOnExternalModifications"
+              ng-true-value="1"
+              ng-false-value="0">
+            <var:string label:value="Receive a mail when someone else modifies my calendar"/>
+          </md-checkbox>
+          <md-checkbox
+              ng-model="properties.calendar.notifications.notifyUserOnPersonalModifications"
+              ng-true-value="1"
+              ng-false-value="0">
+            <var:string label:value="When I modify my calendar, send a mail to"/>
+          </md-checkbox>
+          <md-input-container flex-offset="5" md-no-float="md-no-float">
+            <input type="email"
+                   label:placeholder="Email Address"
+                   ng-model="properties.calendar.notifications.notifiedUserOnPersonalModifications"
+                   ng-required="properties.calendar.notifications.notifyUserOnPersonalModifications"
+                   ng-disabled="!properties.calendar.notifications.notifyUserOnPersonalModifications"/>
+          </md-input-container>
+        </div>
+      </md-dialog-content>
 
+      <md-dialog-actions>
+        <md-button type="button" ng-click="properties.close()"><var:string label:value="Cancel"/></md-button>
+        <md-button type="submit"
+                   ng-disabled="calendarPropertiesForm.$invalid || calendarPropertiesForm.$submitted">
+          <var:string label:value="Save"/>
+        </md-button>
+      </md-dialog-actions>
+
+    </form>
   </md-dialog>
 </container>

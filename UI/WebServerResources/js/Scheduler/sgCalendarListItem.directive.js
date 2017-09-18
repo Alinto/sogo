@@ -233,11 +233,13 @@
               srcCalendar.color = vm.calendar.color;
             });
 
-            function saveProperties() {
-              vm.calendar.$save();
-              // Refresh list instance
-              srcCalendar.init(vm.calendar.$omit());
-              $mdDialog.hide();
+            function saveProperties(form) {
+              if (form.$valid) {
+                vm.calendar.$save();
+                // Refresh list instance
+                srcCalendar.init(vm.calendar.$omit());
+                $mdDialog.hide();
+              }
             }
 
             function close() {
