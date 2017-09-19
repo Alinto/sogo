@@ -623,6 +623,7 @@
       creds = [auth parseCredentials: [authCookie value]];
       xsrfCookie = [WOCookie cookieWithName: @"XSRF-TOKEN"
                                       value: [[SOGoSession valueForSessionKey: [creds lastObject]] asSHA1String]];
+      [xsrfCookie setPath: [NSString stringWithFormat: @"/%@/", [request applicationName]]];
       [response addCookie: xsrfCookie];
     }
   else

@@ -20,6 +20,7 @@ Bug fixes
  - [web] messages list not accessible when changing mailbox in expanded mail view (#4269)
  - [web] only one postal address of same type is saved (#4091)
  - [web] improve handling of email notifications of a calendar properties
+ - [web] fixed XSRF cookie path when changing password (#4139)
  - [eas] hebrew folders encoding problem using EAS (#4240)
 
 3.2.10 (2017-07-05)
