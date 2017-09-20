@@ -133,6 +133,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setAnimationMode: (NSString *) newValue;
 - (NSString *) animationMode;
 
+- (void) setMailComposeWindow: (NSString *) newValue;
+- (NSString *) mailComposeWindow;
+
 - (void) setMailComposeMessageType: (NSString *) newValue;
 - (NSString *) mailComposeMessageType;
 

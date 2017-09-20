@@ -274,6 +274,9 @@ static SoProduct *preferencesProduct = nil;
   //
   // Default Mail preferences
   //
+  if (![[defaults source] objectForKey: @"SOGoMailComposeWindow"])
+    [[defaults source] setObject: [defaults mailComposeWindow] forKey: @"SOGoMailComposeWindow"];
+
   if (![[defaults source] objectForKey: @"SOGoSelectedAddressBook"])
     [[defaults source] setObject: [defaults selectedAddressBook] forKey: @"SOGoSelectedAddressBook"];
 

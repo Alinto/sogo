@@ -322,6 +322,7 @@
 
   <md-fab-speed-dial
       class="md-scale sg-fab-bottom-center"
+      ng-if="::!mailbox.composeWindowEnabled()"
       ng-cloak="ng-cloak"
       ng-class="{ 'sg-sidenav-close': leftIsClose, 'sg-center-close': centerIsClose }"
       md-direction="up">
@@ -343,6 +344,16 @@
       </md-button>
     </md-fab-actions>
   </md-fab-speed-dial>
+
+  <md-button
+      class="md-fab md-accent sg-fab-bottom-center"
+      var:aria-label="Write a new message"
+      ng-if="::mailbox.composeWindowEnabled()"
+      ng-class="{ 'sg-sidenav-close': leftIsClose, 'sg-center-close': centerIsClose }"
+      ng-click="mailbox.newMessage($event)">
+    <md-tooltip md-direction="left"><var:string label:value="Write a new message"/></md-tooltip>
+    <md-icon>edit</md-icon>
+  </md-button>
 
   <div id="detailView" class="view-detail"
        layout="column" layout-align="start center"

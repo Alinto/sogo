@@ -72,9 +72,8 @@
         url: '/edit',
         views: {
           'message@': {
-            templateUrl: 'UIxMailEditor', // UI/Templates/MailerUI/UIxMailEditor.wox
-            controller: 'MessageEditorController',
-            controllerAs: 'editor'
+            template: '<ui-view/>',
+            controller: 'MessageEditorControllerPopup'
           }
         },
         resolve: {
@@ -84,10 +83,9 @@
       .state('mail.account.mailbox.message.action', {
         url: '/{actionName:(?:reply|replyall|forward)}',
         views: {
-          message: {
-            templateUrl: 'UIxMailEditor', // UI/Templates/MailerUI/UIxMailEditor.wox
-            controller: 'MessageEditorController',
-            controllerAs: 'editor'
+          'message@': {
+            template: '<ui-view/>',
+            controller: 'MessageEditorControllerPopup'
           }
         }
       });

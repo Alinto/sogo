@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageController.$inject = ['$window', '$scope', '$state', '$mdMedia', '$mdDialog', 'sgConstant', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'sgHotkeys', 'encodeUriFilter', 'sgSettings', 'ImageGallery', 'sgFocus', 'Dialog', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message'];
-  function MessageController($window, $scope, $state, $mdMedia, $mdDialog, sgConstant, stateAccounts, stateAccount, stateMailbox, stateMessage, sgHotkeys, encodeUriFilter, sgSettings, ImageGallery, focus, Dialog, Calendar, Component, Account, Mailbox, Message) {
+  MessageController.$inject = ['$window', '$scope', '$state', '$mdMedia', '$mdDialog', 'sgConstant', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'sgHotkeys', 'encodeUriFilter', 'sgSettings', 'ImageGallery', 'sgFocus', 'Dialog', 'Preferences', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message'];
+  function MessageController($window, $scope, $state, $mdMedia, $mdDialog, sgConstant, stateAccounts, stateAccount, stateMailbox, stateMessage, sgHotkeys, encodeUriFilter, sgSettings, ImageGallery, focus, Dialog, Preferences, Calendar, Component, Account, Mailbox, Message) {
     var vm = this, popupWindow = null, hotkeys = [];
 
     this.$onInit = function() {
@@ -284,6 +284,15 @@
       }
     }
 
+    this._showMailEditorInPopup = function(action) {
+      if (!sgSettings.isPopup &&
+          Preferences.defaults.SOGoMailComposeWindow == 'popup') {
+        this.openInPopup(action);
+        return true;
+      }
+      return false;
+    };
+
     this.close = function() {
       $state.go('mail.account.mailbox').then(function() {
         vm.message = null;
@@ -292,27 +301,32 @@
     };
 
     this.reply = function($event) {
-      var message = this.message.$reply();
-      _showMailEditor($event, message);
+      if (!this._showMailEditorInPopup('reply')) {
+        _showMailEditor($event, this.message.$reply());
+      }
     };
 
     this.replyAll = function($event) {
-      var message = this.message.$replyAll();
-      _showMailEditor($event, message);
+      if (!this._showMailEditorInPopup('replyall')) {
+        _showMailEditor($event, this.message.$replyAll());
+      }
     };
 
     this.forward = function($event) {
-      var message = this.message.$forward();
-      _showMailEditor($event, message);
+      if (!this._showMailEditorInPopup('forward')) {
+        _showMailEditor($event, this.message.$forward());
+      }
     };
 
     this.edit = function($event) {
-      this.message.$editableContent().then(function() {
-        _showMailEditor($event, vm.message);
-      });
+      if (!this._showMailEditorInPopup('edit')) {
+        this.message.$editableContent().then(function() {
+          _showMailEditor($event, vm.message);
+        });
+      }
     };
 
-    this.openPopup = function() {
+    this.openInPopup = function(action) {
       var url = [sgSettings.baseURL(),
                  'UIxMailPopupView#!/Mail',
                  this.message.accountId,
@@ -321,6 +335,7 @@
                  this.message.uid]
           .join('/'),
           wId = this.message.$absolutePath();
+      if (action) url += '/' + action;
       popupWindow = $window.open(url, wId,
                                  ["width=680",
                                   "height=520",

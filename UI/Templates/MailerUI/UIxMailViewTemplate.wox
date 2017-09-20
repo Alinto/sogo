@@ -67,7 +67,7 @@
           </md-button>
           <md-button class="sg-icon-button hide show-gt-md" label:aria-label="'Open in New Mail Window'.asSafeJSString"
                      ng-hide="::isPopup"
-                     ng-click="viewer.openPopup()">
+                     ng-click="viewer.openInPopup()">
             <md-tooltip md-direction="bottom"><var:string label:value="Open in New Mail Window"/></md-tooltip>
             <md-icon>open_in_new</md-icon>
           </md-button>

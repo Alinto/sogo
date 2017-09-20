@@ -44,6 +44,8 @@
       // Mail editor autosave is a number of minutes or 0 if disabled
       data.SOGoMailAutoSave = parseInt(data.SOGoMailAutoSave) || 0;
 
+      data.SOGoMailComposeWindowEnabled = angular.isDefined(data.SOGoMailComposeWindow);
+
       // Specify a base font size for HTML messages when SOGoMailComposeFontSize is not zero
       data.SOGoMailComposeFontSizeEnabled = parseInt(data.SOGoMailComposeFontSize) > 0;
 
@@ -285,6 +287,10 @@
           action.argument = action.argument.substring(1);
       });
     });
+
+    if (!preferences.defaults.SOGoMailComposeWindowEnabled)
+      delete preferences.defaults.SOGoMailComposeWindow;
+    delete preferences.defaults.SOGoMailComposeWindowEnabled;
 
     if (!preferences.defaults.SOGoMailComposeFontSizeEnabled)
       preferences.defaults.SOGoMailComposeFontSize = 0;

@@ -566,6 +566,29 @@
               </md-checkbox>
             </div>
 
+            <div class="hide-xs" layout="row" layout-align="start center" flex="50">
+              <md-checkbox
+                  class="md-align-top-left"
+                  ng-model="app.preferences.defaults.SOGoMailComposeWindowEnabled"
+                  label:aria-label="Always show mail composer">
+                <!-- SOGoMailComposeWindow -->
+              </md-checkbox>
+
+              <md-input-container class="md-block hide-xs" flex="50">
+                <label><var:string label:value="Always open mail composer"/></label>
+                <md-select
+                    ng-disabled="!app.preferences.defaults.SOGoMailComposeWindowEnabled"
+                    ng-model="app.preferences.defaults.SOGoMailComposeWindow">
+                  <md-option value="inline">
+                    <var:string label:value="Inside current window"/>
+                  </md-option>
+                  <md-option value="popup">
+                    <var:string label:value="In a popup window"/>
+                  </md-option>
+                </md-select>
+              </md-input-container>
+            </div>
+
             <div layout="row" layout-align="start center" flex="50" flex-xs="100">
               <md-checkbox
                   class="md-align-top-left"

@@ -542,6 +542,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self stringForKey: @"SOGoAnimationMode"];
 }
 
+- (void) setMailComposeWindow: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoMailComposeWindow"];
+}
+
+- (NSString *) mailComposeWindow
+{
+  return [self stringForKey: @"SOGoMailComposeWindow"];
+}
+
 - (void) setMailComposeMessageType: (NSString *) newValue
 {
   [self setObject: newValue forKey: @"SOGoMailComposeMessageType"];

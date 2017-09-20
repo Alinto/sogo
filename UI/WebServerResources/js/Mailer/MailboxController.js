@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MailboxController.$inject = ['$window', '$scope', '$timeout', '$q', '$state', '$mdDialog', '$mdToast', 'stateAccounts', 'stateAccount', 'stateMailbox', 'sgHotkeys', 'encodeUriFilter', 'sgSettings', 'sgFocus', 'Dialog', 'Account', 'Mailbox'];
-  function MailboxController($window, $scope, $timeout, $q, $state, $mdDialog, $mdToast, stateAccounts, stateAccount, stateMailbox, sgHotkeys, encodeUriFilter, sgSettings, focus, Dialog, Account, Mailbox) {
+  MailboxController.$inject = ['$window', '$scope', '$timeout', '$q', '$state', '$mdDialog', '$mdToast', 'stateAccounts', 'stateAccount', 'stateMailbox', 'sgHotkeys', 'encodeUriFilter', 'sgSettings', 'sgFocus', 'Dialog', 'Preferences', 'Account', 'Mailbox'];
+  function MailboxController($window, $scope, $timeout, $q, $state, $mdDialog, $mdToast, stateAccounts, stateAccount, stateMailbox, sgHotkeys, encodeUriFilter, sgSettings, focus, Dialog, Preferences, Account, Mailbox) {
     var vm = this,
         defaultWindowTitle = angular.element($window.document).find('title').attr('sg-default') || "SOGo",
         hotkeys = [];
@@ -146,11 +146,15 @@
       });
     };
 
+    this.composeWindowEnabled = function() {
+      return Preferences.defaults.SOGoMailComposeWindowEnabled;
+    };
+
     this.newMessage = function($event, inPopup) {
       var message;
 
       if (vm.messageDialog === null) {
-        if (inPopup)
+        if (inPopup || Preferences.defaults.SOGoMailComposeWindow == 'popup')
           _newMessageInPopup();
         else {
           message = vm.account.$newMessage();
