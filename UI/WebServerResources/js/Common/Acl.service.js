@@ -140,6 +140,8 @@
       _.forEach(user.rights, function(value, right) {
         if (angular.isNumber(user.rights[right]))
           user.rights[right] = 1;
+        else
+          user.rights[right] = "Modifier";
     });
   };
 

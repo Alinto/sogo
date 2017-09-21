@@ -11,6 +11,7 @@ New features
 Enhancements
  - [web] follow requested URL after user authentication
  - [web] added Simplified Chinese (zh_CN) translation - thanks to Thomas Kuiper
+ - [web] now also give modify permission when selecting all calendar rights
 
 Bug fixes
  - [core] yearly repeating events are not shown in web calendar (#4237)
