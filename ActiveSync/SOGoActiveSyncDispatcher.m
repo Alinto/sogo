@@ -2439,7 +2439,7 @@ void handle_eas_terminate(int signum)
                 {
 		  int t;
 
-                  [self logWithFormat: @"Sleeping %d seconds while detecting changes in Ping...", internalInterval-total_sleep];
+                  [self logWithFormat: @"Sleeping %d seconds while detecting changes for user %@ in Ping...", [[context activeUser] login], internalInterval-total_sleep];
 
 		  for (t = 0; t < sleepInterval; t++)
 		    {
