@@ -2592,7 +2592,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 {
 		  int t;
 
-                  [self logWithFormat: @"Sleeping %d seconds while detecting changes in Sync...", internalInterval-total_sleep];
+                  [self logWithFormat: @"Sleeping %d seconds while detecting changes for user %@ in Sync...", [[context activeUser] login], internalInterval-total_sleep];
 
 		  for (t = 0; t < sleepInterval; t++)
 		    {
