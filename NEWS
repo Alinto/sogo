@@ -6,7 +6,7 @@ New features
  - [web] display freebusy information of owner in appointment editor
  - [web] register SOGo as a handler for the mailto scheme (#1223)
  - [web] new events list view where events are grouped by day
- - [web] always show mail editor inside current window or in popup window
+ - [web] user setting to always show mail editor inside current window or in popup window
 
 Enhancements
  - [web] follow requested URL after user authentication
