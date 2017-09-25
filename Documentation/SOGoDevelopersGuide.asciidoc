@@ -167,6 +167,17 @@ Building frontend
     bower install
     grunt build
 
+Defining an alternate color theme
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+SOGo relies on the https://material.angularjs.org/latest/Theming/01_introduction[theming system of Angular Material] to define the colors of the Web interface.
+
+To overwrite the default theme in SOGo, set the following parameter in `/etc/sogo/sogo.conf`:
+
+    SOGoUIAdditionalJSFiles = (js/theme.js);
+
+Edit `theme.js` under `/usr/lib64/GNUstep/SOGo/WebServerResources/js` or `/usr/lib/GNUstep/SOGo/WebServerResources/js` depending on your platform and restart sogod.
+
 Version Control
 ---------------
 
