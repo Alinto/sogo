@@ -6,12 +6,20 @@
 "Domain" = "Domena";
 "Remember username" = "Zapamti korisničko ime";
 "Connect" = "Spoji se";
+
+/* Appears while authentication is in progress */
+"Authenticating" = "Autentifikacija";
+
+/* Appears when authentication succeeds */
+"Welcome" = "Dobro došli";
+
 "Authentication Failed" = "Provjera autentičnosti nije uspjela";
 "Wrong username or password." = "Pogrešno korisničko ime ili lozinka";
+"Retry" = "Ponovni pokušaj";
 "cookiesNotEnabled" = "Ne možete se prijaviti jer su kolačići preglednika onemogućeni. Molimo omogućite kolačiće u postavkama preglednika i pokušajte ponovno.";
-"browserNotCompatible" = "Otkrili smo da verzija vašeg preglednika  trenutno nije podržana na toj stranici. Naša preporuka je da koristite Firefox. Kliknite na link ispod da preuzmete najnoviju verziju tog preglednika.";
-"alternativeBrowsers" = "Alternativno, možete koristiti i sljedeće kompatibilne preglednike";
-"alternativeBrowserSafari" = "Alternativno, možete koristiti Safari.";
+"browserNotCompatible" = "Otkrili smo da verzija vašeg preglednika  trenutno nije podržana na ovoj stranici. Naša preporuka je da koristite Firefox. Kliknite na link ispod da preuzmete najnoviju verziju tog preglednika.";
+"alternativeBrowsers" = "Alternativno možete koristiti i sljedeće kompatibilne preglednike";
+"alternativeBrowserSafari" = "Alternativno možete koristiti Safari.";
 "Download" = "Preuzimanje";
 "Language" = "Jezik";
 "choose" = "Odaberi...";
@@ -19,7 +27,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -34,9 +42,11 @@
 "Italian" = "Italiano";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "Polish" = "Polski";
+"Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Serbian" = "Српски";
@@ -48,18 +58,19 @@
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
 "About" = "o";
 "AboutBox" = "Developed by Inverse, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
 "Your account was locked due to too many failed attempts." = "Vaš korisnički račun je zaključan zbog previše neuspjelih pokušaja.";
-"Your account was locked due to an expired password." = "Vaš korisnički račun je zaključan zbog istekle lozinke.";
+"Your account was locked due to an expired password." = "Vaš korisnički račun je zaključan jer Vam je lozinka istekla..";
 "Login failed due to unhandled error case" = "Prijava nije uspjela zbog neobrađene greške";
 "Change your Password" = "Promjeni lozinku";
 "The password was changed successfully." = "Lozinka je uspješno promijenjena.";
 "Your password has expired, please enter a new one below" = "Vaša lozinka je istekla, molimo unesite novu ispod";
 "Password must not be empty." = "Lozinka ne smije biti prazna.";
-"The passwords do not match. Please try again." = "Lozinke se ne podudaraju. Molim pokušaj ponovno.";
+"The passwords do not match. Please try again." = "Lozinke se ne podudaraju. Molim pokušajte ponovno.";
 "Password Grace Period" = "Lozinka sa odlogom";
-"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Imate %{0} prijava preostalo prije nego što če se vaš račun zaključati. Molimo promijenite svoju lozinku.";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Preostalo Vam je %{0} prijava prije nego što će se Vaš račun zaključati. Molimo promijenite svoju lozinku.";
 "Password about to expire" = "Lozinka će uskoro isteći";
 "Your password is going to expire in %{0} %{1}." = "Vaša lozinka će isteći za %{0} %{1}.";
 "days" = "dana";
@@ -69,9 +80,9 @@
 "Password change failed" = "Promjena lozinke nije uspjela";
 "Password change failed - Permission denied" = "Promjena lozinke nije uspjela - Odobrenje odbijeno";
 "Password change failed - Insufficient password quality" = "Promjena lozinke nije uspjela - nedovoljna kvaliteta lozinke";
-"Password change failed - Password is too short" = "Insufficient password quality - lozinka prekratka";
-"Password change failed - Password is too young" = "Insufficient password quality - lozinka premlada";
-"Password change failed - Password is in history" = "Insufficient password quality - lozinka u povijesti";
+"Password change failed - Password is too short" = "Promjena lozinke nije uspjela - lozinka prekratka";
+"Password change failed - Password is too young" = "Promjena lozinke nije uspjela - lozinka premlada";
+"Password change failed - Password is in history" = "Promjena lozinke nije uspjela - lozinka u povijesti";
 "Unhandled policy error: %{0}" = "Unhandled policy error: %{0}";
 "Unhandled error response" = "Unhandled error response";
 "Password change is not supported." = "Promjena lozinke nije podržana.";
@@ -80,7 +91,6 @@
 "Confirmation" = "Potvrdi";
 "Cancel" = "Odustani";
 "Please wait..." = "Molimo pričekajte...";
-"AboutBox" = "Developed by Inverse, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
 "Close" = "Zatvori";
 "Missing search parameter" = "Nedostaje parametar za pretraživanje ";
 "Missing type parameter" = "Nedostaje vrsta parametra";

@@ -1,10 +1,10 @@
 /* this file is in UTF-8 format! */
 
-"Help" = "Pomoč";
+"Help" = "Pomoć";
 "Close" = "Zatvori";
 "Modules" = "Moduli";
 /* Modules short names */
-"ACLs" = "ACLji";
+"ACLs" = "ACL-i";
 /* Modules titles */
 "ACLs_title" = "Administriranje prava korisnika na mapama";
 /* Modules descriptions */
@@ -13,14 +13,14 @@
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Počni pretragu za uređivanje prava";
 /* Rights module: Empty search result */
-"No matching user" = "Nema odgovarajučeg korisnika";
+"No matching user" = "Nema odgovarajućeg korisnika";
 /* Rights module: no selection */
 "No resource selected" = "Nema odabranog resursa";
 "Add User" = "Dodaj korisnika";
-"Subscribe User" = "Naruči korisnika";
+"Subscribe User" = "Pretplati se za korisnika";
 "Rights" = "Prava";
 "Search Users" = "Traži korisnike";
-"users found" = "korisniki pronađeni";
+"users found" = "Korisnici pronađeni";
 "No resource" = "Nema resursa";
 "Any Authenticated User" = "Svaki ovlašteni korisnik";
 "Public Access" = "Javni pristup";
