@@ -42,19 +42,19 @@
      */
     $mdThemingProvider.theme('alt')
       .primaryPalette('blue-grey', {
-        'default': '400',
+        'default': '400',  // top toolbar
         'hue-1': '400',
-        'hue-2': '600',
+        'hue-2': '600',    // sidebar toolbar
         'hue-3': 'A700'
       })
       .accentPalette('teal', {
-        'default': '600',
-        'hue-1': '50',
+        'default': '600',  // fab buttons
+        'hue-1': '50',     // center list toolbar
         'hue-2': '300',
         'hue-3': 'A700'
       })
       .backgroundPalette('grey', {
-        'default': '50',
+        'default': '50',   // center list background
         'hue-1': '200',
         'hue-2': '300',
         'hue-3': '500'
@@ -68,7 +68,7 @@
       .accentPalette('teal', {
         'default': '600',
         'hue-1': '50',
-        'hue-2': '300',
+        'hue-2': '300',    // selected center list item background, today's date in calendar views
         'hue-3': 'A700'
       });
 
