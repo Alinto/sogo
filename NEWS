@@ -24,6 +24,7 @@ Bug fixes
  - [web] improve handling of email notifications of a calendar properties
  - [web] fixed XSRF cookie path when changing password (#4139)
  - [eas] hebrew folders encoding problem using EAS (#4240)
+ - [eas] avoid sync requests for shared folders every second (#4275)
 
 3.2.10 (2017-07-05)
 -------------------
