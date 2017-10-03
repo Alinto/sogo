@@ -329,7 +329,7 @@ static NSString *inboxFolderName = @"INBOX";
   NSURL *nsURL;
   NSString *baseURLString, *urlString;
 
-  baseURLString = [[self imap4URL] absoluteString];
+  baseURLString = [self imap4URLString];
   urlString = [NSString stringWithFormat: @"%@%@/", baseURLString, [namespace stringByEscapingURL]];
   nsURL = [NSURL URLWithString: urlString];
   folders = [[self imap4Connection] allFoldersForURL: nsURL
