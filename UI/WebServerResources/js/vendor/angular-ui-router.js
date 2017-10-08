@@ -4,7 +4,7 @@
  *         This causes it to be incompatible with plugins that depend on @uirouter/core.
  *         We recommend switching to the ui-router-core.js and ui-router-angularjs.js bundles instead.
  *         For more information, see https://ui-router.github.io/blog/uirouter-for-angularjs-umd-bundles
- * @version v1.0.7
+ * @version v1.0.8
  * @link https://ui-router.github.io
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -499,8 +499,9 @@ var services = {
  * @module common
  */
 /** for typedoc */
-var w = typeof window === 'undefined' ? {} : window;
-var angular$1 = w.angular || {};
+var root = (typeof self === 'object' && self.self === self && self) ||
+    (typeof global === 'object' && global.global === global && global) || undefined;
+var angular$1 = root.angular || {};
 var fromJson = angular$1.fromJson || JSON.parse.bind(JSON);
 var toJson = angular$1.toJson || JSON.stringify.bind(JSON);
 var forEach = angular$1.forEach || _forEach;
@@ -1600,6 +1601,11 @@ var TransitionHook = /** @class */ (function () {
             // If callback throws (synchronously)
             return handleError(Rejection.normalize(err));
         }
+        finally {
+            if (hook.invokeLimit && ++hook.invokeCount >= hook.invokeLimit) {
+                hook.deregister();
+            }
+        }
     };
     /**
      * This method handles the return value of a Transition Hook.
@@ -1781,15 +1787,18 @@ function matchState(state, criterion) {
  * The registration data for a registered transition hook
  */
 var RegisteredHook = /** @class */ (function () {
-    function RegisteredHook(tranSvc, eventType, callback, matchCriteria, options) {
+    function RegisteredHook(tranSvc, eventType, callback, matchCriteria, removeHookFromRegistry, options) {
         if (options === void 0) { options = {}; }
         this.tranSvc = tranSvc;
         this.eventType = eventType;
         this.callback = callback;
         this.matchCriteria = matchCriteria;
+        this.removeHookFromRegistry = removeHookFromRegistry;
+        this.invokeCount = 0;
+        this._deregistered = false;
         this.priority = options.priority || 0;
         this.bind = options.bind || null;
-        this._deregistered = false;
+        this.invokeLimit = options.invokeLimit;
     }
     /**
      * Gets the matching [[PathNode]]s
@@ -1870,6 +1879,10 @@ var RegisteredHook = /** @class */ (function () {
         var allMatched = values(matches).every(identity);
         return allMatched ? matches : null;
     };
+    RegisteredHook.prototype.deregister = function () {
+        this.removeHookFromRegistry(this);
+        this._deregistered = true;
+    };
     return RegisteredHook;
 }());
 /** @hidden Return a registration function of the requested type. */
@@ -1877,16 +1890,14 @@ function makeEvent(registry, transitionService, eventType) {
     // Create the object which holds the registered transition hooks.
     var _registeredHooks = registry._registeredHooks = (registry._registeredHooks || {});
     var hooks = _registeredHooks[eventType.name] = [];
+    var removeHookFn = removeFrom(hooks);
     // Create hook registration function on the IHookRegistry for the event
     registry[eventType.name] = hookRegistrationFn;
     function hookRegistrationFn(matchObject, callback, options) {
         if (options === void 0) { options = {}; }
-        var registeredHook = new RegisteredHook(transitionService, eventType, callback, matchObject, options);
+        var registeredHook = new RegisteredHook(transitionService, eventType, callback, matchObject, removeHookFn, options);
         hooks.push(registeredHook);
-        return function deregisterEventHook() {
-            registeredHook._deregistered = true;
-            removeFrom(hooks)(registeredHook);
-        };
+        return registeredHook.deregister.bind(registeredHook);
     }
     return hookRegistrationFn;
 }
@@ -3837,8 +3848,8 @@ var StateParams = /** @class */ (function () {
 var parseUrl = function (url) {
     if (!isString(url))
         return false;
-    var root = url.charAt(0) === '^';
-    return { val: root ? url.substring(1) : url, root: root };
+    var root$$1 = url.charAt(0) === '^';
+    return { val: root$$1 ? url.substring(1) : url, root: root$$1 };
 };
 function nameBuilder(state) {
     return state.name;
@@ -3853,7 +3864,7 @@ function dataBuilder(state) {
     }
     return state.data;
 }
-var getUrlBuilder = function ($urlMatcherFactoryProvider, root) {
+var getUrlBuilder = function ($urlMatcherFactoryProvider, root$$1) {
     return function urlBuilder(state) {
         var stateDec = state;
         // For future states, i.e., states whose name ends with `.**`,
@@ -3874,7 +3885,7 @@ var getUrlBuilder = function ($urlMatcherFactoryProvider, root) {
             return null;
         if (!$urlMatcherFactoryProvider.isMatcher(url))
             throw new Error("Invalid url '" + url + "' in state '" + state + "'");
-        return (parsed && parsed.root) ? url : ((parent && parent.navigable) || root()).url.append(url);
+        return (parsed && parsed.root) ? url : ((parent && parent.navigable) || root$$1()).url.append(url);
     };
 };
 var getNavigableBuilder = function (isRoot) {
@@ -4002,12 +4013,12 @@ var StateBuilder = /** @class */ (function () {
     function StateBuilder(matcher, urlMatcherFactory) {
         this.matcher = matcher;
         var self = this;
-        var root = function () { return matcher.find(""); };
+        var root$$1 = function () { return matcher.find(""); };
         var isRoot = function (state) { return state.name === ""; };
         function parentBuilder(state) {
             if (isRoot(state))
                 return null;
-            return matcher.find(self.parentName(state)) || root();
+            return matcher.find(self.parentName(state)) || root$$1();
         }
         this.builders = {
             name: [nameBuilder],
@@ -4015,7 +4026,7 @@ var StateBuilder = /** @class */ (function () {
             parent: [parentBuilder],
             data: [dataBuilder],
             // Build a URLMatcher if necessary, either via a relative or absolute URL
-            url: [getUrlBuilder(urlMatcherFactory, root)],
+            url: [getUrlBuilder(urlMatcherFactory, root$$1)],
             // Keep track of the closest ancestor state that has a URL (i.e. is navigable)
             navigable: [getNavigableBuilder(isRoot)],
             params: [getParamsBuilder(urlMatcherFactory.paramFactory)],
@@ -7466,29 +7477,11 @@ function locationPluginFactory(name, isHtml5, serviceClass, configurationClass) 
         return { name: name, service: service, configuration: configuration, dispose: dispose };
     };
 }
-function getCustomEventCtor() {
-    // CustomEvent Polyfill
-    function _CustomEvent(event, params) {
-        params = params || { bubbles: false, cancelable: false, detail: undefined };
-        var evt = document.createEvent('CustomEvent');
-        evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
-        return evt;
-    }
-    _CustomEvent.prototype = Event.prototype;
-    try {
-        new CustomEvent('foo');
-        return CustomEvent;
-    }
-    catch (_err) {
-        return _CustomEvent;
-    }
-}
 
 /**
  * @internalapi
  * @module vanilla
  */ /** */
-var Evt = getCustomEventCtor();
 /** A base `LocationServices` */
 var BaseLocationServices = /** @class */ (function () {
     function BaseLocationServices(router, fireAfterUpdate) {
@@ -7499,16 +7492,15 @@ var BaseLocationServices = /** @class */ (function () {
         this.hash = function () { return parseUrl$1(_this._get()).hash; };
         this.path = function () { return parseUrl$1(_this._get()).path; };
         this.search = function () { return getParams(parseUrl$1(_this._get()).search); };
-        this._location = self && self.location;
-        this._history = self && self.history;
+        this._location = root.location;
+        this._history = root.history;
     }
     BaseLocationServices.prototype.url = function (url, replace) {
         if (replace === void 0) { replace = true; }
         if (isDefined(url) && url !== this._get()) {
             this._set(null, null, url, replace);
             if (this.fireAfterUpdate) {
-                var evt_1 = extend(new Evt("locationchange"), { url: url });
-                this._listeners.forEach(function (cb) { return cb(evt_1); });
+                this._listeners.forEach(function (cb) { return cb({ url: url }); });
             }
         }
         return buildUrl(this);
@@ -7544,7 +7536,7 @@ var HashLocationService = /** @class */ (function (_super) {
     __extends(HashLocationService, _super);
     function HashLocationService(router) {
         var _this = _super.call(this, router, false) || this;
-        self.addEventListener('hashchange', _this._listener, false);
+        root.addEventListener('hashchange', _this._listener, false);
         return _this;
     }
     HashLocationService.prototype._get = function () {
@@ -7555,7 +7547,7 @@ var HashLocationService = /** @class */ (function (_super) {
     };
     HashLocationService.prototype.dispose = function (router) {
         _super.prototype.dispose.call(this, router);
-        self.removeEventListener('hashchange', this._listener);
+        root.removeEventListener('hashchange', this._listener);
     };
     return HashLocationService;
 }(BaseLocationServices));
@@ -7610,7 +7602,7 @@ var PushStateLocationService = /** @class */ (function (_super) {
     function PushStateLocationService(router) {
         var _this = _super.call(this, router, true) || this;
         _this._config = router.urlService.config;
-        self.addEventListener("popstate", _this._listener, false);
+        root.addEventListener('popstate', _this._listener, false);
         return _this;
     }
     
@@ -7636,7 +7628,7 @@ var PushStateLocationService = /** @class */ (function (_super) {
         var exactMatch = pathname === this._config.baseHref();
         var startsWith = pathname.startsWith(basePrefix);
         pathname = exactMatch ? '/' : startsWith ? pathname.substring(basePrefix.length) : pathname;
-        return pathname + (search ? "?" + search : "") + (hash ? "#" + hash : "");
+        return pathname + (search ? '?' + search : '') + (hash ? '#' + hash : '');
     };
     PushStateLocationService.prototype._set = function (state, title, url, replace) {
         var fullUrl = this._getBasePrefix() + url;
@@ -7649,7 +7641,7 @@ var PushStateLocationService = /** @class */ (function (_super) {
     };
     PushStateLocationService.prototype.dispose = function (router) {
         _super.prototype.dispose.call(this, router);
-        self.removeEventListener("popstate", this._listener);
+        root.removeEventListener('popstate', this._listener);
     };
     return PushStateLocationService;
 }(BaseLocationServices));
@@ -7767,6 +7759,7 @@ var UIRouterPluginBase = /** @class */ (function () {
 
 
 var index$1 = Object.freeze({
+	root: root,
 	fromJson: fromJson,
 	toJson: toJson,
 	forEach: forEach,
@@ -7920,7 +7913,6 @@ var index$1 = Object.freeze({
 	parseUrl: parseUrl$1,
 	buildUrl: buildUrl,
 	locationPluginFactory: locationPluginFactory,
-	getCustomEventCtor: getCustomEventCtor,
 	servicesPlugin: servicesPlugin,
 	hashLocationPlugin: hashLocationPlugin,
 	pushStateLocationPlugin: pushStateLocationPlugin,
@@ -9920,6 +9912,7 @@ exports.ng1ViewsBuilder = ng1ViewsBuilder;
 exports.Ng1ViewConfig = Ng1ViewConfig;
 exports.StateProvider = StateProvider;
 exports.UrlRouterProvider = UrlRouterProvider;
+exports.root = root;
 exports.fromJson = fromJson;
 exports.toJson = toJson;
 exports.forEach = forEach;
@@ -10068,7 +10061,6 @@ exports.getParams = getParams;
 exports.parseUrl = parseUrl$1;
 exports.buildUrl = buildUrl;
 exports.locationPluginFactory = locationPluginFactory;
-exports.getCustomEventCtor = getCustomEventCtor;
 exports.servicesPlugin = servicesPlugin;
 exports.hashLocationPlugin = hashLocationPlugin;
 exports.pushStateLocationPlugin = pushStateLocationPlugin;
