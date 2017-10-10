@@ -65,10 +65,6 @@
           $mdSidenav('left').close();
         $state.go('app.addressbook', {addressbookId: folder.id});
       }
-      else {
-        $event.preventDefault();
-        $event.stopPropagation();
-      }
     }
 
     function newAddressbook() {
@@ -102,13 +98,18 @@
 
     function save(folder) {
       var name = folder.name;
-      if (name && name.length > 0 && name != vm.originalAddressbook.name) {
-        folder.$rename(name)
-          .then(function(data) {
-            vm.editMode = false;
-          }, function(data, status) {
-            Dialog.alert(l('Warning'), data);
-          });
+      if (name && name.length > 0) {
+        if (name != vm.originalAddressbook.name) {
+          folder.$rename(name)
+            .then(function(data) {
+              vm.editMode = false;
+            }, function(data, status) {
+              Dialog.alert(l('Warning'), data);
+            });
+        }
+        else {
+          vm.editMode = false;
+        }
       }
     }
 

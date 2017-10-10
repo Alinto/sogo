@@ -56,7 +56,7 @@
                           sg-drop="app.dragSelectedCards(dragFolder, folder, dragMode)">
               <md-icon>contacts</md-icon>
               <p class="sg-item-name"
-                 ng-show="app.editMode!=folder.id">
+                 ng-show="app.editMode != folder.id">
 		{{folder.name}}
 		<md-tooltip md-delay="2000">{{folder.name}}</md-tooltip>
 	      </p>
@@ -144,7 +144,7 @@
                           sg-drop="app.dragSelectedCards(dragFolder, folder, dragMode)">
               <md-icon>contacts</md-icon>
               <p class="sg-item-name"
-                 ng-show="app.editMode!=folder.id">
+                 ng-show="app.editMode != folder.id">
 		{{folder.name}}
 		<md-tooltip md-delay="2000">{{folder.name}}</md-tooltip>
 	      </p>
