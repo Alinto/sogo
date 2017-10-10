@@ -43,7 +43,7 @@
     this.go = function(module, form) {
       if (form.$valid) {
         // Close sidenav on small devices
-        if ($mdMedia('xs'))
+        if (!$mdMedia('gt-sm'))
           $mdSidenav('left').close();
         $state.go('preferences.' + module);
       }
