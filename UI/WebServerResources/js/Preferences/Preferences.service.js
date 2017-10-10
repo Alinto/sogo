@@ -108,6 +108,8 @@
 
       if (angular.isUndefined(data.SOGoContactsCategories))
         data.SOGoContactsCategories = [];
+      else
+        data.SOGoContactsCategories = _.compact(data.SOGoContactsCategories);
 
       angular.extend(_this.defaults, data);
 

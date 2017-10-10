@@ -497,6 +497,7 @@
                 <md-input-container class="md-block md-flex">
 	          <input type="text"
                          label:aria-label="Contact Category"
+                         required="required"
                          ng-model="app.preferences.defaults.SOGoContactsCategories[$index]"
                          sg-focus-on="contactCategory_{{$index}}"/>
                 </md-input-container>

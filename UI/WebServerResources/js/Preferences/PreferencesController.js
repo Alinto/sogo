@@ -76,8 +76,12 @@
     };
 
     this.addContactCategory = function(form) {
-      this.preferences.defaults.SOGoContactsCategories.push("");
-      focus('contactCategory_' + (this.preferences.defaults.SOGoContactsCategories.length - 1));
+      var i = _.indexOf(this.preferences.defaults.SOGoContactsCategories, "");
+      if (i < 0) {
+        this.preferences.defaults.SOGoContactsCategories.push("");
+        i = this.preferences.defaults.SOGoContactsCategories.length - 1;
+      }
+      focus('contactCategory_' + i);
       form.$setDirty();
     };
 
