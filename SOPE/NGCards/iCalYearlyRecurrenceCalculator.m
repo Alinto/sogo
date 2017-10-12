@@ -91,7 +91,7 @@
 	  if ([lastDate compare: rStart] == NSOrderedAscending)
 	    // Range starts after last occurrence
 	    return nil;
-	  if ([lastDate compare: rEnd] == NSOrderedDescending)
+	  if ([lastDate compare: rEnd] == NSOrderedAscending)
 	    // Range ends after last occurence; adjust end date
 	    rEnd = lastDate;
 	}
@@ -212,14 +212,17 @@
 					   months: 0
 					     days: 0];
 	      [start setTimeZone: [firStart timeZone]];
-	      end = [start addTimeInterval: [firstRange duration]];
-	      r = [NGCalendarDateRange calendarDateRangeWithStartDate: start
-							      endDate: end];
-	      if ([_r doesIntersectWithDateRange: r] && (repeatCount == 0 || count < repeatCount))
-		{
-		  [ranges addObject: r];
-		  count++;
-		}
+              if ([start compare: rEnd] == NSOrderedAscending)
+                {
+                  end = [start addTimeInterval: [firstRange duration]];
+                  r = [NGCalendarDateRange calendarDateRangeWithStartDate: start
+                                                                  endDate: end];
+                  if ([_r doesIntersectWithDateRange: r] && (repeatCount == 0 || count < repeatCount))
+                    {
+                      [ranges addObject: r];
+                      count++;
+                    }
+                }
 	    }
 	}
       else

@@ -7,6 +7,7 @@ Enhancements
 Bug fixes
  - [core] yearly repeating events are not shown in web calendar (#4237)
  - [core] correctly handle "Last day of the month" recurrence rule
+ - [core] fixed yearly recurrence calculator with until date
  - [eas] avoid sync requests for shared folders every second (#4275)
 
 2.3.22 (2017-07-20)
