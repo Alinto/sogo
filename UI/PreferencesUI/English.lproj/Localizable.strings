@@ -147,6 +147,10 @@
 /* Mailer */
 "Labels" = "Labels";
 "Label" = "Label";
+"IMAP Label" = "IMAP Label";
+"Invalid label" = "Don't use space, nor ( ) { } % * \" \\";
+"Duplicate label" = "Duplicate label";
+"IMAP labels must have unique names." = "IMAP labels must have unique names.";
 "New label" = "New label";
 "Show subscribed mailboxes only" = "Show subscribed mailboxes only";
 "Synchronize only default mail folders (EAS)" = "Synchronize only default mail folders (EAS)";

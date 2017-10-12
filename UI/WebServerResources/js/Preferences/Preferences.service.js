@@ -22,13 +22,13 @@
         data = {};
       }
 
-      // We swap $key -> _$key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
-      var labels = _.fromPairs(_.map(data.SOGoMailLabelsColors, function(value, key) {
-        if (key.charAt(0) == '$')
-          return ['_' + key, value];
-        return [key, value];
-      }));
-      data.SOGoMailLabelsColors = labels;
+      // Split mail labels keys and values
+      data.SOGoMailLabelsColorsKeys = [];
+      data.SOGoMailLabelsColorsValues = [];
+      _.forEach(data.SOGoMailLabelsColors, function (value, key) {
+        data.SOGoMailLabelsColorsKeys.push(key);
+        data.SOGoMailLabelsColorsValues.push(value);
+      });
 
       _.forEach(data.SOGoSieveFilters, function(filter) {
         _.forEach(filter.actions, function(action) {
@@ -268,18 +268,13 @@
       }
     });
 
-    // We swap _$key -> $key to avoid an Angular bug (https://github.com/angular/angular.js/issues/6266)
-    labels = _.fromPairs(_.map(preferences.defaults.SOGoMailLabelsColors, function(value, key) {
-      if (key.charAt(0) == '_' && key.charAt(1) == '$') {
-        // New key, let's take the value and flatten it
-        if (key.length > 2 && key.charAt(2) == '$') {
-          return [value[0].toLowerCase().replace(/[ \(\)\/\{%\*<>\\\"]/g, "_"), value];
-        }
-        return [key.substring(1), value];
-      }
-      return [key, value];
-    }));
-    preferences.defaults.SOGoMailLabelsColors = labels;
+    // Merge back mail labels keys and values
+    preferences.defaults.SOGoMailLabelsColors = {};
+    _.forEach(preferences.defaults.SOGoMailLabelsColorsKeys, function(key, i) {
+      preferences.defaults.SOGoMailLabelsColors[key] = preferences.defaults.SOGoMailLabelsColorsValues[i];
+    });
+    delete preferences.defaults.SOGoMailLabelsColorsKeys;
+    delete preferences.defaults.SOGoMailLabelsColorsValues;
 
     _.forEach(preferences.defaults.SOGoSieveFilters, function(filter) {
       _.forEach(filter.actions, function(action) {

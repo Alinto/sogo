@@ -771,18 +771,35 @@
                       id="mailLabelsView-content" class="md-padding">
             <md-list layout="row" layout-xs="column" layout-wrap="layout-wrap">
               <md-list-item flex="50" flex-xs="100"
-                            ng-repeat="(key, value) in app.preferences.defaults.SOGoMailLabelsColors">
-                <sg-color-picker ng-model="value[1]"><!-- color picker--></sg-color-picker>
-                <md-input-container class="md-block md-flex">
-	          <input type="text"
-                         label:aria-label="Label"
-                         ng-model="value[0]"
-                         sg-focus-on="mailLabel_{{$index}}"/>
-                </md-input-container>
+                            ng-repeat="key in app.preferences.defaults.SOGoMailLabelsColorsKeys
+                                       track by $index">
+                <sg-color-picker ng-model="app.preferences.defaults.SOGoMailLabelsColorsValues[$index][1]"><!-- color picker--></sg-color-picker>
+                <div layout="row" class="md-flex">
+                  <md-input-container class="md-block md-flex">
+                    <label><var:string label:value="Label"/></label>
+	            <input type="text"
+                           label:aria-label="Label"
+                           ng-model="app.preferences.defaults.SOGoMailLabelsColorsValues[$index][0]"
+                           sg-focus-on="mailLabel_{{$index}}"/>
+                  </md-input-container>
+                  <md-input-container class="md-block md-flex">
+                    <label><var:string label:value="IMAP Label"/></label>
+	            <input type="text"
+                           name="mailIMAPLabel_{{$index}}"
+                           label:aria-label="IMAP Label"
+                           ng-model="app.preferences.defaults.SOGoMailLabelsColorsKeys[$index]"
+                           ng-change="app.resetMailLabelValidity($index, preferencesForm)"
+                           ng-pattern="app.mailLabelKeyRE" />
+                    <div ng-messages="preferencesForm['mailIMAPLabel_' + $index].$error">
+                      <div ng-message="pattern"><var:string label:value="Invalid label"/></div>
+                      <div ng-message="duplicate"><var:string label:value="Duplicate label"/></div>
+                    </div>
+                  </md-input-container>
+                </div>
                 <md-button class="md-icon-button" type="button"
                            layout="row" layout-align="end center"
                            label:aria-label="Delete Label"
-                           ng-click="app.removeMailLabel(key, preferencesForm)">
+                           ng-click="app.removeMailLabel($index, preferencesForm)">
                   <md-icon>remove_circle</md-icon>
                 </md-button>
               </md-list-item>

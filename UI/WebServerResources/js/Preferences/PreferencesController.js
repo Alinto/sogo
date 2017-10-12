@@ -17,6 +17,7 @@
       this.timeZonesList = $window.timeZonesList;
       this.timeZonesSearchText = '';
       this.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
+      this.mailLabelKeyRE = new RegExp("^[^(){} %*\"\\\\]*$");
 
 
       if (sgSettings.activeUser('path').mail) {
@@ -154,17 +155,23 @@
       this.preferences.defaults.AuxiliaryMailAccounts.splice(index, 1);
       form.$setDirty();
     };
-    
+
+    this.resetMailLabelValidity = function(index, form) {
+      form['mailIMAPLabel_' + index].$setValidity('duplicate', true);
+    };
+
     this.addMailLabel = function(form) {
       // See $omit() in the Preferences services for real key generation
       var key = '_$$' + guid();
-      this.preferences.defaults.SOGoMailLabelsColors[key] =  ["New label", "#aaa"];
-      focus('mailLabel_' + (_.size(this.preferences.defaults.SOGoMailLabelsColors) - 1));
+      this.preferences.defaults.SOGoMailLabelsColorsKeys.push("label");
+      this.preferences.defaults.SOGoMailLabelsColorsValues.push(["New label", "#aaa"]);
+      focus('mailLabel_' + (_.size(this.preferences.defaults.SOGoMailLabelsColorsKeys) - 1));
       form.$setDirty();
     };
 
-    this.removeMailLabel = function(key, form) {
-      delete this.preferences.defaults.SOGoMailLabelsColors[key];
+    this.removeMailLabel = function(index, form) {
+      this.preferences.defaults.SOGoMailLabelsColorsKeys.splice(index, 1);
+      this.preferences.defaults.SOGoMailLabelsColorsValues.splice(index, 1);
       form.$setDirty();
     };
 
@@ -308,6 +315,21 @@
             sendForm = false;
           }
         }
+      }
+
+      if (this.preferences.defaults.SOGoMailLabelsColorsKeys.length !=
+          this.preferences.defaults.SOGoMailLabelsColorsValues.length ||
+          this.preferences.defaults.SOGoMailLabelsColorsKeys.length !=
+          _.uniq(this.preferences.defaults.SOGoMailLabelsColorsKeys).length) {
+        Dialog.alert(l('Error'), l("IMAP labels must have unique names."));
+        _.forEach(this.preferences.defaults.SOGoMailLabelsColorsKeys, function (value, i, keys) {
+          if (form['mailIMAPLabel_' + i].$dirty &&
+              (keys.indexOf(value) != i ||
+               keys.indexOf(value, i+1) > -1)) {
+            form['mailIMAPLabel_' + i].$setValidity('duplicate', false);
+            sendForm = false;
+          }
+        });
       }
 
       if (sendForm)
