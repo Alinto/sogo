@@ -52,8 +52,8 @@
   /**
    * @ngInject
    */
-  sgCalendarListItemController.$inject = ['$scope', '$element', '$mdToast', '$mdPanel', '$mdMedia', '$mdSidenav', 'sgConstant', 'Dialog', 'Calendar'];
-  function sgCalendarListItemController($scope, $element, $mdToast, $mdPanel, $mdMedia, $mdSidenav, sgConstant, Dialog, Calendar) {
+  sgCalendarListItemController.$inject = ['$rootScope', '$scope', '$element', '$mdToast', '$mdPanel', '$mdMedia', '$mdSidenav', 'sgConstant', 'Dialog', 'Calendar'];
+  function sgCalendarListItemController($rootScope, $scope, $element, $mdToast, $mdPanel, $mdMedia, $mdSidenav, sgConstant, Dialog, Calendar) {
     var $ctrl = this;
 
 
