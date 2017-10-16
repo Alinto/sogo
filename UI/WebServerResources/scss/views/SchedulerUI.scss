@@ -387,6 +387,9 @@ $quarter_height: 10px;
 
     .secondary { // location in days view, hours in month view
       font-weight: $sg-font-light;
+      span {
+        word-break: break-all;
+      }
     }
 
     .sg-category {

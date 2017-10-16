@@ -62,7 +62,7 @@
         '      </span>',
         //     Location
         '      <div class="secondary" ng-if="'+p+'block.component.c_location">',
-        '        <md-icon>place</md-icon> {{'+p+'block.component.c_location}}',
+        '        <md-icon>place</md-icon> <span ng-bind="'+p+'block.component.c_location"></span>',
         '      </div>',
         '    </div>',
         '  </div>',

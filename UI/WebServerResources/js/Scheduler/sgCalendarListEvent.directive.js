@@ -56,11 +56,11 @@
         '      </span>',
         //     Time
         '      <div class="secondary" ng-if="::!component.c_isallday">',
-        '        <md-icon>access_time</md-icon> {{::component.starthour}}',
+        '        <md-icon>access_time</md-icon> <span ng-bind="::component.starthour"></span>',
         '      </div>',
         //     Location
         '      <div class="secondary" ng-if="::component.c_location">',
-        '        <md-icon>place</md-icon> {{::component.c_location}}',
+        '        <md-icon>place</md-icon> <span ng-bind="::component.c_location"></span>',
         '      </div>',
         '</div>'
       ].join('');
