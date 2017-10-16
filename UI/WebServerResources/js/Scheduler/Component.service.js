@@ -208,7 +208,7 @@
    * @see {@link Calendar.$getComponent}
    */
   Component.$find = function(calendarId, componentId, occurrenceId) {
-    var futureComponentData, path = [calendarId, componentId];
+    var futureComponentData, path = [calendarId, encodeURIComponent(componentId)];
 
     if (occurrenceId)
       path.push(occurrenceId);
@@ -1123,7 +1123,7 @@
    * @returns a promise of the HTTP operation
    */
   Component.prototype.$reply = function() {
-    var _this = this, data, path = [this.pid, this.id];
+    var _this = this, data, path = [this.pid, encodeURIComponent(this.id)];
 
     if (this.occurrenceId)
       path.push(this.occurrenceId);
@@ -1149,7 +1149,7 @@
    * @returns a promise of the HTTP operation
    */
   Component.prototype.$adjust = function(params) {
-    var path = [this.pid, this.id];
+    var path = [this.pid, encodeURIComponent(this.id)];
 
     if (_.every(_.values(params), function(v) { return v === 0; }))
       // No changes
@@ -1237,7 +1237,7 @@
     }
 
     // Build URL
-    path = [this.pid, this.id];
+    path = [this.pid, encodeURIComponent(this.id)];
 
     if (this.isNew)
       options = { action: 'saveAs' + this.type.capitalize() };
@@ -1262,7 +1262,7 @@
    * @param {boolean} occurrenceOnly - delete this occurrence only
    */
   Component.prototype.remove = function(occurrenceOnly) {
-    var _this = this, path = [this.pid, this.id];
+    var _this = this, path = [this.pid, encodeURIComponent(this.id)];
 
     if (occurrenceOnly && this.occurrenceId)
       path.push(this.occurrenceId);
@@ -1356,7 +1356,7 @@
    * @returns a promise of the HTTP operation
    */
   Component.prototype.copyTo = function(calendar) {
-    return Component.$$resource.post(this.pid + '/' + this.id, 'copy', {destination: calendar});
+    return Component.$$resource.post(this.pid + '/' + encodeURIComponent(this.id), 'copy', {destination: calendar});
   };
 
   /**
@@ -1367,7 +1367,7 @@
    * @returns a promise of the HTTP operation
    */
   Component.prototype.moveTo = function(calendar) {
-    return Component.$$resource.post(this.pid + '/' + this.id, 'move', {destination: calendar});
+    return Component.$$resource.post(this.pid + '/' + encodeURIComponent(this.id), 'move', {destination: calendar});
   };
 
   Component.prototype.toString = function() {
