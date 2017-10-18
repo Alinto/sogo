@@ -3,6 +3,7 @@
 
 Enhancements
  - [web] added Simplified Chinese (zh_CN) translation - thanks to Thomas Kuiper
+ - [web] updated CKEditor to version 4.7.3
 
 Bug fixes
  - [core] yearly repeating events are not shown in web calendar (#4237)
