@@ -4,7 +4,7 @@
 "Create a new event" = "Yeni etkinlik oluştur";
 "Create a new task" = "Yeni görev oluştur";
 "Edit this event or task" = "Etkinlik veya görevi düzenle";
-"Print the current calendar view" = "Geçerli takvim görünütüsünü yazdır";
+"Print the current calendar view" = "Geçerli takvim görüntüsünü yazdır";
 "Delete this event or task" = "Etkinlik veya görevi sil";
 "Go to today" = "Bugüne git";
 "Switch to day view" = "Günlük görünüme geç";
@@ -55,7 +55,7 @@
 "Upload" = "Yükle";
 "Uploading" = "Yükleniyor";
 "Publish Calendar..." = "Takvimi Yayınla...";
-"Reload Remote Calendars" = "Uzak Takvimleri Tazele";
+"Reload Remote Calendars" = "Uzaktaki Takvimleri Tazele";
 "Properties" = "Özellikler";
 "Done" = "Tamam";
 "An error occurred while importing calendar." = "Takvimi içeri aktarırken bir hata oluştu.";
@@ -63,6 +63,12 @@
 "A total of %{0} events were imported in the calendar." = "Toplam %{0} etkinlik takvime aktarıldı.";
 "Compose E-Mail to All Attendees" = "Tüm Katılımcılara İleti Yaz";
 "Compose E-Mail to Undecided Attendees" = "Karar Vermemiş Katılımcılara İleti Yaz";
+
+/* Relative dates */
+"Yesterday" = "Dün";
+"Today" = "Bugün";
+"Tomorrow" = "Yarın";
+"Last %@" = "Son%@";
 
 /* Folders */
 "Personal calendar" = "Kişisel takvim";
@@ -100,7 +106,7 @@
 "New calendar" = "Yeni Takvim";
 "Name of the Calendar" = "Takvimin Adı";
 "new" = "Yeni";
-"Print view" = "Yazdırma Görünümü";
+"Print view" = "Yazdırma Ön-izleme";
 "edit" = "Düzenle";
 "delete" = "SİL";
 "proposal" = "Teklif";
@@ -110,7 +116,7 @@
 "Attach" = "Ekle";
 "Update" = "Güncelle";
 "Cancel" = "İptal";
-"Reset" = "Öntanımlı";
+"Reset" = "Başa Al";
 "Save" = "Kaydet";
 "show_rejected_apts" = "Reddedilen çalışmaları göster";
 "hide_rejected_apts" = "Reddedilen çalışmaları gizle";
@@ -126,7 +132,7 @@
 "decline" = "Reddet";
 "more attendees" = "Diğer katılımcılar";
 "Hide already accepted and rejected appointments" = "Kabul edilmiş ve reddedilmiş çalışmaları gizle";
-"Show already accepted and rejected appointments" = "Kabul edilmiş ve reddedilmiş çalışma göster";
+"Show already accepted and rejected appointments" = "Kabul edilmiş ve reddedilmiş çalışmaları göster";
 
 /* Print view */
 "LIST" = "Liste";
@@ -140,7 +146,7 @@
 "Completed tasks" = "Tamamlanmış Görevler";
 "Display events and tasks colors" = "Etkinlik ve görev renklerini göster";
 "Borders" = "Kenarlar";
-"Backgrounds" = "Arkaplan";
+"Backgrounds" = "Arka alan";
 
 /* Appointments */
 "Appointment viewer" = "Çalışma Görüntüleyici";
@@ -174,7 +180,7 @@
 "General" = "Genel";
 "Reply" = "Yanıtla";
 "Created by" = "Oluşturan";
-"You are invited to participate" = "Katılmaya davet edildiniz";
+"You are invited to participate" = "Davet edildiniz";
 "Target" = "Hedef";
 "attributes" = "özellikler";
 "attendees" = "katılımcılar";
@@ -201,7 +207,7 @@
 "partStat_OTHER" = "Diğer";
 
 /* Appointments (error messages) */
-"Conflicts found!" = "Çakışma bulundu!";
+"Conflicts found!" = "Çakışma var!";
 "Invalid iCal data!" = "Geçersiz iCal verisi!";
 "Could not create iCal data!" = "iCal verisi oluşturulamıyor!";
 
@@ -352,8 +358,8 @@
 "reminder_WEEKS" = "hafta";
 "reminder_BEFORE" = "önce";
 "reminder_AFTER" = "sonra";
-"reminder_START" = "başlar";
-"reminder_END" = "biter";
+"reminder_START" = "etkinlik başlangıcından";
+"reminder_END" = "etkinlik bitiminden";
 "Reminder Details" = "Hatırlatıcı Ayrıntıları";
 "Choose a Reminder Action" = "Bir Hatırlatıcı Eylemi Seçin";
 "Show an Alert" = "Bir Uyarı Göster";
@@ -475,7 +481,7 @@ vtodo_class2 = "(Gizli görev)";
 "Please select an event or a task." = "Lütfen bir etkinlik veya görev seçin.";
 "editRepeatingItem" = "Düzenlediğiniz öge tekrarlanan bir ögedir. Bu ögenin tüm tekrarlarını mı yoksa sadece bu tek örneği mi düzenlemek istiyor musunuz?";
 "button_thisOccurrenceOnly" = "Sadece bu tekrar";
-"button_allOccurrences" = "Tüm tekrarlar ";
+"button_allOccurrences" = "Tüm tekrarlar";
 "Edit This Occurrence" = "Bu Tekrarı Düzenle";
 "Edit All Occurrences" = "Tüm Tekrarları Düzenle";
 "Update This Occurrence" = "Bu Tekrarı Güncelle";
@@ -498,7 +504,7 @@ vtodo_class2 = "(Gizli görev)";
 "Export" = "Dışarı Aktar";
 
 
-/* Show only the calendar for which the menu is displayed */ 
+/* Show only the calendar for which the menu is displayed */
 "Show Only This Calendar" = "Sadece Bu Takvimi Göster";
 
 
@@ -562,7 +568,7 @@ vtodo_class2 = "(Gizli görev)";
 "New Appointment" = "Yeni  Çalışma";
 "filters" = "süzgeçler";
 "Today" = "Bugün";
-"More options" = "Daha fazla seçenek";
+"More options" = "Diğer seçenekler";
 "Delete This Occurrence" = "Bu Tekrarı Sil";
 "Delete All Occurrences" = "Tüm Tekrarları Sil";
 "Add From" = "Başlangıç Tarihi Ekle";

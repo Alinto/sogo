@@ -31,7 +31,7 @@
 "Sorry, the user rights can not be configured for that object." = "Sorry, the user rights can not be configured for that object.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?";
-"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
      = "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?";
@@ -57,7 +57,7 @@
 "The user rights cannot be edited for this object!"
         = "The user rights cannot be edited for this object!";
 "A folder by that name already exists." = "A folder by that name already exists.";
-"You cannot create a list in a shared address book." 
+"You cannot create a list in a shared address book."
         = "You cannot create a list in a shared address book.";
 "Warning" = "Warning";
 "Can't contact server" = "An error occurred while contacting the server. Please try again later.";

@@ -64,6 +64,12 @@
 "Compose E-Mail to All Attendees" = "Crear correo para todos los asistentes";
 "Compose E-Mail to Undecided Attendees" = "Crear correo para todos los asistentes indecisos";
 
+/* Relative dates */
+"Yesterday" = "Ayer";
+"Today" = "Hoy";
+"Tomorrow" = "Mañana";
+"Last %@" = "Último %@";
+
 /* Folders */
 "Personal calendar" = "Calendario personal";
 
@@ -73,7 +79,7 @@
 
 /* acls */
 "Access rights to" = "Derechos de accesos a";
-"For user" = "Para usuario";
+"For user" = "Para el usuario";
 "Any Authenticated User" = "Cualquier Usuario Autenticado ";
 "Public Access" = "Acceso Público";
 "label_Public" = "Público";
@@ -366,6 +372,15 @@
 "zoom_50" = "50%";
 "zoom_25" = "25%";
 
+/* Arial label for reminder units */
+"Reminder units" = "Recordatorios";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Posición de los recordatorios";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Relación de los recordatorios";
+
 /* transparency */
 "Show Time as Free" = "Mostrar tiempo como disponible";
 
@@ -379,6 +394,8 @@ validate_notitle           = "Sin título, ¿continuar?";
 validate_invalid_startdate = "Fecha de inicio incorrecta";
 validate_invalid_enddate   = "Fecha de fin incorrecta";
 validate_endbeforestart    = "La fecha/hora de inicio es posterior a la de fin.";
+validate_untilbeforeend    = "La recurrencia debe terminar después de la primera creación.";
+
 "Events" = "Eventos";
 "Tasks" = "Tareas";
 "Show completed tasks" = "Mostrar tareas completadas";
@@ -487,7 +504,7 @@ vtodo_class2 = "(Tarea confidencial)";
 "Export" = "Exportar";
 
 
-/* Show only the calendar for which the menu is displayed */ 
+/* Show only the calendar for which the menu is displayed */
 "Show Only This Calendar" = "Enseñar solo este calendario";
 
 
@@ -515,7 +532,7 @@ vtodo_class2 = "(Tarea confidencial)";
 "tagWasAdded" = "Si quiere sincronizar con este calendario, necesitara recargar los datos en su teléfono móvil.\n¿Continuar?";
 "tagWasRemoved" = "Si quita este calendario de la sincronización, necesitará recargar los datos en su teléfono móvil.\n¿Continuar?";
 "DestinationCalendarError" = "El calendario origen y el destino son iguales. Por favor, intente copiar a otro calendario.";
-"EventCopyError" = "La copia falló. Por favor, intente copiar a un calendario distinto.";
+"EventCopyError" = "La copia falló. Por favor , intente copiarlo en otro calendario.";
 "Please select at least one calendar" = "Por favor, selecciona al menos un calendario";
 "Open Task..." = "Abrir tarea...";
 "Mark Completed" = "Marcar como completo";
@@ -569,3 +586,24 @@ vtodo_class2 = "(Tarea confidencial)";
 
 /* Aria label for scope of search on events or tasks */
 "Search scope" = "Buscar ámbito";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

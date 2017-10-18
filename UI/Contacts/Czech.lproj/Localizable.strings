@@ -41,6 +41,9 @@
 "Move To" = "Přesunout do";
 "Copy To" = "Kopírovat do";
 "Add to" = "Přidat do";
+"To" = "Komu";
+"Carbon Copy (Cc)" = "Kopie (Cc)";
+"Blind Carbon Copy (Bcc)" = "Skrytá kopie (Bcc)";
 
 /* Subheader of empty addressbook */
 "No contact" = "Není kontakt";
@@ -231,6 +234,7 @@
 "URL" = "URL";
 "New URL" = "Nové URL";
 "street" = "ulice";
+"street (continued)" = "ulice (pokračování)";
 "Postoffice" = "Pošta";
 "Region" = "Region";
 "Postal Code" = "PSČ";
@@ -244,6 +248,12 @@
 "More options" = "Více možností";
 "Role" = "Role";
 "Add Screen Name" = "Přidat zobrazované jméno";
+"Custom 1" = "Vlastní 1";
+"Custom 2" = "Vlastní 2";
+"Custom 3" = "Vlastní 3";
+"Custom 4" = "Vlastní 4";
+"Custom Value" = "Vlastní Hodnota";
+"New Custom Value" = "Nová Vlastní Hodnota";
 "Synchronization" = "Synchronizace";
 "Synchronize" = "Synchronizovat";
 "Sucessfully subscribed to address book" = "Přihlášení k odebírání adresáře kontaktů proběhlo úspěšně";

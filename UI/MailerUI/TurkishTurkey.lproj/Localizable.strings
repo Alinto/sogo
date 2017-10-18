@@ -26,7 +26,7 @@
 /* Tooltips */
 "Send this message now" = "İletiyi gönder";
 "Select a recipient from an Address Book" = "Adres Defterinden Alıcı Seç";
-"Include an attachment" = "Dosya Ekle";
+"Include an attachment" = "Dosya ekle";
 "Save this message" = "İletiyi kaydet";
 "Get new messages" = "Yeni gelen iletileri al";
 "Create a new message" = "Yeni ileti oluştur";
@@ -82,7 +82,7 @@
 "Access rights to" = "Klasörün erişim yetkileri";
 "For user" = "Şu kullanıcı için";
 "Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
-"List and see this folder" = "Klasörü listele ve görüntüle";
+"List and see this folder" = "Klasörü listele ve görüntüler";
 "Read mails from this folder" = "Klasördeki iletileri okur";
 "Mark mails read and unread" = "Okumuş ve okunmamış iletileri işaretler";
 "Modify the flags of the mails in this folder" = "Bu klasördeki iletilerin yıldızlarını değiştirir";
@@ -92,7 +92,7 @@
 "Remove this folder" = "Klasörü kaldırır";
 "Erase mails from this folder" = "Klasörden iletileri siler";
 "Expunge this folder" = "Klasörü boşaltır";
-"Export This Folder" = "Klasörü dışa aktar";
+"Export This Folder" = "Klasörü dışa aktarır";
 "Modify the acl of this folder" = "Klasörün erişim denetimi listesini değiştirir";
 "Saved Messages.zip" = "Messages.zip olarak kaydedildi";
 "Update" = "Güncelle";
@@ -155,7 +155,7 @@
 "first"         = "İlk";
 "previous"      = "Önceki";
 "next"          = "Sonraki";
-"last"          = "En son";
+"last"          = "En sonuncu";
 "msgnumber_to"  = "alıcı";
 "msgnumber_of"  = "den";
 "Mark Unread" = "Okunmamışları İşaretle";
@@ -268,8 +268,8 @@
 "contains" = "içeren";
 "does not contain" = "içermeyen";
 "No matches found" = "Eşleşme bulunamadı";
-"results found" = "bulundu";
-"result found" = "bulunamadı";
+"results found" = "bulunanlar";
+"result found" = "bulunan sonuç";
 "Please specify at least one filter" = "Lütfen en az bir süzgeç belirtin";
 
 /* Folder operations */
@@ -321,14 +321,14 @@
 = "İletiler çöpe taşınamıyor. Bu iletileri hemen silmek ister misiniz?";
 
 /* Message editing */
-"error_missingsubject" = "İletiye konu başlığı yazılmadı. İletiyi konusuz olarak göndermek istediğinizden emin misiniz?";
+"error_missingsubject" = "Bu iletinin konusu yok. İletiyi konusuz olarak göndermek istediğinizden emin misiniz?";
 "error_missingrecipients" = "Lütfen en az bir alıcı belirtin.";
 "Send Anyway" = "Yinede Gönder";
 "Error while saving the draft" = "Taslağı kaydederken hata oluştu";
 
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = " \"%{0}\" dosyasını yüklerken hata oluştu:";
-"There is an active file upload. Closing the window will interrupt it." = "Devam eden bir dosya yükleme işlemi var. Pencereyi kapanırsa yükleme işlemi duracak.";
+"There is an active file upload. Closing the window will interrupt it." = "Dosya yükleme işlemi devam ediyor. Pencereyi kapanırsa yükleme işlemi duracak.";
 "Message is too big" = "İleti çok büyük";
 
 /* Appears while sending the message */
@@ -338,14 +338,14 @@
 "Sent" = "Gönderildi";
 
 "cannot send message: (smtp) all recipients discarded" = "İleti gönderilemiyor: tüm alıcılar geçersiz.";
-"cannot send message (smtp) - recipients discarded" = "İleti gönderilemiyor. Şu adresler geçersiz";
-"cannot send message: (smtp) error when connecting" = "İleti gönderilemiyor: SMTP sunucusuna erişirken hata ile karşılaşıldı.";
+"cannot send message (smtp) - recipients discarded" = "İleti gönderilemedi. Şu adresler geçersiz";
+"cannot send message: (smtp) error when connecting" = "İleti gönderilemedi: SMTP sunucusuna erişirken hata ile karşılaşıldı.";
 
 /* Contacts list in mail editor */
 "Email" = "E-posta";
 "More mail options" = "Diğer e-posta seçenekleri";
 "Delegation" = "Yetkili Tayini";
-"Add User" = "Kullanıcı Ekleyin";
+"Add User" = "Kullanıcı Ekle";
 "Add a tag" = "Etiket ekle";
 "reply" = "yanıtla";
 "Edit" = "Düzenle";

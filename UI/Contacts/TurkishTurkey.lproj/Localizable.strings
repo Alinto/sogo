@@ -18,13 +18,13 @@
 "Fax" = "Faks";
 "Firstname" = "Ad";
 "Home" = "Ev";
-"HomePhone" = "EvTelefonu";
+"HomePhone" = "Ev Telefonu";
 "Lastname" = "Soyad";
 "Location" = "Konum";
-"Add a category" = "Bir kategori ekle";
-"MobilePhone" = "CepTelefonu";
+"Add a category" = "Kategori ekle";
+"MobilePhone" = "Cep Telefonu";
 "Name" = "Tam İsim";
-"OfficePhone" = "OfisTelefonu";
+"OfficePhone" = "Ofis Telefonu";
 "Organization" = "Organizasyon";
 "Work Phone" = "İş Telefonu";
 "Phone" = "Telefon";
@@ -52,7 +52,7 @@
 "Start a search to browse this address book" = "Bu adres defterini taramak için bir arama başlatın";
 
 /* Number of contacts in addressbook; string is prefixed by number */
-"contacts" = "kişi";
+"contacts" = "kişiler";
 
 /* No contact matching search criteria */
 "No matching contact" = "Eşleşen kişi yok";
@@ -70,10 +70,10 @@
 "Create a new address book card" = "Yeni adres kartı oluştur";
 "Create a new list" = "Yeni liste oluştur";
 "Edit the selected card" = "Seçili kartı düzenle";
-"Send a mail message" = "Bir e-posta iletisi gönder";
+"Send a mail message" = "E-posta iletisi gönder";
 "Delete selected card or address book" = "Seçili kartı veya adres defterini sil";
 "Reload all contacts" = "Adresleri tazele";
-"htmlMailFormat_UNKNOWN" = "Bilinmiyor";
+"htmlMailFormat_UNKNOWN" = "Bilinmeyen format";
 "htmlMailFormat_FALSE" = "Düz Metin";
 "htmlMailFormat_TRUE" = "HTML";
 "Name or Email" = "İsim veya E-posta";
@@ -86,7 +86,7 @@
 "Properties" = "Özellikler";
 "Sharing..." = "Paylaşım...";
 "Write" = "Yaz";
-"Delete" = "SİL";
+"Delete" = "Sil";
 "Instant Message" = "Anlık İleti";
 "Add..." = "Ekle...";
 "Remove" = "Çıkart";
@@ -98,7 +98,7 @@
 "Additional Email" = "Diğer E-posta";
 "Phone Number" = "Telefon Numarası";
 "Prefers to receive messages formatted as" = "Almayı tercih ettiği ileti formatı";
-"Categories" = "Kategori";
+"Categories" = "Kategoriler";
 "First" = "İlk";
 "Last" = "Son";
 "Nickname" = "Takma ad";
@@ -144,7 +144,7 @@
 "You cannot remove nor unsubscribe from a public addressbook."
 = "Genel adres defterinden çıkamaz ve üyeliğinizi kaldıramazsınız.";
 "You cannot remove nor unsubscribe from your personal addressbook."
-= "Kişisel adres defterinizden çıkamaz ve üyeliğinizi kaldıramazsınız.";
+= "Kendi adres defterinizden çıkamaz ve üyeliğinizi kaldıramazsınız.";
 "Are you sure you want to delete the selected contacts?"
 = "Seçili kişileri silmek istediğinizden emin misiniz?";
 "Are you sure you want to delete the card of %{0}?" = "%{0} kartını silmek istediğinizden emin misiniz?";
@@ -156,7 +156,7 @@
 = "Bu klasöre üye olunamıyor.";
 
 /* acls */
-"Access rights to" = "Adres defteri";
+"Access rights to" = "Erişimi izinleri";
 "For user" = "Erişen";
 "Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
 "Public Access" = "Herkese Açık Erişim";
@@ -207,8 +207,8 @@
 "Reload" = "Tazele";
 
 /* Properties window */
-"Address Book Name" = "Adres Defteri Adı";
-"Links to this Address Book" = "Adres Defteri Bağlantıları";
+"Address Book Name" = "Adres Defterinin Adı";
+"Links to this Address Book" = "Bu Adres Defterinin Bağları";
 "Authenticated User Access" = "Kimliği Doğrulamış Kullanıcı Erişimi";
 "CardDAV URL" = "CardDAV URL";
 "Options" = "Seçenekler";
@@ -216,7 +216,7 @@
 "Subscriptions" = "Üyelikler";
 "Global Addressbooks" = "Genel Adres Defteri";
 "Search" = "Ara";
-"Sort" = "Sıralandır";
+"Sort" = "Sırala";
 "Descending Order" = "Azalan Sıralama";
 "Back" = "Geri";
 "Select All" = "Hepsini Seç";
@@ -234,18 +234,19 @@
 "URL" = "URL";
 "New URL" = "Yeni URL";
 "street" = "sokak";
+"street (continued)" = "sokak(devam)";
 "Postoffice" = "Posta kutusu";
 "Region" = "Bölge";
 "Postal Code" = "Posta Kodu";
 "New Address" = "Yeni Adres";
-"Reset" = "Öntanımlı";
+"Reset" = "Temizle";
 "Description" = "Tanım";
 "Add Member" = "Üye Ekle";
 "Subscribe" = "Üye ol";
 "Add Birthday" = "Doğum Günü Ekle";
 "Import" = "İçeri Aktar";
 "More options" = "Diğer seçenekler";
-"Role" = "Görev";
+"Role" = "Görevi";
 "Add Screen Name" = "Görünen İsim Ekle";
 "Custom 1" = "Özel 1";
 "Custom 2" = "Özel 2";

@@ -53,7 +53,13 @@
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Bienvenido a SOGo Mailer. Use el árbol de carpetas a la izquierda para navegar por sus cuentas de correo.";
 "Read messages"       = "Leer mensajes";
+
+/* Tooltip for fab button */
 "Write a new message" = "Redactar un nuevo mensaje";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Abrir mensaje en ventana nueva";
+
 "Share" = "Compartir";
 "Account" = "Cuenta";
 "Shared Account" = "Cuenta compartida";
@@ -63,6 +69,8 @@
 
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "No buzon seleccionado";
+
+"An error occured while communicating with the mail server" = "Ha ocurrido un error mientras se comunicaba con el servidor de correo electrónico";
 
 /* Mailbox actions */
 /* Compact Folder success message */
@@ -217,6 +225,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Convertir como tarea";
 
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Descargar todos los archivos adjuntos";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "adjuntos";
+
 "Print..." = "Imprimir...";
 "Delete Message" = "Borrar mensaje";
 "Delete Selected Messages" = "Borrar mensajes selecionados";
@@ -267,9 +281,20 @@
 "Operation failed" = "Operación fallida";
 "Quota" = "Cuota";
 "quotasFormat" = "%{0}% de %{1} MB usados";
+"Unable to move/delete folder." = "No se puede mover/borrar la carpeta";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "El buzón no se podrá mover a la papelera de reciclaje. ¿ Quiere eliminarlo ? ";
 
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Estas seguro que quieres borrar los mensajes seleccionados?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} mensaje(s) copiado(s)";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} mensaje(s) movido(s)";
 
 "Please select a message." = "Seleccione un mensaje.";
 "Please select a message to print." = "Seleccione el mensaje que desea imprimir.";
@@ -304,8 +329,14 @@
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Error al cargar el fichero \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Un fichero se esta cargando. Cerrar la ventana cancelara la carga.";
+"Message is too big" = "El mensaje es demasiado grande";
 
-/* Message sending */
+/* Appears while sending the message */
+"Sending" = "Enviando";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Enviado";
+
 "cannot send message: (smtp) all recipients discarded" = "No se puede enviar el mensaje: (smtp) todos los destinatarios han sido descartados";
 "cannot send message (smtp) - recipients discarded" = "No se puede enviar el mensaje: (smtp) destinatarios descartados";
 "cannot send message: (smtp) error when connecting" = "No se puede enviar el mensaje: (smtp) error de conexión";
@@ -332,11 +363,13 @@
 "Set as Junk" = "Marcar como Spam";
 
 "Sort" = "Ordenar";
+"Order Received" = "Orden recivida";
 "Descending Order" = "Orden desciendente";
 "Back" = "Atras";
 "Copy messages" = "Copiar mensajes";
 "More messages options" = "Mas opciones de mensajes";
 "Mark as Unread" = "Marcar como no leído";
+"Mark as Read" = "Marca como leído";
 "Closing Window ..." = "Cerrando ventana...";
 "Tried to send too many mails. Please wait." = "Intentando enviar demasiados correos. Por favor, esperar.";
 "View Mail" = "Ver Correo";
@@ -350,3 +383,27 @@
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Ámbito de búsqueda";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Administrar Suscripciones";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filtro";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

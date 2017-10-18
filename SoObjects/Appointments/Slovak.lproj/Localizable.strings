@@ -1,3 +1,4 @@
+"Inviting the following persons is prohibited:" = "Pozývanie nasledujúcich osôb je zakázané:";
 "Personal Calendar" = "Osobný kalendár";
 vevent_class0 = "(Verejná udalosť)";
 vevent_class1 = "(Súkromná udalosť)";
@@ -17,10 +18,14 @@ vtodo_class2 = "(Dôverná úloha)";
 "calendar_label" = "Kalendár";
 "startDate_label" = "Začiatok";
 "endDate_label" = "Koniec";
+"time_label" = "Čas";
+"to_label" = "pre";
 "due_label" = "Platnosť:";
 "location_label" = "Miesto";
 "summary_label" = "Zhrnutie:";
 "comment_label" = "Komentár:";
+"organizer_label" = "Organizátor";
+"attendee_label" = "Účastník";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Pozvánka na udalosť: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(odoslané %{SentBy})";
