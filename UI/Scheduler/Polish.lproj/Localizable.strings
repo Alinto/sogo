@@ -64,6 +64,12 @@
 "Compose E-Mail to All Attendees" = "Utwórz wiadomość e-mail do wszystkich uczestników";
 "Compose E-Mail to Undecided Attendees" = "Utwórz wiadomość e-mail do niezdecydowanych uczestników";
 
+/* Relative dates */
+"Yesterday" = "Wczoraj";
+"Today" = "Dziś";
+"Tomorrow" = "Jutro";
+"Last %@" = "Ostatnie %@";
+
 /* Folders */
 "Personal calendar" = "Kalendarz osobisty";
 
@@ -498,7 +504,7 @@ vtodo_class2 = "(Zadanie poufne)";
 "Export" = "Eksportuj";
 
 
-/* Show only the calendar for which the menu is displayed */ 
+/* Show only the calendar for which the menu is displayed */
 "Show Only This Calendar" = "Wyświetl tylko ten kalendarz";
 
 

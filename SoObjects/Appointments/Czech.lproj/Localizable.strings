@@ -18,10 +18,14 @@ vtodo_class2 = "(Skrytý úkol)";
 "calendar_label" = "Kalendář";
 "startDate_label" = "Začátek";
 "endDate_label" = "Konec";
+"time_label" = "Čas";
+"to_label" = "pro";
 "due_label" = "Termín:";
 "location_label" = "Místo";
 "summary_label" = "Název:";
 "comment_label" = "Komentář:";
+"organizer_label" = "Organizátor";
+"attendee_label" = "Účastník";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Pozvání na událost: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(poslal/a %{SentBy}) ";

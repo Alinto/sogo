@@ -234,6 +234,7 @@
 "URL" = "URL";
 "New URL" = "Nowy URL";
 "street" = "ulica";
+"street (continued)" = "ulica (kontynuacja)";
 "Postoffice" = "Poczta";
 "Region" = "Region";
 "Postal Code" = "Kod pocztowy";

@@ -41,3 +41,10 @@ reply_info = "Toto je odpoveď na Vašu pozvánku na udalosť.";
 "Date" = "Dátum";
 "To" = "Komu";
 "Issuer" = "Vystavovateľ";
+/* Tooltips */
+"View Attachment" = "Zobraziť prílohu";
+"Save Attachment" = "Uložiť prílohu";
+"CC" = "CC";
+"Cancel" = "Zrušiť";
+"OK" = "OK";
+"Comment" = "Komentár:";

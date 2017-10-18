@@ -64,6 +64,12 @@
 "Compose E-Mail to All Attendees" = "Vytvoriť e-mail pre všetkých účastníkov";
 "Compose E-Mail to Undecided Attendees" = "Vytvoriť e-mail pre nerozhodnutých účastníkov";
 
+/* Relative dates */
+"Yesterday" = "Včera";
+"Today" = "Dnes";
+"Tomorrow" = "Zajtra";
+"Last %@" = "Posledný %@";
+
 /* Folders */
 "Personal calendar" = "Osobný kalendár";
 
@@ -498,7 +504,7 @@ vtodo_class2 = "(Dôverná úloha)";
 "Export" = "Exportovať";
 
 
-/* Show only the calendar for which the menu is displayed */ 
+/* Show only the calendar for which the menu is displayed */
 "Show Only This Calendar" = "Zobraz iba tento kalendár";
 
 

@@ -9,3 +9,18 @@
 "ACLs_title" = "Spravovanie ACL zložiek uzívateľov";
 /* Modules descriptions */
 "ACLs_description" = "<p>Administrácia kontroly prístupových práv (ACL) dovoluje spravovať ACLs kalendárov a adresárov pre všetkých užívateľov.</p><p>Pre úpravu ACL zložky užívateľa, napíšte meno užívateľa v kolonke hľadaj hore v okne a dvojklikom potvrďte výber zložky.</p>";
+"Name or Email" = "Meno alebo E-mail";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Spustite hľadanie pre úpravu práv";
+/* Rights module: Empty search result */
+"No matching user" = "Žiadny užívateľ sa nezhoduje";
+/* Rights module: no selection */
+"No resource selected" = "Nevybrali ste žiadny zdroj";
+"Add User" = "Pridať užívateľa";
+"Subscribe User" = "Prihlás užívateľa";
+"Rights" = "Práva";
+"Search Users" = "Vyhľadať užívateľov";
+"users found" = "nájdený užívatelia";
+"No resource" = "Žiadne zdroje";
+"Any Authenticated User" = "Akýkoľvek overení užívateľ";
+"Public Access" = "Verejný prístup";

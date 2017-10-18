@@ -41,3 +41,10 @@ reply_info = "Toto je odpověď na pozvánku k událost, kterou jste vytvořili 
 "Date" = "Datum";
 "To" = "Komu";
 "Issuer" = "Vydavatel";
+/* Tooltips */
+"View Attachment" = "Zobrazit přílohu";
+"Save Attachment" = "Uložit přílohu";
+"CC" = "CC";
+"Cancel" = "Storno";
+"OK" = "OK";
+"Comment" = "Komentář:";
