@@ -1765,27 +1765,25 @@ static NSArray *childRecordFields = nil;
       for (i = 0; i < [usersAndGroups count]; i++)
         {
           uid = [usersAndGroups objectAtIndex: i];
-          if (![uid hasPrefix: @"@"])
+          group = [SOGoGroup groupWithIdentifier: uid inDomain: domain];
+          if (group)
             {
-              group = [SOGoGroup groupWithIdentifier: uid inDomain: domain];
-              if (group)
+              NSArray *members;
+              SOGoUser *user;
+              unsigned int j;
+
+              // Fetch members to remove them from the cache along the group
+              members = [group members];
+              for (j = 0; j < [members count]; j++)
                 {
-                  NSArray *members;
-                  SOGoUser *user;
-                  unsigned int j;
-
-                  // Fetch members to remove them from the cache along the group
-                  members = [group members];
-                  for (j = 0; j < [members count]; j++)
-                    {
-                      user = [members objectAtIndex: j];
-                      [groupsMembers addObject: [user login]];
-                    }
-
-                  // Prefix the UID with the character "@" when dealing with a group
-                  [usersAndGroups replaceObjectAtIndex: i
-                                            withObject: [NSString stringWithFormat: @"@%@", uid]];
+                  user = [members objectAtIndex: j];
+                  [groupsMembers addObject: [user login]];
                 }
+
+              if (![uid hasPrefix: @"@"])
+                // Prefix the UID with the character "@" when dealing with a group
+                [usersAndGroups replaceObjectAtIndex: i
+                                          withObject: [NSString stringWithFormat: @"@%@", uid]];
             }
         }
       objectPath = [objectPathArray componentsJoinedByString: @"/"];

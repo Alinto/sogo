@@ -1,0 +1,26 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "帮助";
+"Close" = "关闭";
+"Modules" = "模块";
+/* Modules short names */
+"ACLs" = "访问控制列表";
+/* Modules titles */
+"ACLs_title" = "用户目录访问控制管理";
+/* Modules descriptions */
+"ACLs_description" = "<p>访问控制列表管理模块可以更改每个用户的日历和地址簿的访问控制权限</p><p>变更用户目录的访问控制权限时，通过在窗口上部的搜索栏里输入用户名，然后双击目录来实现。</p>";
+"Name or Email" = "姓名或电子邮件";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "搜索要修改的权限";
+/* Rights module: Empty search result */
+"No matching user" = "无匹配用户";
+/* Rights module: no selection */
+"No resource selected" = "没有选中用户";
+"Add User" = "添加用户";
+"Subscribe User" = "订阅用户";
+"Rights" = "权限";
+"Search Users" = "搜索用户";
+"users found" = "搜到的用户";
+"No resource" = "无用户";
+"Any Authenticated User" = "任何授权用户";
+"Public Access" = "公开访问";

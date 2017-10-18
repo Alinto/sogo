@@ -6,7 +6,7 @@
 "Edit User Rights" = "Редактировать права пользователей";
 "Home" = "Начало";
 "Calendar" = "Календарь";
-"Address Book"	= "Адресная книга";
+"Address Book"  = "Адресная книга";
 "Mail" = "Почта";
 "Preferences" = "Настройки";
 "Administration" = "Администрирование";
@@ -44,16 +44,16 @@
 
 /* generic.js */
 "Unable to subscribe to that folder!"
-	= "Невозможно подписаться на эту папку!";
+        = "Невозможно подписаться на эту папку!";
 "You cannot subscribe to a folder that you own!"
-      	= "Вы не можете подписываться на собственную папку!";
+        = "Вы не можете подписываться на собственную папку!";
 "Unable to unsubscribe from that folder!"
-	= "Невозможно прекратить подписку на эту папку!";
+        = "Невозможно прекратить подписку на эту папку!";
 "You cannot unsubscribe from a folder that you own!"
-      	= "Вы не можете прекратить подписку на собственную папку!";
+        = "Вы не можете прекратить подписку на собственную папку!";
 "Unable to rename that folder!" = "Невозможно переименовать эту папку!";
 "You have already subscribed to that folder!"
-     	= "Вы уже подписались на эту папку!";
+        = "Вы уже подписались на эту папку!";
 "The user rights cannot be edited for this object!"
         = "Извините, для данного объекта невозможно настроить права доступа!";
 "A folder by that name already exists." = "Папка с этим именем уже существует.";

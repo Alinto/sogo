@@ -504,7 +504,7 @@ vtodo_class2 = "(Confidential task)";
 "Export" = "Export";
 
 
-/* Show only the calendar for which the menu is displayed */ 
+/* Show only the calendar for which the menu is displayed */
 "Show Only This Calendar" = "Show Only This Calendar";
 
 

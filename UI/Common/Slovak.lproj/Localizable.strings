@@ -6,7 +6,7 @@
 "Edit User Rights" = "Upraviť uživateľské práva";
 "Home" = "Domov";
 "Calendar" = "Kalendár";
-"Address Book"	= "Adresár";
+"Address Book"  = "Adresár";
 "Mail" = "Pošta";
 "Preferences" = "Predvoľby";
 "Administration" = "Správa";
@@ -44,16 +44,16 @@
 
 /* generic.js */
 "Unable to subscribe to that folder!"
-	= "Nedá sa prihlásiť k odberu tejto zložky!";
+        = "Nedá sa prihlásiť k odberu tejto zložky!";
 "You cannot subscribe to a folder that you own!"
-      	= "Nemôžete sa prihlásiť k odberu zložky, ktorú vlastnite!";
+        = "Nemôžete sa prihlásiť k odberu zložky, ktorú vlastnite!";
 "Unable to unsubscribe from that folder!"
-	= "Nedá sa odhlásiť z tejto zložky!";
+        = "Nedá sa odhlásiť z tejto zložky!";
 "You cannot unsubscribe from a folder that you own!"
-      	= "Nemôžete sa odhlásiť zo zložky, ktorú vlastnite!";
+        = "Nemôžete sa odhlásiť zo zložky, ktorú vlastnite!";
 "Unable to rename that folder!" = "Nemožno premenovať túto zložku!";
 "You have already subscribed to that folder!"
-     	= "Už ste prihlásení k odberu tejto zložky!";
+        = "Už ste prihlásení k odberu tejto zložky!";
 "The user rights cannot be edited for this object!"
         = "Užívateľské práva nemožno upraviť pre tento objekt!";
 "A folder by that name already exists." = "Zložka s týmto názvom už existuje.";

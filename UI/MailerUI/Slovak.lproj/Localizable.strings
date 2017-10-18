@@ -70,6 +70,8 @@
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Nebola vybraná žiadna schránka";
 
+"An error occured while communicating with the mail server" = "Pri komunikácii s poštovým serverom nastala chyba";
+
 /* Mailbox actions */
 /* Compact Folder success message */
 "Folder compacted" = "Priečinok bol zmenšený";

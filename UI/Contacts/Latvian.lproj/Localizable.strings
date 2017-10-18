@@ -234,6 +234,7 @@
 "URL" = "URL";
 "New URL" = "Jauns URL";
 "street" = "iela";
+"street (continued)" = "iela (turpinājums)";
 "Postoffice" = "Pasts";
 "Region" = "Reģions";
 "Postal Code" = "Pasta indekss";

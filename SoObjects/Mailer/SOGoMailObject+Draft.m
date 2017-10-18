@@ -106,12 +106,14 @@
 //
 - (NSString *) _contentForEditingFromKeys: (NSArray *) keys
 {
-  NSArray *types;
-  NSDictionary *parts;
   NSString *rawPart, *content, *contentKey;
   SOGoUserDefaults *ud;
-  NSUInteger index;
+  NSDictionary *parts;
+  NSArray *types;
+  NSData *data;
+
   BOOL htmlComposition, htmlContent;
+  NSUInteger index;
 
   content = @"";
 
@@ -156,7 +158,14 @@
         }
     }
 
-  return content;
+  // We strip charset= information from HTML content to avoid SOGo setting
+  // the encoding of the final mail to UTF-8 while keeping charset="iso-8859-1"
+  // in the HTML meta headers, for example. That would cause encoding display
+  // issues with most MUAs.
+  data = [[content dataUsingEncoding: NSUTF8StringEncoding] sanitizedContentUsingVoidTags: nil];
+  content = [[NSString alloc] initWithData: data  encoding: NSUTF8StringEncoding];
+
+  return [content autorelease];
 }
 
 //

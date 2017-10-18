@@ -113,7 +113,7 @@ typedef enum
 	   "           subscribe    subscribe user to owner's folder\n"
 	   "           unsubscribe  unsubscribe user to owner's folder\n"
            "           owner        the user owning the folder\n"
-	   "           folder       the folder - Calendar/<ID> or Contacst/<ID>\n"
+	   "           folder       the folder - Calendar/<ID> or Contacts/<ID>\n"
 	   "           user         the user to get/set rights for - 'ALL', '<default>', 'anonymous' are supported\n"
            "           rights       rights to add\n\n"
            "Example:   sogo-tool manage-acl get jdoe Calendar/personal\n\n"

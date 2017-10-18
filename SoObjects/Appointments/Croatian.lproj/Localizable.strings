@@ -18,10 +18,14 @@ vtodo_class2 = "(Povjerljivi zadatak)";
 "calendar_label" = "Kalendar";
 "startDate_label" = "Start";
 "endDate_label" = "Kraj";
+"time_label" = "Vrijeme";
+"to_label" = "za";
 "due_label" = "Datum dospijeća";
 "location_label" = "Mjesto";
 "summary_label" = "Sažetak";
 "comment_label" = "Komentar";
+"organizer_label" = "Organizator";
+"attendee_label" = "Sudionik";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Pozivnica: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(poslao %{SentBy}) ";
@@ -48,7 +52,7 @@ vtodo_class2 = "(Povjerljivi zadatak)";
 "Delegated invitation: \"%{Summary}\"" = "Proslijediti poziv: \"%{Summary}\"";
 "Not yet decided on invitation: \"%{Summary}\"" = "Još nije odlučeno o pozivu: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
-= "%{Attendee} %{SentByText}je prihvatio vaš poziv događaj.";
+= "%{Attendee} %{SentByText}je prihvatio vaš poziv za događaj.";
 "%{Attendee} %{SentByText}has declined your event invitation."
 = "%{Attendee} %{SentByText}je odbio pozivnicu za događaj.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."

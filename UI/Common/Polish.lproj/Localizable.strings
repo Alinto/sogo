@@ -6,7 +6,7 @@
 "Edit User Rights" = "Edytuj uprawnienia użytkownika";
 "Home" = "Strona domowa";
 "Calendar" = "Kalendarz";
-"Address Book"	= "Książka adresowa";
+"Address Book"  = "Książka adresowa";
 "Mail" = "Poczta";
 "Preferences" = "Ustawienia";
 "Administration" = "Administracja";
@@ -44,16 +44,16 @@
 
 /* generic.js */
 "Unable to subscribe to that folder!"
-	= "Nie można subskrybować tego folderu!";
+        = "Nie można subskrybować tego folderu!";
 "You cannot subscribe to a folder that you own!"
-      	= "Nie możesz subskrybować folderu, który jest twoją własnością!";
+        = "Nie możesz subskrybować folderu, który jest twoją własnością!";
 "Unable to unsubscribe from that folder!"
-	= "Nie można wyłączyć subskrypcji tego folderu!";
+        = "Nie można wyłączyć subskrypcji tego folderu!";
 "You cannot unsubscribe from a folder that you own!"
-      	= "Nie możesz wyłączyć subskrypcji folderu, który jest twoją własnością!";
+        = "Nie możesz wyłączyć subskrypcji folderu, który jest twoją własnością!";
 "Unable to rename that folder!" = "Nie można zmienić nazwy tego folderu!";
 "You have already subscribed to that folder!"
-     	= "Już subskrybujesz ten folder!";
+        = "Już subskrybujesz ten folder!";
 "The user rights cannot be edited for this object!"
         = "Uprawnienia użytkownika na tym obiekcie nie mogą być edytowane!";
 "A folder by that name already exists." = "Folder o tej nazwie już istnieje.";

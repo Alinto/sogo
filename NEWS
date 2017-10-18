@@ -1,3 +1,17 @@
+2.3.23 (2017-10-18)
+-------------------
+
+Enhancements
+ - [web] added Simplified Chinese (zh_CN) translation - thanks to Thomas Kuiper
+ - [web] updated CKEditor to version 4.7.3
+
+Bug fixes
+ - [core] yearly repeating events are not shown in web calendar (#4237)
+ - [core] correctly handle "Last day of the month" recurrence rule
+ - [core] fixed yearly recurrence calculator with until date
+ - [core] generalized HTML sanitization to avoid encoding issues when replying/forwarding mails
+ - [eas] avoid sync requests for shared folders every second (#4275)
+
 2.3.22 (2017-07-20)
 -------------------
 

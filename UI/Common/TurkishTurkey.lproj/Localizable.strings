@@ -4,61 +4,61 @@
 "Save" = "Kaydet";
 "Close" = "Kapat";
 "Edit User Rights" = "Kullanıcı Yetkilerini Düzenle";
-"Home" = "Ev";
+"Home" = "Ana Sayfa";
 "Calendar" = "Takvim";
-"Address Book"	= "Adres Defteri";
+"Address Book"  = "Adres Defteri";
 "Mail" = "E-posta";
 "Preferences" = "Tercihler";
 "Administration" = "Yönetim";
 "Disconnect" = "Güvenli Çıkış";
 "Toggle Menu" = "Menüde Geçiş Yap";
 "Right Administration" = "Yetki Yönetimi";
-"Log Console (dev.)" = "Seyir Defteri (geliştirici)";
+"Log Console (dev.)" = "Seyir Defteri (gelişt.)";
 "User" = "Kullanıcı";
 "Vacation message is enabled" = "Tatil mesajı etkinleştirildi";
 "Help" = "Yardım";
 "noJavascriptError" = "SOGo'yu çalıştırmak için Javascript gereklidir. Lütfen internet gezgininizde Javascript özelliğinin bulunup, etkinleştirilmiş olduğundan emin olun. ";
-"noJavascriptRetry" = "Yeniden Dene";
+"noJavascriptRetry" = "Yeniden Deneyin";
 "Owner" = "Hak Sahibi";
-"Publish the Free/Busy information" = "Serbest/Meşgul bilgisini yayınla";
+"Publish the Free/Busy information" = "Serbest/Meşgul bilgisini yayımla";
 "Add..." = "Ekle...";
 "Remove" = "Çıkar";
 "Subscribe User" = "Kullanıcıyı Üye Yap";
-"Any Authenticated User" = "Kimliği doğrulanmış her kullanıcı";
+"Any Authenticated User" = "Kimliği doğrulanan her kullanıcı";
 "Public Access" = "Herkese Açık Erişim";
 "Any user not listed above" = "Aşağıdaki listede bulanmayan her kullanıcı";
 "Anybody accessing this resource from the public area" = "Bu kaynağa genel alandan ulaşan herkes";
 "Sorry, the user rights can not be configured for that object." = "Üzgünüz, bu öge için kullanıcı yetkileri ayarlanamaz.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
-     = "Bu ağda hesabı bulunan her kullanıcı \"%{0}\" e-posta klasörünüze erişebilecek. Hepsine güvenebileceğinizden emin misiniz?";
+     = "Bu ağda hesabı bulunan her kullanıcı \"%{0}\" e-posta klasörünüze erişebilecek. Hepsine güvenebileceğinize emin misiniz?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
-     = "Bu ağda hesabı olan her kullanıcı \"%{0}\" takviminize erişebilecek. Hepsine güvenebileceğinizden emin misiniz?";
+     = "Bu ağda hesabı olan her kullanıcı \"%{0}\" takviminize erişebilecek. Hepsine güvenebileceğinize emin misiniz?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Muhtemelen internetteki herkes, bu ağ üzerinde bir hesapları olmasa bile \"%{0}\" takviminize erişebilecek. Bu bilgi genel internet için uygun mu?";
+     = "Potansiyel olarak internetteki herkes, bu ağ üzerinde bir hesapları olmasa bile \"%{0}\" takviminize erişebilecek. Bu bilgi genel internet erişimi için uygun mu?";
 "Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
-     = "Bu ağda hesabı olan her kullanıcı \"%{0}\" adres defterinize erişebilecek. Hepsine güvenebileceğinizden emin misiniz?";
+     = "Bu ağda hesabı olan her kullanıcı \"%{0}\" adres defterinize erişebilecek. Hepsine güvenebileceğinize emin misiniz?";
 "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Muhtemelen internetteki herkes, bu ağ üzerinde bir hesapları olmasa bile \"%{0}\" adres defterinize erişebilecek. Bu bilgi genel internet için uygun mu?";
-"Give Access" = "Erişim Yetkisi Ver";
+     = "Potansiyel olarak internetteki herkes, bu ağ üzerinde bir hesapları olmasa bile \"%{0}\" adres defterinize erişebilecek. Bu bilgi genel internet erişimi için uygun mu?";
+"Give Access" = "Erişim İzni Ver";
 "Keep Private" = "Kişisel Tut";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
-	= "Bu klasöre üye olunamıyor!";
+        = "Bu klasöre üye olunamıyor!";
 "You cannot subscribe to a folder that you own!"
-      	= "Kendi klasörünüze üye olamazsınız!";
+        = "Kendi klasörünüze üye olamazsınız!";
 "Unable to unsubscribe from that folder!"
-	= "Bu klasörden üyelik kaldırılamıyor!";
+        = "Bu klasörden üyelik kaldırılamıyor!";
 "You cannot unsubscribe from a folder that you own!"
-      	= "Kendinize ait bir klasörden üyelik kaldıramazsınız!";
+        = "Kendinize ait bir klasörden üyelik kaldıramazsınız!";
 "Unable to rename that folder!" = "Bu klasörün adı değiştirilemiyor!";
 "You have already subscribed to that folder!"
-     	= "Bu klasöre zaten üyesiniz!";
+        = "Bu klasöre zaten üyesiniz!";
 "The user rights cannot be edited for this object!"
         = "Bu ögenin kullanıcı yetkileri düzenlenemez!";
 "A folder by that name already exists." = "Bu isimde başka bir klasör var.";
 "You cannot create a list in a shared address book." 
-        = "Paylaşılan bir adres defterinde liste oluşturmazsınız!";
+        = "Paylaşılan bir adres defterinde liste oluşturamazsınız!";
 "Warning" = "Uyarı";
 "Can't contact server" = "Sunucuya erişirken bir hata oluştu. Lütfen, daha sonra tekrar deneyin.";
 "You are not allowed to access this module or this system. Please contact your system administrator."
@@ -66,7 +66,7 @@
 "You don't have the required privileges to perform the operation."
 = "Bu işlemi gerçekleştirmek için gereken yetkilere sahip değilsiniz.";
 "noEmailForDelegation" = "Davetinize vekil atayacağınız kişinin adresini belirtmelisiniz.";
-"delegate is organizer" = "Vekil edilen kişi etkinliği düzenleyen kişidir. Lütfen başka bir vekil belirleyin edin. ";
+"delegate is organizer" = "Vekil edilen kişi etkinliği düzenleyen kişidir. Lütfen başka bir vekil belirleyin.";
 "delegate is a participant" = "Vekil edilen kişi zaten bu etkinliğe katılıyor.";
 "delegate is a group" = "Belirtilen adres bir gruba denk geliyor. Sadece bir kişiyi vekil tayin edebilirsiniz.";
 
@@ -79,10 +79,10 @@
 /* alarms */
 "Reminder" = "Hatırlatıcı";
 "Start" = "Başlangıç";
-"Due Date" = "Kapanış Tarihi";
+"Due Date" = "Termin Tarih";
 "Location" = "Konum";
 "Snooze" = "Ertele";
-"Snooze for " = "Beklenecek süre";
+"Snooze for " = "Ertelenen süre";
 "5 minutes" = "5 dakika";
 "10 minutes" = "10 dakika";
 "15 minutes" = "15 dakika";
@@ -105,7 +105,7 @@
 "a2_Friday" = "Cum";
 "a2_Saturday" = "Cts";
 "Access Rights" = "Erişim Yetkileri";
-"Add User" = "Kullanıcı Ekleyin";
+"Add User" = "Kullanıcı Ekle";
 "Loading" = "Yükleniyor";
 "No such user." = "Böyle bir kullanıcı yok.";
 "You cannot (un)subscribe to a folder that you own!" = "Kendinize ait bir klasöre üye olamaz (üyeliğinizi kaldıramazsınız)!";
@@ -165,13 +165,13 @@
 "hotkey_search" = "s";
 
 /* Hotkey description to select next list item */
-"View next item" = "Sonraki görünüm";
+"View next item" = "Sonraki öge";
 
 /* Hotkey description to select previous list item */
-"View previous item" = "Önceki görünüm";
+"View previous item" = "Önceki öge";
 
 /* Hotkey description to add next list item to selection */
-"Add next item to selection" = "Sonraki maddeyi seçime ekle";
+"Add next item to selection" = "Sonraki ögeyi seçime ekle";
 
 /* Hotkey description to add previous list item to selection */
 "Add previous item to selection" = "Önceki maddeyi seçime ekle";
@@ -180,4 +180,4 @@
 "Move backward" = "Geriye taşı";
 
 /* Hotkey description to move forward in current view */
-"Move forward" = "Öne taşı";
+"Move forward" = "İleriye taşı";

@@ -147,10 +147,17 @@
 /* Mailer */
 "Labels" = "Labels";
 "Label" = "Label";
+"IMAP Label" = "IMAP Label";
+"Invalid label" = "Don't use space, nor ( ) { } % * \" \\";
+"Duplicate label" = "Duplicate label";
+"IMAP labels must have unique names." = "IMAP labels must have unique names.";
 "New label" = "New label";
 "Show subscribed mailboxes only" = "Show subscribed mailboxes only";
 "Synchronize only default mail folders (EAS)" = "Synchronize only default mail folders (EAS)";
 "Sort messages by threads" = "Sort messages by threads";
+"Always show mail composer" = "Always show mail composer";
+"Inside current window" = "Inside current window";
+"In a popup window" = "In a popup window";
 "When sending mail, add unknown recipients to my" = "When sending mail, add unknown recipients to my";
 "Address Book" = "Address Book";
 "Forward messages" = "Forward messages";
@@ -238,7 +245,8 @@
 "Arabic" = "العربية";
 "Basque" = "Euskara";
 "Catalan" = "Català";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";

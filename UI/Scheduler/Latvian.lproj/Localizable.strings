@@ -64,6 +64,12 @@
 "Compose E-Mail to All Attendees" = "Rakstīt e-pastu visiem dalībniekiem";
 "Compose E-Mail to Undecided Attendees" = "Rakstīt e-pastu iespējamajiem dalībniekiem";
 
+/* Relative dates */
+"Yesterday" = "Vakar";
+"Today" = "Šodien";
+"Tomorrow" = "Rīt";
+"Last %@" = "Pēdējais %@";
+
 /* Folders */
 "Personal calendar" = "Personiskais kalendārs";
 

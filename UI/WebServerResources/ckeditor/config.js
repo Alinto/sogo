@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -26,9 +26,7 @@ CKEDITOR.editorConfig = function( config ) {
 
   // Configure autogrow
   // http://docs.ckeditor.com/#!/guide/dev_autogrow
-  config.autoGrow_onStartup = true;
-  config.autoGrow_minHeight = 300;
-  config.autoGrow_bottomSpace = 0;
+  config.removePlugins = 'autogrow';
 
   // Disables the built-in words spell checker if browser provides one. Defaults to true.
   // http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-disableNativeSpellChecker

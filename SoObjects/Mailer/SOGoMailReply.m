@@ -96,6 +96,9 @@
 @implementation SOGoMailCatalanReply
 @end
 
+@implementation SOGoMailChineseChinaReply
+@end
+
 @implementation SOGoMailChineseTaiwanReply
 @end
 
