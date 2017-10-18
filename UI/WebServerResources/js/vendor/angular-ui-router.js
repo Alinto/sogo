@@ -4,7 +4,7 @@
  *         This causes it to be incompatible with plugins that depend on @uirouter/core.
  *         We recommend switching to the ui-router-core.js and ui-router-angularjs.js bundles instead.
  *         For more information, see https://ui-router.github.io/blog/uirouter-for-angularjs-umd-bundles
- * @version v1.0.8
+ * @version v1.0.9
  * @link https://ui-router.github.io
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -1204,7 +1204,9 @@ function normalizedCat(input) {
     return isNumber(input) ? exports.Category[input] : exports.Category[exports.Category[input]];
 }
 /** @hidden */
-var consoletable = isFunction(console.table) ? console.table.bind(console) : console.log.bind(console);
+var consoleLog = Function.prototype.bind.call(console.log, console);
+/** @hidden */
+var consoletable = isFunction(console.table) ? console.table.bind(console) : consoleLog.bind(console);
 /**
  * Trace categories Enum
  *
