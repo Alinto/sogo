@@ -1,6 +1,6 @@
 /* NSData+Mail.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,8 +29,8 @@
 
 - (NSData *) bodyDataFromEncoding: (NSString *) encoding;
 - (NSString *) bodyStringFromCharset: (NSString *) charset;
-
 - (NSString *) decodedHeader;
+- (NSData *) sanitizedContentUsingVoidTags: (NSArray *) theVoidTags;
 
 @end
 
