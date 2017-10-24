@@ -30,14 +30,15 @@ IFS=" "
 
 # Parse postgres connection string from OCSFolderInfoURL in sogo.conf
 set $(sogo-tool dump-defaults -f /etc/sogo/sogo.conf | awk -F\" '/ OCSFolderInfoURL =/  {print $2}' \
-	| sed -n 's/\([^:]\+\):\/\/\([^:]\+\):\([^@]\+\)@\([^:]\+\):\([^/]\+\)\/\([^/]\+\)\/\([^/]\+\)/\1 \2 \3 \4 \5 \6 \7/p')
+    | sed -n 's/\([^:]\+\):\/\/\([^:]\+\):\([^@]\+\)@\([^:\/]\+\)\(:\([^/]\+\)\)\?\/\([^/]\+\)\/\([^/]\+\)/\1 \2 \3 \4 \7 \8 \6/p')
+
 PROTOCOL=$1
 USER=$2
 PWD=$3
 HOST=$4
-PORT=$5
-DB=$6
-TABLE=$7
+DB=$5
+TABLE=$6
+PORT=${7:-3306}
 
 if [ -z "$PROTOCOL" ] || [ -z "$USER" ] || [ -z "$HOST" ] || [ -z "$PORT" ] || [ -z "$DB" ] || [ -z "$TABLE" ]; then
     echo "ERROR: Failed to parse value of OCSFolderInfoURL in /etc/sogo/sogo.conf" 1>&2
