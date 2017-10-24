@@ -76,7 +76,7 @@
     },
     {
       columnName = c_mail;
-      sqlType    = "VARCHAR2(255)";
+      sqlType    = "CLOB";
       allowsNull = YES;
     },
     {
