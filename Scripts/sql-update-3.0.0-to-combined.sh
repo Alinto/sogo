@@ -213,8 +213,9 @@ fi
 if ! (grep -q "OCSStoreURL" /etc/sogo/sogo.conf); then
     echo "Patching /etc/sogo/sogo.conf...."
     # Generate properties OCSStoreURL and OCSAclURL
-    sed "s/\(.*\)OCSFolderInfoURL.*$/\0\n\1OCSStoreURL = \"postgresql:\/\/$USER:$PASSWORD@$HOST:$PORT\/$DB\/sogo_store\";\
-\n\1OCSAclURL = \"postgresql:\/\/$USER:$PASSWORD@$HOST:$PORT\/$DB\/sogo_acl\";/g" -i /etc/sogo/sogo.conf
+    sed "s/\(.*\)OCSFolderInfoURL.*$/\0\n\1OCSStoreURL = \"postgresql:\/\/$USER:$PWD@$HOST:$PORT\/$DB\/sogo_store\";\
+\n\1OCSAclURL = \"postgresql:\/\/$USER:$PWD@$HOST:$PORT\/$DB\/sogo_acl\";\
+\n\1OCSCacheFolderURL = \"postgresql:\/\/$USER:$PWD@$HOST:$PORT\/$DB\/sogo_cache_folder\";/g" -i /etc/sogo/sogo.conf
 fi
 
 
