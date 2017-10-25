@@ -31,6 +31,9 @@
 
 - (iCalEvent *) eventWithRecurrenceID: (NSString *) recID;
 - (iCalToDo *) todoWithRecurrenceID: (NSString *) recID;
+- (NSArray *) quickRecordsFromContent: (NSString *) theContent
+                            container: (id) theContainer
+                      nameInContainer: (NSString *) nameInContainer;
 
 @end
 
