@@ -23,14 +23,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
-#include <crypt.h>
-#endif
+#define _XOPEN_SOURCE 600
 
 #include <fcntl.h>
-#include <unistd.h>
-
-#define _XOPEN_SOURCE 1
 #include <unistd.h>
 
 #if defined(HAVE_GNUTLS)
