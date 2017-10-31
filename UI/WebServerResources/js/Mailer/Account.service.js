@@ -146,11 +146,19 @@
               });
             };
         if (Account.$Preferences.settings.Mail.ExpandedFolders) {
-          if (angular.isString(Account.$Preferences.settings.Mail.ExpandedFolders))
+          if (angular.isString(Account.$Preferences.settings.Mail.ExpandedFolders)) {
             // Backward compatibility support
-            expandedFolders = angular.fromJson(Account.$Preferences.settings.Mail.ExpandedFolders);
-          else
+            try {
+              expandedFolders = angular.fromJson(Account.$Preferences.settings.Mail.ExpandedFolders);
+            }
+            catch (e) {
+              Account.$log.warn("Can't parse list of expanded folders. String was: " +
+                                Account.$Preferences.settings.Mail.ExpandedFolders);
+            }
+          }
+          else {
             expandedFolders = Account.$Preferences.settings.Mail.ExpandedFolders;
+          }
           _this.$expanded = (expandedFolders.indexOf('/' + _this.id) >= 0);
           if (expandedFolders.length > 0) {
             _visit(_this.$mailboxes);
