@@ -154,6 +154,7 @@
             catch (e) {
               Account.$log.warn("Can't parse list of expanded folders. String was: " +
                                 Account.$Preferences.settings.Mail.ExpandedFolders);
+              expandedFolders = [];
             }
           }
           else {
