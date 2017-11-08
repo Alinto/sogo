@@ -521,6 +521,7 @@
 
 	      for (i = 0; i < [_mailFields count]; i++)
 		if ((s = [response objectForKey: [_mailFields objectAtIndex: i]]) &&
+                    [s isNotNull] &&
 		    [[s stringByTrimmingSpaces] length] > 0)
 		  [emails addObjectsFromArray: [s componentsSeparatedByString: @" "]];
 	    }

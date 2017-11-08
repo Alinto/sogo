@@ -193,24 +193,27 @@ convention:
   NSEnumerator *list;
   CardElement *element;
 
-  // value is either an array or a string
-  if ([value isKindOfClass: [NSString class]])
-    allValues = [NSArray arrayWithObject: value];
-  else
-    allValues = value;
-
-  // Add all values as separate elements
-  list = [allValues objectEnumerator];
-  while ((value = [list nextObject]))
+  if ([value isNotNull])
     {
-      if ([type length])
-        element = [CardElement simpleElementWithTag: elementTag
-                                         singleType: type
-                                              value: value];
+      // value is either an array or a string
+      if ([value isKindOfClass: [NSString class]])
+        allValues = [NSArray arrayWithObject: value];
       else
-        element = [CardElement simpleElementWithTag: elementTag
-                                              value: value];
-      [self addChild: element];
+        allValues = value;
+
+      // Add all values as separate elements
+      list = [allValues objectEnumerator];
+      while ((value = [list nextObject]))
+        {
+          if ([type length])
+            element = [CardElement simpleElementWithTag: elementTag
+                                             singleType: type
+                                                  value: value];
+          else
+            element = [CardElement simpleElementWithTag: elementTag
+                                                  value: value];
+          [self addChild: element];
+        }
     }
 }
 
@@ -380,7 +383,7 @@ convention:
   o = [ldifRecord objectForKey: @"description"];
   if ([o isKindOfClass: [NSArray class]])
     [self setNotes: o];
-  else
+  else if ([o isNotNull])
     [self setNote: o];
 
   o = [ldifRecord objectForKey: @"vcardcategories"];
@@ -389,7 +392,7 @@ convention:
   // string (from a LDIF import) as the value here.
   if ([o isKindOfClass: [NSArray class]])
     [self setCategories: o];
-  else
+  else if ([o isNotNull])
     [self setCategories: [o componentsSeparatedByString: @","]];
 
   // Photo
