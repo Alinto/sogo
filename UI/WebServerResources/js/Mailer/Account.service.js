@@ -323,8 +323,12 @@
         Account.$log.debug('New message (edit): ' + JSON.stringify(data, undefined, 2));
         angular.extend(message.editable, data);
         message.isNew = true;
-        if (options && options.mailto)
-          message.$parseMailto(options.mailto);
+        if (options && options.mailto) {
+          if (angular.isObject(options.mailto))
+            angular.extend(message.editable, options.mailto);
+          else
+            message.$parseMailto(options.mailto);
+        }
         return message;
       });
     });
