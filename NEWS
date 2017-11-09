@@ -28,6 +28,7 @@ Bug fixes
  - [web] fixed XSRF cookie path when changing password (#4139)
  - [web] spaces can now be inserted in address book names
  - [web] prevent the creation of empty contact categories
+ - [web] fixed mail composition from message headers (#4335)
  - [web] restore messages selection after automatic refresh (#4330)
  - [eas] hebrew folders encoding problem using EAS (#4240)
  - [eas] avoid sync requests for shared folders every second (#4275)
