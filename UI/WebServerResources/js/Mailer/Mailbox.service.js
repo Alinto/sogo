@@ -893,6 +893,7 @@
 
     this.$futureMailboxData = futureMailboxData;
     this.$futureMailboxData.then(function(data) {
+      var selectedMessages = _.map(_this.$selectedMessages(), 'uid');
       Mailbox.$timeout(function() {
         var uids, headers;
 
@@ -916,7 +917,7 @@
 
           // Instanciate Message objects
           _.reduce(_this.uids, function(msgs, msg, i) {
-            var data;
+            var data, msgObject;
             if (_this.threaded)
               data = _.zipObject(uids, msg);
             else
@@ -925,7 +926,12 @@
             // Build map of UID <=> index
             _this.uidsMap[data.uid] = i;
 
-            msgs.push(new Mailbox.$Message(_this.$account.id, _this, data, true));
+            msgObject = new Mailbox.$Message(_this.$account.id, _this, data, true);
+
+            // Restore selection
+            msgObject.selected = selectedMessages.indexOf(msgObject.uid) > -1;
+
+            msgs.push(msgObject);
 
             return msgs;
           }, _this.$messages);
