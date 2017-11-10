@@ -19,6 +19,7 @@ Bug fixes
  - [core] increased column size of settings/defaults for MySQL (#4260)
  - [core] fixed yearly recurrence calculator with until date
  - [core] generalized HTML sanitization to avoid encoding issues when replying/forwarding mails
+ - [core] don't restore deleted events in attendees calendars
  - [web] fixed display of error when the mail editor is in a popup
  - [web] attachments are not displayed on IOS (#4150)
  - [web] fixed parsing of pasted email addresses from Spreadsheet (#4258)

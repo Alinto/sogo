@@ -252,8 +252,9 @@
               [iCalendarToSave addChild: [[newEvent copy] autorelease]];
             }
         }
-      else
+      else if (![attendeeObject isNew])
         {
+          // Only update the event in attendee's calendar if it was already there
           iCalendarToSave = [newEvent parent];
         }
 
@@ -904,14 +905,14 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 
   deletedAttendees = [changes deletedAttendees];
 
-  // We delete the attendees in all exception occurences, if
-  // the attendees were removed from the master event.
-  [self _addOrDeleteAttendees: deletedAttendees
-	inRecurrenceExceptionsForEvent: newEvent
-			  add: NO];
-
   if ([deletedAttendees count])
     {
+      // We delete the attendees in all exception occurences, if
+      // the attendees were removed from the master event.
+      [self _addOrDeleteAttendees: deletedAttendees
+            inRecurrenceExceptionsForEvent: newEvent
+                              add: NO];
+
       [self _handleRemovedUsers: deletedAttendees
                withRecurrenceId: [newEvent recurrenceId]];
       if ([self _shouldScheduleEvent: [newEvent organizer]])
