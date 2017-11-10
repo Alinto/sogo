@@ -252,9 +252,8 @@
               [iCalendarToSave addChild: [[newEvent copy] autorelease]];
             }
         }
-      else if (![attendeeObject isNew])
+      else
         {
-          // Only update the event in attendee's calendar if it was already there
           iCalendarToSave = [newEvent parent];
         }
 
