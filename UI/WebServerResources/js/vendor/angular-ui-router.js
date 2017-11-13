@@ -4,7 +4,7 @@
  *         This causes it to be incompatible with plugins that depend on @uirouter/core.
  *         We recommend switching to the ui-router-core.js and ui-router-angularjs.js bundles instead.
  *         For more information, see https://ui-router.github.io/blog/uirouter-for-angularjs-umd-bundles
- * @version v1.0.10
+ * @version v1.0.11
  * @link https://ui-router.github.io
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -508,7 +508,7 @@ var forEach = angular$1.forEach || _forEach;
 var extend = Object.assign || _extend;
 var equals = angular$1.equals || _equals;
 function identity(x) { return x; }
-function noop$1() { }
+function noop() { }
 /**
  * Builds proxy functions on the `to` object which pass through to the `from` object.
  *
@@ -1545,7 +1545,7 @@ var TargetState = /** @class */ (function () {
  */
 /** for typedoc */
 var defaultOptions = {
-    current: noop$1,
+    current: noop,
     transition: null,
     traceData: {},
     bind: null,
@@ -4080,7 +4080,7 @@ var StateBuilder = /** @class */ (function () {
         for (var key in builders) {
             if (!builders.hasOwnProperty(key))
                 continue;
-            var chain = builders[key].reduce(function (parentFn, step) { return function (_state) { return step(_state, parentFn); }; }, noop$1);
+            var chain = builders[key].reduce(function (parentFn, step) { return function (_state) { return step(_state, parentFn); }; }, noop);
             state[key] = chain(state);
         }
         return state;
@@ -5856,7 +5856,7 @@ var UIRouterGlobals = /** @class */ (function () {
  */ /** */
 /** @hidden */
 var makeStub = function (keys) {
-    return keys.reduce(function (acc, key) { return (acc[key] = notImplemented(key), acc); }, { dispose: noop$1 });
+    return keys.reduce(function (acc, key) { return (acc[key] = notImplemented(key), acc); }, { dispose: noop });
 };
 /** @hidden */ var locationServicesFns = ["url", "path", "search", "hash", "onChange"];
 /** @hidden */ var locationConfigFns = ["port", "protocol", "host", "baseHref", "html5Mode", "hashPrefix"];
@@ -6210,7 +6210,7 @@ var registerOnEnterHook = function (transitionService) {
 var eagerResolvePath = function (trans) {
     return new ResolveContext(trans.treeChanges().to)
         .resolvePath("EAGER", trans)
-        .then(noop$1);
+        .then(noop);
 };
 var registerEagerResolvePath = function (transitionService) {
     return transitionService.onStart({}, eagerResolvePath, { priority: 1000 });
@@ -6228,7 +6228,7 @@ var lazyResolveState = function (trans, state) {
     return new ResolveContext(trans.treeChanges().to)
         .subContext(state.$$state())
         .resolvePath("LAZY", trans)
-        .then(noop$1);
+        .then(noop);
 };
 var registerLazyResolveState = function (transitionService) {
     return transitionService.onEnter({ entering: val(true) }, lazyResolveState, { priority: 1000 });
@@ -6248,7 +6248,7 @@ var loadEnteringViews = function (transition) {
     var enteringViews = transition.views("entering");
     if (!enteringViews.length)
         return;
-    return $q.all(enteringViews.map(function (view) { return $q.when(view.load()); })).then(noop$1);
+    return $q.all(enteringViews.map(function (view) { return $q.when(view.load()); })).then(noop);
 };
 var registerLoadEnteringViews = function (transitionService) {
     return transitionService.onFinish({}, loadEnteringViews);
@@ -6789,7 +6789,7 @@ var StateService = /** @class */ (function () {
     });
     /** @internalapi */
     StateService.prototype.dispose = function () {
-        this.defaultErrorHandler(noop$1);
+        this.defaultErrorHandler(noop);
         this.invalidCallbacks = [];
     };
     /**
@@ -7663,7 +7663,7 @@ var MemoryLocationConfig = /** @class */ (function () {
         this.baseHref = function () { return _this._baseHref; };
         this.html5Mode = function () { return false; };
         this.hashPrefix = function (newval) { return isDefined(newval) ? _this._hashPrefix = newval : _this._hashPrefix; };
-        this.dispose = noop$1;
+        this.dispose = noop;
     }
     return MemoryLocationConfig;
 }());
@@ -7768,7 +7768,7 @@ var index$1 = Object.freeze({
 	extend: extend,
 	equals: equals,
 	identity: identity,
-	noop: noop$1,
+	noop: noop,
 	createProxyFunctions: createProxyFunctions,
 	inherit: inherit,
 	inArray: inArray,
@@ -9230,7 +9230,7 @@ uiState = ['$uiRouter', '$timeout',
                 var rawDef = {};
                 var getDef = function () { return processedDef($state, element, rawDef); };
                 var inputAttrs = ['uiState', 'uiStateParams', 'uiStateOpts'];
-                var watchDeregFns = inputAttrs.reduce(function (acc, attr) { return (acc[attr] = noop$1, acc); }, {});
+                var watchDeregFns = inputAttrs.reduce(function (acc, attr) { return (acc[attr] = noop, acc); }, {});
                 function update() {
                     var def = getDef();
                     if (unlinkInfoFn)
@@ -9381,7 +9381,7 @@ uiSrefActive = ['$state', '$stateParams', '$interpolate', '$uiRouter',
                         return deregister;
                     };
                     function updateAfterTransition(trans) {
-                        trans.promise.then(update, noop$1);
+                        trans.promise.then(update, noop);
                     }
                     $scope.$on('$stateChangeSuccess', update);
                     $scope.$on('$destroy', $uiRouter.transitionService.onStart({}, updateAfterTransition));
@@ -9768,7 +9768,7 @@ function $ViewDirectiveFill($compile, $controller, $transitions, $view, $q, $tim
                     $compile($element.contents())(scope);
                     return;
                 }
-                var cfg = data.$cfg || { viewDecl: {}, getTemplate: ng_from_import.noop };
+                var cfg = data.$cfg || { viewDecl: {}, getTemplate: noop };
                 var resolveCtx = cfg.path && new ResolveContext(cfg.path);
                 $element.html(cfg.getTemplate($element, resolveCtx) || initial);
                 trace.traceUIViewFill(data.$uiView, $element.html());
@@ -9921,7 +9921,7 @@ exports.forEach = forEach;
 exports.extend = extend;
 exports.equals = equals;
 exports.identity = identity;
-exports.noop = noop$1;
+exports.noop = noop;
 exports.createProxyFunctions = createProxyFunctions;
 exports.inherit = inherit;
 exports.inArray = inArray;
