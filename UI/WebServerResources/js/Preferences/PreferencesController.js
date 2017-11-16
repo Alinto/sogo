@@ -9,7 +9,7 @@
    */
   PreferencesController.$inject = ['$q', '$window', '$state', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgSettings', 'sgFocus', 'Dialog', 'User', 'Account', 'Preferences', 'Authentication'];
   function PreferencesController($q, $window, $state, $mdMedia, $mdSidenav, $mdDialog, $mdToast, sgSettings, focus, Dialog, User, Account, Preferences, Authentication) {
-    var vm = this, account, mailboxes = [], today = new Date(), tomorrow = today.beginOfDay().addDays(1);
+    var vm = this, account, mailboxes = [], today = new Date().beginOfDay();
 
     this.$onInit = function() {
       this.preferences = Preferences;
@@ -408,9 +408,6 @@
           v.startDate = new Date(v.endDate.getTime());
           v.startDate.addDays(-1);
         }
-        if (v.startDate.getTime() < tomorrow.getTime()) {
-          v.startDate = new Date(tomorrow.getTime());
-        }
       }
     };
 
@@ -425,9 +422,6 @@
           v.endDate = new Date(v.startDate.getTime());
           v.endDate.addDays(1);
         }
-        else if (v.endDate.getTime() < tomorrow.getTime()) {
-          v.endDate = new Date(tomorrow.getTime());
-        }
       }
     };
 
@@ -439,7 +433,7 @@
         if (d.Vacation.startDateEnabled) {
           r = (!d.Vacation.endDateEnabled ||
                date.getTime() < d.Vacation.endDate.getTime()) &&
-            date.getTime() >= tomorrow.getTime();
+            date.getTime() >= today.getTime();
         }
       }
 
@@ -454,7 +448,7 @@
         if (d.Vacation.endDateEnabled) {
           r = (!d.Vacation.startDateEnabled ||
                date.getTime() > d.Vacation.startDate.getTime()) &&
-            date.getTime() >= tomorrow.getTime();
+            date.getTime() >= today.getTime();
         }
       }
 
