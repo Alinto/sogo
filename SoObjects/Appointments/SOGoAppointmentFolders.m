@@ -659,7 +659,8 @@ static SoSecurityManager *sm = nil;
       for (count = 0; count < max; count++)
         {
           folder = [folders objectAtIndex: count];
-          if ([folder folderPropertyValueInCategory: @"WebCalendars"])
+          if ([folder folderPropertyValueInCategory: @"WebCalendars"
+                                            forUser: [SOGoUser userWithLogin: owner]])
             {
               name = [folder nameInContainer];
               if (isWebRequest)

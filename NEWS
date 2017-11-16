@@ -17,6 +17,7 @@ Bug fixes
  - [core] correctly handle "Last day of the month" recurrence rule
  - [core] fixed yearly recurrence calculator with until date
  - [core] generalized HTML sanitization to avoid encoding issues when replying/forwarding mails
+ - [core] don't expose web calendars to other users (#4331)
  - [eas] avoid sync requests for shared folders every second (#4275)
 
 2.3.22 (2017-07-20)
