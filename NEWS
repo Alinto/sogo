@@ -3,6 +3,8 @@
 
 New features
  - [core] can now invite attendees to exceptions only (#2561)
+ - [core] add support for module constraints in SQL sources
+ - [core] add support for listRequiresDot in SQL sources
  - [web] display freebusy information of owner in appointment editor
  - [web] register SOGo as a handler for the mailto scheme (#1223)
  - [web] new events list view where events are grouped by day

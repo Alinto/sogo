@@ -1612,7 +1612,7 @@ SQL source:
 
 [cols="3,47a,50"]
 |=======================================================================
-.18+^|D |SOGoUserSources
+.20+^|D |SOGoUserSources
 |Parameter used to set the SQL and/or LDAP sources used for
 authentication and global address books. Multiple sources can be
 specified as an array of dictionaries. A dictionary that defines a SQL
@@ -1719,6 +1719,23 @@ to the user.
 
 See the _Multi-domains Configuration_ section in this document for more
 information.
+
+|listRequiresDot (optional)
+|If set to `YES`, listing of this SQL source is only possible when performing a search (respecting the SOGoSearchMinimumWordLength parameter) or when explicitely typing a single dot.
+Defaults to `YES` when unset.
+
+|ModulesConstraints (optional)
+|Limits the access of any module through a constraint based on a SQL
+column; must be a dictionary with keys `Mail`, and/or `Calendar`,
+and/or `ActiveSync` for example:
+
+----
+ModulesConstraints = {
+	Calendar = {
+		c_ou = employees;
+	};
+};
+----
 |=======================================================================
 
 Here is an example of an SQL-based authentication and address book

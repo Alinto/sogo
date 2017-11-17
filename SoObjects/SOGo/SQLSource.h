@@ -1,6 +1,6 @@
 /* SQLSource.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2011 Inverse inc.
+ * Copyright (C) 2009-2017 Inverse inc.
  *
  * Authors: Ludovic Marcotte <lmarcotte@inverse.ca>
  *          Francis Lachapelle <flachapelle@invers.ca>
@@ -50,6 +50,10 @@
   /* resources handling */
   NSString *_kindField;
   NSString *_multipleBookingsField;
+
+  BOOL _listRequiresDot;
+
+  NSDictionary *_modulesConstraints;
 }
 
 @end

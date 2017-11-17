@@ -229,8 +229,7 @@ static Class NSStringK;
       else
         queryTimeout = [dd ldapQueryTimeout];
 
-      ASSIGN(modulesConstraints,
-          [udSource objectForKey: @"ModulesConstraints"]);
+      ASSIGN(modulesConstraints, [udSource objectForKey: @"ModulesConstraints"]);
       ASSIGN(_filter, [udSource objectForKey: @"filter"]);
       ASSIGN(_userPasswordAlgorithm, [udSource objectForKey: @"userPasswordAlgorithm"]);
       ASSIGN(_scope, ([udSource objectForKey: @"scope"]

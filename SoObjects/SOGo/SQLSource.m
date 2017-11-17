@@ -57,7 +57,7 @@
  *
  * A SQL source can be defined like this:
  *
- *  {   
+ *  {
  *    id = zot;
  *    type = sql;
  *    viewURL = "mysql://sogo:sogo@127.0.0.1:5432/sogo/sogo_view";
@@ -96,6 +96,8 @@
       _multipleBookingsField = nil;
       _imapHostField = nil;
       _sieveHostField = nil;
+      _listRequiresDot = YES;
+      _modulesConstraints = nil;
     }
 
   return self;
@@ -114,13 +116,16 @@
   [_domainField release];
   [_imapHostField release];
   [_sieveHostField release];
-   
+  [_modulesConstraints release];
+
   [super dealloc];
 }
 
 - (id) initFromUDSource: (NSDictionary *) udSource
                inDomain: (NSString *) sourceDomain
 {
+  NSNumber *dotValue;
+
   self = [self init];
 
   ASSIGN(_sourceID, [udSource objectForKey: @"id"]);
@@ -134,16 +139,21 @@
   ASSIGN(_kindField, [udSource objectForKey: @"KindFieldName"]);
   ASSIGN(_multipleBookingsField, [udSource objectForKey: @"MultipleBookingsFieldName"]);
   ASSIGN(_domainField, [udSource objectForKey: @"DomainFieldName"]);
+  ASSIGN(_modulesConstraints, [udSource objectForKey: @"ModulesConstraints"]);
   if ([udSource objectForKey: @"prependPasswordScheme"])
     _prependPasswordScheme = [[udSource objectForKey: @"prependPasswordScheme"] boolValue];
   else
     _prependPasswordScheme = NO;
-  
+
   if (!_userPasswordAlgorithm)
     _userPasswordAlgorithm = @"none";
 
   if ([udSource objectForKey: @"viewURL"])
     _viewURL = [[NSURL alloc] initWithString: [udSource objectForKey: @"viewURL"]];
+
+  dotValue = [udSource objectForKey: @"listRequiresDot"];
+  if (dotValue)
+    [self setListRequiresDot: [dotValue boolValue]];
 
 #warning this domain code has no effect yet
   if ([sourceDomain length])
@@ -183,7 +193,7 @@
 {
   NSString *pass;
   NSString* result;
-  
+
   pass = [plainPassword asCryptedPassUsingScheme: _userPasswordAlgorithm];
 
   if (pass == nil)
@@ -264,7 +274,7 @@
                              @" WHERE ",
                              [_viewURL gcsTableName]];
       if (_authenticationFilter)
-        {          
+        {
           qualifier = [[EOAndQualifier alloc] initWithQualifiers:
                                                 qualifier,
                        [EOQualifier qualifierWithQualifierFormat: _authenticationFilter],
@@ -272,18 +282,18 @@
           [qualifier autorelease];
         }
       [qualifier _gcsAppendToString: sql];
-      
+
       ex = [channel evaluateExpressionX: sql];
       if (!ex)
         {
           NSDictionary *row;
           NSArray *attrs;
           NSString *value;
-          
+
           attrs = [channel describeResults: NO];
           row = [channel fetchAttributes: attrs  withZone: NULL];
           value = [row objectForKey: @"c_password"];
-      
+
           rc = [self _isPassword: _pwd  equalTo: value];
 	  [channel cancelFetch];
         }
@@ -308,9 +318,9 @@
  * @return YES if the password was successfully changed.
  */
 - (BOOL) changePasswordForLogin: (NSString *) login
-		    oldPassword: (NSString *) oldPassword
-		    newPassword: (NSString *) newPassword
-			   perr: (SOGoPasswordPolicyError *) perr
+	    oldPassword: (NSString *) oldPassword
+	    newPassword: (NSString *) newPassword
+	   perr: (SOGoPasswordPolicyError *) perr
 {
   EOAdaptorChannel *channel;
   GCSChannelManager *cm;
@@ -339,10 +349,10 @@
       if (channel)
 	{
 	  sqlstr = [NSString stringWithFormat: (@"UPDATE %@"
-						@" SET c_password = '%@'"
-						@" WHERE c_uid = '%@'"),
-			     [_viewURL gcsTableName], encryptedPassword, login];
-	  
+	@" SET c_password = '%@'"
+	@" WHERE c_uid = '%@'"),
+	     [_viewURL gcsTableName], encryptedPassword, login];
+
 	  ex = [channel evaluateExpressionX: sqlstr];
 	  if (!ex)
 	    {
@@ -355,13 +365,13 @@
 	  [cm releaseChannel: channel];
 	}
     }
-  
+
   return didChange;
 }
 
 - (NSString *) _whereClauseFromArray: (NSArray *) theArray
                                value: (NSString *) theValue
-			       exact: (BOOL) theBOOL
+	       exact: (BOOL) theBOOL
 {
   NSMutableString *s;
   int i;
@@ -377,6 +387,35 @@
     }
 
   return s;
+}
+
+- (void) _fillConstraintsForModule: (NSString *) module
+                        intoRecord: (NSMutableDictionary *) record
+{
+  NSDictionary *constraints;
+  NSEnumerator *matches;
+  NSString *currentMatch, *currentValue, *recordValue;
+  BOOL result;
+
+  result = YES;
+
+  constraints = [_modulesConstraints objectForKey: module];
+  if (constraints)
+    {
+      matches = [[constraints allKeys] objectEnumerator];
+      while (result == YES && (currentMatch = [matches nextObject]))
+        {
+          currentValue = [constraints objectForKey: currentMatch];
+          recordValue = [record objectForKey: currentMatch];
+          result = NO;
+
+          if ([recordValue caseInsensitiveMatches: currentValue])
+            result = YES;
+        }
+    }
+
+  [record setObject: [NSNumber numberWithBool: result]
+             forKey: [NSString stringWithFormat: @"%@Access", module]];
 }
 
 - (NSDictionary *) _lookupContactEntry: (NSString *) theID
@@ -425,7 +464,7 @@
                 }
             }
         }
-      
+
       domainQualifier = nil;
       if (_domainField && domain)
         {
@@ -443,7 +482,7 @@
                                                               value: [theID lowercaseString]];
           [loginQualifier autorelease];
           [qualifiers addObject: loginQualifier];
-          
+
 	  if (_mailFields)
 	    {
               for (i = 0; i < [_mailFields count]; i++)
@@ -461,7 +500,7 @@
                 }
             }
 	}
-      
+
       sql = [NSMutableString stringWithFormat: @"SELECT *"
                              @" FROM %@"
                              @" WHERE ",
@@ -491,12 +530,9 @@
                              forKey: [field substringFromIndex: 2]];
             }
 
-          // FIXME
-          // We have to do this here since we do not manage modules
-          // constraints right now over a SQL backend.
-          [response setObject: [NSNumber numberWithBool: YES] forKey: @"CalendarAccess"];
-          [response setObject: [NSNumber numberWithBool: YES] forKey: @"MailAccess"];
-          [response setObject: [NSNumber numberWithBool: YES] forKey: @"ActiveSyncAccess"];
+          [self _fillConstraintsForModule: @"Calendar"    intoRecord: response];
+          [self _fillConstraintsForModule: @"Mail"        intoRecord: response];
+          [self _fillConstraintsForModule: @"ActiveSync"  intoRecord: response];
 
 	  // We set the domain, if any
           value = nil;
@@ -510,7 +546,7 @@
 
 	  // We populate all mail fields
 	  emails = [NSMutableArray array];
-	  
+
 	  if ([response objectForKey: @"mail"])
 	    [emails addObject: [response objectForKey: @"mail"]];
 
@@ -520,12 +556,12 @@
 	      int i;
 
 	      for (i = 0; i < [_mailFields count]; i++)
-		if ((s = [response objectForKey: [_mailFields objectAtIndex: i]]) &&
+	if ((s = [response objectForKey: [_mailFields objectAtIndex: i]]) &&
                     [s isNotNull] &&
-		    [[s stringByTrimmingSpaces] length] > 0)
-		  [emails addObjectsFromArray: [s componentsSeparatedByString: @" "]];
+	    [[s stringByTrimmingSpaces] length] > 0)
+	  [emails addObjectsFromArray: [s componentsSeparatedByString: @" "]];
 	    }
-	  
+
 	  [response setObject: emails  forKey: @"c_emails"];
           if (_imapHostField)
             {
@@ -576,7 +612,7 @@
             }
           else
             [response setObject: [NSNumber numberWithBool: YES] forKey: @"canAuthenticate"];
-        
+
           // We check if we should use a different login for IMAP
           if (_imapLoginField)
             {
@@ -586,26 +622,26 @@
 
 	  // We check if it's a resource of not
 	  if (_kindField)
-	    {	      
+	    {
 	      if ((value = [response objectForKey: _kindField]) && [value isNotNull])
-		{
-		  if ([value caseInsensitiveCompare: @"location"] == NSOrderedSame ||
-		      [value caseInsensitiveCompare: @"thing"] == NSOrderedSame ||
-		      [value caseInsensitiveCompare: @"group"] == NSOrderedSame) 
-		    {
-		      [response setObject: [NSNumber numberWithInt: 1]
-				forKey: @"isResource"];
-		    }
-		}
+	{
+	  if ([value caseInsensitiveCompare: @"location"] == NSOrderedSame ||
+	      [value caseInsensitiveCompare: @"thing"] == NSOrderedSame ||
+	      [value caseInsensitiveCompare: @"group"] == NSOrderedSame)
+	    {
+	      [response setObject: [NSNumber numberWithInt: 1]
+	forKey: @"isResource"];
+	    }
+	}
 	    }
 
 	  if (_multipleBookingsField)
 	    {
 	      if ((value = [response objectForKey: _multipleBookingsField]))
-		{
-		  [response setObject: [NSNumber numberWithInt: [value intValue]]
-			    forKey: @"numberOfSimultaneousBookings"];
-		}
+	{
+	  [response setObject: [NSNumber numberWithInt: [value intValue]]
+	    forKey: @"numberOfSimultaneousBookings"];
+	}
 	    }
 
           [response setObject: self forKey: @"source"];
@@ -730,7 +766,7 @@
           NSString *value;
 
           attrs = [channel describeResults: NO];
-          
+
           while ((row = [channel fetchAttributes: attrs withZone: NULL]))
             {
               value = [row objectForKey: @"c_uid"];
@@ -746,7 +782,7 @@
     [self errorWithFormat:@"failed to acquire channel for URL: %@",
           [_viewURL absoluteString]];
 
-  
+
   return results;
 }
 
@@ -764,73 +800,76 @@
   NSException *ex;
   NSMutableString *sql;
   NSString *lowerFilter;
-  
+
   results = [NSMutableArray array];
 
-  cm = [GCSChannelManager defaultChannelManager];
-  channel = [cm acquireOpenChannelForURL: _viewURL];
-  if (channel)
+  if ([filter length] > 0 || !_listRequiresDot)
     {
-      lowerFilter = [filter lowercaseString];
-      lowerFilter = [lowerFilter stringByReplacingString: @"'"  withString: @"''"];
-
-      sql = [NSMutableString stringWithFormat: (@"SELECT *"
-                                         @" FROM %@"
-                                         @" WHERE"
-                                         @" (LOWER(c_cn) LIKE '%%%@%%'"
-                                         @" OR LOWER(mail) LIKE '%%%@%%'"),
-                      [_viewURL gcsTableName],
-                      lowerFilter, lowerFilter];
-      
-      if (_mailFields && [_mailFields count] > 0)
+      cm = [GCSChannelManager defaultChannelManager];
+      channel = [cm acquireOpenChannelForURL: _viewURL];
+      if (channel)
         {
-          [sql appendString: [self _whereClauseFromArray: _mailFields  value: lowerFilter  exact: NO]];
-        }
+          lowerFilter = [filter lowercaseString];
+          lowerFilter = [lowerFilter stringByReplacingString: @"'"  withString: @"''"];
 
-      [sql appendString: @")"];
+          sql = [NSMutableString stringWithFormat: (@"SELECT *"
+                                                    @" FROM %@"
+                                                    @" WHERE"
+                                                    @" (LOWER(c_cn) LIKE '%%%@%%'"
+                                                    @" OR LOWER(mail) LIKE '%%%@%%'"),
+                                 [_viewURL gcsTableName],
+                                 lowerFilter, lowerFilter];
 
-      if (_domainField)
-        {
-          if ([domain length])
+          if (_mailFields && [_mailFields count] > 0)
             {
-              EOQualifier *domainQualifier;
-              domainQualifier =
-                [self _visibleDomainsQualifierFromDomain: domain];
-              if (domainQualifier)
+              [sql appendString: [self _whereClauseFromArray: _mailFields  value: lowerFilter  exact: NO]];
+            }
+
+          [sql appendString: @")"];
+
+          if (_domainField)
+            {
+              if ([domain length])
                 {
-                  [sql appendFormat: @" AND ("];
-                  [domainQualifier _gcsAppendToString: sql];
-                  [sql appendFormat: @")"];
+                  EOQualifier *domainQualifier;
+                  domainQualifier =
+                    [self _visibleDomainsQualifierFromDomain: domain];
+                  if (domainQualifier)
+                    {
+                      [sql appendFormat: @" AND ("];
+                      [domainQualifier _gcsAppendToString: sql];
+                      [sql appendFormat: @")"];
+                    }
+                }
+              else
+                [sql appendFormat: @" AND %@ IS NULL", _domainField];
+            }
+
+          ex = [channel evaluateExpressionX: sql];
+          if (!ex)
+            {
+              NSDictionary *row;
+              NSArray *attrs;
+
+              attrs = [channel describeResults: NO];
+
+              while ((row = [channel fetchAttributes: attrs withZone: NULL]))
+                {
+                  row = [row mutableCopy];
+                  [(NSMutableDictionary *) row setObject: self forKey: @"source"];
+                  [results addObject: row];
+                  [row release];
                 }
             }
           else
-            [sql appendFormat: @" AND %@ IS NULL", _domainField];
-        }
-
-      ex = [channel evaluateExpressionX: sql];
-      if (!ex)
-        {
-          NSDictionary *row;
-          NSArray *attrs;
-
-          attrs = [channel describeResults: NO];
-
-          while ((row = [channel fetchAttributes: attrs withZone: NULL]))
-            {
-              row = [row mutableCopy];
-              [(NSMutableDictionary *) row setObject: self forKey: @"source"];
-              [results addObject: row];
-              [row release];
-            }
+            [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
+          [cm releaseChannel: channel];
         }
       else
-        [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
-      [cm releaseChannel: channel];
+        [self errorWithFormat:@"failed to acquire channel for URL: %@",
+              [_viewURL absoluteString]];
     }
-  else
-    [self errorWithFormat:@"failed to acquire channel for URL: %@",
-          [_viewURL absoluteString]];
-  
+
   return results;
 }
 
@@ -856,13 +895,12 @@
 
 - (void) setListRequiresDot: (BOOL) newListRequiresDot
 {
+  _listRequiresDot = newListRequiresDot;
 }
 
 - (BOOL) listRequiresDot
 {
-  /* This method is not implemented for SQLSource. It must enable a mechanism
-     where using "." is not required to list the content of addressbooks. */
-  return YES;
+  return _listRequiresDot;
 }
 
 /* card editing */
