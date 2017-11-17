@@ -288,13 +288,40 @@
       var initOrganizer = (!vm.component.attendees || vm.component.attendees.length === 0),
           destinationCalendar = Calendar.$get(vm.component.destinationCalendar),
           options = initOrganizer? { organizerCalendar: destinationCalendar } : {};
+      var emailRE = /([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)/i,
+          i, address;
+
+      function createCard(str) {
+        var match = str.match(emailRE),
+            email = match[0],
+            name = str.replace(new RegExp(" *<?" + email + ">? *"), '');
+        vm.showAttendeesEditor |= initOrganizer;
+        vm.searchText = '';
+        return new Card({ c_cn: _.trim(name, ' "'), emails: [{ value: email }] });
+      }
+
       if (angular.isString(card)) {
         // User pressed "Enter" in search field, adding a non-matching card
-        if (card.isValidEmail()) {
-          vm.component.addAttendee(new Card({ emails: [{ value: card }] }), options);
-          vm.showAttendeesEditor |= initOrganizer;
-          vm.searchText = '';
+        // Examples that are handled:
+        //   Smith, John <john@smith.com>
+        //   <john@appleseed.com>;<foo@bar.com>
+        //   foo@bar.com abc@xyz.com
+        address = '';
+        for (i = 0; i < card.length; i++) {
+          if ((card.charCodeAt(i) ==  9 ||   // tab
+               card.charCodeAt(i) == 32 ||   // space
+               card.charCodeAt(i) == 44 ||   // ,
+               card.charCodeAt(i) == 59) &&  // ;
+              emailRE.test(address)) {
+            vm.component.addAttendee(createCard(address), options);
+            address = '';
+          }
+          else {
+            address += card.charAt(i);
+          }
         }
+        if (address)
+          vm.component.addAttendee(createCard(address), options);
       }
       else {
         vm.component.addAttendee(card, options);
@@ -348,7 +375,7 @@
         // Cancelling the creation of a component
         vm.component = null;
       }
-      $mdDialog.cancel();
+      $mdDialog.hide();
     }
 
     function edit(form) {
