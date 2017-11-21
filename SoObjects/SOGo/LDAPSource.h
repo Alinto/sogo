@@ -74,8 +74,6 @@
 
   NSDictionary *modulesConstraints;
 
-  NSMutableArray *searchAttributes;
-  
   BOOL passwordPolicy;
   BOOL updateSambaNTLMPasswords;
 

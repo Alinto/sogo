@@ -79,6 +79,20 @@ static NSArray *folderListingFields = nil;
   [super dealloc];
 }
 
+- (NSArray *) searchFields
+{
+  static NSArray *searchFields = nil;
+
+  if (!searchFields)
+    {
+      // "name" expands to c_sn, c_givenname and c_cn
+      searchFields = [NSArray arrayWithObjects: @"name", @"c_mail", @"c_categories", @"c_o", nil];
+      [searchFields retain];
+    }
+
+  return searchFields;
+}
+
 - (Class) objectClassForContent: (NSString *) content
 {
   CardGroup *cardEntry;
@@ -183,39 +197,42 @@ static NSArray *folderListingFields = nil;
 }
 
 - (EOQualifier *) qualifierForFilter: (NSString *) filter
-                          onCriteria: (NSString *) criteria
+                          onCriteria: (NSArray *) criteria
 {
-  NSString *qs;
+  NSEnumerator *criteriaList;
+  NSMutableArray *filters;
+  NSString *filterFormat, *currentCriteria, *qs;
   EOQualifier *qualifier;
 
+  qualifier = nil;
   if ([filter length] > 0)
     {
       filter = [filter asSafeSQLString];
-      if ([criteria isEqualToString: @"name_or_address"])
-        qs = [NSString stringWithFormat:
-                         @"(c_sn isCaseInsensitiveLike: '%%%@%%') OR "
-                       @"(c_givenname isCaseInsensitiveLike: '%%%@%%') OR "
-                       @"(c_cn isCaseInsensitiveLike: '%%%@%%') OR "
-                       @"(c_mail isCaseInsensitiveLike: '%%%@%%')",
-                       filter, filter, filter, filter];
-      else if ([criteria isEqualToString: @"category"])
-        qs = [NSString stringWithFormat:
-                         @"(c_categories isCaseInsensitiveLike: '%%%@%%')",
-                       filter];
-      else if ([criteria isEqualToString: @"organization"])
-        qs = [NSString stringWithFormat:
-                         @"(c_o isCaseInsensitiveLike: '%%%@%%')",
-                       filter];
+      filters = [NSMutableArray array];
+      filterFormat = [NSString stringWithFormat: @"(%%@ isCaseInsensitiveLike: '%%%%%@%%%%')", filter];
+      if (criteria)
+        criteriaList = [criteria objectEnumerator];
       else
-        qs = @"(1 == 0)";
+        criteriaList = [[self searchFields] objectEnumerator];
 
-      if (qs)
-        qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
-      else
-        qualifier = nil;
+      while (( currentCriteria = [criteriaList nextObject] ))
+        {
+          if ([currentCriteria isEqualToString: @"name"])
+            {
+              [filters addObject: @"c_sn"];
+              [filters addObject: @"c_givenname"];
+              [filters addObject: @"c_cn"];
+            }
+          else if ([[self searchFields] containsObject: currentCriteria])
+            [filters addObject: currentCriteria];
+        }
+
+      if ([filters count])
+        {
+          qs = [[[filters uniqueObjects] stringsWithFormat: filterFormat] componentsJoinedByString: @" OR "];
+          qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
+        }
     }
-  else
-    qualifier = nil;
 
   return qualifier;
 }
@@ -357,7 +374,7 @@ static NSArray *folderListingFields = nil;
  * The domain is therefore ignored.
  */
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
-                            onCriteria: (NSString *) criteria
+                            onCriteria: (NSArray *) criteria
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering
                               inDomain: (NSString *) domain

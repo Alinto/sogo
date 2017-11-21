@@ -31,6 +31,8 @@
 
 @interface UIxContactsListActions : SOGoDirectAction
 {
+  NSDictionary *requestData;
+
   NSDictionary *currentContact;
 
   NSArray *contactInfos;

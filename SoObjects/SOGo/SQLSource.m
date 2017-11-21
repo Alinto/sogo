@@ -1,9 +1,8 @@
 /* SQLSource.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2012 Inverse inc.
+ * Copyright (C) 2009-2017 Inverse inc.
  *
- * Authors: Ludovic Marcotte <lmarcotte@inverse.ca>
- *          Francis Lachapelle <flachapelle@inverse.ca>
+ * This file is part of SOGo.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +34,7 @@
 
 #import <SOGo/SOGoSystemDefaults.h>
 
+#import "NSArray+Utilities.h"
 #import "NSString+Utilities.h"
 #import "NSString+Crypto.h"
 
@@ -90,6 +90,9 @@
       _authenticationFilter = nil;
       _loginFields = nil;
       _mailFields = nil;
+      // "mail" expands to all entries of MailFieldNames
+      _searchFields = [NSArray arrayWithObjects: @"c_cn", @"mail", nil];
+      [_searchFields retain];
       _userPasswordAlgorithm = nil;
       _viewURL = nil;
       _kindField = nil;
@@ -109,6 +112,7 @@
   [_authenticationFilter release];
   [_loginFields release];
   [_mailFields release];
+  [_searchFields release];
   [_userPasswordAlgorithm release];
   [_viewURL release];
   [_kindField release];
@@ -140,6 +144,8 @@
   ASSIGN(_multipleBookingsField, [udSource objectForKey: @"MultipleBookingsFieldName"]);
   ASSIGN(_domainField, [udSource objectForKey: @"DomainFieldName"]);
   ASSIGN(_modulesConstraints, [udSource objectForKey: @"ModulesConstraints"]);
+  if ([udSource objectForKey: @"SearchFieldNames"])
+    ASSIGN(_searchFields, [udSource objectForKey: @"SearchFieldNames"]);
   if ([udSource objectForKey: @"prependPasswordScheme"])
     _prependPasswordScheme = [[udSource objectForKey: @"prependPasswordScheme"] boolValue];
   else
@@ -157,7 +163,7 @@
 
 #warning this domain code has no effect yet
   if ([sourceDomain length])
-    ASSIGN (_domain, sourceDomain);
+    ASSIGN(_domain, sourceDomain);
 
   if (!_viewURL)
     {
@@ -171,6 +177,11 @@
 - (NSString *) domain
 {
   return _domain;
+}
+
+- (NSArray *) searchFields
+{
+  return _searchFields;
 }
 
 - (BOOL) _isPassword: (NSString *) plainPassword
@@ -369,6 +380,7 @@
   return didChange;
 }
 
+/*
 - (NSString *) _whereClauseFromArray: (NSArray *) theArray
                                value: (NSString *) theValue
 	       exact: (BOOL) theBOOL
@@ -388,6 +400,7 @@
 
   return s;
 }
+*/
 
 - (void) _fillConstraintsForModule: (NSString *) module
                         intoRecord: (NSMutableDictionary *) record
@@ -562,7 +575,7 @@
 	  [emails addObjectsFromArray: [s componentsSeparatedByString: @" "]];
 	    }
 
-	  [response setObject: emails  forKey: @"c_emails"];
+	  [response setObject: [emails uniqueObjects]  forKey: @"c_emails"];
           if (_imapHostField)
             {
               value = [response objectForKey: _imapHostField];
@@ -792,14 +805,16 @@
 }
 
 - (NSArray *) fetchContactsMatching: (NSString *) filter
+                       withCriteria: (NSArray *) criteria
                            inDomain: (NSString *) domain
 {
   EOAdaptorChannel *channel;
-  NSMutableArray *results;
+  NSEnumerator *criteriaList;
+  NSMutableArray *fields, *results;
   GCSChannelManager *cm;
   NSException *ex;
   NSMutableString *sql;
-  NSString *lowerFilter;
+  NSString *lowerFilter, *filterFormat, *currentCriteria, *qs;
 
   results = [NSMutableArray array];
 
@@ -809,22 +824,40 @@
       channel = [cm acquireOpenChannelForURL: _viewURL];
       if (channel)
         {
-          lowerFilter = [filter lowercaseString];
-          lowerFilter = [lowerFilter stringByReplacingString: @"'"  withString: @"''"];
-
-          sql = [NSMutableString stringWithFormat: (@"SELECT *"
-                                                    @" FROM %@"
-                                                    @" WHERE"
-                                                    @" (LOWER(c_cn) LIKE '%%%@%%'"
-                                                    @" OR LOWER(mail) LIKE '%%%@%%'"),
-                                 [_viewURL gcsTableName],
-                                 lowerFilter, lowerFilter];
-
-          if (_mailFields && [_mailFields count] > 0)
+          fields = [NSMutableArray array];
+          if ([filter length])
             {
-              [sql appendString: [self _whereClauseFromArray: _mailFields  value: lowerFilter  exact: NO]];
+              lowerFilter = [filter lowercaseString];
+              lowerFilter = [lowerFilter asSafeSQLString];
+              filterFormat = [NSString stringWithFormat: @"LOWER(%%@) LIKE '%%%%%@%%%%'", lowerFilter];
+              if (criteria)
+                criteriaList = [criteria objectEnumerator];
+              else
+                criteriaList = [[self searchFields] objectEnumerator];
+
+              while (( currentCriteria = [criteriaList nextObject] ))
+                {
+                  if ([currentCriteria isEqualToString: @"mail"])
+                    {
+                      // Expand to all mail fields
+                      [fields addObject: currentCriteria];
+                      if (_mailFields)
+                        [fields addObjectsFromArray: _mailFields];
+                    }
+                  else if ([[self searchFields] containsObject: currentCriteria])
+                    [fields addObject: currentCriteria];
+                }
             }
 
+          sql = [NSMutableString stringWithFormat: @"SELECT * FROM %@ WHERE (", [_viewURL gcsTableName]];
+
+          if ([fields count])
+            {
+              qs = [[[fields uniqueObjects] stringsWithFormat: filterFormat] componentsJoinedByString: @" OR "];
+              [sql appendString: qs];
+            }
+          else
+            [sql appendString: @"1 = 1"];
           [sql appendString: @")"];
 
           if (_domainField)
@@ -832,8 +865,7 @@
               if ([domain length])
                 {
                   EOQualifier *domainQualifier;
-                  domainQualifier =
-                    [self _visibleDomainsQualifierFromDomain: domain];
+                  domainQualifier = [self _visibleDomainsQualifierFromDomain: domain];
                   if (domainQualifier)
                     {
                       [sql appendFormat: @" AND ("];

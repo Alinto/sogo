@@ -92,7 +92,9 @@ static Class NSStringK;
       mailFields = [NSArray arrayWithObject: @"mail"];
       [mailFields retain];
       contactMapping = nil;
-      searchFields = [NSArray arrayWithObjects: @"sn", @"displayname", @"telephonenumber", nil];
+      // "mail" expands to all entries of MailFieldNames
+      // "name" expands to sn, displayname and cn
+      searchFields = [NSArray arrayWithObjects: @"name", @"mail", @"telephonenumber", nil];
       [searchFields retain];
       groupObjectClasses = [NSArray arrayWithObjects: @"group", @"groupofnames", @"groupofuniquenames", @"posixgroup", nil];
       [groupObjectClasses retain];
@@ -105,7 +107,6 @@ static Class NSStringK;
       _userPasswordAlgorithm = nil;
       listRequiresDot = YES;
 
-      searchAttributes = nil;
       passwordPolicy = NO;
       updateSambaNTLMPasswords = NO;
 
@@ -149,7 +150,6 @@ static Class NSStringK;
   [sourceID release];
   [modulesConstraints release];
   [_scope release];
-  [searchAttributes release];
   [domain release];
   [kindField release];
   [multipleBookingsField release];
@@ -371,6 +371,11 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 - (BOOL) listRequiresDot
 {
   return listRequiresDot;
+}
+
+- (NSArray *) searchFields
+{
+  return searchFields;
 }
 
 - (void) setContactMapping: (NSDictionary *) newMapping
@@ -761,41 +766,57 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
  * @return a EOQualifier matching the filter
  */
 - (EOQualifier *) _qualifierForFilter: (NSString *) filter
+                           onCriteria: (NSArray *) criteria
 {
+  NSEnumerator *criteriaList;
   NSMutableArray *fields;
-  NSString *fieldFormat, *searchFormat, *escapedFilter;
+  NSString *fieldFormat, *currentCriteria, *searchFormat, *escapedFilter;
   EOQualifier *qualifier;
   NSMutableString *qs;
 
   escapedFilter = SafeLDAPCriteria(filter);
-  if ([escapedFilter length] > 0)
+  qs = [NSMutableString string];
+
+  if (([escapedFilter length] == 0 && !listRequiresDot) || [escapedFilter isEqualToString: @"."])
     {
-      qs = [NSMutableString string];
-      if ([escapedFilter isEqualToString: @"."])
-        [qs appendFormat: @"(%@='*')", CNField];
+      [qs appendFormat: @"(%@='*')", CNField];
+    }
+  else
+    {
+      fieldFormat = [NSString stringWithFormat: @"(%%@='*%@*')", escapedFilter];
+      if (criteria)
+        criteriaList = [criteria objectEnumerator];
       else
+        criteriaList = [[self searchFields] objectEnumerator];
+
+      fields = [NSMutableArray array];
+      while (( currentCriteria = [criteriaList nextObject] ))
         {
-          fieldFormat = [NSString stringWithFormat: @"(%%@='*%@*')", escapedFilter];
-          fields = [NSMutableArray arrayWithArray: searchFields];
-          [fields addObjectsFromArray: mailFields];
-          [fields addObject: CNField];
-          searchFormat = [[[fields uniqueObjects] stringsWithFormat: fieldFormat]
-            componentsJoinedByString: @" OR "];
-          [qs appendString: searchFormat];
+          if ([currentCriteria isEqualToString: @"name"])
+            {
+              [fields addObject: @"sn"];
+              [fields addObject: @"displayname"];
+              [fields addObject: @"cn"];
+            }
+          else if ([currentCriteria isEqualToString: @"mail"])
+            {
+              // Expand to all mail fields
+              [fields addObject: currentCriteria];
+              [fields addObjectsFromArray: mailFields];
+            }
+          else if ([[self searchFields] containsObject: currentCriteria])
+            [fields addObject: currentCriteria];
         }
 
-      if (_filter && [_filter length])
-        [qs appendFormat: @" AND %@", _filter];
+      searchFormat = [[[fields uniqueObjects] stringsWithFormat: fieldFormat] componentsJoinedByString: @" OR "];
+      [qs appendString: searchFormat];
+    }
 
-      qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
-    }
-  else if (!listRequiresDot)
-    {
-      qs = [NSMutableString stringWithFormat: @"(%@='*')", CNField];
-      if ([_filter length])
-        [qs appendFormat: @" AND %@", _filter];
-      qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
-    }
+  if (_filter && [_filter length])
+    [qs appendFormat: @" AND %@", _filter];
+
+  if ([qs length])
+    qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
   else
     qualifier = nil;
 
@@ -832,6 +853,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   return [EOQualifier qualifierWithQualifierFormat: qs];
 }
 
+/*
 - (NSArray *) _constraintsFields
 {
   NSMutableArray *fields;
@@ -845,6 +867,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
   return fields;
 }
+*/
 
 /* This is required for SQL sources when DomainFieldName is enabled.
  * For LDAP, simply discard the domain and call the original method */
@@ -1202,6 +1225,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 }
 
 - (NSArray *) fetchContactsMatching: (NSString *) match
+                       withCriteria: (NSArray *) criteria
                            inDomain: (NSString *) domain
 {
   NGLdapConnection *ldapConnection;
@@ -1216,7 +1240,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   if ([match length] > 0 || !listRequiresDot)
     {
       ldapConnection = [self _ldapConnection];
-      qualifier = [self _qualifierForFilter: match];
+      qualifier = [self _qualifierForFilter: match onCriteria: criteria];
       attributes = [NSArray arrayWithObject: @"*"];
 
       if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)

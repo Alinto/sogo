@@ -459,7 +459,7 @@ Class SOGoContactSourceFolderK;
     folder = [sortedFolders objectAtIndex: i];
     //NSLog(@"  Address book: %@ (%@)", [folder displayName], [folder class]);
     contacts = [folder lookupContactsWithFilter: theFilter
-                                     onCriteria: @"name_or_address"
+                                     onCriteria: nil
                                          sortBy: @"c_cn"
                                        ordering: NSOrderedAscending
                                        inDomain: domain];

@@ -20,7 +20,7 @@
      <md-input-container>
        <input name="search" type="search"/>
      </md-input-container>
-     <md-select class="sg-toolbar-sort md-contrast-light">
+     <md-select multiple>
        <md-option value="subject">Subject</md-option>
        <md-option value="sender">sender</md-option>
      </md-select>
@@ -66,6 +66,9 @@
 
         // Associate the sg-allow-dot parameter (boolean) to the controller
         controller.allowDot = $parse(iElement.attr('sg-allow-dot'))(scope);
+
+        // Associate the sg-search-fields parameter (array) to the controller
+        controller.fields = $parse(iElement.attr('sg-search-fields'))(scope);
 
         // Associate callback to controller
         controller.doSearch = $parse(iElement.attr('sg-search'));
@@ -113,6 +116,14 @@
         blur: 0
       }
     };
+
+    if ($element.attr('sg-search-fields')) {
+      var waitforFieldsOnce = $scope.$watch(vm.fields, function(value) {
+        // Select all fields by default
+        vm.searchField = _.clone(vm.fields);
+        waitforFieldsOnce();
+      });
+    }
 
     // Method to call on data changes
     vm.onChange = function() {

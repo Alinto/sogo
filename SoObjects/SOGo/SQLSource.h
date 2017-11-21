@@ -40,6 +40,7 @@
   NSString *_authenticationFilter;
   NSArray *_loginFields;
   NSArray *_mailFields;
+  NSArray *_searchFields;
   NSString *_imapLoginField;
   NSString *_imapHostField;
   NSString *_sieveHostField;

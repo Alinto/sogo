@@ -39,6 +39,7 @@
                inDomain: (NSString *) domain;
 
 - (NSString *) domain;
+- (NSArray *) searchFields;
 
 /* requires a "." to obtain the full list of contacts */
 - (void) setListRequiresDot: (BOOL) aBool;
@@ -63,6 +64,7 @@
 - (NSArray *) allEntryIDs;
 - (NSArray *) allEntryIDsVisibleFromDomain: (NSString *) domain;
 - (NSArray *) fetchContactsMatching: (NSString *) filter
+                       withCriteria: (NSArray *) criteria
                            inDomain: (NSString *) domain;
 
 - (void) setSourceID: (NSString *) newSourceID;

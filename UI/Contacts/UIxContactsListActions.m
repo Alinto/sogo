@@ -54,6 +54,7 @@
 {
   if ((self = [super init]))
     {
+      requestData = nil;
       contactInfos = nil;
       sortedIDs = nil;
     }
@@ -63,12 +64,27 @@
 
 - (void) dealloc
 {
+  [requestData release];
   [contactInfos release];
   [sortedIDs release];
   [super dealloc];
 }
 
 /* accessors */
+
+- (NSDictionary *) requestData
+{
+  WORequest *rq;
+
+  if (!requestData)
+    {
+      rq = [context request];
+      requestData = [[rq contentAsString] objectFromJSONString];
+      [requestData retain];
+    }
+
+  return requestData;
+}
 
 - (NSString *) defaultSortKey
 {
@@ -78,7 +94,6 @@
 - (NSString *) sortKey
 {
   NSString *s;
-  WORequest *rq;
   static NSArray *sortKeys = nil;
 
   if (!sortKeys)
@@ -88,8 +103,7 @@
       [sortKeys retain];
     }
 
-  rq = [context request];
-  s = [rq formValueForKey: @"sort"];
+  s = [[self requestData] objectForKey: @"sort"];
   if (![s length] || ![sortKeys containsObject: s])
     s = [self defaultSortKey];
 
@@ -102,8 +116,8 @@
   NSString *ascending, *sort;
   SOGoUserSettings *us;
 
-  sort = [[context request] formValueForKey: @"sort"];
-  ascending = [[context request] formValueForKey: @"asc"];
+  sort = [[self requestData] objectForKey: @"sort"];
+  ascending = [[self requestData] objectForKey: @"asc"];
 
   if ([sort length])
     {
@@ -125,14 +139,13 @@
 - (NSArray *) contactInfos
 {
   id <SOGoContactFolder> folder;
-  NSString *ascending, *searchText, *valueText;
-  NSArray *results, *fields;
+  NSString *ascending, *valueText;
+  NSArray *results, *searchFields, *fields;
   NSMutableArray *filteredContacts, *headers;
-  NSDictionary *contact;
+  NSDictionary *data, *contact;
   BOOL excludeLists;
   NSComparisonResult ordering;
   NSUInteger max, count;
-  WORequest *rq;
   unsigned int i;
 
   [self saveSortValue];
@@ -140,23 +153,26 @@
   if (!contactInfos)
     {
       folder = [self clientObject];
-      rq = [context request];
+      data = [self requestData];
 
-      ascending = [rq formValueForKey: @"asc"];
-      ordering = ((![ascending length] || [ascending boolValue])
+      ascending = [data objectForKey: @"asc"];
+      ordering = ((!ascending || [ascending boolValue])
 		  ? NSOrderedAscending : NSOrderedDescending);
 
-      searchText = [rq formValueForKey: @"search"];
-      if ([searchText length] > 0)
-	valueText = [rq formValueForKey: @"value"];
+      searchFields = [data objectForKey: @"search"];
+      if ([searchFields isKindOfClass: [NSArray class]] && [searchFields count] > 0)
+	valueText = [data objectForKey: @"value"];
       else
-	valueText = nil;
+        {
+          searchFields = nil;
+          valueText = nil;
+        }
 
-      excludeLists = [[rq formValueForKey: @"excludeLists"] boolValue];
+      excludeLists = [[data objectForKey: @"excludeLists"] boolValue];
 
       [contactInfos release];
       results = [folder lookupContactsWithFilter: valueText
-                                      onCriteria: searchText
+                                      onCriteria: searchFields
                                           sortBy: [self sortKey]
                                         ordering: ordering
                                         inDomain: [[context activeUser] domain]];
@@ -204,16 +220,15 @@
 - (NSArray *) sortedIDs
 {
   id <SOGoContactFolder> folder;
-  NSString *ascending, *searchText, *valueText;
-  NSArray *fields, *records;
-  NSDictionary *record;
+  NSString *ascending, *valueText;
+  NSArray *searchFields, *fields, *records;
+  NSDictionary *data, *record;
   NSEnumerator *recordsList;
   NSMutableArray *ids;
   BOOL excludeLists;
   EOKeyValueQualifier *kvQualifier;
   EOSortOrdering *ordering;
   EOQualifier *qualifier;
-  WORequest *rq;
   SEL compare;
 
   folder = [self clientObject];
@@ -221,12 +236,12 @@
   if (!sortedIDs && [folder isKindOfClass: [SOGoContactGCSFolder class]])
     {
       fields = [NSArray arrayWithObjects: @"c_name", nil];
-      rq = [context request];
+      data =  [self requestData];
       qualifier = nil;
 
       // ORDER BY clause
-      ascending = [rq formValueForKey: @"asc"];
-      if (![ascending length] || [ascending boolValue])
+      ascending = [data valueForKey: @"asc"];
+      if (!ascending || [ascending boolValue])
         compare = EOCompareAscending;
       else
         compare = EOCompareDescending;
@@ -234,14 +249,14 @@
                                             selector: compare];
 
       // WHERE clause
-      searchText = [rq formValueForKey: @"search"];
-      if ([searchText length] > 0)
+      searchFields = (NSArray *)[data objectForKey: @"search"];
+      if ([searchFields count] > 0)
         {
-          valueText = [rq formValueForKey: @"value"];
+          valueText = [data objectForKey: @"value"];
           qualifier = [(SOGoContactGCSFolder *) folder qualifierForFilter: valueText
-                                                               onCriteria: searchText];
+                                                               onCriteria: searchFields];
         }
-      excludeLists = [[rq formValueForKey: @"excludeLists"] boolValue];
+      excludeLists = [[data objectForKey: @"excludeLists"] boolValue];
       if (excludeLists)
         {
           kvQualifier = [[EOKeyValueQualifier alloc]
@@ -337,7 +352,7 @@
  * @apiExample {curl} Example usage:
  *     curl -i http://localhost/SOGo/so/sogo1/Contacts/personal/view?search=name_or_address\&value=Bob
  *
- * @apiParam {Boolean} [partial] Send all contacts IDs and headers of a the first 50 contacts. Defaults to false.
+ * @apiParam {Boolean} [partial] Send all contacts IDs and headers of the first 50 contacts. Defaults to false.
  * @apiParam {Boolean} [asc] Descending sort when false. Defaults to true (ascending).
  * @apiParam {String} [sort] Sort field. Either c_cn, c_mail, c_screenname, c_o, or c_telephonenumber.
  * @apiParam {String} [search] Field criteria. Either name_or_address, category, or organization.
@@ -383,7 +398,7 @@
                               [self cardDavURL], @"cardDavURL",
                               [self publicCardDavURL], @"publicCardDavURL",
                               nil];
-  partial = [[context request] formValueForKey: @"partial"];
+  partial = [[self requestData] objectForKey: @"partial"];
 
   if ([partial intValue] && [folder isKindOfClass: [SOGoContactGCSFolder class]])
     {
@@ -427,11 +442,9 @@
 {
   NSArray *ids, *headers;
   NSDictionary *data;
-  WORequest *request;
   WOResponse *response;
 
-  request = [context request];
-  data = [[request contentAsString] objectFromJSONString];
+  data = [self requestData];
   if (![[data objectForKey: @"ids"] isKindOfClass: [NSArray class]] ||
       [[data objectForKey: @"ids"] count] == 0)
     {
@@ -463,11 +476,9 @@
   NSMutableDictionary *uniqueContacts;
   unsigned int i;
   NSSortDescriptor *commonNameDescriptor;
-  WORequest *rq;
 
-  rq = [context request];
-  excludeLists = [[rq formValueForKey: @"excludeLists"] boolValue];
-  searchText = [rq formValueForKey: @"search"];
+  excludeLists = [[[self requestData] objectForKey: @"excludeLists"] boolValue];
+  searchText = [[self requestData] objectForKey: @"search"];
   if ([searchText length] > 0)
     {
       NS_DURING
@@ -482,7 +493,7 @@
       domain = [[context activeUser] domain];
       uniqueContacts = [NSMutableDictionary dictionary];
       contacts = [folder lookupContactsWithFilter: searchText
-                                       onCriteria: @"name_or_address"
+                                       onCriteria: nil
                                            sortBy: @"c_cn"
                                          ordering: NSOrderedAscending
                                          inDomain: domain];

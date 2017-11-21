@@ -45,6 +45,30 @@
 "Carbon Copy (Cc)" = "Carbon Copy (Cc)";
 "Blind Carbon Copy (Bcc)" = "Blind Carbon Copy (Bcc)";
 
+/* Search scope: name fields */
+"name" = "Name";
+
+/* Search scope: name fields */
+"c_cn" = "Name";
+
+/* Search scope: mail fields */
+"mail" = "Mail";
+
+/* Search scope: mail fields */
+"c_mail" = "Mail";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telephone";
+
+/* Search scope: categories field */
+"c_categories" = "Categories";
+
+/* Search scope: categories field */
+"vcardcategories" = "Categories";
+
+/* Search scope: organization field */
+"c_o" = "Organization";
+
 /* Subheader of empty addressbook */
 "No contact" = "No contact";
 

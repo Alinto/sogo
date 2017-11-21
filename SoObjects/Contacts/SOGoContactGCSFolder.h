@@ -37,7 +37,7 @@
 }
 - (void) fixupContactRecord: (NSMutableDictionary *) contactRecord;
 - (EOQualifier *) qualifierForFilter: (NSString *) filter
-                          onCriteria: (NSString *) criteria;
+                          onCriteria: (NSArray *) criteria;
 - (NSDictionary *) lookupContactWithName: (NSString *) aName;
 - (NSArray *) lookupContactsWithQualifier: (EOQualifier *) qualifier;
 - (NSArray *) lookupContactsFields: (NSArray *) fields

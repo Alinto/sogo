@@ -43,7 +43,7 @@
       $Card: Card,
       $$Acl: Acl,
       $Preferences: Preferences,
-      $query: {search: 'name_or_address', value: '', sort: 'c_cn', asc: 1},
+      $query: {value: '', sort: 'c_cn', asc: 1},
       activeUser: Settings.activeUser(),
       selectedFolder: null,
       $refreshTimeout: null
@@ -497,7 +497,7 @@
       query.value = search;
 
     return _this.$id().then(function(addressbookId) {
-      var futureData = AddressBook.$$resource.fetch(addressbookId, 'view', query);
+      var futureData = AddressBook.$$resource.post(addressbookId, 'view', query);
 
       if (dry) {
         return futureData.then(function(response) {

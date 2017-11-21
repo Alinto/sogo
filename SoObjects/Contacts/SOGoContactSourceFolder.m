@@ -115,6 +115,11 @@
   return isPersonalSource;
 }
 
+- (NSArray *) searchFields
+{
+  return [source searchFields];
+}
+
 - (BOOL) listRequiresDot
 {
   return [source listRequiresDot];
@@ -391,7 +396,7 @@
 }
 
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
-                            onCriteria: (NSString *) criteria
+                            onCriteria: (NSArray *) criteria
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering
                               inDomain: (NSString *) domain
@@ -401,10 +406,10 @@
 
   result = nil;
 
-  if (([filter length] > 0 && [criteria isEqualToString: @"name_or_address"])
-      || ![source listRequiresDot])
+  if ([filter length] > 0 || ![source listRequiresDot])
     {
       records = [source fetchContactsMatching: filter
+                                 withCriteria: criteria
                                      inDomain: domain];
       [childRecords setObjects: records
                        forKeys: [records objectsForKey: @"c_name"

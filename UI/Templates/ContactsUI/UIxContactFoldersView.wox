@@ -317,7 +317,8 @@
                layout="row"
                ng-show="addressbook.mode.search"
                sg-search="addressbook.selectedFolder.$filter(searchText, { search: searchField })"
-               sg-allow-dot="addressbook.selectedFolder.listRequiresDot">
+               sg-allow-dot="addressbook.selectedFolder.listRequiresDot"
+               sg-search-fields="addressbook.selectedFolder.searchFields">
             <md-button class="md-icon-button"
                        sg-search-cancel="addressbook.cancelSearch()"
                        label:aria-label="Back">
@@ -330,10 +331,13 @@
               </div>
             </md-input-container>
             <md-input-container flex="25">
-              <md-select label:aria-label="Search scope">
-                <md-option value="name_or_address" selected="selected"><var:string label:value="Name or Email"/></md-option>
-                <md-option value="category"><var:string label:value="Category"/></md-option>
-                <md-option value="organization"><var:string label:value="Organization"/></md-option>
+              <label><var:string label:value="Search scope"/></label>
+              <md-select multiple="multiple">
+                <md-optgroup label:label="Search scope">
+                  <md-option
+                      ng-value="field"
+                      ng-repeat="field in ::addressbook.selectedFolder.searchFields">{{::field | loc}}</md-option>
+                </md-optgroup>
               </md-select>
             </md-input-container>
           </form>

@@ -948,15 +948,15 @@ The returned value *must be unique across the whole SOGo installation*
 since it is used to identify the user in the `folder_info` database
 table.
 
-|MailFieldNames
+|MailFieldNames (optional)
 |An array of fields that returns the user's email addresses (defaults to
 `mail` when unset). Note that SOGo will always automatically strip the
 protocol value from the attribute if the attribute name is `proxyAddresses`.
 
-|SearchFieldNames
-|An array of fields to to match against the search string when filtering
-users (defaults to `sn`, `displayName`, and `telephoneNumber` when
-unset).
+|SearchFieldNames (optional)
+|An array of fields to match against the search string when filtering
+users (defaults to `sn`, `displayName`, `cn`, `mail`, and `telephoneNumber`
+when unset).
 
 |IMAPHostFieldName (optional)
 |The field that returns either an URI to the IMAP server as described
@@ -1612,7 +1612,7 @@ SQL source:
 
 [cols="3,47a,50"]
 |=======================================================================
-.20+^|D |SOGoUserSources
+.21+^|D |SOGoUserSources
 |Parameter used to set the SQL and/or LDAP sources used for
 authentication and global address books. Multiple sources can be
 specified as an array of dictionaries. A dictionary that defines a SQL
@@ -1687,6 +1687,10 @@ authentication usernames (defaults to `c_uid` when unset).
 additional email addresses (beside the `mail` column) for each user.
 Values must be unique and not appear in more than one column.
 Space-separated values allowed in all *additional* columns (besides in `mail`).
+
+|SearchFieldNames (optional)
+|An array of fields to match against the search string when filtering
+users (defaults to `c_cn` and `mail` when unset).
 
 |IMAPHostFieldName (optional)
 |The field that returns the IMAP hostname for the user.

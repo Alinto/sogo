@@ -199,7 +199,7 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
           folder = [sortedFolders objectAtIndex: i];
           //NSLog(@"  Address book: %@ (%@)", [folder displayName], [folder class]);
           contacts = [folder lookupContactsWithFilter: searchText
-                                           onCriteria: @"name_or_address"
+                                           onCriteria: nil
                                                sortBy: @"c_cn"
                                              ordering: NSOrderedAscending
                                              inDomain: domain];
@@ -343,6 +343,7 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
                                             && [currentFolder listRequiresDot]], @"listRequiresDot",
                                   acls, @"acls",
                                   urls, @"urls",
+                                  [currentFolder searchFields], @"searchFields",
                                   nil];
       [foldersAttrs addObject: folderAttrs];
     }
