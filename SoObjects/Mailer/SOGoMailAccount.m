@@ -797,7 +797,7 @@ static NSString *inboxFolderName = @"INBOX";
       else
         guid = [[[result objectForKey: @"status"] objectForKey: currentFolder] objectForKey: @"x-guid"];
       
-      if (!guid || [guid isNull])
+      if (!guid || ![guid isNotNull])
         {
           // Don't generate a GUID for "Other users" and "Shared" namespace folders - user foldername instead
           if ((otherUsersFolderName && [currentFolder isEqualToString: otherUsersFolderName]) ||
