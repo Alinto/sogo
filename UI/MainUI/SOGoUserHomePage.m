@@ -1,6 +1,6 @@
 /* SOGoUserHomePage.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,11 +76,12 @@
   loginModule = [ud loginModule];
   if (!([loginModule isEqualToString: @"Calendar"]
         || [loginModule isEqualToString: @"Contacts"]
-        || [loginModule isEqualToString: @"Mail"]))
+        || [loginModule isEqualToString: @"Mail"])
+      || ![[context activeUser] canAccessModule: loginModule])
     {
       [self errorWithFormat: @"login module '%@' not accepted (must be"
             @"'Calendar', 'Contacts' or 'Mail')", loginModule];
-      loginModule = @"Calendar";
+      loginModule = @"Contacts";
     }
 
   // We check if we must write the Sieve scripts to the server

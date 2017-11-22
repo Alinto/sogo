@@ -17,6 +17,7 @@ Enhancements
  - [web] now also give modify permission when selecting all calendar rights
  - [web] allow edition of IMAP flags associated to mail labels
  - [web] search scope of address book is now respected
+ - [web] avoid redirection to forbidden module (via ModulesConstraints)
 
 Bug fixes
  - [core] yearly repeating events are not shown in web calendar (#4237)
