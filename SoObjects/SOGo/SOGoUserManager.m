@@ -1205,6 +1205,7 @@ static Class NSNullK;
       currentSource = [_sources objectForKey: sourceID];
       [contacts addObjectsFromArray:
                   [currentSource fetchContactsMatching: filter
+                                          withCriteria: nil
                                               inDomain: domain]];
     }
 
