@@ -78,22 +78,22 @@
       };
       methods = {
         view = {
-          protectedBy = "<public>";
+          protectedBy = "View";
           actionClass = "UIxMailListActions";
           actionName  = "getUIDs";
         };
         headers = {
-          protectedBy = "<public>";
+          protectedBy = "View";
           actionClass = "UIxMailListActions";
           actionName  = "getHeaders";
         };
         subscribe = {
-          protectedBy = "<public>";
+          protectedBy = "View";
           actionClass = "UIxMailFolderActions";
           actionName = "subscribe";
         };
         unsubscribe = {
-          protectedBy = "<public>";
+          protectedBy = "View";
           actionClass = "UIxMailFolderActions";
           actionName = "unsubscribe";
         };
