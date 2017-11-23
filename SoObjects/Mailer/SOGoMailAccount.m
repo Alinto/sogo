@@ -555,10 +555,10 @@ static NSString *inboxFolderName = @"INBOX";
 					  nil];
 
           if (sieveFolderUTF8Encoding)
-            sievePath = [folderPath stringByDecodingImap4FolderName];
+            sievePath = [currentPath stringByDecodingImap4FolderName];
           else
-            sievePath = folderPath;
-          [folder setObject: [sievePath substringFromIndex: 1] forKey: @"sievePath"];
+            sievePath = currentPath;
+          [folder setObject: sievePath forKey: @"sievePath"];
 
           // Either add this new folder to its parent or the list of root folders
           [folders addObject: folder];
