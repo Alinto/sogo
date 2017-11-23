@@ -59,7 +59,6 @@
 
     this.$onInit = function() {
       this.$element = $element;
-      this.service = Mailbox;
       this.editMode = false;
       this.accountController.addMailboxController(this);
     };
@@ -84,7 +83,7 @@
 
 
     this.selectFolder = function($event) {
-      if (this.editMode || this.mailbox == Mailbox.selectedFolder)
+      if (this.editMode || this.mailbox == Mailbox.selectedFolder || this.mailbox.isNoSelect())
         return;
       Mailbox.$virtualPath = false;
       Mailbox.$virtualMode = false;
