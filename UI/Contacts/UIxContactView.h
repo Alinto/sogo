@@ -36,7 +36,7 @@
 }
 
 //- (NSString *) fullName;
-- (NSArray *) orgUnits;
+//- (NSArray *) orgUnits;
 - (NSString *) photoURL;
 
 @end
