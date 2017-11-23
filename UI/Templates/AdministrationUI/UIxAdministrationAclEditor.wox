@@ -6,7 +6,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-  <div layout-fill="layout-fill">
+  <div layout-fill="layout-fill" layout="column">
     <md-card>
       <md-toolbar class="hide show-xs" flex-none="flex-none">
         <div class="md-toolbar-tools">
@@ -42,7 +42,7 @@
           <md-icon>save</md-icon>
         </md-button>
       </md-toolbar>
-      <md-card-content class="md-flex md-static">
+      <md-card-content>
         <div layout="row">
           <md-icon>search</md-icon>
           <md-autocomplete
