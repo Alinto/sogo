@@ -69,6 +69,18 @@
 /* Search scope: organization field */
 "c_o" = "Organization";
 
+/* Search scope: organization field */
+"o" = "Organization";
+
+/* Search scope: department field */
+"ou" = "Department";
+
+/* Search scope: city field */
+"l" = "City";
+
+/* Search scope: country field */
+"c" = "Country";
+
 /* Subheader of empty addressbook */
 "No contact" = "No contact";
 
