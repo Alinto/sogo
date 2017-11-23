@@ -217,11 +217,13 @@
         if (component.isAllDay)
           coordinates.duration -= 96;
         component.setDelta(coordinates.duration * 15);
-        newComponent(null, 'appointment', component).finally(function() {
-          $timeout(function() {
-            Component.$resetGhost();
+        newComponent(null, 'appointment', component)
+          .catch()
+          .finally(function() {
+            $timeout(function() {
+              Component.$resetGhost();
+            });
           });
-        });
       }
       else {
         delta = pointerHandler.currentEventCoordinates.getDelta(pointerHandler.originalEventCoordinates);
@@ -272,6 +274,8 @@
             controller: RecurrentComponentDialogController
           }).then(function() {
             $rootScope.$emit('calendars:list');
+          }, function() {
+            // Cancel
           }).finally(function() {
             $timeout(function() {
               Component.$resetGhost();
@@ -289,6 +293,8 @@
           component.$adjust(params).then($mdDialog.hide, function(response) {
             $mdDialog.cancel().then(function() {
               onComponentAdjustError(response, component, params);
+            }, function() {
+              // Cancel
             });
           });
         };
@@ -297,6 +303,8 @@
           component.$adjust(params).then($mdDialog.hide, function(response) {
             $mdDialog.cancel().then(function() {
               onComponentAdjustError(response, component, params);
+            }, function() {
+              // Cancel
             });
           });
         };
@@ -319,6 +327,8 @@
             }
           }).then(function() {
             $rootScope.$emit('calendars:list');
+          }, function() {
+            // Cancel
           });
         }
       }
