@@ -120,7 +120,7 @@
             $rootScope.$emit('folder:dragstart', this.folder);
           }
           if (this.dragHasStarted) {
-            if (ev.shiftKey)
+            if (ev.shiftKey || this.folder.isRemote)
               this.helper.addClass('sg-draggable-helper--copy');
             else
               this.helper.removeClass('sg-draggable-helper--copy');
@@ -130,12 +130,16 @@
 
 
         onDragEnd: function(ev) {
+          var action = 'move';
+
           this.startPosition = null;
           $document.off('mousemove', this.bindedOnDrag);
 
           if (this.dragHasStarted) {
+            if (ev.shiftKey || this.folder.isRemote)
+              action = 'copy';
             $log.debug('emit folder:dragend');
-            $rootScope.$emit('folder:dragend', this.folder, ev.shiftKey?'copy':'move');
+            $rootScope.$emit('folder:dragend', this.folder, action);
             this.dragHasStarted = false;
             this.helper.addClass('ng-hide');
           }
