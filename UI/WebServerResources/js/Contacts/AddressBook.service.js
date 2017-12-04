@@ -474,7 +474,7 @@
 
     if (dry) {
       // Don't keep a copy of the query in dry mode
-      query = angular.copy(AddressBook.$query);
+      query = {value: '', sort: 'c_cn', asc: 1};
     }
     else {
       this.$isLoading = true;
@@ -512,15 +512,20 @@
             fields = _.invokeMap(response.headers[0], 'toLowerCase');
             idFieldIndex = fields.indexOf('id');
             response.headers.splice(0, 1);
+            results = _.map(response.headers, function(data) {
+              return data[idFieldIndex];
+            });
           }
 
-          if (excludedCards)
-            // Remove excluded cards from results
-            results = _.filter(response.ids, function(id) {
-              return _.isUndefined(_.find(excludedCards, _.bind(compareIds, id)));
-            });
-          else
-            results = response.ids;
+          if (response.ids) {
+            if (excludedCards)
+              // Remove excluded cards from results
+              results = _.filter(response.ids, function(id) {
+                return _.isUndefined(_.find(excludedCards, _.bind(compareIds, id)));
+              });
+            else
+              results = response.ids;
+          }
 
           // Remove cards that no longer match the search query
           for (index = cards.length - 1; index >= 0; index--) {
