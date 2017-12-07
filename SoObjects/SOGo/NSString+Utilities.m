@@ -264,6 +264,7 @@ static int cssEscapingCount;
   [representation replaceString: @"\n" withString: @"\\n"];
   [representation replaceString: @"\r" withString: @"\\r"];
   [representation replaceString: @"\t" withString: @"\\t"];
+  [representation replaceString: @"\0" withString: @""];
 
   return representation;
 }
