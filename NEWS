@@ -40,6 +40,7 @@ Bug fixes
  - [web] fixed path of destination mailbox in Sieve filter editor
  - [web] force copy of dragged contacts from global address books
  - [web] removed null characters from JSON responses
+ - [web] fixed advanced mailbox search when mailbox name is very long
  - [eas] hebrew folders encoding problem using EAS (#4240)
  - [eas] avoid sync requests for shared folders every second (#4275)
 

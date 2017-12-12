@@ -54,13 +54,9 @@
   @include rtl(transform-origin, right center, left center);
 }
 
-.pseudo-input-label--no-margin,
-.button-label {
-  margin-top: 0;
-}
-
 .pseudo-input-field {
   display: block;
+  margin: 0;
   padding-top: $input-padding-top + 2;
   padding-bottom: $input-border-width-focused - $input-border-width-default;
   padding-left: 2px;
@@ -68,15 +64,9 @@
   border-width: 0;
 }
 
-.pseudo-input-field--underline {
-  @extend .pseudo-input-field;
-  border-bottom: 1px solid $colorGrayLighter;
-  &:focus,
-  &:active,
-  &:hover {
-    margin-bottom: ($line - 1);
-    border-bottom: 2px solid sg-color($sogoBlue, 500);
-  }
+md-select.pseudo-input-field {
+  margin-bottom: $mg;
+  padding: 0;
 }
 
 // The specs dimensions are too large to fit with angular-material
@@ -85,9 +75,4 @@
   .pseudo-input-label {
     margin-top: 0;
   }
-}
-
-input #inner-editor {
-  color: $colorGrayLight;
-  line-height: inherit;
 }

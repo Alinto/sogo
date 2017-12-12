@@ -8,10 +8,13 @@
     <!-- in virtual mailbox mode -->
     <md-toolbar class="md-whiteframe-z1 md-hue-3"
                 ng-hide="!mailbox.service.$virtualPath || mailbox.mode.multiple">
-      <div class="md-toolbar-tools">
-        <md-input-container class="md-flex">
-          <label><var:string label:value="Search messages in"/></label>
-          <md-select ng-model="mailbox.service.$virtualPath">
+      <div class="md-toolbar-tools"
+         layout="row" layout-align="start start">
+        <div class="pseudo-input-container pseudo-input-container--compact md-flex sg-no-wrap">
+          <label class="pseudo-input-label pseudo-input-label">
+            <var:string label:value="Search messages in"/>
+          </label>
+          <md-select class="pseudo-input-field" ng-model="mailbox.service.$virtualPath">
             <md-option ng-value="">
               <span ng-bind="app.accounts[0].name"><!-- main account name --></span>
             </md-option>
@@ -23,7 +26,7 @@
                     ng-bind="folder.$displayName"><!-- mailbox name --></span>
             </md-option>
           </md-select>
-        </md-input-container>
+        </div>
         <md-menu>
           <md-button class="sg-icon-button" label:aria-label="More search options" ng-click="$mdMenu.open()">
             <md-icon>settings</md-icon>
