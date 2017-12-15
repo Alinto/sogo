@@ -19,7 +19,7 @@
     vm.isFullscreen = false;
     vm.hideBcc = (stateMessage.editable.bcc.length === 0);
     vm.hideCc = (stateMessage.editable.cc.length === 0);
-    vm.identities = _.map(stateAccount.identities, 'full');
+    vm.identities = _.uniq(_.map(stateAccount.identities, 'full'));
     vm.message = stateMessage;
     vm.recipientSeparatorKeys = [
       $mdConstant.KEY_CODE.ENTER,
