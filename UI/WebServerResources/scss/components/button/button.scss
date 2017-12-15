@@ -6,6 +6,17 @@ md-sidenav md-list .md-button {
 }
 
 /**
+ * Applying a background color (using ng-class or ui-sref-active) to a clickable (ng-click)
+ * md-list-item would hide the content of the item content.
+ *
+ * See https://github.com/angular/material/commit/9a8eab0cbb0a934f4ba2ffe616359ba6ce38ae75
+ * => HAS BEEN REVERTED
+ */
+a.md-button-wrap-executor.md-no-style {
+  //background-color: transparent;
+}
+
+/**
  * Overlap fab button by half its height downward
  */
 .md-button.md-fab-overlap-bottom {
@@ -60,7 +71,7 @@ md-sidenav md-list .md-button {
  *     +--------------+
  *
  */
-md-fab-speed-dial.sg-fab-bottom-center {
+.sg-fab-bottom-center {
   position: absolute;
   bottom: ($button-fab-height - $button-fab-padding)/2;
   left: auto;
