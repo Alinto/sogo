@@ -174,7 +174,7 @@
       _this.refs[i] = new Card(o);
     });
     // Instanciate date object of birthday
-    if (this.birthday) {
+    if (this.birthday && angular.isString(this.birthday)) {
       var dlp = Card.$Preferences.$mdDateLocaleProvider;
       this.birthday = this.birthday.parseDate(dlp, '%Y-%m-%d');
       this.$birthday = dlp.formatDate(this.birthday);
