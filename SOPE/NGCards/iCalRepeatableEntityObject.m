@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2012 Inverse inc.
+  Copyright (C) 2017 Inverse inc.
 
   This file is part of SOPE.
 
@@ -40,6 +40,8 @@
 
   if ([classTag isEqualToString: @"RRULE"])
     tagClass = [iCalRecurrenceRule class];
+  else if ([classTag isEqualToString: @"RDATE"])
+    tagClass = [iCalDateTime class];
   else if ([classTag isEqualToString: @"EXDATE"])
     tagClass = [iCalDateTime class];
   else
@@ -82,6 +84,108 @@
 
   rules = [self recurrenceRules];
   return [self rules: rules withTimeZone: timezone];
+}
+
+- (void) removeAllRecurrenceDates
+{
+  [self removeChildren: [self childrenWithTag: @"rdate"]];
+}
+
+- (void) addToRecurrenceDates: (NSCalendarDate *) _rdate
+{
+  iCalDateTime *dateTime;
+
+  dateTime = [iCalDateTime new];
+  [dateTime setTag: @"rdate"];
+  if ([self isKindOfClass: [iCalEvent class]] && [(iCalEvent *)self isAllDay])
+    [dateTime setDate: _rdate];
+  else
+    [dateTime setDateTime: _rdate];
+  [self addChild: dateTime];
+  [dateTime release];
+}
+
+- (BOOL) hasRecurrenceDates
+{
+  return ([[self childrenWithTag: @"rdate"] count] > 0);
+}
+
+/**
+ * Returns the recurrence dates for the entity, but adjusted to the entity timezone.
+ * @param theTimeZone the timezone of the entity.
+ * @see [iCalTimeZone computedDatesForStrings:]
+ * @return the exception dates, adjusted to the timezone.
+ */
+- (NSArray *) recurrenceDatesWithTimeZone: (id) theTimeZone
+{
+  NSArray *dates, *rDates;
+  NSEnumerator *dateList;
+  NSCalendarDate *rDate;
+  NSString *dateString;
+  int offset;
+  unsigned i;
+
+  if (theTimeZone)
+    {
+      dates = [NSMutableArray array];
+      dateList = [[self childrenWithTag: @"rdate"] objectEnumerator];
+
+      while ((dateString = [dateList nextObject]))
+	{
+          rDates = [(iCalDateTime*) dateString dateTimes];
+          for (i = 0; i < [rDates count]; i++)
+	    {
+	      rDate = [rDates objectAtIndex: i];
+
+              // Example: timezone is -0400, date is 2012-05-24 (00:00:00 +0000),
+              //                      and changes to 2012-05-24 04:00:00 +0000
+              if ([theTimeZone isKindOfClass: [iCalTimeZone class]])
+                {
+                    rDate = [(iCalTimeZone *) theTimeZone computedDateForDate: rDate];
+                }
+              else
+                {
+                  offset = [(NSTimeZone *) theTimeZone secondsFromGMTForDate: rDate];
+                  rDate = (NSCalendarDate *) [rDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                                               seconds:-offset];
+                }
+	      [(NSMutableArray *) dates addObject: rDate];
+            }
+	}
+    }
+  else
+    dates = [self recurrenceDates];
+
+  return dates;
+}
+
+/**
+ * Return the recurrence dates of the entity in GMT.
+ * @return an array of NSCalendarDate instances.
+ */
+- (NSArray *) recurrenceDates
+{
+  NSArray *rDates;
+  NSMutableArray *dates;
+  NSEnumerator *dateList;
+  NSCalendarDate *rDate;
+  NSString *dateString;
+  unsigned i;
+
+  dates = [NSMutableArray array];
+  dateList = [[self childrenWithTag: @"rdate"] objectEnumerator];
+
+  while ((dateString = [dateList nextObject]))
+    {
+      rDates = [(iCalDateTime*) dateString dateTimes];
+      for (i = 0; i < [rDates count]; i++)
+	{
+	  rDate = [rDates objectAtIndex: i];
+          [dates addObject: rDate];
+	}
+    }
+
+  return dates;
 }
 
 - (void) removeAllExceptionRules
@@ -284,7 +388,7 @@
 
 - (BOOL) isRecurrent
 {
-  return [self hasRecurrenceRules];
+  return [self hasRecurrenceRules] || [self hasRecurrenceDates];
 }
 
 /* Matching */
@@ -303,10 +407,11 @@
                        firstInstanceCalendarDateRange: (NGCalendarDateRange *)_fir
 {
   return [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: _r
-                                   firstInstanceCalendarDateRange: _fir
-                                   recurrenceRules: [self recurrenceRules]
-                                   exceptionRules: [self exceptionRules]
-                                   exceptionDates: [self exceptionDates]];
+                                            firstInstanceCalendarDateRange: _fir
+                                                           recurrenceRules: [self recurrenceRules]
+                                                            exceptionRules: [self exceptionRules]
+                                                           recurrenceDates: [self recurrenceDates]
+                                                            exceptionDates: [self exceptionDates]];
 }
 
 
@@ -315,27 +420,43 @@
 lastPossibleRecurrenceStartDateUsingFirstInstanceCalendarDateRange: (NGCalendarDateRange *)_r
 {
   NSCalendarDate *date;
-  NSEnumerator *rRules;
-  iCalRecurrenceRule *rule;
-  iCalRecurrenceCalculator *calc;
   NSCalendarDate *rdate;
 
   date  = nil;
 
-  rRules = [[self recurrenceRules] objectEnumerator];
-  rule = [rRules nextObject];
-  while (rule && ![rule isInfinite] && !date)
+  if ([self hasRecurrenceRules])
     {
-      calc = [iCalRecurrenceCalculator
-               recurrenceCalculatorForRecurrenceRule: rule
-                  withFirstInstanceCalendarDateRange: _r];
-      rdate = [[calc lastInstanceCalendarDateRange] startDate];
-      if (!rdate)
-        date = [_r startDate];
-      else if (!date || ([date compare: rdate] == NSOrderedAscending))
-        date = rdate;
-      else
-        rule = [rRules nextObject];
+      NSEnumerator *rRules;
+      iCalRecurrenceRule *rule;
+      iCalRecurrenceCalculator *calc;
+
+      rRules = [[self recurrenceRules] objectEnumerator];
+      rule = [rRules nextObject];
+      while (rule && ![rule isInfinite] && !date)
+        {
+          calc = [iCalRecurrenceCalculator
+                   recurrenceCalculatorForRecurrenceRule: rule
+                      withFirstInstanceCalendarDateRange: _r];
+          rdate = [[calc lastInstanceCalendarDateRange] startDate];
+          if (!rdate)
+            date = [_r startDate];
+          else if (!date || ([date compare: rdate] == NSOrderedAscending))
+            date = rdate;
+          else
+            rule = [rRules nextObject];
+        }
+    }
+
+  if ([self hasRecurrenceDates])
+    {
+      NSEnumerator *rDates;
+
+      rDates = [[self recurrenceDates] objectEnumerator];
+      while ((rdate = [rDates nextObject]))
+        {
+          if (!date || ([date compare: rdate] == NSOrderedAscending))
+            date = rdate;
+        }
     }
 
   return date;
@@ -401,6 +522,7 @@ lastPossibleRecurrenceStartDateUsingFirstInstanceCalendarDateRange: (NGCalendarD
                                                            firstInstanceCalendarDateRange: firstInstanceRange
                                                                           recurrenceRules: rules
                                                                            exceptionRules: nil
+                                                                          recurrenceDates: nil
                                                                            exceptionDates: nil];
           if ([recurrences count] > 0)
             firstOccurrenceStartDate = [[recurrences objectAtIndex: 0]

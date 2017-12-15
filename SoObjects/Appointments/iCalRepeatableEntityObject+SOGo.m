@@ -1,6 +1,6 @@
 /* iCalRepeatableEntityObject+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2016 Inverse inc.
+ * Copyright (C) 2007-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 
 #import <NGExtensions/NGCalendarDateRange.h>
 
+#import <SoObjects/SOGo/CardElement+SOGo.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoUserDefaults.h>
 #import <SoObjects/SOGo/WOContext+SOGo.h>
@@ -78,7 +79,7 @@
  */
 - (NSDictionary *) attributesInContext: (WOContext *) context
 {
-  NSArray *allComponents, *rules;
+  NSArray *allComponents, *rules, *dates;
   NSCalendarDate *untilDate;
   NSMutableDictionary *data, *repeat;
   NSString *frequency;
@@ -86,6 +87,7 @@
   SOGoUserDefaults *ud;
   iCalEvent *masterComponent;
   iCalRecurrenceRule *rule;
+  NSInteger i, count;
 
   data = [NSMutableDictionary dictionaryWithDictionary: [super attributesInContext: context]];
 
@@ -99,10 +101,12 @@
         allComponents = [[self parent] todos];
       masterComponent = [allComponents objectAtIndex: 0];
       rules = [masterComponent recurrenceRules];
+      dates = [masterComponent recurrenceDates];
     }
   else
     {
       rules = [self recurrenceRules];
+      dates = [self recurrenceDates];
     }
 
   if ([rules count] > 0)
@@ -129,7 +133,6 @@
         {
           NSMutableArray *byMonthDay = [NSMutableArray arrayWithArray: [rule byMonthDay]];
           NSMutableArray *byDay = [NSMutableArray array];
-          NSInteger i, count;
           count = [byMonthDay count];
           for (i = count - 1; i >= 0; i--)
             {
@@ -154,6 +157,22 @@
       [data setObject: repeat forKey: @"repeat"];
     }
 
+  if ([dates count] > 0)
+    {
+      NSMutableArray *rDates = [NSMutableArray array];
+      NSCalendarDate *rDate;
+      ud = [[context activeUser] userDefaults];
+      timeZone = [ud timeZone];
+      count = [dates count];
+      for (i = 0; i < count; i++)
+        {
+          rDate = [dates objectAtIndex: i];
+          [rDate setTimeZone: timeZone];
+          [rDates addObject: [rDate iso8601DateString]];
+        }
+      [data setObject: [NSDictionary dictionaryWithObject: rDates forKey: @"dates"] forKey: @"repeat"];
+    }
+
   return data;
 }
 
@@ -166,8 +185,11 @@
 {
   iCalRecurrenceRule *rule;
   iCalRecurrenceFrequency frequency;
+  NSArray *rdates;
   NSCalendarDate *date;
   SOGoUserDefaults *ud;
+  NSInteger i;
+  BOOL isAllDay;
   id repeat, o;
 
   [super setAttributes: data inContext: context];
@@ -177,6 +199,7 @@
     return;
 
   repeat = [data objectForKey: @"repeat"];
+  isAllDay = [[data objectForKey: @"isAllDay"] boolValue];
   if ([repeat isKindOfClass: [NSDictionary class]])
     {
       rule = [iCalRecurrenceRule new];
@@ -198,6 +221,26 @@
                 {
                   frequency = iCalRecurrenceFrequenceDaily;
                   [rule setByDayMask: [iCalByDayMask byDayMaskWithWeekDays]];
+                }
+              else if ([o caseInsensitiveCompare: @"CUSTOM"] == NSOrderedSame)
+                {
+                  [self removeAllRecurrenceDates];
+                  o = [repeat objectForKey: @"dates"];
+                  if ([o isKindOfClass: [NSArray class]])
+                    {
+                      rdates = o;
+                      for (i = 0; i < [rdates count]; i++)
+                        {
+                          o = [rdates objectAtIndex: i];
+                          if ([o isKindOfClass: [NSDictionary class]])
+                            {
+                              date = [self dateFromString: [o objectForKey: @"date"] inContext: context];
+                              if (!isAllDay)
+                                [self adjustDate: &date withTimeString: [o objectForKey: @"time"] inContext: context];
+                              [self addToRecurrenceDates: date];
+                            }
+                        }
+                    }
                 }
 	    }
           else
@@ -254,6 +297,10 @@
     {
       [self removeAllRecurrenceRules];
     }
+  else if ([self hasRecurrenceDates])
+    {
+      [self removeAllRecurrenceDates];
+    }
 }
 
 - (NSString *) cycleInfo
@@ -275,6 +322,12 @@
       if (rules)
 	[cycleInfo setObject: rules forKey: @"exRules"];
 
+      /* recurrence dates */
+      rules = [self recurrenceDates];
+      if ([rules count])
+	[cycleInfo setObject: rules forKey: @"rDates"];
+
+      /* exception dates */
       rules = [self exceptionDates];
       if ([rules count])
 	[cycleInfo setObject: rules forKey: @"exDates"];
@@ -328,7 +381,7 @@
  */
 - (BOOL) doesOccurOnDate: (NSCalendarDate *) theOccurenceDate
 {
-  NSArray *ranges;
+  NSMutableArray *ranges;
   NGCalendarDateRange *checkRange, *firstRange;
   NSCalendarDate *startDate, *endDate;
   id firstStartDate, timeZone;
@@ -352,11 +405,25 @@
 							       endDate: endDate];
 
       // Calculate the occurrences for the given date
-      ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: checkRange
-						  firstInstanceCalendarDateRange: firstRange
-								 recurrenceRules: [self recurrenceRulesWithTimeZone: timeZone]
-								  exceptionRules: [self exceptionRulesWithTimeZone: timeZone]
-								  exceptionDates: [self exceptionDatesWithTimeZone: timeZone]];
+      ranges =
+        [NSMutableArray arrayWithArray:
+                          [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: checkRange
+                                                             firstInstanceCalendarDateRange: firstRange
+                                                                            recurrenceRules: [self recurrenceRulesWithTimeZone: timeZone]
+                                                                             exceptionRules: [self exceptionRulesWithTimeZone: timeZone]
+                                                                            recurrenceDates: [self recurrenceDatesWithTimeZone: timeZone]
+                                                                             exceptionDates: [self exceptionDatesWithTimeZone: timeZone]]];
+
+      // Add the master occurrence when dealing with RDATES.
+      // However, the master event must not be flagged with X-MOZ-FAKED-MASTER.
+      if ([self hasRecurrenceDates] &&
+          ![[[self uniqueChildWithTag: @"x-moz-faked-master"]
+                  flattenedValuesForKey: @""] isEqualToString: @"1"] &&
+          [checkRange doesIntersectWithDateRange: firstRange])
+        {
+          [ranges insertObject: firstRange atIndex: 0];
+        }
+
       doesOccur = [ranges dateRangeArrayContainsDate: startDate];
     }
 

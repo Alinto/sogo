@@ -144,4 +144,27 @@
     </div>
   </div>
 
+  <!-- custom (rdates) -->
+  <div ng-if="editor.component.repeat.frequency == 'custom'">
+    <label class="button-label"><var:string label:value="On"/></label>
+    <div layout="row" layout-align="start end" ng-repeat="rdate in editor.component.repeat.dates">
+      <md-button class="md-icon-button" type="button" ng-click="editor.component.$deleteRecurrenceDate($index)">
+        <md-icon>remove_circle</md-icon>
+      </md-button>
+      <md-datepicker
+          ng-model="editor.component.repeat.dates[$index]"
+          label:md-placeholder="On"><!-- date picker --></md-datepicker>
+      <sg-timepicker
+          ng-model="editor.component.repeat.dates[$index]"
+          ng-hide="editor.component.isAllDay"><!-- time picker --></sg-timepicker>
+    </div>
+    <div layout="row" layout-align="start center">
+      <md-button class="md-icon-button" type="button" ng-click="editor.component.$addRecurrenceDate()">
+        <md-icon>add_circle</md-icon>
+      </md-button>
+      <label class="button-label">
+        <var:string label:value="Add Recurrence Date"/>
+      </label>
+    </div>
+  </div>
 </container>

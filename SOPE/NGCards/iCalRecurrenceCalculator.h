@@ -46,6 +46,7 @@
           firstInstanceCalendarDateRange: (NGCalendarDateRange *) _fir
                          recurrenceRules: (NSArray *) _rRules
                           exceptionRules: (NSArray *) _exRules
+                         recurrenceDates: (NSArray *) _rDates
                           exceptionDates: (NSArray *) _exDates;
 
 + (id) recurrenceCalculatorForRecurrenceRule: (iCalRecurrenceRule *) _rrule
@@ -54,8 +55,7 @@
 - (id)    initWithRecurrenceRule: (iCalRecurrenceRule *) _rrule
   firstInstanceCalendarDateRange: (NGCalendarDateRange *) _range;
 
-- (NSArray *)
- recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *)_r;
+- (NSArray *) recurrenceRangesWithinCalendarDateRange: (NGCalendarDateRange *)_r;
 - (BOOL) doesRecurrWithinCalendarDateRange: (NGCalendarDateRange *) _range;
 
 - (NGCalendarDateRange *) firstInstanceCalendarDateRange;

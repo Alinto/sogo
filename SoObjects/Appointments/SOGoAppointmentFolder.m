@@ -1216,10 +1216,10 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
 {
   NSMutableDictionary *row, *fixedRow;
-  NSMutableArray *records;
+  NSMutableArray *records, *ranges;
   NSDictionary *cycleinfo;
   NGCalendarDateRange *firstRange, *recurrenceRange, *oneRange;
-  NSArray *rules, *exRules, *exDates, *ranges;
+  NSArray *rules, *exRules, *rDates, *exDates;
   NSArray *components;
   NSString *content;
   NSCalendarDate *checkStartDate, *checkEndDate, *firstStartDate, *firstEndDate;
@@ -1268,6 +1268,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     }
   rules = [cycleinfo objectForKey: @"rules"];
   exRules = [cycleinfo objectForKey: @"exRules"];
+  rDates = [cycleinfo objectForKey: @"rDates"];
   exDates = [cycleinfo objectForKey: @"exDates"];
   eventTimeZone = nil;
   allDayTimeZone = nil;
@@ -1333,8 +1334,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
           tz = eventTimeZone ? eventTimeZone : allDayTimeZone;
           if (tz)
             {
-              // Adjust the exception dates
+              // Adjust the recurrence and exception dates
               exDates = [component exceptionDatesWithTimeZone: tz];
+              rDates = [component recurrenceDatesWithTimeZone: tz];
               
               // Adjust the recurrence rules "until" dates
               rules = [component recurrenceRulesWithTimeZone: tz];
@@ -1343,11 +1345,25 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
           
           // Calculate the occurrences for the given range
           records = [NSMutableArray array];
-          ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: recurrenceRange
-                                                      firstInstanceCalendarDateRange: firstRange
-                                                                     recurrenceRules: rules
-                                                                      exceptionRules: exRules
-                                                                      exceptionDates: exDates];
+          ranges =
+            [NSMutableArray arrayWithArray:
+                              [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: recurrenceRange
+                                                                 firstInstanceCalendarDateRange: firstRange
+                                                                                recurrenceRules: rules
+                                                                                 exceptionRules: exRules
+                                                                                recurrenceDates: rDates
+                                                                                 exceptionDates: exDates]];
+
+          // Add the master occurrence when dealing with RDATES.
+          // However, the master event must not be flagged with X-MOZ-FAKED-MASTER.
+          if ([component hasRecurrenceDates] &&
+              ![[[component uniqueChildWithTag: @"x-moz-faked-master"]
+                  flattenedValuesForKey: @""] isEqualToString: @"1"] &&
+              [recurrenceRange doesIntersectWithDateRange: firstRange])
+            {
+              [ranges insertObject: firstRange atIndex: 0];
+            }
+
           max = [ranges count];
           for (count = 0; count < max; count++)
             {

@@ -179,7 +179,10 @@
           <div layout="row" layout-align="start center">
             <md-input-container class="md-block md-flex">
               <label><var:string label:value="Repeat"/></label>
-              <md-select ng-model="editor.component.repeat.frequency" ng-disabled="editor.component.occurrenceId">
+              <md-select
+                  ng-model="editor.component.repeat.frequency"
+                  ng-change="editor.changeFrequency($event)"
+                  ng-disabled="editor.component.occurrenceId">
                 <var:foreach list="repeatList" item="item">
                   <md-option var:value="item"><var:string var:value="itemRepeatText"/></md-option>
                 </var:foreach>

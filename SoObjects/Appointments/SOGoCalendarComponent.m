@@ -328,6 +328,7 @@
       [newOccurence autorelease];
       [newOccurence removeAllRecurrenceRules];
       [newOccurence removeAllExceptionRules];
+      [newOccurence removeAllRecurrenceDates];
       [newOccurence removeAllExceptionDates];
 
       // It is important to set the organizer as some DAV clients (iCal

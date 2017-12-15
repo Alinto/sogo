@@ -134,6 +134,17 @@ static Class yearlyCalcClass  = Nil;
     }
 }
 
++ (void)    _fillRanges: (NSMutableArray *) ranges
+              fromDates: (NSArray *) rdates
+	    withinRange: (NGCalendarDateRange *) limits
+       startingWithDate: (NGCalendarDateRange *) first
+{
+  NSArray *dates;
+
+  dates = [self _ranges: rdates withinRange: limits  startingWithDate: first];
+  [ranges addObjectsFromArray: dates];
+}
+
 + (void) _removeExceptionsFromRanges: (NSMutableArray *) ranges
 			   withRules: (NSArray *) exrules
 			 withinRange: (NGCalendarDateRange *) limits
@@ -159,8 +170,30 @@ static Class yearlyCalcClass  = Nil;
 }
 
 + (NSArray *) _dates: (NSArray *) dateList
-	 withinRange: (NGCalendarDateRange *) limits
+         withinRange: (NGCalendarDateRange *) limits
     startingWithDate: (NGCalendarDateRange *) first
+{
+  return [self _dates: dateList
+          withinRange: limits
+      startingWithDate: first
+               ranges: NO];
+}
+
+
++ (NSArray *) _ranges: (NSArray *) dateList
+          withinRange: (NGCalendarDateRange *) limits
+     startingWithDate: (NGCalendarDateRange *) first
+{
+  return [self _dates: dateList
+          withinRange: limits
+      startingWithDate: first
+               ranges: YES];
+}
+
++ (NSArray *) _dates: (NSArray *) dateList
+         withinRange: (NGCalendarDateRange *) limits
+    startingWithDate: (NGCalendarDateRange *) first
+              ranges: (BOOL) returnRanges
 {
   NSMutableArray *newDates;
   NSEnumerator *dates;
@@ -178,7 +211,12 @@ static Class yearlyCalcClass  = Nil;
       currentRange = [NGCalendarDateRange calendarDateRangeWithStartDate: currentDate
 								 endDate: [currentDate dateByAddingYears: 0 months: 0 days: 0 hours: 0 minutes: 0 seconds: [first duration]]];
       if ([limits doesIntersectWithDateRange: currentRange])
-	[newDates addObject: currentDate];
+        {
+          if (returnRanges)
+            [newDates addObject: currentRange];
+          else
+            [newDates addObject: currentDate];
+        }
     }
 
   return newDates;
@@ -217,15 +255,18 @@ static Class yearlyCalcClass  = Nil;
 	  firstInstanceCalendarDateRange: (NGCalendarDateRange *) _fir
 			 recurrenceRules: (NSArray *) _rRules
 			  exceptionRules: (NSArray *) _exRules
+                         recurrenceDates: (NSArray *) _rDates
 			  exceptionDates: (NSArray *) _exDates
 {
   NSMutableArray *ranges;
 
   ranges = [NSMutableArray arrayWithCapacity: 64];
 
-  if ([_rRules count] > 0)
+  if ([_rRules count] > 0 || [_rDates count] > 0)
     {
       [self _fillRanges: ranges fromRules: _rRules
+	    withinRange: _r startingWithDate: _fir];
+      [self _fillRanges: ranges fromDates: _rDates
 	    withinRange: _r startingWithDate: _fir];
       [self _removeExceptionsFromRanges: ranges withRules: _exRules
 	    withinRange: _r startingWithDate: _fir];

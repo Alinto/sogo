@@ -571,6 +571,7 @@ vtodo_class2 = "(Confidential task)";
 "More options" = "More options";
 "Delete This Occurrence" = "Delete This Occurrence";
 "Delete All Occurrences" = "Delete All Occurrences";
+"Add Recurrence Date" = "Add Recurrence Date";
 "Add From" = "Add From";
 "Add Due" = "Add Due";
 "Import" = "Import";

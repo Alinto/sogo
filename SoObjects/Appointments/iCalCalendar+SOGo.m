@@ -49,7 +49,7 @@
   /* master occurrence */
   component = [components objectAtIndex: 0];
 
-  if ([component hasRecurrenceRules] || [component recurrenceId])
+  if ([component isRecurrent] || [component recurrenceId])
     {
       // Skip the master event if required
       count = ([component recurrenceId] ? 0 : 1);

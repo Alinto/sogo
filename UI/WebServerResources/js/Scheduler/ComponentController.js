@@ -222,6 +222,7 @@
     vm.showAttendeesEditor = vm.component.attendees && vm.component.attendees.length;
     vm.toggleAttendeesEditor = toggleAttendeesEditor;
     //vm.searchText = null;
+    vm.changeFrequency = changeFrequency;
     vm.changeCalendar = changeCalendar;
     vm.cardFilter = cardFilter;
     vm.addAttendee = addAttendee;
@@ -270,6 +271,11 @@
       return vm.component &&
         vm.component.repeat.frequency == 'monthly' &&
         vm.component.repeat.month.type == 'bymonthday';
+    }
+
+    function changeFrequency() {
+      if (vm.component.repeat.frequency == 'custom')
+        vm.showRecurrenceEditor = true;
     }
 
     function changeCalendar() {
