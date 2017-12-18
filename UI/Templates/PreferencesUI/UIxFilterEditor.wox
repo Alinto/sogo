@@ -62,7 +62,7 @@
             </md-input-container>
 
             <md-input-container class="md-block" flex="25" ng-if="rule.field == 'header'">
-              <input type="text" ng-model="rule.custom_header" required="required"/>
+              <input type="text" ng-model="rule.custom_header" label:placeholder="Header" required="required"/>
             </md-input-container>
 
             <md-input-container class="md-block" flex="25" ng-if="rule.field == 'size'">
