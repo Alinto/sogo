@@ -562,7 +562,15 @@
     else {
       this.repeat.days = [];
     }
-    if (angular.isUndefined(this.repeat.frequency))
+    if (this.repeat.dates) {
+      this.repeat.frequency = 'custom';
+      _.forEach(this.repeat.dates, function(rdate, i, rdates) {
+        if (angular.isString(rdate))
+          // Ex: 2015-10-25T22:34:51+00:00
+          rdates[i] = Component.$parseDate(rdate);
+      });
+    }
+    else if (angular.isUndefined(this.repeat.frequency))
       this.repeat.frequency = 'never';
     if (angular.isUndefined(this.repeat.interval))
       this.repeat.interval = 1;
@@ -673,12 +681,14 @@
    * @returns true if the recurrence rule requires the full recurrence editor
    */
   Component.prototype.hasCustomRepeat = function() {
-    var b = angular.isDefined(this.repeat) &&
+    var b = angular.isUndefined(this.occurrenceId) &&
+        angular.isDefined(this.repeat) &&
         (this.repeat.interval > 1 ||
          angular.isDefined(this.repeat.days) && this.repeat.days.length > 0 ||
          angular.isDefined(this.repeat.monthdays) && this.repeat.monthdays.length > 0 ||
          angular.isDefined(this.repeat.months) && this.repeat.months.length > 0 ||
-         angular.isDefined(this.repeat.month) && angular.isDefined(this.repeat.month.type));
+         angular.isDefined(this.repeat.month) && angular.isDefined(this.repeat.month.type) ||
+         angular.isDefined(this.repeat.dates) && this.repeat.dates.length > 0);
     return b;
   };
 
@@ -1101,6 +1111,31 @@
   };
 
   /**
+   * @function $addRecurrenceDate
+   * @memberof Component.prototype
+   * @desc Add a start date
+   */
+  Component.prototype.$addRecurrenceDate = function() {
+    var now = new Date();
+    now.setMinutes(Math.round(now.getMinutes()/15)*15);
+
+    if (angular.isUndefined(this.repeat.dates))
+      this.repeat = { frequency: 'custom', dates: [] };
+    this.repeat.dates.push(now);
+  };
+
+  /**
+   * @function $deleteRecurrenceDate
+   * @memberof Component.prototype
+   * @desc Delete a recurrence date
+   */
+  Component.prototype.$deleteRecurrenceDate = function(index) {
+    if (index > -1 && this.repeat && this.repeat.dates && this.repeat.dates.length > index) {
+      this.repeat.dates.splice(index, 1);
+    }
+  };
+
+  /**
    * @function $reset
    * @memberof Component.prototype
    * @desc Reset the original state the component's data.
@@ -1198,6 +1233,14 @@
         delete component.repeat.days;
         if (this.repeat.month.day == 'relative')
           component.repeat.monthdays = [this.repeat.month.occurrence];
+      }
+      else if (this.repeat.frequency == 'custom' && this.repeat.dates) {
+        _.forEach(component.repeat.dates, function(rdate, i, rdates) {
+          rdates[i] = {
+            date: rdate.format(dlp, '%Y-%m-%d'),
+            time: rdate.format(dlp, '%H:%M')
+          };
+        });
       }
     }
     else if (this.repeat.frequency && this.repeat.frequency != 'never') {
