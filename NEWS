@@ -20,6 +20,7 @@ Enhancements
  - [web] search scope of address book is now respected
  - [web] avoid redirection to forbidden module (via ModulesConstraints)
  - [web] lower constraints on dates range of auto-reply message (#4161)
+ - [web] sort categories in event and task editors (#4349)
 
 Bug fixes
  - [core] yearly repeating events are not shown in web calendar (#4237)

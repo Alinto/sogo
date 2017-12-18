@@ -49,7 +49,7 @@
             <md-autocomplete
                 md-selected-item="editor.categories.selected"
                 md-search-text="editor.categories.searchText"
-                md-items="category in editor.component.constructor.filterCategories(editor.categories.searchText)"
+                md-items="category in editor.component.constructor.filterCategories(editor.categories.searchText) | orderBy"
                 md-min-length="0"
                 label:placeholder="Add a category">
               <span md-highlight-text="editor.categories.searchText">{{category}}</span>
