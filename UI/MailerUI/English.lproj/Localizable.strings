@@ -321,6 +321,7 @@
 = "The messages could not be moved to the trash folder. Would you like to delete them immediately?";
 
 /* Message editing */
+"Please specify a subject." = "Please specify a subject.";
 "error_missingsubject" = "The message has no subject. Are you sure you want to send it?";
 "error_missingrecipients" = "Please specify at least one recipient.";
 "Send Anyway" = "Send Anyway";
