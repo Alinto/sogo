@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  AclController.$inject = ['$timeout', '$mdDialog', 'Dialog', 'usersWithACL', 'User', 'folder'];
-  function AclController($timeout, $mdDialog, Dialog, usersWithACL, User, folder) {
+  AclController.$inject = ['$document', '$timeout', '$mdDialog', 'Dialog', 'usersWithACL', 'User', 'folder'];
+  function AclController($document, $timeout, $mdDialog, Dialog, usersWithACL, User, folder) {
     var vm = this;
 
     vm.users = usersWithACL; // ACL users
@@ -16,6 +16,7 @@
     vm.selectedUid = null;
     vm.userToAdd = '';
     vm.searchText = '';
+    vm.templateName = templateName;
     vm.userFilter = userFilter;
     vm.closeModal = closeModal;
     vm.saveModal = saveModal;
@@ -27,6 +28,12 @@
     vm.showRights = showRights;
     vm.confirmation = { showing: false,
                         message: ''};
+
+    function templateName(user) {
+      // Check if user is anonymous and if a specific template must be used
+      var isAnonymous = $document[0].getElementById('UIxAnonymousUserRightsEditor') && user.$isAnonymous();
+      return 'UIx' + (isAnonymous? 'Anonymous' : '') + 'UserRightsEditor';
+    }
 
     function userFilter($query) {
       return User.$filter($query, folder.$acl.users);

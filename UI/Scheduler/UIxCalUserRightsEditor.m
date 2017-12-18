@@ -124,7 +124,7 @@
 	
       if ([currentValue isEqualToString: @"None"])
 	[self removeAllRightsFromList: rightsForType];
-      else
+      else if ([rightsForType containsObject: currentValue])
 	[self appendExclusiveRight: [NSString stringWithFormat: @"%@%@",
 					      currentType, currentValue]
 	      fromList: rightsForType];

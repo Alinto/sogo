@@ -84,7 +84,7 @@
               <var:string label:value="Subscribe User"/>
             </md-checkbox>
           </var:if>
-          <div ng-include="'UIxUserRightsEditor'">
+          <div ng-include="acl.templateName(user)">
             <!--
                 Load ng-template #UIxUserRightsEditor from main module wox. Inner wox templates are:
                 - UI/Templates/ContactsUI/UIxContactsUserRightsEditor.wox

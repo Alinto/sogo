@@ -57,6 +57,11 @@
   [super dealloc];
 }
 
+- (void) setUid: (NSString *) _uid
+{
+  ASSIGNCOPY (self->uid, _uid);
+}
+
 - (NSString *) uid
 {
   return uid;

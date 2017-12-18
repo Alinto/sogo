@@ -583,6 +583,11 @@
     <var:component className="UIxCalUserRightsEditor" />
   </script>
 
+  <!-- modal inner content for anonymous acl editor -->
+  <script type="text/ng-template" id="UIxAnonymousUserRightsEditor">
+    <var:component className="UIxCalUserRightsEditor" const:uid="anonymous" />
+  </script>
+
   <!-- modal for calendar import -->
   <script type="text/ng-template" id="UIxCalendarImportDialog">
     <md-dialog flex="40" flex-xs="100" label:aria-label="Import Calendar">

@@ -554,7 +554,7 @@
     </div>
   </script>
 
-  <!-- modal for addressbook sharing options -->
+  <!-- modal inner content for acl editor -->
   <script type="text/ng-template" id="UIxUserRightsEditor">
     <var:component className="UIxContactsUserRightsEditor" />
   </script>
