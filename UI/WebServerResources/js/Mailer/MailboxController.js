@@ -172,6 +172,7 @@
                 stateMessage: message
               }
             })
+            .catch() // Cancel
             .finally(function() {
               vm.messageDialog = null;
             });

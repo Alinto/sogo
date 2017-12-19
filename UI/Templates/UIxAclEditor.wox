@@ -7,7 +7,7 @@
     xmlns:label="OGo:label"
     >
   <md-dialog flex="50" flex-sm="80" flex-xs="100">
-    <md-toolbar ng-class="!acl.folder.getClassName || acl.folder.getClassName('bg')">
+    <md-toolbar ng-class="::acl.folderClassName()">
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">folder_shared</md-icon>
         <div class="pseudo-input-container md-flex">

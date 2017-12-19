@@ -16,6 +16,7 @@
     vm.selectedUid = null;
     vm.userToAdd = '';
     vm.searchText = '';
+    vm.folderClassName = folderClassName;
     vm.templateName = templateName;
     vm.userFilter = userFilter;
     vm.closeModal = closeModal;
@@ -28,6 +29,13 @@
     vm.showRights = showRights;
     vm.confirmation = { showing: false,
                         message: ''};
+
+    function folderClassName() {
+      if (angular.isFunction(folder.getClassName))
+        return folder.getClassName('bg');
+      else
+        return false;
+    }
 
     function templateName(user) {
       // Check if user is anonymous and if a specific template must be used

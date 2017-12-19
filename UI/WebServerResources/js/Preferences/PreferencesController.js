@@ -148,6 +148,8 @@
       }).then(function() {
         vm.preferences.defaults.AuxiliaryMailAccounts[index] = account;
         form.$setDirty();
+      }, function() {
+        // Cancel
       });
     };
 
