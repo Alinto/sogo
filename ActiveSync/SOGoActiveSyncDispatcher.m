@@ -2831,7 +2831,7 @@ void handle_eas_terminate(int signum)
     {
       currentFolder = [systemSources objectForKey: [allKeys objectAtIndex: i]];
       allContacts = [currentFolder lookupContactsWithFilter: query
-                                                 onCriteria: @"name_or_address"
+                                                 onCriteria: nil
                                                      sortBy: @"c_cn"
                                                    ordering: NSOrderedAscending
                                                    inDomain: [[context activeUser] domain]];
