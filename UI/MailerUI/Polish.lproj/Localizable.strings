@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "Przeszukaj wiele skrzynek";
 
 /* Main Frame  */
-"Home"                 = "Strona główna"; 
+"Home"                 = "Strona główna";
 "Calendar"             = "Kalendarz";
 "Addressbook"          = "Książka adresowa";
 "Mail"                 = "Poczta";
@@ -321,6 +321,7 @@
 = "Wiadomość nie może być przeniesiona do kosza. Czy chcesz ją skasować?";
 
 /* Message editing */
+"Please specify a subject." = "Proszę wybrać tytuł.";
 "error_missingsubject" = "Brak tematu";
 "error_missingrecipients" = "Brak odbiorców";
 "Send Anyway" = "Wyślij mimo wszystko";

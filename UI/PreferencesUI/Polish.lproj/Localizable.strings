@@ -47,6 +47,7 @@
 "Enable auto reply on" = "Włącz autoodpowiedź w";
 "Disable auto reply on" = "Zablokuj autoodpowiedź w";
 "Always send vacation message response" = "Zawsze wysyłaj autoodpowiedź";
+"Discard incoming mails during vacation" = "Odrzucaj przychodzące wiadomości podczas nieobecności";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Podaj treść wiadomości i twoje adresy e-mail, dla których chcesz włączyć autoodpowiedź.";
 "Your vacation message must not end with a single dot on a line." = "Twoja wiadomość nie może kończyć się kropką w pustej linii.";
@@ -146,10 +147,17 @@
 /* Mailer */
 "Labels" = "Etykiety";
 "Label" = "Etykieta";
+"IMAP Label" = "Etykieta IMAP";
+"Invalid label" = "Nie używaj spacji ani znaków ( ) { } % * \" \\";
+"Duplicate label" = "Skopiuj etykietę";
+"IMAP labels must have unique names." = "Etykiety IMAP muszą być unikalne.";
 "New label" = "Nowa etykieta";
 "Show subscribed mailboxes only" = "Pokaż tylko subskrybowane konta pocztowe";
 "Synchronize only default mail folders (EAS)" = "Synchronizuj wyłącznie domyślne foldery (EAS)";
 "Sort messages by threads" = "Sortuj wiadomości według wątków";
+"Always show mail composer" = "Zawsze pokazuj edytor wiadomości";
+"Inside current window" = "W aktualnym oknie";
+"In a popup window" = "W nowym oknie";
 "When sending mail, add unknown recipients to my" = "Gdy wysyłam e-mail, dodaj adresy nowych odbiorców do";
 "Address Book" = "Książka adresowa";
 "Forward messages" = "Przekaż wiadomości";
@@ -238,7 +246,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";

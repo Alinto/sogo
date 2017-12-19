@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "Rechercher dans plusieurs boîtes";
 
 /* Main Frame  */
-"Home"                 = "Accueil"; 
+"Home"                 = "Accueil";
 "Calendar"             = "Agenda";
 "Addressbook"          = "Adresses";
 "Mail"                 = "Courrier";
@@ -321,6 +321,7 @@
 = "Les messages ne peuvent être déplacés dans la corbeille. Voulez-vous les supprimer immédiatement?";
 
 /* Message editing */
+"Please specify a subject." = "Veuillez définir un sujet.";
 "error_missingsubject" = "Le message n'a pas de sujet. Êtes-vous certain de vouloir l'envoyer?";
 "error_missingrecipients" = "Veuillez spécifier au moins un destinataire.";
 "Send Anyway" = "Envoyer sans sujet";

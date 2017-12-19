@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "Birden fazla klasörde ara";
 
 /* Main Frame  */
-"Home"                 = "Ev"; 
+"Home"                 = "Ev";
 "Calendar"             = "Takvim";
 "Addressbook"          = "Adres Defteri";
 "Mail"                 = "E-posta";
@@ -321,6 +321,7 @@
 = "İletiler çöpe taşınamıyor. Bu iletileri hemen silmek ister misiniz?";
 
 /* Message editing */
+"Please specify a subject." = "Lütfen iletinize bir konu belirleyin.";
 "error_missingsubject" = "Bu iletinin konusu yok. İletiyi konusuz olarak göndermek istediğinizden emin misiniz?";
 "error_missingrecipients" = "Lütfen en az bir alıcı belirtin.";
 "Send Anyway" = "Yinede Gönder";
