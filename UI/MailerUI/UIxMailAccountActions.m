@@ -20,8 +20,20 @@
 
 #import <Foundation/NSDictionary.h>
 
+#import <NGHttp/NGHttpRequest.h>
+
+#import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#define COMPILING_NGOBJWEB 1 /* httpRequest is needed in importCertificateAction */
 #import <NGObjWeb/WORequest.h>
+#undef COMPILING_NGOBJWEB
+#import <NGObjWeb/WOResponse.h>
+
+#import <NGMime/NGMimeBodyPart.h>
+#import <NGMime/NGMimeHeaderFields.h>
+#import <NGMime/NGMimeMultipartBody.h>
+#import <NGMime/NGMimeType.h>
+
 #import <NGImap4/NSString+Imap4.h>
 #import <NGExtensions/NSString+misc.h>
 
@@ -91,7 +103,7 @@
   drafts = [[self clientObject] draftsFolderInContext: context];
   newDraftMessage = [drafts newDraft];
   headers = [NSMutableDictionary dictionary];
-  
+
   save = NO;
 
   value = [[self request] formValueForKey: @"mailto"];
@@ -175,6 +187,66 @@
 - (WOResponse *) removeDelegateAction
 {
   return [self _performDelegationAction: @selector (removeDelegates:)];
+}
+
+- (WOResponse *) importCertificateAction
+{
+  NSArray *parts;
+  NGMimeBodyPart *part;
+  NGMimeContentDispositionHeaderField *header;
+  NSData *pkcs12;
+  NSString *mimeType, *name, *password;
+  WOResponse *response;
+  id data;
+  unsigned int count, max;
+
+  password = nil;
+  pkcs12 = nil;
+  response = [self responseWithStatus: 507];
+
+  data = [[[context request] httpRequest] body];
+
+  if (![data isKindOfClass: [NSException class]])
+    {
+      parts = [data parts];
+      max = [parts count];
+      for (count = 0; count < max; count++)
+        {
+          part = [parts objectAtIndex: count];
+          header = (NGMimeContentDispositionHeaderField *)[part headerForKey: @"content-disposition"];
+          name = [header name];
+          if ([name isEqualToString: @"password"])
+            {
+              password = name;
+            }
+          else if ([name isEqualToString: @"file"])
+            {
+              mimeType = [(NGMimeType *)[part headerForKey: @"content-type"] stringValue];
+              if ([mimeType hasSuffix: @"pkcs12"])
+                {
+                  pkcs12 = [part body];
+                }
+              else
+                {
+                  response = [self responseWithStatus: 507];
+                }
+            }
+        }
+    }
+
+  if (password && pkcs12)
+    {
+      // TODO: append certificate to user defaults
+      response = [self responseWith204];
+    }
+
+  return response;
+}
+
+- (WOResponse *) removeCertificateAction
+{
+  // TODO: remove certificate from user defaults
+  return [self responseWith204];
 }
 
 @end

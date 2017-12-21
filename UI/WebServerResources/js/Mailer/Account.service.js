@@ -288,6 +288,18 @@
   };
 
   /**
+   * @function $removeCertificate
+   * @memberof Account.prototype
+   * @desc Remove any S/MIME certificate associated with the account.
+   * @returns a promise of the HTTP operation
+   */
+  Account.prototype.$removeCertificate = function() {
+    var _this = this;
+
+    return Account.$$resource.fetch(this.id.toString(), 'removeCertificate');
+  };
+
+  /**
    * @function updateQuota
    * @memberof Account.prototype
    * @param {Object} data - the inbox quota information returned by the server

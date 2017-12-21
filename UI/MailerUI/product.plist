@@ -433,6 +433,16 @@
           actionClass = "UIxMailAccountActions";
           actionName = "removeDelegate";
         };
+        importCertificate = {
+          protectedBy = "Change Images And Files";
+          actionClass = "UIxMailAccountActions";
+          actionName = "importCertificate";
+        };
+        removeCertificate = {
+          protectedBy = "Change Images And Files";
+          actionClass = "UIxMailAccountActions";
+          actionName = "removeCertificate";
+        };
       };
     };
 

@@ -187,6 +187,8 @@
 "Collected Address Book" = "Collected Address Book";
 
 /* IMAP Accounts */
+"Settings" = "Settings";
+"Security" = "Security";
 "Mail Account" = "Mail Account";
 "New Mail Account" = "New Mail Account";
 "Server Name" = "Server Name";
@@ -203,6 +205,17 @@
 "Please specify a valid sender address." = "Please specify a valid sender address.";
 "Please specify a valid reply-to address." = "Please specify a valid reply-to address.";
 "Specify a hostname other than the local host" = "Specify a hostname other than the local host";
+
+"S/MIME Certificate" = "S/MIME Certificate";
+"No certificate installed" = "No certificate installed";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "The SSL certificate must use the PKCS#12 (PFX) format.";
+"Uninstall" = "Uninstall";
+"Choose PKCS12 Certificate .." = "Choose PKCS12 Certificate ..";
+"Certificate Password" = "Certificate Password";
+"Upload" = "Upload";
+"When composing a message" = "When composing a message";
+"Digitally sign the message by default" = "Digitally sign the message by default";
+"Always try to encrypt the message" = "Always try to encrypt the message";
 
 /* Additional Parameters */
 "Additional Parameters" = "Additional Parameters";

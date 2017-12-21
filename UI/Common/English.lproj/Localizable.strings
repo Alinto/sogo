@@ -76,6 +76,10 @@
 "Yes" = "Yes";
 "No" = "No";
 
+/* generic messages */
+"Error" = "Error";
+"Success" = "Success";
+
 /* alarms */
 "Reminder" = "Reminder";
 "Start" = "Start";

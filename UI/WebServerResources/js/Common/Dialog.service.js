@@ -20,7 +20,8 @@
     var alert = this.$modal.alert()
         .title(title)
         .htmlContent(content)
-        .ok(l('OK'));
+        .ok(l('OK'))
+        .multiple(true);
     this.$modal.show(alert);
   };
 
