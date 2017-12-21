@@ -124,10 +124,13 @@
 	
       if ([currentValue isEqualToString: @"None"])
 	[self removeAllRightsFromList: rightsForType];
-      else if ([rightsForType containsObject: currentValue])
-	[self appendExclusiveRight: [NSString stringWithFormat: @"%@%@",
-					      currentType, currentValue]
-	      fromList: rightsForType];
+      else
+        {
+          currentValue = [NSString stringWithFormat: @"%@%@", currentType, currentValue];
+          if ([rightsForType containsObject: currentValue])
+            [self appendExclusiveRight: currentValue
+                              fromList: rightsForType];
+        }
       currentType = [types nextObject];
     }
 
