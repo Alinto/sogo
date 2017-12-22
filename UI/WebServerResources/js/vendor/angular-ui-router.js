@@ -4,7 +4,7 @@
  *         This causes it to be incompatible with plugins that depend on @uirouter/core.
  *         We recommend switching to the ui-router-core.js and ui-router-angularjs.js bundles instead.
  *         For more information, see https://ui-router.github.io/blog/uirouter-for-angularjs-umd-bundles
- * @version v1.0.11
+ * @version v1.0.12
  * @link https://ui-router.github.io
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -1071,7 +1071,6 @@ var Queue = /** @class */ (function () {
  * @coreapi
  * @module transition
  */ /** for typedoc */
-"use strict";
 
 (function (RejectType) {
     RejectType[RejectType["SUPERSEDED"] = 2] = "SUPERSEDED";
@@ -1351,10 +1350,10 @@ var Trace = /** @class */ (function () {
         if (!this.enabled(exports.Category.VIEWCONFIG))
             return;
         var mapping = pairs.map(function (_a) {
-            var uiViewData = _a[0], config = _a[1];
-            var uiView = uiViewData.$type + ":" + uiViewData.fqn;
-            var view = config && config.viewDecl.$context.name + ": " + config.viewDecl.$name + " (" + config.viewDecl.$type + ")";
-            return { 'ui-view fqn': uiView, 'state: view name': view };
+            var uiView = _a.uiView, viewConfig = _a.viewConfig;
+            var uiv = uiView && uiView.fqn;
+            var cfg = viewConfig && viewConfig.viewDecl.$context.name + ": " + viewConfig.viewDecl.$name;
+            return { 'ui-view fqn': uiv, 'state: view name': cfg };
         }).sort(function (a, b) { return a['ui-view fqn'].localeCompare(b['ui-view fqn']); });
         consoletable(mapping);
     };
@@ -3098,9 +3097,9 @@ var Transition = /** @class */ (function () {
      * #### Example:
      * ```js
      * .onEnter({ to: 'foo.bar' }, trans => {
-     *   // returns result of `foo` state's `data` resolve
-     *   // even though `foo.bar` also has a `data` resolve
-     *   var fooData = trans.injector('foo').get('data');
+     *   // returns result of `foo` state's `myResolve` resolve
+     *   // even though `foo.bar` also has a `myResolve` resolve
+     *   var fooData = trans.injector('foo').get('myResolve');
      * });
      * ```
      *
@@ -3109,8 +3108,8 @@ var Transition = /** @class */ (function () {
      * #### Example:
      * ```js
      * .onExit({ exiting: 'foo.bar' }, trans => {
-     *   // Gets the resolve value of `data` from the exiting state.
-     *   var fooData = trans.injector(null, 'foo.bar').get('data');
+     *   // Gets the resolve value of `myResolve` from the state being exited
+     *   var fooData = trans.injector(null, 'from').get('myResolve');
      * });
      * ```
      *
@@ -3165,6 +3164,18 @@ var Transition = /** @class */ (function () {
     };
     /**
      * Dynamically adds a new [[Resolvable]] (i.e., [[StateDeclaration.resolve]]) to this transition.
+     *
+     * Allows a transition hook to dynamically add a Resolvable to this Transition.
+     *
+     * Use the [[Transition.injector]] to retrieve the resolved data in subsequent hooks ([[UIInjector.get]]).
+     *
+     * If a `state` argument is provided, the Resolvable is processed when that state is being entered.
+     * If no `state` is provided then the root state is used.
+     * If the given `state` has already been entered, the Resolvable is processed when any child state is entered.
+     * If no child states will be entered, the Resolvable is processed during the `onFinish` phase of the Transition.
+     *
+     * The `state` argument also scopes the resolved data.
+     * The resolved data is available from the injector for that `state` and any children states.
      *
      * #### Example:
      * ```js
@@ -3612,7 +3623,7 @@ var beforeAfterSubstr = function (char) { return function (str) {
     return [str.substr(0, idx), str.substr(idx + 1)];
 }; };
 var hostRegex = new RegExp('^(?:[a-z]+:)?//[^/]+/');
-var stripFile = function (str) { return str.replace(/\/[^/]*$/, ''); };
+var stripLastPathElement = function (str) { return str.replace(/\/[^/]*$/, ''); };
 var splitHash = beforeAfterSubstr("#");
 var splitQuery = beforeAfterSubstr("?");
 var splitEqual = beforeAfterSubstr("=");
@@ -5244,7 +5255,7 @@ function appendBasePath(url, isHtml5, absolute, baseHref) {
     if (baseHref === '/')
         return url;
     if (isHtml5)
-        return stripFile(baseHref) + url;
+        return stripLastPathElement(baseHref) + url;
     if (absolute)
         return baseHref.slice(1) + url;
     return url;
@@ -5409,10 +5420,10 @@ var UrlRouter = /** @class */ (function () {
     UrlRouter.prototype.update = function (read) {
         var $url = this._router.locationService;
         if (read) {
-            this.location = $url.path();
+            this.location = $url.url();
             return;
         }
-        if ($url.path() === this.location)
+        if ($url.url() === this.location)
             return;
         $url.url(this.location, true);
     };
@@ -5565,11 +5576,16 @@ var ViewService = /** @class */ (function () {
         this._uiViews = [];
         this._viewConfigs = [];
         this._viewConfigFactories = {};
+        this._listeners = [];
         this._pluginapi = {
             _rootViewContext: this._rootViewContext.bind(this),
             _viewConfigFactory: this._viewConfigFactory.bind(this),
             _registeredUIViews: function () { return _this._uiViews; },
             _activeViewConfigs: function () { return _this._viewConfigs; },
+            _onSync: function (listener) {
+                _this._listeners.push(listener);
+                return function () { return removeFrom(_this._listeners, listener); };
+            },
         };
     }
     ViewService.prototype._rootViewContext = function (context) {
@@ -5631,19 +5647,24 @@ var ViewService = /** @class */ (function () {
                 // console.log(`Multiple matching view configs for ${uiView.fqn}`, matchingConfigs);
                 matchingConfigs.sort(depthCompare(viewConfigDepth, -1)); // descending
             }
-            return [uiView, matchingConfigs[0]];
+            return { uiView: uiView, viewConfig: matchingConfigs[0] };
         };
-        var configureUIView = function (_a) {
-            var uiView = _a[0], viewConfig = _a[1];
+        var configureUIView = function (tuple) {
             // If a parent ui-view is reconfigured, it could destroy child ui-views.
             // Before configuring a child ui-view, make sure it's still in the active uiViews array.
-            if (_this._uiViews.indexOf(uiView) !== -1)
-                uiView.configUpdated(viewConfig);
+            if (_this._uiViews.indexOf(tuple.uiView) !== -1)
+                tuple.uiView.configUpdated(tuple.viewConfig);
         };
         // Sort views by FQN and state depth. Process uiviews nearest the root first.
-        var pairs$$1 = this._uiViews.sort(depthCompare(uiViewDepth, 1)).map(matchingConfigPair);
-        trace.traceViewSync(pairs$$1);
-        pairs$$1.forEach(configureUIView);
+        var uiViewTuples = this._uiViews.sort(depthCompare(uiViewDepth, 1)).map(matchingConfigPair);
+        var matchedViewConfigs = uiViewTuples.map(function (tuple) { return tuple.viewConfig; });
+        var unmatchedConfigTuples = this._viewConfigs
+            .filter(function (config) { return inArray(matchedViewConfigs, config); })
+            .map(function (viewConfig) { return ({ uiView: undefined, viewConfig: viewConfig }); });
+        var allTuples = uiViewTuples.concat(unmatchedConfigTuples);
+        uiViewTuples.forEach(configureUIView);
+        this._listeners.forEach(function (cb) { return cb(allTuples); });
+        trace.traceViewSync(allTuples);
     };
     
     /**
@@ -6198,10 +6219,11 @@ var registerOnEnterHook = function (transitionService) {
 
 /** @module hooks */
 /** for typedoc */
+var RESOLVE_HOOK_PRIORITY = 1000;
 /**
  * A [[TransitionHookFn]] which resolves all EAGER Resolvables in the To Path
  *
- * Registered using `transitionService.onStart({}, eagerResolvePath);`
+ * Registered using `transitionService.onStart({}, eagerResolvePath, { priority: 1000 });`
  *
  * When a Transition starts, this hook resolves all the EAGER Resolvables, which the transition then waits for.
  *
@@ -6213,12 +6235,12 @@ var eagerResolvePath = function (trans) {
         .then(noop);
 };
 var registerEagerResolvePath = function (transitionService) {
-    return transitionService.onStart({}, eagerResolvePath, { priority: 1000 });
+    return transitionService.onStart({}, eagerResolvePath, { priority: RESOLVE_HOOK_PRIORITY });
 };
 /**
  * A [[TransitionHookFn]] which resolves all LAZY Resolvables for the state (and all its ancestors) in the To Path
  *
- * Registered using `transitionService.onEnter({ entering: () => true }, lazyResolveState);`
+ * Registered using `transitionService.onEnter({ entering: () => true }, lazyResolveState, { priority: 1000 });`
  *
  * When a State is being entered, this hook resolves all the Resolvables for this state, which the transition then waits for.
  *
@@ -6231,7 +6253,25 @@ var lazyResolveState = function (trans, state) {
         .then(noop);
 };
 var registerLazyResolveState = function (transitionService) {
-    return transitionService.onEnter({ entering: val(true) }, lazyResolveState, { priority: 1000 });
+    return transitionService.onEnter({ entering: val(true) }, lazyResolveState, { priority: RESOLVE_HOOK_PRIORITY });
+};
+/**
+ * A [[TransitionHookFn]] which resolves any dynamically added (LAZY or EAGER) Resolvables.
+ *
+ * Registered using `transitionService.onFinish({}, eagerResolvePath, { priority: 1000 });`
+ *
+ * After all entering states have been entered, this hook resolves any remaining Resolvables.
+ * These are typically dynamic resolves which were added by some Transition Hook using [[Transition.addResolvable]].
+ *
+ * See [[StateDeclaration.resolve]]
+ */
+var resolveRemaining = function (trans) {
+    return new ResolveContext(trans.treeChanges().to)
+        .resolvePath("LAZY", trans)
+        .then(noop);
+};
+var registerResolveRemaining = function (transitionService) {
+    return transitionService.onFinish({}, resolveRemaining, { priority: RESOLVE_HOOK_PRIORITY });
 };
 
 /** @module hooks */ /** for typedoc */
@@ -6513,7 +6553,7 @@ var defaultTransOpts = {
     reload: false,
     custom: {},
     current: function () { return null; },
-    source: "unknown"
+    source: "unknown",
 };
 /**
  * This class provides services related to Transitions.
@@ -6618,7 +6658,7 @@ var TransitionService = /** @class */ (function () {
         var TH = TransitionHook;
         var paths = this._criteriaPaths;
         var NORMAL_SORT = false, REVERSE_SORT = true;
-        var ASYNCHRONOUS = false, SYNCHRONOUS = true;
+        var SYNCHRONOUS = true;
         this._defineEvent("onCreate", Phase.CREATE, 0, paths.to, NORMAL_SORT, TH.LOG_REJECTED_RESULT, TH.THROW_ERROR, SYNCHRONOUS);
         this._defineEvent("onBefore", Phase.BEFORE, 0, paths.to);
         this._defineEvent("onStart", Phase.RUN, 0, paths.to);
@@ -6648,8 +6688,7 @@ var TransitionService = /** @class */ (function () {
         this._eventTypes.push(eventType);
         makeEvent(this, this, eventType);
     };
-    
-    /** @hidden */
+    /** @hidden */ // tslint:disable-next-line
     TransitionService.prototype._getEvents = function (phase) {
         var transitionHookTypes = isDefined(phase) ?
             this._eventTypes.filter(function (type) { return type.hookPhase === phase; }) :
@@ -6675,7 +6714,7 @@ var TransitionService = /** @class */ (function () {
     TransitionService.prototype._definePathType = function (name, hookScope) {
         this._criteriaPaths[name] = { name: name, scope: hookScope };
     };
-    /** * @hidden */
+    /** * @hidden */ // tslint:disable-next-line
     TransitionService.prototype._getPathTypes = function () {
         return this._criteriaPaths;
     };
@@ -6698,6 +6737,7 @@ var TransitionService = /** @class */ (function () {
         // Wire up Resolve hooks
         fns.eagerResolve = registerEagerResolvePath(this);
         fns.lazyResolve = registerLazyResolveState(this);
+        fns.resolveAll = registerResolveRemaining(this);
         // Wire up the View management hooks
         fns.loadViews = registerLoadEnteringViews(this);
         fns.activateViews = registerActivateViews(this);
@@ -7614,26 +7654,33 @@ var PushStateLocationService = /** @class */ (function (_super) {
      * - trailing filename
      * - protocol and hostname
      *
+     * If <base href='/base/'>, this returns '/base'.
+     * If <base href='/foo/base/'>, this returns '/foo/base'.
      * If <base href='/base/index.html'>, this returns '/base'.
      * If <base href='http://localhost:8080/base/index.html'>, this returns '/base'.
+     * If <base href='/base'>, this returns ''.
+     * If <base href='http://localhost:8080'>, this returns ''.
+     * If <base href='http://localhost:8080/'>, this returns ''.
      *
      * See: https://html.spec.whatwg.org/dev/semantics.html#the-base-element
      */
     PushStateLocationService.prototype._getBasePrefix = function () {
-        return stripFile(this._config.baseHref());
+        return stripLastPathElement(this._config.baseHref());
     };
     PushStateLocationService.prototype._get = function () {
         var _a = this._location, pathname = _a.pathname, hash = _a.hash, search = _a.search;
         search = splitQuery(search)[1]; // strip ? if found
         hash = splitHash(hash)[1]; // strip # if found
         var basePrefix = this._getBasePrefix();
-        var exactMatch = pathname === this._config.baseHref();
-        var startsWith = pathname.startsWith(basePrefix);
-        pathname = exactMatch ? '/' : startsWith ? pathname.substring(basePrefix.length) : pathname;
+        var exactBaseHrefMatch = pathname === this._config.baseHref();
+        var startsWithBase = pathname.substr(0, basePrefix.length) === basePrefix;
+        pathname = exactBaseHrefMatch ? '/' : startsWithBase ? pathname.substring(basePrefix.length) : pathname;
         return pathname + (search ? '?' + search : '') + (hash ? '#' + hash : '');
     };
     PushStateLocationService.prototype._set = function (state, title, url, replace) {
-        var fullUrl = this._getBasePrefix() + url;
+        var basePrefix = this._getBasePrefix();
+        var slash = url && url[0] !== '/' ? '/' : '';
+        var fullUrl = (url === '' || url === '/') ? this._config.baseHref() : basePrefix + slash + url;
         if (replace) {
             this._history.replaceState(state, title, fullUrl);
         }
@@ -7706,7 +7753,7 @@ var BrowserLocationConfig = /** @class */ (function () {
     };
     BrowserLocationConfig.prototype.applyDocumentBaseHref = function () {
         var baseTag = document.getElementsByTagName("base")[0];
-        return this._baseHref = baseTag ? baseTag.href.substr(location.origin.length) : "";
+        return this._baseHref = baseTag ? baseTag.href.substr(location.origin.length) : location.pathname || '/';
     };
     BrowserLocationConfig.prototype.dispose = function () { };
     return BrowserLocationConfig;
@@ -7850,7 +7897,7 @@ var index$1 = Object.freeze({
 	stringify: stringify,
 	beforeAfterSubstr: beforeAfterSubstr,
 	hostRegex: hostRegex,
-	stripFile: stripFile,
+	stripLastPathElement: stripLastPathElement,
 	splitHash: splitHash,
 	splitQuery: splitQuery,
 	splitEqual: splitEqual,
@@ -8364,13 +8411,18 @@ var getStateHookBuilder = function (hookName) {
         var pathname = hookName === 'onExit' ? 'from' : 'to';
         function decoratedNg1Hook(trans, state) {
             var resolveContext = new ResolveContext(trans.treeChanges(pathname));
-            var locals = extend(getLocals(resolveContext), { $state$: state, $transition$: trans });
+            var subContext = resolveContext.subContext(state.$$state());
+            var locals = extend(getLocals(subContext), { $state$: state, $transition$: trans });
             return services.$injector.invoke(hook, this, locals);
         }
         return hook ? decoratedNg1Hook : undefined;
     };
 };
 
+/**
+ * @internalapi
+ * @module ng1
+ */ /** */
 /**
  * Implements UI-Router LocationServices and LocationConfig using Angular 1's $location service
  */
@@ -8395,7 +8447,7 @@ var Ng1LocationServices = /** @class */ (function () {
     };
     Ng1LocationServices.prototype.url = function (newUrl, replace, state) {
         if (replace === void 0) { replace = false; }
-        if (newUrl)
+        if (isDefined(newUrl))
             this.$location.url(newUrl);
         if (replace)
             this.$location.replace();
@@ -9331,7 +9383,7 @@ uiState = ['$uiRouter', '$timeout',
  * </div>
  * ```
  *
- * When the current state is "admin.roles" the "active" class will be applied to both the <div> and <a> elements.
+ * When the current state is "admin.roles" the "active" class will be applied to both the `<div>` and `<a>` elements.
  * It is important to note that the state names/globs passed to `ui-sref-active` override any state provided by a linked `ui-sref`.
  *
  * ### Notes:
@@ -10003,7 +10055,7 @@ exports.fnToString = fnToString;
 exports.stringify = stringify;
 exports.beforeAfterSubstr = beforeAfterSubstr;
 exports.hostRegex = hostRegex;
-exports.stripFile = stripFile;
+exports.stripLastPathElement = stripLastPathElement;
 exports.splitHash = splitHash;
 exports.splitQuery = splitQuery;
 exports.splitEqual = splitEqual;

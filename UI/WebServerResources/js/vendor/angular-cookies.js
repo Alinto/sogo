@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.6.7
+ * @license AngularJS v1.6.8
  * (c) 2010-2017 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -17,7 +17,7 @@
 
 
 angular.module('ngCookies', ['ng']).
-  info({ angularVersion: '1.6.7' }).
+  info({ angularVersion: '1.6.8' }).
   /**
    * @ngdoc provider
    * @name $cookiesProvider

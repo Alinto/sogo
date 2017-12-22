@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.6.7
+ * @license AngularJS v1.6.8
  * (c) 2010-2017 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -106,7 +106,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message += '\nhttp://errors.angularjs.org/1.6.7/' +
+    message += '\nhttp://errors.angularjs.org/1.6.8/' +
       (module ? module + '/' : '') + code;
 
     for (i = 0, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -2790,11 +2790,11 @@ function toDebugString(obj, maxDepth) {
 var version = {
   // These placeholder strings will be replaced by grunt's `build` task.
   // They need to be double- or single-quoted.
-  full: '1.6.7',
+  full: '1.6.8',
   major: 1,
   minor: 6,
-  dot: 7,
-  codeName: 'imperial-backstroke'
+  dot: 8,
+  codeName: 'beneficial-tincture'
 };
 
 
@@ -2940,7 +2940,7 @@ function publishExternalAPI(angular) {
       });
     }
   ])
-  .info({ angularVersion: '1.6.7' });
+  .info({ angularVersion: '1.6.8' });
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -6438,7 +6438,6 @@ function Browser(window, document, $log, $sniffer) {
 
   /**
    * @private
-   * Note: this method is used only by scenario runner
    * TODO(vojta): prefix this method with $$ ?
    * @param {function()} callback Function that will be called when no outstanding request
    */
@@ -13235,9 +13234,7 @@ function $InterpolateProvider() {
             var lastValue;
             return scope.$watchGroup(parseFns, /** @this */ function interpolateFnWatcher(values, oldValues) {
               var currValue = compute(values);
-              if (isFunction(listener)) {
-                listener.call(this, currValue, values !== oldValues ? lastValue : currValue, scope);
-              }
+              listener.call(this, currValue, values !== oldValues ? lastValue : currValue, scope);
               lastValue = currValue;
             });
           }
@@ -14007,7 +14004,7 @@ var locationPrototype = {
     }
 
     var match = PATH_MATCH.exec(url);
-    if (match[1] || url === '') this.path(decodeURI(match[1]));
+    if (match[1] || url === '') this.path(decodeURIComponent(match[1]));
     if (match[2] || match[1] || url === '') this.search(match[3] || '');
     this.hash(match[5] || '');
 
@@ -16441,11 +16438,26 @@ Parser.prototype = {
   constructor: Parser,
 
   parse: function(text) {
-    var ast = this.ast.ast(text);
-    var fn = this.astCompiler.compile(ast);
-    fn.literal = isLiteral(ast);
-    fn.constant = isConstant(ast);
+    var ast = this.getAst(text);
+    var fn = this.astCompiler.compile(ast.ast);
+    fn.literal = isLiteral(ast.ast);
+    fn.constant = isConstant(ast.ast);
+    fn.oneTime = ast.oneTime;
     return fn;
+  },
+
+  getAst: function(exp) {
+    var oneTime = false;
+    exp = exp.trim();
+
+    if (exp.charAt(0) === ':' && exp.charAt(1) === ':') {
+      oneTime = true;
+      exp = exp.substring(2);
+    }
+    return {
+      ast: this.ast.ast(exp),
+      oneTime: oneTime
+    };
   }
 };
 
@@ -16568,10 +16580,11 @@ function $ParseProvider() {
           isIdentifierStart: isFunction(identStart) && identStart,
           isIdentifierContinue: isFunction(identContinue) && identContinue
         };
+    $parse.$$getAst = $$getAst;
     return $parse;
 
     function $parse(exp, interceptorFn) {
-      var parsedExpression, oneTime, cacheKey;
+      var parsedExpression, cacheKey;
 
       switch (typeof exp) {
         case 'string':
@@ -16581,16 +16594,12 @@ function $ParseProvider() {
           parsedExpression = cache[cacheKey];
 
           if (!parsedExpression) {
-            if (exp.charAt(0) === ':' && exp.charAt(1) === ':') {
-              oneTime = true;
-              exp = exp.substring(2);
-            }
             var lexer = new Lexer($parseOptions);
             var parser = new Parser(lexer, $filter, $parseOptions);
             parsedExpression = parser.parse(exp);
             if (parsedExpression.constant) {
               parsedExpression.$$watchDelegate = constantWatchDelegate;
-            } else if (oneTime) {
+            } else if (parsedExpression.oneTime) {
               parsedExpression.$$watchDelegate = parsedExpression.literal ?
                   oneTimeLiteralWatchDelegate : oneTimeWatchDelegate;
             } else if (parsedExpression.inputs) {
@@ -16606,6 +16615,12 @@ function $ParseProvider() {
         default:
           return addInterceptor(noop, interceptorFn);
       }
+    }
+
+    function $$getAst(exp) {
+      var lexer = new Lexer($parseOptions);
+      var parser = new Parser(lexer, $filter, $parseOptions);
+      return parser.getAst(exp).ast;
     }
 
     function expressionInputDirtyCheck(newValue, oldValueOfValue, compareObjectIdentity) {
@@ -17897,14 +17912,15 @@ function $RootScopeProvider() {
        */
       $watch: function(watchExp, listener, objectEquality, prettyPrintExpression) {
         var get = $parse(watchExp);
+        var fn = isFunction(listener) ? listener : noop;
 
         if (get.$$watchDelegate) {
-          return get.$$watchDelegate(this, listener, objectEquality, get, watchExp);
+          return get.$$watchDelegate(this, fn, objectEquality, get, watchExp);
         }
         var scope = this,
             array = scope.$$watchers,
             watcher = {
-              fn: listener,
+              fn: fn,
               last: initWatchVal,
               get: get,
               exp: prettyPrintExpression || watchExp,
@@ -17912,10 +17928,6 @@ function $RootScopeProvider() {
             };
 
         lastDirtyWatch = null;
-
-        if (!isFunction(listener)) {
-          watcher.fn = noop;
-        }
 
         if (!array) {
           array = scope.$$watchers = [];
@@ -28793,6 +28805,9 @@ function NgModelController($scope, $exceptionHandler, $attr, $element, $parse, $
   this.$name = $interpolate($attr.name || '', false)($scope);
   this.$$parentForm = nullFormCtrl;
   this.$options = defaultModelOptions;
+  this.$$updateEvents = '';
+  // Attach the correct context to the event handler function for updateOn
+  this.$$updateEventHandler = this.$$updateEventHandler.bind(this);
 
   this.$$parsedNgModel = $parse($attr.ngModel);
   this.$$parsedNgModelAssign = this.$$parsedNgModel.assign;
@@ -29398,11 +29413,22 @@ NgModelController.prototype = {
    * See {@link ngModelOptions} for information about what options can be specified
    * and how model option inheritance works.
    *
+   * <div class="alert alert-warning">
+   * **Note:** this function only affects the options set on the `ngModelController`,
+   * and not the options on the {@link ngModelOptions} directive from which they might have been
+   * obtained initially.
+   * </div>
+   *
+   * <div class="alert alert-danger">
+   * **Note:** it is not possible to override the `getterSetter` option.
+   * </div>
+   *
    * @param {Object} options a hash of settings to override the previous options
    *
    */
   $overrideModelOptions: function(options) {
     this.$options = this.$options.createChild(options);
+    this.$$setUpdateOnEvents();
   },
 
   /**
@@ -29550,6 +29576,21 @@ NgModelController.prototype = {
     this.$modelValue = this.$$rawModelValue = modelValue;
     this.$$parserValid = undefined;
     this.$processModelValue();
+  },
+
+  $$setUpdateOnEvents: function() {
+    if (this.$$updateEvents) {
+      this.$$element.off(this.$$updateEvents, this.$$updateEventHandler);
+    }
+
+    this.$$updateEvents = this.$options.getOption('updateOn');
+    if (this.$$updateEvents) {
+      this.$$element.on(this.$$updateEvents, this.$$updateEventHandler);
+    }
+  },
+
+  $$updateEventHandler: function(ev) {
+    this.$$debounceViewValueCommit(ev && ev.type);
   }
 };
 
@@ -29841,11 +29882,7 @@ var ngModelDirective = ['$rootScope', function($rootScope) {
         },
         post: function ngModelPostLink(scope, element, attr, ctrls) {
           var modelCtrl = ctrls[0];
-          if (modelCtrl.$options.getOption('updateOn')) {
-            element.on(modelCtrl.$options.getOption('updateOn'), function(ev) {
-              modelCtrl.$$debounceViewValueCommit(ev && ev.type);
-            });
-          }
+          modelCtrl.$$setUpdateOnEvents();
 
           function setTouched() {
             modelCtrl.$setTouched();
@@ -29968,7 +30005,7 @@ defaultModelOptions = new ModelOptions({
  *
  * The `ngModelOptions` settings are found by evaluating the value of the attribute directive as
  * an Angular expression. This expression should evaluate to an object, whose properties contain
- * the settings. For example: `<div "ng-model-options"="{ debounce: 100 }"`.
+ * the settings. For example: `<div ng-model-options="{ debounce: 100 }"`.
  *
  * ## Inheriting Options
  *
@@ -30043,6 +30080,8 @@ defaultModelOptions = new ModelOptions({
  * `submit` event. Note that `ngClick` events will occur before the model is updated. Use `ngSubmit`
  * to have access to the updated model.
  *
+ * ### Overriding immediate updates
+ *
  * The following example shows how to override immediate updates. Changes on the inputs within the
  * form will update the model only when the control loses focus (blur event). If `escape` key is
  * pressed while the input field is focused, the value is reset to the value in the current model.
@@ -30102,6 +30141,8 @@ defaultModelOptions = new ModelOptions({
  *   </file>
  * </example>
  *
+ * ### Debouncing updates
+ *
  * The next example shows how to debounce model changes. Model will be updated only 1 sec after last change.
  * If the `Clear` button is pressed, any debounced action is canceled and the value becomes empty.
  *
@@ -30125,6 +30166,7 @@ defaultModelOptions = new ModelOptions({
  *       }]);
  *   </file>
  * </example>
+ *
  *
  * ## Model updates and validation
  *
@@ -30173,20 +30215,41 @@ defaultModelOptions = new ModelOptions({
  * You can specify the timezone that date/time input directives expect by providing its name in the
  * `timezone` property.
  *
+ *
+ * ## Programmatically changing options
+ *
+ * The `ngModelOptions` expression is only evaluated once when the directive is linked; it is not
+ * watched for changes. However, it is possible to override the options on a single
+ * {@link ngModel.NgModelController} instance with
+ * {@link ngModel.NgModelController#$overrideModelOptions `NgModelController#$overrideModelOptions()`}.
+ *
+ *
  * @param {Object} ngModelOptions options to apply to {@link ngModel} directives on this element and
  *   and its descendents. Valid keys are:
  *   - `updateOn`: string specifying which event should the input be bound to. You can set several
  *     events using an space delimited list. There is a special event called `default` that
- *     matches the default events belonging to the control.
+ *     matches the default events belonging to the control. These are the events that are bound to
+ *     the control, and when fired, update the `$viewValue` via `$setViewValue`.
+ *
+ *     `ngModelOptions` considers every event that is not listed in `updateOn` a "default" event,
+ *     since different control types use different default events.
+ *
+ *     See also the section {@link ngModelOptions#triggering-and-debouncing-model-updates
+ *     Triggering and debouncing model updates}.
+ *
  *   - `debounce`: integer value which contains the debounce model update value in milliseconds. A
  *     value of 0 triggers an immediate update. If an object is supplied instead, you can specify a
  *     custom value for each event. For example:
  *     ```
  *     ng-model-options="{
- *       updateOn: 'default blur',
+ *       updateOn: 'default blur click',
  *       debounce: { 'default': 500, 'blur': 0 }
  *     }"
  *     ```
+ *
+ *     "default" also applies to all events that are listed in `updateOn` but are not
+ *     listed in `debounce`, i.e. "click" would also be debounced by 500 milliseconds.
+ *
  *   - `allowInvalid`: boolean value which indicates that the model can be set with values that did
  *     not validate correctly instead of the default behavior of setting the model to undefined.
  *   - `getterSetter`: boolean value which determines whether or not to treat functions bound to
@@ -30241,10 +30304,11 @@ function defaults(dst, src) {
  * @element ANY
  *
  * @description
- * The `ngNonBindable` directive tells Angular not to compile or bind the contents of the current
- * DOM element. This is useful if the element contains what appears to be Angular directives and
- * bindings but which should be ignored by Angular. This could be the case if you have a site that
- * displays snippets of code, for instance.
+ * The `ngNonBindable` directive tells AngularJS not to compile or bind the contents of the current
+ * DOM element, including directives on the element itself that have a lower priority than
+ * `ngNonBindable`. This is useful if the element contains what appears to be AngularJS directives
+ * and bindings but which should be ignored by AngularJS. This could be the case if you have a site
+ * that displays snippets of code, for instance.
  *
  * @example
  * In this example there are two locations where a simple interpolation binding (`{{}}`) is present,
