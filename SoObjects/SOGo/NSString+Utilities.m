@@ -1,6 +1,6 @@
 /* NSString+Utilities.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2015 Inverse inc.
+ * Copyright (C) 2006-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -335,8 +335,10 @@ static int cssEscapingCount;
 // We avoid naming it like the one in SOPE since if the ActiveSync
 // bundle is loaded, it'll overwrite the one provided by SOPE.
 //
-- (NSString *) safeStringByEscapingXMLString: (BOOL) encoreCR
+- (NSString *) safeStringByEscapingXMLString: (BOOL) encodeCR
 {
+  NSData *data;
+
   register unsigned i, len, j;
   register wchar_t *buf;
   const wchar_t *chars;
@@ -344,13 +346,14 @@ static int cssEscapingCount;
 
   if ([self length] == 0) return @"";
 
-  NSData *data = [self dataUsingEncoding:NSUTF32StringEncoding];
+  data = [self dataUsingEncoding: NSUTF32StringEncoding];
   chars = [data bytes];
   len = [data length]/4;
 
   /* check for characters to escape ... */
-  for (i = 0, escapeCount = 0; i < len; i++) {
-    switch (chars[i]) {
+  for (i = 0, escapeCount = 0; i < len; i++)
+    {
+      switch (chars[i]) {
       case '&': case '"': case '<': case '>': case '\r':
         escapeCount++;
         break;
@@ -358,66 +361,70 @@ static int cssEscapingCount;
         if (chars[i] < 0x20 || chars[i] > 127)
           escapeCount++;
         break;
+      }
     }
-  }
-  if (escapeCount == 0 ) {
-    /* nothing to escape ... */
+
+  /* nothing to escape ... */
+  if (escapeCount == 0 )
     return [[self copy] autorelease];
-  }
 
   buf = calloc((len + 5) + (escapeCount * 16), sizeof(wchar_t));
-  for (i = 0, j = 0; i < len; i++) {
-    switch (chars[i]) {
-      /* escape special chars */
-      case '&':
-        buf[j] = '&'; j++; buf[j] = 'a'; j++; buf[j] = 'm'; j++;
-        buf[j] = 'p'; j++; buf[j] = ';'; j++;
-        break;
-      case '"':
-        buf[j] = '&'; j++; buf[j] = 'q'; j++; buf[j] = 'u'; j++;
-        buf[j] = 'o'; j++; buf[j] = 't'; j++; buf[j] = ';'; j++;
-        break;
-      case '<':
-        buf[j] = '&'; j++; buf[j] = 'l'; j++; buf[j] = 't'; j++;
-        buf[j] = ';'; j++;
-        break;
-      case '>':
-        buf[j] = '&'; j++; buf[j] = 'g'; j++; buf[j] = 't'; j++;
-        buf[j] = ';'; j++;
-        break;
-      case '\r':
-        if (encoreCR) // falls back to default if we don't encode
+  for (i = 0, j = 0; i < len; i++)
+    {
+      switch (chars[i])
+        {
+          /* escape special chars */
+        case '&':
+          buf[j] = '&'; j++; buf[j] = 'a'; j++; buf[j] = 'm'; j++;
+          buf[j] = 'p'; j++; buf[j] = ';'; j++;
+          break;
+        case '"':
+          buf[j] = '&'; j++; buf[j] = 'q'; j++; buf[j] = 'u'; j++;
+          buf[j] = 'o'; j++; buf[j] = 't'; j++; buf[j] = ';'; j++;
+          break;
+        case '<':
+          buf[j] = '&'; j++; buf[j] = 'l'; j++; buf[j] = 't'; j++;
+          buf[j] = ';'; j++;
+          break;
+        case '>':
+          buf[j] = '&'; j++; buf[j] = 'g'; j++; buf[j] = 't'; j++;
+          buf[j] = ';'; j++;
+          break;
+        case '\r':
+          if (encodeCR) // falls back to default if we don't encode
+            {
+              buf[j] = '&'; j++; buf[j] = '#'; j++; buf[j] = '1'; j++;
+              buf[j] = '3'; j++; buf[j] = ';'; j++;
+              break;
+            }
+        default:
+          /* escape big chars */
+        if (chars[i] > 127)
           {
-            buf[j] = '&'; j++; buf[j] = '#'; j++; buf[j] = '1'; j++;
-            buf[j] = '3'; j++; buf[j] = ';'; j++;
-            break;
-          }
-      default:
-        /* escape big chars */
-        if (chars[i] > 127) {
-          unsigned char nbuf[32];
-          unsigned int k;
+            unsigned char nbuf[32];
+            unsigned int k;
 
-          sprintf((char *)nbuf, "&#%i;", (int)chars[i]);
-          for (k = 0; nbuf[k] != '\0'; k++) {
-            buf[j] = nbuf[k];
+            sprintf((char *)nbuf, "&#%i;", (int)chars[i]);
+            for (k = 0; nbuf[k] != '\0'; k++)
+              {
+                buf[j] = nbuf[k];
+                j++;
+              }
+          }
+        else if (chars[i] == 0x9 || chars[i] == 0xA || chars[i] == 0xD || chars[i] >= 0x20)
+          { // ignore any unsupported control character
+            /* nothing to escape */
+            buf[j] = chars[i];
             j++;
           }
-        }
-        else if (chars[i] == 0x9 || chars[i] == 0xA || chars[i] == 0xD || chars[i] >= 0x20) { // ignore any unsupported control character
-          /* nothing to escape */
-          buf[j] = chars[i];
-          j++;
-        }
         break;
+        }
     }
-  }
 
   self = [[NSString alloc] initWithBytesNoCopy: buf
                                         length: (j*sizeof(wchar_t))
                                       encoding: NSUTF32StringEncoding
                                   freeWhenDone: YES];
-
   return [self autorelease];
 }
 
