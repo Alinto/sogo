@@ -1,6 +1,6 @@
 /* UIxMailPartSignedViewer.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2015 Inverse inc.
+ * Copyright (C) 2009-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
  */
 
 #if defined(HAVE_OPENSSL) || defined(HAVE_GNUTLS)
-
 #include <openssl/bio.h>
 #include <openssl/err.h>
 #include <openssl/pkcs7.h>
@@ -29,6 +28,9 @@
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSValue.h>
+
+#import <NGMime/NGMimeMultipartBody.h>
+
 #import <Mailer/SOGoMailObject.h>
 
 #import "UIxMailRenderingContext.h"
@@ -98,7 +100,11 @@
 
   ERR_clear_error();
 
-  signedData = [[self clientObject] content];
+  if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+    signedData = [self flatContent];
+  else
+    signedData = [[self clientObject] content];
+
   msgBio = BIO_new_mem_buf ((void *) [signedData bytes], [signedData length]);
 
   inData = NULL;
@@ -211,23 +217,37 @@
 }
 #endif
 
-- (id) renderedPart {
+- (id) renderedPart
+{
+  NSMutableArray *renderedParts;
   id info, viewer;
   NSArray *parts;
-  NSMutableArray *renderedParts;
+
   NSUInteger i, max;
 
-  parts = [[self bodyInfo] objectForKey: @"parts"];
+  if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+    parts = [[self decodedFlatContent] parts];
+  else
+    parts = [[self bodyInfo] objectForKey: @"parts"];
+
   max = [parts count];
   renderedParts = [NSMutableArray arrayWithCapacity: max];
+
   for (i = 0; i < max; i++)
     {
       [self setChildIndex: i];
-      [self setChildInfo: [parts objectAtIndex: i]];
+
+      if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+        [self setChildInfo: [[parts objectAtIndex: i] bodyInfo]];
+      else
+        [self setChildInfo: [parts objectAtIndex: i]];
+
       info = [self childInfo];
-      viewer = [[[self context] mailRenderingContext] viewerForBodyInfo:info];
+      viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
       [viewer setBodyInfo: info];
       [viewer setPartPath: [self childPartPath]];
+      if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+        [viewer setDecodedContent: [[parts objectAtIndex: i] body]];
       [renderedParts addObject: [viewer renderedPart]];
     }
 
