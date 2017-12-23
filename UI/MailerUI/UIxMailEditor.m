@@ -69,6 +69,8 @@
   NSString *from;
   SOGoMailFolder *sentFolder;
   BOOL isHTML;
+  BOOL sign;
+  BOOL encrypt;
 
   NSString *priority;
   NSString *receipt;
@@ -96,7 +98,7 @@ static NSArray *infoKeys = nil;
                                 @"from", @"inReplyTo",
                                 @"replyTo",
                                 @"priority", @"receipt", @"isHTML",
-                                @"text", nil];
+                                @"text", @"sign", @"encrypt", nil];
 }
 
 - (id) init
@@ -449,6 +451,10 @@ static NSArray *infoKeys = nil;
   [self setIsHTML: [[filteredParams objectForKey: @"isHTML"] boolValue]];
   [self setText: [filteredParams objectForKey: @"text"]];
 
+  // S/MIME parameters
+  sign = [[filteredParams objectForKey: @"sign"] boolValue];
+  encrypt = [[filteredParams objectForKey: @"encrypt"] boolValue];
+
   return filteredParams;
 }
 
@@ -635,6 +641,8 @@ static NSArray *infoKeys = nil;
       info = [self infoFromRequest];
       [co setHeaders: info];
       [co setIsHTML: isHTML];
+      [co setSign: sign];
+      [co setEncrypt: encrypt];
       if (isHTML)
         {
           // Set a base font size if mail is HTML and user has set a default font-size
@@ -744,8 +752,7 @@ static NSArray *infoKeys = nil;
     [data setObject: value forKey: @"subject"];
   if ((value = [self attachmentAttrs]))
     [data setObject: value forKey: @"attachmentAttrs"];
-  // [self shouldAskReceipt], @"shouldAskReceipt",
-  // [NSNumber numberWithBool: [self mailIsDraft]], @"isDraft",
+
   response = [self responseWithStatus: 200
                             andString: [data jsonRepresentation]];
 
