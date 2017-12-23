@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2013 Inverse inc.
+  Copyright (C) 2007-2017 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -125,6 +125,11 @@ static BOOL showNamedTextAttachmentsInline = NO;
   return [viewer pageWithName: @"UIxMailPartMixedViewer"];
 }
 
+- (WOComponent *) encryptedViewer
+{
+  return [viewer pageWithName: @"UIxMailPartEncryptedViewer"];
+}
+
 - (WOComponent *) signedViewer
 {
   /* Note: we cannot cache the multipart viewers, because it can be nested */
@@ -156,11 +161,7 @@ static BOOL showNamedTextAttachmentsInline = NO;
 
 - (WOComponent *) htmlViewer
 {
-  id o;
-  
-  o = [viewer pageWithName: @"UIxMailPartHTMLViewer"];
-  
-  return o;
+  return [viewer pageWithName: @"UIxMailPartHTMLViewer"];
 }
 
 - (WOComponent *) messageViewer
@@ -198,13 +199,13 @@ static BOOL showNamedTextAttachmentsInline = NO;
 	/* this is used by mail-delivery reports */
 	return [self mixedViewer];
     }
-  else if ([mt isEqualToString:@"text"])
+  else if ([mt isEqualToString: @"text"])
     {
-      if ([st isEqualToString:@"plain"] || [st isEqualToString:@"html"]) {
+      if ([st isEqualToString: @"plain"] || [st isEqualToString: @"html"]) {
 	if (!showNamedTextAttachmentsInline && [self _shouldDisplayAsAttachment: _info textPart:YES])
 	  return [self linkViewer];
       
-	return [st isEqualToString:@"html"] 
+	return [st isEqualToString: @"html"]
 	  ? [self htmlViewer] : [self textViewer];
       }
     
@@ -214,7 +215,7 @@ static BOOL showNamedTextAttachmentsInline = NO;
   
   // TIFF files aren't well-supported and Thunderbird sometimes send PDF
   // files over as image/pdf !
-  if ([mt isEqualToString:@"image"] &&
+  if ([mt isEqualToString: @"image"] &&
       !([st isEqualToString: @"tiff"] || [st isEqualToString: @"pdf"]))
     {
       if ([self _shouldDisplayAsAttachment: _info textPart: NO])
@@ -223,11 +224,11 @@ static BOOL showNamedTextAttachmentsInline = NO;
       return [self imageViewer];
     }
   
-  if ([mt isEqualToString:@"message"] && [st isEqualToString:@"rfc822"])
+  if ([mt isEqualToString: @"message"] && [st isEqualToString: @"rfc822"])
     return [self messageViewer];
   
-  if ([mt isEqualToString:@"message"] && 
-      [st isEqualToString:@"delivery-status"]) {
+  if ([mt isEqualToString: @"message"] &&
+      [st isEqualToString: @"delivery-status"]) {
     /*
       Content-Description: Delivery error report
       Content-Type: message/delivery-status
@@ -245,21 +246,25 @@ static BOOL showNamedTextAttachmentsInline = NO;
     return [self linkViewer];
   }
 
-  if ([mt isEqualToString:@"application"])
+  if ([mt isEqualToString: @"application"])
     {
       // octet-stream (generate download link?, autodetect type?)
       if ([st isEqualToString:@"ics"]) /* Cooqle K4lendahr - Google Calendar */
 	return [self iCalViewer];
 
+      if ([st isEqualToString: @"x-pkcs7-mime"] ||
+          [st isEqualToString: @"pkcs7-mime"])
+        return [self encryptedViewer];
+
 #if 0 /* the link viewer looks better than plain text ;-) */
-      if ([st isEqualToString:@"pgp-signature"]) // TODO: real PGP viewer
+      if ([st isEqualToString: @"pgp-signature"]) // TODO: real PGP viewer
 	return [self textViewer];
 #endif
     }
 
   // TODO: always fallback to octet viewer?!
 #if 1
-  [self errorWithFormat:@"found no viewer for MIME type: %@/%@", mt, st];
+  [self errorWithFormat: @"found no viewer for MIME type: %@/%@", mt, st];
 #endif
 
   return [self linkViewer];
