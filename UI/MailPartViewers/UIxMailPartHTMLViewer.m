@@ -1,6 +1,6 @@
 /* UIxMailPartHTMLViewer.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2013 Inverse inc.
+ * Copyright (C) 2007-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,10 +25,14 @@
 #import <SaxObjC/SaxXMLReaderFactory.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSString+Encoding.h>
+#import <NGMime/NGMimeBodyPart.h>
+#import <NGMime/NGMimeType.h>
 
 #include <libxml/encoding.h>
 
 #import <SoObjects/SOGo/NSString+Utilities.h>
+#import <SoObjects/Mailer/NSData+Mail.h>
+#import <SoObjects/Mailer/SOGoMailAccounts.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
 #import <SoObjects/Mailer/SOGoMailBodyPart.h>
 
@@ -718,14 +722,15 @@ _xmlCharsetForCharset (NSString *charset)
 {
   NSObject <SaxXMLReader> *parser;
   NSData *preparsedContent;
-  SOGoMailObject *mail;
   NSString *s;
 
   xmlCharEncoding enc;
 
-  mail = [self clientObject];
+  if ([[self decodedFlatContent] isKindOfClass: [NGMimeBodyPart class]])
+    preparsedContent = [[[self decodedFlatContent] body] sanitizedContentUsingVoidTags: VoidTags];
+  else
+    preparsedContent = [[self decodedFlatContent] sanitizedContentUsingVoidTags: VoidTags];
 
-  preparsedContent = [[super decodedFlatContent] sanitizedContentUsingVoidTags: VoidTags];
   parser = [[SaxXMLReaderFactory standardXMLReaderFactory]
              createXMLReaderForMimeType: @"text/html"];
 
@@ -841,18 +846,25 @@ _xmlCharsetForCharset (NSString *charset)
 {
   NSObject <SaxXMLReader> *parser;
   NSData *preparsedContent;
-  SOGoMailObject *mail;
   SOGoMailBodyPart *part;
   NSString *encoding;
   xmlCharEncoding enc;
 
-  part = [self clientObject];
-  mail = [part mailObject];
-
-  preparsedContent = [[part fetchBLOB] sanitizedContentUsingVoidTags: VoidTags];
   parser = [[SaxXMLReaderFactory standardXMLReaderFactory]
              createXMLReaderForMimeType: @"text/html"];
-  encoding = [[part partInfo] valueForKey: @"encoding"];
+
+  if ([[self decodedFlatContent] isKindOfClass: [NGMimeBodyPart class]])
+    {
+      preparsedContent = [[[self decodedFlatContent] body] sanitizedContentUsingVoidTags: VoidTags];
+      encoding = [[[self decodedFlatContent] contentType] valueOfParameter: @"charset"];
+    }
+  else
+    {
+      part = [self clientObject];
+      preparsedContent = [[part fetchBLOB] sanitizedContentUsingVoidTags: VoidTags];
+      encoding = [[part partInfo] valueForKey: @"encoding"];
+    }
+
   if (![encoding length])
     encoding = @"us-ascii";
 
