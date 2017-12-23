@@ -41,6 +41,7 @@
 #import <NGMail/NGMailAddressParser.h>
 #import <NGMail/NGMimeMessage.h>
 #import <NGMail/NGMimeMessageGenerator.h>
+#import <NGMail/NGMimeMessageParser.h>
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeFileData.h>
 #import <NGMime/NGMimeMultipartBody.h>
@@ -65,6 +66,7 @@
 #import <Contacts/SOGoContactGCSEntry.h>
 
 #import "NSData+Mail.h"
+#import "NSData+SMIME.h"
 #import "NSString+Mail.h"
 #import "SOGoDraftsFolder.h"
 #import "SOGoMailAccount.h"
@@ -120,13 +122,16 @@ static NSString    *userAgent      = nil;
     {
       sourceIMAP4ID = -1;
       IMAP4ID = -1;
-      headers = [NSMutableDictionary new];
+      headers = [[NSMutableDictionary alloc] init];
+      certificates = [[NSMutableDictionary alloc] init];
       text = @"";
       path = nil;
       sourceURL = nil;
       sourceFlag = nil;
       inReplyTo = nil;
       isHTML = NO;
+      sign = NO;
+      encrypt = NO;
     }
 
   return self;
@@ -135,6 +140,7 @@ static NSString    *userAgent      = nil;
 - (void) dealloc
 {
   [headers release];
+  [certificates release];
   [text release];
   [path release];
   [sourceURL release];
@@ -317,6 +323,25 @@ static NSString    *userAgent      = nil;
   return isHTML;
 }
 
+- (void) setSign: (BOOL) aBool
+{
+  sign = aBool;
+}
+- (BOOL) sign
+{
+  return sign;
+}
+
+- (void) setEncrypt: (BOOL) aBool
+{
+  encrypt = aBool;
+}
+
+- (BOOL) encrypt
+{
+  return encrypt;
+}
+
 - (NSString *) inReplyTo
 {
   return inReplyTo;
@@ -400,7 +425,7 @@ static NSString    *userAgent      = nil;
 	  [infos setObject: sourceFolder forKey: @"sourceFolder"];
 	}
 
-      if ([infos writeToFile: [self infoPath] atomically:YES])
+      if ([infos writeToFile: [self infoPath]  atomically: YES])
 	error = nil;
       else
 	{
@@ -536,7 +561,7 @@ static NSString    *userAgent      = nil;
   id result;
 
   error = nil;
-  message = [self mimeMessageAsData];
+  message = [self mimeMessageForRecipient: nil];
 
   if (!message)
     {
@@ -730,7 +755,7 @@ static NSString    *userAgent      = nil;
   /* CC processing if we reply-to-all: - we add all 'to' and 'cc' fields */
   if (_replyToAll)
     {
-      to = [NSMutableArray new];
+      to = [[NSMutableArray alloc] init];
 
       [addrs setArray: [_envelope to]];
       [self _purgeRecipients: allRecipients
@@ -1006,7 +1031,7 @@ static NSString    *userAgent      = nil;
   if ([mimeType length] > 0)
     {
       pmime = [self pathToAttachmentWithName: [NSString stringWithFormat: @".%@.mime", name]];
-      if (![[mimeType dataUsingEncoding: NSUTF8StringEncoding] writeToFile: pmime atomically: YES])
+      if (![[mimeType dataUsingEncoding: NSUTF8StringEncoding] writeToFile: pmime  atomically: YES])
         {
           [[NSFileManager defaultManager] removeFileAtPath: p  handler: nil];
           return [NSException exceptionWithHTTPStatus: 500 /* Server Error */
@@ -1089,7 +1114,7 @@ static NSString    *userAgent      = nil;
   NGMimeMessage *message;
   id body;
 
-  message = [[[NGMimeMessage alloc] initWithHeader:map] autorelease];
+  message = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
 
   if (!isHTML)
     {
@@ -1256,8 +1281,8 @@ static NSString    *userAgent      = nil;
 	content = [content dataByEncodingBase64];
         [map setObject: @"base64" forKey: @"content-transfer-encoding"];
       }
-    [map setObject:[NSNumber numberWithInt:[content length]]
-	 forKey: @"content-length"];
+    [map setObject: [NSNumber numberWithInt: [content length]]
+            forKey: @"content-length"];
 
     /* Note: the -init method will create a temporary file! */
     body = [[NGMimeFileData alloc] initWithBytes:[content bytes]
@@ -1365,6 +1390,7 @@ static NSString    *userAgent      = nil;
 - (NGMimeMessage *) mimeMultiPartMessageWithHeaderMap: (NGMutableHashMap *) map
                                    extractedBodyParts: (NSArray *) extractedBodyParts
   					 andBodyParts: (NSArray *) _bodyParts
+                                             bodyOnly: (BOOL) _bodyOnly
 {
   NGMimeMessage       *message;
   NGMimeMultipartBody *mBody;
@@ -1578,6 +1604,7 @@ static NSString    *userAgent      = nil;
 - (NGMimeMessage *) mimeMessageWithHeaders: (NSDictionary *) _headers
 				 excluding: (NSArray *) _exclude
                           extractingImages: (BOOL) _extractImages
+                                  bodyOnly: (BOOL) _bodyOnly
 {
   NSMutableArray *extractedBodyParts;
   NGMimeMessage *message;
@@ -1597,6 +1624,7 @@ static NSString    *userAgent      = nil;
 
   map = [self mimeHeaderMapWithHeaders: _headers
                              excluding: _exclude];
+
   if (map)
     {
       //[self debugWithFormat: @"MIME Envelope: %@", map];
@@ -1608,14 +1636,16 @@ static NSString    *userAgent      = nil;
       //[self debugWithFormat: @"attachments: %@", bodyParts];
 
       if ([extractedBodyParts count] == 0 && [allBodyParts count] == 0)
-        /* no attachments */
-        message = [self mimeMessageForContentWithHeaderMap: map];
+        {
+          // no attachment
+          message = [self mimeMessageForContentWithHeaderMap: (_bodyOnly ? nil : map)];
+        }
       else
         {
-          message = [self mimeMultiPartMessageWithHeaderMap: map
+          message = [self mimeMultiPartMessageWithHeaderMap: (_bodyOnly ? [NGMutableHashMap hashMap] : map)
                                          extractedBodyParts: extractedBodyParts
-                                               andBodyParts: allBodyParts];
-
+                                               andBodyParts: allBodyParts
+                                                   bodyOnly: _bodyOnly];
           //[self debugWithFormat: @"message: %@", message];
         }
     }
@@ -1626,33 +1656,73 @@ static NSString    *userAgent      = nil;
 //
 // Return a NGMimeMessage object with inline HTML images (<img src=data>) extracted as attachments (<img src=cid>).
 //
-- (NGMimeMessage *) mimeMessage
+- (NSData *) mimeMessageForRecipient: (NSString *) theRecipient
 {
-  return [self mimeMessageWithHeaders: nil  excluding: nil  extractingImages: YES];
-}
+  NGMimeMessageGenerator *generator, *partGenerator;
+  NGMutableHashMap *hashMap;
+  NGMimeMessage *message;
+  NSMutableData *d;
+  NSData *content;
 
-//
-// Return a NSData object of the message with no alteration.
-//
-- (NSData *) mimeMessageAsData
-{
-  NGMimeMessageGenerator *generator;
-  NGMimeMessage *mimeMessage;
-  NSData *message;
-
-  generator = [NGMimeMessageGenerator new];
-  mimeMessage = [self mimeMessageWithHeaders: nil  excluding: nil  extractingImages: NO];
-
-  if (!mimeMessage)
+  // Nothing to sign or encrypt, let's generate the message and return immediately
+  if (![self sign] && ![self encrypt])
     {
-      [generator release];
-      return nil;
+      generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
+      return [generator generateMimeFromPart: [self mimeMessageWithHeaders: nil  excluding: nil  extractingImages: YES  bodyOnly: NO]];
     }
 
-  message = [generator generateMimeFromPart: mimeMessage];
-  [generator release];
+  // We'll sign and/or encrypt our message. Let's generate the actual body of the message to work with
+  partGenerator = [[[NGMimePartGenerator alloc] init] autorelease];
+  content = [partGenerator generateMimeFromPart: [self mimeMessageWithHeaders: nil  excluding: nil  extractingImages: YES  bodyOnly: YES]];
 
-  return message;
+  if ([self sign])
+    {
+      NSData *certificate;
+
+      certificate = [[self mailAccountFolder] certificate];
+      content = [content signUsingCertificateAndKey: certificate];
+
+      if (!content)
+        return nil;
+
+      if (![self encrypt])
+        goto finish_smime;
+    }
+
+  if ([self encrypt])
+    {
+      NSData *certificate;
+
+      if (theRecipient)
+        {
+          SOGoContactFolders *contactFolders;
+          contactFolders = [[[context activeUser] homeFolderInContext: context]
+                                  lookupName: @"Contacts"
+                                   inContext: context
+                                     acquire: NO];
+          certificate = [[contactFolders certificateForEmail: theRecipient] convertPKCS7ToPEM];
+        }
+      else
+        {
+          certificate =  [[self mailAccountFolder] certificate];
+        }
+
+      content = [content encryptUsingCertificate: certificate];
+    }
+
+ finish_smime:
+  // We got our mime part, let's add our mail headers
+  hashMap = [self mimeHeaderMapWithHeaders: nil
+                                 excluding: [NSArray arrayWithObjects: @"MIME-Version", @"Content-Type", @"Content-Transfer-Encoding", nil]];
+  message = [NGMimeMessage messageWithHeader: hashMap];
+  generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
+  d = [NSMutableData dataWithData: [generator generateMimeFromPart: message]];
+  [d replaceBytesInRange: NSMakeRange([d length]-4, 4)
+                          withBytes: NULL
+                             length: 0];
+  [d appendData: content];
+
+  return d;
 }
 
 //
@@ -1700,22 +1770,55 @@ static NSString    *userAgent      = nil;
 //
 - (NSException *) sendMail
 {
+  SOGoContactFolders *contactFolders;
   SOGoUserDefaults *ud;
+  NSArray *recipients;
+  NSString *recipient;
+  int i;
 
   ud = [[context activeUser] userDefaults];
 
+  // If we are trying to sign an email but we don't have a S/MIME certificate for that
+  // IMAP account, we abort
+  if ([self sign] && ![[self mailAccountFolder] certificate])
+    {
+      return [NSException exceptionWithHTTPStatus: 500 /* server error */
+                                           reason: @"cannot sign email without certificate"]; 
+    }
+
+  // If we are encrypting emails, we must make sure that we have the certificate
+  // for all recipients otherwise we cannot, of course, encrypt the email.
+  if ([self encrypt])
+    {
+      NSData *certificate;
+
+      contactFolders = [[[context activeUser] homeFolderInContext: context]
+                               lookupName: @"Contacts"
+                                inContext: context
+                                  acquire: NO];
+      recipients = [self allBareRecipients];
+      for (i = 0; i < [recipients count]; i++)
+        {
+          recipient = [recipients objectAtIndex: i];
+          certificate = [contactFolders certificateForEmail: recipient];
+          if (!certificate)
+            {
+              return [NSException exceptionWithHTTPStatus: 500 /* server error */
+                                                   reason: @"cannot encrypt email without recipient certificate"]; 
+            }
+          [certificates setObject: certificate  forKey: recipient];
+        }
+    }
+
   if ([ud mailAddOutgoingAddresses])
     {
-      NSString *recipient, *emailAddress, *addressBook, *uid;
-      NSArray *matchingContacts, *recipients;
-      SOGoContactFolders *contactFolders;
+      NSString *emailAddress, *addressBook, *uid;
+      NSArray *matchingContacts;
       SOGoContactGCSEntry *newContact;
       NGMailAddress *parsedRecipient;
       NGMailAddressParser *parser;
       SOGoFolder <SOGoContactFolder> *folder;
       NGVCard *card;
-
-      int i;
 
       // Get all the addressbooks
       contactFolders = [[[context activeUser] homeFolderInContext: context]
@@ -1750,13 +1853,13 @@ static NSString    *userAgent      = nil;
               [card addEmail: emailAddress types: nil];
               [card setFn: [parsedRecipient displayName]];
 
-              newContact = [SOGoContactGCSEntry objectWithName: uid
-                                                   inContainer: folder];
+              newContact = [SOGoContactGCSEntry objectWithName: uid  inContainer: folder];
               [newContact setIsNew: YES];
               [newContact saveComponent: card];
             }
         }
     }
+
   return [self sendMailAndCopyToSent: YES];
 }
 
@@ -1771,18 +1874,52 @@ static NSString    *userAgent      = nil;
   NSException *error;
   NSData *message;
 
-  // We strip the BCC fields prior sending any mails
-  NGMimeMessageGenerator *generator;
-
-  generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
-  message = [generator generateMimeFromPart: [self mimeMessage]];
   dd = [[context activeUser] domainDefaults];
+
+  // If we are encrypting mails, let's generate and
+  // send them individually
+  if ([self encrypt])
+    {
+      NSArray *recipients;
+      NSString *recipient;
+      int i;
+
+      recipients = [self allBareRecipients];
+
+      for (i = 0; i < [recipients count]; i++)
+        {
+          recipient = [recipients objectAtIndex: i];
+          message = [self mimeMessageForRecipient: recipient];;
+
+          if (!message)
+            return  [NSException exceptionWithHTTPStatus: 500
+                                                  reason: @"could not generate message content"];
+
+          error = [[SOGoMailer mailerWithDomainDefaults: dd]
+                    sendMailData: message
+                    toRecipients: [NSArray arrayWithObject: recipient]
+                          sender: [self sender]
+                    withAuthenticator: [self authenticatorInContext: context]
+                       inContext: context];
+        }
+
+      // Next we generate
+    }
+
+  // Encryption is done or not, if we didn't have to.
+  message = [self mimeMessageForRecipient: nil];
+
+  if (!message)
+    return  [NSException exceptionWithHTTPStatus: 500
+                                          reason: @"could not generate message content"];
+
   error = [[SOGoMailer mailerWithDomainDefaults: dd]
                   sendMailData: message
                   toRecipients: [self allBareRecipients]
                         sender: [self sender]
              withAuthenticator: [self authenticatorInContext: context]
                      inContext: context];
+
   if (!error && copyToSent)
     {
       sentFolder = [[self mailAccountFolder] sentFolderInContext: context];
@@ -1841,7 +1978,7 @@ static NSString    *userAgent      = nil;
   NSString *str;
   NSData *message;
 
-  message = [self mimeMessageAsData];
+  message = [self mimeMessageForRecipient: nil];
   if (message)
     {
       str = [[NSString alloc] initWithData: message

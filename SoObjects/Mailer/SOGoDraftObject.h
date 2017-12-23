@@ -61,6 +61,11 @@
   NSString *sourceFlag;
   NSString *sourceFolder;
   BOOL isHTML;
+  BOOL sign;
+  BOOL encrypt;
+
+  // Used during S/MIME encryption
+  NSMutableDictionary *certificates;
 }
 
 /* contents */
@@ -78,6 +83,13 @@
 - (NSString *) text;
 - (void) setIsHTML: (BOOL) aBool;
 - (BOOL) isHTML;
+
+- (void) setSign: (BOOL) aBool;
+- (BOOL) sign;
+
+- (void) setEncrypt: (BOOL) aBool;
+- (BOOL) encrypt;
+
 
 /* for replies and forwards */
 - (NSString *) inReplyTo;
@@ -105,8 +117,7 @@
 
 /* NGMime representations */
 
-- (NGMimeMessage *) mimeMessage;
-- (NSData *) mimeMessageAsData;
+- (NSData *) mimeMessageForRecipient: (NSString *) theRecipient;
 
 /* operations */
 - (NSArray *) allRecipients;
