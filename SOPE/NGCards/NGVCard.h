@@ -128,6 +128,8 @@ typedef enum
 - (NSArray *) categories;
 - (NSString *) photo;
 - (void) setPhoto: (NSString *) _value;
+- (NSData *) certificate;
+- (void) setCertificate: (NSData *) theCertificate;
 
 
 // - (void) setN: (NGVCardName *) _v;

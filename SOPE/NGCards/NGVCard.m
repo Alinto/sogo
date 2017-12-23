@@ -302,6 +302,27 @@
   [photo setSingleValue: _value forKey: @""];
 }
 
+- (NSData *) certificate
+{
+  CardElement *key;
+
+  key = [self uniqueChildWithTag: @"key"];
+  return [[[key valuesAtIndex: 0 forKey: @""] objectAtIndex: 0] dataByDecodingBase64];
+}
+
+- (void) setCertificate: (NSData *) theCertificate
+{
+  CardElement *key;
+  NSString *value;
+
+  value = [theCertificate stringByEncodingBase64];
+  key = [self uniqueChildWithTag: @"key"];
+  [key setValue: 0 ofAttribute: @"encoding" to: @"base64"];
+  [key setValue: 0 ofAttribute: @"type" to: @"application/pkcs7-signature"];
+
+  [key setSingleValue: value forKey: @""];
+}
+
 
 - (void) setOrg: (NSString *) anOrg
           units: (NSArray *) someUnits
