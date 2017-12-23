@@ -1196,17 +1196,24 @@ static BOOL debugSoParts       = NO;
   if ([self isEncrypted])
     {
       NSData *certificate;
-      NGMimeMessage *m;
-      id part;
 
       certificate = [[self mailAccountFolder] certificate];
-      m = [[self content] messageFromEncryptedDataAndCertificate: certificate];
 
-      part = [[[m body] parts] objectAtIndex: ([_key intValue]-1)];
-      mimeType = [[part contentType] stringValue];
-      clazz = [SOGoMailBodyPart bodyPartClassForMimeType: mimeType
-				inContext: _ctx];
-      return [clazz objectWithName:_key inContainer: self];
+      // If we got a user certificate, let's use it. Otherwise we fallback
+      // to the current parts fetching code.
+      if (certificate)
+        {
+          NGMimeMessage *m;
+          id part;
+
+          m = [[self content] messageFromEncryptedDataAndCertificate: certificate];
+
+          part = [[[m body] parts] objectAtIndex: ([_key intValue]-1)];
+          mimeType = [[part contentType] stringValue];
+          clazz = [SOGoMailBodyPart bodyPartClassForMimeType: mimeType
+                                                   inContext: _ctx];
+          return [clazz objectWithName:_key inContainer: self];
+        }
     }
 
   parts = [[self bodyStructure] objectForKey: @"parts"];
