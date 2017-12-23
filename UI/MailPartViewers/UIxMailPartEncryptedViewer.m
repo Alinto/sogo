@@ -45,38 +45,49 @@
 
 - (id) renderedPart
 {
+  NSData *certificate; 
   id info, viewer;
 
-  NSData *encryptedData;
+  certificate = [[[self clientObject] mailAccountFolder] certificate];
 
-#if 1
-  NSData *pkcs12Data =  [NSData dataWithContentsOfFile: @"/home/sogo/dropbucket/lmarcotte@inverse.ca.p12"];
-  [pkcs12Data convertPKCS12ToPEMUsingPassword: @"831af13d97576d74d574628c1d0e5abe"];
-#endif
-  
-  
-  encryptedData = [[self clientObject] content];
-  [encryptedData writeToFile: @"/tmp/received.encrypted" atomically: 1];
+  if (certificate)
+    {
+      NSData *decryptedData, *encryptedData;
 
-  //NSData *pem = [NSData dataWithContentsOfFile: @"/home/sogo/dropbucket/lmarcotte@inverse.ca.pem"];
-  NSData *pem = [NSData dataWithContentsOfFile: @"/tmp/foofoo.newpem"];
-  NSData *decryptedData = [encryptedData decryptUsingCertificate: pem];
+      encryptedData = [[self clientObject] content];
+      decryptedData = [encryptedData decryptUsingCertificate: certificate];
 
-  NGMimeMessageParser *parser = [[NGMimeMessageParser alloc] init];
-  id part = [[parser parsePartFromData: decryptedData] retain];
+      if (decryptedData)
+        {
+          NGMimeMessageParser *parser;
+          id part;
 
-  info = [NSDictionary dictionaryWithObjectsAndKeys: [[part contentType] type], @"type",
-                       [[part contentType] subType], @"subtype", nil];
+          parser = [[NGMimeMessageParser alloc] init];
+          part = [[parser parsePartFromData: decryptedData] retain];
+
+          info = [NSDictionary dictionaryWithObjectsAndKeys: [[part contentType] type], @"type",
+                               [[part contentType] subType], @"subtype", nil];
+          viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
+          [viewer setBodyInfo: info];
+          [viewer setFlatContent: decryptedData];
+          [viewer setDecodedContent: [part body]];
+
+          return [NSDictionary dictionaryWithObjectsAndKeys:
+                                 [self className], @"type",
+                                   [NSArray arrayWithObject: [viewer renderedPart]], @"content",
+                               nil];
+        }
+    }
+
+  // Decryption failed, let's return the master viewer
+  // FIXME - does not work for now.
+  info = [NSDictionary dictionaryWithObjectsAndKeys: @"multipart", @"type",
+                       @"mixed", @"subtype", nil];
+  [self setFlatContent: nil];
   viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
   [viewer setBodyInfo: info];
-  [viewer setFlatContent: decryptedData];
-  [viewer setDecodedContent: [part body]];
-  
-  return [NSDictionary dictionaryWithObjectsAndKeys:
-                         [self className], @"type",
-                           [NSArray arrayWithObject: [viewer renderedPart]], @"content",
-                       nil];
-  //return [viewer renderedPart];
+
+  return [viewer renderedPart];
 }
 
 @end /* UIxMailPartAlternativeViewer */
