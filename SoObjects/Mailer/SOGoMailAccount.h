@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2009-2016 Inverse inc.
+  Copyright (C) 2009-2017 Inverse inc.
 
   This file is part of SOGo.
 
@@ -125,6 +125,10 @@ typedef enum {
 - (NSArray *) delegates;
 - (void) addDelegates: (NSArray *) newDelegates;
 - (void) removeDelegates: (NSArray *) oldDelegates;
+
+/* S/MIME certificate */
+- (NSData *) certificate;
+- (void) setCertificate: (NSData *) theData;
 
 @end
 

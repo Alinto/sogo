@@ -26,6 +26,7 @@
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
@@ -1183,5 +1184,26 @@ static NSString *inboxFolderName = @"INBOX";
 {
   return [[self _mailAccount] objectForKey: @"name"];
 }
+
+- (NSData *) certificate
+{
+  SOGoUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+  return [[ud stringForKey: @"SOGoMailCertificate"] dataByDecodingBase64];
+}
+
+- (void) setCertificate: (NSData *) theData
+{
+  SOGoUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+
+  if ([theData length])
+    [ud setObject: [theData stringByEncodingBase64]  forKey: @"SOGoMailCertificate"];
+  else
+    [ud removeObjectForKey: @"SOGoMailCertificate"];
+}
+
 
 @end /* SOGoMailAccount */
