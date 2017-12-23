@@ -187,6 +187,19 @@
                   </sg-checkmark>
                 </md-menu-item>
                 <md-menu-item>
+                  <md-button class="md-primary" ng-disabled="true"><var:string label:value="Security"/></md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <sg-checkmark ng-model="editor.message.editable.sign">
+                    <var:string label:value="Sign"/>
+                  </sg-checkmark>
+                </md-menu-item>
+                <md-menu-item>
+                  <sg-checkmark ng-model="editor.message.editable.encrypt">
+                    <var:string label:value="Encrypt"/>
+                  </sg-checkmark>
+                </md-menu-item>
+                <md-menu-item>
                   <md-button class="md-primary" ng-disabled="true"><var:string label:value="Priority"/></md-button>
                 </md-menu-item>
                 <md-menu-item>
