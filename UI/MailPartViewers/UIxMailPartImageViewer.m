@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2015 Inverse inc.
+  Copyright (C) 2007-2017 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo
@@ -24,8 +24,6 @@
 #import "UIxMailPartViewer.h"
 
 @interface UIxMailPartImageViewer : UIxMailPartViewer
-{
-}
 
 @end
 
