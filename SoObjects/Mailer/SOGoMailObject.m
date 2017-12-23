@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2016 Inverse inc.
+  Copyright (C) 2007-2017 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -37,6 +37,9 @@
 #import <NGImap4/NGImap4Envelope.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGMail/NGMimeMessageParser.h>
+#import <NGMime/NGMimeMultipartBody.h>
+#import <NGMime/NGMimeType.h>
+
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
@@ -49,7 +52,9 @@
 
 #import "NSString+Mail.h"
 #import "NSData+Mail.h"
+#import "NSData+SMIME.h"
 #import "NSDictionary+Mail.h"
+#import "SOGoMailAccount.h"
 #import "SOGoMailFolder.h"
 #import "SOGoMailManager.h"
 #import "SOGoMailBodyPart.h"
@@ -102,9 +107,9 @@ static BOOL debugSoParts       = NO;
 
 - (void) dealloc
 {
-  [headers    release];
+  [headers release];
   [headerPart release];
-  [coreInfos  release];
+  [coreInfos release];
   [super dealloc];
 }
 
@@ -117,7 +122,8 @@ static BOOL debugSoParts       = NO;
 
 /* hierarchy */
 
-- (SOGoMailObject *)mailObject {
+- (SOGoMailObject *) mailObject
+{
   return self;
 }
 
@@ -332,11 +338,6 @@ static BOOL debugSoParts       = NO;
   return [[self fetchCoreInfos] valueForKey: @"header"];
 }
 
-- (BOOL) hasMailHeaderInCoreInfos
-{
-  return [[self mailHeaderData] length] > 0 ? YES : NO;
-}
-
 - (id) mailHeaderPart
 {
   NGMimeMessageParser *parser;
@@ -350,7 +351,7 @@ static BOOL debugSoParts       = NO;
 
   // TODO: do we need to set some delegate method which stops parsing the body?
   parser = [[NGMimeMessageParser alloc] init];
-  headerPart = [[parser parsePartFromData:data] retain];
+  headerPart = [[parser parsePartFromData: data] retain];
   [parser release]; parser = nil;
 
   if (headerPart == nil) {
@@ -885,7 +886,7 @@ static BOOL debugSoParts       = NO;
         {
           path = @"1";
 
-          // We set the path to 0 in case of a smime mail if not provided.
+          // We set the path to 0 in case of a S/MIME mail if not provided.
           subtype = [[part objectForKey: @"subtype"] lowercaseString];
           if ([subtype isEqualToString: @"pkcs7-mime"] || [subtype isEqualToString: @"x-pkcs7-mime"])
              path = @"0";
@@ -913,7 +914,9 @@ static BOOL debugSoParts       = NO;
 
   keys = [NSMutableArray array];
   [self _fetchFileAttachmentKeysInPart: [self bodyStructure]
-                             intoArray: keys withPath: nil andPrefix: prefix];
+                             intoArray: keys
+                              withPath: nil
+                             andPrefix: prefix];
 
   return keys;
 }
@@ -1183,11 +1186,28 @@ static BOOL debugSoParts       = NO;
 		    inContext: (id) _ctx
 {
   // TODO: we might want to check for existence prior controller creation
-  Class clazz;
-  NSArray *parts;
-  int part;
   NSDictionary *partDesc;
   NSString *mimeType;
+  NSArray *parts;
+  Class clazz;
+
+  int part;
+
+  if ([self isEncrypted])
+    {
+      NSData *certificate;
+      NGMimeMessage *m;
+      id part;
+
+      certificate = [[self mailAccountFolder] certificate];
+      m = [[self content] messageFromEncryptedDataAndCertificate: certificate];
+
+      part = [[[m body] parts] objectAtIndex: ([_key intValue]-1)];
+      mimeType = [[part contentType] stringValue];
+      clazz = [SOGoMailBodyPart bodyPartClassForMimeType: mimeType
+				inContext: _ctx];
+      return [clazz objectWithName:_key inContainer: self];
+    }
 
   parts = [[self bodyStructure] objectForKey: @"parts"];
 
@@ -1410,7 +1430,7 @@ static BOOL debugSoParts       = NO;
 - (NSException *) moveToFolderNamed: (NSString *) folderName
                           inContext: (id)_ctx
 {
-  NSException    *error;
+  NSException *error;
 
   if (![self copyToFolderNamed: folderName
 	     inContext: _ctx])
@@ -1707,6 +1727,40 @@ static BOOL debugSoParts       = NO;
 - (BOOL) deleted
 {
   return [self _hasFlag: @"deleted"];
+}
+
+- (BOOL) isSigned
+{
+  NSString *type, *subtype;
+
+  type = [[[[self mailHeaders] objectForKey: @"content-type"] type] lowercaseString];
+  subtype = [[[[self mailHeaders] objectForKey: @"content-type"] subType] lowercaseString];
+
+  if ([type isEqualToString: @"application"])
+    {
+      if ([subtype isEqualToString: @"x-pkcs7-signature"] ||
+          [subtype isEqualToString: @"pkcs7-signature"])
+        return YES;
+    }
+
+  return NO;
+}
+
+- (BOOL) isEncrypted
+{
+  NSString *type, *subtype;
+
+  type = [[[[self mailHeaders] objectForKey: @"content-type"] type] lowercaseString];
+  subtype = [[[[self mailHeaders] objectForKey: @"content-type"] subType] lowercaseString];
+
+  if ([type isEqualToString: @"application"])
+    {
+      if ([subtype isEqualToString: @"x-pkcs7-mime"] ||
+          [subtype isEqualToString: @"pkcs7-mime"])
+        return YES;
+    }
+
+  return NO;
 }
 
 - (NSString *) textDescription
