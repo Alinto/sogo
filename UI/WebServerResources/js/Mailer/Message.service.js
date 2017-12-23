@@ -302,6 +302,11 @@
                 message: formattedMessage
               };
             }
+            else if (part.type == 'UIxMailPartEncryptedViewer') {
+              _this.$smime = {
+                message: "THIS MAIL IS ENCRYPTED!"
+              };
+            }
             _.forEach(part.content, function(mixedPart) {
               _visit(mixedPart);
             });
