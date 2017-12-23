@@ -36,12 +36,18 @@
 
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 
+#import <NGCards/NGVCard.h>
+
+#import <Contacts/SOGoContactGCSEntry.h>
+#import <Contacts/SOGoContactFolders.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserFolder.h>
+#import <Mailer/SOGoMailBodyPart.h>
 #import <Mailer/SOGoMailObject.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailFolder.h>
@@ -202,21 +208,23 @@ static NSString *mailETag = nil;
 
 /* viewers */
 
+//
+// TODO: I would prefer to flatten the body structure prior rendering,
+//       using some delegate to decide which parts to select for alternative.
+//
 - (id) contentViewerComponent
 {
-  // TODO: I would prefer to flatten the body structure prior rendering,
-  //       using some delegate to decide which parts to select for alternative.
+  NSMutableDictionary *attachmentIds;
+  NSString *filename, *from;
+  NSDictionary *attributes;
   id info, viewer;
-  
+
+  unsigned int count, max;
+
   info = [[self clientObject] bodyStructure];
 
   viewer = [[context mailRenderingContext] viewerForBodyInfo: info];
   [viewer setBodyInfo: info];
-
-  NSMutableDictionary *attachmentIds;
-  NSDictionary *attributes;
-  NSString *filename;
-  unsigned int count, max;
 
   max = [[self attachmentAttrs] count];
   attachmentIds = [NSMutableDictionary dictionaryWithCapacity: max];
@@ -232,6 +240,32 @@ static NSString *mailETag = nil;
     }
   [viewer setAttachmentIds: attachmentIds];
 
+  // If we are looking at a S/MIME signed mail which wasn't sent
+  // by our actual active user, we update the certificate of that
+  // sender in the user's address book
+  from = [[[[self clientObject] fromEnvelopeAddresses] lastObject] baseEMail];
+
+  if (![[context activeUser] hasEmail: from] &&
+      [[self clientObject] isSigned])
+    {
+      SOGoContactFolders *contactFolders;
+      NSData *p7s;
+      id card;
+
+      // FIXME: it might not always be part #2
+      p7s = [[[self clientObject] lookupImap4BodyPartKey: @"2" inContext: context] fetchBLOB];
+      contactFolders = [[[context activeUser] homeFolderInContext: context]
+                                  lookupName: @"Contacts"
+                                   inContext: context
+                                     acquire: NO];
+      card = [contactFolders contactForEmail: from];
+      if ([card isKindOfClass: [SOGoContactGCSEntry class]])
+        {
+          [[card vCard] setCertificate: p7s];
+          [card save];
+        }
+    }
+
   return viewer;
 }
 
@@ -240,7 +274,6 @@ static NSString *mailETag = nil;
 - (id <WOActionResults>) defaultAction
 {
   WOResponse *response;
-  NSString *s;
   NSMutableDictionary *data;
   NSArray *addresses;
   SOGoMailObject *co;
@@ -266,28 +299,28 @@ static NSString *mailETag = nil;
     state of an even with an IMIP invitation. We should perhaps even
     store the state as an IMAP flag.
   */
-  s = [[context request] headerForKey: @"if-none-match"];
+  //s = [[context request] headerForKey: @"if-none-match"];
   //if (s)
-  if (0)
-    {
-      if ([s rangeOfString:mailETag].length > 0) /* not perfectly correct */
-        { 
-          /* client already has the proper entity */
-          // [self logWithFormat:@"MATCH: %@ (tag %@)", s, mailETag];
+  // if (0)
+  //   {
+  //     if ([s rangeOfString:mailETag].length > 0) /* not perfectly correct */
+  //       {
+  //         /* client already has the proper entity */
+  //         // [self logWithFormat:@"MATCH: %@ (tag %@)", s, mailETag];
 	  
-          if (![co doesMailExist])
-            {
-              data = [NSDictionary dictionaryWithObject: [self labelForKey: @"Message got deleted"]
-                                                 forKey: @"message"];
-              return [self responseWithStatus: 404 /* Not Found */
-                        andJSONRepresentation: data];
-            }
+  //         if (![co doesMailExist])
+  //           {
+  //             data = [NSDictionary dictionaryWithObject: [self labelForKey: @"Message got deleted"]
+  //                                                forKey: @"message"];
+  //             return [self responseWithStatus: 404 /* Not Found */
+  //                       andJSONRepresentation: data];
+  //           }
           
-          response = [self responseWithStatus: 304];
+  //         response = [self responseWithStatus: 304];
 
-          return response;
-        }
-    }
+  //         return response;
+  //       }
+  //   }
   
   if (![self message]) // TODO: redirect to proper error
     {
