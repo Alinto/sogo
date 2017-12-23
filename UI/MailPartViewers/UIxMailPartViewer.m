@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2015 Inverse inc.
+  Copyright (C) 2007-2017 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -27,6 +27,9 @@
 #import <NGExtensions/NSString+Encoding.h>
 #import <NGExtensions/NSString+misc.h>
 
+#import <NGMime/NGMimeBodyPart.h>
+#import <NGMime/NGMimeMultipartBody.h>
+
 #import <NGObjWeb/WOResponse.h>
 
 #import <SOGo/NSString+Utilities.h>
@@ -47,6 +50,8 @@
   if ((self = [super init]))
     {
       attachmentIds = nil;
+      flatContent = nil;
+      decodedContent = nil;
     }
 
   return self;
@@ -55,6 +60,7 @@
 - (void) dealloc
 {
   [flatContent release];
+  [decodedContent release];
   [bodyInfo release];
   [partPath release];
   [super dealloc];
@@ -62,10 +68,13 @@
 
 /* caches */
 
+//
+// This is called when -setPartPath: is called
+//
 - (void) resetPathCaches
 {
-  /* this is called when -setPartPath: is called */
-  [flatContent release]; flatContent = nil;
+  DESTROY(flatContent);
+  DESTROY(decodedContent);
 }
 
 - (void) resetBodyInfoCaches
@@ -117,19 +126,38 @@
   if (flatContent != nil)
     return [flatContent isNotNull] ? (id)flatContent : nil;
   
-  flatContent = 
-    [[[context mailRenderingContext] flatContentForPartPath:
-					      partPath] retain];
+  flatContent = [[[context mailRenderingContext] flatContentForPartPath: partPath] retain];
+
   return flatContent;
 }
 
-- (NSData *) decodedFlatContent
+- (void) setFlatContent: (NSData *) theData
+{
+  ASSIGN(flatContent, theData);
+}
+
+//
+// This methods decodes quoted-printable or
+// based64 encoded data coming straight
+// from the IMAP server.
+//
+- (id) decodedFlatContent
 {
   NSString *enc;
+
+  if (decodedContent != nil)
+    return [decodedContent isNotNull] ? (id)decodedContent : nil;
   
   enc = [[bodyInfo objectForKey:@"encoding"] lowercaseString];
 
-  return [[self flatContent] bodyDataFromEncoding: enc];
+  decodedContent = [[[self flatContent] bodyDataFromEncoding: enc] retain];
+
+  return decodedContent;
+}
+
+- (void) setDecodedContent: (id) theData
+{
+  ASSIGN(decodedContent, theData);
 }
 
 - (SOGoMailBodyPart *) clientPart
@@ -163,28 +191,38 @@
                        nil];
 }
 
+//
+// Attachment IDs are used to replace CID from HTML content
+// with their MIME parts when viewing an HTML mail with
+// embedded images, defined as CID.
+//
 - (void) setAttachmentIds: (NSDictionary *) newAttachmentIds
 {
   attachmentIds = newAttachmentIds;
 }
 
-- (NSData *) content
-{
-  return [[self clientObject] fetchBLOB];
-}
-
 - (NSString *) flatContentAsString
 {
-  /* Note: we even have the line count in the body-info! */
   NSString *charset, *s;
   NSData *content;
 
   content = [self decodedFlatContent];
   if (content)
     {
-      charset = [[bodyInfo objectForKey:@"parameterList"]
-		  objectForKey: @"charset"];
-      s = [content bodyStringFromCharset: charset];
+      // We handle special cases for S/MIME encrypted message
+      // as we won't deal with IMAP body structure objects here
+      // but rather directly with NGMime objects.
+      if ([content isKindOfClass: [NSData class]])
+        {
+          charset = [[bodyInfo objectForKey:@"parameterList"]
+                      objectForKey: @"charset"];
+          s = [content bodyStringFromCharset: charset];
+        }
+      else if ([content isKindOfClass: [NGMimeBodyPart class]] ||
+               [content isKindOfClass: [NGMimeMultipartBody class]])
+        s = [content body];
+      else
+        s = (id)content;
     }
   else
     {
@@ -222,7 +260,7 @@
     if ([_st isEqualToString:@"x-vcard"])  return @"vcf";
   }
   else if ([_mt isEqualToString:@"message"]) {
-    if ([_st isEqualToString:@"rfc822"]) return @"mail";
+    if ([_st isEqualToString:@"rfc822"]) return @"eml";
   }
   else if ([_mt isEqualToString:@"application"]) {
     if ([_st isEqualToString:@"pdf"]) return @"pdf";
@@ -261,33 +299,6 @@
 
 /* URL generation */
 
-- (NSString *) pathToAttachmentObject
-{
-  /* this points to the SoObject representing the part, no modifications */
-  NSString *url, *n;
-
-  /* path to mail controller object */
-  
-  url = [[self clientObject] baseURLInContext:context];
-  if (![url hasSuffix: @"/"])
-    url = [url stringByAppendingString: @"/"];
-  
-  /* if we get a message with an image-* or application-*
-     Content-Type, we must generate a 'fake' part since our
-     decoded mail won't have any. Also see SOGoMailBodyPart: -fetchBLOB
-     and SOGoMailObject: -lookupImap4BodyPartKey: inContext for
-     other workarounds */
-  if (!partPath || [partPath count] == 0)
-    partPath = [NSArray arrayWithObject: @"0"];
-
-  /* mail relative path to body-part
-     eg this was nil for a draft containing an HTML message */
-  if ([(n = [partPath componentsJoinedByString:@"/"]) isNotNull])
-    url = [url stringByAppendingString:n];
-  
-  return url;
-}
-
 - (NSString *) _filenameForAttachment: (SOGoMailBodyPart *) bodyPart
 {
   NSMutableString *filename;
@@ -315,29 +326,38 @@
 
 - (NSString *) _pathForAttachmentOrDownload: (BOOL) forDownload
 {
-  NSMutableString *url;
-  NSString *s, *attachment;
   SOGoMailBodyPart *bodyPart;
+  NSString *s, *attachment;
+  NSMutableString *url;
 
   bodyPart = [self clientPart];
-  s = [bodyPart baseURLInContext: [self context]];
+  s = [[self clientObject] baseURLInContext: [self context]];
+
   url = [NSMutableString stringWithString: s];
   if (![url hasSuffix: @"/"])
     [url appendString: @"/"];
 
+  [url appendString: [[self partPath] componentsJoinedByString: @"/"]];
+  [url appendString: @"/"];
+
   if ([bodyPart isKindOfClass: [SOGoMailBodyPart class]])
     attachment = [self _filenameForAttachment: bodyPart];
+  else if ([[self decodedFlatContent] isKindOfClass: [NGMimeBodyPart class]])
+    attachment = [[[self decodedFlatContent] headerForKey: @"content-disposition"] filename];
   else
     attachment = @"0";
 
   if (forDownload)
     [url appendString: @"asAttachment/"];
-    
+
   [url appendString: attachment];
 
   return url;
 }
 
+//
+// Used by UI/Templates/MailPartViewers/UIxMailPartICalViewer.wox
+//
 - (NSString *) pathToAttachmentFromMessage
 {
   NSMutableArray *parts;
@@ -367,31 +387,6 @@
 - (NSString *) pathForDownload
 {
   return [self _pathForAttachmentOrDownload: YES];
-}
-
-- (NSString *) mimeImageURL
-{
-  NSString *mimeImageFile, *mimeImageUrl;
-    
-  mimeImageFile = [NSString stringWithFormat: @"mime-%@-%@.png", 
-		      [bodyInfo objectForKey: @"type"], 
-		      [bodyInfo objectForKey: @"subtype"]];
-  
-  mimeImageUrl = [self urlForResourceFilename: mimeImageFile];
-  
-  if ([mimeImageUrl length] == 0) 
-    {
-      mimeImageFile = [NSString stringWithFormat: @"mime-%@.png", 
-			  [bodyInfo objectForKey: @"type"]];
-      mimeImageUrl = [self urlForResourceFilename: mimeImageFile];
-    }
-  
-  if ([mimeImageUrl length] == 0) 
-    {
-      mimeImageUrl = [self urlForResourceFilename: @"mime-unknown.png"];
-    }
-  
-  return mimeImageUrl;
 }
 
 @end /* UIxMailPartViewer */
