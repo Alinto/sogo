@@ -1,6 +1,6 @@
 /* SOGoContactFolders.h - this file is part of SOGo
  *
- * Copyright (C) 2006-2013 Inverse inc.
+ * Copyright (C) 2006-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@
 
 #import <SOGo/SOGoParentFolder.h>
 
+#import "SOGoContactObject.h"
+
 @interface SOGoContactFolders : SOGoParentFolder
 
 - (NSString *) defaultFolderName;
@@ -37,6 +39,9 @@
 - (NSArray *) allContactsFromFilter: (NSString *) theFilter
                       excludeGroups: (BOOL) excludeGroups
                        excludeLists: (BOOL) excludeLists;
+
+- (id<SOGoContactObject>) contactForEmail: (NSString *) theEmail;
+- (NSData *) certificateForEmail: (NSString *) theEmail;
 
 @end
 

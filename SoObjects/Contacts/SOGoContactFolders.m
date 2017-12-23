@@ -1,6 +1,6 @@
 /* SOGoContactFolders.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2013 Inverse inc.
+ * Copyright (C) 2006-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 #import <Foundation/NSSortDescriptor.h>
 
+#import <NGCards/NGVCard.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <DOM/DOMElement.h>
@@ -38,6 +39,7 @@
 #import "SOGoContactGCSFolder.h"
 #import "SOGoContactSourceFolder.h"
 
+#import "SOGoContactFolder.h"
 #import "SOGoContactFolders.h"
 
 Class SOGoContactSourceFolderK;
@@ -419,85 +421,118 @@ Class SOGoContactSourceFolderK;
                       excludeGroups: (BOOL) excludeGroups
                        excludeLists: (BOOL) excludeLists
 {
+  NSArray *folders, *contacts, *descriptors, *sortedContacts;
+  NSMutableDictionary *contact, *uniqueContacts;
+  NSMutableArray *sortedFolders;
   SOGoFolder <SOGoContactFolder> *folder;
   NSString *mail, *domain;
-  NSArray *folders, *contacts, *descriptors, *sortedContacts;
-  NSMutableArray *sortedFolders;
-  NSMutableDictionary *contact, *uniqueContacts;
-  unsigned int i, j, max;
-  NSSortDescriptor *commonNameDescriptor;
 
-  // NSLog(@"Search all contacts: %@", searchText);
+  NSSortDescriptor *commonNameDescriptor;
+  unsigned int i, j, max;
 
   domain = [[context activeUser] domain];
   folders = nil;
+
   NS_DURING
-  folders = [self subFolders];
+    {
+      folders = [self subFolders];
+    }
   NS_HANDLER
-  /* We need to specifically test for @"SOGoDBException", which is
-   raised explicitly in SOGoParentFolder. Any other exception should
-   be re-raised. */
-  if ([[localException name] isEqualToString: @"SOGoDBException"])
-  folders = nil;
-  else
-  [localException raise];
+    {
+      /* We need to specifically test for @"SOGoDBException", which is
+         raised explicitly in SOGoParentFolder. Any other exception should
+         be re-raised. */
+      if ([[localException name] isEqualToString: @"SOGoDBException"])
+        folders = nil;
+      else
+        [localException raise];
+    }
   NS_ENDHANDLER;
+
   max = [folders count];
   sortedFolders = [NSMutableArray arrayWithCapacity: max];
   uniqueContacts = [NSMutableDictionary dictionary];
+
   for (i = 0; i < max; i++)
-  {
-    folder = [folders objectAtIndex: i];
-	  /* We first search in LDAP folders (in case of duplicated entries in GCS folders) */
-    if ([folder isKindOfClass: SOGoContactSourceFolderK])
-    [sortedFolders insertObject: folder atIndex: 0];
-    else
-    [sortedFolders addObject: folder];
-  }
-  for (i = 0; i < max; i++)
-  {
-    folder = [sortedFolders objectAtIndex: i];
-    //NSLog(@"  Address book: %@ (%@)", [folder displayName], [folder class]);
-    contacts = [folder lookupContactsWithFilter: theFilter
-                                     onCriteria: nil
-                                         sortBy: @"c_cn"
-                                       ordering: NSOrderedAscending
-                                       inDomain: domain];
-    for (j = 0; j < [contacts count]; j++)
     {
-      contact = [contacts objectAtIndex: j];
-      mail = [contact objectForKey: @"c_mail"];
-      //NSLog(@"   found %@ (%@) ? %@", [contact objectForKey: @"c_name"], mail,
-      //      [contact description]);
-      if (!excludeLists && [[contact objectForKey: @"c_component"]
-                            isEqualToString: @"vlist"])
-      {
-        [contact setObject: [folder nameInContainer]
-                    forKey: @"container"];
-        [uniqueContacts setObject: contact
-                           forKey: [contact objectForKey: @"c_name"]];
-      }
-      else if ([mail length]
-               && [uniqueContacts objectForKey: mail] == nil
-               && !(excludeGroups && [contact objectForKey: @"isGroup"]))
-      [uniqueContacts setObject: contact forKey: mail];
+      folder = [folders objectAtIndex: i];
+      /* We first search in LDAP folders (in case of duplicated entries in GCS folders) */
+      if ([folder isKindOfClass: SOGoContactSourceFolderK])
+        [sortedFolders insertObject: folder atIndex: 0];
+      else
+        [sortedFolders addObject: folder];
     }
-  }
+  for (i = 0; i < max; i++)
+    {
+      folder = [sortedFolders objectAtIndex: i];
+      //NSLog(@"  Address book: %@ (%@)", [folder displayName], [folder class]);
+      contacts = [folder lookupContactsWithFilter: theFilter
+                                       onCriteria: nil
+                                           sortBy: @"c_cn"
+                                         ordering: NSOrderedAscending
+                                         inDomain: domain];
+      for (j = 0; j < [contacts count]; j++)
+        {
+          contact = [contacts objectAtIndex: j];
+          [contact setObject: [folder nameInContainer]
+                      forKey: @"container"];
+          mail = [contact objectForKey: @"c_mail"];
+
+          if (!excludeLists && [[contact objectForKey: @"c_component"]
+                                 isEqualToString: @"vlist"])  
+            [uniqueContacts setObject: contact
+                               forKey: [contact objectForKey: @"c_name"]];
+          else if ([mail length]
+                   && [uniqueContacts objectForKey: mail] == nil
+                   && !(excludeGroups && [contact objectForKey: @"isGroup"]))
+            [uniqueContacts setObject: contact forKey: mail];
+        }
+    }
   if ([uniqueContacts count] > 0)
-  {
-    // Sort the contacts by display name
-    commonNameDescriptor = [[NSSortDescriptor alloc] initWithKey: @"c_cn"
-                                                       ascending:YES];
-    descriptors = [NSArray arrayWithObjects: commonNameDescriptor, nil];
-    [commonNameDescriptor release];
+    {
+      // Sort the contacts by display name
+      commonNameDescriptor = [[NSSortDescriptor alloc] initWithKey: @"c_cn"
+                                                         ascending: YES];
+      descriptors = [NSArray arrayWithObjects: commonNameDescriptor, nil];
+      [commonNameDescriptor release];
     sortedContacts = [[uniqueContacts allValues]
-                      sortedArrayUsingDescriptors: descriptors];
-  }
+                       sortedArrayUsingDescriptors: descriptors];
+    }
   else
     sortedContacts = [NSArray array];
 
   return sortedContacts;
 }
 
+- (id<SOGoContactObject>) contactForEmail: (NSString *) theEmail
+{
+  NSDictionary *contact;
+  NSArray *allContacts;
+  int i;
+
+  allContacts = [self allContactsFromFilter: theEmail  excludeGroups: YES excludeLists: YES];
+
+  for (i = 0; i < [allContacts count]; i++)
+    {
+      contact = [allContacts objectAtIndex: i];
+      if ([[contact objectForKey: @"c_hascertificate"] boolValue])
+        {
+          SOGoFolder<SOGoContactObject> *contactObject;
+          SOGoFolder<SOGoContactFolder> *contactFolder;
+
+          contactFolder = [self lookupName: [contact objectForKey: @"container"] inContext: context  acquire: NO];
+          contactObject = [contactFolder lookupName: [contact objectForKey: @"id"] inContext: context  acquire: NO];
+
+          return contactObject;
+        }
+    }
+
+  return nil;
+}
+
+- (NSData *) certificateForEmail: (NSString *) theEmail
+{
+  return [[[self contactForEmail: theEmail] vCard] certificate];
+}
 
 @end
