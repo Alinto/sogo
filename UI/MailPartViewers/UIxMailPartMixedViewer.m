@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2015 Inverse inc.
+  Copyright (C) 2007-2017 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -21,6 +21,8 @@
 */
 
 #import <Foundation/NSDictionary.h>
+
+#import <NGMime/NGMimeMultipartBody.h>
 
 #import <UI/MailerUI/WOContext+UIxMailer.h>
 
@@ -50,22 +52,23 @@
   return self->childInfo;
 }
 
-- (void) setChildIndex: (NSUInteger) _index {
+- (void) setChildIndex: (NSUInteger) _index
+{
   self->childIndex = _index;
 }
-- (NSUInteger) childIndex {
+- (NSUInteger) childIndex
+{
   return self->childIndex;
 }
 
-- (NSString *)childPartName {
+- (NSString *) childPartName
+{
   return [NSString stringWithFormat: @"%u",
                    (unsigned int) ([self childIndex] + 1)];
-  char buf[8];
-  sprintf(buf, "%d", (int)[self childIndex] + 1);
-  return [NSString stringWithCString:buf];
 }
 
-- (id)childPartPath {
+- (id)childPartPath
+{
   NSArray *pp;
 
   pp = [self partPath];
@@ -76,34 +79,50 @@
 
 /* nested viewers */
 
-- (id)contentViewerComponent {
+- (id)contentViewerComponent
+{
   id info;
   
   info = [self childInfo];
-  return [[[self context] mailRenderingContext] viewerForBodyInfo:info];
+  return [[[self context] mailRenderingContext] viewerForBodyInfo: info];
 }
 
-- (id) renderedPart {
-  id info, viewer;
-  NSArray *parts;
+- (id) renderedPart
+{
   NSMutableArray *renderedParts;
   NSString *contentType;
+  id viewer, info;
+  NSArray *parts;
+
   NSUInteger i, max;
 
-  parts = [[self bodyInfo] objectForKey: @"parts"];
+  if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+    parts = [[self decodedFlatContent] parts];
+  else
+    parts = [[self bodyInfo] valueForKey: @"parts"];
+
   max = [parts count];
   renderedParts = [NSMutableArray arrayWithCapacity: max];
+
   for (i = 0; i < max; i++)
     {
       [self setChildIndex: i];
-      [self setChildInfo: [parts objectAtIndex: i]];
+
+      if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+        [self setChildInfo: [[parts objectAtIndex: i] bodyInfo]];
+      else
+        [self setChildInfo: [parts objectAtIndex: i]];
+
       info = [self childInfo];
       viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
       [viewer setBodyInfo: info];
       [viewer setPartPath: [self childPartPath]];
       [viewer setAttachmentIds: attachmentIds];
+      if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+        [viewer setDecodedContent: [parts objectAtIndex: i]];
       [renderedParts addObject: [viewer renderedPart]];
     }
+
   contentType = [NSString stringWithFormat: @"%@/%@",
                           [[self bodyInfo] objectForKey: @"type"],
                           [[self bodyInfo] objectForKey: @"subtype"]];
