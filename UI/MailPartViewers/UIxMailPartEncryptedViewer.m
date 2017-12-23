@@ -24,8 +24,11 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGMail/NGMimeMessageParser.h>
+#import <NGMime/NGMimeType.h>
 
 #import <SoObjects/Mailer/NSData+SMIME.h>
+#import <SoObjects/Mailer/SOGoMailAccount.h>
+#import <SoObjects/Mailer/SOGoMailObject.h>
 #import <UI/MailerUI/WOContext+UIxMailer.h>
 
 #import "UIxMailRenderingContext.h"
@@ -45,49 +48,39 @@
 
 - (id) renderedPart
 {
-  NSData *certificate; 
+  NSData *certificate, *decryptedData, *encryptedData;
+
   id info, viewer;
 
   certificate = [[[self clientObject] mailAccountFolder] certificate];
+  encryptedData = [[self clientObject] content];
+  decryptedData = [encryptedData decryptUsingCertificate: certificate];
 
-  if (certificate)
+  if (decryptedData)
     {
-      NSData *decryptedData, *encryptedData;
+      NGMimeMessageParser *parser;
+      id part;
 
-      encryptedData = [[self clientObject] content];
-      decryptedData = [encryptedData decryptUsingCertificate: certificate];
+      parser = [[NGMimeMessageParser alloc] init];
+      part = [[parser parsePartFromData: decryptedData] retain];
 
-      if (decryptedData)
-        {
-          NGMimeMessageParser *parser;
-          id part;
+      info = [NSDictionary dictionaryWithObjectsAndKeys: [[part contentType] type], @"type",
+                           [[part contentType] subType], @"subtype", nil];
+      viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
+      [viewer setBodyInfo: info];
+      [viewer setFlatContent: decryptedData];
+      [viewer setDecodedContent: [part body]];
 
-          parser = [[NGMimeMessageParser alloc] init];
-          part = [[parser parsePartFromData: decryptedData] retain];
-
-          info = [NSDictionary dictionaryWithObjectsAndKeys: [[part contentType] type], @"type",
-                               [[part contentType] subType], @"subtype", nil];
-          viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
-          [viewer setBodyInfo: info];
-          [viewer setFlatContent: decryptedData];
-          [viewer setDecodedContent: [part body]];
-
-          return [NSDictionary dictionaryWithObjectsAndKeys:
+      return [NSDictionary dictionaryWithObjectsAndKeys:
                                  [self className], @"type",
-                                   [NSArray arrayWithObject: [viewer renderedPart]], @"content",
-                               nil];
-        }
+                               [NSArray arrayWithObject: [viewer renderedPart]], @"content",
+                           nil];
     }
 
-  // Decryption failed, let's return the master viewer
-  // FIXME - does not work for now.
-  info = [NSDictionary dictionaryWithObjectsAndKeys: @"multipart", @"type",
-                       @"mixed", @"subtype", nil];
-  [self setFlatContent: nil];
-  viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
-  [viewer setBodyInfo: info];
 
-  return [viewer renderedPart];
+  // Decryption failed, let's return something else...
+  // FIXME - does not work for now.
+  return nil;
 }
 
 @end /* UIxMailPartAlternativeViewer */

@@ -26,6 +26,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSNull+misc.h>
 
+#import <SoObjects/Mailer/SOGoMailAccount.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
 
 #import "UIxMailRenderingContext.h"
@@ -195,7 +196,7 @@ static BOOL showNamedTextAttachmentsInline = NO;
       else if ([st isEqualToString: @"alternative"])
 	return [self alternativeViewer];
     
-      if ([st isEqualToString:@"report"])
+      if ([st isEqualToString: @"report"])
 	/* this is used by mail-delivery reports */
 	return [self mixedViewer];
     }
@@ -249,12 +250,17 @@ static BOOL showNamedTextAttachmentsInline = NO;
   if ([mt isEqualToString: @"application"])
     {
       // octet-stream (generate download link?, autodetect type?)
-      if ([st isEqualToString:@"ics"]) /* Cooqle K4lendahr - Google Calendar */
+      if ([st isEqualToString: @"ics"]) /* Cooqle K4lendahr - Google Calendar */
 	return [self iCalViewer];
 
       if ([st isEqualToString: @"x-pkcs7-mime"] ||
           [st isEqualToString: @"pkcs7-mime"])
-        return [self encryptedViewer];
+        {
+          // If the mail account has a valid certificate, we try to decode
+          // the encrypted email. Otherwise, we fallback to a link viewer
+          if ([[[viewer clientObject] mailAccountFolder] certificate])
+            return [self encryptedViewer];
+        }
 
 #if 0 /* the link viewer looks better than plain text ;-) */
       if ([st isEqualToString: @"pgp-signature"]) // TODO: real PGP viewer
