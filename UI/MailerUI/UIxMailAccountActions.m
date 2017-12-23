@@ -1,6 +1,6 @@
 /* UIxMailAccountActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2016 Inverse inc.
+ * Copyright (C) 2007-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@
 #import <NGImap4/NSString+Imap4.h>
 #import <NGExtensions/NSString+misc.h>
 
+#import <Mailer/NSData+SMIME.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoDraftObject.h>
 #import <Mailer/SOGoDraftsFolder.h>
@@ -198,6 +199,7 @@
   NSString *mimeType, *name, *password;
   WOResponse *response;
   id data;
+
   unsigned int count, max;
 
   password = nil;
@@ -217,7 +219,7 @@
           name = [header name];
           if ([name isEqualToString: @"password"])
             {
-              password = name;
+              password = [part body];
             }
           else if ([name isEqualToString: @"file"])
             {
@@ -236,7 +238,18 @@
 
   if (password && pkcs12)
     {
-      // TODO: append certificate to user defaults
+      SOGoUserDefaults *ud;
+      NSData *certificate;
+
+      certificate = [pkcs12 convertPKCS12ToPEMUsingPassword: password];
+
+      if (!certificate)
+        return [self responseWithStatus: 507];
+
+      ud = [[context activeUser] userDefaults];
+      [[self clientObject] setCertificate: certificate];
+      [ud synchronize];
+
       response = [self responseWith204];
     }
 
@@ -245,7 +258,12 @@
 
 - (WOResponse *) removeCertificateAction
 {
-  // TODO: remove certificate from user defaults
+  SOGoUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+  [[self clientObject] setCertificate: nil];
+  [ud synchronize];
+
   return [self responseWith204];
 }
 
