@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2015 Inverse inc.
+  Copyright (C) 2007-2017 Inverse inc.
   Copyright (C) 2004 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -24,6 +24,9 @@
 #import <Foundation/NSNull.h>
 
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGMail/NGMimeMessageParser.h>
+#import <NGMime/NGMimeMultipartBody.h>
+#import <NGMime/NGMimeType.h>
 
 #import <UI/MailerUI/WOContext+UIxMailer.h>
 
@@ -35,7 +38,7 @@
 
   Display multipart/alternative parts. Most common application is for messages
   which contain text/html and text/plain, but it is also used in other
-  contexts, eg in OGo appointment mails.
+  contexts, eg in SOGo appointment mails.
 
   TODO: We might want to give the user the possibility to access all parts
         of the alternative set.
@@ -57,22 +60,35 @@
 - (NSArray *) childPartTypes
 {
   NSMutableArray *types;
-  NSUInteger i, count;
   NSArray  *childParts;
+  NSString *mt, *st;
 
-  childParts = [[self bodyInfo] valueForKey:@"parts"];
-  count      = [childParts count];
-  types      = [NSMutableArray arrayWithCapacity:count];
+  NSUInteger i, count;
 
-  for (i = 0; i < count; i++) {
-    NSString *mt, *st;
+  if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+    childParts = [[self decodedFlatContent] parts];
+  else
+    childParts = [[self bodyInfo] valueForKey:@"parts"];
 
-    mt = [[[childParts objectAtIndex:i] valueForKey:@"type"] lowercaseString];
-    st = [[[childParts objectAtIndex:i] valueForKey:@"subtype"]
-	               lowercaseString];
-    mt = [[mt stringByAppendingString:@"/"] stringByAppendingString:st];
-    [types addObject:mt ? (id)mt : (id)[NSNull null]];
-  }
+  count = [childParts count];
+  types = [NSMutableArray arrayWithCapacity: count];
+
+  for (i = 0; i < count; i++)
+    {
+      if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+        {
+          mt = [[[[[self decodedFlatContent] parts] objectAtIndex: i] contentType] type];
+          st = [[[[[self decodedFlatContent] parts] objectAtIndex: i] contentType] subType];
+        }
+      else
+        {
+          mt = [[[childParts objectAtIndex: i] valueForKey: @"type"] lowercaseString];
+          st = [[[childParts objectAtIndex: i] valueForKey: @"subtype"] lowercaseString];
+        }
+      mt = [[mt stringByAppendingString: @"/"] stringByAppendingString: st];
+      [types addObject: (mt ? (id)mt : (id)[NSNull null])];
+    }
+
   return types;
 }
 
@@ -137,7 +153,13 @@
     }
 
   childIndex = idx + 1;
-  childInfo = [[[[self bodyInfo] valueForKey:@"parts"] objectAtIndex:idx] retain];
+
+  if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+    childInfo = [[[[self decodedFlatContent] parts] objectAtIndex: idx] bodyInfo];
+  else
+    childInfo = [[[self bodyInfo] valueForKey:@"parts"] objectAtIndex: idx];
+
+  [childInfo retain];
 }
 
 /* nested viewers */
@@ -147,7 +169,7 @@
   id info;
 
   info = [self childInfo];
-  return [[[self context] mailRenderingContext] viewerForBodyInfo:info];
+  return [[[self context] mailRenderingContext] viewerForBodyInfo: info];
 }
 
 - (id) renderedPart {
@@ -157,18 +179,29 @@
   NSString *preferredType;
   NSUInteger i, max;
 
-  parts = [[self bodyInfo] objectForKey: @"parts"];
+  if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+    parts = [[self decodedFlatContent] parts];
+  else
+    parts = [[self bodyInfo] valueForKey:@"parts"];
+
   max = [parts count];
   renderedParts = [NSMutableArray arrayWithCapacity: max];
   for (i = 0; i < max; i++)
     {
       [self setChildIndex: i];
-      [self setChildInfo: [parts objectAtIndex: i]];
+
+      if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+        [self setChildInfo: [[parts objectAtIndex: i] bodyInfo]];
+      else
+        [self setChildInfo: [parts objectAtIndex: i]];
+
       info = [self childInfo];
       viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
       [viewer setBodyInfo: info];
       [viewer setPartPath: [self childPartPath]];
       [viewer setAttachmentIds: attachmentIds];
+      if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+        [viewer setDecodedContent: [parts objectAtIndex: i]];
       [renderedParts addObject: [viewer renderedPart]];
     }
 
