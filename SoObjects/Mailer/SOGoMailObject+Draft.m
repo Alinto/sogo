@@ -1,8 +1,6 @@
 /* SOGoMailObject+Draft.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2008 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,16 +25,23 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGMail/NGMimeMessage.h>
+#import <NGMime/NGMimeBodyPart.h>
+#import <NGMime/NGMimeMultipartBody.h>
+#import <NGMime/NGMimeType.h>
 
 #import <SoObjects/SOGo/NSArray+Utilities.h>
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoUserDefaults.h>
 
+#import "NSData+Mail.h"
+#import "NSData+SMIME.h"
 #import "NSString+Mail.h"
+#import "SOGoMailAccount.h"
 #import "SOGoMailObject+Draft.h"
 #import "SOGoMailReply.h"
 
-#define maxFilenameLength 64
+#define MAX_FILENAME_LENGTH 64
 
 //
 //
@@ -168,18 +173,98 @@
 //
 //
 //
+- (NSString *) _preferredContentFromPart: (id) thePart
+                               favorHTML: (BOOL) favorHTML
+{
+  NSString *type, *subtype;
+  id body;
+
+  if ([thePart isKindOfClass: [NGMimeBodyPart class]])
+    {
+      type = [[thePart contentType] type];
+      subtype = [[thePart contentType] subType];
+      body = [thePart body];
+
+      if ([type isEqualToString: @"text"])
+        {
+          if ([subtype isEqualToString: @"html"] && favorHTML)
+            return [[body stringByEscapingHTMLString] stringByConvertingCRLNToHTML];
+          else if ([subtype isEqualToString: @"html"] && !favorHTML)
+            return [body htmlToText];
+          else if ([subtype isEqualToString: @"plain"])
+            return body;
+        }
+    }
+  else if ([thePart isKindOfClass: [NGMimeMultipartBody class]])
+    {
+      NSArray *parts;
+      int i;
+
+      parts = [thePart parts];
+      for (i = 0; i < [parts count]; i++)
+        {
+          type = [[[parts objectAtIndex: i] contentType] type];
+
+          if ([type isEqualToString: @"text"] || [type isEqualToString: @"multipart"])
+            return [self _preferredContentFromPart: [parts objectAtIndex: i]
+                                         favorHTML: favorHTML];
+        }
+    }
+
+  return nil;
+}
+
+//
+//
+//
+- (NSString *) _contentForEditingFromEncryptedMail
+{
+  NSData *certificate;
+
+  certificate = [[self mailAccountFolder] certificate];
+
+  if (certificate)
+    {
+      SOGoUserDefaults *ud;
+      NGMimeMessage *m;
+
+      m = [[self content] messageFromEncryptedDataAndCertificate: certificate];
+      ud = [[context activeUser] userDefaults];
+
+      return [self _preferredContentFromPart: [m body]
+                                   favorHTML: [[ud mailComposeMessageType] isEqualToString: @"html"]];
+    }
+
+  return nil;
+}
+
+//
+//
+//
 - (NSString *) contentForEditing
 {
   NSMutableArray *keys;
-  NSArray *acceptedTypes;
+  NSString *output;
 
-  acceptedTypes = [NSArray arrayWithObjects: @"text/plain", @"text/html", nil];
-  keys = [NSMutableArray array];
-  [self addRequiredKeysOfStructure: [self bodyStructure]
-                              path: @"" toArray: keys acceptedTypes: acceptedTypes
-                          withPeek: NO];
+  output = nil;
 
-  return [self _contentForEditingFromKeys: keys];
+  if ([self isEncrypted])
+    output = [self _contentForEditingFromEncryptedMail];
+
+  // If not encrypted or if decryption failed, we fallback
+  // to the normal content fetching code.
+  if (!output)
+    {
+      keys = [NSMutableArray array];
+      [self addRequiredKeysOfStructure: [self bodyStructure]
+                                  path: @""
+                               toArray: keys
+                         acceptedTypes: [NSArray arrayWithObjects: @"text/plain", @"text/html", nil]
+                              withPeek: NO];
+      output = [self _contentForEditingFromKeys: keys];
+    }
+
+  return output;
 }
 
 //
@@ -224,8 +309,8 @@
       length = [subject length];
     }
 
-  if (length > maxFilenameLength)
-    length = maxFilenameLength;
+  if (length > MAX_FILENAME_LENGTH)
+    length = MAX_FILENAME_LENGTH;
   newSubject = [NSMutableString
 		 stringWithString: [subject substringToIndex: length]];
   count = 0;
