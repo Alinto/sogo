@@ -212,7 +212,7 @@
                 </div>
               </div>
               <md-input-container class="md-flex">
-                <label><var:string label:value="Certificate Password"/></label>
+                <label><var:string label:value="Certificate Import Password"/></label>
                 <input type="password" autocomplete="new-password"
                        ng-required="$AccountDialogController.uploader.queue.length"
                        ng-model="$AccountDialogController.certificatePassword" />

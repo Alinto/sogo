@@ -211,7 +211,7 @@
 "The SSL certificate must use the PKCS#12 (PFX) format." = "The SSL certificate must use the PKCS#12 (PFX) format.";
 "Uninstall" = "Uninstall";
 "Choose PKCS12 Certificate .." = "Choose PKCS12 Certificate ..";
-"Certificate Password" = "Certificate Password";
+"Certificate Import Password" = "Certificate Import Password";
 "Upload" = "Upload";
 "When composing a message" = "When composing a message";
 "Digitally sign the message by default" = "Digitally sign the message by default";
