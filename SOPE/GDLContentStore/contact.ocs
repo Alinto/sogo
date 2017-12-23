@@ -104,5 +104,10 @@
       sqlType    = "VARCHAR(10)";
       allowsNull = NO;
     },
+    {
+      columnName = c_hascertificate;
+      sqlType    = "INT";
+      allowsNull = YES;
+    },
   );
 }

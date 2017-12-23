@@ -1,9 +1,11 @@
 #!/bin/bash
 
 set -e
-# This script only works with PostgreSQL
-# updates c_mail to text in Contacts quick table
-# http://www.sogo.nu/bugs/view.php?id=4322
+
+# This script only works with PostgreSQL - it does:
+#
+# 1- increase the c_mail column to text to contact quick table
+# 2- add the c_hascertificate column to contact quick table
 
 defaultusername=$USER
 defaulthostname=localhost
@@ -33,10 +35,18 @@ fi
 
 sqlscript=""
 
-function growContactsQuick() {
+function growMailInContactsQuick() {
     oldIFS="$IFS"
     IFS=" "
     part="`echo -e \"ALTER TABLE $table ALTER COLUMN c_mail TYPE TEXT;\\n\"`";
+    sqlscript="$sqlscript$part"
+    IFS="$oldIFS"
+}
+
+function addCertificateInContactsQuick() {
+    oldIFS="$IFS"
+    IFS=" "
+    part="`echo -e \"ALTER TABLE $table ADD c_hascertificate INT4 DEFAULT 0;\\n\"`";
     sqlscript="$sqlscript$part"
     IFS="$oldIFS"
 }
@@ -47,7 +57,8 @@ tables=`psql -t -U $username -h $hostname $database -c "select split_part(c_quic
 
 for table in $tables;
 do
-  growContactsQuick
+    growMailInContactsQuick
+    addCertificateInContactsQuick
 done
 
 echo "$sqlscript" | psql -q -e -U $username -h $hostname $database
