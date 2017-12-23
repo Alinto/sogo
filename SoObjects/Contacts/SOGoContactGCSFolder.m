@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2016 Inverse inc.
+  Copyright (C) 2006-2017 Inverse inc.
 
   This file is part of SOGo.
 
@@ -58,7 +58,8 @@ static NSArray *folderListingFields = nil;
                                            @"c_screenname", @"c_o",
                                            @"c_mail", @"c_telephonenumber",
                                            @"c_categories",
-                                           @"c_component", nil];
+                                           @"c_component",
+                                           @"c_hascertificate", nil];
 }
 
 - (id) init
