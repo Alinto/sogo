@@ -1,6 +1,6 @@
-/* UIxMailPartTextViewer.h - this file is part of SOGo.
+/* UIxMailPartEncryptedViewer.h - this file is part of SOGo
  *
- * Copyright (C) 2006-2017 Inverse inc.
+ * Copyright (C) 2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,18 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef UIXMAILPARTTEXTVIEWER_H
-#define UIXMAILPARTTEXTVIEWER_H
+#ifndef UIXMAILPARTENCRYPTEDVIEWER_H
+#define UIXMAILPARTENCRYPTEDVIEWER_H
 
 #import "UIxMailPartViewer.h"
 
-@class NSString;
+@class NSMutableString;
+@class NGPart;
 
-@interface UIxMailPartTextViewer : UIxMailPartViewer
-
-- (NSString *) flatContentAsString;
+@interface UIxMailPartEncryptedViewer : UIxMailPartViewer
+{
+}
 
 @end
 
-#endif /* UIXMAILPARTTEXTVIEWER_H */
+#endif /* UIXMAILPARTENCRYPTEDVIEWER_H */
