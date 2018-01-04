@@ -32,8 +32,6 @@ $(TEST_TOOL)_OBJC_FILES += \
 	TestNSString+Utilities.m \
 	TestNGMailAddressParser.m \
 	\
-	TestRTFHandler.m \
-	../../OpenChange/RTFHandler.m
     # I don't know how to link against -l:SOGoBackend \
 	     undefined reference to `__objc_class_name_SOGoMailFolder'
 
