@@ -1659,10 +1659,10 @@ static NSString    *userAgent      = nil;
 - (NSData *) mimeMessageForRecipient: (NSString *) theRecipient
 {
   NGMimeMessageGenerator *generator, *partGenerator;
+  NSData *certificate, *content;
   NGMutableHashMap *hashMap;
   NGMimeMessage *message;
   NSMutableData *d;
-  NSData *content;
 
   // Nothing to sign or encrypt, let's generate the message and return immediately
   if (![self sign] && ![self encrypt])
@@ -1677,8 +1677,6 @@ static NSString    *userAgent      = nil;
 
   if ([self sign])
     {
-      NSData *certificate;
-
       certificate = [[self mailAccountFolder] certificate];
       content = [content signUsingCertificateAndKey: certificate];
 
@@ -1691,11 +1689,10 @@ static NSString    *userAgent      = nil;
 
   if ([self encrypt])
     {
-      NSData *certificate;
-
       if (theRecipient)
         {
           SOGoContactFolders *contactFolders;
+
           contactFolders = [[[context activeUser] homeFolderInContext: context]
                                   lookupName: @"Contacts"
                                    inContext: context
@@ -1703,9 +1700,7 @@ static NSString    *userAgent      = nil;
           certificate = [[contactFolders certificateForEmail: theRecipient] convertPKCS7ToPEM];
         }
       else
-        {
-          certificate =  [[self mailAccountFolder] certificate];
-        }
+        certificate =  [[self mailAccountFolder] certificate];
 
       content = [content encryptUsingCertificate: certificate];
     }
@@ -1800,12 +1795,16 @@ static NSString    *userAgent      = nil;
       for (i = 0; i < [recipients count]; i++)
         {
           recipient = [recipients objectAtIndex: i];
-          certificate = [contactFolders certificateForEmail: recipient];
+
+          if ([[context activeUser] hasEmail: recipient])
+            certificate = [[self mailAccountFolder] certificate];
+          else
+            certificate = [contactFolders certificateForEmail: recipient];
+
           if (!certificate)
-            {
-              return [NSException exceptionWithHTTPStatus: 500 /* server error */
-                                                   reason: @"cannot encrypt email without recipient certificate"]; 
-            }
+            return [NSException exceptionWithHTTPStatus: 500 /* server error */
+                                                 reason: @"cannot encrypt email without recipient certificate"];
+
           [certificates setObject: certificate  forKey: recipient];
         }
     }
@@ -1868,13 +1867,14 @@ static NSString    *userAgent      = nil;
 //
 - (NSException *) sendMailAndCopyToSent: (BOOL) copyToSent
 {
+  NSData *message, *messageForSent;
   SOGoMailFolder *sentFolder;
   SOGoDomainDefaults *dd;
   NSURL *sourceIMAP4URL;
   NSException *error;
-  NSData *message;
 
   dd = [[context activeUser] domainDefaults];
+  messageForSent = nil;
 
   // If we are encrypting mails, let's generate and
   // send them individually
@@ -1889,7 +1889,11 @@ static NSString    *userAgent      = nil;
       for (i = 0; i < [recipients count]; i++)
         {
           recipient = [recipients objectAtIndex: i];
-          message = [self mimeMessageForRecipient: recipient];;
+
+          if ([[context activeUser] hasEmail: recipient])
+            message = messageForSent = [self mimeMessageForRecipient: nil];
+          else
+            message = [self mimeMessageForRecipient: recipient];;
 
           if (!message)
             return  [NSException exceptionWithHTTPStatus: 500
@@ -1901,24 +1905,32 @@ static NSString    *userAgent      = nil;
                           sender: [self sender]
                     withAuthenticator: [self authenticatorInContext: context]
                        inContext: context];
+
+          if (error)
+            return error;
         }
 
-      // Next we generate
+      // If the current user isn't part of the recipient list for encrypted emails
+      // let's generate a crypted email for its sent folder
+      if (!messageForSent)
+        messageForSent = [self mimeMessageForRecipient: nil];
     }
+  else
+    {
+      // Encryption is done or not, if we didn't have to.
+      message = messageForSent = [self mimeMessageForRecipient: nil];
 
-  // Encryption is done or not, if we didn't have to.
-  message = [self mimeMessageForRecipient: nil];
-
-  if (!message)
-    return  [NSException exceptionWithHTTPStatus: 500
+      if (!message)
+        return  [NSException exceptionWithHTTPStatus: 500
                                           reason: @"could not generate message content"];
 
-  error = [[SOGoMailer mailerWithDomainDefaults: dd]
+      error = [[SOGoMailer mailerWithDomainDefaults: dd]
                   sendMailData: message
                   toRecipients: [self allBareRecipients]
                         sender: [self sender]
-             withAuthenticator: [self authenticatorInContext: context]
+                withAuthenticator: [self authenticatorInContext: context]
                      inContext: context];
+    }
 
   if (!error && copyToSent)
     {
@@ -1927,7 +1939,7 @@ static NSString    *userAgent      = nil;
         error = (NSException *) sentFolder;
       else
         {
-          error = [sentFolder postData: message flags: @"seen"];
+          error = [sentFolder postData: messageForSent flags: @"seen"];
           if (!error)
             {
               [self imap4Connection];
