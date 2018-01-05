@@ -1,6 +1,6 @@
 /* NSString+Mail.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2014 Inverse inc.
+ * Copyright (C) 2007-2018 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@
 - (int) indexOf: (unichar) _c;
 - (NSString *) decodedHeader;
 - (NSString *) asSafeFilename;
+- (NSString *) asPreferredFilenameUsingPath: (NSString *) thePath;
 
 @end
 

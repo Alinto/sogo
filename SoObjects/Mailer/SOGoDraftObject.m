@@ -779,9 +779,10 @@ static NSString    *userAgent      = nil;
 //
 - (void) _fetchAttachmentsFromMail: (SOGoMailObject *) sourceMail
 {
-  unsigned int max, count;
-  NSArray *attachments;
   NSDictionary *currentInfo;
+  NSArray *attachments;
+
+  unsigned int max, count;
 
   attachments = [sourceMail fetchFileAttachments];
   max = [attachments count];
@@ -792,6 +793,70 @@ static NSString    *userAgent      = nil;
               withMetadata: currentInfo];
     }
 }
+
+//
+//
+//
+- (void) _fileAttachmentsFromPart: (id) thePart
+{
+  if ([thePart isKindOfClass: [NGMimeBodyPart class]])
+    {
+      NSString *filename, *mimeType;
+      id body;
+
+      mimeType = [[thePart contentType] stringValue];
+      body = [thePart body];
+      filename = [(NGMimeContentDispositionHeaderField *)[thePart headerForKey: @"content-disposition"] filename];
+
+      if (!filename)
+        filename = [mimeType asPreferredFilenameUsingPath: nil];
+
+      if (filename)
+        {
+          NSDictionary *currentInfo;
+
+          currentInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                            filename, @"filename",
+                                      mimeType, @"mimetype",
+                                      nil];
+          [self saveAttachment: body
+                  withMetadata: currentInfo];
+        }
+    }
+  else if ([thePart isKindOfClass: [NGMimeMultipartBody class]])
+    {
+      NSArray *parts;
+      int i;
+
+      parts = [thePart parts];
+      for (i = 0; i < [parts count]; i++)
+        {
+          [self _fileAttachmentsFromPart: [parts objectAtIndex: i]];
+        }
+    }
+}
+
+
+//
+//
+//
+- (void) _fetchAttachmentsFromEncryptedMail: (SOGoMailObject *) sourceMail
+{
+  NSData *certificate;
+
+  certificate = [[self mailAccountFolder] certificate];
+
+  // If we got a user certificate, let's use it. Otherwise we fallback we
+  // don't try to get any attachments from the encrypted content
+  if (certificate)
+    {
+      NGMimeMessage *m;
+
+      m = [[sourceMail content] messageFromEncryptedDataAndCertificate: certificate];
+      [self _fileAttachmentsFromPart: [m body]];
+    }
+}
+
 
 //
 //
@@ -912,7 +977,10 @@ static NSString    *userAgent      = nil;
   if ([[ud mailMessageForwarding] isEqualToString: @"inline"])
     {
       [self setText: [sourceMail contentForInlineForward]];
-      [self _fetchAttachmentsFromMail: sourceMail];
+      if ([sourceMail isEncrypted])
+        [self _fetchAttachmentsFromEncryptedMail: sourceMail];
+      else
+        [self _fetchAttachmentsFromMail: sourceMail];
     }
   else
     {
@@ -1009,21 +1077,24 @@ static NSString    *userAgent      = nil;
 {
   NSString *p, *pmime, *name, *mimeType;
 
-  if (![_attach isNotNull]) {
-    return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
-			reason: @"Missing attachment content!"];
-  }
+  if (![_attach isNotNull])
+    {
+      return [NSException exceptionWithHTTPStatus: 400 /* Bad Request */
+                                           reason: @"Missing attachment content!"];
+    }
 
-  if (![self _ensureDraftFolderPath]) {
-    return [NSException exceptionWithHTTPStatus:500 /* Server Error */
-			reason: @"Could not create folder for draft!"];
-  }
+  if (![self _ensureDraftFolderPath])
+    {
+      return [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+                                           reason: @"Could not create folder for draft!"];
+    }
 
   name = [[metadata objectForKey: @"filename"] asSafeFilename];
   p = [self pathToAttachmentWithName: name];
+
   if (![_attach writeToFile: p atomically: YES])
     {
-      return [NSException exceptionWithHTTPStatus:500 /* Server Error */
+      return [NSException exceptionWithHTTPStatus: 500 /* Server Error */
 			  reason: @"Could not write attachment to draft!"];
     }
 

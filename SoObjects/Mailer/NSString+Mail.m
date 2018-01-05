@@ -1,6 +1,6 @@
 /* NSString+Mail.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2014 Inverse inc.
+ * Copyright (C) 2008-2018 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -732,4 +732,33 @@ convertChars (const char *oldString, unsigned int oldLength,
   return safeName;
 }
 
+//
+// We might end up here because of MUA that actually strips the
+// Content-Disposition (and thus, the filename) when mails containing
+// attachments have been forwarded. Thunderbird (2.x) does just that
+// when forwarding mails with images attached to them (using cid:...).
+//
+- (NSString *) asPreferredFilenameUsingPath: (NSString *) thePath
+{
+  NSString *filename;
+
+  filename = nil;
+  if (!thePath)
+    thePath = @"1";
+
+  if ([self hasPrefix: @"application/"] ||
+      [self hasPrefix: @"audio/"] ||
+      [self hasPrefix: @"image/"] ||
+      [self hasPrefix: @"video/"])
+    {
+      filename = [NSString stringWithFormat: @"unknown_%@", thePath];
+    }
+  else
+    {
+      if ([self isEqualToString: @"message/rfc822"])
+        filename = [NSString stringWithFormat: @"email_%@.eml", thePath];
+    }
+
+  return filename;
+}
 @end

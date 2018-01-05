@@ -786,8 +786,8 @@ static BOOL debugSoParts       = NO;
   if ([prefix hasSuffix: @"/"])
     prefix = [prefix substringToIndex: [prefix length] - 1];
   [self _feedFileAttachmentIds: attachmentIds
-	withInfos: [coreInfos objectForKey: @"bodystructure"]
-	andPrefix: prefix];
+                     withInfos: [coreInfos objectForKey: @"bodystructure"]
+                     andPrefix: prefix];
 
   return attachmentIds;
 }
@@ -811,22 +811,7 @@ static BOOL debugSoParts       = NO;
 
   if (!filename)
     {
-      // We might end up here because of MUA that actually strips the
-      // Content-Disposition (and thus, the filename) when mails containing
-      // attachments have been forwarded. Thunderbird (2.x) does just that
-      // when forwarding mails with images attached to them (using cid:...).
-      if ([mimeType hasPrefix: @"application/"] ||
-	  [mimeType hasPrefix: @"audio/"] ||
-	  [mimeType hasPrefix: @"image/"] ||
-	  [mimeType hasPrefix: @"video/"])
-      {
-          filename = [NSString stringWithFormat: @"unknown_%@", path];
-      }
-      else
-      {
-        if ([mimeType isEqualToString: @"message/rfc822"])
-          filename = [NSString stringWithFormat: @"email_%@.eml", path];
-      }
+      filename = [mimeType asPreferredFilenameUsingPath: path];
     }
 
   if (filename)
