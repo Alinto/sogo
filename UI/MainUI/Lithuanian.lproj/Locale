@@ -23,7 +23,7 @@
   NSShortDateFormatString = "%m/%e/%y";
   NSShortMonthNameArray = (Sau, Vas, Kov, Bal, Geg, Bir, Lie, Rgp, Rgs, Spa, Lap, Grd);
   NSShortTimeDateFormatString = "%m/%e/%y %I:%M %p";
-  NSShortWeekDayNameArray = (Pir, Ant, Tre, Ket, Pnk, "Šeš", Sek);
+  NSShortWeekDayNameArray = (Sek, Pir, Ant, Tre, Ket, Pnk, "Šeš");
   NSThisDayDesignations = ("šiandien", dabar);
   NSThousandsSeparator = ",";
   NSTimeDateFormatString = "%A, %B %e, %Y %I:%M:%S %p %Z";
