@@ -1,0 +1,487 @@
+Microsoft Outlook CalDAVSynchronizer Configuration Guide
+========================================================
+:toc: left
+:icons: font
+
+
+About this Guide
+----------------
+
+This guide will walk you through the installation and configuration of the  Microsoft Outlook integration of SOGo with the CalDavSynchronizer addin.
+
+Prior going over this guide, you should have a working SOGo
+installation. Please refer to the _SOGo Installation and Configuration
+Guide_ for more information on installing and configuring SOGo.
+
+The instructions are based on version {release_version} of SOGo.
+
+The latest version of this guide is available
+at http://www.sogo.nu/downloads/documentation.html.
+
+Introduction
+------------
+
+Outlook CalDav Synchronizer is an Open Source Microsoft Windows Outlook Addin, which synchronizes events, tasks and contacts between Outlook and CalDAV or CardDAV servers. Supported Outlook versions are Outlook 2007 to Outlook 2016.
+Together with other open source solutions like SOGo and DAVdroid for Android, a full open source exchange server replacement for desktop and mobile clients is finally possible and enterprise ready.
+Outlook CalDav Synchronizer is Free and Open-Source Software (FOSS) , licensed under AGPL3 and developed by
+
+* https://sourceforge.net/u/nertsch/profile/[Gerhard Zehetbauer]
+* https://sourceforge.net/u/nimm/profile/[Alexander Nimmervoll]
+
+image::images/about_dialog.png[About]
+
+Project Links
+~~~~~~~~~~~~~
+
+The project source and binaries for installation are hosted on GitHub and SourceForge or can be downloaded from https://caldavsynchronizer.org[caldavsynchronizer.org]
+
+https://github.com/aluxnimm/outlookcaldavsynchronizer
+
+https://sourceforge.net/projects/outlookcaldavsynchronizer/
+
+Social Media
+~~~~~~~~~~~~
+
+https://www.facebook.com/caldavsynchronizer/[CalDav Synchronizer on Facebook]
+
+Enterprise support
+~~~~~~~~~~~~~~~~~~
+
+For enterprise support, customization or further information visit https://caldavsynchronizer.org/enterprise
+
+Features
+--------
+
+The most important features are
+
+* Open Source, the only free Outlook CalDAV and CardDAV addin
+* two-way-sync
+* support for CalDAV calendars and tasks, CardDAV contacts
+* support for Google native Contacts and Tasks API
+* full support for timezones and recurring events with exceptions
+* SSL/TLS support, support for self-signed certificates
+* proxy support
+* Autodiscovery of calendars and addressbooks
+* configurable sync timerange filter
+* time-triggered-sync and sync changes from Outlook immediately
+* Category Filtering (sync CalDAV calendar/tasks to Outlook categories)
+* map CalDAV server colors to Outlook category colors
+* Use server settings from Outlook IMAP/POP3 account profile
+* Mapping of Distribution Lists to SOGo VLIST contact groups
+* Configurable mapping of Outlook custom properties
+
+Installation
+------------
+
+Download and extract the `OutlookCalDavSynchronizer-<Version>.zip` into any directory and start setup.exe. You can change the default install path, but you need to use a directory on the `C:\` drive. Follow the instructions and restart Outlook after the installation is finished.
+
+image::images/installer1.png[Installer Step 1]
+image::images/installer2.png[Installer Step 2]
+
+Next, you will see a ribbon CalDav Synchronizer in Outlook and can add synchronization profiles for you SOGo calendars, addressbooks and tasks.
+
+image::images/outlook_ribbon.png[Outlook Ribbon]
+
+In the Synchronization profiles dialog, press *Add new profile* if you just need to synchronize one resource or *Add multiple profiles* if you need to synchronize multiple calendars, addressbooks or task folders.
+
+image::images/add_multiple.png[Add multiple profiles]
+
+Next, select the SOGo profile type
+
+image::images/select_profiletype.png[Select Profile type]
+
+In the multiple profile setup dialog you can configure the details of the sync profiles.
+
+image::images/configure_multiple.png[Multiple Profile Configuration]
+
+First, you should change the profile name and configure the server settings, the DAV url is prefilled with the default SOGo DAV path and you should only change the hostname of your SOGo server, enter Username and Password. If you also have configured an IMAP account and your domain supports autodiscovery via DNS SRV records you can also try to fetch the server settings from your existing mail account in Outlook by pressing *Get IMAP/POP3 account settings*. If successful, username and password will be used from the existing mail account and the DAV url will be discovered.
+If all server settings are configured press *Discover resources and assign to Outlook folders* to start the autodiscovery of all server resources. 
+
+You can assign Outlook folders to found calendar, addressbook and task resources in the three tab views.
+
+image::images/select_calendar.png[Add calendar resources]
+image::images/select_addressbook.png[Add addressbook resources]
+image::images/select_task.png[Add task resources]
+
+To assign a folder click on the "..." button for the corresponding resource and either choose an existing Outlook folder or create a new one in the folder dialog.
+
+image::images/select_folder.png[Select Outlook folder]
+image::images/new_folder.png[Add new Outlook folder]
+
+If you chose *Add new profile* for only one resource you can also choose the Outlook folder and dependent on the folder type you will create a calendar, addressbook or task profile.
+
+image::images/profile_config.png[Single Profile Configuration]
+If you know the correct calendar CalDAV url, you can also enter that directly into the DAV Url textbox or paste it from the SOGo Web Frontend, when selecting Link in the calendar properties. For the personal calendar it looks like
+https://server.example/remote.php/dav/calendars/caldav/personal/
+
+Furthermore, you can configure sync settings and intervals or keep the default settings which are automatic Two-Way-Sync every 30 minutes for all events from 60 days in the past to 365 days in the future.
+
+image::images/profile_advanced.png[Advanced Settings]
+
+For addressbooks, the profile setup is similar, just choose an Outlook contacts folder for synchronization.
+
+If needed, you can configure network and proxy options or special mapping configuration parameters in the corresponding option pages.
+
+image::images/profile_network.png[Network settings]
+image::images/profile_advanced_event_mapping.png[Event mapping configuration]
+image::images/profile_advanced_contact_mapping.png[Contact mapping configuration]
+image::images/profile_advanced_task_mapping.png[Task mapping configuration]
+image::images/profile_advanced_custom_mapping.png[Custom mapping configuration]
+
+See *Advanced settings* below for a detailed description of all available options.
+
+After the configuration of the sync profile is finished you can start the synchronization with pressing *Synchronize now* in the CalDav Synchronizer ribbon and your Outlook resources will be in sync with your SOGo resources.
+
+You can check the status of the last sync runs with the *Status* button in the ribbon.
+
+image::images/status_report.png[Status report]
+Should there be any errors or warnings during synchronization, you can check the *Reports* in the ribbon.
+
+image::images/sync_report.png[Sync report]
+
+Configuration options
+---------------------
+
+Synchronization settings
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+* *Outlook → Server (Replicate):* syncronize everything from Outlook to the server (one way)  
+
+* *Outlook ← Server (Replicate):* synchronize everything from the server to Outlook (one way)  
+
+* *Outlook → Server (Merge):* synchronize everything from Outlook to the server but don’t change events created on the server  
+
+* *Outlook ← Server (Merge):* synchronize everything from the server to Outlook but don’t change events created in Outlook  
+
+* *Outlook ←→ Server (Two-Way):* Two-Way synchronization between Outlook and the server with one of the following conflict resolution  
+
+* *Conflict resolution*
+(only used in Two-Way synchronization mode and only available in *advanced settings*)  
+
+** *Outlook Wins:* If an event is modified in Outlook and in the server since last snyc, use the Outlook version. If an event is modified in Outlook and deleted in the server since last snyc, also use the Outlook version. If an event is deleted in Outlook and modified in the server, also delete it in the server.  
+
+** *Server Wins:* If an event is modified in Outlook and in the server since last snyc, use the server version. If an event is modified in Outlook and deleted in the server since last snyc, also delete it in Outlook. If an event is deleted in Outlook and modified in the server, recreate it in Outlook.  
+
+** *Automatic:* If event is modified in Outlook and in the server since last snyc, use the last recent modified version. If an event is modified in Outlook and deleted in the server since last snyc, delete it also in Outlook. If an event is deleted in Outlook and modified in the server, also delete it in the server. 
+* *Synchronization interval (minutes):* Choose the interval for synchronization in minutes, if 'Manual only' is choosen, there is no automatic sync but you can use the 'Synchronize now' menu item.  
+
+* *Perform synchronization in chunks* perform CalDAV/CardDAV sync in chunks with configurable chunk size to avoid OutOfMemoryEceptions, enabled by default because of lower memory consumption for huge resources. *(only in advanced settings)*  
+
+* *Use time range filter*  *(only in advanced settings)* 
+For performance reasons it is useful to sync only a given timespan of a big calendar, especially past events are normally not necessary to sync after a given timespan. But be aware that Outlook and Google and some other CalDAV servers calculate the intersection with the time-range differently for recurring events which can cause doubled or deleted events, so it is recommended to select a time-range which is larger than the largest interval of your recurring events (e.g. 1 year for birthdays).  
+
+Advanced settings
+~~~~~~~~~~~~~~~~~
+
+When *Show advanced settings* is enabled, you can expand the tree view of the profile to configure network and proxy options and mapping configuration options.
+
+Network and proxy options
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Here you can configure advanced network options and proxy settings. 
+
+* *Close connection after each request* Don’t use KeepAlive, only useful for servers which don’t support it.  
+
+* *Use Preemptive Authentication* Send Authentication header with each request to avoid 401 responses and resending the request, disable only if the server has problems with preemptive authentication.  
+
+* *Force basic authentication* Set basic authentication headers to avoid problems with negotiation or digest authentication with servers like OS X. This is only recommended if you use a secure HTTPS connection, otherwise passwords are sent in cleartext.  
+
+* *Use System Default Proxy* Use proxy settings from Internet Explorer or config file, uses default credentials if available for NTLM authentication.  
+
+* *Use manual proxy configuration* Specify proxy URL as `http://<your-proxy-domain>:<your-proxy-port>` and optional Username and Password for Basic Authentication.  
+
+Mapping Configuration
+^^^^^^^^^^^^^^^^^^^^^
+
+Here you can configure what properties should be synced.  
+
+Event mapping configuration
++++++++++++++++++++++++++++
+
+For appointments you can choose if you want to map reminders (just upcoming, all or none) and the description body.  
+
+* *Export html description X-ALT-DESC converted from RTF Body* If enabled, convert formatted RTF Body of Outlook appointment to html and export it as X-ALT-DESC property. The RTF to html conversion is experimental, inline images and some formatting properties can’t be converted! Be aware that some servers like Google Calendar drop this attribute!  
+* *Set RTF Body from X-ALT-DESC html description* If enabled, convert X-ALT-DESC description html property to RTF and set Outlook appointment RTF Body. The html to RTF conversion is experimental, not all html formatting options can be converted! This overwrites also the plaintext Body!  
+
+* *Timezone settings* See section Timezone mapping below.  
+
+*Use GlobalAppointmentID for UID attribute:* Use Outlook GlobalAppointmendID instead of random Guid for UID attribute in new CalDAV events. This can avoid duplicate events from invitations.  
+
+* In *Privacy settings* you can configure if you want to map Outlook private appointments to CLASS:CONFIDENTIAL and vice versa. This could be useful for Owncloud for example, if you share your calendar with others and they should see start/end dates of your private appointments. You can also map all CLASS:PUBLIC events to Outlook private appointments.  
+
+* In *Scheduling settings* you can configure if you want to map attendees and organizer and if notifications should be sent by the server.  
+
+* Use *Don’t send appointment notifications* for SOGo servers and *SCHEDULE-AGENT=CLIENT* for other servers if you want to send invitations from Outlook and avoid that the server sends invitations too, but be aware that not all servers (e.g. Google) support the SCHEDULE-AGENT=CLIENT setting. 
+
+* In *Outlook settings* you can also define a filter category so that multiple CalDAV-Calendars can be synchronized into one Outlook calendar via the defined category (see Category Filter and Color below).  
+
+* *Cleanup duplicate events after each sync run:* removes duplicate Outlook appointments based on start,end and subject of the events after each sync run, be aware of possible performance penalties with this option enabled.  
+
+Contact mapping configuration
++++++++++++++++++++++++++++++
+
+* For contacts you can configure if birthdays should be mapped or not. If birthdays are mapped, Outlook also creates an recurring appointment for every contact with a defined birthday.  
+
+* You can also configure if contact photos should be mapped or not. Contact photo mapping from Outlook to the server doesn’t work in Outlook 2007. You can also add an option to not overwrite the contact photo in Outlook when it changes on the server, which could happen due to other mobile clients reducing the resolution for example.  
+
+* Don’t overwrite FileAs in Outlook uses the Outlook settings for FileAs and doesn’t overwrite the contact FileAs with the FN from the server.  
+
+* Fix imported phone number format adds round brackets to the area code of phone numbers, so that Outlook can show correct phone number details with country and area code, e.g. +1 23 45678 is mapped to +1 (23) 45678.  
+
+* Map OutlookEmailAddress1 to WORK instead of HOME, enable when you need to change the order of email address mapping.  
+
+* Write IM addresses as IMPP attributes. If enabled IMPP is used instead of X-AIM,X-ICQ,X-JABBER etc. for writing Instant messenger addresses in vCards. (SOGo is only using X-AIM atm.) 
+
+* Default IM protocol. Choose the default IM service type protocol which will be added to the chat address field from Outlook when writing vCards, defaults to AIM.  
+
+* Map Distribution Lists enables the sync of contact groups / Distribution Lists, right now the DAV contact group format SOGo VLIST or vCards with KIND:group are available, see *Distribution Lists* below.  
+
+Task mapping configuration
+++++++++++++++++++++++++++
+
+* For tasks (not for Google task profiles) you can configure if you want to map reminders (just upcoming, all or none), the priority of the task, the description body and if recurring tasks should be synchronized.  
+
+* You can also define if task start and due dates should be mapped as floating without timezone to avoid issues with tasks across different timezones.  
+
+* Similar to calendars you can also define a filter category so that multiple CalDAV Tasklists can be synchronized into one Outlook task folder via the defined category.
+
+Timezone settings
+^^^^^^^^^^^^^^^^^
+
+Outlook and Windows use different Timezone definitions than most CalDAV servers and other clients. When adding new events on the server you have different options how the timezone of the newly created VEVENT is generated. The default setting uses the default Windows Timezone from Outlook (e.g. W. Europe Standard Time) or the selected timezones for the start and end of the appointment. Since some servers have problems with that timezone definitions you can change that behaviour in the event mapping configuration with the following options:  
+
+* *Create events on server in UTC* Use UTC instead of Outlook Appointment Timezone for creating events on CalDAV server. Not recommended for general use, because recurrence exceptions over DST changes can’t be mapped and Appointments with different start and end timezones can’t be represented.  
+* *Create events on server in downloaded IANA Timezones* Use Iana instead of Windows Timezones for creating events on CalDAV server. Needed for servers which do not accept non standard Windows Timezones like GMX for example. Timezone definitions will be downloaded from http://tzurl.org.  
+
+* *Use IANA Timezone* Use this IANA timezone for default Outlook/Windows timezone. Manually selected different timezones in Outlook appointments will be mapped to first corresponding IANA timezone.  
+
+* *Include full IANA zone with historical data* Use full IANA timezone definition with historical data. Needs more bandwith and can be incompatible when manually importing in Outlook.
+
+Custom properties mapping
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When you expand the tree view of the profile for events and tasks, you can configure the mapping of custom properties.  
+
+* *Map all Outlook custom properties to X-CALDAVSYNCHRONIZER attributes* If enabled, all Outlook custom text properties of the appointment/task are mapped to DAV attributes with the prefix X-CALDAVSYNCHRONIZER- and vice versa.  
+
+* You can also define manual mapping pairs of Outlook custom attributes and DAV X-Attributes. This will overrule the general mapping of all Outlook custom properties if both is activated. Outlook properties that don’t exist, will be created. DAV properties MUST start with X-. Only Outlook custom properties of type Text can be mapped.
+
+Managing meetings and invites
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Outlook can only track meeting responses and invites in the main calender folder. If you schedule meetings from Outlook which are synced with the CalDAV server you have two possibilities to avoid double invitation mails for all attendees. First, you can enable the option *Don’t send appointment notifications (enabled by default for SOGo profiles)* or *SCHEDULE-AGENT=CLIENT* (for other servers) and let only Outlook send the meeting invites, if the server supports this option. Or you can disable this option and let the server schedule the meetings after syncing the meeting. Then you need to disable the invitation mails sent from Outlook. This is possible by unchecking the checkbox left to the attendee name in the meeting planning dialog. When syncing meetings created in Outlook to the server, the option *Use GlobalAppointmentID for UID attribute* is recommended. This can avoid duplicate events from invitations.  
+
+The response status of all attendees can be synced from Outlook to the server but only the status of the own Outlook identity (if included in the attendees) can be synced from the server to Outlook due to limitations of the Outlook Object Model.  
+
+When receiving invites from the CalDAV server and via Email in your INBOX, Outlook will automatically create a tentative meeting in the main calendar folder  
+
+To avoid double meetings the option *Cleanup duplicate events after each sync run* in event mapping configuration is recommended.  
+
+Free/busy lookups
+^^^^^^^^^^^^^^^^^
+
+You can configure free/busy lookups globally in the outlook options.  
+
+Select Options/Calendar and there free/busy information and use a free/busy url of your server with placeholder like %Name%, e.g. http://myserver/freebusy.php/%Name%  
+
+For SOGo the url looks like: http://<hostname>/SOGo/dav/public/%NAME%/freebusy.ifb
+
+And `SOGoEnablePublicAccess` must be set to `YES`
+
+Then ervery attendee in the outlook planning view gets resolved with that url for a free/busy lookup against your server. 
+
+Scheduling settings and resources
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If your server supports resources (for SOGo see http://wiki.sogo.nu/ResourceConfiguration disable *set SCHEDULE-AGENT=CLIENT* in Mapping Configuration, so that the server can handle the resource invitation mails, add the resource email adress as attendee in the Outlook appointment and choose type ressource (house icon) for it.  
+
+Category Filter and Color
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you want to sync multiple CalDAV calendars or tasklists into one Outlook folder you can configure an Outlook category for filtering in the *Mapping Configuration*. You can choose a category from the dropdown list of all available Outlook categories or enter a new category name.  
+
+For all events/tasks from the server the defined category is added in Outlook, when syncing back from Outlook to the server only appointments/tasks with that category are considered but the filter category is removed. The category name must not contain any commas or semicolons!  
+
+With the checkbox *Sync also Appointments without any category* also all appointments/tasks without a category are synced to the server.  
+
+With the checkbox below you can alternatively negate the filter and sync all appointments/tasks except this category.  
+
+For calendars it is also possible to choose the color of the category or to fetch the calendar color from the server and map it to the nearest supported Outlook category color with the button *Fetch Color*. With *Set DAV Color* it is also possible to sync the choosen category color back to set the server calendar color accordingly. With *Category Shortcut Key* you can define the shortcut key of the selected category for easier access when creating appointments.  
+
+Reminders
+~~~~~~~~~
+
+In event and task mapping configuration you can define if you want to map (all/non/just upcoming) reminders. If you get the following error message when trying to set reminders in Outlook
+
+`The reminder will not appear because the item is in a folder that doesn’t support reminders.` 
+
+you can try to change the Outlook options as discussed in  
+
+http://answers.microsoft.com/en-us/office/forum/office_2016-outlook/outlook-2016-calendar-reminders/8f40bcdd-e3fc-4f29-acaf-544f48d63992
+
+or try the following reported by user __Todo18__  
+
+1. Create a new storage folder in Outlook via the File menu, Info, Account Settings. In the Data Files tab, you can Add a new (.pst) data file. After the file has been added, Make it the default [data file], and close the dialog.  
+
+2. Go to the Calendar window, right click on the calendar that’s giving you problems, and select Move Calendar. In the dialog, pick the data file that you created in the first step, and confirm. Don’t forget to update the storage folder in the CalDav Synchronizer settings!  
+
+Distribution Lists
+~~~~~~~~~~~~~~~~~~
+
+When enabled in Contact Mapping configuration you can now also sync Outlook Distribution Lists with your server contact groups. Since different servers use different formats to store contact groups, you will be able to choose the used DAV contact group format. Right now, the VLIST format for SOGo servers and vCards with KIND:group are supported. Don’t enable any of these options when your server doesn’t support it!  
+
+Since Outlook Distribution Lists also support list members which aren’t in the addressbook but SOGo VLISTs don’t, we add them as custom X-Attributes. With this workaround those members aren’t displayed in SOGo but won’t get lost when syncing back to Outlook.  
+
+Since vCard in version 3.0 doesn’t support contact groups we use X-ADDRESSBOOK-SERVER attributes for KIND and MEMBER for contact groups.
+
+General Options and SSL settings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In the General Options Dialog you can change settings which are used for all synchronization profiles.  
+
+* *Automatically check for newer versions* set to false to disable checking for updates.  
+* *Check Internet connection before sync run* checks if an interface is up and try DNS query to dns.msftncsi.com first and if that fails try to download http://www.msftncsi.com/ncsi.txt with the configured proxy before each sync run to avoid error reports if network is unavailable after hibernate for example. Disable this option if you are in a local network where DNS and that URL is blocked.  
+
+* *Store data in roaming folder* set to true if you need to store state and profile data in the AppData\Roaming\ directory for roaming profiles in a AD domain for example. When changing this option, a restart of Outlook is required.  
+
+* *Include custom message classes in Outlook filter* Disabled by default, enable only if you have custom forms with message_classes other than the default IPM.Appointment/Contact/Task. For better performance, Windows Search Service shouldn’t be deactivated if this option is enabled.  
+
+* *Use fast queries for Outlook folders* Enabled by default, uses fast GetTable queries when accessing Outlook folders. Disable only if you get errors in GetVersions, when disabled every item needs to be requested which causes a performance penalty!  
+
+* *Trigger sync after Outlook Send/Receive and on Startup* If checked a manual sync is triggered after the Outlook Send/Receive finishes and on Outlook startup.  
+
+* *Show advanced settings as default* Show the advanced settings in synchronization profiles as default if enabled.  
+
+* *Expand all nodes in Synchronization profiles* Enabled by default, expands all nodes in the synchronization profiles to see the suboptions for network settings and mapping configuration.  
+
+* *Enable Tray Icon* Enabled by default, you can disable the tray icon in the Windows Taskbar if you don’t need it.  
+
+* *Fix invalid settings* Fixes invalid settings automatically, when synchronization profiles are edited.  
+
+* *Show Sync Progress Bar* and *Sync Progress Bar Threshold (Items)* Enabled by default, show a progress bar if more than the treshold of items need to be loaded during a synchronization run. If disabled, no progress bar is shown but be aware that for larger changes Outlook can freeze, since some operations need to be performed in the Outlook main thread.  
+
+* *Accept invalid chars in server response* If checked invalid characters in XML server responses are allowed. A typical invalid char, sent by some servers is Form feed (0x0C).  
+
+* * Enable useUnsafeHeaderParsing* Enable, if the server sends invalid http headers, see common network errors. Needed for Yahoo and cPanel Horde servers for example. The general option overrides the setting in the app.config file.  
+
+* *CalDav Connection Timeout (secs)* For slow server connections you can increaste the timeout value (default 90 secs).  
+
+SSL/TLS settings
+^^^^^^^^^^^^^^^^
+
+If you have problems with SSL/TLS and self-signed certificates, you can change the following settings at your own risk.  
+
+The recommended way would be to add the self signed cert to the Local Computer Trusted Root Certification Authorities  
+
+You can import the cert by running the MMC as Administrator.  
+
+* *Disable Certificate Validation* set to true to disable SSL/TLS certificate validation, major security risk, use with caution!  
+
+* *Enable Client Certificates* If enabled, the available client certificates from the Windows user certificate store will automatically be provided.  
+
+* *Enable Tls12* set to false to disable TLS12, not recommended!
+
+* *Enable Ssl3* set to true to enable deprecated SSLv3, major security risk, use with caution!  
+
+Logging
+^^^^^^^
+
+In the *General Logging* section you can show or clear the log file and define the log level. Possible log levels are `INFO` and `DEBUG`.  
+
+You can also configure Synchronization reports for all profiles, this can be configured via general Options:  
+
+* *Log* You can choose if you want to generate reports for *"Only sync runs with errors"* or *"Sync runs with errors or warnings"* or *"All sync runs"*.  
+
+* *Show immediately* configures if the Sync reports should be shown immediately after a sync run with errors, with warnings or errors, or not at all.  
+
+* *Delete reports older than (days)* Automatically delete reports which are older than the days configured.  
+
+You can show reports manually with the *Reports* button in the CalDav Synchronizer Ribbon. There you can choose from available reports (shown as profile name with timestamp of the sync run) and see informations about items synced and if there were any warnings or errors. You can also delete reports or add them to a zip file via the context menu. If the last sync run lead to any errors, a warning symbol is shown in the Ribbon or the Report window opens if configured in the general options. 
+
+Profile Import/Export
+~~~~~~~~~~~~~~~~~~~~~
+
+In the toolbar of the synchronization profiles you can export all profiles to a file and import profiles from an earlier exported file. When exporting, you can choose a filename, the extension is *.cdsp and all options are saved in an xml format into this file. When importing the file, existing profiles are merged with the imported ones. If the selected Outlook folder for the profile doesn’t exist during import, you need to manually select a folder before you can save the options, they are not automatically created. You need also be aware of the fact, that saved profile passwords won’t work on other accounts or machines, since the encryption is dependant on the current user. But you can use the account password from the IMAP/POP3 account if available. General options are not saved in that file, but in the registry in `HKEY_CURRENT_USER\Software\CalDavSynchronizer`.  
+
+
+Trouble Shooting
+----------------
+
+Synchronization Status
+~~~~~~~~~~~~~~~~~~~~~~
+
+With the *Status* button in the CalDav Synchronizer Ribbon or via doubleclick from the TrayIcon you can access the status of the active sync profiles with their last sync run shown in minutes ago and the status OK, error, or warning. When clicking on the profile name you get to the according sync profile settings, when clicking the status icon, you can open the according sync report. When a sync run has any errors or warnings you will get a notification from the CalDav Synchronizer TrayIcon.
+
+Debugging
+~~~~~~~~~
+
+Options and state information is normally stored in the following folder:  
+
+----
+C:\Users\<Your Username>\AppData\Local\CalDavSychronizer 
+---- 
+
+If you activated Store data in roaming folder the location is changed to the following folder:  
+
+----
+C:\Users\<Your Username>\AppData\Roaming\CalDavSychronizer  
+----
+
+There is one `options_<your outlook profile>.xml` file which stores the options for each outlook profile.  
+
+For each sync profile there is a subfolder with state information stored in a relations.xml file after the inital sync. If you delete that folder, a fresh inital sync is performed. In the Synchronization profiles dialog a context menu is available in each profile (right click), which allows to open the cache directory and read the relations.xml file.  
+
+Each synchronization attempt is logged in the `log.txt` file. There you can find information about sync duration and the amount of added, deleted or modified events. Errors and Exceptions are logged aswell. You can view and clear the log file in *General Options*. There you can also change the log level from `INFO` to `DEBUG`.  
+
+In the install dir (The default is `C:\Program Files (x86)\CalDavSynchronizer`) you will find the app config file  
+` CalDavSynchronizer.dll.config` 
+
+In that xml file you can config timeout parameters and config options in the section `appSettings`  
+
+After changing parameters you have to restart Outlook.  
+
+* *wpfRenderModeSoftwareOnly*: When set to true, turn off hardware acceleration and use Software Rendering only. Useful if you have issues with WPF and your graphics card driver.  
+
+You can also change defaults for some of the general options like CheckForNewVersions, StoreAppDatainRoamingFolder, IncludeCustomMessageClasses and SSL/TLS options, useful for All Users deployment, because general options are stored per user in the HKCU registry hive.  
+
+In the section `system.net` you can define proxy settings, e.g. use of NTLM credentials
+
+----
+<defaultProxy useDefaultCredentials="true">  
+</defaultProxy>  
+----
+
+In this section you can also allow UnsafeHeaderParsing if the server sends invalid http headers.  
+
+----
+<system.net>  
+    <settings>  
+        <servicePointManager expect100Continue="false" />  
+        <httpWebRequest useUnsafeHeaderParsing="true" />
+    </settings>  
+</system.net>  
+----
+
+This setting can also be enabled in the general options, starting with version 2.10.0.  
+
+In the section `log4net` you can define the log level for the main log (also possible in general options now).  
+level value can be DEBUG or INFO, e.g.:  
+
+----
+<root>  
+    <level value="DEBUG" />  
+    <appender-ref ref="MainLogAppender" />  
+</root>  
+----
+
+Common network errors
+^^^^^^^^^^^^^^^^^^^^^
+
+* System.Net.Http.HttpRequestException: Response status code does not indicate success: '401' ('Unauthorized').  
+** Wrong Username and/or Password provided.  
+
+* System.Net.Http.HttpRequestException: An error occurred while sending the request. --→ System.Net.WebException: The underlying connection was closed: A connection that was expected to be kept alive was closed by the server. 
+** The server has KeepAlive disabled. Use *"Close connection after each request"* in *Network and proxy options*.  
+
+* System.Net.Http.HttpRequestException: An error occurred while sending the request. --→ System.Net.WebException: The server committed a protocol violation. Section=ResponseStatusLine  
+** The server sends invalid headers. Enable the general option *Enable useUnsafeHeaderParsing* or the commented out option *useUnsafeHeaderparsing* in the app config file.
