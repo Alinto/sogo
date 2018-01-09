@@ -244,27 +244,23 @@
           </sg-block-toggle>
 
           <!-- Load external images -->
-          <md-whiteframe class="md-whiteframe-z2 sg-no-print" layout="row" layout-align="space-between center"
-                         ng-show="viewer.message.$hasUnsafeContent">
-            <div layout="row" layout-align="start center" layout-fill="layout-fill">
-              <div class="md-tile-left">
-                <md-icon>collections</md-icon>
-              </div>
-              <p class="hide show-gt-md"><var:string label:value="This message contains external images."/></p>
-              <div class="md-flex"><!-- spacer --></div>
-              <md-button label:aria-label="Load Images"
-                         ng-click="viewer.message.loadUnsafeContent()">
-                <var:string label:value="Load Images"/>
-              </md-button>
-            </div>
-          </md-whiteframe>
+          <div class="sg-no-print" ng-show="viewer.message.$hasUnsafeContent">
+            <md-divider><!-- divider --></md-divider>
+            <md-list-item class="md-clickable" layout="row" layout-align="space-between center"
+                          label:aria-label="Load Images"
+                          ng-click="viewer.message.loadUnsafeContent()">
+              <md-icon class="md-warn">collections</md-icon>
+              <p class="md-flex"><var:string label:value="This message contains external images."/></p>
+              <md-icon>cloud_download</md-icon>
+            </md-list-item>
+          </div>
 
           <!-- Return Receipt / Send MDN -->
           <md-whiteframe class="md-whiteframe-z2 sg-no-print" layout="column" layout-align="center start"
                          ng-show="viewer.message.shouldAskReceipt == 1">
             <div layout="row" layout-align="start center">
               <div class="md-tile-left">
-                <md-icon>message</md-icon>
+                <md-icon class="md-warn">message</md-icon>
               </div>
               <p class="sg-padded--right"><var:string label:value="The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?"/></p>
             </div>
