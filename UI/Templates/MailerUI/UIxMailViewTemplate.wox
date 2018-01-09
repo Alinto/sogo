@@ -206,16 +206,42 @@
           </div>
 
           <!-- S/MIME Signature -->
-          <md-whiteframe class="md-whiteframe-z2 sg-no-print" layout="row" layout-align="space-between center"
-                         ng-show="::viewer.message.$smime.message">
-            <div layout="row" layout-align="start center">
-              <div class="md-tile-left">
-                <md-icon ng-hide="::viewer.message.$smime.validSignature" class="md-warn">error</md-icon>
-                <md-icon ng-show="::viewer.message.$smime.validSignature" class="md-accent">check</md-icon>
+          <sg-block-toggle class="sg-no-print" layout="column"
+                           ng-show="::viewer.message.$smime.message">
+            <md-divider><!-- divider --></md-divider>
+            <md-list-item class="sg-button-toggle">
+              <div>
+                <md-icon ng-hide="::viewer.message.$smime.validSignature"
+                         class="md-warn"
+                         rsrc:md-svg-src="img/certificate-off.svg"><!-- certificate --></md-icon>
+                <md-icon ng-show="::viewer.message.$smime.validSignature"
+                         class="md-accent"
+                         rsrc:md-svg-src="img/certificate.svg"><!-- certificate --></md-icon>
               </div>
-              <p ng-bind-html="::viewer.message.$smime.message"><!-- message --></p>
+              <p class="md-padding md-flex" ng-bind-html="::viewer.message.$smime.message"><!-- message --></p>
+              <md-icon class="sg-icon-toggle">expand_more</md-icon>
+            </md-list-item>
+            <div class="sg-block-toggle">
+              <div class="md-margin" md-whiteframe="3">
+                <div class="md-padding" layout="row">
+                <div flex="50">
+                  <h6 class="md-subhead md-default-theme md-fg md-primary">Subject Name</h6>
+                  <div ng-repeat="field in ::viewer.message.$smime.certificate.subject">
+                    <div class="pseudo-input-label" ng-bind="field[0]"><!-- label --></div>
+                    <div class="pseudo-input-field md-body-1" ng-bind="field[1]"><!-- value --></div>
+                  </div>
+                </div>
+                <div flex="50">
+                  <h6 class="md-subhead md-default-theme md-fg md-primary">Issuer</h6>
+                  <div ng-repeat="field in ::viewer.message.$smime.certificate.issuer">
+                    <div class="pseudo-input-label" ng-bind="field[0]"><!-- label --></div>
+                    <div class="pseudo-input-field md-body-1" ng-bind="field[1]"><!-- value --></div>
+                  </div>
+                </div>
+                </div>
+              </div>
             </div>
-          </md-whiteframe>
+          </sg-block-toggle>
 
           <!-- Load external images -->
           <md-whiteframe class="md-whiteframe-z2 sg-no-print" layout="row" layout-align="space-between center"

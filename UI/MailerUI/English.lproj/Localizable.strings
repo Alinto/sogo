@@ -246,6 +246,19 @@
 /* Number of selected messages in list */
 "selected" = "selected";
 
+/* SMIME Certificate field */
+"countryName" = "Country";
+"organizationName" = "Organization";
+"organizationalUnitName" = "Organizational Unit";
+"commonName" = "Common Name";
+"emailAddress" = "Email Address";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "This certificate was signed by an unknown issuer";
+
+/* OpenSSL certificate error - email mismatch */
+"digest failure" = "This certificate doesn't match the sender email address";
+
 "This Folder" = "This Folder";
 
 /* Label popup menu */

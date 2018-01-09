@@ -35,11 +35,14 @@
 .pseudo-input-label,
 .button-label {
   display: inline-block;
-  margin-top: $mg;
   color: $colorGray;
   font-weight: $sg-font-regular;
   line-height: $sg-line-height-1;
   transform: scale($input-label-float-scale);
+}
+
+.pseudo-input-label {
+  margin-top: $mg;
 }
 
 .pseudo-input-label {
@@ -64,15 +67,16 @@
   border-width: 0;
 }
 
-md-select.pseudo-input-field {
+md-select.pseudo-input-field,
+md-checkbox.pseudo-input-field {
   margin-bottom: $mg;
   padding: 0;
 }
 
 // The specs dimensions are too large to fit with angular-material
 // Here's a modifier
-.pseudo-input-container--compact {
-  .pseudo-input-label {
-    margin-top: 0;
-  }
-}
+// .pseudo-input-container--compact {
+//   .pseudo-input-label {
+//     margin-top: 0;
+//   }
+// }

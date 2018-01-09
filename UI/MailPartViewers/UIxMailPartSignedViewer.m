@@ -1,6 +1,6 @@
 /* UIxMailPartSignedViewer.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2017 Inverse inc.
+ * Copyright (C) 2009-2018 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,19 +53,19 @@
 
   success = NO;
 
-  store = X509_STORE_new ();
-  OpenSSL_add_all_algorithms ();
+  store = X509_STORE_new();
+  OpenSSL_add_all_algorithms();
 
   if (store)
     {
-      lookup = X509_STORE_add_lookup (store, X509_LOOKUP_file());
+      lookup = X509_STORE_add_lookup(store, X509_LOOKUP_file());
       if (lookup)
         {
-          X509_LOOKUP_load_file (lookup, NULL, X509_FILETYPE_DEFAULT);
-          lookup = X509_STORE_add_lookup (store, X509_LOOKUP_hash_dir());
+          X509_LOOKUP_load_file(lookup, NULL, X509_FILETYPE_DEFAULT);
+          lookup = X509_STORE_add_lookup(store, X509_LOOKUP_hash_dir());
           if (lookup)
             {
-              X509_LOOKUP_add_dir (lookup, NULL, X509_FILETYPE_DEFAULT);
+              X509_LOOKUP_add_dir(lookup, NULL, X509_FILETYPE_DEFAULT);
               ERR_clear_error();
               success = YES;
             }
@@ -86,18 +86,15 @@
 
 - (void) _processMessage
 {
-  NSString *issuer, *subject;
   NSData *signedData;
   
   STACK_OF(X509) *certs;
   X509_STORE *x509Store;
   BIO *msgBio, *inData;
-  char sslError[1024];
+  const char* sslError;
   PKCS7 *p7;
   int err, i;
  
-  memset(sslError, 0, 1024);
-
   ERR_clear_error();
 
   if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
@@ -110,45 +107,50 @@
   inData = NULL;
   p7 = SMIME_read_PKCS7(msgBio, &inData);
 
-  subject = nil;
-  issuer = nil;
   certs = NULL;
+  certificates = [NSMutableArray array];
+  validationMessage = nil;
 
   if (p7)
     {
-      i = OBJ_obj2nid(p7->type);
-      
-      if (i == NID_pkcs7_signed)
+      if (OBJ_obj2nid(p7->type) == NID_pkcs7_signed)
 	{
+          NSString *subject, *issuer;
 	  X509 *x;
 	  
-	  certs=p7->d.sign->cert;
-	  
-	  if (sk_X509_num(certs) > 0)
-	    {
+	  certs = p7->d.sign->cert;
+
+          for (i = 0; i < sk_X509_num(certs); i++)
+            {
 	      BIO *buf;
-	      char p[256];
-	      
-	      memset(p, 0, 256);
-	      x = sk_X509_value(certs,0);
+	      char p[1024];
+
+	      x = sk_X509_value(certs, i);
+
+	      memset(p, 0, 1024);
 	      buf = BIO_new(BIO_s_mem());
-	      X509_NAME_print_ex(buf, X509_get_subject_name(x), 0, XN_FLAG_ONELINE & ~ASN1_STRFLGS_ESC_MSB);
-	      BIO_gets(buf, p, 256);
+	      X509_NAME_print_ex(buf, X509_get_subject_name(x), 0,
+                                 ASN1_STRFLGS_ESC_CTRL | XN_FLAG_SEP_MULTILINE | XN_FLAG_FN_LN);
+              BIO_read(buf, p, 1024);
 	      subject = [NSString stringWithUTF8String: p];
-	      
-	      memset(p, 0, 256);
-	      X509_NAME_print_ex(buf, X509_get_issuer_name(x), 0, XN_FLAG_ONELINE & ~ASN1_STRFLGS_ESC_MSB);
-	      BIO_gets(buf, p, 256);
-	      issuer = [NSString stringWithUTF8String: p];
-	      
 	      BIO_free(buf);
+
+	      memset(p, 0, 1024);
+	      buf = BIO_new(BIO_s_mem());
+	      X509_NAME_print_ex(buf, X509_get_issuer_name(x), 0,
+                                 ASN1_STRFLGS_ESC_CTRL | XN_FLAG_SEP_MULTILINE | XN_FLAG_FN_LN);
+	      BIO_read(buf, p, 1024);
+	      issuer = [NSString stringWithUTF8String: p];
+	      BIO_free(buf);
+
+              [certificates addObject: [self certificateForSubject: subject
+                                                         andIssuer: issuer]];
 	    }
 	}
       
       err = ERR_get_error();
       if (err)
 	{
-	  ERR_error_string_n (err, sslError, 1023);
 	  validSignature = NO;
 	}
       else
@@ -158,30 +160,29 @@
 					 NULL, PKCS7_DETACHED) == 1);
 	  
 	  err = ERR_get_error();
-	  if (err)
-	    ERR_error_string_n(err, sslError, 1023);
 	  
 	  if (x509Store)
 	    X509_STORE_free (x509Store);
 	}
+
+      if (err)
+        {
+          ERR_load_crypto_strings();
+          sslError = ERR_reason_error_string(err);
+          validationMessage = [[self labelForKey: [NSString stringWithUTF8String: sslError]] retain];
+        }
     }
+
   
   BIO_free (msgBio);
   if (inData)
     BIO_free (inData);
   
-  validationMessage = [NSMutableString string];
+  if (validSignature)
+    validationMessage = [NSString stringWithString: [self labelForKey: @"Message is signed"]];
+  else if (!validationMessage)
+    validationMessage = [NSString stringWithString: [self labelForKey: @"Digital signature is not valid"]];
 
-  if (!validSignature)
-    [validationMessage appendString: [self labelForKey: @"Digital signature is not valid"]];
-  else
-    [validationMessage appendString: [self labelForKey: @"Message is signed"]];
-  
-  if (issuer && subject)
-    [validationMessage appendFormat: @"\n%@: %@\n%@: %@",
-		   [self labelForKey: @"Subject"], subject,
-		     [self labelForKey: @"Issuer"], issuer];
-		   
   processed = YES;
 }
 
@@ -191,6 +192,41 @@
     [self _processMessage];
 
   return validSignature;
+}
+
+- (NSArray *) componentsForDN: (NSString *) dn
+{
+  NSArray *pair;
+  NSEnumerator *componentsEnum;
+  NSMutableArray *components;
+  NSString *pairString;
+
+  components = [NSMutableArray array];
+  componentsEnum = [[dn componentsSeparatedByString: @"\n"] objectEnumerator];
+  while (( pairString = [componentsEnum nextObject] ))
+    {
+      pair = [pairString componentsSeparatedByString: @"="];
+      if ([pair count] == 2)
+        [components addObject: [NSArray arrayWithObjects:
+                                       [self labelForKey: [pair objectAtIndex: 0]],
+                                     [pair objectAtIndex: 1], nil]];
+    }
+
+  return components;
+}
+
+- (NSDictionary *) certificateForSubject: (NSString *) subject
+                               andIssuer: (NSString *) issuer
+{
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+                              [self componentsForDN: subject], @"subject",
+                              [self componentsForDN: issuer], @"issuer",
+                       nil];
+}
+
+- (NSArray *) smimeCertificates
+{
+  return certificates;
 }
 
 - (NSString *) validationMessage
@@ -204,6 +240,11 @@
 - (BOOL) supportsSMIME
 {
   return NO;
+}
+
+- (NSArray *) smimeCertificates
+{
+  return nil;
 }
 
 - (BOOL) validSignature
@@ -251,12 +292,16 @@
       [renderedParts addObject: [viewer renderedPart]];
     }
 
+  if (!processed)
+    [self _processMessage];
+
   return [NSDictionary dictionaryWithObjectsAndKeys:
                          [self className], @"type",
                        [NSNumber numberWithBool: [self supportsSMIME]], @"supports-smime",
                        [NSNumber numberWithBool: [self validSignature]], @"valid",
-                       [self validationMessage], @"error",
                        renderedParts, @"content",
+                       [self smimeCertificates], @"certificates",
+                       [self validationMessage], @"error",
                        nil];
 }
 
