@@ -223,21 +223,21 @@
             </md-list-item>
             <div class="sg-block-toggle">
               <div class="md-margin" md-whiteframe="3">
-                <div class="md-padding" layout="row">
-                <div flex="50">
-                  <h6 class="md-subhead md-default-theme md-fg md-primary">Subject Name</h6>
-                  <div ng-repeat="field in ::viewer.message.$smime.certificate.subject">
-                    <div class="pseudo-input-label" ng-bind="field[0]"><!-- label --></div>
-                    <div class="pseudo-input-field md-body-1" ng-bind="field[1]"><!-- value --></div>
+                <div class="md-padding" layout="row" layout-wrap="layout-wrap">
+                  <div flex="50" flex-xs="100">
+                    <h6 class="md-subhead md-default-theme md-fg md-primary">Subject Name</h6>
+                    <div ng-repeat="field in ::viewer.message.$smime.certificate.subject">
+                      <div class="pseudo-input-label" ng-bind="field[0]"><!-- label --></div>
+                      <div class="pseudo-input-field md-body-1" ng-bind="field[1]"><!-- value --></div>
+                    </div>
                   </div>
-                </div>
-                <div flex="50">
-                  <h6 class="md-subhead md-default-theme md-fg md-primary">Issuer</h6>
-                  <div ng-repeat="field in ::viewer.message.$smime.certificate.issuer">
-                    <div class="pseudo-input-label" ng-bind="field[0]"><!-- label --></div>
-                    <div class="pseudo-input-field md-body-1" ng-bind="field[1]"><!-- value --></div>
+                  <div flex="50" flex-xs="100">
+                    <h6 class="md-subhead md-default-theme md-fg md-primary">Issuer</h6>
+                    <div ng-repeat="field in ::viewer.message.$smime.certificate.issuer">
+                      <div class="pseudo-input-label" ng-bind="field[0]"><!-- label --></div>
+                      <div class="pseudo-input-field md-body-1" ng-bind="field[1]"><!-- value --></div>
+                    </div>
                   </div>
-                </div>
                 </div>
               </div>
             </div>

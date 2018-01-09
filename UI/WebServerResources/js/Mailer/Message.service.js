@@ -299,6 +299,7 @@
               formattedMessage = formattedMessage.replace(/\n/g, "</p><p class=\"md-caption\">") + "</p>";
               _this.$smime = {
                 validSignature: part.valid,
+                certificate: part.certificates[part.certificates.length - 1],
                 message: formattedMessage
               };
             }
