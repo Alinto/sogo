@@ -339,6 +339,7 @@
 "repeat_YEARLY" = "Yearly";
 "repeat_CUSTOM" = "Custom...";
 "reminder_NONE" = "No reminder";
+"reminder_0" = "At time of event";
 "reminder_5_MINUTES_BEFORE" = "5 minutes before";
 "reminder_10_MINUTES_BEFORE" = "10 minutes before";
 "reminder_15_MINUTES_BEFORE" = "15 minutes before";

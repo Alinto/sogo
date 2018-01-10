@@ -1379,13 +1379,16 @@
   Component.prototype.alarmDescription = function() {
     var key, localizedString = null;
     if (this.alarm) {
-      key = ['reminder' + this.alarm.quantity, this.alarm.unit, this.alarm.reference].join('_');
+      key = ['reminder', this.alarm.quantity];
+      if (this.alarm.quantity > 0)
+        key.push(this.alarm.unit.toUpperCase(), this.alarm.reference.toUpperCase());
+      key = key.join('_');
       localizedString = l(key);
       if (key === localizedString)
         // No localized string for this reminder definition
         localizedString = [this.alarm.quantity,
-                           l('reminder_' + this.alarm.unit),
-                           l('reminder_' + this.alarm.reference)].join(' ');
+                           l('reminder_' + this.alarm.unit.toUpperCase()),
+                           l('reminder_' + this.alarm.reference.toUpperCase())].join(' ');
     }
 
     return localizedString;
