@@ -537,7 +537,6 @@
       // Move mailbox among its siblings according to its new name
       children.splice(i, 1);
       sibling = _.find(children, function(o) {
-        Mailbox.$log.debug(o.name + ' ? ' + _this.name);
         return (o.type == 'folder' && o.name.localeCompare(_this.name) > 0);
       });
       if (sibling) {
