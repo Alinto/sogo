@@ -37,13 +37,13 @@ clean:
 	-find Tests -name "*.pyc" -exec rm -f {} \;
 	if [ -f config.make ]; \
 	then \
-	  if pkg-config --atleast-version=1.0 libmapi; \
-	  then \
-	    (cd OpenChange; make clean); \
-	  fi; \
+#	  if pkg-config --atleast-version=1.0 libmapi; \
+#	  then \
+#	    (cd OpenChange; make clean); \
+#	  fi; \
 	  make clean; \
 	fi
-	-rm -f OpenChange/MAPIStorePropertySelectors.*
+#	-rm -f OpenChange/MAPIStorePropertySelectors.*
 	-rm -f config.make
 	(cd ActiveSync; make clean); \
 	dh_clean 
@@ -62,18 +62,18 @@ install-arch: build-arch
 #	dh_installdirs -s
 
 	$(MAKE) DESTDIR=$(DESTDIR) GNUSTEP_INSTALLATION_DOMAIN=SYSTEM install
-	if pkg-config --atleast-version=1.0 libmapi; \
-	then \
-	  (cd OpenChange; \
-	   $(MAKE) \
-	       DESTDIR=$(DESTDIR) \
-	       GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
-	     install); \
-	  rm -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so.1; \
-	  rm -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so; \
-	  mv -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so.1.0.0 \
-	           $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/SOGo.so; \
-	fi
+#	if pkg-config --atleast-version=1.0 libmapi; \
+#	then \
+#	  (cd OpenChange; \
+#	   $(MAKE) \
+#	       DESTDIR=$(DESTDIR) \
+#	       GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
+#	     install); \
+#	  rm -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so.1; \
+#	  rm -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so; \
+#	  mv -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so.1.0.0 \
+#	           $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/SOGo.so; \
+#	fi
 	(cd ActiveSync; $(MAKE) DESTDIR=$(DESTDIR) GNUSTEP_INSTALLATION_DOMAIN=SYSTEM install)
 
 	install -D -m 644 Scripts/sogo-default debian/tmp/etc/default/sogo
