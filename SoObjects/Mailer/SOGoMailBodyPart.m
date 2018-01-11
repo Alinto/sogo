@@ -292,7 +292,16 @@ static BOOL debugOn = NO;
 
 - (NSData *) fetchBLOB
 {
-  if ([[self container] isEncrypted])
+  id o;
+
+  // We check if the associated SOGoMailObject is encrypted, we must navigate
+  // in the container list until we find the proper container.
+  o = [self container];
+
+  while (![o isKindOfClass: [SOGoMailObject class]])
+    o = [o container];
+
+  if ([o isEncrypted])
     {
       NSData *certificate;
 
