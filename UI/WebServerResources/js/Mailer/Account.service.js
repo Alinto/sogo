@@ -288,6 +288,30 @@
   };
 
   /**
+   * @function $certificate
+   * @memberof Account.prototype
+   * @desc View the S/MIME certificate details associated to the account.
+   * @returns a promise of the HTTP operation
+   */
+  Account.prototype.$certificate = function() {
+    var _this = this;
+
+    if (this.security && this.security.hasCertificate) {
+      if (this.$$certificate)
+        return Account.$q.when(this.$$certificate);
+      else {
+        return Account.$$resource.fetch(this.id.toString(), 'certificate').then(function(data) {
+          _this.$$certificate = data;
+          return data;
+        });
+      }
+    }
+    else {
+      return Account.$q.reject();
+    }
+  };
+
+  /**
    * @function $removeCertificate
    * @memberof Account.prototype
    * @desc Remove any S/MIME certificate associated with the account.
@@ -296,7 +320,9 @@
   Account.prototype.$removeCertificate = function() {
     var _this = this;
 
-    return Account.$$resource.fetch(this.id.toString(), 'removeCertificate');
+    return Account.$$resource.fetch(this.id.toString(), 'removeCertificate').then(function() {
+      _this.security.hasCertificate = false;
+    });
   };
 
   /**
