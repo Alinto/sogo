@@ -294,14 +294,7 @@ typedef enum
       for (j = 0; j < [rights count]; j++)
 	{
 	  currentRole = [rights objectAtIndex: j];
-	  if ([GCSFolderManager singleStoreMode])
-	    SQL = [NSString stringWithFormat: @"INSERT INTO %@"
-			    @" (c_object, c_uid, c_role, c_folder_id)"
-			    @" VALUES ('/%@', '%@', '%@', %@)",
-			    [theFolder aclTableName],
-			    path, u, currentRole, [theFolder folderId]];
-	  else
-	    SQL = [NSString stringWithFormat: @"INSERT INTO %@"
+	  SQL = [NSString stringWithFormat: @"INSERT INTO %@"
 			    @" (c_object, c_uid, c_role)"
 			    @" VALUES ('/%@', '%@', '%@')",
 			    [theFolder aclTableName],
