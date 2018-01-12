@@ -247,10 +247,10 @@
 "selected" = "selected";
 
 /* OpenSSL certificate error - unknown issuer */
-"certificate verify error" = "This certificate was signed by an unknown issuer";
+"certificate verify error" = "Unable to verify message signature";
 
-/* OpenSSL certificate error - email mismatch */
-"digest failure" = "This certificate doesn't match the sender email address";
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "The message has been modified";
 
 /* OpenSSL reading error */
 "Error reading the certificate. Please install a new certificate." = "Error reading the certificate. Please install a new certificate.";
