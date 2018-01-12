@@ -58,6 +58,7 @@
 - (BOOL) _isSieveServerAvailable;
 - (id) _sieveClient;
 - (NSString *) _vacationTextForTemplate: (NSString *) templateFilePath;
+- (void) _updateAuxiliaryAccount: (NSMutableDictionary *) newAccount;
 
 @end
 

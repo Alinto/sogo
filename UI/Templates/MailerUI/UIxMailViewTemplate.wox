@@ -227,14 +227,14 @@
                   <div flex="50" flex-xs="100">
                     <h6 class="md-subhead md-default-theme md-fg md-primary">Subject Name</h6>
                     <div ng-repeat="field in ::viewer.message.$smime.certificate.subject">
-                      <div class="pseudo-input-label" ng-bind="field[0]"><!-- label --></div>
+                      <div class="pseudo-input-label" ng-bind="field[0] | loc"><!-- label --></div>
                       <div class="pseudo-input-field md-body-1" ng-bind="field[1]"><!-- value --></div>
                     </div>
                   </div>
                   <div flex="50" flex-xs="100">
                     <h6 class="md-subhead md-default-theme md-fg md-primary">Issuer</h6>
                     <div ng-repeat="field in ::viewer.message.$smime.certificate.issuer">
-                      <div class="pseudo-input-label" ng-bind="field[0]"><!-- label --></div>
+                      <div class="pseudo-input-label" ng-bind="field[0] | loc"><!-- label --></div>
                       <div class="pseudo-input-field md-body-1" ng-bind="field[1]"><!-- value --></div>
                     </div>
                   </div>

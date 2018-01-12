@@ -346,8 +346,30 @@ static SoProduct *preferencesProduct = nil;
                                            [locale objectForKey: @"NSShortWeekDayNameArray"], @"shortDays",
                                                     nil] forKey: @"locale"];
 
-  // We inject our default mail account
   accounts = [NSMutableArray arrayWithArray: [values objectForKey: @"AuxiliaryMailAccounts"]];
+  if ([accounts count])
+    {
+      int i;
+      NSDictionary *security;
+      NSMutableDictionary *auxAccount, *limitedSecurity;
+
+      for (i = 0; i < [accounts count]; i++)
+        {
+          auxAccount = [accounts objectAtIndex: i];
+          security = [auxAccount objectForKey: @"security"];
+          if (security)
+            {
+              limitedSecurity = [NSMutableDictionary dictionaryWithDictionary: security];
+              if ([limitedSecurity objectForKey: @"certificate"])
+                {
+                  [limitedSecurity setObject: [NSNumber numberWithBool: YES] forKey: @"hasCertificate"];
+                  [limitedSecurity removeObjectForKey: @"certificate"];
+                }
+              [auxAccount setObject: limitedSecurity forKey: @"security"];
+            }
+        }
+    }
+  // We inject our default mail account
   account = [[[context activeUser] mailAccounts] objectAtIndex: 0];
   if (![account objectForKey: @"receipts"])
     {
@@ -359,6 +381,9 @@ static SoProduct *preferencesProduct = nil;
     }
   if (account)
     [accounts insertObject: account  atIndex: 0];
+  [values removeObjectForKey: @"SOGoMailCertificate"];
+  [values removeObjectForKey: @"SOGoMailCertificateAlwaysSign"];
+  [values removeObjectForKey: @"SOGoMailCertificateAlwaysEncrypt"];
   [values setObject: accounts  forKey: @"AuxiliaryMailAccounts"];
 
   // Add the domain's default vacation subject if user has not specified a custom subject

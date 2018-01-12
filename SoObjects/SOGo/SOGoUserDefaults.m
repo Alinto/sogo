@@ -739,6 +739,41 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self boolForKey: @"SOGoMailUseOutlookStyleReplies"];
 }
 
+- (void) setMailCertificate: (NSData *) newValue
+{
+  [self setObject: [newValue stringByEncodingBase64] forKey: @"SOGoMailCertificate"];
+}
+
+- (void) unsetMailCertificate
+{
+  [self removeObjectForKey: @"SOGoMailCertificate"];
+}
+
+- (NSString *) mailCertificate
+{
+  return [self stringForKey: @"SOGoMailCertificate"];
+}
+
+- (void) setMailCertificateAlwaysSign: (BOOL) newValue
+{
+  [self setBool: newValue forKey: @"SOGoMailCertificateAlwaysSign"];
+}
+
+- (BOOL) mailCertificateAlwaysSign
+{
+  return [self boolForKey: @"SOGoMailCertificateAlwaysSign"];
+}
+
+- (void) setMailCertificateAlwaysEncrypt: (BOOL) newValue
+{
+  [self setBool: newValue forKey: @"SOGoMailCertificateAlwaysEncrypt"];
+}
+
+- (BOOL) mailCertificateAlwaysEncrypt
+{
+  return [self boolForKey: @"SOGoMailCertificateAlwaysEncrypt"];
+}
+
 - (void) setAuxiliaryMailAccounts: (NSArray *) newAccounts
 {
   [self setObject: newAccounts forKey: @"AuxiliaryMailAccounts"];
@@ -837,7 +872,6 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 {
   return [self objectForKey: @"SOGoMailLabelsColors"];
 }
-
 
 - (void) setSieveFilters: (NSArray *) newValue
 {

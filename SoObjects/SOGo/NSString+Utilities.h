@@ -72,6 +72,9 @@
 /* LDAP */
 - (BOOL) caseInsensitiveMatches: (NSString *) match;
 
+/* OpenSSL multiline DN */
+- (NSArray *) componentsFromMultilineDN;
+
 #ifndef GNUSTEP_BASE_LIBRARY
 - (BOOL) boolValue;
 #endif

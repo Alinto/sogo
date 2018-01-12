@@ -99,6 +99,7 @@
       account = _.last(this.preferences.defaults.AuxiliaryMailAccounts);
       angular.extend(account,
                      {
+                       isNew: true,
                        name: "",
                        identities: [
                          {

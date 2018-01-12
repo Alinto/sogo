@@ -624,7 +624,7 @@
 {
   NSString *fullName, *replyTo, *imapLogin, *imapServer, *cImapServer, *signature,
     *encryption, *scheme, *action, *query, *customEmail, *defaultEmail, *sieveServer;
-  NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts, *mailSettings;
+  NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts, *security, *mailSettings;
   NSNumber *port;
   NSMutableArray *identities, *mails;
   NSArray *delegators, *delegates;
@@ -702,7 +702,7 @@
   [mailAccount setObject: port forKey: @"port"];
   [mailAccount setObject: encryption forKey: @"encryption"];
 
-  // Sieve server
+  // 4. Sieve server
   sieveServer = [self _fetchFieldForUser: @"c_sievehostname"];
 
   if (sieveServer)
@@ -710,7 +710,7 @@
       [mailAccount setObject: sieveServer  forKey: @"sieveServerName"];
     }
   
-  // Identities
+  // 5. Identities
   defaultEmail = [NSString stringWithFormat: @"%@@%@", [self loginInDomain], [self domain]];
   default_identity = 0;
   identities = [NSMutableArray new];
@@ -845,7 +845,7 @@
   [mailAccount setObject: identities forKey: @"identities"];
   [identities release];
 
-  /* receipts */
+  // 6. Receipts
   if ([_defaults allowUserReceipt])
     {
       receipts = [NSMutableDictionary new];
@@ -865,7 +865,7 @@
       [receipts release];
     }
 
-  /* mailboxes */
+  // 7. Mailboxes
   mailboxes = [NSMutableDictionary new];
 
   [self _migrateFolderSettings];
@@ -880,7 +880,7 @@
   [mailAccount setObject: mailboxes forKey: @"specialMailboxes"];
   [mailboxes release];
 
-  /* delegates */
+  // 8. Delegates
   delegates = [mailSettings objectForKey: @"DelegateTo"];
   if (!delegates)
     delegates = [NSArray array];
@@ -901,6 +901,23 @@
       delegates = allDelegates;
     }
   [mailAccount setObject: delegates  forKey: @"delegates"];
+
+  // 9. Security
+  if ([[_defaults mailCertificate] length])
+    {
+      security = [NSMutableDictionary new];
+
+      [security setObject: [NSNumber numberWithBool: YES] forKey: @"hasCertificate"];
+
+      if ([_defaults mailCertificateAlwaysSign])
+        [security setObject: [NSNumber numberWithBool: YES] forKey: @"alwaysSign"];
+
+      if ([_defaults mailCertificateAlwaysEncrypt])
+        [security setObject: [NSNumber numberWithBool: YES] forKey: @"alwaysEncrypt"];
+
+      [mailAccount setObject: security forKey: @"security"];
+      [security release];
+    }
 
   [mailAccounts addObject: mailAccount];
   [mailAccount release];

@@ -1,6 +1,6 @@
 /* UIxPreferences.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2016 Inverse inc.
+ * Copyright (C) 2007-2018 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,33 +63,33 @@ static NSArray *reminderValues = nil;
       reminderItems = [NSArray arrayWithObjects:
                                @"NONE",
                                @"5_MINUTES_BEFORE",
-			       @"10_MINUTES_BEFORE",
-			       @"15_MINUTES_BEFORE",
-			       @"30_MINUTES_BEFORE",
-			       @"45_MINUTES_BEFORE",
-			       @"1_HOUR_BEFORE",
-			       @"2_HOURS_BEFORE",
-			       @"5_HOURS_BEFORE",
-			       @"15_HOURS_BEFORE",
-			       @"1_DAY_BEFORE",
-			       @"2_DAYS_BEFORE",
-			       @"1_WEEK_BEFORE",
-			       nil];
+                               @"10_MINUTES_BEFORE",
+                               @"15_MINUTES_BEFORE",
+                               @"30_MINUTES_BEFORE",
+                               @"45_MINUTES_BEFORE",
+                               @"1_HOUR_BEFORE",
+                               @"2_HOURS_BEFORE",
+                               @"5_HOURS_BEFORE",
+                               @"15_HOURS_BEFORE",
+                               @"1_DAY_BEFORE",
+                               @"2_DAYS_BEFORE",
+                               @"1_WEEK_BEFORE",
+                               nil];
       reminderValues = [NSArray arrayWithObjects:
                                 @"NONE",
                                 @"-PT5M",
-				@"-PT10M",
-				@"-PT15M",
-				@"-PT30M",
-				@"-PT45M",
-				@"-PT1H",
-				@"-PT2H",
-				@"-PT5H",
-				@"-PT15H",
-				@"-P1D",
-				@"-P2D",
-				@"-P1W",
-				nil];
+                                @"-PT10M",
+                                @"-PT15M",
+                                @"-PT30M",
+                                @"-PT45M",
+                                @"-PT1H",
+                                @"-PT2H",
+                                @"-PT5H",
+                                @"-PT15H",
+                                @"-P1D",
+                                @"-P2D",
+                                @"-P1W",
+                                nil];
 
       [reminderItems retain];
       [reminderValues retain];
@@ -1945,6 +1945,27 @@ static NSArray *reminderValues = nil;
 //
 // Used internally
 //
+- (void) _extractMainSecurityPreferences: (NSDictionary *) security
+                            inDictionary: (NSMutableDictionary *) target
+
+{
+  NSString *action;
+
+  if ([security isKindOfClass: [NSDictionary class]])
+    {
+      action = [security objectForKey: @"alwaysSign"];
+      if (action && [action boolValue])
+        [target setObject: @"1" forKey: @"SOGoMailCertificateAlwaysSign"];
+
+      action = [security objectForKey: @"alwaysEncrypt"];
+      if (action && [action boolValue])
+        [target setObject: @"1" forKey: @"SOGoMailCertificateAlwaysEncrypt"];
+    }
+}
+
+//
+// Used internally
+//
 - (void) _extractMainCustomFrom: (NSDictionary *) account
 {
 }
@@ -2029,7 +2050,7 @@ static NSArray *reminderValues = nil;
       knownKeys = [NSArray arrayWithObjects: @"name", @"serverName", @"port",
                            @"userName", @"password", @"encryption", @"replyTo",
                            @"identities", @"mailboxes",
-                           @"receipts",
+                           @"receipts", @"security",
                            nil];
       [knownKeys retain];
     }
@@ -2055,7 +2076,7 @@ static NSArray *reminderValues = nil;
 
       if (valid)
         {
-          value = [account objectForKey: @"security"];
+          value = [account objectForKey: @"encryption"];
           if (value)
             valid = ([value isKindOfClass: [NSString class]]
                      && ([value isEqualToString: @"none"]
@@ -2084,6 +2105,7 @@ static NSArray *reminderValues = nil;
           && [identities count] > 0)
         [self _extractMainIdentity: [identities objectAtIndex: 0]  inDictionary: target];
       [self _extractMainReceiptsPreferences: [account objectForKey: @"receipts"]  inDictionary: target];
+      [self _extractMainSecurityPreferences: [account objectForKey: @"security"]  inDictionary: target];
     }
 }
 
@@ -2092,15 +2114,9 @@ static NSArray *reminderValues = nil;
 //
 - (NSArray *) _extractAuxiliaryAccounts: (NSArray *) accounts
 {
-  int count, max, oldMax;
-  NSArray *oldAccounts;
+  int count, max;
   NSMutableArray *auxAccounts;
-  NSDictionary *oldAccount;
   NSMutableDictionary *account;
-  NSString *password;
-
-  oldAccounts = [user mailAccounts];
-  oldMax = [oldAccounts count];
 
   max = [accounts count];
   auxAccounts = [NSMutableArray arrayWithCapacity: max];
@@ -2110,23 +2126,67 @@ static NSArray *reminderValues = nil;
       account = [accounts objectAtIndex: count];
       if ([self _validateAccount: account])
         {
-          password = [account objectForKey: @"password"];
-          if (!password)
-            {
-              if (count < oldMax)
-                {
-                  oldAccount = [oldAccounts objectAtIndex: count];
-                  password = [oldAccount objectForKey: @"password"];
-                }
-              if (!password)
-                password = @"";
-              [account setObject: password forKey: @"password"];
-            }
+          [self _updateAuxiliaryAccount: account];
           [auxAccounts addObject: account];
         }
     }
 
   return auxAccounts;
+}
+
+- (void) _updateAuxiliaryAccount: (NSMutableDictionary *) newAccount
+{
+  int count, oldMax;
+  NSArray *oldAccounts, *comparisonAttributes;
+  NSDictionary *oldAccount, *oldSecurity;
+  NSEnumerator *comparisonAttributesList;
+  NSMutableDictionary *newSecurity;
+  NSString *comparisonAttribute, *password, *certificate;
+
+  comparisonAttributes = [NSArray arrayWithObjects: @"serverName", @"userName", nil];
+  oldAccounts = [user mailAccounts];
+  oldAccount = nil;
+  oldMax = [oldAccounts count];
+
+  for (count = 1 /* skip system account */; !oldAccount && count < oldMax; count++)
+    {
+      oldAccount = [oldAccounts objectAtIndex: count];
+      comparisonAttributesList = [comparisonAttributes objectEnumerator];
+      while (oldAccount && (comparisonAttribute = [comparisonAttributesList nextObject]))
+        {
+          if (![[oldAccount objectForKey: comparisonAttribute]
+                isEqualToString: [newAccount objectForKey: comparisonAttribute]])
+            oldAccount = nil;
+        }
+    }
+
+  if (oldAccount)
+    {
+      // Use previous password if none is provided
+      password = [newAccount objectForKey: @"password"];
+      if (!password)
+        password = [oldAccount objectForKey: @"password"];
+      if (!password)
+        password = @"";
+      [newAccount setObject: password forKey: @"password"];
+
+      // Keep previous certificate
+      oldSecurity = [oldAccount objectForKey: @"security"];
+      if (oldSecurity)
+        {
+          certificate = [oldSecurity objectForKey: @"certificate"];
+          if (certificate)
+            {
+              newSecurity = [newAccount objectForKey: @"security"];
+              if (!newSecurity)
+                {
+                  newSecurity = [NSMutableDictionary dictionary];
+                  [newAccount setObject: newSecurity forKey: @"security"];
+                }
+              [newSecurity setObject: certificate forKey: @"certificate"];
+            }
+        }
+    }
 }
 
 // - (void) setMailAccounts: (NSString *) newMailAccounts
@@ -2174,9 +2234,23 @@ static NSArray *reminderValues = nil;
   return (forwardEnabled ? @"true" : @"false");
 }
 
-//
-//
-//
+/**
+ * @api {post} /so/:username/Preferences/save Save user's defaults and settings
+ * @apiVersion 1.0.0
+ * @apiName PostPreferencesSave
+ * @apiGroup Preferences
+ * @apiDescription Save user's defaults and settings.
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost/SOGo/so/sogo1/Preferences/save \
+ *          -H 'Content-Type: application/json' \
+ *          -d '{ "defaults": { SOGoDayStartTime: "09:00", "SOGoDayEndTime": "18:00" }, \
+ *                "settings": { Calendar: { ListState: "rise", EventsFilterState: "view_next7" } } }'
+ *
+ * @apiParam {Object} [defaults]              All attributes for user's defaults
+ * @apiParam {Object} [settings]              All attributes for user's settings
+ *
+ * @apiError (Error 500) {Object} error       The error message
+ */
 - (id <WOActionResults>) saveAction
 {
   id <WOActionResults> results;
@@ -2263,6 +2337,17 @@ static NSArray *reminderValues = nil;
         {
           if ([accounts count] > 0)
             {
+              // The first account is the main system account. The following mapping is required:
+              // - identities[0].signature             => SOGoMailSignature
+              // - identities[0].email                 => SOGoMailCustomEmail
+              // - identities[0].fullName              => SOGoMailCustomFullName
+              // - identities[0].replyTo               => SOGoMailReplyTo
+              // - receipts.receiptAction              => SOGoMailReceiptAllow
+              // - receipts.receiptNonRecipientAction  => SOGoMailReceiptNonRecipientAction
+              // - receipts.receiptOutsideDomainAction => SOGoMailReceiptOutsideDomainAction
+              // - receipts.receiptAnyAction           => SOGoMailReceiptAnyAction
+              // - security.alwaysSign                 => SOGoMailCertificateAlwaysSign
+              // - security.alwaysEncrypt              => SOGoMailCertificateAlwaysEncrypt
               [self _extractMainAccountSettings: [accounts objectAtIndex: 0]  inDictionary: v];
               if ([self mailAuxiliaryUserAccountsEnabled])
                 accounts = [self _extractAuxiliaryAccounts: accounts];

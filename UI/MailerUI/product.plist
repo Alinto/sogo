@@ -433,6 +433,11 @@
           actionClass = "UIxMailAccountActions";
           actionName = "removeDelegate";
         };
+        certificate = {
+          protectedBy = "View";
+          actionClass = "UIxMailAccountActions";
+          actionName = "certificate";
+        };
         importCertificate = {
           protectedBy = "Change Images And Files";
           actionClass = "UIxMailAccountActions";

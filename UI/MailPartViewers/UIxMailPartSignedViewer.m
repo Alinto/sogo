@@ -31,6 +31,8 @@
 
 #import <NGMime/NGMimeMultipartBody.h>
 
+#import <SOGo/NSString+Utilities.h>
+
 #import <Mailer/SOGoMailObject.h>
 
 #import "UIxMailRenderingContext.h"
@@ -194,33 +196,12 @@
   return validSignature;
 }
 
-- (NSArray *) componentsForDN: (NSString *) dn
-{
-  NSArray *pair;
-  NSEnumerator *componentsEnum;
-  NSMutableArray *components;
-  NSString *pairString;
-
-  components = [NSMutableArray array];
-  componentsEnum = [[dn componentsSeparatedByString: @"\n"] objectEnumerator];
-  while (( pairString = [componentsEnum nextObject] ))
-    {
-      pair = [pairString componentsSeparatedByString: @"="];
-      if ([pair count] == 2)
-        [components addObject: [NSArray arrayWithObjects:
-                                       [self labelForKey: [pair objectAtIndex: 0]],
-                                     [pair objectAtIndex: 1], nil]];
-    }
-
-  return components;
-}
-
 - (NSDictionary *) certificateForSubject: (NSString *) subject
                                andIssuer: (NSString *) issuer
 {
   return [NSDictionary dictionaryWithObjectsAndKeys:
-                              [self componentsForDN: subject], @"subject",
-                              [self componentsForDN: issuer], @"issuer",
+                              [subject componentsFromMultilineDN], @"subject",
+                              [issuer componentsFromMultilineDN], @"issuer",
                        nil];
 }
 

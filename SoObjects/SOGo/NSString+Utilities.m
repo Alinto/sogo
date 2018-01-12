@@ -277,13 +277,21 @@ static int cssEscapingCount;
 //
 // See http://www.hackcraft.net/xmlUnicode/
 //
-// XML1.0 and XML1.1 allow different characters in different contexts, but for the most part I will only describe the XML1.0 usage, XML1.1 usage is analogous.
-// The first definition that is relevant here is that of a Char:
-// [2]	Char	::=	#x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]	/* any Unicode character, excluding the surrogate blocks, FFFE, and FFFF. */
+// XML1.0 and XML1.1 allow different characters in different contexts,
+// but for the most part I will only describe the XML1.0 usage, XML1.1
+// usage is analogous.  The first definition that is relevant here is
+// that of a Char: [2] Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] |
+// [#xE000-#xFFFD] | [#x10000-#x10FFFF] /* any Unicode character,
+// excluding the surrogate blocks, FFFE, and FFFF. */
 //
-// This defines which characters can be used in an XML1.0 document. It is clearly very liberal, banning only some of the control characters and the noncharacters U+FFFE and U+FFFF.
-// Indeed it is somewhat too liberal in my view since it allows other noncharacters (the code points from U+FDD0 to U+FDEF inclusive and the last 2 code points in each plane,
-// from U+1FFFE & U+1FFFF through to U+10FFFE & U+10FFFF, are noncharacters) but the production quoted above allows them.
+// This defines which characters can be used in an XML1.0 document. It
+// is clearly very liberal, banning only some of the control
+// characters and the noncharacters U+FFFE and U+FFFF.  Indeed it is
+// somewhat too liberal in my view since it allows other noncharacters
+// (the code points from U+FDD0 to U+FDEF inclusive and the last 2
+// code points in each plane, from U+1FFFE & U+1FFFF through to
+// U+10FFFE & U+10FFFF, are noncharacters) but the production quoted
+// above allows them.
 //
 - (NSString *) safeString
 {
@@ -611,6 +619,35 @@ static int cssEscapingCount;
   sq = [EOQualifier qualifierWithQualifierFormat: format];
 
   return [(id<EOQualifierEvaluation>)sq evaluateWithObject: self];
+}
+
+//
+// To decompose the DN extracted from a SSL certificate
+// using the XN_FLAG_SEP_MULTILINE flag.
+//
+- (NSArray *) componentsFromMultilineDN
+{
+  NSArray *pair;
+  NSEnumerator *componentsEnum, *rdnComponentsEnum;
+  NSMutableArray *components;
+  NSString *component, *pairString;
+
+  components = [NSMutableArray array];
+  componentsEnum = [[self componentsSeparatedByString: @"\n"] objectEnumerator];
+  while (( component = [componentsEnum nextObject] ))
+    {
+      rdnComponentsEnum = [[component componentsSeparatedByString: @" + "] objectEnumerator];
+      while (( pairString = [rdnComponentsEnum nextObject] ))
+        {
+          pair = [pairString componentsSeparatedByString: @"="];
+          if ([pair count] == 2)
+            [components addObject: [NSArray arrayWithObjects:
+                                         [pair objectAtIndex: 0],
+                                         [pair objectAtIndex: 1], nil]];
+        }
+    }
+
+  return components;
 }
 
 #if LIB_FOUNDATION_LIBRARY

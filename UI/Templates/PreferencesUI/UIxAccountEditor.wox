@@ -180,72 +180,108 @@
           </md-tab>
 
           <!-- security tab -->
-          <md-tab id="accountSecurityView" label:label="Security">
-            <md-content id="accountSecurityContent" class="md-padding" layout="column">
+          <md-tab id="accountSecurityView" ng-disabled="$AccountDialogController.account.isNew" label:label="Security">
+            <md-content id="accountSecurityContent" class="md-padding">
 
-              <div layout="row" layout-align="start center">
-                <md-input-container
-                    class="md-flex"
-                    ng-class="{'md-input-invalid': $AccountDialogController.form.certificateFilename.$error.fileformat}">
-                  <label><var:string label:value="S/MIME Certificate"/></label>
-                  <input type="text" name="certificateFilename"
-                         ng-disabled="true"
-                         label:placeholder="No certificate installed"
-                         ng-model="$AccountDialogController.certificateFilename" />
-                  <div ng-messages="accountForm.certificateFilename.$error" role="alert">
-                    <div ng-message="fileformat"><var:string label:value="The SSL certificate must use the PKCS#12 (PFX) format."/></div>
+              <div layout="column" ng-show="$AccountDialogController.account.security.hasCertificate">
+                <!-- S/MIME Certificate -->
+                <sg-block-toggle class="sg-no-print" layout="column">
+                  <md-list-item class="sg-button-toggle">
+                    <md-icon rsrc:md-svg-src="img/certificate.svg"><!-- certificate --></md-icon>
+                    <p class="md-flex">
+                      <var:string label:value="S/MIME Certificate"/>
+                    </p>
+                    <md-button class="md-warn"
+                               ng-click="$AccountDialogController.removeCertificate()">
+                      <var:string label:value="Uninstall"/>
+                    </md-button>
+                    <md-icon class="sg-icon-toggle">expand_more</md-icon>
+                  </md-list-item>
+                  <div class="sg-block-toggle">
+                    <div class="md-margin" md-whiteframe="3">
+                      <div class="md-padding" layout="row" layout-wrap="layout-wrap">
+                        <div flex="50" flex-xs="100">
+                          <h6 class="md-subhead md-default-theme md-fg md-primary">Subject Name</h6>
+                          <div ng-repeat="field in $AccountDialogController.certificate.subject">
+                            <div class="pseudo-input-label" ng-bind="field[0] | loc"><!-- label --></div>
+                            <div class="pseudo-input-field md-body-1" ng-bind="field[1]"><!-- value --></div>
+                          </div>
+                        </div>
+                        <div flex="50" flex-xs="100">
+                          <h6 class="md-subhead md-default-theme md-fg md-primary">Issuer</h6>
+                          <div ng-repeat="field in $AccountDialogController.certificate.issuer">
+                            <div class="pseudo-input-label" ng-bind="field[0] | loc"><!-- label --></div>
+                            <div class="pseudo-input-field md-body-1" ng-bind="field[1]"><!-- value --></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                </sg-block-toggle>
+
+                <md-divider><!-- divider --></md-divider>
+
+                <div class="pseudo-input-container">
+                  <label class="pseudo-input-label"><var:string label:value="When composing a message"/></label>
+                  <div layout="column">
+                    <md-checkbox
+                        class="pseudo-input-field"
+                        ng-model="$AccountDialogController.account.security.alwaysSign"
+                        ng-true-value="1"
+                        ng-false-value="0"><var:string label:value="Digitally sign the message by default"/></md-checkbox>
+                    <md-checkbox
+                        class="pseudo-input-field"
+                        ng-model="$AccountDialogController.account.security.alwaysEncrypt"
+                        ng-true-value="1"
+                        ng-false-value="0"><var:string label:value="Always try to encrypt the message"/></md-checkbox>
+                  </div>
+                </div>
+
+              </div><!-- /hasCertificate -->
+
+              <div layout="column" ng-hide="$AccountDialogController.account.security.hasCertificate">
+
+                <div layout="row" layout-align="start center">
+                  <md-input-container
+                      class="md-flex"
+                      ng-class="{'md-input-invalid': $AccountDialogController.form.certificateFilename.$error.fileformat}">
+                    <label><var:string label:value="S/MIME Certificate"/></label>
+                    <input type="text" name="certificateFilename"
+                           ng-disabled="true"
+                           label:placeholder="No certificate installed"
+                           ng-model="$AccountDialogController.certificateFilename" />
+                    <div ng-messages="accountForm.certificateFilename.$error" role="alert">
+                      <div ng-message="fileformat"><var:string label:value="The SSL certificate must use the PKCS#12 (PFX) format."/></div>
+                    </div>
+                  </md-input-container>
+                  <div>
+                    <input id="smime-certificate-import" type="file" class="ng-hide"
+                           nv-file-select="nv-file-select"
+                           uploader="$AccountDialogController.uploader"/>
+                    <label class="md-button" for="smime-certificate-import"
+                           ng-click="$AccountDialogController.onBeforeUploadCertificate(accountForm)"
+                           ng-hide="$AccountDialogController.uploader.isUploading">
+                      <span><var:string label:value="Choose PKCS12 Certificate .."/></span>
+                    </label>
+                  </div>
+                </div>
+                <md-input-container class="md-flex">
+                  <label><var:string label:value="Certificate Import Password"/></label>
+                  <input type="password" autocomplete="new-password"
+                         ng-required="$AccountDialogController.uploader.queue.length"
+                         ng-model="$AccountDialogController.certificatePassword" />
                 </md-input-container>
-                <md-button ng-show="$AccountDialogController.certificateIsInstalled()"
-                           ng-click="$AccountDialogController.removeCertificate()">
-                  <var:string label:value="Uninstall"/>
-                </md-button>
-                <div ng-hide="$AccountDialogController.certificateIsInstalled()">
-                  <input id="smime-certificate-import" type="file" class="ng-hide"
-                         nv-file-select="nv-file-select"
-                         uploader="$AccountDialogController.uploader"/>
-                  <label class="md-button" for="smime-certificate-import"
-                         ng-click="$AccountDialogController.onBeforeUploadCertificate(accountForm)"
-                         ng-hide="$AccountDialogController.uploader.isUploading">
-                    <span><var:string label:value="Choose PKCS12 Certificate .."/></span>
-                  </label>
+
+                <div layout="row" layout-align="end end">
+                  <md-button
+                      class="md-warn md-raised"
+                      ng-disabled="!$AccountDialogController.certificatePassword || !$AccountDialogController.certificateFilename"
+                      ng-click="$AccountDialogController.importCertificate()">
+                    <var:string label:value="Upload"/>
+                  </md-button>
                 </div>
-              </div>
-              <md-input-container class="md-flex">
-                <label><var:string label:value="Certificate Import Password"/></label>
-                <input type="password" autocomplete="new-password"
-                       ng-required="$AccountDialogController.uploader.queue.length"
-                       ng-model="$AccountDialogController.certificatePassword" />
-              </md-input-container>
 
-              <div layout="row" layout-align="end end">
-                <md-button
-                    class="md-warn md-raised"
-                    ng-disabled="!$AccountDialogController.certificatePassword || !$AccountDialogController.certificateFilename"
-                    ng-click="$AccountDialogController.importCertificate()">
-                  <var:string label:value="Upload"/>
-                </md-button>
-              </div>
-
-              <md-divider><!-- divider --></md-divider>
-
-              <div class="pseudo-input-container">
-                <label class="pseudo-input-label"><var:string label:value="When composing a message"/></label>
-                <div layout="column">
-                  <md-checkbox
-                      class="pseudo-input-field"
-                      ng-model="$AccountDialogController.account.alwaysSign"
-                      ng-disabled="!$AccountDialogController.certificateIsInstalled()"
-                      ng-true-value="1"
-                      ng-false-value="0"><var:string label:value="Digitally sign the message by default"/></md-checkbox>
-                  <md-checkbox
-                      class="pseudo-input-field"
-                      ng-model="$AccountDialogController.account.alwaysEncrypt"
-                      ng-disabled="!$AccountDialogController.certificateIsInstalled()"
-                      ng-true-value="1"
-                      ng-false-value="0"><var:string label:value="Always try to encrypt the message"/></md-checkbox>
-                </div>
-              </div>
+              </div><!-- /!hasCertificate -->
 
             </md-content>
           </md-tab>

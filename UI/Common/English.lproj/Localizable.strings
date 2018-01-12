@@ -114,6 +114,13 @@
 "No such user." = "No such user.";
 "You cannot (un)subscribe to a folder that you own!" = "You cannot (un)subscribe to a folder that you own!";
 
+/* SMIME Certificate field */
+"countryName" = "Country";
+"organizationName" = "Organization";
+"organizationalUnitName" = "Organizational Unit";
+"commonName" = "Common Name";
+"emailAddress" = "Email Address";
+
 /* Authentication username */
 "Username" = "Username";
 

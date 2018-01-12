@@ -1187,10 +1187,36 @@ static NSString *inboxFolderName = @"INBOX";
 
 - (NSData *) certificate
 {
+  NSData *mailCertificate;
   SOGoUserDefaults *ud;
 
+  mailCertificate = nil;
   ud = [[context activeUser] userDefaults];
-  return [[ud stringForKey: @"SOGoMailCertificate"] dataByDecodingBase64];
+
+  if ([nameInContainer isEqualToString: @"0"])
+    {
+      mailCertificate = [[ud stringForKey: @"SOGoMailCertificate"] dataByDecodingBase64];
+    }
+  else
+    {
+      int accountIdx;
+      NSArray* accounts;
+      NSDictionary *account, *security;
+
+      accountIdx = [nameInContainer intValue] - 1;
+      accounts = [ud auxiliaryMailAccounts];
+      if ([accounts count] > accountIdx)
+        {
+          account = [accounts objectAtIndex: accountIdx];
+          security = [account objectForKey: @"security"];
+          if (security && [[security objectForKey: @"certificate"] length])
+            {
+              mailCertificate = [[security objectForKey: @"certificate"] dataByDecodingBase64];
+            }
+        }
+    }
+
+  return mailCertificate;
 }
 
 - (void) setCertificate: (NSData *) theData
@@ -1199,10 +1225,39 @@ static NSString *inboxFolderName = @"INBOX";
 
   ud = [[context activeUser] userDefaults];
 
-  if ([theData length])
-    [ud setObject: [theData stringByEncodingBase64]  forKey: @"SOGoMailCertificate"];
+  if ([nameInContainer isEqualToString: @"0"])
+    {
+      if ([theData length])
+        [ud setObject: [theData stringByEncodingBase64]  forKey: @"SOGoMailCertificate"];
+      else
+        [ud removeObjectForKey: @"SOGoMailCertificate"];
+    }
   else
-    [ud removeObjectForKey: @"SOGoMailCertificate"];
+    {
+      int accountIdx;
+      NSArray* accounts;
+      NSMutableDictionary *account, *security;
+
+      accountIdx = [nameInContainer intValue] - 1;
+      accounts = [ud auxiliaryMailAccounts];
+      if ([accounts count] > accountIdx)
+        {
+          account = [accounts objectAtIndex: accountIdx];
+          security = [account objectForKey: @"security"];
+          if (!security)
+            {
+              security = [NSMutableDictionary dictionary];
+              [account setObject: security forKey: @"security"];
+            }
+          if ([theData length])
+            [security setObject: [theData stringByEncodingBase64] forKey: @"certificate"];
+          else
+            [security removeObjectForKey: @"certificate"];
+          [ud setAuxiliaryMailAccounts: accounts];
+        }
+    }
+
+  [ud synchronize];
 }
 
 

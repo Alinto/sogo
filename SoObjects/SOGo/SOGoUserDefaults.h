@@ -181,6 +181,16 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setMailUseOutlookStyleReplies: (BOOL) newValue;
 - (BOOL) mailUseOutlookStyleReplies;
 
+- (void) setMailCertificate: (NSData *) newValue;
+- (void) unsetMailCertificate;
+- (NSString *) mailCertificate;
+
+- (void) setMailCertificateAlwaysSign: (BOOL) newValue;
+- (BOOL) mailCertificateAlwaysSign;
+
+- (void) setMailCertificateAlwaysEncrypt: (BOOL) newValue;
+- (BOOL) mailCertificateAlwaysEncrypt;
+
 - (void) setAuxiliaryMailAccounts: (NSArray *) newAccounts;
 - (NSArray *) auxiliaryMailAccounts;
 

@@ -7,9 +7,10 @@
   /**
    * @ngInject
    */
-  AccountDialogController.$inject = ['$mdDialog', '$mdToast', 'FileUploader', 'Dialog', 'sgSettings', 'Account', 'defaults', 'account', 'accountId', 'mailCustomFromEnabled'];
-  function AccountDialogController($mdDialog, $mdToast, FileUploader, Dialog, Settings, Account, defaults, account, accountId, mailCustomFromEnabled) {
-    var vm = this;
+  AccountDialogController.$inject = ['$timeout', '$mdDialog', 'FileUploader', 'Dialog', 'sgSettings', 'Account', 'defaults', 'account', 'accountId', 'mailCustomFromEnabled'];
+  function AccountDialogController($timeout, $mdDialog, FileUploader, Dialog, Settings, Account, defaults, account, accountId, mailCustomFromEnabled) {
+    var vm = this,
+        accountObject = new Account({ id: accountId, security: account.security });
 
     vm.defaultPort = 143;
     vm.defaults = defaults;
@@ -17,7 +18,6 @@
     vm.accountId = accountId;
     vm.customFromIsReadonly = customFromIsReadonly;
     vm.onBeforeUploadCertificate = onBeforeUploadCertificate;
-    vm.certificateIsInstalled = certificateIsInstalled;
     vm.removeCertificate = removeCertificate;
     vm.importCertificate = importCertificate;
     vm.cancel = cancel;
@@ -29,8 +29,7 @@
     else if (vm.account.encryption == "ssl")
       vm.defaultPort = 993;
 
-    if (vm.account.certificateFilename)
-      vm.certificateFilename = vm.account.certificateFilename;
+    _loadCertificate();
 
     vm.uploader = new FileUploader({
       url: [Settings.activeUser('folderURL') + 'Mail', accountId, 'importCertificate'].join('/'),
@@ -41,19 +40,25 @@
         vm.certificateFilename = item.file.name;
       },
       onSuccessItem: function(item, response, status, headers) {
-        var el = angular.element(document.getElementById('accountSecurityContent'));
-        $mdToast.show(
-          $mdToast.simple()
-            .content(l('Success'))
-            .parent(el)
-            .position('top right')
-            .hideDelay(3000));
         this.clearQueue();
+        $timeout(function() {
+          _.assign(vm.account, {security: {hasCertificate: true}});
+        });
+        _loadCertificate();
       },
       onErrorItem: function(item, response, status, headers) {
         Dialog.alert(l('Error'), l('An error occurred while importing the certificate. Verify your password.'));
       }
     });
+
+    function _loadCertificate() {
+      if (vm.account.security && vm.account.security.hasCertificate)
+        accountObject.$certificate().then(function(crt) {
+          vm.certificate = crt;
+        }, function() {
+          delete vm.account.security.hasCertificate;
+        });
+    }
 
     function filterByExtension(item) {
       var isP12File = item.type.indexOf('pkcs12') > 0 || /\.(p12|pfx)$/.test(item.name);
@@ -69,7 +74,7 @@
 
     function importCertificate() {
       vm.uploader.queue[0].formData = [{ password: vm.certificatePassword }];
-      vm.uploader.uploadAll();
+      vm.uploader.uploadItem(0);
     }
 
     function onBeforeUploadCertificate(form) {
@@ -77,14 +82,9 @@
       vm.uploader.clearQueue();
     }
 
-    function certificateIsInstalled() {
-      return vm.certificateFilename && vm.uploader.queue.length === 0;
-    }
-
     function removeCertificate() {
-      var accountObject = new Account({ id: accountId });
       accountObject.$removeCertificate().then(function() {
-        delete vm.certificateFilename;
+        delete vm.account.security.hasCertificate;
       });
     }
 

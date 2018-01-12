@@ -18,6 +18,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#if defined(HAVE_OPENSSL) || defined(HAVE_GNUTLS)
+#include <openssl/bio.h>
+#include <openssl/err.h>
+#include <openssl/pem.h>
+#include <openssl/x509.h>
+#endif
+
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 
 #import <NGHttp/NGHttpRequest.h>
@@ -190,6 +198,75 @@
   return [self _performDelegationAction: @selector (removeDelegates:)];
 }
 
+- (WOResponse *) certificateAction
+{
+  NSData *pem;
+  NSDictionary *data;
+  WOResponse *response;
+
+  pem = [[self clientObject] certificate];
+
+  if (pem)
+    {
+      BIO *pemBio;
+      X509 *x;
+
+      OpenSSL_add_all_algorithms();
+      ERR_load_crypto_strings();
+      pemBio = BIO_new_mem_buf((void *) [pem bytes], [pem length]);
+      x = PEM_read_bio_X509(pemBio, NULL, 0, NULL);
+      if (x)
+        {
+          BIO *buf;
+          char p[1024];
+          NSString *subject, *issuer;
+
+          memset(p, 0, 1024);
+          buf = BIO_new(BIO_s_mem());
+          X509_NAME_print_ex(buf, X509_get_subject_name(x), 0,
+                             ASN1_STRFLGS_ESC_CTRL | XN_FLAG_SEP_MULTILINE | XN_FLAG_FN_LN);
+          BIO_read(buf, p, 1024);
+          subject = [NSString stringWithUTF8String: p];
+          BIO_free(buf);
+
+          memset(p, 0, 1024);
+          buf = BIO_new(BIO_s_mem());
+          X509_NAME_print_ex(buf, X509_get_issuer_name(x), 0,
+                             ASN1_STRFLGS_ESC_CTRL | XN_FLAG_SEP_MULTILINE | XN_FLAG_FN_LN);
+          BIO_read(buf, p, 1024);
+          issuer = [NSString stringWithUTF8String: p];
+          BIO_free(buf);
+
+          data = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 [subject componentsFromMultilineDN], @"subject",
+                               [issuer componentsFromMultilineDN], @"issuer",
+                               nil];
+          response = [self responseWithStatus: 200
+                        andJSONRepresentation: data];
+        }
+      else
+        {
+          NSLog(@"FATAL: failed to read certificate.");
+          data = [NSDictionary
+                   dictionaryWithObject: [self labelForKey: @"Error reading the certificate. Please install a new certificate."]
+                                 forKey: @"message"];
+          response = [self responseWithStatus: 500
+                        andJSONRepresentation: data];
+        }
+
+      BIO_free(pemBio);
+      X509_free(x);
+    }
+  else
+    {
+      response = [self responseWithStatus: 404
+                    andJSONRepresentation: [NSDictionary dictionaryWithObject: [self labelForKey: @"No certificate associated to account."]
+                                                                       forKey: @"message"]];
+    }
+
+  return response;
+}
+
 - (WOResponse *) importCertificateAction
 {
   NSArray *parts;
@@ -238,7 +315,6 @@
 
   if (password && pkcs12)
     {
-      SOGoUserDefaults *ud;
       NSData *certificate;
 
       certificate = [pkcs12 convertPKCS12ToPEMUsingPassword: password];
@@ -246,9 +322,7 @@
       if (!certificate)
         return [self responseWithStatus: 507];
 
-      ud = [[context activeUser] userDefaults];
       [[self clientObject] setCertificate: certificate];
-      [ud synchronize];
 
       response = [self responseWith204];
     }
@@ -258,11 +332,7 @@
 
 - (WOResponse *) removeCertificateAction
 {
-  SOGoUserDefaults *ud;
-
-  ud = [[context activeUser] userDefaults];
   [[self clientObject] setCertificate: nil];
-  [ud synchronize];
 
   return [self responseWith204];
 }
