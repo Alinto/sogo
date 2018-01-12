@@ -33,7 +33,7 @@
 
       $scope.$watch(
         function() {
-          return $ctrl.message? [ _.pick($ctrl.message, ['uid', 'isread', 'isflagged']) ] : null;
+          return $ctrl.message? [ _.pick($ctrl.message, ['uid', 'isread', 'isflagged', 'flags']) ] : null;
         },
         function(newId, oldId) {
           if ($ctrl.message) {
