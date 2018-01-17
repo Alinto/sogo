@@ -201,16 +201,16 @@
                     <div class="md-margin" md-whiteframe="3">
                       <div class="md-padding" layout="row" layout-wrap="layout-wrap">
                         <div flex="50" flex-xs="100">
-                          <h6 class="md-subhead md-default-theme md-fg md-primary"
-                              ng-bind="::'Subject Name' | loc"><!-- Subject Name --></h6>
+                          <div class="md-subhead md-default-theme md-fg md-primary"
+                               ng-bind="::'Subject Name' | loc"><!-- Subject Name --></div>
                           <div ng-repeat="field in $AccountDialogController.certificate.subject">
                             <div class="pseudo-input-label" ng-bind="field[0] | loc"><!-- label --></div>
                             <div class="pseudo-input-field md-body-1" ng-bind="field[1]"><!-- value --></div>
                           </div>
                         </div>
                         <div flex="50" flex-xs="100">
-                          <h6 class="md-subhead md-default-theme md-fg md-primary"
-                              ng-bind="::'Issuer' | loc"><!-- Issuer --></h6>
+                          <div class="md-subhead md-default-theme md-fg md-primary"
+                               ng-bind="::'Issuer' | loc"><!-- Issuer --></div>
                           <div ng-repeat="field in $AccountDialogController.certificate.issuer">
                             <div class="pseudo-input-label" ng-bind="field[0] | loc"><!-- label --></div>
                             <div class="pseudo-input-field md-body-1" ng-bind="field[1]"><!-- value --></div>

@@ -104,14 +104,12 @@
                   <md-icon>warning</md-icon>
                   <var:string label:value="No resource"/>
                 </md-list-item>
-                <md-list-item class="sg-folder" ng-repeat="folder in user.$$folders">
-                  <md-button class=""
+                <md-list-item class="sg-folder" ng-repeat="folder in user.$$folders"
                              aria-label="{{::folder.displayName}}" title="{{::folder.displayName}}"
                              ng-click="app.selectFolder(folder)">
                     <md-icon ng-class="{ 'icon-contacts': folder.type == 'Contact',
                                        'icon-event': folder.type == 'Appointment' }"><!--icon--></md-icon>
-                    {{::folder.displayName}}
-                  </md-button>
+                    <span class="sg-no-wrap" ng-bind="::folder.displayName"><!-- folder name --></span>
                 </md-list-item>
                 <md-divider><!-- divider --></md-divider>
               </div>

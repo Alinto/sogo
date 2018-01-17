@@ -1,4 +1,8 @@
 /// AdministrationUI.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 
 [ui-view="administration"] {
+  md-list-item .md-list-item-inner > md-icon:first-child {
+    margin-left: $bl * 2;
+    margin-right: $bl * 2;
+  }
 }

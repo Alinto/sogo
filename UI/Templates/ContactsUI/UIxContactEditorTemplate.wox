@@ -35,8 +35,8 @@
       </md-card-actions>
       <md-card-content>
         <hgroup class="header">
-          <h1 class="sg-md-display-2--thin" ng-bind-html="editor.card.$fullname()"><!-- fullname --></h1>
-          <h6 class="sg-md-display-2-subheader--thin">{{editor.card.$description()}}</h6>
+          <div class="sg-md-display-2--thin" ng-bind-html="editor.card.$fullname()"><!-- fullname --></div>
+          <div class="sg-md-display-2-subheader--thin">{{editor.card.$description()}}</div>
         </hgroup>
 
         <form class="md-inline-form" name="contactForm"

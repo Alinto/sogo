@@ -223,30 +223,33 @@ $h5-margin-base: 0;
 $h6-font-size-base: $sg-font-size-4;
 $h6-margin-base: 0;
 
-h1 {
-  font-size: $h1-font-size-base;
-  margin: $h1-margin-base;
+.md-headline {
+  margin: 0;
 }
-h2 {
-  font-size: $h2-font-size-base;
-  margin: $h2-margin-base;
-}
-h3 {
-  font-size: $h3-font-size-base;
-  margin: $h3-margin-base;
-}
-h4 {
-  font-size: $h4-font-size-base;
-  margin: $h4-margin-base;
-}
-h5 {
-  font-size: $h5-font-size-base;
-  margin: $h5-margin-base;
-}
-h6 {
-  font-size: $h6-font-size-base;
-  margin: $h6-margin-base;
-}
+// h1 {
+//   font-size: $h1-font-size-base;
+//   margin: $h1-margin-base;
+// }
+// h2 {
+//   font-size: $h2-font-size-base;
+//   margin: $h2-margin-base;
+// }
+// h3 {
+//   font-size: $h3-font-size-base;
+//   margin: $h3-margin-base;
+// }
+// h4 {
+//   font-size: $h4-font-size-base;
+//   margin: $h4-margin-base;
+// }
+// h5 {
+//   font-size: $h5-font-size-base;
+//   margin: $h5-margin-base;
+// }
+// h6 {
+//   font-size: $h6-font-size-base;
+//   margin: $h6-margin-base;
+// }
 
 // Base styles
 // ----------------------------------------------------------------------------

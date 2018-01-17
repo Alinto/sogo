@@ -103,13 +103,13 @@
           <md-icon>access_time</md-icon>
           <div class="md-list-item-text" ng-show="editor.component.startDate">
             <label class="pseudo-input-label"><var:string label:value="Start"/></label>
-            <h3 ng-bind="::editor.component.localizedStartDate"><!-- start date --></h3>
-            <h3 ng-hide="::editor.component.isAllDay" ng-bind="::editor.component.localizedStartTime"><!-- start time --></h3>
+            <div ng-bind="::editor.component.localizedStartDate"><!-- start date --></div>
+            <div ng-hide="::editor.component.isAllDay" ng-bind="::editor.component.localizedStartTime"><!-- start time --></div>
           </div>
           <div class="md-list-item-text" ng-show="editor.component.endDate">
             <label class="pseudo-input-label"><var:string label:value="End"/></label>
-            <h3 ng-bind="::editor.component.localizedEndDate"><!-- end date --></h3>
-            <h3 ng-hide="::editor.component.isAllDay" ng-bind="::editor.component.localizedEndTime"><!-- end time --></h3>
+            <div ng-bind="::editor.component.localizedEndDate"><!-- end date --></div>
+            <div ng-hide="::editor.component.isAllDay" ng-bind="::editor.component.localizedEndTime"><!-- end time --></div>
           </div>
         </md-list-item>
         <!-- is transparent -->

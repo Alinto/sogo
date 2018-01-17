@@ -28,12 +28,12 @@
                            sg-email="::acl.user.c_email"
                            size="40">{{acl.user.$avatarIcon}}</sg-avatar-image>
           <div class="msg-header-content">
-            <h1 ng-class="{ 'sg-md-display-2--thin': isGtMedium,
-                            'sg-md-title': !isGtMedium }">{{::acl.user.cn}}</h1>
-            <h6 class="sg-md-display-2-subheader"><md-icon ng-class="{ 'icon-contacts': acl.folderType == 'AddressBook',
+            <div ng-class="{ 'sg-md-display-2--thin': isGtMedium,
+                            'sg-md-title': !isGtMedium }">{{::acl.user.cn}}</div>
+            <div class="sg-md-display-2-subheader"><md-icon ng-class="{ 'icon-contacts': acl.folderType == 'AddressBook',
                                                                        'icon-event': acl.folderType == 'Calendar' }"><!--icon--></md-icon>
             {{::acl.folder.name}}
-            </h6>
+            </div>
           </div>
         </div>
         <!-- only show the fab button on large screens -->
