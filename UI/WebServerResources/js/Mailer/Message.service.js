@@ -305,7 +305,8 @@
             }
             else if (part.type == 'UIxMailPartEncryptedViewer') {
               _this.$smime = {
-                message: "THIS MAIL IS ENCRYPTED!"
+                isEncrypted: true,
+                message: l("This message is encrypted")
               };
             }
             _.forEach(part.content, function(mixedPart) {

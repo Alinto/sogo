@@ -115,6 +115,8 @@
 "You cannot (un)subscribe to a folder that you own!" = "You cannot (un)subscribe to a folder that you own!";
 
 /* SMIME Certificate field */
+"Subject Name" = "Subject Name";
+"Issuer" = "Issuer";
 "countryName" = "Country";
 "organizationName" = "Organization";
 "organizationalUnitName" = "Organizational Unit";

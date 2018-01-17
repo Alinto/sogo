@@ -246,6 +246,9 @@
 /* Number of selected messages in list */
 "selected" = "selected";
 
+/* Encrypted message notification */
+"This message is encrypted" = "This message is encrypted";
+
 /* OpenSSL certificate error - unknown issuer */
 "certificate verify error" = "Unable to verify message signature";
 
