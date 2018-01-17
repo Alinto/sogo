@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "In mehreren Postfächern suchen";
 
 /* Main Frame  */
-"Home"                 = "Anfang"; 
+"Home"                 = "Anfang";
 "Calendar"             = "Kalender";
 "Addressbook"          = "Adressbuch";
 "Mail"                 = "E-Mail";
@@ -321,6 +321,7 @@
 = "Die Nachricht(en) konnten nicht in den Papierkorb verschoben werden. Wollen Sie diese endgültig löschen?";
 
 /* Message editing */
+"Please specify a subject." = "Bitte geben Sie einen Betreff an.";
 "error_missingsubject" = "Der Betreff fehlt. Sind Sie sicher, dass Sie dies so senden möchten?";
 "error_missingrecipients" = "Der Empfänger fehlt.";
 "Send Anyway" = "Trotzdem versenden";

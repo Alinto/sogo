@@ -47,6 +47,7 @@
 "Enable auto reply on" = "Automatische Abwesenheitsnachricht anschalten am";
 "Disable auto reply on" = "Automatische Abwesenheitsnachricht abschalten am";
 "Always send vacation message response" = "Immer Abwesenheitsmeldung senden";
+"Discard incoming mails during vacation" = "Ankommende E-Mails während der Abwesenheit verwerfen";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Bitte ihren Nachrichtentext und ihre E-Mail-Adressen angeben, für die automatische Abwesenheitsnachrichten aktiviert werden sollen.";
 "Your vacation message must not end with a single dot on a line." = "Ihre Abwesenheitsnachricht darf nicht mit einem alleinstehenden Punkt in einer Zeile enden.";
@@ -144,12 +145,19 @@
 "reminder_1_WEEK_BEFORE" = "1 Woche vorher";
 
 /* Mailer */
-"Labels" = "Bezeichnungen";
+"Labels" = "Schlagwörter";
 "Label" = "Schlagwort";
+"IMAP Label" = "IMAP Schlagwort";
+"Invalid label" = "Keine Leerzeichen oder ( ) { } % * \" \\ verwenden";
+"Duplicate label" = "Dupliziere Ordner";
+"IMAP labels must have unique names." = "IMAP Ordnernamen müssen eindeutig sein";
 "New label" = "Neue Bezeichnung";
 "Show subscribed mailboxes only" = "Nur abonnierte Ordner anzeigen";
 "Synchronize only default mail folders (EAS)" = "Nur Standard-E-Mail-Ordner synchronisieren (EAS)";
 "Sort messages by threads" = "Nachrichten nach Thema sortieren";
+"Always show mail composer" = "Zeige immer den E-Mail Autor an";
+"Inside current window" = "Erscheint im aktuellen Fenster";
+"In a popup window" = "Erscheint in zusätzlichen Fenster";
 "When sending mail, add unknown recipients to my" = "Unbekannte Empfänger meiner E-Mails hinzufügen zu";
 "Address Book" = "Adressbuch";
 "Forward messages" = "Nachrichten weiterleiten";
@@ -238,7 +246,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
