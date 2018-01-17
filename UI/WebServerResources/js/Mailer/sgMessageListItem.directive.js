@@ -28,12 +28,17 @@
 
 
     this.$onInit = function () {
+      var watchedAttrs = ['uid', 'isread', 'isflagged', 'flags', 'subject'];
+
       // this.service = Message;
       this.MailboxService = Mailbox;
 
+      if (Mailbox.selectedFolder.type == 'draft')
+        watchedAttrs.push('subject');
+
       $scope.$watch(
         function() {
-          return $ctrl.message? [ _.pick($ctrl.message, ['uid', 'isread', 'isflagged', 'flags']) ] : null;
+          return $ctrl.message? [ _.pick($ctrl.message, watchedAttrs) ] : null;
         },
         function(newId, oldId) {
           if ($ctrl.message) {

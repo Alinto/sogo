@@ -124,7 +124,7 @@
         </md-card-actions>
         <md-card-content>
           <div class="sg-padded">
-            <h5 ng-bind="::viewer.message.subject"><!-- subject --></h5>
+            <h5 ng-bind="viewer.message.subject"><!-- subject --></h5>
             <time class="msg-date" datetime="viewer.message.date" ng-bind="::viewer.message.date"><!-- date --></time>
           </div>
           <div>
