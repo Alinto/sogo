@@ -44,6 +44,7 @@ Bug fixes
  - [web] removed null characters from JSON responses
  - [web] fixed advanced mailbox search when mailbox name is very long
  - [web] fixed handling of public access rights of Calendars (#4344)
+ - [web] fixed server-side CSS sanitization of messages (#4366)
  - [eas] hebrew folders encoding problem using EAS (#4240)
  - [eas] avoid sync requests for shared folders every second (#4275)
 

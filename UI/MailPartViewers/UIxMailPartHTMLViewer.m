@@ -288,8 +288,8 @@ _xmlCharsetForCharset (NSString *charset)
                 }
               else
                 {
-                  // Prefix CSS rule
-                  length = (currentChar - start);
+                  // Prefix CSS rule including ending curly bracket
+                  length = (currentChar - start) + 1;
                   [declaration appendString: [NSString stringWithCharacters: start length: length]];
                   [css appendFormat: @".SOGoHTMLMail-CSS-Delimiter %@\n", declaration];
                   start = currentChar;
