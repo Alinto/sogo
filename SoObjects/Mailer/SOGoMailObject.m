@@ -1734,7 +1734,7 @@ static BOOL debugSoParts       = NO;
   return ([type isEqualToString: @"multipart"] &&
           [subtype isEqualToString: @"signed"] &&
           ([protocol isEqualToString: @"application/x-pkcs7-signature"] ||
-           [protocol isEqualToString: @"application/pkcs7-signature"]);
+           [protocol isEqualToString: @"application/pkcs7-signature"]));
 }
 
 - (BOOL) isEncrypted
