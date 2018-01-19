@@ -506,6 +506,15 @@ Class SOGoContactSourceFolderK;
 
 - (id<SOGoContactObject>) contactForEmail: (NSString *) theEmail
 {
+  NSArray *allContacts;
+
+  allContacts = [self allContactsFromFilter: theEmail  excludeGroups: YES excludeLists: YES];
+
+  return [allContacts lastObject];
+}
+
+- (NSData *) certificateForEmail: (NSString *) theEmail
+{
   NSDictionary *contact;
   NSArray *allContacts;
   int i;
@@ -523,16 +532,11 @@ Class SOGoContactSourceFolderK;
           contactFolder = [self lookupName: [contact objectForKey: @"container"] inContext: context  acquire: NO];
           contactObject = [contactFolder lookupName: [contact objectForKey: @"id"] inContext: context  acquire: NO];
 
-          return contactObject;
+          return [[contactObject vCard] certificate];
         }
     }
 
   return nil;
-}
-
-- (NSData *) certificateForEmail: (NSString *) theEmail
-{
-  return [[[self contactForEmail: theEmail] vCard] certificate];
 }
 
 @end
