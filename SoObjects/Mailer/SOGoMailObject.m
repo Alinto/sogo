@@ -1723,19 +1723,18 @@ static BOOL debugSoParts       = NO;
 
 - (BOOL) isSigned
 {
-  NSString *type, *subtype;
+  NSString *type, *subtype, *protocol;
+  NGMimeType *contentType;
 
-  type = [[[[self mailHeaders] objectForKey: @"content-type"] type] lowercaseString];
-  subtype = [[[[self mailHeaders] objectForKey: @"content-type"] subType] lowercaseString];
+  contentType = [[self mailHeaders] objectForKey: @"content-type"];
+  type = [[contentType type] lowercaseString];
+  subtype = [[contentType subType] lowercaseString];
+  protocol = [[contentType valueOfParameter: @"protocol"] lowercaseString];
 
-  if ([type isEqualToString: @"application"])
-    {
-      if ([subtype isEqualToString: @"x-pkcs7-signature"] ||
-          [subtype isEqualToString: @"pkcs7-signature"])
-        return YES;
-    }
-
-  return NO;
+  return ([type isEqualToString: @"multipart"] &&
+          [subtype isEqualToString: @"signed"] &&
+          ([protocol isEqualToString: @"application/x-pkcs7-signature"] ||
+           [protocol isEqualToString: @"application/pkcs7-signature"]);
 }
 
 - (BOOL) isEncrypted
