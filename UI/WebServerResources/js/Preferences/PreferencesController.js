@@ -257,7 +257,7 @@
     this.confirmChanges = function($event, form) {
       var target;
 
-      if (form.$dirty && $form.$valid) {
+      if (form.$dirty && form.$valid) {
         // Stop default action
         $event.preventDefault();
         $event.stopPropagation();
