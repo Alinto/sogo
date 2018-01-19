@@ -2330,6 +2330,12 @@ static NSArray *reminderValues = nil;
         }
 
       //
+      // Keep the primary mail certificate
+      //
+      if ([[[user userDefaults] mailCertificate] length])
+        [v setObject: [[user userDefaults] mailCertificate]  forKey: @"SOGoMailCertificate"];
+
+      //
       // We sanitize our auxilary mail accounts
       //
       accounts = [v objectForKey: @"AuxiliaryMailAccounts"];
