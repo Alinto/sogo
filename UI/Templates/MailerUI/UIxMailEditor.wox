@@ -32,7 +32,7 @@
             <label><var:string label:value="From"/></label>
             <md-select name="from"
                        ng-model="editor.message.editable.from">
-              <md-option ng-value="identity" ng-repeat="identity in editor.identities">{{identity}}</md-option>
+              <md-option ng-value="identity" ng-repeat="identity in editor.identities track by $index">{{identity}}</md-option>
             </md-select>
           </md-input-container>
           <div flex="flex"><!-- spacer --></div>
