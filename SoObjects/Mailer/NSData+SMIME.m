@@ -1,6 +1,6 @@
 /* NSData+SMIME.m - this file is part of SOGo
  *
- * Copyright (C) 2017 Inverse inc.
+ * Copyright (C) 2017-2018 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
 #import <NGExtensions/NGBase64Coding.h>
@@ -36,6 +37,7 @@
 #include <openssl/pem.h>
 #endif
 
+#import <SOGo/NSString+Utilities.h>
 #import "NSData+SMIME.h"
 
 @implementation NSData (SOGoMailSMIME)
@@ -455,6 +457,62 @@
   BIO_free(obio);  
   
   return output;
+}
+
+/**
+ * Extract usefull information from PEM certificate
+ */
+- (NSDictionary *) certificateDescription
+{
+  BIO *pemBio;
+  NSDictionary *data;
+  X509 *x;
+
+  data = nil;
+  OpenSSL_add_all_algorithms();
+  pemBio = BIO_new_mem_buf((void *) [self bytes], [self length]);
+  x = PEM_read_bio_X509(pemBio, NULL, 0, NULL);
+
+  if (x)
+    {
+      BIO *buf;
+      char p[1024];
+      NSString *subject, *issuer;
+
+      memset(p, 0, 1024);
+      buf = BIO_new(BIO_s_mem());
+      X509_NAME_print_ex(buf, X509_get_subject_name(x), 0,
+                         ASN1_STRFLGS_ESC_CTRL | XN_FLAG_SEP_MULTILINE | XN_FLAG_FN_LN);
+      BIO_read(buf, p, 1024);
+      subject = [NSString stringWithUTF8String: p];
+      BIO_free(buf);
+
+      memset(p, 0, 1024);
+      buf = BIO_new(BIO_s_mem());
+      X509_NAME_print_ex(buf, X509_get_issuer_name(x), 0,
+                             ASN1_STRFLGS_ESC_CTRL | XN_FLAG_SEP_MULTILINE | XN_FLAG_FN_LN);
+      BIO_read(buf, p, 1024);
+      issuer = [NSString stringWithUTF8String: p];
+      BIO_free(buf);
+
+      data = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [subject componentsFromMultilineDN], @"subject",
+                           [issuer componentsFromMultilineDN], @"issuer",
+                           nil];
+    }
+  else
+    {
+      int err = ERR_get_error();
+      const char* sslError;
+      NSString *error;
+
+      ERR_load_crypto_strings();
+      sslError = ERR_reason_error_string(err);
+      error = [NSString stringWithUTF8String: sslError];
+      NSLog(@"FATAL: failed to read certificate: %@", error);
+    }
+
+  return data;
 }
 
 @end

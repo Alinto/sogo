@@ -234,6 +234,16 @@
           actionClass = "UIxContactActions";
           actionName  = "raw";
         };
+        certificate = {
+          protectedBy = "View";
+          actionClass = "UIxContactActions";
+          actionName = "certificate";
+        };
+        removeCertificate = {
+          protectedBy = "Change Images And Files";
+          actionClass = "UIxContactActions";
+          actionName = "removeCertificate";
+        };
       };
     };
 

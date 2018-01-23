@@ -298,7 +298,7 @@
               var formattedMessage = "<p>" + part.error.replace(/\n/, "</p><p class=\"md-caption\">");
               formattedMessage = formattedMessage.replace(/\n/g, "</p><p class=\"md-caption\">") + "</p>";
               _this.$smime = {
-                validSignature: part.valid,
+                valid: part.valid,
                 certificate: part.certificates[part.certificates.length - 1],
                 message: formattedMessage
               };
@@ -306,8 +306,12 @@
             else if (part.type == 'UIxMailPartEncryptedViewer') {
               _this.$smime = {
                 isEncrypted: true,
-                message: l("This message is encrypted")
+                valid: part.valid
               };
+              if (part.valid)
+                _this.$smime.message = l("This message is encrypted");
+              else
+                _this.$smime.message = l("This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module.");
             }
             _.forEach(part.content, function(mixedPart) {
               _visit(mixedPart);

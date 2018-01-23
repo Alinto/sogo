@@ -38,10 +38,11 @@
    * @desc The factory we'll use to register with Angular.
    * @returns the Card constructor
    */
-  Card.$factory = ['$timeout', 'sgSettings', 'sgCard_STATUS', 'Resource', 'Preferences', function($timeout, Settings, Card_STATUS, Resource, Preferences) {
+  Card.$factory = ['$q', '$timeout', 'sgSettings', 'sgCard_STATUS', 'Resource', 'Preferences', function($q, $timeout, Settings, Card_STATUS, Resource, Preferences) {
     angular.extend(Card, {
       STATUS: Card_STATUS,
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Contacts', Settings.activeUser()),
+      $q: $q,
       $timeout: $timeout,
       $Preferences: Preferences
     });
@@ -483,6 +484,44 @@
         this.refs.push(card);
     }
     return this.refs.length - 1;
+  };
+
+  /**
+   * @function $certificate
+   * @memberof Account.prototype
+   * @desc View the S/MIME certificate details associated to the account.
+   * @returns a promise of the HTTP operation
+   */
+  Card.prototype.$certificate = function() {
+    var _this = this;
+
+    if (this.hasCertificate) {
+      if (this.$$certificate)
+        return Card.$q.when(this.$$certificate);
+      else {
+        return Card.$$resource.fetch([this.pid, this.id].join('/'), 'certificate').then(function(data) {
+          _this.$$certificate = data;
+          return data;
+        });
+      }
+    }
+    else {
+      return Card.$q.reject();
+    }
+  };
+
+  /**
+   * @function $removeCertificate
+   * @memberof Account.prototype
+   * @desc Remove any S/MIME certificate associated with the account.
+   * @returns a promise of the HTTP operation
+   */
+  Card.prototype.$removeCertificate = function() {
+    var _this = this;
+
+    return Card.$$resource.fetch([this.pid, this.id].join('/'), 'removeCertificate').then(function() {
+      _this.hasCertificate = false;
+    });
   };
 
   /**

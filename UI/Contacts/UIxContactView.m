@@ -252,6 +252,7 @@
  * @apiSuccess (Success 200) {String[]} allCategories      All available categories
  * @apiSuccess (Success 200) {Object[]} [categories]       Categories assigned to the card
  * @apiSuccess (Success 200) {String} categories.value     Category name
+ * @apiSuccess (Success 200) {Number} hasCertificate       1 if contact has a mail certificate
  * @apiSuccess (Success 200) {Object[]} [addresses]        Postal addresses
  * @apiSuccess (Success 200) {String} addresses.type       Type (e.g., home or work)
  * @apiSuccess (Success 200) {String} addresses.postoffice Post office box
@@ -330,6 +331,10 @@
         [data setObject: [values subarrayWithRange: NSMakeRange(1, [values count] - 1)] forKey: @"orgs"];
     }
 
+  o = [card certificate];
+  if ([o length])
+    [data setObject: [NSNumber numberWithBool: YES] forKey: @"hasCertificate"];
+
   o = [card birthday];
   if (o)
     [data setObject: [o descriptionWithCalendarFormat: @"%Y-%m-%d"]
@@ -361,7 +366,7 @@
   if ((o = [[card uniqueChildWithTag: @"custom1"] flattenedValuesForKey: @""]) && [o length])
     [customFields setObject: o  forKey: @"1"];
 
-  if ((o = [[card uniqueChildWithTag: @"custom2"] flattenedValuesForKey: @""]) && [o length]) 
+  if ((o = [[card uniqueChildWithTag: @"custom2"] flattenedValuesForKey: @""]) && [o length])
     [customFields setObject: o  forKey: @"2"];
 
   if ((o = [[card uniqueChildWithTag: @"custom3"] flattenedValuesForKey: @""]) && [o length])

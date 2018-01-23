@@ -3,7 +3,8 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:label="OGo:label">
+    xmlns:label="OGo:label"
+    xmlns:rsrc="OGo:url">
 
   <div layout="column" class="layout-fill sg-reversible">
     <md-card style="overflow: hidden">
@@ -130,6 +131,48 @@
                 <span md-highlight-text="editor.categories.searchText">{{category.value}}</span>
               </md-autocomplete>
             </md-chips>
+
+            <!-- S/MIME certificate -->
+            <div class="section" ng-if="editor.card.hasCertificate">
+              <div class="pseudo-input-container">
+                <label class="pseudo-input-label"><var:string label:value="Security"/></label>
+                <sg-block-toggle class="sg-no-print" layout="column">
+                  <md-list-item class="sg-button-toggle">
+                    <p class="md-flex">
+                      <md-icon rsrc:md-svg-src="img/certificate.svg"><!-- certificate --></md-icon>
+                      {{::'S/MIME Certificate' | loc}}
+                    </p>
+                    <md-button class="md-warn"
+                               ng-click="editor.card.$removeCertificate()">
+                      <var:string label:value="Uninstall"/>
+                    </md-button>
+                    <md-icon class="sg-icon-toggle">expand_more</md-icon>
+                  </md-list-item>
+                  <div class="sg-block-toggle">
+                    <div class="md-margin" md-whiteframe="3">
+                      <div class="md-padding" layout="row" layout-wrap="layout-wrap">
+                        <div flex="50" flex-xs="100">
+                          <div class="md-subhead md-default-theme md-fg md-primary"
+                               ng-bind="::'Subject Name' | loc"><!-- Subject Name --></div>
+                          <div ng-repeat="field in editor.certificate.subject">
+                            <div class="pseudo-input-label" ng-bind="field[0] | loc"><!-- label --></div>
+                            <div class="pseudo-input-field md-body-1" ng-bind="field[1]"><!-- value --></div>
+                          </div>
+                        </div>
+                        <div flex="50" flex-xs="100">
+                          <div class="md-subhead md-default-theme md-fg md-primary"
+                               ng-bind="::'Issuer' | loc"><!-- Issuer --></div>
+                          <div ng-repeat="field in editor.certificate.issuer">
+                            <div class="pseudo-input-label" ng-bind="field[0] | loc"><!-- label --></div>
+                            <div class="pseudo-input-field md-body-1" ng-bind="field[1]"><!-- value --></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </sg-block-toggle>
+              </div>
+            </div>
 
             <!-- emails -->
             <div class="section">

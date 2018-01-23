@@ -206,7 +206,6 @@
 "Please specify a valid reply-to address." = "Please specify a valid reply-to address.";
 "Specify a hostname other than the local host" = "Specify a hostname other than the local host";
 
-"S/MIME Certificate" = "S/MIME Certificate";
 "No certificate installed" = "No certificate installed";
 "The SSL certificate must use the PKCS#12 (PFX) format." = "The SSL certificate must use the PKCS#12 (PFX) format.";
 "Uninstall" = "Uninstall";

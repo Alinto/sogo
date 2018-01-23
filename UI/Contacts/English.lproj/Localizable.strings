@@ -239,6 +239,12 @@
 "Unable to subscribe to that folder!"
 = "Unable to subscribe to that folder.";
 
+/* security */
+"Security" = "Security";
+"Uninstall" = "Uninstall";
+"Error reading the card certificate." = "Error reading the card certificate.";
+"No certificate associated to card." = "No certificate associated to card.";
+
 /* acls */
 "Access rights to" = "Access rights to";
 "For user" = "For user";

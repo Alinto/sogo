@@ -249,6 +249,9 @@
 /* Encrypted message notification */
 "This message is encrypted" = "This message is encrypted";
 
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module.";
+
 /* OpenSSL certificate error - unknown issuer */
 "certificate verify error" = "Unable to verify message signature";
 

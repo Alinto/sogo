@@ -1,6 +1,6 @@
 /* UIxContactActions.m - this file is part of SOGo
  *
- * Copyright (C) 2010-2016 Inverse inc.
+ * Copyright (C) 2010-2018 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 
 #import <NGExtensions/NSString+misc.h>
 
@@ -29,6 +30,8 @@
 #import <NGCards/NGVCard.h>
 
 #import <Contacts/SOGoContactGCSEntry.h>
+
+#import <Mailer/NSData+SMIME.h>
 
 #import <SOGoUI/SOGoDirectAction.h>
 
@@ -146,5 +149,47 @@
 
   return response;
 }
+
+- (WOResponse *) certificateAction
+{
+  NSData *pkcs7;
+  NSDictionary *data;
+  WOResponse *response;
+
+  pkcs7 = [[[self clientObject] vCard] certificate];
+
+  if (pkcs7)
+    {
+      data = [[pkcs7 convertPKCS7ToPEM] certificateDescription];
+      if (data)
+        {
+          response = [self responseWithStatus: 200  andJSONRepresentation: data];
+        }
+      else
+        {
+          data = [NSDictionary
+                   dictionaryWithObject: [self labelForKey: @"Error reading the card certificate."]
+                                 forKey: @"message"];
+          response = [self responseWithStatus: 500  andJSONRepresentation: data];
+        }
+    }
+  else
+    {
+      data = [NSDictionary
+               dictionaryWithObject: [self labelForKey: @"No certificate associated to card."]
+                             forKey: @"message"];
+      response = [self responseWithStatus: 404  andJSONRepresentation: data];
+    }
+
+  return response;
+}
+
+- (WOResponse *) removeCertificateAction
+{
+  [[[self clientObject] vCard] setCertificate: nil];
+
+  return [self responseWith204];
+}
+
 
 @end

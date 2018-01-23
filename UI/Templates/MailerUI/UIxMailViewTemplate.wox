@@ -211,10 +211,10 @@
             <md-divider><!-- divider --></md-divider>
             <md-list-item class="sg-button-toggle">
               <div>
-                <md-icon ng-hide="::viewer.message.$smime.validSignature"
+                <md-icon ng-hide="::viewer.message.$smime.valid"
                          class="md-warn"
                          rsrc:md-svg-src="img/certificate-off.svg"><!-- certificate --></md-icon>
-                <md-icon ng-show="::viewer.message.$smime.validSignature"
+                <md-icon ng-show="::viewer.message.$smime.valid"
                          class="md-accent"
                          rsrc:md-svg-src="img/certificate.svg"><!-- certificate --></md-icon>
               </div>
@@ -249,10 +249,13 @@
           <div class="sg-no-print" layout="column"
                ng-show="viewer.message.$smime.isEncrypted">
             <md-divider><!-- divider --></md-divider>
-            <div layout="row" layout-align="start center">
-              <md-icon>lock_outline</md-icon>
+            <md-list-item>
+              <div>
+                <md-icon ng-show="::viewer.message.$smime.valid">lock_outline</md-icon>
+                <md-icon ng-hide="::viewer.message.$smime.valid" class="md-warn">lock_outline</md-icon>
+              </div>
               <p class="md-padding md-flex" ng-bind-html="::viewer.message.$smime.message"><!-- message --></p>
-            </div>
+            </md-list-item>
           </div>
 
           <!-- Load external images -->

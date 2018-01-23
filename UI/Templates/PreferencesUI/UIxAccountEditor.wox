@@ -187,9 +187,9 @@
                 <!-- S/MIME Certificate -->
                 <sg-block-toggle class="sg-no-print" layout="column">
                   <md-list-item class="sg-button-toggle">
-                    <md-icon rsrc:md-svg-src="img/certificate.svg"><!-- certificate --></md-icon>
                     <p class="md-flex">
-                      <var:string label:value="S/MIME Certificate"/>
+                      <md-icon rsrc:md-svg-src="img/certificate.svg"><!-- certificate --></md-icon>
+                      {{::'S/MIME Certificate' | loc}}
                     </p>
                     <md-button class="md-warn"
                                ng-click="$AccountDialogController.removeCertificate()">

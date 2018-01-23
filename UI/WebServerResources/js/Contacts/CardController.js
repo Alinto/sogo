@@ -43,6 +43,7 @@
 
 
     _registerHotkeys(hotkeys);
+    _loadCertificate();
 
     $scope.$on('$destroy', function() {
       // Deregister hotkeys
@@ -69,6 +70,15 @@
       _.forEach(keys, function(key) {
         sgHotkeys.registerHotkey(key);
       });
+    }
+
+    function _loadCertificate() {
+      if (vm.card.hasCertificate)
+        vm.card.$certificate().then(function(crt) {
+          vm.certificate = crt;
+        }, function() {
+          delete vm.card.hasCertificate;
+        });
     }
 
     function transformCategory(input) {
