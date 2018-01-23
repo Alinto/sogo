@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2016 Inverse inc.
+  Copyright (C) 2007-2018 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -799,6 +799,12 @@ static NSString    *userAgent      = nil;
 //
 - (void) _fileAttachmentsFromPart: (id) thePart
 {
+  // Small hack to avoid SOPE's stupid behavior to wrap a multipart
+  // object in a NGMimeBodyPart.
+  if ([thePart isKindOfClass: [NGMimeBodyPart class]] &&
+      [[[thePart contentType] type] isEqualToString: @"multipart"])
+     thePart = [thePart body];
+
   if ([thePart isKindOfClass: [NGMimeBodyPart class]])
     {
       NSString *filename, *mimeType;

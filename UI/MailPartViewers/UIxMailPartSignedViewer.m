@@ -247,7 +247,7 @@
 
   NSUInteger i, max;
 
-  if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+  if ([self decodedFlatContent])
     parts = [[self decodedFlatContent] parts];
   else
     parts = [[self bodyInfo] objectForKey: @"parts"];
@@ -259,7 +259,7 @@
     {
       [self setChildIndex: i];
 
-      if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+      if ([self decodedFlatContent])
         [self setChildInfo: [[parts objectAtIndex: i] bodyInfo]];
       else
         [self setChildInfo: [parts objectAtIndex: i]];
@@ -268,10 +268,11 @@
       viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
       [viewer setBodyInfo: info];
       [viewer setPartPath: [self childPartPath]];
-      [viewer setAttachmentIds: attachmentIds];
 
-      if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+      if ([self decodedFlatContent])
         [viewer setDecodedContent: [[parts objectAtIndex: i] body]];
+
+      [viewer setAttachmentIds: attachmentIds];
       [renderedParts addObject: [viewer renderedPart]];
     }
 

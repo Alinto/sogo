@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2017 Inverse inc.
+  Copyright (C) 2007-2018 Inverse inc.
   Copyright (C) 2004 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -23,8 +23,11 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSNull.h>
 
+#import <SOGo/NSObject+Utilities.h>
+
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGMail/NGMimeMessageParser.h>
+#import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeMultipartBody.h>
 #import <NGMime/NGMimeType.h>
 
@@ -65,20 +68,20 @@
 
   NSUInteger i, count;
 
-  if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+  if ([self decodedFlatContent])
     childParts = [[self decodedFlatContent] parts];
   else
-    childParts = [[self bodyInfo] valueForKey:@"parts"];
+    childParts = [[self bodyInfo] valueForKey: @"parts"];
 
   count = [childParts count];
   types = [NSMutableArray arrayWithCapacity: count];
 
   for (i = 0; i < count; i++)
     {
-      if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+      if ([self decodedFlatContent])
         {
-          mt = [[[[[self decodedFlatContent] parts] objectAtIndex: i] contentType] type];
-          st = [[[[[self decodedFlatContent] parts] objectAtIndex: i] contentType] subType];
+          mt = [[[childParts objectAtIndex: i] contentType] type];
+          st = [[[childParts objectAtIndex: i] contentType] subType];
         }
       else
         {
@@ -141,20 +144,19 @@
 {
   NSUInteger idx;
 
-  [childInfo release]; childInfo = nil;
+  DESTROY(childInfo);
   childIndex = 0;
 
   idx = [self _selectPartIndexFromTypes: [self childPartTypes]];
   if (idx == NSNotFound)
     {
-      [self errorWithFormat:@"could not select a part of types: %@",
-            [self childPartTypes]];
+      [self errorWithFormat:@"could not select a part of types: %@", [self childPartTypes]];
       return;
     }
 
   childIndex = idx + 1;
 
-  if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+  if ([self decodedFlatContent])
     childInfo = [[[[self decodedFlatContent] parts] objectAtIndex: idx] bodyInfo];
   else
     childInfo = [[[self bodyInfo] valueForKey:@"parts"] objectAtIndex: idx];
@@ -172,17 +174,18 @@
   return [[[self context] mailRenderingContext] viewerForBodyInfo: info];
 }
 
-- (id) renderedPart {
+- (id) renderedPart
+{
   id info, viewer;
   NSArray *parts;
   NSMutableArray *renderedParts;
   NSString *preferredType;
   NSUInteger i, max;
 
-  if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+  if ([self decodedFlatContent])
     parts = [[self decodedFlatContent] parts];
   else
-    parts = [[self bodyInfo] valueForKey:@"parts"];
+    parts = [[self bodyInfo] valueForKey: @"parts"];
 
   max = [parts count];
   renderedParts = [NSMutableArray arrayWithCapacity: max];
@@ -190,7 +193,7 @@
     {
       [self setChildIndex: i];
 
-      if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+      if ([self decodedFlatContent])
         [self setChildInfo: [[parts objectAtIndex: i] bodyInfo]];
       else
         [self setChildInfo: [parts objectAtIndex: i]];
@@ -200,7 +203,7 @@
       [viewer setBodyInfo: info];
       [viewer setPartPath: [self childPartPath]];
       [viewer setAttachmentIds: attachmentIds];
-      if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+      if ([self decodedFlatContent])
         [viewer setDecodedContent: [parts objectAtIndex: i]];
       [renderedParts addObject: [viewer renderedPart]];
     }

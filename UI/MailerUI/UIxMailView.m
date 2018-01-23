@@ -226,19 +226,26 @@ static NSString *mailETag = nil;
   viewer = [[context mailRenderingContext] viewerForBodyInfo: info];
   [viewer setBodyInfo: info];
 
-  max = [[self attachmentAttrs] count];
-  attachmentIds = [NSMutableDictionary dictionaryWithCapacity: max];
-  for (count = 0; count < max; count++)
+  if (![[self clientObject] isEncrypted])
     {
-      attributes = [[self attachmentAttrs] objectAtIndex: count];
-      filename = [NSString stringWithFormat: @"<%@>", [attributes objectForKey: @"filename"]];
-      [attachmentIds setObject: [attributes objectForKey: @"url"]
-                        forKey: filename];
-      if ([[attributes objectForKey: @"bodyId"] length])
-        [attachmentIds setObject: [attributes objectForKey: @"url"]
-                          forKey: [attributes objectForKey: @"bodyId"]];
+      max = [[self attachmentAttrs] count];
+      attachmentIds = [NSMutableDictionary dictionaryWithCapacity: max];
+      for (count = 0; count < max; count++)
+        {
+          attributes = [[self attachmentAttrs] objectAtIndex: count];
+          filename = [NSString stringWithFormat: @"<%@>", [attributes objectForKey: @"filename"]];
+          [attachmentIds setObject: [attributes objectForKey: @"url"]
+                            forKey: filename];
+          if ([[attributes objectForKey: @"bodyId"] length])
+            [attachmentIds setObject: [attributes objectForKey: @"url"]
+                              forKey: [attributes objectForKey: @"bodyId"]];
+        }
+      // Attachment IDs will be decoded in UIxMailPartEncryptedViewer for
+      // S/MIME encrypted emails with file attachments.
+      [viewer setAttachmentIds: attachmentIds];
     }
-  [viewer setAttachmentIds: attachmentIds];
+  else
+    [viewer setAttachmentIds: [NSMutableDictionary dictionary]];
 
   // If we are looking at a S/MIME signed mail which wasn't sent
   // by our actual active user, we update the certificate of that
@@ -327,7 +334,7 @@ static NSString *mailETag = nil;
       data = [NSDictionary dictionaryWithObject: [self labelForKey: @"Did not find specified message"]
                                          forKey: @"message"];
       return [self responseWithStatus: 404 /* Not Found */
-                            andJSONRepresentation: data];
+                andJSONRepresentation: data];
     }
 
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:

@@ -203,7 +203,7 @@ static BOOL showNamedTextAttachmentsInline = NO;
   else if ([mt isEqualToString: @"text"])
     {
       if ([st isEqualToString: @"plain"] || [st isEqualToString: @"html"]) {
-	if (!showNamedTextAttachmentsInline && [self _shouldDisplayAsAttachment: _info textPart:YES])
+	if (!showNamedTextAttachmentsInline && [self _shouldDisplayAsAttachment: _info  textPart: YES])
 	  return [self linkViewer];
       
 	return [st isEqualToString: @"html"]
@@ -219,7 +219,7 @@ static BOOL showNamedTextAttachmentsInline = NO;
   if ([mt isEqualToString: @"image"] &&
       !([st isEqualToString: @"tiff"] || [st isEqualToString: @"pdf"]))
     {
-      if ([self _shouldDisplayAsAttachment: _info textPart: NO])
+      if ([self _shouldDisplayAsAttachment: _info  textPart: NO])
 	return [self linkViewer];
      
       return [self imageViewer];

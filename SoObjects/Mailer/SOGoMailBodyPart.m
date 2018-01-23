@@ -37,6 +37,7 @@
 #import <NGMime/NGMimeMultipartBody.h>
 
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
+#import <SoObjects/SOGo/NSObject+Utilities.h>
 
 #import "NSData+SMIME.h"
 #import "NSDictionary+Mail.h"
@@ -169,35 +170,65 @@ static BOOL debugOn = NO;
 		    inContext: (WOContext *) localContext
 {
   // TODO: we might want to check for existence prior controller creation
-  Class clazz;
-  NSArray *subParts;
-  unsigned int nbr;
-  id obj;
   NSDictionary *subPart, *infos;
+  NSString *mimeType;
+  NSArray *subParts;
+  Class clazz;
+  id o, obj;
+
+  unsigned int nbr;
 
   nbr = [key intValue];
-  infos = [self partInfo];
-  subParts = [infos objectForKey: @"parts"];
-  if (!subParts)
-    subParts = [[infos objectForKey: @"body"] objectForKey: @"parts"];
+  o = [self container];
 
-  if (nbr > 0 && nbr < ([subParts count] + 1))
+  while (![o isKindOfClass: [SOGoMailObject class]])
+    o = [o container];
+
+  if ([o isEncrypted])
     {
-      subPart = [subParts objectAtIndex: nbr - 1];
-      clazz
-	= [[self class] bodyPartClassForMimeType:
-			  [subPart keysWithFormat: @"%{type}/%{subtype}"]
-			inContext: localContext];
-      obj = [clazz objectWithName: key inContainer: self];
+      NSData *certificate;
+      NGMimeMessage *m;
+      id part;
+
+      int i;
+
+      certificate = [[self mailAccountFolder] certificate];
+      m = [[o content] messageFromEncryptedDataAndCertificate: certificate];
+      part = [m body];
+
+      for (i = 0; i < [[self bodyPartPath] count]; i++)
+        {
+          nbr = [[[self bodyPartPath] objectAtIndex: i] intValue]-1;
+          part = [[part parts] objectAtIndex: nbr];;
+        }
+
+      //part = [[[m body] parts] objectAtIndex: ([key intValue]-1)];
+      part = [[part parts] objectAtIndex: ([key intValue]-1)];
+      mimeType = [[part contentType] stringValue];
+      clazz = [SOGoMailBodyPart bodyPartClassForMimeType: mimeType
+                                               inContext: localContext];
+      obj = [clazz objectWithName:key inContainer: self];
     }
   else
-    obj = self;
+    {
+      infos = [self partInfo];
+      subParts = [infos objectForKey: @"parts"];
+      if (!subParts)
+        subParts = [[infos objectForKey: @"body"] objectForKey: @"parts"];
 
-  return obj;  
-//   clazz = [SOGoMailBodyPart bodyPartClassForKey: _key
-// 			    inContext: _ctx];
+      if (nbr > 0 && nbr < ([subParts count] + 1))
+        {
+          subPart = [subParts objectAtIndex: nbr - 1];
+          mimeType = [subPart keysWithFormat: @"%{type}/%{subtype}"];
+          clazz = [[self class] bodyPartClassForMimeType: mimeType
+                                               inContext: localContext];
+          obj = [clazz objectWithName: key inContainer: self];
+        }
+      else
+        obj = self;
+    }
 
-//   return [clazz objectWithName: _key inContainer: self];
+  return obj;
 }
 
 - (NSString *) filename
@@ -304,23 +335,29 @@ static BOOL debugOn = NO;
   if ([o isEncrypted])
     {
       NSData *certificate;
+      NGMimeMessage *m;
+      id part;
 
+      unsigned int i, nbr;
+
+      // No need to check if the cert is valid as we already do so
+      // in SOGoMailObject.
       certificate = [[self mailAccountFolder] certificate];
 
-      // If we got a user certificate, let's use it. Otherwise we fallback
-      // to the current BLOB fetching code.
-      if (certificate)
+      m = [[o content] messageFromEncryptedDataAndCertificate: certificate];
+      part = [m body];
+
+      for (i = 0; i < [[self bodyPartPath] count]; i++)
         {
-          NGMimeMessage *m;
-          id part;
-
-          m = [[container content] messageFromEncryptedDataAndCertificate: certificate];
-          part = [[[m body] parts] objectAtIndex: ([[self nameInContainer] intValue]-1)];
-
-          return [part body];
+          nbr = [[[self bodyPartPath] objectAtIndex: i] intValue]-1;
+          part = [[part parts] objectAtIndex: nbr];;
         }
+
+      return [part body];
     }
 
+  // The mail is not encrypted, lets fetch the body party normally
+  // straight from the IMAP server
   return [self fetchBLOBWithPeek: NO];
 }
 

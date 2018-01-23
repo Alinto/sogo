@@ -1,6 +1,6 @@
 /* NSObject+Utilities.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2017 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 
 #import <DOM/DOMProtocols.h>
 
+@class NSArray;
 @class NSString;
 @class WOContext;
 
@@ -38,6 +39,8 @@
                  inContext: (WOContext *) context;
 
 + (void) memoryStatistics;
+
+- (NSArray *) parts;
 
 @end
 

@@ -22,6 +22,9 @@
 
 #import <Foundation/NSDictionary.h>
 
+#import <SOGo/NSObject+Utilities.h>
+
+#import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeMultipartBody.h>
 
 #import <UI/MailerUI/WOContext+UIxMailer.h>
@@ -31,24 +34,25 @@
 
 @implementation UIxMailPartMixedViewer
 
-- (void)dealloc {
+- (void) dealloc
+{
   [self->childInfo release];
   [super dealloc];
 }
 
-/* caches */
-
-- (void)resetBodyInfoCaches {
-  [self->childInfo release]; self->childInfo = nil;
+- (void)resetBodyInfoCaches
+{
+  DESTROY(self->childInfo);
   [super resetBodyInfoCaches];
 }
 
-/* accessors */
-
-- (void)setChildInfo:(id)_info {
+- (void) setChildInfo:(id)_info
+{
   ASSIGN(self->childInfo, _info);
 }
-- (id)childInfo {
+
+- (id) childInfo
+{
   return self->childInfo;
 }
 
@@ -56,6 +60,7 @@
 {
   self->childIndex = _index;
 }
+
 - (NSUInteger) childIndex
 {
   return self->childIndex;
@@ -67,7 +72,7 @@
                    (unsigned int) ([self childIndex] + 1)];
 }
 
-- (id)childPartPath
+- (id) childPartPath
 {
   NSArray *pp;
 
@@ -96,7 +101,7 @@
 
   NSUInteger i, max;
 
-  if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+  if ([self decodedFlatContent])
     parts = [[self decodedFlatContent] parts];
   else
     parts = [[self bodyInfo] valueForKey: @"parts"];
@@ -108,7 +113,7 @@
     {
       [self setChildIndex: i];
 
-      if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+      if ([self decodedFlatContent])
         [self setChildInfo: [[parts objectAtIndex: i] bodyInfo]];
       else
         [self setChildInfo: [parts objectAtIndex: i]];
@@ -117,9 +122,10 @@
       viewer = [[[self context] mailRenderingContext] viewerForBodyInfo: info];
       [viewer setBodyInfo: info];
       [viewer setPartPath: [self childPartPath]];
-      [viewer setAttachmentIds: attachmentIds];
-      if ([[self decodedFlatContent] isKindOfClass: [NGMimeMultipartBody class]])
+      if ([self decodedFlatContent])
         [viewer setDecodedContent: [parts objectAtIndex: i]];
+      [viewer setAttachmentIds: attachmentIds];
+
       [renderedParts addObject: [viewer renderedPart]];
     }
 

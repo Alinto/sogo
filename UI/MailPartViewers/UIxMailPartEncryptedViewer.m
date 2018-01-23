@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2017 Inverse inc.
+  Copyright (C) 2017-2018 Inverse inc.
 
   This file is part of SOGo.
 
@@ -21,12 +21,17 @@
 
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSNull.h>
+#import <Foundation/NSValue.h>
 
 #import <NGExtensions/NSObject+Logs.h>
-#import <NGMail/NGMimeMessageParser.h>
+#import <NGMime/NGMimeBodyPart.h>
+#import <NGMime/NGMimeHeaderFields.h>
+#import <NGMime/NGMimeMultipartBody.h>
 #import <NGMime/NGMimeType.h>
+#import <NGMail/NGMimeMessageParser.h>
 
 #import <SoObjects/Mailer/NSData+SMIME.h>
+#import <SoObjects/Mailer/NSString+Mail.h>
 #import <SoObjects/Mailer/SOGoMailAccount.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
 #import <UI/MailerUI/WOContext+UIxMailer.h>
@@ -36,7 +41,45 @@
 
 @implementation UIxMailPartEncryptedViewer
 
-/* nested viewers */
+- (void) _attachmentIdsFromBodyPart: (id) thePart
+                           partPath: (NSString *) thePartPath
+{
+  // Small hack to avoid SOPE's stupid behavior to wrap a multipart
+  // object in a NGMimeBodyPart.
+   if ([thePart isKindOfClass: [NGMimeBodyPart class]] &&
+       [[[thePart contentType] type] isEqualToString: @"multipart"])
+     thePart = [thePart body];
+
+  if ([thePart isKindOfClass: [NGMimeBodyPart class]])
+    {
+      NSString *filename, *mimeType;
+
+      mimeType = [[thePart contentType] stringValue];
+      filename = [(NGMimeContentDispositionHeaderField *)[thePart headerForKey: @"content-disposition"] filename];
+
+      if (!filename)
+        filename = [mimeType asPreferredFilenameUsingPath: nil];
+
+      if (filename)
+        {
+          [(id)attachmentIds setObject: [NSString stringWithFormat: @"%@%@%@",
+                                                  [[self clientObject] baseURLInContext: [self context]],
+                                                  thePartPath,
+                                                  filename]
+                                forKey: [NSString stringWithFormat: @"<%@>", filename]];
+        }
+    }
+  else if ([thePart isKindOfClass: [NGMimeMultipartBody class]])
+    {
+      int i;
+
+      for (i = 0; i < [[thePart parts] count]; i++)
+        {
+          [self _attachmentIdsFromBodyPart: [[thePart parts] objectAtIndex: i]
+                                  partPath: [NSString stringWithFormat: @"%@%d/", thePartPath, i+1]];
+        }
+    }
+}
 
 - (id) contentViewerComponent
 {
@@ -49,7 +92,6 @@
 - (id) renderedPart
 {
   NSData *certificate, *decryptedData, *encryptedData;
-
   id info, viewer;
 
   certificate = [[[self clientObject] mailAccountFolder] certificate];
@@ -71,16 +113,25 @@
       [viewer setFlatContent: decryptedData];
       [viewer setDecodedContent: [part body]];
 
+      // attachmentIds is empty in an ecrypted email as the IMAP body structure
+      // is of course not available for file attachments
+      [self _attachmentIdsFromBodyPart: [part body]  partPath: @""];
+      [viewer setAttachmentIds: attachmentIds];
+
       return [NSDictionary dictionaryWithObjectsAndKeys:
                                  [self className], @"type",
+                               [NSNumber numberWithBool: YES], @"valid",
                                [NSArray arrayWithObject: [viewer renderedPart]], @"content",
                            nil];
     }
 
 
   // Decryption failed, let's return something else...
-  // FIXME - does not work for now.
-  return nil;
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+                         [self className], @"type",
+                           [NSNumber numberWithBool: NO], @"valid",
+                       [NSArray array], @"content",
+                       nil];
 }
 
 @end /* UIxMailPartAlternativeViewer */

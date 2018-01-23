@@ -214,8 +214,7 @@
       // but rather directly with NGMime objects.
       if ([content isKindOfClass: [NSData class]])
         {
-          charset = [[bodyInfo objectForKey:@"parameterList"]
-                      objectForKey: @"charset"];
+          charset = [[bodyInfo objectForKey: @"parameterList"] objectForKey: @"charset"];
           s = [content bodyStringFromCharset: charset];
         }
       else if ([content isKindOfClass: [NGMimeBodyPart class]] ||

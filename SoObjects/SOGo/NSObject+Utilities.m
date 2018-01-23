@@ -1,6 +1,6 @@
 /* NSObject+Utilities.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2018 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,9 @@
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
+
+#import <NGMime/NGMimeBodyPart.h>
+#import <NGMime/NGMimeMultipartBody.h>
 
 #import "NSDictionary+Utilities.h"
 #import "SOGoUser.h"
@@ -145,6 +148,22 @@
   NSZoneFree(NSDefaultMallocZone(), classList);
 
   printf("Done!\n");
+}
+
+//
+// Small hack to avoid SOPE's stupid behavior to wrap a multipart
+// object in a NGMimeBodyPart.
+//
+- (NSArray *) parts
+{
+  if ([self isKindOfClass: [NGMimeMultipartBody class]])
+    return [self parts];
+
+  if ([self isKindOfClass: [NGMimeBodyPart class]] &&
+      [[(id)self body] isKindOfClass: [NGMimeMultipartBody class]])
+    return [[(id)self body] parts];
+
+  return [NSArray array];
 }
 
 @end
