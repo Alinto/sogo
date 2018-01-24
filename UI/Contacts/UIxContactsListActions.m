@@ -148,8 +148,6 @@
   NSUInteger max, count;
   unsigned int i;
 
-  [self saveSortValue];
-
   if (!contactInfos)
     {
       folder = [self clientObject];
@@ -160,12 +158,10 @@
 		  ? NSOrderedAscending : NSOrderedDescending);
 
       searchFields = [data objectForKey: @"search"];
-      if ([searchFields isKindOfClass: [NSArray class]] && [searchFields count] > 0)
-	valueText = [data objectForKey: @"value"];
-      else
+      valueText = [data objectForKey: @"value"];
+      if (![searchFields isKindOfClass: [NSArray class]] || ![searchFields count] > 0)
         {
           searchFields = nil;
-          valueText = nil;
         }
 
       excludeLists = [[data objectForKey: @"excludeLists"] boolValue];
