@@ -234,7 +234,7 @@
 
     <div layout="row" class="md-flex">
 
-      <div class="view-list" layout="column" ng-class="{'view-list--close': centerIsClose}">
+      <div class="view-list" layout="column" ng-class="{'view-list--close': addressbook.centerIsClose(centerIsClose)}">
 
         <!-- single-selection toolbar -->
         <md-toolbar class="md-accent md-hue-1"
@@ -516,7 +516,7 @@
       <md-fab-speed-dial
           class="md-scale sg-fab-bottom-center"
           ng-cloak="ng-cloak"
-          ng-class="{ 'sg-sidenav-close': leftIsClose, 'sg-center-close': centerIsClose }"
+          ng-class="{ 'sg-sidenav-close': leftIsClose, 'sg-center-close': addressbook.centerIsClose(centerIsClose) }"
           md-direction="up"
           ng-show="addressbook.selectedFolder.isOwned || addressbook.selectedFolder.acls.objectCreator">
         <md-fab-trigger>

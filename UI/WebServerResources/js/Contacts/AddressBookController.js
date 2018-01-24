@@ -89,6 +89,11 @@
       });
     }
 
+    this.centerIsClose = function(navController_centerIsClose) {
+      // Allow the cards list to be hidden only if a card is selected
+      return this.selectedFolder.hasSelectedCard() && !!navController_centerIsClose;
+    };
+
     this.selectCard = function(card) {
       $state.go('app.addressbook.card.view', {cardId: card.id});
     };

@@ -327,7 +327,7 @@
       class="md-scale sg-fab-bottom-center"
       ng-if="::!mailbox.composeWindowEnabled()"
       ng-cloak="ng-cloak"
-      ng-class="{ 'sg-sidenav-close': leftIsClose, 'sg-center-close': centerIsClose }"
+      ng-class="{ 'sg-sidenav-close': leftIsClose, 'sg-center-close': mailbox.centerIsClose(centerIsClose) }"
       md-direction="up">
     <md-fab-trigger>
       <md-button class="md-fab md-accent" label:aria-label="Write a new message">
@@ -352,7 +352,7 @@
       class="md-fab md-accent sg-fab-bottom-center"
       var:aria-label="Write a new message"
       ng-if="::mailbox.composeWindowEnabled()"
-      ng-class="{ 'sg-sidenav-close': leftIsClose, 'sg-center-close': centerIsClose }"
+      ng-class="{ 'sg-sidenav-close': leftIsClose, 'sg-center-close': mailbox.centerIsClose(centerIsClose) }"
       ng-click="mailbox.newMessage($event)">
     <md-tooltip md-direction="left"><var:string label:value="Write a new message"/></md-tooltip>
     <md-icon>edit</md-icon>

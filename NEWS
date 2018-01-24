@@ -45,6 +45,7 @@ Bug fixes
  - [web] fixed advanced mailbox search when mailbox name is very long
  - [web] fixed handling of public access rights of Calendars (#4344)
  - [web] fixed server-side CSS sanitization of messages (#4366)
+ - [web] cards list not accessible when changing address book in expanded card view
  - [eas] hebrew folders encoding problem using EAS (#4240)
  - [eas] avoid sync requests for shared folders every second (#4275)
 
