@@ -262,6 +262,7 @@
            attributes: (id <SaxAttributes>) attributes
 {
   NSString *tagName;
+  BOOL appendElement = YES;
 
   showWhoWeAre();
 
@@ -381,9 +382,11 @@
                 }
 
               [result appendString: @"/>"];
+
+              appendElement = NO;
             }
         }
-      else if (voidTags)
+      if (appendElement && voidTags)
         {
           NSString *type;
           int i;
