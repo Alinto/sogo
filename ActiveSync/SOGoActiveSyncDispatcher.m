@@ -4167,7 +4167,7 @@ void handle_eas_terminate(int signum)
  return_response:
   [theResponse setHeader: @"14.1"  forKey: @"MS-Server-ActiveSync"];
   [theResponse setHeader: @"Sync,SendMail,SmartForward,SmartReply,GetAttachment,GetHierarchy,CreateCollection,DeleteCollection,MoveCollection,FolderSync,FolderCreate,FolderDelete,FolderUpdate,MoveItems,GetItemEstimate,MeetingResponse,Search,Settings,Ping,ItemOperations,ResolveRecipients,ValidateCert"  forKey: @"MS-ASProtocolCommands"];
-  [theResponse setHeader: @"2.5,12.0,12.1,14.0,14.1"  forKey: @"MS-ASProtocolVersions"];
+  [theResponse setHeader: @"2.5,12.0,12.1,14.0,14.1,16.0"  forKey: @"MS-ASProtocolVersions"];
 
   if (debugOn && [[theResponse headerForKey: @"Content-Type"] isEqualToString:@"application/vnd.ms-sync.wbxml"] && [[theResponse content] length] && !([(WOResponse *)theResponse status] == 500))
     [self logWithFormat: @"EAS - response for device %@: %@", [context objectForKey: @"DeviceId"], [[[NSString alloc] initWithData: [[theResponse content] wbxml2xml] encoding: NSUTF8StringEncoding] autorelease]];
