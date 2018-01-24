@@ -285,7 +285,7 @@
                        [NSNumber numberWithBool: [self validSignature]], @"valid",
                        renderedParts, @"content",
                        [self smimeCertificates], @"certificates",
-                       [self validationMessage], @"error",
+                       [self validationMessage], @"message",
                        nil];
 }
 

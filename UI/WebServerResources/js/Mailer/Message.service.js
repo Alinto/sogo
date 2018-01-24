@@ -274,6 +274,7 @@
    */
   Message.prototype.loadUnsafeContent = function() {
     this.$loadUnsafeContent = true;
+    delete this.$parts;
   };
 
   /**
@@ -295,24 +296,20 @@
           // Can be used for UIxMailPartMixedViewer, UIxMailPartMessageViewer, and UIxMailPartSignedViewer
           else if (angular.isArray(part.content)) {
             if (part.type == 'UIxMailPartSignedViewer' && part['supports-smime'] === 1) {
-              // First line in a h1, others each in a p
-              var formattedMessage = "<p>" + part.error.replace(/\n/, "</p><p class=\"md-caption\">");
-              formattedMessage = formattedMessage.replace(/\n/g, "</p><p class=\"md-caption\">") + "</p>";
-              _this.$smime = {
+              _this.signed = {
                 valid: part.valid,
                 certificate: part.certificates[part.certificates.length - 1],
-                message: formattedMessage
+                message: part.message
               };
             }
             else if (part.type == 'UIxMailPartEncryptedViewer') {
-              _this.$smime = {
-                isEncrypted: true,
+              _this.encrypted = {
                 valid: part.valid
               };
               if (part.valid)
-                _this.$smime.message = l("This message is encrypted");
+                _this.encrypted.message = l("This message is encrypted");
               else
-                _this.$smime.message = l("This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module.");
+                _this.encrypted.message = l("This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module.");
             }
             _.forEach(part.content, function(mixedPart) {
               _visit(mixedPart);
@@ -372,8 +369,15 @@
           }
         };
 
-    if (this.parts)
+    if (this.$parts)
+      // Use the cache
+      return this.$parts;
+
+    else if (this.parts)
       _visit(this.parts);
+
+    // Cache result
+    this.$parts = parts;
 
     return parts;
   };
@@ -653,6 +657,13 @@
       // Fetch draft initial data
       return Message.$$resource.fetch(message.$absolutePath({asDraft: true}), 'edit').then(function(data) {
         Message.$log.debug('New ' + action + ': ' + JSON.stringify(data, undefined, 2) + ' original UID: ' + _this.uid);
+        var accountDefaults = Message.$Preferences.defaults.AuxiliaryMailAccounts[_this.$mailbox.$account.id];
+        if (accountDefaults.security) {
+          if (accountDefaults.security.alwaysSign)
+            data.sign = true;
+          if (accountDefaults.security.alwaysEncrypt)
+            data.encrypt = true;
+        }
         angular.extend(message.editable, data);
 
         // We keep a reference to our original message in order to update the flags

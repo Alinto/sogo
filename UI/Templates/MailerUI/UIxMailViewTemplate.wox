@@ -207,18 +207,18 @@
 
           <!-- S/MIME Signature -->
           <sg-block-toggle class="sg-no-print" layout="column"
-                           ng-show="::viewer.message.$smime.certificate">
+                           ng-show="::viewer.message.signed">
             <md-divider><!-- divider --></md-divider>
             <md-list-item class="sg-button-toggle">
               <div>
-                <md-icon ng-hide="::viewer.message.$smime.valid"
+                <md-icon ng-hide="::viewer.message.signed.valid"
                          class="md-warn"
                          rsrc:md-svg-src="img/certificate-off.svg"><!-- certificate --></md-icon>
-                <md-icon ng-show="::viewer.message.$smime.valid"
+                <md-icon ng-show="::viewer.message.signed.valid"
                          class="md-accent"
                          rsrc:md-svg-src="img/certificate.svg"><!-- certificate --></md-icon>
               </div>
-              <p class="md-padding md-flex" ng-bind-html="::viewer.message.$smime.message"><!-- message --></p>
+              <p class="md-padding md-flex" ng-bind-html="::viewer.message.signed.message"><!-- message --></p>
               <md-icon class="sg-icon-toggle">expand_more</md-icon>
             </md-list-item>
             <div class="sg-block-toggle">
@@ -227,7 +227,7 @@
                   <div flex="50" flex-xs="100">
                     <div class="md-subhead md-default-theme md-fg md-primary"
                         ng-bind="::'Subject Name' | loc"><!-- Subject Name --></div>
-                    <div ng-repeat="field in ::viewer.message.$smime.certificate.subject">
+                    <div ng-repeat="field in ::viewer.message.signed.certificate.subject">
                       <div class="pseudo-input-label" ng-bind="field[0] | loc"><!-- label --></div>
                       <div class="pseudo-input-field md-body-1" ng-bind="field[1]"><!-- value --></div>
                     </div>
@@ -235,7 +235,7 @@
                   <div flex="50" flex-xs="100">
                     <div class="md-subhead md-default-theme md-fg md-primary"
                         ng-bind="::'Issuer' | loc"><!-- Issuer --></div>
-                    <div ng-repeat="field in ::viewer.message.$smime.certificate.issuer">
+                    <div ng-repeat="field in ::viewer.message.signed.certificate.issuer">
                       <div class="pseudo-input-label" ng-bind="field[0] | loc"><!-- label --></div>
                       <div class="pseudo-input-field md-body-1" ng-bind="field[1]"><!-- value --></div>
                     </div>
@@ -247,14 +247,14 @@
 
           <!-- S/MIME Encryption -->
           <div class="sg-no-print" layout="column"
-               ng-show="viewer.message.$smime.isEncrypted">
+               ng-show="::viewer.message.encrypted">
             <md-divider><!-- divider --></md-divider>
             <md-list-item>
               <div>
-                <md-icon ng-show="::viewer.message.$smime.valid">lock_outline</md-icon>
-                <md-icon ng-hide="::viewer.message.$smime.valid" class="md-warn">lock_outline</md-icon>
+                <md-icon ng-show="::viewer.message.encrypted.valid">lock_outline</md-icon>
+                <md-icon ng-hide="::viewer.message.encrypted.valid" class="md-warn">lock_outline</md-icon>
               </div>
-              <p class="md-padding md-flex" ng-bind-html="::viewer.message.$smime.message"><!-- message --></p>
+              <p class="md-padding md-flex" ng-bind-html="::viewer.message.encrypted.message"><!-- message --></p>
             </md-list-item>
           </div>
 
@@ -294,7 +294,7 @@
             <div class="msg-body">
               <div layout="row" layout-wrap="layout-wrap">
                 <div class="mailer_mailcontent" layout="row" layout-wrap="layout-wrap"
-                     ng-repeat="part in viewer.message.$content()"
+                     ng-repeat="part in viewer.message.$content() track by $index"
                      ng-class="::part.msgclass">
                   <div class="md-flex sg-mail-part"
                        tabindex="-1"
