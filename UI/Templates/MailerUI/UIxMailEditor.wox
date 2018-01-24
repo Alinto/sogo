@@ -187,7 +187,7 @@
                   </sg-checkmark>
                 </md-menu-item>
                 <md-menu-item>
-                  <md-button class="md-primary" ng-disabled="true"><var:string label:value="Security"/></md-button>
+                  <md-button class="md-primary" ng-disabled="true" ng-bind="::'Security' | loc"><!-- Security --></md-button>
                 </md-menu-item>
                 <md-menu-item>
                   <sg-checkmark ng-model="editor.message.editable.sign">

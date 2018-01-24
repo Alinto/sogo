@@ -46,6 +46,7 @@
       $timeout: $timeout,
       $log: $log,
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Mail', Settings.activeUser()),
+      $Preferences: Preferences,
       $avatar: angular.bind(Preferences, Preferences.avatar)
     });
 
@@ -396,6 +397,13 @@
         });
         if (identity)
           data.from = identity.full;
+        var accountDefaults = Message.$Preferences.defaults.AuxiliaryMailAccounts[_this.$mailbox.$account.id];
+        if (accountDefaults.security) {
+          if (accountDefaults.security.alwaysSign)
+            data.sign = true;
+          if (accountDefaults.security.alwaysEncrypt)
+            data.encrypt = true;
+        }
         Message.$log.debug('editable = ' + JSON.stringify(data, undefined, 2));
         angular.extend(_this.editable, data);
         return data.text;

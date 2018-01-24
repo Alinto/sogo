@@ -358,6 +358,13 @@
     }).then(function(message) {
       // Fetch draft initial data
       return Account.$$resource.fetch(message.$absolutePath({asDraft: true}), 'edit').then(function(data) {
+        var accountDefaults = Account.$Preferences.defaults.AuxiliaryMailAccounts[_this.id];
+        if (accountDefaults.security) {
+          if (accountDefaults.security.alwaysSign)
+            data.sign = true;
+          if (accountDefaults.security.alwaysEncrypt)
+            data.encrypt = true;
+        }
         Account.$log.debug('New message (edit): ' + JSON.stringify(data, undefined, 2));
         angular.extend(message.editable, data);
         message.isNew = true;
