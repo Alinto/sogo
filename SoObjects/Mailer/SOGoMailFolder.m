@@ -795,7 +795,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
                                         junk: (BOOL) isJunk
 {
   NSDictionary *junkSettings;
-  NSString *recipient;
+  NSString *recipient, *subject;
   NSException *error;
   unsigned int limit;
 
@@ -805,9 +805,15 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   if ([[junkSettings objectForKey: @"vendor"] caseInsensitiveCompare: @"generic"] == NSOrderedSame)
     {
       if (isJunk)
-        recipient = [junkSettings objectForKey: @"junkEmailAddress"];
+        {
+          recipient = [junkSettings objectForKey: @"junkEmailAddress"];
+          subject = [[self labelForKey: @"Report: Marked messages as junk"] asQPSubjectString: @"utf-8"];
+        }
       else
-        recipient = [junkSettings objectForKey: @"notJunkEmailAddress"];
+        {
+          recipient = [junkSettings objectForKey: @"notJunkEmailAddress"];
+          subject = [[self labelForKey: @"Report: Marked messages as not not junk"] asQPSubjectString: @"utf-8"];
+        }
 
       limit = [[junkSettings objectForKey: @"limit"] intValue];
 
@@ -837,11 +843,12 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
               // a new mail message
               if ((i%limit) == 0)
                 {
-                  map = [NGMutableHashMap hashMapWithCapacity: 5];
+                  map = [NGMutableHashMap hashMapWithCapacity: 6];
 
 #warning SOPE is just plain stupid here - if you change the case of keys, it will break the encoding of fields
                   [map setObject: @"multipart/mixed" forKey: @"content-type"];
                   [map setObject: @"1.0" forKey: @"MIME-Version"];
+                  [map setObject: subject forKey: @"subject"];
                   [map setObject: [[identities objectAtIndex: 0] objectForKey: @"email"] forKey: @"from"];
                   [map setObject: recipient forKey: @"to"];
                   [map setObject: [[NSCalendarDate date] rfc822DateString]  forKey: @"date"];
