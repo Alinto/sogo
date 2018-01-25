@@ -17,6 +17,7 @@ if [ -z "$indextable" ]; then
   echo "Couldn't fetch OCSFolderInfoURL value, aborting" >&2
   exit 1
 fi
+storeurl=$(sogo-tool dump-defaults -f /etc/sogo/sogo.conf | awk -F\" '/ OCSStoreURL =/  {print $2}' |  awk -F/ '{print $NF}')
 
 read -p "Username ($defaultusername): " username
 read -p "Hostname ($defaulthostname): " hostname
@@ -71,7 +72,12 @@ echo "Converting c_content from TEXT to LONGTEXT in the sogo_user_profile table"
 growUserProfile
 
 echo "Converting c_mail from VARCHAR(255) to TEXT in Contacts quick tables" >&2
-tables=`mysql -p -s -u $username -h $hostname $database -e "select SUBSTRING_INDEX(c_quick_location, '/', -1) from $indextable where c_path3 = 'Contacts';"`
+if [ -z "$storeurl" ]; then
+    tables=`mysql -p -s -u $username -h $hostname $database -e "select SUBSTRING_INDEX(c_quick_location, '/', -1) from $indextable where c_path3 = 'Contacts';"`
+else
+    tables="sogo_quick_contact"
+fi
+
 for table in $tables;
 do
     growMailInContactsQuick

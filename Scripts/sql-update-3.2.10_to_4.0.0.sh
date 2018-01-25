@@ -15,6 +15,7 @@ if [ -z "$indextable" ]; then
   echo "Couldn't fetch OCSFolderInfoURL value, aborting" >&2
   exit 1
 fi
+storeurl=$(sogo-tool dump-defaults -f /etc/sogo/sogo.conf | awk -F\" '/ OCSStoreURL =/  {print $2}' |  awk -F/ '{print $NF}')
 
 read -p "Username ($defaultusername): " username
 read -p "Hostname ($defaulthostname): " hostname
@@ -53,7 +54,11 @@ function addCertificateInContactsQuick() {
 
 echo "This script will ask for the database password twice" >&2
 echo "Converting c_mail from VARCHAR(255) to TEXT in Contacts quick tables" >&2
-tables=`psql -t -U $username -h $hostname $database -c "select split_part(c_quick_location, '/', 5) from $indextable where c_path3 = 'Contacts';"`
+if [ -z "$storeurl" ]; then
+    tables=`psql -t -U $username -h $hostname $database -c "select split_part(c_quick_location, '/', 5) from $indextable where c_path3 = 'Contacts';"`
+else
+    tables="sogo_quick_contact"
+fi
 
 for table in $tables;
 do
