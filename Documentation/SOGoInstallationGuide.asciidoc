@@ -3046,11 +3046,13 @@ current version of SOGo from the previous release.
 
 [cols="100a"]
 |=======================================================================
-h|3.3.0
-|Run the shell script `sql-update-3.2.10_to_3.3.0.sh` if you are using MySQL.
+h|4.0.0
+|Run the shell script `sql-update-3.2.10_to_4.0.0.sh` or
+`sql-update-3.2.10_to_4.0.0-mysql.sh` (if you are using MySQL).
 
 This will grow the "defaults" and "setting" fields of the SOGo user profile table
-to a larger size.
+to a larger size. It will also add the required c_hascertificate column and add
+the c_mail column to a large size contact's quick table.
 
 h|2.3.1
 |The SOGoCalendarDefaultCategoryColor default has been removed. If you
