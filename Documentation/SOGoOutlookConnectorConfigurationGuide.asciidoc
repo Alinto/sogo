@@ -7,7 +7,7 @@ Microsoft Outlook CalDAVSynchronizer Configuration Guide
 About this Guide
 ----------------
 
-This guide will walk you through the installation and configuration of the  Microsoft Outlook integration of SOGo with the CalDavSynchronizer addin.
+This guide will walk you through the installation and configuration of Microsoft Outlook for a better integration with SOGo through the use of the CalDavSynchronizer addon.
 
 Prior going over this guide, you should have a working SOGo
 installation. Please refer to the _SOGo Installation and Configuration
@@ -21,14 +21,12 @@ at http://www.sogo.nu/downloads/documentation.html.
 Introduction
 ------------
 
-Outlook CalDav Synchronizer is an Open Source Microsoft Windows Outlook Addin, which synchronizes events, tasks and contacts between Outlook and CalDAV or CardDAV servers. Supported Outlook versions are Outlook 2007 to Outlook 2016.
-Together with other open source solutions like SOGo and DAVdroid for Android, a full open source exchange server replacement for desktop and mobile clients is finally possible and enterprise ready.
+Outlook CalDav Synchronizer is an open source addon for Microsoft Windows Outlook. It synchronizes events, tasks and contacts between Microsoft Outlook and CalDAV or CardDAV servers. Supported Outlook versions are Outlook 2007 to Outlook 2016.
+Together with other open source solutions like SOGo, a full open source Microsoft Exchange server replacement for desktop users is finally possible and enterprise ready.
 Outlook CalDav Synchronizer is Free and Open-Source Software (FOSS) , licensed under AGPL3 and developed by
 
 * https://sourceforge.net/u/nertsch/profile/[Gerhard Zehetbauer]
 * https://sourceforge.net/u/nimm/profile/[Alexander Nimmervoll]
-
-image::images/about_dialog.png[About]
 
 Project Links
 ~~~~~~~~~~~~~
@@ -44,17 +42,20 @@ Social Media
 
 https://www.facebook.com/caldavsynchronizer/[CalDav Synchronizer on Facebook]
 
-Enterprise support
+Enterprise Support
 ~~~~~~~~~~~~~~~~~~
 
-For enterprise support, customization or further information visit https://caldavsynchronizer.org/enterprise
+Inverse (http://inverse.ca/[http://inverse.ca]) offers professional services around SOGo to help organizations deploy the solution and
+migrate from their legacy systems.
+
+For enterprise support on the integration between SOGo and Microsoft Outlook using the Outlook CalDav Synchronizer, please visit https://caldavsynchronizer.org/enterprise
 
 Features
 --------
 
 The most important features are
 
-* Open Source, the only free Outlook CalDAV and CardDAV addin
+* Open Source, the only free Outlook CalDAV and CardDAV addon
 * two-way-sync
 * support for CalDAV calendars and tasks, CardDAV contacts
 * support for Google native Contacts and Tasks API
@@ -94,7 +95,7 @@ In the multiple profile setup dialog you can configure the details of the sync p
 
 image::images/configure_multiple.png[Multiple Profile Configuration]
 
-First, you should change the profile name and configure the server settings, the DAV url is prefilled with the default SOGo DAV path and you should only change the hostname of your SOGo server, enter Username and Password. If you also have configured an IMAP account and your domain supports autodiscovery via DNS SRV records you can also try to fetch the server settings from your existing mail account in Outlook by pressing *Get IMAP/POP3 account settings*. If successful, username and password will be used from the existing mail account and the DAV url will be discovered.
+First, you should change the profile name and configure the server settings, the DAV URL is prefilled with the default SOGo DAV path and you should only change the hostname of your SOGo server, enter Username and Password. If you also have configured an IMAP account and your domain supports autodiscovery using DNS SRV records you can also try to fetch the server settings from your existing mail account in Outlook by pressing *Get IMAP/POP3 account settings*. If successful, username and password will be used from the existing mail account and the DAV URL will be discovered.
 If all server settings are configured press *Discover resources and assign to Outlook folders* to start the autodiscovery of all server resources. 
 
 You can assign Outlook folders to found calendar, addressbook and task resources in the three tab views.
@@ -111,7 +112,7 @@ image::images/new_folder.png[Add new Outlook folder]
 If you chose *Add new profile* for only one resource you can also choose the Outlook folder and dependent on the folder type you will create a calendar, addressbook or task profile.
 
 image::images/profile_config.png[Single Profile Configuration]
-If you know the correct calendar CalDAV url, you can also enter that directly into the DAV Url textbox or paste it from the SOGo Web Frontend, when selecting Link in the calendar properties. For the personal calendar it looks like
+If you know the correct calendar CalDAV URL, you can also enter that directly into the DAV Url textbox or paste it from the SOGo Web Frontend, when selecting Link in the calendar properties. For the personal calendar it looks like
 https://server.example/remote.php/dav/calendars/caldav/personal/
 
 Furthermore, you can configure sync settings and intervals or keep the default settings which are automatic Two-Way-Sync every 30 minutes for all events from 60 days in the past to 365 days in the future.
@@ -139,10 +140,10 @@ Should there be any errors or warnings during synchronization, you can check the
 
 image::images/sync_report.png[Sync report]
 
-Configuration options
+Configuration Options
 ---------------------
 
-Synchronization settings
+Synchronization Settings
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 * *Outlook → Server (Replicate):* syncronize everything from Outlook to the server (one way)  
@@ -170,12 +171,12 @@ Synchronization settings
 * *Use time range filter*  *(only in advanced settings)* 
 For performance reasons it is useful to sync only a given timespan of a big calendar, especially past events are normally not necessary to sync after a given timespan. But be aware that Outlook and Google and some other CalDAV servers calculate the intersection with the time-range differently for recurring events which can cause doubled or deleted events, so it is recommended to select a time-range which is larger than the largest interval of your recurring events (e.g. 1 year for birthdays).  
 
-Advanced settings
+Advanced Settings
 ~~~~~~~~~~~~~~~~~
 
 When *Show advanced settings* is enabled, you can expand the tree view of the profile to configure network and proxy options and mapping configuration options.
 
-Network and proxy options
+Network and Proxy Options
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Here you can configure advanced network options and proxy settings. 
@@ -184,7 +185,7 @@ Here you can configure advanced network options and proxy settings.
 
 * *Use Preemptive Authentication* Send Authentication header with each request to avoid 401 responses and resending the request, disable only if the server has problems with preemptive authentication.  
 
-* *Force basic authentication* Set basic authentication headers to avoid problems with negotiation or digest authentication with servers like OS X. This is only recommended if you use a secure HTTPS connection, otherwise passwords are sent in cleartext.  
+* *Force basic authentication* Set basic authentication headers to avoid problems with negotiation or digest authentication with servers like Apple OS X / macOS. This is only recommended if you use a secure HTTPS connection, otherwise passwords are sent in cleartext.  
 
 * *Use System Default Proxy* Use proxy settings from Internet Explorer or config file, uses default credentials if available for NTLM authentication.  
 
@@ -195,7 +196,7 @@ Mapping Configuration
 
 Here you can configure what properties should be synced.  
 
-Event mapping configuration
+Event Mapping Configuration
 +++++++++++++++++++++++++++
 
 For appointments you can choose if you want to map reminders (just upcoming, all or none) and the description body.  
@@ -217,7 +218,7 @@ For appointments you can choose if you want to map reminders (just upcoming, all
 
 * *Cleanup duplicate events after each sync run:* removes duplicate Outlook appointments based on start,end and subject of the events after each sync run, be aware of possible performance penalties with this option enabled.  
 
-Contact mapping configuration
+Contact Mapping Configuration
 +++++++++++++++++++++++++++++
 
 * For contacts you can configure if birthdays should be mapped or not. If birthdays are mapped, Outlook also creates an recurring appointment for every contact with a defined birthday.  
@@ -236,7 +237,7 @@ Contact mapping configuration
 
 * Map Distribution Lists enables the sync of contact groups / Distribution Lists, right now the DAV contact group format SOGo VLIST or vCards with KIND:group are available, see *Distribution Lists* below.  
 
-Task mapping configuration
+Task Mapping Configuration
 ++++++++++++++++++++++++++
 
 * For tasks (not for Google task profiles) you can configure if you want to map reminders (just upcoming, all or none), the priority of the task, the description body and if recurring tasks should be synchronized.  
@@ -245,19 +246,19 @@ Task mapping configuration
 
 * Similar to calendars you can also define a filter category so that multiple CalDAV Tasklists can be synchronized into one Outlook task folder via the defined category.
 
-Timezone settings
+Timezone Settings
 ^^^^^^^^^^^^^^^^^
 
-Outlook and Windows use different Timezone definitions than most CalDAV servers and other clients. When adding new events on the server you have different options how the timezone of the newly created VEVENT is generated. The default setting uses the default Windows Timezone from Outlook (e.g. W. Europe Standard Time) or the selected timezones for the start and end of the appointment. Since some servers have problems with that timezone definitions you can change that behaviour in the event mapping configuration with the following options:  
+Outlook and Windows use different timezone definitions than most CalDAV servers and other clients. When adding new events on the server you have different options how the timezone of the newly created VEVENT is generated. The default setting uses the default Windows timezone from Outlook (e.g. W. Europe Standard Time) or the selected timezones for the start and end of the appointment. Since some servers have problems with that timezone definitions you can change that behaviour in the event mapping configuration with the following options:  
 
 * *Create events on server in UTC* Use UTC instead of Outlook Appointment Timezone for creating events on CalDAV server. Not recommended for general use, because recurrence exceptions over DST changes can’t be mapped and Appointments with different start and end timezones can’t be represented.  
-* *Create events on server in downloaded IANA Timezones* Use Iana instead of Windows Timezones for creating events on CalDAV server. Needed for servers which do not accept non standard Windows Timezones like GMX for example. Timezone definitions will be downloaded from http://tzurl.org.  
+* *Create events on server in downloaded IANA Timezones* Use IANA instead of Windows Timezones for creating events on CalDAV server. Needed for servers which do not accept non standard Windows Timezones like GMX for example. Timezone definitions will be downloaded from http://tzurl.org.  
 
 * *Use IANA Timezone* Use this IANA timezone for default Outlook/Windows timezone. Manually selected different timezones in Outlook appointments will be mapped to first corresponding IANA timezone.  
 
 * *Include full IANA zone with historical data* Use full IANA timezone definition with historical data. Needs more bandwith and can be incompatible when manually importing in Outlook.
 
-Custom properties mapping
+Custom Properties Mapping
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 When you expand the tree view of the profile for events and tasks, you can configure the mapping of custom properties.  
@@ -266,7 +267,7 @@ When you expand the tree view of the profile for events and tasks, you can confi
 
 * You can also define manual mapping pairs of Outlook custom attributes and DAV X-Attributes. This will overrule the general mapping of all Outlook custom properties if both is activated. Outlook properties that don’t exist, will be created. DAV properties MUST start with X-. Only Outlook custom properties of type Text can be mapped.
 
-Managing meetings and invites
+Managing Meetings and Invites
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Outlook can only track meeting responses and invites in the main calender folder. If you schedule meetings from Outlook which are synced with the CalDAV server you have two possibilities to avoid double invitation mails for all attendees. First, you can enable the option *Don’t send appointment notifications (enabled by default for SOGo profiles)* or *SCHEDULE-AGENT=CLIENT* (for other servers) and let only Outlook send the meeting invites, if the server supports this option. Or you can disable this option and let the server schedule the meetings after syncing the meeting. Then you need to disable the invitation mails sent from Outlook. This is possible by unchecking the checkbox left to the attendee name in the meeting planning dialog. When syncing meetings created in Outlook to the server, the option *Use GlobalAppointmentID for UID attribute* is recommended. This can avoid duplicate events from invitations.  
@@ -277,20 +278,20 @@ When receiving invites from the CalDAV server and via Email in your INBOX, Outlo
 
 To avoid double meetings the option *Cleanup duplicate events after each sync run* in event mapping configuration is recommended.  
 
-Free/busy lookups
+Free/busy Lookups
 ^^^^^^^^^^^^^^^^^
 
-You can configure free/busy lookups globally in the outlook options.  
+You can configure free/busy lookups globally in the Outlook options.  
 
-Select Options/Calendar and there free/busy information and use a free/busy url of your server with placeholder like %Name%, e.g. http://myserver/freebusy.php/%Name%  
+Select Options/Calendar and there free/busy information and use a free/busy URL of your server with placeholder like %Name%, e.g. http://myserver/freebusy.php/%Name%  
 
-For SOGo the url looks like: http://<hostname>/SOGo/dav/public/%NAME%/freebusy.ifb
+For SOGo the URL looks like: http://<hostname>/SOGo/dav/public/%NAME%/freebusy.ifb
 
 And `SOGoEnablePublicAccess` must be set to `YES`
 
-Then ervery attendee in the outlook planning view gets resolved with that url for a free/busy lookup against your server. 
+Then every attendee in the Outlook planning view gets resolved with that URL for a free/busy lookup against your server. 
 
-Scheduling settings and resources
+Scheduling Settings and Resources
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If your server supports resources (for SOGo see http://wiki.sogo.nu/ResourceConfiguration disable *set SCHEDULE-AGENT=CLIENT* in Mapping Configuration, so that the server can handle the resource invitation mails, add the resource email adress as attendee in the Outlook appointment and choose type ressource (house icon) for it.  
@@ -298,7 +299,7 @@ If your server supports resources (for SOGo see http://wiki.sogo.nu/ResourceConf
 Category Filter and Color
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you want to sync multiple CalDAV calendars or tasklists into one Outlook folder you can configure an Outlook category for filtering in the *Mapping Configuration*. You can choose a category from the dropdown list of all available Outlook categories or enter a new category name.  
+If you want to sync multiple CalDAV calendars or task lists into one Outlook folder you can configure an Outlook category for filtering in the *Mapping Configuration*. You can choose a category from the dropdown list of all available Outlook categories or enter a new category name.
 
 For all events/tasks from the server the defined category is added in Outlook, when syncing back from Outlook to the server only appointments/tasks with that category are considered but the filter category is removed. The category name must not contain any commas or semicolons!  
 
@@ -404,8 +405,8 @@ Profile Import/Export
 In the toolbar of the synchronization profiles you can export all profiles to a file and import profiles from an earlier exported file. When exporting, you can choose a filename, the extension is *.cdsp and all options are saved in an xml format into this file. When importing the file, existing profiles are merged with the imported ones. If the selected Outlook folder for the profile doesn’t exist during import, you need to manually select a folder before you can save the options, they are not automatically created. You need also be aware of the fact, that saved profile passwords won’t work on other accounts or machines, since the encryption is dependant on the current user. But you can use the account password from the IMAP/POP3 account if available. General options are not saved in that file, but in the registry in `HKEY_CURRENT_USER\Software\CalDavSynchronizer`.  
 
 
-Trouble Shooting
-----------------
+Troubleshooting
+---------------
 
 Synchronization Status
 ~~~~~~~~~~~~~~~~~~~~~~
