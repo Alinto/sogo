@@ -84,4 +84,4 @@ do
     addCertificateInContactsQuick
 done
 
-echo "$sqlscript" | mysql -p -s -u $username -h $hostname $database
+echo "$sqlscript" | mysql -p -f -s -u $username -h $hostname $database
