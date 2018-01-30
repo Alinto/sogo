@@ -339,6 +339,7 @@
 "repeat_YEARLY" = "Annuelle";
 "repeat_CUSTOM" = "Personnaliser...";
 "reminder_NONE" = "Pas de rappel";
+"reminder_0" = "À l'heure de l'événement";
 "reminder_5_MINUTES_BEFORE" = "5 minutes avant";
 "reminder_10_MINUTES_BEFORE" = "10 minutes avant";
 "reminder_15_MINUTES_BEFORE" = "15 minutes avant";
@@ -571,6 +572,7 @@ vtodo_class2 = "(Tâche confidentielle)";
 "More options" = "Plus d'options";
 "Delete This Occurrence" = "Supprimer cette occurrence";
 "Delete All Occurrences" = "Supprimer toutes les occurrences";
+"Add Recurrence Date" = "Ajouter une date de récurrence";
 "Add From" = "Ajouter date de début";
 "Add Due" = "Ajouter date d'échéance";
 "Import" = "Importer";

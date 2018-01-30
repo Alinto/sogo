@@ -31,7 +31,7 @@
 "Sorry, the user rights can not be configured for that object." = "Désolé, les droits d'accès ne peuvent être configurés pour cet objet.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Tout utilisateur ayant un compte sur ce système aura accès à votre boîte «%{0}». Voulez-vous vraiment faire confiance à tous ces utilisateurs?";
-"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
      = "Tout utilisateur ayant un compte sur ce système aura accès à votre calendrier «%{0}». Voulez-vous vraiment faire confiance à tous ces utilisateurs?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "N'importe quel internaute aura potentiellement accès à votre calendrier «%{0}», même s'il n'a pas de compte sur ce système. Est-ce que le contenu de votre calendrier est adapté à une telle visibilité?";
@@ -57,7 +57,7 @@
 "The user rights cannot be edited for this object!"
         = "Les droits sur cet objet ne peuvent pas être édités.";
 "A folder by that name already exists." = "Un dossier du même nom existe déjà.";
-"You cannot create a list in a shared address book." 
+"You cannot create a list in a shared address book."
         = "Impossible de créer une liste dans un dossier partagé.";
 "Warning" = "Avertissement";
 "Can't contact server" = "Une erreur est survenue lors de la connexion au serveur. Veuillez réessayer plus tard.";
@@ -75,6 +75,10 @@
 "Cancel" = "Annuler";
 "Yes" = "Oui";
 "No" = "Non";
+
+/* generic messages */
+"Error" = "Erreur";
+"Success" = "Succès";
 
 /* alarms */
 "Reminder" = "Rappel";
@@ -109,6 +113,15 @@
 "Loading" = "Chargement";
 "No such user." = "Aucun utilisateur trouvé.";
 "You cannot (un)subscribe to a folder that you own!" = "Vous ne pouvez pas vous (dés)abonner à vos propres dossiers!";
+
+/* SMIME Certificate field */
+"Subject Name" = "Sujet";
+"Issuer" = "Émetteur";
+"countryName" = "Pays";
+"organizationName" = "Société";
+"organizationalUnitName" = "Unité organisationnelle";
+"commonName" = "Identité";
+"emailAddress" = "Adresse courriel";
 
 /* Authentication username */
 "Username" = "Nom d'utilisateur";
