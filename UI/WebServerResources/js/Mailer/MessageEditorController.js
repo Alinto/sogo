@@ -6,99 +6,75 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$scope', '$window', '$stateParams', '$mdConstant', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccount', 'stateMessage', 'encodeUriFilter', '$timeout', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
-  function MessageEditorController($scope, $window, $stateParams, $mdConstant, $mdDialog, $mdToast, FileUploader, stateAccount, stateMessage, encodeUriFilter, $timeout, Dialog, AddressBook, Card, Preferences) {
-    var vm = this, hotkeys = [];
+  MessageEditorController.$inject = ['$scope', '$window', '$stateParams', '$mdConstant', '$mdUtil', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccount', 'stateMessage', 'encodeUriFilter', '$timeout', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
+  function MessageEditorController($scope, $window, $stateParams, $mdConstant, $mdUtil, $mdDialog, $mdToast, FileUploader, stateAccount, stateMessage, encodeUriFilter, $timeout, Dialog, AddressBook, Card, Preferences) {
+    var vm = this;
 
-    vm.addRecipient = addRecipient;
-    vm.autocomplete = {to: {}, cc: {}, bcc: {}};
-    vm.autosave = null;
-    vm.autosaveDrafts = autosaveDrafts;
-    vm.cancel = cancel;
-    vm.contactFilter = contactFilter;
-    vm.isFullscreen = false;
-    vm.hideBcc = (stateMessage.editable.bcc.length === 0);
-    vm.hideCc = (stateMessage.editable.cc.length === 0);
-    vm.identities = _.uniq(_.map(stateAccount.identities, 'full'));
-    vm.message = stateMessage;
-    vm.recipientSeparatorKeys = [
-      $mdConstant.KEY_CODE.ENTER,
-      $mdConstant.KEY_CODE.TAB,
-      $mdConstant.KEY_CODE.COMMA,
-      $mdConstant.KEY_CODE.SEMICOLON
-    ];
-    vm.removeAttachment = removeAttachment;
-    vm.save = save;
-    vm.send = send;
-    vm.sendState = false;
-    vm.toggleFullscreen = toggleFullscreen;
-    vm.uploader = new FileUploader({
-      url: stateMessage.$absolutePath({asDraft: true, withResourcePath: true}) + '/save',
-      autoUpload: true,
-      alias: 'attachments',
-      removeAfterUpload: false,
-      // onProgressItem: function(item, progress) {
-      //   console.debug(item); console.debug(progress);
-      // },
-      onSuccessItem: function(item, response, status, headers) {
-        stateMessage.$setUID(response.uid);
-        stateMessage.$reload({asDraft: false});
-        item.inlineUrl = response.lastAttachmentAttrs[0].url;
-        //console.debug(item); console.debug('success = ' + JSON.stringify(response, undefined, 2));
-      },
-      onCancelItem: function(item, response, status, headers) {
-        //console.debug(item); console.debug('cancel = ' + JSON.stringify(response, undefined, 2));
-        // We remove the attachment
-        stateMessage.$deleteAttachment(item.file.name);
-        this.removeFromQueue(item);
-      },
-      onErrorItem: function(item, response, status, headers) {
-        $mdToast.show(
-          $mdToast.simple()
-            .content(l('Error while uploading the file \"%{0}\":', item.file.name) +
-                     ' ' + (response.message? l(response.message) : ''))
-            .position('top right')
-            .action(l('OK'))
-            .hideDelay(false));
-        this.removeFromQueue(item);
-        //console.debug(item); console.debug('error = ' + JSON.stringify(response, undefined, 2));
-      }
-    });
-
-    // Read user's defaults
-    if (Preferences.defaults.SOGoMailAutoSave)
-      // Enable auto-save of draft
-      vm.autosave = $timeout(vm.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
-    // Set the locale of CKEditor
-    vm.localeCode = Preferences.defaults.LocaleCode;
-
-    // Destroy file uploader when the controller is being deactivated
-    $scope.$on('$destroy', function() { vm.uploader.destroy(); });
-
-    if ($stateParams.actionName == 'reply') {
-      stateMessage.$reply().then(function(msgObject) {
-        vm.message = msgObject;
-        vm.hideCc = (!msgObject.editable.cc || msgObject.editable.cc.length === 0);
-        vm.hideBcc = (!msgObject.editable.bcc || msgObject.editable.bcc.length === 0);
-      });
-    }
-    else if ($stateParams.actionName == 'replyall') {
-      stateMessage.$replyAll().then(function(msgObject) {
-        vm.message = msgObject;
-        vm.hideCc = (!msgObject.editable.cc || msgObject.editable.cc.length === 0);
-        vm.hideBcc = (!msgObject.editable.bcc || msgObject.editable.bcc.length === 0);
-      });
-    }
-    else if ($stateParams.actionName == 'forward') {
-      stateMessage.$forward().then(function(msgObject) {
-        vm.message = msgObject;
-        addAttachments();
-      });
-    }
-    else if (angular.isDefined(stateMessage)) {
+    this.$onInit = function() {
+      vm.addRecipient = addRecipient;
+      vm.autocomplete = {to: {}, cc: {}, bcc: {}};
+      vm.autosave = null;
+      vm.autosaveDrafts = autosaveDrafts;
+      vm.cancel = cancel;
+      vm.contactFilter = contactFilter;
+      vm.isFullscreen = false;
+      vm.hideBcc = (stateMessage.editable.bcc.length === 0);
+      vm.hideCc = (stateMessage.editable.cc.length === 0);
+      vm.identities = _.uniq(_.map(stateAccount.identities, 'full'));
       vm.message = stateMessage;
-      addAttachments();
-    }
+      vm.recipientSeparatorKeys = [
+        $mdConstant.KEY_CODE.ENTER,
+        $mdConstant.KEY_CODE.TAB,
+        $mdConstant.KEY_CODE.COMMA,
+        $mdConstant.KEY_CODE.SEMICOLON
+      ];
+      vm.removeAttachment = removeAttachment;
+      vm.save = save;
+      vm.send = send;
+      vm.sendState = false;
+      vm.toggleFullscreen = toggleFullscreen;
+
+      _initFileUploader();
+
+      // Read user's defaults
+      if (Preferences.defaults.SOGoMailAutoSave)
+        // Enable auto-save of draft
+        vm.autosave = $timeout(vm.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
+      // Set the locale of CKEditor
+      vm.localeCode = Preferences.defaults.LocaleCode;
+
+      // Destroy file uploader when the controller is being deactivated
+      $scope.$on('$destroy', function() { vm.uploader.destroy(); });
+
+      if ($stateParams.actionName == 'reply') {
+        stateMessage.$reply().then(function(msgObject) {
+          vm.message = msgObject;
+          vm.hideCc = (!msgObject.editable.cc || msgObject.editable.cc.length === 0);
+          vm.hideBcc = (!msgObject.editable.bcc || msgObject.editable.bcc.length === 0);
+          _updateFileUploader();
+        });
+      }
+      else if ($stateParams.actionName == 'replyall') {
+        stateMessage.$replyAll().then(function(msgObject) {
+          vm.message = msgObject;
+          vm.hideCc = (!msgObject.editable.cc || msgObject.editable.cc.length === 0);
+          vm.hideBcc = (!msgObject.editable.bcc || msgObject.editable.bcc.length === 0);
+          _updateFileUploader();
+        });
+      }
+      else if ($stateParams.actionName == 'forward') {
+        stateMessage.$forward().then(function(msgObject) {
+          vm.message = msgObject;
+          _updateFileUploader();
+          _addAttachments();
+        });
+      }
+      else if (angular.isDefined(stateMessage)) {
+        vm.message = stateMessage;
+        _updateFileUploader();
+        _addAttachments();
+      }
+    };
 
     /**
      * If this is a popup window, retrieve the mailbox controller of the parent window.
@@ -133,7 +109,46 @@
       return ctrls;
     }
 
-    function addAttachments() {
+    function _initFileUploader() {
+      vm.uploader = new FileUploader({
+        url: vm.message.$absolutePath({asDraft: true, withResourcePath: true}) + '/save',
+        autoUpload: true,
+        alias: 'attachments',
+        removeAfterUpload: false,
+        // onProgressItem: function(item, progress) {
+        //   console.debug(item); console.debug(progress);
+        // },
+        onSuccessItem: function(item, response, status, headers) {
+          vm.message.$setUID(response.uid);
+          vm.message.$reload({asDraft: false});
+          item.inlineUrl = response.lastAttachmentAttrs[0].url;
+          //console.debug(item); console.debug('success = ' + JSON.stringify(response, undefined, 2));
+        },
+        onCancelItem: function(item, response, status, headers) {
+          //console.debug(item); console.debug('cancel = ' + JSON.stringify(response, undefined, 2));
+          // We remove the attachment
+          vm.message.$deleteAttachment(item.file.name);
+          this.removeFromQueue(item);
+        },
+        onErrorItem: function(item, response, status, headers) {
+          $mdToast.show(
+            $mdToast.simple()
+              .content(l('Error while uploading the file \"%{0}\":', item.file.name) +
+                       ' ' + (response.message? l(response.message) : ''))
+              .position('top right')
+              .action(l('OK'))
+              .hideDelay(false));
+          this.removeFromQueue(item);
+          //console.debug(item); console.debug('error = ' + JSON.stringify(response, undefined, 2));
+        }
+      });
+    }
+
+    function _updateFileUploader() {
+      vm.uploader.url = vm.message.$absolutePath({asDraft: true, withResourcePath: true}) + '/save';
+    }
+
+    function _addAttachments() {
       // Add existing attached files to uploader
       var i, data, fileItem, attrs = vm.message.editable.attachmentAttrs;
       if (attrs)
