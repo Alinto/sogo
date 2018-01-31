@@ -4,7 +4,7 @@
  *         This causes it to be incompatible with plugins that depend on @uirouter/core.
  *         We recommend switching to the ui-router-core.js and ui-router-angularjs.js bundles instead.
  *         For more information, see https://ui-router.github.io/blog/uirouter-for-angularjs-umd-bundles
- * @version v1.0.13
+ * @version v1.0.14
  * @link https://ui-router.github.io
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -715,10 +715,10 @@ function find(collection, callback) {
 /** Given an object, returns a new object, where each property is transformed by the callback function */
 var mapObj = map;
 /** Maps an array or object properties using a callback function */
-function map(collection, callback) {
-    var result = isArray(collection) ? [] : {};
-    forEach(collection, function (item, i) { return result[i] = callback(item, i); });
-    return result;
+function map(collection, callback, target) {
+    target = target || (isArray(collection) ? [] : {});
+    forEach(collection, function (item, i) { return target[i] = callback(item, i); });
+    return target;
 }
 /**
  * Given an object, return its enumerable property values
@@ -1030,19 +1030,27 @@ var silentRejection = function (error) {
 
 /**
  * @module common
- */ /** for typedoc */
+ */
+/** for typedoc */
 var Queue = /** @class */ (function () {
     function Queue(_items, _limit) {
         if (_items === void 0) { _items = []; }
         if (_limit === void 0) { _limit = null; }
         this._items = _items;
         this._limit = _limit;
+        this._evictListeners = [];
+        this.onEvict = pushTo(this._evictListeners);
     }
     Queue.prototype.enqueue = function (item) {
         var items = this._items;
         items.push(item);
         if (this._limit && items.length > this._limit)
-            items.shift();
+            this.evict();
+        return item;
+    };
+    Queue.prototype.evict = function () {
+        var item = this._items.shift();
+        this._evictListeners.forEach(function (fn) { return fn(item); });
         return item;
     };
     Queue.prototype.dequeue = function () {
@@ -1849,7 +1857,7 @@ var RegisteredHook = /** @class */ (function () {
      * }
      */
     RegisteredHook.prototype._getDefaultMatchCriteria = function () {
-        return map(this.tranSvc._pluginapi._getPathTypes(), function () { return true; });
+        return mapObj(this.tranSvc._pluginapi._getPathTypes(), function () { return true; });
     };
     /**
      * Gets matching nodes as [[IMatchingNodes]]
@@ -2384,9 +2392,8 @@ var PathNode = /** @class */ (function () {
             this.resolvables = state.resolvables.map(function (res) { return res.clone(); });
         }
     }
-    /** Returns a clone of the PathNode */
-    PathNode.clone = function (node) {
-        return new PathNode(node);
+    PathNode.prototype.clone = function () {
+        return new PathNode(this);
     };
     /** Sets [[paramValues]] for the node, from the values of an object hash */
     PathNode.prototype.applyRawParams = function (params) {
@@ -2424,6 +2431,11 @@ var PathNode = /** @class */ (function () {
         var params = paramsFn ? paramsFn(this) : this.paramSchema;
         return Param.changed(params, this.paramValues, node.paramValues);
     };
+    /**
+     * Returns a clone of the PathNode
+     * @deprecated use instance method `node.clone()`
+     */
+    PathNode.clone = function (node) { return node.clone(); };
     return PathNode;
 }());
 
@@ -2518,17 +2530,19 @@ var PathUtils = /** @class */ (function () {
         }
         /** Given a retained node, return a new node which uses the to node's param values */
         function applyToParams(retainedNode, idx) {
-            var cloned = PathNode.clone(retainedNode);
+            var cloned = retainedNode.clone();
             cloned.paramValues = toPath[idx].paramValues;
             return cloned;
         }
         var from, retained, exiting, entering, to;
         from = fromPath;
-        retained = from.slice(0, keep).map(applyToParams); // applyToParams to update dynamic params
+        retained = from.slice(0, keep);
         exiting = from.slice(keep);
+        // Create a new retained path (with shallow copies of nodes) which have the params of the toPath mapped
+        var retainedWithToParams = retained.map(applyToParams);
         entering = toPath.slice(keep);
-        to = (retained).concat(entering);
-        return { from: from, to: to, retained: retained, exiting: exiting, entering: entering };
+        to = (retainedWithToParams).concat(entering);
+        return { from: from, to: to, retained: retained, retainedWithToParams: retainedWithToParams, exiting: exiting, entering: entering };
     };
     /**
      * Returns a new path which is: the subpath of the first path which matches the second path.
@@ -2633,7 +2647,7 @@ var Resolvable = /** @class */ (function () {
             this.resolved = data !== undefined;
             this.promise = this.resolved ? services.$q.when(this.data) : undefined;
         }
-        else if (isObject(arg1) && arg1.token && isFunction(arg1.resolveFn)) {
+        else if (isObject(arg1) && arg1.token && (arg1.hasOwnProperty('resolveFn') || arg1.hasOwnProperty('data'))) {
             var literal = arg1;
             return new Resolvable(literal.token, literal.resolveFn, literal.deps, literal.policy, literal.data);
         }
@@ -2686,6 +2700,7 @@ var Resolvable = /** @class */ (function () {
         var applyResolvedValue = function (resolvedValue) {
             _this.data = resolvedValue;
             _this.resolved = true;
+            _this.resolveFn = null;
             trace.traceResolvableResolved(_this, trans);
             return _this.data;
         };
@@ -5999,10 +6014,10 @@ var UIRouter = /** @class */ (function () {
         this.trace = trace;
         /** Provides services related to ui-view synchronization */
         this.viewService = new ViewService();
-        /** Provides services related to Transitions */
-        this.transitionService = new TransitionService(this);
         /** Global router state */
         this.globals = new UIRouterGlobals();
+        /** Provides services related to Transitions */
+        this.transitionService = new TransitionService(this);
         /**
          * Deprecated for public use. Use [[urlService]] instead.
          * @deprecated Use [[urlService]] instead
@@ -6130,16 +6145,34 @@ var UIRouter = /** @class */ (function () {
 
 /** @module hooks */ /** */
 function addCoreResolvables(trans) {
-    trans.addResolvable({ token: UIRouter, deps: [], resolveFn: function () { return trans.router; }, data: trans.router }, '');
-    trans.addResolvable({ token: Transition, deps: [], resolveFn: function () { return trans; }, data: trans }, '');
-    trans.addResolvable({ token: '$transition$', deps: [], resolveFn: function () { return trans; }, data: trans }, '');
-    trans.addResolvable({ token: '$stateParams', deps: [], resolveFn: function () { return trans.params(); }, data: trans.params() }, '');
+    trans.addResolvable(Resolvable.fromData(UIRouter, trans.router), '');
+    trans.addResolvable(Resolvable.fromData(Transition, trans), '');
+    trans.addResolvable(Resolvable.fromData('$transition$', trans), '');
+    trans.addResolvable(Resolvable.fromData('$stateParams', trans.params()), '');
     trans.entering().forEach(function (state) {
-        trans.addResolvable({ token: '$state$', deps: [], resolveFn: function () { return state; }, data: state }, state);
+        trans.addResolvable(Resolvable.fromData('$state$', state), state);
     });
 }
 var registerAddCoreResolvables = function (transitionService) {
     return transitionService.onCreate({}, addCoreResolvables);
+};
+var TRANSITION_TOKENS = ['$transition$', Transition];
+var isTransition = inArray(TRANSITION_TOKENS);
+// References to Transition in the treeChanges pathnodes makes all
+// previous Transitions reachable in memory, causing a memory leak
+// This function removes resolves for '$transition$' and `Transition` from the treeChanges.
+// Do not use this on current transitions, only on old ones.
+var treeChangesCleanup = function (trans) {
+    // If the resolvable is a Transition, return a new resolvable with null data
+    var replaceTransitionWithNull = function (r) {
+        return isTransition(r.token) ? Resolvable.fromData(r.token, null) : r;
+    };
+    var cleanPath = function (path) { return path.map(function (node) {
+        var resolvables = node.resolvables.map(replaceTransitionWithNull);
+        return extend(node.clone(), { resolvables: resolvables });
+    }); };
+    var treeChanges = trans.treeChanges();
+    mapObj(treeChanges, cleanPath, treeChanges);
 };
 
 /** @module hooks */ /** */
@@ -6601,6 +6634,7 @@ var TransitionService = /** @class */ (function () {
         this._defineCorePaths();
         this._defineCoreEvents();
         this._registerCoreTransitionHooks();
+        _router.globals.successfulTransitions.onEvict(treeChangesCleanup);
     }
     /**
      * Registers a [[TransitionHookFn]], called *while a transition is being constructed*.
@@ -7811,7 +7845,7 @@ var UIRouterPluginBase = /** @class */ (function () {
 
 
 
-var index$1 = Object.freeze({
+var index = Object.freeze({
 	root: root,
 	fromJson: fromJson,
 	toJson: toJson,
@@ -9325,6 +9359,17 @@ uiStateDirective = ['$uiRouter', '$timeout',
  * </div>
  * ```
  *
+ * Arrays are also supported as values in the `ngClass`-like interface.
+ * This allows multiple states to add `active` class.
+ *
+ * #### Example:
+ * Given the following template, with "admin.roles" being the current state, the class will be added too:
+ * ```html
+ * <div ui-sref-active="{'active': ['owner.**', 'admin.**']}">
+ *   <a ui-sref-active="active" ui-sref="admin.roles">Roles</a>
+ * </div>
+ * ```
+ *
  * When the current state is "admin.roles" the "active" class will be applied to both the `<div>` and `<a>` elements.
  * It is important to note that the state names/globs passed to `ui-sref-active` override any state provided by a linked `ui-sref`.
  *
@@ -9357,14 +9402,7 @@ uiSrefActiveDirective = ['$state', '$stateParams', '$interpolate', '$uiRouter',
                         // Fall back to using $interpolate below
                     }
                     uiSrefActive = uiSrefActive || $interpolate($attrs.uiSrefActive || '', false)($scope);
-                    if (isObject(uiSrefActive)) {
-                        forEach(uiSrefActive, function (stateOrName, activeClass) {
-                            if (isString(stateOrName)) {
-                                var ref = parseStateRef(stateOrName);
-                                addState(ref.state, $scope.$eval(ref.paramExpr), activeClass);
-                            }
-                        });
-                    }
+                    setStatesFromDefinitionObject(uiSrefActive);
                     // Allow uiSref to communicate with uiSrefActive[Equals]
                     this.$$addStateInfo = function (newState, newParams) {
                         // we already got an explicit state provided by ui-sref-active, so we
@@ -9379,10 +9417,44 @@ uiSrefActiveDirective = ['$state', '$stateParams', '$interpolate', '$uiRouter',
                     function updateAfterTransition(trans) {
                         trans.promise.then(update, noop);
                     }
-                    $scope.$on('$stateChangeSuccess', update);
-                    $scope.$on('$destroy', $uiRouter.transitionService.onStart({}, updateAfterTransition));
+                    $scope.$on('$destroy', setupEventListeners());
                     if ($uiRouter.globals.transition) {
                         updateAfterTransition($uiRouter.globals.transition);
+                    }
+                    function setupEventListeners() {
+                        var deregisterStatesChangedListener = $uiRouter.stateRegistry.onStatesChanged(handleStatesChanged);
+                        var deregisterOnStartListener = $uiRouter.transitionService.onStart({}, updateAfterTransition);
+                        var deregisterStateChangeSuccessListener = $scope.$on('$stateChangeSuccess', update);
+                        return function cleanUp() {
+                            deregisterStatesChangedListener();
+                            deregisterOnStartListener();
+                            deregisterStateChangeSuccessListener();
+                        };
+                    }
+                    function handleStatesChanged() {
+                        setStatesFromDefinitionObject(uiSrefActive);
+                    }
+                    function setStatesFromDefinitionObject(statesDefinition) {
+                        if (isObject(statesDefinition)) {
+                            states = [];
+                            forEach(statesDefinition, function (stateOrName, activeClass) {
+                                // Helper function to abstract adding state.
+                                var addStateForClass = function (stateOrName, activeClass) {
+                                    var ref = parseStateRef(stateOrName);
+                                    addState(ref.state, $scope.$eval(ref.paramExpr), activeClass);
+                                };
+                                if (isString(stateOrName)) {
+                                    // If state is string, just add it.
+                                    addStateForClass(stateOrName, activeClass);
+                                }
+                                else if (isArray(stateOrName)) {
+                                    // If state is an array, iterate over it and add each array item individually.
+                                    forEach(stateOrName, function (stateOrName) {
+                                        addStateForClass(stateOrName, activeClass);
+                                    });
+                                }
+                            });
+                        }
                     }
                     function addState(stateName, stateParams, activeClass) {
                         var state = $state.get(stateName, stateContext($element));
@@ -9901,10 +9973,10 @@ ng.module('ui.router.state').provider('$uiViewScroll', $ViewScrollProvider);
  * Main entry point for angular 1.x build
  * @module ng1
  */ /** */
-var index = 'ui.router';
+var index$1 = 'ui.router';
 
-exports['default'] = index;
-exports.core = index$1;
+exports.default = index$1;
+exports.core = index;
 exports.watchDigests = watchDigests;
 exports.getLocals = getLocals;
 exports.getNg1ViewConfigFactory = getNg1ViewConfigFactory;
