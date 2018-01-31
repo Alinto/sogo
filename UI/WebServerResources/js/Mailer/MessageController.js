@@ -351,7 +351,7 @@
     };
 
     this.closePopup = function() {
-      if ($window.opener)
+      if ($window.document.body.classList.contains('popup'))
         $window.close();
     };
 
