@@ -1,6 +1,6 @@
 /**
- * @license AngularJS v1.6.8
- * (c) 2010-2017 Google, Inc. http://angularjs.org
+ * @license AngularJS v1.6.9
+ * (c) 2010-2018 Google, Inc. http://angularjs.org
  * License: MIT
  */
 (function(window, angular) {'use strict';
@@ -200,7 +200,7 @@ var jqLite;
  *
  * Feel free to use other structural directives such as ng-if and ng-switch to further control
  * what messages are active and when. Be careful, if you place ng-message on the same element
- * as these structural directives, Angular may not be able to determine if a message is active
+ * as these structural directives, AngularJS may not be able to determine if a message is active
  * or not. Therefore it is best to place the ng-message on a child element of the structural
  * directive.
  *
@@ -265,14 +265,14 @@ var jqLite;
  * {@link ngAnimate Click here} to learn how to use JavaScript animations or to learn more about ngAnimate.
  */
 angular.module('ngMessages', [], function initAngularHelpers() {
-  // Access helpers from angular core.
+  // Access helpers from AngularJS core.
   // Do it inside a `config` block to ensure `window.angular` is available.
   forEach = angular.forEach;
   isArray = angular.isArray;
   isString = angular.isString;
   jqLite = angular.element;
 })
-  .info({ angularVersion: '1.6.8' })
+  .info({ angularVersion: '1.6.9' })
 
   /**
    * @ngdoc directive
@@ -313,7 +313,7 @@ angular.module('ngMessages', [], function initAngularHelpers() {
    * </ng-messages>
    * ```
    *
-   * @param {string} ngMessages an angular expression evaluating to a key/value object
+   * @param {string} ngMessages an AngularJS expression evaluating to a key/value object
    *                 (this is typically the $error object on an ngModel instance).
    * @param {string=} ngMessagesMultiple|multiple when set, all messages will be displayed with true
    *
@@ -422,13 +422,6 @@ angular.module('ngMessages', [], function initAngularHelpers() {
 
         $scope.$watchCollection($attrs.ngMessages || $attrs['for'], ctrl.render);
 
-        // If the element is destroyed, proactively destroy all the currently visible messages
-        $element.on('$destroy', function() {
-          forEach(messages, function(item) {
-            item.message.detach();
-          });
-        });
-
         this.reRender = function() {
           if (!renderLater) {
             renderLater = true;
@@ -502,6 +495,9 @@ angular.module('ngMessages', [], function initAngularHelpers() {
 
         function removeMessageNode(parent, comment, key) {
           var messageNode = messages[key];
+
+          // This message node may have already been removed by a call to deregister()
+          if (!messageNode) return;
 
           var match = findPreviousMessage(parent, comment);
           if (match) {
@@ -707,6 +703,8 @@ function ngMessageDirectiveFactory() {
                 // by another structural directive then it's time
                 // to deregister the message from the controller
                 currentElement.on('$destroy', function() {
+                  // If the message element was removed via a call to `detach` then `currentElement` will be null
+                  // So this handler only handles cases where something else removed the message element.
                   if (currentElement && currentElement.$$attachId === $$attachId) {
                     ngMessagesCtrl.deregister(commentNode);
                     messageCtrl.detach();
@@ -723,6 +721,14 @@ function ngMessageDirectiveFactory() {
               $animate.leave(elm);
             }
           }
+        });
+
+        // We need to ensure that this directive deregisters itself when it no longer exists
+        // Normally this is done when the attached element is destroyed; but if this directive
+        // gets removed before we attach the message to the DOM there is nothing to watch
+        // in which case we must deregister when the containing scope is destroyed.
+        scope.$on('$destroy', function() {
+          ngMessagesCtrl.deregister(commentNode);
         });
       }
     };
