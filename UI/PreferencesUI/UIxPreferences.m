@@ -2050,7 +2050,7 @@ static NSArray *reminderValues = nil;
       knownKeys = [NSArray arrayWithObjects: @"name", @"serverName", @"port",
                            @"userName", @"password", @"encryption", @"replyTo",
                            @"identities", @"mailboxes",
-                           @"receipts", @"security",
+                           @"receipts", @"security", @"isNew",
                            nil];
       [knownKeys retain];
     }
