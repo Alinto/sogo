@@ -276,6 +276,7 @@
                 stateMessage: message
               }
             })
+            .catch(_.noop) // Cancel
             .finally(function() {
               _messageDialog(null);
               vm.closePopup();

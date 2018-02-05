@@ -172,7 +172,7 @@
                 stateMessage: message
               }
             })
-            .catch() // Cancel
+            .catch(_.noop) // Cancel
             .finally(function() {
               vm.messageDialog = null;
             });
