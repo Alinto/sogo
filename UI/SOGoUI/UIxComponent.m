@@ -173,6 +173,7 @@ static SoProduct      *commonProduct      = nil;
 - (void) _parseQueryString: (NSString *) _s
 {
   NSEnumerator *e;
+  NSMutableString *urlEncodedValue;
   NSString *part;
   NSRange  r;
   NSString *key, *value;
@@ -190,8 +191,9 @@ static SoProduct      *commonProduct      = nil;
       else
         {
           key = [[part substringToIndex:r.location] stringByUnescapingURL];
-          value = [[part substringFromIndex:(r.location + r.length)] 
-                    stringByUnescapingURL];
+          urlEncodedValue = [NSMutableString stringWithString: [part substringFromIndex:(r.location + r.length)]];
+          [urlEncodedValue replaceString: @"+" withString: @" "];
+          value = [urlEncodedValue stringByUnescapingURL];
         }
       if (key && value)
         [queryParameters setObject:value forKey:key];

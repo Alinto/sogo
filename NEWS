@@ -50,6 +50,7 @@ Bug fixes
  - [web] cards list not accessible when changing address book in expanded card view
  - [web] added missing subject to junk/not junk reports
  - [web] fixed file uploader URL in mail editor
+ - [web] fixed decoding of spaces in URL-encoded parameters (+)
  - [eas] hebrew folders encoding problem using EAS (#4240)
  - [eas] avoid sync requests for shared folders every second (#4275)
 
