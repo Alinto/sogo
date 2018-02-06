@@ -190,6 +190,20 @@
   return filters;
 }
 
+/**
+   <?xml version="1.0" encoding="UTF-8"?>
+     <C:addressbook-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:carddav">
+       <D:prop>
+         <D:getetag/>
+         <C:address-data/>
+       </D:prop>
+       <C:filter>
+         <C:prop-filter name="mail">
+           <C:text-match collation="i;unicasemap" match-type="starts-with">foo</C:text-match>
+         </C:prop-filter>
+       </C:filter>
+     </C:addressbook-query>
+ */
 - (id) davAddressbookQuery: (id) queryContext
 {
   WOResponse *r;
@@ -205,8 +219,8 @@
   filters = [self _parseContactFilters: [document documentElement]];
 
   [self _appendComponentsMatchingFilters: filters
-        toResponse: r
-           context: queryContext];
+                              toResponse: r
+                                 context: queryContext];
   [r appendContentString: @"</D:multistatus>"];
 
   return r;
