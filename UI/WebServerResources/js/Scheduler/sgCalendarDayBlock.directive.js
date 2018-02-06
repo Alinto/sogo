@@ -77,22 +77,14 @@
 
       if (!_.has(attrs, 'sgCalendarGhost')) {
 
-        // Compute overlapping (2%)
+        // Compute position
         pc = 100 / scope.block.siblings;
         left = scope.block.position * pc;
         right = 100 - (scope.block.position + 1) * pc;
-        if (pc < 100) {
-          if (left > 0)
-            left -= 2;
-          if (right > 0)
-            right -= 2;
-        }
 
-        // Add some padding (2%)
-        if (left === 0)
-          left = 2;
+        // Add right margin (10%) for easier creation of events by mouse dragging
         if (right === 0)
-          right = 2;
+          right = 10;
 
         // Set position
         iElement.css('left', left + '%');

@@ -285,13 +285,14 @@ $quarter_height: 10px;
 
   // The outer event container
   .sg-event {
-    font-size: $sg-font-size-2;
+    font-size: $sg-font-size-1;
     font-weight: $sg-font-medium;
     border-radius: $block_radius;
     //overflow: hidden;
     position: absolute;
     left: 0;
     right: 0;
+    margin-left: 1px;
     opacity: 0.9; // When events from a same calendar overlap, it creates a border to help distinguish the events
     outline: none;
     user-select: none;
@@ -299,7 +300,7 @@ $quarter_height: 10px;
     $i: 0;
     @while $i <= 96 { // number of 15-minutes blocks in a day
       &.starts#{$i} { top: $quarter_height * $i; }
-      &.lasts#{$i} { height: $quarter_height * $i; }
+      &.lasts#{$i} { height: $quarter_height * $i - 1; }
       $i: $i + 1;
     }
 
