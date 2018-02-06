@@ -47,6 +47,7 @@
 "Enable auto reply on" = "Zapnúť automatickú odpoveď od";
 "Disable auto reply on" = "Vypnúť automatickú odpoveď";
 "Always send vacation message response" = "Vždy odošli správu o dovolenke";
+"Discard incoming mails during vacation" = "Zrušiť príjem pošty počas neprítomnosti";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Prosím špecifikujte Vašu správu a emailovú adresu pre ktorú chcete zapnút automatickú odpoveď.";
 "Your vacation message must not end with a single dot on a line." = "Vaša dovolenková správa nesmie končit samotnou bodkou v riadku.";
@@ -146,10 +147,17 @@
 /* Mailer */
 "Labels" = "Štítok";
 "Label" = "Štítok";
+"IMAP Label" = "IMAP Štítok";
+"Invalid label" = "Nepoužívajte medzeru, ani znaky ( ) { } % * \" \\";
+"Duplicate label" = "Duplicitný štítok";
+"IMAP labels must have unique names." = "IMAP štítky musia mat unikátne názvy";
 "New label" = "Nový štítok";
 "Show subscribed mailboxes only" = "Ukazuj iba odoberané účty";
 "Synchronize only default mail folders (EAS)" = "Synchronizovať iba predvolené emailové priečinky (EAS)";
 "Sort messages by threads" = "Zoraď správy do konverzácií";
+"Always open mail composer" = "Vždy otvoriť editor správy";
+"Inside current window" = "V aktuálnom okne";
+"In a popup window" = "Vo vyskakovacom okne";
 "When sending mail, add unknown recipients to my" = "Pri odosielaní emailu, pridaj neznámych príjemcov do môjho";
 "Address Book" = "Adresár";
 "Forward messages" = "Preposielaj správy";
@@ -179,6 +187,8 @@
 "Collected Address Book" = "Pozbierané osobné kontakty";
 
 /* IMAP Accounts */
+"Settings" = "Nastavenia";
+"Security" = "Bezpečnosť";
 "Mail Account" = "Mailový účet";
 "New Mail Account" = "Nový mailový účet";
 "Server Name" = "Meno servera";
@@ -195,6 +205,16 @@
 "Please specify a valid sender address." = "Prosím zvoľte platnú adresu odosielateľa";
 "Please specify a valid reply-to address." = "Prosím zvoľte platnú adresu pre odpoveď.";
 "Specify a hostname other than the local host" = "Zadajte iné doménové meno ako local host";
+
+"No certificate installed" = "Nie je nainštalovaný žiaden certifikát";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL certifikát musí byť vo PKCS#12 (PFX) formáte.";
+"Uninstall" = "Odinštalovať";
+"Choose PKCS12 Certificate .." = "Vyberte PKCS12 Certifikát ..";
+"Certificate Import Password" = "Heslo pre Import Certifikátu";
+"Upload" = "Nahrať";
+"When composing a message" = "Pri vytvaraní správy";
+"Digitally sign the message by default" = "Vždy digitálne podpísať správu";
+"Always try to encrypt the message" = "Vždy sa pokúsiť o šifrovanie správy";
 
 /* Additional Parameters */
 "Additional Parameters" = "Dalšie parametre";
@@ -238,7 +258,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -402,3 +422,11 @@
 "monsterid" = "Monster";
 "wavatar" = "Wavatar";
 "retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Úroveň animácie";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normálna";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Obmedzená";
+"animation_NONE" = "Žiadna";

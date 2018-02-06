@@ -246,6 +246,21 @@
 /* Number of selected messages in list */
 "selected" = "ileti seçildi";
 
+/* Encrypted message notification */
+"This message is encrypted" = "Bu ileti şifrelenmiştir";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "İletinin imzası doğrulanamıyor";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "İleti değiştirilmiş";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Sertifika okunurken hata oluştu.\nLütfen yeni bir sertifika yükleyin.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Hesapla ilişkili sertifika yok.";
+
 "This Folder" = "Bu Klasör";
 
 /* Label popup menu */

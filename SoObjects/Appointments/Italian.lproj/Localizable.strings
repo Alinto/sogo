@@ -18,10 +18,14 @@ vtodo_class2 = "(Attività confidenziale)";
 "calendar_label" = "Calendario";
 "startDate_label" = "Inizio";
 "endDate_label" = "Fine";
+"time_label" = "Ora";
+"to_label" = "a";
 "due_label" = "Scadenza:";
 "location_label" = "Luogo";
 "summary_label" = "Summario:";
 "comment_label" = "Commento:";
+"organizer_label" = "Organizzatore";
+"attendee_label" = "Partecipante";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Invito Evento: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(inviato da %{SentBy}) ";

@@ -339,6 +339,7 @@
 "repeat_YEARLY" = "Yıllık";
 "repeat_CUSTOM" = "Özel...";
 "reminder_NONE" = "Hatırlatıcı yok";
+"reminder_0" = "Gerçekleşirken";
 "reminder_5_MINUTES_BEFORE" = "5 dakika önce";
 "reminder_10_MINUTES_BEFORE" = "10 dakika önce";
 "reminder_15_MINUTES_BEFORE" = "15 dakika önce";
@@ -571,6 +572,7 @@ vtodo_class2 = "(Gizli görev)";
 "More options" = "Diğer seçenekler";
 "Delete This Occurrence" = "Bu Tekrarı Sil";
 "Delete All Occurrences" = "Tüm Tekrarları Sil";
+"Add Recurrence Date" = "Yinelenme Tarihi Ekle";
 "Add From" = "Başlangıç Tarihi Ekle";
 "Add Due" = "Kapanış Tarihi Ekle";
 "Import" = "İçeri Aktar";

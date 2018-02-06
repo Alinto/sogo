@@ -155,7 +155,7 @@
 "Show subscribed mailboxes only" = "Sadece üye olunan e-posta klasörlerini göster";
 "Synchronize only default mail folders (EAS)" = "Sadece varsayılan e-posta klasörlerini eşitle (EAS)";
 "Sort messages by threads" = "İletileri diziler halinde sırala";
-"Always show mail composer" = "E-posta düzenleyicisini her zaman göster";
+"Always open mail composer" = "E-posta düzenleyicisini her zaman aç";
 "Inside current window" = "Mevcut pencerenin içinde";
 "In a popup window" = "Yeni pencerede";
 "When sending mail, add unknown recipients to my" = "Gönderilen iletide bulunan yeni kişileri, aşağıdaki defterime ekle";
@@ -187,6 +187,8 @@
 "Collected Address Book" = "Otomatik Eklenen Adresler";
 
 /* IMAP Accounts */
+"Settings" = "Ayarlar";
+"Security" = "Güvenlik";
 "Mail Account" = "E-posta Hesabı";
 "New Mail Account" = "Yeni E-posta Hesabı";
 "Server Name" = "Sunucu Adı";
@@ -203,6 +205,16 @@
 "Please specify a valid sender address." = "Lütfen geçeril bir gönderici adresi belirtin.";
 "Please specify a valid reply-to address." = "Lütfen geçeril bir yanıt adresi belirtin.";
 "Specify a hostname other than the local host" = "Yerel sunucu adından farklı bir sunucu adı belirtin";
+
+"No certificate installed" = "Yüklü sertifika yok";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL sertifikası, PKCS # 12 (PFX) biçimini kullanmalıdır.";
+"Uninstall" = "Kaldır";
+"Choose PKCS12 Certificate .." = "PKCS12 Sertifikasını Seçin ..";
+"Certificate Import Password" = "Sertifika İçeri Alma Parolası";
+"Upload" = "Yükle";
+"When composing a message" = "İleti yazarken";
+"Digitally sign the message by default" = "İletiyi öntanımlı olarak sayısal olarak imzala";
+"Always try to encrypt the message" = "Her zaman iletiyi şifrelemeyi dene";
 
 /* Additional Parameters */
 "Additional Parameters" = "Diğer Özellikler";

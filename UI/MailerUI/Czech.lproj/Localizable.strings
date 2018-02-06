@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "Prohledat více poštovních schránek";
 
 /* Main Frame  */
-"Home"                 = "Domů"; 
+"Home"                 = "Domů";
 "Calendar"             = "Kalendář";
 "Addressbook"          = "Adresář";
 "Mail"                 = "E-Mail";
@@ -246,6 +246,21 @@
 /* Number of selected messages in list */
 "selected" = "vybráno";
 
+/* Encrypted message notification */
+"This message is encrypted" = "Tato zpráva je šifrována";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Nelze ověřit digitální podpis zprávy";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Zpráva byla modifikována";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Chyba čtení certifikátu. Nainstalujte si prosím nový certifikát.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "K účtu není přiřazen certfikát.";
+
 "This Folder" = "Tato složka";
 
 /* Label popup menu */
@@ -321,6 +336,7 @@
 = "Zprávy nemohou být přesunuty do koše. Chcete je smazat trvale?";
 
 /* Message editing */
+"Please specify a subject." = "Zadejte předmět zprávy";
 "error_missingsubject" = "Chybí předmět";
 "error_missingrecipients" = "Zadejte alespoň jednoho příjemce.";
 "Send Anyway" = "Odeslat";

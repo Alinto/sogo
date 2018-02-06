@@ -64,6 +64,12 @@
 "Compose E-Mail to All Attendees" = "Invia Email a tutti gli invitati";
 "Compose E-Mail to Undecided Attendees" = "Invia Email agli invitati indecisi";
 
+/* Relative dates */
+"Yesterday" = "Ieri";
+"Today" = "Oggi";
+"Tomorrow" = "Domani";
+"Last %@" = "Ultimo %@";
+
 /* Folders */
 "Personal calendar" = "Calendario personale";
 
@@ -333,6 +339,7 @@
 "repeat_YEARLY" = "Annualmente";
 "repeat_CUSTOM" = "Personalizza...";
 "reminder_NONE" = "Nessun promemoria";
+"reminder_0" = "All'orario dell'evento";
 "reminder_5_MINUTES_BEFORE" = "5 minuti prima";
 "reminder_10_MINUTES_BEFORE" = "10 minuti prima";
 "reminder_15_MINUTES_BEFORE" = "15 minuti prima";
@@ -366,6 +373,15 @@
 "zoom_50" = "50%";
 "zoom_25" = "25%";
 
+/* Arial label for reminder units */
+"Reminder units" = "Ricorda unità";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Promemoria posizione";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Promemoria relazione";
+
 /* transparency */
 "Show Time as Free" = "Mostra comunque come libero";
 
@@ -379,6 +395,8 @@ validate_notitle           = "Nessun titolo inserito, continuare?";
 validate_invalid_startdate = "Data iniziale non corretta!";
 validate_invalid_enddate   = "Data finale non corretta!";
 validate_endbeforestart    = "La data finale specificata è precedente alla data di inizio.";
+validate_untilbeforeend    = "La ricorrenza deve finire dopo la prima occorrenza.";
+
 "Events" = "Eventi";
 "Tasks" = "Attività";
 "Show completed tasks" = "Visualizza attività completate";
@@ -487,7 +505,7 @@ vtodo_class2 = "(Attività confidenziale)";
 "Export" = "Esporta";
 
 
-/* Show only the calendar for which the menu is displayed */ 
+/* Show only the calendar for which the menu is displayed */
 "Show Only This Calendar" = "Mostra solo questo calendario";
 
 
@@ -515,7 +533,7 @@ vtodo_class2 = "(Attività confidenziale)";
 "tagWasAdded" = "Sincronizzando questo calendario sarà necessario ricaricare i dati sul dispositivo mobile.\nContinuare?";
 "tagWasRemoved" = "Rimuovendo questo calendario dalla sincronizzazione, sarà necessario ricaricare i dati sul dispositivo mobile.\nCotinuare?";
 "DestinationCalendarError" = "La sorgente e la destinazione dei calendari sono le stesse. Prego provare a copiare in un calendario differente.";
-"EventCopyError" = "La copia è fallita. Provare a copiare su un calendario differente.";
+"EventCopyError" = "La copia è fallita. Per favore prova a copiare in un calendario differente.";
 "Please select at least one calendar" = "Per favore seleziona almeno un calendari";
 "Open Task..." = "Apri attività...";
 "Mark Completed" = "Segna come completata";
@@ -554,6 +572,7 @@ vtodo_class2 = "(Attività confidenziale)";
 "More options" = "Altre opzioni";
 "Delete This Occurrence" = "Cancella questa occorrenza";
 "Delete All Occurrences" = "Cancella tutte le occorrenze";
+"Add Recurrence Date" = "Aggiungi Data Ricorrente";
 "Add From" = "Aggiungi da";
 "Add Due" = "Aggiungi scadenza";
 "Import" = "Importa";
@@ -569,3 +588,24 @@ vtodo_class2 = "(Attività confidenziale)";
 
 /* Aria label for scope of search on events or tasks */
 "Search scope" = "Ambito di ricerca";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

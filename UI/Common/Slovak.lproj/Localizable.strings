@@ -31,7 +31,7 @@
 "Sorry, the user rights can not be configured for that object." = "Je nám ľúto, užívateľské práva nie je možné konfigurovať pre daný objekt.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Ktorýkoľvek užívateľ tohoto systému bude môcť vidieť Vašu zložku \"%{0}\". Ste si istý, že veríte všetkým užívateľom?";
-"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
      = "Ktorýkoľvek užívateľ tohoto systému bude môcť vidieť Váš kalendár \"%{0}\". Ste si istý že veríte všetkým užívateľom?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "Potencionálne ktokoľvek na internete bude môcť vidieť Váš kalendár \"%{0}\", napriek tomu že nemá účet v tomto systéme. Sú tieto informácie vhodné pre verejnosť?";
@@ -57,7 +57,7 @@
 "The user rights cannot be edited for this object!"
         = "Užívateľské práva nemožno upraviť pre tento objekt!";
 "A folder by that name already exists." = "Zložka s týmto názvom už existuje.";
-"You cannot create a list in a shared address book." 
+"You cannot create a list in a shared address book."
         = "Nemôžete vytvoriť zoznam v zdieľanom adresári.";
 "Warning" = "Varovanie";
 "Can't contact server" = "Pri kontaktovaní servera nastala chyba. Skúste to neskôr, prosím.";
@@ -75,6 +75,10 @@
 "Cancel" = "Zrušiť";
 "Yes" = "Áno";
 "No" = "Nie";
+
+/* generic messages */
+"Error" = "Chyba";
+"Success" = "Úspešné";
 
 /* alarms */
 "Reminder" = "Pripomienka";
@@ -109,6 +113,15 @@
 "Loading" = "Spúštanie";
 "No such user." = "Spomenutý užívateľ neexistuje.";
 "You cannot (un)subscribe to a folder that you own!" = "Nemôžete sa prihlásiť (odhlásiť) na odber svojej vlastnej zložky!";
+
+/* SMIME Certificate field */
+"Subject Name" = "Meno Subjektu";
+"Issuer" = "Vystavovateľ";
+"countryName" = "Krajina";
+"organizationName" = "Organizácia";
+"organizationalUnitName" = "Organizačná Jednotka";
+"commonName" = "Všeobecné Meno";
+"emailAddress" = "E-mailová Adresa";
 
 /* Authentication username */
 "Username" = "Užívateľské meno";

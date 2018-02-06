@@ -339,6 +339,7 @@
 "repeat_YEARLY" = "Ročně";
 "repeat_CUSTOM" = "Vlastní...";
 "reminder_NONE" = "Bez připomenutí";
+"reminder_0" = "V čase události";
 "reminder_5_MINUTES_BEFORE" = "5 minut před";
 "reminder_10_MINUTES_BEFORE" = "10 minut před";
 "reminder_15_MINUTES_BEFORE" = "15 minut před";
@@ -571,6 +572,7 @@ vtodo_class2 = "(Důvěrný úkol)";
 "More options" = "Více možností";
 "Delete This Occurrence" = "Smazat toto opakování";
 "Delete All Occurrences" = "Smazat všechna opakování";
+"Add Recurrence Date" = "Přidat Datum Opakování";
 "Add From" = "Přidat Začátek";
 "Add Due" = "Přidat Splnění";
 "Import" = "Importovat";

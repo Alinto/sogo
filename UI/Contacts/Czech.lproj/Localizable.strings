@@ -45,6 +45,90 @@
 "Carbon Copy (Cc)" = "Kopie (Cc)";
 "Blind Carbon Copy (Bcc)" = "Skrytá kopie (Bcc)";
 
+/* Search scope: name fields */
+"name" = "Jméno";
+
+/* Search scope: name fields */
+"c_cn" = "Jméno";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Sekundární email";
+
+/* Search scope: screen name field */
+"nsaimid" = "Zobrazované jméno";
+
+/* Search scope: mail fields */
+"mail" = "Pošta";
+
+/* Search scope: mail fields */
+"c_mail" = "Pošta";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telefon";
+
+/* Search scope: telephone field */
+"homephone" = "Telefon";
+
+/* Search scope: mobile field */
+"mobile" = "Mobil";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Pager";
+
+/* Search scope: categories field */
+"c_categories" = "Kategorie";
+
+/* Search scope: categories field */
+"vcardcategories" = "Kategorie";
+
+/* Search scope: title field */
+"title" = "Titul";
+
+/* Search scope: organization field */
+"c_o" = "Organizace";
+
+/* Search scope: organization field */
+"o" = "Organizace";
+
+/* Search scope: department field */
+"ou" = "Oddělení";
+
+/* Search scope: city field */
+"l" = "Město";
+
+/* Search scope: country field */
+"c" = "Země";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Soukromá adresa";
+
+/* Search scope: state/province field */
+"st" = "Kraj";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Kraj (soukromá adresa)";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "PSČ";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "PSČ";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Země (soukromá adresa)";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Soukromá webová stránka";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Webová stránka";
+
+/* Search scope: note field */
+"description" = "Poznámka";
+
 /* Subheader of empty addressbook */
 "No contact" = "Není kontakt";
 

@@ -155,9 +155,9 @@
 "Show subscribed mailboxes only" = "Nur abonnierte Ordner anzeigen";
 "Synchronize only default mail folders (EAS)" = "Nur Standard-E-Mail-Ordner synchronisieren (EAS)";
 "Sort messages by threads" = "Nachrichten nach Thema sortieren";
-"Always show mail composer" = "Zeige immer den E-Mail Autor an";
+"Always open mail composer" = "Immer das E-Mail-Erstellfenster öffnen";
 "Inside current window" = "Erscheint im aktuellen Fenster";
-"In a popup window" = "Erscheint in zusätzlichen Fenster";
+"In a popup window" = "Erscheint in zusätzlichem Fenster";
 "When sending mail, add unknown recipients to my" = "Unbekannte Empfänger meiner E-Mails hinzufügen zu";
 "Address Book" = "Adressbuch";
 "Forward messages" = "Nachrichten weiterleiten";
@@ -187,6 +187,8 @@
 "Collected Address Book" = "Gesammelte Adressen";
 
 /* IMAP Accounts */
+"Settings" = "Einstellungen";
+"Security" = "Sicherheit";
 "Mail Account" = "E-Mail-Konto";
 "New Mail Account" = "Neues E-Mail-Konto";
 "Server Name" = "Servername";
@@ -203,6 +205,16 @@
 "Please specify a valid sender address." = "Bitte geben Sie eine gültige Absenderadresse an.";
 "Please specify a valid reply-to address." = "Bitte geben Sie eine gültige \"Antworten An\"-Adresse (Reply-To) an.";
 "Specify a hostname other than the local host" = "Geben Sie einen anderen Servernamen an, als den Lokalen";
+
+"No certificate installed" = "Kein Zertifikat installiert";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "Das SSL-Zertifikat muss im Format PKCS#12 (PFX) vorliegen.";
+"Uninstall" = "Deinstallieren";
+"Choose PKCS12 Certificate .." = "PKCS#12-Zertifikat wählen ..";
+"Certificate Import Password" = "Import-Passwort des Zertifikats";
+"Upload" = "Hochladen";
+"When composing a message" = "Beim Erstellen einer Nachricht";
+"Digitally sign the message by default" = "Nachricht standardmäßig digital signieren";
+"Always try to encrypt the message" = "Versuche Nachricht immer zu verschlüsseln";
 
 /* Additional Parameters */
 "Additional Parameters" = "Zusätzliche Einstellungen";

@@ -155,7 +155,7 @@
 "Show subscribed mailboxes only" = "Pokaż tylko subskrybowane konta pocztowe";
 "Synchronize only default mail folders (EAS)" = "Synchronizuj wyłącznie domyślne foldery (EAS)";
 "Sort messages by threads" = "Sortuj wiadomości według wątków";
-"Always show mail composer" = "Zawsze pokazuj edytor wiadomości";
+"Always open mail composer" = "Zawsze otwieraj edytor wiadomości";
 "Inside current window" = "W aktualnym oknie";
 "In a popup window" = "W nowym oknie";
 "When sending mail, add unknown recipients to my" = "Gdy wysyłam e-mail, dodaj adresy nowych odbiorców do";
@@ -187,6 +187,8 @@
 "Collected Address Book" = "Książka zebranych adresów";
 
 /* IMAP Accounts */
+"Settings" = "Ustawienia";
+"Security" = "Bezpieczeństwo";
 "Mail Account" = "Konto e-mail";
 "New Mail Account" = "Nowe konto";
 "Server Name" = "Nazwa serwera";
@@ -203,6 +205,16 @@
 "Please specify a valid sender address." = "Wprowadź poprawny adres nadawcy.";
 "Please specify a valid reply-to address." = "Wprowadź poprawny adres \"Odpowiedź do\"";
 "Specify a hostname other than the local host" = "Podaj nazwę serwera inną niż host lokalny";
+
+"No certificate installed" = "Nie zainstalowano certyfikatu";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "Certyfikat SSL musi być w formacie PKCS#12 (PFX).";
+"Uninstall" = "Odinstaluj";
+"Choose PKCS12 Certificate .." = "Wybierz certyfikat PKCS12";
+"Certificate Import Password" = "Hasło importu certyfikatu";
+"Upload" = "Wgraj";
+"When composing a message" = "Gdy wiadomość jest tworzona";
+"Digitally sign the message by default" = "Domyślnie podpisuj cyfrowo wiadomość";
+"Always try to encrypt the message" = "Zawsze próbuj odszyfrować wiadomość";
 
 /* Additional Parameters */
 "Additional Parameters" = "Dodatkowe parametry";

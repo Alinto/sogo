@@ -19,7 +19,7 @@
 "Firstname" = "Meno";
 "Home" = "Domov";
 "HomePhone" = "Telefón domov";
-"Lastname" = "Priezvysko";
+"Lastname" = "Priezvisko";
 "Location" = "Umiestnenie";
 "Add a category" = "Pridať kategóriu";
 "MobilePhone" = "Telefón mobil";
@@ -44,6 +44,90 @@
 "To" = "Komu";
 "Carbon Copy (Cc)" = "Kópia (Cc)";
 "Blind Carbon Copy (Bcc)" = "Skrytá kópia (Bcc)";
+
+/* Search scope: name fields */
+"name" = "Meno";
+
+/* Search scope: name fields */
+"c_cn" = "Meno";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Sekundárny email";
+
+/* Search scope: screen name field */
+"nsaimid" = "Zobrazované meno";
+
+/* Search scope: mail fields */
+"mail" = "Pošta";
+
+/* Search scope: mail fields */
+"c_mail" = "Pošta";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telefón";
+
+/* Search scope: telephone field */
+"homephone" = "Telefón";
+
+/* Search scope: mobile field */
+"mobile" = "Mobil";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Pager";
+
+/* Search scope: categories field */
+"c_categories" = "Kategórie";
+
+/* Search scope: categories field */
+"vcardcategories" = "Kategórie";
+
+/* Search scope: title field */
+"title" = "Titul";
+
+/* Search scope: organization field */
+"c_o" = "Organizácia";
+
+/* Search scope: organization field */
+"o" = "Organizácia";
+
+/* Search scope: department field */
+"ou" = "Oddelenie";
+
+/* Search scope: city field */
+"l" = "Mesto";
+
+/* Search scope: country field */
+"c" = "Krajina";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Súkromná Adresa";
+
+/* Search scope: state/province field */
+"st" = "Štát";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Štát (súkromná adresa)";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Poštové Smerové Číslo";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Poštové Smerové Číslo";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Krajina (súkromná adresa)";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Domáca stránka";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Webová stránka";
+
+/* Search scope: note field */
+"description" = "Poznámka";
 
 /* Subheader of empty addressbook */
 "No contact" = "Žiadny kontakt";

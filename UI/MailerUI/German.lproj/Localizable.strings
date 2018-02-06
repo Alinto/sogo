@@ -246,6 +246,21 @@
 /* Number of selected messages in list */
 "selected" = "ausgewählt";
 
+/* Encrypted message notification */
+"This message is encrypted" = "Diese Nachricht ist verschlüsselt.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Signatur der Nachricht konnte nicht verifiziert werden.";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Die Nachricht wurde verändert.";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Fehler beim Lesen des Zertifikats. Bitte installieren Sie ein neues Zertifikat.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Kein Zertifikat mit dem Benutzer verbunden";
+
 "This Folder" = "Dieser Ordner";
 
 /* Label popup menu */

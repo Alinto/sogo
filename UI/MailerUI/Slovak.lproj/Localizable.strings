@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "Prehľadať viaceré poštové schránky";
 
 /* Main Frame  */
-"Home"                 = "Domov"; 
+"Home"                 = "Domov";
 "Calendar"             = "Kalendár";
 "Addressbook"          = "Kontakty";
 "Mail"                 = "Pošta";
@@ -246,6 +246,21 @@
 /* Number of selected messages in list */
 "selected" = "vybrané";
 
+/* Encrypted message notification */
+"This message is encrypted" = "Správa je zašifrovaná";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Nie je možné overiť digitálny podpis správy";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Správa bola upravená";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Chyba čítania certifikátu. Nainštalujte si prosím nový certifikát.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "K účtu nie je priradený žiaden certifikát.";
+
 "This Folder" = "Adresár";
 
 /* Label popup menu */
@@ -321,6 +336,7 @@
 = "Správy nemôžu byť presunuté do koša. Chcete ich vymazať okamžite?";
 
 /* Message editing */
+"Please specify a subject." = "Zadajte prosím predmet správy";
 "error_missingsubject" = "Správa nemá žiadny predmet. Skutočne ju checete odoslať?";
 "error_missingrecipients" = "Prosím zvoľte aspoň jedného príjemcu.";
 "Send Anyway" = "Poslať napriek tomu";

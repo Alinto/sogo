@@ -31,7 +31,7 @@
 "Sorry, the user rights can not be configured for that object." = "Üzgünüz, bu öge için kullanıcı yetkileri ayarlanamaz.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Bu ağda hesabı bulunan her kullanıcı \"%{0}\" e-posta klasörünüze erişebilecek. Hepsine güvenebileceğinize emin misiniz?";
-"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
      = "Bu ağda hesabı olan her kullanıcı \"%{0}\" takviminize erişebilecek. Hepsine güvenebileceğinize emin misiniz?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "Potansiyel olarak internetteki herkes, bu ağ üzerinde bir hesapları olmasa bile \"%{0}\" takviminize erişebilecek. Bu bilgi genel internet erişimi için uygun mu?";
@@ -57,7 +57,7 @@
 "The user rights cannot be edited for this object!"
         = "Bu ögenin kullanıcı yetkileri düzenlenemez!";
 "A folder by that name already exists." = "Bu isimde başka bir klasör var.";
-"You cannot create a list in a shared address book." 
+"You cannot create a list in a shared address book."
         = "Paylaşılan bir adres defterinde liste oluşturamazsınız!";
 "Warning" = "Uyarı";
 "Can't contact server" = "Sunucuya erişirken bir hata oluştu. Lütfen, daha sonra tekrar deneyin.";
@@ -75,6 +75,10 @@
 "Cancel" = "İptal";
 "Yes" = "Evet";
 "No" = "Hayır";
+
+/* generic messages */
+"Error" = "Hata";
+"Success" = "Başarılı";
 
 /* alarms */
 "Reminder" = "Hatırlatıcı";
@@ -109,6 +113,15 @@
 "Loading" = "Yükleniyor";
 "No such user." = "Böyle bir kullanıcı yok.";
 "You cannot (un)subscribe to a folder that you own!" = "Kendinize ait bir klasöre üye olamaz (üyeliğinizi kaldıramazsınız)!";
+
+/* SMIME Certificate field */
+"Subject Name" = "Konu Başlığı";
+"Issuer" = "Yayınlayan";
+"countryName" = "Ülke";
+"organizationName" = "Organizasyon";
+"organizationalUnitName" = "Organizasyon Birimi";
+"commonName" = "Yaygın İsim";
+"emailAddress" = "E-posta Adresi";
 
 /* Authentication username */
 "Username" = "Kullanıcı Adı";

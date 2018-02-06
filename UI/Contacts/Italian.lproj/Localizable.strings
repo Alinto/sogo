@@ -41,20 +41,115 @@
 "Move To" = "Sposta in ";
 "Copy To" = "Copia in ";
 "Add to" = "Aggiungi a";
+"To" = "A";
+"Carbon Copy (Cc)" = "Copia Carbone (Cc)";
+"Blind Carbon Copy (Bcc)" = "Copia Carbone Nascosta (Ccn)";
+
+/* Search scope: name fields */
+"name" = "Nome";
+
+/* Search scope: name fields */
+"c_cn" = "Nome";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Email secondaria";
+
+/* Search scope: screen name field */
+"nsaimid" = "Nome visualizzato";
+
+/* Search scope: mail fields */
+"mail" = "Mail";
+
+/* Search scope: mail fields */
+"c_mail" = "Mail";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telefono";
+
+/* Search scope: telephone field */
+"homephone" = "Telefono";
+
+/* Search scope: mobile field */
+"mobile" = "Cellulare";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Cercapersone";
+
+/* Search scope: categories field */
+"c_categories" = "Categorie";
+
+/* Search scope: categories field */
+"vcardcategories" = "Categorie";
+
+/* Search scope: title field */
+"title" = "Titolo";
+
+/* Search scope: organization field */
+"c_o" = "Società";
+
+/* Search scope: organization field */
+"o" = "Società";
+
+/* Search scope: department field */
+"ou" = "Reparto";
+
+/* Search scope: city field */
+"l" = "Città";
+
+/* Search scope: country field */
+"c" = "Nazione";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Indirizzo di casa";
+
+/* Search scope: state/province field */
+"st" = "Provincia";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Provincia di residenza";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "CAP/Codice Postale";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "CAP/Codice Postale";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Nazione di residenza";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Home page";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Pagina Web";
+
+/* Search scope: note field */
+"description" = "Note";
+
 /* Subheader of empty addressbook */
 "No contact" = "Nessun contatto";
+
 /* Subheader of system addressbook */
 "Start a search to browse this address book" = "Inizia una ricerca per sfogliare questa rubrica";
+
 /* Number of contacts in addressbook; string is prefixed by number */
 "contacts" = "contatti";
+
 /* No contact matching search criteria */
 "No matching contact" = "Nessun contatto corrispondente";
+
 /* Number of contacts matching search criteria; string is prefixed by number */
 "matching contacts" = "contatti corrispondenti";
+
 /* Number of selected contacts in list */
 "selected" = "selezionato";
+
 /* Empty right pane */
 "No contact selected" = "Nessun contatto selezionato";
+
 /* Tooltips */
 "Create a new address book card" = "Crea un nuovo contatto";
 "Create a new list" = "Crea una nuova lista";
@@ -95,9 +190,11 @@
 "Work" = "Lavoro";
 "Mobile" = "Cellulare";
 "Pager" = "Cerca Persone";
+
 /* categories */
 "contacts_category_labels" = "Collega, Concorrente, Cliente, Amico, Famiglia, Socio, Provider, Stampa, VIP";
 "New category" = "Nuova categoria";
+
 /* adresses */
 "Title" = "Titolo";
 "Service" = "Service";
@@ -134,12 +231,14 @@
 = "Non puoi rimuovere la tua rubrica personale.";
 "Are you sure you want to delete the selected contacts?"
 = "Sei sicuro di voler eliminare i contatti selezionati?";
+"Are you sure you want to delete the card of %{0}?" = "Sei sicuro di voler cancellare il contatto di %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "Non è possibile eliminare il contatto di \"%{0}\".";
 "You cannot subscribe to a folder that you own!"
 = "Non puoi sottoscrivere una cartella di cui sei proprietario!";
 "Unable to subscribe to that folder!"
 = "Non puoi sottoscrivere la cartella!";
+
 /* acls */
 "Access rights to" = "Permessi di accesso a";
 "For user" = "Per utente";
@@ -158,11 +257,15 @@
 "The selected contact has no email address."
 = "Il contatto selezionato non dispone di indirizzo email.";
 "Please select a contact." = "Per favore seleziona un contatto.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} contatti copiati";
+"%{0} card(s) moved" = "%{0} contatti spostati";
 "SoAccessDeniedException" = "Non è possibile scrivere questa rubrica.";
-"Forbidden" = "Non è possibile scrivere questa rubrica.";
+"Forbidden" = "Vietato";
 "Invalid Contact" = "Il contatto selezionato non esiste più.";
 "Unknown Destination Folder" = "La rubrica selezionata come destinazione non esiste più.";
+
 /* Lists */
 "List details" = "Dettagli lista";
 "List name" = "Nome lista";
@@ -175,6 +278,8 @@
 "Export" = "Esporta";
 "Export Address Book..." = "Esporta rubrica...";
 "View Raw Source" = "Vedi sorgente";
+
+/* Import */
 "Import Cards" = "Importa contatti";
 "Select a vCard or LDIF file." = "Seleziona una vCard o LDIF file.";
 "Upload" = "Upload";
@@ -184,6 +289,7 @@
 "No card was imported." = "Nessun contatto importato.";
 "A total of %{0} cards were imported in the addressbook." = "Sono stati importati %{0} contatti nella rubrica.";
 "Reload" = "Ricarica";
+
 /* Properties window */
 "Address Book Name" = "Nome della Rubrica";
 "Links to this Address Book" = "Link a questa rubrica";
@@ -212,6 +318,7 @@
 "URL" = "URL";
 "New URL" = "Nuovo URL";
 "street" = "via";
+"street (continued)" = "indirizzo (continua)";
 "Postoffice" = "Casella postale";
 "Region" = "Regione";
 "Postal Code" = "Codice postale";
@@ -225,9 +332,24 @@
 "More options" = "Altre opzioni";
 "Role" = "Ruolo";
 "Add Screen Name" = "Aggiungi Instant Messanger";
+"Custom 1" = "Personalizzato 1";
+"Custom 2" = "Personalizzato 2";
+"Custom 3" = "Personalizzato 3";
+"Custom 4" = "Personalizzato 4";
+"Custom Value" = "Valore Personalizzato";
+"New Custom Value" = "Nuovo Valore Personalizzato";
 "Synchronization" = "Sincronizzazione";
 "Synchronize" = "Sincronizza";
 "Sucessfully subscribed to address book" = "Sottoscrizione ad una rubrica effettuata correttamente";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Ambito di ricerca";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Azioni elemento";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

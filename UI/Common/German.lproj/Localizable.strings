@@ -31,7 +31,7 @@
 "Sorry, the user rights can not be configured for that object." = "Leider können die Benutzerrechte für dieses Objekt nicht konfiguriert werden.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Jeder Benutzer mit einem Konto auf diesem System wird in der Lage sein auf Ihren E-Mail-Ordner \"%{0}\" zuzugreifen. Sind Sie sicher, dass Sie allen vertrauen?";
-"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
      = "Jeder Benutzer mit einem Konto auf diesem System wird in der Lage sein, auf Ihren Kalender \"%{0}\" zuzugreifen. Sind Sie sicher, dass Sie allen vertrauen?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "Jeder aus dem Internet wird in der Lage sein, auf Ihren Kalender \"%{0}\" zuzugreifen, selbst wenn jene Personen kein Konto auf diesem System haben. Sind diese Informationen für das öffentliche Internet gedacht?";
@@ -57,7 +57,7 @@
 "The user rights cannot be edited for this object!"
         = "Die Benutzerrechte können für dieses Objekt nicht verändert werden!";
 "A folder by that name already exists." = "Ein Ordner mit diesem Namen existiert bereits.";
-"You cannot create a list in a shared address book." 
+"You cannot create a list in a shared address book."
         = "Sie können keine Liste in einem gemeinsamen Adressbuch erstellen.";
 "Warning" = "Warnung";
 "Can't contact server" = "Beim Verbindungsaufbau mit dem Server ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.";
@@ -75,6 +75,10 @@
 "Cancel" = "Abbrechen";
 "Yes" = "Ja";
 "No" = "Nein";
+
+/* generic messages */
+"Error" = "Fehler";
+"Success" = "Erfolg";
 
 /* alarms */
 "Reminder" = "Erinnerung";
@@ -109,6 +113,15 @@
 "Loading" = "Lade";
 "No such user." = "Kein Benutzer gefunden";
 "You cannot (un)subscribe to a folder that you own!" = "Sie können keinen Ordner abonnieren/abbestellen, den Sie besitzen!";
+
+/* SMIME Certificate field */
+"Subject Name" = "Zertifikatsinhaber";
+"Issuer" = "Aussteller";
+"countryName" = "Land";
+"organizationName" = "Organisation";
+"organizationalUnitName" = "Organisationseinheit";
+"commonName" = "Name";
+"emailAddress" = "E-Mail";
 
 /* Authentication username */
 "Username" = "Benutzername";

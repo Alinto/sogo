@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "Cerca caselle email multiple";
 
 /* Main Frame  */
-"Home"                 = "Home"; 
+"Home"                 = "Home";
 "Calendar"             = "Calendario";
 "Addressbook"          = "Rubrica";
 "Mail"                 = "Posta";
@@ -53,7 +53,13 @@
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Benvenuto in SOGo Mailer. Usa l'albero di sinistra per navigare tra i tuoi account di posta!";
 "Read messages"       = "Leggi messaggi";
+
+/* Tooltip for fab button */
 "Write a new message" = "Scrivi un nuovo messaggio";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Scrivi messaggio in una nuova finestra";
+
 "Share" = "Condividi";
 "Account" = "Account";
 "Shared Account" = "Account condiviso";
@@ -63,6 +69,8 @@
 
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Nessuna casella mail selezionata";
+
+"An error occured while communicating with the mail server" = "Si è verificato un errore comunicando col server mail";
 
 /* Mailbox actions */
 /* Compact Folder success message */
@@ -217,6 +225,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Converti in attività";
 
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Scarica tutti gli allegati";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "allegati";
+
 "Print..." = "Stampa...";
 "Delete Message" = "Cancella messaggio";
 "Delete Selected Messages" = "Cancella i messaggi selezionati";
@@ -231,6 +245,21 @@
 
 /* Number of selected messages in list */
 "selected" = "selezionato";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Il messaggio è criptato";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Impossibile verificare la firma del messaggio";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Il messaggio è stato modificato";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Errore leggendo il certificato. Per favore installa un nuovo certificato.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Nessun certificato associato all'account.";
 
 "This Folder" = "Questa cartella";
 
@@ -269,6 +298,10 @@
 "quotasFormat" = "%{0}% usato su %{1} MB";
 "Unable to move/delete folder." = "Impossibile spostare/cancellare la cartella.";
 
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "La casella mail non può essere spostata nel cestino. Vuoi cancellarla immediatamente?";
+
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Sei sicuro di voler cancellare il messaggio selezionato?";
 
@@ -303,6 +336,7 @@
 = "I messaggi non possono essere spostati nel cestino. Vuoi cancellarli immediatamente?";
 
 /* Message editing */
+"Please specify a subject." = "Per favore specifica un oggetto.";
 "error_missingsubject" = "Nessun oggetto specificato";
 "error_missingrecipients" = "Nessun destinatario specificato";
 "Send Anyway" = "Invia comunque";
@@ -311,6 +345,7 @@
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Errore durante l'upload del file \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Caricamento in corso. Chiudendo la finestra verrà interrotto.";
+"Message is too big" = "Messaggio troppo grande";
 
 /* Appears while sending the message */
 "Sending" = "Invio";
@@ -344,11 +379,13 @@
 "Set as Junk" = "Imposta come spam";
 
 "Sort" = "Ordinare";
+"Order Received" = "Ordine Ricevuto";
 "Descending Order" = "Ordine discendente";
 "Back" = "Indietro";
 "Copy messages" = "Copia messaggi";
 "More messages options" = "Altre opzioni messaggi";
 "Mark as Unread" = "Contrassegna come da leggere";
+"Mark as Read" = "Contrassegna come letto";
 "Closing Window ..." = "Chiusura finestra...";
 "Tried to send too many mails. Please wait." = "Hai provato ad inviare troppe email. Per favore attendi.";
 "View Mail" = "Visualizza email";
@@ -362,3 +399,27 @@
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Ambito di ricerca";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Gestisci Sottoscrizioni";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filtra";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "s";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";
