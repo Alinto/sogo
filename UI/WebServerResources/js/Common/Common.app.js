@@ -202,6 +202,10 @@
       'contrastDefaultColor': 'dark',
       'contrastLightColors': ['800', '900']
     });
+    var greyMap = $mdThemingProvider.extendPalette('grey', {
+      '600': '00B0C0' // used when highlighting text in md-autocomplete
+    });
+    $mdThemingProvider.definePalette('sogo-grey', greyMap);
     // Default theme definition
     $mdThemingProvider.theme('default')
       .primaryPalette('sogo-blue', {
@@ -216,7 +220,8 @@
         'hue-1': 'A100', // grey-50
         'hue-2': '300',
         'hue-3': 'A700'
-      });
+      })
+      .backgroundPalette('sogo-grey');
 
     if (!DebugEnabled) {
       // Disable debugging information
