@@ -43,6 +43,7 @@
                 <div class="sg-md-display-4 md-default-theme md-fg md-hue-2"><var:string value="currentTableDay.dayOfMonth"/></div>
               </var:if>
               <div class="md-default-theme md-fg md-primary md-hue-2">
+                <var:string value="labelForDay"/><br/>
                 <var:string value="labelForMonth"/><br/>
                 <span class="md-default-theme md-fg md-primary md-hue-1"><var:string value="currentTableDay.yearOfCommonEra"/></span>
               </div>

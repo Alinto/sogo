@@ -22,6 +22,7 @@ Enhancements
  - [web] avoid redirection to forbidden module (via ModulesConstraints)
  - [web] lower constraints on dates range of auto-reply message (#4161)
  - [web] sort categories in event and task editors (#4349)
+ - [web] show weekday in headers of day view
  - [web] updated Angular Material to version 1.1.6
 
 Bug fixes
