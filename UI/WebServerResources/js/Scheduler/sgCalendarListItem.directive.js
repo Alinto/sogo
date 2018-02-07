@@ -22,6 +22,7 @@
         '<p class="sg-item-name"',
         '   ng-dblclick="$ctrl.editFolder($event)">',
         '  <span ng-bind="$ctrl.calendar.name"></span>',
+        '  <md-icon ng-if="$ctrl.calendar.$error" class="md-warn">error</md-icon>',
         '  <md-tooltip md-delay="1000"',
         '              md-autohide="true"',
         '              ng-bind="$ctrl.calendar.name"></md-tooltip>',
@@ -282,7 +283,7 @@
             targetEvent: $event,
             clickOutsideToClose: true,
             escapeToClose: true,
-            templateUrl: 'UIxCalendarImportDialog',
+            templateUrl: 'UIxCalendarImportDialog', // subtemplate of UIxCalMainView.wox
             controller: CalendarImportDialogController,
             controllerAs: '$CalendarImportDialogController',
             locals: {

@@ -138,6 +138,7 @@
             hostname = parts[2];
 
         vm.title = l("Please identify yourself to %{0}").formatted(hostname);
+        vm.url = url;
         vm.authenticate = function(form) {
           if (form.$valid || !form.$error.required) {
             calendar.setCredentials(vm.username, vm.password).then(function(message) {

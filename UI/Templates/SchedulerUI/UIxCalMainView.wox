@@ -679,7 +679,10 @@
     <md-dialog flex="50" flex-xs="90">
       <form name="authForm" ng-submit="$WebCalendarAuthDialogController.authenticate(authForm)">
         <md-dialog-content class="md-dialog-content" layout="column">
-          <h2 class="md-title" ng-bind="$WebCalendarAuthDialogController.title"><!-- title --></h2>
+          <h2 class="md-title">
+            {{::$WebCalendarAuthDialogController.title}}
+            <div class="md-caption" ng-bind="::$WebCalendarAuthDialogController.url"><!-- url --></div>
+          </h2>
           <md-input-container>
             <label>{{ ::'Username' | loc }}</label>
             <input type="text" name="username"
