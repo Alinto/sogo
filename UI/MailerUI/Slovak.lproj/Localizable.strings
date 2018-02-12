@@ -51,7 +51,7 @@
 "Help" = "Pomoc";
 
 /* Mail account main windows */
-"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Vitajte v SOGo Mailer. Použite zoznam zložiek vľavo na prehliadanie Vášho emailového účtu!";
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Vitajte v SOGo Mailer. Použite zoznam zložiek vľavo na prehliadanie vášho emailového účtu!";
 "Read messages"       = "Čítať správu";
 
 /* Tooltip for fab button */
@@ -65,29 +65,29 @@
 "Shared Account" = "Zdielaný účet";
 
 /* A mailbox is selected, but no message (only shown on large screens) */
-"No message selected" = "Nebola vybraná žiadna správa";
+"No message selected" = "Nebola vybraná žiadna správa.";
 
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
-"No mailbox selected" = "Nebola vybraná žiadna schránka";
+"No mailbox selected" = "Nebola vybraná žiadna schránka.";
 
-"An error occured while communicating with the mail server" = "Pri komunikácii s poštovým serverom nastala chyba";
+"An error occured while communicating with the mail server" = "Pri komunikácii s poštovým serverom nastala chyba.";
 
 /* Mailbox actions */
 /* Compact Folder success message */
-"Folder compacted" = "Priečinok bol zmenšený";
+"Folder compacted" = "Priečinok bol zmenšený.";
 /* Empty Trash success message */
-"Trash emptied" = "Kôš bol vyprázdnený";
+"Trash emptied" = "Kôš bol vyprázdnený.";
 
 /* acls */
 "Access rights to" = "Pristupové práva k";
-"For user" = "Pre užívateľa";
-"Any Authenticated User" = "Akýkoľvek overení užívateľ";
+"For user" = "Pre používateľa";
+"Any Authenticated User" = "Akýkoľvek overený používateľ";
 "List and see this folder" = "Zoraď a zobraz tento priečinok";
-"Read mails from this folder" = "Čitať maile z tejto zložky";
-"Mark mails read and unread" = "Označ maily ako prečítané a neprečítané";
+"Read mails from this folder" = "Čítať správy z tejto zložky";
+"Mark mails read and unread" = "Označ správy ako prečítané a neprečítané";
 "Modify the flags of the mails in this folder" = "Upraviť mailové štítky v tejto zložke";
-"Insert, copy and move mails into this folder" = "Vlož, kopíruj a presuň maile do tejto zložky";
-"Post mails" = "Zverejni maily";
+"Insert, copy and move mails into this folder" = "Vlož, kopíruj a presuň správy do tejto zložky";
+"Post mails" = "Zverejni správy";
 "Add subfolders to this folder" = "Pridať podadresáre pre tento adresár";
 "Remove this folder" = "Zmazať adresár";
 "Erase mails from this folder" = "Zmazať správy z adresára";
@@ -110,7 +110,7 @@
 "Open" = "Otvoriť";
 "Select All" = "Vyber všetko";
 "Select Message" = "Zvoľte správu";
-"Attach Web Page..." = "Prilož WWW stránku...";
+"Attach Web Page..." = "Prilož webovú stránku...";
 "file" = "súbor";
 "files" = "súbory";
 "Save all" = "Uložiť všetko";
@@ -123,14 +123,14 @@
 "Return Receipt" = "Notifikácia o doručení";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Odosielateľ tejto správy si vyžiadal notifikáciu o prečítaní tejto správy. Prajete si odoslať notifikáciu o prečítaní?";
 "Return Receipt (displayed) - %@"= "Notifikácia o doručení (zobrazená) - %@";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Toto je potvrdenie o prečítaní ku správe, ktorú ste poslali pre %@.⏎ ⏎ Poznámka: Potvrdenie o prijatí znamená iba to, že sa správa zobrazila na počítači adresáta. Nie je ale zaručené, že adresát správu čítal a porozumel jej obsahu.";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Toto je potvrdenie o prečítaní k správe, ktorú ste poslali pre %@.  Poznámka: Potvrdenie o prijatí znamená iba to, že sa správa zobrazila na počítači adresáta. Nie je ale zaručené, že adresát správu čítal a porozumel jej obsahu.";
 "Priority" = "Priorita";
 "highest" = "Najvyššia";
 "high" = "Vysoká";
 "normal" = "Normálna";
 "low" = "Nízka";
 "lowest" = "Najnižšia";
-"This mail is being sent from an unsecure network!" = "Tento email bude odoslaný z nezabezpečenej siete!";
+"This mail is being sent from an unsecure network!" = "Táto správa bude odoslaná z nezabezpečenej siete!";
 "Address Book" = "Adresár";
 "Search For" = "Hľadať v";
 
@@ -176,7 +176,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Pridaj do adresára...";
-"Compose Mail To" = "Napísať mail pre";
+"Compose Mail To" = "Napísať správu pre";
 "Create Filter From Message..." = "Vytvoriť filter zo správy...";
 
 /* Image Popup menu */
@@ -201,7 +201,7 @@
 "Delegation..." = "Delegácia ...";
 
 /* Use This Folder menu */
-"Sent Messages" = "Poslať Správu";
+"Sent Messages" = "Poslať správu";
 "Drafts" = "Koncepty";
 "Deleted Messages" = "Zmazať správy";
 "Junk Messages" = "Nevyžiadané správy";
@@ -247,16 +247,16 @@
 "selected" = "vybrané";
 
 /* Encrypted message notification */
-"This message is encrypted" = "Správa je zašifrovaná";
+"This message is encrypted" = "Správa je zašifrovaná.";
 
 /* OpenSSL certificate error - unknown issuer */
-"certificate verify error" = "Nie je možné overiť digitálny podpis správy";
+"certificate verify error" = "Nie je možné overiť digitálny podpis správy.";
 
 /* OpenSSL certificate error - digest failure */
-"digest failure" = "Správa bola upravená";
+"digest failure" = "Správa bola upravená.";
 
 /* OpenSSL reading error */
-"Error reading the certificate. Please install a new certificate." = "Chyba čítania certifikátu. Nainštalujte si prosím nový certifikát.";
+"Error reading the certificate. Please install a new certificate." = "Chyba čítania certifikátu. Nainštalujte si, prosím, nový certifikát.";
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "K účtu nie je priradený žiaden certifikát.";
@@ -282,18 +282,18 @@
 "Match all of the following" = "Zodpovedá všetkému nasledujúcemu";
 "contains" = "obsahuje";
 "does not contain" = "neobsahuje";
-"No matches found" = "Neboli nájdené žiadne zhody";
+"No matches found" = "Neboli nájdené žiadne zhody,";
 "results found" = "nájdené výsledky";
 "result found" = "nájdený výsledok";
-"Please specify at least one filter" = "Prosím zvoľte aspoň jeden filter";
+"Please specify at least one filter" = "Prosím, zvoľte aspoň jeden filter.";
 
 /* Folder operations */
 "Name" = "Meno";
 "Enter the new name of your folder"
- ="Zadajte nové meno adresára";
+ ="Zadajte nové meno adresára.";
 "Do you really want to move this folder into the trash ?"
  = "Skutočne chcete presunúť tento priečinok do koša?";
-"Operation failed" = "Operácia zlyhala";
+"Operation failed" = "Operácia zlyhala.";
 "Quota" = "Kvóta:";
 "quotasFormat" = "%{0}% použité z %{1} MB";
 "Unable to move/delete folder." = "Nemožno presunúť/vymazať zložku.";
@@ -303,7 +303,7 @@
 = "Poštová schránka nemôže byť presunutá do koša. Chcete ju vymazať okamžite?";
 
 /* Confirmation message when deleting multiple messages */
-"Are you sure you want to delete the selected messages?" = "Ste si istý že chcete odstrániť označené správy?";
+"Are you sure you want to delete the selected messages?" = "Ste si istý, že chcete odstrániť označené správy?";
 
 /* Notification on the number of messages successfuly copied */
 "%{0} message(s) copied" = "%{0} správ(a) skopírovaných";
@@ -311,12 +311,12 @@
 /* Notification on the number of messages successfuly movied */
 "%{0} message(s) moved" = "%{0} správ(a) presunutých";
 
-"Please select a message." = "Prsím vyberte správu";
-"Please select a message to print." = "Prosím vyberte správu ktorú chcete tlačiť.";
-"Please select only one message to print." = "Prosím vyberte iba jednu správu ktorú chcete tlačiť.";
-"The message you have selected doesn't exist anymore." = "Správa ktorú ste vybrali už neexistuje.";
+"Please select a message." = "Prosím, vyberte správu.";
+"Please select a message to print." = "Prosím, vyberte správu, ktorú chcete tlačiť.";
+"Please select only one message to print." = "Prosím, vyberte iba jednu správu, ktorú chcete tlačiť.";
+"The message you have selected doesn't exist anymore." = "Správa, ktorú ste vybrali, už neexistuje.";
 "The folder with name \"%{0}\" could not be created."
-= "Priečinok s menom \"%{0}\" nemôže byť vytvorení.";
+= "Priečinok s menom \"%{0}\" nemôže byť vytvorený.";
 "This folder could not be renamed to \"%{0}\"."
 = "Tento priečinok sa nedá premenovať na \"%{0}\".";
 "The folder could not be deleted."
@@ -325,7 +325,7 @@
 = "Kôš sa nedá vyprázniť.";
 "The folder functionality could not be changed."
 = "Funkcia priečinka sa nedá zmeniť.";
-"You need to choose a non-virtual folder!" = "Musíte zvoliť priečinok ktorý nie je virtuálny!";
+"You need to choose a non-virtual folder!" = "Musíte zvoliť priečinok, ktorý nie je virtuálny!";
 "Moving a message into its own folder is impossible!"
 = "Presunúť správu do jej vlastného priečinka sa nedá!";
 "Copying a message into its own folder is impossible!"
@@ -336,32 +336,32 @@
 = "Správy nemôžu byť presunuté do koša. Chcete ich vymazať okamžite?";
 
 /* Message editing */
-"Please specify a subject." = "Zadajte prosím predmet správy";
-"error_missingsubject" = "Správa nemá žiadny predmet. Skutočne ju checete odoslať?";
-"error_missingrecipients" = "Prosím zvoľte aspoň jedného príjemcu.";
+"Please specify a subject." = "Zadajte, prosím, predmet správy.";
+"error_missingsubject" = "Správa nemá žiadny predmet. Skutočne ju chcete odoslať?";
+"error_missingrecipients" = "Prosím, zvoľte aspoň jedného príjemcu.";
 "Send Anyway" = "Poslať napriek tomu";
-"Error while saving the draft" = "Počas ukladania konceptu nastala chyba";
+"Error while saving the draft" = "Počas ukladania konceptu nastala chyba.";
 
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Nastala chyba počas nahrávania súboru \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Práve prebieha nahrávanie súboru. Zatvorením okna nahrávanie prerušíte.";
-"Message is too big" = "Správa je príliš veľká";
+"Message is too big" = "Správa je príliš veľká.";
 
 /* Appears while sending the message */
-"Sending" = "Odosielam správu";
+"Sending" = "Odosielam správu.";
 
 /* Appears when the message is successfuly sent */
 "Sent" = "Odoslané";
 
 "cannot send message: (smtp) all recipients discarded" = "Správa sa nedá odoslať: žiadny príjemca nie je platný.";
-"cannot send message (smtp) - recipients discarded" = "Správa sa nedá odoslať: Nasledujúci príjemcovia nemajú platnú adresu";
+"cannot send message (smtp) - recipients discarded" = "Správa sa nedá odoslať: nasledujúci príjemcovia nemajú platnú adresu.";
 "cannot send message: (smtp) error when connecting" = "Správa sa nedá odoslať: chyba pri pripájaní na SMTP server.";
 
 /* Contacts list in mail editor */
 "Email" = "Email";
 "More mail options" = "Viac možností pošty";
 "Delegation" = "Delegácia";
-"Add User" = "Pridať užívateľa";
+"Add User" = "Pridať používateľa";
 "Add a tag" = "Pridaj štítok";
 "reply" = "odpovedať";
 "Edit" = "Upraviť";
@@ -387,15 +387,15 @@
 "Mark as Unread" = "Označ ako neprečítané";
 "Mark as Read" = "Označiť ako prečítané";
 "Closing Window ..." = "Okno sa zatvára ...";
-"Tried to send too many mails. Please wait." = "Pokúsili ste sa odoslať príliš vela e-mailov. Prosím čakajte.";
-"View Mail" = "Zobraziť E-mail";
+"Tried to send too many mails. Please wait." = "Pokúsili ste sa odoslať príliš veľa e-mailov. Prosím, čakajte.";
+"View Mail" = "Zobraziť správu";
 "This message contains external images." = "Táto správa obsahuje externé obrázky";
 "Expanded" = "Rozšírené";
 "Add a Criteria" = "Pridať kritérium";
 "More search options" = "Viac možností vyhľadávania";
-"Your email has been saved" = "Váš email bol uložený";
-"Your email has been sent" = "Váš email bol odoslaný";
-"Folder compacted" = "Priečinok bol zmenšený";
+"Your email has been saved" = "Vaša správa bola uložená.";
+"Your email has been sent" = "Vaša správa bola odoslaná.";
+"Folder compacted" = "Priečinok bol zmenšený.";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Rozsah vyhľadávania";

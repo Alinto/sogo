@@ -47,6 +47,7 @@
 "Enable auto reply on" = "Automatikus válasz engedélyezése";
 "Disable auto reply on" = "Automatikus válasz tiltása";
 "Always send vacation message response" = "Mindig küldjön távollét üzenet választ";
+"Discard incoming mails during vacation" = "Dobja el a bejövő leveleket a távollét alatt";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Kérem adja meg az üzenetét valamint a címeket, amelyekre engedélyezi az automatikus válasz küldését.";
 "Your vacation message must not end with a single dot on a line." = "A távollét üzenet utolsó sora nem tartalmazhat egy egyedülálló . karatert.";
@@ -146,10 +147,17 @@
 /* Mailer */
 "Labels" = "Címkék";
 "Label" = "Címke";
+"IMAP Label" = "IMAP címke";
+"Invalid label" = "Ne használjon szóközt, vagy ( ) { } % * \" \\ karaktereket";
+"Duplicate label" = "Címke kettőzése";
+"IMAP labels must have unique names." = "IMAP címkéknek egyedi névvel kell rendelkezniük";
 "New label" = "Új címke";
 "Show subscribed mailboxes only" = "Csak azon fiókok mutatása, amelyre feliratkozott";
 "Synchronize only default mail folders (EAS)" = "Csak az alapértelmezett levelezési mappák szinkronizálása (EAS)";
 "Sort messages by threads" = "Üzenetek beszélgetések szerinti rendezése";
+"Always open mail composer" = "Mindig nyissa meg a levél szerkesztőt";
+"Inside current window" = "Az aktuális ablakban";
+"In a popup window" = "Felbukkanó ablakban";
 "When sending mail, add unknown recipients to my" = "Levél küldésekor az ismeretlen címeket adja hozzá a következőhöz";
 "Address Book" = "Címjegyzék";
 "Forward messages" = "Üzenetek továbbítása";
@@ -179,6 +187,8 @@
 "Collected Address Book" = "Összegyűjtöt címek jegyzéke";
 
 /* IMAP Accounts */
+"Settings" = "Beállítások";
+"Security" = "Biztonság";
 "Mail Account" = "Levelezési fiók";
 "New Mail Account" = "Új email fiók";
 "Server Name" = "Kiszolgáló neve";
@@ -195,6 +205,16 @@
 "Please specify a valid sender address." = "Egy érvényes feladó címet adjon meg.";
 "Please specify a valid reply-to address." = "Egy érvényes válaszcímet adjon meg.";
 "Specify a hostname other than the local host" = "A helyi géptől eltérő gépnevet adjon meg";
+
+"No certificate installed" = "Nincs telepített tanúsítvány";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "Az SSL tanúsítványnak PKCS#12 (PFX) formátumúnak kell lennie.";
+"Uninstall" = "Eltávolítás";
+"Choose PKCS12 Certificate .." = "Válasszon PKCS12 tanúsítványt ..";
+"Certificate Import Password" = "Tanúsítvány import jelszó";
+"Upload" = "Feltöltés";
+"When composing a message" = "Amikor létrehoz egy üzenetet";
+"Digitally sign the message by default" = "Alapértelmezés szerint digitálisan aláírja az üzenetet";
+"Always try to encrypt the message" = "Mindig titkosítani próbálja az üzenetet";
 
 /* Additional Parameters */
 "Additional Parameters" = "További beállítások";
@@ -238,7 +258,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";

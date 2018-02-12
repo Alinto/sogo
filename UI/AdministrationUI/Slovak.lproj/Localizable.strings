@@ -6,21 +6,21 @@
 /* Modules short names */
 "ACLs" = "ACL";
 /* Modules titles */
-"ACLs_title" = "Spravovanie ACL zložiek uzívateľov";
+"ACLs_title" = "Spravovanie ACL zložiek pouzívateľov";
 /* Modules descriptions */
-"ACLs_description" = "<p>Administrácia kontroly prístupových práv (ACL) dovoluje spravovať ACLs kalendárov a adresárov pre všetkých užívateľov.</p><p>Pre úpravu ACL zložky užívateľa, napíšte meno užívateľa v kolonke hľadaj hore v okne a dvojklikom potvrďte výber zložky.</p>";
-"Name or Email" = "Meno alebo E-mail";
+"ACLs_description" = "<p>Administrácia kontroly prístupových práv (ACL) dovoľuje spravovať ACLs kalendárov a adresárov pre všetkých používateľov.</p><p>Pre úpravu ACL zložky používateľa napíšte meno používateľa v kolónke hľadaj hore v okne a dvojklikom potvrďte výber zložky.</p>";
+"Name or Email" = "Meno alebo e-mail";
 /* Rights module: initial search message */
-"Start a search to edit the rights" = "Spustite hľadanie pre úpravu práv";
+"Start a search to edit the rights" = "Spustite hľadanie pre úpravu práv.";
 /* Rights module: Empty search result */
-"No matching user" = "Žiadny užívateľ sa nezhoduje";
+"No matching user" = "Žiadny používateľ sa nezhoduje.";
 /* Rights module: no selection */
-"No resource selected" = "Nevybrali ste žiadny zdroj";
-"Add User" = "Pridať užívateľa";
-"Subscribe User" = "Prihlás užívateľa";
+"No resource selected" = "Nevybrali ste žiadny zdroj.";
+"Add User" = "Pridať používateľa";
+"Subscribe User" = "Prihlás používateľa";
 "Rights" = "Práva";
-"Search Users" = "Vyhľadať užívateľov";
-"users found" = "nájdený užívatelia";
+"Search Users" = "Vyhľadať používateľov";
+"users found" = "nájdení používatelia";
 "No resource" = "Žiadne zdroje";
-"Any Authenticated User" = "Akýkoľvek overení užívateľ";
+"Any Authenticated User" = "Akýkoľvek overený používateľ";
 "Public Access" = "Verejný prístup";

@@ -401,7 +401,8 @@ static BOOL debugSoParts       = NO;
   // application/pkcs7-mime
   // application/pdf
   // etc.
-  if ([[[info valueForKey: @"type"] lowercaseString] isEqualToString: @"application"])
+  if ([[[info valueForKey: @"type"] lowercaseString] isEqualToString: @"application"] ||
+      [[[info valueForKey: @"type"] lowercaseString] isEqualToString: @"audio"])
     return info;
 
   /*

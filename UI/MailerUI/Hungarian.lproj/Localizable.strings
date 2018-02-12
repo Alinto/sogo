@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "Keresés több postafiókban";
 
 /* Main Frame  */
-"Home"                 = "Kezdőlap"; 
+"Home"                 = "Kezdőlap";
 "Calendar"             = "Naptár";
 "Addressbook"          = "Címjegyzék";
 "Mail"                 = "Üzenetek";
@@ -246,6 +246,21 @@
 /* Number of selected messages in list */
 "selected" = "kijelölt";
 
+/* Encrypted message notification */
+"This message is encrypted" = "Ez az üzenet titkosított";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Nem lehet ellenőrizni az üzenet aláírását";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Az üzenet módosítva lett";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Hiba történt a tanúsítvány beolvasása során. Telepítsen új tanúsítványt.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Nincs tanúsítvány hozzárendelve a fiókhoz.";
+
 "This Folder" = "Aktulis mappa";
 
 /* Label popup menu */
@@ -321,6 +336,7 @@
 = "Az üzeneteket nem lehetett a szemétkosárba helyezni. Kívánja őket közvetlenül törölni?";
 
 /* Message editing */
+"Please specify a subject." = "Kérem adja meg az üzenet tárgyát";
 "error_missingsubject" = "Az üzenet tárgya hiányzik";
 "error_missingrecipients" = "Nincsenek címzettek megadva";
 "Send Anyway" = "Így küldöm el";

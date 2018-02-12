@@ -47,7 +47,7 @@
 "Calendar"             = "Calendario";
 "Addressbook"          = "Rubrica";
 "Mail"                 = "Posta";
-"Right Administration" = "Gestione permessi";
+"Right Administration" = "Gestione Permessi";
 "Help" = "Aiuto";
 
 /* Mail account main windows */
@@ -62,7 +62,7 @@
 
 "Share" = "Condividi";
 "Account" = "Account";
-"Shared Account" = "Account condiviso";
+"Shared Account" = "Account Condiviso";
 
 /* A mailbox is selected, but no message (only shown on large screens) */
 "No message selected" = "Nessun messaggio selezionato";
@@ -81,20 +81,20 @@
 /* acls */
 "Access rights to" = "Permessi di accesso a";
 "For user" = "Per utente";
-"Any Authenticated User" = "Utenti Autenticati";
+"Any Authenticated User" = "Qualsiasi Utente Autenticato";
 "List and see this folder" = "Elenca e guarda questa cartella";
-"Read mails from this folder" = "Leggi emails da questa cartella";
+"Read mails from this folder" = "Leggi email da questa cartella";
 "Mark mails read and unread" = "Contrassegna email lette/non lette";
-"Modify the flags of the mails in this folder" = "Modifica i contrassegni delle emails in questa cartella";
+"Modify the flags of the mails in this folder" = "Modifica i contrassegni delle email in questa cartella";
 "Insert, copy and move mails into this folder" = "Inserisci, copia e sposta emails in questa cartella";
 "Post mails" = "Recapita email";
 "Add subfolders to this folder" = "Aggiungi sottocartelle a questa cartella";
 "Remove this folder" = "Rimuovi questa cartella";
-"Erase mails from this folder" = "Elimina emails da questa cartella";
+"Erase mails from this folder" = "Elimina email da questa cartella";
 "Expunge this folder" = "Pulisci questa cartella";
-"Export This Folder" = "Esporta questa cartella";
+"Export This Folder" = "Esporta Questa Cartella";
 "Modify the acl of this folder" = "Modifica i permessi per questa cartella";
-"Saved Messages.zip" = "Salvato Messages.zip";
+"Saved Messages.zip" = "Messaggi Salvati.zip";
 "Update" = "Aggiorna";
 "Cancel" = "Annulla";
 
@@ -108,21 +108,21 @@
 "Add address"   = "Aggiungi indirizzi";
 "Body"          = "Corpo";
 "Open" = "Apri";
-"Select All" = "Seleziona tutti";
+"Select All" = "Seleziona Tutti";
 "Select Message" = "Seleziona Messaggio";
-"Attach Web Page..." = "Allega pagina Web...";
+"Attach Web Page..." = "Allega Pagina Web...";
 "file" = "file";
 "files" = "file";
-"Save all" = "Salva tutto.";
+"Save all" = "Salva tutto";
 "to"            = "A";
 "cc"            = "Cc";
 "bcc"           = "Bcc";
 "Add a recipient" = "Aggiungi un destinatario";
-"Edit Draft..." = "Modifica bozza...";
+"Edit Draft..." = "Modifica Bozza...";
 "Load Images" = "Carica Immagini";
-"Return Receipt" = "Ricevuta di ritorno";
+"Return Receipt" = "Ricevuta di Ritorno";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Il mittente del messaggio ha chiesto di essere avvisato della lettura di questo messaggio. Vuoi avvisare il mittente?";
-"Return Receipt (displayed) - %@"= "Ricevuta di ritorno (visualizza) - %@";
+"Return Receipt (displayed) - %@"= "Ricevuta di Ritorno (visualizzata) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Questa è la Ricevuta di ritorno per la mail che hai inviato a %@.\n\nNota: Questa Ricevuta di ritorno ti assicura che il messaggio sta stato visualizzato sul computer del destinatario. Non c'è alcun conferma sul fatto che il destinatario abbia letto o capito il contenuto del messaggio.";
 "Priority" = "Priorità";
 "highest" = "Molto alta";
@@ -130,9 +130,9 @@
 "normal" = "Normale";
 "low" = "Bassa";
 "lowest" = "Molto bassa";
-"This mail is being sent from an unsecure network!" = "Questa email è stata spedita da una rete contrassegnata come non sicura!";
+"This mail is being sent from an unsecure network!" = "Questa email è stata spedita da una rete non sicura!";
 "Address Book" = "Rubrica";
-"Search For" = "Cerca";
+"Search For" = "Cerca Per";
 
 /* Popup "show" */
 "all"     = "tutti";
@@ -145,7 +145,7 @@
 "Sender" = "Mittente";
 "Subject or Sender" = "Oggetto o Mittente";
 "To or Cc" = "A o Cc";
-"Entire Message" = "Tutto il messaggio";
+"Entire Message" = "Tutto il Messaggio";
 "Date"          = "Data";
 "View"          = "Vista";
 "All"           = "Tutti";
@@ -158,8 +158,8 @@
 "last"          = "Ultimo";
 "msgnumber_to"  = "a";
 "msgnumber_of"  = "di";
-"Mark Unread" = "Contrassegna come da leggere";
-"Mark Read"   = "Contrassegna come letto";
+"Mark Unread" = "Contrassegna Come Da Leggere";
+"Mark Read"   = "Contrassegna Come Letto";
 "Untitled" = "Senza nome";
 
 /* Tree */
@@ -175,55 +175,55 @@
 "MoveTo"        = "Sposta in &hellip;";
 
 /* Address Popup menu */
-"Add to Address Book..." = "Aggiungi alla rubrica...";
-"Compose Mail To" = "Invia email a ";
-"Create Filter From Message..." = "Crea filtro dal messaggio...";
+"Add to Address Book..." = "Aggiungi alla Rubrica...";
+"Compose Mail To" = "Invia Email a ";
+"Create Filter From Message..." = "Crea Filtro dal Messaggio...";
 
 /* Image Popup menu */
 "Save Image" = "Salva immagine";
-"Save Attachment" = "Salva l'allegato";
+"Save Attachment" = "Salva allegato";
 
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Apri in una nuova finestra";
 "Copy Folder Location" = "Copia cartella";
 "Subscribe..." = "Sottoscrivi...";
-"Mark Folder Read" = "Contrassegna cartella come già letta...";
-"New Folder..." = "Nuova cartella...";
-"Compact This Folder" = "Compatta cartella";
-"Search Messages..." = "Cerca messaggi...";
+"Mark Folder Read" = "Contrassegna Cartella Come Già Letta...";
+"New Folder..." = "Nuova Cartella...";
+"Compact This Folder" = "Compatta Cartella";
+"Search Messages..." = "Cerca Messaggi...";
 "Sharing..." = "Condivisione...";
-"New Subfolder..." = "Nuova sottocartella...";
-"Rename Folder..." = "Rinomina cartella...";
-"Delete Folder" = "Cancella cartella";
-"Use This Folder For" = "Usa questa cartella per";
+"New Subfolder..." = "Nuova Sottocartella...";
+"Rename Folder..." = "Rinomina Cartella...";
+"Delete Folder" = "Cancella Cartella";
+"Use This Folder For" = "Usa Questa Cartella Per";
 "Get Messages for Account" = "Scarica messaggi per l'account";
 "Properties..." = "Proprietà...";
 "Delegation..." = "Delega...";
 
 /* Use This Folder menu */
-"Sent Messages" = "Messaggi inviati";
+"Sent Messages" = "Messaggi Inviati";
 "Drafts" = "Bozze";
-"Deleted Messages" = "Messaggi cancellati";
-"Junk Messages" = "Messaggi spam";
+"Deleted Messages" = "Messaggi Cancellati";
+"Junk Messages" = "Messaggi Spam";
 
 /* Message list popup menu */
 "Open Message In New Window" = "Apri messaggio in una nuova finestra";
-"Reply to Sender Only" = "Rispondi";
-"Reply to All" = "Rispondi a tutti";
-"Edit As New..." = "Modifica come...";
-"Move To" = "Sposta in ";
-"Copy To" = "Copia in ";
+"Reply to Sender Only" = "Rispondi solo al mittente";
+"Reply to All" = "Rispondi a Tutti";
+"Edit As New..." = "Modifica Come Nuovo...";
+"Move To" = "Sposta In ";
+"Copy To" = "Copia In ";
 "Label" = "Etichetta";
 "Mark" = "Contrassegna";
-"Save As..." = "Salva come ...";
+"Save As..." = "Salva Come...";
 "Print Preview" = "Anteprima di stampa";
-"View Message Source" = "Visualizza sorgente";
+"View Message Source" = "Visualizza Sorgente";
 
 /* Message view "more" menu: create an event from message */
-"Convert To Event" = "Converti in evento";
+"Convert To Event" = "Converti In Evento";
 
 /* Message view "more" menu: create a task from message */
-"Convert To Task" = "Converti in attività";
+"Convert To Task" = "Converti In Attività";
 
 /* Message view "more" menu: download all attachments as a zip archive */
 "Download all attachments" = "Scarica tutti gli allegati";
@@ -232,8 +232,8 @@
 "attachments" = "allegati";
 
 "Print..." = "Stampa...";
-"Delete Message" = "Cancella messaggio";
-"Delete Selected Messages" = "Cancella i messaggi selezionati";
+"Delete Message" = "Cancella Messaggio";
+"Delete Selected Messages" = "Cancella Messaggi Selezionati";
 "Mark the selected messages as junk" = "Contrassegna il messaggio selezionato come indesiderato";
 "Mark the selected messages as not junk" = "Contrassegna il messaggio selezionato come non spam";
 
@@ -261,19 +261,19 @@
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Nessun certificato associato all'account.";
 
-"This Folder" = "Questa cartella";
+"This Folder" = "Questa Cartella";
 
 /* Label popup menu */
 "None" = "Nessuno";
 
 /* Mark popup menu */
-"As Read" = "Già letto";
-"Thread As Read" = "Thread già letto";
-"As Read By Date..." = "Già letti per data...";
-"All Read" = "Tutti già letti";
+"As Read" = "Già Letto";
+"Thread As Read" = "Thread Già Letto";
+"As Read By Date..." = "Già Letti Per Data...";
+"All Read" = "Tutti Già Letti";
 "Flag" = "Contrassegna";
-"As Junk" = "Come indesiderati";
-"As Not Junk" = "Come non indesiderati";
+"As Junk" = "Come Indesiderati";
+"As Not Junk" = "Come Non Indesiderati";
 "Run Junk Mail Controls" = "Avvia controllo email indesiderate";
 "Search messages in" = "Cerca messaggi in";
 "Search" = "Cerca";
@@ -294,7 +294,7 @@
 "Do you really want to move this folder into the trash ?"
  = "Sei sicuro di voler spostare la cartella nel cestino ?";
 "Operation failed" = "Operazione non riuscita";
-"Quota" = "Spazio usato";
+"Quota" = "Spazio usato:";
 "quotasFormat" = "%{0}% usato su %{1} MB";
 "Unable to move/delete folder." = "Impossibile spostare/cancellare la cartella.";
 
@@ -325,7 +325,7 @@
 = "Il cestino non può essere svuotato.";
 "The folder functionality could not be changed."
 = "La funzionalita della cartella non può essere cambiata.";
-"You need to choose a non-virtual folder!" = "Devi selezionare una cartella fisica, non virtuale!";
+"You need to choose a non-virtual folder!" = "Devi selezionare una cartella non virtuale!";
 "Moving a message into its own folder is impossible!"
 = "La cartella di destinazione coincide con la cartella di origine!";
 "Copying a message into its own folder is impossible!"
@@ -361,9 +361,9 @@
 "Email" = "Email";
 "More mail options" = "Altre opzioni mail";
 "Delegation" = "Delega";
-"Add User" = "Aggiungi utente";
+"Add User" = "Aggiungi Utente";
 "Add a tag" = "Aggiungi un tag";
-"reply" = "Rispondi";
+"reply" = "rispondi";
 "Edit" = "Modifica";
 "Yes" = "Si";
 "No" = "No";

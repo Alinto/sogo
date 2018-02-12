@@ -24,7 +24,7 @@
 "Add..." = "Aggiungi...";
 "Remove" = "Rimuovi";
 "Subscribe User" = "Sottoscrivi utente";
-"Any Authenticated User" = "Utenti autenticati";
+"Any Authenticated User" = "Qualsiasi Utente Autenticato";
 "Public Access" = "Accesso pubblico";
 "Any user not listed above" = "Ogni utente non indicato sopra";
 "Anybody accessing this resource from the public area" = "Chiunque acceda a questa risorsa da un area pubblica";
@@ -55,20 +55,20 @@
 "You have already subscribed to that folder!"
         = "Hai già sottoscritto la cartella!";
 "The user rights cannot be edited for this object!"
-        = "I permessi di questo oggetto non possono essere modificati!";
+        = "I permessi utente non possono essere modificati per questo oggetto!";
 "A folder by that name already exists." = "Esiste già una cartella con questo nome.";
 "You cannot create a list in a shared address book."
-        = "Non puoi creare una lista in una rubrica in sola lettura.";
+        = "Non puoi creare una lista in una rubrica condivisa.";
 "Warning" = "Attenzione";
 "Can't contact server" = "Si è verificato un errore contattando il server. Prego riprovare.";
 "You are not allowed to access this module or this system. Please contact your system administrator."
-= "Non sei abilitato ad accedere a questo modulo. Contatta il tuo amministratore di sistema.";
+= "Non sei abilitato ad accedere a questo modulo o sistema. Contatta il tuo amministratore di sistema.";
 "You don't have the required privileges to perform the operation."
 = "Non disponi dei privilegi richiesti per eseguire questa operazione.";
-"noEmailForDelegation" = "E' necessario specificare l'indirizzo a cui vuoi delegare il tuo invito.";
+"noEmailForDelegation" = "E' necessario specificare l'indirizzo a cui vuoi delegare i tuoi inviti.";
 "delegate is organizer" = "Il delato è l'organizzatore. Prego specificare un altro delegato.";
 "delegate is a participant" = "Il delegato è già un partecipante.";
-"delegate is a group" = "L'indirizzo specifico corrisponde ad un gruppo, puoi delegare solo una persona.";
+"delegate is a group" = "L'indirizzo specificato corrisponde ad un gruppo. Puoi delegare solo una persona.";
 
 /* common buttons */
 "OK" = "OK";

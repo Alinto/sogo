@@ -35,7 +35,7 @@
 "Unit" = "Zariadenie";
 "delete" = "zmazať";
 "edit" = "editovať";
-"invalidemailwarn" = "Zvolený email je neplatný";
+"invalidemailwarn" = "Zvolený email je neplatný.";
 "new" = "nový";
 "Preferred Phone" = "Preferovaný telefón";
 "Move To" = "Presuň do";
@@ -103,7 +103,7 @@
 "c" = "Krajina";
 
 /* Search scope: home address field */
-"mozillahomestreet" = "Súkromná Adresa";
+"mozillahomestreet" = "Súkromná adresa";
 
 /* Search scope: state/province field */
 "st" = "Štát";
@@ -112,10 +112,10 @@
 "mozillahomestate" = "Štát (súkromná adresa)";
 
 /* Search scope: zip/postal code field */
-"postalCode" = "Poštové Smerové Číslo";
+"postalCode" = "Poštové smerové číslo";
 
 /* Search scope: home zip/postal code field */
-"mozillahomepostalcode" = "Poštové Smerové Číslo";
+"mozillahomepostalcode" = "Poštové smerové číslo";
 
 /* Search scope: home country field */
 "mozillahomecountryname" = "Krajina (súkromná adresa)";
@@ -160,7 +160,7 @@
 "htmlMailFormat_UNKNOWN" = "Neznámy";
 "htmlMailFormat_FALSE" = "Jednoduchý text";
 "htmlMailFormat_TRUE" = "HTML";
-"Name or Email" = "Meno alebo Email";
+"Name or Email" = "Meno alebo email";
 "Category" = "Kategória";
 "Personal Addressbook" = "Osobný adresár";
 "Search in Addressbook" = "Hľadaj v adresári";
@@ -168,13 +168,13 @@
 "New List" = "Nový zoznam";
 "Edit" = "Upraviť";
 "Properties" = "Možnosti";
-"Sharing..." = "Zdielanie...";
+"Sharing..." = "Zdieľanie...";
 "Write" = "Napíš";
 "Delete" = "Vymaž";
 "Instant Message" = "Okamžitá správa";
 "Add..." = "Pridaj...";
 "Remove" = "Odstráň";
-"Please wait..." = "Prosím čakajte...";
+"Please wait..." = "Prosím, čakajte...";
 "No possible subscription" = "Žiadne možnosti odberu";
 "Preferred" = "Preferovaný";
 "Display" = "Zobraz";
@@ -204,7 +204,7 @@
 "State_Province" = "Štát";
 "ZIP_Postal Code" = "Poštové smerové číslo";
 "Country" = "Krajina";
-"Web Page" = "WWW stránka";
+"Web Page" = "Webová stránka";
 "Other Infos" = "Ostatné informácie";
 "Note" = "Poznámky";
 "Timezone" = "Časová zóna";
@@ -218,11 +218,11 @@
 "New Addressbook..." = "Nový adresár...";
 "Subscribe to an Addressbook..." = "Odoberať adresár...";
 "Remove the selected Addressbook" = "Odstráň označený adresár";
-"Subscribe to a shared folder" = "Odoberať zdielaný priečinok";
-"Search User" = "Hľadať užívatela";
+"Subscribe to a shared folder" = "Odoberať zdieľaný priečinok";
+"Search User" = "Hľadať používatela";
 "Name of the Address Book" = "Názov adresára";
 "Are you sure you want to delete the selected address book?"
-= "Ste si istý že chcete odstrániť označený adresár?";
+= "Ste si istý, že chcete odstrániť označený adresár?";
 "Are you sure you want to delete the addressbook \"%{0}\"?"
 = "Naozaj chcete odstrániť adresár \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
@@ -230,7 +230,7 @@
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Nemôžete odstrániť ani zrušiť odber súkromného adresára.";
 "Are you sure you want to delete the selected contacts?"
-= "Ste si istý že chcete odstrániť označené kontakty?";
+= "Ste si istý, že chcete odstrániť označené kontakty?";
 "Are you sure you want to delete the card of %{0}?" = "Naozaj chcete odstrániť kontakt %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "Nemôžete odstrániť vizitku \"%{0}\".";
@@ -241,8 +241,8 @@
 
 /* acls */
 "Access rights to" = "Prístupové práva pre";
-"For user" = "Pre užívateľa";
-"Any Authenticated User" = "Akýkoľvek neoverený užívateľ";
+"For user" = "Pre používateľa";
+"Any Authenticated User" = "Akýkoľvek neoverený používateľ";
 "Public Access" = "Verejný prístup";
 "This person can add cards to this addressbook."
 = "Táto osoba môže pridávať vizitky do tohoto adresára.";
@@ -256,7 +256,7 @@
 = "Táto osoba môže mazať vizitky z tohoto adresára.";
 "The selected contact has no email address."
 = "Vybraný kontakt nemá žiadny email.";
-"Please select a contact." = "Prosím vyberte kontakt.";
+"Please select a contact." = "Prosím, vyberte kontakt.";
 
 /* Messages for move and copy */
 "%{0} card(s) copied" = "%{0} kontakt(ov) skopírovaných";
@@ -286,14 +286,14 @@
 "Uploading" = "Nahrávam";
 "Done" = "Hotovo";
 "An error occured while importing contacts." = "Počas importovania kontaktov sa vyskytla chyba.";
-"No card was imported." = "Žiadne vizitky neboli importované";
-"A total of %{0} cards were imported in the addressbook." = "Dokopy bolo do adresára importovaných %{0} vizitiek.";
+"No card was imported." = "Žiadne vizitky neboli importované.";
+"A total of %{0} cards were imported in the addressbook." = "Spolu bolo do adresára importovaných %{0} vizitiek.";
 "Reload" = "Znovu načítaj";
 
 /* Properties window */
 "Address Book Name" = "Meno adresára";
 "Links to this Address Book" = "Odkazy k tomuto adresáru";
-"Authenticated User Access" = "Prístup pre overeného užívateľa";
+"Authenticated User Access" = "Prístup pre overeného používateľa";
 "CardDAV URL" = "CardDAV url";
 "Options" = "Možnosti";
 "Rename" = "Premenovať";

@@ -1,7 +1,7 @@
 /* toolbar */
 "Save and Close" = "Uložiť a zavrieť";
 "Close" = "Zavrieť";
-"Preferences saved" = "Nastavenia boli uložené";
+"Preferences saved" = "Nastavenia boli uložené.";
 
 /* Unsaved changes confirmation dialog title */
 "Unsaved Changes" = "Neuložené zmeny";
@@ -20,7 +20,7 @@
 "Calendar Options" = "Vlastnosti kalendára";
 "Contacts Options" = "Vlastnosti kontaktov";
 "Mail Options" = "Vlastnosti pošty";
-"IMAP Accounts" = "imap účty";
+"IMAP Accounts" = "IMAP účty";
 "Vacation" = "Dovolenka";
 "Forward" = "Dopredu";
 "Password" = "Heslo";
@@ -38,10 +38,10 @@
 "Enable vacation auto reply" = "Zapnúť automatickú odpoveď";
 "Enable custom auto reply subject" = "Zapnúť vlastný predmet automatickej odpovede";
 "Auto reply subject" = "Predmet automatickej odpovede";
-"You can write ${subject} to insert the original subject" = "Môžeťe napísať ${subject} pre vloženie originálneho predmetu";
+"You can write ${subject} to insert the original subject" = "Môžeťe napísať ${subject} pre vloženie originálneho predmetu.";
 "Auto reply message" = "Automatická odpoveď";
 "Email addresses (separated by commas)" = "Emailové adresy (oddelené čiarkami)";
-"Add default email addresses" = "Pridať východziu emailovú adresu";
+"Add default email addresses" = "Pridať východiskovú emailovú adresu";
 "Days between responses" = "Dni medzi odpoveďami";
 "Do not send responses to mailing lists" = "Neposielať odpoveď emailovým skupinám";
 "Enable auto reply on" = "Zapnúť automatickú odpoveď od";
@@ -49,8 +49,8 @@
 "Always send vacation message response" = "Vždy odošli správu o dovolenke";
 "Discard incoming mails during vacation" = "Zrušiť príjem pošty počas neprítomnosti";
 "Please specify your message and your email addresses for which you want to enable auto reply."
-= "Prosím špecifikujte Vašu správu a emailovú adresu pre ktorú chcete zapnút automatickú odpoveď.";
-"Your vacation message must not end with a single dot on a line." = "Vaša dovolenková správa nesmie končit samotnou bodkou v riadku.";
+= "Prosím, špecifikujte vašu správu a emailovú adresu, pre ktorú chcete zapnúť automatickú odpoveď.";
+"Your vacation message must not end with a single dot on a line." = "Vaša dovolenková správa nesmie končiť samotnou bodkou v riadku.";
 "End date of your auto reply must be in the future."
 = "Dátum konca platnosti automatickej odpovede musí byť v budúcnosti.";
 
@@ -58,12 +58,12 @@
 "Forward incoming messages" = "Prepošli prichádzajúce správy";
 "Keep a copy" = "Ponechaj kópiu";
 "Please specify an address to which you want to forward your messages."
-= "Prosím zvoľte adresu na ktorú checete preposielať Vaše správy";
+= "Prosím, zvoľte adresu, na ktorú chcete preposielať vaše správy.";
 "You are not allowed to forward your messages to an external email address." = "Nie ste oprávnený preposielať správu na externú emailovú adresu.";
 "You are not allowed to forward your messages to an internal email address." = "Nie ste oprávnený preposielať správu na internú emailovú adresu.";
 
 /* d & t */
-"Current Time Zone" = "Aktuálna Časová Zóna";
+"Current Time Zone" = "Aktuálna časová zóna";
 "Short Date Format" = "Krátky formát dátumu";
 "Long Date Format" = "Dlhý formát dátumu";
 "Time Format" = "Formát času";
@@ -112,18 +112,18 @@
 "Day start time" = "Začiatok dňa";
 "Day end time" = "Koniec dňa";
 "Day start time must be prior to day end time." = "Začiatok dňa musí byť skôr ako koniec dňa.";
-"Week days to display" = "Dni v týždni, ktoré sa budú zobrazovať";
-"Show time as busy outside working hours" = "Mimo pracovných hodín ukáž čas ako obsadený";
+"Week days to display" = "Dni v týždni, ktoré sa budú zobrazovať.";
+"Show time as busy outside working hours" = "Mimo pracovných hodín ukáž čas ako obsadený.";
 "First week of year" = "Prvý týždeň roka";
-"Enable reminders for Calendar items" = "Zapni pripomienky pre položky Kalendára";
-"Play a sound when a reminder comes due" = "Prehraj zvuk keď začne pripomienka";
+"Enable reminders for Calendar items" = "Zapni pripomienky pre položky Kalendára.";
+"Play a sound when a reminder comes due" = "Prehraj zvuk, keď začne pripomienka.";
 "Default reminder" = "Predvolená pripomienka";
-"firstWeekOfYear_January1" = "Začína 1. Januárom";
+"firstWeekOfYear_January1" = "Začína 1. januárom";
 "firstWeekOfYear_First4DayWeek" = "Prvý 4-dňový týždeň";
 "firstWeekOfYear_FirstFullWeek" = "Prvý celý týžden";
 "Prevent from being invited to appointments" = "Zakázať pozvánky na schôdzky";
 "White list for appointment invitations" = "Whitelist pre pozvánky na schôdzky";
-"Contacts Names" = "Mená Kontaktov";
+"Contacts Names" = "Mená kontaktov";
 
 /* Default Calendar */
 "Default calendar" = "Predvolený kalendár";
@@ -147,21 +147,21 @@
 /* Mailer */
 "Labels" = "Štítok";
 "Label" = "Štítok";
-"IMAP Label" = "IMAP Štítok";
+"IMAP Label" = "IMAP štítok";
 "Invalid label" = "Nepoužívajte medzeru, ani znaky ( ) { } % * \" \\";
 "Duplicate label" = "Duplicitný štítok";
-"IMAP labels must have unique names." = "IMAP štítky musia mat unikátne názvy";
+"IMAP labels must have unique names." = "IMAP štítky musia mať unikátne názvy.";
 "New label" = "Nový štítok";
-"Show subscribed mailboxes only" = "Ukazuj iba odoberané účty";
-"Synchronize only default mail folders (EAS)" = "Synchronizovať iba predvolené emailové priečinky (EAS)";
-"Sort messages by threads" = "Zoraď správy do konverzácií";
-"Always open mail composer" = "Vždy otvoriť editor správy";
+"Show subscribed mailboxes only" = "Ukazuj iba odoberané účty.";
+"Synchronize only default mail folders (EAS)" = "Synchronizovať iba predvolené emailové priečinky (EAS).";
+"Sort messages by threads" = "Zoraď správy do konverzácií.";
+"Always open mail composer" = "Vždy otvoriť editor správy.";
 "Inside current window" = "V aktuálnom okne";
 "In a popup window" = "Vo vyskakovacom okne";
-"When sending mail, add unknown recipients to my" = "Pri odosielaní emailu, pridaj neznámych príjemcov do môjho";
+"When sending mail, add unknown recipients to my" = "Pri odosielaní emailu pridaj neznámych príjemcov do môjho.";
 "Address Book" = "Adresár";
 "Forward messages" = "Preposielaj správy";
-"messageforward_inline" = "Vrade";
+"messageforward_inline" = "V rade";
 "messageforward_attached" = "Ako prílohu";
 "When replying to a message" = "Pri odpovedaní na správu";
 "replyplacement_above" = "Odpoveď začína nad citáciou";
@@ -174,9 +174,9 @@
 "composemessagestype_text" = "Čistý text";
 
 /* Base font size for messages composed in HTML */
-"Default font size" = "Predvolená velkosť písma";
+"Default font size" = "Predvolená veľkosť písma";
 
-"Display remote inline images" = "Zobraziť externe pripojené obrázky";
+"Display remote inline images" = "Zobraziť externe pripojené obrázky.";
 "displayremoteinlineimages_never" = "Nikdy";
 "displayremoteinlineimages_always" = "Vždy";
 "Auto save every" = "Automaticky ukladať každých";
@@ -195,29 +195,29 @@
 "Port" = "Port";
 "Encryption" = "Šifrovanie";
 "None" = "Žiadne";
-"User Name" = "Užívateľské meno";
+"User Name" = "Používateľské meno";
 "Full Name" = "Celé meno";
 "Email" = "Email";
 "Reply To Email" = "Email pre odpoveď";
 "Signature" = "Podpis";
 "(Click to create)" = "(klikni pre vytvorenie)";
-"Please enter your signature below" = "Prosím vložte svoj podpis nižšie";
-"Please specify a valid sender address." = "Prosím zvoľte platnú adresu odosielateľa";
-"Please specify a valid reply-to address." = "Prosím zvoľte platnú adresu pre odpoveď.";
-"Specify a hostname other than the local host" = "Zadajte iné doménové meno ako local host";
+"Please enter your signature below" = "Prosím, vložte svoj podpis nižšie.";
+"Please specify a valid sender address." = "Prosím, zvoľte platnú adresu odosielateľa.";
+"Please specify a valid reply-to address." = "Prosím, zvoľte platnú adresu pre odpoveď.";
+"Specify a hostname other than the local host" = "Zadajte iné doménové meno ako local host.";
 
-"No certificate installed" = "Nie je nainštalovaný žiaden certifikát";
+"No certificate installed" = "Nie je nainštalovaný žiaden certifikát.";
 "The SSL certificate must use the PKCS#12 (PFX) format." = "SSL certifikát musí byť vo PKCS#12 (PFX) formáte.";
 "Uninstall" = "Odinštalovať";
-"Choose PKCS12 Certificate .." = "Vyberte PKCS12 Certifikát ..";
-"Certificate Import Password" = "Heslo pre Import Certifikátu";
+"Choose PKCS12 Certificate .." = "Vyberte PKCS12 certifikát ..";
+"Certificate Import Password" = "Heslo pre import certifikátu";
 "Upload" = "Nahrať";
 "When composing a message" = "Pri vytvaraní správy";
 "Digitally sign the message by default" = "Vždy digitálne podpísať správu";
 "Always try to encrypt the message" = "Vždy sa pokúsiť o šifrovanie správy";
 
 /* Additional Parameters */
-"Additional Parameters" = "Dalšie parametre";
+"Additional Parameters" = "Ďalšie parametre";
 
 /* password */
 "New password" = "Nové heslo";
@@ -251,7 +251,7 @@
 "SOGo Version" = "Verzia SOGo";
 
 /* Confirmation asked when changing the language */
-"Save preferences and reload page now?" = "Uložiť nastavenia a znovu načitať stránku?";
+"Save preferences and reload page now?" = "Uložiť nastavenia a znovu načítať stránku?";
 "Language" = "Jazyk";
 "choose" = "Vyber...";
 "Arabic" = "العربية";
@@ -301,23 +301,23 @@
 "refreshview_once_per_hour" = "Raz za hodinu";
 
 /* Return receipts */
-"When I receive a request for a return receipt" = "Keď dostanem požiadavku na potvrdenie o doručení";
-"Never send a return receipt" = "Nikdy neposielať potvrdenie o doručení";
-"Allow return receipts for some messages" = "Povoliť potvrdenie o doručení pre niektoré správy";
-"If I'm not in the To or Cc of the message" = "Pokial nie som v Pre alebo Kópia políčku správy";
-"If the sender is outside my domain" = "Pokiaľ je odosielateľ mimo mojej domény";
-"In all other cases" = "Vo všetkých ostatných prípadoch";
-"Never send" = "Nikdy neposielaj";
-"Always send" = "Vždy posielaj";
-"Ask me" = "Opytať sa";
+"When I receive a request for a return receipt" = "Keď dostanem požiadavku na potvrdenie o doručení.";
+"Never send a return receipt" = "Nikdy neposielať potvrdenie o doručení.";
+"Allow return receipts for some messages" = "Povoliť potvrdenie o doručení pre niektoré správy.";
+"If I'm not in the To or Cc of the message" = "Pokiaľ nie som v políčkach  Pre alebo Kópia správy.";
+"If the sender is outside my domain" = "Pokiaľ je odosielateľ mimo mojej domény.";
+"In all other cases" = "Vo všetkých ostatných prípadoch.";
+"Never send" = "Nikdy neposielaj.";
+"Always send" = "Vždy posielaj.";
+"Ask me" = "Opýtať sa.";
 
 /* Filters - UIxPreferences */
 "Filters" = "Filtre";
 "Active" = "Aktívne";
-"Move Up" = "Posuň hore";
-"Move Down" = "Posuň dole";
+"Move Up" = "Posuň hore.";
+"Move Down" = "Posuň dole.";
 "Connection error" = "Chyba spojenia";
-"Service temporarily unavailable" = "Služba je dočasne nedostupná";
+"Service temporarily unavailable" = "Služba je dočasne nedostupná.";
 
 /* Aria label for filter enable checkbox */
 "Enable filter" = "Zapnúť filter";
@@ -328,18 +328,18 @@
 "Add a condition" = "Pridať podmienku";
 /* Button label */
 "Add an action" = "Pridať akciu";
-"For incoming messages that" = "Pre prichádzajúce správy ktoré";
+"For incoming messages that" = "Pre prichádzajúce správy, ktoré";
 "match all of the following rules" = "splň všetky nasledujúce pravidlá";
 "match any of the following rules" = "zodpovedá ktorémukoľvek z nasledujúcich pravidiel";
 "match all messages" = "zodpovedá pre všetky správy";
 "Perform these actions" = "Vykonaj nasledovné úlohy";
-"Untitled Filter" = "Nepomenovaný Filter";
+"Untitled Filter" = "Nepomenovaný filter";
 "Subject" = "Predmet";
 "From" = "Od";
 "To" = "Pre";
 "Cc" = "Kópia";
 "To or Cc" = "Pre alebo Kópia";
-"Size (Kb)" = "Vľkosť (Kb)";
+"Size (Kb)" = "Veľkosť (Kb)";
 "Header" = "Hlavička";
 "Body" = "Telo";
 "Flag the message with" = "Oštítkuj správu ako";
@@ -389,16 +389,16 @@
 "The password was changed successfully." = "Heslo bolo úspešne zmenené.";
 "Password must not be empty." = "Heslo nemôže byť prázdne.";
 "The passwords do not match. Please try again." = "Heslá sa nezhodujú. Skúste to znova.";
-"Password change failed" = "Zmena hesla nebola úspešná";
-"Password change failed - Permission denied" = "Zmena hesla nebola úspešná - Nemáte dostatočné oprávnenia";
-"Password change failed - Insufficient password quality" = "Zmena hesla nebola úspešná - Nedostatočná kvalita hesla";
-"Password change failed - Password is too short" = "Zmena hesla nebola úspešná - Heslo je príliš krátke";
-"Password change failed - Password is too young" = "Zmena hesla nebola úspešná - Heslo bolo nedávno použité";
-"Password change failed - Password is in history" = "Zmena hesla nebola úspešná - Heslo je v histórii";
+"Password change failed" = "Zmena hesla nebola úspešná.";
+"Password change failed - Permission denied" = "Zmena hesla nebola úspešná - nemáte dostatočné oprávnenia.";
+"Password change failed - Insufficient password quality" = "Zmena hesla nebola úspešná - nedostatočná kvalita hesla.";
+"Password change failed - Password is too short" = "Zmena hesla nebola úspešná - heslo je príliš krátke";
+"Password change failed - Password is too young" = "Zmena hesla nebola úspešná - heslo bolo nedávno použité.";
+"Password change failed - Password is in history" = "Zmena hesla nebola úspešná - heslo je v histórii.";
 "Unhandled policy error: %{0}" = "Neočakávaná chyba v postupe: %{0}";
-"Unhandled error response" = "Neočakávaná chybová odpoveď";
+"Unhandled error response" = "Neočakávaná chybová odpoveď.";
 "Password change is not supported." = "Zmena hesla nie je podporovaná.";
-"Unhandled HTTP error code: %{0}" = "Neočakávaná HTTP chybová hláška: %{0}";
+"Unhandled HTTP error code: %{0}" = "Neočakávané HTTP chybové hlásenie: %{0}";
 "Cancel" = "Zrušiť";
 "Invitations" = "Pozvánky";
 "Edit Filter" = "Uprav filter";
@@ -415,10 +415,10 @@
 "TLS" = "TLS";
 
 /* Avatars */
-"Use Gravatar" = "Používať Gravatar";
-"Alternate Avatar" = "Alternatívny Avatar";
+"Use Gravatar" = "Používať gravatar";
+"Alternate Avatar" = "Alternatívny avatar";
 "none" =  "Žiadny";
-"identicon" = "Ident ikona";
+"identicon" = "Identifikácia ikony";
 "monsterid" = "Monster";
 "wavatar" = "Wavatar";
 "retro" = "Retro";

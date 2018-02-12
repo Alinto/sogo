@@ -64,6 +64,12 @@
 "Compose E-Mail to All Attendees" = "Üzenet küldése az összes résztvevőnek";
 "Compose E-Mail to Undecided Attendees" = "Üzenet küldése az bizonytalan résztvevőnek";
 
+/* Relative dates */
+"Yesterday" = "Tegnap";
+"Today" = "Ma";
+"Tomorrow" = "Holnap";
+"Last %@" = "Utolsó 1%@";
+
 /* Folders */
 "Personal calendar" = "Személyes naptár";
 
@@ -333,6 +339,7 @@
 "repeat_YEARLY" = "Évente";
 "repeat_CUSTOM" = "Egyéni...";
 "reminder_NONE" = "Nincs emlékeztető";
+"reminder_0" = "Az esemény időpontjában";
 "reminder_5_MINUTES_BEFORE" = "5 perccel előtte";
 "reminder_10_MINUTES_BEFORE" = "10 perccel előtte";
 "reminder_15_MINUTES_BEFORE" = "15 perccel előtte";
@@ -498,7 +505,7 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Export" = "Exportálás";
 
 
-/* Show only the calendar for which the menu is displayed */ 
+/* Show only the calendar for which the menu is displayed */
 "Show Only This Calendar" = "Csak ennek a naptárnak a megjelenítése";
 
 
@@ -565,6 +572,7 @@ vtodo_class2 = "(Bizalmas feladat)";
 "More options" = "További tulajdonságok";
 "Delete This Occurrence" = "Törli ezt az előfordulást";
 "Delete All Occurrences" = "Törli az összes előfordulást";
+"Add Recurrence Date" = "Ismétlődés hozzáadása";
 "Add From" = "Feladó hozzáadása";
 "Add Due" = "Lejárat hozzáadása";
 "Import" = "Importálás";

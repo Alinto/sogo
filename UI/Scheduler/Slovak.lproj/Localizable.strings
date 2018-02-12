@@ -10,7 +10,7 @@
 "Switch to day view" = "Prepnúť na denné zobrazenie";
 "Switch to week view" = "Prepnúť na týždenné zobrazenie";
 "Switch to month view" = "Prepnúť na mesačné zobrazenie";
-"Switch to multi-columns day view" = "Prepnúť na viac-stĺpcové zobrazenie dňa";
+"Switch to multi-columns day view" = "Prepnúť na viacstĺpcové zobrazenie dňa";
 "Reload all calendars" = "Aktualizovať všetky kalendáre";
 
 /* Tabs */
@@ -58,11 +58,11 @@
 "Reload Remote Calendars" = "Aktualizovať vzdialené kalendáre";
 "Properties" = "Vlastnosti";
 "Done" = "Hotovo";
-"An error occurred while importing calendar." = "Počas importovania kalendáru nastala chyba";
+"An error occurred while importing calendar." = "Počas importovania kalendáru nastala chyba.";
 "No event was imported." = "Nebola naimportovaná žiadna udalosť.";
 "A total of %{0} events were imported in the calendar." = "Do kalendára bolo naimportovaných %{0} udalostí.";
-"Compose E-Mail to All Attendees" = "Vytvoriť e-mail pre všetkých účastníkov";
-"Compose E-Mail to Undecided Attendees" = "Vytvoriť e-mail pre nerozhodnutých účastníkov";
+"Compose E-Mail to All Attendees" = "Vytvoriť e-mail pre všetkých účastníkov.";
+"Compose E-Mail to Undecided Attendees" = "Vytvoriť e-mail pre nerozhodnutých účastníkov.";
 
 /* Relative dates */
 "Yesterday" = "Včera";
@@ -79,8 +79,8 @@
 
 /* acls */
 "Access rights to" = "Prítupové práva";
-"For user" = "pre užívateľa";
-"Any Authenticated User" = "Každý overený užívateľ";
+"For user" = "Pre používateľa";
+"Any Authenticated User" = "Každý overený používateľ.";
 "Public Access" = "Verejný prístup";
 "label_Public" = "Verejné";
 "label_Private" = "Súkromné";
@@ -123,28 +123,28 @@
 
 /* Schedule */
 "Schedule" = "Plán";
-"No appointments found" = "Neboli nájdené žiadne schôdzky";
-"Meetings proposed by you" = "Schôdzky navrhnuté Vami";
-"Meetings proposed to you" = "Schôdzky navrhnuté Vám";
+"No appointments found" = "Neboli nájdené žiadne schôdzky.";
+"Meetings proposed by you" = "Schôdzky navrhnuté vami";
+"Meetings proposed to you" = "Schôdzky navrhnuté vám";
 "sched_startDateFormat" = "%d/%m %H:%M";
 "action" = "Akcia";
 "accept" = "Prijať";
 "decline" = "Odmietnuť";
 "more attendees" = "Viac účastníkov";
-"Hide already accepted and rejected appointments" = "Skryť prijaté a odmietnuté schôdzky";
-"Show already accepted and rejected appointments" = "Zobraziť prijaté a odmietnuté schôdzky";
+"Hide already accepted and rejected appointments" = "Skryť prijaté a odmietnuté schôdzky.";
+"Show already accepted and rejected appointments" = "Zobraziť prijaté a odmietnuté schôdzky.";
 
 /* Print view */
 "LIST" = "Zoznam";
 "Print Settings" = "Nastavenia tlače";
 "Title" = "Názov";
 "Layout" = "Zobrazenie";
-"What to Print" = "Čo chcete tlačiť";
+"What to Print" = "Čo chcete tlačiť.";
 "Options" = "Možnosti";
 "Tasks with no due date" = "Úlohy bez časového obmedzenia";
-"Display working hours only" = "Zobraz iba pracovné hodiny";
+"Display working hours only" = "Zobraz iba pracovné hodiny.";
 "Completed tasks" = "Dokončené úlohy";
-"Display events and tasks colors" = "Zobraz farby udalostí a úloh";
+"Display events and tasks colors" = "Zobraz farby udalostí a úloh.";
 "Borders" = "Okraje";
 "Backgrounds" = "Pozadia";
 
@@ -157,7 +157,7 @@
 "End" = "Koniec";
 "Due Date" = "Dátum splnenia";
 "Name" = "Meno";
-"Email" = "E-Mail";
+"Email" = "Email";
 "Status" = "Stav";
 "% complete" = "% hotovo";
 "Location" = "Miesto";
@@ -199,11 +199,11 @@
 "Change..." = "Zmeniť...";
 
 /* Appointments (participation state) */
-"partStat_NEEDS-ACTION" = "Potvrdím neskôr";
-"partStat_ACCEPTED" = "Zúčastním sa";
-"partStat_DECLINED" = "Nezúčastním sa";
-"partStat_TENTATIVE" = "Potvrdzujem nezáväzne";
-"partStat_DELEGATED" = "Delegujem";
+"partStat_NEEDS-ACTION" = "Potvrdím neskôr.";
+"partStat_ACCEPTED" = "Zúčastním sa.";
+"partStat_DECLINED" = "Nezúčastním sa.";
+"partStat_TENTATIVE" = "Potvrdzujem nezáväzne.";
+"partStat_DELEGATED" = "Delegujem.";
 "partStat_OTHER" = "Ostatní";
 
 /* Appointments (error messages) */
@@ -294,7 +294,7 @@
 "Recurrence pattern" = "Vzor opakovania";
 "Range of recurrence" = "Rozsah opakovania";
 "Daily" = "Denné";
-"Multi-Columns" = "Viac-stĺpcové";
+"Multi-Columns" = "Viacstĺpcové";
 "Weekly" = "Týždenné";
 "Monthly" = "Mesačné";
 "Yearly" = "Ročné";
@@ -310,7 +310,7 @@
 "Year(s)" = "rokoch";
 
 /* [Event recurrence editor] Ex: Every first Sunday _of_ April */
-"cycle_of" = "s";
+"cycle_of" = "z";
 "No end date" = "Bez dátumu ukončenia";
 "Create" = "Vytvoriť";
 "appointment(s)" = "schôdzku/y";
@@ -319,7 +319,7 @@
 "Never" = "Nikdy";
 "After" = "Po";
 "On Date" = "Dňa";
-"times" = "krát";
+"times" = "raz";
 "First" = "Prvý";
 "Second" = "Druhý";
 "Third" = "Tretí";
@@ -367,11 +367,11 @@
 "Send an E-mail" = "Poslať e-mail";
 "Email Organizer" = "E-mail organizátorovi";
 "Email Attendees" = "E-mail účastníkom";
-"zoom_400" = "400%";
-"zoom_200" = "200%";
-"zoom_100" = "100%";
-"zoom_50" = "50%";
-"zoom_25" = "25%";
+"zoom_400" = "400 %";
+"zoom_200" = "200 %";
+"zoom_100" = "100 %";
+"zoom_50" = "50 %";
+"zoom_25" = "25 %";
 
 /* Arial label for reminder units */
 "Reminder units" = "Jednotky pripomenutia";
@@ -397,7 +397,7 @@ validate_invalid_enddate   = "Chybný dátum konca!";
 validate_endbeforestart    = "Zadaný dátum konca je pred začiatkom udalosti.";
 validate_untilbeforeend    = "Opakovanie musí skončiť po prvom výskyte.";
 
-"Events" = "Události";
+"Events" = "Udalosti";
 "Tasks" = "Úlohy";
 "Show completed tasks" = "Zobraziť dokončené úlohy";
 
@@ -429,8 +429,8 @@ validate_untilbeforeend    = "Opakovanie musí skončiť po prvom výskyte.";
 "Select All" = "Vybrať všetko";
 "Workweek days only" = "Len pracovné dni";
 "Tasks in View" = "Zobrazené úlohy";
-"eventDeleteConfirmation" = "Táto udalosť(i) bude odstránená:";
-"taskDeleteConfirmation" = "Táto udalosť(i) bude odstránená:";
+"eventDeleteConfirmation" = "Táto/tieto udalosť/i bude/ú odstránená/é:";
+"taskDeleteConfirmation" = "Táto/tieto úloha/y bude/ú odstránená/é:";
 "Would you like to continue?" = "Chcete pokračovať?";
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Nemôžete odstrániť ani sa odhlásiť z odoberania svojho vlastného kalendára.";
@@ -477,9 +477,9 @@ vevent_class2 = "(Dôverná udalosť)";
 vtodo_class0 = "(Verejná úloha)";
 vtodo_class1 = "(Súkromná úloha)";
 vtodo_class2 = "(Dôverná úloha)";
-"closeThisWindowMessage" = "Dakujeme! Teraz môžete okno zatvoriť alebo sa pozrieť na vaše ";
+"closeThisWindowMessage" = "Ďakujeme! Teraz môžete okno zatvoriť alebo sa pozrieť na vaše ";
 "Multicolumn Day View" = "Viacstĺpcové denné zobrazenie";
-"Please select an event or a task." = "Vyberte prosím udalosť alebo úlohu.";
+"Please select an event or a task." = "Vyberte, prosím, udalosť alebo úlohu.";
 "editRepeatingItem" = "Položka, ktorú upravujete, se opakuje. Chcete opraviť všetky opakovania alebo len toto?";
 "button_thisOccurrenceOnly" = "Len toto opakovanie";
 "button_allOccurrences" = "Všetky opakovania";
@@ -498,9 +498,9 @@ vtodo_class2 = "(Dôverná úloha)";
 "Show alarms" = "Zobraziť pripomenutie";
 "Show tasks" = "Zobraziť úlohy";
 "Notifications" = "Oznámenia";
-"Receive a mail when I modify my calendar" = "Informuj emailom keď upravím môj kalendár";
-"Receive a mail when someone else modifies my calendar" = "Informuj emailom keď niekto iný upraví môj kalendár";
-"When I modify my calendar, send a mail to" = "Keď upravím svoj kalendár, pošli email";
+"Receive a mail when I modify my calendar" = "Informuj emailom, keď upravím môj kalendár.";
+"Receive a mail when someone else modifies my calendar" = "Informuj emailom, keď niekto iný upraví môj kalendár.";
+"When I modify my calendar, send a mail to" = "Keď upravím svoj kalendár, pošli email.";
 "Email Address" = "E-mailová adresa";
 "Export" = "Exportovať";
 
@@ -513,7 +513,7 @@ vtodo_class2 = "(Dôverná úloha)";
 "Show All Calendars" = "Zobraz všetky kalendáre";
 
 "Links to this Calendar" = "Odkazy na tento kalendár";
-"Authenticated User Access" = "Prístup pre overeného užívateľa";
+"Authenticated User Access" = "Prístup pre overeného používateľa";
 "CalDAV URL" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
@@ -526,15 +526,15 @@ vtodo_class2 = "(Dôverná úloha)";
 "yearFieldInvalid" = "V políčku Rok zadajte číselnú hodnotu väčšiu alebo rovnú 1.";
 "appointmentFieldInvalid" = "V políčku Pripomenutie zadajte číselnú hodnotu väčšiu alebo rovnú 1.";
 "recurrenceUnsupported" = "Tento typ opakovania nie je podporovaný.";
-"Please specify a calendar name." = "Prosím zadajte meno kalendára.";
+"Please specify a calendar name." = "Prosím, zadajte meno kalendára.";
 "tagNotDefined" = "Ak chcete synchronizovať tento kalendár, musíte zadať jeho štítok.";
 "tagAlreadyExists" = "Zadaný štítok je už priradený inému kalendáru.";
 "tagHasChanged" = "Ak zmeníte štítok svojho kalendára, budete musieť znovu načítať údaje do svojho mobilného zariadenia.\nPokračovať?";
 "tagWasAdded" = "Ak chcete synchronizovať tento kalendár, budete musieť znovu načítať údaje do svojho mobilného zariadenia.\nPokračovať?";
 "tagWasRemoved" = "Ak odstránite v tomto kalendári synchronizáciu, budete musieť znovu načítať údaje do svojho mobilného zariadenia.\nPokračovať?";
 "DestinationCalendarError" = "Zdrojový a cieľový kalendár sú rovnaké. Prosím, skúste kopírovať iný kalendár.";
-"EventCopyError" = "Kopírovanie sa nepodarilo. Skúste prosím skopírovať do iného kalendáru.";
-"Please select at least one calendar" = "Prosím zvoľte aspoň jeden kalendár";
+"EventCopyError" = "Kopírovanie sa nepodarilo. Skúste, prosím, skopírovať do iného kalendára.";
+"Please select at least one calendar" = "Prosím, zvoľte aspoň jeden kalendár.";
 "Open Task..." = "Otvoriť úlohu...";
 "Mark Completed" = "Označiť ako dokončené";
 "Delete Task" = "Odstrániť úlohu";
@@ -542,11 +542,11 @@ vtodo_class2 = "(Dôverná úloha)";
 "Copy event to my calendar" = "Kopírovať udalosť do môjho kalendára";
 "View Raw Source" = "Zobrazit zdroj";
 "Subscriptions" = "Odoberania";
-"Subscribe to a shared folder" = "Odoberať zdielaný priečinok";
+"Subscribe to a shared folder" = "Odoberať zdieľaný priečinok";
 "Subscribe to a web calendar..." = "Odoberať vzdialený kalendár na webe";
 "URL of the Calendar" = "Adresa vzdialeného kalendára na webe";
 "Web Calendar" = "Vzdialený kalendár na webe";
-"Web Calendars" = "Vzdialený kalendár na webe";
+"Web Calendars" = "Vzdialené kalendáre na webe";
 "Reload on login" = "Aktualizovať pri prihlásení";
 "Invalid number." = "Neplatné číslo.";
 "Please identify yourself to %{0}" = "Identifikujte sa na %{0}";
@@ -557,7 +557,7 @@ vtodo_class2 = "(Dôverná úloha)";
 "Select starting date" = "Vyberte dátum začiatku";
 "Select ending date" = "Vyberte dátum ukončenia";
 "Delegated to" = "Delegované na";
-"Keep sending me updates" = "Posielajte mi aktualizácie";
+"Keep sending me updates" = "Posielajte mi aktualizácie.";
 "OK" = "OK";
 "Confidential" = "Dôverné";
 "Enable" = "Povoliť";
@@ -572,7 +572,7 @@ vtodo_class2 = "(Dôverná úloha)";
 "More options" = "Viac možností";
 "Delete This Occurrence" = "Vymazať túto udalosť";
 "Delete All Occurrences" = "Vymazať všetky udalosti";
-"Add Recurrence Date" = "Pridať Dátum Opakovánia";
+"Add Recurrence Date" = "Pridať Dátum opakovania";
 "Add From" = "Pridať Od:";
 "Add Due" = "Pridaj končiaci";
 "Import" = "Importuj";

@@ -3,7 +3,7 @@
 /* toolbars */
 "Save" = "Uložiť";
 "Close" = "Zavrieť";
-"Edit User Rights" = "Upraviť uživateľské práva";
+"Edit User Rights" = "Upraviť použivateľské práva";
 "Home" = "Domov";
 "Calendar" = "Kalendár";
 "Address Book"  = "Adresár";
@@ -14,59 +14,59 @@
 "Toggle Menu" = "Prepnúť menu";
 "Right Administration" = "Administrácia práv";
 "Log Console (dev.)" = "Log konzola (vývoj)";
-"User" = "Užívateľ";
-"Vacation message is enabled" = "Dovolenková správa je zaplnutá";
+"User" = "Používateľ";
+"Vacation message is enabled" = "Dovolenková správa je zapnutá.";
 "Help" = "Pomoc";
-"noJavascriptError" = "Sogo vyžaduje pre spustenie JavaScript. Uistite sa, že táto možnosť je k dispozícii a aktivovaná v prehliadači.";
+"noJavascriptError" = "Sogo vyžaduje na spustenie JavaScript. Uistite sa, že táto možnosť je k dispozícii a aktivovaná v prehliadači.";
 "noJavascriptRetry" = "Opakovať";
 "Owner" = "Vlastník";
-"Publish the Free/Busy information" = "Publikovanie Free / Busy informácií";
+"Publish the Free/Busy information" = "Publikovanie free/ busy  informácií.";
 "Add..." = "Pridať...";
 "Remove" = "Odstrániť";
-"Subscribe User" = "Prihlásiť užívateľa k odberu";
-"Any Authenticated User" = "Všetkým prihláseným užívateľom";
+"Subscribe User" = "Prihlásiť používateľa na odber";
+"Any Authenticated User" = "Všetkým prihláseným používateľom";
 "Public Access" = "Verejný prístup";
-"Any user not listed above" = "Každý užívateľ, ktorý nie je uvedený vyššie";
-"Anybody accessing this resource from the public area" = "Každý, kto prístupuje k tomuto zdroju z verejného priestoru";
-"Sorry, the user rights can not be configured for that object." = "Je nám ľúto, užívateľské práva nie je možné konfigurovať pre daný objekt.";
+"Any user not listed above" = "Každý používateľ, ktorý nie je uvedený vyššie.";
+"Anybody accessing this resource from the public area" = "Každý, kto pristupuje k tomuto zdroju z verejného priestoru.";
+"Sorry, the user rights can not be configured for that object." = "Je nám ľúto, používateľské práva nie je možné konfigurovať pre daný objekt.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
-     = "Ktorýkoľvek užívateľ tohoto systému bude môcť vidieť Vašu zložku \"%{0}\". Ste si istý, že veríte všetkým užívateľom?";
+     = "Ktorýkoľvek používateľ tohoto systému bude môcť vidieť vašu zložku \"%{0}\". Ste si istý, že veríte všetkým používateľom?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
-     = "Ktorýkoľvek užívateľ tohoto systému bude môcť vidieť Váš kalendár \"%{0}\". Ste si istý že veríte všetkým užívateľom?";
+     = "Ktorýkoľvek používateľ tohoto systému bude môcť vidieť váš kalendár \"%{0}\". Ste si istý, že veríte všetkým používateľom?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Potencionálne ktokoľvek na internete bude môcť vidieť Váš kalendár \"%{0}\", napriek tomu že nemá účet v tomto systéme. Sú tieto informácie vhodné pre verejnosť?";
+     = "Potencionálne ktokoľvek na internete bude môcť vidieť váš kalendár \"%{0}\", napriek tomu že nemá účet v tomto systéme. Sú tieto informácie vhodné pre verejnosť?";
 "Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
-     = "Ktorýkoľvek užívateľ tohoto systému bude môcť vidieť Váš adresár \"%{0}\". Ste si istý že veríte všetkým užívateľom?";
+     = "Ktorýkoľvek používateľ tohoto systému bude môcť vidieť váš adresár \"%{0}\". Ste si istý, že veríte všetkým používateľom?";
 "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Potencionálne ktokoľvek na internete bude môcť vidieť Váš adresár \"%{0}\", napriek tomu že nemá účet v tomto systéme. Sú tieto informácie vhodné pre verejnosť?";
+     = "Potencionálne ktokoľvek na internete bude môcť vidieť váš adresár \"%{0}\", napriek tomu že nemá účet v tomto systéme. Sú tieto informácie vhodné pre verejnosť?";
 "Give Access" = "Daj prístup";
 "Keep Private" = "Nechaj súkromné";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
-        = "Nedá sa prihlásiť k odberu tejto zložky!";
+        = "Nedá sa prihlásiť na odber tejto zložky!";
 "You cannot subscribe to a folder that you own!"
-        = "Nemôžete sa prihlásiť k odberu zložky, ktorú vlastnite!";
+        = "Nemôžete sa prihlásiť na odber zložky, ktorú vlastníte!";
 "Unable to unsubscribe from that folder!"
         = "Nedá sa odhlásiť z tejto zložky!";
 "You cannot unsubscribe from a folder that you own!"
-        = "Nemôžete sa odhlásiť zo zložky, ktorú vlastnite!";
+        = "Nemôžete sa odhlásiť zo zložky, ktorú vlastníte!";
 "Unable to rename that folder!" = "Nemožno premenovať túto zložku!";
 "You have already subscribed to that folder!"
-        = "Už ste prihlásení k odberu tejto zložky!";
+        = "Už ste prihlásený na odber tejto zložky!";
 "The user rights cannot be edited for this object!"
-        = "Užívateľské práva nemožno upraviť pre tento objekt!";
-"A folder by that name already exists." = "Zložka s týmto názvom už existuje.";
+        = "Používateľské práva nemožno upraviť pre tento objekt!";
+"A folder by that name already exists." = "Zložka s týmto názvom už existuje!";
 "You cannot create a list in a shared address book."
-        = "Nemôžete vytvoriť zoznam v zdieľanom adresári.";
+        = "Nemôžete vytvoriť zoznam v zdieľanom adresári!";
 "Warning" = "Varovanie";
 "Can't contact server" = "Pri kontaktovaní servera nastala chyba. Skúste to neskôr, prosím.";
 "You are not allowed to access this module or this system. Please contact your system administrator."
-= "Nemate dovolený prístup k tomuto modulu alebo tento systém. Obráťte sa na správcu systému.";
+= "Nemáte povolený prístup k tomuto modulu alebo tomuto systémy. Obráťte sa na správcu systému.";
 "You don't have the required privileges to perform the operation."
 = "Nemáte potrebné oprávnenia na vykonanie operácie.";
 "noEmailForDelegation" = "Musíte zadať adresu, na ktorú chcete delegovať vaše pozvanie.";
-"delegate is organizer" = "Delegát je organizátorom. Zadajte prosím iného delegáta.";
+"delegate is organizer" = "Delegát je organizátorom. Zadajte, prosím, iného delegáta.";
 "delegate is a participant" = "Delegát je už účastníkom.";
 "delegate is a group" = "Zadaná adresa zodpovedá skupine. Môžete ju delegovať len na jedinečnú osobu.";
 
@@ -109,34 +109,34 @@
 "a2_Friday" = "Pi";
 "a2_Saturday" = "So";
 "Access Rights" = "Prístupové práva";
-"Add User" = "Pridať užívateľa";
+"Add User" = "Pridať používateľa";
 "Loading" = "Spúštanie";
-"No such user." = "Spomenutý užívateľ neexistuje.";
+"No such user." = "Spomenutý používateľ neexistuje.";
 "You cannot (un)subscribe to a folder that you own!" = "Nemôžete sa prihlásiť (odhlásiť) na odber svojej vlastnej zložky!";
 
 /* SMIME Certificate field */
-"Subject Name" = "Meno Subjektu";
+"Subject Name" = "Meno subjektu";
 "Issuer" = "Vystavovateľ";
 "countryName" = "Krajina";
 "organizationName" = "Organizácia";
-"organizationalUnitName" = "Organizačná Jednotka";
-"commonName" = "Všeobecné Meno";
-"emailAddress" = "E-mailová Adresa";
+"organizationalUnitName" = "Organizačná jednotka";
+"commonName" = "Všeobecné meno";
+"emailAddress" = "E-mailová adresa";
 
 /* Authentication username */
-"Username" = "Užívateľské meno";
+"Username" = "Používateľské meno";
 
 /* Authentication password */
 "Password" = "Heslo";
 
 /* Authentication failed */
-"Wrong username or password." = "Nesprávne uživateľské meno alebo heslo.";
+"Wrong username or password." = "Nesprávne použivateľské meno alebo heslo.";
 
 /* Error message displayed bellow search field when the search string has less than the required number of characters */
-"Enter at least %{minimumSearchLength} characters" = "Vložte minimálne %{minimumSearchLength} znakov";
+"Enter at least %{minimumSearchLength} characters" = "Vložte minimálne %{minimumSearchLength} znakov.";
 
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
-"File size upload limit reached" = "Bol dosiahnutý limit pre veľkosť nahraného súboru";
+"File size upload limit reached" = "Bol dosiahnutý limit pre veľkosť nahraného súboru.";
 
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Prepnúť zobrazenie";
@@ -145,7 +145,7 @@
 "Toggle range of items" = "Prepnúť rozsah položiek";
 
 /* Question mark shows list of hotkeys */
-"Show or hide this help" = "Zobraziť alebo skryť túto nápovedu";
+"Show or hide this help" = "Zobraziť alebo skryť túto pomoc.";
 
 /* Space key */
 "key_space" = "space";
