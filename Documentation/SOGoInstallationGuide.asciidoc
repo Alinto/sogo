@@ -786,7 +786,7 @@ Authentication using LDAP
 
 SOGo can use a LDAP server to authenticate users and, if desired, to
 provide global address books. SOGo can also use an SQL backend for this
-purpose (see the section_Authentication using SQL_ later in this
+purpose (see the section _<<Authentication-using-SQL,Authentication using SQL>>_ later in this
 document). Insert the following text into your configuration file to
 configure an authentication and global address book using an LDAP
 directory server:
@@ -1600,6 +1600,8 @@ Once SOGo is running, you can test correctness by creating an event such as
 calendar.
 
 Ensure the computer used for the test has emoji fonts installed.
+
+[[Authentication-using-SQL]]
 
 Authentication using SQL
 ~~~~~~~~~~~~~~~~~~~~~~~~
