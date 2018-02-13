@@ -336,10 +336,14 @@
   if (![url hasSuffix: @"/"])
     [url appendString: @"/"];
 
-  [url appendString: [[self partPath] componentsJoinedByString: @"/"]];
-  [url appendString: @"/"];
+  if ([self partPath])
+    {
+      [url appendString: [[self partPath] componentsJoinedByString: @"/"]];
+      [url appendString: @"/"];
+    }
 
-  if ([bodyPart isKindOfClass: [SOGoMailBodyPart class]])
+  if ([bodyPart isKindOfClass: [SOGoMailBodyPart class]] ||
+      [bodyPart isKindOfClass: [SOGoMailObject class]])
     attachment = [self _filenameForAttachment: bodyPart];
   else if ([[self decodedFlatContent] isKindOfClass: [NGMimeBodyPart class]])
     attachment = [[[self decodedFlatContent] headerForKey: @"content-disposition"] filename];
