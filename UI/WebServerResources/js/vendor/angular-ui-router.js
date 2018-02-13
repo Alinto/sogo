@@ -4,7 +4,7 @@
  *         This causes it to be incompatible with plugins that depend on @uirouter/core.
  *         We recommend switching to the ui-router-core.js and ui-router-angularjs.js bundles instead.
  *         For more information, see https://ui-router.github.io/blog/uirouter-for-angularjs-umd-bundles
- * @version v1.0.14
+ * @version v1.0.15
  * @link https://ui-router.github.io
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -1028,10 +1028,7 @@ var silentRejection = function (error) {
     return silenceUncaughtInPromise(services.$q.reject(error));
 };
 
-/**
- * @module common
- */
-/** for typedoc */
+/** @module common */
 var Queue = /** @class */ (function () {
     function Queue(_items, _limit) {
         if (_items === void 0) { _items = []; }
@@ -6163,16 +6160,14 @@ var isTransition = inArray(TRANSITION_TOKENS);
 // This function removes resolves for '$transition$' and `Transition` from the treeChanges.
 // Do not use this on current transitions, only on old ones.
 var treeChangesCleanup = function (trans) {
+    var nodes = values(trans.treeChanges()).reduce(unnestR, []).reduce(uniqR, []);
     // If the resolvable is a Transition, return a new resolvable with null data
     var replaceTransitionWithNull = function (r) {
         return isTransition(r.token) ? Resolvable.fromData(r.token, null) : r;
     };
-    var cleanPath = function (path) { return path.map(function (node) {
-        var resolvables = node.resolvables.map(replaceTransitionWithNull);
-        return extend(node.clone(), { resolvables: resolvables });
-    }); };
-    var treeChanges = trans.treeChanges();
-    mapObj(treeChanges, cleanPath, treeChanges);
+    nodes.forEach(function (node) {
+        node.resolvables = node.resolvables.map(replaceTransitionWithNull);
+    });
 };
 
 /** @module hooks */ /** */
