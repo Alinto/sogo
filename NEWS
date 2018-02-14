@@ -55,6 +55,7 @@ Bug fixes
  - [web] fixed decoding of spaces in URL-encoded parameters (+)
  - [eas] hebrew folders encoding problem using EAS (#4240)
  - [eas] avoid sync requests for shared folders every second (#4275)
+ - [eas] we skip the organizer from the attendees list (#4402)
 
 3.2.10 (2017-07-05)
 -------------------
