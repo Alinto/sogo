@@ -128,7 +128,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // StartTime -- http://msdn.microsoft.com/en-us/library/ee157132(v=exchg.80).aspx
   if ([self startDate])
     {
-      if ([self isAllDay] && !tz)
+      if ([self isAllDay] && !tz && [[context objectForKey: @"ASProtocolVersion"] floatValue] < 16.0)
         [s appendFormat: @"<StartTime xmlns=\"Calendar:\">%@</StartTime>",
            [[[self startDate] dateByAddingYears: 0 months: 0 days: 0
                                           hours: 0 minutes: 0
@@ -141,7 +141,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // EndTime -- http://msdn.microsoft.com/en-us/library/ee157945(v=exchg.80).aspx
   if ([self endDate])
     {
-      if ([self isAllDay] && !tz)
+      if ([self isAllDay] && !tz && [[context objectForKey: @"ASProtocolVersion"] floatValue] < 16.0)
         [s appendFormat: @"<EndTime xmlns=\"Calendar:\">%@</EndTime>",
            [[[self endDate] dateByAddingYears: 0 months: 0 days: 0
                                         hours: 0 minutes: 0
