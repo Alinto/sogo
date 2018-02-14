@@ -868,6 +868,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               // { "Attendee_Email" = "sogo3@example.com"; "Attendee_Name" = "Wolfgang Fritz"; "Attendee_Status" = 5; "Attendee_Type" = 1; }
               attendee = [o objectAtIndex: i];
               
+              if ([self isOrganizer: [attendee objectForKey: @"Attendee_Email"]])
+                continue;
+
               person = [iCalPerson elementWithTag: @"attendee"];
               [person setCn: [attendee objectForKey: @"Attendee_Name"]];
               [person setEmail: [attendee objectForKey: @"Attendee_Email"]];

@@ -1,0 +1,2704 @@
+4.0.0 (2017-XX-XX)
+------------------
+
+New features
+ - [core] full S/MIME support
+ - [core] can now invite attendees to exceptions only (#2561)
+ - [core] add support for module constraints in SQL sources
+ - [core] add support for listRequiresDot in SQL sources
+ - [web] add support for SearchFieldNames in SQL sources
+ - [web] display freebusy information of owner in appointment editor
+ - [web] register SOGo as a handler for the mailto scheme (#1223)
+ - [web] new events list view where events are grouped by day
+ - [web] user setting to always show mail editor inside current window or in popup window
+ - [web] add support for events with recurrence dates (RDATE)
+
+Enhancements
+ - [web] follow requested URL after user authentication
+ - [web] added Simplified Chinese (zh_CN) translation - thanks to Thomas Kuiper
+ - [web] now also give modify permission when selecting all calendar rights
+ - [web] allow edition of IMAP flags associated to mail labels
+ - [web] search scope of address book is now respected
+ - [web] avoid redirection to forbidden module (via ModulesConstraints)
+ - [web] lower constraints on dates range of auto-reply message (#4161)
+ - [web] sort categories in event and task editors (#4349)
+ - [web] show weekday in headers of day view
+ - [web] improve display of overlapping events with categories
+ - [web] updated Angular Material to version 1.1.6
+
+Bug fixes
+ - [core] yearly repeating events are not shown in web calendar (#4237)
+ - [core] increased column size of settings/defaults for MySQL (#4260)
+ - [core] fixed yearly recurrence calculator with until date
+ - [core] generalized HTML sanitization to avoid encoding issues when replying/forwarding mails
+ - [core] don't expose web calendars to other users (#4331)
+ - [web] fixed display of error when the mail editor is in a popup
+ - [web] attachments are not displayed on IOS (#4150)
+ - [web] fixed parsing of pasted email addresses from Spreadsheet (#4258)
+ - [web] messages list not accessible when changing mailbox in expanded mail view (#4269)
+ - [web] only one postal address of same type is saved (#4091)
+ - [web] improve handling of email notifications of a calendar properties
+ - [web] fixed XSRF cookie path when changing password (#4139)
+ - [web] spaces can now be inserted in address book names
+ - [web] prevent the creation of empty contact categories
+ - [web] fixed mail composition from message headers (#4335)
+ - [web] restore messages selection after automatic refresh (#4330)
+ - [web] fixed path of destination mailbox in Sieve filter editor
+ - [web] force copy of dragged contacts from global address books
+ - [web] removed null characters from JSON responses
+ - [web] fixed advanced mailbox search when mailbox name is very long
+ - [web] fixed handling of public access rights of Calendars (#4344)
+ - [web] fixed server-side CSS sanitization of messages (#4366)
+ - [web] cards list not accessible when changing address book in expanded card view
+ - [web] added missing subject to junk/not junk reports
+ - [web] fixed file uploader URL in mail editor
+ - [web] fixed decoding of spaces in URL-encoded parameters (+)
+ - [eas] hebrew folders encoding problem using EAS (#4240)
+ - [eas] avoid sync requests for shared folders every second (#4275)
+ - [eas] we skip the organizer from the attendees list (#4402)
+
+3.2.10 (2017-07-05)
+-------------------
+
+New features
+ - [web] new images viewer in Mail module
+ - [web] create list from selected cards (#3561)
+ - [eas] initial EAS v16 and email drafts support
+ - [core] load-testing scripts to evaluate SOGo performance
+
+Enhancements
+ - [core] now possible to {un}subscribe to folders using sogo-tool
+ - [web] AngularJS optimizations in Mail module
+ - [web] AngularJS optimization of color picker
+ - [web] improve display of tasks status
+ - [web] added custom fields support from Thunderbird's address book
+ - [web] added Latvian (lv) translation - thanks to Juris Balandis
+ - [web] expose user's defaults and settings inline
+ - [web] can now discard incoming mails during vacation
+ - [web] support both backspace and delete keys in Mail and Contacts modules
+ - [web] improved display of appointment/task comments and card notes
+ - [web] updated Angular Material to version 1.1.4
+ - [web] updated CKEditor to version 4.7.1
+
+Bug fixes
+ - [web] respect SOGoLanguage and SOGoSupportedLanguages (#4169)
+ - [web] fixed adding list members with multiple email addresses
+ - [web] fixed responsive condition of login page (960px to 1023px)
+ - [web] don't throw errors when accessing nonexistent special mailboxes (#4177)
+ - [core] newly subscribed calendars are excluded from freebusy (#3354)
+ - [core] don't update subscriptions when owner is not the active user (#3988)
+ - [core] strip cr during LDIF import process (#4172)
+ - [core] email alarms are sent too many times (#4100)
+ - [core] enable S/MIME even when using GNU TLS (#4201)
+ - [core] silence verbose output for sogo-ealarms-notify (#4170)
+ - [eas] don't include task folders if we hide them in SOGo (#4164)
+
+3.2.9 (2017-05-09)
+------------------
+
+New features
+ - [core] email alarms now have pretty formatting (#805)
+
+Enhancements
+ - [core] improved event invitation for all day events (#4145)
+ - [web] improved interface refresh time with external IMAP accounts
+ - [eas] added photo support for GAL search operations
+
+Bug fixes
+ - [web] fixed attachment path when inside multiple body parts
+ - [web] fixed email reminder with attendees (#4115)
+ - [web] prevented form to be marked dirty when changing password (#4138)
+ - [web] restored support for SOGoLDAPContactInfoAttribute
+ - [web] avoid duplicated email addresses in LDAP-based addressbook (#4129)
+ - [web] fixed mail delegation of pristine user accounts (#4160)
+ - [core] cherry-picked comma escaping fix from v2 (#3296)
+ - [core] fix sogo-tool restore potentially crashing on corrupted data (#4048)
+ - [core] handle properly mails using windows-1255 charset (#4124)
+ - [core] fixed email reminders sent multiple times (#4100)
+ - [core] fixed LDIF to vCard conversion for non-handled multi-value attributes (#4086)
+ - [core] properly honor the "include in freebusy" setting (#3354)
+ - [core] make sure to use crypt scheme when encoding md5/sha256/sha512 (#4137)
+ - [eas] set reply/forwarded flags when ReplaceMime is set (#4133)
+ - [eas] remove alarms over EAS if we don't want them (#4059)
+ - [eas] correctly set RSVP on event invitations
+ - [eas] avoid sending IMIP request/update messages for all EAS clients (#4022)
+
+3.2.8 (2017-03-24)
+------------------
+
+New features
+ - [core] new sogo-tool manage-acl command to manage calendar/address book ACLs
+
+Enhancements
+ - [web] constrain event/task reminder to a positive number
+ - [web] display year in day and week views
+ - [web] split string on comma and semicolon when pasting multiple addresses (#4097)
+ - [web] restrict Draft/Sent/Trash/Junk mailboxes to the top level
+ - [web] animations are automatically disabled under IE11
+ - [web] updated Angular Material to version 1.1.3
+
+Bug fixes
+ - [core] handle broken CalDAV clients sending bogus SENT-BY (#3992)
+ - [core] fixed handling of exdates and proper intersection for fbinfo (#4051)
+ - [core] remove attendees that have the same identity as the organizer (#3905)
+ - [web] fixed ACL editor in admin module for Safari (#4036)
+ - [web] fixed function call when removing contact category (#4039)
+ - [web] localized mailbox names everywhere (#4040, #4041)
+ - [web] hide fab button when printing (#4038)
+ - [web] SOGoCalendarWeekdays must now be defined before saving preferences
+ - [web] fixed CAS session timeout handling during XHR requests (#1456)
+ - [web] exposed default value of SOGoMailAutoSave (#4053)
+ - [web] exposed default value of SOGoMailAddOutgoingAddresses (#4064)
+ - [web] fixed handling of contact organizations (#4028)
+ - [web] fixed handling of attachments in mail editor (#4058, #4063)
+ - [web] fixed saving draft outside Mail module (#4071)
+ - [web] fixed SCAYT automatic language selection in HTML editor
+ - [web] fixed task sorting on multiple categories
+ - [web] fixed sanitisation of flags in Sieve filters (#4087)
+ - [web] fixed missing CC or BCC when specified before sending message (#3944)
+ - [web] enabled Save button after deleting attributes from a card (#4095)
+ - [web] don't show Copy To and Move To menu options when user has a single address book
+ - [web] fixed display of category colors in events and tasks lists
+ - [eas] fixed opacity in EAS freebusy (#4033)
+
+3.2.7 (2017-02-14)
+------------------
+
+New features
+ - [core] new sogo-tool checkup command to make sure user's data is sane
+
+Enhancements
+ - [web] added Hebrew (he) translation - thanks to Raz Aidlitz
+
+Bug fixes
+ - [core] generalized the bcc handling code 
+ - [web] saving the preferences was not possible when Mail module is disabled
+ - [web] ignore mouse events in scrollbars of Month view (#3990)
+ - [web] fixed public URL with special characters (#3993)
+ - [web] keep the fab button visible when the center list is hidden
+ - [web] localized mail, phone, url and address types (#4030)
+ - [eas] improved EAS parameters parsing (#4003)
+ - [eas] properly handle canceled appointments
+
+3.2.6a (2017-01-26)
+-------------------
+
+Bug fixes
+ - [core] fixed "include in freebusy" (reverts #3354)
+ - [web] improved ACLs handling of inactive users
+
+3.2.6 (2017-01-23)
+------------------
+
+Enhancements
+ - [web] show locale codes beside language names in Preferences module
+ - [web] fixed visual glitches in Month view with Firefox
+ - [web] mail editor can now be expanded horizontally and automatically expands vertically
+ - [web] compose a new message inline or in a popup window
+ - [web] allow to select multiple files when uploading attachments (#3999)
+ - [web] use "date" extension of Sieve to enable/disable vacation auto-reply (#1530, #1949)
+ - [web] updated Angular to version 1.6.1
+ - [web] updated CKEditor to version 4.6.2
+
+Bug fixes
+ - [core] remove all alarms before sending IMIP replies (#3925)
+ - [web] fixed rendering of forwared HTML message with inline images (#3981)
+ - [web] fixed pasting images in CKEditor using Chrome (#3986)
+ - [eas] make sure we trigger a download of service-side changed events
+ - [eas] now strip attendees with no email during MeetingResponse calls
+
+3.2.5 (2017-01-10)
+------------------
+
+New features
+ - [web] download attachments of a message as a zip archive
+
+Enhancements
+ - [core] improved IMIP handling from Exchange/Outlook clients
+ - [web] prevent using localhost on additional IMAP accounts
+ - [web] renamed buttons of alarm toast (#3945)
+ - [web] load photos of LDAP-based address books in contacts list (#3942)
+ - [web] added SOGoMaximumMessageSizeLimit to limit webmail message size
+ - [web] added photo support for LDIF import (#1084)
+ - [web] updated CKEditor to version 4.6.1
+
+Bug fixes
+ - [core] honor blocking wrong login attempts within time interval (#2850)
+ - [core] better support for RFC 6638 (schedule-agent)
+ - [core] use source's domain when none defined and trying to match users (#3523)
+ - [core] handle delegation with no SENT-BY set (#3368)
+ - [core] properly honor the "include in freebusy" setting (#3354)
+ - [core] properly save next email alarm in the database (#3949)
+ - [core] fix events in floating time during CalDAV's PUT operation (#2865)
+ - [core] handle rounds in sha512-crypt password hashes
+ - [web] fixed confusion between owner and active user in ACLs management of Administration module
+ - [web] fixed JavaScript exception after renaming an address book
+ - [web] fixed Sieve folder encoding support (#3904)
+ - [web] fixed ordering of calendars when renaming or adding a calendar (#3931)
+ - [web] use the organizer's alarm by default when accepting IMIP messages (#3934)
+ - [web] switch on "Remember username" when cookie username is set
+ - [web] return login page for unknown users (#2135)
+ - [web] fixed saving monthly recurrence rule with "by day" condition (#3948)
+ - [web] fixed display of message content when enabling auto-reply (#3940)
+ - [web] don't allow to create lists in a remote address book (not yet supported)
+ - [web] fixed attached links in task viewer (#3963)
+ - [web] avoid duplicate mail entries in contact of LDAP-based address book (#3941)
+ - [web] append ics file extension when importing events (#2308)
+ - [web] handle URI in vCard photos (#2683)
+ - [web] handle semicolon in values during LDIF import (#1760)
+ - [web] fixed computation of week number (#3973, #3976)
+ - [web] fixed saving of inactive calendars (#3862, #3980)
+ - [web] fixed public URLs to Calendars (#3974)
+ - [web] fixed hotkeys in Mail module when a dialog is active (#3983)
+ - [eas] properly skip folders we don't want to synchronize (#3943)
+ - [eas] fixed 30 mins freebusy offset with S Planner
+ - [eas] now correctly handles reminders on tasks (#3964)
+ - [eas] always force save events creation over EAS (#3958)
+ - [eas] do not decode from hex the event's UID (#3965)
+ - [eas] add support for "other addresses" (#3966)
+ - [eas] provide correct response status when sending too big mails (#3956)
+
+3.2.4 (2016-12-01)
+------------------
+
+New features
+ - [core] new sogo-tool cleanup user feature
+
+Enhancements
+ - [core] added handling of BYSETPOS for BYDAY in recurrence rules
+ - [web] added sort by start date for tasks (#3840)
+
+Bug fixes
+ - [web] fixed JavaScript exception when SOGo is launched from an external link (#3900)
+ - [web] restored fetching of freebusy information of MS Exchange contacts
+ - [web] fixed mail attribute when importing an LDIF file (#3878)
+ - [web] don't save empty custom auto-reply subject
+ - [web] fixed detection of session expiration
+ - [eas] properly escape all GAL responses (#3923)
+
+3.2.3 (2016-11-25)
+------------------
+
+New features
+ - [core] added photo support for LDAP-based address books (#747, #2184)
+
+Enhancements
+ - [web] updated CKEditor to version 4.6.0
+ - [web] updated Angular to version 1.5.9
+
+Bug fixes
+ - [web] restore attributes when rewriting base64-encoded img tags (#3814)
+ - [web] improve alarms dialog (#3909)
+ - [eas] fixed EAS delete operation
+
+3.2.2 (2016-11-23)
+------------------
+
+New features
+ - [core] support repetitive email alarms on tasks and events (#1053)
+ - [web] allow to hide center column on large screens (#3861)
+ - [eas] relaxed permission requirements for subscription synchronizations (#3118, #3180)
+
+Enhancements
+ - [core] added sha256-crypt and sha512-crypt password support
+ - [core] updated time zones to version 2016i
+ - [eas] now also search on senders when using EAS Search ops
+ - [web] allow multiple messages to be marked as seen (#3873)
+ - [web] use switches instead of checkboxes in Calendars module
+
+Bug fixes
+ - [core] fixed condition in weekly recurrence calculator
+ - [core] always send IMIP messages using UTF-8
+ - [web] fixed mail settings persistence when sorting by arrival date
+ - [web] disable submit button while saving an event or a task (#3880)
+ - [web] disable submit button while saving a contact
+ - [web] fixed computation of week number
+ - [web] fixed and improved IMAP folder subscriptions manager (#3865)
+ - [web] fixed Sieve script activation when vacation start date is in the future (#3885)
+ - [web] fixed moving a component without the proper rights (#3889)
+ - [web] restored Sieve folder encoding support (#3904)
+ - [web] allow edition of a mailbox rights when user can administer mailbox
+
+3.2.1 (2016-11-02)
+------------------
+
+Enhancements
+ - [web] add constraints to start/end dates of automatic responder (#3841)
+ - [web] allow a mailbox to be deleted immediately (#3875)
+ - [web] updated Angular to version 1.5.8
+ - [eas] initial support for recurring tasks EAS
+ - [eas] now support replied/forwarded flags using EAS (#3796)
+ - [core] updated time zones to version 2016h
+
+Bug fixes
+ - [web] fixed tasks list when some weekdays are disabled
+ - [web] fixed automatic refresh of calendar view
+ - [web] respect SOGoSearchMinimumWordLength in contacts list editor
+ - [web] improved memory usage when importing very large address books
+ - [web] fixed progress indicator while importing cards or events and tasks
+ - [web] improved detection of changes in CKEditor (#3839)
+ - [web] fixed vCard generation for tags with no type (#3826)
+ - [web] only show the organizer field of an IMIP REPLY if one is defined
+ - [web] fixed saving the note of a card (#3849)
+ - [web] fixed support for recurrent tasks (#3864)
+ - [web] restored support for alarms in tasks
+ - [web] improved validation of mail account delegators
+ - [web] fixed auto-completion of list members (#3870)
+ - [web] added missing options to subscribed addressbooks (#3850)
+ - [web] added missing options to subscribed calendars (#3863)
+ - [web] fixed resource conflict error handling (403 vs 409 HTTP code) (#3837)
+ - [web] restored immediate deletion of messages (without moving them to the trash)
+ - [web] avoid mail notifications on superfluous event changes (#3790)
+ - [web] CKEditor: added the pastefromexcel plugin (#3854)
+ - [eas] improve handling of email folders without a parent
+ - [eas] never send IMIP reply when the "initiator" is Outlook 2013/2016
+ - [core] only consider SMTP addresses for AD's proxyAddresses (#3842)
+ - [core] sogo-tool manage-eas now works with single store mode
+
+
+3.2.0 (2016-10-03)
+------------------
+
+New features
+ - [web] added IMAP folder subscriptions management (#255)
+ - [web] keyboard hotkeys (#1711, #1467, #3817)
+ - [eas] initial support for server-side mailbox search operations
+
+Enhancements
+ - [web] don't allow a recurrence rule to end before the first occurrence
+ - [web] updated Angular Material to version 1.1.1
+ - [web] show user's name upon successful login
+ - [web] inserted unseen messages count and mailbox name in browser's window title
+ - [web] disable JavaScript theme generation when SOGoUIxDebugEnabled is set to NO
+ - [web] added Serbian (sr) translation - thanks to Bogdanović Bojan
+ - [web] added sort by arrival date in Mail module (#708)
+ - [web] restored "now" line in Calendar module
+ - [web] updated CKEditor to version 4.5.11
+ - [web] allow custom email address to be one of the user's profile (#3551)
+ - [eas] propagate message submission errors to EAS clients (#3774) 
+
+Bug fixes
+ - [eas] properly generate the BusyStatus for normal events
+ - [eas] properly escape all email and address fields
+ - [eas] properly generate yearly rrule
+ - [eas] make sure we don't sleep for too long when EAS processes need interruption
+ - [eas] fixed recurring events with timezones for EAS (#3822)
+ - [web] restored functionality to save unknown recipient emails to address book on send
+ - [web] fixed ripple blocking the form when submitting no values (#3808)
+ - [web] fixed error handling when renaming a mailbox
+ - [web] handle binary content transfer encoding when displaying mails
+ - [web] removed resize grips to short events (#3771)
+ - [core] strip protocol value from proxyAddresses attribute (#3182)
+ - [core] we now search in all domain sources for Apple Calendar
+ - [core] properly handle groups in Apple Calendar's delegation
+ - [core] fixed caching expiration of ACLs assigned to LDAP groups (#2867)
+ - [core] make sure new cards always have a UID (#3819)
+ - [core] fixed default TRANSP value when creating event
+
+3.1.5 (2016-08-10)
+------------------
+
+New features
+ - [web] drag'n'drop of messages in the Mail module (#3497, #3586, #3734, #3788)
+ - [web] drag'n'drop of cards in the AddressBook module
+ - [eas] added folder merging capabilities
+
+Enhancements
+ - [web] improve action progress when login in or sending a message (#3765, #3761)
+ - [web] don't allow to send the message while an upload is in progress
+ - [web] notify when successfully copied or moved some messages
+ - [web] restored indicator in the top banner when a vacation message (auto-reply) is active
+ - [web] removed animation when dragging an event to speed up rendering
+ - [web] expunge drafts mailbox when a draft is sent and deleted
+ - [web] actions of Sieve filters are now sortable
+ - [web] show progress indicator when refreshing events/tasks lists
+ - [web] updated CKEditor to version 4.5.10
+
+Bug fixes
+ - [web] fixed refresh of addressbook when deleting one or many cards
+ - [web] reset multiple-selection mode after deleting cards, events or tasks
+ - [web] fixed exception when moving tasks to a different calendar
+ - [web] fixed printing of long mail (#3731)
+ - [web] fixed position of ghost block when creating an event from DnD
+ - [web] fixed avatar image in autocompletion
+ - [web] restored expunge of current mailbox when leaving the Mail module
+ - [web] added support for multiple description values in LDAP entries (#3750)
+ - [web] don't allow drag'n'drop of invitations
+ - [eas] fixed long GUID issue preventing sometimes synchronisation (#3460)
+ - [core] fixing sogo-tool backup with multi-domain configuration but domain-less logins
+ - [core] during event scheduling, use 409 instead of 403 so Lightning doesn't fail silently
+ - [core] correctly calculate recurrence exceptions when not overlapping the recurrence id
+ - [core] prevent invalid SENT-BY handling during event invitations (#3759)
+
+3.1.4 (2016-07-12)
+------------------
+
+New features
+ - [core] new sogo-tool truncate-calendar feature (#1513, #3141)
+ - [eas] initial Out-of-Office support in EAS
+ - [oc] initial support for calendar and address book sharing with OpenChange
+
+Enhancements
+ - [eas] use the preferred email identity in EAS if valid (#3698)
+ - [eas] handle inline attachments during EAS content generation
+ - [web] all batch operations can now be performed on selected messages in advanced search mode
+ - [web] add date picker to change date, week, or month of current Calendar view
+ - [web] style cancelled events in Calendar module
+ - [web] replace sortable library for better support with Firefox
+ - [web] stage-1 tuning of sgColorPicker directive
+ - [oc] better handling of nested attachments with OpenChange
+
+Bug fixes
+ - [web] fixed crash when an attachment filename has no extension
+ - [web] fixed selection of transparent all-day events (#3744)
+ - [web] leaving the dropping area while dragging a file was blocking the mail editor
+ - [web] fixed scrolling of all-day events (#3190)
+ - [eas] handle base64 EAS protocol version
+ - [eas] handle missing IMAP folders from a hierarchy using EAS
+
+3.1.3 (2016-06-22)
+------------------
+
+New features
+ - [core] now possible to define default Sieve filters (#2949)
+ - [core] now possible to set vacation message start date (#3679)
+ - [web] add a header and/or footer to the vacation message (#1961)
+ - [web] specify a custom subject for the vacation message (#685, #1447)
+
+Enhancements
+ - [core] when restoring data using sogo-tool, regenerate Sieve script (#3029)
+ - [web] always display name of month in week view (#3724)
+ - [web] use a speed dial (instead of a dialog) for card/list creation
+ - [web] use a speed dial for event/task creation
+ - [web] CSS is now minified using clean-css
+
+Bug fixes
+ - [core] properly handle sorted/deleted calendars (#3723)
+ - [core] properly handle flattened timezone definitions (#2690)
+ - [web] fixed generic avatar in lists (#3719)
+ - [web] fixed validation in Sieve filter editor
+ - [web] properly encode rawsource of events and tasks to avoid XSS issues (#3718)
+ - [web] properly encode rawsource of cards to avoid XSS issues
+ - [web] fixed all-day events covering a timezone change (#3457)
+ - [web] sgTimePicker parser now respects the user's time format and language
+ - [web] fixed time format when user chooses the default one
+ - [web] added missing delegators identities in mail editor (#3720)
+ - [web] honour the domain default SOGoAppointmentSendEMailNotifications (#3729)
+ - [web] the login module parameter is now properly restored when set as "Last used"
+ - [web] if cn isn't found for shared mailboxes, use email address (#3733)
+ - [web] fixed handling of attendees when updating an event
+ - [web] show tooltips over long calendar/ab names (#232)
+ - [web] one-click option to give all permissions for user (#1637)
+ - [web] never query gravatar.com when disabled
+
+3.1.2 (2016-06-06)
+------------------
+
+Enhancements
+ - [web] updated Angular Material to version 1.1.0rc5
+
+Bug fixes
+ - [web] fixed error handling when renaming a mailbox
+ - [web] fixed user removal from ACLs in Administration module (#3713)
+ - [web] fixed event classification icon (private/confidential) in month view (#3711)
+ - [web] CKEditor: added the pastefromword plugin (#2295, #3313)
+ - [web] fixed loading of card from global addressbooks
+ - [web] fixed negative offset when saving an all-day event (#3717)
+
+3.1.1 (2016-06-02)
+------------------
+
+Enhancements
+ - [web] expose all email addresses in autocompletion of message editor (#3443)
+ - [web] Gravatar service can now be disabled (#3600)
+ - [web] collapsable mail accounts (#3493)
+ - [web] show progress indicator when loading messages and cards
+ - [web] display messages sizes in list of Mail module
+ - [web] link event's attendees email addresses to mail composer
+ - [web] respect SOGoSearchMinimumWordLength when searching for events or tasks
+ - [web] updated CKEditor to version 4.5.9
+ - [web] CKEditor: switched to the minimalist skin
+ - [web] CKEditor: added the base64image plugin
+
+Bug fixes
+ - [core] strip X- tags when securing content (#3695)
+ - [web] fixed creation of chip on blur (sgTransformOnBlur directive)
+ - [web] fixed composition of new messages from Contacts module
+ - [web] fixed autocompletion of LDAP-based groups (#3673)
+ - [web] fixed month view when current month covers six weeks (#3663)
+ - [web] fixed negative offset when converting a regular event to an all-day event (#3655)
+ - [web] fixed event classification icon (private/confidential) in day/week/multicolumn views
+ - [web] fixed display of mailboxes list on mobiles (#3654)
+ - [web] restored Catalan and Slovak translations (#3687)
+ - [web] fixed restore of mailboxes expansion state when multiple IMAP accounts are configured
+ - [web] improved CSS sanitizer for HTML messages (#3700)
+ - [web] fixed toolbar of mail editor when sender address was too long (#3705)
+ - [web] fixed decoding of filename in attachments (quotes and Cyrillic characters) (#2272)
+ - [web] fixed recipients when replying from a message in the Sent mailbox (#2625)
+ - [eas] when using EAS/ItemOperations, use IMAP PEEK operation
+
+3.1.0 (2016-05-18)
+------------------
+
+New features
+ - [core] new database structure options to make SOGo use a total of nine tables
+ - [core] new user-based rate-limiting support for all SOGo requests (#3188)
+ - [web] toolbar of all-day events can be expanded to display all events
+ - [web] added AngularJS's XSRF support (#3246)
+ - [web] calendars list can be reordered and filtered
+ - [web] user can limit the calendars view to specific week days (#1841)
+
+Enhancements
+ - [web] updated Angular Material to version 1.1.0rc4
+ - [web] added Lithuanan (lt) translation - thanks to Mantas Liobė
+ - [web] added Turkish (Turkey) (tr_TR) translation - thanks to Sinan Kurşunoğlu
+ - [web] we now "cc" delegates during invitation updates (#3195)
+ - [web] new SOGoHelpURL preference to set a custom URL for SOGo help (#2768)
+ - [web] now able to copy/move events and also duplicate them (#3196)
+ - [web] improved preferences validation and now check for unsaved changes
+ - [web] display events and tasks priorities in list and day/week views (#3162)
+ - [web] style events depending on the user participation state
+ - [web] style transparent events (show time as free) (#3192)
+ - [web] improved input parsing of time picker (#3659)
+ - [web] restored support for Web calendars that require authentication
+
+Bug fixes
+ - [core] properly escape wide characters (#3616)
+ - [core] avoid double-appending domains in cache for multi-domain configurations (#3614)
+ - [core] fixed multidomain issue with non-unique ID accross domains (#3625)
+ - [core] fixed bogus headers generation when stripping folded bcc header (#3664)
+ - [core] fixed issue with multi-value org units (#3630)
+ - [core] sanity checks for events with bogus timezone offsets
+ - [web] fixed missing columns in SELECT statements (PostgreSQL)
+ - [web] fixed display of ghosts when dragging events
+ - [web] fixed management of mail labels in Preferences module
+ - [web] respect super user privileges to create in any calendar and addressbook (#3533)
+ - [web] properly null-terminate IS8601-formatted dates (#3539)
+ - [web] display CC/BCC fields in message editor when initialized with values
+ - [web] fixed message initialization in popup window (#3583)
+ - [web] create chip (recipient) on blur (#3470)
+ - [web] fixed position of warning when JavaScript is disabled (#3449)
+ - [web] respect the LDAP attributes mapping in the list view
+ - [web] handle empty body data when forwarding mails (#3581)
+ - [web] show repeating events when we ask for "All" or "Future" events (#69)
+ - [web] show the To instead of From when we are in the Sent folder (#3547)
+ - [web] fixed handling of mail tags in mail viewer
+ - [web] avoid marking mails as read when archiving a folder (#2792)
+ - [web] fixed crash when sending a message with a special priority
+ - [web] fixed saving of a custom weekly recurrence definition
+ - [web] properly escape the user's display name (#3617)
+ - [web] avoid returning search results on objects without read permissions (#3619)
+ - [web] restore priority of event or task in component editor
+ - [web] fixed menu content visibility when printing an email (#3584)
+ - [web] retired CSS reset so the style of HTML messages is respected (#3582)
+ - [web] fixed messages archiving as zip file
+ - [web] adapted time picker to match changes of md calendar picker
+ - [web] fixed sender addresses of draft when using multiple IMAP accounts (#3577)
+ - [web] create a new message when clicking on a "mailto" link (#3588)
+ - [web] fixed handling of Web calendars option "reload on login"
+ - [web] add recipient chip when leaving an input field (to/cc/bcc) (#3470)
+ - [dav] we now handle the default classifications for tasks (#3541)
+ - [eas] properly unfold long mail headers (#3152)
+ - [eas] correctly set EAS message class for S/MIME messages (#3576)
+ - [eas] handle FilterType changes using EAS (#3543)
+ - [eas] handle Dovecot's mail_shared_explicit_inbox parameter
+ - [eas] prevent concurrent Sync ops from same device (#3603)
+ - [eas] handle EAS loop termination when SOGo is being shutdown (#3604)
+ - [eas] now cache heartbeat interval and folders list during Ping ops (#3606)
+ - [eas] sanitize non-us-ascii 7bit emails (#3592)
+ - [eas] properly escape organizer name (#3615)
+ - [eas] correctly set answered/forwarded flags during smart operations
+ - [eas] don't mark calendar invitations as read when fetching messages
+
+3.0.2 (2016-03-04)
+------------------
+
+New features
+ - [web] show all/only this calendar
+ - [web] convert a message to an appointment or a task (#1722)
+ - [web] customizable base font size for HTML messages
+ - [web you can now limit the file upload size using the WOMaxUploadSize
+   configuration parameter (integer value in kilobytes) (#3510, #3135)
+
+Enhancements
+ - [web] added Junk handling feature from v2
+ - [web] updated Material Icons font to version 2.1.3
+ - [web] don't offer forward/vacation options in filters if not enabled
+ - [web] mail filters are now sortable
+ - [web] now supports RFC6154 and NoInferiors IMAP flag
+ - [web] improved confirm dialogs for deletions
+ - [web] allow resources to prevent invitations (#3410)
+ - [web] warn when double-booking attendees and offer force save option
+ - [web] list search now displays a warning regarding the minlength constraint
+ - [web] loading an LDAP-based addressbook is now instantaneous when listRequiresDot is disabled (#438, #3464)
+ - [web] improve display of messages with many recipients
+ - [web] colorize categories chips in event and task viewers
+ - [web] initial stylesheet for printing (#3484)
+ - [web] updated lodash to version 4.6.1
+ - [i18n] updated French and Finnish translations
+ - [eas] now support EAS MIME truncation
+
+Bug fixes
+ - [web] handle birthday dates before 1970 (#3567)
+ - [web] safe-guarding against bogus value coming from the quick tables
+ - [web] apply search filters when automatically reloading current mailbox (#3507)
+ - [web] fixed virtual repeater when moving up in messages list
+ - [web] really delete mailboxes being deleted from the Trash folder (#595, #1189, #641)
+ - [web] fixed address autocompletion of mail editor affecting cards list of active addressbook
+ - [web] fixed batched delete of components (#3516)
+ - [web] fixed mail draft autosave in preferences (#3519)
+ - [web] fixed password change (#3496)
+ - [web] fixed saving of notification email for calendar changes (#3522)
+ - [web] fixed ACL editor for authenticated users in Mail module
+ - [web] fixed fab button position in Calendar module (#3462)
+ - [web] fixed default priority of sent messages (#3542)
+ - [web] removed double-quotes from Chinese (Taiwan) translations that were breaking templates
+ - [web] fixed unseen count retrieval of nested IMAP folders
+ - [web] properly extract the mail column values from an SQL contacts source (#3544)
+ - [web] fixed incorrect date formatting when timezone was after UTC+0 (#3481, #3494)
+ - [web] replaced checkboxes in menu by a custom checkmark (#3557)
+ - [web] fixed attachments display when forwarding a message (#3560)
+ - [web] activate new calendar subscriptions by default
+ - [web] keep specified task status when not completed (#3499)
+ - [eas] allow EAS attachments get on 2nd-level mailboxes (#3505)
+ - [eas] fix EAS bday shift (#3518)
+ - [eas] encode CR in EAS payload (#3626)
+
+3.0.1 (2016-02-05)
+------------------
+
+Enhancements
+ - [web] improved scrolling behavior when deleting a single message (#3489)
+ - [web] added "Move To" option for selected messages (#3477)
+ - [web] updated CKEditor to version 4.5.7
+ - [web] updated Angular Material to 1.0.5
+ - [web/eas] add shared/public namespaces in the list or returned folders
+
+Bug fixes
+ - [web] safeguard against mailboxes with no quota (#3468)
+ - [web] fixed blank calendar view when selecting "Descending Order" in the sort menu
+ - [web] show active user's default email address instead of system email address (#3473)
+ - [web] fixed display of HTML tags when viewing a message raw source (#3490)
+ - [web] fixed IMIP accept/decline when there is only one MIME part
+ - [web] improved handling of IMAP connection problem in Web interface
+ - [web] fixed frequency parsing of recurrence rule when saving new appointment (#3472)
+ - [web] added support for %p in date formatting (#3480)
+ - [web] make sure an email is defined before trying to use it (#3488)
+ - [web] handle broken messages that have no date (#3498)
+ - [web] fixed virtual-repeater display in Webmail when a search is performed (#3500)
+ - [web] fixed drag'n'drop of all-day events in multicolumn view
+ - [eas] correctly encode filename of attachments over EAS (#3491)
+
+3.0.0 (2016-01-27)
+------------------
+
+New features
+ - complete rewrite of the JavaScript frontend using Angular and AngularMaterial
+ - responsive design and accessible options focused on mobile devices
+ - horizontal 3-pane view for a better experience on large desktop screens
+ - new color palette and better contrast ratio as recommended by the W3C
+ - improved accessibility to persons with disabilities by enabling common ARIA attributes
+ - use of Mozilla's Fira Sans typeface
+ - and many more!
+
+2.3.7 (2016-01-25)
+------------------
+
+New features
+ - new junk/not junk capability with generic SMTP integration
+
+Enhancements
+ - newly created folders using EAS are always sync'ed by default (#3454)
+ - added Croatian (hr_HR) translation - thanks to Jens Riecken
+
+Bug fixes
+ - now always generate invitation updates when using EAS
+ - rewrote the string sanitization to be 32-bit Unicode safe
+ - do not try to decode non-wbxml responses for debug output (#3444)
+
+2.3.6 (2016-01-18)
+------------------
+
+New features
+ - now able to sync only default mail folders when using EAS
+
+Enhancements
+ - Unit testing for RTFHandler
+ - JUnit output for sogo-tests
+
+Bug fixes
+ - don't unescape twice mail folder names (#3423)
+ - don't consider mobile Outlook EAS clients as DAV ones (#3431)
+ - we now follow 301 redirects when fetching ICS calendars
+ - when deleting an event using EAS, properly invoke the auto-scheduling code
+ - do not include failure attachments (really long filenames)
+ - fix encoding of email subjects with non-ASCII characters
+ - fix appointment notification mails using SOGoEnableDomainBasedUID configuration
+ - fix shifts in event times on Outlook
+
+2.3.5 (2016-01-05)
+------------------
+
+Enhancements
+ - return an error to openchange if mail message delivery fails
+ - return the requested elements on complex requests from Outlook when downloading changes
+ - user sources can be loaded dynamically
+ - unify user sources API
+ - updated Russian translation (#3383)
+
+Bug fixes
+ - properly compute the last week number for the year (#1010)
+ - share calendar, tasks and contacts folders in Outlook 2013 with editor permissions
+ - priorize filename in Content-Disposition against name in Content-Type to get the filename of an attachment in mail
+ - request all contacts when there is no filter in Contacts menu in Webmail
+ - personal contacts working properly on Outlook
+ - fixes on RTF parsing used by event/contact description and mail as RTF to read non-ASCII characters:
+   better parsing of font table, when using a font, switch to its character set, correct parsing of
+   escaped characters and Unicode character command word support for unicode characters greater than 32767
+ - no crash resolving recipients after reconnecting LDAP connection
+ - avoid creation of phantom contacts in SOGo from distribution list synced from Outlook.
+ - accepted & updated event names are now shown correctly in Outlook
+ - provide safe guards in mail and calendar to avoid exceptions while syncing
+
+2.3.4 (2015-12-15)
+------------------
+
+New features
+ - initial support for EAS calendar exceptions
+
+Enhancements
+ - limit the maximum width of toolbar buttons (#3381)
+ - updated CKEditor to version 4.5.6
+
+Bug fixes
+ - JavaScript exception when printing events from calendars with no assigned color (#3203)
+ - EAS fix for wrong charset being used (#3392)
+ - EAS fix on qp-encoded subjects (#3390)
+ - correctly handle all-day event exceptions when the master event changes
+ - prevent characters in calendar component UID causing issues during import process
+ - avoid duplicating attendees when accepting event using a different identity over CalDAV
+
+2.3.3a (2015-11-18)
+-------------------
+
+Bug fixes
+ - expanded mail folders list is not saved (#3386)
+ - cleanup translations
+
+2.3.3 (2015-11-11)
+------------------
+
+New features
+ - initial S/MIME support for EAS (#3327)
+ - now possible to choose which folders to sync over EAS
+
+Enhancements
+ - we no longer always entirely rewrite messages for Outlook 2013 when using EAS
+ - support for ghosted elements on contacts over EAS
+ - added Macedonian (mk_MK) translation - thanks to Miroslav Jovanovic
+ - added Portuguese (pt) translation - thanks to Eduardo Crispim
+
+Bug fixes
+ - numerous EAS fixes when connections are dropped before the EAS client receives the response (#3058, #2849)
+ - correctly handle the References header over EAS (#3365)
+ - make sure English is always used when generating Date headers using EAS (#3356)
+ - don't escape quoted strings during versit generation
+ - we now return all cards when we receive an empty addressbook-query REPORT
+ - avoid crash when replying to a mail with no recipients (#3359)
+ - inline images sent from SOGo webmail are not displayed in Mozilla Thunderbird (#3271)
+ - prevent postal address showing on single line over EAS (#2614)
+ - display missing events when printing working hours only
+ - fix corner case making server crash when syncing hard deleted messages when clear offline items was set up (Zentyal)
+ - avoid infinite Outlook client loops trying to set read flag when it is already set (Zentyal)
+ - avoid crashing when calendar metadata is missing in the cache (Zentyal)
+ - fix recurrence pattern event corner case created by Mozilla Thunderbird which made server crash (Zentyal)
+ - fix corner case that removes attachments on sending messages from Outlook (Zentyal)
+ - freebusy on web interface works again in multidomain environments (Zentyal)
+ - fix double creation of folders in Outlook when the folder name starts with a digit (Zentyal)
+ - avoid crashing Outlook after setting a custom view in a calendar folder (Zentyal)
+ - handle emails having an attachment as their content
+ - fixed JavaScript syntax error in attendees editor
+ - fixed wrong comparison of meta vs. META tag in HTML mails
+ - fixed popup menu position when moved to the left (#3381)
+ - fixed dialog position when at the bottom of the window (#2646, #3378)
+
+2.3.2 (2015-09-16)
+------------------
+
+Enhancements
+ - improved EAS speed and memory usage, avoiding many IMAP LIST commands (#3294)
+ - improved EAS speed during initial syncing of large mailboxes (#3293)
+ - updated CKEditor to version 4.5.3
+
+Bug fixes
+ - fixed display of whitelisted attendees in Preferences window on Firefox (#3285)
+ - non-latin subfolder names are displayed correctly on Outlook (Zentyal)
+ - fixed several sync issues on environments with multiple users (Zentyal)
+ - folders from other users will no longer appear on your Outlook (Zentyal)
+ - use right auth in multidomain environments in contacts and calendar from Outlook (Zentyal)
+ - session fix when SOGoEnableDomainBasedUID is enabled but logins are domain-less
+ - less sync issues when setting read flag (Zentyal)
+ - attachments with non-latin filenames sent by Outlook are now received (Zentyal)
+ - support attachments from more mail clients (Zentyal)
+ - avoid conflicting message on saving a draft mail (Zentyal)
+ - less conflicting messages in Outlook while moving messages between folders (Zentyal)
+ - start/end shifting by 1 hour due to timezone change on last Sunday of October 2015 (#3344)
+ - fixed localization of calendar categories with empty profile (#3295)
+ - fixed options availability in contextual menu of Contacts module (#3342)
+
+2.3.1 (2015-07-23)
+------------------
+
+Enhancements
+ - improved EAS speed, especially when fetching big attachments
+ - now always enforce the organizer's default identity in appointments
+ - improved the handling of default calendar categories/colors (#3200) 
+ - added support for DeletesAsMoves over EAS
+ - added create-folder subcommand to sogo-tool to create contact and calendar folders
+ - group mail addresses can be used as recipient in Outlook
+ - added 'ActiveSync' module constraints
+ - updated CKEditor to version 4.5.1
+ - added Slovenian translation - thanks to Jens Riecken
+ - added Chinese (Taiwan) translation
+
+Bug fixes
+ - EAS's GetItemEstimate/ItemOperations now support fetching mails and empty folders
+ - fixed some rare cornercases in multidomain configurations
+ - properly escape folder after creation using EAS (#3237)
+ - fixed potential organizer highjacking when using EAS (#3131)
+ - properly support big characters in EAS and fix encoding QP EAS error for Outlook (#3082)
+ - properly encode id of DOM elements in Address Book module (#3239, #3245)
+ - fixed multi-domain support for sogo-tool backup/restore (#2600)
+ - fixed data ordering in events list of Calendar module (#3261)
+ - fixed data ordering in tasks list of Calendar module (#3267)
+ - Android EAS Lollipop fixes (#3268 and #3269) 
+ - improved EAS email flagging handling (#3140)
+ - fixed computation of GlobalObjectId (#3235)
+ - fixed EAS conversation ID issues on BB10 (#3152)
+ - fixed CR/LF printing in event's description (#3228)
+ - optimized Calendar module in multidomain configurations
+
+2.3.0 (2015-06-01)
+-------------------
+
+New features
+ - Internet headers are now shown in Outlook (Zentyal)
+
+Enhancements
+ - improved multipart handling using EAS
+ - added systemd startup script (PR#76)
+ - added Basque translation - thanks to Gorka Gonzalez
+ - updated Brazilian (Portuguese), Dutch, Norwegian (Bokmal), Polish, Russian, and Spanish (Spain) translations
+ - calendar sharing request support among different Outlook versions (Zentyal)
+ - improved sync speed from Outlook by non-reprocessing already downloaded unread mails (Zentyal)
+ - added support for sharing calendar invitations
+ - missing contact fields are now saved and available when sharing it (Office, Profession, Manager's name, Assistant's name, Spouse/Partner, Anniversary) (Zentyal)
+ - appointment color and importance work now between Outlooks (Zentyal)
+ - synchronize events, contacts and tasks in reverse chronological order (Zentyal)
+ - during login, we now extract the domain from the user to accelerate authentication requests on sources
+ - make sure sure email invitations can always be read by EAS clients
+ - now able to print event/task's description (new components only) in the list view (#2881)
+ - now possible to log EAS commands using the SOGoEASDebugEnabled system defaults
+ - many improvements to EAS SmartReply/SmartForward commands
+ - event invitation response mails from Outlook are now sent
+ - mail subfolders created in WebMail are created when Outlook synchronises
+ - mail root folder created in WebMail (same level INBOX) are created on Outlook logon
+
+Bug fixes
+ - now keep the BodyPreference for future EAS use and default to MIME if none set (#3146)
+ - EAS reply fix when message/rfc822 parts are included in the original mail (#3153)
+ - fixed yet an other potential crash during freebusy lookups during timezone changes
+ - fixed display of freebusy information in event attendees editor during timezone changes
+ - fixed timezone of MSExchange freebusy information
+ - fixed a potential EAS error with multiple email priority flags
+ - fixed paragraphs margins in HTML messages (#3163)
+ - fixed regression when loading the inbox for the first time
+ - fixed serialization of the PreventInvitationsWhitelist settings
+ - fixed md4 support (for NTLM password changes) with GNU TLS
+ - fixed edition of attachment URL in event/task editor
+ - sent mails are not longer in Drafts folder using Outlook (Zentyal)
+ - deleted mails are properly synced between Outlook profiles from the same account (Zentyal)
+ - does not create a mail folder in other user's mailbox (Zentyal)
+ - fix server-side crash with invalid events (Zentyal)
+ - fix setting permissions for a folder with several users (Zentyal)
+ - fix reception of calendar event invitations on optional attendees (Zentyal)
+ - fix server side crash parsing rtf without color table (Zentyal)
+ - weekly recurring events created in SOGo web interface are now shown in Outlook (Zentyal)
+ - fix exception modifications import in recurrence series (Zentyal)
+ - fix server side crash parsing rtf emails with images (with word97 format) (Zentyal)
+ - fix sender on importing email messages like event invitations (Zentyal)
+ - fix Outlook crashes when modifying the view of a folder (Zentyal)
+ - fix server side crash when reading some recurrence appointments (Zentyal)
+ - Outlook clients can use reply all functionality on multidomain environment (Zentyal)
+ - optional attendes on events are now shown properly (Zentyal)
+ - fixed the EAS maximum response size being per-folder, and not global
+ - now set MeetingMessageType only for EAS 14.1
+ - now correctly handle external invitations using EAS
+ - now correctly handle multiple email addresses in the GAL over EAS (#3102)
+ - now handle very large amount of participants correctly (#3175)
+ - fix message bodies not shown on some EAS devices (#3173)
+ - avoid appending the domain unconditionally when SOGoEnableDomainBasedUID is set to YES
+ - recurrent all day events are now shown properly in Outlook
+
+2.2.17a (2015-03-15)
+--------------------
+
+Bug fixes
+ - avoid calling -stringByReplacingOccurrencesOfString:... for old GNUstep runtime
+
+2.2.17 (2015-03-24)
+-------------------
+
+Enhancements
+ - support for mail prority using EAS
+ - immediately delete mails from EAS clients when they are marked as deleted on the IMAP server
+ - now favor login@domain as the default email address if multiple mail: fields are specified
+ - enable by default HTML mails support using EAS on Windows and BB phones
+ - now possible to configure objectClass names for LDAP groups using GroupObjectClasses (#1499)
+
+Bug fixes
+ - fixed login issue after password change (#2601)
+ - fixed potential encoding issue using EAS and 8-bit mails (#3116)
+ - multiple collections support for GetItemEstimate using EAS
+ - fixed empty sync responses for EAS 2.5 and 12.0 clients
+ - use the correct mail body element for EAS 2.5 clients
+ - fixed tasks disappearing issue with RoadSync
+ - use the correct body element for events for EAS 2.5 clients
+ - SmartReply improvements for missing body attributes
+ - do not use syncKey from cache when davCollectionTag = -1
+ - use correct mail attachment elements for EAS 2.5 clients
+ - fixed contacts lookup by UID in freebusy
+ - reduced telephone number to a single value in JSON response of contacts list
+ - fixed freebusy data when 'busy off hours' is enabled and period starts during the weekend
+ - fixed fetching of freebusy data from the Web interface
+ - fixed EAS handling of Bcc in emails (#3138)
+ - fixed Language-Region tags in Web interface (#3121)
+ - properly fallback over EAS to UTF-8 and then Latin1 for messages w/o charset (#3103)
+ - prevent potential freebusy lookup crashes during timezone changes with repetitive events
+ - improved GetItemEstimate to count all vasnished/deleted mails too
+ - improvements to EAS SyncKey handling to avoid missing mails (#3048, #3058)
+ - fixed EAS replies decoding from Outlook (#3123)
+
+2.2.16 (2015-02-12)
+-------------------
+
+New features
+ - now possible for SOGo to change the sambaNTPassword/sambaLMPassword
+ - now possible to limit automatic forwards to internal/external domains
+
+Enhancements
+ - added support for email categories using EAS (#2995)
+ - now possible to always send vacation messages (#2332)
+ - added EAS best practices to the documentation
+ - improved fetching of text parts over EAS
+ - updated Czech, Finnish, French, German and Hungarian translations
+
+Bug fixes
+ - (regression) fixed sending a message when mail module is not active (#3088)
+ - mail labels with blanks are not handled correctly (#3078)
+ - fixed BlackBerry issues sending multiple mails over EAS (#3095)
+ - fixed plain/text mails showing on one line on Android/EAS (#3055)
+ - fixed exception in sogo-tool when parsing arguments of a set operation
+
+2.2.15 (2015-01-30)
+-------------------
+
+Enhancements
+ - improved handling of EAS Push when no heartbeat is provided
+ - no longer need to kill Outlook 2013 when creating EAS profiles (#3076)
+ - improved server-side CSS cleaner (#3040)
+ - unified the logging messages in sogo.log file (#2534/#3063)
+ - updated Brazilian (Portuguese) and Hungarian translations
+
+2.2.14 (2015-01-20)
+-------------------
+
+Enhancements
+ - MultipleBookingsFieldName can be set to -1 to show busy status when booked at least once 
+ - handle multipart objects in EAS/ItemOperations
+
+Bug fixes
+ - fixed calendar selection in event and task editors (#3049, #3050)
+ - check for resources existence when listing subscribed ones (#3054)
+ - correctly recognize Apple Calendar on Yosemite (#2960) 
+ - fixed two potential autorelease pool leaks (#3026 and #3051)
+ - fixed birthday offset in EAS
+ - fixed From's full name over EAS
+ - fixed potential issue when handling multiple Add/Change/Delete/Fetch EAS commands (#3057)
+ - fixed wrong timezone calculation on recurring events
+
+2.2.13 (2014-12-30)
+-------------------
+
+Enhancements
+ - initial support for empty sync request/response for EAS
+ - added the SOGoMaximumSyncResponseSize EAS configuration parameter to
+   support memory-limited sync response sizes
+ - we now not only use the creation date for event's cutoff date (EAS)
+
+Bug fixes
+ - fixed contact description truncation on WP8 phones (#3028)
+ - fixed freebusy information not always returned
+ - fixed tz issue when the user one was different from the system one with EAS
+
+2.2.12a (2014-12-19)
+--------------------
+
+Bug fixes
+ - fixed empty HTML mails being sent (#3034)
+
+2.2.12 (2014-12-18)
+-------------------
+
+New features
+ - allow including or not freebusy info from subscribed calendars
+ - now possible to set an autosave timer for draft messages
+ - now possible to set alarms on event invitations (#76)
+
+Enhancements
+ - updated CKEditor to version 4.4.6 and added the 'Source Area' plugin
+ - avoid testing for IMAP ANNOTATION when X-GUID is available (#3018)
+ - updated Czech, Dutch, Finnish, French, German, Polish and Spanish (Spain) translations
+
+Bug fixes
+ - fixed for privacy and categories for EAS (#3022)
+ - correctly set MeetingStatus for EAS on iOS devices
+ - Ubuntu Lucid fixes for EAS
+ - fixed calendar reminders for future events (#3008)
+ - make sure all text parts are UTF-8 re-encoded for Outlook 2013 over EAS (#3003)
+ - fixed task description truncation affecting WP8 phones over EAS (#3028)
+ 
+2.2.11a (2014-12-10)
+--------------------
+
+Bug fixes
+ - make sure all address books returned using EAS are GCS ones
+
+2.2.11 (2014-12-09)
+-------------------
+
+New features
+ - sogo-tool can now be used to manage EAS metadata for all devices
+
+Enhancements
+ - improved the SAML2 documentation
+ - radically reduced AES memory usage
+
+Bug fixes
+ - now possible to specify the username attribute for SAML2 (SOGoSAML2LoginAttribute) (#2381)
+ - added support for IdP-initiated SAML2 logout (#2377)
+ - we now generate SAML2 metadata on the fly (#2378)
+ - we now handle correctly the SOGo logout when using SAML (#2376 and #2379)
+ - fixed freebusy lookups going off bounds for resources (#3010)
+ - fixed EAS clients moving mails between folders but disconnecting before receiving server's response (#2982)
+ 
+2.2.10 (2014-11-21)
+-------------------
+
+Enhancements
+ - no longer leaking database passwords in the logs (#2953)
+ - added support for multiple calendars and address books over ActiveSync
+ - updated timezone information (#2968)
+ - updated Brazilian Portuguese, Czech, Dutch, Finnish, French, German, Hungarian, Polish,
+   Russian, Spanish (Argentina), and Spanish (Spain) translations
+ - updated CKEditor to version 4.4.5
+
+Bug fixes
+ - fixed freebusy lookup with "Show time as busy" (#2930)
+ - don't escape <br>'s in a card's note field
+ - fixed folder's display name when subscribing to a folder
+ - fixed folder's display name when the active user subscribes another user to one of her/his folders
+ - fixed error with new user default sorting value for the mailer module (#2952)
+ - fixed ActiveSync PING command flooding the server (#2940)
+ - fixed many interop issues with Windows Phones over ActiveSync
+ - fixed automatic return receipts crash when not in the recepient list (#2965)
+ - fixed support for Sieve folder encoding parameter (#2622)
+ - fixed rename of subscribed addressbooks
+ - sanitize strings before escaping them when using EAS
+ - fixed handling of event invitations on iOS/EAS with no organizer (#2978)
+ - fixed corrupted png files (#2975)
+ - improved dramatically the BSON decoding speed
+ - added WindowSize support for GCS collections when using EAS
+ - fixed IMAP search with non-ASCII folder names
+ - fixed extraction of email addresses when pasting text with tabs (#2945)
+ - fixed Outlook attachment corruption issues when using AES (#2957)
+
+2.2.9a (2014-09-29)
+-------------------
+
+Bug fixes
+ - correctly skip unallowed characters (#2936)
+
+2.2.9 (2014-09-26)
+------------------
+
+New features
+ - support for recurrent tasks (#2160)
+ - support for alarms on recurrent events / tasks
+
+Enhancements
+ - alarms can now be snoozed for 1 day
+ - better iOS/Mac OS X Calendar compability regarding alarms (#1920)
+ - force default classification over CalDAV if none is set (#2326)
+ - now compliant when handling completed tasks (#589)
+ - better iOS invitations handling regarding part state (#2852)
+ - fixed Mac OS X Calendar delegation issue (#2837)
+ - converted ODT documentation to AsciiDoc format
+ - updated Czech, Dutch, Finnish, French, German, Hungarian, Norwegian (Bokmal), Polish, Russian, and
+   Spanish (Spain) translations
+
+Bug fixes
+ - fixed sending mails to multiple recipients over AS 
+ - fixed freebusy support in iCal 7 and free/busy state changes (#2878, #2879)
+ - we now get rid of all potential control characters before sending the DAV response
+ - sync-token can now be returned during PROPFIND (#2493)
+ - fixed calendar deletion on iOS/Mac OS Calendar (#2838)
+
+2.2.8 (2014-09-10)
+------------------
+
+New features
+ - new user settings for threads collapsing
+ - IMAP global search support (#2670)
+
+Enhancements
+ - major refactoring of the GCS component saving code (dropped OGoContentStore)
+ - printing calendars in colors is now possible in all views; list, daily, weekly and multicolumns
+ - new option to print calendars events and tasks with a background color or with a border color
+ - labels tagging only make one AJAX call for all the selected messages instead of one AJAX call per message  
+ - new option to print calendars events and tasks with a background color or with a border color  
+ - all modules can now be automatically refreshed 
+ - new configurable user defaults variables; SOGoRefreshViewCheck & SOGoRefreshViewIntervals. SOGoMailMessageCheck has
+   been replaced by SOGoRefreshViewCheck and SOGoMailPollingIntervals has been replaced by SOGoRefreshViewIntervals
+ - updated Catalan, Czech, Dutch, Finnish, French, Hungarian, Norwegian, and Polish translations
+
+Bug fixes
+ - fixed crasher when subscribing users to resources (#2892)
+ - fixed encoding of new calendars and new subscriptions (JavaScript only)
+ - fixed display of users with no possible subscription
+ - fixed usage of SOGoSubscriptionFolderFormat domain default when the folder's name hasn't been changed
+ - fixed "sogo-tool restore -l" that was returning incorrect folder IDs
+ - fixed Can not delete mail when over quota (#2812)
+ - fixed Events and tasks cannot be moved to other calendars using drag&drop (#2759)
+ - fixed In "Multicolumn Day View" mouse position is not honored when creating an event (#2864)
+ - fixed handling of messages labels (#2902)
+ - fixed Apache > 2.3 configuration
+ - fixed freebusy retrieval during timezone changes (#1240)
+
+2.2.7 (2014-07-30)
+------------------
+
+New features
+ - new user preference to prevent event invitations
+
+Enhancements
+ - improved badges of active tasks count
+ - refresh draft folder after sending a message
+ - now possible to DnD events in the calendar list
+ - improved handling of SOGoSubscriptionFolderFormat
+ - JSON'ified folder subscription interface
+ - updated Finnish, French, German, and Spanish (Spain) translations
+ - updated CKEditor to version 4.4.3
+
+Bug fixes
+ - fixed weekdays translation in the datepicker
+ - fixed event categories display
+ - fixed all-day events display in IE
+ - fixed rename of calendars
+ - we now correctly add the "METHOD:REPLY" when sending out ITIP messages from DAV clients
+ - fixed refresh of message headers when forwarding a message (#2818)
+ - we now correctly escape all charset= in <meta> tags, not only in the <head>
+ - we now destroy cache objects of vanished folders
+
+2.2.6 (2014-07-02)
+------------------
+
+New features
+ - add new 'multi-columns' calendar view (#1948)
+
+Enhancements
+ - contacts photos are now synchronized using ActiveSync (#2807)
+ - implemented the GetAttachment ActiveSync command (#2808)
+ - implemented the Ping ActiveSync command
+ - added "soft deletes" support for ActiveSync (#2734)
+ - now display the active tasks count next to calendar names (#2760)
+
+Bug fixes
+ - better handling of empty "Flag" messages over ActiveSync (#2806)
+ - fixed Chinese charset handling (#2809)
+ - fixed folder name (calendars and contacts) of new subscriptions (#2801)
+ - fixed the reply/forward operation over ActiveSync (#2805)
+ - fixed regression when attaching files to a reply
+ - wait 20 seconds (instead of 2) before deleting temporary download forms (#2811)
+ - avoid raising exceptions when the db is down and we try to access the preferences module (#2813)
+ - we now ignore the SCHEDULE-AGENT property when Thunderbird/Lightning sends it to avoid
+   not-generating invitation responses for externally received IMIP messages
+ - improved charset handling over ActiveSync (#2810)
+
+2.2.5 (2014-06-05)
+------------------
+
+Enhancements
+ - new meta tag to tell IE to use the highest mode available
+ - updated Dutch, Finnish, German, and Polish translations
+
+Bug fixes
+ - avoid crashing when we forward an email with no Subject header
+ - we no longer try to include attachments when replying to a mail
+ - fixed ActiveSync repetitive events issues with "Weekly" and "Monthly" ones 
+ - fixed ActiveSync text/plain parts re-encoding issues for Outlook
+
+2.2.4 (2014-05-29)
+------------------
+
+New features
+ - new print option in Calendar module
+ - now able to save unknown recipient emails to address book on send (#1496)
+
+Enhancements
+ - Sieve folder encoding is now configurable (#2622)
+ - SOGo version is now displayed in preferences window (#2612)
+ - report Sieve error when saving preferences (#1046)
+ - added the SOGoMaximumSyncWindowSize system default to overwrite the
+   maximum number of items returned during an ActiveSync sync operation
+ - updated datepicker
+ - addressbooks properties are now accessible from a popup window
+ - extended events and tasks searches
+ - updated Czech, French, Hungarian, Polish, Russian, Slovak, Spanish (Argentina), and Spanish (Spain) translations
+ - added more sycned contact properties when using ActiveSync (#2775)
+ - now possible to configure the default subscribed resource name using SOGoSubscriptionFolderFormat
+ - now handle server-side folder updates using ActiveSync (#2688)
+ - updated CKEditor to version 4.4.1
+
+Bug fixes
+ - fixed saved HTML content of draft when attaching a file
+ - fixed text nodes of HTML content handler by encoding HTML entities
+ - fixed iCal7 delegation issue with the "inbox" folder (#2489)
+ - fixed birth date validity checks (#1636)
+ - fixed URL handling (#2616)
+ - improved folder rename operations using ActiveSync (#2700)
+ - fixed SmartReply/Forward when ReplaceMime was omitted (#2680)
+ - fixed wrong generation of weekly repetitive events with ActiveSync (#2654)
+ - fixed incorrect XML data conversion with ActiveSync (#2695)
+ - fixed display of events having a category with HTML entities (#2703)
+ - fixed display of images in CSS background (#2437)
+ - fixed limitation of Sieve script size (#2745)
+ - fixed sync-token generation when no change was returned (#2492)
+ - fixed the IMAP copy/move operation between subfolders in different accounts
+ - fixed synchronization of seen/unseen status of msgs in Webmail (#2715)
+ - fixed focus of popup windows open through a contextual menu with Firefox on Windows 7
+ - fixed missing characters in shared folder names over ActiveSync (#2709)
+ - fixed reply and forward mail templates for Brazilian Portuguese (#2738)
+ - fixed newline in signature when forwarding a message as attachment in HTML mode (#2787)
+ - fixed restoration of options (priority & return receipt) when editing a draft (#193)
+ - fixed update of participation status via CalDAV (#2786)
+
+2.2.3 (2014-04-03)
+------------------
+
+Enhancements
+ - updated Dutch, Hungarian, Russian and Spanish (Argentina) translations
+ - initial support for ActiveSync event reminders support (#2681)
+ - updated CKEditor to version 4.3.4
+
+Bug fixes
+ - fixed possible exception when retrieving the default event reminder value on 64bit architectures (#2678)
+ - fixed calling unescapeHTML on null variables to avoid JavaScript exceptions in Contacts module
+ - fixed detection of IMAP flags support on the client side (#2664)
+ - fixed the ActiveSync issue marking all mails as read when downloading them
+ - fixed ActiveSync's move operations not working for multiple selections (#2691)
+ - fixed email validation regexp to allow gTLDs
+ - improved all-day events support for ActiveSync (#2686)
+
+2.2.2 (2014-03-21)
+------------------
+
+Enhancements
+ - updated French, Finnish, German and Spanish (Spain) translations
+ - added sanitization support for Outlook/ActiveSync to circumvent Outlook bugs (#2667)
+ - updated CKEditor to version 4.3.3
+ - updated jQuery File Upload to version 9.5.7
+
+Bug fixes
+ - fixed possible exception when retrieving the default event reminder value on 64bit architectures (#2647, #2648)
+ - disable file paste support in mail editor (#2641)
+ - fixed copying/moving messages to a mail folder begining with a digit (#2658)
+ - fixed unseen count for folders beginning with a digit and used in Sieve filters (#2652)
+ - fixed decoding of HTML entities in reminder alerts (#2659)
+ - fixed check for resource conflict when creating an event in the resource's calendar (#2541)
+ - fixed construction of mail folders tree
+ - fixed parsing of ORG attribute in cards (#2662)
+ - disabled ActiveSync provisioning for now (#2663)
+ - fixed messages move in Outlook which would create duplicates (#2650)
+ - fixed translations for OtherUsersFolderName and SharedFoldersName folders (#2657)
+ - fixed handling of accentuated characters when filtering contacts (#2656)
+ - fixed classification icon of events (#2651)
+ - fixed ActiveSync's SendMail with client version <= 12.1 (#2669)
+
+2.2.1 (2014-03-07)
+------------------
+
+Enhancements
+ - updated Czech, Dutch, Finnish, and Hungarian translations
+ - show current folder name in prompt dialog when renaming a mail folder
+
+Bug fixes
+ - fixed an issue with ActiveSync when the number of messages in the mailbox was greater than the window-size specified by the client
+ - fixed sogo-tool operations on Sieve script (#2617)
+ - fixed unsubscription when renaming an IMAP folder (#2630)
+ - fixed sorting of events list by calendar name (#2629)
+ - fixed wrong date format leading to Android email syncing issues (#2609)
+ - fixed possible exception when retrieving the default event reminder value (#2624)
+ - fixed encoding of mail folder name when creating a subfolder (#2637)
+ - fixed returned date format for email messages in ActiveSync
+ - fixed missing 'name part' in address for email messages in ActiveSync
+ - fixed race condition when syncing huge amount of deleted messages over ActiveSync
+ - fixed encoding of string as CSS identifier when the string starts with a digit
+ - fixed auto-completion popupmenu when UID is a digit
+
+2.2.0 (2014-02-24)
+------------------
+
+New features
+ - initial implementation of Microsoft ActiveSync protocol
+ - it's now possible to set a default reminder for calendar components
+   using SOGoCalendarDefaultReminder
+ - select multiple files to attach to a message or drag'n'drop files onto the
+   mail editor; will also now display progress of uploads
+ - new popup menu to download all attachments of a mail
+ - move & copy messages between different accounts
+ - support for the Sieve 'body' extension (mail filter based on the body content)
+
+Enhancements
+ - we now automatically convert <img src=data...> into file attachments
+   using CIDs to prevent Outlook issues
+ - updated French, Finnish, Polish, German, Russian, and Spanish (Spain) translations
+ - XMLHttpRequest.js is now loaded conditionaly (< IE9)
+ - format time in attendees invitation window according to the user's locale
+ - improved IE11 support
+ - respect signature placement when forwarding a message
+ - respect Sieve server capabilities
+ - encode messages in quoted-printable when content is bigger than 72 bytes
+ - we now use binary encoding in memcached (#2587)
+ - warn user when overbooking a resource by creating an event in its calendar (#2541)
+ - converted JavaScript alerts to inline CSS dialogs in appointment editor
+ - visually identify users with no freebusy information in autocompletion widget of attendees editor (#2565)
+ - respect occurences of recurrent events when deleting selected events (#1950)
+ - improved confirmation dialog box when deleting events and tasks
+ - moved the DN cache to SOGoCache - avoiding sogod restarts after RDN operations
+ - don't use the HTML editor with Internet Explorer 7
+ - add message-id header to appointment notifications (#2535)
+ - detect URLs in popup of events
+ - improved display of a contact (#2350)
+
+Bug fixes
+ - don't load 'background' attribute (#2437)
+ - fixed validation of subscribed folders (#2583)
+ - fixed display of folder names in messages filter editor (#2569)
+ - fixed contextual menu of the current calendar view (#2557)
+ - fixed handling of the '=' character in cards/events/tasks (#2505)
+ - simplify searches in the address book (#2187)
+ - warn user when dnd failed because of a resource conflict (#1613)
+ - respect the maximum number of bookings when viewing the freebusy information of a resource (#2560)
+ - encode HTML entities when forwarding an HTML message inline in plain text composition mode (#2411)
+ - encode HTML entities in JSON data (#2598)
+ - fixed handling of ACLs on shared calendars with multiple groups (#1854)
+ - fixed HTML formatting of appointment notifications for Outlook (#2233)
+ - replace slashes by dashes in filenames of attachments to avoid a 404 return code (#2537)
+ - avoid over-using LDAP connections when decomposing groups
+ - fixed display of a contact's birthday when not defined (#2503)
+ - fixed JavaScript error when switching views in calendar module (#2613)
+
+2.1.1b (2013-12-04)
+-------------------
+
+Enhancements
+ - updated CKEditor to version 4.3.0 and added tab module
+
+Bug fixes
+ - HTML formatting is now retained when forwarding/replying to a mail using the HTML editor
+ - put the text part before the HTML part when composing mail to fix a display issue with Thunderbird (#2512)
+
+2.1.1a (2013-11-22)
+-------------------
+
+Bug fixes
+ - fixed Sieve filters editor (#2504)
+ - moved missing translation to UI/Common (#2499)
+ - fixed potential crasher in OpenChange
+
+2.1.1 (2013-11-19)
+------------------
+
+New features
+ - creation and modification of mail labels
+
+Enhancements
+ - the color picker is no longer a popup window
+
+Bug fixes
+ - fixed utf8 character handling in special folder names
+   Special folder names can now be set as UTF8 or modified UTF7 in sogo.conf
+ - fixed reply-to header not being set for auxiliary IMAP accounts
+ - fixed handling of broken/invalid email addresses
+
+2.1.0 (2013-11-07)
+------------------
+
+Enhancements
+ - improved order of user rights in calendar module (#1431)
+ - increased height of alarm editor when email alarms are enabled
+ - added SMTP AUTH support for sogo-ealarms-notify
+ - added support for LDAP password change against AD/Samba4
+ - added Apache configuration for Apple autoconfiguration (#2248)
+ - the init scripts now start 3 sogod processes by default instead of 1
+ - SOGo now also sends a plain/text parts when sending HTML mails (#2217)
+ - SOGo now listens on 127.0.0.1:20000 by default (instead of *:20000)
+ - SOGo new uses the latest WebDAV sync response type (#1275)
+ - updated CKEditor to version 4.2.2 and added the tables-related modules (#2410)
+ - improved display of vEvents in messages
+
+Bug fixes
+ - fixed handling of an incomplete attachment filename (#2385)
+ - fixed Finnish mail reply/forward templates (#2401)
+ - fixed position of red line of current time (#2373)
+ - fixed crontab error (#2372)
+ - avoid using too many LDAP connections while looping through LDAP results
+ - don't encode HTML entities in mail subject of notification (#2402)
+ - fixed crash of Samba when sending an invitation (#2398)
+ - fixed selection of destination calendar when saving a task or an event (#2353)
+ - fixed "display remote images" preference for message in a popup (#2417)
+ - avoid crash when handling malformed or non-ASCII HTTP credentials (#2358)
+ - fixed crash in DAV free-busy lookups when using SQL addressbooks (#2418)
+ - disabled verbose logging of SMTP sessions by default
+ - fixed high CPU usage when there are no available child processes and added logging when such a condition occurs
+ - fixed memory consumption issues when doing dav lookups with huge result set
+ - fixed S/MIME verification issues with certain OpenSSL versions
+ - worked around an issue with chunked encoding of CAS replies (#2408)
+ - fixed OpenChange corruption issue regarding predecessors change list (#2405)
+ - avoid unnecessary UTF-7 conversions (#2318)
+ - improved RTF parser to fix vCards (#2354)
+ - fixed definition of the COMPLETED attribute of vTODO (#2240)
+ - fixed DAV:resource-id property when sharing calendars (#2399)
+ - fixed reload of multiple external web calendars (#2221)
+ - fixed display of PDF files sent from Thunderbird (#2270)
+ - fixed TLS support for IMAP (#2386)
+ - fixed creation of web calendar when added using sogo-tool (#2007)
+ - avoid crash when parsing HTML tags of a message (#2434)
+ - fixed handling of LDAP groups with no email address (#1328)
+ - fixed encoding of messages with non-ASCII characters (#2459)
+ - fixed compilation with clang 3.2 (#2235)
+ - truncated long fields of quick records to avoid an SQL error (#2461)
+ - fixed IMAP ACLs (#2433)
+ - removed inline JavaScript when viewing HTML messages (#2468)
+
+2.0.7 (2013-07-19)
+------------------
+
+New features
+ - print gridlines of calendar in 15-minute intervals
+ - allow the events/tasks lists to be collapsable
+ 
+Enhancements
+ - bubble box of events no longer overlaps the current event
+ - now pass the x-originating-ip using the IMAP ID extension (#2366)
+ - updated BrazilianPortuguese, Czech, Dutch, German, Polish and Russian translations
+
+Bug fixes
+ - properly handle RFC2231 everywhere
+ - fixed minor XSS issues 
+ - fixed jquery-ui not bluring the active element when clicking on a draggable
+
+2.0.6b (2013-06-27)
+------------------
+
+Bug fixes
+ - properly escape the foldername to avoid XSS issues
+ - fixed loading of MSExchangeFreeBusySOAPResponseMap
+
+2.0.6a (2013-06-25)
+------------------
+
+Bug fixes
+ - documentation fixes
+ - added missing file for CAS single logout
+
+2.0.6 (2013-06-21)
+------------------
+
+Enhancements
+ - updated CKEditor to version 4.1.1 (#2333)
+ - new failed login attemps rate-limiting options. See the new
+   SOGoMaximumFailedLoginCount, SOGoMaximumFailedLoginInterval and
+   SOGoFailedLoginBlockInterval defaults
+ - new message submissions rate-limiting options. See the new
+   SOGoMaximumMessageSubmissionCount, SOGoMaximumRecipientCount,
+   SOGoMaximumSubmissionInterval and SOGoMessageSubmissionBlockInterval defaults 
+ - now possible to send or not event notifications on a per-event basis
+ - now possible to see who created an event/task in a delegated calendar
+ - multi-domain support in OpenChange (implemented using a trick)
+
+Bug fixes
+ - fixed decoding of the charset parameter when using single quotes (#2306)
+ - fixed potential crash when sending MDN from Sent folder (#2209)
+ - fixed handling of unicode separators (#2309)
+ - fixed public access when SOGoTrustProxyAuthentication is used (#2237)
+ - fixed access right issues with import feature (#2294)
+ - fixed IMAP ACL issue when SOGoForceExternalLoginWithEmail is used (#2313)
+ - fixed handling of CAS logoutRequest (#2346)
+ - fixed many major OpenChange stability issues
+
+2.0.5a (2013-04-17)
+------------------
+
+Bug fixes
+ - fixed an issue when parsing user CN with leading or trailing spaces (#2287)
+ - fixed a crash that occured when saving contacts or tasks via Outlook
+
+2.0.5 (2013-04-11)
+------------------
+
+New features
+ - new system default SOGoEncryptionKey to be used to encrypt the passwords of
+   remote Web calendars when SOGoTrustProxyAuthentication is enabled
+ - activated the menu option "Mark Folder Read" in the Webmail (#1473)
+
+Enhancements
+ - added logging of the X-Forwarded-For HTTP header (#2229)
+ - now use BSON instead of GNUstep's binary format for serializing
+    Outlook related cache files
+ - updated Danish, Finnish, Polish and Slovak translations
+ - added Arabic translation - thanks to Anass Ahmed
+
+Bug fixes
+ - don't use the cache for password lookups from login page (#2169)
+ - fixed issue with exceptions in repeating events
+ - avoid data truncation issue in OpenChange with mysql backend
+   run sql-update-2.0.4b_to_2.0.5-mysql.sh to update existing tables
+ - avoid random crashes in OpenChange due to RTF conversion
+ - fixed issue when modifying/deleting exceptions of recurring events
+ - fixed major cache miss issue leading to slow Outlook resynchronizations
+ - fixed major memory corruption issue when Outlook was saving "messages"
+ - fixed filtering of sql contact entries when using dynamic domains (#2269)
+ - sogo.conf can now be used by all tools (#2226)
+ - SOPE: fixed handling of sieve capabilities after starttls (#2132)
+ - OpenChange: fixed 'stuck email' problem when sending a mail
+ - OpenChange NTLMAuthHandler: avoid tightloop when samba isn't available.
+ - OpenChange NTLMAuthHandler: avoid crash while parsing cookies
+ - OpenChange ocsmanager: a LOT of fixes, see git log
+
+
+2.0.4b (2013-02-04)
+------------------
+
+Bug fixes
+ - Fixed order of precedence for options (#2166)
+   The following order is enforced - first match wins
+     1. Command line arguments
+     2. .GNUstepDefaults
+     3. /etc/sogo/{debconf,sogo}.conf
+     4. SOGoDefaults.plist
+ - fixed handling of LDAP DN containing special characters (#2152, #2207)
+ - fixed handling of credential files for older GNUsteps (#2216)
+ - fixed display of messages with control characters (#2079, #2177)
+ - fixed tooltips in contacts list (#2211)
+ - fixed classification menu in component editor (#2223)
+ - fixed link to ACL editor for 'any authenticated user' (#2222, #2224)
+ - fixed saving preferences when mail module is disabled
+ - fixed handling for long credential strings (#2212)
+
+2.0.4a (2013-01-30)
+------------------
+
+Enhancements
+ - updated Czech translation
+ - birthday is now properly formatted in addressbook module
+
+Bug fixes
+ - fixed handling of groups with spaces in their UID
+ - fixed possible infinite loop in repeatable object
+ - fixed until date in component editor
+ - fixed saving all-day event in appointment editor
+ - fixed handling of decoding contacts UID
+ - fixed support of GNUstep 1.20 / Debian Squeeze
+
+2.0.4 (2013-01-25)
+------------------
+
+New features
+ - sogo-tool: new "dump-defaults" command to easily create /etc/sogo/sogo.conf
+
+Enhancements
+ - The sogo user is now a system user.
+   For new installs, this means that 'su - sogo' won't work anymore.
+   Please use 'sudo -u sogo cmd' instead
+   If used in scripts from cronjobs, 'requiretty' must be disabled in sudoers
+ - added basic support for LDAP URL in user sources
+ - renamed default SOGoForceIMAPLoginWithEmail to
+   SOGoForceExternalLoginWithEmail and extended it to SMTP authentication
+ - updated the timezone files to the 2012j edition and removed RRDATES
+ - updated CKEditor to version 4.0.1
+ - added Finnish translation - thanks to Kari Salmu
+ - updated translations
+ - recurrence-id of all-day events is now set as a proper date with no time
+ - 'show completed tasks' is now persistent
+ - fixed memory usage consumption for remote ICS subscriptions
+
+Bug fixes
+ - fixed usage of browser's language for the login page
+ - fixed partstat of attendee in her/his calendar
+ - fixed French templates encoding
+ - fixed CardDAV collections for OS X
+ - fixed event recurrence editor (until date)
+ - fixed column display for subfolders of draft & sent
+ - improved IE7 support
+ - fixed drag'n'drop of events with Safari
+ - fixed first day of the week in datepickers
+ - fixed exceptions of recurring all-day events
+
+2.0.3 (2012-12-06)
+------------------
+
+New features
+ - support for SAML2 for single sign-on, with the help of the lasso library
+ - added support for the "AUTHENTICATE" command and SASL mechanisms
+ - added domain default SieveHostFieldName
+ - added a search field for tasks
+
+Enhancements
+ - search the contacts for the organization attribute
+ - in HTML mode, optionally place answer after the quoted text
+ - improved memory usage of "sogo-tool restore"
+ - fixed invitations status in OSX iCal.app/Calendar.app (cleanup RSVP attribute)
+ - now uses "imap4flags" instead of the deprecated "imapflags"
+ - added Slovak translation - thanks to Martin Pastor
+ - updated translations
+
+Bug fixes
+ - fixed LDIF import with categories
+ - imported events now keep their UID when possible
+ - fixed importation of multiple calendars
+ - fixed modification date when drag'n'droping events
+ - fixed missing 'from' header in Outlook
+ - fixed invitations in Outlook
+ - fixed JavaScript regexp for Firefox
+ - fixed JavaScript syntax for IE7
+ - fixed all-day event display in day/week view
+ - fixed parsing of alarm
+ - fixed Sieve server URL fallback
+ - fixed Debian cronjob (spool directory cleanup)
+
+2.0.2a (2012-11-15)
+-------------------
+
+Enhancements
+ - improved user rights editor in calendar module
+ - disable alarms for newly subsribed calendars
+
+Bug fixes
+ - fixed typos in Spanish (Spain) translation
+ - fixed display of raw source for tasks
+ - fixed title display of cards with a photo
+ - fixed null address in reply-to header of messages
+ - fixed scrolling for calendar/addressbooks lists
+ - fixed display of invitations on BlackBerry devices
+ - fixed sogo-tool rename-user for MySQL database
+ - fixed corrupted attachments in Webmail
+ - fixed parsing of URLs that can throw an exception
+ - fixed password encoding in user sources
+
+2.0.2 (2012-10-24)
+------------------
+
+New features
+ - added support for SMTP AUTH
+ - sogo configuration can now be set in /etc/sogo/sogo.conf
+ - added support for GNU TLS
+
+Enhancements
+ - speed up of the parsing of IMAP traffic
+ - minor speed up of the web interface
+ - speed up the scrolling of the message list in the mail module
+ - speed up the deletion of a large amounts of entries in the contacts module
+ - updated the timezone files to the 2012.g edition
+ - openchange backend: miscellaneous speed up of the synchronization
+   operations
+ - open file descriptors are now closed when the process starts
+
+Bug fixes
+ - the parameters included in the url of remote calendars are now taken into
+   account
+ - fixed an issue occurring with timezone definitions providing multiple entries
+ - openchange backend: miscellaneous crashes during certain Outlook
+   operations, which have appeared in version 2.0.0, have been fixed
+ - fixed issues occuring on OpenBSD and potentially other BSD flavours
+
+2.0.1 (2012-10-10)
+-------------------
+
+Enhancements
+ - deletion of contacts is now performed in batch, which speeds up the
+   operation for large numbers of items
+ - scalability enhancements in the OpenChange backend that enables the first
+   synchronization of mailboxes in a more reasonable time and using less
+   memory
+ - the task list is now sortable 
+
+Bug Fixes
+ - improved support of IE 9
+
+2.0.0 (2012-09-27)
+-------------------
+New Features
+ - Microsoft Outlook compatibility layer
+
+Enhancements
+ - updated translations
+ - calendars list and mini-calendar are now always visible
+ - tasks list has moved to a table in a tabs view along the events list
+ - rows in tree view are now 4 pixels taller
+ - node selection in trees now highlights entire row
+ - new inline date picker
+ - improved IE8/9 support
+ - added support for standard/daylight timezone definition with end date
+ - no longer possible to send a message multilpe times
+ - mail editor title now reflects the current message subject
+ - default language is selected on login page
+ - mail notifications now include the calendar name
+
+Bug Fixes
+ - fixed translation of invitation replies
+ - fixed vacation message encoding
+ - fixed display of events of no duration
+ - fixed error when copying/moving large set of contacts
+ - fixed drag'n'drop of all-day events
+
+1.3.18a (2012-09-04)
+-------------------
+Bug Fixes
+ - fixed display of weekly events with no day mask
+ - fixed parsing of mail headers
+ - fixed support for OS X 10.8 (Mountain Lion)
+
+1.3.18 (2012-08-28)
+-------------------
+Enhancements
+ - updated Catalan, Dutch, German, Hungarian, Russian, Spanish (Argentina), and
+   Spanish (Spain) translations
+ - mail filters (Sieve) are no longer conditional to each other (all filters are
+   executed, no matter if a previous condition matches)
+ - improved tasks list display
+ - RPM packages now treat logrotate file as a config file
+ - completed the transition from text/plain message templates to HTML
+ - new packages for Debian 7.0 (Wheezy)
+
+Bug Fixes
+ - fixed passwords that would be prefixed with '{none}' when not using a
+   password algorithm
+ - fixed handling of duplicated contacts in contact lists
+ - fixed handling of exception dates with timezones in recurrent events
+ - fixed validation of the interval in daily recurrent events with a day mask
+   covering multiple days
+ - fixed name quoting when sending invitations
+
+1.3.17 (2012-07-26)
+-------------------
+New Features
+ - new contextual menu to view the raw content of events, tasks and contacts
+ - send and/or receive email notifications when a calendar is modified (new
+   domain defaults SOGoNotifyOnPersonalModifications and
+   SOGoNotifyOnExternalModifications)
+ - added the SOGoSearchMinimumWordLength domain default which controls the
+   minimal length required before triggering server-side search operations for
+   attendee completion, contact searches, etc. The default value is 2, which
+   means search operations are trigged once the 3rd character is typed.
+
+Enhancements
+ - updated BrazilianPortuguese, Czech, Dutch, French, German, Italian,
+   Spanish (Argentina), Spanish (Spain) translations
+ - all addresses from a contact are displayed in the Web interface (no longer
+   limited to one additional address)
+ - improved Sieve script: vacation message is now sent after evaluating the
+   mail filters
+ - updated CKEditor to version 3.6.4
+
+Bug Fixes
+ - fixed a crash when multiple mail headers of the same type were encountered
+ - fixed logrotate script for Debian
+ - fixed linking of libcurl on Ubuntu 12.04
+ - fixed parsing of timezones when importing .ics files
+ - fixed resource reservation for recurring events
+ - fixed display of text attachments in messages
+ - fixed contextual menu on newly created address books
+ - fixed missing sender in mail notifications to removed attendees
+ - improved invitations handling in iCal
+
+1.3.16 (2012-06-07)
+-------------------
+Enhancements
+ - new password schemes for SQL authentication (crypt-md5, ssha (including
+   256/512 variants), cram-md5, smd5, crypt, crypt-md5)
+ - new unique names for static resources to avoid browser caching when
+   updating SOGo
+ - it's no longer possible to click the "Upload" button multiple times
+ - allow delivery of mail with no subject, but alert the user
+ - updated Dutch, German, French translations
+
+Bug Fixes
+ - fixed compilation under GNU/kFreeBSD
+ - fixed compilation for arm architecture
+ - fixed exceptions under 64bit GNUstep 1.24
+ - fixed LDAP group expansion
+ - fixed exception when reading ACL of a deleted mailbox
+ - fixed exception when composing a mail while the database server is down
+ - fixed handling of all-day repeating events with exception dates
+ - fixed Sieve filter editor when matching all messages
+ - fixed creation of URLs (A-tag) in messages
+
+1.3.15 (2012-05-15)
+-------------------
+New Features
+ - sources address books are now exposed in Apple and iOS AddressBook app
+   using the "directory gateway" extension of CardDAV
+ - sogo-tool: new "expire-sessions" command
+ - the all-day events container is now resized progressively
+ - added handling of "BYSETPOS" for "BYDAY" sets in monthly recurrence
+   calculator
+ - new domain default (SOGoMailCustomFromEnabled) to allow users to change
+   their "from" and "reply-to" headers 
+ - access to external calendar subscriptions (.ics) with authentication
+ - new domain default (SOGoHideSystemEMail) to hide or not the system
+   email. This is currently limited to CalDAV operations
+
+Enhancements
+ - updated Spanish (Argentina), German, Dutch translations
+ - updated CKEditor to version 3.6.3
+ - automatically add/remove attendees to recurrence exceptions when they are
+   being added to the master event
+ - replaced the Scriptaculous Javascript framework by jQuery to improve the
+   drag'n'drop experience
+ - updated timezone definition files
+
+Bug Fixes
+ - fixed wrong date validation in preferences module affecting French users
+ - fixed bugs in weekly recurrence calculator
+ - when saving a draft, fixed content-transfer-encoding to properly handle
+   8bit data
+ - escaped single-quote in HTML view of contacts
+ - fixed support of recurrent events with Apple iCal
+ - fixed overbooking handling of resources with recurrent events
+ - fixed auto-accept of resources when added later to an event
+
+1.3.14 (2012-03-23)
+-------------------
+Enhancements
+ - when replying or inline-forwarding a message, we now prefer the HTML part
+   over the text part when composing HTML messages
+ - when emptying the trash, we now unsubscribe from folders within the trash
+ - added CalDAV autocompletion support for iPad (iOS 5.0.x)
+ - improved notifications support for Apple iCal
+ - updated Czech translation
+ - updated Russian translation
+
+Bug Fixes
+ - fixed name of backup script in cronjob template
+ - fixed crash caused by contacts with multiple mail values
+ - fixed signal handlers to avoid possible hanging issues
+ - fixed the "user-preferences" command of sogo-tool
+
+1.3.13 (2012-03-16)
+-------------------
+New Features
+ - email notifications now includes a new x-sogo-message-type mail header
+ - added the "IMAPHostnameFieldName" parameter in SQL source to
+   specify a different IMAP hostname for each user (was already possible for
+   LDAP sources)
+ - default event & task classification can now be set from the preferences window
+ - contacts from LDAP sources can now be modified by privileged owners (see
+   the "modifiers" parameter)
+
+Enhancements
+ - bundled a shell script to perform and manage backups using sogo-tool
+ - increased the delay before starting drag and drop in Mail and Contacts module
+  to improve the user experience with cheap mouses
+ - improved contact card layout when it includes a photo
+ - updated German translation
+ - updated Spanish (Spain) translation
+ - updated Spanish (Argentina) translation
+ - updated Ukrainian translation
+ - updated Hungarian translation
+ - updated Dutch translation
+
+Bug Fixes
+ - fixed escaping issue with PostgreSQL 8.1
+ - fixed resizing issue when editing an HTML message
+ - fixed Spanish (Argentina) templates for mail reply and forward
+ - we no longer show public address books (from SOGoUserSources) on iOS 5.0.1
+ - improved support for IE
+
+1.3.12c (2012-02-15)
+-------------------
+
+Bug Fixes
+ - fixed a possible crash when using a SQL source
+
+1.3.12b (2012-02-14)
+-------------------
+
+Bug Fixes
+ - we now properly escape strings via the database adapator methods when
+   saving users settings
+ - fixed a crash when exporting a vCard without specifying a UID
+ - fixed the contextual menu on newly created contacts and lists
+
+1.3.12a (2012-02-13)
+-------------------
+
+Bug Fixes
+ - the plus sign (+) is now properly escaped in JavaScript (fixes issue when
+   loading the mailboxes list)
+ - added missing migration script in Debian/Ubuntu packages
+
+1.3.12 (2012-02-13)
+-------------------
+New Features
+ - show end time in bubble box of events
+ - we now check for new mails in folders for which sieve rules are defined to
+   file messages into
+ - new parameter DomainFieldName for SQL sources to dynamically determine the 
+   domain of the user
+
+Enhancements
+ - updated Ukrainian translation
+ - updated Russian translation
+ - updated Brazilian (Portuguese) translation
+ - updated Italian translation
+ - updated Spanish (Spain) translation
+ - updated German translation
+ - updated Catalan translation
+ - updated Norwegian (Bokmal) translation
+ - now possible to use memcached over a UNIX socket
+ - increase size of content columns
+ - improved import of .ics files
+ - new cronjob template with commented out entries
+ - LDAP passwords can now be encrypted with the specified algorithm
+ - improved parsing of addresses when composing mail
+
+Bug Fixes
+ - fixed resizing issue of mail editor
+ - alarms for tasks now depend on the start date and instead of the due date
+ - increased the content column size in database tables to permit syncs of
+   cards with big photos in them
+ - fixed intended behavior of WOSendMail
+ - fixed selection issue with Firefox when editing the content of a textarea
+ - fixed bug with daily recurrence calculator that would affect conflict detection
+ - fixed issue with Apple Address Book 6.1 (1083) (bundled with MacOS X 10.7.3)
+ - removed double line breaks in HTML mail and fixed empty tags in general
+
+1.3.11 (2011-12-12)
+-------------------
+New Features
+ - new experimental feature to force popup windows to appear in an iframe -- this mode
+   can be forced by setting the cookie "SOGoWindowMode" to "single"
+
+Enhancements
+ - contacts from the email editor now appear in a pane, like in Thunderbird
+ - improved display of contacts in Address Book module
+ - "remember login" cookie now expires after one month
+ - added DanishDenmark translation - thanks to Altibox
+ - updated German translation
+ - updated SpanishArgentina translation
+ - updated SpanishSpain translation
+ - updated Russian translation
+
+Bug Fixes
+ - fixed encoding of headers in sogo-ealarm-notify
+ - fixed confirmation dialog box when deleting too many events
+ - fixed issue when saving associating a category to an event/task
+ - fixed time shift regression in Calendar module
+ - activated "standard conforming strings" in the PosgreSQL adapter to fixed errors with backslashes
+ - fixed a bug when GCSFolderDebugEnabled or GCSFolderManagerDebugEnabled were enabled
+
+1.3.10 (2011-11-30)
+-------------------
+New Features
+ - new migration script for SquirrelMail (address books)
+ - users can now set an end date to their vacation message (sysadmin must 
+   configure sogo-tool)
+
+Enhancements
+ - splitted Norwegian translation into NorwegianBokmal and NorwegianNynorsk
+ - splitted Spanish translation into SpanishSpain and SpanishArgentina
+ - updated timezone files
+ - updated French translation
+
+Bug Fixes
+ - added missing Icelandic wod files
+ - fixed crash when the Sieve authentication failed
+ - fixed bug with iOS devices and UIDs containing the @ symbol
+ - fixed handling of commas in multi-values fields of versit strings
+ - fixed support of UTF-8 characters in LDAP searches
+ - added initial fixes for iCal 5 (Mac OS X 10.7)
+ - Address Book 6.1 now shows properly the personal address book
+ - fixed vcomponent updates for MySQL
+ - fixed clang/llvm and libobjc2 build
+
+1.3.9 (2011-10-28)
+-------------------
+New Features
+ - new user defaults SOGoDefaultCalendar to specify which calendar is used when
+   creating an event or a task (selected, personal, first enabled)
+ - new user defaults SOGoBusyOffHours to specify if off-hours should be
+   automatically added to the free-busy information
+ - new indicator in the link banner when a vacation message (auto-reply) is active
+ - new snooze function for events alarms in Web interface
+ - new "Remember login" checkbox on the login page
+ - authentication with SQL sources can now be performed on any database column
+   using the new LoginFieldNames parameter
+
+Enhancements
+ - added support for the CalDAV move operation
+ - phone numbers in the contacts web module are now links (tel:)
+ - revamp of the modules link banner (15-pixel taller)
+ - updated CKEditor to version 3.6.2
+ - updated unread and flagged icons in Webmail module
+ - new dependency on GNUstep 1.23
+
+Bug Fixes
+ - fixed support for Apple iOS 5
+ - fixed handling of untagged IMAP responses
+ - fixed handling of commas in email addresses when composing a message
+ - fixed creation of clickable links for URLs surrounded by square brackets
+ - fixed behaviour of combo box for contacts categories
+ - fixed Swedish translation classes
+ - fixed bug when setting no ACL on a calendar
+
+1.3.8b (2011-07-26)
+-------------------
+Bug Fixes
+ - fixed a bug with multi-domain configurations that would cause the first
+   authentication to fail
+
+1.3.8a (2011-07-19)
+-------------------
+New Features
+ - new system setting SOGoEnableDomainBasedUID to enable user identification
+     by domain
+
+Bug Fixes
+ - fixed a buffer overflow in SOPE (mainly affecting OpenBSD)
+
+1.3.8 (2011-07-14)
+-------------------
+New Features
+ - initial support for threaded-view in the webmail interface
+ - sogo-tool: new "rename-user" command that automatically updates all the
+   references in the database after modifying a user id
+ - sogo-tool: new "user-preferences {get,set,unset} command to manipulate
+   user's defaults/settings.
+ - groups support for IMAP ACLs
+ - now possible to define multiple forwarding addresses
+ - now possible to define to-the-minute events/tasks
+ - the domain can be selected from the login page when using multiple domains
+   (SOGoLoginDomains)
+ - sources from one domain can be accessed from another domain when using
+   multiple domains (SOGoDomainsVisibility)
+- added Icelandic translation - thanks to Anna Jonna Armannsdottir
+
+Enhancements
+ - improved list selection and contextual menu behavior in all web modules
+ - the quota status bar is now updated more frequently in the webmail module
+ - automatically create new cards when populating a list of contacts with unknown entries
+ - added fade effect when displaying and hiding dialog boxes in Web interface
+ - updated CKEditor to version 3.6.1
+ - updated Russian translation
+
+Bug Fixes
+ - submenus in contextual menus splitted in multiple lists are now displayed correctly
+ - fixed display of cards/lists icons in public address books
+ - no longer accept an empty string when renaming a calendar
+ - fixed display of daily events that cover two days
+ - fixed time shift issue when editing an event title on iOS
+ - fixed bug when using indirect LDAP binds and bindAsCurrentUser
+ - fixed bugs when converting an event to an all-day one
+ - many small fixes related to CalDAV scheduling
+ - many OpenBSD-related fixes
+ 
+1.3.7 (2011-05-03)
+-------------------
+New Features
+ - IMAP namespaces are now translated and the full name of the
+   mailbox owner is extracted under "Other Users" 
+ - added the "authenticationFilter" parameter for SQL-based
+   sources to limit who can authenticate to a local SOGo instance
+ - added the "IMAPLoginFieldName" parameter in authentication sources to
+   specify a different value for IMAP authentication
+ - added support for resources like projectors, conference rooms
+   and more which allows SOGo to avoid double-booking of them
+   and also allows SOGo to automatically accept invitations for them
+
+Enhancements
+ - the personal calendar in iCal is now placed at the very top
+ - the recipients selection works more like Thunderbird when
+   composing emails
+ - improved the documentation regarding groups in LDAP
+ - minor improvements to the webmail module
+ - minor improvements to the contacts web module
+
+Bug Fixes
+ - selection problems with Chrome under OS X in the webmail interface
+ - crash when some events had no end date
+
+
+1.3.6 (2011-04-08)
+-------------------
+New Features
+- added Norwegian translation - thanks to Altibox
+
+Enhancements
+- updated Italian translation
+- updated Ukranian translation
+- updated Spanish translation
+- "check while typing" is no longer enabled by default in HTML editor
+- show unread messages count in window title in the webmail interface
+- updated CKEditor to version 3.5.2
+- contact lists now have their own icons in the contacts web module
+- added the ability to invite people and to answer invitations from the iOS
+  Calendar
+- alarms are no longer exported to DAV clients for calendars where the alarms
+  are configured to be disabled
+- IMAP connection pooling is disabled by default to avoid flooding the IMAP
+  servers in multi-process environments (NGImap4DisableIMAP4Pooling now set
+  to "YES" by default)
+- sogo-tool: the remove-doubles command now makes use of the card complete
+  names
+- sope-appserver: added the ability to configure the minutes timeout per
+  request after which child processes are killed, via
+   WOWatchDogRequestTimeout (default: 10)
+
+Bug Fixes
+- restored the automatic expunge of IMAP folders
+- various mutli-domain fixes
+- various timezone fixes
+- fixed various issues occurring with non-ascii strings received from DAV
+  clients
+- sogo-tool: now works in multi-domain environments
+- sogo-tool: now retrieves list of users from the folder info table
+- sogo-tool: the remove-doubles command is now compatible with the
+  synchronization mechanisms
+- sope-mime: fixed some parsing problems occurring with dbmail
+- sope-mime: fixed the fetching of mail body parts when other untagged
+  responses are received
+- sope-appserver: fixed a bug leaving child processes performing the watchdog
+  safety belt cleanup
+
+1.3.5 (2011-01-25)
+-------------------
+New Features
+- implemented secured sessions
+- added SHA1 password hashing in SQL sources
+- mail aliases columns can be specified for SQL sources through the configuration parameter MailFieldNames
+
+Enhancements
+- updated CKEditor to version 3.4.3
+- removed the Reply-To header in sent messages
+- the event timezone is now considered when computing an event recurrence rule
+- improved printing of a message with multple recipients
+- the new parameter SearchFieldNames allows to specify which LDAP fields to query when filtering contacts
+
+Bug Fixes
+- restored current time shown as a red line in calendar module
+- logout button no longer appears when SOGoCASLogoutEnabled is set to NO
+- fixed error when deleting freshly created addressbooks
+- the mail column in SQL sources is not longer ignored
+- fixed wrapping of long lines in messages with non-ASCII characters
+- fixed a bug that would prevent alarms to be triggered when non-repetitive
+
+1.3.4 (2010-11-17)
+-------------------
+- updated CKEditor to version 3.4.2
+- added event details in invitation email
+- fixed a bug that would prevent web calendars from being considered as such
+  under certain circumstances
+- when relevant, the "X-Forward" is added to mail headers with the client's
+  originating IP
+- added the ability to add categories to contacts as well as to configure the
+  list of contact categories in the preferences
+- improved performance of live-loading of messages in the webmail interface
+- fixed a bug that would not identify which calendars must be excluded from the
+  freebusy information
+- increased the contrast ratio of input/select/textarea fields
+
+1.3.3 (2010-10-19)
+-------------------
+- added Catalan translation, thanks to Hector Rulot
+- fixed German translation
+- fixed Polish translation
+- fixed Italian translation
+- enhanced default Apache config files
+- improved groups support by caching results
+- fixed base64 decoding issues in SOPE
+- updated the Polish, Italian and Ukrainian translations
+- added the capability of renaming subscribed address books
+- acls are now cached in memcached and added a major performance improvement
+  when listing calendar / contact folders
+- fixed many small issues pertaining to DST switches
+- auto complete of attendees caused an error if entered to fast
+- ctrl + a (select all) was not working properly in the Calendar UI on Firefox
+- calendar sync tag names and other metadata were not released when a calendar
+  was deleted
+- in the Contacts UI, clicking on the "write" toolbar button did not cause a
+  message to be displayed when no contact were selected
+- added the ability to rename a subscribed folder in the Contacts UI
+- card and event fields can now contain versit separators (";" and ",")
+- fixed handling of unsigned int fields with the MySQL adaptor
+- improved the speed of certain IMAP operations, in particular for GMail
+  accounts
+- prevent excessing login failures with IMAP accounts
+- fixed spurious creation of header fields due to an bug of auto-completion in
+  the mail composition window
+- fixed a wrong redirect when clicking "reply" or "forward" while no mail were
+  selected
+- added caching of ACLs locally and in memcached
+
+1.3.2 (2010-09-21)
+-------------------
+- fixed various issues with some types of email address fields
+- added support for Ctrl-A (select all) in all web modules
+- added support for Ctrl-C/Ctrl-V (copy/paste) in the calendar web module
+- now builds properly with gnustep-make >= 2.2 and gnustep-base >= 1.20
+- added return receipts support in the webmail interface
+- added CardDAV support (Apple AddressBook and iPhone)
+- added support for multiple, external IMAP accounts
+- added SSL/TLS support for IMAP accounts (system and external)
+- improved and standardized alerts in all web modules
+- added differentiation of public, private and confidential events
+- added display of unread messages count for all mailboxes
+- added support for email event reminders
+
+1.3.1 (2010-08-19)
+-------------------
+- added migration scripts for Horde (email signatures and address books)
+- added migration script for Oracle Calendar (events, tasks and access rights)
+- added Polish translation
+- added crypt support to SQL sources
+- updated Ukrainian translation
+- added the caldav-auto-schedule capability 
+- improved support for IE8
+
+1.3.0 (2010-07-21)
+-------------------
+- added support for the "tentative" status in the invitation responses
+- inviting a group of contacts is now possible, where each contact will be
+  extracted when the group is resolved
+- added support for modifying the role of the meeting participants
+- attendees having an "RSVP" set to "FALSE" or empty will no longer need/be
+  able to respond to invitations
+- added the ability to specify which calendar is taken into account when
+  retrieving a user's freebusy
+- added the ability to publish resources to unauthenticated (anonymous) users,
+  via the "/SOGo/dav/public" url
+- we now provide ICS and XML version of a user's personal calendars when
+  accessed from his own "Calendar" base collection
+- events are now displayed with the colored stripe representing their
+  category, if one is defined in the preferences
+- fixed display of all-day events in a monthly view where the timezone differs
+  from the current one
+- the event location is now displayed in the calendar view when defined
+  properly
+- added a caching mechanism for freebusy requests, in order to accelerate the
+  display
+- added the ability to specify a time range when requesting a time slot
+  suggestion
+- added live-loading support in the webmail interface with caching support
+- updated CKEditor and improved its integration with the current user
+  language for automatic spell checking support
+- added support for displaying photos from contacts
+- added a Ukrainian translation
+- updated the Czech translation
+
+1.2.2 (2010-05-04)
+-------------------
+- subscribers can now rename folders that do not belong to them in their own environment
+- added support for LDAP password policies
+- added support for custom Sieve filters
+- fixed timezone issues occurring specifically in the southern hemisphere
+- updated ckeditor to version 3.2
+- tabs: enabled the scrolling when overflowing
+- updated Czech translation, thanks to Milos Wimmer
+- updated German translation, tnanks to Alexander Greiner-Baer
+- removed remaining .wo templates, thereby easing the effort for future translations
+- fixed regressions with Courier IMAP and Dovecot
+- added support for BYDAY with multiple values and negative positions
+- added support for BYMONTHDAY with multiple values and negative positions
+- added support for BYMONTH with multiple values
+- added ability to delete events from a keypress
+- added the "remove" command to "sogo-tool", in order to remove user data and settings
+- added the ability to export address books in LDIF format from the web interface
+- improved the webmail security by banning a few sensitive tags and handling
+  "object" elements
+
+1.2.1 (2010-02-19)
+-------------------
+- added CAS authentication support
+- improved display of message size in webmail
+- improved security of login cookie by specifying a path
+- added drag and drop to the web calendar interface
+- calendar: fixed CSS oddities and harmonized appearance of event cells in all
+  supported browsers
+- added many IMAP fixes for Courier and Dovecot
+- many small bug fixes and other small enhancements
+
+1.2.0 (2010-01-25)
+-------------------
+- improved handling of popup windows when closing the parent window
+- major refresh of CSS
+- added handling of preforked processes by SOPE/SOGo (a load balancer is
+  therefore no longer needed)
+- added Swedish translation, thanks to Altrusoft
+- added multi-domain support
+- refactored the handling of user defaults to enable fallback on default
+  values more easily
+- added sensible default configuration values
+- updated ckeditor to version 3.1
+- added support for iCal 4 delegation
+- added support for letting the user choose which calendars should be shared
+  with iCal delegation
+- added the ability for users to subscribe other users to their resources from
+  the ACL dialog
+- added fixes for bugs in GNUstep 1.19.3 (NSURL)
+
+1.1.0 (2009-10-28)
+-------------------
+- added backup/restore tools for all user's data (calendars, address books, preferences, etc.)
+- added Web administrative interface (right now, only for ACLs)
+- added the "Starred" column in the webmail module to match Thunderbird's behavior
+- improved the calendar properties dialog to be able to enable/disabled calendars for synchronization
+- the default module can now be set on a per-user basis
+- a context menu is now available for tasks
+- added the capability of creating and managing lists of contacts (same as in Thunderbird)
+- added support for short date format in the calendar views
+- added support for iCal delegation (iCal 3)
+- added preliminary support for iCal 4
+- rewrote dTree.js to include major optimizations
+- added WebAuth support
+- added support for remote ICS subscriptions
+- added support for ICS and vCard/LDIF import
+- added support for event delegation (resend an invitation to someone else)
+- added initial support for checking and displaying S/MIME signed messages
+- added support SQL-based authentication sources and address books
+- added support for Sieve filters (Vacation and Forward)
+
+1.0.4 (2009-08-12)
+-------------------
+- added ability to create and modify event categories in the preferences
+- added contextual menu in web calendar views
+- added "Reload" button to refresh the current view in the calendar module
+- fixed freebusy support for Apple iCal
+- added support for the calendar application of the iPhone OS v3
+- added the possibility to disable alarms or tasks from Web calendars
+- added support for printing cards
+- added a default title when creating a new task or event
+- the completion checkbox of read-only tasks is now disabled
+- the event/task summary dialog is now similar to Lightning
+- added the current time as a line in the calendar module
+- added the necessary files to build Debian packages
+- added functional tests for DAV operations and fixed some issues related to
+  permissions
+- added Hungarian translation, thanks to Sándor Kuti
+
+1.0.3 (2009-07-14)
+-------------------
+- improved search behavior of users folders (UIxContactsUserFolders)
+- the editor window in the web interface now appears directly when editing an exception occurence of a repeating event (no more dialog window, as in Lightning)
+- implemented the webdav sync spec from Cyrus Daboo, in order to reduce useless payload on databases
+- greatly reduced the number of SQL requests performed in many situations
+- added HTML composition in the web mail module
+- added drag and drop in the addressbook and mail modules
+- improved the attendees modification dialog by implementing slots management and zooming
+- added the capability to display the size of messages in the mail module
+- added the capability of limiting the number of returned events from DAV requests
+- added support for Cyrus Daboo's Webdav sync draft spec in the calendar and addressbook collections
+- added unicode support in the IMAP folder names
+- fixed some issues with the conversion of folder names in modified UTF-7
+- component editor in web interface stores the document URL in the ATTACH property of the component, like in Lightning
+- added Czech translation, thanks to Šimon Halamásek
+- added Brazilian Portuguese translation, thanks to Alexandre Marcilio
+
+1.0.2 (2009-06-05)
+-------------------
+- basic alarm implementation for the web interface
+- added Welsh translation, thanks to Iona Bailey
+- added Russian translation, thanks to Alex Kabakaev
+- added support for Oracle RAC
+- added "scope" parameter to LDAP sources
+- now possible to use SSL (or TLS) for LDAP sources
+- added groups support in attendees and in ACLs
+- added support for user-based IMAP hostname
+- added support for IMAP subscriptions in web interface
+- added compatibility mode meta tag for IE8
+- added support for next/previous slot buttons in attendees window of
+   calendar module
+- user's status for events in the web interface now appears like in Lightning
+  ("needs-action" events are surrounded by a dashed line, "declined" events
+  are lighter)
+- improvements to the underlying SOGo cache infrastructure
+- improved JavaScript for selection and deselection in HTML tables and lists
+- improved the handling of user permissions in CalDAV and WebDAV queries
+  pertaining to accessing and deleting elements
+- fixed bug with LDAP-based address books and the entries references (ID vs
+  UID)
+- fixed week view alignment problem in IE7
+- fixed LDAP and SQL injection bugs
+- fixed many bugs related to the encoding and decoding of IMAP folder names
+
+1.0.1 (2009-04-07)
+-------------------
+- now possbile to navigate using keyboard keys in the address book and mail
+  modules
+- the favicon can now be specified using the SOGoFaviconRelativeURL preference
+- we now support LDAP encryption for binding and for contact lookups
+- we now support LDAP scopes for various search operations
+- when the status of an attendee changes, the event of an organizer is now
+  updated correctly if it doesn't reside in the personal folder
+- formatting improvements in the email invitation templates
+- Dovecot IMAP fixes and speed enhancements 
+- code cleanups to remove most compiler warnings
+- various database fixes (Oracle, connection pools, unavailability, etc.)
+- init scripts improvements
+
+1.0.0 (2009-03-17)
+-------------------
+- when double-clicking in the all-day zone (day & week views), the "All Day
+  event" checkbox is now automatically checked
+- replaced the JavaScript FastInit class by the dom:loaded event of Prototype
+  JS
+- also updated Prototype JS to fix issues with IE7
+- improvements to the underlying SOGo cache infrastructure
+- many improvements to DST handling
+- better compatibility with nginx
+- new SOGo login screen
+- added MySQL support
+
+1.0 rc9 (2009-01-30)
+-------------------
+- added quota indicator in web mail module
+- improved drag handles behavior
+- added support for LDAP-based configuration
+- improved init script when killing proccesses
+- improved behavior of recurrent events with attendees
+- improved the ACL editor of the calendar web module
+- fixed handling of timezones in daily and weekly events
+
+1.0 rc8 (2008-08-26)
+-------------------
+- fixed a bug that would prevent deleted event and tasks from being removed
+  from the events and tasks list
+- fixed a bug where the search of contacts would be done in
+  authentication-only LDAP repositories
+- added the ability to transfer an event from one calendar to another
+- fixed a bug where deleting a contact would leave it listed in the contact
+  list until the next refresh
+- fixed a bug where events shared among different attendees would no longer be
+  updated automatically
+- changed the look of the Calendar module to match the look of Lightning 0.9
+- the event details appear when the user clicks on it
+- enable module constraints to be specified as patterns
+- inhibit internal links and css/javascript content from html files embedded
+  as attachments to mails
+- updated all icons to use those from Thunderbird 2 and Lightning 0.9
+- fixed a bug where the cached credentials wouldn't be expired using
+  SOGoLDAPUserManagerCleanupInterval
+- fixed a bug where mail headers wouldn't be decoded correctly
+- the copy/move menu items are correctly updated when IMAP folders are added,
+  removed or renamed
+- fixed a bug where the ctag of a calendar would not take the deleted events
+  into account, and another one where the value would always take the one of the
+  first calendar queries during the process lifetime.
+
+1.0 rc7 (2008-07-29)
+-------------------
+- work around the situation where Courier IMAP would refuse to rename the
+  current mailbox or move it into the trash
+- fixed tab index in mail composition window
+- fixed default privacy selection for new events
+- fixed a bug where concurrent versions of SOGo would create the user's
+  personal folders table twice
+- added address completion in the web mail editor
+- implemented support for CalDAV methods which were missing for supporting
+  iCal 3
+- added support to write to multiple contacts from the Address Book module
+- added support to move and copy one or many contacts to another address book
+  in the Address Book module
+- added icons to folders in Address Book module
+- fixed various bugs occuring with Safari 3.1
+- fixed various bugs occuring with Firefox 3
+- fixed bug where selecting the current day cell would not select the header
+  day cell and vice-versa in the daily and weekly views
+- the events are now computed in the server code again, in order to speedup
+  the drawing of events as well as to fix the bug where events would be
+  shifted back or forth of one day, depending on how their start time would be
+  compared to UTC time
+- implemented the handling of exceptional occurences of recurrent events
+- all the calendar preferences are now taken into account
+- the user defaults variable "SOGoAuthentificationMethod" has been renamed to
+  "SOGoAuthenticationMethod"
+- fixed a bug where the search of users would be done in addressbook-only LDAP
+  repositories
+
+1.0 rc6 (2008-05-20)
+-------------------
+- retrieving the freebusy DAV object was causing SOGo to crash
+- converted to use the gnustep-make 2 build framework
+- added custom DAV methods for managing user permissions from the SOGo
+  Integrator
+- pressing enter in the contact edition dialog will perform the
+  creation/update operation
+- implemented more of the CalDAV specification for compatibility with
+  Lightning 0.8
+- added Italian translation, thanks to Marco Lertora and Sauro Saltini
+- added initial logic for splitting overlapping events
+- improved restoration of drag handles state
+- improved contextual menu handling of Address Book module
+- fixed time/date control widget of attendees editor
+- fixed various bugs occuring with Safari 3.1
+- monthly events would not be returned properly
+- bi-weekly events would appear every week instead
+- weekly events with specified days of week would not appear on the correct
+  days
+- started supporting Lightning 0.8, improved general implementation of the
+  CalDAV protocol
+- added support for calendar colors, both in the web and DAV interfaces
+- refactored and fixed the implementation of DAV acl, with partial support for
+  CalDAV Scheduling extensions
+- removed the limitation that prevented the user of underscore characters in
+  usernames
+- added Spanish translation, thanks to Ernesto Revilla
+- added Dutch translation, thanks to Wilco Baan Hofman
+- applied a patch from Wilco Baan Hofman to let SOGo works correctly through a
+  Squid proxy
+
+1.0 rc5 (2008-02-08)
+-------------------
+- improved validation in the custom recurrence window
+- improved resiliance when parsing buggy recurrence rules
+- added the ability to authenticate users and to identify their resources with
+  an LDAP field other than the username
+- the monthly view would not switch to the next or previous month if the
+  current day of the new month was already displayed in the current view
+- enabled the instant-messaging entry in the addressbook
+- prevent the user from selecting disabled menu entries
+- added the ability to add/remove and rename calendars in DAV
+- no longer require a default domain name/imap server to work properly
+- the position of the splitters is now remembered across user sessions
+- improved the email notifications when creating and removing a folder
+- fixed the tab handling in IE7
+- improved the appearance of widgets in IE7
+- dramatic improvement in the overall stability of SOGo
+
+1.0 rc4 (2008-01-16)
+-------------------
+- improved the attendees window;
+- added the attendees pulldown menu in the event editor (like in Lightning);
+- added the recurrence window;
+- a message can be composed to multiple recipients from an address book or
+  from an event attendees menu;
+- many bugfixes in the Calendar module;
+
+1.0 rc3 (2007-12-17)
+-------------------
+- mail folders state is now saved;
+- image attachments in emails can now be saved;
+- the status of participants in represented with an icon;
+- added the option to save attached images;
+- fixed problems with mod_ngobjweb (part of SOPE);
+- the current module can no longer be reselected from the module navigation
+  bar;
+- many bugfixes in the Mail and Calendar modules;
+- improved handling of ACLs;
+
+1.0 rc2 (2007-11-27)
+-------------------
+- the user password is no longer transmitted in the url when logging in;
+- SOGo will no longer redirect the browser to the default page when a
+  specific location is submitted before login;
+- it is now possible to specify a sequence of LDAP attributes/values pairs
+  required in a user record to enable or prevent access to the Calendar and/or
+  Mail module;
+- many messages can be moved or copied at the same time;
+- replying to mails in the Sent folder will take the recipients of the
+  original mails into account;
+- complete review of the ACLs wrt to the address books, both in the Web UI and
+  through DAV access;
+- invitation from Google calendar are now correctly parsed;
+- it is now possible to search events by title in the Calendar module;
+- all the writable calendars are now listed in the event edition dialog;
+
+1.0 rc1 (2007-11-19)
+-------------------
+- the user can now configure his folders as drafts, trash or sent folder;
+- added the ability the move and copy message across mail folders;
+- added the ability to label messages;
+- implemented cookie-based identification in the web interface;
+- fixed a bug where a false positive happening whenever a wrong user login was
+  given during an indirect bind;
+- remove the constraint that a username can't begin with a digit;
+- deleting a message no longer expunges its parent folder;
+- implemented support for multiple calendars;
+- it is now possible to rename folders;
+- fixed search in message content;
+- added tooltips for toolbar buttons (English and French);
+- added checkmarks in live search options popup menus;
+- added browser detection with recommanded alternatives;
+- support for resizable columns in tables;
+- improved support for multiple selection in tables and lists;
+- improved IE7 and Safari support: attendees selector, email file attachments;
+- updated PrototypeJS to version 1.6.0;
+- improved address completion and freebusy timeline in attendees selector;
+- changed look of message composition window to Thunderbird 2.0;
+- countless bugfixes;
+
+0.9.0 (2007-08-24)
+-------------------
+- added the ability to choose the default module from the
+  application settings: "Calendars", "Contacts" or "Mail";
+- added the ability to show or hide the password change dialog from the
+  application settings;
+- put a work-around in the LDAP directory code to avoid fetching all the
+  entries whenever a specific one is being requested;
+- added support for limiting LDAP queries with the SOGoLDAPQueryLimit and
+  the SOGoLDAPSizeLimit settings;
+- fixed a bug where folders starting with digits would not be displayed;
+- improved IE7 and Safari support: priority menus, attendees selector,
+  search fields, textarea sizes;
+- added the ability to print messages from the mailer toolbar;
+- added the ability to use and configure SMTP as the email transport instead
+  of sendmail;
+- rewrote the handling of draft objects to comply better with the behaviour of
+  Thunderbird;
+- added a German translation based on Thunderbird;
+
+0.9.0 (2007-07-13)
+-------------------
+- added the ability to specify a super user through the SOGoSuperUsername user
+  default; 
+- added the ability to view the message source;
+- don't autocreate folders if we are not their owners;
+- made compatible with PostgreSQL 8.2;
+- the months and years menus of the date selector would no longer appear;
+- fixed a bug which would produce task SQL records which would violate
+  non-null constraints on the quick calendar tables;
+- the tasks due date was wrongly set because of a change in the API;
+- it was impossible to empty the start and the due date in the task editor
+  from the moment they were set;
+- imap folders with non-ascii characters are now correctly accessed;
+- display the quotas of the selected mailbox on servers that support quotas;
+- a bug in the folder acl description was preventing from accessing resources
+  in dav;
+- AuthentificationMethod was renamed to SOGoAuthentificationMethod;
+- SOGoAuthentificationMethod needs to be explicitly set to "bypass" to prevent
+  login verification;
+
+Local variables:
+mode: text
+End:
