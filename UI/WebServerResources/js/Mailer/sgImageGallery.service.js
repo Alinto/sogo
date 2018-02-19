@@ -78,7 +78,7 @@
   ImageGallery.prototype.showGallery = function($event, partIndex) {
     var _this = this,
         $mdPanel = ImageGallery.$mdPanel,
-        partSrc = angular.element(this.message.parts.content[partIndex].content).find('img')[0].src;
+        partSrc = angular.element(this.message.$content()[partIndex].content).find('img')[0].src;
 
     var images = _.filter(this.message.attachmentAttrs, function(attrs) {
       return attrs.mimetype.indexOf('image/') === 0;
