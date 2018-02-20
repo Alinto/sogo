@@ -43,6 +43,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
                     inContext: (WOContext *) context;
 - (NSString *) storeMail: (NSDictionary *) theValues
+                inBuffer: (NSMutableString *) theBuffer
                inContext: (WOContext *) _context;
 
 @end
