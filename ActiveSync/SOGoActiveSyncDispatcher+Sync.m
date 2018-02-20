@@ -311,8 +311,34 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           anAddition = [additions objectAtIndex: i];
           is_new = YES;
 
-          clientId = [[(id)[anAddition getElementsByTagName: @"ClientId"] lastObject] textValue];
+
+/*
+FIXME
+    <Add>
+     <ClientId>338</ClientId>
+     <ApplicationData>
+      <To xmlns="Email:">&lt;foot@bar.com&gt;</To>
+      <Cc xmlns="Email:"/>
+      <Subject xmlns="Email:">test</Subject>
+      <Reply-To xmlns="Email:">foo@bar.com</Reply-To>
+      <Importance xmlns="Email:">1</Importance>
+      <Read xmlns="Email:">1</Read>
+      <Attachments xmlns="AirSyncBase:">
+       <Add>
+        <ClientId>152-ab557915-8451-49a7-a9c6-a9ac153021ad</ClientId>
+
+
+-> lastObject returns the ClientId in Attachments element -> try with objectAtIndex: 0 -> is this correct?
+*/
+          //clientId = [[(id)[anAddition getElementsByTagName: @"ClientId"] lastObject] textValue];
+          clientId = [[(id)[anAddition getElementsByTagName: @"ClientId"] objectAtIndex: 0] textValue];
+
           allValues = [NSMutableDictionary dictionaryWithDictionary: [[(id)[anAddition getElementsByTagName: @"ApplicationData"]  lastObject] applicationData]];
+
+          // FIXME: ignore the <Add> elements of Attachemnts - above  (id)[theDocumentElement getElementsByTagName: @"Add"]; return any <Add> elements instead of only the direct childs of the <commands> element ..
+          if (![allValues count])
+            continue;
+
           
           switch (theFolderType)
             {
@@ -367,23 +393,39 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             case ActiveSyncMailFolder:
             default:
               {
-                 // Support SMS to Exchange eMail sync.
+                 // Support Draft Mail/SMS to Exchange eMail sync.
                  NSString *serverId;
+                 NSMutableString *s;
+                 NSDictionary *result;
+                 NSNumber *modseq;
+
+                 serverId = nil;
+                 s = [NSMutableString string];
+
                  sogoObject = [SOGoMailObject objectWithName: @"Mail" inContainer: theCollection];
-                 serverId = [sogoObject storeMail: allValues  inContext: context];
+                 serverId = [sogoObject storeMail: allValues  inBuffer: s inContext: context];
                  if (serverId)
                    {
+                     sogoObject = [theCollection lookupName: serverId inContext: context acquire: 0];
+                     [sogoObject takeActiveSyncValues: allValues  inContext: context];
+
                      // Everything is fine, lets generate our response
-                     // serverId = clientId - There is no furhter processing after adding the SMS to the inbox.
                      [theBuffer appendString: @"<Add>"];
                      [theBuffer appendFormat: @"<ClientId>%@</ClientId>", clientId];
                      [theBuffer appendFormat: @"<ServerId>%@</ServerId>", serverId];
                      [theBuffer appendFormat: @"<Status>%d</Status>", 1];
+                     [theBuffer appendString: s];
                      [theBuffer appendString: @"</Add>"];
+
 
                      folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: theCollection withType: theFolderType]];
                      syncCache = [folderMetadata objectForKey: @"SyncCache"];
-                     [syncCache setObject: @"0" forKey: serverId];
+
+                     result = [sogoObject fetchParts: [NSArray arrayWithObject: @"MODSEQ"]];
+                     modseq = [[[result objectForKey: @"RawResponse"] objectForKey: @"fetch"] objectForKey: @"modseq"];
+
+                     [syncCache setObject: [modseq stringValue] forKey: serverId];
+
                      [self _setFolderMetadata: folderMetadata  forKey: [self _getNameInCache: theCollection withType: theFolderType]];
 
                      continue;
@@ -670,6 +712,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 NSDictionary *result;
                 NSNumber *modseq;
 
+                // Process an update to a Draft Mail.
+                if ([allChanges objectForKey: @"Body"])
+                  {
+                    NSString *serverId;
+                    NSMutableString *s;
+
+                    serverId = nil;
+                    s = [NSMutableString string];
+
+                    serverId = [sogoObject storeMail: allChanges  inBuffer: s inContext: context];
+                    if (serverId)
+                      {
+                        // we delete the original email - next sync will update the client with the new mail
+                        [sogoObject delete];
+                        sogoObject = [theCollection lookupName: serverId inContext: context acquire: 0];
+                      }
+                  }
+
                 [sogoObject takeActiveSyncValues: allChanges  inContext: context];
 
                 result = [sogoObject fetchParts: [NSArray arrayWithObject: @"MODSEQ"]];
@@ -684,7 +744,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
           [theBuffer appendString: @"<Change>"];
           [theBuffer appendFormat: @"<ServerId>%@</ServerId>", origServerId];
-          [theBuffer appendFormat: @"<Status>%d</Status>", 1];
+
+          // A body element is sent only for draft mails - status 8 will delete the mail on the client - the next sync update fetch the new mail
+          if ([allChanges objectForKey: @"Body"] && theFolderType == ActiveSyncMailFolder)
+            [theBuffer appendFormat: @"<Status>%d</Status>", 8];
+          else
+            [theBuffer appendFormat: @"<Status>%d</Status>", 1];
+
           [theBuffer appendString: @"</Change>"];
         }
     }

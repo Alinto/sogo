@@ -57,6 +57,7 @@ Bug fixes
  - [eas] avoid sync requests for shared folders every second (#4275)
  - [eas] we skip the organizer from the attendees list (#4402)
  - [eas] correctly handle all-day events with EAS v16 (#4397)
+ - [eas] fixed EAS save in drafts with attachments
 
 3.2.10 (2017-07-05)
 -------------------
