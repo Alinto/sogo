@@ -38,9 +38,9 @@
     // });
 
     /**
-     * Define the Alternative theme
+     * Overwrite the default theme
      */
-    $mdThemingProvider.theme('alt')
+    $mdThemingProvider.theme('default')
       .primaryPalette('blue-grey', {
         'default': '400',  // top toolbar
         'hue-1': '400',
@@ -60,19 +60,7 @@
         'hue-3': '500'
       });
 
-    /**
-     * Overwrite the accent palette from the default theme.
-     * This is necessary because some templates directly refer to the "md-default-theme" class.
-     */
-    $mdThemingProvider.theme('default')
-      .accentPalette('teal', {
-        'default': '600',
-        'hue-1': '50',
-        'hue-2': '300',    // selected center list item background, today's date in calendar views
-        'hue-3': 'A700'
-      });
-
-    $mdThemingProvider.setDefaultTheme('alt');
+    $mdThemingProvider.setDefaultTheme('default');
     $mdThemingProvider.generateThemesOnDemand(false);
   }
 })();
