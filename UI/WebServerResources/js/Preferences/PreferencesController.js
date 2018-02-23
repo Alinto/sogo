@@ -179,7 +179,7 @@
     };
 
     this.addMailFilter = function(ev, form) {
-      var filter = { match: 'all' };
+      var filter = { match: 'all', active: 1 };
 
       $mdDialog.show({
         templateUrl: 'editFilter?filter=new',
