@@ -2,6 +2,6 @@
 # This file is included by library makefiles to set the version information
 # of the executable.
 
-MAJOR_VERSION=3
-MINOR_VERSION=2
-SUBMINOR_VERSION=10
+MAJOR_VERSION=4
+MINOR_VERSION=0
+SUBMINOR_VERSION=0
