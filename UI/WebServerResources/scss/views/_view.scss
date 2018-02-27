@@ -221,6 +221,12 @@ body {
     position: absolute;
     &.sg-flip {
       transform: rotateY( 180deg );
+      .sg-face {
+        pointer-events: none;
+      }
+      .sg-back {
+        pointer-events: auto;
+      }
     }
     .sg-face, .sg-back {
       backface-visibility: hidden;
@@ -233,6 +239,7 @@ body {
     }
     .sg-back {
       transform: rotateY( 180deg );
+      pointer-events: none;
     }
   }
 }
