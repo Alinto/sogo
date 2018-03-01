@@ -272,7 +272,7 @@
     }
 
   if (rememberLogin)
-    [response addCookie: [self _cookieWithUsername: username]];
+    [response addCookie: [self _cookieWithUsername: [params objectForKey: @"userName"]]];
   else
     [response addCookie: [self _cookieWithUsername: nil]];
 
