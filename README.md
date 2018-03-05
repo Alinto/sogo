@@ -14,12 +14,12 @@ There are multiple ways you can contribute to the project
 
 You can browse the lastest version of the source code online from Inverse's github repository:
 
-* [https://github.com/inverse-inc](https://github.com/inverse-inc/sogo)
+* [https://github.com/inverse-inc/sogo](https://github.com/inverse-inc/sogo)
 
 To compile SOGo, you first need to obtain the source code of both SOGo and SOPE. The source code of SOPE and SOGo can be obtained from Inverse's github repositories:
 
-* [https://github.com/inverse-inc/sope](https://github.com/inverse-inc/sope/archive/master.zip)
-* [https://github.com/inverse-inc/sogo](https://github.com/inverse-inc/sogo/archive/master.zip)
+* [https://github.com/inverse-inc/sope/archive/master.zip](https://github.com/inverse-inc/sope/archive/master.zip)
+* [https://github.com/inverse-inc/sogo/archive/master.zip](https://github.com/inverse-inc/sogo/archive/master.zip)
 
 The source code of the SOGo Connector and SOGo Integrator extensions for Thunderbird 31+ can be obtained from Inverse's github repository:
 
