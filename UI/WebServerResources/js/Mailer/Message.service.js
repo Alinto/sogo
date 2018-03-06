@@ -745,6 +745,7 @@
         _this.$mailbox.unseenCount--;
       }
       return Message.$timeout(function() {
+        delete _this.$parts;
         angular.extend(_this, data);
         _this.$formatFullAddresses();
         _this.$loadUnsafeContent = false;

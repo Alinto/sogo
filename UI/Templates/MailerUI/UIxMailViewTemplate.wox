@@ -134,8 +134,9 @@
                   <sg-avatar-image class="md-tile-left"
                                    sg-email="::viewer.message.from[0].email"
                                    size="40">person</sg-avatar-image>
-                  <div class="md-list-item-text">
-                    <span ng-bind="::viewer.message.from[0].name"><!-- from --></span><br/>
+                  <div>
+                    <span ng-bind="::viewer.message.from[0].name"><!-- from --></span>
+                    <br/>
                     <a href="#" class="md-caption"
                        ng-bind="::viewer.message.from[0].email"
                        ng-click="viewer.newMessage($event, { to: [viewer.message.from[0].full] })"><!-- from --></a>
@@ -294,7 +295,7 @@
             <div class="msg-body">
               <div layout="row" layout-wrap="layout-wrap">
                 <div class="mailer_mailcontent" layout="row" layout-wrap="layout-wrap"
-                     ng-repeat="part in viewer.message.$content() track by $index"
+                     ng-repeat="part in viewer.message.$content() track by $id(part.content)"
                      ng-class="::part.msgclass">
                   <div class="md-flex sg-mail-part"
                        tabindex="-1"
