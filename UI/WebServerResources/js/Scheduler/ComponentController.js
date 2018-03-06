@@ -229,6 +229,7 @@
     vm.removeAttendee = removeAttendee;
     vm.addAttachUrl = addAttachUrl;
     vm.priorityLevel = priorityLevel;
+    vm.changeAlarmRelation = changeAlarmRelation;
     vm.reset = reset;
     vm.cancel = cancel;
     vm.edit = edit;
@@ -239,7 +240,9 @@
       hours: getHours()
     };
     vm.addStartDate = addStartDate;
+    vm.removeStartDate = removeStartDate;
     vm.addDueDate = addDueDate;
+    vm.removeDueDate = removeDueDate;
 
     // Synchronize start and end dates
     vm.adjustStartTime = adjustStartTime;
@@ -353,6 +356,17 @@
       }
     }
 
+    function changeAlarmRelation(form) {
+      if (vm.component.type == 'task' &&
+          ((!vm.component.start && vm.component.alarm.relation == 'START') ||
+           (!vm.component.due   && vm.component.alarm.relation == 'END'))) {
+        form.alarmRelation.$setValidity('alarm', false);
+      }
+      else {
+        form.alarmRelation.$setValidity('alarm', true);
+      }
+    }
+
     function save(form, options) {
       if (form.$valid) {
         vm.component.$save(options)
@@ -410,14 +424,38 @@
       return hours;
     }
 
-    function addStartDate() {
+    function addStartDate(form) {
       vm.component.$addStartDate();
       oldStartDate = new Date(vm.component.start.getTime());
+      if (!vm.component.due) {
+        vm.component.alarm.relation = 'START';
+      }
+      changeAlarmRelation(form);
     }
 
-    function addDueDate() {
+    function removeStartDate(form) {
+      vm.component.$deleteStartDate();
+      if (vm.component.due) {
+        vm.component.alarm.relation = 'END';
+      }
+      changeAlarmRelation(form);
+    }
+
+    function addDueDate(form) {
       vm.component.$addDueDate();
       oldDueDate = new Date(vm.component.due.getTime());
+      if (!vm.component.start) {
+        vm.component.alarm.relation = 'END';
+      }
+      changeAlarmRelation(form);
+    }
+
+    function removeDueDate(form) {
+      vm.component.$deleteDueDate();
+      if (vm.component.start) {
+        vm.component.alarm.relation = 'START';
+      }
+      changeAlarmRelation(form);
     }
 
     function adjustStartTime() {

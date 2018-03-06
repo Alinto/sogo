@@ -23,7 +23,9 @@
       </md-select>
     </md-input-container>
     <md-input-container>
-      <md-select label:aria-label="Reminder relation" ng-model="editor.component.alarm.relation">
+      <md-select label:aria-label="Reminder relation" name="alarmRelation"
+                 ng-model="editor.component.alarm.relation"
+                 ng-change="editor.changeAlarmRelation(eventForm)">
         <var:foreach list="relationsList" item="item">
           <md-option var:value="item"><var:string value="itemText"/></md-option>
         </var:foreach>

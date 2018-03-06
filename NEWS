@@ -55,6 +55,7 @@ Bug fixes
  - [web] fixed decoding of spaces in URL-encoded parameters (+)
  - [web] fixed scrolling of message with Firefox (#4008, #4282, #4398)
  - [web] save original username in cookie when remembering login (#4363)
+ - [web] allow to set a reminder on a task with a due date
  - [eas] hebrew folders encoding problem using EAS (#4240)
  - [eas] avoid sync requests for shared folders every second (#4275)
  - [eas] we skip the organizer from the attendees list (#4402)

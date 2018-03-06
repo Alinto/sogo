@@ -117,7 +117,7 @@
               <label class="pseudo-input-label"><var:string label:value="From"/></label>
             </div>
             <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
-              <md-button class="md-icon-button" type="button" ng-click="editor.component.$deleteStartDate()">
+              <md-button class="md-icon-button" type="button" ng-click="editor.removeStartDate(eventForm)">
                 <md-icon>remove_circle</md-icon>
               </md-button>
               <md-datepicker ng-model="editor.component.start"
@@ -128,7 +128,7 @@
             </div>
           </div>
           <div class="md-layout-margin" layout="row" layout-align="start center" ng-hide="editor.component.start">
-            <md-button class="md-icon-button" type="button" ng-click="editor.addStartDate()">
+            <md-button class="md-icon-button" type="button" ng-click="editor.addStartDate(eventForm)">
               <md-icon>add_circle</md-icon>
             </md-button>
             <label class="button-label"><var:string label:value="Add From"/></label>
@@ -139,7 +139,7 @@
               <label class="pseudo-input-label"><var:string label:value="Due"/></label>
             </div>
             <div layout="row" layout-align="start center" layout-wrap="layout-wrap">
-              <md-button class="md-icon-button" type="button" ng-click="editor.component.$deleteDueDate()">
+              <md-button class="md-icon-button" type="button" ng-click="editor.removeDueDate(eventForm)">
                 <md-icon>remove_circle</md-icon>
               </md-button>
               <md-datepicker ng-model="editor.component.due"
@@ -150,7 +150,7 @@
             </div>
           </div>
           <div class="md-layout-margin" layout="row" layout-align="start center" ng-hide="editor.component.due">
-            <md-button class="md-icon-button" type="button" ng-click="editor.addDueDate()">
+            <md-button class="md-icon-button" type="button" ng-click="editor.addDueDate(eventForm)">
               <md-icon>add_circle</md-icon>
             </md-button>
             <label class="button-label"><var:string label:value="Add Due"/></label>
@@ -233,7 +233,7 @@
           </div>
         </div>
         <div class="sg-form-section"
-             ng-show="editor.component.start">
+             ng-show="editor.component.start || editor.component.due">
           <!-- reminder -->
           <md-checkbox ng-model="editor.component.$hasAlarm"
                        label:aria-label="Reminder">
