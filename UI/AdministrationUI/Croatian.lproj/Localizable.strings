@@ -4,20 +4,20 @@
 "Close" = "Zatvori";
 "Modules" = "Moduli";
 /* Modules short names */
-"ACLs" = "ACL-i";
+"ACLs" = "Popisi kontrole pristupa";
 /* Modules titles */
-"ACLs_title" = "Administriranje prava korisnika na mapama";
+"ACLs_title" = "Upravljanje pravima korisnika nad mapama";
 /* Modules descriptions */
-"ACLs_description" = "<p>The Access Control Lists administration module allows to change the ACLs of each user's Calendars and Address books.</p><p>To modify the ACLs of a user's folder, type the name of the user in the search field at the top of the window and double-click on the desired folder.</p> ";
-"Name or Email" = "Ime ili e-mail";
+"ACLs_description" = "<p>Modul upravljanja popisima kontrole pristupa (ACL-ovima) omogućava promjenu prava pristupa kalendarima i imenicima svakog pojedinog korisnika.</p><p>Kako biste promijenili prava pristupa korisnikovoj mapi, upišite ime korisnika u polje za pretragu pri vrhu prozora te zatim dvaput kliknite na željenu mapu.</p>";
+"Name or Email" = "Ime ili e-adresa";
 /* Rights module: initial search message */
-"Start a search to edit the rights" = "Počni pretragu za uređivanje prava";
+"Start a search to edit the rights" = "Započnite pretragu kako biste uređivali prava";
 /* Rights module: Empty search result */
 "No matching user" = "Nema odgovarajućeg korisnika";
 /* Rights module: no selection */
 "No resource selected" = "Nema odabranog resursa";
 "Add User" = "Dodaj korisnika";
-"Subscribe User" = "Pretplati se za korisnika";
+"Subscribe User" = "Pretplati korisnika";
 "Rights" = "Prava";
 "Search Users" = "Traži korisnike";
 "users found" = "Korisnici pronađeni";

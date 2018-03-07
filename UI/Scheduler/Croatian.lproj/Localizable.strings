@@ -339,6 +339,7 @@
 "repeat_YEARLY" = "Godišnje";
 "repeat_CUSTOM" = "Prilagođeno...";
 "reminder_NONE" = "Nema podsjetnika";
+"reminder_0" = "U vrijeme događaja";
 "reminder_5_MINUTES_BEFORE" = "5 minuta prije";
 "reminder_10_MINUTES_BEFORE" = "10 minuta prije";
 "reminder_15_MINUTES_BEFORE" = "15 minuta prije";
@@ -571,6 +572,7 @@ vtodo_class2 = "(Povjerljivi zadatak)";
 "More options" = "Više opcija";
 "Delete This Occurrence" = "Izbriši ovo pojavljivanje";
 "Delete All Occurrences" = "Izbriši sva pojavljivanja";
+"Add Recurrence Date" = "Dodaj vrijeme ponavljanja";
 "Add From" = "Dodaj od";
 "Add Due" = "Dodaj do";
 "Import" = "Uvezi";

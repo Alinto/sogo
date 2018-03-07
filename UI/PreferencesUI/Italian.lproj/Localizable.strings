@@ -160,7 +160,7 @@
 "In a popup window" = "In una finestra popup";
 "When sending mail, add unknown recipients to my" = "Durante l'invio di email, aggiungi destinatari sconosciuti alla mia";
 "Address Book" = "Rubrica";
-"Forward messages" = "Inoltra messaggi";
+"Forward messages" = "Inoltra messaggi come";
 "messageforward_inline" = "Parte del messaggio";
 "messageforward_attached" = "Come Allegato";
 "When replying to a message" = "Quando rispondi ad un messaggio";
@@ -226,7 +226,7 @@
 
 /* Event+task classifications */
 "Default events classification" = "Classificazioni degli eventi di default";
-"Default tasks classification" = "Classificazione di default delle attività";
+"Default tasks classification" = "Classificazione delle attività di default";
 "PUBLIC_item" = "Pubblico";
 "CONFIDENTIAL_item" = "Confidenziale";
 "PRIVATE_item" = "Privato";
