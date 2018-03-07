@@ -3,6 +3,15 @@ Microsoft Outlook CalDAVSynchronizer Configuration Guide
 :toc: left
 :icons: font
 
+////
+
+    This file is part of the SOGo project.
+
+    See docinfo.xml for authors, copyright and license information.
+
+////
+
+include::includes/global-attributes.asciidoc[]
 
 About this Guide
 ----------------
@@ -76,58 +85,59 @@ Installation
 
 Download and extract the `OutlookCalDavSynchronizer-<Version>.zip` into any directory and start setup.exe. You can change the default install path, but you need to use a directory on the `C:\` drive. Follow the instructions and restart Outlook after the installation is finished.
 
-image::images/installer1.png[Installer Step 1]
-image::images/installer2.png[Installer Step 2]
+image::images/installer1.png[scaledwidth="100%",alt="Installer Step 1"]
+image::images/installer2.png[scaledwidth="100%",alt="Installer Step 2"]
 
 Next, you will see a ribbon CalDav Synchronizer in Outlook and can add synchronization profiles for you SOGo calendars, addressbooks and tasks.
 
-image::images/outlook_ribbon.png[Outlook Ribbon]
+image::images/outlook_ribbon.png[scaledwidth="100%",alt="Outlook Ribbon"]
 
 In the Synchronization profiles dialog, press *Add new profile* if you just need to synchronize one resource or *Add multiple profiles* if you need to synchronize multiple calendars, addressbooks or task folders.
 
-image::images/add_multiple.png[Add multiple profiles]
+image::images/add_multiple.png[scaledwidth="75%",alt="Add multiple profiles"]
 
 Next, select the SOGo profile type
 
-image::images/select_profiletype.png[Select Profile type]
+image::images/select_profiletype.png[scaledwidth="100%",alt="Select Profile type"]
 
 In the multiple profile setup dialog you can configure the details of the sync profiles.
 
-image::images/configure_multiple.png[Multiple Profile Configuration]
+image::images/configure_multiple.png[scaledwidth="100%",alt="Multiple Profile Configuration"]
 
 First, you should change the profile name and configure the server settings, the DAV URL is prefilled with the default SOGo DAV path and you should only change the hostname of your SOGo server, enter Username and Password. If you also have configured an IMAP account and your domain supports autodiscovery using DNS SRV records you can also try to fetch the server settings from your existing mail account in Outlook by pressing *Get IMAP/POP3 account settings*. If successful, username and password will be used from the existing mail account and the DAV URL will be discovered.
 If all server settings are configured press *Discover resources and assign to Outlook folders* to start the autodiscovery of all server resources. 
 
 You can assign Outlook folders to found calendar, addressbook and task resources in the three tab views.
 
-image::images/select_calendar.png[Add calendar resources]
-image::images/select_addressbook.png[Add addressbook resources]
-image::images/select_task.png[Add task resources]
+image::images/select_calendar.png[scaledwidth="100%",alt="Add calendar resources"]
+image::images/select_addressbook.png[scaledwidth="100%",alt="Add addressbook resources"]
+image::images/select_task.png[scaledwidth="100%",alt="Add task resources"]
 
 To assign a folder click on the "..." button for the corresponding resource and either choose an existing Outlook folder or create a new one in the folder dialog.
 
-image::images/select_folder.png[Select Outlook folder]
-image::images/new_folder.png[Add new Outlook folder]
+image::images/select_folder.png[scaledwidth="60%",alt="Select Outlook folder"]
+image::images/new_folder.png[scaledwidth="60%",alt="Add new Outlook folder"]
 
 If you chose *Add new profile* for only one resource you can also choose the Outlook folder and dependent on the folder type you will create a calendar, addressbook or task profile.
 
-image::images/profile_config.png[Single Profile Configuration]
+image::images/profile_config.png[scaledwidth="100%",alt="Single Profile Configuration"]
+
 If you know the correct calendar CalDAV URL, you can also enter that directly into the DAV Url textbox or paste it from the SOGo Web Frontend, when selecting Link in the calendar properties. For the personal calendar it looks like
 https://server.example/remote.php/dav/calendars/caldav/personal/
 
 Furthermore, you can configure sync settings and intervals or keep the default settings which are automatic Two-Way-Sync every 30 minutes for all events from 60 days in the past to 365 days in the future.
 
-image::images/profile_advanced.png[Advanced Settings]
+image::images/profile_advanced.png[scaledwidth="100%",alt="Advanced Settings"]
 
 For addressbooks, the profile setup is similar, just choose an Outlook contacts folder for synchronization.
 
 If needed, you can configure network and proxy options or special mapping configuration parameters in the corresponding option pages.
 
-image::images/profile_network.png[Network settings]
-image::images/profile_advanced_event_mapping.png[Event mapping configuration]
-image::images/profile_advanced_contact_mapping.png[Contact mapping configuration]
-image::images/profile_advanced_task_mapping.png[Task mapping configuration]
-image::images/profile_advanced_custom_mapping.png[Custom mapping configuration]
+image::images/profile_network.png[scaledwidth="100%",alt="Network settings"]
+image::images/profile_advanced_event_mapping.png[scaledwidth="100%",alt="Event mapping configuration"]
+image::images/profile_advanced_contact_mapping.png[scaledwidth="100%",alt="Contact mapping configuration"]
+image::images/profile_advanced_task_mapping.png[scaledwidth="100%",alt="Task mapping configuration"]
+image::images/profile_advanced_custom_mapping.png[scaledwidth="100%",alt="Custom mapping configuration"]
 
 See *Advanced settings* below for a detailed description of all available options.
 
@@ -135,10 +145,11 @@ After the configuration of the sync profile is finished you can start the synchr
 
 You can check the status of the last sync runs with the *Status* button in the ribbon.
 
-image::images/status_report.png[Status report]
+image::images/status_report.png[scaledwidth="50%",alt="Status report"]
+
 Should there be any errors or warnings during synchronization, you can check the *Reports* in the ribbon.
 
-image::images/sync_report.png[Sync report]
+image::images/sync_report.png[scaledwidth="100%",alt="Sync report"]
 
 Configuration Options
 ---------------------
