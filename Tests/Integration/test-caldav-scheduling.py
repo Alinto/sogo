@@ -635,6 +635,7 @@ class CalDAVSchedulingTest(unittest.TestCase):
 	
 	# fetch the organizer's event
 	org_ev = self._getEvent(self.client, "%s%s" % (self.user_calendar, ics_name))
+	org_ev_exception = False
 	for ev in org_ev.vevent_list:
 	  try:
 	    if (ev.recurrence_id.value):
@@ -731,6 +732,7 @@ class CalDAVSchedulingTest(unittest.TestCase):
 	#  needs-action in master event
 	#  declined in the new exception created by the exdate above
 	org_ev=self._getEvent(self.client, "%s%s" % (self.user_calendar, ics_name))
+	org_ev_exception = False
 	for ev in org_ev.vevent_list:
 	  try:
 	    if (ev.recurrence_id.value == attendee_exdate[0]):
