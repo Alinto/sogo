@@ -135,6 +135,7 @@ CREATE TABLE sogo_quick_contact (
 	c_telephonenumber varchar(255) DEFAULT NULL,
 	c_categories      varchar(255) DEFAULT NULL,
 	c_component       varchar(10)  NOT NULL,
+	c_hascertificate  int(11)      DEFAULT NULL,
 	PRIMARY KEY (c_folder_id,c_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
