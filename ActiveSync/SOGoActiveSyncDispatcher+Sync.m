@@ -872,7 +872,9 @@ FIXME
               // FIXME: handle errors here
               if (deletesAsMoves && theFolderType == ActiveSyncMailFolder)
 		{
-		  [(SOGoMailFolder *)[sogoObject container] deleteUIDs: [NSArray arrayWithObjects: serverId, nil] useTrashFolder: &useTrash inContext: context];
+		  [(SOGoMailFolder *)[sogoObject container] deleteUIDs: [NSArray arrayWithObjects: serverId, nil]
+                                                        useTrashFolder: &useTrash
+                                                             inContext: context];
 		}
               else if (theFolderType == ActiveSyncEventFolder || theFolderType == ActiveSyncTaskFolder || theFolderType == ActiveSyncContactFolder)
                 {
@@ -1449,7 +1451,10 @@ FIXME
               }
           }
 
-        allMessages = [theCollection syncTokenFieldsWithProperties: nil  matchingSyncToken: theSyncKey  fromDate: theFilterType  initialLoad: initialLoadInProgress];
+        allMessages = [theCollection syncTokenFieldsWithProperties: nil
+                                                 matchingSyncToken: theSyncKey
+                                                          fromDate: theFilterType
+                                                       initialLoad: initialLoadInProgress];
         max = [allMessages count];
         
         allCacheObjects = [NSMutableArray array];
