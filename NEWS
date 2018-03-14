@@ -3,6 +3,7 @@
 
 Bug fixes
  - [web] prevent deletion of special folders using del key
+ - [eas] improved alarms syncing with EAS devices (#4351)
 
 4.0.0 (2018-03-07)
 ------------------

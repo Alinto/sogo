@@ -45,27 +45,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   NSMutableString *s;
+  NSCalendarDate *nextAlarmDate;
+  NSInteger delta;
 
   s = [NSMutableString string];
+
+  nextAlarmDate = [self nextAlarmDate];
+  delta = (int)(([[(iCalEvent *)parent startDate] timeIntervalSince1970] - [nextAlarmDate timeIntervalSince1970])/60);
   
-  if ([[self action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
+  if ([parent isKindOfClass: [iCalEvent class]])
     {
-      NSCalendarDate *nextAlarmDate;
-      NSInteger delta;
-      
-      nextAlarmDate = [self nextAlarmDate];
-      delta = (int)(([[(iCalEvent *)parent startDate] timeIntervalSince1970] - [nextAlarmDate timeIntervalSince1970])/60);
-      
-      if ([parent isKindOfClass: [iCalEvent class]])
-        {
-          // don't send negative reminder - not supported
-          if (delta > 0)
-            [s appendFormat: @"<Reminder xmlns=\"Calendar:\">%d</Reminder>", (int)delta];
-        }
-      else
-        {
-          [s appendFormat: @"<ReminderTime xmlns=\"Task:\">%@</ReminderTime>", [nextAlarmDate activeSyncRepresentationInContext: context]];
-        }
+      // don't send negative reminder - not supported
+      if (delta > 0)
+        [s appendFormat: @"<Reminder xmlns=\"Calendar:\">%d</Reminder>", (int)delta];
+    }
+  else
+    {
+      [s appendFormat: @"<ReminderTime xmlns=\"Task:\">%@</ReminderTime>", [nextAlarmDate activeSyncRepresentationInContext: context]];
     }
   
   return s;
@@ -86,7 +82,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       trigger = [iCalTrigger elementWithTag: @"TRIGGER"];
       [trigger setValueType: @"DURATION"];
       [self setTrigger: trigger];
-      [self setAction: @"DISPLAY"];
+      if (![self  action])
+        [self setAction: @"DISPLAY"];
 
       // SOGo web ui only supports 1w but not 2w (custom reminder only supports min/hours/days)
       // 1week = -P1W
@@ -115,8 +112,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       trigger = [iCalTrigger elementWithTag: @"TRIGGER"];
       [trigger setValueType: @"DATE-TIME"];
       [trigger setSingleValue: [NSString stringWithFormat: @"%@Z", [o iCalFormattedDateTimeString]] forKey: @""];
+
+      if  ((o = [theValues objectForKey: @"ReminderSet"]))
+        {
+          if ([o intValue] == 0)
+             [trigger setValue: 0 ofAttribute: @"x-webstatus" to: @"triggered"];
+        }
+
       [self setTrigger: trigger];
-      [self setAction: @"DISPLAY"];
+      if (![self  action])
+        [self setAction: @"DISPLAY"];
     }
 }
 

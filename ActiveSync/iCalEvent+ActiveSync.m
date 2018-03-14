@@ -321,7 +321,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       iCalAlarm *alarm;
       
-      alarm = [self firstDisplayOrAudioAlarm];
+      alarm = [self firstSupportedAlarm];
       [s appendString: [alarm activeSyncRepresentationInContext: context]];
     }
 
@@ -447,6 +447,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSCalendarDate *oldstart;
   NSTimeZone *userTimeZone;
   iCalTimeZone *tz;
+  iCalAlarm *alarm;
   id o;
   int deltasecs;
 
@@ -582,23 +583,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
     }
 
-  //
-  // If an alarm is deinfed with an action != DISPLAY, we ignore the alarm - don't want to overwrite. 
-  //
-  if ([self hasAlarms] && [[[[self alarms] objectAtIndex: 0] action] caseInsensitiveCompare: @"DISPLAY"] != NSOrderedSame)
-    {
-      // Ignore the alarm for now
-    }
-  else if ((o = [theValues objectForKey: @"Reminder"]) && [o length])
+  if ((o = [theValues objectForKey: @"Reminder"]) && [o length])
     {           
+      if ([self hasAlarms])
+        alarm = [[self firstSupportedAlarm] mutableCopy];
+      else
+        alarm = [[iCalAlarm alloc] init];
+
       // NOTE: Outlook sends a 15 min reminder (18 hour for allday) if no reminder is specified  
       // although no default reminder is defined (File -> Options -> Clendar -> Calendar Options - > Default Reminders)
       //
       // http://answers.microsoft.com/en-us/office/forum/office_2013_release-outlook/desktop-outlook-calendar-creates-entries-with/9aef72d8-81bb-4a32-a6ab-bf7d216fb811?page=5&tm=1395690285088 
       //
-      iCalAlarm *alarm;
       
-      alarm = [[iCalAlarm alloc] init];
       [alarm takeActiveSyncValues: theValues  inContext: context];
 
       [self removeAllAlarms];
