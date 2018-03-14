@@ -2416,6 +2416,11 @@ void handle_eas_terminate(int signum)
           realCollectionId = [collectionId realCollectionIdWithFolderType: &folderType];
           realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
 
+          // We avoid loading the cache metadata if we can't get the real connection. This can happen
+          // for example if the IMAP server is down. We just skip the folder for now.
+          if (!realCollectionId)
+            continue;
+
           if (folderType == ActiveSyncMailFolder)
               folderMetadata = [self _folderMetadataForKey: [NSString stringWithFormat: @"folder%@", [[collectionId stringByUnescapingURL] substringFromIndex:5]]];
           else
