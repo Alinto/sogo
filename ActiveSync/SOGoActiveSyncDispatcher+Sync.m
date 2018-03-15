@@ -2602,9 +2602,36 @@ FIXME
   // We enter our loop detection change
   for (i = 0; i < (heartbeatInterval/internalInterval); i++)
     {
+      // Terminate the process if we need to
       if ([self easShouldTerminate])
         break;
 
+      // We first check of any of the collections we want to sync are already
+      // in an other sync process. If that's the case, we do not do anything
+      // and we return immediately. So we'll let the other sync process terminate
+      for (j = 0; j < [allCollections count]; j++)
+        {
+          aCollection = [allCollections objectAtIndex: j];
+          globalMetadata = [self globalMetadataForDevice];
+
+          key = [NSString stringWithFormat: @"SyncRequest+%@", [[[(id)[aCollection getElementsByTagName: @"CollectionId"] lastObject] textValue] stringByUnescapingURL]];
+
+          if (!([[globalMetadata objectForKey: key] isEqual: processIdentifier]))
+            {
+              if (debugOn)
+                [self logWithFormat: @"EAS - Discard response %@", [self globalMetadataForDevice]];
+
+              [output appendString: @"<Status>13</Status>"];
+              [output appendString: @"</Sync>"];
+              d = [[output dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+              [theResponse setContent: d];
+              RELEASE(output);
+              return;
+            }
+
+        }
+
+      // We're good to go to sync the collections
       s = [NSMutableString string];
 
       for (j = 0; j < [allCollections count]; j++)
@@ -2615,21 +2642,6 @@ FIXME
                              inBuffer: s
                        changeDetected: &changeDetected
                   maxSyncResponseSize: maxSyncResponseSize];
-
-          // Don't return a response if another Sync is waiting.
-          globalMetadata = [self globalMetadataForDevice];
-          key = [NSString stringWithFormat: @"SyncRequest+%@", [[[(id)[aCollection getElementsByTagName: @"CollectionId"] lastObject] textValue] stringByUnescapingURL]];
-
-          if (!([[globalMetadata objectForKey: key] isEqual: processIdentifier]))
-            {
-              if (debugOn)
-                [self logWithFormat: @"EAS - Discard response %@", [self globalMetadataForDevice]];
-
-              [theResponse setStatus: 503];
-
-              RELEASE(output);
-              return;
-            }
 
           if ((maxSyncResponseSize > 0 && [s length] >= maxSyncResponseSize))
             break;
