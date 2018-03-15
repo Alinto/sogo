@@ -114,7 +114,6 @@
       if ([event hasRecurrenceRules])
         [event updateRecurrenceRulesUntilDate: end];
 
-      [event setLastModified: [NSCalendarDate calendarDate]];
       ex = [co saveComponent: event  force: forceSave];
 
       // This condition will be executed only if the event is moved from a calendar to another. If destionationCalendar == 0; there is no calendar change

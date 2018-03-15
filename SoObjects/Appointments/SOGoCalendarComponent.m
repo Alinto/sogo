@@ -687,6 +687,7 @@
 
 - (NSException *) saveComponent: (iCalRepeatableEntityObject *) newObject
 {
+  [newObject setLastModified: [NSCalendarDate calendarDate]];
   return [self saveCalendar: [newObject parent]];
 }
 

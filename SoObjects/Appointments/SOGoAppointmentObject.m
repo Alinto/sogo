@@ -323,7 +323,8 @@
               [event addToExceptionDates: recurrenceId];
               
               [event increaseSequence];
-              
+              [event setLastModified: [NSCalendarDate calendarDate]];
+
               // We save the updated iCalendar in the database.
               [object saveCalendar: calendar];
             }
@@ -1242,6 +1243,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
         }
       
       // We save the updated iCalendar in the database.
+      [event setLastModified: [NSCalendarDate calendarDate]];
       error = [eventObject saveCalendar: [event parent]];
     }
       
@@ -1638,7 +1640,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                     {
                       [event addToAlarms: alarm];
                     }
-                  
+
+                  [event setLastModified: [NSCalendarDate calendarDate]];
                   ex = [self saveCalendar: [event parent]];
                 }
             }
