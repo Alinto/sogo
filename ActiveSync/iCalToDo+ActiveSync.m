@@ -102,10 +102,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if ([self hasAlarms])
     {
       iCalAlarm *alarm;
+      NSString *webstatus;
 
-      alarm = [self firstDisplayOrAudioAlarm];
-      [s appendFormat: @"<ReminderSet xmlns=\"Tasks:\">%d</ReminderSet>", 1];
-      [s appendString: [alarm activeSyncRepresentationInContext: context]];
+      if ((alarm = [self firstSupportedAlarm]))
+        {
+          webstatus = [[alarm trigger] value: 0 ofAttribute: @"x-webstatus"];
+          if (!webstatus || ([webstatus caseInsensitiveCompare: @"TRIGGERED"] != NSOrderedSame))
+            [s appendFormat: @"<ReminderSet xmlns=\"Tasks:\">%d</ReminderSet>", 1];
+          else
+            [s appendFormat: @"<ReminderSet xmlns=\"Tasks:\">%d</ReminderSet>", 0];
+
+          [s appendString: [alarm activeSyncRepresentationInContext: context]];
+        }
+      else
+        {
+          [s appendFormat: @"<ReminderSet xmlns=\"Tasks:\">%d</ReminderSet>", 0];
+        }
     }
   else
     {

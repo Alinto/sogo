@@ -82,7 +82,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       trigger = [iCalTrigger elementWithTag: @"TRIGGER"];
       [trigger setValueType: @"DURATION"];
       [self setTrigger: trigger];
-      if (![self  action])
+      if (![[self action] length])
         [self setAction: @"DISPLAY"];
 
       // SOGo web ui only supports 1w but not 2w (custom reminder only supports min/hours/days)
@@ -120,7 +120,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
 
       [self setTrigger: trigger];
-      if (![self  action])
+      if (![[self action] length])
         [self setAction: @"DISPLAY"];
     }
 }
