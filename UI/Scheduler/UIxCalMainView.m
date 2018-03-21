@@ -1,6 +1,6 @@
 /* UIxCalMainView.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2017 Inverse inc.
+ * Copyright (C) 2006-2018 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -143,7 +143,7 @@
 - (NSArray *) tasksFilters
 {
   return [NSArray arrayWithObjects: @"view_all", @"view_today", @"view_next7",
-                                    @"view_next14", @"view_next31", @"view_thismonth",
+                                    @"view_next14", @"view_next31", @"view_thismonth", @"view_thisyear",
                                     @"view_not_started", @"view_overdue", @"view_incomplete", nil];
 }
 

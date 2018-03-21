@@ -201,6 +201,12 @@
                         <!-- selected --></md-icon><var:string label:value="view_thismonth"/>
                     </md-button>
                   </md-menu-item>
+                  <md-menu-item>
+                    <md-button ng-click="list.filter('view_thisyear')">
+                      <md-icon ng-class="{ 'icon-check': list.filteredBy('view_thisyear') }">
+                        <!-- selected --></md-icon><var:string label:value="view_thisyear"/>
+                    </md-button>
+                  </md-menu-item>
                   <md-menu-item ng-if="list.componentType == 'events'">
                     <md-button ng-click="list.filter('view_future')">
                       <md-icon ng-class="{ 'icon-check': list.component.$queryEvents.filterpopup == 'view_future' }">

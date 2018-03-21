@@ -1,8 +1,6 @@
 /* UIxContactsFilterPanel.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2009 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2006-2018 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +35,7 @@ static NSArray *filters = nil;
   static NSString *quals[]
     = {@"view_all",
        @"view_today", @"view_next7", @"view_next14",
-       @"view_next31", @"view_thismonth", @"view_future",
+       @"view_next31", @"view_thismonth", @"view_thisyear", @"view_future",
        @"view_selectedday" };
 
   if (!filters)

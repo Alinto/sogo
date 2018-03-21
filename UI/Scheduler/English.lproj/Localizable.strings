@@ -218,6 +218,7 @@
 "view_next14" = "Next 14 days";
 "view_next31" = "Next 31 days";
 "view_thismonth" = "This Month";
+"view_thisyear" = "This Year";
 "view_future" = "All Future Events";
 "view_selectedday" = "Selected Day";
 "view_not_started" = "Not started tasks";

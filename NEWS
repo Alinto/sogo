@@ -1,6 +1,9 @@
 4.0.1 (2018-03-XX)
 ------------------
 
+Enhancements
+ - [web] now possible to show events/task for the current year
+
 Bug fixes
  - [core] properly update the last-modified attribute (#4313)
  - [web] prevent deletion of special folders using del key

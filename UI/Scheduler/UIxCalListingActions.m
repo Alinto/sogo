@@ -171,10 +171,26 @@ static NSArray *tasksFields = nil;
     endDate = [[startDate dateByAddingYears: 0 months: 0 days: 30] endOfDay];
   }
   else if ([popupValue isEqualToString: @"view_thismonth"])
+    {
+      newDate = [NSCalendarDate calendarDate];
+      [newDate setTimeZone: userTZ];
+      startDate = [[newDate firstDayOfMonth] beginOfDay];
+      endDate = [[newDate lastDayOfMonth] endOfDay];
+    }
+  else if ([popupValue isEqualToString: @"view_thisyear"])
   {
-    newDate = [NSCalendarDate calendarDate];
-    [newDate setTimeZone: userTZ];
+    newDate = [NSCalendarDate dateWithYear: [[NSCalendarDate calendarDate] yearOfCommonEra]
+                                     month: 1
+                                       day: 1
+                                      hour: 0 minute: 0 second: 0
+                                  timeZone: userTZ];
     startDate = [[newDate firstDayOfMonth] beginOfDay];
+
+    newDate = [NSCalendarDate dateWithYear: [[NSCalendarDate calendarDate] yearOfCommonEra]
+                                     month: 12
+                                       day: 31
+                                      hour: 0 minute: 0 second: 0
+                                  timeZone: userTZ];
     endDate = [[newDate lastDayOfMonth] endOfDay];
   }
   else if ([popupValue isEqualToString: @"view_future"])
@@ -780,7 +796,7 @@ static inline NSString* _userStateInEvent (NSArray *event)
  * @apiParam {Boolean} [asc]         Descending sort when false. Defaults to true (ascending).
  * @apiParam {String} [sort]         Sort field. Either title, start, end, location, or calendarName.
  * @apiParam {Number} [day]          Selected day (YYYYMMDD)
- * @apiParam {String} [filterpopup]  Time period. Either view_today, view_next7, view_next14, view_next31, view_thismonth, view_future, view_selectedday, or view_all
+ * @apiParam {String} [filterpopup]  Time period. Either view_today, view_next7, view_next14, view_next31, view_thismonth, view_thisyear, view_future, view_selectedday, or view_all
  * @apiParam {String} [search]       Search field criteria. Either title_Category_Location or entireContent.
  * @apiParam {String} [value]        String to match
  *
@@ -1569,7 +1585,7 @@ _computeBlocksPosition (NSArray *blocks)
  * @apiParam {Boolean} [asc]           Descending sort when false. Defaults to true (ascending).
  * @apiParam {Boolean} [sort]          Sort field. Either title, priority, end, location, category, calendarname, or status.
  * @apiParam {Number} [day]            Selected day (YYYYMMDD)
- * @apiParam {String} [filterpopup]    Time period. Either view_today, view_next7, view_next14, view_next31, view_thismonth, view_overdue, view_incomplete, view_not_started, or view_all
+ * @apiParam {String} [filterpopup]    Time period. Either view_today, view_next7, view_next14, view_next31, view_thismonth, view_thisyear, view_overdue, view_incomplete, view_not_started, or view_all
  * @apiParam {String} [search]         Search field criteria. Either title_Category_Location or entireContent.
  *
  * @apiSuccess (Success 200) {String[]} fields                List of fields for each event definition
@@ -1642,11 +1658,12 @@ _computeBlocksPosition (NSArray *blocks)
                                                       forAllDay: NO]];
       else
         [filteredTask addObject: [NSNull null]];
-      if (([tasksView isEqualToString:@"view_today"]  ||
-           [tasksView isEqualToString:@"view_next7"]  ||
-           [tasksView isEqualToString:@"view_next14"] ||
-           [tasksView isEqualToString:@"view_next31"] ||
-           [tasksView isEqualToString:@"view_thismonth"]) &&
+      if (([tasksView isEqualToString:@"view_today"]     ||
+           [tasksView isEqualToString:@"view_next7"]     ||
+           [tasksView isEqualToString:@"view_next14"]    ||
+           [tasksView isEqualToString:@"view_next31"]    ||
+           [tasksView isEqualToString:@"view_thismonth"] ||
+           [tasksView isEqualToString:@"view_thisyear"]) &&
           (endDateStamp == 0 || endDateStamp >= startSecs))
         [filteredTasks addObject: filteredTask];
       else if ([tasksView isEqualToString:@"view_all"])
