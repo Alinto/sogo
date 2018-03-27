@@ -152,6 +152,7 @@ a.md-button.sg-icon-button,
 md-list md-list-item button.md-button.sg-icon-button {
   @extend .md-button.md-icon-button;
   //transition: $iconButton-transition;
+  min-width: $iconButton-size;
   &:hover:not([disabled]),
   &:active {
     //background-color: transparent;
