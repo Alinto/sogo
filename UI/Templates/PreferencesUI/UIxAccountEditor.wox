@@ -133,7 +133,7 @@
                           ck-options="{ 'autoGrow_minHeight': 70,
                                       'toolbar': [['Bold', 'Italic', '-', 'Link',
                                       'Font','FontSize','-','TextColor',
-                                      'BGColor']] }"
+                                      'BGColor', 'Source']] }"
                           ck-margin="8px"
                           ng-model="$AccountDialogController.account.identities[0].signature"><!-- signature --></textarea>
               </div>
