@@ -230,6 +230,7 @@
     vm.addAttachUrl = addAttachUrl;
     vm.priorityLevel = priorityLevel;
     vm.changeAlarmRelation = changeAlarmRelation;
+    vm.onAlarmChange = onAlarmChange;
     vm.reset = reset;
     vm.cancel = cancel;
     vm.edit = edit;
@@ -367,7 +368,19 @@
       }
     }
 
+    function onAlarmChange(event) {
+      if (vm.component.type !== 'task') {
+        return;
+      }
+      if (!vm.component.start && vm.component.alarm.relation == 'START') {
+        vm.component.alarm.relation = 'END';
+      } else if (!vm.component.due && vm.component.alarm.relation == 'END') {
+        vm.component.alarm.relation = 'START';
+      }
+    }
+
     function save(form, options) {
+      changeAlarmRelation(form);
       if (form.$valid) {
         vm.component.$save(options)
           .then(function(data) {
