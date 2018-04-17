@@ -472,6 +472,15 @@
   return [[sd authenticationType] isEqualToString: @"cas"];
 }
 
+- (BOOL) usesSAML2Authentication
+{
+  SOGoSystemDefaults *sd;
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  return [[sd authenticationType] isEqualToString: @"saml2"];
+}
+
 - (NSString *) userIdentification
 {
   NSString *v;

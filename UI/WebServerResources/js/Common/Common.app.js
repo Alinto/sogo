@@ -267,9 +267,10 @@
         var deferred, iframe;
         if (/^application\/json/.test(rejection.config.headers.Accept)) {
           // Handle CAS ticket renewal
-          if ($window.usesCASAuthentication && rejection.status == -1) {
+          if (($window.usesCASAuthentication   && rejection.status == -1) ||
+              ($window.usesSAML2Authentication && rejection.status == 401)) {
             deferred = $q.defer();
-            iframe = angular.element('<iframe class="ng-hide" src="' + UserFolderURL + 'recover"></iframe>');
+            iframe = angular.element('<iframe class="ng-hide" src="' + $window.UserFolderURL + 'recover"></iframe>');
             iframe.on('load', function() {
               // Once the browser has followed the redirection, send the initial request
               var $http = $injector.get('$http');

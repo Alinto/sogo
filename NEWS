@@ -7,6 +7,7 @@ Enhancements
 Bug fixes
  - [core] properly update the last-modified attribute (#4313)
  - [web] prevent deletion of special folders using del key
+ - [web] fixed SAML2 session timeout handling during XHR requests
  - [eas] improved alarms syncing with EAS devices (#4351)
  - [eas] avoid potential cache update when breaking sync queries (#4422)
 
