@@ -53,8 +53,8 @@
   /**
    * @ngInject
    */
-  sgCalendarListItemController.$inject = ['$rootScope', '$scope', '$element', '$mdToast', '$mdPanel', '$mdMedia', '$mdSidenav', 'sgConstant', 'Dialog', 'Calendar'];
-  function sgCalendarListItemController($rootScope, $scope, $element, $mdToast, $mdPanel, $mdMedia, $mdSidenav, sgConstant, Dialog, Calendar) {
+  sgCalendarListItemController.$inject = ['$rootScope', '$scope', '$element', '$timeout', '$mdToast', '$mdPanel', '$mdMedia', '$mdSidenav', 'sgConstant', 'Dialog', 'Calendar'];
+  function sgCalendarListItemController($rootScope, $scope, $element, $timeout, $mdToast, $mdPanel, $mdMedia, $mdSidenav, sgConstant, Dialog, Calendar) {
     var $ctrl = this;
 
 
@@ -81,15 +81,24 @@
 
 
     this.editFolder = function($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
       this.editMode = true;
       this.inputElement.value = this.calendar.name;
       this.clickableElement.classList.add('ng-hide');
       this.inputContainer.classList.remove('ng-hide');
-      this.inputElement.focus();
-      this.inputElement.select();
-      if ($event) {
-        $event.stopPropagation();
-        $event.preventDefault();
+      if ($event.srcEvent.type == 'touchend') {
+        $timeout(function() {
+          $ctrl.inputElement.focus();
+          $ctrl.inputElement.select();
+        }, 200); // delayed focus for iOS
+      }
+      else {
+        this.inputElement.select();
+        this.inputElement.focus();
+      }
+      if (this.panel) {
+        this.panel.close();
       }
     };
 
@@ -180,6 +189,7 @@
 
       $mdPanel.open(config)
         .then(function(panelRef) {
+          $ctrl.panel = panelRef;
           // Automatically close panel when clicking inside of it
           panelRef.panelEl.one('click', function() {
             panelRef.close();

@@ -54,12 +54,14 @@ md-list-item {
   .sg-item-name {
     align-items: flex-start;
     font-size: sg-size(button);
-    line-height: $list-item-height;
     max-width: 75%; // leave some place for a secondary button
     overflow: hidden;
     text-overflow: ellipsis;
     text-transform: initial;
     white-space: nowrap;
+    @include from(md) {
+      line-height: $list-item-height;
+    }
   }
   .sg-inline-list-icon-label {
     text-transform: uppercase;

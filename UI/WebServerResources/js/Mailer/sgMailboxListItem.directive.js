@@ -52,8 +52,8 @@
   /**
    * @ngInject
    */
-  sgMailboxListItemController.$inject = ['$scope', '$element', '$state', '$mdToast', '$mdPanel', '$mdMedia', '$mdSidenav', 'sgConstant', 'Dialog', 'Mailbox', 'encodeUriFilter'];
-  function sgMailboxListItemController($scope, $element, $state, $mdToast, $mdPanel, $mdMedia, $mdSidenav, sgConstant, Dialog, Mailbox, encodeUriFilter) {
+  sgMailboxListItemController.$inject = ['$scope', '$element', '$state', '$timeout', '$mdToast', '$mdPanel', '$mdMedia', '$mdSidenav', 'sgConstant', 'Dialog', 'Mailbox', 'encodeUriFilter'];
+  function sgMailboxListItemController($scope, $element, $state, $timeout, $mdToast, $mdPanel, $mdMedia, $mdSidenav, sgConstant, Dialog, Mailbox, encodeUriFilter) {
     var $ctrl = this;
 
 
@@ -105,15 +105,24 @@
 
 
     this.editFolder = function($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
       this.editMode = true;
       this.inputElement.value = this.mailbox.name;
       this.clickableElement.classList.add('ng-hide');
       this.inputContainer.classList.remove('ng-hide');
-      this.inputElement.focus();
-      this.inputElement.select();
-      if ($event) {
-        $event.stopPropagation();
-        $event.preventDefault();
+      if ($event.srcEvent.type == 'touchend') {
+        $timeout(function() {
+          $ctrl.inputElement.select();
+          $ctrl.inputElement.focus();
+        }, 200); // delayed focus for iOS
+      }
+      else {
+        this.inputElement.select();
+        this.inputElement.focus();
+      }
+      if (this.panel) {
+        this.panel.close();
       }
     };
 
@@ -188,7 +197,8 @@
         locals: {
           itemCtrl: this,
           folder: this.mailbox,
-          confirmDelete: this.confirmDelete
+          editFolder: angular.bind(this, this.editFolder),
+          confirmDelete: angular.bind(this, this.confirmDelete)
         },
         bindToController: true,
         controller: MenuController,
@@ -205,6 +215,7 @@
 
       $mdPanel.open(config)
         .then(function(panelRef) {
+          $ctrl.panel = panelRef;
           // Automatically close panel when clicking inside of it
           panelRef.panelEl.one('click', function() {
             panelRef.close();
@@ -231,10 +242,6 @@
                                l(data.error));
                 });
             });
-        };
-
-        this.editFolder = function() {
-          this.itemCtrl.editFolder();
         };
 
         this.compactFolder = function() {
