@@ -236,7 +236,8 @@
              ng-show="editor.component.start || editor.component.due">
           <!-- reminder -->
           <md-checkbox ng-model="editor.component.$hasAlarm"
-                       label:aria-label="Reminder">
+                       label:aria-label="Reminder"
+                       ng-change="editor.onAlarmChange(eventForm)">
             <var:string label:value="Reminder"/>
           </md-checkbox>
           <div flex-offset="5"

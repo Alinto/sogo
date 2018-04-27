@@ -358,7 +358,7 @@
     }
 
     function changeAlarmRelation(form) {
-      if (vm.component.type == 'task' &&
+      if (vm.component.type == 'task' && vm.component.$hasAlarm &&
           ((!vm.component.start && vm.component.alarm.relation == 'START') ||
            (!vm.component.due   && vm.component.alarm.relation == 'END'))) {
         form.alarmRelation.$setValidity('alarm', false);
@@ -368,7 +368,7 @@
       }
     }
 
-    function onAlarmChange(event) {
+    function onAlarmChange(form) {
       if (vm.component.type !== 'task') {
         return;
       }
@@ -377,6 +377,7 @@
       } else if (!vm.component.due && vm.component.alarm.relation == 'END') {
         vm.component.alarm.relation = 'START';
       }
+      changeAlarmRelation(form);
     }
 
     function save(form, options) {
