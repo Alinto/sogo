@@ -348,11 +348,18 @@
           userRoles = [[acl objectForKey: currentUser] objectEnumerator];
           while ((currentRole = [userRoles nextObject]))
             {
-              SQL = [NSString stringWithFormat: @"INSERT INTO %@"
-                              @" (c_object, c_uid, c_role)"
-                              @" VALUES ('%@', '%@', '%@')",
-                              aclTableName,
-                              folderPath, currentUser, currentRole];
+              if ([GCSFolderManager singleStoreMode])
+                SQL = [NSString stringWithFormat: @"INSERT INTO %@"
+                                @" (c_object, c_uid, c_role, c_folder_id)"
+                                @" VALUES ('%@', '%@', '%@', %@)",
+                                aclTableName,
+                                folderPath, currentUser, currentRole, [gcsFolder folderId]];
+              else
+                SQL = [NSString stringWithFormat: @"INSERT INTO %@"
+                                @" (c_object, c_uid, c_role)"
+                                @" VALUES ('%@', '%@', '%@')",
+                                aclTableName,
+                                folderPath, currentUser, currentRole];
               [channel evaluateExpressionX: SQL];
             }
         }

@@ -7,6 +7,7 @@ Enhancements
 Bug fixes
  - [core] properly update the last-modified attribute (#4313)
  - [core] fixed default data value for c_hascertificate (#4442)
+ - [core] fixed ACLs restoration with sogo-tool in single store mode (#4385)
  - [web] prevent deletion of special folders using del key
  - [web] fixed SAML2 session timeout handling during XHR requests
  - [web] fixed renaming a folder under iOS

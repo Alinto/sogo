@@ -1650,11 +1650,13 @@ andAttribute: (EOAttribute *)_attribute
   sql = [NSMutableString stringWithCapacity:256];
   [sql appendString:@"DELETE FROM "];
   [sql appendString:[self aclTableName]];
+  if ([GCSFolderManager singleStoreMode])
+    [sql appendFormat:@" WHERE c_folder_id = %@", folderId];
   qSql = [self _sqlForQualifier: [_fs qualifier]];
   if (qSql)
     {
       if ([GCSFolderManager singleStoreMode])
-        [sql appendFormat:@" WHERE c_folder_id = %@ AND (%@)", folderId, qSql];
+        [sql appendFormat:@" AND (%@)", qSql];
       else
         [sql appendFormat:@" WHERE %@", qSql];
     }
