@@ -267,8 +267,7 @@
         var deferred, iframe;
         if (/^application\/json/.test(rejection.config.headers.Accept)) {
           // Handle CAS ticket renewal
-          if (($window.usesCASAuthentication   && rejection.status == -1) ||
-              ($window.usesSAML2Authentication && rejection.status == 401)) {
+          if ($window.usesCASAuthentication && rejection.status == -1) {
             deferred = $q.defer();
             iframe = angular.element('<iframe class="ng-hide" src="' + $window.UserFolderURL + 'recover"></iframe>');
             iframe.on('load', function() {
@@ -279,6 +278,9 @@
             });
             document.body.appendChild(iframe[0]);
             return deferred.promise;
+          }
+          else if ($window.usesSAML2Authentication && rejection.status == 401) {
+            $window.location.reload(true);
           }
           else {
             // Broadcast the response error
