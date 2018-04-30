@@ -6,7 +6,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-  <div layout-fill="layout-fill" layout="column">
+  <div layout-fill="layout-fill" layout="column" class="sg-reversible">
     <md-card>
       <md-toolbar class="hide show-xs" flex-none="flex-none">
         <div class="md-toolbar-tools">
@@ -30,7 +30,7 @@
           <div class="msg-header-content">
             <div ng-class="{ 'sg-md-display-2--thin': isGtMedium,
                             'sg-md-title': !isGtMedium }">{{::acl.user.cn}}</div>
-            <div class="sg-md-display-2-subheader"><md-icon ng-class="{ 'icon-contacts': acl.folderType == 'AddressBook',
+            <div class="md-truncate sg-md-display-2-subheader"><md-icon ng-class="{ 'icon-contacts': acl.folderType == 'AddressBook',
                                                                        'icon-event': acl.folderType == 'Calendar' }"><!--icon--></md-icon>
             {{::acl.folder.name}}
             </div>
