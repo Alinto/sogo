@@ -8,7 +8,7 @@ Standards-Version: 3.9.1
 Package: sogo
 Section: web
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, tmpreaper, sope4.9-libxmlsaxdriver, sope4.9-db-connector, gnustep-make, libcurl3, zip, liblasso3 (>= 2.3.5)
+Depends: ${shlibs:Depends}, ${misc:Depends}, sope4.9-libxmlsaxdriver, sope4.9-db-connector, gnustep-make, libcurl3, zip, liblasso3 (>= 2.3.5)
 Recommends: memcached
 Suggests: nginx
 Description: a modern and scalable groupware
