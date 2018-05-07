@@ -3,6 +3,7 @@
 
 Enhancements
  - [web] now possible to show events/task for the current year
+ - [web] show current ordering setting in lists
 
 Bug fixes
  - [core] properly update the last-modified attribute (#4313)

@@ -209,31 +209,31 @@
                   </md-menu-item>
                   <md-menu-item ng-if="list.componentType == 'events'">
                     <md-button ng-click="list.filter('view_future')">
-                      <md-icon ng-class="{ 'icon-check': list.component.$queryEvents.filterpopup == 'view_future' }">
+                      <md-icon ng-class="{ 'icon-check': list.filteredBy('view_future') }">
                         <!-- selected --></md-icon> <var:string label:value="view_future"/>
                     </md-button>
                   </md-menu-item>
                   <md-menu-item ng-if="list.componentType == 'events'">
                     <md-button ng-click="list.filter('view_selectedday')">
-                      <md-icon ng-class="{ 'icon-check': list.component.$queryEvents.filterpopup == 'view_selectedday' }">
+                      <md-icon ng-class="{ 'icon-check': list.filteredBy('view_selectedday') }">
                         <!-- selected --></md-icon> <var:string label:value="view_selectedday"/>
                     </md-button>
                   </md-menu-item>
                   <md-menu-item ng-if="list.componentType == 'tasks'">
                     <md-button ng-click="list.filter('view_not_started')">
-                      <md-icon ng-class="{ 'icon-check': list.component.$queryTasks.filterpopup == 'view_not_started' }">
+                      <md-icon ng-class="{ 'icon-check': list.filteredBy('view_not_started') }">
                         <!-- selected --></md-icon> <var:string label:value="view_not_started"/>
                     </md-button>
                   </md-menu-item>
                   <md-menu-item ng-if="list.componentType == 'tasks'">
                     <md-button ng-click="list.filter('view_overdue')">
-                      <md-icon ng-class="{ 'icon-check': list.component.$queryTasks.filterpopup == 'view_overdue' }">
+                      <md-icon ng-class="{ 'icon-check': list.filteredBy('view_overdue') }">
                         <!-- selected --></md-icon> <var:string label:value="view_overdue"/>
                     </md-button>
                   </md-menu-item>
                   <md-menu-item ng-if="list.componentType == 'tasks'">
                     <md-button ng-click="list.filter('view_incomplete')">
-                      <md-icon ng-class="{ 'icon-check': list.component.$queryTasks.filterpopup == 'view_incomplete' }">
+                      <md-icon ng-class="{ 'icon-check': list.filteredBy('view_incomplete') }">
                         <!-- selected --></md-icon> <var:string label:value="view_incomplete"/>
                     </md-button>
                   </md-menu-item>
@@ -386,7 +386,10 @@
               <md-tab label:label="Events"
                       md-on-select="list.selectComponentType('events')">
                 <md-subheader>
-                  <span ng-bind="list.filterpopup() | loc"><!-- active filter --></span>
+                  <div layout="row"  layout-align="space-between center">
+                    <div ng-bind="list.filter() | loc"><!-- active filter --></div>
+                    <div><md-icon ng-class="{ 'md-flip': list.ascending() }">sort</md-icon> <span ng-bind="list.sort() | loc"><!-- active sort --></span></div>
+                  </div>
                 </md-subheader>
                 <md-list class="sg-section-list"
                          ng-class="{ 'sg-list-selectable': list.mode.multiple }"
@@ -430,7 +433,10 @@
               <md-tab label:label="Tasks"
                       md-on-select="list.selectComponentType('tasks')">
                 <md-subheader>
-                  <span>{{list.filterpopup() | loc}}</span>
+                  <div layout="row"  layout-align="space-between center">
+                    <div ng-bind="list.filter() | loc"><!-- active filter --></div>
+                    <div><md-icon ng-class="{ 'md-flip': list.ascending() }">sort</md-icon> <span ng-bind="list.sort() | loc"><!-- active sort --></span></div>
+                  </div>
                 </md-subheader>
                 <md-list class="sg-section-list"
                          ng-class="{ 'sg-list-selectable': list.mode.multiple }">

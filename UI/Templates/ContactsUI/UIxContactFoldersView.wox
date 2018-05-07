@@ -280,15 +280,13 @@
                 <md-menu-item>
                   <md-button ng-click="addressbook.sort('c_screenname')">
                     <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_screenname') }">
-                      <!-- selected --></md-icon> <var:string
-                      label:value="Screen Name"/>
+                      <!-- selected --></md-icon> <var:string label:value="Screen Name"/>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
                   <md-button ng-click="addressbook.sort('c_o')">
                     <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_o') }">
-                      <!-- selected --></md-icon> <var:string
-                      label:value="Organization"/>
+                      <!-- selected --></md-icon> <var:string label:value="Organization"/>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
@@ -446,10 +444,13 @@
 
         <md-content id="contactsList" layout="column" class="md-flex">
           <md-subheader ng-show="addressbook.service.$query.value">
-            <span ng-switch="addressbook.selectedFolder.$cards.length">
+            <div ng-switch="addressbook.selectedFolder.$cards.length">
               <span ng-switch-when="0"><var:string label:value="No matching contact"/></span>
-              <span ng-switch-default="true">{{addressbook.selectedFolder.$cards.length}} <var:string label:value="matching contacts"/></span>
-            </span>
+              <div ng-switch-default="true" layout="row"  layout-align="space-between center">
+                <div>{{addressbook.selectedFolder.$cards.length}} <var:string label:value="matching contacts"/></div>
+                <div><md-icon ng-class="{ 'md-flip': addressbook.ascending() }">sort</md-icon> <span ng-bind="addressbook.sort() | loc"><!-- active sort --></span></div>
+              </div>
+            </div>
           </md-subheader>
           <md-subheader ng-hide="addressbook.service.$query.value">
             <span ng-switch="addressbook.selectedFolder.listRequiresDot">
@@ -459,7 +460,10 @@
               <span ng-switch-default="true">
                 <span ng-switch="addressbook.selectedFolder.$cards.length">
                   <span ng-switch-when="0"><var:string label:value="No contact"/></span>
-                  <span ng-switch-default="true">{{addressbook.selectedFolder.$cards.length}} <var:string label:value="contacts"/></span>
+                  <div ng-switch-default="true" layout="row"  layout-align="space-between center">
+                    <div>{{addressbook.selectedFolder.$cards.length}} <var:string label:value="contacts"/></div>
+                    <div><md-icon ng-class="{ 'md-flip': addressbook.ascending() }">sort</md-icon> <span ng-bind="addressbook.sort() | loc"><!-- active sort --></span></div>
+                  </div>
                 </span>
               </span>
             </span>

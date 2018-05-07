@@ -10,7 +10,16 @@
   function MailboxController($window, $scope, $timeout, $q, $state, $mdDialog, $mdToast, stateAccounts, stateAccount, stateMailbox, sgHotkeys, encodeUriFilter, sgSettings, focus, Dialog, Preferences, Account, Mailbox) {
     var vm = this,
         defaultWindowTitle = angular.element($window.document).find('title').attr('sg-default') || "SOGo",
-        hotkeys = [];
+        hotkeys = [],
+        sortLabels;
+
+    sortLabels = {
+      subject: 'Subject',
+      from: 'From',
+      date: 'Date',
+      size: 'Size',
+      arrival: 'Order Received'
+    };
 
     this.$onInit = function() {
       // Expose controller for eventual popup windows
@@ -123,11 +132,20 @@
     };
 
     this.sort = function(field) {
-      vm.selectedFolder.$filter({ sort: field });
+      if (field) {
+        vm.selectedFolder.$filter({ sort: field });
+      }
+      else {
+        return sortLabels[vm.service.$query.sort];
+      }
     };
 
     this.sortedBy = function(field) {
       return Mailbox.$query.sort == field;
+    };
+
+    this.ascending = function() {
+      return Mailbox.$query.asc;
     };
 
     this.searchMode = function() {

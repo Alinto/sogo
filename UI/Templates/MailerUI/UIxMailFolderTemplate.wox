@@ -280,11 +280,14 @@
 
     <md-content id="messagesList" layout="column" class="md-flex">
       <md-subheader>
-        <!-- message count -->
-        <span ng-switch="mailbox.service.selectedFolder.getLength()">
-          <span ng-switch-when="0"><var:string label:value="No message"/></span>
-          <span ng-switch-default="true"><span ng-bind="mailbox.service.selectedFolder.getLength()"><!-- count --></span> <var:string label:value="messages"/></span>
-        </span>
+        <div layout="row"  layout-align="space-between center">
+          <div ng-switch="mailbox.service.selectedFolder.getLength()">
+            <!-- message count -->
+            <span ng-switch-when="0"><var:string label:value="No message"/></span>
+            <span ng-switch-default="true"><span ng-bind="mailbox.service.selectedFolder.getLength()"><!-- count --></span> <var:string label:value="messages"/></span>
+          </div>
+          <div><md-icon ng-class="{ 'md-flip': mailbox.ascending() }">sort</md-icon> <span ng-bind="mailbox.sort() | loc"><!-- active sort --></span></div>
+        </div>
       </md-subheader>
       <md-virtual-repeat-container class="md-flex" md-top-index="mailbox.selectedFolder.$topIndex">
         <md-list class="sg-section-list"

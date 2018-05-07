@@ -8,7 +8,17 @@
    */
   AddressBookController.$inject = ['$scope', '$q', '$window', '$state', '$timeout', '$mdDialog', '$mdToast', 'Account', 'Card', 'AddressBook', 'sgFocus', 'Dialog', 'sgSettings', 'sgHotkeys', 'stateAddressbooks', 'stateAddressbook'];
   function AddressBookController($scope, $q, $window, $state, $timeout, $mdDialog, $mdToast, Account, Card, AddressBook, focus, Dialog, Settings, sgHotkeys, stateAddressbooks, stateAddressbook) {
-    var vm = this, hotkeys = [];
+    var vm = this, hotkeys = [], sortLabels;
+
+    sortLabels = {
+      c_cn: 'Name',
+      c_sn: 'Lastname',
+      c_givenname: 'Firstname',
+      c_mail: 'Email',
+      c_screenname: 'Screen Name',
+      c_o: 'Organization',
+      c_telephonenumber: 'Preferred Phone'
+    };
 
     this.$onInit = function() {
       AddressBook.selectedFolder = stateAddressbook;
@@ -296,11 +306,20 @@
     };
 
     this.sort = function(field) {
-      this.selectedFolder.$filter('', { sort: field });
+      if (field) {
+        this.selectedFolder.$filter('', { sort: field });
+      }
+      else {
+        return sortLabels[AddressBook.$query.sort];
+      }
     };
 
     this.sortedBy = function(field) {
       return AddressBook.$query.sort == field;
+    };
+
+    this.ascending = function() {
+      return AddressBook.$query.asc;
     };
 
     this.searchMode = function() {

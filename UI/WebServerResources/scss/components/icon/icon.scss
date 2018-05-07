@@ -84,6 +84,9 @@ md-icon {
   &.md-rotate-180-ccw {
     transform: rotate(-180deg);
   }
+  &.md-flip {
+    transform: scaleY(-1);
+  }
 //   &.icon-add:before {
 //     content: "\e317";
   //   }

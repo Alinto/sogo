@@ -8,7 +8,23 @@
    */
   CalendarListController.$inject = ['$rootScope', '$scope', '$q', '$timeout', '$state', '$mdDialog', 'sgHotkeys', 'sgFocus', 'Dialog', 'Preferences', 'CalendarSettings', 'Calendar', 'Component', 'Alarm'];
   function CalendarListController($rootScope, $scope, $q, $timeout, $state, $mdDialog, sgHotkeys, focus, Dialog, Preferences, CalendarSettings, Calendar, Component, Alarm) {
-    var vm = this, hotkeys = [], type;
+    var vm = this, hotkeys = [], type, sortLabels;
+
+    sortLabels = {
+      title: 'Title',
+      location: 'Location',
+      calendarName: 'Calendar',
+      start: 'Start',
+      priority: 'Priority',
+      category: 'Category',
+      status: 'Status',
+      events: {
+        end: 'End'
+      },
+      tasks: {
+        end: 'Due Date'
+      }
+    };
 
     vm.component = Component;
     vm.componentType = 'events';
@@ -22,7 +38,6 @@
     vm.openEvent = openEvent;
     vm.openTask = openTask;
     vm.newComponent = newComponent;
-    vm.filterpopup = filterpopup;
     vm.filter = filter;
     vm.filteredBy = filteredBy;
     vm.sort = sort;
@@ -350,12 +365,13 @@
       }
     }
 
-    function filterpopup() {
-      return Component['$query' + vm.componentType.capitalize()].filterpopup;
-    }
-
     function filter(filterpopup) {
-      Component.$filter(vm.componentType, { filterpopup: filterpopup });
+      if (filterpopup) {
+        Component.$filter(vm.componentType, { filterpopup: filterpopup });
+      }
+      else {
+        return Component['$query' + vm.componentType.capitalize()].filterpopup;
+      }
     }
 
     function filteredBy(filterpopup) {
@@ -363,12 +379,22 @@
     }
 
     function sort(field) {
-      Component.$filter(vm.componentType, { sort: field });
+      if (field) {
+        Component.$filter(vm.componentType, { sort: field });
+      }
+      else {
+        var sort = Component['$query' + vm.componentType.capitalize()].sort;
+        return sortLabels[sort] || sortLabels[vm.componentType][sort];
+      }
     }
 
     function sortedBy(field) {
       return Component['$query' + vm.componentType.capitalize()].sort == field;
     }
+
+    this.ascending = function() {
+      return Component['$query' + vm.componentType.capitalize()].asc;
+    };
 
     function reload() {
       Calendar.reloadWebCalendars().finally(function() {
