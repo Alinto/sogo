@@ -540,7 +540,7 @@
           </md-button>
         </md-menu-item>
         <md-menu-item>
-          <md-button type="button" ng-click="$menuCtrl.editFolder()">
+          <md-button type="button" ng-click="$menuCtrl.editFolder($event)">
             <var:string label:value="Rename"/>
           </md-button>
         </md-menu-item>
