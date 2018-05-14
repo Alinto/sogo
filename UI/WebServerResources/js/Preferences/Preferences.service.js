@@ -27,7 +27,12 @@
       data.SOGoMailLabelsColorsValues = [];
       _.forEach(data.SOGoMailLabelsColors, function (value, key) {
         data.SOGoMailLabelsColorsKeys.push(key);
-        data.SOGoMailLabelsColorsValues.push(value);
+        data.SOGoMailLabelsColorsValues.push(value); // value is an array of the user-defined name and color
+        if (key.charAt(0) == '$') {
+          Object.defineProperty(data.SOGoMailLabelsColors, '_' + key,
+                                Object.getOwnPropertyDescriptor(data.SOGoMailLabelsColors, key));
+          delete data.SOGoMailLabelsColors[key];
+        }
       });
 
       _.forEach(data.SOGoSieveFilters, function(filter) {

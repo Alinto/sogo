@@ -164,7 +164,7 @@
                 <md-option value="flagged"><var:string label:value="Flagged"/></md-option>
                 <md-option value="junk"><var:string label:value="Junk"/></md-option>
                 <md-option value="not_junk"><var:string label:value="Not Junk"/></md-option>
-                <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.labels">{{ value[0] }}</md-option>
+                <md-option ng-value="key" ng-repeat="(key, value) in filterEditor.labels track by key">{{ value[0] }}</md-option>
               </md-select>
             </md-input-container>
 
