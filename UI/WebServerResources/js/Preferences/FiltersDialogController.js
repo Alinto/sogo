@@ -78,15 +78,6 @@
       vm.textOperatorLabels.regex_not = l("does not match regex");
     }
 
-    vm.flagLabels = {
-      "seen": l("Seen"),
-      "deleted": l("Deleted"),
-      "answered": l("Answered"),
-      "flagged": l("Flagged"),
-      "junk": l("Junk"),
-      "not_junk": l("Not Junk")
-    };
-    
     function cancel() {
       $mdDialog.cancel();
     }
