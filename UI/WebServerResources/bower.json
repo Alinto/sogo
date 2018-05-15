@@ -8,7 +8,7 @@
     "angular-cookies": "1.6.x",
     "angular-messages": "1.6.x",
     "angular-sanitize": "1.6.x",
-    "angular-ui-router": "latest",
+    "angular-ui-router": "1.0.15",
     "angular-file-upload": "latest",
     "angular-material": "1.1.9",
     "file-saver.js": "latest",
