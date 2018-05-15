@@ -321,10 +321,10 @@
    * @function $filter
    * @memberof Mailbox.prototype
    * @desc Fetch the messages metadata of the mailbox
-   * @param {object} [sort] - sort preferences. Defaults to descendent by date.
-   * @param {string} sort.match - either AND or OR
-   * @param {string} sort.sort - either arrival, subject, from, to, date, or size
-   * @param {boolean} sort.asc - sort is ascendant if true
+   * @param {object} [sortsortingAttributes] - sort preferences. Defaults to descendent by date.
+   * @param {string} sortingAttributes.match - either AND or OR
+   * @param {string} sortingAttributes.sort - either arrival, subject, from, to, date, or size
+   * @param {boolean} sortingAttributes.asc - sort is ascendant if true
    * @param {object[]} [filters] - list of filters for the query
    * @param {string} filters.searchBy - either subject, from, to, cc, or body
    * @param {string} filters.searchInput - the search string to match
@@ -573,6 +573,7 @@
         // Update inbox quota
         if (data.quotas)
           _this.$account.updateQuota(data.quotas);
+        return true;
       });
   };
 
@@ -917,10 +918,11 @@
           // Instanciate Message objects
           _.reduce(_this.uids, function(msgs, msg, i) {
             var data, msgObject;
-            if (_this.threaded)
+            if (_this.threaded) {
               data = _.zipObject(uids, msg);
-            else
+            } else {
               data = {uid: msg.toString()};
+            }
 
             // Build map of UID <=> index
             _this.uidsMap[data.uid] = i;
@@ -939,7 +941,7 @@
           _.forEach(_this.headers, function(data) {
             var msg = _.zipObject(headers, data),
                 i = _this.uidsMap[msg.uid.toString()];
-            _.extend(_this.$messages[i], msg);
+            _this.$messages[i].init(msg);
           });
         }
         Mailbox.$log.debug('mailbox ' + _this.id + ' ready');
@@ -976,7 +978,7 @@
             messageHeaders = _.zipObject(headers, messageHeaders);
             j = _this.uidsMap[messageHeaders.uid.toString()];
             if (angular.isDefined(j)) {
-              _.extend(_this.$messages[j], messageHeaders);
+              _this.$messages[j].init(messageHeaders);
             }
           });
         }

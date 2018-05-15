@@ -23,8 +23,7 @@
     if (typeof futureMessageData.then !== 'function') {
       //console.debug(JSON.stringify(futureMessageData, undefined, 2));
       if (angular.isUndefined(lazy) || !lazy) {
-        angular.extend(this, futureMessageData);
-        this.$formatFullAddresses();
+        this.init(futureMessageData);
       }
       this.uid = parseInt(futureMessageData.uid);
     }
@@ -102,6 +101,24 @@
     });
 
     return results;
+  };
+
+  /**
+   * @function init
+   * @memberof Message.prototype
+   * @desc Extend instance with new data and massage some attributes.
+   * @param {object} data - attributes of message
+   */
+  Message.prototype.init = function(data) {
+    var _this = this;
+    angular.extend(this, data);
+    this.$formatFullAddresses();
+    this.$loadUnsafeContent = false;
+    _.forEach(this.flags, function(flag, i) {
+      if (flag.charAt(0) == '$') {
+        _this.flags.splice(i, 1,'_' + flag);
+      }
+    });
   };
 
   /**
@@ -458,7 +475,7 @@
     var data = {
       operation: operation,
       msgUIDs: [this.uid],
-      flags: tag
+      flags: tag.replace(/^_\$/, '$')
     };
 
     if (tag)
@@ -746,10 +763,8 @@
       }
       return Message.$timeout(function() {
         delete _this.$parts;
-        angular.extend(_this, data);
-        _this.$formatFullAddresses();
-        _this.$loadUnsafeContent = false;
         _this.$loaded = Message.STATUS.LOADED;
+        _this.init(data);
         return _this;
       });
     });

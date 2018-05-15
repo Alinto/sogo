@@ -177,6 +177,8 @@
     }
 
     this.addFlags = function($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
       this.showFlags = true;
       focus("flags");
     };

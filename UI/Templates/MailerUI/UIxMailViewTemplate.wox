@@ -78,7 +78,7 @@
             <md-menu-content width="4">
               <md-menu-item ng-hide="viewer.showFlags">
                 <md-button label:aria-label="Add a tag"
-                           ng-click="viewer.addFlags()">
+                           ng-click="viewer.addFlags($event)">
                   <var:string label:value="Add a tag"/>
                 </md-button>
               </md-menu-item>
@@ -179,10 +179,11 @@
               </div>
             </div>
           </div>
-          <div class="sg-padded hide-xs" ng-show="viewer.showFlags">
+          <div class="sg-padded" ng-show="viewer.showFlags">
             <md-chips class="sg-readonly"
                       sg-focus-on="flags"
-                      ng-model="viewer.message.flags">
+                      ng-model="viewer.message.flags"
+                      md-transform-chip="$chip.name">
               <md-chip-template>
                 <span class="sg-chip-color">
                   <span ng-style="{ 'background-color': viewer.service.$tags[$chip][1] }"><!-- color --></span>

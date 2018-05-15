@@ -17,7 +17,7 @@
       this.timeZonesList = $window.timeZonesList;
       this.timeZonesSearchText = '';
       this.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
-      this.mailLabelKeyRE = new RegExp("^[^(){} %*\"\\\\]*$");
+      this.mailLabelKeyRE = new RegExp(/^(?!^_\$)[^(){} %*\"\\\\]*?$/);
 
 
       if (sgSettings.activeUser('path').mail) {
