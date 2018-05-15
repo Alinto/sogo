@@ -13,7 +13,7 @@
     "angular-material": "1.1.9",
     "file-saver.js": "latest",
     "lodash": "latest",
-    "ng-sortable": "1.3.7",
+    "ng-sortable": "1.3.8",
     "breakpoint-sass": ">=2.4.2"
   }
 }
