@@ -1361,7 +1361,8 @@ from `http://<hostname>/SOGo/saml2-metadata` for registration with the
 identity provider. SOGo will dynamically generate the metadata based on
 the SOGoSAML2CertificateLocation's content and the SOGo server name.
 
-When using SimpleSAMLphp, make sure the convert OID to names by modifying your
+When using https://simplesamlphp.org/[SimpleSAMLphp], make sure the
+convert OID to names by modifying your
 `metadata/saml20-idp-hosted.php` to contain something like this:
 
 ----
