@@ -4,6 +4,7 @@
 Enhancements
  - [web] now possible to show events/task for the current year
  - [web] show current ordering setting in lists
+ - [web] updated Angular Material to version 1.1.9
 
 Bug fixes
  - [core] properly update the last-modified attribute (#4313)
