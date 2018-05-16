@@ -6,6 +6,7 @@ Enhancements
  - [web] show current ordering setting in lists
  - [web] remove invalid occurrences when modifying a recurrent event
  - [web] updated Angular Material to version 1.1.9
+ - [web] allow mail flag addition/edition on mobile
 
 Bug fixes
  - [core] properly update the last-modified attribute (#4313)
@@ -14,6 +15,7 @@ Bug fixes
  - [web] prevent deletion of special folders using del key
  - [web] fixed SAML2 session timeout handling during XHR requests
  - [web] fixed renaming a folder under iOS
+ - [web] fixed download of exported folders under iOS
  - [eas] improved alarms syncing with EAS devices (#4351)
  - [eas] avoid potential cache update when breaking sync queries (#4422)
 

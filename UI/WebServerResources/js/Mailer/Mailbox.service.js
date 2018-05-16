@@ -683,7 +683,7 @@
 
     options = { filename: this.name + '.zip' };
 
-    return Mailbox.$$resource.download(this.id, 'exportFolder', null, options);
+    return Mailbox.$$resource.open(this.id, 'exportFolder', null, options);
   };
 
   /**

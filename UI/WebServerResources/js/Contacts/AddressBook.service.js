@@ -723,7 +723,12 @@
       data = { uids: _.map(selectedCards, 'id') };
     }
 
-    return AddressBook.$$resource.download(this.id, 'export', data, options);
+    if (data) {
+      return AddressBook.$$resource.download(this.id, 'export', data, options);
+    }
+    else {
+      return AddressBook.$$resource.open(this.id, 'export', data, options);
+    }
   };
 
   /**

@@ -11,10 +11,11 @@
    * @param {String} path - the base path of the external resource
    * @param {Object} options - extra attributes to be associated to the object
    */
-  function Resource($http, $q, path, activeUser, options) {
+  function Resource($http, $q, $window, path, activeUser, options) {
     angular.extend(this, {
       _http: $http,
       _q: $q,
+      _window: $window,
       _path: path,
       _activeUser: activeUser
     });
@@ -28,9 +29,9 @@
    * @desc The factory we'll use to register with Angular.
    * @return a new Resource object
    */
-  Resource.$factory =  ['$http', '$q', function($http, $q) {
+  Resource.$factory =  ['$http', '$q', '$window', function($http, $q, $window) {
     return function(path, activeUser, options) {
-      return new Resource($http, $q, path, activeUser, options);
+      return new Resource($http, $q, $window, path, activeUser, options);
     };
   }];
 
@@ -230,6 +231,15 @@
         }
       }
     });
+  };
+
+  Resource.prototype.open = function(id, action) {
+    var path = [this._path];
+    if (id) path.push(id);
+    if (action) path.push(action);
+    path = _.compact(_.flatten(path)).join('/');
+
+    this._window.location.href = path;
   };
 
   /**

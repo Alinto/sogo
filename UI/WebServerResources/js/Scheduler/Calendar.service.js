@@ -554,7 +554,7 @@
       filename: this.name + '.ics'
     };
 
-    return Calendar.$$resource.download(this.id + '.ics', 'export', null, options);
+    return Calendar.$$resource.open(this.id + '.ics', 'export', null, options);
   };
 
   /**
