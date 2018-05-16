@@ -387,8 +387,8 @@
                       md-on-select="list.selectComponentType('events')">
                 <md-subheader>
                   <div layout="row"  layout-align="space-between center">
-                    <div ng-bind="list.filter() | loc"><!-- active filter --></div>
-                    <div><md-icon ng-class="{ 'md-flip': list.ascending() }">sort</md-icon> <span ng-bind="list.sort() | loc"><!-- active sort --></span></div>
+                    <div class="md-truncate" ng-bind="list.filter() | loc"><!-- active filter --></div>
+                    <div class="md-truncate"><md-icon ng-class="{ 'md-flip': list.ascending() }">sort</md-icon> <span ng-bind="list.sort() | loc"><!-- active sort --></span></div>
                   </div>
                 </md-subheader>
                 <md-list class="sg-section-list"
@@ -434,8 +434,8 @@
                       md-on-select="list.selectComponentType('tasks')">
                 <md-subheader>
                   <div layout="row"  layout-align="space-between center">
-                    <div ng-bind="list.filter() | loc"><!-- active filter --></div>
-                    <div><md-icon ng-class="{ 'md-flip': list.ascending() }">sort</md-icon> <span ng-bind="list.sort() | loc"><!-- active sort --></span></div>
+                    <div class="md-truncate" ng-bind="list.filter() | loc"><!-- active filter --></div>
+                    <div class="md-truncate"><md-icon ng-class="{ 'md-flip': list.ascending() }">sort</md-icon> <span ng-bind="list.sort() | loc"><!-- active sort --></span></div>
                   </div>
                 </md-subheader>
                 <md-list class="sg-section-list"

@@ -292,8 +292,7 @@
                 <md-menu-item>
                   <md-button ng-click="addressbook.sort('c_telephonenumber')">
                     <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_telephonenumber') }">
-                      <!-- selected --></md-icon> <var:string
-                      label:value="Preferred Phone"/>
+                      <!-- selected --></md-icon> <var:string label:value="Preferred Phone"/>
                   </md-button>
                 </md-menu-item>
                 <md-menu-divider> <!-- divider --></md-menu-divider>
@@ -447,8 +446,8 @@
             <div ng-switch="addressbook.selectedFolder.$cards.length">
               <span ng-switch-when="0"><var:string label:value="No matching contact"/></span>
               <div ng-switch-default="true" layout="row"  layout-align="space-between center">
-                <div>{{addressbook.selectedFolder.$cards.length}} <var:string label:value="matching contacts"/></div>
-                <div><md-icon ng-class="{ 'md-flip': addressbook.ascending() }">sort</md-icon> <span ng-bind="addressbook.sort() | loc"><!-- active sort --></span></div>
+                <div class="md-truncate">{{addressbook.selectedFolder.$cards.length}} <var:string label:value="matching contacts"/></div>
+                <div class="md-truncate"><md-icon ng-class="{ 'md-flip': addressbook.ascending() }">sort</md-icon> <span ng-bind="addressbook.sort() | loc"><!-- active sort --></span></div>
               </div>
             </div>
           </md-subheader>
