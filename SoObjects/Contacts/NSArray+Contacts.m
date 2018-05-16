@@ -31,6 +31,11 @@
   firstObject      = [self count] > 0 ? [self objectAtIndex: 0] : nil;
   otherFirstObject = [otherRecord count] > 0 ? [otherRecord objectAtIndex: 0] : nil;
 
+  if (firstObject == nil)
+    return NSOrderedAscending;
+  else if (otherFirstObject == nil)
+    return NSOrderedDescending;
+
   return [firstObject compareCaseInsensitiveAscending: otherFirstObject];
 }
 
