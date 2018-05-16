@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2016 Inverse inc.
+  Copyright (C) 2007-2018 Inverse inc.
 
   This file is part of SOGo
 
@@ -48,6 +48,8 @@
                                withDelegate: (iCalPerson *) delegate
                                       alarm: (iCalAlarm *) alarm
 			    forRecurrenceId: (NSCalendarDate *) _recurrenceId;
+
+- (void) prepareDeleteOccurence: (iCalEvent *) occurence;
 
 //
 // Old CalDAV scheduling (draft 4 and below) methods. We keep them since we still

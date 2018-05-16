@@ -1,6 +1,6 @@
 /* UIxAppointmentEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2017 Inverse inc.
+ * Copyright (C) 2007-2018 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,6 +45,7 @@
 #import <Appointments/iCalCalendar+SOGo.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/iCalPerson+SOGo.h>
+#import <Appointments/iCalRepeatableEntityObject+SOGo.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import <Appointments/SOGoAppointmentOccurence.h>
@@ -189,14 +190,20 @@
 
 - (NSException *) _adjustRecurrentRules
 {
-  iCalEvent *event;
-  iCalRecurrenceRule *rule;
+  NSArray *events;
+  NSCalendarDate *untilDate, *recurrenceId;
   NSEnumerator *rules;
   NSException *ex;
-  NSCalendarDate *untilDate;
-  SOGoUserDefaults *ud;
   NSTimeZone *timeZone;
+  SOGoAppointmentObject *co;
+  SOGoUserDefaults *ud;
+  iCalCalendar *calendar;
+  iCalEvent *event;
+  iCalRecurrenceRule *rule;
+  iCalRepeatableEntityObject *masterEvent, *occurrence;
+  int count, max;
 
+  co = [self clientObject];
   event = [self event];
   rules = [[event recurrenceRules] objectEnumerator];
   ex = nil;
@@ -231,6 +238,22 @@
               [rule setUntilDate: untilDate];
               [date release];
             }
+        }
+    }
+
+  // Remove invalid occurrences
+  calendar = [event parent];
+  events = [calendar events];
+  masterEvent = [events objectAtIndex: 0];
+  max = [events count];
+  for (count = max - 1; count > 0; count--)
+    {
+      occurrence = [events objectAtIndex: count];
+      recurrenceId = [occurrence recurrenceId];
+      if (recurrenceId && ![masterEvent doesOccurOnDate: recurrenceId])
+        {
+          [co prepareDeleteOccurence: (iCalEvent *)occurrence]; // notify attendees, update their calendars
+          [calendar removeChild: occurrence];
         }
     }
 

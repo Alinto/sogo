@@ -317,16 +317,23 @@
                     }
                   count++;
                 }
-              
+
               // Add an date exception.
               event = (iCalRepeatableEntityObject*)[calendar firstChildWithTag: [object componentTag]];
-              [event addToExceptionDates: recurrenceId];
-              
-              [event increaseSequence];
-              [event setLastModified: [NSCalendarDate calendarDate]];
+              if (event)
+                {
+                  [event addToExceptionDates: recurrenceId];
+                  [event increaseSequence];
+                  [event setLastModified: [NSCalendarDate calendarDate]];
 
-              // We save the updated iCalendar in the database.
-              [object saveCalendar: calendar];
+                  // We save the updated iCalendar in the database.
+                  [object saveCalendar: calendar];
+                }
+              else
+                {
+                  // No more child; kill the parent
+                  [object delete];
+                }
             }
         }
       else
