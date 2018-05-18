@@ -23,6 +23,7 @@
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/SoSecurityManager.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/NSException+HTTP.h>
@@ -56,14 +57,14 @@
 
 @implementation UIxAppointmentEditor
 
-- (id) init
+- (id) initWithContext: (WOContext *) _context
 {
   SOGoUser *user;
 
-  if ((self = [super init]))
+  if ((self = [super initWithContext: _context]))
     {
-      user = [[self context] activeUser];
-      ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
+      user = [_context activeUser];
+      ASSIGN (dateFormatter, [user dateFormatterInContext: _context]);
     }
 
   return self;

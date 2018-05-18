@@ -27,6 +27,7 @@
 #import <NGCards/NSCalendarDate+NGCards.h>
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
@@ -125,17 +126,20 @@ static NSArray *reminderValues = nil;
   [super dealloc];
 }
 
-- (void) setClientObject: (id)_client
+- (id) initWithContext: (WOContext *) _context
 {
-  [super setClientObject: _client]; // WOComponent+SoObjects
+  if ((self = [super initWithContext: _context]))
+    {
+      component = [[self clientObject] occurence];
+      [[component parent] retain];
 
-  component = [[self clientObject] occurence];
-  [[component parent] retain];
+      componentCalendar = [[self clientObject] container];
+      if ([componentCalendar isKindOfClass: [SOGoCalendarComponent class]])
+        componentCalendar = [componentCalendar container];
+      [componentCalendar retain];
+    }
 
-  componentCalendar = [[self clientObject] container];
-  if ([componentCalendar isKindOfClass: [SOGoCalendarComponent class]])
-    componentCalendar = [componentCalendar container];
-  [componentCalendar retain];
+  return self;
 }
 
 - (BOOL) isChildOccurrence

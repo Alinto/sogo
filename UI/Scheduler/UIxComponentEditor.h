@@ -21,13 +21,13 @@
 #ifndef UIXCOMPONENTEDITOR_H
 #define UIXCOMPONENTEDITOR_H
 
-#import <SOGoUI/UIxComponent.h>
+#import <SOGoUI/SOGoDirectAction.h>
 
 @class NSDictionary;
 
 @class iCalRepeatableEntityObject;
 
-@interface UIxComponentEditor : UIxComponent
+@interface UIxComponentEditor : SOGoDirectAction
 {
   iCalRepeatableEntityObject *component;
   SOGoAppointmentFolder *componentCalendar;

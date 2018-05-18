@@ -22,6 +22,7 @@
 
 #import <NGObjWeb/SoPermissions.h>
 #import <NGObjWeb/SoSecurityManager.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/NSException+HTTP.h>
@@ -49,16 +50,14 @@
 
 @implementation UIxTaskEditor
 
-- (id) init
+- (id) initWithContext: (WOContext *) _context
 {
   SOGoUser *user;
 
-  if ((self = [super init]))
+  if ((self = [super initWithContext: _context]))
     {
-      // item = nil;
-
-      user = [[self context] activeUser];
-      ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
+      user = [_context activeUser];
+      ASSIGN (dateFormatter, [user dateFormatterInContext: _context]);
     }
 
   return self;
@@ -140,6 +139,8 @@
 // }
 
 /* actions */
+
+/*
 - (NSCalendarDate *) newStartDate
 {
   NSCalendarDate *newStartDate, *now;
@@ -177,6 +178,7 @@
 
   return newStartDate;
 }
+*/
 
 // - (id <WOActionResults>) defaultAction
 // {
@@ -602,6 +604,7 @@
   return [self responseWithStatus: 200 andJSONRepresentation: data];
 }
 
+/*
 - (id) changeStatusAction
 {
   NSString *newStatus;
@@ -624,5 +627,6 @@
 
   return [self responseWith204];
 }
+*/
 
 @end
