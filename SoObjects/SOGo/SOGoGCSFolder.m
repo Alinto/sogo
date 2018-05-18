@@ -282,6 +282,11 @@ static NSArray *childRecordFields = nil;
       else
         name = primaryDN;
     }
+  else
+    {
+      [self errorWithFormat: @"(%s): No c_foldername defined (%@)",
+            __PRETTY_FUNCTION__, [container defaultFolderName]];
+    }
 
   return name;
 }
@@ -342,7 +347,12 @@ static NSArray *childRecordFields = nil;
           [fc cancelFetch];
           [cm releaseChannel: fc];
         }
-      NS_HANDLER;
+      NS_HANDLER
+        {
+          [self errorWithFormat: @"(%s): Could not fetch c_foldername from %@ for c_path %@",
+                __PRETTY_FUNCTION__, [folderLocation gcsTableName], ocsPath];
+          [self errorWithFormat: @"%@", localException];
+        }
       NS_ENDHANDLER;
     }
 
@@ -439,7 +449,11 @@ static NSArray *childRecordFields = nil;
       record = [[self folderManager] recordAtPath: _path];
 
       if (!record)
-	return nil;
+        {
+          [self errorWithFormat: @"(%s): Can't find record at path %@",
+                __PRETTY_FUNCTION__, _path];
+          return nil;
+        }
 
       [cache setValue: [record jsonRepresentation]  forKey: _path];
     }

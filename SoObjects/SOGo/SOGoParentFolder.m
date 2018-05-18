@@ -289,7 +289,7 @@ static SoSecurityManager *sm = nil;
 
   // We check with -ocsFolderForPath if the folder also exists in the database.
   // This is important because user A could delete folder X, and user B has subscribed to it.
-  // If the "default roles" are enabled for calendars/address books, -validatePersmission:.. will
+  // If the "default roles" are enabled for calendars/address books, -validatePermission:.. will
   // work (grabbing the default role) and the deleted resource will be incorrectly returned.
   if (subscribedFolder
       && [subscribedFolder ocsFolderForPath: [subscribedFolder ocsPath]]
