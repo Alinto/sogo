@@ -61,6 +61,7 @@
 #include "SOGoUserManager.h"
 #include "SOGoUser.h"
 
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGLdap/NGLdapEntry.h>
 
 #define CHECK_CLASS(o) ({ \
@@ -281,6 +282,10 @@
                   [logins addObject: login];
                   [_members addObject: user];
                 }
+              else
+                {
+                  [self errorWithFormat: @"Invalid uniquemember %@ (%@) in group %@", dn, login, _identifier];
+                }
               [pool release];
             }
 
@@ -290,11 +295,14 @@
               pool = [NSAutoreleasePool new];
               login = [uids objectAtIndex: i];
               user = [SOGoUser userWithLogin: login  roles: nil];
-              
               if (user)
                 {
                   [logins addObject: [user loginInDomain]];
                   [_members addObject: user];
+                }
+              else
+                {
+                  [self errorWithFormat: @"Invalid memberuid %@ in group %@", login, _identifier];
                 }
               [pool release];
             }
@@ -304,6 +312,7 @@
           // (ie., their UIDs) in memcached to speed up -hasMemberWithUID.
           [[SOGoCache sharedCache] setValue: [logins componentsJoinedByString: @","]
             forKey: [NSString stringWithFormat: @"%@+%@", _identifier, _domain]];
+          [self logWithFormat: @"Cached %i members for group %@: %@", [logins count], _identifier, [logins componentsJoinedByString: @","]];
         }
       else
         {
@@ -341,7 +350,8 @@
 	  currentUID = [[_members objectAtIndex: count] login];
 	  rc = [memberUID isEqualToString: currentUID];
 	}
-
+      if (!rc)
+        [self logWithFormat: @"User %@ is not a member of group %@", memberUID, _identifier];
     }
   else
     {
@@ -362,6 +372,8 @@
 
       a = [value componentsSeparatedByString: @","];
       rc = [a containsObject: memberUID];
+      if (!rc)
+        [self logWithFormat: @"User %@ is not a member of group %@ (cached)", memberUID, _identifier];
     }
 
   return rc;

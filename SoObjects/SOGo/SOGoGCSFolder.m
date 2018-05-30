@@ -1649,7 +1649,9 @@ static NSArray *childRecordFields = nil;
 	      [[SOGoCache sharedCache] registerGroup: group  withName: currentUID  inDomain: domain];
 	    }
 
-          if (group && [group hasMemberWithUID: uid])
+          if (!group)
+            [self errorWithFormat: @"Can't find group %@", group];
+          else if ([group hasMemberWithUID: uid])
             [acls addObject: [record valueForKey: @"c_role"]];
         }
     }
