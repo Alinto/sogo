@@ -138,6 +138,9 @@
 @implementation SOGoMailItalianReply
 @end
 
+@implementation SOGoMailJapaneseReply
+@end
+
 @implementation SOGoMailLatvianReply
 @end
 

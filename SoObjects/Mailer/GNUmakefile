@@ -80,6 +80,8 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailIcelandicReply.wo \
 	SOGoMailItalianForward.wo \
 	SOGoMailItalianReply.wo \
+	SOGoMailJapaneseForward.wo \
+	SOGoMailJapaneseReply.wo \
 	SOGoMailLatvianForward.wo \
 	SOGoMailLatvianReply.wo \
 	SOGoMailLithuanianForward.wo \

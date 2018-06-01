@@ -1,0 +1,355 @@
+/* this file is in UTF-8 format! */
+
+"Contact" = "連絡先";
+"Address" = "アドレス";
+"Photos" = "写真";
+"Other" = "その他";
+"Address Books" = "アドレス帳";
+"Addressbook" = "アドレス帳";
+"Addresses" = "アドレス";
+"Update" = "更新";
+"Cancel" = "キャンセル";
+"Common" = "共通";
+"Contact editor" = "連絡先編集";
+"Contact viewer" = "連絡先表示";
+"Email" = "メール";
+"Screen Name" = "表示名";
+"Extended" = "拡張されました";
+"Fax" = "Fax";
+"Firstname" = "名";
+"Home" = "自宅";
+"HomePhone" = "自宅の電話番号";
+"Lastname" = "姓";
+"Location" = "場所";
+"Add a category" = "カテゴリを追加";
+"MobilePhone" = "携帯電話";
+"Name" = "氏名";
+"OfficePhone" = "会社の電話番号";
+"Organization" = "組織";
+"Work Phone" = "仕事用の電話番号";
+"Phone" = "電話番号";
+"Phones" = "電話番号";
+"Postal" = "郵便";
+"Save" = "保存";
+"Internet" = "インターネット";
+"Unit" = "単位";
+"delete" = "削除";
+"edit" = "編集";
+"invalidemailwarn" = "指定したメールアドレスは正しくありません。";
+"new" = "新";
+"Preferred Phone" = "優先電話番号";
+"Move To" = "移動先";
+"Copy To" = "コピー先";
+"Add to" = "追加先";
+"To" = "宛先";
+"Carbon Copy (Cc)" = "CC";
+"Blind Carbon Copy (Bcc)" = "BCC";
+
+/* Search scope: name fields */
+"name" = "名前";
+
+/* Search scope: name fields */
+"c_cn" = "名前";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "他のメールアドレス";
+
+/* Search scope: screen name field */
+"nsaimid" = "表示名";
+
+/* Search scope: mail fields */
+"mail" = "メール";
+
+/* Search scope: mail fields */
+"c_mail" = "メール";
+
+/* Search scope: telephone field */
+"telephonenumber" = "電話";
+
+/* Search scope: telephone field */
+"homephone" = "電話";
+
+/* Search scope: mobile field */
+"mobile" = "携帯電話";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "ポケベル";
+
+/* Search scope: categories field */
+"c_categories" = "カテゴリ";
+
+/* Search scope: categories field */
+"vcardcategories" = "カテゴリ";
+
+/* Search scope: title field */
+"title" = "タイトル";
+
+/* Search scope: organization field */
+"c_o" = "組織";
+
+/* Search scope: organization field */
+"o" = "組織";
+
+/* Search scope: department field */
+"ou" = "部門";
+
+/* Search scope: city field */
+"l" = "市町村";
+
+/* Search scope: country field */
+"c" = "国";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "住所";
+
+/* Search scope: state/province field */
+"st" = "都道府県";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "出身都道府県";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "郵便番号";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "郵便番号";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "出身国";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "ホームページ";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "ウェブページ";
+
+/* Search scope: note field */
+"description" = "メモ";
+
+/* Subheader of empty addressbook */
+"No contact" = "連絡先がありません";
+
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "アドレス帳内を検索する";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "連絡先";
+
+/* No contact matching search criteria */
+"No matching contact" = "一致する連絡先はありません";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "一致する連絡先";
+
+/* Number of selected contacts in list */
+"selected" = "選択された連絡先";
+
+/* Empty right pane */
+"No contact selected" = "連絡先が選択されていません";
+
+/* Tooltips */
+"Create a new address book card" = "新しいアドレス帳カードを作成";
+"Create a new list" = "新しいリストを作成";
+"Edit the selected card" = "選択したカードを編集";
+"Send a mail message" = "メールのメッセージを送信";
+"Delete selected card or address book" = "選択しているカードやアドレス帳を削除";
+"Reload all contacts" = "すべての連絡先を再読み込み";
+"htmlMailFormat_UNKNOWN" = "不明";
+"htmlMailFormat_FALSE" = "テキスト";
+"htmlMailFormat_TRUE" = "HTML";
+"Name or Email" = "名前またはメール";
+"Category" = "カテゴリ";
+"Personal Addressbook" = "個人用アドレス帳";
+"Search in Addressbook" = "アドレス帳内を検索";
+"New Card" = "新しいカード";
+"New List" = "新しいリスト";
+"Edit" = "編集";
+"Properties" = "属性";
+"Sharing..." = "共有...";
+"Write" = "書く";
+"Delete" = "削除";
+"Instant Message" = "インスタントメッセージ";
+"Add..." = "追加...";
+"Remove" = "削除";
+"Please wait..." = "少々お待ちください...";
+"No possible subscription" = "登録可能なサブスクリプションはありません";
+"Preferred" = "優先";
+"Display" = "表示";
+"Display Name" = "表示名";
+"Additional Email" = "追加メール";
+"Phone Number" = "電話番号";
+"Prefers to receive messages formatted as" = "希望する受信メッセージの形式:";
+"Categories" = "カテゴリ";
+"First" = "名";
+"Last" = "姓";
+"Nickname" = "ニックネーム";
+"Telephone" = "電話";
+"Work" = "職業";
+"Mobile" = "携帯電話";
+"Pager" = "ポケベル";
+
+/* categories */
+"contacts_category_labels" = "同僚, 競合企業, 顧客, 友達, 家族, ビジネスパートナー, プロバイダー, 報道機関, VIP";
+"New category" = "新しいカテゴリ";
+
+/* adresses */
+"Title" = "タイトル";
+"Service" = "サービス";
+"Company" = "会社";
+"Department" = "部門";
+"City" = "市町村";
+"State_Province" = "都道府県";
+"ZIP_Postal Code" = "郵便番号";
+"Country" = "国";
+"Web Page" = "ウェブページ";
+"Other Infos" = "その他の情報";
+"Note" = "メモ";
+"Timezone" = "タイムゾーン";
+"Birthday" = "誕生日";
+"Birthday (yyyy-mm-dd)" = "誕生日 (yyyy-mm-dd)";
+"Freebusy URL" = "Freebusy URL";
+"Add as..." = "追加";
+"Recipient" = "宛先";
+"Carbon Copy" = "CC";
+"Blind Carbon Copy" = "BCC";
+"New Addressbook..." = "新しいアドレス帳...";
+"Subscribe to an Addressbook..." = "アドレス帳に登録";
+"Remove the selected Addressbook" = "選択したアドレス帳を削除";
+"Subscribe to a shared folder" = "共有フォルダに登録";
+"Search User" = "ユーザーを検索";
+"Name of the Address Book" = "アドレス帳の名前";
+"Are you sure you want to delete the selected address book?"
+= "選択されたアドレス帳を本当に削除しますか?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "選択されたアドレス帳\"%{0}\"を本当に削除しますか?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "公開されているアドレス帳から削除や登録解除をすることはできません。";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "個人用アドレス帳からの削除や解除はできません。";
+"Are you sure you want to delete the selected contacts?"
+= "選択された連絡先を本当に削除しますか?";
+"Are you sure you want to delete the card of %{0}?" = "%{0}のカードを本当に削除しますか?";
+"You cannot delete the card of \"%{0}\"."
+= "\"%{0}\"のカードを削除することはできません。";
+"You cannot subscribe to a folder that you own!"
+= "所有しているフォルダーへの登録はできません。";
+"Unable to subscribe to that folder!"
+= "フォルダーに登録出来ません。";
+
+/* acls */
+"Access rights to" = "アクセス権";
+"For user" = "ユーザ向け";
+"Any Authenticated User" = "認証済みの任意のユーザー";
+"Public Access" = "公開アクセス";
+"This person can add cards to this addressbook."
+= "この人は私のカレンダーからオブジェクトを削除できます。";
+"This person can edit the cards of this addressbook."
+= "この人はアドレス帳のカードを編集できます。";
+"This person can list the content of this addressbook."
+= "この人はアドレス帳の内容を表示することができます。";
+"This person can read the cards of this addressbook."
+= "この人はアドレス帳のカードを確認することができます。";
+"This person can erase cards from this addressbook."
+= "この人はアドレス帳からカードを確認することができます。";
+"The selected contact has no email address."
+= "選択された連絡先はメールアドレスを含んでいません。";
+"Please select a contact." = "連絡先を選択してください。";
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0}カードをコピーしました";
+"%{0} card(s) moved" = "%{0}カードを移動しました";
+"SoAccessDeniedException" = "アドレス帳に書き込む権限がありません。";
+"Forbidden" = "禁止されています";
+"Invalid Contact" = "選択された連絡先は存在しません。";
+"Unknown Destination Folder" = "選択されたアドレス帳は存在しません。";
+
+/* Lists */
+"List details" = "詳細を表示";
+"List name" = "名前を表示";
+"List nickname" = "ニックネームを表示";
+"List description" = "説明を表示";
+"Members" = "メンバー";
+"Contacts" = "連絡先";
+"Add" = "追加";
+"Lists can't be moved or copied." = "リストを移動やコピーすることはできません。";
+"Export" = "エクスポート";
+"Export Address Book..." = "アドレス帳をエクスポート";
+"View Raw Source" = "ソースを表示";
+
+/* Import */
+"Import Cards" = "カードをインポート";
+"Select a vCard or LDIF file." = "vCardまたはLDIFファイルを選択";
+"Upload" = "アップロード";
+"Uploading" = "アップロード中";
+"Done" = "完了";
+"An error occured while importing contacts." = "連絡先のインポート中にエラーが発生しました。";
+"No card was imported." = "インポートされたカードはありません。";
+"A total of %{0} cards were imported in the addressbook." = "合計で%{0}のカードがアドレス帳にインポートされました。";
+"Reload" = "再読み込み";
+
+/* Properties window */
+"Address Book Name" = "アドレス帳の名前";
+"Links to this Address Book" = "このアドレス帳にリンク";
+"Authenticated User Access" = "認証済みのユーザーのアクセス";
+"CardDAV URL" = "CardDAV URL";
+"Options" = "オプション";
+"Rename" = "名前を変更";
+"Subscriptions" = "サブスクリプション";
+"Global Addressbooks" = "アドレス帳";
+"Search" = "検索";
+"Sort" = "並べ替え";
+"Descending Order" = "降順";
+"Back" = "戻る";
+"Select All" = "すべてを選択";
+"Copy contacts" = "連絡先をコピー";
+"More messages options" = "他のメールオプション";
+"New Contact" = "新しい連絡先";
+"Close" = "閉じる";
+"More contact options" = "他の連絡先オプション";
+"Organization Unit" = "組織の単位";
+"Add Organizational Unit" = "組織単位を追加";
+"Type" = "タイプ";
+"Email Address" = "メールアドレス";
+"New Email Address" = "新しいメールアドレス";
+"New Phone Number" = "新しい電話番号";
+"URL" = "URL";
+"New URL" = "新しいURL";
+"street" = "建物名、部屋番号など";
+"street (continued)" = "建物名、部屋番号など";
+"Postoffice" = "郵便局";
+"Region" = "地域";
+"Postal Code" = "郵便番号";
+"New Address" = "新しい住所";
+"Reset" = "リセット";
+"Description" = "説明";
+"Add Member" = "メンバーを追加";
+"Subscribe" = "登録";
+"Add Birthday" = "誕生日を追加";
+"Import" = "インポート";
+"More options" = "他のオプション";
+"Role" = "役割";
+"Add Screen Name" = "表示名を追加";
+"Custom 1" = "カスタム1";
+"Custom 2" = "カスタム2";
+"Custom 3" = "カスタム3";
+"Custom 4" = "カスタム4";
+"Custom Value" = "カスタム値";
+"New Custom Value" = "新しいカスタム値";
+"Synchronization" = "同期";
+"Synchronize" = "同期する";
+"Sucessfully subscribed to address book" = "アドレス帳に登録されました";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "検索範囲";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "項目を切替";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

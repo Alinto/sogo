@@ -1,0 +1,97 @@
+/* this file is in UTF-8 format! */
+
+"title" = "SOGo";
+"Username" = "ユーザー名";
+"Password" = "パスワード";
+"Domain" = "ドメイン";
+"Remember username" = "ユーザー名を記憶する";
+"Connect" = "接続";
+
+/* Appears while authentication is in progress */
+"Authenticating" = "認証中";
+
+/* Appears when authentication succeeds */
+"Welcome" = "ようこそ";
+
+"Authentication Failed" = "ログインできません";
+"Wrong username or password." = "ユーザー名またはパスワードが誤っています。";
+"Retry" = "再試行";
+"cookiesNotEnabled" = "ブラウザーのクッキーが無効なためログインできません。ブラウザーの設定でクッキーを有効にして、再度試してください。";
+"browserNotCompatible" = "使用しているバージョンのブラウザーは現在このサイトでサポートしていません。Firefoxの使用を推奨します。下のリンクをクリックすると最新のバージョンのFirefoxをダウンロードできます。";
+"alternativeBrowsers" = "または、以下の互換性があるブラウザーも使用できます。";
+"alternativeBrowserSafari" = "または、Safariも使用できます。";
+"Download" = "ダウンロード";
+"Language" = "言語";
+"choose" = "選択...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"Japanese" = "日本語";
+"Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"About" = "SOGoについて";
+"AboutBox" = "Inverseが開発したSOGoは、拡張性と単純さに重点を置いたフル装備のグループウェアサーバーです。<br/><br/>\nSOGoはAjaxに基づいたWebインターフェイスと、CalDAVとCardDavといった標準プロトコルを使用した機種固有の複数のアプリケーションをサポートしています。<br/><br/>\nSOGoは<a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a>バージョン2以降で、その一部はGNU LGPLバージョン2で配布されています。これはフリーソフトウェアです: 変更や再配布は自由にできます。法律で許される範囲内で無保証です。<br/><br/>\n様々なサポートの選択肢については、<a href=\"http://www.sogo.nu/en/support/community.html\">このページ</a>を参照してください。";
+"Your account was locked due to too many failed attempts." = "ログインの失敗の回数が多すぎるためアカウントをロックしました。";
+"Your account was locked due to an expired password." = "パスワードの期限切れのためアカウントをロックしています。";
+"Login failed due to unhandled error case" = "対処できないエラーによりログインできませんでした。";
+"Change your Password" = "パスワードを変更";
+"The password was changed successfully." = "パスワードを変更しました。";
+"Your password has expired, please enter a new one below" = "パスワードの期限が切れています、以下から新しいパスワードを入力してください";
+"Password must not be empty." = "空のパスワードは使用できません。";
+"The passwords do not match. Please try again." = "パスワードが一致しません。再度試してください。";
+"Password Grace Period" = "パスワードの猶予期間";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "アカウントのロックの前に、あと%{0}回ログインできます。設定のダイアログでパスワードを変更してください。";
+"Password about to expire" = "期限切れが近いパスワード";
+"Your password is going to expire in %{0} %{1}." = "パスワードは%{0}%{1}で期限切れとなります。";
+"days" = "日";
+"hours" = "時間";
+"minutes" = "分";
+"seconds" = "秒";
+"Password change failed" = "パスワードを変更できませんでした。";
+"Password change failed - Permission denied" = "パスワードを変更できませんでした。権限がありません。";
+"Password change failed - Insufficient password quality" = "パスワードを変更できませんでした。長く複雑な文字列にしてください。";
+"Password change failed - Password is too short" = "パスワードを変更できませんでした。パスワードが短すぎます。";
+"Password change failed - Password is too young" = "パスワードを変更できませんでした。";
+"Password change failed - Password is in history" = "パスワードを変更できませんでした。既に使用したことのあるパスワードです。";
+"Unhandled policy error: %{0}" = "処理できないポリシーのエラー: %{0}";
+"Unhandled error response" = "処理できないエラーの応答";
+"Password change is not supported." = "パスワードの変更をサポートしていません。";
+"Unhandled HTTP error code: %{0}" = "処理できないHTTPのエラーコード: %{0}";
+"New password" = "新しいパスワード";
+"Confirmation" = "パスワードの再入力";
+"Cancel" = "キャンセル";
+"Please wait..." = "しばらくお待ちください...";
+"Close" = "閉じる";
+"Missing search parameter" = "検索パラメーターがありません";
+"Missing type parameter" = "型のパラメーターがありません";

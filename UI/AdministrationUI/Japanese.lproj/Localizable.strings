@@ -1,0 +1,26 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "ヘルプ";
+"Close" = "閉じる";
+"Modules" = "モジュール";
+/* Modules short names */
+"ACLs" = "アクセス制御リスト";
+/* Modules titles */
+"ACLs_title" = "ユーザーフォルダの権限管理";
+/* Modules descriptions */
+"ACLs_description" = "<p>アクセス制御リストの管理モジュールを使用すると、各ユーザーのカレンダーとアドレス帳のアクセス制御リストを変更できます。</p><p>ユーザーのフォルダのアクセス制御リストを変更するには、ウィンドウの上部の検索欄にユーザーのフォルダのACLを変更するには、ウィンドウの上部にある検索欄にユーザーの名前を入力して、目的のフォルダをダブルクリックしてください。</p>";
+"Name or Email" = "名前またはメール";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "権限編集の検索を開始";
+/* Rights module: Empty search result */
+"No matching user" = "検索条件に一致するユーザーはいません。";
+/* Rights module: no selection */
+"No resource selected" = "リソースが選択されていません";
+"Add User" = "ユーザーを追加";
+"Subscribe User" = "ユーザーの登録";
+"Rights" = "権限";
+"Search Users" = "ユーザーを検索";
+"users found" = "ユーザーが見つかりません";
+"No resource" = "リソースがありません";
+"Any Authenticated User" = "すべての認証済みユーザー";
+"Public Access" = "公開アクセス";
