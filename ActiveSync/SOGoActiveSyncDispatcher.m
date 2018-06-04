@@ -293,6 +293,39 @@ void handle_eas_terminate(int signum)
 //
 //
 //
+- (SOGoAppointmentObject *) _eventObjectWithUID: (NSString *) uid
+{
+  SOGoAppointmentFolder *folder;
+  SOGoAppointmentObject *eventObject;
+  NSArray *folders;
+  NSEnumerator *e;
+  NSString *cname;
+
+  eventObject = nil;
+
+  folders = [[[context activeUser] calendarsFolderInContext: context] subFolders];
+  e = [folders objectEnumerator];
+  while (eventObject == nil && (folder = [e nextObject]))
+    {
+      cname = [folder resourceNameForEventUID: uid];
+      if (cname)
+        {
+          eventObject = [folder lookupName: cname inContext: context
+                                   acquire: NO];
+          if ([eventObject isKindOfClass: [NSException class]])
+            eventObject = nil;
+        }
+    }
+
+  if (eventObject)
+    return eventObject;
+  else
+    return [NSException exceptionWithHTTPStatus:404 /* Not Found */];
+}
+
+//
+//
+//
 - (id) collectionFromId: (NSString *) theCollectionId
                    type: (SOGoMicrosoftActiveSyncFolderType) theFolderType
 {
@@ -1847,6 +1880,9 @@ void handle_eas_terminate(int signum)
           appointmentObject = [collection lookupName: [NSString stringWithFormat: @"%@.ics", [event uid]]
                                            inContext: context
                                              acquire: NO];
+
+          if ([appointmentObject isKindOfClass: [NSException class]])
+            appointmentObject = [self _eventObjectWithUID:[event uid]];
 
           // Create the appointment if it is not added to calendar yet
           if ([appointmentObject isKindOfClass: [NSException class]])

@@ -189,7 +189,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   processIdentifierInCache = [[self globalMetadataForDevice] objectForKey: key];
 
   // Don't update the cache if another request is processing the same collection.
-  // I case of a merged folder we have to check personal folder's lock.
+  // In case of a merged folder we have to check personal folder's lock.
   a = [key componentsSeparatedByString: @"/"];
   pkey = [NSString stringWithFormat: @"%@/personal", [a objectAtIndex:0]];
 
