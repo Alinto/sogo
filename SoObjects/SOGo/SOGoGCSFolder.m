@@ -1650,7 +1650,7 @@ static NSArray *childRecordFields = nil;
 	    }
 
           if (!group)
-            [self errorWithFormat: @"Can't find group %@", group];
+            [self errorWithFormat: @"Can't find group %@", currentUID];
           else if ([group hasMemberWithUID: uid])
             [acls addObject: [record valueForKey: @"c_role"]];
         }
