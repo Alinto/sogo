@@ -124,6 +124,9 @@
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "The sender of this message has asked to be notified when you read this message. Do you wish to notify the sender?";
 "Return Receipt (displayed) - %@"= "Return Receipt (displayed) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
+"Security" = "Security";
+"Sign" = "Sign";
+"Encrypt" = "Encrypt";
 "Priority" = "Priority";
 "highest" = "Highest";
 "high" = "High";
