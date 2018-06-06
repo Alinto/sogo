@@ -91,7 +91,7 @@
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
 "longDateFmt_3" = "%d %B, %Y";
-"longDateFmt_4" = "";
+"longDateFmt_4" = "%Y年%B%e⽇ %A";
 "longDateFmt_5" = "";
 "longDateFmt_6" = "";
 "longDateFmt_7" = "";
