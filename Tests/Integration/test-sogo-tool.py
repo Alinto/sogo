@@ -34,7 +34,7 @@ class sogoToolTest(unittest.TestCase):
       os.chown(self.backupdir, uid, gid)
       status = os.system("sudo -u %s bash -c \"(cd %s && %s backup . ALL >/dev/null 2>&1)\""
                           % (sogo_user, self.backupdir, sogo_tool_path))
-
+      print "Exit status of os.system(): %d" % status
       rc=os.WEXITSTATUS(status)
       self.assertEqual(rc, 0, "sogo-tool failed RC=%d" % rc)
 
