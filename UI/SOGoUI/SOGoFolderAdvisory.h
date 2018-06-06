@@ -119,10 +119,10 @@
 @interface SOGoFolderItalianRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
-@interface SOGoFolderJapanaseAdditionAdvisory : SOGoFolderAdditionAdvisory
+@interface SOGoFolderJapaneseAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 
-@interface SOGoFolderJapanaseRemovalAdvisory : SOGoFolderRemovalAdvisory
+@interface SOGoFolderJapaneseRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
 @interface SOGoFolderLatvianAdditionAdvisory : SOGoFolderAdditionAdvisory
