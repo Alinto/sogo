@@ -249,6 +249,13 @@ md-sidenav {
   }
 }
 
+// Force wrapping of pre elements in HTML content
+.mailer_htmlcontent pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  tab-size: 4;
+}
+
 .sg-mail-editor {
   .pseudo-input-container {
     max-height: 400px;
