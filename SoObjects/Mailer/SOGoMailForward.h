@@ -91,6 +91,9 @@
 @interface SOGoMailItalianForward : SOGoMailForward
 @end
 
+@interface SOGoMailJapaneseForward : SOGoMailForward
+@end
+
 @interface SOGoMailLatvianForward : SOGoMailForward
 @end
 

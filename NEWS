@@ -7,6 +7,7 @@ Enhancements
  - [web] remove invalid occurrences when modifying a recurrent event
  - [web] updated Angular Material to version 1.1.9
  - [web] allow mail flag addition/edition on mobile
+ - [web] added Japanese (jp) translation - thanks to Ryo Yamamoto
 
 Bug fixes
  - [core] properly update the last-modified attribute (#4313)

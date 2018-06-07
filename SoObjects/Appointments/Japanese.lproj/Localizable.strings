@@ -1,0 +1,64 @@
+"Inviting the following persons is prohibited:" = "次の人々の招待は禁止されています:";
+"Personal Calendar" = "個人用カレンダー";
+vevent_class0 = "(公開イベント)";
+vevent_class1 = "(非公開イベント)";
+vevent_class2 = "(機密イベント)";
+
+vtodo_class0 = "(公開タスク)";
+vtodo_class1 = "(非公開タスク)";
+vtodo_class2 = "(機密タスク)";
+/* Receipts */
+"The event \"%{Summary}\" was created" = "イベント\"%{Summary}\"を作成しました";
+"The event \"%{Summary}\" was deleted" = "イベント\"%{Summary}\"を削除しました";
+"The event \"%{Summary}\" was updated" = "イベント\"%{Summary}\"を更新しました";
+"The following attendees(s) were notified" = "以下の参加者に通知しました";
+"The following attendees(s) were added" = "以下の参加者を追加しました";
+"The following attendees(s) were removed" = "以下の参加者を削除しました";
+/* IMIP messages */
+"calendar_label" = "カレンダー";
+"startDate_label" = "開始";
+"endDate_label" = "終了";
+"time_label" = "時刻";
+"to_label" = "to";
+"due_label" = "期日";
+"location_label" = "場所";
+"summary_label" = "概要";
+"comment_label" = "コメント";
+"organizer_label" = "オーガナイザー";
+"attendee_label" = "出席者";
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "イベントに招待: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(%{SentBy}が送信) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}が%{Summary}にあなたを招待しました。\n\n開始: %{StartDate}\n終了: %{EndDate}\n説明: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}が%{Summary}にあなたを招待しました。\n\n開始: %{StartDate} %{StartTime}\n終了: %{EndDate} %{EndTime}\n説明: %{Description}";
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "イベントがキャンセルされました: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}がイベントをキャンセルしました: %{Summary}.\n\n開始: %{StartDate}\n終了: %{EndDate}\n説明: %{Description}";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}がイベントをキャンセルしました: %{Summary}.\n\n開始: %{StartDate} %{StartTime}\n終了: %{EndDate} %{EndTime}\n説明: %{Description}";
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "%{OldStartDate}の予約\"%{Summary}\"に変更がありました";
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "%{OldStartDate} %{OldStartTime}の予約\"%{Summary}\"に変更がありました";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "ミーティング\"%{Summary}\"の予定に以下の変更がありました:";
+"Please accept or decline those changes."
+= "これらの変更を承認または辞退してください。";
+/* Reply */
+"Accepted invitation: \"%{Summary}\"" = "承諾された招待: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "辞退された招待: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "委任された招待: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "回答未定の招待: \"%{Summary}\"";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "%{Attendee} %{SentByText}が、あなたの招待を承諾しました。";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "%{Attendee} %{SentByText}が、あなたの招待を辞退しました。";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText}は、あなたの招待を%{Delegate}に委任しました。";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText}は、あなたの招待の回答を決めていません。";
+/* Resources */
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "リソースにアクセスできません: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "同時の予約の最大数(%{NumberOfSimultaneousBookings})がリソース\"%{Cn} %{SystemEmail}\"の最大数に達しました。競合しているイベントは%{StartDate}から開始の\"%{EventTitle}\"です。";

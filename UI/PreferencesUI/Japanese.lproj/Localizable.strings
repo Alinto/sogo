@@ -1,0 +1,433 @@
+/* toolbar */
+"Save and Close" = "保存して閉じる";
+"Close" = "閉じる";
+"Preferences saved" = "設定が保存されました";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "保存されていない変更があります";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "設定の変更を保存しますか?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "保存";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "保存しない";
+
+/* tabs */
+"General" = "一般";
+"Calendar Options" = "カレンダーのオプション";
+"Contacts Options" = "連絡先のオプション";
+"Mail Options" = "メールのオプション";
+"IMAP Accounts" = "IMAPアカウント";
+"Vacation" = "休暇";
+"Forward" = "転送";
+"Password" = "パスワード";
+"Categories" = "カテゴリ";
+"Appointments invitations" = "予定への招待";
+"Name" = "名前";
+"Color" = "色";
+"Add" = "追加";
+"Delete" = "削除";
+
+/* contacts categories */
+"contacts_category_labels" = "同僚, 競合企業, 顧客, 友達, 家族, ビジネスパートナー, プロバイダー, 報道機関, VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "休暇の自動応答を有効";
+"Enable custom auto reply subject" = "カスタム自動応答の件名を有効化";
+"Auto reply subject" = "自動応答の件名";
+"You can write ${subject} to insert the original subject" = "もとの件名を使用するには ${subject} と入力してください";
+"Auto reply message" = "自動応答メッセージ";
+"Email addresses (separated by commas)" = "メールアドレス (コンマ区切り)";
+"Add default email addresses" = "デフォルトのメールアドレスを追加";
+"Days between responses" = "応答の間の日数";
+"Do not send responses to mailing lists" = "メーリングリストに応答を送信しない。";
+"Enable auto reply on" = "自動応答は有効化";
+"Disable auto reply on" = "次の自動応答は無効:";
+"Always send vacation message response" = "必ず休暇メッセージを送信する";
+"Discard incoming mails during vacation" = "休暇中は受信したメールをゴミ箱に入れる";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "自動応答のメッセージと有効にしたいメールアドレスを設定してください。";
+"Your vacation message must not end with a single dot on a line." = "ドット( . )だけの休暇メッセージは作成できません。";
+"End date of your auto reply must be in the future."
+= "自動応答の終了日は未来の日付にしてください。";
+
+/* forward messages */
+"Forward incoming messages" = "受信したメッセージを転送";
+"Keep a copy" = "コピーを残す";
+"Please specify an address to which you want to forward your messages."
+= "メッセージを転送したいアドレスを設定してください。";
+"You are not allowed to forward your messages to an external email address." = "外部メールアドレスにメッセージを転送することは許可されていません。";
+"You are not allowed to forward your messages to an internal email address." = "内部メールアドレスにメッセージを転送することは許可されていません。";
+
+/* d & t */
+"Current Time Zone" = "現在のタイムゾーン";
+"Short Date Format" = "短い日付の表示形式";
+"Long Date Format" = "長い日付の表示形式";
+"Time Format" = "時間の表示形式";
+"default" = "初期値";
+"Default Module" = "デフォルトのモジュール";
+"Save" = "保存";
+"shortDateFmt_0" = "%d-%b-%y";
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "";
+
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "%Y年%B%e⽇ %A";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "一致する結果が見つかりません。";
+
+/* calendar */
+"Week begins on" = "週の開始曜日";
+"Day start time" = "日の開始時刻";
+"Day end time" = "日の終了時刻";
+"Day start time must be prior to day end time." = "開始時刻は終了時刻より前でなければなりません。";
+"Week days to display" = "表示する平日";
+"Show time as busy outside working hours" = "就業時間以外は予約済みとして時刻を表示";
+"First week of year" = "年の最初の週";
+"Enable reminders for Calendar items" = "カレンダーの項目にリマインダーを有効";
+"Play a sound when a reminder comes due" = "リマインダーの時間に音を鳴らす";
+"Default reminder" = "デフォルトのリマインダー";
+"firstWeekOfYear_January1" = "1月1日に開始";
+"firstWeekOfYear_First4DayWeek" = "週の最初の4日";
+"firstWeekOfYear_FirstFullWeek" = "最初の週すべて";
+"Prevent from being invited to appointments" = "予定へ招待されないように設定する";
+"White list for appointment invitations" = "予定への招待をホワイトリスト設定";
+"Contacts Names" = "連絡先の名前";
+
+/* Default Calendar */
+"Default calendar" = "デフォルトのカレンダー";
+"selectedCalendar" = "選択したカレンダー";
+"personalCalendar" = "個人用カレンダー";
+"firstCalendar" = "最初に有効にしたカレンダー";
+"reminder_NONE" = "通知なし";
+"reminder_5_MINUTES_BEFORE" = "5分前";
+"reminder_10_MINUTES_BEFORE" = "10分前";
+"reminder_15_MINUTES_BEFORE" = "15分前";
+"reminder_30_MINUTES_BEFORE" = "30分前";
+"reminder_45_MINUTES_BEFORE" = "45分前";
+"reminder_1_HOUR_BEFORE" = "1時間前";
+"reminder_2_HOURS_BEFORE" = "2時間前";
+"reminder_5_HOURS_BEFORE" = "5時間前";
+"reminder_15_HOURS_BEFORE" = "15時間前";
+"reminder_1_DAY_BEFORE" = "1日前";
+"reminder_2_DAYS_BEFORE" = "2日前";
+"reminder_1_WEEK_BEFORE" = "1週間前";
+
+/* Mailer */
+"Labels" = "ラベル";
+"Label" = "ラベル";
+"IMAP Label" = "IMAPラベル";
+"Invalid label" = "スペースや ( ) { } % * \" \\ を使用しないでください。";
+"Duplicate label" = "重複したラベル";
+"IMAP labels must have unique names." = "IMAPラベルは他と重複しない名前である必要があります。";
+"New label" = "新しいラベル";
+"Show subscribed mailboxes only" = "登録したメールボックスだけ表示";
+"Synchronize only default mail folders (EAS)" = "デフォルトのメールフォルダのみ同期する (EAS)";
+"Sort messages by threads" = "スレッドでメッセージを並べ替え";
+"Always open mail composer" = "メッセージ作成画面をいつも開く";
+"Inside current window" = "現在のウィンドウの中で";
+"In a popup window" = "ポップアップウィンドウで";
+"When sending mail, add unknown recipients to my" = "メールを送るときに、不明な宛先を私に追加";
+"Address Book" = "アドレス帳";
+"Forward messages" = "メッセージを転送";
+"messageforward_inline" = "インライン";
+"messageforward_attached" = "添付ファイルとして";
+"When replying to a message" = "メッセージに返信するとき";
+"replyplacement_above" = "返信を引用の前から開始";
+"replyplacement_below" = "返信を引用の後から開始";
+"And place my signature" = "署名を置く";
+"signatureplacement_above" = "返信の前";
+"signatureplacement_below" = "引用の前";
+"Compose messages in" = "メッセージを作成:";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "テキスト";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "デフォルトのフォントサイズ";
+
+"Display remote inline images" = "リモートのインライン画像を表示";
+"displayremoteinlineimages_never" = "決してしない";
+"displayremoteinlineimages_always" = "常にする";
+"Auto save every" = "自動保存";
+"minutes" = "分";
+
+/* Contact */
+"Personal Address Book" = "個人のアドレス帳";
+"Collected Address Book" = "収集したアドレス帳";
+
+/* IMAP Accounts */
+"Settings" = "設定";
+"Security" = "セキュリティ";
+"Mail Account" = "メールアカウント";
+"New Mail Account" = "新しいメールアカウント";
+"Server Name" = "サーバー名";
+"Port" = "ポート";
+"Encryption" = "暗号化";
+"None" = "なし";
+"User Name" = "ユーザー名";
+"Full Name" = "氏名";
+"Email" = "メール";
+"Reply To Email" = "メールに返信";
+"Signature" = "署名";
+"(Click to create)" = "(クリックして作成)";
+"Please enter your signature below" = "以下に署名を入力してください。";
+"Please specify a valid sender address." = "正しい送信者のアドレスを指定してください。";
+"Please specify a valid reply-to address." = "正しい返信先のアドレスを指定してください。";
+"Specify a hostname other than the local host" = "ローカルホスト以外のホスト名を入力してください。";
+
+"No certificate installed" = "証明書はインストールされていません。";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL証明書にはPKCS#12 (PFX)形式を使用する必要があります。";
+"Uninstall" = "アンインストール";
+"Choose PKCS12 Certificate .." = "PKCS12証明書を選択";
+"Certificate Import Password" = "証明書インポート用パスワード";
+"Upload" = "アップロード";
+"When composing a message" = "メッセージを作成するとき";
+"Digitally sign the message by default" = "デフォルトでメッセージにデジタル署名";
+"Always try to encrypt the message" = "いつもメッセージを暗号化";
+
+/* Additional Parameters */
+"Additional Parameters" = "追加のパラメーター";
+
+/* password */
+"New password" = "新しいパスワード";
+"Confirmation" = "パスワードの再入力";
+"Change" = "変更";
+
+/* Event+task classifications */
+"Default events classification" = "イベントのデフォルトの区分";
+"Default tasks classification" = "タスクのデフォルトの区分";
+"PUBLIC_item" = "公開";
+"CONFIDENTIAL_item" = "機密";
+"PRIVATE_item" = "非公開";
+
+/* Event+task categories */
+"Calendar Category" = "カレンダーのカテゴリ";
+"Add Calendar Category" = "カレンダーのカテゴリを追加";
+"New category" = "新しいカテゴリ";
+"Remove Calendar Category" = "カレンダーのカテゴリを削除";
+"Contact Category" = "連絡先のカテゴリ";
+"Add Contact Category" = "連絡先のカテゴリを追加";
+"Remove Contact Category" = "連絡先のカテゴリを削除";
+"category_none" = "なし";
+"calendar_category_labels" = "記念日,誕生日,事業,電話会議,顧客,競合,取引先,お気に入り,フォローアップ,贈り物,休日,アイデア,ミーティング,問題,その他,個人,プロジェクト,公休,状態,納入業者,旅行,休暇";
+
+/* Default module */
+"Calendar" = "カレンダー";
+"Contacts" = "アドレス帳";
+"Mail" = "メール";
+"Last" = "最後に使用";
+"Default Module " = "デフォルトのモジュール";
+"SOGo Version" = "SOGoバージョン";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "ユーザー設定を保存してページを再読み込みしますか?";
+"Language" = "言語";
+"choose" = "選択...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"Japanese" = "日本語";
+"Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"Refresh View" = "ページ再読み込み";
+"refreshview_manually" = "手動";
+"refreshview_every_minute" = "毎分";
+"refreshview_every_2_minutes" = "2分毎";
+"refreshview_every_5_minutes" = "5分毎";
+"refreshview_every_10_minutes" = "10分毎";
+"refreshview_every_20_minutes" = "20分毎";
+"refreshview_every_30_minutes" = "30分毎";
+"refreshview_once_per_hour" = "1時間に1度";
+
+/* Return receipts */
+"When I receive a request for a return receipt" = "受領通知の要求を受信したとき";
+"Never send a return receipt" = "受領通知を送信しない";
+"Allow return receipts for some messages" = "メッセージにより受領通知を返す";
+"If I'm not in the To or Cc of the message" = "自分のアドレスがメッセージの宛先(To)や写し(Cc)にない場合";
+"If the sender is outside my domain" = "送信者が自分のドメイン外の場合";
+"In all other cases" = "他のすべての場合:";
+"Never send" = "送信しない";
+"Always send" = "常に送信";
+"Ask me" = "確認する";
+
+/* Filters - UIxPreferences */
+"Filters" = "フィルター";
+"Active" = "有効";
+"Move Up" = "上に移動";
+"Move Down" = "下に移動";
+"Connection error" = "接続エラー";
+"Service temporarily unavailable" = "サービスを一時的に利用不可";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "フィルターを有効化";
+
+/* Filters - UIxFilterEditor */
+"Filter name" = "フィルターの名前";
+/* Button label */
+"Add a condition" = "条件を追加";
+/* Button label */
+"Add an action" = "アクションを追加";
+"For incoming messages that" = "適用する受信したメッセージ";
+"match all of the following rules" = "以下のルールすべてに一致";
+"match any of the following rules" = "以下のルールのいずれかに一致";
+"match all messages" = "すべてのメッセージに一致";
+"Perform these actions" = "これらのアクションを実行";
+"Untitled Filter" = "題名のないフィルター";
+"Subject" = "件名";
+"From" = "発信者";
+"To" = "宛先";
+"Cc" = "写し";
+"To or Cc" = "宛先または写し";
+"Size (Kb)" = "大きさ(Kb)";
+"Header" = "ヘッダー";
+"Body" = "本文";
+"Flag the message with" = "メッセージにフラグを追加";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "フラグ";
+
+"Discard the message" = "メッセージを破棄";
+"File the message in" = "メッセージをファイルに格納";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "メールボックス";
+
+"Keep the message" = "メッセージを保持";
+"Forward the message to" = "メッセージを転送";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "メール";
+
+"Send a reject message" = "拒否のメッセージを送信";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "メッセージ";
+
+"Send a vacation message" = "休暇メッセージを送信";
+"Stop processing filter rules" = "フィルターのルールの適用を終了";
+"is under" = "未満";
+"is over" = "超過";
+"is" = "等しい";
+"is not" = "等しくない";
+"contains" = "含む";
+"does not contain" = "含まない";
+"matches" = "一致";
+"does not match" = "不一致";
+"matches regex" = "正規表現に一致";
+"does not match regex" = "正規表現に不一致";
+/* Placeholder for the value field of a condition */
+"Value" = "値";
+"Seen" = "既読";
+"Deleted" = "削除済み";
+"Answered" = "返信済み";
+"Flagged" = "フラグ付き";
+"Junk" = "迷惑メール";
+"Not Junk" = "非迷惑メール";
+
+/* Password policy */
+"The password was changed successfully." = "パスワードを変更しました。";
+"Password must not be empty." = "空のパスワードは使用できません。";
+"The passwords do not match. Please try again." = "パスワードが一致しません。再度実行してください。";
+"Password change failed" = "パスワードを変更できませんでした。";
+"Password change failed - Permission denied" = "パスワードを変更できませんでした。権限がありません。";
+"Password change failed - Insufficient password quality" = "パスワードを変更できません。長く複雑な文字列にしてください。";
+"Password change failed - Password is too short" = "パスワードを変更できませんでした。パスワードが短すぎます。";
+"Password change failed - Password is too young" = "パスワードを変更できませんでした。";
+"Password change failed - Password is in history" = "パスワードの変更に失敗しました。既に使用したことのあるパスワードです。";
+"Unhandled policy error: %{0}" = "処理できないポリシーのエラー: %{0}";
+"Unhandled error response" = "処理できないエラーの応答です。";
+"Password change is not supported." = "パスワードの変更をサポートしていません。";
+"Unhandled HTTP error code: %{0}" = "処理できないHTTPのエラーコード: %{0}";
+"Cancel" = "キャンセル";
+"Invitations" = "招待";
+"Edit Filter" = "フィルターを編集";
+"Delete Filter" = "フィルターを削除";
+"Create Filter" = "フィルターを作成";
+"Delete Label" = "ラベルを削除";
+"Create Label" = "ラベルを作成";
+"Accounts" = "アカウント";
+"Edit Account" = "アカウントを編集";
+"Delete Account" = "アカウントを削除";
+"Create Account" = "アカウントを作成";
+"Account Name" = "アカウント名";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "Gravatarを使う";
+"Alternate Avatar" = "アバターを変更";
+"none" =  "なし";
+"identicon" = "Identicon (キルト柄)";
+"monsterid" = "Monster (モンスター)";
+"wavatar" = "Wavatar (マンガ顔)";
+"retro" = "Retro (8ビット)";
+
+/* Animation Level */
+"Animation Level" = "アニメーションレベル";
+/* Normal Animation Mode */
+"animation_NORMAL" = "普通";
+/* Limited Animation Mode */
+"animation_LIMITED" = "制限付き";
+"animation_NONE" = "なし";

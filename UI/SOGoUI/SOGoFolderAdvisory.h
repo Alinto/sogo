@@ -119,6 +119,12 @@
 @interface SOGoFolderItalianRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
+@interface SOGoFolderJapaneseAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderJapaneseRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
 @interface SOGoFolderLatvianAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 

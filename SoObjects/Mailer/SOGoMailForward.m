@@ -302,6 +302,9 @@
 @implementation SOGoMailItalianForward
 @end
 
+@implementation SOGoMailJapaneseForward
+@end
+
 @implementation SOGoMailLatvianForward
 @end
 

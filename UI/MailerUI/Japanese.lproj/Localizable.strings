@@ -1,0 +1,425 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "作成";
+"Empty Trash" = "ゴミ箱を空にする";
+"Delete"      = "削除";
+"Expunge"     = "消す";
+"Forward"     = "転送";
+"Get Mail"    = "メールを受信";
+"Junk"        = "迷惑メール";
+"Not junk"    = "非迷惑メール";
+"Reply"       = "返信";
+"Reply All"   = "全員に返信";
+"Print"       = "印刷";
+"Stop"        = "停止";
+"Write"       = "書く";
+"Search"      = "検索";
+"Send" = "送信";
+"Contacts" = "連絡先";
+"Attach" = "添付";
+"Save" = "保存";
+"Options" = "オプション";
+"Close" = "閉じる";
+"Size" = "サイズ";
+
+/* Tooltips */
+"Send this message now" = "このメッセージをすぐ送信";
+"Select a recipient from an Address Book" = "アドレス帳から受信者を選択";
+"Include an attachment" = "添付ファイルを含める";
+"Save this message" = "このメッセージを保存";
+"Get new messages" = "新しいメッセージを取得";
+"Create a new message" = "新しいメッセージを作成";
+"Go to address book" = "アドレス帳に行く";
+"Reply to the message" = "メッセージに返信";
+"Reply to sender and all recipients" = "送信者とすべての受信者に返信";
+"Forward selected message" = "選択したメッセージを転送";
+"Delete selected message or folder" = "選択したメッセージを削除";
+"Print this message" = "このメッセージを印刷";
+"Stop the current transfer" = "現在の転送を停止";
+"Attachment" = "添付ファイル";
+"Unread" = "未読";
+"Flagged" = "フラグ付け";
+"Search multiple mailboxes" = "複数のメールボックスを検索";
+
+/* Main Frame  */
+"Home"                 = "ホーム";
+"Calendar"             = "カレンダー";
+"Addressbook"          = "アドレス帳";
+"Mail"                 = "メール";
+"Right Administration" = "権限の管理";
+"Help" = "ヘルプ";
+
+/* Mail account main windows */
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "SOGoメーラーへようこそ。メールアカウントを参照するには、左側にフォルダツリーを使用してください。";
+"Read messages"       = "メッセージを読む";
+
+/* Tooltip for fab button */
+"Write a new message" = "新しいメッセージを書く";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "新しいウィンドウでメッセージを作成する";
+
+"Share" = "共有";
+"Account" = "アカウント";
+"Shared Account" = "共有アカウント";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "メッセージが選択されていません";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "メールボックスが選択されていません";
+
+"An error occured while communicating with the mail server" = "メールサーバーとの通信中にエラーが発生しました";
+
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "フォルダが圧縮されました";
+/* Empty Trash success message */
+"Trash emptied" = "ゴミ箱が空です";
+
+/* acls */
+"Access rights to" = "アクセス権を";
+"For user" = "ユーザの";
+"Any Authenticated User" = "認証済みのすべてのユーザー";
+"List and see this folder" = "このフォルダの一覧を表示、参照";
+"Read mails from this folder" = "このフォルダからメールを読む";
+"Mark mails read and unread" = "メールを既読または未読状態にする";
+"Modify the flags of the mails in this folder" = "このフォルダにメールのフラグを変更";
+"Insert, copy and move mails into this folder" = "このフォルダにメールを挿入、コピー、移動する";
+"Post mails" = "メールを投稿";
+"Add subfolders to this folder" = "このフォルダにサブフォルダを追加";
+"Remove this folder" = "このフォルダを削除";
+"Erase mails from this folder" = "このフォルダからメールを消去";
+"Expunge this folder" = "このフォルダを消去";
+"Export This Folder" = "このフォルダをエクスポート";
+"Modify the acl of this folder" = "このフォルダのACLを変更";
+"Saved Messages.zip" = "保存されたMessages.zip";
+"Update" = "更新";
+"Cancel" = "キャンセル";
+
+/* Mail edition */
+"From"          = "送信者";
+"Subject"       = "件名";
+"To"            = "受信者";
+"Cc"            = "Cc";
+"Bcc"           = "Bcc";
+"Reply-To"	    = "返信先";
+"Add address"   = "アドレスを追加";
+"Body"          = "本文";
+"Open" = "開く";
+"Select All" = "すべてを選択";
+"Select Message" = "メッセージを選択";
+"Attach Web Page..." = "Webページを添付...";
+"file" = "ファイル";
+"files" = "ファイル";
+"Save all" = "すべて保存";
+"to"            = "受信人";
+"cc"            = "Cc";
+"bcc"           = "Bcc";
+"Add a recipient" = "宛先を追加";
+"Edit Draft..." = "下書きを編集...";
+"Load Images" = "画像を読み込む";
+"Return Receipt" = "受信を返す";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "メッセージの送信者は、開封確認をリクエストしています。開封確認のメッセージを送信しますか?";
+"Return Receipt (displayed) - %@"= "受信を返す（表示中） - ％@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "あなたが %@ に送信したメールの受領確認です。\n\n注意: この受領確認はメッセージが宛先の方がコンピューターで表示されたことを知らせるだけです。宛先の方がメッセージの内容を読んだ、または理解したと保証するものではありません。";
+"Priority" = "優先順位";
+"highest" = "最高";
+"high" = "高";
+"normal" = "通常";
+"low" = "低";
+"lowest" = "最低";
+"This mail is being sent from an unsecure network!" = "このメールは保護されていないネットワークから送信されています。";
+"Address Book" = "アドレス帳";
+"Search For" = "検索";
+
+/* Popup "show" */
+"all"     = "すべて";
+"read"    = "既読";
+"unread"  = "未読";
+"deleted" = "削除済み";
+"flagged" = "フラグが付けられました";
+
+/* MailListView */
+"Sender" = "差出人";
+"Subject or Sender" = "件名または送信者";
+"To or Cc" = "ToまたはCc";
+"Entire Message" = "全メッセージ";
+"Date"          = "日付";
+"View"          = "表示";
+"All"           = "すべて";
+"No message"    = "メッセージはありません";
+"messages"      = "メッセージ";
+"Yesterday"     = "昨日";
+"first"         = "最初";
+"previous"      = "前";
+"next"          = "次";
+"last"          = "最後";
+"msgnumber_to"  = "to";
+"msgnumber_of"  = "の";
+"Mark Unread" = "未読状態に戻す";
+"Mark Read"   = "既読マークを付ける";
+"Untitled" = "無題";
+
+/* Tree */
+"SentFolderName"   = "送信済み";
+"TrashFolderName"  = "ゴミ箱";
+"InboxFolderName"  = "受信トレイ";
+"DraftsFolderName" = "下書き";
+"JunkFolderName" = "迷惑メール";
+"SieveFolderName"  = "フィルター";
+"Folders"          = "フォルダ"; /* title line */
+
+/* MailMoveToPopUp */
+"MoveTo"        = "Move &hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "アドレス帳に追加...";
+"Compose Mail To" = "メール作成";
+"Create Filter From Message..." = "メッセージからフィルタを作成...";
+
+/* Image Popup menu */
+"Save Image" = "画像を保存";
+"Save Attachment" = "添付ファイルを保存";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "新規メールウィンドウで開く";
+"Copy Folder Location" = "フォルダの場所をコピー";
+"Subscribe..." = "購読する...";
+"Mark Folder Read" = "フォルダーを既読に設定";
+"New Folder..." = "新しいフォルダ...";
+"Compact This Folder" = "このフォルダを圧縮";
+"Search Messages..." = "メッセージを検索...";
+"Sharing..." = "共有...";
+"New Subfolder..." = "新しいサブフォルダ...";
+"Rename Folder..." = "フォルダの名前を変更...";
+"Delete Folder" = "フォルダを削除";
+"Use This Folder For" = "このフォルダを使用";
+"Get Messages for Account" = "アカウントのメッセージを取得";
+"Properties..." = "プロパティ...";
+"Delegation..." = "委任設定...";
+
+/* Use This Folder menu */
+"Sent Messages" = "送信されるメッセージ";
+"Drafts" = "下書き";
+"Deleted Messages" = "削除されたメッセージ";
+"Junk Messages" = "迷惑メール";
+
+/* Message list popup menu */
+"Open Message In New Window" = "新しいウィンドウでメッセージを開く";
+"Reply to Sender Only" = "送信者のみに返信";
+"Reply to All" = "全員に返信";
+"Edit As New..." = "新規として編集...";
+"Move To" = "移動先";
+"Copy To" = "コピー先";
+"Label" = "ラベル";
+"Mark" = "マーク";
+"Save As..." = "名前を付けて保存...";
+"Print Preview" = "印刷プレビュー";
+"View Message Source" = "メッセージのソースを表示";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "イベントに変更";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "タスクに変更";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "全ての添付ファイルをダウンロード";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "添付ファイル";
+
+"Print..." = "印刷...　";
+"Delete Message" = "メッセージを削除";
+"Delete Selected Messages" = "選択したメッセージを削除";
+"Mark the selected messages as junk" = "ジャンクとして選択されたメッセージにマークを付ける";
+"Mark the selected messages as not junk" = "選択されたメッセージを非迷惑メールとしてマークを付ける";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "その他 %{0}";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "非表示";
+
+/* Number of selected messages in list */
+"selected" = "選択されたメッセージ";
+
+/* Encrypted message notification */
+"This message is encrypted" = "このメッセージは暗号化されています。";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "メッセージの署名を確認することができませんでした。";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "メッセージが編集されました。";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "証明書の読み込み中にエラーが発生しました。新しい証明書をインストールしてください。";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "アカウントに証明書が関連付けされていません。";
+
+"This Folder" = "このフォルダ";
+
+/* Label popup menu */
+"None" = "なし";
+
+/* Mark popup menu */
+"As Read" = "既読にする";
+"Thread As Read" = "スレッドを既読にする";
+"As Read By Date..." = "日付で既読にする...";
+"All Read" = "すべて既読にする";
+"Flag" = "フラグ";
+"As Junk" = "迷惑メールとして";
+"As Not Junk" = "迷惑メールを解除";
+"Run Junk Mail Controls" = "ジャンクメールコントロールを実行";
+"Search messages in" = "メッセージを検索";
+"Search" = "検索";
+"Search subfolders" = "サブフォルダを検索";
+"Match any of the following" = "以下のいずれかに一致";
+"Match all of the following" = "以下のすべてに一致";
+"contains" = "含む";
+"does not contain" = "含まない";
+"No matches found" = "一致する結果が見つかりません";
+"results found" = "結果が見つかりました";
+"result found" = "結果が見つかりました";
+"Please specify at least one filter" = "少なくとも1つのフィルターを指定してください";
+
+/* Folder operations */
+"Name" = "名前";
+"Enter the new name of your folder"
+ ="フォルダ名を入力してください";
+"Do you really want to move this folder into the trash ?"
+ = "あなたは本当にゴミ箱にこのフォルダを移動したいですか？";
+"Operation failed" = "操作に失敗しました";
+"Quota" = "クォータ：";
+"quotasFormat" = "%{0}% used on %{1} MB";
+"Unable to move/delete folder." = "フォルダを移動または削除できません。";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "メールボックスをゴミ箱に移動することはできません。メールボックスを削除しますか?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "選択されたメッセージを本当に削除しますか?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0}メッセージがコピーされました";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0}メッセージがコピーされました";
+
+"Please select a message." = "メッセージを選択してください。";
+"Please select a message to print." = "印刷するメッセージを選択してください。";
+"Please select only one message to print." = "印刷する1つのメッセージだけを選択してください。";
+"The message you have selected doesn't exist anymore." = "選択したメッセージは存在しません。";
+"The folder with name \"%{0}\" could not be created."
+= "\"%{0}\"という名前のフォルダを作成できませんでした。";
+"This folder could not be renamed to \"%{0}\"."
+= "フォルダの名前を\"%{0}\"に変更できませんでした。";
+"The folder could not be deleted."
+= "フォルダを削除できませんでした。";
+"The trash could not be emptied."
+= "ゴミ箱を空にできませんでした。";
+"The folder functionality could not be changed."
+= "フォルダの機能を変更できませんでした。";
+"You need to choose a non-virtual folder!" = "非仮想フォルダを選択する必要があります。";
+"Moving a message into its own folder is impossible!"
+= "自分のフォルダにメッセージを移動することはできません。";
+"Copying a message into its own folder is impossible!"
+= "自分のフォルダにメッセージをコピーすることはできません。";
+
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "メッセージがごみ箱フォルダに移動できませんでした。メッセージを削除しますか？";
+
+/* Message editing */
+"Please specify a subject." = "件名を指定してください。";
+"error_missingsubject" = "メッセージには件名がありません。本当に送信しますか?";
+"error_missingrecipients" = "少なくとも一つの受信者を指定してください。";
+"Send Anyway" = "送信する";
+"Error while saving the draft" = "下書きを保存中にエラーが発生しました";
+
+/* Error when uploading a file attachment */
+"Error while uploading the file \"%{0}\":" = "\"%{0}\"というファイルのアップロード中にエラーが発生しました:";
+"There is an active file upload. Closing the window will interrupt it." = "ファイルをアップロード中です。ウィンドウを閉じると中断します。";
+"Message is too big" = "メッセージのサイズが大きすぎます";
+
+/* Appears while sending the message */
+"Sending" = "送信中";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "送信されました";
+
+"cannot send message: (smtp) all recipients discarded" = "メッセージを送信できません。無効な宛先です。";
+"cannot send message (smtp) - recipients discarded" = "メッセージを送信できません。次のアドレスは無効です。";
+"cannot send message: (smtp) error when connecting" = "メッセージを送信できません。SMTPサーバーへの接続時にエラーが発生しました。";
+
+/* Contacts list in mail editor */
+"Email" = "メール";
+"More mail options" = "他のメールオプション";
+"Delegation" = "委任設定";
+"Add User" = "ユーザーを追加";
+"Add a tag" = "タグを追加";
+"reply" = "返信";
+"Edit" = "編集";
+"Yes" = "はい";
+"No" = "いいえ";
+"Location" = "場所";
+"Rename" = "名前を変更";
+"Compact" = "圧縮";
+"Export" = "エクスポート";
+"Set as Drafts" = "下書き";
+"Set as Sent" = "送信済み";
+"Set as Trash" = "ゴミ箱";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "迷惑メール";
+
+"Sort" = "並べ替え";
+"Order Received" = "受信順";
+"Descending Order" = "降順";
+"Back" = "戻る";
+"Copy messages" = "メッセージをコピー";
+"More messages options" = "他のメッセージオプション";
+"Mark as Unread" = "未読状態に戻す";
+"Mark as Read" = "既読状態にする";
+"Closing Window ..." = "ウィンドウを閉じる";
+"Tried to send too many mails. Please wait." = "大量のメールを送信しようとしています。少々お待ちください。";
+"View Mail" = "メールを表示";
+"This message contains external images." = "このメールは外部画像を含みます。";
+"Expanded" = "広げる";
+"Add a Criteria" = "基準を追加";
+"More search options" = "他の検索オプション";
+"Your email has been saved" = "メールが保存されました";
+"Your email has been sent" = "メールが送信されました";
+"Folder compacted" = "フォルダが圧縮されました";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "検索範囲";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "サブスクリプションの管理";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "フィルター";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

@@ -1,0 +1,614 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+"Create a new event" = "新しいイベントを作成";
+"Create a new task" = "新しいタスクを作成";
+"Edit this event or task" = "イベントまたはタスクを編集";
+"Print the current calendar view" = "現在のカレンダーの表示を印刷";
+"Delete this event or task" = "イベントまたはタスクを削除";
+"Go to today" = "今日の日付に移動";
+"Switch to day view" = "日表示に切り替え";
+"Switch to week view" = "週表示に切り替え";
+"Switch to month view" = "月表示に切り替";
+"Switch to multi-columns day view" = "複数列日表示に切り替え";
+"Reload all calendars" = "すべてのカレンダーを再読み込み";
+
+/* Tabs */
+"Date" = "日付";
+"Calendars" = "カレンダー";
+"No events for selected criteria" = "指定した条件のイベントはありません";
+"No tasks for selected criteria" = "指定した条件のタスクはありません";
+
+/* Day */
+"DayOfTheMonth" = "日";
+"dayLabelFormat" = "%Y年%m月%d日";
+"today" = "今日";
+"Previous Day" = "前日";
+"Next Day" = "翌日";
+
+/* Week */
+"Week" = "週";
+"this week" = "今週";
+"Week %d" = "第%d週";
+"Previous Week" = "前週";
+"Next Week" = "翌週";
+
+/* Month */
+"this month" = "今月";
+"Previous Month" = "前月";
+"Next Month" = "翌月";
+
+/* Year */
+"this year" = "今年";
+
+/* Menu */
+"Calendar" = "カレンダー";
+"Contacts" = "連絡先";
+"New Calendar..." = "新しいカレンダー...";
+"Delete Calendar" = "カレンダーを削除...";
+"Unsubscribe Calendar" = "カレンダーを解除";
+"Sharing..." = "共有...";
+"Export Calendar..." = "カレンダーをエクスポート...";
+"Import Events..." = "イベントをインポート...";
+"Import Events" = "イベントをインポート";
+"Select an iCalendar file (.ics)." = "iCalendarファイル(.ics)を選択";
+"Upload" = "アップロード";
+"Uploading" = "アップロード中";
+"Publish Calendar..." = "カレンダーを公開...";
+"Reload Remote Calendars" = "リモートカレンダーを再読み込み";
+"Properties" = "特性";
+"Done" = "完了";
+"An error occurred while importing calendar." = "カレンダーのインポート中にエラーが発生しました。";
+"No event was imported." = "インポートしたイベントはありません。";
+"A total of %{0} events were imported in the calendar." = "合計で%{0}件のイベントをカレンダーにインポートしました。";
+"Compose E-Mail to All Attendees" = "すべての出席者にメールを作成";
+"Compose E-Mail to Undecided Attendees" = "出席が未定の参加者にメールを作成";
+
+/* Relative dates */
+"Yesterday" = "昨日";
+"Today" = "今日";
+"Tomorrow" = "明日";
+"Last %@" = "最後 %@";
+
+/* Folders */
+"Personal calendar" = "個人用カレンダー";
+
+/* Misc */
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "禁止";
+
+/* acls */
+"Access rights to" = "アクセス権の割り当て:";
+"For user" = "ユーザ向け";
+"Any Authenticated User" = "すべての認証済みユーザー";
+"Public Access" = "公開アクセス";
+"label_Public" = "公開";
+"label_Private" = "非公開";
+"label_Confidential" = "秘密";
+"label_Viewer" = "すべて表示";
+"label_DAndTViewer" = "日付と時刻を表示";
+"label_Modifier" = "修正";
+"label_Responder" = "次に対応";
+"label_None" = "なし";
+"View All" = "すべて表示";
+"View the Date & Time" = "日付と時刻を表示";
+"Modify" = "修正";
+"Respond To" = "次に対応";
+"None" = "なし";
+"This person can create objects in my calendar."
+= "この人は私のカレンダーにオブジェクトを作成できます。";
+"This person can erase objects from my calendar."
+= "この人は私のカレンダーからオブジェクトを削除できます。";
+
+/* Button Titles */
+"Subscribe to a Calendar..." = "カレンダーを登録...";
+"Remove the selected Calendar" = "選択したカレンダーを削除";
+"New calendar" = "新しいカレンダー";
+"Name of the Calendar" = "カレンダーの名前";
+"new" = "新規";
+"Print view" = "印刷表示";
+"edit" = "編集";
+"delete" = "削除";
+"proposal" = "提案";
+"Save and Close" = "保存して閉じる";
+"Close" = "閉じる";
+"Invite Attendees" = "出席者を招待";
+"Attach" = "添付";
+"Update" = "更新";
+"Cancel" = "キャンセル";
+"Reset" = "リセット";
+"Save" = "保存";
+"show_rejected_apts" = "拒否された予定を表示";
+"hide_rejected_apts" = "拒否された予定を隠す";
+
+/* Schedule */
+"Schedule" = "予定表";
+"No appointments found" = "予定はありません";
+"Meetings proposed by you" = "あなたが提案している会合";
+"Meetings proposed to you" = "あなたに提案されている会合";
+"sched_startDateFormat" = "%m/%d %H:%M";
+"action" = "行動";
+"accept" = "受諾";
+"decline" = "辞退";
+"more attendees" = "さらなる出席者";
+"Hide already accepted and rejected appointments" = "既に受諾または拒否した予定を隠す";
+"Show already accepted and rejected appointments" = "既に受諾または拒否した予定を表示";
+
+/* Print view */
+"LIST" = "リスト";
+"Print Settings" = "印刷の設定";
+"Title" = "題名";
+"Layout" = "レイアウト";
+"What to Print" = "印刷の対象";
+"Options" = "オプション";
+"Tasks with no due date" = "期日のないタスク";
+"Display working hours only" = "就業時間だけ表示";
+"Completed tasks" = "完了したタスク";
+"Display events and tasks colors" = "イベントとタスクにを色を付けて表示";
+"Borders" = "枠";
+"Backgrounds" = "背景";
+
+/* Appointments */
+"Appointment viewer" = "予定の表示";
+"Appointment editor" = "予定の編集";
+"Appointment proposal" = "予定の提案";
+"Appointment on" = "予定";
+"Start" = "開始";
+"End" = "終了";
+"Due Date" = "期日";
+"Name" = "名前";
+"Email" = "電子メール";
+"Status" = "状態";
+"% complete" = "% 完了";
+"Location" = "場所";
+"Add a category" = "カテゴリを追加";
+"Priority" = "優先度";
+"Privacy" = "プライバシー";
+"Cycle" = "繰り返し";
+"Cycle End" = "繰り返しの終了";
+"Categories" = "カテゴリ";
+"Classification" = "分類";
+"Duration" = "期間";
+"Attendees" = "出席者";
+"Resources" = "リソース";
+"Organizer" = "主催者";
+"Description" = "説明";
+"Document" = "ドキュメント";
+"Category" = "カテゴリ";
+"Repeat" = "繰り返し";
+"Reminder" = "リマインダー";
+"General" = "一般";
+"Reply" = "返信";
+"Created by" = "作成者";
+"You are invited to participate" = "あなたは参加者として招待されました";
+"Target" = "ターゲット";
+"attributes" = "属性";
+"attendees" = "出席者";
+"delegated from" = "委任元";
+
+/* checkbox title */
+"is private" = "は非公開";
+
+/* classification */
+"Public" = "公開";
+"Private" = "非公開";
+
+/* text used in overviews and tooltips */
+"empty title" = "無題";
+"private appointment" = "非公開の予定";
+"Change..." = "変更...";
+
+/* Appointments (participation state) */
+"partStat_NEEDS-ACTION" = "後で確認";
+"partStat_ACCEPTED" = "出席";
+"partStat_DECLINED" = "欠席";
+"partStat_TENTATIVE" = "おそらく出席";
+"partStat_DELEGATED" = "委任";
+"partStat_OTHER" = "その他";
+
+/* Appointments (error messages) */
+"Conflicts found!" = "競合が見つかりました。";
+"Invalid iCal data!" = "不正なiCalのデータです";
+"Could not create iCal data!" = "iCalのデータを作成できません。";
+
+/* Searching */
+"view_all" = "すべて";
+"view_today" = "今日";
+"view_next7" = "次の7日間";
+"view_next14" = "次の14日間";
+"view_next31" = "次の31日間";
+"view_thismonth" = "今月";
+"view_thisyear" = "今年";
+"view_future" = "すべての今後のイベント";
+"view_selectedday" = "選択した日";
+"view_not_started" = "開始していないタスク";
+"view_overdue" = "期限を過ぎたタスク";
+"view_incomplete" = "未完了のタスク";
+"View" = "表示";
+"Title, category or location" = "タイトル、カテゴリ、場所";
+"Entire content" = "内容全体";
+"Search" = "検索";
+"Search attendees" = "出席者を検索";
+"Search resources" = "リソースを検索";
+"Search appointments" = "予定を検索";
+"All day Event" = "終日のイベント";
+"check for conflicts" = "競合を検査";
+"URL" = "URL";
+"newAttendee" = "出席者を追加";
+
+/* calendar modes */
+"Overview" = "概要";
+"Chart" = "図表";
+"List" = "一覧";
+"Columns" = "列";
+
+/* Priorities */
+"prio_0" = "指定なし";
+"prio_1" = "高";
+"prio_2" = "高";
+"prio_3" = "高";
+"prio_4" = "高";
+"prio_5" = "通常";
+"prio_6" = "低";
+"prio_7" = "低";
+"prio_8" = "低";
+"prio_9" = "低";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "公開のイベント";
+"CONFIDENTIAL_vevent" = "秘密のイベント";
+"PRIVATE_vevent" = "非公開のイベント";
+"PUBLIC_vtodo" = "公開のタスク";
+"CONFIDENTIAL_vtodo" = "秘密のタスク";
+"PRIVATE_vtodo" = "非公開のタスク";
+
+/* status type */
+"status_" = "無指定";
+"status_NOT-SPECIFIED" = "無指定";
+"status_TENTATIVE" = "暫定";
+"status_CONFIRMED" = "確認済み";
+"status_CANCELLED" = "取り止め済み";
+"status_NEEDS-ACTION" = "行動が必要";
+"status_IN-PROCESS" = "進行中";
+"status_COMPLETED" = "完了日";
+
+/* Priority level */
+"low" = "低";
+
+/* Priority level */
+"normal" = "通常";
+
+/* Priority level */
+"high" = "高";
+
+/* Cycles */
+"cycle_once" = "1回";
+"cycle_daily" = "毎日";
+"cycle_weekly" = "毎週";
+"cycle_2weeks" = "隔週";
+"cycle_4weeks" = "毎4週";
+"cycle_monthly" = "毎月";
+"cycle_weekday" = "平日";
+"cycle_yearly" = "毎年";
+"cycle_end_never" = "ずっと繰り返し";
+"cycle_end_until" = "繰り返しの終了";
+"Recurrence pattern" = "繰り返しのパターン";
+"Range of recurrence" = "繰り返しの範囲";
+"Daily" = "毎日";
+"Multi-Columns" = "複数列";
+"Weekly" = "毎週";
+"Monthly" = "毎月";
+"Yearly" = "毎年";
+"Every" = "毎";
+"Days" = "日";
+"Week(s)" = "週";
+"On" = "On";
+"Month(s)" = "月";
+
+/* [Event recurrence editor] Ex: _The_ first Sunday */
+"The" = "The";
+"Recur on day(s)" = "日で繰り返す";
+"Year(s)" = "年";
+
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
+"cycle_of" = "of";
+"No end date" = "終了日なし";
+"Create" = "作成";
+"appointment(s)" = "予定";
+"Repeat until" = "繰り返しの期限";
+"End Repeat" = "繰り返しの終了";
+"Never" = "決してしない";
+"After" = "後";
+"On Date" = "指定日";
+"times" = "回数";
+"First" = "第一";
+"Second" = "第二";
+"Third" = "第三";
+"Fourth" = "第四";
+"Fift" = "第五";
+"Last" = "最後";
+
+/* Appointment categories */
+"category_none" = "なし";
+"category_labels" = "記念日,誕生日,ビジネス,業務,呼び出し,顧客,競合,取引先,お気に入り,フォローアップ,贈り物,休日,アイデア,打ち合わせ,問題,その他,個人,プロジェクト,祝日,状態,供給者,旅行,休暇";
+"repeat_NEVER" = "繰り返さない";
+"repeat_DAILY" = "毎日";
+"repeat_WEEKLY" = "毎週";
+"repeat_BI-WEEKLY" = "隔週";
+"repeat_EVERY WEEKDAY" = "平日";
+"repeat_MONTHLY" = "毎月";
+"repeat_YEARLY" = "毎年";
+"repeat_CUSTOM" = "カスタム設定...";
+"reminder_NONE" = "リマインダーなし";
+"reminder_0" = "イベント時";
+"reminder_5_MINUTES_BEFORE" = "5分前";
+"reminder_10_MINUTES_BEFORE" = "10分前";
+"reminder_15_MINUTES_BEFORE" = "15分前";
+"reminder_30_MINUTES_BEFORE" = "30分前";
+"reminder_45_MINUTES_BEFORE" = "45分前";
+"reminder_1_HOUR_BEFORE" = "1時間前";
+"reminder_2_HOURS_BEFORE" = "2時間前";
+"reminder_5_HOURS_BEFORE" = "5時間前";
+"reminder_15_HOURS_BEFORE" = "15時間前";
+"reminder_1_DAY_BEFORE" = "1日前";
+"reminder_2_DAYS_BEFORE" = "2日前";
+"reminder_1_WEEK_BEFORE" = "1週間前";
+"reminder_CUSTOM" = "カスタム設定...";
+"reminder_MINUTES" = "分";
+"reminder_HOURS" = "時間";
+"reminder_DAYS" = "日";
+"reminder_WEEKS" = "週";
+"reminder_BEFORE" = "前";
+"reminder_AFTER" = "後";
+"reminder_START" = "イベントの開始";
+"reminder_END" = "イベントの終了";
+"Reminder Details" = "リマインダーの詳細";
+"Choose a Reminder Action" = "リマインダーの動作を選択";
+"Show an Alert" = "アラートを表示";
+"Send an E-mail" = "メールを送信";
+"Email Organizer" = "オーガナイザーにメール送信";
+"Email Attendees" = "出席者にメール送信";
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* Arial label for reminder units */
+"Reminder units" = "リマインダー";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "リマインダー";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "リマインダー";
+
+/* transparency */
+"Show Time as Free" = "空き時間として表示";
+
+/* email notifications */
+"Send Appointment Notifications" = "予定の通知を送信";
+"From" = "From";
+"To" = "To";
+
+/* validation errors */
+validate_notitle           = "タイトルがありません、続けますか?";
+validate_invalid_startdate = "誤った開始日のフィールドです。";
+validate_invalid_enddate   = "誤った終了日のフィールドです。";
+validate_endbeforestart    = "入力した終了日は開始日より前の日付です。";
+validate_untilbeforeend    = "繰り返し日は最初に設定した予定の後である必要があります。";
+
+"Events" = "イベント";
+"Tasks" = "タスク";
+"Show completed tasks" = "完了したタスクを表示";
+
+/* tabs */
+"Task" = "タスク";
+"Event" = "イベント";
+"Recurrence" = "繰り返し";
+
+/* toolbar */
+"New Event" = "新しいイベント";
+"New Task" = "新しいタスク";
+"Edit" = "編集";
+"Delete" = "削除";
+"Go to Today" = "今日に移動";
+"Day View" = "日表示";
+"Week View" = "週表示";
+"Month View" = "月表示";
+"Reload" = "再読み込み";
+
+/* Number of selected components in events or tasks list */
+"selected" = "選択済み";
+"eventPartStatModificationError" = "参加の状態を変更できませんでした。";
+
+/* menu */
+"New Event..." = "新しいイベント...";
+"New Task..." = "新しいタスク...";
+"Edit Selected Event..." = "選択したイベントを編集...";
+"Delete Selected Event" = "選択したイベントを削除";
+"Select All" = "すべて選択";
+"Workweek days only" = "就業日だけ";
+"Tasks in View" = "表示中タスク";
+"eventDeleteConfirmation" = "以下のイベントを削除します:";
+"taskDeleteConfirmation" = "以下のタスクを削除します:";
+"Would you like to continue?" = "続けますか?";
+"You cannot remove nor unsubscribe from your personal calendar."
+= "個人用カレンダーの削除や解除はできません。";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "カレンダー\"%{0}\"を本当に削除しますか?";
+
+/* Legend */
+"Participant" = "参加者";
+"Optional Participant" = "自由参加者";
+"Non Participant" = "非参加者";
+"Chair" = "司会者";
+"Needs action" = "行動が必要";
+"Accepted" = "受諾済み";
+"Declined" = "辞退済み";
+"Tentative" = "暫定";
+"Free" = "空き";
+"Busy" = "予定あり";
+"Maybe busy" = "おそらく予定あり";
+"No free-busy information" = "予定の有無の情報はありません";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot" = "時間帯を提案";
+"Zoom" = "拡大";
+"Previous slot" = "前の時間帯";
+"Next slot" = "次の時間帯";
+"Previous hour" = "前の時間";
+"Next hour" = "次の時間";
+"Work days only" = "就業日だけ";
+"The whole day" = "終日";
+"Between" = "間";
+"and" = "と";
+"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
+= "時間が競合している参加者が1人以上います。\n現在の設定のままでよろしいですか?";
+
+/* events list */
+"Due" = "期日";
+"(Private Event)" = "(非公開のイベント)";
+vevent_class0 = "(公開のイベント)";
+vevent_class1 = "(非公開のイベント)";
+vevent_class2 = "(機密のイベント)";
+
+/* tasks list */
+"Descending Order" = "降順";
+vtodo_class0 = "(公開のタスク)";
+vtodo_class1 = "(非公開のタスク)";
+vtodo_class2 = "(機密のタスク)";
+"closeThisWindowMessage" = "ありがとうございます!  このウィンドウまたは表示を閉じても構いません。";
+"Multicolumn Day View" = "複数日表示";
+"Please select an event or a task." = "イベントまたはタスクを選択してください。";
+"editRepeatingItem" = "編集している項目は繰り返しています。すべてを編集対象としますか、または1つだけを編集しますか?";
+"button_thisOccurrenceOnly" = "この予定だけ";
+"button_allOccurrences" = "すべての予定";
+"Edit This Occurrence" = "この予定を編集";
+"Edit All Occurrences" = "定期的な予定設定を編集";
+"Update This Occurrence" = "この予定を更新";
+"Update All Occurrences" = "定期的な予定設定を更新";
+
+/* Properties dialog */
+"Color" = "色";
+"Include in free-busy" = "予定の有無に含める";
+"Synchronization" = "同期";
+"Synchronize" = "同期";
+"Tag" = "タグ";
+"Display" = "表示";
+"Show alarms" = "アラームを表示";
+"Show tasks" = "タスクを表示";
+"Notifications" = "通知";
+"Receive a mail when I modify my calendar" = "自分で自分のカレンダーを修正したときにメールを受信";
+"Receive a mail when someone else modifies my calendar" = "誰かが自分のカレンダーを修正したときにメールを受信";
+"When I modify my calendar, send a mail to" = "カレンダーが更新された時に、次にメールを送信:";
+"Email Address" = "メールアドレス";
+"Export" = "エクスポート";
+
+
+/* Show only the calendar for which the menu is displayed */
+"Show Only This Calendar" = "このカレンダーのみを表示";
+
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "すべてのカレンダーを表示";
+
+"Links to this Calendar" = "このカレンダーへのリンク";
+"Authenticated User Access" = "認証済みユーザーのアクセス";
+"CalDAV URL" = "CalDAV URL ";
+"WebDAV ICS URL" = "WebDAV ICSのURL";
+"WebDAV XML URL" = "WebDAV XMLのURL";
+
+/* Error messages */
+"dayFieldInvalid" = "日付のフィールドには1以上の数値を指定してください。";
+"weekFieldInvalid" = "週のフィールドには1以上の数値を指定してください。";
+"monthFieldInvalid" = "月のフィールドには1以上の数値を指定してください。";
+"monthDayFieldInvalid" = "日付の欄には1以上の数値を指定してください。";
+"yearFieldInvalid" = "年のフィールドには1以上の数値を指定してください。";
+"appointmentFieldInvalid" = "予定のフィールドには1以上の数値を指定してください。";
+"recurrenceUnsupported" = "この種類の繰り返しは現在サポートしていません。";
+"Please specify a calendar name." = "カレンダーの名前を指定してください。";
+"tagNotDefined" = "このカレンダーを同期したい場合はタグを指定しなければなりません。";
+"tagAlreadyExists" = "指定したタグは既に別のカレンダーに関連付けられています。";
+"tagHasChanged" = "カレンダーのタグを変更すると、移動端末にデータを再読み込みしなければならなくなります。\n続けますか?";
+"tagWasAdded" = "このカレンダーを同期すると、移動端末にデータを再読み込みしなければならなくなります。\n続けますか?";
+"tagWasRemoved" = "カレンダーの同期を止めると、移動端末にデータを再読み込みしなければならなくなります。\n続けますか?";
+"DestinationCalendarError" = "コピーの元と先が同じカレンダーです。別のカレンダーへコピーしてみてください。";
+"EventCopyError" = "コピーできませんでした。別のカレンダーへのコピーをお試しください。";
+"Please select at least one calendar" = "カレンダーを少なくとも1つ選んでください。";
+"Open Task..." = "タスクを開く...";
+"Mark Completed" = "完了済みにする";
+"Delete Task" = "タスクを削除";
+"Delete Event" = "イベントを削除";
+"Copy event to my calendar" = "イベントを自分のカレンダーにコピー";
+"View Raw Source" = "生のソースを表示";
+"Move To" = "移動先";
+"Copy To" = "コピー先";
+"Subscriptions" = "サブスクリプション";
+"Subscribe to a shared folder" = "共有フォルダに登録";
+"Subscribe to a web calendar..." = "ウェブカレンダーを登録...";
+"URL of the Calendar" = "カレンダーのURL";
+"Web Calendar" = "ウェブカレンダー";
+"Web Calendars" = "ウェブカレンダー";
+"Reload on login" = "ログイン時に再読み込み";
+"Invalid number." = "正しくない数値です。";
+"Please identify yourself to %{0}" = "%{0}に自分の情報を共有してください";
+"quantity" = "量";
+"Current view" = "現在表示されているページ";
+"Selected events and tasks" = "選択されたイベントとタスク";
+"Custom date range" = "選択した日付範囲";
+"Select starting date" = "開始日を選択";
+"Select ending date" = "終了日を選択";
+"Delegated to" = "委任先";
+"Keep sending me updates" = "更新時にメッセージを送信";
+"OK" = "OK";
+"Confidential" = "秘密";
+"Enable" = "有効化";
+"Filter" = "フィルター";
+"Sort" = "並べ替え";
+"Back" = "戻る";
+"Day" = "日";
+"Month" = "月";
+"New Appointment" = "新しい予定";
+"filters" = "フィルター";
+"Today" = "今日";
+"More options" = "他のオプション";
+"Delete This Occurrence" = "この予定を削除";
+"Delete All Occurrences" = "定期的な予定設定を削除";
+"Add Recurrence Date" = "繰り返し日を追加";
+"Add From" = "開始日を追加";
+"Add Due" = "期日を追加";
+"Import" = "インポート";
+"Rename" = "名称変更";
+"Import Calendar" = "カレンダーをインポート";
+"Select an ICS file." = "ICSファイルを選択";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "カレンダーに登録されました";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "項目を切替";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "検索範囲";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";
