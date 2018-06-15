@@ -69,6 +69,13 @@
 		      <var:string label:value="New Folder..."/>
 		    </md-button>
 		  </md-menu-item>
+		  <md-menu-item ng-show="::account.id == 0">
+		    <md-button
+			label:aria-label="Search"
+			ng-click="app.showAdvancedSearch()">
+		      <var:string label:value="Search"/>
+		    </md-button>
+		  </md-menu-item>
 		</md-menu-content>
 	      </md-menu>
 	    </md-list-item>
@@ -116,13 +123,13 @@
 
   <script type="text/ng-template" id="UIxMailFolderTemplate">
     <md-toolbar layout="row" layout-align="space-between center" class="toolbar-main"
-                ng-hide="mailbox.service.$virtualPath">
+                ng-hide="mailbox.service.$virtualPath !== false">
       <var:component className="UIxTopnavToolbar"/>
     </md-toolbar>
 
     <!-- Advanced search toolbar -->
     <md-toolbar layout="column" class="md-tall toolbar-main md-hue-3"
-                ng-show="mailbox.service.$virtualPath">
+                ng-show="mailbox.service.$virtualPath !== false">
       <div class="md-toolbar-tools">
         <div layout="column" class="md-flex">
           <div class="pseudo-input-container--compact">

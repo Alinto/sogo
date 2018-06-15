@@ -7,7 +7,7 @@
 
     <!-- in virtual mailbox mode -->
     <md-toolbar class="md-whiteframe-z1 md-hue-3"
-                ng-hide="!mailbox.service.$virtualPath || mailbox.mode.multiple">
+                ng-hide="mailbox.service.$virtualPath === false || mailbox.mode.multiple">
       <div class="md-toolbar-tools"
          layout="row" layout-align="start start">
         <div class="pseudo-input-container pseudo-input-container--compact md-flex sg-no-wrap">
@@ -15,7 +15,7 @@
             <var:string label:value="Search messages in"/>
           </label>
           <md-select class="pseudo-input-field" ng-model="mailbox.service.$virtualPath">
-            <md-option ng-value="">
+            <md-option ng-value="''">
               <span ng-bind="app.accounts[0].name"><!-- main account name --></span>
             </md-option>
             <md-option ng-repeat="folder in
@@ -67,7 +67,7 @@
     </md-toolbar>
     <!-- single-selection toolbars -->
     <md-toolbar class="md-accent md-hue-1"
-                ng-hide="mailbox.service.$virtualPath || mailbox.mode.multiple">
+                ng-hide="mailbox.service.$virtualPath !== false || mailbox.mode.multiple">
       <!-- sort mode (default) -->
       <div class="md-toolbar-tools" ng-hide="mailbox.mode.search">
         <md-button class="sg-icon-button" label:aria-label="Search"

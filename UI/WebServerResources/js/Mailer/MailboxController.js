@@ -240,7 +240,7 @@
       }
 
       if (index > -1)
-        vm.selectMessage(vm.selectedFolder.$messages[index]);
+        vm.selectMessage(vm.selectedFolder.getItemAtIndex(index));
 
       $event.preventDefault();
 
@@ -263,7 +263,7 @@
         index = 0;
 
       if (index < vm.selectedFolder.getLength())
-        vm.selectMessage(vm.selectedFolder.$messages[index]);
+        vm.selectMessage(vm.selectedFolder.getItemAtIndex(index));
       else
         index = -1;
 

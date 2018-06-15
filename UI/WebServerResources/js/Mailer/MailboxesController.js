@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MailboxesController.$inject = ['$scope', '$state', '$transitions', '$timeout', '$window', '$mdDialog', '$mdToast', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'sgHotkeys', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
-  function MailboxesController($scope, $state, $transitions, $timeout, $window, $mdDialog, $mdToast, focus, encodeUriFilter, Dialog, Settings, sgHotkeys, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
+  MailboxesController.$inject = ['$scope', '$state', '$transitions', '$timeout', '$window', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgConstant', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'sgHotkeys', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
+  function MailboxesController($scope, $state, $transitions, $timeout, $window, $mdMedia, $mdSidenav, $mdDialog, $mdToast, sgConstant, focus, encodeUriFilter, Dialog, Settings, sgHotkeys, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
     var vm = this,
         account,
         mailbox,
@@ -84,7 +84,8 @@
         var root, mailboxes = [],
             _visit = function(folders) {
               _.forEach(folders, function(o) {
-                mailboxes.push(o);
+                if (!o.isNoSelect())
+                  mailboxes.push(o);
                 if (o.children && o.children.length > 0) {
                   _visit(o.children);
                 }
@@ -102,14 +103,16 @@
         Mailbox.selectedFolder = vm.virtualMailbox;
         Mailbox.$virtualMode = true;
 
-        if (angular.isDefined(Mailbox.$virtualPath)) {
+        if (Mailbox.$virtualPath.length) {
           root = vm.accounts[0].$getMailboxByPath(Mailbox.$virtualPath);
           mailboxes.push(root);
           if (vm.search.subfolders && root.children.length)
             _visit(root.children);
         }
         else {
-          mailboxes = vm.accounts[0].$flattenMailboxes();
+          mailboxes = _.filter(vm.accounts[0].$flattenMailboxes({ all: true }), function(mailbox) {
+            return !mailbox.isNoSelect();
+          });
         }
 
         vm.virtualMailbox.setMailboxes(mailboxes);
@@ -185,6 +188,13 @@
           $mdDialog.hide();
         }
       }
+    };
+
+    this.showAdvancedSearch = function() {
+      Mailbox.$virtualPath = '';
+      // Close sidenav on small devices
+      if (!$mdMedia(sgConstant['gt-md']))
+        $mdSidenav('left').close();
     };
 
     this.newFolder = function(parentFolder) {

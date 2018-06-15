@@ -185,8 +185,8 @@
       for (j = 0; j < this.$mailboxes.length; j++) {
         mailbox = this.$mailboxes[j];
         for (k = 0; k < mailbox.$messages.length; i++, k++) {
-          message = mailbox.$messages[k];
           if (i == index) {
+            message = mailbox.$messages[k];
             if (mailbox.$loadMessage(message.uid))
               return message;
           }
@@ -208,6 +208,26 @@
   };
 
   /**
+   * @function $selectedMessageIndex
+   * @memberof Mailbox.prototype
+   * @desc Return the index of the currently visible message.
+   * @returns a number or undefined if no message is selected
+   */
+  VirtualMailbox.prototype.$selectedMessageIndex = function() {
+    var offset = 0;
+    var selectedMailbox = _.find(this.$mailboxes, function(mailbox) {
+      if (angular.isDefined(mailbox.selectedMessage)) {
+        return true;
+      }
+      else {
+        offset += mailbox.getLength();
+        return false;
+      }
+    });
+    return offset + selectedMailbox.uidsMap[selectedMailbox.selectedMessage];
+  };
+
+  /**
    * @function $selectedMessages
    * @memberof VirtualMailbox.prototype
    * @desc Return an associative array of the selected messages for each mailbox. Keys are the mailboxes ids.
@@ -215,9 +235,11 @@
    */
   VirtualMailbox.prototype.$selectedMessages = function() {
     var messagesMap = {};
-    return _.transform(this.$mailboxes, function(messagesMap, mailbox) {
+    return _.filter(_.transform(this.$mailboxes, function(messagesMap, mailbox) {
       messagesMap[mailbox.id] = mailbox.$selectedMessages();
-    }, {});
+    }, {}), function(o) {
+      return _.size(o) > 0;
+    });
   };
 
   /**
@@ -264,22 +286,43 @@
   /**
    * @function $deleteMessages
    * @memberof VirtualMailbox.prototype
-   * @desc Delete multiple messages from mailbox.
+   * @desc Delete one or multiple messages from mailbox.
    * @param {object} messagesMap
    * @return a promise of the HTTP operation
    */
   VirtualMailbox.prototype.$deleteMessages = function(messagesMap) {
-    var promises = [];
+    var _this = this, promises = [];
 
-    _.forEach(messagesMap, function(messages, id) {
-      if (messages.length > 0) {
-        var mailbox = messages[0].$mailbox;
-        var promise = mailbox.$deleteMessages(messages);
-        promises.push(promise);
-      }
-    });
+    if (_.isArray(messagesMap) && messagesMap.length === 1) {
+      // Deleting one message
+      var message = messagesMap[0];
+      var mailbox = message.$mailbox;
+      return mailbox.$deleteMessages([message]).then(function(index) {
+        var offset = 0;
+        _.find(_this.$mailboxes, function(currentMailbox) {
+          if (currentMailbox.id === mailbox.id) {
+            return true;
+          }
+          else {
+            offset += currentMailbox.getLength();
+            return false;
+          }
+        });
+        return offset + index;
+      });
+    }
+    else {
+      // Deleting multiple messages from different mailboxes
+      _.forEach(messagesMap, function(messages, id) {
+        if (messages.length > 0) {
+          var mailbox = messages[0].$mailbox;
+          var promise = mailbox.$deleteMessages(messages);
+          promises.push(promise);
+        }
+      });
 
-    return VirtualMailbox.$q.all(promises);
+      return VirtualMailbox.$q.all(promises);
+    }
   };
 
   /**
@@ -345,6 +388,15 @@
     });
 
     return VirtualMailbox.$q.all(promises);
+  };
+
+  /**
+   * @function $compact
+   * @memberof VirtualMailbox.prototype
+   * @desc Called when leaving the Mailer module. No-op when in advanced search.
+   */
+  VirtualMailbox.prototype.$comact = function() {
+    return true;
   };
 
 })();

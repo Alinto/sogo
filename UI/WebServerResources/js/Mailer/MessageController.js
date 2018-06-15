@@ -215,6 +215,9 @@
         message = stateMessage;
         state = $state;
       }
+      if (Mailbox.$virtualMode) {
+        mailbox = Mailbox.selectedFolder; // the VirtualMailbox instance
+      }
 
       mailbox.$deleteMessages([message]).then(function(index) {
         var nextIndex = index;
@@ -224,10 +227,10 @@
           // Select either the next or previous message
           if (index > 0) {
             nextIndex -= 1;
-            nextMessage = mailbox.$messages[nextIndex];
+            nextMessage = mailbox.getItemAtIndex(nextIndex);
           }
-          if (index < mailbox.$messages.length)
-            previousMessage = mailbox.$messages[index];
+          if (index < mailbox.getLength())
+            previousMessage = mailbox.getItemAtIndex(index);
 
           if (nextMessage) {
             if (nextMessage.isread && previousMessage && !previousMessage.isread) {
@@ -242,7 +245,10 @@
 
           try {
             if (nextMessage && $mdMedia(sgConstant['gt-md'])) {
-              state.go('mail.account.mailbox.message', { messageId: nextMessage.uid });
+              if (Mailbox.$virtualMode)
+                state.go('mail.account.virtualMailbox.message', {mailboxId: encodeUriFilter(nextMessage.$mailbox.path), messageId: nextMessage.uid});
+              else
+                state.go('mail.account.mailbox.message', {messageId: nextMessage.uid});
               if (nextIndex < mailbox.$topIndex)
                 mailbox.$topIndex = nextIndex;
               else if (nextIndex > mailbox.$lastVisibleIndex)
