@@ -310,7 +310,7 @@
                 {
                   currentOccurence = [occurences objectAtIndex: count];
                   currentId = [currentOccurence recurrenceId];
-                  if ([currentId compare: recurrenceId] == NSOrderedSame)
+                  if (currentId && [currentId compare: recurrenceId] == NSOrderedSame)
                     {
                       [[calendar children] removeObject: currentOccurence];
                       break;
