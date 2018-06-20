@@ -26,13 +26,13 @@
       this.tags = { searchText: '', selected: '' };
       this.showFlags = stateMessage.flags && stateMessage.flags.length > 0;
       this.$showDetailedRecipients = false;
-
-      vm.showRawSource = false;
+      this.showRawSource = false;
 
       _registerHotkeys(hotkeys);
 
       // One-way refresh of the parent window when modifying the message from a popup window.
-      if ($window.opener) {
+      if ($window.opener &&
+          '$mailboxController' in $window.opener) {
         // Update the message flags. The message must be displayed in the parent window.
         $scope.$watchCollection(function() { return vm.message.flags; }, function(newTags, oldTags) {
           var ctrls;
@@ -160,12 +160,13 @@
       var message, mailbox, ctrls = {};
       if ($window.opener) {
         // Deleting the message from a popup window
-        if ($window.opener.$mailboxController &&
+        if ('$mailboxController' in $window.opener &&
+            'selectedFolder' in $window.opener.$mailboxController &&
             $window.opener.$mailboxController.selectedFolder.$id() == stateMailbox.$id()) {
             // The message mailbox is opened in the parent window
             mailbox = $window.opener.$mailboxController;
             ctrls.mailboxCtrl = mailbox;
-            if ($window.opener.$messageController &&
+            if ('$messageController' in $window.opener &&
                 $window.opener.$messageController.message.uid == stateMessage.uid) {
               // The message is opened in the parent window
               message = $window.opener.$messageController;
