@@ -3041,7 +3041,7 @@ void handle_eas_terminate(int signum)
 - (void) processSearchMailbox: (id <DOMElement>) theDocumentElement
 		   inResponse: (WOResponse *) theResponse
 {
-  NSString *folderId, *realCollectionId, *itemId;
+  NSString *folderId, *realCollectionId, *itemId, *bodyPreferenceType, *mimeSupport;
   NSMutableArray *folderIdentifiers;
   SOGoMailAccounts *accountsFolder;
   SOGoMailAccount *accountFolder;
@@ -3064,6 +3064,13 @@ void handle_eas_terminate(int signum)
       [theResponse setStatus: 500];
       return;
     }
+
+  bodyPreferenceType = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"BodyPreference"] lastObject] getElementsByTagName: @"Type"] lastObject] textValue];
+  [context setObject: bodyPreferenceType  forKey: @"BodyPreferenceType"];
+  mimeSupport = [[(id)[theDocumentElement getElementsByTagName: @"MIMESupport"] lastObject] textValue];
+  [context setObject: mimeSupport  forKey: @"MIMESupport"];
+
+  [context setObject: @"8" forKey: @"MIMETruncation"];
 
   // FIXME: support more than one CollectionId tag + DeepTraversal
   folderId = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject] getElementsByTagName: @"CollectionId"] lastObject] textValue];
