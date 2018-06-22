@@ -59,7 +59,6 @@
   const char* bytes;
   const char* sbytes;
 
-  //int flags = PKCS7_DETACHED | PKCS7_STREAM;
   int flags = PKCS7_STREAM | PKCS7_DETACHED | PKCS7_CRLFEOL;
   
   OpenSSL_add_all_algorithms();
@@ -70,7 +69,9 @@
   len = [theData length];
   tbio = BIO_new_mem_buf((void *)bytes, len);
 
-  scert = PEM_read_bio_X509(tbio, NULL, 0, NULL);
+  // Grab the last certificate in case it's chained
+  scert = NULL;
+  while (PEM_read_bio_X509(tbio, &scert, 0, NULL) != NULL);
 
   if (!scert)
     {
@@ -147,8 +148,10 @@
       NSLog(@"FATAL: unable to allocate BIO memory");
       goto cleanup;
     }
-  
-  rcert = PEM_read_bio_X509(tbio, NULL, 0, NULL);
+
+  // Grab the last certificate in case it's chained
+  rcert = NULL;
+  while (PEM_read_bio_X509(tbio, &rcert, 0, NULL) != NULL);
 
   if (!rcert)
     {
@@ -226,7 +229,9 @@
   len = [theData length];
   tbio = BIO_new_mem_buf((void *)bytes, len);
 
-  scert = PEM_read_bio_X509(tbio, NULL, 0, NULL);
+  // Grab the last certificate in case it's chained
+  scert = NULL;
+  while (PEM_read_bio_X509(tbio, &scert, 0, NULL) != NULL);
 
   if (!scert)
     {
@@ -464,20 +469,23 @@
  */
 - (NSDictionary *) certificateDescription
 {
-  BIO *pemBio;
   NSDictionary *data;
+  BIO *bio;
   X509 *x;
 
   data = nil;
   OpenSSL_add_all_algorithms();
-  pemBio = BIO_new_mem_buf((void *) [self bytes], [self length]);
-  x = PEM_read_bio_X509(pemBio, NULL, 0, NULL);
+  bio = BIO_new_mem_buf((void *) [self bytes], [self length]);
+
+  // Grab the last certificate in case it's chained
+  x = NULL;
+  while (PEM_read_bio_X509(bio, &x, 0, NULL) != NULL);
 
   if (x)
     {
-      BIO *buf;
-      char p[1024];
       NSString *subject, *issuer;
+      char p[1024];
+      BIO *buf;
 
       memset(p, 0, 1024);
       buf = BIO_new(BIO_s_mem());
@@ -502,10 +510,11 @@
     }
   else
     {
-      int err = ERR_get_error();
-      const char* sslError;
       NSString *error;
+      const char* sslError;
+      int err;
 
+      err = ERR_get_error();
       ERR_load_crypto_strings();
       sslError = ERR_reason_error_string(err);
       error = [NSString stringWithUTF8String: sslError];
