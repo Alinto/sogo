@@ -1779,7 +1779,12 @@ static NSString    *userAgent      = nil;
       else
         certificate =  [[self mailAccountFolder] certificate];
 
-      content = [content encryptUsingCertificate: certificate];
+      // We check if we have a valid certificate. We can have nil here coming from [[self mailAccountFolder] certificate].
+      // This can happen if one sends an encrypted mail, but actually never uploaded
+      // a PKCS#12 file to SOGo for his/her own usage and we're trying to save an encrypted
+      // version of the message in the current user's Sent folder
+      if (certificate)
+        content = [content encryptUsingCertificate: certificate];
     }
 
  finish_smime:
@@ -1988,7 +1993,7 @@ static NSString    *userAgent      = nil;
         }
 
       // If the current user isn't part of the recipient list for encrypted emails
-      // let's generate a crypted email for its sent folder
+      // let's generate a crypted email for its sent folder.
       if (!messageForSent)
         messageForSent = [self mimeMessageForRecipient: nil];
     }
