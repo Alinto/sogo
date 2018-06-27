@@ -348,11 +348,8 @@ static SoSecurityManager *sm = nil;
 	  [subscribedReferences removeObject: currentKey];
 	  [folderDisplayNames removeObjectForKey: currentKey];
           if ([owner isEqualToString: activeUser])
-            {
-              // Synchronize settings only if the subscription is owned by the active user
-              dirty = YES;
-              [self errorWithFormat: @"%@ lost access to %@", owner, currentKey];
-            }
+            // Synchronize settings only if the subscription is owned by the active user
+            dirty = YES;
 	}
     }
   
