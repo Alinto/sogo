@@ -1004,7 +1004,7 @@ static NSArray *childRecordFields = nil;
           [folderSubscription removeObject: subscriptionPointer];
 	}
 
-      [self logWithFormat: @"Update subscriptions for %@: %@", [sogoUser login], folderSubscription];
+      [self debugWithFormat: @"Update subscriptions for @%: %@", [sogoUser login], folderSubscription];
       [us synchronize];
 
       rc = YES;
