@@ -124,6 +124,9 @@
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Odesílatel této zprávy si přeje být informován o tom, že jste si tuto zprávu přečetli. Chcete odesílateli poslat potvrzení?";
 "Return Receipt (displayed) - %@"= "Potvrzení o přečtení (zobrazeno) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Toto je potvrzení o přečtení ke zprávě, kterou jste poslali pro %@.\n\nPoznámka: Potvrzení o přijetí znamená pouze to, že se zpráva zobrazila na počítači adresáta. Není ale zaručeno, že adresát zprávu četl a porozuměl jejímu obsahu.";
+"Security" = "Zabezpečení";
+"Sign" = "Podepsat";
+"Encrypt" = "Šifrovat";
 "Priority" = "Priorita";
 "highest" = "Nejvyšší";
 "high" = "Vysoká";
@@ -248,6 +251,9 @@
 
 /* Encrypted message notification */
 "This message is encrypted" = "Tato zpráva je šifrována";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Tato zpráva nemohla být dešifrována. Zkontrolujte, zda máte nahrán Váš S/MIME certifikát v předvolnách modulu pošta.";
 
 /* OpenSSL certificate error - unknown issuer */
 "certificate verify error" = "Nelze ověřit digitální podpis zprávy";

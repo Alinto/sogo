@@ -47,6 +47,7 @@
 "Enable auto reply on" = "Ieslēgt automātisko atbildi";
 "Disable auto reply on" = "Izslēgt automātisko atbildi";
 "Always send vacation message response" = "Vienmēr sūtīt atvaļinājuma atbildes ziņojumu";
+"Discard incoming mails during vacation" = "Atmest ienākošo pastu atvaļinājuma laikā";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Lūdzu, norādiet ziņojuma adresātu un e-pasta adreses, kuras vēlaties iespējot automātisko atbildi.";
 "Your vacation message must not end with a single dot on a line." = "Jūsu atvaļinājums ziņa nedrīkst beigties ar vienu punktiņu līnijā.";
@@ -146,10 +147,17 @@
 /* Mailer */
 "Labels" = "Etiķetes";
 "Label" = "Etiķete";
+"IMAP Label" = "IMAP etiķete";
+"Invalid label" = "Nelietojiet atstarpi, ne () {}% * \"\\";
+"Duplicate label" = "Etiķetes dublikāts";
+"IMAP labels must have unique names." = "IMAP etiķetēm ir jābūt unikāliem nosaukumiem.";
 "New label" = "Jauna etiķete";
 "Show subscribed mailboxes only" = "Rādīt tikai abonētajām pastkastēm";
 "Synchronize only default mail folders (EAS)" = "Sinhronizēt tikai noklusējuma pasta mapes (EAS)";
 "Sort messages by threads" = "Kārtot ziņojumus pēc pavedieniem";
+"Always open mail composer" = "Vienmēr atvērt e-pasta sastādītāju";
+"Inside current window" = "Pašreizējā logā";
+"In a popup window" = "Uznirstošajā logā";
 "When sending mail, add unknown recipients to my" = "Sūtot e-pastu, pievienojiet nezināmos adresātus manai";
 "Address Book" = "Adrešu grāmata";
 "Forward messages" = "Pārsūtīt ziņojumus";
@@ -179,6 +187,8 @@
 "Collected Address Book" = "Savāktā adrešu grāmata";
 
 /* IMAP Accounts */
+"Settings" = "Iestatījumi";
+"Security" = "Drošība";
 "Mail Account" = "E-pasta konts";
 "New Mail Account" = "Jauns e-pasta konts";
 "Server Name" = "Servera nosaukums";
@@ -195,6 +205,16 @@
 "Please specify a valid sender address." = "Lūdzu, norādiet derīgu sūtītāja adresi.";
 "Please specify a valid reply-to address." = "Lūdzu, norādiet derīgu atbildēt-uz adresi.";
 "Specify a hostname other than the local host" = "Jānorāda resursdatora nosaukums, izņemot vietējo resursdatoru";
+
+"No certificate installed" = "Nav instalēts neviens sertifikāts";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL sertifikātam jāizmanto PKCS # 12 (PFX) formāts.";
+"Uninstall" = "Atinstalēt";
+"Choose PKCS12 Certificate .." = "Izvēlieties PKCS12 sertifikātu.";
+"Certificate Import Password" = "Sertifikāta importēšanas parole";
+"Upload" = "Augšupielādēt";
+"When composing a message" = "Veidojot ziņojumu";
+"Digitally sign the message by default" = "Ziņojuma parakstīšana ar ciparparakstu pēc noklusējuma";
+"Always try to encrypt the message" = "Vienmēr mēģiniet šifrēt ziņojumu";
 
 /* Additional Parameters */
 "Additional Parameters" = "Papildu parametri";
@@ -238,7 +258,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";

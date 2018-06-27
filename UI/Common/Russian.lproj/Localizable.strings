@@ -31,7 +31,7 @@
 "Sorry, the user rights can not be configured for that object." = "Извините, для данного объекта невозможно настроить права доступа.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Любой пользователь данной системы получит доступ к вашему почтовому ящику \"%{0}\". Вы уверены что доверяете им всем?";
-"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
      = "Любой зарегистрированный в данной системе пользователь сможет просматривать ваш календарь \"%{0}\". Вы уверены что доверяете им всем?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "Вероятнее всего, любые пользователи Интернета сможет получить доступ к вашему календарю \"%{0}\", даже если они не зарегистрированы в этой системе. Действительно ли эта информация может быть доступна для всего Интернета?";
@@ -57,7 +57,7 @@
 "The user rights cannot be edited for this object!"
         = "Извините, для данного объекта невозможно настроить права доступа!";
 "A folder by that name already exists." = "Папка с этим именем уже существует.";
-"You cannot create a list in a shared address book." 
+"You cannot create a list in a shared address book."
         = "Вы не можете создать список в разделяемой адресной книге.";
 "Warning" = "Предупреждение";
 "Can't contact server" = "Произошла ошибка при обращении к серверу. Пожалуйста, повторите попытку позже.";
@@ -75,6 +75,10 @@
 "Cancel" = "Отмена";
 "Yes" = "Да";
 "No" = "Нет";
+
+/* generic messages */
+"Error" = "Ошибка";
+"Success" = "Успех";
 
 /* alarms */
 "Reminder" = "Напоминание";
@@ -109,6 +113,15 @@
 "Loading" = "Загружается";
 "No such user." = "Нет такого пользователя";
 "You cannot (un)subscribe to a folder that you own!" = "Вы не можете подписаться или отписаться от собственной папки.";
+
+/* SMIME Certificate field */
+"Subject Name" = "Субъект";
+"Issuer" = "Издатель";
+"countryName" = "Страна";
+"organizationName" = "Организация";
+"organizationalUnitName" = "Организационное подразделение";
+"commonName" = "Понятное имя";
+"emailAddress" = "Адрес электронной почты";
 
 /* Authentication username */
 "Username" = "Логин";

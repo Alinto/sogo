@@ -124,6 +124,9 @@
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Bu iletiyi gönderen kişi, iletiyi okuduğunuzdan haberdar olmak istedi. Gönderene alındı raporu yollamak ister misiniz?";
 "Return Receipt (displayed) - %@"= "Alındı Raporu (görüntülendi) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Şu adrese gönderdiğiniz iletinin Alındı Raporudur: %@\nBilgi Notu: Bu Alındı Raporu gönderdiğiniz iletinin yalnızca, alıcının bilgisayarında görüntülendiğini belirtir. İleti içeriğinin alıcı tarafından okunduğunu veya anlaşıldığını garanti etmez.";
+"Security" = "Güvenlik";
+"Sign" = "İmzala";
+"Encrypt" = "Şifrele";
 "Priority" = "Öncelik";
 "highest" = "En yüksek";
 "high" = "Yüksek";
@@ -248,6 +251,9 @@
 
 /* Encrypted message notification */
 "This message is encrypted" = "Bu ileti şifrelenmiştir";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Bu mesaj şifresi çözülemez. Lütfen S/MIME sertifikanızı posta tercihleri ​​modülünden yüklediğinizden emin olun.";
 
 /* OpenSSL certificate error - unknown issuer */
 "certificate verify error" = "İletinin imzası doğrulanamıyor";

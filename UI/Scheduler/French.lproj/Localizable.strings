@@ -212,14 +212,15 @@
 "Could not create iCal data!" = "Les données iCal n'ont pu être crées ...";
 
 /* Searching */
-"view_all" = "Tous les événements";
-"view_today" = "Événements du jour";
-"view_next7" = "Événements des 7 prochains jours";
-"view_next14" = "Événements des 14 prochains jours";
-"view_next31" = "Événements des 31 prochains jours";
-"view_thismonth" = "Événements du mois en cours";
-"view_future" = "Tous les événements futurs";
-"view_selectedday" = "Jour courant";
+"view_all" = "Tous";
+"view_today" = "Aujourd'hui";
+"view_next7" = "Les 7 prochains jours";
+"view_next14" = "Les 14 prochains jours";
+"view_next31" = "Les 31 prochains jours";
+"view_thismonth" = "Mois en cours";
+"view_thisyear" = "Année en cours";
+"view_future" = "Futurement";
+"view_selectedday" = "Jour sélectionné";
 "view_not_started" = "Tâches non-commencées";
 "view_overdue" = "Tâches en retard";
 "view_incomplete" = "Tâches à compléter";
@@ -541,6 +542,8 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Delete Event" = "Supprimer l'événement";
 "Copy event to my calendar" = "Copier l'événement dans mon agenda";
 "View Raw Source" = "Afficher le contenu original";
+"Move To" = "Déplacer vers";
+"Copy To" = "Copier vers";
 "Subscriptions" = "Abonnements";
 "Subscribe to a shared folder" = "S'abonner à un dossier partagé";
 "Subscribe to a web calendar..." = "S'inscrire à un agenda en ligne...";

@@ -124,6 +124,9 @@
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Nadawca wiadomości prosił o powiadomienie, gdy odczytasz tą wiadomość. Czy powiadomić nadawcę?";
 "Return Receipt (displayed) - %@"= "Potwierdzenie (wyświetlone) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "To jest potwierdzenie dla e-maila, który był wysłany do %@.\n\nUwaga: To jest potwierdzenie otwarcia maila. Nie gwarantuje ono, że odbiorca przeczytał wiadomość i ją zrozumiał.";
+"Security" = "Bezpieczeństwo";
+"Sign" = "Podpisz";
+"Encrypt" = "Zaszyfruj";
 "Priority" = "Priorytet";
 "highest" = "Najwyższy";
 "high" = "Wysoki";
@@ -248,6 +251,9 @@
 
 /* Encrypted message notification */
 "This message is encrypted" = "Ta wiadomość jest zaszyfrowana";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Tej wiadomości nie można odszyfrować. Upewnij się, że wgrałeś swój certyfikat S/MIME w ustawieniach poczty.";
 
 /* OpenSSL certificate error - unknown issuer */
 "certificate verify error" = "Nie można zweryfikować podpisu wiadomości";

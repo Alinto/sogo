@@ -218,6 +218,7 @@
 "view_next14" = "Termine in den nächsten 14 Tagen";
 "view_next31" = "Termine in den nächsten 31 Tagen";
 "view_thismonth" = "Termine in diesem Kalendermonat";
+"view_thisyear" = "Dieses Jahr";
 "view_future" = "Alle zukünftigen Termine";
 "view_selectedday" = "Momentan gewählter Tag";
 "view_not_started" = "Nicht begonnene Aufgaben";
@@ -541,6 +542,8 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "Delete Event" = "Termin löschen";
 "Copy event to my calendar" = "Kopiere diesen Termin in meinen Kalender";
 "View Raw Source" = "Rohen Quelltext anzeigen";
+"Move To" = "Verschieben in";
+"Copy To" = "Kopieren in";
 "Subscriptions" = "Abonnements";
 "Subscribe to a shared folder" = "Einen geteilten Ordner abonnieren";
 "Subscribe to a web calendar..." = "Einen Webkalender abonnieren...";

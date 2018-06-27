@@ -218,6 +218,7 @@
 "view_next14" = "Gelecek 14 gün";
 "view_next31" = "Gelecek 31 gün";
 "view_thismonth" = "Bu Ay";
+"view_thisyear" = "Bu Yıl";
 "view_future" = "İleri Tarihteki Her Etkinlik";
 "view_selectedday" = "Seçili Gün";
 "view_not_started" = "Başlamamış görevler";
@@ -541,6 +542,8 @@ vtodo_class2 = "(Gizli görev)";
 "Delete Event" = "Etkinliği Sil";
 "Copy event to my calendar" = "Etkinliği takvimime kopyala";
 "View Raw Source" = "Kaynak Kodunu Göster";
+"Move To" = "Taşı";
+"Copy To" = "Kopyala";
 "Subscriptions" = "Üyelikler";
 "Subscribe to a shared folder" = "Paylaşılan bir klasöre üye ol";
 "Subscribe to a web calendar..." = "Bir web takvimine üye ol...";

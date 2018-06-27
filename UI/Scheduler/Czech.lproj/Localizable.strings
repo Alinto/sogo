@@ -218,6 +218,7 @@
 "view_next14" = "Následujících 14 dní";
 "view_next31" = "Následujících 31 dní";
 "view_thismonth" = "Tento měsíc";
+"view_thisyear" = "Letos";
 "view_future" = "Všechny budoucí události";
 "view_selectedday" = "Zvolený den";
 "view_not_started" = "Nezapočaté úkoly";
@@ -541,6 +542,8 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Delete Event" = "Smazat událost";
 "Copy event to my calendar" = "Copy event to my calendar";
 "View Raw Source" = "Zobrazit surový zdroj";
+"Move To" = "Přesunout do";
+"Copy To" = "Kopírovat do";
 "Subscriptions" = "Odebírání";
 "Subscribe to a shared folder" = "Odebírat sdílenou složku";
 "Subscribe to a web calendar..." = "Odebírat vzdálený kalendář na webu";

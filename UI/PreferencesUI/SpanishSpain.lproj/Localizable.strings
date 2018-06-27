@@ -47,6 +47,7 @@
 "Enable auto reply on" = "Activar respuesta automática";
 "Disable auto reply on" = "Desactivar respuesta automatica";
 "Always send vacation message response" = "Siempre enviar mensaje de vacaciones";
+"Discard incoming mails during vacation" = "Descartar los correos entrantes durante las vacaciones";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Por favor, especificar el mensaje y la dirección de correo para aquellos a los que quiere habilitar la respuesta automática.";
 "Your vacation message must not end with a single dot on a line." = "El mensaje de vacaciones no puede finalizarse con un único punto en una linea.";
@@ -146,9 +147,17 @@
 /* Mailer */
 "Labels" = "Etiquetas";
 "Label" = "Etiquetar";
+"IMAP Label" = "Etiqueta IMAP";
+"Invalid label" = "No use el espacio, ni ( ) { } % * \" \\";
+"Duplicate label" = "Etiqueta duplicada";
+"IMAP labels must have unique names." = "El nombre de la etiqueta IMAP tiene que ser único ";
+"New label" = "Nueva etiqueta";
 "Show subscribed mailboxes only" = "Mostrar sólo buzones suscritos";
 "Synchronize only default mail folders (EAS)" = "Syncronizar solo las carpetas de correo por defecto(EAS)";
 "Sort messages by threads" = "Ordenar mensajes por temas";
+"Always open mail composer" = "Siempre abrir el redactor de correo";
+"Inside current window" = "Dentro de la ventana actual";
+"In a popup window" = "En una ventana emergente";
 "When sending mail, add unknown recipients to my" = "Cuando se envía correo, añade destinatarios desconocidos a mi";
 "Address Book" = "Libreta de direcciones";
 "Forward messages" = "Reenviar mensajes";
@@ -178,6 +187,8 @@
 "Collected Address Book" = "Libreta de direcciones recogidas";
 
 /* IMAP Accounts */
+"Settings" = "Configuración";
+"Security" = "Seguridad";
 "Mail Account" = "Cuenta de correo";
 "New Mail Account" = "Nueva Cuenta de Correo";
 "Server Name" = "Nombre de Servidor";
@@ -193,6 +204,17 @@
 "Please enter your signature below" = "Por favor, ponga su firma abajo";
 "Please specify a valid sender address." = "Por favor, especifica una dirección de correo electrónico valida para el remitente.";
 "Please specify a valid reply-to address." = "Por favor, especifica una dirección de correo electrónico valida para responder.";
+"Specify a hostname other than the local host" = "Especifique un nombre de host que no sea el host local";
+
+"No certificate installed" = "No hay un certificado instalado";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "El certificado SSL tiene que usar el formato PKCS#12 (PKX)";
+"Uninstall" = "desinstalar";
+"Choose PKCS12 Certificate .." = "Elije un certificado PKCS12..";
+"Certificate Import Password" = "Importar certificado contraseña";
+"Upload" = "Cargar";
+"When composing a message" = "Al redactar un mensaje";
+"Digitally sign the message by default" = "Firme digitalmente el mensaje por defecto";
+"Always try to encrypt the message" = "Siempre trate de encriptar el mensaje";
 
 /* Additional Parameters */
 "Additional Parameters" = "Parámetros Adicionales";
@@ -212,6 +234,7 @@
 /* Event+task categories */
 "Calendar Category" = "Categoría de Calendarios";
 "Add Calendar Category" = "Añadir Categoría de Calendarios";
+"New category" = "Nueva categoría";
 "Remove Calendar Category" = "Quitar Categoría de Calendarios";
 "Contact Category" = "Categoría de Contactos";
 "Add Contact Category" = "Añadir Categoría de Contactos";
@@ -235,7 +258,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -297,6 +320,9 @@
 "Connection error" = "Error al conectar";
 "Service temporarily unavailable" = "Servicio temporalmente no disponible";
 
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Activar filtro";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Nombre del filtro";
 /* Button label */
@@ -318,11 +344,27 @@
 "Header" = "Cabecera";
 "Body" = "Cuerpo";
 "Flag the message with" = "Marca el mensaje con";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Etiqueta";
+
 "Discard the message" = "Descarta el mensaje";
 "File the message in" = "Archiva el mensaje en";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Buzón";
+
 "Keep the message" = "Guarda el mensaje";
 "Forward the message to" = "Reenvía el mensaje a";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "Correo Electrónico";
+
 "Send a reject message" = "Envía un mensaje de rechazo";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Mensaje";
+
 "Send a vacation message" = "Envío un mensaje de vacaciones";
 "Stop processing filter rules" = "Parar los filtros";
 "is under" = "es debajo";
@@ -381,3 +423,11 @@
 "monsterid" = "Monster";
 "wavatar" = "Wavatar";
 "retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Nivel de animación";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normal";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Limitado";
+"animation_NONE" = "Ninguno";

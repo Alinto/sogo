@@ -76,6 +76,10 @@
 "Yes" = "Jā";
 "No" = "Nē";
 
+/* generic messages */
+"Error" = "Kļūda";
+"Success" = "Panākumi";
+
 /* alarms */
 "Reminder" = "Atgādinājums";
 "Start" = "Sākums";
@@ -109,6 +113,15 @@
 "Loading" = "Ielādēšana";
 "No such user." = "Nav šādu lietotāju.";
 "You cannot (un)subscribe to a folder that you own!" = "Nevar (ne) abonēt mapi, kas tev pieder!";
+
+/* SMIME Certificate field */
+"Subject Name" = "Tēmas nosaukums";
+"Issuer" = "Izdevējs";
+"countryName" = "Valsts";
+"organizationName" = "Organizācija";
+"organizationalUnitName" = "Organizācijas vienība";
+"commonName" = "Kopējais vārds";
+"emailAddress" = "E-pasta adrese";
 
 /* Authentication username */
 "Username" = "Lietotājvārds";

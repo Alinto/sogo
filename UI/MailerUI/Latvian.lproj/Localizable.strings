@@ -124,6 +124,9 @@
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Šī ziņojuma nosūtītājs ir pieprasījis, lai tiktu paziņots, kad izlasīsiet šo ziņojumu. Vai vēlaties apstiprināt ?";
 "Return Receipt (displayed) - %@"= "Saņemšanas paziņojums (parādīts) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Šis ir saņemšanas paziņojums e-pastam ko jūs nosūtījāt %@.\n\nPiezīme: šī ziņojuma saņemšanas paziņojums tikai apstiprināts, ka ziņojums tika parādīts adresāta datorā. Bet nav garantijas, ka adresāts ir izlasījis un sapratis šo ziņojumu saturu.";
+"Security" = "Drošība";
+"Sign" = "Parakstīt";
+"Encrypt" = "Šifrēt";
 "Priority" = "Prioritāte";
 "highest" = "Augstākā";
 "high" = "Augsts";
@@ -246,6 +249,24 @@
 /* Number of selected messages in list */
 "selected" = "atlasīts";
 
+/* Encrypted message notification */
+"This message is encrypted" = "Šis ziņojums ir šifrēts";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Šo ziņojumu nevar atšifrēt. Lūdzu, pārliecinieties, vai esat augšupielādējis savu S/MIME sertifikātu no e-pasta preferenču moduļa.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Nevar pārbaudīt ziņojuma parakstu";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Ziņojums ir modificēts";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Lasot sertifikātu, radās kļūda. Lūdzu, instalējiet jaunu sertifikātu.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Ar kontu nav saistīts neviens sertifikāts.";
+
 "This Folder" = "Šī mape";
 
 /* Label popup menu */
@@ -321,6 +342,7 @@
 = "Ziņas nevarēja pārvietot uz atkritni. Vai vēlaties dzēst tās tūlīt?";
 
 /* Message editing */
+"Please specify a subject." = "Lūdzu, norādiet tēmu.";
 "error_missingsubject" = "Šim ziņojumam nav tēmas. Vai tiešām vēlaties to nosūtīt?";
 "error_missingrecipients" = "Lūdzu, norādiet vismaz vienu adresātu.";
 "Send Anyway" = "Tomēr nosūtīt";
