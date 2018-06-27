@@ -291,28 +291,18 @@ static SoSecurityManager *sm = nil;
   // This is important because user A could delete folder X, and user B has subscribed to it.
   // If the "default roles" are enabled for calendars/address books, -validatePermission:.. will
   // work (grabbing the default role) and the deleted resource will be incorrectly returned.
-  if (!subscribedFolder)
+  if (subscribedFolder
+      && [subscribedFolder ocsFolderForPath: [subscribedFolder ocsPath]]
+      && ![sm validatePermission: SOGoPerm_AccessObject
+			onObject: subscribedFolder
+		       inContext: context])
     {
-      [self errorWithFormat: @"Can't find subscription %@", sourceKey];
-      return NO;
+      [subscribedSubFolders setObject: subscribedFolder
+			       forKey: [subscribedFolder nameInContainer]];
+      return YES;
     }
-  if (![subscribedFolder ocsFolderForPath: [subscribedFolder ocsPath]])
-    {
-      [self errorWithFormat: @"Folder vanished for subscription %@", sourceKey];
-      return NO;
-    }
-  if ([sm validatePermission: SOGoPerm_AccessObject
-                    onObject: subscribedFolder
-                   inContext: context])
-    {
-      [self errorWithFormat: @"User %@ has no right to access %@", [[context activeUser] login], sourceKey];
-      return NO;
-    }
-
-  [subscribedSubFolders setObject: subscribedFolder
-                           forKey: [subscribedFolder nameInContainer]];
-
-  return YES;
+  
+  return NO;
 }
 
 - (NSException *) appendSubscribedSources

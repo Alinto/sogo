@@ -169,10 +169,7 @@ static NSArray *childRecordFields = nil;
   [newFolder setOwner: login];
   [newFolder setIsSubscription: localIsSubscription];
   if (![newFolder displayName])
-    {
-      [self errorWithFormat: @"No displayName for %@", newFolder];
-      newFolder = nil;
-    }
+    newFolder = nil;
 
   return newFolder;
 }
