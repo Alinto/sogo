@@ -623,7 +623,9 @@ _xmlCharsetForCharset (NSString *charset)
         {
           if ([lowerName isEqualToString: @"body"])
             {
-              inBody = NO;
+              // Assume <body> never ends to properly display incorrectly constructed messages.
+              // See bug #4492
+              // inBody = NO;
               if (css)
                 [self _finishCSS];
             }
