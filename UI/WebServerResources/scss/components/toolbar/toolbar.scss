@@ -71,11 +71,17 @@ header {
   justify-content: space-between;
   display: flex;
 }
+
 hgroup {
   align-items: center;
   &h3 {
     margin-bottom: 0;
   }
+}
+
+.sg-toolbar-auto {
+  height: auto;
+  max-height: inherit;
 }
 
 .sg-toolbar-group {
