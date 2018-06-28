@@ -5,7 +5,8 @@ Enhancements
  - [web] now possible to show events/task for the current year
  - [web] show current ordering setting in lists
  - [web] remove invalid occurrences when modifying a recurrent event
- - [web] updated Angular Material to version 1.1.9
+ - [web] updated Angular to version 1.7.2
+ - [web] updated Angular Material to version 1.1.10
  - [web] allow mail flag addition/edition on mobile
  - [web] added Japanese (jp) translation - thanks to Ryo Yamamoto
 
