@@ -388,6 +388,7 @@ html p {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  word-break: break-all;
 }
 
 .sg-label-outline {
