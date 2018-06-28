@@ -143,12 +143,6 @@
     this.toggleAccountState = function (account) {
       account.$expanded = !account.$expanded;
       account.$flattenMailboxes({ reload: true, saveState: true });
-      // Fire a window resize to recompute the virtual-repeater.
-      // This is a fix until the following issue is officially resolved:
-      // https://github.com/angular/material/issues/7309
-      $timeout(function() {
-        angular.element($window).triggerHandler('resize');
-      }, 150);
     };
 
     this.subscribe = function(account) {
