@@ -128,11 +128,11 @@
     </md-toolbar>
 
     <!-- Advanced search toolbar -->
-    <md-toolbar layout="column" class="md-tall toolbar-main md-hue-3"
+    <md-toolbar layout="column" class="toolbar-main md-hue-3"
                 ng-show="mailbox.service.$virtualPath !== false">
       <div class="md-toolbar-tools">
         <div layout="column" class="md-flex">
-          <div class="pseudo-input-container--compact">
+          <div class="pseudo-input-container pseudo-input-container--compact">
             <label class="pseudo-input-label"><var:string label:value="Add a Criteria"/></label>
           </div>
           <div layout="row">
@@ -157,19 +157,19 @@
           <md-icon>close</md-icon>
         </md-button>
       </div>
-      <div class="md-toolbar-tools">
+      <div class="md-toolbar-tools sg-toolbar-auto">
         <md-chips class="md-flex"
                   ng-show="app.search.params.length != 0 || app.currentSearchParam"
                   ng-model="app.search.params"
                   md-transform-chip="app.newSearchParam($chip)"
                   md-add-on-blur="true">
-          <input sg-focus-on="advancedSearch" type="text"
+          <input type="text" sg-focus-on="advancedSearch"
                  ng-disabled="app.currentSearchParam.length == 0"
                  sg-placeholder="app.search.options[app.currentSearchParam]"/>
           <md-chip-template>
-            <span class="md-caption" ng-show="$chip.negative == 0">(<var:string label:value="match"/></span>
-            <span class="md-caption" ng-show="$chip.negative == 1">(<var:string label:value="does not match"/></span>
-            <span class="md-caption" ng-bind="$chip.searchBy"><!-- search by --></span>
+            <span class="md-caption" ng-show="$chip.negative == 0"><var:string label:value="match"/></span>
+            <span class="md-caption" ng-show="$chip.negative == 1"><var:string label:value="does not match"/></span>
+            <span class="md-caption" ng-bind="$chip.searchBy.capitalize() | loc"><!-- search by --></span>
             <span ng-bind="$chip.searchInput"><!-- search input --></span>
           </md-chip-template>
         </md-chips>
@@ -197,7 +197,7 @@
           </md-button>
         </md-menu-item>
         <md-menu-item ng-show="::$menuCtrl.folder.$isEditable">
-          <md-button type="button" ng-click="$menuCtrl.editFolder()">
+          <md-button type="button" ng-click="$menuCtrl.editFolder($event)">
             <var:string label:value="Rename"/>
           </md-button>
         </md-menu-item>

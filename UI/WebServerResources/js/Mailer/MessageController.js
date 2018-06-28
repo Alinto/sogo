@@ -304,7 +304,8 @@
     };
 
     this.close = function() {
-      $state.go('mail.account.mailbox').then(function() {
+      var destination = Mailbox.$virtualMode ? 'mail.account.virtualMailbox' : 'mail.account.mailbox';
+      $state.go(destination).then(function() {
         vm.message = null;
         delete stateMailbox.selectedMessage;
       });

@@ -403,6 +403,15 @@
 "Your email has been sent" = "Your email has been sent";
 "Folder compacted" = "Folder compacted";
 
+/* Advanced search */
+"Enter Subject" = "Enter Subject";
+"Enter From" = "Enter From";
+"Enter To" = "Enter To";
+"Enter Cc" = "Enter Cc";
+"Enter Body" = "Enter Body";
+"match" = "match";
+"does not match" = "does not match";
+
 /* Aria label for scope of search on messages */
 "Search scope" = "Search scope";
 

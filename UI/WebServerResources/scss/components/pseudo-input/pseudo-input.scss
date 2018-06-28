@@ -75,8 +75,13 @@ md-checkbox.pseudo-input-field {
 
 // The specs dimensions are too large to fit with angular-material
 // Here's a modifier
-// .pseudo-input-container--compact {
-//   .pseudo-input-label {
-//     margin-top: 0;
-//   }
-// }
+.pseudo-input-container--compact {
+  .pseudo-input-label {
+    margin-top: 0;
+    line-height: $bl;
+  }
+  md-select.pseudo-input-field,
+  md-checkbox.pseudo-input-field {
+    margin-bottom: $bl;
+  }
+}

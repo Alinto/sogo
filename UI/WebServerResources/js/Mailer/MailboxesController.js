@@ -123,19 +123,19 @@
     };
 
     this.addSearchParam = function(v) {
-      vm.currentSearchParam = v;
+      this.currentSearchParam = v;
       focus('advancedSearch');
       return false;
     };
 
     this.newSearchParam = function(pattern) {
-      if (pattern.length && vm.currentSearchParam.length) {
-        var n = 0, searchParam = vm.currentSearchParam;
+      if (pattern.length && this.currentSearchParam.length) {
+        var n = 0, searchParam = this.currentSearchParam;
         if (pattern.startsWith("!")) {
           n = 1;
           pattern = pattern.substring(1).trim();
         }
-        vm.currentSearchParam = '';
+        this.currentSearchParam = '';
         return { searchBy: searchParam, searchInput: pattern, negative: n };
       }
     };
