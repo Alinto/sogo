@@ -35,6 +35,11 @@ $i: 0;
   $i: $i + 1;
 }
 
+md-select-value [class*="sg-child-level"] {
+  // No padding for selected value
+  padding-left: inherit;
+}
+
 [class^=sg-child-level] {
   md-icon,
   md-checkbox {
