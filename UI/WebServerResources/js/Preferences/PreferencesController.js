@@ -63,8 +63,8 @@
     };
 
     this.addCalendarCategory = function(form) {
-      this.preferences.defaults.SOGoCalendarCategoriesColors["New category"] = "#aaa";
-      this.preferences.defaults.SOGoCalendarCategories.push("New category");
+      this.preferences.defaults.SOGoCalendarCategoriesColors[l('New category')] = "#aaa";
+      this.preferences.defaults.SOGoCalendarCategories.push(l('New category'));
       focus('calendarCategory_' + (this.preferences.defaults.SOGoCalendarCategories.length - 1));
       form.$setDirty();
     };
