@@ -106,6 +106,9 @@ sg-timepicker {
 // The input into which the user can type the time.
 .sg-timepicker-input {
   @extend .md-datepicker-input;
+
+  // From datePicker-theme.scss
+  color: rgba(0,0,0,0.87);
 }
 
 // Container for the timepicker input.
@@ -135,7 +138,7 @@ sg-timepicker {
   max-width: $sg-time-width;
 
   // From datePicker-theme.css
-  border-color: rgb(224,224,224);
+  border-color: rgb(255,255,255);
 
   &.md-pane-open {
     transform: scale(1);
@@ -149,8 +152,7 @@ sg-timepicker {
 
 // From datepicker-theme.scss
 .sg-timepicker-input-mask-opaque {
-  box-shadow: 0 0 0 9999px rgb(238,238,238)
-  //  @extend .md-datepicker-input-mask-opaque;
+  box-shadow: 0 0 0 9999px rgb(255,255,255);
 }
 
 // The time portion of the floating pane (vs. the input mask).
@@ -183,7 +185,7 @@ sg-timepicker {
   @extend .md-datepicker-triangle-button;
 
   // From datepicker-theme.scss
-  &:hover .sg-timepicker-expand-triangle {
+  .sg-timepicker-expand-triangle {
     border-top-color: rgba(0,0,0,0.54);
   }
 }
@@ -209,7 +211,7 @@ sg-timepicker[disabled] {
 
   .sg-timepicker-input-container {
     // From datePicker-theme.scss
-    background: $colorGrey200; //'{{background-hue-1}}';
+    background: rgb(255,255,255); //'{{background-hue-1}}';
   }
 
   .sg-timepicker-input-container,
