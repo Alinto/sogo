@@ -139,8 +139,8 @@
   /**
    * @ngInject
    */
-  configure.$inject = ['$logProvider', '$compileProvider', '$httpProvider', '$mdThemingProvider', '$mdAriaProvider'];
-  function configure($logProvider, $compileProvider, $httpProvider, $mdThemingProvider, $mdAriaProvider) {
+  configure.$inject = ['$logProvider', '$compileProvider', '$httpProvider', '$mdThemingProvider', '$mdAriaProvider', '$qProvider'];
+  function configure($logProvider, $compileProvider, $httpProvider, $mdThemingProvider, $mdAriaProvider, $qProvider) {
     // Accent palette
     $mdThemingProvider.definePalette('sogo-green', {
       '50': 'eaf5e9',
@@ -229,6 +229,7 @@
       $compileProvider.debugInfoEnabled(false);
       // Disable warnings
       $mdAriaProvider.disableWarnings();
+      $qProvider.errorOnUnhandledRejections(false);
       // Disable theme generation but keep definition in config (required by mdColors)
       $mdThemingProvider.generateThemesOnDemand(true);
       // Disable theming completely
