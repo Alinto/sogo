@@ -11,8 +11,8 @@
   /**
    * @ngInject
    */
-  configure.$inject = ['$stateProvider', '$urlRouterProvider'];
-  function configure($stateProvider, $urlRouterProvider) {
+  configure.$inject = ['$stateProvider', '$urlServiceProvider'];
+  function configure($stateProvider, $urlServiceProvider) {
     $stateProvider
       .state('calendars', {
         url: '/calendar',
@@ -28,7 +28,7 @@
         }
       })
       .state('calendars.view', {
-        url: '/{view:(?:day|week|month|multicolumnday)}/:day',
+        url: '/{view:(?:day|week|month|multicolumnday)}/{day:[0-9]{8}}',
         //sticky: true,
         //deepStateRedirect: true,
         views: {
@@ -49,22 +49,22 @@
         }
       });
 
-    $urlRouterProvider.when('/calendar/day', function() {
+    $urlServiceProvider.rules.when('/calendar/day', function() {
       // If no date is specified, show today
       var now = new Date();
       return '/calendar/day/' + now.getDayString();
     });
-    $urlRouterProvider.when('/calendar/multicolumnday', function() {
+    $urlServiceProvider.rules.when('/calendar/multicolumnday', function() {
       // If no date is specified, show today
       var now = new Date();
       return '/calendar/multicolumnday/' + now.getDayString();
     });
-    $urlRouterProvider.when('/calendar/week', function() {
+    $urlServiceProvider.rules.when('/calendar/week', function() {
       // If no date is specified, show today's week
       var now = new Date();
       return '/calendar/week/' + now.getDayString();
     });
-    $urlRouterProvider.when('/calendar/month', function() {
+    $urlServiceProvider.rules.when('/calendar/month', function() {
       // If no date is specified, show today's month
       var now = new Date();
       return '/calendar/month/' + now.getDayString();
@@ -72,7 +72,7 @@
 
     // If none of the above states are matched, use this as the fallback.
     // runBlock will also act as a fallback by looking at user's settings
-    $urlRouterProvider.otherwise('/calendar');
+    $urlServiceProvider.rules.otherwise('/calendar/week');
   }
 
   /**
@@ -105,14 +105,18 @@
   /**
    * @ngInject
    */
-  runBlock.$inject = ['$rootScope', '$log', '$location', '$state', 'Preferences'];
-  function runBlock($rootScope, $log, $location, $state, Preferences) {
-    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-      $log.error(error);
-      $state.go('calendar');
-    });
-    $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
-      $log.error(event, current, previous, rejection);
+  runBlock.$inject = ['$window', '$log', '$transitions', '$location', '$state', 'Preferences'];
+  function runBlock($window, $log, $transitions, $location, $state, Preferences) {
+    if (!$window.DebugEnabled)
+      $state.defaultErrorHandler(function() {
+        // Don't report any state error
+      });
+    $transitions.onError({ to: 'calendars.**' }, function(transition) {
+      if (transition.to().name != 'calendars' &&
+          !transition.ignored()) {
+        $log.error('transition error to ' + transition.to().name + ': ' + transition.error().detail);
+        $state.go({ state: 'calendars' });
+      }
     });
     if ($location.url().length === 0) {
       // Restore user's last view

@@ -11,8 +11,8 @@
   /**
    * @ngInject
    */
-  configure.$inject = ['$stateProvider', '$urlRouterProvider'];
-  function configure($stateProvider, $urlRouterProvider) {
+  configure.$inject = ['$stateProvider', '$urlServiceProvider'];
+  function configure($stateProvider, $urlServiceProvider) {
     $stateProvider
       .state('app', {
         url: '/addressbooks',
@@ -93,7 +93,7 @@
       });
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/addressbooks/personal');
+    $urlServiceProvider.rules.otherwise({ state: 'app.addressbook', params: { addressbookId: 'personal' } });
   }
 
   /**
@@ -170,14 +170,18 @@
   /**
    * @ngInject
    */
-  runBlock.$inject = ['$rootScope', '$log', '$state'];
-  function runBlock($rootScope, $log, $state) {
-    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-      $log.error(error);
-      $state.go('app.addressbook', { addressbookId: 'personal' });
-    });
-    $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
-      $log.error(event, current, previous, rejection);
+  runBlock.$inject = ['$window', '$log', '$transitions', '$state'];
+  function runBlock($window, $log, $transitions, $state) {
+    if (!$window.DebugEnabled)
+      $state.defaultErrorHandler(function() {
+        // Don't report any state error
+      });
+    $transitions.onError({ to: 'app.**' }, function(transition) {
+      if (transition.to().name != 'app' &&
+          !transition.ignored()) {
+        $log.error('transition error to ' + transition.to().name + ': ' + transition.error().detail);
+        $state.go('app.addressbook', { addressbookId: 'personal' });
+      }
     });
   }
 

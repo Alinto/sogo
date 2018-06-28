@@ -11,8 +11,8 @@
   /**
    * @ngInject
    */
-  configure.$inject = ['$stateProvider', '$urlRouterProvider'];
-  function configure($stateProvider, $urlRouterProvider) {
+  configure.$inject = ['$stateProvider', '$urlServiceProvider'];
+  function configure($stateProvider, $urlServiceProvider) {
     $stateProvider
       .state('mail', {
         url: '/Mail',
@@ -140,7 +140,7 @@
       // });
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/Mail/0/inbox');
+    $urlServiceProvider.rules.otherwise('/Mail/0/inbox');
 
     // Try to register SOGo has an handler for mailto: links
     if (navigator && navigator.registerProtocolHandler) {
@@ -348,7 +348,7 @@
       if (transition.to().name != 'mail' &&
           !transition.ignored() &&
           transition.error().message.indexOf('superseded') < 0) {
-        $log.error('transition error to ' + transition.to().name);
+        $log.error('transition error to ' + transition.to().name + ': ' + transition.error().detail);
         // Unselect everything
         Mailbox.selectedFolder = false;
         $state.go('mail');

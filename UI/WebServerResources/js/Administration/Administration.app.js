@@ -11,8 +11,8 @@
   /**
    * @ngInject
    */
-  configure.$inject = ['$stateProvider', '$urlRouterProvider'];
-  function configure($stateProvider, $urlRouterProvider) {
+  configure.$inject = ['$stateProvider', '$urlServiceProvider'];
+  function configure($stateProvider, $urlServiceProvider) {
     $stateProvider
       .state('administration', {
         abstract: true,
@@ -48,7 +48,7 @@
       });
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/rights');
+    $urlServiceProvider.rules.otherwise('/rights');
   }
 
   /**
@@ -113,14 +113,18 @@
   /**
    * @ngInject
    */
-  runBlock.$inject = ['$log', '$rootScope', '$state'];
-  function runBlock($log, $rootScope, $state) {
-    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-      $log.error(error);
-      $state.go('administration.rights');
-    });
-    $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
-      $log.error(event, current, previous, rejection);
+  runBlock.$inject = ['$window', '$log', '$transitions', '$state'];
+  function runBlock($window, $log, $transitions, $state) {
+    if (!$window.DebugEnabled)
+      $state.defaultErrorHandler(function() {
+        // Don't report any state error
+      });
+    $transitions.onError({ to: 'administration.**' }, function(transition) {
+      if (transition.to().name != 'administration' &&
+          !transition.ignored()) {
+        $log.error('transition error to ' + transition.to().name + ': ' + transition.error().detail);
+        $state.go({ state: 'administration.rights' });
+      }
     });
   }
 

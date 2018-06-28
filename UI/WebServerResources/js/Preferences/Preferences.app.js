@@ -11,8 +11,8 @@
   /**
    * @ngInject
    */
-  configure.$inject = ['$stateProvider', '$urlRouterProvider'];
-  function configure($stateProvider, $urlRouterProvider) {
+  configure.$inject = ['$stateProvider', '$urlServiceProvider'];
+  function configure($stateProvider, $urlServiceProvider) {
     $stateProvider
       .state('preferences', {
         abstract: true,
@@ -58,17 +58,25 @@
       });
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/general');
+    $urlServiceProvider.rules.otherwise('/general');
   }
 
 
   /**
    * @ngInject
    */
-  runBlock.$inject = ['$rootScope'];
-  function runBlock($rootScope) {
-    $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
-      console.error(event, current, previous, rejection);
+  runBlock.$inject = ['$window', '$log', '$transitions', '$state'];
+  function runBlock($window, $log, $transitions, $state) {
+    if (!$window.DebugEnabled)
+      $state.defaultErrorHandler(function() {
+        // Don't report any state error
+      });
+    $transitions.onError({ to: 'preferences.**' }, function(transition) {
+      if (transition.to().name != 'preferences' &&
+          !transition.ignored()) {
+        $log.error('transition error to ' + transition.to().name + ': ' + transition.error().detail);
+        $state.go({ state: 'preferences' });
+      }
     });
   }
 
