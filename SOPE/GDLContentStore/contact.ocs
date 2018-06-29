@@ -106,7 +106,7 @@
     },
     {
       columnName = c_hascertificate;
-      sqlType    = "INT";
+      sqlType    = "INT4";
       allowsNull = YES;
     },
   );
