@@ -317,7 +317,7 @@
   if (!allEmails)
     [self _fetchAllEmails];
 
-  return [allEmails lastObject];
+  return [allEmails objectAtIndex: 0];
 }
 
 - (BOOL) hasEmail: (NSString *) email
