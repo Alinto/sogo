@@ -874,16 +874,17 @@
           if (!ex)
             {
               NSDictionary *row;
+              NSMutableDictionary *mutableRow;
               NSArray *attrs;
 
               attrs = [channel describeResults: NO];
 
               while ((row = [channel fetchAttributes: attrs withZone: NULL]))
                 {
-                  row = [row mutableCopy];
-                  [(NSMutableDictionary *) row setObject: self forKey: @"source"];
-                  [results addObject: row];
-                  [row release];
+                  mutableRow = [row mutableCopy];
+                  [mutableRow setObject: self forKey: @"source"];
+                  [results addObject: mutableRow];
+                  [mutableRow release];
                 }
             }
           else
