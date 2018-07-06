@@ -86,7 +86,7 @@
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
 "shortDateFmt_15" = "";
-   
+
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
@@ -225,7 +225,7 @@
 "Change" = "Cambia";
 
 /* Event+task classifications */
-"Default events classification" = "Classificazioni degli eventi di default";
+"Default events classification" = "Classificazione degli eventi di default";
 "Default tasks classification" = "Classificazione delle attività di default";
 "PUBLIC_item" = "Pubblico";
 "CONFIDENTIAL_item" = "Confidenziale";

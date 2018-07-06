@@ -86,7 +86,7 @@
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
 "shortDateFmt_15" = "";
-   
+
 "longDateFmt_0" = "%A, %e %B %Y";
 "longDateFmt_1" = "%A, %e de %B de %Y";
 "longDateFmt_2" = "%e de %b %Y";

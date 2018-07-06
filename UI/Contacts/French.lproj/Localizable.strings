@@ -316,13 +316,13 @@
 "New Email Address" = "Ajouter une adresse courriel";
 "New Phone Number" = "Ajouter un numéro téléphone";
 "URL" = "URL";
-"New URL" = "Nouveau URL";
+"New URL" = "Ajouter un URL";
 "street" = "Rue";
 "street (continued)" = "Rue (suite)";
 "Postoffice" = "Bureau de poste";
 "Region" = "Région";
 "Postal Code" = "Code postal";
-"New Address" = "Nouvelle adresse";
+"New Address" = "Ajouter une adresse";
 "Reset" = "Réinitialiser";
 "Description" = "Description";
 "Add Member" = "Ajouter un contact";

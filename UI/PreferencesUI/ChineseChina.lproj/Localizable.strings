@@ -128,7 +128,7 @@
 /* Default Calendar */
 "Default calendar" = "默认日程";
 "selectedCalendar" = "选中的日历";
-"personalCalendar" = "个人日历";
+"personalCalendar" = "个人日程";
 "firstCalendar" = "第一个有效的日历";
 "reminder_NONE" = "无提醒";
 "reminder_5_MINUTES_BEFORE" = "提前5分钟";
@@ -147,10 +147,17 @@
 /* Mailer */
 "Labels" = "标签";
 "Label" = "标签";
+"IMAP Label" = "IMAP标签";
+"Invalid label" = "不能使用空格( ) { } % * \" \\等特殊符号";
+"Duplicate label" = "重复标签";
+"IMAP labels must have unique names." = "IMAP标签必须具有唯一的名称。";
 "New label" = "新标签";
 "Show subscribed mailboxes only" = "仅显示订阅的邮箱";
 "Synchronize only default mail folders (EAS)" = "仅同步系统默认邮箱文件夹";
 "Sort messages by threads" = "邮件按线索排序";
+"Always open mail composer" = "总是打开邮件编辑器";
+"Inside current window" = "在当前窗口内";
+"In a popup window" = "在弹出窗口中";
 "When sending mail, add unknown recipients to my" = "邮件发送时，添加未知收件人";
 "Address Book" = "通讯录";
 "Forward messages" = "发送信息";
@@ -180,6 +187,8 @@
 "Collected Address Book" = "收集的地址簿";
 
 /* IMAP Accounts */
+"Settings" = "设定";
+"Security" = "安全性";
 "Mail Account" = "邮箱账号";
 "New Mail Account" = "新邮件账户";
 "Server Name" = "服务器名";
@@ -196,6 +205,16 @@
 "Please specify a valid sender address." = " 请指定有效的发件人地址。";
 "Please specify a valid reply-to address." = "请指定有效的回复地址。";
 "Specify a hostname other than the local host" = "指定本地主机以外的主机名";
+
+"No certificate installed" = "没有安装证书";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL证书必须使用PKCS＃12（PFX）格式。";
+"Uninstall" = "卸载";
+"Choose PKCS12 Certificate .." = "选择PKCS12证书..";
+"Certificate Import Password" = "证书导入密码";
+"Upload" = "上传";
+"When composing a message" = "撰写邮件时";
+"Digitally sign the message by default" = "默认对消息进行数字签名";
+"Always try to encrypt the message" = "总是尝试加密消息";
 
 /* Additional Parameters */
 "Additional Parameters" = "附加设置";

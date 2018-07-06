@@ -218,6 +218,7 @@
 "view_next14" = "Következő 14 nap";
 "view_next31" = "Következő 31 nap";
 "view_thismonth" = "Aktuális hónap";
+"view_thisyear" = "Aktuális év";
 "view_future" = "Összes jövőbeni esemény";
 "view_selectedday" = "Kijelölt nap";
 "view_not_started" = "Nem megkezdett feladatok";
@@ -541,6 +542,8 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Delete Event" = "Esemény törlése";
 "Copy event to my calendar" = "Esemény másolása a naptáromba";
 "View Raw Source" = "Forrás megtekintése";
+"Move To" = "Áthelyezés";
+"Copy To" = "Másolás";
 "Subscriptions" = "Feliratkozások";
 "Subscribe to a shared folder" = "Feliratkozás megosztott mappára";
 "Subscribe to a web calendar..." = "Internetes naptár becsatolása";

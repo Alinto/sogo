@@ -218,6 +218,7 @@
 "view_next14" = "Prossimi 14 giorni";
 "view_next31" = "Prossimi 31 giorni";
 "view_thismonth" = "Questo Mese";
+"view_thisyear" = "Quest'anno";
 "view_future" = "Tutti i prossimi eventi";
 "view_selectedday" = "Giorno Selezionato";
 "view_not_started" = "Attività non iniziate";
@@ -541,6 +542,8 @@ vtodo_class2 = "(Attività confidenziale)";
 "Delete Event" = "Elimina evento";
 "Copy event to my calendar" = "Copia gli eventi sul mio calendario";
 "View Raw Source" = "Vedi sorgente";
+"Move To" = "Sposta In ";
+"Copy To" = "Copia In ";
 "Subscriptions" = "Sottoscrizioni";
 "Subscribe to a shared folder" = "Sottoscrivi una cartella condivisa";
 "Subscribe to a web calendar..." = "Sottoscrivi un calendario remoto...";

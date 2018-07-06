@@ -47,6 +47,7 @@
 "Enable auto reply on" = "Включить автоответ на";
 "Disable auto reply on" = "Отключить автоответ";
 "Always send vacation message response" = "Всегда отправлять ответное сообщение об отпуске";
+"Discard incoming mails during vacation" = "Не получать входящие письма во время отпуска";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Пожалуйста, укажите Ваше сообщение и адреса электронной почты для которых Вы хотите включить автоматический ответ.";
 "Your vacation message must not end with a single dot on a line." = "Ваше сообщение о верменном отсутсвии не должно оканчиваться строкой с одиночной точкой.";
@@ -85,7 +86,7 @@
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
 "shortDateFmt_15" = "";
-   
+
 "longDateFmt_0" = "%A %e %B %Y";
 "longDateFmt_1" = "%e %b. %Y";
 "longDateFmt_2" = "%e %B %Y";
@@ -146,10 +147,17 @@
 /* Mailer */
 "Labels" = "Метки";
 "Label" = "Метка";
+"IMAP Label" = "IMAP метки";
+"Invalid label" = "Не используйте пробелы, а также ( ) { } % * \" \\";
+"Duplicate label" = "Дублировать метку";
+"IMAP labels must have unique names." = "Имена IMAP меток должны быть уникальными.";
 "New label" = "Новая метка";
 "Show subscribed mailboxes only" = "Показывать только почтовые ящики, на которые подписан";
 "Synchronize only default mail folders (EAS)" = "Синхронизировать только почтовые папки по умолчанию (EAS)";
 "Sort messages by threads" = "Группировать сообщения по обсуждениям";
+"Always open mail composer" = "Всегда открывать редактор писем";
+"Inside current window" = "Внутри текущего окна";
+"In a popup window" = "Во всплывающем окне";
 "When sending mail, add unknown recipients to my" = "При отправке добавлять неизвестных получателей в:";
 "Address Book" = "Адресная книга";
 "Forward messages" = "Пересылать сообщения";
@@ -179,6 +187,8 @@
 "Collected Address Book" = "Собранные адреса";
 
 /* IMAP Accounts */
+"Settings" = "Настройки";
+"Security" = "Безопасность";
 "Mail Account" = "Учетная запись почты";
 "New Mail Account" = "Новая учетная запись почты";
 "Server Name" = "Имя сервера";
@@ -195,6 +205,16 @@
 "Please specify a valid sender address." = "Пожалуйста, укажите правильный адрес отправителя.";
 "Please specify a valid reply-to address." = "Пожалуйста, укажите правильный адрес для ответа.";
 "Specify a hostname other than the local host" = "Укажите имя хоста, отличное от localhost";
+
+"No certificate installed" = "Отсутствует сертификат";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL сертификат должен использовать формат PKCS#12 (PFX).";
+"Uninstall" = "Удалить";
+"Choose PKCS12 Certificate .." = "Выберите сертификат PKCS12...";
+"Certificate Import Password" = "Пароль импорта сертификата";
+"Upload" = "Загрузить";
+"When composing a message" = "При составлении сообщения";
+"Digitally sign the message by default" = "Подписывать цифровой подписью сообщения по умолчанию";
+"Always try to encrypt the message" = "Всегда пытаться зашифровать сообщение";
 
 /* Additional Parameters */
 "Additional Parameters" = "Дополнительные параметры";
@@ -238,7 +258,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";

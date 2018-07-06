@@ -168,7 +168,7 @@
 /* Tree */
 "SentFolderName"   = "Envoyés";
 "TrashFolderName"  = "Corbeille";
-"InboxFolderName"  = "Courrier entrant";
+"InboxFolderName"  = "Réception";
 "DraftsFolderName" = "Brouillons";
 "JunkFolderName" = "Pourriel";
 "SieveFolderName"  = "Filtres";
