@@ -110,7 +110,7 @@
       focus('phone_' + i);
     }
     function addUrl() {
-      var i = vm.card.$addUrl('', '');
+      var i = vm.card.$addUrl('', 'https://www.fsf.org/');
       focus('url_' + i);
     }
     function canAddCustomField() {
