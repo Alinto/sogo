@@ -206,7 +206,10 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
           for (j = 0; j < [contacts count]; j++)
             {
               contact = [contacts objectAtIndex: j];
-              mail = [contact objectForKey: @"c_mail"];
+              if ([[contact objectForKey: @"emails"] count] == 0)
+                // Contact must have an email address
+                continue;
+              mail = [[[contact objectForKey: @"emails"] objectAtIndex: 0] objectForKey: @"value"];
               //NSLog(@"   found %@ (%@) ? %@", [contact objectForKey: @"c_name"], mail,
               //      [contact description]);
               if (!excludeLists && [[contact objectForKey: @"c_component"]
