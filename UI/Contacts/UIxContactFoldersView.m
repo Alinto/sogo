@@ -206,10 +206,8 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
           for (j = 0; j < [contacts count]; j++)
             {
               contact = [contacts objectAtIndex: j];
-              if ([[contact objectForKey: @"emails"] count] == 0)
-                // Contact must have an email address
-                continue;
-              mail = [[[contact objectForKey: @"emails"] objectAtIndex: 0] objectForKey: @"value"];
+              [contact setObject: [folder displayName]
+                          forKey: @"containerName"];
               //NSLog(@"   found %@ (%@) ? %@", [contact objectForKey: @"c_name"], mail,
               //      [contact description]);
               if (!excludeLists && [[contact objectForKey: @"c_component"]
@@ -220,10 +218,17 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
                   [uniqueContacts setObject: contact 
                                      forKey: [contact objectForKey: @"c_name"]]; 
                 }
-              else if ([mail length]
-                       && [uniqueContacts objectForKey: mail] == nil
-                       && !(excludeGroups && [contact objectForKey: @"isGroup"]))
-                [uniqueContacts setObject: contact forKey: mail];
+              else
+                {
+                  if ([[contact objectForKey: @"emails"] count] == 0)
+                    // Contact must have an email address
+                    continue;
+                  mail = [[[contact objectForKey: @"emails"] objectAtIndex: 0] objectForKey: @"value"];
+                  if ([mail length]
+                      && [uniqueContacts objectForKey: mail] == nil
+                      && !(excludeGroups && [contact objectForKey: @"isGroup"]))
+                    [uniqueContacts setObject: contact forKey: mail];
+                }
             }
         }
       if ([uniqueContacts count] > 0)
