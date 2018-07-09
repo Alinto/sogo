@@ -8,15 +8,11 @@ $sg-grid-border-width-focused: 2px;
     &.sg-icon-button {
       @extend .md-button;
       // Overwrite some styles of .md-button
-      border: 1px solid sg-color($sogoBlue, 300);
-      border-radius: 5%;
-      color: sg-color($sogoBlue, 600);
+      border: 1px solid $colorGrey600;
+      border-radius: 2px;
+      color: $colorGrey700;
       min-height: auto;
       position: absolute;
-    }
-    &.sg-active {
-      background-color: sg-color($sogoBlue, 300);
-      color: #fff;
     }
   }
 }

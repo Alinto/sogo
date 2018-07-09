@@ -24,6 +24,7 @@
     };
 
     function compile(tElement, tAttrs) {
+      var CLASS_ACTIVE = 'md-default-theme md-accent md-bg md-bdr';
       return function postLink(scope, element, attr, controllers) {
         var tiles = tElement.find('md-grid-tile'),
             tile,
@@ -43,7 +44,7 @@
           // Toggle class on click event and call toggle function
           var tile = angular.element(this),
               day = tile.attr('value');
-          tile.toggleClass('sg-active');
+          tile.toggleClass(CLASS_ACTIVE);
           toggle(day);
         };
 
@@ -64,7 +65,7 @@
           _.forEach(tiles, function(o) {
             var tile = angular.element(o);
             if (_.includes(flattenedDays, tile.attr('value'))) {
-              tile.addClass('sg-active');
+              tile.addClass(CLASS_ACTIVE);
             }
           });
           ngModelCtrl.$validate();
