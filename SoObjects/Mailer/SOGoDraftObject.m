@@ -931,6 +931,7 @@ static NSString    *userAgent      = nil;
 {
   BOOL fromSentMailbox;
   NSString *msgID;
+  NSMutableArray *addresses;
   NSMutableDictionary *info;
   NGImap4Envelope *sourceEnvelope;
 
@@ -948,6 +949,12 @@ static NSString    *userAgent      = nil;
   msgID = [sourceEnvelope messageID];
   if ([msgID length] > 0)
     [self setInReplyTo: msgID];
+
+  addresses = [NSMutableArray array];
+  [self _addEMailsOfAddresses: [sourceEnvelope to] toArray: addresses];
+  if ([addresses count])
+    [info setObject: [addresses objectAtIndex: 0] forKey: @"from"];
+
   [self setText: [sourceMail contentForReply]];
   [self setHeaders: info];
   [self setSourceURL: [sourceMail imap4URLString]];

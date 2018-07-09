@@ -253,11 +253,37 @@ static NSArray *infoKeys = nil;
 - (NSString *) from
 {
   NSArray *identities;
+  NSEnumerator *allIdentities;
+  NSDictionary *identity;
+  NSRange r;
+  BOOL valid;
 
-  if (!from)
+  identities = [[[self clientObject] mailAccountFolder] identities];
+  if ([identities count])
     {
-      identities = [[[self clientObject] mailAccountFolder] identities];
-      if ([identities count])
+      if (from)
+        {
+          allIdentities = [identities objectEnumerator];
+          valid = NO;
+          while ((identity = [allIdentities nextObject]) && !valid)
+             {
+               // from ivar must contain a valid email address surrounded by pointy brackets
+               r = [[from lowercaseString] rangeOfString: [NSString stringWithFormat: @"<%@>", [[identity objectForKey: @"email"] lowercaseString]]];
+               if (r.length > 0)
+                 {
+                   valid = YES;
+                   [from release];
+                   from = [self _emailFromIdentity: identity];
+                   [from retain];
+                 }
+             }
+          if (!valid)
+            {
+              [from release];
+              from = nil;
+            }
+        }
+      if (!from)
         {
           from = [self _emailFromIdentity: [identities objectAtIndex: 0]];
           [from retain];
