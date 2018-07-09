@@ -16,34 +16,7 @@ include::includes/global-attributes.asciidoc[]
 UI and UX
 ---------
 
-* http://www.google.com/design/spec/material-design/
-* http://goodui.org/
-  - Try Repeating Your Primary Action instead of showing it just once.
-  - Try Distinct Clickable/Selected Styles instead of blurring them.
-  - Try Undos instead of prompting for confirmation.
-  - Try More Contrast instead of similarity.
-  - Try Exposing Options instead of hiding them.
-  - Try Showing State instead of being state agnostic.
-  - Try Direct Manipulation instead of contextless menus.
-  - Try Exposing Fields instead of creating extra pages.
-  - Try Transitions instead of showing changes instantly.
-  - Try Fewer Borders instead of wasting attention.
-  - Try Designing For Zero Data instead of just data heavy cases.
-  - Try Consistency instead of making people relearn.
-  - Try Conventions instead of reinventing the wheel.
-  - Try Visual Hierarchy instead of dullness.
-  - Try Grouping Related Items instead of disordering.
-  - Try Inline Validation instead of delaying errors.
-  - Try Forgiving Inputs instead of being strict with data.
-  - Try Bigger Click Areas instead of tiny ones.
-  - Try Faster Load Times instead of making people wait.
-  - Try Keyboard Shortcuts instead of buttons only.
-  - Try Upfront Progress instead of starting with a blank.
-  - Try Softer Prompts instead of modal windows.
-  - Try Multifunctional Controls instead of more parts.
-  - Try Icon Labels instead of opening for interpretation.
-* http://designmodo.com/create-style-guides/
-* http://uxmyths.com/
+* https://material.io/design/
 
 Frameworks & Tools
 ------------------
@@ -58,10 +31,11 @@ JavaScript libraries
 ~~~~~~~~~~~~~~~~~~~~
 
 * https://angularjs.org/
-* http://angular-ui.github.io/ui-router/
 * https://material.angularjs.org/
+* http://angular-ui.github.io/ui-router/
 * http://lodash.com/
 * https://github.com/nervgh/angular-file-upload
+* https://github.com/a5hik/ng-sortable
 
 Code Style
 ----------
@@ -177,6 +151,23 @@ To overwrite the default theme in SOGo, set the following parameter in `/etc/sog
     SOGoUIAdditionalJSFiles = (js/theme.js);
 
 Edit `theme.js` under `/usr/lib64/GNUstep/SOGo/WebServerResources/js` or `/usr/lib/GNUstep/SOGo/WebServerResources/js` depending on your platform and restart sogod.
+
+If the configuration parameter `SOGoUIxDebugEnabled` is unset or set to `NO` in `/etc/sogo/sogo.conf`, you'll need to generate a new `theme-default.css` stylesheet for the new theme.
+
+. Temporarily set `SOGoUIxDebugEnabled` to `YES`;
+. Restart sogod;
+. From your favorite browser, open the JavaScript console and type the following:
+
+    copy([].slice.call(document.styleSheets)
+      .map(e => e.ownerNode)
+      .filter(e => e.hasAttribute('md-theme-style'))
+      .map(e => e.textContent)
+      .join('\n')
+    )
+
+. Overwrite the content of `WebServerResources/css/theme-default.css` with the content of the clipboard;
+. Restore the value `SOGoUIxDebugEnabled` (`NO` or unset);
+. Restart sogod.
 
 Version Control
 ---------------
