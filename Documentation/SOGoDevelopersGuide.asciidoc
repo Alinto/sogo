@@ -166,7 +166,7 @@ If the configuration parameter `SOGoUIxDebugEnabled` is unset or set to `NO` in 
     )
 
 . Overwrite the content of `WebServerResources/css/theme-default.css` with the content of the clipboard;
-. Restore the value `SOGoUIxDebugEnabled` (`NO` or unset);
+. Restore the value of `SOGoUIxDebugEnabled` (`NO` or unset);
 . Restart sogod.
 
 Version Control

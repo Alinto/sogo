@@ -6,7 +6,7 @@
     Authors: 
       - Inverse inc. <info@inverse.ca>
 
-    Copyright (C) 2008-2017 Inverse inc.
+    Copyright (C) 2008-2018 Inverse inc.
     License: GFDL 1.2 or later. http://www.gnu.org/licenses/fdl.html
 
 ////
@@ -17,7 +17,7 @@ Additional Information
 For more information, please consult the online FAQs (Frequently Asked
 Questions) :
 
-http://sogo.nu/support/faq.html
+https://sogo.nu/support/faq.html
 
 You can also read the mailing archives or post your questions to it. For
 details, see :
