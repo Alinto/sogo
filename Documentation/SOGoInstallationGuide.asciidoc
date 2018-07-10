@@ -24,7 +24,7 @@ devices with SOGo.
 The instructions are based on version {release_version} of SOGo.
 
 The latest version of this guide is available
-at http://sogo.nu/downloads/documentation.html.
+at https://sogo.nu/downloads/documentation.html.
 
 Introduction
 ------------
@@ -50,7 +50,7 @@ the SOGo Connector and the SOGo Integrator
 device, or Outlook 2013/2016
 
 SOGo is developed by a community of developers located mainly in North
-America and Europe. More information can be found at http://sogo.nu/
+America and Europe. More information can be found at https://sogo.nu/
 
 Architecture and Compatibility
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -165,13 +165,12 @@ Microsoft ActiveSync.
 Operating System Requirements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following 32-bit and 64-bit operating systems are currently
-supported by SOGo:
+The following operating systems are currently supported by SOGo:
 
 * Red Hat Enterprise Linux (RHEL) Server 5, 6 and 7
 * Community ENTerprise Operating System (CentOS) 5, 6 and 7
-* Debian GNU/Linux 6.0 (Squeeze), 7.0 (Wheezy) and 8.0 (Jessie)
-* Ubuntu 12.04 (Precise), 14.04 (Trusty) and 16.04 (Xenial)
+* Debian GNU/Linux 6.0 (Squeeze), 7.0 (Wheezy), 8.0 (Jessie) and 9.0 (Stretch)
+* Ubuntu 12.04 (Precise), 14.04 (Trusty), 16.04 (Xenial) and 18.04 (Bionic)
 
 Make sure the required components are started automatically at boot time
 and that they are running before proceeding with the SOGo configuration.
@@ -183,9 +182,7 @@ continuing with the SOGo software installation.
 NOTE: This document covers the installation of SOGo under RHEL 7.
 
 For installation instructions on Debian and Ubuntu, please refer
-directly to the SOGo website at http://sogo.nu/.
-Under the _Support_ section, you will find links for installation steps
-for Debian and Ubuntu.
+directly to the SOGo website at https://sogo.nu/faq/installation.html.
 
 Note that once the SOGo packages are installed under Debian and Ubuntu,
 this guide can be followed in order to fully configure SOGo.
@@ -2951,7 +2948,7 @@ your site. However, be aware that in order to use the SOGo Integrator
 plug in, you will need to repackage it with specific modifications.
 Please refer to the documentation published online:
 
-http://sogo.nu/downloads/documentation.html
+https://sogo.nu/downloads/documentation.html
 
 If you only use the SOGo Connector plug in, you can still easily access
 your data.
