@@ -322,9 +322,11 @@
       return AddressBook.$query.asc;
     };
 
-    this.searchMode = function() {
+    this.searchMode = function($event) {
       vm.mode.search = true;
       focus('search');
+      if ($event)
+        $event.preventDefault();
     };
 
     this.cancelSearch = function() {
