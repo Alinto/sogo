@@ -2124,8 +2124,8 @@ Defaults to `NO` when unset.
 can still modify the scripts and the initial values will be written
 to the Sieve server upon first login.
 
-|D |SOGoMailPollingIntervals
-|Parameter used to define the mail polling intervals (in minutes)
+|D |SOGoRefreshViewIntervals
+|Parameter used to define the polling intervals (in minutes)
 available to the user. The parameter is an array that can contain the
 following numbers:
 
@@ -2140,9 +2140,9 @@ following numbers:
 
 Defaults to the list above when unset.
 
-|U |SOGoMailMessageCheck
-|Parameter used to define the mail polling interval at which the IMAP
-server is queried for new messages. Possible values are:
+|U |SOGoRefreshViewCheck
+|Parameter used to define the polling interval at which the Web
+interface queries the server for new data. Possible values are:
 
 [options="compact"]
 * `manually`
