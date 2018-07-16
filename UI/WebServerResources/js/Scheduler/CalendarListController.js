@@ -397,6 +397,7 @@
     };
 
     function reload() {
+      Component.$loaded = Component.STATUS.LOADING; // Show progress indicator
       Calendar.reloadWebCalendars().finally(function() {
         $rootScope.$emit('calendars:list');
       });
