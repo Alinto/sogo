@@ -274,8 +274,24 @@ convention:
         }
     }
 
-  homeMail = [self elementWithTag: @"email" ofType: @"home"];
-  [homeMail setSingleValue: [ldifRecord objectForKey: @"mozillasecondemail"] forKey: @""];
+  mail = [ldifRecord objectForKey: @"mozillasecondemail"];
+  if ([mail isKindOfClass: [NSArray class]])
+    {
+      mailList = [(NSArray *)mail objectEnumerator];
+      while ((mail = [mailList nextObject]))
+        {
+          if ([mail length] && ![emails containsObject: mail])
+            [self addElementWithTag: @"email"
+                             ofType: @"home"
+                          withValue: mail];
+        }
+    }
+  else
+    {
+      homeMail = [self elementWithTag: @"email" ofType: @"home"];
+      [homeMail setSingleValue: mail forKey: @""];
+    }
+
   [[self uniqueChildWithTag: @"x-mozilla-html"]
     setSingleValue: [ldifRecord objectForKey: @"mozillausehtmlmail"]
             forKey: @""];
