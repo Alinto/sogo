@@ -485,7 +485,7 @@
   /**
    * @function $rename
    * @memberof AddressBook.prototype
-   * @desc Rename the addressbook and keep the list sorted
+   * @desc Rename the mailbox and keep the list sorted
    * @param {string} name - the new name
    * @returns a promise of the HTTP operation
    */
@@ -825,6 +825,21 @@
     });
     angular.extend(this, this.$shadowData);
     this.$shadowData = this.$omit();
+  };
+
+  /**
+   * @function $move
+   * @memberof Mailbox.prototype
+   * @desc Move the mailbox to a different parent. Will reload the mailboxes list.
+   * @returns a promise of the HTTP operation
+   */
+  Mailbox.prototype.$move = function(parentPath) {
+    var _this = this;
+
+    return Mailbox.$$resource.post(this.id, 'move', {parent: parentPath}).finally(function() {
+      _this.$account.$getMailboxes({reload: true});
+      return true;
+    });
   };
 
   /**

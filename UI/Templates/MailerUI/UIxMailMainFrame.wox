@@ -201,6 +201,28 @@
             <var:string label:value="Rename"/>
           </md-button>
         </md-menu-item>
+        <md-menu-item ng-show="::$menuCtrl.folder.$isEditable">
+          <md-menu md-position-mode="cascade target">
+            <md-button label:aria-label="Move To" ng-click="$mdMenu.open($event)">
+              <var:string label:value="Move To"/>
+            </md-button>
+            <md-menu-content class="md-dense" width="3">
+              <div ng-repeat="folder in
+                              $menuCtrl.folder.$account.$flattenMailboxes({ all: true })
+                              track by folder.path">
+                <md-menu-item>
+                  <md-button class="sg-no-wrap"
+                             aria-label="{{folder.$displayName}}"
+                             ng-disabled="$menuCtrl.isParentOf(folder.path)"
+                             ng-click="$menuCtrl.moveFolder(folder.path)">
+                    <span ng-class="::('sg-child-level-' + folder.level)"
+                          ng-bind="folder.$displayName"><!-- mailbox name --></span>
+                  </md-button>
+                </md-menu-item>
+              </div>
+            </md-menu-content>
+          </md-menu>
+        </md-menu-item>
         <md-menu-item>
           <md-button type="button" ng-click="$menuCtrl.compactFolder()">
             <var:string label:value="Compact"/>

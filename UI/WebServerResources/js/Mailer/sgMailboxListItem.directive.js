@@ -296,6 +296,37 @@
           });
         };
 
+        this.isParentOf = function(path) {
+          var findChildren;
+
+          // Local recursive function
+          findChildren = function(parent) {
+            if (parent.children && parent.children.length > 0) {
+              for (var i = 0, found = false; !found && i < parent.children.length; i++) {
+                var o = parent.children[i];
+                if (o.children && o.children.length > 0) {
+                  if (findChildren(o)) {
+                    return true;
+                  }
+                }
+                else if (o.path == path) {
+                  return true;
+                }
+              }
+            }
+            else {
+              return (parent.path == path);
+            }
+          };
+
+          return findChildren(this.folder);
+        };
+
+        this.moveFolder = function(path) {
+          this.folder.$move(path);
+          mdPanelRef.close();
+        };
+
       } // MenuController
 
 

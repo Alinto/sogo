@@ -1,6 +1,6 @@
 /* UIxMailFolderActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2017 Inverse inc.
+ * Copyright (C) 2007-2018 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoTrashFolder.h>
 
+#import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
@@ -167,6 +168,109 @@
                 }
             }
           newFolderPath = [[[co imap4URL] path] substringFromIndex: 1]; // remove slash at beginning of path
+
+          NSString *sieveFolderEncoding = [[SOGoSystemDefaults sharedSystemDefaults] sieveFolderEncoding];
+          if ([sieveFolderEncoding isEqualToString: @"UTF-8"])
+            sievePath = [newFolderPath stringByDecodingImap4FolderName];
+          else
+            sievePath = newFolderPath;
+
+          message = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    newFolderPath, @"path", sievePath, @"sievePath", nil];
+          response = [self responseWithStatus: 200 andJSONRepresentation: message];
+        }
+    }
+
+  return response;
+}
+
+/**
+ * @api {post} /so/:username/Mail/:accountId/:mailboxPath/renameFolder Rename mailbox
+ * @apiVersion 1.0.0
+ * @apiName PostRenameFolder
+ * @apiGroup Mail
+ *
+ * @apiParam {String} parent Name of the new parent mailbox
+ *
+ * @apiSuccess (Success 200) {String} path  New mailbox path relative to account
+ * @apiSuccess (Success 200) {String} sievePath  New mailbox path relative to account for Sieve script usage
+ * @apiError   (Error 500) {Object} error   The error message
+ */
+- (WOResponse *) moveFolderAction
+{
+  SOGoMailFolder *co;
+  SOGoUserSettings *us;
+  WORequest *request;
+  WOResponse *response;
+  NSException *error;
+  NSString *newParentPath, *newFolderPath, *sievePath, *currentMailbox, *currentAccount,
+    *keyForMsgUIDs, *newKeyForMsgUIDs;
+  NSMutableDictionary *params, *moduleSettings, *threadsCollapsed, *message;
+  NSArray *currentComponents, *newComponents, *values;
+  int count;
+
+  co = [self clientObject];
+
+  // Prepare the variables need to verify if the current folder have any collapsed threads saved in userSettings
+  us = [[context activeUser] userSettings];
+  moduleSettings = [us objectForKey: @"Mail"];
+  threadsCollapsed = [moduleSettings objectForKey:@"threadsCollapsed"];
+
+  // Retrieve new folder name from JSON payload
+  request = [context request];
+  params = [[request contentAsString] objectFromJSONString];
+  newParentPath = [params objectForKey: @"parent"]; // encoded parent path (ex: "Travail/Employ&AOk-s")
+
+  if (!newParentPath || [newParentPath length] == 0)
+    {
+      message = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing parent parameter" inContext: context]
+                                            forKey: @"message"];
+      response = [self responseWithStatus: 500 andJSONRepresentation: message];
+    }
+  else
+    {
+      newFolderPath = [NSString stringWithFormat:@"/%@/%@",
+                                newParentPath,
+                                [[co imap4URL] lastPathComponent]];
+      error = [co renameTo: newFolderPath];
+      if (error)
+        {
+          message = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to move folder." inContext: context]
+                                                forKey: @"message"];
+          response = [self responseWithStatus: 500 andJSONRepresentation: message];
+        }
+      else
+        {
+          // Build lookup key for current mailbox path
+          currentComponents = [[co imap4URL] pathComponents];
+          count = [currentComponents count];
+          currentComponents = [[currentComponents subarrayWithRange: NSMakeRange(1,count-1)]
+                                resultsOfSelector: @selector (asCSSIdentifier)];
+          currentComponents = [currentComponents stringsWithFormat: @"folder%@"];
+          currentAccount = [[co mailAccountFolder] nameInContainer]; // integer (ex: 0)
+          keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", currentAccount,
+                                    [currentComponents componentsJoinedByString: @"/"]];
+
+          // Build lookup key for new mailbox path
+          newComponents = [newParentPath pathComponents];
+          newComponents = [newComponents resultsOfSelector: @selector (asCSSIdentifier)];
+          newComponents = [newComponents stringsWithFormat: @"folder%@"];
+          currentMailbox = [NSString stringWithFormat: @"folder%@", [[[co imap4URL] lastPathComponent] asCSSIdentifier]];
+          newKeyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@/%@", currentAccount,
+                                       [newComponents componentsJoinedByString: @"/"], currentMailbox];
+
+          // Verify if the current folder have any collapsed threads save under it old name and adjust the folderName
+          if (threadsCollapsed)
+            {
+              if ([threadsCollapsed objectForKey: keyForMsgUIDs])
+                {
+                  values = [NSArray arrayWithArray:[threadsCollapsed objectForKey:keyForMsgUIDs]];
+                  [threadsCollapsed setObject:values forKey:newKeyForMsgUIDs];
+                  [threadsCollapsed removeObjectForKey:keyForMsgUIDs];
+                  [us synchronize];
+                }
+            }
+          newFolderPath = [newFolderPath substringFromIndex: 1]; // remove slash at beginning of path
 
           NSString *sieveFolderEncoding = [[SOGoSystemDefaults sharedSystemDefaults] sieveFolderEncoding];
           if ([sieveFolderEncoding isEqualToString: @"UTF-8"])
