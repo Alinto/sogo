@@ -1,0 +1,26 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "Ajutor";
+"Close" = "Închide";
+"Modules" = "Module";
+/* Modules short names */
+"ACLs" = "ACL-uri";
+/* Modules titles */
+"ACLs_title" = "Managementul ACL-urilor pentru folderele utilizator";
+/* Modules descriptions */
+"ACLs_description" = "<p>Modulul de administrare a ACL-urilor permite modificarea ACL-urilor pentru Calendarele și Contactele utilizator.</p><p>Pentru a modifica ACL-ul pentru un folder utilizator tastaţi numele utilizatorului în câmpul de căutare aflat în partea de sus a ferestrei şi daţi dublu clic pe folderul al cărui ACL trebuie modificat.</p>";
+"Name or Email" = "Nume sau Email";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Lansați o căutare pentru a edita drepturile";
+/* Rights module: Empty search result */
+"No matching user" = "Nu există un astfel de utilizator";
+/* Rights module: no selection */
+"No resource selected" = "Nici-o resursa selectată";
+"Add User" = "Adăugaţi Utilizator";
+"Subscribe User" = "Abonare utilizator";
+"Rights" = "Drepturi de acces";
+"Search Users" = "Căutare Utilizatori";
+"users found" = "utilizatori găsiți";
+"No resource" = "Nici-o resursa";
+"Any Authenticated User" = "Orice utilizator autentificat";
+"Public Access" = "Acces Public";

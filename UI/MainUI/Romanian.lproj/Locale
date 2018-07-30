@@ -1,0 +1,35 @@
+/* Romanian */
+{
+  NSLanguageName = "Romanian";
+  NSFormalName = "Română";
+  NSLocaleCode = "ro"; /* ISO 639-1 */
+  NSLanguageCode = "ron"; /* ISO 639-2 */
+  NSParentContext = "";
+
+  NSAMPMDesignation = (AM, PM);
+  NSCurrencySymbol = " €";
+  NSDateFormatString = "%A %e %B %Y";
+  NSDateTimeOrdering = DMYH;
+  NSDecimalDigits = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+  NSDecimalSeparator = ",";
+  NSEarlierTimeDesignations = ("anterior", "ultima", "trecut", "în urmă");
+  NSHourNameDesignations = ((0, "miezul nopţii"), (10, "dimineaţă"), (12, "amiază", "prânz"), (14, "după amiază"), (19, "cină"));
+  NSInternationalCurrencyString = EUR; /* ISO 4217 */
+  NSLaterTimeDesignations = ("următorul");
+  NSMonthNameArray = (Ianuarie, Februarie, Martie, Aprilie, Mai, Iunie, Iulie, August, Septembrie, Octombrie, Noiembrie, Decembrie);
+  NSNextDayDesignations = ("mâine");
+  NSNextNextDayDesignations = ("ziua următoare");
+  NSPriorDayDesignations = (ieri);
+  NSShortDateFormatString = "%e/%m/%y";
+  NSShortMonthNameArray = (Ian, Feb, Mar, Apr, Mai, Iun, Iul, Aug, Sep, Oct, Noi, Dec);
+  NSShortTimeDateFormatString = "%e/%m/%y %H:%M";
+  NSShortWeekDayNameArray = (Dum, Lun, Mar, Mie, Joi, Vin, "Sâm");
+  NSThisDayDesignations = (azi, acum);
+  NSThousandsSeparator = " ";
+  NSTimeDateFormatString = "%A %e %B %Y %H:%M:%S %Z";
+  NSTimeFormatString = "%H:%M:%S";
+  NSWeekDayNameArray = ("Duminică", Luni, "Marți", Miercuri, Joi, Vineri, "Sâmbătă");
+  NSYearMonthWeekDesignations = (an, "lună", "săptămână");
+  NSPositiveCurrencyFormatString = "9,999.00$";
+  NSNegativeCurrencyFormatString = "-9,999.00$";
+}

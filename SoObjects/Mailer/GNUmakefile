@@ -96,9 +96,11 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailPolishReply.wo \
 	SOGoMailPortugueseForward.wo \
 	SOGoMailPortugueseReply.wo \
+	SOGoMailRomanianForward.wo \
+	SOGoMailRomanianReply.wo \
 	SOGoMailRussianForward.wo \
-	SOGoMailSerbianForward.wo \
 	SOGoMailRussianReply.wo \
+	SOGoMailSerbianForward.wo \
 	SOGoMailSerbianReply.wo \
 	SOGoMailSlovakForward.wo \
 	SOGoMailSlovakReply.wo \

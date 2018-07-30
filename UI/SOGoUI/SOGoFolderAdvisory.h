@@ -155,6 +155,12 @@
 @interface SOGoFolderPolishRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
+@interface SOGoFolderRomanianAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderRomanianRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
 @interface SOGoFolderRussianAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 

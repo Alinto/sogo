@@ -1,0 +1,431 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Compunere";
+"Empty Trash" = "Curățare coș";
+"Delete"      = "Ștergere";
+"Expunge"     = "Ștergere definitivă";
+"Forward"     = "Retrimitere";
+"Get Mail"    = "Citire mesaje";
+"Junk"        = "Gunoi";
+"Not junk"    = "Nu este Gunoi";
+"Reply"       = "Răspuns";
+"Reply All"   = "Răspuns către toți";
+"Print"       = "Imprimare";
+"Stop"        = "Stop";
+"Write"       = "Scrie";
+"Search"      = "Căutare";
+"Send" = "Trimite";
+"Contacts" = "Contacte";
+"Attach" = "Atașament";
+"Save" = "Salvare";
+"Options" = "Opțiuni";
+"Close" = "Închidere";
+"Size" = "Mărime";
+
+/* Tooltips */
+"Send this message now" = "Trimite mesaj";
+"Select a recipient from an Address Book" = "Selectare destinatar din lista de Contacte";
+"Include an attachment" = "Includere atașament";
+"Save this message" = "Salvare mesaj curent";
+"Get new messages" = "Descărcare mesaje noi";
+"Create a new message" = "Compunere mesaj nou";
+"Go to address book" = "Contacte";
+"Reply to the message" = "Răspunde la mesaj";
+"Reply to sender and all recipients" = "Răspunde la mesaj către expeditor și toți destinatarii";
+"Forward selected message" = "Retrimite mesajul selectat";
+"Delete selected message or folder" = "Ștergere mesaj sau folderul curent";
+"Print this message" = "Tipărire mesaj";
+"Stop the current transfer" = "Întrerupe transferul curent";
+"Attachment" = "Atașament";
+"Unread" = "Necitit";
+"Flagged" = "Marcat";
+"Search multiple mailboxes" = "Caută în cutii poștale multiple";
+
+/* Main Frame  */
+"Home"                 = "Acasă";
+"Calendar"             = "Calendar";
+"Addressbook"          = "Contacte";
+"Mail"                 = "Mail";
+"Right Administration" = "Drept de administrare";
+"Help" = "Ajutor";
+
+/* Mail account main windows */
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Bine ați venit la SOGo Mailer. Folosiți lista din partea stângă pentru a naviga în conturile dvs. de mail!";
+"Read messages"       = "Citește mesaje";
+
+/* Tooltip for fab button */
+"Write a new message" = "Compunere mesaj";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Scrie un mesaj într-o fereastră nouă";
+
+"Share" = "Partajare";
+"Account" = "Cont";
+"Shared Account" = "Cont partajat";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "Nici un mesaj selectat";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "Nici o cutie poștală selectată";
+
+"An error occured while communicating with the mail server" = "A apărut o eroare în timpul comunicaţiei cu serverul de mail";
+
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Folderul a fost compactat";
+/* Empty Trash success message */
+"Trash emptied" = "Coșul de gunoi a fost golit";
+
+/* acls */
+"Access rights to" = "Drept de acces pentru";
+"For user" = "Pentru utilizatorul";
+"Any Authenticated User" = "Orice utilizator autentificat";
+"List and see this folder" = "Listare și vizualizare folder";
+"Read mails from this folder" = "Citire mesaje din folderul curent";
+"Mark mails read and unread" = "Marcare mesaje citite și necitite";
+"Modify the flags of the mails in this folder" = "Modificare marcaje pentru mesajele din acest folder";
+"Insert, copy and move mails into this folder" = "Inserare, copiere și mutare a mesajelor în acest folder";
+"Post mails" = "Trimitere mesaje";
+"Add subfolders to this folder" = "Adăugare subfoldere la acest folder";
+"Remove this folder" = "Ștergere folder";
+"Erase mails from this folder" = "Ștergere mesaje din acest folder";
+"Expunge this folder" = "Ștergere definitivă a acestui folder";
+"Export This Folder" = "Exportă acest folder";
+"Modify the acl of this folder" = "Modificare ACL pentru acest folder";
+"Saved Messages.zip" = "Salvat ca Messages.zip";
+"Update" = "Actualizare";
+"Cancel" = "Renunțare";
+
+/* Mail edition */
+"From"          = "De la";
+"Subject"       = "Subiect";
+"To"            = "Către";
+"Cc"            = "Cc";
+"Bcc"           = "Bcc";
+"Reply-To"	    = "Reply-To";
+"Add address"   = "Adăugare adresă";
+"Body"          = "Conținut";
+"Open" = "Deschidere";
+"Select All" = "Selectare tot";
+"Select Message" = "Selectați Mesaj";
+"Attach Web Page..." = "Atașare Pagină Web";
+"file" = "fișier";
+"files" = "fișiere";
+"Save all" = "Salvare toate";
+"to"            = "Către";
+"cc"            = "Cc";
+"bcc"           = "Bcc";
+"Add a recipient" = "Adaugă un destinatar";
+"Edit Draft..." = "Editare Draft...";
+"Load Images" = "Încărcare Imagini";
+"Return Receipt" = "Confirmare de primire";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Expeditorul acestui mesaj a cerut să fie notificat când citiți acest mesaj. Doriți să notificați expeditorul?";
+"Return Receipt (displayed) - %@"= "Confirmare de primire (afișată) - %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Aceasta este o Confirmare de Primire pentru mesajul care l-ați trimis către %@.⏎ ⏎ Notă: Această confirmare de primire confirmă doar faptul că mesajul a fost afișat pe calculatorul destinatarului dar nu și faptul că destinatarul l-a citit sau că i-a înțeles conținutul.";
+"Security" = "Securitate";
+"Sign" = "Semnează";
+"Encrypt" = "Criptează";
+"Priority" = "Prioritate";
+"highest" = "Cel mai înalt";
+"high" = "Înalt";
+"normal" = "Normal";
+"low" = "Jos";
+"lowest" = "Cel mai de jos";
+"This mail is being sent from an unsecure network!" = "Acest mesaj este trimis dintr-o rețea nesigură!";
+"Address Book" = "Contacte";
+"Search For" = "Caută";
+
+/* Popup "show" */
+"all"     = "tot";
+"read"    = "citire";
+"unread"  = "necitit";
+"deleted" = "șters";
+"flagged" = "marcat";
+
+/* MailListView */
+"Sender" = "Expeditor";
+"Subject or Sender" = "Subiect sau Expeditor";
+"To or Cc" = "To sau Cc";
+"Entire Message" = "Mesajul complet";
+"Date"          = "Data";
+"View"          = "Vizualizare";
+"All"           = "Tot";
+"No message"    = "Nici un mesaj";
+"messages"      = "Mesaje";
+"Yesterday"     = "Ieri";
+"first"         = "Primul";
+"previous"      = "Anteriorul";
+"next"          = "Următorul";
+"last"          = "Ultimul";
+"msgnumber_to"  = "către";
+"msgnumber_of"  = "de";
+"Mark Unread" = "Marcare ca Necitit";
+"Mark Read"   = "Marcare ca citit";
+"Untitled" = "Fără titlu";
+
+/* Tree */
+"SentFolderName"   = "Trimis";
+"TrashFolderName"  = "Coș de gunoi";
+"InboxFolderName"  = "Inbox";
+"DraftsFolderName" = "Ciorne";
+"JunkFolderName" = "Junk";
+"SieveFolderName"  = "Filtre";
+"Folders"          = "Foldere"; /* title line */
+
+/* MailMoveToPopUp */
+"MoveTo"        = "Mutare &ajutor;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Adăugare în lista de Contacte...";
+"Compose Mail To" = "Compunere mesaj către";
+"Create Filter From Message..." = "Creare filtru din mesaj...";
+
+/* Image Popup menu */
+"Save Image" = "Salvare imagine";
+"Save Attachment" = "Salvare atașament";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Deschidere în fereastră nouă";
+"Copy Folder Location" = "Copiere locaţie folder";
+"Subscribe..." = "Subscriere...";
+"Mark Folder Read" = "Marcare folder ca citit";
+"New Folder..." = "Folder nou...";
+"Compact This Folder" = "Compactare folder curent";
+"Search Messages..." = "Căutare mesaje...";
+"Sharing..." = "Partajare...";
+"New Subfolder..." = "Subfolder nou...";
+"Rename Folder..." = "Redenumire Folder...";
+"Delete Folder" = "Ștergere Folder";
+"Use This Folder For" = "Folosirea folderului curent";
+"Get Messages for Account" = "Citire mesaje pentru contul curent";
+"Properties..." = "Proprietăți...";
+"Delegation..." = "Delegare...";
+
+/* Use This Folder menu */
+"Sent Messages" = "Trimitere mesaje";
+"Drafts" = "Ciorne";
+"Deleted Messages" = "Mesaje Şterse";
+"Junk Messages" = "Mesaje Junk";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Deschidere mesaj în fereastră nouă";
+"Reply to Sender Only" = "Răspuns doar către Expeditor";
+"Reply to All" = "Răspuns către toţi";
+"Edit As New..." = "Editare ca Nou...";
+"Move To" = "Mutare În";
+"Copy To" = "Copiere În";
+"Label" = "Etichetă";
+"Mark" = "Marcare";
+"Save As..." = "Salvare ca...";
+"Print Preview" = "Previzualizare Pentru Imprimare";
+"View Message Source" = "Vizualizarea Sursei Mesajului";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Transformați în Eveniment";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Transformați în Sarcină";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Descarcă toate atașamentele";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "atașamente";
+
+"Print..." = "Imprimare...";
+"Delete Message" = "Ştergere Mesaj";
+"Delete Selected Messages" = "Ştergerea Mesajelor Selectate";
+"Mark the selected messages as junk" = "Marcare mesaje selectate ca junk";
+"Mark the selected messages as not junk" = "Marcare mesaje selectate ca non-junk";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "și %{0} mai mult...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "Ascunde";
+
+/* Number of selected messages in list */
+"selected" = "selectat";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Acest mesaj este criptat";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Acest mesaj nu poate fi decriptat. Vă rugăm să vă asigurați că v-ați încărcat certificatul S/MIME în preferințele modulului mail.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Semnătura mesajului nu a putut fi verificată";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Acest mesaj a fost modificat";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Eroare în citirea certificatului. Vă rugăm să instalați un alt certificat.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Nici un certificat nu a fost asociat acestui cont.";
+
+"This Folder" = "Acest Folder";
+
+/* Label popup menu */
+"None" = "Nici unul";
+
+/* Mark popup menu */
+"As Read" = "Ca Citit";
+"Thread As Read" = "Thread ca citit";
+"As Read By Date..." = "Ca Citit După Dată...";
+"All Read" = "Toate citite";
+"Flag" = "Marcaj";
+"As Junk" = "Ca nedorit";
+"As Not Junk" = "Ca dorit";
+"Run Junk Mail Controls" = "Rulaţi Controalele Pentru Mail Nedorit";
+"Search messages in" = "Căutare mesaje în";
+"Search" = "Căutare";
+"Search subfolders" = "Căutare în sub-foldere";
+"Match any of the following" = "potrivește oricare din urmatoarele";
+"Match all of the following" = "potrivește urmatoarele";
+"contains" = "conține";
+"does not contain" = "nu conține";
+"No matches found" = "Nu s-a gasit nici o potrivire";
+"results found" = "rezultate găsite";
+"result found" = "rezultat găsit";
+"Please specify at least one filter" = "Specificați cel puțin un filtru";
+
+/* Folder operations */
+"Name" = "Nume";
+"Enter the new name of your folder"
+ ="Introduceţi numele folderului dumneavoastră";
+"Do you really want to move this folder into the trash ?"
+ = "Sunteţi sigur că doriţi mutarea acestui folder la Coşul de Gunoi ?";
+"Operation failed" = "Operaţiune eşuată";
+"Quota" = "Limită:";
+"quotasFormat" = "%{0} folosit din %{1} MB";
+"Unable to move/delete folder." = "Nu se poate muta / șterge folder.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Căsuța poștală nu a putut fi mutată în dosarul gunoi. Doriți să o ștergeți imediat?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "Sunteți sigur că doriți să ștergeți mesajele selectate?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} mesaj(e) copiate";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} mesaj(e) mutate";
+
+"Please select a message." = "Selectaţi un mesaj.";
+"Please select a message to print." = "Selectaţi un mesaj pentru imprimare.";
+"Please select only one message to print." = "Selectaţi un singur mesaj pentru imprimare.";
+"The message you have selected doesn't exist anymore." = "Mesajul selectat nu mai există.";
+"The folder with name \"%{0}\" could not be created."
+= "Folderul cu numele \"%{0}\" nu poate fi creat.";
+"This folder could not be renamed to \"%{0}\"."
+= "Folderul nu poate fi redenumit în \"%{0}\".";
+"The folder could not be deleted."
+= "Folderul nu poate fi creat.";
+"The trash could not be emptied."
+= "Coşul de gunoi nu poate fi golit.";
+"The folder functionality could not be changed."
+= "Funcționalitatea folderului nu poate fi modificată.";
+"You need to choose a non-virtual folder!" = "Trebuie selectat un folder non-virtual!";
+"Moving a message into its own folder is impossible!"
+= "Mutarea unui mesaj în propriul folder nu se poate realiza!";
+"Copying a message into its own folder is impossible!"
+= "Copierea unui mesaj în propriul folder nu se poate realiza!";
+
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "Mesajul nu poate fi mutat în coșul de gunoi. Doriți ștergerea lui?";
+
+/* Message editing */
+"Please specify a subject." = "Vă rugăm să completați subiectul.";
+"error_missingsubject" = "Mesajul nu are subiect. Sunteți sigur că doriți trimiterea lui?";
+"error_missingrecipients" = "Specificați cel puțin un destinatar.";
+"Send Anyway" = "Forțare trimitere ";
+"Error while saving the draft" = "Eroare la salvarea draftului";
+
+/* Error when uploading a file attachment */
+"Error while uploading the file \"%{0}\":" = "Eroare la încărcarea fișierului \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "Există un fișier care se încărcare. Închiderea ferestrei va întrerupe încărcarea.";
+"Message is too big" = "Mesajul este prea mare";
+
+/* Appears while sending the message */
+"Sending" = "Trimit";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Trimis";
+
+"cannot send message: (smtp) all recipients discarded" = "Mesajul nu poate fi trimis: toate adresele destinatar sunt invalide.";
+"cannot send message (smtp) - recipients discarded" = "Mesajul nu poate fi trimis. Următoarea adrese sunt invalide:";
+"cannot send message: (smtp) error when connecting" = "Mesajul nu poate fi trimis: eroare de conectare la serverul SMTP.";
+
+/* Contacts list in mail editor */
+"Email" = "Email";
+"More mail options" = "Mai multe opțiuni";
+"Delegation" = "Delegare";
+"Add User" = "Adăugaţi Utilizator";
+"Add a tag" = "Adaugă o etichetă";
+"reply" = "răspuns";
+"Edit" = "Editare";
+"Yes" = "Da";
+"No" = "Nu";
+"Location" = "Locaţie";
+"Rename" = "Redenumire";
+"Compact" = "Compact";
+"Export" = "Export";
+"Set as Drafts" = "Setează ca Ciornă";
+"Set as Sent" = "Setează ca Trimis";
+"Set as Trash" = "Setează ca Coș";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "Setează ca Junk";
+
+"Sort" = "Sortare";
+"Order Received" = "Ordinea de primire";
+"Descending Order" = "Ordine Descendentă";
+"Back" = "Înapoi";
+"Copy messages" = "Copiere mesaje";
+"More messages options" = "Mai multe opțiuni";
+"Mark as Unread" = "Marcare ca Necitit";
+"Mark as Read" = "Marcare ca citit";
+"Closing Window ..." = "Închid Fereastra ...";
+"Tried to send too many mails. Please wait." = "Ați încercat să trimiteți prea multe mail-uri. Va rugăm să așteptați.";
+"View Mail" = "Vizualizare Email";
+"This message contains external images." = "Acest mesaj conține imagini externe.";
+"Expanded" = "Extins";
+"Add a Criteria" = "Adaugă un Criteriu";
+"More search options" = "Mai multe opțiuni";
+"Your email has been saved" = "Emailul dumneavoastră a fost salvat";
+"Your email has been sent" = "Emailul dumneavoastră a fost trimis";
+"Folder compacted" = "Folderul a fost compactat";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Domeniul de căutare";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Gestionarea Abonamentelor";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filtru";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

@@ -4,6 +4,9 @@
 New features
  - [web] move mailboxes (#644, #3511, #4479)
 
+Enhancements
+ - [web] added Romanian (ro) translation - thanks to Vasile Razvan Luca
+
 Bug fixes
  - [core] handle multi-valued mozillasecondemail attribute mapping
 

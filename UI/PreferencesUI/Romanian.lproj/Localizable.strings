@@ -1,0 +1,434 @@
+/* toolbar */
+"Save and Close" = "Salvare și închidere";
+"Close" = "Închidere";
+"Preferences saved" = "Preferințe salvate";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Modificări nesalvate";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Doriți să salvați modificările aduse configurației?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Salvare";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Nu salvați";
+
+/* tabs */
+"General" = "General";
+"Calendar Options" = "Opțiuni Calendar";
+"Contacts Options" = "Opțiuni Contacte";
+"Mail Options" = "Opțiuni Mail";
+"IMAP Accounts" = "Conturi IMAP";
+"Vacation" = "Vacanță";
+"Forward" = "Retrimitere";
+"Password" = "Parola";
+"Categories" = "Categorii";
+"Appointments invitations" = "Invitațiile întâlnirii";
+"Name" = "Nume";
+"Color" = "Culoare";
+"Add" = "Adăugare";
+"Delete" = "Ștergere";
+
+/* contacts categories */
+"contacts_category_labels" = "Coleg, Competitor, Client, Prieten, Familie, Partener de afaceri, Furnizor, Presă, VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Activare mesaj de vacanță";
+"Enable custom auto reply subject" = "Activare subiect mesaj automat personalizat";
+"Auto reply subject" = "Subiect mesaj automat";
+"You can write ${subject} to insert the original subject" = "Puteți scrie ${subject} pentru a insera subiectul original";
+"Auto reply message" = "Continut mesaj automat";
+"Email addresses (separated by commas)" = "Adrese de mail (separate prin virgulă)";
+"Add default email addresses" = "Adăugare adresă de mail implicită";
+"Days between responses" = "Numărul de zile dintre răspunsuri";
+"Do not send responses to mailing lists" = "Nu răspundeți la mesajele de la liste de discuții";
+"Enable auto reply on" = "Activare răspuns automat pe";
+"Disable auto reply on" = "Dezactivare răspuns automat pe";
+"Always send vacation message response" = "Întotdeauna trimite un mesaj de concediu";
+"Discard incoming mails during vacation" = "Ignoră mesajele primite pe perioada vacanței";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Specificați mesajul și adresa de mail pentru care doriți activarea răspunsului automat.";
+"Your vacation message must not end with a single dot on a line." = "Mesajul de vacanţă nu trebuie să se termine cu un singur punct într-o linie nouă.";
+"End date of your auto reply must be in the future."
+= "Data de sfârşit a mesajului de răspuns auto generat trebuie să fie o dată din viitor.";
+
+/* forward messages */
+"Forward incoming messages" = "Retrimitere mesaje primite";
+"Keep a copy" = "Păstrare a unei copii";
+"Please specify an address to which you want to forward your messages."
+= "Specificați o adresă de mail la care doriți retrimiterea mesajelor dumneavoastră.";
+"You are not allowed to forward your messages to an external email address." = "Nu aveți permisiunea de a transmite mesajele către o adresă de e-mail externă.";
+"You are not allowed to forward your messages to an internal email address." = "Nu aveți permisiunea de a transmite mesajele către o adresă de e-mail internă.";
+
+/* d & t */
+"Current Time Zone" = "Fus orar curent";
+"Short Date Format" = "Format scurt dată";
+"Long Date Format" = "Format lung dată";
+"Time Format" = "Format timp";
+"default" = "Implicit";
+"Default Module" = "Modul implicit";
+"Save" = "Salvare";
+"shortDateFmt_0" = "%d-%b-%y";
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "";
+
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "Nu s-a gasit nici o potrivire.";
+
+/* calendar */
+"Week begins on" = "Săptămâna începe pe";
+"Day start time" = "Ziua începe la";
+"Day end time" = "Ziua se termină la";
+"Day start time must be prior to day end time." = "Timpul de început al zilei trebuie să fie anterior timpului de sfârşit al zilei.";
+"Week days to display" = "Zilele săptămânii afișate";
+"Show time as busy outside working hours" = "Arată ca ocupat timpul în afara orelor de lucru";
+"First week of year" = "Prima săptămână a anului";
+"Enable reminders for Calendar items" = "Activare memento pentru elementele Calendarului";
+"Play a sound when a reminder comes due" = "Reda un sunet atunci când un memento este scadent";
+"Default reminder" = "Memento implicit";
+"firstWeekOfYear_January1" = "Începe în 1 Ianuarie";
+"firstWeekOfYear_First4DayWeek" = "Prima săptămână de 4 zile";
+"firstWeekOfYear_FirstFullWeek" = "Prima săptămână completă";
+"Prevent from being invited to appointments" = "Împiedica de a fi invitat la întâlniri";
+"White list for appointment invitations" = "Lista albă pentru invitații la întâlniri";
+"Contacts Names" = "Numele Contactelor";
+
+/* Default Calendar */
+"Default calendar" = "Calendar implicit";
+"selectedCalendar" = "Calendarul selectat";
+"personalCalendar" = "Calendar personal";
+"firstCalendar" = "Primul calendar activ";
+"reminder_NONE" = "Fără memento";
+"reminder_5_MINUTES_BEFORE" = "5 minute înainte";
+"reminder_10_MINUTES_BEFORE" = "10 minute înainte";
+"reminder_15_MINUTES_BEFORE" = "15 minute înainte";
+"reminder_30_MINUTES_BEFORE" = "30 minute înainte";
+"reminder_45_MINUTES_BEFORE" = "45 minute înainte";
+"reminder_1_HOUR_BEFORE" = "1 oră înainte";
+"reminder_2_HOURS_BEFORE" = "2 ore înainte";
+"reminder_5_HOURS_BEFORE" = "5 ore înainte";
+"reminder_15_HOURS_BEFORE" = "15 ore înainte";
+"reminder_1_DAY_BEFORE" = "1 zi înainte";
+"reminder_2_DAYS_BEFORE" = "2 zile înainte";
+"reminder_1_WEEK_BEFORE" = "1 saptamana înainte";
+
+/* Mailer */
+"Labels" = "Etichete";
+"Label" = "Etichetă";
+"IMAP Label" = "Eticheta IMAP";
+"Invalid label" = "A nu se folosi spațiu sau ( ) { } % * \" \\";
+"Duplicate label" = "Etichetă duplicată";
+"IMAP labels must have unique names." = "etichetele IMAP necesită nume unic";
+"New label" = "Etichetă Nouă";
+"Show subscribed mailboxes only" = "Arată numai cutiile poștale la care sunt abonat";
+"Synchronize only default mail folders (EAS)" = "Sincronizează numai folderele de corespondență implicite (EAS)";
+"Sort messages by threads" = "Sortare mesaje după thread";
+"Always open mail composer" = "Întotdeauna deschide interfața pentru scrierea de mesaje";
+"Inside current window" = "Înăuntrul ferestrei curente";
+"In a popup window" = "Într-o fereastră pop-up";
+"When sending mail, add unknown recipients to my" = "Cantr trimit mesaje, slavează destinatari necunoscuți în";
+"Address Book" = "Contacte";
+"Forward messages" = "Redirecționare mesaje";
+"messageforward_inline" = "În conținutul mesajului";
+"messageforward_attached" = "Ca ataşament";
+"When replying to a message" = "Când răspundeți la un mesaj";
+"replyplacement_above" = "Mesaj de răspuns deasupra textului";
+"replyplacement_below" = "Mesaj de răspuns sub text";
+"And place my signature" = "Şi adaugă semnătura mea";
+"signatureplacement_above" = "sub răspunsul meu";
+"signatureplacement_below" = "sub text";
+"Compose messages in" = "Compunere mesaj în";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Text";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Marime font implicită";
+
+"Display remote inline images" = "Afișează imaginile incluse in conținutul mesajului";
+"displayremoteinlineimages_never" = "Niciodată";
+"displayremoteinlineimages_always" = "Întotdeauna";
+"Auto save every" = "Salvare automată la fiecare";
+"minutes" = "minute";
+
+/* Contact */
+"Personal Address Book" = "Agenda Personală";
+"Collected Address Book" = "Agenda Colectată";
+
+/* IMAP Accounts */
+"Settings" = "Setări";
+"Security" = "Securitate";
+"Mail Account" = "Cont Email";
+"New Mail Account" = "Cont de mail nou";
+"Server Name" = "Nume Server";
+"Port" = "Port";
+"Encryption" = "Criptare";
+"None" = "Nimic";
+"User Name" = "Nume Utilizator";
+"Full Name" = "Nume Complet";
+"Email" = "Email";
+"Reply To Email" = "Răspunde la Email";
+"Signature" = "Semnătura";
+"(Click to create)" = "(Click pentru a crea)";
+"Please enter your signature below" = "Introduceți mai jos semnătura";
+"Please specify a valid sender address." = "Introduceţi o adresă expeditor validă.";
+"Please specify a valid reply-to address." = "Introduceţi o adresă de răspuns validă.";
+"Specify a hostname other than the local host" = "Specifică un nume de host diferit de localhost";
+
+"No certificate installed" = "Nici un certificat instalat";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "Certificatul SSL trebuie să fie în formatul PKCS#12 (PFX).";
+"Uninstall" = "Dezinstalează";
+"Choose PKCS12 Certificate .." = "Alege certificatul PKCS12 ..";
+"Certificate Import Password" = "Parola certificatului importat";
+"Upload" = "Încarcă";
+"When composing a message" = "La compunerea unui mesaj";
+"Digitally sign the message by default" = "Semnează digital mesajul în mod implicit";
+"Always try to encrypt the message" = "Întotdeauna încearcă criptarea mesajului";
+
+/* Additional Parameters */
+"Additional Parameters" = "Parametri adiționali";
+
+/* password */
+"New password" = "Parola nouă";
+"Confirmation" = "Confirmare";
+"Change" = "Schimbare";
+
+/* Event+task classifications */
+"Default events classification" = "Clasificare implicită a evenimentelor";
+"Default tasks classification" = "Clasificare implicită a sarcinilor";
+"PUBLIC_item" = "Public";
+"CONFIDENTIAL_item" = "Confidenţial";
+"PRIVATE_item" = "Privat";
+
+/* Event+task categories */
+"Calendar Category" = "Categorie Calendar";
+"Add Calendar Category" = "Adaugă Categorie Calendar";
+"New category" = "Categorie nouă";
+"Remove Calendar Category" = "Ștergere Categorie Calendar";
+"Contact Category" = "Categorie Contact";
+"Add Contact Category" = "Adaugă Categorie Contact";
+"Remove Contact Category" = "Ștergere Categorie Contact";
+"category_none" = "Nimic";
+"calendar_category_labels" = "Aniversare,Zi de naștere,Afacere,Apeluri,Clienți,Competiție,Client,Favorite,Urmărire,Cadouri,Sărbători,Idei,Întâlniri,Probleme,Diverse,Personale,Proiecte,Sărbători publice,Status,Furnizori,Vacanță";
+
+/* Default module */
+"Calendar" = "Calendar";
+"Contacts" = "Contacte";
+"Mail" = "Mail";
+"Last" = "Ultimul folosit";
+"Default Module " = "Modul implicit";
+"SOGo Version" = "Versiune SOGo";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Salvați preferințele și reîncărcați pagina?";
+"Language" = "Limba";
+"choose" = "Alegere...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"Japanese" = "日本語";
+"Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"Refresh View" = "Reîmprospătare";
+"refreshview_manually" = "Manual";
+"refreshview_every_minute" = "Fiecare minut";
+"refreshview_every_2_minutes" = "Fiecare 2 minute";
+"refreshview_every_5_minutes" = "Fiecare 5 minute";
+"refreshview_every_10_minutes" = "Fiecare 10 minute";
+"refreshview_every_20_minutes" = "Fiecare 20 minute";
+"refreshview_every_30_minutes" = "Fiecare 30 minute";
+"refreshview_once_per_hour" = "O dată pe oră";
+
+/* Return receipts */
+"When I receive a request for a return receipt" = "Atunci când primesc o cerere de confirmare de primire";
+"Never send a return receipt" = "Nu trimite niciodată confirmare de primire";
+"Allow return receipts for some messages" = "Permite confirmarea de primire pentru câteva mesaje";
+"If I'm not in the To or Cc of the message" = "Dacă nu mă regăsesc în To sau Cc";
+"If the sender is outside my domain" = "Dacă expeditorul nu este din domeniul meu";
+"In all other cases" = "In toate celelalte cazuri";
+"Never send" = "Nu trimite niciodată";
+"Always send" = "Trimite întotdeauna";
+"Ask me" = "Întreabă-mă";
+
+/* Filters - UIxPreferences */
+"Filters" = "Filtre";
+"Active" = "Activ";
+"Move Up" = "Mutare Sus";
+"Move Down" = "Mutare Jos";
+"Connection error" = "Eroare conexiune";
+"Service temporarily unavailable" = "Serviciu temporar indisponibil";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Activare filtru";
+
+/* Filters - UIxFilterEditor */
+"Filter name" = "Nume filtru";
+/* Button label */
+"Add a condition" = "Adaugă o conditie";
+/* Button label */
+"Add an action" = "Adaugă o actiune";
+"For incoming messages that" = "Pentru mesaje primite care";
+"match all of the following rules" = "potrivește urmatoarele reguli";
+"match any of the following rules" = "potrivește oricare din urmatoarele reguli";
+"match all messages" = "potrivește toate mesajele";
+"Perform these actions" = "Efectuează aceste acțiuni";
+"Untitled Filter" = "Filtru \fFără titlu";
+"Subject" = "Subiect";
+"From" = "De la";
+"To" = "Către";
+"Cc" = "Cc";
+"To or Cc" = "Către sau Cc";
+"Size (Kb)" = "Mărime (Ko)";
+"Header" = "Antet";
+"Body" = "Conținut";
+"Flag the message with" = "Marchează mesajul cu";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Marcaj";
+
+"Discard the message" = "Șterge mesajul";
+"File the message in" = "Mută în";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Cutie Poștală";
+
+"Keep the message" = "Păstrează mesajul";
+"Forward the message to" = "Redirecționează mesajul la";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "Email";
+
+"Send a reject message" = "Trimite un mesaj de respingere";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Mesaj";
+
+"Send a vacation message" = "Trimite un mesaj de concediu";
+"Stop processing filter rules" = "Oprește procesarea regulilor din filtru";
+"is under" = "este sub";
+"is over" = "este peste";
+"is" = "este";
+"is not" = "nu este";
+"contains" = "conține";
+"does not contain" = "nu conține";
+"matches" = "coincide";
+"does not match" = "nu coincide";
+"matches regex" = "coincide regex";
+"does not match regex" = "nu coincide regex";
+/* Placeholder for the value field of a condition */
+"Value" = "Valoare";
+"Seen" = "Văzut";
+"Deleted" = "Șters";
+"Answered" = "Cu Răspuns";
+"Flagged" = "Marcat";
+"Junk" = "Junk";
+"Not Junk" = "Nu este Junk";
+
+/* Password policy */
+"The password was changed successfully." = "Parola a fost schimbată.";
+"Password must not be empty." = "Parola nu poate fi goală.";
+"The passwords do not match. Please try again." = "Parola nu se potriveste. Vă rugăm să încercați din nou.";
+"Password change failed" = "Schimbare parolă eşuată";
+"Password change failed - Permission denied" = "Schimbare parolă eşuată - drepturi insuficiente";
+"Password change failed - Insufficient password quality" = "Schimbare parolă eşuată - drepturi insuficiente";
+"Password change failed - Password is too short" = "Schimbare parolă eşuată - Parola este prea scurtă";
+"Password change failed - Password is too young" = "Schimbare parolă eşuată";
+"Password change failed - Password is in history" = "Schimbare parolă eşuată - Parola a mai fost folosită";
+"Unhandled policy error: %{0}" = "Eroare de politica nedeclarată: %{0}";
+"Unhandled error response" = "Răspuns de eroare nedeclarat";
+"Password change is not supported." = "Schimbare parolei nu este suportată.";
+"Unhandled HTTP error code: %{0}" = "Răspuns de eroare HTTP nedeclarat: %{0}";
+"Cancel" = "Renunţare";
+"Invitations" = "Invitații";
+"Edit Filter" = "Editare Filtru";
+"Delete Filter" = "Ștergere Filtru";
+"Create Filter" = "Adăugare Filtru";
+"Delete Label" = "Ștergere Etichetă";
+"Create Label" = "Adăugare Etichetă";
+"Accounts" = "Conturi";
+"Edit Account" = "Editare Cont";
+"Delete Account" = "Ștergere Cont";
+"Create Account" = "Creare Cont";
+"Account Name" = "Nume Cont";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "Folosește Gravatar";
+"Alternate Avatar" = "Avatar Alternativ";
+"none" =  "Nimic";
+"identicon" = "Ident Icon";
+"monsterid" = "Monster";
+"wavatar" = "Wavatar";
+"retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Nivel Animaţie";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normal";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Limitat";
+"animation_NONE" = "Niciuna";

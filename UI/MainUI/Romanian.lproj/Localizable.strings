@@ -1,0 +1,98 @@
+/* this file is in UTF-8 format! */
+
+"title" = "SOGo";
+"Username" = "Utilizator";
+"Password" = "Parola";
+"Domain" = "Domeniu";
+"Remember username" = "Ține minte numele de utilizator";
+"Connect" = "Conectare";
+
+/* Appears while authentication is in progress */
+"Authenticating" = "Autentific";
+
+/* Appears when authentication succeeds */
+"Welcome" = "Bine ati venit";
+
+"Authentication Failed" = "Autentificarea a eșuat";
+"Wrong username or password." = "Nume de utilizator sau parolă greșită.";
+"Retry" = "Reîncearcă";
+"cookiesNotEnabled" = "Nu te poti loga deoarece cookie-urile din browser-ul sunt dezactivate. Vă rugăm să activați cookie-urile în setările browser-ului dvs. și încercați din nou.";
+"browserNotCompatible" = "Am detectat că versiunea browser-ului nu este suportată de acest site. Recomandarea noastră este de a folosi Firefox. Click pe link-ul de mai jos pentru a descărca cea mai recentă versiune a acestui browser.";
+"alternativeBrowsers" = "Ca alternativă puteți utiliza următoarele browsere compatibile";
+"alternativeBrowserSafari" = "Ca alternativă puteți utiliza Safari.";
+"Download" = "Descarca";
+"Language" = "Limba";
+"choose" = "Alege ...";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"Japanese" = "日本語";
+"Latvian" = "Latviešu";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"About" = "Despre";
+"AboutBox" = "Developed by Inverse, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>\nSOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>\nSOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>\nSee <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+"Your account was locked due to too many failed attempts." = "Contul dvs. a fost blocat din cauza prea multe încercări nereușite de conectare.";
+"Your account was locked due to an expired password." = "Contul dvs. a fost blocat din cauza că parola a expirat.";
+"Login failed due to unhandled error case" = "Conectarea a eșuat din cauza unei erori nedeclarate";
+"Change your Password" = "Schimbați-vă parola";
+"The password was changed successfully." = "Parola a fost schimbată.";
+"Your password has expired, please enter a new one below" = "Parola a expirat, vă rugăm să introduceți una nouă mai jos";
+"Password must not be empty." = "Parola nu poate fi goală.";
+"The passwords do not match. Please try again." = "Parola nu se potriveste. Vă rugăm să încercați din nou.";
+"Password Grace Period" = "Perioada de grație parolă";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Mai aveți %{0} autentificări până când contul dvs. va fi blocat. Vă rugăm să schimbați parola în dialogul de preferințe.";
+"Password about to expire" = "Parolă expiră în curând";
+"Your password is going to expire in %{0} %{1}." = "Parola dvs. va expira în %{0} %{1}.";
+"days" = "zile";
+"hours" = "ore";
+"minutes" = "minute";
+"seconds" = "secunde";
+"Password change failed" = "Schimbare parolă eşuată";
+"Password change failed - Permission denied" = "Schimbare parolă eşuată - drepturi insuficiente";
+"Password change failed - Insufficient password quality" = "Schimbare parolă eşuată - Calitate parolă insuficientă";
+"Password change failed - Password is too short" = "Schimbare parolă eşuată - Parola este prea scurtă";
+"Password change failed - Password is too young" = "Schimbare parolă eşuată";
+"Password change failed - Password is in history" = "Schimbare parolă eşuată - Parola a mai fost folosită";
+"Unhandled policy error: %{0}" = "Eroare de politica nedeclarată: %{0}";
+"Unhandled error response" = "Răspuns de eroare nedeclarat";
+"Password change is not supported." = "Schimbare parolei nu este suportată.";
+"Unhandled HTTP error code: %{0}" = "Răspuns de eroare HTTP nedeclarat: %{0}";
+"New password" = "Parola nouă";
+"Confirmation" = "Confirmare";
+"Cancel" = "Renunţare";
+"Please wait..." = "Vă rugăm să așteptați...";
+"Close" = "Închide";
+"Missing search parameter" = "Parametru de căutare lipsește";
+"Missing type parameter" = "Parametru de tip lipsește";

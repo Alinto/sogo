@@ -326,6 +326,9 @@
 @implementation SOGoMailPortugueseForward
 @end
 
+@implementation SOGoMailRomanianForward
+@end
+
 @implementation SOGoMailRussianForward
 @end
 

@@ -115,6 +115,9 @@
 @interface SOGoMailPortugueseForward : SOGoMailForward
 @end
 
+@interface SOGoMailRomanianForward : SOGoMailForward
+@end
+
 @interface SOGoMailRussianForward : SOGoMailForward
 @end
 

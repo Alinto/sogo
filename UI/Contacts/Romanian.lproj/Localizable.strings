@@ -1,0 +1,355 @@
+/* this file is in UTF-8 format! */
+
+"Contact" = "Contact";
+"Address" = "Adresă";
+"Photos" = "Fotografii";
+"Other" = "Altul";
+"Address Books" = "Contacte";
+"Addressbook" = "Contacte";
+"Addresses" = "Adrese";
+"Update" = "Actualizare";
+"Cancel" = "Renunţare";
+"Common" = "Comun";
+"Contact editor" = "Editor de contacte";
+"Contact viewer" = "Vizualizator de contacte";
+"Email" = "Email";
+"Screen Name" = "Screen Name";
+"Extended" = "Extins";
+"Fax" = "Fax";
+"Firstname" = "Prenume";
+"Home" = "Acasă";
+"HomePhone" = "Telefon de acasă";
+"Lastname" = "Nume de familie";
+"Location" = "Locaţie";
+"Add a category" = "Adaugă o categorie";
+"MobilePhone" = "Telefon mobil";
+"Name" = "Nume";
+"OfficePhone" = "Telefon de birou";
+"Organization" = "Organizaţie";
+"Work Phone" = "Telefon de serviciu";
+"Phone" = "Telefon";
+"Phones" = "Telefoane";
+"Postal" = "Poştal";
+"Save" = "Salvare";
+"Internet" = "Internet";
+"Unit" = "Unitate";
+"delete" = "Ştergere";
+"edit" = "editare";
+"invalidemailwarn" = "Mesajul specificat este invalid";
+"new" = "nou";
+"Preferred Phone" = "Telefon Preferat";
+"Move To" = "Mutare În";
+"Copy To" = "Copiere În";
+"Add to" = "Adaugă la";
+"To" = "Către";
+"Carbon Copy (Cc)" = "Copie către (CC)";
+"Blind Carbon Copy (Bcc)" = "Copie secretă către (BCC)";
+
+/* Search scope: name fields */
+"name" = "Nume";
+
+/* Search scope: name fields */
+"c_cn" = "Nume";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Email secundar";
+
+/* Search scope: screen name field */
+"nsaimid" = "Nume afișat";
+
+/* Search scope: mail fields */
+"mail" = "Mail";
+
+/* Search scope: mail fields */
+"c_mail" = "Mail";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telefon";
+
+/* Search scope: telephone field */
+"homephone" = "Telefon";
+
+/* Search scope: mobile field */
+"mobile" = "Mobil";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Pager";
+
+/* Search scope: categories field */
+"c_categories" = "Categorii";
+
+/* Search scope: categories field */
+"vcardcategories" = "Categorii";
+
+/* Search scope: title field */
+"title" = "Titlu";
+
+/* Search scope: organization field */
+"c_o" = "Organizaţie";
+
+/* Search scope: organization field */
+"o" = "Organizaţie";
+
+/* Search scope: department field */
+"ou" = "Departament";
+
+/* Search scope: city field */
+"l" = "Localitate";
+
+/* Search scope: country field */
+"c" = "Țară";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Adresa de domiciliu";
+
+/* Search scope: state/province field */
+"st" = "Județ/Regiune";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Județul/Regiunea de domiciliu";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Cod Poștal";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Cod Poștal";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Țara de domiciliu";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Pagină personală";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Pagină web";
+
+/* Search scope: note field */
+"description" = "Note";
+
+/* Subheader of empty addressbook */
+"No contact" = "Nu există contact";
+
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Începeți o căutare pt. a răsfoi agenda.";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "contacte";
+
+/* No contact matching search criteria */
+"No matching contact" = "Nici un contact nu corespunde";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "contacte care corespund";
+
+/* Number of selected contacts in list */
+"selected" = "selectat";
+
+/* Empty right pane */
+"No contact selected" = "Nici un contact selectat";
+
+/* Tooltips */
+"Create a new address book card" = "Creare contact nou";
+"Create a new list" = "Creare listă nouă";
+"Edit the selected card" = "Editare contact selectat";
+"Send a mail message" = "Trimitere mesaj mail";
+"Delete selected card or address book" = "Ştergere contact sau agendă";
+"Reload all contacts" = "Reîncărcare toate contactele";
+"htmlMailFormat_UNKNOWN" = "Necunoscut";
+"htmlMailFormat_FALSE" = "Text simplu";
+"htmlMailFormat_TRUE" = "HTML";
+"Name or Email" = "Nume sau Email";
+"Category" = "Categorie";
+"Personal Addressbook" = "Agenda Personală";
+"Search in Addressbook" = "Cautare in Agendă";
+"New Card" = "Card nou";
+"New List" = "Listă nouă";
+"Edit" = "Editare";
+"Properties" = "Proprietăți";
+"Sharing..." = "Partajare...";
+"Write" = "Scrie";
+"Delete" = "Ștergere";
+"Instant Message" = "Mesaj Instant";
+"Add..." = "Adăugare...";
+"Remove" = "Eliminare";
+"Please wait..." = "Vă rugăm să așteptați...";
+"No possible subscription" = "Abonarea nu este posibilă";
+"Preferred" = "Preferat";
+"Display" = "Afișare";
+"Display Name" = "Afișează numele";
+"Additional Email" = "Email adițional";
+"Phone Number" = "Nr. de telefon";
+"Prefers to receive messages formatted as" = "Formatarea mesajelor primite e de preferință";
+"Categories" = "Categorii";
+"First" = "Primul";
+"Last" = "Ultimul";
+"Nickname" = "Poreclă";
+"Telephone" = "Telefon";
+"Work" = "Muncă";
+"Mobile" = "Mobil";
+"Pager" = "Pager";
+
+/* categories */
+"contacts_category_labels" = "Coleg, Competitor, Client, Prieten, Familie, Partener de Business, Furnizor, Presă, VIP";
+"New category" = "Categorie nouă";
+
+/* adresses */
+"Title" = "Titlu";
+"Service" = "Serviciu";
+"Company" = "Companie";
+"Department" = "Departament";
+"City" = "Localitate";
+"State_Province" = "Județ";
+"ZIP_Postal Code" = "Cod Poștal";
+"Country" = "Țară";
+"Web Page" = "Pagină Web";
+"Other Infos" = "Alte Informații";
+"Note" = "Note";
+"Timezone" = "Fus orar";
+"Birthday" = "Zi de nastere";
+"Birthday (yyyy-mm-dd)" = "Zi de nastere (aaaa-ll-zz)";
+"Freebusy URL" = "URL Freebusy";
+"Add as..." = "Adăugare ca...";
+"Recipient" = "Destinatar";
+"Carbon Copy" = "Copie la indigo";
+"Blind Carbon Copy" = "Copie la indigo oarbă";
+"New Addressbook..." = "Agenda Nouă...";
+"Subscribe to an Addressbook..." = "Abonare la o agendă";
+"Remove the selected Addressbook" = "Elimină agenda selectată";
+"Subscribe to a shared folder" = "Abonare la un folder partajat";
+"Search User" = "Căutare utilizator";
+"Name of the Address Book" = "Numele agendei";
+"Are you sure you want to delete the selected address book?"
+= "Ești sigur(ă) că dorești ștergerea agendei selectate?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Ești sigur(ă) că dorești ștergerea agendei \"%{0}\"?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "Nu poți să elimini sau să te deabonezi de la o agendă publică.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "Nu poți să elimini sau să te deabonezi de la o agenda personală.";
+"Are you sure you want to delete the selected contacts?"
+= "Ești sigur(ă) că dorești ștergerea contactelor selectate?";
+"Are you sure you want to delete the card of %{0}?" = "Ești sigur(ă) că dorești cardul %{0}?";
+"You cannot delete the card of \"%{0}\"."
+= "Nu poți șterge cardul \"%{0}\".";
+"You cannot subscribe to a folder that you own!"
+= "Nu puteți să vă abonați la un dosar pe care îl dețineți!";
+"Unable to subscribe to that folder!"
+= "Nu se poate abona la acest dosar!";
+
+/* acls */
+"Access rights to" = "Drept de acces pentru";
+"For user" = "Pentru utilizatorul";
+"Any Authenticated User" = "Orice utilizator autentificat";
+"Public Access" = "Acces Public";
+"This person can add cards to this addressbook."
+= "Această persoană poate adăuga carduri la această agende.";
+"This person can edit the cards of this addressbook."
+= "Această persoană poate modificat cardurile aceastei agende.";
+"This person can list the content of this addressbook."
+= "Această persoană poate să listeze conținutul acestei agende.";
+"This person can read the cards of this addressbook."
+= "Această persoană poate să citească cardurile acestei agende.";
+"This person can erase cards from this addressbook."
+= "Această persoană poate să elimine cardurile acestei agende.";
+"The selected contact has no email address."
+= "Contactul selectat nu are adresă de email.";
+"Please select a contact." = "Selectaţi un contact.";
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} card(uri) copiate";
+"%{0} card(s) moved" = "%{0} card(uri) mutate";
+"SoAccessDeniedException" = "Nu poți scrie în această agendă.";
+"Forbidden" = "Interzis";
+"Invalid Contact" = "Contactul selectat nu mai există.";
+"Unknown Destination Folder" = "Agenda de destinație nu mai există.";
+
+/* Lists */
+"List details" = "Detalii Listă";
+"List name" = "Nume Listă";
+"List nickname" = "Poreclă Listă";
+"List description" = "Descrierea Listei";
+"Members" = "Membri";
+"Contacts" = "Contacte";
+"Add" = "Adăugare";
+"Lists can't be moved or copied." = "Listele nu pot fi mutate sau copiate.";
+"Export" = "Export";
+"Export Address Book..." = "Exportă agenda...";
+"View Raw Source" = "Vezi sursa de cod.";
+
+/* Import */
+"Import Cards" = "Import carduri";
+"Select a vCard or LDIF file." = "Selectează un vCard sau fișier LDIF.";
+"Upload" = "Încarcare";
+"Uploading" = "Încarc";
+"Done" = "Terminat";
+"An error occured while importing contacts." = "A apărut o eroare în timpiul importului de contacte.";
+"No card was imported." = "Niciun card nu a fost importat.";
+"A total of %{0} cards were imported in the addressbook." = "Un total de %{0} carduri au fost importate în agendă.";
+"Reload" = "Reîncărcare";
+
+/* Properties window */
+"Address Book Name" = "Nume Agendă";
+"Links to this Address Book" = "Link-uri către agendă.";
+"Authenticated User Access" = "Acces Utilizatori Autentificați.";
+"CardDAV URL" = "URL CardDAV";
+"Options" = "Opțiuni";
+"Rename" = "Redenumire";
+"Subscriptions" = "Abonamente";
+"Global Addressbooks" = "Agenda Globală";
+"Search" = "Căutare";
+"Sort" = "Sortare";
+"Descending Order" = "Ordine Descendentă";
+"Back" = "Înapoi";
+"Select All" = "Selectare tot";
+"Copy contacts" = "Copiere contacte";
+"More messages options" = "Mai multe opțiuni de mesaje.";
+"New Contact" = "Contact Nou";
+"Close" = "Închide";
+"More contact options" = "Mai multe opțiuni de contacte";
+"Organization Unit" = "Unitate de Organizare";
+"Add Organizational Unit" = "Adaugă Unitate de Organizare";
+"Type" = "Tip";
+"Email Address" = "Adresă Email";
+"New Email Address" = "Adresă Email Nouă";
+"New Phone Number" = "Număr de telefon nou";
+"URL" = "URL";
+"New URL" = "URL Nou";
+"street" = "stradă";
+"street (continued)" = "strada (continuare)";
+"Postoffice" = "Oficiu Poștal";
+"Region" = "Județ";
+"Postal Code" = "Cod Poștal";
+"New Address" = "Adresă Nouă";
+"Reset" = "Resetare";
+"Description" = "Descriere";
+"Add Member" = "Adaugă Membru";
+"Subscribe" = "Abonează-te";
+"Add Birthday" = "Adaugă zi de naștere";
+"Import" = "Import";
+"More options" = "Mai multe opțiuni";
+"Role" = "Rol";
+"Add Screen Name" = "Adaugă pseudonim";
+"Custom 1" = "Personalizat 1";
+"Custom 2" = "Personalizat 2";
+"Custom 3" = "Personalizat 3";
+"Custom 4" = "Personalizat 4";
+"Custom Value" = "Valoare Personalizată";
+"New Custom Value" = "Noua Valoare Personalizată";
+"Synchronization" = "Sincronizare";
+"Synchronize" = "Sincronizare";
+"Sucessfully subscribed to address book" = "Te-ai abonat cu succes la agendă.";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Domeniul de căutare";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Comută element";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

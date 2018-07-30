@@ -16,7 +16,7 @@ DEBUG=False
 SOGoSupportedLanguages = [ "Arabic", "Basque", "Catalan", "ChineseChina", "ChineseTaiwan", "Croatian", "Czech", "Dutch", "Danish", "Welsh", "English", "Finnish",
                            "SpanishSpain", "SpanishArgentina", "French", "German", "Hebrew",
                            "Icelandic", "Italian", "Japanese", "Latvian", "Lithuanian", "Macedonian", "Hungarian", "Portuguese", "BrazilianPortuguese",
-                           "NorwegianBokmal", "NorwegianNynorsk", "Polish", "Russian", "Serbian", "Slovak",
+                           "NorwegianBokmal", "NorwegianNynorsk", "Polish", "Romanian", "Russian", "Serbian", "Slovak",
                            "Slovenian", "Swedish", "TurkishTurkey", "Ukrainian" ];
 daysBetweenResponseList=[1,2,3,5,7,14,21,30]
 

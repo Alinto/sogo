@@ -58,6 +58,7 @@ SOGo and its associated components are available in various languages. The follo
 * [nn_NO] Norwegian (Nynorsk) - Altibox
 * [pl] Polish - Paweł Bogusławski
 * [pt] Portuguese - Eduardo Crispim
+* [ro_RO] Romanian - Vasile Razvan Luca
 * [ru] Russian - Alex Kabakaev
 * [sr] Serbian - Bogdanović Bojan
 * [sk] Slovak - Martin Pastor

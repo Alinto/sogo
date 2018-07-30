@@ -162,6 +162,9 @@
 @implementation SOGoMailPortugueseReply
 @end
 
+@implementation SOGoMailRomanianReply
+@end
+
 @implementation SOGoMailRussianReply
 @end
 

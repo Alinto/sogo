@@ -114,6 +114,9 @@
 @interface SOGoMailPortugueseReply : SOGoMailReply
 @end
 
+@interface SOGoMailRomanianReply : SOGoMailReply
+@end
+
 @interface SOGoMailRussianReply : SOGoMailReply
 @end
 

@@ -1,0 +1,614 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+"Create a new event" = "Creează un nou eveniment";
+"Create a new task" = "Creează o nouă sarcină";
+"Edit this event or task" = "Modifică evenimentul sau sarcina";
+"Print the current calendar view" = "Tipărește perspectiva curentă a calendarului";
+"Delete this event or task" = "Șterge evenimentul sau sarcina";
+"Go to today" = "Du-te la data de azi";
+"Switch to day view" = "Comută la perspectiva pe zile";
+"Switch to week view" = "Comută la perspectiva pe săptămâni";
+"Switch to month view" = "Comută la perspectiva pe luni";
+"Switch to multi-columns day view" = "Comută la perspectiva pe zile cu multi-coloane";
+"Reload all calendars" = "Reîncarcă toate calendarele";
+
+/* Tabs */
+"Date" = "Data";
+"Calendars" = "Calendare";
+"No events for selected criteria" = "Niciun eveniment pt. criteriile selectate ";
+"No tasks for selected criteria" = "Nicio sarcină pentru criteriile selectate";
+
+/* Day */
+"DayOfTheMonth" = "Ziua lunii";
+"dayLabelFormat" = "%m/%d/%Y";
+"today" = "Astăzi";
+"Previous Day" = "Ziua Precedentă";
+"Next Day" = "Ziua Următoare";
+
+/* Week */
+"Week" = "Săptămână";
+"this week" = "săptămâna curentă";
+"Week %d" = "Săptămâna %d";
+"Previous Week" = "Săptămâna Precedentă";
+"Next Week" = "Săptămâna Următoare";
+
+/* Month */
+"this month" = "luna curentă";
+"Previous Month" = "Luna Precedentă";
+"Next Month" = "Luna Următoare";
+
+/* Year */
+"this year" = "acul curent";
+
+/* Menu */
+"Calendar" = "Calendar";
+"Contacts" = "Contacte";
+"New Calendar..." = "Calendar Nou...";
+"Delete Calendar" = "Șterge Calendar...";
+"Unsubscribe Calendar" = "Dezabonare Calendar";
+"Sharing..." = "Partajare...";
+"Export Calendar..." = "Exportă Calendar...";
+"Import Events..." = "Importă Evenimente...";
+"Import Events" = "Importă Evenimente";
+"Select an iCalendar file (.ics)." = "Selectați un fișier iCalendar (.ics).";
+"Upload" = "Încarcare";
+"Uploading" = "Încarc";
+"Publish Calendar..." = "Publică Calendarul...";
+"Reload Remote Calendars" = "Reîncarcă Calendarele Remote (nelocale)";
+"Properties" = "Proprietăți";
+"Done" = "Terminat";
+"An error occurred while importing calendar." = "Importul de calendar a întâmpinat o eroare.";
+"No event was imported." = "Niciun eveniment nu a fost importat.";
+"A total of %{0} events were imported in the calendar." = "Un total de %{0} evenimente au fost importate în calendar.";
+"Compose E-Mail to All Attendees" = "Compune un e-mail către toți participanții";
+"Compose E-Mail to Undecided Attendees" = "Compune un e-mail către participanții indeciși";
+
+/* Relative dates */
+"Yesterday" = "Ieri";
+"Today" = "Astăzi";
+"Tomorrow" = "Mâine";
+"Last %@" = "Ultimul %@";
+
+/* Folders */
+"Personal calendar" = "Calendar personal";
+
+/* Misc */
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "Interzis";
+
+/* acls */
+"Access rights to" = "Drept de acces pentru";
+"For user" = "Pentru utilizatorul";
+"Any Authenticated User" = "Orice utilizator autentificat";
+"Public Access" = "Acces Public";
+"label_Public" = "Public";
+"label_Private" = "Privat";
+"label_Confidential" = "Confidenţial";
+"label_Viewer" = "Vizualizare Tot";
+"label_DAndTViewer" = "Vizualizează Data și Ora";
+"label_Modifier" = "Modificare";
+"label_Responder" = "Răspunde Către";
+"label_None" = "Nimic";
+"View All" = "Vizualizare Tot";
+"View the Date & Time" = "Vizualizează Data și Ora";
+"Modify" = "Modificare";
+"Respond To" = "Răspunde La";
+"None" = "Nimic";
+"This person can create objects in my calendar."
+= "Această persoană poate creea obiecte în calendarul meu.";
+"This person can erase objects from my calendar."
+= "Această persoană poate șterge obiecte din calendarul meu.";
+
+/* Button Titles */
+"Subscribe to a Calendar..." = "Abonează-te la un Calendar...";
+"Remove the selected Calendar" = "Șterge Calendarul selectat";
+"New calendar" = "Calendar Nou";
+"Name of the Calendar" = "Nume Calendar";
+"new" = "Nou";
+"Print view" = "Imprimare";
+"edit" = "Editare";
+"delete" = "Ștergere";
+"proposal" = "Propunere";
+"Save and Close" = "Salvare și închidere";
+"Close" = "Închide";
+"Invite Attendees" = "Invită Participanții";
+"Attach" = "Atașament";
+"Update" = "Actualizare";
+"Cancel" = "Renunţare";
+"Reset" = "Resetare";
+"Save" = "Salvare";
+"show_rejected_apts" = "Arată întâlnirile refuzate";
+"hide_rejected_apts" = "Ascunde întâlnirile refuzate";
+
+/* Schedule */
+"Schedule" = "Program";
+"No appointments found" = "Nu am găsit întâlniri";
+"Meetings proposed by you" = "Întâlniri propuse de tine";
+"Meetings proposed to you" = "Întâlniri propuse către tine";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "Acțiune";
+"accept" = "Acceptare";
+"decline" = "Refuzare";
+"more attendees" = "Mai Mulți Participanţi";
+"Hide already accepted and rejected appointments" = "Ascunde întâlnirile deja acceptate sau respinse";
+"Show already accepted and rejected appointments" = "Arată întâlnirile deja acceptate sau respinse";
+
+/* Print view */
+"LIST" = "Listă";
+"Print Settings" = "Setări Imprimare";
+"Title" = "Titlu";
+"Layout" = "Șablon";
+"What to Print" = "Ce să tipăresc";
+"Options" = "Opțiuni";
+"Tasks with no due date" = "Sarcini fără timp limită";
+"Display working hours only" = "Afişează doar orele de lucru";
+"Completed tasks" = "Sarcini Terminate";
+"Display events and tasks colors" = "Afişează culori la evenimente şi sarcini";
+"Borders" = "Bordură";
+"Backgrounds" = "Fundal";
+
+/* Appointments */
+"Appointment viewer" = "Vizualizare Întâlnire";
+"Appointment editor" = "Editor Întâlnire";
+"Appointment proposal" = "Propunere Întâlnire";
+"Appointment on" = "Întâlnire Activă";
+"Start" = "Start";
+"End" = "Sfârşit";
+"Due Date" = "Data Scadentă";
+"Name" = "Nume";
+"Email" = "Email";
+"Status" = "Stare";
+"% complete" = "% finalizat";
+"Location" = "Locaţie";
+"Add a category" = "Adaugă o categorie";
+"Priority" = "Prioritate";
+"Privacy" = "Intimitate";
+"Cycle" = "Ciclu";
+"Cycle End" = "Sfârșit ciclu";
+"Categories" = "Categorii";
+"Classification" = "Clasificare";
+"Duration" = "Durată";
+"Attendees" = "Participanţi";
+"Resources" = "Resurse";
+"Organizer" = "Organizator";
+"Description" = "Descriere";
+"Document" = "Document";
+"Category" = "Categorie";
+"Repeat" = "Repetă";
+"Reminder" = "Amintire";
+"General" = "General";
+"Reply" = "Răspunde";
+"Created by" = "Creat de";
+"You are invited to participate" = "Ești invitat să participi";
+"Target" = "Țintă";
+"attributes" = "atribute";
+"attendees" = "participanţi";
+"delegated from" = "Transferat de la";
+
+/* checkbox title */
+"is private" = "este privat";
+
+/* classification */
+"Public" = "Public";
+"Private" = "Privat";
+
+/* text used in overviews and tooltips */
+"empty title" = "Titlu gol";
+"private appointment" = "Întâlnire privată";
+"Change..." = "Schimbă...";
+
+/* Appointments (participation state) */
+"partStat_NEEDS-ACTION" = "Voi confirma mai târziu";
+"partStat_ACCEPTED" = "Voi participa";
+"partStat_DECLINED" = "Nu particip";
+"partStat_TENTATIVE" = "Probabil voi participa";
+"partStat_DELEGATED" = "Voi delega";
+"partStat_OTHER" = "Altul";
+
+/* Appointments (error messages) */
+"Conflicts found!" = "Conflicte găsite!";
+"Invalid iCal data!" = "Date iCal invalide!";
+"Could not create iCal data!" = "Nu am putut creea date iCal!";
+
+/* Searching */
+"view_all" = "Tot";
+"view_today" = "Astăzi";
+"view_next7" = "Următoarele 7 zile";
+"view_next14" = "Următoarele 14 zile";
+"view_next31" = "Următoarele 31 zile";
+"view_thismonth" = "Luna curentă";
+"view_thisyear" = "Acest an";
+"view_future" = "Toate evenimentele viitoare";
+"view_selectedday" = "Ziua Selectată";
+"view_not_started" = "Sarcini neîncepute";
+"view_overdue" = "Sarcini neîndeplinite";
+"view_incomplete" = "Sarcini incomplete";
+"View" = "Vizualizare";
+"Title, category or location" = "Titlu, categorie sau locație";
+"Entire content" = "Tot conținutul";
+"Search" = "Căutare";
+"Search attendees" = "Caută participanți";
+"Search resources" = "Caută resurse";
+"Search appointments" = "Caută întâlniri";
+"All day Event" = "Eveniment pe toată ziua";
+"check for conflicts" = "Caută conflicte";
+"URL" = "URL";
+"newAttendee" = "Adaugă participant";
+
+/* calendar modes */
+"Overview" = "Privire de ansamblu";
+"Chart" = "Grafic";
+"List" = "Listă";
+"Columns" = "Coloane";
+
+/* Priorities */
+"prio_0" = "Nespecificat";
+"prio_1" = "Urgent";
+"prio_2" = "Urgent";
+"prio_3" = "Urgent";
+"prio_4" = "Urgent";
+"prio_5" = "Normal";
+"prio_6" = "Mică";
+"prio_7" = "Mică";
+"prio_8" = "Mică";
+"prio_9" = "Mică";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "Eveniment Public";
+"CONFIDENTIAL_vevent" = "Eveniment Confidenţial";
+"PRIVATE_vevent" = "Eveniment Privat";
+"PUBLIC_vtodo" = "Sarcină Publică";
+"CONFIDENTIAL_vtodo" = "Sarcină Confidenţială";
+"PRIVATE_vtodo" = "Sarcină Privată";
+
+/* status type */
+"status_" = "Nespecificat";
+"status_NOT-SPECIFIED" = "Nespecificat";
+"status_TENTATIVE" = "Tentativă";
+"status_CONFIRMED" = "Confirmat";
+"status_CANCELLED" = "Anulat";
+"status_NEEDS-ACTION" = "Necesită acțiune";
+"status_IN-PROCESS" = "În proces";
+"status_COMPLETED" = "Completat la";
+
+/* Priority level */
+"low" = "mică";
+
+/* Priority level */
+"normal" = "normal";
+
+/* Priority level */
+"high" = "urgent";
+
+/* Cycles */
+"cycle_once" = "ciclu_o_dată";
+"cycle_daily" = "ciclu_zilnic";
+"cycle_weekly" = "ciclu_săptămânal";
+"cycle_2weeks" = "ciclu_2săptămâni";
+"cycle_4weeks" = "ciclu_4săptămâni";
+"cycle_monthly" = "ciclu_lunar";
+"cycle_weekday" = "ciclu_zisăptămână";
+"cycle_yearly" = "ciclu_anual";
+"cycle_end_never" = "ciclu_sfărșește_niciodată";
+"cycle_end_until" = "ciclu_sfarșește_la";
+"Recurrence pattern" = "Tipar recurență";
+"Range of recurrence" = "Interval recurență";
+"Daily" = "Zilnic";
+"Multi-Columns" = "Multi-coloane";
+"Weekly" = "Săptamânal";
+"Monthly" = "Lunar";
+"Yearly" = "Anual";
+"Every" = "La fiecare";
+"Days" = "Zile";
+"Week(s)" = "Săptămână(i)";
+"On" = "Deschis";
+"Month(s)" = "Luna(Lunile)";
+
+/* [Event recurrence editor] Ex: _The_ first Sunday */
+"The" = " ";
+"Recur on day(s)" = "Recurență în ziua(zilele)";
+"Year(s)" = "An(i)";
+
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
+"cycle_of" = "din";
+"No end date" = "Nici o dată de sfârșit";
+"Create" = "Creează";
+"appointment(s)" = "întâlniri";
+"Repeat until" = "Repetă până la";
+"End Repeat" = "Sfârșit repetare";
+"Never" = "Niciodată";
+"After" = "După";
+"On Date" = "La data";
+"times" = "ori";
+"First" = "Primul";
+"Second" = "Al doilea";
+"Third" = "Al treilea";
+"Fourth" = "Al patrulea";
+"Fift" = "Al cincilea";
+"Last" = "Ultimul";
+
+/* Appointment categories */
+"category_none" = "Niciunul";
+"category_labels" = "Aniversare,Zi naștere,Business,Apeluri,Clienți,Competiție,Client,Favorite,Urmărire,Cadouri,Concedii,Idei,Întâlnire,Probleme,Diverse,Personale,Proiecte,Publice Concedii,Stare,Furnizori,Călătorii,Vacanță";
+"repeat_NEVER" = "Nu se repetă";
+"repeat_DAILY" = "Zilnic";
+"repeat_WEEKLY" = "Săptamânal";
+"repeat_BI-WEEKLY" = "Bi-Săptamânal";
+"repeat_EVERY WEEKDAY" = "Fiecare zi a săptămânii";
+"repeat_MONTHLY" = "Lunar";
+"repeat_YEARLY" = "Anual";
+"repeat_CUSTOM" = "Personalizare...";
+"reminder_NONE" = "Fără memento";
+"reminder_0" = "La momentul evenimentului";
+"reminder_5_MINUTES_BEFORE" = "5 minute înainte";
+"reminder_10_MINUTES_BEFORE" = "10 minute înainte";
+"reminder_15_MINUTES_BEFORE" = "15 minute înainte";
+"reminder_30_MINUTES_BEFORE" = "30 minute înainte";
+"reminder_45_MINUTES_BEFORE" = "45 minute înainte";
+"reminder_1_HOUR_BEFORE" = "1 oră înainte";
+"reminder_2_HOURS_BEFORE" = "2 ore înainte";
+"reminder_5_HOURS_BEFORE" = "5 ore înainte";
+"reminder_15_HOURS_BEFORE" = "15 ore înainte";
+"reminder_1_DAY_BEFORE" = "1 zi înainte";
+"reminder_2_DAYS_BEFORE" = "2 zile înainte";
+"reminder_1_WEEK_BEFORE" = "1 saptamana înainte";
+"reminder_CUSTOM" = "Personalizare...";
+"reminder_MINUTES" = "minute";
+"reminder_HOURS" = "ore";
+"reminder_DAYS" = "zile";
+"reminder_WEEKS" = "săptămâni";
+"reminder_BEFORE" = "înainte";
+"reminder_AFTER" = "după";
+"reminder_START" = "evenimentul începe";
+"reminder_END" = "evenimentul sfârşeşte";
+"Reminder Details" = "Detalii Memento";
+"Choose a Reminder Action" = "Alege o Acţiune pentru Memento";
+"Show an Alert" = "Afişează o Alertă";
+"Send an E-mail" = "Trimite un E-Mail";
+"Email Organizer" = "Organizator E-Mail";
+"Email Attendees" = "Participanţi E-mail";
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* Arial label for reminder units */
+"Reminder units" = "Unităţi Memento";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Poziţie Memento";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Relaţie Memento";
+
+/* transparency */
+"Show Time as Free" = "Arată timpul ca Liber";
+
+/* email notifications */
+"Send Appointment Notifications" = "Trimite Notificări de Întâlnire";
+"From" = "De la";
+"To" = "Către";
+
+/* validation errors */
+validate_notitle           = "Nu este setat Titlul. Continuaţi?";
+validate_invalid_startdate = "Data de start incorectă!";
+validate_invalid_enddate   = "Data de sfârșit incorectă!";
+validate_endbeforestart    = "Data de sfârşit este înaintea datei de început!";
+validate_untilbeforeend    = "Repetarea trebuie să se încheie după prima apariție.";
+
+"Events" = "Evenimente";
+"Tasks" = "Sarcini";
+"Show completed tasks" = "Arată sarcinile completate";
+
+/* tabs */
+"Task" = "Sarcină";
+"Event" = "Eveniment";
+"Recurrence" = "Repetare";
+
+/* toolbar */
+"New Event" = "Eveniment Nou";
+"New Task" = "Sarcină Nouă";
+"Edit" = "Editare";
+"Delete" = "Ștergere";
+"Go to Today" = "Mergi la Data de Azi";
+"Day View" = "Vizualizare Zi";
+"Week View" = "Vizualizare Săptămână";
+"Month View" = "Vizualizare Lună";
+"Reload" = "Reîncărcare";
+
+/* Number of selected components in events or tasks list */
+"selected" = "selectat";
+"eventPartStatModificationError" = "Nu s-a putut modifica Starea dvs. de Participare.";
+
+/* menu */
+"New Event..." = "Eveniment Nou...";
+"New Task..." = "Sarcină Nouă...";
+"Edit Selected Event..." = "Editează Eveniment...";
+"Delete Selected Event" = "Şterge Eveniment";
+"Select All" = "Selectare tot";
+"Workweek days only" = "Doar Zile Lucrătoare";
+"Tasks in View" = "Sarcini în Vizualizare";
+"eventDeleteConfirmation" = "Următoarele eveniment(e) vor fi șterse:";
+"taskDeleteConfirmation" = "Următoare(a/le) sarcini vor fi șterse:";
+"Would you like to continue?" = "Dorești să continui?";
+"You cannot remove nor unsubscribe from your personal calendar."
+= "Nu te poţi şterge sau dezabona din calendarul personal.";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "Sigur dorești ștergerea calendarului \"%{0}\"?";
+
+/* Legend */
+"Participant" = "Participant";
+"Optional Participant" = "Participant opţional";
+"Non Participant" = "Neparticipant";
+"Chair" = "Poziţie";
+"Needs action" = "Acţiune necesară";
+"Accepted" = "Acceptat";
+"Declined" = "Refuzat";
+"Tentative" = "Încercare";
+"Free" = "Liber";
+"Busy" = "Ocupat";
+"Maybe busy" = "Posibil ocupat";
+"No free-busy information" = "Nu sunt informaţii liber/ocupat";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot" = "Sugerează un interval de timp";
+"Zoom" = "Măreşte";
+"Previous slot" = "Poziția precedentă";
+"Next slot" = "Poziția următoare";
+"Previous hour" = "Ora precedentă";
+"Next hour" = "Următoarea oră";
+"Work days only" = "Doar zile lucrătoare";
+"The whole day" = "Toată ziua";
+"Between" = "Între";
+"and" = "și";
+"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
+= "Există o suprapunere cu alte întâlniri.\nDorești să păstrezi modificările așa cum sunt?";
+
+/* events list */
+"Due" = "Datorită";
+"(Private Event)" = "(Eveniment privat)";
+vevent_class0 = "(Eveniment public)";
+vevent_class1 = "(Eveniment privat)";
+vevent_class2 = "(Eveniment confidenţial)";
+
+/* tasks list */
+"Descending Order" = "Ordine Descendentă";
+vtodo_class0 = "(Sarcină publică)";
+vtodo_class1 = "(Sarcină privată)";
+vtodo_class2 = "(Sarcină confidenţială)";
+"closeThisWindowMessage" = "Mulțumesc! Poţi închide această fereastră sau poţi să vizualizezi";
+"Multicolumn Day View" = "Vizualizare Zi multicoloană";
+"Please select an event or a task." = "Te rog să selectezi un eveniment sau o sarcină.";
+"editRepeatingItem" = "Elementul editat se repetă. Dorești ca modificările să se propage la toate aparițiile sau doar la elementul selectat?";
+"button_thisOccurrenceOnly" = "Doar această ocurență";
+"button_allOccurrences" = "Toate ocurențele";
+"Edit This Occurrence" = "Editare această ocurență";
+"Edit All Occurrences" = "Editare toate ocurențele";
+"Update This Occurrence" = "Actualizare această ocurență";
+"Update All Occurrences" = "Actualizare toate ocurențele";
+
+/* Properties dialog */
+"Color" = "Culoare";
+"Include in free-busy" = "Include în free-busy";
+"Synchronization" = "Sincronizare";
+"Synchronize" = "Sincronizare";
+"Tag" = "Etichetă";
+"Display" = "Afișare";
+"Show alarms" = "Afișare alarme";
+"Show tasks" = "Afișare sarcini";
+"Notifications" = "Notificări";
+"Receive a mail when I modify my calendar" = "Primeşte E-Mail când modific calendarul";
+"Receive a mail when someone else modifies my calendar" = "Primeşte E-Mail când altcineva îmi modifică calendarul";
+"When I modify my calendar, send a mail to" = "Când modific calendarul trimite un E-Mail către";
+"Email Address" = "Adresă Email";
+"Export" = "Export";
+
+
+/* Show only the calendar for which the menu is displayed */
+"Show Only This Calendar" = "Arată doar acest calendar";
+
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "Arată toate calendarele";
+
+"Links to this Calendar" = "Legături către acest Calendar";
+"Authenticated User Access" = "Acces Utilizatoril Autentificaţi";
+"CalDAV URL" = "URL CalDAV";
+"WebDAV ICS URL" = "URL WebDAV ICS";
+"WebDAV XML URL" = "URL WebDAV XML";
+
+/* Error messages */
+"dayFieldInvalid" = "În câmpul Zile trebuie o valoare numerică mai mare sau egală cu 1.";
+"weekFieldInvalid" = "În câmpul Saptămân(ă/i) trebuie o valoare numerică mai mare sau egală cu 1.";
+"monthFieldInvalid" = "În câmpul Lun(ă/i) trebuie o valoare numerică mai mare sau egală cu 1.";
+"monthDayFieldInvalid" = "În câmpul Zi din Lună trebuie o valoare numerică mai mare sau egală cu 1.";
+"yearFieldInvalid" = "În câmpul An(i) trebuie o valoare numerică mai mare sau egală cu 1.";
+"appointmentFieldInvalid" = "În câmpul Întâlnir(e/i) trebuie o valoare numerică mai mare sau egală cu 1.";
+"recurrenceUnsupported" = "Acest tip de recurență nu este suportat momentan.";
+"Please specify a calendar name." = "Vă rugăm să specificați un nume de calendar.";
+"tagNotDefined" = "Trebuie specificată o etichetă pentru a putea sincroniza acest calendar.";
+"tagAlreadyExists" = "Eticheta specificată este asociată deja cu alt calendar.";
+"tagHasChanged" = "Dacă schimbați eticheta calendarului va trebui să reîncărcați datele pe dispozitivul mobil.\nContinuă?";
+"tagWasAdded" = "Dacă doriți să sincronizați calendarul va trebui să reîncărcați datele pe dispozitivul mobil.\nContinuă?";
+"tagWasRemoved" = "Dacă eliminați calendarul de la sincronizare, va trebui să reîncărcați datele pe dispozitivul mobil.\nContinuă?";
+"DestinationCalendarError" = "Calendarul sursă și cel destinație sunt același. Încearcă să copiezi în alt calendar.";
+"EventCopyError" = "Nu a reuşit copierea. Te rog să încerci să copiezi în alt calendar.";
+"Please select at least one calendar" = "Selectează te rog minim un calendar";
+"Open Task..." = "Deschide sarcină...";
+"Mark Completed" = "Marcare ca finalizat";
+"Delete Task" = "Șterge Sarcină";
+"Delete Event" = "Șterge Eveniment";
+"Copy event to my calendar" = "Copiază eveniment la calendarul meu";
+"View Raw Source" = "Vizualizarea Sursei Mesajului";
+"Move To" = "Mută în";
+"Copy To" = "Copiază în";
+"Subscriptions" = "Abonamente";
+"Subscribe to a shared folder" = "Abonează-te la un folder partajat...";
+"Subscribe to a web calendar..." = "Abonează-te la un calendar web...";
+"URL of the Calendar" = "URL-ul Calendarului";
+"Web Calendar" = "Calendar Web";
+"Web Calendars" = "Calendare Web";
+"Reload on login" = "Reîncărcare la autentificare";
+"Invalid number." = "Număr invalid.";
+"Please identify yourself to %{0}" = "Vă rugam să vă identificați ca %{0}";
+"quantity" = "cantitate";
+"Current view" = "Perspectiva curentă";
+"Selected events and tasks" = "Evenimentele și sarcinile selectate";
+"Custom date range" = "Interval de timp personalizat";
+"Select starting date" = "Selectează data de început";
+"Select ending date" = "Selectează data de sfârșit";
+"Delegated to" = "Delegat către";
+"Keep sending me updates" = "Continuă să mă ții la curent";
+"OK" = "OK";
+"Confidential" = "Confidenţial";
+"Enable" = "Activare";
+"Filter" = "Filtru";
+"Sort" = "Sortare";
+"Back" = "Înapoi";
+"Day" = "Zi";
+"Month" = "Lună";
+"New Appointment" = "Eveniment Nou";
+"filters" = "filtre";
+"Today" = "Astăzi";
+"More options" = "Mai multe opțiuni";
+"Delete This Occurrence" = "Șterge această ocurență";
+"Delete All Occurrences" = "Șterge toate ocurențele";
+"Add Recurrence Date" = "Adaugă o dată recurentă";
+"Add From" = "Adaugă de la";
+"Add Due" = "Adaugare până la";
+"Import" = "Import";
+"Rename" = "Redenumire";
+"Import Calendar" = "Importă Calendar";
+"Select an ICS file." = "Selectează un fișier ICS.";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "Te-ai abonat la calendar cu succes";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Comută articolul";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Domeniul de căutare";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";
