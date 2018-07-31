@@ -11,6 +11,8 @@
     var vm = this, popupWindow = null, hotkeys = [];
 
     this.$onInit = function() {
+      var isPopupWindow = false;
+
       // Expose controller
       $window.$messageController = vm;
 
@@ -30,9 +32,14 @@
 
       _registerHotkeys(hotkeys);
 
+      // Detect if this is message appears in a separate window
+      try {
+        isPopupWindow = $window.opener && '$mailboxController' in $window.opener;
+      }
+      catch (e) {}
+
       // One-way refresh of the parent window when modifying the message from a popup window.
-      if ($window.opener &&
-          '$mailboxController' in $window.opener) {
+      if (isPopupWindow) {
         // Update the message flags. The message must be displayed in the parent window.
         $scope.$watchCollection(function() { return vm.message.flags; }, function(newTags, oldTags) {
           var ctrls;
