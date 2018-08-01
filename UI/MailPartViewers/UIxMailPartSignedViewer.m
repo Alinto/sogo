@@ -170,8 +170,9 @@
       if (err)
         {
           ERR_load_crypto_strings();
+          SSL_load_error_strings();
           sslError = ERR_reason_error_string(err);
-          validationMessage = [[self labelForKey: [NSString stringWithUTF8String: sslError]] retain];
+          validationMessage = [[self labelForKey: [NSString stringWithUTF8String: sslError ? sslError : "(no error information available)"]] retain];
         }
     }
 
