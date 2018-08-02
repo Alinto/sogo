@@ -69,6 +69,10 @@
       form.$setDirty();
     };
 
+    this.resetCalendarCategoryValidity = function(index, form) {
+      form['calendarCategory_' + index].$setValidity('duplicate', true);
+    };
+
     this.removeCalendarCategory = function(index, form) {
       var key = this.preferences.defaults.SOGoCalendarCategories[index];
       this.preferences.defaults.SOGoCalendarCategories.splice(index, 1);
@@ -320,6 +324,7 @@
         }
       }
 
+      // IMAP labels must be unique
       if (this.preferences.defaults.SOGoMailLabelsColorsKeys.length !=
           this.preferences.defaults.SOGoMailLabelsColorsValues.length ||
           this.preferences.defaults.SOGoMailLabelsColorsKeys.length !=
@@ -330,6 +335,20 @@
               (keys.indexOf(value) != i ||
                keys.indexOf(value, i+1) > -1)) {
             form['mailIMAPLabel_' + i].$setValidity('duplicate', false);
+            sendForm = false;
+          }
+        });
+      }
+
+      // Calendar categories must be unique
+      if (this.preferences.defaults.SOGoCalendarCategories.length !=
+          _.uniq(this.preferences.defaults.SOGoCalendarCategories).length) {
+        Dialog.alert(l('Error'), l("Calendar categories must have unique names."));
+        _.forEach(this.preferences.defaults.SOGoCalendarCategories, function (value, i, keys) {
+          if (form['calendarCategory_' + i].$dirty &&
+              (keys.indexOf(value) != i ||
+               keys.indexOf(value, i+1) > -1)) {
+            form['calendarCategory_' + i].$setValidity('duplicate', false);
             sendForm = false;
           }
         });

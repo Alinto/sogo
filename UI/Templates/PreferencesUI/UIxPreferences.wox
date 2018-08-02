@@ -410,9 +410,14 @@
                                          track by $index">
                   <sg-color-picker ng-model="app.preferences.defaults.SOGoCalendarCategoriesColors[item]"><!-- color picker--></sg-color-picker>
                   <md-input-container class="md-block md-flex">
-	            <input type="text" label:aria-label="Calendar Category"
+	            <input type="text" label:aria-label="Calendar Category" required="required"
+                           name="calendarCategory_{{$index}}"
                            ng-model="app.preferences.defaults.SOGoCalendarCategories[$index]"
+                           ng-change="app.resetCalendarCategoryValidity($index, preferencesForm)"
                            sg-focus-on="calendarCategory_{{$index}}"/>
+                    <div ng-messages="preferencesForm['calendarCategory_' + $index].$error">
+                      <div ng-message="duplicate"><var:string label:value="Duplicate name"/></div>
+                    </div>
                   </md-input-container>
                   <md-button class="sg-icon-button" type="button"
                              layout="row" layout-align="end center"

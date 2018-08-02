@@ -5,6 +5,7 @@ New features
  - [web] move mailboxes (#644, #3511, #4479)
 
 Enhancements
+ - [web] prohibit duplicate calendar categories in Preferences module
  - [web] added Romanian (ro) translation - thanks to Vasile Razvan Luca
 
 Bug fixes
