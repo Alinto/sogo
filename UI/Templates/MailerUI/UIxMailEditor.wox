@@ -12,7 +12,8 @@
              nv-file-drop="nv-file-drop"
              nv-file-over="nv-file-over"
              over-class="sg-over-dropzone"
-             uploader="editor.uploader">
+             uploader="editor.uploader"
+             var:sg-labels="framework">
     <form name="messageForm">
       <md-toolbar>
         <div class="md-toolbar-tools">

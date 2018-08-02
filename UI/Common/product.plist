@@ -71,6 +71,15 @@
         };
       };
     };
+    SOGoUserFolder = {
+      methods = {
+        labels = {
+          protectedBy = "Access Contents Information";
+          pageName = "UIxPageFrame";
+          actionName  = "labels";
+        };
+      };
+    };
     SOGoParentFolder = {
       methods = {
         createFolder = {

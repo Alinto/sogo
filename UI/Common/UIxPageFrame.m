@@ -28,6 +28,7 @@
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoSystemDefaults.h>
@@ -213,8 +214,9 @@
 
 /* page based JavaScript */
 
-- (NSString *) _stringsForFramework: (NSString *) framework
+- (NSDictionary *) _stringsForFramework: (NSString *) framework
 {
+  NSDictionary *moreStrings;
   NSString *language, *frameworkName;
   NSMutableDictionary* strings;
   SOGoUserDefaults *ud;
@@ -235,10 +237,13 @@
 
   strings = [NSMutableDictionary dictionaryWithDictionary: table];
 
-  if (!framework)
+  if (framework)
+    {
+      moreStrings = [NSDictionary dictionaryWithObjectsAndKeys: [NSArray arrayWithObject: framework], @"_loadedFrameworks", nil];
+    }
+  else
     {
       // Add strings from Locale
-      NSDictionary *moreStrings;
 
       // AM/PM
       moreStrings = [NSDictionary dictionaryWithObjects: [locale objectForKey: NSAMPMDesignation]
@@ -253,16 +258,17 @@
       // Short month names
       moreStrings = [NSDictionary dictionaryWithObjects: [locale objectForKey: NSShortMonthNameArray]
                                                 forKeys: [UIxComponent abbrMonthLabelKeys]];
-      [strings addEntriesFromDictionary: moreStrings];
     }
+  [strings addEntriesFromDictionary: moreStrings];
 
   /* table is not really an NSDictionary but a hackish variation thereof */
-  return [strings jsonRepresentation];
+  return strings;
 }
 
 - (NSString *) commonLocalizableStrings
 {
-  return [NSString stringWithFormat: @"var clabels = %@;", [self _stringsForFramework: nil]];
+  return [NSString stringWithFormat: @"var clabels = %@;",
+                   [[self _stringsForFramework: nil] jsonRepresentation]];
 }
 
 - (NSString *) productLocalizableStrings
@@ -271,7 +277,32 @@
 
   frameworkName = [[context page] frameworkName];
 
-  return [NSString stringWithFormat: @"var labels = %@;", [self _stringsForFramework: frameworkName]];
+  return [NSString stringWithFormat: @"var labels = %@;",
+                   [[self _stringsForFramework: frameworkName] jsonRepresentation]];
+}
+
+- (WOResponse *) labelsAction
+{
+  WOResponse *response;
+  NSDictionary *params, *data;
+  NSString *frameworkName;
+
+  params = [[[context request] contentAsString] objectFromJSONString];
+  frameworkName = [params objectForKey: @"framework"];
+  if (frameworkName)
+    {
+      data = [NSDictionary dictionaryWithObject: [self _stringsForFramework: frameworkName]
+                                         forKey: @"labels"];
+      response = [self responseWithStatus: 200 andJSONRepresentation: data];
+    }
+  else
+    {
+      data = [NSDictionary dictionaryWithObject: @"Missing framework name"
+                                         forKey: @"message"];
+      response = [self responseWithStatus: 400 andJSONRepresentation: data];
+    }
+
+  return response;
 }
 
 - (NSString *) angularModule

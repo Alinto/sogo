@@ -535,6 +535,11 @@ static SoProduct      *commonProduct      = nil;
 
 /* labels */
 
+- (NSString *) framework
+{
+  return [[context page] frameworkName];
+}
+
 - (NSString *) labelForKey: (NSString *) _str
 {
   WOResourceManager *rm;
