@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.7.2
+ * @license AngularJS v1.7.3
  * (c) 2010-2018 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -291,7 +291,7 @@ angular.module('ngMessages', [], function initAngularHelpers() {
   isString = angular.isString;
   jqLite = angular.element;
 })
-  .info({ angularVersion: '1.7.2' })
+  .info({ angularVersion: '1.7.3' })
 
   /**
    * @ngdoc directive
