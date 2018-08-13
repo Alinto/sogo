@@ -437,6 +437,8 @@ validate_untilbeforeend    = "The recurrence must end after the first occurrence
 = "You cannot remove nor unsubscribe from your personal calendar.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Are you sure you want to delete the calendar \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Are you sure you want to delete the selected components?";
 
 /* Legend */
 "Participant" = "Participant";
