@@ -2268,6 +2268,13 @@ following the current day.
 
 Defaults to `(7, 7)` when unset.
 
+|D |SOGoDAVCalendarStartTimeLimit
+|The number of days, at maximum, to include in DAV calendar responses.
+For example, when set to 180, SOGo will not include in DAV calendar
+responses events that are older than 180 days from the current date.
+
+Defaults to `0` when unset - which means no limit is imposed.
+
 |U |SOGoBusyOffHours
 |Parameter used to specify if off-hours should be automatically added to
 the free-busy information. Off hours included weekends and periods
