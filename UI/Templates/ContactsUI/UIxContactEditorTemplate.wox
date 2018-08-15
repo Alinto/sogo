@@ -461,6 +461,7 @@
               <md-contact-chips
                   class="sg-chips-autocomplete"
                   ng-model="editor.card.refs"
+                  ng-change="contactForm.$setDirty()"
                   md-contacts="editor.userFilter($query, editor.card.refs)"
                   md-contact-name="$$fullname"
                   md-contact-image="$$image"

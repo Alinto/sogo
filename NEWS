@@ -12,6 +12,7 @@ Bug fixes
  - [core] handle multi-valued mozillasecondemail attribute mapping
  - [core] avoid displaying empty signed emails when using GNU TLS (#4433)
  - [web] improve popup window detection in message viewer (#4518)
+ - [web] enable save button when editing the members of a list
 
 4.0.1 (2018-07-10)
 ------------------
