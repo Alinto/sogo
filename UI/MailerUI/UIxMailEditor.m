@@ -268,7 +268,7 @@ static NSArray *infoKeys = nil;
           while ((identity = [allIdentities nextObject]) && !valid)
              {
                // from ivar must contain a valid email address surrounded by pointy brackets
-               r = [[from lowercaseString] rangeOfString: [NSString stringWithFormat: @"<%@>", [[identity objectForKey: @"email"] lowercaseString]]];
+               r = [[from lowercaseString] rangeOfString: [[identity objectForKey: @"email"] lowercaseString]];
                if (r.length > 0)
                  {
                    valid = YES;
