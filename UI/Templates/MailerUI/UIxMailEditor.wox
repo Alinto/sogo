@@ -72,7 +72,7 @@
                         md-add-on-blur="true">
                 <md-autocomplete
                     class="sg-chips-autocomplete"
-                    md-autofocus="true"
+                    md-autofocus="editor.isNew()"
                     md-search-text="editor.autocomplete.to.searchText"
                     md-selected-item="editor.autocomplete.to.selected"
                     md-items="user in editor.contactFilter(editor.autocomplete.to.searchText)"
@@ -244,10 +244,13 @@
         <!-- MESSAGE CONTENT -->
         <md-input-container class="md-block sg-mail-editor-content">
           <textarea name="content" var:class="editorClass"
+                    rows="9"
                     ck-locale="editor.localeCode"
                     ck-margin="16px"
-                    rows="9"
+                    ck-focus="editor.onHTMLFocus($event)"
                     ng-model="editor.message.editable.text"
+                    ng-focus="editor.onTextFocus($event)"
+                    md-autofocus="!editor.isNew()"
                     md-no-resize="md-no-resize"
                     md-detect-hidden="md-detect-hidden" />
         </md-input-container>

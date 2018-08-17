@@ -171,7 +171,7 @@
     };
 
     this.newMessage = function($event, inPopup) {
-      var message;
+      var message, onCompleteDeferred = $q.defer();
 
       if (vm.messageDialog === null) {
         if (inPopup || Preferences.defaults.SOGoMailComposeWindow == 'popup')
@@ -187,9 +187,15 @@
               templateUrl: 'UIxMailEditor',
               controller: 'MessageEditorController',
               controllerAs: 'editor',
+              onComplete: function (scope, element) {
+                return onCompleteDeferred.resolve(element);
+              },
               locals: {
                 stateAccount: vm.account,
-                stateMessage: message
+                stateMessage: message,
+                onCompletePromise: function () {
+                  return onCompleteDeferred.promise;
+                }
               }
             })
             .catch(_.noop) // Cancel

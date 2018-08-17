@@ -13,6 +13,7 @@ Bug fixes
  - [core] avoid displaying empty signed emails when using GNU TLS (#4433)
  - [web] improve popup window detection in message viewer (#4518)
  - [web] enable save button when editing the members of a list
+ - [web] restore caret position when replying or forwarding a message (#4517)
 
 4.0.1 (2018-07-10)
 ------------------

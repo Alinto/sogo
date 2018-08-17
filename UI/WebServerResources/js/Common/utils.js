@@ -509,6 +509,33 @@ Date.prototype.format = function(localeProvider, format) {
   return date.join('');
 };
 
+Element.prototype.setCaretTo = function(pos) {
+  if (this.setSelectionRange) {  // For Mozilla and Safari
+    this.focus();
+    this.setSelectionRange(pos, pos);
+  }
+  else if (this.createTextRange) {  // For IE
+    var range = this.createTextRange();
+    range.move('character', pos);
+    range.select();
+  }
+};
+
+Element.prototype.selectText = function(start, end) {
+  if (this.setSelectionRange) {     // For Mozilla and Safari
+    this.setSelectionRange(start, end);
+  }
+  else if (this.createTextRange) {  // For IE
+    var textRange = this.createTextRange();
+    textRange.moveStart('character', start);
+    textRange.moveEnd('character', end-element.value.length);
+    textRange.select();
+  }
+  else {
+    this.select();
+  }
+};
+
 /* Functions */
 
 function l() {

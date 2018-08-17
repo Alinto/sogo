@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageController.$inject = ['$window', '$scope', '$state', '$mdMedia', '$mdDialog', 'sgConstant', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'sgHotkeys', 'encodeUriFilter', 'sgSettings', 'ImageGallery', 'sgFocus', 'Dialog', 'Preferences', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message'];
-  function MessageController($window, $scope, $state, $mdMedia, $mdDialog, sgConstant, stateAccounts, stateAccount, stateMailbox, stateMessage, sgHotkeys, encodeUriFilter, sgSettings, ImageGallery, focus, Dialog, Preferences, Calendar, Component, Account, Mailbox, Message) {
+  MessageController.$inject = ['$window', '$scope', '$q', '$state', '$mdMedia', '$mdDialog', 'sgConstant', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'sgHotkeys', 'encodeUriFilter', 'sgSettings', 'ImageGallery', 'sgFocus', 'Dialog', 'Preferences', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message'];
+  function MessageController($window, $scope, $q, $state, $mdMedia, $mdDialog, sgConstant, stateAccounts, stateAccount, stateMailbox, stateMessage, sgHotkeys, encodeUriFilter, sgSettings, ImageGallery, focus, Dialog, Preferences, Calendar, Component, Account, Mailbox, Message) {
     var vm = this, popupWindow = null, hotkeys = [];
 
     this.$onInit = function() {
@@ -277,6 +277,7 @@
 
     function _showMailEditor($event, message) {
       if (_messageDialog() === null) {
+        var onCompleteDeferred = $q.defer();
         _messageDialog(
           $mdDialog
             .show({
@@ -287,9 +288,15 @@
               templateUrl: 'UIxMailEditor',
               controller: 'MessageEditorController',
               controllerAs: 'editor',
+              onComplete: function (scope, element) {
+                return onCompleteDeferred.resolve(element);
+              },
               locals: {
                 stateAccount: vm.account,
-                stateMessage: message
+                stateMessage: message,
+                onCompletePromise: function () {
+                  return onCompleteDeferred.promise;
+                }
               }
             })
             .catch(_.noop) // Cancel

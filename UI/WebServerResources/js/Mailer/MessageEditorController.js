@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$scope', '$window', '$stateParams', '$mdConstant', '$mdUtil', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccount', 'stateMessage', 'encodeUriFilter', '$timeout', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
-  function MessageEditorController($scope, $window, $stateParams, $mdConstant, $mdUtil, $mdDialog, $mdToast, FileUploader, stateAccount, stateMessage, encodeUriFilter, $timeout, Dialog, AddressBook, Card, Preferences) {
+  MessageEditorController.$inject = ['$scope', '$window', '$stateParams', '$mdConstant', '$mdUtil', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccount', 'stateMessage', 'onCompletePromise', 'encodeUriFilter', '$timeout', 'sgFocus', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
+  function MessageEditorController($scope, $window, $stateParams, $mdConstant, $mdUtil, $mdDialog, $mdToast, FileUploader, stateAccount, stateMessage, onCompletePromise, encodeUriFilter, $timeout, focus, Dialog, AddressBook, Card, Preferences) {
     var vm = this;
 
     this.$onInit = function() {
@@ -33,6 +33,7 @@
       vm.send = send;
       vm.sendState = false;
       vm.toggleFullscreen = toggleFullscreen;
+      this.firstFocus = true;
 
       _initFileUploader();
 
@@ -42,6 +43,12 @@
         vm.autosave = $timeout(vm.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
       // Set the locale of CKEditor
       vm.localeCode = Preferences.defaults.LocaleCode;
+
+      this.replyPlacement = Preferences.defaults.SOGoMailReplyPlacement;
+      if (this.message.origin && this.message.origin.action == 'forward') {
+        // For forwards, place caret at top unconditionally
+        this.replyPlacement = 'above';
+      }
 
       // Destroy file uploader when the controller is being deactivated
       $scope.$on('$destroy', function() { vm.uploader.destroy(); });
@@ -338,6 +345,96 @@
         vm.autosave = $timeout(vm.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
     }
 
+    this.isNew = function () {
+      return typeof this.message.origin == 'undefined';
+    };
+
+    this.onTextFocus = function ($event) {
+      var textArea = $event.target;
+
+      function adjustOffset(val, offset) {
+        var newOffset = offset, matches;
+        if (val.indexOf("\r\n") > -1) {
+          matches = val.replace(/\r\n/g, "\n").slice(0, offset).match(/\n/g);
+          newOffset -= matches ? matches.length - 1 : 0;
+        }
+        return newOffset;
+      }
+
+      if (this.firstFocus) {
+        onCompletePromise().then(function(element) {
+          var textContent = angular.element(textArea).val(),
+              hasSignature = (Preferences.defaults.SOGoMailSignature &&
+                              Preferences.defaults.SOGoMailSignature.length > 0),
+              signatureLength = 0,
+              sigLimit,
+              caretPosition;
+
+          if (vm.replyPlacement == 'above') {
+            textArea.setCaretTo(0);
+            element.find('md-dialog-content')[0].scrollTop = 0;
+          }
+          else {
+            if (hasSignature) {
+              sigLimit = textContent.lastIndexOf("--");
+              if (sigLimit > -1)
+                signatureLength = (textContent.length - sigLimit);
+            }
+            caretPosition = textContent.length - signatureLength;
+            caretPosition = adjustOffset(textContent, caretPosition);
+            if (hasSignature)
+              caretPosition -= 2;
+            textArea.setCaretTo(caretPosition);
+          }
+        });
+
+        this.firstFocus = false;
+      }
+    };
+
+    this.onHTMLFocus = function ($event) {
+      var caretAtTop = (this.replyPlacement == 'above');
+
+      if (this.firstFocus) {
+        onCompletePromise().then(function(element) {
+          var selected = $event.editor.getSelection(),
+              selected_ranges = selected.getRanges(),
+              children = $event.editor.document.getBody().getChildren(),
+              node;
+
+          if (caretAtTop) {
+            node = children.getItem(0);
+          }
+          else {
+            // Search for signature starting from bottom
+            node = children.getItem(children.count() - 1);
+            while (true) {
+              var x = node.getPrevious();
+              if (x === null) {
+                break;
+              }
+              if (x.getText() == '--') {
+                node = x.getPrevious().getPrevious();
+                break;
+              }
+              node = x;
+            }
+          }
+          selected.selectElement(node);
+
+          // Place the caret
+          if (caretAtTop)
+            selected.scrollIntoView(); // top
+          selected_ranges = selected.getRanges();
+          selected_ranges[0].collapse(true);
+          selected.selectRanges(selected_ranges);
+          if (!caretAtTop)
+            selected.scrollIntoView(); // bottom
+        });
+
+        this.firstFocus = false;
+      }
+    };
   }
 
   SendMessageToastController.$inject = ['$scope', '$mdToast'];

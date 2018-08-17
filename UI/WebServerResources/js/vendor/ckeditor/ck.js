@@ -81,6 +81,17 @@
 
         ck = CKEDITOR.replace(elm[0], options);
 
+        if (attr.mdAutofocus && $parse(attr.mdAutofocus)($scope)) {
+          // Autofocus is enabled
+          ck.on('instanceReady', function(event) {
+            ck.focus();
+          });
+          ck.on('focus', function(event) {
+            if (attr.ckFocus) {
+              $parse(attr.ckFocus)($scope, {'$event': event});
+            }
+          });
+        }
 
         // Update the model whenever the content changes
         ck.on('change', function() {
