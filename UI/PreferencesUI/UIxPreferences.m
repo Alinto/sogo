@@ -98,6 +98,7 @@ static NSArray *reminderValues = nil;
 
 - (id) init
 {
+  NSCalendarDate *referenceDate;
   SOGoDomainDefaults *dd;
 
   if ((self = [super init]))
@@ -107,7 +108,10 @@ static NSArray *reminderValues = nil;
       client = nil;
 #warning user should be the owner rather than the activeUser
       ASSIGN (user, [context activeUser]);
-      ASSIGN (today, [NSCalendarDate date]);
+      referenceDate = [NSCalendarDate date];
+      if ([referenceDate dayOfMonth] > 9)
+        referenceDate = [referenceDate addYear:0 month:0 day:(-[referenceDate dayOfMonth] + 1) hour:0 minute:0 second:0];
+      ASSIGN (today, referenceDate);
 
       calendarCategories = nil;
       calendarCategoriesColors = nil;
