@@ -227,6 +227,16 @@
       form.$setDirty();
     };
 
+    this.onFiltersOrderChanged = function(form) {
+      // Return a callback that will affect the form
+      if (!this._onFiltersOrderChanged) {
+        this._onFiltersOrderChanged = function(type) {
+          form.$setDirty();
+        };
+      }
+      return this._onFiltersOrderChanged;
+    };
+
     this.addDefaultEmailAddresses = function(form) {
       var v = [];
 
