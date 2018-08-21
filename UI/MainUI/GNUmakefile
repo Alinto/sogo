@@ -28,9 +28,12 @@ MainUI_RESOURCE_FILES += 	\
 	OCSFolderInfo-oracle.sql \
 	OCSStore.sql \
 	OCSStore-mysql.sql \
+	OCSStore-oracle.sql \
 	OCSAcl-mysql.sql \
+	OCSAcl-oracle.sql \
 	OCSAcl-postgresql.sql \
 	OCSCacheFolder-mysql.sql \
+	OCSCacheFolder-oracle.sql \
 	OCSCacheFolder-postgresql.sql
 
 MainUI_LOCALIZED_RESOURCE_FILES += \
