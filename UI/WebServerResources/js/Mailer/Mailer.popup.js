@@ -237,8 +237,9 @@
   /**
    * @ngInject
    */
-  MessageEditorControllerPopup.$inject = ['$window', '$mdDialog', 'stateAccount', 'stateMessage'];
-  function MessageEditorControllerPopup($window, $mdDialog, stateAccount, stateMessage) {
+  MessageEditorControllerPopup.$inject = ['$window', '$q', '$mdDialog', 'stateAccount', 'stateMessage'];
+  function MessageEditorControllerPopup($window, $q, $mdDialog, stateAccount, stateMessage) {
+    var onCompleteDeferred = $q.defer();
     $mdDialog
       .show({
         hasBackdrop: false,
@@ -248,9 +249,15 @@
         templateUrl: 'UIxMailEditor',
         controller: 'MessageEditorController',
         controllerAs: 'editor',
+        onComplete: function (scope, element) {
+          return onCompleteDeferred.resolve(element);
+        },
         locals: {
           stateAccount: stateAccount,
-          stateMessage: stateMessage
+          stateMessage: stateMessage,
+          onCompletePromise: function () {
+            return onCompleteDeferred.promise;
+          }
         }
       })
       .finally(function() {

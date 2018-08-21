@@ -215,7 +215,6 @@
                  'new']
           .join('/'),
           wId = vm.selectedFolder.$id() + '/' + Math.random(0, 1000);
-      console.debug(url);
       $window.open(url, wId,
                    ["width=680",
                     "height=520",
