@@ -164,7 +164,7 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
   BOOL excludeGroups, excludeLists;
 
   searchText = [self queryParameterForKey: @"search"];
-  if ([searchText length] > 0)
+  if ([searchText length] >= [self minimumSearchLength])
     {
       // NSLog(@"Search all contacts: %@", searchText);
       excludeGroups = [[self queryParameterForKey: @"excludeGroups"] boolValue];
@@ -251,7 +251,7 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
     }
   else
     result = [NSException exceptionWithHTTPStatus: 400
-                                           reason: @"missing 'search' parameter"];  
+                                           reason: [NSString stringWithFormat: @"'search' parameter must be at least %i characters", [self minimumSearchLength]]];
 
   return result;
 }
