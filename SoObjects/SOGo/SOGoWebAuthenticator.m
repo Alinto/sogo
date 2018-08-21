@@ -383,6 +383,7 @@
 {
   WOCookie *authCookie;
   NSString *cookieValue, *cookieString, *appName, *sessionKey, *userKey, *securedPassword;
+  BOOL isSecure;
 
   //
   // We create a new cookie - thus we create a new session
@@ -409,8 +410,14 @@
                            userKey, sessionKey];
   cookieValue = [NSString stringWithFormat: @"basic %@",
                           [cookieString stringByEncodingBase64]];
+  isSecure = [[[context serverURL] scheme] isEqualToString: @"https"];
   authCookie = [WOCookie cookieWithName: [self cookieNameInContext: context]
-                                  value: cookieValue];
+                                  value: cookieValue
+                                   path: nil
+                                 domain: nil
+                                expires: nil
+                               isSecure: isSecure
+                               httpOnly: YES];
   appName = [[context request] applicationName];
   [authCookie setPath: [NSString stringWithFormat: @"/%@/", appName]];
   

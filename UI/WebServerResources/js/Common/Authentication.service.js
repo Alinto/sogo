@@ -57,18 +57,6 @@
     function getService($q, $http, $cookies, passwordPolicyConfig) {
       var service;
 
-      function readLoginCookie() {
-        var loginValues = null,
-            cookie = $cookies.get('0xHIGHFLYxSOGo'),
-            value;
-        if (cookie && cookie.length > 8) {
-          value = decodeURIComponent(cookie.substr(8));
-          loginValues = value.base64decode().split(':');
-        }
-
-        return loginValues;
-      }
-
       service = {
         login: function(data) {
           var d = $q.defer(),
@@ -99,9 +87,8 @@
           }).then(function(response) {
             var data = response.data;
             // Make sure browser's cookies are enabled
-            var loginCookie = readLoginCookie();
-            if (!loginCookie) {
-              d.reject(l('cookiesNotEnabled'));
+            if (navigator && !navigator.cookieEnabled) {
+              d.reject({error: l('cookiesNotEnabled')});
             }
             else {
               // Check password policy
@@ -145,7 +132,6 @@
 
         changePassword: function(newPassword) {
           var d = $q.defer(),
-              loginCookie = readLoginCookie(),
               xsrfCookie = $cookies.get('XSRF-TOKEN');
 
           $cookies.remove('XSRF-TOKEN', {path: '/SOGo/'});
@@ -156,10 +142,7 @@
             headers: {
               'X-XSRF-TOKEN' : xsrfCookie
             },
-            data: {
-              userName: loginCookie[0],
-              password: loginCookie[1],
-              newPassword: newPassword }
+            data: { newPassword: newPassword }
           }).then(d.resolve, function(response) {
             var error,
                 data = response.data,

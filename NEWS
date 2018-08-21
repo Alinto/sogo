@@ -7,6 +7,7 @@ New features
 Enhancements
  - [web] prohibit duplicate calendar categories in Preferences module
  - [web] added Romanian (ro) translation - thanks to Vasile Razvan Luca
+ - [web] add security flags to cookies (HttpOnly, secure) (#4525)
  - [core] enable Oracle OCI support for CentOS/RHEL v7
 
 Bug fixes
