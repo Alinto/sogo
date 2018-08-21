@@ -717,7 +717,8 @@
         <var:if condition="isSieveScriptsEnabled">
           <md-tab id="mailFiltersTab"
                   aria-controls="mailFiltersTab-content"
-                  label:label="Filters">
+                  label:label="Filters"
+                  sg-labels="MailerUI">
             <md-content role="tabpanel" aria-labelledby="mailFiltersView">
               <div class="sg-list-sortable"
                    ng-model="app.preferences.defaults.SOGoSieveFilters"

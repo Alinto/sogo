@@ -148,7 +148,7 @@
               <md-select ng-model="action.argument" required="required">
                 <md-option ng-value="item.sievePath" ng-repeat="item in filterEditor.mailboxes">
                   <div ng-class="'sg-child-level-' + item.level">
-                    {{ item.name }}
+                    {{ item.$displayName }}
                   </div>
                 </md-option>
               </md-select>
