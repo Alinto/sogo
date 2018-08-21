@@ -219,7 +219,8 @@
       }).then(function() {
         vm.preferences.defaults.SOGoSieveFilters[index] = filter;
         form.$setDirty();
-      });
+      },
+              _.noop); // Cancel
     };
 
     this.removeMailFilter = function(index, form) {
