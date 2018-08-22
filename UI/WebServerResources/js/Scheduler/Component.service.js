@@ -1267,7 +1267,7 @@
       delete component.completedDate;
 
     // Verify alarm
-    if (component.startDate && this.$hasAlarm) {
+    if ((component.startDate || component.dueDate) && this.$hasAlarm) {
       if (this.alarm.action && this.alarm.action == 'email' &&
           !(this.attendees && this.attendees.length > 0)) {
         // No attendees; email reminder must be sent to organizer only
