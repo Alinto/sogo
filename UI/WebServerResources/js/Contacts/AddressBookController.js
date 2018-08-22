@@ -339,7 +339,8 @@
         var account = _.find(accounts, function(o) {
           if (o.id === 0)
             return o;
-        });
+        }),
+            onCompleteDeferred = $q.defer();
 
         // We must initialize the Account with its mailbox
         // list before proceeding with message's creation
@@ -354,9 +355,15 @@
               templateUrl: '../Mail/UIxMailEditor',
               controller: 'MessageEditorController',
               controllerAs: 'editor',
+              onComplete: function (scope, element) {
+                return onCompleteDeferred.resolve(element);
+              },
               locals: {
                 stateAccount: account,
-                stateMessage: message
+                stateMessage: message,
+                onCompletePromise: function () {
+                  return onCompleteDeferred.promise;
+                }
               }
             });
           });
