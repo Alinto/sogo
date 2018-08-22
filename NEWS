@@ -17,6 +17,7 @@ Bug fixes
  - [web] enable save button when editing the members of a list
  - [web] restore caret position when replying or forwarding a message (#4517)
  - [web] localized special mailboxes names in filter editor
+ - [web] fixed saving task with reminder based on due date
 
 4.0.1 (2018-07-10)
 ------------------

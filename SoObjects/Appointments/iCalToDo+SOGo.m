@@ -132,10 +132,7 @@
   if (startDate)
     [self setStartDate: startDate];
   else
-    {
-      [self setStartDate: nil];
-      [self removeAllAlarms];
-    }
+    [self setStartDate: nil];
 
   // Handle due date
   isAllDayDueDate = YES;
@@ -157,6 +154,9 @@
       [self setDue: dueDate];
   else
     [self setDue: nil];
+
+  if (!startDate && !dueDate)
+    [self removeAllAlarms];
 
   // Handle time zone
   todoStartDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtstart"];
@@ -234,7 +234,7 @@
 
 - (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
                                        container: (id) theContainer
-				 nameInContainer: (NSString *) nameInContainer
+                                 nameInContainer: (NSString *) nameInContainer
 {
   NSMutableDictionary *row;
   NSCalendarDate *startDate, *dueDate, *completed;
@@ -294,14 +294,14 @@
 
   if ([startDate isNotNull])
     date = [self quickRecordDateAsNumber: startDate
-		 withOffset: 0 forAllDay: NO];
+                              withOffset: 0 forAllDay: NO];
   else
     date = [NSNull null];
   [row setObject: date forKey: @"c_startdate"];
 
   if ([dueDate isNotNull])
     date = [self quickRecordDateAsNumber: dueDate
-		 withOffset: 0 forAllDay: NO];
+                              withOffset: 0 forAllDay: NO];
   else
     date = [NSNull null];
   [row setObject: date forKey: @"c_enddate"];
@@ -321,13 +321,13 @@
     {
       code = 0;
       if (completed || [status isEqualToString: @"COMPLETED"])
-	code = taskStatusCompleted;
+        code = taskStatusCompleted;
       else if ([status isEqualToString: @"IN-PROCESS"])
-	code = taskStatusInProcess;
+        code = taskStatusInProcess;
       else if ([status isEqualToString: @"CANCELLED"])
-	code = taskStatusCancelled;
+        code = taskStatusCancelled;
       else if ([status isEqualToString: @"NEEDS-ACTION"])
-	code = taskStatusNeedsAction;
+        code = taskStatusNeedsAction;
       [row setObject: [NSNumber numberWithInt: code] forKey: @"c_status"];
     }
   else
@@ -346,7 +346,7 @@
 
       email = [organizer valueForKey: @"rfc822Email"];
       if (email)
-	[row setObject:email forKey: @"c_orgmail"];
+        [row setObject:email forKey: @"c_orgmail"];
     }
 
   /* construct partstates */
@@ -360,7 +360,7 @@
       p = [attendees objectAtIndex:i];
       stat = [p participationStatus];
       if(i != 0)
-	[partstates appendString: @"\n"];
+        [partstates appendString: @"\n"];
       [partstates appendFormat: @"%d", stat];
     }
   [row setObject:partstates forKey: @"c_partstates"];
