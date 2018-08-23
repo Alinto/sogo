@@ -8,6 +8,9 @@ Enhancements
  - [web] prohibit duplicate calendar categories in Preferences module
  - [web] added Romanian (ro) translation - thanks to Vasile Razvan Luca
  - [web] add security flags to cookies (HttpOnly, secure) (#4525)
+ - [web] better theming for better customization (#4500)
+ - [web] updated Angular to version 1.7.3
+ - [web] updated ui-router to version 1.0.20
  - [core] enable Oracle OCI support for CentOS/RHEL v7
 
 Bug fixes
