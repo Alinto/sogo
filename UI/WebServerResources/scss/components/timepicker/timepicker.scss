@@ -65,7 +65,6 @@ $sg-time-font-size: 13px;
   }
 
   &.sg-time-selected, &:hover.sg-time-selected, &.md-focus.sg-time-selected {
-    background: sg-color($sogoBlue, 500); // {{primary-500}}
     color: #fff; // {{primary-500-contrast}}
     border-color: transparent;
   }
@@ -150,11 +149,6 @@ sg-timepicker {
   @extend .md-datepicker-input-mask;
 }
 
-// From datepicker-theme.scss
-.sg-timepicker-input-mask-opaque {
-  box-shadow: 0 0 0 9999px rgb(255,255,255);
-}
-
 // The time portion of the floating pane (vs. the input mask).
 .sg-timepicker-time {
   opacity: 0;
@@ -209,11 +203,6 @@ sg-timepicker[disabled] {
 .sg-timepicker-open {
   overflow: hidden;
 
-  .sg-timepicker-input-container {
-    // From datePicker-theme.scss
-    background: rgb(255,255,255); //'{{background-hue-1}}';
-  }
-
   .sg-timepicker-input-container,
   input.md-input {
     border-bottom-color: transparent;
@@ -223,10 +212,6 @@ sg-timepicker[disabled] {
   &.md-input-has-value > label,
   &.md-input-has-placeholder > label {
     display: none;
-  }
-
-  .sg-timepicker-icon {
-    color: sg-color($sogoBlue, 900); //'{{primary-color}}';
   }
 }
 

@@ -203,7 +203,8 @@
       'contrastLightColors': ['800', '900']
     });
     var greyMap = $mdThemingProvider.extendPalette('grey', {
-      '600': '00B0C0' // used when highlighting text in md-autocomplete
+      '600': '00b0c0', // used when highlighting text in md-autocomplete,
+      '1000': 'baa870' // used as the background color of the busy periods of the attendees editor
     });
     $mdThemingProvider.definePalette('sogo-grey', greyMap);
     // Default theme definition
@@ -223,7 +224,26 @@
       })
       .backgroundPalette('sogo-grey');
 
-    if (!DebugEnabled) {
+    // Register custom stylesheet for sgTimepicker
+    $mdThemingProvider.registerStyles([
+      '.sg-time-selection-indicator.sg-time-selected,',
+      '.sg-time-selection-indicator:hover.sg-time-selected,',
+      '.sg-time-selection-indicator.md-focus.sg-time-selected {',
+      '  background: \'{{primary-500}}\';',
+      '}',
+      '.sg-timepicker-open .sg-timepicker-icon {',
+      '  color: \'{{primary-900}}\';',
+      '}',
+      '.sg-timepicker-time,',
+      '.sg-timepicker-open .sg-timepicker-input-container {',
+      '  background: \'{{background-hue-1}}\';',
+      '}',
+      '.sg-timepicker-input-mask-opaque {',
+      '  box-shadow: 0 0 0 9999px \'{{background-hue-1}}\';',
+      '}',
+    ].join(''));
+
+    if (!window.DebugEnabled) {
       // Disable debugging information
       $logProvider.debugEnabled(false);
       $compileProvider.debugInfoEnabled(false);

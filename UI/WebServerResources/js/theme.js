@@ -40,6 +40,32 @@
     /**
      * Overwrite the default theme
      */
+    $mdThemingProvider.definePalette('sogo-paper', {
+      '50': 'fcf7f8',
+      '100': 'f7f1dc',
+      '200': 'ede5ca',
+      '300': 'e6d8ba',
+      '400': 'e2d2a3',
+      '500': 'd6c48d',
+      '600': 'baa870', // busy periods in attendees editor
+      '700': '857545',
+      '800': '524517',
+      '900': '433809',
+      '1000': '000000',
+      'A100': 'ffffff',
+      'A200': 'eeeeee',
+      'A400': 'bdbdbd',
+      'A700': '616161',
+      'contrastDefaultColor': 'dark',
+      'contrastLightColors': ['800', '900']
+    });
+
+    var greyMap = $mdThemingProvider.extendPalette('grey', {
+      '600': '00b0c0', // used when highlighting text in md-autocomplete,
+      '1000': 'baa870' // used as the background color of the busy periods of the attendees editor
+    });
+    $mdThemingProvider.definePalette('sogo-grey', greyMap);
+
     $mdThemingProvider.theme('default')
       .primaryPalette('blue-grey', {
         'default': '400',  // top toolbar
@@ -53,7 +79,7 @@
         'hue-2': '300',
         'hue-3': 'A700'
       })
-      .backgroundPalette('grey', {
+      .backgroundPalette('sogo-grey', {
         'default': '50',   // center list background
         'hue-1': '200',
         'hue-2': '300',

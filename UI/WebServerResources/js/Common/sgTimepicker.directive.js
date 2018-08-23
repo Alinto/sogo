@@ -456,7 +456,7 @@
           '    <div class="sg-timepicker-input-mask-opaque"></div>',
           // '                md-colors="::{\'box-shadow\': \'default-background-hue-1\'}"></div>', // using mdColors
           '  </div>',
-          '  <div class="sg-timepicker-time" md-colors="::{background: \'default-background-A100\'}">',
+          '  <div class="sg-timepicker-time">',
           '    <sg-time-pane role="dialog" aria-label="{{::ctrl.dateLocale.msgCalendar}}" ',
           '                  ng-model="ctrl.time" ng-if="ctrl.isTimeOpen"></sg-time-pane>',
           '  </div>',

@@ -240,7 +240,6 @@ $quarter_height: 10px;
 
   // The left column of hours
   .hours {
-    color: sg-color($sogoBlue, 700);
     display: inline-block;
     float: left;
     clear: left;
@@ -774,13 +773,9 @@ $quarter_height: 10px;
     display: flex;
     align-items: stretch;
   }
-  .event {
-    background-color: sg-color($sogoBlue, 300);
-  }
   .busy {
     margin: 8px 0;
     min-width: 4px;
-    background-color: sg-color($sogoPaper, 600);
   }
 
   .sg-color-sample {

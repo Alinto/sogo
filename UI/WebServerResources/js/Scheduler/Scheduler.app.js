@@ -11,8 +11,20 @@
   /**
    * @ngInject
    */
-  configure.$inject = ['$stateProvider', '$urlServiceProvider'];
-  function configure($stateProvider, $urlServiceProvider) {
+  configure.$inject = ['$stateProvider', '$urlServiceProvider', '$mdThemingProvider'];
+  function configure($stateProvider, $urlServiceProvider, $mdThemingProvider) {
+    // Register custom stylesheet
+    $mdThemingProvider.registerStyles([
+      '[ui-view=calendars] .hours {',
+      '  color: \'{{primary-700}}\';',
+      '}',
+      '.attendees .busy {',
+      '  background-color: \'{{background-1000}}\';',
+      '}',
+      '.attendees .event {',
+      '  background-color: \'{{primary-300}}\';',
+      '}'
+    ].join(''));
     $stateProvider
       .state('calendars', {
         url: '/calendar',
