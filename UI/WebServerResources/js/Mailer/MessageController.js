@@ -285,6 +285,8 @@
               targetEvent: $event,
               clickOutsideToClose: false,
               escapeToClose: false,
+              scope: $scope,
+              preserveScope: true,
               templateUrl: 'UIxMailEditor',
               controller: 'MessageEditorController',
               controllerAs: 'editor',

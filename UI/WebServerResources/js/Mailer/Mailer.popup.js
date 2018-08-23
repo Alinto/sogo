@@ -237,8 +237,8 @@
   /**
    * @ngInject
    */
-  MessageEditorControllerPopup.$inject = ['$window', '$q', '$mdDialog', 'stateAccount', 'stateMessage'];
-  function MessageEditorControllerPopup($window, $q, $mdDialog, stateAccount, stateMessage) {
+  MessageEditorControllerPopup.$inject = ['$window', '$scope', '$q', '$mdDialog', 'stateAccount', 'stateMessage'];
+  function MessageEditorControllerPopup($window, $scope, $q, $mdDialog, stateAccount, stateMessage) {
     var onCompleteDeferred = $q.defer();
     $mdDialog
       .show({
@@ -246,6 +246,8 @@
         disableParentScroll: false,
         clickOutsideToClose: false,
         escapeToClose: false,
+        scope: $scope,
+        preserveScope: true,
         templateUrl: 'UIxMailEditor',
         controller: 'MessageEditorController',
         controllerAs: 'editor',
