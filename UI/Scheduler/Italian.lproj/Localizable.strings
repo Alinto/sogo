@@ -437,6 +437,8 @@ validate_untilbeforeend    = "La ricorrenza deve finire dopo la prima occorrenza
 = "Non puoi rimuovere la sottoscrizione del tuo calendario personale.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Sei sicuro di voler cancellare il calendario \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Sei sicuro di voler eliminare i componenti selezionati?";
 
 /* Legend */
 "Participant" = "Partecipante";

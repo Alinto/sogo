@@ -218,6 +218,7 @@
 "view_next14" = "Nasledujúcich 14 dní";
 "view_next31" = "Nasledujúcich 31 dní";
 "view_thismonth" = "Tento mesiac";
+"view_thisyear" = "Tento Rok";
 "view_future" = "Všetky budúce udalosti";
 "view_selectedday" = "Zvolený deň";
 "view_not_started" = "Nezačaté úlohy";
@@ -436,6 +437,8 @@ validate_untilbeforeend    = "Opakovanie musí skončiť po prvom výskyte.";
 = "Nemôžete odstrániť ani sa odhlásiť z odoberania svojho vlastného kalendára.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Naozaj chcete odstrániť kalendár \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Ste si istý, že chcete odstrániť označené komponenty?";
 
 /* Legend */
 "Participant" = "Účastník";
@@ -541,6 +544,8 @@ vtodo_class2 = "(Dôverná úloha)";
 "Delete Event" = "Odstrániť udalosť";
 "Copy event to my calendar" = "Kopírovať udalosť do môjho kalendára";
 "View Raw Source" = "Zobrazit zdroj";
+"Move To" = "Presunúť do";
+"Copy To" = "Kopírovať do";
 "Subscriptions" = "Odoberania";
 "Subscribe to a shared folder" = "Odoberať zdieľaný priečinok";
 "Subscribe to a web calendar..." = "Odoberať vzdialený kalendár na webe";

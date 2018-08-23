@@ -124,6 +124,8 @@
 "Prevent from being invited to appointments" = "Impedisci di essere invitato ad appuntamenti";
 "White list for appointment invitations" = "White list per inviti ad appuntamenti";
 "Contacts Names" = "Nomi Contatti";
+"Duplicate name" = "Duplica nome";
+"Calendar categories must have unique names." = "Le categorie del calendario devono avere un nome univoco.";
 
 /* Default Calendar */
 "Default calendar" = "Calendario predefinito";

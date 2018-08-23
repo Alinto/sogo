@@ -437,6 +437,8 @@ validate_untilbeforeend    = "Zapętlenie musi zakończyć się po pierwszym wys
 = "Nie możesz usunąć ani zrezygnować z subskrypcji kalendarza osobistego.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Czy na pewno chcesz usunąć kalendarz \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Na pewno chcesz usunąć wybrane komponenty?";
 
 /* Legend */
 "Participant" = "Uczestnik";

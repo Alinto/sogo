@@ -86,7 +86,7 @@
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
 "shortDateFmt_15" = "";
-   
+
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
@@ -124,6 +124,8 @@
 "Prevent from being invited to appointments" = "Zakázať pozvánky na schôdzky";
 "White list for appointment invitations" = "Whitelist pre pozvánky na schôdzky";
 "Contacts Names" = "Mená kontaktov";
+"Duplicate name" = "Duplicitné meno";
+"Calendar categories must have unique names." = "Kategórie kalendáru musia mať unikátne názvy.";
 
 /* Default Calendar */
 "Default calendar" = "Predvolený kalendár";
@@ -188,7 +190,7 @@
 
 /* IMAP Accounts */
 "Settings" = "Nastavenia";
-"Security" = "Bezpečnosť";
+"Security" = "Zabezpečenie";
 "Mail Account" = "Mailový účet";
 "New Mail Account" = "Nový mailový účet";
 "Server Name" = "Meno servera";

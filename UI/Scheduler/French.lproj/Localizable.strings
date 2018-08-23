@@ -437,6 +437,8 @@ validate_untilbeforeend    = "La répétition doit se terminer après la premiè
 = "Vous ne pouvez pas supprimer ni vous désabonner de votre agenda personnel.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Voulez-vous vraiment supprimer l'agenda «%{0}»?";
+"Are you sure you want to delete the selected components?"
+= "Voulez-vous vraiment supprimer les éléments sélectionnés?";
 
 /* Legend */
 "Participant" = "Invité";
