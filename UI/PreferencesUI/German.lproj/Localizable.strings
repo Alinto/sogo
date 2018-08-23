@@ -74,17 +74,18 @@
 "shortDateFmt_1" = "%e.%m.%Y";
 "shortDateFmt_2" = "%d.%m.%y";
 "shortDateFmt_3" = "%e.%m.%y";
-"shortDateFmt_4" = "%d. %b. %Y";
-"shortDateFmt_5" = "%e. %b. %Y";
-"shortDateFmt_6" = "%d. %b. %y";
-"shortDateFmt_7" = "%e. %b. %y";
-"shortDateFmt_8" = "%y-%m-%d";
-"shortDateFmt_9" = "%y/%m/%d";
-"shortDateFmt_10" = "%y.%m.%d";
-"shortDateFmt_11" = "%Y-%m-%d";
-"shortDateFmt_12" = "%Y/%m/%d";
-"shortDateFmt_13" = "%Y.%m.%d";
-"shortDateFmt_14" = "";
+"shortDateFmt_4" = "%Y-%m-%d";
+"shortDateFmt_5" = "%d. %b. %Y";
+"shortDateFmt_6" = "%e. %b. %Y";
+"shortDateFmt_7" = "%d. %b. %y";
+"shortDateFmt_8" = "%e. %b. %y";
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "";
 
 "longDateFmt_0" = "%A, %d. %B %Y";
 "longDateFmt_1" = "%A, %e. %B %Y";
@@ -123,6 +124,8 @@
 "Prevent from being invited to appointments" = "Verhindere, dass ich zu Terminen eingeladen werde";
 "White list for appointment invitations" = "White-Liste für Termineinladungen";
 "Contacts Names" = "Kontaktnamen";
+"Duplicate name" = "Dupliziere Namen";
+"Calendar categories must have unique names." = "Kalenderkathegorien müssen eindeutige Namen haben.";
 
 /* Default Calendar */
 "Default calendar" = "Standardkalender";

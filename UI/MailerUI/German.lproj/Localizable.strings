@@ -256,7 +256,7 @@
 "This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Diese Nachricht kann nicht entschlüsselt werden. Bitte stellen Sie sicher, dass Sie ihr S/MIME-Zertifikat im Modul für E-Mail-Einstellungen hochgeladen haben.";
 
 /* OpenSSL certificate error - unknown issuer */
-"certificate verify error" = "Signatur der Nachricht konnte nicht verifiziert werden.";
+"certificate verify error" = "Signatur der Nachricht konnte nicht verifiziert werden";
 
 /* OpenSSL certificate error - digest failure */
 "digest failure" = "Die Nachricht wurde verändert.";

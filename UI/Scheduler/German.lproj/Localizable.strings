@@ -437,6 +437,8 @@ validate_untilbeforeend    = "Die Wiederholung muss nach dem ersten Auftreten en
 = "Der persönliche Kalender kann weder gelöscht noch abbestellt werden.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Wollen Sie diesen Kalender wirklich löschen \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Wollen Sie wirklich die ausgewählten Komponenten löschen?";
 
 /* Legend */
 "Participant" = "Teilnehmer";
