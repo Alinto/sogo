@@ -191,6 +191,7 @@ static BOOL debugLeaks;
   NSString *tableName, *fileSuffix, *tableScript;
   EOAdaptorChannel *tc;
   NSURL *channelURL;
+  NSException *ex;
 
   channelURL = [NSURL URLWithString: url];
   fileSuffix = [channelURL scheme];
@@ -205,8 +206,10 @@ static BOOL debugLeaks;
       tableScript = [self _sqlScriptForTable: tableName
 			  withType: tableType
 			  andFileSuffix: fileSuffix];
-      if (![tc evaluateExpressionX: tableScript])
+      if (!(ex = [tc evaluateExpressionX: tableScript]))
 	[self logWithFormat: @"table '%@' successfully created!", tableName];
+      else
+        [self logWithFormat: @"table '%@' creation failed! Reason: %@", tableName, ex];
     }
   else
     [tc cancelFetch];
@@ -218,10 +221,10 @@ static BOOL debugLeaks;
                                withCm: (GCSChannelManager *) cm
                              tableURL: (NSString *) url
 {
-  GCSFolderType *type;
-  NSString *sql;
-  NSString *tableName;
   EOAdaptorChannel *channel;
+  NSString *tableName, *sql;
+  GCSFolderType *type;
+  NSException *ex;
 
   channel = [cm acquireOpenChannelForURL: [NSURL URLWithString: url]];
 
@@ -234,9 +237,11 @@ static BOOL debugLeaks;
       if (type)
         {
           sql = [type sqlQuickCreateWithTableName: tableName];
-          if (![channel evaluateExpressionX: sql])
-            [self logWithFormat: @"sogo quick table %@ successfully created!",
+          if (!(ex = [channel evaluateExpressionX: sql]))
+            [self logWithFormat: @"sogo quick table '%@' successfully created!",
                   tableName];
+          else
+            [self logWithFormat: @"sogo quick table '%@' creation failed! Reason: %@", tableName, ex];
         }
     }
   else
