@@ -203,6 +203,9 @@ static BOOL debugLeaks;
 	    [NSString stringWithFormat: @"SELECT count(*) FROM %@",
 		      tableName]])
     {
+      // We re-acquire the channel in case it was abruptly closed between statements
+      if (![tc isOpen])
+        tc = [cm acquireOpenChannelForURL: channelURL];
       tableScript = [self _sqlScriptForTable: tableName
 			  withType: tableType
 			  andFileSuffix: fileSuffix];
@@ -236,6 +239,9 @@ static BOOL debugLeaks;
       type = [GCSFolderType folderTypeWithName: typeName];
       if (type)
         {
+          // We re-acquire the channel in case it was abruptly closed between statements
+          if (![channel isOpen])
+            channel = [cm acquireOpenChannelForURL: [NSURL URLWithString: url]];
           sql = [type sqlQuickCreateWithTableName: tableName];
           if (!(ex = [channel evaluateExpressionX: sql]))
             [self logWithFormat: @"sogo quick table '%@' successfully created!",
