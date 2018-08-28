@@ -1,3 +1,9 @@
+4.X.Y (2018-MM-DD)
+------------------
+
+Enhancements
+ - [web] prohibit subscribing a user with no rights
+
 4.0.2 (2018-08-24)
 ------------------
 

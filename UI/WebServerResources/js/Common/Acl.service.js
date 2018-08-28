@@ -146,6 +146,22 @@
   };
 
   /**
+   * @function $hasNoRight
+   * @memberof Acl.prototype
+   * @desc Check if user has any rights on the resource
+   * @return true if user has no right at all
+   */
+  Acl.prototype.$hasNoRight = function(user) {
+    var o = _.find(user.rights, function(value, right) {
+      if (angular.isNumber(value))
+        return (value === 1);
+      else
+        return (value !== 'None');
+    });
+    return _.isUndefined(o);
+  };
+
+  /**
    * @function $resetUsersRights
    * @memberof Acl.prototype
    * @desc Restore initial rights of all users.

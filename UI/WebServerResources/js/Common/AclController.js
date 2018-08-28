@@ -26,6 +26,7 @@
     vm.addUser = addUser;
     vm.selectAllRights = selectAllRights;
     vm.selectUser = selectUser;
+    vm.hasNoRight = hasNoRight;
     vm.showRights = showRights;
     vm.confirmation = { showing: false,
                         message: ''};
@@ -102,6 +103,10 @@
         if (!user.inactive)
           vm.selectedUser.$rights();
       }
+    }
+
+    function hasNoRight(user) {
+      return folder.$acl.$hasNoRight(user);
     }
 
     function showRights(user) {
