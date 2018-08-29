@@ -1743,6 +1743,7 @@ static NSString    *userAgent      = nil;
 - (NSData *) mimeMessageForRecipient: (NSString *) theRecipient
 {
   NGMimeMessageGenerator *generator, *partGenerator;
+  NGMimeMessage *mimeMessage;
   NSData *certificate, *content;
   NGMutableHashMap *hashMap;
   NGMimeMessage *message;
@@ -1751,8 +1752,14 @@ static NSString    *userAgent      = nil;
   // Nothing to sign or encrypt, let's generate the message and return immediately
   if (![self sign] && ![self encrypt])
     {
-      generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
-      return [generator generateMimeFromPart: [self mimeMessageWithHeaders: nil  excluding: nil  extractingImages: YES  bodyOnly: NO]];
+      mimeMessage = [self mimeMessageWithHeaders: nil  excluding: nil  extractingImages: YES  bodyOnly: NO];
+      if (mimeMessage)
+        {
+          generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
+          return [generator generateMimeFromPart: mimeMessage];
+        }
+      else
+        return nil;
     }
 
   // We'll sign and/or encrypt our message. Let's generate the actual body of the message to work with
