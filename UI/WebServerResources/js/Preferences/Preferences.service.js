@@ -84,7 +84,9 @@
           data.Vacation.endDate = new Date(data.Vacation.startDate.getTime());
           data.Vacation.endDate.addDays(1);
         }
-        if (data.Vacation.autoReplyEmailAddresses && data.Vacation.autoReplyEmailAddresses.length)
+        if (data.Vacation.autoReplyEmailAddresses &&
+            angular.isArray(data.Vacation.autoReplyEmailAddresses) &&
+            data.Vacation.autoReplyEmailAddresses.length)
           data.Vacation.autoReplyEmailAddresses = data.Vacation.autoReplyEmailAddresses.join(",");
         else
           delete data.Vacation.autoReplyEmailAddresses;
@@ -108,7 +110,8 @@
         data.Vacation.endDate = new Date();
       }
 
-      if (data.Forward && data.Forward.forwardAddress)
+      if (data.Forward && data.Forward.forwardAddress &&
+          angular.isArray(data.Forward.forwardAddress))
         data.Forward.forwardAddress = data.Forward.forwardAddress.join(",");
 
       if (angular.isUndefined(data.SOGoCalendarCategoriesColors)) {
