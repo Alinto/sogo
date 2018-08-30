@@ -4,6 +4,9 @@
 Enhancements
  - [web] prohibit subscribing a user with no rights
 
+Bug fixes
+ - [web] include mail account name in form validation (#4532)
+
 4.0.2 (2018-08-24)
 ------------------
 
