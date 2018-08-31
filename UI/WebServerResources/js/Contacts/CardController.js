@@ -59,7 +59,7 @@
           key: hotkey,
           description: l('Delete'),
           callback: function($event) {
-            if (vm.currentFolder.$selectedCount() === 0)
+            if (vm.currentFolder.acls.objectEraser && vm.currentFolder.$selectedCount() === 0)
               confirmDelete();
             $event.preventDefault();
           }

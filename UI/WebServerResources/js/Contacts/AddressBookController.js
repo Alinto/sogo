@@ -228,7 +228,7 @@
     this.confirmDeleteSelectedCards = function($event) {
       var selectedCards = this.selectedFolder.$selectedCards();
 
-      if (_.size(selectedCards) > 0)
+      if (this.selectedFolder.acls.objectEraser && _.size(selectedCards) > 0)
         Dialog.confirm(l('Warning'),
                        l('Are you sure you want to delete the selected contacts?'),
                        { ok: l('Delete') })

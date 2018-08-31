@@ -7,6 +7,7 @@ Enhancements
 Bug fixes
  - [web] include mail account name in form validation (#4532)
  - [web] calendar properties were not completely reset on cancel
+ - [web] check ACLs on address book prior to delete cards
 
 4.0.2 (2018-08-24)
 ------------------
