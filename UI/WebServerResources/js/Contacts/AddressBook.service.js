@@ -262,7 +262,10 @@
     else {
       // Wait until object is unwrapped
       return this.$futureAddressBookData.then(function(addressbook) {
-        return addressbook.id;
+        if (addressbook)
+          return addressbook.id;
+        else
+          return AddressBook.$q.reject();
       });
     }
   };
