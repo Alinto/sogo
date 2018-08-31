@@ -102,7 +102,7 @@
           );
           calendar.$id().then(function() {
             Calendar.$add(calendar);
-          });
+          }).catch(_.noop); // error
         });
     }
 
