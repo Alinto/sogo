@@ -117,6 +117,7 @@
           $ctrl.updateCalendarName();
         }, function() {
           $ctrl.editMode = true;
+          $ctrl.inputElement.value = $ctrl.calendar.name;
           $timeout(function() {
             $ctrl.inputElement.focus();
             $ctrl.inputElement.select();
