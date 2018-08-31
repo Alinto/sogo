@@ -759,6 +759,31 @@
   };
 
   /**
+   * @function markAsCompleted
+   * @memberof Component.prototype
+   * @desc Mark the task as completed.
+   * @returns a promise of the HTTP operation
+   */
+  Component.prototype.markAsCompleted = function() {
+    var _this = this, dlp;
+    if (this.type == 'task') {
+      dlp = Component.$Preferences.$mdDateLocaleProvider;
+      this.percentComplete = 100;
+      this.completed = new Date();
+      this.completed.$dateFormat = Component.$Preferences.defaults.SOGoLongDateFormat;
+      this.status = 'completed';
+      this.localizedCompletedDate = dlp.formatDate(this.completed);
+      this.localizedCompletedTime = dlp.formatTime(this.completed);
+      return this.$save().catch(function() {
+        _this.$reset();
+      });
+    }
+    else {
+      return Component.$q.reject('Only tasks can be mark as completed');
+    }
+  };
+
+  /**
    * @function coversFreeBusy
    * @memberof Component.prototype
    * @desc Check if a specific quarter matches the component's period

@@ -30,6 +30,11 @@
             </md-menu-item>
           </md-menu-content>
         </md-menu>
+        <md-button class="sg-icon-button"
+                   ng-show="editor.component.status != 'completed'"
+                   ng-click="editor.component.markAsCompleted()">
+          <md-icon label:aria-label="Mark Completed">check</md-icon>
+        </md-button>
         <md-button class="sg-icon-button" ng-click="editor.close()">
           <md-icon label:aria-label="Close">close</md-icon>
         </md-button>
@@ -74,19 +79,19 @@
           </div>
         </md-list-item>
         <!-- status -->
-        <md-list-item ng-show="::(editor.component.status == 'completed')">
+        <md-list-item ng-show="editor.component.status == 'completed'">
           <md-icon>check</md-icon>
-          <p>{{::editor.component.localizedCompletedDate}} {{::editor.component.localizedCompletedTime}}</p>
+          <p>{{editor.component.localizedCompletedDate}} {{editor.component.localizedCompletedTime}}</p>
         </md-list-item>
-        <md-list-item ng-show="::editor.component.showPercentComplete()">
+        <md-list-item ng-show="editor.component.showPercentComplete()">
           <md-icon>timelapse</md-icon>
-          <p>{{::editor.component.percentComplete}} %</p>
+          <p>{{editor.component.percentComplete}} %</p>
         </md-list-item>
-        <md-list-item ng-show="::(editor.component.status == 'cancelled')">
+        <md-list-item ng-show="editor.component.status == 'cancelled'">
           <md-icon>close</md-icon>
           <p><var:string label:value="status_CANCELLED"/></p>
         </md-list-item>
-        <md-list-item ng-show="::(editor.component.status == 'needs-action')">
+        <md-list-item ng-show="editor.component.status == 'needs-action'">
           <md-icon>error_outline</md-icon>
           <p><var:string label:value="status_NEEDS-ACTION"/></p>
         </md-list-item>
