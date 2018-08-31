@@ -614,19 +614,21 @@ static NSArray *childRecordFields = nil;
   NSURL *folderLocation;
   NSString *sql;
 
+  if ([[self container] hasLocalSubFolderNamed: newName])
+    [NSException raise: NSInvalidArgumentException
+                format: @"That name already exists"];
+
   cm = [GCSChannelManager defaultChannelManager];
-  folderLocation
-    = [[GCSFolderManager defaultFolderManager] folderInfoLocation];
+  folderLocation = [[GCSFolderManager defaultFolderManager] folderInfoLocation];
   fc = [cm acquireOpenChannelForURL: folderLocation];
   if (fc)
     {
 #warning GDLContentStore should provide methods for renaming folders
-      sql
-	= [NSString stringWithFormat: (@"UPDATE %@ SET c_foldername = '%@'"
-				       @" WHERE c_path = '%@'"),
-		    [folderLocation gcsTableName],
-		    [newName stringByReplacingString: @"'"  withString: @"''"],
-		    ocsPath];
+      sql = [NSString stringWithFormat: (@"UPDATE %@ SET c_foldername = '%@'"
+                                         @" WHERE c_path = '%@'"),
+                      [folderLocation gcsTableName],
+                      [newName stringByReplacingString: @"'"  withString: @"''"],
+                      ocsPath];
       [fc evaluateExpressionX: sql];
       [cm releaseChannel: fc];
 //       sql = [sql stringByAppendingFormat:@" WHERE %@ = '%@'", 

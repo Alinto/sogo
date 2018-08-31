@@ -17,6 +17,7 @@
     vm.edit = edit;
     vm.revertEditing = revertEditing;
     vm.save = save;
+    vm.saving = false;
     vm.confirmDelete = confirmDelete;
     vm.importCards = importCards;
     vm.showLinks = showLinks;
@@ -98,13 +99,18 @@
 
     function save(folder) {
       var name = folder.name;
-      if (name && name.length > 0) {
+      if (!vm.saving && name && name.length > 0) {
         if (name != vm.originalAddressbook.name) {
+          vm.saving = true;
           folder.$rename(name)
             .then(function(data) {
               vm.editMode = false;
-            }, function(data, status) {
-              Dialog.alert(l('Warning'), data);
+            }, function() {
+              revertEditing(folder);
+              vm.editMode = folder.id;
+            })
+            .finally(function() {
+              vm.saving = false;
             });
         }
         else {

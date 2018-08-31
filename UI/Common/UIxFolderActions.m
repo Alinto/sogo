@@ -289,8 +289,18 @@
   if ([folderName length] > 0)
     {
       clientObject = [self clientObject];
-      [clientObject renameTo: folderName];
-      response = [self responseWith204];
+      NS_DURING
+        {
+          [clientObject renameTo: folderName];
+          response = [self responseWith204];
+        }
+      NS_HANDLER
+        {
+          message = [NSDictionary dictionaryWithObject: [localException reason] forKey: @"message"];
+          response = [self responseWithStatus: 409 /* Conflict */
+                                    andString: [message jsonRepresentation]];
+        }
+      NS_ENDHANDLER;
     }
   else
     {

@@ -1,6 +1,6 @@
 /* UIxContactFolderProperties.m - this file is part of SOGo
  *
- * Copyright (C) 2015 Inverse inc.
+ * Copyright (C) 2015-2018 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,10 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSValue.h>
 
+#import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WORequest.h>
 
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 
 #import <Contacts/SOGoContactGCSFolder.h>
@@ -59,21 +61,34 @@
 - (WOResponse *) savePropertiesAction
 {
   WORequest *request;
-  NSDictionary *params;
+  WOResponse *response;
+  NSDictionary *params, *message;
   id o;
 
   request = [context request];
   params = [[request contentAsString] objectFromJSONString];
+  response = [self responseWith204];
 
-  o = [params objectForKey: @"name"];
-  if ([o isKindOfClass: [NSString class]])
-    [addressbook renameTo: o];
+  NS_DURING
+    {
+      o = [params objectForKey: @"name"];
+      if ([o isKindOfClass: [NSString class]])
+        [addressbook renameTo: o];
 
-  o = [params objectForKey: @"synchronize"];
-  if ([o isKindOfClass: [NSNumber class]])
-    [addressbook setSynchronize: [o boolValue]];
+      o = [params objectForKey: @"synchronize"];
+      if ([o isKindOfClass: [NSNumber class]])
+        [addressbook setSynchronize: [o boolValue]];
+    }
+  NS_HANDLER
+    {
+      message = [NSDictionary dictionaryWithObject: [localException reason] forKey: @"message"];
+      response = [self responseWithStatus: 400 /* Bad Request */
+                                andString: [message jsonRepresentation]];
 
-  return [self responseWith204];
+    }
+  NS_ENDHANDLER;
+
+  return response;
 }
 
 @end

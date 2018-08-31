@@ -581,15 +581,16 @@
    * @returns a promise of the HTTP operation
    */
   AddressBook.prototype.$rename = function(name) {
-    var i, list;
+    var _this = this, i, list;
 
     list = this.isSubscription? AddressBook.$subscriptions : AddressBook.$addressbooks;
     i = _.indexOf(_.map(list, 'id'), this.id);
-    this.name = name;
-    list.splice(i, 1);
-    AddressBook.$add(this);
 
-    return this.$save();
+    return this.$save().then(function() {
+      list.splice(i, 1);
+      _this.name = name;
+      AddressBook.$add(_this);
+    });
   };
 
   /**

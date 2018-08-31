@@ -87,7 +87,7 @@
       this.inputElement.value = this.calendar.name;
       this.clickableElement.classList.add('ng-hide');
       this.inputContainer.classList.remove('ng-hide');
-      if ($event.srcEvent.type == 'touchend') {
+      if ($event.srcEvent && $event.srcEvent.type == 'touchend') {
         $timeout(function() {
           $ctrl.inputElement.focus();
           $ctrl.inputElement.select();
@@ -115,6 +115,12 @@
           $ctrl.inputContainer.classList.add('ng-hide');
           $ctrl.clickableElement.classList.remove('ng-hide');
           $ctrl.updateCalendarName();
+        }, function() {
+          $ctrl.editMode = true;
+          $timeout(function() {
+            $ctrl.inputElement.focus();
+            $ctrl.inputElement.select();
+          }, 200); // delayed focus for iOS
         })
         .finally(function() {
           $ctrl.inputElement.disabled = false;

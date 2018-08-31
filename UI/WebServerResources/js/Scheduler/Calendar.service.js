@@ -498,18 +498,20 @@
    * @returns a promise of the HTTP operation
    */
   Calendar.prototype.$save = function() {
-    var _this = this;
+    var _this = this,
+        d = Calendar.$q.defer();
 
-    return Calendar.$$resource.save(this.id, this.$omit()).then(function(data) {
+    Calendar.$$resource.save(this.id, this.$omit()).then(function(data) {
       // Make a copy of the data for an eventual reset
       _this.$shadowData = _this.$omit();
-      return data;
+      return d.resolve(data);
     }, function(data) {
-      Calendar.$log.error(JSON.stringify(data, undefined, 2));
       // Restore previous version
       _this.$reset();
-      return data;
+      return d.reject(data);
     });
+
+    return d.promise;
   };
 
   /**
