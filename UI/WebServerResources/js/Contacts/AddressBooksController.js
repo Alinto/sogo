@@ -10,33 +10,20 @@
   function AddressBooksController($q, $state, $scope, $rootScope, $stateParams, $timeout, $window, $mdDialog, $mdToast, $mdMedia, $mdSidenav, FileUploader, sgConstant, sgHotkeys, focus, Card, AddressBook, Dialog, Settings, User, stateAddressbooks) {
     var vm = this, hotkeys = [];
 
-    vm.activeUser = Settings.activeUser;
-    vm.service = AddressBook;
-    vm.select = select;
-    vm.newAddressbook = newAddressbook;
-    vm.edit = edit;
-    vm.revertEditing = revertEditing;
-    vm.save = save;
-    vm.saving = false;
-    vm.confirmDelete = confirmDelete;
-    vm.importCards = importCards;
-    vm.showLinks = showLinks;
-    vm.showProperties = showProperties;
-    vm.share = share;
-    vm.subscribeToFolder = subscribeToFolder;
-    vm.isDroppableFolder = isDroppableFolder;
-    vm.dragSelectedCards = dragSelectedCards;
+    this.$onInit = function () {
+      this.activeUser = Settings.activeUser;
+      this.service = AddressBook;
+      this.saving = false;
 
+      _registerHotkeys(hotkeys);
+    };
 
-    _registerHotkeys(hotkeys);
-
-    $scope.$on('$destroy', function() {
+    this.$onDestroy = function () {
       // Deregister hotkeys
       _.forEach(hotkeys, function(key) {
         sgHotkeys.deregisterHotkey(key);
       });
-    });
-
+    };
 
     function _registerHotkeys(keys) {
       _.forEach(['backspace', 'delete'], function(hotkey) {
@@ -56,19 +43,19 @@
       });
     }
 
-    function select($event, folder) {
+    this.select = function ($event, folder) {
       if ($state.params.addressbookId != folder.id &&
-          vm.editMode != folder.id) {
-        vm.editMode = false;
+          this.editMode != folder.id) {
+        this.editMode = false;
         AddressBook.$query.value = '';
         // Close sidenav on small devices
         if (!$mdMedia(sgConstant['gt-md']))
           $mdSidenav('left').close();
         $state.go('app.addressbook', {addressbookId: folder.id});
       }
-    }
+    };
 
-    function newAddressbook() {
+    this.newAddressbook = function () {
       Dialog.prompt(l('New Addressbook...'),
                     l('Name of the Address Book'))
         .then(function(name) {
@@ -80,33 +67,35 @@
               owner: UserLogin
             }
           );
-          AddressBook.$add(addressbook);
+          addressbook.$id().then(function() {
+            AddressBook.$add(addressbook);
+          }).catch(_.noop); // error
         });
-    }
+    };
 
-    function edit(folder) {
+    this.edit = function (folder) {
       if (!folder.isRemote) {
-        vm.editMode = folder.id;
-        vm.originalAddressbook = folder.$omit();
+        this.editMode = folder.id;
+        this.originalAddressbook = folder.$omit();
         focus('addressBookName_' + folder.id);
       }
-    }
+    };
 
-    function revertEditing(folder) {
-      folder.name = vm.originalAddressbook.name;
-      vm.editMode = false;
-    }
+    this.revertEditing = function (folder) {
+      folder.name = this.originalAddressbook.name;
+      this.editMode = false;
+    };
 
-    function save(folder) {
+    this.save = function (folder) {
       var name = folder.name;
-      if (!vm.saving && name && name.length > 0) {
-        if (name != vm.originalAddressbook.name) {
-          vm.saving = true;
+      if (!this.saving && name && name.length > 0) {
+        if (name != this.originalAddressbook.name) {
+          this.saving = true;
           folder.$rename(name)
             .then(function(data) {
               vm.editMode = false;
             }, function() {
-              revertEditing(folder);
+              vm.revertEditing(folder);
               vm.editMode = folder.id;
             })
             .finally(function() {
@@ -114,15 +103,15 @@
             });
         }
         else {
-          vm.editMode = false;
+          this.editMode = false;
         }
       }
-    }
+    };
 
-    function confirmDelete() {
-      if (vm.service.selectedFolder.isSubscription) {
+    this.confirmDelete = function () {
+      if (this.service.selectedFolder.isSubscription) {
         // Unsubscribe without confirmation
-        vm.service.selectedFolder.$delete()
+        this.service.selectedFolder.$delete()
           .then(function() {
             vm.service.selectedFolder = null;
             $state.go('app.addressbook', { addressbookId: 'personal' });
@@ -134,7 +123,7 @@
       }
       else {
         Dialog.confirm(l('Warning'), l('Are you sure you want to delete the addressbook "%{0}"?',
-                                       vm.service.selectedFolder.name),
+                                       this.service.selectedFolder.name),
                        { ok: l('Delete') })
           .then(function() {
             return vm.service.selectedFolder.$delete();
@@ -153,9 +142,9 @@
             }
           });
       }
-    }
+    };
 
-    function importCards($event, folder) {
+    this.importCards = function ($event, folder) {
       $mdDialog.show({
         parent: angular.element(document.body),
         targetEvent: $event,
@@ -240,9 +229,9 @@
           return isTextFile;
         }
       }
-    }
+    };
 
-    function showLinks(addressbook) {
+    this.showLinks = function (addressbook) {
       var promise;
       if (addressbook.urls)
         promise = $q.when();
@@ -276,9 +265,9 @@
           $mdDialog.hide();
         }
       }
-    }
+    };
 
-    function showProperties(addressbook) {
+    this.showProperties = function (addressbook) {
       $mdDialog.show({
         templateUrl: addressbook.id + '/properties',
         controller: PropertiesDialogController,
@@ -315,9 +304,9 @@
           $mdDialog.cancel();
         }
       }
-    }
+    };
 
-    function share(addressbook) {
+    this.share = function (addressbook) {
       // Fetch list of ACL users
       addressbook.$acl.$users().then(function() {
         // Show ACL editor
@@ -334,13 +323,12 @@
           }
         });
       });
-    }
+    };
 
     /**
      * subscribeToFolder - Callback of sgSubscribe directive
      */
-    function subscribeToFolder(addressbookData) {
-      console.debug('subscribeToFolder ' + addressbookData.owner + addressbookData.name);
+    this.subscribeToFolder = function (addressbookData) {
       AddressBook.$subscribe(addressbookData.owner, addressbookData.name).then(function(data) {
          $mdToast.show(
            $mdToast.simple()
@@ -348,16 +336,16 @@
              .position('top right')
              .hideDelay(3000));
       });
-    }
+    };
 
-    function isDroppableFolder(srcFolder, dstFolder) {
+    this.isDroppableFolder = function (srcFolder, dstFolder) {
       return (dstFolder.id != srcFolder.id) && (dstFolder.isOwned || dstFolder.acls.objectCreator);
-    }
+    };
 
     /**
      * @see AddressBookController._selectedCardsOperation
      */
-    function dragSelectedCards(srcFolder, dstFolder, mode) {
+    this.dragSelectedCards = function (srcFolder, dstFolder, mode) {
       var dstId, allCards, cards, ids, clearCardView, promise, success;
 
       dstId = dstFolder.id;
@@ -400,7 +388,7 @@
               .hideDelay(2000));
         });
       }
-    }
+    };
 
   }
 
