@@ -619,7 +619,7 @@
     angular.forEach(this, function(value, key) {
       if (key != 'constructor' &&
           key[0] != '$') {
-        calendar[key] = value;
+        calendar[key] = angular.copy(value);
       }
     });
     return calendar;
