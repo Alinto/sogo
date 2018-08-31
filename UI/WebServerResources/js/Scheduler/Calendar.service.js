@@ -386,6 +386,8 @@
    * @returns a promise of the calendar id
    */
   Calendar.prototype.$id = function() {
+    var _this = this;
+
     if (this.id) {
       // Object already unwrapped
       return Calendar.$q.when(this.id);
@@ -393,6 +395,7 @@
     else {
       // Wait until object is unwrapped
       return this.$futureCalendarData.then(function(calendar) {
+        _this.id = calendar.id;
         return calendar.id;
       });
     }
