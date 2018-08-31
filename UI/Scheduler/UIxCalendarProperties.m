@@ -1,6 +1,6 @@
 /* UIxCalendarProperties.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2015 Inverse inc.
+ * Copyright (C) 2008-2018 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,10 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSValue.h>
 
+#import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WORequest.h>
 
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 
 #import <Appointments/SOGoWebAppointmentFolder.h>
@@ -73,65 +75,78 @@
 - (WOResponse *) savePropertiesAction
 {
   WORequest *request;
-  NSDictionary *params;
+  WOResponse *response;
+  NSDictionary *params, *message;
   id o, values;
 
   request = [context request];
   params = [[request contentAsString] objectFromJSONString];
+  response = [self responseWith204];
 
-  o = [params objectForKey: @"name"];
-  if ([o isKindOfClass: [NSString class]])
-    [calendar renameTo: o];
-
-  o = [params objectForKey: @"color"];
-  if ([o isKindOfClass: [NSString class]])
-    [calendar setCalendarColor: o];
-
-  o = [params objectForKey: @"includeInFreeBusy"];
-  if ([o isKindOfClass: [NSNumber class]])
-    [calendar setIncludeInFreeBusy: [o boolValue]];
-
-  o = [params objectForKey: @"showCalendarAlarms"];
-  if ([o isKindOfClass: [NSNumber class]])
-    [calendar setShowCalendarAlarms: [o boolValue]];
-
-  o = [params objectForKey: @"showCalendarTasks"];
-  if ([o isKindOfClass: [NSNumber class]])
-    [calendar setShowCalendarTasks: [o boolValue]];
-
-  o = [params objectForKey: @"showCalendarTasks"];
-  if ([o isKindOfClass: [NSNumber class]])
-    [calendar setShowCalendarTasks: [o boolValue]];
-
-  o = [params objectForKey: @"synchronize"];
-  if ([o isKindOfClass: [NSNumber class]])
-    [calendar setSynchronize: [o boolValue]];
-
-  o = [params objectForKey: @"reloadOnLogin"];
-  if ([o isKindOfClass: [NSNumber class]] && [calendar isKindOfClass: [SOGoWebAppointmentFolder class]])
-    [(SOGoWebAppointmentFolder *) calendar setReloadOnLogin: [o boolValue]];
-
-  values = [params objectForKey: @"notifications"];
-  if ([values isKindOfClass: [NSDictionary class]])
+  NS_DURING
     {
-      o = [values objectForKey: @"notifyOnPersonalModifications"];
-      if ([o isKindOfClass: [NSNumber class]])
-        [calendar setNotifyOnPersonalModifications: [o boolValue]];
-
-      o = [values objectForKey: @"notifyOnExternalModifications"];
-      if ([o isKindOfClass: [NSNumber class]])
-        [calendar setNotifyOnExternalModifications: [o boolValue]];
-
-      o = [values objectForKey: @"notifyUserOnPersonalModifications"];
-      if ([o isKindOfClass: [NSNumber class]])
-        [calendar setNotifyUserOnPersonalModifications: [o boolValue]];
-
-      o = [values objectForKey: @"notifiedUserOnPersonalModifications"];
+      o = [params objectForKey: @"name"];
       if ([o isKindOfClass: [NSString class]])
-        [calendar setNotifiedUserOnPersonalModifications: o];
-    }
+        [calendar renameTo: o];
 
-  return [self responseWith204];
+      o = [params objectForKey: @"color"];
+      if ([o isKindOfClass: [NSString class]])
+        [calendar setCalendarColor: o];
+
+      o = [params objectForKey: @"includeInFreeBusy"];
+      if ([o isKindOfClass: [NSNumber class]])
+        [calendar setIncludeInFreeBusy: [o boolValue]];
+
+      o = [params objectForKey: @"showCalendarAlarms"];
+      if ([o isKindOfClass: [NSNumber class]])
+        [calendar setShowCalendarAlarms: [o boolValue]];
+
+      o = [params objectForKey: @"showCalendarTasks"];
+      if ([o isKindOfClass: [NSNumber class]])
+        [calendar setShowCalendarTasks: [o boolValue]];
+
+      o = [params objectForKey: @"showCalendarTasks"];
+      if ([o isKindOfClass: [NSNumber class]])
+        [calendar setShowCalendarTasks: [o boolValue]];
+
+      o = [params objectForKey: @"synchronize"];
+      if ([o isKindOfClass: [NSNumber class]])
+        [calendar setSynchronize: [o boolValue]];
+
+      o = [params objectForKey: @"reloadOnLogin"];
+      if ([o isKindOfClass: [NSNumber class]] && [calendar isKindOfClass: [SOGoWebAppointmentFolder class]])
+        [(SOGoWebAppointmentFolder *) calendar setReloadOnLogin: [o boolValue]];
+
+      values = [params objectForKey: @"notifications"];
+      if ([values isKindOfClass: [NSDictionary class]])
+        {
+          o = [values objectForKey: @"notifyOnPersonalModifications"];
+          if ([o isKindOfClass: [NSNumber class]])
+            [calendar setNotifyOnPersonalModifications: [o boolValue]];
+
+          o = [values objectForKey: @"notifyOnExternalModifications"];
+          if ([o isKindOfClass: [NSNumber class]])
+            [calendar setNotifyOnExternalModifications: [o boolValue]];
+
+          o = [values objectForKey: @"notifyUserOnPersonalModifications"];
+          if ([o isKindOfClass: [NSNumber class]])
+            [calendar setNotifyUserOnPersonalModifications: [o boolValue]];
+
+          o = [values objectForKey: @"notifiedUserOnPersonalModifications"];
+          if ([o isKindOfClass: [NSString class]])
+            [calendar setNotifiedUserOnPersonalModifications: o];
+        }
+    }
+  NS_HANDLER
+    {
+      message = [NSDictionary dictionaryWithObject: [localException reason] forKey: @"message"];
+      response = [self responseWithStatus: 400 /* Bad Request */
+                                andString: [message jsonRepresentation]];
+
+    }
+  NS_ENDHANDLER;
+
+  return response;
 }
 
 @end
