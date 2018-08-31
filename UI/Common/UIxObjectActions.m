@@ -103,7 +103,7 @@
 
   if (response)
     {
-      data = [NSDictionary dictionaryWithObjectsAndKeys: [(NSException *) response reason], @"error", nil];
+      data = [NSDictionary dictionaryWithObjectsAndKeys: [(NSException *) response reason], @"message", nil];
       response = [self responseWithStatus: 403
                     andJSONRepresentation: data];
     }

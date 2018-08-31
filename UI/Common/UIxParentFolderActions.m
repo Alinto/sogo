@@ -79,14 +79,14 @@
         }
       else
         {
-          data = [NSDictionary dictionaryWithObjectsAndKeys: @"That name already exists", @"error", nil];
+          data = [NSDictionary dictionaryWithObjectsAndKeys: @"That name already exists", @"message", nil];
           response = [self responseWithStatus: 409
                                     andString: [data jsonRepresentation]];
         }
     }
   else
     {
-      data = [NSDictionary dictionaryWithObjectsAndKeys: @"The name is missing", @"error", nil];
+      data = [NSDictionary dictionaryWithObjectsAndKeys: @"The name is missing", @"message", nil];
       response = [self responseWithStatus: 400
                                 andString: [data jsonRepresentation]];
     }

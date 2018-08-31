@@ -217,7 +217,7 @@
   if (![self _initRights])
     {
       jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"No such user."]
-                                                 forKey: @"error"];
+                                                 forKey: @"message"];
       response = [self responseWithStatus: 403
                                 andString: [jsonResponse jsonRepresentation]];
     }
@@ -274,7 +274,7 @@
       if (!([self _initRightsForUserID: currentUid]))
         {
           jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"No such user."]
-                                                     forKey: @"error"];
+                                                     forKey: @"message"];
           response = [self responseWithStatus: 403
                                     andString: [jsonResponse jsonRepresentation]];
           break;

@@ -84,7 +84,7 @@
   if ([owner isEqualToString: login])
     {
       jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"You cannot (un)subscribe to a folder that you own!"]
-                                                 forKey: @"error"];
+                                                 forKey: @"message"];
       response = [self responseWithStatus: 403
                     andJSONRepresentation: jsonResponse];
     }
@@ -294,7 +294,7 @@
     }
   else
     {
-      message = [NSDictionary dictionaryWithObject: @"Missing name parameter" forKey: @"error"];
+      message = [NSDictionary dictionaryWithObject: @"Missing name parameter" forKey: @"message"];
       response = [self responseWithStatus: 500
                                 andString: [message jsonRepresentation]];
     }
@@ -335,7 +335,7 @@
     {
       response = [self responseWithStatus: 400
                     andJSONRepresentation: [NSDictionary dictionaryWithObject: @"At least 1 id required."
-                                                                     forKey: @"error"]];
+                                                                     forKey: @"message"]];
     }
   
   return response;

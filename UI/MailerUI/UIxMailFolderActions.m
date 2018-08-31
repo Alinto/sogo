@@ -85,14 +85,14 @@
         {
           errorFormat = [self labelForKey: @"The folder with name \"%@\" could not be created." inContext: context];
           jsonResponse = [NSDictionary dictionaryWithObject: [NSString stringWithFormat: errorFormat, folderName]
-                                                     forKey: @"error"];
+                                                     forKey: @"message"];
           response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
         }
     }
   else
     {
       jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing 'name' parameter."  inContext: context]
-                                                 forKey: @"error"];
+                                                 forKey: @"message"];
       response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
     }
 
@@ -401,7 +401,7 @@
           if (error)
             {
               jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to move/delete folder." inContext: context]
-                                                         forKey: @"error"];
+                                                         forKey: @"message"];
               response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
             }
           else
@@ -428,7 +428,7 @@
       if (error)
         {
           jsonResponse = [NSDictionary dictionaryWithObject: [self labelForKey: @"Unable to move/delete folder." inContext: context]
-                                                     forKey: @"error"];
+                                                     forKey: @"message"];
           response = [self responseWithStatus: 500 andJSONRepresentation: jsonResponse];
         }
       else
@@ -993,7 +993,7 @@
     {
       result = [NSDictionary dictionaryWithObject: [self labelForKey: @"Missing 'flags' and 'msgUIDs' parameters."
                                                            inContext: context]
-                                           forKey: @"error"];
+                                           forKey: @"message"];
       response = [self responseWithStatus: 500 andJSONRepresentation: result];
     }
   else
