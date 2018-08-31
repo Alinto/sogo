@@ -373,7 +373,7 @@
     // Add 'isOwned' and 'isSubscription' attributes based on active user (TODO: add it server-side?)
     this.isOwned = Calendar.activeUser.isSuperUser || this.owner == Calendar.activeUser.login;
     this.isSubscription = !this.isRemote && this.owner != Calendar.activeUser.login;
-    if (angular.isUndefined(this.$shadowData)) {
+    if (angular.isUndefined(this.$shadowData) || !this.$shadowData.id) {
       // Make a copy of the data for an eventual reset
       this.$shadowData = this.$omit();
     }
@@ -395,8 +395,10 @@
     else {
       // Wait until object is unwrapped
       return this.$futureCalendarData.then(function(calendar) {
-        _this.id = calendar.id;
-        return calendar.id;
+        if (calendar.id)
+          return calendar.id;
+        else
+          return Calendar.$q.reject();
       });
     }
   };
