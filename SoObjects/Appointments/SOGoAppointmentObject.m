@@ -197,8 +197,8 @@
               iCalEvent *ownerEvent;
               SOGoUser *user;
               // We check if the attendee that was added to a single occurence is
-              // present in the master component. If not, we add it with a participation
-              // status set to "DECLINED".
+              // present in the master component. If not, we create a calendar with
+              // a single event for the occurence.
               ownerEvent = [[[newEvent parent] events] objectAtIndex: 0];
               user = [SOGoUser userWithLogin: theUID];
 
