@@ -253,10 +253,13 @@
 
             function saveProperties(form) {
               if (form.$valid) {
-                vm.calendar.$save();
-                // Refresh list instance
-                srcCalendar.init(vm.calendar.$omit());
-                $mdDialog.hide();
+                vm.calendar.$save().then(function() {
+                  // Refresh list instance
+                  srcCalendar.init(vm.calendar.$omit());
+                  $mdDialog.hide();
+                }, function() {
+                  form.$setPristine();
+                });
               }
             }
 

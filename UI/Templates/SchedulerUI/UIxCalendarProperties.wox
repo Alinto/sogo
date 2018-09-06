@@ -81,7 +81,7 @@
           <md-input-container flex-offset="5" md-no-float="md-no-float">
             <input type="email"
                    label:placeholder="Email Address"
-                   ng-model="properties.calendar.notifications.notifiedUserOnPersonalModifications"
+                   ng-model="properties.calendar.notifiedUserOnPersonalModifications"
                    ng-required="properties.calendar.notifications.notifyUserOnPersonalModifications"
                    ng-disabled="!properties.calendar.notifications.notifyUserOnPersonalModifications"/>
           </md-input-container>

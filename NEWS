@@ -10,6 +10,7 @@ Bug fixes
  - [web] calendar properties were not completely reset on cancel
  - [web] check ACLs on address book prior to delete cards
  - [web] fixed condition of copy action on cards
+ - [web] fixed display of notification email in calendar properties
 
 4.0.2 (2018-08-24)
 ------------------
