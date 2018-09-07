@@ -367,6 +367,7 @@ static NSArray *tasksFields = nil;
 - (NSArray *) _fetchFields: (NSArray *) fields
         forComponentOfType: (NSString *) component
 {
+  NSCalendarDate *currentStartDate, *currentEndDate;
   NSEnumerator *folders, *currentInfos;
   NSMutableDictionary *newInfo;
   NSMutableArray *infos, *quickInfos, *allInfos, *quickInfosName;
@@ -472,12 +473,18 @@ static NSArray *tasksFields = nil;
 
           while ((newInfo = [currentInfos nextObject]))
             {
-              if ([newInfo objectForKey: @"startDate"])
+              if ([enabledWeekDays count] &&
+                  [newInfo objectForKey: @"startDate"])
                 {
-                  weekDay = iCalWeekDayString[[[newInfo objectForKey: @"startDate"] dayOfWeek]];
-                  if ([enabledWeekDays count] && ![enabledWeekDays containsObject: weekDay])
-                    // Skip components that appear on disabled weekdays
-                    continue;
+                  currentStartDate = [newInfo objectForKey: @"startDate"];
+                  currentEndDate = [newInfo objectForKey: @"endDate"];
+                  if (!currentEndDate || [currentStartDate isDateOnSameDay: currentEndDate])
+                    {
+                      weekDay = iCalWeekDayString[[[newInfo objectForKey: @"startDate"] dayOfWeek]];
+                      if (![enabledWeekDays containsObject: weekDay])
+                        // Skip components that appear on disabled weekdays
+                        continue;
+                    }
                 }
 
               if ([fields containsObject: @"viewable"])

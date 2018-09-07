@@ -11,26 +11,26 @@
   function CalendarController($scope, $rootScope, $state, $stateParams, sgHotkeys, Calendar, Component, Preferences, stateEventsBlocks) {
     var vm = this, deregisterCalendarsList, hotkeys = [];
 
-    // Make the toolbar state of all-day events persistent
-    if (angular.isUndefined(CalendarController.expandedAllDays))
-      CalendarController.expandedAllDays = false;
-
-    vm.selectedDate = $stateParams.day.asDate();
-    vm.expandedAllDays = CalendarController.expandedAllDays;
-    vm.toggleAllDays = toggleAllDays;
-    vm.views = stateEventsBlocks;
-    vm.changeDate = changeDate;
-    vm.changeView = changeView;
-
-
     this.$onInit = function() {
+      // Make the toolbar state of all-day events persistent
+      if (angular.isUndefined(CalendarController.expandedAllDays))
+        CalendarController.expandedAllDays = false;
+
+      this.selectedDate = $stateParams.day.asDate();
+      this.selectableDays = _.map(Preferences.defaults.SOGoCalendarWeekdays, function(day) {
+        return _.indexOf(['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'], day);
+      });
+      this.expandedAllDays = CalendarController.expandedAllDays;
+      this.views = stateEventsBlocks;
+
       _registerHotkeys(hotkeys);
 
-      _formatDate(vm.selectedDate);
+      _formatDate(this.selectedDate);
 
       // Refresh current view when the list of calendars is modified
-      deregisterCalendarsList = $rootScope.$on('calendars:list', updateView);
+      deregisterCalendarsList = $rootScope.$on('calendars:list', _updateView);
 
+      // NOTE: $onDestroy won't work with ui-router (tested with v1.0.20).
       $scope.$on('$destroy', function() {
         // Destroy event listener when the controller is being deactivated
         deregisterCalendarsList();
@@ -41,36 +41,35 @@
       });
     };
 
-
     function _registerHotkeys(keys) {
       keys.push(sgHotkeys.createHotkey({
         key: l('hotkey_today'),
         description: l('Today'),
-        callback: changeDate,
+        callback: vm.changeDate,
         args: new Date()
       }));
       keys.push(sgHotkeys.createHotkey({
         key: l('hotkey_dayview'),
         description: l('Day'),
-        callback: changeView,
+        callback: vm.changeView,
         args: 'day'
       }));
       keys.push(sgHotkeys.createHotkey({
         key: l('hotkey_weekview'),
         description: l('Week'),
-        callback: changeView,
+        callback: vm.changeView,
         args: 'week'
       }));
       keys.push(sgHotkeys.createHotkey({
         key: l('hotkey_monthview'),
         description: l('Month'),
-        callback: changeView,
+        callback: vm.changeView,
         args: 'month'
       }));
       keys.push(sgHotkeys.createHotkey({
         key: l('hotkey_multicolumndayview'),
         description: l('Multicolumn Day View'),
-        callback: changeView,
+        callback: vm.changeView,
         args: 'multicolumnday'
       }));
       keys.push(sgHotkeys.createHotkey({
@@ -106,9 +105,12 @@
       }
       else {
         date = vm.selectedDate.addDays(direction);
+        while (!vm.isSelectableDay(date)) {
+          date = date.addDays(direction);
+        }
       }
 
-      changeDate($event, date);
+      vm.changeDate($event, date);
     }
 
     /**
@@ -132,13 +134,7 @@
       }
     }
 
-    // Expand or collapse all-day events
-    function toggleAllDays() {
-      CalendarController.expandedAllDays = !CalendarController.expandedAllDays;
-      vm.expandedAllDays = CalendarController.expandedAllDays;
-    }
-
-    function updateView() {
+    function _updateView() {
       // The list of calendars has changed; update the views
       // See stateEventsBlocks in Scheduler.app.js
       Component.$eventsBlocksForView($stateParams.view, $stateParams.day.asDate()).then(function(data) {
@@ -168,18 +164,30 @@
       });
     }
 
+    // Expand or collapse all-day events
+    this.toggleAllDays = function() {
+      CalendarController.expandedAllDays = !CalendarController.expandedAllDays;
+      this.expandedAllDays = CalendarController.expandedAllDays;
+    };
+
     // Change calendar's date
-    function changeDate($event, newDate) {
+    this.changeDate = function($event, newDate) {
       var date = newDate? newDate.getDayString() : angular.element($event.currentTarget).attr('date');
       if (newDate)
         _formatDate(newDate);
       $state.go('calendars.view', { day: date });
-    }
+      // $state.transitionTo('calendars.view', { day: date });
+    };
 
     // Change calendar's view
-    function changeView($event, view) {
+    this.changeView = function($event, view) {
       $state.go('calendars.view', { view: view });
-    }
+    };
+
+    // Check if the week day should be visible/selectable
+    this.isSelectableDay = function(date) {
+      return _.includes(vm.selectableDays, date.getDay());
+    };
 }
 
   angular

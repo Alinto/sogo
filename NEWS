@@ -11,6 +11,7 @@ Bug fixes
  - [web] check ACLs on address book prior to delete cards
  - [web] fixed condition of copy action on cards
  - [web] fixed display of notification email in calendar properties
+ - [web] fixed display of multi-days events when some weekdays are disabled
 
 4.0.2 (2018-08-24)
 ------------------
