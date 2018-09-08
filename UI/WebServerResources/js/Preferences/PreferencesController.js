@@ -3,7 +3,7 @@
 
 (function() {
   'use strict';
-  
+
   /**
    * @ngInject
    */
@@ -60,6 +60,12 @@
             $window.location.reload(true);
           });
         });
+    };
+
+    this.resetCalendarCategories = function(form) {
+      this.preferences.defaults.SOGoCalendarCategories = _.keys($window.defaultCalendarCategories);
+      this.preferences.defaults.SOGoCalendarCategoriesColors = angular.copy($window.defaultCalendarCategories);
+      form.$setDirty();
     };
 
     this.addCalendarCategory = function(form) {
@@ -202,10 +208,10 @@
         form.$setDirty();
       });
     };
-    
+
     this.editMailFilter = function(ev, index, form) {
       var filter = angular.copy(this.preferences.defaults.SOGoSieveFilters[index]);
-      
+
       $mdDialog.show({
         templateUrl: 'editFilter?filter=' + index,
         controller: 'FiltersDialogController',
@@ -388,7 +394,7 @@
 
       return false;
     };
-    
+
     this.changePassword = function() {
       Authentication.changePassword(this.passwords.newPassword).then(function() {
         var alert = $mdDialog.alert({

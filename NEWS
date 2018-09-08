@@ -4,6 +4,7 @@
 Enhancements
  - [web] prohibit subscribing a user with no rights
  - [web] new button to mark a task as completed (#4531)
+ - [web] new button to reset Calendar categories to defaults
 
 Bug fixes
  - [web] include mail account name in form validation (#4532)

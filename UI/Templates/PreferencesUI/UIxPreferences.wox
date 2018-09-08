@@ -19,6 +19,7 @@
     var vacationEnabled = <var:string value="isVacationEnabled" const:escapeHTML="NO"/>;
     var timeZonesList = <var:string value="timeZonesList" const:escapeHTML="NO"/>;
     var defaultEmailAddresses = '<var:string value="defaultEmailAddresses" const:escapeHTML="NO"/>';
+    var defaultCalendarCategories = <var:string value="defaultCalendarCategoriesColors" const:escapeHTML="NO"/>;
     var forwardConstraints = <var:string value="forwardConstraints" const:escapeHTML="NO"/>;
     var sieveCapabilities = <var:string value="sieveCapabilities" const:escapeHTML="NO"/>;
   </script>
@@ -429,6 +430,11 @@
               </md-list>
 
               <div layout="row" layout-align="end center">
+                <md-button type="button"
+                           label:aria-label="Reset to defaults"
+                           ng-click="app.resetCalendarCategories(preferencesForm)">
+                  <var:string label:value="Reset to defaults"/>
+                </md-button>
                 <md-button type="button"
                            label:aria-label="Add Calendar Category"
                            ng-click="app.addCalendarCategory(preferencesForm)">

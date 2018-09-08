@@ -1215,6 +1215,27 @@ static NSArray *reminderValues = nil;
 //
 // Used by templates
 //
+- (NSString *) defaultCalendarCategoriesColors
+{
+  NSArray *labels, *colors;
+  NSMutableDictionary *defaultCategoriesColors;
+  unsigned int i;
+
+  labels = [[self labelForKey: @"calendar_category_labels"] componentsSeparatedByString: @","];
+  colors = [[[SOGoSystemDefaults sharedSystemDefaults] calendarCategoriesColors] allValues];
+  defaultCategoriesColors = [NSMutableDictionary dictionary];
+  for (i = 0; i < [colors count]; i++)
+    {
+      [defaultCategoriesColors setObject: [colors objectAtIndex: i]
+                                  forKey: [labels objectAtIndex: i]];
+    }
+
+  return [defaultCategoriesColors jsonRepresentation];
+}
+
+//
+// Used by templates
+//
 - (NSString *) autoReplyEmailAddresses
 {
   NSArray *addressesList;
