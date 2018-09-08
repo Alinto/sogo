@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.7.3
+ * @license AngularJS v1.7.4
  * (c) 2010-2018 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -99,7 +99,7 @@ function isValidObjectMaxDepth(maxDepth) {
 function minErr(module, ErrorConstructor) {
   ErrorConstructor = ErrorConstructor || Error;
 
-  var url = 'https://errors.angularjs.org/1.7.3/';
+  var url = 'https://errors.angularjs.org/1.7.4/';
   var regex = url.replace('.', '\\.') + '[\\s\\S]*';
   var errRegExp = new RegExp(regex, 'g');
 
@@ -931,15 +931,16 @@ function arrayRemove(array, value) {
  * * If `source` is identical to `destination` an exception will be thrown.
  *
  * <br />
+ *
  * <div class="alert alert-warning">
  *   Only enumerable properties are taken into account. Non-enumerable properties (both on `source`
  *   and on `destination`) will be ignored.
  * </div>
  *
- * @param {*} source The source that will be used to make a copy.
- *                   Can be any type, including primitives, `null`, and `undefined`.
- * @param {(Object|Array)=} destination Destination into which the source is copied. If
- *     provided, must be of the same type as `source`.
+ * @param {*} source The source that will be used to make a copy. Can be any type, including
+ *     primitives, `null`, and `undefined`.
+ * @param {(Object|Array)=} destination Destination into which the source is copied. If provided,
+ *     must be of the same type as `source`.
  * @returns {*} The copy or updated `destination`, if `destination` was specified.
  *
  * @example
@@ -2786,11 +2787,11 @@ function toDebugString(obj, maxDepth) {
 var version = {
   // These placeholder strings will be replaced by grunt's `build` task.
   // They need to be double- or single-quoted.
-  full: '1.7.3',
+  full: '1.7.4',
   major: 1,
   minor: 7,
-  dot: 3,
-  codeName: 'eventful-proposal'
+  dot: 4,
+  codeName: 'interstellar-exploration'
 };
 
 
@@ -2939,7 +2940,7 @@ function publishExternalAPI(angular) {
       });
     }
   ])
-  .info({ angularVersion: '1.7.3' });
+  .info({ angularVersion: '1.7.4' });
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -20306,7 +20307,7 @@ function $SceDelegateProvider() {
       // If we get here, then we will either sanitize the value or throw an exception.
       if (type === SCE_CONTEXTS.MEDIA_URL || type === SCE_CONTEXTS.URL) {
         // we attempt to sanitize non-resource URLs
-        return $$sanitizeUri(maybeTrusted, type === SCE_CONTEXTS.MEDIA_URL);
+        return $$sanitizeUri(maybeTrusted.toString(), type === SCE_CONTEXTS.MEDIA_URL);
       } else if (type === SCE_CONTEXTS.RESOURCE_URL) {
         if (isResourceUrlAllowedByPolicy(maybeTrusted)) {
           return maybeTrusted;
@@ -33203,7 +33204,7 @@ var ngRefDirective = ['$parse', function($parse) {
  * For example, if an item is added to the collection, `ngRepeat` will know that all other items
  * already have DOM elements, and will not re-render them.
  *
- * All different types of tracking functions, their syntax, and and their support for duplicate
+ * All different types of tracking functions, their syntax, and their support for duplicate
  * items in collections can be found in the
  * {@link ngRepeat#ngRepeat-arguments ngRepeat expression description}.
  *
@@ -35164,7 +35165,7 @@ var SelectController =
 
     if (optionAttrs.$attr.ngValue) {
       // The value attribute is set by ngValue
-      var oldVal, hashedVal = NaN;
+      var oldVal, hashedVal;
       optionAttrs.$observe('value', function valueAttributeObserveAction(newVal) {
 
         var removal;
@@ -35336,18 +35337,6 @@ var SelectController =
  * @param {string=} ngAttrSize sets the size of the select element dynamically. Uses the
  * {@link guide/interpolation#-ngattr-for-binding-to-arbitrary-attributes ngAttr} directive.
  *
- *
- * @knownIssue
- *
- * In Firefox, the select model is only updated when the select element is blurred. For example,
- * when switching between options with the keyboard, the select model is only set to the
- * currently selected option when the select is blurred, e.g via tab key or clicking the mouse
- * outside the select.
- *
- * This is due to an ambiguity in the select element specification. See the
- * [issue on the Firefox bug tracker](https://bugzilla.mozilla.org/show_bug.cgi?id=126379)
- * for more information, and this
- * [Github comment for a workaround](https://github.com/angular/angular.js/issues/9134#issuecomment-130800488)
  *
  * @example
  * ### Simple `select` elements with static options

@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.7.3
+ * @license AngularJS v1.7.4
  * (c) 2010-2018 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -3020,8 +3020,6 @@ var $$AnimationProvider = ['$animateProvider', /** @this */ function($animatePro
 
     // TODO(matsko): document the signature in a better way
     return function(element, event, options) {
-      var node = getDomNode(element);
-
       options = prepareAnimationOptions(options);
       var isStructural = ['enter', 'move', 'leave'].indexOf(event) >= 0;
 
@@ -3093,8 +3091,9 @@ var $$AnimationProvider = ['$animateProvider', /** @this */ function($animatePro
         forEach(groupedAnimations, function(animationEntry) {
           var element = animationEntry.from ? animationEntry.from.element : animationEntry.element;
           var extraClasses = options.addClass;
+
           extraClasses = (extraClasses ? (extraClasses + ' ') : '') + NG_ANIMATE_CLASSNAME;
-          var cacheKey = $$animateCache.cacheKey(node, event, extraClasses, options.removeClass);
+          var cacheKey = $$animateCache.cacheKey(element[0], animationEntry.event, extraClasses, options.removeClass);
 
           toBeSortedAnimations.push({
             element: element,
@@ -4250,7 +4249,7 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
   isFunction  = angular.isFunction;
   isElement   = angular.isElement;
 })
-  .info({ angularVersion: '1.7.3' })
+  .info({ angularVersion: '1.7.4' })
   .directive('ngAnimateSwap', ngAnimateSwapDirective)
 
   .directive('ngAnimateChildren', $$AnimateChildrenDirective)
