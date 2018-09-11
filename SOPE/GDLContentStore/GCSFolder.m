@@ -718,8 +718,6 @@ andAttribute: (EOAttribute *)_attribute
   [sql appendString:@"INSERT INTO "];
   [sql appendString:_table];
   [sql appendString:@" ("];
-  if ([GCSFolderManager singleStoreMode])
-    [sql appendString:@"c_folder_id, "];
 
   for (i = 0, count = [keys count]; i < count; i++) {
     if (i != 0) [sql appendString:@", "];
@@ -727,8 +725,6 @@ andAttribute: (EOAttribute *)_attribute
   }
 
   [sql appendString:@") VALUES ("];
-  if ([GCSFolderManager singleStoreMode])
-    [sql appendFormat:@"%@, ", folderId];
 
   for (i = 0, count = [keys count]; i < count; i++) {
     fieldName = [keys objectAtIndex:i];
@@ -1094,6 +1090,9 @@ andAttribute: (EOAttribute *)_attribute
 
 		      if (isNewRecord)
 			{
+                          if ([GCSFolderManager singleStoreMode])
+                            [quickRow setObject: folderId  Key:@"c_folder_id"];
+
 			  if (!ofFlags.sameTableForQuick)
 			    error = (hasInsertDelegate
 				     ? [quickChannel insertRowX: quickRow forEntity: quickTableEntity]
