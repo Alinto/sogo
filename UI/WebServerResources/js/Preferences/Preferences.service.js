@@ -114,10 +114,13 @@
           angular.isArray(data.Forward.forwardAddress))
         data.Forward.forwardAddress = data.Forward.forwardAddress.join(",");
 
-      if (angular.isUndefined(data.SOGoCalendarCategoriesColors)) {
-        data.SOGoCalendarCategoriesColors = {};
+      // Split calendar categories colors keys and values
+      if (angular.isUndefined(data.SOGoCalendarCategories))
         data.SOGoCalendarCategories = [];
-      }
+      data.SOGoCalendarCategoriesColorsValues = [];
+      _.forEach(data.SOGoCalendarCategories, function (value) {
+        data.SOGoCalendarCategoriesColorsValues.push(data.SOGoCalendarCategoriesColors[value]);
+      });
 
       if (angular.isUndefined(data.SOGoContactsCategories))
         data.SOGoContactsCategories = [];
@@ -328,6 +331,13 @@
 
     if (preferences.defaults.Forward && preferences.defaults.Forward.forwardAddress)
       preferences.defaults.Forward.forwardAddress = preferences.defaults.Forward.forwardAddress.split(",");
+
+    // Merge back calendar categories colors keys and values
+    preferences.defaults.SOGoCalendarCategoriesColors = {};
+    _.forEach(preferences.defaults.SOGoCalendarCategories, function(key, i) {
+      preferences.defaults.SOGoCalendarCategoriesColors[key] = preferences.defaults.SOGoCalendarCategoriesColorsValues[i];
+    });
+    delete preferences.defaults.SOGoCalendarCategoriesColorsValues;
 
     if (preferences.settings.Calendar && preferences.settings.Calendar.PreventInvitationsWhitelist) {
       _.forEach(preferences.settings.Calendar.PreventInvitationsWhitelist, function(user) {

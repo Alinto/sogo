@@ -13,6 +13,7 @@ Bug fixes
  - [web] fixed condition of copy action on cards
  - [web] fixed display of notification email in calendar properties
  - [web] fixed display of multi-days events when some weekdays are disabled
+ - [web] fixed synchronisation of calendar categories
 
 4.0.2 (2018-08-24)
 ------------------

@@ -409,7 +409,7 @@
                               ng-repeat="item in
                                          app.preferences.defaults.SOGoCalendarCategories
                                          track by $index">
-                  <sg-color-picker ng-model="app.preferences.defaults.SOGoCalendarCategoriesColors[item]"><!-- color picker--></sg-color-picker>
+                  <sg-color-picker ng-model="app.preferences.defaults.SOGoCalendarCategoriesColorsValues[$index]"><!-- color picker--></sg-color-picker>
                   <md-input-container class="md-block md-flex">
 	            <input type="text" label:aria-label="Calendar Category" required="required"
                            name="calendarCategory_{{$index}}"

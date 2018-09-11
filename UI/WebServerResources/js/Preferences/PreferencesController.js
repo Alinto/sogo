@@ -64,13 +64,13 @@
 
     this.resetCalendarCategories = function(form) {
       this.preferences.defaults.SOGoCalendarCategories = _.keys($window.defaultCalendarCategories);
-      this.preferences.defaults.SOGoCalendarCategoriesColors = angular.copy($window.defaultCalendarCategories);
+      this.preferences.defaults.SOGoCalendarCategoriesColorsValues = _.values($window.defaultCalendarCategories);
       form.$setDirty();
     };
 
     this.addCalendarCategory = function(form) {
-      this.preferences.defaults.SOGoCalendarCategoriesColors[l('New category')] = "#aaa";
       this.preferences.defaults.SOGoCalendarCategories.push(l('New category'));
+      this.preferences.defaults.SOGoCalendarCategoriesColorsValues.push("#aaa");
       focus('calendarCategory_' + (this.preferences.defaults.SOGoCalendarCategories.length - 1));
       form.$setDirty();
     };
@@ -80,9 +80,8 @@
     };
 
     this.removeCalendarCategory = function(index, form) {
-      var key = this.preferences.defaults.SOGoCalendarCategories[index];
       this.preferences.defaults.SOGoCalendarCategories.splice(index, 1);
-      delete this.preferences.defaults.SOGoCalendarCategoriesColors[key];
+      this.preferences.defaults.SOGoCalendarCategoriesColorsValues.splice(index, 1);
       form.$setDirty();
     };
 
