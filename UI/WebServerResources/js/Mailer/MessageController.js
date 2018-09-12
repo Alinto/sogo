@@ -285,8 +285,6 @@
               targetEvent: $event,
               clickOutsideToClose: false,
               escapeToClose: false,
-              scope: $scope,
-              preserveScope: true,
               templateUrl: 'UIxMailEditor',
               controller: 'MessageEditorController',
               controllerAs: 'editor',
@@ -294,6 +292,7 @@
                 return onCompleteDeferred.resolve(element);
               },
               locals: {
+                stateParent: $scope,
                 stateAccount: vm.account,
                 stateMessage: message,
                 onCompletePromise: function () {

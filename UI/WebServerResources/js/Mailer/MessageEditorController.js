@@ -6,11 +6,12 @@
   /**
    * @ngInject
    */
-  MessageEditorController.$inject = ['$scope', '$window', '$stateParams', '$mdConstant', '$mdUtil', '$mdDialog', '$mdToast', 'FileUploader', 'stateAccount', 'stateMessage', 'onCompletePromise', 'encodeUriFilter', '$timeout', 'sgFocus', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
-  function MessageEditorController($scope, $window, $stateParams, $mdConstant, $mdUtil, $mdDialog, $mdToast, FileUploader, stateAccount, stateMessage, onCompletePromise, encodeUriFilter, $timeout, focus, Dialog, AddressBook, Card, Preferences) {
+  MessageEditorController.$inject = ['$scope', '$window', '$stateParams', '$mdConstant', '$mdUtil', '$mdDialog', '$mdToast', 'FileUploader', 'stateParent', 'stateAccount', 'stateMessage', 'onCompletePromise', 'encodeUriFilter', '$timeout', 'sgFocus', 'Dialog', 'AddressBook', 'Card', 'Preferences'];
+  function MessageEditorController($scope, $window, $stateParams, $mdConstant, $mdUtil, $mdDialog, $mdToast, FileUploader, stateParent, stateAccount, stateMessage, onCompletePromise, encodeUriFilter, $timeout, focus, Dialog, AddressBook, Card, Preferences) {
     var vm = this;
 
     this.$onInit = function() {
+      $scope.isPopup = stateParent.isPopup;
       vm.addRecipient = addRecipient;
       vm.autocomplete = {to: {}, cc: {}, bcc: {}};
       vm.autosave = null;
