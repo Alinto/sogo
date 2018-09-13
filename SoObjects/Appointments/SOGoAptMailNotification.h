@@ -1,6 +1,5 @@
 /*
-  Copyright (C) 2006-2012 Inverse inc.
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2006-2018 Inverse inc.
 
   This file is part of SOGo.
 
@@ -15,7 +14,7 @@
   License for more details.
 
   You should have received a copy of the GNU Lesser General Public
-  License along with OGo; see the file COPYING.  If not, write to the
+  License along with SOGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
@@ -29,7 +28,7 @@
 @class NSMutableDictionary;
 @class NSString;
 @class NSTimeZone;
-@class iCalEvent;
+@class iCalRepeatableEntityObject;
 @class SOGoDateFormatter;
 
 /*
@@ -38,8 +37,8 @@
  */
 @interface SOGoAptMailNotification : SoComponent
 {
-  iCalEvent *apt;
-  iCalEvent *previousApt;
+  iCalRepeatableEntityObject *apt;
+  iCalRepeatableEntityObject *previousApt;
   NSString *homePageURL;
   NSTimeZone *viewTZ;
   NSCalendarDate *oldStartDate;
@@ -53,11 +52,11 @@
 
 - (void) setupValues;
 
-- (iCalEvent *) apt;
-- (void) setApt: (iCalEvent *) theApt;
+- (iCalRepeatableEntityObject *) apt;
+- (void) setApt: (iCalRepeatableEntityObject *) theApt;
 
-- (iCalEvent *) previousApt;
-- (void) setPreviousApt: (iCalEvent *) theApt;
+- (iCalRepeatableEntityObject *) previousApt;
+- (void) setPreviousApt: (iCalRepeatableEntityObject *) theApt;
 
 - (void) setOrganizerName: (NSString *) theString;
 - (NSString *) organizerName;

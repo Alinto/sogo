@@ -125,33 +125,25 @@ static NSCharacterSet *wsSet = nil;
 - (NSString *) _formattedUserDate: (NSCalendarDate *) date
 {
   SOGoDateFormatter *formatter;
-  NSCalendarDate *tzDate;
   SOGoUser *currentUser;
 
   currentUser = [context activeUser];
-
-  tzDate = [date copy];
-  [tzDate setTimeZone: viewTZ];
-  [tzDate autorelease];
-
   formatter = [currentUser dateFormatterInContext: context];
 
-  if ([apt isAllDay])
-    return [formatter formattedDate: tzDate];
+  if ([apt isKindOfClass: [iCalEvent class]] && [(iCalEvent*)apt isAllDay])
+    return [formatter formattedDate: date];
   else
-    return [NSString stringWithFormat: @"%@, %@",
-             [formatter formattedDate: tzDate],
-             [formatter formattedTime: tzDate]];
+    return [formatter formattedDateAndTime: date];
 }
 
 - (NSString *) aptStartDate
 {
-  return [self _formattedUserDate: [apt startDate]];
+  return [self _formattedUserDate: [self newStartDate]];
 }
 
 - (NSString *) aptEndDate
 {
-  return [self _formattedUserDate: [(iCalEvent *) apt endDate]];
+  return [self _formattedUserDate: [self newEndDate]];
 }
 
 - (iCalPerson *) organizer

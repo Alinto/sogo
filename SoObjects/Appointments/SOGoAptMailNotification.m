@@ -28,7 +28,7 @@
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/iCalEvent.h>
-
+#import <NGCards/iCalToDo.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
@@ -68,22 +68,22 @@
   [super dealloc];
 }
 
-- (iCalEvent *) apt
+- (iCalRepeatableEntityObject *) apt
 {
   return apt;
 }
 
-- (void) setApt: (iCalEvent *) theApt
+- (void) setApt: (iCalRepeatableEntityObject *) theApt
 {
   ASSIGN (apt, theApt);
 }
 
-- (iCalEvent *) previousApt
+- (iCalRepeatableEntityObject *) previousApt
 {
   return previousApt;
 }
 
-- (void) setPreviousApt: (iCalEvent *) theApt
+- (void) setPreviousApt: (iCalRepeatableEntityObject *) theApt
 {
   ASSIGN (previousApt, theApt);
 }
@@ -122,7 +122,10 @@
 {
   if (!oldEndDate)
     {
-      ASSIGN (oldEndDate, [[self previousApt] endDate]);
+      if ([[self previousApt] isKindOfClass: [iCalEvent class]])
+        ASSIGN (oldEndDate, [(iCalEvent*)[self previousApt] endDate]);
+      else
+        ASSIGN (oldEndDate, [(iCalToDo*)[self previousApt] due]);
       [oldEndDate setTimeZone: viewTZ];
     }
   return oldEndDate;
@@ -132,7 +135,10 @@
 {
   if (!newEndDate)
     {
-      ASSIGN (newEndDate, [[self apt] endDate]);
+      if ([[self apt] isKindOfClass: [iCalEvent class]])
+        ASSIGN (newEndDate, [(iCalEvent*)[self apt] endDate]);
+      else
+        ASSIGN (newEndDate, [(iCalToDo*)[self apt] due]);
       [newEndDate setTimeZone: viewTZ];
     }
   return newEndDate;
@@ -191,7 +197,7 @@
 
 - (BOOL) isEndDateOnSameDay
 {
-  if ([[self apt] isAllDay])
+  if ([[self apt] isKindOfClass: [iCalEvent class]] && [(iCalEvent*)[self apt] isAllDay])
     return ([self duration] <= 86400);
 
   return [[self newStartDate] isDateOnSameDay: [self newEndDate]];
@@ -220,7 +226,7 @@
   value = [self newStartDate];
   s = @"";
   
-  if (value && ![apt isAllDay])
+  if (value && (![apt isKindOfClass: [iCalEvent class]] || ![(iCalEvent*)apt isAllDay]))
     s = [dateFormatter formattedTime: value];
 
   return s;
@@ -248,7 +254,7 @@
   value = [self newEndDate];
   s = @"";
   
-  if (value && ![apt isAllDay])
+  if (value && (![apt isKindOfClass: [iCalEvent class]] || ![(iCalEvent*)apt isAllDay]))
     s = [dateFormatter formattedTime: value];
 
   return s;

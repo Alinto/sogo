@@ -16,6 +16,7 @@ Bug fixes
  - [web] fixed synchronisation of calendar categories
  - [web] fixed popup window detection in message viewer (#4518)
  - [web] fixed behaviour of return receipt actions
+ - [core] fixed email reminders support for tasks
 
 4.0.2 (2018-08-24)
 ------------------

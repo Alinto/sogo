@@ -33,10 +33,11 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
         <th align="right" style="font-weight: bold;"><var:string label:value="startDate_label" const:escapeHTML="NO"/></th>
         <td><var:string value="aptStartDate" const:escapeHTML="NO"/></td>
       </tr>
-      <tr>
+      <var:if condition="aptEndDate"
+      ><tr>
         <th align="right" style="font-weight: bold;"><var:string label:value="endDate_label" const:escapeHTML="NO"/></th>
         <td><var:string value="aptEndDate" const:escapeHTML="NO"/></td>
-      </tr>
+      </tr></var:if>
       <var:if condition="apt.comment.length"
       ><tr>
         <th align="right" style="font-weight: bold;"><var:string label:value="comment_label" const:escapeHTML="NO"/></th>
