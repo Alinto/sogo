@@ -534,7 +534,7 @@ static Class iCalEventK = nil;
       = [self folderPropertyValueInCategory: @"FreeBusyExclusions"
 				    forUser: [SOGoUser userWithLogin: ownerInContext]];
 
-  // User has not setting for freebusy inclusion/exclusion,
+  // User has no setting for freebusy inclusion/exclusion,
   //   * include it if it's a personal folder;
   //   * exclude it if it's a subscription.
   if (!excludeFromFreeBusy)

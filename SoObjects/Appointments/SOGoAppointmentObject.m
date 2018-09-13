@@ -27,6 +27,7 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NGCalendarDateRange.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/iCalDateTime.h>
@@ -59,6 +60,7 @@
 #import "NSArray+Appointments.h"
 #import "SOGoAppointmentFolder.h"
 #import "SOGoAppointmentOccurence.h"
+#import "SOGoFreeBusyObject.h"
 
 #import "SOGoAppointmentObject.h"
 
@@ -627,6 +629,7 @@
     {
       NSCalendarDate *start, *end, *rangeStartDate, *rangeEndDate;
       SOGoAppointmentFolder *folder;
+      SOGoFreeBusyObject *fb;
       NGCalendarDateRange *range;
       NSMutableArray *fbInfo;
       NSArray *allOccurences;
@@ -642,7 +645,7 @@
       end = [[theEvent endDate] dateByAddingYears: ([theEvent isRecurrent] ? 1 : 0)  months: 0  days: 0  hours: 0  minutes: 0  seconds: -1];
           
       folder = [user personalCalendarFolderInContext: context];
-          
+
       // Deny access to the resource if the ACLs don't allow the user
       if ([user isResource] && ![folder aclSQLListingFilter])
         {
@@ -656,8 +659,9 @@
           return [NSException exceptionWithHTTPStatus:409 reason: reason];
         }
 
-      fbInfo = [NSMutableArray arrayWithArray: [folder fetchFreeBusyInfosFrom: start
-									   to: end]];
+      fb = [SOGoFreeBusyObject objectWithName: @"freebusy.ifb" inContainer: [user homeFolderInContext: context]];
+      fbInfo = [fb fetchFreeBusyInfosFrom: start to: end];
+
       //
       // We must also check here for repetitive events that don't overlap our event.
       // We remove all events that don't overlap. The events here are already
@@ -778,6 +782,7 @@
             {
               NSMutableDictionary *info;
               NSMutableArray *conflicts;
+              NSString *formattedEnd;
               id o;
 
               info = [NSMutableDictionary dictionary];
@@ -795,12 +800,19 @@
               for (i = 0; i < [fbInfo count]; i++)
                 {
                   o = [fbInfo objectAtIndex: i];
+                  end = [o objectForKey: @"endDate"];
+                  if ([[o objectForKey: @"startDate"] isDateOnSameDay: end])
+                    formattedEnd = [formatter formattedTime: end];
+                  else
+                    [formatter formattedDateAndTime: end];
+
                   [conflicts addObject: [NSDictionary dictionaryWithObjectsAndKeys: [formatter formattedDateAndTime: [o objectForKey: @"startDate"]], @"startDate",
-                                                   [formatter formattedDateAndTime: [o objectForKey: @"endDate"]], @"endDate", nil]];
+                                                      formattedEnd, @"endDate", nil]];
                 }
 
               [info setObject: conflicts  forKey: @"conflicts"];
 
+              // We immediately raise an exception, without processing the possible other attendees.
               return [NSException exceptionWithHTTPStatus: 409
                                                    reason: [info jsonRepresentation]];
             }
@@ -814,7 +826,7 @@
           [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
 	  _resourceHasAutoAccepted = YES;
         }
-    } // if ([user isResource]) ...
+    }
 
   return nil;
 }

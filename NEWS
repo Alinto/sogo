@@ -17,6 +17,7 @@ Bug fixes
  - [web] fixed popup window detection in message viewer (#4518)
  - [web] fixed behaviour of return receipt actions
  - [core] fixed email reminders support for tasks
+ - [core] fixed time conflict validation (#4539)
 
 4.0.2 (2018-08-24)
 ------------------
