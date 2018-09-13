@@ -1091,7 +1091,10 @@ andAttribute: (EOAttribute *)_attribute
 		      if (isNewRecord)
 			{
                           if ([GCSFolderManager singleStoreMode])
-                            [quickRow setObject: folderId  forKey:@"c_folder_id"];
+                            {
+                              [contentRow setObject: folderId  forKey:@"c_folder_id"];
+                              [quickRow setObject: folderId  forKey:@"c_folder_id"];
+                            }
 
 			  if (!ofFlags.sameTableForQuick)
 			    error = (hasInsertDelegate
