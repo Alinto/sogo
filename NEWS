@@ -15,6 +15,7 @@ Bug fixes
  - [web] fixed display of multi-days events when some weekdays are disabled
  - [web] fixed synchronisation of calendar categories
  - [web] fixed popup window detection in message viewer (#4518)
+ - [web] fixed behaviour of return receipt actions
 
 4.0.2 (2018-08-24)
 ------------------

@@ -131,6 +131,7 @@
         $label3 = ("Personal", "#009900");
         $label4 = ("To Do", "#3333FF");
         $label5 = ("Later", "#993399");
+        $mdnsent = ("Return Receipt Sent", "#006600");
     };
 
     SOGoCalendarCategories = (

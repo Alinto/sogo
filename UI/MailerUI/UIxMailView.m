@@ -70,6 +70,7 @@
 - (BOOL) mailIsDraft;
 - (NSNumber *) shouldAskReceipt;
 - (NSString *) formattedDate;
+- (NSString *) _matchingIdentityEMailOrDefault: (BOOL) useDefault;
 
 @end
 
@@ -422,12 +423,19 @@ static NSString *mailETag = nil;
 
 - (NSString *) _matchingIdentityEMail
 {
+  return [self _matchingIdentityEMailOrDefault: YES];
+}
+
+- (NSString *) _matchingIdentityEMailOrDefault: (BOOL) useDefault
+{
   NSMutableArray *recipients;
   NSArray *headerRecipients;
-  NSString *currentEMail;
+  NSString *currentEMail, *email;
   NGImap4EnvelopeAddress *address;
   NSInteger count, max;
   SOGoMailObject *co;
+
+  email = nil;
 
   if (!matchingIdentityEMail)
     {
@@ -453,18 +461,21 @@ static NSString *mailETag = nil;
               [matchingIdentityEMail retain];
             }
         }
-      
-      if (!matchingIdentityEMail)
-        {
-          // This can happen if we receive the message because we are
-          // in the list of bcc. In this case, we take the first
-          // identity associated with the account.
-          matchingIdentityEMail = [[[[[self clientObject] mailAccountFolder] identities] lastObject] objectForKey: @"email"];
-          RETAIN(matchingIdentityEMail);
-        }
     }
 
-  return matchingIdentityEMail;
+  if (matchingIdentityEMail)
+    {
+      email = matchingIdentityEMail;
+    }
+  else if (useDefault)
+    {
+      // This can happen if we receive the message because we are
+      // in the list of bcc. In this case, we take the first
+      // identity associated with the account.
+      email = [[[[[self clientObject] mailAccountFolder] identities] objectAtIndex: 0] objectForKey: @"email"];
+    }
+
+  return email;
 }
 
 - (NSString *) _domainFromEMail: (NSString *) email
@@ -531,7 +542,7 @@ static NSString *mailETag = nil;
   ud = [[context activeUser] userDefaults];
   if ([ud allowUserReceipt])
     {
-      if ([self _matchingIdentityEMail])
+      if ([self _matchingIdentityEMailOrDefault: NO])
         {
           if ([self _senderIsInUserDomain: headers])
             action = [ud userReceiptAnyAction];
@@ -723,7 +734,6 @@ static NSString *mailETag = nil;
               if ([action isEqualToString: @"ask"])
                 {
                   shouldAskReceipt = [NSNumber numberWithBool: YES];
-                  [self _flagMessageWithMDNSent];
                 }
               else if ([action isEqualToString: @"send"])
                 [self _sendEMailReceiptTo: email];
