@@ -684,6 +684,12 @@ andAttribute: (EOAttribute *)_attribute
   if (!sqlType)
     sqlType = [self _sqlTypeForColumn: _field
                     withFieldInfos: [folderInfo fields]];
+  if (!sqlType && [_field isEqualToString: @"c_folder_id"])
+    // The c_folder_id column used in single-store mode is not defined
+    // in the OCS files; return the definition from the c_version column
+    // which uses the same data type.
+    sqlType = [self _sqlTypeForColumn: @"c_version"
+                       withFieldInfos: [folderInfo fields]];
   if (sqlType)
     {
       attribute = AUTORELEASE([[EOAttribute alloc] init]);
