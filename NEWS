@@ -16,6 +16,7 @@ Bug fixes
  - [web] fixed synchronisation of calendar categories
  - [web] fixed popup window detection in message viewer (#4518)
  - [web] fixed behaviour of return receipt actions
+ - [web] fixed freebusy information with all-day events
  - [core] fixed email reminders support for tasks
  - [core] fixed time conflict validation (#4539)
 

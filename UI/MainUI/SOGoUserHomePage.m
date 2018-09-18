@@ -196,6 +196,8 @@
                   // User is busy for this event
                   currentStartDate = [record objectForKey: @"startDate"];
                   currentEndDate = [record objectForKey: @"endDate"];
+                  if ([currentStartDate earlierDate: startDate] == currentStartDate)
+                    currentStartDate = startDate;
                   dayKey = [currentStartDate shortDateString];
                   dayData = [freeBusy objectForKey: dayKey];
                   if (!dayData)
@@ -203,8 +205,6 @@
                       dayData = [NSMutableDictionary dictionary];
                       [freeBusy setObject: dayData forKey: dayKey];
                     }
-                  if ([currentStartDate earlierDate: startDate] == currentStartDate)
-                    currentStartDate = startDate;
 
                   currentDate = [NSCalendarDate dateWithYear: [currentStartDate yearOfCommonEra]
                                                        month: [currentStartDate monthOfYear]
