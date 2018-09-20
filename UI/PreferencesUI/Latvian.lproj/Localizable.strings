@@ -240,7 +240,7 @@
 "Add Contact Category" = "Pievienot kontaktpersonu kategorijas";
 "Remove Contact Category" = "Noņemt kontaktpersonu kategorijas";
 "category_none" = "Neviens";
-"calendar_category_labels" = "Gadadienas, Dzimšanas dienas, Bizness, Zvani, Klienti, Konkurence,  Izlase, Sekošana, Dāvanas, Brīvdienas, Idejas, Sapulces, Jautājumi, Dažādi, Personīgi, Projekti, Valsts svētki, Statusi, Piegādātāji, Ceļojumi, Atvaļinājumi";
+"calendar_category_labels" = "Gadadienas,Dzimšanas dienas,Bizness,Zvani,Klienti,Konkurence,Klients,Izlase,Sekošana,Dāvanas,Brīvdienas,Idejas,Sapulces,Jautājumi,Dažādi,Personīgi,Projekti,Valsts svētki,Statusi,Piegādātāji,Ceļojumi,Atvaļinājumi";
 
 /* Default module */
 "Calendar" = "Kalendārs";
