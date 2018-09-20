@@ -242,7 +242,7 @@
 "Add Contact Category" = "Pridať kategóriu kontaktov";
 "Remove Contact Category" = "Odstrániť kategóriu kontaktov";
 "category_none" = "Žiadne";
-"calendar_category_labels" = "Výročia,Narodeniny,Obchod,Hovory,Zákazníci,Konkurencia,Obľúbene,Sledovať,Darčeky,Prázdniny,Nápady,Stretnutia,Probléma,Rôzne,Osobné,Projekty,Štátne sviatky,Stav,Dodávatelia,Cestovanie,Dovolenka";
+"calendar_category_labels" = "Výročia,Narodeniny,Obchod,Hovory,Zákazníci,Konkurencia,Klient,Obľúbene,Sledovať,Darčeky,Prázdniny,Nápady,Stretnutia,Probléma,Rôzne,Osobné,Projekty,Štátne sviatky,Stav,Dodávatelia,Cestovanie,Dovolenka";
 
 /* Default module */
 "Calendar" = "Kalendár";
