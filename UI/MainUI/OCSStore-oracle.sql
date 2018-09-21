@@ -12,4 +12,4 @@ CREATE TABLE @{tableName} (
 	c_version INT NOT NULL,
 	c_deleted INT NULL,
 	CONSTRAINT @{tableName}_pkey PRIMARY KEY (c_folder_id, c_name)
-);
+)
