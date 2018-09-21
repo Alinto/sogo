@@ -52,6 +52,7 @@
 }
 
 + (id)folderTypeWithName:(NSString *)_type;
++ (id)folderTypeWithName:(NSString *)_type  driver:(NSString *)_driver;
 
 - (id)initWithPropertyList:(id)_plist;
 - (id)initWithContentsOfFile:(NSString *)_path;

@@ -38,14 +38,26 @@
 
 @implementation GCSFolderType
 
-+ (id) folderTypeWithName: (NSString *) _typeName
++ (id)folderTypeWithName:(NSString *)_typeName  driver:(NSString *)_driver
 {
   NSString *filename, *path;
   GCSFolderType *folderType;
 
+  filename = nil;
+
   // TODO: fix me, GCS instead of OCS
-  filename = [_typeName stringByAppendingPathExtension:@"ocs"];
-  path = [[self resourceLocator] lookupFileWithName: filename];
+  if (_driver)
+    {
+      filename = [NSString stringWithFormat: @"%@-%@.ocs", _typeName, _driver];
+      if (!(path = [[self resourceLocator] lookupFileWithName: filename]))
+        filename =  nil;
+    }
+
+  if (!filename)
+    {
+      filename = [_typeName stringByAppendingPathExtension:@"ocs"];
+      path = [[self resourceLocator] lookupFileWithName: filename];
+    }
  
   if (path)
     {
@@ -60,6 +72,12 @@
     }
 
   return folderType;
+}
+
+
++ (id) folderTypeWithName: (NSString *) _typeName
+{
+  return [self folderTypeWithName: _typeName  driver: nil];
 }
 
 - (id) initWithPropertyList: (id) _plist

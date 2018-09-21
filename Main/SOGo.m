@@ -172,10 +172,9 @@ static BOOL debugLeaks;
   bundle = [bm bundleWithName: @"MainUI" type: @"SOGo"];
   length = [tableType length] - 3;
   tableFile = [tableType substringToIndex: length];
-  descFile
-    = [bundle pathForResource: [NSString stringWithFormat: @"%@-%@",
-					 tableFile, fileSuffix]
-	      ofType: @"sql"];
+  descFile = [bundle pathForResource: [NSString stringWithFormat: @"%@-%@",
+                                                tableFile, fileSuffix]
+                              ofType: @"sql"];
   if (!descFile)
     descFile = [bundle pathForResource: tableFile ofType: @"sql"];
 
@@ -224,24 +223,22 @@ static BOOL debugLeaks;
                                withCm: (GCSChannelManager *) cm
                              tableURL: (NSString *) url
 {
+  NSString *tableName, *sql, *driver;
   EOAdaptorChannel *channel;
-  NSString *tableName, *sql;
   GCSFolderType *type;
   NSException *ex;
 
   channel = [cm acquireOpenChannelForURL: [NSURL URLWithString: url]];
 
   tableName = [NSString stringWithFormat: @"sogo_quick_%@", typeName];
+  driver = [url substringToIndex: [url rangeOfString: @":"].location];
   sql = [NSString stringWithFormat: @"SELECT count(*) FROM %@",
                   tableName];
   if ([channel evaluateExpressionX: sql])
     {
-      type = [GCSFolderType folderTypeWithName: typeName];
+      type = [GCSFolderType folderTypeWithName: typeName  driver: driver];
       if (type)
         {
-          // We re-acquire the channel in case it was abruptly closed between statements
-          if (![channel isOpen])
-            channel = [cm acquireOpenChannelForURL: [NSURL URLWithString: url]];
           sql = [type sqlQuickCreateWithTableName: tableName];
           if (!(ex = [channel evaluateExpressionX: sql]))
             [self logWithFormat: @"sogo quick table '%@' successfully created!",

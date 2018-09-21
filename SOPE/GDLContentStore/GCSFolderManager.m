@@ -190,7 +190,7 @@ static BOOL       _singleStoreMode           = NO;
   return fm;
 }
 
-- (NSDictionary *) loadDefaultFolderTypes
+- (NSDictionary *) loadDefaultFolderTypes: (NSString *) driver
 {
   NSMutableDictionary *typeMap;
   NSArray  *types;
@@ -212,7 +212,15 @@ static BOOL       _singleStoreMode           = NO;
     GCSFolderType *typeObject;
     
     type       = [[types objectAtIndex:i] stringByDeletingPathExtension];
-    typeObject = [GCSFolderType folderTypeWithName: type];
+
+    // We skip type files associated to drivers directly, since
+    // [GCSFolderType folderTypeWithName:driver] will handle the
+    // mojo directly
+    if ([type rangeOfString: [NSString stringWithFormat: @"-%@", driver]].length)
+      continue;
+
+    typeObject = [GCSFolderType folderTypeWithName: type
+                                            driver: driver];
     
     [self debugWithFormat:@"  %@: %s", 
 	  type, [typeObject isNotNull] ? "OK" : "FAIL"];
@@ -302,7 +310,7 @@ static BOOL       _singleStoreMode           = NO;
     }
     
     /* register default folder types */
-    nameToType = [[self loadDefaultFolderTypes] copy];
+    nameToType = [[self loadDefaultFolderTypes: [_infoUrl scheme]] copy];
   }
   return self;
 }
