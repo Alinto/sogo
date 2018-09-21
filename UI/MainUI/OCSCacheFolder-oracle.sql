@@ -9,8 +9,8 @@ CREATE TABLE @{tableName} (
         c_type SMALLINT NOT NULL,
         c_creationdate INT NOT NULL,
         c_lastmodified INT NOT NULL,
-        c_version INT NOT NULL DEFAULT 0,
-        c_deleted SMALLINT NOT NULL DEFAULT 0,
+        c_version INT DEFAULT 0 NOT NULL,
+        c_deleted INT DEFAULT 0 NOT NULL,
         c_content CLOB,
         CONSTRAINT @{tableName}_pkey PRIMARY KEY (c_uid, c_path)
-);
+)
