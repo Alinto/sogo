@@ -5,6 +5,7 @@ Enhancements
  - [web] prohibit subscribing a user with no rights
  - [web] new button to mark a task as completed (#4531)
  - [web] new button to reset Calendar categories to defaults
+ - [web] moved the unseen messages count to the beginning of the window's title (#4553)
 
 Bug fixes
  - [web] include mail account name in form validation (#4532)
@@ -17,6 +18,7 @@ Bug fixes
  - [web] fixed popup window detection in message viewer (#4518)
  - [web] fixed behaviour of return receipt actions
  - [web] fixed freebusy information with all-day events
+ - [web] fixed support for SOGoMaximumMessageSizeLimit
  - [core] fixed email reminders support for tasks
  - [core] fixed time conflict validation (#4539)
 

@@ -46,10 +46,11 @@
 
       // Update window's title with unseen messages count of selected mailbox
       $scope.$watch(function() { return vm.selectedFolder.unseenCount; }, function(unseenCount) {
-        var title = defaultWindowTitle + ' - ';
+        var title = '';
         if (unseenCount)
           title += '(' + unseenCount + ') ';
         title += vm.selectedFolder.$displayName;
+        title += ' | ' + defaultWindowTitle;
         $window.document.title = title;
       });
     };
