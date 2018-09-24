@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  ComponentController.$inject = ['$rootScope', '$q', '$mdDialog', 'Calendar', 'Component', 'AddressBook', 'Alarm', 'Account', 'stateComponent'];
-  function ComponentController($rootScope, $q, $mdDialog, Calendar, Component, AddressBook, Alarm, Account, stateComponent) {
+  ComponentController.$inject = ['$rootScope', '$scope', '$q', '$mdDialog', 'Calendar', 'Component', 'AddressBook', 'Alarm', 'Account', 'stateComponent'];
+  function ComponentController($rootScope, $scope, $q, $mdDialog, Calendar, Component, AddressBook, Alarm, Account, stateComponent) {
     var vm = this, component;
 
     this.$onInit = function () {
@@ -70,6 +70,7 @@
                 return onCompleteDeferred.resolve(element);
               },
               locals: {
+                stateParent: $scope,
                 stateAccount: account,
                 stateMessage: message,
                 onCompletePromise: function () {
@@ -367,7 +368,7 @@
                 _.isObject(response.data.message))
               vm.attendeeConflictError = response.data.message;
             else
-              edit(form);
+              vm.edit(form);
           });
       }
     };
@@ -386,11 +387,11 @@
       $mdDialog.hide();
     };
 
-    function edit(form) {
-      vm.attendeeConflictError = false;
+    this.edit = function (form) {
+      this.attendeeConflictError = false;
       form.$setPristine();
       form.$setDirty();
-    }
+    };
 
     function getDays() {
       var days = [];

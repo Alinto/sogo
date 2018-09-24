@@ -359,6 +359,7 @@
                 return onCompleteDeferred.resolve(element);
               },
               locals: {
+                stateParent: $scope,
                 stateAccount: account,
                 stateMessage: message,
                 onCompletePromise: function () {
