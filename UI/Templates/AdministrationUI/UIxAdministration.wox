@@ -79,42 +79,44 @@
           <md-subheader ng-hide="app.service.$query">
             <var:string label:value="Start a search to edit the rights"/>
           </md-subheader>
-          <md-list class="sg-section-list">
-            <div ng-repeat="user in app.users">
-              <md-list-item ng-class="{ 'sg-collapsed': user.uid != app.selectedUser.uid,
-                                      'sg-expanded': user.uid == app.selectedUser.uid }"
-                            ng-click="app.selectUser($index)"
-                            aria-label="{{::user.c_email}}">
-                <sg-avatar-image class="md-avatar"
-                                 sg-email="::user.c_email"
-                                 size="40">{{::user.$avatarIcon}}</sg-avatar-image>
-                <div class="sg-tile-content">
-                  <div class="sg-md-subhead">
-                    <div>{{::user.cn}}</div>
+          <md-virtual-repeat-container class="md-flex">
+            <md-list class="sg-section-list">
+              <div ng-repeat="user in app.users">
+                <md-list-item ng-class="{ 'sg-collapsed': user.uid != app.selectedUser.uid,
+                                        'sg-expanded': user.uid == app.selectedUser.uid }"
+                              ng-click="app.selectUser($index)"
+                              aria-label="{{::user.c_email}}">
+                  <sg-avatar-image class="md-avatar"
+                                   sg-email="::user.c_email"
+                                   size="40">{{::user.$avatarIcon}}</sg-avatar-image>
+                  <div class="sg-tile-content">
+                    <div class="sg-md-subhead">
+                      <div>{{::user.cn}}</div>
+                    </div>
+                    <div class="sg-md-body">
+                      <div>{{::user.c_email}}</div>
+                    </div>
                   </div>
-                  <div class="sg-md-body">
-                    <div>{{::user.c_email}}</div>
-                  </div>
-                </div>
-                <md-button class="md-icon-button"><md-icon ng-class="{'md-rotate-180': user.uid == app.selectedUser.uid}">expand_more</md-icon></md-button>
-              </md-list-item>
-              <div ng-show="user == app.selectedUser">
-                <!-- folders list -->
-                <md-list-item ng-show="user.$$folders.length == 0">
-                  <md-icon>warning</md-icon>
-                  <var:string label:value="No resource"/>
+                  <md-button class="md-icon-button"><md-icon ng-class="{'md-rotate-180': user.uid == app.selectedUser.uid}">expand_more</md-icon></md-button>
                 </md-list-item>
-                <md-list-item class="sg-folder" ng-repeat="folder in user.$$folders"
-                             aria-label="{{::folder.displayName}}" title="{{::folder.displayName}}"
-                             ng-click="app.selectFolder(folder)">
+                <div ng-show="user == app.selectedUser">
+                  <!-- folders list -->
+                  <md-list-item ng-show="user.$$folders.length == 0">
+                    <md-icon>warning</md-icon>
+                    <var:string label:value="No resource"/>
+                  </md-list-item>
+                  <md-list-item class="sg-folder" ng-repeat="folder in user.$$folders"
+                                aria-label="{{::folder.displayName}}" title="{{::folder.displayName}}"
+                                ng-click="app.selectFolder(folder)">
                     <md-icon ng-class="{ 'icon-contacts': folder.type == 'Contact',
                                        'icon-event': folder.type == 'Appointment' }"><!--icon--></md-icon>
                     <span class="sg-no-wrap" ng-bind="::folder.displayName"><!-- folder name --></span>
-                </md-list-item>
-                <md-divider><!-- divider --></md-divider>
+                  </md-list-item>
+                  <md-divider><!-- divider --></md-divider>
+                </div>
               </div>
-            </div>
-          </md-list>
+            </md-list>
+          </md-virtual-repeat-container>
         </md-content>
       </div>
 

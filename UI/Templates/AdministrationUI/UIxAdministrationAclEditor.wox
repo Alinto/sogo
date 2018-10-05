@@ -6,119 +6,121 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-  <div layout-fill="layout-fill" layout="column" class="sg-reversible">
-    <md-card>
-      <md-toolbar class="hide show-xs" flex-none="flex-none">
-        <div class="md-toolbar-tools">
-          <md-button class="sg-icon-button"
-                     label:aria-label="Close"
-                     ng-click="acl.close()">
-            <md-icon>close</md-icon>
-          </md-button>
-          <div class="md-flex"><!-- spacer --></div>
-          <md-button class="md-icon-button"
+  <div class="sg-reversible">
+    <div class="sg-face" layout="column" layout-fill="layout-fill">
+      <md-card>
+        <md-toolbar class="hide show-xs" flex-none="flex-none">
+          <div class="md-toolbar-tools">
+            <md-button class="sg-icon-button"
+                       label:aria-label="Close"
+                       ng-click="acl.close()">
+              <md-icon>close</md-icon>
+            </md-button>
+            <div class="md-flex"><!-- spacer --></div>
+            <md-button class="md-icon-button"
+                       ng-click="acl.save()">
+              <md-icon>save</md-icon>
+            </md-button>
+          </div>
+        </md-toolbar>
+        <md-toolbar flex-none="flex-none">
+          <div layout="row">
+            <sg-avatar-image class="md-tile-left"
+                             sg-email="::acl.user.c_email"
+                             size="40">{{acl.user.$avatarIcon}}</sg-avatar-image>
+            <div class="msg-header-content">
+              <div ng-class="{ 'sg-md-display-2--thin': isGtMedium,
+                             'sg-md-title': !isGtMedium }">{{::acl.user.cn}}</div>
+              <div class="md-truncate sg-md-display-2-subheader"><md-icon ng-class="{ 'icon-contacts': acl.folderType == 'AddressBook',
+                                                                                    'icon-event': acl.folderType == 'Calendar' }"><!--icon--></md-icon>
+              {{::acl.folder.name}}
+              </div>
+            </div>
+          </div>
+          <!-- only show the fab button on large screens -->
+          <md-button type="button" class="hide-xs md-fab md-fab-bottom-right md-fab-overlap-bottom"
                      ng-click="acl.save()">
             <md-icon>save</md-icon>
           </md-button>
-        </div>
-      </md-toolbar>
-      <md-toolbar flex-none="flex-none">
-        <div layout="row">
-          <sg-avatar-image class="md-tile-left"
-                           sg-email="::acl.user.c_email"
-                           size="40">{{acl.user.$avatarIcon}}</sg-avatar-image>
-          <div class="msg-header-content">
-            <div ng-class="{ 'sg-md-display-2--thin': isGtMedium,
-                            'sg-md-title': !isGtMedium }">{{::acl.user.cn}}</div>
-            <div class="md-truncate sg-md-display-2-subheader"><md-icon ng-class="{ 'icon-contacts': acl.folderType == 'AddressBook',
-                                                                       'icon-event': acl.folderType == 'Calendar' }"><!--icon--></md-icon>
-            {{::acl.folder.name}}
-            </div>
+        </md-toolbar>
+        <md-card-content>
+          <div layout="row">
+            <md-icon>search</md-icon>
+            <md-autocomplete
+                class="md-flex sg-input-no-message"
+                md-input-name="addUser"
+                md-search-text="acl.searchText"
+                md-selected-item="acl.userToAdd"
+                md-selected-item-change="acl.addUser(user)"
+                md-items="user in acl.userFilter(acl.searchText)"
+                md-item-text="user.empty"
+                md-min-length="3"
+                md-delay="300"
+                md-no-cache="true"
+                label:md-floating-label="Add User">
+              <md-item-template>
+                <span class="md-contact-suggestion">
+                  <span class="md-contact-name"
+                        md-highlight-text="acl.searchText"
+                        md-highlight-flags="^i">{{ user.$fullname() }}</span>
+                  <span class="md-contact-email"
+                        md-highlight-text="acl.searchText"
+                        md-highlight-flags="^i">{{user.c_email}}</span>
+                </span>
+              </md-item-template>
+            </md-autocomplete>
           </div>
-        </div>
-        <!-- only show the fab button on large screens -->
-        <md-button type="button" class="hide-xs md-fab md-fab-bottom-right md-fab-overlap-bottom"
-                   ng-click="acl.save()">
-          <md-icon>save</md-icon>
-        </md-button>
-      </md-toolbar>
-      <md-card-content>
-        <div layout="row">
-          <md-icon>search</md-icon>
-          <md-autocomplete
-              class="md-flex sg-input-no-message"
-              md-input-name="addUser"
-              md-search-text="acl.searchText"
-              md-selected-item="acl.userToAdd"
-              md-selected-item-change="acl.addUser(user)"
-              md-items="user in acl.userFilter(acl.searchText)"
-              md-item-text="user.empty"
-              md-min-length="3"
-              md-delay="300"
-              md-no-cache="true"
-              label:md-floating-label="Add User">
-            <md-item-template>
-              <span class="md-contact-suggestion">
-                <span class="md-contact-name"
-                      md-highlight-text="acl.searchText"
-                      md-highlight-flags="^i">{{ user.$fullname() }}</span>
-                <span class="md-contact-email"
-                      md-highlight-text="acl.searchText"
-                      md-highlight-flags="^i">{{user.c_email}}</span>
-              </span>
-            </md-item-template>
-          </md-autocomplete>
-        </div>
-        <md-card ng-repeat="user in acl.users track by user.uid | orderBy:['userClass', 'displayName']"
-                 class="sg-collapsed"
-                 ng-class="{ 'sg-expanded': user.uid == acl.selectedUid }">
-          <a class="md-flex md-button" ng-click="acl.selectUser(user, $event)">
-            <div layout="row" layout-align="start center">
-              <span class="card-picture">
-                <sg-avatar-image class="md-avatar"
-                                 sg-email="user.c_email"
-                                 size="40">{{ user.$avatarIcon }}</sg-avatar-image>
-              </span>
-              <div class="sg-tile-content">
-                <div class="sg-md-subhead"><div>{{user.$fullname()}}</div></div>
-                <div class="sg-md-body"><div>{{user.c_email}}</div></div>
+          <md-card ng-repeat="user in acl.users track by user.uid | orderBy:['userClass', 'displayName']"
+                   class="sg-collapsed"
+                   ng-class="{ 'sg-expanded': user.uid == acl.selectedUid }">
+            <a class="md-flex md-button" ng-click="acl.selectUser(user, $event)">
+              <div layout="row" layout-align="start center">
+                <span class="card-picture">
+                  <sg-avatar-image class="md-avatar"
+                                   sg-email="user.c_email"
+                                   size="40">{{ user.$avatarIcon }}</sg-avatar-image>
+                </span>
+                <div class="sg-tile-content">
+                  <div class="sg-md-subhead"><div>{{user.$fullname()}}</div></div>
+                  <div class="sg-md-body"><div>{{user.c_email}}</div></div>
+                </div>
+	        <md-button class="md-icon-button md-secondary" type="button"
+                           ng-click="acl.selectAllRights(user)"
+                           ng-hide="!acl.showRights(user) || user.$isSpecial()">
+                  <md-icon>select_all</md-icon>
+                </md-button>
+                <md-button class="md-icon-button" type="button"
+                           ng-click="acl.removeUser(user)"
+                           ng-hide="user.uid != acl.selectedUid || user.$isSpecial()">
+                  <md-icon>delete</md-icon>
+                </md-button>
               </div>
-	      <md-button class="md-icon-button md-secondary" type="button"
-                         ng-click="acl.selectAllRights(user)"
-                         ng-hide="!acl.showRights(user) || user.$isSpecial()">
-                <md-icon>select_all</md-icon>
-              </md-button>
-              <md-button class="md-icon-button" type="button"
-                         ng-click="acl.removeUser(user)"
-                         ng-hide="user.uid != acl.selectedUid || user.$isSpecial()">
-                <md-icon>delete</md-icon>
-              </md-button>
-            </div>
-          </a>
-          <md-card-content id="AccessRightList" ng-show="acl.showRights(user)">
-            <var:if condition="canSubscribeUsers">
-              <md-checkbox ng-model="user.isSubscribed"
-                           label:arial-label="Subscribe User"
-                           ng-disabled="user.wasSubscribed"
-                           ng-true-value="1"
-                           ng-false-value="0"
-                           ng-hide="user.$isSpecial()">
-                <var:string label:value="Subscribe User"/>
-              </md-checkbox>
-            </var:if>
-            <div ng-include="acl.getTemplate()"></div>
+            </a>
+            <md-card-content id="AccessRightList" ng-show="acl.showRights(user)">
+              <var:if condition="canSubscribeUsers">
+                <md-checkbox ng-model="user.isSubscribed"
+                             label:arial-label="Subscribe User"
+                             ng-disabled="user.wasSubscribed"
+                             ng-true-value="1"
+                             ng-false-value="0"
+                             ng-hide="user.$isSpecial()">
+                  <var:string label:value="Subscribe User"/>
+                </md-checkbox>
+              </var:if>
+              <div ng-include="acl.getTemplate()"></div>
 
-            <!-- <script type="text/ng-template" id="UIxContactsUserRightsEditor">
-                 <var:component className="UIxContactsUserRightsEditor" />
-                 </script>
+              <!-- <script type="text/ng-template" id="UIxContactsUserRightsEditor">
+                   <var:component className="UIxContactsUserRightsEditor" />
+                   </script>
 
 <script type="text/ng-template" id="UIxCalUserRightsEditor">
 <var:component className="UIxCalUserRightsEditor" />
 </script> -->
 
-          </md-card-content>
-        </md-card>
-      </md-card-content>
-    </md-card>
+            </md-card-content>
+          </md-card>
+        </md-card-content>
+      </md-card>
+    </div>
   </div>
 </container>
