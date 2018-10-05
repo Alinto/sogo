@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.7.4
+ * @license AngularJS v1.7.5
  * (c) 2010-2018 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -4249,7 +4249,7 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
   isFunction  = angular.isFunction;
   isElement   = angular.isElement;
 })
-  .info({ angularVersion: '1.7.4' })
+  .info({ angularVersion: '1.7.5' })
   .directive('ngAnimateSwap', ngAnimateSwapDirective)
 
   .directive('ngAnimateChildren', $$AnimateChildrenDirective)
