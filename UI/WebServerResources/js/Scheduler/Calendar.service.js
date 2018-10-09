@@ -554,14 +554,26 @@
    * @returns a promise of the HTTP operation
    */
   Calendar.prototype.export = function() {
-    var options;
+    var options, resource, ownerPaths, realOwnerId, path, index;
 
     options = {
       type: 'application/octet-stream',
       filename: this.name + '.ics'
     };
 
-    return Calendar.$$resource.open(this.id + '.ics', 'export', null, options);
+    if (this.isSubscription) {
+      index = this.urls.webDavICSURL.indexOf('/dav/');
+      ownerPaths = this.urls.webDavICSURL.substring(index + 5).split(/\//);
+      realOwnerId = ownerPaths[0];
+      resource = Calendar.$$resource.userResource(realOwnerId);
+      path = ownerPaths.splice(ownerPaths.length - 2).join('/');
+    }
+    else {
+      resource = Calendar.$$resource;
+      path = this.id + '.ics';
+    }
+
+    return resource.open(path, 'export', null, options);
   };
 
   /**

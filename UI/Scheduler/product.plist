@@ -226,7 +226,7 @@
     SOGoAppointmentFolderICS = {
       methods = {
         export = {
-          protectedBy = "View";
+          protectedBy = "Access Contents Information";
           actionClass = "UIxCalFolderActions";
           actionName  = "export";
         };

@@ -487,7 +487,7 @@
                ng-show="list.component.$isLoading()">
             <md-progress-circular class="md-accent"
                                   md-mode="indeterminate"
-                                  md-diameter="32"><!-- mailbox loading progress --></md-progress-circular>
+                                  md-diameter="32"><!-- components loading progress --></md-progress-circular>
           </div>
         </div>
 
@@ -572,7 +572,7 @@
             <var:string label:value="Import"/>
           </md-button>
         </md-menu-item>
-        <md-menu-item ng-hide="::($menuCtrl.calendar.isSubscription || $menuCtrl.calendar.isWebCalendar)">
+        <md-menu-item ng-hide="::$menuCtrl.calendar.isWebCalendar">
           <md-button ng-click="$menuCtrl.calendar.export()">
             <var:string label:value="Export"/>
           </md-button>
