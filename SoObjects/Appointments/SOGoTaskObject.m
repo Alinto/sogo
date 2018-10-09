@@ -118,6 +118,15 @@
 
   rq = [_ctx request];
   rqCalendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
+
+  // We are unable to parse the received calendar, we return right away
+  // with a 400 error code.
+  if (!rqCalendar)
+    {
+      return [NSException exceptionWithHTTPStatus: 400
+                                           reason: @"Unable to parse task."];
+    }
+
   [self adjustClassificationInRequestCalendar: rqCalendar];
   [rq setContent: [[rqCalendar versitString] dataUsingEncoding: [rq contentEncoding]]];
 
