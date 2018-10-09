@@ -329,6 +329,7 @@
   <md-fab-speed-dial
       class="md-scale sg-fab-bottom-center"
       ng-if="::!mailbox.composeWindowEnabled()"
+      ng-show="!mailbox.selectedFolder.hasSelectedMessage() || isGtMedium"
       ng-cloak="ng-cloak"
       ng-class="{ 'sg-sidenav-close': leftIsClose, 'sg-center-close': mailbox.centerIsClose(centerIsClose) }"
       md-direction="up">
@@ -355,6 +356,7 @@
       class="md-fab md-accent sg-fab-bottom-center"
       var:aria-label="Write a new message"
       ng-if="::mailbox.composeWindowEnabled()"
+      ng-show="!mailbox.selectedFolder.hasSelectedMessage() || isGtMedium"
       ng-class="{ 'sg-sidenav-close': leftIsClose, 'sg-center-close': mailbox.centerIsClose(centerIsClose) }"
       ng-click="mailbox.newMessage($event)">
     <md-tooltip md-direction="left"><var:string label:value="Write a new message"/></md-tooltip>
