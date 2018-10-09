@@ -437,6 +437,8 @@ validate_untilbeforeend    = "Повторение должно заканчив
 = "Вы не можете удалить персональный календарь, равно как и выключить подписку на него.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Вы уверены что хотите удалить календарь \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Вы уверены, что вы хотите удалить выбранные компоненты?";
 
 /* Legend */
 "Participant" = "Участник";

@@ -124,6 +124,8 @@
 "Prevent from being invited to appointments" = "Не допускать приглашения на встречи";
 "White list for appointment invitations" = "Белый список для приглашений на встречи";
 "Contacts Names" = "Имена контактов";
+"Duplicate name" = "Дублировать имя";
+"Calendar categories must have unique names." = "Имена категорий календаря должны быть уникальными.";
 
 /* Default Calendar */
 "Default calendar" = "Календарь по умолчанию";
