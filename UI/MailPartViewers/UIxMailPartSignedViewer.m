@@ -169,11 +169,20 @@
 
       if (err)
         {
-          ERR_load_crypto_strings();
+#ifdef HAVE_GNUTLS
+	  ERR_load_crypto_strings();
           SSL_load_error_strings();
           sslError = ERR_reason_error_string(err);
           validationMessage = [[self labelForKey: [NSString stringWithUTF8String: sslError ? sslError : "(no error information available)"]] retain];
-        }
+#elseif OPENSSL_VERSION_NUMBER < 0x10100000L
+	  ERR_load_crypto_strings();
+          SSL_load_error_strings();
+          sslError = ERR_reason_error_string(err);
+          validationMessage = [[self labelForKey: [NSString stringWithUTF8String: sslError ? sslError]] retain];
+#else
+	  validationMessage = [[self labelForKey: [NSString stringWithUTF8String: sslError ? sslError]] retain];
+#endif /* HAVE_GNUTLS */
+      }
     }
 
   
