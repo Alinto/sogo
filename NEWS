@@ -8,6 +8,7 @@ Enhancements
  - [web] moved the unseen messages count to the beginning of the window's title (#4553)
  - [web] allow export of calendars subscriptions (#4560)
  - [web] hide compose button when reading message on mobile device
+ - [web] updated Angular to version 1.7.5
  - [web] updated CKEditor to version 4.10.1
 
 Bug fixes
