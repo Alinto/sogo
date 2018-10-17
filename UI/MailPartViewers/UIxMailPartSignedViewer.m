@@ -93,7 +93,6 @@
   STACK_OF(X509) *certs;
   X509_STORE *x509Store;
   BIO *msgBio, *inData;
-  const char* sslError;
   PKCS7 *p7;
   int err, i;
  
@@ -170,17 +169,19 @@
       if (err)
         {
 #ifdef HAVE_GNUTLS
+          const char* sslError;
 	  ERR_load_crypto_strings();
           SSL_load_error_strings();
           sslError = ERR_reason_error_string(err);
-          validationMessage = [[self labelForKey: [NSString stringWithUTF8String: sslError ? sslError : "(no error information available)"]] retain];
+          validationMessage = [[self labelForKey: [NSString stringWithUTF8String: sslError ? sslError : @"No error information available"]] retain];
 #elseif OPENSSL_VERSION_NUMBER < 0x10100000L
+          const char* sslError;
 	  ERR_load_crypto_strings();
           SSL_load_error_strings();
           sslError = ERR_reason_error_string(err);
-          validationMessage = [[self labelForKey: [NSString stringWithUTF8String: sslError ? sslError]] retain];
+          validationMessage = [[self labelForKey: [NSString stringWithUTF8String: sslError ? sslError : @"No error information available"]] retain];
 #else
-	  validationMessage = [[self labelForKey: [NSString stringWithUTF8String: sslError ? sslError]] retain];
+	  validationMessage = [[self labelForKey: @"No error information available"] retain];
 #endif /* HAVE_GNUTLS */
       }
     }
