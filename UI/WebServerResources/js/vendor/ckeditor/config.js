@@ -5,7 +5,7 @@
 
 CKEDITOR.editorConfig = function( config ) {
   // For the complete reference:
-  // http://docs.ckeditor.com/#!/api/CKEDITOR.config
+  // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html
   config.toolbarGroups = [
     { name: 'basicstyles', groups: [ 'basicstyles' ] },
     { name: 'colors' },
@@ -25,21 +25,21 @@ CKEDITOR.editorConfig = function( config ) {
   config.entities = false;
 
   // Configure autogrow
-  // http://docs.ckeditor.com/#!/guide/dev_autogrow
+  // https://ckeditor.com/docs/ckeditor4/latest/guide/dev_autogrow.html
   config.autoGrow_onStartup = true;
   config.autoGrow_minHeight = 300;
   config.autoGrow_bottomSpace = 0;
 
   // Disables the built-in words spell checker if browser provides one. Defaults to true.
-  // http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-disableNativeSpellChecker
+  // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-disableNativeSpellChecker
   //config.disableNativeSpellChecker = false;
 
   // Whether to show the browser native context menu when the Ctrl or Meta (Mac) key is pressed on opening the context
   // menu with the right mouse button click or the Menu key. Defaults to true.
-  // http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-browserContextMenuOnCtrl
+  // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-browserContextMenuOnCtrl
   //config.browserContextMenuOnCtrl = false;
 
   // If enabled, turns on SCAYT automatically after loading the editor. Defaults to false.
-  // http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-scayt_autoStartup
+  // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-scayt_autoStartup
   //config.scayt_autoStartup = true;
 };
