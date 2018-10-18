@@ -1223,8 +1223,14 @@ static NSArray *reminderValues = nil;
 
   labels = [[self labelForKey: @"calendar_category_labels"] componentsSeparatedByString: @","];
   colors = [[[SOGoSystemDefaults sharedSystemDefaults] calendarCategoriesColors] allValues];
+
+  if ([colors count] > [labels count])
+    {
+      [self errorWithFormat: @"Incomplete calendar_category_labels for translation %@", [[user userDefaults] language]];
+    }
+
   defaultCategoriesColors = [NSMutableDictionary dictionary];
-  for (i = 0; i < [colors count]; i++)
+  for (i = 0; i < [colors count] && i < [labels count]; i++)
     {
       [defaultCategoriesColors setObject: [colors objectAtIndex: i]
                                   forKey: [labels objectAtIndex: i]];

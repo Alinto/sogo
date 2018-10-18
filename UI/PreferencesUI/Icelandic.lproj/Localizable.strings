@@ -48,12 +48,8 @@
 "shortDateFmt_7" = "%m/%d/%y";
 "shortDateFmt_8" = "%m/%e/%y";
 "shortDateFmt_9" = "%y.%m.%d";
-"shortDateFmt_10" = "%y.%m.%d";
-"shortDateFmt_11" = "%y.%m.%d";
-"shortDateFmt_12" = "%Y.%m.%d";
-"shortDateFmt_13" = "%Y.%m.%d";
-"shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
+"shortDateFmt_10" = "%Y.%m.%d";
+"shortDateFmt_11" = "";
    
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
