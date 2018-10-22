@@ -1,3 +1,9 @@
+4.X.Y (2018-MM-DD)
+------------------
+
+Bug fixes
+ - [web] fixed time conflict validation when not the owner
+
 4.0.3 (2018-10-17)
 ------------------
 

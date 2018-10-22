@@ -718,6 +718,7 @@
         }
 
       // Find the attendee associated to the current UID
+      currentAttendee = nil;
       for (i = 0; i < [theAttendees count]; i++)
         {
           currentAttendee = [theAttendees objectAtIndex: i];
@@ -783,6 +784,7 @@
               NSMutableDictionary *info;
               NSMutableArray *conflicts;
               NSString *formattedEnd;
+              SOGoUser *ownerUser;
               id o;
 
               info = [NSMutableDictionary dictionary];
@@ -792,9 +794,16 @@
                 {
                   if ([currentAttendee cn])
                     [info setObject: [currentAttendee cn]  forKey: @"attendee_name"];
-
                   if ([currentAttendee rfc822Email])
                     [info setObject: [currentAttendee rfc822Email]  forKey: @"attendee_email"];
+                }
+              else if ([owner isEqualToString: currentUID])
+                {
+                  ownerUser = [SOGoUser userWithLogin: owner];
+                  if ([ownerUser cn])
+                    [info setObject: [ownerUser cn]  forKey: @"attendee_name"];
+                  if ([ownerUser systemEmail])
+                    [info setObject: [ownerUser systemEmail]  forKey: @"attendee_email"];
                 }
 
               for (i = 0; i < [fbInfo count]; i++)
