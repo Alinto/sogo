@@ -660,7 +660,7 @@
         }
 
       fb = [SOGoFreeBusyObject objectWithName: @"freebusy.ifb" inContainer: [user homeFolderInContext: context]];
-      fbInfo = [fb fetchFreeBusyInfosFrom: start to: end];
+      fbInfo = (NSMutableArray *)[fb fetchFreeBusyInfosFrom: start to: end];
 
       //
       // We must also check here for repetitive events that don't overlap our event.
@@ -804,7 +804,7 @@
                   if ([[o objectForKey: @"startDate"] isDateOnSameDay: end])
                     formattedEnd = [formatter formattedTime: end];
                   else
-                    [formatter formattedDateAndTime: end];
+                    formattedEnd = [formatter formattedDateAndTime: end];
 
                   [conflicts addObject: [NSDictionary dictionaryWithObjectsAndKeys: [formatter formattedDateAndTime: [o objectForKey: @"startDate"]], @"startDate",
                                                       formattedEnd, @"endDate", nil]];
