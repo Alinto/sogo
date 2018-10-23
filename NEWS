@@ -3,6 +3,7 @@
 
 Bug fixes
  - [web] fixed time conflict validation when not the owner
+ - [web] fixed freebusy display with default theme
 
 4.0.3 (2018-10-17)
 ------------------

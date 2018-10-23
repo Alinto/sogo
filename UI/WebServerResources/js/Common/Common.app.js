@@ -243,6 +243,19 @@
       '}',
     ].join(''));
 
+    // Register custom stylesheet for Calendar module
+    $mdThemingProvider.registerStyles([
+      '[ui-view=calendars] .hours {',
+      '  color: \'{{primary-700}}\';',
+      '}',
+      '.attendees .busy {',
+      '  background-color: \'{{background-1000}}\';',
+      '}',
+      '.attendees .event {',
+      '  background-color: \'{{primary-300}}\';',
+      '}'
+    ].join(''));
+
     if (!window.DebugEnabled) {
       // Disable debugging information
       $logProvider.debugEnabled(false);
