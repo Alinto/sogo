@@ -13,6 +13,6 @@
 
 // TODO have the build system take care of this
 
-:release_version: 4.0.3
+:release_version: 4.0.4
 
 // vim: set syntax=asciidoc tabstop=2 shiftwidth=2 expandtab:

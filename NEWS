@@ -1,9 +1,9 @@
-4.X.Y (2018-MM-DD)
+4.0.4 (2018-10-23)
 ------------------
 
 Bug fixes
  - [web] fixed time conflict validation when not the owner
- - [web] fixed freebusy display with default theme
+ - [web] fixed freebusy display with default theme (#4578)
 
 4.0.3 (2018-10-17)
 ------------------

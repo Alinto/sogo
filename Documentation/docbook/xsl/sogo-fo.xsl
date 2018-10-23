@@ -47,11 +47,11 @@
       but we decided to load all sensible local xsd since it only produce a warning on missing imports.
   -->
   <!-- CentOS / RHEL -->
-  <xsl:import href="/usr/share/sgml/docbook/xsl-stylesheets/fo/docbook.xsl"/>
+  <!-- <xsl:import href="/usr/share/sgml/docbook/xsl-stylesheets/fo/docbook.xsl"/> -->
   <!-- Debian / Ubuntu -->
   <xsl:import href="/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl"/>
   <!-- OSX through mac ports -->
-  <xsl:import href="/opt/local/share/xsl/docbook-xsl/fo/docbook.xsl"/>
+  <!-- <xsl:import href="/opt/local/share/xsl/docbook-xsl/fo/docbook.xsl"/> -->
 
   <!-- title page extra styling -->
   <xsl:import href="titlepage-fo.xsl"/>
