@@ -240,7 +240,7 @@
 "Add Contact Category" = "Adaugă Categorie Contact";
 "Remove Contact Category" = "Ștergere Categorie Contact";
 "category_none" = "Nimic";
-"calendar_category_labels" = "Aniversare,Zi de naștere,Afacere,Apeluri,Clienți,Competiție,Client,Favorite,Urmărire,Cadouri,Sărbători,Idei,Întâlniri,Probleme,Diverse,Personale,Proiecte,Sărbători publice,Status,Furnizori,Vacanță";
+"calendar_category_labels" = "Aniversare,Zi de naștere,Afacere,Apeluri,Clienți,Competiție,Client,Favorite,Urmărire,Cadouri,Sărbători,Idei,Întâlniri,Probleme,Diverse,Personale,Proiecte,Sărbători publice,Status,Furnizori,Călătorie,Vacanță";
 
 /* Default module */
 "Calendar" = "Calendar";
