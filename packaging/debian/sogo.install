@@ -1,4 +1,4 @@
-etc/apache2/conf.d/SOGo.conf
+etc/apache2/conf-available/SOGo.conf
 etc/cron.d/sogo
 etc/default/sogo
 etc/logrotate.d/sogo
