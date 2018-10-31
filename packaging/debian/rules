@@ -4,11 +4,8 @@ export DH_VERBOSE=1
 # export DH_OPTIONS="-p sogo"
 
 DESTDIR=$(CURDIR)/debian/tmp
-DIST_CODENAME=$(shell lsb_release -cs)
 
-#ifeq ($(DIST_CODENAME), squeeze)
 SAML2_CONFIG=--enable-saml2
-#endif
 
 include /etc/GNUstep/GNUstep.conf
 include /usr/share/GNUstep/Makefiles/common.make
@@ -43,11 +40,11 @@ clean:
 #	  then \
 #	    (cd OpenChange; make clean); \
 #	  fi; \
-	  (cd ActiveSync; $(MAKE) clean); \
 	  make clean; \
 	fi
 #	-rm -f OpenChange/MAPIStorePropertySelectors.*
 	-rm -f config.make
+	(cd ActiveSync; $(MAKE) clean); \
 	dh_clean 
 
 install: install-arch
@@ -105,7 +102,7 @@ binary-arch: build-arch install-arch
 	  ln -s GNUstep/Frameworks/SOGo.framework/Versions/*/libSOGo* ./ )
 	dh_compress -X.py -X.sh
 	dh_fixperms
-	dh_makeshlibs -X/usr/lib/mapistore_backends
+#	dh_makeshlibs -X/usr/lib/mapistore_backends
 	dh_shlibdeps
 	dh_installdeb
 	dh_gencontrol
