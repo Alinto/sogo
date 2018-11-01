@@ -41,6 +41,9 @@ the packaging system.
 Please check the list of database schema upgrade scripts
 inside /usr/share/doc/sogo/ and apply them if needed.
 
+More details can be found in the Upgrading section:
+https://sogo.nu/files/docs/SOGoInstallationGuide.html#_upgrading
+
 EOF
 
           # Apache 2.2 / 2.4 kungfu

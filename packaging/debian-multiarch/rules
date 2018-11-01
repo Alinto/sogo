@@ -4,7 +4,6 @@ export DH_VERBOSE=1
 # export DH_OPTIONS="-p sogo"
 
 DESTDIR=$(CURDIR)/debian/tmp
-DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
 SAML2_CONFIG=--enable-saml2
 
@@ -22,9 +21,6 @@ build-arch: build-arch-stamp
 build-arch-stamp:  config.make 
 #	 Add here commands to compile the arch part of the package.
 	$(MAKE)
-	if pkg-config --atleast-version=1.0 libmapi; \
-	then (cd OpenChange; $(MAKE));  \
-	fi
 	(cd ActiveSync && $(MAKE))
 	touch $@
 
@@ -37,15 +33,10 @@ clean:
 	-find Tests -name "*.pyc" -exec rm -f {} \;
 	if [ -f config.make ]; \
 	then \
-#	  if pkg-config --atleast-version=1.0 libmapi; \
-#	  then \
-#	    (cd OpenChange; make clean); \
-#	  fi; \
-	  make clean; \
+	  $(MAKE) clean; \
 	fi
-#	-rm -f OpenChange/MAPIStorePropertySelectors.*
 	-rm -f config.make
-	(cd ActiveSync; make clean); \
+	(cd ActiveSync; $(MAKE) clean); \
 	dh_clean 
 
 install: install-arch
@@ -62,18 +53,6 @@ install-arch: build-arch
 #	dh_installdirs -s
 
 	$(MAKE) DESTDIR=$(DESTDIR) GNUSTEP_INSTALLATION_DOMAIN=SYSTEM install
-#	if pkg-config --atleast-version=1.0 libmapi; \
-#	then \
-#	  (cd OpenChange; \
-#	   $(MAKE) \
-#	       DESTDIR=$(DESTDIR) \
-#	       GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
-#	     install); \
-#	  rm -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so.1; \
-#	  rm -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so; \
-#	  mv -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so.1.0.0 \
-#	           $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/SOGo.so; \
-#	fi
 	(cd ActiveSync; $(MAKE) DESTDIR=$(DESTDIR) GNUSTEP_INSTALLATION_DOMAIN=SYSTEM install)
 
 	install -D -m 644 Scripts/sogo-default debian/tmp/etc/default/sogo
@@ -103,7 +82,7 @@ binary-arch: build-arch install-arch
 	  ln -s GNUstep/Frameworks/SOGo.framework/Versions/*/libSOGo* ./ )
 	dh_compress -X.py -X.sh
 	dh_fixperms
-	dh_makeshlibs -X/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends
+#	dh_makeshlibs -X/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends
 	dh_shlibdeps
 	dh_installdeb
 	dh_gencontrol

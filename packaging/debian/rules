@@ -4,8 +4,11 @@ export DH_VERBOSE=1
 # export DH_OPTIONS="-p sogo"
 
 DESTDIR=$(CURDIR)/debian/tmp
+DIST_CODENAME=$(shell lsb_release -cs)
 
+#ifeq ($(DIST_CODENAME), squeeze)
 SAML2_CONFIG=--enable-saml2
+#endif
 
 include /etc/GNUstep/GNUstep.conf
 include /usr/share/GNUstep/Makefiles/common.make
@@ -21,9 +24,6 @@ build-arch: build-arch-stamp
 build-arch-stamp:  config.make 
 #	 Add here commands to compile the arch part of the package.
 	$(MAKE)
-	if pkg-config --atleast-version=1.0 libmapi; \
-	then (cd OpenChange; $(MAKE));  \
-	fi
 	(cd ActiveSync && $(MAKE))
 	touch $@
 
@@ -36,13 +36,8 @@ clean:
 	-find Tests -name "*.pyc" -exec rm -f {} \;
 	if [ -f config.make ]; \
 	then \
-#	  if pkg-config --atleast-version=1.0 libmapi; \
-#	  then \
-#	    (cd OpenChange; make clean); \
-#	  fi; \
-	  make clean; \
+	  $(MAKE) clean; \
 	fi
-#	-rm -f OpenChange/MAPIStorePropertySelectors.*
 	-rm -f config.make
 	(cd ActiveSync; $(MAKE) clean); \
 	dh_clean 
@@ -61,26 +56,14 @@ install-arch: build-arch
 #	dh_installdirs -s
 
 	$(MAKE) DESTDIR=$(DESTDIR) GNUSTEP_INSTALLATION_DOMAIN=SYSTEM install
-#	if pkg-config --atleast-version=1.0 libmapi; \
-#	then \
-#	  (cd OpenChange; \
-#	   $(MAKE) \
-#	       DESTDIR=$(DESTDIR) \
-#	       GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
-#	     install); \
-#	  rm -f $(DESTDIR)/usr/lib/mapistore_backends/libMAPIStoreSOGo.so.1; \
-#	  rm -f $(DESTDIR)/usr/lib/mapistore_backends/libMAPIStoreSOGo.so; \
-#	  mv -f $(DESTDIR)/usr/lib/mapistore_backends/libMAPIStoreSOGo.so.1.0.0 \
-#	           $(DESTDIR)/usr/lib/mapistore_backends/SOGo.so; \
-#	fi
 	(cd ActiveSync; $(MAKE) DESTDIR=$(DESTDIR) GNUSTEP_INSTALLATION_DOMAIN=SYSTEM install)
 
 	install -D -m 644 Scripts/sogo-default debian/tmp/etc/default/sogo
 	install -D -m 644 debian/sogo.overrides debian/tmp/usr/share/lintian/overrides/sogo
-	install -D -m 644 Apache/SOGo.conf debian/tmp/etc/apache2/conf-available/SOGo.conf
+	install -D -m 644 Apache/SOGo.conf debian/tmp/etc/apache2/conf.d/SOGo.conf
 	install -D -m 644 Scripts/sogo.cron debian/tmp/etc/cron.d/sogo
 	install -D -m 644 Scripts/logrotate debian/tmp/etc/logrotate.d/sogo
-	install -d -m 750 debian/tmp/etc/sogo
+	install -d -m 750 debian/tmp/etc/sogo/
 	install -D -m 640 Scripts/sogo.conf debian/tmp/etc/sogo/sogo.conf
 
 # Build architecture dependant packages using the common target.

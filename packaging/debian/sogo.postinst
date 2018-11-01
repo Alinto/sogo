@@ -45,18 +45,6 @@ More details can be found in the Upgrading section:
 https://sogo.nu/files/docs/SOGoInstallationGuide.html#_upgrading
 
 EOF
-
-          # Apache 2.2 / 2.4 kungfu
-          COMMON_STATE=$(dpkg-query -f '${Status}' -W 'apache2.2-common' 2>/dev/null | awk '{print $3}' || true)
-
-          if [ -e /usr/share/apache2/apache2-maintscript-helper ] ; then
-              . /usr/share/apache2/apache2-maintscript-helper
-              apache2_invoke enconf SOGo || exit $?
-          elif [ "$COMMON_STATE" = "installed" ] || [ "$COMMON_STATE" = "unpacked" ] ; then
-              if [ -d /etc/apache2/conf.d/ -a ! -e /etc/apache2/conf.d/SOGo.conf ]; then
-                  ln -s ../conf-available/SOGo.conf /etc/apache2/conf.d/SOGo.conf
-              fi
-          fi
         ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
