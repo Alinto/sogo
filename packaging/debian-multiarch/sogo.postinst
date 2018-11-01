@@ -1,0 +1,70 @@
+#!/bin/bash
+
+set -e
+
+# summary of how this script can be called:
+#        * <postinst> `configure' <most-recently-configured-version>
+#        * <old-postinst> `abort-upgrade' <new version>
+#        * <conflictor's-postinst> `abort-remove' `in-favour' <package>
+#          <new-version>
+#        * <deconfigured's-postinst> `abort-deconfigure' `in-favour'
+#          <failed-install-package> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see http://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+#
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+case "$1" in
+    configure)
+          # update timestamp on imgs,css,js to let apache know the files changed
+          find /usr/lib/GNUstep/SOGo/WebServerResources  -exec touch {} \;
+
+          # Make example scripts in /usr/share/doc/sogo/ executable
+          # (they do not really belong there, we are violating Debian
+          # packaging guidelines, but OTOH moving these files now would
+          # break lots of setups)
+          chmod a+x /usr/share/doc/sogo/*.sh
+
+          # Enforce owner+mode on configuration
+          chmod 750 /etc/sogo
+          chown root:sogo /etc/sogo
+          chmod 640 /etc/sogo/sogo.conf
+          chown root:sogo /etc/sogo/sogo.conf
+          cat << EOF
+======= Important SOGo post-installation note =======
+
+SOGo database schemas are _not_ automatically upgraded by
+the packaging system.
+
+Please check the list of database schema upgrade scripts
+inside /usr/share/doc/sogo/ and apply them if needed.
+
+EOF
+
+          # Apache 2.2 / 2.4 kungfu
+          COMMON_STATE=$(dpkg-query -f '${Status}' -W 'apache2.2-common' 2>/dev/null | awk '{print $3}' || true)
+
+          if [ -e /usr/share/apache2/apache2-maintscript-helper ] ; then
+              . /usr/share/apache2/apache2-maintscript-helper
+              apache2_invoke enconf SOGo || exit $?
+          elif [ "$COMMON_STATE" = "installed" ] || [ "$COMMON_STATE" = "unpacked" ] ; then
+              if [ -d /etc/apache2/conf.d/ -a ! -e /etc/apache2/conf.d/SOGo.conf ]; then
+                  ln -s ../conf-available/SOGo.conf /etc/apache2/conf.d/SOGo.conf
+              fi
+          fi
+        ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+        ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 0
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

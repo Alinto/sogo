@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# SOGOSPOOL must match the value of the configuration parameter SOGoMailSpoolPath
+SOGOSPOOL=/var/spool/sogo
+
+find "$SOGOSPOOL" -type f -user sogo -atime +23 -delete > /dev/null
+find "$SOGOSPOOL" -mindepth 1 -type d -user sogo -empty -delete > /dev/null
