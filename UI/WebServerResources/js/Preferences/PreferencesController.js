@@ -9,7 +9,7 @@
    */
   PreferencesController.$inject = ['$q', '$window', '$state', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgSettings', 'sgFocus', 'Dialog', 'User', 'Account', 'Preferences', 'Authentication'];
   function PreferencesController($q, $window, $state, $mdMedia, $mdSidenav, $mdDialog, $mdToast, sgSettings, focus, Dialog, User, Account, Preferences, Authentication) {
-    var vm = this, account, mailboxes = [], today = new Date().beginOfDay();
+    var vm = this, mailboxes = [], today = new Date().beginOfDay();
 
     this.$onInit = function() {
       this.preferences = Preferences;
@@ -18,21 +18,6 @@
       this.timeZonesSearchText = '';
       this.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
       this.mailLabelKeyRE = new RegExp(/^(?!^_\$)[^(){} %*\"\\\\]*?$/);
-
-
-      if (sgSettings.activeUser('path').mail) {
-        // Fetch a flatten version of the mailboxes list of the main account (0)
-        // This list will be forwarded to the Sieve filter controller
-        account = new Account({ id: 0 });
-        account.$getMailboxes().then(function() {
-          var allMailboxes = account.$flattenMailboxes({all: true}),
-              index = -1,
-              length = allMailboxes.length;
-          while (++index < length) {
-            mailboxes.push(allMailboxes[index]);
-          }
-        });
-      }
 
       // Set alternate avatar in User service
       if (Preferences.defaults.SOGoAlternateAvatar)
@@ -187,9 +172,31 @@
       form.$setDirty();
     };
 
+    function _loadAllMailboxes() {
+      var account;
+
+      if (mailboxes.length) {
+        return;
+      }
+      if (sgSettings.activeUser('path').mail) {
+        // Fetch a flatten version of the mailboxes list of the main account (0)
+        // This list will be forwarded to the Sieve filter controller
+        account = new Account({ id: 0 });
+        account.$getMailboxes().then(function() {
+          var allMailboxes = account.$flattenMailboxes({all: true}),
+              index = -1,
+              length = allMailboxes.length;
+          while (++index < length) {
+            mailboxes.push(allMailboxes[index]);
+          }
+        });
+      }
+    }
+
     this.addMailFilter = function(ev, form) {
       var filter = { match: 'all', active: 1 };
 
+      _loadAllMailboxes();
       $mdDialog.show({
         templateUrl: 'editFilter?filter=new',
         controller: 'FiltersDialogController',
@@ -211,6 +218,7 @@
     this.editMailFilter = function(ev, index, form) {
       var filter = angular.copy(this.preferences.defaults.SOGoSieveFilters[index]);
 
+      _loadAllMailboxes();
       $mdDialog.show({
         templateUrl: 'editFilter?filter=' + index,
         controller: 'FiltersDialogController',
