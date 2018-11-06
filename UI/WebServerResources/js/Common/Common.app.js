@@ -224,6 +224,14 @@
       })
       .backgroundPalette('sogo-grey');
 
+
+    // Register custom stylesheet for md-autocomplete
+    $mdThemingProvider.registerStyles([
+      '.md-autocomplete-suggestions.md-3-line li p {',
+      '  color: \'{{foreground-2}}\';',
+      '}',
+    ].join(''));
+
     // Register custom stylesheet for sgTimepicker
     $mdThemingProvider.registerStyles([
       '.sg-time-selection-indicator.sg-time-selected,',

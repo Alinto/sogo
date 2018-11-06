@@ -972,7 +972,7 @@
           _.forEach(list.refs, function(ref) {
             attendee = {
               name: ref.c_cn,
-              email: ref.$preferredEmail(),
+              email: ref.$preferredEmail(options? options.partial : undefined),
               role: 'req-participant',
               partstat: 'needs-action',
               uid: ref.c_uid,

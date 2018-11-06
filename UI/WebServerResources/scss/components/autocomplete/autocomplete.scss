@@ -1,5 +1,78 @@
 @import "extends";
 
+/**
+ * Format suggestions on three lines, in dense mode
+ *
+ * From angular-material/src/components/list/list.scss
+ */
+
+$dense-baseline-grid: $baseline-grid / 2 !default;
+
+$list-h3-margin: 0 0 0px 0 !default;
+$list-h4-margin: 3px 0 1px 0 !default;
+$list-h4-font-weight: 400 !default;
+$list-header-line-height: 1.2em !default;
+$list-p-margin: 0 0 0 0 !default;
+$list-p-line-height: 1.6em !default;
+
+$list-item-dense-three-line-height: 19 * $dense-baseline-grid !default;
+$list-item-dense-header-font-size: round($subhead-font-size-base * 0.8) !default;
+$list-item-dense-font-size: round($body-font-size-base * 0.85) !default;
+$list-item-dense-line-height: 1.05 !default;
+
+
+.md-autocomplete-suggestions.md-3-line {
+  li {
+    line-height: $list-item-dense-line-height;
+    height: $list-item-dense-three-line-height;
+    min-height: $list-item-dense-three-line-height;
+    @include ie11-min-height-flexbug($list-item-dense-three-line-height);
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+
+
+    .md-list-item-text {
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    h3,
+    h4,
+    p {
+      line-height: $list-item-dense-line-height;
+      font-size: $list-item-dense-font-size;
+    }
+    h3 {
+      font-size: $list-item-dense-header-font-size;
+    }
+    h3 {
+      font-weight: 400;
+      letter-spacing: 0.010em;
+      margin: $list-h3-margin;
+      line-height: $list-header-line-height;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    h4 {
+      letter-spacing: 0.010em;
+      margin: $list-h4-margin;
+      font-weight: $list-h4-font-weight;
+      line-height: $list-header-line-height;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    p {
+      font-weight: 500;
+      letter-spacing: 0.010em;
+      margin: $list-p-margin;
+      line-height: $list-p-line-height;
+    }
+  }
+}
+
 @media (max-width: $layout-breakpoint-xs) {
   // Enlarge the autocompletion menu on small devices to fit the entire screen
   .md-autocomplete-suggestions-container {
