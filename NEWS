@@ -3,6 +3,7 @@
 
 Enhancements
  - [web] show source addressbook of matching contacts in appointment editor (#4579)
+ - [web] improve display of keyboard shortcuts
 
 4.0.4 (2018-10-23)
 ------------------
