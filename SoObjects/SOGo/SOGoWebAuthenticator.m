@@ -82,7 +82,10 @@
   value = [SOGoSession valueForSessionKey: _pwd];
 
   if (!value)
-    return NO;
+    {
+      [self logWithFormat:@"Expired session received, redirecting to login page."];
+      return NO;
+    }
 
   domain = nil;
   [SOGoSession decodeValue: value
