@@ -1,6 +1,6 @@
 /* SOGoToolManageACL.m - this file is part of SOGo
  *
- * Copyright (C) 2017 Inverse inc.
+ * Copyright (C) 2017-2018 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ typedef enum
   ManageACLAdd = 1,
   ManageACLRemove = 2,
   ManageACLSubscribe = 3,
-  ManageACLUnsubscribe = 3,
+  ManageACLUnsubscribe = 4,
 } SOGoManageACLCommand;
 
 @interface SOGoToolManageACL : SOGoTool

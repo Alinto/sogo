@@ -5,6 +5,9 @@ Enhancements
  - [web] show source addressbook of matching contacts in appointment editor (#4579)
  - [web] improve display of keyboard shortcuts
 
+Bug fixes
+ - [sogo-tool] fixed "manage-acl unsubscribe" command (#4591)
+
 4.0.4 (2018-10-23)
 ------------------
 
