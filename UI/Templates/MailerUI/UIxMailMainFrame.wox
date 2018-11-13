@@ -88,7 +88,7 @@
                  ng-show="account.$expanded"
                  ng-class="{ 'md-warn': account.$quota.percent > 70 }">{{account.$quota.description}}</div>
           </div>
-          <md-virtual-repeat-container ng-class="{ 'md-flex': account.$expanded }">
+          <md-virtual-repeat-container class="md-flex">
             <md-list>
               <md-list-item
                   class="sg-mailbox-list-item md-clickable md-default-theme md-background md-hue-1"

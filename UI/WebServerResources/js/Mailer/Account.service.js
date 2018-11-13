@@ -98,7 +98,10 @@
    * @returns the number of mailboxes in the account
    */
   Account.prototype.getLength = function() {
-    return this.$flattenMailboxes().length;
+    if (this.$expanded)
+      return this.$flattenMailboxes().length;
+    else
+      return 0;
   };
 
   /**

@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MailboxesController.$inject = ['$scope', '$state', '$transitions', '$timeout', '$window', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgConstant', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'sgHotkeys', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
-  function MailboxesController($scope, $state, $transitions, $timeout, $window, $mdMedia, $mdSidenav, $mdDialog, $mdToast, sgConstant, focus, encodeUriFilter, Dialog, Settings, sgHotkeys, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
+  MailboxesController.$inject = ['$scope', '$state', '$transitions', '$timeout', '$window', '$mdUtil', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgConstant', 'sgFocus', 'encodeUriFilter', 'Dialog', 'sgSettings', 'sgHotkeys', 'Account', 'Mailbox', 'VirtualMailbox', 'User', 'Preferences', 'stateAccounts'];
+  function MailboxesController($scope, $state, $transitions, $timeout, $window, $mdUtil, $mdMedia, $mdSidenav, $mdDialog, $mdToast, sgConstant, focus, encodeUriFilter, Dialog, Settings, sgHotkeys, Account, Mailbox, VirtualMailbox, User, Preferences, stateAccounts) {
     var vm = this,
         account,
         mailbox,
@@ -142,7 +142,12 @@
 
     this.toggleAccountState = function (account) {
       account.$expanded = !account.$expanded;
-      account.$flattenMailboxes({ reload: true, saveState: true });
+      if (!this.debounceSaveState) {
+        this.debounceSaveState = $mdUtil.debounce(function () {
+          account.$flattenMailboxes({ reload: true, saveState: true });
+        }, 1000);
+      }
+      this.debounceSaveState();
     };
 
     this.subscribe = function(account) {
