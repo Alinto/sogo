@@ -437,6 +437,8 @@ validate_untilbeforeend    = "Repetarea trebuie să se încheie după prima apar
 = "Nu te poţi şterge sau dezabona din calendarul personal.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Sigur dorești ștergerea calendarului \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Ești sigur(ă) că dorești ștergerea componentelor selectate?";
 
 /* Legend */
 "Participant" = "Participant";
