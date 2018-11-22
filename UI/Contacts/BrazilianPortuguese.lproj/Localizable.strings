@@ -41,20 +41,115 @@
 "Move To" = "Mover para";
 "Copy To" = "Copiar para";
 "Add to" = "Adicionar em";
+"To" = "Para";
+"Carbon Copy (Cc)" = "Cópia (CC)";
+"Blind Carbon Copy (Bcc)" = "Cópia Oculta (CCO)";
+
+/* Search scope: name fields */
+"name" = "Nome";
+
+/* Search scope: name fields */
+"c_cn" = "Nome";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "E-mail Secundário";
+
+/* Search scope: screen name field */
+"nsaimid" = "Nome para exibição";
+
+/* Search scope: mail fields */
+"mail" = "Enviar";
+
+/* Search scope: mail fields */
+"c_mail" = "Enviar";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telefone";
+
+/* Search scope: telephone field */
+"homephone" = "Telefone";
+
+/* Search scope: mobile field */
+"mobile" = "Celular";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Pager";
+
+/* Search scope: categories field */
+"c_categories" = "Categorias";
+
+/* Search scope: categories field */
+"vcardcategories" = "Categorias";
+
+/* Search scope: title field */
+"title" = "Título";
+
+/* Search scope: organization field */
+"c_o" = "Organização";
+
+/* Search scope: organization field */
+"o" = "Organização";
+
+/* Search scope: department field */
+"ou" = "Departamento";
+
+/* Search scope: city field */
+"l" = "Cidade";
+
+/* Search scope: country field */
+"c" = "País";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Endereço Residencial";
+
+/* Search scope: state/province field */
+"st" = "Estado/Cidade";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Estado/Cidade";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "CEP";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "CEP";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "País";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Site";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Página Web";
+
+/* Search scope: note field */
+"description" = "Nota";
+
 /* Subheader of empty addressbook */
 "No contact" = "Sem contato";
+
 /* Subheader of system addressbook */
 "Start a search to browse this address book" = "Inicie uma pesquisa para abrir este catálogo";
+
 /* Number of contacts in addressbook; string is prefixed by number */
 "contacts" = "contatos";
+
 /* No contact matching search criteria */
 "No matching contact" = "Nenhum contato encontrado";
+
 /* Number of contacts matching search criteria; string is prefixed by number */
 "matching contacts" = "contatos encontrados";
+
 /* Number of selected contacts in list */
 "selected" = "selecionado";
+
 /* Empty right pane */
 "No contact selected" = "Nenhum contato selecionado";
+
 /* Tooltips */
 "Create a new address book card" = "Cria um novo contato";
 "Create a new list" = "Cria uma nova lista";
@@ -95,9 +190,11 @@
 "Work" = "Comercial";
 "Mobile" = "Celular";
 "Pager" = "Pager";
+
 /* categories */
 "contacts_category_labels" = "Colega, Concorrente, Cliente, Amigo, Família, Parceiro de Negócios, Provedor, Press, VIP";
 "New category" = "Nova categoria";
+
 /* adresses */
 "Title" = "Título";
 "Service" = "Serviço";
@@ -134,12 +231,14 @@
 = "Você não pode apagar nem retirar-se de uma catálogo pessoal.";
 "Are you sure you want to delete the selected contacts?"
 = "Você tem certeza que quer apagar os contatos selecionados?";
+"Are you sure you want to delete the card of %{0}?" = "Você tem certeza que deseja remover o contato %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "Você não pode apagar o contato de \"%{0}\".";
 "You cannot subscribe to a folder that you own!"
 = "Você não pode inscrever-se em uma pasta que você é dono.";
 "Unable to subscribe to that folder!"
 = "Não foi possível inscrever-se a esta pasta.";
+
 /* acls */
 "Access rights to" = "Direitos de acesso para";
 "For user" = "Para usuário";
@@ -158,11 +257,15 @@
 "The selected contact has no email address."
 = "O contato selecionado não tem endereço de email.";
 "Please select a contact." = "Por favor, selecione um contato.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} contato(s) copiados";
+"%{0} card(s) moved" = "%{0} contato(s) movidos";
 "SoAccessDeniedException" = "Você não pode gravar neste catálogo.";
-"Forbidden" = "Você não pode gravar neste catálogo.";
+"Forbidden" = "Proibido";
 "Invalid Contact" = "O contato selecionado não existe.";
 "Unknown Destination Folder" = "O catálogo de destino selecionado não existe.";
+
 /* Lists */
 "List details" = "Detalhes da lista";
 "List name" = "Lista nome";
@@ -175,6 +278,8 @@
 "Export" = "Exportar";
 "Export Address Book..." = "Exportar Catálogo de Endereço...";
 "View Raw Source" = "Visualizar Fonte";
+
+/* Import */
 "Import Cards" = "Importar cartões";
 "Select a vCard or LDIF file." = "Selecione um arquivo vCard ou LDIF.";
 "Upload" = "Carregar";
@@ -184,6 +289,7 @@
 "No card was imported." = "Nenhum cartão foi importado.";
 "A total of %{0} cards were imported in the addressbook." = "Um total de %{0} cartões foram importados no catálogo de endereços.";
 "Reload" = "Atualizar";
+
 /* Properties window */
 "Address Book Name" = "Nome do Catálogo";
 "Links to this Address Book" = "Link para este Catálogo";
@@ -212,6 +318,7 @@
 "URL" = "URL";
 "New URL" = "Nova URL";
 "street" = "rua";
+"street (continued)" = "rua (continuação)";
 "Postoffice" = "Caixa Postal";
 "Region" = "Região";
 "Postal Code" = "CEP";
@@ -225,9 +332,24 @@
 "More options" = "Mais opções";
 "Role" = "Papel";
 "Add Screen Name" = "Adicionar Nome de Apresentação";
+"Custom 1" = "Personalizado 1";
+"Custom 2" = "Personalizado 2";
+"Custom 3" = "Personalizado 3";
+"Custom 4" = "Personalizado 4";
+"Custom Value" = "Valor Personalizado";
+"New Custom Value" = "Novo Valor Personalizado";
 "Synchronization" = "Sincronização";
 "Synchronize" = "Sincronizar";
 "Sucessfully subscribed to address book" = "Inscrito com sucesso no catálogo de endereços";
 
 /* Aria label for scope of search on contacts */
 "Search scope" = "Escopo de pesquisa";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Item alternativo";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

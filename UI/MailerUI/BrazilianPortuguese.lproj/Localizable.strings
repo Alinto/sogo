@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "Pesquisar múltiplas caixas de correio";
 
 /* Main Frame  */
-"Home"                 = "Início"; 
+"Home"                 = "Início";
 "Calendar"             = "Calendário";
 "Addressbook"          = "Catálogo";
 "Mail"                 = "Correio";
@@ -53,7 +53,13 @@
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Bem-Vindo ao SOGo WebMail. Use as pastas a esquerda para exibir suas contas de email!";
 "Read messages"       = "Ler mensagens";
+
+/* Tooltip for fab button */
 "Write a new message" = "Escrever uma nova mensagem";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Escreva uma mensagem em uma nova janela";
+
 "Share" = "Compartilhamento";
 "Account" = "Conta";
 "Shared Account" = "Conta Compartilhada";
@@ -63,6 +69,8 @@
 
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Nenhuma caixa de correio selecionada";
+
+"An error occured while communicating with the mail server" = "Ocorreu um erro durante a comunicação com o servidor de e-mail";
 
 /* Mailbox actions */
 /* Compact Folder success message */
@@ -116,6 +124,9 @@
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "O remetente desta mensagem será notificado quando você ler esta mensagem. Você deseja notificá-lo?";
 "Return Receipt (displayed) - %@"= "Endereço de Resposta - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Este é o Endereço de Resposta do e-mail que você enviou para %@.\n\nNota: Este Endereço de Resposta permite saber que a mensagem foi visualizada pelo destinatário. Não há garantia de que o destinatário tenha lido ou entendido o conteúdo da mensagem.";
+"Security" = "Segurança";
+"Sign" = "Assinar";
+"Encrypt" = "Criptografar";
 "Priority" = "Prioridade";
 "highest" = "Muito Alta";
 "high" = "Alta";
@@ -178,7 +189,7 @@
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Abrir em uma Nova Janela";
 "Copy Folder Location" = "Copiar o Local da Pasta";
-"Subscribe..." = "Inscrever-se...";
+"Subscribe..." = "Inscrições...";
 "Mark Folder Read" = "Marcar Pasta como Lido...";
 "New Folder..." = "Nova Pasta...";
 "Compact This Folder" = "Compactar Esta Pasta";
@@ -217,6 +228,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Converter para Tarefa";
 
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Baixar todos os anexos";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "anexos";
+
 "Print..." = "Imprimir...";
 "Delete Message" = "Apagar Mensagem";
 "Delete Selected Messages" = "Apagar Mensagens Selecionadas";
@@ -231,6 +248,24 @@
 
 /* Number of selected messages in list */
 "selected" = "selecionado";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Esta mensagem está encriptada";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Esta mensagem não pode ser descriptografada. Por favor, certifique-se de ter carregado o seu certificado S / MIME no módulo de preferências de correio.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Não é possível verificar a assinatura da mensagem";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "A mensagem foi modificada";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Erro ao ler o certificado. Por favor, instale um novo certificado.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Nenhum certificado associado à conta.";
 
 "This Folder" = "Esta Pasta";
 
@@ -269,6 +304,10 @@
 "quotasFormat" = "%{0}% usado em %{1} MB";
 "Unable to move/delete folder." = "Não foi possível mover/deletar esta pasta";
 
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "A caixa de correio não pôde ser movida para a lixeira. Você gostaria de apagá-la imediatamente?";
+
 /* Confirmation message when deleting multiple messages */
 "Are you sure you want to delete the selected messages?" = "Tem certeza que quer excluir a mensagem selecionada?";
 
@@ -303,6 +342,7 @@
 = "As mensagens não podem ser movidas para a lixeira. Gostaria de excluí-las imediatamente?";
 
 /* Message editing */
+"Please specify a subject." = "Favor especificar um assunto";
 "error_missingsubject" = "Está faltando o Assunto";
 "error_missingrecipients" = "Sem destinatários selecionados";
 "Send Anyway" = "Enviar assim mesmo";
@@ -311,6 +351,7 @@
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Erro ao carregar o arquivo \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "Este arquivo está sendo carregado. Fechando a janela irá interromper o processo.";
+"Message is too big" = "A mensagem é muito grande";
 
 /* Appears while sending the message */
 "Sending" = "Enviando";
@@ -344,11 +385,13 @@
 "Set as Junk" = "Definir como Spam";
 
 "Sort" = "Ordenar";
+"Order Received" = "Ordem Recebida";
 "Descending Order" = "Ordem Descendente";
 "Back" = "Voltar";
 "Copy messages" = "Copiar mensagens";
 "More messages options" = "Mais opções de mensagens";
 "Mark as Unread" = "Marcar como Não Lido";
+"Mark as Read" = "Marcar como lido";
 "Closing Window ..." = "Fechando Janela ...";
 "Tried to send too many mails. Please wait." = "Tentando enviar muitos emails. Aguarde.";
 "View Mail" = "Visualizar Mensagem";
@@ -366,5 +409,23 @@
 /* Subscriptions Dialog */
 "Manage Subscriptions" = "Gerenciar Inscrições";
 
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filtro";
+
 /* Hotkey to write a new message */
 "hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

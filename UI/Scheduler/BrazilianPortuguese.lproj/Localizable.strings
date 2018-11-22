@@ -64,6 +64,12 @@
 "Compose E-Mail to All Attendees" = "Compor E-Mail para Todos os Participantes";
 "Compose E-Mail to Undecided Attendees" = "Compor E-Mail para os Participantes não confirmados";
 
+/* Relative dates */
+"Yesterday" = "Ontem";
+"Today" = "Hoje";
+"Tomorrow" = "Amanhã";
+"Last %@" = "Último %@";
+
 /* Folders */
 "Personal calendar" = "Calendário Pessoal";
 
@@ -212,6 +218,7 @@
 "view_next14" = "Próximos 14 dias";
 "view_next31" = "Próximos 31 dias";
 "view_thismonth" = "Este Mês";
+"view_thisyear" = "Esse ano";
 "view_future" = "Todos os Eventos Futuros";
 "view_selectedday" = "Dia Selecionado";
 "view_not_started" = "Tarefas não iniciadas";
@@ -333,6 +340,7 @@
 "repeat_YEARLY" = "Anualmente";
 "repeat_CUSTOM" = "Personalizar...";
 "reminder_NONE" = "Não lembrar";
+"reminder_0" = "No momento do evento";
 "reminder_5_MINUTES_BEFORE" = "5 minutos antes";
 "reminder_10_MINUTES_BEFORE" = "10 minutos antes";
 "reminder_15_MINUTES_BEFORE" = "15 minutos antes";
@@ -366,6 +374,15 @@
 "zoom_50" = "50%";
 "zoom_25" = "25%";
 
+/* Arial label for reminder units */
+"Reminder units" = "Unidades de Lembrete";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Posição do Lembrete";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Relação do Lembrete";
+
 /* transparency */
 "Show Time as Free" = "Exibir Hora como Livre";
 
@@ -379,6 +396,8 @@ validate_notitle           = "Nenhum título informado, continue?";
 validate_invalid_startdate = "Campo Data Inicial incorreto!";
 validate_invalid_enddate   = "Campo Data Final incorreto!";
 validate_endbeforestart    = "A data que você informou ocorre antes da data inicial.";
+validate_untilbeforeend    = "A recorrência deve terminar após a primeira ocorrência.";
+
 "Events" = "Eventos";
 "Tasks" = "Tarefas";
 "Show completed tasks" = "Exibir tarefas completadas";
@@ -418,6 +437,8 @@ validate_endbeforestart    = "A data que você informou ocorre antes da data ini
 = "Você não pode remover nem retirar-se do seu calendário pessoal.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Você tem certeza que quer apagar o calendário \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Tem certeza de que deseja excluir os componentes selecionados?";
 
 /* Legend */
 "Participant" = "Participante";
@@ -487,7 +508,7 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "Export" = "Exportar";
 
 
-/* Show only the calendar for which the menu is displayed */ 
+/* Show only the calendar for which the menu is displayed */
 "Show Only This Calendar" = "Exibir apenas este calendário";
 
 
@@ -523,6 +544,8 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "Delete Event" = "Remover Evento";
 "Copy event to my calendar" = "Copiar evento para o meu calendário";
 "View Raw Source" = "Visualizar Fonte";
+"Move To" = "Mover para";
+"Copy To" = "Copiar para";
 "Subscriptions" = "Assinaturas";
 "Subscribe to a shared folder" = "Inscrever uma pasta compartilhada";
 "Subscribe to a web calendar..." = "Inscrever-se a um calendário web...";
@@ -554,6 +577,7 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "More options" = "Mais opções";
 "Delete This Occurrence" = "Apagar esta Ocorrência";
 "Delete All Occurrences" = "Apagar todas as Ocorrências";
+"Add Recurrence Date" = "Adicionar data de recorrência";
 "Add From" = "Início";
 "Add Due" = "Fim";
 "Import" = "Importar";
@@ -569,3 +593,24 @@ vtodo_class2 = "(Tarefa Confidencial)";
 
 /* Aria label for scope of search on events or tasks */
 "Search scope" = "Escopo de pesquisa";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

@@ -18,10 +18,14 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "calendar_label" = "Calendário";
 "startDate_label" = "Início";
 "endDate_label" = "Fim";
+"time_label" = "vezes";
+"to_label" = "para";
 "due_label" = "Data de Vencimento:";
 "location_label" = "Localização";
 "summary_label" = "Resumo:";
 "comment_label" = "Comentário:";
+"organizer_label" = "Organizador";
+"attendee_label" = "Participante";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Convite do Evento: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(enviado por %{SentBy}) ";
