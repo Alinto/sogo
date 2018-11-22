@@ -298,7 +298,8 @@
                contact.charCodeAt(i) == 32 ||   // space
                contact.charCodeAt(i) == 44 ||   // ,
                contact.charCodeAt(i) == 59) &&  // ;
-              emailRE.test(address)) {
+              emailRE.test(address) &&
+              recipients.indexOf(address) < 0) {
             recipients.push(address);
             address = '';
           }
@@ -306,8 +307,9 @@
             address += contact.charAt(i);
           }
         }
-        if (address)
+        if (address && recipients.indexOf(address) < 0)
           recipients.push(address);
+
         return null;
       }
 
@@ -315,7 +317,7 @@
         // If the list's members were already fetch, use them
         if (angular.isDefined(contact.refs) && contact.refs.length) {
           _.forEach(contact.refs, function(ref) {
-            if (ref.email.length)
+            if (ref.email.length && recipients.indexOf(ref.$shortFormat()) < 0)
               recipients.push(ref.$shortFormat());
           });
         }
@@ -323,7 +325,7 @@
           list = Card.$find(contact.container, contact.c_name);
           list.$id().then(function(listId) {
             _.forEach(list.refs, function(ref) {
-              if (ref.email.length)
+              if (ref.email.length && recipients.indexOf(ref.$shortFormat()) < 0)
                 recipients.push(ref.$shortFormat());
             });
           });

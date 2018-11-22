@@ -8,6 +8,7 @@ Enhancements
 Bug fixes
  - [sogo-tool] fixed "manage-acl unsubscribe" command (#4591)
  - [web] fixed handling of collapsed/expanded mail accounts (#4541)
+ - [web] fixed handling of duplicate recipients (#4597)
 
 4.0.4 (2018-10-23)
 ------------------
