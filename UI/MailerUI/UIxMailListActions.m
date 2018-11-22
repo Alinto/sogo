@@ -126,14 +126,13 @@
   else if ([now dayOfCommonEra] - [messageDate dayOfCommonEra] == 1)
     {
       // Yesterday
-      return [self labelForKey: @"Yesterday" inContext: context];
+      return [NSString stringWithFormat: @"%@ %@",
+                      [self labelForKey: @"Yesterday" inContext: context],
+                       [dateFormatter formattedTime: messageDate]];
     }
   else if ([now dayOfCommonEra] - [messageDate dayOfCommonEra] < 7)
     {
       // Same week
-      WOResourceManager *resMgr = [[WOApplication application] resourceManager];
-      NSString *language = [[[context activeUser] userDefaults] language];
-      NSDictionary *locale = [resMgr localeForLanguageNamed: language];
       return [[locale objectForKey: NSWeekDayNameArray] objectAtIndex: [messageDate dayOfWeek]];
     }
   else
