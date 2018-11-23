@@ -11,11 +11,12 @@
    * @param {String} path - the base path of the external resource
    * @param {Object} options - extra attributes to be associated to the object
    */
-  function Resource($http, $q, $window, path, activeUser, options) {
+  function Resource($http, $q, $window, $cookies, path, activeUser, options) {
     angular.extend(this, {
       _http: $http,
       _q: $q,
       _window: $window,
+      _cookies: $cookies,
       _path: path,
       _activeUser: activeUser
     });
@@ -29,9 +30,9 @@
    * @desc The factory we'll use to register with Angular.
    * @return a new Resource object
    */
-  Resource.$factory =  ['$http', '$q', '$window', function($http, $q, $window) {
+  Resource.$factory =  ['$http', '$q', '$window', '$cookies', function($http, $q, $window, $cookies) {
     return function(path, activeUser, options) {
-      return new Resource($http, $q, $window, path, activeUser, options);
+      return new Resource($http, $q, $window, $cookies, path, activeUser, options);
     };
   }];
 
@@ -54,7 +55,7 @@
     if (uid)
       path.splice(path.length - 1, 1, escape(uid));
 
-    return new Resource(this._http, this._q, this._window, '/' + path.join('/'), this._activeUser);
+    return new Resource(this._http, this._q, this._window, this._cookies, '/' + path.join('/'), this._activeUser);
   };
 
   /**
@@ -234,10 +235,14 @@
   };
 
   Resource.prototype.open = function(id, action) {
-    var path = [this._path];
+    var path = [this._path], xsrfToken;
+    xsrfToken = this._cookies.get('XSRF-TOKEN');
     if (id) path.push(id);
     if (action) path.push(action);
     path = _.compact(_.flatten(path)).join('/');
+    if (xsrfToken) {
+      path += '?X-XSRF-TOKEN=' + xsrfToken;
+    }
 
     this._window.location.href = path;
   };

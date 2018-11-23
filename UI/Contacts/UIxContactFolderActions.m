@@ -94,12 +94,11 @@ static NSArray *photoTags = nil;
     }
 
   response = [context response];
-  [response setHeader: @"application/octet-stream; charset=utf-8" 
+  [response setHeader: @"application/directory; charset=utf-8"
                forKey: @"content-type"];
   filename = [NSString stringWithFormat: @"%@.ldif",
-                       [sourceFolder displayName]];
-  disposition = [NSString stringWithFormat: @"attachment; filename=\"%@\"", 
-                          [filename asQPSubjectString: @"utf-8"]];
+                       [[sourceFolder displayName] asQPSubjectString: @"utf-8"]];
+  disposition = [NSString stringWithFormat: @"attachment; filename=\"%@\"", filename];
   [response setHeader: disposition forKey: @"Content-Disposition"];
   [response setContent: [content dataUsingEncoding: NSUTF8StringEncoding]];
 

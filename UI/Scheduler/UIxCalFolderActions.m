@@ -54,7 +54,7 @@
   [response setHeader: @"text/calendar; charset=utf-8" 
                forKey: @"content-type"];
   disposition = [NSString stringWithFormat: @"attachment; filename=\"%@.ics\"",
-                          [folderICS displayName]];
+                          [[folderICS displayName] asQPSubjectString: @"utf-8"]];
   [response setHeader: disposition forKey: @"Content-Disposition"];
 
   return response;

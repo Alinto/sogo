@@ -253,8 +253,12 @@ static SoProduct      *commonProduct      = nil;
       ![auth isKindOfClass: [SOGoWebAuthenticator class]])
     return [super performActionNamed: _actionName];
 
-  // We grab the X-XSRF-TOKEN header
+  // We grab the X-XSRF-TOKEN from the header or the URL
   token = [[context request] headerForKey: @"X-XSRF-TOKEN"];
+  if (![token length])
+    {
+      token = [[context request] formValueForKey: @"X-XSRF-TOKEN"];
+    }
 
   // We compare it with our session key
   value = [[context request]
