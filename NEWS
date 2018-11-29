@@ -3,6 +3,7 @@
 
 Bug fixes
  - [eas] strip '<>' from bodyId and when forwarding mails
+ - [eas] fix search on for Outlook application (#4605 and #4607)
 
 4.0.1 (2018-07-10)
 ------------------
