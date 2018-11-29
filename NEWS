@@ -1,6 +1,11 @@
-4.0.1 (2018-03-XX)
+4.0.5 (2018-MM-DD)
 ------------------
 
+Bug fixes
+ - [eas] strip '<>' from bodyId and when forwarding mails
+
+4.0.1 (2018-07-10)
+------------------
 Bug fixes
  - [web] prevent deletion of special folders using del key
  - [eas] improved alarms syncing with EAS devices (#4351)
@@ -2710,3 +2715,4 @@ Bug Fixes
 Local variables:
 mode: text
 End:
+

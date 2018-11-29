@@ -1250,7 +1250,7 @@ struct GlobalObjectId {
             {
               if ([[value objectForKey: @"bodyId"] length])
                 {
-                  [s appendFormat: @"<ContentId>%@</ContentId>", [[value objectForKey: @"bodyId"] activeSyncRepresentationInContext: context]];
+                  [s appendFormat: @"<ContentId>%@</ContentId>", [[[value objectForKey: @"bodyId"] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"<>"]] activeSyncRepresentationInContext: context]];
                   [s appendFormat: @"<IsInline>%d</IsInline>", 1];
                 }
 
