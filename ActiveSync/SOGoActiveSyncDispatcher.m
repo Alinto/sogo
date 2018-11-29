@@ -3077,7 +3077,8 @@ void handle_eas_terminate(int signum)
   folderIdentifiers = [NSMutableArray array];
 
   // Android 6 will send search requests with no collection ID - so we search in all folders.
-  if (!folderId)
+  // Outlook Mobile App sends search requests with CollectionId=0 - We treat this as an all-folder-search.
+  if (!folderId || [folderId isEqualToString: @"0"])
     {
       NSArray *foldersInCache;
       SOGoCacheGCSObject *o;
@@ -3145,7 +3146,7 @@ void handle_eas_terminate(int signum)
 	  [s appendFormat: @"<LongId>%@+%@</LongId>", folderId, itemId];
 	  [s appendFormat: @"<CollectionId xmlns=\"AirSyncBase:\">%@</CollectionId>", folderId];
 	  [s appendString: @"<Properties>"];
-	  [s appendFormat: [mailObject activeSyncRepresentationInContext: context]];
+	  [s appendString: [mailObject activeSyncRepresentationInContext: context]];
 	  [s appendString: @"</Properties>"];
 	  [s appendFormat: @"</Result>"];
 	}
@@ -3948,6 +3949,8 @@ void handle_eas_terminate(int signum)
                       [map setObject: [currentAttachment objectForKey: @"mimetype"] forKey: @"content-type"];
                       [map setObject: [currentAttachment objectForKey: @"encoding"] forKey: @"content-transfer-encoding"];
                       [map addObject: [NSString stringWithFormat: @"attachment; filename=\"%@\"", [currentAttachment objectForKey: @"filename"]] forKey: @"content-disposition"];
+                      if ([[currentAttachment objectForKey: @"bodyId"] length])
+                        [map setObject: [currentAttachment objectForKey: @"bodyId"] forKey: @"content-id"];
                       bodyPart = [[[NGMimeBodyPart alloc] initWithHeader: map] autorelease];
 
                       fdata = [[NGMimeFileData alloc] initWithBytes:[bodydata bytes]  length:[bodydata length]];

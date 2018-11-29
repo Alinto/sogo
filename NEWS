@@ -14,6 +14,7 @@ Bug fixes
  - [web] don't encode filename extension when exporting folders
  - [core] don't always fetch the sorting columns
  - [eas] strip '<>' from bodyId and when forwarding mails
+ - [eas] fix search on for Outlook application (#4605 and #4607)
 
 4.0.4 (2018-10-23)
 ------------------
