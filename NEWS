@@ -12,6 +12,7 @@ Bug fixes
  - [web] fixed handling of duplicate recipients (#4597)
  - [web] fixed folder export when XSRF validation is enabled (#4502)
  - [web] don't encode filename extension when exporting folders
+ - [core] don't always fetch the sorting columns
 
 4.0.4 (2018-10-23)
 ------------------

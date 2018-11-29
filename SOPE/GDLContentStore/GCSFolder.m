@@ -464,7 +464,8 @@ static GCSStringFormatter *stringFormatter = nil;
       sortOrderingsList = [sortOrderings objectEnumerator];
       while ((ordering = [sortOrderingsList nextObject]))
         {
-          [allFields addObject: [ordering key]];
+          if (![allFields containsObject: [ordering key]])
+            [allFields addObject: [ordering key]];
         }
     }
   requirement = [self _tableRequirementForFields: allFields
