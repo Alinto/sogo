@@ -13,6 +13,7 @@ Bug fixes
  - [web] fixed folder export when XSRF validation is enabled (#4502)
  - [web] don't encode filename extension when exporting folders
  - [core] don't always fetch the sorting columns
+ - [eas] strip '<>' from bodyId and when forwarding mails
 
 4.0.4 (2018-10-23)
 ------------------
