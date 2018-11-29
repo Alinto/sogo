@@ -1216,10 +1216,22 @@ struct GlobalObjectId {
           else
              [s appendFormat: @"<Type>%d</Type>", preferredBodyType];
 
-          [s appendFormat: @"<Truncated>%d</Truncated>", truncated];
-          [s appendFormat: @"<Preview></Preview>"];
-          [s appendFormat: @"<Data>%@</Data>", content];
-          [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", len];
+          if ([[context objectForKey: @"MultiPartsLen"] isKindOfClass: [NSArray class]])
+            {
+              [[context objectForKey: @"MultiPartsLen"]  addObject: [NSNumber numberWithInteger: [sanitizedData length]]];
+              [[context objectForKey: @"MultiParts"]  appendData: sanitizedData];
+
+              [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", len];
+              [s appendFormat: @"<Part xmlns=\"ItemOperations:\">%d</Part>", [[context objectForKey: @"MultiPartsLen"] count]];
+            }
+          else
+            {
+              [s appendFormat: @"<Truncated>%d</Truncated>", truncated];
+              [s appendFormat: @"<Preview></Preview>"];
+              [s appendFormat: @"<Data>%@</Data>", content];
+              [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", len];
+            }
+
           [s appendString: @"</Body>"];
        }
     }

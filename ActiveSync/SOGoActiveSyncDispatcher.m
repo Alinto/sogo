@@ -1613,9 +1613,26 @@ void handle_eas_terminate(int signum)
                   mailObject = [currentCollection lookupName: serverId  inContext: context  acquire: NO];
                   [s appendString: @"<Fetch>"];
                   [s appendString: @"<Status>1</Status>"];
-                  [s appendFormat: @"<CollectionId xmlns=\"AirSyncBase:\">%@</CollectionId>", collectionId];
-                  [s appendFormat: @"<ServerId xmlns=\"AirSyncBase:\">%@</ServerId>", serverId];
+
+                  if ([[[(id)[theDocumentElement getElementsByTagName: @"LongId"] lastObject] textValue] length])
+                    {
+                      [s appendString: @"<Class xmlns=\"AirSync:\">Email</Class>"];
+                      [s appendFormat: @"<LongId xmlns=\"Search:\">%@</LongId>", [[(id)[theDocumentElement getElementsByTagName: @"LongId"] lastObject] textValue]];
+                    }
+                  else
+                    {
+                      [s appendFormat: @"<CollectionId xmlns=\"AirSyncBase:\">%@</CollectionId>", collectionId];
+                      [s appendFormat: @"<ServerId xmlns=\"AirSyncBase:\">%@</ServerId>", serverId];
+                    }
+
                   [s appendString: @"<Properties>"];
+
+                  if ([[theResponse headerForKey: @"Content-Type"] isEqualToString:@"application/vnd.ms-sync.multipart"])
+                    {
+                      [context setObject: parts  forKey: @"MultiParts"];
+                      [context setObject: partLength  forKey: @"MultiPartsLen"];
+                    }
+
                   [s appendString: [mailObject activeSyncRepresentationInContext: context]];
                 }
 
@@ -3049,12 +3066,14 @@ void handle_eas_terminate(int signum)
   SOGoMailObject *mailObject;
   SOGoUserFolder *userFolder;
   EOQualifier *qualifier;
-  NSArray *sortedUIDs;
+  NSArray *sortedUIDs, *a;
   NSMutableString *s;
   NSData *d;
 
   SOGoMicrosoftActiveSyncFolderType folderType;
-  int i, j, total;
+  int i, j, total, begin, startRange, endRange, maxResults, overallTotal;
+
+  overallTotal = 0;
 
   // We build the qualifier and we launch our search operation
   qualifier = [self _qualifierFromMailboxSearchQuery: [(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject]];
@@ -3071,6 +3090,16 @@ void handle_eas_terminate(int signum)
   [context setObject: mimeSupport  forKey: @"MIMESupport"];
 
   [context setObject: @"8" forKey: @"MIMETruncation"];
+
+  // We check for the maximum number of results to return.
+  a = [[[(id)[theDocumentElement getElementsByTagName: @"Range"] lastObject] textValue] componentsSeparatedByString: @"-"];
+  startRange = [[a objectAtIndex: 0] intValue];
+  begin = startRange;
+  endRange = [[a objectAtIndex: 1] intValue];
+  maxResults = endRange - startRange;
+
+  if (maxResults == 0)
+    maxResults = endRange = 99;
 
   // FIXME: support more than one CollectionId tag + DeepTraversal
   folderId = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject] getElementsByTagName: @"CollectionId"] lastObject] textValue];
@@ -3134,13 +3163,23 @@ void handle_eas_terminate(int signum)
 						sortOrdering: @"REVERSE ARRIVAL"
 						    threaded: NO];
       total = [sortedUIDs count];
-      for (j = 0; j < total; j++)
+      overallTotal+=total;
+
+      if (total < startRange)
+        {
+          begin -= total;
+          continue;;
+        }
+
+      for (j = begin; j < total && maxResults >= 0; j++)
 	{
 	  itemId = [[sortedUIDs objectAtIndex: j] stringValue];
 	  mailObject = [currentFolder lookupName: itemId  inContext: context  acquire: NO];
 
 	  if ([mailObject isKindOfClass: [NSException class]])
 	    continue;
+
+          maxResults--;
 
 	  [s appendString: @"<Result xmlns=\"Search:\">"];
 	  [s appendFormat: @"<LongId>%@+%@</LongId>", folderId, itemId];
@@ -3152,8 +3191,11 @@ void handle_eas_terminate(int signum)
 	}
     }
 
-  [s appendFormat: @"<Range>0-%d</Range>",(total ? total-1 : 0)];
-  [s appendFormat: @"<Total>%d</Total>", total];
+  if (overallTotal < startRange)
+    overallTotal = 0;
+
+  [s appendFormat: @"<Range>%d-%d</Range>",(overallTotal ? startRange : 0), (overallTotal ? endRange - maxResults - 1 : 0)];
+  [s appendFormat: @"<Total>%d</Total>", overallTotal];
   [s appendString: @"</Store>"];
   [s appendString: @"</Response>"];
   [s appendString: @"</Search>"];
