@@ -35,6 +35,7 @@
 #import <NGImap4/NGImap4Connection.h>
 #import <NGMail/NGMimeMessage.h>
 #import <NGMime/NGMimeMultipartBody.h>
+#import <NGMime/NGMimeType.h>
 
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 #import <SoObjects/SOGo/NSObject+Utilities.h>
@@ -265,10 +266,15 @@ static BOOL debugOn = NO;
   if (!obj)
     {
       /* lookup body part */
-      if ([self isBodyPartKey: _key])
-	obj = [self lookupImap4BodyPartKey: _key inContext: _ctx];
+      if ([self isBodyPartKey: _key]) {
+        obj = [self lookupImap4BodyPartKey: _key inContext: _ctx];
+      }
       else if ([_key isEqualToString: @"asAttachment"])
-	[self setAsAttachment];
+        {
+          // Don't try to render the part; rewrite object to a simple body part.
+          obj = [SOGoMailBodyPart objectWithName: [self nameInContainer] inContainer: [self container]];
+          [obj setAsAttachment];
+        }
       /* should check whether such a filename exist in the attached names */
       if (!obj)
 	obj = self;

@@ -12,6 +12,7 @@ Bug fixes
  - [web] fixed handling of duplicate recipients (#4597)
  - [web] fixed folder export when XSRF validation is enabled (#4502)
  - [web] don't encode filename extension when exporting folders
+ - [web] fixed download of HTML body parts
  - [core] don't always fetch the sorting columns
  - [eas] strip '<>' from bodyId and when forwarding mails
  - [eas] fix search on for Outlook application (#4605 and #4607)
