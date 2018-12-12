@@ -71,7 +71,7 @@
       <div class="calendarView monthView">
         <md-grid-list
             var:md-cols="headerDaysToDisplay.count"
-            md-row-height="1:1"
+            md-row-height="fit"
             md-gutter="0">
           <var:foreach list="weeksToDisplay" item="currentWeek">
             <var:foreach list="currentWeek" item="currentTableDay">

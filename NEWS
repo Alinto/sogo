@@ -5,6 +5,7 @@ Enhancements
  - [web] show source addressbook of matching contacts in appointment editor (#4579)
  - [web] improve display of keyboard shortcuts
  - [web] show time for messages of yesterday (#4599)
+ - [web] fit month view to window size (#4554)
 
 Bug fixes
  - [sogo-tool] fixed "manage-acl unsubscribe" command (#4591)

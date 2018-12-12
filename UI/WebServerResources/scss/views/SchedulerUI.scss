@@ -555,6 +555,9 @@ $quarter_height: 10px;
       flex: 1 1 0;
       text-align: center;
     }
+    md-grid-list {
+      height: 100%;
+    }
     md-grid-tile {
       // Border of month day cell
       border-right: 1px solid $colorGrey100;
