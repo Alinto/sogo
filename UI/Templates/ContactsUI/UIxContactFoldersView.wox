@@ -234,7 +234,7 @@
 
     <div layout="row" class="md-flex">
 
-      <div class="view-list" layout="column" ng-class="{'view-list--close': addressbook.centerIsClose(centerIsClose)}">
+      <div class="view-list sg-no-print" layout="column" ng-class="{'view-list--close': addressbook.centerIsClose(centerIsClose)}">
 
         <!-- single-selection toolbar -->
         <md-toolbar class="md-accent md-hue-1"

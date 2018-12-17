@@ -798,3 +798,127 @@ $quarter_height: 10px;
   }
 }
 
+/**
+ * Print page preview
+ */
+$preview-size: 200px;
+$preview-letter-ratio: 8.5 / 11;
+$preview-legal-ratio: 8.5 / 14;
+$preview-a4-ratio: 210 / 297;
+
+.sg-print-preview {
+  .letter.portrait & {
+    height: $preview-size;
+    width: $preview-letter-ratio * $preview-size;
+  }
+  .letter.landscape & {
+    height: $preview-letter-ratio * $preview-size;
+    width: $preview-size;
+  }
+  .legal.portrait & {
+    height: $preview-size;
+    width: $preview-legal-ratio * $preview-size;
+  }
+  .legal.landscape & {
+    height: $preview-legal-ratio * $preview-size;
+    width: $preview-size;
+  }
+  .a4.portrait & {
+    height: $preview-size;
+    width: $preview-a4-ratio * $preview-size;
+  }
+  .a4.landscape & {
+    height: $preview-a4-ratio * $preview-size;
+    width: $preview-size;
+  }
+}
+
+/**
+ * Print media
+ */
+@media print {
+  [ui-view=calendars] {
+
+    .allDaysView,
+    md-toolbar.daysView .days:not([sg-calendar-scroll-view$="allday"]),
+    md-toolbar.monthView > div {
+      overflow-y: hidden; // hide scrollbar
+    }
+  }
+
+
+  [ui-view=calendars] {
+
+    /**
+     * Events/tasks center list
+     */
+    md-tab-data,
+    md-tab-item:not(.md-active),
+    md-ink-bar,
+    // md-divider,
+    // .md-subheader,
+    md-list-item .md-secondary-container {
+      display: none;
+    }
+
+    [ui-view=listView]:not(.view-list--close) {
+      // border-right: 1px solid $colorGrayLighter;
+      padding-right: 2 * $layout-gutter-width;
+
+      .sg-tile-content .sg-md-subhead {
+        font-size: $caption-font-size-base;
+      }
+
+      md-list-item,
+      md-list-item::before,
+      md-list-item .md-list-item-inner::before {
+        min-height: 6 * $baseline-grid;
+      }
+    }
+
+    .md-tab {
+      font-size: $title-font-size-base;
+      padding: $layout-gutter-width;
+      color: $colorGrayDark;
+    }
+
+    .sg-tile-icons {
+      height: auto;
+    }
+
+    /**
+     * Calendar view
+     */
+    .view-detail md-card {
+      margin: 0;
+    }
+
+    .days .day {
+      border-left-color: $colorGrayLight;
+    }
+
+    .allDaysView,
+    .allDaysView--sidenav,
+    .hours .hour,
+    .days .day .clickableHourCell {
+      border-bottom-color: $colorGrayLight;
+    }
+
+    .sg-event {
+      &.sg-event--transparent:before {
+        content: none;
+      }
+      &[class*=bg-folder],
+      &[class*=bg-folder] md-icon {
+        background: white !important;
+        color: black !important;
+      }
+      &[class*=contrast-bdr-folder] {
+        border-color: black !important;
+        border-width: 1px !important;
+        border-style: solid !important;
+      }
+    }
+
+  }
+}

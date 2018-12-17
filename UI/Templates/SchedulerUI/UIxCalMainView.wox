@@ -149,8 +149,9 @@
 
         <div class="view-list ng-hide" layout="column"
              ng-show="list.selectedList >= 0"
-             ng-class="{'view-list--close': centerIsClose}">
-          <md-toolbar class="md-accent md-hue-1" flex-none="flex-none"
+             ng-class="{'view-list--close': centerIsClose}"
+             ui-view="listView">
+          <md-toolbar class="md-accent md-hue-1 sg-no-print" flex-none="flex-none"
                       ng-hide="list.mode.multiple">
             <!-- sort/filter mode (default) -->
             <div class="md-toolbar-tools" layout="row" ng-hide="list.mode.search">
@@ -377,7 +378,7 @@
             </div>
           </md-toolbar>
 
-          <md-divider><!-- divider --></md-divider>
+          <md-divider class="sg-no-print"><!-- divider --></md-divider>
 
           <md-content layout="column" class="view-list">
             <md-tabs md-dynamic-height="true"
@@ -385,7 +386,7 @@
               <!-- Events list -->
               <md-tab label:label="Events"
                       md-on-select="list.selectComponentType('events')">
-                <md-subheader>
+                <md-subheader class="sg-no-print">
                   <div layout="row"  layout-align="space-between center">
                     <div class="md-truncate" ng-bind="list.filter() | loc"><!-- active filter --></div>
                     <div class="md-truncate"><md-icon ng-class="{ 'md-flip': list.ascending() }">sort</md-icon> <span ng-bind="list.sort() | loc"><!-- active sort --></span></div>
@@ -432,7 +433,7 @@
               <!-- Tasks list -->
               <md-tab label:label="Tasks"
                       md-on-select="list.selectComponentType('tasks')">
-                <md-subheader>
+                <md-subheader class="sg-no-print">
                   <div layout="row"  layout-align="space-between center">
                     <div class="md-truncate" ng-bind="list.filter() | loc"><!-- active filter --></div>
                     <div class="md-truncate"><md-icon ng-class="{ 'md-flip': list.ascending() }">sort</md-icon> <span ng-bind="list.sort() | loc"><!-- active sort --></span></div>
@@ -683,6 +684,58 @@
           <var:string label:value="Save"/>
         </md-button>
       </md-dialog-actions>
+    </md-dialog>
+  </script>
+
+  <script type="text/ng-template" id="UIxCalPrintDialog">
+    <md-dialog flex="50" flex-xs="90">
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <div class="sg-md-title md-flex">
+            {{::'Print Settings' | loc }}
+          </div>
+          <md-button class="md-icon-button" ng-click="$PrintDialogController.close()">
+            <md-icon label:aria-label="Close">close</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+      <form name="printForm" ng-submit="$PrintDialogController.print($event)">
+        <md-dialog-content class="md-dialog-content" layout="row" layout-align="space-around center">
+          <div layout="column" flex="50">
+            <md-input-container class="md-block hide-xs" flex="50">
+              <label><var:string label:value="Page Format"/></label>
+              <md-select ng-model="$PrintDialogController.pageSize">
+                <md-option value="letter">Letter</md-option>
+                <md-option value="legal">Legal</md-option>
+                <md-option value="a4">A4</md-option>
+              </md-select>
+            </md-input-container>
+            <md-checkbox
+                ng-model="$PrintDialogController.workingHoursOnly"
+                label:aria-label="Show working hours only">
+              <var:string label:value="Show working hours only"/>
+            </md-checkbox>
+          </div>
+          <div>
+            <div class="sg-print-preview"
+                 layout="row" layout-align="center" layout-padding="layout-padding"
+                 md-whiteframe="3">
+              <div flex="30" ng-show="$PrintDialogController.visibleList" style="border-right: 1px solid #eee">
+                <div class="sg-md-caption"><var:string label:value="Tasks"/></div>
+              </div>
+              <div class="md-flex" style="align-self: center; text-align: center;">{{:: $PrintDialogController.calendarView | loc }}</div>
+            </div>
+          </div>
+        </md-dialog-content>
+        <md-dialog-actions>
+          <md-button class="md-primary" type="submit"><var:string label:value="Print"/></md-button>
+        </md-dialog-actions>
+      </form>
+      <sg-calendar-print-stylesheet
+          sg-calendar-view="$PrintDialogController.calendarView"
+          sg-page-size="$PrintDialogController.pageSize"
+          sg-orientation="$PrintDialogController.orientation"
+          sg-working-hours-only="$PrintDialogController.workingHoursOnly"></sg-calendar-print-stylesheet>
     </md-dialog>
   </script>
 

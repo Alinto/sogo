@@ -56,12 +56,15 @@
       <a class="md-icon-button md-button"
          label:aria-label="Multicolumn Day View"
          ng-click="calendar.changeView($event, 'multicolumnday')"><md-icon>view_array</md-icon></a>
+      <md-button class="md-icon-button md-primary md-hue-1 hide show-gt-xs"
+                 label:aria-label="Print"
+                 ng-click="calendar.printView(centerIsClose, list.componentType)"><md-icon>print</md-icon></md-button>
     </md-card-actions>
-  <var:component
-      className="UIxCalDayTable"
-      startDate="startDate"
-      const:CSSClass="weekOverview"
-      const:numberOfDays="7"
-      const:currentView="weekview"/>
+    <var:component
+        className="UIxCalDayTable"
+        startDate="startDate"
+        const:CSSClass="weekOverview"
+        const:numberOfDays="7"
+        const:currentView="weekview"/>
   </md-card>
 </container>

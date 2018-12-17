@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  CalendarController.$inject = ['$scope', '$rootScope', '$state', '$stateParams', 'sgHotkeys', 'Calendar', 'Component', 'Preferences', 'stateEventsBlocks'];
-  function CalendarController($scope, $rootScope, $state, $stateParams, sgHotkeys, Calendar, Component, Preferences, stateEventsBlocks) {
+  CalendarController.$inject = ['$scope', '$rootScope', '$state', '$stateParams', '$mdDialog', 'sgHotkeys', 'Calendar', 'Component', 'Preferences', 'stateEventsBlocks'];
+  function CalendarController($scope, $rootScope, $state, $stateParams, $mdDialog ,sgHotkeys, Calendar, Component, Preferences, stateEventsBlocks) {
     var vm = this, deregisterCalendarsList, hotkeys = [];
 
     this.$onInit = function() {
@@ -184,11 +184,70 @@
       $state.go('calendars.view', { view: view });
     };
 
+    this.printView = function(centerIsClose, componentType) {
+      $mdDialog.show({
+        parent: angular.element(document.body),
+        clickOutsideToClose: true,
+        escapeToClose: true,
+        templateUrl: 'UIxCalPrintDialog', // See UIxCalMainView.wox
+        controller: PrintController,
+        controllerAs: '$PrintDialogController',
+        locals: {
+          calendarView: $stateParams.view,
+          visibleList: centerIsClose? undefined : componentType
+        }
+      });
+
+    };
+
     // Check if the week day should be visible/selectable
     this.isSelectableDay = function(date) {
       return _.includes(vm.selectableDays, date.getDay());
     };
-}
+  }
+
+  /**
+   * @ngInject
+   */
+  PrintController.$inject = ['$rootScope', '$scope', '$window', '$stateParams', '$mdDialog', '$log', '$mdToast', 'Dialog', 'sgSettings', 'Preferences', 'Calendar', 'calendarView', 'visibleList'];
+  function PrintController($rootScope, $scope, $window, $stateParams, $mdDialog, $log, $mdToast, Dialog, Settings, Preferences, Calendar, calendarView, visibleList) {
+    var vm = this;
+    var orientations = {
+      day: 'portrait',
+      week: 'landscape',
+      month: 'landscape',
+      multicolumnday: 'landscape'
+    };
+
+    this.$onInit = function() {
+      // Default values
+      this.pageSize = 'letter';
+      this.workingHoursOnly = true;
+      this.calendarView = calendarView;
+      this.orientation = orientations[this.calendarView];
+      this.visibleList = visibleList;
+
+      angular.element(document.body).addClass(this.orientation);
+      $scope.$watch(function() { return vm.pageSize; }, angular.bind(this, function(newSize, oldSize) {
+        angular.element(document.body).removeClass(oldSize);
+        angular.element(document.body).addClass(newSize);
+      }));
+    };
+
+    this.$onDestroy = function() {
+      angular.element(document.body).removeClass(['portrait', 'landscape', 'letter', 'legal', 'a4']);
+    };
+
+    this.print = function($event) {
+      $window.print();
+      $event.stopPropagation();
+      return false;
+    };
+
+    this.close = function () {
+      $mdDialog.hide();
+    };
+  }
 
   angular
     .module('SOGo.SchedulerUI')  
