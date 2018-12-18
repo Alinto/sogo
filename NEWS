@@ -2,7 +2,7 @@
 ------------------
 
 New features
- - [web] dynamic stylesheet for printing calendars (#3650)
+ - [web] dynamic stylesheet for printing calendars (#3768)
 
 Enhancements
  - [web] show source addressbook of matching contacts in appointment editor (#4579)
