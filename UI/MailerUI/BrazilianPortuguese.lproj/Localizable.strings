@@ -136,6 +136,7 @@
 "This mail is being sent from an unsecure network!" = "Este email está sendo enviado por uma rede não segura!";
 "Address Book" = "Catálogo";
 "Search For" = "Pesquisar Por";
+"me" = "eu";			
 
 /* Popup "show" */
 "all"     = "todos";

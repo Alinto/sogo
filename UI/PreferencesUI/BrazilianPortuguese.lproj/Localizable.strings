@@ -40,15 +40,15 @@
 "Auto reply subject" = "Auto Responder somente uma vez a cada remetente com o sequinte assunto";
 "You can write ${subject} to insert the original subject" = "Você pode escrever ${subject} para inserir o assunto original";
 "Auto reply message" = "Auto Responder somente uma vez a cada remetente com o seguinte texto";
-"Email addresses (separated by commas)" = "Endereço de e-mail (separado por vírgulas)";
-"Add default email addresses" = "Adicionar endereço de e-mail padrão";
+"Email addresses (separated by commas)" = "Endereço de email (separado por vírgulas)";
+"Add default email addresses" = "Adicionar endereço de email padrão";
 "Days between responses" = "Dias entre respostas";
-"Do not send responses to mailing lists" = "Não envie respostas para listas de e-mails";
+"Do not send responses to mailing lists" = "Não envie respostas para listas de emails";
 "Enable auto reply on" = "Habilitar resposta automática em";
 "Disable auto reply on" = "Desativar resposta automática em";
 "Always send vacation message response" = "Sempre enviar resposta de mensagem de férias";
 "Please specify your message and your email addresses for which you want to enable auto reply."
-= "Favor especificar a sua mensagem e seus endereços de e-mail para o qual você deseja ativar resposta automática.";
+= "Favor especificar a sua mensagem e seus endereços de email para o qual você deseja ativar resposta automática.";
 "Your vacation message must not end with a single dot on a line." = "Sua mensagem de férias não deve terminar com um ponto único em uma linha.";
 "End date of your auto reply must be in the future."
 = "A data final da resposta automática deve estar no futuro.";
@@ -58,8 +58,8 @@
 "Keep a copy" = "Manter uma cópia";
 "Please specify an address to which you want to forward your messages."
 = "Favor especificar um endereço para o qual você deseja encaminhar suas mensagens.";
-"You are not allowed to forward your messages to an external email address." = "Você não tem permissão para transmitir a sua mensagem para um endereço de e-mail externo.";
-"You are not allowed to forward your messages to an internal email address." = "Você não tem permissão para transmitir a sua mensagem para um endereço de e-mail interno.";
+"You are not allowed to forward your messages to an external email address." = "Você não tem permissão para transmitir a sua mensagem para um endereço de email externo.";
+"You are not allowed to forward your messages to an internal email address." = "Você não tem permissão para transmitir a sua mensagem para um endereço de email interno.";
 
 /* d & t */
 "Current Time Zone" = "Fuso Horário";
@@ -149,7 +149,10 @@
 "Show subscribed mailboxes only" = "Exibir somente caixas de correio inscritas";
 "Synchronize only default mail folders (EAS)" = "Sincronizar somente pastas de email padrão (EAS)";
 "Sort messages by threads" = "Ordenar mensagens por tópicos";
-"When sending mail, add unknown recipients to my" = "Ao enviar e-mail, adicionar destinatários desconhecidos ao meu";
+"Always open mail composer" = "Sempre abrir o editor de email";
+"Inside current window" = "Na janela atual";
+"In a popup window" = "Em nova janela";															   
+"When sending mail, add unknown recipients to my" = "Ao enviar email, adicionar destinatários desconhecidos ao meu";
 "Address Book" = "Catálogo";
 "Forward messages" = "Encaminhar mensagens";
 "messageforward_inline" = "No corpo da mensagem";
@@ -179,14 +182,14 @@
 
 /* IMAP Accounts */
 "Mail Account" = "Conta de Email";
-"New Mail Account" = "Nova conta de e-mail";
+"New Mail Account" = "Nova conta de email";
 "Server Name" = "Nome do Servidor";
 "Port" = "Porta";
 "Encryption" = "Encriptação";
 "None" = "Nenhum";
 "User Name" = "Nome do Usuário";
 "Full Name" = "Nome Completo";
-"Email" = "E-mail";
+"Email" = "Email";
 "Reply To Email" = "Responder para o Email";
 "Signature" = "Assinatura";
 "(Click to create)" = "(Click para criar)";
@@ -382,3 +385,11 @@
 "monsterid" = "Monstro";
 "wavatar" = "Wavatar";
 "retro" = "Retro";
+
+* Animation Level */
+"Animation Level" = "Nível de animação";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normal";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Limitado";
+"animation_NONE" = "Nenhum";
