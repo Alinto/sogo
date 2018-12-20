@@ -3622,6 +3622,48 @@ void handle_eas_terminate(int signum)
         }
      }
 
+  if ([(id)[[(id)[theDocumentElement getElementsByTagName: @"UserInformation"] lastObject] getElementsByTagName: @"Get"] lastObject])
+    {
+      NSArray *identities;
+      int i;
+
+      identities = [[context activeUser] allIdentities];
+
+      [s appendString: @"<UserInformation>"];
+      [s appendString: @"<Get>"];
+
+      if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 14.1)
+        {
+          [s appendString: @"<Accounts>"];
+          [s appendString: @"<Account>"];
+          [s appendFormat: @"<UserDisplayName>%@</UserDisplayName>", [[[identities objectAtIndex: 0] objectForKey: @"fullName"] activeSyncRepresentationInContext: context] ];
+        }
+
+      [s appendString: @"<EmailAddresses>"];
+
+      if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 14.1)
+        [s appendFormat: @"<PrimarySmtpAddress>%@</PrimarySmtpAddress>", [[[identities objectAtIndex: 0] objectForKey: @"email"] activeSyncRepresentationInContext: context] ];
+      else
+        [s appendFormat: @"<SmtpAddress>%@</SmtpAddress>", [[[identities objectAtIndex: 0] objectForKey: @"email"] activeSyncRepresentationInContext: context] ];
+
+      if ([identities count] > 1)
+        {
+          for (i = 1; i < [identities count]; i++)
+            [s appendFormat: @"<SmtpAddress>%@</SmtpAddress>", [[[identities objectAtIndex: i] objectForKey: @"email"] activeSyncRepresentationInContext: context] ];
+        }
+
+      [s appendString: @"</EmailAddresses>"];
+
+      if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 14.1)
+        {
+          [s appendString: @"</Account>"];
+          [s appendString: @"</Accounts>"];
+        }
+
+      [s appendString: @"</Get>"];
+      [s appendString: @"</UserInformation>"];
+    }
+
   [s appendString: @"</Settings>"];
   
   d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
