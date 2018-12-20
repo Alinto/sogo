@@ -6,6 +6,7 @@ Bug fixes
  - [eas] fix search on for Outlook application (#4605 and #4607)
  - [eas] better handle bogus DTStart values
  - [eas] support for basic UserInformation queries (#4614)
+ - [eas] better handle timezone changes (#4624)
 
 4.0.1 (2018-07-10)
 ------------------
