@@ -35,6 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSString.h>
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSTimeZone.h>
+#import <Foundation/NSValue.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
@@ -970,7 +971,7 @@ struct GlobalObjectId {
       if ([event startDate])
         [s appendFormat: @"<StartTime xmlns=\"Email:\">%@</StartTime>", [[event startDate] activeSyncRepresentationInContext: context]];
       
-      if ([event timeStampAsDate])
+      if ([event timeStampAsDate] && [[event timeStampAsDate] dayOfMonth] > 0 && [[event timeStampAsDate] monthOfYear] > 0)
         [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event timeStampAsDate] activeSyncRepresentationInContext: context]];
       else if ([event created])
         [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event created] activeSyncRepresentationInContext: context]];
