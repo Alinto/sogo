@@ -22,6 +22,7 @@ Bug fixes
  - [eas] fix search on for Outlook application (#4605 and #4607)
  - [eas] improve search operations and results fetching
  - [eas] better handle bogus DTStart values
+ - [eas] support for basic UserInformation queries (#4614)
 
 4.0.4 (2018-10-23)
 ------------------
