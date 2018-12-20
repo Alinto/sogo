@@ -23,6 +23,7 @@ Bug fixes
  - [eas] improve search operations and results fetching
  - [eas] better handle bogus DTStart values
  - [eas] support for basic UserInformation queries (#4614)
+ - [eas] better handle timezone changes (#4624)
 
 4.0.4 (2018-10-23)
 ------------------

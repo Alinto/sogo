@@ -78,10 +78,28 @@ struct SYSTEMTIME {
       tzData->wDay = ([mask firstOccurrence] == -1) ? 5 : [mask firstOccurrence];
 
       dateValue = [self startDate];
-      tzData->wHour = [dateValue hourOfDay];
-      tzData->wMinute = [dateValue minuteOfHour];
-      tzData->wSecond = [dateValue secondOfMinute];
-      tzData->wMilliseconds = 0;
+
+      if (![dateValue hourOfDay])
+        {
+          if ([mask firstDay]-1 < 0)
+            tzData->wDayOfWeek = 6;
+          else
+            tzData->wDayOfWeek = [mask firstDay]-1;
+
+          tzData->wHour = 23;
+          tzData->wMinute = 59;
+          tzData->wSecond = 59;
+          tzData->wMilliseconds = 999;
+        }
+      else
+       {
+          tzData->wDayOfWeek = [mask firstDay];
+
+          tzData->wHour = [dateValue hourOfDay];
+          tzData->wMinute = [dateValue minuteOfHour];
+          tzData->wSecond = [dateValue secondOfMinute];
+          tzData->wMilliseconds = 0;
+       }
     }
 }
 
