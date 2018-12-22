@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "Пребарај повеќе поштенски сандачиња";
 
 /* Main Frame  */
-"Home"                 = "дома"; 
+"Home"                 = "дома";
 "Calendar"             = "Календар";
 "Addressbook"          = "Адресар";
 "Mail"                 = "Пошта";
@@ -124,6 +124,9 @@
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Испраќачот на оваа порака побара да биде известен кога ќе ја прочитате оваа порака. Дали сакате да го известите испраќачот?";
 "Return Receipt (displayed) - %@"= "Повратен примач (прикажан) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Ова е повратница за пораката која ја испративте на %@.\n\nзабелешка: Оваа повратница само укажува дека пораката била прикажана на екранот на примателот. Нема никаква гаранција дека примачот ја прочитал пораката или пак разбрал содржината на истата.";
+"Security" = "Безбедност";
+"Sign" = "Потпиши";
+"Encrypt" = "Шифрирај";
 "Priority" = "Приоритет";
 "highest" = "Највисок";
 "high" = "Висок";
@@ -246,6 +249,24 @@
 /* Number of selected messages in list */
 "selected" = "одбрани";
 
+/* Encrypted message notification */
+"This message is encrypted" = "Оваа порака е шифрирана";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Оваа порака не може да биде дешифрирана. Бидете сигурни дека сте го вчитале вашиот S/MIME сертификат оф вашиот модул за електронска пошта во делот на нагодувањата.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Не можам да го потврдам потписот на пораката";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Пораката е изменета";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Грешка при читање на сертификатот. Ве молам да инсталирате нов сертификат.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Нема сертификат кој е асоциран со сметката.";
+
 "This Folder" = "Оваа папка";
 
 /* Label popup menu */
@@ -321,6 +342,7 @@
 = "Пораките не можат да се префрлат во папката за ѓубре. Дали саката веднаш да ги избришам?";
 
 /* Message editing */
+"Please specify a subject." = "Обезбедете содржина на субјектот.";
 "error_missingsubject" = "Пораката нема тема. Дали сте сигурни дека сакате да ја испратите?";
 "error_missingrecipients" = "Одберете барем еден примател.";
 "Send Anyway" = "Испрати во секој случај";

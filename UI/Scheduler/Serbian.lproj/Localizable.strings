@@ -64,6 +64,12 @@
 "Compose E-Mail to All Attendees" = "Састави е-писмо свим полазницима";
 "Compose E-Mail to Undecided Attendees" = "Састави е-писмо свим неодлучним полазницима";
 
+/* Relative dates */
+"Yesterday" = "Јуче";
+"Today" = "Данас";
+"Tomorrow" = "Сутра";
+"Last %@" = "Последњих %@";
+
 /* Folders */
 "Personal calendar" = "Лични календар";
 
@@ -212,6 +218,7 @@
 "view_next14" = "Наредних 14 дана";
 "view_next31" = "Наредних 31 дан";
 "view_thismonth" = "Овог месеца";
+"view_thisyear" = "Ове године";
 "view_future" = "Сви будући догађаји";
 "view_selectedday" = "Изабрани дан";
 "view_not_started" = "Нема започетих задатака";
@@ -333,6 +340,7 @@
 "repeat_YEARLY" = "Годишње";
 "repeat_CUSTOM" = "Прилагођено...";
 "reminder_NONE" = "Нема подсетника";
+"reminder_0" = "У време догађаја";
 "reminder_5_MINUTES_BEFORE" = "5 минута пре";
 "reminder_10_MINUTES_BEFORE" = "10 минута пре";
 "reminder_15_MINUTES_BEFORE" = "15 минута пре";
@@ -429,6 +437,8 @@ validate_untilbeforeend    = "Понављање се мора завршити 
 = "Не можете уклонити нити се одјавити из вашег личног календара.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Да ли сте сигурни да желите да обришете календар \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Да ли сте сигурни да желите да обришете одабране компоненте?";
 
 /* Legend */
 "Participant" = "Учесник";
@@ -498,7 +508,7 @@ vtodo_class2 = "(Поверљиви задатак)";
 "Export" = "Извези";
 
 
-/* Show only the calendar for which the menu is displayed */ 
+/* Show only the calendar for which the menu is displayed */
 "Show Only This Calendar" = "Прикажи само овај календар";
 
 
@@ -526,7 +536,7 @@ vtodo_class2 = "(Поверљиви задатак)";
 "tagWasAdded" = "Ако желите да синхронизујете овај календар, морате поново учитати податке на вашем мобилном уређају.\nНаставити?";
 "tagWasRemoved" = "Ако уклоните овај календар из синхронизације, морате поново учитати податке на вашем мобилном уређају.\nНаставити?";
 "DestinationCalendarError" = "Изворишни и одредишни календар су исти. Молимо покушајте да копирате у други календар.";
-"EventCopyError" = "Копирање није успело. Молимо покушајте да копирате у други календар.";
+"EventCopyError" = "Неуспешно копирање. Молимо да покушате копирање у други календар.";
 "Please select at least one calendar" = "Молимо одаберите барем један календар";
 "Open Task..." = "Отвори задатак...";
 "Mark Completed" = "Означи завршеним";
@@ -534,6 +544,8 @@ vtodo_class2 = "(Поверљиви задатак)";
 "Delete Event" = "Обриши догађај";
 "Copy event to my calendar" = "Копирај догађај у мој календар";
 "View Raw Source" = "Погледај извнорни код";
+"Move To" = "Премести у";
+"Copy To" = "Копирај у";
 "Subscriptions" = "Претплате";
 "Subscribe to a shared folder" = "Претплати се на дељени директоријум";
 "Subscribe to a web calendar..." = "Претплати се на веб календар...";
@@ -565,6 +577,7 @@ vtodo_class2 = "(Поверљиви задатак)";
 "More options" = "Више опција";
 "Delete This Occurrence" = "Обриши ово понављање";
 "Delete All Occurrences" = "Обриши сва понављања";
+"Add Recurrence Date" = "Додајте датум понављања";
 "Add From" = "Додај из";
 "Add Due" = "Додај рок";
 "Import" = "Увези";

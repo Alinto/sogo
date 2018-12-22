@@ -18,10 +18,14 @@ vtodo_class2 = "(Tarea confidencial)";
 "calendar_label" = "Calendario";
 "startDate_label" = "Inicio";
 "endDate_label" = "Fin";
+"time_label" = "Hora";
+"to_label" = "para";
 "due_label" = "Fecha de finalización:";
 "location_label" = "Lugar";
 "summary_label" = "Resumen:";
 "comment_label" = "Comentario:";
+"organizer_label" = "Organizador";
+"attendee_label" = "Asistente";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Invitación al evento:  \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(enviado por %{SentBy}) ";

@@ -43,7 +43,7 @@
 "Search multiple mailboxes" = "Претражи више поштанских сандучића";
 
 /* Main Frame  */
-"Home"                 = "Почетна"; 
+"Home"                 = "Почетна";
 "Calendar"             = "Календар";
 "Addressbook"          = "Адресар";
 "Mail"                 = "Пошта";
@@ -53,7 +53,13 @@
 /* Mail account main windows */
 "Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Добродошли у SOGo Пошту. Користите стабло директоријума са леве стране да претражите ваше поштанске налоге!";
 "Read messages"       = "Прочитај поруке";
+
+/* Tooltip for fab button */
 "Write a new message" = "Напиши нову поруку";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Напиши поруку у новом прозору";
+
 "Share" = "Дели";
 "Account" = "Налог";
 "Shared Account" = "Дељени налог";
@@ -63,6 +69,8 @@
 
 /* No mailbox is selected (usually resulting from an IMAP connection problem) */
 "No mailbox selected" = "Нема одабраног поштанског сандучета";
+
+"An error occured while communicating with the mail server" = "Десила се грешка приликом контактирања поштнског сервера";
 
 /* Mailbox actions */
 /* Compact Folder success message */
@@ -116,6 +124,9 @@
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Пошиљалац ове поруке је питао да буде обавештен када прочитате ову поруку. Да ли желите да обавестите пошиљаоца?";
 "Return Receipt (displayed) - %@"= "Потврда о пријему (приказана) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Ово је Потврда о пријему за пошту коју сте послали %@.\n\nБелешка: Ова потврда о пријему је само потврда да је порука приказана на рачунару примаоца. Нема гаранције да је прималац прочитао поруку или разумео садржај поруке.";
+"Security" = "Сигурност";
+"Sign" = "Потпиши";
+"Encrypt" = "Енкриптуј";
 "Priority" = "Приоритет";
 "highest" = "Највиши";
 "high" = "Висок";
@@ -217,6 +228,12 @@
 /* Message view "more" menu: create a task from message */
 "Convert To Task" = "Претвори у задатак";
 
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Преузми све прилоге";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "прилози";
+
 "Print..." = "Штампај...";
 "Delete Message" = "Обриши поруку";
 "Delete Selected Messages" = "Обриши одабране поруке";
@@ -231,6 +248,24 @@
 
 /* Number of selected messages in list */
 "selected" = "изабрано";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Порука је енкриптована";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Ова порука не може бити декриптована. Молимо да се уверите да сте отпремили Ваш S/MIME сертификат у модул подешавања поште.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Немогућа је верификација потписа поруке";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Порука је измењена";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Грешка у читању сертификата. Молимо, инсталирајте нов сертификат.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Нема сертификата повезаног са налогом.";
 
 "This Folder" = "Овај директоријум";
 
@@ -307,6 +342,7 @@
 = "Поруке не могу бити премештене у директоријум канте. Да ли желите да их одмах обришете?";
 
 /* Message editing */
+"Please specify a subject." = "Молимо наведите тему.";
 "error_missingsubject" = "Порука нема тему. Да ли сте сигурни да желите да је пошаљете?";
 "error_missingrecipients" = "Молимо наведите барем једног примаоца.";
 "Send Anyway" = "Свеједно пошаљи";
@@ -315,6 +351,7 @@
 /* Error when uploading a file attachment */
 "Error while uploading the file \"%{0}\":" = "Грешка при отпремаљу документа \"%{0}\":";
 "There is an active file upload. Closing the window will interrupt it." = "У току је отпремање документа. Ако затворите прозор прекинућете отпремање.";
+"Message is too big" = "Порука је превелика";
 
 /* Appears while sending the message */
 "Sending" = "Слање";
