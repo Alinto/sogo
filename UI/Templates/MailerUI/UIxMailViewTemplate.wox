@@ -208,7 +208,7 @@
           </div>
 
           <!-- S/MIME Signature -->
-          <sg-block-toggle class="sg-no-print" layout="column"
+          <sg-block-toggle class="hide-print" layout="column"
                            ng-show="::viewer.message.signed">
             <md-divider><!-- divider --></md-divider>
             <md-list-item class="sg-button-toggle">
@@ -248,7 +248,7 @@
           </sg-block-toggle>
 
           <!-- S/MIME Encryption -->
-          <div class="sg-no-print" layout="column"
+          <div class="hide-print" layout="column"
                ng-show="::viewer.message.encrypted">
             <md-divider><!-- divider --></md-divider>
             <md-list-item>
@@ -261,7 +261,7 @@
           </div>
 
           <!-- Load external images -->
-          <div class="sg-no-print" ng-show="viewer.message.$hasUnsafeContent">
+          <div class="hide-print" ng-show="viewer.message.$hasUnsafeContent">
             <md-divider><!-- divider --></md-divider>
             <md-list-item class="md-clickable" layout="row" layout-align="space-between center"
                           label:aria-label="Load Images"
@@ -273,7 +273,7 @@
           </div>
 
           <!-- Return Receipt / Send MDN -->
-          <md-whiteframe class="md-whiteframe-z2 sg-no-print" layout="column" layout-align="center start"
+          <md-whiteframe class="md-whiteframe-z2 hide-print" layout="column" layout-align="center start"
                          ng-show="viewer.message.shouldAskReceipt == 1">
             <div layout="row" layout-align="start center">
               <div class="md-tile-left">

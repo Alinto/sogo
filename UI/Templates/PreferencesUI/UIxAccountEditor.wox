@@ -184,7 +184,7 @@
 
             <div layout="column" ng-show="$AccountDialogController.account.security.hasCertificate">
               <!-- S/MIME Certificate -->
-              <sg-block-toggle class="sg-no-print" layout="column">
+              <sg-block-toggle class="hide-print" layout="column">
                 <md-list-item class="sg-button-toggle">
                   <p class="md-flex">
                     <md-icon rsrc:md-svg-src="img/certificate.svg"><!-- certificate --></md-icon>

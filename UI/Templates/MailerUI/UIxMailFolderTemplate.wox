@@ -3,7 +3,7 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:label="OGo:label">
-  <div class="view-list sg-no-print" layout="column" ng-class="{'view-list--close': mailbox.centerIsClose(centerIsClose)}">
+  <div class="view-list hide-print" layout="column" ng-class="{'view-list--close': mailbox.centerIsClose(centerIsClose)}">
 
     <!-- in virtual mailbox mode -->
     <md-toolbar class="md-whiteframe-z1 md-hue-3"
@@ -363,7 +363,7 @@
     <md-icon>edit</md-icon>
   </md-button>
 
-  <div id="detailView" class="view-detail"
+  <div id="detailView" class="view-detail sg-block-print"
        layout="column" layout-align="start center"
        ng-class="{ 'sg-close': !mailbox.service.selectedFolder.hasSelectedMessage() }"
        md-colors="::{backgroundColor: 'default-background-200'}"

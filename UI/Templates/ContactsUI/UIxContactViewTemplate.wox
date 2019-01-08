@@ -107,7 +107,7 @@
             <div class="section" ng-if="editor.card.hasCertificate">
               <div class="pseudo-input-container">
                 <label class="pseudo-input-label"><var:string label:value="Security"/></label>
-                <sg-block-toggle class="sg-no-print" layout="column">
+                <sg-block-toggle class="hide-print" layout="column">
                   <md-list-item class="sg-button-toggle">
                     <p class="md-flex">
                       <md-icon rsrc:md-svg-src="img/certificate.svg"><!-- certificate --></md-icon>

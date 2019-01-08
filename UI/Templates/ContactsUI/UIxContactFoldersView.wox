@@ -232,9 +232,9 @@
       <var:component className="UIxTopnavToolbar" />
     </md-toolbar>
 
-    <div layout="row" class="md-flex">
+    <div layout="row" class="md-flex sg-block-print">
 
-      <div class="view-list sg-no-print" layout="column" ng-class="{'view-list--close': addressbook.centerIsClose(centerIsClose)}">
+      <div class="view-list hide-print" layout="column" ng-class="{'view-list--close': addressbook.centerIsClose(centerIsClose)}">
 
         <!-- single-selection toolbar -->
         <md-toolbar class="md-accent md-hue-1"
@@ -542,7 +542,7 @@
         </md-fab-actions>
       </md-fab-speed-dial>
 
-      <div id="detailView" class="view-detail"
+      <div id="detailView" class="view-detail sg-block-print"
            layout="column" layout-align="start center"
            ng-class="{ 'sg-close': !addressbook.selectedFolder.selectedCard }"
            md-colors="::{backgroundColor: 'default-background-200'}"

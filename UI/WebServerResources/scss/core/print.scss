@@ -56,9 +56,7 @@
   .toolbar-main,
   .view-list--close,
   .view-detail .sg-reversible.sg-flip .sg-face,
-  .view-detail .sg-reversible:not(.sg-flip) .sg-back,
-  .sg-no-print
-   {
+  .view-detail .sg-reversible:not(.sg-flip) .sg-back {
     display: none !important;
   }
 
@@ -84,12 +82,14 @@
   md-card-content pre,
   .view-detail .sg-reversible,
   .view-detail .sg-reversible:not(.sg-flip) .sg-face,
-  .view-detail .sg-reversible.sg-flip .sg-back {
+  .view-detail .sg-reversible.sg-flip .sg-back,
+  .sg-block-print {
     display: block !important;
     height: auto !important;
     min-height: auto !important;
     overflow: visible !important;
     position: relative !important;
+    flex: none;
   }
 
   // Remove shadow from Cards
