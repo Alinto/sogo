@@ -101,6 +101,7 @@
 "Personal" = "Personnel";
 "To Do" = "À faire";
 "Later" = "Peut attendre";
+"Return Receipt Sent" = "Accusé de réception envoyé";
 "a2_Sunday" = "Di";
 "a2_Monday" = "Lu";
 "a2_Tuesday" = "Ma";
@@ -115,6 +116,7 @@
 "You cannot (un)subscribe to a folder that you own!" = "Vous ne pouvez pas vous (dés)abonner à vos propres dossiers!";
 
 /* SMIME Certificate field */
+"S/MIME Certificate" = "Certificat S/MIME";
 "Subject Name" = "Sujet";
 "Issuer" = "Émetteur";
 "countryName" = "Pays";
@@ -141,6 +143,8 @@
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Basculer l'affichage";
 
+"Keyboard Shortcuts" = "Raccourcis clavier";
+
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Basculer l'étendue des éléments";
 
@@ -149,6 +153,9 @@
 
 /* Space key */
 "key_space" = "espace";
+
+/* Delete key */
+"key_delete" = "Suppr.";
 
 /* Shift and space key */
 "key_shift+space" = "maj. + espace";
