@@ -61,6 +61,9 @@
     padding-left: $mg;
     padding-right: $mg;
   }
+  md-chip {
+    cursor: pointer;
+  }
 }
 
 // Vertical buttons in header area of mail composer dialog

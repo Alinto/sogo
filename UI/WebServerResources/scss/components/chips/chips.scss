@@ -1,6 +1,11 @@
 /// chips.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
+$chip-dense-font-size: rem(1.2) !default;
+$chip-dense-height: rem(2.4) !default;
+$chip-dense-padding: 0 rem(0.8) 0 rem(0.8) !default;
+$chip-dense-margin: rem(0.6) rem(0.6) 0 0 !default;
+
 md-chips {
   // Remove the line under the tags of the message viewer
   &.sg-readonly {
@@ -8,6 +13,9 @@ md-chips {
       box-shadow: none;
       &.md-focused {
         box-shadow: none;
+      }
+      md-chip-template:focus {
+        outline: 0;
       }
       .md-chip-content {
         //max-width: initial; // fix bug in ng-material
@@ -24,6 +32,15 @@ md-chips {
         width: $chip-delete-icon-size;
       }
     }
+  }
+
+  // Small, compact chip
+  &.sg-dense md-chip {
+    height: $chip-dense-height;
+    padding: $chip-dense-padding;
+    @include rtl(margin, $chip-dense-margin, rtl-value($chip-dense-margin));
+    font-size: $chip-dense-font-size;
+    line-height: $chip-dense-height;
   }
   .sg-chip-progress {
     border-radius: $chip-height / 2;

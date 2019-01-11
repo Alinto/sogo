@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  MessageController.$inject = ['$window', '$scope', '$q', '$state', '$mdMedia', '$mdDialog', 'sgConstant', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'sgHotkeys', 'encodeUriFilter', 'sgSettings', 'ImageGallery', 'sgFocus', 'Dialog', 'Preferences', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message'];
-  function MessageController($window, $scope, $q, $state, $mdMedia, $mdDialog, sgConstant, stateAccounts, stateAccount, stateMailbox, stateMessage, sgHotkeys, encodeUriFilter, sgSettings, ImageGallery, focus, Dialog, Preferences, Calendar, Component, Account, Mailbox, Message) {
+  MessageController.$inject = ['$window', '$scope', '$q', '$state', '$mdMedia', '$mdDialog', '$mdPanel', 'sgConstant', 'stateAccounts', 'stateAccount', 'stateMailbox', 'stateMessage', 'sgHotkeys', 'encodeUriFilter', 'sgSettings', 'ImageGallery', 'sgFocus', 'Dialog', 'Preferences', 'Calendar', 'Component', 'Account', 'Mailbox', 'Message', 'AddressBook', 'Card'];
+  function MessageController($window, $scope, $q, $state, $mdMedia, $mdDialog, $mdPanel, sgConstant, stateAccounts, stateAccount, stateMailbox, stateMessage, sgHotkeys, encodeUriFilter, sgSettings, ImageGallery, focus, Dialog, Preferences, Calendar, Component, Account, Mailbox, Message, AddressBook, Card) {
     var vm = this, popupWindow = null, hotkeys = [];
 
     this.$onInit = function() {
@@ -27,7 +27,8 @@
       this.service = Message;
       this.tags = { searchText: '', selected: '' };
       this.showFlags = stateMessage.flags && stateMessage.flags.length > 0;
-      this.$showDetailedRecipients = false;
+      this.$alwaysShowDetailedRecipients = (!stateMessage.to || stateMessage.to.length < 5) && (!stateMessage.cc || stateMessage.cc.length < 5);
+      this.$showDetailedRecipients = this.$alwaysShowDetailedRecipients;
       this.showRawSource = false;
 
       _registerHotkeys(hotkeys);
@@ -195,6 +196,108 @@
       this.$showDetailedRecipients = !this.$showDetailedRecipients;
       $event.stopPropagation();
       $event.preventDefault();
+    };
+
+    this.focusChip = function($event) {
+      var chipElement = $event.target;
+      while (chipElement.tagName !== 'MD-CHIP') {
+        chipElement = chipElement.parentNode;
+      }
+      chipElement.classList.add('md-focused');
+    };
+
+    this.blurChip = function($event) {
+      var chipElement = $event.target;
+      while (chipElement.tagName !== 'MD-CHIP') {
+        chipElement = chipElement.parentNode;
+      }
+      chipElement.classList.remove('md-focused');
+      if ($event.relatedTarget && $event.relatedTarget.tagName === 'MD-CHIP-TEMPLATE') {
+        // Moving to another chip; close menu
+        vm.panel.close();
+      }
+    };
+
+    this.selectRecipient = function(recipient, $event) {
+      // Fetch addressbooks list
+      AddressBook.$findAll([]);
+
+      var targetElement = $event.target;
+
+      var panelPosition = $mdPanel.newPanelPosition()
+          .relativeTo(targetElement)
+          .addPanelPosition(
+            $mdPanel.xPosition.ALIGN_START,
+            $mdPanel.yPosition.ALIGN_TOPS
+          );
+
+      var panelAnimation = $mdPanel.newPanelAnimation()
+          .openFrom(targetElement)
+          .duration(100)
+          .withAnimation($mdPanel.animation.FADE);
+
+      var config = {
+        attachTo: angular.element(document.body),
+        locals: {
+          recipient: recipient,
+          addressbooks: AddressBook.$addressbooks,
+          subscriptions: AddressBook.$subscriptions,
+          newMessage: angular.bind(this, this.newMessage)
+        },
+        bindToController: true,
+        controller: MenuController,
+        controllerAs: '$menuCtrl',
+        position: panelPosition,
+        animation: panelAnimation,
+        targetEvent: $event,
+        templateUrl: 'UIxMailViewRecipientMenu',
+        trapFocus: true,
+        clickOutsideToClose: true,
+        escapeToClose: true,
+        focusOnOpen: false
+      };
+
+      $mdPanel.open(config)
+        .then(function(panelRef) {
+          vm.panel = panelRef;
+          // Automatically close panel when clicking inside of it
+          panelRef.panelEl.one('click', function() {
+            panelRef.close();
+          });
+        });
+
+      MenuController.$inject = ['mdPanelRef', '$state', '$mdToast'];
+      function MenuController(mdPanelRef, $state, $mdToast) {
+        this.onKeyDown = function($event) {
+          if ($event.which === 9) { // Tab
+            mdPanelRef.close();
+          }
+        };
+
+        this.newCard = function(recipient, addressbookId) {
+          var card = new Card({
+            pid: addressbookId,
+            c_cn: recipient.name,
+            emails: [{ value: recipient.email }]
+          });
+          card.$id().then(function(id) {
+            card.$save().then(function() {
+              // Show success toast when action succeeds
+              $mdToast.show(
+                $mdToast.simple()
+                  .content(l('Successfully created card'))
+                  .position('top right')
+                  .hideDelay(2000));
+            });
+          });
+          mdPanelRef.close();
+        };
+      }
+
+      if (targetElement.tagName === 'A') {
+        $event.stopPropagation();
+        $event.preventDefault();
+      }
     };
 
     this.filterMailtoLinks = function($event) {
@@ -382,8 +485,10 @@
     };
 
     this.newMessage = function($event, mailto) {
-      $event.stopPropagation();
-      $event.preventDefault();
+      if ($event.target.tagName === 'A') {
+        $event.stopPropagation();
+        $event.preventDefault();
+      }
       this.account.$newMessage({ mailto: mailto }).then(function(message) {
         _showMailEditor($event, message);
       });

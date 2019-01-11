@@ -1,3 +1,9 @@
+4.0.6 (YYYY-MM-DD)
+------------------
+
+Enhancements
+- [web] create card from sender or recipient address (#3002, #4610)
+
 4.0.5 (2019-01-09)
 ------------------
 
