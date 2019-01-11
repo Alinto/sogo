@@ -55,7 +55,12 @@
           protectedBy = "View";
           pageName    = "UIxContactsUserFolders"; 
         };
-        saveDragHandleState = {
+        addressbooksList = {
+          protectedBy = "View";
+          pageName = "UIxContactFoldersView";
+          actionName = "addressbooksList";
+        };
+       saveDragHandleState = {
           protectedBy = "View";
           pageName    = "UIxContactFoldersView";
           actionName  = "saveDragHandleState";
