@@ -141,6 +141,7 @@
                 </div>
               </div>
             </div>
+            <!-- to -->
             <div class="msg-recipients" layout="column" flex="50" flex-xs="100">
               <div class="pseudo-input-container--compact">
                 <label class="pseudo-input-label">
@@ -165,6 +166,7 @@
                   </md-chips>
                 </div>
               </div>
+              <!-- cc -->
               <div class="pseudo-input-container--compact" ng-show="viewer.$showDetailedRecipients">
                 <label class="pseudo-input-label" ng-show="::viewer.message.cc.length > 0">
                   <var:string label:value="Cc"/>
@@ -173,6 +175,26 @@
                   <md-chips
                       class="sg-dense sg-readonly"
                       ng-model="::viewer.message.cc"
+                      md-removable="::false"
+                      readonly="::true">
+                    <md-chip-template
+                        ng-click="viewer.selectRecipient($chip, $event)"
+                        ng-focus="viewer.focusChip($event)"
+                        ng-blur="viewer.blurChip($event)">
+                      {{ $chip.name || $chip.email }}
+                    </md-chip-template>
+                  </md-chips>
+                </div>
+              </div>
+              <!-- bcc -->
+              <div class="pseudo-input-container--compact" ng-show="viewer.$showDetailedRecipients">
+                <label class="pseudo-input-label" ng-show="::viewer.message.bcc.length > 0">
+                  <var:string label:value="Bcc"/>
+                </label>
+                <div class="pseudo-input-field" ng-show="::viewer.message.bcc.length > 0">
+                  <md-chips
+                      class="sg-dense sg-readonly"
+                      ng-model="::viewer.message.bcc"
                       md-removable="::false"
                       readonly="::true">
                     <md-chip-template
