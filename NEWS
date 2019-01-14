@@ -4,6 +4,9 @@
 Enhancements
 - [web] create card from sender or recipient address (#3002, #4610)
 
+Bug fixes
+- [web] Fix all-day event dates with different timezone
+
 4.0.5 (2019-01-09)
 ------------------
 
