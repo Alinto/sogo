@@ -677,19 +677,6 @@
 
       for (i = [fbInfo count]-1; i >= 0; i--)
         {
-          // We MUST use the -uniqueChildWithTag method here because the event has been flattened, so its timezone has been
-          // modified in SOGoAppointmentFolder: -fixupCycleRecord: ....
-          rangeStartDate = [[fbInfo objectAtIndex: i] objectForKey: @"startDate"];
-          delta = [[rangeStartDate timeZoneDetail] timeZoneSecondsFromGMT] - [[[(iCalDateTime *)[theEvent uniqueChildWithTag: @"dtstart"] timeZone] periodForDate: [theEvent startDate]] secondsOffsetFromGMT];
-          rangeStartDate = [rangeStartDate dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: delta];
-
-          rangeEndDate = [[fbInfo objectAtIndex: i] objectForKey: @"endDate"];
-          delta = [[rangeEndDate timeZoneDetail] timeZoneSecondsFromGMT] - [[[(iCalDateTime *)[theEvent uniqueChildWithTag: @"dtend"] timeZone] periodForDate: [theEvent endDate]] secondsOffsetFromGMT];
-          rangeEndDate = [rangeEndDate dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: delta];
-
-          range = [NGCalendarDateRange calendarDateRangeWithStartDate: rangeStartDate
-                                                              endDate: rangeEndDate];
-
 	  // We first remove any occurences in the freebusy that corresponds to the
 	  // current event. We do this to avoid raising a conflict if we move a 1 hour
 	  // meeting from 12:00-13:00 to 12:15-13:15. We would overlap on ourself otherwise.
@@ -698,11 +685,32 @@
               [fbInfo removeObjectAtIndex: i];
               continue;
             }
+
+          // Ignore transparent events
+          if (![[[fbInfo objectAtIndex: i] objectForKey: @"c_isopaque"] boolValue])
+            {
+              [fbInfo removeObjectAtIndex: i];
+              continue;
+            }
+
           // No need to check if the event isn't recurrent here as it's handled correctly
           // when we compute the "end" date.
           if ([allOccurences count])
             {
               must_delete = YES;
+
+              // We MUST use the -uniqueChildWithTag method here because the event has been flattened, so its timezone has been
+              // modified in SOGoAppointmentFolder: -fixupCycleRecord: ....
+              rangeStartDate = [[fbInfo objectAtIndex: i] objectForKey: @"startDate"];
+              delta = [[rangeStartDate timeZoneDetail] timeZoneSecondsFromGMT] - [[[(iCalDateTime *)[theEvent uniqueChildWithTag: @"dtstart"] timeZone] periodForDate: [theEvent startDate]] secondsOffsetFromGMT];
+              rangeStartDate = [rangeStartDate dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: delta];
+
+              rangeEndDate = [[fbInfo objectAtIndex: i] objectForKey: @"endDate"];
+              delta = [[rangeEndDate timeZoneDetail] timeZoneSecondsFromGMT] - [[[(iCalDateTime *)[theEvent uniqueChildWithTag: @"dtend"] timeZone] periodForDate: [theEvent endDate]] secondsOffsetFromGMT];
+              rangeEndDate = [rangeEndDate dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: delta];
+
+              range = [NGCalendarDateRange calendarDateRangeWithStartDate: rangeStartDate
+                                                                  endDate: rangeEndDate];
 
               for (j = 0; j < [allOccurences count]; j++)
                 {
