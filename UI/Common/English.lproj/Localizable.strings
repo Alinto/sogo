@@ -80,6 +80,9 @@
 "Error" = "Error";
 "Success" = "Success";
 
+/* confirmation dialog box */
+"Confirmation" = "Confirmation";
+
 /* alarms */
 "Reminder" = "Reminder";
 "Start" = "Start";
