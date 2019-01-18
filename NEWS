@@ -8,6 +8,7 @@ Bug fixes
  - [web] fixed all-day event dates with different timezone
  - [web] fixed display of Bcc header (#4642)
  - [core] ignore transparent events in time conflict validation (#4539)
+ - [core] fixed yearly recurrence calculator when starting from previous year
 
 4.0.5 (2019-01-09)
 ------------------

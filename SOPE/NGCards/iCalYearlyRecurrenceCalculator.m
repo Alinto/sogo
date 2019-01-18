@@ -227,8 +227,9 @@
 	}
       else
 	{
-	  // Year was skipped, added 12 months to the counter
-	  monthDiff += 12;
+	  // Year was skipped, jump to following year
+	  monthDiff += (13 - currentMonth);
+          currentMonth = 1;
 	}
     }
 

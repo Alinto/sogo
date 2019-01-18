@@ -1,8 +1,6 @@
 /* TestiCalRecurrenceCalculator.m - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
- *
- * Author: Francis Lachapelle <flachapelle@inverse.ca>
+ * Copyright (C) 2010-2019 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -225,8 +223,16 @@
 - (void) test_recurrenceRangesWithinCalendarDateRange_
 {
   NSArray *rules = [NSArray arrayWithObjects:
+                            [NSArray arrayWithObjects: @"20190104T090000Z",
+                                     @"20181201T000000Z",
+                                     @"FREQ=YEARLY;COUNT=0;UNTIL=20200123T090000Z;BYMONTH=1;BYDAY=4TH",
+                                     @"20190104T090000Z",
+                                     @"20190124T090000Z",
+                                     @"20200123T090000Z",
+                                     nil],
 			    // Every other year on January, February, and March for 10 occurrences
 			    [NSArray arrayWithObjects: @"19970310T090000Z",
+                                     @"19970310T090000Z",
 				     @"FREQ=YEARLY;INTERVAL=2;COUNT=10;BYMONTH=1,2,3",
 				     @"19970310T090000Z",
 				     @"19990110T090000Z",
@@ -241,6 +247,7 @@
 				     nil],
 			    // Everyday in January, for 3 years
 			    [NSArray arrayWithObjects: @"19980101T090000Z",
+                                     @"19980101T090000Z",
 				     @"FREQ=YEARLY;UNTIL=20000131T090000Z;BYMONTH=1;BYDAY=SU,MO,TU,WE,TH,FR,SA",
 					 //     RRULE:FREQ=DAILY;UNTIL=20000131T090000Z;BYMONTH=1
 				     @"19980101T090000Z",
@@ -345,7 +352,7 @@
   NSEnumerator *rulesList;
   NSArray *currentRule, *occurrences;
   int i, j;
-  NSCalendarDate *startDate, *endDate, *currentOccurrence;
+  NSCalendarDate *startDate, *endDate, *rangeStartDate, *currentOccurrence;
   iCalRecurrenceRule *recurrenceRule;
   iCalRecurrenceCalculator *calculator;
 
@@ -354,29 +361,30 @@
     {
       startDate = [[currentRule objectAtIndex: 0] asCalendarDate];
       endDate = [startDate dateByAddingYears: 0 months: 0 days: 0 hours: 1 minutes: 0 seconds: 0];
-      recurrenceRule = [iCalRecurrenceRule recurrenceRuleWithICalRepresentation: [currentRule objectAtIndex: 1]];
+      rangeStartDate = [[currentRule objectAtIndex: 1] asCalendarDate];
+      recurrenceRule = [iCalRecurrenceRule recurrenceRuleWithICalRepresentation: [currentRule objectAtIndex: 2]];
 
       firRange = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
 							     endDate: endDate];
       calculator = [iCalRecurrenceCalculator recurrenceCalculatorForRecurrenceRule: recurrenceRule
 						withFirstInstanceCalendarDateRange: firRange];
-      range = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
+      range = [NGCalendarDateRange calendarDateRangeWithStartDate: rangeStartDate
 							  endDate: [NSCalendarDate distantFuture]];
       occurrences = [calculator recurrenceRangesWithinCalendarDateRange: range];
-      for (i = 2, j = 0; i < [currentRule count] && j < [occurrences count]; i++, j++)
+      for (i = 3, j = 0; i < [currentRule count] && j < [occurrences count]; i++, j++)
 	{
 	  currentOccurrence = [[currentRule objectAtIndex: i] asCalendarDate];
 	  error = [NSString stringWithFormat: @"Invalid occurrence for recurrence rule %@: %@ (expected date was %@)",
-			    [currentRule objectAtIndex: 1],
+			    [currentRule objectAtIndex: 2],
 			    [[[occurrences objectAtIndex: j] startDate] descriptionWithCalendarFormat: dateFormat],
 			    [currentOccurrence descriptionWithCalendarFormat: dateFormat]];
 	  testWithMessage([currentOccurrence isDateOnSameDay: [[occurrences objectAtIndex: j] startDate]], error);
 	}
       error = [NSString stringWithFormat: @"Unexpected number of occurrences for recurrence rule %@ (found %ld, expected %ld)",
-			[currentRule objectAtIndex: 1],
+			[currentRule objectAtIndex: 2],
 			[occurrences count],
-			[currentRule count] - 2];
-      testWithMessage([currentRule count] - [occurrences count] == 2, error);
+			[currentRule count] - 3];
+      testWithMessage([currentRule count] - [occurrences count] == 3, error);
     }
 }
 
