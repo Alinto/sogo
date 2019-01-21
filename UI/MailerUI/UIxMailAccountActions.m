@@ -106,6 +106,7 @@
   NSDictionary *data;
   NSString *accountName, *mailboxName, *messageName;
   SOGoDraftsFolder *drafts;
+  SOGoUserDefaults *ud;
   id mailTo;
   BOOL save;
 
@@ -139,10 +140,11 @@
   signature = [[self clientObject] signature];
   if ([signature length])
     {
-      nl = ([[[[context activeUser] userDefaults] mailComposeMessageType] isEqualToString: @"html"] ? @"<br/>" : @"\n");
+      ud = [[context activeUser] userDefaults];
+      [newDraftMessage setIsHTML: [[ud mailComposeMessageType] isEqualToString: @"html"]];
+      nl = ([newDraftMessage isHTML] ? @"<br/>" : @"\n");
 
-      [newDraftMessage
-        setText: [NSString stringWithFormat: @"%@%@-- %@%@", nl, nl, nl, signature]];
+      [newDraftMessage setText: [NSString stringWithFormat: @"%@%@-- %@%@", nl, nl, nl, signature]];
       save = YES;
     }
   if (save)

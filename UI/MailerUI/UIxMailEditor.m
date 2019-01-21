@@ -756,6 +756,7 @@ static NSArray *infoKeys = nil;
   co = [self clientObject];
   [co fetchInfo];
   [self loadInfo: [co headers]];
+  [self setIsHTML: [co isHTML]];
   [self setText: [co text]];
   [self setSourceUID: [co IMAP4ID]];
   [self setSourceFolder: [co sourceFolder]];
@@ -793,7 +794,7 @@ static NSArray *infoKeys = nil;
   SOGoDraftObject *co;
 
   co = [self clientObject];
-  [self setIsHTML: [self isHTML]];
+  [co setIsHTML: isHTML];
 
   result = [self _saveRequestInfo];
   if (!result)
@@ -805,6 +806,7 @@ static NSArray *infoKeys = nil;
     {
       // Save new UID to plist
       [self setSourceUID: [co IMAP4ID]];
+      [co setIsHTML: isHTML];
       [co storeInfo];
 
       // Prepare response

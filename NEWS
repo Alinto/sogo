@@ -7,6 +7,7 @@ Enhancements
 Bug fixes
  - [web] fixed all-day event dates with different timezone
  - [web] fixed display of Bcc header (#4642)
+ - [web] fixed refresh of drafts folder when saving a draft
  - [core] ignore transparent events in time conflict validation (#4539)
  - [core] fixed yearly recurrence calculator when starting from previous year
 

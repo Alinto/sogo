@@ -874,6 +874,7 @@ static NSString    *userAgent      = nil;
   NSDictionary *h;
   NSMutableArray *addresses;
   NGImap4Envelope *sourceEnvelope;
+  SOGoUserDefaults *ud;
   id priority, receipt;
 
   [sourceMail fetchCoreInfos];
@@ -917,10 +918,12 @@ static NSString    *userAgent      = nil;
   if ([receipt isNotEmpty] && [receipt isKindOfClass: [NSString class]])
       [info setObject: (NSString*)receipt forKey: @"Disposition-Notification-To"];
 
-  [self setHeaders: info];
+  ud = [[context activeUser] userDefaults];
 
+  [self setHeaders: info];
   [self setText: [sourceMail contentForEditing]];
   [self setIMAP4ID: [[sourceMail nameInContainer] intValue]];
+  [self setIsHTML: [[ud mailComposeMessageType] isEqualToString: @"html"]];
 }
 
 //
@@ -934,6 +937,7 @@ static NSString    *userAgent      = nil;
   NSMutableArray *addresses;
   NSMutableDictionary *info;
   NGImap4Envelope *sourceEnvelope;
+  SOGoUserDefaults *ud;
 
   fromSentMailbox = [[sourceMail container] isKindOfClass: [SOGoSentFolder class]];
   [sourceMail fetchCoreInfos];
@@ -955,8 +959,11 @@ static NSString    *userAgent      = nil;
   if ([addresses count])
     [info setObject: [addresses objectAtIndex: 0] forKey: @"from"];
 
+  ud = [[context activeUser] userDefaults];
+
   [self setText: [sourceMail contentForReply]];
   [self setHeaders: info];
+  [self setIsHTML: [[ud mailComposeMessageType] isEqualToString: @"html"]];
   [self setSourceURL: [sourceMail imap4URLString]];
   [self setSourceFlag: @"Answered"];
   [self setSourceIMAP4ID: [[sourceMail nameInContainer] intValue]];

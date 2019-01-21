@@ -171,10 +171,11 @@
           index = this.$mailbox.uidsMap[oldUID];
           this.$mailbox.uidsMap[uid] = index;
           delete this.$mailbox.uidsMap[oldUID];
+          this.$mailbox.$messages[index].uid = this.uid;
 
           // Update messages list of mailbox
           _.forEach(['from', 'to', 'subject'], function(attr) {
-            _this.$mailbox.$messages[index][attr] = _this[attr];
+            _this.$mailbox.$messages[index][attr] = _this.editable[attr];
           });
         }
       }
