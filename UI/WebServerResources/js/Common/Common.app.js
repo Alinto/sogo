@@ -312,7 +312,7 @@
           if ($window.usesCASAuthentication && rejection.status == -1) {
             if ($window.attempted) {
               // Already attempted once -- reload page
-              $window.location.reload(true);
+              $window.location.href = $window.ApplicationBaseURL;
             }
             else {
               deferred = $q.defer();
@@ -330,7 +330,7 @@
           }
           else if ($window.usesSAML2Authentication && rejection.status == 401 && !$window.attempted) {
             $window.attempted = true;
-            $window.location.reload(true);
+            $window.location.href = $window.ApplicationBaseURL;
           }
           else {
             // Broadcast the response error
