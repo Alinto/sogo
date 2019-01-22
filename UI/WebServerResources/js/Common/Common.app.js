@@ -310,18 +310,26 @@
         if (/^application\/json/.test(rejection.config.headers.Accept)) {
           // Handle CAS ticket renewal
           if ($window.usesCASAuthentication && rejection.status == -1) {
-            deferred = $q.defer();
-            iframe = angular.element('<iframe class="ng-hide" src="' + $window.UserFolderURL + 'recover"></iframe>');
-            iframe.on('load', function() {
-              // Once the browser has followed the redirection, send the initial request
-              var $http = $injector.get('$http');
-              $http(rejection.config).then(deferred.resolve, deferred.reject);
-              iframe.remove();
-            });
-            document.body.appendChild(iframe[0]);
-            return deferred.promise;
+            if ($window.attempted) {
+              // Already attempted once -- reload page
+              $window.location.reload(true);
+            }
+            else {
+              deferred = $q.defer();
+              iframe = angular.element('<iframe class="ng-hide" src="' + $window.UserFolderURL + 'recover"></iframe>');
+              iframe.on('load', function() {
+                // Once the browser has followed the redirection, send the initial request
+                var $http = $injector.get('$http');
+                $http(rejection.config).then(deferred.resolve, deferred.reject);
+                iframe.remove();
+                $window.attempted = true;
+              });
+              document.body.appendChild(iframe[0]);
+              return deferred.promise;
+            }
           }
-          else if ($window.usesSAML2Authentication && rejection.status == 401) {
+          else if ($window.usesSAML2Authentication && rejection.status == 401 && !$window.attempted) {
+            $window.attempted = true;
             $window.location.reload(true);
           }
           else {
