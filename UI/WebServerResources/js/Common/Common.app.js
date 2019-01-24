@@ -322,9 +322,9 @@
                 var $http = $injector.get('$http');
                 $http(rejection.config).then(deferred.resolve, deferred.reject);
                 iframe.remove();
-                $window.attempted = true;
               });
               document.body.appendChild(iframe[0]);
+              $window.attempted = true;
               return deferred.promise;
             }
           }
