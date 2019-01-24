@@ -6,8 +6,16 @@
 "Domain" = "Domínio";
 "Remember username" = "Lembrar login";
 "Connect" = "Conectar";
+
+/* Appears while authentication is in progress */
+"Authenticating" = "Autenticando";
+
+/* Appears when authentication succeeds */
+"Welcome" = "Bem vindo";
+
 "Authentication Failed" = "Autenticação Falhou";
 "Wrong username or password." = "Usuário ou Senha Inválido.";
+"Retry" = "Tente Novamente";
 "cookiesNotEnabled" = "Você não pode logar porque a opção cookies está desabilitada. Por favor, habilite os cookies nas configurações de seu navegador e tente novamente.";
 "browserNotCompatible" = "Foi detectado que a atual versão de seu navegador não é suportado neste site. Recomentamos que use o Firefox. Clique no link abaixo para baixar a versão atual deste navegador.";
 "alternativeBrowsers" = "Alternativamente, você pode usar os seguinte navegadores compatíveis";
@@ -19,7 +27,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -52,6 +60,7 @@
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
 "About" = "Sobre";
 "AboutBox" = "Desenvolvido por Inverse, Sogo é um servidor de groupware cheio de recursos com foco em escalabilidade e simplicidade.\nSogo fornece uma interface Web baseada em AJAX ricos e suporta vários clientes nativos através da utilização de protocolos padrão como CalDAV e CardDAV.\nSogo é distribuído sob a GNU GPL <a href=\"http://gnu.org/licenses/gpl.html\"> </a> versão 2 ou posterior e as partes são distribuídos sob a GNU LGPL versão 2. Este é um software livre: você é livre para mudar e redistribuí-lo. Não há NENHUMA GARANTIA, até o limite permitido por lei.\nVeja <a href=\"http://www.sogo.nu/en/support/community.html\"> desta página</a> para várias opções de suporte.";
 "Your account was locked due to too many failed attempts." = "Sua conta foi bloqueada devido a muitas tentativas fracassadas.";
