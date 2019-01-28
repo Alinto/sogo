@@ -9,6 +9,7 @@ Bug fixes
  - [web] fixed display of Bcc header (#4642)
  - [web] fixed refresh of drafts folder when saving a draft
  - [web] fixed CAS session timeout handling during XHR requests (#4468)
+ - [web] reflect active locale in HTML lang attribute (#4660)
  - [core] ignore transparent events in time conflict validation (#4539)
  - [core] fixed yearly recurrence calculator when starting from previous year
 
