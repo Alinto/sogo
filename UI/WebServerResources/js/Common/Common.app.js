@@ -302,34 +302,41 @@
   /**
    * @ngInject
    */
-  ErrorInterceptor.$inject = ['$rootScope', '$window', '$q', '$injector'];
-  function ErrorInterceptor($rootScope, $window, $q, $injector) {
+  ErrorInterceptor.$inject = ['$rootScope', '$window', '$q', '$timeout', '$injector'];
+  function ErrorInterceptor($rootScope, $window, $q, $timeout, $injector) {
     return {
       responseError: function(rejection) {
         var deferred, iframe;
         if (/^application\/json/.test(rejection.config.headers.Accept)) {
           // Handle CAS ticket renewal
           if ($window.usesCASAuthentication && rejection.status == -1) {
-            if ($window.attempted) {
-              // Already attempted once -- reload page
-              $window.location.href = $window.ApplicationBaseURL;
-            }
-            else {
-              deferred = $q.defer();
-              iframe = angular.element('<iframe class="ng-hide" src="' + $window.UserFolderURL + 'recover"></iframe>');
-              iframe.on('load', function() {
+            deferred = $q.defer();
+            iframe = angular.element('<iframe class="ng-hide" src="' + $window.UserFolderURL + 'recover"></iframe>');
+            iframe.on('load', function() {
+              if ($window.recovered) {
+                // Already attempted once -- reload page
+                angular.element($window).off('beforeunload');
+                $window.location.href = $window.ApplicationBaseURL;
+              }
+              else {
                 // Once the browser has followed the redirection, send the initial request
-                var $http = $injector.get('$http');
-                $http(rejection.config).then(deferred.resolve, deferred.reject);
-                iframe.remove();
-              });
+                $timeout(function() {
+                  var $http = $injector.get('$http');
+                  $http(rejection.config)
+                    .then(deferred.resolve, deferred.reject)
+                    .finally(function () {
+                      $window.recovered = true;
+                      $timeout(iframe.remove, 500); // Wait before removing the iframe
+                    });
+                }, 500); // Wait before replaying the request
+              }
               document.body.appendChild(iframe[0]);
-              $window.attempted = true;
               return deferred.promise;
-            }
+            });
           }
-          else if ($window.usesSAML2Authentication && rejection.status == 401 && !$window.attempted) {
-            $window.attempted = true;
+          else if ($window.usesSAML2Authentication && rejection.status == 401 && !$window.recovered) {
+            angular.element($window).off('beforeunload');
+            $window.recovered = true;
             $window.location.href = $window.ApplicationBaseURL;
           }
           else {
