@@ -323,10 +323,13 @@
                 $timeout(function() {
                   var $http = $injector.get('$http');
                   $http(rejection.config)
-                    .then(deferred.resolve, deferred.reject)
-                    .finally(function () {
+                    .then(function() {
                       $window.recovered = true;
-                      $timeout(iframe.remove, 500); // Wait before removing the iframe
+                      $timeout(iframe.remove, 500);
+                      return deferred.resolve();
+                    }, function () {
+                      $window.recovered = true;
+                      return deferred.reject(); // Will reload the page
                     });
                 }, 500); // Wait before replaying the request
               }
