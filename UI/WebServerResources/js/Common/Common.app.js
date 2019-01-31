@@ -317,20 +317,17 @@
                 // Already attempted once -- reload page
                 angular.element($window).off('beforeunload');
                 $window.location.href = $window.ApplicationBaseURL;
+                deferred.resolve();
               }
               else {
                 // Once the browser has followed the redirection, send the initial request
                 $timeout(function() {
                   var $http = $injector.get('$http');
-                  $http(rejection.config)
-                    .then(function() {
-                      $window.recovered = true;
-                      $timeout(iframe.remove, 500);
-                      return deferred.resolve();
-                    }, function () {
-                      $window.recovered = true;
-                      return deferred.reject(); // Will reload the page
-                    });
+                  $http(rejection.config).then(function() {
+                    $timeout(iframe.remove, 500);
+                  });
+                  $window.recovered = true;
+                  deferred.reject(); // Will reload the page
                 }, 500); // Wait before replaying the request
               }
             });
