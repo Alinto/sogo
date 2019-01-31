@@ -330,9 +330,9 @@
                     });
                 }, 500); // Wait before replaying the request
               }
-              document.body.appendChild(iframe[0]);
-              return deferred.promise;
             });
+            document.body.appendChild(iframe[0]);
+            return deferred.promise;
           }
           else if ($window.usesSAML2Authentication && rejection.status == 401 && !$window.recovered) {
             angular.element($window).off('beforeunload');
