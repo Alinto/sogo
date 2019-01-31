@@ -313,22 +313,22 @@
             deferred = $q.defer();
             iframe = angular.element('<iframe class="ng-hide" src="' + $window.UserFolderURL + 'recover"></iframe>');
             iframe.on('load', function() {
-              if ($window.recovered) {
+              if (rejection.config.attempt) {
                 // Already attempted once -- reload page
                 angular.element($window).off('beforeunload');
                 $window.location.href = $window.ApplicationBaseURL;
-                deferred.resolve();
+                deferred.reject();
               }
               else {
                 // Once the browser has followed the redirection, send the initial request
                 $timeout(function() {
                   var $http = $injector.get('$http');
-                  $http(rejection.config).then(function() {
-                    $timeout(iframe.remove, 500);
+                  rejection.config.attempt = 1;
+                  $http(rejection.config).then(function(response) {
+                    deferred.resolve(response);
                   });
-                  $window.recovered = true;
-                  deferred.reject(); // Will reload the page
-                }, 500); // Wait before replaying the request
+                  $timeout(iframe.remove, 500);
+                }, 100); // Wait before replaying the request
               }
             });
             document.body.appendChild(iframe[0]);
