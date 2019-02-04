@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2018 Inverse inc.
+  Copyright (C) 2006-2019 Inverse inc.
 
   This file is part of SOGo.
 
@@ -28,6 +28,7 @@
 @class NSMutableDictionary;
 @class NSString;
 @class NSTimeZone;
+@class iCalPerson;
 @class iCalRepeatableEntityObject;
 @class SOGoDateFormatter;
 
@@ -46,6 +47,7 @@
   NSCalendarDate *oldEndDate;
   NSCalendarDate *newEndDate;
   NSString *organizerName;
+  iCalPerson *currentAttendee;
   NSMutableDictionary *values;
   SOGoDateFormatter *dateFormatter;
 }
@@ -60,6 +62,9 @@
 
 - (void) setOrganizerName: (NSString *) theString;
 - (NSString *) organizerName;
+
+- (void) setCurrentAttendee: (iCalPerson *) theAttendee;
+- (iCalPerson *) currentAttendee;
 
 - (NSCalendarDate *) oldStartDate;
 - (NSCalendarDate *) newStartDate;

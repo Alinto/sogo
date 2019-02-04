@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2013 Inverse inc.
+  Copyright (C) 2006-2019 Inverse inc.
   Copyright (C) 2000-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -48,6 +48,8 @@
       apt = nil;
       values = nil;
       dateFormatter = RETAIN([[context activeUser] dateFormatterInContext: context]);
+      organizerName = nil;
+      currentAttendee = nil;
     }
 
   return self;
@@ -59,6 +61,7 @@
   [apt release];
   [previousApt release];
   [organizerName release];
+  [currentAttendee release];
   [viewTZ release];
   [oldStartDate release];
   [newStartDate release];
@@ -162,6 +165,16 @@
 - (NSString *) organizerName
 {
   return organizerName;
+}
+
+- (void) setCurrentAttendee: (iCalPerson *) theAttendee
+{
+  ASSIGN(currentAttendee, theAttendee);
+}
+
+- (iCalPerson *) currentAttendee
+{
+  return currentAttendee;
 }
 
 - (NSString *) sentByText
@@ -291,6 +304,23 @@
   [self subclassResponsibility: _cmd];
 
   return nil;
+}
+
+- (NSString *) getParticipationRole
+{
+  if ([[currentAttendee role] caseInsensitiveCompare: @"OPT-PARTICIPANT"] == NSOrderedSame)
+    {
+      return [self labelForKey: @"Your participation is optional to this event"
+                     inContext: context];
+    }
+  else if ([[currentAttendee role] caseInsensitiveCompare: @"NON-PARTICIPANT"] == NSOrderedSame)
+    {
+      return [self labelForKey: @"Your participation is not required to this event"
+                 inContext: context];
+    }
+
+  return [self labelForKey: @"Your participation is required to this event"
+                 inContext: context];
 }
 
 @end

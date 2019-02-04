@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2016 Inverse inc.
+  Copyright (C) 2007-2019 Inverse inc.
 
   This file is part of SOGo
 
@@ -187,9 +187,17 @@
     {
       SOGoAppointmentObject *attendeeObject;
       iCalCalendar *iCalendarToSave;
-      
+      iCalPerson *attendee;
+      SOGoUser *user;
+
       iCalendarToSave = nil;
+      user = [SOGoUser userWithLogin: theUID];
       attendeeObject = [self _lookupEvent: [newEvent uid] forUID: theUID];
+      attendee = [newEvent userAsAttendee: user];
+
+      // If the atttende's role is NON-PARTICIPANT, we write nothing to its calendar
+      if ([[attendee role] caseInsensitiveCompare: @"NON-PARTICIPANT"] == NSOrderedSame)
+        return;
 
       if ([newEvent recurrenceId])
         {
@@ -197,12 +205,11 @@
           if ([attendeeObject isNew])
             {
               iCalEvent *ownerEvent;
-              SOGoUser *user;
+
               // We check if the attendee that was added to a single occurence is
               // present in the master component. If not, we create a calendar with
               // a single event for the occurence.
               ownerEvent = [[[newEvent parent] events] objectAtIndex: 0];
-              user = [SOGoUser userWithLogin: theUID];
 
               if (![ownerEvent userAsAttendee: user])
                 {
@@ -339,7 +346,7 @@
             }
         }
       else
-        [self errorWithFormat: @"Unable to find event with UID %@ in %@'s calendar - skipping delete operation", nameInContainer, theUID];
+        [self errorWithFormat: @"Unable to find event with UID %@ in %@'s calendar - skipping delete operation. This can be normal for NON-PARTICIPANT attendees.", nameInContainer, theUID];
     }
 }
 
@@ -1170,6 +1177,10 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   NSString *recurrenceTime, *delegateEmail;
   NSException *error;
   BOOL addDelegate, removeDelegate;
+
+  // If the atttende's role is NON-PARTICIPANT, we write nothing to its calendar
+  if ([[attendee role] caseInsensitiveCompare: @"NON-PARTICIPANT"] == NSOrderedSame)
+    return;
 
   error = nil;
 
