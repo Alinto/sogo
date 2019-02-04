@@ -3,6 +3,7 @@
 
 Enhancements
  - [web] create card from sender or recipient address (#3002, #4610)
+ - [core] baseDN now accept dynamic domain values (#3685)
 
 Bug fixes
  - [web] fixed all-day event dates with different timezone
