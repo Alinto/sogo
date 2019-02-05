@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.7.6
+ * @license AngularJS v1.7.7
  * (c) 2010-2018 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -99,7 +99,7 @@ function isValidObjectMaxDepth(maxDepth) {
 function minErr(module, ErrorConstructor) {
   ErrorConstructor = ErrorConstructor || Error;
 
-  var url = 'https://errors.angularjs.org/1.7.6/';
+  var url = 'https://errors.angularjs.org/1.7.7/';
   var regex = url.replace('.', '\\.') + '[\\s\\S]*';
   var errRegExp = new RegExp(regex, 'g');
 
@@ -535,8 +535,8 @@ function extend(dst) {
 * sinceVersion="1.6.5"
 * This function is deprecated, but will not be removed in the 1.x lifecycle.
 * There are edge cases (see {@link angular.merge#known-issues known issues}) that are not
-* supported by this function. We suggest
-* using [lodash's merge()](https://lodash.com/docs/4.17.4#merge) instead.
+* supported by this function. We suggest using another, similar library for all-purpose merging,
+* such as [lodash's merge()](https://lodash.com/docs/4.17.4#merge).
 *
 * @knownIssue
 * This is a list of (known) object types that are not handled correctly by this function:
@@ -544,6 +544,8 @@ function extend(dst) {
 * - [`MediaStream`](https://developer.mozilla.org/docs/Web/API/MediaStream)
 * - [`CanvasGradient`](https://developer.mozilla.org/docs/Web/API/CanvasGradient)
 * - AngularJS {@link $rootScope.Scope scopes};
+*
+* `angular.merge` also does not support merging objects with circular references.
 *
 * @param {Object} dst Destination object.
 * @param {...Object} src Source object(s).
@@ -922,7 +924,9 @@ function arrayRemove(array, value) {
  * @kind function
  *
  * @description
- * Creates a deep copy of `source`, which should be an object or an array.
+ * Creates a deep copy of `source`, which should be an object or an array. This functions is used
+ * internally, mostly in the change-detection code. It is not intended as an all-purpose copy
+ * function, and has several limitations (see below).
  *
  * * If no destination is supplied, a copy of the object or array is created.
  * * If a destination is provided, all of its elements (for arrays) or properties (for objects)
@@ -936,6 +940,25 @@ function arrayRemove(array, value) {
  *   Only enumerable properties are taken into account. Non-enumerable properties (both on `source`
  *   and on `destination`) will be ignored.
  * </div>
+ *
+ * <div class="alert alert-warning">
+ *   `angular.copy` does not check if destination and source are of the same type. It's the
+ *   developer's responsibility to make sure they are compatible.
+ * </div>
+ *
+ * @knownIssue
+ * This is a non-exhaustive list of object types / features that are not handled correctly by
+ * `angular.copy`. Note that since this functions is used by the change detection code, this
+ * means binding or watching objects of these types (or that include these types) might not work
+ * correctly.
+ * - [`File`](https://developer.mozilla.org/docs/Web/API/File)
+ * - [`Map`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Map)
+ * - [`ImageData`](https://developer.mozilla.org/docs/Web/API/ImageData)
+ * - [`MediaStream`](https://developer.mozilla.org/docs/Web/API/MediaStream)
+ * - [`Set`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)
+ * - [`WeakMap`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/WeakMap)
+ * - ['getter'](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get)/
+ *   [`setter`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set)`
  *
  * @param {*} source The source that will be used to make a copy. Can be any type, including
  *     primitives, `null`, and `undefined`.
@@ -2782,11 +2805,11 @@ function toDebugString(obj, maxDepth) {
 var version = {
   // These placeholder strings will be replaced by grunt's `build` task.
   // They need to be double- or single-quoted.
-  full: '1.7.6',
+  full: '1.7.7',
   major: 1,
   minor: 7,
-  dot: 6,
-  codeName: 'gravity-manipulation'
+  dot: 7,
+  codeName: 'kingly-exiting'
 };
 
 
@@ -2936,7 +2959,7 @@ function publishExternalAPI(angular) {
       });
     }
   ])
-  .info({ angularVersion: '1.7.6' });
+  .info({ angularVersion: '1.7.7' });
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -24158,7 +24181,6 @@ var htmlAnchorDirective = valueFn({
       </file>
     </example>
  *
- * @element INPUT
  * @param {expression} ngDisabled If the {@link guide/expression expression} is truthy,
  *     then the `disabled` attribute will be set on the element
  */
@@ -26060,8 +26082,10 @@ var inputType = {
    *
    * <div class="alert alert-warning">
    * **Note:** `input[email]` uses a regex to validate email addresses that is derived from the regex
-   * used in Chromium. If you need stricter validation (e.g. requiring a top-level domain), you can
-   * use `ng-pattern` or modify the built-in validators (see the {@link guide/forms Forms guide})
+   * used in Chromium, which may not fulfill your app's requirements.
+   * If you need stricter (e.g. requiring a top-level domain), or more relaxed validation
+   * (e.g. allowing IPv6 address literals) you can use `ng-pattern` or
+   * modify the built-in validators (see the {@link guide/forms Forms guide}).
    * </div>
    *
    * @param {string} ngModel Assignable AngularJS expression to data-bind to.
@@ -35875,17 +35899,17 @@ var requiredDirective = ['$parse', function($parse) {
     require: '?ngModel',
     link: function(scope, elm, attr, ctrl) {
       if (!ctrl) return;
-      var oldVal = attr.required || $parse(attr.ngRequired)(scope);
+      var value = attr.required || $parse(attr.ngRequired)(scope);
 
       attr.required = true; // force truthy in case we are on non input element
 
       ctrl.$validators.required = function(modelValue, viewValue) {
-        return !attr.required || !ctrl.$isEmpty(viewValue);
+        return !value || !ctrl.$isEmpty(viewValue);
       };
 
-      attr.$observe('required', function(val) {
-        if (oldVal !== val) {
-          oldVal = val;
+      attr.$observe('required', function(newVal) {
+        if (value !== newVal) {
+          value = newVal;
           ctrl.$validate();
         }
       });
