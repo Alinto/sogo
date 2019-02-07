@@ -197,7 +197,24 @@
 
       // If the atttende's role is NON-PARTICIPANT, we write nothing to its calendar
       if ([[attendee role] caseInsensitiveCompare: @"NON-PARTICIPANT"] == NSOrderedSame)
-        return;
+        {
+          // If the attendee's previous role was not NON-PARTICIPANT we must also delete
+          // the event from its calendar
+          attendee = [oldEvent userAsAttendee: user];
+          if ([[attendee role] caseInsensitiveCompare: @"NON-PARTICIPANT"] != NSOrderedSame)
+            {
+              NSString *currentUID;
+
+              currentUID = [attendee uidInContext: context];
+              if (currentUID)
+                [self _removeEventFromUID: currentUID
+                                    owner: owner
+                         withRecurrenceId: [oldEvent recurrenceId]];
+
+            }
+
+          return;
+        }
 
       if ([newEvent recurrenceId])
         {
@@ -1180,7 +1197,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 
   // If the atttende's role is NON-PARTICIPANT, we write nothing to its calendar
   if ([[attendee role] caseInsensitiveCompare: @"NON-PARTICIPANT"] == NSOrderedSame)
-    return;
+    return nil;
 
   error = nil;
 
