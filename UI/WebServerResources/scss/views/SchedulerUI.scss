@@ -713,6 +713,7 @@ $quarter_height: 10px;
   md-content {
     background-color: transparent;
     display: table-row;
+    scroll-behavior: smooth;
   }
   md-list {
     display: table-cell;

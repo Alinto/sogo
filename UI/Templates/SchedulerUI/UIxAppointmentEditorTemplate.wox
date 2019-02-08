@@ -130,6 +130,7 @@
           <div layout="row">
             <md-checkbox flex="50"
                          ng-model="editor.component.isAllDay"
+                         ng-change="editor.updateFreeBusyCoverage()"
                          ng-true-value="1"
                          ng-false-value="0"
                          label:aria-label="All day Event">
@@ -295,7 +296,7 @@
         </div>
       </md-dialog-content>
       <!-- cancel/reset/save -->
-      <md-dialog-actions ng-hide="editor.attendeeConflictError">
+      <md-dialog-actions class="ng-hide" ng-hide="editor.attendeeConflictError">
         <md-button type="button" ng-click="editor.cancel(eventForm)">
           <var:string label:value="Cancel"/>
         </md-button>
@@ -336,7 +337,7 @@
           </div>
         </div>
       </md-dialog-content>
-      <md-dialog-actions ng-show="editor.attendeeConflictError.conflicts">
+      <md-dialog-actions class="ng-hide" ng-show="editor.attendeeConflictError.conflicts">
         <md-button type="button" ng-click="editor.cancel(eventForm)">
           <var:string label:value="Cancel"/>
         </md-button>
