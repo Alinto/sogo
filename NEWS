@@ -15,6 +15,7 @@ Bug fixes
  - [web] fixed CAS session timeout handling during XHR requests (#4468)
  - [web] reflect active locale in HTML lang attribute (#4660)
  - [web] allow scroll of login page on small screen (#4035)
+ - [web] fixed saving of email address for external calendar notifications (#4630)
  - [core] ignore transparent events in time conflict validation (#4539)
  - [core] fixed yearly recurrence calculator when starting from previous year
 
