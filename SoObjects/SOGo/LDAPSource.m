@@ -526,14 +526,28 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
               grace: (int *) _grace
 {
   NGLdapConnection *bindConnection;
+  NSMutableString *s;
   NSString *userDN;
   BOOL didBind;
+  NSRange r;
 
   didBind = NO;
 
   NS_DURING
     if ([_login length] > 0 && [_pwd length] > 0)
       {
+        // We check if SOGo admins have deviced a top-level SOGoUserSources with a dynamic base DN.
+        // This is a supported multi-domain configuration. We alter the baseDN in this case by extracting
+        // the domain from the login.
+        r = [_login rangeOfString: @"@"];
+        if (r.location != NSNotFound &&
+            [_baseDN rangeOfString: @"%d"].location != NSNotFound)
+          {
+              s = [NSMutableString stringWithString: _baseDN];
+              [s replaceOccurrencesOfString: @"%d"  withString: [_login substringFromIndex: r.location+1]  options: 0  range: NSMakeRange(0, [s length])];
+              ASSIGN(_baseDN, s);
+            }
+
         bindConnection = [[NGLdapConnection alloc] initWithHostName: _hostname
                                                                port: _port];
         if (![_encryption length] || [self _setupEncryption: bindConnection])
