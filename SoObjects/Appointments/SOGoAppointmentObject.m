@@ -2150,7 +2150,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   NSException *ex;
   NSArray *roles;
 
-  BOOL userIsOrganizer;
+  BOOL ownerIsOrganizer;
 
   if (calendar == fullCalendar || calendar == safeCalendar
                                || calendar == originalCalendar)
@@ -2205,23 +2205,23 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       //
       // New event and we're the organizer -- send invitation to all attendees
       //
-      userIsOrganizer = [event userIsOrganizer: ownerUser];
+      ownerIsOrganizer = [event userIsOrganizer: ownerUser];
 
       // We handle the situation where the SOGo Integrator extension isn't installed or
       // if the SENT-BY isn't set. That can happen if Bob invites Alice by creating the event
       // in Annie's calendar. Annie should be the organizer, and Bob the SENT-BY. But most
       // broken CalDAV client that aren't identity-aware will create the event in Annie's calendar
       // and set Bob as the organizer. We fix this for them. See #3368 for details.
-      if (!userIsOrganizer &&
+      if (!ownerIsOrganizer &&
 	  [[context activeUser] hasEmail: [[event organizer] rfc822Email]])
 	{
 	  [[event organizer] setCn: [ownerUser cn]];
 	  [[event organizer] setEmail: [[ownerUser allEmails] objectAtIndex: 0]];
 	  [[event organizer] setSentBy: [NSString stringWithFormat: @"\"MAILTO:%@\"", [[[context activeUser] allEmails] objectAtIndex: 0]]];
-	  userIsOrganizer = YES;
+	  ownerIsOrganizer = YES;
 	}
 
-      if (userIsOrganizer)
+      if (ownerIsOrganizer)
 	{
 	  attendees = [event attendeesWithoutUser: ownerUser];
 	  if ([attendees count])
@@ -2359,25 +2359,38 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       //
       if ([[newEvent attendees] count] || [[oldEvent attendees] count])
         {
+          BOOL userIsOrganizer;
+
           // newEvent might be nil here, if we're deleting a RECURRENCE-ID with attendees
           // If that's the case, we use the oldEvent to obtain the organizer
           if (newEvent)
-            userIsOrganizer = [newEvent userIsOrganizer: ownerUser];
+            {
+              ownerIsOrganizer = [newEvent userIsOrganizer: ownerUser];
+              userIsOrganizer = [newEvent userIsOrganizer: [context activeUser]];
+            }
           else
-            userIsOrganizer = [oldEvent userIsOrganizer: ownerUser];
+            {
+              ownerIsOrganizer = [oldEvent userIsOrganizer: ownerUser];
+              userIsOrganizer = [oldEvent userIsOrganizer: [context activeUser]];
+            }
 
 	  // We handle the situation where the SOGo Integrator extension isn't installed or
 	  // if the SENT-BY isn't set. That can happen if Bob invites Alice by creating the event
 	  // in Annie's calendar. Annie should be the organizer, and Bob the SENT-BY. But most
 	  // broken CalDAV client that aren't identity-aware will create the event in Annie's calendar
 	  // and set Bob as the organizer. We fix this for them.  See #3368 for details.
+          //
+          // We also handle the case where Bob invites Alice and Bob has full access to Alice's calendar
+          // After inviting ALice, Bob opens the event in Alice's calendar and accept/declines the event.
+          //
 	  if (!userIsOrganizer &&
+              !ownerIsOrganizer &&
 	      [[context activeUser] hasEmail: [[newEvent organizer] rfc822Email]])
 	    {
 	      [[newEvent organizer] setCn: [ownerUser cn]];
 	      [[newEvent organizer] setEmail: [[ownerUser allEmails] objectAtIndex: 0]];
 	      [[newEvent organizer] setSentBy: [NSString stringWithFormat: @"\"MAILTO:%@\"", [[[context activeUser] allEmails] objectAtIndex: 0]]];
-	      userIsOrganizer = YES;
+	      ownerIsOrganizer = YES;
 	    }
 
           // With Thunderbird 10, if you create a recurring event with an exception
@@ -2387,7 +2400,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           if (!recurrenceId && ![[[[[newEvent parent] events] objectAtIndex: 0] organizer] uidInContext: context])
             [[[[newEvent parent] events] objectAtIndex: 0] setOrganizer: [newEvent organizer]];
 
-          if (userIsOrganizer)
+          if (ownerIsOrganizer)
             {
 	      // We check ACLs of the 'organizer' - in case someone forges the SENT-BY
 	      NSString *uid;
@@ -2417,7 +2430,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               // The master event was changed, A RECCURENCE-ID was added or modified
               else if ((ex = [self _handleUpdatedEvent: newEvent  fromOldEvent: oldEvent  force: YES]))
                 return ex;
-            }
+            } // if (ownerIsOrganizer) ..
           //
           // else => attendee is responding
           //
