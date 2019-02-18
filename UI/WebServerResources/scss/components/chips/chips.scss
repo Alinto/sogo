@@ -1,4 +1,6 @@
 /// chips.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
+$contact-chip-suggestion-margin: rem(0.4);
+
 @import 'extends';
 
 $chip-dense-font-size: rem(1.2) !default;
@@ -72,6 +74,14 @@ md-chips {
   }
 }
 
+// Adapting avatars in contact chips to the new material guidelines
+// See https://material.io/design/components/chips.html
+.md-contact-chips .md-chips md-chip .md-contact-avatar img,
+.md-contact-chips .sg-icon-badge-container md-icon {
+  height: $chip-height - 6px;
+  margin: 3px;
+}
+
 // Adjust space around secondary element in contact chip.
 // Used for attendees participation status icon (UIxAppointmentViewTemplate.wox)
 .md-contact-chips.sg-with-secondary .md-chips md-chip {
@@ -93,9 +103,14 @@ md-chips {
   }
 }
 
-// In the autocompletion menu, don't limit the contact name to a fixed width
-// and show the email address right after it
+// In the autocompletion menu,
+//  - fix image alignement;
+//  - don't limit the contact name to a fixed width;
+//  - show the email address right after it.
 .md-contact-suggestion {
+  img {
+    vertical-align: top;
+  }
   .md-contact-name {
     width: auto;
   }

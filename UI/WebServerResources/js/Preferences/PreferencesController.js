@@ -273,9 +273,7 @@
             if (user.image)
               user.$$image = user.image;
             else
-              vm.preferences.avatar(user.c_email, 32, {no_404: true}).then(function(url) {
-                user.$$image = url;
-              });
+              user.$$image = vm.preferences.avatar(user.c_email, 40, {no_404: true});
             }
         });
         return users;

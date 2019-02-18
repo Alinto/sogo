@@ -153,7 +153,7 @@
                         readonly="true">
                 <md-chip-template>
                   <div class="md-contact-avatar">
-                    <sg-avatar-image sg-email="$chip.email" size="32">person</sg-avatar-image>
+                    <sg-avatar-image sg-email="$chip.email" size="26">person</sg-avatar-image>
                   </div>
                   <div class="md-contact-name">
                     <a href="#"
@@ -173,7 +173,7 @@
                         readonly="true">
                 <md-chip-template>
                   <div class="md-contact-avatar">
-                    <sg-avatar-image sg-email="$chip.email" size="32">person</sg-avatar-image>
+                    <sg-avatar-image sg-email="$chip.email" size="26">person</sg-avatar-image>
                   </div>
                   <div class="md-contact-name">
                     <a href="#"
