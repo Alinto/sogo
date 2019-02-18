@@ -1,6 +1,6 @@
 /* SOGoContactGCSEntry.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2017 Inverse inc.
+ * Copyright (C) 2006-2019 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,15 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
+#import <NGCards/NGVCardReference.h>
+#import <NGCards/NGVList.h>
+
+#import <EOControl/EOQualifier.h>
 
 #import "NGVCard+SOGo.h"
 #import "SOGoContactEntryPhoto.h"
+#import "SOGoContactGCSFolder.h"
+#import "SOGoContactGCSList.h"
 
 #import "SOGoContactGCSEntry.h"
 
@@ -182,7 +188,14 @@
 - (NSException *) saveComponent: (NGVCard *) newCard
                     baseVersion: (unsigned int) newVersion
 {
+  NSArray *lists, *references;
+  NGVCardReference *reference;
+  SOGoContactGCSList *list;
+  EOQualifier *qualifier;
   NSException *ex;
+  NGVList *vlist;
+
+  int i, j;
 
   // We make sure new cards always have a UID - see #3819
   if (![[newCard uid] length])
@@ -191,6 +204,30 @@
   ex = [super saveComponent: newCard baseVersion: newVersion];
   [card release];
   card = nil;
+
+  // We now check if we must update lisst where this contact is present
+  qualifier = [EOQualifier qualifierWithQualifierFormat: @"c_component = 'vlist'"];
+  lists = [[self container] lookupContactsWithQualifier: qualifier];
+
+  for (i = 0; i < [lists count]; i++)
+    {
+      list = [[self container] lookupName: [[lists objectAtIndex: i] objectForKey: @"c_name"]
+                                inContext: context
+                                  acquire: NO];
+      vlist = [list vList];
+      references = [vlist cardReferences];
+
+      for (j = 0; j < [references count]; j++)
+        {
+          reference = [references objectAtIndex: j];
+          if ([[self nameInContainer] isEqualToString: [reference reference]])
+            {
+              [reference setFn: [newCard fn]];
+              [reference setEmail: [newCard preferredEMail]];
+              [list save];
+            }
+        }
+    }
 
   return ex;
 }
