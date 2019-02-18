@@ -20,6 +20,7 @@
 
 #import <Foundation/NSValue.h>
 
+#import <NGExtensions/NSObject+Logs.h>
 
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoPermissions.h>
@@ -147,7 +148,10 @@ _intValueFromHex (NSString *hexString)
             {
               folder = [sortedFolders objectAtIndex: count];
               folderName = [folder nameInContainer];
-              [sortedFolderNames addObject: folderName];
+              if (folderName)
+                [sortedFolderNames addObject: folderName];
+              else
+                [self errorWithFormat: @"Unexpected entry in FoldersOrder setting: %@", folder];
             }
         }
 
