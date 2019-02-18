@@ -5,6 +5,7 @@ Enhancements
  - [web] create card from sender or recipient address (#3002, #4610)
  - [web] updated Angular to version 1.7.7
  - [web] restored support for next/previous slot suggestion in attendees editor
+ - [web] improved auto-completion display of contacts
  - [core] baseDN now accept dynamic domain values (#3685 - sponsored by iRedMail)
  - [core] we now handle optional and non-required attendee states
 

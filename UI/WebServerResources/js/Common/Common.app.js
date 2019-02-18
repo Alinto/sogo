@@ -203,7 +203,6 @@
       'contrastLightColors': ['800', '900']
     });
     var greyMap = $mdThemingProvider.extendPalette('grey', {
-      '600': '00b0c0', // used when highlighting text in md-autocomplete,
       '1000': 'baa870' // used as the background color of the busy periods of the attendees editor
     });
     $mdThemingProvider.definePalette('sogo-grey', greyMap);

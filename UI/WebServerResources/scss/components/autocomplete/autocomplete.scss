@@ -20,17 +20,21 @@ $list-item-dense-header-font-size: round($subhead-font-size-base * .8) !default;
 $list-item-dense-font-size: round($body-font-size-base * .85) !default;
 $list-item-dense-line-height: 1.05 !default;
 
-
 .md-autocomplete-suggestions.md-3-line {
   li {
     @include ie11-min-height-flexbug($list-item-dense-three-line-height);
     height: $list-item-dense-three-line-height;
     line-height: $list-item-dense-line-height;
     min-height: $list-item-dense-three-line-height;
+  }
+}
+
+.md-autocomplete-suggestions.md-2-line,
+.md-autocomplete-suggestions.md-3-line {
+  li {
     display: flex;
     flex: 1 1 auto;
     align-items: center;
-
 
     .md-list-item-text {
       overflow: hidden;

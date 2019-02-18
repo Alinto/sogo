@@ -19,12 +19,10 @@
     <sg-timepicker ng-model="editor.component.$attendees.slotEndTimeLimit"><!-- slot end --></sg-timepicker>
     <md-button class="md-icon-button"
                label:aria-label="Previous slot"
-               ng-click="editor.previousSlot()"
-               md-no-ink="md-no-ink"><md-icon>chevron_left</md-icon></md-button>
+               ng-click="editor.previousSlot()"><md-icon>chevron_left</md-icon></md-button>
     <md-button class="md-icon-button"
                label:aria-label="Next slot"
-               ng-click="editor.nextSlot()"
-               md-no-ink="md-no-ink"><md-icon>chevron_right</md-icon></md-button>
+               ng-click="editor.nextSlot()"><md-icon>chevron_right</md-icon></md-button>
   </div>
   <div layout="row">
     <!-- attendees -->
