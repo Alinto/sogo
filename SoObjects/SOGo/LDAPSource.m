@@ -85,6 +85,7 @@ static Class NSStringK;
       _domain = nil;
 
       _baseDN = nil;
+      _pristineBaseDN = nil;
       _schema = nil;
       _IDField = @"cn"; /* the first part of a user DN */
       _CNField = @"cn";
@@ -131,6 +132,7 @@ static Class NSStringK;
   [_hostname release];
   [_encryption release];
   [_baseDN release];
+  [_pristineBaseDN release];
   [_IDField release];
   [_CNField release];
   [_UIDField release];
@@ -323,6 +325,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   andMultipleBookingsField: (NSString *) newMultipleBookingsField
 {
   ASSIGN(_baseDN, [newBaseDN lowercaseString]);
+  ASSIGN(_pristineBaseDN, [newBaseDN lowercaseString]);
   if (newIDField)
     ASSIGN(_IDField, [newIDField lowercaseString]);
   if (newCNField)
@@ -541,9 +544,9 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
         // the domain from the login.
         r = [_login rangeOfString: @"@"];
         if (r.location != NSNotFound &&
-            [_baseDN rangeOfString: @"%d"].location != NSNotFound)
+            [_pristineBaseDN rangeOfString: @"%d"].location != NSNotFound)
           {
-              s = [NSMutableString stringWithString: _baseDN];
+              s = [NSMutableString stringWithString: _pristineBaseDN];
               [s replaceOccurrencesOfString: @"%d"  withString: [_login substringFromIndex: r.location+1]  options: 0  range: NSMakeRange(0, [s length])];
               ASSIGN(_baseDN, s);
             }

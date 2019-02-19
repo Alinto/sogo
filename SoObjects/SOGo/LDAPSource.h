@@ -51,6 +51,7 @@
   NSString *_userPasswordAlgorithm;
 
   NSString *_baseDN;
+  NSString *_pristineBaseDN;
   LDAPSourceSchema *_schema;
   NSString *_IDField;     // the first part of a user DN
   NSString *_CNField;
