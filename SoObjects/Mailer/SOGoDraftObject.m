@@ -752,25 +752,33 @@ static NSString    *userAgent      = nil;
       [_info removeObjectForKey: @"cc"];
     }
 
-  /* CC processing if we reply-to-all: - we add all 'to' and 'cc' fields */
+  /* CC processing if we reply-to-all: - we add all 'to', 'cc' and 'bcc' fields */
   if (_replyToAll)
     {
-      to = [[NSMutableArray alloc] init];
+      to = [NSMutableArray array];
 
       [addrs setArray: [_envelope to]];
       [self _purgeRecipients: allRecipients
-	    fromAddresses: addrs];
+               fromAddresses: addrs];
       [self _addEMailsOfAddresses: addrs toArray: to];
       [self _addRecipients: addrs toArray: allRecipients];
 
       [addrs setArray: [_envelope cc]];
       [self _purgeRecipients: allRecipients
-	    fromAddresses: addrs];
+               fromAddresses: addrs];
       [self _addEMailsOfAddresses: addrs toArray: to];
-
+      [self _addRecipients: addrs toArray: allRecipients];
       [_info setObject: to forKey: @"cc"];
 
-      [to release];
+      if ([[_envelope bcc] count])
+        {
+          to = [NSMutableArray array];
+          [addrs setArray: [_envelope bcc]];
+          [self _purgeRecipients: allRecipients
+                   fromAddresses: addrs];
+          [self _addEMailsOfAddresses: addrs toArray: to];
+          [_info setObject: to forKey: @"bcc"];
+        }
     }
 }
 

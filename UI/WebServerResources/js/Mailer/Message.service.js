@@ -275,7 +275,7 @@
    */
   Message.prototype.allowReplyAll = function() {
     var recipientsCount = 0;
-    recipientsCount = _.reduce(['to', 'cc'], _.bind(function(count, type) {
+    recipientsCount = _.reduce(['to', 'cc', 'bcc'], _.bind(function(count, type) {
       if (this[type])
         return count + this[type].length;
       else
