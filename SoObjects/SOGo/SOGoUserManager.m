@@ -584,7 +584,7 @@ static Class NSNullK;
       block_time = [sd failedLoginBlockInterval];
 
       if ([[failedCount objectForKey: @"FailedCount"] intValue] >= [sd maximumFailedLoginCount] &&
-          delta_last_request >= [sd maximumFailedLoginInterval] &&
+          delta_last_request < [sd maximumFailedLoginInterval] &&
           delta_start <= block_time )
         {
           *_perr = PolicyAccountLocked;

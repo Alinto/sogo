@@ -21,6 +21,7 @@ Bug fixes
  - [core] ignore transparent events in time conflict validation (#4539)
  - [core] fixed yearly recurrence calculator when starting from previous year
  - [core] changes to contacts are now propagated to lists (#850, #4301, #4617)
+ - [core] fixed bad password login interval (#4664)
 
 4.0.5 (2019-01-09)
 ------------------
