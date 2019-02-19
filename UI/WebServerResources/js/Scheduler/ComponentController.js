@@ -234,6 +234,8 @@
         oldEndDate = new Date(this.component.end.getTime());
       if (this.component.due)
         oldDueDate = new Date(this.component.due.getTime());
+
+      $timeout(scrollToStart);
     };
 
     this.addAttachUrl = function () {

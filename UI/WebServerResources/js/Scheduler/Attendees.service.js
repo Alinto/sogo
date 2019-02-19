@@ -32,7 +32,7 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Attendees constructor
    */
-  Attendees.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Preferences', 'User', 'Card', 'Gravatar', 'Resource', function($q, $timeout, $log, Settings, Preferences, User, Card, Gravatar, Resource) {
+  Attendees.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Attendees_ROLES', 'Preferences', 'User', 'Card', 'Gravatar', 'Resource', function($q, $timeout, $log, Settings, ROLES, Preferences, User, Card, Gravatar, Resource) {
     angular.extend(Attendees, {
       $q: $q,
       $timeout: $timeout,
@@ -42,7 +42,8 @@
       $Preferences: Preferences,
       $Card: Card,
       $gravatar: Gravatar,
-      $$resource: new Resource(Settings.activeUser('folderURL') + 'Calendar', Settings.activeUser())
+      $$resource: new Resource(Settings.activeUser('folderURL') + 'Calendar', Settings.activeUser()),
+      ROLES: ROLES
     });
 
     Attendees.dayStartHour = parseInt(Preferences.defaults.SOGoDayStartTime.split(':')[0]);
@@ -62,8 +63,13 @@
     angular.module('SOGo.SchedulerUI', ['SOGo.Common']);
   }
   angular.module('SOGo.SchedulerUI')
+    .constant('Attendees_ROLES', {
+      REQ_PARTICIPANT: 'req-participant',
+      OPT_PARTICIPANT: 'opt-participant',
+      NON_PARTICIPANT: 'non-participant',
+      CHAIR: 'chair'
+    })
     .factory('Attendees', Attendees.$factory);
-
 
   /**
    * @function timeToQuarters
@@ -138,7 +144,7 @@
             attendee = {
               name: ref.c_cn,
               email: ref.$preferredEmail(options? options.partial : undefined),
-              role: 'req-participant',
+              role: Attendees.ROLES.REQ_PARTICIPANT,
               partstat: 'needs-action',
               uid: ref.c_uid,
               $avatarIcon: 'person',
@@ -165,7 +171,7 @@
           isMSExchange: card.ismsexchange,
           name: card.c_cn,
           email: card.$preferredEmail(),
-          role: 'req-participant',
+          role: Attendees.ROLES.REQ_PARTICIPANT,
           partstat: 'needs-action',
           $avatarIcon: card.$avatarIcon
         };
@@ -181,6 +187,20 @@
         }
       }
     }
+  };
+
+  /**
+   * @function nextRole
+   * @memberof Attendees.prototype
+   * @desc Switch the attendee to the next participation role.
+   * @param {Object} attendee - the attendee definition
+   */
+  Attendees.prototype.nextRole = function(attendee) {
+    var roles = _.values(Attendees.ROLES);
+    var index = _.findIndex(roles, function(role) {
+      return attendee.role === role;
+    });
+    attendee.role = roles[++index % 4];
   };
 
   /**

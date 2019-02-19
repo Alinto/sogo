@@ -440,15 +440,45 @@ validate_untilbeforeend    = "The recurrence must end after the first occurrence
 "Are you sure you want to delete the selected components?"
 = "Are you sure you want to delete the selected components?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Role";
+
+/* Participant role: participation is required */
 "Participant" = "Participant";
+
+/* Participant role: participation is required */
+"req-participant" = "Participant";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Optional Participant";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Optional Participant";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Non Participant";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Non Participant";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Chair";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Chair";
+
+/* Participant status: needs action */
 "Needs action" = "Needs action";
+
+/* Participant status: event accepted */
 "Accepted" = "Accepted";
+
+/* Participant status: event declined */
 "Declined" = "Declined";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Tentative";
+
 "Free" = "Free";
 "Busy" = "Busy";
 "Maybe busy" = "Maybe busy";

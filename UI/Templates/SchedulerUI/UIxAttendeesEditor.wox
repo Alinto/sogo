@@ -4,6 +4,7 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
+    xmlns:rsrc="OGo:url"
     >
   <script type="text/javascript">
     var dayStartHour = <var:string value="dayStartHour"/>;
@@ -50,6 +51,16 @@
                    label:aria-label="Delete"
                    ng-click="editor.removeAttendee(currentAttendee, eventForm)">
           <md-icon>remove_circle</md-icon>
+        </md-button>
+        <md-button class="md-icon-button"
+                   label:aria-label="Role"
+                   ng-click="editor.component.$attendees.nextRole(currentAttendee)"
+                   ng-switch="currentAttendee.role">
+          <md-tooltip md-direction="right">{{ currentAttendee.role | loc }}</md-tooltip>
+          <md-icon class="ng-animate-disabled" ng-switch-when="req-participant">record_voice_over</md-icon>
+          <md-icon class="ng-animate-disabled" ng-switch-when="opt-participant">person_outline</md-icon>
+          <md-icon class="ng-animate-disabled" ng-switch-when="non-participant" rsrc:md-svg-src="img/voice_over_off.svg"><!-- non-participant --></md-icon>
+          <md-icon class="ng-animate-disabled" ng-switch-when="chair">event_seat</md-icon>
         </md-button>
         <sg-avatar-image class="md-avatar"
                          sg-email="currentAttendee.email"
