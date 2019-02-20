@@ -70,10 +70,10 @@
                         md-separator-keys="editor.recipientSeparatorKeys"
                         md-transform-chip="editor.addRecipient($chip, 'to')"
                         md-add-on-blur="true"
+                        md-autofocus="editor.isNew()"
                         md-autocomplete-snap="width">
                 <md-autocomplete
                     md-menu-class="md-2-line"
-                    md-autofocus="editor.isNew()"
                     md-search-text="editor.autocomplete.to.searchText"
                     md-selected-item="editor.autocomplete.to.selected"
                     md-items="user in editor.contactFilter(editor.autocomplete.to.searchText)"
@@ -250,7 +250,7 @@
                     ck-focus="editor.onHTMLFocus($event)"
                     ng-model="editor.message.editable.text"
                     ng-focus="editor.onTextFocus($event)"
-                    md-autofocus="!editor.isNew()"
+                    md-autofocus="::!editor.isNew()"
                     md-no-resize="md-no-resize"
                     md-detect-hidden="md-detect-hidden" />
         </md-input-container>
