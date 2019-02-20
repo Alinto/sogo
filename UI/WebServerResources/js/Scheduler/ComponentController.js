@@ -235,7 +235,8 @@
       if (this.component.due)
         oldDueDate = new Date(this.component.due.getTime());
 
-      $timeout(scrollToStart);
+      if (this.component.attendees)
+        $timeout(scrollToStart);
     };
 
     this.addAttachUrl = function () {
