@@ -334,7 +334,7 @@
 "Add an action" = "Adicionar uma ação";
 "For incoming messages that" = "Para mensagens recebidas que";
 "match all of the following rules" = "correspondem a todas as seguintes regras";
-"match any of the following rules" = "corresponde a nenhuma das seguintes regras";
+"match any of the following rules" = "corresponde a alguma das seguintes regras";
 "match all messages" = "corresponder a todas as mensagens";
 "Perform these actions" = "Realizar essas ações";
 "Untitled Filter" = "Filtro sem título";
@@ -352,7 +352,7 @@
 "Flag" = "Sinalizar";
 
 "Discard the message" = "Descarte a mensagem";
-"File the message in" = "Arquivo da mensagem em";
+"File the message in" = "Arquivar a mensagem em";
 
 /* Select field label of "file message" mail filter action */
 "Mailbox" = "Caixa de correio";

@@ -11,7 +11,7 @@ add_info_text = "As solicitações iMIP 'ADD' ainda não são suportadas pelo SO
 publish_info_text = "O solicitante lhe informa sobre um evento anexo.";
 cancel_info_text = "Seu convite ou evento foi cancelado.";
 request_info_no_attendee = "está propondo uma reunião aos participantes. Você está recebendo este email como uma notificação, você não está agendado como um particiopante.";
-Appointment = "Apontamento";
+Appointment = "Compromisso";
 "Status Update" = "Status da Atualização";
 was = "foi";
 

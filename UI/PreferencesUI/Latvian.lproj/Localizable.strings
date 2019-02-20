@@ -124,6 +124,8 @@
 "Prevent from being invited to appointments" = "Izvairītos no aicinājuma uz tikšanos";
 "White list for appointment invitations" = "Tikšanās uzaicinājumu baltais saraksts";
 "Contacts Names" = "Kontaktu nosaukumi";
+"Duplicate name" = "Nosaukuma dublikāts";
+"Calendar categories must have unique names." = "Kalendāra kategorijām ir jābūt ar unikāliem nosaukumiem.";
 
 /* Default Calendar */
 "Default calendar" = "Noklusējuma kalendārs";
