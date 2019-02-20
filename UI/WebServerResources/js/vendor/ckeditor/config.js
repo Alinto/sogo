@@ -21,6 +21,7 @@ CKEDITOR.editorConfig = function( config ) {
   config.removeDialogTabs = 'link:advanced';
   config.enterMode = CKEDITOR.ENTER_BR;
   config.tabSpaces = 4;
+  // config.fullPage = true; include header and body
   config.allowedContent = true; // don't filter tags
   config.entities = false;
 

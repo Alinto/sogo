@@ -7,6 +7,7 @@ Enhancements
  - [web] restored support for next/previous slot suggestion in attendees editor
  - [web] improved auto-completion display of contacts
  - [web] allow modification of attendees participation role
+ - [web] updated CKEditor to version 4.11.2
  - [core] baseDN now accept dynamic domain values (#3685 - sponsored by iRedMail)
  - [core] we now handle optional and non-required attendee states
 
