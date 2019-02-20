@@ -69,9 +69,9 @@
               <md-chips ng-model="editor.message.editable.to"
                         md-separator-keys="editor.recipientSeparatorKeys"
                         md-transform-chip="editor.addRecipient($chip, 'to')"
-                        md-add-on-blur="true">
+                        md-add-on-blur="true"
+                        md-autocomplete-snap="width">
                 <md-autocomplete
-                    class="sg-chips-autocomplete"
                     md-menu-class="md-2-line"
                     md-autofocus="editor.isNew()"
                     md-search-text="editor.autocomplete.to.searchText"
@@ -103,9 +103,9 @@
               <md-chips ng-model="editor.message.editable.cc"
                         md-separator-keys="editor.recipientSeparatorKeys"
                         md-transform-chip="editor.addRecipient($chip, 'cc')"
-                        md-add-on-blur="true">
+                        md-add-on-blur="true"
+                        md-autocomplete-snap="width">
                 <md-autocomplete
-                    class="sg-chips-autocomplete"
                     md-menu-class="md-2-line"
                     md-search-text="editor.autocomplete.cc.searchText"
                     md-selected-item="editor.autocomplete.cc.selected"
@@ -136,9 +136,9 @@
               <md-chips ng-model="editor.message.editable.bcc"
                         md-separator-keys="editor.recipientSeparatorKeys"
                         md-transform-chip="editor.addRecipient($chip, 'bcc')"
-                        md-add-on-blur="true">
+                        md-add-on-blur="true"
+                        md-autocomplete-snap="width">
                 <md-autocomplete
-                    class="sg-chips-autocomplete"
                     md-menu-class="md-2-line"
                     md-selected-item="editor.autocomplete.bcc.selected"
                     md-search-text="editor.autocomplete.bcc.searchText"

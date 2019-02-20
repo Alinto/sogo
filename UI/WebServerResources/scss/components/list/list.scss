@@ -184,7 +184,7 @@ div.md-tile-left {
     }
     .#{$md}-subhead {
       @extend .#{$md}-body-1;
-      white-space: pre-wrap;
+      white-space: pre;
     }
     .#{$md}-body {
       @extend .#{$md}-caption;
