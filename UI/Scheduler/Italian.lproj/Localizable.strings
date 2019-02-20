@@ -440,15 +440,45 @@ validate_untilbeforeend    = "La ricorrenza deve finire dopo la prima occorrenza
 "Are you sure you want to delete the selected components?"
 = "Sei sicuro di voler eliminare i componenti selezionati?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Ruolo";
+
+/* Participant role: participation is required */
 "Participant" = "Partecipante";
+
+/* Participant role: participation is required */
+"req-participant" = "Partecipante";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Partecipante non necessario";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Partecipante non necessario";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Non Partecipante";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Non Partecipante";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Presidente";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Presidente";
+
+/* Participant status: needs action */
 "Needs action" = "Richiede un'azione";
+
+/* Participant status: event accepted */
 "Accepted" = "Accettato";
+
+/* Participant status: event declined */
 "Declined" = "Declinato";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Tentativo";
+
 "Free" = "Libero";
 "Busy" = "Occupato";
 "Maybe busy" = "Probabilmente occupato";
