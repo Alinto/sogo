@@ -43,13 +43,3 @@ md-menu-content {
     }
   }
 }
-
-// Fix dense menu
-// See https://github.com/angular/material/commit/d370eb2
-md-menu-content {
-  &.md-dense {
-    md-menu-item {
-      min-height: $dense-menu-item-height;
-    }
-  }
-}
