@@ -62,3 +62,8 @@ vtodo_class2 = "(Tâche confidentielle)";
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Impossible d'accéder à la ressource suivante: %{Cn} %{SystemEmail}";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Le nombre maximal de réservations simultanées (%{NumberOfSimultaneousBookings}) est atteint pour la ressource «%{Cn} %{SystemEmail}». L'événement en conflit est «%{EventTitle}» et débute le %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Votre participation est requise pour cet événement";
+"Your participation is optional to this event" = "Votre participation est optionnelle pour cet événement";
+"Your participation is not required to this event" = "Votre participation n'est pas requise pour cet événement";
