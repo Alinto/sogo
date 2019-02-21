@@ -440,15 +440,45 @@ validate_untilbeforeend    = "Zapętlenie musi zakończyć się po pierwszym wys
 "Are you sure you want to delete the selected components?"
 = "Na pewno chcesz usunąć wybrane komponenty?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Rola";
+
+/* Participant role: participation is required */
 "Participant" = "Uczestnik";
+
+/* Participant role: participation is required */
+"req-participant" = "Uczestnik";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Uczestnik opcjonalny";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Uczestnik opcjonalny";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Nie uczestniczy";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Nie uczestniczy";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Prowadzący";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Prowadzący";
+
+/* Participant status: needs action */
 "Needs action" = "Wymaga akcji";
+
+/* Participant status: event accepted */
 "Accepted" = "Zaakceptowane";
+
+/* Participant status: event declined */
 "Declined" = "Odmówione";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Niepewne";
+
 "Free" = "Wolny";
 "Busy" = "Zajęty";
 "Maybe busy" = "Być może zajęty";
