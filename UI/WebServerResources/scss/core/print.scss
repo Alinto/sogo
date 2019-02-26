@@ -47,8 +47,8 @@
   md-autocomplete,
   md-sidenav,
   md-card-actions,
-  md-fab-speed-dial,
   md-backdrop,
+  .md-fab,
   .md-scroll-mask,
   .md-dialog-container,
   .md-open-menu-container,
@@ -75,6 +75,7 @@
 
   // Content must be visible to be printed on multiple pages
   main,
+  body.popup .view-detail,
   section,
   md-content,
   md-card,
