@@ -274,12 +274,22 @@
    * @returns true if the message is not a draft and has more than one recipient
    */
   Message.prototype.allowReplyAll = function() {
+    var identities = _.map(this.$mailbox.$account.identities, 'email');
     var recipientsCount = 0;
-    recipientsCount = _.reduce(['to', 'cc', 'bcc'], _.bind(function(count, type) {
-      if (this[type])
-        return count + this[type].length;
-      else
+    recipientsCount = _.reduce(['to', 'cc', 'bcc', 'reply-to'], _.bind(function(count, type) {
+      var typeCount = 0;
+      if (this[type]) {
+        typeCount = this[type].length;
+        _.forEach(this[type], function(recipient) {
+          if (_.indexOf(identities, recipient.email) >= 0) {
+            typeCount--;
+          }
+        });
+        return count + typeCount;
+      }
+      else {
         return count;
+      }
     }, this), recipientsCount);
 
     return !this.isDraft && recipientsCount > 1;
