@@ -5,6 +5,7 @@ Bug fixes
  - [web] date validator now handles non-latin characters
  - [web] show the "reply all" button in more situations
  - [web] fixed CSS when printing message in popup window (#4674)
+ - [i18n] added missing subject of appointment mail reminders (#4656)
 
 4.0.6 (2019-02-21)
 ------------------
