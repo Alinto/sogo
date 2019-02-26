@@ -154,6 +154,13 @@
       _this.$mdDateLocaleProvider.formatTime = function(date) {
         return date? date.format(_this.$mdDateLocaleProvider, _this.defaults.SOGoTimeFormat) : '';
       };
+      _this.$mdDateLocaleProvider.isDateComplete = function(dateString) {
+        dateString = dateString.trim();
+        // The default function of Angular Material doesn't handle non-latin characters.
+        // This one does.
+        var re = /^((([a-zA-Z]|[^\x00-\x7F]){3,}|[0-9]{1,4})([ .,]+|[/-])){2}(([a-zA-Z]|[^\x00-\x7F]){3,}|[0-9]{1,4})$/;
+        return re.test(dateString);
+      };
     }
 
     settingsElement = Preferences.$document[0].getElementById('UserSettings');
