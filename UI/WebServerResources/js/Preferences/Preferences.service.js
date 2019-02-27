@@ -140,7 +140,7 @@
       _this.$mdDateLocaleProvider.weekNumberFormatter = function(weekNumber) {
         return l('Week %d', weekNumber);
       };
-      _this.$mdDateLocaleProvider.msgCalendar = l('Calender');
+      _this.$mdDateLocaleProvider.msgCalendar = l('Calendar');
       _this.$mdDateLocaleProvider.msgOpenCalendar = l('Open Calendar');
       _this.$mdDateLocaleProvider.parseDate = function(dateString) {
         return dateString? dateString.parseDate(_this.$mdDateLocaleProvider, _this.defaults.SOGoShortDateFormat) : new Date(NaN);

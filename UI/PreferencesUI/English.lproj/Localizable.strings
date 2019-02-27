@@ -219,6 +219,7 @@
 "When composing a message" = "When composing a message";
 "Digitally sign the message by default" = "Digitally sign the message by default";
 "Always try to encrypt the message" = "Always try to encrypt the message";
+"An error occurred while importing the certificate. Verify your password." = "An error occurred while importing the certificate. Verify your password.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Additional Parameters";

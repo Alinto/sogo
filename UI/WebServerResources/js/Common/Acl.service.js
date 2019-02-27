@@ -100,7 +100,7 @@
         _this.users.push(user);
         deferred.resolve(user);
       }, function(data, status) {
-        deferred.reject(l('An error occured please try again.'));
+        deferred.reject(l('An error occured, please try again.'));
       });
     }
     return deferred.promise;

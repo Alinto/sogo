@@ -402,7 +402,7 @@
         _this.delegates.push(user);
         deferred.resolve(_this.users);
       }, function(data, status) {
-        deferred.reject(l('An error occured please try again.'));
+        deferred.reject(l('An error occured, please try again.'));
       });
     }
     return deferred.promise;

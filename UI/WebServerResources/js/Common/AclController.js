@@ -57,7 +57,7 @@
       folder.$acl.$saveUsersRights().then(function() {
         $mdDialog.hide();
       }, function(data, status) {
-        Dialog.alert(l('Warning'), l('An error occured please try again.'));
+        Dialog.alert(l('Warning'), l('An error occured, please try again.'));
       });
     }
 

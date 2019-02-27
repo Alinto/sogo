@@ -249,7 +249,7 @@
 
         function removeUser(user) {
           account.$removeDelegate(user.uid).catch(function(data, status) {
-            Dialog.alert(l('Warning'), l('An error occured please try again.'));
+            Dialog.alert(l('Warning'), l('An error occured, please try again.'));
           });
         }
 
