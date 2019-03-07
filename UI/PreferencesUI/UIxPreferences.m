@@ -1213,16 +1213,48 @@ static NSArray *reminderValues = nil;
 }
 
 //
+// Used internally
+//
+- (NSDictionary *) _localizedCategoryLabels
+{
+  NSArray *categoryLabels, *localizedCategoryLabels;
+  NSDictionary *labelsDictionary;
+
+  labelsDictionary = nil;
+  localizedCategoryLabels = [[self labelForKey: @"calendar_category_labels"
+                                   withResourceManager: [self resourceManager]]
+                              componentsSeparatedByString: @","];
+  categoryLabels = [[[self resourceManager]
+                                      stringForKey: @"calendar_category_labels"
+                                      inTableNamed: nil
+                                  withDefaultValue: @""
+                                         languages: [NSArray arrayWithObject: @"English"]]
+                                      componentsSeparatedByString: @","];
+
+  if ([localizedCategoryLabels count] == [categoryLabels count])
+    labelsDictionary = [NSDictionary dictionaryWithObjects: localizedCategoryLabels
+                                                   forKeys: categoryLabels];
+  else
+    [self logWithFormat: @"ERROR: localizable strings calendar_category_labels is incorrect for language %@",
+          [[[context activeUser] userDefaults] language]];
+
+  return labelsDictionary;
+}
+
+//
 // Used by templates
 //
 - (NSString *) defaultCalendarCategoriesColors
 {
-  NSArray *labels, *colors;
+  NSArray *labels;
+  NSDictionary *localizedLabels, *colors;
   NSMutableDictionary *defaultCategoriesColors;
+  NSString *label, *localizedLabel, *color;
   unsigned int i;
 
-  labels = [[self labelForKey: @"calendar_category_labels"] componentsSeparatedByString: @","];
-  colors = [[[SOGoSystemDefaults sharedSystemDefaults] calendarCategoriesColors] allValues];
+  localizedLabels = [self _localizedCategoryLabels];
+  labels = [[SOGoSystemDefaults sharedSystemDefaults] calendarCategories];
+  colors = [[SOGoSystemDefaults sharedSystemDefaults] calendarCategoriesColors];
 
   if ([colors count] > [labels count])
     {
@@ -1232,8 +1264,14 @@ static NSArray *reminderValues = nil;
   defaultCategoriesColors = [NSMutableDictionary dictionary];
   for (i = 0; i < [colors count] && i < [labels count]; i++)
     {
-      [defaultCategoriesColors setObject: [colors objectAtIndex: i]
-                                  forKey: [labels objectAtIndex: i]];
+      label = [labels objectAtIndex: i];
+      color = [colors objectForKey: label];
+      if (!(localizedLabel = [localizedLabels objectForKey: label]))
+        {
+          localizedLabel = label;
+        }
+      [defaultCategoriesColors setObject: color
+                                  forKey: localizedLabel];
     }
 
   return [defaultCategoriesColors jsonRepresentation];
