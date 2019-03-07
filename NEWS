@@ -1,3 +1,10 @@
+4.0.8 (YYYY-MM-DD)
+------------------
+
+Bug fixes
+ - [web] fixed wrong translation of custom calendar categories
+ - [web] fixed wrong colors assigned to default calendar categories
+
 4.0.7 (2019-02-27)
 ------------------
 
