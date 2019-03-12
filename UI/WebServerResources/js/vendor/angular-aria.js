@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.7.7
+ * @license AngularJS v1.7.8
  * (c) 2010-2018 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -63,7 +63,7 @@
 var ARIA_DISABLE_ATTR = 'ngAriaDisable';
 
 var ngAriaModule = angular.module('ngAria', ['ng']).
-                        info({ angularVersion: '1.7.7' }).
+                        info({ angularVersion: '1.7.8' }).
                         provider('$aria', $AriaProvider);
 
 /**

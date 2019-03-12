@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.7.7
+ * @license AngularJS v1.7.8
  * (c) 2010-2018 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -99,7 +99,7 @@ function isValidObjectMaxDepth(maxDepth) {
 function minErr(module, ErrorConstructor) {
   ErrorConstructor = ErrorConstructor || Error;
 
-  var url = 'https://errors.angularjs.org/1.7.7/';
+  var url = 'https://errors.angularjs.org/1.7.8/';
   var regex = url.replace('.', '\\.') + '[\\s\\S]*';
   var errRegExp = new RegExp(regex, 'g');
 
@@ -2805,11 +2805,11 @@ function toDebugString(obj, maxDepth) {
 var version = {
   // These placeholder strings will be replaced by grunt's `build` task.
   // They need to be double- or single-quoted.
-  full: '1.7.7',
+  full: '1.7.8',
   major: 1,
   minor: 7,
-  dot: 7,
-  codeName: 'kingly-exiting'
+  dot: 8,
+  codeName: 'enthusiastic-oblation'
 };
 
 
@@ -2959,7 +2959,7 @@ function publishExternalAPI(angular) {
       });
     }
   ])
-  .info({ angularVersion: '1.7.7' });
+  .info({ angularVersion: '1.7.8' });
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -35899,15 +35899,21 @@ var requiredDirective = ['$parse', function($parse) {
     require: '?ngModel',
     link: function(scope, elm, attr, ctrl) {
       if (!ctrl) return;
-      var value = attr.required || $parse(attr.ngRequired)(scope);
+      // For boolean attributes like required, presence means true
+      var value = attr.hasOwnProperty('required') || $parse(attr.ngRequired)(scope);
 
-      attr.required = true; // force truthy in case we are on non input element
+      if (!attr.ngRequired) {
+        // force truthy in case we are on non input element
+        // (input elements do this automatically for boolean attributes like required)
+        attr.required = true;
+      }
 
       ctrl.$validators.required = function(modelValue, viewValue) {
         return !value || !ctrl.$isEmpty(viewValue);
       };
 
       attr.$observe('required', function(newVal) {
+
         if (value !== newVal) {
           value = newVal;
           ctrl.$validate();

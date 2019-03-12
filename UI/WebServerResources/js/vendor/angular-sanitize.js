@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.7.7
+ * @license AngularJS v1.7.8
  * (c) 2010-2018 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -711,7 +711,7 @@ function sanitizeText(chars) {
 // define ngSanitize module and register $sanitize service
 angular.module('ngSanitize', [])
   .provider('$sanitize', $SanitizeProvider)
-  .info({ angularVersion: '1.7.7' });
+  .info({ angularVersion: '1.7.8' });
 
 /**
  * @ngdoc filter
