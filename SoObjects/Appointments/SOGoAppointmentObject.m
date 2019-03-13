@@ -2417,7 +2417,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 		  roles = [[context activeUser] rolesForObject: organizerObject
 						     inContext: context];
 
-		  if (![roles containsObject: @"ComponentModifier"])
+		  if (![roles containsObject: @"ComponentModifier"] && ![[context activeUser] isSuperUser])
 		    {
 		      return [NSException exceptionWithHTTPStatus: 409
 							   reason: @"Not allowed to perform this action. Wrong SENT-BY being used regarding access rights on organizer's calendar."];
