@@ -626,6 +626,11 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
       return nil;
     }
 
+  if ([_userPasswordAlgorithm caseInsensitiveCompare: @"sha256-crypt"] == NSOrderedSame || [_userPasswordAlgorithm caseInsensitiveCompare: @"sha512-crypt"] == NSOrderedSame)
+    {
+      _userPasswordAlgorithm = @"CRYPT";
+    }
+
   return [NSString stringWithFormat: @"{%@}%@", _userPasswordAlgorithm, pass];
 }
 
