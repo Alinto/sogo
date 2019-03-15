@@ -683,7 +683,9 @@ static Class NSNullK;
 
   // We MUST, for all LDAP sources, update the bindDN and bindPassword
   // to the user's value if bindAsCurrentUser is set to true in the
-  // LDAP source configuration
+  // LDAP source configuration.
+  //
+  // We also update the baseDN of all sources.
   if (checkOK)
     {
       NSObject <SOGoDNSource> *currentSource;
@@ -697,6 +699,7 @@ static Class NSNullK;
           {
             [currentSource setBindDN: [currentSource lookupDNByLogin: _login]];
             [currentSource setBindPassword: _pwd];
+            [currentSource updateBaseDNFromLogin: _login];
           }
     }
 

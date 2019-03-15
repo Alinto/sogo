@@ -529,10 +529,8 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
               grace: (int *) _grace
 {
   NGLdapConnection *bindConnection;
-  NSMutableString *s;
   NSString *userDN;
   BOOL didBind;
-  NSRange r;
 
   didBind = NO;
 
@@ -542,14 +540,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
         // We check if SOGo admins have deviced a top-level SOGoUserSources with a dynamic base DN.
         // This is a supported multi-domain configuration. We alter the baseDN in this case by extracting
         // the domain from the login.
-        r = [_login rangeOfString: @"@"];
-        if (r.location != NSNotFound &&
-            [_pristineBaseDN rangeOfString: @"%d"].location != NSNotFound)
-          {
-              s = [NSMutableString stringWithString: _pristineBaseDN];
-              [s replaceOccurrencesOfString: @"%d"  withString: [_login substringFromIndex: r.location+1]  options: 0  range: NSMakeRange(0, [s length])];
-              ASSIGN(_baseDN, s);
-            }
+        [self updateBaseDNFromLogin: _login];
 
         bindConnection = [[NGLdapConnection alloc] initWithHostName: _hostname
                                                                port: _port];
@@ -1969,6 +1960,21 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
                                    userInfo: nil];
 
   return result;
+}
+
+- (void) updateBaseDNFromLogin: (NSString *) theLogin
+{
+  NSMutableString *s;
+  NSRange r;
+
+  r = [theLogin rangeOfString: @"@"];
+  if (r.location != NSNotFound &&
+      [_pristineBaseDN rangeOfString: @"%d"].location != NSNotFound)
+    {
+      s = [NSMutableString stringWithString: _pristineBaseDN];
+      [s replaceOccurrencesOfString: @"%d"  withString: [theLogin substringFromIndex: r.location+1]  options: 0  range: NSMakeRange(0, [s length])];
+      ASSIGN(_baseDN, s);
+    }
 }
 
 @end
