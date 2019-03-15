@@ -6,6 +6,7 @@ Bug fixes
  - [web] fixed wrong colors assigned to default calendar categories
  - [core] allow super users to modify any event (#4216)
  - [core] correctly handle the full cert chain in S/MIME
+ - [core] handle multidays events in freebusy data
 
 4.0.7 (2019-02-27)
 ------------------

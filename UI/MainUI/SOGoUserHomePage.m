@@ -246,6 +246,17 @@
                   while ([currentDate compare: currentEndDate] == NSOrderedAscending &&
                          [currentEndDate timeIntervalSinceDate: currentDate] >= 3600) // 1 hour
                     {
+                      if ([currentDate hourOfDay] == 0)
+                        {
+                          // New day
+                          dayKey = [currentDate shortDateString];
+                          dayData = [freeBusy objectForKey: dayKey];
+                          if (!dayData)
+                            {
+                              dayData = [NSMutableDictionary dictionary];
+                              [freeBusy setObject: dayData forKey: dayKey];
+                            }
+                        }
                       hourKey = [NSString stringWithFormat: @"%u", (unsigned int)[currentDate hourOfDay]];
                       hourData = [dayData objectForKey: hourKey];
                       if (!hourData)
