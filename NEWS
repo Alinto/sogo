@@ -5,6 +5,7 @@ Bug fixes
  - [web] fixed wrong translation of custom calendar categories
  - [web] fixed wrong colors assigned to default calendar categories
  - [core] allow super users to modify any event (#4216)
+ - [core] correctly handle the full cert chain in S/MIME
 
 4.0.7 (2019-02-27)
 ------------------

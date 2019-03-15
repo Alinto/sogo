@@ -51,6 +51,8 @@
 
   BIO *tbio = NULL, *sbio = NULL, *obio = NULL;
   X509 *scert = NULL;
+  X509 *link = NULL;
+  STACK_OF(X509) *chain = NULL;
   EVP_PKEY *skey = NULL;
   PKCS7 *p7 = NULL;
   BUF_MEM *bptr;
@@ -69,9 +71,7 @@
   len = [theData length];
   tbio = BIO_new_mem_buf((void *)bytes, len);
 
-  // Grab the last certificate in case it's chained
-  scert = NULL;
-  while (PEM_read_bio_X509(tbio, &scert, 0, NULL) != NULL);
+  scert = PEM_read_bio_X509(tbio, NULL, 0, NULL);
 
   if (!scert)
     {
@@ -79,6 +79,10 @@
       goto cleanup;
     }
   
+  chain = sk_X509_new_null();
+  while (link = PEM_read_bio_X509_AUX(tbio, NULL, 0, NULL))
+    sk_X509_unshift(chain, link);
+
   BIO_reset(tbio);
   
   skey = PEM_read_bio_PrivateKey(tbio, NULL, 0, NULL);
@@ -93,7 +97,7 @@
   sbytes = [self bytes];
   slen = [self length];
   sbio = BIO_new_mem_buf((void *)sbytes, slen);
-  p7 = PKCS7_sign(scert, skey, NULL, sbio, flags);
+  p7 = PKCS7_sign(scert, skey, (sk_X509_num(chain) > 0) ? chain : NULL, sbio, flags);
 
   if (!p7)
     {
@@ -110,6 +114,7 @@
 
  cleanup:
   PKCS7_free(p7);
+  sk_X509_pop_free(chain, X509_free);
   X509_free(scert);     
   BIO_free(tbio);
   BIO_free(sbio);
