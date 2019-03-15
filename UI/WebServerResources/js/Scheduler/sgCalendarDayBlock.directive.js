@@ -19,8 +19,8 @@
       sg-block="block"
       sg-click="open(clickEvent, clickComponent)" />
   */
-  sgCalendarDayBlock.$inject = ['CalendarSettings'];
-  function sgCalendarDayBlock(CalendarSettings) {
+  sgCalendarDayBlock.$inject = ['Calendar'];
+  function sgCalendarDayBlock(Calendar) {
     return {
       restrict: 'E',
       scope: {
@@ -50,6 +50,7 @@
         '      <span ng-show="'+p+'block.component.c_priority" class="sg-priority">{{'+p+'block.component.c_priority}}</span>',
         //     Summary
         '      {{ '+p+'block.component.summary }}',
+        '      <div class="secondary md-truncate" ng-show="'+p+'showCalendarName" ng-bind="'+p+'block.component.calendarName"></div>',
         '      <span class="icons">',
         //       Component is reccurent
         '        <md-icon ng-if="'+p+'block.component.occurrenceId" class="material-icons icon-repeat"></md-icon>',
@@ -75,6 +76,7 @@
     function link(scope, iElement, attrs) {
       var pc, left, right;
 
+
       if (!_.has(attrs, 'sgCalendarGhost')) {
 
         // Compute position
@@ -99,6 +101,9 @@
           iElement.addClass('sg-event--' + scope.block.userState);
 
         if (scope.block.component) {
+          // Show calendar name for subscriptions only
+          scope.showCalendarName = Calendar.activeUser.login !== scope.block.component.c_owner;
+
           // Set background color
           iElement.addClass('bg-folder' + scope.block.component.pid);
           iElement.addClass('contrast-bdr-folder' + scope.block.component.pid);

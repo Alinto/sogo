@@ -1,6 +1,9 @@
 4.0.8 (YYYY-MM-DD)
 ------------------
 
+Enhancements
+ - [web] show calendar names of subscriptions in events blocks
+
 Bug fixes
  - [web] fixed wrong translation of custom calendar categories
  - [web] fixed wrong colors assigned to default calendar categories
