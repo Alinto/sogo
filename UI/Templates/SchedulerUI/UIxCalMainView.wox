@@ -149,7 +149,7 @@
 
         <div class="view-list ng-hide" layout="column"
              ng-show="list.selectedList >= 0"
-             ng-class="{'view-list--close': centerIsClose}"
+             ng-class="{'view-list--close': app.centerIsClose(centerIsClose)}"
              ui-view="listView">
           <md-toolbar class="md-accent md-hue-1 hide-print" flex-none="flex-none"
                       ng-hide="list.mode.multiple">
