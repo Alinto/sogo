@@ -247,10 +247,6 @@ div.md-tile-left {
  * See https://github.com/a5hik/ng-sortable
  */
 
-.as-sortable-item {
-  touch-action: none;
-}
-
 .as-sortable-hidden {
   display: none !important;
 }
@@ -261,10 +257,19 @@ div.md-tile-left {
 
 .as-sortable-item-handle {
   display: none; /* [1] */
+  cursor: move;
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
 }
 
 .sg-list-sortable {
   position: relative;
+
+  .as-sortable-item {
+    -ms-touch-action: none;
+    touch-action: none;
+    -webkit-touch-callout: none; /* to disable context menu on iOS devices */
+  }
   .as-sortable-item-handle {
     cursor: move;
     display: block; /* [1] */

@@ -8,6 +8,7 @@ Bug fixes
  - [web] fixed wrong translation of custom calendar categories
  - [web] fixed wrong colors assigned to default calendar categories
  - [web] lowered size of headings on small screens
+ - [web] fixed scrolling in calendars list on Android
  - [core] allow super users to modify any event (#4216)
  - [core] correctly handle the full cert chain in S/MIME
  - [core] handle multidays events in freebusy data
