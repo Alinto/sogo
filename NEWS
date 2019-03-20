@@ -15,6 +15,7 @@ Bug fixes
  - [core] correctly handle the full cert chain in S/MIME
  - [core] handle multidays events in freebusy data
  - [core] avoid exception on recent GNUstep when attached file has no filename (#4702)
+ - [core] avoid generating broken DTSTART for the freebusy.ifb file (#4289)
 
 4.0.7 (2019-02-27)
 ------------------
