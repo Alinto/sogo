@@ -1,6 +1,6 @@
 /* NSString+Utilities.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2017 Inverse inc.
+ * Copyright (C) 2006-2019 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,8 @@
 
 static NSMutableCharacterSet *urlNonEndingChars = nil;
 static NSMutableCharacterSet *urlAfterEndingChars = nil;
-static NSMutableCharacterSet *urlStartChars = nil;
+static NSMutableCharacterSet *schemaStartChars = nil;
+static NSMutableCharacterSet *emailStartChars = nil;
 
 static NSString **cssEscapingStrings = NULL;
 static unichar *cssEscapingCharacters = NULL;
@@ -101,27 +102,19 @@ static int cssEscapingCount;
 }
 
 - (NSRange) _rangeOfURLInRange: (NSRange) refRange
+               withPrefixChars: (NSCharacterSet *) startChars
 {
   int start, length;
   NSRange workRange;
 
 //       [urlNonEndingChars addCharactersInString: @">&=,.:;\t \r\n"];
 //       [urlAfterEndingChars addCharactersInString: @"()[]{}&;<\t \r\n"];
-  if (!urlNonEndingChars)
-    {
-      urlNonEndingChars = [NSMutableCharacterSet new];
-      [urlNonEndingChars addCharactersInString: @"=,.:;&()\t \r\n"];
-    }
-  if (!urlAfterEndingChars)
-    {
-      urlAfterEndingChars = [NSMutableCharacterSet new];
-      [urlAfterEndingChars addCharactersInString: @"()[]\t \r\n"];
-    }
-
   start = refRange.location;
+  if (start > 0)
+    start--; // Start with the character before the refRange
   while (start > -1
-	 && ![urlAfterEndingChars characterIsMember:
-				    [self characterAtIndex: start]])
+	 && [startChars characterIsMember:
+                   [self characterAtIndex: start]])
     start--;
   start++;
 
@@ -153,6 +146,7 @@ static int cssEscapingCount;
 
 - (void) _handleURLs: (NSMutableString *) selfCopy
 	 textToMatch: (NSString *) match
+      urlPrefixChars: (NSCharacterSet *) startChars
 	      prefix: (NSString *) prefix
 	    inRanges: (NSMutableArray *) ranges
 {
@@ -162,51 +156,25 @@ static int cssEscapingCount;
   NSRange *rangePtr;
   NSString *urlText, *newUrlText;
   unsigned int length, matchLength, offset;
-  int startLocation;
-
-  if (!urlStartChars)
-    {
-      urlStartChars = [NSMutableCharacterSet new];
-      [urlStartChars addCharactersInString: @"abcdefghijklmnopqrstuvwxyz"
-		     @"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-		     @"0123456789:@"];
-    }
 
   newRanges = [NSMutableArray array];
   matchLength = [match length];
-  rest.location = -1;
 
   matchRange = [selfCopy rangeOfString: match];
   while (matchRange.location != NSNotFound)
     {
-      startLocation = matchRange.location;
-      while (startLocation > rest.location
-	     && [urlStartChars characterIsMember:
-				 [selfCopy characterAtIndex: startLocation]])
-	startLocation--;
-      matchRange.location = startLocation + 1;
-
-      // We avoid going out of bounds if the mail content actually finishes
-      // with the @ (or something else) character
-      if (matchRange.location < [selfCopy length])
-        {
-          currentUrlRange = [selfCopy _rangeOfURLInRange: matchRange];
-          if (![ranges hasRangeIntersection: currentUrlRange])
-            if (currentUrlRange.length > matchLength)
-              [newRanges addNonNSObject: &currentUrlRange
-                               withSize: sizeof (NSRange)
-                                   copy: YES];
-          
-          rest.location = NSMaxRange (currentUrlRange);
-          length = [selfCopy length];
-          rest.length = length - rest.location;
-          matchRange = [selfCopy rangeOfString: match
-                                       options: 0 range: rest];
-        }
-      else
-        {
-          matchRange.location = NSNotFound;
-        }
+      currentUrlRange = [selfCopy _rangeOfURLInRange: matchRange
+                                     withPrefixChars: startChars];
+      if (![ranges hasRangeIntersection: currentUrlRange])
+        if (currentUrlRange.length > matchLength)
+          [newRanges addNonNSObject: &currentUrlRange
+                           withSize: sizeof (NSRange)
+                               copy: YES];
+      rest.location = NSMaxRange (currentUrlRange);
+      length = [selfCopy length];
+      rest.length = length - rest.location;
+      matchRange = [selfCopy rangeOfString: match
+                                   options: 0 range: rest];
     }
 
   // Make the substitutions, keep track of the new offset
@@ -237,14 +205,41 @@ static int cssEscapingCount;
   NSMutableString *selfCopy;
   NSMutableArray *ranges;
 
+  if (!urlNonEndingChars)
+    {
+      urlNonEndingChars = [NSMutableCharacterSet new];
+      [urlNonEndingChars addCharactersInString: @"=,.:;&()\t \r\n"];
+    }
+  if (!urlAfterEndingChars)
+    {
+      urlAfterEndingChars = [NSMutableCharacterSet new];
+      [urlAfterEndingChars addCharactersInString: @"()[]\t \r\n"];
+    }
+  if (!schemaStartChars)
+    {
+      schemaStartChars = [NSMutableCharacterSet new];
+      [schemaStartChars addCharactersInString: @"abcdefghijklmnopqrstuvwxyz"
+		     @"ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+    }
+  if (!emailStartChars)
+    {
+      emailStartChars = [NSMutableCharacterSet new];
+      [emailStartChars addCharactersInString: @"abcdefghijklmnopqrstuvwxyz"
+                       @"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                       @"01234567890"
+                       @"!#$%&'*+-/=?^`{|}~."];
+    }
+
   ranges = [NSMutableArray array];
   selfCopy = [NSMutableString stringWithString: self];
   [self _handleURLs: selfCopy
 	textToMatch: @"://"
+     urlPrefixChars: schemaStartChars
              prefix: @""
            inRanges: ranges];
   [self _handleURLs: selfCopy
 	textToMatch: @"@"
+     urlPrefixChars: emailStartChars
              prefix: @"mailto:"
            inRanges: ranges];
   [ranges freeNonNSObjects];

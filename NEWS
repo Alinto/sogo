@@ -11,6 +11,7 @@ Bug fixes
  - [web] fixed scrolling in calendars list on Android
  - [web] keep center list of Calendar module visible on small screens
  - [web] check for duplicate name only if address book name is changed
+ - [web] improved detection of URLs and email addresses in text mail parts
  - [core] allow super users to modify any event (#4216)
  - [core] correctly handle the full cert chain in S/MIME
  - [core] handle multidays events in freebusy data
