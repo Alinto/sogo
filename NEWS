@@ -17,6 +17,7 @@ Bug fixes
  - [core] handle multidays events in freebusy data
  - [core] avoid exception on recent GNUstep when attached file has no filename (#4702)
  - [core] avoid generating broken DTSTART for the freebusy.ifb file (#4289)
+ - [core] consider DAVx5 like Apple Calendar (#4304)
 
 4.0.7 (2019-02-27)
 ------------------
