@@ -47,7 +47,9 @@
 "Enable auto reply on" = "Enable auto reply on";
 "Disable auto reply on" = "Disable auto reply on";
 "Always send vacation message response" = "Always send vacation message response";
+"The vacation message is sent prior to apply your filters." = "The vacation message is sent prior to apply your filters.";
 "Discard incoming mails during vacation" = "Discard incoming mails during vacation";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "The vacation message is sent but incoming messages are not delivered to your inbox.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Please specify your message and your email addresses for which you want to enable auto reply.";
 "Your vacation message must not end with a single dot on a line." = "Your vacation message must not end with a single dot on a line.";
@@ -158,6 +160,7 @@
 "New label" = "New label";
 "Show subscribed mailboxes only" = "Show subscribed mailboxes only";
 "Synchronize only default mail folders (EAS)" = "Synchronize only default mail folders (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Fetch count of unseen messages for all mailboxes";
 "Sort messages by threads" = "Sort messages by threads";
 "Always open mail composer" = "Always open mail composer";
 "Inside current window" = "Inside current window";
