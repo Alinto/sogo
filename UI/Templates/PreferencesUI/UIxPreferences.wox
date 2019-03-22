@@ -1011,6 +1011,7 @@
                       ng-true-value="1"
                       ng-false-value="0">
                     <var:string label:value="Always send vacation message response"/>
+                    <div class="sg-hint"><var:string label:value="The vacation message is sent prior to apply your filters."/></div>
                   </md-checkbox>
                 </div>
 
@@ -1020,6 +1021,7 @@
                       ng-true-value="1"
                       ng-false-value="0">
                     <var:string label:value="Discard incoming mails during vacation"/>
+                    <div class="sg-hint"><var:string label:value="The vacation message is sent but incoming messages are not delivered to your inbox."/></div>
                   </md-checkbox>
                 </div>
 

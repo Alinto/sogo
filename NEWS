@@ -3,6 +3,7 @@
 
 Enhancements
  - [web] show calendar names of subscriptions in events blocks
+ - [web] show hints for mail vacation options (#4462)
  - [web] allow to fetch unseen count of all mailboxes (#522, #2776, #4276)
 
 Bug fixes
