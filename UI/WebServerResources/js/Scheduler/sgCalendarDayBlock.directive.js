@@ -50,7 +50,7 @@
         '      <span ng-show="'+p+'block.component.c_priority" class="sg-priority">{{'+p+'block.component.c_priority}}</span>',
         //     Summary
         '      {{ '+p+'block.component.summary }}',
-        '      <div class="secondary md-truncate" ng-show="'+p+'showCalendarName" ng-bind="'+p+'block.component.calendarName"></div>',
+        //     Icons
         '      <span class="icons">',
         //       Component is reccurent
         '        <md-icon ng-if="'+p+'block.component.occurrenceId" class="material-icons icon-repeat"></md-icon>',
@@ -65,6 +65,9 @@
         '      <div class="secondary" ng-if="'+p+'block.component.c_location">',
         '        <md-icon>place</md-icon> <span ng-bind="'+p+'block.component.c_location"></span>',
         '      </div>',
+        //     Calendar name
+        '      <div class="secondary md-truncate" ng-if="'+p+'showCalendarName"',
+        '        ng-bind="'+p+'block.component.calendarName"></div>',
         '    </div>',
         '  </div>',
         '  <div class="ghostStartHour" ng-if="block.startHour">{{ block.startHour }}</div>',

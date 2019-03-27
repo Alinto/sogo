@@ -122,6 +122,9 @@ $quarter_height: 10px;
   }
 
   // The all-day events appear in the shrinkable toolbar, bellow the days labels
+  .allDaysView--container {
+    overflow: hidden;
+  }
   .allDaysView {
     border-bottom: 1px solid sg-color($sogoPaper, 300);
     max-height: $sg-font-size-4 * 6;

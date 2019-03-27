@@ -14,7 +14,7 @@
       </md-button>
     </div>
 
-    <div layout="column" class="md-flex">
+    <div layout="column" class="md-flex allDaysView--container">
       <!-- Display today abreviation and date -->
       <div class="days dayLabels">
         <var:foreach list="daysToDisplay" item="currentTableDay">
