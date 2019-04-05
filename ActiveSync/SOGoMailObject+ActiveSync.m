@@ -857,6 +857,8 @@ struct GlobalObjectId {
   value = [self date];
   if (value)
     [s appendFormat: @"<DateReceived xmlns=\"Email:\">%@</DateReceived>", [value activeSyncRepresentationInContext: context]];
+  else
+    [s appendFormat: @"<DateReceived xmlns=\"Email:\">%@</DateReceived>", [[NSDate date] activeSyncRepresentationInContext: context]];
 
   // DisplayTo
   [s appendFormat: @"<DisplayTo xmlns=\"Email:\">%@</DisplayTo>", [[context activeUser] login]];
