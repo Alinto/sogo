@@ -119,7 +119,7 @@
           NSString *subject, *issuer;
 	  X509 *x;
 	  
-	  certs = p7->d.sign->cert;
+	  certs = PKCS7_get0_signers(p7, NULL, 0);
 
           for (i = 0; i < sk_X509_num(certs); i++)
             {

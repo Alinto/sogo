@@ -381,12 +381,11 @@
 //
 //
 //
-- (NSData *) convertPKCS7ToPEM
+- (NSData *) signersFromPKCS7
 {
   NSData *output;
 
   STACK_OF(X509) *certs = NULL;
-  STACK_OF(X509_CRL) *crls = NULL;
   BIO *ibio, *obio;
   BUF_MEM *bptr;
   PKCS7 *p7;
@@ -412,27 +411,7 @@
   // We output everything in PEM
   obio = BIO_new(BIO_s_mem());
 
-  i = OBJ_obj2nid(p7->type);
-  switch (i)
-    {
-    case NID_pkcs7_signed:
-      if (p7->d.sign != NULL)
-        {
-          certs = p7->d.sign->cert;
-          crls = p7->d.sign->crl;
-        }
-      break;
-    case NID_pkcs7_signedAndEnveloped:
-      if (p7->d.signed_and_enveloped != NULL)
-        {
-          certs = p7->d.signed_and_enveloped->cert;
-          crls = p7->d.signed_and_enveloped->crl;
-        }
-      break;
-    default:
-      break;
-    }
-
+  certs = PKCS7_get0_signers(p7, NULL, 0);
   if (certs != NULL)
     {
       X509 *x;
@@ -443,18 +422,6 @@
           PEM_write_bio_X509(obio, x);
           BIO_puts(obio, "\n");
         }
-    }
-  if (crls != NULL)
-    {
-      X509_CRL *crl;
-
-    for (i = 0; i < sk_X509_CRL_num(crls); i++)
-      {
-        crl = sk_X509_CRL_value(crls, i);
-        X509_CRL_print(obio, crl);
-        PEM_write_bio_X509_CRL(obio, crl);
-        BIO_puts(obio, "\n");
-      }
     }
 
   BIO_get_mem_ptr(obio, &bptr);

@@ -1803,7 +1803,7 @@ static NSString    *userAgent      = nil;
                                   lookupName: @"Contacts"
                                    inContext: context
                                      acquire: NO];
-          certificate = [[contactFolders certificateForEmail: theRecipient] convertPKCS7ToPEM];
+          certificate = [[contactFolders certificateForEmail: theRecipient] signersFromPKCS7];
         }
       else
         certificate =  [[self mailAccountFolder] certificate];
