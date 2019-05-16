@@ -16,6 +16,7 @@ Bug fixes
  - [web] improved detection of URLs and email addresses in text mail parts
  - [web] fixed page reload with external IMAP account (#4709)
  - [web] constrained absolute-positioned child elements of HTML mail parts
+ - [web] fixed useless scrolling when deleting a message
  - [core] allow super users to modify any event (#4216)
  - [core] correctly handle the full cert chain in S/MIME
  - [core] handle multidays events in freebusy data

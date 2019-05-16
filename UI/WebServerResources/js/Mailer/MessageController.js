@@ -314,7 +314,8 @@
 
     this.deleteMessage = function() {
       var mailbox, message, state, nextMessage, previousMessage,
-          parentCtrls = $parentControllers();
+          parentCtrls = $parentControllers(),
+          $timeout = this.service.$timeout;
 
       if (parentCtrls.messageCtrl) {
         mailbox = parentCtrls.mailboxCtrl.selectedFolder;
@@ -360,10 +361,12 @@
                 state.go('mail.account.virtualMailbox.message', {mailboxId: encodeUriFilter(nextMessage.$mailbox.path), messageId: nextMessage.uid});
               else
                 state.go('mail.account.mailbox.message', {messageId: nextMessage.uid});
-              if (nextIndex < mailbox.$topIndex)
-                mailbox.$topIndex = nextIndex;
-              else if (nextIndex > mailbox.$lastVisibleIndex)
-                mailbox.$topIndex = nextIndex - (mailbox.$lastVisibleIndex - mailbox.$topIndex);
+              $timeout(function() {
+                if (nextIndex < mailbox.$topIndex)
+                  mailbox.$topIndex = nextIndex;
+                else if (nextIndex > mailbox.$lastVisibleIndex)
+                  mailbox.$topIndex = nextIndex - (mailbox.$lastVisibleIndex - mailbox.$topIndex);
+              });
             }
             else {
               state.go('mail.account.mailbox').then(function() {
