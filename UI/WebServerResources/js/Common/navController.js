@@ -30,6 +30,13 @@
         }, 24 * 3600 * 1000);
       }, window.currentDay.secondsBeforeTomorrow * 1000);
 
+      // Track the 600px window width threashold
+      $scope.$watch(function() {
+        return $mdMedia(sgConstant['gt-xs']);
+      }, function(newVal) {
+        $scope.isGtExtraSmall = newVal;
+      });
+
       // Track the 1024px window width threashold
       $scope.$watch(function() {
         return $mdMedia(sgConstant['gt-md']);
