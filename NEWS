@@ -25,6 +25,7 @@ Bug fixes
  - [core] avoid generating broken DTSTART for the freebusy.ifb file (#4289)
  - [core] consider DAVx5 like Apple Calendar (#4304)
  - [core] improve handling of signer certificate (#4742)
+ - [core] added safety checks in S/MIME (#4745)
 
 4.0.7 (2019-02-27)
 ------------------

@@ -47,7 +47,7 @@
 //
 - (NSData *) signUsingCertificateAndKey: (NSData *) theData
 {
-  NSData *output;
+  NSData *output = NULL;
 
   BIO *tbio = NULL, *sbio = NULL, *obio = NULL;
   X509 *scert = NULL;
@@ -65,7 +65,6 @@
   
   OpenSSL_add_all_algorithms();
   ERR_load_crypto_strings();
-  output = nil;
   
   bytes = [theData bytes];
   len = [theData length];
@@ -128,7 +127,7 @@
 //
 - (NSData *) encryptUsingCertificate: (NSData *) theData
 {
-  NSData *output;
+  NSData *output = NULL;
 
   BUF_MEM *bptr = NULL;
   BIO *tbio = NULL, *sbio = NULL, *obio = NULL;
@@ -215,7 +214,7 @@
 //
 - (NSData *) decryptUsingCertificate: (NSData *) theData
 {
-  NSData *output;
+  NSData *output = NULL;
 
   BIO *tbio, *sbio, *obio;
   BUF_MEM *bptr;
@@ -311,7 +310,7 @@
 //
 - (NSData *) convertPKCS12ToPEMUsingPassword: (NSString *) thePassword
 {
-  NSData *output;
+  NSData *output = NULL;
 
   BIO *ibio, *obio;
   EVP_PKEY *pkey;
@@ -326,7 +325,6 @@
 
   OpenSSL_add_all_algorithms();
   ERR_load_crypto_strings();
-  output = nil;
 
   bytes = [self bytes];
   len = [self length];
@@ -383,7 +381,7 @@
 //
 - (NSData *) signersFromPKCS7
 {
-  NSData *output;
+  NSData *output = NULL;
 
   STACK_OF(X509) *certs = NULL;
   BIO *ibio, *obio;
