@@ -123,6 +123,8 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField;
 
 - (void) applyContactMappingToResult: (NSMutableDictionary *) ldifRecord;
 
+- (void) updateBaseDNFromLogin: (NSString *) theLogin;
+
 @end
 
 #endif /* LDAPSOURCE_H */
