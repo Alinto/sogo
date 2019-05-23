@@ -47,6 +47,7 @@
 "Enable auto reply on" = "Habilitar resposta automática em";
 "Disable auto reply on" = "Desativar resposta automática em";
 "Always send vacation message response" = "Sempre enviar resposta de mensagem de férias";
+"Discard incoming mails during vacation" = "Descarte emails recebidos durante as férias";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Favor especificar a sua mensagem e seus endereços de e-mail para o qual você deseja ativar resposta automática.";
 "Your vacation message must not end with a single dot on a line." = "Sua mensagem de férias não deve terminar com um ponto único em uma linha.";
@@ -85,7 +86,7 @@
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
 "shortDateFmt_15" = "";
-   
+
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
@@ -123,6 +124,8 @@
 "Prevent from being invited to appointments" = "Impedir de ser convidado para um compromisso";
 "White list for appointment invitations" = "Lista branca para convites de compromissos";
 "Contacts Names" = "Nomes de Contatos";
+"Duplicate name" = "Nome duplicado";
+"Calendar categories must have unique names." = "Categorias de calendário devem ter nomes exclusivos.";
 
 /* Default Calendar */
 "Default calendar" = "Calendário Padrão";
@@ -146,9 +149,17 @@
 /* Mailer */
 "Labels" = "Etiquetas";
 "Label" = "Etiqueta";
+"IMAP Label" = "Rótulo IMAP";
+"Invalid label" = "Não utilize espaço. nem () {}% * \"\\";
+"Duplicate label" = "Rótulo duplicado";
+"IMAP labels must have unique names." = "Os Rótulos IMAP devem ter nomes únicos.";
+"New label" = "Nova etiqueta";
 "Show subscribed mailboxes only" = "Exibir somente caixas de correio inscritas";
 "Synchronize only default mail folders (EAS)" = "Sincronizar somente pastas de email padrão (EAS)";
 "Sort messages by threads" = "Ordenar mensagens por tópicos";
+"Always open mail composer" = "Sempre abrir o editor de email";
+"Inside current window" = "Dentro da janela atual";
+"In a popup window" = "Em uma janela pop-up";
 "When sending mail, add unknown recipients to my" = "Ao enviar e-mail, adicionar destinatários desconhecidos ao meu";
 "Address Book" = "Catálogo";
 "Forward messages" = "Encaminhar mensagens";
@@ -178,6 +189,8 @@
 "Collected Address Book" = "Catálogo Coletado";
 
 /* IMAP Accounts */
+"Settings" = "Configurações";
+"Security" = "Segurança";
 "Mail Account" = "Conta de Email";
 "New Mail Account" = "Nova conta de e-mail";
 "Server Name" = "Nome do Servidor";
@@ -193,6 +206,17 @@
 "Please enter your signature below" = "Por favor, digite sua assinatura abaixo";
 "Please specify a valid sender address." = "Por favor, especifique um endereço de email válido.";
 "Please specify a valid reply-to address." = "Por favor,especifique um endereço de resposta válido.";
+"Specify a hostname other than the local host" = "Especifique um servidor diferente do local";
+
+"No certificate installed" = "Nenhum certificado instalado";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "O certificado SSL deve usar o formato PKCS # 12 (PFX).";
+"Uninstall" = "Desinstalar";
+"Choose PKCS12 Certificate .." = "Escolha o certificado PKCS12...";
+"Certificate Import Password" = "Senha de importação de certificado";
+"Upload" = "Carregar";
+"When composing a message" = "Ao compor uma mensagem";
+"Digitally sign the message by default" = "Assinar digitalmente a mensagem por padrão";
+"Always try to encrypt the message" = "Sempre tente criptografar a mensagem";
 
 /* Additional Parameters */
 "Additional Parameters" = "Parâmetros Adicionais";
@@ -212,6 +236,7 @@
 /* Event+task categories */
 "Calendar Category" = "Categoria de Calendário";
 "Add Calendar Category" = "Adicionar uma Categoria de Calendário";
+"New category" = "Nova categoria";
 "Remove Calendar Category" = "Remover uma Categoria de Calendário";
 "Contact Category" = "Categoria de Contato";
 "Add Contact Category" = "Adicionar uma Categoria de Calendário";
@@ -235,7 +260,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -298,6 +323,9 @@
 "Connection error" = "Erro de conexão";
 "Service temporarily unavailable" = "Serviço temporariamente indisponível";
 
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Habilitar filtro";
+
 /* Filters - UIxFilterEditor */
 "Filter name" = "Nome do filtro";
 /* Button label */
@@ -306,7 +334,7 @@
 "Add an action" = "Adicionar uma ação";
 "For incoming messages that" = "Para mensagens recebidas que";
 "match all of the following rules" = "correspondem a todas as seguintes regras";
-"match any of the following rules" = "corresponde a nenhuma das seguintes regras";
+"match any of the following rules" = "corresponde a alguma das seguintes regras";
 "match all messages" = "corresponder a todas as mensagens";
 "Perform these actions" = "Realizar essas ações";
 "Untitled Filter" = "Filtro sem título";
@@ -319,11 +347,27 @@
 "Header" = "Cabeçalho";
 "Body" = "Corpo";
 "Flag the message with" = "Marcar a mensagem com";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Sinalizar";
+
 "Discard the message" = "Descarte a mensagem";
-"File the message in" = "Arquivo da mensagem em";
+"File the message in" = "Arquivar a mensagem em";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Caixa de correio";
+
 "Keep the message" = "Manter a mensagem";
 "Forward the message to" = "Encaminhar a mensagem para";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "E-mail";
+
 "Send a reject message" = "Enviar uma mensagem de rejeição";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "Mensagem";
+
 "Send a vacation message" = "Enviar uma mensagem de ausência";
 "Stop processing filter rules" = "Parar o processamento dos filtros";
 "is under" = "abaixo";
@@ -382,3 +426,11 @@
 "monsterid" = "Monstro";
 "wavatar" = "Wavatar";
 "retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "Nível de Animação";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normal";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Limitado";
+"animation_NONE" = "Nenhum";

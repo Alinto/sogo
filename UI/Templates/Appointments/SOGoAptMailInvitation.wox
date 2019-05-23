@@ -20,7 +20,12 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
           value="getSubject" const:escapeHTML="NO"/> <small style="font-size: 12px; color: #999;"><var:string
           value="organizerName" const:escapeHTML="NO"/><var:string value="sentByText" const:escapeHTML="NO"/></small></h1></td>
       </tr>
-      <var:if condition="location.length"
+      <tr>
+        <th></th>
+        <td><h1 style="font-size: 14px; font-weight: normal;
+          padding-bottom: 9px; border-bottom: 1px solid #ccc;"><var:string
+          value="getParticipationRole" const:escapeHTML="NO"/></h1></td>
+      </tr>  <var:if condition="location.length"
       ><tr>
         <th align="right" style="font-weight: bold;"><var:string label:value="location_label" const:escapeHTML="NO"/></th>
         <td><var:string value="location" const:escapeHTML="NO"/></td>

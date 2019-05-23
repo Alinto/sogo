@@ -133,7 +133,9 @@
   else if ([now dayOfCommonEra] - [messageDate dayOfCommonEra] < 7)
     {
       // Same week
-      return [[locale objectForKey: NSWeekDayNameArray] objectAtIndex: [messageDate dayOfWeek]];
+      return [NSString stringWithFormat: @"%@ %@",
+                  [[locale objectForKey: NSWeekDayNameArray] objectAtIndex: [messageDate dayOfWeek]],
+                       [dateFormatter formattedTime: messageDate]];
     }
   else
     {

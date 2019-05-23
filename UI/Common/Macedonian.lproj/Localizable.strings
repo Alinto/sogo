@@ -6,7 +6,7 @@
 "Edit User Rights" = "Уреди ги корисничките права";
 "Home" = "Дома";
 "Calendar" = "Календар";
-"Address Book"	= "Адресна книга";
+"Address Book"  = "Адресна книга";
 "Mail" = "Електронска пошта";
 "Preferences" = "Нагодувања";
 "Administration" = "Администрација";
@@ -31,7 +31,7 @@
 "Sorry, the user rights can not be configured for that object." = "Жалам, корисничките привилегии не можат да се конфигурираат за овој објект.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Секој корисник со сметка на овој систем ќе биде во можност да пристапува на вашето сандаче за пошта \"%{0}\". Дали сте сигурни дека можете да им верувате на сите?";
-"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
      = "Било кој корисник со сметка на овој систем че биде во можност да го пристапи вашиот календар \"%{0}\". дали сте сигурни дека можете да им верувате на сите?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "Потенцијално секој на интернет ќе може да го пристапи вашиот календар \"%{0}\", иако немаат сметка на овој систем. Дали оваа информација е погодна за јавен интернет?";
@@ -44,20 +44,20 @@
 
 /* generic.js */
 "Unable to subscribe to that folder!"
-	= "Не е можно да се претплатите на оваа папка!";
+        = "Не е можно да се претплатите на оваа папка!";
 "You cannot subscribe to a folder that you own!"
-      	= "Не можете да се претплатите на папката која е ваша!";
+        = "Не можете да се претплатите на папката која е ваша!";
 "Unable to unsubscribe from that folder!"
-	= "Не е можно да се отпишете од папката!";
+        = "Не е можно да се отпишете од папката!";
 "You cannot unsubscribe from a folder that you own!"
-      	= "Не е можно да се отпишете од папката која е ваша!";
+        = "Не е можно да се отпишете од папката која е ваша!";
 "Unable to rename that folder!" = "Не е можно да ја преименувате папката!";
 "You have already subscribed to that folder!"
-     	= "Веќе сте претплатени на папката!";
+        = "Веќе сте претплатени на папката!";
 "The user rights cannot be edited for this object!"
         = "Корисничките права не можат да се уредат на овој објект!";
 "A folder by that name already exists." = "Папка со вакво име веќе постои.";
-"You cannot create a list in a shared address book." 
+"You cannot create a list in a shared address book."
         = "Не можете да креирате листа во споделен адресар.";
 "Warning" = "Предупредување";
 "Can't contact server" = "Настана грешка при контактирање на серверот. Подоцна обидете се повторно.";
@@ -75,6 +75,10 @@
 "Cancel" = "Откажи";
 "Yes" = "Да";
 "No" = "Не";
+
+/* generic messages */
+"Error" = "Грешка";
+"Success" = "Успешно";
 
 /* alarms */
 "Reminder" = "Потсетник";
@@ -97,6 +101,7 @@
 "Personal" = "Лично";
 "To Do" = "Да се направи";
 "Later" = "Подоцна";
+"Return Receipt Sent" = "Потврда за прием е испратена";
 "a2_Sunday" = "Нед";
 "a2_Monday" = "Пон";
 "a2_Tuesday" = "Вто";
@@ -109,6 +114,16 @@
 "Loading" = "Вчитувам";
 "No such user." = "Нема таков корисник.";
 "You cannot (un)subscribe to a folder that you own!" = "Не е можно да се запишете/отпишете од папката која е ваша!";
+
+/* SMIME Certificate field */
+"S/MIME Certificate" = "S/MIME сертификат";
+"Subject Name" = "Име на субјектот";
+"Issuer" = "Издавач";
+"countryName" = "Држава";
+"organizationName" = "Организација";
+"organizationalUnitName" = "Организациона единица";
+"commonName" = "Општо име";
+"emailAddress" = "Електронска адреса";
 
 /* Authentication username */
 "Username" = "Корисничко име";
@@ -128,6 +143,8 @@
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Промени ја видливоста";
 
+"Keyboard Shortcuts" = "Кратенка на тастатура";
+
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Промени го рангот на поставките";
 
@@ -136,6 +153,9 @@
 
 /* Space key */
 "key_space" = "space";
+
+/* Delete key */
+"key_delete" = "избриши";
 
 /* Shift and space key */
 "key_shift+space" = "shift + space";
@@ -159,7 +179,7 @@
 "key_shift+down" = "shift + ↓";
 
 /* Backspace key */
-"key_backspace" = "backspace";
+"key_backspace" = "⌫";
 
 /* Hotkey to start a search */
 "hotkey_search" = "s";

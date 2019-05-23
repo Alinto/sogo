@@ -6,7 +6,7 @@
 "Edit User Rights" = "Измени права корисника";
 "Home" = "Почетна";
 "Calendar" = "Календар";
-"Address Book"	= "Адресар";
+"Address Book"  = "Адресар";
 "Mail" = "Пошта";
 "Preferences" = "Подешавање";
 "Administration" = "Администрација";
@@ -31,7 +31,7 @@
 "Sorry, the user rights can not be configured for that object." = "Жао нам је, права корисника не могу бити подешена за овај објекат.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Сваки корисник са налогом на овом систему моћи ће да приступи вашем поштанском сандучету \"%{0}\". Да ли сте сигурни да верујете свима?";
-"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
      = "Сваки корисник са налогом на овом систему моћи ће да приступи вашем календару \"%{0}\". Да ли сте сигурни да верујете свима?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "Потенцијално би свако на интернету могао да приступи вашем календару \"%{0}\", чак и ако немају налог на овом систему. Да ли је ова информација погодна за јавни интернет?";
@@ -44,20 +44,20 @@
 
 /* generic.js */
 "Unable to subscribe to that folder!"
-	= "Не могу да се претплатим на тај директоријум!";
+        = "Не могу да се претплатим на тај директоријум!";
 "You cannot subscribe to a folder that you own!"
-      	= "Не можете се претплатити на директоијум чији сте власник!";
+        = "Не можете се претплатити на директоијум чији сте власник!";
 "Unable to unsubscribe from that folder!"
-	= "Не могу да се одјавим са овог директоријума!";
+        = "Не могу да се одјавим са овог директоријума!";
 "You cannot unsubscribe from a folder that you own!"
-      	= "Не можете да се одјавите са директоријума чији сте власник!";
+        = "Не можете да се одјавите са директоријума чији сте власник!";
 "Unable to rename that folder!" = "Не могу да преименујем овај директоријум!";
 "You have already subscribed to that folder!"
-     	= "Већ сте претплаћени на овај директоријум!";
+        = "Већ сте претплаћени на овај директоријум!";
 "The user rights cannot be edited for this object!"
         = "Права корисника не могу бити измењена за овај објекат!";
 "A folder by that name already exists." = "Директоријум са тим именом већ постоји.";
-"You cannot create a list in a shared address book." 
+"You cannot create a list in a shared address book."
         = "Не можете креирати листу у дељеном адресару.";
 "Warning" = "Упозорење";
 "Can't contact server" = "Десила се грешка приликом контактирања сервера. Молимо покушајте касније.";
@@ -69,6 +69,23 @@
 "delegate is organizer" = "Делегирали сте организатору. Молимо наведите неког другог за делегирање.";
 "delegate is a participant" = "Делегирали сте већ постојећем учеснику.";
 "delegate is a group" = "Наведена адреса представља групу. Можете само делегирати једној особи.";
+
+/* common buttons */
+"OK" = "У реду";
+"Cancel" = "Откажи";
+"Yes" = "Да";
+"No" = "Не";
+
+/* generic messages */
+"Error" = "Грешка";
+"Success" = "Успешно";
+
+/* alarms */
+"Reminder" = "Подсетник";
+"Start" = "Почетак";
+"Due Date" = "Рок";
+"Location" = "Локација";
+"Snooze" = "Одложи";
 "Snooze for " = "Одложи за";
 "5 minutes" = "5 минута";
 "10 minutes" = "10 минута";
@@ -78,24 +95,13 @@
 "1 hour" = "1 сат";
 "1 day" = "1 дан";
 
-/* common buttons */
-"OK" = "У реду";
-"Cancel" = "Откажи";
-"Yes" = "Да";
-"No" = "Не";
-
-/* alarms */
-"Reminder" = "Подсетник";
-"Start" = "Почетак";
-"Due Date" = "Рок";
-"Location" = "Локација";
-
 /* mail labels */
 "Important" = "Важно";
 "Work" = "Посао";
 "Personal" = "Лично";
 "To Do" = "Урадити";
 "Later" = "Касније";
+"Return Receipt Sent" = "Потврда о пријему послата";
 "a2_Sunday" = "Не";
 "a2_Monday" = "По";
 "a2_Tuesday" = "Ут";
@@ -109,6 +115,16 @@
 "No such user." = "Нема таквог корисника.";
 "You cannot (un)subscribe to a folder that you own!" = "Не можете се претплатити(одјавити) из директоријума чији сте власник!";
 
+/* SMIME Certificate field */
+"S/MIME Certificate" = "S/MIME Сертификат";
+"Subject Name" = "Име теме";
+"Issuer" = "Издавач";
+"countryName" = "Земља";
+"organizationName" = "Организација";
+"organizationalUnitName" = "Организациона јединица";
+"commonName" = "Опште име";
+"emailAddress" = "Адреса епоште";
+
 /* Authentication username */
 "Username" = "Корисничко име";
 
@@ -118,17 +134,31 @@
 /* Authentication failed */
 "Wrong username or password." = "Погрешно корисничко име и лозинка.";
 
-/* Error message display bellow search field when the search string has less than the required number of characters */
+/* Error message displayed bellow search field when the search string has less than the required number of characters */
 "Enter at least %{minimumSearchLength} characters" = "Унестите најмање %{minimumSearchLength} карактера";
+
+/* Error message displayed when a file upload exceeds WOMaxUploadSize */
+"File size upload limit reached" = "Достигнут лимит величине за слање докумената";
 
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Искључи видљивост";
+
+"Keyboard Shortcuts" = "Пречице на тастатури";
+
+/* Toggle multiple items at the same time (hotkeys cheatsheet) */
+"Toggle range of items" = "Искључи опсег ставки";
 
 /* Question mark shows list of hotkeys */
 "Show or hide this help" = "Прокажи или сакри помоћ";
 
 /* Space key */
 "key_space" = "space";
+
+/* Delete key */
+"key_delete" = "обриши";
+
+/* Shift and space key */
+"key_shift+space" = "shift + space";
 
 /* Up arrow key */
 "key_up" = "↑";
@@ -149,7 +179,7 @@
 "key_shift+down" = "shift + ↓";
 
 /* Backspace key */
-"key_backspace" = "backspace";
+"key_backspace" = "⌫";
 
 /* Hotkey to start a search */
 "hotkey_search" = "s";

@@ -31,7 +31,7 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Component constructor
    */
-  Component.$factory = ['$q', '$timeout', '$log', '$rootScope', 'sgSettings', 'sgComponent_STATUS', 'Preferences', 'User', 'Card', 'Gravatar', 'Resource', function($q, $timeout, $log, $rootScope, Settings, Component_STATUS, Preferences, User, Card, Gravatar, Resource) {
+  Component.$factory = ['$q', '$timeout', '$log', '$rootScope', 'sgSettings', 'sgComponent_STATUS', 'Attendees', 'Preferences', 'User', 'Card', 'Resource', function($q, $timeout, $log, $rootScope, Settings, Component_STATUS, Attendees, Preferences, User, Card, Resource) {
     angular.extend(Component, {
       STATUS: Component_STATUS,
       $q: $q,
@@ -41,8 +41,8 @@
       $settings: Settings,
       $User: User,
       $Preferences: Preferences,
+      $Attendees: Attendees,
       $Card: Card,
-      $gravatar: Gravatar,
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Calendar', Settings.activeUser()),
       timeFormat: "%H:%M",
       // Filter parameters common to events and tasks
@@ -629,50 +629,19 @@
     //   this.organizer.$image = Component.$gravatar(this.organizer.email, 32);
     // }
 
-    if (this.attendees) {
-      _.forEach(this.attendees, function(attendee) {
-        attendee.image = Component.$gravatar(attendee.email, 32);
-      });
-    }
-
-    // Load freebusy of attendees
-    this.updateFreeBusy();
-
     this.selected = false;
   };
 
-
   /**
-   * @function initOrganizer
+   * @function init
    * @memberof Component.prototype
-   * @desc Extend instance with organizer including her freebusy information.
-   * @param {object} calendar - Calendar instance associated to current component
+   * @desc Extend instance with required attributes and new data.
+   * @param {object} data - attributes of component
    */
-  Component.prototype.initOrganizer = function(calendar) {
-    var _this = this, promise;
-    if (calendar && calendar.isSubscription) {
-      promise = Component.$User.$filter(calendar.owner).then(function(results) {
-        var owner = results[0];
-        _this.organizer = {
-          uid: owner.uid,
-          name: owner.cn,
-          email: owner.c_email
-        };
-      });
-    }
-    else {
-      this.organizer = {
-        uid: Component.$settings.activeUser('login'),
-        name: Component.$settings.activeUser('identification'),
-        email: Component.$settings.activeUser('email')
-      };
-      promise = Component.$q.when();
-    }
-    // Fetch organizer's freebusy
-    promise.then(function() {
-      _this.updateFreeBusyAttendee(_this.organizer);
-    });
+  Component.prototype.initAttendees = function() {
+    this.$attendees = new Component.$Attendees(this);
   };
+
 
   /**
    * @function hasCustomRepeat
@@ -784,85 +753,6 @@
   };
 
   /**
-   * @function coversFreeBusy
-   * @memberof Component.prototype
-   * @desc Check if a specific quarter matches the component's period
-   * @returns true if the quarter covers the component's period
-   */
-  Component.prototype.coversFreeBusy = function(day, hour, quarter) {
-    var b = (angular.isDefined(this.freebusy[day]) &&
-             angular.isDefined(this.freebusy[day][hour]) &&
-             this.freebusy[day][hour][quarter] == 1);
-    return b;
-  };
-
-  /**
-   * @function updateFreeBusyCoverage
-   * @memberof Component.prototype
-   * @desc Build a 15-minute-based representation of the component's period.
-   * @returns an object literal hashed by days and hours and arrays of four 1's and 0's
-   */
-  Component.prototype.updateFreeBusyCoverage = function() {
-    var _this = this, freebusy = {};
-
-    if (this.start && this.end) {
-      var roundedStart = new Date(this.start.getTime()),
-          roundedEnd = new Date(this.end.getTime()),
-          startQuarter = parseInt(roundedStart.getMinutes()/15 + 0.5),
-          endQuarter = parseInt(roundedEnd.getMinutes()/15 + 0.5);
-      roundedStart.setMinutes(15*startQuarter);
-      roundedEnd.setMinutes(15*endQuarter);
-
-      _.forEach(roundedStart.daysUpTo(roundedEnd), function(date, index) {
-        var currentDay = date.getDate(),
-            dayKey = date.getDayString(),
-            hourKey;
-        if (dayKey == _this.start.getDayString()) {
-          hourKey = date.getHours().toString();
-          freebusy[dayKey] = {};
-          freebusy[dayKey][hourKey] = [];
-          while (startQuarter > 0) {
-            freebusy[dayKey][hourKey].push(0);
-            startQuarter--;
-          }
-        }
-        else {
-          date = date.beginOfDay();
-          freebusy[dayKey] = {};
-        }
-        while (date.getTime() < _this.end.getTime() &&
-               date.getDate() == currentDay) {
-          hourKey = date.getHours().toString();
-          if (angular.isUndefined(freebusy[dayKey][hourKey]))
-            freebusy[dayKey][hourKey] = [];
-          freebusy[dayKey][hourKey].push(1);
-          date.addMinutes(15);
-        }
-      });
-      return freebusy;
-    }
-  };
-
-  /**
-   * @function updateFreeBusy
-   * @memberof Component.prototype
-   * @desc Update the freebusy coverage representation and the attendees freebusy information
-   */
-  Component.prototype.updateFreeBusy = function() {
-    var _this = this;
-
-    this.freebusy = this.updateFreeBusyCoverage();
-
-    if (this.attendees) {
-      if (this.organizer)
-        this.updateFreeBusyAttendee(this.organizer);
-      _.forEach(this.attendees, function(attendee) {
-        _this.updateFreeBusyAttendee(attendee);
-      });
-    }
-  };
-
-  /**
    * @function setDelta
    * @memberof Component.prototype
    * @desc Set the end time to the specified number of minutes after the start time.
@@ -876,70 +766,6 @@
   };
 
   /**
-   * @function updateFreeBusyAttendee
-   * @memberof Component.prototype
-   * @desc Update the freebusy information for the component's period for a specific attendee.
-   * @param {Object} card - an Card object instance of the attendee
-   */
-  Component.prototype.updateFreeBusyAttendee = function(attendee) {
-    var resource, uid, params, days;
-
-    if (attendee.uid) {
-      uid = attendee.uid;
-      if (attendee.domain)
-        uid += '@' + attendee.domain;
-      params =
-        {
-          sday: this.start.getDayString(),
-          eday: this.end.getDayString()
-        };
-
-      if (attendee.isMSExchange) {
-        // Attendee is not a local user, but her freebusy data is available from an external MS Exchange server;
-        // we query /SOGo/so/<login_user>/freebusy.ifb/ajaxRead?uid=<uid>
-        resource = Component.$$resource.userResource();
-        params.uid = uid;
-      }
-      else {
-        // Attendee is a user;
-        // web query /SOGo/so/<uid>/freebusy.ifb/ajaxRead
-        resource = Component.$$resource.userResource(uid);
-      }
-
-      days = _.map(this.start.daysUpTo(this.end), function(day) { return day.getDayString(); });
-
-      if (angular.isUndefined(attendee.freebusy))
-        attendee.freebusy = {};
-
-      // Fetch FreeBusy information
-      resource.fetch('freebusy.ifb', 'ajaxRead', params).then(function(data) {
-        _.forEach(days, function(day) {
-          var hour;
-
-          if (angular.isUndefined(attendee.freebusy[day]))
-            attendee.freebusy[day] = {};
-
-          if (angular.isUndefined(data[day]))
-            data[day] = {};
-
-          for (var i = 0; i <= 23; i++) {
-            hour = i.toString();
-            if (data[day][hour])
-              attendee.freebusy[day][hour] = [
-                data[day][hour]["0"],
-                data[day][hour]["15"],
-                data[day][hour]["30"],
-                data[day][hour]["45"]
-              ];
-            else
-              attendee.freebusy[day][hour] = [0, 0, 0, 0];
-          }
-        });
-      });
-    }
-  };
-
-  /**
    * @function getClassName
    * @memberof Component.prototype
    * @desc Return the component CSS class name based on its container (calendar) ID.
@@ -950,101 +776,6 @@
     if (angular.isUndefined(base))
       base = 'fg';
     return base + '-folder' + (this.destinationCalendar || this.c_folder || this.pid);
-  };
-
-  /**
-   * @function addAttendee
-   * @memberof Component.prototype
-   * @desc Add an attendee and fetch his freebusy info.
-   * @param {Object} card - an Card object instance to be added to the attendees list
-   */
-  Component.prototype.addAttendee = function(card, options) {
-    var _this = this, attendee, list, url, params;
-    if (card) {
-      if (!this.attendees || (options && options.organizerCalendar)) {
-        // No attendee yet; initialize the organizer
-        this.initOrganizer(options? options.organizerCalendar : undefined);
-      }
-      if (card.$isList({expandable: true})) {
-        // Decompose list members
-        list = Component.$Card.$find(card.container, card.c_name);
-        list.$id().then(function(listId) {
-          _.forEach(list.refs, function(ref) {
-            attendee = {
-              name: ref.c_cn,
-              email: ref.$preferredEmail(options? options.partial : undefined),
-              role: 'req-participant',
-              partstat: 'needs-action',
-              uid: ref.c_uid,
-              $avatarIcon: 'person',
-            };
-            if (!_.find(_this.attendees, function(o) {
-              return o.email == attendee.email;
-            })) {
-              // Contact is not already an attendee, add it
-              attendee.image = Component.$gravatar(attendee.email, 32);
-              if (_this.attendees)
-                _this.attendees.push(attendee);
-              else
-                _this.attendees = [attendee];
-              _this.updateFreeBusyAttendee(attendee);
-            }
-          });
-        });
-      }
-      else {
-        // Single contact
-        attendee = {
-          uid: card.c_uid,
-          domain: card.c_domain,
-          isMSExchange: card.ismsexchange,
-          name: card.c_cn,
-          email: card.$preferredEmail(),
-          role: 'req-participant',
-          partstat: 'needs-action',
-          $avatarIcon: card.$avatarIcon
-        };
-        if (!_.find(this.attendees, function(o) {
-          return o.email == attendee.email;
-        })) {
-          attendee.image = Component.$gravatar(attendee.email, 32);
-          if (this.attendees)
-            this.attendees.push(attendee);
-          else
-            this.attendees = [attendee];
-          this.updateFreeBusyAttendee(attendee);
-        }
-      }
-    }
-  };
-
-  /**
-   * @function hasAttendee
-   * @memberof Component.prototype
-   * @desc Verify if one of the email addresses of a Card instance matches an attendee.
-   * @param {Object} card - an Card object instance
-   * @returns true if the Card matches an attendee
-   */
-  Component.prototype.hasAttendee = function(card) {
-    var attendee = _.find(this.attendees, function(attendee) {
-      return _.find(card.emails, function(email) {
-        return email.value == attendee.email;
-      });
-    });
-    return angular.isDefined(attendee);
-  };
-
-  /**
-   * @function deleteAttendee
-   * @memberof Component.prototype
-   * @desc Remove an attendee from the component
-   * @param {Object} attendee - an object literal defining an attendee
-   */
-  Component.prototype.deleteAttendee = function(attendee) {
-    var index = _.findIndex(this.attendees, function(currentAttendee) {
-      return currentAttendee.email == attendee.email;
-    });
-    this.attendees.splice(index, 1);
   };
 
   /**

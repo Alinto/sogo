@@ -80,6 +80,9 @@
 "Error" = "Chyba";
 "Success" = "Úspěšné";
 
+/* confirmation dialog box */
+"Confirmation" = "Potvrzení";
+
 /* alarms */
 "Reminder" = "Upomínka";
 "Start" = "Začátek";
@@ -101,6 +104,7 @@
 "Personal" = "Osobní";
 "To Do" = "Třeba udělat";
 "Later" = "Později";
+"Return Receipt Sent" = "Odesláno potvrzení o přečtení";
 "a2_Sunday" = "Ne";
 "a2_Monday" = "Po";
 "a2_Tuesday" = "Út";
@@ -115,6 +119,7 @@
 "You cannot (un)subscribe to a folder that you own!" = "Nemůžete (přestat)odebírat složku, kterou vlastníte!";
 
 /* SMIME Certificate field */
+"S/MIME Certificate" = "S/MIME Certifikát";
 "Subject Name" = "Jméno Subjektu";
 "Issuer" = "Vydavatel";
 "countryName" = "Země";
@@ -141,6 +146,8 @@
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Přepnout zobrazení";
 
+"Keyboard Shortcuts" = "Klávesové zkratky";
+
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Přepnout rozsah položek";
 
@@ -149,6 +156,9 @@
 
 /* Space key */
 "key_space" = "space";
+
+/* Delete key */
+"key_delete" = "smazat";
 
 /* Shift and space key */
 "key_shift+space" = "shift + mezerník";
@@ -172,7 +182,7 @@
 "key_shift+down" = "shift + ↓";
 
 /* Backspace key */
-"key_backspace" = "backspace";
+"key_backspace" = "⌫";
 
 /* Hotkey to start a search */
 "hotkey_search" = "s";

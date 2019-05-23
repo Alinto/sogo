@@ -1,6 +1,6 @@
 /* SOGoCalendarComponent.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2016 Inverse inc.
+ * Copyright (C) 2006-2019 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -846,6 +846,7 @@
 		  p = [app pageWithName: pageName inContext: context];
 		  [p setApt: (iCalEvent *) object];
 		  [p setPreviousApt: (iCalEvent *) previousObject];
+                  [p setCurrentAttendee: attendee];
 		  
 		  if ([[object organizer] cn] && [[[object organizer] cn] length])
 		    {
@@ -893,9 +894,10 @@
 		  /* attach text part to multipart body */
 		  [body addBodyPart: bodyPart];
     
-		  /* attach calendar part to multipart body */
-		  [body addBodyPart: eventBodyPart];
-    
+		  /* attach calendar part to multipart body only if the participation role is not NON-PARTICIPANT */
+                  if ([[attendee role] caseInsensitiveCompare: @"NON-PARTICIPANT"] != NSOrderedSame)
+                    [body addBodyPart: eventBodyPart];
+
 		  /* attach multipart body to message */
 		  [msg setBody: body];
 		  [body release];

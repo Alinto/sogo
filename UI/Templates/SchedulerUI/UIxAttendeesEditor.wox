@@ -4,13 +4,34 @@
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
+    xmlns:rsrc="OGo:url"
     >
   <script type="text/javascript">
     var dayStartHour = <var:string value="dayStartHour"/>;
     var dayEndHour = <var:string value="dayEndHour"/>;
     var timeFormat = '<var:string value="userDefaults.timeFormat" const:escapeHTML="NO"/>';
   </script>
-  <md-content>
+  <div layout="row" layout-align="end center">
+    <!-- suggestions options -->
+    <md-checkbox ng-model="editor.component.$attendees.workDaysOnly">
+      <var:string label:value="Work days only"/>
+    </md-checkbox>
+    <sg-timepicker ng-model="editor.component.$attendees.slotStartTimeLimit"><!-- slot start --></sg-timepicker>
+    <sg-timepicker ng-model="editor.component.$attendees.slotEndTimeLimit"><!-- slot end --></sg-timepicker>
+    <md-button class="md-icon-button"
+               label:aria-label="Previous slot"
+               ng-click="editor.previousSlot()">
+      <md-tooltip><var:string label:value="Previous slot"/></md-tooltip>
+      <md-icon>chevron_left</md-icon>
+    </md-button>
+    <md-button class="md-icon-button"
+               label:aria-label="Next slot"
+               ng-click="editor.nextSlot()">
+      <md-tooltip><var:string label:value="Next slot"/></md-tooltip>
+      <md-icon>chevron_right</md-icon>
+    </md-button>
+  </div>
+  <div layout="row">
     <!-- attendees -->
     <md-list>
       <md-list-item>
@@ -24,7 +45,7 @@
         <sg-avatar-image class="md-avatar"
                          sg-email="editor.component.organizer.email"
                          size="40">person</sg-avatar-image>
-        <div class="sg-tile-content">
+        <div class="sg-tile-content sg-padded--right">
           <div class="sg-md-subhead"><div>{{editor.component.organizer.name}}</div></div>
           <div class="sg-md-body"><div>{{editor.component.organizer.email}}</div></div>
         </div>
@@ -37,72 +58,85 @@
                    ng-click="editor.removeAttendee(currentAttendee, eventForm)">
           <md-icon>remove_circle</md-icon>
         </md-button>
+        <md-button class="md-icon-button"
+                   label:aria-label="Role"
+                   ng-click="editor.component.$attendees.nextRole(currentAttendee)"
+                   ng-switch="currentAttendee.role">
+          <md-tooltip md-direction="right">{{ currentAttendee.role | loc }}</md-tooltip>
+          <md-icon class="ng-animate-disabled" ng-switch-when="req-participant">record_voice_over</md-icon>
+          <md-icon class="ng-animate-disabled" ng-switch-when="opt-participant">person_outline</md-icon>
+          <md-icon class="ng-animate-disabled" ng-switch-when="non-participant" rsrc:md-svg-src="img/voice_over_off.svg"><!-- non-participant --></md-icon>
+          <md-icon class="ng-animate-disabled" ng-switch-when="chair">event_seat</md-icon>
+        </md-button>
         <sg-avatar-image class="md-avatar"
                          sg-email="currentAttendee.email"
                          size="40">person</sg-avatar-image>
-        <div class="sg-tile-content">
+        <div class="sg-tile-content sg-padded--right">
           <div class="sg-md-subhead"><div>{{currentAttendee.name}}</div></div>
           <div class="sg-md-body"><div>{{currentAttendee.email}}</div></div>
         </div>
         <md-divider><!-- divider --></md-divider>
       </md-list-item>
     </md-list>
-    <!-- freebusy -->
-    <md-list class="day"
-             ng-repeat="day in editor.attendeesEditor.days">
-      <!-- timeline -->
-      <md-list-item layout-align="start end">
-        <div layout="column" layout-align="end start">
-          <div>{{day.stringWithSeparator}}</div>
-          <div class="hours" layout="row" layout-align="space-between center">
-            <div class="hour" ng-repeat="hour in ::editor.attendeesEditor.hours">{{hour}}</div>
+    <md-content id="freebusy">
+      <!-- freebusy -->
+      <md-list class="day"
+               id="freebusy_day_{{ day.getDayString }}"
+               ng-repeat="day in editor.attendeesEditor.days track by day.getDayString">
+        <!-- timeline -->
+        <md-list-item layout-align="start end">
+          <div layout="column" layout-align="end start">
+            <div>{{day.stringWithSeparator}}</div>
+            <div class="hours" layout="row" layout-align="space-between center">
+              <div class="hour" ng-repeat="hour in ::editor.attendeesEditor.hours">{{hour}}</div>
+            </div>
           </div>
-        </div>
-      </md-list-item>
-      <!-- organizer freebusy -->
-      <md-list-item>
-        <div class="hour"
-             ng-class="{'sg-no-freebusy': !editor.component.organizer.uid}"
-             ng-repeat="hour in ::editor.attendeesEditor.hours">
-          <div class="quarter" ng-class="{event: editor.component.coversFreeBusy(day.getDayString, hour, 0)}">
-            <div class="busy" ng-show="editor.component.organizer.freebusy[day.getDayString][hour][0]"><!-- 15 minutes --></div>
+        </md-list-item>
+        <!-- organizer freebusy -->
+        <md-list-item>
+          <div class="hour"
+               ng-class="{'sg-no-freebusy': !editor.component.organizer.uid}"
+               ng-repeat="hour in ::editor.attendeesEditor.hours">
+            <div class="quarter" ng-class="{event: editor.coversFreeBusy(day.getDayString, hour, 0)}">
+              <div class="busy" ng-show="editor.component.organizer.freebusy[day.getDayString][hour][0]"><!-- 15 minutes --></div>
+            </div>
+            <div class="quarter" ng-class="{event: editor.coversFreeBusy(day.getDayString, hour, 1)}">
+              <div class="busy" ng-show="editor.component.organizer.freebusy[day.getDayString][hour][1]"><!-- 15 minutes --></div>
+            </div>
+            <div class="quarter" ng-class="{event: editor.coversFreeBusy(day.getDayString, hour, 2)}">
+              <div class="busy" ng-show="editor.component.organizer.freebusy[day.getDayString][hour][2]"><!-- 15 minutes --></div>
+            </div>
+            <div class="quarter" ng-class="{event: editor.coversFreeBusy(day.getDayString, hour, 3)}">
+              <div class="busy" ng-show="editor.component.organizer.freebusy[day.getDayString][hour][3]"><!-- 15 minutes --></div>
+            </div>
           </div>
-          <div class="quarter" ng-class="{event: editor.component.coversFreeBusy(day.getDayString, hour, 1)}">
-            <div class="busy" ng-show="editor.component.organizer.freebusy[day.getDayString][hour][1]"><!-- 15 minutes --></div>
+          <md-divider><!-- divider --></md-divider>
+        </md-list-item>
+        <!-- attendees freebusy -->
+        <md-list-item ng-repeat="currentAttendee in editor.component.attendees track by currentAttendee.email">
+          <div class="hour"
+               ng-class="{'sg-no-freebusy': !currentAttendee.uid}"
+               ng-repeat="hour in ::editor.attendeesEditor.hours">
+            <div class="quarter" ng-class="{event: editor.coversFreeBusy(day.getDayString, hour, 0)}">
+              <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][0]"><!-- 15 minutes --></div>
+            </div>
+            <div class="quarter" ng-class="{event: editor.coversFreeBusy(day.getDayString, hour, 1)}">
+              <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][1]"><!-- 15 minutes --></div>
+            </div>
+            <div class="quarter" ng-class="{event: editor.coversFreeBusy(day.getDayString, hour, 2)}">
+              <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][2]"><!-- 15 minutes --></div>
+            </div>
+            <div class="quarter" ng-class="{event: editor.coversFreeBusy(day.getDayString, hour, 3)}">
+              <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][3]"><!-- 15 minutes --></div>
+            </div>
           </div>
-          <div class="quarter" ng-class="{event: editor.component.coversFreeBusy(day.getDayString, hour, 2)}">
-            <div class="busy" ng-show="editor.component.organizer.freebusy[day.getDayString][hour][2]"><!-- 15 minutes --></div>
-          </div>
-          <div class="quarter" ng-class="{event: editor.component.coversFreeBusy(day.getDayString, hour, 3)}">
-            <div class="busy" ng-show="editor.component.organizer.freebusy[day.getDayString][hour][3]"><!-- 15 minutes --></div>
-          </div>
-        </div>
-        <md-divider><!-- divider --></md-divider>
-      </md-list-item>
-      <!-- attendees freebusy -->
-      <md-list-item ng-repeat="currentAttendee in editor.component.attendees track by currentAttendee.email">
-        <div class="hour"
-             ng-class="{'sg-no-freebusy': !currentAttendee.uid}"
-             ng-repeat="hour in ::editor.attendeesEditor.hours">
-          <div class="quarter" ng-class="{event: editor.component.coversFreeBusy(day.getDayString, hour, 0)}">
-            <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][0]"><!-- 15 minutes --></div>
-          </div>
-          <div class="quarter" ng-class="{event: editor.component.coversFreeBusy(day.getDayString, hour, 1)}">
-            <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][1]"><!-- 15 minutes --></div>
-          </div>
-          <div class="quarter" ng-class="{event: editor.component.coversFreeBusy(day.getDayString, hour, 2)}">
-            <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][2]"><!-- 15 minutes --></div>
-          </div>
-          <div class="quarter" ng-class="{event: editor.component.coversFreeBusy(day.getDayString, hour, 3)}">
-            <div class="busy" ng-show="currentAttendee.freebusy[day.getDayString][hour][3]"><!-- 15 minutes --></div>
-          </div>
-        </div>
-        <md-divider><!-- divider --></md-divider>
-      </md-list-item>
-    </md-list>
-  </md-content>
+          <md-divider><!-- divider --></md-divider>
+        </md-list-item>
+      </md-list>
+    </md-content>
+  </div><!-- row -->
   <!-- freebusy caption -->
-  <div layout="row" layout-align="end center">
+  <div layout="row" layout-align="end center" class="sg-padded--top">
     <div class="quarter"><div class="busy sg-color-chip"><!-- busy --></div></div>
     <label class="md-caption"><var:string label:value="Busy"/></label>
     <div class="quarter"><div class="sg-no-freebusy sg-color-sample"><!-- no fb --></div></div>

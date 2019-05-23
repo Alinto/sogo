@@ -18,7 +18,7 @@
       <md-toolbar>
         <div class="md-toolbar-tools">
           <!-- expand dialog -->
-          <md-button ng-click="editor.toggleFullscreen()"
+          <md-button ng-click="editor.toggleFullscreen($event)"
                      class="md-icon-button md-primary md-hue-1 hide show-gt-xs"
                      aria-hidden="true"
                      ng-if="!isPopup">
@@ -69,10 +69,11 @@
               <md-chips ng-model="editor.message.editable.to"
                         md-separator-keys="editor.recipientSeparatorKeys"
                         md-transform-chip="editor.addRecipient($chip, 'to')"
-                        md-add-on-blur="true">
+                        md-add-on-blur="true"
+                        md-autofocus="editor.isNew()"
+                        md-autocomplete-snap="width">
                 <md-autocomplete
-                    class="sg-chips-autocomplete"
-                    md-autofocus="editor.isNew()"
+                    md-menu-class="md-2-line"
                     md-search-text="editor.autocomplete.to.searchText"
                     md-selected-item="editor.autocomplete.to.selected"
                     md-items="user in editor.contactFilter(editor.autocomplete.to.searchText)"
@@ -81,14 +82,13 @@
                     md-no-cache="true"
                     label:placeholder="Add a recipient">
                   <md-item-template>
-                    <span class="md-contact-suggestion">
-                      <span class="md-contact-name"
+                    <div class="sg-tile-content">
+                      <div class="sg-md-subhead"
                             md-highlight-text="editor.autocomplete.to.searchText"
-                            md-highlight-flags="^i">{{user.$$fullname}}</span>
-                      <span class="md-contact-email"
-                            md-highlight-text="editor.autocomplete.to.searchText"
-                            md-highlight-flags="^i">{{user.$$email}}</span>
-                    </span>
+                            md-highlight-flags="gi">{{ user.$shortFormat(editor.autocomplete.to.searchText) }}</div>
+                      <div class="sg-md-body"
+                           md-colors="::{color: 'default-background-500'}">{{ user.containername }}</div>
+                    </div>
                   </md-item-template>
                 </md-autocomplete>
                 <md-chip-template>{{$chip}}</md-chip-template>
@@ -103,25 +103,25 @@
               <md-chips ng-model="editor.message.editable.cc"
                         md-separator-keys="editor.recipientSeparatorKeys"
                         md-transform-chip="editor.addRecipient($chip, 'cc')"
-                        md-add-on-blur="true">
+                        md-add-on-blur="true"
+                        md-autocomplete-snap="width">
                 <md-autocomplete
-                    class="sg-chips-autocomplete"
+                    md-menu-class="md-2-line"
                     md-search-text="editor.autocomplete.cc.searchText"
                     md-selected-item="editor.autocomplete.cc.selected"
                     md-items="user in editor.contactFilter(editor.autocomplete.cc.searchText)"
                     md-min-length="3"
-                    md-delay="300"
+                    md-delay="150"
                     md-no-cache="true"
                     label:placeholder="Add a recipient">
                   <md-item-template>
-                    <span class="md-contact-suggestion">
-                      <span class="md-contact-name"
-                            md-highlight-text="editor.autocomplete.to.searchText"
-                            md-highlight-flags="^i">{{user.$$fullname}}</span>
-                      <span class="md-contact-email"
-                            md-highlight-text="editor.autocomplete.to.searchText"
-                            md-highlight-flags="^i">{{user.$$email}}</span>
-                    </span>
+                    <div class="sg-tile-content">
+                      <div class="sg-md-subhead"
+                            md-highlight-text="editor.autocomplete.cc.searchText"
+                            md-highlight-flags="gi">{{ user.$shortFormat(editor.autocomplete.cc.searchText) }}</div>
+                      <div class="sg-md-body"
+                           md-colors="::{color: 'default-background-500'}">{{ user.containername }}</div>
+                    </div>
                   </md-item-template>
                 </md-autocomplete>
                 <md-chip-template>{{$chip}}</md-chip-template>
@@ -136,25 +136,25 @@
               <md-chips ng-model="editor.message.editable.bcc"
                         md-separator-keys="editor.recipientSeparatorKeys"
                         md-transform-chip="editor.addRecipient($chip, 'bcc')"
-                        md-add-on-blur="true">
+                        md-add-on-blur="true"
+                        md-autocomplete-snap="width">
                 <md-autocomplete
-                    class="sg-chips-autocomplete"
+                    md-menu-class="md-2-line"
                     md-selected-item="editor.autocomplete.bcc.selected"
                     md-search-text="editor.autocomplete.bcc.searchText"
                     md-items="user in editor.contactFilter(editor.autocomplete.bcc.searchText)"
                     md-min-length="3"
-                    md-delay="300"
+                    md-delay="150"
                     md-no-cache="true"
                     label:placeholder="Add a recipient">
                   <md-item-template>
-                    <span class="md-contact-suggestion">
-                      <span class="md-contact-name"
-                            md-highlight-text="editor.autocomplete.to.searchText"
-                            md-highlight-flags="^i">{{user.$$fullname}}</span>
-                      <span class="md-contact-email"
-                            md-highlight-text="editor.autocomplete.to.searchText"
-                            md-highlight-flags="^i">{{user.$$email}}</span>
-                    </span>
+                    <div class="sg-tile-content">
+                      <div class="sg-md-subhead"
+                            md-highlight-text="editor.autocomplete.bcc.searchText"
+                            md-highlight-flags="gi">{{ user.$shortFormat(editor.autocomplete.bcc.searchText) }}</div>
+                      <div class="sg-md-body"
+                           md-colors="::{color: 'default-background-500'}">{{ user.containername }}</div>
+                    </div>
                   </md-item-template>
                 </md-autocomplete>
                 <md-chip-template>{{$chip}}</md-chip-template>
@@ -250,7 +250,7 @@
                     ck-focus="editor.onHTMLFocus($event)"
                     ng-model="editor.message.editable.text"
                     ng-focus="editor.onTextFocus($event)"
-                    md-autofocus="!editor.isNew()"
+                    md-autofocus="::!editor.isNew()"
                     md-no-resize="md-no-resize"
                     md-detect-hidden="md-detect-hidden" />
         </md-input-container>

@@ -186,10 +186,11 @@ static SoProduct *preferencesProduct = nil;
           for (count = 0; count < max; count++)
             {
               label = [defaultCalendarCategories objectAtIndex: count];
-              if ((localizedLabel = [categoryLabels objectForKey: label]))
+              if (!(localizedLabel = [categoryLabels objectForKey: label]))
                 {
-                  [filteredCalendarCategories addObject: localizedLabel];
+                  localizedLabel = label;
                 }
+              [filteredCalendarCategories addObject: localizedLabel];
             }
 
           [defaults setCalendarCategories: filteredCalendarCategories];
@@ -224,11 +225,12 @@ static SoProduct *preferencesProduct = nil;
           for (count = 0; count < max; count++)
             {
               label = [defaultCalendarCategories objectAtIndex: count];
-              if ((localizedLabel = [categoryLabels objectForKey: label]))
+              if (!(localizedLabel = [categoryLabels objectForKey: label]))
                 {
-                  [filteredCalendarCategoriesColors setObject: [defaultCalendarCategoriesColors objectForKey: label]
-                                                       forKey: localizedLabel];
+                  localizedLabel = label;
                 }
+              [filteredCalendarCategoriesColors setObject: [defaultCalendarCategoriesColors objectForKey: label]
+                                                   forKey: localizedLabel];
             }
 
           [defaults setCalendarCategoriesColors: filteredCalendarCategoriesColors];

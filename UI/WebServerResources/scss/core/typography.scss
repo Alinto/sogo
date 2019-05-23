@@ -333,6 +333,10 @@ html p {
   font-weight: $sg-font-regular;
   margin-top: 0;
   margin-bottom: $line;
+  @media (max-width: $layout-breakpoint-md) {
+    font-size: $sg-font-size-4;
+    line-height: $sg-line-height-4;
+  }
 }
 .#{$md}-display-1 {
   $lineHeight : $sg-line-height-6;
@@ -350,12 +354,20 @@ html p {
   line-height: $lineHeight;
   font-weight: $sg-font-regular;
   white-space: nowrap;
+  @media (max-width: $layout-breakpoint-md) {
+    font-size: $sg-font-size-6;
+    line-height: $sg-line-height-6;
+  }
 }
 .#{$md}-display-2--thin {
   $lineHeight: $sg-line-height-7;
   font-size: $sg-font-size-7;
   line-height: $lineHeight;
   font-weight: $sg-font-thin;
+  @media (max-width: $layout-breakpoint-md) {
+    font-size: $sg-font-size-6;
+    line-height: $sg-line-height-6;
+  }
  }
 .#{$md}-display-2-subheader {
   @extend .#{$md}-title;
@@ -382,6 +394,10 @@ html p {
   line-height: $lineHeight;
   font-weight: $sg-font-light;
   white-space: nowrap;
+  @media (max-width: $layout-breakpoint-md) {
+    font-size: $sg-font-size-8;
+    line-height: $sg-line-height-8;
+  }
 }
 
 .sg-no-wrap {

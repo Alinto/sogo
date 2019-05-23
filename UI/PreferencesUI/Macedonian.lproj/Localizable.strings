@@ -47,6 +47,7 @@
 "Enable auto reply on" = "Овозможи го автоматскиот одговор";
 "Disable auto reply on" = "Исклучи го автоматскиот одговор";
 "Always send vacation message response" = "Секогаш испрати порака кога си на одмор";
+"Discard incoming mails during vacation" = "Не ги земај во предвид мејловите кои ќе дојдат за време на одморот";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Креирајте ја вашата порака и електронска адреса за која сакате да го овозможите автоматското одговарање.";
 "Your vacation message must not end with a single dot on a line." = "Вашата порака кога сте отсатен не смее да заврши со една точка во линијата.";
@@ -70,21 +71,22 @@
 "Default Module" = "Стандарден модул";
 "Save" = "Сними";
 "shortDateFmt_0" = "%d-%b-%y";
-"shortDateFmt_1" = "%d/%m/%y";
-"shortDateFmt_2" = "%e/%m/%y";
-"shortDateFmt_3" = "%d-%m-%Y";
-"shortDateFmt_4" = "%d/%m/%Y";
-"shortDateFmt_5" = "%m-%d-%y";
-"shortDateFmt_6" = "%m/%d/%y";
-"shortDateFmt_7" = "%m/%e/%y";
-"shortDateFmt_8" = "%y-%m-%d";
-"shortDateFmt_9" = "%y/%m/%d";
-"shortDateFmt_10" = "%y.%m.%d";
-"shortDateFmt_11" = "%Y-%m-%d";
-"shortDateFmt_12" = "%Y/%m/%d";
-"shortDateFmt_13" = "%Y.%m.%d";
+"shortDateFmt_1" = "%d-%b-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
 "shortDateFmt_15" = "";
-   
+
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
@@ -122,6 +124,8 @@
 "Prevent from being invited to appointments" = "Избегни да бидеш повикан на состаноци";
 "White list for appointment invitations" = "Бела листа на покани за состанок";
 "Contacts Names" = "Имиња на контактите";
+"Duplicate name" = "Удвоено име";
+"Calendar categories must have unique names." = "Категориите во календарот мораат да имаат единствен назив";
 
 /* Default Calendar */
 "Default calendar" = "Стандарден календар";
@@ -145,10 +149,17 @@
 /* Mailer */
 "Labels" = "Лабели";
 "Label" = "Лабела";
+"IMAP Label" = "IMAP лабела";
+"Invalid label" = "Не користете бланко, ниту ( ) { } % * \" \\";
+"Duplicate label" = "Дуплицирај ја лабелата";
+"IMAP labels must have unique names." = "IMAP лабелите мораат да имаат единствени називи.";
 "New label" = "Нова лабела";
 "Show subscribed mailboxes only" = "Прикажи ги само претплатените поштенски сандачиња";
 "Synchronize only default mail folders (EAS)" = "Синхронизирај ги само основните папки за пошта (EAS)";
 "Sort messages by threads" = "Сортирај ги пораките според конверзацијата";
+"Always open mail composer" = "Секогаш отвори го прозорецот за креирање на пошта";
+"Inside current window" = "Во рамките на тековниот прозорец";
+"In a popup window" = "Во скокачки прозорец";
 "When sending mail, add unknown recipients to my" = "Кога испраќаш порака, додади ги непознатите приматели во мојата";
 "Address Book" = "Адресар";
 "Forward messages" = "Препрати ги пораките";
@@ -178,6 +189,8 @@
 "Collected Address Book" = "Собрана адресна книга";
 
 /* IMAP Accounts */
+"Settings" = "Нагодувања";
+"Security" = "Безбедност";
 "Mail Account" = "Сметка за електронска пошта";
 "New Mail Account" = "Нова сметка за електронска пошта";
 "Server Name" = "Име на серверот";
@@ -194,6 +207,16 @@
 "Please specify a valid sender address." = "Обезбедете валидна адреса на испраќачот.";
 "Please specify a valid reply-to address." = "Обезбедете валидна електронска адреса за “одговори на“.";
 "Specify a hostname other than the local host" = "Дефинирај hostname различен од local host";
+
+"No certificate installed" = "Нема инсталирано сертификат";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "SSL сертификатот мора да биде во PKCS#12 (PFX) формат.";
+"Uninstall" = "Деинсталирај";
+"Choose PKCS12 Certificate .." = "Одбери PKCS12 сертификат ..";
+"Certificate Import Password" = "Лозинка за увоз на сертификатот";
+"Upload" = "Префрли";
+"When composing a message" = "Кога ја пишуваш пораката";
+"Digitally sign the message by default" = "Дигитално потпишија пораката како основно нагодување";
+"Always try to encrypt the message" = "Обиди се секогаш да ја шифрираш пораката";
 
 /* Additional Parameters */
 "Additional Parameters" = "Дополнителни параметри";
@@ -237,7 +260,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -259,7 +282,7 @@
 "Polish" = "Polski";
 "Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
-"Romanian" = "Română";
+"Romanian" = "Романија";
 "Russian" = "Русский";
 "Serbian" = "Српски";
 "Slovak" = "Slovensky";

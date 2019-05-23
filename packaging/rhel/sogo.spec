@@ -277,6 +277,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_libdir}/GNUstep/OCSTypeModels
 %{_libdir}/GNUstep/WOxElemBuilders-*
 
+%config(noreplace) %{_libdir}/GNUstep/SOGo/WebServerResources/css/theme-default.css
 %config(noreplace) %attr(0640, root, %sogo_user) %{_sysconfdir}/sogo/sogo.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/sogo
 %config(noreplace) %{_sysconfdir}/cron.d/sogo

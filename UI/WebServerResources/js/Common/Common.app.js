@@ -139,8 +139,11 @@
   /**
    * @ngInject
    */
-  configure.$inject = ['$logProvider', '$compileProvider', '$httpProvider', '$mdThemingProvider', '$mdAriaProvider', '$qProvider'];
-  function configure($logProvider, $compileProvider, $httpProvider, $mdThemingProvider, $mdAriaProvider, $qProvider) {
+  configure.$inject = ['$animateProvider', '$logProvider', '$compileProvider', '$httpProvider', '$mdThemingProvider', '$mdAriaProvider', '$qProvider'];
+  function configure($animateProvider, $logProvider, $compileProvider, $httpProvider, $mdThemingProvider, $mdAriaProvider, $qProvider) {
+    // Disabled animation for elements with class ng-animate-disabled
+    $animateProvider.classNameFilter(/^(?:(?!ng-animate-disabled).)*$/);
+
     // Accent palette
     $mdThemingProvider.definePalette('sogo-green', {
       '50': 'eaf5e9',
@@ -203,7 +206,6 @@
       'contrastLightColors': ['800', '900']
     });
     var greyMap = $mdThemingProvider.extendPalette('grey', {
-      '600': '00b0c0', // used when highlighting text in md-autocomplete,
       '1000': 'baa870' // used as the background color of the busy periods of the attendees editor
     });
     $mdThemingProvider.definePalette('sogo-grey', greyMap);
@@ -291,7 +293,7 @@
         // When expecting JSON but receiving HTML, assume session has expired and reload page
         if (response && /^application\/json/.test(response.config.headers.Accept) &&
             /^[\n\r ]*<!DOCTYPE html>/.test(response.data)) {
-          $window.location.reload(true);
+          $window.location.href = $window.ApplicationBaseURL;
           return $q.reject();
         }
         return response;
@@ -302,8 +304,8 @@
   /**
    * @ngInject
    */
-  ErrorInterceptor.$inject = ['$rootScope', '$window', '$q', '$injector'];
-  function ErrorInterceptor($rootScope, $window, $q, $injector) {
+  ErrorInterceptor.$inject = ['$rootScope', '$window', '$q', '$timeout', '$injector'];
+  function ErrorInterceptor($rootScope, $window, $q, $timeout, $injector) {
     return {
       responseError: function(rejection) {
         var deferred, iframe;
@@ -313,16 +315,31 @@
             deferred = $q.defer();
             iframe = angular.element('<iframe class="ng-hide" src="' + $window.UserFolderURL + 'recover"></iframe>');
             iframe.on('load', function() {
-              // Once the browser has followed the redirection, send the initial request
-              var $http = $injector.get('$http');
-              $http(rejection.config).then(deferred.resolve, deferred.reject);
-              iframe.remove();
+              if (rejection.config.attempt) {
+                // Already attempted once -- reload page
+                angular.element($window).off('beforeunload');
+                $window.location.href = $window.ApplicationBaseURL;
+                deferred.reject();
+              }
+              else {
+                // Once the browser has followed the redirection, send the initial request
+                $timeout(function() {
+                  var $http = $injector.get('$http');
+                  rejection.config.attempt = 1;
+                  $http(rejection.config).then(function(response) {
+                    deferred.resolve(response);
+                  });
+                  $timeout(iframe.remove, 500);
+                }, 100); // Wait before replaying the request
+              }
             });
             document.body.appendChild(iframe[0]);
             return deferred.promise;
           }
-          else if ($window.usesSAML2Authentication && rejection.status == 401) {
-            $window.location.reload(true);
+          else if ($window.usesSAML2Authentication && rejection.status == 401 && !$window.recovered) {
+            angular.element($window).off('beforeunload');
+            $window.recovered = true;
+            $window.location.href = $window.ApplicationBaseURL;
           }
           else {
             // Broadcast the response error

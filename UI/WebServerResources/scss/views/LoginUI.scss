@@ -36,11 +36,13 @@ $sg-login-width: grid-step(5);
       & {
         // Fill the screen
         min-height: 100%;
+        overflow: auto;
       }
       .sg-logo {
         img {
           margin: auto;
           height: 100%;
+          max-height: 20vh; // limit the logo's height
           max-width: 75%;
         }
       }

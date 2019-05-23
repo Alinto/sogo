@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2017 Inverse inc.
+  Copyright (C) 2006-2019 Inverse inc.
 
   This file is part of SOGo.
 

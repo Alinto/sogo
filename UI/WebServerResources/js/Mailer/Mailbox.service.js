@@ -434,9 +434,11 @@
           }
         }
 
-        Mailbox.$log.debug('Loading UIDs ' + uids.join(' '));
-        futureHeadersData = Mailbox.$$resource.post(this.id, 'headers', {uids: uids});
-        this.$unwrapHeaders(futureHeadersData);
+        if (uids.length) {
+          Mailbox.$log.debug('Loading UIDs ' + uids.join(' '));
+          futureHeadersData = Mailbox.$$resource.post(this.id, 'headers', {uids: uids});
+          this.$unwrapHeaders(futureHeadersData);
+        }
       }
     }
     return loaded;

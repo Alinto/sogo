@@ -1,14 +1,82 @@
-4.0.5 (2018-MM-DD)
+4.0.8 (YYYY-MM-DD)
+------------------
+
+Enhancements
+ - [web] show calendar names of subscriptions in events blocks
+ - [web] show hints for mail vacation options (#4462)
+ - [web] allow to fetch unseen count of all mailboxes (#522, #2776, #4276)
+
+Bug fixes
+ - [web] fixed wrong translation of custom calendar categories
+ - [web] fixed wrong colors assigned to default calendar categories
+ - [web] lowered size of headings on small screens
+ - [web] fixed scrolling in calendars list on Android
+ - [web] keep center list of Calendar module visible on small screens
+ - [web] check for duplicate name only if address book name is changed
+ - [web] improved detection of URLs and email addresses in text mail parts
+ - [web] fixed page reload with external IMAP account (#4709)
+ - [web] constrained absolute-positioned child elements of HTML mail parts
+ - [web] fixed useless scrolling when deleting a message
+ - [web] don't hide compose button if messages list is visible
+ - [core] allow super users to modify any event (#4216)
+ - [core] correctly handle the full cert chain in S/MIME
+ - [core] handle multidays events in freebusy data
+ - [core] avoid exception on recent GNUstep when attached file has no filename (#4702)
+ - [core] avoid generating broken DTSTART for the freebusy.ifb file (#4289)
+ - [core] consider DAVx5 like Apple Calendar (#4304)
+ - [core] improve handling of signer certificate (#4742)
+ - [core] added safety checks in S/MIME (#4745)
+
+4.0.7 (2019-02-27)
+------------------
+
+Bug fixes
+ - [web] date validator now handles non-latin characters
+ - [web] show the "reply all" button in more situations
+ - [web] fixed CSS when printing message in popup window (#4674)
+ - [i18n] added missing subject of appointment mail reminders (#4656)
+
+4.0.6 (2019-02-21)
+------------------
+
+Enhancements
+ - [web] create card from sender or recipient address (#3002, #4610)
+ - [web] updated Angular to version 1.7.7
+ - [web] restored support for next/previous slot suggestion in attendees editor
+ - [web] improved auto-completion display of contacts
+ - [web] allow modification of attendees participation role
+ - [web] updated Angular Material to version 1.1.13
+ - [web] updated CKEditor to version 4.11.2
+ - [core] baseDN now accept dynamic domain values (#3685 - sponsored by iRedMail)
+ - [core] we now handle optional and non-required attendee states
+
+Bug fixes
+ - [web] fixed all-day event dates with different timezone
+ - [web] fixed display of Bcc header (#4642)
+ - [web] fixed refresh of drafts folder when saving a draft
+ - [web] fixed CAS session timeout handling during XHR requests (#4468)
+ - [web] reflect active locale in HTML lang attribute (#4660)
+ - [web] allow scroll of login page on small screen (#4035)
+ - [web] fixed saving of email address for external calendar notifications (#4630)
+ - [web] sent messages cannot be replied to their BCC email addresses (#4460)
+ - [core] ignore transparent events in time conflict validation (#4539)
+ - [core] fixed yearly recurrence calculator when starting from previous year
+ - [core] changes to contacts are now propagated to lists (#850, #4301, #4617)
+ - [core] fixed bad password login interval (#4664)
+
+4.0.5 (2019-01-09)
 ------------------
 
 New features
- - [web] dynamic stylesheet for printing calendars (#3650)
+ - [web] dynamic stylesheet for printing calendars (#3768)
 
 Enhancements
  - [web] show source addressbook of matching contacts in appointment editor (#4579)
  - [web] improve display of keyboard shortcuts
  - [web] show time for messages of yesterday (#4599)
  - [web] fit month view to window size (#4554)
+ - [web] updated CKEditor to version 4.11.1
+ - [web] updated Angular Material to version 1.1.12
 
 Bug fixes
  - [sogo-tool] fixed "manage-acl unsubscribe" command (#4591)
@@ -17,10 +85,14 @@ Bug fixes
  - [web] fixed folder export when XSRF validation is enabled (#4502)
  - [web] don't encode filename extension when exporting folders
  - [web] fixed download of HTML body parts
+ - [web] catch possible exception when registering mailto protocol
  - [core] don't always fetch the sorting columns
  - [eas] strip '<>' from bodyId and when forwarding mails
  - [eas] fix search on for Outlook application (#4605 and #4607)
  - [eas] improve search operations and results fetching
+ - [eas] better handle bogus DTStart values
+ - [eas] support for basic UserInformation queries (#4614)
+ - [eas] better handle timezone changes (#4624)
 
 4.0.4 (2018-10-23)
 ------------------

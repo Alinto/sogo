@@ -176,7 +176,7 @@
       </div>
     </md-toolbar>
 
-    <div layout="row" class="md-flex">
+    <div layout="row" class="md-flex sg-block-print">
       <var:component className="UIxMailFolderTemplate" />
     </div>
   </script>

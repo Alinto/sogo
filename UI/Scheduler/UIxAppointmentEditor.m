@@ -31,7 +31,9 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 
+#import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalEvent.h>
+#import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalTrigger.h>
 #import <NGCards/iCalRecurrenceRule.h>
 
@@ -689,7 +691,6 @@
   iCalEvent *event;
 
   BOOL resetAlarm;
-  NSInteger offset;
   NSUInteger snoozeAlarm;
 
   event = [self event];
@@ -703,6 +704,21 @@
 
   if (isAllDay)
     {
+      iCalDateTime *dt;
+      iCalTimeZone *tz;
+      NSInteger offset;
+
+      // An all-day event usually doesn't have a timezone associated to its
+      // start-end dates; however, if it does, we convert them to GMT.
+      dt = (iCalDateTime*) [event uniqueChildWithTag: @"dtstart"];
+      tz = [(iCalDateTime*) dt timeZone];
+      if (tz)
+        eventStartDate = [tz computedDateForDate: eventStartDate];
+      dt = (iCalDateTime*) [event uniqueChildWithTag: @"dtend"];
+      tz = [(iCalDateTime*) dt timeZone];
+      if (tz)
+        eventEndDate = [tz computedDateForDate: eventEndDate];
+
       eventEndDate = [eventEndDate dateByAddingYears: 0 months: 0 days: -1];
 
       // Convert the dates to the user's timezone

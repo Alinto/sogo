@@ -11,7 +11,7 @@
 
   <var:string var:value="doctype" const:escapeHTML="NO" />
   <var:if condition="hideFrame" const:negate="YES">
-    <html const:xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" const:lang="en">
+    <html const:xmlns="http://www.w3.org/1999/xhtml" var:lang="localeCode">
       <head>
         <title var:sg-default="title"><var:string value="title"/></title>
         <meta name="hideFrame" var:content="hideFrame" />

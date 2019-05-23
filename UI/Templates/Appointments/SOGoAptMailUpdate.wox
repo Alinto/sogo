@@ -22,6 +22,12 @@ th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; fon
       </tr>
       <tr>
         <th></th>
+        <td><h1 style="font-size: 14px; font-weight: normal;
+          padding-bottom: 9px; border-bottom: 1px solid #ccc;"><var:string
+          value="getParticipationRole" const:escapeHTML="NO"/></h1></td>
+      </tr>
+      <tr>
+        <th></th>
         <td><var:string value="bodyStartText" const:escapeHTML="NO"/></td>
       </tr>
       <var:foreach list="allChangesList" item="currentItem"

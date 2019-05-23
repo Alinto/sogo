@@ -102,6 +102,7 @@
 
 - (void) setBindDN: (NSString *) theDN;
 - (NSString *) bindDN;
+
 - (void) setBindPassword: (NSString *) thePassword;
 - (NSString *) bindPassword;
 - (BOOL) bindAsCurrentUser;
@@ -113,6 +114,8 @@
 - (NSString *) MSExchangeHostname;
 
 - (NSArray *) groupObjectClasses;
+
+- (void) updateBaseDNFromLogin: (NSString *) theLogin;
 @end
 
 #endif /* SOGOSOURCE_H */

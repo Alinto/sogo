@@ -6,13 +6,13 @@
     Authors:
       - Inverse inc. <info@inverse.ca>
 
-    Copyright (C) 2008-2018 Inverse inc.
+    Copyright (C) 2008-2019 Inverse inc.
     License: GFDL 1.2 or later. http://www.gnu.org/licenses/fdl.html
 
 ////
 
 // TODO have the build system take care of this
 
-:release_version: 4.0.4
+:release_version: 4.0.7
 
 // vim: set syntax=asciidoc tabstop=2 shiftwidth=2 expandtab:

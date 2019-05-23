@@ -130,10 +130,15 @@
 //
 - (BOOL) isICal
 {
+  WEClientCapabilities *cc;
+
+  cc = [self clientCapabilities];
+
   return ([self isAppleDAVWithSubstring: @"Mac OS X/10."]
           || [self isAppleDAVWithSubstring: @"Mac_OS_X/"]
           || [self isAppleDAVWithSubstring: @"Mac+OS+X/"]
-          || [self isAppleDAVWithSubstring: @"CoreDAV/"]);
+          || [self isAppleDAVWithSubstring: @"CoreDAV/"]
+          || [[cc userAgent] rangeOfString: @"DAVx5"].location != NSNotFound);
 }
 
 //

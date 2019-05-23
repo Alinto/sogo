@@ -80,6 +80,9 @@
 "Error" = "Błąd";
 "Success" = "Sukces";
 
+/* confirmation dialog box */
+"Confirmation" = "Potwierdzenie";
+
 /* alarms */
 "Reminder" = "Przypomnienie";
 "Start" = "Początek";
@@ -101,6 +104,7 @@
 "Personal" = "Osobiste";
 "To Do" = "Do zrobienia";
 "Later" = "Później";
+"Return Receipt Sent" = "Potwierdzenie wysłane";
 "a2_Sunday" = "Ni";
 "a2_Monday" = "Pn";
 "a2_Tuesday" = "Wt";
@@ -115,6 +119,7 @@
 "You cannot (un)subscribe to a folder that you own!" = "Nie możesz (od)subskrybować folderu, który jest twoją własnością!";
 
 /* SMIME Certificate field */
+"S/MIME Certificate" = "Certyfikat S/MIME";
 "Subject Name" = "Nazwa opisowa";
 "Issuer" = "Wystawca";
 "countryName" = "Kraj";
@@ -141,6 +146,8 @@
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Odwróć widok";
 
+"Keyboard Shortcuts" = "Skróty klawiszowe";
+
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Odwróć wskazany zakres";
 
@@ -149,6 +156,9 @@
 
 /* Space key */
 "key_space" = "space";
+
+/* Delete key */
+"key_delete" = "delete";
 
 /* Shift and space key */
 "key_shift+space" = "shift + spacja";
@@ -172,7 +182,7 @@
 "key_shift+down" = "shift + ↓";
 
 /* Backspace key */
-"key_backspace" = "backspace";
+"key_backspace" = "⌫";
 
 /* Hotkey to start a search */
 "hotkey_search" = "s";

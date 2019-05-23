@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2016 Inverse inc.
+  Copyright (C) 2007-2019 Inverse inc.
 
   This file is part of SOGo
 
@@ -141,8 +141,6 @@ static SoProduct      *commonProduct      = nil;
 
 - (id) init
 {
-  NSString *language;
-
   if ((self = [super init]))
     {
       _selectedDate = nil;
@@ -150,10 +148,9 @@ static SoProduct      *commonProduct      = nil;
       ASSIGN (userDefaults, [[context activeUser] userDefaults]);
       if (!userDefaults)
         ASSIGN (userDefaults, [SOGoSystemDefaults sharedSystemDefaults]);
-      language = [userDefaults language];
       ASSIGN (languages, [context resourceLookupLanguages]);
       ASSIGN (locale,
-              [[self resourceManager] localeForLanguageNamed: language]);
+              [[self resourceManager] localeForLanguageNamed: [languages objectAtIndex: 0]]);
     }
 
   return self;
@@ -637,6 +634,20 @@ static SoProduct      *commonProduct      = nil;
 - (NSDictionary *)locale {
   /* we need no fallback here, as locale is guaranteed to be set by sogod */
   return [context valueForKey: @"locale"];
+}
+
+- (NSString *) localeCode
+{
+  // WARNING : NSLocaleCode is not defined in <Foundation/NSUserDefaults.h>
+  // Region subtag must be separated by a dash
+  NSMutableString *s = [NSMutableString stringWithString: [locale objectForKey: @"NSLocaleCode"]];
+
+  [s replaceOccurrencesOfString: @"_"
+                     withString: @"-"
+                        options: 0
+                          range: NSMakeRange(0, [s length])];
+
+  return s;
 }
 
 - (WOResourceManager *) pageResourceManager

@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -21,6 +21,7 @@ CKEDITOR.editorConfig = function( config ) {
   config.removeDialogTabs = 'link:advanced';
   config.enterMode = CKEDITOR.ENTER_BR;
   config.tabSpaces = 4;
+  // config.fullPage = true; include header and body
   config.allowedContent = true; // don't filter tags
   config.entities = false;
 

@@ -149,9 +149,9 @@
 
         <div class="view-list ng-hide" layout="column"
              ng-show="list.selectedList >= 0"
-             ng-class="{'view-list--close': centerIsClose}"
+             ng-class="{'view-list--close': app.centerIsClose(centerIsClose)}"
              ui-view="listView">
-          <md-toolbar class="md-accent md-hue-1 sg-no-print" flex-none="flex-none"
+          <md-toolbar class="md-accent md-hue-1 hide-print" flex-none="flex-none"
                       ng-hide="list.mode.multiple">
             <!-- sort/filter mode (default) -->
             <div class="md-toolbar-tools" layout="row" ng-hide="list.mode.search">
@@ -378,7 +378,7 @@
             </div>
           </md-toolbar>
 
-          <md-divider class="sg-no-print"><!-- divider --></md-divider>
+          <md-divider class="hide-print"><!-- divider --></md-divider>
 
           <md-content layout="column" class="view-list">
             <md-tabs md-dynamic-height="true"
@@ -386,7 +386,7 @@
               <!-- Events list -->
               <md-tab label:label="Events"
                       md-on-select="list.selectComponentType('events')">
-                <md-subheader class="sg-no-print">
+                <md-subheader class="hide-print">
                   <div layout="row"  layout-align="space-between center">
                     <div class="md-truncate" ng-bind="list.filter() | loc"><!-- active filter --></div>
                     <div class="md-truncate"><md-icon ng-class="{ 'md-flip': list.ascending() }">sort</md-icon> <span ng-bind="list.sort() | loc"><!-- active sort --></span></div>
@@ -433,7 +433,7 @@
               <!-- Tasks list -->
               <md-tab label:label="Tasks"
                       md-on-select="list.selectComponentType('tasks')">
-                <md-subheader class="sg-no-print">
+                <md-subheader class="hide-print">
                   <div layout="row"  layout-align="space-between center">
                     <div class="md-truncate" ng-bind="list.filter() | loc"><!-- active filter --></div>
                     <div class="md-truncate"><md-icon ng-class="{ 'md-flip': list.ascending() }">sort</md-icon> <span ng-bind="list.sort() | loc"><!-- active sort --></span></div>

@@ -79,20 +79,6 @@
     }
 }
 
-- (NSString *) localeCode
-{
-  // WARNING : NSLocaleCode is not defined in <Foundation/NSUserDefaults.h>
-  // Region subtag must be separated by a dash
-  NSMutableString *s = [NSMutableString stringWithString: [locale objectForKey: @"NSLocaleCode"]];
-
-  [s replaceOccurrencesOfString: @"_"
-                     withString: @"-"
-                        options: 0
-                          range: NSMakeRange(0, [s length])];
-  
-  return s;
-}
-
 - (NSArray *) monthMenuItems
 {
   static NSMutableArray *monthMenuItems = nil;

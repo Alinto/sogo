@@ -160,7 +160,7 @@
 
   if (pkcs7)
     {
-      data = [[pkcs7 convertPKCS7ToPEM] certificateDescription];
+      data = [[pkcs7 signersFromPKCS7] certificateDescription];
       if (data)
         {
           response = [self responseWithStatus: 200  andJSONRepresentation: data];

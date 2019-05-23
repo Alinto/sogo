@@ -3,7 +3,7 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:label="OGo:label">
-  <div class="view-list sg-no-print" layout="column" ng-class="{'view-list--close': mailbox.centerIsClose(centerIsClose)}">
+  <div class="view-list hide-print" layout="column" ng-class="{'view-list--close': mailbox.centerIsClose(centerIsClose)}">
 
     <!-- in virtual mailbox mode -->
     <md-toolbar class="md-whiteframe-z1 md-hue-3"
@@ -39,7 +39,7 @@
                 <var:string label:value="Search subfolders"/>
               </sg-checkmark>
             </md-menu-item>
-            <md-menu-divider> <!-- divider --></md-menu-divider>
+            <md-menu-divider><!-- divider --></md-menu-divider>
             <md-menu-item>
               <md-button ng-click="app.search.match='AND'">
                 <md-icon ng-class="{ 'icon-check': app.search.match == 'AND'}"
@@ -329,7 +329,7 @@
   <md-fab-speed-dial
       class="md-scale sg-fab-bottom-center"
       ng-if="::!mailbox.composeWindowEnabled()"
-      ng-show="!mailbox.selectedFolder.hasSelectedMessage() || isGtMedium"
+      ng-show="!mailbox.selectedFolder.hasSelectedMessage() || isGtExtraSmall"
       ng-cloak="ng-cloak"
       ng-class="{ 'sg-sidenav-close': leftIsClose, 'sg-center-close': mailbox.centerIsClose(centerIsClose) }"
       md-direction="up">
@@ -356,14 +356,14 @@
       class="md-fab md-accent sg-fab-bottom-center"
       var:aria-label="Write a new message"
       ng-if="::mailbox.composeWindowEnabled()"
-      ng-show="!mailbox.selectedFolder.hasSelectedMessage() || isGtMedium"
+      ng-show="!mailbox.selectedFolder.hasSelectedMessage() || isGtExtraSmall"
       ng-class="{ 'sg-sidenav-close': leftIsClose, 'sg-center-close': mailbox.centerIsClose(centerIsClose) }"
       ng-click="mailbox.newMessage($event)">
     <md-tooltip md-direction="left"><var:string label:value="Write a new message"/></md-tooltip>
     <md-icon>edit</md-icon>
   </md-button>
 
-  <div id="detailView" class="view-detail"
+  <div id="detailView" class="view-detail sg-block-print"
        layout="column" layout-align="start center"
        ng-class="{ 'sg-close': !mailbox.service.selectedFolder.hasSelectedMessage() }"
        md-colors="::{backgroundColor: 'default-background-200'}"
@@ -375,5 +375,43 @@
            md-colors="::{color: 'default-background-500'}"><var:string label:value="No message selected"/></div>
     </md-content>
   </div>
+
+  <!-- template of contextual menu for a recipient -->
+  <script type="text/ng-template" id="UIxMailViewRecipientMenu">
+    <div md-whiteframe="3">
+      <md-menu-content class="md-dense" width="3">
+        <md-menu-item>
+          <md-button disabled="disabled" md-menu-align-target="md-menu-align-target">
+            {{ $menuCtrl.recipient.full }}
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button type="button"
+                     ng-click="$menuCtrl.newMessage($event, { to: [$menuCtrl.recipient.full] })">
+            <var:string label:value="Write a new message"/>
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-menu md-position-mode="cascade cascade">
+            <md-button
+                label:aria-label="Add to Address Book..."
+                ng-mouseenter="$mdMenu.open($event)"
+                ng-keydown="$mdMenu.onKeyDown($event)">
+              <var:string label:value="Add to Address Book..."/>
+            </md-button>
+            <md-menu-content class="md-dense" width="4">
+              <md-menu-item ng-repeat="addressbook in $menuCtrl.addressbooks track by addressbook.id">
+                <md-button ng-click="$menuCtrl.newCard($menuCtrl.recipient, addressbook.id)">{{addressbook.name}}</md-button>
+              </md-menu-item>
+              <md-menu-item ng-repeat="addressbook in $menuCtrl.subscriptions track by addressbook.id">
+                <md-button ng-click="$menuCtrl.newCard($menuCtrl.recipient, addressbook.id)"
+                           ng-disabled="!addressbook.acls.objectCreator">{{addressbook.name}}</md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+        </md-menu-item>
+      </md-menu-content>
+    </div>
+  </script>
 
 </container>

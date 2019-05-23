@@ -205,21 +205,27 @@
   /**
    * @ngInject
    */
-  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$mdDialog', 'sgFocus', 'User', 'CalendarSettings', 'Calendar', 'Component', 'AddressBook', 'Card', 'Alarm', 'stateComponent'];
-  function ComponentEditorController($rootScope, $scope, $log, $timeout, $mdDialog, focus, User, CalendarSettings, Calendar, Component, AddressBook, Card, Alarm, stateComponent) {
+  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$element', '$mdDialog', 'sgFocus', 'User', 'CalendarSettings', 'Calendar', 'Component', 'Attendees', 'AddressBook', 'Card', 'Alarm', 'stateComponent'];
+  function ComponentEditorController($rootScope, $scope, $log, $timeout, $element, $mdDialog, focus, User, CalendarSettings, Calendar, Component, Attendees, AddressBook, Card, Alarm, stateComponent) {
     var vm = this, component, oldStartDate, oldEndDate, oldDueDate;
 
     this.$onInit = function () {
+      stateComponent.initAttendees();
       this.service = Calendar;
       this.component = stateComponent;
       this.categories = {};
+      this.updateFreeBusyCoverage =
+        angular.bind(this.component.$attendees, this.component.$attendees.updateFreeBusyCoverage);
+      this.coversFreeBusy =
+        angular.bind(this.component.$attendees, this.component.$attendees.coversFreeBusy);
       this.showRecurrenceEditor = this.component.$hasCustomRepeat;
       this.showAttendeesEditor = this.component.attendees && this.component.attendees.length;
       //this.searchText = null;
       this.attendeeConflictError = false;
       this.attendeesEditor = {
-        days: getDays(),
-        hours: getHours()
+        days: this.component.$attendees.$days,
+        hours: getHours(),
+        containerElement: $element[0].querySelector('#freebusy')
       };
 
       if (this.component.start)
@@ -228,6 +234,9 @@
         oldEndDate = new Date(this.component.end.getTime());
       if (this.component.due)
         oldDueDate = new Date(this.component.due.getTime());
+
+      if (this.component.attendees)
+        $timeout(scrollToStart);
     };
 
     this.addAttachUrl = function () {
@@ -297,7 +306,7 @@
                card.charCodeAt(i) == 44 ||   // ,
                card.charCodeAt(i) == 59) &&  // ;
               emailRE.test(address)) {
-            this.component.addAttendee(createCard(address), options);
+            this.component.$attendees.add(createCard(address), options);
             address = '';
           }
           else {
@@ -305,20 +314,42 @@
           }
         }
         if (address)
-          this.component.addAttendee(createCard(address), options);
+          this.component.$attendees.add(createCard(address), options);
       }
       else {
-        this.component.addAttendee(card, options);
+        this.component.$attendees.add(card, options);
         this.showAttendeesEditor |= initOrganizer;
       }
+
+      $timeout(scrollToStart);
     };
 
+    function scrollToStart() {
+      var dayElement = $element[0].querySelector('#freebusy_day_' + vm.component.start.getDayString());
+      var scrollLeft = dayElement.offsetLeft - vm.attendeesEditor.containerElement.offsetLeft;
+      vm.attendeesEditor.containerElement.scrollLeft = scrollLeft;
+    }
+
     this.removeAttendee = function (attendee, form) {
-      this.component.deleteAttendee(attendee);
-      if (this.component.attendees.length === 0)
+      this.component.$attendees.remove(attendee);
+      if (this.component.$attendees.getLength() === 0)
         this.showAttendeesEditor = false;
       form.$setDirty();
     };
+
+    this.nextSlot = function () {
+      findSlot(1);
+    };
+
+    this.previousSlot = function () {
+      findSlot(-1);
+    };
+
+    function findSlot(direction) {
+      vm.component.$attendees.findSlot(direction).then(function () {
+        $timeout(scrollToStart);
+      });
+    }
 
     this.priorityLevel = function () {
       if (this.component && this.component.priority) {
@@ -392,18 +423,6 @@
       form.$setPristine();
       form.$setDirty();
     };
-
-    function getDays() {
-      var days = [];
-
-      if (vm.component.start && vm.component.end)
-        days = vm.component.start.daysUpTo(vm.component.end);
-
-      return _.map(days, function(date) {
-        return { stringWithSeparator: date.stringWithSeparator(),
-                 getDayString: date.getDayString() };
-      });
-    }
 
     function getHours() {
       var hours = [];
@@ -486,8 +505,9 @@
     };
 
     function updateFreeBusy() {
-      vm.attendeesEditor.days = getDays();
-      vm.component.updateFreeBusy();
+      vm.component.$attendees.updateFreeBusyCoverage();
+      vm.component.$attendees.updateFreeBusy();
+      scrollToStart();
     }
   }
 

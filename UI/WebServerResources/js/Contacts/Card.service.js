@@ -150,7 +150,7 @@
     if (!this.$$image)
       this.$$image = this.image;
     if (!this.$$image)
-      this.$$image = Card.$Preferences.avatar(this.$$email, 32, {no_404: true});
+      this.$$image = Card.$Preferences.avatar(this.$$email, 40, {no_404: true});
     if (this.hasphoto)
       this.photoURL = Card.$$resource.path(this.pid, this.id, 'photo');
     if (this.isgroup)

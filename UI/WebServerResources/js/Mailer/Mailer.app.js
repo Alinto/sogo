@@ -145,7 +145,10 @@
     // Try to register SOGo has an handler for mailto: links
     if (navigator && navigator.registerProtocolHandler) {
       var mailtoURL = window.location.origin + window.ApplicationBaseURL + 'UIxMailPopupView#!/Mail/0/INBOX/new?%s';
-      navigator.registerProtocolHandler('mailto', mailtoURL, 'SOGo');
+      try {
+        navigator.registerProtocolHandler('mailto', mailtoURL, 'SOGo');
+      }
+      catch (e) {}
     }
   }
 
@@ -208,16 +211,18 @@
     if (Mailbox.selectedFolder && !Mailbox.$virtualMode)
       Mailbox.selectedFolder.$isLoading = true;
 
-    mailbox = _find(stateAccount.$mailboxes);
-
-    if (mailbox) {
-      mailbox.$topIndex = 0;
-      mailbox.selectFolder();
-      return mailbox;
-    }
-    else
-      // Mailbox not found
-      return $q.reject("Mailbox doesn't exist");
+    return stateAccount.$getMailboxes().then(function (mailboxes) {
+      mailbox = _find(mailboxes);
+      if (mailbox) {
+        mailbox.$topIndex = 0;
+        mailbox.selectFolder();
+        return mailbox;
+      }
+      else {
+        // Mailbox not found
+        $state.go('mail.account', { accountId: stateMailbox.$account.id });
+      }
+    });
   }
 
   /**

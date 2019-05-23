@@ -130,6 +130,7 @@
           <div layout="row">
             <md-checkbox flex="50"
                          ng-model="editor.component.isAllDay"
+                         ng-change="editor.updateFreeBusyCoverage()"
                          ng-true-value="1"
                          ng-false-value="0"
                          label:aria-label="All day Event">
@@ -234,22 +235,21 @@
             <md-icon>search</md-icon>
             <md-autocomplete
                 class="md-flex"
-                md-menu-class="md-3-line"
+                md-menu-class="md-2-line"
                 label:md-floating-label="Invite Attendees"
                 md-search-text="editor.searchText"
                 md-selected-item-change="editor.addAttendee(card, editor.searchText)"
                 md-items="card in editor.cardFilter(editor.searchText)"
                 md-item-text="card.empty"
                 var:md-min-length="minimumSearchLength"
-                md-delay="300"
+                md-delay="150"
                 md-no-cache="true"
                 sg-enter="editor.addAttendee(editor.searchText)">
               <md-item-template>
-                  <div class="md-list-item-text" layout="column">
-                    <h3 md-highlight-text="editor.searchText" md-highlight-flags="^i">{{ card.$$fullname }}</h3>
-                    <h4 md-highlight-text="editor.searchText" md-highlight-flags="^i">{{ card.$$email }}</h4>
-                    <p>{{ card.containername }}</p>
-                  </div>
+                <div class="sg-tile-content">
+                  <div class="sg-md-subhead" md-highlight-text="editor.searchText" md-highlight-flags="gi">{{ card.$shortFormat(editor.searchText) }}</div>
+                  <div class="sg-md-body" md-colors="::{color: 'default-background-500'}">{{ card.containername }}</div>
+                </div>
               </md-item-template>
             </md-autocomplete>
             <md-button type="button" class="sg-icon-button"
@@ -268,7 +268,7 @@
                       readonly="true">
               <md-chip-template>
                 <div class="md-contact-avatar">
-                  <sg-avatar-image sg-email="$chip.email" size="32">person</sg-avatar-image>
+                  <sg-avatar-image sg-email="$chip.email" size="26">person</sg-avatar-image>
                 </div>
                 <div class="md-contact-name">{{$chip.name || $chip.email}}</div>
                 <md-icon ng-class="'icon-' + $chip.partstat"><!-- partstat --></md-icon>
@@ -295,7 +295,7 @@
         </div>
       </md-dialog-content>
       <!-- cancel/reset/save -->
-      <md-dialog-actions ng-hide="editor.attendeeConflictError">
+      <md-dialog-actions class="ng-hide" ng-hide="editor.attendeeConflictError">
         <md-button type="button" ng-click="editor.cancel(eventForm)">
           <var:string label:value="Cancel"/>
         </md-button>
@@ -336,7 +336,7 @@
           </div>
         </div>
       </md-dialog-content>
-      <md-dialog-actions ng-show="editor.attendeeConflictError.conflicts">
+      <md-dialog-actions class="ng-hide" ng-show="editor.attendeeConflictError.conflicts">
         <md-button type="button" ng-click="editor.cancel(eventForm)">
           <var:string label:value="Cancel"/>
         </md-button>

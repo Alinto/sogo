@@ -47,8 +47,8 @@
   md-autocomplete,
   md-sidenav,
   md-card-actions,
-  md-fab-speed-dial,
   md-backdrop,
+  .md-fab,
   .md-scroll-mask,
   .md-dialog-container,
   .md-open-menu-container,
@@ -56,9 +56,7 @@
   .toolbar-main,
   .view-list--close,
   .view-detail .sg-reversible.sg-flip .sg-face,
-  .view-detail .sg-reversible:not(.sg-flip) .sg-back,
-  .sg-no-print
-   {
+  .view-detail .sg-reversible:not(.sg-flip) .sg-back {
     display: none !important;
   }
 
@@ -77,6 +75,7 @@
 
   // Content must be visible to be printed on multiple pages
   main,
+  body.popup .view-detail,
   section,
   md-content,
   md-card,
@@ -84,12 +83,14 @@
   md-card-content pre,
   .view-detail .sg-reversible,
   .view-detail .sg-reversible:not(.sg-flip) .sg-face,
-  .view-detail .sg-reversible.sg-flip .sg-back {
+  .view-detail .sg-reversible.sg-flip .sg-back,
+  .sg-block-print {
     display: block !important;
     height: auto !important;
     min-height: auto !important;
     overflow: visible !important;
     position: relative !important;
+    flex: none;
   }
 
   // Remove shadow from Cards

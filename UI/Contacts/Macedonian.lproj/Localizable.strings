@@ -45,6 +45,90 @@
 "Carbon Copy (Cc)" = "Копија до (Cc)";
 "Blind Carbon Copy (Bcc)" = "Скриена копија до (Bcc)";
 
+/* Search scope: name fields */
+"name" = "Име";
+
+/* Search scope: name fields */
+"c_cn" = "Име";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Втора електронска адреса";
+
+/* Search scope: screen name field */
+"nsaimid" = "Прекар";
+
+/* Search scope: mail fields */
+"mail" = "Електронска пошта";
+
+/* Search scope: mail fields */
+"c_mail" = "Електронска пошта";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Телефон";
+
+/* Search scope: telephone field */
+"homephone" = "Телефон";
+
+/* Search scope: mobile field */
+"mobile" = "Мобилен";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Факс";
+
+/* Search scope: pager field */
+"pager" = "Пејџер";
+
+/* Search scope: categories field */
+"c_categories" = "Категории";
+
+/* Search scope: categories field */
+"vcardcategories" = "Категории";
+
+/* Search scope: title field */
+"title" = "Наслов";
+
+/* Search scope: organization field */
+"c_o" = "Организација";
+
+/* Search scope: organization field */
+"o" = "Организација";
+
+/* Search scope: department field */
+"ou" = "Оддел";
+
+/* Search scope: city field */
+"l" = "Град";
+
+/* Search scope: country field */
+"c" = "Земја";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Домашна адреса";
+
+/* Search scope: state/province field */
+"st" = "Држава/провинција";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Држава/провинција";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Поштенски број";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Поштенски број";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Земја";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Веб страница";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Веб страница";
+
+/* Search scope: note field */
+"description" = "Забелешка";
+
 /* Subheader of empty addressbook */
 "No contact" = "Нема контакт";
 
@@ -234,6 +318,7 @@
 "URL" = "URL";
 "New URL" = "Нов URL";
 "street" = "улица";
+"street (continued)" = "улица (продолжува)";
 "Postoffice" = "Пошта";
 "Region" = "Регион";
 "Postal Code" = "Поштенски број";

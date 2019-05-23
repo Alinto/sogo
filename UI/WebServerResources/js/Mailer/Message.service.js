@@ -171,10 +171,11 @@
           index = this.$mailbox.uidsMap[oldUID];
           this.$mailbox.uidsMap[uid] = index;
           delete this.$mailbox.uidsMap[oldUID];
+          this.$mailbox.$messages[index].uid = this.uid;
 
           // Update messages list of mailbox
           _.forEach(['from', 'to', 'subject'], function(attr) {
-            _this.$mailbox.$messages[index][attr] = _this[attr];
+            _this.$mailbox.$messages[index][attr] = _this.editable[attr];
           });
         }
       }
@@ -273,12 +274,22 @@
    * @returns true if the message is not a draft and has more than one recipient
    */
   Message.prototype.allowReplyAll = function() {
+    var identities = _.map(this.$mailbox.$account.identities, 'email');
     var recipientsCount = 0;
-    recipientsCount = _.reduce(['to', 'cc'], _.bind(function(count, type) {
-      if (this[type])
-        return count + this[type].length;
-      else
+    recipientsCount = _.reduce(['to', 'cc', 'bcc', 'reply-to'], _.bind(function(count, type) {
+      var typeCount = 0;
+      if (this[type]) {
+        typeCount = this[type].length;
+        _.forEach(this[type], function(recipient) {
+          if (_.indexOf(identities, recipient.email) >= 0) {
+            typeCount--;
+          }
+        });
+        return count + typeCount;
+      }
+      else {
         return count;
+      }
     }, this), recipientsCount);
 
     return !this.isDraft && recipientsCount > 1;

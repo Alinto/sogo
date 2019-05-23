@@ -195,7 +195,7 @@
   SOGoUserDefaults *ud;
   SOGoDomainDefaults *dd;
   NSArray *interval;
-  unsigned int start, end;
+  int start, end;
   
   today = [[NSCalendarDate calendarDate] beginOfDay];
   ud = [[context activeUser] userDefaults];

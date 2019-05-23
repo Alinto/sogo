@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.7.5
+ * @license AngularJS v1.7.8
  * (c) 2010-2018 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -63,7 +63,7 @@
 var ARIA_DISABLE_ATTR = 'ngAriaDisable';
 
 var ngAriaModule = angular.module('ngAria', ['ng']).
-                        info({ angularVersion: '1.7.5' }).
+                        info({ angularVersion: '1.7.8' }).
                         provider('$aria', $AriaProvider);
 
 /**
@@ -395,7 +395,7 @@ ngAriaModule.directive('ngShow', ['$aria', function($aria) {
 
               if (keyCode === 13 || keyCode === 32) {
                 // If the event is triggered on a non-interactive element ...
-                if (nodeBlackList.indexOf(event.target.nodeName) === -1) {
+                if (nodeBlackList.indexOf(event.target.nodeName) === -1 && !event.target.isContentEditable) {
                   // ... prevent the default browser behavior (e.g. scrolling when pressing spacebar)
                   // See https://github.com/angular/angular.js/issues/16664
                   event.preventDefault();

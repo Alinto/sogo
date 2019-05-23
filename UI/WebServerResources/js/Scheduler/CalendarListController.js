@@ -196,7 +196,8 @@
 
       if (baseComponent) {
         component = baseComponent;
-        component.updateFreeBusy();
+        component.initAttendees();
+        component.$attendees.updateFreeBusy();
       }
       else {
         component = new Component({ pid: Calendar.$defaultCalendar(), type: type });

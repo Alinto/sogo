@@ -972,7 +972,11 @@ a replacement for the hostname part in the URI provided by the
 _SOGoSieveServer_ parameter.
 
 |baseDN
-|The base DN of your user entries.
+|The base DN of your user entries. You can use `%d` in this value if you
+want the base DN to be built dynamically from the user's domain during
+the login process. If you use that, you might always enable bindAsCurrentUser.
+
+For example: `baseDN = "ou=%d,ou=domains,dc=example,dc=com";`
 
 |KindFieldName (optional)
 |If set, SOGo will try to determine if the value of the field
@@ -1333,7 +1337,7 @@ pam logs and sogo logs.
 
 Currently, SOGo will ask for a CAS ticket using the same CAS service
 name for both IMAP and Sieve. *When CASifying sieve, this means that the
-`-s` parameter of `pam_cas`should be the same for both IMAP and Sieve*,
+`-s` parameter of `pam_cas` should be the same for both IMAP and Sieve*,
 otherwise the CAS server will complain:
 
 ----

@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  CalendarsController.$inject = ['$rootScope', '$scope', '$window', '$mdDialog', '$log', '$mdToast', 'Dialog', 'sgSettings', 'Preferences', 'Calendar'];
-  function CalendarsController($rootScope, $scope, $window, $mdDialog, $log, $mdToast, Dialog, Settings, Preferences, Calendar) {
+  CalendarsController.$inject = ['$rootScope', '$scope', '$window', '$mdDialog', '$mdMedia', '$log', '$mdToast', 'sgConstant', 'Dialog', 'sgSettings', 'Preferences', 'Calendar'];
+  function CalendarsController($rootScope, $scope, $window, $mdDialog, $mdMedia, $log, $mdToast, sgConstant, Dialog, Settings, Preferences, Calendar) {
     var vm = this;
 
     vm.activeUser = Settings.activeUser;
@@ -67,6 +67,13 @@
         },
         true // compare for object equality
       );
+    };
+
+    /**
+     * The center is always displayed on small screens.
+     */
+    this.centerIsClose = function (closed) {
+      return closed && $mdMedia(sgConstant['gt-xs']);
     };
 
     /**

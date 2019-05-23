@@ -131,11 +131,11 @@
           o = [values objectForKey: @"notifyUserOnPersonalModifications"];
           if ([o isKindOfClass: [NSNumber class]])
             [calendar setNotifyUserOnPersonalModifications: [o boolValue]];
-
-          o = [values objectForKey: @"notifiedUserOnPersonalModifications"];
-          if ([o isKindOfClass: [NSString class]])
-            [calendar setNotifiedUserOnPersonalModifications: o];
         }
+
+      o = [params objectForKey: @"notifiedUserOnPersonalModifications"];
+      if ([o isKindOfClass: [NSString class]])
+        [calendar setNotifiedUserOnPersonalModifications: o];
     }
   NS_HANDLER
     {

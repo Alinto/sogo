@@ -45,6 +45,9 @@
       $Preferences: Preferences,
       $query: {value: '', sort: 'c_cn', asc: 1},
       activeUser: Settings.activeUser(),
+      $addressbooks: [],
+      $subscriptions: [],
+      $remotes: [],
       selectedFolder: null,
       $refreshTimeout: null
     });
@@ -159,10 +162,10 @@
    */
   AddressBook.$findAll = function(data) {
     var _this = this;
-    if (data) {
-      this.$addressbooks = [];
-      this.$subscriptions = [];
-      this.$remotes = [];
+    if (data && data.length) {
+      this.$addressbooks.splice(0, this.$addressbooks.length);
+      this.$subscriptions.splice(0, this.$subscriptions.length);
+      this.$remotes.splice(0, this.$remotes.length);
       // Instanciate AddressBook objects
       angular.forEach(data, function(o, i) {
         var addressbook = new AddressBook(o);
@@ -174,6 +177,12 @@
           _this.$addressbooks.push(addressbook);
       });
     }
+    else if (angular.isArray(data)) { // empty array
+      return AddressBook.$$resource.fetch('addressbooksList').then(function(data) {
+        return AddressBook.$findAll(data.addressbooks);
+      });
+    }
+
     return _.union(this.$addressbooks, this.$subscriptions, this.$remotes);
   };
 

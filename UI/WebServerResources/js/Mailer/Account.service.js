@@ -65,12 +65,17 @@
    * @returns the list of accounts
    */
   Account.$findAll = function(data) {
-    if (!data) {
+    if (data) {
+      return Account.$unwrapCollection(data);
+    }
+    else if (Account.$accounts) {
+      return Account.$q.when(Account.$accounts);
+    }
+    else {
       return Account.$$resource.fetch('', 'mailAccounts').then(function(o) {
         return Account.$unwrapCollection(o);
       });
     }
-    return Account.$unwrapCollection(data);
   };
 
   /**
@@ -133,8 +138,11 @@
     if (this.$mailboxes && !(options && options.reload)) {
       return Account.$q.when(this.$mailboxes);
     }
+    else if (this.$futureMailboxesData) {
+      return this.$futureMailboxesData;
+    }
     else {
-      return Account.$Mailbox.$find(this, options).then(function(data) {
+      this.$futureMailboxesData = Account.$Mailbox.$find(this, options).then(function(data) {
         _this.$mailboxes = data;
         _this.$expanded = false;
 
@@ -174,6 +182,7 @@
 
         return _this.$mailboxes;
       });
+      return this.$futureMailboxesData;
     }
   };
 
@@ -402,7 +411,7 @@
         _this.delegates.push(user);
         deferred.resolve(_this.users);
       }, function(data, status) {
-        deferred.reject(l('An error occured please try again.'));
+        deferred.reject(l('An error occured, please try again.'));
       });
     }
     return deferred.promise;

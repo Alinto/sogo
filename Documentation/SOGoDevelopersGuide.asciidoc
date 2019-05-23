@@ -118,7 +118,7 @@ Fonts
 ^^^^^
 
 * http://mozilla.github.io/Fira/[Mozilla Fira]
-* https://www.google.com/design/icons/[Material icons]
+* https://material.io/tools/icons/[Material icons]
 
 Building frontend
 -----------------

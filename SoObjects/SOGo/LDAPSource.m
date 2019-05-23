@@ -1,6 +1,6 @@
 /* LDAPSource.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2019 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,16 +53,16 @@ static Class NSStringK;
 //
 //
 //
-+ (id) sourceFromUDSource: (NSDictionary *) udSource
-                 inDomain: (NSString *) sourceDomain
++ (id) sourceFromUDSource: (NSDictionary *) theSource
+                 inDomain: (NSString *) theDomain
 {
-  id newSource;
+  id source;
 
-  newSource = [[self alloc] initFromUDSource: udSource
-                                    inDomain: sourceDomain];
-  [newSource autorelease];
+  source = [[self alloc] initFromUDSource: theSource
+                                 inDomain: theDomain];
+  [source autorelease];
 
-  return newSource;
+  return source;
 }
 
 //
@@ -72,50 +72,48 @@ static Class NSStringK;
 {
   if ((self = [super init]))
     {
-      sourceID = nil;
-      displayName = nil;
+      _sourceID = nil;
+      _displayName = nil;
 
-      bindDN = nil;
-      password = nil;
-      sourceBindDN = nil;
-      sourceBindPassword = nil;
-      hostname = nil;
-      port = 389;
-      encryption = nil;
-      domain = nil;
+      _bindDN = nil;
+      _password = nil;
+      _sourceBindDN = nil;
+      _sourceBindPassword = nil;
+      _hostname = nil;
+      _port = 389;
+      _encryption = nil;
+      _domain = nil;
 
-      baseDN = nil;
-      schema = nil;
-      IDField = @"cn"; /* the first part of a user DN */
-      CNField = @"cn";
-      UIDField = @"uid";
-      mailFields = [NSArray arrayWithObject: @"mail"];
-      [mailFields retain];
-      contactMapping = nil;
+      _baseDN = nil;
+      _pristineBaseDN = nil;
+      _schema = nil;
+      _IDField = @"cn"; /* the first part of a user DN */
+      _CNField = @"cn";
+      _UIDField = @"uid";
+      _mailFields = [[NSArray arrayWithObject: @"mail"] retain];
+      _contactMapping = nil;
       // "mail" expands to all entries of MailFieldNames
       // "name" expands to sn, displayname and cn
-      searchFields = [NSArray arrayWithObjects: @"name", @"mail", @"telephonenumber", nil];
-      [searchFields retain];
-      groupObjectClasses = [NSArray arrayWithObjects: @"group", @"groupofnames", @"groupofuniquenames", @"posixgroup", nil];
-      [groupObjectClasses retain];
-      IMAPHostField = nil;
-      IMAPLoginField = nil;
-      SieveHostField = nil;
-      bindFields = nil;
+      _searchFields = [[NSArray arrayWithObjects: @"name", @"mail", @"telephonenumber", nil] retain];
+      _groupObjectClasses = [[NSArray arrayWithObjects: @"group", @"groupofnames", @"groupofuniquenames", @"posixgroup", nil] retain];
+      _IMAPHostField = nil;
+      _IMAPLoginField = nil;
+      _SieveHostField = nil;
+      _bindFields = nil;
       _scope = @"sub";
       _filter = nil;
       _userPasswordAlgorithm = nil;
-      listRequiresDot = YES;
+      _listRequiresDot = YES;
 
-      passwordPolicy = NO;
-      updateSambaNTLMPasswords = NO;
+      _passwordPolicy = NO;
+      _updateSambaNTLMPasswords = NO;
 
-      kindField = nil;
-      multipleBookingsField = nil;
+      _kindField = nil;
+      _multipleBookingsField = nil;
 
-      MSExchangeHostname = nil;
+      _MSExchangeHostname = nil;
 
-      modifiers = nil;
+      _modifiers = nil;
     }
 
   return self;
@@ -126,36 +124,37 @@ static Class NSStringK;
 //
 - (void) dealloc
 {
-  [schema release];
-  [bindDN release];
-  [password release];
-  [sourceBindDN release];
-  [sourceBindPassword release];
-  [hostname release];
-  [encryption release];
-  [baseDN release];
-  [IDField release];
-  [CNField release];
-  [UIDField release];
-  [contactMapping release];
-  [mailFields release];
-  [searchFields release];
-  [groupObjectClasses release];
-  [IMAPHostField release];
-  [IMAPLoginField release];
-  [SieveHostField release];
-  [bindFields release];
+  [_schema release];
+  [_bindDN release];
+  [_password release];
+  [_sourceBindDN release];
+  [_sourceBindPassword release];
+  [_hostname release];
+  [_encryption release];
+  [_baseDN release];
+  [_pristineBaseDN release];
+  [_IDField release];
+  [_CNField release];
+  [_UIDField release];
+  [_contactMapping release];
+  [_mailFields release];
+  [_searchFields release];
+  [_groupObjectClasses release];
+  [_IMAPHostField release];
+  [_IMAPLoginField release];
+  [_SieveHostField release];
+  [_bindFields release];
   [_filter release];
   [_userPasswordAlgorithm release];
-  [sourceID release];
-  [modulesConstraints release];
+  [_sourceID release];
+  [_modulesConstraints release];
   [_scope release];
-  [domain release];
-  [kindField release];
-  [multipleBookingsField release];
-  [MSExchangeHostname release];
-  [modifiers release];
-  [displayName release];
+  [_domain release];
+  [_kindField release];
+  [_multipleBookingsField release];
+  [_MSExchangeHostname release];
+  [_modifiers release];
+  [_displayName release];
   [super dealloc];
 }
 
@@ -201,35 +200,45 @@ static Class NSStringK;
              andObjectClasses: [udSource objectForKey: @"objectClasses"]];
 
       [self setModifiers: [udSource objectForKey: @"modifiers"]];
-      ASSIGN (abOU, [udSource objectForKey: @"abOU"]);
+      ASSIGN(_abOU, [udSource objectForKey: @"abOU"]);
 
       if ([sourceDomain length])
         {
+          NSMutableString *s;
+
           dd = [SOGoDomainDefaults defaultsForDomain: sourceDomain];
-          ASSIGN (domain, sourceDomain);
+          ASSIGN(_domain, sourceDomain);
+
+          // We now look if we have a dynamic baseBN and if we have any value to swap
+          if ([_baseDN rangeOfString: @"%d"].location != NSNotFound)
+            {
+              s = [NSMutableString stringWithString: _baseDN];
+              [s replaceOccurrencesOfString: @"%d"  withString: _domain  options: 0  range: NSMakeRange(0, [s length])];
+              ASSIGN(_baseDN, s);
+            }
         }
       else
         dd = [SOGoSystemDefaults sharedSystemDefaults];
 
-      contactInfoAttribute
+      _contactInfoAttribute
         = [udSource objectForKey: @"SOGoLDAPContactInfoAttribute"];
-      if (!contactInfoAttribute)
-        contactInfoAttribute = [dd ldapContactInfoAttribute];
-      [contactInfoAttribute retain];
+      if (!_contactInfoAttribute)
+        _contactInfoAttribute = [dd ldapContactInfoAttribute];
+      [_contactInfoAttribute retain];
       
       udQueryLimit = [udSource objectForKey: @"SOGoLDAPQueryLimit"];
       if (udQueryLimit)
-        queryLimit = [udQueryLimit intValue];
+        _queryLimit = [udQueryLimit intValue];
       else
-        queryLimit = [dd ldapQueryLimit];
+        _queryLimit = [dd ldapQueryLimit];
 
       udQueryTimeout = [udSource objectForKey: @"SOGoLDAPQueryTimeout"];
       if (udQueryTimeout)
-        queryTimeout = [udQueryTimeout intValue];
+        _queryTimeout = [udQueryTimeout intValue];
       else
-        queryTimeout = [dd ldapQueryTimeout];
+        _queryTimeout = [dd ldapQueryTimeout];
 
-      ASSIGN(modulesConstraints, [udSource objectForKey: @"ModulesConstraints"]);
+      ASSIGN(_modulesConstraints, [udSource objectForKey: @"ModulesConstraints"]);
       ASSIGN(_filter, [udSource objectForKey: @"filter"]);
       ASSIGN(_userPasswordAlgorithm, [udSource objectForKey: @"userPasswordAlgorithm"]);
       ASSIGN(_scope, ([udSource objectForKey: @"scope"]
@@ -240,12 +249,12 @@ static Class NSStringK;
         _userPasswordAlgorithm = @"none";
 
       if ([udSource objectForKey: @"passwordPolicy"])
-        passwordPolicy = [[udSource objectForKey: @"passwordPolicy"] boolValue];
+        _passwordPolicy = [[udSource objectForKey: @"passwordPolicy"] boolValue];
 
       if ([udSource objectForKey: @"updateSambaNTLMPasswords"])
-        updateSambaNTLMPasswords = [[udSource objectForKey: @"updateSambaNTLMPasswords"] boolValue];
+        _updateSambaNTLMPasswords = [[udSource objectForKey: @"updateSambaNTLMPasswords"] boolValue];
       
-      ASSIGN(MSExchangeHostname, [udSource objectForKey: @"MSExchangeHostname"]);
+      ASSIGN(_MSExchangeHostname, [udSource objectForKey: @"MSExchangeHostname"]);
     }
 
   return self;
@@ -254,22 +263,22 @@ static Class NSStringK;
 - (void) setBindDN: (NSString *) theDN
 {
   //NSLog(@"Setting bind DN to %@", theDN);
-  ASSIGN(bindDN, theDN);
+  ASSIGN(_bindDN, theDN);
 }
 
 - (NSString *) bindDN
 {
-  return bindDN;
+  return _bindDN;
 }
 
 - (void) setBindPassword: (NSString *) thePassword
 {
-  ASSIGN (password, thePassword);
+  ASSIGN(_password, thePassword);
 }
 
 - (NSString *) bindPassword
 {
-  return password;
+  return _password;
 }
 
 - (BOOL) bindAsCurrentUser
@@ -284,17 +293,17 @@ static Class NSStringK;
         encryption: (NSString *) newEncryption
  bindAsCurrentUser: (NSString *) bindAsCurrentUser
 {
-  ASSIGN(bindDN, newBindDN);
-  ASSIGN(password, newBindPassword);
-  ASSIGN(sourceBindDN, newBindDN);
-  ASSIGN(sourceBindPassword, newBindPassword);
+  ASSIGN(_bindDN, newBindDN);
+  ASSIGN(_password, newBindPassword);
+  ASSIGN(_sourceBindDN, newBindDN);
+  ASSIGN(_sourceBindPassword, newBindPassword);
 
-  ASSIGN(encryption, [newEncryption uppercaseString]);
-  if ([encryption isEqualToString: @"SSL"])
-    port = 636;
-  ASSIGN(hostname, newBindHostname);
+  ASSIGN(_encryption, [newEncryption uppercaseString]);
+  if ([_encryption isEqualToString: @"SSL"])
+    _port = 636;
+  ASSIGN(_hostname, newBindHostname);
   if (newBindPort)
-    port = [newBindPort intValue];
+    _port = [newBindPort intValue];
   _bindAsCurrentUser = [bindAsCurrentUser boolValue];
 }
 
@@ -315,25 +324,26 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
          kindField: (NSString *) newKindField
   andMultipleBookingsField: (NSString *) newMultipleBookingsField
 {
-  ASSIGN(baseDN, [newBaseDN lowercaseString]);
+  ASSIGN(_baseDN, [newBaseDN lowercaseString]);
+  ASSIGN(_pristineBaseDN, [newBaseDN lowercaseString]);
   if (newIDField)
-    ASSIGN(IDField, [newIDField lowercaseString]);
+    ASSIGN(_IDField, [newIDField lowercaseString]);
   if (newCNField)
-    ASSIGN(CNField, [newCNField lowercaseString]);
+    ASSIGN(_CNField, [newCNField lowercaseString]);
   if (newUIDField)
-    ASSIGN(UIDField, [newUIDField lowercaseString]);
+    ASSIGN(_UIDField, [newUIDField lowercaseString]);
   if (newIMAPHostField)
-    ASSIGN(IMAPHostField, [newIMAPHostField lowercaseString]);
+    ASSIGN(_IMAPHostField, [newIMAPHostField lowercaseString]);
   if (newIMAPLoginField)
-    ASSIGN(IMAPLoginField, [newIMAPLoginField lowercaseString]);
+    ASSIGN(_IMAPLoginField, [newIMAPLoginField lowercaseString]);
   if (newSieveHostField)
-    ASSIGN(SieveHostField, [newSieveHostField lowercaseString]);
+    ASSIGN(_SieveHostField, [newSieveHostField lowercaseString]);
   if (newMailFields)
-    ASSIGN(mailFields, newMailFields);
+    ASSIGN(_mailFields, newMailFields);
   if (newSearchFields)
-    ASSIGN(searchFields, newSearchFields);
+    ASSIGN(_searchFields, newSearchFields);
   if (newGroupObjectClasses)
-    ASSIGN(groupObjectClasses, newGroupObjectClasses);
+    ASSIGN(_groupObjectClasses, newGroupObjectClasses);
   if (newBindFields)
     {
       // Before SOGo v1.2.0, bindFields was a comma-separated list
@@ -350,57 +360,57 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
       //
       // We check for the old format and we support it.
       if ([newBindFields isKindOfClass: [NSArray class]])
-        ASSIGN(bindFields, newBindFields);
+        ASSIGN(_bindFields, newBindFields);
       else
         {
           [self logWithFormat: @"WARNING: using old bindFields format - please update it"];
-          ASSIGN(bindFields, [newBindFields componentsSeparatedByString: @","]);
+          ASSIGN(_bindFields, [newBindFields componentsSeparatedByString: @","]);
         }
     }
   if (newKindField)
-    ASSIGN(kindField, [newKindField lowercaseString]);
+    ASSIGN(_kindField, [newKindField lowercaseString]);
   if (newMultipleBookingsField)
-    ASSIGN(multipleBookingsField, [newMultipleBookingsField lowercaseString]);
+    ASSIGN(_multipleBookingsField, [newMultipleBookingsField lowercaseString]);
 }
 
-- (void) setListRequiresDot: (BOOL) aBool
+- (void) setListRequiresDot: (BOOL) theBool
 {
-  listRequiresDot = aBool;
+  _listRequiresDot = theBool;
 }
 
 - (BOOL) listRequiresDot
 {
-  return listRequiresDot;
+  return _listRequiresDot;
 }
 
 - (NSArray *) searchFields
 {
-  return searchFields;
+  return _searchFields;
 }
 
-- (void) setContactMapping: (NSDictionary *) newMapping
-          andObjectClasses: (NSArray *) newObjectClasses
+- (void) setContactMapping: (NSDictionary *) theMapping
+          andObjectClasses: (NSArray *) theObjectClasses
 {
-  ASSIGN (contactMapping, newMapping);
-  ASSIGN (contactObjectClasses, newObjectClasses);
+  ASSIGN(_contactMapping, theMapping);
+  ASSIGN(_contactObjectClasses, theObjectClasses);
 }
 
 //
 //
 //
-- (BOOL) _setupEncryption: (NGLdapConnection *) encryptedConn
+- (BOOL) _setupEncryption: (NGLdapConnection *) theConnection
 {
   BOOL rc;
 
-  if ([encryption isEqualToString: @"SSL"])
-    rc = [encryptedConn useSSL];
-  else if ([encryption isEqualToString: @"STARTTLS"])
-    rc = [encryptedConn startTLS];
+  if ([_encryption isEqualToString: @"SSL"])
+    rc = [theConnection useSSL];
+  else if ([_encryption isEqualToString: @"STARTTLS"])
+    rc = [theConnection startTLS];
   else
     {
       [self errorWithFormat:
         @"encryption scheme '%@' not supported:"
-        @" use 'SSL' or 'STARTTLS'", encryption];
+        @" use 'SSL' or 'STARTTLS'", _encryption];
       rc = NO;
     }
 
@@ -416,24 +426,23 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
   NS_DURING
     {
-      //NSLog(@"Creating NGLdapConnection instance for bindDN '%@'", bindDN);
-
-      ldapConnection = [[NGLdapConnection alloc] initWithHostName: hostname
-                                                             port: port];
+      NSLog(@"Creating NGLdapConnection instance for bindDN '%@'", _bindDN);
+      ldapConnection = [[NGLdapConnection alloc] initWithHostName: _hostname
+                                                             port: _port];
       [ldapConnection autorelease];
-      if (![encryption length] || [self _setupEncryption: ldapConnection])
+      if (![_encryption length] || [self _setupEncryption: ldapConnection])
         {
           [ldapConnection bindWithMethod: @"simple"
-                                  binddn: bindDN
-                             credentials: password];
-          if (queryLimit > 0)
-            [ldapConnection setQuerySizeLimit: queryLimit];
-          if (queryTimeout > 0)
-            [ldapConnection setQueryTimeLimit: queryTimeout];
-          if (!schema)
+                                  binddn: _bindDN
+                             credentials: _password];
+          if (_queryLimit > 0)
+            [ldapConnection setQuerySizeLimit: _queryLimit];
+          if (_queryTimeout > 0)
+            [ldapConnection setQueryTimeLimit: _queryTimeout];
+          if (!_schema)
             {
-              schema = [LDAPSourceSchema new];
-              [schema readSchemaFromConnection: ldapConnection];
+              _schema = [LDAPSourceSchema new];
+              [_schema readSchemaFromConnection: ldapConnection];
             }
         }
       else
@@ -442,7 +451,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   NS_HANDLER
     {
       [self errorWithFormat: @"Could not bind to the LDAP server %@ (%d) "
-                             @"using the bind DN: %@", hostname, port, bindDN];
+                             @"using the bind DN: %@", _hostname, _port, _bindDN];
       [self errorWithFormat: @"%@", localException];
       ldapConnection = nil;
     }
@@ -453,11 +462,11 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
 - (NSString *) domain
 {
-  return domain;
+  return _domain;
 }
 
 /* user management */
-- (EOQualifier *) _qualifierForBindFilter: (NSString *) uid
+- (EOQualifier *) _qualifierForBindFilter: (NSString *) theUID
 {
   NSMutableString *qs;
   NSString *escapedUid;
@@ -466,9 +475,9 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
   qs = [NSMutableString string];
 
-  escapedUid = SafeLDAPCriteria(uid);
+  escapedUid = SafeLDAPCriteria(theUID);
 
-  fields = [bindFields objectEnumerator];
+  fields = [_bindFields objectEnumerator];
   while ((currentField = [fields nextObject]))
     [qs appendFormat: @" OR (%@='%@')", currentField, escapedUid];
 
@@ -480,28 +489,28 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   return [EOQualifier qualifierWithQualifierFormat: qs];
 }
 
-- (NSString *) _fetchUserDNForLogin: (NSString *) loginToCheck
+- (NSString *) _fetchUserDNForLogin: (NSString *) theLogin
 {
-  NSEnumerator *entries;
-  EOQualifier *qualifier;
-  NSArray *attributes;
   NGLdapConnection *ldapConnection;
+  EOQualifier *qualifier;
+  NSEnumerator *entries;
+  NSArray *attributes;
   NSString *userDN;
 
   ldapConnection = [self _ldapConnection];
-  qualifier = [self _qualifierForBindFilter: loginToCheck];
+  qualifier = [self _qualifierForBindFilter: theLogin];
   attributes = [NSArray arrayWithObject: @"dn"];
 
   if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
-    entries = [ldapConnection baseSearchAtBaseDN: baseDN
+    entries = [ldapConnection baseSearchAtBaseDN: _baseDN
                                        qualifier: qualifier
                                       attributes: attributes];
   else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
-    entries = [ldapConnection flatSearchAtBaseDN: baseDN
+    entries = [ldapConnection flatSearchAtBaseDN: _baseDN
                                        qualifier: qualifier
                                       attributes: attributes];
   else
-    entries = [ldapConnection deepSearchAtBaseDN: baseDN
+    entries = [ldapConnection deepSearchAtBaseDN: _baseDN
                                        qualifier: qualifier
                                       attributes: attributes];
 
@@ -528,36 +537,41 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   NS_DURING
     if ([_login length] > 0 && [_pwd length] > 0)
       {
-        bindConnection = [[NGLdapConnection alloc] initWithHostName: hostname
-                                                             port: port];
-        if (![encryption length] || [self _setupEncryption: bindConnection])
+        // We check if SOGo admins have deviced a top-level SOGoUserSources with a dynamic base DN.
+        // This is a supported multi-domain configuration. We alter the baseDN in this case by extracting
+        // the domain from the login.
+        [self updateBaseDNFromLogin: _login];
+
+        bindConnection = [[NGLdapConnection alloc] initWithHostName: _hostname
+                                                               port: _port];
+        if (![_encryption length] || [self _setupEncryption: bindConnection])
           {
-            if (queryTimeout > 0)
-              [bindConnection setQueryTimeLimit: queryTimeout];
+            if (_queryTimeout > 0)
+              [bindConnection setQueryTimeLimit: _queryTimeout];
 
             userDN = [[SOGoCache sharedCache] distinguishedNameForLogin: _login];
 
             if (!userDN)
               {
-                if (bindFields)
+                if (_bindFields)
                   {
                     // We MUST always use the source's bindDN/password in
                     // order to lookup the user's DN. This is important since
                     // if we use bindAsCurrentUser, we could stay bound and
                     // lookup the user's DN (for an other user that is trying
                     // to log in) but not be able to do so due to ACLs in LDAP.
-                    [self setBindDN: sourceBindDN];
-                    [self setBindPassword: sourceBindPassword];
+                    [self setBindDN: _sourceBindDN];
+                    [self setBindPassword: _sourceBindPassword];
                     userDN = [self _fetchUserDNForLogin: _login];
                   }
                 else
                   userDN = [NSString stringWithFormat: @"%@=%@,%@",
-                                   IDField, [_login escapedForLDAPDN], baseDN];
+                                     _IDField, [_login escapedForLDAPDN], _baseDN];
               }
 
             if (userDN)
               {
-                if (!passwordPolicy)
+                if (!_passwordPolicy)
                   didBind = [bindConnection bindWithMethod: @"simple"
                                                     binddn: userDN
                                                credentials: _pwd];
@@ -592,10 +606,10 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
  * @return a new encrypted string.
  * @see _isPassword:equalTo:
  */
-- (NSString *) _encryptPassword: (NSString *) plainPassword
+- (NSString *) _encryptPassword: (NSString *) thePassword
 {
   NSString *pass;
-  pass = [plainPassword asCryptedPassUsingScheme: _userPasswordAlgorithm];
+  pass = [thePassword asCryptedPassUsingScheme: _userPasswordAlgorithm];
 
   if (pass == nil)
     {
@@ -658,17 +672,19 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   NS_DURING
     if ([login length] > 0)
       {
-        bindConnection = [[NGLdapConnection alloc] initWithHostName: hostname
-                                                             port: port];
-        if (![encryption length] || [self _setupEncryption: bindConnection])
+        bindConnection = [[NGLdapConnection alloc] initWithHostName: _hostname
+                                                               port: _port];
+        if (![_encryption length] || [self _setupEncryption: bindConnection])
           {
-            if (queryTimeout > 0)
-              [bindConnection setQueryTimeLimit: queryTimeout];
-            if (bindFields)
+            if (_queryTimeout > 0)
+              [bindConnection setQueryTimeLimit: _queryTimeout];
+            if (_bindFields)
               userDN = [self _fetchUserDNForLogin: login];
             else
-              userDN = [NSString stringWithFormat: @"%@=%@,%@",
-                     IDField, [login escapedForLDAPDN], baseDN];
+              {
+                userDN = [NSString stringWithFormat: @"%@=%@,%@",
+                                   _IDField, [login escapedForLDAPDN], _baseDN];
+              }
             if (userDN)
               {
                 if ([bindConnection isADCompatible])
@@ -682,7 +698,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
                                                              newPassword: newPassword];
                       }
                   }
-                else if (passwordPolicy)
+                else if (_passwordPolicy)
                   {
                     didChange = [bindConnection changePasswordAtDn: userDN
                                                        oldPassword: oldPassword
@@ -716,7 +732,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
                   }
 
                 // We must check if we must update the Samba NT/LM password hashes
-                if (didChange && updateSambaNTLMPasswords)
+                if (didChange && _updateSambaNTLMPasswords)
                   {
                     [self _ldapModifyAttribute: @"sambaNTPassword"
                                      withValue: [newPassword asNTHash]
@@ -770,9 +786,9 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   escapedFilter = SafeLDAPCriteria(filter);
   qs = [NSMutableString string];
 
-  if (([escapedFilter length] == 0 && !listRequiresDot) || [escapedFilter isEqualToString: @"."])
+  if (([escapedFilter length] == 0 && !_listRequiresDot) || [escapedFilter isEqualToString: @"."])
     {
-      [qs appendFormat: @"(%@='*')", CNField];
+      [qs appendFormat: @"(%@='*')", _CNField];
     }
   else
     {
@@ -795,7 +811,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
             {
               // Expand to all mail fields
               [fields addObject: currentCriteria];
-              [fields addObjectsFromArray: mailFields];
+              [fields addObjectsFromArray: _mailFields];
             }
           else if ([[self searchFields] containsObject: currentCriteria])
             [fields addObject: currentCriteria];
@@ -825,17 +841,17 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   escapedUid = SafeLDAPCriteria(uid);
 
   fieldFormat = [NSString stringWithFormat: @"(%%@='%@')", escapedUid];
-  mailFormat = [[mailFields stringsWithFormat: fieldFormat]
+  mailFormat = [[_mailFields stringsWithFormat: fieldFormat]
                      componentsJoinedByString: @" OR "];
   qs = [NSMutableString stringWithFormat: @"(%@='%@') OR %@",
-                        UIDField, escapedUid, mailFormat];
-  if (bindFields)
+                        _UIDField, escapedUid, mailFormat];
+  if (_bindFields)
     {
-      bindFieldsEnum = [bindFields objectEnumerator];
+      bindFieldsEnum = [_bindFields objectEnumerator];
       while ((currentField = [bindFieldsEnum nextObject]))
         {
-          if ([currentField caseInsensitiveCompare: UIDField] != NSOrderedSame
-              && ![mailFields containsObject: currentField])
+          if ([currentField caseInsensitiveCompare: _UIDField] != NSOrderedSame
+              && ![_mailFields containsObject: currentField])
             [qs appendFormat: @" OR (%@='%@')", [currentField stringByTrimmingSpaces], escapedUid];
         }
     }
@@ -864,7 +880,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
 /* This is required for SQL sources when DomainFieldName is enabled.
  * For LDAP, simply discard the domain and call the original method */
-- (NSArray *) allEntryIDsVisibleFromDomain: (NSString *) domain
+- (NSArray *) allEntryIDsVisibleFromDomain: (NSString *) theDomain
 {
   return [self allEntryIDs];
 }
@@ -883,29 +899,29 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   ids = [NSMutableArray array];
 
   ldapConnection = [self _ldapConnection];
-  attributes = [NSArray arrayWithObject: IDField];
+  attributes = [NSArray arrayWithObject: _IDField];
 
-  qs = [NSMutableString stringWithFormat: @"(%@='*')", CNField];
+  qs = [NSMutableString stringWithFormat: @"(%@='*')", _CNField];
   if ([_filter length])
     [qs appendFormat: @" AND %@", _filter];
   qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
 
   if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame) 
-    entries = [ldapConnection baseSearchAtBaseDN: baseDN
+    entries = [ldapConnection baseSearchAtBaseDN: _baseDN
                                        qualifier: qualifier
                                       attributes: attributes];
   else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame) 
-    entries = [ldapConnection flatSearchAtBaseDN: baseDN
+    entries = [ldapConnection flatSearchAtBaseDN: _baseDN
                                        qualifier: qualifier
                                       attributes: attributes];
   else
-    entries = [ldapConnection deepSearchAtBaseDN: baseDN
+    entries = [ldapConnection deepSearchAtBaseDN: _baseDN
                                        qualifier: qualifier
                                       attributes: attributes];
 
   while ((currentEntry = [entries nextObject]))
     {
-      value = [[currentEntry attributeWithName: IDField]
+      value = [[currentEntry attributeWithName: _IDField]
                             stringValueAtIndex: 0];
       if ([value length] > 0)
         [ids addObject: value];
@@ -917,13 +933,13 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 - (void) _fillEmailsOfEntry: (NGLdapEntry *) ldapEntry
              intoLDIFRecord: (NSMutableDictionary *) ldifRecord
 {
-  NSEnumerator *emailFields;
   NSString *currentFieldName, *ldapValue;
+  NSEnumerator *emailFields;
   NSMutableArray *emails;
   NSArray *allValues;
 
   emails = [[NSMutableArray alloc] init];
-  emailFields = [mailFields objectEnumerator];
+  emailFields = [_mailFields objectEnumerator];
   while ((currentFieldName = [emailFields nextObject]))
     {
       allValues = [[ldapEntry attributeWithName: currentFieldName]
@@ -958,23 +974,23 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   [ldifRecord setObject: emails forKey: @"c_emails"];
   [emails release];
 
-  if (IMAPHostField)
+  if (_IMAPHostField)
     {
-      ldapValue = [[ldapEntry attributeWithName: IMAPHostField] stringValueAtIndex: 0];
+      ldapValue = [[ldapEntry attributeWithName: _IMAPHostField] stringValueAtIndex: 0];
       if ([ldapValue length] > 0)
         [ldifRecord setObject: ldapValue forKey: @"c_imaphostname"];
     }
 
-  if (IMAPLoginField)
+  if (_IMAPLoginField)
     {
-      ldapValue = [[ldapEntry attributeWithName: IMAPLoginField] stringValueAtIndex: 0];
+      ldapValue = [[ldapEntry attributeWithName: _IMAPLoginField] stringValueAtIndex: 0];
       if ([ldapValue length] > 0)
         [ldifRecord setObject: ldapValue forKey: @"c_imaplogin"];
     }
 
-  if (SieveHostField)
+  if (_SieveHostField)
     {
-      ldapValue = [[ldapEntry attributeWithName: SieveHostField] stringValueAtIndex: 0];
+      ldapValue = [[ldapEntry attributeWithName: _SieveHostField] stringValueAtIndex: 0];
       if ([ldapValue length] > 0)
         [ldifRecord setObject: ldapValue forKey: @"c_sievehostname"];
     }
@@ -991,7 +1007,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
   result = YES;
 
-  constraints = [modulesConstraints objectForKey: module];
+  constraints = [_modulesConstraints objectForKey: module];
   if (constraints)
     {
       matches = [[constraints allKeys] objectEnumerator];
@@ -1020,12 +1036,12 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   NSUInteger count, max, fieldCount, fieldMax;
   BOOL filled;
 
-  keys = [contactMapping allKeys];
+  keys = [_contactMapping allKeys];
   max = [keys count];
   for (count = 0; count < max; count++)
     {
       key = [keys objectAtIndex: count];
-      sourceFields = [contactMapping objectForKey: key];
+      sourceFields = [_contactMapping objectForKey: key];
       if ([sourceFields isKindOfClass: NSStringK])
         sourceFields = [NSArray arrayWithObject: sourceFields];
       fieldMax = [sourceFields count];
@@ -1053,11 +1069,11 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   NSString *key, *lowerKey, *field, *value;
   NSUInteger count, max, fieldCount, fieldMax;
 
-  if (contactObjectClasses)
-    [ldifRecord setObject: contactObjectClasses
+  if (_contactObjectClasses)
+    [ldifRecord setObject: _contactObjectClasses
                    forKey: @"objectclass"];
 
-  keys = [contactMapping allKeys];
+  keys = [_contactMapping allKeys];
   max = [keys count];
   for (count = 0; count < max; count++)
     {
@@ -1066,7 +1082,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
       value = [ldifRecord objectForKey: lowerKey];
       if ([value length] > 0)
         {
-          sourceFields = [contactMapping objectForKey: key];
+          sourceFields = [_contactMapping objectForKey: key];
           if ([sourceFields isKindOfClass: NSStringK])
             sourceFields = [NSArray arrayWithObject: sourceFields];
 
@@ -1129,7 +1145,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
         {
         // We check if our entry is a group. If so, we set the
         // 'isGroup' custom attribute.
-        gclasses = [groupObjectClasses objectEnumerator];
+        gclasses = [_groupObjectClasses objectEnumerator];
         while ((gclass = [gclasses nextObject]))
          if ([classes containsObject: [gclass lowercaseString]])
            {
@@ -1147,9 +1163,9 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   // thing
   // group
   //
-  if ([kindField length] > 0)
+  if ([_kindField length] > 0)
     {
-      value = [ldifRecord objectForKey: [kindField lowercaseString]];
+      value = [ldifRecord objectForKey: [_kindField lowercaseString]];
       if ([value isKindOfClass: NSStringK]
           && [resourceKinds containsObject: value])
         [ldifRecord setObject: [NSNumber numberWithInt: 1]
@@ -1158,18 +1174,18 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
   // We check for the number of simultanous bookings that is allowed.
   // A value of 0 means that there's no limit.
-  if ([multipleBookingsField length] > 0)
+  if ([_multipleBookingsField length] > 0)
     {
-      value = [ldifRecord objectForKey: [multipleBookingsField lowercaseString]];
+      value = [ldifRecord objectForKey: [_multipleBookingsField lowercaseString]];
       [ldifRecord setObject: [NSNumber numberWithInt: [value intValue]]
                      forKey: @"numberOfSimultaneousBookings"];
     }
 
-  value = [[ldapEntry attributeWithName: IDField] stringValueAtIndex: 0];
+  value = [[ldapEntry attributeWithName: _IDField] stringValueAtIndex: 0];
   if (!value)
     value = @"";
   [ldifRecord setObject: value forKey: @"c_name"];
-  value = [[ldapEntry attributeWithName: UIDField] stringValueAtIndex: 0];
+  value = [[ldapEntry attributeWithName: _UIDField] stringValueAtIndex: 0];
   if (!value)
     value = @"";
 //  else
@@ -1178,7 +1194,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 //      and prefix the UID with a "@"
 //    }
   [ldifRecord setObject: value forKey: @"c_uid"];
-  value = [[ldapEntry attributeWithName: CNField] stringValueAtIndex: 0];
+  value = [[ldapEntry attributeWithName: _CNField] stringValueAtIndex: 0];
   if (!value)
     value = @"";
   [ldifRecord setObject: value forKey: @"c_cn"];
@@ -1186,9 +1202,9 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   if (![ldifRecord objectForKey: @"displayname"])
     [ldifRecord setObject: value forKey: @"displayname"];
 
-  if (contactInfoAttribute)
+  if (_contactInfoAttribute)
     {
-      value = [[ldapEntry attributeWithName: contactInfoAttribute]
+      value = [[ldapEntry attributeWithName: _contactInfoAttribute]
                 stringValueAtIndex: 0];
       if (!value)
         value = @"";
@@ -1197,8 +1213,8 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
     value = @"";
   [ldifRecord setObject: value forKey: @"c_info"];
 
-  if (domain)
-    value = domain;
+  if (_domain)
+    value = _domain;
   else
     value = @"";
   [ldifRecord setObject: value forKey: @"c_domain"];
@@ -1211,7 +1227,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   [self _fillConstraints: ldapEntry forModule: @"ActiveSync"
           intoLDIFRecord: (NSMutableDictionary *) ldifRecord];
 
-  if (contactMapping)
+  if (_contactMapping)
     [self applyContactMappingToResult: ldifRecord];
 
   return ldifRecord;
@@ -1219,7 +1235,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
 - (NSArray *) fetchContactsMatching: (NSString *) match
                        withCriteria: (NSArray *) criteria
-                           inDomain: (NSString *) domain
+                           inDomain: (NSString *) theDomain
 {
   NGLdapConnection *ldapConnection;
   NGLdapEntry *currentEntry;
@@ -1230,22 +1246,22 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
   contacts = [NSMutableArray array];
 
-  if ([match length] > 0 || !listRequiresDot)
+  if ([match length] > 0 || !_listRequiresDot)
     {
       ldapConnection = [self _ldapConnection];
       qualifier = [self _qualifierForFilter: match onCriteria: criteria];
       attributes = [NSArray arrayWithObject: @"*"];
 
       if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
-        entries = [ldapConnection baseSearchAtBaseDN: baseDN
+        entries = [ldapConnection baseSearchAtBaseDN: _baseDN
                                            qualifier: qualifier
                                           attributes: attributes];
       else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
-        entries = [ldapConnection flatSearchAtBaseDN: baseDN
+        entries = [ldapConnection flatSearchAtBaseDN: _baseDN
                                            qualifier: qualifier
                                           attributes: attributes];
       else /* we do it like before */ 
-        entries = [ldapConnection deepSearchAtBaseDN: baseDN
+        entries = [ldapConnection deepSearchAtBaseDN: _baseDN
                                            qualifier: qualifier
                                           attributes: attributes];
       while ((currentEntry = [entries nextObject]))
@@ -1256,7 +1272,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   return contacts;
 }
 
-- (NGLdapEntry *) _lookupLDAPEntry: (EOQualifier *) qualifier
+- (NGLdapEntry *) _lookupLDAPEntry: (EOQualifier *) theQualifier
 {
   NGLdapConnection *ldapConnection;
   NSEnumerator *entries;
@@ -1266,23 +1282,23 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   attributes = [NSArray arrayWithObject: @"*"];
 
   if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
-    entries = [ldapConnection baseSearchAtBaseDN: baseDN
-                                       qualifier: qualifier
+    entries = [ldapConnection baseSearchAtBaseDN: _baseDN
+                                       qualifier: theQualifier
                                       attributes: attributes];
   else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
-    entries = [ldapConnection flatSearchAtBaseDN: baseDN
-                                       qualifier: qualifier
+    entries = [ldapConnection flatSearchAtBaseDN: _baseDN
+                                       qualifier: theQualifier
                                       attributes: attributes];
   else
-    entries = [ldapConnection deepSearchAtBaseDN: baseDN
-                                       qualifier: qualifier
+    entries = [ldapConnection deepSearchAtBaseDN: _baseDN
+                                       qualifier: theQualifier
                                       attributes: attributes];
 
   return [entries nextObject];
 }
 
 - (NSDictionary *) lookupContactEntry: (NSString *) theID
-                             inDomain: (NSString *) domain
+                             inDomain: (NSString *) theDomain
 {
   NGLdapEntry *ldapEntry;
   EOQualifier *qualifier;
@@ -1294,7 +1310,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   if ([theID length] > 0)
     {
       s = [NSString stringWithFormat: @"(%@='%@')",
-                    IDField, SafeLDAPCriteria(theID)];
+                    _IDField, SafeLDAPCriteria(theID)];
       qualifier = [EOQualifier qualifierWithQualifierFormat: s];
       ldapEntry = [self _lookupLDAPEntry: qualifier];
       if (ldapEntry)
@@ -1305,7 +1321,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 }
 
 - (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) uid
-                                           inDomain: (NSString *) domain
+                                           inDomain: (NSString *) theDomain
 {
   NGLdapEntry *ldapEntry;
   EOQualifier *qualifier;
@@ -1341,9 +1357,9 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
   entry = [ldapConnection entryAtDN: theDN
 			  qualifier: qualifier
-                         attributes: [NSArray arrayWithObject: UIDField]];
+                         attributes: [NSArray arrayWithObject: _UIDField]];
   if (entry)
-    login = [[entry attributeWithName: UIDField] stringValueAtIndex: 0];
+    login = [[entry attributeWithName: _UIDField] stringValueAtIndex: 0];
 
   return login;
 }
@@ -1387,62 +1403,62 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 }
 
 - (NGLdapEntry *) lookupGroupEntryByUID: (NSString *) theUID
-                               inDomain: (NSString *) domain
+                               inDomain: (NSString *) theDomain
 {
-  return [self _lookupGroupEntryByAttributes: [NSArray arrayWithObject: UIDField]
+  return [self _lookupGroupEntryByAttributes: [NSArray arrayWithObject: _UIDField]
 				    andValue: theUID];
 }
 
 - (NGLdapEntry *) lookupGroupEntryByEmail: (NSString *) theEmail
-                                 inDomain: (NSString *) domain
+                                 inDomain: (NSString *) theDomain
 {
-  return [self _lookupGroupEntryByAttributes: mailFields
+  return [self _lookupGroupEntryByAttributes: _mailFields
 				    andValue: theEmail];
 }
 
 - (void) setSourceID: (NSString *) newSourceID
 {
-  ASSIGN (sourceID, newSourceID);
+  ASSIGN(_sourceID, newSourceID);
 }
 
 - (NSString *) sourceID
 {
-  return sourceID;
+  return _sourceID;
 }
 
 - (void) setDisplayName: (NSString *) newDisplayName
 {
-  ASSIGN (displayName, newDisplayName);
+  ASSIGN(_displayName, newDisplayName);
 }
 
 - (NSString *) displayName
 {
-  return displayName;
+  return _displayName;
 }
 
 - (NSString *) baseDN
 {
-  return baseDN;
+  return _baseDN;
 }
 
 - (NSString *) MSExchangeHostname
 {
-  return MSExchangeHostname;
+  return _MSExchangeHostname;
 }
 
 - (void) setModifiers: (NSArray *) newModifiers
 {
-  ASSIGN (modifiers, newModifiers);
+  ASSIGN(_modifiers, newModifiers);
 }
 
 - (NSArray *) modifiers
 {
-  return modifiers;
+  return _modifiers;
 }
 
 - (NSArray *) groupObjectClasses
 {
-  return groupObjectClasses;
+  return _groupObjectClasses;
 }
 
 static NSArray *
@@ -1516,40 +1532,42 @@ _convertRecordToLDAPAttributes (LDAPSourceSchema *schema, NSDictionary *ldifReco
   return attributes;
 }
 
-- (NSException *) addContactEntry: (NSDictionary *) roLdifRecord
-                           withID: (NSString *) aId
+- (NSException *) addContactEntry: (NSDictionary *) theEntry
+                           withID: (NSString *) theId
 {
-  NSException *result;
-  NGLdapEntry *newEntry;
-  NSMutableDictionary *ldifRecord;
-  NSArray *attributes;
-  NSString *dn, *cnValue;
   NGLdapConnection *ldapConnection;
+  NSMutableDictionary *ldifRecord;
+  NSString *dn, *cnValue;
+  NGLdapEntry *newEntry;
+  NSException *result;
+  NSArray *attributes;
 
-  if ([aId length] > 0)
+  result = nil;
+
+  if ([theId length] > 0)
     {
       ldapConnection = [self _ldapConnection];
-      ldifRecord = [roLdifRecord mutableCopy];
+      ldifRecord = [theEntry mutableCopy];
       [ldifRecord autorelease];
-      [ldifRecord setObject: aId forKey: UIDField];
+      [ldifRecord setObject: theId forKey: _UIDField];
 
       /* if CN is not set, we use aId because it must exist */
-      if (![ldifRecord objectForKey: CNField])
+      if (![ldifRecord objectForKey: _CNField])
         {
           cnValue = [ldifRecord objectForKey: @"displayname"];
           if ([cnValue length] == 0)
-            cnValue = aId;
-          [ldifRecord setObject: aId forKey: @"cn"];
+            cnValue = theId;
+          [ldifRecord setObject: theId forKey: @"cn"];
         }
 
       [self applyContactMappingToOutput: ldifRecord];
 
       /* since the id might have changed due to the mapping above, we
          reload the record ID */
-      aId = [ldifRecord objectForKey: UIDField];
-      dn = [NSString stringWithFormat: @"%@=%@,%@", IDField,
-                     [aId escapedForLDAPDN], baseDN];
-      attributes = _convertRecordToLDAPAttributes (schema, ldifRecord);
+      theId = [ldifRecord objectForKey: _UIDField];
+      dn = [NSString stringWithFormat: @"%@=%@,%@", _IDField,
+                     [theId escapedForLDAPDN], _baseDN];
+      attributes = _convertRecordToLDAPAttributes(_schema, ldifRecord);
 
       newEntry = [[NGLdapEntry alloc] initWithDN: dn
                                       attributes: attributes];
@@ -1569,7 +1587,7 @@ _convertRecordToLDAPAttributes (LDAPSourceSchema *schema, NSDictionary *ldifReco
       [result autorelease];
     }
   else
-    [self errorWithFormat: @"no value for id field '%@'", IDField];
+    [self errorWithFormat: @"no value for id field '%@'", _IDField];
 
   return result;
 }
@@ -1579,13 +1597,12 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
                   NSString *dn, NSArray *attributes)
 {
   NSMutableArray *changes, *attributeNames, *origAttributeNames;
-  NGLdapEntry *origEntry;
-  // NSArray *values;
   NGLdapAttribute *attribute, *origAttribute;
-  NSString *name;
   NSDictionary *origAttributes;
-  NSUInteger count, max/* , valueCount, valueMax */;
-  // BOOL allStrings;
+  NGLdapEntry *origEntry;
+  NSString *name;
+
+  NSUInteger count, max;
 
   /* additions and modifications */
   origEntry = [ldapConnection entryAtDN: dn
@@ -1636,22 +1653,24 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
   return changes;
 }
 
-- (NSException *) updateContactEntry: (NSDictionary *) roLdifRecord
+- (NSException *) updateContactEntry: (NSDictionary *) theEntry
 {
-  NSException *result;
-  NSString *dn;
+  NGLdapConnection *ldapConnection;
   NSMutableDictionary *ldifRecord;
   NSArray *attributes, *changes;
-  NGLdapConnection *ldapConnection;
+  NSException *result;
+  NSString *dn;
 
-  dn = [roLdifRecord objectForKey: @"dn"];
+  dn = [theEntry objectForKey: @"dn"];
+  result = nil;
+
   if ([dn length] > 0)
     {
       ldapConnection = [self _ldapConnection];
-      ldifRecord = [roLdifRecord mutableCopy];
+      ldifRecord = [theEntry mutableCopy];
       [ldifRecord autorelease];
       [self applyContactMappingToOutput: ldifRecord];
-      attributes = _convertRecordToLDAPAttributes (schema, ldifRecord);
+      attributes = _convertRecordToLDAPAttributes(_schema, ldifRecord);
 
       changes = _makeLDAPChanges (ldapConnection, dn, attributes);
 
@@ -1675,15 +1694,15 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
   return result;
 }
 
-- (NSException *) removeContactEntryWithID: (NSString *) aId
+- (NSException *) removeContactEntryWithID: (NSString *) theId
 {
-  NSException *result;
   NGLdapConnection *ldapConnection;
+  NSException *result;
   NSString *dn;
 
   ldapConnection = [self _ldapConnection];
-  dn = [NSString stringWithFormat: @"%@=%@,%@", IDField,
-                 [aId escapedForLDAPDN], baseDN];
+  dn = [NSString stringWithFormat: @"%@=%@,%@", _IDField,
+                 [theId escapedForLDAPDN], _baseDN];
   NS_DURING
     {
       [ldapConnection removeEntryWithDN: dn];
@@ -1704,19 +1723,19 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
 /* user addressbooks */
 - (BOOL) hasUserAddressBooks
 {
-  return ([abOU length] > 0);
+  return ([_abOU length] > 0);
 }
 
-- (NSArray *) addressBookSourcesForUser: (NSString *) user
+- (NSArray *) addressBookSourcesForUser: (NSString *) theUser
 {
-  NSMutableArray *sources;
-  NSString *abBaseDN;
   NGLdapConnection *ldapConnection;
+  NSMutableDictionary *entryRecord;
   NSArray *attributes, *modifier;
+  NSMutableArray *sources;
+  NSDictionary *sourceRec;
   NSEnumerator *entries;
   NGLdapEntry *entry;
-  NSMutableDictionary *entryRecord;
-  NSDictionary *sourceRec;
+  NSString *abBaseDN;
   LDAPSource *ab;
 
   if ([self hasUserAddressBooks])
@@ -1726,8 +1745,8 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
 
       ldapConnection = [self _ldapConnection];
       abBaseDN = [NSString stringWithFormat: @"ou=%@,%@=%@,%@",
-                           [abOU escapedForLDAPDN], IDField,
-                           [user escapedForLDAPDN], baseDN];
+                           [_abOU escapedForLDAPDN], _IDField,
+                           [theUser escapedForLDAPDN], _baseDN];
 
       /* test ou=addressbooks entry */
       attributes = [NSArray arrayWithObject: @"*"];
@@ -1741,18 +1760,18 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
           entries = [ldapConnection flatSearchAtBaseDN: abBaseDN
                                              qualifier: nil
                                             attributes: attributes];
-          modifier = [NSArray arrayWithObject: user];
+          modifier = [NSArray arrayWithObject: theUser];
           while ((entry = [entries nextObject]))
             {
               sourceRec = [entry asDictionary];
               ab = [LDAPSource new];
               [ab setSourceID: [sourceRec objectForKey: @"ou"]];
               [ab setDisplayName: [sourceRec objectForKey: @"description"]];
-              [ab setBindDN: bindDN
-		   password: password
-		   hostname: hostname
-		       port: [NSString stringWithFormat: @"%d", port]
-		 encryption: encryption
+              [ab setBindDN: _bindDN
+		   password: _password
+		   hostname: _hostname
+		       port: [NSString stringWithFormat: @"%d", _port]
+		 encryption: _encryption
 		  bindAsCurrentUser: [NSString stringWithFormat: @"%d", NO]];
               [ab setBaseDN: [entry dn]
 		    IDField: @"cn"
@@ -1778,7 +1797,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
           entryRecord = [NSMutableDictionary dictionary];
           [entryRecord setObject: @"organizationalUnit" forKey: @"objectclass"];
           [entryRecord setObject: @"addressbooks" forKey: @"ou"];
-          attributes = _convertRecordToLDAPAttributes (schema, entryRecord);
+          attributes = _convertRecordToLDAPAttributes(_schema, entryRecord);
           entry = [[NGLdapEntry alloc] initWithDN: abBaseDN
                                        attributes: attributes];
           [entry autorelease];
@@ -1815,15 +1834,15 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
   if ([self hasUserAddressBooks])
     {
       abDN = [NSString stringWithFormat: @"ou=%@,ou=%@,%@=%@,%@",
-                       [newId escapedForLDAPDN], [abOU escapedForLDAPDN],
-                       IDField, [user escapedForLDAPDN], baseDN];
+                       [newId escapedForLDAPDN], [_abOU escapedForLDAPDN],
+                       _IDField, [user escapedForLDAPDN], _baseDN];
       entryRecord = [NSMutableDictionary dictionary];
       [entryRecord setObject: @"organizationalUnit" forKey: @"objectclass"];
       [entryRecord setObject: newId forKey: @"ou"];
       if ([newDisplayName length] > 0)
         [entryRecord setObject: newDisplayName forKey: @"description"];
       ldapConnection = [self _ldapConnection];
-      attributes = _convertRecordToLDAPAttributes (schema, entryRecord);
+      attributes = _convertRecordToLDAPAttributes(_schema, entryRecord);
       entry = [[NGLdapEntry alloc] initWithDN: abDN
                                    attributes: attributes];
       [entry autorelease];
@@ -1855,24 +1874,24 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
                           withDisplayName: (NSString *) newDisplayName
                                   forUser: (NSString *) user
 {
+  NGLdapConnection *ldapConnection;
+  NSMutableDictionary *entryRecord;
+  NSArray *attributes, *changes;
   NSException *result;
   NSString *abDN;
-  NGLdapConnection *ldapConnection;
-  NSArray *attributes, *changes;
-  NSMutableDictionary *entryRecord;
 
   if ([self hasUserAddressBooks])
     {
       abDN = [NSString stringWithFormat: @"ou=%@,ou=%@,%@=%@,%@",
-                       [newId escapedForLDAPDN], [abOU escapedForLDAPDN],
-                       IDField, [user escapedForLDAPDN], baseDN];
+                       [newId escapedForLDAPDN], [_abOU escapedForLDAPDN],
+                       _IDField, [user escapedForLDAPDN], _baseDN];
       entryRecord = [NSMutableDictionary dictionary];
       [entryRecord setObject: @"organizationalUnit" forKey: @"objectclass"];
       [entryRecord setObject: newId forKey: @"ou"];
       if ([newDisplayName length] > 0)
         [entryRecord setObject: newDisplayName forKey: @"description"];
       ldapConnection = [self _ldapConnection];
-      attributes = _convertRecordToLDAPAttributes (schema, entryRecord);
+      attributes = _convertRecordToLDAPAttributes(_schema, entryRecord);
       changes = _makeLDAPChanges (ldapConnection, abDN, attributes);
       [attributes release];
       NS_DURING
@@ -1902,17 +1921,17 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
 - (NSException *) removeAddressBookSource: (NSString *) newId
                                   forUser: (NSString *) user
 {
-  NSException *result;
-  NSString *abDN;
   NGLdapConnection *ldapConnection;
   NSEnumerator *entries;
+  NSException *result;
   NGLdapEntry *entry;
+  NSString *abDN;
 
   if ([self hasUserAddressBooks])
     {
       abDN = [NSString stringWithFormat: @"ou=%@,ou=%@,%@=%@,%@",
-                       [newId escapedForLDAPDN], [abOU escapedForLDAPDN],
-                       IDField, [user escapedForLDAPDN], baseDN];
+                       [newId escapedForLDAPDN], [_abOU escapedForLDAPDN],
+                       _IDField, [user escapedForLDAPDN], _baseDN];
       ldapConnection = [self _ldapConnection];
       NS_DURING
         {
@@ -1941,6 +1960,21 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
                                    userInfo: nil];
 
   return result;
+}
+
+- (void) updateBaseDNFromLogin: (NSString *) theLogin
+{
+  NSMutableString *s;
+  NSRange r;
+
+  r = [theLogin rangeOfString: @"@"];
+  if (r.location != NSNotFound &&
+      [_pristineBaseDN rangeOfString: @"%d"].location != NSNotFound)
+    {
+      s = [NSMutableString stringWithString: _pristineBaseDN];
+      [s replaceOccurrencesOfString: @"%d"  withString: [theLogin substringFromIndex: r.location+1]  options: 0  range: NSMakeRange(0, [s length])];
+      ASSIGN(_baseDN, s);
+    }
 }
 
 @end

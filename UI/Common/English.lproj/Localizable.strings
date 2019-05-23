@@ -80,6 +80,9 @@
 "Error" = "Error";
 "Success" = "Success";
 
+/* confirmation dialog box */
+"Confirmation" = "Confirmation";
+
 /* alarms */
 "Reminder" = "Reminder";
 "Start" = "Start";
@@ -140,10 +143,19 @@
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
 "File size upload limit reached" = "File size upload limit reached";
 
+/* Generic server error */
+"An error occured, please try again." = "An error occured, please try again.";
+
+/* Open datepicker */
+"Open Calendar" = "Open Calendar";
+
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Toggle visibility";
 
 "Keyboard Shortcuts" = "Keyboard Shortcuts";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "Toggle item";
 
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Toggle range of items";

@@ -260,6 +260,14 @@ String.prototype.parseDate = function(localeProvider, format) {
     return new Date(NaN);
 };
 
+Date.prototype.clone = function() {
+  var newDate = new Date();
+
+  newDate.setTime(this.getTime());
+
+  return newDate;
+};
+
 Date.prototype.daysUpTo = function(otherDate) {
     var days = [];
 

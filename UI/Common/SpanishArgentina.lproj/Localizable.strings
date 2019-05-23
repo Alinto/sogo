@@ -6,7 +6,7 @@
 "Edit User Rights" = "Modificar permisos";
 "Home" = "Inicio";
 "Calendar" = "Calendario";
-"Address Book"	= "Libreta de direcciones";
+"Address Book"  = "Libreta de direcciones";
 "Mail" = "Correo";
 "Preferences" = "Preferencias";
 "Administration" = "Administración";
@@ -31,7 +31,7 @@
 "Sorry, the user rights can not be configured for that object." = "Lo sentimos, los permisos de este usuario no pueden ser configurados para este objeto.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "Cualquier usuario con una cuenta en el sistema tendrá acceso a su buzón de correo \"%{0}\".  ¿Está seguro de querer dar acceso a cualquier usuario en el sistema?";
-"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
      = "Cualquier usuario con una cuenta en el sistema tendrá acceso a su calendario \"%{0}\". ¿Está seguro de querer dar acceso a cualquier usuario en el sistema?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "Cualquiera persona en Internet podrá tener acceso a su calendario \"%{0}\", incluso si no tiene una cuenta en este sistema. ¿Está seguro de querer publicar esta información en Internet?";
@@ -41,24 +41,25 @@
      = "Cualquier usuario en Internet tendrá acceso a su libreta de direcciones \"%{0}\", incluso aquellos que no tengan cuenta en este sistema. ¿Está seguro de que la información de la libreta es adecuada para ser publicada en Internet?";
 "Give Access" = "Permitir el acceso";
 "Keep Private" = "Mantener privado";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
-	= "No es posible suscribirse a esta carpeta.";
+        = "No es posible suscribirse a esta carpeta.";
 "You cannot subscribe to a folder that you own!"
-      	= "No es posible suscribirse a una carpeta que le pertenece.";
+        = "No es posible suscribirse a una carpeta que le pertenece.";
 "Unable to unsubscribe from that folder!"
-	= "No es posible darse de baja de esta carpeta.";
+        = "No es posible darse de baja de esta carpeta.";
 "You cannot unsubscribe from a folder that you own!"
-      	= "No es posible darse de baja de una carpeta que le pertenece.";
+        = "No es posible darse de baja de una carpeta que le pertenece.";
 "Unable to rename that folder!" = "La carpeta no puede ser renombrada.";
 "You have already subscribed to that folder!"
-     	= "Ya se ha suscrito a esta carpeta.";
+        = "Ya se ha suscrito a esta carpeta.";
 "The user rights cannot be edited for this object!"
         = "No es posible modificar los permisos de acceso a este objeto.";
 "A folder by that name already exists." = "Ya existe una carpeta con el mismo nombre.";
-"You cannot create a list in a shared address book." 
+"You cannot create a list in a shared address book."
         = "No es posible crear una lista en una libreta de direcciones compartida.";
-"Warning" = "Atención";
+"Warning" = "Advertencia";
 "Can't contact server" = "Ha ocurrido un error mientras se contactaba al servidor. Por favor intente de nuevo";
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "No esta permitido el acceso a este módulo o éste sistema. Por favor contacte con su administrador de sistemas.";
@@ -68,6 +69,23 @@
 "delegate is organizer" = "La persona que ha delegado es el organizador. Por favor, especifique una persona diferente.";
 "delegate is a participant" = "La persona a la que ha delegado ya es un participante.";
 "delegate is a group" = "La dirección especificada corresponde a un grupo. Sólo puede delegar a una única persona.";
+
+/* common buttons */
+"OK" = "OK";
+"Cancel" = "Cancelar";
+"Yes" = "Si";
+"No" = "No";
+
+/* generic messages */
+"Error" = "Error";
+"Success" = "Correcto";
+
+/* alarms */
+"Reminder" = "Recordatorio";
+"Start" = "Desde";
+"Due Date" = "Vencimiento";
+"Location" = "Lugar";
+"Snooze" = "Posponer";
 "Snooze for " = "Posponer por ";
 "5 minutes" = "5 minutos";
 "10 minutes" = "10 minutos";
@@ -76,22 +94,14 @@
 "45 minutes" = "45 minutos";
 "1 hour" = "1 hora";
 "1 day" = "1 día";
-/* common buttons */
-"OK" = "OK";
-"Cancel" = "Cancelar";
-"Yes" = "Si";
-"No" = "No";
-/* alarms */
-"Reminder" = "Recordatorio";
-"Start" = "Desde";
-"Due Date" = "Vencimiento";
-"Location" = "Lugar";
+
 /* mail labels */
 "Important" = "Importante";
 "Work" = "Trabajo";
 "Personal" = "Personal";
 "To Do" = "Por hacer";
 "Later" = "Más tarde";
+"Return Receipt Sent" = "Acuse de recibo enviado";
 "a2_Sunday" = "Do";
 "a2_Monday" = "Lu";
 "a2_Tuesday" = "Ma";
@@ -104,5 +114,90 @@
 "Loading" = "Cargando";
 "No such user." = "No existe el usuario";
 "You cannot (un)subscribe to a folder that you own!" = "¡No se puede suscribir o desuscribir a una carpeta que le pertenece!";
-"SOGo" = "SOGo";
-"Modules" = "Módulos";
+
+/* SMIME Certificate field */
+"S/MIME Certificate" = "Certifiicado S/MIME";
+"Subject Name" = "Titular";
+"Issuer" = "Remitente";
+"countryName" = "País";
+"organizationName" = "Organización";
+"organizationalUnitName" = "Departamento/ Sección";
+"commonName" = "Dominio";
+"emailAddress" = "Dirección de correo electrónico";
+
+/* Authentication username */
+"Username" = "Nombre de usuario";
+
+/* Authentication password */
+"Password" = "Contraseña";
+
+/* Authentication failed */
+"Wrong username or password." = "Nombre de usuario o contraseña incorrectos";
+
+/* Error message displayed bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "Ingrese por lo menos %{minimumSearchLength} caracteres";
+
+/* Error message displayed when a file upload exceeds WOMaxUploadSize */
+"File size upload limit reached" = "Se ha alcanzado el tamaño máximo para subir un archivo";
+
+/* Toggle visibility (ex: mail account in left navigation menu) */
+"Toggle visibility" = "Mostrar/Ocultar visibilidad";
+
+"Keyboard Shortcuts" = "Atajos del teclado";
+
+/* Toggle multiple items at the same time (hotkeys cheatsheet) */
+"Toggle range of items" = "Mostrar/Ocultar rango de ítems";
+
+/* Question mark shows list of hotkeys */
+"Show or hide this help" = "Mostrar u ocultar estar ayuda";
+
+/* Space key */
+"key_space" = "space";
+
+/* Delete key */
+"key_delete" = "borrar";
+
+/* Shift and space key */
+"key_shift+space" = "shift + espacio";
+
+/* Up arrow key */
+"key_up" = "↑";
+
+/* Down arrow key */
+"key_down" = "↓";
+
+/* Left arrow key */
+"key_left" = "←";
+
+/* Right arrow key */
+"key_right" = "→";
+
+/* Shift and up arrow combo keys */
+"key_shift+up" = "shift + ↑";
+
+/* Shift and down arrow combo keys */
+"key_shift+down" = "shift + ↓";
+
+/* Backspace key */
+"key_backspace" = "⌫";
+
+/* Hotkey to start a search */
+"hotkey_search" = "s";
+
+/* Hotkey description to select next list item */
+"View next item" = "Ver el próximo ítem";
+
+/* Hotkey description to select previous list item */
+"View previous item" = "Ver el ítem anterior";
+
+/* Hotkey description to add next list item to selection */
+"Add next item to selection" = "Agregar el siguiente ítem a la selección";
+
+/* Hotkey description to add previous list item to selection */
+"Add previous item to selection" = "Agregar el ítem anterior a la selección";
+
+/* Hotkey description to move backward in current view */
+"Move backward" = "Mover hacia atrás";
+
+/* Hotkey description to move forward in current view */
+"Move forward" = "Mover hacia adelante";

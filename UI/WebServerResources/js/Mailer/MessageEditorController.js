@@ -128,7 +128,7 @@
         // },
         onSuccessItem: function(item, response, status, headers) {
           vm.message.$setUID(response.uid);
-          vm.message.$reload({asDraft: false});
+          vm.message.$reload();
           item.inlineUrl = response.lastAttachmentAttrs[0].url;
           //console.debug(item); console.debug('success = ' + JSON.stringify(response, undefined, 2));
         },

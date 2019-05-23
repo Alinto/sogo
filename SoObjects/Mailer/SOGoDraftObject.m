@@ -752,25 +752,33 @@ static NSString    *userAgent      = nil;
       [_info removeObjectForKey: @"cc"];
     }
 
-  /* CC processing if we reply-to-all: - we add all 'to' and 'cc' fields */
+  /* CC processing if we reply-to-all: - we add all 'to', 'cc' and 'bcc' fields */
   if (_replyToAll)
     {
-      to = [[NSMutableArray alloc] init];
+      to = [NSMutableArray array];
 
       [addrs setArray: [_envelope to]];
       [self _purgeRecipients: allRecipients
-	    fromAddresses: addrs];
+               fromAddresses: addrs];
       [self _addEMailsOfAddresses: addrs toArray: to];
       [self _addRecipients: addrs toArray: allRecipients];
 
       [addrs setArray: [_envelope cc]];
       [self _purgeRecipients: allRecipients
-	    fromAddresses: addrs];
+               fromAddresses: addrs];
       [self _addEMailsOfAddresses: addrs toArray: to];
-
+      [self _addRecipients: addrs toArray: allRecipients];
       [_info setObject: to forKey: @"cc"];
 
-      [to release];
+      if ([[_envelope bcc] count])
+        {
+          to = [NSMutableArray array];
+          [addrs setArray: [_envelope bcc]];
+          [self _purgeRecipients: allRecipients
+                   fromAddresses: addrs];
+          [self _addEMailsOfAddresses: addrs toArray: to];
+          [_info setObject: to forKey: @"bcc"];
+        }
     }
 }
 
@@ -874,6 +882,7 @@ static NSString    *userAgent      = nil;
   NSDictionary *h;
   NSMutableArray *addresses;
   NGImap4Envelope *sourceEnvelope;
+  SOGoUserDefaults *ud;
   id priority, receipt;
 
   [sourceMail fetchCoreInfos];
@@ -917,10 +926,12 @@ static NSString    *userAgent      = nil;
   if ([receipt isNotEmpty] && [receipt isKindOfClass: [NSString class]])
       [info setObject: (NSString*)receipt forKey: @"Disposition-Notification-To"];
 
-  [self setHeaders: info];
+  ud = [[context activeUser] userDefaults];
 
+  [self setHeaders: info];
   [self setText: [sourceMail contentForEditing]];
   [self setIMAP4ID: [[sourceMail nameInContainer] intValue]];
+  [self setIsHTML: [[ud mailComposeMessageType] isEqualToString: @"html"]];
 }
 
 //
@@ -934,6 +945,7 @@ static NSString    *userAgent      = nil;
   NSMutableArray *addresses;
   NSMutableDictionary *info;
   NGImap4Envelope *sourceEnvelope;
+  SOGoUserDefaults *ud;
 
   fromSentMailbox = [[sourceMail container] isKindOfClass: [SOGoSentFolder class]];
   [sourceMail fetchCoreInfos];
@@ -955,8 +967,11 @@ static NSString    *userAgent      = nil;
   if ([addresses count])
     [info setObject: [addresses objectAtIndex: 0] forKey: @"from"];
 
+  ud = [[context activeUser] userDefaults];
+
   [self setText: [sourceMail contentForReply]];
   [self setHeaders: info];
+  [self setIsHTML: [[ud mailComposeMessageType] isEqualToString: @"html"]];
   [self setSourceURL: [sourceMail imap4URLString]];
   [self setSourceFlag: @"Answered"];
   [self setSourceIMAP4ID: [[sourceMail nameInContainer] intValue]];
@@ -1788,7 +1803,7 @@ static NSString    *userAgent      = nil;
                                   lookupName: @"Contacts"
                                    inContext: context
                                      acquire: NO];
-          certificate = [[contactFolders certificateForEmail: theRecipient] convertPKCS7ToPEM];
+          certificate = [[contactFolders certificateForEmail: theRecipient] signersFromPKCS7];
         }
       else
         certificate =  [[self mailAccountFolder] certificate];

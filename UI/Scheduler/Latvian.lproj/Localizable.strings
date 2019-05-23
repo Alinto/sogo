@@ -437,6 +437,8 @@ validate_untilbeforeend    = "Atkārtošanās ir jāpārtrauc pēc pirmā gadīj
 = "Jūs nevarat noņemt vai atteikties no jūsu personiskā kalendāra.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Vai tiešām vēlaties dzēst kalendāru \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Vai tiešām vēlaties izdzēst atlasītos komponentus?";
 
 /* Legend */
 "Participant" = "Dalībnieks";

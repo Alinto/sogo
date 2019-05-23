@@ -440,15 +440,45 @@ validate_untilbeforeend    = "Die Wiederholung muss nach dem ersten Auftreten en
 "Are you sure you want to delete the selected components?"
 = "Wollen Sie wirklich die ausgewählten Komponenten löschen?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Rolle";
+
+/* Participant role: participation is required */
 "Participant" = "Teilnehmer";
+
+/* Participant role: participation is required */
+"req-participant" = "Teilnehmer";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Optionaler Teilnehmer";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Optionaler Teilnehmer";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Kein Teilnehmer";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Kein Teilnehmer";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Vorsitz";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Vorsitz";
+
+/* Participant status: needs action */
 "Needs action" = "Benötigt Eingriff";
+
+/* Participant status: event accepted */
 "Accepted" = "Akzeptiert";
+
+/* Participant status: event declined */
 "Declined" = "Abgelehnt";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Vorläufig";
+
 "Free" = "Verfügbar";
 "Busy" = "Beschäftigt";
 "Maybe busy" = "Vielleicht beschäftigt";

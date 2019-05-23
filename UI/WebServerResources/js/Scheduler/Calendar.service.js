@@ -536,7 +536,7 @@
       }, function(response) {
         if (response.status == 401) {
           // Authentication failed
-          d.reject(l('Wrong username or password'));
+          d.reject(l('Wrong username or password.'));
         }
         else {
           d.reject(response.statusText);

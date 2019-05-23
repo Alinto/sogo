@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2016 Inverse inc.
+  Copyright (C) 2007-2019 Inverse inc.
 
   This file is part of SOGo
 
@@ -108,6 +108,7 @@
     
 /* locale */
 - (NSDictionary *)locale;
+- (NSString *) localeCode;
 
 /* cached resource filenames */
 - (WOResourceManager *) pageResourceManager;

@@ -179,6 +179,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Add to Address Book...";
+"Successfully created card" = "Successfully created card";
 "Compose Mail To" = "Compose Mail To";
 "Create Filter From Message..." = "Create Filter From Message...";
 
