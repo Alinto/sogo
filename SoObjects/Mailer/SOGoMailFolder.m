@@ -812,7 +812,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       else
         {
           recipient = [junkSettings objectForKey: @"notJunkEmailAddress"];
-          subject = [[self labelForKey: @"Report: Marked messages as not not junk"] asQPSubjectString: @"utf-8"];
+          subject = [[self labelForKey: @"Report: Marked messages as not junk"] asQPSubjectString: @"utf-8"];
         }
 
       limit = [[junkSettings objectForKey: @"limit"] intValue];
