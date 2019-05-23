@@ -978,6 +978,10 @@ the login process. If you use that, you might always enable bindAsCurrentUser.
 
 For example: `baseDN = "ou=%d,ou=domains,dc=example,dc=com";`
 
+Moreover, if you use the dynamic base DN, you should use set
+UIDFieldName to `mail` in order to be able to extract the domain
+name automatically during the backup/restore process.
+
 |KindFieldName (optional)
 |If set, SOGo will try to determine if the value of the field
 corresponds to either "group", "location" or "thing". If that's the
