@@ -180,7 +180,9 @@
         </md-button>
         <md-button class="sg-icon-button" ng-click="mailbox.markOrUnMarkMessagesAsJunk()">
           <md-icon ng-hide="::mailbox.service.selectedFolder.type == 'junk'">thumb_down</md-icon>
+	  <md-tooltip ng-hide="::mailbox.service.selectedFolder.type == 'junk'" md-direction="bottom"><var:string label:value="Junk"/></md-tooltip>	
           <md-icon ng-hide="::mailbox.service.selectedFolder.type != 'junk'">thumb_up</md-icon>
+	  <md-tooltip ng-hide="::mailbox.service.selectedFolder.type != 'junk'" md-direction="bottom"><var:string label:value="Not junk"/></md-tooltip>
         </md-button>
         <md-menu>
           <md-button class="sg-icon-button" label:aria-label="More messages options" ng-click="$mdMenu.open()">
