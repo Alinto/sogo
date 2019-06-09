@@ -74,7 +74,7 @@ Installation directories:
   --configmake=PATH       path to the config file being created
   --enable-debug          turn on debugging and compile time warnings
   --enable-strip          turn on stripping of debug symbols
-  --with-ssl=SSL          specify ssl library (none, libssl, gnutls, auto) [auto]
+  --with-ssl=SSL          specify ssl library (none, ssl, gnutls, auto) [auto]
   --enable-saml2          enable support for SAML2 authentication (requires liblasso)
 
   --enable-ldap-config    enable LDAP based configuration of SOGo
