@@ -184,7 +184,7 @@ static int cssEscapingCount;
     {
       rangePtr->location += offset;
       urlText = [selfCopy substringFromRange: *rangePtr];
-      newUrlText = [NSString stringWithFormat: @"<a href=\"%@%@\">%@</a>",
+      newUrlText = [NSString stringWithFormat: @"<a rel=\"noopener\" href=\"%@%@\">%@</a>",
                           ([urlText hasPrefix: prefix]? @"" : prefix),
                              urlText, urlText];
       [selfCopy replaceCharactersInRange: *rangePtr

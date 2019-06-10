@@ -14,7 +14,7 @@
   function txt2html(linkyFilter) {
     return function(text) {
       // Linky will first sanitize the text; linefeeds are therefore encoded.
-      return text ? String(linkyFilter(text, ' _blank')).replace(/&#10;/gm, '<br>') : undefined;
+      return text ? String(linkyFilter(text, ' _blank', { rel: 'noopener' })).replace(/&#10;/gm, '<br>') : undefined;
     };
   }
 

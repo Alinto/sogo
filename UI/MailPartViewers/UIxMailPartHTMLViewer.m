@@ -521,6 +521,8 @@ _xmlCharsetForCharset (NSString *charset)
                                    == NSNotFound
                                    && ![value hasPrefix: @"mailto:"]
                                    && ![value hasPrefix: @"#"]);
+                  if (!skipAttribute)
+                    [resultPart appendString: @" rel=\"noopener\""];
                 }
               // Avoid: <div style="background:url('http://www.sogo.nu/fileadmin/sogo/logos/sogo.bts.png' ); width: 200px; height: 200px;" title="ssss">
               else if ([name isEqualToString: @"style"])

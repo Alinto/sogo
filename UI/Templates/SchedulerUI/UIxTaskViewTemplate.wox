@@ -98,7 +98,7 @@
         <!-- attach urls -->
         <md-list-item  ng-repeat="url in ::editor.component.attachUrls">
           <md-icon>link</md-icon>
-          <p><a ng-href="{{::url.value}}" target="_new" ng-bind="::url.value"><!-- link --></a></p>
+          <p><a ng-href="{{::url.value}}" rel="noopener" target="_new" ng-bind="::url.value"><!-- link --></a></p>
         </md-list-item>
         <!-- comment -->
         <md-list-item ng-show="::editor.component.comment">

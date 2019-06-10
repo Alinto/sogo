@@ -171,7 +171,7 @@
               <div class="pseudo-input-container" ng-repeat="url in editor.card.urls">
                 <label class="pseudo-input-label"><var:entity const:name="nbsp"/>{{url.type.capitalize() | loc}}</label>
                 <div class="pseudo-input-field">
-                  <a href="#" target="_new" ng-href="{{url.value}}">{{url.value}}</a>
+                  <a href="#" rel="noopener" target="_new" ng-href="{{url.value}}">{{url.value}}</a>
                 </div>
               </div>
             </div>
