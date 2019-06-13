@@ -846,6 +846,13 @@ _xmlCharsetForCharset (NSString *charset)
   if (enc == XML_CHAR_ENCODING_UTF8)
     {
       s = [[NSString alloc] initWithData: preparsedContent  encoding: NSUTF8StringEncoding];
+
+      // Again, In some rare cases (like #4513), we can get utterly broken email messages where
+      // HTML parts are wrongly encoded. We try to fall back to UTF-8 if that happens and
+      // if it still happens, we fall back to ISO-Latin-1.
+      if (!s)
+        s = [[NSString alloc] initWithData: preparsedContent  encoding: NSISOLatin1StringEncoding];
+
       preparsedContent = [[s safeString] dataUsingEncoding: NSUTF8StringEncoding];
       RELEASE(s);
     }
