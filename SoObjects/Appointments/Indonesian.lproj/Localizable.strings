@@ -1,0 +1,79 @@
+"Inviting the following persons is prohibited:" = "Dilarang mengundang orang berikut:";
+"Personal Calendar" = "Kalender Pribadi";
+vevent_class0 = "(Acara Publik)";
+vevent_class1 = "(Acara Pribadi)";
+vevent_class2 = "(Acara Rahasia)";
+
+vtodo_class0 = "(Tugas Publik)";
+vtodo_class1 = "(Tugas Pribadi)";
+vtodo_class2 = "(Tugas Rahasia)";
+
+/* Receipts */
+"The event \"%{Summary}\" was created" = "Acara \"%{Summary}\" telah dibuat";
+"The event \"%{Summary}\" was deleted" = "Acara \"%{Summary}\" telah dihapus";
+"The event \"%{Summary}\" was updated" = "Acara \"%{Summary}\" telah diperbaharui";
+"The following attendees(s) were notified" = "Peserta berikut telah diberi tahu";
+"The following attendees(s) were added" = "Peserta berikut telah ditambahkan";
+"The following attendees(s) were removed" = "Peserta berikut telah dihilangkan";
+
+/* IMIP messages */
+"calendar_label" = "Kalender";
+"startDate_label" = "Mulai";
+"endDate_label" = "Selesai";
+"time_label" = "Waktu";
+"to_label" = "kepada";
+"due_label" = "Batas Akhir";
+"location_label" = "Lokasi";
+"summary_label" = "Ikhtisar";
+"comment_label" = "Komentar";
+"organizer_label" = "Penyelenggara";
+"attendee_label" = "Peserta";
+
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "Undangan Acara: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(dikirim oleh %{SentBy})";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} telah mengundang Anda ke %{Summary}.\n\nMulai: %{StartDate}\nSelesai: %{EndDate}\nKeterangan: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} telah mengundang Anda ke %{Summary}.\n\nMulai: %{StartDate} pukul %{StartTime}\nSelesai: %{EndDate} pukul %{EndTime}\nKeterangan: %{Description}";
+
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "Acara Dibatalkan: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} telah membatalkan acara ini: %{Summary}.\n\nMulai: %{StartDate}\nSelesai: %{EndDate}\nKeterangan: %{Description}";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} telah membatalkan acara ini: %{Summary}.\n\nMulai: %{StartDate} pukul %{StartTime}\nSelesai: %{EndDate} pukul %{EndTime}\nKeterangan: %{Description}";
+
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "Janji \"%{Summary}\" untuk %{OldStartDate} telah diubah";
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "Janji \"%{Summary}\" untuk %{OldStartDate} pukul %{OldStartTime} telah diubah";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "Parameter berikut telah berubah pada pertemuan \"%{Summary}\":";
+"Please accept or decline those changes."
+= "Mohon menerima atau menolak perubahan tersebut.";
+
+/* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Undangan yang diterima: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Undangan yang ditolak: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Undangan yang didelegasikan: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Belum memutuskan pada undangan: \"%{Summary}\"";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "%{Attendee} %{SentByText} telah menerima undangan acara Anda.";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "%{Attendee} %{SentByText} telah menolak undangan acara Anda.";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText} telah mendelegasikan undangan kepada %{Delegate}.";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText} belum memutuskan tentang undangan acara Anda.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Reminder: \"%{Summary}\" - %{StartDate}";
+
+/* Resources */
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Tidak dapat mengakses sumber daya: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Jumlah maksimal booking bersamaan (%{NumberOfSimultaneousBookings}) telah terlampaui untuk sumber daya \"%{Cn} %{SystemEmail}\". Acara yang bentrok adalah \"%{EventTitle}\", dan mulai pada %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Your participation is required to this event";
+"Your participation is optional to this event" = "Your participation is optional to this event";
+"Your participation is not required to this event" = "Your participation is not required to this event";

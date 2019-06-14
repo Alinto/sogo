@@ -279,6 +279,12 @@
 @implementation SOGoFolderHungarianRemovalAdvisory
 @end
 
+@implementation SOGoFolderIndonesianAdditionAdvisory
+@end
+
+@implementation SOGoFolderIndonesianRemovalAdvisory
+@end
+
 @implementation SOGoFolderIcelandicAdditionAdvisory
 @end
 

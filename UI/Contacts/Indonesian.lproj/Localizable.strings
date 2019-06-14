@@ -1,0 +1,361 @@
+/* this file is in UTF-8 format! */
+
+"Contact" = "Kontak";
+"Address" = "Alamat";
+"Photos" = "Foto";
+"Other" = "Lainnya";
+"Address Books" = "Buku Alamat";
+"Addressbook" = "Buku Alamat";
+"Addresses" = "Alamat";
+"Update" = "Perbarui";
+"Cancel" = "Batal";
+"Common" = "Umum";
+"Contact editor" = "Hubungi editor";
+"Contact viewer" = "Hubungi viewer";
+"Email" = "Email";
+"Screen Name" = "Nama Layar";
+"Extended" = "Ext";
+"Fax" = "Fax";
+"Firstname" = "Nama Depan";
+"Home" = "Rumah";
+"HomePhone" = "Telepon Rumah";
+"Lastname" = "Nama Belakang";
+"Location" = "Lokasi";
+"Add a category" = "Tambah sebuah kategori";
+"MobilePhone" = "Handphone";
+"Name" = "Nama";
+"OfficePhone" = "Telepon Kantor";
+"Organization" = "Organisasi";
+"Work Phone" = "Telepon Kerja";
+"Phone" = "Telepon";
+"Phones" = "Telepon";
+"Postal" = "Pos";
+"Save" = "Simpan";
+"Internet" = "Internet";
+"Unit" = "Unit";
+"delete" = "hapus";
+"edit" = "edit";
+"invalidemailwarn" = "Email tidak valid";
+"new" = "baru";
+"Preferred Phone" = "Telepon yang Disukai";
+"Move To" = "Pindah ke";
+"Copy To" = "Salin ke";
+"Add to" = "Tambah ke";
+"To" = "Kepada";
+"Carbon Copy (Cc)" = "Tembusan (Cc)";
+"Blind Carbon Copy (Bcc)" = "Tembusan buta (Bcc)";
+
+/* Search scope: name fields */
+"name" = "Nama";
+
+/* Search scope: name fields */
+"c_cn" = "Nama";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Email cadangan";
+
+/* Search scope: screen name field */
+"nsaimid" = "Nama di layar";
+
+/* Search scope: mail fields */
+"mail" = "Pesan";
+
+/* Search scope: mail fields */
+"c_mail" = "Pesan";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telepon";
+
+/* Search scope: telephone field */
+"homephone" = "Telepon";
+
+/* Search scope: mobile field */
+"mobile" = "Handphone";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Pager";
+
+/* Search scope: categories field */
+"c_categories" = "Kategori";
+
+/* Search scope: categories field */
+"vcardcategories" = "Kategori";
+
+/* Search scope: title field */
+"title" = "Gelar panggilan";
+
+/* Search scope: organization field */
+"c_o" = "Organisasi";
+
+/* Search scope: organization field */
+"o" = "Organisasi";
+
+/* Search scope: department field */
+"ou" = "Departemen";
+
+/* Search scope: city field */
+"l" = "Kota";
+
+/* Search scope: country field */
+"c" = "Negara";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Alamat Rumah";
+
+/* Search scope: state/province field */
+"st" = "Kota/Provinsi";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Kota/Provinsi Asal";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Kode Pos";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Kode Pos";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Negara Asal";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Alamat Website";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Halaman Web";
+
+/* Search scope: note field */
+"description" = "Catatan";
+
+/* Subheader of empty addressbook */
+"No contact" = "Tidak ada kontak";
+
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Mulai pencarian untuk menelusuri buku alamat ini";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "kontak";
+
+/* No contact matching search criteria */
+"No matching contact" = "Tidak ada kontak yang cocok";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "kontak yang cocok";
+
+/* Number of selected contacts in list */
+"selected" = "dipilih";
+
+/* Empty right pane */
+"No contact selected" = "Tidak ada kontak yang dipilih";
+
+/* Tooltips */
+"Create a new address book card" = "Buat sebuah kartu buku alamat baru";
+"Create a new list" = "Buat sebuah daftar baru";
+"Edit the selected card" = "Ediy kartu yang dipilih";
+"Send a mail message" = "Kirim sebuah pesan email";
+"Delete selected card or address book" = "Hapus kartu atau buku alamat yang dipilih";
+"Reload all contacts" = "Muat ulang semua kontak";
+"htmlMailFormat_UNKNOWN" = "Tidak diketahui";
+"htmlMailFormat_FALSE" = "Plain Text";
+"htmlMailFormat_TRUE" = "HTML";
+"Name or Email" = "Nama atau Email";
+"Category" = "Kategori";
+"Personal Addressbook" = "Buku Alamat Personal";
+"Search in Addressbook" = "Cari di Buku Alamat";
+"New Card" = "Kartu Baru";
+"New List" = "Daftar Baru";
+"Edit" = "Edit";
+"Properties" = "Properti";
+"Sharing..." = "Berbagi...";
+"Write" = "Tulis";
+"Delete" = "Hapus";
+"Instant Message" = "Pesan Instan";
+"Add..." = "Tambah...";
+"Remove" = "Hapus";
+"Please wait..." = "Monoh tunggu...";
+"No possible subscription" = "Tidak ada kemungkinan berlangganan ";
+"Preferred" = "Lebih disukai";
+"Display" = "Tampilan";
+"Display Name" = "Tampilkan Nama";
+"Additional Email" = "Email Tambahan";
+"Phone Number" = "Nomor Telepon";
+"Prefers to receive messages formatted as" = "Lebih suka menerima pesan dengan format";
+"Categories" = "Kategori";
+"First" = "Awal";
+"Last" = "Terakhir";
+"Nickname" = "Nama Panggilan";
+"Telephone" = "Telepon";
+"Work" = "Kerja";
+"Mobile" = "Handphone";
+"Pager" = "Pager";
+
+/* categories */
+"contacts_category_labels" = "Rekan, Pesaing, Pelanggan, Teman, Keluarga, Mitra Bisnis, Provider, Pers, VIP";
+"New category" = "Kategori Baru";
+
+/* adresses */
+"Title" = "Judul";
+"Service" = "Layanan";
+"Company" = "Perusahaan";
+"Department" = "Departemen";
+"City" = "Kota";
+"State_Province" = "Negara Bagian/Propinsi";
+"ZIP_Postal Code" = "Kode Pos";
+"Country" = "Negara";
+"Web Page" = "Halaman Web";
+"Other Infos" = "Info Lain";
+"Note" = "Catatan";
+"Timezone" = "Zona Waktu";
+"Birthday" = "Tanggal Lahir";
+"Birthday (yyyy-mm-dd)" = "Tanggal Lahir (yyyy-mm-dd)";
+"Freebusy URL" = "Freebusy URL";
+"Add as..." = "Tambah sebagai...";
+"Recipient" = "Penerima";
+"Carbon Copy" = "Carbon Copy";
+"Blind Carbon Copy" = "Blind Carbon Copy";
+"New Addressbook..." = "Buku Alamat Baru...";
+"Subscribe to an Addressbook..." = "Berlangganan sebuah Buku Alamat...";
+"Remove the selected Addressbook" = "Hapus buku alamat yang dipilih";
+"Subscribe to a shared folder" = "Berlangganan sebuah folder bersama";
+"Search User" = "Cari Pengguna";
+"Name of the Address Book" = "Nama Buku Alamat";
+"Are you sure you want to delete the selected address book?"
+= "Apakah Anda yakin ingin menghapus buku alamat yang dipilih?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Apakah Anda yakin ingin menghapus buku alamat \"%{0}\"?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "Anda tidak bisa menghapus atau berhenti berlangganan dari sebuah buku alamat publik.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "Anda tidak bisa menghapus atau berhenti berlangganan dari sebuah buku alamat personal Anda.";
+"Are you sure you want to delete the selected contacts?"
+= "Apakah Anda yakin ingin menghapus kontak yang dipilih?";
+"Are you sure you want to delete the card of %{0}?" = "Apakah Anda yakin ingin menghapus kartu %{0}?";
+"You cannot delete the card of \"%{0}\"."
+= "Anda tidak bisa menghapus kartu \"%{0}\".";
+"You cannot subscribe to a folder that you own!"
+= "Anda tidak bisa berlangganan sebuah folder yang Anda miliki.";
+"Unable to subscribe to that folder!"
+= "Tidak bisa berlangganan folder tersebut.";
+
+/* security */
+"Security" = "Security";
+"Uninstall" = "Uninstall";
+"Error reading the card certificate." = "Error reading the card certificate.";
+"No certificate associated to card." = "No certificate associated to card.";
+
+/* acls */
+"Access rights to" = "Hak akses ke";
+"For user" = "Untuk pengguna";
+"Any Authenticated User" = "Setiap Pengguna Terotentikasi";
+"Public Access" = "Akses Publik";
+"This person can add cards to this addressbook."
+= "Orang ini dapat menambah kartu pada buku alamat ini.";
+"This person can edit the cards of this addressbook."
+= "Orang ini dapat merubah kartu alamat buku ini";
+"This person can list the content of this addressbook."
+= "Orang ini dapat mendaftar konten pada buku alamat ini";
+"This person can read the cards of this addressbook."
+= "Orang ini dapat membaca kartu buku alamat ini";
+"This person can erase cards from this addressbook."
+= "Orang ini dapat menghapus kartu pada buku alamat ini.";
+"The selected contact has no email address."
+= "Kontak yang dipilih tidak memiliki alamat email";
+"Please select a contact." = "silahkan pilih kontak.";
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} kartu (s) disalin";
+"%{0} card(s) moved" = "%{0} kartu (s) dipindah";
+"SoAccessDeniedException" = "Anda tidak dapat menulis di buku alamat ini.";
+"Forbidden" = "Terlarang";
+"Invalid Contact" = "Kontak yang dipilih sudah tidak tersedia.";
+"Unknown Destination Folder" = "Buku alamat tujuan yang dipilih tidak ada lagi.";
+
+/* Lists */
+"List details" = "Daftar rincian";
+"List name" = "Daftar nama";
+"List nickname" = "Daftar nama panggilan";
+"List description" = "Daftar deskripsi";
+"Members" = "Anggota";
+"Contacts" = "Kontak";
+"Add" = "Tambah";
+"Lists can't be moved or copied." = "List tidak bisa di pindah atau di salin";
+"Export" = "Ekspor";
+"Export Address Book..." = "Ekspor buku alamat";
+"View Raw Source" = "Tinjau sumber bahan";
+
+/* Import */
+"Import Cards" = "Impor Kartu";
+"Select a vCard or LDIF file." = "Pilih vCard atau file LDIF";
+"Upload" = "Unggah";
+"Uploading" = "Sedang mengunggah";
+"Done" = "selesai";
+"An error occured while importing contacts." = "terjadi kesalahan saat impor kontak";
+"No card was imported." = "tidak ada kontak yang di impor";
+"A total of %{0} cards were imported in the addressbook." = "Total %{0} kartu telah diimpor di buku alamat ini.";
+"Reload" = "memuat";
+
+/* Properties window */
+"Address Book Name" = "Nama buku Alamat";
+"Links to this Address Book" = "hubungkan dengan buku alamat";
+"Authenticated User Access" = "Akses Pengguna terotentikasi";
+"CardDAV URL" = "URL CardDAV";
+"Options" = "Pilihan";
+"Rename" = "Ganti Nama";
+"Subscriptions" = "Langganan";
+"Global Addressbooks" = "Buku alamat umum";
+"Search" = "mencari";
+"Sort" = "menyortir";
+"Descending Order" = "Menurunkan pesanan";
+"Back" = "Kembali";
+"Select All" = "Pilih Semua";
+"Copy contacts" = "Salin kontak";
+"More messages options" = "Pilihan pesan lainya";
+"New Contact" = "Kontak baru";
+"Close" = "Tutup";
+"More contact options" = "Pilihan kontak lainya";
+"Organization Unit" = "Unit Organisasi";
+"Add Organizational Unit" = "Tambah unit organisasi";
+"Type" = "Mengetik";
+"Email Address" = "Alamat Email";
+"New Email Address" = "Alamat email baru";
+"New Phone Number" = "Nomor telepon baru";
+"URL" = "URL";
+"New URL" = "URL baru";
+"street" = "Jalan";
+"street (continued)" = "nama jalan (lanjutan)";
+"Postoffice" = "Kantor Pos";
+"Region" = "Wilayah";
+"Postal Code" = "Kode pos";
+"New Address" = "Alamat baru";
+"Reset" = "Memasang ulang";
+"Description" = "Deskripsi";
+"Add Member" = "Tambah Anggota";
+"Subscribe" = "Berlangganan";
+"Add Birthday" = "Tambah hari lahir";
+"Import" = "Impor";
+"More options" = "Pilihan lainya";
+"Role" = "Peran";
+"Add Screen Name" = "Tambah nama layar";
+"Custom 1" = "Kustom 1";
+"Custom 2" = "Kustom 2";
+"Custom 3" = "Kustom 3";
+"Custom 4" = "Kustom 4";
+"Custom Value" = "Nilai Kustom";
+"New Custom Value" = "Nilai Kustom Baru";
+"Synchronization" = "Sinkronisasi";
+"Synchronize" = "Mensinkronisasikan";
+"Sucessfully subscribed to address book" = "Berhasil berlangganan pada Buku Alamat...";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Batasan pencarian";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Beralih item";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

@@ -1,0 +1,27 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "Bantuan";
+"Close" = "Tutup";
+"Modules" = "Modul";
+/* Modules short names */
+"ACLs" = "ACL";
+/* Modules titles */
+"ACLs_title" = "Pengaturan ACL folder pengguna";
+/* Modules descriptions */
+"ACLs_description" = "<p>Modul administrasi ACL memungkinkan Anda merubah ACL setiap kalender dan buku alamat pengguna.</p><p>Untuk merubah ACL dari folder pengguna, ketik nama penguna di bagian pencarian yang berada di atas dan klik dua kali pada folder yang diinginkan.</p>";
+"Name or Email" = "Nama atau Email";
+"ACLs saved" = "ACLs saved";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Mulai pencarian untuk menyunting hak";
+/* Rights module: Empty search result */
+"No matching user" = "Tidak ada pengguna yang sesuai";
+/* Rights module: no selection */
+"No resource selected" = "Tidak ada sumber daya yang dipilih";
+"Add User" = "Tambah Pengguna";
+"Subscribe User" = "Langganan User";
+"Rights" = "Hak";
+"Search Users" = "Cari Pengguna";
+"users found" = "pengguna ditemukan";
+"No resource" = "Tiadak ada sumber daya";
+"Any Authenticated User" = "Setiap Pengguna Terotentikasi";
+"Public Access" = "Akses Publik";

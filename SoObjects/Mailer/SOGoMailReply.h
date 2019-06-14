@@ -84,6 +84,9 @@
 @interface SOGoMailHungarianReply : SOGoMailReply
 @end
 
+@interface SOGoMailIndonesianReply : SOGoMailReply
+@end
+
 @interface SOGoMailIcelandicReply : SOGoMailReply
 @end
 

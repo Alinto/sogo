@@ -13,11 +13,13 @@ DEBUG=False
 
 # must be kept in sync with SoObjects/SOGo/SOGoDefaults.plist
 # this should probably be fetched magically...
-SOGoSupportedLanguages = [ "Arabic", "Basque", "Catalan", "ChineseChina", "ChineseTaiwan", "Croatian", "Czech", "Dutch", "Danish", "Welsh", "English", "Finnish",
+SOGoSupportedLanguages = [ "Arabic", "Basque", "Catalan", "ChineseChina", "ChineseTaiwan", "Croatian",
+                           "Czech", "Dutch", "Danish", "Welsh", "English", "Finnish",
                            "SpanishSpain", "SpanishArgentina", "French", "German", "Hebrew",
-                           "Icelandic", "Italian", "Japanese", "Latvian", "Lithuanian", "Macedonian", "Hungarian", "Portuguese", "BrazilianPortuguese",
-                           "NorwegianBokmal", "NorwegianNynorsk", "Polish", "Romanian", "Russian", "Serbian", "Slovak",
-                           "Slovenian", "Swedish", "TurkishTurkey", "Ukrainian" ];
+                           "Hungarian", "Indonesian", "Icelandic", "Italian", "Japanese",
+                           "Latvian", "Lithuanian", "Macedonian", "Portuguese", "BrazilianPortuguese",
+                           "NorwegianBokmal", "NorwegianNynorsk", "Polish", "Romanian", "Russian",
+                           "Serbian", "Slovak", "Slovenian", "Swedish", "TurkishTurkey", "Ukrainian" ];
 daysBetweenResponseList=[1,2,3,5,7,14,21,30]
 
 class HTTPPreferencesPOST (webdavlib.HTTPPOST):

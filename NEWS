@@ -6,6 +6,7 @@ Enhancements
  - [web] show hints for mail vacation options (#4462)
  - [web] allow to fetch unseen count of all mailboxes (#522, #2776, #4276)
  - [web] add rel="noopener" to external links (#4764)
+ - [web] add Indonesian (id) translation
 
 Bug fixes
  - [web] fixed wrong translation of custom calendar categories

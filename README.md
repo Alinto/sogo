@@ -48,6 +48,7 @@ SOGo and its associated components are available in various languages. The follo
 * [de] German - Alexander Greiner-Baer
 * [he] Hebrew - Raz Aidlitz
 * [hu] Hungarian - Sándor Kuti
+* [id] Indonesian - Woka
 * [is] Icelandic - Anna Jonna Armannsdottir
 * [it] Italian - Alessio Fattorini
 * [jp] Japanese - Ryo Yamamoto

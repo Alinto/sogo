@@ -1,0 +1,646 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+"Create a new event" = "Buat sebuah acara baru";
+"Create a new task" = "Buat sebuah tugas baru";
+"Edit this event or task" = "Edit acara atau tugas ini";
+"Print the current calendar view" = "Cetak Tanpilan kalender terbaru";
+"Delete this event or task" = "Hapus Acara atau tugas ini";
+"Go to today" = "Ke Hari ini";
+"Switch to day view" = "Beralih ke tampilan hari";
+"Switch to week view" = "Beralih ke tampilan minggu";
+"Switch to month view" = "beralih ke tampilan bulan";
+"Switch to multi-columns day view" = "beralih ke multi kolom tampilan hari";
+"Reload all calendars" = "Muat Ulang semua kalender";
+
+/* Tabs */
+"Date" = "Tanggal";
+"Calendars" = "Kalender";
+"No events for selected criteria" = "Tidak ada acara pada kriteria yang dipilih";
+"No tasks for selected criteria" = "Tidak ada tugas pada kriteria yang dipilih";
+
+/* Day */
+"DayOfTheMonth" = "Hari dalam sebulan";
+"dayLabelFormat" = "%m/%d/%Y";
+"today" = "Hari ini";
+"Previous Day" = "Hari sebelumnya";
+"Next Day" = "Hari selanjutnya";
+
+/* Week */
+"Week" = "Minggu";
+"this week" = "Minggu ini";
+"Week %d" = "minggu %d";
+"Previous Week" = "Minggu sebelumnya";
+"Next Week" = "Minggu selanjutnya";
+
+/* Month */
+"this month" = "Bulan ini";
+"Previous Month" = "Bulan sebelumnya";
+"Next Month" = "Bulan selanjnutnya";
+
+/* Year */
+"this year" = "Tahun Ini";
+
+/* Menu */
+"Calendar" = "Kalender";
+"Contacts" = "Kontak";
+"New Calendar..." = "Kalender baru";
+"Delete Calendar" = "Hapus kalender";
+"Unsubscribe Calendar" = "Berhenti langganan kalender";
+"Sharing..." = "Berbagi...";
+"Export Calendar..." = "Ekspor kalender";
+"Import Events..." = "Impor acara";
+"Import Events" = "Impor acara";
+"Select an iCalendar file (.ics)." = "Pilih sebuah file iCalendar (.ics).";
+"Upload" = "Unggah";
+"Uploading" = "Sedang mengunggah";
+"Publish Calendar..." = "Terbitkan kalender";
+"Reload Remote Calendars" = "Muat ulang Kalender jarak jauh";
+"Properties" = "Properti";
+"Done" = "Selesai";
+"An error occurred while importing calendar." = "Terjadi kesalahan saat impor kalender";
+"No event was imported." = "Tidak ada acara yang di impor";
+"A total of %{0} events were imported in the calendar." = "Total %{0} Acara yang diimpor di kalender";
+"Compose E-Mail to All Attendees" = "Tulis E-mail untuk semua peserta";
+"Compose E-Mail to Undecided Attendees" = "Tulis E-mail untuk peserta yang belum diputuskan";
+
+/* Relative dates */
+"Yesterday" = "Kemarin";
+"Today" = "Hari ini";
+"Tomorrow" = "Besok";
+"Last %@" = "Terakhir %@";
+
+/* Folders */
+"Personal calendar" = "Kalender pribadi";
+
+/* Misc */
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "Dilarang";
+
+/* acls */
+"Access rights to" = "Hak akses ke";
+"For user" = "Untuk pengguna";
+"Any Authenticated User" = "Setiap Pengguna Terotentikasi";
+"Public Access" = "Akses Publik";
+"label_Public" = "Publik";
+"label_Private" = "Pribadi";
+"label_Confidential" = "Kondisional";
+"label_Viewer" = "Tinjau semua";
+"label_DAndTViewer" = "Tinjau tanggal dan waktu";
+"label_Modifier" = "Modifikasi";
+"label_Responder" = "Tanggapi";
+"label_None" = "Tak satupun";
+"View All" = "Tinjau semua";
+"View the Date & Time" = "Tinjau tanggal dan waktu";
+"Modify" = "Modifikasi";
+"Respond To" = "Tanggapi";
+"None" = "Tak satupun";
+"This person can create objects in my calendar."
+= "Orang ini dapat membuat  objek di kalender saya.";
+"This person can erase objects from my calendar."
+= "Orang ini dapat menghapus objek dari kalender saya.";
+
+/* Button Titles */
+"Subscribe to a Calendar..." = "Berlangganan sebuah kalender...";
+"Remove the selected Calendar" = "Hapus kalender yang dipilih";
+"New calendar" = "Kalender baru";
+"Name of the Calendar" = "Nama kalender";
+"new" = "baru";
+"Print view" = "Tinjauan cetak";
+"edit" = "Edit";
+"delete" = "Hapus";
+"proposal" = "Usul";
+"Save and Close" = "Simpan dan tutup";
+"Close" = "Tutup";
+"Invite Attendees" = "Undang Peserta";
+"Attach" = "Lampirkan";
+"Update" = "Perbarui";
+"Cancel" = "Batal";
+"Reset" = "Memasang ulang";
+"Save" = "Simpan";
+"show_rejected_apts" = "Tampilkan Janji temu yang ditolak";
+"hide_rejected_apts" = "Sembunyikan janji temu yang ditolak";
+
+/* Schedule */
+"Schedule" = "Jadwal";
+"No appointments found" = "Tidak ada janji ditemukan";
+"Meetings proposed by you" = "Pertemuan yang anda usulkan";
+"Meetings proposed to you" = "Pertemuan yang anda usulkan";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "tindakan";
+"accept" = "Terima";
+"decline" = "Tolak";
+"more attendees" = "Peserta lainya";
+"Hide already accepted and rejected appointments" = "Sembunyikan janji temu yang sudah diterima dan ditolak";
+"Show already accepted and rejected appointments" = "Tampilkan janji temu yang sudah diterima dan ditolak";
+
+/* Print view */
+"LIST" = "Daftar";
+"Print Settings" = "Atur Cetak";
+"Title" = "Judul";
+"Layout" = "Tataletak";
+"What to Print" = "Apa yang di cetak";
+"Options" = "Pilihan";
+"Tasks with no due date" = "Tugas dengan tanpa bata akhir";
+"Display working hours only" = "Tampilkan Jam kerja saja";
+"Completed tasks" = "Tugas Komplit";
+"Display events and tasks colors" = "Tampilkan warna acara dan tugas";
+"Borders" = "Batas";
+"Backgrounds" = "LAtar belakang";
+
+/* Appointments */
+"Appointment viewer" = "Penunjukan pemirsa";
+"Appointment editor" = "Editor penunjukan";
+"Appointment proposal" = "Usulan penunjukan";
+"Appointment on" = "Penunjukan pada";
+"Start" = "Mulai";
+"End" = "Selesai";
+"Due Date" = "Batas Akhir";
+"Name" = "Nama";
+"Email" = "Email";
+"Status" = "status";
+"% complete" = "% Komplit";
+"Location" = "Lokasi";
+"Add a category" = "Tambah sebuah kategori";
+"Priority" = "Prioritas";
+"Privacy" = "Privasi";
+"Cycle" = "Lingkaran";
+"Cycle End" = "Akkhir lingkaran";
+"Categories" = "kategori";
+"Classification" = "Klasifikasi";
+"Duration" = "Durasi";
+"Attendees" = "Peserta";
+"Resources" = "Sumberdaya";
+"Organizer" = "Organisasator";
+"Description" = "Deskripsi";
+"Document" = "Dokumen";
+"Category" = "Kategori";
+"Repeat" = "Mengulangi";
+"Reminder" = "Peringatan";
+"General" = "Umum";
+"Reply" = "Balas";
+"Created by" = "Dibuat Oleh";
+"You are invited to participate" = "Anda di undang untuk berpartisipasi";
+"Target" = "Target";
+"attributes" = "Atribut";
+"attendees" = "Peserta";
+"delegated from" = "Dilimpahkan dari";
+
+/* checkbox title */
+"is private" = "adalah Pribadi";
+
+/* classification */
+"Public" = "Publik";
+"Private" = "Pribadi";
+
+/* text used in overviews and tooltips */
+"empty title" = "Kosongkan judul";
+"private appointment" = "Penunjukan pribadi";
+"Change..." = "Ubah...";
+
+/* Appointments (participation state) */
+"partStat_NEEDS-ACTION" = "Saya akan konfirmasi nanti";
+"partStat_ACCEPTED" = "Saya akan hadir";
+"partStat_DECLINED" = "Saya tidak akan hadir";
+"partStat_TENTATIVE" = "Saya mungkin hadir";
+"partStat_DELEGATED" = "Saya limpahkan";
+"partStat_OTHER" = "Lainya";
+
+/* Appointments (error messages) */
+"Conflicts found!" = "konflik ditemukan";
+"Invalid iCal data!" = "Data iCal tidak valid!";
+"Could not create iCal data!" = "Tidak bisa membuat data iCal!";
+
+/* Searching */
+"view_all" = "Semua";
+"view_today" = "Hari ini";
+"view_next7" = "7 hari selanjutnya";
+"view_next14" = "14 hari selanjutnya";
+"view_next31" = "31 hari selanjutnya";
+"view_thismonth" = "Bulan ini";
+"view_thisyear" = "Tahun ini";
+"view_future" = "Semua acara mendatang";
+"view_selectedday" = "hari terpilih";
+"view_not_started" = "Tugas tidak dimulai";
+"view_overdue" = "Batas akhir tugas";
+"view_incomplete" = "Tugas yang tidak lengkap";
+"View" = "Tinjau";
+"Title, category or location" = "Judul, kategori, lokasi";
+"Entire content" = "seluruh konten";
+"Search" = "Mencari";
+"Search attendees" = "Cari peserta";
+"Search resources" = "Cari Sumberdaya";
+"Search appointments" = "Cari penunjukan";
+"All day Event" = "Acara sepanjang hari";
+"check for conflicts" = "Periksa konflik";
+"URL" = "URL";
+"newAttendee" = "Tambah peserta";
+
+/* calendar modes */
+"Overview" = "Ikhtisar";
+"Chart" = "Grafik";
+"List" = "Daftar";
+"Columns" = "Kolom";
+
+/* Priorities */
+"prio_0" = "Tidak spesifik";
+"prio_1" = "Tinggi";
+"prio_2" = "Tinggi";
+"prio_3" = "Tinggi";
+"prio_4" = "Tinggi";
+"prio_5" = "Normal";
+"prio_6" = "Rendah";
+"prio_7" = "Rendah";
+"prio_8" = "Rendah";
+"prio_9" = "Rendah";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "Acara Publik";
+"CONFIDENTIAL_vevent" = "Acara Rahasia";
+"PRIVATE_vevent" = "Acara Pribadi";
+"PUBLIC_vtodo" = "Tugas Publik";
+"CONFIDENTIAL_vtodo" = "Tugas Rahasia";
+"PRIVATE_vtodo" = "Tugas Pribadi";
+
+/* status type */
+"status_" = "Tidak spesifik";
+"status_NOT-SPECIFIED" = "Tidak spesifik";
+"status_TENTATIVE" = "Tentatif";
+"status_CONFIRMED" = "Dikonfirmasi";
+"status_CANCELLED" = "Dibatalkan";
+"status_NEEDS-ACTION" = "Butuh Tindakan";
+"status_IN-PROCESS" = "Dalam proses";
+"status_COMPLETED" = "Lengkap pada";
+
+/* Priority level */
+"low" = "Rendah";
+
+/* Priority level */
+"normal" = "Normal";
+
+/* Priority level */
+"high" = "Tinggi";
+
+/* Cycles */
+"cycle_once" = "Siklus_sekali";
+"cycle_daily" = "Siklus_harian";
+"cycle_weekly" = "Siklus_mingguan";
+"cycle_2weeks" = "Siklus_2mingguan";
+"cycle_4weeks" = "Siklus_4mingguan";
+"cycle_monthly" = "Siklus_bulanan";
+"cycle_weekday" = "Siklus_hari minggu";
+"cycle_yearly" = "Siklus_tahunan";
+"cycle_end_never" = "Siklus_berakhir_tidak pernah";
+"cycle_end_until" = "Siklus_berakhir_hingga";
+"Recurrence pattern" = "POla perulangan";
+"Range of recurrence" = "Rentang perulangan";
+"Daily" = "Harian";
+"Multi-Columns" = "Ragam kolom";
+"Weekly" = "MIngguan";
+"Monthly" = "Bulanan";
+"Yearly" = "Tahunan";
+"Every" = "Setiap";
+"Days" = "Hari";
+"Week(s)" = "Minggu(s)";
+"On" = "Pada";
+"Month(s)" = "Bulan(s)";
+
+/* [Event recurrence editor] Ex: _The_ first Sunday */
+"The" = "The";
+"Recur on day(s)" = "Berulang pada hari(s)";
+"Year(s)" = "Tahun(s)";
+
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
+"cycle_of" = "dari";
+"No end date" = "tidak ada tanggal akhir ";
+"Create" = "Buat";
+"appointment(s)" = "Penunjukan(s)";
+"Repeat until" = "Mengulangi hingga";
+"End Repeat" = "Akhir pengulangan";
+"Never" = "Tidak pernah";
+"After" = "Setelah";
+"On Date" = "Pada tanggal";
+"times" = "Waktu";
+"First" = "pertama";
+"Second" = "kedua";
+"Third" = "ketiga";
+"Fourth" = "keempat";
+"Fift" = "Kelima";
+"Last" = "Terakhir";
+
+/* Appointment categories */
+"category_none" = "Tak satupun";
+"category_labels" = "Hari Jadi, Ulang Tahun, Bisnis, Panggilan, Klien, Kompetisi, Pelanggan, Favorit, Menindaklanjuti, Hadiah, Liburan, Ide, Rapat, Isu, Beragam, Personal, Proyek, Liburan Publik, Status, Pemasok, Perjalanan, Liburan";
+"repeat_NEVER" = "Tidak mengulangi";
+"repeat_DAILY" = "Harian";
+"repeat_WEEKLY" = "MIngguan";
+"repeat_BI-WEEKLY" = "Duakali seminggu";
+"repeat_EVERY WEEKDAY" = "Setiap hari kerja";
+"repeat_MONTHLY" = "Bulanan";
+"repeat_YEARLY" = "Tahunan";
+"repeat_CUSTOM" = "Kastem...";
+"reminder_NONE" = "Tidak ada pengingat";
+"reminder_0" = "Pada saat itu";
+"reminder_5_MINUTES_BEFORE" = "5 Menit sebelum";
+"reminder_10_MINUTES_BEFORE" = "10 Menit sebelum";
+"reminder_15_MINUTES_BEFORE" = "15 menit sebelum";
+"reminder_30_MINUTES_BEFORE" = "30 menit sebelum";
+"reminder_45_MINUTES_BEFORE" = "45 menit sebelum";
+"reminder_1_HOUR_BEFORE" = "1 jam sebelum";
+"reminder_2_HOURS_BEFORE" = "2 jam sebelum";
+"reminder_5_HOURS_BEFORE" = "5 jam sebelum";
+"reminder_15_HOURS_BEFORE" = "15 jam sebelum";
+"reminder_1_DAY_BEFORE" = "1 hari sebelum";
+"reminder_2_DAYS_BEFORE" = "2 hari sebelum";
+"reminder_1_WEEK_BEFORE" = "1 minggu sebelum";
+"reminder_CUSTOM" = "Kastem...";
+"reminder_MINUTES" = "Menit";
+"reminder_HOURS" = "Jam";
+"reminder_DAYS" = "Hari";
+"reminder_WEEKS" = "Minggu";
+"reminder_BEFORE" = "Sebelum";
+"reminder_AFTER" = "Setelah";
+"reminder_START" = "Acara mulai";
+"reminder_END" = "Acara berakhir";
+"Reminder Details" = "Rincian peringatan";
+"Choose a Reminder Action" = "Pilih Tindakan peringatan";
+"Show an Alert" = "Tampilkan  sebuah tanda";
+"Send an E-mail" = "Kirim sebuah email";
+"Email Organizer" = "Email Organisator ";
+"Email Attendees" = "Email Peserta";
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* Arial label for reminder units */
+"Reminder units" = "Satuan pengingat";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Posisi pengingat";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Hubungan pengingat";
+
+/* transparency */
+"Show Time as Free" = "Tampilkan waktu secara bebas";
+
+/* email notifications */
+"Send Appointment Notifications" = "kirim notifikasi penunjukan";
+"From" = "Dari";
+"To" = "Kepada";
+
+/* validation errors */
+validate_notitle           = "Tidak ada judul diatur, Lanjutkan?";
+validate_invalid_startdate = "Bidang mulai tanggal salah";
+validate_invalid_enddate   = "Bidang akhir tanggal salah";
+validate_endbeforestart    = "Tanggal akhir yang Anda masukkan terjadi sebelum tanggal mulai.";
+validate_untilbeforeend    = "berulangnya harus berakhir setelah kejadian pertama.";
+
+"Events" = "Acara";
+"Tasks" = "Tugas";
+"Show completed tasks" = "Tampilkan Tugas lengkap";
+
+/* tabs */
+"Task" = "Tugas";
+"Event" = "Acara";
+"Recurrence" = "Perulangan";
+
+/* toolbar */
+"New Event" = "Acara Baru";
+"New Task" = "Tugas Baru";
+"Edit" = "Edit";
+"Delete" = "Hapus";
+"Go to Today" = "Ke Hari ini";
+"Day View" = "Peninjauan hari";
+"Week View" = "Peninjauan minggu";
+"Month View" = "Tinjauan bulan";
+"Reload" = "memuat";
+
+/* Number of selected components in events or tasks list */
+"selected" = "dipilih";
+"eventPartStatModificationError" = "Status partisipasi anda tidak dapat dimodifikasi";
+
+/* menu */
+"New Event..." = "Acara Baru...";
+"New Task..." = "Tugas Baru...";
+"Edit Selected Event..." = "Edit acara terpilih...";
+"Delete Selected Event" = "Hapus Acara terpilih";
+"Select All" = "Pilih Semua";
+"Workweek days only" = "Hanya hari pekan kerja ";
+"Tasks in View" = "Tugas dalam tinjauan";
+"eventDeleteConfirmation" = "Acara(s) berikut akan dihapus:";
+"taskDeleteConfirmation" = "Tugas(s) berikut akan dihapus:";
+"Would you like to continue?" = "Apakah anda ingin lanjut?";
+"You cannot remove nor unsubscribe from your personal calendar."
+= "Anda tidak bisa menghapus atau berhenti berlangganan dari kalender pribadi Anda.";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "apakah anda yakin ingin hapus kalender ini \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Anda yakin ingin menghapus komponen yang dipilih?";
+
+/* Participation role */
+"Role" = "Role";
+
+/* Participant role: participation is required */
+"Participant" = "Peserta";
+
+/* Participant role: participation is required */
+"req-participant" = "Participant";
+
+/* Participant role: participation is optional */
+"Optional Participant" = "Peserta Pilihan";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Optional Participant";
+
+/* Participant role: participant is copied for information purposes only */
+"Non Participant" = "Bukan peserta";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Non Participant";
+
+/* Participant role: participant is chair of the calendar entity */
+"Chair" = "Kursi";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Chair";
+
+/* Participant status: needs action */
+"Needs action" = "Butuh Tindakan";
+
+/* Participant status: event accepted */
+"Accepted" = "Diterima";
+
+/* Participant status: event declined */
+"Declined" = "Ditolak";
+
+/* Participant status: tentatively accepted */
+"Tentative" = "Tentatif";
+
+"Free" = "Bebas";
+"Busy" = "Sibuk";
+"Maybe busy" = "Mungkin sibuk";
+"No free-busy information" = "Tidak ada informasi senggang-sibuk";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot" = "Sarankan waktu tayang";
+"Zoom" = "Meningkatkan";
+"Previous slot" = "Slot sebelumnya";
+"Next slot" = "Slot selanjutnya";
+"Previous hour" = "Jam sebelunya";
+"Next hour" = "Jam selanjutnya";
+"Work days only" = "Hari kerja saja";
+"The whole day" = "Sepanjang hari";
+"Between" = "Antara";
+"and" = "Dan";
+"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
+= "terdapat sebuah konflik waktu dengan satu atau lebih peserta\nApakah Anda ingin tetap menyimpan pengaturan saat ini?";
+
+/* events list */
+"Due" = "Jatuh tempo";
+"(Private Event)" = "(Acara Pribadi)";
+vevent_class0 = "(Acara Publik)";
+vevent_class1 = "(Acara Pribadi)";
+vevent_class2 = "(Acara Rahasia)";
+
+/* tasks list */
+"Descending Order" = "Menurunkan pesanan";
+vtodo_class0 = "(Tugas Publik)";
+vtodo_class1 = "(Tugas Pribadi)";
+vtodo_class2 = "(Tugas Rahasia)";
+"closeThisWindowMessage" = "Terimakasih! Sekarang anda boleh menutup jendela atau meninjau milik anda";
+"Multicolumn Day View" = "peninjauan  multikolom hari";
+"Please select an event or a task." = "silahkan pilih acara atau tugas.";
+"editRepeatingItem" = "Item yang anda edit merupakan item berulang. Apakah anda ingin edit semua kejadian atau hanya satu hal ini?";
+"button_thisOccurrenceOnly" = "Hanya kejadian saja";
+"button_allOccurrences" = "Semua kejadian";
+"Edit This Occurrence" = "Edit kejadian ini";
+"Edit All Occurrences" = "Edit semua kejadian";
+"Update This Occurrence" = "Perbarui kejadian ini";
+"Update All Occurrences" = "Perbarui semua kejadian";
+
+/* Properties dialog */
+"Color" = "Warna";
+"Include in free-busy" = "Termasuk pada Senggang-Sibuk";
+"Synchronization" = "Sinkronisasi";
+"Synchronize" = "Mensinkronisasikan";
+"Tag" = "Label";
+"Display" = "Tampilan";
+"Show alarms" = "Tampilkan alarm";
+"Show tasks" = "Tampilkan Tugas";
+"Notifications" = "Notifikasi";
+"Receive a mail when I modify my calendar" = "Terima surat saat saya modifikasi kalender saya";
+"Receive a mail when someone else modifies my calendar" = "Terima Surat saat orang lain modifikasi kalender saya";
+"When I modify my calendar, send a mail to" = "Saat saya modifikasi kalender saya, kirim surat kepada";
+"Email Address" = "Alamat Email";
+"Export" = "Ekspor";
+
+
+/* Show only the calendar for which the menu is displayed */
+"Show Only This Calendar" = "Tampilkan hany akalender ini";
+
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "Tampilkan semua kalender";
+
+"Links to this Calendar" = "Hubungkan dengan kalender ini";
+"Authenticated User Access" = "Akses Pengguna terotentikasi";
+"CalDAV URL" = "CalDAV URL ";
+"WebDAV ICS URL" = "WebDAV ICS URL";
+"WebDAV XML URL" = "WebDAV XML URL";
+
+/* Error messages */
+"dayFieldInvalid" = "Silahkan tetapkan sebuah nilai nomor dalam bidang hari yang lebih besar atau sepadan dengan 1.";
+"weekFieldInvalid" = "Silahkan tetapkan sebuah nilai nomerik dalam bidang minggu (s) yang lebih besar atau sepadan dengan 1.";
+"monthFieldInvalid" = "Silahkan tetapkan sebuah nilai nomerik dalam bidang bulan (s) yang lebih besar atau sepadan dengan 1.";
+"monthDayFieldInvalid" = "Silahkan tetapkan sebuah nilai nomerik dalam bidang hari bulan yang lebih besar atau sepadan dengan 1.";
+"yearFieldInvalid" = "Silahkan menentapkan sebuah nilai nomerik dalam bidang tahun (s) lebih besar atau sepadan dengan 1.";
+"appointmentFieldInvalid" = "Silahkan tetapkan sebuah nilai nomerik pada bidang penunjukan (s) lebih besar atau sepadan dengan 1. ";
+"recurrenceUnsupported" = "Tipe pengulangannya saat ini tidak didukung.";
+"Please specify a calendar name." = "Mohon tentukan sebuah nama kalender.";
+"tagNotDefined" = "Anda harus menentukan sebuah label jika ingin sinkronisasi kalender ini.";
+"tagAlreadyExists" = "Label yang anda tetapkan telah diasosiasikan pada kalender lain.";
+"tagHasChanged" = "Jika anda ingin merubah label kalender, anda perlu memuat ulang data pada perangkat seluler anda\nlanjutkan?";
+"tagWasAdded" = "Jika anda ingin sinkronisasikan kalender ini, anda perlu memuat ulang data pada perangkat seluler anda\nlanjutkan?";
+"tagWasRemoved" = "Jika anda ingin menghapus kalender ini dari sinkronisasi, anda perlu memuat ulang data pada perangkat seluler anda\nlanjutkan?";
+"DestinationCalendarError" = "Sumber dan tujuan kalender sama. Silakan coba untuk menyalin ke kalender yang berbeda.";
+"EventCopyError" = "Gagal menyalin. Cobalah untuk menyalin ke kalender yang berbeda.";
+"Please select at least one calendar" = "Silahkan pilih minimal satu kalender";
+"Open Task..." = "Buka Tugas";
+"Mark Completed" = "Tandai Lengkap";
+"Delete Task" = "Hapus Tugas";
+"Delete Event" = "Hapus Acara";
+"Copy event to my calendar" = "Salin Acara ke kalender saya";
+"View Raw Source" = "Tinjau sumber bahan";
+"Move To" = "Pindahkan ke";
+"Copy To" = "Salin ke";
+"Subscriptions" = "Langganan";
+"Subscribe to a shared folder" = "Berlangganan sebuah folder bersama";
+"Subscribe to a web calendar..." = "Berlangganan sebuah kalender web...";
+"URL of the Calendar" = "URL kalender";
+"Web Calendar" = "Kalender web";
+"Web Calendars" = "Kalender web";
+"Reload on login" = "Muat ulang pada login";
+"Invalid number." = "Nomer tidak sah";
+"Please identify yourself to %{0}" = "silahkan identifikasi diri anda pada %{0}";
+"quantity" = "Kuantitas";
+"Current view" = "Tinjauan terkini";
+"Selected events and tasks" = "Pilih acara dan tugas";
+"Custom date range" = "kastem jarak tanggal";
+"Select starting date" = "pilih tanggal mulai";
+"Select ending date" = "Pilih tanggal akhir";
+"Delegated to" = "Didelegasikan kepada";
+"Keep sending me updates" = "Tetap kirim saya pembaharuan";
+"OK" = "OK";
+"Confidential" = "Rahasia";
+"Enable" = "Memungkinkan";
+"Filter" = "Filter";
+"Sort" = "menyortir";
+"Back" = "Kembali";
+"Day" = "Hari";
+"Month" = "Bulan";
+"New Appointment" = "Penunjukan baru";
+"filters" = "Filter";
+"Today" = "Hari ini";
+"More options" = "Pilihan lainya";
+"Delete This Occurrence" = "Hapus kejadian ini";
+"Delete All Occurrences" = "Hapus semua kejadian";
+"Add Recurrence Date" = "Tambahkan Tanggal Perulangan";
+"Add From" = "Tambah dari";
+"Add Due" = "Tambah Jatuh Tempo";
+"Import" = "Impor";
+"Rename" = "Ganti Nama";
+"Import Calendar" = "Impor kalender";
+"Select an ICS file." = "Pilih file ICS.";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "Berhasil berlangganan di kalender";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Beralih item";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Batasan pencarian";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

@@ -1,0 +1,443 @@
+/* toolbar */
+"Save and Close" = "Simpan dan tutup";
+"Close" = "Tutup";
+"Preferences saved" = "Preferensi tersimpan";
+
+/* Unsaved changes confirmation dialog title */
+"Unsaved Changes" = "Perubahan belum disimpan";
+
+/* Unsaved changes confirmation dialog text */
+"Do you want to save your changes made to the configuration?" = "Apakah anda ingin menyimpan perubahan yang anda buat pada konfigurasi?";
+
+/* Unsaved changes confirmation dialog button */
+"Save" = "Simpan";
+
+/* Unsaved changes confirmation dialog button */
+"Don't Save" = "Jangan Simpan";
+
+/* tabs */
+"General" = "Umum";
+"Calendar Options" = "Pilihan Kalender";
+"Contacts Options" = "Pilihan Kontak";
+"Mail Options" = "Opsi Surat";
+"IMAP Accounts" = "Akun IMAP";
+"Vacation" = "Liburan";
+"Forward" = "Teruskan";
+"Password" = "Katasandi";
+"Categories" = "Kategori";
+"Appointments invitations" = "Undangan Pengangkatan";
+"Name" = "Nama";
+"Color" = "Warna";
+"Add" = "Tambah";
+"Delete" = "Hapus";
+
+/* contacts categories */
+"contacts_category_labels" = "Rekan, Pesaing, Pelanggan, Teman, Keluarga, Mitra Bisnis, Provider, Pers, VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Aktifkan balasan otomatis liburan";
+"Enable custom auto reply subject" = "Aktifkan kustom subjek balasan otomatis";
+"Auto reply subject" = "Subjek Balasan Otomatis";
+"You can write ${subject} to insert the original subject" = " anda dapat menulis ${subjek} untuk memasukan subjek asli.";
+"Auto reply message" = "Pesan balasan otomatis";
+"Email addresses (separated by commas)" = "Alamat Email (dipisahkan oleh koma)";
+"Add default email addresses" = "Tambah alamat email default";
+"Days between responses" = "Hari diantara tanggapan";
+"Do not send responses to mailing lists" = "Jangan mengirim tanggapan ke milis";
+"Enable auto reply on" = "Aktifkan balasan otomatis pada";
+"Disable auto reply on" = "Non Aktifkan balasan otomatis pada";
+"Always send vacation message response" = "Selalu mengirim tanggapan pesan liburan";
+"The vacation message is sent prior to apply your filters." = "The vacation message is sent prior to apply your filters.";
+"Discard incoming mails during vacation" = "Buang surat masuk saat liburan";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "The vacation message is sent but incoming messages are not delivered to your inbox.";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Silakan tentukan pesan dan alamat email yang ingin anda aktifkan balasan otomatis.";
+"Your vacation message must not end with a single dot on a line." = "Pesan liburan anda tidak harus diakhiri dengan titik tunggal pada satu baris.";
+"End date of your auto reply must be in the future."
+= "Tanggal akhir balasan otomatis anda harus pada waktu mendatang.";
+
+/* forward messages */
+"Forward incoming messages" = "Teruskan pesan yang masuk";
+"Keep a copy" = "Tetap salin";
+"Please specify an address to which you want to forward your messages."
+= "Silahkan tentukan alamat yang ingin anda teruskan pesan anda.";
+"You are not allowed to forward your messages to an external email address." = "Anda tidak diperbolehkan meneruskan pesan ke alamat email eksternal.";
+"You are not allowed to forward your messages to an internal email address." = "Anda tidak diperbolehkan meneruskan pesan ke alamat email internal.";
+
+/* d & t */
+"Current Time Zone" = "Zona waktu terkini";
+"Short Date Format" = "Sortir format tanggal";
+"Long Date Format" = "Format tanggal lama";
+"Time Format" = "Format Waktu";
+"default" = "Default";
+"Default Module" = "Modul default";
+"Save" = "Simpan";
+"shortDateFmt_0" = "%d-%b-%y";
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
+
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* Timezone autocompletion */
+"No matches found." = "Tidak ditemukan yang sesuai";
+
+/* calendar */
+"Week begins on" = "Minggu dimulai pada";
+"Day start time" = "Waktu Mulai hari";
+"Day end time" = "Waktu akhir hari";
+"Day start time must be prior to day end time." = "Waktu mulai hari harus sebelum waktu akhir hari.";
+"Week days to display" = "Hari seminggu untuk ditampilkan";
+"Show time as busy outside working hours" = "tampilkan waktu sibuk di luar jam kerja";
+"First week of year" = "Minggu tahun pertama";
+"Enable reminders for Calendar items" = "Aktifkan pengingat untuk item Kalender";
+"Play a sound when a reminder comes due" = "Putar suara saat pengingat jatuh tempo";
+"Default reminder" = "Pengingat default";
+"firstWeekOfYear_January1" = "Dimulai saat 1 januari";
+"firstWeekOfYear_First4DayWeek" = "4 hari minggu pertama";
+"firstWeekOfYear_FirstFullWeek" = "Seminggu penuh pertama";
+"Prevent from being invited to appointments" = "Cegah dari yang diundang untuk janji temu";
+"White list for appointment invitations" = "Daftar putih untuk undangan janji temu";
+"Contacts Names" = "Nama kontak";
+"Duplicate name" = "Nama ganda";
+"Calendar categories must have unique names." = "Kategori kalender harus memiliki nama unik";
+
+/* Default Calendar */
+"Default calendar" = "Kalender Default";
+"selectedCalendar" = "kalender terpilih";
+"personalCalendar" = "Kalender pribadi";
+"firstCalendar" = "Kalender diaktifkan pertama";
+"reminder_NONE" = "Tidak ada pengingat";
+"reminder_5_MINUTES_BEFORE" = "5 Menit sebelum";
+"reminder_10_MINUTES_BEFORE" = "10 Menit sebelum";
+"reminder_15_MINUTES_BEFORE" = "15 menit sebelum";
+"reminder_30_MINUTES_BEFORE" = "30 menit sebelum";
+"reminder_45_MINUTES_BEFORE" = "45 menit sebelum";
+"reminder_1_HOUR_BEFORE" = "1 jam sebelum";
+"reminder_2_HOURS_BEFORE" = "2 jam sebelum";
+"reminder_5_HOURS_BEFORE" = "5 jam sebelum";
+"reminder_15_HOURS_BEFORE" = "15 jam sebelum";
+"reminder_1_DAY_BEFORE" = "1 hari sebelum";
+"reminder_2_DAYS_BEFORE" = "2 hari sebelum";
+"reminder_1_WEEK_BEFORE" = "1 minggu sebelum";
+
+/* Mailer */
+"Labels" = "label";
+"Label" = "Label";
+"IMAP Label" = "Label IMAP";
+"Invalid label" = "Tidak menggunakan spasi ataupun ( ) { } % * \" \\";
+"Duplicate label" = "Label ganda";
+"IMAP labels must have unique names." = "Lable IMAP harus memiliki nama unik";
+"New label" = "Label baru";
+"Show subscribed mailboxes only" = "Tampilkan hanya kotak surat langganan";
+"Synchronize only default mail folders (EAS)" = "Sinkronisasikan hanya folder surat defult (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Fetch count of unseen messages for all mailboxes";
+"Sort messages by threads" = "Sortir pesan berdasarkan thread";
+"Always open mail composer" = "Selalu buka komposer email";
+"Inside current window" = "Di dalam jendela aktif";
+"In a popup window" = "Di jendela pop-up";
+"When sending mail, add unknown recipients to my" = "Saat mengirim surat, tambah penerima tidak diketahui pada saya";
+"Address Book" = "Buku Alamat";
+"Forward messages" = "Teruskan pesan";
+"messageforward_inline" = "Dalam baris";
+"messageforward_attached" = "Sebagai Lampiran";
+"When replying to a message" = "Saat Membalas pada pesan";
+"replyplacement_above" = "Mulai jawaban saya diatas kutipan";
+"replyplacement_below" = "Mulai jawaban saya dibawah kutipan";
+"And place my signature" = "Dan letakan tandatangan saya";
+"signatureplacement_above" = "dibawah balasan saya";
+"signatureplacement_below" = "dibawah kutipan";
+"Compose messages in" = "Tulis pesan di";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Teks biasa";
+
+/* Base font size for messages composed in HTML */
+"Default font size" = "Ukuran font default";
+
+"Display remote inline images" = "Tampilkan gambar tipis digaris";
+"displayremoteinlineimages_never" = "Tidak pernah";
+"displayremoteinlineimages_always" = "Selalu";
+"Auto save every" = "Otomatis simpan setiap";
+"minutes" = "Menit";
+
+/* Contact */
+"Personal Address Book" = "Buku Alamat Pribadi";
+"Collected Address Book" = "Buku alamat terkumpul";
+
+/* IMAP Accounts */
+"Settings" = "Pengaturan";
+"Security" = "Keamanan";
+"Mail Account" = "Akun Surat";
+"New Mail Account" = "Akun Surat Baru";
+"Server Name" = "Nama server";
+"Port" = "Port";
+"Encryption" = "Encripsi";
+"None" = "Tak satupun";
+"User Name" = "Nama Pengguna";
+"Full Name" = "Nama Lengkap";
+"Email" = "Email";
+"Reply To Email" = "Balas ke Email";
+"Signature" = "Tandatangan";
+"(Click to create)" = "(klik untuk membuat)";
+"Please enter your signature below" = "Silahkan masukan tandatangan anda dibawah ini";
+"Please specify a valid sender address." = "Mohon tentukan alamat pengirim yang sah";
+"Please specify a valid reply-to address." = "Harap tentukan balasan ke alamat yang valid.";
+"Specify a hostname other than the local host" = "Tentukan hostname selain host lokal";
+
+"No certificate installed" = "Tidak ada sertifikat terinstal";
+"The SSL certificate must use the PKCS#12 (PFX) format." = "Sertifikat SSL harus menggunakan format PKCS # 12 (PFX).";
+"Uninstall" = "Menghapus instalasi";
+"Choose PKCS12 Certificate .." = "Pilih Sertifikat PKCS12 ..";
+"Certificate Import Password" = "Sertifikat Mengimpor Kata Sandi";
+"Upload" = "Unggah";
+"When composing a message" = "Saat menulis pesan";
+"Digitally sign the message by default" = "Menandatangani pesan secara digital pesan sebagai pilihan utama";
+"Always try to encrypt the message" = "Selalu mencoba mengenkripsi pesan";
+"An error occurred while importing the certificate. Verify your password." = "An error occurred while importing the certificate. Verify your password.";
+
+/* Additional Parameters */
+"Additional Parameters" = "Parameter tambahan";
+
+/* password */
+"New password" = "Katasandi baru";
+"Confirmation" = "Konfirmasi";
+"Change" = "Ubah";
+
+/* Event+task classifications */
+"Default events classification" = "Klasifikasi acara default";
+"Default tasks classification" = "Klasifikasi tuga default";
+"PUBLIC_item" = "Publik";
+"CONFIDENTIAL_item" = "Kondisional";
+"PRIVATE_item" = "Pribadi";
+
+/* Event+task categories */
+"Calendar Category" = "Kategori kalender";
+"Add Calendar Category" = "Tambah kategori kalender";
+"New category" = "Kategori baru";
+"Reset to defaults" = "Reset to defaults";
+"Remove Calendar Category" = "Hilangkan kategori kalender";
+"Contact Category" = "Kategori Kontak";
+"Add Contact Category" = "Tambah Kategori Kontak";
+"Remove Contact Category" = "Hilangkan kategori Kontak";
+"category_none" = "Tak satupun";
+"calendar_category_labels" = "Hari Jadi, Ulang Tahun, Bisnis, Panggilan, Klien, Kompetisi, Pelanggan, Favorit, Menindaklanjuti, Hadiah, Liburan, Ide, Rapat, Isu, Beragam, Personal, Proyek, Liburan Publik, Status, Pemasok, Perjalanan, Liburan";
+
+/* Default module */
+"Calendar" = "Kalender";
+"Contacts" = "Buku Alamat";
+"Mail" = "Surat";
+"Last" = "Terahir digunakan";
+"Default Module " = "Modul default";
+"SOGo Version" = "Versi SOGo";
+
+/* Confirmation asked when changing the language */
+"Save preferences and reload page now?" = "Simpan preferensi dan muat ulang halaman sekarang?";
+"Language" = "Bahasa";
+"choose" = "Pilih";
+"Arabic" = "العربية";
+"Basque" = "Euskara";
+"Catalan" = "Català";
+"ChineseChina" = "简体中文";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"Finnish" = "Suomi";
+"French" = "Français";
+"German" = "Deutsch";
+"Hebrew" = "עברית";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"Japanese" = "日本語";
+"Latvian" = "עברית";
+"Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"Polish" = "Polski";
+"Portuguese" = "Português";
+"BrazilianPortuguese" = "Português brasileiro";
+"Romanian" = "Română";
+"Russian" = "Русский";
+"Serbian" = "Српски";
+"Slovak" = "Slovensky";
+"Slovenian" = "Slovenščina";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"TurkishTurkey" = "Türkçe (Türkiye)";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"Refresh View" = "Segarkan Tampilan";
+"refreshview_manually" = "Secara Manual";
+"refreshview_every_minute" = "Setiap Menit";
+"refreshview_every_2_minutes" = "Setiap 2 menit";
+"refreshview_every_5_minutes" = "Setiap 5 Menit";
+"refreshview_every_10_minutes" = "Setiap 10 Menit";
+"refreshview_every_20_minutes" = "Setiap 20 menit";
+"refreshview_every_30_minutes" = "setiap 30 menit";
+"refreshview_once_per_hour" = "sekali per jam";
+
+/* Return receipts */
+"When I receive a request for a return receipt" = "ketika saya menerima permintaan tanda terima";
+"Never send a return receipt" = "Tidak pernah mengirim tanda terima";
+"Allow return receipts for some messages" = "Izinkan tanda terima untuk beberapa pesan";
+"If I'm not in the To or Cc of the message" = "Jika saya tidak dalam Ke atau Cc pesan";
+"If the sender is outside my domain" = "Jika pengirim diluar domain saya";
+"In all other cases" = "Dalam semua kasus lain";
+"Never send" = "Tak pernah mengirim";
+"Always send" = "selalu kirim";
+"Ask me" = "Tanya saya";
+
+/* Filters - UIxPreferences */
+"Filters" = "Filter";
+"Active" = "Aktif";
+"Move Up" = "Pindah ke atas";
+"Move Down" = "Pindah kebawah";
+"Connection error" = "Kesalahan koneksi";
+"Service temporarily unavailable" = "Layanan sementara tidak tersedia";
+
+/* Aria label for filter enable checkbox */
+"Enable filter" = "Aktifkan filter";
+
+/* Filters - UIxFilterEditor */
+"Filter name" = "filter nama";
+/* Button label */
+"Add a condition" = "Tambah kondisi";
+/* Button label */
+"Add an action" = "tambah tindakan";
+"For incoming messages that" = "Untuk pesan masuk yang";
+"match all of the following rules" = "Cocokan dengan semua ketentuan berikut";
+"match any of the following rules" = "Cocokan dengan beberapa ketentuan berikut";
+"match all messages" = "Cocokan semua pesan";
+"Perform these actions" = "Laksanakan tindakan ini";
+"Untitled Filter" = "Filter belum berjudul";
+"Subject" = "Subjek";
+"From" = "Dari";
+"To" = "Kepada";
+"Cc" = "Cc";
+"To or Cc" = "Kepada atau Cc";
+"Size (Kb)" = "Ukuran (Kb)";
+"Header" = "Kepala";
+"Body" = "Badan";
+"Flag the message with" = "beri bendera pesan dengan";
+
+/* Select field label of "flag message" mail filter action */
+"Flag" = "Bendera";
+
+"Discard the message" = "Buang pesan";
+"File the message in" = "File pesan masuk";
+
+/* Select field label of "file message" mail filter action */
+"Mailbox" = "Kotak Surat";
+
+"Keep the message" = "Menyimopan pesan";
+"Forward the message to" = "Teruskan pesan kepada";
+
+/* Input field label of "forward" mail filter action */
+"Email" = "Email";
+
+"Send a reject message" = "Kirim pesan penolakan";
+
+/* Input field label of "reject" mail filter action */
+"Message" = "pesan";
+
+"Send a vacation message" = "Kirim pesan liburan";
+"Stop processing filter rules" = "Berhenti memproses ketentuan filter";
+"is under" = "berada dibawah";
+"is over" = "Berada di atas";
+"is" = " ";
+"is not" = "bukan";
+"contains" = "Mengandung";
+"does not contain" = "Tidak mengandung";
+"matches" = "Cocok";
+"does not match" = "Tidak cocok";
+"matches regex" = "Cocok Regex";
+"does not match regex" = "Tidak cocok regex";
+/* Placeholder for the value field of a condition */
+"Value" = "Nilai";
+"Seen" = "Terlihat";
+"Deleted" = "Hapus";
+"Answered" = "Terjawab";
+"Flagged" = "Ditandai";
+"Junk" = "Sampah";
+"Not Junk" = "Bukan sampah";
+
+/* Password policy */
+"The password was changed successfully." = "Sandi telah berhasil dirubah";
+"Password must not be empty." = "Kata sandi tidak boleh kosong";
+"The passwords do not match. Please try again." = "Kata sandi tidak cocok. Silahkan coba lagi.";
+"Password change failed" = "Perubahan kata sandi gagal";
+"Password change failed - Permission denied" = "perubahan katasandi gagal - Izin ditolak";
+"Password change failed - Insufficient password quality" = "perubahan katasandi gagal - kualitas katasandi tidak memadai";
+"Password change failed - Password is too short" = "perubahan katasandi gagal - kata sandi terlalu pendek";
+"Password change failed - Password is too young" = "perubahan katasandi gagal - katasandi terlalu kecil";
+"Password change failed - Password is in history" = "perubahan katasandi gagal - katasandi ada dalam histori";
+"Unhandled policy error: %{0}" = "Kesalahan kebijakan tak tertangani: %{0}";
+"Unhandled error response" = "Respon kesalahan tak tertangani";
+"Password change is not supported." = "Perubahan katasandi tidak didukung";
+"Unhandled HTTP error code: %{0}" = "kode error HTTP tidak tertangani: %{0}";
+"Cancel" = "Batal";
+"Invitations" = "Undangan";
+"Edit Filter" = "Edit filter";
+"Delete Filter" = "Hapus Filter";
+"Create Filter" = "Buat Filter";
+"Delete Label" = "Hapus Label";
+"Create Label" = "Buat Label";
+"Accounts" = "Akun";
+"Edit Account" = "Edit Akun";
+"Delete Account" = "Hapus Akun";
+"Create Account" = "Buat Akun";
+"Account Name" = "Nama akun";
+"SSL" = "SSL";
+"TLS" = "TLS";
+
+/* Avatars */
+"Use Gravatar" = "Gunakan Gravatar";
+"Alternate Avatar" = "Alternatif Avatar";
+"none" =  "Tak satupun";
+"identicon" = "Icon Ident";
+"monsterid" = "Monster";
+"wavatar" = "Wavatar";
+"retro" = "Retro";
+
+/* Animation Level */
+"Animation Level" = "TIngkat Animasi";
+/* Normal Animation Mode */
+"animation_NORMAL" = "Normal";
+/* Limited Animation Mode */
+"animation_LIMITED" = "Terbatas";
+"animation_NONE" = "Tidak ada";

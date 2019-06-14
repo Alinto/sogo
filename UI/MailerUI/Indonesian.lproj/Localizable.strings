@@ -1,0 +1,441 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Buat";
+"Empty Trash" = "Kosongkan sampah";
+"Delete"      = "Hapus";
+"Expunge"     = "Menghilangkan";
+"Forward"     = "Teruskan";
+"Get Mail"    = "Mendapat Surat";
+"Junk"        = "Sampah";
+"Not junk"    = "Bukan sampah";
+"Reply"       = "Balas";
+"Reply All"   = "Balas Semua";
+"Print"       = "Cetak";
+"Stop"        = "Berhenti";
+"Write"       = "Tulis";
+"Search"      = "Mencari";
+"Send" = "Kirim";
+"Contacts" = "Kontak";
+"Attach" = "Lampirkan";
+"Save" = "Simpan";
+"Options" = "Pilihan";
+"Close" = "Tutup";
+"Size" = "Ukuran";
+
+/* Tooltips */
+"Send this message now" = "Kirim Pesan sekarang";
+"Select a recipient from an Address Book" = "Pilih Penerima dari buku alamat";
+"Include an attachment" = "Masukan sebuah lampiran";
+"Save this message" = "Simpan Pesan ini";
+"Get new messages" = "Terima pesan baru";
+"Create a new message" = "Buat pesan baru";
+"Go to address book" = "Ke Buku alamat";
+"Reply to the message" = "Balas Pesan";
+"Reply to sender and all recipients" = "Balas ke pengirim dan semua penerima";
+"Forward selected message" = "Teruskan pesan yang dipilih";
+"Delete selected message or folder" = "Hapus pesan atau folder terpilih";
+"Print this message" = "cetak pesan ini";
+"Stop the current transfer" = "Hentikan Pemindahan terkini";
+"Attachment" = "Lampiran";
+"Unread" = "Belum dibaca";
+"Flagged" = "Ditandai";
+"Search multiple mailboxes" = "Cari beberapa kotak surat";
+
+/* Main Frame  */
+"Home"                 = "Beranda";
+"Calendar"             = "Kalender";
+"Addressbook"          = "Buku Alamat";
+"Mail"                 = "Surat";
+"Right Administration" = "Administrasi Hak";
+"Help" = "Bantuan";
+
+/* Mail account main windows */
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Selamat datang di SOGo Mailer. Gunakan pohon folder di sebelah kiri untuk menelusuri account email Anda!";
+"Read messages"       = "Baca pesan";
+
+/* Tooltip for fab button */
+"Write a new message" = "Tulis pesan baru";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Tulis pesan di jendela baru";
+
+"Share" = "Baggikan";
+"Account" = "Akun";
+"Shared Account" = "Akun Bersama";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "Tidak ada pesan yang dipilih";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "Tidak ada kotak surat dipilih";
+
+"An error occured while communicating with the mail server" = "erjadi kesalahan saat berkomunikasi dengan mail server";
+
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Folder Dikompaksi";
+/* Empty Trash success message */
+"Trash emptied" = "Sampah dikosongkan";
+
+/* acls */
+"Access rights to" = "Hak akses ke";
+"For user" = "Untuk pengguna";
+"Any Authenticated User" = "Setiap Pengguna Terotentikasi";
+"List and see this folder" = "Mendaftar dan lihat folder ini";
+"Read mails from this folder" = "Baca Surat dari folder ini";
+"Mark mails read and unread" = "Tandai surat yang dibaca dan belum dibaca";
+"Modify the flags of the mails in this folder" = "Modifikasi bendera dari surat di folder ini.";
+"Insert, copy and move mails into this folder" = "Masukan, salin dan pindah surat ke folder ini";
+"Post mails" = "Pos surat";
+"Add subfolders to this folder" = "tambahkan subfolder ke folder ini.";
+"Remove this folder" = "Hapus folder ini";
+"Erase mails from this folder" = "Hapus surat dalam folder ini";
+"Expunge this folder" = "Hilangkan folder ini";
+"Export This Folder" = "Ekspor folder ini";
+"Modify the acl of this folder" = "Modifikasi acl dari folder ini";
+"Saved Messages.zip" = "Surat tersimpan.zip";
+"Update" = "Perbarui";
+"Cancel" = "Batal";
+
+/* Mail edition */
+"From"          = "Dari";
+"Subject"       = "Subjek";
+"To"            = "Kepada";
+"Cc"            = "Cc";
+"Bcc"           = "Bcc";
+"Reply-To"	    = "Balas ke";
+"Add address"   = "Tambah Alamat";
+"Body"          = "Bdan";
+"Open" = "Buka";
+"Select All" = "Pilih Semua";
+"Select Message" = "Pilih Pesan";
+"Attach Web Page..." = "Melampirkan halaman web...";
+"file" = "File";
+"files" = "File";
+"Save all" = "Simpan Semua";
+"to"            = "Kepada";
+"cc"            = "Cc";
+"bcc"           = "Bcc";
+"Add a recipient" = "Tambah penerima";
+"Edit Draft..." = "Perbaiki draf";
+"Load Images" = "Memuat gambar";
+"Return Receipt" = "Tanda terima";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Pengirim pesan ini meminta diberitahu apabila anda telah membaca pesan ini. Apakah anda ingin memberitahu kepada pengirim?";
+"Return Receipt (displayed) - %@"= "tanda terima (ditampilkan)- %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Ini adalah tanda terima untuk pesan yang anda kirim ke %@\n\nCatatan:  tanda terima ini hanya menyatakan bahwa pesan ditampilkan pada komputer penerima. Tidak ada jaminan bahwa penerima telah membaca atau memahami isi pesan.";
+"Security" = "Keamanan";
+"Sign" = "Tanda";
+"Encrypt" = "Enkripsi";
+"Priority" = "Prioritas";
+"highest" = "Tertinggi";
+"high" = "Tinggi";
+"normal" = "Normal";
+"low" = "Rendah";
+"lowest" = "Paling rendah";
+"This mail is being sent from an unsecure network!" = "Pesan ini sedang dikirim dari sebuah jaringan yang tidak aman";
+"Address Book" = "Buku Alamat";
+"Search For" = "Pencarian untuk";
+
+/* Popup "show" */
+"all"     = "Semua";
+"read"    = "Baca";
+"unread"  = "Belum dibaca";
+"deleted" = "hapus";
+"flagged" = "Ditandai";
+
+/* MailListView */
+"Sender" = "Pengirim";
+"Subject or Sender" = "Subjek atau pengirim";
+"To or Cc" = "Unutk atau Cc";
+"Entire Message" = "Semua pesan";
+"Date"          = "Tanggal";
+"View"          = "Tinjau";
+"All"           = "Semua";
+"No message"    = "Tidak ada pesan";
+"messages"      = "pesan";
+"Yesterday"     = "Kemarin";
+"first"         = "Awal";
+"previous"      = "Sebelumnya";
+"next"          = "Selanjutnya";
+"last"          = "Terakhir";
+"msgnumber_to"  = "Kepada";
+"msgnumber_of"  = "Dari";
+"Mark Unread" = "Tandai belum dibaca";
+"Mark Read"   = "Tandai sudah dibaca";
+"Untitled" = "Belum berjudul";
+
+/* Tree */
+"SentFolderName"   = "Terkirim";
+"TrashFolderName"  = "Sampah";
+"InboxFolderName"  = "Kotak pesan";
+"DraftsFolderName" = "Draf";
+"JunkFolderName" = "Sampah";
+"SieveFolderName"  = "Filter";
+"Folders"          = "Folder"; /* title line */
+
+/* MailMoveToPopUp */
+"MoveTo"        = "Pindahkan &hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Tambah ke buku alamt";
+"Successfully created card" = "Successfully created card";
+"Compose Mail To" = "Tulis surat kepada";
+"Create Filter From Message..." = "Buat filter dari pesan...";
+
+/* Image Popup menu */
+"Save Image" = "Simpan Gambar";
+"Save Attachment" = "Simpan Lampiran";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Buka di jendela pesan baru";
+"Copy Folder Location" = "Salin lokasi folder";
+"Subscribe..." = "Langganan";
+"Mark Folder Read" = "Tandai folder terbaca";
+"New Folder..." = "Folder baru";
+"Compact This Folder" = "Ringkas folder ini";
+"Search Messages..." = "Mencari pesan...";
+"Sharing..." = "Berbagi...";
+"New Subfolder..." = "Subfolder baru";
+"Rename Folder..." = "Ganti Nama Folder";
+"Delete Folder" = "Hapus Folder";
+"Use This Folder For" = "Gunakan folder ini untuk";
+"Get Messages for Account" = "Dapatkan pesan untuk akun";
+"Properties..." = "Properti...";
+"Delegation..." = "Deligasi...";
+
+/* Use This Folder menu */
+"Sent Messages" = "Pesan terkirim";
+"Drafts" = "Draf";
+"Deleted Messages" = "Pesan dihapus";
+"Junk Messages" = "Pesan sampah";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Buka pesan di jendela baru";
+"Reply to Sender Only" = "Balas kepada pengirim saja";
+"Reply to All" = "Balas ke Semua";
+"Edit As New..." = "Perbaiki sebagai baru...";
+"Move To" = "Pindah ke";
+"Copy To" = "Salin ke";
+"Label" = "Label";
+"Mark" = "Tandai";
+"Save As..." = "Simpan Sebagai";
+"Print Preview" = "Tinjauan cetak";
+"View Message Source" = "Tinjau sumber pesan";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Mengkonversi ke acara";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Mengkonversi ke Tugas";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Undus semua lampiran";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "Lampiran";
+
+"Print..." = "Cetak";
+"Delete Message" = "Hapus pesan";
+"Delete Selected Messages" = "Hapus pesan terpilih";
+"Mark the selected messages as junk" = "Tandai pesan terpilih sebagai sampah";
+"Mark the selected messages as not junk" = "tandai pesan terpilih sebagai bukan sampah";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "dan %{0} lebih...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "Sembunyikan";
+
+/* Number of selected messages in list */
+"selected" = "dipilih";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Pesan ini dienkripsi";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Pesan ini tidak dapat didekripsi. Pastikan Anda telah mengunggah sertifikat S/MIME Anda dari modul preferensi surat.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Gagal memeriksa tanda tangan pada pesan";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Pesan ini telah diubah";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Kesalahan membaca sertifikat. Silakan instal sertifikat baru.";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Tidak ada sertifikat yang berkaitan dengan akun ini";
+
+"This Folder" = "Folder ini";
+
+/* Label popup menu */
+"None" = "Tak satupun";
+
+/* Mark popup menu */
+"As Read" = "Sebagai terbaca";
+"Thread As Read" = "Thread Sebagai Dibaca";
+"As Read By Date..." = "Sebagai Dibaca berdasarkan tanggal";
+"All Read" = "Semua yang dibaca";
+"Flag" = "Bendera";
+"As Junk" = "Sebagai sampah";
+"As Not Junk" = "Sebagai Bukan sampah";
+"Run Junk Mail Controls" = "Jalankan kontrol pesan sampah";
+"Search messages in" = "Pencarian pesan masuk";
+"Search" = "Mencari";
+"Search subfolders" = "cari subfolder";
+"Match any of the following" = "Cocokan dengan berikut ini";
+"Match all of the following" = "Cocokan semua dengan berikut ini";
+"contains" = "Mengandung";
+"does not contain" = "Tidak mengandung";
+"No matches found" = "Tidak ditemukan yang cocok";
+"results found" = "Hasil ditemukan";
+"result found" = "Hasil ditemukan";
+"Please specify at least one filter" = "Mohon tentukan minimal satu filter";
+
+/* Folder operations */
+"Name" = "Nama";
+"Enter the new name of your folder"
+ ="Masukan nama folder baru anda";
+"Do you really want to move this folder into the trash ?"
+ = "Apakah Anda benar-benar ingin pindah folder ini ke tempat sampah?";
+"Operation failed" = "Operasi gagal";
+"Quota" = "Kutipan:";
+"quotasFormat" = "%{0}% digunakan pada %{1} MB";
+"Unable to move/delete folder." = "Tidak dapat memindah/hapus folder";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "Kotak surat tidak dapat dipindahkan ke folder sampah. Apakah Anda ingin menghapusnya langsung?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "Apakah anda yakin ingin menghapus pesan ini?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} pesan(s) disalin";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} pesan(s) dipindah";
+
+"Please select a message." = "Silahkan pilih sebuah pesan";
+"Please select a message to print." = "Silahkan pilih sebuah pesan untuk dicetak.";
+"Please select only one message to print." = "Mohon hanya pilih satu pesan untuk di cetak";
+"The message you have selected doesn't exist anymore." = "Pesan yang telah anda pilih sudah tidak tersedia.";
+"The folder with name \"%{0}\" could not be created."
+= "Folder dengan nama \"%{0}\" tidak dapat di buat.";
+"This folder could not be renamed to \"%{0}\"."
+= "Folder ini tidak bisa dirubah namanya menjadi \"%{0}\".";
+"The folder could not be deleted."
+= "Folder ini tidak dapat dihapus.";
+"The trash could not be emptied."
+= "Sampah tidak dapat dikosongkan.";
+"The folder functionality could not be changed."
+= "Fungsi folder tidak dapat dirubah.";
+"You need to choose a non-virtual folder!" = "Anda perlu memilih folder non-virtual!";
+"Moving a message into its own folder is impossible!"
+= "Memindahkan pesan ke folder sendiri tidak mungkin!";
+"Copying a message into its own folder is impossible!"
+= "Menyalin pesan ke folder sendiri tidak mungkin!";
+
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "Pesan tidak dapat dipindahkan ke folder sampah. Apakah Anda ingin menghapusnya langsung?";
+
+/* Message editing */
+"Please specify a subject." = "Silakan tentukan subjek.";
+"error_missingsubject" = "Pesan tidak memiliki subjek. Apakah anda yakin ingin mengirimnya?";
+"error_missingrecipients" = "Mohon tentukan minimal satu penerima";
+"Send Anyway" = "Tetap kirim";
+"Error while saving the draft" = "Terjadi kesalahan saat menyimpan draf";
+
+/* Error when uploading a file attachment */
+"Error while uploading the file \"%{0}\":" = "Terjadi kesalahan saat mengunggah file \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "Ada file yang sedang di unggah. Menutup jendela akan mengganggu.";
+"Message is too big" = "Pesan terlalu panjang";
+
+/* Appears while sending the message */
+"Sending" = "Sedang Mengirim";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Terkirim";
+
+"cannot send message: (smtp) all recipients discarded" = "Tidak dapat mengirim pesan: Semua penerima tidak valid.";
+"cannot send message (smtp) - recipients discarded" = "Tidak dapat mengirim pesan. alamat berikut tidak valid.";
+"cannot send message: (smtp) error when connecting" = "Tidak dapat megirim pesan: kesalahan saat menghubungkan ke server SMTP.";
+
+/* Contacts list in mail editor */
+"Email" = "Email";
+"More mail options" = "Pilihan pesan lainya";
+"Delegation" = "Deligasi...";
+"Add User" = "Tambah pengguna";
+"Add a tag" = "Tambah sebuah label";
+"reply" = "Balas";
+"Edit" = "Edit";
+"Yes" = "Ya";
+"No" = "Tidak";
+"Location" = "Lokasi";
+"Rename" = "Ganti Nama";
+"Compact" = "Ringkas";
+"Export" = "Ekspor";
+"Set as Drafts" = "Tetapkan sebaga Konsep";
+"Set as Sent" = "tetapkan sebagai terkirim";
+"Set as Trash" = "tetapkan sebagai sampah";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "Tetapkan sebagai sampah";
+
+"Sort" = "menyortir";
+"Order Received" = "Pesanan diterima";
+"Descending Order" = "Menurunkan pesanan";
+"Back" = "Kembali";
+"Copy messages" = "Salin Pesan";
+"More messages options" = "Pilihan pesan lainya";
+"Mark as Unread" = "Tandai sebagai belum dibaca";
+"Mark as Read" = "Tandai sebagai sudah dibaca";
+"Closing Window ..." = "Menutup Jendela...";
+"Tried to send too many mails. Please wait." = "Mencoba untuk mengirim terlalu banyak mail. Silahkan tunggu.";
+"View Mail" = "Tinjau Surat";
+"This message contains external images." = "Pesan ini berisi gambar eksternal";
+"Expanded" = "Diperluas";
+"Add a Criteria" = "Tambah kriteria";
+"More search options" = "Pilihan pencarian lainya";
+"Your email has been saved" = "Email anda telah disimpan";
+"Your email has been sent" = "Email anda telah dikirim";
+"Folder compacted" = "Folder Dikompaksi";
+
+/* Advanced search */
+"Enter Subject" = "Enter Subject";
+"Enter From" = "Enter From";
+"Enter To" = "Enter To";
+"Enter Cc" = "Enter Cc";
+"Enter Body" = "Enter Body";
+"match" = "match";
+"does not match" = "does not match";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Batasan pencarian";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Kelola langganan";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filter";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

@@ -76,6 +76,8 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailHebrewReply.wo \
 	SOGoMailHungarianForward.wo \
 	SOGoMailHungarianReply.wo \
+	SOGoMailIndonesianForward.wo \
+	SOGoMailIndonesianReply.wo \
 	SOGoMailIcelandicForward.wo \
 	SOGoMailIcelandicReply.wo \
 	SOGoMailItalianForward.wo \
