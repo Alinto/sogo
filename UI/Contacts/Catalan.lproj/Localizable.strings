@@ -41,20 +41,115 @@
 "Move To" = "Moure a";
 "Copy To" = "Copiar a";
 "Add to" = "Afegir a";
+"To" = "Per a";
+"Carbon Copy (Cc)" = "Còpia en carbó (Cc)";
+"Blind Carbon Copy (Bcc)" = "Còpia en carbó oculta (Cco)";
+
+/* Search scope: name fields */
+"name" = "Nom";
+
+/* Search scope: name fields */
+"c_cn" = "Nom";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Email secundari";
+
+/* Search scope: screen name field */
+"nsaimid" = "Nom en pantalla";
+
+/* Search scope: mail fields */
+"mail" = "Correu";
+
+/* Search scope: mail fields */
+"c_mail" = "Correu";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telèfon";
+
+/* Search scope: telephone field */
+"homephone" = "Telèfon";
+
+/* Search scope: mobile field */
+"mobile" = "Mòbil";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Busca";
+
+/* Search scope: categories field */
+"c_categories" = "Categories";
+
+/* Search scope: categories field */
+"vcardcategories" = "Categories";
+
+/* Search scope: title field */
+"title" = "Títol";
+
+/* Search scope: organization field */
+"c_o" = "Organització";
+
+/* Search scope: organization field */
+"o" = "Organització";
+
+/* Search scope: department field */
+"ou" = "Departament";
+
+/* Search scope: city field */
+"l" = "Ciutat";
+
+/* Search scope: country field */
+"c" = "País";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Adreça de casa";
+
+/* Search scope: state/province field */
+"st" = "Estat/Província";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Estat/Província d'origen";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Codi postal";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Codi postal";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "País d'origen";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Pàgina personal";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Pàgina web";
+
+/* Search scope: note field */
+"description" = "Nota";
+
 /* Subheader of empty addressbook */
 "No contact" = "Sense contactes";
+
 /* Subheader of system addressbook */
 "Start a search to browse this address book" = "Començar una cerca per navegar per aquesta llibreta d'adreces";
+
 /* Number of contacts in addressbook; string is prefixed by number */
 "contacts" = "contactes";
+
 /* No contact matching search criteria */
 "No matching contact" = "Cap contacte coincident";
+
 /* Number of contacts matching search criteria; string is prefixed by number */
 "matching contacts" = "contactes coincidents";
+
 /* Number of selected contacts in list */
 "selected" = "seleccionats";
+
 /* Empty right pane */
 "No contact selected" = "Sense contacte seleccionat";
+
 /* Tooltips */
 "Create a new address book card" = "Afegir un contacte nou";
 "Create a new list" = "Crear una llista nova";
@@ -95,9 +190,11 @@
 "Work" = "Feina";
 "Mobile" = "Mòbil";
 "Pager" = "Cercapersones";
+
 /* categories */
 "contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
 "New category" = "New category";
+
 /* adresses */
 "Title" = "Títol";
 "Service" = "Servei";
@@ -126,18 +223,28 @@
 "Name of the Address Book" = "Nom de la llibreta";
 "Are you sure you want to delete the selected address book?"
 = "Voleu esborrar la llibreta d'adreces seleccionada?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Estàs segur/a que vols esborrar la llibreta \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "No és possible cancel·lar la subscripció o esborrar-se d'una llibreta pública.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "No és possible cancel·lar la subscripció o esborrar-se de la llibreta personal.";
 "Are you sure you want to delete the selected contacts?"
 = "Voleu esborrar els contactes seleccionats?";
+"Are you sure you want to delete the card of %{0}?" = "Estàs segur/a que vols esborrar el contacte de %{0}?";
 "You cannot delete the card of \"%{0}\"."
 = "No podeu esborrar el contacte \"%{0}\".";
 "You cannot subscribe to a folder that you own!"
 = "No us podeu subscriure a una carpeta que és vostra.";
 "Unable to subscribe to that folder!"
 = "No us podeu subscriure a aquesta carpeta.";
+
+/* security */
+"Security" = "Seguretat";
+"Uninstall" = "Desinstal·lar";
+"Error reading the card certificate." = "Error en llegir el certificat del contacte.";
+"No certificate associated to card." = "El contacte no té cap certificat associat.";
+
 /* acls */
 "Access rights to" = "Drets d'accés a";
 "For user" = "Per a l'usuari";
@@ -156,11 +263,15 @@
 "The selected contact has no email address."
 = "El contacte seleccionat no té adreça de correu electrònic.";
 "Please select a contact." = "Seleccioneu un contacte.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} contacte(s) copiat";
+"%{0} card(s) moved" = "%{0} contacte(s) mogut";
 "SoAccessDeniedException" = "No podeu escriure en aquesta llibreta.";
-"Forbidden" = "No podeu escriure en aquesta llibreta.";
+"Forbidden" = "Prohibit";
 "Invalid Contact" = "El contacte seleccionat ja no existeix.";
 "Unknown Destination Folder" = "La llibreta de destinació seleccionada ja no existeix.";
+
 /* Lists */
 "List details" = "Detalls de la llista";
 "List name" = "Nom de la llista";
@@ -173,6 +284,8 @@
 "Export" = "Exportar";
 "Export Address Book..." = "Exportar llibreta...";
 "View Raw Source" = "Veure l'original ";
+
+/* Import */
 "Import Cards" = "Importar contactes";
 "Select a vCard or LDIF file." = "Seleccionar una targeta de presentació electrònica o un fitxer LDIF.";
 "Upload" = "Carregar";
@@ -182,6 +295,7 @@
 "No card was imported." = "No s'ha importat cap contacte.";
 "A total of %{0} cards were imported in the addressbook." = "S'han importat a la llibreta %{0} contactes.";
 "Reload" = "Actualitzar";
+
 /* Properties window */
 "Address Book Name" = "Nom de la llibreta";
 "Links to this Address Book" = "Enllaços a aquesta llibreta d'adreces";
@@ -210,6 +324,7 @@
 "URL" = "URL";
 "New URL" = "Nou URL";
 "street" = "carrer";
+"street (continued)" = "carrer (continuació)";
 "Postoffice" = "Oficina de correus";
 "Region" = "Regió";
 "Postal Code" = "Codi postal";
@@ -223,4 +338,24 @@
 "More options" = "Més opcions";
 "Role" = "Rol";
 "Add Screen Name" = "Afegir àlies";
+"Custom 1" = "Personalitzat 1";
+"Custom 2" = "Personalitzat 2";
+"Custom 3" = "Personalitzat 3";
+"Custom 4" = "Personalitzat 4";
+"Custom Value" = "Valor personalitzat";
+"New Custom Value" = "Nou valor personalitzat";
+"Synchronization" = "Sincronització";
 "Synchronize" = "Sincronitzar";
+"Sucessfully subscribed to address book" = "S'ha subscrit correctament a la llibreta d'adreces";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = " Abast de la cerca ";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Activa/Desactiva ítem";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";
