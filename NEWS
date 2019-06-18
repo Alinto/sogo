@@ -22,6 +22,7 @@ Bug fixes
  - [web] constrained absolute-positioned child elements of HTML mail parts
  - [web] fixed useless scrolling when deleting a message
  - [web] don't hide compose button if messages list is visible
+ - [web] fixed next/previous slots with external attendees
  - [core] allow super users to modify any event (#4216)
  - [core] correctly handle the full cert chain in S/MIME
  - [core] handle multidays events in freebusy data
