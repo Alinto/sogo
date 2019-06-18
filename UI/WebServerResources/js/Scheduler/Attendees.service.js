@@ -631,7 +631,7 @@
       _this.currentEntries = _.flatMap(_this.component.organizer.freebusy[startDay]);
       for (i = 0; i < _this.component.attendees.length; i++) {
         attendee = _this.component.attendees[i];
-        if (attendee.role !== Attendees.ROLES.NON_PARTICIPANT) {
+        if (attendee.freebusy && attendee.role !== Attendees.ROLES.NON_PARTICIPANT) {
           attendeeEntries = _.flatMap(attendee.freebusy[startDay]);
           for (j = 0; j < _this.currentEntries.length; j++) {
             _this.currentEntries[j] += attendeeEntries[j];

@@ -17,8 +17,8 @@ module.exports = function(grunt) {
 
   };
   var custom_vendor_files = {
-    'js/vendor/angular-file-upload.min.js': ['bower_components/angular-file-upload/dist/angular-file-upload.js', 'js/Common/angular-file-upload.trump.js'],
-    'js/vendor/FileSaver.min.js': ['bower_components/FileSaver/dist/FileSaver.js']
+    'js/vendor/angular-file-upload.min.js': ['node_modules/angular-file-upload/dist/angular-file-upload.js', 'js/Common/angular-file-upload.trump.js'],
+    'js/vendor/FileSaver.min.js': ['node_modules/file-saver/dist/FileSaver.js']
   };
 
   require('time-grunt')(grunt);
@@ -32,7 +32,7 @@ module.exports = function(grunt) {
         outFile: 'css/styles.css',
         noCache: true,
         includePaths: ['scss/',
-                       'bower_components/breakpoint-sass/stylesheets/'
+                       'node_modules/breakpoint-sass/stylesheets/'
         ]
       },
       target: {
@@ -48,15 +48,8 @@ module.exports = function(grunt) {
           map: true,
           processors: [
             // See angular-material/gulp/util.js
-            require('autoprefixer')({
-              browsers: [
-                'last 2 versions',
-                'not ie <= 10',
-                'not ie_mob <= 10',
-                'last 4 Android versions',
-                'Safari >= 8'
-              ]
-            })
+            // See browserslist in package.json
+            require('autoprefixer')()
           ]
         },
         src: ['css/styles.css', 'css/no-animation.css']
@@ -127,7 +120,7 @@ module.exports = function(grunt) {
   // Register Grunt tasks
   grunt.task.registerTask('static', function() {
     var options = {
-      'src': 'bower_components',
+      'src': 'node_modules',
       'js_dest': 'js/vendor/',
       'fonts_dest': 'fonts/',
       'css_dest': 'css/'

@@ -8,6 +8,7 @@ Enhancements
  - [web] add rel="noopener" to external links (#4764)
  - [web] add Indonesian (id) translation
  - [web] updated Angular Material to version 1.1.19
+ - [web] replaced bower packages by npm packages
 
 Bug fixes
  - [web] fixed wrong translation of custom calendar categories

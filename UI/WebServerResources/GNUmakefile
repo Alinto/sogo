@@ -10,16 +10,11 @@ CSS_FILES = css/styles.css css/styles.css.map css/no-animation.css  css/no-anima
 .DEFAULT_GOAL := all
 
 dev:
-	npm install --production
+	npm install
 	@if [ ! -e angular-material/src ]; then \
 	  git submodule init; \
 	fi
 	git submodule update
-	@if [ -d bower_components ]; then \
-	  bower update --allow-root; \
-	else \
-	  bower install --allow-root; \
-	fi
 	grunt --stack build
 
 prod:
