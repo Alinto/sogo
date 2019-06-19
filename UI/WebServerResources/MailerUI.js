@@ -955,6 +955,8 @@ function openMailbox(mailbox, reload) {
         var messageList = $("messageListBody").down('TBODY');
         var key = mailbox;
 
+        Mailer.currentMailbox = mailbox;
+
         if (reload) {
             // Don't change data source, only query UIDs from server and refresh
             // the view. Cases that end up here:
@@ -996,8 +998,6 @@ function openMailbox(mailbox, reload) {
             Mailer.dataTable.setSource(dataSource);
             Mailer.dataTable.render();
         }
-
-        Mailer.currentMailbox = mailbox;
 
         if (Mailer.unseenCountMailboxes.indexOf(mailbox) == -1) {
             Mailer.unseenCountMailboxes.push(mailbox);

@@ -3,6 +3,7 @@
 
 Bug fixes
  - sogo-tool manage-acl not working on v2 (#4292)
+ - [web] restored mail threads state of inbox on initial page load
 
 
 2.3.23 (2017-10-18)
