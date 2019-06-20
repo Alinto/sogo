@@ -239,7 +239,7 @@ function mailListToggleMessageThread(row, cell) {
     else {
         row.removeClassName('openedThread');
         row.addClassName('closedThread');
-        var img = createElement("img", null, null, { src: ResourcesURL + '/arrow-right.png' });
+        var img = createElement("img", null, 'messageThread', { src: ResourcesURL + '/arrow-right.png' });
         cell.insertBefore(img, cell.firstChild);
     }
     while ((row = row.next()) && row.hasClassName('thread')) {
@@ -1052,6 +1052,7 @@ function messageListCallback(row, data, isNew) {
             }
             else {
                 row.addClassName('openedThread');
+                displayThreadElement = false;
             }
         }
     }
@@ -1072,7 +1073,9 @@ function messageListCallback(row, data, isNew) {
     for (var j = 0; j < cells.length; j++) {
         var cell = cells[j];
         var cellType = Mailer.columnsOrder[j];
-        if (data[cellType]) cell.innerHTML = data[cellType];
+        if (data[cellType]) {
+            if (cell.innerHTML != data[cellType]) cell.innerHTML = data[cellType];
+        }
         else cell.innerHTML = '&nbsp;';
     }
 }

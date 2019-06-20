@@ -756,7 +756,7 @@
 
       // Attachment
       if ([self hasMessageAttachment])
-	[msg addObject: [NSString stringWithFormat: @"<img src=\"%@\"/>", [self urlForResourceFilename: @"title_attachment_14x14.png"]]];
+	[msg addObject: [NSString stringWithFormat: @"<img src=\"%@\">", [self urlForResourceFilename: @"title_attachment_14x14.png"]]];
       else
 	[msg addObject: @""];
 
@@ -786,7 +786,7 @@
       else
 	msgIconStatus = @"unread.png";
       
-      [msg addObject: [NSString stringWithFormat: @"<img src=\"%@\" class=\"mailerReadIcon\" title=\"%@\" title-markread=\"%@\" title-markunread=\"%@\" id=\"%@\"/>",
+      [msg addObject: [NSString stringWithFormat: @"<img src=\"%@\" class=\"mailerReadIcon\" title=\"%@\" title-markread=\"%@\" title-markunread=\"%@\" id=\"%@\">",
 				[self urlForResourceFilename: msgIconStatus],
  			       [self labelForKey: @"Mark Unread"],
  			       [self labelForKey: @"Mark Read"],

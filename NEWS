@@ -1,10 +1,10 @@
-2.3.24 (2018-XX-XX)
+2.3.24 (2019-XX-XX)
 -------------------
 
 Bug fixes
  - sogo-tool manage-acl not working on v2 (#4292)
  - [web] restored mail threads state of inbox on initial page load
-
+ - [web] fixed and improved messages list in threads mode
 
 2.3.23 (2017-10-18)
 -------------------
