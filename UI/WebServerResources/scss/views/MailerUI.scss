@@ -9,6 +9,15 @@
   md-list-item._md-button-wrap > div.md-button:first-child {
     padding-right: 0;
   }
+
+  .sg-tile-subject {
+    flex-grow: 1;
+  }
+
+  .sg-message-thread > .md-button:before {
+    content: '';
+    width: $mg;
+  }
 }
 
 // Container for the linear progress bar of the quota
