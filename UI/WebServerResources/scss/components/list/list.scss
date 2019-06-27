@@ -172,15 +172,24 @@ div.md-tile-left {
   &-tile-content {
     flex: 1;
     overflow: hidden; // required in Firefox
-    .sg-tile-date, .sg-tile-size {
+    .sg-tile-date, .sg-tile-size, .sg-tile-thread {
       flex-shrink: 0;
       font-size: sg-size(body);
       font-weight: $sg-font-light;
       line-height: $sg-line-height-2;
-      margin-left: 3px;
+      margin-left: 3px !important;
     }
     .sg-tile-size {
       font-size: sg-size(caption);
+    }
+    .sg-tile-thread {
+      min-height: auto;
+      min-width: auto;
+      padding: 0 3px !important;
+      font-weight: $sg-font-medium;
+      md-icon {
+        font-size: sg-size(body);
+      }
     }
     .#{$md}-subhead {
       @extend .#{$md}-body-1;

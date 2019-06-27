@@ -11,7 +11,7 @@
     var _this = this, defaultsElement, settingsElement, data;
 
     this.defaults = {};
-    this.settings = {};
+    this.settings = {Mail: {}};
 
     defaultsElement = Preferences.$document[0].getElementById('UserDefaults');
     if (defaultsElement) {

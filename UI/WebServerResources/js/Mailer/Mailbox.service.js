@@ -165,6 +165,9 @@
     if (this.path) {
       this.id = this.$id();
       this.$acl = new Mailbox.$$Acl('Mail/' + this.id);
+      if (this.threaded) {
+        this.$collapsedThreads = Mailbox.$Preferences.settings.Mail.threadsCollapsed['/' + this.id] || [];
+      }
     }
     this.$displayName = this.name;
     if (this.type) {
@@ -222,7 +225,16 @@
    * @returns the number of messages in the mailbox
    */
   Mailbox.prototype.getLength = function() {
-    return this.$messages.length;
+    var _this = this, collapsedThread = false;
+    var visibleMessages = _.filter(this.$messages, function(msg, i) {
+      if (msg.first) {
+        collapsedThread = msg.collapsed;
+      } else if (msg.level < 0) {
+        collapsedThread = false;
+      }
+      return msg.first || collapsedThread === false;
+    });
+    return visibleMessages.length;
   };
 
   /**
@@ -232,10 +244,18 @@
    * @returns the message at the specified index
    */
   Mailbox.prototype.getItemAtIndex = function(index) {
-    var message;
+    var _this = this, collapsedThread = false, message;
+    var visibleMessages = _.filter(this.$messages, function(msg, i) {
+      if (msg.first) {
+        collapsedThread = msg.collapsed;
+      } else if (msg.level < 0) {
+        collapsedThread = false; // leaving the thread
+      }
+      return msg.first || collapsedThread === false;
+    });
 
-    if (index >= 0 && index < this.$messages.length) {
-      message = this.$messages[index];
+    if (index >= 0 && index < visibleMessages.length) {
+      message = visibleMessages[index];
       this.$lastVisibleIndex = Math.max(0, index - 3); // Magic number is NUM_EXTRA from virtual-repeater.js
 
       if (this.$loadMessage(message.uid))
@@ -928,7 +948,7 @@
 
           // First entry of 'uids' are keys when threaded view is enabled
           if (_this.threaded) {
-            uids = _this.uids[0];
+            uids = _this.uids[0]; // uid, level, first
             _this.uids.splice(0, 1);
           }
 
@@ -937,6 +957,19 @@
             var data, msgObject;
             if (_this.threaded) {
               data = _.zipObject(uids, msg);
+              if (data.first === 1) {
+                var count = 1;
+                while (_this.uids[i + count] &&
+                       _this.uids[i + count][1] >= 0 &&
+                       _this.uids[i + count][2] !== 1) {
+                  count++;
+                }
+                data.count = count;
+                data.collapsed = false;
+                if (_this.$collapsedThreads.indexOf(data.uid.toString()) >= 0) {
+                  data.collapsed = true;
+                }
+              }
             } else {
               data = {uid: msg.toString()};
             }

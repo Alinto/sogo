@@ -26,6 +26,15 @@
         this.init(futureMessageData);
       }
       this.uid = parseInt(futureMessageData.uid);
+      this.level = parseInt(futureMessageData.level);
+      this.first = parseInt(futureMessageData.first) === 1;
+      if (this.first) {
+        this.threadCount = parseInt(futureMessageData.count);
+        this.collapsed = (futureMessageData.collapsed === true);
+      }
+      else if (!isNaN(this.level) && this.level >= 0) {
+        this.threadMember = true;
+      }
     }
     else {
       // The promise will be unwrapped first
@@ -539,7 +548,7 @@
   };
 
   /**
-   * @function $markAsFlaggedOrUnflagged
+   * @function toggleFlag
    * @memberof Message.prototype
    * @desc Add or remove a the \\Flagged flag on the current message.
    * @returns a promise of the HTTP operation
@@ -556,6 +565,24 @@
         _this.isflagged = !_this.isflagged;
       });
     });
+  };
+
+  /**
+   * @function toggleThread
+   * @memberof Message.prototype
+   * @desc Collapse or expand mail thread
+   * @returns a promise of the HTTP operation
+   */
+  Message.prototype.toggleThread = function() {
+    var _this = this,
+        action = 'markMessageCollapse';
+
+    if (this.collapsed)
+      action = 'markMessageUncollapse';
+
+    this.collapsed = !this.collapsed;
+
+    return Message.$$resource.post(this.$absolutePath(), action);
   };
 
   /**

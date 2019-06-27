@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -221,16 +222,30 @@
 
 - (void) collapseAction: (BOOL) isCollapsing
 {
-  WORequest *request;
-  NSMutableDictionary *moduleSettings, *threadsCollapsed, *content;
+  NSArray *currentComponents;
   NSMutableArray *mailboxThreadsCollapsed;
-  NSString *msguid, *keyForMsgUIDs;
+  NSMutableDictionary *moduleSettings, *threadsCollapsed;
+  NSString *accountName, *msguid, *keyForMsgUIDs;
+  SOGoMailAccount *account;
+  SOGoMailFolder *mailbox;
+  SOGoMailObject *co;
   SOGoUserSettings *us;
+  int count;
 
-  request = [context request];
-  content = [[request contentAsString] objectFromJSONString];
-  keyForMsgUIDs = [content objectForKey:@"currentMailbox"];
-  msguid = [content objectForKey:@"msguid"];
+  co = [self clientObject];
+  account = [co mailAccountFolder];
+  accountName = [account nameInContainer];
+  mailbox = [co container];
+  msguid = [co nameInContainer];
+
+  // Build lookup key for current mailbox path
+  currentComponents = [[mailbox imap4URL] pathComponents];
+  count = [currentComponents count];
+  currentComponents = [[currentComponents subarrayWithRange: NSMakeRange(1,count-1)]
+                                resultsOfSelector: @selector (asCSSIdentifier)];
+  currentComponents = [currentComponents stringsWithFormat: @"folder%@"];
+  keyForMsgUIDs = [NSString stringWithFormat:@"/%@/%@", accountName,
+                            [currentComponents componentsJoinedByString: @"/"]];
 
   us = [[context activeUser] userSettings];
   if (!(moduleSettings = [us objectForKey: @"Mail"]))

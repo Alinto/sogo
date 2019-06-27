@@ -266,6 +266,16 @@
       '}'
     ].join(''));
 
+    // Register custom stylesheet for Mail module
+    $mdThemingProvider.registerStyles([
+      '.sg-message-thread {',
+      '  background-color: \'{{primary-100}}\';',
+      '}',
+      '.sg-message-thread-first {',
+      '  background-color: \'{{primary-200}}\';',
+      '}',
+    ].join(''));
+
     if (!window.DebugEnabled) {
       // Disable debugging information
       $logProvider.debugEnabled(false);
