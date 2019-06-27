@@ -91,7 +91,7 @@
       if ($event) {
         $state.go('mail.account.mailbox', {
           accountId: this.mailbox.$account.id,
-          mailboxId: encodeUriFilter(this.mailbox.path)
+          mailboxId: encodeUriFilter(encodeUriFilter(this.mailbox.path))
         });
         $event.stopPropagation();
         $event.preventDefault();

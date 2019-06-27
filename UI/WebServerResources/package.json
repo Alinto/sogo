@@ -11,7 +11,7 @@
     "angular-material": "1.1.19",
     "angular-messages": "1.7.x",
     "angular-sanitize": "1.7.x",
-    "angular-ui-router": "1.0.20",
+    "angular-ui-router": "1.0.x",
     "file-saver": "latest",
     "lodash": "latest",
     "ng-sortable": "1.3.7"

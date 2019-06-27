@@ -190,7 +190,7 @@
   stateMailbox.$inject = ['$q', '$stateParams', 'stateAccount', 'decodeUriFilter', 'Mailbox'];
   function stateMailbox($q, $stateParams, stateAccount, decodeUriFilter, Mailbox) {
     var mailbox,
-        mailboxId = decodeUriFilter($stateParams.mailboxId),
+        mailboxId = decodeUriFilter(decodeUriFilter($stateParams.mailboxId)),
         _find;
 
     // Recursive find function
