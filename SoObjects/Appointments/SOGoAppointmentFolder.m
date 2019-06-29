@@ -665,7 +665,7 @@ static Class iCalEventK = nil;
               @" AND (c_cycleenddate = NULL OR c_cycleenddate >= %u)");
   else
     format = (@"(c_startdate = NULL OR c_startdate <= %u)"
-              @" AND (c_enddate = NULL OR c_enddate >= %u)");
+              @" AND (c_enddate = NULL OR c_enddate <= %u)");
 
   return [NSString stringWithFormat: format, end, start];
 }
@@ -2180,8 +2180,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     {
       startDateSecs = (int) [startDate timeIntervalSince1970];
       filter = [NSString stringWithFormat: @"(c_enddate = NULL"
-                         @" OR (c_enddate >= %d AND c_iscycle = 0)"
-                         @" OR (c_cycleenddate >= %d AND c_iscycle = 1))",
+                         @" OR (c_enddate <= %d AND c_iscycle = 0)"
+                         @" OR (c_cycleenddate <= %d AND c_iscycle = 1))",
                          startDateSecs, startDateSecs];
       [filters addObject: filter];
     }
