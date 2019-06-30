@@ -4,15 +4,15 @@
  *         This causes it to be incompatible with plugins that depend on @uirouter/core.
  *         We recommend switching to the ui-router-core.js and ui-router-angularjs.js bundles instead.
  *         For more information, see https://ui-router.github.io/blog/uirouter-for-angularjs-umd-bundles
- * @version v1.0.20
+ * @version v1.0.22
  * @link https://ui-router.github.io
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('angular')) :
     typeof define === 'function' && define.amd ? define(['exports', 'angular'], factory) :
-    (factory((global['@uirouter/angularjs'] = {}),global.angular));
-}(this, (function (exports,ng_from_import) { 'use strict';
+    (global = global || self, factory(global['@uirouter/angularjs'] = {}, global.angular));
+}(this, function (exports, ng_from_import) { 'use strict';
 
     /** @publicapi @module ng1 */ /** */
     /** @hidden */ var ng_from_global = angular;
@@ -2206,7 +2206,9 @@
          */
         PathUtils.applyViewConfigs = function ($view, path, states) {
             // Only apply the viewConfigs to the nodes for the given states
-            path.filter(function (node) { return inArray(states, node.state); }).forEach(function (node) {
+            path
+                .filter(function (node) { return inArray(states, node.state); })
+                .forEach(function (node) {
                 var viewDecls = values(node.state.views || {});
                 var subPath = PathUtils.subPath(path, function (n) { return n === node; });
                 var viewConfigs = viewDecls.map(function (view) { return $view.createViewConfig(subPath, view); });
@@ -2690,15 +2692,18 @@
     }
     var getUrlBuilder = function ($urlMatcherFactoryProvider, root$$1) {
         return function urlBuilder(stateObject) {
-            var state = stateObject.self;
+            var stateDec = stateObject.self;
             // For future states, i.e., states whose name ends with `.**`,
             // match anything that starts with the url prefix
-            if (state && state.url && state.name && state.name.match(/\.\*\*$/)) {
-                state.url += '{remainder:any}'; // match any path (.*)
+            if (stateDec && stateDec.url && stateDec.name && stateDec.name.match(/\.\*\*$/)) {
+                var newStateDec = {};
+                copy(stateDec, newStateDec);
+                newStateDec.url += '{remainder:any}'; // match any path (.*)
+                stateDec = newStateDec;
             }
             var parent = stateObject.parent;
-            var parsed = parseUrl(state.url);
-            var url = !parsed ? state.url : $urlMatcherFactoryProvider.compile(parsed.val, { state: state });
+            var parsed = parseUrl(stateDec.url);
+            var url = !parsed ? stateDec.url : $urlMatcherFactoryProvider.compile(parsed.val, { state: stateDec });
             if (!url)
                 return null;
             if (!$urlMatcherFactoryProvider.isMatcher(url))
@@ -3560,7 +3565,7 @@
      * - If a function, matchState calls the function with the state and returns true if the function's result is truthy.
      * @returns {boolean}
      */
-    function matchState(state, criterion) {
+    function matchState(state, criterion, transition) {
         var toMatch = isString(criterion) ? [criterion] : criterion;
         function matchGlobs(_state) {
             var globStrings = toMatch;
@@ -3573,7 +3578,7 @@
             return false;
         }
         var matchFn = (isFunction(toMatch) ? toMatch : matchGlobs);
-        return !!matchFn(state);
+        return !!matchFn(state, transition);
     }
     /**
      * @internalapi
@@ -3608,10 +3613,10 @@
          * with `entering: (state) => true` which only matches when a state is actually
          * being entered.
          */
-        RegisteredHook.prototype._matchingNodes = function (nodes, criterion) {
+        RegisteredHook.prototype._matchingNodes = function (nodes, criterion, transition) {
             if (criterion === true)
                 return nodes;
-            var matching = nodes.filter(function (node) { return matchState(node.state, criterion); });
+            var matching = nodes.filter(function (node) { return matchState(node.state, criterion, transition); });
             return matching.length ? matching : null;
         };
         /**
@@ -3646,7 +3651,7 @@
          * };
          * ```
          */
-        RegisteredHook.prototype._getMatchingNodes = function (treeChanges) {
+        RegisteredHook.prototype._getMatchingNodes = function (treeChanges, transition) {
             var _this = this;
             var criteria = extend(this._getDefaultMatchCriteria(), this.matchCriteria);
             var paths = values(this.tranSvc._pluginapi._getPathTypes());
@@ -3656,7 +3661,7 @@
                 var isStateHook = pathtype.scope === exports.TransitionHookScope.STATE;
                 var path = treeChanges[pathtype.name] || [];
                 var nodes = isStateHook ? path : [tail(path)];
-                mn[pathtype.name] = _this._matchingNodes(nodes, criteria[pathtype.name]);
+                mn[pathtype.name] = _this._matchingNodes(nodes, criteria[pathtype.name], transition);
                 return mn;
             }, {});
         };
@@ -3666,8 +3671,8 @@
          * @returns an IMatchingNodes object, or null. If an IMatchingNodes object is returned, its values
          * are the matching [[PathNode]]s for each [[HookMatchCriterion]] (to, from, exiting, retained, entering)
          */
-        RegisteredHook.prototype.matches = function (treeChanges) {
-            var matches = this._getMatchingNodes(treeChanges);
+        RegisteredHook.prototype.matches = function (treeChanges, transition) {
+            var matches = this._getMatchingNodes(treeChanges, transition);
             // Check if all the criteria matched the TreeChanges object
             var allMatched = values(matches).every(identity);
             return allMatched ? matches : null;
@@ -3736,7 +3741,7 @@
             var transition = this.transition;
             var treeChanges = transition.treeChanges();
             // Find all the matching registered hooks for a given hook type
-            var matchingHooks = this.getMatchingHooks(hookType, treeChanges);
+            var matchingHooks = this.getMatchingHooks(hookType, treeChanges, transition);
             if (!matchingHooks)
                 return [];
             var baseHookOptions = {
@@ -3745,7 +3750,7 @@
             };
             var makeTransitionHooks = function (hook) {
                 // Fetch the Nodes that caused this hook to match.
-                var matches = hook.matches(treeChanges);
+                var matches = hook.matches(treeChanges, transition);
                 // Select the PathNode[] that will be used as TransitionHook context objects
                 var matchingNodes = matches[hookType.criteriaMatchPath.name];
                 // Return an array of HookTuples
@@ -3776,7 +3781,7 @@
          *
          * @returns an array of matched [[RegisteredHook]]s
          */
-        HookBuilder.prototype.getMatchingHooks = function (hookType, treeChanges) {
+        HookBuilder.prototype.getMatchingHooks = function (hookType, treeChanges, transition) {
             var isCreate = hookType.hookPhase === exports.TransitionHookPhase.CREATE;
             // Instance and Global hook registries
             var $transitions = this.transition.router.transitionService;
@@ -3785,7 +3790,7 @@
                 .map(function (reg) { return reg.getHooks(hookType.name); }) // Get named hooks from registries
                 .filter(assertPredicate(isArray, "broken event named: " + hookType.name)) // Sanity check
                 .reduce(unnestR, []) // Un-nest RegisteredHook[][] to RegisteredHook[] array
-                .filter(function (hook) { return hook.matches(treeChanges); }); // Only those satisfying matchCriteria
+                .filter(function (hook) { return hook.matches(treeChanges, transition); }); // Only those satisfying matchCriteria
         };
         return HookBuilder;
     }());
@@ -3969,8 +3974,8 @@
                 // TODO: Also compare parameters
                 return this.is({ to: compare.$to().name, from: compare.$from().name });
             }
-            return !((compare.to && !matchState(this.$to(), compare.to)) ||
-                (compare.from && !matchState(this.$from(), compare.from)));
+            return !((compare.to && !matchState(this.$to(), compare.to, this)) ||
+                (compare.from && !matchState(this.$from(), compare.from, this)));
         };
         Transition.prototype.params = function (pathname) {
             if (pathname === void 0) { pathname = 'to'; }
@@ -4993,13 +4998,16 @@
         return UrlMatcher;
     }());
 
-    var __assign = (undefined && undefined.__assign) || Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
+    var __assign = (undefined && undefined.__assign) || function () {
+        __assign = Object.assign || function(t) {
+            for (var s, i = 1, n = arguments.length; i < n; i++) {
+                s = arguments[i];
+                for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                    t[p] = s[p];
+            }
+            return t;
+        };
+        return __assign.apply(this, arguments);
     };
     /** @internalapi */
     var ParamFactory = /** @class */ (function () {
@@ -7655,7 +7663,7 @@
              */
             var rejectedTransitionHandler = function (trans) { return function (error) {
                 if (error instanceof Rejection) {
-                    var isLatest = router.globals.lastStartedTransitionId === trans.$id;
+                    var isLatest = router.globals.lastStartedTransitionId <= trans.$id;
                     if (error.type === exports.RejectType.IGNORED) {
                         isLatest && router.urlRouter.update();
                         // Consider ignored `Transition.run()` as a successful `transitionTo`
@@ -8124,9 +8132,12 @@
     }());
 
     var __extends = (undefined && undefined.__extends) || (function () {
-        var extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        var extendStatics = function (d, b) {
+            extendStatics = Object.setPrototypeOf ||
+                ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+                function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            return extendStatics(d, b);
+        };
         return function (d, b) {
             extendStatics(d, b);
             function __() { this.constructor = d; }
@@ -8155,9 +8166,12 @@
     }(BaseLocationServices));
 
     var __extends$1 = (undefined && undefined.__extends) || (function () {
-        var extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        var extendStatics = function (d, b) {
+            extendStatics = Object.setPrototypeOf ||
+                ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+                function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            return extendStatics(d, b);
+        };
         return function (d, b) {
             extendStatics(d, b);
             function __() { this.constructor = d; }
@@ -8180,9 +8194,12 @@
     }(BaseLocationServices));
 
     var __extends$2 = (undefined && undefined.__extends) || (function () {
-        var extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        var extendStatics = function (d, b) {
+            extendStatics = Object.setPrototypeOf ||
+                ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+                function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            return extendStatics(d, b);
+        };
         return function (d, b) {
             extendStatics(d, b);
             function __() { this.constructor = d; }
@@ -8306,7 +8323,7 @@
         BrowserLocationConfig.prototype.getBaseHref = function () {
             var baseTag = document.getElementsByTagName('base')[0];
             if (baseTag && baseTag.href) {
-                return baseTag.href.replace(/^(https?:)?\/\/[^/]*/, '');
+                return baseTag.href.replace(/^([^/:]*:)?\/\/[^/]*/, '');
             }
             return this._isHtml5 ? '/' : location.pathname || '/';
         };
@@ -10708,5 +10725,5 @@
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));
 //# sourceMappingURL=angular-ui-router.js.map
