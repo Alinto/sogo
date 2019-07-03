@@ -166,8 +166,10 @@
       this.id = this.$id();
       this.$acl = new Mailbox.$$Acl('Mail/' + this.id);
       if (this.threaded) {
-        this.$collapsedThreads = Mailbox.$Preferences.settings.Mail.threadsCollapsed['/' + this.id] || [];
-      }
+        this.$collapsedThreads = [];
+        if (Mailbox.$Preferences.settings.Mail.threadsCollapsed && Mailbox.$Preferences.settings.Mail.threadsCollapsed['/' + this.id]) {
+          this.$collapsedThreads = Mailbox.$Preferences.settings.Mail.threadsCollapsed['/' + this.id];
+        }
     }
     this.$displayName = this.name;
     if (this.type) {
