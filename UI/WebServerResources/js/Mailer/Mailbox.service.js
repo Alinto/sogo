@@ -170,6 +170,7 @@
         if (Mailbox.$Preferences.settings.Mail.threadsCollapsed && Mailbox.$Preferences.settings.Mail.threadsCollapsed['/' + this.id]) {
           this.$collapsedThreads = Mailbox.$Preferences.settings.Mail.threadsCollapsed['/' + this.id];
         }
+      }
     }
     this.$displayName = this.name;
     if (this.type) {
