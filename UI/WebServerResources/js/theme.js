@@ -13,80 +13,69 @@
   function configure($mdThemingProvider) {
 
     /**
-     * Define a new palette or choose any of the default palettes:
+     * The SOGo palettes are defined in js/Common/Common.app.js:
      *
-     * https://material.io/guidelines/style/color.html#color-color-palette
+     * - sogo-green
+     * - sogo-blue
+     * - sogo-grey
+     *
+     * The Material palettes are also available:
+     *
+     * - red
+     * - pink
+     * - purple
+     * - deep-purple
+     * - indigo
+     * - blue
+     * - light-blue
+     * - cyan
+     * - teal
+     * - green
+     * - light-green
+     * - lime
+     * - yellow
+     * - amber
+     * - orange
+     * - deep-orange
+     * - brown
+     * - grey
+     * - blue-grey
+     *
+     * See https://material.angularjs.org/latest/Theming/01_introduction
+     * and https://material.io/archive/guidelines/style/color.html#color-color-palette
+     *
+     * You can also define your own palettes. See js/Common/Common.app.js.
      */
-    // $mdThemingProvider.definePalette('sogo-paper', {
-    //   '50': 'fcf7f8',
-    //   '100': 'f7f1dc',
-    //   '200': 'ede5ca',
-    //   '300': 'e6d8ba',
-    //   '400': 'e2d2a3',
-    //   '500': 'd6c48d',
-    //   '600': 'baa870',
-    //   '700': '857545',
-    //   '800': '524517',
-    //   '900': '433809',
-    //   '1000': '000000',
-    //   'A100': 'ffffff',
-    //   'A200': 'eeeeee',
-    //   'A400': 'bdbdbd',
-    //   'A700': '616161',
-    //   'contrastDefaultColor': 'dark',
-    //   'contrastLightColors': ['800', '900']
-    // });
 
-    /**
-     * Overwrite the default theme
-     */
-    $mdThemingProvider.definePalette('sogo-paper', {
-      '50': 'fcf7f8',
-      '100': 'f7f1dc',
-      '200': 'ede5ca',
-      '300': 'e6d8ba',
-      '400': 'e2d2a3',
-      '500': 'd6c48d',
-      '600': 'baa870', // busy periods in attendees editor
-      '700': '857545',
-      '800': '524517',
-      '900': '433809',
-      '1000': '000000',
-      'A100': 'ffffff',
-      'A200': 'eeeeee',
-      'A400': 'bdbdbd',
-      'A700': '616161',
-      'contrastDefaultColor': 'dark',
-      'contrastLightColors': ['800', '900']
-    });
-
+    // Create new background palette from grey palette
     var greyMap = $mdThemingProvider.extendPalette('grey', {
-      '600': '00b0c0', // used when highlighting text in md-autocomplete,
-      '1000': 'baa870' // used as the background color of the busy periods of the attendees editor
+      // background color of sidebar selected item,
+      // background color of right panel,
+      // background color of menus (autocomplete and contextual menus)
+      '200': 'ECEFF4',
+      // background color of sidebar
+      '300': 'D8DEE9',
+       // background color of the busy periods of the attendees editor
+      '1000': '4C566A'
     });
-    $mdThemingProvider.definePalette('sogo-grey', greyMap);
+    $mdThemingProvider.definePalette('frost-grey', greyMap);
 
+    // Apply new palettes to the default theme, remap some of the hues
     $mdThemingProvider.theme('default')
-      .primaryPalette('blue-grey', {
-        'default': '400',  // top toolbar
+      .primaryPalette('indigo', {
+        'default': '400',  // background color of top toolbars
         'hue-1': '400',
-        'hue-2': '600',    // sidebar toolbar
+        'hue-2': '600',    // background color of sidebar toolbar
         'hue-3': 'A700'
       })
-      .accentPalette('teal', {
-        'default': '600',  // fab buttons
-        'hue-1': '50',     // center list toolbar
+      .accentPalette('pink', {
+        'default': '600',  // background color of fab buttons
+        'hue-1': '300',    // background color of center list toolbar
         'hue-2': '300',
         'hue-3': 'A700'
       })
-      .backgroundPalette('sogo-grey', {
-        'default': '50',   // center list background
-        'hue-1': '200',
-        'hue-2': '300',
-        'hue-3': '500'
-      });
+      .backgroundPalette('frost-grey');
 
-    $mdThemingProvider.setDefaultTheme('default');
     $mdThemingProvider.generateThemesOnDemand(false);
   }
 })();
