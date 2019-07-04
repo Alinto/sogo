@@ -134,7 +134,7 @@
     if (card) {
       if (!this.component.attendees || (options && options.organizerCalendar)) {
         // No attendee yet; initialize the organizer
-        this.initOrganizer(options? options.organizerCalendar : undefined);
+        this.initOrganizer(options? options.organizerCalendar : null);
       }
       if (card.$isList({expandable: true})) {
         // Decompose list members
@@ -143,7 +143,7 @@
           _.forEach(list.refs, function(ref) {
             attendee = {
               name: ref.c_cn,
-              email: ref.$preferredEmail(options? options.partial : undefined),
+              email: ref.$preferredEmail(options? options.partial : null),
               role: Attendees.ROLES.REQ_PARTICIPANT,
               partstat: 'needs-action',
               uid: ref.c_uid,
@@ -172,7 +172,7 @@
           isGroup: card.$isList(),
           isResource: card.isresource,
           name: card.c_cn,
-          email: card.$preferredEmail(),
+          email: card.$$email,
           role: Attendees.ROLES.REQ_PARTICIPANT,
           partstat: 'needs-action',
           $avatarIcon: card.$avatarIcon

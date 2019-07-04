@@ -26,6 +26,7 @@ Bug fixes
  - [web] don't hide compose button if messages list is visible
  - [web] fixed next/previous slots with external attendees
  - [web] fixed restoration of sub mailbox when reloading page
+ - [web] use matching address of attendee (#4473)
  - [core] allow super users to modify any event (#4216)
  - [core] correctly handle the full cert chain in S/MIME
  - [core] handle multidays events in freebusy data
