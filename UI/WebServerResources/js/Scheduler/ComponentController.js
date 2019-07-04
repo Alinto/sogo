@@ -337,6 +337,16 @@
       form.$setDirty();
     };
 
+    this.defaultIconForAttendee = function (attendee) {
+      if (attendee.isGroup) {
+        return 'group';
+      } else if (attendee.isResource) {
+        return 'meeting_room';
+      } else {
+        return 'person';
+      }
+    };
+
     this.nextSlot = function () {
       findSlot(1);
     };

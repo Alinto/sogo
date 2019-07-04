@@ -10,6 +10,7 @@ Enhancements
  - [web] updated Angular Material to version 1.1.19
  - [web] replaced bower packages by npm packages
  - [web] restored mail threads (#3478, #4616, #4735)
+ - [web] reflect attendee type with generic icon (person/group/resource)
 
 Bug fixes
  - [web] fixed wrong translation of custom calendar categories

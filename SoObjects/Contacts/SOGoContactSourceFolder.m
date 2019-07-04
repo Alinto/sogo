@@ -322,8 +322,7 @@
     data = @"";
   [newRecord setObject: data forKey: @"c_telephonenumber"];
 
-  // Custom attribute for group-lookups. See LDAPSource.m where
-  // it's set.
+  // Custom attribute for group lookups. See LDAPSource.m.
   data = [oldRecord objectForKey: @"isGroup"];
   if (data)
     {
@@ -335,7 +334,14 @@
       [newRecord setObject: @"vcard" forKey: @"c_component"];
     }
   
-  // c_info => note
+  // Custom attribute for resource lookups. See LDAPSource.m.
+  data = [oldRecord objectForKey: @"isResource"];
+  if (data)
+    {
+      [newRecord setObject: data forKey: @"isResource"];
+    }
+
+  // c_info => note + contactInfo
   data = [oldRecord objectForKey: @"c_info"];
   if ([data length] > 0)
     {

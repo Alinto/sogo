@@ -169,6 +169,8 @@
           uid: card.c_uid,
           domain: card.c_domain,
           isMSExchange: card.ismsexchange,
+          isGroup: card.$isList(),
+          isResource: card.isresource,
           name: card.c_cn,
           email: card.$preferredEmail(),
           role: Attendees.ROLES.REQ_PARTICIPANT,

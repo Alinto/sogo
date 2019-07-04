@@ -268,7 +268,7 @@
                       readonly="true">
               <md-chip-template>
                 <div class="md-contact-avatar">
-                  <sg-avatar-image sg-email="$chip.email" size="26">person</sg-avatar-image>
+                  <sg-avatar-image sg-email="$chip.email" size="26">{{ editor.defaultIconForAttendee($chip) }}</sg-avatar-image>
                 </div>
                 <div class="md-contact-name">{{$chip.name || $chip.email}}</div>
                 <md-icon ng-class="'icon-' + $chip.partstat"><!-- partstat --></md-icon>
