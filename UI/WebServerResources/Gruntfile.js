@@ -21,6 +21,7 @@ module.exports = function(grunt) {
     'js/vendor/FileSaver.min.js': ['node_modules/file-saver/dist/FileSaver.js']
   };
 
+  const sass = require('node-sass');
   require('time-grunt')(grunt);
 
   // Tasks
@@ -28,6 +29,7 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     sass: {
       options: {
+        implementation: sass,
         sourceMap: true,
         outFile: 'css/styles.css',
         noCache: true,
