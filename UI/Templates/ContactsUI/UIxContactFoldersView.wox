@@ -255,44 +255,37 @@
               <md-menu-content>
                 <md-menu-item>
                   <md-button ng-click="addressbook.sort('c_cn')">
-                    <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_cn') }">
-                      <!-- selected --></md-icon> <var:string label:value="Name"/>
+                    <md-icon>{{ addressbook.sortedBy('c_cn') ? 'check' : null }}</md-icon> <var:string label:value="Name"/>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
                   <md-button ng-click="addressbook.sort('c_sn')">
-                    <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_sn') }">
-                      <!-- selected --></md-icon> <var:string label:value="Lastname"/>
+                    <md-icon>{{ addressbook.sortedBy('c_sn') ? 'check' : null }}</md-icon> <var:string label:value="Lastname"/>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
                   <md-button ng-click="addressbook.sort('c_givenname')">
-                    <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_givenname') }">
-                      <!-- selected --></md-icon> <var:string label:value="Firstname"/>
+                    <md-icon>{{ addressbook.sortedBy('c_givenname') ? 'check' : null }}</md-icon> <var:string label:value="Firstname"/>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
                   <md-button ng-click="addressbook.sort('c_mail')">
-                    <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_mail') }">
-                      <!-- selected --></md-icon> <var:string label:value="Email"/>
+                    <md-icon>{{ addressbook.sortedBy('c_mail') ? 'check' : null }}</md-icon> <var:string label:value="Email"/>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
                   <md-button ng-click="addressbook.sort('c_screenname')">
-                    <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_screenname') }">
-                      <!-- selected --></md-icon> <var:string label:value="Screen Name"/>
+                    <md-icon>{{ addressbook.sortedBy('c_screenname') ? 'check' : null }}</md-icon> <var:string label:value="Screen Name"/>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
                   <md-button ng-click="addressbook.sort('c_o')">
-                    <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_o') }">
-                      <!-- selected --></md-icon> <var:string label:value="Organization"/>
+                    <md-icon>{{ addressbook.sortedBy('c_o') ? 'check' : null }}</md-icon> <var:string label:value="Organization"/>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
                   <md-button ng-click="addressbook.sort('c_telephonenumber')">
-                    <md-icon ng-class="{ 'icon-check': addressbook.sortedBy('c_telephonenumber') }">
-                      <!-- selected --></md-icon> <var:string label:value="Preferred Phone"/>
+                    <md-icon>{{ addressbook.sortedBy('c_telephonenumber') ? 'check' : null }}</md-icon> <var:string label:value="Preferred Phone"/>
                   </md-button>
                 </md-menu-item>
                 <md-menu-divider> <!-- divider --></md-menu-divider>
@@ -567,7 +560,7 @@
     <md-dialog flex="40" flex-sm="80" flex-xs="100" label:aria-label="Import Cards">
       <md-toolbar>
         <div class="md-toolbar-tools">
-          <md-icon class="material-icons sg-icon-toolbar-bg">import_export</md-icon>
+          <md-icon class="sg-icon-toolbar-bg">import_export</md-icon>
           <div class="md-flex">
             <div class="sg-md-title"><var:string label:value="Import Cards"/></div>
           </div>

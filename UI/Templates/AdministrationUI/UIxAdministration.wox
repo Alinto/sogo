@@ -108,8 +108,7 @@
                   <md-list-item class="sg-folder" ng-repeat="folder in user.$$folders"
                                 aria-label="{{::folder.displayName}}" title="{{::folder.displayName}}"
                                 ng-click="app.selectFolder(folder)">
-                    <md-icon ng-class="{ 'icon-contacts': folder.type == 'Contact',
-                                       'icon-event': folder.type == 'Appointment' }"><!--icon--></md-icon>
+                    <md-icon>{{ folder.type == 'Contact' ? 'contacts' : 'event' }}</md-icon>
                     <span class="sg-no-wrap" ng-bind="::folder.displayName"><!-- folder name --></span>
                   </md-list-item>
                   <md-divider><!-- divider --></md-divider>

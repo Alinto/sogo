@@ -31,8 +31,7 @@
             <div class="msg-header-content">
               <div ng-class="{ 'sg-md-display-2--thin': isGtMedium,
                              'sg-md-title': !isGtMedium }">{{::acl.user.cn}}</div>
-              <div class="md-truncate sg-md-display-2-subheader"><md-icon ng-class="{ 'icon-contacts': acl.folderType == 'AddressBook',
-                                                                                    'icon-event': acl.folderType == 'Calendar' }"><!--icon--></md-icon>
+              <div class="md-truncate sg-md-display-2-subheader"><md-icon>{{ acl.folderType == 'AddressBook' ? 'contacts' : 'event' }}</md-icon>
               {{::acl.folder.name}}
               </div>
             </div>

@@ -19,11 +19,10 @@
         <div class="md-toolbar-tools">
           <!-- expand dialog -->
           <md-button ng-click="editor.toggleFullscreen($event)"
-                     class="md-icon-button md-primary md-hue-1 hide show-gt-xs"
+                     class="md-icon-button hide show-gt-xs"
                      aria-hidden="true"
                      ng-if="!isPopup">
-            <md-icon class="icon-fullscreen"
-                     ng-class="{ 'icon-fullscreen-exit': editor.isFullscreen }"><!-- fullscreen --></md-icon>
+            <md-icon>{{ editor.isFullscreen ? 'fullscreen_exit' : 'fullscreen' }}</md-icon>
           </md-button>
           <!-- from -->
           <sg-avatar-image class="hide-xs"
@@ -205,33 +204,31 @@
                 </md-menu-item>
                 <md-menu-item>
                   <md-button ng-click="editor.message.editable.priority = 1">
-                    <md-icon ng-class="{ 'icon-check': editor.message.editable.priority == 1}"><!-- highest --></md-icon>
+                    <md-icon>{{ editor.message.editable.priority == 1 ? 'check' : null }}</md-icon>
                     <var:string label:value="highest"/>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
                   <md-button ng-click="editor.message.editable.priority = 2">
-                    <md-icon ng-class="{ 'icon-check': editor.message.editable.priority == 2}"><!-- high --></md-icon>
+                    <md-icon>{{ editor.message.editable.priority == 2 ? 'check' : null }}</md-icon>
                     <var:string label:value="high"/>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
                   <md-button ng-click="editor.message.editable.priority = 3">
-                    <md-icon ng-class="{ 'icon-check':
-                                       !editor.message.editable.priority
-                                       || editor.message.editable.priority == 3}"><!-- normal --></md-icon>
+                    <md-icon>{{ (!editor.message.editable.priority || editor.message.editable.priority == 3) ? 'check' : null }}</md-icon>
                     <var:string label:value="normal"/>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
                   <md-button ng-click="editor.message.editable.priority = 4">
-                    <md-icon ng-class="{ 'icon-check': editor.message.editable.priority == 4}"><!-- low --></md-icon>
+                    <md-icon>{{ editor.message.editable.priority == 4 ? 'check' : null }}</md-icon>
                     <var:string label:value="low"/>
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
                   <md-button ng-click="editor.message.editable.priority = 5">
-                    <md-icon ng-class="{ 'icon-check': editor.message.editable.priority == 5}"><!-- lowest --></md-icon>
+                    <md-icon>{{ editor.message.editable.priority == 5 ? 'check' : null }}</md-icon>
                     <var:string label:value="lowest"/>
                   </md-button>
                 </md-menu-item>

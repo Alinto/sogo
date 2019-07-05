@@ -53,13 +53,13 @@
         //     Icons
         '      <span class="icons">',
         //       Component is reccurent
-        '        <md-icon ng-if="'+p+'block.component.occurrenceId" class="material-icons icon-repeat"></md-icon>',
+        '        <md-icon ng-if="'+p+'block.component.occurrenceId">repeat</md-icon>',
         //       Component has an alarm
-        '        <md-icon ng-if="'+p+'block.component.c_nextalarm" class="material-icons icon-alarm"></md-icon>',
+        '        <md-icon ng-if="'+p+'block.component.c_nextalarm">alarm</md-icon>',
         //       Component is confidential
-        '        <md-icon ng-if="'+p+'block.component.c_classification == 2" class="material-icons icon-visibility-off"></md-icon>',
+        '        <md-icon ng-if="'+p+'block.component.c_classification == 2">visibility_off</md-icon>',
         //       Component is private
-        '        <md-icon ng-if="'+p+'block.component.c_classification == 1" class="material-icons icon-vpn-key"></md-icon>',
+        '        <md-icon ng-if="'+p+'block.component.c_classification == 1">vpn_key</md-icon>',
         '      </span>',
         //     Location
         '      <div class="secondary" ng-if="'+p+'block.component.c_location">',

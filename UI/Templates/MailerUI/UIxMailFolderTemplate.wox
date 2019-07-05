@@ -42,16 +42,14 @@
             <md-menu-divider><!-- divider --></md-menu-divider>
             <md-menu-item>
               <md-button ng-click="app.search.match='AND'">
-                <md-icon ng-class="{ 'icon-check': app.search.match == 'AND'}"
-                         label:aria-label="Match all of the following">
-                  <!-- all --></md-icon><var:string label:value="Match all of the following"/>
+                <md-icon label:aria-label="Match all of the following">{{ app.search.match == 'AND' ? 'check' : null }}</md-icon>
+                <var:string label:value="Match all of the following"/>
               </md-button>
             </md-menu-item>
             <md-menu-item>
               <md-button ng-click="app.search.match='OR'">
-                <md-icon ng-class="{ 'icon-check': app.search.match == 'OR'}"
-                         label:aria-label="Match any of the following">
-                  <!-- any --></md-icon><var:string label:value="Match any of the following"/>
+                <md-icon label:aria-label="Match any of the following">{{ app.search.match == 'OR' ? 'check' : null }}</md-icon>
+                <var:string label:value="Match any of the following"/>
               </md-button>
             </md-menu-item>
           </md-menu-content>
@@ -60,8 +58,7 @@
                    label:aria-label="Search"
                    ng-click="app.toggleAdvancedSearch()"
                    ng-disabled="app.search.params.length == 0">
-          <md-icon ng-class="{'icon-stop': app.service.selectedFolder.$isLoading,
-                              'icon-search': !app.service.selectedFolder.$isLoading}"><!-- icon --></md-icon>
+          <md-icon>{{ app.service.selectedFolder.$isLoading ? 'stop' : 'search' }}</md-icon>
         </md-button>
       </div>
     </md-toolbar>
@@ -84,37 +81,27 @@
           <md-menu-content>
             <md-menu-item>
               <md-button ng-click="mailbox.sort('subject')">
-                <md-icon ng-class="{ 'icon-check': mailbox.sortedBy('subject') }"
-                         label:aria-label="Subject">
-                  <!-- subject --></md-icon> <var:string label:value="Subject"/>
+                <md-icon label:aria-label="Subject">{{ mailbox.sortedBy('subject') ? 'check' : null }}</md-icon> <var:string label:value="Subject"/>
               </md-button>
             </md-menu-item>
             <md-menu-item>
               <md-button ng-click="mailbox.sort('from')">
-                <md-icon ng-class="{ 'icon-check': mailbox.sortedBy('from') }"
-                         label:aria-label="From">
-                  <!-- from --></md-icon> <var:string label:value="From"/>
+                <md-icon label:aria-label="From">{{ mailbox.sortedBy('from') ? 'check' : null }}</md-icon> <var:string label:value="From"/>
               </md-button>
             </md-menu-item>
             <md-menu-item>
               <md-button ng-click="mailbox.sort('date')">
-                <md-icon ng-class="{ 'icon-check': mailbox.sortedBy('date') }"
-                         label:aria-label="Date">
-                  <!-- date --></md-icon> <var:string label:value="Date"/>
+                <md-icon label:aria-label="Date">{{ mailbox.sortedBy('date') ? 'check' : null }}</md-icon> <var:string label:value="Date"/>
               </md-button>
             </md-menu-item>
             <md-menu-item>
               <md-button ng-click="mailbox.sort('size')">
-                <md-icon ng-class="{ 'icon-check': mailbox.sortedBy('size') }"
-                         label:aria-label="Size">
-                  <!-- size --></md-icon> <var:string label:value="Size"/>
+                <md-icon label:aria-label="Size">{{ mailbox.sortedBy('size') ? 'check' : null }}</md-icon> <var:string label:value="Size"/>
               </md-button>
             </md-menu-item>
 	    <md-menu-item>
               <md-button ng-click="mailbox.sort('arrival')">
-                <md-icon ng-class="{ 'icon-check': mailbox.sortedBy('arrival') }"
-                         label:aria-label="Order Received">
-                  <!-- order received --></md-icon> <var:string label:value="Order Received"/>
+                <md-icon label:aria-label="Order Received">{{ mailbox.sortedBy('arrival') ? 'check' : null }}</md-icon> <var:string label:value="Order Received"/>
               </md-button>
             </md-menu-item>
             <md-menu-divider> <!-- divider --></md-menu-divider>

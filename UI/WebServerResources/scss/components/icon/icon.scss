@@ -87,79 +87,28 @@ md-icon {
   &.md-flip {
     transform: scaleY(-1);
   }
-//   &.icon-add:before {
-//     content: "\e317";
-  //   }
-  &.icon-alarm:before {
-    content: "\e855";
-  }
   &.icon-delegated:before,
   &.icon-arrow-forward:before {
-    content: "\e5c8";
+    content: "arrow_forward";
   }
   &.icon-accepted:before,
   &.icon-check:before {
-    content: "\e5ca";
-  }
-  &.icon-clear:before {
-    content: "\e14c";
-  }
-  &.icon-contacts:before {
-    content: "\e0ba";
-  }
-  &.icon-event:before {
-    content: "\e878";
-  }
-  &.icon-expand-less:before {
-    content: "\e5ce";
-  }
-  &.icon-expand-more:before {
-    content: "\e5cf";
-  }
-  &.icon-fullscreen:before {
-    content: "\e5d0";
-  }
-  &.icon-fullscreen-exit:before {
-    content: "\e5d1";
+    content: "check";
   }
   &.icon-needs-action:before,
   &.icon-help:before {
-    content: "\e887";
+    content: "help";
   }
   &.icon-more-horiz:before {
     content: "\e5d3";
   }
   &.icon-tentative:before,
   &.icon-person:before {
-    content: "\e7fd";
+    content: "person";
   }
-//  &.icon_public:before {
-//    content: "\e80b";
-//  }
   &.icon-declined:before,
   &.icon-remove-circle:before {
-    content: "\e15c";
-  }
-  &.icon-repeat:before {
-    content: "\e040";
-  }
-  &.icon-search:before {
-    content: "\e8b6";
-  }
-  &.icon-star:before {
-    content: "\e838";
-  }
-  &.icon-star-border:before {
-    content: "\e83a";
-  }
-  &.icon-stop:before {
-    content: "\e047";
-  }
-  &.icon-visibility-off:before {
-    content: "\e8f5";
-  }
-  &.icon-vpn-key:before {
-    content: "\e0da";
+    content: "remove_circle";
   }
 }
 

@@ -15,8 +15,7 @@
                      class="md-icon-button md-primary md-hue-1 hide show-gt-xs"
                      aria-hidden="true"
                      ng-if="::!isPopup">
-            <md-icon class="icon-fullscreen"
-                     ng-class="{ 'icon-fullscreen-exit': centerIsClose }"><!-- fullscreen --></md-icon>
+            <md-icon>{{ centerIsClose ? 'fullscreen_exit' : 'fullscreen' }}</md-icon>
           </md-button>
           <md-button class="md-icon-button"
                      ng-if="::isPopup"
@@ -32,8 +31,7 @@
           </md-button>
           <div class="md-flex"><!-- spacer --></div>
           <md-button class="sg-icon-button" label:aria-label="Flagged" ng-click="viewer.message.toggleFlag()">
-            <md-icon ng-class="{'icon-star md-accent md-hue-2': viewer.message.isflagged,
-                               'icon-star-border': !viewer.message.isflagged}"><!-- flag --></md-icon>
+            <md-icon ng-class="{ 'md-accent md-hue-2': viewer.message.isflagged }">{{ viewer.message.isflagged ? 'star' : 'star_border' }}</md-icon>
           </md-button>
           <md-button class="sg-icon-button"
                      ng-hide="::viewer.message.isDraft"

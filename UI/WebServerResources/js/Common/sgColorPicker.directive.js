@@ -81,7 +81,7 @@
           column += 'class="selected" ';
         column += 'style="background-color: ' + currentColor + '" ng-click="$menuCtrl.setColor($event, \'' + currentColor + '\')">';
         if (selected)
-          column += '<md-icon class="icon-check" style="color: ' + currentContrastColor + '"></md-icon>';
+          column += '<md-icon style="color: ' + currentContrastColor + '">check</md-icon>';
         column += '</span>';
       }
 

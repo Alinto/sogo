@@ -56,9 +56,8 @@
           </div>
           <div layout="row" layout-align="start center" layout-fill="true"
                ng-repeat="folder in user.$$folders">
-            <md-icon ng-class="{ 'icon-contacts': folder.type == 'Contact',
-                                 'icon-event': folder.type == 'Appointment' }"><!--icon--></md-icon>
-            <p class="sg-padded--left md-flex">{{folder.displayName}}</p>
+            <md-icon>{{ folder.type == 'Contact' ? 'contacts' : 'event' }}</md-icon>
+            <div class="sg-padded--left md-flex" md-truncate="md-truncate">{{folder.displayName}}</div>
             <md-button class="md-raised"
                        ng-click="subscribe.selectFolder(folder)"><var:string label:value="Subscribe"/></md-button>
           </div>

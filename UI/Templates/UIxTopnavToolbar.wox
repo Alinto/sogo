@@ -8,10 +8,8 @@
   <div class="md-toolbar-tools sg-toolbar-group-1" layout="row">
     <md-button ng-click="toggleLeft()"
                class="md-icon-button hide show-gt-md"
-               label:aria-label="Toggle Menu"
-               ng-switch="leftIsClose">
-      <md-icon ng-switch-when="true">fullscreen_exit</md-icon>
-      <md-icon ng-switch-when="false">fullscreen</md-icon>
+               label:aria-label="Toggle Menu">
+      <md-icon>{{ leftIsClose ? 'fullscreen_exit' : 'fullscreen' }}</md-icon>
     </md-button>
     <md-button ng-click="toggleLeft()"
                class="md-icon-button hide-gt-md"
