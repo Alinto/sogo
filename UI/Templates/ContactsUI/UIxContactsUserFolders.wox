@@ -63,40 +63,6 @@
           </div>
         </md-card-content>
       </md-card>
-
-      <md-list class="ng-hide">
-        <md-list-item layout="column"
-                      ng-repeat="user in subscribe.users">
-          <md-button class="sg-expandable" ng-click="subscribe.selectUser($index)">
-            <div layout="row" layout-align="start center"
-                 layout-fill="true">
-              <div class="sg-avatar"><!-- normal-user --></div>
-              <span class="sg-item-name">{{user.$shortFormat()}}</span>
-              <span class="md-secondary md-display-1">
-                <md-icon ng-class="{ 'icon-expand-more': user.uid != subscribe.selectedUser.uid,
-                                     'icon-expand-less': user.uid == subscribe.selectedUser.uid }"><!--icon--></md-icon>
-              </span>
-            </div>
-          </md-button>
-          <md-list layout-fill="true"
-                   ng-show="user == subscribe.selectedUser">
-            <md-list-item ng-show="user.$$folders.length == 0">
-              <md-icon>warning</md-icon>
-              <var:string label:value="No possible subscription"/>
-            </md-list-item>
-            <md-list-item layout="row" layout-fill="true"
-                          ng-repeat="folder in user.$$folders">
-              <md-icon ng-class="{ 'icon-contacts': folder.type == 'Contact',
-                                   'icon-event': folder.type == 'Appointment' }"><!--icon--></md-icon>
-              <p class="md-flex sg-item-name">{{folder.displayName}}</p>
-              <md-button
-                  class="md-raised"
-                  ng-click="subscribe.selectFolder(folder)"><var:string label:value="Subscribe"/></md-button>
-            </md-list-item>
-          </md-list>
-          <md-divider ng-if="!$last"><!-- divider --></md-divider>
-        </md-list-item>
-      </md-list>
     </md-dialog-content>
   </md-dialog>
 </container>
