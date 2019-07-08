@@ -8,12 +8,16 @@
     >
 
   <md-dialog flex="60" flex-sm="80" flex-xs="100">
-    <md-toolbar ng-class="links.calendar.getClassName('bg')">
+    <md-toolbar>
       <md-icon class="material-icons sg-icon-toolbar-bg">link</md-icon>
       <div class="md-toolbar-tools">
         <div class="pseudo-input-container md-flex">
           <label class="pseudo-input-label"><var:string label:value="Links to this Calendar"/></label>
-          <div class="pseudo-input-field sg-md-title">{{links.calendar.name}}</div>
+          <div layout="row" layout-align="start center">
+            <div class="sg-color-chip"
+                 ng-class="::links.calendar.getClassName('bg')"><!-- color --></div>
+            <div class="sg-md-title" ng-bind="::links.calendar.name"><!-- calendar --></div>
+          </div>
         </div>
         <md-button class="md-icon-button" ng-click="links.close()">
           <md-icon label:aria-label="Close">close</md-icon>
@@ -24,41 +28,41 @@
     <md-dialog-content class="md-padding">
       <div layout="column">
 
-        <md-input-container class="md-block" ng-show="links.calendar.isWebCalendar">
+        <md-input-container class="md-block" ng-show="::links.calendar.isWebCalendar">
           <label><var:string label:value="URL"/></label>
-          <input type="text" ng-model="links.calendar.urls.webCalendarURL" ng-readonly="true"/>
+          <input type="text" ng-model="::links.calendar.urls.webCalendarURL" ng-readonly="true"/>
         </md-input-container>
 
-        <div layout="column" ng-hide="links.calendar.isWebCalendar">
+        <div layout="column" ng-hide="::links.calendar.isWebCalendar">
           <div class="sg-md-title"><var:string label:value="Authenticated User Access"/></div>
           <md-input-container class="md-block">
             <label><var:string label:value="CalDAV URL"/></label>
-            <input type="text" ng-model="links.calendar.urls.calDavURL" ng-readonly="true"/>
+            <input type="text" ng-model="::links.calendar.urls.calDavURL" ng-readonly="true"/>
           </md-input-container>
           <md-input-container class="md-block">
             <label><var:string label:value="WebDAV ICS URL"/></label>
-            <input  type="text" ng-model="links.calendar.urls.webDavICSURL" ng-readonly="true"/>
+            <input  type="text" ng-model="::links.calendar.urls.webDavICSURL" ng-readonly="true"/>
           </md-input-container>
           <md-input-container class="md-block">
             <label><var:string label:value="WebDAV XML URL"/></label>
-            <input  type="text" ng-model="links.calendar.urls.webDavXMLURL" ng-readonly="true"/>
+            <input  type="text" ng-model="::links.calendar.urls.webDavXMLURL" ng-readonly="true"/>
           </md-input-container>
         </div>
 
         <var:if condition="isPublicAccessEnabled">
-          <div layout="column" ng-hide="links.calendar.isWebCalendar">
+          <div layout="column" ng-hide="::links.calendar.isWebCalendar">
             <div class="sg-md-title"><var:string label:value="Public Access"/></div>
             <md-input-container class="md-block">
               <label><var:string label:value="CalDAV URL"/></label>
-              <input type="text" ng-model="links.calendar.urls.publicCalDavURL" ng-readonly="true"/>
+              <input type="text" ng-model="::links.calendar.urls.publicCalDavURL" ng-readonly="true"/>
             </md-input-container>
             <md-input-container class="md-block">
               <label><var:string label:value="WebDAV ICS URL"/></label>
-              <input type="text" ng-model="links.calendar.urls.publicWebDavICSURL" ng-readonly="true"/>
+              <input type="text" ng-model="::links.calendar.urls.publicWebDavICSURL" ng-readonly="true"/>
             </md-input-container>
             <md-input-container class="md-block">
               <label><var:string label:value="WebDAV XML URL"/></label>
-              <input type="text" ng-model="links.calendar.urls.publicWebDavXMLURL" ng-readonly="true"/>
+              <input type="text" ng-model="::links.calendar.urls.publicWebDavXMLURL" ng-readonly="true"/>
             </md-input-container>
           </div>
         </var:if>

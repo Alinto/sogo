@@ -15,7 +15,7 @@ $list-item-height: 6 * $baseline-grid; // 48px
 $sg-avatar-width: 40px;
 
 // Circle diamter of color chips
-$sg-color-chip-width: 16px;
+$sg-color-chip-width: 2 * $baseline-grid;
 
 
 /*------------------------------------*\
@@ -163,10 +163,14 @@ div.md-tile-left {
     border-color: white;
     border-radius: 50%;
     border-style: solid;
+    border-width: 2px;
     display: block;
     height: $sg-color-chip-width;
     margin: 0 $bl;
     width: $sg-color-chip-width;
+    &:first-child {
+      margin-left: 0;
+    }
   }
 
   &-tile-content {

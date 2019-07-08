@@ -5,7 +5,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
   <md-dialog flex="40" flex-md="60" flex-sm="80" flex-xs="100">
-    <md-toolbar ng-class="::editor.component.getClassName('bg')">
+    <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">assignment_turned_in</md-icon>
         <div class="sg-md-title md-flex">
@@ -61,7 +61,11 @@
         <!-- calendar -->
         <md-list-item>
           <md-icon>event</md-icon>
-          <p ng-bind="::editor.component.calendar"><!-- calendar --></p>
+          <div layout="row" layout-align="start center">
+            <div class="sg-color-chip"
+                 ng-class="::editor.component.getClassName('bg')"><!-- color --></div>
+            <div ng-bind="::editor.component.calendar"><!-- calendar --></div>
+          </div>
         </md-list-item>
         <!-- start/due dates -->
         <md-list-item ng-class="{ 'md-2-line': editor.component.isAllDay, 'md-3-line': !editor.component.isAllDay }"

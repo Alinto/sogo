@@ -6,7 +6,7 @@
     xmlns:label="OGo:label">
   <md-dialog flex="60" flex-sm="80" flex-xs="100">
     <form name="eventForm" ng-submit="editor.save(eventForm)">
-      <md-toolbar ng-class="editor.component.getClassName('bg')">
+      <md-toolbar>
         <div class="md-toolbar-tools">
           <md-icon class="material-icons sg-icon-toolbar-bg">assignment_turned_in</md-icon>
           <!-- summary -->
@@ -35,7 +35,13 @@
               <label><var:string label:value="Calendar"/></label>
               <md-select ng-model="editor.component.destinationCalendar">
                 <md-option ng-repeat="calendar in editor.service.$findAll(null, true)"
-                           ng-value="calendar.id">{{calendar.name}}</md-option>
+                           ng-value="calendar.id">
+                  <div layout="row" layout-align="start center">
+                    <div class="sg-color-chip"
+                         ng-class="calendar.getClassName('bg')"><!-- color --></div>
+                    {{calendar.name}}
+                  </div>
+                </md-option>
               </md-select>
             </md-input-container>
           </div>

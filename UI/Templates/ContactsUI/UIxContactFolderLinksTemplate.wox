@@ -12,7 +12,7 @@
       <div class="md-toolbar-tools">
         <div class="pseudo-input-container md-flex">
           <label class="pseudo-input-label"><var:string label:value="Links to this Address Book"/></label>
-          <div class="pseudo-input-field sg-md-title">{{links.addressbook.name}}</div>
+          <div class="pseudo-input-field sg-md-title">{{::links.addressbook.name}}</div>
         </div>
         <md-button class="md-icon-button" ng-click="links.close()">
           <md-icon aria-label="Close dialog">close</md-icon>
@@ -25,7 +25,7 @@
         <div class="sg-md-title"><var:string label:value="Authenticated User Access"/></div>
         <md-input-container class="md-block">
           <label><var:string label:value="CardDAV URL"/></label>
-          <input type="text" ng-model="links.addressbook.urls.cardDavURL" ng-readonly="true"/>
+          <input type="text" ng-model="::links.addressbook.urls.cardDavURL" ng-readonly="true"/>
         </md-input-container>
       </div>
       <var:if condition="isPublicAccessEnabled">
@@ -33,7 +33,7 @@
           <div class="sg-md-title"><var:string label:value="Public Access"/></div>
           <md-input-container class="md-block">
             <label><var:string label:value="CardDAV URL"/></label>
-            <input type="text" ng-model="links.addressbook.urls.publicCardDavURL" ng-readonly="true"/>
+            <input type="text" ng-model="::links.addressbook.urls.publicCardDavURL" ng-readonly="true"/>
           </md-input-container>
         </div>
       </var:if>

@@ -11,6 +11,7 @@ Enhancements
  - [web] replaced bower packages by npm packages
  - [web] restored mail threads (#3478, #4616, #4735)
  - [web] reflect attendee type with generic icon (person/group/resource)
+ - [web] reduce usage of calendar color in dialogs
 
 Bug fixes
  - [web] fixed wrong translation of custom calendar categories

@@ -7,12 +7,16 @@
     xmlns:label="OGo:label"
     >
   <md-dialog flex="50" flex-sm="80" flex-xs="100">
-    <md-toolbar ng-class="::acl.folderClassName()">
+    <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">folder_shared</md-icon>
         <div class="pseudo-input-container md-flex">
           <label class="pseudo-input-label"><var:string label:value="Access Rights"/></label>
-          <div class="sg-md-title">{{acl.folder.name}}</div>
+          <div layout="row" layout-align="start center">
+            <div class="sg-color-chip"
+                 ng-class="::acl.folderClassName()"><!-- color --></div>
+            <div class="sg-md-title" ng-bind="::acl.folder.name"><!-- calendar --></div>
+          </div>
         </div>
         <md-button class="md-icon-button" ng-click="acl.closeModal()">
           <md-icon aria-label="Close dialog">close</md-icon>

@@ -5,7 +5,7 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label">
   <md-dialog flex="40" flex-md="60" flex-sm="80" flex-xs="100">
-    <md-toolbar ng-class="::editor.component.getClassName('bg')">
+    <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">event</md-icon>
         <div class="sg-md-title md-flex">
@@ -38,7 +38,11 @@
                     <md-menu-item>
                       <md-button class="sg-no-wrap"
                                  ng-click="editor.copySelectedComponent(calendar.id)">
-                        <span ng-bind="::calendar.name"><!-- menu entry --></span>
+                        <div layout="row" layout-align="start center">
+                          <div class="sg-color-chip"
+                               ng-style="::{ 'background-color': calendar.color }"><!-- color --></div>
+                          <div ng-bind="::calendar.name"><!-- calendar --></div>
+                        </div>
                       </md-button>
                     </md-menu-item>
                   </div>
@@ -56,7 +60,11 @@
                       <md-button class="sg-no-wrap"
                                  ng-disabled="editor.component.destinationCalendar == calendar.id"
                                  ng-click="editor.moveSelectedComponent(calendar.id)">
-                        <span ng-bind="::calendar.name"><!-- menu entry --></span>
+                        <div layout="row" layout-align="start center">
+                          <div class="sg-color-chip"
+                               ng-style="::{ 'background-color': calendar.color }"><!-- color --></div>
+                          <div ng-bind="::calendar.name"><!-- calendar --></div>
+                        </div>
                       </md-button>
                     </md-menu-item>
                   </div>
@@ -96,7 +104,11 @@
         <!-- calendar -->
         <md-list-item>
           <md-icon>event</md-icon>
-          <p ng-bind="::editor.component.calendar"><!-- calendar --></p>
+          <div layout="row" layout-align="start center">
+            <div class="sg-color-chip"
+                 ng-class="::editor.component.getClassName('bg')"><!-- color --></div>
+            <div ng-bind="::editor.component.calendar"><!-- calendar --></div>
+          </div>
         </md-list-item>
         <!-- start/end dates -->
         <md-list-item ng-class="{ 'md-2-line': editor.component.isAllDay, 'md-3-line': !editor.component.isAllDay }">
