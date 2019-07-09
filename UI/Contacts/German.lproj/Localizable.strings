@@ -239,6 +239,12 @@
 "Unable to subscribe to that folder!"
 = "Abonnieren des Ordners nicht möglich.";
 
+/* security */
+"Security" = "Sicherheit";
+"Uninstall" = "Deinstallieren";
+"Error reading the card certificate." = "Fehler beim Lesen des Kartenzertifikates";
+"No certificate associated to card." = "Kein Zertifikat zugeordnet zu dieser Karte";
+
 /* acls */
 "Access rights to" = "Zugriffsrechte für";
 "For user" = "Für Benutzer";
@@ -346,7 +352,7 @@
 "Search scope" = "Suchbereich";
 
 /* Aria label for avatar button to select and unselect a card */
-"Toggle item" = "Gegenstand umschalten";
+"Toggle item" = "Objekt umschalten";
 
 /* Hotkey to create a new card */
 "key_create_card" = "c";

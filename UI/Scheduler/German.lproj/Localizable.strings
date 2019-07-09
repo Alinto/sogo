@@ -619,7 +619,7 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "Successfully subscribed to calendar" = "Der Kalender wurde erfolgreich abonniert";
 
 /* Aria label for color chip button to select and unselect an event or task */
-"Toggle item" = "Punkt umschalten";
+"Toggle item" = "Objekt umschalten";
 
 /* Aria label for scope of search on events or tasks */
 "Search scope" = "Suchbereich";
