@@ -45,7 +45,6 @@ thousands of users
 and the data of Mozilla Thunderbird and Lightning
 * Improved integration with Mozilla Thunderbird and Lightning by using
 the SOGo Connector and the SOGo Integrator
-* Native compatibility for Microsoft Outlook 2003, 2007, 2010, and 2013
 * Two-way synchronization support with any Microsoft ActiveSync-capable
 device, or Outlook 2013/2016
 
@@ -3048,7 +3047,7 @@ Microsoft ActiveSync / Mobile Devices
 
 You can synchronize contacts, emails, events and tasks from SOGo with
 any mobile devices that support Microsoft ActiveSync. Microsoft Outlook
-2013 is also supported.
+2013/2016 is also supported.
 
 The Microsoft ActiveSync server URL is generally something
 like: `http://127.0.0.1/Microsoft-Server-ActiveSync`.
