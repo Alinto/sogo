@@ -7,6 +7,7 @@ vevent_class2 = "(Konfidenciāls notikums)";
 vtodo_class0 = "(Publisks uzdevums)";
 vtodo_class1 = "(Privāts uzdevums)";
 vtodo_class2 = "(Konfidenciāls uzdevums)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "Notikums \"%{Summary}\" ir izveidots";
 "The event \"%{Summary}\" was deleted" = "Notikums \"%{Summary}\" ir dzēsts";
@@ -14,6 +15,7 @@ vtodo_class2 = "(Konfidenciāls uzdevums)";
 "The following attendees(s) were notified" = "Paziņojums nosūtīts šiem dalībniekiem";
 "The following attendees(s) were added" = "Pievienoti šādi dalībnieki";
 "The following attendees(s) were removed" = "Dzēsti šādi dalībnieki";
+
 /* IMIP messages */
 "calendar_label" = "Kalendārs";
 "startDate_label" = "Sākums";
@@ -26,17 +28,20 @@ vtodo_class2 = "(Konfidenciāls uzdevums)";
 "comment_label" = "Komentārs";
 "organizer_label" = "Organizētājs";
 "attendee_label" = "Dalībnieks";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Pasākuma ielūgums: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(sūtīja %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} ielūdza Jūs uz %{Summary}.\n\nSākums: %{StartDate}\nBeigas: %{EndDate}\nApraksts: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} ielūdza Jūs uz %{Summary}.\n\nSākums: %{StartDate} %{StartTime}\nBeigas: %{EndDate} %{EndTime}\nApraksts: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Atcelts pasākums: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} atcēla notikumu: %{Summary}.\n\nSākums: %{StartDate}\nBeigas: %{EndDate}\nApraksts: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} atcēla notikumu: %{Summary}.\n\nSākums: %{StartDate} %{StartTime}\nBeigas: %{EndDate} %{EndTime}\nApraksts: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "Tikšanās \"%{Summary}\" %{OldStartDate} ir mainīta";
@@ -46,6 +51,7 @@ vtodo_class2 = "(Konfidenciāls uzdevums)";
 = "Plānotā tikšanās \"%{Summary}\" ir mainīta, ir veiktas šādas izmaiņas:";
 "Please accept or decline those changes."
 = "Lūdzu pieņemt vai noraidīt šīs izmaiņas.";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Akceptēt uzaicinājumu: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Noraidīt uzaicinājumu: \"%{Summary}\"";
@@ -59,6 +65,15 @@ vtodo_class2 = "(Konfidenciāls uzdevums)";
 = "%{Attendee} %{SentByText} deleģējusi uzaicinājumu %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText} vēl nav izlemts par jūsu uzaicinājumu piedalīties pasākumā.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "Atgādinājums: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Nevar piekļūt resursiem: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Maksimālais skaits vienlaicīgām rezervācijām (%{NumberOfSimultaneousBookings}) sasniedza resursu \"%{Cn} %{SystemEmail}\". Strīdu notikums ir \"%{EventTitle}\", un sākas %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Jūsu līdzdalība ir nepieciešama pasākumā";
+"Your participation is optional to this event" = "Jūsu dalība šajā pasākumā nav obligāta";
+"Your participation is not required to this event" = "Jūsu piedalīšanās pasākumā nav nepieciešama";

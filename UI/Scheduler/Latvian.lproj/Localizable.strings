@@ -440,15 +440,45 @@ validate_untilbeforeend    = "Atkārtošanās ir jāpārtrauc pēc pirmā gadīj
 "Are you sure you want to delete the selected components?"
 = "Vai tiešām vēlaties izdzēst atlasītos komponentus?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Loma";
+
+/* Participant role: participation is required */
 "Participant" = "Dalībnieks";
+
+/* Participant role: participation is required */
+"req-participant" = "Dalībnieks";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Neobligāts dalībnieks";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Neobligāts dalībnieks";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Nav dalībnieks";
-"Chair" = "Katedra";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Nav dalībnieks";
+
+/* Participant role: participant is chair of the calendar entity */
+"Chair" = "Priekšsēdētājs";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Priekšsēdētājs";
+
+/* Participant status: needs action */
 "Needs action" = "Nepieciešama darbība";
+
+/* Participant status: event accepted */
 "Accepted" = "Akceptēts";
+
+/* Participant status: event declined */
 "Declined" = "Noraidījis";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Varbūtējs";
+
 "Free" = "Brīvs";
 "Busy" = "Aizņemts";
 "Maybe busy" = "Varbūt aizņemts";

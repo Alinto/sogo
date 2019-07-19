@@ -239,6 +239,12 @@
 "Unable to subscribe to that folder!"
 = "Impossible de vous inscrire à ce dossier.";
 
+/* security */
+"Security" = "Sécurité";
+"Uninstall" = "Désinstaller";
+"Error reading the card certificate." = "Impossible de lire le certificat.";
+"No certificate associated to card." = "Aucun certificat n'est associé à cette carte.";
+
 /* acls */
 "Access rights to" = "Droits d'accès à";
 "For user" = "Pour l'utilisateur";

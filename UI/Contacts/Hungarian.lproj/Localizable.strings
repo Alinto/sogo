@@ -239,6 +239,12 @@
 "Unable to subscribe to that folder!"
 = "Erre a mappára nem lehet feliratkozni.";
 
+/* security */
+"Security" = "Biztonság";
+"Uninstall" = "Eltávolítás";
+"Error reading the card certificate." = "Hiba történt a kártya tanúsítvány beolvasása során.";
+"No certificate associated to card." = "Nincs tanúsítvány összerendelés a kártyához.";
+
 /* acls */
 "Access rights to" = "Hozzáférés az alábbiaknak:";
 "For user" = "Felhasználónak";

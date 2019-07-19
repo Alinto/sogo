@@ -143,10 +143,19 @@
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
 "File size upload limit reached" = "Elérte a maximális állomány feltöltési méretkorlátot";
 
+/* Generic server error */
+"An error occured, please try again." = "Hiba történt, próbálja újra.";
+
+/* Open datepicker */
+"Open Calendar" = "Naptár megnyitása";
+
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Láthatóság összecsukása";
 
 "Keyboard Shortcuts" = "Gyorsbillentyűk";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "Elem összecsukása";
 
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Több elem módosítása";

@@ -21,6 +21,7 @@
 "HomePhone" = "Hemtelefon";
 "Lastname" = "Efternamn";
 "Location" = "Plats";
+"Add a category" = "Skapa en kategori";
 "MobilePhone" = "Mobiltelefon";
 "Name" = "Namn";
 "OfficePhone" = "Kontorstelefon";
@@ -35,12 +36,120 @@
 "delete" = "radera";
 "edit" = "ändra";
 "invalidemailwarn" = "Meddelandet är inkomplett";
-"invaliddatewarn" = "The specified date is invalid.";
 "new" = "ny";
 "Preferred Phone" = "Föredragen telefon";
 "Move To" = "Flytta";
 "Copy To" = "Kopiera";
 "Add to" = "Addera";
+"To" = "Till";
+"Carbon Copy (Cc)" = "Kopia (Cc)";
+"Blind Carbon Copy (Bcc)" = "Dold kopia (Bcc)";
+
+/* Search scope: name fields */
+"name" = "Namn";
+
+/* Search scope: name fields */
+"c_cn" = "Namn";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "Sekundär E-post";
+
+/* Search scope: screen name field */
+"nsaimid" = "Visningsnamn";
+
+/* Search scope: mail fields */
+"mail" = "E-post";
+
+/* Search scope: mail fields */
+"c_mail" = "E-post";
+
+/* Search scope: telephone field */
+"telephonenumber" = "Telefon";
+
+/* Search scope: telephone field */
+"homephone" = "Telefon";
+
+/* Search scope: mobile field */
+"mobile" = "Mobil";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "Fax";
+
+/* Search scope: pager field */
+"pager" = "Personsökare";
+
+/* Search scope: categories field */
+"c_categories" = "Kategorier";
+
+/* Search scope: categories field */
+"vcardcategories" = "Kategorier";
+
+/* Search scope: title field */
+"title" = "Titel";
+
+/* Search scope: organization field */
+"c_o" = "Organisation";
+
+/* Search scope: organization field */
+"o" = "Organisation";
+
+/* Search scope: department field */
+"ou" = "Avdelning";
+
+/* Search scope: city field */
+"l" = "Stad";
+
+/* Search scope: country field */
+"c" = "Land";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "Hemadress";
+
+/* Search scope: state/province field */
+"st" = "Stat/Provins";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "Hemstat/Provins";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "Postnummer";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "Postnummer";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "Hemland";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "Hemsida";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "Websida";
+
+/* Search scope: note field */
+"description" = "Anteckning";
+
+/* Subheader of empty addressbook */
+"No contact" = "Ingen kontakt";
+
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "Börja sök för att bläddra i den här adressboken";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "kontakter";
+
+/* No contact matching search criteria */
+"No matching contact" = "Ingen matchande kontakt";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "matchande kontakter";
+
+/* Number of selected contacts in list */
+"selected" = "markerad";
+
+/* Empty right pane */
+"No contact selected" = "Ingen kontakt markerad";
+
 /* Tooltips */
 "Create a new address book card" = "Skapa ett nytt adresskort";
 "Create a new list" = "Skapa en ny utskickslista";
@@ -57,6 +166,7 @@
 "Search in Addressbook" = "Sök i adressbok";
 "New Card" = "Nytt adresskort";
 "New List" = "Ny utskickslista";
+"Edit" = "Ändra";
 "Properties" = "Egenskaper";
 "Sharing..." = "Dela ut...";
 "Write" = "Skriv";
@@ -67,7 +177,6 @@
 "Please wait..." = "Var god vänta...";
 "No possible subscription" = "Prenumeration är ej möjlig";
 "Preferred" = "Föredragen";
-"Card for %@" = "Adresskort för %@";
 "Display" = "Visa";
 "Display Name" = "Visningsnamn";
 "Additional Email" = "Ytterligare e-post";
@@ -81,9 +190,11 @@
 "Work" = "Arbete";
 "Mobile" = "Mobiltelefon";
 "Pager" = "Personsökare";
+
 /* categories */
 "contacts_category_labels" = "Kollega, Konkurrent, Kund, Vän, Familj, Affärspartner, Leverantör, Press, VIP";
 "New category" = "Ny kategori";
+
 /* adresses */
 "Title" = "Titel";
 "Service" = "Befattning";
@@ -107,23 +218,36 @@
 "New Addressbook..." = "Ny adressbok...";
 "Subscribe to an Addressbook..." = "Prenumrera på en adressbok...";
 "Remove the selected Addressbook" = "Ta bort markerad adressbok";
+"Subscribe to a shared folder" = "Prenumerera på en delad mapp";
+"Search User" = "Sök användare";
 "Name of the Address Book" = "Namn på adressbok";
 "Are you sure you want to delete the selected address book?"
 = "Är du säker på att du vill ta bort markerad adressbok?";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "Är du säker på att du vill ta bort adressboken \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
 = "Du kan inte ta bort eller avbryta prenumration på en publik adressbok.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Du kan inte ta bort eller avbryta prenumration på en personlig adressbok.";
 "Are you sure you want to delete the selected contacts?"
 = "Är du säker på att du vill ta bort markerade kontakter?";
+"Are you sure you want to delete the card of %{0}?" = "Är du säker på att du vill ta bort kontaktkortet för \"%{0}\"?";
 "You cannot delete the card of \"%{0}\"."
 = "Du kan inte ta bort adresskortet \"%{0}\".";
-"Address Book Name" = "Namn på adressbok";
 "You cannot subscribe to a folder that you own!"
 = "Du kan inte prenumrera på en mapp som du äger.";
 "Unable to subscribe to that folder!"
 = "Du kan inte prenumrera på mappen.";
-"User rights for" = "Användarrättigheter för";
+
+/* security */
+"Security" = "Säkerhet";
+"Uninstall" = "Avinstallera";
+"Error reading the card certificate." = "Fel vid inläsning av kortcertifikat.";
+"No certificate associated to card." = "Inget certifikat är kopplat till kortet.";
+
+/* acls */
+"Access rights to" = "Åtkomsträttigheter till";
+"For user" = "För användare";
 "Any Authenticated User" = "Alla autentiserade användare";
 "Public Access" = "Allmän åtkomst";
 "This person can add cards to this addressbook."
@@ -139,11 +263,15 @@
 "The selected contact has no email address."
 = "Markerad kontakt har ingen e-postadress.";
 "Please select a contact." = "Markera en kontakt.";
-/* Error messages for move and copy */
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "%{0} kort kopierade";
+"%{0} card(s) moved" = "%{0} kort flyttade";
 "SoAccessDeniedException" = "Du kan inte skriva i den här adressboken.";
-"Forbidden" = "Du kan inte skriva i den här adressboken.";
+"Forbidden" = "Otillåten";
 "Invalid Contact" = "Markerad kontakt finns inte längre.";
 "Unknown Destination Folder" = "Den markerade adressboken finns inte längre.";
+
 /* Lists */
 "List details" = "Information om utskickslistan";
 "List name" = "Namn på utskickslistan";
@@ -155,11 +283,79 @@
 "Lists can't be moved or copied." = "Utskickslistor kan inte flyttas eller kopieras.";
 "Export" = "Exportera";
 "Export Address Book..." = "Exportera adressbok...";
+"View Raw Source" = "Visa källkod";
+
+/* Import */
 "Import Cards" = "Importera adresskort";
 "Select a vCard or LDIF file." = "Välj ett vCard eller LDIF fil.";
 "Upload" = "Ladda upp";
+"Uploading" = "Laddar upp";
 "Done" = "Klart";
 "An error occured while importing contacts." = "Ett fel inträffade under importen av kontaker.";
 "No card was imported." = "Inga adresskort importerades.";
 "A total of %{0} cards were imported in the addressbook." = "Totalt %{0} av adresskorten importerades till adressboken.";
 "Reload" = "Ladda om";
+
+/* Properties window */
+"Address Book Name" = "Namn på adressbok";
+"Links to this Address Book" = "Länkar till denna adressbok";
+"Authenticated User Access" = "Inloggade användare";
+"CardDAV URL" = "CardDAV url";
+"Options" = "Alternativ";
+"Rename" = "Byt namn";
+"Subscriptions" = "Prenumerationer";
+"Global Addressbooks" = "Globala adressböcker";
+"Search" = "Sök";
+"Sort" = "Sortera";
+"Descending Order" = "Omvänd ordning";
+"Back" = "Tillbaka";
+"Select All" = "Markera alla";
+"Copy contacts" = "Kopiera kontakter";
+"More messages options" = "Fler meddelandealternativ";
+"New Contact" = "Ny kontakt";
+"Close" = "Stäng";
+"More contact options" = "Fler kontaktalternativ";
+"Organization Unit" = "Organisationsenhet";
+"Add Organizational Unit" = "Skapa organisationsenhet";
+"Type" = "Typ";
+"Email Address" = "E-postadress";
+"New Email Address" = "Ny e-postadress";
+"New Phone Number" = "Nytt telefonnummer";
+"URL" = "URL";
+"New URL" = "Ny URL";
+"street" = "gata";
+"street (continued)" = "Gatuadress (fortsatt)";
+"Postoffice" = "Postkontor";
+"Region" = "Region";
+"Postal Code" = "Postnummer";
+"New Address" = "Ny adress";
+"Reset" = "Nollställ";
+"Description" = "Beskrivning";
+"Add Member" = "Lägg till medlem";
+"Subscribe" = "Prenumrera";
+"Add Birthday" = "Lägg till födelsedag";
+"Import" = "Importera";
+"More options" = "Fler alternativ";
+"Role" = "Roll";
+"Add Screen Name" = "Lägg till skärmnamn";
+"Custom 1" = "Valfri 1";
+"Custom 2" = "Valfri 2";
+"Custom 3" = "Valfri 3";
+"Custom 4" = "Valfri 4";
+"Custom Value" = "Valfri ändring";
+"New Custom Value" = "Ny valfri ändring";
+"Synchronization" = "Synkronisering";
+"Synchronize" = "Synkronisera";
+"Sucessfully subscribed to address book" = "Prenumeration på adressbok skapad";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "Sökomfattning";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "Växla objekt";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

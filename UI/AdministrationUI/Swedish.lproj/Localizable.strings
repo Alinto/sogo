@@ -9,3 +9,19 @@
 "ACLs_title" = "Hantering av åtkomsträttigheter för användarmappar";
 /* Modules descriptions */
 "ACLs_description" = "<p>Administrationsmodulen för åtkomsträttigheter möjliggör ändring av åtkomsträttigheter för användarens kalendrar och adressböcker.</p><p>För att ändra åtkomsträttigheter på en användarmapp, skriv användarnamnet i sökfältet uppe i fönstret och dubbelklicka på önskad mapp.</p>";
+"Name or Email" = "Namn eller e-postadress";
+"ACLs saved" = "ACLer har sparats";
+/* Rights module: initial search message */
+"Start a search to edit the rights" = "Starta en sökning för att kunna redigera rättigheterna";
+/* Rights module: Empty search result */
+"No matching user" = "Ingen användare matchade sökningen";
+/* Rights module: no selection */
+"No resource selected" = "Ingen resurs är vald";
+"Add User" = "Lägg till användare";
+"Subscribe User" = "Prenumerera på användare";
+"Rights" = "Tillgångsrättigheter";
+"Search Users" = "Sök efter användare";
+"users found" = "Användare hittades";
+"No resource" = "Resursen inte vald";
+"Any Authenticated User" = "Inloggade användare";
+"Public Access" = "Publik tillgång";

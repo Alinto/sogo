@@ -120,10 +120,10 @@
 "Add a recipient" = "Adicionar um endereço";
 "Edit Draft..." = "Editar Rascunho...";
 "Load Images" = "Carregar Imagens";
-"Return Receipt" = "Endereço de Resposta";
+"Return Receipt" = "Confirmação de leitura";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "O remetente desta mensagem será notificado quando você ler esta mensagem. Você deseja notificá-lo?";
-"Return Receipt (displayed) - %@"= "Endereço de Resposta - %@";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Este é o Endereço de Resposta do e-mail que você enviou para %@.\n\nNota: Este Endereço de Resposta permite saber que a mensagem foi visualizada pelo destinatário. Não há garantia de que o destinatário tenha lido ou entendido o conteúdo da mensagem.";
+"Return Receipt (displayed) - %@"= "Confirmação de leiura (exibida)- %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Este é a Confirmação de Leitura do e-mail que você enviou para %@.\n\nNota: Este Endereço de Resposta permite saber que a mensagem foi visualizada pelo destinatário. Não há garantia de que o destinatário tenha lido ou entendido o conteúdo da mensagem.";
 "Security" = "Segurança";
 "Sign" = "Assinar";
 "Encrypt" = "Criptografar";
@@ -179,6 +179,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Adicionar ao Catálogo...";
+"Successfully created card" = "Adicionado ao catálogo com sucesso.";
 "Compose Mail To" = "Escrever Mensagem Para";
 "Create Filter From Message..." = "Criar Filtro Da Mensagem...";
 
@@ -402,6 +403,15 @@
 "Your email has been saved" = "Seu e-mail foi salvo";
 "Your email has been sent" = "Seu e-mail foi enviado";
 "Folder compacted" = "Pasta compactada";
+
+/* Advanced search */
+"Enter Subject" = "Insira Assunto";
+"Enter From" = "Insira De";
+"Enter To" = "Insira Para";
+"Enter Cc" = "Insira CC";
+"Enter Body" = "Informar Corpo";
+"match" = "combina";
+"does not match" = "não combina";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Escopo de pesquisa";

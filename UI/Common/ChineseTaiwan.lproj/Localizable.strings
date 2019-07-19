@@ -6,68 +6,90 @@
 "Edit User Rights" = "編輯使用者權限";
 "Home" = "首頁";
 "Calendar" = "行事曆";
-"Address Book"	= "通訊錄";
+"Address Book"  = "通訊錄";
 "Mail" = "郵件";
-"Preferences" = "個人設定";
+"Preferences" = "使用者設定";
 "Administration" = "管理";
-"Disconnect" = "離線";
+"Disconnect" = "登出";
+"Toggle Menu" = "切換選單";
 "Right Administration" = "管理權限";
-"Log Console (dev.)" = "登錄控制台(dev.)";
+"Log Console (dev.)" = "日誌檢視 (開發人員)";
 "User" = "使用者";
 "Vacation message is enabled" = "啟用休假自動回覆訊息功能";
 "Help" = "幫助";
 "noJavascriptError" = "SOGo 需要執行Javascript指令。請確定您的瀏覽器偏好設定該選項是開啟的。";
 "noJavascriptRetry" = "重試";
-"Owner:" = "擁有者";
-"Publish the Free/Busy information" = "公開空閒/忙錄的訊息";
+"Owner" = "所有權人";
+"Publish the Free/Busy information" = "公開您空閒/忙錄的訊息";
 "Add..." = "增加...";
 "Remove" = "移除";
-"Subscribe User" = "訂閱者";
+"Subscribe User" = "將使用者加入訂閱";
 "Any Authenticated User" = "任何授權使用者";
 "Public Access" = "公開存取";
 "Any user not listed above" = "列表以外的使用者";
 "Anybody accessing this resource from the public area" = "由公開區域存取資源的任何人";
-"Sorry, the user rights can not be configured for that object." = "對不起, 使用者的權限無法操作這個項目。";
+"Sorry, the user rights can not be configured for that object." = "對不起, 無法設定這個項目的使用者權限。";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
      = "這個系統的所有帳號都能存取您的郵件信箱\"%{0}\"。您確定所有帳號都可以信任嗎?";
-"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
      = "這個系統的所有帳號都能存取您的行事曆 \"%{0}\"。您確定所有帳號都可以信任嗎?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "任何人都可以存取您的行事曆 \"%{0}\", 且不限定只有同系統的帳號。確定要在網路上公開行事曆嗎?";
+     = "任何人都可以存取您的行事曆 \"%{0}\", 無論他們在這個系統上有沒有帳號。您確定要在網路上公開行事曆嗎?";
 "Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
      = "這個系統的所有帳號都能存取您的通訊錄 \"%{0}\"。您確定所有帳號都可以信任嗎?";
 "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "任何人都可以存取您的通訊錄 \"%{0}\", 且不限定只有同系統的帳號。確定要在網路上公開通訊錄嗎?";
+     = "任何人都可以存取您的通訊錄 \"%{0}\", 無論他們在這個系統上有沒有帳號。您確定要在網路上公開通訊錄嗎?";
 "Give Access" = "允許存取";
 "Keep Private" = "保持隱私";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
-	= "無法訂閱這個資料匣!";
+        = "無法訂閱這個資料匣!";
 "You cannot subscribe to a folder that you own!"
-      	= "您不能訂閱自己的資料匣!";
+        = "您不能訂閱自己的資料匣!";
 "Unable to unsubscribe from that folder!"
-	= "無法在資料匣取消訂閱!";
+        = "無法取消訂閱此資料匣!";
 "You cannot unsubscribe from a folder that you own!"
-      	= "您不能取消訂閱自己的資料匣!";
-"Unable to rename that folder!" = "不能更改資料匣的名稱!";
+        = "您不能取消訂閱自己的資料匣!";
+"Unable to rename that folder!" = "無法更改此資料匣的名稱!";
 "You have already subscribed to that folder!"
-     	= "您己經訂閱了這個資料匣!";
+        = "您已經訂閱了這個資料匣!";
 "The user rights cannot be edited for this object!"
-        = "使用者的權限無法編輯這個項目!";
-"A folder by that name already exists." = "己有相同名稱的資料匣。";
-"You cannot create a list in a shared address book." 
+        = "無法設定這個項目的使用者權限!";
+"A folder by that name already exists." = "已經存在相同名稱的資料匣了。";
+"You cannot create a list in a shared address book."
         = "您無法在共用的通訊錄新增列表。";
 "Warning" = "警告";
 "Can't contact server" = "連接伺服器失敗。請稍後再試。";
 "You are not allowed to access this module or this system. Please contact your system administrator."
-= "您沒有權限存取這個模組或系統。請聯絡您的系統管理者。";
+= "您沒有權限存取這個模組或系統。請聯絡您的系統管理員。";
 "You don't have the required privileges to perform the operation."
 = "您沒有權限執行這項操作。";
 "noEmailForDelegation" = "您必須指定代理人的電子郵件地址。";
-"delegate is organizer" = "您指定的代理人是組織；請另外指定。";
-"delegate is a participant" = "您指定的代理人己經是受邀者。";
-"delegate is a group" = "您指定的電子郵件帳號為群組。您必須指定代理人的電子郵件帳號。";
-"Snooze for " = "提醒";
+"delegate is organizer" = "您指定的代理人是發起人；請另外指定。";
+"delegate is a participant" = "您指定的代理人已受邀在列。";
+"delegate is a group" = "您所指定的電子郵件為群組帳號。請改為指定單一個人為代理人。";
+
+/* common buttons */
+"OK" = "確定";
+"Cancel" = "取消";
+"Yes" = "好";
+"No" = "不好";
+
+/* generic messages */
+"Error" = "錯誤";
+"Success" = "成功";
+
+/* confirmation dialog box */
+"Confirmation" = "確認";
+
+/* alarms */
+"Reminder" = "提醒訊息";
+"Start" = "開始";
+"Due Date" = "到期日";
+"Location" = "地點";
+"Snooze" = "休眠";
+"Snooze for " = "延後提醒";
 "5 minutes" = "5分鐘";
 "10 minutes" = "10分鐘";
 "15 minutes" = "15分鐘";
@@ -75,22 +97,14 @@
 "45 minutes" = "45分鐘";
 "1 hour" = " 1小時";
 "1 day" = "1天";
-/* common buttons */
-"OK" = "確定";
-"Cancel" = "取消";
-"Yes" = "是";
-"No" = "不是";
-/* alarms */
-"Reminder:" = "提醒";
-"Start" = "開始";
-"Due Date" = "到期日";
-"Location" = "地點";
+
 /* mail labels */
 "Important" = "重要等級";
 "Work" = "工作";
 "Personal" = "私人";
 "To Do" = "待辦";
 "Later" = "稍後";
+"Return Receipt Sent" = "已傳送回條";
 "a2_Sunday" = "星期日";
 "a2_Monday" = "星期一";
 "a2_Tuesday" = "星期二";
@@ -98,3 +112,104 @@
 "a2_Thursday" = "星期四";
 "a2_Friday" = "星期五";
 "a2_Saturday" = "星期六";
+"Access Rights" = "存取權限";
+"Add User" = "新增使用者";
+"Loading" = "載入中";
+"No such user." = "找不到該用戶。";
+"You cannot (un)subscribe to a folder that you own!" = "您無法訂閱/取消訂閱您自己的資料夾！";
+
+/* SMIME Certificate field */
+"S/MIME Certificate" = "S/MIME 憑證";
+"Subject Name" = "憑證主旨名稱";
+"Issuer" = "憑證發行者";
+"countryName" = "國家";
+"organizationName" = "組織";
+"organizationalUnitName" = "部門";
+"commonName" = "簽署名稱";
+"emailAddress" = "電子郵件地址";
+
+/* Authentication username */
+"Username" = "使用者名稱";
+
+/* Authentication password */
+"Password" = "密碼";
+
+/* Authentication failed */
+"Wrong username or password." = "使用者名稱或密碼錯誤";
+
+/* Error message displayed bellow search field when the search string has less than the required number of characters */
+"Enter at least %{minimumSearchLength} characters" = "請輸入 %{minimumSearchLength}  個以上的字元";
+
+/* Error message displayed when a file upload exceeds WOMaxUploadSize */
+"File size upload limit reached" = "已到達檔案大小上傳上限";
+
+/* Generic server error */
+"An error occured, please try again." = "出現錯誤，請重新嘗試。";
+
+/* Open datepicker */
+"Open Calendar" = "開啟行事曆";
+
+/* Toggle visibility (ex: mail account in left navigation menu) */
+"Toggle visibility" = "切換顯示/隱藏";
+
+"Keyboard Shortcuts" = "鍵盤快捷鍵";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "切換選擇";
+
+/* Toggle multiple items at the same time (hotkeys cheatsheet) */
+"Toggle range of items" = "切換選擇範圍";
+
+/* Question mark shows list of hotkeys */
+"Show or hide this help" = "顯示/隱藏提示訊息";
+
+/* Space key */
+"key_space" = "space";
+
+/* Delete key */
+"key_delete" = "delete 鍵";
+
+/* Shift and space key */
+"key_shift+space" = "shift + 空白鍵";
+
+/* Up arrow key */
+"key_up" = "↑";
+
+/* Down arrow key */
+"key_down" = "↓";
+
+/* Left arrow key */
+"key_left" = "←";
+
+/* Right arrow key */
+"key_right" = "→";
+
+/* Shift and up arrow combo keys */
+"key_shift+up" = "shift + ↑";
+
+/* Shift and down arrow combo keys */
+"key_shift+down" = "shift + ↓";
+
+/* Backspace key */
+"key_backspace" = "⌫";
+
+/* Hotkey to start a search */
+"hotkey_search" = "s";
+
+/* Hotkey description to select next list item */
+"View next item" = "檢視下一個物件";
+
+/* Hotkey description to select previous list item */
+"View previous item" = "檢視上一個物件";
+
+/* Hotkey description to add next list item to selection */
+"Add next item to selection" = "將下個物件加入選取";
+
+/* Hotkey description to add previous list item to selection */
+"Add previous item to selection" = "將上個物件加入選取";
+
+/* Hotkey description to move backward in current view */
+"Move backward" = "往前移動";
+
+/* Hotkey description to move forward in current view */
+"Move forward" = "往後移動";

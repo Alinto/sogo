@@ -8,17 +8,21 @@
 "Forward"     = "Vidarebefordra";
 "Get Mail"    = "Hämta";
 "Junk"        = "Skräppost";
+"Not junk"    = "Inte skräp";
 "Reply"       = "Svara";
 "Reply All"   = "Svara alla";
 "Print"       = "Skriv ut";
 "Stop"        = "Stopp";
 "Write"       = "Skriv";
+"Search"      = "Sök";
 "Send" = "Skicka";
 "Contacts" = "Kontakter";
 "Attach" = "Bifoga";
 "Save" = "Spara";
 "Options" = "Alternativ";
+"Close" = "Stäng";
 "Size" = "Storlek";
+
 /* Tooltips */
 "Send this message now" = "Skicka meddelandet nu";
 "Select a recipient from an Address Book" = "Välj en mottagare ur en adressbok";
@@ -27,33 +31,57 @@
 "Get new messages" = "Hämta nya meddelanden";
 "Create a new message" = "Skapa ett nytt meddelande";
 "Go to address book" = "Gå till adressboken";
-"Reply to the message" = "Svara avsändaren";
-"Reply to sender and all recipients" = "Svara avsändaren och även alla mottagare";
+"Reply to the message" = "Svara på meddelandet";
+"Reply to sender and all recipients" = "Svara avsändaren och alla mottagare";
 "Forward selected message" = "Vidarebefordra meddelandet";
 "Delete selected message or folder" = "Ta bort markerat meddelande eller mapp";
-"Mark the selected messages as junk" = "Märk de markerade meddelandena som skräp";
 "Print this message" = "Skriv ut detta meddelande";
 "Stop the current transfer" = "Stoppa pågående överföring";
 "Attachment" = "Bilagor";
 "Unread" = "Oläst";
 "Flagged" = "Märkt";
+"Search multiple mailboxes" = "Sök i flera e-postkonton";
+
 /* Main Frame  */
-"Home"                 = "Hem"; 
+"Home"                 = "Hem";
 "Calendar"             = "Kalender";
 "Addressbook"          = "Adressbok";
 "Mail"                 = "E-post";
 "Right Administration" = "Rättighetsadministration";
 "Help" = "Hjälp";
+
 /* Mail account main windows */
-"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Välkommen till SOGo Mailer. Använd mappvisaren på vänster sida för att bläddra i dina e-post konton!";
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Välkommen till SOGo Mailer. Använd katalogvyn till vänster för att bläddra bland dina e-postkonton!";
 "Read messages"       = "Läs meddelanden";
+
+/* Tooltip for fab button */
 "Write a new message" = "Skriv ett nytt meddelande";
-"Share" = "Dela ut";
+
+/* Tooltip for fab button */
+"Write a message in new window" = "Skriv meddelande i ett nytt fönster";
+
+"Share" = "Dela";
 "Account" = "Konto";
 "Shared Account" = "Delat konto";
+
+/* A mailbox is selected, but no message (only shown on large screens) */
+"No message selected" = "Inga meddelanden valda";
+
+/* No mailbox is selected (usually resulting from an IMAP connection problem) */
+"No mailbox selected" = "Inget e-postkonto valt";
+
+"An error occured while communicating with the mail server" = "Ett fel har uppstått vid kommunikation med mailserver";
+
+/* Mailbox actions */
+/* Compact Folder success message */
+"Folder compacted" = "Katalogen har komprimerats";
+/* Empty Trash success message */
+"Trash emptied" = "Papperskorgen tömd";
+
 /* acls */
-"Default Roles" = "Standardroller";
-"User rights for" = "Användarrättigheter till";
+"Access rights to" = "Tillgångsrättigheter för";
+"For user" = "För användare";
+"Any Authenticated User" = "Alla autentiserade användare";
 "List and see this folder" = "Lista och titta i mappen";
 "Read mails from this folder" = "Läsa meddelanden i mappen";
 "Mark mails read and unread" = "Markera meddelanden som lästa och olästa";
@@ -64,33 +92,41 @@
 "Remove this folder" = "Ta bort mappen";
 "Erase mails from this folder" = "Radera meddelanden från mappen";
 "Expunge this folder" = "Radera mappen";
+"Export This Folder" = "Exportera denna katalog";
 "Modify the acl of this folder" = "Ändra åtkomsträttigheter på mappen";
 "Saved Messages.zip" = "Sparat Messages.zip";
 "Update" = "Uppdatera";
 "Cancel" = "Avbryt";
+
 /* Mail edition */
 "From"          = "Från";
 "Subject"       = "Ämne";
 "To"            = "Till";
 "Cc"            = "Kopia";
 "Bcc"           = "Dold kopia";
-"Reply-To"	= "Svar-till";
+"Reply-To"	    = "Svar-till";
 "Add address"   = "Lägg till adress";
-"Attachments" = "Bilagor";
+"Body"          = "Meddelandetext";
 "Open" = "Öppna";
 "Select All" = "Välj alla";
+"Select Message" = "Välj meddelande";
 "Attach Web Page..." = "Bifoga webbsida...";
-"Attach File(s)..." = "Bifoga fil(er)...";
+"file" = "fil";
+"files" = "filer";
+"Save all" = "Spara allt";
 "to"            = "Till";
 "cc"            = "Kopia";
-"bcc"           = "Dold kopia";
-"Addressbook"   = "Adressbok";
+"bcc"           = "Hemlig kopia";
+"Add a recipient" = "Lägg till en mottagare";
 "Edit Draft..." = "Redigera utkast...";
 "Load Images" = "Ladda bilder";
 "Return Receipt" = "Mottagningskvitto";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Avsändaren av detta meddelande har begärt att få bli underrättad när du läser detta meddelande. Vill du underrätta avsändaren?";
 "Return Receipt (displayed) - %@"= "Mottagningskvitto (visad) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Detta är ett mottagningskvitto för meddelandet du skickade till %@.\n\nNotera: Detta mottagningskvitto bekräftar bara att meddelandet visades på mottagarens dator. Det finns ingen garanti att mottagaren har läst eller förstått innehållet i meddelandet.";
+"Security" = "Säkerhet";
+"Sign" = "Signera";
+"Encrypt" = "Kryptera";
 "Priority" = "Prioritet";
 "highest" = "Högst";
 "high" = "Hög";
@@ -98,12 +134,16 @@
 "low" = "Låg";
 "lowest" = "Lägst";
 "This mail is being sent from an unsecure network!" = "Meddelandet skickas över en osäker nätverksförbindelse!";
+"Address Book" = "Adressbok";
+"Search For" = "Sök efter";
+
 /* Popup "show" */
 "all"     = "alla";
 "read"    = "läst";
 "unread"  = "oläst";
 "deleted" = "borttaget";
-"flagged" = "märkt";
+"flagged" = "flaggad";
+
 /* MailListView */
 "Sender" = "Avsändare";
 "Subject or Sender" = "Ämne eller avsändare";
@@ -112,9 +152,9 @@
 "Date"          = "Datum";
 "View"          = "Visa";
 "All"           = "Alla";
-"Unread"        = "Oläst";
 "No message"    = "Inga meddelanden";
 "messages"      = "meddelanden";
+"Yesterday"     = "Igår";
 "first"         = "Första";
 "previous"      = "Föregående";
 "next"          = "Nästa";
@@ -124,27 +164,34 @@
 "Mark Unread" = "Märk som oläst";
 "Mark Read"   = "Märk som läst";
 "Untitled" = "Ämne saknas";
+
 /* Tree */
 "SentFolderName"   = "Skickat";
 "TrashFolderName"  = "Papperskorgen";
-"InboxFolderName"  = "Inkorgen";
+"InboxFolderName"  = "Inkorg";
 "DraftsFolderName" = "Utkast";
+"JunkFolderName" = "Skräppost";
 "SieveFolderName"  = "Filter";
 "Folders"          = "Mappar"; /* title line */
+
 /* MailMoveToPopUp */
 "MoveTo"        = "Flytta &hellip;";
+
 /* Address Popup menu */
 "Add to Address Book..." = "Lägg till i adressbok...";
+"Successfully created card" = "Kort skapat";
 "Compose Mail To" = "Skriv meddelande till";
 "Create Filter From Message..." = "Skapa filter från ett meddelande...";
+
 /* Image Popup menu */
 "Save Image" = "Spara bild";
 "Save Attachment" = "Spara bilaga";
+
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Öppna i nytt fönster";
 "Copy Folder Location" = "Kopiera mappens sökväg";
 "Subscribe..." = "Prenumrera...";
-"Mark Folder Read" = "Märk mapp som läst...";
+"Mark Folder Read" = "Markera mapp som läst";
 "New Folder..." = "Ny mapp...";
 "Compact This Folder" = "Komprimera mapp";
 "Search Messages..." = "Sök meddelanden...";
@@ -156,15 +203,17 @@
 "Get Messages for Account" = "Hämta nya meddelanden för konto";
 "Properties..." = "Egenskaper...";
 "Delegation..." = "Delegera meddelanden...";
+
 /* Use This Folder menu */
 "Sent Messages" = "Skickade meddelanden";
 "Drafts" = "Utkast";
 "Deleted Messages" = "Borttagna meddelanden";
+"Junk Messages" = "Skräppost";
+
 /* Message list popup menu */
 "Open Message In New Window" = "Öppna meddelande i nytt fönster";
 "Reply to Sender Only" = "Svara endast avsändaren";
 "Reply to All" = "Svara alla";
-"Forward" = "Vidarebefordra";
 "Edit As New..." = "Redigera som nytt...";
 "Move To" = "Flytta till";
 "Copy To" = "Kopiera till";
@@ -173,12 +222,57 @@
 "Save As..." = "Spara som...";
 "Print Preview" = "Förhandsgranska";
 "View Message Source" = "Visa meddelandets källkod";
+
+/* Message view "more" menu: create an event from message */
+"Convert To Event" = "Konvertera till händelse";
+
+/* Message view "more" menu: create a task from message */
+"Convert To Task" = "Konvertera till uppgift";
+
+/* Message view "more" menu: download all attachments as a zip archive */
+"Download all attachments" = "Ladda ner alla bilagor";
+
+/* Filename prefix when downloading all attachments as a zip archive */
+"attachments" = "bilagor";
+
 "Print..." = "Skriv ut...";
 "Delete Message" = "Ta bort meddelande";
 "Delete Selected Messages" = "Ta bort markerade meddelanden";
+"Mark the selected messages as junk" = "Märk de markerade meddelandena som skräp";
+"Mark the selected messages as not junk" = "Märk inte de markerade meddelandena som skräp";
+
+/* Text appended to the recipients list when there are too many recipients */
+"and %{0} more..." = "och %{0} fler...";
+
+/* Button label to hide extended list of recipients */
+"Hide" = "Göm";
+
+/* Number of selected messages in list */
+"selected" = "markerad";
+
+/* Encrypted message notification */
+"This message is encrypted" = "Detta meddelande är krypterat";
+
+/* Encrypted message but no certificate */
+"This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module." = "Meddelandet kan inte dekrypteras. Verifiera att du har laddat upp ditt S/MIME certifikat från e-postinställningsmodulen.";
+
+/* OpenSSL certificate error - unknown issuer */
+"certificate verify error" = "Verifiering av meddelandesignatur misslyckades";
+
+/* OpenSSL certificate error - digest failure */
+"digest failure" = "Detta meddelande har förändrats";
+
+/* OpenSSL reading error */
+"Error reading the certificate. Please install a new certificate." = "Fel vid inläsnimg av certifikat. Installera nytt certifikat";
+
+/* Trying to access a non-existent certificate */
+"No certificate associated to account." = "Inget certifikat associerat med konto";
+
 "This Folder" = "Den här mappen";
+
 /* Label popup menu */
 "None" = "Inget";
+
 /* Mark popup menu */
 "As Read" = "Som läst";
 "Thread As Read" = "Hela tråden som läst";
@@ -188,15 +282,42 @@
 "As Junk" = "Som skräp";
 "As Not Junk" = "Som icke skräp";
 "Run Junk Mail Controls" = "Kör skräppostkontroll";
+"Search messages in" = "Sök meddelanden i";
+"Search" = "Sök";
+"Search subfolders" = "Sök i underkatalog";
+"Match any of the following" = "Matcha något av följande";
+"Match all of the following" = "Matcha alla";
+"contains" = "som innehåller";
+"does not contain" = "som inte innehåller";
+"No matches found" = "Inga träffar hittades";
+"results found" = "resultat hittades";
+"result found" = "resultat hittades";
+"Please specify at least one filter" = "Vänligen specificera åtminstone ett filter";
+
 /* Folder operations */
 "Name" = "Namn";
 "Enter the new name of your folder"
- = "Skriv namnet på mappen";
+ ="Skriv namnet på mappen";
 "Do you really want to move this folder into the trash ?"
  = "Vill du verkligen flytta mappen till papperskorgen?";
 "Operation failed" = "Operationen misslyckades";
 "Quota" = "Disktilldelning";
 "quotasFormat" = "%{0}% använt av %{1} MB";
+"Unable to move/delete folder." = "Du kan inte flytta eller radera mappen.";
+
+/* Alternative operation when folder cannot be deleted */
+"The mailbox could not be moved to the trash folder. Would you like to delete it immediately?"
+= "E-postlådan kunde inte flyttas till papperskorgen. Vill du ta bort den direkt?";
+
+/* Confirmation message when deleting multiple messages */
+"Are you sure you want to delete the selected messages?" = "Är du säker på att du vill ta bort de markerade meddelandena?";
+
+/* Notification on the number of messages successfuly copied */
+"%{0} message(s) copied" = "%{0} meddelanden kopierade";
+
+/* Notification on the number of messages successfuly movied */
+"%{0} message(s) moved" = "%{0} meddelanden flyttade";
+
 "Please select a message." = "Markera ett meddelande.";
 "Please select a message to print." = "Markera meddelandet som ska skrivas ut.";
 "Please select only one message to print." = "Markera bara ett meddelande som ska skrivas ut.";
@@ -216,15 +337,105 @@
 = "Det är inte möjligt att flytta ett meddelande till samma mapp!";
 "Copying a message into its own folder is impossible!"
 = "Det är inte möjligt att kopiera ett meddelande till samma mapp!";
+
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
-= "Meddelandena kunde inte flyttas till papperskorgen. Vill du ta bort dem direkt?";
+= "Meddelandena kunde inte flyttas till papperskorgen. Vill du ta bort dem direkt istället?";
+
 /* Message editing */
-"error_validationfailed" = "Validering har misslyckats";
-"error_missingsubject" = "Ämne saknas";
-"error_missingrecipients" = "Ingen mottagare är angiven";
-/* Message sending */
+"Please specify a subject." = "Ange ämne";
+"error_missingsubject" = "Ämne saknas. Är du säker på att du vill skicka ändå?";
+"error_missingrecipients" = "Ingen mottagare är angiven.";
+"Send Anyway" = "Skicka ändå";
+"Error while saving the draft" = "Ett fel inträffade när utkastet skulle sparas";
+
+/* Error when uploading a file attachment */
+"Error while uploading the file \"%{0}\":" = "Följande fel inträffade när filen \"%{0}\" skulle laddas upp: ";
+"There is an active file upload. Closing the window will interrupt it." = "En fil håller på att laddas upp för tillfället. Om du stänger fönstret så kommer uppladdningen att avbrytas.";
+"Message is too big" = "Meddelandet är för stort";
+
+/* Appears while sending the message */
+"Sending" = "Skickar";
+
+/* Appears when the message is successfuly sent */
+"Sent" = "Skickat";
+
 "cannot send message: (smtp) all recipients discarded" = "Meddelandet kan inte skickas: alla mottagaradresserna är felaktiga.";
 "cannot send message (smtp) - recipients discarded" = "Meddelandet kan inte skickas. Följande mottagaradresser är felaktiga";
 "cannot send message: (smtp) error when connecting" = "Meddelandet kan inte skickas: ett fel uppstod i uppkopplingen mot SMTP servern.";
+
+/* Contacts list in mail editor */
 "Email" = "E-post";
+"More mail options" = "Fler e-postinställningar";
+"Delegation" = "Deligeringar";
+"Add User" = "Lägg till användare";
+"Add a tag" = "Lägg till en tagg";
+"reply" = "svara";
+"Edit" = "Svara";
+"Yes" = "Ja";
+"No" = "Nej";
+"Location" = "Plats";
+"Rename" = "Byt namn";
+"Compact" = "Komprimera";
+"Export" = "Exportera";
+"Set as Drafts" = "Välj för Utkast";
+"Set as Sent" = "Välj för Skickade meddelanden";
+"Set as Trash" = "Välj som Papperskorg";
+
+/* Set the folder as the one holding Junk mails */
+"Set as Junk" = "Välj för Skräppost";
+
+"Sort" = "Sortera";
+"Order Received" = "Beställning mottagen";
+"Descending Order" = "Omvänd ordning";
+"Back" = "Backa";
+"Copy messages" = "Kopiera meddelanden";
+"More messages options" = "Fler meddelandealternativ";
+"Mark as Unread" = "Markera som oläst";
+"Mark as Read" = "Markera som läst";
+"Closing Window ..." = "Stäng fönstret...";
+"Tried to send too many mails. Please wait." = "Försöker skicka för många meddelanden på en gång, var vänlig vänta.";
+"View Mail" = "Läs meddelande";
+"This message contains external images." = "Detta meddelande innehåller externa bilder";
+"Expanded" = "Expanderad";
+"Add a Criteria" = "Lägg till ett kriterium";
+"More search options" = "Fler sökalternativ";
+"Your email has been saved" = "Ditt meddelande har sparats";
+"Your email has been sent" = "Ditt meddelande har skickats";
+"Folder compacted" = "Katalogen har komprimerats";
+
+/* Advanced search */
+"Enter Subject" = "Ange ämne";
+"Enter From" = "Ange avsändare";
+"Enter To" = "Ange mottagare";
+"Enter Cc" = "Ange mottagare för kopia";
+"Enter Body" = "Ange meddelandetext";
+"match" = "matcha";
+"does not match" = "matchar inte";
+
+/* Aria label for scope of search on messages */
+"Search scope" = "Sökomfattning";
+
+/* Subscriptions Dialog */
+"Manage Subscriptions" = "Hantera prenumerationer";
+
+/* Label of filter input field in subscriptions dialog */
+"Filter" = "Filter";
+
+/* Hotkey to write a new message */
+"hotkey_compose" = "w";
+
+/* Hotkey to mark selected message(s) as junk */
+"hotkey_junk" = "j";
+
+/* Hotkey to flag a message */
+"hotkey_flag" = "*";
+
+/* Hotkey to reply to a message */
+"hotkey_reply" = "r";
+
+/* Hotkey to reply to all recipients of a message */
+"hotkey_replyall" = "a";
+
+/* Hotkey to forward to a message */
+"hotkey_forward" = "f";

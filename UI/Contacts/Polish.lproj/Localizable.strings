@@ -239,6 +239,12 @@
 "Unable to subscribe to that folder!"
 = "Nie można włączyć subskrypcji tego foldera.";
 
+/* security */
+"Security" = "Zabezpieczenia";
+"Uninstall" = "Odinstaluj";
+"Error reading the card certificate." = "Błąd odczytu certyfikatu karty.";
+"No certificate associated to card." = "Nie ma certyfikatu powiązanego z tą kartą.";
+
 /* acls */
 "Access rights to" = "Uprawnienia dla";
 "For user" = "Dla użytkownika";

@@ -12,6 +12,8 @@ publish_info_text = "Avsändaren informerar dig om bifogad händelse.";
 cancel_info_text = "Din inbjudan eller hela händelsen har ställts in.";
 request_info_no_attendee = "föreslår ett möte till deltagarna. Du har fått meddelandet som information, men är inte planerad som deltagare.";
 Appointment = "Möte";
+"Status Update" = "Statusuppdatering";
+was = "var";
 
 Organizer = "Organisatör";
 Time = "Tid";
@@ -39,3 +41,10 @@ reply_info = "Du har fått ett svar till en händelse inbjuden av dig.";
 "Date" = "Datum";
 "To" = "Till";
 "Issuer" = "Utfärdat av";
+/* Tooltips */
+"View Attachment" = "Visa bilaga";
+"Save Attachment" = "Spara bilaga";
+"CC" = "Cc";
+"Cancel" = "Avbryt";
+"OK" = "OK";
+"Comment" = "Kommentar:";

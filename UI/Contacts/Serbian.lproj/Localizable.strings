@@ -239,6 +239,12 @@
 "Unable to subscribe to that folder!"
 = "Не могу да се претплатим на овај директоријум.";
 
+/* security */
+"Security" = "Сигурност";
+"Uninstall" = "Уклони";
+"Error reading the card certificate." = "Грешка у читању сертификата картице.";
+"No certificate associated to card." = "Нема сертификата повезаног са картицом.";
+
 /* acls */
 "Access rights to" = "Права приступа у";
 "For user" = "За корисника";

@@ -239,6 +239,12 @@
 "Unable to subscribe to that folder!"
 = "Nevar parakstīties uz šo mapi.";
 
+/* security */
+"Security" = "Drošība";
+"Uninstall" = "Atinstalēt";
+"Error reading the card certificate." = "Kļūda, lasot kartes sertifikātu.";
+"No certificate associated to card." = "Kartei nav piesaistīts sertifikāts.";
+
 /* acls */
 "Access rights to" = "Piekļuves tiesības";
 "For user" = "Lietotājam";

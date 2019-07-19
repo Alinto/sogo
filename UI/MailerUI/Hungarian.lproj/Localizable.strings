@@ -179,6 +179,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Hozzáadás a címjegyzékhez...";
+"Successfully created card" = "Sikeresen létrehozott kártya";
 "Compose Mail To" = "Üzenet írása";
 "Create Filter From Message..." = "Szűrő létrehozása az üzenet alapján...";
 
@@ -402,6 +403,15 @@
 "Your email has been saved" = "Üzenete mentésre került";
 "Your email has been sent" = "Üzenete elküldve";
 "Folder compacted" = "Mappa tömörítve";
+
+/* Advanced search */
+"Enter Subject" = "Adja meg a tárgyat";
+"Enter From" = "Adja meg a feladót";
+"Enter To" = "Adja meg a címzettet";
+"Enter Cc" = "Adja meg a másolati címet";
+"Enter Body" = "Adja meg a levél törzsét";
+"match" = "megfelel";
+"does not match" = "nem felel meg";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Keresés hatóköre";

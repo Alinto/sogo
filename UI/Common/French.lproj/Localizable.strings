@@ -80,6 +80,9 @@
 "Error" = "Erreur";
 "Success" = "Succès";
 
+/* confirmation dialog box */
+"Confirmation" = "Confirmation";
+
 /* alarms */
 "Reminder" = "Rappel";
 "Start" = "Début";
@@ -140,10 +143,19 @@
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
 "File size upload limit reached" = "Le fichier dépasse la taille limite permise";
 
+/* Generic server error */
+"An error occured, please try again." = "Une erreur est survenue, essayez à nouveau.";
+
+/* Open datepicker */
+"Open Calendar" = "Ouvrir le calendrier";
+
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Basculer l'affichage";
 
 "Keyboard Shortcuts" = "Raccourcis clavier";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "Basculer la sélection";
 
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Basculer l'étendue des éléments";

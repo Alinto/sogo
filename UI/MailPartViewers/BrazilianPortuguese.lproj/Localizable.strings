@@ -1,5 +1,5 @@
-ACCEPTED = "aceitado";
-COMPLETED = "completado";
+ACCEPTED = "aceite";
+COMPLETED = "completo";
 DECLINED = "declinado";
 DELEGATED = "apagado";
 "IN-PROCESS" = "em processamento";

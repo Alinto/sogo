@@ -80,6 +80,9 @@
 "Error" = "Грешка";
 "Success" = "Успешно";
 
+/* confirmation dialog box */
+"Confirmation" = "Потврда";
+
 /* alarms */
 "Reminder" = "Потсетник";
 "Start" = "Почеток";
@@ -140,10 +143,19 @@
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
 "File size upload limit reached" = "Достигнат е максиналната големина за прикачување на фајлови";
 
+/* Generic server error */
+"An error occured, please try again." = "Настана грешка, обидете се повторно";
+
+/* Open datepicker */
+"Open Calendar" = "Отвори го календарот";
+
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Промени ја видливоста";
 
 "Keyboard Shortcuts" = "Кратенка на тастатура";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "Промени ја поставката";
 
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Промени го рангот на поставките";

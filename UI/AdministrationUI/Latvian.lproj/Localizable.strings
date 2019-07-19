@@ -10,6 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p>Access Control Lists administrēšanas modulis ļauj mainīt ACL lietotāja kalendāru un adrešu grāmatu.</p> <p>Lai modificētu ACL lietotāja mapi ierakstiet lietotāja vārdu meklēšanas laukā loga augšdaļā un veiciet dubultklikšķi uz vajadzīgās mapes.</p>";
 "Name or Email" = "Vārds vai e-pasts";
+"ACLs saved" = "ACL saglabāts";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Sākt meklēšanu, lai rediģētu tiesības";
 /* Rights module: Empty search result */

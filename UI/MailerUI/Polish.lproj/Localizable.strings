@@ -84,7 +84,7 @@
 "Any Authenticated User" = "Dowolny zalogowany użytkownik";
 "List and see this folder" = "Wylistuj i zobacz ten folder";
 "Read mails from this folder" = "Czytaj wiadomości z tego folderu";
-"Mark mails read and unread" = "Zaznacz wiadomości jako przeczytane lub nie przeczytane";
+"Mark mails read and unread" = "Zaznacz wiadomości jako przeczytane lub nieprzeczytane";
 "Modify the flags of the mails in this folder" = "Zmień oflagowanie wiadomości w tym folderze";
 "Insert, copy and move mails into this folder" = "Wstaw, kopiuj lub przenieś wiadomości do tego folderu";
 "Post mails" = "Wyślij wiadomości";
@@ -140,7 +140,7 @@
 /* Popup "show" */
 "all"     = "wszystkie";
 "read"    = "przeczytane";
-"unread"  = "nie przeczytane";
+"unread"  = "nieprzeczytane";
 "deleted" = "usunięte";
 "flagged" = "oflagowane";
 
@@ -161,7 +161,7 @@
 "last"          = "Ostatnia";
 "msgnumber_to"  = "do";
 "msgnumber_of"  = "z";
-"Mark Unread" = "Oznacz jako nie przeczytane";
+"Mark Unread" = "Oznacz jako nieprzeczytane";
 "Mark Read"   = "Oznacz jako przeczytane";
 "Untitled" = "Bez tytułu";
 
@@ -179,6 +179,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Dodaj do książki adresowej";
+"Successfully created card" = "Karta pomyślnie utworzona";
 "Compose Mail To" = "Utwórz wiadomość do";
 "Create Filter From Message..." = "Utwórz filtr z wiadomości";
 
@@ -390,7 +391,7 @@
 "Back" = "Wstecz";
 "Copy messages" = "Kopiuj wiadomości";
 "More messages options" = "Więcej opcji wiadomości";
-"Mark as Unread" = "Oznacz jako nie przeczytany";
+"Mark as Unread" = "Oznacz jako nieprzeczytany";
 "Mark as Read" = "Oznacz jako przeczytane";
 "Closing Window ..." = "Zamykanie okna";
 "Tried to send too many mails. Please wait." = "Próbowano wysłać zbyt wiele e-maili. Proszę czekać.";
@@ -402,6 +403,15 @@
 "Your email has been saved" = "E-mail został zapisany";
 "Your email has been sent" = "E-mail został wysłany";
 "Folder compacted" = "Folder zkompaktowany";
+
+/* Advanced search */
+"Enter Subject" = "Tytuł";
+"Enter From" = "Od";
+"Enter To" = "Do";
+"Enter Cc" = "CC";
+"Enter Body" = "Treść";
+"match" = "pasuje do";
+"does not match" = "nie pasuje do";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Zakres wyszukiwania";

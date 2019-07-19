@@ -179,6 +179,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Додај у адресар...";
+"Successfully created card" = "Успешно крекирана картица";
 "Compose Mail To" = "Састави поруку за";
 "Create Filter From Message..." = "Креирај филтер од поруке...";
 
@@ -402,6 +403,15 @@
 "Your email has been saved" = "Ваше еписмо је сачувано";
 "Your email has been sent" = "Ваше еписмо је послато";
 "Folder compacted" = "Директоријум је сабијен";
+
+/* Advanced search */
+"Enter Subject" = "Унесите тему";
+"Enter From" = "Унесите Од кога";
+"Enter To" = "Унесите Коме";
+"Enter Cc" = "Унесите КК";
+"Enter Body" = "Унесите Текст";
+"match" = "подудара се";
+"does not match" = "не подудара се";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Претражи опсег";

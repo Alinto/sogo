@@ -10,6 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p>A hozzáférést szabályzó lista (ACL) rendszerfelügyeleti modul lehetővé teszi bármely felhasználó naptár és címjegyzék hozzáférhetőségének módosítását.</p><p>A felhasználói mappa ACL-ek módosításához gépelje be a felhasználó nevét a kereső mezőbe az ablak tetején, majd kattintson duplán a kívánt mappára. </p>";
 "Name or Email" = "Név vagy email";
+"ACLs saved" = "ACL-ek mentve";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Indítson egy keresést a jogosultságok szerkesztéséhez";
 /* Rights module: Empty search result */

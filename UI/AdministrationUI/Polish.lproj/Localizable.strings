@@ -10,6 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p>Moduł zarządzania uprawnieniami ACL (ang. Access Control Lists) pozwala zmienić uprawnienia ACL na folderach poczty i książkach adresowych każdego użytkownika.</p><p>Aby zmodyfikować uprawnienie ACL foldera użytkownika, wpisz nazwę tego użytkownika w pole wyszukiwania w górnej części okna i kliknij podwójnie na wybranym folderze.</p>";
 "Name or Email" = "Nazwa lub e-mail";
+"ACLs saved" = "ACLe zostały zapisane";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Rozpocznij wyszukiwanie, by zmienić uprawnienia";
 /* Rights module: Empty search result */

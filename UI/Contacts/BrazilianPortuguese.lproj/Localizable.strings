@@ -239,6 +239,12 @@
 "Unable to subscribe to that folder!"
 = "Não foi possível inscrever-se a esta pasta.";
 
+/* security */
+"Security" = "Segurança";
+"Uninstall" = "Desinstalar";
+"Error reading the card certificate." = "Erro ao ler o certificado.";
+"No certificate associated to card." = "Nenhum certificado associado.";
+
 /* acls */
 "Access rights to" = "Direitos de acesso para";
 "For user" = "Para usuário";

@@ -1,6 +1,6 @@
 /* this file is in UTF-8 format! */
 
-"Contact" = "連絡人";
+"Contact" = "聯絡人";
 "Address" = "地址";
 "Photos" = "照片";
 "Other" = "其它";
@@ -10,17 +10,18 @@
 "Update" = "更新";
 "Cancel" = "取消";
 "Common" = "一般";
-"Contact editor" = "連絡人編輯器";
-"Contact viewer" = "連絡人瀏覽器";
+"Contact editor" = "聯絡人編輯器";
+"Contact viewer" = "聯絡人瀏覽器";
 "Email" = "郵件";
 "Screen Name" = "顯示名稱";
 "Extended" = "延伸";
 "Fax" = "傳真";
 "Firstname" = "名";
-"Home" = "家";
+"Home" = "住家";
 "HomePhone" = "住家電話";
 "Lastname" = "姓氏";
 "Location" = "地點";
+"Add a category" = "新增目錄";
 "MobilePhone" = "手機";
 "Name" = "名字";
 "OfficePhone" = "辦公室電話";
@@ -31,22 +32,131 @@
 "Postal" = "郵遞區號";
 "Save" = "儲存";
 "Internet" = "網際網路";
-"Unit" = "部門";
+"Unit" = "單位";
 "delete" = "刪除";
 "edit" = "編輯";
 "invalidemailwarn" = "無效的郵件地址";
 "new" = "新增";
-"Preferred Phone" = "首選電話";
+"Preferred Phone" = "預設號碼";
 "Move To" = "移至";
-"Copy To" = "拷貝到";
-"Add to:" = "增加到";
+"Copy To" = "複製到";
+"Add to" = "新增至";
+"To" = "收件人欄位";
+"Carbon Copy (Cc)" = "副本收件人 (Cc)";
+"Blind Carbon Copy (Bcc)" = "密件副本收件人 (Bcc)";
+
+/* Search scope: name fields */
+"name" = "名字";
+
+/* Search scope: name fields */
+"c_cn" = "名字";
+
+/* Search scope: secondary email field */
+"mozillanickname" = "備用信箱";
+
+/* Search scope: screen name field */
+"nsaimid" = "顯示名稱";
+
+/* Search scope: mail fields */
+"mail" = "信箱";
+
+/* Search scope: mail fields */
+"c_mail" = "信箱";
+
+/* Search scope: telephone field */
+"telephonenumber" = "電話";
+
+/* Search scope: telephone field */
+"homephone" = "電話";
+
+/* Search scope: mobile field */
+"mobile" = "手機";
+
+/* Search scope: fax field */
+"facsimiletelephonenumber" = "傳真";
+
+/* Search scope: pager field */
+"pager" = "呼叫器";
+
+/* Search scope: categories field */
+"c_categories" = "類別";
+
+/* Search scope: categories field */
+"vcardcategories" = "類別";
+
+/* Search scope: title field */
+"title" = "標題";
+
+/* Search scope: organization field */
+"c_o" = "組織";
+
+/* Search scope: organization field */
+"o" = "組織";
+
+/* Search scope: department field */
+"ou" = "部門";
+
+/* Search scope: city field */
+"l" = "城市";
+
+/* Search scope: country field */
+"c" = "國家";
+
+/* Search scope: home address field */
+"mozillahomestreet" = "戶籍地址";
+
+/* Search scope: state/province field */
+"st" = "州 / 省";
+
+/* Search scope: home state/province field */
+"mozillahomestate" = "住籍 州 / 省";
+
+/* Search scope: zip/postal code field */
+"postalCode" = "郵遞區號";
+
+/* Search scope: home zip/postal code field */
+"mozillahomepostalcode" = "郵遞區號";
+
+/* Search scope: home country field */
+"mozillahomecountryname" = "國籍";
+
+/* Search scope: home web page field */
+"mozillahomeurl" = "首頁";
+
+/* Search scope: work web page field */
+"mozillaworkurl" = "網頁";
+
+/* Search scope: note field */
+"description" = "備註";
+
+/* Subheader of empty addressbook */
+"No contact" = "沒有聯絡人";
+
+/* Subheader of system addressbook */
+"Start a search to browse this address book" = "開始搜尋以便瀏覽此通訊錄";
+
+/* Number of contacts in addressbook; string is prefixed by number */
+"contacts" = "聯絡人";
+
+/* No contact matching search criteria */
+"No matching contact" = "找不到符合搜尋條件的聯絡人";
+
+/* Number of contacts matching search criteria; string is prefixed by number */
+"matching contacts" = "符合搜尋條件的聯絡人";
+
+/* Number of selected contacts in list */
+"selected" = "已選擇";
+
+/* Empty right pane */
+"No contact selected" = "未選擇任何聯絡人";
+
 /* Tooltips */
-"Create a new address book card" = "新增一筆通訊錄卡片";
-"Create a new list" = "新增一份清單";
-"Edit the selected card" = "編輯選擇的卡片";
+"Create a new address book card" = "新增一筆聯絡人紀錄";
+"Create a new list" = "新增聯絡人群組";
+"Edit the selected card" = "編輯所選擇的聯絡人";
 "Send a mail message" = "發送一份郵件訊息";
-"Delete selected card or address book" = "刪除選擇的卡片或通訊錄";
-"Reload all contacts" = "重載所有的連絡人";
+"Delete selected card or address book" = "刪除所選擇的聯絡人或通訊錄";
+"Reload all contacts" = "重新載入所有的聯絡人";
 "htmlMailFormat_UNKNOWN" = "未知";
 "htmlMailFormat_FALSE" = "純文字";
 "htmlMailFormat_TRUE" = "HTML";
@@ -54,8 +164,8 @@
 "Category" = "類別";
 "Personal Addressbook" = "個人通訊錄";
 "Search in Addressbook" = "搜索通訊錄";
-"New Card" = "新增卡片";
-"New List" = "新增清單";
+"New Card" = "新聯絡人";
+"New List" = "新群組";
 "Edit" = "編輯";
 "Properties" = "屬性";
 "Sharing..." = "共享...";
@@ -65,36 +175,36 @@
 "Add..." = "新增...";
 "Remove" = "移除";
 "Please wait..." = "請稍後...";
-"No possible subscription" = "不可訂閱";
-"Preferred" = "首選";
+"No possible subscription" = "無可訂閱";
+"Preferred" = "預設";
 "Display" = "顯示";
 "Display Name" = "顯示名稱";
-"Additional Email" = "添加的郵件";
+"Additional Email" = "額外的郵件";
 "Phone Number" = "電話號碼";
-"Prefers to receive messages formatted as" = "喜愛的接收訊息格式為";
+"Prefers to receive messages formatted as" = "預設的接收訊息格式為";
 "Categories" = "類别";
 "First" = "名";
 "Last" = "姓";
 "Nickname" = "暱稱";
 "Telephone" = "電話";
-"Work" = "辦公";
+"Work" = "公司";
 "Mobile" = "手機";
 "Pager" = "呼叫器";
+
 /* categories */
-"contacts_category_labels" = "同事,競争对手,客户,朋友,家人,事業伙伴,供應商,出版社,VIP";
-"Categories" = "分類";
+"contacts_category_labels" = "同事,競爭對手,客戶,朋友,家人,事業夥伴,供應商,出版社,VIP";
 "New category" = "新類別";
+
 /* adresses */
-"Title" = "頭銜";
+"Title" = "職稱";
 "Service" = "服務";
 "Company" = "公司";
 "Department" = "部門";
-"Organization" = "组織";
 "City" = "城市";
-"State_Province" = "州/省";
-"ZIP_Postal Code" = "ZIP/郵遞區號";
+"State_Province" = "州 / 省";
+"ZIP_Postal Code" = "郵遞區號";
 "Country" = "國家";
-"Web Page" = "網页";
+"Web Page" = "網頁";
 "Other Infos" = "其他資訊";
 "Note" = "備註";
 "Timezone" = "時區";
@@ -107,68 +217,145 @@
 "Blind Carbon Copy" = "密件副本";
 "New Addressbook..." = "新增通訊錄...";
 "Subscribe to an Addressbook..." = "訂閱通訊錄...";
-"Remove the selected Addressbook" = "移除選擇的通訊錄";
+"Remove the selected Addressbook" = "移除所選擇的通訊錄";
+"Subscribe to a shared folder" = "訂閱共享的資料夾";
+"Search User" = "搜尋用戶";
 "Name of the Address Book" = " 通訊錄名稱";
 "Are you sure you want to delete the selected address book?"
-= "您確定要刪除選擇的通訊錄嗎？";
+= "您確定要刪除所選擇的通訊錄嗎？";
+"Are you sure you want to delete the addressbook \"%{0}\"?"
+= "您確定要刪除通訊錄 \"%{0}\"？";
 "You cannot remove nor unsubscribe from a public addressbook."
-= "您不能從共有通訊錄中移除或取消訂閱。";
+= "您不能移除公用通訊錄或取消訂閱。";
 "You cannot remove nor unsubscribe from your personal addressbook."
-= "您不能從您的個人通訊錄中移除或取消訂閱。";
+= "您不能移除您的個人通訊錄或取消訂閱。";
 "Are you sure you want to delete the selected contacts?"
-= "您確定要刪除選擇的連絡人嗎？";
+= "您確定要刪除所選擇的聯絡人嗎？";
+"Are you sure you want to delete the card of %{0}?" = "您確定要刪除聯絡人 %{0} 嗎？";
 "You cannot delete the card of \"%{0}\"."
-= "您不能删除第\"%{0}\"筆卡片。";
+= "您不能删除 \"%{0}\" 的聯絡人紀錄。";
 "You cannot subscribe to a folder that you own!"
 = "您不能訂閱自己的資料夾。";
 "Unable to subscribe to that folder!"
-= "不能訂閱到該資料夾。";
+= "無法訂閱到該資料夾。";
+
+/* security */
+"Security" = "安全性";
+"Uninstall" = "解除安裝";
+"Error reading the card certificate." = "讀取聯絡人憑證發生錯誤。";
+"No certificate associated to card." = "聯絡人無相關憑證。";
+
 /* acls */
 "Access rights to" = "給予存取權限至";
 "For user" = "给使用者";
 "Any Authenticated User" = "任一授權的使用者";
 "Public Access" = "公開存取";
 "This person can add cards to this addressbook."
-= "這個人可以新增卡片到這個通訊錄。";
+= "這個人可以新增聯絡人到這個通訊錄。";
 "This person can edit the cards of this addressbook."
-= "這個人可以編輯這個通訊錄的卡片。";
+= "這個人可以編輯這個通訊錄的聯絡人。";
 "This person can list the content of this addressbook."
 = "這個人可以列出這個通訊錄的内容。";
 "This person can read the cards of this addressbook."
-= "這個人可以讀取這個通訊錄的卡片。";
+= "這個人可以讀取這個通訊錄的聯絡人。";
 "This person can erase cards from this addressbook."
-= "這個人可以刪除這個通訊錄的卡片。";
+= "這個人可以刪除這個通訊錄的聯絡人。";
 "The selected contact has no email address."
-= "被選擇的連絡人沒有郵件地址。";
-"Please select a contact." = "請選擇連絡人。";
-/* Error messages for move and copy */
+= "選取的聯絡人沒有郵件地址。";
+"Please select a contact." = "請選擇聯絡人。";
+
+/* Messages for move and copy */
+"%{0} card(s) copied" = "已複製 %{0} 個聯絡人";
+"%{0} card(s) moved" = "已移動 %{0} 個聯絡人";
 "SoAccessDeniedException" = "您不能寫入資料到這個通訊錄。";
-"Forbidden" = "您不能寫入資料到這個通訊錄。";
-"Invalid Contact" = "所選擇的連絡人已經不存在了。";
-"Unknown Destination Folder" = "所選擇的目標地址簿已經不存在了。";
+"Forbidden" = "禁止存取";
+"Invalid Contact" = "所選擇的聯絡人已經不存在了。";
+"Unknown Destination Folder" = "所選擇的目標通訊錄已經不存在了。";
+
 /* Lists */
-"List details" = "列出明细";
-"List name" = "列出名字";
-"List nickname" = "列出暱稱";
-"List description" = "列出說明";
+"List details" = "群組資訊";
+"List name" = "群組名稱";
+"List nickname" = "群組暱稱";
+"List description" = "群組說明";
 "Members" = "成員";
-"Contacts" = "連絡人";
+"Contacts" = "聯絡人";
 "Add" = "新增";
-"Lists can't be moved or copied." = "列表不能被移除或拷貝。";
+"Lists can't be moved or copied." = "群組不能移動或複製。";
 "Export" = "匯出";
 "Export Address Book..." = "匯出通訊錄...";
-"View Raw Source" = "查看源文件";
-"Import Cards" = "匯入卡片";
-"Select a vCard or LDIF file." = "選擇一張 vCard 或者 LDIF 檔案。";
+"View Raw Source" = "顯示原始碼";
+
+/* Import */
+"Import Cards" = "匯入聯絡人";
+"Select a vCard or LDIF file." = "選擇 vCard 或者 LDIF 檔案。";
 "Upload" = "上傳";
 "Uploading" = "上傳中";
 "Done" = "完成";
-"An error occured while importing contacts." = "導入連絡人時發生錯誤。";
-"No card was imported." = "没有卡片可以被導入。";
-"A total of %{0} cards were imported in the addressbook." = "共有%{0}張卡片被導入到通訊錄中。";
+"An error occured while importing contacts." = "匯入聯絡人時發生錯誤。";
+"No card was imported." = "沒有匯入任何聯絡人。";
+"A total of %{0} cards were imported in the addressbook." = "總共匯入 %{0} 筆聯絡人到通訊錄中。";
 "Reload" = "重新載入";
+
 /* Properties window */
 "Address Book Name" = "通訊錄名稱";
 "Links to this Address Book" = "連結到這本通訊錄";
 "Authenticated User Access" = "授權的使用者存取";
-"CardDAV URL" = "CardDAV URL";
+"CardDAV URL" = "CardDAV 網址";
+"Options" = "選項";
+"Rename" = "重新命名";
+"Subscriptions" = "訂閱";
+"Global Addressbooks" = "公用通訊錄";
+"Search" = "搜尋";
+"Sort" = "分類";
+"Descending Order" = "降冪排列";
+"Back" = "返回";
+"Select All" = "全選";
+"Copy contacts" = "複製聯絡人";
+"More messages options" = "更多訊息選項";
+"New Contact" = "新聯絡人";
+"Close" = "關閉";
+"More contact options" = "更多聯絡人選項";
+"Organization Unit" = "組織單位";
+"Add Organizational Unit" = "增加組織單位";
+"Type" = "類型";
+"Email Address" = "電子郵件地址";
+"New Email Address" = "新增電子郵件地址";
+"New Phone Number" = "新增電話號碼";
+"URL" = "網址";
+"New URL" = "新增網址";
+"street" = "街道";
+"street (continued)" = "街道 (續)";
+"Postoffice" = "郵局";
+"Region" = "地區";
+"Postal Code" = "郵遞區號";
+"New Address" = "新增地址";
+"Reset" = "重置";
+"Description" = "說明";
+"Add Member" = "新增成員";
+"Subscribe" = "訂閱";
+"Add Birthday" = "新增生日";
+"Import" = "匯入";
+"More options" = "更多選項";
+"Role" = "角色";
+"Add Screen Name" = "新增顯示名稱";
+"Custom 1" = "自訂 1";
+"Custom 2" = "自訂 2";
+"Custom 3" = "自訂 3";
+"Custom 4" = "自訂 4";
+"Custom Value" = "自訂值";
+"New Custom Value" = "新增自訂欄位";
+"Synchronization" = "同步";
+"Synchronize" = "同步";
+"Sucessfully subscribed to address book" = "已成功訂閱通訊錄";
+
+/* Aria label for scope of search on contacts */
+"Search scope" = "搜尋範圍";
+
+/* Aria label for avatar button to select and unselect a card */
+"Toggle item" = "切換選取";
+
+/* Hotkey to create a new card */
+"key_create_card" = "c";
+
+/* Hotkey to create a new list */
+"key_create_list" = "l";

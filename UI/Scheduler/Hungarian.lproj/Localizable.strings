@@ -437,16 +437,48 @@ validate_untilbeforeend    = "Az ismétlődésnek az első előfordulás után k
 = "Nem törölhet, valamint nem iratkozhat le egy személyes naptárról.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Biztosan törli ezt a naptárat: \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Biztosan törli a kiválasztott komponenseket?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Szerepkör";
+
+/* Participant role: participation is required */
 "Participant" = "Kötelező résztvevő";
+
+/* Participant role: participation is required */
+"req-participant" = "Résztvevő";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Nem kötelező résztvevő";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Nem kötelező résztvevő";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Nem résztvevő";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Nem résztvevő";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Szék";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Elnők";
+
+/* Participant status: needs action */
 "Needs action" = "Foglalkozni kell vele";
+
+/* Participant status: event accepted */
 "Accepted" = "Elfogadott";
+
+/* Participant status: event declined */
 "Declined" = "Visszautasított";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Bizonytalan";
+
 "Free" = "Szabad";
 "Busy" = "Foglalt";
 "Maybe busy" = "Bizonytalan";

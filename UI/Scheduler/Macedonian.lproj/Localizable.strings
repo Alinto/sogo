@@ -440,15 +440,45 @@ validate_untilbeforeend    = "Повторувањето мора да завр�
 "Are you sure you want to delete the selected components?"
 = "Сигурни ли сте дека сакате да ги избришете одбраните компоненти?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Улога";
+
+/* Participant role: participation is required */
 "Participant" = "Учесници";
+
+/* Participant role: participation is required */
+"req-participant" = "Учесник";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Незадолжителни учесници";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Незадолжителен учесник";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Не е учесник";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Не е учесник";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Претседавач";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Претседавач";
+
+/* Participant status: needs action */
 "Needs action" = "Треба активност";
+
+/* Participant status: event accepted */
 "Accepted" = "Прифатено";
+
+/* Participant status: event declined */
 "Declined" = "Одбиено";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Не е сигурно";
+
 "Free" = "Слободно";
 "Busy" = "Зафатено";
 "Maybe busy" = "Можеби зафатено";

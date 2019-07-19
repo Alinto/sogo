@@ -179,6 +179,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Додади во адресарот...";
+"Successfully created card" = "Успешно е креирана картичката";
 "Compose Mail To" = "Компонирај порака до";
 "Create Filter From Message..." = "Креирај филтер од пораката...";
 
@@ -402,6 +403,15 @@
 "Your email has been saved" = "Вашата порака е снимена";
 "Your email has been sent" = "Вашата порака е испратена";
 "Folder compacted" = "Папката е компактирана";
+
+/* Advanced search */
+"Enter Subject" = "Внеси Тема";
+"Enter From" = "Внеди Од";
+"Enter To" = "Внеси До";
+"Enter Cc" = "Внеси Cc";
+"Enter Body" = "Внеси Тело";
+"match" = "се совпаѓа";
+"does not match" = "не се совпаѓа";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Предмет на пребарување";

@@ -179,6 +179,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "... pievienot adrešu grāmatai";
+"Successfully created card" = "Veiksmīgi izveidota karte";
 "Compose Mail To" = "Rakstīt pastu";
 "Create Filter From Message..." = "Izveidot filtru no ziņojuma...";
 
@@ -402,6 +403,15 @@
 "Your email has been saved" = "Jūsu e-pasts ir saglabāts";
 "Your email has been sent" = "Jūsu e-pasts ir nosūtīts";
 "Folder compacted" = "Mape saspiesta";
+
+/* Advanced search */
+"Enter Subject" = "Ievadīt tēmu";
+"Enter From" = "Ievadīt no";
+"Enter To" = "Ievadīt kam";
+"Enter Cc" = "Ievadīt kopiju";
+"Enter Body" = "Ievadiet pamattekstu";
+"match" = "atbilst";
+"does not match" = "neatbilst";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Meklēšanas joma";

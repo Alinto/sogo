@@ -179,6 +179,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Ajouter au carnet d'adresses";
+"Successfully created card" = "Carte créé avec succès";
 "Compose Mail To" = "Écrire à";
 "Create Filter From Message..." = "Créer un filtre à partir du message...";
 
@@ -402,6 +403,15 @@
 "Your email has been saved" = "Votre courriel a été sauvegardé";
 "Your email has been sent" = "Votre courriel a été envoyé";
 "Folder compacted" = "Dossier compressé";
+
+/* Advanced search */
+"Enter Subject" = "Sujet";
+"Enter From" = "Expéditeur";
+"Enter To" = "Destinataire";
+"Enter Cc" = "Cc";
+"Enter Body" = "Contenu";
+"match" = "correspond à";
+"does not match" = "ne correspond pas à";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Étendue de la recherche";

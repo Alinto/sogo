@@ -7,6 +7,7 @@ vevent_class2 = "(機密事件)";
 vtodo_class0 = "(公開任務)";
 vtodo_class1 = "(私人任務)";
 vtodo_class2 = "(機密任務)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "事件 \"%{Summary}\" 已建立";
 "The event \"%{Summary}\" was deleted" = "事件\"%{Summary}\" 已刪除";
@@ -14,38 +15,47 @@ vtodo_class2 = "(機密任務)";
 "The following attendees(s) were notified" = "已通知下列出席者";
 "The following attendees(s) were added" = "已增加下列出席者";
 "The following attendees(s) were removed" = "已移除下列出席者";
+
 /* IMIP messages */
 "calendar_label" = "行事曆";
 "startDate_label" = "開始";
 "endDate_label" = "結束";
+"time_label" = "時間";
+"to_label" = "到";
 "due_label" = "截止日期:";
 "location_label" = "地點";
 "summary_label" = "事件主題:";
 "comment_label" = "備註:";
+"organizer_label" = "發起人";
+"attendee_label" = "出席人員";
+
 /* Invitation */
-"Event Invitation: \"%{Summary}\"" = "邀請事件: \"%{Summary}\"";
+"Event Invitation: \"%{Summary}\"" = "事件邀請: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(來自 %{SentBy})";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} 邀請您參加 %{Summary}。\n\n起始日期: %{StartDate}\n結束日期: %{EndDate}\n備註說明: %{Description}";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} 邀請您參加 %{Summary}。\n\n起始時間: %{StartDate}  %{StartTime}\n結束時間: %{EndDate}  %{EndTime}\n備註說明: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} 邀請您參加 %{Summary}。\n\n起始時間: %{StartDate} %{StartTime}\n結束時間: %{EndDate} %{EndTime}\n備註說明: %{Description}";
+
 /* Deletion */
-"Event Cancelled: \"%{Summary}\"" = "取消事件 : \"%{Summary}\"";
+"Event Cancelled: \"%{Summary}\"" = "事件取消 : \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} 己取消事件: %{Summary}。\n\n起始日期: %{StartDate}\n結束日期: %{EndDate}\n備註說明: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText} 己取消了事件: %{Summary}。\n\n起始時間: %{StartDate} %{StartTime}\n結束時間: %{EndDate} %{EndTime}\n備註說明: %{Description}";
+= "%{Organizer} %{SentByText} 己取消事件: %{Summary}。\n\n起始時間: %{StartDate} %{StartTime}\n結束時間: %{EndDate} %{EndTime}\n備註說明: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
-= " 安排於%{OldStartDate} 的事件 \"%{Summary}\" 已變更";
+= "安排於%{OldStartDate} 的事件 \"%{Summary}\" 已變更";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= "安排於 %{OldStartDate}  %{OldStartTime} 的事件 \"%{Summary}\" 已變更";
+= "安排於 %{OldStartDate} %{OldStartTime} 的事件 \"%{Summary}\" 已變更";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
-= "已變更會議  \"%{Summary}\" 下列參數:";
+= "已變更會議  \"%{Summary}\" 中的下列參數:";
 "Please accept or decline those changes."
-= "請接受或拒絶這些變更。";
+= "請接受或回絶這些變動。";
+
 /* Reply */
-"Accepted invitation: \"%{Summary}\"" = "接受邀請: \"%{Summary}\"";
-"Declined invitation: \"%{Summary}\"" = "拒絶邀請: \"%{Summary}\"";
-"Delegated invitation: \"%{Summary}\"" = "\"委派出席: \"%{Summary}\"";
+"Accepted invitation: \"%{Summary}\"" = "已接受邀請: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "已拒絶邀請: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "已委派他人出席: \"%{Summary}\"";
 "Not yet decided on invitation: \"%{Summary}\"" = "未處理的邀請: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "\"%{Attendee} %{SentByText}已接受了您的邀請。";
@@ -55,6 +65,15 @@ vtodo_class2 = "(機密任務)";
 = "\"%{Attendee} %{SentByText}已將您的邀請委任給%{Delegate}。";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}還沒有決定是否接受您的邀請。";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = "事件提醒：\"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "無法讀取資源: \"%{Cn} %{SystemEmail}\"";
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "\"%{Cn} %{SystemEmail}\" 的衝突事件己達上限 ( %{NumberOfSimultaneousBookings} )。衝突事件 \"%{EventTitle}\" 的起始日期為 %{StartDate}。";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "\"%{Cn} %{SystemEmail}\" 的重疊事件己達上限：( %{NumberOfSimultaneousBookings} )件。衝突事件 \"%{EventTitle}\" 的起始日期為 %{StartDate}。";
+
+/* Participation role */
+"Your participation is required to this event" = "您的參與對於此事件而言是必須的。";
+"Your participation is optional to this event" = "您可選擇是否參與此事件。";
+"Your participation is not required to this event" = "您無須參與此事件。";

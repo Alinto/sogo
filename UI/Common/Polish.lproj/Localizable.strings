@@ -143,10 +143,19 @@
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
 "File size upload limit reached" = "Rozmiar pliku jest większy niż dopuszczalny limit";
 
+/* Generic server error */
+"An error occured, please try again." = "Wystąpił błąd, proszę spróbować ponownie.";
+
+/* Open datepicker */
+"Open Calendar" = "Otwórz kalendarz";
+
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Odwróć widok";
 
 "Keyboard Shortcuts" = "Skróty klawiszowe";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "Odwróć wskazanie";
 
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Odwróć wskazany zakres";

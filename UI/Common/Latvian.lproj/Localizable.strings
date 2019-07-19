@@ -143,10 +143,19 @@
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
 "File size upload limit reached" = "Sasniegts augšupielādes faila lielums";
 
+/* Generic server error */
+"An error occured, please try again." = "Radās kļūda. Lūdzu, mēģiniet vēlreiz.";
+
+/* Open datepicker */
+"Open Calendar" = "Atvērt kalendāru";
+
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Pārslēgt redzamību";
 
 "Keyboard Shortcuts" = "Tastatūras saīsnes";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "Pārslēgt vienumu";
 
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Pārslēgt vienību diapazonu";

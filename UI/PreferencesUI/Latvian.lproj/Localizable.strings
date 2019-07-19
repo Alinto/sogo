@@ -47,7 +47,9 @@
 "Enable auto reply on" = "Ieslēgt automātisko atbildi";
 "Disable auto reply on" = "Izslēgt automātisko atbildi";
 "Always send vacation message response" = "Vienmēr sūtīt atvaļinājuma atbildes ziņojumu";
+"The vacation message is sent prior to apply your filters." = "Atvaļinājuma ziņojums tiek nosūtīts pirms filtru lietošanas.";
 "Discard incoming mails during vacation" = "Atmest ienākošo pastu atvaļinājuma laikā";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Atvaļinājuma laika ziņojums tiek nosūtīts, bet ienākošās ziņas netiek piegādātas uz iesūtni.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Lūdzu, norādiet ziņojuma adresātu un e-pasta adreses, kuras vēlaties iespējot automātisko atbildi.";
 "Your vacation message must not end with a single dot on a line." = "Jūsu atvaļinājums ziņa nedrīkst beigties ar vienu punktiņu līnijā.";
@@ -85,7 +87,9 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
 
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
@@ -156,6 +160,7 @@
 "New label" = "Jauna etiķete";
 "Show subscribed mailboxes only" = "Rādīt tikai abonētajām pastkastēm";
 "Synchronize only default mail folders (EAS)" = "Sinhronizēt tikai noklusējuma pasta mapes (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Iegūt visu pastkastu neredzamo ziņojumu skaitu";
 "Sort messages by threads" = "Kārtot ziņojumus pēc pavedieniem";
 "Always open mail composer" = "Vienmēr atvērt e-pasta sastādītāju";
 "Inside current window" = "Pašreizējā logā";
@@ -217,6 +222,7 @@
 "When composing a message" = "Veidojot ziņojumu";
 "Digitally sign the message by default" = "Ziņojuma parakstīšana ar ciparparakstu pēc noklusējuma";
 "Always try to encrypt the message" = "Vienmēr mēģiniet šifrēt ziņojumu";
+"An error occurred while importing the certificate. Verify your password." = "Importējot sertifikātu, radās kļūda. Pārbaudiet paroli.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Papildu parametri";
@@ -237,6 +243,7 @@
 "Calendar Category" = "Kalendāra kategorija";
 "Add Calendar Category" = "Pievienot kalendāra kategorijai";
 "New category" = "Jauna kategorija";
+"Reset to defaults" = "Atiestatīt noklusējumus";
 "Remove Calendar Category" = "Noņemiet kalendāra kategorijas";
 "Contact Category" = "Kontaktu kategorijas";
 "Add Contact Category" = "Pievienot kontaktpersonu kategorijas";
@@ -272,7 +279,6 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
-"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
 "Japanese" = "日本語";
 "Latvian" = "Latviešu";
