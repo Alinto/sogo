@@ -61,9 +61,8 @@ SMTP are used to communicate with the SOGo platform or its
 sub-components. Mobile devices supporting the Microsoft ActiveSync
 protocol are also supported.
 
-To install and configure the native Microsoft Outlook compatibility
-layer, please refer to the _SOGo Native Microsoft Outlook Configuration
-Guide_.
+To install and configure the Outlook CalDav Synchronizer, please refer
+to the _Outlook Connector Configuration Guide_.
 
 System Requirements
 -------------------
