@@ -27,6 +27,9 @@
 
 #include <fcntl.h>
 #include <unistd.h>
+#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
+#include <crypt.h>
+#endif
 
 #if defined(HAVE_GNUTLS)
 #include <gnutls/gnutls.h>
