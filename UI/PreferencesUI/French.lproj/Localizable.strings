@@ -47,7 +47,9 @@
 "Enable auto reply on" = "Débuter la réponse automatique le";
 "Disable auto reply on" = "Désactiver la réponse automatique le";
 "Always send vacation message response" = "Toujours envoyer le message de vacances prolongées";
+"The vacation message is sent prior to apply your filters." = "Le message de vacances est envoyé avant d'appliquer vos filtres.";
 "Discard incoming mails during vacation" = "Ne pas conserver le courrier entrant pendant les vacances";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Le message de vacances est envoyé mais les messages entrants ne sont pas livrés dans votre boîte de réception.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Veuillez définir un message et vos adresses pour lesquelles pour désirez activer une réponse automatique.";
 "Your vacation message must not end with a single dot on a line." = "Le message de vacances ne doit pas se terminer par une ligne ne contenant qu'un point.";
@@ -85,7 +87,9 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
 
 "longDateFmt_0" = "%A %e %B %Y";
 "longDateFmt_1" = "%e %b. %Y";
@@ -156,6 +160,7 @@
 "New label" = "Nouvelle étiquette";
 "Show subscribed mailboxes only" = "Afficher seulement les abonnements";
 "Synchronize only default mail folders (EAS)" = "Synchroniser uniquement les boîtes principales (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Récupération du nombre de messages non lus pour toutes les boîtes aux lettres";
 "Sort messages by threads" = "Grouper les discussions";
 "Always open mail composer" = "Toujours ouvrir l'éditeur";
 "Inside current window" = "Dans la fenêtre courante";
@@ -217,6 +222,7 @@
 "When composing a message" = "Lors de la rédaction d'un message";
 "Digitally sign the message by default" = "Toujours signer le message";
 "Always try to encrypt the message" = "Toujours tenter de crypter le message";
+"An error occurred while importing the certificate. Verify your password." = "Une erreur est survenue lors de l'importation du certificat. Veuillez vérifier votre mot de passe.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Paramètres supplémentaires";
@@ -237,6 +243,7 @@
 "Calendar Category" = "Catégorie de calendrier";
 "Add Calendar Category" = "Ajouter une catégorie";
 "New category" = "Nouvelle catégorie";
+"Reset to defaults" = "Réinitialiser les valeurs";
 "Remove Calendar Category" = "Supprimer une catégorie";
 "Contact Category" = "Catégorie de contact";
 "Add Contact Category" = "Ajouter une catégorie";
