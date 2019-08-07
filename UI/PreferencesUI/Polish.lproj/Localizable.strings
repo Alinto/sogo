@@ -47,7 +47,9 @@
 "Enable auto reply on" = "Włącz autoodpowiedź w";
 "Disable auto reply on" = "Zablokuj autoodpowiedź w";
 "Always send vacation message response" = "Zawsze wysyłaj autoodpowiedź";
+"The vacation message is sent prior to apply your filters." = "Autoodpowiedź jest wysyłana przed zastosowaniem filtrów.";
 "Discard incoming mails during vacation" = "Odrzucaj przychodzące wiadomości podczas nieobecności";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Autoodpowiedź jest wysyłana, ale przychodzące wiadomości nie zostaną zapisane w folderze Odebrane.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Podaj treść wiadomości i twoje adresy e-mail, dla których chcesz włączyć autoodpowiedź.";
 "Your vacation message must not end with a single dot on a line." = "Twoja wiadomość nie może kończyć się kropką w pustej linii.";
@@ -85,7 +87,9 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
 
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
@@ -156,6 +160,7 @@
 "New label" = "Nowa etykieta";
 "Show subscribed mailboxes only" = "Pokaż tylko subskrybowane konta pocztowe";
 "Synchronize only default mail folders (EAS)" = "Synchronizuj wyłącznie domyślne foldery (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Pobierz liczbę nieczytanych wiadomości dla wszystkich skrzynek pocztowych";
 "Sort messages by threads" = "Sortuj wiadomości według wątków";
 "Always open mail composer" = "Zawsze otwieraj edytor wiadomości";
 "Inside current window" = "W aktualnym oknie";
@@ -217,6 +222,7 @@
 "When composing a message" = "Gdy wiadomość jest tworzona";
 "Digitally sign the message by default" = "Domyślnie podpisuj cyfrowo wiadomość";
 "Always try to encrypt the message" = "Zawsze próbuj odszyfrować wiadomość";
+"An error occurred while importing the certificate. Verify your password." = "Błąd w trakcie importu certyfikatu. Sprawdź hasło.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Dodatkowe parametry";
@@ -237,6 +243,7 @@
 "Calendar Category" = "Kategoria kalendarza";
 "Add Calendar Category" = "Dodaj kategorię kalendarza";
 "New category" = "Nowa kategoria";
+"Reset to defaults" = "Wróć do ustawień domyślnych";
 "Remove Calendar Category" = "Usuń kategorię kalendarza";
 "Contact Category" = "Kategoria kontaktu";
 "Add Contact Category" = "Dodaj kategorię kontaktu";

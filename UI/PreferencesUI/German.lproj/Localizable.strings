@@ -47,7 +47,9 @@
 "Enable auto reply on" = "Automatische Abwesenheitsnachricht anschalten am";
 "Disable auto reply on" = "Automatische Abwesenheitsnachricht abschalten am";
 "Always send vacation message response" = "Immer Abwesenheitsmeldung senden";
+"The vacation message is sent prior to apply your filters." = "Die Abwesenheitsnachricht wird vor dem Anwenden von Filtern verschickt.";
 "Discard incoming mails during vacation" = "Ankommende E-Mails während der Abwesenheit verwerfen";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Die Abwesenheitsnachricht wird verschickt, aber eintreffende Nachrichten werden nicht in den Posteingang zugestellt.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Bitte ihren Nachrichtentext und ihre E-Mail-Adressen angeben, für die automatische Abwesenheitsnachrichten aktiviert werden sollen.";
 "Your vacation message must not end with a single dot on a line." = "Ihre Abwesenheitsnachricht darf nicht mit einem alleinstehenden Punkt in einer Zeile enden.";
@@ -82,9 +84,12 @@
 "shortDateFmt_9" = "%y-%m-%d";
 "shortDateFmt_10" = "%y/%m/%d";
 "shortDateFmt_11" = "%y.%m.%d";
-"shortDateFmt_12" = "%Y/%m/%d";
-"shortDateFmt_13" = "%Y.%m.%d";
-"shortDateFmt_14" = "";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
 
 "longDateFmt_0" = "%A, %d. %B %Y";
 "longDateFmt_1" = "%A, %e. %B %Y";
@@ -123,8 +128,8 @@
 "Prevent from being invited to appointments" = "Verhindere, dass ich zu Terminen eingeladen werde";
 "White list for appointment invitations" = "White-Liste für Termineinladungen";
 "Contacts Names" = "Kontaktnamen";
-"Duplicate name" = "Dupliziere Namen";
-"Calendar categories must have unique names." = "Kalenderkathegorien müssen eindeutige Namen haben.";
+"Duplicate name" = "Doppelter Name";
+"Calendar categories must have unique names." = "Kalenderkategorien müssen eindeutige Namen haben.";
 
 /* Default Calendar */
 "Default calendar" = "Standardkalender";
@@ -150,11 +155,12 @@
 "Label" = "Schlagwort";
 "IMAP Label" = "IMAP Schlagwort";
 "Invalid label" = "Keine Leerzeichen oder ( ) { } % * \" \\ verwenden";
-"Duplicate label" = "Dupliziere Ordner";
-"IMAP labels must have unique names." = "IMAP Ordnernamen müssen eindeutig sein";
+"Duplicate label" = "Doppeltes Schlagwort";
+"IMAP labels must have unique names." = "IMAP-Schlagwörter müssen eindeutig sein";
 "New label" = "Neue Bezeichnung";
 "Show subscribed mailboxes only" = "Nur abonnierte Ordner anzeigen";
 "Synchronize only default mail folders (EAS)" = "Nur Standard-E-Mail-Ordner synchronisieren (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Den Zähler für ungesehene Nachrichten für alle Postfächer holen.";
 "Sort messages by threads" = "Nachrichten nach Thema sortieren";
 "Always open mail composer" = "Immer das E-Mail-Erstellfenster öffnen";
 "Inside current window" = "Erscheint im aktuellen Fenster";
@@ -216,6 +222,7 @@
 "When composing a message" = "Beim Erstellen einer Nachricht";
 "Digitally sign the message by default" = "Nachricht standardmäßig digital signieren";
 "Always try to encrypt the message" = "Versuche Nachricht immer zu verschlüsseln";
+"An error occurred while importing the certificate. Verify your password." = "Beim Importieren des Zertifikates ist ein Fehler aufgetreten. Bitte prüfen Sie Ihr Passwort.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Zusätzliche Einstellungen";
@@ -236,6 +243,7 @@
 "Calendar Category" = "Kalenderkategorie";
 "Add Calendar Category" = "Kalenderkategorie hinzufügen";
 "New category" = "Neue Kategorie";
+"Reset to defaults" = "Auf Standard zurücksetzen";
 "Remove Calendar Category" = "Kalenderkategorie entfernen";
 "Contact Category" = "Kontaktkategorie";
 "Add Contact Category" = "Kontaktkategorie hinzufügen";
