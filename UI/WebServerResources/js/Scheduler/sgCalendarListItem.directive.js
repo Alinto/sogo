@@ -107,6 +107,9 @@
       if (this.inputElement.disabled)
         return;
 
+      if (this.inputElement.value.length === 0)
+        this.revertEditing();
+
       this.calendar.name = this.inputElement.value;
       this.inputElement.disabled = true;
       this.calendar.$rename()

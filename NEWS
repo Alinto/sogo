@@ -1,6 +1,9 @@
 4.0.9 (2019-XX-XX)
 ------------------
 
+Enhancements
+ - [web] avoid saving an empty calendar name
+
 Bug fixes
  - [web] properly handle Windows-1256 charaset (#4781)
 

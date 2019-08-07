@@ -106,6 +106,9 @@
           this.editMode = false;
         }
       }
+      else {
+        this.revertEditing(folder);
+      }
     };
 
     this.confirmDelete = function () {
