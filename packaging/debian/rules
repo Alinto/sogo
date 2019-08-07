@@ -15,7 +15,7 @@ include /usr/share/GNUstep/Makefiles/common.make
 
 config.make: configure
 	dh_testdir
-	./configure --prefix=$(GNUSTEP_SYSTEM_ROOT) $(SAML2_CONFIG)
+	./configure --prefix=$(GNUSTEP_SYSTEM_APPS) $(SAML2_CONFIG)
 
 #Architecture
 build: build-arch
