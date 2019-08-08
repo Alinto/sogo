@@ -1994,8 +1994,8 @@ static NSArray *reminderValues = nil;
 
   if ([receipts isKindOfClass: [NSDictionary class]])
     {
-      action = [receipts objectForKey: @"receiptAction"];
-      [target setObject: @"1" forKey: @"SOGoMailReceiptAllow"];
+      action = [[receipts objectForKey: @"receiptAction"] isEqualToString: @"ignore"] ? @"0" : @"1";
+      [target setObject: action forKey: @"SOGoMailReceiptAllow"];
 
       action = [receipts objectForKey: @"receiptNonRecipientAction"];
       if ([self _validateReceiptAction: action])
