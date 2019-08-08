@@ -87,6 +87,7 @@ case "$1" in
         install -o $USER -g adm -m 750 -d /var/spool/$NAME
         install -o $USER -g adm -m 750 -d /var/log/$NAME
 	start-stop-daemon -c $USER --quiet --start --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS 
+	chown root:root $PIDFILE
 	log_end_msg 0
 	;;
   status)
