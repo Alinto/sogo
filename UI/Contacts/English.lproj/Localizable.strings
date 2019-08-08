@@ -27,6 +27,9 @@
 "OfficePhone" = "OfficePhone";
 "Organization" = "Organization";
 "Work Phone" = "Work Phone";
+"Cell" = "Cell";
+"Pager" = "Pager";
+"Pref" = "Pref";
 "Phone" = "Phone";
 "Phones" = "Phones";
 "Postal" = "Postal";
