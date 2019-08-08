@@ -192,6 +192,7 @@
 /* Contact */
 "Personal Address Book" = "Personal Address Book";
 "Collected Address Book" = "Collected Address Book";
+"Contact categories must have unique names." = "Contact categories must have unique names.";
 
 /* IMAP Accounts */
 "Settings" = "Settings";

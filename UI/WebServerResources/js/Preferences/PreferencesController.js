@@ -54,10 +54,14 @@
     };
 
     this.addCalendarCategory = function(form) {
-      this.preferences.defaults.SOGoCalendarCategories.push(l('New category'));
-      this.preferences.defaults.SOGoCalendarCategoriesColorsValues.push("#aaa");
-      focus('calendarCategory_' + (this.preferences.defaults.SOGoCalendarCategories.length - 1));
-      form.$setDirty();
+      var i = _.indexOf(this.preferences.defaults.SOGoCalendarCategories, l('New category'));
+      if (i < 0) {
+        this.preferences.defaults.SOGoCalendarCategories.push(l('New category'));
+        this.preferences.defaults.SOGoCalendarCategoriesColorsValues.push("#aaa");
+        form.$setDirty();
+        i = this.preferences.defaults.SOGoCalendarCategories.length - 1;
+      }
+      focus('calendarCategory_' + i);
     };
 
     this.resetCalendarCategoryValidity = function(index, form) {
@@ -371,6 +375,20 @@
               (keys.indexOf(value) != i ||
                keys.indexOf(value, i+1) > -1)) {
             form['calendarCategory_' + i].$setValidity('duplicate', false);
+            sendForm = false;
+          }
+        });
+      }
+
+      // Contact categories must be unique
+      if (this.preferences.defaults.SOGoContactsCategories.length !=
+          _.uniq(this.preferences.defaults.SOGoContactsCategories).length) {
+        Dialog.alert(l('Error'), l("Contact categories must have unique names."));
+        _.forEach(this.preferences.defaults.SOGoContactsCategories, function (value, i, keys) {
+          if (form['contactCategory_' + i].$dirty &&
+              (keys.indexOf(value) != i ||
+               keys.indexOf(value, i+1) > -1)) {
+            form['contactCategory_' + i].$setValidity('duplicate', false);
             sendForm = false;
           }
         });

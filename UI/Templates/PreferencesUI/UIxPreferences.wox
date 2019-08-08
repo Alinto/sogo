@@ -509,8 +509,12 @@
 	          <input type="text"
                          label:aria-label="Contact Category"
                          required="required"
+                         name="contactCategory_{{$index}}"
                          ng-model="app.preferences.defaults.SOGoContactsCategories[$index]"
                          sg-focus-on="contactCategory_{{$index}}"/>
+                    <div ng-messages="preferencesForm['contactCategory_' + $index].$error">
+                      <div ng-message="duplicate"><var:string label:value="Duplicate name"/></div>
+                    </div>
                 </md-input-container>
                 <md-button type="button" class="sg-icon-button"
                            label:aria-label="Remove Contact Category"

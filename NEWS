@@ -3,6 +3,7 @@
 
 Enhancements
  - [web] avoid saving an empty calendar name
+ - [web] prohibit duplicate contact categories in Preferences module
 
 Bug fixes
  - [web] properly handle Windows-1256 charaset (#4781)
