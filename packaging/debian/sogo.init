@@ -71,6 +71,7 @@ case "$1" in
 	then
 	    log_progress_msg "already running"
         fi
+	chown root:root $PIDFILE
 	log_end_msg 0
 	;;
   stop)
