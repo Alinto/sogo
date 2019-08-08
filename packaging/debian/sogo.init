@@ -75,7 +75,7 @@ case "$1" in
 	;;
   stop)
 	log_daemon_msg "Stopping $DESC" "$NAME"
-	start-stop-daemon --stop --pidfile $PIDFILE --retry=TERM/20/KILL/5 --oknodo
+	start-stop-daemon -c $USER --stop --pidfile $PIDFILE --retry=TERM/20/KILL/5 --oknodo
 	log_end_msg 0
 	;;
   restart|force-reload)
