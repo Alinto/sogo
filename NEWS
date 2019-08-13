@@ -1,6 +1,9 @@
 2.3.24 (2019-XX-XX)
 -------------------
 
+New features
+ - [core] Debian 10 (Buster) support for x86_64 (#4775)
+
 Bug fixes
  - sogo-tool manage-acl not working on v2 (#4292)
  - [web] restored mail threads state of inbox on initial page load
