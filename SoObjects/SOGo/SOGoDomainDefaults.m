@@ -1,6 +1,6 @@
 /* SOGoDomainDefaults.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2016 Inverse inc.
+ * Copyright (C) 2009-2019 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -213,6 +213,11 @@
   v =  [self integerForKey: @"SOGoForwardConstraints"];
   
   return (v > 2 ? 0 : v);
+}
+
+- (NSArray *) forwardConstraintsDomains
+{
+  return [self stringArrayForKey: @"SOGoForwardConstraintsDomains"];
 }
 
 - (BOOL) vacationEnabled

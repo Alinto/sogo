@@ -2118,6 +2118,15 @@ automatically forwarding mails. When set to `0` (default), no constraint
 is enforced. When set to `1`, only internal domains can be used. When
 set to `2`, only external domains can be used.
 
+|D |SOGoForwardConstraintsDomains
+|Parameter used to set which domains are allowed as external domains
+when SOGoForwardConstraints is set to `2`. For example, setting:
+
+SOGoForwardConstraintsDomains = ("gmail.com", "googlemail.com");
+
+will allow users to forward emails to only `gmail.com` and `googlemail.com` domains.
+When empty or undefined, no constraints are imposed.
+
 |D |SOGoSieveScriptsEnabled
 |Parameter used to activate the edition from the preferences windows of
 server-side mail filters. Requires Sieve script support on the IMAP

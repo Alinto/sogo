@@ -21,6 +21,7 @@
     var defaultEmailAddresses = '<var:string value="defaultEmailAddresses" const:escapeHTML="NO"/>';
     var defaultCalendarCategories = <var:string value="defaultCalendarCategoriesColors" const:escapeHTML="NO"/>;
     var forwardConstraints = <var:string value="forwardConstraints" const:escapeHTML="NO"/>;
+    var forwardConstraintsDomains = <var:string value="forwardConstraintsDomains" const:escapeHTML="NO"/>;
     var sieveCapabilities = <var:string value="sieveCapabilities" const:escapeHTML="NO"/>;
   </script>
 

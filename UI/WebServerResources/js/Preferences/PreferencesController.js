@@ -347,6 +347,12 @@
             Dialog.alert(l('Error'), l("You are not allowed to forward your messages to an internal email address."));
             sendForm = false;
           }
+          else if ($window.forwardConstraints == 2 &&
+                   $window.forwardConstraintsDomains.length > 0 &&
+                   $window.forwardConstraintsDomains.indexOf(domain) < 0) {
+            Dialog.alert(l('Error'), l("You are not allowed to forward your messages to this domain:") + " " + domain);
+            sendForm = false;
+          }
         }
       }
 
