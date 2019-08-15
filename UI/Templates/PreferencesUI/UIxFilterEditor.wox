@@ -9,7 +9,7 @@
     xmlns:uix="OGo:uix"><var:string var:value="doctype" const:escapeHTML="NO" />
 <md-dialog flex="50" flex-sm="80" flex-xs="100">
   <form id="filterForm" name="filterForm" class="md-inline-form" ng-submit="filterEditor.save(filterForm)">
-    <md-toolbar>
+    <md-toolbar class="md-hue-1">
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">filter_list</md-icon>
         <md-input-container class="md-block md-flex">

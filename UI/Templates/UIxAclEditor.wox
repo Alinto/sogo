@@ -14,7 +14,7 @@
           <label class="pseudo-input-label"><var:string label:value="Access Rights"/></label>
           <div layout="row" layout-align="start center">
             <div class="sg-color-chip"
-                 ng-class="::acl.folderClassName()"><!-- color --></div>
+                 ng-show="::acl.folderClassName()" ng-class="::acl.folderClassName()"><!-- color --></div>
             <div class="sg-md-title" ng-bind="::acl.folder.name"><!-- calendar --></div>
           </div>
         </div>

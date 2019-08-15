@@ -9,7 +9,7 @@
   <md-dialog flex="50" flex-sm="70" flex-xs="100">
     <form name="calendarPropertiesForm" ng-submit="properties.saveProperties(calendarPropertiesForm)">
 
-      <md-toolbar ng-class="properties.calendar.getClassName('bg')">
+      <md-toolbar class="md-hue-1">
         <div class="md-toolbar-tools">
           <!-- color -->
           <sg-color-picker ng-model="properties.calendar.color"><!-- color picker --></sg-color-picker>
