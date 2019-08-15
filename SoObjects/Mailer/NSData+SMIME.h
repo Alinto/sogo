@@ -32,7 +32,7 @@
 - (NSData *) decryptUsingCertificate: (NSData *) theData;
 - (NGMimeMessage *) messageFromEncryptedDataAndCertificate: (NSData *) theCertificate;
 - (NSData *) convertPKCS12ToPEMUsingPassword: (NSString *) thePassword;
-- (NSData *) convertPKCS7ToPEM;
+- (NSData *) signersFromPKCS7;
 - (NSDictionary *) certificateDescription;
 
 @end
