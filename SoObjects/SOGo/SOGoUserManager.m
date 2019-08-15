@@ -839,7 +839,7 @@ static Class NSNullK;
 
       // We update the placeholder in the LDAP source if needed
       if ([currentSource conformsToProtocol: @protocol(SOGoDNSource)])
-        [currentSource updateBaseDNFromLogin: theUID];
+        [(id<SOGoDNSource>) currentSource updateBaseDNFromLogin: theUID];
 
       // Use the provided domain during the lookup. If none is defined, use the source's one
       // so if there's a match based on the source's domain, the user ID will be associated
