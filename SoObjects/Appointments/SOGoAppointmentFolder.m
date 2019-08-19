@@ -1626,7 +1626,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
           // replace the date range
           if (r)
             {
-              if ([baseWhere count] > 1)
+              if (dateSqlString)
                 [baseWhere removeLastObject];
               dateSqlString = [self _sqlStringRangeFrom: _startDate
                                                      to: endDate
