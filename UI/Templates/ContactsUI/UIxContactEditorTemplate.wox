@@ -48,7 +48,7 @@
               <label>
                 <var:string label:value="Display"/>
               </label>
-              <input type="text" ng-maxlength="30" ng-model="editor.card.c_cn"/>
+              <input type="text" ng-maxlength="255" ng-model="editor.card.c_cn"/>
             </md-input-container>
 
             <div id="contact-identification" class="sg-fieldset" layout="row" layout-xs="column">
@@ -56,13 +56,13 @@
                 <label>
                   <var:string label:value="Firstname"/>
                 </label>
-                <input type="text" ng-model="editor.card.c_givenname"/>
+                <input type="text" ng-maxlength="255" ng-model="editor.card.c_givenname"/>
               </md-input-container>
               <md-input-container flex="40" flex-xs="100">
                 <label>
                   <var:string label:value="Lastname"/>
                 </label>
-                <input type="text" ng-model="editor.card.c_sn"/>
+                <input type="text" ng-maxlength="255" ng-model="editor.card.c_sn"/>
               </md-input-container>
               <md-input-container flex="20" flex-xs="100">
                 <label>
@@ -435,14 +435,14 @@
               <label>
                 <var:string label:value="Display"/>
               </label>
-              <input type="text" ng-maxlength="30" ng-model="editor.card.c_cn"/>
+              <input type="text" ng-maxlength="255" ng-model="editor.card.c_cn"/>
             </md-input-container>
 
             <md-input-container>
               <label>
                 <var:string label:value="Nickname"/>
               </label>
-              <input type="text" ng-maxlength="30" ng-model="editor.card.nickname"/>
+              <input type="text" ng-model="editor.card.nickname"/>
             </md-input-container>
 
             <md-input-container>
