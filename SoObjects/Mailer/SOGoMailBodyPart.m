@@ -210,6 +210,28 @@ static BOOL debugOn = NO;
                                                inContext: localContext];
       obj = [clazz objectWithName:key inContainer: self];
     }
+  else if ([o isOpaqueSigned])
+    {
+      NGMimeMessage *m;
+      id part;
+
+      int i;
+
+      m = [[o content] messageFromOpaqueSignedData];
+      part = [m body];
+
+      for (i = 0; i < [[self bodyPartPath] count]; i++)
+        {
+          nbr = [[[self bodyPartPath] objectAtIndex: i] intValue]-1;
+          part = [[part parts] objectAtIndex: nbr];;
+        }
+
+      part = [[part parts] objectAtIndex: ([key intValue]-1)];
+      mimeType = [[part contentType] stringValue];
+      clazz = [SOGoMailBodyPart bodyPartClassForMimeType: mimeType
+                                               inContext: localContext];
+      obj = [clazz objectWithName:key inContainer: self];
+    }
   else
     {
       infos = [self partInfo];
@@ -351,6 +373,24 @@ static BOOL debugOn = NO;
       certificate = [[self mailAccountFolder] certificate];
 
       m = [[o content] messageFromEncryptedDataAndCertificate: certificate];
+      part = [m body];
+
+      for (i = 0; i < [[self bodyPartPath] count]; i++)
+        {
+          nbr = [[[self bodyPartPath] objectAtIndex: i] intValue]-1;
+          part = [[part parts] objectAtIndex: nbr];;
+        }
+
+      return [part body];
+    }
+  else if ([o isOpaqueSigned])
+    {
+      NGMimeMessage *m;
+      id part;
+
+      unsigned int i, nbr;
+
+      m = [[o content] messageFromOpaqueSignedData];
       part = [m body];
 
       for (i = 0; i < [[self bodyPartPath] count]; i++)

@@ -256,10 +256,20 @@ static BOOL showNamedTextAttachmentsInline = NO;
       if ([st isEqualToString: @"x-pkcs7-mime"] ||
           [st isEqualToString: @"pkcs7-mime"])
         {
-          // If the mail account has a valid certificate, we try to decode
-          // the encrypted email. Otherwise, we fallback to a link viewer
-          if ([[[viewer clientObject] mailAccountFolder] certificate])
-            return [self encryptedViewer];
+          NSString *smt;
+
+          smt = [[[_info objectForKey:@"parameterList"] valueForKey:@"smime-type"] lowercaseString];
+          if ([smt isEqualToString:@"signed-data"])
+            {
+              return [self encryptedViewer];
+            }
+          else if ([smt isEqualToString:@"enveloped-data"])
+            {
+              // If the mail account has a valid certificate, we try to decode
+              // the encrypted email. Otherwise, we fallback to a link viewer
+              if ([[[viewer clientObject] mailAccountFolder] certificate])
+                return [self encryptedViewer];
+            }
         }
 
 #if 0 /* the link viewer looks better than plain text ;-) */

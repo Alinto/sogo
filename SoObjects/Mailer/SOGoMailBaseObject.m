@@ -197,9 +197,7 @@
 - (NGImap4Connection *) imap4Connection
 {
   NSString *cacheKey, *login;
-  
   SOGoCache *sogoCache;
-  
 
   if (!imap4)
     {

@@ -124,7 +124,8 @@ NSArray *SOGoMailCoreInfoKeys;
 - (BOOL) replied;     /* \Answered */
 - (BOOL) forwarded;   /* $forwarded */
 - (BOOL) deleted;     /* \Deleted */
-- (BOOL) isSigned;    /* S/MIME signed message */
+- (BOOL) isSigned;       /* S/MIME signed message (detached signature) */
+- (BOOL) isOpaqueSigned; /* S/MIME signed message (embedded content) */
 - (BOOL) isEncrypted; /* S/MIME encrypted message */
 
 /* deletion */

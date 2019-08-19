@@ -340,13 +340,22 @@
               };
             }
             else if (part.type == 'UIxMailPartEncryptedViewer') {
-              _this.encrypted = {
-                valid: part.valid
-              };
-              if (part.valid)
-                _this.encrypted.message = l("This message is encrypted");
-              else
-                _this.encrypted.message = l("This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module.");
+              if (part.encrypted) {
+                _this.encrypted = {
+                  valid: part.decrypted
+                };
+                if (part.decrypted)
+                  _this.encrypted.message = l("This message is encrypted");
+                else
+                  _this.encrypted.message = l("This message can't be decrypted. Please make sure you have uploaded your S/MIME certificate from the mail preferences module.");
+              }
+              if (part.opaqueSigned) {
+                _this.signed = {
+                  valid: part.valid,
+                  certificate: part.certificates[part.certificates.length - 1],
+                  message: part.message
+                };
+              }
             }
             _.forEach(part.content, function(mixedPart) {
               _visit(mixedPart);

@@ -1201,6 +1201,19 @@ static BOOL debugSoParts       = NO;
           return [clazz objectWithName:_key inContainer: self];
         }
     }
+  else if ([self isOpaqueSigned])
+    {
+      NGMimeMessage *m;
+      id part;
+
+      m = [[self content] messageFromOpaqueSignedData];
+
+      part = [[[m body] parts] objectAtIndex: ([_key intValue]-1)];
+      mimeType = [[part contentType] stringValue];
+      clazz = [SOGoMailBodyPart bodyPartClassForMimeType: mimeType
+                                               inContext: _ctx];
+      return [clazz objectWithName:_key inContainer: self];
+    }
 
   parts = [[self bodyStructure] objectForKey: @"parts"];
 
@@ -1738,18 +1751,47 @@ static BOOL debugSoParts       = NO;
            [protocol isEqualToString: @"application/pkcs7-signature"]));
 }
 
-- (BOOL) isEncrypted
+- (BOOL) isOpaqueSigned
 {
-  NSString *type, *subtype;
+  NSString *type, *subtype, *smimetype;
+  NGMimeType *contentType;
 
-  type = [[[[self mailHeaders] objectForKey: @"content-type"] type] lowercaseString];
-  subtype = [[[[self mailHeaders] objectForKey: @"content-type"] subType] lowercaseString];
+  contentType = [[self mailHeaders] objectForKey: @"content-type"];
+  type = [[contentType type] lowercaseString];
+  subtype = [[contentType subType] lowercaseString];
 
   if ([type isEqualToString: @"application"])
     {
       if ([subtype isEqualToString: @"x-pkcs7-mime"] ||
           [subtype isEqualToString: @"pkcs7-mime"])
-        return YES;
+        {
+          smimetype = [[contentType valueOfParameter: @"smime-type"] lowercaseString];
+          if ([smimetype isEqualToString: @"signed-data"])
+              return YES;
+        }
+    }
+
+  return NO;
+}
+
+- (BOOL) isEncrypted
+{
+  NSString *type, *subtype, *smimetype;
+  NGMimeType *contentType;
+
+  contentType = [[self mailHeaders] objectForKey: @"content-type"];
+  type = [[contentType type] lowercaseString];
+  subtype = [[contentType subType] lowercaseString];
+
+  if ([type isEqualToString: @"application"])
+    {
+      if ([subtype isEqualToString: @"x-pkcs7-mime"] ||
+          [subtype isEqualToString: @"pkcs7-mime"])
+        {
+          smimetype = [[contentType valueOfParameter: @"smime-type"] lowercaseString];
+          if ([smimetype isEqualToString: @"enveloped-data"])
+              return YES;
+        }
     }
 
   return NO;

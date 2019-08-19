@@ -875,6 +875,18 @@ static NSString    *userAgent      = nil;
 //
 //
 //
+- (void) _fetchAttachmentsFromOpaqueSignedMail: (SOGoMailObject *) sourceMail
+{
+  NGMimeMessage *m;
+
+  m = [[sourceMail content] messageFromOpaqueSignedData];
+  [self _fileAttachmentsFromPart: [m body]];
+}
+
+
+//
+//
+//
 - (void) fetchMailForEditing: (SOGoMailObject *) sourceMail
 {
   NSString *subject, *msgid;
@@ -1007,6 +1019,8 @@ static NSString    *userAgent      = nil;
       [self setText: [sourceMail contentForInlineForward]];
       if ([sourceMail isEncrypted])
         [self _fetchAttachmentsFromEncryptedMail: sourceMail];
+      else if ([sourceMail isOpaqueSigned])
+        [self _fetchAttachmentsFromOpaqueSignedMail: sourceMail];
       else
         [self _fetchAttachmentsFromMail: sourceMail];
     }

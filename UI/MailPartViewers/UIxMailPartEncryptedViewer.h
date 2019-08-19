@@ -28,7 +28,19 @@
 
 @interface UIxMailPartEncryptedViewer : UIxMailPartViewer
 {
+  BOOL processed;
+  BOOL encrypted;
+  BOOL opaqueSigned;
+  BOOL validSignature;
+  NSMutableArray *certificates;
+  NSString *validationMessage;
 }
+
+- (BOOL) validSignature;
+- (NSString *) validationMessage;
+- (NSArray *) smimeCertificates;
+- (NSDictionary *) certificateForSubject: (NSString *) subject
+                               andIssuer: (NSString *) issuer;
 
 @end
 

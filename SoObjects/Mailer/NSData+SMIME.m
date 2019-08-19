@@ -1,6 +1,6 @@
 /* NSData+SMIME.m - this file is part of SOGo
  *
- * Copyright (C) 2017-2018 Inverse inc.
+ * Copyright (C) 2017-2019 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -296,10 +296,86 @@
   NGMimeMessageParser *parser;
   NGMimeMessage *message;
   NSData *decryptedData; 
+  NGMimeType *contentType;
+  NSString *type, *subtype, *smimetype;
  
   decryptedData = [self decryptUsingCertificate: theCertificate];
   parser = [[NGMimeMessageParser alloc] init];
   message = [parser parsePartFromData: decryptedData];
+
+  // Extract contents if the encrypted messages contains opaque signed data
+  contentType = [message contentType];
+  type = [[contentType type] lowercaseString];
+  subtype = [[contentType subType] lowercaseString];
+  if ([type isEqualToString: @"application"])
+    {
+      if ([subtype isEqualToString: @"x-pkcs7-mime"] ||
+          [subtype isEqualToString: @"pkcs7-mime"])
+	{
+	  smimetype = [[contentType valueOfParameter: @"smime-type"] lowercaseString];
+	  if ([smimetype isEqualToString: @"signed-data"])
+	    {
+	      message = [decryptedData messageFromOpaqueSignedData];
+	    }
+	}
+    }
+
+  RELEASE(parser);
+
+  return message;
+}
+
+- (NSData *) embeddedContent
+{
+  NSData *output = NULL;
+
+  BIO *sbio, *obio;
+  BUF_MEM *bptr;
+  PKCS7 *p7 = NULL;
+
+  sbio = BIO_new_mem_buf((void *)[self bytes], [self length]);
+
+  p7 = SMIME_read_PKCS7(sbio, NULL);
+
+  if (!p7)
+    {
+      NSLog(@"FATAL: could not read the signature");
+      goto cleanup;
+    }
+
+  // We output the S/MIME encrypted message
+  obio = BIO_new(BIO_s_mem());
+
+  if (!PKCS7_verify(p7, NULL, NULL, NULL, obio, PKCS7_NOVERIFY|PKCS7_NOSIGS))
+    {
+      NSLog(@"FATAL: could not extract content");
+      goto cleanup;
+    }
+
+  BIO_get_mem_ptr(obio, &bptr);
+
+  output = [NSData dataWithBytes: bptr->data  length: bptr->length];
+
+ cleanup:
+  PKCS7_free(p7);
+  BIO_free(sbio);
+  BIO_free(obio);
+
+  return output;
+}
+
+//
+//
+//
+- (NGMimeMessage *) messageFromOpaqueSignedData
+{
+  NGMimeMessageParser *parser;
+  NGMimeMessage *message;
+  NSData *extractedData;
+
+  extractedData = [self embeddedContent];
+  parser = [[NGMimeMessageParser alloc] init];
+  message = [parser parsePartFromData: extractedData];
   RELEASE(parser);
 
   return message;

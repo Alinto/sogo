@@ -238,6 +238,24 @@
   return nil;
 }
 
+
+//
+//
+//
+- (NSString *) _contentForEditingFromOpaqueSignedMail
+{
+  SOGoUserDefaults *ud;
+  NGMimeMessage *m;
+
+  m = [[self content] messageFromOpaqueSignedData];
+  ud = [[context activeUser] userDefaults];
+
+  return [self _preferredContentFromPart: [m body]
+                               favorHTML: [[ud mailComposeMessageType] isEqualToString: @"html"]];
+
+  return nil;
+}
+
 //
 //
 //
@@ -250,6 +268,8 @@
 
   if ([self isEncrypted])
     output = [self _contentForEditingFromEncryptedMail];
+  else if ([self isOpaqueSigned])
+    output = [self _contentForEditingFromOpaqueSignedMail];
 
   // If not encrypted or if decryption failed, we fallback
   // to the normal content fetching code.
