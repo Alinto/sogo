@@ -104,6 +104,7 @@
   ERR_clear_error();
 
   msgBio = BIO_new_mem_buf ((void *) [signedData bytes], [signedData length]);
+  output = NULL;
 
   p7 = SMIME_read_PKCS7(msgBio, NULL);
 
