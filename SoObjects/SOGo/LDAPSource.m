@@ -426,7 +426,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 
   NS_DURING
     {
-      NSLog(@"Creating NGLdapConnection instance for bindDN '%@'", _bindDN);
+      //NSLog(@"Creating NGLdapConnection instance for bindDN '%@'", _bindDN);
       ldapConnection = [[NGLdapConnection alloc] initWithHostName: _hostname
                                                              port: _port];
       [ldapConnection autorelease];
