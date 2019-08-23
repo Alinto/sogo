@@ -60,6 +60,7 @@
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
+#import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/WOResponse+SOGo.h>
@@ -1423,15 +1424,19 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
 - (NSString *) _sogoACLUIDToIMAPUID: (NSString *) uid
 {
+  SOGoUser *user;
+
+  user = [SOGoUser userWithLogin: uid];
+
   if ([uid hasPrefix: @"@"])
     return [[[[context activeUser] domainDefaults] imapAclGroupIdPrefix]
              stringByAppendingString: [uid substringFromIndex: 1]];
   else if ([[[context activeUser] domainDefaults] forceExternalLoginWithEmail])
-    {
-      return [[[SOGoUser userWithLogin: uid] primaryIdentity] objectForKey: @"email"];
-    }
-  else
-    return uid;
+      return [[user primaryIdentity] objectForKey: @"email"];
+
+  return [[SOGoUserManager sharedUserManager]
+                     getExternalLoginForUID: [user loginInDomain]
+                                   inDomain: [user domain]];
 }
 
 - (void) _removeIMAPExtUsernames
