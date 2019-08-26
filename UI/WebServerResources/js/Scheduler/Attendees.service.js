@@ -23,6 +23,7 @@
     this.slotEndTimeLimit.setMinutes(0);
     this.slotEndTimeLimit.setHours(Attendees.dayEndHour);
     this.$days = [];
+    this.$futureFreebusyData = {};
     this.updateFreeBusyCoverage();
     this.updateFreeBusy();
   }
@@ -431,6 +432,8 @@
       else {
         promise = Attendees.$q.when();
       }
+
+      this.$futureFreebusyData[attendee.uid] = promise;
 
       return promise;
     }
