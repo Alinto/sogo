@@ -76,7 +76,7 @@
       });
 
       this.parentController.onUpdate = function () {
-        var freebusys = $ctrl.attendee.freebusy[$ctrl.day];
+        var freebusys = $ctrl.attendee.uid ? $ctrl.attendee.freebusy[$ctrl.day] : null;
 
         if (!$ctrl.attendee.uid) {
           _.forEach(hours, function(div) {
@@ -92,7 +92,7 @@
             } else {
               quarters[index].classList.remove('event');
             }
-            if (freebusys[hour][quarter]) {
+            if (freebusys && freebusys[hour][quarter]) {
               busys[index].classList.remove('ng-hide');
             } else {
               busys[index].classList.add('ng-hide');

@@ -143,6 +143,8 @@
       this.categories = [];
     this.c_screenname = null;
     angular.extend(this, data);
+    if (!this.pid)
+      this.pid = this.container;
     if (!this.$$fullname)
       this.$$fullname = this.$fullname();
     if (!this.$$email)
@@ -211,12 +213,12 @@
 
   /**
    * @function $reload
-   * @memberof Message.prototype
-   * @desc Fetch the viewable message body along with other metadata such as the list of attachments.
+   * @memberof Card.prototype
+   * @desc Fetch all available attributes of the contact.
    * @returns a promise of the HTTP operation
    */
   Card.prototype.$reload = function() {
-    var futureCardData;
+    var _this = this, futureCardData;
 
     if (this.$futureCardData)
       return this;
@@ -224,6 +226,28 @@
     futureCardData = Card.$$resource.fetch([this.pid, this.id].join('/'), 'view');
 
     return this.$unwrap(futureCardData);
+  };
+
+  /**
+   * @function $members
+   * @memberof Card.prototype
+   * @desc Fetch members of the LDAP group.
+   * @returns a promise that resolves with the members
+   */
+  Card.prototype.$members = function() {
+    var _this = this;
+
+    if (this.members)
+      return Card.$q.when(this.members);
+
+    if (this.isgroup) {
+      return Card.$$resource.fetch([this.pid, this.id].join('/'), 'members').then(function(data) {
+        _this.members = _.map(data.members, function(member) {
+          return new Card(member);
+        });
+        return _this.members;
+      });
+    }
   };
 
   /**
@@ -383,7 +407,7 @@
   };
 
   Card.prototype.$isList = function(options) {
-    // isGroup attribute means it's a group of a LDAP source (not expandable on the client-side)
+    // isGroup attribute means it's a group of a LDAP source (not automatically expanded on the client-side)
     var condition = (!options || !options.expandable || options.expandable && !this.isgroup);
     return this.c_component == 'vlist' && condition;
   };

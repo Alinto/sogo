@@ -5,6 +5,7 @@ New features
  - [core] Debian 10 (Buster) support for x86_64 (#4775)
  - [core] now possible to specify which domains you can forward your mails to
  - [core] added support for S/MIME opaque signing (#4582)
+ - [web] optionally expand LDAP groups in attendees editor (#2506)
 
 Enhancements
  - [web] avoid saving an empty calendar name

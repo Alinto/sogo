@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2005-2017 Inverse inc.
+  Copyright (C) 2005-2019 Inverse inc.
 
   This file is part of SOGo.
 
@@ -31,8 +31,10 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/SOGoGroup.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserManager.h>
 
 #import <Contacts/NGVCard+SOGo.h>
 #import <Contacts/SOGoContactObject.h>
@@ -383,6 +385,55 @@
 
   return result;
 }
+
+- (id <WOActionResults>) membersAction
+{
+  NSArray *allUsers;
+  NSDictionary *dict;
+  NSEnumerator *emails;
+  NSMutableArray *allUsersData, *allUserEmails;
+  NSMutableDictionary *userData;
+  NSString *email;
+  SOGoObject <SOGoContactObject> *contact;
+  SOGoUser *user;
+  id <WOActionResults> result;
+  unsigned int i, max;
+
+  result = nil;
+  contact = [self clientObject];
+  dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: [contact nameInContainer]];
+
+  if ([[dict objectForKey: @"isGroup"] boolValue])
+    {
+      SOGoGroup *aGroup;
+
+      aGroup = [SOGoGroup groupWithIdentifier: [contact nameInContainer]
+				     inDomain: [[context activeUser] domain]];
+      allUsers = [aGroup members]; // array of SOGoUser objects
+      max = [allUsers count];
+      allUsersData = [NSMutableArray arrayWithCapacity: max];
+      for (i = 0; i < max; i++)
+        {
+          user = [allUsers objectAtIndex: i];
+          allUserEmails = [NSMutableArray array];
+          emails = [[user allEmails] objectEnumerator];
+          while ((email = [emails nextObject])) {
+            [allUserEmails addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                      email, @"value", @"work", @"type", nil]];
+          }
+          userData = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [user loginInDomain], @"c_uid",
+                                   [user cn], @"c_cn",
+                                   allUserEmails, @"emails", nil];
+          [allUsersData addObject: userData];
+        }
+      dict = [NSDictionary dictionaryWithObject: allUsersData forKey: @"members"];
+      result = [self responseWithStatus: 200
+                              andString: [dict jsonRepresentation]];
+    }
+  return result;
+}
+
 
 - (BOOL) hasPhoto
 {

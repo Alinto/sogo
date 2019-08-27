@@ -325,10 +325,25 @@
     };
 
     function scrollToStart() {
-      var dayElement = $element[0].querySelector('#freebusy_day_' + vm.component.start.getDayString());
-      var scrollLeft = dayElement.offsetLeft - vm.attendeesEditor.containerElement.offsetLeft;
-      vm.attendeesEditor.containerElement.scrollLeft = scrollLeft;
+      var dayElement, scrollLeft;
+      if (!vm.attendeesEditor.containerElement) {
+        vm.attendeesEditor.containerElement = $element[0].querySelector('#freebusy');
+      }
+      if (vm.attendeesEditor.containerElement) {
+        dayElement = $element[0].querySelector('#freebusy_day_' + vm.component.start.getDayString());
+        scrollLeft = dayElement.offsetLeft - vm.attendeesEditor.containerElement.offsetLeft;
+        vm.attendeesEditor.containerElement.scrollLeft = scrollLeft;
+      }
     }
+
+    this.expandAttendee = function (attendee) {
+      if (attendee.members.length > 0) {
+        this.component.$attendees.remove(attendee);
+        _.forEach(attendee.members, function (member) {
+          vm.component.$attendees.add(member);
+        });
+      }
+    };
 
     this.removeAttendee = function (attendee, form) {
       this.component.$attendees.remove(attendee);

@@ -31,11 +31,15 @@
 
       $scope.$watch(
         function() {
-          return $ctrl.component? [ _.pick($ctrl.component, watchedAttrs) ] : null;
+          return $ctrl.component? {
+            start: $ctrl.component.start,
+            end: $ctrl.component.end,
+            attendees: _.map($ctrl.component.attendees, 'email')
+          } : null;
         },
-        function(newId, oldId) {
-          if ($ctrl.component) {
-            // Component has changed
+        function(newAttrs, oldAttrs) {
+          if (newAttrs.attendees) {
+            // Attendees have changed
             $q.all(_.values($ctrl.component.$attendees.$futureFreebusyData)).then(function() {
               $ctrl.onUpdate();
             });

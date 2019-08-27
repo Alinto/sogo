@@ -66,9 +66,14 @@
         <sg-avatar-image class="md-avatar"
                          sg-email="currentAttendee.email"
                          size="40">{{ editor.defaultIconForAttendee(currentAttendee) }}</sg-avatar-image>
-        <div class="sg-tile-content sg-padded--right">
+        <div class="sg-tile-content">
           <div class="sg-md-subhead"><div>{{currentAttendee.name}}</div></div>
-          <div class="sg-md-body"><div>{{currentAttendee.email}}</div></div>
+          <div class="sg-md-body">
+            <div>{{currentAttendee.email}}</div>
+            <md-button class="sg-tile-thread" md-colors="::{ color: 'accent-600'}" ng-if="currentAttendee.isGroup" ng-click="editor.expandAttendee(currentAttendee)">
+              <md-icon class="md-rotate-180-ccw" md-colors="::{ color: 'accent-600'}">add_box</md-icon><span ng-bind="currentAttendee.members.length"></span>
+            </md-button>
+          </div>
         </div>
         <md-button class="md-icon-button"
                    label:aria-label="Delete"
