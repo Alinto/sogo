@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2009-2017 Inverse inc.
+  Copyright (C) 2009-2019 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -58,6 +58,7 @@
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoSystemDefaults.h>
+#import <SOGo/SOGoGroup.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserManager.h>
@@ -1424,7 +1425,14 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
 - (NSString *) _sogoACLUIDToIMAPUID: (NSString *) uid
 {
+  SOGoGroup *group;
   SOGoUser *user;
+
+  group = [SOGoGroup groupWithIdentifier: uid
+                                inDomain: [[context activeUser] domain]];
+  if (group)
+    return [[[[context activeUser] domainDefaults] imapAclGroupIdPrefix]
+             stringByAppendingString: uid];
 
   user = [SOGoUser userWithLogin: uid];
 

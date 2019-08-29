@@ -17,6 +17,7 @@ Bug fixes
  - [web] fixed saving value of receipt action for main IMAP account
  - [web] fixed search results in Calendar module when targeting all events
  - [core] honor IMAPLoginFieldName also when setting IMAP ACLs
+ - [core] honor groups when setting IMAP ACLs
 
 4.0.8 (2019-07-19)
 ------------------
