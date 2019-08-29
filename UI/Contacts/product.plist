@@ -305,6 +305,11 @@
           protectedBy = "Access Contents Information";
           pageName    = "UIxContactEditor";
         };
+        members = {
+          protectedBy = "Access Contents Information";
+          pageName    = "UIxContactView";
+          actionName  = "members";
+        };
         save = {
           protectedBy = "Change Images And Files";
           pageName    = "UIxContactEditor";
