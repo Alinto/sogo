@@ -1428,6 +1428,9 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   SOGoGroup *group;
   SOGoUser *user;
 
+  if ([uid isEqualToString: defaultUserID])
+    return uid;
+
   group = [SOGoGroup groupWithIdentifier: uid
                                 inDomain: [[context activeUser] domain]];
   if (group)
