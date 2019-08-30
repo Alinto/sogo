@@ -16,6 +16,7 @@ Bug fixes
  - [web] properly handle Windows-1256 charaset (#4781)
  - [web] fixed saving value of receipt action for main IMAP account
  - [web] fixed search results in Calendar module when targeting all events
+ - [web] properly encode URL of cards from exteral sources
  - [core] honor IMAPLoginFieldName also when setting IMAP ACLs
  - [core] honor groups when setting IMAP ACLs
  - [core] honor "any authenticated user" when setting IMAP ACLs

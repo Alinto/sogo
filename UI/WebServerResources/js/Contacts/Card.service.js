@@ -38,9 +38,10 @@
    * @desc The factory we'll use to register with Angular.
    * @returns the Card constructor
    */
-  Card.$factory = ['$q', '$timeout', 'sgSettings', 'sgCard_STATUS', 'Resource', 'Preferences', function($q, $timeout, Settings, Card_STATUS, Resource, Preferences) {
+  Card.$factory = ['$q', '$timeout', 'sgSettings', 'sgCard_STATUS', 'encodeUriFilter', 'Resource', 'Preferences', function($q, $timeout, Settings, Card_STATUS, encodeUriFilter, Resource, Preferences) {
     angular.extend(Card, {
       STATUS: Card_STATUS,
+      encodeUri: encodeUriFilter,
       $$resource: new Resource(Settings.activeUser('folderURL') + 'Contacts', Settings.activeUser()),
       $q: $q,
       $timeout: $timeout,
@@ -202,6 +203,19 @@
   };
 
   /**
+   * @function $path
+   * @memberof Card.prototype
+   * @desc Return the relative URL of the card.
+   * @returns the relative URL, properly encoded
+   */
+  Card.prototype.$path = function() {
+    return [
+      Card.encodeUri(this.pid),
+      Card.encodeUri(this.id)
+    ].join('/');
+  };
+
+  /**
    * @function $isLoading
    * @memberof Card.prototype
    * @returns true if the Card definition is still being retrieved from server after a specific delay
@@ -223,7 +237,7 @@
     if (this.$futureCardData)
       return this;
 
-    futureCardData = Card.$$resource.fetch([this.pid, this.id].join('/'), 'view');
+    futureCardData = Card.$$resource.fetch(this.$path(), 'view');
 
     return this.$unwrap(futureCardData);
   };
@@ -241,7 +255,7 @@
       return Card.$q.when(this.members);
 
     if (this.isgroup) {
-      return Card.$$resource.fetch([this.pid, this.id].join('/'), 'members').then(function(data) {
+      return Card.$$resource.fetch(this.$path(), 'members').then(function(data) {
         _this.members = _.map(data.members, function(member) {
           return new Card(member);
         });
@@ -266,7 +280,10 @@
       });
     }
 
-    return Card.$$resource.save([this.pid, this.id || '_new_'].join('/'),
+    return Card.$$resource.save([
+      Card.encodeUri(this.pid),
+      Card.encodeUri(this.id) || '_new_'
+    ].join('/'),
                                 this.$omit(),
                                 { action: action })
       .then(function(data) {
@@ -289,7 +306,7 @@
     }
     else {
       // No arguments -- delete card
-      return Card.$$resource.remove([this.pid, this.id].join('/'));
+      return Card.$$resource.remove(this.$path());
     }
   };
 
@@ -523,7 +540,7 @@
       if (this.$$certificate)
         return Card.$q.when(this.$$certificate);
       else {
-        return Card.$$resource.fetch([this.pid, this.id].join('/'), 'certificate').then(function(data) {
+        return Card.$$resource.fetch(this.$path(), 'certificate').then(function(data) {
           _this.$$certificate = data;
           return data;
         });
@@ -543,7 +560,7 @@
   Card.prototype.$removeCertificate = function() {
     var _this = this;
 
-    return Card.$$resource.fetch([this.pid, this.id].join('/'), 'removeCertificate').then(function() {
+    return Card.$$resource.fetch(this.$path(), 'removeCertificate').then(function() {
       _this.hasCertificate = false;
     });
   };
