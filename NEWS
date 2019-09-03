@@ -11,6 +11,7 @@ Enhancements
  - [web] avoid saving an empty calendar name
  - [web] prohibit duplicate contact categories in Preferences module
  - [web] improve constrat of text in toolbar with input fields
+ - [web] updated Angular Material to version 1.1.20
 
 Bug fixes
  - [web] properly handle Windows-1256 charaset (#4781)
