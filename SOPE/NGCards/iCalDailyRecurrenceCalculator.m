@@ -69,6 +69,10 @@
   dayMask = nil;
   repeatCount = 0;
 
+  if (!firstRange)
+    // Can happen when event/todo has a rrule with no dtstart
+    return nil;
+
   if ([endDate compare: firStart] == NSOrderedAscending)
     // Range ends before first occurrence
     return nil;

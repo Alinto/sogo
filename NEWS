@@ -20,6 +20,7 @@ Bug fixes
  - [core] honor IMAPLoginFieldName also when setting IMAP ACLs
  - [core] honor groups when setting IMAP ACLs
  - [core] honor "any authenticated user" when setting IMAP ACLs
+ - [core] avoid exceptions for RRULE with no DTSTART
 
 4.0.8 (2019-07-19)
 ------------------

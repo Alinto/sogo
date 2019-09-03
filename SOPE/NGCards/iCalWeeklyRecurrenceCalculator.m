@@ -79,6 +79,10 @@
   repeatCount = 0;
   hasRepeatCount = [rrule hasRepeatCount];
 
+  if (!firstRange)
+    // Can happen when event/todo has a rrule with no dtstart
+    return nil;
+
   if ([endDate compare: firStart] == NSOrderedAscending)
     // Range ends before first occurrence
     return nil;
