@@ -44,7 +44,6 @@
 - (NSString *) imapCASServiceName;
 - (NSString *) imapAclStyle;
 - (NSString *) imapAclGroupIdPrefix;
-- (NSString *) imapFolderSeparator;
 - (BOOL) imapAclConformsToIMAPExt;
 - (BOOL) forceExternalLoginWithEmail;
 - (BOOL) externalAvatarsEnabled;

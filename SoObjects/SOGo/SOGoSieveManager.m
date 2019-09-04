@@ -446,6 +446,7 @@ static NSString *sieveScriptName = @"sogo";
 }
 
 - (NSString *) _extractSieveAction: (NSDictionary *) action
+                         delimiter: (NSString *) delimiter
 {
   NSString *sieveAction, *method, *requirement, *argument, *flag, *mailbox;
   NSDictionary *mailLabels;
@@ -488,7 +489,7 @@ static NSString *sieveScriptName = @"sogo";
                   dd = [user domainDefaults];
                   mailbox
                     = [[argument componentsSeparatedByString: @"/"]
-                          componentsJoinedByString: [dd imapFolderSeparator]];
+                          componentsJoinedByString: delimiter];
                   sieveAction = [NSString stringWithFormat: @"%@ %@",
                                           method, [mailbox asSieveQuotedString]];
                 }
@@ -520,6 +521,7 @@ static NSString *sieveScriptName = @"sogo";
 }
 
 - (NSArray *) _extractSieveActions: (NSArray *) actions
+                         delimiter: (NSString *) delimiter
 {
   NSMutableArray *sieveActions;
   NSString *sieveAction;
@@ -529,7 +531,8 @@ static NSString *sieveScriptName = @"sogo";
   sieveActions = [NSMutableArray arrayWithCapacity: max];
   for (count = 0; !scriptError && count < max; count++)
     {
-      sieveAction = [self _extractSieveAction: [actions objectAtIndex: count]];
+      sieveAction = [self _extractSieveAction: [actions objectAtIndex: count]
+                                    delimiter: delimiter];
       if (!scriptError)
         [sieveActions addObject: sieveAction];
     }
@@ -538,6 +541,7 @@ static NSString *sieveScriptName = @"sogo";
 }
 
 - (NSString *) _convertScriptToSieve: (NSDictionary *) newScript
+                           delimiter: (NSString *) delimiter
 {
   NSMutableString *sieveText;
   NSString *match;
@@ -565,7 +569,8 @@ static NSString *sieveScriptName = @"sogo";
       else
         scriptError = [NSString stringWithFormat: @"Bad test: %@", match];
     }
-  sieveActions = [self _extractSieveActions: [newScript objectForKey: @"actions"]];
+  sieveActions = [self _extractSieveActions: [newScript objectForKey: @"actions"]
+                                  delimiter: delimiter];
   if ([sieveActions count])
     [sieveText appendFormat: @"    %@;\r\n",
                [sieveActions componentsJoinedByString: @";\r\n    "]];
@@ -577,6 +582,7 @@ static NSString *sieveScriptName = @"sogo";
 }
 
 - (NSString *) sieveScriptWithRequirements: (NSMutableArray *) newRequirements
+                                 delimiter: (NSString *) delimiter
 {
   NSMutableString *sieveScript;
   NSString *sieveText;
@@ -599,7 +605,8 @@ static NSString *sieveScriptName = @"sogo";
           currentScript = [scripts objectAtIndex: count];
           if ([[currentScript objectForKey: @"active"] boolValue])
             {
-              sieveText = [self _convertScriptToSieve: currentScript];
+              sieveText = [self _convertScriptToSieve: currentScript
+                                            delimiter: delimiter];
               [sieveScript appendString: sieveText];
             }
         }
@@ -815,7 +822,8 @@ static NSString *sieveScriptName = @"sogo";
   script = [NSMutableString string];
 
   // We first handle filters
-  filterScript = [self sieveScriptWithRequirements: req];
+  filterScript = [self sieveScriptWithRequirements: req
+                                         delimiter: [theAccount imap4Separator]];
   if (filterScript)
     {
       if ([filterScript length])

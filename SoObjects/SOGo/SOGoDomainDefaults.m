@@ -137,11 +137,6 @@
   return [self stringForKey: @"NGImap4ConnectionGroupIdPrefix"];
 }
 
-- (NSString *) imapFolderSeparator
-{
-  return [self stringForKey: @"NGImap4ConnectionStringSeparator"];
-}
-
 #warning this should be determined from the capabilities
 /* http://www.tools.ietf.org/wg/imapext/draft-ietf-imapext-acl/ */
 - (BOOL) imapAclConformsToIMAPExt

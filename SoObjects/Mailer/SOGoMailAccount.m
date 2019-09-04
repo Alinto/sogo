@@ -257,6 +257,18 @@ static NSString *inboxFolderName = @"INBOX";
   return [capabilities containsObject: capability];
 }
 
+- (NSString *) imap4Separator
+{
+  NGImap4Client *imapClient;
+
+  imapClient = [[self imap4Connection] client];
+
+  if (![imapClient delimiter])
+    [imapClient list: @"INBOX"  pattern: @""];
+
+  return [imapClient delimiter];
+}
+
 - (BOOL) supportsQuotas
 {
   return [self hasCapability: @"quota"];
