@@ -1173,6 +1173,12 @@ for operations is also bounded by the maximum time that the server is
 configured to allow.
 
 Defaults to `0` (unlimited).
+
+|D |SOGoLDAPGroupExpansionEnabled
+|Parameter used to enable group expansion from the Web interface.
+
+Defaults to `NO` when unset.
+
 |=======================================================================
 
 LDAP Attributes Indexing

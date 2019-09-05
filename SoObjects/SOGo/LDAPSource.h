@@ -67,6 +67,7 @@
 
   NSString *_domain;
   NSString *_contactInfoAttribute;
+  BOOL _groupExpansionEnabled;
 
   NSDictionary *_contactMapping;
   NSArray *_contactObjectClasses;
@@ -124,6 +125,8 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField;
 - (void) applyContactMappingToResult: (NSMutableDictionary *) ldifRecord;
 
 - (void) updateBaseDNFromLogin: (NSString *) theLogin;
+
+- (BOOL) groupExpansionEnabled;
 
 @end
 

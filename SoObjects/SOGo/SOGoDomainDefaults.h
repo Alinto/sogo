@@ -75,6 +75,8 @@
 - (NSArray *) freeBusyDefaultInterval;
 - (int) davCalendarStartTimeLimit;
 
+- (BOOL) ldapGroupExpansionEnabled;
+
 - (BOOL) iPhoneForceAllDayTransparency;
 
 - (NSArray *) additionalJSFiles;

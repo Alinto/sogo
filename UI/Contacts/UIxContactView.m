@@ -31,7 +31,9 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/LDAPSource.h>
 #import <SOGo/SOGoGroup.h>
+#import <SOGo/SOGoSource.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserManager.h>
@@ -395,42 +397,58 @@
   NSMutableDictionary *userData;
   NSString *email;
   SOGoObject <SOGoContactObject> *contact;
+  SOGoObject <SOGoSource> *source;
   SOGoUser *user;
   id <WOActionResults> result;
   unsigned int i, max;
 
   result = nil;
   contact = [self clientObject];
+  source = [[contact container] source];
   dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: [contact nameInContainer]];
 
   if ([[dict objectForKey: @"isGroup"] boolValue])
     {
-      SOGoGroup *aGroup;
-
-      aGroup = [SOGoGroup groupWithIdentifier: [contact nameInContainer]
-				     inDomain: [[context activeUser] domain]];
-      allUsers = [aGroup members]; // array of SOGoUser objects
-      max = [allUsers count];
-      allUsersData = [NSMutableArray arrayWithCapacity: max];
-      for (i = 0; i < max; i++)
+      if ([source isKindOfClass: [LDAPSource class]] && [(LDAPSource *) source groupExpansionEnabled])
         {
-          user = [allUsers objectAtIndex: i];
-          allUserEmails = [NSMutableArray array];
-          emails = [[user allEmails] objectEnumerator];
-          while ((email = [emails nextObject])) {
-            [allUserEmails addObject: [NSDictionary dictionaryWithObjectsAndKeys:
-                                                      email, @"value", @"work", @"type", nil]];
-          }
-          userData = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [user loginInDomain], @"c_uid",
-                                   [user cn], @"c_cn",
-                                   allUserEmails, @"emails", nil];
-          [allUsersData addObject: userData];
+          SOGoGroup *aGroup;
+
+          aGroup = [SOGoGroup groupWithIdentifier: [contact nameInContainer]
+                                         inDomain: [[context activeUser] domain]];
+          allUsers = [aGroup members]; // array of SOGoUser objects
+          max = [allUsers count];
+          allUsersData = [NSMutableArray arrayWithCapacity: max];
+          for (i = 0; i < max; i++)
+            {
+              user = [allUsers objectAtIndex: i];
+              allUserEmails = [NSMutableArray array];
+              emails = [[user allEmails] objectEnumerator];
+              while ((email = [emails nextObject])) {
+                [allUserEmails addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                          email, @"value", @"work", @"type", nil]];
+              }
+              userData = [NSDictionary dictionaryWithObjectsAndKeys:
+                                         [user loginInDomain], @"c_uid",
+                                       [user cn], @"c_cn",
+                                       allUserEmails, @"emails", nil];
+              [allUsersData addObject: userData];
+            }
+          dict = [NSDictionary dictionaryWithObject: allUsersData forKey: @"members"];
+          result = [self responseWithStatus: 200
+                                  andString: [dict jsonRepresentation]];
         }
-      dict = [NSDictionary dictionaryWithObject: allUsersData forKey: @"members"];
-      result = [self responseWithStatus: 200
-                              andString: [dict jsonRepresentation]];
+      else
+        {
+          result = [self responseWithStatus: 403
+                                  andString: @"Group is not expandable"];
+        }
     }
+  else
+    {
+      result = [self responseWithStatus: 405
+                              andString: @"Contact is not a group"];
+    }
+
   return result;
 }
 

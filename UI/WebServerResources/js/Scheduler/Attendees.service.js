@@ -171,6 +171,7 @@
           domain: card.c_domain,
           isMSExchange: card.ismsexchange,
           isGroup: card.$isList(),
+          isExpandableGroup: false,
           isResource: card.isresource,
           name: card.c_cn,
           email: card.$$email,
@@ -185,6 +186,7 @@
             // LDAP list -- preload members
             card.$members().then(function(members) {
               attendee.members = members;
+              attendee.isExpandableGroup = true;
             });
           }
           attendee.image = Attendees.$gravatar(attendee.email, 32);

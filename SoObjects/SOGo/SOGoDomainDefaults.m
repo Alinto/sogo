@@ -314,6 +314,11 @@
   return [self stringForKey: @"SOGoLDAPContactInfoAttribute"];
 }
 
+- (BOOL) ldapGroupExpansionEnabled
+{
+  return [self boolForKey: @"SOGoLDAPGroupExpansionEnabled"];
+}
+
 - (NSArray *) freeBusyDefaultInterval
 {
   return [self arrayForKey: @"SOGoFreeBusyDefaultInterval"];
