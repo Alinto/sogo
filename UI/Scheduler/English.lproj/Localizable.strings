@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Name of the Calendar";
 "new" = "New";
 "Print view" = "Print view";
+"Print" = "Print";
 "edit" = "Edit";
 "delete" = "Delete";
 "proposal" = "Proposal";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Display events and tasks colors";
 "Borders" = "Borders";
 "Backgrounds" = "Backgrounds";
+"Page Format" = "Page Format";
 
 /* Appointments */
 "Appointment viewer" = "Appointment Viewer";

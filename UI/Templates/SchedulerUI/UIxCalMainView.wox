@@ -692,7 +692,7 @@
             <md-checkbox
                 ng-model="$PrintDialogController.workingHoursOnly"
                 label:aria-label="Show working hours only">
-              <var:string label:value="Show working hours only"/>
+              <var:string label:value="Display working hours only"/>
             </md-checkbox>
           </div>
           <div>
@@ -702,7 +702,7 @@
               <div flex="30" ng-show="$PrintDialogController.visibleList" style="border-right: 1px solid #eee">
                 <div class="sg-md-caption"><var:string label:value="Tasks"/></div>
               </div>
-              <div class="md-flex" style="align-self: center; text-align: center;">{{:: $PrintDialogController.calendarView | loc }}</div>
+              <div class="md-flex" style="align-self: center; text-align: center;">{{:: $PrintDialogController.calendarView.capitalize() | loc }}</div>
             </div>
           </div>
         </md-dialog-content>
