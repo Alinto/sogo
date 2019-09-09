@@ -1,8 +1,6 @@
 /* iCalEventChanges+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2019 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +28,7 @@
 - (BOOL) sequenceShouldBeIncreased
 {
   static NSString *properties[] = {@"organizer", @"startDate", @"endDate",
-                                   @"due", @"duration",
+                                   @"due", @"duration", @"summary",
                                    @"rdate", @"rrule", @"exdate", @"exrule",
                                    @"status", @"location",
                                    nil};
