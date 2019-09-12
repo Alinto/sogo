@@ -24,6 +24,7 @@ Bug fixes
  - [core] honor "any authenticated user" when setting IMAP ACLs
  - [core] avoid exceptions for RRULE with no DTSTART
  - [core] make sure we handle events occurring after RRULE's UNTIL date
+ - [core] avoid changing RRULE's UNTIL date for no reason
 
 4.0.8 (2019-07-19)
 ------------------
