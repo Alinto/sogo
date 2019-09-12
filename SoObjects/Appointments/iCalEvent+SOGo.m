@@ -175,6 +175,8 @@
   if ([self isRecurrent])
     {
       NSCalendarDate *date;
+      NSArray *events;
+      iCalEvent *e;
 
       date = [self lastPossibleRecurrenceStartDate];
       if (date)
@@ -183,6 +185,22 @@
         /* this could also be *nil*, but in the end it makes the fetchspecs
            more complex - thus we set it to a "reasonable" distant future */
         date = iCalDistantFuture;
+
+      // We have to make sure that we don't have occurrences that are after
+      // our -lastPossibleRecurrenceStartDate. We do that by walking through
+      // the events list from the calendar component
+      events = [[self parent] events];
+
+      for (i = 0; i < [events count]; i++)
+        {
+          e = [events objectAtIndex: i];
+          if ([e recurrenceId] && [[e startDate] compare: date] == NSOrderedDescending)
+            {
+              date = [e startDate];
+              date = [date addTimeInterval: [e durationAsTimeInterval]];
+            }
+        }
+
       [row setObject: [self quickRecordDateAsNumber: date
                                          withOffset: 0 forAllDay: NO]
               forKey: @"c_cycleenddate"];
