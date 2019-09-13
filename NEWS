@@ -1,3 +1,9 @@
+﻿4.0.9 (2019-XX-XX)
+------------------
+
+Bug fixes
+ - [eas] improve FolderSync operation (#4672)
+
 4.0.5 (2018-MM-DD)
 ------------------
 
