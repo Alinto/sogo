@@ -951,7 +951,7 @@ class CalDAVSchedulingTest(unittest.TestCase):
 
         invitation.add("method").value = "REQUEST"
         invitation.vevent.summary.value = "Updated invitation"
-        invitation.vevent.sequence.value = "1"
+        invitation.vevent.sequence.value = "2"
         attendee.partstat_param = "NEEDS-ACTION"
         now = datetime.datetime.now()
         invitation.vevent.last_modified.value = now
@@ -1033,7 +1033,7 @@ class CalDAVSchedulingTest(unittest.TestCase):
         invitation.vevent.last_modified.value = now
         invitation.vevent.dtstamp.value = now
         invitation.vevent.summary.value = "Updated invitation (again)"
-        invitation.vevent.sequence.value = "2"
+        invitation.vevent.sequence.value = "3"
         delegate.partstat_param = "NEEDS-ACTION"
 
         self._postEvent(self.client, self.user_calendar, invitation,
