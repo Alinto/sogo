@@ -1060,7 +1060,7 @@ class CalDAVSchedulingTest(unittest.TestCase):
         invitation.vevent.last_modified.value = now
         invitation.vevent.dtstamp.value = now
         invitation.vevent.summary.value = "Cancelled invitation (again)"
-        invitation.vevent.sequence.value = "3"
+        invitation.vevent.sequence.value = "4"
 
         self._postEvent(self.client, self.user_calendar, invitation,
                         self.user_email, [self.attendee1_email, self.attendee1_delegate_email])
