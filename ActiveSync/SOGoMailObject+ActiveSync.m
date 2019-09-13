@@ -729,6 +729,17 @@ struct GlobalObjectId {
             break;
         }
 
+      // If we didn't find a "space" character search again for &# to avoid
+      // truncating the content in the middle of a XML entity
+      if (i < 0)
+        {
+          for (i = len-2 ; i >= 0; i--)
+            {
+              if ([theContent characterAtIndex: i] == '&' && [theContent characterAtIndex: i+1] == '#')
+                break;
+            }
+        }
+
       return [theContent substringToIndex: i];
     }
 

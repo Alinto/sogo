@@ -26,6 +26,7 @@ Bug fixes
  - [core] make sure we handle events occurring after RRULE's UNTIL date
  - [core] avoid changing RRULE's UNTIL date for no reason
  - [eas] improve FolderSync operation (#4672)
+ - [eas] avoid incorrect truncation leading to exception (#4806)
 
 4.0.8 (2019-07-19)
 ------------------
