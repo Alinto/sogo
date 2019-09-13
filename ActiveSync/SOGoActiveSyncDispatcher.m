@@ -802,7 +802,7 @@ void handle_eas_terminate(int signum)
 - (void) processFolderSync: (id <DOMElement>) theDocumentElement
                 inResponse: (WOResponse *) theResponse
 {
-  NSString *key, *cKey, *nkey, *name, *serverId, *parentId, *nameInCache, *personalFolderName, *syncKey, *folderType, *operation;
+  NSString *key, *cKey, *nkey, *name, *serverId, *parentId, *nameInCache, *personalFolderName, *syncKey, *folderType, *operation, *parent;
   NSMutableArray *folders, *processedFolders, *allFoldersMetadata;
   NSMutableDictionary *cachedGUIDs, *metadata;
   NSDictionary *folderMetadata, *imapGUIDs;
@@ -1173,9 +1173,19 @@ void handle_eas_terminate(int signum)
          {
            if ([[folders objectAtIndex:fi] isKindOfClass: [SOGoAppointmentFolder class]])
              {
-               type = ([[[folders objectAtIndex:fi] nameInContainer] isEqualToString: personalFolderName] ? 8 : 13);
+               if ([[[folders objectAtIndex:fi] nameInContainer] isEqualToString: personalFolderName])
+                 {
+                   type = 8;
+                   parent = @"0";
+                 }
+               else
+                 {
+                   type = 13;
+                   parent = [NSString stringWithFormat: @"vevent/%@",personalFolderName];
+                 }
+
                [commands appendFormat: @"<%@><ServerId>%@</ServerId><ParentId>%@</ParentId><DisplayName>%@</DisplayName><Type>%d</Type></%@>", operation,
-                   [name stringByEscapingURL], @"0", [[[folders objectAtIndex:fi] displayName] activeSyncRepresentationInContext: context], type, operation];
+                   [name stringByEscapingURL], [parent stringByEscapingURL], [[[folders objectAtIndex:fi] displayName] activeSyncRepresentationInContext: context], type, operation];
 
                command_count++;
 
@@ -1183,7 +1193,17 @@ void handle_eas_terminate(int signum)
                [o save];
 
                name = [NSString stringWithFormat: @"vtodo/%@", [[folders objectAtIndex:fi] nameInContainer]];
-               type = ([[[folders objectAtIndex:fi] nameInContainer] isEqualToString: personalFolderName] ? 7 : 15);
+               if ([[[folders objectAtIndex:fi] nameInContainer] isEqualToString: personalFolderName])
+                 {
+                   type = 7;
+                   parent = @"0";
+                 }
+               else
+                 {
+                   type = 15;
+                   parent = [NSString stringWithFormat: @"vtodo/%@",personalFolderName];
+                 }
+
 
                // We always sync the "Default Tasks folder" (7). For "User-created Tasks folder" (15), we check if we include it in
                // the sync process by checking if "Show tasks" is enabled. If not, we skip the folder entirely.
@@ -1191,7 +1211,7 @@ void handle_eas_terminate(int signum)
                    (type == 15 && [[folders objectAtIndex: fi] showCalendarTasks]))
                  {
                    [commands appendFormat: @"<%@><ServerId>%@</ServerId><ParentId>%@</ParentId><DisplayName>%@</DisplayName><Type>%d</Type></%@>", operation,
-                             [name stringByEscapingURL], @"0", [[[folders objectAtIndex:fi] displayName] activeSyncRepresentationInContext: context], type, operation];
+                       [name stringByEscapingURL], [parent stringByEscapingURL], [[[folders objectAtIndex:fi] displayName] activeSyncRepresentationInContext: context], type, operation];
 
                    command_count++;
 
@@ -1226,9 +1246,19 @@ void handle_eas_terminate(int signum)
              } 
            else if ([[folders objectAtIndex:fi] isKindOfClass: [SOGoContactGCSFolder class]])
              {
-               type = ([[[folders objectAtIndex:fi] nameInContainer] isEqualToString: personalFolderName] ? 9 : 14);
+               if ([[[folders objectAtIndex:fi] nameInContainer] isEqualToString: personalFolderName])
+                 {
+                   type = 9;
+                   parent = @"0";
+                 }
+               else
+                 {
+                   type = 14;
+                   parent = [NSString stringWithFormat: @"vcard/%@",personalFolderName];
+                 }
+
                [commands appendFormat: @"<%@><ServerId>%@</ServerId><ParentId>%@</ParentId><DisplayName>%@</DisplayName><Type>%d</Type></%@>", operation,
-                   [name stringByEscapingURL], @"0", [[[folders objectAtIndex:fi] displayName] activeSyncRepresentationInContext: context], type, operation];
+                   [name stringByEscapingURL], [parent stringByEscapingURL], [[[folders objectAtIndex:fi] displayName] activeSyncRepresentationInContext: context], type, operation];
 
                command_count++;
 
