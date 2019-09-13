@@ -950,8 +950,8 @@ class CalDAVSchedulingTest(unittest.TestCase):
         #    => org: 1 (updated), attendee: 1 (updated), delegate: 0
 
         invitation.add("method").value = "REQUEST"
-        invitation.vevent.summary.value = "Updated invitation"
-        invitation.vevent.sequence.value = "2"
+        #invitation.vevent.summary.value = "Updated invitation"
+        invitation.vevent.sequence.value = "1"
         attendee.partstat_param = "NEEDS-ACTION"
         now = datetime.datetime.now()
         invitation.vevent.last_modified.value = now
@@ -1032,8 +1032,8 @@ class CalDAVSchedulingTest(unittest.TestCase):
         now = datetime.datetime.now()
         invitation.vevent.last_modified.value = now
         invitation.vevent.dtstamp.value = now
-        invitation.vevent.summary.value = "Updated invitation (again)"
-        invitation.vevent.sequence.value = "3"
+        #invitation.vevent.summary.value = "Updated invitation (again)"
+        invitation.vevent.sequence.value = "2"
         delegate.partstat_param = "NEEDS-ACTION"
 
         self._postEvent(self.client, self.user_calendar, invitation,
@@ -1059,8 +1059,8 @@ class CalDAVSchedulingTest(unittest.TestCase):
         now = datetime.datetime.now()
         invitation.vevent.last_modified.value = now
         invitation.vevent.dtstamp.value = now
-        invitation.vevent.summary.value = "Cancelled invitation (again)"
-        invitation.vevent.sequence.value = "4"
+        #invitation.vevent.summary.value = "Cancelled invitation (again)"
+        invitation.vevent.sequence.value = "3"
 
         self._postEvent(self.client, self.user_calendar, invitation,
                         self.user_email, [self.attendee1_email, self.attendee1_delegate_email])
