@@ -2927,15 +2927,20 @@ SOGoInternalSyncInterval = 60;
 S/MIME Support in SOGo
 ----------------------
 
-SOGo supports S/MIME email signing and encryption. When receiving S/MIME signed emails, SOGo automatically extracts the
-PKCS (Public-Key Cryptography Standard) #7 signature and stores it in the user's personal address book for the contact
-associated to the email address of the email's sender. This certificate will allow the user to send encrypted emails to
-these recipients.
+SOGo supports S/MIME email signing and encryption. When receiving
+S/MIME signed emails, SOGo automatically extracts the PKCS (Public-Key
+Cryptography Standard) #7 signature and stores it in the user's
+personal address book for the contact associated to the email address
+of the email's sender. This certificate will allow the user to send
+encrypted emails to these recipients.
 
-User that wish to send signed emails must upload their certificate in PKCS #12 format. When doing so,
-SOGo will convert the PKCS #12 file into the PEM format and store it in the user's preferences.
+User that wish to send signed emails must upload their certificate in
+PKCS #12 format. When doing so, SOGo will convert the PKCS #12 file
+into the PEM format and store it in the user's preferences.
 
-If you are looking for a free S/MIME certificate from a well-known CA, please have a look at Comodo: https://www.comodo.com/home/email-security/free-email-certificate.php
+If you are looking for a free S/MIME certificate from a well-known CA,
+please have a look at Actalis:
+https://www.actalis.it/products/certificates-for-secure-electronic-mail.aspx
 
 
 Using SOGo
