@@ -208,7 +208,7 @@ content:
 ----
 [SOGo]
 name=Inverse SOGo Repository
-baseurl=https://<username>:<password>@packages.inverse.ca/SOGo/release/3/rhel/7/$basearch
+baseurl=https://<username>:<password>@packages.inverse.ca/SOGo/release/4/rhel/7/$basearch
 gpgcheck=1
 ----
 
