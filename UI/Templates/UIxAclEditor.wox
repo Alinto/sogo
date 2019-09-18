@@ -34,7 +34,7 @@
             md-selected-item-change="acl.addUser(user)"
             md-items="user in acl.userFilter(acl.searchText)"
             md-item-text="user.empty"
-            md-min-length="3"
+            var:md-min-length="minimumSearchLength"
             md-delay="300"
             md-no-cache="true"
             label:md-floating-label="Add User">

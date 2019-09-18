@@ -31,7 +31,7 @@
             md-selected-item-change="delegate.addUser(user)"
             md-items="user in delegate.userFilter(delegate.searchText)"
             md-item-text="user.empty"
-            md-min-length="3"
+            var:md-min-length="minimumSearchLength"
             md-no-cache="true"
             label:md-floating-label="Add User">
           <md-item-template>

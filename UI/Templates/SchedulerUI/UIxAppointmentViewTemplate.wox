@@ -224,7 +224,7 @@
               md-selected-item="cardToAdd"
               md-items="card in editor.cardFilter(editor.component.delegatedTo)"
               md-item-text="card.$$email"
-              md-min-length="3"
+              var:md-min-length="minimumSearchLength"
               md-no-cache="true"
               label:md-floating-label="Delegated to">
             <span class="md-contact-suggestion" layout="row" layout-align="space-between center">

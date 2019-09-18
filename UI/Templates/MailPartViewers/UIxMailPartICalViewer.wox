@@ -85,7 +85,7 @@
                           md-search-text="searchText"
                           md-selected-item="delegatedTo"
                           md-items="user in userFilter(searchText)"
-                          md-min-length="3"
+                          var:md-min-length="minimumSearchLength"
                           md-no-cache="true"
                           md-item-text="user.$shortFormat()"
                           label:md-floating-label="Delegated to">
