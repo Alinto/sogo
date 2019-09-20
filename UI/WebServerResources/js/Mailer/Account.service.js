@@ -133,12 +133,12 @@
    * @returns a promise of the HTTP operation
    */
   Account.prototype.$getMailboxes = function(options) {
-    var _this = this;
+    var _this = this, reload = (options && options.reload);
 
-    if (this.$mailboxes && !(options && options.reload)) {
+    if (this.$mailboxes && !reload) {
       return Account.$q.when(this.$mailboxes);
     }
-    else if (this.$futureMailboxesData) {
+    else if (!reload && this.$futureMailboxesData) {
       return this.$futureMailboxesData;
     }
     else {
