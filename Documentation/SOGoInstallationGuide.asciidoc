@@ -1351,7 +1351,7 @@ otherwise the CAS server will complain:
 ----
 ERROR [org.jasig.cas.CentralAuthenticationServiceImpl] - ServiceTicket
 [ST-31740-hoV1brhhwMNfnBkSMVUw-ocas] with service [imap://myimapserver
-does not match supplied service [sieve://mysieveserver:2000]
+does not match supplied service [sieve://mysieveserver:4190]
 ----
 
 Finally, when using imapproxy to speed up the imap accesses, the
@@ -1895,8 +1895,8 @@ URL, such as:
 
 [options="compact"]
 * `sieve://127.0.0.1`
-* `sieve://127.0.0.1:2000`
-* `sieve://127.0.0.1:2000/?tls=YES`
+* `sieve://127.0.0.1:4190`
+* `sieve://127.0.0.1:4190/?tls=YES`
 
 Note that TLS is supported but SSL is not.
 
@@ -3073,6 +3073,10 @@ current version of SOGo from the previous release.
 
 [cols="100a"]
 |=======================================================================
+h|4.1.0
+|The default port for the SOGoSieveServer default is now 4190 (previously
+2000). You need to explicitly set the port if you use a different port.
+
 h|4.0.0
 |Run the shell script `sql-update-3.2.10_to_4.0.0.sh` or
 `sql-update-3.2.10_to_4.0.0-mysql.sh` (if you are using MySQL).

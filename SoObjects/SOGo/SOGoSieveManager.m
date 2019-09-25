@@ -1,6 +1,6 @@
 /* SOGoSieveManager.m - this file is part of SOGo
  *
- * Copyright (C) 2010-2016 Inverse inc.
+ * Copyright (C) 2010-2019 Inverse inc.
  *
  * Author: Inverse <info@inverse.ca>
  *
@@ -673,10 +673,10 @@ static NSString *sieveScriptName = @"sogo";
   // sieveServer might have the following format:
   //
   // sieve://localhost
-  // sieve://localhost:2000
-  // sieve://localhost:2000/?tls=YES
+  // sieve://localhost:4190
+  // sieve://localhost:4190/?tls=YES
   //
-  // Values such as "localhost" or "localhost:2000" are NOT supported.
+  // Values such as "localhost" or "localhost:4190" are NOT supported.
   //
   // We first try to get the user's preferred Sieve server
   sieveServer = [[[user mailAccounts] objectAtIndex: 0] objectForKey: @"sieveServerName"];
@@ -710,7 +710,7 @@ static NSString *sieveScriptName = @"sogo";
     if ([url port])
       sievePort = [[url port] intValue];
     else
-      sievePort = 2000;
+      sievePort = 4190;
 
   sieveQuery = [cUrl query] ? [cUrl query] : [url query];
   if (sieveQuery)
