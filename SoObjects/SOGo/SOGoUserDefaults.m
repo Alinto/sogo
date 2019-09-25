@@ -372,7 +372,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
       userLanguage = [source objectForKey: @"SOGoLanguage"];
       if (!(userLanguage && [userLanguage isKindOfClass: [NSString class]]))
         userLanguage = [(SOGoDomainDefaults *) parentSource language];
-  
+
       supportedLanguages = [[SOGoSystemDefaults sharedSystemDefaults]
                              supportedLanguages];
 
@@ -541,7 +541,14 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
 - (void) setMailAutoSave: (NSString *) newValue
 {
-  [self setObject: newValue forKey: @"SOGoMailAutoSave"];
+  NSString *s;
+
+  if ([newValue intValue] == 0)
+    s = @"5";
+  else
+    s = newValue;
+
+  [self setObject: s forKey: @"SOGoMailAutoSave"];
 }
 
 - (NSString *) mailAutoSave
@@ -552,7 +559,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
   if ([s intValue] == 0)
     s = @"5";
-  
+
   return s;
 }
 
