@@ -757,6 +757,7 @@
 
     // Expose and resolve the promise
     this.$futureAddressBookData = futureAddressBookData.then(function(response) {
+      var selectedCards = _.map(_this.$selectedCards(), 'id');
       return AddressBook.$timeout(function() {
         var headers;
 
@@ -779,12 +780,17 @@
 
           // Instanciate Card objects
           _.reduce(_this.ids, function(cards, card, i) {
-            var data = { pid: _this.id, id: card };
+            var data = { pid: _this.id, id: card }, cardObject;
 
             // Build map of ID <=> index
             _this.idsMap[data.id] = i;
 
-            cards.push(new AddressBook.$Card(data));
+            cardObject = new AddressBook.$Card(data);
+
+            // Restore selection
+            cardObject.selected = selectedCards.indexOf(cardObject.id) > -1;
+
+            cards.push(cardObject);
 
             return cards;
           }, _this.$cards);

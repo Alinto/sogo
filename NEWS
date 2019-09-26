@@ -20,6 +20,7 @@ Bug fixes
  - [web] fixed saving value of receipt action for main IMAP account
  - [web] fixed search results in Calendar module when targeting all events
  - [web] properly encode URL of cards from exteral sources
+ - [web] restore cards selection after automatic refresh (#4809)
  - [core] honor IMAPLoginFieldName also when setting IMAP ACLs
  - [core] honor groups when setting IMAP ACLs
  - [core] honor "any authenticated user" when setting IMAP ACLs
