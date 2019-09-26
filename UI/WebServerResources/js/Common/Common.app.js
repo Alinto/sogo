@@ -303,6 +303,7 @@
         // When expecting JSON but receiving HTML, assume session has expired and reload page
         if (response && /^application\/json/.test(response.config.headers.Accept) &&
             /^[\n\r ]*<!DOCTYPE html/.test(response.data)) {
+          angular.element($window).off('beforeunload');
           $window.location.href = $window.ApplicationBaseURL;
           return $q.reject();
         }
