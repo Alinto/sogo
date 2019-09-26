@@ -384,7 +384,7 @@ function initAddresses() {
 }
 
 function initAutoSaveTimer() {
-    var autoSave = parseInt(UserDefaults["SOGoMailAutoSave"]) || 5;
+    var autoSave = Math.abs(parseInt(UserDefaults["SOGoMailAutoSave"])) || 5;
 
     if (autoSave) {
         var interval;

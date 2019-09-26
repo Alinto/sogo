@@ -543,7 +543,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 {
   NSString *s;
 
-  if ([newValue intValue] == 0)
+  if ([newValue intValue] <= 0)
     s = @"5";
   else
     s = newValue;
@@ -557,7 +557,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
   s = [self stringForKey: @"SOGoMailAutoSave"];
 
-  if ([s intValue] == 0)
+  if ([s intValue] <= 0)
     s = @"5";
 
   return s;
