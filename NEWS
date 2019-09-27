@@ -21,6 +21,7 @@ Bug fixes
  - [web] fixed search results in Calendar module when targeting all events
  - [web] properly encode URL of cards from exteral sources
  - [web] restore cards selection after automatic refresh (#4809)
+ - [web] don't mark draft as deleted when SOGoMailKeepDraftsAfterSend is enabled (#4830)
  - [core] honor IMAPLoginFieldName also when setting IMAP ACLs
  - [core] honor groups when setting IMAP ACLs
  - [core] honor "any authenticated user" when setting IMAP ACLs

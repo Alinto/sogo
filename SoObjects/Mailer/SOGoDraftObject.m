@@ -2068,7 +2068,7 @@ static NSString    *userAgent      = nil;
           if (!error)
             {
               [self imap4Connection];
-              if (IMAP4ID > -1)
+              if (IMAP4ID > -1 && ![dd mailKeepDraftsAfterSend])
                 [imap4 markURLDeleted: [self imap4URL]];
               if (sourceURL && sourceFlag)
                 {
