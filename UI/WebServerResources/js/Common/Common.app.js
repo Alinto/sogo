@@ -296,15 +296,15 @@
   /**
    * @ngInject
    */
-  AuthInterceptor.$inject = ['$window', '$q'];
-  function AuthInterceptor($window, $q) {
+  AuthInterceptor.$inject = ['$window', '$q', '$state'];
+  function AuthInterceptor($window, $q, $state) {
     return {
       response: function(response) {
         // When expecting JSON but receiving HTML, assume session has expired and reload page
         if (response && /^application\/json/.test(response.config.headers.Accept) &&
             /^[\n\r ]*<!DOCTYPE html/.test(response.data)) {
           angular.element($window).off('beforeunload');
-          $window.location.href = $window.ApplicationBaseURL;
+          $window.location.href = $window.ApplicationBaseURL + $state.href($state.current);
           return $q.reject();
         }
         return response;
@@ -315,8 +315,8 @@
   /**
    * @ngInject
    */
-  ErrorInterceptor.$inject = ['$rootScope', '$window', '$q', '$timeout', '$injector'];
-  function ErrorInterceptor($rootScope, $window, $q, $timeout, $injector) {
+  ErrorInterceptor.$inject = ['$rootScope', '$window', '$q', '$timeout', '$injector', '$state'];
+  function ErrorInterceptor($rootScope, $window, $q, $timeout, $injector, $state) {
     return {
       responseError: function(rejection) {
         var deferred, iframe;
@@ -350,7 +350,7 @@
           else if ($window.usesSAML2Authentication && rejection.status == 401 && !$window.recovered) {
             angular.element($window).off('beforeunload');
             $window.recovered = true;
-            $window.location.href = $window.ApplicationBaseURL;
+            $window.location.href = $window.ApplicationBaseURL + $state.href($state.current);
           }
           else {
             // Broadcast the response error
