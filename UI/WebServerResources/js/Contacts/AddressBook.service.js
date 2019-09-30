@@ -813,9 +813,11 @@
             // Instanciate Card objects
             _this.$cards = [];
             angular.forEach(response.headers, function(data) {
-              var o = _.zipObject(headers, data);
+              var o = _.zipObject(headers, data), cardObject;
               angular.extend(o, { pid: _this.id });
-              _this.$cards.push(new AddressBook.$Card(o));
+              cardObject = new AddressBook.$Card(o);
+              cardObject.selected = selectedCards.indexOf(cardObject.id) > -1; // Restore selection
+              _this.$cards.push(cardObject);
             });
           }
         }
