@@ -2,7 +2,7 @@
 -- Fully-Unicode compliant SOGo MySQL schema
 --
 -- Required MySQL version: >= 5.5.5
--- Required SOGo version: >= 3.1.0
+-- Required SOGo version: >= 4.0.0
 --
 -- This schema includes some specific table creation
 -- parameters needed for complete Unicode coverage
@@ -129,7 +129,7 @@ CREATE TABLE sogo_quick_contact (
 	c_sn              varchar(255) DEFAULT NULL,
 	c_screenname      varchar(255) DEFAULT NULL,
 	c_l               varchar(255) DEFAULT NULL,
-	c_mail            varchar(255) DEFAULT NULL,
+	c_mail            text         DEFAULT NULL,
 	c_o               varchar(255) DEFAULT NULL,
 	c_ou              varchar(255) DEFAULT NULL,
 	c_telephonenumber varchar(255) DEFAULT NULL,
@@ -160,8 +160,8 @@ CREATE TABLE sogo_store (
 
 CREATE TABLE sogo_user_profile (
 	c_uid      varchar(255) NOT NULL,
-	c_defaults text,
-	c_settings text,
+	c_defaults longtext,
+	c_settings longtext,
 	PRIMARY KEY (c_uid)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
