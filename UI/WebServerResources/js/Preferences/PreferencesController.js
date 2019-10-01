@@ -500,7 +500,7 @@
           d.Vacation.enabled) {
         if (d.Vacation.startDateEnabled) {
           r = (!d.Vacation.endDateEnabled ||
-               date.getTime() < d.Vacation.endDate.getTime()) &&
+               date.getTime() <= d.Vacation.endDate.getTime()) &&
             date.getTime() >= today.getTime();
         }
       }
@@ -515,7 +515,7 @@
           d.Vacation.enabled) {
         if (d.Vacation.endDateEnabled) {
           r = (!d.Vacation.startDateEnabled ||
-               date.getTime() > d.Vacation.startDate.getTime()) &&
+               date.getTime() >= d.Vacation.startDate.getTime()) &&
             date.getTime() >= today.getTime();
         }
       }
