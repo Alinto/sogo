@@ -293,19 +293,58 @@
     $httpProvider.interceptors.push('ErrorInterceptor');
   }
 
+  function renewTicket($window, $q, $timeout, $injector, response) {
+    var deferred, iframe;
+
+    deferred = $q.defer();
+    iframe = angular.element('<iframe class="ng-hide" src="' + $window.UserFolderURL + 'recover"></iframe>');
+
+    iframe.on('load', function() {
+      var $state = $injector.get('$state');
+      if (response.config.attempt) {
+        // Already attempted once -- reload page
+        angular.element($window).off('beforeunload');
+        $window.location.href = $window.ApplicationBaseURL + $state.href($state.current);
+        deferred.reject();
+      }
+      else {
+        // Once the browser has followed the redirection, send the initial request
+        $timeout(function() {
+          var $http = $injector.get('$http');
+          response.config.attempt = 1;
+          $http(response.config).then(function(response) {
+            deferred.resolve(response);
+          });
+          $timeout(iframe.remove, 500);
+        }, 100); // Wait before replaying the request
+      }
+    });
+
+    document.body.appendChild(iframe[0]);
+
+    return deferred.promise;
+  }
+
   /**
    * @ngInject
    */
-  AuthInterceptor.$inject = ['$window', '$q', '$state'];
-  function AuthInterceptor($window, $q, $state) {
+  AuthInterceptor.$inject = ['$window', '$q', '$timeout', '$injector'];
+  function AuthInterceptor($window, $q, $timeout, $injector) {
     return {
       response: function(response) {
         // When expecting JSON but receiving HTML, assume session has expired and reload page
+        var $state;
         if (response && /^application\/json/.test(response.config.headers.Accept) &&
             /^[\n\r ]*<!DOCTYPE html/.test(response.data)) {
-          angular.element($window).off('beforeunload');
-          $window.location.href = $window.ApplicationBaseURL + $state.href($state.current);
-          return $q.reject();
+          if ($window.usesCASAuthentication) {
+            return renewTicket($window, $q, $timeout, $injector, response);
+          }
+          else {
+            $state = $injector.get('$state');
+            angular.element($window).off('beforeunload');
+            $window.location.href = $window.ApplicationBaseURL + $state.href($state.current);
+            return $q.reject();
+          }
         }
         return response;
       }
@@ -315,39 +354,18 @@
   /**
    * @ngInject
    */
-  ErrorInterceptor.$inject = ['$rootScope', '$window', '$q', '$timeout', '$injector', '$state'];
-  function ErrorInterceptor($rootScope, $window, $q, $timeout, $injector, $state) {
+  ErrorInterceptor.$inject = ['$rootScope', '$window', '$q', '$timeout', '$injector'];
+  function ErrorInterceptor($rootScope, $window, $q, $timeout, $injector) {
     return {
       responseError: function(rejection) {
-        var deferred, iframe;
+        var $state;
         if (/^application\/json/.test(rejection.config.headers.Accept)) {
           // Handle CAS ticket renewal
           if ($window.usesCASAuthentication && rejection.status == -1) {
-            deferred = $q.defer();
-            iframe = angular.element('<iframe class="ng-hide" src="' + $window.UserFolderURL + 'recover"></iframe>');
-            iframe.on('load', function() {
-              if (rejection.config.attempt) {
-                // Already attempted once -- reload page
-                angular.element($window).off('beforeunload');
-                $window.location.href = $window.ApplicationBaseURL;
-                deferred.reject();
-              }
-              else {
-                // Once the browser has followed the redirection, send the initial request
-                $timeout(function() {
-                  var $http = $injector.get('$http');
-                  rejection.config.attempt = 1;
-                  $http(rejection.config).then(function(response) {
-                    deferred.resolve(response);
-                  });
-                  $timeout(iframe.remove, 500);
-                }, 100); // Wait before replaying the request
-              }
-            });
-            document.body.appendChild(iframe[0]);
-            return deferred.promise;
+            return renewTicket($window, $q, $timeout, $injector, rejection);
           }
           else if ($window.usesSAML2Authentication && rejection.status == 401 && !$window.recovered) {
+            $state = $injector.get('$state');
             angular.element($window).off('beforeunload');
             $window.recovered = true;
             $window.location.href = $window.ApplicationBaseURL + $state.href($state.current);
