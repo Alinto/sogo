@@ -388,14 +388,16 @@
     };
 
     this.changeAlarmRelation = function (form) {
-      if (this.component.type == 'task' && this.component.$hasAlarm &&
-          (this.component.start || this.component.due) &&
-          ((!this.component.start && this.component.alarm.relation == 'START') ||
-           (!this.component.due   && this.component.alarm.relation == 'END'))) {
-        form.alarmRelation.$setValidity('alarm', false);
-      }
-      else {
-        form.alarmRelation.$setValidity('alarm', true);
+      if (form.alarmRelation) {
+        if (this.component.type == 'task' && this.component.$hasAlarm &&
+            (this.component.start || this.component.due) &&
+            ((!this.component.start && this.component.alarm.relation == 'START') ||
+             (!this.component.due   && this.component.alarm.relation == 'END'))) {
+          form.alarmRelation.$setValidity('alarm', false);
+        }
+        else {
+          form.alarmRelation.$setValidity('alarm', true);
+        }
       }
     };
 

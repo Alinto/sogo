@@ -208,12 +208,12 @@
             </md-button>
           </div>
           <div flex-offset="5"
-               ng-show="editor.showRecurrenceEditor">
+               ng-if="editor.showRecurrenceEditor">
             <var:component className="UIxRecurrenceEditor" />
           </div>
           <!-- end repeat -->
           <div layout="row"
-               ng-show="editor.component.repeat.frequency != 'never'">
+               ng-if="editor.component.repeat.frequency != 'never'">
             <md-input-container class="md-block" flex="50" flex-xs="100">
               <label><var:string label:value="End Repeat"/></label>
               <md-select ng-model="editor.component.repeat.end"
@@ -299,7 +299,7 @@
             <var:string label:value="Reminder"/>
           </md-checkbox>
           <div flex-offset="5"
-               ng-show="editor.component.$hasAlarm">
+               ng-if="editor.component.$hasAlarm">
             <var:component className="UIxReminderEditor" />
           </div>
         </div>
