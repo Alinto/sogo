@@ -197,15 +197,14 @@ _intValueFromHex (NSString *hexString)
           allACLs = ([owner isEqualToString: userLogin] ? nil : [folder aclsForUser: userLogin]);
           objectCreator = ([owner isEqualToString: userLogin] || [allACLs containsObject: SOGoRole_ObjectCreator]);
           objectEraser = ([owner isEqualToString: userLogin] || [allACLs containsObject: SOGoRole_ObjectEraser]);
-          acls = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool: objectCreator], @"objectCreator",
-                                   [NSNumber numberWithBool: objectEraser], @"objectEraser", nil];
-
 
           if ([folder isKindOfClass: [SOGoWebAppointmentFolder class]])
             objectCreator = objectEraser = synchronize = NO;
           else
             synchronize = [folder synchronize];
 
+          acls = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool: objectCreator], @"objectCreator",
+                                   [NSNumber numberWithBool: objectEraser], @"objectEraser", nil];
           [calendar setObject: acls  forKey: @"acls"];
 
           if ([[folder nameInContainer] isEqualToString: @"personal"])

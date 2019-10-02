@@ -547,7 +547,7 @@
             ng-hide="::($menuCtrl.calendar.isSubscription || $menuCtrl.calendar.isWebCalendar)">
           <!-- divider -->
         </md-menu-divider>
-        <md-menu-item ng-hide="::($menuCtrl.calendar.isSubscription || $menuCtrl.calendar.isWebCalendar)">
+        <md-menu-item ng-show="::$menuCtrl.calendar.acls.objectCreator">
           <md-button ng-click="$menuCtrl.importCalendar($event)">
             <var:string label:value="Import"/>
           </md-button>
