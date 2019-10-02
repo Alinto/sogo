@@ -1,2 +1,6 @@
 /*! toast/_extends.scss - */
 @import '../../../angular-material/src/components/truncate/truncate.scss';
+
+.md-no-truncate {
+  overflow: visible !important;
+}

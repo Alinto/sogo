@@ -983,8 +983,10 @@
                     <var:string label:value="Enable auto reply on" />
                   </md-checkbox>
                   <md-input-container>
+                    <label class="md-no-truncate"><var:string label:value="First day of vacation"/></label>
                     <md-datepicker
                         name="vacationStartDate"
+                        label:md-placeholder="Enter date"
                         ng-disabled="!app.preferences.defaults.Vacation.startDateEnabled"
                         ng-model="app.preferences.defaults.Vacation.startDate"
                         md-date-filter="app.validateVacationStartDate"
@@ -1001,8 +1003,10 @@
                     <var:string label:value="Disable auto reply on" />
                   </md-checkbox>
                   <md-input-container>
+                    <label class="md-no-truncate"><var:string label:value="Last day of vacation"/></label>
                     <md-datepicker
                         name="vacationEndDate"
+                        label:md-placeholder="Enter date"
                         ng-disabled="!app.preferences.defaults.Vacation.endDateEnabled"
                         ng-model="app.preferences.defaults.Vacation.endDate"
                         md-date-filter="app.validateVacationEndDate"

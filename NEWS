@@ -12,6 +12,7 @@ Enhancements
  - [web] prohibit duplicate contact categories in Preferences module
  - [web] improve constrat of text in toolbar with input fields
  - [web] updated Angular Material to version 1.1.20
+ - [web] improve labels of auto-reply date settings (#4791)
  - [core] now dynamically detect and use the IMAP separator (#1490)
  - [core] default Sieve port is now 4190 (#4826)
 

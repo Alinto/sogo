@@ -45,7 +45,10 @@
 "Days between responses" = "Days between responses";
 "Do not send responses to mailing lists" = "Do not send responses to mailing lists";
 "Enable auto reply on" = "Enable auto reply on";
+"First day of vacation" = "First day of vacation";
 "Disable auto reply on" = "Disable auto reply on";
+"Last day of vacation" = "Last day of vacation";
+"Enter date" = "Enter date";
 "Always send vacation message response" = "Always send vacation message response";
 "The vacation message is sent prior to apply your filters." = "The vacation message is sent prior to apply your filters.";
 "Discard incoming mails during vacation" = "Discard incoming mails during vacation";
