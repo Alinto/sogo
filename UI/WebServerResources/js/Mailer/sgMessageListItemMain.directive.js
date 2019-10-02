@@ -27,7 +27,7 @@
         '    <div class="sg-tile-subject"><!-- subject --></div>',
         '    <div class="sg-tile-size"><!-- size --></div>',
         '    <md-button class="sg-tile-thread md-secondary ng-hide" md-colors="::{ color: \'accent-600\'}" ng-click="$ctrl.toggleThread()">',
-        '      <md-icon class="md-rotate-180-ccw" md-colors="::{ color: \'accent-600\'}">expand_more</md-icon><span><span>', // expanded by default (icon is rotated)
+        '      <md-icon class="md-rotate-180-ccw" md-colors="::{ color: \'accent-600\'}">expand_more</md-icon><span></span>', // expanded by default (icon is rotated)
         '    </md-button>',
         '  </div>',
         '</div>',
@@ -169,6 +169,7 @@
 
         // Subject
         $ctrl.subjectElement.innerHTML = $ctrl.message.subject.encodeEntities();
+
         // Message size
         $ctrl.sizeElement.innerHTML = $ctrl.message.size;
 
