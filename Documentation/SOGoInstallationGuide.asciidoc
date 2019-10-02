@@ -102,7 +102,7 @@ components, together with version numbers:
 |Database server	|PostgreSQL 7.4 or later
 |LDAP server		|OpenLDAP 2.3.x or later
 |SMTP server		|Postfix 2.x
-|IMAP server		|Cyrus IMAP Server 2.3.x or later
+|IMAP server		|Cyrus IMAP Server 2.4.x or later
 |=============================================
 
 More recent versions of the software mentioned above can also be used.
@@ -165,8 +165,8 @@ Operating System Requirements
 
 The following operating systems are currently supported by SOGo:
 
-* Red Hat Enterprise Linux (RHEL) Server 5, 6 and 7
-* Community ENTerprise Operating System (CentOS) 5, 6 and 7
+* Red Hat Enterprise Linux (RHEL) Server 6 and 7
+* Community ENTerprise Operating System (CentOS) 6 and 7
 * Debian GNU/Linux 6.0 (Squeeze), 7.0 (Wheezy), 8.0 (Jessie) and 9.0 (Stretch)
 * Ubuntu 12.04 (Precise), 14.04 (Trusty), 16.04 (Xenial) and 18.04 (Bionic)
 
