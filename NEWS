@@ -30,6 +30,7 @@ Bug fixes
  - [core] avoid exceptions for RRULE with no DTSTART
  - [core] make sure we handle events occurring after RRULE's UNTIL date
  - [core] avoid changing RRULE's UNTIL date for no reason
+ - [core] fixed handling of SENT-BY addresses (#4583)
  - [eas] improve FolderSync operation (#4672)
  - [eas] avoid incorrect truncation leading to exception (#4806)
 

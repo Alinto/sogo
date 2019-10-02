@@ -2124,21 +2124,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 }
 
 //
-// Let's check if our CalDAV client has sent us a broken SENT-BY. When Lightning is identity-aware,
-// it'll stupidly send something like this:
-// ORGANIZER;RSVP=TRUE;CN=John Doe;PARTSTAT=ACCEPTED;ROLE=CHAIR;SENT-BY="mail
-// to:mailto:sogo3@example.com":mailto:sogo1@example.com
-//
-- (void) _fixupSentByForPerson: (iCalPerson *) person
-{
-  NSString *sentBy;
-
-  sentBy = [person sentBy];
-  if ([sentBy hasPrefix: @"mailto:"])
-    [person setSentBy: [sentBy substringFromIndex: 7]];
-}
-
-//
 // This method is meant to be the common point of any save operation from web
 // and DAV requests, as well as from code making use of SOGo as a library
 // (OpenChange)
@@ -2226,8 +2211,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 	  attendees = [event attendeesWithoutUser: ownerUser];
 	  if ([attendees count])
 	    {
-	      [self _fixupSentByForPerson: [event organizer]];
-
 	      if ((ex = [self _handleAddedUsers: attendees fromEvent: event  force: YES]))
 		return ex;
 	      else
@@ -2405,8 +2388,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 	      // We check ACLs of the 'organizer' - in case someone forges the SENT-BY
 	      NSString *uid;
 
-	      [self _fixupSentByForPerson: [newEvent organizer]];
-
 	      uid = [[oldEvent organizer] uidInContext: context];
 
 	      if (uid && [[[context activeUser] login] caseInsensitiveCompare: uid] != NSOrderedSame)
@@ -2486,7 +2467,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               
               if ([delegateEmail length])
                 {
-                  delegateEmail = [delegateEmail substringFromIndex: 7];
+                  if ([[delegateEmail lowercaseString] hasPrefix: @"mailto:"])
+                    delegateEmail = [delegateEmail substringFromIndex: 7];
                   if ([delegateEmail length])
                     delegate = [newEvent findAttendeeWithEmail: delegateEmail];
                 }

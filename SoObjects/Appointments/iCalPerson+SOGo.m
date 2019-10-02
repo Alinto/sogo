@@ -131,7 +131,7 @@ static SOGoUserManager *um = nil;
 
   mail = [self value: 0 ofAttribute: @"SENT-BY"];
 
-  return ([mail length] > 7);
+  return [mail length];
 }
 
 - (NSString *) sentBy
@@ -140,12 +140,15 @@ static SOGoUserManager *um = nil;
   
   mail = [self value: 0 ofAttribute: @"SENT-BY"];
 
-  if ([mail length] > 7)
+  if ([mail length])
     {
       if ([mail characterAtIndex: 0] == '"' && [mail hasSuffix: @"\""])
 	mail = [mail substringWithRange: NSMakeRange(1, [mail length]-2)];
-      
-      return [mail substringFromIndex: 7];
+
+      if ([[mail lowercaseString] hasPrefix: @"mailto:"])
+        mail = [mail substringFromIndex: 7];
+
+      return mail;
     }
   
   return @"";
