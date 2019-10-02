@@ -10,17 +10,11 @@
   function CalendarsController($rootScope, $scope, $window, $mdDialog, $mdMedia, $log, $mdToast, sgConstant, Dialog, Settings, Preferences, Calendar) {
     var vm = this;
 
-    vm.activeUser = Settings.activeUser;
-    vm.service = Calendar;
-    vm.newCalendar = newCalendar;
-    vm.addWebCalendar = addWebCalendar;
-    vm.subscribeToFolder = subscribeToFolder;
-
-    vm.filter = { name: '' };
-    vm.sortableMode = false;
-    vm.toggleSortableMode = toggleSortableMode;
-    vm.resetSort = resetSort;
-    vm.sortableCalendars = {
+    this.activeUser = Settings.activeUser;
+    this.service = Calendar;
+    this.filter = { name: '' };
+    this.sortableMode = false;
+    this.sortableCalendars = {
       scrollableContainer: '#sidenav-content',
       containment: 'md-list',
       orderChanged: _sortableEnd,
@@ -87,16 +81,16 @@
       Calendar.saveFoldersOrder(_.flatMap(Calendar.$findAll(), 'id'));
     }
 
-    function toggleSortableMode() {
-      vm.sortableMode = !vm.sortableMode;
-      vm.filter.name = '';
-    }
+    this.toggleSortableMode = function () {
+      this.sortableMode = !vm.sortableMode;
+      this.filter.name = '';
+    };
 
-    function resetSort() {
+    this.resetSort = function () {
       Calendar.saveFoldersOrder();
-    }
+    };
 
-    function newCalendar(ev) {
+    this.newCalendar = function (ev) {
       Dialog.prompt(l('New calendar'), l('Name of the Calendar'))
         .then(function(name) {
           var calendar = new Calendar(
@@ -111,9 +105,9 @@
             Calendar.$add(calendar);
           }).catch(_.noop); // error
         });
-    }
+    };
 
-    function addWebCalendar() {
+    this.addWebCalendar = function () {
       Dialog.prompt(l('Subscribe to a web calendar...'), l('URL of the Calendar'), {inputType: 'url'})
         .then(function(url) {
           Calendar.$addWebCalendar(url).then(function(calendar) {
@@ -132,8 +126,8 @@
                 }
               });
             }
-          });
-        });
+          }).catch(_.noop); // error
+        }).catch(_.noop); // error
 
       /**
        * @ngInject
@@ -159,11 +153,11 @@
           $mdDialog.cancel();
         };
       }
-    }
+    };
 
 
     // Callback of sgSubscribe directive
-    function subscribeToFolder(calendarData) {
+    this.subscribeToFolder = function (calendarData) {
       $log.debug('subscribeToFolder ' + calendarData.owner + calendarData.name);
       Calendar.$subscribe(calendarData.owner, calendarData.name).then(function(data) {
          $mdToast.show(
@@ -172,7 +166,7 @@
              .position('top right')
              .hideDelay(3000));
       });
-    }
+    };
 
   }
 
