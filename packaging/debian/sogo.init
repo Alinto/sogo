@@ -76,6 +76,7 @@ case "$1" in
 	;;
   stop)
 	log_daemon_msg "Stopping $DESC" "$NAME"
+	chown -f root:root $PIDFILE
 	start-stop-daemon -c $USER --stop --pidfile $PIDFILE --retry=TERM/20/KILL/5 --oknodo
 	rm -f $PIDFILE
 	log_end_msg 0
