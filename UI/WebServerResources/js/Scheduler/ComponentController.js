@@ -534,7 +534,7 @@
     function updateFreeBusy() {
       vm.component.$attendees.updateFreeBusyCoverage();
       vm.component.$attendees.updateFreeBusy();
-      scrollToStart();
+      $timeout(scrollToStart);
     }
   }
 

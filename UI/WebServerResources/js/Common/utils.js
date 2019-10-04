@@ -269,24 +269,25 @@ Date.prototype.clone = function() {
 };
 
 Date.prototype.daysUpTo = function(otherDate) {
-    var days = [];
+  var days = [];
 
-    var day1 = this.getTime();
-    var day2 = otherDate.getTime();
-    if (day1 > day2) {
-        var tmp = day1;
-        day1 = day2;
-        day2 = tmp;
-    }
+  var day1 = this.getTime();
+  var day2 = otherDate.getTime();
+  if (day1 > day2) {
+    var tmp = day1;
+    day1 = day2;
+    day2 = tmp;
+  }
 
-    var nbrDays = Math.round((day2 - day1) / 86400000) + 1;
-    for (var i = 0; i < nbrDays; i++) {
-        var newDate = new Date();
-        newDate.setTime(day1 + (i * 86400000));
-        days.push(newDate);
-    }
+  var DAY_SECS = 25 * 60 * 60 * 1000; // compensate for DST
+  var nbrDays = Math.round((day2 - day1) / DAY_SECS) + 1;
+  for (var i = 0; i < nbrDays; i++) {
+    var newDate = new Date();
+    newDate.setTime(day1 + (i * 86400000));
+    days.push(newDate);
+  }
 
-    return days;
+  return days;
 };
 
 Date.prototype.minutesTo = function(otherDate) {
