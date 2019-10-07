@@ -38,7 +38,7 @@
           } : null;
         },
         function(newAttrs, oldAttrs) {
-          if (newAttrs.attendees) {
+          if (newAttrs && newAttrs.attendees) {
             // Attendees have changed
             $q.all(_.values($ctrl.component.$attendees.$futureFreebusyData)).then(function() {
               $ctrl.onUpdate();
