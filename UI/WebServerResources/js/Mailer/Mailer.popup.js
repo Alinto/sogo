@@ -103,9 +103,9 @@
 
     if ($window &&
         $window.opener &&
-        $window.opener.$mailboxController) {
+        $window.opener.mailAccounts) {
       // Mail accounts are available from the parent window
-      accounts = $window.opener.$mailboxController.accounts;
+      accounts = Account.$findAll($window.opener.mailAccounts);
       return $q.when(accounts);
     }
     else {
@@ -132,9 +132,22 @@
    */
   stateAccount.$inject = ['$stateParams', 'stateAccounts'];
   function stateAccount($stateParams, stateAccounts) {
-    return _.find(stateAccounts, function(account) {
+    var account, mailboxes;
+
+    account = _.find(stateAccounts, function(account) {
       return account.id == $stateParams.accountId;
     });
+    if (account) {
+      // Fetch mailboxes
+      mailboxes = account.$getMailboxes();
+      return mailboxes.then(function () {
+        return account;
+      });
+    }
+    else {
+      // Account not found
+      return $q.reject("Account " + $stateParams.accountId + " doesn't exist");
+    }
   }
 
   /**
@@ -170,7 +183,7 @@
     }
     else
       // Mailbox not found
-      return $q.reject("Mailbox doesn't exist");
+      return $q.reject("Mailbox " + mailboxId + " doesn't exist");
   }
 
   /**
