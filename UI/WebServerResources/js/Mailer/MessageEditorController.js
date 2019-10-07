@@ -12,28 +12,26 @@
 
     this.$onInit = function() {
       $scope.isPopup = stateParent.isPopup;
-      vm.addRecipient = addRecipient;
-      vm.autocomplete = {to: {}, cc: {}, bcc: {}};
-      vm.autosave = null;
-      vm.autosaveDrafts = autosaveDrafts;
-      vm.cancel = cancel;
-      vm.contactFilter = contactFilter;
-      vm.isFullscreen = false;
-      vm.hideBcc = (stateMessage.editable.bcc.length === 0);
-      vm.hideCc = (stateMessage.editable.cc.length === 0);
-      vm.identities = _.uniq(_.map(stateAccount.identities, 'full'));
-      vm.message = stateMessage;
-      vm.recipientSeparatorKeys = [
+      this.addRecipient = addRecipient;
+      this.autocomplete = {to: {}, cc: {}, bcc: {}};
+      this.autosave = null;
+      this.autosaveDrafts = autosaveDrafts;
+      this.cancel = cancel;
+      this.contactFilter = contactFilter;
+      this.isFullscreen = false;
+      this.hideBcc = (stateMessage.editable.bcc.length === 0);
+      this.hideCc = (stateMessage.editable.cc.length === 0);
+      this.identities = _.uniq(_.map(stateAccount.identities, 'full'));
+      this.message = stateMessage;
+      this.recipientSeparatorKeys = [
         $mdConstant.KEY_CODE.ENTER,
         $mdConstant.KEY_CODE.TAB,
         $mdConstant.KEY_CODE.COMMA,
         $mdConstant.KEY_CODE.SEMICOLON
       ];
-      vm.removeAttachment = removeAttachment;
-      vm.save = save;
-      vm.send = send;
-      vm.sendState = false;
-      vm.toggleFullscreen = toggleFullscreen;
+      this.removeAttachment = removeAttachment;
+      this.sendState = false;
+      this.toggleFullscreen = toggleFullscreen;
       this.firstFocus = true;
 
       _initFileUploader();
@@ -41,9 +39,9 @@
       // Read user's defaults
       if (Preferences.defaults.SOGoMailAutoSave)
         // Enable auto-save of draft
-        vm.autosave = $timeout(vm.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
+        this.autosave = $timeout(this.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
       // Set the locale of CKEditor
-      vm.localeCode = Preferences.defaults.LocaleCode;
+      this.localeCode = Preferences.defaults.LocaleCode;
 
       this.replyPlacement = Preferences.defaults.SOGoMailReplyPlacement;
       if (this.message.origin && this.message.origin.action == 'forward') {
@@ -78,7 +76,7 @@
         });
       }
       else if (angular.isDefined(stateMessage)) {
-        vm.message = stateMessage;
+        this.message = stateMessage;
         _updateFileUploader();
         _addAttachments();
       }
@@ -199,9 +197,9 @@
       $mdDialog.cancel();
     }
 
-    function save() {
+    this.save = function () {
       var ctrls = $parentControllers();
-      vm.message.$save().then(function(data) {
+      this.message.$save().then(function(data) {
         vm.message.$rawSource = null;
         if (ctrls.draftMailboxCtrl) {
           // We're saving a draft from a popup window.
@@ -219,14 +217,14 @@
             .position('top right')
             .hideDelay(3000));
       });
-    }
+    };
 
-    function send() {
-      vm.sendState = 'sending';
-      if (vm.autosave)
-        $timeout.cancel(vm.autosave);
+    this.send = function () {
+      this.sendState = 'sending';
+      if (this.autosave)
+        $timeout.cancel(this.autosave);
 
-      vm.message.$send().then(function(data) {
+      this.message.$send().then(function(data) {
         var ctrls = $parentControllers();
         vm.sendState = 'sent';
         if (ctrls.draftMailboxCtrl) {
