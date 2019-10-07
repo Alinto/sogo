@@ -329,8 +329,8 @@
       if (!vm.attendeesEditor.containerElement) {
         vm.attendeesEditor.containerElement = $element[0].querySelector('#freebusy');
       }
-      if (vm.attendeesEditor.containerElement) {
-        dayElement = $element[0].querySelector('#freebusy_day_' + vm.component.start.getDayString());
+      dayElement = $element[0].querySelector('#freebusy_day_' + vm.component.start.getDayString());
+      if (vm.attendeesEditor.containerElement && dayElement) {
         scrollLeft = dayElement.offsetLeft - vm.attendeesEditor.containerElement.offsetLeft;
         vm.attendeesEditor.containerElement.scrollLeft = scrollLeft;
       }

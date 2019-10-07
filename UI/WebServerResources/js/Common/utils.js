@@ -283,7 +283,11 @@ Date.prototype.daysUpTo = function(otherDate) {
   var nbrDays = Math.round((day2 - day1) / DAY_SECS) + 1;
   for (var i = 0; i < nbrDays; i++) {
     var newDate = new Date();
-    newDate.setTime(day1 + (i * 86400000));
+    newDate.setTime(day1 + (i * DAY_SECS));
+    newDate.setHours(0);
+    newDate.setMinutes(0);
+    newDate.setSeconds(0);
+    newDate.setMilliseconds(0);
     days.push(newDate);
   }
 
