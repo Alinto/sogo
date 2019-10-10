@@ -25,7 +25,9 @@ Bug fixes
  - [web] don't mark draft as deleted when SOGoMailKeepDraftsAfterSend is enabled (#4830)
  - [web] allow single-day vacation auto-reply (#4698)
  - [web] allow import to calendar subscriptions with creation rights
- - [web] handle DST change in Date.daysUpTo
+ - [web] handle DST change in Date.daysUpTo (#4842)
+ - [web] improved handling of start/end times (#4497, #4845)
+ - [web] improved handling of vacation auto-reply activation dates (#4844)
  - [core] honor IMAPLoginFieldName also when setting IMAP ACLs
  - [core] honor groups when setting IMAP ACLs
  - [core] honor "any authenticated user" when setting IMAP ACLs
