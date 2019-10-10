@@ -472,7 +472,10 @@
 
       if (v.startDateEnabled) {
         // Enabling the start date
-        if (v.endDateEnabled && v.startDate.getTime() > v.endDate.getTime()) {
+        if (!v.startDate) {
+          v.startDate = new Date();
+        }
+        if (v.endDateEnabled && v.endDate && v.startDate.getTime() > v.endDate.getTime()) {
           v.startDate = new Date(v.endDate.getTime());
           v.startDate.addDays(-1);
         }
@@ -486,7 +489,10 @@
 
       if (v.endDateEnabled) {
         // Enabling the end date
-        if (v.startDateEnabled && v.endDate.getTime() < v.startDate.getTime()) {
+        if (!v.endDate) {
+          v.endDate = new Date();
+        }
+        if (v.startDateEnabled && v.startDate && v.endDate.getTime() < v.startDate.getTime()) {
           v.endDate = new Date(v.startDate.getTime());
           v.endDate.addDays(1);
         }
@@ -500,6 +506,7 @@
           d.Vacation.enabled) {
         if (d.Vacation.startDateEnabled) {
           r = (!d.Vacation.endDateEnabled ||
+               !d.Vacation.endDate ||
                date.getTime() <= d.Vacation.endDate.getTime()) &&
             date.getTime() >= today.getTime();
         }
@@ -515,6 +522,7 @@
           d.Vacation.enabled) {
         if (d.Vacation.endDateEnabled) {
           r = (!d.Vacation.startDateEnabled ||
+               !d.Vacation.startDate ||
                date.getTime() >= d.Vacation.startDate.getTime()) &&
             date.getTime() >= today.getTime();
         }

@@ -906,7 +906,7 @@
               </md-checkbox>
 
               <div class="md-inline-form" layout="column" flex-offset="5"
-                   ng-if="app.preferences.defaults.Vacation.enabled == 1">
+                   ng-show="app.preferences.defaults.Vacation.enabled == 1">
 
                 <div layout="row">
                   <md-checkbox
@@ -932,8 +932,8 @@
                   <var:if condition="vacationHeader.length">
                     <p class="text-preview" md-colors="::{color: 'default-background-600'}"><var:string value="vacationHeader"/></p>
                   </var:if>
-                  <textarea const:name="autoReplyText"
-                            const:id="autoReplyText"
+                  <textarea name="autoReplyText"
+                            id="autoReplyText"
                             ng-model="app.preferences.defaults.Vacation.autoReplyText"/>
                   <var:if condition="vacationFooter.length">
                     <p class="text-preview" md-colors="::{color: 'default-background-600'}"><var:string value="vacationFooter"/></p>
@@ -943,9 +943,9 @@
                 <div layout="row" layout-align="start center">
                   <md-input-container class="md-block md-flex">
                     <label><var:string label:value="Email addresses (separated by commas)"/></label>
-                    <textarea const:name="autoReplyEmailAddresses"
+                    <textarea name="autoReplyEmailAddresses"
                               required="required"
-                              const:id="autoReplyEmailAddresses"
+                              id="autoReplyEmailAddresses"
                               ng-model="app.preferences.defaults.Vacation.autoReplyEmailAddresses"/>
                   </md-input-container>
                   <md-button ng-click="app.addDefaultEmailAddresses(preferencesForm)">
@@ -988,6 +988,7 @@
                         name="vacationStartDate"
                         label:md-placeholder="Enter date"
                         ng-disabled="!app.preferences.defaults.Vacation.startDateEnabled"
+                        ng-required="app.preferences.defaults.Vacation.startDateEnabled"
                         ng-model="app.preferences.defaults.Vacation.startDate"
                         md-date-filter="app.validateVacationStartDate"
                         sg-reset-on-disabled="sg-reset-on-disabled"><!-- datepicker --></md-datepicker>
@@ -1008,6 +1009,7 @@
                         name="vacationEndDate"
                         label:md-placeholder="Enter date"
                         ng-disabled="!app.preferences.defaults.Vacation.endDateEnabled"
+                        ng-required="app.preferences.defaults.Vacation.endDateEnabled"
                         ng-model="app.preferences.defaults.Vacation.endDate"
                         md-date-filter="app.validateVacationEndDate"
                         sg-reset-on-disabled="sg-reset-on-disabled"><!-- datepicker --></md-datepicker>
@@ -1056,8 +1058,8 @@
               <div flex-offset="5" ng-show="app.preferences.defaults.Forward.enabled == 1">
                 <md-input-container class="md-block md-flex">
                   <label><var:string label:value="Email addresses (separated by commas)"/></label>
-                  <textarea const:name="forwardAddress"
-                            const:id="forwardAddress"
+                  <textarea name="forwardAddress"
+                            id="forwardAddress"
                             ng-model="app.preferences.defaults.Forward.forwardAddress" />
                 </md-input-container>
 
