@@ -118,7 +118,7 @@
 
         <div class="sg-form-section">
           <!-- start -->
-          <div ng-show="editor.component.start">
+          <div ng-if="editor.component.start">
             <div class="pseudo-input-container">
               <label class="pseudo-input-label"><var:string label:value="From"/></label>
             </div>
@@ -129,7 +129,8 @@
               <md-datepicker ng-model="editor.component.start"
                              ng-change="editor.adjustStartTime()"
                              label:md-placeholder="From"> <!-- date picker--></md-datepicker>
-              <sg-timepicker ng-model="editor.component.start"
+              <sg-timepicker ng-model="editor.startTime"
+                             ng-required="editor.component.start"
                              ng-change="editor.adjustStartTime()"><!-- time picker --></sg-timepicker>
             </div>
           </div>
@@ -140,7 +141,7 @@
             <label class="button-label"><var:string label:value="Add From"/></label>
           </div>
           <!-- due -->
-          <div ng-show="editor.component.due">
+          <div ng-if="editor.component.due">
             <div class="pseudo-input-container">
               <label class="pseudo-input-label"><var:string label:value="Due"/></label>
             </div>
@@ -151,7 +152,8 @@
               <md-datepicker ng-model="editor.component.due"
                              ng-change="editor.adjustDueTime()"
                              label:md-placeholder="Due"><!-- date picker--></md-datepicker>
-              <sg-timepicker ng-model="editor.component.due"
+              <sg-timepicker ng-model="editor.dueTime"
+                             ng-required="editor.component.due"
                              ng-change="editor.adjustDueTime()"><!-- time picker --></sg-timepicker>
             </div>
           </div>

@@ -205,19 +205,15 @@
   /**
    * @ngInject
    */
-  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$element', '$mdDialog', 'sgFocus', 'User', 'CalendarSettings', 'Calendar', 'Component', 'Attendees', 'AddressBook', 'Card', 'Alarm', 'stateComponent'];
-  function ComponentEditorController($rootScope, $scope, $log, $timeout, $element, $mdDialog, focus, User, CalendarSettings, Calendar, Component, Attendees, AddressBook, Card, Alarm, stateComponent) {
-    var vm = this, component, oldStartDate, oldEndDate, oldDueDate;
+  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$element', '$mdDialog', 'sgFocus', 'User', 'CalendarSettings', 'Calendar', 'Component', 'Attendees', 'AddressBook', 'Card', 'Alarm', 'Preferences', 'stateComponent'];
+  function ComponentEditorController($rootScope, $scope, $log, $timeout, $element, $mdDialog, focus, User, CalendarSettings, Calendar, Component, Attendees, AddressBook, Card, Alarm, Preferences, stateComponent) {
+    var vm = this, component, oldStartDate, oldEndDate, oldDueDate, dayStartTime, dayEndTime;
 
     this.$onInit = function () {
       stateComponent.initAttendees();
       this.service = Calendar;
       this.component = stateComponent;
       this.categories = {};
-      this.updateFreeBusyCoverage =
-        angular.bind(this.component.$attendees, this.component.$attendees.updateFreeBusyCoverage);
-      this.coversFreeBusy =
-        angular.bind(this.component.$attendees, this.component.$attendees.coversFreeBusy);
       this.showRecurrenceEditor = this.component.$hasCustomRepeat;
       this.showAttendeesEditor = this.component.attendees && this.component.attendees.length;
       //this.searchText = null;
@@ -228,15 +224,24 @@
         containerElement: $element[0].querySelector('#freebusy')
       };
 
-      if (this.component.start)
+      if (this.component.start) {
         oldStartDate = new Date(this.component.start.getTime());
-      if (this.component.end)
+        this.startTime = new Date(this.component.start.getTime());
+      }
+      if (this.component.end) {
         oldEndDate = new Date(this.component.end.getTime());
-      if (this.component.due)
+        this.endTime = new Date(this.component.end.getTime());
+      }
+      if (this.component.due) {
         oldDueDate = new Date(this.component.due.getTime());
+        this.dueTime = new Date(this.component.due.getTime());
+      }
 
       if (this.component.attendees)
         $timeout(scrollToStart);
+
+      dayStartTime = parseInt(Preferences.defaults.SOGoDayStartTime);
+      dayEndTime = parseInt(Preferences.defaults.SOGoDayEndTime);
     };
 
     this.addAttachUrl = function () {
@@ -462,10 +467,12 @@
     this.addStartDate = function (form) {
       this.component.$addStartDate();
       oldStartDate = new Date(this.component.start.getTime());
+      this.startTime = new Date(this.component.start.getTime());
       if (!this.component.due) {
         this.component.alarm.relation = 'START';
       }
       this.changeAlarmRelation(form);
+      form.$setDirty();
     };
 
     this.removeStartDate = function (form) {
@@ -474,15 +481,18 @@
         this.component.alarm.relation = 'END';
       }
       this.changeAlarmRelation(form);
+      form.$setDirty();
     };
 
     this.addDueDate = function (form) {
       this.component.$addDueDate();
       oldDueDate = new Date(this.component.due.getTime());
+      this.dueTime = new Date(this.component.due.getTime());
       if (!this.component.start) {
         this.component.alarm.relation = 'END';
       }
       this.changeAlarmRelation(form);
+      form.$setDirty();
     };
 
     this.removeDueDate = function (form) {
@@ -491,18 +501,38 @@
         this.component.alarm.relation = 'START';
       }
       this.changeAlarmRelation(form);
+      form.$setDirty();
+    };
+
+    this.adjustAllDay = function () {
+      if (!this.component.isAllDay) {
+        this.component.start.setHours(dayStartTime);
+        this.component.start.setMinutes(0);
+        this.startTime = new Date(this.component.start.getTime());
+        oldStartDate = new Date(this.component.start.getTime());
+        this.component.end.setHours(dayEndTime);
+        this.component.end.setMinutes(0);
+        this.endTime = new Date(this.component.end.getTime());
+        oldEndDate = new Date(this.component.end.getTime());
+        this.component.delta = this.component.start.minutesTo(this.component.end);
+      }
+      this.component.$attendees.updateFreeBusyCoverage();
     };
 
     this.adjustStartTime = function () {
-      if (this.component.start) {
+      var delta;
+      if (this.component.start && this.startTime) {
+        // Update the component start date
+        this.component.start.setHours(this.startTime.getHours());
+        this.component.start.setMinutes(this.startTime.getMinutes());
         // Preserve the delta between the start and end dates
-        var delta;
         delta = oldStartDate.valueOf() - this.component.start.valueOf();
         if (delta !== 0) {
           oldStartDate = new Date(this.component.start.getTime());
           if (this.component.type === 'appointment') {
             this.component.end = new Date(this.component.start.getTime());
             this.component.end.addMinutes(this.component.delta);
+            this.endTime = new Date(this.component.end.getTime());
             oldEndDate = new Date(this.component.end.getTime());
           }
           updateFreeBusy();
@@ -511,13 +541,19 @@
     };
 
     this.adjustEndTime = function () {
-      if (this.component.end) {
+      var delta;
+      if (this.component.end && this.endTime) {
+        // Update the component start date
+        this.component.end.setHours(this.endTime.getHours());
+        this.component.end.setMinutes(this.endTime.getMinutes());
         // The end date must be after the start date
-        var delta = oldEndDate.valueOf() - this.component.end.valueOf();
+        delta = oldEndDate.valueOf() - this.component.end.valueOf();
         if (delta !== 0) {
           delta = this.component.start.minutesTo(this.component.end);
-          if (delta < 0)
+          if (delta < 0) {
             this.component.end = new Date(oldEndDate.getTime());
+            this.endTime = new Date(this.component.end.getTime());
+          }
           else {
             this.component.delta = delta;
             oldEndDate = new Date(this.component.end.getTime());
@@ -528,7 +564,11 @@
     };
 
     this.adjustDueTime = function () {
-      oldDueDate = new Date(this.component.due.getTime());
+      if (this.component.due && this.dueTime) {
+        this.component.due.setHours(this.dueTime.getHours());
+        this.component.due.setMinutes(this.dueTime.getMinutes());
+        oldDueDate = new Date(this.component.due.getTime());
+      }
     };
 
     function updateFreeBusy() {

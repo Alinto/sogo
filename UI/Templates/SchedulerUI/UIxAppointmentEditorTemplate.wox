@@ -140,7 +140,7 @@
           <div layout="row">
             <md-checkbox flex="50"
                          ng-model="editor.component.isAllDay"
-                         ng-change="editor.updateFreeBusyCoverage()"
+                         ng-change="editor.adjustAllDay()"
                          ng-true-value="1"
                          ng-false-value="0"
                          label:aria-label="All day Event">
@@ -163,10 +163,12 @@
               </div>
               <div layout="row" layout-align="start end" layout-wrap="layout-wrap">
                 <md-datepicker ng-model="editor.component.start"
+                               required="required"
                                ng-change="editor.adjustStartTime()"
                                label:md-placeholder="From"><!-- date picker --></md-datepicker>
-                <sg-timepicker ng-model="editor.component.start"
+                <sg-timepicker ng-model="editor.startTime"
                                ng-change="editor.adjustStartTime()"
+                               ng-required="!editor.component.isAllDay"
                                ng-hide="editor.component.isAllDay"><!-- time picker --></sg-timepicker>
               </div>
             </div>
@@ -176,10 +178,13 @@
               </div>
               <div layout="row" layout-align="start end" layout-wrap="layout-wrap">
                 <md-datepicker ng-model="editor.component.end"
+                               required="required"
                                ng-change="editor.adjustEndTime()"
+                               md-min-date="editor.component.start"
                                label:md-placeholder="To"><!-- date picker --></md-datepicker>
-                <sg-timepicker ng-model="editor.component.end"
+                <sg-timepicker ng-model="editor.endTime"
                                ng-change="editor.adjustEndTime()"
+                               ng-required="!editor.component.isAllDay"
                                ng-hide="editor.component.isAllDay"><!-- time picker --></sg-timepicker>
               </div>
             </div>
