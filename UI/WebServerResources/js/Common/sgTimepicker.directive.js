@@ -420,8 +420,8 @@
    *
    */
 
-  timePickerDirective.$inject = ['$mdUtil', '$mdAria'];
-  function timePickerDirective($mdUtil, $mdAria) {
+  timePickerDirective.$inject = ['$mdUtil', '$mdAria', 'inputDirective'];
+  function timePickerDirective($mdUtil, $mdAria, inputDirective) {
     return {
       template: function(tElement, tAttrs) {
         // Buttons are not in the tab order because users can open the hours pane via keyboard
@@ -463,7 +463,7 @@
           '</div>'
         ].join('');
       },
-      require: ['ngModel', 'sgTimepicker', '?^form'],
+      require: ['ngModel', 'sgTimepicker', '?^mdInputContainer', '?^form'],
       scope: {
         placeholder: '@mdPlaceholder'
       },
@@ -472,20 +472,44 @@
       bindToController: true,
       link: function(scope, element, attr, controllers) {
         var ngModelCtrl = controllers[0];
-        var mdTimePickerCtrl = controllers[1];
-        var parentForm = controllers[2];
+        var sgTimePickerCtrl = controllers[1];
+        var mdInputContainer = controllers[2];
+        var parentForm = controllers[3];
         var mdNoAsterisk = $mdUtil.parseAttributeBoolean(attr.mdNoAsterisk);
 
-        mdTimePickerCtrl.configureNgModel(ngModelCtrl);
+        sgTimePickerCtrl.configureNgModel(ngModelCtrl, mdInputContainer, inputDirective);
 
-        // TODO: shall we check ^mdInputContainer?
-        if (parentForm) {
+        if (mdInputContainer) {
+          var spacer = element[0].querySelector('.md-errors-spacer');
+
+          if (spacer) {
+            element.after(angular.element('<div>').append(spacer));
+          }
+
+          mdInputContainer.setHasPlaceholder(attr.mdPlaceholder);
+          mdInputContainer.input = element;
+          mdInputContainer.element
+            .addClass(INPUT_CONTAINER_CLASS)
+            .toggleClass(HAS_TIME_ICON_CLASS, attr.mdHideIcons !== 'time' && attr.mdHideIcons !== 'all');
+
+          if (!mdInputContainer.label) {
+            $mdAria.expect(element, 'aria-label', attr.mdPlaceholder);
+          } else if (!mdNoAsterisk) {
+            attr.$observe('required', function(value) {
+              mdInputContainer.label.toggleClass('md-required', !!value);
+            });
+          }
+
+          scope.$watch(mdInputContainer.isErrorGetter || function() {
+            return ngModelCtrl.$invalid && (ngModelCtrl.$touched || (parentForm && parentForm.$submitted));
+          }, mdInputContainer.setInvalid);
+        } else if (parentForm) {
           // If invalid, highlights the input when the parent form is submitted.
           var parentSubmittedWatcher = scope.$watch(function() {
             return parentForm.$submitted;
           }, function(isSubmitted) {
             if (isSubmitted) {
-              mdTimePickerCtrl.updateErrorState();
+              sgTimePickerCtrl.updateErrorState();
               parentSubmittedWatcher();
             }
           });
@@ -502,6 +526,12 @@
 
   /** Class applied to the timepicker when it's open. */
   var OPEN_CLASS = 'sg-timepicker-open';
+
+  /** Class applied to the md-input-container, if a timepicker is placed inside it */
+  var INPUT_CONTAINER_CLASS = '_sg-timepicker-floating-label';
+
+  /** Class to be applied when the time icon is enabled. */
+  var HAS_TIME_ICON_CLASS = '_sg-timepicker-has-calendar-icon';
 
   /** Default time in ms to debounce input event by. */
   var DEFAULT_DEBOUNCE_INTERVAL = 500;
@@ -605,7 +635,7 @@
     this.$scope = $scope;
 
     /** @type {Date} */
-    this.date = null;
+    this.time = null;
 
     /** @type {boolean} */
     this.isFocused = false;
@@ -670,23 +700,56 @@
     $mdTheming($element);
     $mdTheming(angular.element(this.timePane));
 
-    this.installPropertyInterceptors();
-    this.attachChangeListeners();
-    this.attachInteractionListeners();
-
     var self = this;
 
     $scope.$on('$destroy', function() {
       self.detachTimePane();
     });
+
+    if ($attrs.mdIsOpen) {
+      $scope.$watch('ctrl.isOpen', function(shouldBeOpen) {
+        if (shouldBeOpen) {
+          self.openTimePane({
+            target: self.inputElement
+          });
+        } else {
+          self.closeTimePane();
+        }
+      });
+    }
+
   }
+
+  /**
+   * AngularJS Lifecycle hook for newer AngularJS versions.
+   * Bindings are not guaranteed to have been assigned in the controller, but they are in the $onInit hook.
+   */
+  TimePickerCtrl.prototype.$onInit = function() {
+    this.installPropertyInterceptors();
+    this.attachChangeListeners();
+    this.attachInteractionListeners();
+  };
 
   /**
    * Sets up the controller's reference to ngModelController.
    * @param {!angular.NgModelController} ngModelCtrl Instance of the ngModel controller.
    */
-  TimePickerCtrl.prototype.configureNgModel = function(ngModelCtrl) {
+  TimePickerCtrl.prototype.configureNgModel = function(ngModelCtrl, mdInputContainer, inputDirective) {
     this.ngModelCtrl = ngModelCtrl;
+    this.mdInputContainer = mdInputContainer;
+
+    // The input needs to be [type="date"] in order to be picked up by AngularJS.
+    this.$attrs.$set('type', 'date');
+
+    // Invoke the `input` directive link function, adding a stub for the element.
+    // This allows us to re-use AngularJS's logic for setting the timezone via ng-model-options.
+    // It works by calling the link function directly which then adds the proper `$parsers` and
+    // `$formatters` to the ngModel controller.
+    // inputDirective[0].link.pre(this.$scope, {
+    //   on: angular.noop,
+    //   val: angular.noop,
+    //   0: {}
+    // }, this.$attrs, [ngModelCtrl]);
 
     var self = this;
 
@@ -697,16 +760,25 @@
                     'Currently the model is a: ' + (typeof value));
       }
 
-      self.time = value;
-      self.inputElement.value = self.dateLocale.formatTime(value);
-      self.resizeInputElement();
-      self.updateErrorState();
+      self.onExternalChange(value);
 
       return value;
     });
 
     // Responds to external error state changes (e.g. ng-required based on another input).
     ngModelCtrl.$viewChangeListeners.unshift(angular.bind(this, this.updateErrorState));
+
+    // Forwards any events from the input to the root element. This is necessary to get `updateOn`
+    // working for events that don't bubble (e.g. 'blur') since AngularJS binds the handlers to
+    // the `<md-datepicker>`.
+    var updateOn = self.$mdUtil.getModelOption(ngModelCtrl, 'updateOn');
+
+    if (updateOn) {
+      this.ngInputElement.on(
+        updateOn,
+        angular.bind(this.$element, this.$element.triggerHandler, updateOn)
+      );
+    }
   };
 
   /**
@@ -719,14 +791,11 @@
 
     self.$scope.$on('sg-time-pane-change', function(event, data) {
       var time = new Date(data.date);
-      self.ngModelCtrl.$setViewValue(time);
-      self.time = time;
-      self.inputElement.value = self.dateLocale.formatTime(time);
+      self.setModelValue(time);
+      self.onExternalChange(time);
       if (data.changed == 'minutes') {
         self.closeTimePane();
       }
-      self.resizeInputElement();
-      self.inputContainer.classList.remove(INVALID_CLASS);
     });
 
     self.ngInputElement.on('input', angular.bind(self, self.resizeInputElement));
@@ -806,7 +875,7 @@
    * @param {Date=} opt_date Date to check. If not given, defaults to the datepicker's model value.
    */
   TimePickerCtrl.prototype.updateErrorState = function(opt_date) {
-    var date = opt_date || this.date;
+    var date = opt_date || this.time;
 
     // Clear any existing errors to get rid of anything that's no longer relevant.
     this.clearErrorState();
@@ -817,12 +886,25 @@
       this.ngModelCtrl.$setValidity('valid', date === null);
     }
 
-    // TODO(jelbourn): Change this to classList.toggle when we stop using PhantomJS in unit tests
-    // because it doesn't conform to the DOMTokenList spec.
-    // See https://github.com/ariya/phantomjs/issues/12782.
-    if (!this.ngModelCtrl.$valid) {
-      this.inputContainer.classList.add(INVALID_CLASS);
+    var input = this.inputElement.value;
+    var parsedTime = this.dateLocale.parseTime(input);
+
+    if (!this.isInputValid(input, parsedTime) && this.ngModelCtrl.$valid) {
+      this.ngModelCtrl.$setValidity('valid', date == null);
     }
+
+    angular.element(this.inputContainer).toggleClass(INVALID_CLASS, !this.ngModelCtrl.$valid);
+  };
+
+  /**
+   * Check to see if the input is valid, as the validation should fail if the model is invalid.
+   *
+   * @param {string} inputString
+   * @param {Date} parsedDate
+   * @return {boolean} Whether the input is valid
+   */
+  TimePickerCtrl.prototype.isInputValid = function (inputString, parsedTime) {
+    return inputString === '' || this.dateUtil.isValidDate(parsedTime);
   };
 
   /** Clears any error flags set by `updateErrorState`. */
@@ -850,14 +932,18 @@
 
     // An input string is valid if it is either empty (representing no date)
     // or if it parses to a valid time that the user is allowed to select.
-    var isValidInput = inputString === '' || this.dateUtil.isValidDate(parsedTime);
+    var isValidInput = this.isInputValid(inputString, parsedTime);
 
     // The datepicker's model is only updated when there is a valid input.
     if (isValidInput) {
       var updated = new Date(this.time);
-      updated.setHours(parsedTime.getHours());
-      updated.setMinutes(parsedTime.getMinutes());
-      this.ngModelCtrl.$setViewValue(updated);
+      if (parsedTime) {
+        updated.setHours(parsedTime.getHours());
+        updated.setMinutes(parsedTime.getMinutes());
+      } else {
+        updated = null;
+      }
+      this.setModelValue(updated);
       this.time = updated;
     }
 
@@ -931,7 +1017,7 @@
 
     // If the bottom edge of the pane would be off the screen and shifting it up by the
     // difference would not go past the top edge of the screen.
-    var min = (typeof this.time == 'object' && this.time.getMinutes() % 5 === 0)? 'MIN5' : 'MIN1';
+    var min = (this.time && this.time.getMinutes() % 5 === 0)? 'MIN5' : 'MIN1';
     var paneHeight = this.$mdMedia('xs')? TIME_PANE_HEIGHT[min].XS : TIME_PANE_HEIGHT[min].GTXS;
     if (paneTop + paneHeight > viewportBottom &&
         viewportBottom - paneHeight > viewportTop) {
@@ -1084,5 +1170,25 @@
     if (this.$attrs[attr]) {
       this.$scope.$parent.$eval(this.$attrs[attr]);
     }
+  };
+
+  /**
+   * Sets the ng-model value.
+   * @param {Date=} value Date to be set as the model value.
+   */
+  TimePickerCtrl.prototype.setModelValue = function(value) {
+    this.ngModelCtrl.$setViewValue(value);
+  };
+
+  /**
+   * Updates the timepicker when a model change occurred externally.
+   * @param {Date=} value Value that was set to the model.
+   */
+  TimePickerCtrl.prototype.onExternalChange = function(value) {
+    this.time = value;
+    this.inputElement.value = this.dateLocale.formatTime(value);
+    if (this.mdInputContainer) this.mdInputContainer.setHasValue(!!value);
+    this.resizeInputElement();
+    this.updateErrorState();
   };
 })();
