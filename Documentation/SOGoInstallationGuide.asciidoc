@@ -473,7 +473,7 @@ by SOGo to sign and encrypt communications with the SAML2 identity
 provider. This file must be generated for each running SOGo service
 (rather than host). Make sure this file is readable by the SOGo user.
 
-|S |SOGoSAML2CertiticateLocation
+|S |SOGoSAML2CertificateLocation
 |The location of the SSL certificate file. This file must be generated
 for each running SOGo service. Make sure this file is readable by the SOGo user.
 
