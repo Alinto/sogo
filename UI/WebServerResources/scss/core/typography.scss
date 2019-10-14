@@ -427,6 +427,7 @@ $today-font-size: 72px; // Visualy adjusted
   font-size: sg-size(button);
   line-height: 1;
   text-transform: uppercase;
+  word-break: keep-all;
 }
 
 .sg-date-today {
