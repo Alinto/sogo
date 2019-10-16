@@ -317,7 +317,9 @@
 {
   WOResponse *response;
   NSString *login, *logoutRequest, *newLocation, *oldLocation, *ticket;
+  SOGoAppointmentFolders *calendars;
   SOGoCASSession *casSession;
+  SOGoUser *loggedInUser;
   SOGoWebAuthenticator *auth;
   WOCookie *casCookie, *casLocationCookie;
   WORequest *rq;
@@ -381,6 +383,11 @@
           newLocation = [NSString stringWithFormat: @"%@%@",
                                   oldLocation, [login stringByEscapingURL]];
         }
+
+      loggedInUser = [SOGoUser userWithLogin: login];
+      calendars = [loggedInUser calendarsFolderInContext: context];
+      if ([calendars respondsToSelector: @selector (reloadWebCalendars:)])
+        [calendars reloadWebCalendars: NO];
     }
   else
     {
