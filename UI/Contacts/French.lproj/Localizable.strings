@@ -17,7 +17,7 @@
 "Extended" = "Informations complémentaires";
 "Fax" = "Fax";
 "Firstname" = "Prénom";
-"Home" = "Personnelle";
+"Home" = "Personnel";
 "HomePhone" = "Domicile";
 "Lastname" = "Nom";
 "Location" = "Lieux";
@@ -316,7 +316,7 @@
 "Close" = "Fermer";
 "More contact options" = "Options des contacts";
 "Organization Unit" = "Unité organisationnelle";
-"Add Organizational Unit" = "Ajouter une unité oranisationnelle";
+"Add Organizational Unit" = "Ajouter une unité organisationnelle";
 "Type" = "Type";
 "Email Address" = "Adresse courriel";
 "New Email Address" = "Ajouter une adresse courriel";
