@@ -28,6 +28,7 @@ Bug fixes
  - [web] handle DST change in Date.daysUpTo (#4842)
  - [web] improved handling of start/end times (#4497, #4845)
  - [web] improved handling of vacation auto-reply activation dates (#4844)
+ - [web] added missing contact fields for sorting LDAP sources (#4799)
  - [core] honor IMAPLoginFieldName also when setting IMAP ACLs
  - [core] honor groups when setting IMAP ACLs
  - [core] honor "any authenticated user" when setting IMAP ACLs
