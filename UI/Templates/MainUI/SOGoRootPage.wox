@@ -10,7 +10,7 @@
     const:jsFiles="Main.js, Common.js"
     >
   <script type="text/javascript">
-    var cookieUsername = '<var:string var:value="cookieUsername" const:escapeHTML="NO"/>';
+    var cookieUsername = <var:string var:value="cookieUsername.doubleQuotedString" const:escapeHTML="NO"/>;
     var language = '<var:string var:value="language" const:escapeHTML="NO"/>';
   </script>
 
