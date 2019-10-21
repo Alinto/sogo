@@ -247,6 +247,18 @@
     data = @"";
   [newRecord setObject: data forKey: @"c_cn"];
 
+  // sn => c_sn
+  data = [oldRecord objectForKey: @"sn"];
+  if (!data)
+    data = @"";
+  [newRecord setObject: data forKey: @"c_sn"]; // for sorting
+
+  // givenname => c_givenname
+  data = [oldRecord objectForKey: @"givenname"];
+  if (!data)
+    data = @"";
+  [newRecord setObject: data forKey: @"c_givenname"];
+
   if ([[SOGoSystemDefaults sharedSystemDefaults] enableDomainBasedUID])
     {
       data = [oldRecord objectForKey: @"c_domain"];
@@ -296,7 +308,7 @@
     data = [oldRecord objectForKey: @"nscpaimscreenname"];
   if (![data length])
     data = @"";
-  [newRecord setObject: data forKey: @"c_screenname"];
+  [newRecord setObject: data forKey: @"c_screenname"]; // for sorting
 
   // o => org
   data = [oldRecord objectForKey: @"o"];
@@ -304,9 +316,9 @@
     [newRecord setObject: data forKey: @"org"];
   else
     data = @"";
-  [newRecord setObject: data forKey: @"c_o"];
+  [newRecord setObject: data forKey: @"c_o"]; // for sorting
 
-  // telephonenumber || cellphone || homephone => phones[]
+  // telephonenumber || cellphone || homephone => phones[] & c_telephonenumber
   data = [oldRecord objectForKey: @"telephonenumber"];
   if (![data length])
     data = [oldRecord objectForKey: @"cellphone"];
@@ -320,7 +332,7 @@
     }
   else
     data = @"";
-  [newRecord setObject: data forKey: @"c_telephonenumber"];
+  [newRecord setObject: data forKey: @"c_telephonenumber"]; // for sorting
 
   // Custom attribute for group lookups. See LDAPSource.m.
   data = [oldRecord objectForKey: @"isGroup"];
@@ -375,8 +387,6 @@
     {
       oldRecord = [NSMutableDictionary dictionary];
       [oldRecord addEntriesFromDictionary: o];
-      if ([source isKindOfClass: [LDAPSource class]])
-        [(LDAPSource *)source applyContactMappingToResult: oldRecord];
       [newRecords addObject: [self _flattenedRecord: oldRecord]];
     }
 
