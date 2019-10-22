@@ -41,7 +41,7 @@
         '           as-sortable-item-handle="as-sortable-item-handle">',
         '  <md-icon md-colors="::{color: \'accent-400\'}">drag_handle</md-icon>',
         '</md-button>',
-        '<md-icon class="md-menu sg-list-sortable-hide"',
+        '<md-icon class="md-menu md-secondary-container sg-list-sortable-hide"',
         '         ng-click="$ctrl.showMenu($event)"',
         '         aria-label="' + l("Options") + '">more_vert</md-icon>'
       ].join(''),
