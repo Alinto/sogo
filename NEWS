@@ -16,6 +16,7 @@ Enhancements
  - [web] updated CKEditor to version 4.13.0
  - [core] now dynamically detect and use the IMAP separator (#1490)
  - [core] default Sieve port is now 4190 (#4826)
+ - [core] updated timezones to version 2019c
 
 Bug fixes
  - [web] properly handle Windows-1256 charset (#4781)
