@@ -1,6 +1,6 @@
 /**
- * @license Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 CKEDITOR.editorConfig = function( config ) {
@@ -16,6 +16,8 @@ CKEDITOR.editorConfig = function( config ) {
     { name: 'styles' },
     { name: 'mode' }
   ];
+
+  // config.font_style = {
 
   config.removeButtons = 'Strike,Subscript,Superscript,BGColor,Anchor,Format,Image';
   config.removeDialogTabs = 'link:advanced';
