@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Nom de l'agenda";
 "new" = "Nouveau";
 "Print view" = "Imprimer";
+"Print" = "Imprimer";
 "edit" = "Éditer";
 "delete" = "Supprimer";
 "proposal" = "Recherche de plages horaires";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Affichage en couleurs";
 "Borders" = "Bordures";
 "Backgrounds" = "Arrière-plans";
+"Page Format" = "Papier";
 
 /* Appointments */
 "Appointment viewer" = "Visualisation de rendez-vous";

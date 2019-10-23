@@ -27,6 +27,9 @@
 "OfficePhone" = "Bureau";
 "Organization" = "Société";
 "Work Phone" = "Travail";
+"Cell" = "Cellulaire";
+"Pager" = "Téléavertisseur";
+"Pref" = "Favori";
 "Phone" = "Téléphone";
 "Phones" = "Numéros de téléphone";
 "Postal" = "Professionnelle";

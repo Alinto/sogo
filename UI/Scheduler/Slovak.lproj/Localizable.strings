@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Názov kalendára";
 "new" = "Nový";
 "Print view" = "Náhľad tlače";
+"Print" = "Tlačiť";
 "edit" = "Upraviť";
 "delete" = "Odstrániť";
 "proposal" = "Návrh";
@@ -141,12 +142,13 @@
 "Layout" = "Zobrazenie";
 "What to Print" = "Čo chcete tlačiť.";
 "Options" = "Možnosti";
-"Tasks with no due date" = "Úlohy bez časového obmedzenia";
-"Display working hours only" = "Zobraz iba pracovné hodiny.";
+"Tasks with no due date" = "Úlohy bez termínu dokončenia";
+"Display working hours only" = "Zobraziť len pracovné hodiny.";
 "Completed tasks" = "Dokončené úlohy";
-"Display events and tasks colors" = "Zobraz farby udalostí a úloh.";
+"Display events and tasks colors" = "Zobraziť farby udalostí a úloh.";
 "Borders" = "Okraje";
 "Backgrounds" = "Pozadia";
+"Page Format" = "Formát stránky";
 
 /* Appointments */
 "Appointment viewer" = "Zobraziť schôdzky";
@@ -155,9 +157,9 @@
 "Appointment on" = "Schôdzka na";
 "Start" = "Začiatok";
 "End" = "Koniec";
-"Due Date" = "Dátum splnenia";
+"Due Date" = "Termín dokončenia";
 "Name" = "Meno";
-"Email" = "Email";
+"Email" = "E-mail";
 "Status" = "Stav";
 "% complete" = "% hotovo";
 "Location" = "Miesto";
@@ -222,7 +224,7 @@
 "view_future" = "Všetky budúce udalosti";
 "view_selectedday" = "Zvolený deň";
 "view_not_started" = "Nezačaté úlohy";
-"view_overdue" = "Vypršané úlohy";
+"view_overdue" = "Úlohy po termíne";
 "view_incomplete" = "Nedokončené úlohy";
 "View" = "Zobraziť";
 "Title, category or location" = "Názov, kategória alebo miesto";
@@ -384,7 +386,7 @@
 "Reminder relation" = "Vzťah pripomenutia";
 
 /* transparency */
-"Show Time as Free" = "Čas zobraziť ako voľný";
+"Show Time as Free" = "Čas zobraziť ako dostupný";
 
 /* email notifications */
 "Send Appointment Notifications" = "Odoslať notifikáciu o stretnutí";
@@ -440,18 +442,48 @@ validate_untilbeforeend    = "Opakovanie musí skončiť po prvom výskyte.";
 "Are you sure you want to delete the selected components?"
 = "Ste si istý, že chcete odstrániť označené komponenty?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Role";
+
+/* Participant role: participation is required */
 "Participant" = "Účastník";
+
+/* Participant role: participation is required */
+"req-participant" = "Účastník";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Nepovinný účastník";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Nepovinný účastník";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Na vedomie";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Na vedomie";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Predsedajúci";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Predsedajúci";
+
+/* Participant status: needs action */
 "Needs action" = "Vyžaduje akciu";
+
+/* Participant status: event accepted */
 "Accepted" = "Zúčastní sa";
+
+/* Participant status: event declined */
 "Declined" = "Nezúčastní sa";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Nezáväzne";
-"Free" = "Voľno";
-"Busy" = "Nie je voľno";
-"Maybe busy" = "Možno nie je voľno";
+
+"Free" = "Dostupný";
+"Busy" = "Obsadený";
+"Maybe busy" = "Možno obsadený";
 "No free-busy information" = "Bez informácií";
 
 /* FreeBusy panel buttons and labels */
@@ -469,7 +501,7 @@ validate_untilbeforeend    = "Opakovanie musí skončiť po prvom výskyte.";
 = "Medzi účastníkmi dochádza k časovému konfliktu.\nPonecháte súčasné nastavenie aj napriek tomu?";
 
 /* events list */
-"Due" = "Termín";
+"Due" = "Termín dokončenia";
 "(Private Event)" = "(Súkromná udalosť)";
 vevent_class0 = "(Verejná udalosť)";
 vevent_class1 = "(Súkromná udalosť)";
@@ -493,7 +525,7 @@ vtodo_class2 = "(Dôverná úloha)";
 
 /* Properties dialog */
 "Color" = "Farba";
-"Include in free-busy" = "Zahrnúť do voľný-obsadený";
+"Include in free-busy" = "Zahrnúť do informácie o dostupnosti";
 "Synchronization" = "Synchronizácia";
 "Synchronize" = "Synchronizovať";
 "Tag" = "Štítok";
@@ -501,19 +533,19 @@ vtodo_class2 = "(Dôverná úloha)";
 "Show alarms" = "Zobraziť pripomenutie";
 "Show tasks" = "Zobraziť úlohy";
 "Notifications" = "Oznámenia";
-"Receive a mail when I modify my calendar" = "Informuj emailom, keď upravím môj kalendár.";
-"Receive a mail when someone else modifies my calendar" = "Informuj emailom, keď niekto iný upraví môj kalendár.";
-"When I modify my calendar, send a mail to" = "Keď upravím svoj kalendár, pošli email.";
+"Receive a mail when I modify my calendar" = "Informovať ma e-mailom keď upravím svoj kalendár.";
+"Receive a mail when someone else modifies my calendar" = "Informovať ma e-mailom, keď niekto iný upraví môj kalendár.";
+"When I modify my calendar, send a mail to" = "Keď upravím svoj kalendár, poslať e-mail na";
 "Email Address" = "E-mailová adresa";
 "Export" = "Exportovať";
 
 
 /* Show only the calendar for which the menu is displayed */
-"Show Only This Calendar" = "Zobraz iba tento kalendár";
+"Show Only This Calendar" = "Zobraziť iba tento kalendár";
 
 
 /* Show all calendar (personal, subscriptions and web) */
-"Show All Calendars" = "Zobraz všetky kalendáre";
+"Show All Calendars" = "Zobraziť všetky kalendáre";
 
 "Links to this Calendar" = "Odkazy na tento kalendár";
 "Authenticated User Access" = "Prístup pre overeného používateľa";
@@ -543,7 +575,7 @@ vtodo_class2 = "(Dôverná úloha)";
 "Delete Task" = "Odstrániť úlohu";
 "Delete Event" = "Odstrániť udalosť";
 "Copy event to my calendar" = "Kopírovať udalosť do môjho kalendára";
-"View Raw Source" = "Zobrazit zdroj";
+"View Raw Source" = "Zobraziť zdroj";
 "Move To" = "Presunúť do";
 "Copy To" = "Kopírovať do";
 "Subscriptions" = "Odoberania";
@@ -579,8 +611,8 @@ vtodo_class2 = "(Dôverná úloha)";
 "Delete All Occurrences" = "Vymazať všetky udalosti";
 "Add Recurrence Date" = "Pridať Dátum opakovania";
 "Add From" = "Pridať Od:";
-"Add Due" = "Pridaj končiaci";
-"Import" = "Importuj";
+"Add Due" = "Pridať termín dokončenia";
+"Import" = "Importovať";
 "Rename" = "Premenovať";
 "Import Calendar" = "Importovať kalendár";
 "Select an ICS file." = "Vyberte ICS súbor.";

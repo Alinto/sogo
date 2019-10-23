@@ -45,7 +45,10 @@
 "Days between responses" = "Nombre de jours entre les réponses d'absence";
 "Do not send responses to mailing lists" = "Ne pas envoyer les réponses aux listes de diffusion";
 "Enable auto reply on" = "Débuter la réponse automatique le";
+"First day of vacation" = "Premier jour d'absence";
 "Disable auto reply on" = "Désactiver la réponse automatique le";
+"Last day of vacation" = "Dernier jour d'absence";
+"Enter date" = "Date";
 "Always send vacation message response" = "Toujours envoyer le message de vacances prolongées";
 "The vacation message is sent prior to apply your filters." = "Le message de vacances est envoyé avant d'appliquer vos filtres.";
 "Discard incoming mails during vacation" = "Ne pas conserver le courrier entrant pendant les vacances";
@@ -63,6 +66,7 @@
 = "Veuillez définir une adresse à laquelle vous désirez transférer automatiquement vos nouveaux messages.";
 "You are not allowed to forward your messages to an external email address." = "Il est interdit de renvoyer vos messages vers une adresse externe.";
 "You are not allowed to forward your messages to an internal email address." = "Il est interdit de renvoyer vos messages vers une adresse interne.";
+"You are not allowed to forward your messages to this domain:" = "Vous ne pouvez pas transférer vos messages à ce domaine :";
 
 /* d & t */
 "Current Time Zone" = "Fuseau horaire en cours";
@@ -192,6 +196,7 @@
 /* Contact */
 "Personal Address Book" = "Adresses personnelles";
 "Collected Address Book" = "Adresses collectées";
+"Contact categories must have unique names." = "Les catégories de contact doivent être uniques.";
 
 /* IMAP Accounts */
 "Settings" = "Paramètres";

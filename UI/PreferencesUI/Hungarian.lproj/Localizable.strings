@@ -45,9 +45,14 @@
 "Days between responses" = "Válaszok között eltelt napok száma";
 "Do not send responses to mailing lists" = "Levelező listákra válasz mellőzése";
 "Enable auto reply on" = "Automatikus válasz engedélyezése";
+"First day of vacation" = "Távollét első napja";
 "Disable auto reply on" = "Automatikus válasz tiltása";
+"Last day of vacation" = "Távollét utolsó napja";
+"Enter date" = "Adja meg a dátumot";
 "Always send vacation message response" = "Mindig küldjön távollét üzenet választ";
+"The vacation message is sent prior to apply your filters." = "Távollét üzenet elküldve a szűrőknek megfelelően.";
 "Discard incoming mails during vacation" = "Dobja el a bejövő leveleket a távollét alatt";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Távollét üzenet elküldve, de a beérkező üzenetek nem lettek továbbítva a beérkezett üzenetek mappába.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Kérem adja meg az üzenetét valamint a címeket, amelyekre engedélyezi az automatikus válasz küldését.";
 "Your vacation message must not end with a single dot on a line." = "A távollét üzenet utolsó sora nem tartalmazhat egy egyedülálló . karatert.";
@@ -61,6 +66,7 @@
 = "Kérem adjon meg egy címet, amelyre a leveleit továbbítani kívánja.";
 "You are not allowed to forward your messages to an external email address." = "Ön számára nem endélyezett az üzenetek továbbítása külső email címre.";
 "You are not allowed to forward your messages to an internal email address." = "Ön számára nem endélyezett az üzenetek továbbítása belső email címre.";
+"You are not allowed to forward your messages to this domain:" = "Ön számára nem engedélyezett az üzenetek továbbítása ebbe a tartományba:";
 
 /* d & t */
 "Current Time Zone" = "Időzóna";
@@ -85,7 +91,9 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
 
 "longDateFmt_0" = "%Y %B %d, %A";
 "longDateFmt_1" = "%B %d, %Y";
@@ -124,6 +132,8 @@
 "Prevent from being invited to appointments" = "Megakadályozza a meghívást találkozókra";
 "White list for appointment invitations" = "Engedélyezési lista a találkozók meghívásaihoz";
 "Contacts Names" = "Kapcsolatok nevei";
+"Duplicate name" = "Név kettőzése";
+"Calendar categories must have unique names." = "Naptár kategóriáknak egyedi névvel kell rendelkezniük.";
 
 /* Default Calendar */
 "Default calendar" = "Alapértelmezett naptár";
@@ -154,6 +164,7 @@
 "New label" = "Új címke";
 "Show subscribed mailboxes only" = "Csak azon fiókok mutatása, amelyre feliratkozott";
 "Synchronize only default mail folders (EAS)" = "Csak az alapértelmezett levelezési mappák szinkronizálása (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Olvasatlan üzenetek számának összegyűjtése minden mappában";
 "Sort messages by threads" = "Üzenetek beszélgetések szerinti rendezése";
 "Always open mail composer" = "Mindig nyissa meg a levél szerkesztőt";
 "Inside current window" = "Az aktuális ablakban";
@@ -185,6 +196,7 @@
 /* Contact */
 "Personal Address Book" = "Személyes címjegyzék";
 "Collected Address Book" = "Összegyűjtöt címek jegyzéke";
+"Contact categories must have unique names." = "Névjegy kategóriáknak egyedi névvel kell rendelkezniük.";
 
 /* IMAP Accounts */
 "Settings" = "Beállítások";
@@ -215,6 +227,7 @@
 "When composing a message" = "Amikor létrehoz egy üzenetet";
 "Digitally sign the message by default" = "Alapértelmezés szerint digitálisan aláírja az üzenetet";
 "Always try to encrypt the message" = "Mindig titkosítani próbálja az üzenetet";
+"An error occurred while importing the certificate. Verify your password." = "Hiba történt a tanúsítvány importálása során. Ellenőrizze a jelszót.";
 
 /* Additional Parameters */
 "Additional Parameters" = "További beállítások";
@@ -235,6 +248,7 @@
 "Calendar Category" = "Naptár kategória";
 "Add Calendar Category" = "Naptár kategória hozzáadása";
 "New category" = "Új kategória";
+"Reset to defaults" = "Visszaállítás alapértékekre";
 "Remove Calendar Category" = "Naptár kategória eltávolítása";
 "Contact Category" = "Kapcsolat kategória";
 "Add Contact Category" = "Kapcsolat kategória hozzáadása";

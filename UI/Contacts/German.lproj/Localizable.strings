@@ -27,6 +27,9 @@
 "OfficePhone" = "Büronummer";
 "Organization" = "Organisation";
 "Work Phone" = "Dienstnummer";
+"Cell" = "Mobil";
+"Pager" = "Pager";
+"Pref" = "Bevorzugt";
 "Phone" = "Telefon";
 "Phones" = "Telefone";
 "Postal" = "PLZ";

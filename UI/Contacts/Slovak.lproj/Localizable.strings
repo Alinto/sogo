@@ -12,7 +12,7 @@
 "Common" = "Spoločný";
 "Contact editor" = "Editor kontaktov";
 "Contact viewer" = "Prehliadač kontaktov";
-"Email" = "Email";
+"Email" = "E-mail";
 "Screen Name" = "Zobrazované meno";
 "Extended" = "Rozšírené";
 "Fax" = "Fax";
@@ -27,6 +27,9 @@
 "OfficePhone" = "Telefón kancelária";
 "Organization" = "Organizácia";
 "Work Phone" = "Telefón práca";
+"Cell" = "Mobil";
+"Pager" = "Pager";
+"Pref" = "Pref";
 "Phone" = "Telefón";
 "Phones" = "Telefóny";
 "Postal" = "Poštové";
@@ -35,12 +38,12 @@
 "Unit" = "Zariadenie";
 "delete" = "zmazať";
 "edit" = "editovať";
-"invalidemailwarn" = "Zvolený email je neplatný.";
+"invalidemailwarn" = "Zadaný e-mail je neplatný.";
 "new" = "nový";
 "Preferred Phone" = "Preferovaný telefón";
 "Move To" = "Presuň do";
 "Copy To" = "Kopíruj do";
-"Add to" = "Pridaj do";
+"Add to" = "Pridať do";
 "To" = "Komu";
 "Carbon Copy (Cc)" = "Kópia (Cc)";
 "Blind Carbon Copy (Bcc)" = "Skrytá kópia (Bcc)";
@@ -52,7 +55,7 @@
 "c_cn" = "Meno";
 
 /* Search scope: secondary email field */
-"mozillanickname" = "Sekundárny email";
+"mozillanickname" = "Sekundárny e-mail";
 
 /* Search scope: screen name field */
 "nsaimid" = "Zobrazované meno";
@@ -151,35 +154,35 @@
 "No contact selected" = "Žiadny vybraný kontakt";
 
 /* Tooltips */
-"Create a new address book card" = "Vytvor novú vizitku";
-"Create a new list" = "Vytvor nový zoznam";
-"Edit the selected card" = "Uprav zvolenú vizitku";
-"Send a mail message" = "Pošli emailovú správu";
-"Delete selected card or address book" = "Vymaž označenú vizitku alebo adresár";
+"Create a new address book card" = "Vytvoriť nový kontakt";
+"Create a new list" = "Vytvoriť nový zoznam";
+"Edit the selected card" = "Upraviť označný kontakt";
+"Send a mail message" = "Poslať správu";
+"Delete selected card or address book" = "Vymazať označený kontakt alebo adresár";
 "Reload all contacts" = "Znovu načítaj všetky kontakty";
 "htmlMailFormat_UNKNOWN" = "Neznámy";
 "htmlMailFormat_FALSE" = "Jednoduchý text";
 "htmlMailFormat_TRUE" = "HTML";
-"Name or Email" = "Meno alebo email";
+"Name or Email" = "Meno alebo e-mail";
 "Category" = "Kategória";
 "Personal Addressbook" = "Osobný adresár";
-"Search in Addressbook" = "Hľadaj v adresári";
-"New Card" = "Nová vizitka";
+"Search in Addressbook" = "Hľadať v adresári";
+"New Card" = "Nový kontakt";
 "New List" = "Nový zoznam";
 "Edit" = "Upraviť";
 "Properties" = "Možnosti";
 "Sharing..." = "Zdieľanie...";
 "Write" = "Napíš";
-"Delete" = "Vymaž";
+"Delete" = "Vymazať";
 "Instant Message" = "Okamžitá správa";
-"Add..." = "Pridaj...";
-"Remove" = "Odstráň";
+"Add..." = "Pridať...";
+"Remove" = "Odstrániť";
 "Please wait..." = "Prosím, čakajte...";
 "No possible subscription" = "Žiadne možnosti odberu";
 "Preferred" = "Preferovaný";
-"Display" = "Zobraz";
+"Display" = "Zobrazované meno";
 "Display Name" = "Zobrazované meno";
-"Additional Email" = "Další email";
+"Additional Email" = "Ďalší e-mail";
 "Phone Number" = "Telefónne číslo";
 "Prefers to receive messages formatted as" = "Preferuje prijímať správy formátované ako";
 "Categories" = "Kategórie";
@@ -210,14 +213,14 @@
 "Timezone" = "Časová zóna";
 "Birthday" = "Narodeniny";
 "Birthday (yyyy-mm-dd)" = "Narodeniny (dd-mm-yyyy)";
-"Freebusy URL" = "URL voľný alebo obsadený";
-"Add as..." = "Pridaj ako...";
+"Freebusy URL" = "URL informácie o dostupnosti";
+"Add as..." = "Pridať ako...";
 "Recipient" = "Príjemca";
 "Carbon Copy" = "Kópia";
 "Blind Carbon Copy" = "Skrytá kópia";
 "New Addressbook..." = "Nový adresár...";
 "Subscribe to an Addressbook..." = "Odoberať adresár...";
-"Remove the selected Addressbook" = "Odstráň označený adresár";
+"Remove the selected Addressbook" = "Odstrániť označený adresár";
 "Subscribe to a shared folder" = "Odoberať zdieľaný priečinok";
 "Search User" = "Hľadať používatela";
 "Name of the Address Book" = "Názov adresára";
@@ -226,18 +229,24 @@
 "Are you sure you want to delete the addressbook \"%{0}\"?"
 = "Naozaj chcete odstrániť adresár \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
-= "Nemôžete odstrániť ani zrušiť odber verejného adresára.";
+= "Nemôžete odstrániť ani zrušiť odber verejného adresára";
 "You cannot remove nor unsubscribe from your personal addressbook."
-= "Nemôžete odstrániť ani zrušiť odber súkromného adresára.";
+= "Nemôžete odstrániť ani zrušiť odber osobného adresára.";
 "Are you sure you want to delete the selected contacts?"
 = "Ste si istý, že chcete odstrániť označené kontakty?";
 "Are you sure you want to delete the card of %{0}?" = "Naozaj chcete odstrániť kontakt %{0}?";
 "You cannot delete the card of \"%{0}\"."
-= "Nemôžete odstrániť vizitku \"%{0}\".";
+= "Nemôžete odstrániť kontakt \"%{0}\".";
 "You cannot subscribe to a folder that you own!"
 = "Nemôžete sa prihlásiť na odber svojej vlastnej zložky.";
 "Unable to subscribe to that folder!"
 = "Nedá sa prihlásiť na odber tejto zložky.";
+
+/* security */
+"Security" = "Zabezpečenie";
+"Uninstall" = "Odinštalovať";
+"Error reading the card certificate." = "Chyba pri čítaní certifikátu uloženého na karte.";
+"No certificate associated to card." = "Ku karte nie je priradený žiadny certifikát.";
 
 /* acls */
 "Access rights to" = "Prístupové práva pre";
@@ -245,17 +254,17 @@
 "Any Authenticated User" = "Akýkoľvek neoverený používateľ";
 "Public Access" = "Verejný prístup";
 "This person can add cards to this addressbook."
-= "Táto osoba môže pridávať vizitky do tohoto adresára.";
+= "Táto osoba môže pridávať kontakty do tohto adresára.";
 "This person can edit the cards of this addressbook."
-= "Táto osoba môže upravovať vizitky v tomto adresári.";
+= "Táto osoba môže upravovať kontakty v tomto adresári.";
 "This person can list the content of this addressbook."
 = "Táto osoba môže prehľadávať obsah tohoto adresára.";
 "This person can read the cards of this addressbook."
-= "Táto osoba môže prezerať vizitky v tomto adresári.";
+= "Táto osoba môže prezerať kontakty v tomto adresári.";
 "This person can erase cards from this addressbook."
-= "Táto osoba môže mazať vizitky z tohoto adresára.";
+= "Táto osoba môže mazať kontakty z tohoto adresára.";
 "The selected contact has no email address."
-= "Vybraný kontakt nemá žiadny email.";
+= "Vybraný kontakt nemá e-mailovú adresu.";
 "Please select a contact." = "Prosím, vyberte kontakt.";
 
 /* Messages for move and copy */
@@ -273,21 +282,21 @@
 "List description" = "Popis zoznamu";
 "Members" = "Členovia";
 "Contacts" = "Kontakty";
-"Add" = "Pridaj";
+"Add" = "Pridať";
 "Lists can't be moved or copied." = "Zoznamy nemôžu byť presunuté alebo kopírované.";
-"Export" = "Export";
-"Export Address Book..." = "Exportuj adresár...";
+"Export" = "Exportovať";
+"Export Address Book..." = "Exportovať adresár...";
 "View Raw Source" = "Zobraziť surový zdroj";
 
 /* Import */
-"Import Cards" = "Importuj vizitky";
+"Import Cards" = "Importovať kontakty";
 "Select a vCard or LDIF file." = "Vyber vCard alebo LDIF súbor.";
 "Upload" = "Nahraj";
 "Uploading" = "Nahrávam";
 "Done" = "Hotovo";
 "An error occured while importing contacts." = "Počas importovania kontaktov sa vyskytla chyba.";
-"No card was imported." = "Žiadne vizitky neboli importované.";
-"A total of %{0} cards were imported in the addressbook." = "Spolu bolo do adresára importovaných %{0} vizitiek.";
+"No card was imported." = "Neboli importované žiadne kontakty.";
+"A total of %{0} cards were imported in the addressbook." = "Spolu bolo do adresára importovaných %{0} kontaktov.";
 "Reload" = "Znovu načítaj";
 
 /* Properties window */
@@ -310,7 +319,7 @@
 "Close" = "Zatvoriť";
 "More contact options" = "Viac možností kontaktov";
 "Organization Unit" = "Organizačná jednotka";
-"Add Organizational Unit" = "Pridaj organizačná jednotku";
+"Add Organizational Unit" = "Pridať organizačná jednotku";
 "Type" = "Typ";
 "Email Address" = "E-mailová adresa";
 "New Email Address" = "Nová e-mailová adresa";
@@ -325,13 +334,13 @@
 "New Address" = "Nová adresa";
 "Reset" = "Resetuj";
 "Description" = "Popis";
-"Add Member" = "Pridaj člena";
-"Subscribe" = "Pridaj odber";
-"Add Birthday" = "Pridaj narodeniny";
-"Import" = "Importuj";
+"Add Member" = "Pridať člena";
+"Subscribe" = "Odoberať";
+"Add Birthday" = "Pridať dátum narodenia";
+"Import" = "Importovať";
 "More options" = "Viac možností";
 "Role" = "Rola";
-"Add Screen Name" = "Pridaj zobrazované meno";
+"Add Screen Name" = "Pridať zobrazované meno";
 "Custom 1" = "Vlastné 1";
 "Custom 2" = "Vlastné 2";
 "Custom 3" = "Vlastné 3";
@@ -339,7 +348,7 @@
 "Custom Value" = "Vlastná Hodnota";
 "New Custom Value" = "Nová Vlastná Hodnota";
 "Synchronization" = "Synchronizácia";
-"Synchronize" = "Synchronizuj";
+"Synchronize" = "Synchronizovať";
 "Sucessfully subscribed to address book" = "Potvrdený odber adresára";
 
 /* Aria label for scope of search on contacts */

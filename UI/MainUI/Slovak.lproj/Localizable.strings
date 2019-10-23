@@ -16,6 +16,7 @@
 "Authentication Failed" = "Overenie zlyhalo";
 "Wrong username or password." = "Nesprávne používateľské meno alebo heslo.";
 "Retry" = "Opakovať";
+"Login failed due to unhandled error case:" = "Prihlásenie zlyhalo z dôvodu neošetrenej chyby:";
 "cookiesNotEnabled" = "Nemôžete sa prihlásiť, pretože vo svojom prehliadači máte zakázané cookies. Prosím, povoľte cookies vo vašom prehliadači a skúste to znova.";
 "browserNotCompatible" = "Zistili sme, že váš prehliadač nie je našou stránkou  momentálne podporovaný. Odporúčame používať Firefox. Kliknite na odkaz nižšie a stiahnite si aktuálnu verziu tohto prehliadača.";
 "alternativeBrowsers" = "Prípadne môžete použiť aj nasledujúce kompatibilné prehliadače.";
@@ -39,7 +40,6 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
-"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
 "Japanese" = "日本語";
 "Latvian" = "Latviešu";
@@ -64,8 +64,8 @@
 
 "About" = "O";
 "AboutBox" = "Vyvinuté Inverse, SOGo je plne vybavený groupware server s dôrazom na škálovateľnosť a jednoduchosť.<br/><br/>\nSOGo ponúka bohaté web rozhranie na báze AJAX-u a natívne podporuje mnoho klientov použitím štandardov, ako sú CalDAV a CardDAV.<br/><br/>\nSOGo je distribuované pod licenciou <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> verzie 2 alebo novšej a niektoré časti pod licenciou GNU LGPL verzie 2. Toto je voľne šíriteľný softvér: môžete ho meniť a šíriť ďalej. Neexistuje ŽIADNA ZÁRUKA v rozsahu povolenom zákonom.<br/><br/>\nPozrite si <a href=\"http://www.sogo.nu/en/support/community.html\">túto stránku</a> pre rôzne možnosti podpory.";
-"Your account was locked due to too many failed attempts." = "Váš účet bol uzamknutý kvôli príliš mnohých neúspešným pokusom.";
-"Your account was locked due to an expired password." = "Váš účet bol uzamknutý kvôli neplatnému heslu.";
+"Your account was locked due to too many failed attempts." = "Váš účet bol zablokovaný z dôvodu mnohých neúspešných pokusov o prihlásenie.";
+"Your account was locked due to an expired password." = "Váš účet bol zablokovaný z dôvodu vypršania platnosti hesla.";
 "Login failed due to unhandled error case" = "Prihlásenie zlyhalo z dôvodu nespracovanej chyby.";
 "Change your Password" = "Zmeniť heslo";
 "The password was changed successfully." = "Vaše heslo bolo zmené.";

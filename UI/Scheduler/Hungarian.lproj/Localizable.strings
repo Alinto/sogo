@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Naptár neve";
 "new" = "Új";
 "Print view" = "Nyomtatási nézet";
+"Print" = "Nyomtatás";
 "edit" = "Szerkesztés";
 "delete" = "Törlés";
 "proposal" = "Javaslat";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Események és feladatok színes megjelenítése";
 "Borders" = "Keretek";
 "Backgrounds" = "Hátterek";
+"Page Format" = "Oldal formátum";
 
 /* Appointments */
 "Appointment viewer" = "Találkozó betekintő";

@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Nome deste Calendário";
 "new" = "Novo";
 "Print view" = "Visualização de Impressão";
+"Print" = "Imprimir";
 "edit" = "Editar";
 "delete" = "Apagar";
 "proposal" = "Proposta";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Exibir eventos e tarefas com cores";
 "Borders" = "Fronteiras";
 "Backgrounds" = "Segundo plano";
+"Page Format" = "Formato da página";
 
 /* Appointments */
 "Appointment viewer" = "Visualizador de Compromissos";

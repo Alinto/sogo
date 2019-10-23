@@ -7,8 +7,8 @@
 "Expunge"     = "Vyškrtnúť";
 "Forward"     = "Preposlať";
 "Get Mail"    = "Prijať";
-"Junk"        = "Spam";
-"Not junk"    = "Nie je SPAM";
+"Junk"        = "Nevyžiadaná pošta";
+"Not junk"    = "Nie je nevyžiadaná";
 "Reply"       = "Odpovedať";
 "Reply All"   = "Odpovedať všetkým";
 "Print"       = "Tlačiť";
@@ -33,8 +33,8 @@
 "Go to address book" = "Prejsť do adresára";
 "Reply to the message" = "Odpoveď na správu";
 "Reply to sender and all recipients" = "Odpovedať odosielateľovi a všetkým príjemcom";
-"Forward selected message" = "Prepošli označené správy";
-"Delete selected message or folder" = "Odstráň označenú správu alebo priečinok";
+"Forward selected message" = "Preposlať označené správy";
+"Delete selected message or folder" = "Odstrániť označenú správu alebo priečinok";
 "Print this message" = "Vytlačiť správu";
 "Stop the current transfer" = "Zastav prebiehajúci presun";
 "Attachment" = "Príloha";
@@ -51,7 +51,7 @@
 "Help" = "Pomoc";
 
 /* Mail account main windows */
-"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Vitajte v SOGo Mailer. Použite zoznam zložiek vľavo na prehliadanie vášho emailového účtu!";
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Vitajte v SOGo Mailer. Použite zoznam zložiek vľavo na prehliadanie vášho e-mailového účtu!";
 "Read messages"       = "Čítať správu";
 
 /* Tooltip for fab button */
@@ -82,12 +82,12 @@
 "Access rights to" = "Pristupové práva k";
 "For user" = "Pre používateľa";
 "Any Authenticated User" = "Akýkoľvek overený používateľ";
-"List and see this folder" = "Zoraď a zobraz tento priečinok";
+"List and see this folder" = "Zobraziť tento priečinok";
 "Read mails from this folder" = "Čítať správy z tejto zložky";
 "Mark mails read and unread" = "Označ správy ako prečítané a neprečítané";
 "Modify the flags of the mails in this folder" = "Upraviť mailové štítky v tejto zložke";
 "Insert, copy and move mails into this folder" = "Vlož, kopíruj a presuň správy do tejto zložky";
-"Post mails" = "Zverejni správy";
+"Post mails" = "Zverejniť správy";
 "Add subfolders to this folder" = "Pridať podadresáre pre tento adresár";
 "Remove this folder" = "Zmazať adresár";
 "Erase mails from this folder" = "Zmazať správy z adresára";
@@ -170,7 +170,7 @@
 "TrashFolderName"  = "Kôš";
 "InboxFolderName"  = "Prijaté";
 "DraftsFolderName" = "Koncepty";
-"JunkFolderName" = "Spam";
+"JunkFolderName" = "Nevyžiadaná pošta";
 "SieveFolderName"  = "Filtre";
 "Folders"          = "Adresáre"; /* title line */
 
@@ -178,7 +178,8 @@
 "MoveTo"        = "Presuň &hellip;";
 
 /* Address Popup menu */
-"Add to Address Book..." = "Pridaj do adresára...";
+"Add to Address Book..." = "Pridať do adresára...";
+"Successfully created card" = "Kontakt bol úspešne vytvorený";
 "Compose Mail To" = "Napísať správu pre";
 "Create Filter From Message..." = "Vytvoriť filter zo správy...";
 
@@ -237,7 +238,7 @@
 "Print..." = "Tlačiť";
 "Delete Message" = "Zmazať správu";
 "Delete Selected Messages" = "Zmazať vybrané správy";
-"Mark the selected messages as junk" = "Označ vybrané správy ako spam";
+"Mark the selected messages as junk" = "Označiť vybrané správy ako nevyžiadané";
 "Mark the selected messages as not junk" = "Vybrané správy nie sú nevyžiadaná pošta";
 
 /* Text appended to the recipients list when there are too many recipients */
@@ -278,9 +279,9 @@
 "As Read By Date..." = "Prečítané dátumom...";
 "All Read" = "Prečítať všetko";
 "Flag" = "Oštítkovať";
-"As Junk" = "Ako SPAM";
-"As Not Junk" = "Ako nie SPAM";
-"Run Junk Mail Controls" = "Spusti kontrolu SPAMu";
+"As Junk" = "Ako nevyžiadané";
+"As Not Junk" = "Ako normálna správa";
+"Run Junk Mail Controls" = "Spustiť kontrolu nevyžiadaných správ";
 "Search messages in" = "Prehľadať správy v";
 "Search" = "Vyhľadať";
 "Search subfolders" = "Prehľadať podadresár";
@@ -364,11 +365,11 @@
 "cannot send message: (smtp) error when connecting" = "Správa sa nedá odoslať: chyba pri pripájaní na SMTP server.";
 
 /* Contacts list in mail editor */
-"Email" = "Email";
+"Email" = "E-mail";
 "More mail options" = "Viac možností pošty";
 "Delegation" = "Delegácia";
 "Add User" = "Pridať používateľa";
-"Add a tag" = "Pridaj štítok";
+"Add a tag" = "Pridať štítok";
 "reply" = "odpovedať";
 "Edit" = "Upraviť";
 "Yes" = "Áno";
@@ -382,7 +383,7 @@
 "Set as Trash" = "Označ do koša";
 
 /* Set the folder as the one holding Junk mails */
-"Set as Junk" = "Označ ako SPAM";
+"Set as Junk" = "Nastaviť ako Nevyžiadaná pošta";
 
 "Sort" = "Zoraď";
 "Order Received" = "Poradie prijatia";
@@ -402,6 +403,15 @@
 "Your email has been saved" = "Vaša správa bola uložená.";
 "Your email has been sent" = "Vaša správa bola odoslaná.";
 "Folder compacted" = "Priečinok bol zmenšený.";
+
+/* Advanced search */
+"Enter Subject" = "Zadajte predmet";
+"Enter From" = "Zadajte odosielateľa";
+"Enter To" = "Zadajte príjemcu";
+"Enter Cc" = "Zadajte príjemcu kópie";
+"Enter Body" = "Zadajte správu";
+"match" = "zodpovedá";
+"does not match" = "nezodpovedá";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Rozsah vyhľadávania";

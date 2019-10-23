@@ -27,6 +27,9 @@
 "OfficePhone" = "Telefone Comercial";
 "Organization" = "Organização";
 "Work Phone" = "Telefone Comercial";
+"Cell" = "Célula";
+"Pager" = "Pager";
+"Pref" = "Pref";
 "Phone" = "Telefone";
 "Phones" = "Telefones";
 "Postal" = "CEP";

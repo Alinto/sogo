@@ -45,9 +45,14 @@
 "Days between responses" = "Dias entre respostas";
 "Do not send responses to mailing lists" = "Não envie respostas para listas de e-mails";
 "Enable auto reply on" = "Habilitar resposta automática em";
+"First day of vacation" = "Primeiro dia de férias";
 "Disable auto reply on" = "Desativar resposta automática em";
+"Last day of vacation" = "Último dia de férias";
+"Enter date" = "Digite a data";
 "Always send vacation message response" = "Sempre enviar resposta de mensagem de férias";
+"The vacation message is sent prior to apply your filters." = "A mensagem de férias é enviada antes de aplicar seus filtros";
 "Discard incoming mails during vacation" = "Descarte emails recebidos durante as férias";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "A mensagem de férias é enviada, mas as mensagens recebidas não são entregues na sua caixa de entrada.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Favor especificar a sua mensagem e seus endereços de e-mail para o qual você deseja ativar resposta automática.";
 "Your vacation message must not end with a single dot on a line." = "Sua mensagem de férias não deve terminar com um ponto único em uma linha.";
@@ -61,6 +66,7 @@
 = "Favor especificar um endereço para o qual você deseja encaminhar suas mensagens.";
 "You are not allowed to forward your messages to an external email address." = "Você não tem permissão para transmitir a sua mensagem para um endereço de e-mail externo.";
 "You are not allowed to forward your messages to an internal email address." = "Você não tem permissão para transmitir a sua mensagem para um endereço de e-mail interno.";
+"You are not allowed to forward your messages to this domain:" = "Você não tem permissão para encaminhar suas mensagens para este domínio:";
 
 /* d & t */
 "Current Time Zone" = "Fuso Horário";
@@ -85,7 +91,9 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
 
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
@@ -156,6 +164,7 @@
 "New label" = "Nova etiqueta";
 "Show subscribed mailboxes only" = "Exibir somente caixas de correio inscritas";
 "Synchronize only default mail folders (EAS)" = "Sincronizar somente pastas de email padrão (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Contar mensagens não lidas em todas as caixas de correio";
 "Sort messages by threads" = "Ordenar mensagens por tópicos";
 "Always open mail composer" = "Sempre abrir o editor de email";
 "Inside current window" = "Dentro da janela atual";
@@ -187,6 +196,7 @@
 /* Contact */
 "Personal Address Book" = "Catálogo Pessoal";
 "Collected Address Book" = "Catálogo Coletado";
+"Contact categories must have unique names." = "As categorias de contato devem ter nomes únicos.";
 
 /* IMAP Accounts */
 "Settings" = "Configurações";
@@ -217,6 +227,7 @@
 "When composing a message" = "Ao compor uma mensagem";
 "Digitally sign the message by default" = "Assinar digitalmente a mensagem por padrão";
 "Always try to encrypt the message" = "Sempre tente criptografar a mensagem";
+"An error occurred while importing the certificate. Verify your password." = "Ocorreu um erro ao importar o certificado. Verifique sua senha.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Parâmetros Adicionais";
@@ -237,6 +248,7 @@
 "Calendar Category" = "Categoria de Calendário";
 "Add Calendar Category" = "Adicionar uma Categoria de Calendário";
 "New category" = "Nova categoria";
+"Reset to defaults" = "Redefinir para os padrões";
 "Remove Calendar Category" = "Remover uma Categoria de Calendário";
 "Contact Category" = "Categoria de Contato";
 "Add Contact Category" = "Adicionar uma Categoria de Calendário";
@@ -272,7 +284,7 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
-"Indonesian" = "bahasa Indonesia";
+"Indonesian" = "Indonésio";
 "Italian" = "Italiano";
 "Japanese" = "日本語";
 "Latvian" = "Latviešu";
