@@ -26,6 +26,7 @@
                  md-no-ink="md-no-ink"><md-icon>chevron_right</md-icon></md-button>
       <md-datepicker md-hide-icons="triangle"
                      md-open-on-focus="md-open-on-focus"
+                     md-date-filter="calendar.isSelectableDay"
                      ng-model="calendar.selectedDate"
                      ng-change="calendar.changeDate($event, calendar.selectedDate)"
                      sg-datepicker-readonly-input="true"><!-- date picker --></md-datepicker>
