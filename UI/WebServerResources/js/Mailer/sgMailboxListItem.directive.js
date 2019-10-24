@@ -42,7 +42,7 @@
         '           sg-enter="$ctrl.saveFolder($event)"',
         '           sg-escape="$ctrl.revertEditing()" />',
         '  </md-input-container>',
-        '  <md-icon class="md-menu" ng-click="$ctrl.showMenu($event)" aria-label="' + l("Options") + '">more_vert</md-icon>'
+        '  <md-icon class="md-menu md-secondary-container" ng-click="$ctrl.showMenu($event)" aria-label="' + l("Options") + '">more_vert</md-icon>'
       ].join(''),
       controller: 'sgMailboxListItemController',
       controllerAs: '$ctrl'
