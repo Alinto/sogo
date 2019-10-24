@@ -139,9 +139,9 @@
                 </div>
               </div>
             </div>
-            <!-- to -->
             <div class="msg-recipients" layout="column" flex="50" flex-xs="100">
-              <div class="pseudo-input-container--compact">
+              <!-- to -->
+              <div class="pseudo-input-container--compact" ng-show="::viewer.message.to.length > 0">
                 <label class="pseudo-input-label">
                   <var:string label:value="To"/>
                 </label>
