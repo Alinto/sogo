@@ -22,6 +22,16 @@ md-input-container {
   }
 }
 
+.sg-hint {
+  @include rtl(text-align, left, right);
+
+  // See .md-char-counter in input.scss
+  font-size: $input-error-font-size;
+  line-height: $input-error-line-height;
+  overflow: hidden;
+  padding-top: $error-padding-top;
+}
+
 md-autocomplete .sg-input-no-message [md-floating-label] {
   md-input-container {
     // See .md-input-has-messages
