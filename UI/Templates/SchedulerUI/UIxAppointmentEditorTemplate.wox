@@ -213,7 +213,7 @@
             </md-button>
           </div>
           <div flex-offset="5"
-               ng-if="editor.showRecurrenceEditor">
+               ng-show="editor.showRecurrenceEditor">
             <var:component className="UIxRecurrenceEditor" />
           </div>
           <!-- end repeat -->
