@@ -75,7 +75,6 @@ typedef enum {
 
 /* capabilities */
 - (BOOL) hasCapability: (NSString *) capability;
-- (NSString *) imap4Separator;
 - (BOOL) supportsQuotas;
 - (BOOL) supportsQResync;
 
