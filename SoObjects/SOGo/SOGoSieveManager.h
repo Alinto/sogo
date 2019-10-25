@@ -1,6 +1,6 @@
 /* SOGoSieveManager.h - this file is part of SOGo
  *
- * Copyright (C) 2010-2014 Inverse inc.
+ * Copyright (C) 2010-2019 Inverse inc.
  *
  * Author: Inverse <info@inverse.ca>
  *
@@ -41,7 +41,8 @@
 + (id) sieveManagerForUser: (SOGoUser *) user;
 - (id) initForUser: (SOGoUser *) newUser;
 
-- (NSString *) sieveScriptWithRequirements: (NSMutableArray *) newRequirements;
+- (NSString *) sieveScriptWithRequirements: (NSMutableArray *) newRequirements
+                                 delimiter: (NSString *) delimiter;
 - (NSString *) lastScriptError;
 
 - (NGSieveClient *) clientForAccount: (SOGoMailAccount *) theAccount;

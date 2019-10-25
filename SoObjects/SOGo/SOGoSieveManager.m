@@ -32,6 +32,8 @@
 #import <SOGo/SOGoTextTemplateFile.h>
 
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGImap4/NGImap4Connection.h>
+#import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NGSieveClient.h>
 
 #import "../Mailer/SOGoMailAccount.h"
@@ -450,7 +452,6 @@ static NSString *sieveScriptName = @"sogo";
 {
   NSString *sieveAction, *method, *requirement, *argument, *flag, *mailbox;
   NSDictionary *mailLabels;
-  SOGoDomainDefaults *dd;
 
   sieveAction = nil;
 
@@ -486,7 +487,6 @@ static NSString *sieveScriptName = @"sogo";
                 }
               else if ([method isEqualToString: @"fileinto"])
                 {
-                  dd = [user domainDefaults];
                   mailbox
                     = [[argument componentsSeparatedByString: @"/"]
                           componentsJoinedByString: delimiter];
@@ -789,6 +789,7 @@ static NSString *sieveScriptName = @"sogo";
   SOGoUserDefaults *ud;
   SOGoDomainDefaults *dd;
   NGSieveClient *client;
+  NGImap4Client *imapClient;
   NSString *filterScript, *v;
   BOOL b, dateCapability;
   unsigned int now;
@@ -821,9 +822,21 @@ static NSString *sieveScriptName = @"sogo";
   //
   script = [NSMutableString string];
 
+  // We grab the IMAP4 delimiter using the supplied username/password
+  if (thePassword)
+    {
+      imapClient = [NGImap4Client clientWithURL: [theAccount imap4URL]];
+      [imapClient login: theUsername  password: thePassword];
+    }
+  else
+    imapClient = [[theAccount imap4Connection] client];
+
+  if (![imapClient delimiter])
+    [imapClient list: @"INBOX"  pattern: @""];
+
   // We first handle filters
   filterScript = [self sieveScriptWithRequirements: req
-                                         delimiter: [theAccount imap4Separator]];
+                                         delimiter: [imapClient delimiter]];
   if (filterScript)
     {
       if ([filterScript length])

@@ -1,3 +1,16 @@
+4.1.1 (2019-XX-XX)
+------------------
+
+New features
+ -
+
+Enhancements
+ -
+
+Bug fixes
+ - [core] use the supplied Sieve creds to fetch the IMAP4 separator (#4846)
+
+
 4.1.0 (2019-10-24)
 ------------------
 
