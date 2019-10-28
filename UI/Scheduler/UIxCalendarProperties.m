@@ -86,7 +86,7 @@
   NS_DURING
     {
       o = [params objectForKey: @"name"];
-      if ([o isKindOfClass: [NSString class]] && ![o isEqualToString: [calendar displayName]])
+      if ([o isKindOfClass: [NSString class]])
         [calendar renameTo: o];
 
       o = [params objectForKey: @"color"];

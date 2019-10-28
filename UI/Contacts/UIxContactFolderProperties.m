@@ -72,7 +72,7 @@
   NS_DURING
     {
       o = [params objectForKey: @"name"];
-      if ([o isKindOfClass: [NSString class]] && ![o isEqualToString: [addressbook displayName]])
+      if ([o isKindOfClass: [NSString class]])
         [addressbook renameTo: o];
 
       o = [params objectForKey: @"synchronize"];

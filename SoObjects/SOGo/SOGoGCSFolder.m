@@ -477,11 +477,18 @@ static NSArray *childRecordFields = nil;
 
   if ([newName length])
     {
-      [self renameTo: newName];
-      error = nil;
+      NS_DURING
+        {
+          [self renameTo: newName];
+          error = nil;
+        }
+      NS_HANDLER
+        error = [NSException exceptionWithHTTPStatus: 409
+                                              reason: @"Existing name"];
+      NS_ENDHANDLER;
     }
   else
-    error = [NSException exceptionWithHTTPStatus: 400
+    error = [NSException exceptionWithHTTPStatus: 403
                                           reason: @"Empty string"];
 
   return error;
@@ -645,6 +652,12 @@ static NSArray *childRecordFields = nil;
 
 - (void) renameTo: (NSString *) newName
 {
+  if (!displayName)
+    [self displayName];
+
+  if ([displayName isEqualToString: newName])
+    return;
+
 #warning SOGoFolder should have the corresponding method
   [displayName release];
   displayName = nil;

@@ -378,7 +378,7 @@ static SoSecurityManager *sm = nil;
 	  methodSel = SOGoSelectorForPropertySetter (currentName);
 	  if ([newFolder respondsToSelector: methodSel])
 	    [newFolder performSelector: methodSel
-		       withObject: value];
+                            withObject: value];
 	}
     }
 
