@@ -254,7 +254,7 @@
 "Add Contact Category" = "Dodaj kategorię kontaktu";
 "Remove Contact Category" = "Usuń kategorię kontaktu";
 "category_none" = "Brak";
-"calendar_category_labels" = "Rocznica,Urodziny,Biznes,Telefony,Klienci,Konkurencja,Klient,Ulubione,Nawiązanie,Podarunki,Święta,Idee,Spotkania,Problemy,Różne,Osobiste,Projekty,Święta,Status,Dostawcy,Podróż,Wakacje";
+"calendar_category_labels" = "Rocznica,Urodziny,Biznes,Telefony,Klienci,Konkurencja,Klient,Ulubione,Nawiązanie,Podarunki,Święta,Idee,Spotkania,Problemy,Różne,Osobiste,Projekty,Święta Publiczne,Status,Dostawcy,Podróż,Wakacje";
 
 /* Default module */
 "Calendar" = "Kalendarz";
