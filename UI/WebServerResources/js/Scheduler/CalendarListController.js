@@ -222,16 +222,19 @@
 
     // Adjust component or create new component through drag'n'drop
     function updateComponentFromGhost($event) {
-      var component, pointerHandler, coordinates, delta, params, calendarNumber, activeCalendars;
+      var component, pointerHandler, originalCoordinates, coordinates, delta, params, calendarNumber, activeCalendars;
 
       component = Component.$ghost.component;
       pointerHandler = Component.$ghost.pointerHandler;
 
       if (component.isNew) {
+        originalCoordinates = pointerHandler.originalEventCoordinates;
         coordinates = pointerHandler.currentEventCoordinates;
         component.summary = '';
         if (component.isAllDay)
           coordinates.duration -= 96;
+        if (coordinates.start < originalCoordinates.start)
+          coordinates.duration *= -1;
         component.setDelta(coordinates.duration * 15);
         newComponent(null, 'appointment', component)
           .catch()

@@ -759,6 +759,13 @@
    * @param {number} delta - the number of minutes
    */
   Component.prototype.setDelta = function(delta) {
+    if (delta < 0) {
+      var start = new Date(this.start.getTime());
+      start.setMinutes(Math.round(start.getMinutes()/15)*15);
+      start.addMinutes(delta);
+      this.start = start;
+      delta *= -1;
+    }
     this.delta = delta;
     this.end = new Date(this.start.getTime());
     this.end.setMinutes(Math.round(this.end.getMinutes()/15)*15);
