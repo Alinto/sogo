@@ -2012,9 +2012,8 @@ FIXME
     {
       bodyPreferenceType = [[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"BodyPreferenceType"];
 
-      // By default, send MIME mails. See #3146 for details.
       if (!bodyPreferenceType)
-        bodyPreferenceType = @"4";
+        bodyPreferenceType = @"1";
 
       mimeSupport = [[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMESupport"];
       mimeTruncation = [[folderMetadata objectForKey: @"FolderOptions"] objectForKey: @"MIMETruncation"];

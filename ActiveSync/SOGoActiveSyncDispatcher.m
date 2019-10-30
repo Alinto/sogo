@@ -707,11 +707,13 @@ void handle_eas_terminate(int signum)
                                               inContext: context
                                                 acquire: NO];
 
-        // update the cache anyway regardless of any error; if the rename fails next folderSync will to the cleanup 
-        [folderToUpdate renameTo: [NSString stringWithFormat: @"%@", [displayName stringByEncodingImap4FolderName]]];
-
         if (folderType == ActiveSyncEventFolder)
-          nameInCache = [NSString stringWithFormat: @"vevent/%@", serverId];
+          {
+            nameInCache = [NSString stringWithFormat: @"vevent/%@", serverId];
+            // We do the rename only for EventFolder. TaskFolder and EventFolder have the same target on server.
+            // In case of an error we expect the foldersync to do the cleanup.
+            [folderToUpdate renameTo: [NSString stringWithFormat: @"%@", [displayName stringByEncodingImap4FolderName]]];
+          }
         else
           nameInCache = [NSString stringWithFormat: @"vtodo/%@",serverId];
 
@@ -1626,11 +1628,11 @@ void handle_eas_terminate(int signum)
 		  // ServerId might have been set if LongId was defined in the initial request. If not, it is
 		  // a normal ItemOperations (Fetch) to get a complete email
 		  if (!serverId)
-		    serverId = [[(id)[theDocumentElement getElementsByTagName: @"ServerId"] lastObject] textValue];
+		    serverId = [[(id)[aFetch getElementsByTagName: @"ServerId"] lastObject] textValue];
 
-                  bodyPreferenceType = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"BodyPreference"] lastObject] getElementsByTagName: @"Type"] lastObject] textValue];
+                  bodyPreferenceType = [[(id)[[(id)[aFetch getElementsByTagName: @"BodyPreference"] lastObject] getElementsByTagName: @"Type"] lastObject] textValue];
                   [context setObject: bodyPreferenceType  forKey: @"BodyPreferenceType"];
-                  mimeSupport = [[(id)[theDocumentElement getElementsByTagName: @"MIMESupport"] lastObject] textValue];
+                  mimeSupport = [[(id)[aFetch getElementsByTagName: @"MIMESupport"] lastObject] textValue];
                   [context setObject: mimeSupport  forKey: @"MIMESupport"];
 
                   // https://msdn.microsoft.com/en-us/library/gg675490%28v=exchg.80%29.aspx
@@ -1644,10 +1646,10 @@ void handle_eas_terminate(int signum)
                   [s appendString: @"<Fetch>"];
                   [s appendString: @"<Status>1</Status>"];
 
-                  if ([[[(id)[theDocumentElement getElementsByTagName: @"LongId"] lastObject] textValue] length])
+                  if ([[[(id)[aFetch getElementsByTagName: @"LongId"] lastObject] textValue] length])
                     {
                       [s appendString: @"<Class xmlns=\"AirSync:\">Email</Class>"];
-                      [s appendFormat: @"<LongId xmlns=\"Search:\">%@</LongId>", [[(id)[theDocumentElement getElementsByTagName: @"LongId"] lastObject] textValue]];
+                      [s appendFormat: @"<LongId xmlns=\"Search:\">%@</LongId>", [[(id)[aFetch getElementsByTagName: @"LongId"] lastObject] textValue]];
                     }
                   else
                     {
@@ -1671,8 +1673,75 @@ void handle_eas_terminate(int signum)
             }
           else
             {
-              [theResponse setStatus: 500];
-              return;
+              NSMutableDictionary *uidCache, *folderMetadata;
+              NSString *easId;
+              id sogoObject, currentCollection, componentObject;
+
+              // ServerId might have been set if LongId was defined in the initial request. If not, it is
+              // a normal ItemOperations (Fetch).
+              if (!serverId)
+                serverId = [[(id)[aFetch getElementsByTagName: @"ServerId"] lastObject] textValue];
+
+              currentCollection = [self collectionFromId: realCollectionId  type: folderType];
+              folderMetadata = [self _folderMetadataForKey: [self _getNameInCache: realCollectionId withType: folderType]];
+
+              uidCache = [folderMetadata objectForKey: @"UidCache"];
+              if (uidCache)
+                {
+                  easId = [[uidCache allKeysForObject: serverId] objectAtIndex: 0];
+
+                  if (easId)
+                    {
+                      if (debugOn)
+                        [self logWithFormat: @"EAS - Found easId: %@ for serverId: %@", easId, serverId];
+                    }
+                  else
+                    {
+                      if (debugOn)
+                        [self logWithFormat: @"EAS - Use original serverId: %@", serverId];
+
+                      easId = serverId;
+                    }
+                }
+              else
+                easId = serverId;
+
+
+              sogoObject = [currentCollection lookupName: [easId sanitizedServerIdWithType: folderType]
+                                               inContext: context
+                                                 acquire: NO];
+
+              if (folderType == ActiveSyncContactFolder)
+                componentObject = [sogoObject vCard];
+              else
+                componentObject = [sogoObject component: NO  secure: YES];
+
+              [s appendString: @"<Fetch>"];
+              [s appendString: @"<Status>1</Status>"];
+
+              if ([[[(id)[aFetch getElementsByTagName: @"LongId"] lastObject] textValue] length])
+                {
+                  if (folderType == ActiveSyncContactFolder)
+                    [s appendString: @"<Class xmlns=\"AirSync:\">Contacts</Class>"];
+                  else if (folderType == ActiveSyncEventFolder)
+                    [s appendString: @"<Class xmlns=\"AirSync:\">Calendar</Class>"];
+                  else if (folderType == ActiveSyncTaskFolder)
+                    [s appendString: @"<Class xmlns=\"AirSync:\">Task</Class>"];
+
+                  [s appendFormat: @"<LongId xmlns=\"Search:\">%@</LongId>", [[(id)[aFetch getElementsByTagName: @"LongId"] lastObject] textValue]];
+                }
+              else
+                {
+                  [s appendFormat: @"<CollectionId xmlns=\"AirSyncBase:\">%@</CollectionId>", collectionId];
+                  [s appendFormat: @"<ServerId xmlns=\"AirSyncBase:\">%@</ServerId>", serverId];
+                }
+
+              [s appendString: @"<Properties>"];
+
+              [s appendString: [componentObject activeSyncRepresentationInContext: context]];
+
+              [s appendString: @"</Properties>"];
+              [s appendString: @"</Fetch>"];
             }
         }
 
@@ -2592,7 +2661,7 @@ void handle_eas_terminate(int signum)
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
   [s appendString: @"<Provision xmlns=\"Provision:\">"];
-  [s appendString: @"<AllowHTMLEmail>1</AllowHTMLEmail>"];
+  [s appendString: @"<Status>1</Status><Policies><Policy><PolicyType>MS-EAS-Provisioning-WBXML</PolicyType><Status>2</Status></Policy></Policies>"];
   [s appendString: @"</Provision>"];
   
   d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
