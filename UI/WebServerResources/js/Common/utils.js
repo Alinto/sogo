@@ -284,10 +284,10 @@ Date.prototype.daysUpTo = function(otherDate) {
   for (var i = 0; i < nbrDays; i++) {
     var newDate = new Date();
     newDate.setTime(day1 + (i * DAY_SECS));
-    newDate.setHours(0);
-    newDate.setMinutes(0);
-    newDate.setSeconds(0);
-    newDate.setMilliseconds(0);
+    newDate.setHours(this.getHours());
+    newDate.setMinutes(this.getMinutes());
+    newDate.setSeconds(this.getSeconds());
+    newDate.setMilliseconds(this.getMilliseconds());
     days.push(newDate);
   }
 
