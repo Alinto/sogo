@@ -256,7 +256,7 @@
           vm.errorMessage = response.data? response.data.message : response.statusText;
         });
       });
-    }
+    };
 
     function toggleFullscreen() {
       vm.isFullscreen = !vm.isFullscreen;
