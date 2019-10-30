@@ -199,9 +199,7 @@
                   ng-model="editor.component.repeat.frequency"
                   ng-change="editor.changeFrequency($event)"
                   ng-disabled="editor.component.occurrenceId">
-                <var:foreach list="repeatList" item="item">
-                  <md-option var:value="item"><var:string var:value="itemRepeatText"/></md-option>
-                </var:foreach>
+                <md-option ng-value="frequency[0]" ng-repeat="frequency in ::editor.frequencies()">{{ frequency[1] }}</md-option>
               </md-select>
             </md-input-container>
             <md-button type="button" class="sg-icon-button"

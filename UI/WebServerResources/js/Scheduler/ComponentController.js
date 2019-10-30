@@ -205,8 +205,8 @@
   /**
    * @ngInject
    */
-  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$element', '$mdDialog', 'sgFocus', 'User', 'CalendarSettings', 'Calendar', 'Component', 'Attendees', 'AddressBook', 'Card', 'Alarm', 'Preferences', 'stateComponent'];
-  function ComponentEditorController($rootScope, $scope, $log, $timeout, $element, $mdDialog, focus, User, CalendarSettings, Calendar, Component, Attendees, AddressBook, Card, Alarm, Preferences, stateComponent) {
+  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$window', '$element', '$mdDialog', 'sgFocus', 'User', 'CalendarSettings', 'Calendar', 'Component', 'Attendees', 'AddressBook', 'Card', 'Alarm', 'Preferences', 'stateComponent'];
+  function ComponentEditorController($rootScope, $scope, $log, $timeout, $window, $element, $mdDialog, focus, User, CalendarSettings, Calendar, Component, Attendees, AddressBook, Card, Alarm, Preferences, stateComponent) {
     var vm = this, component, oldStartDate, oldEndDate, oldDueDate, dayStartTime, dayEndTime;
 
     this.$onInit = function () {
@@ -262,6 +262,12 @@
       return this.component &&
         this.component.repeat.frequency == 'monthly' &&
         this.component.repeat.month.type == 'bymonthday';
+    };
+
+    this.frequencies = function () {
+      return _.filter($window.repeatFrequencies, function (frequency) {
+        return frequency[0] != 'custom' || vm.component.repeat.frequency == 'custom';
+      });
     };
 
     this.changeFrequency = function () {
