@@ -7,10 +7,10 @@ If you encounter a possible bug with SOGo, you can access our
 
 Please make sure to respect the following guidelines when reporting a bug:
 
-  * verify that the bug you found is not already known or even fixed in the `master` version
-  * make the actual facts very clear; be precise, we need to be able to reproduce the problem
-  * explain your speculations, if any
-  * add a screenshot to the ticket if appropriate
+* verify that the bug you found is not already known or even fixed in the `master` version
+* make the actual facts very clear; be precise, we need to be able to reproduce the problem
+* explain your speculations, if any
+* add a screenshot to the ticket if appropriate
 
 ## Submitting a Pull Request
 
@@ -43,29 +43,30 @@ format that includes a **type**, a **scope** and a **subject**:
 #### Type
 Must be one of the following:
 
-  * **feat**: A new feature
-  * **fix**: A bug fix
-  * **docs**: Documentation only changes
-  * **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing
-    semi-colons, etc)
-  * **refactor**: A code change that neither fixes a bug nor adds a feature
-  * **perf**: A code change that improves performance
-  * **test**: Adding missing tests
-  * **chore**: Changes to the build and packaging process or auxiliary tools (sogo-tool,
-    sogo-ealarms-notify) and libraries such as documentation generation
+* **feat**: A new feature
+* **fix**: A bug fix
+* **docs**: Documentation only changes
+* **i18n**: Change in localizable strings
+* **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing
+  semi-colons, etc)
+* **refactor**: A code change that neither fixes a bug nor adds a feature
+* **perf**: A code change that improves performance
+* **test**: Adding missing tests
+* **chore**: Changes to the build and packaging process or auxiliary tools (sogo-tool,
+  sogo-ealarms-notify) and libraries such as documentation generation
 
 #### Scope
 The scope could be anything that helps specifying the scope (or feature) that is changing.
 
 Examples
 
-  * mail
-  * mail(js)
-  * calendar(css)
-  * addressbook
-  * preferences(js)
-  * core
-  * eas
+* mail
+* mail(js)
+* calendar(css)
+* addressbook
+* preferences(js)
+* core
+* eas
 
 #### Subject
 The subject contains a succinct description of the change:
