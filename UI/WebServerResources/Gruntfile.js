@@ -139,7 +139,7 @@ module.exports = function(grunt) {
       '<%= src %>/angular-ui-router/release/angular-ui-router{,.min}.js{,.map}',
       //'<%= src %>/ng-file-upload/ng-file-upload{,.min}.js{,map}',
       '<%= src %>/ng-sortable/dist/ng-sortable.min.js{,map}',
-      '<%= src %>/lodash/dist/lodash{,.min}.js'
+      '<%= src %>/lodash/lodash{,.min}.js'
     ];
     for (var j = 0; j < js.length; j++) {
       var files = grunt.file.expand(grunt.template.process(js[j], {data: options}));
