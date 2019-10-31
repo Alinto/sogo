@@ -1,13 +1,10 @@
-4.1.1 (2019-XX-XX)
+4.1.1 (2019-10-31)
 ------------------
 
-New features
- -
-
-Enhancements
- -
-
 Bug fixes
+ - [web] don't allow RDATE unless already defined
+ - [web] don't modify time when computing dates interval (#4861)
+ - [web] swap start-end dates when delta is negative
  - [core] use the supplied Sieve creds to fetch the IMAP4 separator (#4846)
  - [core] fixed Apple Calendar creation (#4813)
  - [eas] fixed EAS provisioning support for Outlook/iOS (#4853)
