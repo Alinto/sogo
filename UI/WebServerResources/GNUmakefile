@@ -22,7 +22,7 @@ prod:
 	git update-index --no-assume-unchanged $(CSS_FILES) $(JS_FILES) $(JS_LIB_FILES)
 	git add -f $(CSS_FILES) $(JS_FILES) $(JS_LIB_FILES)
 	@if ! git diff --cached --quiet --exit-code; then \
-		git commit -m "(js/css) Update generated files"; \
+		git commit -m "chore(js/css): update generated files"; \
 	else \
 		echo "Nothing to commit; skipping git-commit"; \
 	fi
