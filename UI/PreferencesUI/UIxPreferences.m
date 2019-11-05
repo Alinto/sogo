@@ -1108,6 +1108,11 @@ static NSArray *reminderValues = nil;
   return [[user domainDefaults] vacationEnabled];
 }
 
+- (BOOL) isVacationPeriodEnabled
+{
+  return [[user domainDefaults] vacationPeriodEnabled];
+}
+
 - (NSString *) vacationHeader
 {
   NSString *path;
@@ -1141,54 +1146,6 @@ static NSArray *reminderValues = nil;
 
   return text;
 }
-
-// - (void) setSieveFiltersValue: (NSString *) newValue
-// {
-//   sieveFilters = [newValue objectFromJSONString];
-//   if (sieveFilters)
-//     {
-//       if ([sieveFilters isKindOfClass: [NSArray class]])
-//         [sieveFilters retain];
-//       else
-//         sieveFilters = nil;
-//     }
-// }
-
-// - (NSString *) sieveFiltersValue
-// {
-//   return [sieveFilters jsonRepresentation];
-// }
-
-// - (void) setEnableVacation: (BOOL) enableVacation
-// {
-//   [vacationOptions setObject: [NSNumber numberWithBool: enableVacation]
-//                       forKey: @"enabled"];
-// }
-
-// - (BOOL) enableVacation
-// {
-//   return [[vacationOptions objectForKey: @"enabled"] boolValue];
-// }
-
-// - (void) setAutoReplyText: (NSString *) theText
-// {
-//   [vacationOptions setObject: theText forKey: @"autoReplyText"];
-// }
-
-// - (NSString *) autoReplyText
-// {
-//   return [vacationOptions objectForKey: @"autoReplyText"];
-// }
-
-// - (void) setAutoReplyEmailAddresses: (NSString *) theAddresses
-// {
-//   NSArray *addresses;
-
-//   addresses = [[theAddresses componentsSeparatedByString: @","]
-//                 trimmedComponents];
-//   [vacationOptions setObject: addresses
-// 		      forKey: @"autoReplyEmailAddresses"];
-// }
 
 //
 // Used internally
@@ -1334,105 +1291,6 @@ static NSArray *reminderValues = nil;
   return daysBetweenResponses;
 }
 
-// - (void) setDaysBetweenResponses: (NSNumber *) theDays
-// {
-//   [vacationOptions setObject: theDays
-// 		      forKey: @"daysBetweenResponse"];
-// }
-
-// - (NSString *) daysBetweenResponses
-// {
-//   NSString *days;
-
-//   days = [vacationOptions objectForKey: @"daysBetweenResponse"];
-//   if (!days)
-//     days = @"7"; // defaults to 7 days
-
-//   return days;
-// }
-
-// - (void) setIgnoreLists: (BOOL) ignoreLists
-// {
-//   [vacationOptions setObject: [NSNumber numberWithBool: ignoreLists]
-// 		      forKey: @"ignoreLists"];
-// }
-
-// - (BOOL) ignoreLists
-// {
-//   NSNumber *obj;
-//   BOOL ignore;
-
-//   obj = [vacationOptions objectForKey: @"ignoreLists"];
-
-//   if (obj == nil)
-//     ignore = YES; // defaults to YES
-//   else
-//     ignore = [obj boolValue];
-
-//   return ignore;
-// }
-
-//
-// See http://sogo.nu/bugs/view.php?id=2332 for details
-//
-// - (void) setAlwaysSend: (BOOL) ignoreLists
-// {
-//   [vacationOptions setObject: [NSNumber numberWithBool: ignoreLists]
-// 		      forKey: @"alwaysSend"];
-// }
-
-// - (BOOL) alwaysSend
-// {
-//   NSNumber *obj;
-//   BOOL ignore;
-
-//   obj = [vacationOptions objectForKey: @"alwaysSend"];
-
-//   if (obj == nil)
-//     ignore = NO; // defaults to NO
-//   else
-//     ignore = [obj boolValue];
-
-//   return ignore;
-// }
-
-// - (BOOL) enableVacationEndDate
-// {
-//   return [[vacationOptions objectForKey: @"endDateEnabled"] boolValue];
-// }
-
-// - (BOOL) disableVacationEndDate
-// {
-//   return ![self enableVacationEndDate];
-// }
-
-// - (void) setEnableVacationEndDate: (BOOL) enableVacationEndDate
-// {
-//   [vacationOptions setObject: [NSNumber numberWithBool: enableVacationEndDate]
-//                       forKey: @"endDateEnabled"];
-// }
-
-// - (void) setVacationEndDate: (NSCalendarDate *) endDate
-// {
-//   NSNumber *time;
-
-//   time = [NSNumber numberWithInt: [endDate timeIntervalSince1970]];
-
-//   [vacationOptions setObject: time forKey: @"endDate"];
-// }
-
-// - (NSCalendarDate *) vacationEndDate
-// {
-//   int time;
-
-//   time = [[vacationOptions objectForKey: @"endDate"] intValue];
-
-//   if (time > 0)
-//     return [NSCalendarDate dateWithTimeIntervalSince1970: time];
-//   else
-//     return [NSCalendarDate calendarDate];
-// }
-
 /* mail forward */
 
 //
@@ -1442,49 +1300,6 @@ static NSArray *reminderValues = nil;
 {
   return [[user domainDefaults] forwardEnabled];
 }
-
-// - (void) setEnableForward: (BOOL) enableForward
-// {
-//   [forwardOptions setObject: [NSNumber numberWithBool: enableForward]
-// 		     forKey: @"enabled"];
-// }
-
-// - (BOOL) enableForward
-// {
-//   return [[forwardOptions objectForKey: @"enabled"] boolValue];
-// }
-
-// - (void) setForwardAddress: (NSString *) forwardAddress
-// {
-//   NSArray *addresses;
-
-//   addresses = [[forwardAddress componentsSeparatedByString: @","]
-//                 trimmedComponents];
-//   [forwardOptions setObject: addresses
-// 		     forKey: @"forwardAddress"];
-// }
-
-// - (NSString *) forwardAddress
-// {
-//   id addresses;
-
-//   addresses = [forwardOptions objectForKey: @"forwardAddress"];
-
-//   return ([addresses respondsToSelector: @selector(componentsJoinedByString:)]
-//           ? [(NSArray *)addresses componentsJoinedByString: @", "]
-//           : (NSString *)addresses);
-// }
-
-// - (void) setForwardKeepCopy: (BOOL) keepCopy
-// {
-//   [forwardOptions setObject: [NSNumber numberWithBool: keepCopy]
-// 		     forKey: @"keepCopy"];
-// }
-
-// - (BOOL) forwardKeepCopy
-// {
-//   return [[forwardOptions objectForKey: @"keepCopy"] boolValue];
-// }
 
 - (NSString *) forwardConstraints
 {
@@ -1616,52 +1431,6 @@ static NSArray *reminderValues = nil;
           ? YES
           : NO);
 }
-
-// - (id <WOActionResults>) defaultAction
-// {
-//   id <WOActionResults> results;
-//   SOGoDomainDefaults *dd;
-//   SOGoMailAccount *account;
-//   SOGoMailAccounts *folder;
-//   WORequest *request;
-
-//   request = [context request];
-//   if ([[request method] isEqualToString: @"POST"])
-//     {
-//       dd = [[context activeUser] domainDefaults];
-//       if ([dd sieveScriptsEnabled])
-//         [userDefaults setSieveFilters: sieveFilters];
-//       if ([dd vacationEnabled])
-//         [userDefaults setVacationOptions: vacationOptions];
-//       if ([dd forwardEnabled])
-//         [userDefaults setForwardOptions: forwardOptions];
-
-//       if (!([dd sieveScriptsEnabled] || [dd vacationEnabled] || [dd forwardEnabled]) || [self _isSieveServerAvailable])
-//         {
-//           [userDefaults synchronize];
-//           folder = [[self clientObject] mailAccountsFolder: @"Mail"
-//                                                  inContext: context];
-//           account = [folder lookupName: @"0" inContext: context acquire: NO];
-
-//           if ([account updateFilters])
-//             // If Sieve is not enabled, the SOGoSieveManager will immediatly return a positive answer
-//             // See [SOGoSieveManager updateFiltersForAccount:withUsername:andPassword:]
-//             results = (id <WOActionResults>)[self responseWithStatus: 200
-//                          andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:hasChanged], @"hasChanged", nil]];
-
-//           else
-//             results = (id <WOActionResults>)[self responseWithStatus: 502
-//                          andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Connection error", @"textStatus", nil]];
-//         }
-//       else
-//         results = (id <WOActionResults>)[self responseWithStatus: 503
-//                      andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Service temporarily unavailable", @"textStatus", nil]];
-//     }
-//   else
-//     results = self;
-
-//   return results;
-// }
 
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
                            inContext: (WOContext*) context

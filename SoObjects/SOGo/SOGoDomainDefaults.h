@@ -52,6 +52,7 @@
 - (int) forwardConstraints;
 - (NSArray *) forwardConstraintsDomains;
 - (BOOL) vacationEnabled;
+- (BOOL) vacationPeriodEnabled;
 - (NSString *) vacationDefaultSubject;
 - (NSString *) vacationHeaderTemplateFile;
 - (NSString *) vacationFooterTemplateFile;

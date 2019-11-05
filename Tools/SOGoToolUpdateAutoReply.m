@@ -83,6 +83,7 @@
   BOOL result;
 
   user = [SOGoUser userWithLogin: theLogin];
+
   userDefaults = [user userDefaults];
   vacationOptions = [[userDefaults vacationOptions] mutableCopy];
   [vacationOptions autorelease];
@@ -93,6 +94,14 @@
     }
   else
     {
+      // We do NOT enable the vacation message automatically if the domain
+      // preference is disabled by default.
+      if (![[user domainDefaults] vacationPeriodEnabled])
+        {
+          NSLog(@"SOGoVacationPeriodEnabled set to NO for the domain - ignoring.");
+          return NO;
+        }
+
       [vacationOptions setObject: [NSNumber numberWithBool: NO] forKey: @"startDateEnabled"];
     }
 

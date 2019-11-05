@@ -927,7 +927,9 @@ static NSString *sieveScriptName = @"sogo";
         }
 
       // Start date of auto-reply
-      if ([[values objectForKey: @"startDateEnabled"] boolValue] && dateCapability)
+      if ([dd vacationPeriodEnabled] &&
+          [[values objectForKey: @"startDateEnabled"] boolValue] &&
+          dateCapability)
         {
           [req addObjectUniquely: @"date"];
           [req addObjectUniquely: @"relational"];
@@ -938,7 +940,9 @@ static NSString *sieveScriptName = @"sogo";
         }
 
       // End date of auto-reply
-      if ([[values objectForKey: @"endDateEnabled"] boolValue] && dateCapability)
+      if ([dd vacationPeriodEnabled] &&
+          [[values objectForKey: @"endDateEnabled"] boolValue] &&
+          dateCapability)
         {
           [req addObjectUniquely: @"date"];
           [req addObjectUniquely: @"relational"];

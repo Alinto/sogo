@@ -220,6 +220,18 @@
   return [self boolForKey: @"SOGoVacationEnabled"];
 }
 
+- (BOOL) vacationPeriodEnabled
+{
+  id o;
+
+  o = [self stringForKey: @"SOGoVacationPeriodEnabled"];
+
+  if (o)
+    return [o boolValue];
+
+  return YES;
+}
+
 - (NSString *) vacationDefaultSubject
 {
   return [self stringForKey: @"SOGoVacationDefaultSubject"];

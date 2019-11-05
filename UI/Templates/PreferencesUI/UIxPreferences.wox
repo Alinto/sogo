@@ -974,47 +974,49 @@
                   </md-checkbox>
                 </div>
 
-                <div>
-                  <md-checkbox
-                      ng-model="app.preferences.defaults.Vacation.startDateEnabled"
-                      ng-true-value="1"
-                      ng-false-value="0"
-                      ng-change="app.toggleVacationStartDate()">
-                    <var:string label:value="Enable auto reply on" />
-                  </md-checkbox>
-                  <md-input-container>
-                    <label class="md-no-truncate"><var:string label:value="First day of vacation"/></label>
-                    <md-datepicker
-                        name="vacationStartDate"
-                        label:md-placeholder="Enter date"
-                        ng-disabled="!app.preferences.defaults.Vacation.startDateEnabled"
-                        ng-required="app.preferences.defaults.Vacation.startDateEnabled"
-                        ng-model="app.preferences.defaults.Vacation.startDate"
-                        md-date-filter="app.validateVacationStartDate"
-                        sg-reset-on-disabled="sg-reset-on-disabled"><!-- datepicker --></md-datepicker>
-                  </md-input-container>
-                </div>
+                <var:if condition="isVacationPeriodEnabled">
+                  <div>
+                    <md-checkbox
+                        ng-model="app.preferences.defaults.Vacation.startDateEnabled"
+                        ng-true-value="1"
+                        ng-false-value="0"
+                        ng-change="app.toggleVacationStartDate()">
+                      <var:string label:value="Enable auto reply on" />
+                    </md-checkbox>
+                    <md-input-container>
+                      <label class="md-no-truncate"><var:string label:value="First day of vacation"/></label>
+                      <md-datepicker
+                          name="vacationStartDate"
+                          label:md-placeholder="Enter date"
+                          ng-disabled="!app.preferences.defaults.Vacation.startDateEnabled"
+                          ng-required="app.preferences.defaults.Vacation.startDateEnabled"
+                          ng-model="app.preferences.defaults.Vacation.startDate"
+                          md-date-filter="app.validateVacationStartDate"
+                          sg-reset-on-disabled="sg-reset-on-disabled"><!-- datepicker --></md-datepicker>
+                    </md-input-container>
+                  </div>
 
-                <div>
-                  <md-checkbox
-                      ng-model="app.preferences.defaults.Vacation.endDateEnabled"
-                      ng-true-value="1"
-                      ng-false-value="0"
-                      ng-change="app.toggleVacationEndDate()">
-                    <var:string label:value="Disable auto reply on" />
-                  </md-checkbox>
-                  <md-input-container>
-                    <label class="md-no-truncate"><var:string label:value="Last day of vacation"/></label>
-                    <md-datepicker
-                        name="vacationEndDate"
-                        label:md-placeholder="Enter date"
-                        ng-disabled="!app.preferences.defaults.Vacation.endDateEnabled"
-                        ng-required="app.preferences.defaults.Vacation.endDateEnabled"
-                        ng-model="app.preferences.defaults.Vacation.endDate"
-                        md-date-filter="app.validateVacationEndDate"
-                        sg-reset-on-disabled="sg-reset-on-disabled"><!-- datepicker --></md-datepicker>
-                  </md-input-container>
-                </div>
+                  <div>
+                    <md-checkbox
+                        ng-model="app.preferences.defaults.Vacation.endDateEnabled"
+                        ng-true-value="1"
+                        ng-false-value="0"
+                        ng-change="app.toggleVacationEndDate()">
+                      <var:string label:value="Disable auto reply on" />
+                    </md-checkbox>
+                    <md-input-container>
+                      <label class="md-no-truncate"><var:string label:value="Last day of vacation"/></label>
+                      <md-datepicker
+                          name="vacationEndDate"
+                          label:md-placeholder="Enter date"
+                          ng-disabled="!app.preferences.defaults.Vacation.endDateEnabled"
+                          ng-required="app.preferences.defaults.Vacation.endDateEnabled"
+                          ng-model="app.preferences.defaults.Vacation.endDate"
+                          md-date-filter="app.validateVacationEndDate"
+                          sg-reset-on-disabled="sg-reset-on-disabled"><!-- datepicker --></md-datepicker>
+                    </md-input-container>
+                  </div>
+                </var:if>
 
                 <div>
                   <md-checkbox

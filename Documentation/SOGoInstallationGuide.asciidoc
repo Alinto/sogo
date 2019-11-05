@@ -2071,12 +2071,16 @@ Requires Sieve script support on the IMAP host.
 
 Defaults to `NO` when unset.
 
-When enabling this parameter, one may have to also enable the associated
+|D |SOGoVacationPeriodEnabled
+|When enabling this parameter, one may have to also enable the associated
 cronjob in `/etc/cron.d/sogo` in order to activate automatic vacation
-message activation and expiration.
+message activation and expiration if your Sieve server does not support
+the date extension.
 
 See the _Cronjob — Vacation messages activation and expiration_ section
 below for details.
+
+Defaults to `YES` when unset.
 
 |D |SOGoVacationDefaultSubject
 |Parameter used to define a default vacation subject if user don't specify a
