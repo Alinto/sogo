@@ -2138,6 +2138,16 @@ host.
 
 Defaults to `NO` when unset.
 
+|D |SOGoSieveScriptHeaderTemplateFile
+|Parameter used to set the full path of the Sieve script that will be
+automatically prepended to any Sieve scripts a user might define. The file
+must be encoded in UTF-8 and it must also respect the RFC5228 syntax.
+
+|D |SOGoSieveScriptFooterTemplateFile
+|Parameter used to set the full path of the Sieve script that will be
+automatically appended to any Sieve scripts a user might define. The file
+must be encoded in UTF-8 and it must also respect the RFC5228 syntax.
+
 |U |SOGoSieveFilters
 |Parameter used to define initial Sieve scripts for users. The user
 can still modify the scripts and the initial values will be written

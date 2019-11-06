@@ -196,6 +196,16 @@
   return [self boolForKey: @"SOGoSieveScriptsEnabled"];
 }
 
+- (NSString *) sieveScriptHeaderTemplateFile
+{
+  return [self stringForKey: @"SOGoSieveScriptHeaderTemplateFile"];
+}
+
+- (NSString *) sieveScriptFooterTemplateFile
+{
+  return [self stringForKey: @"SOGoSieveScriptFooterTemplateFile"];
+}
+
 - (BOOL) forwardEnabled
 {
   return [self boolForKey: @"SOGoForwardEnabled"];

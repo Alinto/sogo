@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
@@ -32,6 +33,7 @@
 #import <SOGo/SOGoTextTemplateFile.h>
 
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+Ext.h>
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NGSieveClient.h>
@@ -251,6 +253,46 @@ static NSString *sieveScriptName = @"sogo";
 - (BOOL) _saveFilters
 {
   return YES;
+}
+
+- (NSString *) _extractRequirementsFromContent: (NSString *) theContent
+                                     intoArray: (NSMutableArray *) theRequirements
+{
+  NSString *line, *v;
+  NSArray *lines;
+  id o;
+
+  int i, count;
+
+  lines = [theContent componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+  count = [lines count];
+
+  for (i = 0; i < count; i++)
+    {
+      line = [[lines objectAtIndex: i] stringByTrimmingSpaces];
+      if ([line hasPrefix: @"require "])
+        {
+          line = [line substringFromIndex: 8];
+          // Handle lines like: require "imapflags";
+          if ([line characterAtIndex: 0] == '"')
+            {
+              v = [line substringToIndex: [line length]-2];
+              [theRequirements addObject: v];
+              NSLog(@"require: |%@|", v);
+            }
+          // Else handle lines like: require ["imapflags","vacation"];
+          else if ([line characterAtIndex: 0] == '[')
+            {
+              o = [[line substringToIndex: [line length]-1] objectFromJSONString];
+              [theRequirements addObjectsFromArray: o];
+              NSLog(@"requires: |%@|", o);
+            }
+        }
+      else
+        break;
+    }
+
+  return [[lines subarrayWithRange: NSMakeRange(i, count-i)] componentsJoinedByString: @"\n"];
 }
 
 - (BOOL) _extractRuleField: (NSString **) field
@@ -592,7 +634,7 @@ static NSString *sieveScriptName = @"sogo";
 
   sieveScript = [NSMutableString string];
 
-  ASSIGN (requirements, newRequirements);
+  ASSIGN(requirements, newRequirements);
   [scriptError release];
   scriptError = nil;
 
@@ -613,8 +655,7 @@ static NSString *sieveScriptName = @"sogo";
     }
 
   [scriptError retain];
-  [requirements release];
-  requirements = nil;
+  DESTROY(requirements);
 
   if (scriptError)
     sieveScript = nil;
@@ -783,6 +824,7 @@ static NSString *sieveScriptName = @"sogo";
                     withUsername: (NSString *) theUsername
                      andPassword: (NSString *) thePassword
 {
+  NSString *filterScript, *v, *content;
   NSMutableArray *req;
   NSMutableString *script, *header;
   NSDictionary *result, *values;
@@ -790,7 +832,6 @@ static NSString *sieveScriptName = @"sogo";
   SOGoDomainDefaults *dd;
   NGSieveClient *client;
   NGImap4Client *imapClient;
-  NSString *filterScript, *v;
   BOOL b, dateCapability;
   unsigned int now;
 
@@ -1029,10 +1070,38 @@ static NSString *sieveScriptName = @"sogo";
         [script appendString: @"keep;\r\n"];
     }
 
+  // We handle header/footer Sieve scripts
+  if ((v = [dd sieveScriptHeaderTemplateFile]))
+    {
+      content = [NSString stringWithContentsOfFile: v
+                                          encoding: NSUTF8StringEncoding
+                                             error: NULL];
+      if (content)
+        {
+          v = [self _extractRequirementsFromContent: content
+                                          intoArray: req];
+          [script insertString: v  atIndex: 0];
+        }
+    }
+
+  if ((v = [dd sieveScriptFooterTemplateFile]))
+    {
+      content = [NSString stringWithContentsOfFile: v
+                                          encoding: NSUTF8StringEncoding
+                                             error: NULL];
+      if (content)
+        {
+          v = [self _extractRequirementsFromContent: content
+                                          intoArray: req];
+          [script appendString: @"\n"];
+          [script appendString: v];
+        }
+    }
+
   if ([req count])
     {
       header = [NSString stringWithFormat: @"require [\"%@\"];\r\n",
-                         [req componentsJoinedByString: @"\",\""]];
+                         [[req uniqueObjects] componentsJoinedByString: @"\",\""]];
       [script insertString: header  atIndex: 0];
     }
 

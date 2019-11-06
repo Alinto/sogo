@@ -48,6 +48,8 @@
 - (BOOL) forceExternalLoginWithEmail;
 - (BOOL) externalAvatarsEnabled;
 - (BOOL) sieveScriptsEnabled;
+- (NSString *) sieveScriptHeaderTemplateFile;
+- (NSString *) sieveScriptFooterTemplateFile;
 - (BOOL) forwardEnabled;
 - (int) forwardConstraints;
 - (NSArray *) forwardConstraintsDomains;
