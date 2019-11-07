@@ -18,6 +18,7 @@
       this.timeZonesSearchText = '';
       this.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
       this.mailLabelKeyRE = new RegExp(/^(?!^_\$)[^(){} %*\"\\\\]*?$/);
+      this.hasActiveExternalSieveScripts = $window.hasActiveExternalSieveScripts;
 
       // Set alternate avatar in User service
       if (Preferences.defaults.SOGoAlternateAvatar)

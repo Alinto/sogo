@@ -728,6 +728,25 @@ static NSArray *reminderValues = nil;
   return [[user domainDefaults] sieveScriptsEnabled];
 }
 
+- (NSString *) hasActiveExternalSieveScripts
+{
+  NSDictionary *scripts;
+  NSEnumerator *keys;
+  NSString *key;
+
+  scripts = [[self _sieveClient] listScripts];
+
+  keys = [scripts keyEnumerator];
+  while ((key = [keys nextObject]))
+    {
+      if ([key caseInsensitiveCompare: @"sogo"] != NSOrderedSame &&
+          [[scripts objectForKey: key] boolValue])
+        return @"true";
+    }
+
+  return @"false";
+}
+
 //
 // Used by wox template
 //

@@ -23,6 +23,7 @@
     var forwardConstraints = <var:string value="forwardConstraints" const:escapeHTML="NO"/>;
     var forwardConstraintsDomains = <var:string value="forwardConstraintsDomains" const:escapeHTML="NO"/>;
     var sieveCapabilities = <var:string value="sieveCapabilities" const:escapeHTML="NO"/>;
+    var hasActiveExternalSieveScripts = <var:string value="hasActiveExternalSieveScripts" const:escapeHTML="NO"/>;
   </script>
 
   <script type="text/ng-template" id="preferences.html">
@@ -733,63 +734,6 @@
         </md-tab>
         <!-- END OF MAIL > GENERAL -->
 
-
-        <!-- MAIL > FILTERS -->
-        <var:if condition="isSieveScriptsEnabled">
-          <md-tab id="mailFiltersTab"
-                  aria-controls="mailFiltersTab-content"
-                  label:label="Filters"
-                  sg-labels="MailerUI">
-            <md-content role="tabpanel" aria-labelledby="mailFiltersView">
-              <div class="sg-list-sortable"
-                   ng-model="app.preferences.defaults.SOGoSieveFilters"
-                   as-sortable="{ scrollableContainer: '.sg-list-sortable', containment: '.sg-list-sortable', containerPositioning: 'relative', orderChanged: app.onFiltersOrderChanged(preferencesForm) }">
-                <div layout="row" layout-align="start center"
-                     ng-repeat="item in app.preferences.defaults.SOGoSieveFilters"
-                     as-sortable-item="as-sortable-item">
-                  <md-button class="md-icon-button" md-no-ink="md-no-ink"
-                             as-sortable-item-handle="as-sortable-item-handle">
-                    <md-icon class="sg-sortable-grip">drag_handle</md-icon>
-                  </md-button>
-                  <md-checkbox
-                      style="margin-bottom: 0;"
-                      label:aria-label="Enable filter"
-                      ng-model="app.preferences.defaults.SOGoSieveFilters[$index].active"
-                      ng-true-value="1"
-                      ng-false-value="0">
-                    <!-- active or not-->
-                  </md-checkbox>
-                  <md-input-container class="md-flex">
-	            <input type="text" label:aria-label="Filter name"
-                           ng-model="app.preferences.defaults.SOGoSieveFilters[$index].name"/>
-                  </md-input-container>
-                  <md-button class="sg-icon-button" type="button"
-                             ng-click="app.editMailFilter($event, $index, preferencesForm)"
-                             layout="row" layout-align="end center"
-                             label:aria-label="Edit Filter">
-                    <md-icon>edit</md-icon>
-                  </md-button>
-                  <md-button class="sg-icon-button" type="button"
-                             ng-click="app.removeMailFilter($index, preferencesForm)"
-                             layout="row" layout-align="end center"
-                             label:aria-label="Delete Filter">
-                    <md-icon>remove_circle</md-icon>
-                  </md-button>
-                </div>
-              </div>
-
-              <div layout="row" layout-align="end center">
-                <md-button type="button"
-                           ng-click="app.addMailFilter($event, preferencesForm)"
-                           label:aria-label="Create Filter">
-                  <var:string label:value="Create Filter"/>
-                </md-button>
-              </div>
-            </md-content>
-          </md-tab>
-        </var:if>
-        <!-- END OF MAIL > FILTERS -->
-
         <!-- MAIL > LABELS -->
         <md-tab id="mailLabelsTab"
                 aria-controls="mailLabelsTab-content" label:label="Labels">
@@ -889,12 +833,84 @@
         </md-tab>
         <!-- END OF MAIL > ACCOUNTS -->
 
+        <!-- MAIL > FILTERS -->
+        <var:if condition="isSieveScriptsEnabled">
+          <md-tab id="mailFiltersTab"
+                  aria-controls="mailFiltersTab-content"
+                  label:label="Filters"
+                  sg-labels="MailerUI">
+            <md-content role="tabpanel" aria-labelledby="mailFiltersView" ng-hide="app.hasActiveExternalSieveScripts">
+              <div class="sg-list-sortable"
+                   ng-model="app.preferences.defaults.SOGoSieveFilters"
+                   as-sortable="{ scrollableContainer: '.sg-list-sortable', containment: '.sg-list-sortable', containerPositioning: 'relative', orderChanged: app.onFiltersOrderChanged(preferencesForm) }">
+                <div layout="row" layout-align="start center"
+                     ng-repeat="item in app.preferences.defaults.SOGoSieveFilters"
+                     as-sortable-item="as-sortable-item">
+                  <md-button class="md-icon-button" md-no-ink="md-no-ink"
+                             as-sortable-item-handle="as-sortable-item-handle">
+                    <md-icon class="sg-sortable-grip">drag_handle</md-icon>
+                  </md-button>
+                  <md-checkbox
+                      style="margin-bottom: 0;"
+                      label:aria-label="Enable filter"
+                      ng-model="app.preferences.defaults.SOGoSieveFilters[$index].active"
+                      ng-true-value="1"
+                      ng-false-value="0">
+                    <!-- active or not-->
+                  </md-checkbox>
+                  <md-input-container class="md-flex">
+	            <input type="text" label:aria-label="Filter name"
+                           ng-model="app.preferences.defaults.SOGoSieveFilters[$index].name"/>
+                  </md-input-container>
+                  <md-button class="sg-icon-button" type="button"
+                             ng-click="app.editMailFilter($event, $index, preferencesForm)"
+                             layout="row" layout-align="end center"
+                             label:aria-label="Edit Filter">
+                    <md-icon>edit</md-icon>
+                  </md-button>
+                  <md-button class="sg-icon-button" type="button"
+                             ng-click="app.removeMailFilter($index, preferencesForm)"
+                             layout="row" layout-align="end center"
+                             label:aria-label="Delete Filter">
+                    <md-icon>remove_circle</md-icon>
+                  </md-button>
+                </div>
+              </div>
+
+              <div layout="row" layout-align="end center">
+                <md-button type="button"
+                           ng-click="app.addMailFilter($event, preferencesForm)"
+                           label:aria-label="Create Filter">
+                  <var:string label:value="Create Filter"/>
+                </md-button>
+              </div>
+            </md-content>
+            <md-content class="md-padding" ng-show="app.hasActiveExternalSieveScripts">
+              <md-card flex="50" flex-xs="100">
+                <md-card-title>
+                  <md-card-title-text>
+                    <span class="md-headline"><var:string label:value="An external Sieve script is active"/></span>
+                    <span class="md-subhead"><var:string label:value="Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." /></span>
+                  </md-card-title-text>
+                </md-card-title>
+                <md-card-actions layout="row" layout-align="end center">
+                  <md-button type="button" class="md-raised md-warn"
+                             ng-click="app.hasActiveExternalSieveScripts = false">
+                    <var:string label:value="Let SOGo handle everything" />
+                  </md-button>
+                </md-card-actions>
+              </md-card>
+            </md-content>
+          </md-tab>
+        </var:if>
+        <!-- END OF MAIL > FILTERS -->
 
         <!-- MAIL > VACATION -->
         <var:if condition="isVacationEnabled">
           <md-tab id="mailVacationTab" aria-controls="mailVacationTab-content" label:label="Vacation">
             <div role="tabpanel" aria-labelledby="mailVacationView"
-                 id="mailVacationView-content" class="md-padding">
+                 id="mailVacationView-content" class="md-padding"
+                 ng-hide="app.hasActiveExternalSieveScripts">
 
               <md-checkbox
                   ng-model="app.preferences.defaults.Vacation.enabled"
@@ -1040,6 +1056,22 @@
 
               </div>
             </div>
+            <md-content class="md-padding" ng-show="app.hasActiveExternalSieveScripts">
+              <md-card flex="50" flex-xs="100">
+                <md-card-title>
+                  <md-card-title-text>
+                    <span class="md-headline"><var:string label:value="An external Sieve script is active"/></span>
+                    <span class="md-subhead"><var:string label:value="Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." /></span>
+                  </md-card-title-text>
+                </md-card-title>
+                <md-card-actions layout="row" layout-align="end center">
+                  <md-button type="button" class="md-raised md-warn"
+                             ng-click="app.hasActiveExternalSieveScripts = false">
+                    <var:string label:value="Let SOGo handle everything" />
+                  </md-button>
+                </md-card-actions>
+              </md-card>
+            </md-content>
           </md-tab>
         </var:if>
         <!-- END OF MAIL > VACATION -->
@@ -1048,7 +1080,8 @@
         <var:if condition="isForwardEnabled">
           <md-tab id="mailForwardTab" aria-controls="mailForwardTab-content" label:label="Forward">
             <div role="tabpanel" aria-labelledby="mailForwardView"
-                 id="mailForwardView-content" class="md-padding">
+                 id="mailForwardView-content" class="md-padding"
+                 ng-hide="app.hasActiveExternalSieveScripts">
 
               <md-checkbox
                   ng-model="app.preferences.defaults.Forward.enabled"
@@ -1076,6 +1109,22 @@
 
               </div>
             </div>
+            <md-content class="md-padding" ng-show="app.hasActiveExternalSieveScripts">
+              <md-card flex="50" flex-xs="100">
+                <md-card-title>
+                  <md-card-title-text>
+                    <span class="md-headline"><var:string label:value="An external Sieve script is active"/></span>
+                    <span class="md-subhead"><var:string label:value="Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." /></span>
+                  </md-card-title-text>
+                </md-card-title>
+                <md-card-actions layout="row" layout-align="end center">
+                  <md-button type="button" class="md-raised md-warn"
+                             ng-click="app.hasActiveExternalSieveScripts = false">
+                    <var:string label:value="Let SOGo handle everything" />
+                  </md-button>
+                </md-card-actions>
+              </md-card>
+            </md-content>
           </md-tab>
         </var:if>
         <!-- END OF MAIL > FORWARD -->
