@@ -1079,6 +1079,7 @@ static NSString *sieveScriptName = @"sogo";
           v = [self _extractRequirementsFromContent: content
                                           intoArray: req];
           [script insertString: v  atIndex: 0];
+          b = YES;
         }
     }
 
@@ -1101,38 +1102,38 @@ static NSString *sieveScriptName = @"sogo";
       header = [NSString stringWithFormat: @"require [\"%@\"];\r\n",
                          [[req uniqueObjects] componentsJoinedByString: @"\",\""]];
       [script insertString: header  atIndex: 0];
+      b = YES;
     }
 
 
   /* We ensure to deactive the current active script since it could prevent
      its deletion from the server. */
-  result = [client setActiveScript: @""];
-  // We delete the existing Sieve script
-  result = [client deleteScript: sieveScriptName];
-
-  if (![[result valueForKey:@"result"] boolValue]) {
-    [self logWithFormat: @"WARNING: Could not delete Sieve script - continuing...: %@", result];
-  }
-
-  // We put and activate the script only if we actually have a script
-  // that does something...
   if (b && [script length])
     {
+      result = [client setActiveScript: @""];
+      // We delete the existing Sieve script
+      result = [client deleteScript: sieveScriptName];
+
+      if (![[result valueForKey:@"result"] boolValue])
+        [self logWithFormat: @"WARNING: Could not delete Sieve script - continuing...: %@", result];
+
       result = [client putScript: sieveScriptName  script: script];
 
-      if (![[result valueForKey:@"result"] boolValue]) {
-        [self logWithFormat: @"Could not upload Sieve script: %@", result];
-        [client closeConnection];
-        return NO;
-      }
+      if (![[result valueForKey:@"result"] boolValue])
+        {
+          [self logWithFormat: @"Could not upload Sieve script: %@", result];
+          [client closeConnection];
+          return NO;
+        }
 
       result = [client setActiveScript: sieveScriptName];
-      if (![[result valueForKey:@"result"] boolValue]) {
-        [self logWithFormat: @"Could not enable Sieve script: %@", result];
-        [client closeConnection];
-        return NO;
-      }
-  }
+      if (![[result valueForKey:@"result"] boolValue])
+        {
+          [self logWithFormat: @"Could not enable Sieve script: %@", result];
+          [client closeConnection];
+          return NO;
+        }
+    }
 
   [client closeConnection];
   return YES;
