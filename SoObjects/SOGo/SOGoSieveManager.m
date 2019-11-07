@@ -278,14 +278,12 @@ static NSString *sieveScriptName = @"sogo";
             {
               v = [line substringToIndex: [line length]-2];
               [theRequirements addObject: v];
-              NSLog(@"require: |%@|", v);
             }
           // Else handle lines like: require ["imapflags","vacation"];
           else if ([line characterAtIndex: 0] == '[')
             {
               o = [[line substringToIndex: [line length]-1] objectFromJSONString];
               [theRequirements addObjectsFromArray: o];
-              NSLog(@"requires: |%@|", o);
             }
         }
       else
