@@ -507,8 +507,7 @@
         if (d.Vacation.startDateEnabled) {
           r = (!d.Vacation.endDateEnabled ||
                !d.Vacation.endDate ||
-               date.getTime() <= d.Vacation.endDate.getTime()) &&
-            date.getTime() >= today.getTime();
+               date.getTime() <= d.Vacation.endDate.getTime());
         }
       }
 
@@ -523,8 +522,7 @@
         if (d.Vacation.endDateEnabled) {
           r = (!d.Vacation.startDateEnabled ||
                !d.Vacation.startDate ||
-               date.getTime() >= d.Vacation.startDate.getTime()) &&
-            date.getTime() >= today.getTime();
+               date.getTime() >= d.Vacation.startDate.getTime());
         }
       }
 
