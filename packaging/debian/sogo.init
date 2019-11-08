@@ -76,13 +76,14 @@ case "$1" in
 	;;
   stop)
 	log_daemon_msg "Stopping $DESC" "$NAME"
-	chown -f root:root $PIDFILE
+	[ -e $PIDFILE ] && chown root:root $PIDFILE
 	start-stop-daemon -c $USER --stop --pidfile $PIDFILE --retry=TERM/20/KILL/5 --oknodo
 	rm -f $PIDFILE
 	log_end_msg 0
 	;;
   restart|force-reload)
 	log_daemon_msg "Restarting $DESC" "$NAME"
+	[ -e $PIDFILE ] && chown root:root $PIDFILE
 	start-stop-daemon -c $USER --stop --pidfile $PIDFILE --retry=TERM/20/KILL/5 --oknodo
 	rm -f $PIDFILE
         # Ensure directory's existence and permissions
