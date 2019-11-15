@@ -804,6 +804,24 @@ static NSString *sieveScriptName = @"sogo";
   return [client autorelease];
 }
 
+- (BOOL) hasActiveExternalSieveScripts: (NGSieveClient *) client
+{
+  NSDictionary *scripts;
+  NSEnumerator *keys;
+  NSString *key;
+
+  scripts = [client listScripts];
+
+  keys = [scripts keyEnumerator];
+  while ((key = [keys nextObject]))
+    {
+      if ([key caseInsensitiveCompare: @"sogo"] != NSOrderedSame &&
+          [[[scripts objectForKey: key] stringValue] length] > 0)
+        return YES;
+    }
+
+  return NO;
+}
 
 //
 //
@@ -812,7 +830,8 @@ static NSString *sieveScriptName = @"sogo";
 {
   return [self updateFiltersForAccount: theAccount
                           withUsername: nil
-                           andPassword: nil];
+                           andPassword: nil
+                       forceActivation: NO];
 }
 
 //
@@ -821,6 +840,7 @@ static NSString *sieveScriptName = @"sogo";
 - (BOOL) updateFiltersForAccount: (SOGoMailAccount *) theAccount
                     withUsername: (NSString *) theUsername
                      andPassword: (NSString *) thePassword
+                 forceActivation: (BOOL) forceActivation
 {
   NSString *filterScript, *v, *content;
   NSMutableArray *req;
@@ -830,7 +850,7 @@ static NSString *sieveScriptName = @"sogo";
   SOGoDomainDefaults *dd;
   NGSieveClient *client;
   NGImap4Client *imapClient;
-  BOOL b, dateCapability;
+  BOOL b, activate, dateCapability;
   unsigned int now;
 
   dd = [user domainDefaults];
@@ -843,6 +863,9 @@ static NSString *sieveScriptName = @"sogo";
   client = [self clientForAccount: theAccount  withUsername: theUsername  andPassword: thePassword];
   if (!client)
     return NO;
+
+  // Activate script Sieve when forced or when no external script is enabled
+  activate = forceActivation || ![self hasActiveExternalSieveScripts: client];
 
   // We adjust the "methodRequirements" based on the server's
   // capabilities. Cyrus exposes "imapflags" while Dovecot (and
@@ -1094,6 +1117,7 @@ static NSString *sieveScriptName = @"sogo";
                                           intoArray: req];
           [script appendString: @"\n"];
           [script appendString: v];
+          b = YES;
         }
     }
 
@@ -1102,21 +1126,23 @@ static NSString *sieveScriptName = @"sogo";
       header = [NSString stringWithFormat: @"require [\"%@\"];\r\n",
                          [[req uniqueObjects] componentsJoinedByString: @"\",\""]];
       [script insertString: header  atIndex: 0];
-      b = YES;
     }
 
 
   /* We ensure to deactive the current active script since it could prevent
      its deletion from the server. */
+  if (activate)
+    result = [client setActiveScript: @""];
+  // We delete the existing Sieve script
+  result = [client deleteScript: sieveScriptName];
+
+  if (![[result valueForKey:@"result"] boolValue])
+    [self logWithFormat: @"WARNING: Could not delete Sieve script - continuing...: %@", result];
+
+  /* We put and activate the script only if we actually have a script
+     that does something... */
   if (b && [script length])
     {
-      result = [client setActiveScript: @""];
-      // We delete the existing Sieve script
-      result = [client deleteScript: sieveScriptName];
-
-      if (![[result valueForKey:@"result"] boolValue])
-        [self logWithFormat: @"WARNING: Could not delete Sieve script - continuing...: %@", result];
-
       result = [client putScript: sieveScriptName  script: script];
 
       if (![[result valueForKey:@"result"] boolValue])
@@ -1126,12 +1152,15 @@ static NSString *sieveScriptName = @"sogo";
           return NO;
         }
 
-      result = [client setActiveScript: sieveScriptName];
-      if (![[result valueForKey:@"result"] boolValue])
+      if (activate)
         {
-          [self logWithFormat: @"Could not enable Sieve script: %@", result];
-          [client closeConnection];
-          return NO;
+          result = [client setActiveScript: sieveScriptName];
+          if (![[result valueForKey:@"result"] boolValue])
+            {
+              [self logWithFormat: @"Could not enable Sieve script: %@", result];
+              [client closeConnection];
+              return NO;
+            }
         }
     }
 

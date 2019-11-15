@@ -300,19 +300,32 @@ static NSString *inboxFolderName = @"INBOX";
   return inboxQuota;
 }
 
+- (BOOL) updateFiltersAndForceActivation: (BOOL) forceActivation
+{
+  return [self updateFiltersWithUsername: nil
+                             andPassword: nil
+                         forceActivation: forceActivation];
+}
+
 - (BOOL) updateFilters
 {
-  return [self updateFiltersWithUsername: nil andPassword: nil];
+  return [self updateFiltersWithUsername: nil
+                             andPassword: nil
+                         forceActivation: NO];
 }
 
 - (BOOL) updateFiltersWithUsername: (NSString *) theUsername
                        andPassword: (NSString *) thePassword
+                   forceActivation: (BOOL) forceActivation
 {
   SOGoSieveManager *manager;
 
   manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
 
-  return [manager updateFiltersForAccount: self  withUsername: theUsername  andPassword: thePassword];
+  return [manager updateFiltersForAccount: self
+                             withUsername: theUsername
+                              andPassword: thePassword
+                          forceActivation: forceActivation];
 }
 
 

@@ -80,8 +80,10 @@ typedef enum {
 
 - (id) getInboxQuota;
 - (BOOL) updateFilters;
+- (BOOL) updateFiltersAndForceActivation: (BOOL) forceActivation;
 - (BOOL) updateFiltersWithUsername: (NSString *) theUsername
-                       andPassword: (NSString *) thePassword;
+                       andPassword: (NSString *) thePassword
+                   forceActivation: (BOOL) forceActivation;
 
 - (NSArray *) identities;
 - (NSString *) signature;

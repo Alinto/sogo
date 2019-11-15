@@ -50,10 +50,13 @@
                         withUsername: (NSString *) theUsername
                          andPassword: (NSString *) thePassword;
 
+- (BOOL) hasActiveExternalSieveScripts: (NGSieveClient *) client;
+
 - (BOOL) updateFiltersForAccount: (SOGoMailAccount *) theAccount;
 - (BOOL) updateFiltersForAccount: (SOGoMailAccount *) theAccount
                     withUsername: (NSString *) theUsername
-                     andPassword: (NSString *) thePassword;
+                     andPassword: (NSString *) thePassword
+                 forceActivation: (BOOL) forceActivation;
 
 @end
 

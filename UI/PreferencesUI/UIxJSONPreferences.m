@@ -25,18 +25,23 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGImap4/NGSieveClient.h>
 
 #import <SOPE/NGCards/iCalRecurrenceRule.h>
 
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
+#import <SOGo/SOGoSieveManager.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoUserProfile.h>
 #import <SOGo/WOResourceManager+SOGo.h>
 #import <SOGoUI/UIxComponent.h>
+#import <Mailer/SOGoMailAccount.h>
+#import <Mailer/SOGoMailAccounts.h>
 #import <Mailer/SOGoMailLabel.h>
 
 #import "UIxJSONPreferences.h"
@@ -69,6 +74,27 @@ static SoProduct *preferencesProduct = nil;
           [[[context activeUser] userDefaults] language]];
 
   return labelsDictionary;
+}
+
+//
+// Used internally
+//
+- (BOOL) _hasActiveExternalSieveScripts
+{
+  NGSieveClient *client;
+  SOGoMailAccount *account;
+  SOGoMailAccounts *folder;
+  SOGoSieveManager *manager;
+
+  folder = [[[context activeUser] homeFolderInContext: context] mailAccountsFolder: @"Mail" inContext: context];
+  account = [folder lookupName: @"0" inContext: context acquire: NO];
+  manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
+  client = [manager clientForAccount: account];
+
+  if (client)
+    return [manager hasActiveExternalSieveScripts: client];
+
+  return NO;
 }
 
 - (WOResponse *) jsonDefaultsAction
@@ -400,6 +426,9 @@ static SoProduct *preferencesProduct = nil;
       [vacation setObject: [domainDefaults vacationDefaultSubject] forKey: @"customSubject"];
       [values setObject: vacation forKey: @"Vacation"];
     }
+
+  // Detect if an external Sieve script is active
+  [values setObject: [NSNumber numberWithBool: [self _hasActiveExternalSieveScripts]] forKey: @"hasActiveExternalSieveScripts"];
 
   return [values jsonRepresentation];
 }

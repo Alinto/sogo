@@ -18,7 +18,6 @@
       this.timeZonesSearchText = '';
       this.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
       this.mailLabelKeyRE = new RegExp(/^(?!^_\$)[^(){} %*\"\\\\]*?$/);
-      this.hasActiveExternalSieveScripts = $window.hasActiveExternalSieveScripts;
 
       // Set alternate avatar in User service
       if (Preferences.defaults.SOGoAlternateAvatar)
@@ -283,6 +282,11 @@
         });
         return users;
       });
+    };
+
+    this.manageSieveScript = function(form) {
+      this.preferences.defaults.hasActiveExternalSieveScripts = false;
+      form.$setDirty();
     };
 
     this.confirmChanges = function($event, form) {

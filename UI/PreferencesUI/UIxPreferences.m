@@ -728,25 +728,6 @@ static NSArray *reminderValues = nil;
   return [[user domainDefaults] sieveScriptsEnabled];
 }
 
-- (NSString *) hasActiveExternalSieveScripts
-{
-  NSDictionary *scripts;
-  NSEnumerator *keys;
-  NSString *key;
-
-  scripts = [[self _sieveClient] listScripts];
-
-  keys = [scripts keyEnumerator];
-  while ((key = [keys nextObject]))
-    {
-      if ([key caseInsensitiveCompare: @"sogo"] != NSOrderedSame &&
-          [[scripts objectForKey: key] boolValue])
-        return @"true";
-    }
-
-  return @"false";
-}
-
 //
 // Used by wox template
 //
@@ -1645,12 +1626,13 @@ static NSArray *reminderValues = nil;
           // We check if the Sieve server is available *ONLY* if at least one of the option is enabled
           if (!([dd sieveScriptsEnabled] || [dd vacationEnabled] || [dd forwardEnabled]) || [self _isSieveServerAvailable])
             {
+              BOOL forceActivation = ![[v objectForKey: @"hasActiveExternalSieveScripts"] boolValue];
 
               folder = [[[context activeUser] homeFolderInContext: context]  mailAccountsFolder: @"Mail"
                                                                                       inContext: context];
               account = [folder lookupName: @"0" inContext: context acquire: NO];
 
-              if (![account updateFilters])
+              if (![account updateFiltersAndForceActivation: forceActivation])
                 {
                   results = (id <WOActionResults>) [self responseWithStatus: 502
                            andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Connection error", @"message", nil]];
