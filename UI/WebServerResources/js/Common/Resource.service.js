@@ -191,6 +191,10 @@
     if (action) path.push(action);
     path = _.compact(_.flatten(path)).join('/');
 
+    if (typeof saveAs == 'undefined') {
+      throw new Error('To use Resource.download, FileSaver.js must be loaded.');
+    }
+
     function getFileNameFromHeader(header) {
       var result;
 
@@ -224,12 +228,7 @@
         else {
           getFileNameFromHeader(headers('content-disposition'));
         }
-        if (!saveAs) {
-          throw new Error('To use Resource.download, FileSaver.js must be loaded.');
-        }
-        else {
-          saveAs(blob, fileName);
-        }
+        saveAs(blob, fileName);
       }
     });
   };
