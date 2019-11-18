@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Nom del calendari";
 "new" = "Nou";
 "Print view" = "Imprimeix la vista";
+"Print" = "Imprimir";
 "edit" = "Modificar";
 "delete" = "Esborrar";
 "proposal" = "Proposta";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Mostrar els colors d'esdeveniments i tasques";
 "Borders" = "Bòrdes";
 "Backgrounds" = "Fons";
+"Page Format" = "Format de pàgina";
 
 /* Appointments */
 "Appointment viewer" = "Mostrar cita";
