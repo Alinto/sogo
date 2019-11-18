@@ -182,7 +182,7 @@
         if (!_.find(this.attendees, function(o) {
           return o.email == attendee.email;
         })) {
-          if (card.$isList()) {
+          if (card.$isList() && Attendees.$Preferences.defaults.SOGoLDAPGroupExpansionEnabled) {
             // LDAP list -- preload members
             card.$members().then(function(members) {
               attendee.members = members;

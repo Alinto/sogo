@@ -365,6 +365,10 @@ static SoProduct *preferencesProduct = nil;
   [values setObject: [NSNumber numberWithBool: [domainDefaults appointmentSendEMailNotifications]]
              forKey: @"SOGoAppointmentSendEMailNotifications"];
 
+  // Expose the SOGoLDAPGroupExpansionEnabled configuration parameter from the domain defaults
+  [values setObject: [NSNumber numberWithBool: [domainDefaults ldapGroupExpansionEnabled]]
+             forKey: @"SOGoLDAPGroupExpansionEnabled"];
+
   // Add locale code (used by CK Editor)
   [values setObject: [locale objectForKey: @"NSLocaleCode"] forKey: @"LocaleCode"];
   [values setObject: [NSDictionary dictionaryWithObjectsAndKeys:
