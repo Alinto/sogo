@@ -44,6 +44,10 @@ $icon-badge-size: 2 * $baseline-grid;
   font-feature-settings: 'liga';
 }
 
+md-icon[ng-click]:hover {
+  cursor: pointer;
+}
+
 // Define CSS styles to use ng-class with md-icon
 md-icon {
   transition: transform 240ms;
@@ -54,6 +58,7 @@ md-icon {
     position: absolute;
     right: $mg * 3;
     transform: rotate(-15deg);
+    color: white;
   }
   &.sg-icon--large {
     font-size: $sg-md-grid-pitch;

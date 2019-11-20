@@ -15,7 +15,7 @@
              uploader="editor.uploader"
              var:sg-labels="framework">
     <form name="messageForm">
-      <md-toolbar class="md-hue-1">
+      <md-toolbar>
         <div class="md-toolbar-tools">
           <!-- expand dialog -->
           <md-button ng-click="editor.toggleFullscreen($event)"

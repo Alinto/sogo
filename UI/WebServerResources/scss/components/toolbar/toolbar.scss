@@ -20,20 +20,7 @@ md-toolbar {
   transition-duration: 0s;
 }
 
-// Colors transition when changing folder color in dialogs
-md-dialog {
-  md-toolbar,
-  md-toolbar .md-input,
-  md-toolbar md-input-container.md-input-has-value label,
-  md-toolbar md-input-container.md-input-has-value label:not(.md-no-float),
-  md-toolbar md-icon {
-    transition: background-color $swift-ease-out-duration $swift-ease-out-timing-function,
-    color $swift-ease-out-duration $swift-ease-out-timing-function;
-  }
-}
-
 .md-toolbar-tools {
-  //padding: 0;
   // dirty fix to override angular-material botchy typography
   font-size: 1em !important;
 }
@@ -61,6 +48,31 @@ md-toolbar,
       // Hack until this bug is fixed: https://github.com/angular/material/issues/5989
       color: rgba(0,0,0,0.54);
     }
+  }
+}
+
+// Colors transition when changing folder color in dialogs
+md-dialog {
+  md-toolbar,
+  md-toolbar .md-input,
+  md-toolbar md-input-container.md-input-has-value label,
+  md-toolbar md-input-container.md-input-has-value label:not(.md-no-float),
+  md-toolbar md-icon {
+    transition: background-color $swift-ease-out-duration $swift-ease-out-timing-function,
+    color $swift-ease-out-duration $swift-ease-out-timing-function;
+  }
+}
+
+// Light colors for md-input inside md-toolbar
+md-toolbar md-input-container:not(.md-input-invalid) {
+  &.md-input-focused label,
+  .md-input {
+    color: rgba(255,255,255,0.87); // {{primary-contrast}}
+  }
+  &.md-input-focused .md-input {
+    padding-bottom: $input-border-width-focused - $input-border-width-default;
+    border-bottom-width: $input-border-width-default;
+    border-color: rgba(255,255,255,0.87); // {{primary-contrast}}
   }
 }
 

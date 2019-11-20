@@ -9,7 +9,7 @@
   <md-dialog flex="50" flex-sm="70" flex-xs="100">
     <form name="calendarPropertiesForm" ng-submit="properties.saveProperties(calendarPropertiesForm)">
 
-      <md-toolbar class="md-hue-1">
+      <md-toolbar>
         <div class="md-toolbar-tools">
           <!-- color -->
           <sg-color-picker ng-model="properties.calendar.color"><!-- color picker --></sg-color-picker>
@@ -90,7 +90,7 @@
 
       <md-dialog-actions>
         <md-button type="button" ng-click="properties.close()"><var:string label:value="Cancel"/></md-button>
-        <md-button type="submit"
+        <md-button type="submit" class="md-primary"
                    ng-disabled="calendarPropertiesForm.$invalid || calendarPropertiesForm.$submitted">
           <var:string label:value="Save"/>
         </md-button>

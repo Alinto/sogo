@@ -6,7 +6,7 @@
     xmlns:label="OGo:label">
   <md-dialog flex="60" flex-sm="80" flex-xs="100">
     <form name="eventForm" ng-submit="editor.save(eventForm)">
-      <md-toolbar class="md-hue-1">
+      <md-toolbar>
         <div class="md-toolbar-tools">
           <md-icon class="material-icons sg-icon-toolbar-bg">assignment_turned_in</md-icon>
           <!-- summary -->
