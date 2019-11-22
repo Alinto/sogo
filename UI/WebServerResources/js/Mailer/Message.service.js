@@ -745,7 +745,7 @@
    */
   Message.prototype.$save = function() {
     var _this = this,
-        data = this.editable;
+        data = this.$omit();
 
     Message.$log.debug('save = ' + JSON.stringify(data, undefined, 2));
 
@@ -765,7 +765,7 @@
    */
   Message.prototype.$send = function() {
     var _this = this,
-        data = angular.copy(this.editable);
+        data = this.$omit();
 
     Message.$log.debug('send = ' + JSON.stringify(data, undefined, 2));
 
@@ -828,8 +828,13 @@
   Message.prototype.$omit = function(options) {
     var message = {},
         privateAttributes = options && options.privateAttributes;
-    angular.forEach(this, function(value, key) {
-      if (key != 'constructor' && key[0] != '$' || privateAttributes) {
+    angular.forEach(this.editable, function(value, key) {
+      if (_.includes(['to', 'cc', 'bcc'], key)) {
+        message[key] = _.map(value, function (addr) {
+          return addr.toString();
+        });
+      }
+      else if (key != 'constructor' && key[0] != '$' || privateAttributes) {
         message[key] = value;
       }
     });

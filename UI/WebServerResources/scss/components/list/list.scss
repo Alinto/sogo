@@ -176,7 +176,7 @@ div.md-tile-left {
   &-tile-content {
     flex: 1;
     overflow: hidden; // required in Firefox
-    .sg-tile-date, .sg-tile-size, .sg-tile-thread {
+    .sg-tile-date, .sg-tile-size, .sg-tile-btn {
       flex-shrink: 0;
       font-size: sg-size(body);
       font-weight: $sg-font-light;
@@ -186,7 +186,7 @@ div.md-tile-left {
     .sg-tile-size {
       font-size: sg-size(caption);
     }
-    .sg-tile-thread {
+    .sg-tile-btn {
       min-height: auto;
       min-width: auto;
       padding: 0 3px !important;

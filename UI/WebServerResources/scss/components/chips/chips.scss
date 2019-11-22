@@ -72,6 +72,9 @@ md-chips {
       width: 100%;
     }
   }
+  .sg-tile-btn {
+    margin-right: 3px !important; // assume the button is right before the close button
+  }
 }
 
 // Adapting avatars in contact chips to the new material guidelines

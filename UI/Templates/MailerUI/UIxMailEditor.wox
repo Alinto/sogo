@@ -82,15 +82,23 @@
                     label:placeholder="Add a recipient">
                   <md-item-template>
                     <div class="sg-tile-content">
-                      <div class="sg-md-subhead"
-                            md-highlight-text="editor.autocomplete.to.searchText"
-                            md-highlight-flags="gi">{{ user.$shortFormat(editor.autocomplete.to.searchText) }}</div>
+                      <div class="sg-md-subhead">
+                        <div md-highlight-text="editor.autocomplete.to.searchText"
+                             md-highlight-flags="gi">{{ user.$shortFormat(editor.autocomplete.to.searchText) }}</div>
+                      </div>
                       <div class="sg-md-body"
                            md-colors="::{color: 'default-background-500'}">{{ user.containername }}</div>
                     </div>
                   </md-item-template>
                 </md-autocomplete>
-                <md-chip-template>{{$chip}}</md-chip-template>
+                <md-chip-template>
+                  <div class="sg-tile-content">
+                    {{$chip}}
+                    <md-button class="sg-tile-btn" md-colors="::{ color: 'accent-600'}" ng-if="$chip.isExpandable" ng-click="editor.expandGroup($chip, 'to')">
+                      <md-icon md-colors="::{ color: 'accent-600'}">add_box</md-icon><span ng-bind="$chip.members.length"></span>
+                    </md-button>
+                  </div>
+                </md-chip-template>
               </md-chips>
             </div>
 
@@ -115,15 +123,23 @@
                     label:placeholder="Add a recipient">
                   <md-item-template>
                     <div class="sg-tile-content">
-                      <div class="sg-md-subhead"
-                            md-highlight-text="editor.autocomplete.cc.searchText"
-                            md-highlight-flags="gi">{{ user.$shortFormat(editor.autocomplete.cc.searchText) }}</div>
+                      <div class="sg-md-subhead">
+                        <div md-highlight-text="editor.autocomplete.cc.searchText"
+                             md-highlight-flags="gi">{{ user.$shortFormat(editor.autocomplete.cc.searchText) }}</div>
+                      </div>
                       <div class="sg-md-body"
                            md-colors="::{color: 'default-background-500'}">{{ user.containername }}</div>
                     </div>
                   </md-item-template>
                 </md-autocomplete>
-                <md-chip-template>{{$chip}}</md-chip-template>
+                <md-chip-template>
+                  <div class="sg-tile-content">
+                    {{$chip}}
+                    <md-button class="sg-tile-btn" md-colors="::{ color: 'accent-600'}" ng-if="$chip.isExpandable" ng-click="editor.expandGroup($chip, 'cc')">
+                      <md-icon md-colors="::{ color: 'accent-600'}">add_box</md-icon><span ng-bind="$chip.members.length"></span>
+                    </md-button>
+                  </div>
+                </md-chip-template>
               </md-chips>
             </div>
 
@@ -148,15 +164,23 @@
                     label:placeholder="Add a recipient">
                   <md-item-template>
                     <div class="sg-tile-content">
-                      <div class="sg-md-subhead"
-                            md-highlight-text="editor.autocomplete.bcc.searchText"
-                            md-highlight-flags="gi">{{ user.$shortFormat(editor.autocomplete.bcc.searchText) }}</div>
+                      <div class="sg-md-subhead">
+                        <div md-highlight-text="editor.autocomplete.bcc.searchText"
+                             md-highlight-flags="gi">{{ user.$shortFormat(editor.autocomplete.bcc.searchText) }}</div>
+                      </div>
                       <div class="sg-md-body"
                            md-colors="::{color: 'default-background-500'}">{{ user.containername }}</div>
                     </div>
                   </md-item-template>
                 </md-autocomplete>
-                <md-chip-template>{{$chip}}</md-chip-template>
+                <md-chip-template>
+                  <div class="sg-tile-content">
+                    {{$chip}}
+                    <md-button class="sg-tile-btn" md-colors="::{ color: 'accent-600'}" ng-if="$chip.isExpandable" ng-click="editor.expandGroup($chip, 'bcc')">
+                      <md-icon md-colors="::{ color: 'accent-600'}">add_box</md-icon><span ng-bind="$chip.members.length"></span>
+                    </md-button>
+                  </div>
+                </md-chip-template>
               </md-chips>
             </div>
 

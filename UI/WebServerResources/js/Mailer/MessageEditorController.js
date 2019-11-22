@@ -329,6 +329,16 @@
           });
         }
       }
+      else if (contact.$isGroup({expandable: true})) {
+        recipient = {
+          toString: function () { return contact.$shortFormat(); },
+          isExpandable: true,
+          members: []
+        };
+        contact.$members().then(function (members) {
+          recipient.members = members;
+        });
+      }
       else {
         recipient = contact.$shortFormat();
       }
@@ -338,6 +348,16 @@
       else
         return null;
     }
+
+    this.expandGroup = function(contact, field) {
+      var recipients, i, j;
+      recipients = vm.message.editable[field];
+      i = recipients.indexOf(contact);
+      recipients.splice(i, 1);
+      for (j = 0; j < contact.members.length; j++) {
+        recipients.splice(i + j, 0, contact.members[j].$shortFormat());
+      }
+    };
 
     // Drafts autosaving
     function autosaveDrafts() {

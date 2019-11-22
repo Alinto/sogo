@@ -26,7 +26,7 @@
         '  <div class="sg-md-body">',
         '    <div class="sg-tile-subject"><!-- subject --></div>',
         '    <div class="sg-tile-size"><!-- size --></div>',
-        '    <md-button class="sg-tile-thread md-secondary ng-hide" md-colors="::{ color: \'accent-600\'}" ng-click="$ctrl.toggleThread()">',
+        '    <md-button class="sg-tile-btn md-secondary ng-hide" md-colors="::{ color: \'accent-600\'}" ng-click="$ctrl.toggleThread()">',
         '      <md-icon class="md-rotate-180-ccw" md-colors="::{ color: \'accent-600\'}">expand_more</md-icon><span></span>', // expanded by default (icon is rotated)
         '    </md-button>',
         '  </div>',

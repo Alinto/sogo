@@ -254,7 +254,7 @@
     if (this.members)
       return Card.$q.when(this.members);
 
-    if (this.isgroup) {
+    if (this.$isGroup({expandable: true})) {
       return Card.$$resource.fetch(this.$path(), 'members').then(function(data) {
         _this.members = _.map(data.members, function(member) {
           return new Card(member);
@@ -262,6 +262,8 @@
         return _this.members;
       });
     }
+
+    return Card.$q.reject("Card " + this.id + " is not an LDAP group");
   };
 
   /**
@@ -427,6 +429,11 @@
     // isGroup attribute means it's a group of a LDAP source (not automatically expanded on the client-side)
     var condition = (!options || !options.expandable || options.expandable && !this.isgroup);
     return this.c_component == 'vlist' && condition;
+  };
+
+  Card.prototype.$isGroup = function(options) {
+    var condition = (!options || !options.expandable || options.expandable && Card.$Preferences.defaults.SOGoLDAPGroupExpansionEnabled);
+    return this.isgroup && condition;
   };
 
   Card.prototype.$addOrg = function(org) {
