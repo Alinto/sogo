@@ -31,8 +31,6 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>
-#import <SOGo/LDAPSource.h>
-#import <SOGo/SOGoGroup.h>
 #import <SOGo/SOGoSource.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
@@ -409,13 +407,9 @@
 
   if ([[dict objectForKey: @"isGroup"] boolValue])
     {
-      if ([source isKindOfClass: [LDAPSource class]] && [(LDAPSource *) source groupExpansionEnabled])
+      if ([source conformsToProtocol:@protocol(MembershipAwareSource)])
         {
-          SOGoGroup *aGroup;
-
-          aGroup = [SOGoGroup groupWithIdentifier: [contact nameInContainer]
-                                         inDomain: [[context activeUser] domain]];
-          allUsers = [aGroup members]; // array of SOGoUser objects
+          allUsers = [(id<MembershipAwareSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
           max = [allUsers count];
           allUsersData = [NSMutableArray arrayWithCapacity: max];
           for (i = 0; i < max; i++)

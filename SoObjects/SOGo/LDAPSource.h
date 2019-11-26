@@ -30,7 +30,7 @@
 @class NSMutableDictionary;
 @class NSString;
 
-@interface LDAPSource : NSObject <SOGoDNSource>
+@interface LDAPSource : NSObject <SOGoDNSource, MembershipAwareSource>
 {
   int _queryLimit;
   int _queryTimeout;

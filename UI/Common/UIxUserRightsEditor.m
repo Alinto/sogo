@@ -27,7 +27,6 @@
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
-#import <SOGo/SOGoGroup.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserManager.h>
 
@@ -120,10 +119,10 @@
 - (BOOL) _initRights
 {
   BOOL response;
-  NSString *newUID, *domain;
+  NSString *newUID;
   SOGoUserManager *um;
   SOGoObject *clientObject;
-  SOGoGroup *group;
+  NSDictionary *dict;
 
   response = NO;
 
@@ -140,9 +139,8 @@
         {
           if (![newUID hasPrefix: @"@"])
             {
-              domain = [[context activeUser] domain];
-              group = [SOGoGroup groupWithIdentifier: newUID inDomain: domain];
-              if (group)
+              dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: newUID];
+              if (dict && [[dict objectForKey: @"isGroup"] boolValue])
                 newUID = [NSString stringWithFormat: @"@%@", newUID];
             }
           ASSIGN (uid, newUID);
@@ -158,10 +156,9 @@
 - (BOOL) _initRightsForUserID:(NSString *) newUID
 {
   BOOL response;
-  NSString *domain;
   SOGoUserManager *um;
   SOGoObject *clientObject;
-  SOGoGroup *group;
+  NSDictionary *dict;
 
   response = NO;
 
@@ -174,11 +171,11 @@
       if ([newUID isEqualToString: defaultUserID] || [newUID isEqualToString: @"anonymous"]
                                                   || [[um getEmailForUID: newUID] length] > 0)
         {
+#warning Duplicated code from _initRights
           if (![newUID hasPrefix: @"@"])
             {
-              domain = [[context activeUser] domain];
-              group = [SOGoGroup groupWithIdentifier: newUID inDomain: domain];
-              if (group)
+              dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: newUID];
+              if (dict && [[dict objectForKey: @"isGroup"] boolValue])
                 newUID = [NSString stringWithFormat: @"@%@", newUID];
             }
           ASSIGN (uid, newUID);

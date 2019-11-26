@@ -59,6 +59,7 @@
 #import <SOGo/SOGoWebDAVValue.h>
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/WOResponse+SOGo.h>
+#import <SOGo/SOGoSource.h>
 
 #import "iCalCalendar+SOGo.h"
 #import "iCalRepeatableEntityObject+SOGo.h"
@@ -69,7 +70,6 @@
 #import "SOGoFreeBusyObject.h"
 #import "SOGoTaskObject.h"
 #import "SOGoWebAppointmentFolder.h"
-
 
 #define defaultColor @"#AAAAAA"
 
@@ -437,19 +437,22 @@ static Class iCalEventK = nil;
 
   if (rc)
     {
+#warning Duplicated code from SOGoGCSFolder subscribeUserOrGroup
       dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: theIdentifier];
 
-      if ([[dict objectForKey: @"isGroup"] boolValue])
+      if (dict && [[dict objectForKey: @"isGroup"] boolValue])
         {
-          SOGoGroup *aGroup;
+          id <SOGoSource> source;
 
-          aGroup = [SOGoGroup groupWithIdentifier: theIdentifier
-                                         inDomain: [[context activeUser] domain]];
-          allUsers = [NSMutableArray arrayWithArray: [aGroup members]];
+          source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
+          if ([source conformsToProtocol:@protocol(MembershipAwareSource)])
+            {
+              allUsers = [NSMutableArray arrayWithArray: [(id<MembershipAwareSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]]];
 
-          // We remove the active user from the group (if present) in order to
-          // not subscribe him to their own resource!
-          [allUsers removeObject: [context activeUser]];
+              // We remove the active user from the group (if present) in order to
+              // not subscribe him to their own resource!
+              [allUsers removeObject: [context activeUser]];
+            }
         }
       else
         {

@@ -49,7 +49,7 @@
 #import "SOGoCache.h"
 #import "SOGoContentObject.h"
 #import "SOGoDomainDefaults.h"
-#import "SOGoGroup.h"
+#import "SOGoSource.h"
 #import "SOGoParentFolder.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
@@ -933,17 +933,19 @@ static NSArray *childRecordFields = nil;
 
   dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: theIdentifier];
 
-  if ([[dict objectForKey: @"isGroup"] boolValue])
+  if (dict && [[dict objectForKey: @"isGroup"] boolValue])
     {
-      SOGoGroup *aGroup;
+      id <SOGoSource> source;
 
-      aGroup = [SOGoGroup groupWithIdentifier: theIdentifier
-				     inDomain: [[context activeUser] domain]];
-      allUsers = [NSMutableArray arrayWithArray: [aGroup members]];
+      source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
+      if ([source conformsToProtocol:@protocol(MembershipAwareSource)])
+        {
+          allUsers = [NSMutableArray arrayWithArray: [(id<MembershipAwareSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]]];
 
-      // We remove the active user from the group (if present) in order to
-      // not subscribe him to their own resource!
-      [allUsers removeObject: [context activeUser]];
+          // We remove the active user from the group (if present) in order to
+          // not subscribe him to their own resource!
+          [allUsers removeObject: [context activeUser]];
+        }
     }
   else
     {
@@ -1622,13 +1624,10 @@ static NSArray *childRecordFields = nil;
 {
   int count, max;
   NSDictionary *record;
-  NSString *currentUID, *domain;
-  SOGoGroup *group;
+  NSString *currentUID;
   NSMutableArray *acls;
 
   acls = [NSMutableArray array];
-#warning should it be the domain of the ownerUser instead?
-  domain = [[context activeUser] domain];
 
   max = [records count];
   for (count = 0; count < max; count++)
@@ -1637,17 +1636,14 @@ static NSArray *childRecordFields = nil;
       currentUID = [record valueForKey: @"c_uid"];
       if ([currentUID hasPrefix: @"@"])
         {
-	  group = [[SOGoCache sharedCache] groupNamed: currentUID  inDomain: domain];
-
-	  if (!group)
-	    {
-	      group = [SOGoGroup groupWithIdentifier: currentUID
-				 inDomain: domain];
-	      [[SOGoCache sharedCache] registerGroup: group  withName: currentUID  inDomain: domain];
-	    }
-
-          if (group && [group hasMemberWithUID: uid])
-            [acls addObject: [record valueForKey: @"c_role"]];
+          NSString *dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: currentUID];
+          if (dict)
+            {
+              id <SOGoSource> source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
+              if ([source conformsToProtocol:@protocol(MembershipAwareSource)] &&
+                  [(id<MembershipAwareSource>)(source) groupWithUIDHasMemberWithUID: currentUID memberUid: uid])
+                [acls addObject: [record valueForKey: @"c_role"]];
+            }
         }
     }
 
@@ -1754,39 +1750,45 @@ static NSArray *childRecordFields = nil;
             forObjectAtPath: (NSArray *) objectPathArray
 {
   EOQualifier *qualifier;
-  NSString *uid, *uids, *qs, *objectPath, *domain;
+  NSString *uid, *uids, *qs, *objectPath;
   NSMutableArray *usersAndGroups, *groupsMembers;
   NSMutableDictionary *aclsForObject;
-  SOGoGroup *group;
+
   unsigned int i;
 
   if ([users count] > 0)
     {
-      domain = [[context activeUser] domain];
       usersAndGroups = [NSMutableArray arrayWithArray: users];
       groupsMembers = [NSMutableArray array];
       for (i = 0; i < [usersAndGroups count]; i++)
         {
+          NSDictionary *dict;
+
           uid = [usersAndGroups objectAtIndex: i];
-          group = [SOGoGroup groupWithIdentifier: uid inDomain: domain];
-          if (group)
+          dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: uid];
+          if (dict && [[dict objectForKey: @"isGroup"] boolValue])
             {
-              NSArray *members;
-              SOGoUser *user;
-              unsigned int j;
-
-              // Fetch members to remove them from the cache along the group
-              members = [group members];
-              for (j = 0; j < [members count]; j++)
+              id <SOGoSource> source;
+              source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
+              if ([source conformsToProtocol:@protocol(MembershipAwareSource)])
                 {
-                  user = [members objectAtIndex: j];
-                  [groupsMembers addObject: [user login]];
-                }
+                  NSArray *members;
+                  SOGoUser *user;
+                  unsigned int j;
 
-              if (![uid hasPrefix: @"@"])
-                // Prefix the UID with the character "@" when dealing with a group
-                [usersAndGroups replaceObjectAtIndex: i
-                                          withObject: [NSString stringWithFormat: @"@%@", uid]];
+                  // Fetch members to remove them from the cache along the group
+                  members = [(id<MembershipAwareSource>)(source) membersForGroupWithUID: uid];
+                  for (j = 0; j < [members count]; j++)
+                    {
+                      user = [members objectAtIndex: j];
+                      [groupsMembers addObject: [user login]];
+                    }
+
+                  if (![uid hasPrefix: @"@"])
+                    // Prefix the UID with the character "@" when dealing with a group
+                    [usersAndGroups replaceObjectAtIndex: i
+                                              withObject: [NSString stringWithFormat: @"@%@", uid]];
+                }
             }
         }
       objectPath = [objectPathArray componentsJoinedByString: @"/"];
@@ -1846,9 +1848,8 @@ static NSArray *childRecordFields = nil;
           forUser: (NSString *) uid
   forObjectAtPath: (NSArray *) objectPathArray
 {
-  NSString *objectPath, *aUID, *domain;
+  NSString *objectPath, *aUID;
   NSMutableArray *newRoles;
-  SOGoGroup *group;
 
   objectPath = [objectPathArray componentsJoinedByString: @"/"];
 
@@ -1858,10 +1859,9 @@ static NSArray *childRecordFields = nil;
   aUID = uid;
   if (![uid hasPrefix: @"@"])
     {
-      // Prefix the UID with the character "@" when dealing with a group
-      domain = [[context activeUser] domain];
-      group = [SOGoGroup groupWithIdentifier: uid inDomain: domain];
-      if (group)
+      NSDictionary *dict;
+      dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: uid];
+      if ([[dict objectForKey: @"isGroup"] boolValue])
         {
           aUID = [NSString stringWithFormat: @"@%@", uid];
           // Remove all roles when defining ACLs for a group
