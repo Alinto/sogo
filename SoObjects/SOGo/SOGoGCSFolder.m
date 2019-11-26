@@ -927,7 +927,6 @@ static NSArray *childRecordFields = nil;
   NSMutableArray *allUsers;
   SOGoUserSettings *us;
   NSDictionary *dict;
-  SOGoUser *sogoUser;
   BOOL rc;
   int i;
 
@@ -940,19 +939,22 @@ static NSArray *childRecordFields = nil;
       source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
       if ([source conformsToProtocol:@protocol(MembershipAwareSource)])
         {
-          allUsers = [NSMutableArray arrayWithArray: [(id<MembershipAwareSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]]];
+          NSArray *members = [(id<MembershipAwareSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
+          allUsers = [NSMutableArray array];
 
+          for (i = 0; i < [members count]; i++)
+            {
+              [allUsers addObject: [[members objectAtIndex: i] objectForKey: @"c_uid"]];
+            }
           // We remove the active user from the group (if present) in order to
           // not subscribe him to their own resource!
-          [allUsers removeObject: [context activeUser]];
+          [allUsers removeObject: [[context activeUser] login]];
         }
     }
   else
     {
-      sogoUser = [SOGoUser userWithLogin: theIdentifier roles: nil];
-      
-      if (sogoUser)
-	allUsers = [NSArray arrayWithObject: sogoUser];
+      if (dict)
+	allUsers = [NSArray arrayWithObject: [dict objectForKey: @"c_uid"]];
       else
 	allUsers = [NSArray array];
     }
@@ -965,8 +967,7 @@ static NSArray *childRecordFields = nil;
 
   for (i = 0; i < [allUsers count]; i++)
     {
-      sogoUser = [allUsers objectAtIndex: i];
-      us = [sogoUser userSettings];
+      us = [SOGoUserSettings settingsForUser: [allUsers objectAtIndex: i]];
       moduleSettings = [us objectForKey: [container nameInContainer]];
       if (!(moduleSettings
             && [moduleSettings isKindOfClass: [NSMutableDictionary class]]))
@@ -1773,7 +1774,7 @@ static NSArray *childRecordFields = nil;
               if ([source conformsToProtocol:@protocol(MembershipAwareSource)])
                 {
                   NSArray *members;
-                  SOGoUser *user;
+                  NSDictionary *user;
                   unsigned int j;
 
                   // Fetch members to remove them from the cache along the group
@@ -1781,7 +1782,7 @@ static NSArray *childRecordFields = nil;
                   for (j = 0; j < [members count]; j++)
                     {
                       user = [members objectAtIndex: j];
-                      [groupsMembers addObject: [user login]];
+                      [groupsMembers addObject: [user objectForKey: @"c_uid"]];
                     }
 
                   if (![uid hasPrefix: @"@"])

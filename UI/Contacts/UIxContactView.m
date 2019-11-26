@@ -396,7 +396,7 @@
   NSString *email;
   SOGoObject <SOGoContactObject> *contact;
   SOGoObject <SOGoSource> *source;
-  SOGoUser *user;
+  NSDictionary *user;
   id <WOActionResults> result;
   unsigned int i, max;
 
@@ -416,14 +416,14 @@
             {
               user = [allUsers objectAtIndex: i];
               allUserEmails = [NSMutableArray array];
-              emails = [[user allEmails] objectEnumerator];
+              emails = [[user objectForKey: @"c_emails"] objectEnumerator];
               while ((email = [emails nextObject])) {
                 [allUserEmails addObject: [NSDictionary dictionaryWithObjectsAndKeys:
                                                           email, @"value", @"work", @"type", nil]];
               }
               userData = [NSDictionary dictionaryWithObjectsAndKeys:
-                                         [user loginInDomain], @"c_uid",
-                                       [user cn], @"c_cn",
+                                       [user objectForKey: @"c_uid"], @"c_uid",
+                                       [user objectForKey: @"c_cn"], @"c_cn",
                                        allUserEmails, @"emails", nil];
               [allUsersData addObject: userData];
             }

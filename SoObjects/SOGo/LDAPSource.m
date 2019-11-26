@@ -1373,6 +1373,30 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
   return login;
 }
 
+- (NSDictionary *) lookupContactEntryByDN: (NSString *) theDN
+{
+  NGLdapConnection *ldapConnection;
+  NGLdapEntry *ldapEntry;
+  EOQualifier *qualifier;
+  NSDictionary *ldifRecord;
+
+  ldifRecord = nil;
+  qualifier = nil;
+
+  ldapConnection = [self _ldapConnection];
+
+  if (_filter)
+    qualifier = [EOQualifier qualifierWithQualifierFormat: _filter];
+
+  ldapEntry = [ldapConnection entryAtDN: theDN
+                              qualifier: qualifier
+                             attributes: [NSArray arrayWithObject: @"*"]];
+  if (ldapEntry)
+    ldifRecord = [self _convertLDAPEntryToContact: ldapEntry];
+
+  return ldifRecord;
+}
+
 - (NSString *) lookupDNByLogin: (NSString *) theLogin
 {
   return [[SOGoCache sharedCache] distinguishedNameForLogin: theLogin];
@@ -2002,7 +2026,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
   NSString *dn, *login;
   SOGoUserManager *um;
   NSDictionary *d;
-  SOGoUser *user;
+  NSDictionary *user;
   NSArray *o;
   NSAutoreleasePool *pool;
   int i, c;
@@ -2050,11 +2074,10 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
             {
               pool = [NSAutoreleasePool new];
               dn = [dns objectAtIndex: i];
-              login = [um getLoginForDN: [dn lowercaseString]];
-              user = [SOGoUser userWithLogin: login  roles: nil];
+              user = [self lookupContactEntryByDN: dn];
               if (user)
                 {
-                  [logins addObject: login];
+                  [logins addObject: [user objectForKey: @"c_uid"]];
                   [members addObject: user];
                 }
               [pool release];
@@ -2065,11 +2088,11 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
             {
               pool = [NSAutoreleasePool new];
               login = [uids objectAtIndex: i];
-              user = [SOGoUser userWithLogin: login  roles: nil];
+              user = [self lookupContactEntry: login inDomain: nil];
 
               if (user)
                 {
-                  [logins addObject: [user loginInDomain]];
+                  [logins addObject: [user objectForKey: @"c_uid"]];
                   [members addObject: user];
                 }
               [pool release];

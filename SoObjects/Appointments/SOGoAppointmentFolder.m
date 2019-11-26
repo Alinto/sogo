@@ -438,36 +438,38 @@ static Class iCalEventK = nil;
   if (rc)
     {
 #warning Duplicated code from SOGoGCSFolder subscribeUserOrGroup
-      dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: theIdentifier];
+     dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: theIdentifier];
 
-      if (dict && [[dict objectForKey: @"isGroup"] boolValue])
-        {
-          id <SOGoSource> source;
+     if (dict && [[dict objectForKey: @"isGroup"] boolValue])
+       {
+         id <SOGoSource> source;
 
-          source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
-          if ([source conformsToProtocol:@protocol(MembershipAwareSource)])
-            {
-              allUsers = [NSMutableArray arrayWithArray: [(id<MembershipAwareSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]]];
+         source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
+         if ([source conformsToProtocol:@protocol(MembershipAwareSource)])
+           {
+             NSArray *members = [(id<MembershipAwareSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
+             allUsers = [NSMutableArray array];
 
-              // We remove the active user from the group (if present) in order to
-              // not subscribe him to their own resource!
-              [allUsers removeObject: [context activeUser]];
-            }
-        }
-      else
-        {
-          sogoUser = [SOGoUser userWithLogin: theIdentifier roles: nil];
-
-          if (sogoUser)
-            allUsers = [NSArray arrayWithObject: sogoUser];
-          else
-            allUsers = [NSArray array];
-        }
+             for (i = 0; i < [members count]; i++)
+               {
+                 [allUsers addObject: [[members objectAtIndex: i] objectForKey: @"c_uid"]];
+               }
+             // We remove the active user from the group (if present) in order to
+             // not subscribe him to their own resource!
+             [allUsers removeObject: [[context activeUser] login]];
+           }
+       }
+     else
+       {
+         if (dict)
+           allUsers = [NSArray arrayWithObject: [dict objectForKey: @"c_uid"]];
+         else
+           allUsers = [NSArray array];
+       }
 
       for (i = 0; i < [allUsers count]; i++)
         {
-          sogoUser = [allUsers objectAtIndex: i];
-          us = [sogoUser userSettings];
+          us = [SOGoUserSettings settingsForUser: [allUsers objectAtIndex: i]];
           moduleSettings = [us objectForKey: [container nameInContainer]];
           if (!(moduleSettings
                 && [moduleSettings isKindOfClass: [NSMutableDictionary class]]))
