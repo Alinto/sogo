@@ -1,28 +1,30 @@
 /* NSCalendarDate+SOGo.m - this file is part of SOGo
-   Copyright (C) 2000-2004 SKYRIX Software AG
-
-   This file is part of OGo
-
-   OGo is free software; you can redistribute it and/or modify it under
-   the terms of the GNU Lesser General Public License as published by the
-   Free Software Foundation; either version 2, or (at your option) any
-   later version.
-
-   OGo is distributed in the hope that it will be useful, but WITHOUT ANY
-   WARRANTY; without even the implied warranty of MERCHANTABILITY or
-   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-   License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with OGo; see the file COPYING.  If not, write to the
-   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
-   02111-1307, USA.
-*/
+ *
+ * Copyright (C) 2019 Inverse inc.
+ *
+ * This file is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
 
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
+
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "NSCalendarDate+SOGo.h"
 
@@ -94,6 +96,26 @@ static NSString *rfc822Months[] = {@"", @"Jan", @"Feb", @"Mar", @"Apr",
                   (int)[self dayOfMonth]];
 
   return str;
+}
+
+- (NSCalendarDate *) beginOfDayForUser: (SOGoUser *) user
+{
+  NSCalendarDate *date;
+  NSTimeZone *timeZone;
+  SOGoUserDefaults *ud;
+
+  ud = [user userDefaults];
+  timeZone = [ud timeZone];
+  [self setTimeZone: timeZone];
+  date = [self beginOfDay];
+  date = [date addYear: 0
+                 month: 0
+                   day: 0
+                  hour: 0 - [date hourOfDay] + [ud dayStartHour]
+                minute: 0 - [date minuteOfHour]
+                second: 0];
+
+  return date;
 }
 
 - (NSString *) rfc822DateString

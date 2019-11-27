@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2014 Inverse inc.
+  Copyright (C) 2007-2019 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -37,6 +37,7 @@
 #import <NGCards/iCalTimeZonePeriod.h>
 #import <NGCards/iCalToDo.h>
 #import <NGCards/NSString+NGCards.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -50,6 +51,7 @@
 #import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoDomainDefaults.h>
+#import <SOGo/SOGoGroup.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
@@ -3392,7 +3394,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSMutableDictionary *timezones, *uids;
   NSString *tzId, *uid, *originalUid;
   iCalEntityObject *element;
-  iCalDateTime *startDate;
   iCalTimeZone *timezone;
   iCalCalendar *masterCalendar;
   iCalEvent *event;
@@ -3436,92 +3437,29 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
           
           timezone = nil;
           element = [components objectAtIndex: i];
-          // Use the timezone of the start date.
-          startDate = (iCalDateTime *) [element uniqueChildWithTag: @"dtstart"];
-          if (startDate)
-            {
-              tzId = [startDate value: 0 ofAttribute: @"tzid"];
-              if ([tzId length])
-                timezone = [timezones valueForKey: tzId];
-	      else
-		{
-		  // If the start date is a "floating time", let's use the user's timezone
-		  // during the import for both the start and end dates. This is similar
-		  // to what we do in SOGoAppointmentObject: -_adjustFloatingTimeInRequestCalendar:
-		  NSString *s;
-		  
-		  s = [[startDate valuesAtIndex: 0 forKey: @""] objectAtIndex: 0];
-		  
-		  if ([element isKindOfClass: iCalEventK] &&
-		      ![(iCalEvent *)element isAllDay] &&
-		      ![s hasSuffix: @"Z"] &&
-		      ![s hasSuffix: @"z"])
-		    {
-		      iCalDateTime *endDate;
-		      int delta;
-		      
-		      timezone = [iCalTimeZone timeZoneForName: [[[self->context activeUser] userDefaults] timeZoneName]];
-		      [calendar addTimeZone: timezone];
-	
-		      delta = [[timezone periodForDate: [startDate dateTime]] secondsOffsetFromGMT];
-		      event = (iCalEvent *)element;
-		  
-		      [event setStartDate: [[event startDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: -delta]];
-		      [startDate setTimeZone: timezone];
 
-		      endDate = (iCalDateTime *) [element uniqueChildWithTag: @"dtend"];
-		      
-		      if (endDate)
-			{
-			  [event setEndDate: [[event endDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: -delta]];
-			  [endDate setTimeZone: timezone];
-			}
-		    }
-		}
-	      
-              if ([element isKindOfClass: iCalEventK])
+          if ([element isKindOfClass: iCalEventK])
+            {
+              event = (iCalEvent *)element;
+              timezone = [event adjustInContext: self->context];
+
+              if ([event recurrenceId])
                 {
-                  event = (iCalEvent *)element;
-                  if (![event hasEndDate] && ![event hasDuration])
+                  // Event is an occurrence of a repeating event
+                  if ((uid = [uids valueForKey: [event uid]]))
                     {
-                      // No end date, no duration
-                      if ([event isAllDay])
-                        [event setDuration: @"P1D"];
-                      else
-                        [event setDuration: @"PT1H"];
-                      
-                      [self errorWithFormat: @"Importing event with no end date; setting duration to %@ for UID = %@", [event duration], [event uid]];
-                    }
-		  //
-		  // We check for broken all-day events (like the ones coming from the "WebCalendar" tool) where
-		  // the start date is equal to the end date. This clearly violates the RFC:
-		  //
-		  // 3.8.2.2. Date-Time End
-		  // The value MUST be later in time than the value of the "DTSTART" property. 
-		  //
-		  if ([event isAllDay] && [[event startDate] isEqual: [event endDate]])
-		    {
-		      [event setEndDate: [[event startDate] dateByAddingYears: 0  months: 0  days: 1  hours: 0  minutes: 0  seconds: 0]];
-		      [self errorWithFormat: @"Fixed broken all-day event; setting end date to %@ for UID = %@", [event endDate], [event uid]];
-		    }
-                  if ([event recurrenceId])
-                    {
-                      // Event is an occurrence of a repeating event
-                      if ((uid = [uids valueForKey: [event uid]]))
+                      SOGoAppointmentObject *master = [self lookupName: uid
+                                                             inContext: context
+                                                               acquire: NO];
+                      if (master)
                         {
-                          SOGoAppointmentObject *master = [self lookupName: uid
-                                                                 inContext: context
-                                                                   acquire: NO];
-                          if (master)
-                            {
-                              // Associate the occurrence to the master event and skip the actual import process
-                              masterCalendar = [master calendar: NO secure: NO];
-                              [masterCalendar addToEvents: event];
-                              if (timezone)
-                                [masterCalendar addTimeZone: timezone];
-                              [master saveCalendar: masterCalendar];
-                              continue;
-                            }
+                          // Associate the occurrence to the master event and skip the actual import process
+                          masterCalendar = [master calendar: NO secure: NO];
+                          [masterCalendar addToEvents: event];
+                          if (timezone)
+                            [masterCalendar addTimeZone: timezone];
+                          [master saveCalendar: masterCalendar];
+                          continue;
                         }
                     }
                 }

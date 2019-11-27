@@ -1,6 +1,6 @@
 /* iCalEvent+SOGo.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2015 Inverse inc.
+ * Copyright (C) 2007-2019 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 
 #import <NGCards/iCalEvent.h>
 
+@class iCalTimeZone;
 @class NSMutableDictionary;
 
 @interface iCalEvent (SOGoExtensions)
@@ -30,6 +31,7 @@
 - (BOOL) isStillRelevant;
 - (NSTimeInterval) occurenceInterval;
 - (void) updateRecurrenceRulesUntilDate: (NSCalendarDate *) previousEndDate;
+- (iCalTimeZone *) adjustInContext: (WOContext *) context;
 
 @end
 

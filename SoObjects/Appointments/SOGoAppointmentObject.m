@@ -54,6 +54,7 @@
 #import <SOGo/WORequest+SOGo.h>
 
 #import "iCalCalendar+SOGo.h"
+#import "iCalEvent+SOGo.h"
 #import "iCalEventChanges+SOGo.h"
 #import "iCalEntityObject+SOGo.h"
 #import "iCalPerson+SOGo.h"
@@ -1930,6 +1931,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 {
   NSArray *allEvents;
   iCalEvent *event;
+  iCalTimeZone *tz;
   NSUInteger i;
   int j;
 
@@ -1939,15 +1941,9 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
     {
       event = [allEvents objectAtIndex: i];
 
-      if (![event hasEndDate] && ![event hasDuration])
-        {
-          // No end date, no duration
-          if ([event isAllDay])
-            [event setDuration: @"P1D"];
-          else
-            [event setDuration: @"PT1H"];
-          [self warnWithFormat: @"Invalid event: no end date; setting duration to %@", [event duration]];
-        }
+      tz = [event adjustInContext: context];
+      if (tz)
+        [rqCalendar addTimeZone: tz];
 
       if ([event organizer])
         {
@@ -1994,53 +1990,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
     }
 }
 
-//
-// This is similar to what we do in SOGoAppointmentFolder: -importCalendar:
-//
-- (void) _adjustFloatingTimeInRequestCalendar: (iCalCalendar *) rqCalendar
-{
-  iCalDateTime *startDate, *endDate;
-  NSString *startDateAsString;
-  SOGoUserDefaults *ud;
-  NSArray *allEvents;
-  iCalTimeZone *tz;
-  iCalEvent *event;
-  int i, delta;
-
-  allEvents = [rqCalendar events];
-  for (i = 0; i < [allEvents count]; i++)
-    {
-      event = [allEvents objectAtIndex: i];
-
-      if ([event isAllDay])
-	continue;
-
-      startDate =  (iCalDateTime *)[event uniqueChildWithTag: @"dtstart"];
-      startDateAsString = [[startDate valuesAtIndex: 0 forKey: @""] objectAtIndex: 0];
-
-      if (![startDate timeZone] &&
-	  ![startDateAsString hasSuffix: @"Z"] &&
-	  ![startDateAsString hasSuffix: @"z"])
-	{
-	  ud = [[context activeUser] userDefaults];
-          tz = [iCalTimeZone timeZoneForName: [ud timeZoneName]];
-          if ([rqCalendar addTimeZone: tz])
-            {
-	      delta = [[tz periodForDate: [startDate dateTime]] secondsOffsetFromGMT];
-
-	      [event setStartDate: [[event startDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: -delta]];
-	      [startDate setTimeZone: tz];
-
-	      endDate = (iCalDateTime *) [event uniqueChildWithTag: @"dtend"];
-	      if (endDate)
-		{
-		  [event setEndDate: [[event endDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: -delta]];
-		  [endDate setTimeZone: tz];
-		}
-            }
-	}
-    }
-}
 
 - (void) _decomposeGroupsInRequestCalendar: (iCalCalendar *) rqCalendar
 {
@@ -2163,7 +2112,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       [self _adjustEventsInRequestCalendar: calendar];
       [self adjustClassificationInRequestCalendar: calendar];
       [self _adjustPartStatInRequestCalendar: calendar];
-      [self _adjustFloatingTimeInRequestCalendar: calendar];
     }
       
   //

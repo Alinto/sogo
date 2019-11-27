@@ -27,9 +27,10 @@
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
-#import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRecurrenceRule.h>
+#import <NGCards/iCalTimeZone.h>
+#import <NGCards/iCalTimeZonePeriod.h>
 #import <NGCards/NSString+NGCards.h>
 
 #import <SoObjects/SOGo/CardElement+SOGo.h>
@@ -68,7 +69,7 @@
 //
 - (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent
                                        container: (id) theContainer
-				 nameInContainer: (NSString *) nameInContainer
+                                 nameInContainer: (NSString *) nameInContainer
 {
   NSMutableDictionary *row;
   NSCalendarDate *startDate, *endDate;
@@ -125,15 +126,15 @@
 
   boolTmp = ((isAllDay) ? 1 : 0);
   [row setObject: [NSNumber numberWithInt: boolTmp]
-       forKey: @"c_isallday"];
+          forKey: @"c_isallday"];
   boolTmp = ((([self isRecurrent] || [self recurrenceId])) ? 1 : 0);
   [row setObject: [NSNumber numberWithInt: boolTmp]
-       forKey: @"c_iscycle"];
+          forKey: @"c_iscycle"];
   boolTmp = (([self isOpaque]) ? 1 : 0);
   [row setObject: [NSNumber numberWithInt: boolTmp]
-       forKey: @"c_isopaque"];
+          forKey: @"c_isopaque"];
   [row setObject: [NSNumber numberWithInt: [self priorityNumber]]
-       forKey: @"c_priority"];
+          forKey: @"c_priority"];
 
   [row setObject: title forKey: @"c_title"];
   if ([location isNotNull]) [row setObject: location forKey: @"c_location"];
@@ -151,8 +152,8 @@
 	    startDate = [timeZone computedDateForDate: startDate];
 	}
       [row setObject: [self quickRecordDateAsNumber: startDate
-					 withOffset: 0
-					  forAllDay: isAllDay]
+                                         withOffset: 0
+                                          forAllDay: isAllDay]
 	      forKey: @"c_startdate"];
     }
   if ([endDate isNotNull])
@@ -167,8 +168,8 @@
 	    endDate = [timeZone computedDateForDate: endDate];
 	}
       [row setObject: [self quickRecordDateAsNumber: endDate
-					 withOffset: ((isAllDay) ? -1 : 0)
-					  forAllDay: isAllDay]
+                                         withOffset: ((isAllDay) ? -1 : 0)
+                                          forAllDay: isAllDay]
 	      forKey: @"c_enddate"];
     }
 
@@ -274,7 +275,7 @@
     [row setObject: [self comment]  forKey: @"c_description"];
   else
     [row setObject: [NSNull null] forKey: @"c_description"];
-  
+
   return row;
 }
 
@@ -305,11 +306,11 @@
 	  // The until date must match the time of the end date
 	  offset = [[self endDate] timeIntervalSinceDate: previousEndDate];
 	  untilDate = [untilDate dateByAddingYears:0
-					    months:0
-					      days:0
-					     hours:0
-					   minutes:0
-					   seconds:offset];
+                                            months:0
+                                              days:0
+                                             hours:0
+                                           minutes:0
+                                           seconds:offset];
 	  [rule setUntilDate: untilDate];
 	}
     }
@@ -324,11 +325,11 @@
 	  // The until date must match the time of the end date
 	  offset = [[self endDate] timeIntervalSinceDate: previousEndDate];
 	  untilDate = [untilDate dateByAddingYears:0
-					    months:0
-					      days:0
-					     hours:0
-					   minutes:0
-					   seconds:offset];
+                                            months:0
+                                              days:0
+                                             hours:0
+                                           minutes:0
+                                           seconds:offset];
 	  [rule setUntilDate: untilDate];
 	}
     }
@@ -442,6 +443,99 @@
             }
         }
     }
+}
+
+- (iCalTimeZone *) adjustInContext: (WOContext *) context
+{
+  iCalDateTime *startDate, *endDate;
+  iCalTimeZone *timezone;
+  NSCalendarDate *date;
+  NSString *startDateAsString, *timezoneId;
+  SOGoUserDefaults *ud;
+  int delta;
+
+  delta = 0;
+  timezone = nil;
+
+  startDate = (iCalDateTime *) [self uniqueChildWithTag: @"dtstart"];
+  endDate = (iCalDateTime *) [self uniqueChildWithTag: @"dtend"];
+
+  if (![startDate dateTime])
+    {
+      if ([endDate dateTime])
+        {
+          // End date but no start date
+          delta = 60*60; // 1 hour
+          [self setStartDate: [[self endDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: -delta]];
+        }
+      else
+        {
+          // No start date, no end date; start the event at the first "working" hour
+          date = [[NSCalendarDate calendarDate] beginOfDayForUser: [context activeUser]];
+          [self setStartDate: date];
+        }
+      startDate = (iCalDateTime *) [self uniqueChildWithTag: @"dtstart"];
+      [self errorWithFormat: @"Fixed event with no start date; setting start date to %@ for UID %@", [startDate dateTime], [self uid]];
+    }
+
+  if ([startDate dateTime])
+    {
+      timezoneId = [startDate value: 0 ofAttribute: @"tzid"];
+      if ([timezoneId length])
+        {
+          timezone = [iCalTimeZone timeZoneForName: timezoneId];
+        }
+      else
+        {
+          startDateAsString = [[startDate valuesAtIndex: 0 forKey: @""] objectAtIndex: 0];
+          if (![startDateAsString hasSuffix: @"Z"] &&
+              ![startDateAsString hasSuffix: @"z"])
+            {
+              // The start date is a "floating time", let's use the user's timezone
+              // for both the start and end dates.
+              ud = [[context activeUser] userDefaults];
+              timezone = [iCalTimeZone timeZoneForName: [ud timeZoneName]];
+              delta = [[timezone periodForDate: [startDate dateTime]] secondsOffsetFromGMT];
+
+              [self setStartDate: [[self startDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: -delta]];
+              [startDate setTimeZone: timezone];
+
+              if ([endDate dateTime])
+                {
+                  [self setEndDate: [[self endDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: -delta]];
+                  [endDate setTimeZone: timezone];
+                }
+            }
+        }
+    }
+
+  if (![endDate dateTime] && ![self hasDuration])
+    {
+      // No end date, no duration
+      if ([self isAllDay])
+        [self setDuration: @"P1D"];
+      else
+        [self setDuration: @"PT1H"];
+
+      [self errorWithFormat: @"Fixed event with no end date; setting duration to %@ for UID %@", [self duration], [self uid]];
+    }
+
+  //
+  // We check for broken all-day events (like the ones coming from the "WebCalendar" tool) where
+  // the start date is equal to the end date. This clearly violates the RFC:
+  //
+  // 3.8.2.2. Date-Time End
+  // The value MUST be later in time than the value of the "DTSTART" property.
+  //
+  if ([self isAllDay] && [[self startDate] isEqual: [self endDate]])
+    {
+      [self setEndDate: [[self startDate] dateByAddingYears: 0  months: 0  days: 1  hours: 0  minutes: 0  seconds: 0]];
+      [self errorWithFormat: @"Fixed broken all-day event; setting end date to %@ for UID %@", [self endDate], [self uid]];
+    }
+
+
+  return timezone;
+
 }
 
 @end
