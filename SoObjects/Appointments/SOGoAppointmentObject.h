@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2018 Inverse inc.
+  Copyright (C) 2007-2019 Inverse inc.
 
   This file is part of SOGo
 
@@ -37,7 +37,6 @@
 
 @interface SOGoAppointmentObject : SOGoCalendarComponent
 {
-  BOOL _resourceHasAutoAccepted;
 }
 
 - (NSException *) changeParticipationStatus: (NSString *) status
@@ -61,8 +60,6 @@
 
 - (NSException *) updateContentWithCalendar: (iCalCalendar *) calendar
                                 fromRequest: (WORequest *) rq;
-
-- (BOOL) resourceHasAutoAccepted;
 
 @end
 

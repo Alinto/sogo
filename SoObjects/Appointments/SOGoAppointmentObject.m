@@ -627,8 +627,6 @@
   NSString *currentUID;
   SOGoUser *user, *currentUser;
 
-  _resourceHasAutoAccepted = NO;
-
   // Build a list of the attendees uids
   attendees = [NSMutableArray arrayWithCapacity: [theAttendees count]];
   enumerator = [theAttendees objectEnumerator];
@@ -763,23 +761,27 @@
 
       if ([fbInfo count])
         {
+          BOOL resourceHasAutoAccepted;
           SOGoDateFormatter *formatter;
 
+          resourceHasAutoAccepted = NO;
           formatter = [[context activeUser] dateFormatterInContext: context];
           
           if ([user isResource])
             {
-              // If we always force the auto-accept if numberOfSimultaneousBookings <= 0 (ie., no limit
+              // We always force the auto-accept if numberOfSimultaneousBookings <= 0 (ie., no limit
               // is imposed) or if numberOfSimultaneousBookings is greater than the number of
-              // overlapping events
+              // overlapping events.
+              // When numberOfSimultaneousBookings is set to -1, only force the auto-accept
+              // once the conflict has been raised and the action is forced by the user.
               if ([user numberOfSimultaneousBookings] <= 0 ||
                   [user numberOfSimultaneousBookings] > [fbInfo count])
                 {
-                  if (currentAttendee)
+                  if (currentAttendee && ([user numberOfSimultaneousBookings] >= 0 || forceSave))
                     {
                       [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
                       [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
-		      _resourceHasAutoAccepted = YES;
+		      resourceHasAutoAccepted = YES;
                     }
                 }
               else
@@ -812,7 +814,7 @@
           // We are dealing with a normal attendee. Lets check if we have conflicts, unless
           // we are being asked to force the save anyway
           //
-          else if (!forceSave)
+          if (!forceSave && !resourceHasAutoAccepted)
             {
               NSMutableDictionary *info;
               NSMutableArray *conflicts;
@@ -866,7 +868,6 @@
           // set the resource as one!
           [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
           [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
-	  _resourceHasAutoAccepted = YES;
         }
     }
 
@@ -2528,11 +2529,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
     }
       
   return response;
-}
-
-- (BOOL) resourceHasAutoAccepted
-{
-  return _resourceHasAutoAccepted;
 }
 
 @end /* SOGoAppointmentObject */
