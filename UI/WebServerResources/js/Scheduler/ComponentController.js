@@ -358,8 +358,10 @@
 
     this.removeAttendee = function (attendee, form) {
       this.component.$attendees.remove(attendee);
-      if (this.component.$attendees.getLength() === 0)
+      if (this.component.$attendees.getLength() === 0) {
         this.showAttendeesEditor = false;
+        this.component.$attendees.remove(this.component.organizer);
+      }
       form.$setDirty();
     };
 

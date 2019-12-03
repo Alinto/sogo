@@ -34,7 +34,7 @@
           return $ctrl.component? {
             start: $ctrl.component.start,
             end: $ctrl.component.end,
-            attendees: _.map($ctrl.component.attendees, 'email')
+            attendees: _.keys($ctrl.component.$attendees.$futureFreebusyData)
           } : null;
         },
         function(newAttrs, oldAttrs) {

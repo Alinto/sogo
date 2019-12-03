@@ -240,7 +240,9 @@
     var index = _.findIndex(this.component.attendees, function(currentAttendee) {
       return currentAttendee.email == attendee.email;
     });
-    this.component.attendees.splice(index, 1);
+    if (index > -1)
+      this.component.attendees.splice(index, 1);
+    delete this.$futureFreebusyData[attendee.uid];
   };
 
   /**
@@ -270,7 +272,9 @@
       roundedStart.setMinutes(15*startQuarter);
       roundedEnd.setMinutes(15*endQuarter);
 
-      _.forEach(roundedStart.daysUpTo(roundedEnd), function(date, index) {
+      _.forEach(roundedStart.beginOfDay().daysUpTo(roundedEnd.beginOfDay()), function(date, index) {
+        if (date < roundedStart)
+          date = new Date(roundedStart.getTime());
         var currentDay = date.getDate(),
             dayKey = date.getDayString(),
             hourKey;
