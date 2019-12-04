@@ -64,7 +64,7 @@ md-dialog {
 }
 
 // Light colors for md-input inside md-toolbar
-md-toolbar md-input-container:not(.md-input-invalid) {
+md-toolbar:not(.md-accent.md-hue-1) md-input-container:not(.md-input-invalid) {
   &.md-input-focused label,
   .md-input {
     color: rgba(255,255,255,0.87); // {{primary-contrast}}
