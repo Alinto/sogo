@@ -1,6 +1,6 @@
 /* UIxMailPartHTMLViewer.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2017 Inverse inc.
+ * Copyright (C) 2007-2019 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -795,6 +795,7 @@ _xmlCharsetForCharset (NSString *charset)
 {
   NSObject <SaxXMLReader> *parser;
   NSData *preparsedContent;
+  NSMutableData *htmlContent;
   NSString *s;
 
   xmlCharEncoding enc;
@@ -858,10 +859,17 @@ _xmlCharsetForCharset (NSString *charset)
       RELEASE(s);
     }
 
+  // Some broken email messages have some additionnal content outside the main HTML tags which are
+  // ignored by libxml.
+  // We surround the whole part with additional HTML tags to render all content.
+  htmlContent = [NSMutableData dataWithBytes: "<html>" length: 6];
+  [htmlContent appendData: preparsedContent];
+  [htmlContent appendBytes: "</html>" length: 7];
+
   [handler setContentEncoding: enc];
 
   [parser setContentHandler: handler];
-  [parser parseFromSource: preparsedContent];
+  [parser parseFromSource: htmlContent];
 }
 
 - (NSString *) cssContent
