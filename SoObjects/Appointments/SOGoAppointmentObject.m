@@ -1624,7 +1624,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   iCalPerson *attendee;
   NSException *ex;
   SOGoUser *ownerUser, *delegatedUser;
-  NSString *recurrenceTime, *delegatedUid;
+  NSString *recurrenceTime, *delegatedUid, *domain;
 
   event = nil;
   ex = nil;
@@ -1672,7 +1672,9 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                                                    reason: @"delegate is a participant"];
               else {
                 NSDictionary *dict;
-                dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: [[delegate email] rfc822Email]];
+                domain = [[context activeUser] domain];
+                dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: [[delegate email] rfc822Email]
+                                                                                     inDomain: domain];
                 if (dict && [[dict objectForKey: @"isGroup"] boolValue])
                   ex = [NSException exceptionWithHTTPStatus: 409
                                                      reason: @"delegate is a group"];

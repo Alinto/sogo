@@ -118,7 +118,7 @@
 - (void) updateBaseDNFromLogin: (NSString *) theLogin;
 @end
 
-@protocol MembershipAwareSource <SOGoSource>
+@protocol SOGoMembershipSource <SOGoSource>
 - (NSArray *) membersForGroupWithUID: (NSString *) uid;
 - (BOOL) groupWithUIDHasMemberWithUID: (NSString *) uid
                             memberUid: (NSString *) memberUid;

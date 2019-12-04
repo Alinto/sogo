@@ -1424,13 +1424,16 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
 - (NSString *) _sogoACLUIDToIMAPUID: (NSString *) uid
 {
+  NSString *domain;
   NSDictionary *dict;
   SOGoUser *user;
 
   if ([uid isEqualToString: defaultUserID])
     return uid;
 
-  dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: uid];
+  domain = [[context activeUser] domain];
+  dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: uid
+                                                                       inDomain: domain];
 
   if (dict && [[dict objectForKey: @"isGroup"] boolValue])
     return [[[[context activeUser] domainDefaults] imapAclGroupIdPrefix]

@@ -425,7 +425,7 @@ static Class iCalEventK = nil;
                      response: (WOResponse *) theResponse
 {
   NSMutableDictionary *moduleSettings, *folderShowAlarms, *freeBusyExclusions;
-  NSString *subscriptionPointer;
+  NSString *subscriptionPointer, *domain;
   NSMutableArray *allUsers;
   SOGoUserSettings *us;
   NSDictionary *dict;
@@ -438,16 +438,18 @@ static Class iCalEventK = nil;
   if (rc)
     {
 #warning Duplicated code from SOGoGCSFolder subscribeUserOrGroup
-     dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: theIdentifier];
+     domain = [[context activeUser] domain];
+     dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: theIdentifier
+                                                                          inDomain: domain];
 
      if (dict && [[dict objectForKey: @"isGroup"] boolValue])
        {
          id <SOGoSource> source;
 
          source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
-         if ([source conformsToProtocol:@protocol(MembershipAwareSource)])
+         if ([source conformsToProtocol:@protocol(SOGoMembershipSource)])
            {
-             NSArray *members = [(id<MembershipAwareSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
+             NSArray *members = [(id<SOGoMembershipSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
              allUsers = [NSMutableArray array];
 
              for (i = 0; i < [members count]; i++)

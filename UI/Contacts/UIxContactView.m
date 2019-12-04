@@ -407,9 +407,9 @@
 
   if ([[dict objectForKey: @"isGroup"] boolValue])
     {
-      if ([source conformsToProtocol:@protocol(MembershipAwareSource)])
+      if ([source conformsToProtocol:@protocol(SOGoMembershipSource)])
         {
-          allUsers = [(id<MembershipAwareSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
+          allUsers = [(id<SOGoMembershipSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
           max = [allUsers count];
           allUsersData = [NSMutableArray arrayWithCapacity: max];
           for (i = 0; i < max; i++)

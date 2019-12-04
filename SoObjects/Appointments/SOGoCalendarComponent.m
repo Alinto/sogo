@@ -549,7 +549,8 @@
           pool = [[NSAutoreleasePool alloc] init];
         }
 
-      dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: [currentAttendee rfc822Email]];
+      dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: [currentAttendee rfc822Email]
+                                                                           inDomain: domain];
 
       if (dict && [[dict objectForKey: @"isGroup"] boolValue])
         {
@@ -562,9 +563,9 @@
 	  [allAttendees removeObject: currentAttendee];
 
           source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
-          if ([source conformsToProtocol:@protocol(MembershipAwareSource)])
+          if ([source conformsToProtocol:@protocol(SOGoMembershipSource)])
             {
-              members = [(id<MembershipAwareSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
+              members = [(id<SOGoMembershipSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
               for (i = 0; i < [members count]; i++)
                 {
                   user = [members objectAtIndex: i];
