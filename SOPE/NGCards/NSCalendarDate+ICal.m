@@ -31,7 +31,7 @@
 static NSTimeZone *gmt = nil;
 static inline void _setupGMT(void) {
   if (gmt == nil)
-    gmt = [[NSTimeZone timeZoneWithAbbreviation:@"GMT"] retain];
+    gmt = [[NSTimeZone timeZoneForSecondsFromGMT: 0] retain];
 }
 
 @implementation NSCalendarDate(iCalRepresentation)

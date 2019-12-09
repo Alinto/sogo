@@ -107,7 +107,7 @@
   NSCalendarDate *utcStart, *utcEnd;
   NSTimeZone *uTZ;
 
-  uTZ = [NSTimeZone timeZoneWithAbbreviation: @"GMT"];
+  uTZ = [NSTimeZone timeZoneForSecondsFromGMT: 0];
   utcStart = [start copy];
   utcEnd = [end copy];
   [utcStart setTimeZone: uTZ];

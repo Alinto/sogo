@@ -509,7 +509,7 @@
   response = [self redirectToLocation: [self _logoutRedirectURL]];
 
   date = [NSCalendarDate calendarDate];
-  [date setTimeZone: [NSTimeZone timeZoneWithAbbreviation: @"GMT"]];
+  [date setTimeZone: [NSTimeZone timeZoneForSecondsFromGMT: 0]];
 
   // We cleanup the memecached/database session cache. We do this before
   // invoking _logoutCookieWithDate: in order to obtain its value.

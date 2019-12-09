@@ -40,7 +40,7 @@
   if ((self = [super init]))
     {
       address = nil;
-      timeZone = [NSTimeZone timeZoneWithAbbreviation: @"GMT"];
+      timeZone = [NSTimeZone timeZoneForSecondsFromGMT: 0];
       [timeZone retain];
       startDate = nil;
       endDate = nil;

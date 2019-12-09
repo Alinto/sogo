@@ -192,7 +192,7 @@ static inline id GetProperty(NSDictionary *_set, NSString *_name) {
     
     if ([val respondsToSelector:@selector(descriptionWithCalendarFormat:)]) {
       static NSTimeZone *gmt = nil;
-      if (gmt == nil) gmt = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+      if (gmt == nil) gmt = [NSTimeZone timeZoneForSecondsFromGMT: 0];
       [val setTimeZone:gmt];
       val = [val descriptionWithCalendarFormat:calfmt];
     }
