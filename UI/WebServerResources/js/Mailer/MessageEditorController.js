@@ -355,7 +355,9 @@
       i = recipients.indexOf(contact);
       recipients.splice(i, 1);
       for (j = 0; j < contact.members.length; j++) {
-        recipients.splice(i + j, 0, contact.members[j].$shortFormat());
+        var recipient = contact.members[j].$shortFormat();
+        if (recipients.indexOf(recipient) < 0)
+          recipients.splice(i + j, 0, contact.members[j].$shortFormat());
       }
     };
 
