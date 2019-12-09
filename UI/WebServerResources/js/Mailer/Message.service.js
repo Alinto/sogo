@@ -827,9 +827,10 @@
    */
   Message.prototype.$omit = function(options) {
     var message = {},
-        privateAttributes = options && options.privateAttributes;
-    angular.forEach(this.editable, function(value, key) {
-      if (_.includes(['to', 'cc', 'bcc'], key)) {
+        privateAttributes = options && options.privateAttributes,
+        source = privateAttributes ? this : this.editable;
+    angular.forEach(source, function(value, key) {
+      if (_.includes(['to', 'cc', 'bcc'], key) && !privateAttributes) {
         message[key] = _.map(value, function (addr) {
           return addr.toString();
         });
