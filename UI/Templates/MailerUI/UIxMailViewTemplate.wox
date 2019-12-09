@@ -364,4 +364,43 @@
       </md-card>
     </div>
   </div>
+
+  <!-- template of contextual menu for a recipient -->
+  <script type="text/ng-template" id="UIxMailViewRecipientMenu">
+    <div md-whiteframe="3">
+      <md-menu-content class="md-dense" width="3">
+        <md-menu-item>
+          <md-button disabled="disabled" md-menu-align-target="md-menu-align-target">
+            {{ $menuCtrl.recipient.full }}
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button type="button"
+                     ng-click="$menuCtrl.newMessage($event, { to: [$menuCtrl.recipient.full] })">
+            <var:string label:value="Write a new message"/>
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-menu md-position-mode="cascade cascade">
+            <md-button
+                label:aria-label="Add to Address Book..."
+                ng-mouseenter="$mdMenu.open($event)"
+                ng-keydown="$mdMenu.onKeyDown($event)">
+              <var:string label:value="Add to Address Book..."/>
+            </md-button>
+            <md-menu-content class="md-dense" width="4">
+              <md-menu-item ng-repeat="addressbook in $menuCtrl.addressbooks track by addressbook.id">
+                <md-button ng-click="$menuCtrl.newCard($menuCtrl.recipient, addressbook.id)">{{addressbook.name}}</md-button>
+              </md-menu-item>
+              <md-menu-item ng-repeat="addressbook in $menuCtrl.subscriptions track by addressbook.id">
+                <md-button ng-click="$menuCtrl.newCard($menuCtrl.recipient, addressbook.id)"
+                           ng-disabled="!addressbook.acls.objectCreator">{{addressbook.name}}</md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+        </md-menu-item>
+      </md-menu-content>
+    </div>
+  </script>
+
 </container>
