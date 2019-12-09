@@ -190,8 +190,10 @@
             });
           }
           attendee.image = Attendees.$gravatar(attendee.email, 32);
-          if (this.component.attendees)
-            this.component.attendees.push(attendee);
+          if (this.component.attendees) {
+            if (_.findIndex(this.component.attendees, { email: attendee.email }) < 0)
+              this.component.attendees.push(attendee);
+          }
           else
             this.component.attendees = [attendee];
           this.updateFreeBusyAttendee(attendee);
