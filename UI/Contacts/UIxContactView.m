@@ -405,7 +405,8 @@
   result = nil;
   contact = [self clientObject];
   source = [[contact container] source];
-  dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: [contact nameInContainer]];
+  dict = [source lookupContactEntryWithUIDorEmail: [contact nameInContainer]
+                                         inDomain: nil];
 
   if ([[dict objectForKey: @"isGroup"] boolValue])
     {
