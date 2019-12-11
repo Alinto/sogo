@@ -112,7 +112,7 @@
 
   appName = [[context request] applicationName];
   date = [NSCalendarDate calendarDate];
-  [date setTimeZone: [NSTimeZone timeZoneWithAbbreviation: @"GMT"]];
+  [date setTimeZone: [NSTimeZone timeZoneForSecondsFromGMT: 0]];
   if (username)
     {
       // Cookie expires in one month
@@ -151,7 +151,7 @@
   if (cookieReset)
     {
       date = [NSCalendarDate calendarDate];
-      [date setTimeZone: [NSTimeZone timeZoneWithAbbreviation: @"GMT"]];
+      [date setTimeZone: [NSTimeZone timeZoneForSecondsFromGMT: 0]];
       [locationCookie setExpires: [date yesterday]];
     }
 

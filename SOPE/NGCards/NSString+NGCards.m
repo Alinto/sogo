@@ -340,7 +340,7 @@
 	  second = 0;
 	}
 
-      utc = [NSTimeZone timeZoneWithAbbreviation: @"GMT"];
+      utc = [NSTimeZone timeZoneForSecondsFromGMT: 0];
       date = [NSCalendarDate dateWithYear: year month: month 
                              day: day hour: hour minute: minute 
                              second: second
