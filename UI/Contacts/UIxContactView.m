@@ -156,7 +156,8 @@
           url = [NSURL URLWithString: value];
           if (![url scheme] && [value length] > 0)
             url = [NSURL URLWithString: [NSString stringWithFormat: @"http://%@", value]];
-          [attrs setObject: [url absoluteString] forKey: @"value"];
+          if (url)
+            [attrs setObject: [url absoluteString] forKey: @"value"];
 
           [urls addObject: attrs];
         }
