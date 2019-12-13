@@ -127,7 +127,9 @@
       account = [folder lookupName: @"0" inContext: localContext acquire: NO];
       [account setContext: localContext];
 
-      result = [account updateFiltersWithUsername: theUsername  andPassword: thePassword];
+      result = [account updateFiltersWithUsername: theUsername
+                                      andPassword: thePassword
+                                  forceActivation: NO];
       if (!result)
         {
           // Can't update Sieve script -- Reactivate auto-reply
