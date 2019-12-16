@@ -498,13 +498,9 @@ static NSArray *reminderValues = nil;
 
 - (NSArray *) shortWeekDaysList
 {
-  static NSArray *shortWeekDaysList = nil;
+  NSArray *shortWeekDaysList = nil;
 
-  if (!shortWeekDaysList)
-    {
-      shortWeekDaysList = [locale objectForKey: NSShortWeekDayNameArray];
-      [shortWeekDaysList retain];
-    }
+  shortWeekDaysList = [locale objectForKey: NSShortWeekDayNameArray];
 
   return shortWeekDaysList;
 }
