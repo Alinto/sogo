@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2016 Inverse inc.
+  Copyright (C) 2007-2019 Inverse inc.
 
   This file is part of SOGo.
 
@@ -300,21 +300,21 @@ static NSString *inboxFolderName = @"INBOX";
   return inboxQuota;
 }
 
-- (BOOL) updateFiltersAndForceActivation: (BOOL) forceActivation
+- (NSException *) updateFiltersAndForceActivation: (BOOL) forceActivation
 {
   return [self updateFiltersWithUsername: nil
                              andPassword: nil
                          forceActivation: forceActivation];
 }
 
-- (BOOL) updateFilters
+- (NSException *) updateFilters
 {
   return [self updateFiltersWithUsername: nil
                              andPassword: nil
                          forceActivation: NO];
 }
 
-- (BOOL) updateFiltersWithUsername: (NSString *) theUsername
+- (NSException *) updateFiltersWithUsername: (NSString *) theUsername
                        andPassword: (NSString *) thePassword
                    forceActivation: (BOOL) forceActivation
 {

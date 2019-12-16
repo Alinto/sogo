@@ -37,6 +37,7 @@
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NGSieveClient.h>
+#import <NGObjWeb/NSException+HTTP.h>
 
 #import "../Mailer/SOGoMailAccount.h"
 
@@ -816,7 +817,7 @@ static NSString *sieveScriptName = @"sogo";
   while ((key = [keys nextObject]))
     {
       if ([key caseInsensitiveCompare: @"sogo"] != NSOrderedSame &&
-          [[[scripts objectForKey: key] stringValue] length] > 0)
+          [[scripts objectForKey: key] intValue] > 0)
         return YES;
     }
 
@@ -826,7 +827,7 @@ static NSString *sieveScriptName = @"sogo";
 //
 //
 //
-- (BOOL) updateFiltersForAccount: (SOGoMailAccount *) theAccount
+- (NSException *) updateFiltersForAccount: (SOGoMailAccount *) theAccount
 {
   return [self updateFiltersForAccount: theAccount
                           withUsername: nil
@@ -837,15 +838,16 @@ static NSString *sieveScriptName = @"sogo";
 //
 //
 //
-- (BOOL) updateFiltersForAccount: (SOGoMailAccount *) theAccount
+- (NSException *) updateFiltersForAccount: (SOGoMailAccount *) theAccount
                     withUsername: (NSString *) theUsername
                      andPassword: (NSString *) thePassword
                  forceActivation: (BOOL) forceActivation
 {
-  NSString *filterScript, *v, *content;
+  NSString *filterScript, *v, *content, *message;
   NSMutableArray *req;
   NSMutableString *script, *header;
   NSDictionary *result, *values;
+  NSException *error;
   SOGoUserDefaults *ud;
   SOGoDomainDefaults *dd;
   NGSieveClient *client;
@@ -853,16 +855,22 @@ static NSString *sieveScriptName = @"sogo";
   BOOL b, activate, dateCapability;
   unsigned int now;
 
+  error = nil;
   dd = [user domainDefaults];
   if (!([dd sieveScriptsEnabled] || [dd vacationEnabled] || [dd forwardEnabled]))
-    return YES;
+    return error;
 
   req = [NSMutableArray arrayWithCapacity: 15];
   ud = [user userDefaults];
 
   client = [self clientForAccount: theAccount  withUsername: theUsername  andPassword: thePassword];
   if (!client)
-    return NO;
+    {
+      error = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+                                            reason: @"Error while connecting to Sieve server."];
+      return error;
+    }
+
 
   // Activate script Sieve when forced or when no external script is enabled
   activate = forceActivation || ![self hasActiveExternalSieveScripts: client];
@@ -909,9 +917,12 @@ static NSString *sieveScriptName = @"sogo";
     }
   else
     {
-      [self errorWithFormat: @"Sieve generation failure: %@", [self lastScriptError]];
+      message = [NSString stringWithFormat: @"Sieve generation failure: %@", [self lastScriptError]];
+      [self errorWithFormat: message];
       [client closeConnection];
-      return NO;
+      error = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+                                            reason: message];
+      return error;
     }
 
   //
@@ -1137,7 +1148,7 @@ static NSString *sieveScriptName = @"sogo";
   result = [client deleteScript: sieveScriptName];
 
   if (![[result valueForKey:@"result"] boolValue])
-    [self logWithFormat: @"WARNING: Could not delete Sieve script - continuing...: %@", result];
+    [self warnWithFormat: @"Could not delete Sieve script: %@", [[result objectForKey: @"RawResponse"] objectForKey: @"reason"]];
 
   /* We put and activate the script only if we actually have a script
      that does something... */
@@ -1147,9 +1158,12 @@ static NSString *sieveScriptName = @"sogo";
 
       if (![[result valueForKey:@"result"] boolValue])
         {
-          [self logWithFormat: @"Could not upload Sieve script: %@", result];
+          message = [NSString stringWithFormat: @"Could not upload Sieve script: %@", [[result objectForKey: @"RawResponse"] objectForKey: @"reason"]];
+          [self errorWithFormat: message];
           [client closeConnection];
-          return NO;
+          error = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+                                            reason: message];
+          return error;
         }
 
       if (activate)
@@ -1157,15 +1171,18 @@ static NSString *sieveScriptName = @"sogo";
           result = [client setActiveScript: sieveScriptName];
           if (![[result valueForKey:@"result"] boolValue])
             {
-              [self logWithFormat: @"Could not enable Sieve script: %@", result];
+              message = [NSString stringWithFormat: @"Could not enable Sieve script: %@", [[result objectForKey: @"RawResponse"] objectForKey: @"reason"]];
+              [self errorWithFormat: message];
               [client closeConnection];
-              return NO;
+              error = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+                                                    reason: message];
+              return error;
             }
         }
     }
 
   [client closeConnection];
-  return YES;
+  return error;
 }
 
 @end

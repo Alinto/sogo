@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2009-2017 Inverse inc.
+  Copyright (C) 2009-2019 Inverse inc.
 
   This file is part of SOGo.
 
@@ -34,6 +34,7 @@
 */
 
 @class NSArray;
+@class NSException;
 @class NSMutableDictionary;
 @class NSMutableArray;
 @class NSString;
@@ -79,11 +80,11 @@ typedef enum {
 - (BOOL) supportsQResync;
 
 - (id) getInboxQuota;
-- (BOOL) updateFilters;
-- (BOOL) updateFiltersAndForceActivation: (BOOL) forceActivation;
-- (BOOL) updateFiltersWithUsername: (NSString *) theUsername
-                       andPassword: (NSString *) thePassword
-                   forceActivation: (BOOL) forceActivation;
+- (NSException *) updateFilters;
+- (NSException *) updateFiltersAndForceActivation: (BOOL) forceActivation;
+- (NSException *) updateFiltersWithUsername: (NSString *) theUsername
+                                andPassword: (NSString *) thePassword
+                            forceActivation: (BOOL) forceActivation;
 
 - (NSArray *) identities;
 - (NSString *) signature;

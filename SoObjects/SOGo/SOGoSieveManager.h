@@ -25,6 +25,7 @@
 
 
 @class NSDictionary;
+@class NSException;
 @class NSMutableArray;
 @class NSString;
 @class NGSieveClient;
@@ -52,8 +53,8 @@
 
 - (BOOL) hasActiveExternalSieveScripts: (NGSieveClient *) client;
 
-- (BOOL) updateFiltersForAccount: (SOGoMailAccount *) theAccount;
-- (BOOL) updateFiltersForAccount: (SOGoMailAccount *) theAccount
+- (NSException *) updateFiltersForAccount: (SOGoMailAccount *) theAccount;
+- (NSException *) updateFiltersForAccount: (SOGoMailAccount *) theAccount
                     withUsername: (NSString *) theUsername
                      andPassword: (NSString *) thePassword
                  forceActivation: (BOOL) forceActivation;

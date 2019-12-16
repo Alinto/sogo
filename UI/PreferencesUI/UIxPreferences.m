@@ -1613,6 +1613,7 @@ static NSArray *reminderValues = nil;
 
       if ([[user userDefaults] synchronize])
         {
+          NSException *error;
           SOGoMailAccount *account;
           SOGoMailAccounts *folder;
           SOGoDomainDefaults *dd;
@@ -1628,10 +1629,10 @@ static NSArray *reminderValues = nil;
                                                                                       inContext: context];
               account = [folder lookupName: @"0" inContext: context acquire: NO];
 
-              if (![account updateFiltersAndForceActivation: forceActivation])
+              if ((error = [account updateFiltersAndForceActivation: forceActivation]))
                 {
-                  results = (id <WOActionResults>) [self responseWithStatus: 502
-                           andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Connection error", @"message", nil]];
+                  results = (id <WOActionResults>) [self responseWithStatus: 500
+                                                      andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: [error reason], @"message", nil]];
                 }
             }
           else
