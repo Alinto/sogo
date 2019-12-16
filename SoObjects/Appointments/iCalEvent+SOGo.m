@@ -475,7 +475,7 @@
           [self setStartDate: date];
         }
       startDate = (iCalDateTime *) [self uniqueChildWithTag: @"dtstart"];
-      [self errorWithFormat: @"Fixed event with no start date; setting start date to %@ for UID %@", [startDate dateTime], [self uid]];
+      [self errorWithFormat: @"Event with no start date; setting start date to %@ for UID %@", [startDate dateTime], [self uid]];
     }
 
   if ([startDate dateTime])
@@ -488,8 +488,9 @@
       else
         {
           startDateAsString = [[startDate valuesAtIndex: 0 forKey: @""] objectAtIndex: 0];
-          if (![startDateAsString hasSuffix: @"Z"] &&
-              ![startDateAsString hasSuffix: @"z"])
+          if (!([self isAllDay] ||
+                [startDateAsString hasSuffix: @"Z"] ||
+                [startDateAsString hasSuffix: @"z"]))
             {
               // The start date is a "floating time", let's use the user's timezone
               // for both the start and end dates.
@@ -499,11 +500,13 @@
 
               [self setStartDate: [[self startDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: -delta]];
               [startDate setTimeZone: timezone];
+              [self errorWithFormat: @"Event with no timezone; setting timezone %@ to start date for UID %@", [timezone tzId], [self uid]];
 
               if ([endDate dateTime])
                 {
                   [self setEndDate: [[self endDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: -delta]];
                   [endDate setTimeZone: timezone];
+                  [self errorWithFormat: @"Event with no timezone; setting timezone %@ to end date for UID %@", [timezone tzId], [self uid]];
                 }
             }
         }
@@ -517,7 +520,7 @@
       else
         [self setDuration: @"PT1H"];
 
-      [self errorWithFormat: @"Fixed event with no end date; setting duration to %@ for UID %@", [self duration], [self uid]];
+      [self errorWithFormat: @"Event with no end date; setting duration to %@ for UID %@", [self duration], [self uid]];
     }
 
   //
@@ -530,7 +533,7 @@
   if ([self isAllDay] && [[self startDate] isEqual: [self endDate]])
     {
       [self setEndDate: [[self startDate] dateByAddingYears: 0  months: 0  days: 1  hours: 0  minutes: 0  seconds: 0]];
-      [self errorWithFormat: @"Fixed broken all-day event; setting end date to %@ for UID %@", [self endDate], [self uid]];
+      [self errorWithFormat: @"Broken all-day event; setting end date to %@ for UID %@", [self endDate], [self uid]];
     }
 
 
