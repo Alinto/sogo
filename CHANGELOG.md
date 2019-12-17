@@ -1,3 +1,48 @@
+## [4.2.0](https://github.com/inverse-inc/sogo/compare/SOGo-4.1.1...SOGo-4.2.0) (2019-12-17)
+
+### Features
+
+* **core:** allow pre/appended Sieve scripts ([4475ac6](https://github.com/inverse-inc/sogo/commit/4475ac651d1d94513729d6133a70d0e70ea52b87))
+* **core:** Allow the detection of external Sieve scripts ([ac91a30](https://github.com/inverse-inc/sogo/commit/ac91a303c9e688790410180e4b50afe5a0a86414))
+* **mail(js):** new button to expand recipients that are LDAP groups ([46ade76](https://github.com/inverse-inc/sogo/commit/46ade7640ad45c44a36fb085357019ce3ac9b0be)), closes [#4902](https://sogo.nu/bugs/view.php?id=4902)
+* **mail(js):** new button to expand recipients that are LDAP groups ([456a66b](https://github.com/inverse-inc/sogo/commit/456a66b66b85ae669009453a411f648eb1ed3e67))
+* **preferences:** allow hiding of vacation the vacation period ([c2e7f6a](https://github.com/inverse-inc/sogo/commit/c2e7f6a8660b7185c4b21246e41009563aec03ea))
+
+### Bug Fixes
+
+* **addressbook(core):** safety check from broken URLs ([0ceccdd](https://github.com/inverse-inc/sogo/commit/0ceccdd61208a6c4501ad4c5dc6e0c57581f3a59))
+* **calendar:** adjust invalid dates when importing a vEvent ([3bb40e4](https://github.com/inverse-inc/sogo/commit/3bb40e4024aae5392e0f0951b583ce315f781c8a)), closes [#4845](https://sogo.nu/bugs/view.php?id=4845)
+* **calendar:** adjust invalid dates when importing a vEvent ([15d7c69](https://github.com/inverse-inc/sogo/commit/15d7c69d94b77add6c2e234ac14047db0771e2eb)), closes [#4845](https://sogo.nu/bugs/view.php?id=4845)
+* **calendar:** allow fetching group members from contacts-only sources ([edc01e9](https://github.com/inverse-inc/sogo/commit/edc01e95329cc0d8a61ca9217cde20ba0744a74a))
+* **calendar:** raise warning when MuiltipleBookings is set to -1 ([5923639](https://github.com/inverse-inc/sogo/commit/592363915453bbd79dca995b7a06fd9a994ff484))
+* **calendar(html):** don't cache list of week days ([9aeecea](https://github.com/inverse-inc/sogo/commit/9aeecead6c40b0121e1f62c9db7256c9196ada26)), closes [#4907](https://sogo.nu/bugs/view.php?id=4907)
+* **calendar(js):** avoid call to /members when expansion is disabled ([14b60cd](https://github.com/inverse-inc/sogo/commit/14b60cd75639fc3d23cf59f50d19d060c0a96c0e))
+* **calendar(js):** avoid exception when adding duplicated attendee ([2048fb1](https://github.com/inverse-inc/sogo/commit/2048fb19cff4e5037d6bf0be44320721691ea05c))
+* **calendar(js):** don't escape HTML characters in repeat select menu ([699849c](https://github.com/inverse-inc/sogo/commit/699849caecbd7e741dc5479445cdfaa4cbd83e94)), closes [#4875](https://sogo.nu/bugs/view.php?id=4875)
+* **calendar(js):** fix refresh of attendees freebusy information ([fbdabc9](https://github.com/inverse-inc/sogo/commit/fbdabc9615faea5903afd3080ace6556ea3272a0)), closes [#4899](https://sogo.nu/bugs/view.php?id=4899)
+* **core:** don't disable the current script if we aren't doing anything ([2bc24ec](https://github.com/inverse-inc/sogo/commit/2bc24eca829a6481a951c006a5bd7ec5740c2e8c))
+* **mail:** wrap HTML part with HTML tags to render all content ([47075b4](https://github.com/inverse-inc/sogo/commit/47075b40a2435b24ef00847c3901fe9d31ef9db9))
+* **mail(html:** expose UIxMailViewRecipientMenu in popup view ([5ccc126](https://github.com/inverse-inc/sogo/commit/5ccc12639be1cc5a88982e12223864adf52a1eb9))
+* **mail(js):** add missing library to save msg from popup window ([7298022](https://github.com/inverse-inc/sogo/commit/729802222f673a319e5613701b17576539b8af28)), closes [#4879](https://sogo.nu/bugs/view.php?id=4879)
+* **mail(js):** avoid exception when adding duplicated recipient ([a303011](https://github.com/inverse-inc/sogo/commit/a3030112374fef8c2e0712199dfe9894491fea69))
+* **preferences:** improve error handling with Sieve server ([7180b59](https://github.com/inverse-inc/sogo/commit/7180b5988de35eee11aaa19ffc819399a86657b4))
+* **preferences(js):** Lower constraints on auto-reply dates range ([70984de](https://github.com/inverse-inc/sogo/commit/70984def1fe69472ac69675adc3fac45b64a5869)), closes [#4874](https://sogo.nu/bugs/view.php?id=4874)
+* **web:** improve contrast of toolbars w/input field ([e71afc9](https://github.com/inverse-inc/sogo/commit/e71afc982e93941fc749839d4b2ea4ede9ecbc5e))
+
+### Localization
+
+* **ca:** update Catalan translation ([e458a78](https://github.com/inverse-inc/sogo/commit/e458a78a10ffbdb01bf6422d1ce969d90e1327c8)), closes [#4878](https://sogo.nu/bugs/view.php?id=4878)
+* **cs:** update Czech translation ([cd8f957](https://github.com/inverse-inc/sogo/commit/cd8f95777433e3759fe4c1bb6cf3966db00abcc1))
+* **de:** remove duplicated short date formats ([f872dc5](https://github.com/inverse-inc/sogo/commit/f872dc52c690bbe5b755238f18dd15697d844c14))
+* **fr:** update French translation ([bc172c5](https://github.com/inverse-inc/sogo/commit/bc172c5895934b1f2fe2bf8cedbf1fdc80918f26))
+* **nl:** update Dutch translation ([ae42fd8](https://github.com/inverse-inc/sogo/commit/ae42fd869a507c8020fb5f0e59d8adf720d39562))
+* **sk:** update Slovak translation ([e65e0f1](https://github.com/inverse-inc/sogo/commit/e65e0f191f55f5fea101ad8c198bad9c89ef9ca5))
+
+### Enhancements
+
+* **preferences:** conditionally activate the Sieve script ([5b3d84e](https://github.com/inverse-inc/sogo/commit/5b3d84ee2441c717f1cb7ce8f40a1196f3bad0cb))
+* replace calls to create GMT NSTimeZone instance ([2e46e89](https://github.com/inverse-inc/sogo/commit/2e46e89d58d75f15d931b3664b12b674bfae6453))
+
 ## [4.1.1](https://github.com/inverse-inc/sogo/compare/SOGo-4.1.0...SOGo-4.1.1) (2019-10-31)
 
 ### Bug Fixes
