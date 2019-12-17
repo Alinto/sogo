@@ -192,13 +192,13 @@
 "Copy Folder Location" = "Kopírovať adresu priečinka";
 "Subscribe..." = "Potvrď odber...";
 "Mark Folder Read" = "Označ priečinok ako prečítaný...";
-"New Folder..." = "Nový adresár";
+"New Folder..." = "Nový priečinok...";
 "Compact This Folder" = "Vykonaj údržbu tohoto priečinku";
 "Search Messages..." = "Hľadať správy";
 "Sharing..." = "Zdieľanie";
-"New Subfolder..." = "Nový podadresár";
-"Rename Folder..." = "Premenovať adresár";
-"Delete Folder" = "Zmazať adresár";
+"New Subfolder..." = "Nový podpriečinok...";
+"Rename Folder..." = "Premenovať priečinok...";
+"Delete Folder" = "Zmazať priečinok";
 "Use This Folder For" = "Použitie tejto zložky";
 "Get Messages for Account" = "Prijať správy na účet";
 "Properties..." = "Vlastnosti";
@@ -266,12 +266,12 @@
 "Error reading the certificate. Please install a new certificate." = "Chyba čítania certifikátu. Nainštalujte si, prosím, nový certifikát.";
 
 /* Trying to access a non-existent certificate */
-"No certificate associated to account." = "K účtu nie je priradený žiaden certifikát.";
+"No certificate associated to account." = "K účtu nie je priradený žiadny certifikát.";
 
-"This Folder" = "Adresár";
+"This Folder" = "Tento priečinok";
 
 /* Label popup menu */
-"None" = "Žiaden";
+"None" = "Žiadny";
 
 /* Mark popup menu */
 "As Read" = "Prečítané";

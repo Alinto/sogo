@@ -218,7 +218,7 @@
 "Please specify a valid reply-to address." = "Prosím, zvoľte platnú adresu pre odpoveď.";
 "Specify a hostname other than the local host" = "Zadajte iné doménové meno ako local host.";
 
-"No certificate installed" = "Nie je nainštalovaný žiaden certifikát.";
+"No certificate installed" = "Nie je nainštalovaný žiadny certifikát.";
 "The SSL certificate must use the PKCS#12 (PFX) format." = "SSL certifikát musí byť vo PKCS#12 (PFX) formáte.";
 "Uninstall" = "Odinštalovať";
 "Choose PKCS12 Certificate .." = "Vyberte PKCS12 certifikát ..";
@@ -254,7 +254,7 @@
 "Add Contact Category" = "Pridať kategóriu kontaktov";
 "Remove Contact Category" = "Odstrániť kategóriu kontaktov";
 "category_none" = "Žiadne";
-"calendar_category_labels" = "Výročia,Narodeniny,Obchod,Hovory,Zákazníci,Konkurencia,Klient,Obľúbene,Sledovať,Darčeky,Prázdniny,Nápady,Stretnutia,Probléma,Rôzne,Osobné,Projekty,Štátne sviatky,Stav,Dodávatelia,Cestovanie,Dovolenka";
+"calendar_category_labels" = "Výročia,Narodeniny,Obchod,Hovory,Zákazníci,Konkurencia,Klient,Obľúbené,Sledovať,Darčeky,Prázdniny,Nápady,Stretnutia,Problémy,Rôzne,Osobné,Projekty,Štátne sviatky,Stav,Dodávatelia,Cestovanie,Dovolenka";
 
 /* Default module */
 "Calendar" = "Kalendár";

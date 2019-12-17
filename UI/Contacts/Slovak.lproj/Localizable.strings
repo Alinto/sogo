@@ -4,8 +4,8 @@
 "Address" = "Adresa";
 "Photos" = "Fotka";
 "Other" = "Ďalšie";
-"Address Books" = "Adresáre";
-"Addressbook" = "Adresár";
+"Address Books" = "Priečinky kontaktov";
+"Addressbook" = "Priečinok kontaktov";
 "Addresses" = "Adresy";
 "Update" = "Aktualizovať";
 "Cancel" = "Zrušiť";
@@ -158,15 +158,15 @@
 "Create a new list" = "Vytvoriť nový zoznam";
 "Edit the selected card" = "Upraviť označný kontakt";
 "Send a mail message" = "Poslať správu";
-"Delete selected card or address book" = "Vymazať označený kontakt alebo adresár";
+"Delete selected card or address book" = "Vymazať označený kontakt alebo priečinok kontaktov";
 "Reload all contacts" = "Znovu načítaj všetky kontakty";
 "htmlMailFormat_UNKNOWN" = "Neznámy";
 "htmlMailFormat_FALSE" = "Jednoduchý text";
 "htmlMailFormat_TRUE" = "HTML";
 "Name or Email" = "Meno alebo e-mail";
 "Category" = "Kategória";
-"Personal Addressbook" = "Osobný adresár";
-"Search in Addressbook" = "Hľadať v adresári";
+"Personal Addressbook" = "Osobné kontakty";
+"Search in Addressbook" = "Vyhľadávať v kontaktoch";
 "New Card" = "Nový kontakt";
 "New List" = "Nový zoznam";
 "Edit" = "Upraviť";
@@ -218,18 +218,18 @@
 "Recipient" = "Príjemca";
 "Carbon Copy" = "Kópia";
 "Blind Carbon Copy" = "Skrytá kópia";
-"New Addressbook..." = "Nový adresár...";
-"Subscribe to an Addressbook..." = "Odoberať adresár...";
-"Remove the selected Addressbook" = "Odstrániť označený adresár";
+"New Addressbook..." = "Nový priečinok kontaktov...";
+"Subscribe to an Addressbook..." = "Odoberať priečinok kontaktov...";
+"Remove the selected Addressbook" = "Odstrániť priečinok kontaktov";
 "Subscribe to a shared folder" = "Odoberať zdieľaný priečinok";
 "Search User" = "Hľadať používatela";
-"Name of the Address Book" = "Názov adresára";
+"Name of the Address Book" = "Názov priečinka kontaktov";
 "Are you sure you want to delete the selected address book?"
-= "Ste si istý, že chcete odstrániť označený adresár?";
+= "Ste si istý, že chcete odstrániť označený priečinok kontaktov?";
 "Are you sure you want to delete the addressbook \"%{0}\"?"
 = "Naozaj chcete odstrániť adresár \"%{0}\"?";
 "You cannot remove nor unsubscribe from a public addressbook."
-= "Nemôžete odstrániť ani zrušiť odber verejného adresára";
+= "Nie je možné odstrániť a ani sa odhlásiť z odberu verejného adresára.";
 "You cannot remove nor unsubscribe from your personal addressbook."
 = "Nemôžete odstrániť ani zrušiť odber osobného adresára.";
 "Are you sure you want to delete the selected contacts?"
