@@ -170,7 +170,7 @@
 "New Card" = "Nouvelle fiche";
 "New List" = "Nouvelle liste";
 "Edit" = "Éditer";
-"Properties" = "Modifier";
+"Properties" = "Propriétés...";
 "Sharing..." = "Partage...";
 "Write" = "Écrire";
 "Delete" = "Effacer";
@@ -319,7 +319,7 @@
 "Close" = "Fermer";
 "More contact options" = "Options des contacts";
 "Organization Unit" = "Unité organisationnelle";
-"Add Organizational Unit" = "Ajouter une unité oranisationnelle";
+"Add Organizational Unit" = "Ajouter une unité organisationnelle";
 "Type" = "Type";
 "Email Address" = "Adresse courriel";
 "New Email Address" = "Ajouter une adresse courriel";
@@ -346,7 +346,7 @@
 "Custom 3" = "Autre 3";
 "Custom 4" = "Autre 4";
 "Custom Value" = "Valeur";
-"New Custom Value" = "Ajouter un champs personnalisé";
+"New Custom Value" = "Ajouter un champ personnalisé";
 "Synchronization" = "Synchronisation";
 "Synchronize" = "Synchroniser";
 "Sucessfully subscribed to address book" = "Abonnement au carnet d'adresses complété";
