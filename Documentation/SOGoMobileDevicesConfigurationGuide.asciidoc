@@ -26,7 +26,7 @@ devices (iPhone, iPod touch, and iPad).
 The instructions are based on version {release_version} of SOGo.
 
 The latest version of this guide is available at
-http://www.sogo.nu/downloads/documentation.html.
+https://sogo.nu/downloads/documentation.html.
 
 Introduction
 ------------

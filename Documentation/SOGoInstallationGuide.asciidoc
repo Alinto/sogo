@@ -3013,10 +3013,10 @@ To access your personal calendar:
 `http://127.0.0.1/SOGo/dav/jdoe/Calendar/personal/`
 * Click on Continue.
 
-Apple Calendar and iOS
-~~~~~~~~~~~~~~~~~~~~~~
+Apple Calendar (macOS, iOS, iPadOS)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Apple Calendar and Mac OS X and the calendar application on iOS can also be used
+Apple Calendar on macOS, iOS, and iPadOS can also be used
 as a client application for SOGo.
 
 To configure the application so it works with SOGo, create a new account and specify,
@@ -3069,8 +3069,8 @@ The virtual host should be defined like:
 This configuration is also required if you want to configure a CardDAV
 account on an Apple iOS device (version 4.0 and later).
 
-Microsoft ActiveSync / Mobile Devices
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Microsoft ActiveSync
+~~~~~~~~~~~~~~~~~~~~
 
 You can synchronize contacts, emails, events and tasks from SOGo with
 any mobile devices that support Microsoft ActiveSync. Microsoft Outlook

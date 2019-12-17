@@ -25,7 +25,7 @@ Guide_ for more information on installing and configuring SOGo.
 The instructions are based on version {release_version} of SOGo.
 
 The latest version of this guide is available
-at http://www.sogo.nu/downloads/documentation.html.
+at https://sogo.nu/downloads/documentation.html.
 
 Introduction
 ------------
@@ -42,9 +42,8 @@ Project Links
 
 The project source and binaries for installation are hosted on GitHub and SourceForge or can be downloaded from https://caldavsynchronizer.org[caldavsynchronizer.org]
 
-https://github.com/aluxnimm/outlookcaldavsynchronizer
-
-https://sourceforge.net/projects/outlookcaldavsynchronizer/
+* https://github.com/aluxnimm/outlookcaldavsynchronizer
+* https://sourceforge.net/projects/outlookcaldavsynchronizer/
 
 Social Media
 ~~~~~~~~~~~~
