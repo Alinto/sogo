@@ -179,6 +179,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Přidat do adresáře...";
+"Successfully created card" = "Karta byla úspěšně vytvořena";
 "Compose Mail To" = "Napsat mail pro";
 "Create Filter From Message..." = "Vytvořit filtr ze zprávy...";
 
@@ -262,7 +263,7 @@
 "digest failure" = "Zpráva byla modifikována";
 
 /* OpenSSL reading error */
-"Error reading the certificate. Please install a new certificate." = "Chyba čtení certifikátu. Nainstalujte si prosím nový certifikát.";
+"Error reading the certificate. Please install a new certificate." = "Chyba při čtení certifikátu. Nainstalujte si prosím nový certifikát.";
 
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "K účtu není přiřazen certfikát.";
@@ -402,6 +403,15 @@
 "Your email has been saved" = "Vaše zpráva byla uložena";
 "Your email has been sent" = "Vaše zpráva byla odeslána";
 "Folder compacted" = "Údržba složky byla provedena";
+
+/* Advanced search */
+"Enter Subject" = "Zadejte předmět";
+"Enter From" = "Zadejte odesílatele";
+"Enter To" = "Zadejte příjemce";
+"Enter Cc" = "Zadejte příjemce kopie";
+"Enter Body" = "Zadejte zprávu";
+"match" = "odpovídá";
+"does not match" = "neodpovídá";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Oblast hledání";

@@ -10,6 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p>Administrační modul přístupových práv umožňuje nastavovat přístupová práva ke kalendářům a adresářům každého uživatele.</p><p>Chcete-li změnit přístupová práva ke složkám uživatele, zadejte jeho uživatelské jméno do vyhledávacího pole v horní části okna, rozbalte stromovou strukturu jeho složek a na požadované složce udělejte dvojkliknutí.</p>";
 "Name or Email" = "Jméno nebo e-mail";
+"ACLs saved" = "ACL uloženy";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Vyhledat k úpravě práv";
 /* Rights module: Empty search result */

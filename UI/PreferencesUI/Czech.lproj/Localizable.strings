@@ -16,7 +16,7 @@
 "Don't Save" = "Neuložit";
 
 /* tabs */
-"General" = "Obecný";
+"General" = "Obecné";
 "Calendar Options" = "Možnosti kalendáře";
 "Contacts Options" = "Možnosti kontaktů";
 "Mail Options" = "Možnosti pošty";
@@ -45,9 +45,14 @@
 "Days between responses" = "Počet dnů mezi odpověďmi";
 "Do not send responses to mailing lists" = "Neposílat odpovědi do konferencí";
 "Enable auto reply on" = "Zapnout odpovědi v nepřítomnosti";
+"First day of vacation" = "První den nepřítomnosti";
 "Disable auto reply on" = "Automatické odpovědi vypnout dne";
+"Last day of vacation" = "Poslední den nepřítomnosti";
+"Enter date" = "Zadejte datum";
 "Always send vacation message response" = "Vždy posílat zprávu v nepřítomnosti";
+"The vacation message is sent prior to apply your filters." = "Zpráva v nepřítomnosti je odeslána ještě před provedením Vašich filtrů.";
 "Discard incoming mails during vacation" = "Zrušit příjem pošty během nepřítomnosti";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Zpráva v nepřítomnosti je odeslána, ale příchozí zpráva nebude doručena do Vaší schránky.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Prosím zadejte text zprávy a své emailové adresy, pro které chcete zasílání v nepřítomnosti použít.";
 "Your vacation message must not end with a single dot on a line." = "Vaše zpráva v nepřítomnosti nesmí končit samotnou tečkou na řádce.";
@@ -61,6 +66,7 @@
 = "Prosím zadejte adresu, na kterou chcete své zprávy přeposílat.";
 "You are not allowed to forward your messages to an external email address." = "Nemáte povoleno přeposílání Vašich zpráv na externí emailovou adresu.";
 "You are not allowed to forward your messages to an internal email address." = "Nemáte povoleno přeposílání Vašich zpráv na interní emailovou adresu.";
+"You are not allowed to forward your messages to this domain:" = "Nemáte povoleno přeposílání Vašich zpráv na následující doménu:";
 
 /* d & t */
 "Current Time Zone" = "Současné časové pásmo";
@@ -85,7 +91,9 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
 
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
@@ -124,6 +132,8 @@
 "Prevent from being invited to appointments" = "Blokovat budoucí pozvání na schůzky";
 "White list for appointment invitations" = "Seznam povolených pro pozvání na schůzky";
 "Contacts Names" = "Jména kontaktů";
+"Duplicate name" = "Duplicitní jméno";
+"Calendar categories must have unique names." = "Kategorie kalendáře musí mít jedinečná jména.";
 
 /* Default Calendar */
 "Default calendar" = "Výchozí kalendář";
@@ -154,6 +164,7 @@
 "New label" = "Nový štítek";
 "Show subscribed mailboxes only" = "Ukázat pouze odebírané poštovní schránky";
 "Synchronize only default mail folders (EAS)" = "Synchronizovat pouze standartní poštovní složky (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Načíst počet nepřečtených zpráv pro všechny poštovní schránky";
 "Sort messages by threads" = "Třídit zprávy podle souvislostí";
 "Always open mail composer" = "Vždy otevřít editor zprávy";
 "Inside current window" = "Uvnitř aktuálního okna";
@@ -185,6 +196,7 @@
 /* Contact */
 "Personal Address Book" = "Osobní kontakty";
 "Collected Address Book" = "Sebrané kontakty";
+"Contact categories must have unique names." = "Kategorie kontaktů musí mít jedinečná jména.";
 
 /* IMAP Accounts */
 "Settings" = "Nastavení";
@@ -215,6 +227,7 @@
 "When composing a message" = "Při vytváření zprávy";
 "Digitally sign the message by default" = "Vždy digitálně podepsat zprávu";
 "Always try to encrypt the message" = "Vždy zkusit zašifrovat zprávu";
+"An error occurred while importing the certificate. Verify your password." = "Při importu certifikátu došlo k chybě. Ověřte své heslo.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Dodatečné parametry";
@@ -235,6 +248,7 @@
 "Calendar Category" = "Kategorie kalendáře";
 "Add Calendar Category" = "Přidat kategorii kalendáře";
 "New category" = "Nová kategorie";
+"Reset to defaults" = "Nastavení výchozích hodnot";
 "Remove Calendar Category" = "Odstranit kategorii kalendáře";
 "Contact Category" = "Kategorie kontaktu";
 "Add Contact Category" = "Přidat kategorii kontaktu";

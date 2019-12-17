@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Název kalendáře";
 "new" = "Nový";
 "Print view" = "Tisk";
+"Print" = "Tisk";
 "edit" = "Upravit";
 "delete" = "Smazat";
 "proposal" = "Návrh";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Zobrazit barvy událostí a úkolů";
 "Borders" = "Okraje";
 "Backgrounds" = "Pozadí";
+"Page Format" = "Formát stránky";
 
 /* Appointments */
 "Appointment viewer" = "Zobrazit schůzky";
@@ -177,7 +179,7 @@
 "Category" = "Kategorie";
 "Repeat" = "Opakování";
 "Reminder" = "Připomenutí";
-"General" = "Obecný";
+"General" = "Obecné";
 "Reply" = "Odpověď";
 "Created by" = "Vytvořeno";
 "You are invited to participate" = "Jste pozván k účasti";
@@ -437,16 +439,48 @@ validate_untilbeforeend    = "Opakování musí skončit po prvním výskytu.";
 = "Nemůžete odebrat nebo se odhlásit z odebírání svého vlastního kalendáře.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Opravdu chcete smazat kalendář \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Opravdu chcete smazat označené položky?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Role";
+
+/* Participant role: participation is required */
 "Participant" = "Účastník";
+
+/* Participant role: participation is required */
+"req-participant" = "Účastník";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Nepovinný účastník";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Nepovinný účastník";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Na vědomí";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Na vědomí";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Předsedající";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Předsedající";
+
+/* Participant status: needs action */
 "Needs action" = "Vyžaduje akci";
+
+/* Participant status: event accepted */
 "Accepted" = "Zúčastníse";
+
+/* Participant status: event declined */
 "Declined" = "Nezúčastníse";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Nezávazně";
+
 "Free" = "Volno";
 "Busy" = "Není volno";
 "Maybe busy" = "Možná není volno";

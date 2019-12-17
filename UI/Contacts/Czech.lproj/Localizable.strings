@@ -27,6 +27,9 @@
 "OfficePhone" = "Telefon do kanceláře";
 "Organization" = "Organizace";
 "Work Phone" = "Pracovní telefon";
+"Cell" = "Mobil";
+"Pager" = "Pager";
+"Pref" = "Pref";
 "Phone" = "Telefon";
 "Phones" = "Telefony";
 "Postal" = "Pošta";
@@ -238,6 +241,12 @@
 = "Nemůžete se přihlásit k odebírání vlastní složky! ";
 "Unable to subscribe to that folder!"
 = "Nemůžete se přihlásit k odebírání této složky!";
+
+/* security */
+"Security" = "Zabezpečení";
+"Uninstall" = "Odinstalovat";
+"Error reading the card certificate." = "Chyba při čtení certifikátu uloženého na kartě.";
+"No certificate associated to card." = "Ke kartě není přiřazen žádný certifikát.";
 
 /* acls */
 "Access rights to" = "Přístupová práva k";

@@ -16,6 +16,7 @@
 "Authentication Failed" = "Ověření selhalo";
 "Wrong username or password." = "Špatné uživatelské jméno nebo heslo.";
 "Retry" = "Opakovat";
+"Login failed due to unhandled error case:" = "Přihlášení selhalo z důvodu chyby: ";
 "cookiesNotEnabled" = "Nemůžete se přihlásit, protože nemáte povoleny cookies ve Vašem prohlížeči. Povolte prosím cookies v nastavení Vašeho prohlížeče a akci opakujte.";
 "browserNotCompatible" = "Tento systém nepodporuje současnou verzi Vašeho prohlížeče. Doporučujeme použít Firefox. Klikněte na níže uvedený odkaz pro stažení aktuální verze tohoto prohlížeče.";
 "alternativeBrowsers" = "Můžete však použít i následující kompatibilní prohlížeče";
@@ -39,7 +40,6 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
-"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
 "Japanese" = "日本語";
 "Latvian" = "Latviešu";

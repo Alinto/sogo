@@ -143,10 +143,19 @@
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
 "File size upload limit reached" = "Byl dosažen limit pro velikost nahraného souboru";
 
+/* Generic server error */
+"An error occured, please try again." = "Došlo k chybě, zkuste to prosím znovu.";
+
+/* Open datepicker */
+"Open Calendar" = "Otevřít Kalendář";
+
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Přepnout zobrazení";
 
 "Keyboard Shortcuts" = "Klávesové zkratky";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "Přepnout položku";
 
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Přepnout rozsah položek";
