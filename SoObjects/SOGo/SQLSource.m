@@ -228,10 +228,10 @@
 // kind of logic in this module.
 //
 - (BOOL) checkLogin: (NSString *) _login
-	   password: (NSString *) _pwd
-	       perr: (SOGoPasswordPolicyError *) _perr
-	     expire: (int *) _expire
-	      grace: (int *) _grace
+           password: (NSString *) _pwd
+               perr: (SOGoPasswordPolicyError *) _perr
+             expire: (int *) _expire
+              grace: (int *) _grace
 {
   EOAdaptorChannel *channel;
   EOQualifier *qualifier;
@@ -259,8 +259,8 @@
             {
               field = [_loginFields objectAtIndex: i];
               loginQualifier = [[EOKeyValueQualifier alloc] initWithKey: field
-                                              operatorSelector: EOQualifierOperatorEqual
-                                                         value: _login];
+                                                       operatorSelector: EOQualifierOperatorEqual
+                                                                  value: _login];
               [loginQualifier autorelease];
               [qualifiers addObject: loginQualifier];
             }
@@ -299,7 +299,7 @@
           value = [row objectForKey: @"c_password"];
 
           rc = [self _isPassword: _pwd  equalTo: value];
-	  [channel cancelFetch];
+          [channel cancelFetch];
         }
       else
         [self errorWithFormat: @"could not run SQL '%@': %@", qualifier, ex];
@@ -322,9 +322,9 @@
  * @return YES if the password was successfully changed.
  */
 - (BOOL) changePasswordForLogin: (NSString *) login
-	    oldPassword: (NSString *) oldPassword
-	    newPassword: (NSString *) newPassword
-	   perr: (SOGoPasswordPolicyError *) perr
+                    oldPassword: (NSString *) oldPassword
+                    newPassword: (NSString *) newPassword
+                           perr: (SOGoPasswordPolicyError *) perr
 {
   EOAdaptorChannel *channel;
   GCSChannelManager *cm;
@@ -351,23 +351,23 @@
       cm = [GCSChannelManager defaultChannelManager];
       channel = [cm acquireOpenChannelForURL: _viewURL];
       if (channel)
-	{
-	  sqlstr = [NSString stringWithFormat: (@"UPDATE %@"
-	@" SET c_password = '%@'"
-	@" WHERE c_uid = '%@'"),
-	     [_viewURL gcsTableName], encryptedPassword, login];
+        {
+          sqlstr = [NSString stringWithFormat: (@"UPDATE %@"
+                                                @" SET c_password = '%@'"
+                                                @" WHERE c_uid = '%@'"),
+                             [_viewURL gcsTableName], encryptedPassword, login];
 
-	  ex = [channel evaluateExpressionX: sqlstr];
-	  if (!ex)
-	    {
-	      didChange = YES;
-	    }
-	  else
-	    {
-	      [self errorWithFormat: @"could not run SQL '%@': %@", sqlstr, ex];
-	    }
-	  [cm releaseChannel: channel];
-	}
+          ex = [channel evaluateExpressionX: sqlstr];
+          if (!ex)
+            {
+              didChange = YES;
+            }
+          else
+            {
+              [self errorWithFormat: @"could not run SQL '%@': %@", sqlstr, ex];
+            }
+          [cm releaseChannel: channel];
+        }
     }
 
   return didChange;
@@ -489,8 +489,8 @@
           [loginQualifier autorelease];
           [qualifiers addObject: loginQualifier];
 
-	  if (_mailFields)
-	    {
+          if (_mailFields)
+            {
               for (i = 0; i < [_mailFields count]; i++)
                 {
                   field = [_mailFields objectAtIndex: i];
@@ -505,7 +505,7 @@
                     }
                 }
             }
-	}
+        }
 
       sql = [NSMutableString stringWithFormat: @"SELECT *"
                              @" FROM %@"
@@ -519,12 +519,12 @@
       ex = [channel evaluateExpressionX: sql];
       if (!ex)
         {
-	  NSMutableArray *emails;
+          NSMutableArray *emails;
 
           response = [[channel fetchAttributes: [channel describeResults: NO]
                                       withZone: NULL] mutableCopy];
           [response autorelease];
-	  [channel cancelFetch];
+          [channel cancelFetch];
 
           /* Convert all c_ fields to obtain their ldif equivalent */
           fieldNames = [response allKeys];
@@ -540,35 +540,35 @@
           [self _fillConstraintsForModule: @"Mail"        intoRecord: response];
           [self _fillConstraintsForModule: @"ActiveSync"  intoRecord: response];
 
-	  // We set the domain, if any
+          // We set the domain, if any
           value = nil;
-	  if (_domain)
-	    value = _domain;
-	  else if (_domainField)
+          if (_domain)
+            value = _domain;
+          else if (_domainField)
             value = [response objectForKey: _domainField];
           if (![value isNotNull])
-	    value = @"";
-	  [response setObject: value forKey: @"c_domain"];
+            value = @"";
+          [response setObject: value forKey: @"c_domain"];
 
-	  // We populate all mail fields
-	  emails = [NSMutableArray array];
+          // We populate all mail fields
+          emails = [NSMutableArray array];
 
-	  if ([response objectForKey: @"mail"])
-	    [emails addObject: [response objectForKey: @"mail"]];
+          if ([response objectForKey: @"mail"])
+            [emails addObject: [response objectForKey: @"mail"]];
 
-	  if (_mailFields && [_mailFields count] > 0)
-	    {
-	      NSString *s;
-	      int i;
+          if (_mailFields && [_mailFields count] > 0)
+            {
+              NSString *s;
+              int i;
 
-	      for (i = 0; i < [_mailFields count]; i++)
-	if ((s = [response objectForKey: [_mailFields objectAtIndex: i]]) &&
+              for (i = 0; i < [_mailFields count]; i++)
+                if ((s = [response objectForKey: [_mailFields objectAtIndex: i]]) &&
                     [s isNotNull] &&
-	    [[s stringByTrimmingSpaces] length] > 0)
-	  [emails addObjectsFromArray: [s componentsSeparatedByString: @" "]];
-	    }
+                    [[s stringByTrimmingSpaces] length] > 0)
+                  [emails addObjectsFromArray: [s componentsSeparatedByString: @" "]];
+            }
 
-	  [response setObject: [emails uniqueObjects]  forKey: @"c_emails"];
+          [response setObject: [emails uniqueObjects]  forKey: @"c_emails"];
           if (_imapHostField)
             {
               value = [response objectForKey: _imapHostField];
@@ -626,29 +626,29 @@
                 [response setObject: [response objectForKey: _imapLoginField] forKey: @"c_imaplogin"];
             }
 
-	  // We check if it's a resource of not
-	  if (_kindField)
-	    {
-	      if ((value = [response objectForKey: _kindField]) && [value isNotNull])
-	{
-	  if ([value caseInsensitiveCompare: @"location"] == NSOrderedSame ||
-	      [value caseInsensitiveCompare: @"thing"] == NSOrderedSame ||
-	      [value caseInsensitiveCompare: @"group"] == NSOrderedSame)
-	    {
-	      [response setObject: [NSNumber numberWithInt: 1]
-	forKey: @"isResource"];
-	    }
-	}
-	    }
+          // We check if it's a resource of not
+          if (_kindField)
+            {
+              if ((value = [response objectForKey: _kindField]) && [value isNotNull])
+                {
+                  if ([value caseInsensitiveCompare: @"location"] == NSOrderedSame ||
+                      [value caseInsensitiveCompare: @"thing"] == NSOrderedSame ||
+                      [value caseInsensitiveCompare: @"group"] == NSOrderedSame)
+                    {
+                      [response setObject: [NSNumber numberWithInt: 1]
+                                   forKey: @"isResource"];
+                    }
+                }
+            }
 
-	  if (_multipleBookingsField)
-	    {
-	      if ((value = [response objectForKey: _multipleBookingsField]))
-	{
-	  [response setObject: [NSNumber numberWithInt: [value intValue]]
-	    forKey: @"numberOfSimultaneousBookings"];
-	}
-	    }
+          if (_multipleBookingsField)
+            {
+              if ((value = [response objectForKey: _multipleBookingsField]))
+                {
+                  [response setObject: [NSNumber numberWithInt: [value intValue]]
+                               forKey: @"numberOfSimultaneousBookings"];
+                }
+            }
 
           [response setObject: self forKey: @"source"];
         }
@@ -742,7 +742,7 @@
   if (channel)
     {
       sql = [NSMutableString stringWithFormat: @"SELECT c_uid FROM %@",
-                      [_viewURL gcsTableName]];
+                             [_viewURL gcsTableName]];
 
       if (_domainField)
         {
