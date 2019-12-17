@@ -27,6 +27,9 @@
 "OfficePhone" = "Kantoor";
 "Organization" = "Organisatie";
 "Work Phone" = "Werk";
+"Cell" = "Mobiel";
+"Pager" = "Pieper";
+"Pref" = "Voorkeur";
 "Phone" = "Telefoon";
 "Phones" = "Telefoonnummers";
 "Postal" = "Postcode";

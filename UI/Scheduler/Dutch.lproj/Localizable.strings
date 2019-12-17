@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Naam van de agenda";
 "new" = "Nieuw";
 "Print view" = "Print weergave";
+"Print" = "Afdrukken";
 "edit" = "Aanpassen";
 "delete" = "Verwijderen";
 "proposal" = "Voorstel";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Toon afspraak- en taakkleuren";
 "Borders" = "Randen";
 "Backgrounds" = "Achtergronden";
+"Page Format" = "Paginaformaat";
 
 /* Appointments */
 "Appointment viewer" = "Afspraak inzien";
