@@ -1,6 +1,6 @@
 /* SOGoToolRestore.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2015 Inverse inc.
+ * Copyright (C) 2009-2019 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -614,6 +614,7 @@
 - (BOOL) _updateSieveScripsForLogin: (NSString *) theLogin
 {
   /* credentials file handling */
+  NSException *error;
   NSString *credsFilename, *authname=nil, *authpwd=nil;
   SOGoCredentialsFile *cf;
   SOGoUser *user;
@@ -650,7 +651,13 @@
   account = [folder lookupName: @"0" inContext: localContext acquire: NO];
   [account setContext: localContext];
 
-  return [account updateFiltersWithUsername: authname  andPassword: authpwd];
+  error = [account updateFiltersWithUsername: authname
+                                 andPassword: authpwd
+                             forceActivation: NO];
+  if (error)
+    return NO;
+
+  return YES;
 }
 
 - (BOOL) restoreUserPreferencesFromUserRecord: (NSDictionary *) userRecord

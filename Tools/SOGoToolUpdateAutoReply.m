@@ -1,6 +1,6 @@
 /* SOGoToolUpdateAutoReply.m - this file is part of SOGo
  *
- * Copyright (C) 2011-2016 Inverse inc.
+ * Copyright (C) 2011-2019 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -81,6 +81,7 @@
   SOGoUserDefaults *userDefaults;
   SOGoUser *user;
   BOOL result;
+  NSException *error;
 
   user = [SOGoUser userWithLogin: theLogin];
 
@@ -127,10 +128,10 @@
       account = [folder lookupName: @"0" inContext: localContext acquire: NO];
       [account setContext: localContext];
 
-      result = [account updateFiltersWithUsername: theUsername
+      error = [account updateFiltersWithUsername: theUsername
                                       andPassword: thePassword
                                   forceActivation: NO];
-      if (!result)
+      if (error)
         {
           // Can't update Sieve script -- Reactivate auto-reply
 	  if (disabling)
@@ -139,6 +140,7 @@
 	    [vacationOptions setObject: [NSNumber numberWithBool: YES] forKey: @"startDateEnabled"];
           [userDefaults setVacationOptions: vacationOptions];
           [userDefaults synchronize];
+          result = NO;
         }
     }
 

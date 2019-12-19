@@ -1,6 +1,6 @@
 /* SOGoToolUserPreferences.m - this file is part of SOGo
  *
- * Copyright (C) 2011-2017 Inverse inc.
+ * Copyright (C) 2011-2019 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -122,6 +122,7 @@ typedef enum
         }
 
       /* update sieve script */
+      NSException *error;
       SOGoUser *user;
       SOGoUserFolder *home;
       SOGoMailAccounts *folder;
@@ -141,7 +142,11 @@ typedef enum
       account = [folder lookupName: @"0" inContext: localContext acquire: NO];
       [account setContext: localContext];
 
-      return [account updateFiltersWithUsername: authname  andPassword: authpwd];
+      error = [account updateFiltersWithUsername: authname
+                                     andPassword: authpwd
+                                 forceActivation: NO];
+      if (error)
+        return NO;
     }
   
   return YES;
