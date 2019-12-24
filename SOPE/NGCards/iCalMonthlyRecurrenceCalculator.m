@@ -99,12 +99,12 @@ static BOOL NGMonthDaySet_fillWithByMonthDay (NGMonthDaySet *positiveDaySet,
       if (dayInMonth > 31) 
 	{
 	  ok = NO;
-	  continue; /* error, value to large */
+	  continue; /* error, value too large */
 	}
       if (dayInMonth < -31)
 	{
 	  ok = NO;
-	  continue; /* error, value to large */
+	  continue; /* error, value too large */
 	}
     
       /* adjust negative days */
@@ -160,7 +160,7 @@ static inline unsigned iCalDoWForNSDoW (int dow)
   /* create range and check whether its in the requested range */
   
   r = [[NGCalendarDateRange alloc] initWithStartDate: _startDate endDate: end];
-  if ([_r containsDateRange: r])
+  if ([_r doesIntersectWithDateRange: r])
     [_ranges addObject: r];
   [r release];
   r = nil;
