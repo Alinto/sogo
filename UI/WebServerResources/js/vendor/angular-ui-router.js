@@ -4,7 +4,7 @@
  *         This causes it to be incompatible with plugins that depend on @uirouter/core.
  *         We recommend switching to the ui-router-core.js and ui-router-angularjs.js bundles instead.
  *         For more information, see https://ui-router.github.io/blog/uirouter-for-angularjs-umd-bundles
- * @version v1.0.23
+ * @version v1.0.24
  * @link https://ui-router.github.io
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -12,7 +12,7 @@
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('angular')) :
     typeof define === 'function' && define.amd ? define(['exports', 'angular'], factory) :
     (global = global || self, factory(global['@uirouter/angularjs'] = {}, global.angular));
-}(this, function (exports, ng_from_import) { 'use strict';
+}(this, (function (exports, ng_from_import) { 'use strict';
 
     /** @publicapi @module ng1 */ /** */
     /** @hidden */ var ng_from_global = angular;
@@ -25,6 +25,13 @@
      *
      * @module common_hof
      */ /** */
+    var __spreadArrays = (undefined && undefined.__spreadArrays) || function () {
+        for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+        for (var r = Array(s), k = 0, i = 0; i < il; i++)
+            for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+                r[k] = a[j];
+        return r;
+    };
     /**
      * Returns a new function for [Partial Application](https://en.wikipedia.org/wiki/Partial_application) of the original function.
      *
@@ -63,22 +70,17 @@
      *
      * ```
      *
-     * Stolen from: http://stackoverflow.com/questions/4394747/javascript-curry-function
-     *
      * @param fn
      * @returns {*|function(): (*|any)}
      */
     function curry(fn) {
-        var initial_args = [].slice.apply(arguments, [1]);
-        var func_args_length = fn.length;
-        function curried(args) {
-            if (args.length >= func_args_length)
-                return fn.apply(null, args);
-            return function () {
-                return curried(args.concat([].slice.apply(arguments)));
-            };
-        }
-        return curried(initial_args);
+        return function curried() {
+            if (arguments.length >= fn.length) {
+                return fn.apply(this, arguments);
+            }
+            var args = Array.prototype.slice.call(arguments);
+            return curried.bind.apply(curried, __spreadArrays([this], args));
+        };
     }
     /**
      * Given a varargs list of functions, returns a function that composes the argument functions, right-to-left
@@ -290,13 +292,13 @@
         $injector: undefined,
     };
 
-    /**
-     * Random utility functions used in the UI-Router code
-     *
-     * These functions are exported, but are subject to change without notice.
-     *
-     * @preferred @publicapi @module common
-     */ /** */
+    var __spreadArrays$1 = (undefined && undefined.__spreadArrays) || function () {
+        for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+        for (var r = Array(s), k = 0, i = 0; i < il; i++)
+            for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+                r[k] = a[j];
+        return r;
+    };
     var root = (typeof self === 'object' && self.self === self && self) ||
         (typeof global === 'object' && global.global === global && global) ||
         undefined;
@@ -424,7 +426,7 @@
         for (var _i = 1; _i < arguments.length; _i++) {
             defaultsList[_i - 1] = arguments[_i];
         }
-        var defaultVals = extend.apply(void 0, [{}].concat(defaultsList.reverse()));
+        var defaultVals = extend.apply(void 0, __spreadArrays$1([{}], defaultsList.reverse()));
         return extend(defaultVals, pick(opts || {}, Object.keys(defaultVals)));
     }
     /** Reduce function that merges each element of the list into a single object, using extend */
@@ -1187,6 +1189,37 @@
         return pushR(acc, x);
     }
 
+    /** workaround for missing console object in IE9 when dev tools haven't been opened o_O */
+    var noopConsoleStub = { log: noop, error: noop, table: noop };
+    function ie9Console(console) {
+        var bound = function (fn) { return Function.prototype.bind.call(fn, console); };
+        return {
+            log: bound(console.log),
+            error: bound(console.log),
+            table: bound(console.log),
+        };
+    }
+    function fallbackConsole(console) {
+        var log = console.log.bind(console);
+        var error = console.error ? console.error.bind(console) : log;
+        var table = console.table ? console.table.bind(console) : log;
+        return { log: log, error: error, table: table };
+    }
+    function getSafeConsole() {
+        // @ts-ignore
+        var isIE9 = document && document.documentMode && document.documentMode === 9;
+        if (isIE9) {
+            return window && window.console ? ie9Console(window.console) : noopConsoleStub;
+        }
+        else if (!console.table || !console.error) {
+            return fallbackConsole(console);
+        }
+        else {
+            return console;
+        }
+    }
+    var safeConsole = getSafeConsole();
+
     /**
      * # Transition tracing (debug)
      *
@@ -1238,10 +1271,6 @@
     function normalizedCat(input) {
         return isNumber(input) ? exports.Category[input] : exports.Category[exports.Category[input]];
     }
-    /** @hidden */
-    var consoleLog = Function.prototype.bind.call(console.log, console);
-    /** @hidden */
-    var consoletable = isFunction(console.table) ? console.table.bind(console) : consoleLog.bind(console);
     /**
      * Trace categories Enum
      *
@@ -1320,57 +1349,57 @@
         Trace.prototype.traceTransitionStart = function (trans) {
             if (!this.enabled(exports.Category.TRANSITION))
                 return;
-            console.log(transLbl(trans) + ": Started  -> " + stringify(trans));
+            safeConsole.log(transLbl(trans) + ": Started  -> " + stringify(trans));
         };
         /** @internalapi called by ui-router code */
         Trace.prototype.traceTransitionIgnored = function (trans) {
             if (!this.enabled(exports.Category.TRANSITION))
                 return;
-            console.log(transLbl(trans) + ": Ignored  <> " + stringify(trans));
+            safeConsole.log(transLbl(trans) + ": Ignored  <> " + stringify(trans));
         };
         /** @internalapi called by ui-router code */
         Trace.prototype.traceHookInvocation = function (step, trans, options) {
             if (!this.enabled(exports.Category.HOOK))
                 return;
             var event = parse('traceData.hookType')(options) || 'internal', context = parse('traceData.context.state.name')(options) || parse('traceData.context')(options) || 'unknown', name = functionToString(step.registeredHook.callback);
-            console.log(transLbl(trans) + ":   Hook -> " + event + " context: " + context + ", " + maxLength(200, name));
+            safeConsole.log(transLbl(trans) + ":   Hook -> " + event + " context: " + context + ", " + maxLength(200, name));
         };
         /** @internalapi called by ui-router code */
         Trace.prototype.traceHookResult = function (hookResult, trans, transitionOptions) {
             if (!this.enabled(exports.Category.HOOK))
                 return;
-            console.log(transLbl(trans) + ":   <- Hook returned: " + maxLength(200, stringify(hookResult)));
+            safeConsole.log(transLbl(trans) + ":   <- Hook returned: " + maxLength(200, stringify(hookResult)));
         };
         /** @internalapi called by ui-router code */
         Trace.prototype.traceResolvePath = function (path, when, trans) {
             if (!this.enabled(exports.Category.RESOLVE))
                 return;
-            console.log(transLbl(trans) + ":         Resolving " + path + " (" + when + ")");
+            safeConsole.log(transLbl(trans) + ":         Resolving " + path + " (" + when + ")");
         };
         /** @internalapi called by ui-router code */
         Trace.prototype.traceResolvableResolved = function (resolvable, trans) {
             if (!this.enabled(exports.Category.RESOLVE))
                 return;
-            console.log(transLbl(trans) + ":               <- Resolved  " + resolvable + " to: " + maxLength(200, stringify(resolvable.data)));
+            safeConsole.log(transLbl(trans) + ":               <- Resolved  " + resolvable + " to: " + maxLength(200, stringify(resolvable.data)));
         };
         /** @internalapi called by ui-router code */
         Trace.prototype.traceError = function (reason, trans) {
             if (!this.enabled(exports.Category.TRANSITION))
                 return;
-            console.log(transLbl(trans) + ": <- Rejected " + stringify(trans) + ", reason: " + reason);
+            safeConsole.log(transLbl(trans) + ": <- Rejected " + stringify(trans) + ", reason: " + reason);
         };
         /** @internalapi called by ui-router code */
         Trace.prototype.traceSuccess = function (finalState, trans) {
             if (!this.enabled(exports.Category.TRANSITION))
                 return;
-            console.log(transLbl(trans) + ": <- Success  " + stringify(trans) + ", final state: " + finalState.name);
+            safeConsole.log(transLbl(trans) + ": <- Success  " + stringify(trans) + ", final state: " + finalState.name);
         };
         /** @internalapi called by ui-router code */
         Trace.prototype.traceUIViewEvent = function (event, viewData, extra) {
             if (extra === void 0) { extra = ''; }
             if (!this.enabled(exports.Category.UIVIEW))
                 return;
-            console.log("ui-view: " + padString(30, event) + " " + uiViewString(viewData) + extra);
+            safeConsole.log("ui-view: " + padString(30, event) + " " + uiViewString(viewData) + extra);
         };
         /** @internalapi called by ui-router code */
         Trace.prototype.traceUIViewConfigUpdated = function (viewData, context) {
@@ -1399,19 +1428,19 @@
                 return _b = {}, _b[uivheader] = uiv, _b[cfgheader] = cfg, _b;
             })
                 .sort(function (a, b) { return (a[uivheader] || '').localeCompare(b[uivheader] || ''); });
-            consoletable(mapping);
+            safeConsole.table(mapping);
         };
         /** @internalapi called by ui-router code */
         Trace.prototype.traceViewServiceEvent = function (event, viewConfig) {
             if (!this.enabled(exports.Category.VIEWCONFIG))
                 return;
-            console.log("VIEWCONFIG: " + event + " " + viewConfigString(viewConfig));
+            safeConsole.log("VIEWCONFIG: " + event + " " + viewConfigString(viewConfig));
         };
         /** @internalapi called by ui-router code */
         Trace.prototype.traceViewServiceUIViewEvent = function (event, viewData) {
             if (!this.enabled(exports.Category.VIEWCONFIG))
                 return;
-            console.log("VIEWCONFIG: " + event + " " + uiViewString(viewData));
+            safeConsole.log("VIEWCONFIG: " + event + " " + uiViewString(viewData));
         };
         return Trace;
     }());
@@ -1425,8 +1454,6 @@
      * ```
      */
     var trace = new Trace();
-
-    /** @publicapi @module common */ /** */
 
     /** @publicapi @module params */ /** */
     /**
@@ -2339,8 +2366,6 @@
         return PathUtils;
     }());
 
-    /** @internalapi @module path */ /** */
-
     /** @internalapi */
     var resolvePolicies = {
         when: {
@@ -2350,7 +2375,6 @@
         async: {
             WAIT: 'WAIT',
             NOWAIT: 'NOWAIT',
-            RXWAIT: 'RXWAIT',
         },
     };
 
@@ -2421,7 +2445,6 @@
             };
             // Invokes the resolve function passing the resolved dependencies as arguments
             var invokeResolveFn = function (resolvedDeps) { return _this.resolveFn.apply(null, resolvedDeps); };
-            // If the resolve policy is RXWAIT, wait for the observable to emit something. otherwise pass through.
             var node = resolveContext.findNode(this);
             var state = node && node.state;
             var asyncPolicy = this.getPolicy(state).async;
@@ -2653,8 +2676,6 @@
         };
         return UIInjectorImpl;
     }());
-
-    /** @publicapi @module resolve */ /** */
 
     /** @publicapi @module state */ /** */
     var parseUrl = function (url) {
@@ -3068,8 +3089,7 @@
                 var _states = values(this._states);
                 var matches = _states.filter(function (_state) { return _state.__stateObjectCache.nameGlob && _state.__stateObjectCache.nameGlob.matches(name); });
                 if (matches.length > 1) {
-                    // tslint:disable-next-line:no-console
-                    console.log("stateMatcher.find: Found multiple matches for " + name + " using glob: ", matches.map(function (match) { return match.name; }));
+                    safeConsole.error("stateMatcher.find: Found multiple matches for " + name + " using glob: ", matches.map(function (match) { return match.name; }));
                 }
                 return matches[0];
             }
@@ -7096,6 +7116,7 @@
         inherit: false,
         notify: true,
         reload: false,
+        supercede: true,
         custom: {},
         current: function () { return null; },
         source: 'unknown',
@@ -7637,6 +7658,9 @@
                 return this._handleInvalidTargetState(currentPath, ref);
             if (!ref.valid())
                 return silentRejection(ref.error());
+            if (options.supercede === false && getCurrent()) {
+                return Rejection.ignored('Another transition is in progress and supercede has been set to false in TransitionOptions for the transition. So the transition was ignored in favour of the existing one in progress.').toPromise();
+            }
             /**
              * Special handling for Ignored, Aborted, and Redirected transitions
              *
@@ -7867,19 +7891,6 @@
         };
         return StateService;
     }());
-
-    /**
-     * # Transition subsystem
-     *
-     * This module contains APIs related to a Transition.
-     *
-     * See:
-     * - [[TransitionService]]
-     * - [[Transition]]
-     * - [[HookFn]], [[TransitionHookFn]], [[TransitionStateHookFn]], [[HookMatchCriteria]], [[HookResult]]
-     *
-     * @preferred @publicapi @module transition
-     */ /** */
 
     /** @internalapi @module vanilla */ /** */
     /**
@@ -8329,8 +8340,6 @@
     /** A `UIRouterPlugin` that gets/sets the current location from an in-memory object */
     var memoryLocationPlugin = locationPluginFactory('vanilla.memoryLocation', false, MemoryLocationService, MemoryLocationConfig);
 
-    /** @internalapi @module vanilla */ /** */
-
     /**
      * # Core classes and interfaces
      *
@@ -8350,6 +8359,7 @@
     /** @publicapi @module common */ /** */
 
     var index = /*#__PURE__*/Object.freeze({
+        __proto__: null,
         root: root,
         fromJson: fromJson,
         toJson: toJson,
@@ -9362,68 +9372,6 @@
         });
         return tuples.reduce(applyPairs, {});
     };
-
-    /**
-     * The current (or pending) State Parameters
-     *
-     * An injectable global **Service Object** which holds the state parameters for the latest **SUCCESSFUL** transition.
-     *
-     * The values are not updated until *after* a `Transition` successfully completes.
-     *
-     * **Also:** an injectable **Per-Transition Object** object which holds the pending state parameters for the pending `Transition` currently running.
-     *
-     * ### Deprecation warning:
-     *
-     * The value injected for `$stateParams` is different depending on where it is injected.
-     *
-     * - When injected into an angular service, the object injected is the global **Service Object** with the parameter values for the latest successful `Transition`.
-     * - When injected into transition hooks, resolves, or view controllers, the object is the **Per-Transition Object** with the parameter values for the running `Transition`.
-     *
-     * Because of these confusing details, this service is deprecated.
-     *
-     * ### Instead of using the global `$stateParams` service object,
-     * inject [[$uiRouterGlobals]] and use [[UIRouterGlobals.params]]
-     *
-     * ```js
-     * MyService.$inject = ['$uiRouterGlobals'];
-     * function MyService($uiRouterGlobals) {
-     *   return {
-     *     paramValues: function () {
-     *       return $uiRouterGlobals.params;
-     *     }
-     *   }
-     * }
-     * ```
-     *
-     * ### Instead of using the per-transition `$stateParams` object,
-     * inject the current `Transition` (as [[$transition$]]) and use [[Transition.params]]
-     *
-     * ```js
-     * MyController.$inject = ['$transition$'];
-     * function MyController($transition$) {
-     *   var username = $transition$.params().username;
-     *   // .. do something with username
-     * }
-     * ```
-     *
-     * ---
-     *
-     * This object can be injected into other services.
-     *
-     * #### Deprecated Example:
-     * ```js
-     * SomeService.$inject = ['$http', '$stateParams'];
-     * function SomeService($http, $stateParams) {
-     *   return {
-     *     getUser: function() {
-     *       return $http.get('/api/users/' + $stateParams.username);
-     *     }
-     *   }
-     * };
-     * angular.service('SomeService', SomeService);
-     * ```
-     * @deprecated
-     */
 
     /**
      * # Angular 1 Directives
@@ -10710,5 +10658,5 @@
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
-}));
+})));
 //# sourceMappingURL=angular-ui-router.js.map
