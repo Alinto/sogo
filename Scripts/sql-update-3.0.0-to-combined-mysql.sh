@@ -195,7 +195,7 @@ do
     echo "DROP TABLE $QUICKTABLE;" >> $SQLFILE
     echo "DROP TABLE $STORETABLE;" >> $SQLFILE
     echo "DROP TABLE $ACLTABLE;" >> $SQLFILE
-    echo "UPDATE sogo_folder_info SET c_location = NULL, c_quick_location = NULL, c_acl_location = NULL WHERE c_folder_id = $FOLDERID;" >> $SQLFILE      
+    echo "UPDATE $TABLE SET c_location = NULL, c_quick_location = NULL, c_acl_location = NULL WHERE c_folder_id = $FOLDERID;" >> $SQLFILE
     echo >> $SQLFILE
 done 
 
