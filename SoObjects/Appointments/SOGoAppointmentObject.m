@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2019 Inverse inc.
+  Copyright (C) 2007-2020 Inverse inc.
 
   This file is part of SOGo
 
@@ -627,6 +627,8 @@
   NSString *currentUID;
   SOGoUser *user, *currentUser;
 
+  _resourceHasAutoAccepted = NO;
+
   // Build a list of the attendees uids
   attendees = [NSMutableArray arrayWithCapacity: [theAttendees count]];
   enumerator = [theAttendees objectEnumerator];
@@ -761,10 +763,8 @@
 
       if ([fbInfo count])
         {
-          BOOL resourceHasAutoAccepted;
           SOGoDateFormatter *formatter;
 
-          resourceHasAutoAccepted = NO;
           formatter = [[context activeUser] dateFormatterInContext: context];
           
           if ([user isResource])
@@ -781,7 +781,7 @@
                     {
                       [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
                       [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
-		      resourceHasAutoAccepted = YES;
+		      _resourceHasAutoAccepted = YES;
                     }
                 }
               else
@@ -814,7 +814,7 @@
           // We are dealing with a normal attendee. Lets check if we have conflicts, unless
           // we are being asked to force the save anyway
           //
-          if (!forceSave && !resourceHasAutoAccepted)
+          if (!forceSave && !_resourceHasAutoAccepted)
             {
               NSMutableDictionary *info;
               NSMutableArray *conflicts;
@@ -868,6 +868,7 @@
           // set the resource as one!
           [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
           [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
+          _resourceHasAutoAccepted = YES;
         }
     }
 
