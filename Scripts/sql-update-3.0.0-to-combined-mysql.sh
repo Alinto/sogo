@@ -76,7 +76,7 @@ fi
 
 if ! [ "$CHECK" = "1" ]; then
    cat >> $SQLFILE <<HERE
-ALTER TABLE $TABLE MODIFY COLUMN c_location integer NULL;
+ALTER TABLE $TABLE MODIFY COLUMN c_location varchar(2048) NULL;
 
 CREATE TABLE sogo_store
 (
