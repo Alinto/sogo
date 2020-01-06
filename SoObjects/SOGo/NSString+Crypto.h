@@ -1,7 +1,7 @@
 /* NSString+Crypto.h - this file is part of SOGo
  *
  * Copyright (C) 2012 Nicolas Höft
- * Copyright (C) 2012-2016 Inverse inc.
+ * Copyright (C) 2012-2020 Inverse inc.
  *
  * Author: Nicolas Höft
  *         Inverse inc.
@@ -39,15 +39,18 @@ typedef enum {
 @interface NSString (SOGoCryptoExtension)
 
 - (BOOL) isEqualToCrypted: (NSString *) cryptedPassword
-        withDefaultScheme: (NSString *) theScheme;
+        withDefaultScheme: (NSString *) theScheme
+                  keyPath: (NSString *) theKeyPath;
 
 - (NSString *) asCryptedPassUsingScheme: (NSString *) passwordScheme
                                withSalt: (NSData *) theSalt
-                            andEncoding: (keyEncoding) encoding;
+                            andEncoding: (keyEncoding) encoding
+                                keyPath: (NSString *) theKeyPath;
 
 // this method uses the default encoding (base64, plain, hex)
 // and generates a salt when necessary
-- (NSString *) asCryptedPassUsingScheme: (NSString *) passwordScheme;
+- (NSString *) asCryptedPassUsingScheme: (NSString *) passwordScheme
+                                keyPath: (NSString *) theKeyPath;
 
 - (NSArray *) splitPasswordWithDefaultScheme: (NSString *) defaultScheme;
 

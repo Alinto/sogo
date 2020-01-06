@@ -1,7 +1,7 @@
 /* NSData+Crypto.m - this file is part of SOGo
  *
  * Copyright (C) 2012 Nicolas Höft
- * Copyright (C) 2012-2016 Inverse inc.
+ * Copyright (C) 2012-2020 Inverse inc.
  * Copyright (C) 2012 Jeroen Dekkers
  *
  * Author: Nicolas Höft
@@ -49,6 +49,7 @@
 #error this module requires either gnutls or openssl
 #endif
 
+#include "aes.h"
 #include "lmhash.h"
 
 #import <Foundation/NSArray.h>
@@ -178,6 +179,7 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
  */
 - (NSData *) asCryptedPassUsingScheme: (NSString *) passwordScheme
                              withSalt: (NSData *) theSalt
+                              keyPath: (NSString *) theKeyPath
 {
   if ([passwordScheme caseInsensitiveCompare: @"none"] == NSOrderedSame ||
       [passwordScheme caseInsensitiveCompare: @"plain"] == NSOrderedSame ||
@@ -242,6 +244,39 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   else if ([passwordScheme caseInsensitiveCompare: @"sha512-crypt"] == NSOrderedSame)
     {
       return [self asSHA512CryptUsingSalt: theSalt];
+    }
+  else if ([[passwordScheme lowercaseString] hasPrefix: @"sym"])
+    {
+      // We first support one sym cipher, AES-128-CBC. If something else is provided
+      // we return nil for now. Example of what theSalt might contain:
+      // $AES-128-CBC$cinlbHKnyBApySphVCz6yA==$Z9hjCXfMhz4xbXkW+aMkAw==
+      // If theSalt is empty, that means we are not validating a password
+      // but rather changing it. In this case, we generate an IV.      
+      NSString *cipher, *iv;
+
+      cipher = nil;
+      iv = nil;
+
+      if ([theSalt length])
+        {
+          NSString *s;
+          NSArray *a;
+
+          s = [[NSString alloc] initWithData: theSalt  encoding: NSUTF8StringEncoding];
+          [s autorelease];
+          a = [s componentsSeparatedByString: @"$"];
+          cipher = [a objectAtIndex: 1];
+          iv = [a objectAtIndex: 2];
+        }
+      else
+        {
+          if ([passwordScheme caseInsensitiveCompare: @"sym-aes-128-cbc"] == NSOrderedSame)
+            cipher = @"AES-128-CBC";
+        }
+
+      if ([cipher caseInsensitiveCompare: @"AES-128-CBC"] == NSOrderedSame)
+        return [self asSymAES128CBCUsingIV: iv
+                                   keyPath: theKeyPath];
     }
   // in case the scheme was not detected, return nil
   return nil;
@@ -476,6 +511,48 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   return [NSData dataWithBytes: sha  length: SHA512_DIGEST_LENGTH];
 }
 
+- (NSData *) asSymAES128CBCUsingIV: (NSString *) theIV
+                           keyPath: (NSString *) theKeyPath
+{
+  NSData *iv_d, *key_d, *cipherdata;
+  NSMutableString *result;
+  NSString *s;
+
+  char ciphertext[256], *iv_s, *key_s, *pass;
+  unsigned int len;
+
+  len = ceil((double)[self length]/16) * 16;
+
+  if (theIV)
+    iv_d = [theIV dataByDecodingBase64];
+  else
+    {
+      iv_d = [NSData generateSaltForLength: len];
+      theIV = [iv_d stringByEncodingBase64];
+    }
+
+  iv_s = calloc([iv_d length]+1, sizeof(char));
+  strncpy(iv_s, [iv_d bytes], [iv_d length]);
+
+  key_d = [NSData dataWithContentsOfFile: theKeyPath];
+  key_s = calloc([key_d length]+1, sizeof(char));
+  strncpy(key_s, [key_d bytes], [key_d length]);
+
+  pass = calloc(len, sizeof(char));
+  strncpy(pass, [self bytes], [self length]);
+  AES128_CBC_encrypt_buffer((uint8_t*)ciphertext, (uint8_t*)pass, (uint32_t)len, (const uint8_t*)key_s, (const uint8_t*)iv_s);
+
+  cipherdata = [NSData dataWithBytes: ciphertext  length: 16];
+  s = [[NSString alloc] initWithData: [cipherdata dataByEncodingBase64WithLineLength: 1024]
+                            encoding: NSASCIIStringEncoding];
+
+  result = [NSMutableString string];
+  [result appendFormat: @"$AES-128-CBC$%@$%@", theIV, s];
+  RELEASE(s);
+
+  return [result dataUsingEncoding: NSUTF8StringEncoding];
+}
+
 /**
  * Hash the data with SSHA. Uses openssl functions to generate it.
  *
@@ -490,7 +567,8 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   NSMutableData *sshaData;
 
   // generate salt, if not available
-  if ([theSalt length] == 0) theSalt = [NSData generateSaltForLength: 8];
+  if ([theSalt length] == 0)
+    theSalt = [NSData generateSaltForLength: 8];
 
   // put the pass and salt together as one data array
   sshaData = [NSMutableData dataWithData: self];
@@ -517,7 +595,8 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   NSMutableData *sshaData;
 
   // generate salt, if not available
-  if ([theSalt length] == 0) theSalt = [NSData generateSaltForLength: 8];
+  if ([theSalt length] == 0)
+    theSalt = [NSData generateSaltForLength: 8];
 
   // put the pass and salt together as one data array
   sshaData = [NSMutableData dataWithData: self];
@@ -544,7 +623,8 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   NSMutableData *sshaData;
 
   // generate salt, if not available
-  if ([theSalt length] == 0) theSalt = [NSData generateSaltForLength: 8];
+  if ([theSalt length] == 0)
+    theSalt = [NSData generateSaltForLength: 8];
 
   // put the pass and salt together as one data array
   sshaData = [NSMutableData dataWithData: self];
@@ -571,7 +651,8 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   NSMutableData *smdData;
 
   // generate salt, if not available
-  if ([theSalt length] == 0) theSalt = [NSData generateSaltForLength: 8];
+  if ([theSalt length] == 0)
+    theSalt = [NSData generateSaltForLength: 8];
 
   // put the pass and salt together as one data array
   smdData = [NSMutableData dataWithData: self];
@@ -600,6 +681,7 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
       // make sure these characters are all printable by using base64
       theSalt = [NSData generateSaltForLength: 8  withBase64: YES];
     }
+
   cryptString = [[NSString alloc] initWithData: self  encoding: NSUTF8StringEncoding];
 
   saltData = [NSMutableData dataWithData: [[NSString stringWithFormat:@"$%@$", magic] dataUsingEncoding: NSUTF8StringEncoding]];
@@ -758,6 +840,11 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   else if ([theScheme caseInsensitiveCompare: @"smd5"] == NSOrderedSame)
     {
       r = NSMakeRange(MD5_DIGEST_LENGTH, len - MD5_DIGEST_LENGTH);
+    }
+  else if ([[theScheme lowercaseString] hasPrefix: @"sym"])
+    {
+      // For sym we return everything
+      r = NSMakeRange(0, len);
     }
   else
     {

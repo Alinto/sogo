@@ -1659,8 +1659,9 @@ they have the same name as popular LDAP attributes (such as `givenName`,
 |The default algorithm used for password encryption when changing
 passwords. Possible values are: `none`, `plain`, `crypt`, `md5`,
 `md5-crypt`, `smd5`, `cram-md5`, `ldap-md5`, and `sha`, `sha256`,
-`sha512` and its ssha (e.g. `ssha` or `ssha256`) variants. Passwords can
-have the scheme prepended in the form `{scheme}encryptedPass`.
+`sha256-crypt`, `sha512`, `sha512-crypt` and its ssha (e.g. `ssha` or
+`ssha256`) variants and `sym-aes-128-cbc`. Passwords can have the
+scheme prepended in the form `{scheme}encryptedPass`.
 
 If no scheme is given, _userPasswordAlgorithm_ is used instead. The
 schemes listed above follow the algorithms described in
@@ -1673,7 +1674,13 @@ context as Dovecot stores in its database. 
 |prependPasswordScheme
 |The default behaviour is to store newly set passwords without the
 scheme (default: `NO`). This can be overridden by setting to `YES` and
-will result in passwords stored as `{scheme}encryptedPass`. 
+will result in passwords stored as `{scheme}encryptedPass`. For
+`sym-aes-128-cbc`, always set this to `NO`.
+
+|keyPath
+For `sym-aes-128-cbc`, a global key file is required. This value
+must be set to the full path where the key file is. The key file
+must also be readable by the `sogo` user.
 
 |canAuthenticate
 |If set to `YES`, this SQL source is used for authentication.

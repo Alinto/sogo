@@ -1,7 +1,7 @@
 /* NSString+Crypto.m - this file is part of SOGo
  *
  * Copyright (C) 2012 Nicolas Höft
- * Copyright (C) 2012-2015 Inverse inc.
+ * Copyright (C) 2012-2019 Inverse inc.
  *
  * Author: Nicolas Höft
  *         Inverse inc.
@@ -106,6 +106,7 @@
  */
 - (BOOL) isEqualToCrypted: (NSString *) cryptedPassword
         withDefaultScheme: (NSString *) theScheme
+                  keyPath: (NSString *) theKeyPath
 {
   NSArray *passInfo;
   NSString *selfCrypted;
@@ -113,7 +114,6 @@
   NSString *scheme;
   NSData *salt;
   NSData *decodedData;
-  NSNumber *encodingNumber;
   keyEncoding encoding;
 
   // split scheme and pass
@@ -121,8 +121,7 @@
 
   scheme   = [passInfo objectAtIndex: 0];
   pass     = [passInfo objectAtIndex: 1];
-  encodingNumber = [passInfo objectAtIndex: 2];
-  encoding = [encodingNumber intValue];
+  encoding = [[passInfo objectAtIndex: 2] intValue];
 
   if (encoding == encHex)
     {
@@ -158,7 +157,8 @@
   // encrypt self with the salt an compare the results
   selfCrypted = [self asCryptedPassUsingScheme: scheme
 				      withSalt: salt
-				   andEncoding: encoding];
+				   andEncoding: encoding
+                                       keyPath: theKeyPath];
 
   // return always false when there was a problem
   if (selfCrypted == nil)
@@ -178,10 +178,12 @@
  * @return If successful, the encrypted and encoded NSString of the format {scheme}pass, or nil if the scheme did not exists or an error occured
  */
 - (NSString *) asCryptedPassUsingScheme: (NSString *) passwordScheme
+                                keyPath: (NSString *) theKeyPath
 {
   return [self asCryptedPassUsingScheme: passwordScheme
                                withSalt: [NSData data]
-                            andEncoding: encDefault];
+                            andEncoding: encDefault
+                                keyPath: theKeyPath];
 }
 
 /**
@@ -198,6 +200,7 @@
 - (NSString *) asCryptedPassUsingScheme: (NSString *) passwordScheme
                                withSalt: (NSData *) theSalt
                             andEncoding: (keyEncoding) userEncoding
+                                keyPath: (NSString *) theKeyPath
 {
   keyEncoding dataEncoding;
   NSData* cryptedData;
@@ -219,7 +222,10 @@
 
   // convert NSString to NSData and apply encryption scheme
   cryptedData = [self dataUsingEncoding: NSUTF8StringEncoding];
-  cryptedData = [cryptedData asCryptedPassUsingScheme: passwordScheme  withSalt: theSalt];
+  cryptedData = [cryptedData asCryptedPassUsingScheme: passwordScheme
+                                             withSalt: theSalt
+                                              keyPath: theKeyPath];
+
   // abort on unsupported scheme or error
   if (cryptedData == nil)
     return nil;
@@ -229,7 +235,7 @@
       // hex encoding
       return [NSData encodeDataAsHexString: cryptedData];
     }
-  else if(dataEncoding == encBase64)
+  else if (dataEncoding == encBase64)
     {
        // base64 encoding
       NSString *s = [[NSString alloc] initWithData: [cryptedData dataByEncodingBase64WithLineLength: 1024]

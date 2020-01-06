@@ -617,7 +617,8 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
 - (NSString *) _encryptPassword: (NSString *) thePassword
 {
   NSString *pass;
-  pass = [thePassword asCryptedPassUsingScheme: _userPasswordAlgorithm];
+  pass = [thePassword asCryptedPassUsingScheme: _userPasswordAlgorithm
+                                       keyPath: nil];
 
   if (pass == nil)
     {

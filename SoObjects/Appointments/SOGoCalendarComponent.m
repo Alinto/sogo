@@ -235,7 +235,8 @@
   tags = [NSArray arrayWithObjects: @"DTSTAMP", @"DTSTART", @"DTEND", @"DUE", @"EXDATE", @"EXRULE", @"RRULE", @"RECURRENCE-ID", nil];
   uid = [[component uid] asCryptedPassUsingScheme: @"ssha256"
                                          withSalt: [[settings userSalt] dataUsingEncoding: NSASCIIStringEncoding]
-                                      andEncoding: encHex];
+                                      andEncoding: encHex
+                                          keyPath: nil];
 
   children = [[[[component children] copy] autorelease] objectEnumerator];
 

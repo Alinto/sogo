@@ -1,6 +1,6 @@
 /* SQLSource.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2019 Inverse inc.
+ * Copyright (C) 2009-2020 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@
   NSString *_imapHostField;
   NSString *_sieveHostField;
   NSString *_userPasswordAlgorithm;
+  NSString *_keyPath;
   NSURL *_viewURL;
   BOOL _prependPasswordScheme;
 

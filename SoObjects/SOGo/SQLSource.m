@@ -1,6 +1,6 @@
 /* SQLSource.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2017 Inverse inc.
+ * Copyright (C) 2009-2020 Inverse inc.
  *
  * This file is part of SOGo.
  *
@@ -94,6 +94,7 @@
       _searchFields = [NSArray arrayWithObjects: @"c_cn", @"mail", nil];
       [_searchFields retain];
       _userPasswordAlgorithm = nil;
+      _keyPath = nil;
       _viewURL = nil;
       _kindField = nil;
       _multipleBookingsField = nil;
@@ -114,6 +115,7 @@
   [_mailFields release];
   [_searchFields release];
   [_userPasswordAlgorithm release];
+  [_keyPath release];
   [_viewURL release];
   [_kindField release];
   [_multipleBookingsField release];
@@ -137,6 +139,7 @@
   ASSIGN(_loginFields, [udSource objectForKey: @"LoginFieldNames"]);
   ASSIGN(_mailFields, [udSource objectForKey: @"MailFieldNames"]);
   ASSIGN(_userPasswordAlgorithm, [udSource objectForKey: @"userPasswordAlgorithm"]);
+  ASSIGN(_keyPath, [udSource objectForKey: @"keyPath"]);
   ASSIGN(_imapLoginField, [udSource objectForKey: @"IMAPLoginFieldName"]);
   ASSIGN(_imapHostField, [udSource objectForKey:  @"IMAPHostFieldName"]);
   ASSIGN(_sieveHostField, [udSource objectForKey:  @"SieveHostFieldName"]);
@@ -191,7 +194,8 @@
     return NO;
 
   return [plainPassword isEqualToCrypted: encryptedPassword
-                       withDefaultScheme: _userPasswordAlgorithm];
+                       withDefaultScheme: _userPasswordAlgorithm
+                                 keyPath: _keyPath];
 }
 
 /**
@@ -205,7 +209,8 @@
   NSString *pass;
   NSString* result;
 
-  pass = [plainPassword asCryptedPassUsingScheme: _userPasswordAlgorithm];
+  pass = [plainPassword asCryptedPassUsingScheme: _userPasswordAlgorithm
+                                         keyPath: _keyPath];
 
   if (pass == nil)
     {
