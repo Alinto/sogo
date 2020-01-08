@@ -2596,7 +2596,6 @@ FIXME
       //[output appendFormat: @"<Status>%d</Status>", 14];
     }
 
-  [output appendString: @"<Collections>"];
   s = nil;
 
   // We enter our loop detection change
@@ -2699,6 +2698,8 @@ FIXME
   //
   if (changeDetected || [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"2.5"] || [[[context request] headerForKey: @"MS-ASProtocolVersion"] isEqualToString: @"12.0"])
     {
+      [output appendString: @"<Collections>"];
+
       // We always return the last generated response.
       // If we only return <Sync><Collections/></Sync>,
       // iOS powered devices will simply crash.
