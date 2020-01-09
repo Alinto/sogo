@@ -302,6 +302,9 @@ static SoProduct *preferencesProduct = nil;
   //
   // Default Mail preferences
   //
+  if (![[defaults source] objectForKey: @"SOGoMailShowSubscribedFoldersOnly"])
+    [[defaults source] setObject: [NSNumber numberWithBool: [defaults mailShowSubscribedFoldersOnly]] forKey: @"SOGoMailShowSubscribedFoldersOnly"];
+
   if (![[defaults source] objectForKey: @"SOGoMailComposeWindow"])
     [[defaults source] setObject: [defaults mailComposeWindow] forKey: @"SOGoMailComposeWindow"];
 
