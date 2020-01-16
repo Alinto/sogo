@@ -2532,4 +2532,9 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   return response;
 }
 
+- (BOOL) resourceHasAutoAccepted
+{
+  return _resourceHasAutoAccepted;
+}
+
 @end /* SOGoAppointmentObject */
