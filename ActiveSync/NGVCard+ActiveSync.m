@@ -99,7 +99,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   if ((o = [n flattenedValueAtIndex: 1 forKey: @""]))
     [s appendFormat: @"<FirstName xmlns=\"Contacts:\">%@</FirstName>", [o activeSyncRepresentationInContext: context]];
-  
+
+  if ((o = [n flattenedValueAtIndex: 2 forKey: @""]))
+    [s appendFormat: @"<MiddleName xmlns=\"Contacts:\">%@</MiddleName>", [o activeSyncRepresentationInContext: context]];
+
+  if ((o = [n flattenedValueAtIndex: 3 forKey: @""]))
+    [s appendFormat: @"<Title xmlns=\"Contacts:\">%@</Title>", [o activeSyncRepresentationInContext: context]];
+
+  if ((o = [n flattenedValueAtIndex: 4 forKey: @""]))
+    [s appendFormat: @"<Suffix xmlns=\"Contacts:\">%@</Suffix>", [o activeSyncRepresentationInContext: context]];
+
   if ((o = [self workCompany]))
     [s appendFormat: @"<CompanyName xmlns=\"Contacts:\">%@</CompanyName>", [o activeSyncRepresentationInContext: context]];
 
@@ -302,8 +311,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
   CardElement *element;
   NSMutableArray *addressLines, *other_addresses;
-  id o;
-  
+  id o, l, m, f, p, s;
+
+  l = m = f = p = s = nil;
+
   // Contact's note
   if ((o = [[theValues objectForKey: @"Body"] objectForKey: @"Data"]))
     [self setNote: o];
@@ -529,10 +540,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if ((o = [theValues objectForKey: @"FileAs"]) || ![self _isGhosted: @"FileAs" inContext: context])
     [self setFn: [theValues objectForKey: @"FileAs"]];
 
-  [self setNWithFamily: [theValues objectForKey: @"LastName"]
-                 given: [theValues objectForKey: @"FirstName"]
-            additional: nil prefixes: nil suffixes: nil];
-  
+  if ((o = [theValues objectForKey: @"LastName"]) || ![self _isGhosted: @"LastName" inContext: context])
+    l = o ? o : @"";
+
+  if ((o = [theValues objectForKey: @"FirstName"]) || ![self _isGhosted: @"FirstName" inContext: context])
+    f = o ? o : @"";
+
+  if ((o = [theValues objectForKey: @"MiddleName"]) || ![self _isGhosted: @"MiddleName" inContext: context])
+    m = o ? o : @"";
+
+  if ((o = [theValues objectForKey: @"Title"]) || ![self _isGhosted: @"Title" inContext: context])
+    p = o ? o : @"";
+
+  if ((o = [theValues objectForKey: @"Suffix"]) || ![self _isGhosted: @"Suffix" inContext: context])
+    s = o ? o : @"";
+
+  [self setNWithFamily: l given: f additional: m prefixes: p suffixes: s];
+
   // IM information
   if ((o = [theValues objectForKey: @"IMAddress"]) || ![self _isGhosted: @"IMAddress" inContext: context])
     [[self uniqueChildWithTag: @"x-aim"]
