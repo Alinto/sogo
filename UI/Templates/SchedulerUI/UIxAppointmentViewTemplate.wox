@@ -49,7 +49,7 @@
                 </md-menu-content>
               </md-menu>
             </md-menu-item>
-            <md-menu-item ng-hide="::editor.component.isReadOnly">
+            <md-menu-item ng-show="editor.component.isMovable()">
               <md-menu>
                 <md-button label:aria-label="Move To" ng-click="$mdMenu.open($event)">
                   <var:string label:value="Move To"/>

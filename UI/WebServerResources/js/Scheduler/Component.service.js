@@ -694,11 +694,23 @@
   /**
    * @function isInvitationOccurrence
    * @memberof Component.prototype
-   * @desc Check if the component an invitation and an occurrence of a recurrent component
+   * @desc Check if the component is an invitation and an occurrence of a recurrent component
    * @returns true or false
    */
   Component.prototype.isInvitationOccurrence = function() {
     return (this.occurrenceId && this.userHasRSVP);
+  };
+
+  /**
+   * @function isMovable
+   * @memberof Component.prototype
+   * @desc Return true if the component can be moved to a different calendar which occurs in two cases:
+   *       - the component is editable, ie is owned by the current user;
+   *       - the component is an invitation and the current user is an attendee.
+   * @returns true or false
+   */
+  Component.prototype.isMovable = function() {
+    return (!this.isReadOnly || this.userHasRSVP);
   };
 
   /**
