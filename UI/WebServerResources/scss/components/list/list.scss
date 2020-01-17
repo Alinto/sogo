@@ -261,19 +261,21 @@ div.md-tile-left {
  * See https://github.com/a5hik/ng-sortable
  */
 
-.as-sortable-hidden {
-  display: none !important;
-}
+.as-sortable-item {
+  .as-sortable-hidden {
+    display: none !important;
+  }
 
-.as-sortable-un-selectable {
-  user-select: none;
-}
+  .as-sortable-un-selectable {
+    user-select: none;
+  }
 
-.as-sortable-item-handle {
-  display: none; /* [1] */
-  cursor: move;
-  cursor: -webkit-grab;
-  cursor: -moz-grab;
+  .as-sortable-item-handle {
+    display: none; /* [1] */
+    cursor: move;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+  }
 }
 
 .sg-list-sortable {
