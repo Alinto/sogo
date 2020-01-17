@@ -4,8 +4,11 @@
  */
 
 CKEDITOR.editorConfig = function( config ) {
-  // For the complete reference:
+  // Define changes to default configuration here.
+  // For the complete reference see:
   // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html
+
+  // The toolbar groups arrangement, optimized for a single toolbar row.
   config.toolbarGroups = [
     { name: 'basicstyles', groups: [ 'basicstyles' ] },
     { name: 'colors' },
@@ -17,10 +20,13 @@ CKEDITOR.editorConfig = function( config ) {
     { name: 'mode' }
   ];
 
-  // config.font_style = {
-
+  // The default plugins included in the basic setup define some buttons that
+  // are not needed in a basic editor. They are removed here.
   config.removeButtons = 'Strike,Subscript,Superscript,BGColor,Anchor,Format,Image';
+
+  // Dialog windows are also simplified.
   config.removeDialogTabs = 'link:advanced';
+
   config.enterMode = CKEDITOR.ENTER_BR;
   config.tabSpaces = 4;
   // config.fullPage = true; include header and body
