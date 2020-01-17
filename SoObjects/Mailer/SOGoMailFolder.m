@@ -884,7 +884,6 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
               // We reached the limit or the end of the array
               if ((i%limit) == 0 || i == [uids count]-1)
                 {
-                  id <SOGoAuthenticator> authenticator;
                   NGMimeMessageGenerator *generator;
 
                   [messageToSend setBody: body];
@@ -892,13 +891,11 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
                   generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
                   data = [generator generateMimeFromPart: messageToSend];
 
-                  authenticator = [SOGoDAVAuthenticator sharedSOGoDAVAuthenticator];
-
                   error = [[SOGoMailer mailerWithDomainDefaults: [[context activeUser] domainDefaults]]
                             sendMailData: data
                             toRecipients: [NSArray arrayWithObject: recipient]
                                   sender: [[identities objectAtIndex: 0] objectForKey: @"email"]
-                            withAuthenticator: authenticator
+                            withAuthenticator: [self authenticatorInContext: context]
                                inContext: context];
 
                   if (error)
