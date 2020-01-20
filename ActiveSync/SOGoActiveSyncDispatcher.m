@@ -44,6 +44,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalEvent.h>
+#import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalPerson.h>
 
 #import <NGExtensions/NGBase64Coding.h>
@@ -90,6 +91,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
 #import <Appointments/SOGoAppointmentObject.h>
+#import <Appointments/iCalEntityObject+SOGo.h>
 
 #import <Contacts/SOGoContactGCSFolder.h>
 #import <Contacts/SOGoContactFolders.h>
@@ -1862,6 +1864,7 @@ void handle_eas_terminate(int signum)
 {
   NSString *realCollectionId, *requestId, *easRequestId, *participationStatus, *calendarId;
   SOGoAppointmentObject *appointmentObject;
+  iCalAlarm *alarm = nil;
   SOGoMailObject *mailObject;
   NSMutableDictionary *uidCache, *folderMetadata;
   NSMutableString *s, *nameInCache;
@@ -1959,6 +1962,9 @@ void handle_eas_terminate(int signum)
           event = [[calendar events] lastObject];
           calendarId = [event uid];
 
+          // We take the organizers's alarm to start with
+          alarm = [event firstSupportedAlarm];
+
           // Fetch the SOGoAppointmentObject
           collection = [[context activeUser] personalCalendarFolderInContext: context];
           nameInCache = [NSString stringWithFormat: @"vevent/%@", [collection nameInContainer]];
@@ -1979,7 +1985,7 @@ void handle_eas_terminate(int signum)
             {
               appointmentObject = [[SOGoAppointmentObject alloc] initWithName: [NSString stringWithFormat: @"%@.ics", [event uid]]
                                                                   inContainer: collection];
-              [appointmentObject saveComponent: event force: YES];
+              [appointmentObject saveCalendar: [event parent]];
            }
 
           if (uidCache && [calendarId length] > 64)
@@ -2016,10 +2022,10 @@ void handle_eas_terminate(int signum)
         participationStatus = @"TENTATIVE";
       else
         participationStatus = @"DECLINED";
-      
+
       [appointmentObject changeParticipationStatus: participationStatus
                                       withDelegate: nil
-                                             alarm: nil];
+                                             alarm: alarm];
 
       [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
       [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
