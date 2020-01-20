@@ -11,11 +11,12 @@
 "Authenticating" = "Autenticando";
 
 /* Appears when authentication succeeds */
-"Welcome" = "Bem vindo";
+"Welcome" = "Bem-vindo";
 
 "Authentication Failed" = "Autenticação Falhou";
 "Wrong username or password." = "Usuário ou Senha Inválido.";
 "Retry" = "Tente Novamente";
+"Login failed due to unhandled error case:" = "O login falhou devido a um caso de erro não tratado:";
 "cookiesNotEnabled" = "Você não pode logar porque a opção cookies está desabilitada. Por favor, habilite os cookies nas configurações de seu navegador e tente novamente.";
 "browserNotCompatible" = "Foi detectado que a atual versão de seu navegador não é suportado neste site. Recomentamos que use o Firefox. Clique no link abaixo para baixar a versão atual deste navegador.";
 "alternativeBrowsers" = "Alternativamente, você pode usar os seguinte navegadores compatíveis";
