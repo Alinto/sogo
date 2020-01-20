@@ -41,6 +41,8 @@
 
         elem.on('keyup', AutoGrowTextArea);
         elem.on('paste', AutoGrowTextArea);
+
+        AutoGrowTextArea();
       }
     };
   }
