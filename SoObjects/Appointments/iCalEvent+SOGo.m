@@ -536,6 +536,23 @@
       [self errorWithFormat: @"Broken all-day event; setting end date to %@ for UID %@", [self endDate], [self uid]];
     }
 
+  if ([self isRecurrent])
+    {
+      NSArray *rules;
+      iCalRecurrenceRule *rule;
+
+      rules = [self recurrenceRules];
+      if ([rules count] > 0)
+        {
+          // Consider first rule only
+          rule = [rules objectAtIndex: 0];
+          if ([rule repeatCount] && [rule untilDate])
+            {
+              [self errorWithFormat: @"Recurrent event with both repeat count (%i) and until date (%@); dropping until date", [rule repeatCount], [rule untilDate]];
+              [rule setUntil: nil];
+            }
+        }
+    }
 
   return timezone;
 
