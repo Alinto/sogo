@@ -273,6 +273,8 @@
                     ng-focus="editor.onTextFocus($event)"
                     md-autofocus="::!editor.isNew()"
                     md-no-resize="md-no-resize"
+                    md-no-autogrow="md-no-autogrow"
+                    sg-autogrow="sg-autogrow"
                     md-detect-hidden="md-detect-hidden" />
         </md-input-container>
       </md-dialog-content>
