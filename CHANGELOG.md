@@ -1,3 +1,35 @@
+# Changelog
+
+## [4.3.0](https://github.com/inverse-inc/sogo/compare/SOGo-4.2.0...SOGo-4.3.0) (2020-01-21)
+
+### Features
+
+* **core:** Added AES-128-CBC password scheme for SQL authentication. ([f0980a9](https://github.com/inverse-inc/sogo/commit/f0980a9cbd14e0fab163be71e4e260bde67d7ee9))
+
+### Bug Fixes
+
+* **calendar:** adjust recurrent rule when importing a vEvent ([560c1dc](https://github.com/inverse-inc/sogo/commit/560c1dcd82359c7fe8ccbb985d122e532c594df9))
+* **calendar:** fix monthly computation with month day mask ([aaaa16e](https://github.com/inverse-inc/sogo/commit/aaaa16ed403f77510b6c51c8a7dee8f40a91b7c9)), closes [#4915](https://sogo.nu/bugs/view.php?id=4915)
+* **calendar:** restore [SOGoAppointmentObject resourceHasAutoAccepted] ([91ca8b8](https://github.com/inverse-inc/sogo/commit/91ca8b8bece8f5e30b7b89e2931f6e2a678ae090)), closes [#4923](https://sogo.nu/bugs/view.php?id=4923)
+* **calendar(css):** fix padding of sort handle of calendars ([43e5662](https://github.com/inverse-inc/sogo/commit/43e56629501e8d8cdbdc1f223a2a3a6aedc0ef4e))
+* **calendar(js):** allow event invitations to be moved ([001d76f](https://github.com/inverse-inc/sogo/commit/001d76fd05fbd950084a64ca111c5b983518d1d8)), closes [#4926](https://sogo.nu/bugs/view.php?id=4926)
+* **eas:** additional name fields (fixes [#4929](https://sogo.nu/bugs/view.php?id=4929)) ([3f94516](https://github.com/inverse-inc/sogo/commit/3f94516e316985b040cabd12dd581fa39101fd0f))
+* **eas:** avoid generating broken XML ouput (fixes [#4927](https://sogo.nu/bugs/view.php?id=4927)) ([047a98b](https://github.com/inverse-inc/sogo/commit/047a98b870e162578554a9d46e62946be15a6699))
+* **eas:** make sure there is always an attendee name (fixes [#4910](https://sogo.nu/bugs/view.php?id=4910)) ([4ed2c72](https://github.com/inverse-inc/sogo/commit/4ed2c727a22bb8df3b74c34028de25658532997e))
+* **eas:** sync reminder for invitation (fixes [#4911](https://sogo.nu/bugs/view.php?id=4911)) ([9221811](https://github.com/inverse-inc/sogo/commit/9221811fdc21a4dca6624f5e5714d3454a679342))
+* **mail:** fix SMTP authentication when reporting spam/ham ([62f6431](https://github.com/inverse-inc/sogo/commit/62f64314c049c1b2b17ca7bc4f90bb50c2a734a2)), closes [#4941](https://sogo.nu/bugs/view.php?id=4941)
+* **mail(js):** bypass autogrow feature of md-input to fix scroll jumping ([73dc86a](https://github.com/inverse-inc/sogo/commit/73dc86a6ed4a5febe640667bd8cc1f6ff4de7110))
+* **tool:** fix error handling when updating Sieve script ([d6d33f9](https://github.com/inverse-inc/sogo/commit/d6d33f9f0bcf99a058955a3dfff6354ebd9c0c08))
+
+
+### Localization
+
+* **pt_BR:** update Brazilian (Portuguese) translation ([88a6755](https://github.com/inverse-inc/sogo/commit/88a675596ca6b4a635fb1cfa08216b0539f27433))
+
+### Enhancements
+
+* **css:** remove unused selectors for layout ([94b1716](https://github.com/inverse-inc/sogo/commit/94b171675f735d50e898b24c94e774aede1abe3f))
+
 ## [4.2.0](https://github.com/inverse-inc/sogo/compare/SOGo-4.1.1...SOGo-4.2.0) (2019-12-17)
 
 ### Features
