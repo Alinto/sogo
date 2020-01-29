@@ -446,6 +446,7 @@
 }
 
 - (iCalTimeZone *) adjustInContext: (WOContext *) context
+                     withTimezones: (NSDictionary *) timezones
 {
   iCalDateTime *startDate, *endDate;
   iCalTimeZone *timezone;
@@ -484,6 +485,9 @@
       if ([timezoneId length])
         {
           timezone = [iCalTimeZone timeZoneForName: timezoneId];
+          // Fallback to tz (VTIMEZONE) found in the ics.
+          if (!timezone)
+            timezone = [timezones valueForKey: timezoneId];
         }
       else
         {

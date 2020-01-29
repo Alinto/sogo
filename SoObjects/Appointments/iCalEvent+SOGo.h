@@ -31,7 +31,7 @@
 - (BOOL) isStillRelevant;
 - (NSTimeInterval) occurenceInterval;
 - (void) updateRecurrenceRulesUntilDate: (NSCalendarDate *) previousEndDate;
-- (iCalTimeZone *) adjustInContext: (WOContext *) context;
+- (iCalTimeZone *) adjustInContext: (WOContext *) context withTimezones: (NSDictionary *) timezones;
 
 @end
 

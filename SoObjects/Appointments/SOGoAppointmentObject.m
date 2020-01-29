@@ -1943,7 +1943,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
     {
       event = [allEvents objectAtIndex: i];
 
-      tz = [event adjustInContext: context];
+      tz = [event adjustInContext: context withTimezones: nil];
       if (tz)
         [rqCalendar addTimeZone: tz];
 
