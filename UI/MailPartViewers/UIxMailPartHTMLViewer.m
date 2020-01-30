@@ -811,6 +811,14 @@ _xmlCharsetForCharset (NSString *charset)
   handler = [_UIxHTMLMailContentHandler new];
   [handler setAttachmentIds: attachmentIds];
 
+  // Some broken email messages have some additionnal content outside the main HTML tags which are
+  // ignored by libxml.
+  // We surround the whole part with additional HTML tags to render all content.
+  htmlContent = [NSMutableData dataWithBytes: "<html>" length: 6];
+  [htmlContent appendData: preparsedContent];
+  [htmlContent appendBytes: "</html>" length: 7];
+  preparsedContent = (NSData *)htmlContent;
+
   // We check if we got an unsupported charset. If so
   // we convert everything to UTF-16{LE,BE} so it passes
   // in libxml2 and also in characters: length: defined
@@ -859,17 +867,10 @@ _xmlCharsetForCharset (NSString *charset)
       RELEASE(s);
     }
 
-  // Some broken email messages have some additionnal content outside the main HTML tags which are
-  // ignored by libxml.
-  // We surround the whole part with additional HTML tags to render all content.
-  htmlContent = [NSMutableData dataWithBytes: "<html>" length: 6];
-  [htmlContent appendData: preparsedContent];
-  [htmlContent appendBytes: "</html>" length: 7];
-
   [handler setContentEncoding: enc];
 
   [parser setContentHandler: handler];
-  [parser parseFromSource: htmlContent];
+  [parser parseFromSource: preparsedContent];
 }
 
 - (NSString *) cssContent
