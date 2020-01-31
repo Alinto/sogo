@@ -102,6 +102,45 @@
   };
 
   /**
+   * @function quietFetch
+   * @memberof Resource.prototype
+   * @desc Fetch resource using a specific folder, action and/or parameters, but disable the global
+   *       error interceptor.
+   * @param {string} folderId - the folder on which the action will be applied (ex: addressbook, calendar)
+   * @param {string} action - the action to be used in the URL
+   * @param {Object} params - Object parameters injected through the $http service
+   * @return a promise
+   */
+  Resource.prototype.quietFetch = function(folderId, action, params) {
+    var deferred = this._q.defer(),
+        path = [this._path];
+    if (folderId) path.push(folderId.split('/'));
+    if (action)   path.push(action);
+    path = _.compact(_.flatten(path)).join('/');
+
+    this._http({
+      method: 'GET',
+      url: path,
+      params: params,
+      transformResponse: function(data) {
+        var jsonData;
+        try {
+          jsonData = angular.fromJson(data);
+        }
+        catch (e) {
+          jsonData = {};
+        }
+        return angular.extend({ quiet: true }, jsonData);
+      }
+    })
+      .then(function(response) {
+        return deferred.resolve(response.data);
+      }, deferred.reject);
+
+    return deferred.promise;
+  };
+
+  /**
    * @function newguid
    * @memberof Resource.prototype
    * @desc Fetch a new GUID on the specified folder ID.

@@ -254,6 +254,35 @@
   };
 
   /**
+   * @function hasActiveExternalSieveScripts
+   * @memberof Preferences.prototype
+   * @desc Check if the user has an external Sieve script enabled.
+   */
+  Preferences.prototype.hasActiveExternalSieveScripts = function(value) {
+    var _this = this;
+
+    if (typeof value !== 'undefined') {
+      this.defaults.hasActiveExternalSieveScripts = value;
+    }
+    else if (typeof this.defaults.hasActiveExternalSieveScripts !== 'undefined') {
+      return this.defaults.hasActiveExternalSieveScripts;
+    }
+    else {
+      // Fetch information from server
+      this.defaults.hasActiveExternalSieveScripts = false; // default until we receive an answer
+      Preferences.$$resource.quietFetch('activeExternalSieveScripts')
+        .then(function() {
+          _this.defaults.hasActiveExternalSieveScripts = true;
+        }, function(response) {
+          _this.defaults.hasActiveExternalSieveScripts = false;
+          if (response.status === 404) {
+            return Preferences.$q.resolve(true);
+          }
+        });
+    }
+  };
+
+  /**
    * @function $save
    * @memberof Preferences.prototype
    * @desc Save the preferences to the server.

@@ -31,6 +31,11 @@
           protectedBy = "View";
           pageName = "UIxIdentities";
         };
+        activeExternalSieveScripts = {
+          protectedBy = "View";
+          pageName = "UIxJSONPreferences";
+          actionName = "activeExternalSieveScripts";
+        };
         jsonDefaults = {
           protectedBy = "View";
           pageName = "UIxJSONPreferences";

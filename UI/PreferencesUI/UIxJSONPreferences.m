@@ -76,15 +76,14 @@ static SoProduct *preferencesProduct = nil;
   return labelsDictionary;
 }
 
-//
-// Used internally
-//
-- (BOOL) _hasActiveExternalSieveScripts
+- (WOResponse *) activeExternalSieveScriptsAction
 {
   NGSieveClient *client;
+  NSDictionary *data;
   SOGoMailAccount *account;
   SOGoMailAccounts *folder;
   SOGoSieveManager *manager;
+  WOResponse *response;
 
   folder = [[[context activeUser] homeFolderInContext: context] mailAccountsFolder: @"Mail" inContext: context];
   account = [folder lookupName: @"0" inContext: context acquire: NO];
@@ -92,9 +91,20 @@ static SoProduct *preferencesProduct = nil;
   client = [manager clientForAccount: account];
 
   if (client)
-    return [manager hasActiveExternalSieveScripts: client];
+    {
+      if ([manager hasActiveExternalSieveScripts: client])
+        response = [self responseWith204];
+      else
+        response = [self responseWithStatus: 404];
+    }
+  else
+    {
+      data = [NSDictionary dictionaryWithObjectsAndKeys:
+                             @"An error occured while communicating with the Sieve server", @"message", nil];
+      response = [self responseWithStatus: 500 andJSONRepresentation: data];
+    }
 
-  return NO;
+  return response;
 }
 
 - (WOResponse *) jsonDefaultsAction
@@ -431,8 +441,8 @@ static SoProduct *preferencesProduct = nil;
       [values setObject: vacation forKey: @"Vacation"];
     }
 
-  // Detect if an external Sieve script is active
-  [values setObject: [NSNumber numberWithBool: [self _hasActiveExternalSieveScripts]] forKey: @"hasActiveExternalSieveScripts"];
+  // Ignore hasActiveExternalSieveScripts as it will be requested on demand
+  [values removeObjectForKey: @"hasActiveExternalSieveScripts"];
 
   return [values jsonRepresentation];
 }

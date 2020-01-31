@@ -23,6 +23,7 @@
       if (Preferences.defaults.SOGoAlternateAvatar)
         User.$alternateAvatar = Preferences.defaults.SOGoAlternateAvatar;
 
+      this.preferences.hasActiveExternalSieveScripts();
       this.updateVacationDates();
     };
 
@@ -285,7 +286,7 @@
     };
 
     this.manageSieveScript = function(form) {
-      this.preferences.defaults.hasActiveExternalSieveScripts = false;
+      this.preferences.hasActiveExternalSieveScripts(false);
       form.$setDirty();
     };
 
