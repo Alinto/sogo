@@ -3441,7 +3441,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
           if ([element isKindOfClass: iCalEventK])
             {
               event = (iCalEvent *)element;
-              timezone = [event adjustInContext: self->context];
+              timezone = [event adjustInContext: self->context withTimezones: timezones];
 
               if ([event recurrenceId])
                 {

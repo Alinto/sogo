@@ -300,7 +300,7 @@
       = [(iCalDateTime *) [self uniqueChildWithTag: @"dtstart"] dateTime];
   else if ([rrule untilDate] == nil || [refDate compare: [rrule untilDate]] == NSOrderedAscending)
     tmpDate = [self _occurrenceForDate: refDate byRRule: rrule];
-  else if ([refDate compare: [rrule untilDate]] == NSOrderedDescending)
+  else if ([[self _occurrenceForDate: refDate byRRule: rrule] compare: [rrule untilDate] ] == NSOrderedAscending)
     tmpDate = [rrule untilDate];
 
   return tmpDate;
