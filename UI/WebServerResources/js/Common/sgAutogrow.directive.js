@@ -19,25 +19,38 @@
 
      <textarea rows="9" md-no-autogrow sg-autogrow />
   */
-  sgAutogrow.$inject = ['$timeout'];
-  function sgAutogrow($timeout) {
+  sgAutogrow.$inject = ['$document', '$timeout'];
+  function sgAutogrow($document, $timeout) {
     return {
       restrict: 'A',
       link: function(scope, elem, attr) {
         var textarea = elem[0];
+        var hiddenDiv = $document[0].createElement('div');
+        var content = null;
+
+        hiddenDiv.classList.add('md-input');
+        hiddenDiv.classList.add('plain-text');
+        hiddenDiv.style.display = 'none';
+        hiddenDiv.style.whiteSpace = 'pre-wrap';
+        hiddenDiv.style.wordWrap = 'break-word';
+        textarea.parentNode.appendChild(hiddenDiv);
+
+        textarea.style.resize = 'none';
+        textarea.style.overflow = 'hidden';
 
         function AutoGrowTextArea() {
           $timeout(function() {
-            if (textarea.clientHeight < textarea.scrollHeight) {
-              textarea.style.height = textarea.scrollHeight + 'px';
-              if (textarea.clientHeight < textarea.scrollHeight) {
-                textarea.style.height = (textarea.scrollHeight * 2 - textarea.clientHeight) + 'px';
-              }
-            }
+            content = textarea.value;
+            content = content.replace(/\n/g, '<br>');
+            hiddenDiv.innerHTML = content + '<br style="line-height: 3px;">';
+            hiddenDiv.style.visibility = 'hidden';
+            hiddenDiv.style.display = 'block';
+            textarea.style.height = hiddenDiv.offsetHeight + 'px';
+            console.debug('resize to ' + hiddenDiv.offsetHeight + 'px');
+            hiddenDiv.style.visibility = 'visible';
+            hiddenDiv.style.display = 'none';
           });
         }
-
-        textarea.style.overflow = 'hidden';
 
         elem.on('keyup', AutoGrowTextArea);
         elem.on('paste', AutoGrowTextArea);
