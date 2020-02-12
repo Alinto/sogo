@@ -36,6 +36,8 @@
 #import <SOGo/SOGoSystemDefaults.h>
 
 #import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalEvent.h>
 #import <NGCards/NGVCard.h>
 
 #import "SOGoTool.h"
@@ -248,6 +250,33 @@
 		    [gcsFolder deleteContentWithName: c_name];
 		  rc = NO;
 		}
+              else
+                {
+                  iCalEvent *event;
+
+                  event = (iCalEvent *) [calendar firstChildWithTag: @"vevent"];
+                  if (event)
+                    {
+                      iCalDateTime *date;
+
+                      date = (iCalDateTime *) [event uniqueChildWithTag: @"dtstart"];
+                      if (![date dateTime])
+                        {
+                          NSLog(@"Missing start date of event in path %@ with c_name = %@ (%@)", folder, c_name, [event summary]);
+                          if (delete)
+                            [gcsFolder deleteContentWithName: c_name];
+                          rc = NO;
+                        }
+                      date = (iCalDateTime *) [event uniqueChildWithTag: @"dtend"];
+                      if (![date dateTime] && ![event hasDuration])
+                        {
+                          NSLog(@"Missing end date of event in path %@ with c_name = %@ (%@)", folder, c_name, [event summary]);
+                          if (delete)
+                            [gcsFolder deleteContentWithName: c_name];
+                          rc = NO;
+                        }
+                    }
+                }
 	    }
 	}
       else
