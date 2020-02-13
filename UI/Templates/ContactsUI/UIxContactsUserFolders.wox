@@ -54,7 +54,7 @@
             <md-icon>warning</md-icon>
             <var:string label:value="No possible subscription"/>
           </div>
-          <div layout="row" layout-align="start center" layout-fill="true"
+          <div layout="row" layout-align="start center"
                ng-repeat="folder in user.$$folders">
             <md-icon>{{ folder.type == 'Contact' ? 'contacts' : 'event' }}</md-icon>
             <div class="sg-padded--left md-flex" md-truncate="md-truncate">{{folder.displayName}}</div>
