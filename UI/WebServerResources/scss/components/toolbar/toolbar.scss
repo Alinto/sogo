@@ -64,15 +64,23 @@ md-dialog {
 }
 
 // Light colors for md-input inside md-toolbar
-md-toolbar:not(.md-accent.md-hue-1) md-input-container:not(.md-input-invalid) {
+md-toolbar:not(.md-accent):not(.md-hue-1) md-input-container:not(.md-input-invalid),
+md-toolbar:not(.md-accent):not(.md-hue-1) md-chips,
+md-toolbar:not(.md-accent):not(.md-hue-1) .pseudo-input-container md-select:focus {
   &.md-input-focused label,
-  .md-input {
+  .md-input,
+  .md-select-value {
     color: rgba(255,255,255,0.87); // {{primary-contrast}}
   }
-  &.md-input-focused .md-input {
+  &.md-input-focused .md-input,
+  &.md-input-focused .md-select-value,
+  > .md-select-value {
     padding-bottom: $input-border-width-focused - $input-border-width-default;
     border-bottom-width: $input-border-width-default;
     border-color: rgba(255,255,255,0.87); // {{primary-contrast}}
+  }
+  .md-chips.md-focused {
+    box-shadow: 0 1px rgba(255,255,255,0.87); // {{primary-contrast}}
   }
 }
 
