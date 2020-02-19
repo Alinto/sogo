@@ -31,7 +31,7 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Mailbox constructor
    */
-  Mailbox.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Message', 'Acl', 'Preferences', 'sgMailbox_PRELOAD', function($q, $timeout, $log, Settings, Resource, Message, Acl, Preferences, PRELOAD) {
+  Mailbox.$factory = ['$q', '$timeout', '$log', 'sgSettings', 'Resource', 'Message', 'Acl', 'Preferences', 'sgMailbox_PRELOAD', 'sgMailbox_BATCH_DELETE_LIMIT', function($q, $timeout, $log, Settings, Resource, Message, Acl, Preferences, PRELOAD, BATCH_DELETE_LIMIT) {
     angular.extend(Mailbox, {
       $q: $q,
       $timeout: $timeout,
@@ -45,7 +45,8 @@
       $refreshTimeout: null,
       $virtualMode: false,
       $virtualPath: false,
-      PRELOAD: PRELOAD
+      PRELOAD: PRELOAD,
+      BATCH_DELETE_LIMIT: BATCH_DELETE_LIMIT
     });
     // Initialize sort parameters from user's settings
     if (Preferences.settings.Mail.SortingState) {
@@ -71,6 +72,7 @@
       LOOKAHEAD: 50,
       SIZE: 100
     })
+    .constant('sgMailbox_BATCH_DELETE_LIMIT', 1000)
     .factory('Mailbox', Mailbox.$factory);
 
   /**
@@ -769,25 +771,36 @@
   /**
    * @function $deleteMessages
    * @memberof Mailbox.prototype
-   * @desc Delete multiple messages from mailbox.
+   * @desc Delete multiple messages from mailbox by batch of 1000 messages (see constant sgMailbox_BATCH_DELETE_LIMIT).
    * @param {object} [options] - additional options (use {withoutTrash: true} to delete immediately)
    * @return a promise of the HTTP operation
    */
   Mailbox.prototype.$deleteMessages = function(messages, options) {
-    var _this = this, uids, data;
+    var _this = this, uids,
+        batchSize = Mailbox.BATCH_DELETE_LIMIT;
 
     uids = _.map(messages, 'uid');
-    data = { uids: uids };
-    if (options) angular.extend(data, options);
 
-    return Mailbox.$$resource.post(this.id, 'batchDelete', data)
-      .then(function(data) {
-        // Update inbox quota
-        if (data.quotas)
-          _this.$account.updateQuota(data.quotas);
-
-        return _this.$_deleteMessages(uids, messages);
+    // Recursive function to synchronously delete batch of messages
+    function _deleteMessages(start, end) {
+      var currentUids = uids.slice(start, end),
+          currentMessages = uids.slice(start, end),
+          data = { uids: currentUids };
+      return Mailbox.$$resource.post(_this.id, 'batchDelete', data).then(function(data) {
+        if (end < uids.length) {
+          _this.$_deleteMessages(currentUids, currentMessages);
+          return _deleteMessages(end, Math.min(end + batchSize, uids.length));
+        }
+        else {
+          // Update inbox quota
+          if (data.quotas)
+            _this.$account.updateQuota(data.quotas);
+          return _this.$_deleteMessages(currentUids, currentMessages);
+        }
       });
+    }
+
+    return _deleteMessages(0, Math.min(batchSize, uids.length));
   };
 
   /**
