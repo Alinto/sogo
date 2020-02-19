@@ -139,7 +139,7 @@
             <!-- SEND REJECT MESSAGE -->
             <md-input-container class="md-block" flex="50" ng-if="action.method == 'reject'">
               <label><var:string label:value="Message"/></label>
-              <input type="text" ng-model="action.argument" required="required"/>
+              <textarea ng-model="action.argument" required="required"></textarea>
             </md-input-container>
 
             <!-- FILE INTO -->
