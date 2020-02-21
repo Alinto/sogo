@@ -372,10 +372,23 @@
           if ([endDate compare: currentEndDate] == NSOrderedAscending)
             currentEndDate = endDate;
 
-          [infos addObject: [NSDictionary dictionaryWithObjectsAndKeys:
-                                              [NSNumber numberWithBool: YES], @"c_isopaque",
-                                            ([currentStartDate compare: startDate] == NSOrderedAscending)? startDate : currentStartDate, @"startDate",
-                                          currentEndDate, @"endDate", nil]];
+          if ([currentStartDate compare: startDate] == NSOrderedAscending)
+            {
+              if ([startDate compare: currentEndDate] == NSOrderedAscending)
+                {
+                  [infos addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                      [NSNumber numberWithBool: YES], @"c_isopaque",
+                                                  startDate, @"startDate",
+                                                  currentEndDate, @"endDate", nil]];
+                }
+            }
+          else
+            {
+              [infos addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                  [NSNumber numberWithBool: YES], @"c_isopaque",
+                                              currentStartDate, @"startDate",
+                                              currentEndDate, @"endDate", nil]];
+            }
 
           if (currentEndDate != endDate
               && ([currentEndDate dayOfWeek] == 6 || [currentEndDate dayOfWeek] == 0))
