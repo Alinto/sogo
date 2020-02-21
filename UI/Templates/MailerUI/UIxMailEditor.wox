@@ -274,13 +274,13 @@
                     md-autofocus="::!editor.isNew()"
                     md-no-resize="md-no-resize"
                     md-no-autogrow="md-no-autogrow"
-                    sg-autogrow="sg-autogrow"
+                    sg-autogrow="!isPopup"
                     md-detect-hidden="md-detect-hidden" />
         </md-input-container>
       </md-dialog-content>
 
       <!-- ATTACHMENTS -->
-      <md-dialog-content class="md-actions sg-mail-editor-attachments"
+      <md-dialog-actions class="sg-mail-editor-attachments"
                          layout="row" layout-align="space-between start">
         <!-- Attachments -->
         <md-chips ng-model="editor.uploader.queue"
@@ -311,7 +311,7 @@
           -->
           <!-- multiple="multiple" -->
         </div>
-      </md-dialog-content>
+      </md-dialog-actions>
     </form>
 
     <sg-ripple class="md-default-theme md-accent md-bg"
