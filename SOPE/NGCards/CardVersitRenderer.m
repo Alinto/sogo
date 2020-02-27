@@ -1,8 +1,6 @@
 /* CardVersitRenderer.m - this file is part of SOPE
  *
- * Copyright (C) 2006-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2006-2020 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +47,7 @@
 
 - (NSString *) renderElement: (CardElement *) anElement
 {
-  NSMutableString *rendering;
+  NSMutableString *rendering, *buffer;
   NSDictionary *attributes;
   NSMutableDictionary *values;
   NSString *finalRendering, *tag;
@@ -73,10 +71,12 @@
       attributes = [anElement attributes];
       if ([attributes count])
         {
-          [rendering appendString: @";"];
-          [attributes versitRenderInString: rendering
+          buffer = [NSMutableString string];
+          [attributes versitRenderInString: buffer
                            withKeyOrdering: [anElement orderOfAttributeKeys]
                               asAttributes: YES];
+          if ([buffer length])
+            [rendering appendFormat: @";%@", buffer];
         }
 
       /* values */
