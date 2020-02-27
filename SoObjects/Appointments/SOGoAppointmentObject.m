@@ -2258,7 +2258,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       if (!oldEvent && !newEvent)
         {
           // We check if we only have to deal with the MASTER event
-          if ([newEvents count] == [oldEvents count])
+          if ([oldEvents count] && [newEvents count] == [oldEvents count])
             {
               oldEvent = [oldEvents objectAtIndex: 0];
               newEvent = [newEvents objectAtIndex: 0];
