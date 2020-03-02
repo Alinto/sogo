@@ -29,10 +29,11 @@
 
 - (BOOL) conformsToRFC4314
 {
-  if ([[self clientObject] respondsToSelector: @selector(mailAccountFolder)])
-    return ([[[self clientObject] mailAccountFolder] imapAclStyle] == rfc4314);
+  SOGoMailAccount *account;
 
-  return NO;
+  account = [[self clientObject] lookupName: @"0" inContext: context acquire: NO];
+
+  return ([account imapAclStyle] == rfc4314);
 }
 
 - (void) setUserCanReadMails: (BOOL) userCanReadMails
