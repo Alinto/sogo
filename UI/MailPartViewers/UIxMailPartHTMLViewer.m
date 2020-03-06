@@ -541,6 +541,7 @@ _xmlCharsetForCharset (NSString *charset)
 		       [name isEqualToString: @"onmouseout"] ||
 		       [name isEqualToString: @"onmouseup"] ||
 		       [name isEqualToString: @"onmouseover"] ||
+                       [name isEqualToString: @"onpointerrawupdate"] ||
 
 		       // Keyboard Events
 		       [name isEqualToString: @"onkeydown"] ||

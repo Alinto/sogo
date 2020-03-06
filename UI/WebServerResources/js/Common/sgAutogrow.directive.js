@@ -58,7 +58,14 @@
         elem.on('keyup', AutoGrowTextArea);
         elem.on('paste', AutoGrowTextArea);
 
-        AutoGrowTextArea();
+        var deregisterWatcher = scope.$watch(function() {
+          return elem[0].value;
+        }, function(content) {
+          if (content) {
+            AutoGrowTextArea();
+            deregisterWatcher(); // watch once
+          }
+        });
       }
     };
   }
