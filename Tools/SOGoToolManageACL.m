@@ -116,7 +116,7 @@ typedef enum
 	   "           folder       the folder - Calendar/<ID> or Contacts/<ID>\n"
 	   "           user         the user to get/set rights for - 'ALL', '<default>', 'anonymous' are supported\n"
            "           rights       rights to add\n\n"
-           "Example:   sogo-tool manage-acl get jdoe Calendar/personal\n\n"
+           "Example:   sogo-tool manage-acl get jdoe Calendar/personal ALL\n\n"
            "Note:      You can add only one access right at the time. To set them all at once,\n"
            "           invoke 'remove' first to remove them all.\n\n");
 }
