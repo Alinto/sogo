@@ -7,6 +7,7 @@ vevent_class2 = "(Eveniment confidenţial)";
 vtodo_class0 = "(Sarcină publică)";
 vtodo_class1 = "(Sarcină privată)";
 vtodo_class2 = "(Sarcină confidenţială)";
+
 /* Receipts */
 "The event \"%{Summary}\" was created" = "Evenimentul \"%{Summary}\" a fost creat";
 "The event \"%{Summary}\" was deleted" = "Evenimentul \"%{Summary}\" a fost șters";
@@ -14,6 +15,7 @@ vtodo_class2 = "(Sarcină confidenţială)";
 "The following attendees(s) were notified" = "Următori participan(t/ți) au fost notificați";
 "The following attendees(s) were added" = "Următori participan(t/ți) au fost adăugați";
 "The following attendees(s) were removed" = "Următori participan(t/ți) au fost eliminați";
+
 /* IMIP messages */
 "calendar_label" = "Calendar";
 "startDate_label" = "Start";
@@ -26,17 +28,20 @@ vtodo_class2 = "(Sarcină confidenţială)";
 "comment_label" = "Comentariu";
 "organizer_label" = "Organizator";
 "attendee_label" = "Participant";
+
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Invitație la eveniment: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(trimis de %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}va invitat la %{Summary}.\n\nÎnceput: %{StartDate}\nSfârșit: %{EndDate}\nDescriere: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}va invitat la %{Summary}.\n\nÎnceput: %{StartDate} la %{StartTime}\nSfârșit: %{EndDate} la %{EndTime}\nDescriere: %{Description}";
+
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Eveniment Anulat: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}a anulat acest eveniment: %{Summary}.\n\nÎnceput: %{StartDate}\nSfârșit: %{EndDate}\nDescriere: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}a anulat acest eveniment: %{Summary}.\n\nÎnceput: %{StartDate} la %{StartTime}\nSfârșit: %{EndDate} la %{EndTime}\nDescriere: %{Description}";
+
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
 = "întâlnirea \"%{Summary}\" pentru %{OldStartDate} s-a schimbat";
@@ -46,6 +51,7 @@ vtodo_class2 = "(Sarcină confidenţială)";
 = "Următorii parametri s-au schimbat în întâlnirea \"%{Summary}\":";
 "Please accept or decline those changes."
 = "Vă rugăm să acceptați sau să refuzați aceste modificări.";
+
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Invitație acceptată: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Invitație refuzată: \"%{Summary}\"";
@@ -59,6 +65,15 @@ vtodo_class2 = "(Sarcină confidenţială)";
 = "%{Attendee} %{SentByText}a delegat invitația catre %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}nu a decis încă cu privire la invitația dvs.";
+
+/* Reminder */
+"Reminder: \"%{Summary}\" - %{StartDate}" = " Memento: \"%{Summary}\" - %{StartDate}";
+
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Nu pot accesa resursa: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Numărul maxim de rezervările simultane(%{NumberOfSimultaneousBookings}) a fost atins pentru resursa \"%{Cn} %{SystemEmail}\". Evenimentul în conflict este \"%{EventTitle}\", și începe pe %{StartDate}.";
+
+/* Participation role */
+"Your participation is required to this event" = "Participarea ta este necesară pentru acest eveniment";
+"Your participation is optional to this event" = " Participarea ta este opțională pentru acest eveniment";
+"Your participation is not required to this event" = "Participarea ta nu este necesară pentru acest eveniment";

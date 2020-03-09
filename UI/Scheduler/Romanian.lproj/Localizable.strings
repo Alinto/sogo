@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Nume Calendar";
 "new" = "Nou";
 "Print view" = "Imprimare";
+"Print" = "Imprimare";
 "edit" = "Editare";
 "delete" = "Ștergere";
 "proposal" = "Propunere";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Afişează culori la evenimente şi sarcini";
 "Borders" = "Bordură";
 "Backgrounds" = "Fundal";
+"Page Format" = "Format pagină";
 
 /* Appointments */
 "Appointment viewer" = "Vizualizare Întâlnire";
@@ -440,15 +442,45 @@ validate_untilbeforeend    = "Repetarea trebuie să se încheie după prima apar
 "Are you sure you want to delete the selected components?"
 = "Ești sigur(ă) că dorești ștergerea componentelor selectate?";
 
-/* Legend */
+/* Participation role */
+"Role" = "Rol";
+
+/* Participant role: participation is required */
 "Participant" = "Participant";
+
+/* Participant role: participation is required */
+"req-participant" = "Participant";
+
+/* Participant role: participation is optional */
 "Optional Participant" = "Participant opţional";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Participant opţional";
+
+/* Participant role: participant is copied for information purposes only */
 "Non Participant" = "Neparticipant";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Neparticipant";
+
+/* Participant role: participant is chair of the calendar entity */
 "Chair" = "Poziţie";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Poziţie";
+
+/* Participant status: needs action */
 "Needs action" = "Acţiune necesară";
+
+/* Participant status: event accepted */
 "Accepted" = "Acceptat";
+
+/* Participant status: event declined */
 "Declined" = "Refuzat";
+
+/* Participant status: tentatively accepted */
 "Tentative" = "Încercare";
+
 "Free" = "Liber";
 "Busy" = "Ocupat";
 "Maybe busy" = "Posibil ocupat";

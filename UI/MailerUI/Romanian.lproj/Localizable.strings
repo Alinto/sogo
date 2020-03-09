@@ -179,6 +179,7 @@
 
 /* Address Popup menu */
 "Add to Address Book..." = "Adăugare în lista de Contacte...";
+"Successfully created card" = "Successfully created card ";
 "Compose Mail To" = "Compunere mesaj către";
 "Create Filter From Message..." = "Creare filtru din mesaj...";
 
@@ -402,6 +403,15 @@
 "Your email has been saved" = "Emailul dumneavoastră a fost salvat";
 "Your email has been sent" = "Emailul dumneavoastră a fost trimis";
 "Folder compacted" = "Folderul a fost compactat";
+
+/* Advanced search */
+"Enter Subject" = "Introduceți Subiect";
+"Enter From" = " Introduceți De la";
+"Enter To" = "Introduceți La";
+"Enter Cc" = "Introduceți Cc";
+"Enter Body" = "Introduceți Mesajul";
+"match" = "Se potrivește";
+"does not match" = " Nu se potrivește";
 
 /* Aria label for scope of search on messages */
 "Search scope" = "Domeniul de căutare";

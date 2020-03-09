@@ -27,6 +27,9 @@
 "OfficePhone" = "Telefon de birou";
 "Organization" = "Organizaţie";
 "Work Phone" = "Telefon de serviciu";
+"Cell" = "Celula";
+"Pager" = "Pager";
+"Pref" = "Pref";
 "Phone" = "Telefon";
 "Phones" = "Telefoane";
 "Postal" = "Poştal";
@@ -238,6 +241,12 @@
 = "Nu puteți să vă abonați la un dosar pe care îl dețineți!";
 "Unable to subscribe to that folder!"
 = "Nu se poate abona la acest dosar!";
+
+/* security */
+"Security" = "Securitate";
+"Uninstall" = "Dezinstalează";
+"Error reading the card certificate." = "Eroare la citirea certificatului de card.";
+"No certificate associated to card." = "Niciun certificat asociat cardului.";
 
 /* acls */
 "Access rights to" = "Drept de acces pentru";

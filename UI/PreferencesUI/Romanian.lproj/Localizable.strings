@@ -45,9 +45,14 @@
 "Days between responses" = "Numărul de zile dintre răspunsuri";
 "Do not send responses to mailing lists" = "Nu răspundeți la mesajele de la liste de discuții";
 "Enable auto reply on" = "Activare răspuns automat pe";
+"First day of vacation" = " Prima zi de vacanță";
 "Disable auto reply on" = "Dezactivare răspuns automat pe";
+"Last day of vacation" = "Ultima zi de vacanță";
+"Enter date" = "Introduceți data";
 "Always send vacation message response" = "Întotdeauna trimite un mesaj de concediu";
+"The vacation message is sent prior to apply your filters." = "Mesajul de vacanță este trimis înainte de a aplica filtrele.";
 "Discard incoming mails during vacation" = "Ignoră mesajele primite pe perioada vacanței";
+"The vacation message is sent but incoming messages are not delivered to your inbox." = "Mesajul de vacanță este trimis dar mesajele primite nu sunt livrate căsuța dvs.";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Specificați mesajul și adresa de mail pentru care doriți activarea răspunsului automat.";
 "Your vacation message must not end with a single dot on a line." = "Mesajul de vacanţă nu trebuie să se termine cu un singur punct într-o linie nouă.";
@@ -61,6 +66,7 @@
 = "Specificați o adresă de mail la care doriți retrimiterea mesajelor dumneavoastră.";
 "You are not allowed to forward your messages to an external email address." = "Nu aveți permisiunea de a transmite mesajele către o adresă de e-mail externă.";
 "You are not allowed to forward your messages to an internal email address." = "Nu aveți permisiunea de a transmite mesajele către o adresă de e-mail internă.";
+"You are not allowed to forward your messages to this domain:" = "Nu aveți voie să trimiteți mesajele dvs. către acest domeniu:";
 
 /* d & t */
 "Current Time Zone" = "Fus orar curent";
@@ -85,7 +91,9 @@
 "shortDateFmt_12" = "%Y-%m-%d";
 "shortDateFmt_13" = "%Y/%m/%d";
 "shortDateFmt_14" = "%Y.%m.%d";
-"shortDateFmt_15" = "";
+"shortDateFmt_15" = "%d-%m-%Y";
+"shortDateFmt_16" = "%d-%m-%y";
+"shortDateFmt_17" = "";
 
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
@@ -156,6 +164,7 @@
 "New label" = "Etichetă Nouă";
 "Show subscribed mailboxes only" = "Arată numai cutiile poștale la care sunt abonat";
 "Synchronize only default mail folders (EAS)" = "Sincronizează numai folderele de corespondență implicite (EAS)";
+"Fetch count of unseen messages for all mailboxes" = " Numără mesajele nevăzute pentru toate căsuțele poștale";
 "Sort messages by threads" = "Sortare mesaje după thread";
 "Always open mail composer" = "Întotdeauna deschide interfața pentru scrierea de mesaje";
 "Inside current window" = "Înăuntrul ferestrei curente";
@@ -187,6 +196,7 @@
 /* Contact */
 "Personal Address Book" = "Agenda Personală";
 "Collected Address Book" = "Agenda Colectată";
+"Contact categories must have unique names." = "Categoriile de contacte trebuie să aibă nume unice.";
 
 /* IMAP Accounts */
 "Settings" = "Setări";
@@ -217,6 +227,7 @@
 "When composing a message" = "La compunerea unui mesaj";
 "Digitally sign the message by default" = "Semnează digital mesajul în mod implicit";
 "Always try to encrypt the message" = "Întotdeauna încearcă criptarea mesajului";
+"An error occurred while importing the certificate. Verify your password." = " A apărut o eroare la importul certificatului. Verificați parola.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Parametri adiționali";
@@ -237,6 +248,7 @@
 "Calendar Category" = "Categorie Calendar";
 "Add Calendar Category" = "Adaugă Categorie Calendar";
 "New category" = "Categorie nouă";
+"Reset to defaults" = "Resetați la valorile prestabilite";
 "Remove Calendar Category" = "Ștergere Categorie Calendar";
 "Contact Category" = "Categorie Contact";
 "Add Contact Category" = "Adaugă Categorie Contact";

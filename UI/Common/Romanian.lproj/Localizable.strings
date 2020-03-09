@@ -80,6 +80,9 @@
 "Error" = "Eroare";
 "Success" = "Succes";
 
+/* confirmation dialog box */
+"Confirmation" = "Confirmare";
+
 /* alarms */
 "Reminder" = "Memento";
 "Start" = "Start";
@@ -140,10 +143,19 @@
 /* Error message displayed when a file upload exceeds WOMaxUploadSize */
 "File size upload limit reached" = "Limita de upload a fost atinsă";
 
+/* Generic server error */
+"An error occured, please try again." = " A apărut o eroare. Încercați din nou.";
+
+/* Open datepicker */
+"Open Calendar" = "Deschide calendarul";
+
 /* Toggle visibility (ex: mail account in left navigation menu) */
 "Toggle visibility" = "Comutare vizibilitate";
 
 "Keyboard Shortcuts" = "Scurtaturi  tastatură";
+
+/* Aria label for avatar button to select and unselect an item */
+"Toggle item" = "Comută elementul";
 
 /* Toggle multiple items at the same time (hotkeys cheatsheet) */
 "Toggle range of items" = "Comută intervalul de elemente";

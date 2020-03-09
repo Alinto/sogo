@@ -16,6 +16,7 @@
 "Authentication Failed" = "Autentificarea a eșuat";
 "Wrong username or password." = "Nume de utilizator sau parolă greșită.";
 "Retry" = "Reîncearcă";
+"Login failed due to unhandled error case:" = "Conectarea a eșuat din cauza unei erori nedeclarate:";
 "cookiesNotEnabled" = "Nu te poti loga deoarece cookie-urile din browser-ul sunt dezactivate. Vă rugăm să activați cookie-urile în setările browser-ului dvs. și încercați din nou.";
 "browserNotCompatible" = "Am detectat că versiunea browser-ului nu este suportată de acest site. Recomandarea noastră este de a folosi Firefox. Click pe link-ul de mai jos pentru a descărca cea mai recentă versiune a acestui browser.";
 "alternativeBrowsers" = "Ca alternativă puteți utiliza următoarele browsere compatibile";

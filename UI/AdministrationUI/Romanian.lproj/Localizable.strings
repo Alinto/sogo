@@ -10,6 +10,7 @@
 /* Modules descriptions */
 "ACLs_description" = "<p>Modulul de administrare a ACL-urilor permite modificarea ACL-urilor pentru Calendarele și Contactele utilizator.</p><p>Pentru a modifica ACL-ul pentru un folder utilizator tastaţi numele utilizatorului în câmpul de căutare aflat în partea de sus a ferestrei şi daţi dublu clic pe folderul al cărui ACL trebuie modificat.</p>";
 "Name or Email" = "Nume sau Email";
+"ACLs saved" = "ACL-uri salvate";
 /* Rights module: initial search message */
 "Start a search to edit the rights" = "Lansați o căutare pentru a edita drepturile";
 /* Rights module: Empty search result */
