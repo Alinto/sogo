@@ -45,7 +45,10 @@
 "Days between responses" = "Dienas starp atbildēm";
 "Do not send responses to mailing lists" = "Nesūtīt automātiskās atbildes adresātu sarakstam";
 "Enable auto reply on" = "Ieslēgt automātisko atbildi";
+"First day of vacation" = "Pirmā atvaļinājuma diena";
 "Disable auto reply on" = "Izslēgt automātisko atbildi";
+"Last day of vacation" = "Pēdējā atvaļinājuma diena";
+"Enter date" = "Ievadiet datumu";
 "Always send vacation message response" = "Vienmēr sūtīt atvaļinājuma atbildes ziņojumu";
 "The vacation message is sent prior to apply your filters." = "Atvaļinājuma ziņojums tiek nosūtīts pirms filtru lietošanas.";
 "Discard incoming mails during vacation" = "Atmest ienākošo pastu atvaļinājuma laikā";
@@ -63,6 +66,7 @@
 = "Lūdzu, norādiet adresi, uz kuru vēlaties pārsūtīt ziņojumu.";
 "You are not allowed to forward your messages to an external email address." = "Jums nav atļauts pārsūtīt ziņojumus uz ārēju e-pasta adresi.";
 "You are not allowed to forward your messages to an internal email address." = "Jums nav atļauts nosūtīt savus ziņojumus iekšējai e-pasta adresei.";
+"You are not allowed to forward your messages to this domain:" = "Jums nav atļauts pārsūtīt ziņojumus uz šo domēnu:";
 
 /* d & t */
 "Current Time Zone" = "Pašreizējā laika josla";
@@ -192,6 +196,7 @@
 /* Contact */
 "Personal Address Book" = "Personiskā adrešu grāmata";
 "Collected Address Book" = "Savāktā adrešu grāmata";
+"Contact categories must have unique names." = "Kontaktpersonu kategorijām jābūt unikāliem nosaukumiem.";
 
 /* IMAP Accounts */
 "Settings" = "Iestatījumi";
@@ -279,6 +284,7 @@
 "Hebrew" = "עברית";
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
+"Indonesian" = "bahasa Indonesia";
 "Italian" = "Italiano";
 "Japanese" = "日本語";
 "Latvian" = "Latviešu";

@@ -107,6 +107,7 @@
 "Name of the Calendar" = "Kalendāra nosaukums";
 "new" = "Jauns";
 "Print view" = "Drukas skats";
+"Print" = "Drukāt";
 "edit" = "Labot";
 "delete" = "Dzēst";
 "proposal" = "Priekšlikums";
@@ -147,6 +148,7 @@
 "Display events and tasks colors" = "Rādīt notikumus un uzdevumus krāsas";
 "Borders" = "Robežas";
 "Backgrounds" = "Foni";
+"Page Format" = "Lapas formāts";
 
 /* Appointments */
 "Appointment viewer" = "Tikšanās skatītājs";
