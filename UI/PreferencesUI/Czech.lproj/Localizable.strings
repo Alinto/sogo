@@ -162,9 +162,9 @@
 "Duplicate label" = "Duplicitní štítek";
 "IMAP labels must have unique names." = "IMAP štítky musí mít jedinečná jména.";
 "New label" = "Nový štítek";
-"Show subscribed mailboxes only" = "Ukázat pouze odebírané poštovní schránky";
-"Synchronize only default mail folders (EAS)" = "Synchronizovat pouze standartní poštovní složky (EAS)";
-"Fetch count of unseen messages for all mailboxes" = "Načíst počet nepřečtených zpráv pro všechny poštovní schránky";
+"Show subscribed mailboxes only" = "Ukázat pouze odebírané poštovní složky";
+"Synchronize only default mail folders (EAS)" = "Synchronizovat pouze standardní poštovní složky (EAS)";
+"Fetch count of unseen messages for all mailboxes" = "Načíst počet nepřečtených zpráv pro všechny poštovní složky";
 "Sort messages by threads" = "Třídit zprávy podle souvislostí";
 "Always open mail composer" = "Vždy otevřít editor zprávy";
 "Inside current window" = "Uvnitř aktuálního okna";
@@ -358,8 +358,8 @@
 "To or Cc" = "Komu nebo Kopie";
 "Size (Kb)" = "Velikost (Kb)";
 "Header" = "Hlavička";
-"Body" = "Tělo";
-"Flag the message with" = "Oštítkuj zprávu jako";
+"Body" = "Text zprávy";
+"Flag the message with" = "Označ zprávu štítkem";
 
 /* Select field label of "flag message" mail filter action */
 "Flag" = "Štítek";
