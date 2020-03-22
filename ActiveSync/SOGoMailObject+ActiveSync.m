@@ -261,6 +261,38 @@ struct GlobalObjectId {
 //
 //
 //
+- (NSString *) _personalNameFrom: (NSArray *) enveloppeAddresses
+{
+  NGImap4EnvelopeAddress *address;
+  NSString *email, *rc, *name;
+  NSMutableArray *addresses;
+  int i, max;
+
+  rc = nil;
+  max = [enveloppeAddresses count];
+
+  if (max > 0)
+    {
+      addresses = [NSMutableArray array];
+      for (i = 0; i < max; i++)
+        {
+          address = [enveloppeAddresses objectAtIndex: i];
+          name = [address personalName];
+          email = [NSString stringWithFormat: @"%@", (name ? name : [address baseEMail])];
+
+          if (email)
+            [addresses addObject: email];
+        }
+      rc = [addresses componentsJoinedByString: @";"];
+    }
+
+  return rc;
+}
+
+
+//
+//
+//
 - (NSData *) _preferredBodyDataInMultipartUsingType: (int) theType
                                     nativeTypeFound: (int *) theNativeTypeFound
 {
@@ -849,7 +881,11 @@ struct GlobalObjectId {
   // If there are multiple e-mail addresses, they are separated by commas."
   value = [self _emailAddressesFrom: [[self envelope] to]];
   if (value)
-    [s appendFormat: @"<To xmlns=\"Email:\">%@</To>", [value activeSyncRepresentationInContext: context]];
+    {
+      [s appendFormat: @"<To xmlns=\"Email:\">%@</To>", [value activeSyncRepresentationInContext: context]];
+      // DisplayTo - If there are multiple display names, they are separated by semi-colons.
+      [s appendFormat: @"<DisplayTo xmlns=\"Email:\">%@</DisplayTo>", [self _personalNameFrom: [[self envelope] to]]];
+    }
 
   // From
   value = [self _emailAddressesFrom: [[self envelope] from]];
@@ -871,9 +907,6 @@ struct GlobalObjectId {
   else
     [s appendFormat: @"<DateReceived xmlns=\"Email:\">%@</DateReceived>", [[NSDate date] activeSyncRepresentationInContext: context]];
 
-  // DisplayTo
-  [s appendFormat: @"<DisplayTo xmlns=\"Email:\">%@</DisplayTo>", [[context activeUser] login]];
-  
   // Cc - same syntax as the To field
   value = [self _emailAddressesFrom: [[self envelope] cc]];
   if (value)
