@@ -894,7 +894,9 @@ struct GlobalObjectId {
     {
       [s appendFormat: @"<To xmlns=\"Email:\">%@</To>", [value activeSyncRepresentationInContext: context]];
       // DisplayTo - If there are multiple display names, they are separated by semi-colons.
-      [s appendFormat: @"<DisplayTo xmlns=\"Email:\">%@</DisplayTo>", [self _personalNameFrom: [[self envelope] to]]];
+      value = [self _personalNameFrom: [[self envelope] to]];
+      if (value)
+        [s appendFormat: @"<DisplayTo xmlns=\"Email:\">%@</DisplayTo>", [value activeSyncRepresentationInContext: context]];
     }
 
   // From
