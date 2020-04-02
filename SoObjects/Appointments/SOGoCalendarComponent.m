@@ -46,7 +46,7 @@
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoMailer.h>
-#import <SOGo/SOGoGroup.h>
+#import <SOGo/SOGoSource.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
@@ -526,7 +526,7 @@
   iCalPerson *currentAttendee;
   NSEnumerator *enumerator;
   NSAutoreleasePool *pool;
-  SOGoGroup *group;
+  NSDictionary *dict;
 
   BOOL eventWasModified;
   unsigned int i, j;
@@ -550,37 +550,43 @@
           pool = [[NSAutoreleasePool alloc] init];
         }
 
-      group = [SOGoGroup groupWithEmail: [currentAttendee rfc822Email]
-                               inDomain: domain];
-      if (group)
-	{
+      dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: [currentAttendee rfc822Email]
+                                                                           inDomain: domain];
+
+      if (dict && [[dict objectForKey: @"isGroup"] boolValue])
+        {
 	  iCalPerson *person;
 	  NSArray *members;
-	  SOGoUser *user;
+	  NSDictionary *user;
+          id <SOGoSource> source;
 	  
 	  // We did decompose a group...
 	  [allAttendees removeObject: currentAttendee];
 
-	  members = [group members];
-	  for (i = 0; i < [members count]; i++)
-	    {
-	      user = [members objectAtIndex: i];
-	      eventWasModified = YES;
+          source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
+          if ([source conformsToProtocol:@protocol(SOGoMembershipSource)])
+            {
+              members = [(id<SOGoMembershipSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
+              for (i = 0; i < [members count]; i++)
+                {
+                  user = [members objectAtIndex: i];
+                  eventWasModified = YES;
 
-	      // If the organizer is part of the group, we skip it from
-	      // the addition to the attendees' list
-	      if ([user hasEmail: organizerEmail])
-		continue;
-	      
-	      person = [self iCalPersonWithUID: [user login]];
-	      [person setTag: @"ATTENDEE"];
-	      [person setParticipationStatus: [currentAttendee participationStatus]];
-	      [person setRsvp: [currentAttendee rsvp]];
-	      [person setRole: [currentAttendee role]];
-			    
-	      if (![allAttendees containsObject: person])
-		[allAttendees addObject: person];
-	    }
+                  // If the organizer is part of the group, we skip it from
+                  // the addition to the attendees' list
+                  if ([[user objectForKey: @"c_emails"] containsObject: organizerEmail])
+                    continue;
+
+                  person = [self iCalPersonWithUID: [user objectForKey: @"c_uid"]];
+                  [person setTag: @"ATTENDEE"];
+                  [person setParticipationStatus: [currentAttendee participationStatus]];
+                  [person setRsvp: [currentAttendee rsvp]];
+                  [person setRole: [currentAttendee role]];
+
+                  if (![allAttendees containsObject: person])
+                    [allAttendees addObject: person];
+                }
+            }
 	}
       
       j++;

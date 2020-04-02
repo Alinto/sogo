@@ -47,7 +47,7 @@
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDateFormatter.h>
-#import <SOGo/SOGoGroup.h>
+#import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoDomainDefaults.h>
@@ -1627,7 +1627,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   iCalPerson *attendee;
   NSException *ex;
   SOGoUser *ownerUser, *delegatedUser;
-  NSString *recurrenceTime, *delegatedUid;
+  NSString *recurrenceTime, *delegatedUid, *domain;
 
   event = nil;
   ex = nil;
@@ -1673,10 +1673,15 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               if ([event isAttendee: [[delegate email] rfc822Email]])
                 ex = [NSException exceptionWithHTTPStatus: 409
                                                    reason: @"delegate is a participant"];
-              else if ([SOGoGroup groupWithEmail: [[delegate email] rfc822Email]
-                                        inDomain: [ownerUser domain]])
-                ex = [NSException exceptionWithHTTPStatus: 409
-                                                   reason: @"delegate is a group"];
+              else {
+                NSDictionary *dict;
+                domain = [[context activeUser] domain];
+                dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: [[delegate email] rfc822Email]
+                                                                                     inDomain: domain];
+                if (dict && [[dict objectForKey: @"isGroup"] boolValue])
+                  ex = [NSException exceptionWithHTTPStatus: 409
+                                                     reason: @"delegate is a group"];
+              }
             }
           if (ex == nil)
             {

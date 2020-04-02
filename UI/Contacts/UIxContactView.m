@@ -31,8 +31,6 @@
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>
-#import <SOGo/LDAPSource.h>
-#import <SOGo/SOGoGroup.h>
 #import <SOGo/SOGoSource.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
@@ -399,7 +397,7 @@
   NSString *email;
   SOGoObject <SOGoContactObject> *contact;
   SOGoObject <SOGoSource> *source;
-  SOGoUser *user;
+  NSDictionary *user;
   id <WOActionResults> result;
   unsigned int i, max;
 
@@ -411,27 +409,23 @@
 
   if ([[dict objectForKey: @"isGroup"] boolValue])
     {
-      if ([source isKindOfClass: [LDAPSource class]] && [(LDAPSource *) source groupExpansionEnabled])
+      if ([source conformsToProtocol:@protocol(SOGoMembershipSource)])
         {
-          SOGoGroup *aGroup;
-
-          aGroup = [SOGoGroup groupWithIdentifier: [contact nameInContainer]
-                                         inDomain: [[context activeUser] domain]];
-          allUsers = [aGroup members]; // array of SOGoUser objects
+          allUsers = [(id<SOGoMembershipSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
           max = [allUsers count];
           allUsersData = [NSMutableArray arrayWithCapacity: max];
           for (i = 0; i < max; i++)
             {
               user = [allUsers objectAtIndex: i];
               allUserEmails = [NSMutableArray array];
-              emails = [[user allEmails] objectEnumerator];
+              emails = [[user objectForKey: @"c_emails"] objectEnumerator];
               while ((email = [emails nextObject])) {
                 [allUserEmails addObject: [NSDictionary dictionaryWithObjectsAndKeys:
                                                           email, @"value", @"work", @"type", nil]];
               }
               userData = [NSDictionary dictionaryWithObjectsAndKeys:
-                                         [user loginInDomain], @"c_uid",
-                                       [user cn], @"c_cn",
+                                       [user objectForKey: @"c_uid"], @"c_uid",
+                                       [user objectForKey: @"c_cn"], @"c_cn",
                                        allUserEmails, @"emails", nil];
               [allUsersData addObject: userData];
             }

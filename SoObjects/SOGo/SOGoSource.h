@@ -118,4 +118,10 @@
 - (void) updateBaseDNFromLogin: (NSString *) theLogin;
 @end
 
+@protocol SOGoMembershipSource <SOGoSource>
+- (NSArray *) membersForGroupWithUID: (NSString *) uid;
+- (BOOL) groupWithUIDHasMemberWithUID: (NSString *) uid
+                            memberUid: (NSString *) memberUid;
+@end
+
 #endif /* SOGOSOURCE_H */

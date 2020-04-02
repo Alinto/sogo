@@ -58,7 +58,6 @@
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoSystemDefaults.h>
-#import <SOGo/SOGoGroup.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserManager.h>
@@ -1422,15 +1421,18 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
 - (NSString *) _sogoACLUIDToIMAPUID: (NSString *) uid
 {
-  SOGoGroup *group;
+  NSString *domain;
+  NSDictionary *dict;
   SOGoUser *user;
 
   if ([uid isEqualToString: defaultUserID])
     return uid;
 
-  group = [SOGoGroup groupWithIdentifier: uid
-                                inDomain: [[context activeUser] domain]];
-  if (group)
+  domain = [[context activeUser] domain];
+  dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: uid
+                                                                       inDomain: domain];
+
+  if (dict && [[dict objectForKey: @"isGroup"] boolValue])
     return [[[[context activeUser] domainDefaults] imapAclGroupIdPrefix]
              stringByAppendingString: uid];
 

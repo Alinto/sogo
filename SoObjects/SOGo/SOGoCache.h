@@ -31,7 +31,6 @@
 
 @class NGImap4Connection;
 
-@class SOGoGroup;
 @class SOGoObject;
 @class SOGoUser;
 @class SOGoUserDefaults;
@@ -66,13 +65,6 @@
 - (void) registerUser: (SOGoUser *) user
              withName: (NSString *) userName;
 - (id) userNamed: (NSString *) name;
-
-- (void) registerGroup: (SOGoGroup *) group
-              withName: (NSString *) groupName
-	      inDomain: (NSString *) domainName;
-
-- (id) groupNamed: (NSString *) groupName
-	 inDomain: (NSString *) domainName;
 
 - (void) registerIMAP4Connection: (NGImap4Connection *) connection
                           forKey: (NSString *) key;

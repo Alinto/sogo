@@ -61,6 +61,7 @@
 #import <SOGo/SOGoWebDAVValue.h>
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/WOResponse+SOGo.h>
+#import <SOGo/SOGoSource.h>
 
 #import "iCalCalendar+SOGo.h"
 #import "iCalRepeatableEntityObject+SOGo.h"
@@ -71,7 +72,6 @@
 #import "SOGoFreeBusyObject.h"
 #import "SOGoTaskObject.h"
 #import "SOGoWebAppointmentFolder.h"
-
 
 #define defaultColor @"#AAAAAA"
 
@@ -427,7 +427,7 @@ static Class iCalEventK = nil;
                      response: (WOResponse *) theResponse
 {
   NSMutableDictionary *moduleSettings, *folderShowAlarms, *freeBusyExclusions;
-  NSString *subscriptionPointer;
+  NSString *subscriptionPointer, *domain;
   NSMutableArray *allUsers;
   SOGoUserSettings *us;
   NSDictionary *dict;
@@ -439,34 +439,41 @@ static Class iCalEventK = nil;
 
   if (rc)
     {
-      dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: theIdentifier];
+#warning Duplicated code from SOGoGCSFolder subscribeUserOrGroup
+     domain = [[context activeUser] domain];
+     dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: theIdentifier
+                                                                          inDomain: domain];
 
-      if ([[dict objectForKey: @"isGroup"] boolValue])
-        {
-          SOGoGroup *aGroup;
+     if (dict && [[dict objectForKey: @"isGroup"] boolValue])
+       {
+         id <SOGoSource> source;
 
-          aGroup = [SOGoGroup groupWithIdentifier: theIdentifier
-                                         inDomain: [[context activeUser] domain]];
-          allUsers = [NSMutableArray arrayWithArray: [aGroup members]];
+         source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
+         if ([source conformsToProtocol:@protocol(SOGoMembershipSource)])
+           {
+             NSArray *members = [(id<SOGoMembershipSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
+             allUsers = [NSMutableArray array];
 
-          // We remove the active user from the group (if present) in order to
-          // not subscribe him to their own resource!
-          [allUsers removeObject: [context activeUser]];
-        }
-      else
-        {
-          sogoUser = [SOGoUser userWithLogin: theIdentifier roles: nil];
-
-          if (sogoUser)
-            allUsers = [NSArray arrayWithObject: sogoUser];
-          else
-            allUsers = [NSArray array];
-        }
+             for (i = 0; i < [members count]; i++)
+               {
+                 [allUsers addObject: [[members objectAtIndex: i] objectForKey: @"c_uid"]];
+               }
+             // We remove the active user from the group (if present) in order to
+             // not subscribe him to their own resource!
+             [allUsers removeObject: [[context activeUser] login]];
+           }
+       }
+     else
+       {
+         if (dict)
+           allUsers = [NSArray arrayWithObject: [dict objectForKey: @"c_uid"]];
+         else
+           allUsers = [NSArray array];
+       }
 
       for (i = 0; i < [allUsers count]; i++)
         {
-          sogoUser = [allUsers objectAtIndex: i];
-          us = [sogoUser userSettings];
+          us = [SOGoUserSettings settingsForUser: [allUsers objectAtIndex: i]];
           moduleSettings = [us objectForKey: [container nameInContainer]];
           if (!(moduleSettings
                 && [moduleSettings isKindOfClass: [NSMutableDictionary class]]))
