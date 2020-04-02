@@ -1678,7 +1678,7 @@ will result in passwords stored as `{scheme}encryptedPass`. For
 `sym-aes-128-cbc`, always set this to `NO`.
 
 |keyPath
-For `sym-aes-128-cbc`, a global key file is required. This value
+|For `sym-aes-128-cbc`, a global key file is required. This value
 must be set to the full path where the key file is. The key file
 must also be readable by the `sogo` user.
 
