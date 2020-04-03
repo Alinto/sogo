@@ -1476,8 +1476,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 #warning we do not take the participation status into account
   while ((currentRecord = [ma nextObject]))
     {
-      accessClass
-        = [[currentRecord objectForKey: @"c_classification"] intValue];
+      accessClass = [[currentRecord objectForKey: @"c_classification"] intValue];
       role = roles[accessClass];
       if (!role)
         {
@@ -1506,13 +1505,17 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   EOQualifier *qualifier;
   GCSFolder *folder;
   NSMutableArray *fields, *ma;
+  NSMutableDictionary *currentRecord;
   NSArray *records;
+  NSEnumerator *matchingRecords;
   NSMutableArray *baseWhere;
   NSString *where, *dateSqlString, *privacySQLString, *currentLogin;
   NSCalendarDate *endDate;
   NGCalendarDateRange *r;
   BOOL rememberRecords, canCycle;
+  SOGoUser *ownerUser;
 
+  ownerUser = [SOGoUser userWithLogin: owner roles: nil];
   rememberRecords = [self _checkIfWeCanRememberRecords: _fields];
   canCycle = [_component isEqualToString: @"vevent"] || [_component isEqualToString: @"vtodo"];
 //   if (rememberRecords)
@@ -1670,11 +1673,21 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
         }
 
       currentLogin = [[context activeUser] login];
-      if (![currentLogin isEqualToString: owner]
-          && !_includeProtectedInformation)
-        [self _fixupProtectedInformation: [ma objectEnumerator]
-                                inFields: _fields
-                                 forUser: currentLogin];
+      if (![currentLogin isEqualToString: owner])
+        {
+
+          if (!_includeProtectedInformation)
+            [self _fixupProtectedInformation: [ma objectEnumerator]
+                                    inFields: _fields
+                                     forUser: currentLogin];
+        }
+
+      // Add owner to each record. It will be used when generating freebusy.
+      matchingRecords = [ma objectEnumerator];
+      while ((currentRecord = [matchingRecords nextObject]))
+        {
+          [currentRecord setObject: ownerUser forKey: @"owner"];
+        }
 
       if (rememberRecords)
         [self _rememberRecords: ma];

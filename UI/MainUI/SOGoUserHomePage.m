@@ -157,6 +157,7 @@
       for (recordCount = 0; recordCount < recordMax; recordCount++)
         {
           record = [records objectAtIndex: recordCount];
+          user = [record objectForKey: @"owner"];
           if ([[record objectForKey: @"c_isopaque"] boolValue])
             {
               type = 0;
@@ -181,9 +182,13 @@
                           // We now fetch the c_partstates array and get the participation
                           // status of the user for the event
                           partstates = [[record objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];
-		    
                           if (i < [partstates count])
                             {
+                              // 0: needs action   (considered busy)
+                              // 1: accepted       (busy)
+                              // 2: declined       (free)
+                              // 3: tentative      (free)
+                              // 4: delegated      (free)
                               type = ([[partstates objectAtIndex: i] intValue] < 2 ? 1 : 0);
                             }
                           break;
