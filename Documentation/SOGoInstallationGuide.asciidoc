@@ -2016,7 +2016,7 @@ values are:
 * `Mail`
 * `Contacts`
 
-Defaults to `Calendar` when unset.
+Defaults to `Mail` when unset.
 
 |S |SOGoFaviconRelativeURL
 |Parameter used to specify the relative URL of the site favion.
@@ -2373,7 +2373,7 @@ Defaults to `below`.
 * `text`
 * `html`
 
-Defaults to `text`.
+Defaults to `html`.
 
 |S |SOGoEnableEMailAlarms
 |Parameter used to enable email-based alarms on events and tasks.

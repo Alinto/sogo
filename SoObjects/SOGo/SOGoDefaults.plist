@@ -103,7 +103,6 @@
     SOGoMailReplyPlacement = "below";
     SOGoMailSignaturePlacement = "below";
     SOGoRefreshViewIntervals = ( 1, 2, 5, 10, 20, 30, 60 );
-    SOGoMailComposeMessageType = "text";
     SOGoMailListViewColumnsOrder = ( "Thread", "Flagged", "Attachment", "Subject",
                                      "From", "Unread", "Date", "Priority",
                                      "Size" );
