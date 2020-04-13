@@ -87,7 +87,7 @@
         path = [this._path];
     if (folderId) path.push(folderId.split('/'));
     if (action)   path.push(action);
-    path = _.compact(_.flatten(path)).join('/');
+    path = this._window.encodeURI(_.compact(_.flatten(path)).join('/'));
 
     this._http({
       method: 'GET',
@@ -191,7 +191,7 @@
         path = [this._path];
     if (id) path.push(id);
     if (action) path.push(action);
-    path = _.compact(_.flatten(path)).join('/');
+    path = this._window.encodeURI(_.compact(_.flatten(path)).join('/'));
 
     this._http
       .post(path, data)
