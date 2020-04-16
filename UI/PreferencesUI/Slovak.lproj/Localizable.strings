@@ -235,7 +235,7 @@
 /* password */
 "New password" = "Nové heslo";
 "Confirmation" = "Potvrdenie";
-"Change" = "Zmena";
+"Change" = "Zmeniť";
 
 /* Event+task classifications */
 "Default events classification" = "Predvolená klasifikácia udalostí";
