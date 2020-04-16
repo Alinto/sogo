@@ -90,7 +90,10 @@
 "shortDateFmt_11" = "%y.%m.%d";
 "shortDateFmt_12" = "%Y/%m/%d";
 "shortDateFmt_13" = "%Y.%m.%d";
-"shortDateFmt_14" = "";
+"shortDateFmt_14" = "%Y.%m.%d";
+"shortDateFmt_15" = "%d.%m.%Y";
+"shortDateFmt_16" = "%d.%m.%y";
+"shortDateFmt_17" = "";
 
 "longDateFmt_0" = "%A, %d. %B %Y";
 "longDateFmt_1" = "%A, %e. %B %Y";
@@ -251,7 +254,7 @@
 "Add Contact Category" = "Kontaktkategorie hinzufügen";
 "Remove Contact Category" = "Kontaktkategorie entfernen";
 "category_none" = "Keine";
-"calendar_category_labels" = "Anrufe,Besprechung,Favoriten,Feiertag,Ferien,Fortsetzung,Fragen,Geburtstag,Geschäft,Geschenke,Ideen,Jubiläum,Klienten,Konkurrenz,Kunde,Lieferanten,Persönlich,Projekte,Reise,Status,Urlaub,Verschiedenes";
+"calendar_category_labels" = "Jubiläum,Geburtstag,Geschäft,Anrufe,Klienten,Konkurrenz,Kunde,Favoriten,Fortsetzung,Geschenke,Ferien,Ideen,Besprechung,Fragen,Verschiedenes,Persönlich,Projekte,Feiertag,Status,Lieferanten,Reise,Urlaub";
 
 /* Default module */
 "Calendar" = "Kalender";

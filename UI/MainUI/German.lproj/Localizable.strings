@@ -16,6 +16,7 @@
 "Authentication Failed" = "Authentifizierung fehlgeschlagen";
 "Wrong username or password." = "Falscher Benutzername oder falsches Passwort";
 "Retry" = "Erneut versuchen";
+"Login failed due to unhandled error case:" = "Anmeldung ist wegen folgendem unbehandelten Fehler fehlgeschlagen:";
 "cookiesNotEnabled" = "Anmeldung an SOGo ist nicht möglich, da Cookies in Ihrem Browser deaktiviert sind. Bitte aktivieren Sie Cookies in Ihrem Browser und versuchen Sie es erneut.";
 "browserNotCompatible" = "Wir haben festgestellt, dass Ihre Browserversion im Moment nicht von SOGo unterstützt wird. Wir empfehlen Firefox zu verwenden. Klicken Sie unten auf den Link, um die aktuelle Version dieses Browsers zu installieren.";
 "alternativeBrowsers" = "Sie können auch die folgenden Browser benutzen";

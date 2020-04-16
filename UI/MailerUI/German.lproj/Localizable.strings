@@ -125,7 +125,7 @@
 "Return Receipt (displayed) - %@"= "Empfangsbestätigung (angezeigt) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dies ist die Empfangsbestätigung für die Nachricht, die Sie an %@ gesendet haben.\n\nHinweis: Es wird lediglich bestätigt, dass die Nachricht auf dem Computer des Empfängers empfangen (angezeigt) wurde. Es wird nicht garantiert, dass der Empfänger die Nachricht gelesen und/oder verstanden hat.";
 "Security" = "Sicherheit";
-"Sign" = "Unterschreiben";
+"Sign" = "Signieren";
 "Encrypt" = "Verschlüsseln";
 "Priority" = "Priorität";
 "highest" = "Sehr hoch";
@@ -266,7 +266,7 @@
 "Error reading the certificate. Please install a new certificate." = "Fehler beim Lesen des Zertifikats. Bitte installieren Sie ein neues Zertifikat.";
 
 /* Trying to access a non-existent certificate */
-"No certificate associated to account." = "Kein Zertifikat mit dem Benutzer verbunden";
+"No certificate associated to account." = "Kein Zertifikat mit dem Benutzer verbunden.";
 
 "This Folder" = "Dieser Ordner";
 
