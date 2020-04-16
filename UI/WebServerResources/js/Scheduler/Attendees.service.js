@@ -632,6 +632,9 @@
       _this.component.end.addMinutes(_this.component.delta);
       _this.updateFreeBusyCoverage();
       return foundDate;
+    }).catch(function (err) {
+      _this.updateFreeBusy();
+      throw err;
     });
   };
 
@@ -666,8 +669,13 @@
    * @desc Recursively search for the next available slot, one day a the time.
    * @param {date) currentStart - the starting day
    */
-  Attendees.prototype.step = function(currentStart) {
+  Attendees.prototype.step = function(currentStart, count) {
     var _this = this;
+    if (!parseInt(count)) {
+      count = 0;
+    } else if (count >= 30) {
+      return Attendees.$q.reject(l('There\'s no free slot available for all attendees in the next 30 days. Please try a different date or length.'));
+    }
     // var currentStartDay = currentStart.getDayString();
     return this.mergeFreebusy(currentStart).then(function () {
       var foundDate = _this.findDate(currentStart);
@@ -680,7 +688,7 @@
         if (_this.workDaysOnly) {
           _this.adjustCurrentStart(currentStart);
         }
-        return _this.step(currentStart);
+        return _this.step(currentStart, count + 1);
       }
     });
   };

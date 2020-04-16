@@ -205,8 +205,8 @@
   /**
    * @ngInject
    */
-  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$window', '$element', '$mdDialog', 'sgFocus', 'User', 'CalendarSettings', 'Calendar', 'Component', 'Attendees', 'AddressBook', 'Card', 'Alarm', 'Preferences', 'stateComponent'];
-  function ComponentEditorController($rootScope, $scope, $log, $timeout, $window, $element, $mdDialog, focus, User, CalendarSettings, Calendar, Component, Attendees, AddressBook, Card, Alarm, Preferences, stateComponent) {
+  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$window', '$element', '$mdDialog', '$mdToast', 'sgFocus', 'User', 'CalendarSettings', 'Calendar', 'Component', 'Attendees', 'AddressBook', 'Card', 'Alarm', 'Preferences', 'stateComponent'];
+  function ComponentEditorController($rootScope, $scope, $log, $timeout, $window, $element, $mdDialog, $mdToast, focus, User, CalendarSettings, Calendar, Component, Attendees, AddressBook, Card, Alarm, Preferences, stateComponent) {
     var vm = this, component, oldStartDate, oldEndDate, oldDueDate, dayStartTime, dayEndTime;
 
     this.$onInit = function () {
@@ -385,6 +385,22 @@
 
     function findSlot(direction) {
       vm.component.$attendees.findSlot(direction).then(function () {
+      }).catch(function (err) {
+        vm.component.start = new Date(vm.component.start.getTime() + 1); // trigger update in sgFreeBusy
+        $timeout(scrollToStart);
+        $mdToast.show({
+          template: [
+            '<md-toast>',
+            '  <div class="md-toast-content">',
+            '    <md-icon class="md-warn md-hue-1">error_outline</md-icon>',
+            '    <span flex>' + err + '</span>',
+            '  </div>',
+            '</md-toast>'
+          ].join(''),
+          hideDelay: 5000,
+          position: 'top right'
+        });
+      }).finally(function () {
         $timeout(scrollToStart);
       });
     }
