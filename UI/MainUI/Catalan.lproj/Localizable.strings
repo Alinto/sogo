@@ -6,8 +6,17 @@
 "Domain" = "Domini";
 "Remember username" = "recordar usuari";
 "Connect" = "Connectar";
+
+/* Appears while authentication is in progress */
+"Authenticating" = "S'està autenticant";
+
+/* Appears when authentication succeeds */
+"Welcome" = "Benvingut/da";
+
 "Authentication Failed" = "L'autenticació ha fallat";
 "Wrong username or password." = "Usuari o contrasenya incorrectes.";
+"Retry" = "Torneu-ho a intentar";
+"Login failed due to unhandled error case:" = "Connexió fallida a causa d'un error inesperat: ";
 "cookiesNotEnabled" = "No us hi podeu connectar perquè les galetes estan deshabilitades. Habiliteu les galetes en el navegador i torneu a intentar-ho.";
 "browserNotCompatible" = "Aquesta versió del navegador no és compatible amb el sistema. Us recomanem l'ús de Firefox. Feu clic en l'enllaç següent per descarregar-vos la versió más recent d'aquest navegador.";
 "alternativeBrowsers" = "També podeu utilitza un d'aquests navegadors compatibles: ";
@@ -16,10 +25,11 @@
 "Language" = "Llengua";
 "choose" = "Triar ...";
 "Arabic" = "العربية";
-"Basque" = "Euskera";
+"Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Xinès (Taiwan)";
+"ChineseTaiwan" = "正體中文";
+"Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
@@ -35,9 +45,11 @@
 "Japanese" = "日本語";
 "Latvian" = "Latviešu";
 "Lithuanian" = "Lietuvių";
+"Macedonian" = "Македонски";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "Polish" = "Polski";
+"Portuguese" = "Português";
 "BrazilianPortuguese" = "Português brasileiro";
 "Romanian" = "Română";
 "Russian" = "Русский";
@@ -50,6 +62,7 @@
 "TurkishTurkey" = "Türkçe (Türkiye)";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
 "About" = "Informació";
 "AboutBox" = "Desenvolupat per Inverse, Sogo és un servidor amb totes les funcions de treball en grup amb un enfocament en la escalabilitat i simplicitat. <br/> ⏎ Sogo ofereix una rica interfície web basada en AJAX i suporta múltiples clients natius mitjançant l'ús de protocols estàndard, com CalDAV i CardDAV. <br/> ⏎ Sogo es distribueix sota la <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</ a> versió 2 o posterior, i parts es distribueixen sota la llicència GNU LGPL versió 2. Aquest és programari lliure: és lliure de canviar i redistribuir. NO hi ha cap garantia, en la mesura permesa per la llei. <br/> ⏎ Veure <a href = \"http://www.sogo.nu/en/support/community.html\"> aquesta pàgina</ a> per a les opcions de suport.";
 "Your account was locked due to too many failed attempts." = "El vostre compte ha estat bloquejat per un excés d'intents fallits.";
@@ -82,7 +95,6 @@
 "Confirmation" = "Confirmació";
 "Cancel" = "Cancel·lar";
 "Please wait..." = "Si us plau, espereu-vos...";
-"AboutBox" = "Desenvolupat per Inverse, Sogo és un servidor amb totes les funcions de treball en grup amb un enfocament en la escalabilitat i simplicitat. <br/> ⏎ Sogo ofereix una rica interfície web basada en AJAX i suporta múltiples clients natius mitjançant l'ús de protocols estàndard, com CalDAV i CardDAV. <br/> ⏎ Sogo es distribueix sota la <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</ a> versió 2 o posterior, i parts es distribueixen sota la llicència GNU LGPL versió 2. Aquest és programari lliure: és lliure de canviar i redistribuir. NO hi ha cap garantia, en la mesura permesa per la llei. <br/> ⏎ Veure <a href = \"http://www.sogo.nu/en/support/community.html\"> aquesta pàgina</ a> per a les opcions de suport.";
 "Close" = "Tancar";
 "Missing search parameter" = "Falten paràmetres de cerca";
 "Missing type parameter" = "Falta el paràmetre de tipus";
