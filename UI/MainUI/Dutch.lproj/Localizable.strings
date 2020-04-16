@@ -16,6 +16,7 @@
 "Authentication Failed" = "Authenticatie mislukt";
 "Wrong username or password." = "Onjuiste gebruikersnaam of wachtwoord.";
 "Retry" = "Opnieuw proberen";
+"Login failed due to unhandled error case:" = "Inloggen mislukt wegens onverwerkte fout:";
 "cookiesNotEnabled" = "U kunt niet inloggen omdat de browser geen cookies accepteert. Verander de cookie-instellingen van de browser en probeer het opnieuw.";
 "browserNotCompatible" = "We hebben gedetecteerd dat de browser die u op dit moment gebruikt niet word ondersteund voor deze site. Onze aanbeveling is Firefox te gebruiken. Hieronder staat een link om de laatste versie van deze browser te downloaden.";
 "alternativeBrowsers" = "Als alternatief kunt u ook de volgende compatibele browsers gebruiken";
@@ -27,7 +28,7 @@
 "Basque" = "Euskara";
 "Catalan" = "Català";
 "ChineseChina" = "简体中文";
-"ChineseTaiwan" = "Chinese (Taiwan)";
+"ChineseTaiwan" = "正體中文";
 "Croatian" = "Hrvatski";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
