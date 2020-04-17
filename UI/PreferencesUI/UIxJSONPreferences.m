@@ -465,7 +465,7 @@ static SoProduct *preferencesProduct = nil;
   // sorry about this engineering brain fart!
   v = [[settings objectForKey: @"Calendar"] objectForKey: @"PreventInvitationsWhitelist"];
 
-  if (v && [v isKindOfClass: [NSString class]])
+  if (v && [v isKindOfClass: [NSString class]] && [v length] > 0)
     {
       [[settings objectForKey: @"Calendar"] setObject: [v objectFromJSONString]
                                                forKey: @"PreventInvitationsWhitelist"];
