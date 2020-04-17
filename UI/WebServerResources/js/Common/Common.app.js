@@ -364,7 +364,7 @@
           if ($window.usesCASAuthentication && rejection.status == -1) {
             return renewTicket($window, $q, $timeout, $injector, rejection);
           }
-          else if ($window.usesSAML2Authentication && rejection.status == 401 && !$window.recovered) {
+          else if ($window.usesSAML2Authentication && (rejection.status == 401 || rejection.status == -1) && !$window.recovered) {
             $state = $injector.get('$state');
             angular.element($window).off('beforeunload');
             $window.recovered = true;
