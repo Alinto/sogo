@@ -361,10 +361,10 @@
         var $state;
         if (/^application\/json/.test(rejection.config.headers.Accept)) {
           // Handle CAS ticket renewal
-          if ($window.usesCASAuthentication && rejection.status == -1) {
+          if (($window.usesCASAuthentication || $window.usesSAML2Authentication) && rejection.status == -1) {
             return renewTicket($window, $q, $timeout, $injector, rejection);
           }
-          else if ($window.usesSAML2Authentication && (rejection.status == 401 || rejection.status == -1) && !$window.recovered) {
+          else if ($window.usesSAML2Authentication && rejection.status == 401 && !$window.recovered) {
             $state = $injector.get('$state');
             angular.element($window).off('beforeunload');
             $window.recovered = true;
