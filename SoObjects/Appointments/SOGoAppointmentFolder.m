@@ -51,7 +51,6 @@
 #import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoDomainDefaults.h>
-#import <SOGo/SOGoGroup.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
