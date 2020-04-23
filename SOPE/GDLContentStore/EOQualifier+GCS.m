@@ -118,7 +118,7 @@
     if ([val isKindOfClass:[NSNumber class]])
       qValue = [val stringValue];
     else if ([val isKindOfClass:[NSString class]]) {
-      qValue = [NSString stringWithFormat: @"'%@'", val];
+      qValue = [NSString stringWithFormat: @"'%@'", [val stringByReplacingString: @"'" withString: @"\\'"]];
     }
     else {
       qValue = @"NULL";
