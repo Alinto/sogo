@@ -32,8 +32,8 @@
 
 @implementation EOQualifier(GCS)
 
-- (void)_appendAndQualifier:(EOAndQualifier *)_q 
-  toString:(NSMutableString *)_ms
+- (void) _appendAndQualifier: (EOAndQualifier *) _q
+                    toString: (NSMutableString *) _ms
 {
   // TODO: move to EOQualifier category
   NSArray *qs;
@@ -46,12 +46,12 @@
   for (i = 0; i < count; i++) {
     if (i != 0) [_ms appendString:@" AND "];
     if (count > 1) [_ms appendString:@"("];
-    [[qs objectAtIndex:i] _gcsAppendToString:_ms];
+    [[qs objectAtIndex:i] _gcsAppendToString: _ms];
     if (count > 1) [_ms appendString:@")"];
   }
 }
-- (void)_appendOrQualifier:(EOAndQualifier *)_q 
-  toString:(NSMutableString *)_ms
+- (void)_appendOrQualifier: (EOAndQualifier *) _q
+                  toString: (NSMutableString *) _ms
 {
   // TODO: move to EOQualifier category
   NSArray *qs;
@@ -64,21 +64,21 @@
   for (i = 0; i < count; i++) {
     if (i != 0) [_ms appendString:@" OR "];
     if (count > 1) [_ms appendString:@"("];
-    [[qs objectAtIndex:i] _gcsAppendToString:_ms];
+    [[qs objectAtIndex:i] _gcsAppendToString: _ms];
     if (count > 1) [_ms appendString:@")"];
   }
 }
 
-- (void)_appendNotQualifier:(EONotQualifier *)_q 
-  toString:(NSMutableString *)_ms
+- (void)_appendNotQualifier: (EONotQualifier *)_q
+                   toString:(NSMutableString *) _ms
 {
   [_ms appendString:@" NOT ("];
-  [[_q qualifier] _gcsAppendToString:_ms];
+  [[_q qualifier] _gcsAppendToString: _ms];
   [_ms appendString:@")"];
 }
 
-- (void)_appendKeyValueQualifier:(EOKeyValueQualifier *)_q 
-  toString:(NSMutableString *)_ms
+- (void) _appendKeyValueQualifier: (EOKeyValueQualifier *) _q
+                         toString: (NSMutableString *) _ms
 {
   id val;
   NSString *qKey, *qOperator, *qValue, *qFormat;
@@ -115,10 +115,13 @@
       qOperator = @"=";
     }
     
-    if ([val isKindOfClass:[NSNumber class]])
+    if ([val isKindOfClass: [NSNumber class]])
       qValue = [val stringValue];
-    else if ([val isKindOfClass:[NSString class]]) {
-      qValue = [NSString stringWithFormat: @"'%@'", [val stringByReplacingString: @"'" withString: @"\\'"]];
+    else if ([val isKindOfClass: [NSString class]]) {
+      if ([val hasPrefix: @"'"])
+        qValue = val;
+      else
+        qValue = [NSString stringWithFormat: @"'%@'", val];
     }
     else {
       qValue = @"NULL";
@@ -151,23 +154,31 @@
   [_ms appendFormat: qFormat, qKey, qOperator, qValue];
 }
 
-- (void)_appendQualifier:(EOQualifier *)_q toString:(NSMutableString *)_ms {
+- (void) _appendQualifier: (EOQualifier *) _q
+                 toString: (NSMutableString *) _ms
+{
   if (_q == nil) return;
   
-  if ([_q isKindOfClass:[EOAndQualifier class]])
-    [self _appendAndQualifier:(id)_q toString:_ms];
-  else if ([_q isKindOfClass:[EOOrQualifier class]])
-    [self _appendOrQualifier:(id)_q toString:_ms];
-  else if ([_q isKindOfClass:[EOKeyValueQualifier class]])
-    [self _appendKeyValueQualifier:(id)_q toString:_ms];
-  else if ([_q isKindOfClass:[EONotQualifier class]])
-    [self _appendNotQualifier:(id)_q toString:_ms];
+  if ([_q isKindOfClass: [EOAndQualifier class]])
+    [self _appendAndQualifier: (id)_q
+                     toString: _ms];
+  else if ([_q isKindOfClass: [EOOrQualifier class]])
+    [self _appendOrQualifier: (id)_q
+                    toString:_ms];
+  else if ([_q isKindOfClass: [EOKeyValueQualifier class]])
+    [self _appendKeyValueQualifier: (id)_q
+                          toString:_ms];
+  else if ([_q isKindOfClass: [EONotQualifier class]])
+    [self _appendNotQualifier: (id)_q
+                     toString:_ms];
   else
     [self errorWithFormat:@"unknown qualifier: %@", _q];
 }
 
-- (void)_gcsAppendToString:(NSMutableString *)_ms {
-  [self _appendQualifier:self toString:_ms];
+- (void) _gcsAppendToString: (NSMutableString *) _ms
+{
+  [self _appendQualifier: self
+                toString: _ms];
 }
 
 @end /* EOQualifier(GCS) */

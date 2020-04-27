@@ -28,7 +28,7 @@
 
 @interface EOQualifier(GCS)
 
-- (void)_gcsAppendToString:(NSMutableString *)_ms;
+- (void) _gcsAppendToString: (NSMutableString *) _ms;
 
 @end
 
