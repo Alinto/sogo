@@ -118,7 +118,7 @@
     if ([val isKindOfClass: [NSNumber class]])
       qValue = [val stringValue];
     else if ([val isKindOfClass: [NSString class]]) {
-      if ([val hasPrefix: @"'"])
+      if ([(EOKeyValueQualifier *)self formatted])
         qValue = val;
       else
         qValue = [NSString stringWithFormat: @"'%@'", val];

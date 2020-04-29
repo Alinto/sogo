@@ -396,12 +396,12 @@ static GCSStringFormatter *stringFormatter = nil;
 
       if ([qualifier isKindOfClass: [EOAndQualifier class]])
         [self _findQualifiers: (id)qualifier withAdaptor: adaptor];
-      else if ([qualifier isKindOfClass:[EOOrQualifier class]])
+      else if ([qualifier isKindOfClass: [EOOrQualifier class]])
         [self _findQualifiers: (id)qualifier withAdaptor: adaptor];
-      else if ([qualifier isKindOfClass:[EOKeyValueQualifier class]])
-        [self _formatQualifierValue: (id)qualifier withAdaptor: adaptor];
-      else if ([qualifier isKindOfClass:[EONotQualifier class]])
-        [self _formatQualifierValue: [(id)qualifier qualifier] withAdaptor: adaptor];
+      else if ([qualifier isKindOfClass: [EOKeyValueQualifier class]])
+        [self _formatQualifierValue: (EOKeyValueQualifier *)qualifier withAdaptor: adaptor];
+      else if ([qualifier isKindOfClass: [EONotQualifier class]])
+        [self _formatQualifierValue: (EOKeyValueQualifier *)[(id)qualifier qualifier] withAdaptor: adaptor];
       else
         [self errorWithFormat:@"unknown qualifier: %@", qualifier];
 
@@ -433,9 +433,9 @@ static GCSStringFormatter *stringFormatter = nil;
     else if ([q isKindOfClass:[EOOrQualifier class]])
       [self _findQualifiers: q withAdaptor: adaptor];
     else if ([q isKindOfClass:[EOKeyValueQualifier class]])
-      [self _formatQualifierValue: q withAdaptor: adaptor];
+      [self _formatQualifierValue: (EOKeyValueQualifier *)q withAdaptor: adaptor];
     else if ([q isKindOfClass:[EONotQualifier class]])
-      [self _formatQualifierValue: [q qualifier] withAdaptor: adaptor];
+      [self _formatQualifierValue: (EOKeyValueQualifier *)[q qualifier] withAdaptor: adaptor];
     else
       [self errorWithFormat:@"unknown qualifier: %@", q];
   }
@@ -450,9 +450,13 @@ static GCSStringFormatter *stringFormatter = nil;
 
   field = [qualifier key];
   attribute = [self _attributeForColumn: field];
-  formattedValue = [adaptor formatValue: [qualifier value]
-                           forAttribute: attribute];
-  [qualifier setValue: formattedValue];
+  if (attribute)
+    {
+      formattedValue = [adaptor formatValue: [qualifier value]
+                               forAttribute: attribute];
+      [qualifier setValue: formattedValue];
+      [qualifier setFormatted: YES];
+    }
 }
 
 - (NSString *)_sqlForSortOrderings:(NSArray *)_so {
