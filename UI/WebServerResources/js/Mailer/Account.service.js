@@ -143,16 +143,31 @@
     }
     else {
       this.$futureMailboxesData = Account.$Mailbox.$find(this, options).then(function(data) {
+        var previousMailboxes = _this.$flattenMailboxes({ all: true });
         _this.$mailboxes = data;
         _this.$expanded = false;
 
+        // Restore unseen count
+        var _visitForUnseencount = function(mailboxes) {
+          _.forEach(mailboxes, function(o) {
+            var previousMailbox = _.find(previousMailboxes, ['id', o.id]);
+            if (previousMailbox) {
+              o.unseenCount = previousMailbox.unseenCount;
+            }
+            if (o.children && o.children.length > 0) {
+              _visitForUnseencount(o.children);
+            }
+          });
+        };
+        _visitForUnseencount(_this.$mailboxes);
+
         // Set expanded folders from user's settings
         var expandedFolders,
-            _visit = function(mailboxes) {
+            _visitForExpanded = function(mailboxes) {
               _.forEach(mailboxes, function(o) {
                 o.$expanded = (expandedFolders.indexOf('/' + o.id) >= 0);
                 if (o.children && o.children.length > 0) {
-                  _visit(o.children);
+                  _visitForExpanded(o.children);
                 }
               });
             };
@@ -173,11 +188,12 @@
           }
           _this.$expanded = (expandedFolders.indexOf('/' + _this.id) >= 0);
           if (expandedFolders.length > 0) {
-            _visit(_this.$mailboxes);
+            _visitForExpanded(_this.$mailboxes);
           }
         }
         if (Account.$accounts)
           _this.$expanded |= (Account.$accounts.length == 1); // Always expand single account
+
         _this.$flattenMailboxes({reload: true});
 
         return _this.$mailboxes;
@@ -434,5 +450,5 @@
       }
     });
   };
- 
+
 })();
