@@ -784,7 +784,7 @@
     // Recursive function to synchronously delete batch of messages
     function _deleteMessages(start, end) {
       var currentUids = uids.slice(start, end),
-          currentMessages = uids.slice(start, end),
+          currentMessages = messages.slice(start, end),
           data = { uids: currentUids };
       return Mailbox.$$resource.post(_this.id, 'batchDelete', data).then(function(data) {
         if (end < uids.length) {
