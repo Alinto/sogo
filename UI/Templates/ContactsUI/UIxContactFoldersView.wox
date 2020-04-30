@@ -340,7 +340,7 @@
             <md-button class="sg-icon-button" ng-click="addressbook.unselectCards()">
               <md-icon>arrow_back</md-icon>
             </md-button>
-            <label>{{addressbook.selectedFolder.$selectedCount()}} <var:string label:value="selected"/></label>
+            <label class="md-truncate"><span ng-bind="addressbook.selectedFolder.$selectedCount()"><!-- count --></span> <var:string label:value="selected"/></label>
             <div class="md-flex"><!-- spacer --></div>
             <md-button class="sg-icon-button" ng-click="addressbook.selectAll()">
               <md-tooltip md-direction="left"><var:string label:value="Select All"/></md-tooltip>
