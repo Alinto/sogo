@@ -275,7 +275,7 @@ md-sidenav {
 
 .sg-mail-editor {
   .pseudo-input-container {
-    max-height: 400px;
+    max-height: $baseline-grid * 4 * 6; // about 6 lines
     overflow: hidden;
     overflow-y: auto;
     padding-bottom: 2px; // leave some space for the border
@@ -301,7 +301,7 @@ md-sidenav {
 }
 
 // Attachments list in bottom actions section of mail composer dialog
-md-dialog .md-actions.sg-mail-editor-attachments {
+md-dialog md-dialog-actions.sg-mail-editor-attachments {
   border-top: 1px solid $colorGrayLighter;
   overflow: auto;
   max-height: 2 * $pitch; // = 128px (3 rows of chips)
@@ -319,7 +319,7 @@ md-dialog .md-actions.sg-mail-editor-attachments {
     position: absolute;
     right: 0;
   }
-  .md-icon-button {
+  .msg-header-buttons .md-icon-button {
     // Attachment button (file upload label)
     // Lower margins to fit the md-actions max height (52px)
     margin-bottom: $baseline-grid/2;
