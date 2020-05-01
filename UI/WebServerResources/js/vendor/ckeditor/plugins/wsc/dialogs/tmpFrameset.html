@@ -11,8 +11,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 function doLoadScript( url )
 {
-	if ( !url )
-		return false ;
+	if ( !url || typeof url !== 'string' )
+	return false ;
 
 	var s = document.createElement( "script" ) ;
 	s.type = "text/javascript" ;
