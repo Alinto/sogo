@@ -1,5 +1,54 @@
 # Changelog
 
+### [4.3.1](https://github.com/inverse-inc/sogo/compare/SOGo-4.3.0...SOGo-4.3.1) (2020-05-01)
+
+### Bug Fixes
+
+* **calendar:** fallback to tz found in ics ([57bbb25](https://github.com/inverse-inc/sogo/commit/57bbb255cc0f349a83d6bd83c030761120eaf174))
+* **calendar:** fix first range of "busy off hours" in vFreeBusy response ([5e1f487](https://github.com/inverse-inc/sogo/commit/5e1f487e4945be3b62765d583e47861d8b6e8734))
+* **calendar:** handle tz with until in rrule (fixes [#4943](https://sogo.nu/bugs/view.php?id=4943)) ([24fc9a9](https://github.com/inverse-inc/sogo/commit/24fc9a950b799ae6f8dfd4728d3503131b7b688d))
+* **calendar:** use the calendar owner when generating freebusy information ([6af0058](https://github.com/inverse-inc/sogo/commit/6af0058657cb8e5ba96c4023bb673be5b6179c27))
+* **calendar(core):** avoid generating empty parameters list ([62e25f6](https://github.com/inverse-inc/sogo/commit/62e25f6c13320837bdf792a8f01a67ba5e58061f))
+* **calendar(core):** check for array size before looking into ([7829249](https://github.com/inverse-inc/sogo/commit/78292495bb3cdbdcab7922a3ff68df22ff58e176))
+* **calendar(js):** find a free slot for a maximum of 30 days ([058df21](https://github.com/inverse-inc/sogo/commit/058df21ada3396b19db3df5f695f0b909289f0c6))
+* **core:** escape quotes before sending SQL queries ([09c76b3](https://github.com/inverse-inc/sogo/commit/09c76b3649d7e58a809f4c1358f8794a446397d0), [d99bbbb](https://github.com/inverse-inc/sogo/commit/d99bbbb37ea94603831926cfbb0d9e9a25327123), [04a6217](https://github.com/inverse-inc/sogo/commit/04a6217512833b2fa04358220e5d520832b24a35)), closes [#5010](https://sogo.nu/bugs/view.php?id=5010)
+* **css:** improve contrast of toolbars w/input field ([eabb40a](https://github.com/inverse-inc/sogo/commit/eabb40a0bf06a17a8f91d9b9535f500777c4bcb3))
+* **eas:** fix invalid DisplayTo (fixes [#4988](https://sogo.nu/bugs/view.php?id=4988)) ([b8f3106](https://github.com/inverse-inc/sogo/commit/b8f31069ed6ad257daa666f7698a1054196c836e))
+* **eas:** properly encode DisplayTo (fixes [#4995](https://sogo.nu/bugs/view.php?id=4995)) ([18ffd1a](https://github.com/inverse-inc/sogo/commit/18ffd1a7440ff69fc907d3e6a59afc61d92d14f7))
+* **mail:** remove onpointerrawupdate event handler from HTML messages ([d1dbceb](https://github.com/inverse-inc/sogo/commit/d1dbceb407b37aff6563d06194189965af39cf3e)), closes [#4979](https://sogo.nu/bugs/view.php?id=4979)
+* **mail:** validate IMAP ACL compliance on main mail account ([da51482](https://github.com/inverse-inc/sogo/commit/da51482ce1cd4cc15b5de3c2b203b60fa6c6ddde))
+* **mail:** wrap HTML part before re-encoding content ([bc963d5](https://github.com/inverse-inc/sogo/commit/bc963d53c69ead5e06cfb3cf52f75b64582178af))
+* **mail(css):** minor improvements to the mail editor ([807cefa](https://github.com/inverse-inc/sogo/commit/807cefaa39d591a0506913d4831cb99a9ff91732))
+* **mail(js):** disable autogrow of textarea in popup window ([daaad93](https://github.com/inverse-inc/sogo/commit/daaad938cbfc73426f260ca95ebb9ea7e663c3cb)), closes [#4962](https://sogo.nu/bugs/view.php?id=4962)
+* **mail(js):** limit number of messages to batch delete per API call ([4e2d509](https://github.com/inverse-inc/sogo/commit/4e2d5098c750eb78acee226283ecd4cc748f8ca9))
+* **mail(js):** restore unseen count after deleting a mailbox ([158c5e4](https://github.com/inverse-inc/sogo/commit/158c5e45c45ad06bebf4e0841563204ecd2c4330))
+* **mail(js):** skrink autogrow md-input when content is removed ([95b3e9d](https://github.com/inverse-inc/sogo/commit/95b3e9d4fa42fcd65625fefc16cb5d7b2a2a010a))
+* **mail(js):** url-encode folder path to handle special characters (%) ([52bb3ba](https://github.com/inverse-inc/sogo/commit/52bb3baa8b3f5653ed6e40e1f370d341a34d7d98)), closes [#4989](https://sogo.nu/bugs/view.php?id=4989)
+* **mail(js):** wrong argument to Mailbox.$_deleteMessages ([2c050d8](https://github.com/inverse-inc/sogo/commit/2c050d847e84ec35e3d27bb222b376d6e9846835)), closes [#4986](https://sogo.nu/bugs/view.php?id=4986)
+* **preferences:** avoid exception when parsing PreventInvitationsWhitelist ([824b383](https://github.com/inverse-inc/sogo/commit/824b38332c4cd23bf343e8510214f0b56212721c)), closes [#5006](https://sogo.nu/bugs/view.php?id=5006)
+* **preferences(html):** reject action of mail filter is now a textarea ([656410e](https://github.com/inverse-inc/sogo/commit/656410eb6b4fd54f19134ad65844dc62835ef40c))
+* **web(css):** space issue with folders subscription dialog on Firefox ([860d635](https://github.com/inverse-inc/sogo/commit/860d635c9c8d0ce0862c70142304fe2c88a68f3d)), closes [#4954](https://sogo.nu/bugs/view.php?id=4954)
+* **web(css):** truncate text of toolbar in multi-selection mode ([174b44e](https://github.com/inverse-inc/sogo/commit/174b44ed50415dbf2fbadc17ee19b70f08380091)), closes [#4623](https://sogo.nu/bugs/view.php?id=4623)
+* **web(js):** handle SAML assertion expiration ([6446176](https://github.com/inverse-inc/sogo/commit/64461764c83ad02a8778f44d6bab64c1d965cf60), [fd063fd](https://github.com/inverse-inc/sogo/commit/fd063fd5b370c347ca5b164e8a92f2c0b4060637))
+
+### Localization
+
+* **ca:** update Catalan translation ([0e5e9dd](https://github.com/inverse-inc/sogo/commit/0e5e9ddb749a0ab566f0a5224ea998549e9a1030))
+* **cs:** update Czech translation ([e3559d5](https://github.com/inverse-inc/sogo/commit/e3559d5ca3ddb53c1d6b514e27ecb8153dbbb50a))
+* **de:** update German translation ([a41fb9e](https://github.com/inverse-inc/sogo/commit/a41fb9e1a9c2e604b14a3aaedd576f9e9da3f32d))
+* **fr:** update French translation ([f75af12](https://github.com/inverse-inc/sogo/commit/f75af12db89f38c1042d6ebac792dc3b88532d22))
+* **hu:** update Hungarian translation ([543abb3](https://github.com/inverse-inc/sogo/commit/543abb39d5b5a5423667f46610d457fff2efb467))
+* **lv:** update Latvian translation ([e8e41f1](https://github.com/inverse-inc/sogo/commit/e8e41f15e3f2cb6d2531661f5d0b176be1a8d44e))
+* **nl:** update Dutch translation ([91d193f](https://github.com/inverse-inc/sogo/commit/91d193fa0f3f2a11aae5468ba5ea9e40f552abb8))
+* **pl:** update Polish translation ([7b4e4f7](https://github.com/inverse-inc/sogo/commit/7b4e4f7345c6fe0e5fe41e368cb412aaecfb977e))
+* **pt_BR:** update Brazilian (Portuguese) translation ([c61fe4a](https://github.com/inverse-inc/sogo/commit/c61fe4a188f0407112cd346a483bb34a745492ab))
+* **ro_RO:** update Romanian translation ([de5da7b](https://github.com/inverse-inc/sogo/commit/de5da7bd0d3264c0397703b94f07747d3b062b3e))
+* **sk:** update Slovak translation ([84f3fd5](https://github.com/inverse-inc/sogo/commit/84f3fd5e1c670c196051e23b1308ed90ece4d5e7))
+
+### Enhancements
+
+* **web:** don't wait on Sieve server to render UIxPageFrame.wox ([3e6cd3c](https://github.com/inverse-inc/sogo/commit/3e6cd3c53cb9708f90bd3600ad948f631688a3b6))
+
 ## [4.3.0](https://github.com/inverse-inc/sogo/compare/SOGo-4.2.0...SOGo-4.3.0) (2020-01-21)
 
 ### Features
@@ -20,7 +69,6 @@
 * **mail:** fix SMTP authentication when reporting spam/ham ([62f6431](https://github.com/inverse-inc/sogo/commit/62f64314c049c1b2b17ca7bc4f90bb50c2a734a2)), closes [#4941](https://sogo.nu/bugs/view.php?id=4941)
 * **mail(js):** bypass autogrow feature of md-input to fix scroll jumping ([73dc86a](https://github.com/inverse-inc/sogo/commit/73dc86a6ed4a5febe640667bd8cc1f6ff4de7110))
 * **tool:** fix error handling when updating Sieve script ([d6d33f9](https://github.com/inverse-inc/sogo/commit/d6d33f9f0bcf99a058955a3dfff6354ebd9c0c08))
-
 
 ### Localization
 
