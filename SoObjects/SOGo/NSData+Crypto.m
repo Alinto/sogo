@@ -1,6 +1,6 @@
 /* NSData+Crypto.m - this file is part of SOGo
  *
- * Copyright (C) 2012 Nicolas Höft
+ * Copyright (C) 2012, 2020 Nicolas Höft
  * Copyright (C) 2012-2020 Inverse inc.
  * Copyright (C) 2012 Jeroen Dekkers
  *
@@ -50,6 +50,7 @@
 #endif
 
 #include "aes.h"
+#include "crypt_blowfish.h"
 #include "lmhash.h"
 
 #import <Foundation/NSArray.h>
@@ -61,6 +62,12 @@ static unsigned charTo4Bits(char c);
 static BOOL check_gnutls_init(void);
 static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
 #endif
+
+#define BLF_CRYPT_DEFAULT_COMPLEXITY (5)
+#define BLF_CRYPT_SALT_LEN (16)
+#define BLF_CRYPT_BUFFER_LEN (128)
+#define BLF_CRYPT_PREFIX_LEN (7+22+1) /* $2.$nn$ + salt */
+#define BLF_CRYPT_PREFIX "$2y"
 
 
 @implementation NSData (SOGoCryptoExtension)
@@ -244,6 +251,10 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   else if ([passwordScheme caseInsensitiveCompare: @"sha512-crypt"] == NSOrderedSame)
     {
       return [self asSHA512CryptUsingSalt: theSalt];
+    }
+  else if ([passwordScheme caseInsensitiveCompare: @"blf-crypt"] == NSOrderedSame)
+    {
+      return [self asBlowfishCryptUsingSalt: theSalt];
     }
   else if ([[passwordScheme lowercaseString] hasPrefix: @"sym"])
     {
@@ -763,6 +774,52 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
     return nil;
   return [NSData dataWithBytes: buf length: strlen(buf)];
 }
+
+/**
+ * Hash the data using blowfish-crypt
+ * @param theSalt The salt to be used must not be nil, if empty, one will be generated
+ */
+- (NSData *) asBlowfishCryptUsingSalt: (NSData *) theSalt
+{
+  NSString *cleartext;
+  char hashed_password[BLF_CRYPT_BUFFER_LEN];
+  char magic_salt[BLF_CRYPT_PREFIX_LEN]; // contains $2.$nn$ + salt
+
+  if ([theSalt length] == 0)
+    {
+      // generate a salt with default complexity if none was provided
+      NSData* salt = [NSData generateSaltForLength: BLF_CRYPT_SALT_LEN];
+      if (_crypt_gensalt_blowfish_rn(BLF_CRYPT_PREFIX, BLF_CRYPT_DEFAULT_COMPLEXITY,
+        [salt bytes], BLF_CRYPT_SALT_LEN,
+        magic_salt, BLF_CRYPT_PREFIX_LEN) == NULL)
+          return nil;
+    }
+  else
+    {
+      const char* salt = [theSalt bytes];
+      if ([theSalt length] < BLF_CRYPT_PREFIX_LEN ||
+          salt[0] != '$' || salt[1] != '2' ||
+          salt[2] < 'a' || salt[2] > 'z' ||
+          salt[3] != '$')
+        {
+          return nil;
+        }
+      memcpy(magic_salt, salt, BLF_CRYPT_PREFIX_LEN);
+    }
+
+  cleartext = [[NSString alloc] initWithData: self encoding: NSUTF8StringEncoding];
+  const char* password = [cleartext UTF8String];
+
+  char* bf_res = _crypt_blowfish_rn(password, magic_salt,
+    hashed_password, BLF_CRYPT_BUFFER_LEN);
+  [cleartext autorelease];
+
+  if (bf_res == NULL)
+    return nil;
+
+  return [NSData dataWithBytes: hashed_password length: strlen(hashed_password)];
+}
+
 
 /**
  * Get the salt from a password encrypted with a specied scheme

@@ -60,4 +60,29 @@
     }
 }
 
+- (void) test_blowfish
+{
+  NSString *error;
+  // well-known comparison
+  NSString *blf_key = @"123456";
+  NSString *blf_hash = @"{BLF-CRYPT}$2a$05$tLVuFQTgdwrZmixu.QMxoedUAUEeIFIBv89Ur5mQ6F1vBL8Vw1mXO";
+  error = [NSString stringWithFormat:
+                          @"string '%@' wrong BLF-CRYPT: '%@'",
+                        blf_key, blf_hash];
+  testWithMessage([blf_key isEqualToCrypted:blf_hash withDefaultScheme: @"CRYPT" keyPath: nil], error);
+
+  // generate a new blowfish-crypt key
+  NSString *blf_prefix = @"$2y$05$";
+
+  NSString *blf_result = [blf_key asCryptedPassUsingScheme: @"blf-crypt" keyPath: nil];
+
+  error = [NSString stringWithFormat:
+                          @"returned hash '%@' has incorrect BLF-CRYPT prefix: '%@'",
+                        blf_result, blf_prefix];
+
+  testWithMessage([blf_result hasPrefix: blf_prefix], error);
+
+  test([blf_key isEqualToCrypted:blf_result withDefaultScheme: @"BLF-CRYPT" keyPath: nil]);
+}
+
 @end

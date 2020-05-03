@@ -53,6 +53,7 @@
 
 - (NSData *) asCryptUsingSalt: (NSData *) theSalt;
 - (NSData *) asMD5CryptUsingSalt: (NSData *) theSalt;
+- (NSData *) asBlowfishCryptUsingSalt: (NSData *) theSalt;
 
 - (NSData *) extractSalt: (NSString *) theScheme;
 
