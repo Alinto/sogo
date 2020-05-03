@@ -1,6 +1,7 @@
-/* TestNSString+MD5SHA1.m - this file is part of SOGo
+/* TestNSString+Crypto.m - this file is part of SOGo
  *
  * Copyright (C) 2011, 2012 Jeroen Dekkers
+ * Copyright (C) 2020 Nicolas Höft
  *
  * Author: Jeroen Dekkers <jeroen@dekkers.ch>
  *
@@ -83,6 +84,32 @@
   testWithMessage([blf_result hasPrefix: blf_prefix], error);
 
   test([blf_key isEqualToCrypted:blf_result withDefaultScheme: @"BLF-CRYPT" keyPath: nil]);
+}
+
+- (void) test_pbkdf2
+{
+  NSString *error;
+  // well-known comparison
+  NSString *pbkdf2_key = @"123456";
+  NSString *pbkdf2_hash = @"{PBKDF2}$1$xbhnwhLxltdS9L5M$5001$f1699047a6132383490817d6e58a5284f13339f0";
+  NSString *pkbf2_prefix;
+  NSString *pkbf2_result;
+
+  error = [NSString stringWithFormat:
+                          @"string '%@' wrong PBKDF2: '%@'",
+                        pbkdf2_key, pbkdf2_hash];
+  testWithMessage([pbkdf2_key isEqualToCrypted:pbkdf2_hash withDefaultScheme: @"CRYPT" keyPath: nil], error);
+
+  // generate a new pbkdf2-crypt key
+  pkbf2_prefix = @"$1$";
+  pkbf2_result = [pbkdf2_key asCryptedPassUsingScheme: @"PBKDF2" keyPath: nil];
+
+  error = [NSString stringWithFormat:
+                          @"returned hash '%@' has incorrect PBKDF2 prefix: '%@'",
+                        pkbf2_result, pkbf2_prefix];
+
+  testWithMessage([pkbf2_result hasPrefix: pkbf2_prefix], error);
+  test([pbkdf2_key isEqualToCrypted:pkbf2_result withDefaultScheme: @"PBKDF2" keyPath: nil]);
 }
 
 @end
