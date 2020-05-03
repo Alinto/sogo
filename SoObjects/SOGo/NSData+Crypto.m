@@ -175,7 +175,7 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
  *
  * @param passwordScheme The scheme to use for hashing/encryption.
  * @param theSalt The salt to be used. If none is given but needed, it will be generated
- * @return Binary data from the encryption by the specified scheme. On error the funciton returns nil.
+ * @return Binary data from the encryption by the specified scheme. On error the function returns nil.
  */
 - (NSData *) asCryptedPassUsingScheme: (NSString *) passwordScheme
                              withSalt: (NSData *) theSalt
@@ -251,7 +251,7 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
       // we return nil for now. Example of what theSalt might contain:
       // $AES-128-CBC$cinlbHKnyBApySphVCz6yA==$Z9hjCXfMhz4xbXkW+aMkAw==
       // If theSalt is empty, that means we are not validating a password
-      // but rather changing it. In this case, we generate an IV.      
+      // but rather changing it. In this case, we generate an IV.
       NSString *cipher, *iv;
 
       cipher = nil;
@@ -285,11 +285,11 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
 - (NSData *) asLM
 {
   NSData *out;
-  
+
   unsigned char buf[14];
   unsigned char *o;
   unsigned int len;
-  
+
   memset(buf, 0, 14);
   len = ([self length] >= 14 ? 14 : [self length]);
   [self getBytes: buf  length: len];
@@ -317,7 +317,7 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
 #if defined(HAVE_GNUTLS)
   if (!check_gnutls_init())
     return nil;
-  
+
   md4_buffer([self bytes], [self length], md4);
 #elif defined(HAVE_OPENSSL)
   MD4([self bytes], [self length], md4);
@@ -374,7 +374,7 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   int i;
   int len;
   NSData *key;
-  
+
   if ([self length] > 64)
     {
       key = [self asMD5];
@@ -390,7 +390,7 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   // make sure the rest of the bytes is zero
   memset(inner + len, 0, 64 - len);
   memcpy(outer, inner, 64);
-  
+
   for (i = 0; i < 64; i++)
     {
       inner[i] ^= 0x36;
@@ -563,7 +563,7 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
  */
 - (NSData *) asSSHAUsingSalt: (NSData *) theSalt
 {
-  // 
+  //
   NSMutableData *sshaData;
 
   // generate salt, if not available
@@ -780,15 +780,16 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
 
   // for the ssha schemes the salt is appended at the endif
   // so the range with the salt are bytes after each digest length
-  if ([theScheme caseInsensitiveCompare: @"crypt"] == NSOrderedSame)
+  if ([theScheme caseInsensitiveCompare: @"crypt"] == NSOrderedSame ||
+      [theScheme caseInsensitiveCompare: @"blf-crypt"] == NSOrderedSame)
     {
-      // for crypt schemes simply use the whole string
+      // for (blf-)crypt schemes simply use the whole string
       // the crypt() function is able to extract it by itself
       r = NSMakeRange(0, len);
     }
   else if ([theScheme caseInsensitiveCompare: @"md5-crypt"] == NSOrderedSame ||
-	   [theScheme caseInsensitiveCompare: @"sha256-crypt"] == NSOrderedSame ||
-	   [theScheme caseInsensitiveCompare: @"sha512-crypt"] == NSOrderedSame)
+      [theScheme caseInsensitiveCompare: @"sha256-crypt"] == NSOrderedSame ||
+      [theScheme caseInsensitiveCompare: @"sha512-crypt"] == NSOrderedSame)
     {
       // md5-crypt is generated the following "$1$<salt>$<encrypted pass>"
       // sha256-crypt is generated the following "$5$<salt>$<encrypted pass>"
@@ -807,21 +808,21 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
         }
       // second is the identifier of md5-crypt/sha256-crypt or sha512-crypt
       else if ([[cryptParts objectAtIndex: 1] caseInsensitiveCompare: @"1"] == NSOrderedSame ||
-	       [[cryptParts objectAtIndex: 1] caseInsensitiveCompare: @"5"] == NSOrderedSame ||
-	       [[cryptParts objectAtIndex: 1] caseInsensitiveCompare: @"6"] == NSOrderedSame)
+          [[cryptParts objectAtIndex: 1] caseInsensitiveCompare: @"5"] == NSOrderedSame ||
+          [[cryptParts objectAtIndex: 1] caseInsensitiveCompare: @"6"] == NSOrderedSame)
         {
-	  // third is the salt; convert it to NSData
-	  if ([cryptParts count] == 4)
-	    return [[cryptParts objectAtIndex: 2] dataUsingEncoding: NSUTF8StringEncoding];
-	  else
-	    {
-	      NSString *saltWithRounds;
+          // third is the salt; convert it to NSData
+          if ([cryptParts count] == 4)
+            return [[cryptParts objectAtIndex: 2] dataUsingEncoding: NSUTF8StringEncoding];
+          else
+            {
+              NSString *saltWithRounds;
 
-	      saltWithRounds = [NSString stringWithFormat: @"%@$%@", [cryptParts objectAtIndex: 2], [cryptParts objectAtIndex: 3]]; 
+              saltWithRounds = [NSString stringWithFormat: @"%@$%@", [cryptParts objectAtIndex: 2], [cryptParts objectAtIndex: 3]];
 
-	      return [saltWithRounds dataUsingEncoding: NSUTF8StringEncoding];
-	    }
-	}
+              return [saltWithRounds dataUsingEncoding: NSUTF8StringEncoding];
+            }
+        }
       // nothing good
       return [NSData data];
     }
