@@ -58,7 +58,7 @@
 - (NSData *) extractSalt: (NSString *) theScheme;
 
 + (NSData *) generateSaltForLength: (unsigned int) theLength
-                        withBase64: (BOOL) doBase64;
+                        withPrintable: (BOOL) doPrintable;
 + (NSData *) generateSaltForLength: (unsigned int) theLength;
 
 + (NSString *) encodeDataAsHexString: (NSData *) theData;

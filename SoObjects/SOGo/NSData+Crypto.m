@@ -69,6 +69,9 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
 #define BLF_CRYPT_PREFIX_LEN (7+22+1) /* $2.$nn$ + salt */
 #define BLF_CRYPT_PREFIX "$2y"
 
+static const char salt_chars[] =
+	"./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
 
 @implementation NSData (SOGoCryptoExtension)
 
@@ -141,7 +144,7 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
  */
 + (NSData *) generateSaltForLength: (unsigned int) theLength
 {
-  return [NSData generateSaltForLength: theLength withBase64: NO];
+  return [NSData generateSaltForLength: theLength withPrintable: NO];
 }
 
 /**
@@ -149,15 +152,16 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
  * with doBase64 == YES then the data will be longer than theLength
  *
  * @param theLength Length of the binary data to be generated in bytes
- * @param doBase64 Convert the data into Base-64 before retuning it, be aware that this makes the binary data longer
+ * @param doPrintable Use only printable characters
  * @return Pseudo-random binary data with length theLength or nil, if an error occured
  */
 + (NSData *) generateSaltForLength: (unsigned int) theLength
-                        withBase64: (BOOL) doBase64
+                        withPrintable: (BOOL) doPrintable
 {
   char *buf;
   int fd;
   NSData *data;
+  unsigned int i;
 
   fd = open("/dev/urandom", O_RDONLY);
 
@@ -166,12 +170,14 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
       buf = (char *)malloc(theLength);
       read(fd, buf, theLength);
       close(fd);
-
-      data = [NSData dataWithBytesNoCopy: buf  length: theLength  freeWhenDone: YES];
-      if(doBase64 == YES)
+      if (doPrintable == YES)
         {
-          return [data dataByEncodingBase64WithLineLength: 1024];
+          for (i = 0; i < theLength; i++)
+            {
+              buf[i] = salt_chars[buf[i] % (sizeof(salt_chars)-1)];
+            }
         }
+      data = [NSData dataWithBytesNoCopy: buf  length: theLength  freeWhenDone: YES];
       return data;
     }
   return nil;
@@ -689,8 +695,8 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
 
   if ([theSalt length] == 0)
     {
-      // make sure these characters are all printable by using base64
-      theSalt = [NSData generateSaltForLength: 8  withBase64: YES];
+      // make sure these characters are all printable
+      theSalt = [NSData generateSaltForLength: 8  withPrintable: YES];
     }
 
   cryptString = [[NSString alloc] initWithData: self  encoding: NSUTF8StringEncoding];
@@ -761,7 +767,8 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   // crypt() works with strings, so convert NSData to strings
   cryptString = [[NSString alloc] initWithData: self  encoding: NSUTF8StringEncoding];
 
-  if ([theSalt length] == 0) theSalt = [NSData generateSaltForLength: 8 withBase64: YES];
+  if ([theSalt length] == 0)
+    theSalt = [NSData generateSaltForLength: 8 withPrintable: YES];
 
   saltString = [[NSString alloc] initWithData: theSalt  encoding: NSUTF8StringEncoding];
 
