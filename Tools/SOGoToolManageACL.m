@@ -413,7 +413,9 @@ typedef enum
   fm = [GCSFolderManager defaultFolderManager];
   f = [fm folderAtPath: [NSString stringWithFormat: @"/Users/%@/%@", owner, folder]];
 
-  if (!f)
+  // Skip the folder existence check so we can auto-create the personal folder
+  // for users that have never logged-in
+  if (!f && command != ManageACLSubscribe)
     {
       NSLog(@"No folder %@ found for user %@", folder, owner);
       rc = NO;
