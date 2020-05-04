@@ -55,6 +55,7 @@
   LDAPSourceSchema *_schema;
   NSString *_IDField;     // the first part of a user DN
   NSString *_CNField;
+  NSString *_SNField;
   NSString *_UIDField;
   NSArray *_mailFields;
   NSArray *_searchFields;
@@ -102,6 +103,7 @@
 - (void) setBaseDN: (NSString *) newBaseDN
 	   IDField: (NSString *) newIDField
 	   CNField: (NSString *) newCNField
+       SNField: (NSString *) newSNField
 	  UIDField: (NSString *) newUIDField
 	mailFields: (NSArray *) newMailFields
       searchFields: (NSArray *) newSearchFields
