@@ -208,12 +208,12 @@
    * @see {@link Calendar.$getComponent}
    */
   Component.$find = function(calendarId, componentId, occurrenceId) {
-    var futureComponentData, path = [calendarId, encodeURIComponent(componentId)];
+    var futureComponentData, path = [calendarId, componentId];
 
     if (occurrenceId)
       path.push(occurrenceId);
 
-    futureComponentData = this.$$resource.fetch(path.join('/'), 'view');
+    futureComponentData = this.$$resource.fetch(path, 'view');
 
     return new Component(futureComponentData);
   };
@@ -933,7 +933,7 @@
    * @returns a promise of the HTTP operation
    */
   Component.prototype.$reply = function() {
-    var _this = this, data, path = [this.pid, encodeURIComponent(this.id)];
+    var _this = this, data, path = [this.pid, this.id];
 
     if (this.occurrenceId)
       path.push(this.occurrenceId);
@@ -944,7 +944,7 @@
       alarm: this.$hasAlarm? this.alarm : {}
     };
 
-    return Component.$$resource.save(path.join('/'), data, { action: 'rsvpAppointment' })
+    return Component.$$resource.save(path, data, { action: 'rsvpAppointment' })
       .then(function(data) {
         // Make a copy of the data for an eventual reset
         _this.$shadowData = _this.$omit();
@@ -959,7 +959,7 @@
    * @returns a promise of the HTTP operation
    */
   Component.prototype.$adjust = function(params) {
-    var path = [this.pid, encodeURIComponent(this.id)];
+    var path = [this.pid, this.id];
 
     if (_.every(_.values(params), function(v) { return v === 0; }))
       // No changes
@@ -970,7 +970,7 @@
 
     Component.$log.debug('adjust ' + path.join('/') + ' ' + JSON.stringify(params));
 
-    return Component.$$resource.save(path.join('/'), params, { action: 'adjust' });
+    return Component.$$resource.save(path, params, { action: 'adjust' });
   };
 
   /**
@@ -1055,7 +1055,7 @@
     }
 
     // Build URL
-    path = [this.pid, encodeURIComponent(this.id)];
+    path = [this.pid, this.id];
 
     if (this.isNew)
       options = { action: 'saveAs' + this.type.capitalize() };
@@ -1065,7 +1065,7 @@
 
     angular.extend(component, extraAttributes);
 
-    return Component.$$resource.save(path.join('/'), component, options)
+    return Component.$$resource.save(path, component, options)
       .then(function(data) {
         // Make a copy of the data for an eventual reset
         _this.$shadowData = _this.$omit();
@@ -1080,12 +1080,12 @@
    * @param {boolean} occurrenceOnly - delete this occurrence only
    */
   Component.prototype.remove = function(occurrenceOnly) {
-    var _this = this, path = [this.pid, encodeURIComponent(this.id)];
+    var _this = this, path = [this.pid, this.id];
 
     if (occurrenceOnly && this.occurrenceId)
       path.push(this.occurrenceId);
 
-    return Component.$$resource.remove(path.join('/'));
+    return Component.$$resource.remove(path);
   };
 
   /**
@@ -1177,7 +1177,7 @@
    * @returns a promise of the HTTP operation
    */
   Component.prototype.copyTo = function(calendar) {
-    return Component.$$resource.post(this.pid + '/' + encodeURIComponent(this.id), 'copy', {destination: calendar});
+    return Component.$$resource.post([this.pid, this.id], 'copy', {destination: calendar});
   };
 
   /**
@@ -1188,7 +1188,7 @@
    * @returns a promise of the HTTP operation
    */
   Component.prototype.moveTo = function(calendar) {
-    return Component.$$resource.post(this.pid + '/' + encodeURIComponent(this.id), 'move', {destination: calendar});
+    return Component.$$resource.post([this.pid, this.id], 'move', {destination: calendar});
   };
 
   Component.prototype.toString = function() {

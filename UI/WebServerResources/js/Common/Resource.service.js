@@ -42,6 +42,18 @@
    */
   angular.module('SOGo.Common').factory('Resource', Resource.$factory);
 
+  Resource.prototype.encodeURL = function(url) {
+    var _this = this,
+        segments = url;
+
+    if (!angular.isArray(segments)) {
+      segments = url.split('/');
+    }
+    return _.map(segments, function(segment) {
+      return _this._window.encodeURIComponent(segment.toString());
+    });
+  };
+
   /**
    * @function userResource
    * @memberof Resource.prototype
@@ -85,9 +97,9 @@
   Resource.prototype.fetch = function(folderId, action, params) {
     var deferred = this._q.defer(),
         path = [this._path];
-    if (folderId) path.push(folderId.split('/'));
+    if (folderId) path.push(this.encodeURL(folderId));
     if (action)   path.push(action);
-    path = this._window.encodeURI(_.compact(_.flatten(path)).join('/'));
+    path = _.compact(_.flatten(path)).join('/');
 
     this._http({
       method: 'GET',
@@ -114,7 +126,7 @@
   Resource.prototype.quietFetch = function(folderId, action, params) {
     var deferred = this._q.defer(),
         path = [this._path];
-    if (folderId) path.push(folderId.split('/'));
+    if (folderId) path.push(this.encodeURL(folderId));
     if (action)   path.push(action);
     path = _.compact(_.flatten(path)).join('/');
 
@@ -189,9 +201,9 @@
   Resource.prototype.post = function(id, action, data) {
     var deferred = this._q.defer(),
         path = [this._path];
-    if (id) path.push(id);
+    if (id) path.push(this.encodeURL(id));
     if (action) path.push(action);
-    path = this._window.encodeURI(_.compact(_.flatten(path)).join('/'));
+    path = _.compact(_.flatten(path)).join('/');
 
     this._http
       .post(path, data)
@@ -226,7 +238,7 @@
     var deferred = this._q.defer(),
         type = (options && options.type)? options.type : 'application/zip',
         path = [this._path];
-    if (id) path.push(id);
+    if (id) path.push(this.encodeURL(id));
     if (action) path.push(action);
     path = _.compact(_.flatten(path)).join('/');
 
@@ -293,7 +305,7 @@
    */
   Resource.prototype.remove = function(uid) {
     var deferred = this._q.defer(),
-        path = this._path + '/' + uid + '/delete';
+        path = _.flatten([this._path, this.encodeURL(uid), 'delete']).join('/');
 
     this._http
       .get(path)

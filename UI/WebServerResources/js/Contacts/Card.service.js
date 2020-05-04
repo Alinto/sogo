@@ -209,10 +209,7 @@
    * @returns the relative URL, properly encoded
    */
   Card.prototype.$path = function() {
-    return [
-      Card.encodeUri(this.pid),
-      Card.encodeUri(this.id)
-    ].join('/');
+    return [this.pid, this.id];
   };
 
   /**
