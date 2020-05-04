@@ -34,6 +34,7 @@
 #import "NSString+Crypto.h"
 #import "SOGoCache.h"
 #import "SOGoSystemDefaults.h"
+#import "SOGoUser.h"
 #import "SOGoUserManager.h"
 
 #import "LDAPSource.h"
@@ -2027,7 +2028,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
   NSString *dn, *login;
   SOGoUserManager *um;
   NSDictionary *d;
-  NSDictionary *user;
+  SOGoUser *user;
   NSArray *o;
   NSAutoreleasePool *pool;
   int i, c;
@@ -2075,10 +2076,11 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
             {
               pool = [NSAutoreleasePool new];
               dn = [dns objectAtIndex: i];
-              user = [self lookupContactEntryByDN: dn];
+              login = [um getLoginForDN: [dn lowercaseString]];
+              user = [SOGoUser userWithLogin: login  roles: nil];
               if (user)
                 {
-                  [logins addObject: [user objectForKey: @"c_uid"]];
+                  [logins addObject: login];
                   [members addObject: user];
                 }
               [pool release];
@@ -2089,11 +2091,11 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
             {
               pool = [NSAutoreleasePool new];
               login = [uids objectAtIndex: i];
-              user = [self lookupContactEntry: login inDomain: nil];
+              user = [SOGoUser userWithLogin: login  roles: nil];
 
               if (user)
                 {
-                  [logins addObject: [user objectForKey: @"c_uid"]];
+                  [logins addObject: [user loginInDomain]];
                   [members addObject: user];
                 }
               [pool release];
