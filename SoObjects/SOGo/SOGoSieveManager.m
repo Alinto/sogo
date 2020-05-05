@@ -843,7 +843,7 @@ static NSString *sieveScriptName = @"sogo";
                      andPassword: (NSString *) thePassword
                  forceActivation: (BOOL) forceActivation
 {
-  NSString *filterScript, *v, *content, *message;
+  NSString *filterScript, *v, *delimiter, *content, *message;
   NSMutableArray *req;
   NSMutableString *script, *header;
   NSDictionary *result, *values;
@@ -901,12 +901,17 @@ static NSString *sieveScriptName = @"sogo";
   else
     imapClient = [[theAccount imap4Connection] client];
 
-  if (![imapClient delimiter])
+  delimiter = [imapClient delimiter];
+
+  if (!delimiter)
     [imapClient list: @"INBOX"  pattern: @""];
+
+  if (!delimiter)
+    delimiter = [dd stringForKey: @"NGImap4ConnectionStringSeparator"];
 
   // We first handle filters
   filterScript = [self sieveScriptWithRequirements: req
-                                         delimiter: [imapClient delimiter]];
+                                         delimiter: delimiter];
   if (filterScript)
     {
       if ([filterScript length])
