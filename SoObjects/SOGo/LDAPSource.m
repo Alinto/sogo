@@ -2081,7 +2081,8 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
               if (user)
                 {
                   [logins addObject: login];
-                  [members addObject: user];
+                  [members addObject: [NSDictionary dictionaryWithObject: login
+                                                                  forKey: @"c_uid"]];
                 }
               [pool release];
             }
@@ -2092,11 +2093,11 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
               pool = [NSAutoreleasePool new];
               login = [uids objectAtIndex: i];
               user = [SOGoUser userWithLogin: login  roles: nil];
-
               if (user)
                 {
-                  [logins addObject: [user loginInDomain]];
-                  [members addObject: user];
+                  [logins addObject: login];
+                  [members addObject: [NSDictionary dictionaryWithObject: login
+                                                                  forKey: @"c_uid"]];
                 }
               [pool release];
             }
