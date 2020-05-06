@@ -1,5 +1,14 @@
 # Changelog
 
+### [4.3.2](https://github.com/inverse-inc/sogo/compare/SOGo-4.3.1...SOGo-4.3.2) (2020-05-06)
+
+### Bug Fixes
+
+* **core:** LDAP group expansion must use all user sources ([7b5c787](https://github.com/inverse-inc/sogo/commit/7b5c7877182030e113bc6734f3ce9d3b09e7fec5))
+* **core:** LDAP group expansion must use all user sources ([8f7b2bf](https://github.com/inverse-inc/sogo/commit/8f7b2bfbed3978751011a86e764e65ee45ac2cf4))
+* **core:** skip folder check during ACL subscribe ([7929fd3](https://github.com/inverse-inc/sogo/commit/7929fd394fa7da003a079872a0128b848c514876), [8a4e799](https://github.com/inverse-inc/sogo/commit/8a4e79963f4ec973f893eb6fe9d38700488dcc45))
+* **web(js):** improve encoding of folder paths in XHR calls ([e7da4c1](https://github.com/inverse-inc/sogo/commit/e7da4c19b82fa9f9587f97d6ba2d4a411cc778db)), closes [#4989](https://sogo.nu/bugs/view.php?id=4989)
+
 ### [4.3.1](https://github.com/inverse-inc/sogo/compare/SOGo-4.3.0...SOGo-4.3.1) (2020-05-01)
 
 ### Bug Fixes
