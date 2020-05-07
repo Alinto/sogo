@@ -52,16 +52,6 @@
               <input type="password" ng-model="app.creds.password" ng-required="true"/>
             </md-input-container>
 
-            <var:if condition="isGoogleAuthenticatorEnabled">
-              <md-input-container class="md-block"
-                                  ng-show="app.showGoogleAuthenticatorCode">
-                <label><var:string label:value="Google Authenticator
-                Verification Code"/></label>
-                <md-icon>email</md-icon>
-                <input type="text" ng-model="app.creds.verificationCode" ng-required="false"/>
-              </md-input-container>
-            </var:if>
-
             <!-- LANGUAGES SELECT -->
             <div layout="row" layout-align="start end">
               <md-icon>language</md-icon>
@@ -112,12 +102,12 @@
               </md-button>
               <md-button class="md-fab md-accent md-hue-2" type="submit"
                          label:aria-label="Connect"
-                         ng-disabled="loginForm.$invalid" sg-ripple-click="loginContent">
+                         ng-if="!app.loginState"
+                         ng-disabled="loginForm.$invalid"
+                         sg-ripple-click="loginContent">
                 <md-icon>arrow_forward</md-icon>
               </md-button>
             </div>
-
-          </form>
 
           <sg-ripple class="md-default-theme md-accent md-bg"
                      ng-class="{ 'md-warn': app.loginState == 'error' }"><!-- ripple background --></sg-ripple>
@@ -136,6 +126,36 @@
               </div>
             </div>
 
+            <!-- Google Authenticator Code -->
+            <var:if condition="isGoogleAuthenticatorEnabled">
+            <div layout="row" layout-align="center center" layout-fill="layout-fill"
+                 ng-switch-when="googleauthenticatorcode">
+              <div flex="80" flex-sm="50" flex-gt-sm="40">
+                <md-input-container class="md-block">
+                  <label><var:string label:value="Verification Code"/></label>
+                  <md-icon>lock</md-icon>
+                  <input type="text" ng-pattern="app.verificationCodePattern" ng-model="app.creds.verificationCode" ng-required="app.loginState == 'googleauthenticatorcode'"/>
+                  <div class="sg-hint"><var:string label:value="Enter the 6-digit verification code from your Google Authenticator application."/></div>
+                </md-input-container>
+                <div layout="row" layout-align="space-between center">
+                  <md-button class="md-icon-button"
+                             label:aria-label="Cancel"
+                             ng-click="app.restoreLogin()"
+                             sg-ripple-click="loginContent">
+                    <md-icon>arrow_backward</md-icon>
+                  </md-button>
+                  <md-button class="md-fab md-accent md-hue-2" type="submit"
+                             label:aria-label="Connect"
+                             ng-if="app.loginState == 'googleauthenticatorcode'"
+                             ng-disabled="loginForm.$invalid"
+                             ng-click="app.login()">
+                    <md-icon>arrow_forward</md-icon>
+                  </md-button>
+                </div>
+              </div>
+            </div>
+            </var:if>
+
             <!-- Logged in -->
             <div layout="column" layout-align="center center"
                  ng-switch-when="logged">
@@ -152,10 +172,14 @@
               <div class="md-default-theme md-accent md-hue-1 md-fg md-padding">
                 {{app.errorMessage}}
               </div>
-              <md-button sg-ripple-click="loginContent"><var:string label:value="Retry"/></md-button>
+              <md-button
+                  ng-click="app.restoreLogin()"
+                  sg-ripple-click="loginContent"><var:string label:value="Retry"/></md-button>
             </div>
 
           </sg-ripple-content>
+        </form>
+
         </div>
       </div>
     </md-content>

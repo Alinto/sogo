@@ -448,6 +448,11 @@
 "animation_LIMITED" = "Limited";
 "animation_NONE" = "None";
 
+/* 2FA */
+"Enable two-factor authentication using Google Authenticator" = "Enable two-factor authentication using Google Authenticator";
+"You must enter this key into your Google Authenticator application." = "You must enter this key into your Google Authenticator application.";
+"If you do not and you log out you will not be able to login again." = "If you do not and you log out you will not be able to login again.";
+
 /* External Sieve scripts */
 "An external Sieve script is active" = "An external Sieve script is active";
 "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled.";

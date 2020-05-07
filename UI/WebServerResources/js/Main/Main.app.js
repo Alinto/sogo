@@ -23,7 +23,9 @@
       if (/\blanguage=/.test($window.location.search))
         this.creds.language = $window.language;
       this.loginState = false;
-      this.showGoogleAuthenticatorCode = false;
+
+      // Code pattern for Google verification code
+      this.verificationCodePattern = '\\d{6}';
 
       // Show login once everything is initialized
       this.showLogin = false;
@@ -35,9 +37,8 @@
       Authentication.login(vm.creds)
         .then(function(data) {
 
-          if (typeof data.gamissingkey != 'undefined' && data.gamissingkey == 1) {
-            vm.showGoogleAuthenticatorCode = true;
-            vm.loginState = 'error';
+          if (data.gamissingkey) {
+            vm.loginState = 'googleauthenticatorcode';
           }
           else {
             vm.loginState = 'logged';
@@ -56,6 +57,11 @@
           vm.errorMessage = msg.error;
         });
       return false;
+    };
+
+    this.restoreLogin = function() {
+      vm.loginState = false;
+      delete vm.creds.verificationCode;
     };
 
     this.showAbout = function($event) {

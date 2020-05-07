@@ -30,7 +30,8 @@
     "grunt-postcss": ">=0.6.0",
     "grunt-sass": "^3.1.0",
     "kss": "^3.0.1",
-    "node-sass": "^4.14.0",
+    "node-sass": "^4.14.1",
+    "qrcodejs": "^1.0.0",
     "time-grunt": "latest"
   },
   "browserslist": [

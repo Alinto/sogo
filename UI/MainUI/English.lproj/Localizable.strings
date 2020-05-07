@@ -21,6 +21,12 @@
 "browserNotCompatible" = "We've detected that your browser version is currently not supported on this site. Our recommendation is to use Firefox. Click on the link below to download the most current version of this browser.";
 "alternativeBrowsers" = "Alternatively, you can also use the following compatible browsers";
 "alternativeBrowserSafari" = "Alternatively, you can also use Safari.";
+
+/* 2FA */
+"Verification Code" = "Verification Code";
+"Enter the 6-digit verification code from your Google Authenticator application." = "Enter the 6-digit verification code from your Google Authenticator application.";
+"You provided an invalid Google Authenticator key." = "You provided an invalid Google Authenticator key.";
+
 "Download" = "Download";
 "Language" = "Language";
 "choose" = "Choose ...";

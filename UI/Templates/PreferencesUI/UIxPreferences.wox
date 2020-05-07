@@ -8,7 +8,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:jsFiles="vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/angular-file-upload.min.js, vendor/ng-sortable.min.js, Common.js, Preferences.js, Preferences.services.js, Mailer.services.js, Contacts.services.js">
+    const:jsFiles="vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, vendor/angular-file-upload.min.js, vendor/ng-sortable.min.js, vendor/qrcode.min.js, Common.js, Preferences.js, Preferences.services.js, Mailer.services.js, Contacts.services.js">
 
   <main layout-fill="layout-fill" ui-view="preferences"
         ng-controller="navController"><!-- preferences --> </main>
@@ -232,24 +232,22 @@
             </md-input-container>
 
             <var:if condition="isGoogleAuthenticatorEnabled">
-              <md-checkbox flex="20"
-                           ng-model="app.preferences.defaults.SOGoGoogleAuthenticatorEnabled"
+              <md-checkbox ng-model="app.preferences.defaults.SOGoGoogleAuthenticatorEnabled"
                            ng-true-value="1"
                            ng-false-value="0"
                            label:aria-label="Enable two-factor authentication using Google Authenticator">
                 <var:string label:value="Enable two-factor authentication using Google Authenticator"/>
               </md-checkbox>
-              <input type="text"
-                     ng-readonly="true"
-                     ng-show="app.preferences.defaults.SOGoGoogleAuthenticatorEnabled == 1"
-                     var:value="googleAuthenticatorKey"/>
-              <label
-                  ng-show="app.preferences.defaults.SOGoGoogleAuthenticatorEnabled
-                           == 1"><var:string label:value="You must enter
-                           this key into your Google Authenticator
-                           application. If you do not and you log out
-                           you will not be able to access SOGo
-                           again."/></label>
+              <div layout="row" layout-align="start center" layout-wrap="layout-wrap"
+                   layout-padding="layout-padding" layout-margin="layout-margin"
+                   ng-show="app.preferences.defaults.SOGoGoogleAuthenticatorEnabled">
+                <div>
+                  <sg-qr-code var:text="googleAuthenticatorKey" />
+                </div>
+                <div flex="100" flex-sm="60" flex-gt-sm="50">
+                  <var:string label:value="You must enter this key into your Google Authenticator application."/> <b><var:string label:value="If you do not and you log out you will not be able to login again."/></b>
+                </div>
+              </div>
             </var:if>
 
           </div>
