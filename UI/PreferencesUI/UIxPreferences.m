@@ -1,6 +1,6 @@
 /* UIxPreferences.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2019 Inverse inc.
+ * Copyright (C) 2007-2020 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1019,6 +1019,20 @@ static NSArray *reminderValues = nil;
 {
   // The variable SOGoVersion comes from the import: SOGo/Build.h
   return [NSString stringWithString: SOGoVersion];
+}
+
+- (BOOL) isGoogleAuthenticatorEnabled
+{
+#if defined(MFA_CONFIG)
+  return YES;
+#else
+  return NO;
+#endif
+}
+
+- (NSString *) googleAuthenticatorKey
+{
+  return [[context activeUser] googleAuthenticatorKey];
 }
 
 //

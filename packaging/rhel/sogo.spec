@@ -34,11 +34,17 @@ BuildRequires:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{so
 
 # saml is enabled everywhere except on el5 since its glib2 is prehistoric
 %define saml2_cfg_opts "--enable-saml2"
+%define mfa_cfg_opts "--enable-mfa"
 %{?el5:%define saml2_cfg_opts ""}
+%{?el5:%define mfa_cfg_opts ""}
+%{?el6:%define mfa_cfg_opts ""}
 %{?el6:Requires: lasso}
 %{?el6:BuildRequires: lasso-devel}
 %{?el7:Requires: lasso}
 %{?el7:BuildRequires: lasso-devel}
+%{?el7:Requires: liboath}
+%{?el7:BuildRequires: liboath-devel}
+
 
 %description
 SOGo is a groupware server built around OpenGroupware.org (OGo) and
@@ -155,7 +161,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %else
 . /usr/share/GNUstep/Makefiles/GNUstep.sh
 %endif
-./configure %saml2_cfg_opts
+./configure %saml2_cfg_opts %mfa_cfg_opts
 
 case %{_target_platform} in
 ppc64-*) 
@@ -376,6 +382,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Thu Apr 30 2020 Inverse inc. <support@inverse.ca>
+- added liboath requirements for RHELv7
+
 * Thu Mar 31 2015 Inverse inc. <support@inverse.ca>
 - Change script start sogod for systemd
 

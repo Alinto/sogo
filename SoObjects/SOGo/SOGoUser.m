@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2016 Inverse inc.
+  Copyright (C) 2006-2020 Inverse inc.
 
   This file is part of SOGo.
 
@@ -38,6 +38,10 @@
 #import "SOGoUserManager.h"
 #import "SOGoUserSettings.h"
 #import "WOResourceManager+SOGo.h"
+
+#if defined(MFA_CONFIG)
+#include <liboath/oath.h>
+#endif
 
 #import "SOGoUser.h"
 
@@ -1077,6 +1081,34 @@
   authValue = [self _fetchFieldForUser: @"canAuthenticate"];
   
   return [authValue boolValue];
+}
+
+- (NSString *) googleAuthenticatorKey
+{
+#if defined(MFA_CONFIG)
+  NSString *key, *result;
+  const char *s;
+  char *secret;
+
+  size_t s_len, secret_len;
+
+  key = [[[self userSettings] userSalt] substringToIndex: 12];
+  s = [key UTF8String];
+  s_len = strlen(s);
+
+  oath_init();
+  oath_base32_encode(s,s_len, &secret, &secret_len);
+  oath_done();
+
+  result = [[NSString alloc] initWithBytesNoCopy: secret
+                                          length: secret_len
+                                        encoding: NSASCIIStringEncoding
+                                    freeWhenDone: YES];
+
+  return [result autorelease];
+#else
+  return nil;
+#endif
 }
 
 /* resource */

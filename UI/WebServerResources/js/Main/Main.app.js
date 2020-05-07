@@ -23,6 +23,7 @@
       if (/\blanguage=/.test($window.location.search))
         this.creds.language = $window.language;
       this.loginState = false;
+      this.showGoogleAuthenticatorCode = false;
 
       // Show login once everything is initialized
       this.showLogin = false;
@@ -33,16 +34,23 @@
       vm.loginState = 'authenticating';
       Authentication.login(vm.creds)
         .then(function(data) {
-          vm.loginState = 'logged';
-          vm.cn = data.cn;
 
-          // Let the user see the succesfull message before reloading the page
-          $timeout(function() {
-            if ($window.location.href === data.url)
-              $window.location.reload(true);
-            else
-              $window.location.href = data.url;
-          }, 1000);
+          if (typeof data.gamissingkey != 'undefined' && data.gamissingkey == 1) {
+            vm.showGoogleAuthenticatorCode = true;
+            vm.loginState = 'error';
+          }
+          else {
+            vm.loginState = 'logged';
+            vm.cn = data.cn;
+
+            // Let the user see the succesfull message before reloading the page
+            $timeout(function() {
+              if ($window.location.href === data.url)
+                $window.location.reload(true);
+              else
+                $window.location.href = data.url;
+            }, 1000);
+          }
         }, function(msg) {
           vm.loginState = 'error';
           vm.errorMessage = msg.error;

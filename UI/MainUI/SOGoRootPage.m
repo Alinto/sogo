@@ -50,6 +50,10 @@
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoWebAuthenticator.h>
 
+#if defined(MFA_CONFIG)
+#include <liboath/oath.h>
+#endif
+
 #import "SOGoRootPage.h"
 
 @implementation SOGoRootPage
@@ -182,7 +186,7 @@
   SOGoUserDefaults *ud;
   SOGoUser *loggedInUser;
   NSDictionary *params;
-  NSString *username, *password, *language, *domain, *remoteHost;
+  NSString *username, *password, *language, *domain, *remoteHost, *verificationCode;
   NSArray *supportedLanguages, *creds;
   
   SOGoPasswordPolicyError err;
@@ -198,6 +202,7 @@
 
   username = [params objectForKey: @"userName"];
   password = [params objectForKey: @"password"];
+  verificationCode = [params objectForKey: @"verificationCode"];
   language = [params objectForKey: @"language"];
   rememberLogin = [[params objectForKey: @"rememberLogin"] boolValue];
   domain = [params objectForKey: @"domain"];
@@ -223,11 +228,69 @@
       // the DomainLessLogin situation, so we would NOT add the domain. -getUIDForEmail
       // has all the logic for this, so lets use it.
       if ([domain isNotNull])
-        {
-          username = [[SOGoUserManager sharedUserManager] getUIDForEmail: username];
-        }
+        username = [[SOGoUserManager sharedUserManager] getUIDForEmail: username];
 
       loggedInUser = [SOGoUser userWithLogin: username];
+
+#if defined(MFA_CONFIG)
+      if ([[loggedInUser userDefaults] googleAuthenticatorEnabled])
+        {
+          if ([verificationCode length] == 6 && [verificationCode unsignedIntValue] > 0)
+            {
+              unsigned int code;
+              const char *real_secret;
+              char *secret;
+
+              size_t secret_len;
+
+              const auto time_step = OATH_TOTP_DEFAULT_TIME_STEP_SIZE;
+              const auto digits = 6;
+
+              real_secret = [[loggedInUser googleAuthenticatorKey] UTF8String];
+
+              auto result = oath_init();
+              auto t = time(NULL);
+              auto left = time_step - (t % time_step);
+
+              char otp[digits + 1];
+
+              oath_base32_decode (real_secret,
+                                  strlen(real_secret),
+                                  &secret, &secret_len);
+
+              result = oath_totp_generate2(secret,
+                                           secret_len,
+                                           t,
+                                           time_step,
+                                           OATH_TOTP_DEFAULT_START_TIME,
+                                           digits,
+                                           0,
+                                           otp);
+
+              sscanf(otp, "%u", &code);
+
+              oath_done();
+              free(secret);
+
+              if (code != [verificationCode unsignedIntValue])
+                {
+                  [self logWithFormat: @"Invalid Google Authenticator key for '%@'", username];
+                  json = [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: 1]
+                                                 forKey: @"GoogleAuthenticatorInvalidKey"];
+                  return [self responseWithStatus: 403
+                        andJSONRepresentation: json];
+                }
+            } //  if ([verificationCode length] == 6 && [verificationCode unsignedIntValue] > 0)
+          else
+            {
+              [self logWithFormat: @"Missing Google Authenticator key for '%@', asking it..", username];
+              json = [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: 1]
+                                                 forKey: @"GoogleAuthenticatorMissingKey"];
+              return [self responseWithStatus: 202
+                        andJSONRepresentation: json];
+            }
+        }
+#endif
 
       json = [NSDictionary dictionaryWithObjectsAndKeys:
                              [loggedInUser cn], @"cn",
@@ -265,8 +328,8 @@
     }
   else
     {
-      [self logWithFormat:@"Login from '%@' for user '%@' might not have worked - password policy: %d  grace: %d  expire: %d  bound: %d",
-                          remoteHost, username, err, grace, expire, b];
+      [self logWithFormat: @"Login from '%@' for user '%@' might not have worked - password policy: %d  grace: %d  expire: %d  bound: %d",
+            remoteHost, username, err, grace, expire, b];
 
       response = [self _responseWithLDAPPolicyError: err];
     }
@@ -637,6 +700,15 @@
     response = [self _responseWithLDAPPolicyError: error];
 
   return response;
+}
+
+- (BOOL) isGoogleAuthenticatorEnabled
+{
+#if defined(MFA_CONFIG)
+  return YES;
+#else
+  return NO;
+#endif
 }
 
 @end /* SOGoRootPage */

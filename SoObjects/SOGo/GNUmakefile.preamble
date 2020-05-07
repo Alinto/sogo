@@ -43,6 +43,10 @@ ADDITIONAL_CPPFLAGS += $(LASSO_CFLAGS)
 SOGo_LIBRARIES_DEPEND_UPON += $(LASSO_LIBS)
 endif
 
+ifeq ($(HAS_LIBRARY_oath), yes)
+SOGo_LIBRARIES_DEPEND_UPON += $(MFA_LIBS)
+endif
+
 ifeq ($(findstring openbsd, $(GNUSTEP_HOST_OS)), openbsd)
 SOGo_LIBRARIES_DEPEND_UPON += -lcrypto
 else

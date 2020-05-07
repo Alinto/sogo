@@ -52,6 +52,16 @@
               <input type="password" ng-model="app.creds.password" ng-required="true"/>
             </md-input-container>
 
+            <var:if condition="isGoogleAuthenticatorEnabled">
+              <md-input-container class="md-block"
+                                  ng-show="app.showGoogleAuthenticatorCode">
+                <label><var:string label:value="Google Authenticator
+                Verification Code"/></label>
+                <md-icon>email</md-icon>
+                <input type="text" ng-model="app.creds.verificationCode" ng-required="false"/>
+              </md-input-container>
+            </var:if>
+
             <!-- LANGUAGES SELECT -->
             <div layout="row" layout-align="start end">
               <md-icon>language</md-icon>

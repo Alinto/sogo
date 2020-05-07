@@ -8,3 +8,7 @@ ADDITIONAL_CPPFLAGS += \
 ifeq ($(HAS_LIBRARY_lasso), yes)
 ADDITIONAL_CPPFLAGS += $(LASSO_CFLAGS)
 endif
+
+ifeq ($(HAS_LIBRARY_oath), yes)
+ADDITIONAL_LDFLAGS += $(MFA_LIBS)
+endif

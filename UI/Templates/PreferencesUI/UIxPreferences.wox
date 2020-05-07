@@ -231,6 +231,27 @@
               </md-radio-group>
             </md-input-container>
 
+            <var:if condition="isGoogleAuthenticatorEnabled">
+              <md-checkbox flex="20"
+                           ng-model="app.preferences.defaults.SOGoGoogleAuthenticatorEnabled"
+                           ng-true-value="1"
+                           ng-false-value="0"
+                           label:aria-label="Enable two-factor authentication using Google Authenticator">
+                <var:string label:value="Enable two-factor authentication using Google Authenticator"/>
+              </md-checkbox>
+              <input type="text"
+                     ng-readonly="true"
+                     ng-show="app.preferences.defaults.SOGoGoogleAuthenticatorEnabled == 1"
+                     var:value="googleAuthenticatorKey"/>
+              <label
+                  ng-show="app.preferences.defaults.SOGoGoogleAuthenticatorEnabled
+                           == 1"><var:string label:value="You must enter
+                           this key into your Google Authenticator
+                           application. If you do not and you log out
+                           you will not be able to access SOGo
+                           again."/></label>
+            </var:if>
+
           </div>
         </md-content>
       </md-tab>

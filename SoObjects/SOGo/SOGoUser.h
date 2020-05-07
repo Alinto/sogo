@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2016 Inverse inc.
+  Copyright (C) 2006-2020 Inverse inc.
 
   This file is part of SOGo.
 
@@ -120,6 +120,7 @@
 
 - (BOOL) isSuperUser;
 - (BOOL) canAuthenticate;
+- (NSString *) googleAuthenticatorKey;
 
 /* resource */
 - (BOOL) isResource;

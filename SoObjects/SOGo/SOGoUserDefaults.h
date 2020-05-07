@@ -133,6 +133,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setAnimationMode: (NSString *) newValue;
 - (NSString *) animationMode;
 
+- (BOOL) googleAuthenticatorEnabled;
+- (void) setGoogleAuthenticatorEnabled: (BOOL) newValue;
+
 - (void) setMailComposeWindow: (NSString *) newValue;
 - (NSString *) mailComposeWindow;
 

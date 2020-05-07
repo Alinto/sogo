@@ -7,12 +7,28 @@ DESTDIR=$(CURDIR)/debian/tmp
 
 SAML2_CONFIG=--enable-saml2
 
+#ifeq ($(DIST_CODENAME), stretch)
+MFA_CONFIG=--enable-mfa
+#endif
+
+#ifeq ($(DIST_CODENAME), buster)
+MFA_CONFIG=--enable-mfa
+#endif
+
+#ifeq ($(DIST_CODENAME), xenial)
+MFA_CONFIG=--enable-mfa
+#endif
+
+#ifeq ($(DIST_CODENAME), bionic)
+MFA_CONFIG=--enable-mfa
+#endif
+
 include /etc/GNUstep/GNUstep.conf
 include /usr/share/GNUstep/Makefiles/common.make
 
 config.make: configure
 	dh_testdir
-	./configure $(SAML2_CONFIG)
+	./configure $(SAML2_CONFIG) $(MFA_CONFIG)
 
 #Architecture
 build: build-arch

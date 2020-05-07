@@ -25,6 +25,7 @@ ARG_CFGSSL="auto"
 ARG_WITH_DEBUG=1
 ARG_WITH_STRIP=0
 ARG_ENABLE_SAML2=0
+ARG_ENABLE_MFA=0
 ARG_WITH_LDAP_CONFIG=0
 
 GNUSTEP_INSTALLATION_DOMAIN="LOCAL"
@@ -76,6 +77,7 @@ Installation directories:
   --enable-strip          turn on stripping of debug symbols
   --with-ssl=SSL          specify ssl library (none, ssl, gnutls, auto) [auto]
   --enable-saml2          enable support for SAML2 authentication (requires liblasso)
+  --enable-mfa            enable multi-factor authentication (requires liboath)
 
   --enable-ldap-config    enable LDAP based configuration of SOGo
 
@@ -105,6 +107,11 @@ printParas() {
     echo "  saml2 support:  yes";
   else
     echo "  saml2 support:  no";
+  fi
+  if test $ARG_ENABLE_MFA = 1; then
+    echo "  mfa support:  yes";
+  else
+    echo "  mfa support:  no";
   fi
   if test $ARG_WITH_LDAP_CONFIG = 1; then 
     echo "  ldap-based configuration:  yes";
@@ -312,6 +319,11 @@ genConfigMake() {
       cfgwrite "saml2_config:=yes"
   fi
 
+  if test $ARG_ENABLE_MFA = 1; then
+      cfgwrite "ADDITIONAL_CPPFLAGS += -DMFA_CONFIG=1"
+      cfgwrite "mfa_config:=yes"
+  fi
+
   if test $ARG_WITH_LDAP_CONFIG = 1; then
       cfgwrite "ADDITIONAL_CPPFLAGS += -DLDAP_CONFIG=1"
       cfgwrite "ldap_config:=yes"
@@ -324,7 +336,7 @@ checkLinking() {
   # library-name => $1, type => $2
   local oldpwd="${PWD}"
   local tmpdir=".configure-test-$$"
-  
+
   mkdir $tmpdir
   cd $tmpdir
   cat > dummytool.c <<EOF
@@ -387,6 +399,12 @@ checkDependencies() {
           cfgwrite "LASSO_CFLAGS := $lasso_cflags"
           lasso_libs="`pkg-config lasso --libs` `pkg-config gobject-2.0 --libs`"
           cfgwrite "LASSO_LIBS := $lasso_libs"
+      fi;
+  fi
+  if test "x$ARG_ENABLE_MFA" = "x1"; then
+      checkLinking "oath"   required;
+      if test $? = 0; then
+          cfgwrite "MFA_LIBS := -loath"
       fi;
   fi
   if test "x$ARG_CFGSSL" = "xauto"; then
@@ -480,7 +498,9 @@ processOption() {
     "x--enable-saml2")
         ARG_ENABLE_SAML2=1
 	;;
-
+    "x--enable-mfa")
+        ARG_ENABLE_MFA=1
+	;;
     "x--enable-ldap-config")
         ARG_WITH_LDAP_CONFIG=1
 	;;

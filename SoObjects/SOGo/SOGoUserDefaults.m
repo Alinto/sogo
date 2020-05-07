@@ -1,6 +1,6 @@
 /* SOGoUserDefaults.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2017 Inverse inc.
+ * Copyright (C) 2009-2020 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -540,6 +540,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 - (NSString *) animationMode
 {
   return [self stringForKey: @"SOGoAnimationMode"];
+}
+
+- (BOOL) googleAuthenticatorEnabled
+{
+  return [self boolForKey: @"SOGoGoogleAuthenticatorEnabled"];
+}
+
+- (void) setGoogleAuthenticatorEnabled: (BOOL) newValue
+{
+  [self setBool: newValue  forKey: @"SOGoGoogleAuthenticatorEnabled"];
 }
 
 - (void) setMailComposeWindow: (NSString *) newValue
