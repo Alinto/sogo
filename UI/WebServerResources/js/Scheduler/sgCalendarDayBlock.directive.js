@@ -83,13 +83,10 @@
       if (!_.has(attrs, 'sgCalendarGhost')) {
 
         // Compute position
-        pc = 100 / scope.block.siblings;
+        // Add right margin (10%) for easier creation of events by mouse dragging
+        pc = 90 / scope.block.siblings;
         left = scope.block.position * pc;
         right = 100 - (scope.block.position + 1) * pc;
-
-        // Add right margin (10%) for easier creation of events by mouse dragging
-        if (right === 0)
-          right = 10;
 
         // Set position
         iElement.css('left', left + '%');
