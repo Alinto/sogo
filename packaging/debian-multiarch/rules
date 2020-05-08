@@ -4,6 +4,7 @@ export DH_VERBOSE=1
 # export DH_OPTIONS="-p sogo"
 
 DESTDIR=$(CURDIR)/debian/tmp
+DIST_CODENAME=$(shell lsb_release -cs)
 
 SAML2_CONFIG=--enable-saml2
 
