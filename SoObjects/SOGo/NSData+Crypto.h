@@ -35,6 +35,10 @@
                              withSalt: (NSData *) theSalt
                               keyPath: (NSString *) theKeyPath;
 
+- (BOOL) verifyUsingScheme: (NSString *) passwordScheme
+                withPassword: (NSData *) thePassword
+                     keyPath: (NSString *) theKeyPath;
+
 - (NSData *) asLM;
 - (NSData *) asMD4;
 - (NSData *) asMD5;

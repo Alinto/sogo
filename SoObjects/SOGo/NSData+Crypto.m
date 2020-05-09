@@ -299,6 +299,35 @@ static const char salt_chars[] =
   return nil;
 }
 
+/**
+ * Verify the given password data is equivalent with the
+ * clear text password using the passed encryption scheme
+ *
+ * @param passwordScheme The password scheme to use for comparison
+ * @param thePassword
+ */
+- (BOOL) verifyUsingScheme: (NSString *) passwordScheme
+                withPassword: (NSData *) thePassword
+                     keyPath: (NSString *) theKeyPath
+{
+  NSData *passwordCrypted;
+  NSData *salt;
+
+  salt = [self extractSalt: passwordScheme];
+  if (salt == nil)
+      return NO;
+  // encrypt self with the salt an compare the results
+  passwordCrypted = [thePassword asCryptedPassUsingScheme: passwordScheme
+                                      withSalt: salt
+                                       keyPath: theKeyPath];
+
+  // return always false when there was a problem
+  if (passwordCrypted == nil)
+    return NO;
+
+  return [self isEqual: passwordCrypted];
+}
+
 - (NSData *) asLM
 {
   NSData *out;

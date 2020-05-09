@@ -41,17 +41,17 @@
 {
   NSRange r;
   int len;
-  
+
   len = [self length];
   if (len == 0)
      return @"";
   if ([self characterAtIndex:0] != '{')
     return @"";
-  
+
   r = [self rangeOfString:@"}" options:(NSLiteralSearch)];
   if (r.length == 0)
     return @"";
-  
+
   r.length   = (r.location - 1);
   r.location = 1;
   return [[self substringWithRange:r] lowercaseString];
@@ -73,7 +73,7 @@
   NSString *scheme;
   NSString *pass;
   NSArray *encodingAndScheme;
-  
+
   NSRange range;
   int selflen, len;
 
@@ -91,7 +91,7 @@
   encodingAndScheme = [NSString getDefaultEncodingForScheme: scheme];
 
   pass = [self substringWithRange: range];
-  
+
   // Returns an array with [scheme, password, encoding]
   return [NSArray arrayWithObjects: [encodingAndScheme objectAtIndex: 1], pass, [encodingAndScheme objectAtIndex: 0], nil];
 }
@@ -109,11 +109,10 @@
                   keyPath: (NSString *) theKeyPath
 {
   NSArray *passInfo;
-  NSString *selfCrypted;
   NSString *pass;
   NSString *scheme;
-  NSData *salt;
   NSData *decodedData;
+  NSData *passwordData;
   keyEncoding encoding;
 
   // split scheme and pass
@@ -152,29 +151,17 @@
       decodedData = [pass dataUsingEncoding: NSUTF8StringEncoding];
     }
 
-  salt = [decodedData extractSalt: scheme];
-
-  // encrypt self with the salt an compare the results
-  selfCrypted = [self asCryptedPassUsingScheme: scheme
-				      withSalt: salt
-				   andEncoding: encoding
-                                       keyPath: theKeyPath];
-
-  // return always false when there was a problem
-  if (selfCrypted == nil)
-    return NO;
-
-  if ([selfCrypted isEqualToString: pass] == YES)
-    return YES;
-
-  return NO;
+  passwordData = [self dataUsingEncoding: NSUTF8StringEncoding];
+  return [decodedData verifyUsingScheme: scheme
+                           withPassword: passwordData
+                            keyPath: theKeyPath];
 }
 
 /**
  * Calls asCryptedPassUsingScheme:withSalt:andEncoding: with an empty salt and uses
  * the default encoding.
  *
- * @param passwordScheme 
+ * @param passwordScheme: The password scheme to hash the cleartext password.
  * @return If successful, the encrypted and encoded NSString of the format {scheme}pass, or nil if the scheme did not exists or an error occured
  */
 - (NSString *) asCryptedPassUsingScheme: (NSString *) passwordScheme
@@ -358,7 +345,7 @@
 
   // See http://en.wikipedia.org/wiki/LM_hash#Algorithm
   d = [[self uppercaseString] dataUsingEncoding: NSWindowsCP1252StringEncoding];
-  
+
   return [[NSData encodeDataAsHexString: [d asLM]] uppercaseString];
 }
 
