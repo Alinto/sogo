@@ -229,9 +229,15 @@ Some of the softwares on which SOGo depends are available from the repository
 "Extra Packages for Enterprise Linux" (EPEL). To add EPEL to your packages
 sources, install the following package:
 
+On RHEL/CentOS 7,
 ----
 rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 ----
+
+For RHEL/CentOS 8
+----
+yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+---
 
 SOGo relies on the GNUstep packages provided by Inverse and must not use the
 packages from EPEL. Adjust the repository definition to exclude those packages:
@@ -694,7 +700,7 @@ Defaults to `NO` when unset.
 For this feature to work properly when authenticating against AD or
 Samba4, the LDAP connection must use SSL/TLS. Server side restrictions
 can also cause the password change to fail, in which case SOGo will only
-log a 'Constraint violation (0x13)' error. These restrictions include 
+log a 'Constraint violation (0x13)' error. These restrictions include
 password too young, complexity constraints not satisfied, user cannot
 change password, etc...  Also note that Samba has a minimum password age
 of 1 day by default.
@@ -1299,9 +1305,9 @@ tweaking the `javax.net.ssl.trustStore` setting, either in the
 the SOGo certificate can also be added to the truststore as follows:
 
 ----
-openssl x509 -in /etc/ssl/certs/sogo-cert.pem -outform DER \ 
+openssl x509 -in /etc/ssl/certs/sogo-cert.pem -outform DER \
   -out /tmp/sogo-cert.der
-keytool -import -keystore /etc/ssl/certs/java/cacerts  \ 
+keytool -import -keystore /etc/ssl/certs/java/cacerts  \
   -file /tmp/sogo-cert.der -alias sogo-cert
 # The keystore password is 'changeit'
 # tomcat must be restarted after this operation
@@ -1315,7 +1321,7 @@ that file differs between distributions). Basically:
 
 ----
 # export tomcat's cert to openssl format
-keytool -keystore /etc/tomcat7/keystore  -exportcert -alias tomcat | \ 
+keytool -keystore /etc/tomcat7/keystore  -exportcert -alias tomcat | \
  openssl x509 -inform der >tomcat.pem
 
 Enter keystore password:  tomcat
@@ -1652,7 +1658,7 @@ present. Required columns are:
 * `c_name`: will be used to uniquely identify entries - which can be
   identical to `c_uid`
 * `c_password`: password of the user, plain text, crypt, md5 or sha
-  encoded 
+  encoded
 * `c_cn`: the user's common name
 * `mail`: the user's email address
 
@@ -1666,6 +1672,8 @@ passwords. Possible values are: `none`, `plain`, `crypt`, `md5`,
 `md5-crypt`, `smd5`, `cram-md5`, `ldap-md5`, and `sha`, `sha256`,
 `sha256-crypt`, `sha512`, `sha512-crypt`, its ssha (e.g. `ssha` or
 `ssha256`) variants, `blf-crypt`, `PBKDF2`, and `sym-aes-128-cbc`.
+The `argon2i` and `argon2id` password hashing algorithms are supported
+if SOGo is compiled with `libsodium`.
 Passwords can have the scheme prepended in the form
 `{scheme}encryptedPass`.
 
@@ -2707,7 +2715,7 @@ objectClass: inetOrgPerson
 objectClass: person
 objectClass: organizationalPerson
 uid: sogo
-cn: SOGo Administrator 
+cn: SOGo Administrator
 mail: sogo@acme.com
 sn: Administrator
 givenName: SOGo
@@ -2774,8 +2782,8 @@ Once installed, simply uncomment the following lines from your SOGo
 Apache configuration:
 
 ----
-ProxyPass /Microsoft-Server-ActiveSync \ 
-	http://127.0.0.1:20000/SOGo/Microsoft-Server-ActiveSync \ 
+ProxyPass /Microsoft-Server-ActiveSync \
+	http://127.0.0.1:20000/SOGo/Microsoft-Server-ActiveSync \
 	retry=60 connectiontimeout=5 timeout=360
 ----
 
@@ -2861,7 +2869,7 @@ supported.
 Free/Busy feature of Outlook 2013/2016. Please
 see http://support.microsoft.com/kb/291621 for configuration
 instructions. On the SOGo side, _SOGoEnablePublicAccess_ must be set to
-`YES` and the URL to use must be of the following format: 
+`YES` and the URL to use must be of the following format:
 `http://<hostname>/SOGo/dav/public/%NAME%/freebusy.ifb`
 * If you have very large mail folders (thousands of messages), you will
 need to adjust the word size of your IMAP server. In Dovecot, the parameter
@@ -3154,7 +3162,7 @@ install -d -m 750 -o sogo -g sogo /etc/sogo
 sudo -u sogo sogo-tool dump-defaults > /etc/sogo/sogo.conf
 chown root:sogo /etc/sogo/sogo.conf
 chmod 640 /etc/sogo/sogo.conf
-sudo -u sogo mv ~/GNUstep/Defaults/.GNUstepDefaults \ 
+sudo -u sogo mv ~/GNUstep/Defaults/.GNUstepDefaults \
     ~/GNUstep/Defaults/GNUstepDefaults.old
 ----
 

@@ -49,6 +49,10 @@
 #error this module requires either gnutls or openssl
 #endif
 
+#ifdef HAVE_SODIUM
+#include <sodium.h>
+#endif
+
 #include "aes.h"
 #include "crypt_blowfish.h"
 #include "lmhash.h"
@@ -267,6 +271,18 @@ static const char salt_chars[] =
     {
       return [self asPBKDF2SHA1UsingSalt: theSalt];
     }
+#ifdef HAVE_SODIUM
+  else if ([passwordScheme caseInsensitiveCompare: @"argon2i"] == NSOrderedSame)
+    {
+      return [self asArgon2iUsingSalt: theSalt];
+    }
+# ifdef crypto_pwhash_ALG_ARGON2ID13
+  else if ([passwordScheme caseInsensitiveCompare: @"argon2id"] == NSOrderedSame)
+    {
+      return [self asArgon2idUsingSalt: theSalt];
+    }
+# endif /* crypto_pwhash_ALG_ARGON2ID13 */
+#endif /* HAVE_SODIUM */
   else if ([[passwordScheme lowercaseString] hasPrefix: @"sym"])
     {
       // We first support one sym cipher, AES-128-CBC. If something else is provided
@@ -309,7 +325,7 @@ static const char salt_chars[] =
  * clear text password using the passed encryption scheme
  *
  * @param passwordScheme The password scheme to use for comparison
- * @param thePassword
+ * @param thePassword cleartext key
  */
 - (BOOL) verifyUsingScheme: (NSString *) passwordScheme
                 withPassword: (NSData *) thePassword
@@ -321,6 +337,30 @@ static const char salt_chars[] =
   salt = [self extractSalt: passwordScheme];
   if (salt == nil)
       return NO;
+
+#ifdef HAVE_SODIUM
+  // use verification function provided by libsodium
+  if ([passwordScheme caseInsensitiveCompare: @"argon2i"] == NSOrderedSame
+#ifdef crypto_pwhash_ALG_ARGON2ID13
+   || [passwordScheme caseInsensitiveCompare: @"argon2id"] == NSOrderedSame
+#endif /* crypto_pwhash_ALG_ARGON2ID13 */
+   )
+     {
+        NSString *cryptString;
+        int result;
+
+        if (sodium_init() < 0)
+          return NO;
+        // For the sodium comparison we need to pass a null-terminated string
+        // as the first parameter
+        cryptString = [[NSString alloc] initWithData: self encoding: NSUTF8StringEncoding];
+        const char* pass = [thePassword bytes];
+        result = crypto_pwhash_str_verify([cryptString UTF8String], pass, [thePassword length]);
+        [cryptString release];
+        return result == 0;
+     }
+#endif /* HAVE_SODIUM */
+
   // encrypt self with the salt an compare the results
   passwordCrypted = [thePassword asCryptedPassUsingScheme: passwordScheme
                                       withSalt: salt
@@ -915,6 +955,43 @@ static const char salt_chars[] =
   NSString* result = [NSString stringWithFormat: @"$1$%@$%u$%@", saltString, rounds, hexHash];
   return [result dataUsingEncoding:NSUTF8StringEncoding];
 }
+
+
+#ifdef HAVE_SODIUM
+- (NSData *) asArgon2iUsingSalt: (NSData *) theSalt
+{
+  char hashed_password[crypto_pwhash_argon2i_STRBYTES];
+  int rounds = crypto_pwhash_argon2i_OPSLIMIT_INTERACTIVE;
+  size_t memlimit = crypto_pwhash_argon2i_MEMLIMIT_INTERACTIVE;
+
+  if (sodium_init() < 0)
+    return nil;
+
+  const char* password = [self bytes];
+  if (crypto_pwhash_argon2i_str(hashed_password, password, [self length], rounds, memlimit) != 0)
+    return nil;
+
+  return [NSData dataWithBytes: hashed_password length: strlen(hashed_password)];
+}
+
+# ifdef crypto_pwhash_ALG_ARGON2ID13
+- (NSData *) asArgon2idUsingSalt: (NSData *) theSalt;
+{
+  char hashed_password[crypto_pwhash_argon2id_STRBYTES];
+  int rounds = crypto_pwhash_argon2id_OPSLIMIT_INTERACTIVE;
+  size_t memlimit = crypto_pwhash_argon2id_MEMLIMIT_INTERACTIVE;
+
+  if (sodium_init() < 0)
+    return nil;
+
+  const char* password = [self bytes];
+  if (crypto_pwhash_argon2id_str(hashed_password, password, [self length], rounds, memlimit) != 0)
+    return nil;
+
+  return [NSData dataWithBytes: hashed_password length: strlen(hashed_password)];
+}
+#endif /* crypto_pwhash_ALG_ARGON2ID13 */
+#endif /* HAVE_SODIUM */
 
 /**
  * Get the salt from a password encrypted with a specied scheme

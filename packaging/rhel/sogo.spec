@@ -49,6 +49,14 @@ BuildRequires:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{so
 %{?el8:Requires: liboath}
 %{?el8:BuildRequires: liboath-devel}
 
+%if 0%{?rhel} >= 7
+Requires: libsodium
+BuildRequires: libsodium-devel
+%define sodium_cfg_opts "--enable-sodium"
+%else
+%define sodium_cfg_opts "--disable-sodium"
+%endif
+
 %description
 SOGo is a groupware server built around OpenGroupware.org (OGo) and
 the SOPE application server.  It focuses on scalability.
@@ -164,15 +172,15 @@ rm -fr ${RPM_BUILD_ROOT}
 %else
 . /usr/share/GNUstep/Makefiles/GNUstep.sh
 %endif
-./configure %saml2_cfg_opts %mfa_cfg_opts
+./configure %saml2_cfg_opts %mfa_cfg_opts %sodium_cfg_opts
 
 case %{_target_platform} in
-ppc64-*) 
+ppc64-*)
   cc="gcc -m64";
-  ldflags="-m64";; 
+  ldflags="-m64";;
 *)
   cc="gcc";
-  ldflags="";; 
+  ldflags="";;
 esac
 
 make CC="$cc" LDFLAGS="$ldflags" messages=yes

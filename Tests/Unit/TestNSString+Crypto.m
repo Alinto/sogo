@@ -112,4 +112,33 @@
   test([pbkdf2_key isEqualToCrypted:pkbf2_result withDefaultScheme: @"PBKDF2" keyPath: nil]);
 }
 
+#ifdef HAVE_SODIUM
+- (void) test_argon2
+{
+  NSString *error;
+  // well-known comparison
+  NSString *cleartext = @"123456";
+  NSString *hash = @"{ARGON2I}$argon2i$v=19$m=32768,t=4,p=1$HWg68rEbwmY6yrdByJ7U1g$z1c06BysT+51u1RXGtYIknTpA9jAHUfw1dAqPgTiQJ8";
+  NSString *prefix;
+  NSString *crypted_hash;
+
+  error = [NSString stringWithFormat:
+                          @"string '%@' wrong ARGON2ID: '%@'",
+                        cleartext, hash];
+  testWithMessage([cleartext isEqualToCrypted:hash withDefaultScheme: @"CRYPT" keyPath: nil], error);
+
+  // generate a new argon2id key
+  prefix = @"$argon2id$";
+  crypted_hash = [cleartext asCryptedPassUsingScheme: @"ARGON2ID" keyPath: nil];
+  fprintf(stdout, "hash = %s\n", [crypted_hash UTF8String]);
+
+  error = [NSString stringWithFormat:
+                          @"returned hash '%@' has incorrect ARGON2ID prefix: '%@'",
+                        crypted_hash, prefix];
+
+  testWithMessage([crypted_hash hasPrefix: prefix], error);
+  test([cleartext isEqualToCrypted:crypted_hash withDefaultScheme: @"ARGON2ID" keyPath: nil]);
+}
+#endif /* HAVE_SODUM */
+
 @end

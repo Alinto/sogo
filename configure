@@ -26,6 +26,7 @@ ARG_WITH_DEBUG=1
 ARG_WITH_STRIP=0
 ARG_ENABLE_SAML2=0
 ARG_ENABLE_MFA=0
+ARG_ENABLE_SODIUM=1
 ARG_WITH_LDAP_CONFIG=0
 
 GNUSTEP_INSTALLATION_DOMAIN="LOCAL"
@@ -78,7 +79,7 @@ Installation directories:
   --with-ssl=SSL          specify ssl library (none, ssl, gnutls, auto) [auto]
   --enable-saml2          enable support for SAML2 authentication (requires liblasso)
   --enable-mfa            enable multi-factor authentication (requires liboath)
-
+  --disable-sodium        disable building with libsodium (will disable argon2 password schemes)
   --enable-ldap-config    enable LDAP based configuration of SOGo
 
 _ACEOF
@@ -113,7 +114,12 @@ printParas() {
   else
     echo "  mfa support:  no";
   fi
-  if test $ARG_WITH_LDAP_CONFIG = 1; then 
+  if test $ARG_ENABLE_SODIUM = 1; then
+    echo "  argon2 support:  yes";
+  else
+    echo "  argon2 support:  no";
+  fi
+  if test $ARG_WITH_LDAP_CONFIG = 1; then
     echo "  ldap-based configuration:  yes";
   else
     echo "  ldap-based configuration:  no";
@@ -407,6 +413,9 @@ checkDependencies() {
           cfgwrite "MFA_LIBS := -loath"
       fi;
   fi
+  if test "x$ARG_ENABLE_SODIUM" = "x1"; then
+    checkLinking "sodium"   required;
+  fi
   if test "x$ARG_CFGSSL" = "xauto"; then
       checkLinking "ssl"     optional;
       if test $? != 0; then
@@ -500,6 +509,12 @@ processOption() {
 	;;
     "x--enable-mfa")
         ARG_ENABLE_MFA=1
+	;;
+    "x--enable-sodium")
+        ARG_ENABLE_SODIUM=1
+	;;
+    "x--disable-sodium")
+        ARG_ENABLE_SODIUM=0
 	;;
     "x--enable-ldap-config")
         ARG_WITH_LDAP_CONFIG=1
