@@ -44,7 +44,7 @@
 
         function AutoGrowTextArea() {
           $timeout(function() {
-            content = textarea.value;
+            content = textarea.value.encodeEntities();
             content = content.replace(/\n/g, '<br>');
             hiddenDiv.innerHTML = content + '<br style="line-height: 3px;">';
             hiddenDiv.style.visibility = 'hidden';
