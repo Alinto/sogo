@@ -6,6 +6,10 @@ export DH_VERBOSE=1
 DESTDIR=$(CURDIR)/debian/tmp
 DIST_CODENAME=$(shell lsb_release -cs)
 
+ifeq ($(DIST_CODENAME), squeeze)
+SAML2_CONFIG=--enable-saml2
+endif
+
 ifeq ($(DIST_CODENAME), stretch)
 MFA_CONFIG=--enable-mfa
 endif
