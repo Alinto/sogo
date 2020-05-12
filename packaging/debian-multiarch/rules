@@ -23,6 +23,10 @@ ifeq ($(DIST_CODENAME), bionic)
 MFA_CONFIG=--enable-mfa
 endif
 
+ifeq ($(DIST_CODENAME), focal)
+MFA_CONFIG=--enable-mfa
+endif
+
 include /etc/GNUstep/GNUstep.conf
 include /usr/share/GNUstep/Makefiles/common.make
 
