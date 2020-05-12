@@ -5,24 +5,23 @@ export DH_VERBOSE=1
 
 DESTDIR=$(CURDIR)/debian/tmp
 DIST_CODENAME=$(shell lsb_release -cs)
-
 SAML2_CONFIG=--enable-saml2
 
-#ifeq ($(DIST_CODENAME), stretch)
+ifeq ($(DIST_CODENAME), stretch)
 MFA_CONFIG=--enable-mfa
-#endif
+endif
 
-#ifeq ($(DIST_CODENAME), buster)
+ifeq ($(DIST_CODENAME), buster)
 MFA_CONFIG=--enable-mfa
-#endif
+endif
 
-#ifeq ($(DIST_CODENAME), xenial)
+ifeq ($(DIST_CODENAME), xenial)
 MFA_CONFIG=--enable-mfa
-#endif
+endif
 
-#ifeq ($(DIST_CODENAME), bionic)
+ifeq ($(DIST_CODENAME), bionic)
 MFA_CONFIG=--enable-mfa
-#endif
+endif
 
 include /etc/GNUstep/GNUstep.conf
 include /usr/share/GNUstep/Makefiles/common.make
