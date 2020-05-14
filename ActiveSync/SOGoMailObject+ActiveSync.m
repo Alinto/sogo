@@ -772,7 +772,8 @@ struct GlobalObjectId {
             }
         }
 
-      return [theContent substringToIndex: i];
+      if (i >= 0)
+        return [theContent substringToIndex: i];
     }
 
   *wasTruncated = 0;
