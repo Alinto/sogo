@@ -281,7 +281,15 @@
 
 - (NSString *) smtpServer
 {
-  return [self stringForKey: @"SOGoSMTPServer"];
+  NSString *server;
+  server = [self stringForKey: @"SOGoSMTPServer"];
+  // backwards compatibility
+  if (![server hasPrefix: @"smtp://"] &&
+      ![server hasPrefix: @"smtps://"])
+    {
+      return [NSString stringWithFormat: @"smtp://%@", server];
+    }
+  return server;
 }
 
 - (NSString *) smtpAuthenticationType
