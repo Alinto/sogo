@@ -62,18 +62,6 @@ install-arch: build-arch
 #	dh_installdirs -s
 
 	$(MAKE) DESTDIR=$(DESTDIR) GNUSTEP_INSTALLATION_DOMAIN=SYSTEM install
-	if pkg-config --atleast-version=1.0 libmapi; \
-	then \
-	  (cd OpenChange; \
-	   $(MAKE) \
-	       DESTDIR=$(DESTDIR) \
-	       GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
-	     install); \
-	  rm -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so.1; \
-	  rm -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so; \
-	  mv -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so.1.0.0 \
-	           $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/SOGo.so; \
-	fi
 	(cd ActiveSync; $(MAKE) DESTDIR=$(DESTDIR) GNUSTEP_INSTALLATION_DOMAIN=SYSTEM install)
 
 	install -D -m 644 Scripts/sogo-default debian/tmp/etc/default/sogo
@@ -103,7 +91,6 @@ binary-arch: build-arch install-arch
 	  ln -s GNUstep/Frameworks/SOGo.framework/Versions/*/libSOGo* ./ )
 	dh_compress -X.py -X.sh
 	dh_fixperms
-#	dh_makeshlibs -X/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends
 	dh_shlibdeps
 	dh_installdeb
 	dh_gencontrol
