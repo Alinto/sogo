@@ -106,7 +106,7 @@ def FindHFile(args, filename):
             found = full_filename
 
     if found is None:
-        raise Exception, "'%s' not found in include dirs" % filename
+        raise Exception("'%s' not found in include dirs" % filename)
 
     return found
 
