@@ -122,19 +122,16 @@
             <md-input-container class="md-block md-flex"
                                 ng-if="$AccountDialogController.defaults.SOGoMailComposeMessageType == 'text'">
               <label><var:string label:value="Signature"/></label>
-              <textarea ng-model="$AccountDialogController.account.identities[0].signature"><!-- signature --></textarea>
+              <textarea
+                  ng-model="$AccountDialogController.account.identities[0].signature"><!-- plain text editor --></textarea>
             </md-input-container>
             <div class="pseudo-input-container"
                  ng-if="$AccountDialogController.defaults.SOGoMailComposeMessageType == 'html'">
               <label class="pseudo-input-label"><var:string label:value="Signature"/></label>
-              <textarea class="ck-editor"
-                        ck-locale="$AccountDialogController.defaults.LocaleCode"
-                        ck-options="{ 'autoGrow_minHeight': 70,
-                                    'toolbar': [['Bold', 'Italic', '-', 'Link',
-                                    'Font','FontSize','-','TextColor',
-                                    'BGColor', 'Source']] }"
-                        ck-margin="8px"
-                        ng-model="$AccountDialogController.account.identities[0].signature"><!-- signature --></textarea>
+              <sg-ckeditor
+                  config="$AccountDialogController.ckConfig"
+                  ck-margin="8px"
+                  ng-model="$AccountDialogController.account.identities[0].signature"><!-- HTML editor --></sg-ckeditor>
             </div>
 
             <md-input-container class="md-block md-input-has-value">

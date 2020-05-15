@@ -23,6 +23,13 @@
     vm.cancel = cancel;
     vm.save = save;
     vm.hostnameRE = accountId > 0 ? /^(?!(127\.0\.0\.1|localhost(?:\.localdomain)?)$)/ : /./;
+    vm.ckConfig = {
+      'autoGrow_minHeight': 70,
+      'toolbar': [['Bold', 'Italic', '-', 'Link',
+                   'Font','FontSize','-','TextColor',
+                   'BGColor', 'Source']],
+      language: defaults.LocaleCode
+    };
 
     if (!vm.account.encryption)
       vm.account.encryption = "none";

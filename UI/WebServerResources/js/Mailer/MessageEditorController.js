@@ -40,8 +40,12 @@
       if (Preferences.defaults.SOGoMailAutoSave)
         // Enable auto-save of draft
         this.autosave = $timeout(this.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
+
       // Set the locale of CKEditor
       this.localeCode = Preferences.defaults.LocaleCode;
+      this.ckConfig = { language: Preferences.defaults.LocaleCode };
+
+      this.composeType = Preferences.defaults.SOGoMailComposeMessageType;
 
       this.replyPlacement = Preferences.defaults.SOGoMailReplyPlacement;
       if (this.message.origin && this.message.origin.action == 'forward') {
@@ -415,14 +419,21 @@
       }
     };
 
-    this.onHTMLFocus = function ($event) {
-      var caretAtTop = (this.replyPlacement == 'above');
+    this.onHTMLReady = function ($editor) {
+      if (!this.isNew()) {
+        onCompletePromise().then(function() {
+          $editor.focus();
+        });
+      }
+    };
 
+    this.onHTMLFocus = function (editor) {
       if (this.firstFocus) {
         onCompletePromise().then(function(element) {
-          var selected = $event.editor.getSelection(),
+          var caretAtTop = (vm.replyPlacement == 'above'),
+              selected = editor.getSelection(),
               selected_ranges = selected.getRanges(),
-              children = $event.editor.document.getBody().getChildren(),
+              children = editor.document.getBody().getChildren(),
               node;
 
           if (caretAtTop) {

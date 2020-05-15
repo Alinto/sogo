@@ -4,7 +4,7 @@
 (function() {
   'use strict';
 
-  angular.module('SOGo.PreferencesUI', ['ui.router', 'ck', 'angularFileUpload', 'SOGo.Common', 'SOGo.MailerUI', 'SOGo.ContactsUI', 'SOGo.Authentication', 'as.sortable'])
+  angular.module('SOGo.PreferencesUI', ['ui.router', 'sgCkeditor', 'angularFileUpload', 'SOGo.Common', 'SOGo.MailerUI', 'SOGo.ContactsUI', 'SOGo.Authentication', 'as.sortable'])
     .config(configure)
     .run(runBlock);
 

@@ -203,11 +203,6 @@ static NSArray *infoKeys = nil;
   return [[ud mailComposeMessageType] isEqualToString: @"html"];
 }
 
-- (NSString *) editorClass
-{
-  return ([self isHTML]? @"ck-editor" : @"plain-text");
-}
-
 - (NSString *) itemPriorityText
 {
   return [self labelForKey: [NSString stringWithFormat: @"%@", [item lowercaseString]]];

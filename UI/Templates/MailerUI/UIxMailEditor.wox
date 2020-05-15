@@ -264,18 +264,22 @@
 
         <!-- MESSAGE CONTENT -->
         <md-input-container class="md-block sg-mail-editor-content">
-          <textarea name="content" var:class="editorClass"
+          <textarea name="content" class="plain-text"
+                    ng-if="editor.composeType == 'text'"
                     rows="9"
-                    ck-locale="editor.localeCode"
-                    ck-margin="16px"
-                    ck-focus="editor.onHTMLFocus($event)"
                     ng-model="editor.message.editable.text"
                     ng-focus="editor.onTextFocus($event)"
                     md-autofocus="::!editor.isNew()"
                     md-no-resize="md-no-resize"
                     md-no-autogrow="md-no-autogrow"
                     sg-autogrow="true"
-                    md-detect-hidden="md-detect-hidden" />
+                    md-detect-hidden="md-detect-hidden"><!-- plain text editor --></textarea>
+          <sg-ckeditor id="message-content"
+                       ng-if="editor.composeType == 'html'"
+                       config="editor.ckConfig"
+                       on-instance-ready="editor.onHTMLReady($editor)"
+                       on-focus="editor.onHTMLFocus($editor)"
+                       ng-model="editor.message.editable.text"><!-- HTML editor --></sg-ckeditor>
         </md-input-container>
       </md-dialog-content>
 
