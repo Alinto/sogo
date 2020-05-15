@@ -35,6 +35,10 @@
                              withSalt: (NSData *) theSalt
                               keyPath: (NSString *) theKeyPath;
 
+- (BOOL) verifyUsingScheme: (NSString *) passwordScheme
+                withPassword: (NSData *) thePassword
+                     keyPath: (NSString *) theKeyPath;
+
 - (NSData *) asLM;
 - (NSData *) asMD4;
 - (NSData *) asMD5;
@@ -53,11 +57,12 @@
 
 - (NSData *) asCryptUsingSalt: (NSData *) theSalt;
 - (NSData *) asMD5CryptUsingSalt: (NSData *) theSalt;
+- (NSData *) asBlowfishCryptUsingSalt: (NSData *) theSalt;
 
 - (NSData *) extractSalt: (NSString *) theScheme;
 
 + (NSData *) generateSaltForLength: (unsigned int) theLength
-                        withBase64: (BOOL) doBase64;
+                        withPrintable: (BOOL) doPrintable;
 + (NSData *) generateSaltForLength: (unsigned int) theLength;
 
 + (NSString *) encodeDataAsHexString: (NSData *) theData;

@@ -1069,7 +1069,7 @@ Possible values are: `none`, `plain`, `crypt`, `md5`, `md5-crypt`,
 (plus setting of the encoding with `.b64` or `.hex`).
 
 For a more detailed description see
-http://wiki.dovecot.org/Authentication/PasswordSchemes.
+https://doc.dovecot.org/configuration_manual/authentication/password_schemes/.
 
 Note that `cram-md5` is not actually using cram-md5 (due to the lack of
 challenge-response mechanism), its just saving the intermediate MD5
@@ -1659,13 +1659,13 @@ they have the same name as popular LDAP attributes (such as `givenName`,
 |The default algorithm used for password encryption when changing
 passwords. Possible values are: `none`, `plain`, `crypt`, `md5`,
 `md5-crypt`, `smd5`, `cram-md5`, `ldap-md5`, and `sha`, `sha256`,
-`sha256-crypt`, `sha512`, `sha512-crypt` and its ssha (e.g. `ssha` or
-`ssha256`) variants and `sym-aes-128-cbc`. Passwords can have the
-scheme prepended in the form `{scheme}encryptedPass`.
+`sha256-crypt`, `sha512`, `sha512-crypt`, its ssha (e.g. `ssha` or
+`ssha256`) variants, `blf-crypt`, and `sym-aes-128-cbc`. Passwords
+can have the scheme prepended in the form `{scheme}encryptedPass`.
 
 If no scheme is given, _userPasswordAlgorithm_ is used instead. The
 schemes listed above follow the algorithms described in
-http://wiki.dovecot.org/Authentication/PasswordSchemes.
+https://doc.dovecot.org/configuration_manual/authentication/password_schemes/.
 
 Note that `cram-md5` is not actually using cram-md5 (due to the lack of
 challenge-response mechanism), its just saving the intermediate MD5
