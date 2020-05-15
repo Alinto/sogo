@@ -263,7 +263,7 @@ The syntax is:
 ----
          "<extension ID>"
          => array( "application" => "thunderbird",
-                   "version" => "<exact version found in the extension's install.rdf file>",
+                   "version" => "<exact version found in the extension's manifest.json file>",
                    "filename" => "<exact filename on the filesystem>" )
 ----
 
