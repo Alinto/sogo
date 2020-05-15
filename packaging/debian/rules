@@ -93,6 +93,7 @@ binary-arch: build-arch install-arch
 	  ln -s GNUstep/Frameworks/SOGo.framework/Versions/*/libSOGo* ./ )
 	dh_compress -X.py -X.sh
 	dh_fixperms
+	dh_makeshlibs
 	dh_shlibdeps
 	dh_installdeb
 	dh_gencontrol
