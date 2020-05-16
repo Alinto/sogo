@@ -25,6 +25,7 @@
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSURL+misc.h>
 #import <NGMail/NGSendMail.h>
 #import <NGMail/NGSmtpClient.h>
 #import <NGMime/NGMimePartGenerator.h>
@@ -221,40 +222,27 @@
 }
 
 - (NSException *) _smtpSendData: (NSData *) mailData
-		   toRecipients: (NSArray *) recipients
-			 sender: (NSString *) sender
+                   toRecipients: (NSArray *) recipients
+                         sender: (NSString *) sender
               withAuthenticator: (id <SOGoAuthenticator>) authenticator
                       inContext: (WOContext *) woContext
 {
-  NSString *currentTo, *host, *login, *password;
-  NGInternetSocketAddress *addr;
+  NSString *currentTo, *login, *password;
   NSMutableArray *toErrors;
-  NSEnumerator *addresses; 
+  NSEnumerator *addresses;
   NGSmtpClient *client;
   NSException *result;
-  NSRange r;
-  unsigned int port;
+  NSURL * smtpUrl;
 
-  client = [NGSmtpClient smtpClient];
-  host = smtpServer;
   result = nil;
-  port = 25;
 
-  // We check if there is a port specified in the smtpServer ivar value
-  r = [smtpServer rangeOfString: @":"];
-  
-  if (r.length)
-    {
-      port = [[smtpServer substringFromIndex: r.location+1] intValue];
-      host = [smtpServer substringToIndex: r.location];
-    }
+  smtpUrl = [[[NSURL alloc] initWithString: smtpServer] autorelease];
 
-  addr = [NGInternetSocketAddress addressWithPort: port
-				  onHost: host];
+  client = [NGSmtpClient clientWithURL: smtpUrl];
 
   NS_DURING
     {
-      [client connectToAddress: addr];
+      [client connect];
       if ([authenticationType isEqualToString: @"plain"])
         {
           /* XXX Allow static credentials by peeking at the classname */
@@ -302,7 +290,7 @@
                                       @" (smtp) all recipients discarded"];
               else if ([toErrors count] > 0)
                 result = [NSException exceptionWithHTTPStatus: 500
-                                                       reason: [NSString stringWithFormat: 
+                                                       reason: [NSString stringWithFormat:
                                                                            @"cannot send message (smtp) - recipients discarded:\n%@",
                                                                          [toErrors componentsJoinedByString: @", "]]];
               else
@@ -318,7 +306,7 @@
     }
   NS_HANDLER
     {
-      [self errorWithFormat: @"Could not connect to the SMTP server %@ on port %d", host, port];
+      [self errorWithFormat: @"Could not connect to the SMTP server %@", smtpServer];
       result = [NSException exceptionWithHTTPStatus: 500
 					     reason: @"cannot send message:"
 			    @" (smtp) error when connecting"];

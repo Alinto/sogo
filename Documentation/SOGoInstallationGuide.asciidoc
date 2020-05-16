@@ -1642,10 +1642,16 @@ are:
 |D |SOGoSMTPServer
 |The DNS name or IP address of the SMTP server used when
 _SOGoMailingMechanism_ is set to `smtp`.
+Supported formats are: `smtp://domain:port`, `smtps://domain`,
+`domain:port`, `smtp://domain:port/?tls=YES`. Using the option
+`tls=YES` will enforce using STARTTLS smtp connections. Thus,
+`smtp://localhost:587/?tls=YES` would use the default MUA port
+on localhost with STARTTLS enforced.
 
 |D |SOGoSMTPAuthenticationType
 |Activate SMTP authentication and specifies which type is in use.
-Current, only `PLAIN` is supported and other values will be ignored.
+Current, only `PLAIN` is supported and other values will cause
+the authentication to fail.
 
 |S |WOSendMail
 |The path of the sendmail binary.
@@ -2214,7 +2220,7 @@ like this:
     SOGoTrashFolderName = Trash;
     SOGoJunkFolderName = Junk;
     SOGoMailingMechanism = smtp;
-    SOGoSMTPServer = 127.0.0.1;
+    SOGoSMTPServer = "smtp://127.0.0.1";
     SOGoUserSources = (
         {
             type = ldap;
