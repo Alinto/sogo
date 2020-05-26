@@ -430,7 +430,6 @@ static Class iCalEventK = nil;
   NSMutableArray *allUsers;
   SOGoUserSettings *us;
   NSDictionary *dict;
-  SOGoUser *sogoUser;
   BOOL rc;
   int i;
 
@@ -450,7 +449,9 @@ static Class iCalEventK = nil;
          source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
          if ([source conformsToProtocol:@protocol(SOGoMembershipSource)])
            {
-             NSArray *members = [(id<SOGoMembershipSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
+             NSArray *members;
+
+             members = [(id<SOGoMembershipSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
              allUsers = [NSMutableArray array];
 
              for (i = 0; i < [members count]; i++)
@@ -460,6 +461,11 @@ static Class iCalEventK = nil;
              // We remove the active user from the group (if present) in order to
              // not subscribe him to their own resource!
              [allUsers removeObject: [[context activeUser] login]];
+           }
+         else
+           {
+             [self errorWithFormat: @"Inconsistency error - got group identifier (%@) from a source (%@) that does not support groups.", theIdentifier, [dict objectForKey: @"SOGoSource"]];
+             return NO;
            }
        }
      else

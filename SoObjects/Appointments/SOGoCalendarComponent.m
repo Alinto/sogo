@@ -587,6 +587,12 @@
                     [allAttendees addObject: person];
                 }
             }
+          else
+            {
+              [self errorWithFormat: @"Inconsistency error - got group identifier (%@) from a source (%@) that does not support groups.", [currentAttendee rfc822Email], [dict objectForKey: @"SOGoSource"]];
+              RELEASE(pool);
+              return NO;
+            }
 	}
       
       j++;

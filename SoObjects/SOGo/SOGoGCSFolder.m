@@ -941,7 +941,9 @@ static NSArray *childRecordFields = nil;
       source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
       if ([source conformsToProtocol:@protocol(SOGoMembershipSource)])
         {
-          NSArray *members = [(id<SOGoMembershipSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
+          NSArray *members;
+
+          members = [(id<SOGoMembershipSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
           allUsers = [NSMutableArray array];
 
           for (i = 0; i < [members count]; i++)
@@ -951,6 +953,11 @@ static NSArray *childRecordFields = nil;
           // We remove the active user from the group (if present) in order to
           // not subscribe him to their own resource!
           [allUsers removeObject: [[context activeUser] login]];
+        }
+      else
+        {
+          [self errorWithFormat: @"Inconsistency error - got group identifier (%@) from a source (%@) that does not support groups.", theIdentifier, [dict objectForKey: @"SOGoSource"]];
+          return NO;
         }
     }
   else
@@ -1626,7 +1633,7 @@ static NSArray *childRecordFields = nil;
                       matchingUID: (NSString *) uid
 {
   int count, max;
-  NSDictionary *record;
+  NSDictionary *record, *dict;
   NSString *currentUID, *domain;
   NSMutableArray *acls;
 
@@ -1640,14 +1647,21 @@ static NSArray *childRecordFields = nil;
       if ([currentUID hasPrefix: @"@"])
         {
           domain = [[context activeUser] domain];
-          NSString *dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: currentUID
-                                                                                         inDomain: domain];
+          dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: currentUID
+                                                                               inDomain: domain];
           if (dict)
             {
               id <SOGoSource> source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
               if ([source conformsToProtocol:@protocol(SOGoMembershipSource)] &&
                   [(id<SOGoMembershipSource>)(source) groupWithUIDHasMemberWithUID: currentUID memberUid: uid])
-                [acls addObject: [record valueForKey: @"c_role"]];
+                {
+                  [acls addObject: [record valueForKey: @"c_role"]];
+                }
+              else
+                {
+                  [self errorWithFormat: @"Inconsistency error - got group identifier (%@) from a source (%@) that does not support groups.", currentUID, [dict objectForKey: @"SOGoSource"]];
+                  return [NSArray array];
+                }
             }
         }
     }
@@ -1779,8 +1793,8 @@ static NSArray *childRecordFields = nil;
               source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
               if ([source conformsToProtocol:@protocol(SOGoMembershipSource)])
                 {
-                  NSArray *members;
                   NSDictionary *user;
+                  NSArray *members;
                   unsigned int j;
 
                   // Fetch members to remove them from the cache along the group
@@ -1795,6 +1809,11 @@ static NSArray *childRecordFields = nil;
                     // Prefix the UID with the character "@" when dealing with a group
                     [usersAndGroups replaceObjectAtIndex: i
                                               withObject: [NSString stringWithFormat: @"@%@", uid]];
+                }
+              else
+                {
+                  [self errorWithFormat: @"Inconsistency error - got group identifier (%@) from a source (%@) that does not support groups.", uid, [dict objectForKey: @"SOGoSource"]];
+                  return;
                 }
             }
         }
