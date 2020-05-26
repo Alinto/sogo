@@ -32,6 +32,7 @@
 #import <GDLContentStore/NSURL+GCS.h>
 
 #import <SOGo/SOGoCache.h>
+#import <SOGo/SOGoSource.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
@@ -215,7 +216,30 @@ typedef enum
 	[allSQLUsers addObject: @"anonymous"];
     }
   else
-    [allSQLUsers addObject: user];
+    {
+      NSDictionary *dict;
+
+      dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: user];
+
+      if (dict && [[dict objectForKey: @"isGroup"] boolValue])
+        {
+          id <SOGoSource> source;
+          NSArray *members;
+	  int i;
+
+          source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
+          if ([source conformsToProtocol: @protocol(SOGoMembershipSource)])
+            {
+              members = [(id<SOGoMembershipSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
+              for (i = 0; i < [members count]; i++)
+                {
+                  [allSQLUsers addObject: [[members objectAtIndex: i] objectForKey: @"c_uid"]];
+                }
+            }
+        }
+      else
+        [allSQLUsers addObject: user];
+    }
 
   pool = [[NSAutoreleasePool alloc] init];
   max = [allSQLUsers count];
