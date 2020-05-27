@@ -4,9 +4,9 @@ set -o pipefail
 #set -x
 PROGNAME="$(basename $0)"
 
-BACKUP_DIR=~sogo/backups
+BACKUP_DIR=${BACKUP_DIR:-~sogo/backups}
 SOGO_TOOL=/usr/sbin/sogo-tool
-DAYS_TO_KEEP="30"
+DAYS_TO_KEEP=${DAYS_TO_KEEP:-30}
 
 DATE=$(date +%F_%H%M)
 LOG="logger -t $PROGNAME -p daemon.info"
