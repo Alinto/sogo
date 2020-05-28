@@ -464,7 +464,7 @@ static Class iCalEventK = nil;
            }
          else
            {
-             [self errorWithFormat: @"Inconsistency error - got group identifier (%@) from a source (%@) that does not support groups.", theIdentifier, [dict objectForKey: @"SOGoSource"]];
+             [self errorWithFormat: @"Inconsistency error - got group identifier (%@) from a source (%@) that does not support groups (%@).", theIdentifier, [dict objectForKey: @"SOGoSource"], NSStringFromClass([source class])];
              return NO;
            }
        }
