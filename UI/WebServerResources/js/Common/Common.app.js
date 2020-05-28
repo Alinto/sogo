@@ -335,8 +335,8 @@
         // When expecting JSON but receiving HTML, assume session has expired and reload page
         var $state;
         if (response && /^application\/json/.test(response.config.headers.Accept) &&
-            /^[\n\r ]*<!DOCTYPE html/.test(response.data)) {
-          if ($window.usesCASAuthentication) {
+            /^[\n\r\t ]*<!DOCTYPE html/.test(response.data)) {
+          if ($window.usesCASAuthentication || $window.usesSAML2Authentication) {
             return renewTicket($window, $q, $timeout, $injector, response);
           }
           else {
@@ -360,7 +360,7 @@
       responseError: function(rejection) {
         var $state;
         if (/^application\/json/.test(rejection.config.headers.Accept)) {
-          // Handle CAS ticket renewal
+          // Handle SSO ticket renewal
           if (($window.usesCASAuthentication || $window.usesSAML2Authentication) && rejection.status == -1) {
             return renewTicket($window, $q, $timeout, $injector, rejection);
           }
