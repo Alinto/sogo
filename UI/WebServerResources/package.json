@@ -18,7 +18,7 @@
     "qrcodejs": "^1.0.0"
   },
   "devDependencies": {
-    "autoprefixer": "^9.7.6",
+    "autoprefixer": "^9.8.0",
     "breakpoint-sass": ">=2.4.2",
     "csswring": ">=3.0.0",
     "grunt": "^1.1.0",
