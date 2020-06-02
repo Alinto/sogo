@@ -18,7 +18,7 @@
     var forwardEnabled = <var:string value="forwardEnabled" const:escapeHTML="NO"/>;
     var vacationEnabled = <var:string value="isVacationEnabled" const:escapeHTML="NO"/>;
     var timeZonesList = <var:string value="timeZonesList" const:escapeHTML="NO"/>;
-    var defaultEmailAddresses = '<var:string value="defaultEmailAddresses" const:escapeHTML="NO"/>';
+    var defaultEmailAddresses = <var:string value="defaultEmailAddresses" const:escapeHTML="NO"/>;
     var defaultCalendarCategories = <var:string value="defaultCalendarCategoriesColors" const:escapeHTML="NO"/>;
     var forwardConstraints = <var:string value="forwardConstraints" const:escapeHTML="NO"/>;
     var forwardConstraintsDomains = <var:string value="forwardConstraintsDomains" const:escapeHTML="NO"/>;
@@ -969,14 +969,37 @@
 
                 <div layout="row" layout-align="start center">
                   <md-input-container class="md-block md-flex">
-                    <label><var:string label:value="Email addresses (separated by commas)"/></label>
-                    <textarea name="autoReplyEmailAddresses"
-                              required="required"
-                              id="autoReplyEmailAddresses"
-                              ng-model="app.preferences.defaults.Vacation.autoReplyEmailAddresses"/>
+                    <label><var:string label:value="Email addresses"/></label>
+                    <md-chips
+                        id="autoReplyEmailAddresses"
+                        name="autoReplyEmailAddresses"
+                        ng-model="app.preferences.defaults.Vacation.autoReplyEmailAddresses"
+                        ng-required="app.preferences.defaults.Vacation.enabled == 1"
+                        md-separator-keys="app.emailSeparatorKeys"
+                        md-add-on-blur="true"
+                        md-autocomplete-snap="width">
+                      <md-autocomplete
+                          md-menu-class="md-2-line"
+                          md-search-text="app.addressesSearchText"
+                          md-items="address in app.filterEmailAddresses(app.addressesSearchText)"
+                          md-no-cache="true"
+                          md-min-length="0"
+                          md-autofocus="true"
+                          md-autoselect="true"
+                          label:placeholder="Add an address">
+                        <md-item-template>
+                          <div class="sg-tile-content">
+                            <div class="sg-md-subhead">
+                              <div md-highlight-text="app.addressesSearchText"
+                                   md-highlight-flags="gi">{{ address }}</div>
+                            </div>
+                          </div>
+                        </md-item-template>
+                      </md-autocomplete>
+                    </md-chips>
                   </md-input-container>
                   <md-button ng-click="app.addDefaultEmailAddresses(preferencesForm)">
-                    <var:string label:value="Add default email addresses" type="button"/>
+                    <var:string label:value="Add default email addresses"/>
                   </md-button>
                 </div>
 
@@ -1091,10 +1114,17 @@
 
               <div flex-offset="5" ng-show="app.preferences.defaults.Forward.enabled == 1">
                 <md-input-container class="md-block md-flex">
-                  <label><var:string label:value="Email addresses (separated by commas)"/></label>
-                  <textarea name="forwardAddress"
-                            id="forwardAddress"
-                            ng-model="app.preferences.defaults.Forward.forwardAddress" />
+                  <label><var:string label:value="Email addresses"/></label>
+                    <md-chips
+                        id="forwardAddress"
+                        name="forwardAddress"
+                        ng-model="app.preferences.defaults.Forward.forwardAddress"
+                        ng-required="app.preferences.defaults.Forward.enabled == 1"
+                        md-separator-keys="app.emailSeparatorKeys"
+                        md-add-on-blur="true"
+                        md-autocomplete-snap="width">
+                      <!-- forward addresses -->
+                    </md-chips>
                 </md-input-container>
 
                 <div>

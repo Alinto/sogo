@@ -85,15 +85,14 @@
           data.Vacation.endDate.addDays(1);
         }
         if (data.Vacation.autoReplyEmailAddresses &&
-            angular.isArray(data.Vacation.autoReplyEmailAddresses) &&
+            angular.isString(data.Vacation.autoReplyEmailAddresses) &&
             data.Vacation.autoReplyEmailAddresses.length)
-          data.Vacation.autoReplyEmailAddresses = data.Vacation.autoReplyEmailAddresses.join(",");
-        else
-          delete data.Vacation.autoReplyEmailAddresses;
+          data.Vacation.autoReplyEmailAddresses = data.Vacation.autoReplyEmailAddresses.split(/, */);
       } else
         data.Vacation = {};
 
-      if (angular.isUndefined(data.Vacation.autoReplyEmailAddresses) &&
+      if ((angular.isUndefined(data.Vacation.autoReplyEmailAddresses) ||
+          data.Vacation.autoReplyEmailAddresses.length == 0) &&
           angular.isDefined(window.defaultEmailAddresses))
         data.Vacation.autoReplyEmailAddresses = window.defaultEmailAddresses;
 
@@ -110,9 +109,8 @@
         data.Vacation.endDate = new Date();
       }
 
-      if (data.Forward && data.Forward.forwardAddress &&
-          angular.isArray(data.Forward.forwardAddress))
-        data.Forward.forwardAddress = data.Forward.forwardAddress.join(",");
+      if (data.Forward && angular.isUndefined(data.Forward.forwardAddress))
+        data.Forward.forwardAddress = [];
 
       // Split calendar categories colors keys and values
       if (angular.isUndefined(data.SOGoCalendarCategories))
@@ -360,13 +358,13 @@
       }
 
       if (preferences.defaults.Vacation.autoReplyEmailAddresses)
-        preferences.defaults.Vacation.autoReplyEmailAddresses = _.filter(preferences.defaults.Vacation.autoReplyEmailAddresses.split(","), function(v) { return v.length; });
+        preferences.defaults.Vacation.autoReplyEmailAddresses = _.compact(preferences.defaults.Vacation.autoReplyEmailAddresses);
       else
         preferences.defaults.Vacation.autoReplyEmailAddresses = [];
     }
 
     if (preferences.defaults.Forward && preferences.defaults.Forward.forwardAddress)
-      preferences.defaults.Forward.forwardAddress = preferences.defaults.Forward.forwardAddress.split(",");
+      preferences.defaults.Forward.forwardAddress = _.compact(preferences.defaults.Forward.forwardAddress);
 
     // Merge back calendar categories colors keys and values
     preferences.defaults.SOGoCalendarCategoriesColors = {};

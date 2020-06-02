@@ -40,7 +40,7 @@
 "Auto reply subject" = "Auto reply subject";
 "You can write ${subject} to insert the original subject" = "You can write ${subject} to insert the original subject";
 "Auto reply message" = "Auto reply message";
-"Email addresses (separated by commas)" = "Email addresses (separated by commas)";
+"Email addresses" = "Email addresses";
 "Add default email addresses" = "Add default email addresses";
 "Days between responses" = "Days between responses";
 "Do not send responses to mailing lists" = "Do not send responses to mailing lists";

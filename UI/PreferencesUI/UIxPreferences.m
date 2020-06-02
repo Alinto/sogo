@@ -793,23 +793,9 @@ static NSArray *reminderValues = nil;
 //
 // Used internally
 //
-- (NSString *) _defaultEmailAddresses
+- (NSString *) defaultEmailAddresses
 {
-  NSArray *addressesList;
-  NSMutableArray *uniqueAddressesList;
-  NSString *address;
-  unsigned int i;
-
-  uniqueAddressesList = [NSMutableArray array];
-  addressesList = [NSMutableArray arrayWithArray: [user allEmails]];
-  for (i = 0; i < [addressesList count]; i++)
-    {
-      address = [addressesList objectAtIndex: i];
-      if (![uniqueAddressesList containsObject: address])
-	[uniqueAddressesList addObject: address];
-    }
-
-  return [uniqueAddressesList componentsJoinedByString: @", "];
+  return [[[user allEmails] uniqueObjects] jsonRepresentation];
 }
 
 //
@@ -875,20 +861,6 @@ static NSArray *reminderValues = nil;
     }
 
   return [defaultCategoriesColors jsonRepresentation];
-}
-
-//
-// Used by templates
-//
-- (NSString *) autoReplyEmailAddresses
-{
-  NSArray *addressesList;
-
-  addressesList = [vacationOptions objectForKey: @"autoReplyEmailAddresses"];
-
-  return (addressesList
-          ? [addressesList componentsJoinedByString: @", "]
-          : [self _defaultEmailAddresses]);
 }
 
 //
