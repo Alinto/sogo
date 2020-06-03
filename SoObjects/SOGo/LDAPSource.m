@@ -98,6 +98,7 @@ static Class NSStringK;
       // "name" expands to sn, displayname and cn
       _searchFields = [[NSArray arrayWithObjects: @"name", @"mail", @"telephonenumber", nil] retain];
       _groupObjectClasses = [[NSArray arrayWithObjects: @"group", @"groupofnames", @"groupofuniquenames", @"posixgroup", nil] retain];
+      _members = nil;
       _IMAPHostField = nil;
       _IMAPLoginField = nil;
       _SieveHostField = nil;
@@ -142,6 +143,7 @@ static Class NSStringK;
   [_mailFields release];
   [_searchFields release];
   [_groupObjectClasses release];
+  [_members release];
   [_IMAPHostField release];
   [_IMAPLoginField release];
   [_SieveHostField release];
@@ -2033,90 +2035,92 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
   NSAutoreleasePool *pool;
   int i, c;
   NGLdapEntry *entry;
-  NSMutableArray *members = nil;
 
-  if ([uid hasPrefix: @"@"])
-    uid = [uid substringFromIndex: 1];
-
-  entry = [self lookupGroupEntryByUID: uid  inDomain: nil];
-
-  if (entry)
+  if (!_members)
     {
-      members = [NSMutableArray new];
-      uids = [NSMutableArray array];
-      dns = [NSMutableArray array];
-      logins = [NSMutableArray array];
+      if ([uid hasPrefix: @"@"])
+        uid = [uid substringFromIndex: 1];
 
-      // We check if it's a static group
-      // Fetch "members" - we get DNs
-      d = [entry asDictionary];
-      o = [d objectForKey: @"member"];
-      CHECK_CLASS(o);
-      if (o) [dns addObjectsFromArray: o];
+      entry = [self lookupGroupEntryByUID: uid  inDomain: nil];
 
-      // Fetch "uniqueMembers" - we get DNs
-      o = [d objectForKey: @"uniquemember"];
-      CHECK_CLASS(o);
-      if (o) [dns addObjectsFromArray: o];
-
-      // Fetch "memberUid" - we get UID (like login names)
-      o = [d objectForKey: @"memberuid"];
-      CHECK_CLASS(o);
-      if (o) [uids addObjectsFromArray: o];
-
-      c = [dns count] + [uids count];
-
-      // We deal with a static group, let's add the members
-      if (c)
+      if (entry)
         {
-          um = [SOGoUserManager sharedUserManager];
+          _members = [[NSMutableArray alloc] init];
+          uids = [NSMutableArray array];
+          dns = [NSMutableArray array];
+          logins = [NSMutableArray array];
 
-          // We add members for whom we have their associated DN
-          for (i = 0; i < [dns count]; i++)
+          // We check if it's a static group
+          // Fetch "members" - we get DNs
+          d = [entry asDictionary];
+          o = [d objectForKey: @"member"];
+          CHECK_CLASS(o);
+          if (o) [dns addObjectsFromArray: o];
+
+          // Fetch "uniqueMembers" - we get DNs
+          o = [d objectForKey: @"uniquemember"];
+          CHECK_CLASS(o);
+          if (o) [dns addObjectsFromArray: o];
+
+          // Fetch "memberUid" - we get UID (like login names)
+          o = [d objectForKey: @"memberuid"];
+          CHECK_CLASS(o);
+          if (o) [uids addObjectsFromArray: o];
+
+          c = [dns count] + [uids count];
+
+          // We deal with a static group, let's add the members
+          if (c)
             {
-              pool = [NSAutoreleasePool new];
-              dn = [dns objectAtIndex: i];
-              login = [um getLoginForDN: [dn lowercaseString]];
-              user = [SOGoUser userWithLogin: login  roles: nil];
-              if (user)
-                {
-                  [logins addObject: login];
-                  [members addObject: [NSDictionary dictionaryWithObject: login
-                                                                  forKey: @"c_uid"]];
-                }
-              [pool release];
-            }
+              um = [SOGoUserManager sharedUserManager];
 
-          // We add members for whom we have their associated login name
-          for (i = 0; i < [uids count]; i++)
+              // We add members for whom we have their associated DN
+              for (i = 0; i < [dns count]; i++)
+                {
+                  pool = [NSAutoreleasePool new];
+                  dn = [dns objectAtIndex: i];
+                  login = [um getLoginForDN: [dn lowercaseString]];
+                  user = [SOGoUser userWithLogin: login  roles: nil];
+                  if (user)
+                    {
+                      [logins addObject: login];
+                      [_members addObject: [NSDictionary dictionaryWithObject: login
+                                                                       forKey: @"c_uid"]];
+                    }
+                  [pool release];
+                }
+
+              // We add members for whom we have their associated login name
+              for (i = 0; i < [uids count]; i++)
+                {
+                  pool = [NSAutoreleasePool new];
+                  login = [uids objectAtIndex: i];
+                  user = [SOGoUser userWithLogin: login  roles: nil];
+                  if (user)
+                    {
+                      [logins addObject: login];
+                      [_members addObject: [NSDictionary dictionaryWithObject: login
+                                                                       forKey: @"c_uid"]];
+                    }
+                  [pool release];
+                }
+
+
+              // We are done fetching members, let's cache the members of the group
+              // (ie., their UIDs) in memcached to speed up -hasMemberWithUID.
+              [[SOGoCache sharedCache] setValue: [logins componentsJoinedByString: @","]
+                                         forKey: [NSString stringWithFormat: @"%@+%@", uid, _domain]];
+            }
+          else
             {
-              pool = [NSAutoreleasePool new];
-              login = [uids objectAtIndex: i];
-              user = [SOGoUser userWithLogin: login  roles: nil];
-              if (user)
-                {
-                  [logins addObject: login];
-                  [members addObject: [NSDictionary dictionaryWithObject: login
-                                                                  forKey: @"c_uid"]];
-                }
-              [pool release];
+              // We deal with a dynamic group, let's search all users for whom
+              // memberOf is equal to our group's DN.
+              // We also need to look for labelelURI?
             }
-
-
-          // We are done fetching members, let's cache the members of the group
-          // (ie., their UIDs) in memcached to speed up -hasMemberWithUID.
-          [[SOGoCache sharedCache] setValue: [logins componentsJoinedByString: @","]
-            forKey: [NSString stringWithFormat: @"%@+%@", uid, _domain]];
-        }
-      else
-        {
-          // We deal with a dynamic group, let's search all users for whom
-          // memberOf is equal to our group's DN.
-          // We also need to look for labelelURI?
         }
     }
 
-  return members;
+  return _members;
 }
 
 //
@@ -2125,29 +2129,48 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
 - (BOOL) groupWithUIDHasMemberWithUID: (NSString *) uid
                             memberUid: (NSString *) memberUid
 {
-
   BOOL rc;
-  NSString *key, *value;;
-  NSArray *a;
 
   rc = NO;
 
-  if ([uid hasPrefix: @"@"])
-    uid = [uid substringFromIndex: 1];
-
-  key = [NSString stringWithFormat: @"%@+%@", uid, _domain];
-  value = [[SOGoCache sharedCache] valueForKey: key];
-
-  // If the value isn't in memcached, that probably means -members was never called.
-  // We call it only once here.
-  if (!value)
+  // If _members is initialized, we use it as it's very accurate.
+  // Otherwise, we fallback on memcached in order to avoid
+  // decomposing the group all the time just to see if a user
+  // is a member of it.
+  if (_members)
     {
-      [self membersForGroupWithUID: uid];
-      value = [[SOGoCache sharedCache] valueForKey: key];
-    }
+      NSString *currentUID;
+      int count, max;
 
-  a = [value componentsSeparatedByString: @","];
-  rc = [a containsObject: memberUid];
+      max = [_members count];
+      for (count = 0; !rc && count < max; count++)
+        {
+          currentUID = [[_members objectAtIndex: count] objectForKey: @"c_uid"];
+          rc = [memberUid isEqualToString: currentUID];
+        }
+    }
+  else
+    {
+      NSString *key, *value;
+      NSArray *a;
+
+      if ([uid hasPrefix: @"@"])
+        uid = [uid substringFromIndex: 1];
+
+      key = [NSString stringWithFormat: @"%@+%@", uid, _domain];
+      value = [[SOGoCache sharedCache] valueForKey: key];
+
+      // If the value isn't in memcached, that probably means -members was never called.
+      // We call it only once here.
+      if (!value)
+        {
+          [self membersForGroupWithUID: uid];
+          value = [[SOGoCache sharedCache] valueForKey: key];
+        }
+
+      a = [value componentsSeparatedByString: @","];
+      rc = [a containsObject: memberUid];
+    }
 
   return rc;
 }
