@@ -956,7 +956,7 @@ static NSArray *childRecordFields = nil;
         }
       else
         {
-          [self errorWithFormat: @"Inconsistency error - got group identifier (%@) from a source (%@) that does not support groups.", theIdentifier, [dict objectForKey: @"SOGoSource"]];
+          [self errorWithFormat: @"Inconsistency (subscribeUserOrGroup:reallyDo:response:) error - got group identifier (%@) from a source (%@) that does not support groups (%@).", theIdentifier, [dict objectForKey: @"SOGoSource"], NSStringFromClass([source class])];
           return NO;
         }
     }
@@ -1651,15 +1651,19 @@ static NSArray *childRecordFields = nil;
                                                                                inDomain: domain];
           if (dict)
             {
-              id <SOGoSource> source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
-              if ([source conformsToProtocol:@protocol(SOGoMembershipSource)] &&
-                  [(id<SOGoMembershipSource>)(source) groupWithUIDHasMemberWithUID: currentUID memberUid: uid])
+              id <SOGoSource> source;
+
+              source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
+              if ([source conformsToProtocol:@protocol(SOGoMembershipSource)])
                 {
-                  [acls addObject: [record valueForKey: @"c_role"]];
+                  if ([(id<SOGoMembershipSource>)(source) groupWithUIDHasMemberWithUID: currentUID memberUid: uid])
+                    [acls addObject: [record valueForKey: @"c_role"]];
+                  else
+                    [self errorWithFormat: @"Group %@ has no member with UID %@", currentUID, uid];
                 }
               else
                 {
-                  [self errorWithFormat: @"Inconsistency error - got group identifier (%@) from a source (%@) that does not support groups.", currentUID, [dict objectForKey: @"SOGoSource"]];
+                  [self errorWithFormat: @"Inconsistency (_aclsFromGroupRoles:matchingUID:) error - got group identifier (%@) from a source (%@) that does not support groups (%@).", currentUID, [dict objectForKey: @"SOGoSource"], NSStringFromClass([source class])];
                   return [NSArray array];
                 }
             }
@@ -1812,7 +1816,7 @@ static NSArray *childRecordFields = nil;
                 }
               else
                 {
-                  [self errorWithFormat: @"Inconsistency error - got group identifier (%@) from a source (%@) that does not support groups (%@).", uid, [dict objectForKey: @"SOGoSource"], NSStringFromClass([source class])];
+                  [self errorWithFormat: @"Inconsistency error (removeAclsForUsers:forObjectAtPath:) - got group identifier (%@) from a source (%@) that does not support groups (%@).", uid, [dict objectForKey: @"SOGoSource"], NSStringFromClass([source class])];
                   return;
                 }
             }
