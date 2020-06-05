@@ -301,8 +301,8 @@
 
     iframe.on('load', function() {
       var $state = $injector.get('$state');
-      if (response.config.attempt) {
-        // Already attempted once -- reload page
+      if (response.config.attempt > 2) {
+        // Already attempted 3 times -- reload page
         angular.element($window).off('beforeunload');
         $window.location.href = $window.ApplicationBaseURL + $state.href($state.current);
         deferred.reject();
@@ -311,7 +311,10 @@
         // Once the browser has followed the redirection, send the initial request
         $timeout(function() {
           var $http = $injector.get('$http');
-          response.config.attempt = 1;
+          if (response.config.attempt)
+            response.config.attempt++;
+          else
+            response.config.attempt = 1;
           $http(response.config).then(function(response) {
             deferred.resolve(response);
           });
