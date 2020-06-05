@@ -1,6 +1,6 @@
 /**
- * @license AngularJS v1.7.9
- * (c) 2010-2018 Google, Inc. http://angularjs.org
+ * @license AngularJS v1.8.0
+ * (c) 2010-2020 Google, Inc. http://angularjs.org
  * License: MIT
  */
 (function(window, angular) {'use strict';
@@ -63,7 +63,7 @@
 var ARIA_DISABLE_ATTR = 'ngAriaDisable';
 
 var ngAriaModule = angular.module('ngAria', ['ng']).
-                        info({ angularVersion: '1.7.9' }).
+                        info({ angularVersion: '1.8.0' }).
                         provider('$aria', $AriaProvider);
 
 /**
@@ -160,7 +160,6 @@ function $AriaProvider() {
    * @name $aria
    *
    * @description
-   * @priority 200
    *
    * The $aria service contains helper methods for applying common
    * [ARIA](http://www.w3.org/TR/wai-aria/) attributes to HTML directives.
