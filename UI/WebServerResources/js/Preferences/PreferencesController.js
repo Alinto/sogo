@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  PreferencesController.$inject = ['$q', '$window', '$state', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgSettings', 'sgFocus', 'Dialog', 'User', 'Account', 'Preferences', 'Authentication'];
-  function PreferencesController($q, $window, $state, $mdMedia, $mdSidenav, $mdDialog, $mdToast, sgSettings, focus, Dialog, User, Account, Preferences, Authentication) {
+  PreferencesController.$inject = ['$q', '$window', '$state', '$mdConstant', '$mdMedia', '$mdSidenav', '$mdDialog', '$mdToast', 'sgSettings', 'sgFocus', 'Dialog', 'User', 'Account', 'Preferences', 'Authentication'];
+  function PreferencesController($q, $window, $state, $mdConstant, $mdMedia, $mdSidenav, $mdDialog, $mdToast, sgSettings, focus, Dialog, User, Account, Preferences, Authentication) {
     var vm = this, mailboxes = [], today = new Date().beginOfDay();
 
     this.$onInit = function() {
@@ -17,7 +17,14 @@
       this.timeZonesList = $window.timeZonesList;
       this.timeZonesSearchText = '';
       this.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
+      this.addressesSearchText = '';
       this.mailLabelKeyRE = new RegExp(/^(?!^_\$)[^(){} %*\"\\\\]*?$/);
+      this.emailSeparatorKeys = [
+        $mdConstant.KEY_CODE.ENTER,
+        $mdConstant.KEY_CODE.TAB,
+        $mdConstant.KEY_CODE.COMMA,
+        $mdConstant.KEY_CODE.SEMICOLON
+      ];
 
       // Set alternate avatar in User service
       if (Preferences.defaults.SOGoAlternateAvatar)
@@ -256,19 +263,29 @@
       return this._onFiltersOrderChanged;
     };
 
+    this.filterEmailAddresses = function ($query) {
+      return _.filter(
+        _.difference($window.defaultEmailAddresses,
+                     this.preferences.defaults.Vacation.autoReplyEmailAddresses),
+        function (address) {
+          return address.toLowerCase().indexOf($query.toLowerCase()) >= 0;
+        }
+      );
+    };
+
     this.addDefaultEmailAddresses = function(form) {
       var v = [];
 
       if (angular.isDefined(this.preferences.defaults.Vacation.autoReplyEmailAddresses)) {
-        v = this.preferences.defaults.Vacation.autoReplyEmailAddresses.split(',');
+        v = this.preferences.defaults.Vacation.autoReplyEmailAddresses;
       }
 
-      this.preferences.defaults.Vacation.autoReplyEmailAddresses = (_.union($window.defaultEmailAddresses.split(','), v)).join(',');
+      this.preferences.defaults.Vacation.autoReplyEmailAddresses = _.union($window.defaultEmailAddresses, v);
       form.$setDirty();
     };
 
     this.userFilter = function(search, excludedUsers) {
-      if (search.length < sgSettings.minimumSearchLength())
+      if (!search || search.length < sgSettings.minimumSearchLength())
         return [];
 
       return User.$filter(search, excludedUsers).then(function(users) {
@@ -333,7 +350,7 @@
         addresses = this.preferences.defaults.Forward.forwardAddress.split(",");
 
         // We first extract the list of 'known domains' to SOGo
-        defaultAddresses = $window.defaultEmailAddresses.split(/, */);
+        defaultAddresses = $window.defaultEmailAddresses;
 
         _.forEach(defaultAddresses, function(adr) {
           var domain = adr.split("@")[1];
