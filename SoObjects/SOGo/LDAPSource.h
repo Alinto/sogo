@@ -72,7 +72,7 @@
   NSDictionary *_contactMapping;
   NSArray *_contactObjectClasses;
   NSArray *_groupObjectClasses;
-  NSMutableDictionary *_members;
+  NSMutableArray *_members;
 
   NSDictionary *_modulesConstraints;
   NSArray *_lookupFields;

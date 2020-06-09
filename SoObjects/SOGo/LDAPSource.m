@@ -98,7 +98,7 @@ static Class NSStringK;
       // "name" expands to sn, displayname and cn
       _searchFields = [[NSArray arrayWithObjects: @"name", @"mail", @"telephonenumber", nil] retain];
       _groupObjectClasses = [[NSArray arrayWithObjects: @"group", @"groupofnames", @"groupofuniquenames", @"posixgroup", nil] retain];
-      _members = [[NSMutableDictionary alloc] init];
+      _members = nil;
       _IMAPHostField = nil;
       _IMAPLoginField = nil;
       _SieveHostField = nil;
@@ -2030,19 +2030,17 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
 
 - (NSArray *) membersForGroupWithUID: (NSString *) uid
 {
-  NSMutableArray *dns, *uids, *logins, *members;
-  NSAutoreleasePool *pool;
+  NSMutableArray *dns, *uids, *logins;
   NSString *dn, *login;
   SOGoUserManager *um;
-  NGLdapEntry *entry;
   NSDictionary *d;
   SOGoUser *user;
   NSArray *o;
-
-  id result;
+  NSAutoreleasePool *pool;
   int i, c;
+  NGLdapEntry *entry;
 
-  if (!(result = [_members objectForKey: uid]))
+  if (!_members)
     {
       if ([uid hasPrefix: @"@"])
         uid = [uid substringFromIndex: 1];
@@ -2051,7 +2049,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
 
       if (entry)
         {
-          members = [NSMutableArray array];
+          _members = [[NSMutableArray alloc] init];
           uids = [NSMutableArray array];
           dns = [NSMutableArray array];
           logins = [NSMutableArray array];
@@ -2090,7 +2088,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
                   if (user)
                     {
                       [logins addObject: login];
-                      [members addObject: [NSDictionary dictionaryWithObject: login
+                      [_members addObject: [NSDictionary dictionaryWithObject: login
                                                                        forKey: @"c_uid"]];
                     }
                   [pool release];
@@ -2105,7 +2103,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
                   if (user)
                     {
                       [logins addObject: login];
-                      [members addObject: [NSDictionary dictionaryWithObject: login
+                      [_members addObject: [NSDictionary dictionaryWithObject: login
                                                                        forKey: @"c_uid"]];
                     }
                   [pool release];
@@ -2114,7 +2112,6 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
 
               // We are done fetching members, let's cache the members of the group
               // (ie., their UIDs) in memcached to speed up -hasMemberWithUID.
-              [_members setObject: members  forKey: uid];
               [[SOGoCache sharedCache] setValue: [logins componentsJoinedByString: @","]
                                          forKey: [NSString stringWithFormat: @"%@+%@", uid, _domain]];
             }
@@ -2127,7 +2124,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
         }
     }
 
-  return result;
+  return _members;
 }
 
 //
@@ -2136,7 +2133,6 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
 - (BOOL) groupWithUIDHasMemberWithUID: (NSString *) uid
                             memberUid: (NSString *) memberUid
 {
-  id result;
   BOOL rc;
 
   rc = NO;
@@ -2145,15 +2141,15 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
   // Otherwise, we fallback on memcached in order to avoid
   // decomposing the group all the time just to see if a user
   // is a member of it.
-  if ((result = [_members objectForKey: uid]))
+  if (_members)
     {
       NSString *currentUID;
       int count, max;
 
-      max = [result count];
+      max = [_members count];
       for (count = 0; !rc && count < max; count++)
         {
-          currentUID = [[result objectAtIndex: count] objectForKey: @"c_uid"];
+          currentUID = [[_members objectAtIndex: count] objectForKey: @"c_uid"];
           rc = [memberUid isEqualToString: currentUID];
         }
     }
