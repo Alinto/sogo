@@ -611,7 +611,7 @@
    * @returns true if folder is eligible
    */
   Mailbox.prototype.$canFolderAs = function() {
-    return this.type == 'folder' && this.level === 0;
+    return this.type == 'folder';
   };
 
   /**

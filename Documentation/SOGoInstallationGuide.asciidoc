@@ -1749,7 +1749,7 @@ See the _Multi-domains Configuration_ section in this document for more
 information.
 
 |listRequiresDot (optional)
-|If set to `YES`, listing of this SQL source is only possible when performing a search (respecting the SOGoSearchMinimumWordLength parameter) or when explicitely typing a single dot.
+|If set to `YES`, listing of this SQL source is only possible when performing a search (respecting the SOGoSearchMinimumWordLength parameter) or when explicitly typing a single dot.
 Defaults to `YES` when unset.
 
 |ModulesConstraints (optional)
@@ -1862,16 +1862,18 @@ messages.
 
 Defaults to `Drafts` when unset.
 
-Use a `/`  as a hierarchy separator if  referring to an IMAP subfolder.
-For example: `INBOX/Drafts`.
+Use a `/` as a hierarchy separator if referring to an IMAP subfolder.
+For example: `INBOX/Drafts`. You must use a `/` even if your real
+IMAP separator is a `.`.
 
 |U |SOGoSentFolderName
 |Parameter used to set the IMAP folder name used to store sent messages.
 
 Defaults to `Sent` when unset.
 
-Use a `/`  as a hierarchy separator if referring to an IMAP subfolder.
-For example: `INBOX/Sent`.
+Use a `/` as a hierarchy separator if referring to an IMAP subfolder.
+For example: `INBOX/Sent`. You must use a `/` even if your real
+IMAP separator is a `.`.
 
 |U |SOGoTrashFolderName
 |Parameter used to set the IMAP folder name used to store deleted
@@ -1879,8 +1881,9 @@ messages.
 
 Defaults to `Trash` when unset.
 
-Use a `/`  as a hierarchy separator if referring to an IMAP subfolder.
-For example: `INBOX/Trash`.
+Use a `/` as a hierarchy separator if referring to an IMAP subfolder.
+For example: `INBOX/Trash`. You must use a `/` even if your real
+IMAP separator is a `.`.
 
 |U |SOGoJunkFolderName
 |Parameter used to set the IMAP folder name used to store junk
@@ -1888,8 +1891,9 @@ messages.
 
 Defaults to `Junk` when unset.
 
-Use a `/`  as a hierarchy separator if referring to an IMAP subfolder.
-For example: `INBOX/Junk`. Also see the SOGoMailJunkSettings for
+Use a `/` as a hierarchy separator if referring to an IMAP subfolder.
+For example: `INBOX/Junk`. You must use a `/` even if your real
+IMAP separator is a `.`. Also see the SOGoMailJunkSettings for
 more options regarding junk/not-junk actions.
 
 |D |SOGoIMAPCASServiceName
