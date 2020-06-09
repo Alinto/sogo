@@ -75,6 +75,7 @@
   NSMutableDictionary *_members;
 
   NSDictionary *_modulesConstraints;
+  NSArray *_lookupFields;
 
   BOOL _passwordPolicy;
   BOOL _updateSambaNTLMPasswords;
@@ -110,6 +111,7 @@ groupObjectClasses: (NSArray *) newGroupObjectClasses
     IMAPLoginField: (NSString *) newIMAPLoginField
     SieveHostField: (NSString *) newSieveHostField
         bindFields: (id) newBindFields
+      lookupFields: (NSArray *) newLookupFields
 	 kindField: (NSString *) newKindField
 andMultipleBookingsField: (NSString *) newMultipleBookingsField;
 

@@ -1028,6 +1028,11 @@ _bindDN_ and _bindPassword_ will still be required to find the proper DN
 |bindFields (optional)
 |An array of fields to use when doing indirect binds.
 
+|lookupFields (optional)
+|Lookup fields for LDAP queries. Default is `(*)`. This can be utilized
+to lookup operational fields (which are per default not part of the result)
+such as `memberOf`: `lookupFields = ("*", "memberOf");`
+
 |hostname
 |A space-delimited list of LDAP URLs or LDAP hostnames.
 
@@ -1106,7 +1111,7 @@ not work for entries in this source and thus, freebusy lookups.
 repository
 
 |listRequiresDot (optional)
-|If set to `YES`, listing of this LDAP source is only possible when performing a search (respecting the SOGoSearchMinimumWordLength parameter) or when explicitely typing a single dot.
+|If set to `YES`, listing of this LDAP source is only possible when performing a search (respecting the SOGoSearchMinimumWordLength parameter) or when explicitly typing a single dot.
 Defaults to `YES` when unset.
 
 |ModulesConstraints (optional)
