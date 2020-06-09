@@ -317,8 +317,10 @@
             response.config.attempt = 1;
           $http(response.config).then(function(response) {
             deferred.resolve(response);
+          }, function(response) {
+            deferred.reject(response);
           });
-          $timeout(iframe.remove, 500);
+          $timeout(iframe.remove, 2000);
         }, 100); // Wait before replaying the request
       }
     });
