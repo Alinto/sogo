@@ -21,7 +21,7 @@
 */
 
 #import <Foundation/NSValue.h>
-#import <Foundation/NSTask.h>
+#import <Foundation/NSFileHandle.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -66,6 +66,7 @@
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/WOResponse+SOGo.h>
 #import <SOGo/SOGoMailer.h>
+#import <SOGo/SOGoZipArchiver.h>
 
 #import "EOQualifier+MailDAV.h"
 #import "SOGoMailAccount.h"
@@ -524,9 +525,9 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   NSDictionary *msgs;
   NSArray *messages;
   NSData *content, *zipContent;
-  NSTask *zipTask;
-  NSMutableArray *zipTaskArguments;
   WOResponse *response;
+  SOGoZipArchiver *archiver;
+  NSFileHandle *zipFileHandle;
   int i;
 
   if (!archiveName)
@@ -541,21 +542,15 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       return (WOResponse *)error;
   }
 
-  zipPath = [[SOGoSystemDefaults sharedSystemDefaults] zipPath];
   fm = [NSFileManager defaultManager];
-  if (![fm fileExistsAtPath: zipPath])
-    {
+  zipPath = [NSString stringWithFormat: @"%@/%@", spoolPath, archiveName];
+  archiver = [SOGoZipArchiver archiverAtPath: zipPath];
+  if (archiver == nil) {
+      [self errorWithFormat: @"Failed to create zip archive at %@", spoolPath];
       error = [NSException exceptionWithHTTPStatus: 500
-                                            reason: @"zip not available"];
+                                            reason: @"Internal server error"];
       return (WOResponse *)error;
-    }
-  
-  zipTask = [[NSTask alloc] init];
-  [zipTask setCurrentDirectoryPath: spoolPath];
-  [zipTask setLaunchPath: zipPath];
-  
-  zipTaskArguments = [NSMutableArray arrayWithObjects: nil];
-  [zipTaskArguments addObject: @"SavedMessages.zip"];
+  }
 
   msgs = (NSDictionary *)[self fetchUIDs: uids  
                                    parts: [NSArray arrayWithObject: @"BODY.PEEK[]"]];
@@ -564,30 +559,26 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   for (i = 0; i < [messages count]; i++)
     {
       content = [[[messages objectAtIndex: i] objectForKey: @"body[]"] objectForKey: @"data"];
-      fileName = [NSString stringWithFormat:@"%@/%@.eml", spoolPath, [uids objectAtIndex: i]];;
-      [content writeToFile: fileName atomically: YES];
-    
-      [zipTaskArguments addObject:
-                          [NSString stringWithFormat:@"%@.eml", [uids objectAtIndex: i]]];
-    }
-  
-  [zipTask setArguments: zipTaskArguments];
-  [zipTask launch];
-  [zipTask waitUntilExit];
-  
-  [zipTask release];
-  
-  zipContent = [[NSData alloc] initWithContentsOfFile: 
-                           [NSString stringWithFormat: @"%@/SavedMessages.zip", spoolPath]];
-  
-  for (i = 0; i < [zipTaskArguments count]; i++)
-    {
-      fileName = [zipTaskArguments objectAtIndex: i];
-      [fm removeFileAtPath:
-            [NSString stringWithFormat: @"%@/%@", spoolPath, fileName] handler: nil];
+      fileName = [NSString stringWithFormat:@"%@.eml", [uids objectAtIndex: i]];
+      [archiver putFileWithName: fileName andData: content];
     }
 
+  [archiver close];
+
   response = [context response];
+
+  // Check if SOPE has support for serving files directly
+  if ([response respondsToSelector: @selector(setContentFile:)]) {
+      zipFileHandle = [NSFileHandle fileHandleForReadingAtPath: zipPath];
+      [response setContentFile: zipFileHandle];
+  } else {
+      zipContent = [[NSData alloc] initWithContentsOfFile:zipPath];
+      [response setContent:zipContent];
+      [zipContent release];
+  }
+
+  [fm removeFileAtPath: zipPath handler: nil];
+
   baseName = [archiveName stringByDeletingPathExtension];
   extension = [archiveName pathExtension];
   if ([extension length] > 0)
@@ -605,9 +596,6 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   [response setHeader: [NSString stringWithFormat: @"attachment; filename=\"%@\"",
                                  qpFileName]
                forKey: @"Content-Disposition"];
-  [response setContent: zipContent];
-
-  [zipContent release];
 
   return response;
 }
