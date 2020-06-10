@@ -319,9 +319,10 @@
             deferred.resolve(response);
           }, function(response) {
             deferred.reject(response);
+          }).finally(function() {
+            $timeout(iframe.remove, 1000);
           });
-          $timeout(iframe.remove, 2000);
-        }, 100); // Wait before replaying the request
+        }, 2000); // Wait before replaying the request
       }
     });
 
