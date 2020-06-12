@@ -981,7 +981,8 @@
   [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
 
   if (textOnly)
-    [headerMap setObject: @"text/html" forKey: @"content-type"];
+    [headerMap setObject: @"text/html; charset=utf-8"
+                  forKey: @"content-type"];
   else
     [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
 
