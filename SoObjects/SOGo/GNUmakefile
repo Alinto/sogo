@@ -206,7 +206,7 @@ endif
 ADDITIONAL_TOOL_LIBS += -Lobj -lSOGo$(LIBRARY_NAME_SUFFIX)
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/
 ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
-ADDITIONAL_LDFLAGS += -lmemcached
+ADDITIONAL_LDFLAGS += -lmemcached -lzip
 
 -include GNUmakefile.preamble
 ifneq ($(FHS_INSTALL_ROOT),)
