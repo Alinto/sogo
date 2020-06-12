@@ -54,7 +54,7 @@
 - (NSData *) asSymAES128CBCUsingIV: (NSString *) theIV
                            keyPath: (NSString *) theKeyPath;
 - (NSData *) asCramMD5;
-
+- (NSData *) asPBKDF2SHA1UsingSalt: (NSData *) theSalt;
 - (NSData *) asCryptUsingSalt: (NSData *) theSalt;
 - (NSData *) asMD5CryptUsingSalt: (NSData *) theSalt;
 - (NSData *) asBlowfishCryptUsingSalt: (NSData *) theSalt;

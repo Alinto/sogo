@@ -169,7 +169,7 @@ SOGo_OBJC_FILES = \
 	SOGoTextTemplateFile.m		\
 	SOGoZipArchiver.m
 
-SOGo_C_FILES += lmhash.c aes.c crypt_blowfish.c
+SOGo_C_FILES += lmhash.c aes.c crypt_blowfish.c pkcs5_pbkdf2.c
 
 SOGo_RESOURCE_FILES = \
 	SOGoDefaults.plist \

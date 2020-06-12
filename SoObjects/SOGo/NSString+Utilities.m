@@ -739,7 +739,7 @@ static int cssEscapingCount;
   substrLen = [substring length];
 
   matchRange = NSMakeRange (0, selfLen);
-  while (!done)
+  while (!done && matchRange.length > 0)
     {
       substrRange = [self rangeOfString: substring options: 0 range: matchRange];
       if (substrRange.location == NSNotFound)

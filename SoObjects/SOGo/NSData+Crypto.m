@@ -52,6 +52,7 @@
 #include "aes.h"
 #include "crypt_blowfish.h"
 #include "lmhash.h"
+#include "pkcs5_pbkdf2.h"
 
 #import <Foundation/NSArray.h>
 #import <NGExtensions/NGBase64Coding.h>
@@ -261,6 +262,10 @@ static const char salt_chars[] =
   else if ([passwordScheme caseInsensitiveCompare: @"blf-crypt"] == NSOrderedSame)
     {
       return [self asBlowfishCryptUsingSalt: theSalt];
+    }
+  else if ([passwordScheme caseInsensitiveCompare: @"pbkdf2"] == NSOrderedSame)
+    {
+      return [self asPBKDF2SHA1UsingSalt: theSalt];
     }
   else if ([[passwordScheme lowercaseString] hasPrefix: @"sym"])
     {
@@ -856,6 +861,60 @@ static const char salt_chars[] =
   return [NSData dataWithBytes: hashed_password length: strlen(hashed_password)];
 }
 
+- (NSData *) asPBKDF2SHA1UsingSalt: (NSData *) theSalt
+{
+  NSString *saltString;
+  unsigned char hashed_password[PBKDF2_KEY_SIZE_SHA1] = {0};
+  int rounds = 0;
+
+  if ([theSalt length] == 0)
+    {
+      // generate a salt with default complexity if none was provided
+      NSData* saltData = [NSData generateSaltForLength: PBKDF2_SALT_LEN withPrintable: YES];
+      saltString = [[NSString alloc] initWithData: saltData encoding: NSUTF8StringEncoding];
+      [saltString autorelease];
+    }
+  else
+    {
+      NSString *saltAndRounds;
+      NSArray *saltAndRoundsComponents;
+      saltAndRounds = [[NSString alloc] initWithData: theSalt encoding: NSUTF8StringEncoding];
+      // salt is expected to be of the form salt$rounds
+      saltAndRoundsComponents = [saltAndRounds componentsSeparatedByString: @"$"];
+      AUTORELEASE(saltAndRounds);
+
+      if ([saltAndRoundsComponents count] != 2)
+        {
+          return nil;
+        }
+      saltString = [saltAndRoundsComponents objectAtIndex: 0];
+
+      rounds = [[saltAndRoundsComponents objectAtIndex: 1] intValue];
+    }
+
+  if (rounds == 0)
+      rounds = PBKDF2_DEFAULT_ROUNDS;
+
+  const char* password = [self bytes];
+  const unsigned char* salt = (const unsigned char*)[saltString UTF8String];
+#if defined(HAVE_GNUTLS)
+  if (!check_gnutls_init())
+    return nil;
+#endif
+  if (pkcs5_pbkdf2(password, [self length], salt, PBKDF2_SALT_LEN,
+                   hashed_password, PBKDF2_KEY_SIZE_SHA1,
+                   rounds) != 0)
+    {
+      return nil;
+    }
+
+  NSData *passwordData =
+    [NSData dataWithBytesNoCopy: hashed_password  length: PBKDF2_KEY_SIZE_SHA1  freeWhenDone: NO];
+  NSString *hexHash = [NSData encodeDataAsHexString: passwordData];
+
+  NSString* result = [NSString stringWithFormat: @"$1$%@$%u$%@", saltString, rounds, hexHash];
+  return [result dataUsingEncoding:NSUTF8StringEncoding];
+}
 
 /**
  * Get the salt from a password encrypted with a specied scheme
@@ -882,11 +941,13 @@ static const char salt_chars[] =
     }
   else if ([theScheme caseInsensitiveCompare: @"md5-crypt"] == NSOrderedSame ||
       [theScheme caseInsensitiveCompare: @"sha256-crypt"] == NSOrderedSame ||
-      [theScheme caseInsensitiveCompare: @"sha512-crypt"] == NSOrderedSame)
+      [theScheme caseInsensitiveCompare: @"sha512-crypt"] == NSOrderedSame ||
+      [theScheme caseInsensitiveCompare: @"pbkdf2"] == NSOrderedSame)
     {
       // md5-crypt is generated the following "$1$<salt>$<encrypted pass>"
       // sha256-crypt is generated the following "$5$<salt>$<encrypted pass>"
       // sha512-crypt is generated the following "$6$<salt>$<encrypted pass>"
+      // pbkdf2 is generated as "$1$<salt>$<rounds>$<encrypted pass>"
       NSString *cryptString;
       NSArray *cryptParts;
 
