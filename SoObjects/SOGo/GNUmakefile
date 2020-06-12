@@ -86,7 +86,8 @@ SOGo_HEADER_FILES = \
 	WOContext+SOGo.h		\
 	\
 	SOGoCredentialsFile.h		\
-	SOGoTextTemplateFile.h
+	SOGoTextTemplateFile.h		\
+	SOGoZipArchiver.h
 
 all::
 	@touch SOGoBuild.m
@@ -165,7 +166,8 @@ SOGo_OBJC_FILES = \
 	WOContext+SOGo.m		\
 	\
 	SOGoCredentialsFile.m		\
-	SOGoTextTemplateFile.m
+	SOGoTextTemplateFile.m		\
+	SOGoZipArchiver.m
 
 SOGo_C_FILES += lmhash.c aes.c crypt_blowfish.c
 

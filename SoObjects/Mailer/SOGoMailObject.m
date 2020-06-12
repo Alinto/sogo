@@ -20,9 +20,9 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSTask.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
+#import <Foundation/NSFileHandle.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
@@ -49,6 +49,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
+#import <SOGo/SOGoZipArchiver.h>
 
 #import "NSString+Mail.h"
 #import "NSData+Mail.h"
@@ -962,17 +963,18 @@ static BOOL debugSoParts       = NO;
 
 - (WOResponse *) archiveAllFilesinArchiveNamed: (NSString *) archiveName
 {
+#warning duplicated code from [SOGoMailFolder archiveUIDs]
   NSArray *attachments;
   NSData *body, *zipContent;
   NSDictionary *currentAttachment;
   NSException *error;
   NSFileManager *fm;
-  NSMutableArray *zipTaskArguments;
-  NSString *spoolPath, *name, *fileName, *baseName, *extension, *zipPath, *qpFileName;
-  NSTask *zipTask;
+  NSString *spoolPath, *name, *baseName, *extension, *zipPath, *qpFileName;
   SOGoMailFolder *folder;
   WOResponse *response;
   unsigned int max, count;
+  SOGoZipArchiver *archiver;
+  NSFileHandle *zipFileHandle;;
 
   if (!archiveName)
     archiveName = @"attachments.zip";
@@ -988,22 +990,15 @@ static BOOL debugSoParts       = NO;
       return (WOResponse *)error;
   }
 
-  // Prepare execution of zip
-  zipPath = [[SOGoSystemDefaults sharedSystemDefaults] zipPath];
   fm = [NSFileManager defaultManager];
-  if (![fm fileExistsAtPath: zipPath])
-    {
+  zipPath = [NSString stringWithFormat: @"%@/%@", spoolPath, archiveName];
+  archiver = [SOGoZipArchiver archiverAtPath: zipPath];
+  if (archiver == nil) {
+      [self errorWithFormat: @"Failed to create zip archive at %@", spoolPath];
       error = [NSException exceptionWithHTTPStatus: 500
-                                            reason: @"zip not available"];
+                                            reason: @"Internal server error"];
       return (WOResponse *)error;
-    }
-
-  zipTask = [[NSTask alloc] init];
-  [zipTask setCurrentDirectoryPath: spoolPath];
-  [zipTask setLaunchPath: zipPath];
-
-  zipTaskArguments = [NSMutableArray arrayWithObjects: nil];
-  [zipTaskArguments addObject: @"attachments.zip"];
+  }
 
   // Fetch attachments and write them on disk
   attachments = [self fetchFileAttachments];
@@ -1013,32 +1008,25 @@ static BOOL debugSoParts       = NO;
       currentAttachment = [attachments objectAtIndex: count];
       body = [currentAttachment objectForKey: @"body"];
       name = [[currentAttachment objectForKey: @"filename"] asSafeFilename];
-
-      fileName = [NSString stringWithFormat:@"%@/%@", spoolPath, name];
-      [body writeToFile: fileName atomically: YES];
-
-      [zipTaskArguments addObject: [NSString stringWithFormat: @"./%@", name]];
+      [archiver putFileWithName: name andData: body];
     }
 
-  // Zip files
-  [zipTask setArguments: zipTaskArguments];
-  [zipTask launch];
-  [zipTask waitUntilExit];
-  [zipTask release];
-  zipContent = [[NSData alloc] initWithContentsOfFile:
-                           [NSString stringWithFormat: @"%@/attachments.zip", spoolPath]];
+  [archiver close];
 
-  // Delete attachments from disk
-  max = [zipTaskArguments count];
-  for (count = 0; count < max; count++)
-    {
-      fileName = [zipTaskArguments objectAtIndex: count];
-      [fm removeFileAtPath:
-            [NSString stringWithFormat: @"%@/%@", spoolPath, fileName] handler: nil];
-    }
-
-  // Prepare response
   response = [context response];
+
+  // Check if SOPE has support for serving files directly
+  if ([response respondsToSelector: @selector(setContentFile:)]) {
+     zipFileHandle = [NSFileHandle fileHandleForReadingAtPath: zipPath];
+     [response setContentFile: zipFileHandle];
+  } else {
+     zipContent = [[NSData alloc] initWithContentsOfFile:zipPath];
+     [response setContent:zipContent];
+     [zipContent release];
+  }
+
+  [fm removeFileAtPath: zipPath handler: nil];
+
   baseName = [archiveName stringByDeletingPathExtension];
   extension = [archiveName pathExtension];
   if ([extension length] > 0)
@@ -1054,9 +1042,6 @@ static BOOL debugSoParts       = NO;
   [response setHeader: [NSString stringWithFormat: @"attachment; filename=\"%@\"",
                                  qpFileName]
                forKey: @"Content-Disposition"];
-  [response setContent: zipContent];
-
-  [zipContent release];
 
   return response;
 }
