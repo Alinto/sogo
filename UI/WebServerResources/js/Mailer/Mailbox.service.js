@@ -786,13 +786,14 @@
       var currentUids = uids.slice(start, end),
           currentMessages = messages.slice(start, end),
           data = { uids: currentUids };
+      if (options) angular.extend(data, options);
       return Mailbox.$$resource.post(_this.id, 'batchDelete', data).then(function(data) {
         if (end < uids.length) {
           _this.$_deleteMessages(currentUids, currentMessages);
           return _deleteMessages(end, Math.min(end + batchSize, uids.length));
         }
         else {
-          // Update inbox quota
+          // Last API call; update inbox quota
           if (data.quotas)
             _this.$account.updateQuota(data.quotas);
           return _this.$_deleteMessages(currentUids, currentMessages);

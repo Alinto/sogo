@@ -331,7 +331,7 @@
         mailbox = Mailbox.selectedFolder; // the VirtualMailbox instance
       }
 
-      mailbox.$deleteMessages([message]).then(function(index) {
+      function _success(index) {
         var nextIndex = index;
         // Remove message object from scope
         message = null;
@@ -378,6 +378,24 @@
           catch (error) {}
         }
         vm.closePopup();
+      }
+
+      mailbox.$deleteMessages([message]).then(_success, function(response) {
+        _messageDialog(
+            Dialog.confirm(l('Warning'),
+                           l('The message could not be moved to the trash folder. Would you like to delete it immediately?'),
+                           { ok: l('Delete') })
+            .then(function() {
+              mailbox.$deleteMessages([message], { withoutTrash: true })
+                .then(_success)
+                .finally(function() {
+                  _messageDialog(null);
+                });
+            })
+            .finally(function() {
+              _messageDialog(null);
+            })
+        );
       });
     };
 

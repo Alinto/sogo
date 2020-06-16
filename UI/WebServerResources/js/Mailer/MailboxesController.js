@@ -53,7 +53,11 @@
           key: hotkey,
           description: l('Delete selected message or folder'),
           callback: function() {
-            if (Mailbox.selectedFolderController && Mailbox.selectedFolder && Mailbox.selectedFolder.$isEditable && !Mailbox.selectedFolder.hasSelectedMessage())
+            if (Mailbox.selectedFolderController &&
+                Mailbox.selectedFolder &&
+                Mailbox.selectedFolder.$isEditable &&
+                !Mailbox.selectedFolder.hasSelectedMessage() &&
+                Mailbox.selectedFolder.$selectedCount() === 0)
               Mailbox.selectedFolderController.confirmDelete(Mailbox.selectedFolder);
           }
         }));
