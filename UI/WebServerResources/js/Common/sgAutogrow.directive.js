@@ -29,6 +29,7 @@
         if (!scope.autogrow) return;
 
         var textarea = elem[0];
+        var minHeight = textarea.clientHeight;
         var hiddenDiv = $document[0].createElement('div');
         var content = null;
 
@@ -49,7 +50,7 @@
             hiddenDiv.innerHTML = content + '<br style="line-height: 3px;">';
             hiddenDiv.style.visibility = 'hidden';
             hiddenDiv.style.display = 'block';
-            textarea.style.height = hiddenDiv.offsetHeight + 'px';
+            textarea.style.height = Math.max(minHeight, hiddenDiv.offsetHeight) + 'px';
             hiddenDiv.style.visibility = 'visible';
             hiddenDiv.style.display = 'none';
           });
