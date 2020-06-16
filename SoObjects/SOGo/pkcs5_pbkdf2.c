@@ -126,11 +126,11 @@ pkcs5_pbkdf2(const char *pass, size_t pass_len, const uint8_t *salt,
 		key += r;
 		key_len -= r;
 	};
-	explicit_bzero(asalt, salt_len + 4);
+	bzero(asalt, salt_len + 4);
 	free(asalt);
-	explicit_bzero(d1, sizeof(d1));
-	explicit_bzero(d2, sizeof(d2));
-	explicit_bzero(obuf, sizeof(obuf));
+	bzero(d1, sizeof(d1));
+	bzero(d2, sizeof(d2));
+	bzero(obuf, sizeof(obuf));
 
 	return 0;
 
