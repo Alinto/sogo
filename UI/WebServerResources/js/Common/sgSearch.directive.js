@@ -40,6 +40,7 @@
       var mdInputEl = tElement.find('md-input-container'),
           inputEl = tElement.find('input'),
           selectEl = tElement.find('md-select'),
+          optionEl = tElement.find('md-option'),
           buttonEl = tElement.find('md-button');
 
       inputEl.attr('ng-model', '$sgSearchController.searchText');
@@ -58,7 +59,7 @@
       }
 
       return function postLink(scope, iElement, iAttr, controller) {
-        var compiledButtonEl = iElement.find('button');
+        var compiledButtonEl = iElement.find('button'), selectedOption;
 
         // Retrive the form and input names to check the form's validity in the controller
         controller.formName = iElement.attr('name');
@@ -72,6 +73,14 @@
 
         // Associate callback to controller
         controller.doSearch = $parse(iElement.attr('sg-search'));
+
+        // Initialize searchField model to first selected option
+        selectedOption = _.find(optionEl, function (el) {
+          return el.getAttribute('selected');
+        });
+        if (selectedOption) {
+          controller.searchField = selectedOption.getAttribute('value');
+        }
 
         // Reset the input field when cancelling the search
         if (buttonEl && compiledButtonEl) {
