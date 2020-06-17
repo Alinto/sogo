@@ -347,7 +347,7 @@
           this.preferences.defaults.Forward.enabled &&
           angular.isDefined(this.preferences.defaults.Forward.forwardAddress)) {
 
-        addresses = this.preferences.defaults.Forward.forwardAddress.split(",");
+        addresses = this.preferences.defaults.Forward.forwardAddress;
 
         // We first extract the list of 'known domains' to SOGo
         defaultAddresses = $window.defaultEmailAddresses;
