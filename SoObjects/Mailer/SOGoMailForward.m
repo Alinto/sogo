@@ -234,14 +234,15 @@
 
 - (NSString *) signature
 {
-  NSString *signature, *mailSignature, *nl;
+  NSString *signature, *mailSignature, *nl, *space;
   
   signature = [[sourceMail mailAccountFolder] signature];
 
   if ([signature length])
     {
-      nl = (htmlComposition ? @"<br/>" : @"\n");
-      mailSignature = [NSString stringWithFormat: @"-- %@%@", nl, signature];
+      nl = (htmlComposition ? @"<br />" : @"\n");
+      space = (htmlComposition ? @"&nbsp;" : @" ");
+      mailSignature = [NSString stringWithFormat: @"--%@%@%@", space, nl, signature];
     }
   else
     mailSignature = @"";

@@ -323,6 +323,7 @@
     }
 
     this.$onDestroy = function () {
+      editorElement.classList.add('ng-cloak');
       editor.destroy();
     }
 
@@ -349,12 +350,19 @@
         });
       }
 
-      // vm.ngModelCtrl.$render();
+      editorElement.classList.remove('ng-cloak');
+      vm.ngModelCtrl.$render();
     }
 
     function onEditorChange () {
       var html = editor.getData();
-      var text = editor.document.getBody().getText();
+      var body = editor.document.getBody();
+      var text;
+
+      if (_.isEmpty(body))
+        return;
+      else
+        text = body.getText();
 
       if (text === '\n') {
         text = '';

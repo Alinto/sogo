@@ -94,45 +94,100 @@
               </md-input-container>
             </div>
 
-            <md-input-container class="md-block md-flex">
-              <label><var:string label:value="Full Name"/></label>
-              <input type="text" required="required"
-                     ng-disabled="$AccountDialogController.customFromIsReadonly()"
-                     ng-model="$AccountDialogController.account.identities[0].fullName"/>
-            </md-input-container>
-
-            <div layout="row">
-              <md-input-container class="md-block" flex="50">
-                <label><var:string label:value="Email"/></label>
-                <input type="email" required="required"
-                       ng-disabled="$AccountDialogController.customFromIsReadonly()"
-                       ng-model="$AccountDialogController.account.identities[0].email"/>
-              </md-input-container>
-              <md-input-container class="md-block" flex="50"
-                                  ng-hide="$AccountDialogController.customFromIsReadonly()">
-                <label><var:string label:value="Reply To Email"/></label>
-                <input type="email"
-                       autocomplete="off"
-                       ng-model="$AccountDialogController.account.identities[0].replyTo"/>
-              </md-input-container>
+            <!-- identities -->
+            <div class="pseudo-input-container" ng-if="$AccountDialogController.hasIdentities()">
+              <label class="pseudo-input-label"><var:string label:value="Identities"/></label>
+              <md-card ng-repeat="identity in $AccountDialogController.account.identities | filter:$AccountDialogController.isEditableIdentity"
+                       class="sg-collapsed"
+                       ng-class="{ 'sg-expanded': $index == $AccountDialogController.selectedIdentity }">
+                <a class="md-flex md-button" ng-click="$AccountDialogController.selectIdentity($index)">
+                  <div layout="row" layout-align="start center">
+                    <div class="card-picture">
+                      <sg-avatar-image class="md-avatar"
+                                       sg-email="identity.email"
+                                       size="40">person</sg-avatar-image>
+                    </div>
+                    <div class="sg-tile-content">
+                      <div class="sg-md-subhead">
+                        <div>
+                          <span ng-bind="identity.fullName"><!-- fullName --></span>
+                          <span ng-show="identity.email">
+                            <var:entity const:name="nbsp"/>
+                            <var:entity const:name="lt"/><span ng-bind="identity.email"><!-- email --></span><var:entity const:name="gt"/>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="sg-md-body">
+                        <i ng-bind-html="$AccountDialogController.account.getTextSignature($index)"><!-- signature --></i>
+                      </div>
+                    </div>
+                    <md-button class="sg-icon-button" type="button"
+                               ng-click="$AccountDialogController.removeIdentity($index)"
+                               ng-show="$AccountDialogController.canRemoveIdentity($index)">
+                      <md-icon>delete</md-icon>
+                    </md-button>
+                    <md-button class="sg-icon-button"
+                               label:aria-label="Default Identity"
+                               ng-click="$AccountDialogController.setDefaultIdentity($event, $index)">
+                      <md-icon ng-class="{ 'md-warn md-hue-2': identity.isDefault }">{{ identity.isDefault ? 'favorite' : 'favorite_border' }}</md-icon>
+                    </md-button>
+                  </div>
+                </a>
+                <md-card-content ng-show="$index == $AccountDialogController.selectedIdentity">
+                  <md-input-container class="md-block md-flex">
+                    <label><var:string label:value="Full Name"/></label>
+                    <input type="text" required="required"
+                           ng-disabled="$AccountDialogController.customFromIsReadonly()"
+                           ng-model="identity.fullName"/>
+                  </md-input-container>
+                  <md-autocomplete
+                      class="md-block" required="required"
+                      md-no-cache="true"
+                      md-search-text="identity.email"
+                      md-items="address in $AccountDialogController.filterEmailAddresses(identity.email)"
+                      md-escape-options="clear"
+                      md-require-match="$AccountDialogController.customFromIsReadonly()"
+                      md-min-length="0"
+                      label:md-floating-label="Email">
+                    <md-item-template>
+                      <span md-highlight-text="identity.email"
+                            md-highlight-flags="gi">{{ address }}</span>
+                    </md-item-template>
+                  </md-autocomplete>
+                  <md-input-container class="md-block"
+                                      ng-hide="$AccountDialogController.customFromIsReadonly()">
+                    <label><var:string label:value="Reply To Email"/></label>
+                    <input type="email"
+                           autocomplete="off"
+                           ng-model="identity.replyTo"/>
+                  </md-input-container>
+                  <md-input-container
+                      class="md-block md-flex"
+                      ng-if="$AccountDialogController.defaults.SOGoMailComposeMessageType == 'text'">
+                    <label><var:string label:value="Signature"/></label>
+                    <textarea ng-model="identity.signature"><!-- signature --></textarea>
+                  </md-input-container>
+                  <div class="pseudo-input-container"
+                       ng-if="$AccountDialogController.defaults.SOGoMailComposeMessageType == 'html'">
+                    <label class="pseudo-input-label"><var:string label:value="Signature"/></label>
+                    <sg-ckeditor
+                        class="ng-cloak"
+                        config="$AccountDialogController.ckConfig"
+                        ck-margin="8px"
+                        ng-model="identity.signature"><!-- HTML editor --></sg-ckeditor>
+                  </div>
+                </md-card-content>
+              </md-card>
+              <div layout="row" layout-align="end center">
+                <md-button type="button"
+                           ng-click="$AccountDialogController.addIdentity()"
+                           label:aria-label="New Identity">
+                  <var:string label:value="New Identity"/>
+                </md-button>
+              </div>
             </div>
 
-            <!-- To switch between a simple text editor and the CK/HTML editor, we use a ng-if and not
-                 a ng-class as it doesn't get initialized by the ckEditor class directive -->
-            <md-input-container class="md-block md-flex"
-                                ng-if="$AccountDialogController.defaults.SOGoMailComposeMessageType == 'text'">
-              <label><var:string label:value="Signature"/></label>
-              <textarea
-                  ng-model="$AccountDialogController.account.identities[0].signature"><!-- plain text editor --></textarea>
-            </md-input-container>
-            <div class="pseudo-input-container"
-                 ng-if="$AccountDialogController.defaults.SOGoMailComposeMessageType == 'html'">
-              <label class="pseudo-input-label"><var:string label:value="Signature"/></label>
-              <sg-ckeditor
-                  config="$AccountDialogController.ckConfig"
-                  ck-margin="8px"
-                  ng-model="$AccountDialogController.account.identities[0].signature"><!-- HTML editor --></sg-ckeditor>
-            </div>
+            <div class="sg-padded--bottom"><!-- spacer --></div>
 
             <md-input-container class="md-block md-input-has-value">
               <label><var:string label:value="When I receive a request for a return receipt"/></label>

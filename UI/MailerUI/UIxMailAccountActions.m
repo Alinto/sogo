@@ -100,7 +100,7 @@
 
 - (WOResponse *) composeAction
 {
-  NSString *value, *signature, *nl;
+  NSString *value, *signature, *nl, *space;
   SOGoDraftObject *newDraftMessage;
   NSMutableDictionary *headers;
   NSDictionary *data;
@@ -108,7 +108,7 @@
   SOGoDraftsFolder *drafts;
   SOGoUserDefaults *ud;
   id mailTo;
-  BOOL save;
+  BOOL save, isHTML;
 
   drafts = [[self clientObject] draftsFolderInContext: context];
   newDraftMessage = [drafts newDraft];
@@ -142,9 +142,11 @@
     {
       ud = [[context activeUser] userDefaults];
       [newDraftMessage setIsHTML: [[ud mailComposeMessageType] isEqualToString: @"html"]];
-      nl = ([newDraftMessage isHTML] ? @"<br/>" : @"\n");
+      isHTML = [newDraftMessage isHTML];
+      nl = (isHTML? @"<br />" : @"\n");
+      space = (isHTML ? @"&nbsp;" : @" ");
 
-      [newDraftMessage setText: [NSString stringWithFormat: @"%@%@-- %@%@", nl, nl, nl, signature]];
+      [newDraftMessage setText: [NSString stringWithFormat: @"%@%@--%@%@%@", nl, nl, space, nl, signature]];
       save = YES;
     }
   if (save)

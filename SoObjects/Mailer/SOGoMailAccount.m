@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2019 Inverse inc.
+  Copyright (C) 2007-2020 Inverse inc.
 
   This file is part of SOGo.
 
@@ -667,13 +667,37 @@ static NSString *inboxFolderName = @"INBOX";
   return identities;
 }
 
+- (NSDictionary *) defaultIdentity
+{
+  NSDictionary *defaultIdentity, *currentIdentity;
+  unsigned int count, max;
+
+  defaultIdentity = nil;
+  [self identities];
+
+  max = [identities count];
+  for (count = 0; count < max; count++)
+    {
+      currentIdentity = [identities objectAtIndex: count];
+      if ([[currentIdentity objectForKey: @"isDefault"] boolValue])
+        {
+          defaultIdentity = currentIdentity;
+          break;
+        }
+    }
+
+  return defaultIdentity; // can be nil
+}
+
 - (NSString *) signature
 {
+  NSDictionary *identity;
   NSString *signature;
 
-  [self identities];
-  if ([identities count] > 0)
-    signature = [[identities objectAtIndex: 0] objectForKey: @"signature"];
+  identity = [self defaultIdentity];
+
+  if (identity)
+    signature = [identity objectForKey: @"signature"];
   else
     signature = nil;
 

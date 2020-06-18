@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2009-2019 Inverse inc.
+  Copyright (C) 2009-2020 Inverse inc.
 
   This file is part of SOGo.
 
@@ -87,6 +87,7 @@ typedef enum {
                             forceActivation: (BOOL) forceActivation;
 
 - (NSArray *) identities;
+- (NSDictionary *) defaultIdentity;
 - (NSString *) signature;
 - (NSString *) encryption;
 

@@ -674,18 +674,18 @@
   return [NSString stringWithFormat: @"urn:uuid:%@", nameInContainer];
 }
 
-- (NSException *) setDavSignature: (NSString *) newSignature
-{
-  SOGoUserDefaults *ud;
-  SOGoUser *user;
+// - (NSException *) setDavSignature: (NSString *) newSignature
+// {
+//   SOGoUserDefaults *ud;
+//   SOGoUser *user;
 
-  user = [SOGoUser userWithLogin: [self ownerInContext: nil]];
-  ud = [user userDefaults];
-  [ud setMailSignature: newSignature];
-  [ud synchronize];
+//   user = [SOGoUser userWithLogin: [self ownerInContext: nil]];
+//   ud = [user userDefaults];
+//   [ud setMailSignature: newSignature];
+//   [ud synchronize];
 
-  return nil;
-}
+//   return nil;
+// }
 
 #warning unused stub
 - (BOOL) collectionDavKey: (NSString *) key

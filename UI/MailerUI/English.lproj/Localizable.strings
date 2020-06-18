@@ -104,7 +104,7 @@
 "To"            = "To";
 "Cc"            = "Cc";
 "Bcc"           = "Bcc";
-"Reply-To"	    = "Reply-To";
+"Reply-To"	= "Reply-To";
 "Add address"   = "Add address";
 "Body"          = "Body";
 "Open" = "Open";
@@ -121,6 +121,7 @@
 "Edit Draft..." = "Edit Draft...";
 "Load Images" = "Load Images";
 "Return Receipt" = "Return Receipt";
+"Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "The sender of this message has asked to be notified when you read this message. Do you wish to notify the sender?";
 "Return Receipt (displayed) - %@"= "Return Receipt (displayed) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";

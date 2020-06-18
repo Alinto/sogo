@@ -426,10 +426,13 @@ static SoProduct *preferencesProduct = nil;
     }
   if (account)
     [accounts insertObject: account  atIndex: 0];
+  [values setObject: accounts  forKey: @"AuxiliaryMailAccounts"];
+
+  // Ignore parameters as they are injected in the system mail account ([SOGoUser mailAccounts])
+  [values removeObjectForKey: @"SOGoMailIdentities"];
   [values removeObjectForKey: @"SOGoMailCertificate"];
   [values removeObjectForKey: @"SOGoMailCertificateAlwaysSign"];
   [values removeObjectForKey: @"SOGoMailCertificateAlwaysEncrypt"];
-  [values setObject: accounts  forKey: @"AuxiliaryMailAccounts"];
 
   // Add the domain's default vacation subject if user has not specified a custom subject
   vacationOptions = [defaults vacationOptions];
