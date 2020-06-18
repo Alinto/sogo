@@ -19,6 +19,7 @@
  */
 
 #import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
@@ -257,23 +258,38 @@
                   event = (iCalEvent *) [calendar firstChildWithTag: @"vevent"];
                   if (event)
                     {
-                      iCalDateTime *date;
+                      iCalDateTime *startDate, *endDate;
 
-                      date = (iCalDateTime *) [event uniqueChildWithTag: @"dtstart"];
-                      if (![date dateTime])
+                      startDate = (iCalDateTime *) [event uniqueChildWithTag: @"dtstart"];
+                      if (![startDate dateTime])
                         {
                           NSLog(@"Missing start date of event in path %@ with c_name = %@ (%@)", folder, c_name, [event summary]);
                           if (delete)
                             [gcsFolder deleteContentWithName: c_name];
                           rc = NO;
                         }
-                      date = (iCalDateTime *) [event uniqueChildWithTag: @"dtend"];
-                      if (![date dateTime] && ![event hasDuration])
+                      endDate = (iCalDateTime *) [event uniqueChildWithTag: @"dtend"];
+                      if (![endDate dateTime] && ![event hasDuration])
                         {
                           NSLog(@"Missing end date of event in path %@ with c_name = %@ (%@)", folder, c_name, [event summary]);
                           if (delete)
                             [gcsFolder deleteContentWithName: c_name];
                           rc = NO;
+                        }
+                      if ([startDate dateTime] && [endDate dateTime])
+                        {
+                          NSComparisonResult comparison;
+
+                          comparison = [[startDate dateTime] compare: [endDate dateTime]];
+                          if (([event isAllDay] && comparison == NSOrderedDescending) ||
+                              (![event isAllDay] && comparison != NSOrderedAscending))
+                            {
+                              NSLog(@"Start date (%@) is not before end date (%@) for event in path %@ with c_name = %@ (%@)",
+                                    [startDate dateTime], [endDate dateTime], folder, c_name, [event summary]);
+                              if (delete)
+                                [gcsFolder deleteContentWithName: c_name];
+                              rc = NO;
+                            }
                         }
                     }
                 }
