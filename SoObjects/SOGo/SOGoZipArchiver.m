@@ -56,14 +56,7 @@
             int errorp;
             self->z = zip_open([file cString], ZIP_CREATE | ZIP_EXCL, &errorp);
             if (self->z == NULL) {
-#ifdef LIBZIP_VERSION
-                zip_error_t ziperror;
-                zip_error_init_with_code(&ziperror, errorp);
-                NSLog(@"Failed to open zip output file %@: %@", file,
-                        [NSString stringWithCString: zip_error_strerror(&ziperror)]);
-#else
                 NSLog(@"Failed to open zip output file %@: %@", file, zip_strerror(self->z));
-#endif
             } else {
                 ret = self;
             }
