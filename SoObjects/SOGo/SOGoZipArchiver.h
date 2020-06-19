@@ -25,7 +25,8 @@
 
 @interface SOGoZipArchiver : NSObject
 {
-  zip_t *zip;
+  /* we use zip instead of zip_t for backward compatibility */
+  struct zip *z;
 }
 
 - (id) initFromFile: (NSString *) file;

@@ -35,7 +35,7 @@
 - (id)init
 {
     if ((self = [super init])) {
-        zip = NULL;
+        z = NULL;
     }
     return self;
 }
@@ -54,8 +54,8 @@
     if (file) {
         if ((self = [self init])) {
             int errorp;
-            self->zip = zip_open([file cString], ZIP_CREATE | ZIP_EXCL, &errorp);
-            if (self->zip == NULL) {
+            self->z = zip_open([file cString], ZIP_CREATE | ZIP_EXCL, &errorp);
+            if (self->z == NULL) {
                 zip_error_t ziperror;
                 zip_error_init_with_code(&ziperror, errorp);
                 NSLog(@"Failed to open zip output file %@: %@", file,
@@ -71,19 +71,19 @@
 
 - (BOOL)putFileWithName:(NSString *)filename andData:(NSData *)data
 {
-    if (self->zip == NULL) {
+    if (self->z == NULL) {
         NSLog(@"Failed to add file, archive is not open");
         return NO;
     }
 
-    zip_source_t *source = zip_source_buffer(self->zip, [data bytes], [data length], 0);
+    zip_source_t *source = zip_source_buffer(self->z, [data bytes], [data length], 0);
     if (source == NULL) {
-        NSLog(@"Failed to create zip source from buffer: %@", [NSString stringWithCString: zip_strerror(self->zip)]);
+        NSLog(@"Failed to create zip source from buffer: %@", [NSString stringWithCString: zip_strerror(self->z)]);
         return NO;
     }
 
-    if (zip_file_add(self->zip, [filename UTF8String], source, ZIP_FL_ENC_UTF_8) < 0) {
-        NSLog(@"Failed to add file %@: %@", filename, [NSString stringWithCString: zip_strerror(self->zip)]);
+    if (zip_file_add(self->z, [filename UTF8String], source, ZIP_FL_ENC_UTF_8) < 0) {
+        NSLog(@"Failed to add file %@: %@", filename, [NSString stringWithCString: zip_strerror(self->z)]);
         zip_source_free(source);
     }
 
@@ -93,13 +93,13 @@
 - (BOOL)close
 {
     BOOL success = YES;
-    if (self->zip != NULL) {
-        if (zip_close(zip) != 0) {
-            NSLog(@"Failed to close zip archive: %@", [NSString stringWithCString: zip_strerror(self->zip)]);
-            zip_discard(self->zip);
+    if (self->z != NULL) {
+        if (zip_close(self->z) != 0) {
+            NSLog(@"Failed to close zip archive: %@", [NSString stringWithCString: zip_strerror(self->z)]);
+            zip_discard(self->z);
             success = NO;
         }
-        self->zip = NULL;
+        self->z = NULL;
     }
     return success;
 }
