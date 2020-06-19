@@ -107,7 +107,6 @@
     if (self->z != NULL) {
         if (zip_close(self->z) != 0) {
             NSLog(@"Failed to close zip archive: %@", [NSString stringWithCString: zip_strerror(self->z)]);
-            zip_discard(self->z);
             success = NO;
         }
         self->z = NULL;
