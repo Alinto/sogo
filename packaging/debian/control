@@ -8,7 +8,7 @@ Standards-Version: 3.9.1
 Package: sogo
 Section: web
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, sope4.9-libxmlsaxdriver, sope4.9-db-connector, gnustep-make, libcurl3 | libcurl4, libzip4, liblasso3 (>= 2.3.5)
+Depends: ${shlibs:Depends}, ${misc:Depends}, sope4.9-libxmlsaxdriver, sope4.9-db-connector, gnustep-make, libcurl3 | libcurl4, libzip1 | libzip2 | libzip4, liblasso3 (>= 2.3.5)
 Recommends: memcached, apache2 | nginx | httpd
 Description: a modern and scalable groupware
  SOGo is a groupware server built around OpenGroupware.org (OGo) and
