@@ -1113,63 +1113,6 @@ static NSArray *reminderValues = nil;
 //
 // Used internally
 //
-- (void) _extractMainIdentity: (NSDictionary *) identity
-                 inDictionary: (NSMutableDictionary *) target
-
-{
-  /* We perform some validation here as we have no guaranty on the input
-     validity. */
-  NSString *value;
-
-  if ([identity isKindOfClass: [NSDictionary class]])
-    {
-      value = [identity objectForKey: @"signature"];
-
-      if (value)
-        [target setObject: value  forKey: @"SOGoMailSignature"];
-      else
-        [target removeObjectForKey: @"SOGoMailSignature"];
-
-      if (mailCustomFromEnabled)
-        {
-          value = [[identity objectForKey: @"email"]
-                    stringByTrimmingSpaces];
-
-          /* We make sure that the "custom" value is different from the system email */
-          if ([value length] == 0
-              || [[user systemEmail] isEqualToString: value])
-            value = nil;
-
-          if (value)
-            [target setObject: value  forKey: @"SOGoMailCustomEmail"];
-          else
-            [target removeObjectForKey: @"SOGoMailCustomEmail"];
-
-          value = [[identity objectForKey: @"fullName"]
-                    stringByTrimmingSpaces];
-          if ([value length] == 0
-              || [[user cn] isEqualToString: value])
-            value = nil;
-
-          if (value)
-            [target setObject: value  forKey: @"SOGoMailCustomFullName"];
-          else
-            [target removeObjectForKey: @"SOGoMailCustomFullName"];
-        }
-
-      value = [[identity objectForKey: @"replyTo"]
-                stringByTrimmingSpaces];
-
-      if (value && [value length] > 0)
-        [target setObject: value  forKey: @"SOGoMailReplyTo"];
-      else
-        [target removeObjectForKey: @"SOGoMailReplyTo"];
-    }
-}
-
-//
-// Used internally
-//
 - (BOOL) _validateReceiptAction: (NSString *) action
 {
   return ([action isKindOfClass: [NSString class]]
@@ -1232,20 +1175,6 @@ static NSArray *reminderValues = nil;
 //
 // Used internally
 //
-- (void) _extractMainCustomFrom: (NSDictionary *) account
-{
-}
-
-//
-// Used internally
-//
-- (void) _extractMainReplyTo: (NSDictionary *) account
-{
-}
-
-//
-// Used internally
-//
 - (BOOL) _validateAccountIdentities: (NSArray *) identities
 {
   static NSString *identityKeys[] = { @"fullName", @"email", nil };
@@ -1259,7 +1188,7 @@ static NSArray *reminderValues = nil;
   if (!knownKeys)
     {
       knownKeys = [NSArray arrayWithObjects: @"fullName", @"email",
-                           @"signature", @"replyTo", nil];
+                           @"signature", @"replyTo", @"isDefault", nil];
       [knownKeys retain];
     }
 
@@ -1367,9 +1296,8 @@ static NSArray *reminderValues = nil;
   if ([account isKindOfClass: [NSDictionary class]])
     {
       identities = [account objectForKey: @"identities"];
-      if ([identities isKindOfClass: [NSArray class]]
-          && [identities count] > 0)
-        [self _extractMainIdentity: [identities objectAtIndex: 0]  inDictionary: target];
+      if ([self _validateAccountIdentities: identities])
+        [target setObject: identities forKey: @"SOGoMailIdentities"];
       [self _extractMainReceiptsPreferences: [account objectForKey: @"receipts"]  inDictionary: target];
       [self _extractMainSecurityPreferences: [account objectForKey: @"security"]  inDictionary: target];
     }
@@ -1575,10 +1503,6 @@ static NSArray *reminderValues = nil;
           if ([accounts count] > 0)
             {
               // The first account is the main system account. The following mapping is required:
-              // - identities[0].signature             => SOGoMailSignature
-              // - identities[0].email                 => SOGoMailCustomEmail
-              // - identities[0].fullName              => SOGoMailCustomFullName
-              // - identities[0].replyTo               => SOGoMailReplyTo
               // - receipts.receiptAction              => SOGoMailReceiptAllow
               // - receipts.receiptNonRecipientAction  => SOGoMailReceiptNonRecipientAction
               // - receipts.receiptOutsideDomainAction => SOGoMailReceiptOutsideDomainAction

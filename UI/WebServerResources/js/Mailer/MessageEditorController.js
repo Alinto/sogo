@@ -12,7 +12,7 @@
 
     this.$onInit = function() {
       $scope.isPopup = stateParent.isPopup;
-      this.addRecipient = addRecipient;
+      this.account = stateAccount;
       this.autocomplete = {to: {}, cc: {}, bcc: {}};
       this.autosave = null;
       this.autosaveDrafts = autosaveDrafts;
@@ -21,7 +21,9 @@
       this.isFullscreen = false;
       this.hideBcc = (stateMessage.editable.bcc.length === 0);
       this.hideCc = (stateMessage.editable.cc.length === 0);
-      this.identities = _.uniq(_.map(stateAccount.identities, 'full'));
+      this.identities = stateAccount.identities;
+      this.fromIdentity = stateMessage.editable.from;
+      this.identitySearchText = '';
       this.message = stateMessage;
       this.recipientSeparatorKeys = [
         $mdConstant.KEY_CODE.ENTER,
@@ -283,11 +285,11 @@
       });
     }
 
-    function addRecipient(contact, field) {
+    this.addRecipient = function (contact, field) {
       var recipients, recipient, list, i, address;
       var emailRE = /([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)/i;
 
-      recipients = vm.message.editable[field];
+      recipients = this.message.editable[field];
 
       if (angular.isString(contact)) {
         // Examples that are handled:
@@ -351,11 +353,66 @@
         return recipient;
       else
         return null;
-    }
+    };
+
+    this.setFromIdentity = function (identity) {
+      var node, children, nl, space, signature, previousIdentity;
+
+      if (identity)
+        this.message.editable.from = identity.full;
+
+      if (this.composeType == "html") {
+        nl = '<br />';
+        space = '&nbsp;';
+      } else {
+        nl = '\n';
+        space = ' ';
+      }
+
+      if (identity && identity.signature)
+        signature = nl + nl + '--' + space + nl + identity.signature;
+      else
+        signature = '';
+
+      previousIdentity = _.find(this.identities, function (currentIdentity, index) {
+        if (currentIdentity.signature) {
+          var currentSignature = new RegExp(nl + ' ?' + nl + '--' + space + nl + currentIdentity.signature);
+          if (vm.message.editable.text.search(currentSignature) >= 0) {
+            vm.message.editable.text = vm.message.editable.text.replace(currentSignature, signature);
+            return true;
+          }
+        }
+        return false;
+      });
+
+      if (!previousIdentity && signature.length > 0) {
+        // Must place signature at proper place
+        if (!this.isNew() && this.replyPlacement == 'above') {
+          var quotedMessageIndex = this.message.editable.text.search(new RegExp(nl + '.+?:( ?' + nl + '){2}(> |<blockquote type="cite")'));
+          if (quotedMessageIndex >= 0) {
+            this.message.editable.text =
+              this.message.editable.text.slice(0, quotedMessageIndex) +
+              signature +
+              this.message.editable.text.slice(quotedMessageIndex);
+          } else {
+            this.message.editable.text = signature + this.message.editable.text;
+          }
+        } else {
+          this.message.editable.text += signature;
+        }
+      }
+    };
+
+    this.identitySearch = function (query) {
+      var q = query ? query : '';
+      return _.filter(stateAccount.identities, function(identity) {
+        return identity.full.toLowerCase().indexOf(q.toLowerCase()) >= 0;
+      });
+    };
 
     this.expandGroup = function(contact, field) {
       var recipients, i, j;
-      recipients = vm.message.editable[field];
+      recipients = this.message.editable[field];
       i = recipients.indexOf(contact);
       recipients.splice(i, 1);
       for (j = 0; j < contact.members.length; j++) {
@@ -391,8 +448,7 @@
       if (this.firstFocus) {
         onCompletePromise().then(function(element) {
           var textContent = angular.element(textArea).val(),
-              hasSignature = (Preferences.defaults.SOGoMailSignature &&
-                              Preferences.defaults.SOGoMailSignature.length > 0),
+              hasSignature = /\n-- \n/.test(textContent),
               signatureLength = 0,
               sigLimit,
               caretPosition;
@@ -402,8 +458,9 @@
             element.find('md-dialog-content')[0].scrollTop = 0;
           }
           else {
+            // Search for signature starting from bottom
             if (hasSignature) {
-              sigLimit = textContent.lastIndexOf("--");
+              sigLimit = textContent.lastIndexOf("-- ");
               if (sigLimit > -1)
                 signatureLength = (textContent.length - sigLimit);
             }
@@ -447,7 +504,7 @@
               if (x === null) {
                 break;
               }
-              if (x.getText() == '--') {
+              if (/--(%20|%A0|%C2%A0)/.test(encodeURI(x.getText()))) {
                 node = x.getPrevious().getPrevious();
                 break;
               }

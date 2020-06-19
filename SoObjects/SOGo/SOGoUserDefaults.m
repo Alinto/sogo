@@ -20,6 +20,7 @@
 
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSTimeZone.h>
+#import <Foundation/NSValue.h>
 
 #import <NGImap4/NSString+Imap4.h>
 #import <NGObjWeb/WOApplication.h>
@@ -114,33 +115,55 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return rc;
 }
 
-- (BOOL) _migrateSignature
+- (BOOL) _migrateMailIdentities
 {
   BOOL rc;
-  NSString *signature;
-  NSArray *mailAccounts, *identities;
-  NSDictionary *identity;
+  NSArray *mailIdentities;
+  NSMutableDictionary *identity;
+  NSString *fullName, *email, *replyTo, *signature;
 
-  mailAccounts = [self arrayForKey: @"MailAccounts"];
-  if (mailAccounts)
+  mailIdentities = [self mailIdentities];
+  if (mailIdentities)
     {
-      rc = YES;
-      if ([mailAccounts count] > 0)
-        {
-          identities = [[mailAccounts objectAtIndex: 0]
-                         objectForKey: @"identifies"];
-          if ([identities count] > 0)
-            {
-              identity = [identities objectAtIndex: 0];
-              signature = [identity objectForKey: @"signature"];
-              if ([signature length])
-                [self setObject: signature forKey: @"MailSignature"];
-            }
-        }
-      [self removeObjectForKey: @"MailAccounts"];
+      rc = NO;
     }
   else
-    rc = NO;
+    {
+      identity = [NSMutableDictionary dictionaryWithCapacity: 4];
+      fullName = [self stringForKey: @"SOGoMailCustomFullName"];
+      email = [self stringForKey: @"SOGoMailCustomEmail"];
+      replyTo = [self stringForKey: @"SOGoMailReplyTo"];
+      signature = [self stringForKey: @"SOGoMailSignature"];
+
+      if ([fullName length])
+        [identity setObject: fullName forKey: @"fullName"];
+      if ([email length])
+        [identity setObject: email forKey: @"email"];
+      if ([replyTo length])
+        [identity setObject: replyTo forKey: @"replyTo"];
+      if ([signature length])
+        [identity setObject: signature forKey: @"signature"];
+
+      if ([identity count])
+        {
+          [identity setObject: [NSNumber numberWithBool: YES] forKey: @"isDefault"];
+          [self setMailIdentities: [NSArray arrayWithObject: identity]];
+        }
+
+      /**
+       * Keep old attributes for now because v2 doesn't handle identities
+       *
+      if (fullName)
+       [self removeObjectForKey: @"SOGoMailCustomFullName"];
+      if (email)
+       [self removeObjectForKey: @"SOGoMailCustomEmail"];
+      if (replyTo)
+       [self removeObjectForKey: @"SOGoMailReplyTo"];
+      if (signature)
+        [self removeObjectForKey: @"SOGoMailSignature"];
+      */
+      rc = YES;
+    }
 
   return rc;
 }
@@ -211,7 +234,8 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   /* we must not use a boolean operation, otherwise subsequent migrations will
      not be invoked in the case where rc = YES. */
   return ([self _migrateLastModule]
-          | [self _migrateSignature]
+          // | [self _migrateSignature]
+          | [self _migrateMailIdentities]
           | [self _migrateCalendarCategories]
           | [self migrateOldDefaultsWithDictionary: migratedKeys]
           | [super migrate]);
@@ -629,18 +653,6 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self stringForKey: @"SOGoMailReplyPlacement"];
 }
 
-- (void) setMailSignature: (NSString *) newValue
-{
-  if ([newValue length] == 0)
-    newValue = nil;
-  [self setObject: newValue forKey: @"SOGoMailSignature"];
-}
-
-- (NSString *) mailSignature
-{
-  return [self stringForKey: @"SOGoMailSignature"];
-}
-
 - (void) setMailSignaturePlacement: (NSString *) newValue
 {
   [self setObject: newValue forKey: @"SOGoMailSignaturePlacement"];
@@ -658,45 +670,6 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
     signaturePlacement = [self stringForKey: @"SOGoMailSignaturePlacement"];
 
   return signaturePlacement;
-}
-
-- (void) setMailCustomFullName: (NSString *) newValue
-{
-  if ([newValue length] == 0)
-    newValue = nil;
-  [self setObject: [newValue stringByTrimmingSpaces]
-           forKey: @"SOGoMailCustomFullName"];
-}
-
-- (NSString *) mailCustomFullName
-{
-  return [self stringForKey: @"SOGoMailCustomFullName"];
-}
-
-- (void) setMailCustomEmail: (NSString *) newValue
-{
-  if ([newValue length] == 0)
-    newValue = nil;
-  [self setObject: [newValue stringByTrimmingSpaces]
-           forKey: @"SOGoMailCustomEmail"];
-}
-
-- (NSString *) mailCustomEmail
-{
-  return [self stringForKey: @"SOGoMailCustomEmail"];
-}
-
-- (void) setMailReplyTo: (NSString *) newValue
-{
-  if ([newValue length] == 0)
-    newValue = nil;
-  [self setObject: [newValue stringByTrimmingSpaces]
-           forKey: @"SOGoMailReplyTo"];
-}
-
-- (NSString *) mailReplyTo
-{
-  return [self stringForKey: @"SOGoMailReplyTo"];
 }
 
 - (void) setAllowUserReceipt: (BOOL) allow
@@ -782,6 +755,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 - (BOOL) mailCertificateAlwaysEncrypt
 {
   return [self boolForKey: @"SOGoMailCertificateAlwaysEncrypt"];
+}
+
+- (void) setMailIdentities: (NSArray *) newIdentites
+{
+  [self setObject: newIdentites forKey: @"SOGoMailIdentities"];
+}
+
+- (NSArray *) mailIdentities
+{
+  return [self arrayForKey: @"SOGoMailIdentities"];
 }
 
 - (void) setAuxiliaryMailAccounts: (NSArray *) newAccounts

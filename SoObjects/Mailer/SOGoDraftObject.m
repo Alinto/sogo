@@ -995,7 +995,7 @@ static NSString    *userAgent      = nil;
 - (void) fetchMailForForwarding: (SOGoMailObject *) sourceMail
 {
   NSDictionary *info, *attachment;
-  NSString *signature, *nl;
+  NSString *signature, *nl, *space;
   SOGoUserDefaults *ud;
 
   [sourceMail fetchCoreInfos];
@@ -1031,8 +1031,9 @@ static NSString    *userAgent      = nil;
       signature = [[self mailAccountFolder] signature];
       if ([signature length])
         {
-          nl = (isHTML ? @"<br/>" : @"\n");
-          [self setText: [NSString stringWithFormat: @"%@%@-- %@%@", nl, nl, nl, signature]];
+          nl = (isHTML ? @"<br />" : @"\n");
+          space = (isHTML ? @"&nbsp;" : @" ");
+          [self setText: [NSString stringWithFormat: @"%@%@--%@%@%@", nl, nl, space, nl, signature]];
         }
       attachment = [NSDictionary dictionaryWithObjectsAndKeys:
 				   [sourceMail filenameForForward], @"filename",

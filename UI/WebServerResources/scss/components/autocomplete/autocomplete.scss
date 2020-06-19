@@ -80,6 +80,11 @@ $list-item-dense-line-height: 1.05 !default;
   }
 }
 
+md-autocomplete .ng-invalid:not(.ng-empty) {
+  text-decoration: underline;
+  color: $colorRedA700 !important;
+}
+
 @media (max-width: $layout-breakpoint-xs) {
   // Enlarge the autocompletion menu on small devices to fit the entire screen
   .md-autocomplete-suggestions-container {

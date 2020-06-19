@@ -13,10 +13,16 @@
     if (typeof futureAccountData.then !== 'function') {
       angular.extend(this, futureAccountData);
       _.forEach(this.identities, function(identity) {
-        if (identity.fullName)
+        if (identity.fullName && identity.email)
           identity.full = identity.fullName + ' <' + identity.email + '>';
-        else
+        else if (identity.email)
           identity.full = '<' + identity.email + '>';
+        else
+          identity.full = '';
+        if (identity.signature) {
+          var element = angular.element('<div>' + identity.signature + '</div>');
+          identity.textSignature = _.map(element.contents(), 'textContent').join(' ').trim();
+        }
       });
       Account.$log.debug('Account: ' + JSON.stringify(futureAccountData, undefined, 2));
     }
@@ -316,6 +322,27 @@
   };
 
   /**
+   * @function getTextSignature
+   * @memberof Account.prototype
+   * @desc Create a plain text representation of the signature for the specified identity index.
+   * @returns a plain text version of the signature
+   */
+  Account.prototype.getTextSignature = function(index) {
+    if (index < this.identities.length) {
+      var identity = this.identities[index];
+      if (identity.signature) {
+        var element = angular.element('<div>' + identity.signature + '</div>');
+        identity.textSignature = _.map(element.contents(), 'textContent').join(' ').trim();
+      } else {
+        identity.textSignature = '';
+      }
+      return identity.textSignature;
+    } else {
+      throw Error('Index of identity is out of range');
+    }
+  };
+
+  /**
    * @function $certificate
    * @memberof Account.prototype
    * @desc View the S/MIME certificate details associated to the account.
@@ -449,6 +476,30 @@
         _this.delegates.splice(i, 1);
       }
     });
+  };
+
+  /**
+   * @function $omit
+   * @memberof Account.prototype
+   * @desc Return a sanitized object used to send to the server.
+   * @return an object literal copy of the Account instance
+   */
+  Account.prototype.$omit = function () {
+    var account = {}, identities = [];
+
+    angular.forEach(this, function(value, key) {
+      if (key != 'constructor' && key !='identities' && key[0] != '$') {
+        account[key] = angular.copy(value);
+      }
+    });
+
+    _.forEach(this.identities, function (identity) {
+      if (!identity.isReadOnly)
+        identities.push(_.pick(identity, ['email', 'fullName', 'replyTo', 'signature', 'isDefault']));
+    });
+    account.identities = identities;
+
+    return account;
   };
 
 })();

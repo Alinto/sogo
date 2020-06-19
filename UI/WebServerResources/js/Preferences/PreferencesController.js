@@ -98,28 +98,25 @@
     };
 
     this.addMailAccount = function(ev, form) {
-      var account;
+      var account, index;
 
-      this.preferences.defaults.AuxiliaryMailAccounts.push({});
-
-      account = _.last(this.preferences.defaults.AuxiliaryMailAccounts);
-      angular.extend(account,
-                     {
-                       isNew: true,
-                       name: "",
-                       identities: [
-                         {
-                           fullName: "",
-                           email: ""
-                         }
-                       ],
-                       receipts: {
-                         receiptAction: "ignore",
-                         receiptNonRecipientAction: "ignore",
-                         receiptOutsideDomainAction: "ignore",
-                         receiptAnyAction: "ignore"
-                       }
-                     });
+      account = new Account({
+        isNew: true,
+        name: "",
+        identities: [
+          {
+            fullName: "",
+            email: ""
+          }
+        ],
+        receipts: {
+          receiptAction: "ignore",
+          receiptNonRecipientAction: "ignore",
+          receiptOutsideDomainAction: "ignore",
+          receiptAnyAction: "ignore"
+        }
+      });
+      index = this.preferences.defaults.AuxiliaryMailAccounts.length;
 
       $mdDialog.show({
         controller: 'AccountDialogController',
@@ -133,14 +130,13 @@
           mailCustomFromEnabled: $window.mailCustomFromEnabled
         }
       }).then(function() {
+        vm.preferences.defaults.AuxiliaryMailAccounts.push(account.$omit());
         form.$setDirty();
-      }).catch(function() {
-        vm.preferences.defaults.AuxiliaryMailAccounts.pop();
       });
     };
 
     this.editMailAccount = function(event, index, form) {
-      var account = this.preferences.defaults.AuxiliaryMailAccounts[index];
+      var account = new Account(this.preferences.defaults.AuxiliaryMailAccounts[index]);
       $mdDialog.show({
         controller: 'AccountDialogController',
         controllerAs: '$AccountDialogController',
@@ -153,10 +149,8 @@
           mailCustomFromEnabled: $window.mailCustomFromEnabled
         }
       }).then(function() {
-        vm.preferences.defaults.AuxiliaryMailAccounts[index] = account;
+        vm.preferences.defaults.AuxiliaryMailAccounts[index] = account.$omit();
         form.$setDirty();
-      }, function() {
-        // Cancel
       });
     };
 

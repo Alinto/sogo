@@ -28,14 +28,35 @@
           <sg-avatar-image class="hide-xs"
                            sg-email="editor.message.editable.from"
                            size="32">person</sg-avatar-image>
-          <md-input-container class="sg-no-wrap">
-            <label><var:string label:value="From"/></label>
-            <md-select name="from"
-                       ng-model="editor.message.editable.from">
-              <md-option ng-value="identity" ng-repeat="identity in editor.identities track by $index">{{identity}}</md-option>
-            </md-select>
-          </md-input-container>
-          <div flex="flex"><!-- spacer --></div>
+          <md-autocomplete
+              class="md-margin md-default-theme md-bg md-hue-1" flex="flex"
+              required="required"
+              md-input-name="from"
+              md-require-match="true"
+              md-selected-item="editor.fromIdentity"
+              md-search-text="editor.identitySearchText"
+              md-selected-item-change="editor.setFromIdentity(identity)"
+              md-items="identity in editor.identitySearch(editor.identitySearchText)"
+              md-item-text="identity.full"
+              md-min-length="0"
+              md-escape-options="clear"
+              label:placeholder="Choose which identity to send this message from"
+              md-menu-class="md-2-line">
+            <md-item-template>
+              <div class="sg-tile-content">
+                <div class="sg-md-subhead">
+                  <span md-highlight-text="editor.identitySearchText"
+                        md-highlight-flags="gi">{{ identity.full }}</span>
+                </div>
+                <div class="sg-md-body">
+                  <i ng-bind-html="editor.account.getTextSignature($index)"><!-- signature --></i>
+                </div>
+              </div>
+            </md-item-template>
+            <div ng-messages="messageForm.from.$error">
+              <div ng-message="required">This field is required</div>
+            </div>
+          </md-autocomplete>
           <md-button class="sg-icon-button" ng-click="editor.send()"
                      ng-disabled="!(editor.message.editable.to.length > 0 || editor.message.editable.cc.length > 0 || editor.message.editable.bcc.length > 0) || editor.uploader.isUploading || messageForm.$invalid || messageForm.$submitted"
                      sg-ripple-click="mailEditor">

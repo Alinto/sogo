@@ -280,7 +280,7 @@ static NSArray *infoKeys = nil;
         }
       if (!from)
         {
-          from = [self _emailFromIdentity: [identities objectAtIndex: 0]];
+          from = [self _emailFromIdentity: [[context activeUser] defaultIdentity]];
           [from retain];
         }
     }
@@ -301,19 +301,11 @@ static NSArray *infoKeys = nil;
   //
   if ([[[[self clientObject] mailAccountFolder] nameInContainer] intValue] == 0)
     {
-      SOGoUserDefaults *ud;
-      
-      ud = [[context activeUser] userDefaults];
-      value = [ud mailReplyTo];
+      value = [[[context activeUser] defaultIdentity] objectForKey: @"replyTo"];
     }
   else
     {
-      NSArray *identities;
-      
-      identities = [[[self clientObject] mailAccountFolder] identities];
-
-      if ([identities count])
-        value = [[identities objectAtIndex: 0] objectForKey: @"replyTo"];
+      value = [[[[self clientObject] mailAccountFolder] defaultIdentity] objectForKey: @"replyTo"];
     }
 
   return value;
@@ -757,11 +749,12 @@ static NSArray *infoKeys = nil;
   [self setSourceFolder: [co sourceFolder]];
 
   data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                              [self from], @"from",
                               [self localeCode], @"locale",
                               [NSNumber numberWithBool: [self isHTML]], @"isHTML",
                               text, @"text",
                               nil];
+  if ((value = [self from]))
+    [data setObject: value forKey: @"from"];
   if ((value = [self replyTo]))
     [data setObject: value forKey: @"replyTo"];
   if ((value = [self to]))

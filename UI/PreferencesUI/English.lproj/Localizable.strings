@@ -212,6 +212,9 @@
 "Email" = "Email";
 "Reply To Email" = "Reply To Email";
 "Signature" = "Signature";
+"Identities" = "Identities";
+"Default Identity" = "Default Identity";
+"New Identity" = "New Identity";
 "(Click to create)" = "(Click to create)";
 "Please enter your signature below" = "Please enter your signature below";
 "Please specify a valid sender address." = "Please specify a valid sender address.";

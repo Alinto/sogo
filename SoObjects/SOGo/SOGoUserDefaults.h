@@ -1,6 +1,6 @@
 /* SOGoUserDefaults.h - this file is part of SOGo
  *
- * Copyright (C) 2011-2017 Inverse inc.
+ * Copyright (C) 2011-2020 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -157,20 +157,8 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setMailReplyPlacement: (NSString *) newValue;
 - (NSString *) mailReplyPlacement;
 
-- (void) setMailSignature: (NSString *) newValue;
-- (NSString *) mailSignature;
-
 - (void) setMailSignaturePlacement: (NSString *) newValue;
 - (NSString *) mailSignaturePlacement;
-
-- (void) setMailCustomFullName: (NSString *) newValue;
-- (NSString *) mailCustomFullName;
-
-- (void) setMailCustomEmail: (NSString *) newValue;
-- (NSString *) mailCustomEmail;
-
-- (void) setMailReplyTo: (NSString *) newValue;
-- (NSString *) mailReplyTo;
 
 - (void) setAllowUserReceipt: (BOOL) allow;
 - (BOOL) allowUserReceipt;
@@ -193,6 +181,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 - (void) setMailCertificateAlwaysEncrypt: (BOOL) newValue;
 - (BOOL) mailCertificateAlwaysEncrypt;
+
+- (void) setMailIdentities: (NSArray *) newIdentites;
+- (NSArray *) mailIdentities;
 
 - (void) setAuxiliaryMailAccounts: (NSArray *) newAccounts;
 - (NSArray *) auxiliaryMailAccounts;
