@@ -56,10 +56,14 @@
             int errorp;
             self->z = zip_open([file cString], ZIP_CREATE | ZIP_EXCL, &errorp);
             if (self->z == NULL) {
+#ifdef LIBZIP_VERSION
                 zip_error_t ziperror;
                 zip_error_init_with_code(&ziperror, errorp);
                 NSLog(@"Failed to open zip output file %@: %@", file,
                         [NSString stringWithCString: zip_error_strerror(&ziperror)]);
+#else
+                NSLog(@"Failed to open zip output file %@: %@", file, zip_strerror(self->z));
+#endif
             } else {
                 ret = self;
             }
@@ -76,16 +80,23 @@
         return NO;
     }
 
-    zip_source_t *source = zip_source_buffer(self->z, [data bytes], [data length], 0);
+    struct zip_source *source = zip_source_buffer(self->z, [data bytes], [data length], 0);
     if (source == NULL) {
         NSLog(@"Failed to create zip source from buffer: %@", [NSString stringWithCString: zip_strerror(self->z)]);
         return NO;
     }
 
+#ifdef ZIP_FL_ENC_UTF_8
     if (zip_file_add(self->z, [filename UTF8String], source, ZIP_FL_ENC_UTF_8) < 0) {
         NSLog(@"Failed to add file %@: %@", filename, [NSString stringWithCString: zip_strerror(self->z)]);
         zip_source_free(source);
     }
+#else
+    if (zip_add(self->z, [filename UTF8String], source) < 0) {
+      NSLog(@"Failed to add file %@: %@", filename, [NSString stringWithCString: zip_strerror(self->z)]);
+      zip_source_free(source);
+    }
+#endif
 
     return YES;
 }
