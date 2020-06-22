@@ -65,8 +65,7 @@
           mailAccount.port = null;
       });
 
-      // We convert our list of autoReplyEmailAddresses/forwardAddress into a string.
-      // We also convert our date objects into real date, otherwise we'll have strings
+      // We convert our date objects into real date, otherwise we'll have strings
       // or undefined values and the md-datepicker does NOT like this.
       if (data.Vacation) {
         if (data.Vacation.startDate)
@@ -109,8 +108,12 @@
         data.Vacation.endDate = new Date();
       }
 
-      if (data.Forward && angular.isUndefined(data.Forward.forwardAddress))
-        data.Forward.forwardAddress = [];
+      if (data.Forward) {
+        if (angular.isString(data.Forward.forwardAddress))
+          data.Forward.forwardAddress = data.Forward.forwardAddress.split(/, */);
+        else if (!angular.isArray(data.Forward.forwardAddress))
+          data.Forward.forwardAddress = [];
+      }
 
       // Split calendar categories colors keys and values
       if (angular.isUndefined(data.SOGoCalendarCategories))

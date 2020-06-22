@@ -1094,7 +1094,7 @@ static NSString *sieveScriptName = @"sogo";
 
       addresses = [values objectForKey: @"forwardAddress"];
       if ([addresses isKindOfClass: [NSString class]])
-        addresses = [NSArray arrayWithObject: addresses];
+        addresses = [addresses componentsSeparatedByString: @","];
 
       for (i = 0; i < [addresses count]; i++)
         {
