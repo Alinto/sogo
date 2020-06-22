@@ -62,6 +62,8 @@
 /* forward messages */
 "Forward incoming messages" = "Forward incoming messages";
 "Keep a copy" = "Keep a copy";
+"Enter an email" = "Enter an email";
+"Add another email" = "Add another email";
 "Please specify an address to which you want to forward your messages."
 = "Please specify an address to which you want to forward your messages.";
 "You are not allowed to forward your messages to an external email address." = "You are not allowed to forward your messages to an external email address.";

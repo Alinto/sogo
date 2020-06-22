@@ -1122,7 +1122,9 @@
                         ng-required="app.preferences.defaults.Forward.enabled == 1"
                         md-separator-keys="app.emailSeparatorKeys"
                         md-add-on-blur="true"
-                        md-autocomplete-snap="width">
+                        n0md-autocomplete-snap="width"
+                        label:placeholder="Enter an email"
+                        label:secondary-placeholder="Add another email">
                       <!-- forward addresses -->
                     </md-chips>
                 </md-input-container>
