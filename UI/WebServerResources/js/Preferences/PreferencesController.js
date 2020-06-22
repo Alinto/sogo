@@ -136,7 +136,8 @@
     };
 
     this.editMailAccount = function(event, index, form) {
-      var account = new Account(this.preferences.defaults.AuxiliaryMailAccounts[index]);
+      var data = _.cloneDeep(this.preferences.defaults.AuxiliaryMailAccounts[index]);
+      var account = new Account(data);
       $mdDialog.show({
         controller: 'AccountDialogController',
         controllerAs: '$AccountDialogController',
@@ -151,7 +152,7 @@
       }).then(function() {
         vm.preferences.defaults.AuxiliaryMailAccounts[index] = account.$omit();
         form.$setDirty();
-      });
+      }).catch(_.noop); // Cancel
     };
 
     this.removeMailAccount = function(index, form) {
