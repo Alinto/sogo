@@ -986,7 +986,8 @@
                           md-min-length="0"
                           md-autofocus="true"
                           md-autoselect="true"
-                          label:placeholder="Add an address">
+                          label:placeholder="Enter an email"
+                          label:secondary-placeholder="Add another email">>
                         <md-item-template>
                           <div class="sg-tile-content">
                             <div class="sg-md-subhead">
@@ -1122,7 +1123,7 @@
                         ng-required="app.preferences.defaults.Forward.enabled == 1"
                         md-separator-keys="app.emailSeparatorKeys"
                         md-add-on-blur="true"
-                        n0md-autocomplete-snap="width"
+                        md-autocomplete-snap="width"
                         label:placeholder="Enter an email"
                         label:secondary-placeholder="Add another email">
                       <!-- forward addresses -->
