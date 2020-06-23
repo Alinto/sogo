@@ -283,8 +283,7 @@
 
     // Autocomplete cards for attendees
     this.cardFilter = function ($query) {
-      AddressBook.$filterAll($query);
-      return AddressBook.$cards;
+      return AddressBook.$filterAll($query);
     };
 
     this.addAttendee = function (card, partial) {
@@ -301,7 +300,21 @@
             name = str.replace(new RegExp(" *<?" + email + ">? *"), '');
         vm.showAttendeesEditor |= initOrganizer;
         vm.searchText = '';
-        return new Card({ c_cn: _.trim(name, ' "'), emails: [{ value: email }] });
+        return vm.cardFilter(email).then(function (cards) {
+          if (cards.length) {
+            return cards[0];
+          } else {
+            return new Card({ c_cn: _.trim(name, ' "'), emails: [{ value: email }] });
+          }
+        }).catch(function (err) {
+          // Server error
+          return new Card({ c_cn: _.trim(name, ' "'), emails: [{ value: email }] });
+        });
+      }
+
+      function addCard(newCard) {
+        if (!vm.component.$attendees.hasAttendee(newCard))
+          vm.component.$attendees.add(newCard, options);
       }
 
       if (angular.isString(card)) {
@@ -317,18 +330,19 @@
                card.charCodeAt(i) == 44 ||   // ,
                card.charCodeAt(i) == 59) &&  // ;
               emailRE.test(address)) {
-            this.component.$attendees.add(createCard(address), options);
+            createCard(address).then(addCard);
             address = '';
           }
           else {
             address += card.charAt(i);
           }
         }
-        if (address)
-          this.component.$attendees.add(createCard(address), options);
+        if (address && emailRE.test(address))
+          createCard(address).then(addCard);
       }
       else {
-        this.component.$attendees.add(card, options);
+        if (!this.component.$attendees.hasAttendee(card))
+          this.component.$attendees.add(card, options);
         this.showAttendeesEditor |= initOrganizer;
       }
 

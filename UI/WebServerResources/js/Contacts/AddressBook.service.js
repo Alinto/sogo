@@ -85,17 +85,17 @@
    * @param {object[]} excludedCards - a list of Card objects that must be excluded from the results
    * @returns a collection of Cards instances
    */
-  AddressBook.$filterAll = function(search, options, excludedCards) {
+  AddressBook.$filterAll = function(search, cards, options, excludedCards) {
     var params = { search: search };
 
     if (!search) {
       // No query specified
-      AddressBook.$cards = [];
-      return AddressBook.$q.when(AddressBook.$cards);
+      cards = [];
+      return AddressBook.$q.when(cards);
     }
-    if (angular.isUndefined(AddressBook.$cards)) {
+    if (angular.isUndefined(cards)) {
       // First session query
-      AddressBook.$cards = [];
+      cards = [];
     }
 
     angular.extend(params, options);
@@ -115,23 +115,23 @@
         results = response.contacts;
       }
       // Remove cards that no longer match the search query
-      for (index = AddressBook.$cards.length - 1; index >= 0; index--) {
-        card = AddressBook.$cards[index];
+      for (index = cards.length - 1; index >= 0; index--) {
+        card = cards[index];
         if (_.isUndefined(_.find(results, _.bind(compareIds, card)))) {
-          AddressBook.$cards.splice(index, 1);
+          cards.splice(index, 1);
         }
       }
       // Add new cards matching the search query
       _.forEach(results, function(data, index) {
-        if (_.isUndefined(_.find(AddressBook.$cards, _.bind(compareIds, data)))) {
+        if (_.isUndefined(_.find(cards, _.bind(compareIds, data)))) {
           var card = new AddressBook.$Card(_.mapKeys(data, function(value, key) {
             return key.toLowerCase();
           }), search);
-          AddressBook.$cards.splice(index, 0, card);
+          cards.splice(index, 0, card);
         }
       });
-      AddressBook.$log.debug(AddressBook.$cards);
-      return AddressBook.$cards;
+      AddressBook.$log.debug(cards);
+      return cards;
     });
   };
 

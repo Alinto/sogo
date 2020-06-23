@@ -254,13 +254,14 @@
                 md-selected-item-change="editor.addAttendee(card, editor.searchText)"
                 md-items="card in editor.cardFilter(editor.searchText)"
                 md-item-text="card.empty"
+                md-autoselect="true"
                 var:md-min-length="minimumSearchLength"
                 md-delay="150"
                 md-no-cache="true"
                 sg-enter="editor.addAttendee(editor.searchText)">
               <md-item-template>
                 <div class="sg-tile-content">
-                  <div class="sg-md-subhead" md-highlight-text="editor.searchText" md-highlight-flags="gi">{{ card.$shortFormat(editor.searchText) }}</div>
+                  <div class="sg-md-subhead md-block" md-highlight-text="editor.searchText" md-highlight-flags="gi">{{ card.$shortFormat(editor.searchText) }}</div>
                   <div class="sg-md-body" md-colors="::{color: 'default-background-500'}">{{ card.containername }}</div>
                 </div>
               </md-item-template>
