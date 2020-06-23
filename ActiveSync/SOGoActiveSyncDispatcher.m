@@ -977,7 +977,7 @@ void handle_eas_terminate(int signum)
 	       }
 
              // Remove the folder from device if it doesn't exist, or don't want to sync it.
-             if (!currentFolder || !([currentFolder synchronize]))
+             if (!currentFolder || !([(SOGoGCSFolder*)currentFolder synchronize]))
                {
                  // Don't send a delete when MergedFoler is set, we have done it above.
                  // Windows Phones don't like when a <Delete>-folder is sent twice.
@@ -1135,7 +1135,7 @@ void handle_eas_terminate(int signum)
          continue;
 
        if (![currentFolder isKindOfClass: [SOGoGCSFolder class]] ||
-           ![currentFolder synchronize])
+           ![(SOGoGCSFolder*)currentFolder synchronize])
          {
            [folders removeObjectAtIndex: count];
            continue;

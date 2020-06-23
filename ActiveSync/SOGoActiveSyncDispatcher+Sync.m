@@ -2211,7 +2211,7 @@ FIXME
 
                    // Cache-entry still exists but folder doesn't exists or synchronize flag is not set.
                    // We ignore the folder and wait for foldersync to do the cleanup.
-                   if (!(mfCollection && [mfCollection synchronize]))
+                   if (!(mfCollection && [(SOGoGCSFolder*)mfCollection synchronize]))
                      {
                        if (debugOn)
                          [self logWithFormat: @"EAS - Folder %@ not found. Ignoring ...", folderName];
@@ -2245,7 +2245,7 @@ FIXME
               realCollectionId = [folderName realCollectionIdWithFolderType: &mergedFolderType];
               mfCollection = [self collectionFromId: realCollectionId  type: mergedFolderType];
 
-              if (!(mfCollection && [mfCollection synchronize]))
+              if (!(mfCollection && [(SOGoGCSFolder*)mfCollection synchronize]))
                 {
                   if (debugOn)
                     [self logWithFormat: @"EAS - Folder %@ not found. Reset personal folder to cleanup", folderName];
