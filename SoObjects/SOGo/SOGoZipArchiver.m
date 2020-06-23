@@ -56,7 +56,14 @@
             int errorp;
             self->z = zip_open([file cString], ZIP_CREATE | ZIP_EXCL, &errorp);
             if (self->z == NULL) {
-                NSLog(@"Failed to open zip output file %@: %@", file, zip_strerror(self->z));
+#if defined(LIBZIP_VERSION_MAJOR) && LIBZIP_VERSION_MAJOR >= 1
+                zip_error_t ziperror;
+                zip_error_init_with_code(&ziperror, errorp);
+                NSLog(@"Failed to open zip output file %@: %@", file,
+                        [NSString stringWithCString: zip_error_strerror(&ziperror)]);
+#else
+                NSLog(@"Failed to open zip output file %@", file);
+#endif
             } else {
                 ret = self;
             }
@@ -100,6 +107,9 @@
     if (self->z != NULL) {
         if (zip_close(self->z) != 0) {
             NSLog(@"Failed to close zip archive: %@", [NSString stringWithCString: zip_strerror(self->z)]);
+#if defined(LIBZIP_VERSION_MAJOR) && (LIBZIP_VERSION_MAJOR >= 1 || LIBZIP_VERSION_MINOR >= 11)
+            zip_discard(self->z);
+#endif
             success = NO;
         }
         self->z = NULL;
