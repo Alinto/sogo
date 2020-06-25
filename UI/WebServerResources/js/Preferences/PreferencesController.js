@@ -126,7 +126,7 @@
         locals: {
           defaults: this.preferences.defaults,
           account: account,
-          accountId: (this.preferences.defaults.AuxiliaryMailAccounts.length-1),
+          accountId: index,
           mailCustomFromEnabled: $window.mailCustomFromEnabled
         }
       }).then(function() {
