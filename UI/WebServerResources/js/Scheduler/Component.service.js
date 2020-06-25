@@ -441,7 +441,7 @@
           }, components);
         }
 
-        Component.$log.debug('list of ' + type + ' ready (' + components.length + ')');
+        Component.$log.debug('list of ' + type + ' ready (' + _.size(components) + ')');
 
         // Save the list of components to the object model
         Component['$' + type] = components;
