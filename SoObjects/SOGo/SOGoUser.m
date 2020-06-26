@@ -786,20 +786,28 @@
 
   if (![identities count])
     {
-      // Create a default identity
-      identity = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                        fullName, @"fullName",
-                                      [self systemEmail], @"email", nil];
-      if (appendDeletegatedIdentities)
+      // Create an identity for each email address
+      max = [mails count];
+      for (count = 0; count < max; count++)
         {
-          [identity setObject: [NSNumber numberWithBool: YES] forKey: @"isDefault"];
-          hasDefaultIdentity = YES;
+          identity = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                            fullName, @"fullName",
+                                                  [mails objectAtIndex: count], @"email", nil];
+          if (appendDeletegatedIdentities)
+            {
+              if (count == 0)
+                {
+                  // First identity uses the system email -- mark it as the default
+                  [identity setObject: [NSNumber numberWithBool: YES] forKey: @"isDefault"];
+                  hasDefaultIdentity = YES;
+                }
+            }
+          else
+            {
+              [identity setObject: [NSNumber numberWithBool: YES] forKey: @"isReadOnly"];
+            }
+          [identities addObject: identity];
         }
-      else
-        {
-          [identity setObject: [NSNumber numberWithBool: YES] forKey: @"isReadOnly"];
-        }
-      [identities addObject: identity];
     }
 
   /* identities from delegators */
