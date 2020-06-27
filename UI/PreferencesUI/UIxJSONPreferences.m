@@ -365,6 +365,11 @@ static SoProduct *preferencesProduct = nil;
       [defaults setMailLabelsColors: v];
     }
 
+  if ([domainDefaults forwardEnabled] && ![defaults forwardOptions])
+    {
+      [defaults setForwardOptions: [NSDictionary new]];
+    }
+
   if ([[defaults source] dirty])
     [defaults synchronize];
 
