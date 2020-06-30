@@ -1544,7 +1544,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                                                _component]];
     }
   else if (![self showCalendarTasks])
-      [baseWhere addObject: @"c_component != 'vtodo'"];
+    [baseWhere addObject: @"c_component != 'vtodo'"];
 
   if (_startDate)
     {
@@ -1564,8 +1564,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     }
 
   privacySQLString = [self aclSQLListingFilter];
-  
-  if (privacySQLString)
+
+  // Check for access to classification and also make sure the user is still active
+  if (privacySQLString && ownerUser)
     {
       if ([privacySQLString length])
         [baseWhere addObject: privacySQLString];
