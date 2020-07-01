@@ -209,8 +209,8 @@
   /**
    * @ngInject
    */
-  PrintController.$inject = ['$rootScope', '$scope', '$window', '$stateParams', '$mdDialog', '$log', '$mdToast', 'Dialog', 'sgSettings', 'Preferences', 'Calendar', 'calendarView', 'visibleList'];
-  function PrintController($rootScope, $scope, $window, $stateParams, $mdDialog, $log, $mdToast, Dialog, Settings, Preferences, Calendar, calendarView, visibleList) {
+  PrintController.$inject = ['$rootScope', '$scope', '$window', '$stateParams', '$mdDialog', '$log', 'Dialog', 'sgSettings', 'Preferences', 'Calendar', 'calendarView', 'visibleList'];
+  function PrintController($rootScope, $scope, $window, $stateParams, $mdDialog, $log, Dialog, Settings, Preferences, Calendar, calendarView, visibleList) {
     var vm = this;
     var orientations = {
       day: 'portrait',
