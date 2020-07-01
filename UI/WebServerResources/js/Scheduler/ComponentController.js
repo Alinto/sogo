@@ -340,7 +340,7 @@
         if (address && emailRE.test(address))
           createCard(address).then(addCard);
       }
-      else {
+      else if (angular.isDefined(card)) {
         if (!this.component.$attendees.hasAttendee(card))
           this.component.$attendees.add(card, options);
         this.showAttendeesEditor |= initOrganizer;
