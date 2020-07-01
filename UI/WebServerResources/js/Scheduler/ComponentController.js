@@ -457,6 +457,8 @@
     };
 
     this.save = function (form, options) {
+      this.adjustStartTime();
+      this.adjustEndTime();
       this.changeAlarmRelation(form);
       if (form.$valid) {
         this.component.$save(options)
@@ -581,12 +583,17 @@
     this.adjustEndTime = function () {
       var delta;
       if (this.component.end && this.endTime) {
-        // Update the component start date
+        // Update the component end date
         this.component.end.setHours(this.endTime.getHours());
         this.component.end.setMinutes(this.endTime.getMinutes());
         // The end date must be after the start date
         delta = oldEndDate.valueOf() - this.component.end.valueOf();
         if (delta !== 0) {
+          if (this.startTime) {
+            // Update the component start date
+            this.component.start.setHours(this.startTime.getHours());
+            this.component.start.setMinutes(this.startTime.getMinutes());
+          }
           delta = this.component.start.minutesTo(this.component.end);
           if (delta < 0) {
             this.component.end = new Date(oldEndDate.getTime());
