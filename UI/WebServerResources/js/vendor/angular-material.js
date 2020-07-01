@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.23
+ * v1.1.22
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -450,7 +450,7 @@ function MdConstantFactory() {
     },
 
     /**
-     * As defined in core/style/_variables.scss
+     * As defined in core/style/variables.scss
      *
      * $layout-breakpoint-xs:     600px !default;
      * $layout-breakpoint-sm:     960px !default;
@@ -1114,7 +1114,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     /**
      * Cross-version compatibility method to retrieve an option of a ngModel controller,
      * which supports the breaking changes in the AngularJS snapshot (SHA 87a2ff76af5d0a9268d8eb84db5755077d27c84c).
-     * @param {!ngModel.NgModelController} ngModelCtrl
+     * @param {!angular.NgModelController} ngModelCtrl
      * @param {!string} optionName
      * @returns {Object|undefined}
      */
@@ -1635,27 +1635,8 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
     },
 
     /**
-     * Get an element's siblings matching a given tag name.
-     *
-     * @param {JQLite|angular.element|HTMLElement} element Element to start walking the DOM from
-     * @param {string} tagName HTML tag name to match against
-     * @returns {Object[]} JQLite
-     */
-    getSiblings: function getSiblings(element, tagName) {
-      var upperCasedTagName = tagName.toUpperCase();
-      if (element instanceof angular.element) {
-        element = element[0];
-      }
-      var siblings = Array.prototype.filter.call(element.parentNode.children, function(node) {
-        return element !== node && node.tagName.toUpperCase() === upperCasedTagName;
-      });
-      return siblings.map(function (sibling) {
-        return angular.element(sibling);
-      });
-    },
-
-    /*
-     * getClosest replicates jQuery.closest() to walk up the DOM tree until it finds a matching nodeName
+     * getClosest replicates jQuery.closest() to walk up the DOM tree until it finds a matching
+     * nodeName.
      *
      * @param {Node} el Element to start walking the DOM from
      * @param {string|function} validateWith If a string is passed, it will be evaluated against
@@ -2060,7 +2041,7 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
      */
     sanitize: function(term) {
       if (!term) return term;
-      return term.replace(/[\\^$*+?.()|{}[]/g, '\\$&');
+      return term.replace(/[\\^$*+?.()|{}[]]/g, '\\$&');
     }
   };
 
@@ -2079,13 +2060,13 @@ function UtilFactory($document, $timeout, $compile, $rootScope, $$mdAnimate, $in
  * Since removing jQuery from the demos, some code that uses `element.focus()` is broken.
  * We need to add `element.focus()`, because it's testable unlike `element[0].focus`.
  */
+
 angular.element.prototype.focus = angular.element.prototype.focus || function() {
   if (this.length) {
     this[0].focus();
   }
   return this;
 };
-
 angular.element.prototype.blur = angular.element.prototype.blur || function() {
   if (this.length) {
     this[0].blur();
@@ -3153,10 +3134,7 @@ angular
  * will effect **bindings** in controllers created by AngularJS Material's services like
  * `$mdDialog`, `$mdPanel`, `$mdToast`, or `$mdBottomSheet`.
  *
- * See
- * <a ng-href="#mdcompilerprovider-respectpreassignbindingsenabled-respected">
- *   $mdCompilerProvider.respectPreAssignBindingsEnabled
- * </a>
+ * See [$mdCompilerProvider.respectPreAssignBindingsEnabled](#mdcompilerprovider-respectpreassignbindingsenabled-respected)
  * for the details of how the different versions and settings of AngularJS affect this behavior.
  *
  * @usage
@@ -3396,34 +3374,19 @@ function MdCompilerProvider($compileProvider) {
    */
   function MdCompilerService($q, $templateRequest, $injector, $compile, $controller) {
 
-    /**
-     * @private @const
-     * @type {!IQService}
-     */
+    /** @private @const {!angular.$q} */
     this.$q = $q;
 
-    /**
-     * @private @const
-     * @type {!ITemplateRequestService}
-     */
+    /** @private @const {!angular.$templateRequest} */
     this.$templateRequest = $templateRequest;
 
-    /**
-     * @private @const
-     * @type {!IInjectorService}
-     */
+    /** @private @const {!angular.$injector} */
     this.$injector = $injector;
 
-    /**
-     * @private @const
-     * @type{!ICompileService}
-     */
+    /** @private @const {!angular.$compile} */
     this.$compile = $compile;
 
-    /**
-     * @private @const
-     * @type {!IControllerService}
-     */
+    /** @private @const {!angular.$controller} */
     this.$controller = $controller;
   }
 
@@ -3575,15 +3538,6 @@ function MdCompilerProvider($compileProvider) {
 
         // Create the specified controller instance.
         var ctrl = self._createController(options, injectLocals, locals);
-
-        // Registering extra $destroy listeners should be avoided.
-        // Only register the listener if the controller implements a $onDestroy hook.
-        if (angular.isFunction(ctrl.$onDestroy)) {
-          scope.$on('$destroy', function() {
-            // Call the $onDestroy hook if it's present on the controller.
-            angular.isFunction(ctrl.$onDestroy) && ctrl.$onDestroy();
-          });
-        }
 
         // Unique identifier for AngularJS Route ngView controllers.
         element.data('$ngControllerController', ctrl);
@@ -4719,10 +4673,10 @@ MdInteractionService.prototype.isUserInvoked = function(checkDelay) {
 angular.module('material.core')
   .provider('$$interimElement', InterimElementProvider);
 
-/**
+/*
  * @ngdoc service
- * @name $$interimElementProvider
- * @module material.core.interimElement
+ * @name $$interimElement
+ * @module material.core
  *
  * @description
  *
@@ -4731,16 +4685,16 @@ angular.module('material.core')
  * The service provides a promise-like API for interacting with the temporary
  * elements.
  *
- * <hljs lang="js">
- *   app.service('$mdToast', function($$interimElement) {
- *     var $mdToast = $$interimElement(toastDefaultOptions);
- *     return $mdToast;
- *   });
- * </hljs>
- *
+ * ```js
+ * app.service('$mdToast', function($$interimElement) {
+ *   var $mdToast = $$interimElement(toastDefaultOptions);
+ *   return $mdToast;
+ * });
+ * ```
  * @param {object=} defaultOptions Options used by default for the `show` method on the service.
  *
  * @returns {$$interimElement.$service}
+ *
  */
 
 function InterimElementProvider() {
@@ -4791,6 +4745,7 @@ function InterimElementProvider() {
     /**
      * Add a method to the factory that isn't specific to any interim element operations
      */
+
     function addMethod(name, fn) {
       customMethods[name] = fn;
       return provider;
@@ -4957,7 +4912,9 @@ function InterimElementProvider() {
         locals[interimFactoryName] = publicService;
         return $injector.invoke(factory || function() { return defaultVal; }, {}, locals);
       }
+
     }
+
   }
 
   /* @ngInject */
@@ -4966,14 +4923,15 @@ function InterimElementProvider() {
     return function createInterimElementService() {
       var SHOW_CANCELLED = false;
 
-      /**
+      /*
        * @ngdoc service
-       * @name $$interimElementProvider.$service
+       * @name $$interimElement.$service
        *
        * @description
-       * A service used to control inserting and removing of an element from the DOM.
-       * It is used by $mdBottomSheet, $mdDialog, $mdToast, $mdMenu, $mdPanel, and $mdSelect.
+       * A service used to control inserting and removing an element into the DOM.
+       *
        */
+
       var service;
 
       var showPromises = []; // Promises for the interim's which are currently opening.
@@ -4981,6 +4939,8 @@ function InterimElementProvider() {
       var showingInterims = []; // Interim elements which are currently showing up.
 
       // Publish instance $$interimElement service;
+      // ... used as $mdDialog, $mdToast, $mdMenu, and $mdSelect
+
       return service = {
         show: show,
         hide: waitForInterim(hide),
@@ -4989,18 +4949,18 @@ function InterimElementProvider() {
         $injector_: $injector
       };
 
-      /**
+      /*
        * @ngdoc method
-       * @name $$interimElementProvider.$service#show
+       * @name $$interimElement.$service#show
        * @kind function
        *
        * @description
-       * Adds the `$interimElement` to the DOM and returns a special promise that will be resolved
-       * or rejected with hide or cancel, respectively.
+       * Adds the `$interimElement` to the DOM and returns a special promise that will be resolved or rejected
+       * with hide or cancel, respectively. To external cancel/hide, developers should use the
        *
-       * @param {object} options map of options and values
-       * @returns {Promise} a Promise that will be resolved when hide() is called or rejected when
-       *  cancel() is called.
+       * @param {*} options is hashMap of settings
+       * @returns a Promise
+       *
        */
       function show(options) {
         options = options || {};
@@ -5053,18 +5013,17 @@ function InterimElementProvider() {
         return interimElement.deferred.promise;
       }
 
-      /**
+      /*
        * @ngdoc method
-       * @name $$interimElementProvider.$service#hide
+       * @name $$interimElement.$service#hide
        * @kind function
        *
        * @description
-       * Removes the `$interimElement` from the DOM and resolves the Promise returned from `show()`.
+       * Removes the `$interimElement` from the DOM and resolves the promise returned from `show`
        *
-       * @param {*} reason Data used to resolve the Promise
-       * @param {object} options map of options and values
-       * @returns {Promise} a Promise that will be resolved after the element has been removed
-       *  from the DOM.
+       * @param {*} resolveParam Data to resolve the promise with
+       * @returns a Promise that will be resolved after the element has been removed.
+       *
        */
       function hide(reason, options) {
         options = options || {};
@@ -5079,11 +5038,8 @@ function InterimElementProvider() {
         // Hide the latest showing interim element.
         return closeElement(showingInterims[showingInterims.length - 1]);
 
-        /**
-         * @param {InterimElement} interim element to close
-         * @returns {Promise<InterimElement>}
-         */
         function closeElement(interim) {
+
           if (!interim) {
             return $q.when(reason);
           }
@@ -5102,18 +5058,17 @@ function InterimElementProvider() {
         }
       }
 
-      /**
+      /*
        * @ngdoc method
-       * @name $$interimElementProvider.$service#cancel
+       * @name $$interimElement.$service#cancel
        * @kind function
        *
        * @description
-       * Removes the `$interimElement` from the DOM and rejects the Promise returned from `show()`.
+       * Removes the `$interimElement` from the DOM and rejects the promise returned from `show`
        *
-       * @param {*} reason Data used to resolve the Promise
-       * @param {object} options map of options and values
-       * @returns {Promise} Promise that will be resolved after the element has been removed
-       *  from the DOM.
+       * @param {*} reason Data to reject the promise with
+       * @returns Promise that will be resolved after the element has been removed.
+       *
        */
       function cancel(reason, options) {
         var interim = showingInterims.pop();
@@ -5161,15 +5116,9 @@ function InterimElementProvider() {
         };
       }
 
-      /**
-       * @ngdoc method
-       * @name $$interimElementProvider.$service#destroy
-       * @kind function
-       *
-       * Special method to quick-remove the interim element without running animations. This is
-       * useful when the parent component has been or is being destroyed.
-       *
-       * Note: interim elements are in "interim containers".
+      /*
+       * Special method to quick-remove the interim element without animations
+       * Note: interim elements are in "interim containers"
        */
       function destroy(targetEl) {
         var interim = !targetEl ? showingInterims.shift() : null;
@@ -5480,7 +5429,9 @@ function InterimElementProvider() {
 
       }
     };
+
   }
+
 }
 
 })();
@@ -5896,7 +5847,7 @@ function InterimElementProvider() {
    * fallback value
    */
   function validateAttributeValue(className, value, updateFn) {
-    var origValue = value;
+    var origValue;
 
     if (!needsInterpolation(value)) {
       switch (className.replace(SUFFIXES,"")) {
@@ -7712,9 +7663,7 @@ function ThemingProvider($mdColorPalette, $$mdMetaProvider) {
      * @ngdoc method
      * @name $mdThemingProvider#setNonce
      * @param {string} nonceValue The nonce to be added as an attribute to the theme style tags.
-     * Setting a value allows the use of CSP policy without using the `'unsafe-inline'` directive.
-     * The string must already be base64 encoded. You can use `btoa(string)` to do this encoding.
-     * In your CSP's `style-src`, you would then add an entry for `'nonce-nonceValue'`.
+     * Setting a value allows the use of CSP policy without using the unsafe-inline directive.
      */
     setNonce: function(nonceValue) {
       themeConfig.nonce = nonceValue;
@@ -14416,16 +14365,10 @@ angular.module('material.components.datepicker', [
    * @module material.components.datepicker
    *
    * @param {Date} ng-model The component's model. Should be a Date object.
-   * @param {Object=} ng-model-options Allows tuning of the way in which `ng-model` is being
-   *  updated. Also allows for a timezone to be specified.
-   *  <a href="https://docs.angularjs.org/api/ng/directive/ngModelOptions#usage">Read more at the
-   *  ngModelOptions docs.</a>
    * @param {Date=} md-min-date Expression representing the minimum date.
    * @param {Date=} md-max-date Expression representing the maximum date.
    * @param {(function(Date): boolean)=} md-date-filter Function expecting a date and returning a
-   *  boolean whether it can be selected in "day" mode or not.
-   * @param {(function(Date): boolean)=} md-month-filter Function expecting a date and returning a
-   *  boolean whether it can be selected in "month" mode or not.
+   *  boolean whether it can be selected or not.
    * @param {String=} md-current-view Current view of the calendar. Can be either "month" or "year".
    * @param {String=} md-mode Restricts the user to only selecting a value from a particular view.
    *  This option can be used if the user is only supposed to choose from a certain date type
@@ -14442,11 +14385,11 @@ angular.module('material.components.datepicker', [
    *   <md-calendar ng-model="birthday"></md-calendar>
    * </hljs>
    */
-  CalendarCtrl.$inject = ["$element", "$scope", "$$mdDateUtil", "$mdUtil", "$mdConstant", "$mdTheming", "$$rAF", "$attrs", "$mdDateLocale", "$filter"];
-  calendarDirective.$inject = ["inputDirective"];
+  CalendarCtrl.$inject = ["$element", "$scope", "$$mdDateUtil", "$mdUtil", "$mdConstant", "$mdTheming", "$$rAF", "$attrs", "$mdDateLocale"];
   angular.module('material.components.datepicker')
     .directive('mdCalendar', calendarDirective);
 
+  // POST RELEASE
   // TODO(jelbourn): Mac Cmd + left / right == Home / End
   // TODO(jelbourn): Refactor month element creation to use cloneNode (performance).
   // TODO(jelbourn): Define virtual scrolling constants (compactness) users can override.
@@ -14457,27 +14400,29 @@ angular.module('material.components.datepicker', [
   // TODO(jelbourn): Previous month opacity is lowered when partially scrolled out of view.
   // TODO(jelbourn): Support md-calendar standalone on a page (as a tabstop w/ aria-live
   //     announcement and key handling).
-  // TODO Read-only calendar (not just date-picker).
+  // Read-only calendar (not just date-picker).
 
-  function calendarDirective(inputDirective) {
+  function calendarDirective() {
     return {
       template: function(tElement, tAttr) {
-        // This allows the calendar to work, without a datepicker. This ensures that the virtual
-        // repeater scrolls to the proper place on load by deferring the execution until the next
-        // digest. It's necessary only if the calendar is used without a datepicker, otherwise it's
-        // already wrapped in an ngIf.
+        // TODO(crisbeto): This is a workaround that allows the calendar to work, without
+        // a datepicker, until issue #8585 gets resolved. It can safely be removed
+        // afterwards. This ensures that the virtual repeater scrolls to the proper place on load by
+        // deferring the execution until the next digest. It's necessary only if the calendar is used
+        // without a datepicker, otherwise it's already wrapped in an ngIf.
         var extraAttrs = tAttr.hasOwnProperty('ngIf') ? '' : 'ng-if="calendarCtrl.isInitialized"';
-        return '' +
+        var template = '' +
           '<div ng-switch="calendarCtrl.currentView" ' + extraAttrs + '>' +
             '<md-calendar-year ng-switch-when="year"></md-calendar-year>' +
             '<md-calendar-month ng-switch-default></md-calendar-month>' +
           '</div>';
+
+        return template;
       },
       scope: {
         minDate: '=mdMinDate',
         maxDate: '=mdMaxDate',
         dateFilter: '=mdDateFilter',
-        monthFilter: '=mdMonthFilter',
 
         // These need to be prefixed, because Angular resets
         // any changes to the value due to bindToController.
@@ -14491,7 +14436,7 @@ angular.module('material.components.datepicker', [
       link: function(scope, element, attrs, controllers) {
         var ngModelCtrl = controllers[0];
         var mdCalendarCtrl = controllers[1];
-        mdCalendarCtrl.configureNgModel(ngModelCtrl, inputDirective);
+        mdCalendarCtrl.configureNgModel(ngModelCtrl);
       }
     };
   }
@@ -14519,27 +14464,15 @@ angular.module('material.components.datepicker', [
    * @ngInject @constructor
    */
   function CalendarCtrl($element, $scope, $$mdDateUtil, $mdUtil,
-    $mdConstant, $mdTheming, $$rAF, $attrs, $mdDateLocale, $filter) {
+    $mdConstant, $mdTheming, $$rAF, $attrs, $mdDateLocale) {
 
     $mdTheming($element);
 
-    /**
-     * @final
-     * @type {!JQLite}
-     */
+    /** @final {!angular.JQLite} */
     this.$element = $element;
 
-    /**
-     * @final
-     * @type {!angular.Scope}
-     */
+    /** @final {!angular.Scope} */
     this.$scope = $scope;
-
-    /**
-     * @final
-     * @type {!angular.$attrs} Current attributes object for the element
-     */
-    this.$attrs = $attrs;
 
     /** @final */
     this.dateUtil = $$mdDateUtil;
@@ -14556,31 +14489,22 @@ angular.module('material.components.datepicker', [
     /** @final */
     this.$mdDateLocale = $mdDateLocale;
 
-    /** @final The built-in Angular date filter. */
-    this.ngDateFilter = $filter('date');
-
-    /**
-     * @final
-     * @type {Date}
-     */
+    /** @final {Date} */
     this.today = this.dateUtil.createDateAtMidnight();
 
-    /** @type {!ngModel.NgModelController} */
-    this.ngModelCtrl = undefined;
+    /** @type {!angular.NgModelController} */
+    this.ngModelCtrl = null;
 
-    /** @type {string} Class applied to the selected date cell. */
+    /** @type {String} Class applied to the selected date cell. */
     this.SELECTED_DATE_CLASS = 'md-calendar-selected-date';
 
-    /** @type {string} Class applied to the cell for today. */
+    /** @type {String} Class applied to the cell for today. */
     this.TODAY_CLASS = 'md-calendar-date-today';
 
-    /** @type {string} Class applied to the focused cell. */
+    /** @type {String} Class applied to the focused cell. */
     this.FOCUSED_DATE_CLASS = 'md-focus';
 
-    /**
-     * @final
-     * @type {number} Unique ID for this calendar instance.
-     */
+    /** @final {number} Unique ID for this calendar instance. */
     this.id = nextUniqueId++;
 
     /**
@@ -14591,12 +14515,6 @@ angular.module('material.components.datepicker', [
      * @type {Date}
      */
     this.displayDate = null;
-
-    /**
-     * Allows restricting the calendar to only allow selecting a month or a day.
-     * @type {'month'|'day'|null}
-     */
-    this.mode = null;
 
     /**
      * The selected date. Keep track of this separately from the ng-model value so that we
@@ -14623,20 +14541,20 @@ angular.module('material.components.datepicker', [
 
     /**
      * Used to toggle initialize the root element in the next digest.
-     * @type {boolean}
+     * @type {Boolean}
      */
     this.isInitialized = false;
 
     /**
      * Cache for the  width of the element without a scrollbar. Used to hide the scrollbar later on
      * and to avoid extra reflows when switching between views.
-     * @type {number}
+     * @type {Number}
      */
     this.width = 0;
 
     /**
      * Caches the width of the scrollbar in order to be used when hiding it and to avoid extra reflows.
-     * @type {number}
+     * @type {Number}
      */
     this.scrollbarWidth = 0;
 
@@ -14674,12 +14592,12 @@ angular.module('material.components.datepicker', [
     if (angular.version.major === 1 && angular.version.minor <= 4) {
       this.$onInit();
     }
+
   }
 
   /**
    * AngularJS Lifecycle hook for newer AngularJS versions.
-   * Bindings are not guaranteed to have been assigned in the controller, but they are in the
-   * $onInit hook.
+   * Bindings are not guaranteed to have been assigned in the controller, but they are in the $onInit hook.
    */
   CalendarCtrl.prototype.$onInit = function() {
     /**
@@ -14696,55 +14614,36 @@ angular.module('material.components.datepicker', [
       this.mode = null;
     }
 
-    if (this.minDate && this.minDate > this.$mdDateLocale.firstRenderableDate) {
+    var dateLocale = this.$mdDateLocale;
+
+    if (this.minDate && this.minDate > dateLocale.firstRenderableDate) {
       this.firstRenderableDate = this.minDate;
     } else {
-      this.firstRenderableDate = this.$mdDateLocale.firstRenderableDate;
+      this.firstRenderableDate = dateLocale.firstRenderableDate;
     }
 
-    if (this.maxDate && this.maxDate < this.$mdDateLocale.lastRenderableDate) {
+    if (this.maxDate && this.maxDate < dateLocale.lastRenderableDate) {
       this.lastRenderableDate = this.maxDate;
     } else {
-      this.lastRenderableDate = this.$mdDateLocale.lastRenderableDate;
+      this.lastRenderableDate = dateLocale.lastRenderableDate;
     }
   };
 
   /**
    * Sets up the controller's reference to ngModelController.
-   * @param {!ngModel.NgModelController} ngModelCtrl Instance of the ngModel controller.
-   * @param {Object} inputDirective Config for Angular's `input` directive.
+   * @param {!angular.NgModelController} ngModelCtrl
    */
-  CalendarCtrl.prototype.configureNgModel = function(ngModelCtrl, inputDirective) {
+  CalendarCtrl.prototype.configureNgModel = function(ngModelCtrl) {
     var self = this;
+
     self.ngModelCtrl = ngModelCtrl;
 
-    // The component needs to be [type="date"] in order to be picked up by AngularJS.
-    this.$attrs.$set('type', 'date');
-
-    // Invoke the `input` directive link function, adding a stub for the element.
-    // This allows us to re-use AngularJS' logic for setting the timezone via ng-model-options.
-    // It works by calling the link function directly which then adds the proper `$parsers` and
-    // `$formatters` to the NgModelController.
-    inputDirective[0].link.pre(this.$scope, {
-      on: angular.noop,
-      val: angular.noop,
-      0: {}
-    }, this.$attrs, [ngModelCtrl]);
+    self.$mdUtil.nextTick(function() {
+      self.isInitialized = true;
+    });
 
     ngModelCtrl.$render = function() {
       var value = this.$viewValue;
-      var parsedValue, convertedValue;
-
-      // In the case where a conversion is needed, the $viewValue here will be a string like
-      // "2020-05-10" instead of a Date object.
-      if (!self.dateUtil.isValidDate(value)) {
-        parsedValue = self.$mdDateLocale.parseDate(this.$viewValue);
-        convertedValue =
-          new Date(parsedValue.getTime() + 60000 * parsedValue.getTimezoneOffset());
-        if (self.dateUtil.isValidDate(convertedValue)) {
-          value = convertedValue;
-        }
-      }
 
       // Notify the child scopes of any changes.
       self.$scope.$broadcast('md-calendar-parent-changed', value);
@@ -14759,22 +14658,17 @@ angular.module('material.components.datepicker', [
         self.displayDate = self.selectedDate || self.today;
       }
     };
-
-    self.$mdUtil.nextTick(function() {
-      self.isInitialized = true;
-    });
   };
 
   /**
    * Sets the ng-model value for the calendar and emits a change event.
-   * @param {Date} date new value for the calendar
+   * @param {Date} date
    */
   CalendarCtrl.prototype.setNgModelValue = function(date) {
-    var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
     var value = this.dateUtil.createDateAtMidnight(date);
-    this.focusDate(value);
+    this.focus(value);
     this.$scope.$emit('md-calendar-change', value);
-    this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone), 'default');
+    this.ngModelCtrl.$setViewValue(value);
     this.ngModelCtrl.$render();
     return value;
   };
@@ -14798,9 +14692,9 @@ angular.module('material.components.datepicker', [
 
   /**
    * Focus the cell corresponding to the given date.
-   * @param {Date=} date The date to be focused.
+   * @param {Date} date The date to be focused.
    */
-  CalendarCtrl.prototype.focusDate = function(date) {
+  CalendarCtrl.prototype.focus = function(date) {
     if (this.dateUtil.isValidDate(date)) {
       var previousFocus = this.$element[0].querySelector('.' + this.FOCUSED_DATE_CLASS);
       if (previousFocus) {
@@ -14889,10 +14783,10 @@ angular.module('material.components.datepicker', [
     this.$scope.$apply(function() {
       // Capture escape and emit back up so that a wrapping component
       // (such as a date-picker) can decide to close.
-      if (event.which === self.keyCode.ESCAPE || event.which === self.keyCode.TAB) {
+      if (event.which == self.keyCode.ESCAPE || event.which == self.keyCode.TAB) {
         self.$scope.$emit('md-calendar-close');
 
-        if (event.which === self.keyCode.TAB) {
+        if (event.which == self.keyCode.TAB) {
           event.preventDefault();
         }
 
@@ -15093,7 +14987,7 @@ angular.module('material.components.datepicker', [
     this.cellClickHandler = function() {
       var timestamp = $$mdDateUtil.getTimestampFromNode(this);
       self.$scope.$apply(function() {
-        self.calendarCtrl.setNgModelValue(self.dateLocale.parseDate(timestamp));
+        self.calendarCtrl.setNgModelValue(timestamp);
       });
     };
 
@@ -15140,7 +15034,7 @@ angular.module('material.components.datepicker', [
 
   /**
    * Gets the "index" of the currently selected date as it would be in the virtual-repeat.
-   * @returns {number} the "index" of the currently selected date
+   * @returns {number}
    */
   CalendarMonthCtrl.prototype.getSelectedMonthIndex = function() {
     var calendarCtrl = this.calendarCtrl;
@@ -15263,7 +15157,7 @@ angular.module('material.components.datepicker', [
         date = this.dateUtil.clampDate(date, calendarCtrl.minDate, calendarCtrl.maxDate);
 
         this.changeDisplayDate(date).then(function() {
-          calendarCtrl.focusDate(date);
+          calendarCtrl.focus(date);
         });
       }
     }
@@ -15325,10 +15219,7 @@ angular.module('material.components.datepicker', [
    * @ngInject @constructor
    */
   function CalendarMonthBodyCtrl($element, $$mdDateUtil, $mdDateLocale) {
-    /**
-     * @final
-     * @type {!JQLite}
-     */
+    /** @final {!angular.JQLite} */
     this.$element = $element;
 
     /** @final */
@@ -15346,7 +15237,7 @@ angular.module('material.components.datepicker', [
     /**
      * Number of months from the start of the month "items" that the currently rendered month
      * occurs. Set via angular data binding.
-     * @type {number|null}
+     * @type {number}
      */
     this.offset = null;
 
@@ -15367,6 +15258,7 @@ angular.module('material.components.datepicker', [
 
     if (this.focusAfterAppend) {
       this.focusAfterAppend.classList.add(this.calendarCtrl.FOCUSED_DATE_CLASS);
+      this.focusAfterAppend.focus();
       this.focusAfterAppend = null;
     }
   };
@@ -15637,7 +15529,8 @@ angular.module('material.components.datepicker', [
    * Controller for the mdCalendar component.
    * @ngInject @constructor
    */
-  function CalendarYearCtrl($element, $scope, $animate, $q, $$mdDateUtil, $mdUtil) {
+  function CalendarYearCtrl($element, $scope, $animate, $q,
+    $$mdDateUtil, $mdUtil) {
 
     /** @final {!angular.JQLite} */
     this.$element = $element;
@@ -15786,7 +15679,7 @@ angular.module('material.components.datepicker', [
         date = dateUtil.getFirstDateOfMonth(self.dateUtil.clampDate(date, min, max));
 
         self.changeDate(date).then(function() {
-          calendarCtrl.focusDate(date);
+          calendarCtrl.focus(date);
         });
       }
     }
@@ -15817,7 +15710,7 @@ angular.module('material.components.datepicker', [
 
     if (calendarCtrl.mode) {
       this.$mdUtil.nextTick(function() {
-        calendarCtrl.setNgModelValue(calendarCtrl.$mdDateLocale.parseDate(timestamp));
+        calendarCtrl.setNgModelValue(timestamp);
       });
     } else {
       calendarCtrl.setCurrentView('month', timestamp);
@@ -15869,10 +15762,7 @@ angular.module('material.components.datepicker', [
    * @ngInject @constructor
    */
   function CalendarYearBodyCtrl($element, $$mdDateUtil, $mdDateLocale) {
-    /**
-     * @final
-     * @type {!JQLite}
-     */
+    /** @final {!angular.JQLite} */
     this.$element = $element;
 
     /** @final */
@@ -15890,7 +15780,7 @@ angular.module('material.components.datepicker', [
     /**
      * Number of months from the start of the month "items" that the currently rendered month
      * occurs. Set via angular data binding.
-     * @type {number|null}
+     * @type {number}
      */
     this.offset = null;
 
@@ -15911,6 +15801,7 @@ angular.module('material.components.datepicker', [
 
     if (this.focusAfterAppend) {
       this.focusAfterAppend.classList.add(this.calendarCtrl.FOCUSED_DATE_CLASS);
+      this.focusAfterAppend.focus();
       this.focusAfterAppend = null;
     }
   };
@@ -15948,8 +15839,8 @@ angular.module('material.components.datepicker', [
 
     if (this.dateUtil.isMonthWithinRange(
           firstOfMonth, calendarCtrl.minDate, calendarCtrl.maxDate) &&
-      (!angular.isFunction(calendarCtrl.monthFilter) ||
-        calendarCtrl.monthFilter(firstOfMonth))) {
+      (!angular.isFunction(this.calendarCtrl.dateFilter) ||
+        this.calendarCtrl.dateFilter(firstOfMonth))) {
       var selectionIndicator = document.createElement('span');
       selectionIndicator.classList.add('md-calendar-date-selection-indicator');
       selectionIndicator.textContent = cellText;
@@ -15997,7 +15888,7 @@ angular.module('material.components.datepicker', [
     var firstRow = document.createElement('tr');
     var labelCell = document.createElement('td');
     labelCell.className = 'md-calendar-month-label';
-    labelCell.textContent = String(year);
+    labelCell.textContent = year;
     firstRow.appendChild(labelCell);
 
     for (i = 0; i < 6; i++) {
@@ -16033,8 +15924,7 @@ angular.module('material.components.datepicker', [
    * The `$mdDateLocaleProvider` is the provider that creates the `$mdDateLocale` service.
    * This provider that allows the user to specify messages, formatters, and parsers for date
    * internationalization. The `$mdDateLocale` service itself is consumed by AngularJS Material
-   * components that deal with dates
-   * (i.e. <a ng-href="api/directive/mdDatepicker">mdDatepicker</a>).
+   * components that deal with dates (i.e. {@link api/directive/mdDatepicker mdDatepicker}).
    *
    * @property {Array<string>} months Array of month names (in order).
    * @property {Array<string>} shortMonths Array of abbreviated month names.
@@ -16207,7 +16097,6 @@ angular.module('material.components.datepicker', [
      * Factory function that returns an instance of the dateLocale service.
      * @ngInject
      * @param $locale
-     * @param $filter
      * @returns {DateLocale}
      */
     DateLocaleProvider.prototype.$get = function($locale, $filter) {
@@ -16239,7 +16128,7 @@ angular.module('material.components.datepicker', [
 
       /**
        * Default string-to-date parsing function.
-       * @param {string|number} dateString
+       * @param {string} dateString
        * @returns {!Date}
        */
       function defaultParseDate(dateString) {
@@ -16439,7 +16328,7 @@ angular.module('material.components.datepicker', [
     }
 
     /**
-     * Gets whether two dates are the same day (not not necessarily the same time).
+     * Gets whether two dates are the same day (not not necesarily the same time).
      * @param {Date} d1
      * @param {Date} d2
      * @returns {boolean}
@@ -16567,19 +16456,19 @@ angular.module('material.components.datepicker', [
 
     /**
      * Creates a date with the time set to midnight.
-     * Drop-in replacement for two forms of the Date constructor via opt_value.
-     * @param {number|Date=} opt_value Leave undefined for a Date representing now. Or use a
-     *  single value representing the number of seconds since the Unix Epoch or a Date object.
+     * Drop-in replacement for two forms of the Date constructor:
+     * 1. No argument for Date representing now.
+     * 2. Single-argument value representing number of seconds since Unix Epoch
+     * or a Date object.
+     * @param {number|Date=} opt_value
      * @return {Date} New date with time set to midnight.
      */
     function createDateAtMidnight(opt_value) {
       var date;
-      if (angular.isDate(opt_value)) {
-        date = opt_value;
-      } else if (angular.isNumber(opt_value)) {
-        date = new Date(opt_value);
-      } else {
+      if (angular.isUndefined(opt_value)) {
         date = new Date();
+      } else {
+        date = new Date(opt_value);
       }
       setDateTimeToMidnight(date);
       return date;
@@ -16707,11 +16596,7 @@ angular.module('material.components.datepicker', [
    * @param {Date=} md-min-date Expression representing a min date (inclusive).
    * @param {Date=} md-max-date Expression representing a max date (inclusive).
    * @param {(function(Date): boolean)=} md-date-filter Function expecting a date and returning a
-   *  boolean whether it can be selected in "day" mode or not. Returning false will also trigger a
-   *  `filtered` model validation error.
-   * @param {(function(Date): boolean)=} md-month-filter Function expecting a date and returning a
-   *  boolean whether it can be selected in "month" mode or not. Returning false will also trigger a
-   *  `filtered` model validation error.
+   *  boolean whether it can be selected or not.
    * @param {String=} md-placeholder The date input placeholder value.
    * @param {String=} md-open-on-focus When present, the calendar will be opened when the input
    *  is focused.
@@ -16731,13 +16616,13 @@ angular.module('material.components.datepicker', [
    * * `"calendar"` - Only hides the calendar icon.
    * * `"triangle"` - Only hides the triangle icon.
    * @param {Object=} md-date-locale Allows for the values from the `$mdDateLocaleProvider` to be
-   * overwritten on a per-element basis (e.g. `msgOpenCalendar` can be overwritten with
+   * ovewritten on a per-element basis (e.g. `msgOpenCalendar` can be overwritten with
    * `md-date-locale="{ msgOpenCalendar: 'Open a special calendar' }"`).
    *
    * @description
    * `<md-datepicker>` is a component used to select a single date.
    * For information on how to configure internationalization for the date picker,
-   * see <a ng-href="api/service/$mdDateLocaleProvider">$mdDateLocaleProvider</a>.
+   * see {@link api/service/$mdDateLocaleProvider $mdDateLocaleProvider}.
    *
    * This component supports
    * [ngMessages](https://docs.angularjs.org/api/ngMessages/directive/ngMessages).
@@ -16809,7 +16694,6 @@ angular.module('material.components.datepicker', [
                 'md-min-date="ctrl.minDate" ' +
                 'md-max-date="ctrl.maxDate" ' +
                 'md-date-filter="ctrl.dateFilter" ' +
-                'md-month-filter="ctrl.monthFilter" ' +
                 'ng-model="ctrl.date" ng-if="ctrl.isCalendarOpen">' +
             '</md-calendar>' +
           '</div>' +
@@ -16823,7 +16707,6 @@ angular.module('material.components.datepicker', [
         currentView: '@mdCurrentView',
         mode: '@mdMode',
         dateFilter: '=mdDateFilter',
-        monthFilter: '=mdMonthFilter',
         isOpen: '=?mdIsOpen',
         debounceInterval: '=mdDebounceInterval',
         dateLocale: '=mdDateLocale'
@@ -16964,20 +16847,17 @@ angular.module('material.components.datepicker', [
      * close the calendar panel when a click outside said panel occurs. We use `documentElement`
      * instead of body because, when scrolling is disabled, some browsers consider the body element
      * to be completely off the screen and propagate events directly to the html element.
-     * @type {!JQLite}
+     * @type {!angular.JQLite}
      */
     this.documentElement = angular.element(document.documentElement);
 
-    /** @type {!ngModel.NgModelController} */
+    /** @type {!angular.NgModelController} */
     this.ngModelCtrl = null;
 
     /** @type {HTMLInputElement} */
     this.inputElement = $element[0].querySelector('input');
 
-    /**
-     * @final
-     * @type {!JQLite}
-     */
+    /** @final {!angular.JQLite} */
     this.ngInputElement = angular.element(this.inputElement);
 
     /** @type {HTMLElement} */
@@ -16991,26 +16871,17 @@ angular.module('material.components.datepicker', [
 
     /**
      * Element covering everything but the input in the top of the floating calendar pane.
-     * @type {!JQLite}
+     * @type {!angular.JQLite}
      */
     this.inputMask = angular.element($element[0].querySelector('.md-datepicker-input-mask-opaque'));
 
-    /**
-     * @final
-     * @type {!JQLite}
-     */
+    /** @final {!angular.JQLite} */
     this.$element = $element;
 
-    /**
-     * @final
-     * @type {!angular.Attributes}
-     */
+    /** @final {!angular.Attributes} */
     this.$attrs = $attrs;
 
-    /**
-     * @final
-     * @type {!angular.Scope}
-     */
+    /** @final {!angular.Scope} */
     this.$scope = $scope;
 
     /** @type {Date} */
@@ -17107,6 +16978,7 @@ angular.module('material.components.datepicker', [
     if (angular.version.major === 1 && angular.version.minor <= 4) {
       this.$onInit();
     }
+
   }
 
   /**
@@ -17325,10 +17197,6 @@ angular.module('material.components.datepicker', [
       if (angular.isFunction(this.dateFilter)) {
         this.ngModelCtrl.$setValidity('filtered', this.dateFilter(date));
       }
-
-      if (angular.isFunction(this.monthFilter)) {
-        this.ngModelCtrl.$setValidity('filtered', this.monthFilter(date));
-      }
     } else {
       // The date is seen as "not a valid date" if there is *something* set
       // (i.e.., not null or undefined), but that something isn't a valid date.
@@ -17342,8 +17210,7 @@ angular.module('material.components.datepicker', [
       this.ngModelCtrl.$setValidity('valid', date == null);
     }
 
-    angular.element(this.inputContainer).toggleClass(INVALID_CLASS,
-      this.ngModelCtrl.$invalid && (this.ngModelCtrl.$touched || this.ngModelCtrl.$submitted));
+    angular.element(this.inputContainer).toggleClass(INVALID_CLASS, !this.ngModelCtrl.$valid);
   };
 
   /**
@@ -17403,8 +17270,7 @@ angular.module('material.components.datepicker', [
    */
   DatePickerCtrl.prototype.isDateEnabled = function(opt_date) {
     return this.dateUtil.isDateWithinRange(opt_date, this.minDate, this.maxDate) &&
-          (!angular.isFunction(this.dateFilter) || this.dateFilter(opt_date)) &&
-          (!angular.isFunction(this.monthFilter) || this.monthFilter(opt_date));
+          (!angular.isFunction(this.dateFilter) || this.dateFilter(opt_date));
   };
 
   /** Position and attach the floating calendar to the document. */
@@ -17433,11 +17299,11 @@ angular.module('material.components.datepicker', [
     // then it's possible that the already-scrolled body has a negative top/left. In this case,
     // we want to treat the "real" top as (0 - bodyRect.top). In a normal scrolling situation,
     // though, the top of the viewport should just be the body's scroll position.
-    var viewportTop = (bodyRect.top < 0 && document.body.scrollTop === 0) ?
+    var viewportTop = (bodyRect.top < 0 && document.body.scrollTop == 0) ?
         -bodyRect.top :
         document.body.scrollTop;
 
-    var viewportLeft = (bodyRect.left < 0 && document.body.scrollLeft === 0) ?
+    var viewportLeft = (bodyRect.left < 0 && document.body.scrollLeft == 0) ?
         -bodyRect.left :
         document.body.scrollLeft;
 
@@ -17586,7 +17452,7 @@ angular.module('material.components.datepicker', [
     // Use a timeout in order to allow the calendar to be rendered, as it is gated behind an ng-if.
     var self = this;
     this.$mdUtil.nextTick(function() {
-      self.getCalendarCtrl().focusDate();
+      self.getCalendarCtrl().focus();
     }, false);
   };
 
@@ -17660,7 +17526,7 @@ angular.module('material.components.datepicker', [
    */
   DatePickerCtrl.prototype.setModelValue = function(value) {
     var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
-    this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone), 'default');
+    this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone));
   };
 
   /**
@@ -17668,17 +17534,13 @@ angular.module('material.components.datepicker', [
    * @param {Date=} value Value that was set to the model.
    */
   DatePickerCtrl.prototype.onExternalChange = function(value) {
-    var self = this;
     var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
 
     this.date = value;
     this.inputElement.value = this.locale.formatDate(value, timezone);
     this.mdInputContainer && this.mdInputContainer.setHasValue(!!value);
     this.resizeInputElement();
-    // This is often called from the $formatters section of the $validators pipeline.
-    // In that case, we need to delay to let $render and $validate run, so that the checks for
-    // error state are accurate.
-    this.$mdUtil.nextTick(function() {self.updateErrorState();}, false, self.$scope);
+    this.updateErrorState();
   };
 })();
 
@@ -24352,11 +24214,7 @@ function MenuProvider($$interimElementProvider) {
           var handled;
           switch (ev.keyCode) {
             case $mdConstant.KEY_CODE.ESCAPE:
-              if (opts.nestLevel) {
-                opts.mdMenuCtrl.close();
-              } else {
-                opts.mdMenuCtrl.close(false, { closeAll: true });
-              }
+              opts.mdMenuCtrl.close(false, { closeAll: true });
               handled = true;
               break;
             case $mdConstant.KEY_CODE.TAB:
@@ -25301,7 +25159,7 @@ function MenuItemDirective($mdUtil, $mdConstant, $$mdSvgRegistry) {
  */
 
 
-MdNavBar.$inject = ["$mdAria", "$mdTheming", "$window", "$mdUtil"];
+MdNavBar.$inject = ["$mdAria", "$mdTheming"];
 MdNavBarController.$inject = ["$element", "$scope", "$timeout", "$mdConstant"];
 MdNavItem.$inject = ["$mdAria", "$$rAF", "$mdUtil", "$window"];
 MdNavItemController.$inject = ["$element"];
@@ -25379,12 +25237,10 @@ angular.module('material.components.navBar', ['material.core'])
 /**
  * @param $mdAria
  * @param $mdTheming
- * @param $window
- * @param $mdUtil
  * @constructor
  * @ngInject
  */
-function MdNavBar($mdAria, $mdTheming, $window, $mdUtil) {
+function MdNavBar($mdAria, $mdTheming) {
   return {
     restrict: 'E',
     transclude: true,
@@ -25407,24 +25263,6 @@ function MdNavBar($mdAria, $mdTheming, $window, $mdUtil) {
         '<md-nav-ink-bar ng-hide="ctrl.mdNoInkBar"></md-nav-ink-bar>' +
       '</div>',
     link: function(scope, element, attrs, ctrl) {
-
-      ctrl.width = $window.innerWidth;
-
-      function onResize() {
-        if (ctrl.width !== $window.innerWidth) {
-          ctrl.updateSelectedTabInkBar();
-          ctrl.width = $window.innerWidth;
-          scope.$digest();
-        }
-      }
-
-      function cleanUp() {
-        angular.element($window).off('resize', onResize);
-      }
-
-      angular.element($window).on('resize', $mdUtil.debounce(onResize, 300));
-      scope.$on('$destroy', cleanUp);
-
       $mdTheming(element);
       if (!ctrl.navBarAriaLabel) {
         $mdAria.expectAsync(element, 'aria-label', angular.noop);
@@ -25550,27 +25388,19 @@ MdNavBarController.prototype._updateTabs = function(newValue, oldValue) {
  * Repositions the ink bar to the selected tab.
  * @private
  */
-MdNavBarController.prototype._updateInkBarStyles = function(tab, newIndex) {
+MdNavBarController.prototype._updateInkBarStyles = function(tab, newIndex, oldIndex) {
+  this._inkbar.toggleClass('_md-left', newIndex < oldIndex)
+      .toggleClass('_md-right', newIndex > oldIndex);
+
   this._inkbar.css({display: newIndex < 0 ? 'none' : ''});
 
   if (tab) {
     var tabEl = tab.getButtonEl();
     var left = tabEl.offsetLeft;
-    var tabWidth = tabEl.offsetWidth;
-    var navBarWidth = this._navBarEl.getBoundingClientRect().width;
-    var scale = tabWidth / navBarWidth;
-    var translate = left / navBarWidth * 100;
 
-    this._inkbar.css({ transform: 'translateX(' + translate + '%) scaleX(' + scale + ')' });
+    this._inkbar.css({left: left + 'px', width: tabEl.offsetWidth + 'px'});
   }
 };
-
-/**
- * Updates inkbar to match current tab.
- */
-MdNavBarController.prototype.updateSelectedTabInkBar = function() {
-  this._updateInkBarStyles(this._getSelectedTab());
-}
 
 /**
  * Returns an array of the current tabs.
@@ -26226,7 +26056,7 @@ angular
  *
  * @param {string} name Preset name.
  * @param {!Object} preset Specific configuration object that can contain any
- *     and all of the parameters available within the `$mdPanel.create` method.
+ *     and all of the parameters avaialble within the `$mdPanel.create` method.
  *     However, parameters that pertain to id, position, animation, and user
  *     interaction are not allowed and will be removed from the preset
  *     configuration.
@@ -26248,9 +26078,9 @@ angular
  * the screen. It can be used to implement tooltips, dialogs, pop-ups, etc.
  *
  * The following types, referenced below, have separate documentation:
- * - <a ng-href="api/type/MdPanelAnimation">MdPanelAnimation</a> from `$mdPanel.newPanelAnimation()`
- * - <a ng-href="api/type/MdPanelPosition">MdPanelPosition</a> from `$mdPanel.newPanelPosition()`
- * - <a ng-href="api/type/MdPanelRef">MdPanelRef</a> from the `$mdPanel.open()` Promise or
+ * - <a href="api/type/MdPanelAnimation">MdPanelAnimation</a> from `$mdPanel.newPanelAnimation()`
+ * - <a href="api/type/MdPanelPosition">MdPanelPosition</a> from `$mdPanel.newPanelPosition()`
+ * - <a href="api/type/MdPanelRef">MdPanelRef</a> from the `$mdPanel.open()` Promise or
  * injected in the panel's controller
  *
  * @usage
@@ -26326,7 +26156,7 @@ angular
  *     [$sce service](https://docs.angularjs.org/api/ng/service/$sce).
  *   - `templateUrl` - `{string=}`: The URL that will be used as the content of
  *     the panel.
- *   - `contentElement` - `{(string|!JQLite|!Element)=}`: Pre-compiled
+ *   - `contentElement` - `{(string|!angular.JQLite|!Element)=}`: Pre-compiled
  *     element to be used as the panel's content.
  *   - `controller` - `{(function|string)=}`: The controller to associate with
  *     the panel. The controller can inject a reference to the returned
@@ -26345,7 +26175,7 @@ angular
  *     be set to the created MdPanelRef instance.
  *   - `resolve` - `{Object=}`: Similar to locals, except it takes promises as
  *     values. The panel will not open until all of the promises resolve.
- *   - `attachTo` - `{(string|!JQLite|!Element)=}`: The element to
+ *   - `attachTo` - `{(string|!angular.JQLite|!Element)=}`: The element to
  *     attach the panel to. Defaults to appending to the root element of the
  *     application.
  *   - `propagateContainerEvents` - `{boolean=}`: Whether pointer or touch
@@ -26393,7 +26223,7 @@ angular
  *     close/hide() action is starting.
  *   - `onDomRemoved` - `{function=}`: Callback function used to announce when
  *     the panel is removed from the DOM.
- *   - `origin` - `{(string|!JQLite|!Element)=}`: The element to focus
+ *   - `origin` - `{(string|!angular.JQLite|!Element)=}`: The element to focus
  *     on when the panel closes. This is commonly the element which triggered
  *     the opening of the panel. If you do not use `origin`, you need to control
  *     the focus manually.
@@ -26418,7 +26248,7 @@ angular
  *
  * @param {!Object=} config Specific configuration object that may contain
  *     the properties defined in `$mdPanel.create`.
- * @returns {!Q.IPromise<!MdPanelRef>} panelRef A promise that resolves
+ * @returns {!angular.$q.Promise<!MdPanelRef>} panelRef A promise that resolves
  *     to an instance of the panel.
  */
 
@@ -26493,10 +26323,10 @@ angular
  *     create.
  *   - `isAttached` - `{boolean}`: Whether the panel is attached to the DOM.
  *     Visibility to the user does not factor into isAttached.
- *   - `panelContainer` - `{JQLite}`: The wrapper element containing the
+ *   - `panelContainer` - `{angular.JQLite}`: The wrapper element containing the
  *     panel. This property is added in order to have access to the `addClass`,
  *     `removeClass`, `toggleClass`, etc methods.
- *   - `panelEl` - `{JQLite}`: The panel element. This property is added
+ *   - `panelEl` - `{angular.JQLite}`: The panel element. This property is added
  *     in order to have access to the `addClass`, `removeClass`, `toggleClass`,
  *     etc methods.
  */
@@ -26507,7 +26337,7 @@ angular
  * @description
  * Attaches and shows the panel.
  *
- * @returns {!Q.IPromise} A promise that is resolved when the panel is
+ * @returns {!angular.$q.Promise} A promise that is resolved when the panel is
  *     opened.
  */
 
@@ -26519,7 +26349,7 @@ angular
  * If you don't intend on using the panel again, call the {@link #destroy
  * destroy} method afterwards.
  *
- * @returns {!Q.IPromise} A promise that is resolved when the panel is
+ * @returns {!angular.$q.Promise} A promise that is resolved when the panel is
  *     closed.
  */
 
@@ -26530,7 +26360,7 @@ angular
  * Create the panel elements and attach them to the DOM. The panel will be
  * hidden by default.
  *
- * @returns {!Q.IPromise} A promise that is resolved when the panel is
+ * @returns {!angular.$q.Promise} A promise that is resolved when the panel is
  *     attached.
  */
 
@@ -26541,7 +26371,7 @@ angular
  * Removes the panel from the DOM. This will NOT hide the panel before removing
  * it.
  *
- * @returns {!Q.IPromise} A promise that is resolved when the panel is
+ * @returns {!angular.$q.Promise} A promise that is resolved when the panel is
  *     detached.
  */
 
@@ -26551,7 +26381,7 @@ angular
  * @description
  * Shows the panel.
  *
- * @returns {!Q.IPromise} A promise that is resolved when the panel has
+ * @returns {!angular.$q.Promise} A promise that is resolved when the panel has
  *     shown and animations are completed.
  */
 
@@ -26561,7 +26391,7 @@ angular
  * @description
  * Hides the panel.
  *
- * @returns {!Q.IPromise} A promise that is resolved when the panel has
+ * @returns {!angular.$q.Promise} A promise that is resolved when the panel has
  *     hidden and animations are completed.
  */
 
@@ -26660,7 +26490,7 @@ angular
  * * `CLOSE` - Gets called before the panel begins closing.
  *
  * @param {string} type Type of interceptor.
- * @param {!Q.IPromise<any>} callback Callback to be registered.
+ * @param {!angular.$q.Promise<any>} callback Callback to be registered.
  * @returns {!MdPanelRef}
  */
 
@@ -26671,7 +26501,7 @@ angular
  * Removes a registered interceptor.
  *
  * @param {string} type Type of interceptor to be removed.
- * @param {function(): !Q.IPromise<any>} callback Interceptor to be removed.
+ * @param {function(): !angular.$q.Promise<any>} callback Interceptor to be removed.
  * @returns {!MdPanelRef}
  */
 
@@ -26755,7 +26585,7 @@ angular
  * @description
  * Positions the panel relative to a specific element.
  *
- * @param {string|!Element|!JQLite} element Query selector, DOM element,
+ * @param {string|!Element|!angular.JQLite} element Query selector, DOM element,
  *     or angular element to position the panel with respect to.
  * @returns {!MdPanelPosition}
  */
@@ -27097,10 +26927,10 @@ function clearPresets() {
  * reference to the MdPanelService is returned where the needed arguments are
  * passed in including the MdPanelProvider `_presets`.
  * @param {!Object} _presets
- * @param {!JQLite} $rootElement
+ * @param {!angular.JQLite} $rootElement
  * @param {!angular.Scope} $rootScope
- * @param {!IInjectorService} $injector
- * @param {!IWindowService} $window
+ * @param {!angular.$injector} $injector
+ * @param {!angular.$window} $window
  */
 function $getProvider() {
   return [
@@ -27121,10 +26951,10 @@ function $getProvider() {
 /**
  * A service that is used for controlling/displaying panels on the screen.
  * @param {!Object} presets
- * @param {!JQLite} $rootElement
+ * @param {!angular.JQLite} $rootElement
  * @param {!angular.Scope} $rootScope
- * @param {!IInjectorService} $injector
- * @param {!IWindowService} $window
+ * @param {!angular.$injector} $injector
+ * @param {!angular.$window} $window
  * @final @constructor @ngInject
  */
 function MdPanelService(presets, $rootElement, $rootScope, $injector, $window) {
@@ -27224,7 +27054,7 @@ function MdPanelService(presets, $rootElement, $rootScope, $injector, $window) {
 
 /**
  * Creates a panel with the specified options.
- * @param {string|Object=} preset Name of a preset configuration that can be used to
+ * @param {string=} preset Name of a preset configuration that can be used to
  *     extend the panel configuration.
  * @param {!Object=} config Configuration object for the panel.
  * @returns {!MdPanelRef}
@@ -27284,7 +27114,7 @@ MdPanelService.prototype.create = function(preset, config) {
  * @param {string=} preset Name of a preset configuration that can be used to
  *     extend the panel configuration.
  * @param {!Object=} config Configuration object for the panel.
- * @returns {!Q.IPromise<!MdPanelRef>} The panel created from create.
+ * @returns {!angular.$q.Promise<!MdPanelRef>} The panel created from create.
  */
 MdPanelService.prototype.open = function(preset, config) {
   var panelRef = this.create(preset, config);
@@ -27400,10 +27230,10 @@ MdPanelService.prototype._closeFirstOpenedPanel = function(groupName) {
 
 
 /**
- * Wraps the user's template in three elements:
- * - md-panel-outer-wrapper - covers the entire `attachTo` element.
- * - md-panel-inner-wrapper - handles the positioning.
- * - md-panel - contains the user's content and deals with the animations.
+ * Wraps the users template in two elements, md-panel-outer-wrapper, which
+ * covers the entire attachTo element, and md-panel, which contains only the
+ * template. This allows the panel control over positioning, animations,
+ * and similar properties.
  * @param {string} origTemplate The original template.
  * @returns {string} The wrapped template.
  * @private
@@ -27415,32 +27245,26 @@ MdPanelService.prototype._wrapTemplate = function(origTemplate) {
   // height and width for positioning.
   return '' +
       '<div class="md-panel-outer-wrapper">' +
-        '<div class="md-panel-inner-wrapper _md-panel-offscreen">' +
-          '<div class="md-panel _md-panel-offscreen">' + template + '</div>' +
-        '</div>' +
+      '  <div class="md-panel _md-panel-offscreen">' + template + '</div>' +
       '</div>';
 };
 
 
 /**
- * Wraps a content element in a `md-panel-outer-wrapper`, as well as
- * a `md-panel-inner-wrapper`, and positions it off-screen. Allows for
- * proper control over positioning and animations.
- * @param {!JQLite} contentElement Element to be wrapped.
- * @return {!JQLite} Wrapper element.
+ * Wraps a content element in a md-panel-outer wrapper and
+ * positions it off-screen. Allows for proper control over positoning
+ * and animations.
+ * @param {!angular.JQLite} contentElement Element to be wrapped.
+ * @return {!angular.JQLite} Wrapper element.
  * @private
  */
 MdPanelService.prototype._wrapContentElement = function(contentElement) {
-  var outerWrapper = angular.element(
-    '<div class="md-panel-outer-wrapper">' +
-      '<div class="md-panel-inner-wrapper _md-panel-offscreen"></div>' +
-    '</div>'
-  );
+  var wrapper = angular.element('<div class="md-panel-outer-wrapper">');
 
   contentElement.addClass('md-panel _md-panel-offscreen');
-  outerWrapper.children().eq(0).append(contentElement);
+  wrapper.append(contentElement);
 
-  return outerWrapper;
+  return wrapper;
 };
 
 
@@ -27453,12 +27277,12 @@ MdPanelService.prototype._wrapContentElement = function(contentElement) {
  * A reference to a created panel. This reference contains a unique id for the
  * panel, along with properties/functions used to control the panel.
  * @param {!Object} config
- * @param {!IInjectorService} $injector
+ * @param {!angular.$injector} $injector
  * @final @constructor
  */
 function MdPanelRef(config, $injector) {
   // Injected variables.
-  /** @private @const {!IQService} */
+  /** @private @const {!angular.$q} */
   this._$q = $injector.get('$q');
 
   /** @private @const {!angular.$mdCompiler} */
@@ -27473,7 +27297,7 @@ function MdPanelRef(config, $injector) {
   /** @private @const {!angular.$mdTheming} */
   this._$mdTheming = $injector.get('$mdTheming');
 
-  /** @private @const {!IRootScopeService} */
+  /** @private @const {!angular.Scope} */
   this._$rootScope = $injector.get('$rootScope');
 
   /** @private @const {!angular.$animate} */
@@ -27482,10 +27306,10 @@ function MdPanelRef(config, $injector) {
   /** @private @const {!MdPanelRef} */
   this._$mdPanel = $injector.get('$mdPanel');
 
-  /** @private @const {!ILogService} */
+  /** @private @const {!angular.$log} */
   this._$log = $injector.get('$log');
 
-  /** @private @const {!IWindowService} */
+  /** @private @const {!angular.$window} */
   this._$window = $injector.get('$window');
 
   /** @private @const {!Function} */
@@ -27501,14 +27325,11 @@ function MdPanelRef(config, $injector) {
   /** @type {!Object} */
   this.config = config;
 
-  /** @type {!JQLite|undefined} */
-  this.panelContainer = undefined;
+  /** @type {!angular.JQLite|undefined} */
+  this.panelContainer;
 
-  /** @type {!JQLite|undefined} */
-  this.panelEl = undefined;
-
-  /** @type {!JQLite|undefined} */
-  this.innerWrapper = undefined;
+  /** @type {!angular.JQLite|undefined} */
+  this.panelEl;
 
   /**
    * Whether the panel is attached. This is synchronous. When attach is called,
@@ -27522,14 +27343,14 @@ function MdPanelRef(config, $injector) {
   /** @private {Array<function()>} */
   this._removeListeners = [];
 
-  /** @private {!JQLite|undefined} */
-  this._topFocusTrap = undefined;
+  /** @private {!angular.JQLite|undefined} */
+  this._topFocusTrap;
 
-  /** @private {!JQLite|undefined} */
-  this._bottomFocusTrap = undefined;
+  /** @private {!angular.JQLite|undefined} */
+  this._bottomFocusTrap;
 
   /** @private {!$mdPanel|undefined} */
-  this._backdropRef = undefined;
+  this._backdropRef;
 
   /** @private {Function?} */
   this._restoreScroll = null;
@@ -27544,7 +27365,7 @@ function MdPanelRef(config, $injector) {
    * Cleanup function, provided by `$mdCompiler` and assigned after the element
    * has been compiled. When `contentElement` is used, the function is used to
    * restore the element to it's proper place in the DOM.
-   * @private {Function|null}
+   * @private {!Function}
    */
   this._compilerCleanup = null;
 
@@ -27567,7 +27388,7 @@ MdPanelRef.interceptorTypes = {
 /**
  * Opens an already created and configured panel. If the panel is already
  * visible, does nothing.
- * @returns {!Q.IPromise<!MdPanelRef>} A promise that is resolved when
+ * @returns {!angular.$q.Promise<!MdPanelRef>} A promise that is resolved when
  *     the panel is opened and animations finish.
  */
 MdPanelRef.prototype.open = function() {
@@ -27597,7 +27418,7 @@ MdPanelRef.prototype.open = function() {
 /**
  * Closes the panel.
  * @param {string} closeReason The event type that triggered the close.
- * @returns {!Q.IPromise<!MdPanelRef>} A promise that is resolved when
+ * @returns {!angular.$q.Promise<!MdPanelRef>} A promise that is resolved when
  *     the panel is closed and animations finish.
  */
 MdPanelRef.prototype.close = function(closeReason) {
@@ -27622,7 +27443,7 @@ MdPanelRef.prototype.close = function(closeReason) {
 
 /**
  * Attaches the panel. The panel will be hidden afterwards.
- * @returns {!Q.IPromise<!MdPanelRef>} A promise that is resolved when
+ * @returns {!angular.$q.Promise<!MdPanelRef>} A promise that is resolved when
  *     the panel is attached.
  */
 MdPanelRef.prototype.attach = function() {
@@ -27654,7 +27475,7 @@ MdPanelRef.prototype.attach = function() {
 
 /**
  * Only detaches the panel. Will NOT hide the panel first.
- * @returns {!Q.IPromise<!MdPanelRef>} A promise that is resolved when
+ * @returns {!angular.$q.Promise<!MdPanelRef>} A promise that is resolved when
  *     the panel is detached.
  */
 MdPanelRef.prototype.detach = function() {
@@ -27731,7 +27552,7 @@ MdPanelRef.prototype.destroy = function() {
 
 /**
  * Shows the panel.
- * @returns {!Q.IPromise<!MdPanelRef>} A promise that is resolved when
+ * @returns {!angular.$q.Promise<!MdPanelRef>} A promise that is resolved when
  *     the panel has shown and animations finish.
  */
 MdPanelRef.prototype.show = function() {
@@ -27775,7 +27596,7 @@ MdPanelRef.prototype.show = function() {
 
 /**
  * Hides the panel.
- * @returns {!Q.IPromise<!MdPanelRef>} A promise that is resolved when
+ * @returns {!angular.$q.Promise<!MdPanelRef>} A promise that is resolved when
  *     the panel has hidden and animations finish.
  */
 MdPanelRef.prototype.hide = function() {
@@ -27926,7 +27747,7 @@ MdPanelRef.prototype.toggleClass = function(toggleClass, onElement) {
  * Compiles the panel, according to the passed in config and appends it to
  * the DOM. Helps normalize differences in the compilation process between
  * using a string template and a content element.
- * @returns {!Q.IPromise<!MdPanelRef>} Promise that is resolved when
+ * @returns {!angular.$q.Promise<!MdPanelRef>} Promise that is resolved when
  *     the element has been compiled and added to the DOM.
  * @private
  */
@@ -27956,11 +27777,6 @@ MdPanelRef.prototype._compile = function() {
       );
     }
 
-    // Save a reference to the inner wrapper.
-    self.innerWrapper = angular.element(
-      self.panelContainer[0].querySelector('.md-panel-inner-wrapper')
-    );
-
     // Save a reference to the cleanup function from the compiler.
     self._compilerCleanup = compileData.cleanup;
 
@@ -27974,7 +27790,7 @@ MdPanelRef.prototype._compile = function() {
 
 /**
  * Creates a panel and adds it to the dom.
- * @returns {!Q.IPromise} A promise that is resolved when the panel is
+ * @returns {!angular.$q.Promise} A promise that is resolved when the panel is
  *     created.
  * @private
  */
@@ -28030,22 +27846,21 @@ MdPanelRef.prototype._createPanel = function() {
 /**
  * Adds the styles for the panel, such as positioning and z-index. Also,
  * themes the panel element and panel container using `$mdTheming`.
- * @returns {!Q.IPromise<!MdPanelRef>}
+ * @returns {!angular.$q.Promise<!MdPanelRef>}
  * @private
  */
 MdPanelRef.prototype._addStyles = function() {
   var self = this;
   return this._$q(function(resolve) {
     self.panelContainer.css('z-index', self.config['zIndex']);
-    self.innerWrapper.css('z-index', self.config['zIndex'] + 1);
+    self.panelEl.css('z-index', self.config['zIndex'] + 1);
 
     var hideAndResolve = function() {
       // Theme the element and container.
       self._setTheming();
 
-      // Remove offscreen classes and add hidden class.
+      // Remove offscreen class and add hidden class.
       self.panelEl.removeClass('_md-panel-offscreen');
-      self.innerWrapper.removeClass('_md-panel-offscreen');
       self.panelContainer.addClass(MD_PANEL_HIDDEN);
 
       resolve(self);
@@ -28112,7 +27927,7 @@ MdPanelRef.prototype._updatePosition = function(init) {
   var positionConfig = this.config['position'];
 
   if (positionConfig) {
-    positionConfig._setPanelPosition(this.innerWrapper);
+    positionConfig._setPanelPosition(this.panelEl);
 
     // Hide the panel now that position is known.
     if (init) {
@@ -28120,19 +27935,19 @@ MdPanelRef.prototype._updatePosition = function(init) {
       this.panelContainer.addClass(MD_PANEL_HIDDEN);
     }
 
-    this.innerWrapper.css(
+    this.panelEl.css(
       MdPanelPosition.absPosition.TOP,
       positionConfig.getTop()
     );
-    this.innerWrapper.css(
+    this.panelEl.css(
       MdPanelPosition.absPosition.BOTTOM,
       positionConfig.getBottom()
     );
-    this.innerWrapper.css(
+    this.panelEl.css(
       MdPanelPosition.absPosition.LEFT,
       positionConfig.getLeft()
     );
-    this.innerWrapper.css(
+    this.panelEl.css(
       MdPanelPosition.absPosition.RIGHT,
       positionConfig.getRight()
     );
@@ -28161,7 +27976,7 @@ MdPanelRef.prototype._focusOnOpen = function() {
 
 /**
  * Shows the backdrop.
- * @returns {!Q.IPromise} A promise that is resolved when the backdrop
+ * @returns {!angular.$q.Promise} A promise that is resolved when the backdrop
  *     is created and attached.
  * @private
  */
@@ -28382,7 +28197,7 @@ MdPanelRef.prototype.updateAnimation = function(animation) {
 
 /**
  * Animate the panel opening.
- * @returns {!Q.IPromise} A promise that is resolved when the panel has
+ * @returns {!angular.$q.Promise} A promise that is resolved when the panel has
  *     animated open.
  * @private
  */
@@ -28413,7 +28228,7 @@ MdPanelRef.prototype._animateOpen = function() {
 
 /**
  * Animate the panel closing.
- * @returns {!Q.IPromise} A promise that is resolved when the panel has
+ * @returns {!angular.$q.Promise} A promise that is resolved when the panel has
  *     animated closed.
  * @private
  */
@@ -28449,7 +28264,7 @@ MdPanelRef.prototype._animateClose = function() {
  * which will allow the action to continue when it gets resolved, or will
  * prevent an action if it is rejected.
  * @param {string} type Type of interceptor.
- * @param {!Q.IPromise<!any>} callback Callback to be registered.
+ * @param {!angular.$q.Promise<!any>} callback Callback to be registered.
  * @returns {!MdPanelRef}
  */
 MdPanelRef.prototype.registerInterceptor = function(type, callback) {
@@ -28515,7 +28330,7 @@ MdPanelRef.prototype.removeAllInterceptors = function(type) {
  *     reverse order. Works in a similar way to `$q.all`, except it
  *     respects the order of the functions.
  * @param {string} type Type of interceptors to be invoked.
- * @returns {!Q.IPromise<!MdPanelRef>}
+ * @returns {!angular.$q.Promise<!MdPanelRef>}
  * @private
  */
 MdPanelRef.prototype._callInterceptors = function(type) {
@@ -28642,11 +28457,11 @@ MdPanelRef.closeReasons = {
  *   position: panelPosition
  * });
  *
- * @param {!IInjectorService} $injector
+ * @param {!angular.$injector} $injector
  * @final @constructor
  */
 function MdPanelPosition($injector) {
-  /** @private @const {!IWindowService} */
+  /** @private @const {!angular.$window} */
   this._$window = $injector.get('$window');
 
   /** @private {boolean} */
@@ -28658,8 +28473,8 @@ function MdPanelPosition($injector) {
   /** @private {boolean} */
   this._absolute = false;
 
-  /** @private {!JQLite} */
-  this._relativeToEl = undefined;
+  /** @private {!angular.JQLite} */
+  this._relativeToEl;
 
   /** @private {string} */
   this._top = '';
@@ -28683,7 +28498,7 @@ function MdPanelPosition($injector) {
   this._positions = [];
 
   /** @private {?{x:string, y:string}} */
-  this._actualPosition = undefined;
+  this._actualPosition;
 }
 
 
@@ -28877,7 +28692,7 @@ MdPanelPosition.prototype.center = function() {
 
 /**
  * Sets element for relative positioning.
- * @param {string|!Element|!JQLite} element Query selector, DOM element,
+ * @param {string|!Element|!angular.JQLite} element Query selector, DOM element,
  *     or angular element to set the panel relative to.
  * @returns {!MdPanelPosition}
  */
@@ -28902,15 +28717,65 @@ MdPanelPosition.prototype.addPanelPosition = function(xPosition, yPosition) {
         'relative positioning. Set relativeTo first.');
   }
 
-  validatePosition(MdPanelPosition.xPosition, xPosition);
-  validatePosition(MdPanelPosition.yPosition, yPosition);
+  this._validateXPosition(xPosition);
+  this._validateYPosition(yPosition);
 
   this._positions.push({
-    x: xPosition,
-    y: yPosition
+      x: xPosition,
+      y: yPosition,
   });
-
   return this;
+};
+
+
+/**
+ * Ensures that yPosition is a valid position name. Throw an exception if not.
+ * @param {string} yPosition
+ */
+MdPanelPosition.prototype._validateYPosition = function(yPosition) {
+  // empty is ok
+  if (yPosition == null) {
+      return;
+  }
+
+  var positionKeys = Object.keys(MdPanelPosition.yPosition);
+  var positionValues = [];
+  for (var key, i = 0; key = positionKeys[i]; i++) {
+    var position = MdPanelPosition.yPosition[key];
+    positionValues.push(position);
+
+    if (position === yPosition) {
+      return;
+    }
+  }
+
+  throw new Error('mdPanel: Panel y position only accepts the following ' +
+      'values:\n' + positionValues.join(' | '));
+};
+
+
+/**
+ * Ensures that xPosition is a valid position name. Throw an exception if not.
+ * @param {string} xPosition
+ */
+MdPanelPosition.prototype._validateXPosition = function(xPosition) {
+  // empty is ok
+  if (xPosition == null) {
+      return;
+  }
+
+  var positionKeys = Object.keys(MdPanelPosition.xPosition);
+  var positionValues = [];
+  for (var key, i = 0; key = positionKeys[i]; i++) {
+    var position = MdPanelPosition.xPosition[key];
+    positionValues.push(position);
+    if (position === xPosition) {
+      return;
+    }
+  }
+
+  throw new Error('mdPanel: Panel x Position only accepts the following ' +
+      'values:\n' + positionValues.join(' | '));
 };
 
 
@@ -28989,24 +28854,24 @@ MdPanelPosition.prototype.getTransform = function() {
 
 
 /**
- * Sets the `transform` value for an element.
- * @param {!JQLite} el
- * @returns {!JQLite}
+ * Sets the `transform` value for a panel element.
+ * @param {!angular.JQLite} panelEl
+ * @returns {!angular.JQLite}
  * @private
  */
-MdPanelPosition.prototype._setTransform = function(el) {
-  return el.css(this._$mdConstant.CSS.TRANSFORM, this.getTransform());
+MdPanelPosition.prototype._setTransform = function(panelEl) {
+  return panelEl.css(this._$mdConstant.CSS.TRANSFORM, this.getTransform());
 };
 
 
 /**
  * True if the panel is completely on-screen with this positioning; false
  * otherwise.
- * @param {!JQLite} el
+ * @param {!angular.JQLite} panelEl
  * @return {boolean}
  * @private
  */
-MdPanelPosition.prototype._isOnscreen = function(el) {
+MdPanelPosition.prototype._isOnscreen = function(panelEl) {
   // this works because we always use fixed positioning for the panel,
   // which is relative to the viewport.
   var left = parseInt(this.getLeft());
@@ -29014,13 +28879,13 @@ MdPanelPosition.prototype._isOnscreen = function(el) {
 
   if (this._translateX.length || this._translateY.length) {
     var prefixedTransform = this._$mdConstant.CSS.TRANSFORM;
-    var offsets = getComputedTranslations(el, prefixedTransform);
+    var offsets = getComputedTranslations(panelEl, prefixedTransform);
     left += offsets.x;
     top += offsets.y;
   }
 
-  var right = left + el[0].offsetWidth;
-  var bottom = top + el[0].offsetHeight;
+  var right = left + panelEl[0].offsetWidth;
+  var bottom = top + panelEl[0].offsetHeight;
 
   return (left >= 0) &&
     (top >= 0) &&
@@ -29059,53 +28924,53 @@ MdPanelPosition.prototype._reduceTranslateValues =
 /**
  * Sets the panel position based on the created panel element and best x/y
  * positioning.
- * @param {!JQLite} el
+ * @param {!angular.JQLite} panelEl
  * @private
  */
-MdPanelPosition.prototype._setPanelPosition = function(el) {
-  // Remove the class in case it has been added before.
-  el.removeClass('_md-panel-position-adjusted');
+MdPanelPosition.prototype._setPanelPosition = function(panelEl) {
+  // Remove the "position adjusted" class in case it has been added before.
+  panelEl.removeClass('_md-panel-position-adjusted');
 
   // Only calculate the position if necessary.
   if (this._absolute) {
-    this._setTransform(el);
+    this._setTransform(panelEl);
     return;
   }
 
   if (this._actualPosition) {
-    this._calculatePanelPosition(el, this._actualPosition);
-    this._setTransform(el);
-    this._constrainToViewport(el);
+    this._calculatePanelPosition(panelEl, this._actualPosition);
+    this._setTransform(panelEl);
+    this._constrainToViewport(panelEl);
     return;
   }
 
   for (var i = 0; i < this._positions.length; i++) {
     this._actualPosition = this._positions[i];
-    this._calculatePanelPosition(el, this._actualPosition);
-    this._setTransform(el);
+    this._calculatePanelPosition(panelEl, this._actualPosition);
+    this._setTransform(panelEl);
 
-    if (this._isOnscreen(el)) {
+    if (this._isOnscreen(panelEl)) {
       return;
     }
   }
 
-  this._constrainToViewport(el);
+  this._constrainToViewport(panelEl);
 };
 
 
 /**
  * Constrains a panel's position to the viewport.
- * @param {!JQLite} el
+ * @param {!angular.JQLite} panelEl
  * @private
  */
-MdPanelPosition.prototype._constrainToViewport = function(el) {
+MdPanelPosition.prototype._constrainToViewport = function(panelEl) {
   var margin = MdPanelPosition.viewportMargin;
   var initialTop = this._top;
   var initialLeft = this._left;
 
   if (this.getTop()) {
     var top = parseInt(this.getTop());
-    var bottom = el[0].offsetHeight + top;
+    var bottom = panelEl[0].offsetHeight + top;
     var viewportHeight = this._$window.innerHeight;
 
     if (top < margin) {
@@ -29117,7 +28982,7 @@ MdPanelPosition.prototype._constrainToViewport = function(el) {
 
   if (this.getLeft()) {
     var left = parseInt(this.getLeft());
-    var right = el[0].offsetWidth + left;
+    var right = panelEl[0].offsetWidth + left;
     var viewportWidth = this._$window.innerWidth;
 
     if (left < margin) {
@@ -29128,7 +28993,7 @@ MdPanelPosition.prototype._constrainToViewport = function(el) {
   }
 
   // Class that can be used to re-style the panel if it was repositioned.
-  el.toggleClass(
+  panelEl.toggleClass(
     '_md-panel-position-adjusted',
     this._top !== initialTop || this._left !== initialLeft
   );
@@ -29167,15 +29032,15 @@ MdPanelPosition.prototype._bidi = function(position) {
 /**
  * Calculates the panel position based on the created panel element and the
  * provided positioning.
- * @param {!JQLite} el
+ * @param {!angular.JQLite} panelEl
  * @param {!{x:string, y:string}} position
  * @private
  */
-MdPanelPosition.prototype._calculatePanelPosition = function(el, position) {
+MdPanelPosition.prototype._calculatePanelPosition = function(panelEl, position) {
 
-  var panelBounds = el[0].getBoundingClientRect();
-  var panelWidth = Math.max(panelBounds.width, el[0].clientWidth);
-  var panelHeight = Math.max(panelBounds.height, el[0].clientHeight);
+  var panelBounds = panelEl[0].getBoundingClientRect();
+  var panelWidth = Math.max(panelBounds.width, panelEl[0].clientWidth);
+  var panelHeight = Math.max(panelBounds.height, panelEl[0].clientHeight);
 
   var targetBounds = this._relativeToEl[0].getBoundingClientRect();
 
@@ -29247,7 +29112,7 @@ MdPanelPosition.prototype._calculatePanelPosition = function(el, position) {
  *   animation: panelAnimation
  * });
  *
- * @param {!IInjectorService} $injector
+ * @param {!angular.$injector} $injector
  * @final @constructor
  */
 function MdPanelAnimation($injector) {
@@ -29255,13 +29120,13 @@ function MdPanelAnimation($injector) {
   this._$mdUtil = $injector.get('$mdUtil');
 
   /**
-   * @private {{element: !JQLite|undefined, bounds: !DOMRect}|
+   * @private {{element: !angular.JQLite|undefined, bounds: !DOMRect}|
    *     undefined}
    */
   this._openFrom;
 
   /**
-   * @private {{element: !JQLite|undefined, bounds: !DOMRect}|
+   * @private {{element: !angular.JQLite|undefined, bounds: !DOMRect}|
    *     undefined}
    */
   this._closeTo;
@@ -29354,7 +29219,7 @@ MdPanelAnimation.prototype.duration = function(duration) {
 /**
  * Returns the element and bounds for the animation target.
  * @param {string|!Element|{top: number, left: number}} location
- * @returns {{element: !JQLite|undefined, bounds: !DOMRect}}
+ * @returns {{element: !angular.JQLite|undefined, bounds: !DOMRect}}
  * @private
  */
 MdPanelAnimation.prototype._getPanelAnimationTarget = function(location) {
@@ -29393,8 +29258,8 @@ MdPanelAnimation.prototype.withAnimation = function(cssClass) {
 
 /**
  * Animate the panel open.
- * @param {!JQLite} panelEl
- * @returns {!Q.IPromise} A promise that is resolved when the open
+ * @param {!angular.JQLite} panelEl
+ * @returns {!angular.$q.Promise} A promise that is resolved when the open
  *     animation is complete.
  */
 MdPanelAnimation.prototype.animateOpen = function(panelEl) {
@@ -29415,8 +29280,7 @@ MdPanelAnimation.prototype.animateOpen = function(panelEl) {
       panelEl.css('opacity', '1');
 
       animationOptions = {
-        transitionInClass: '_md-panel-animate-enter',
-        transitionOutClass: '_md-panel-animate-leave',
+        transitionInClass: '_md-panel-animate-enter'
       };
 
       var openSlide = animator.calculateSlideToOrigin(
@@ -29462,8 +29326,8 @@ MdPanelAnimation.prototype.animateOpen = function(panelEl) {
 
 /**
  * Animate the panel close.
- * @param {!JQLite} panelEl
- * @returns {!Q.IPromise} A promise that resolves when the close
+ * @param {!angular.JQLite} panelEl
+ * @returns {!angular.$q.Promise} A promise that resolves when the close
  *     animation is complete.
  */
 MdPanelAnimation.prototype.animateClose = function(panelEl) {
@@ -29481,8 +29345,7 @@ MdPanelAnimation.prototype.animateClose = function(panelEl) {
       // Slide should start with opacity: 1.
       panelEl.css('opacity', '1');
       reverseAnimationOptions = {
-        transitionInClass: '_md-panel-animate-leave',
-        transitionOutClass: '_md-panel-animate-enter _md-panel-animate-leave'
+        transitionInClass: '_md-panel-animate-leave'
       };
 
       var closeSlide = animator.calculateSlideToOrigin(
@@ -29492,8 +29355,7 @@ MdPanelAnimation.prototype.animateClose = function(panelEl) {
 
     case MdPanelAnimation.animation.SCALE:
       reverseAnimationOptions = {
-        transitionInClass: '_md-panel-animate-scale-out _md-panel-animate-leave',
-        transitionOutClass: '_md-panel-animate-scale-out _md-panel-animate-enter _md-panel-animate-leave'
+        transitionInClass: '_md-panel-animate-scale-out _md-panel-animate-leave'
       };
 
       var closeScale = animator.calculateZoomToOrigin(
@@ -29503,8 +29365,7 @@ MdPanelAnimation.prototype.animateClose = function(panelEl) {
 
     case MdPanelAnimation.animation.FADE:
       reverseAnimationOptions = {
-        transitionInClass: '_md-panel-animate-fade-out _md-panel-animate-leave',
-        transitionOutClass: '_md-panel-animate-fade-out _md-panel-animate-enter _md-panel-animate-leave'
+        transitionInClass: '_md-panel-animate-fade-out _md-panel-animate-leave'
       };
       break;
 
@@ -29530,7 +29391,7 @@ MdPanelAnimation.prototype.animateClose = function(panelEl) {
 
 /**
  * Set the height and width to match the panel if not provided.
- * @param {!JQLite} panelEl
+ * @param {!angular.JQLite} panelEl
  * @private
  */
 MdPanelAnimation.prototype._fixBounds = function(panelEl) {
@@ -29554,8 +29415,8 @@ MdPanelAnimation.prototype._fixBounds = function(panelEl) {
 
 /**
  * Identify the bounding RECT for the target element.
- * @param {!JQLite} element
- * @returns {{element: !JQLite|undefined, bounds: !DOMRect}}
+ * @param {!angular.JQLite} element
+ * @returns {{element: !angular.JQLite|undefined, bounds: !DOMRect}}
  * @private
  */
 MdPanelAnimation.prototype._getBoundingClientRect = function(element) {
@@ -29575,8 +29436,8 @@ MdPanelAnimation.prototype._getBoundingClientRect = function(element) {
 
 /**
  * Returns the angular element associated with a css selector or element.
- * @param el {string|!JQLite|!Element}
- * @returns {!JQLite}
+ * @param el {string|!angular.JQLite|!Element}
+ * @returns {!angular.JQLite}
  */
 function getElement(el) {
   var queryResult = angular.isString(el) ?
@@ -29586,7 +29447,7 @@ function getElement(el) {
 
 /**
  * Gets the computed values for an element's translateX and translateY in px.
- * @param {!JQLite|!Element} el
+ * @param {!angular.JQLite|!Element} el
  * @param {string} property
  * @return {{x: number, y: number}}
  */
@@ -29610,33 +29471,6 @@ function getComputedTranslations(el, property) {
   }
 
   return output;
-}
-
-/*
- * Ensures that a value is a valid position name. Throw an exception if not.
- * @param {Object} positionMap Object against which the value will be checked.
- * @param {string} value
- */
-function validatePosition(positionMap, value) {
-  // empty is ok
-  if (value === null || angular.isUndefined(value)) {
-    return;
-  }
-
-  var positionKeys = Object.keys(positionMap);
-  var positionValues = [];
-
-  for (var key, i = 0; key = positionKeys[i]; i++) {
-    var position = positionMap[key];
-    positionValues.push(position);
-
-    if (position === value) {
-      return;
-    }
-  }
-
-  throw new Error('Panel position only accepts the following values:\n' +
-    positionValues.join(' | '));
 }
 
 /**
@@ -29826,7 +29660,7 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
             diameter = getSize(scope.mdDiameter);
             strokeWidth = getStroke(diameter);
             path.attr('d', getSvgArc(diameter, strokeWidth, true));
-            path.attr('stroke-dasharray', getDashLength(diameter, strokeWidth, 75));
+            path.attr('stroke-dasharray', (diameter - strokeWidth) * $window.Math.PI * 0.75);
           }
           startIndeterminateAnimation();
         } else {
@@ -29839,7 +29673,7 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
             diameter = getSize(scope.mdDiameter);
             strokeWidth = getStroke(diameter);
             path.attr('d', getSvgArc(diameter, strokeWidth, false));
-            path.attr('stroke-dasharray', getDashLength(diameter, strokeWidth, 100));
+            path.attr('stroke-dasharray', (diameter - strokeWidth) * $window.Math.PI);
           }
 
           element.attr('aria-valuenow', newValue);
@@ -29883,12 +29717,12 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
       path.attr('stroke-linecap', 'square');
       if (scope.mdMode == MODE_INDETERMINATE) {
         path.attr('d', getSvgArc(diameter, strokeWidth, true));
-        path.attr('stroke-dasharray', getDashLength(diameter, strokeWidth, 75));
-        path.attr('stroke-dashoffset', getDashOffset(diameter, strokeWidth, 1, 75));
+        path.attr('stroke-dasharray', (diameter - strokeWidth) * $window.Math.PI * 0.75);
+        path.attr('stroke-dashoffset', getDashLength(diameter, strokeWidth, 1, 75));
       } else {
         path.attr('d', getSvgArc(diameter, strokeWidth, false));
-        path.attr('stroke-dasharray', getDashLength(diameter, strokeWidth, 100));
-        path.attr('stroke-dashoffset', getDashOffset(diameter, strokeWidth, 0, 100));
+        path.attr('stroke-dasharray', (diameter - strokeWidth) * $window.Math.PI);
+        path.attr('stroke-dashoffset', getDashLength(diameter, strokeWidth, 0, 100));
         renderCircle(value, value);
       }
 
@@ -29922,7 +29756,7 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
       }
 
       function renderFrame(value) {
-        path.attr('stroke-dashoffset', getDashOffset(diameter, strokeWidth, value, dashLimit));
+        path.attr('stroke-dashoffset', getDashLength(diameter, strokeWidth, value, dashLimit));
         path.attr('transform','rotate(' + (rotation) + ' ' + diameter/2 + ' ' + diameter/2 + ')');
       }
     }
@@ -29997,12 +29831,12 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
    * @param {number} diameter Diameter of the container.
    * @param {number} strokeWidth Stroke width to be used when drawing circle
    * @param {number} value Percentage of circle (between 0 and 100)
-   * @param {number} maxArcLength Maximum length of arc as a percentage of circle (between 0 and 100)
+   * @param {number} limit Max percentage for circle
    *
-   * @returns {number} Stroke length for progress circle
+   * @returns {number} Stroke length for progres circle
    */
-  function getDashOffset(diameter, strokeWidth, value, maxArcLength) {
-    return getSpinnerCircumference(diameter, strokeWidth) * ((maxArcLength - value) / 100);
+  function getDashLength(diameter, strokeWidth, value, limit) {
+    return (diameter - strokeWidth) * $window.Math.PI * ((3 * (limit || 100) / 100) - (value/100));
   }
 
   /**
@@ -30038,31 +29872,6 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
    */
   function getStroke(diameter) {
     return $mdProgressCircular.strokeWidth / 100 * diameter;
-  }
-
-  /**
-   * Return length of the dash
-   *
-   * @param {number} diameter Diameter of the container.
-   * @param {number} strokeWidth Stroke width to be used when drawing circle
-   * @param {number} value Percentage of circle (between 0 and 100)
-   *
-   * @returns {number} Length of the dash
-   */
-  function getDashLength(diameter, strokeWidth, value) {
-    return getSpinnerCircumference(diameter, strokeWidth) * (value / 100);
-  }
-
-  /**
-   * Return circumference of the spinner
-   *
-   * @param {number} diameter Diameter of the container.
-   * @param {number} strokeWidth Stroke width to be used when drawing circle
-   *
-   * @returns {number} Circumference of the spinner
-   */
-  function getSpinnerCircumference(diameter, strokeWidth) {
-    return ((diameter - strokeWidth) * $window.Math.PI);
   }
 
 }
@@ -30781,8 +30590,6 @@ angular.module('material.components.select', [
  *  is present.
  * @param {string=} md-container-class Class list to get applied to the `.md-select-menu-container`
  *  element (for custom styling).
- * @param {string=} md-select-only-option If specified, a `<md-select>` will automatically select
- * it's first option, if it only has one.
  *
  * @usage
  * With a placeholder (label and aria-label are added dynamically)
@@ -30876,6 +30683,9 @@ angular.module('material.components.select', [
  */
 function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $parse, $sce,
     $injector) {
+  var keyCodes = $mdConstant.KEY_CODE;
+  var NAVIGATION_KEYS = [keyCodes.SPACE, keyCodes.ENTER, keyCodes.UP_ARROW, keyCodes.DOWN_ARROW];
+
   return {
     restrict: 'E',
     require: ['^?mdInputContainer', 'mdSelect', 'ngModel', '?^form'],
@@ -31314,9 +31124,12 @@ function SelectDirective($mdSelect, $mdUtil, $mdConstant, $mdTheming, $mdAria, $
           element[0].querySelector('.md-select-menu-container')
         );
         selectScope = scope;
-        attrs.mdContainerClass && selectContainer.addClass(attrs.mdContainerClass);
+        if (attrs.mdContainerClass) {
+          var value = selectContainer[0].getAttribute('class') + ' ' + attrs.mdContainerClass;
+          selectContainer[0].setAttribute('class', value);
+        }
         selectMenuCtrl = selectContainer.find('md-select-menu').controller('mdSelectMenu');
-        selectMenuCtrl.init(ngModelCtrl, attrs);
+        selectMenuCtrl.init(ngModelCtrl, attrs.ngModel);
         element.on('$destroy', function() {
           selectContainer.remove();
         });
@@ -31459,7 +31272,6 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
       return self.options;
     }, function() {
       self.ngModel.$render();
-      updateOptionSetSizeAndPosition();
     });
 
     /**
@@ -31541,9 +31353,9 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
       }
     };
 
-    self.init = function(ngModel, parentAttrs) {
+    self.init = function(ngModel, binding) {
       self.ngModel = ngModel;
-      self.modelBinding = parentAttrs.ngModel;
+      self.modelBinding = binding;
 
       // Setup a more robust version of isEmpty to ensure value is a valid option
       self.ngModel.$isEmpty = function($viewValue) {
@@ -31585,21 +31397,6 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
           return 'object_' + (value.$$mdSelectId || (value.$$mdSelectId = ++selectNextId));
         }
         return value + '';
-      }
-
-      if (parentAttrs.hasOwnProperty('mdSelectOnlyOption')) {
-        $mdUtil.nextTick(function() {
-          var optionKeys = Object.keys(self.options);
-
-          if (optionKeys.length === 1) {
-            var option = self.options[optionKeys[0]];
-
-            self.deselect(Object.keys(self.selected)[0]);
-            self.select(self.hashGetter(option.value), option.value);
-            self.refreshViewValue();
-            self.ngModel.$setPristine();
-          }
-        }, false);
       }
     };
 
@@ -31786,32 +31583,9 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
       }
     };
 
-    /**
-     * If the options include md-optgroups, then we need to apply aria-setsize and aria-posinset
-     * to help screen readers understand the indexes. When md-optgroups are not used, we save on
-     * perf and extra attributes by not applying these attributes as they are not needed by screen
-     * readers.
-     */
-    function updateOptionSetSizeAndPosition() {
-      var i, options;
-      var hasOptGroup = $element.find('md-optgroup');
-      if (!hasOptGroup.length) {
-        return;
-      }
-
-      options = $element.find('md-option');
-
-      for (i = 0; i < options.length; i++) {
-        options[i].setAttribute('aria-setsize', options.length);
-        options[i].setAttribute('aria-posinset', i + 1);
-      }
-    }
-
     function renderMultiple() {
       var newSelectedValues = self.ngModel.$modelValue || self.ngModel.$viewValue || [];
-      if (!angular.isArray(newSelectedValues)) {
-        return;
-      }
+      if (!angular.isArray(newSelectedValues)) return;
 
       var oldSelected = Object.keys(self.selected);
 
@@ -31888,12 +31662,6 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
  * @param {string=} value Attribute to set the value of the option.
  * @param {expression=} ng-repeat <a ng-href="https://docs.angularjs.org/api/ng/directive/ngRepeat">
  *  AngularJS directive</a> that instantiates a template once per item from a collection.
- * @param {expression=} ng-selected <a ng-href="https://docs.angularjs.org/api/ng/directive/ngSelected">
- *  AngularJS directive</a> that adds the `selected` attribute to the option when the expression
- *  evaluates as truthy.
- *
- *  **Note:** Unlike native `option` elements used with AngularJS, `md-option` elements
- *  watch their `selected` attributes for changes and trigger model value changes on `md-select`.
  * @param {boolean=} md-option-empty If the attribute exists, mark the option as "empty" allowing
  * the option to clear the select and put it back in it's default state. You may supply this
  * attribute on any option you wish, however, it is automatically applied to an option whose `value`
@@ -31982,22 +31750,6 @@ function OptionDirective($mdButtonInkRipple, $mdUtil, $mdTheming) {
       }
     });
 
-    scope.$$postDigest(function() {
-      attrs.$observe('selected', function(selected) {
-        if (!angular.isDefined(selected)) return;
-        if (typeof selected == 'string') selected = true;
-        if (selected) {
-          if (!selectMenuCtrl.isMultiple) {
-            selectMenuCtrl.deselect(Object.keys(selectMenuCtrl.selected)[0]);
-          }
-          selectMenuCtrl.select(optionCtrl.hashKey, optionCtrl.value);
-        } else {
-          selectMenuCtrl.deselect(optionCtrl.hashKey);
-        }
-        selectMenuCtrl.refreshViewValue();
-      });
-    });
-
     $mdButtonInkRipple.attach(scope, element);
     configureAria();
 
@@ -32005,7 +31757,7 @@ function OptionDirective($mdButtonInkRipple, $mdUtil, $mdTheming) {
      * @param {*} newValue the option's new value
      * @param {*=} oldValue the option's previous value
      * @param {boolean=} prevAttempt true if this had to be attempted again due to an undefined
-     *  hashGetter on the selectMenuCtrl, undefined otherwise.
+     *  hashGetter on the selectCtrl, undefined otherwise.
      */
     function setOptionValue(newValue, oldValue, prevAttempt) {
       if (!selectMenuCtrl.hashGetter) {
@@ -32135,7 +31887,6 @@ function OptgroupDirective() {
     if (!hasSelectHeader()) {
       setupLabelElement();
     }
-    element.attr('role', 'group');
 
     function hasSelectHeader() {
       return element.parent().find('md-select-header').length;
@@ -32152,7 +31903,6 @@ function OptgroupDirective() {
       if (attrs.label) {
         labelElement.text(attrs.label);
       }
-      element.attr('aria-label', labelElement.text());
     }
   }
 }
@@ -32357,7 +32107,7 @@ function SelectProvider($$interimElementProvider) {
       /**
        * @param {Element|HTMLElement|null=} previousNode
        * @param {Element|HTMLElement} node
-       * @param {SelectMenuController|Function|object=} menuController SelectMenuController instance
+       * @param {SelectMenuController|Function|Object=} menuController SelectMenuController instance
        */
       function focusOptionNode(previousNode, node, menuController) {
         var listboxContentNode = opts.contentEl[0];
@@ -32603,7 +32353,6 @@ function SelectProvider($$interimElementProvider) {
 
               $mdUtil.nextTick(function () {
                 $mdSelect.hide(selectMenuController.ngModel.$viewValue);
-                opts.focusedNode.classList.remove('md-focused');
               }, true);
             }
           }
@@ -32780,7 +32529,7 @@ function SelectProvider($$interimElementProvider) {
         container: {
           element: angular.element(containerNode),
           styles: {
-            left: Math.floor(clamp(bounds.left, left, bounds.right - minWidth)),
+            left: Math.floor(clamp(bounds.left, left, bounds.right - containerRect.width)),
             top: Math.floor(clamp(bounds.top, top, bounds.bottom - containerRect.height)),
             'min-width': minWidth,
             'font-size': fontSize
@@ -34040,7 +33789,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       element[0].focus();
       refreshSliderDimensions();
 
-      var exactVal = percentToValue(positionToPercent(vertical ? ev.srcEvent.clientY : ev.srcEvent.clientX));
+      var exactVal = percentToValue(positionToPercent(vertical ? ev.pointer.y : ev.pointer.x));
       var closestVal = minMaxValidator(stepValidator(exactVal));
       scope.$apply(function() {
         setModelValue(closestVal);
@@ -34052,7 +33801,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
 
       element.removeClass('md-dragging');
 
-      var exactVal = percentToValue(positionToPercent(vertical ? ev.srcEvent.clientY : ev.srcEvent.clientX));
+      var exactVal = percentToValue(positionToPercent(vertical ? ev.pointer.y : ev.pointer.x));
       var closestVal = minMaxValidator(stepValidator(exactVal));
       scope.$apply(function() {
         setModelValue(closestVal);
@@ -34082,8 +33831,8 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     function setSliderFromEvent(ev) {
       // While panning discrete, update only the
       // visual positioning but not the model value.
-      if (discrete) adjustThumbPosition(vertical ? ev.srcEvent.clientY : ev.srcEvent.clientX);
-      else            doSlide(vertical ? ev.srcEvent.clientY : ev.srcEvent.clientX);
+      if (discrete) adjustThumbPosition(vertical ? ev.pointer.y : ev.pointer.x);
+      else            doSlide(vertical ? ev.pointer.y : ev.pointer.x);
     }
 
     /**
@@ -35369,11 +35118,10 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
     defineBooleanAttribute('dynamicHeight', handleDynamicHeight);
     defineBooleanAttribute('noPagination');
     defineBooleanAttribute('swipeContent');
-    // TODO remove noDisconnect in 1.2.0
     defineBooleanAttribute('noDisconnect');
     defineBooleanAttribute('autoselect');
     defineBooleanAttribute('noSelectClick');
-    defineBooleanAttribute('centerTabs', handleCenterTabs);
+    defineBooleanAttribute('centerTabs', handleCenterTabs, false);
     defineBooleanAttribute('enableDisconnect');
 
     // Define public properties
@@ -35453,11 +35201,11 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
    * Defines boolean attributes with default value set to true. I.e. md-stretch-tabs with no value
    * will be treated as being truthy.
    * @param {string} key
-   * @param {Function=} handler
+   * @param {Function} handler
    */
   function defineBooleanAttribute (key, handler) {
     var attr = $attrs.$normalize('md-' + key);
-    if (handler) defineProperty(key, handler, undefined);
+    if (handler) defineProperty(key, handler);
     if ($attrs.hasOwnProperty(attr)) updateValue($attrs[attr]);
     $attrs.$observe(attr, updateValue);
     function updateValue (newValue) {
@@ -35755,7 +35503,6 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
           isActive:     function () { return this.getIndex() === ctrl.selectedIndex; },
           isLeft:       function () { return this.getIndex() < ctrl.selectedIndex; },
           isRight:      function () { return this.getIndex() > ctrl.selectedIndex; },
-          // TODO remove reference to noDisconnect in 1.2.0
           shouldRender: function () { return !ctrl.noDisconnect || this.isActive(); },
           hasFocus:     function () {
             return ctrl.styleTabItemFocus
@@ -36346,29 +36093,26 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
  * `always`          | stretched | stretched
  * `never`           | ---       | ---
  *
- * @param {number=} md-selected Index of the active/selected tab.
- * @param {expression=} md-no-ink-bar If `true` or no value, disables the selection ink bar.
- * @param {string=} md-align-tabs Attribute to indicate position of tab buttons: `bottom` or `top`;
+ * @param {integer=} md-selected Index of the active/selected tab.
+ * @param {boolean=} md-no-ink-bar If present, disables the selection ink bar.
+ * @param {string=}  md-align-tabs Attribute to indicate position of tab buttons: `bottom` or `top`;
  *  Default is `top`.
  * @param {string=} md-stretch-tabs Attribute to indicate whether or not to stretch tabs: `auto`,
  *  `always`, or `never`; Default is `auto`.
- * @param {expression=} md-dynamic-height If `true` or no value, the tab wrapper will resize based
- *  on the contents of the selected tab.
- * @param {boolean=} md-border-bottom If the attribute is present, shows a solid `1px` border
- *  between the tabs and their content.
- * @param {boolean=} md-center-tabs If the attribute is present, tabs will be centered provided
- *  there is no need for pagination.
- * @param {boolean=} md-no-pagination If the attribute is present, pagination will remain off.
- * @param {expression=} md-swipe-content When enabled, swipe gestures will be enabled for the content
+ * @param {boolean=} md-dynamic-height When enabled, the tab wrapper will resize based on the
+ *  contents of the selected tab.
+ * @param {boolean=} md-border-bottom If present, shows a solid `1px` border between the tabs and
+ *  their content.
+ * @param {boolean=} md-center-tabs If defined, tabs will be centered provided there is no need
+ *  for pagination.
+ * @param {boolean=} md-no-pagination When enabled, pagination will remain off.
+ * @param {boolean=} md-swipe-content When enabled, swipe gestures will be enabled for the content
  *  area to allow swiping between tabs.
  * @param {boolean=} md-enable-disconnect When enabled, scopes will be disconnected for tabs that
  *  are not being displayed. This provides a performance boost, but may also cause unexpected
  *  issues. It is not recommended for most users.
- * @param {boolean=} md-no-disconnect **Deprecated**: If your tab content has background tasks
- *  (ie. event listeners), you will want to include this to prevent the scope from being
- *  disconnected.
- * @param {boolean=} md-autoselect If the attribute is present, any tabs added after the initial
- *  load will be automatically selected.
+ * @param {boolean=} md-autoselect When present, any tabs added after the initial load will be
+ *  automatically selected.
  * @param {boolean=} md-no-select-click When true, click events will not be fired when the value of
  *  `md-active` on an `md-tab` changes. This is useful when using tabs with UI-Router's child
  *  states, as triggering a click event in that case can cause an extra tab change to occur.
@@ -36955,7 +36699,7 @@ function MdToastProvider($$interimElementProvider) {
   // Differentiate promise resolves: hide timeout (value == true) and hide action clicks
   // (value == ok).
   MdToastController.$inject = ["$mdToast", "$scope", "$log"];
-  toastDefaultOptions.$inject = ["$animate", "$mdToast", "$mdUtil", "$mdMedia", "$document", "$q"];
+  toastDefaultOptions.$inject = ["$animate", "$mdToast", "$mdUtil", "$mdMedia", "$document"];
   var ACTION_RESOLVE = 'ok';
 
   var activeToastContent;
@@ -37046,7 +36790,7 @@ function MdToastProvider($$interimElementProvider) {
   }
 
   /* @ngInject */
-  function toastDefaultOptions($animate, $mdToast, $mdUtil, $mdMedia, $document, $q) {
+  function toastDefaultOptions($animate, $mdToast, $mdUtil, $mdMedia, $document) {
     var SWIPE_EVENTS = '$md.swipeleft $md.swiperight $md.swipeup $md.swipedown';
     return {
       onShow: onShow,
@@ -37148,12 +36892,6 @@ function MdToastProvider($$interimElementProvider) {
       });
     }
 
-    /**
-     * @param {object} scope the toast's scope
-     * @param {JQLite} element the toast to be removed
-     * @param {object} options
-     * @return {Promise<*>} a Promise to remove the element immediately or to animate it out.
-     */
     function onRemove(scope, element, options) {
       if (scope.toast && scope.toast.actionKey) {
         removeActionKeyListener();
@@ -37162,8 +36900,7 @@ function MdToastProvider($$interimElementProvider) {
       if (options.parent) options.parent.addClass('md-toast-animating');
       if (options.openClass) options.parent.removeClass(options.openClass);
 
-      // Don't run the leave animation if the element has already been destroyed.
-      return ((options.$destroy === true) ? $q.when(element.remove()) : $animate.leave(element))
+      return ((options.$destroy === true) ? element.remove() : $animate.leave(element))
         .then(function () {
           if (options.parent) options.parent.removeClass('md-toast-animating');
           if ($mdUtil.hasComputedStyle(options.parent, 'position', 'static')) {
@@ -37210,7 +36947,7 @@ function MdToastProvider($$interimElementProvider) {
  * @ngdoc module
  * @name material.components.toolbar
  */
-mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming", "$animate", "$timeout"];
+mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming", "$animate"];
 angular.module('material.components.toolbar', [
   'material.core',
   'material.components.content'
@@ -37291,7 +37028,7 @@ angular.module('material.components.toolbar', [
  *
  */
 
-function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate, $timeout) {
+function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate) {
   var translateY = angular.bind(null, $mdUtil.supplant, 'translate3d(0,{0}px,0)');
 
   return {
@@ -37350,15 +37087,16 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate, $
         scope.$on('$destroy', disableScrollShrink);
 
         /**
-         * @param {string} shrinkWithScroll value of md-scroll-shrink attribute
+         *
          */
         function onChangeScrollShrink(shrinkWithScroll) {
-          var closestContent = $mdUtil.getSiblings(element, 'md-content');
+          var closestContent = element.parent().find('md-content');
 
-          // If there are content elements, fake the call using the first content element.
-          // This might still fail if the content element isn't a sibling of the toolbar.
+          // If we have a content element, fake the call; this might still fail
+          // if the content element isn't a sibling of the toolbar
+
           if (!contentElement && closestContent.length) {
-            onMdContentLoad(null, closestContent[0]);
+            onMdContentLoad(null, closestContent);
           }
 
           // Evaluate the expression
@@ -37373,8 +37111,7 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate, $
         }
 
         /**
-         * @param {null} $event $mdContentLoaded always has a null event
-         * @param {JQLite} newContentEl JQLite object containing an md-content
+         *
          */
         function onMdContentLoad($event, newContentEl) {
           // Toolbar and content must be siblings
@@ -37428,7 +37165,7 @@ function mdToolbarDirective($$rAF, $mdConstant, $mdUtil, $mdTheming, $animate, $
           contentElement.on('scroll', debouncedContentScroll);
           contentElement.attr('scroll-shrink', 'true');
 
-          $timeout(updateToolbarHeight);
+          $mdUtil.nextTick(updateToolbarHeight, false);
 
           return function disableScrollShrink() {
             contentElement.off('scroll', debouncedContentScroll);
@@ -39184,4 +38921,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.23"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.22"}};
