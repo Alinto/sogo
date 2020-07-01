@@ -2085,8 +2085,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
               if (user)
                 {
                   [logins addObject: login];
-                  [members addObject: [NSDictionary dictionaryWithObject: login
-                                                                  forKey: @"c_uid"]];
+                  [members addObject: user];
                 }
               [pool release];
             }
@@ -2100,15 +2099,14 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
               if (user)
                 {
                   [logins addObject: login];
-                  [members addObject: [NSDictionary dictionaryWithObject: login
-                                                                  forKey: @"c_uid"]];
+                  [members addObject: user];
                 }
               [pool release];
             }
 
 
           // We are done fetching members, let's cache the members of the group
-          // (ie., their UIDs) in memcached to speed up -hasMemberWithUID.
+          // (ie., their UIDs) in memcached to speed up -groupWithUIDHasMemberWithUID.
           [[SOGoCache sharedCache] setValue: [logins componentsJoinedByString: @","]
             forKey: [NSString stringWithFormat: @"%@+%@", uid, _domain]];
         }

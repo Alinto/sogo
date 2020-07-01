@@ -557,7 +557,7 @@
         {
 	  iCalPerson *person;
 	  NSArray *members;
-	  NSDictionary *user;
+	  SOGoUser *user;
           id <SOGoSource> source;
 	  
 	  // We did decompose a group...
@@ -574,10 +574,10 @@
 
                   // If the organizer is part of the group, we skip it from
                   // the addition to the attendees' list
-                  if ([[user objectForKey: @"c_emails"] containsObject: organizerEmail])
+                  if ([user hasEmail: organizerEmail])
                     continue;
 
-                  person = [self iCalPersonWithUID: [user objectForKey: @"c_uid"]];
+                  person = [self iCalPersonWithUID: [user login]];
                   [person setTag: @"ATTENDEE"];
                   [person setParticipationStatus: [currentAttendee participationStatus]];
                   [person setRsvp: [currentAttendee rsvp]];
