@@ -546,13 +546,18 @@ static NSString *inboxFolderName = @"INBOX";
                    && [currentFolderName caseInsensitiveCompare: sharedFoldersName] == NSOrderedSame)
 	    currentFolderName = [self labelForKey: @"SharedFoldersName"];
 
-          flags = [NSMutableArray array];;
+          flags = [NSMutableArray array];
 
           if (last)
-            folderType = [self _folderType: currentPath
-                                     flags: flags];
+            {
+              folderType = [self _folderType: currentPath
+                                       flags: flags];
+            }
           else
-            folderType = @"additional";
+            {
+              folderType = @"additional";
+              [flags addObject: @"noselect"];
+            }
 
 	  if ([subscribedFolders objectForKey: folderPath])
 	    isSubscribed = YES;

@@ -203,7 +203,7 @@
       }
       else {
         this.$isSpecial = false;
-        this.$icon = 'folder_open';
+        this.$icon = 'folder';
       }
     }
     this.$isNoInferiors = this.isNoInferiors();

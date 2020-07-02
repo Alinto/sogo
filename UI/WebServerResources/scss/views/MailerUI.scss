@@ -92,16 +92,30 @@
 }
 
 md-sidenav {
+  md-list-item.sg-mailbox-list-item {
+    // Lower by half the left padding of list items to accomodate the expand/collapse button
+    padding-left: $bl;
+    .sg-item-name {
+      transform: translateX(-$bl);
+      margin-right: 0;
+      md-icon {
+        margin-right: $bl;
+      }
+      &:focus {
+        outline: none;
+      }
+    }
+  }
   md-checkbox {
     &.sg-folder {
-      // Show checkbox as a "closed" folder when unchecked and "opened" folder when checked
+      // Show checkbox as a collapsed/right arrow when unchecked and expanded/down arrow when checked
       .md-container:after {
         color: rgba(0,0,0,0.54);
         font-family: 'Material Icons';
         font-size: 24px;
-        content: "\e2c7"; // folder
-        top: -4px;
-        left: 0px;
+        content: "\e5df"; // arrow_right (collapsed folder)
+        top: 0;
+        left: 0;
         width: 1em;
         height: 1em;
       }
@@ -110,7 +124,7 @@ md-sidenav {
       }
       &.md-checked {
         .md-container:after {
-          content: "\e2c8"; // folder open
+          content: "\e5c5"; // arrow_drop_down (expanded folder)
         }
         .md-icon {
           background-color: initial !important;
@@ -119,11 +133,7 @@ md-sidenav {
           }
         }
       }
-      // Hide the label (which contains an icon) if the checkbox is enabled ..
-      .md-label {
-        display: none;
-      }
-      // .. but show the label and hide the checkbox when disabled (no children)
+      // Hide the checkbox when disabled (no children)
       &[disabled] {
         .md-container {
           width: 0;
@@ -131,16 +141,7 @@ md-sidenav {
             content: '';
           }
         }
-        .md-label {
-          display: inline-block;
-          margin-left: 0;
-        }
       }
-    }
-  }
-  .sg-item-name {
-    &:focus {
-      outline: none;
     }
   }
 }

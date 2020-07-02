@@ -25,11 +25,12 @@
         '                 ng-model="$ctrl.mailbox.$expanded"',
         '                 ng-disabled="$ctrl.mailbox.children.length == 0"',
         '                 ng-change="$ctrl.mailbox.$account.$flattenMailboxes({ reload: true, saveState: true })">',
-        '    <md-icon>{{$ctrl.mailbox.$icon}}</md-icon></md-checkbox>',
+        '    </md-checkbox>',
         '  </div>',
         '  <p class="sg-item-name"',
         '    ng-click="$ctrl.selectFolder($event)"',
         '    ng-dblclick="$ctrl.editFolder($event)">',
+        '    <md-icon ng-class="{ \'sg-opacity-70\': $ctrl.mailbox.isNoSelect() }">{{$ctrl.mailbox.$icon}}</md-icon>',
         '    <span ng-bind="$ctrl.mailbox.$displayName"></span>',
         '    <span class="sg-counter-badge ng-hide"',
         '          ng-show="$ctrl.mailbox.unseenCount"',
@@ -111,7 +112,7 @@
       this.inputElement.value = this.mailbox.name;
       this.clickableElement.classList.add('ng-hide');
       this.inputContainer.classList.remove('ng-hide');
-      if ($event.srcEvent.type == 'touchend') {
+      if ($event.srcEvent && $event.srcEvent.type == 'touchend') {
         $timeout(function() {
           $ctrl.inputElement.select();
           $ctrl.inputElement.focus();
