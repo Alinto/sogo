@@ -1,6 +1,6 @@
 /* SOGoToolManageACL.m - this file is part of SOGo
  *
- * Copyright (C) 2017-2018 Inverse inc.
+ * Copyright (C) 2017-2020 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -107,7 +107,7 @@ typedef enum
 
 - (void) usage
 {
-  fprintf (stderr, "manage-acl get|add|remove|subscribe|unsubscribe owner folder user <rights>\n\n"
+  fprintf (stderr, "manage-acl get|add|remove|subscribe|unsubscribe owner folder user|group <rights>\n\n"
 	   "           get          get ACL information of folder for user\n"
 	   "           add          add ACL information of folder for user\n"
 	   "           remove       remove all ACL information of folder for user\n"
@@ -115,7 +115,7 @@ typedef enum
 	   "           unsubscribe  unsubscribe user to owner's folder\n"
            "           owner        the user owning the folder\n"
 	   "           folder       the folder - Calendar/<ID> or Contacts/<ID>\n"
-	   "           user         the user to get/set rights for - 'ALL', '<default>', 'anonymous' are supported\n"
+	   "           user         the user (or group without the @ prefix) to get/set rights for - 'ALL', '<default>', 'anonymous' are supported\n"
            "           rights       rights to add\n\n"
            "Example:   sogo-tool manage-acl get jdoe Calendar/personal ALL\n\n"
            "Note:      You can add only one access right at the time. To set them all at once,\n"
@@ -216,30 +216,7 @@ typedef enum
 	[allSQLUsers addObject: @"anonymous"];
     }
   else
-    {
-      NSDictionary *dict;
-
-      dict = [[SOGoUserManager sharedUserManager] contactInfosForUserWithUIDorEmail: user];
-
-      if (dict && [[dict objectForKey: @"isGroup"] boolValue])
-        {
-          id <SOGoSource> source;
-          NSArray *members;
-	  int i;
-
-          source = [[SOGoUserManager sharedUserManager] sourceWithID: [dict objectForKey: @"SOGoSource"]];
-          if ([source conformsToProtocol: @protocol(SOGoMembershipSource)])
-            {
-              members = [(id<SOGoMembershipSource>)(source) membersForGroupWithUID: [dict objectForKey: @"c_uid"]];
-              for (i = 0; i < [members count]; i++)
-                {
-                  [allSQLUsers addObject: [[members objectAtIndex: i] objectForKey: @"c_uid"]];
-                }
-            }
-        }
-      else
-        [allSQLUsers addObject: user];
-    }
+    [allSQLUsers addObject: user];
 
   pool = [[NSAutoreleasePool alloc] init];
   max = [allSQLUsers count];
@@ -267,7 +244,12 @@ typedef enum
 
       infos = [lm contactInfosForUserWithUIDorEmail: u];
       if (infos)
-        [allUsers addObject: [infos objectForKey: @"c_uid"]];
+        {
+          if (infos && [[infos objectForKey: @"isGroup"] boolValue])
+            [allUsers addObject: [NSString stringWithFormat: @"@%@", [infos objectForKey: @"c_uid"]]];
+          else
+            [allUsers addObject: [infos objectForKey: @"c_uid"]];
+        }
       else
         {
           // We haven't found the user based on the GCS table name
