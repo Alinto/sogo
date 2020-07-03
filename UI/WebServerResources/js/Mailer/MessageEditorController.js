@@ -49,6 +49,7 @@
 
       this.composeType = Preferences.defaults.SOGoMailComposeMessageType;
 
+      this.signaturePlacement = Preferences.defaults.SOGoMailSignaturePlacement;
       this.replyPlacement = Preferences.defaults.SOGoMailReplyPlacement;
       if (this.message.origin && this.message.origin.action == 'forward') {
         // For forwards, place caret at top unconditionally
@@ -387,7 +388,7 @@
 
       if (!previousIdentity && signature.length > 0) {
         // Must place signature at proper place
-        if (!this.isNew() && this.replyPlacement == 'above') {
+        if (!this.isNew() && this.signaturePlacement == 'above') {
           var quotedMessageIndex = this.message.editable.text.search(new RegExp(nl + '.+?:( ?' + nl + '){2}(> |<blockquote type="cite")'));
           if (quotedMessageIndex >= 0) {
             this.message.editable.text =
