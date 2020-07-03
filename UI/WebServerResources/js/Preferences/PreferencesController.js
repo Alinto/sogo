@@ -135,7 +135,13 @@
           mailCustomFromEnabled: $window.mailCustomFromEnabled
         }
       }).then(function() {
+        // Automatically expand the new mail account
+        if (!angular.isArray(vm.preferences.settings.Mail.ExpandedFolders)) {
+          vm.preferences.settings.Mail.ExpandedFolders = ['/0'];
+        }
+        vm.preferences.settings.Mail.ExpandedFolders.push('/' + index);
         vm.preferences.defaults.AuxiliaryMailAccounts.push(account.$omit());
+
         form.$setDirty();
       });
     };
