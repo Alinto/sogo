@@ -58,6 +58,10 @@
 - (NSData *) asCryptUsingSalt: (NSData *) theSalt;
 - (NSData *) asMD5CryptUsingSalt: (NSData *) theSalt;
 - (NSData *) asBlowfishCryptUsingSalt: (NSData *) theSalt;
+#ifdef HAVE_SODIUM
+- (NSData *) asArgon2iUsingSalt: (NSData *) theSalt;
+- (NSData *) asArgon2idUsingSalt: (NSData *) theSalt;
+#endif /* HAVE_SODIUM */
 
 - (NSData *) extractSalt: (NSString *) theScheme;
 

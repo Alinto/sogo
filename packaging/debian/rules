@@ -6,26 +6,54 @@ export DH_VERBOSE=1
 DESTDIR=$(CURDIR)/debian/tmp
 DIST_CODENAME=$(shell lsb_release -cs)
 
+# Debian 6
 ifeq ($(DIST_CODENAME), squeeze)
 SAML2_CONFIG=--enable-saml2
+SODIUM_CONFIG=--disable-sodium
 endif
 
+# Debian 7
+ifeq ($(DIST_CODENAME), wheezy)
+SODIUM_CONFIG=--disable-sodium
+endif
+
+# Debian 8
+ifeq ($(DIST_CODENAME), jessie)
+SODIUM_CONFIG=--disable-sodium
+endif
+
+# Debian 9
 ifeq ($(DIST_CODENAME), stretch)
 MFA_CONFIG=--enable-mfa
 endif
 
+# Debian 10
 ifeq ($(DIST_CODENAME), buster)
 MFA_CONFIG=--enable-mfa
 endif
 
-ifeq ($(DIST_CODENAME), xenial)
-MFA_CONFIG=--enable-mfa
+# Ubuntu 12.04
+ifeq ($(DIST_CODENAME), precise)
+SODIUM_CONFIG=--disable-sodium
 endif
 
+# Ubuntu 14.04
+ifeq ($(DIST_CODENAME), trusty)
+SODIUM_CONFIG=--disable-sodium
+endif
+
+# Ubuntu 16.04
+ifeq ($(DIST_CODENAME), xenial)
+MFA_CONFIG=--enable-mfa
+SODIUM_CONFIG=--disable-sodium
+endif
+
+# Ubuntu 18.04
 ifeq ($(DIST_CODENAME), bionic)
 MFA_CONFIG=--enable-mfa
 endif
 
+# Ubuntu 20.04
 ifeq ($(DIST_CODENAME), focal)
 MFA_CONFIG=--enable-mfa
 endif
@@ -35,19 +63,19 @@ include /usr/share/GNUstep/Makefiles/common.make
 
 config.make: configure
 	dh_testdir
-	./configure $(SAML2_CONFIG) $(MFA_CONFIG)
+	./configure $(SAML2_CONFIG) $(MFA_CONFIG) $(SODIUM_CONFIG)
 
 #Architecture
 build: build-arch
 
 build-arch: build-arch-stamp
-build-arch-stamp:  config.make 
+build-arch-stamp:  config.make
 #	 Add here commands to compile the arch part of the package.
 	$(MAKE)
 	(cd ActiveSync && $(MAKE))
 	touch $@
 
-clean: 
+clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-arch-stamp
@@ -60,7 +88,7 @@ clean:
 	fi
 	-rm -f config.make
 	(cd ActiveSync; $(MAKE) clean); \
-	dh_clean 
+	dh_clean
 
 install: install-arch
 	dh_testdir

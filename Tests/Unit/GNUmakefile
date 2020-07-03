@@ -46,10 +46,14 @@ ADDITIONAL_LIB_DIRS += \
 	-Wl,-rpath,../../SoObjects/SOGo/SOGo.framework/Versions/Current/sogo -Wl,-rpath,../../SOPE/NGCards/obj -Wl,-rpath,../../SOPE/GDLContentStore/obj
 ADDITIONAL_LDFLAGS += -Wl,--no-as-needed
 
+ifeq ($(HAS_LIBRARY_sodium), yes)
+ADDITIONAL_CPPFLAGS += -DHAVE_SODIUM=1 `pkg-config --cflags libsodium`
+endif
+
+
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/test-tool.make
 -include GNUmakefile.postamble
 
 check :: $(TEST_TOOL)
 	./obj/sogo-tests
-

@@ -47,6 +47,11 @@ ifeq ($(HAS_LIBRARY_oath), yes)
 SOGo_LIBRARIES_DEPEND_UPON += $(MFA_LIBS)
 endif
 
+ifeq ($(HAS_LIBRARY_sodium), yes)
+ADDITIONAL_CPPFLAGS += -DHAVE_SODIUM=1 `pkg-config --cflags libsodium`
+SOGo_LIBRARIES_DEPEND_UPON += -lsodium
+endif
+
 ifeq ($(findstring openbsd, $(GNUSTEP_HOST_OS)), openbsd)
 SOGo_LIBRARIES_DEPEND_UPON += -lcrypto
 else
