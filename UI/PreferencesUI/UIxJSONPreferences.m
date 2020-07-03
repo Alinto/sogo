@@ -29,6 +29,7 @@
 
 #import <SOPE/NGCards/iCalRecurrenceRule.h>
 
+#import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
@@ -299,14 +300,16 @@ static SoProduct *preferencesProduct = nil;
   //
   if (![defaults contactsCategories])
     {
-      categoryLabels = [[[self labelForKey: @"contacts_category_labels"  withResourceManager: [preferencesProduct resourceManager]]
-                          componentsSeparatedByString: @","]
-                          sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+      NSArray *contactsCategories;
 
-      if (!categoryLabels)
-        categoryLabels = [NSArray array];
+      contactsCategories = [[[[self labelForKey: @"contacts_category_labels"  withResourceManager: [preferencesProduct resourceManager]]
+                              componentsSeparatedByString: @","] trimmedComponents]
+                             sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
 
-      [defaults setContactsCategories: categoryLabels];
+      if (!contactsCategories)
+        contactsCategories = [NSArray array];
+
+      [defaults setContactsCategories: contactsCategories];
     }
 
   if (![[defaults source] objectForKey: @"SOGoMailAddOutgoingAddresses"])

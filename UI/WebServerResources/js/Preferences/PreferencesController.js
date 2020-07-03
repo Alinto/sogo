@@ -55,6 +55,11 @@
         });
     };
 
+    this.resetContactsCategories = function(form) {
+      this.preferences.defaults.SOGoContactsCategories = $window.defaultContactsCategories;
+      form.$setDirty();
+    };
+
     this.resetCalendarCategories = function(form) {
       this.preferences.defaults.SOGoCalendarCategories = _.keys($window.defaultCalendarCategories);
       this.preferences.defaults.SOGoCalendarCategoriesColorsValues = _.values($window.defaultCalendarCategories);

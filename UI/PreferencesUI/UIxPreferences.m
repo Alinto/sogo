@@ -113,10 +113,6 @@ static NSArray *reminderValues = nil;
         referenceDate = [referenceDate addYear:0 month:0 day:(-[referenceDate dayOfMonth] + 1) hour:0 minute:0 second:0];
       ASSIGN (today, referenceDate);
 
-      calendarCategories = nil;
-      calendarCategoriesColors = nil;
-      category = nil;
-
       ASSIGN (daysOfWeek, [locale objectForKey: NSWeekDayNameArray]);
 
       dd = [user domainDefaults];
@@ -157,10 +153,6 @@ static NSArray *reminderValues = nil;
   [user release];
   [sieveFilters release];
   [vacationOptions release];
-  [calendarCategories release];
-  [calendarCategoriesColors release];
-  [category release];
-  [contactsCategories release];
   [forwardOptions release];
   [daysOfWeek release];
   [addressBooksIDWithDisplayName release];
@@ -861,6 +853,23 @@ static NSArray *reminderValues = nil;
     }
 
   return [defaultCategoriesColors jsonRepresentation];
+}
+
+//
+// Used by templates
+//
+- (NSString *) defaultContactsCategories
+{
+  NSArray *contactsCategories;
+
+  contactsCategories = [[[[self labelForKey: @"contacts_category_labels"  withResourceManager: [self resourceManager]]
+                              componentsSeparatedByString: @","] trimmedComponents]
+                             sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+
+  if (!contactsCategories)
+    contactsCategories = [NSArray array];
+
+  return [contactsCategories jsonRepresentation];
 }
 
 //

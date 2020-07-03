@@ -36,13 +36,7 @@
 
   // Addressbook
   NSMutableDictionary *addressBooksIDWithDisplayName;
-  
-  // Calendar categories
-  NSString *category;
-  NSArray *calendarCategories;
-  NSDictionary *calendarCategoriesColors;
-  
-  NSArray *contactsCategories;
+
   NSCalendarDate *today;
 
   // Sieve filtering
