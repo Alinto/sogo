@@ -135,7 +135,7 @@
                   md-match-case-insensitive="true"
                   ng-required="true"
                   sg-select-only="sg-select-only"
-                  label:md-floating-label="Current Time Zone">
+                  label:md-floating-label="Time Zone">
                 <md-item-template>
                   <span md-highlight-text="app.timeZonesSearchText">{{timezone}}</span>
                 </md-item-template>

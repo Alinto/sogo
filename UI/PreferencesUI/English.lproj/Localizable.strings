@@ -71,7 +71,7 @@
 "You are not allowed to forward your messages to this domain:" = "You are not allowed to forward your messages to this domain:";
 
 /* d & t */
-"Current Time Zone" = "Current Time Zone";
+"Time Zone" = "Time Zone";
 "Short Date Format" = "Short Date Format";
 "Long Date Format" = "Long Date Format";
 "Time Format" = "Time Format";
