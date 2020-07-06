@@ -88,6 +88,7 @@ typedef enum {
 
 - (NSArray *) identities;
 - (NSDictionary *) defaultIdentity;
+- (NSDictionary *) identityForEmail: (NSString *) email;
 - (NSString *) signature;
 - (NSString *) encryption;
 

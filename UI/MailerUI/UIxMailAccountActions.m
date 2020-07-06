@@ -50,6 +50,7 @@
 #import <Mailer/SOGoDraftObject.h>
 #import <Mailer/SOGoDraftsFolder.h>
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
@@ -98,19 +99,34 @@
 
 /* compose */
 
+- (NSString *) _emailFromIdentity: (NSDictionary *) identity
+{
+  NSString *fullName, *format;
+
+  fullName = [identity objectForKey: @"fullName"];
+  if ([fullName length])
+    format = @"%{fullName} <%{email}>";
+  else
+    format = @"%{email}";
+
+  return [identity keysWithFormat: format];
+}
+
 - (WOResponse *) composeAction
 {
+  BOOL save, isHTML;
+  NSDictionary *data, *identity;
+  NSMutableDictionary *headers;
+  NSString *accountName, *mailboxName, *messageName;
   NSString *value, *signature, *nl, *space;
   SOGoDraftObject *newDraftMessage;
-  NSMutableDictionary *headers;
-  NSDictionary *data;
-  NSString *accountName, *mailboxName, *messageName;
   SOGoDraftsFolder *drafts;
+  SOGoMailAccount *co;
   SOGoUserDefaults *ud;
   id mailTo;
-  BOOL save, isHTML;
 
-  drafts = [[self clientObject] draftsFolderInContext: context];
+  co = [self clientObject];
+  drafts = [co draftsFolderInContext: context];
   newDraftMessage = [drafts newDraft];
   headers = [NSMutableDictionary dictionary];
 
@@ -134,25 +150,30 @@
       save = YES;
     }
 
-  if (save)
-    [newDraftMessage setHeaders: headers];
-
-  signature = [[self clientObject] signature];
-  if ([signature length])
+  identity = [co defaultIdentity];
+  if (identity)
     {
-      ud = [[context activeUser] userDefaults];
-      [newDraftMessage setIsHTML: [[ud mailComposeMessageType] isEqualToString: @"html"]];
-      isHTML = [newDraftMessage isHTML];
-      nl = (isHTML? @"<br />" : @"\n");
-      space = (isHTML ? @"&nbsp;" : @" ");
-
-      [newDraftMessage setText: [NSString stringWithFormat: @"%@%@--%@%@%@", nl, nl, space, nl, signature]];
+      [headers setObject: [self _emailFromIdentity: identity] forKey: @"from"];
+      signature = [identity objectForKey: @"signature"];
+      if ([signature length])
+        {
+          ud = [[context activeUser] userDefaults];
+          [newDraftMessage setIsHTML: [[ud mailComposeMessageType] isEqualToString: @"html"]];
+          isHTML = [newDraftMessage isHTML];
+          nl = (isHTML? @"<br />" : @"\n");
+          space = (isHTML ? @"&nbsp;" : @" ");
+          [newDraftMessage setText: [NSString stringWithFormat: @"%@%@--%@%@%@", nl, nl, space, nl, signature]];
+        }
       save = YES;
     }
-  if (save)
-    [newDraftMessage storeInfo];
 
-  accountName = [[self clientObject] nameInContainer];
+  if (save)
+    {
+      [newDraftMessage setHeaders: headers];
+      [newDraftMessage storeInfo];
+    }
+
+  accountName = [co nameInContainer];
   mailboxName = [drafts absoluteImap4Name]; // Ex: /INBOX/Drafts/
   mailboxName = [mailboxName substringWithRange: NSMakeRange(1, [mailboxName length] -2)];
   messageName = [newDraftMessage nameInContainer];

@@ -694,6 +694,30 @@ static NSString *inboxFolderName = @"INBOX";
   return defaultIdentity; // can be nil
 }
 
+- (NSDictionary *) identityForEmail: (NSString *) email
+{
+  NSDictionary *identity, *currentIdentity;
+  NSString *currentEmail;
+  unsigned int count, max;
+
+  identity = nil;
+  [self identities];
+
+  max = [identities count];
+  for (count = 0; count < max; count++)
+    {
+      currentIdentity = [identities objectAtIndex: count];
+      currentEmail = [currentIdentity objectForKey: @"email"];
+      if ([currentEmail caseInsensitiveCompare: email] == NSOrderedSame)
+        {
+          identity = currentIdentity;
+          break;
+        }
+    }
+
+  return identity; // can be nil
+}
+
 - (NSString *) signature
 {
   NSDictionary *identity;

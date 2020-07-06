@@ -443,7 +443,7 @@
       return Message.$$resource.fetch(_this.$absolutePath({asDraft: true}), 'edit').then(function(data) {
         // Try to match a known account identity from the specified "from" address
         var identity = _.find(_this.$mailbox.$account.identities, function(identity) {
-          return data.from.toLowerCase().indexOf(identity.email) !== -1;
+          return data.from && data.from.toLowerCase().indexOf(identity.email) !== -1;
         });
         if (identity)
           data.from = identity.full;

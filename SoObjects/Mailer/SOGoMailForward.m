@@ -1,6 +1,6 @@
 /* SOGoMailForward.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2017 Inverse inc.
+ * Copyright (C) 2007-2020 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 #import <Foundation/NSDictionary.h>
 
+#import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSString+misc.h>
 
@@ -30,6 +31,7 @@
 #import "SOGoMailAccount.h"
 #import "SOGoMailObject+Draft.h"
 #import "SOGoMailForward.h"
+#import "SOGoSentFolder.h"
 
 @implementation SOGoMailForward
 
@@ -234,18 +236,43 @@
 
 - (NSString *) signature
 {
-  NSString *signature, *mailSignature, *nl, *space;
-  
-  signature = [[sourceMail mailAccountFolder] signature];
+  BOOL fromSentMailbox;
+  NGImap4EnvelopeAddress *address;
+  NSArray *addresses;
+  NSDictionary *identity;
+  NSString *email, *signature, *mailSignature, *nl, *space;
+  int count, max;
 
-  if ([signature length])
-    {
-      nl = (htmlComposition ? @"<br />" : @"\n");
-      space = (htmlComposition ? @"&nbsp;" : @" ");
-      mailSignature = [NSString stringWithFormat: @"--%@%@%@", space, nl, signature];
-    }
+  fromSentMailbox = [[sourceMail container] isKindOfClass: [SOGoSentFolder class]];
+  if (fromSentMailbox)
+    addresses = [sourceMail fromEnvelopeAddresses];
   else
-    mailSignature = @"";
+    addresses = [sourceMail toEnvelopeAddresses];
+  identity = nil;
+  mailSignature = @"";
+  max = [addresses count];
+
+  if (max)
+    {
+      // Pick the first email matching one of the account's identities
+      for (count = 0; !identity && count < max; count++)
+        {
+          address = [addresses objectAtIndex: count];
+          email = [address baseEMail];
+          identity = [[sourceMail mailAccountFolder] identityForEmail: email];
+        }
+    }
+
+  if (identity)
+    {
+      signature = [identity objectForKey: @"signature"];
+      if ([signature length])
+        {
+          nl = (htmlComposition ? @"<br />" : @"\n");
+          space = (htmlComposition ? @"&nbsp;" : @" ");
+          mailSignature = [NSString stringWithFormat: @"%@--%@%@%@", nl, space, nl, signature];
+        }
+    }
 
   return mailSignature;
 }

@@ -50,6 +50,7 @@
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoDomainDefaults.h>
@@ -664,6 +665,53 @@ static NSString    *userAgent      = nil;
 //
 //
 //
+- (NSString *) _emailFromIdentity: (NSDictionary *) identity
+{
+  NSString *fullName, *format;
+
+  fullName = [identity objectForKey: @"fullName"];
+  if ([fullName length])
+    format = @"%{fullName} <%{email}>";
+  else
+    format = @"%{email}";
+
+  return [identity keysWithFormat: format];
+}
+
+- (void) _fillInFromAddress: (NSMutableDictionary *) _info
+            fromSentMailbox: (BOOL) _fromSentMailbox
+                   envelope: (NGImap4Envelope *) _envelope
+{
+  NSDictionary *identity;
+  NSMutableArray *addrs;
+  NSString *email;
+  int i;
+
+  /* Pick the first email matching one of the account's identities */
+  addrs = [NSMutableArray array];
+  if (_fromSentMailbox)
+    [self _addRecipients: [_envelope from] toArray: addrs];
+  else
+    [self _addRecipients: [_envelope to] toArray: addrs];
+
+  if ([addrs count])
+    {
+      identity = nil;
+      for (i = 0; !identity && i < [addrs count]; i++)
+        {
+          email = [addrs objectAtIndex: i];
+          identity = [[[self container] mailAccountFolder] identityForEmail: email];
+        }
+      if (identity)
+        {
+          [_info setObject: [self _emailFromIdentity: identity]  forKey: @"from"];
+        }
+    }
+}
+
+//
+//
+//
 - (void) _fillInReplyAddresses: (NSMutableDictionary *) _info
 		    replyToAll: (BOOL) _replyToAll
                fromSentMailbox: (BOOL) _fromSentMailbox
@@ -705,11 +753,9 @@ static NSString    *userAgent      = nil;
       int i;
 
       identities = [[[self container] mailAccountFolder] identities];
-
       for (i = 0; i < [identities count]; i++)
         {
           email = [[identities objectAtIndex: i] objectForKey: @"email"];
-
           if (email)
             [allRecipients addObject: email];
         }
@@ -726,7 +772,7 @@ static NSString    *userAgent      = nil;
   else
     [addrs setArray: [_envelope from]];
 
-  [self _purgeRecipients: allRecipients  fromAddresses: addrs];
+  [self _purgeRecipients: allRecipients  fromAddresses: addrs]; // addrs contain the recipient addresses without the any of the sender's addresses
   [self _addEMailsOfAddresses: addrs  toArray: to];
   [self _addRecipients: addrs  toArray: allRecipients];
   [_info setObject: to  forKey: @"to"];
@@ -740,6 +786,11 @@ static NSString    *userAgent      = nil;
       else
 	[self _addEMailsOfAddresses: [_envelope from]  toArray: to];
     }
+
+  /* Pick the first email matching one of the account's identities */
+  [self _fillInFromAddress: _info
+           fromSentMailbox: _fromSentMailbox
+                  envelope: _envelope];
 
   /* If we have no To but we have Cc recipients, let's move the Cc
      to the To bucket... */
@@ -954,7 +1005,6 @@ static NSString    *userAgent      = nil;
 {
   BOOL fromSentMailbox;
   NSString *msgID;
-  NSMutableArray *addresses;
   NSMutableDictionary *info;
   NGImap4Envelope *sourceEnvelope;
   SOGoUserDefaults *ud;
@@ -974,11 +1024,6 @@ static NSString    *userAgent      = nil;
   if ([msgID length] > 0)
     [self setInReplyTo: msgID];
 
-  addresses = [NSMutableArray array];
-  [self _addEMailsOfAddresses: [sourceEnvelope to] toArray: addresses];
-  if ([addresses count])
-    [info setObject: [addresses objectAtIndex: 0] forKey: @"from"];
-
   ud = [[context activeUser] userDefaults];
 
   [self setText: [sourceMail contentForReply]];
@@ -994,18 +1039,27 @@ static NSString    *userAgent      = nil;
 
 - (void) fetchMailForForwarding: (SOGoMailObject *) sourceMail
 {
-  NSDictionary *info, *attachment;
+  BOOL fromSentMailbox;
+  NGImap4Envelope *sourceEnvelope;
+  NSDictionary *attachment;
+  NSMutableDictionary *info;
   NSString *signature, *nl, *space;
   SOGoUserDefaults *ud;
 
+  fromSentMailbox = [[sourceMail container] isKindOfClass: [SOGoSentFolder class]];
   [sourceMail fetchCoreInfos];
+  sourceEnvelope = [sourceMail envelope];
+  info = [NSMutableDictionary dictionaryWithCapacity: 2];
 
   if ([sourceMail subjectForForward])
     {
-      info = [NSDictionary dictionaryWithObject: [sourceMail subjectForForward]
-			   forKey: @"subject"];
-      [self setHeaders: info];
+      [info setObject: [sourceMail subjectForForward] forKey: @"subject"];
     }
+
+  [self _fillInFromAddress: info
+           fromSentMailbox: fromSentMailbox
+                  envelope: sourceEnvelope];
+  [self setHeaders: info];
 
   [self setSourceURL: [sourceMail imap4URLString]];
   [self setSourceFlag: @"$Forwarded"];

@@ -65,7 +65,6 @@
   NSString *sourceUID;
   NSString *sourceFolder;
   NSString *text;
-  NSMutableArray *fromEMails;
   NSString *from;
   SOGoMailFolder *sentFolder;
   BOOL isHTML;
@@ -122,7 +121,6 @@ static NSArray *infoKeys = nil;
   [priority release];
   [receipt release];
   [sentFolder release];
-  [fromEMails release];
   [from release];
   [text release];
   [subject release];
@@ -256,7 +254,7 @@ static NSArray *infoKeys = nil;
   identities = [[[self clientObject] mailAccountFolder] identities];
   if ([identities count])
     {
-      if (from)
+      if ([from length])
         {
           allIdentities = [identities objectEnumerator];
           valid = NO;
@@ -277,11 +275,6 @@ static NSArray *infoKeys = nil;
               [from release];
               from = nil;
             }
-        }
-      if (!from)
-        {
-          from = [self _emailFromIdentity: [[context activeUser] defaultIdentity]];
-          [from retain];
         }
     }
 
@@ -411,31 +404,6 @@ static NSArray *infoKeys = nil;
 - (NSFormatter *) sizeFormatter
 {
   return [UIxMailSizeFormatter sharedMailSizeFormatter];
-}
-
-/* from addresses */
-
-- (NSArray *) fromEMails
-{
-  NSArray *identities;
-  int count, max;
-  NSString *email;
-  SOGoMailAccount *account;
-
-  if (!fromEMails)
-    { 
-      account = [[self clientObject] mailAccountFolder];
-      identities = [account identities];
-      max = [identities count];
-      fromEMails = [[NSMutableArray alloc] initWithCapacity: max];
-      for (count = 0; count < max; count++)
-        {
-          email = [self _emailFromIdentity: [identities objectAtIndex: count]];
-          [fromEMails addObjectUniquely: email];
-        }
-    }
-
-  return fromEMails;
 }
 
 /* info loading */
