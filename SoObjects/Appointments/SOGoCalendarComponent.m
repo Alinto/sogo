@@ -828,7 +828,7 @@
 
           // No organizer, grab the event's owner
           if (![senderEmail length])
-            senderEmail = shortSenderEmail = [[ownerUser defaultIdentity] objectForKey: @"email"];
+            senderEmail = shortSenderEmail = [[ownerUser primaryIdentity] objectForKey: @"email"];
 
           /* calendar part */
           eventBodyPart = [self _bodyPartForICalObject: object];

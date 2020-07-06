@@ -59,7 +59,7 @@
   iCalPerson *aAttendee;
 
   ownerIdentity = [[SOGoUser userWithLogin: uid roles: nil]
-                    defaultIdentity];
+                    primaryIdentity];
   aAttendee = [iCalPerson elementWithTag: @"attendee"];
   [aAttendee setCn: [ownerIdentity objectForKey: @"fullName"]];
   [aAttendee setEmail: [ownerIdentity objectForKey: @"email"]];

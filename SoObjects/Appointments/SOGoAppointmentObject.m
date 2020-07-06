@@ -1972,7 +1972,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 	      NSArray *allAttendees;
 
 	      organizerUser = [SOGoUser userWithLogin: uid];
-              defaultIdentity = [organizerUser defaultIdentity];
+              defaultIdentity = [organizerUser primaryIdentity];
 	      organizer = [[event organizer] copy];
               [organizer setCn: [defaultIdentity objectForKey: @"fullName"]];
               [organizer setEmail: [defaultIdentity objectForKey: @"email"]];
