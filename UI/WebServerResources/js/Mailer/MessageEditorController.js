@@ -62,6 +62,7 @@
       if ($stateParams.actionName == 'reply') {
         stateMessage.$reply().then(function(msgObject) {
           vm.message = msgObject;
+          vm.fromIdentity = msgObject.editable.from;
           vm.hideCc = (!msgObject.editable.cc || msgObject.editable.cc.length === 0);
           vm.hideBcc = (!msgObject.editable.bcc || msgObject.editable.bcc.length === 0);
           _updateFileUploader();
@@ -70,6 +71,7 @@
       else if ($stateParams.actionName == 'replyall') {
         stateMessage.$replyAll().then(function(msgObject) {
           vm.message = msgObject;
+          vm.fromIdentity = msgObject.editable.from;
           vm.hideCc = (!msgObject.editable.cc || msgObject.editable.cc.length === 0);
           vm.hideBcc = (!msgObject.editable.bcc || msgObject.editable.bcc.length === 0);
           _updateFileUploader();
@@ -78,6 +80,7 @@
       else if ($stateParams.actionName == 'forward') {
         stateMessage.$forward().then(function(msgObject) {
           vm.message = msgObject;
+          vm.fromIdentity = msgObject.editable.from;
           _updateFileUploader();
           _addAttachments();
         });
