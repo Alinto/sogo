@@ -244,8 +244,7 @@
   NSMutableString *flattenedValues;
   NSString *encoding, *realValue, *value;
 
-  encoding = [[self value: 0 ofAttribute: @"encoding"]
-               lowercaseString];
+  encoding = [[self value: 0 ofAttribute: @"encoding"] lowercaseString];
 
   flattenedValues = [NSMutableString string];
 

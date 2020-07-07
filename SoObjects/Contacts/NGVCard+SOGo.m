@@ -1,6 +1,6 @@
 /* NGVCard+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2017 Inverse inc.
+ * Copyright (C) 2009-2020 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -310,7 +310,12 @@ convention:
                  given: [ldifRecord objectForKey: @"givenname"]
             additional: nil prefixes: nil suffixes: nil];
   [self setNickname: [ldifRecord objectForKey: @"mozillanickname"]];
-  [self setTitle: [ldifRecord objectForKey: @"title"]];
+
+  o = [ldifRecord objectForKey: @"title"];
+  if ([o isKindOfClass: [NSArray class]])
+    [self setTitles: o];
+  else
+    [self setTitle: o];
 
   fn = [ldifRecord objectForKey: @"displayname"];
   if (!fn)
@@ -999,6 +1004,42 @@ convention:
     }
 
   return flattenedNotes;
+}
+
+- (void) setTitles: (NSArray *) newTitles
+{
+  NSArray *elements;
+  NSUInteger count, max;
+
+  elements = [self childrenWithTag: @"title"];
+  [self removeChildren: elements];
+  max = [newTitles count];
+  for (count = 0; count < max; count++)
+    {
+      [self addChildWithTag: @"title"
+                      types: nil
+                singleValue: [newTitles objectAtIndex: count]];
+    }
+}
+
+- (NSArray *) titles
+{
+  NSArray *titles;
+  NSMutableArray *flattenedTitles;
+  NSString *title;
+  NSUInteger count, max;
+
+  titles = [self childrenWithTag: @"title"];
+  max = [titles count];
+  flattenedTitles = [NSMutableArray arrayWithCapacity: max];
+
+  for (count = 0; count < max; count++)
+    {
+      title = [[titles objectAtIndex: count] flattenedValuesForKey: @""];
+      [flattenedTitles addObject: title];
+    }
+
+  return flattenedTitles;
 }
 
 - (NSMutableDictionary *) quickRecordFromContent: (NSString *) theContent

@@ -320,9 +320,9 @@
 
   o = [card nickname];
   if (o) [data setObject: o forKey: @"nickname"];
-  o = [card title];
-  if ([o length] > 0)
-    [data setObject: o forKey: @"title"];
+  o = [card titles];
+  if ([o count])
+    [data setObject: [o componentsJoinedByString: @" / "] forKey: @"title"];
   o = [card role];
   if ([o length] > 0)
     [data setObject: o forKey: @"role"];
