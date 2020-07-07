@@ -2004,6 +2004,9 @@ static NSString    *userAgent      = nil;
                          lookupName: @"Contacts"
                           inContext: context
                             acquire: NO];
+      // Get the selected addressbook from the user preferences where the new address will be added
+      addressBook = [ud selectedAddressBook];
+      folder = [contactFolders lookupName: addressBook inContext: context  acquire: NO];
       // Get all the recipients from the current email
       recipients = [self allRecipients];
       for (i = 0; i < [recipients count]; i++)
@@ -2017,24 +2020,22 @@ static NSString    *userAgent      = nil;
           matchingContacts = [contactFolders allContactsFromFilter: emailAddress
                                                      excludeGroups: YES
                                                       excludeLists: YES];
-        }
-      // If we don't get any results from the autocompletion code, we add it..
-      if ([matchingContacts count] == 0)
-        {
-          // Get the selected addressbook from the user preferences where the new address will be added
-          addressBook = [ud selectedAddressBook];
-          folder = [contactFolders lookupName: addressBook inContext: context  acquire: NO];
-          uid = [folder globallyUniqueObjectId];
 
-          if (folder && uid)
+          // If we don't get any results from the autocompletion code, we add it..
+          if ([matchingContacts count] == 0)
             {
-              card = [NGVCard cardWithUid: uid];
-              [card addEmail: emailAddress types: nil];
-              [card setFn: [parsedRecipient displayName]];
+              uid = [folder globallyUniqueObjectId];
 
-              newContact = [SOGoContactGCSEntry objectWithName: uid  inContainer: folder];
-              [newContact setIsNew: YES];
-              [newContact saveComponent: card];
+              if (folder && uid)
+                {
+                  card = [NGVCard cardWithUid: uid];
+                  [card addEmail: emailAddress types: nil];
+                  [card setFn: [parsedRecipient displayName]];
+
+                  newContact = [SOGoContactGCSEntry objectWithName: uid  inContainer: folder];
+                  [newContact setIsNew: YES];
+                  [newContact saveComponent: card];
+                }
             }
         }
     }
