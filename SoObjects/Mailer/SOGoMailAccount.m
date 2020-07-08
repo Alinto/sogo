@@ -875,7 +875,8 @@ static NSString *inboxFolderName = @"INBOX";
           // * LIST (\NonExistent \HasChildren) "/" shared/jdoe@example.com
           // * LIST (\HasNoChildren) "/" shared/jdoe@example.com/INBOX
           else if (!hasAnnotatemore &&
-		   ([[[result objectForKey: @"list"] objectForKey: currentFolder] indexOfObject: @"nonexistent"] != NSNotFound &&
+		   (([[[result objectForKey: @"list"] objectForKey: currentFolder] indexOfObject: @"nonexistent"] != NSNotFound ||
+                     [[[result objectForKey: @"list"] objectForKey: currentFolder] indexOfObject: @"noselect"] != NSNotFound)&&
 		    [[[result objectForKey: @"list"] objectForKey: currentFolder] indexOfObject: @"haschildren"] != NSNotFound))
             guid = [NSString stringWithFormat: @"%@", currentFolder];
           else
