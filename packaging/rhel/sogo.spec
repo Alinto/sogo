@@ -363,10 +363,10 @@ find %{_docdir}/ -name '*.sh' -exec chmod a+x {} \;
 %if 0%{?_with_systemd}
   systemctl daemon-reload
   systemctl enable sogod
-  systemctl start sogod > /dev/null 2>&1
+  systemctl try-restart sogod > /dev/null 2>&1
 %else
   /sbin/chkconfig --add sogod
-  /etc/init.d/sogod condrestart  >&/dev/null
+  /etc/init.d/sogod condrestart > /dev/null 2>&1
 %endif
 
 %preun
