@@ -784,26 +784,41 @@
       [identities replaceObjectAtIndex: count withObject: identity];
     }
 
-  if (![identities count])
+  // Create an identity for each missing email address
+  max = [mails count];
+  for (count = 0; count < max; count++)
     {
-      // Create an identity for each email address
-      max = [mails count];
-      for (count = 0; count < max; count++)
+      BOOL noIdentityForEmail;
+      NSString *identityEmail;
+
+      noIdentityForEmail = YES;
+      customEmail = [mails objectAtIndex: count];
+      for (index = 0; noIdentityForEmail && index < [identities count]; index++)
+        {
+          identity = [identities objectAtIndex: index];
+          identityEmail = [identity objectForKey: @"email"];
+          if ([customEmail caseInsensitiveCompare: identityEmail] == NSOrderedSame)
+            {
+              noIdentityForEmail = NO;
+            }
+        }
+
+      if (noIdentityForEmail)
         {
           identity = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                             fullName, @"fullName",
-                                                  [mails objectAtIndex: count], @"email", nil];
-          if (appendDeletegatedIdentities)
+                                                  customEmail, @"email", nil];
+          if (appendDeletegatedIdentities &&
+              count == 0 &&
+              [identities count] == 0)
             {
-              if (count == 0)
-                {
-                  // First identity uses the system email -- mark it as the default
-                  [identity setObject: [NSNumber numberWithBool: YES] forKey: @"isDefault"];
-                  hasDefaultIdentity = YES;
-                }
+              // First identity uses the system email -- mark it as the default and keep it editable
+              [identity setObject: [NSNumber numberWithBool: YES] forKey: @"isDefault"];
+              hasDefaultIdentity = YES;
             }
           else
             {
+              // This additional identity should not appear in the identity manager of the Preferences
               [identity setObject: [NSNumber numberWithBool: YES] forKey: @"isReadOnly"];
             }
           [identities addObject: identity];
