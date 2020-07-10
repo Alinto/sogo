@@ -206,7 +206,7 @@ typedef enum
               if (u)
                 [allSQLUsers addObject: u];
             }
-          [cm releaseChannel: fc];
+          [cm releaseChannel: fc  immediately: YES];
         }
 
       // We add our system users

@@ -1,6 +1,6 @@
 /* SOGoToolRemove.m - this file is part of SOGo
  *
- * Copyright (C) 2010-2017 Inverse inc.
+ * Copyright (C) 2010-2020 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,7 +105,7 @@ static NSURL *tableURL = nil;
           while ((row = [fc fetchAttributes: attrs withZone: NULL]))
             [paths addObject: [row objectForKey: @"c_path"]];
         }
-      [cm releaseChannel: fc];
+      [cm releaseChannel: fc  immediately: YES];
     }
 
   return paths;
@@ -150,7 +150,7 @@ static NSURL *tableURL = nil;
         NSLog (@"Unable to delete the preference record for '%@'", userId);
       else if (verbose)
         NSLog (@"Removed preference record for '%@'", userId);
-      [cm releaseChannel: fc];
+      [cm releaseChannel: fc  immediately: YES];
     }
 }
 

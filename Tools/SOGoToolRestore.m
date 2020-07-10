@@ -1,6 +1,6 @@
 /* SOGoToolRestore.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2019 Inverse inc.
+ * Copyright (C) 2009-2020 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -312,7 +312,7 @@
                                                      withString: @"''"],
                         [gcsFolder path]];
           [fc evaluateExpressionX: sql];
-          [cm releaseChannel: fc];
+          [cm releaseChannel: fc  immediately: YES];
         }
     }
   else
@@ -365,7 +365,7 @@
         }
 
       [[channel adaptorContext] commitTransaction];
-      [gcsFolder releaseChannel: channel];
+      [gcsFolder releaseChannel: channel  immediately: YES];
 
       rc = YES;
     }

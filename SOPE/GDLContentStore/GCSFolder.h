@@ -108,6 +108,9 @@
 - (EOAdaptorChannel *) acquireQuickChannel;
 - (EOAdaptorChannel *) acquireAclChannel;
 - (void) releaseChannel: (EOAdaptorChannel *) _channel;
+- (void) releaseChannel: (EOAdaptorChannel *) _channel
+            immediately: (BOOL) _immediately;
+
 
 - (BOOL) canConnectStore;
 - (BOOL) canConnectQuick;

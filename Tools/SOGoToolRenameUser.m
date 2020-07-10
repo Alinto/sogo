@@ -1,6 +1,6 @@
 /* SOGoToolRenameUser.m - this file is part of SOGo
  *
- * Copyright (C) 2011-2017 Inverse inc
+ * Copyright (C) 2011-2020 Inverse inc
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -147,7 +147,7 @@
   else
     rc = [ac commitTransaction];
   
-  [cm releaseChannel: fc];
+  [cm releaseChannel: fc  immediately: YES];
 
   return rc;
 }
@@ -200,7 +200,7 @@
   else
     rc = [ac commitTransaction];
   
-  [cm releaseChannel: fc];
+  [cm releaseChannel: fc  immediately: YES];
 
   return rc;
 }
@@ -245,7 +245,7 @@
   while ((row = [fc fetchAttributes: attrs withZone: NULL]))
     [subscribers addObject: [row objectForKey: @"c_uid"]];
   [fc cancelFetch];
-  [cm releaseChannel: fc];
+  [cm releaseChannel: fc  immediately: YES];
 
   return subscribers;
 }
@@ -446,7 +446,7 @@
       sql = [NSString stringWithFormat: @"UPDATE %@ SET c_object = '%@'",
                       [location gcsTableName], newObjectPath];
       [ac evaluateExpressionX: sql];
-      [cm releaseChannel: ac];
+      [cm releaseChannel: ac  immediately: YES];
     }
 
   [pool release];
@@ -480,7 +480,7 @@
                       fromSQLUser: sqlFromUserID
                         toSQLUser: sqlToUserID];
   [fc cancelFetch];
-  [cm releaseChannel: fc];
+  [cm releaseChannel: fc  immediately: YES];
 }
 
 - (void) _updateForeignACLsForLocation: (NSString *) locationString
@@ -505,7 +505,7 @@
                      [location gcsTableName],
                      sqlToUserID, sqlFromUserID];
   [tc evaluateExpressionX: sql];
-  [cm releaseChannel: tc];
+  [cm releaseChannel: tc  immediately: YES];
   [pool release];
 }
 
@@ -537,7 +537,7 @@
                             fromSQLUser: sqlFromUserID
                               toSQLUser: sqlToUserID];
   [fc cancelFetch];
-  [cm releaseChannel: fc];
+  [cm releaseChannel: fc  immediately: YES];
 }
 
 - (BOOL) proceed

@@ -248,9 +248,16 @@ static GCSStringFormatter *stringFormatter = nil;
   return [[self _channelManager] acquireOpenChannelForURL:[self aclLocation]];
 }
 
+
 - (void)releaseChannel:(EOAdaptorChannel *)_channel {
+  [self releaseChannel: _channel  immediately: NO];
+}
+
+- (void) releaseChannel: (EOAdaptorChannel *) _channel
+            immediately: (BOOL) _immediately
+{
   if (debugOn) [self debugWithFormat:@"releasing channel: %@", _channel];
-  [[self _channelManager] releaseChannel:_channel];
+  [[self _channelManager] releaseChannel:_channel  immediately: _immediately];
 }
 
 - (BOOL)canConnectStore {

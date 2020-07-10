@@ -83,9 +83,9 @@
 
 - (void) parseArguments: (NSArray *) arguments
 {
-  BOOL error;
-  int count, max;
   NSString *argument;
+  int count, max;
+  BOOL error;
 
   error = NO;
 
@@ -104,7 +104,7 @@
         {
           error = YES;
           helpMode = YES;
-          NSLog (@"Invalid command line parameter: '%@'", argument);
+          NSLog(@"Invalid command line parameter: '%@'", argument);
         }
       else
         {

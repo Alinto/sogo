@@ -1,6 +1,6 @@
 /* SOGoToolExpireUserSessions.m - this file is part of SOGo
  *
- * Copyright (C) 2012-2017 Inverse inc.
+ * Copyright (C) 2012-2020 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -134,7 +134,7 @@
       NSLog(@"No session to remove");
   }
 
-  [cm releaseChannel: channel];
+  [cm releaseChannel: channel  immediately: YES];
   return rc;
 }
 
