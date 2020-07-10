@@ -327,19 +327,14 @@
    * @desc Create a plain text representation of the signature for the specified identity index.
    * @returns a plain text version of the signature
    */
-  Account.prototype.getTextSignature = function(index) {
-    if (index < this.identities.length) {
-      var identity = this.identities[index];
-      if (identity.signature) {
-        var element = angular.element('<div>' + identity.signature + '</div>');
-        identity.textSignature = _.map(element.contents(), 'textContent').join(' ').trim();
-      } else {
-        identity.textSignature = '';
-      }
-      return identity.textSignature;
+  Account.prototype.getTextSignature = function(identity) {
+    if (identity.signature) {
+      var element = angular.element('<div>' + identity.signature + '</div>');
+      identity.textSignature = _.map(element.contents(), 'textContent').join(' ').trim();
     } else {
-      throw Error('Index of identity is out of range');
+      identity.textSignature = '';
     }
+    return identity.textSignature;
   };
 
   /**

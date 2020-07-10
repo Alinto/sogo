@@ -49,7 +49,7 @@
                         md-highlight-flags="gi">{{ identity.full }}</span>
                 </div>
                 <div class="sg-md-body">
-                  <i ng-bind-html="editor.account.getTextSignature($index)"><!-- signature --></i>
+                  <i ng-bind-html="editor.account.getTextSignature(identity)"><!-- signature --></i>
                 </div>
               </div>
             </md-item-template>

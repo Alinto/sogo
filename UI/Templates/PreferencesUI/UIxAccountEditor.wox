@@ -118,7 +118,7 @@
                         </div>
                       </div>
                       <div class="sg-md-body">
-                        <i ng-bind-html="$AccountDialogController.account.getTextSignature($index)"><!-- signature --></i>
+                        <i ng-bind-html="$AccountDialogController.account.getTextSignature(identity)"><!-- signature --></i>
                       </div>
                     </div>
                     <md-button class="sg-icon-button" type="button"
