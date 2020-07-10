@@ -56,7 +56,7 @@
 - (void) setNotes: (NSArray *) newNotes;
 - (NSArray *) notes;
 
-- (void) setTitles;
+- (void) setTitles: (NSArray *) newTitles;
 - (NSArray *) titles;
 
 @end
