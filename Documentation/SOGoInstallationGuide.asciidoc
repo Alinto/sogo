@@ -237,14 +237,14 @@ rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 For RHEL/CentOS 8
 ----
 yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
----
+----
 
 SOGo relies on the GNUstep packages provided by Inverse and must not use the
 packages from EPEL. Adjust the repository definition to exclude those packages:
 
 ----
 sed -i '/enabled=1/a \
-exclude=gnustep*' /etc/yum.repos.d/epel.repo
+  exclude=gnustep*' /etc/yum.repos.d/epel.repo
 ----
 
 For more information on EPEL, visit http://fedoraproject.org/wiki/EPEL/.
@@ -1913,12 +1913,12 @@ value as the `-s` argument of the imap pam service.
 
 |D |SOGoIMAPServer
 |Parameter used to set the DNS name or IP address of the IMAP server
-used by SOGo. You can also use SSL or TLS by providing a value using an
-URL, such as:
+used by SOGo. You can also use SSL or TLS by providing a value using a
+URL with a fully qualified domain name, such as:
 
 [options="compact"]
-* `imaps://127.0.0.1:993`
-* `imap://127.0.0.1:143/?tls=YES`
+* `imaps://mail.acme.com:993`
+* `imap://mail.acme.com:143/?tls=YES`
 
 |D |SOGoSieveServer
 |Parameter used to set the DNS name or IP address of the Sieve
@@ -1927,7 +1927,12 @@ URL, such as:
 [options="compact"]
 * `sieve://127.0.0.1`
 * `sieve://127.0.0.1:4190`
-* `sieve://127.0.0.1:4190/?tls=YES`
+
+You can also use TLS by providing a value using a URL with a fully
+qualified domain name, such as:
+
+[options="compact"]
+* `sieve://mail.acme.com:4190/?tls=YES`
 
 Note that TLS is supported but SSL is not.
 
@@ -2376,7 +2381,8 @@ Defaults to `below`.
 
 |U |SOGoMailReplyTo
 |The email address to use in the `reply-to` header field when the user
-sends a message.
+sends a message, if _SOGoMailCustomFromEnabled_ is set in the user's
+domain defaults.
 
 Ignored when empty.
 
