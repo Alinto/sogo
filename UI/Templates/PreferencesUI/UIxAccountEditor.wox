@@ -131,6 +131,7 @@
                                ng-click="$AccountDialogController.setDefaultIdentity($event, $index)">
                       <md-icon ng-class="{ 'md-warn md-hue-2': identity.isDefault }">{{ identity.isDefault ? 'favorite' : 'favorite_border' }}</md-icon>
                     </md-button>
+                    <md-icon ng-class="{ 'md-rotate-90': $index == $AccountDialogController.selectedIdentity }">chevron_right</md-icon>
                   </div>
                 </a>
                 <md-card-content ng-show="$index == $AccountDialogController.selectedIdentity">

@@ -75,6 +75,7 @@
                        ng-hide="user.uid != acl.selectedUid || user.$isSpecial()">
               <md-icon>delete</md-icon>
             </md-button>
+            <md-icon ng-class="{ 'md-rotate-90': acl.showRights(user) }">chevron_right</md-icon>
           </div>
         </a>
         <md-card-content id="AccessRightList" ng-show="acl.showRights(user)">
