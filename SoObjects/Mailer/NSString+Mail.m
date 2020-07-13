@@ -388,6 +388,7 @@
         }
       if (appendElement && voidTags)
         {
+          NSMutableString *value;
           NSString *type;
           int i;
 
@@ -396,10 +397,13 @@
           for (i = 0; i < [attributes count]; i++)
             {
               [result appendString: @" "];
+              value = [NSMutableString stringWithString: [attributes valueAtIndex: i]];
+              [value replaceString: @"\\" withString: @"\\\\"];
+              [value replaceString: @"\"" withString: @"\\\""];
               [result appendString: [attributes nameAtIndex: i]];
-              [result appendString: @"='"];
-              [result appendString: [attributes valueAtIndex: i]];
-              [result appendString: @"'"];
+              [result appendString: @"=\""];
+              [result appendString: value];
+              [result appendString: @"\""];
 
               type = [attributes typeAtIndex: i];
               if (![type isEqualToString: @"CDATA"])
