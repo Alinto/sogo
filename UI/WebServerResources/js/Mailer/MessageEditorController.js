@@ -360,16 +360,20 @@
     };
 
     this.setFromIdentity = function (identity) {
-      var node, children, nl, space, signature, previousIdentity;
+      var node, children, nl, reNl, space, signature, previousIdentity;
 
-      if (identity)
+      if (identity && identity.full)
         this.message.editable.from = identity.full;
+      else if (identity && identity.length)
+        return;
 
       if (this.composeType == "html") {
         nl = '<br />';
+        reNl = '<br ?/>[ \n]?';
         space = '&nbsp;';
       } else {
         nl = '\n';
+        reNl = '\n';
         space = ' ';
       }
 
@@ -380,7 +384,7 @@
 
       previousIdentity = _.find(this.identities, function (currentIdentity, index) {
         if (currentIdentity.signature) {
-          var currentSignature = new RegExp(nl + ' ?' + nl + '--' + space + nl + currentIdentity.signature);
+          var currentSignature = new RegExp(reNl + reNl + '--' + space + reNl + currentIdentity.signature);
           if (vm.message.editable.text.search(currentSignature) >= 0) {
             vm.message.editable.text = vm.message.editable.text.replace(currentSignature, signature);
             return true;
@@ -392,7 +396,7 @@
       if (!previousIdentity && signature.length > 0) {
         // Must place signature at proper place
         if (!this.isNew() && this.signaturePlacement == 'above') {
-          var quotedMessageIndex = this.message.editable.text.search(new RegExp(nl + '.+?:( ?' + nl + '){2}(> |<blockquote type="cite")'));
+          var quotedMessageIndex = this.message.editable.text.search(new RegExp(reNl + '.+?:( ?' + reNl + '){2}(> |<blockquote type="cite")'));
           if (quotedMessageIndex >= 0) {
             this.message.editable.text =
               this.message.editable.text.slice(0, quotedMessageIndex) +
