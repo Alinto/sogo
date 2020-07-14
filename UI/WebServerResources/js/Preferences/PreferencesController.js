@@ -223,7 +223,8 @@
         locals: {
           filter: filter,
           mailboxes: mailboxes,
-          labels: this.preferences.defaults.SOGoMailLabelsColors
+          labels: this.preferences.defaults.SOGoMailLabelsColors,
+          validateForwardAddress: validateForwardAddress
         }
       }).then(function() {
         if (!vm.preferences.defaults.SOGoSieveFilters)
@@ -341,23 +342,18 @@
       }
     };
 
-    this.save = function(form, options) {
-      var i, sendForm, addresses, defaultAddresses, domains, domain;
+    function validateForwardAddress(address) {
+      var defaultAddresses, domains, domain;
 
-      sendForm = true;
       domains = [];
 
-      // We do some sanity checks
       if ($window.forwardConstraints > 0 &&
-          angular.isDefined(this.preferences.defaults.Forward) &&
-          this.preferences.defaults.Forward.enabled &&
-          angular.isDefined(this.preferences.defaults.Forward.forwardAddress)) {
-
-        addresses = this.preferences.defaults.Forward.forwardAddress;
+          angular.isDefined(Preferences.defaults.Forward) &&
+          Preferences.defaults.Forward.enabled &&
+          angular.isDefined(Preferences.defaults.Forward.forwardAddress)) {
 
         // We first extract the list of 'known domains' to SOGo
         defaultAddresses = $window.defaultEmailAddresses;
-
         _.forEach(defaultAddresses, function(adr) {
           var domain = adr.split("@")[1];
           if (domain) {
@@ -366,23 +362,39 @@
         });
 
         // We check if we're allowed or not to forward based on the domain defaults
-        for (i = 0; i < addresses.length && sendForm; i++) {
-          domain = addresses[i].split("@")[1].toLowerCase();
-          if (domains.indexOf(domain) < 0 && $window.forwardConstraints == 1) {
-            Dialog.alert(l('Error'), l("You are not allowed to forward your messages to an external email address."));
-            sendForm = false;
-          }
-          else if (domains.indexOf(domain) >= 0 && $window.forwardConstraints == 2) {
-            Dialog.alert(l('Error'), l("You are not allowed to forward your messages to an internal email address."));
-            sendForm = false;
-          }
-          else if ($window.forwardConstraints == 2 &&
-                   $window.forwardConstraintsDomains.length > 0 &&
-                   $window.forwardConstraintsDomains.indexOf(domain) < 0) {
-            Dialog.alert(l('Error'), l("You are not allowed to forward your messages to this domain:") + " " + domain);
-            sendForm = false;
-          }
+        domain = address.split("@")[1].toLowerCase();
+        if (domains.indexOf(domain) < 0 && $window.forwardConstraints == 1) {
+          throw new Error(l("You are not allowed to forward your messages to an external email address."));
         }
+        else if (domains.indexOf(domain) >= 0 && $window.forwardConstraints == 2) {
+          throw new Error(l("You are not allowed to forward your messages to an internal email address."));
+        }
+        else if ($window.forwardConstraints == 2 &&
+                 $window.forwardConstraintsDomains.length > 0 &&
+                 $window.forwardConstraintsDomains.indexOf(domain) < 0) {
+          throw new Error(l("You are not allowed to forward your messages to this domain:") + " " + domain);
+        }
+      }
+
+      return true;
+    }
+
+    this.save = function(form, options) {
+      var i, sendForm, addresses;
+
+      sendForm = true;
+
+      // We do some sanity checks
+
+      // We check if we're allowed or not to forward based on the domain defaults
+      addresses = this.preferences.defaults.Forward.forwardAddress;
+      try {
+        for (i = 0; i < addresses.length; i++) {
+          validateForwardAddress(addresses[i]);
+        }
+      } catch (err) {
+        Dialog.alert(l('Error'), err);
+        sendForm = false;
       }
 
       // IMAP labels must be unique
@@ -441,7 +453,7 @@
           }
         });
 
-      return $q.reject();
+      return $q.reject('Invalid form');
     };
 
     this.canChangePassword = function() {
