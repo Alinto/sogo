@@ -520,7 +520,7 @@
             <var:string label:value="Show All Calendars"/>
           </md-button>
         </md-menu-item>
-        <md-menu-divider><!-- divider --></md-menu-divider>
+        <md-divider><!-- divider --></md-divider>
         <md-menu-item>
           <md-button ng-click="$menuCtrl.showProperties($event)">
             <var:string label:value="Properties"/>
@@ -538,16 +538,16 @@
             <span ng-switch-when="false"><var:string label:value="Delete"/></span>
           </md-button>
         </md-menu-item>
-        <md-menu-divider><!-- divider --></md-menu-divider>
+        <md-divider><!-- divider --></md-divider>
         <md-menu-item>
           <md-button ng-click="$menuCtrl.showLinks($event)">
             <var:string label:value="Links to this Calendar"/>
           </md-button>
         </md-menu-item>
-        <md-menu-divider
+        <md-divider
             ng-hide="::($menuCtrl.calendar.isSubscription || $menuCtrl.calendar.isWebCalendar)">
           <!-- divider -->
-        </md-menu-divider>
+        </md-divider>
         <md-menu-item ng-show="::$menuCtrl.calendar.acls.objectCreator">
           <md-button ng-click="$menuCtrl.importCalendar($event)">
             <var:string label:value="Import"/>
@@ -558,10 +558,10 @@
             <var:string label:value="Export"/>
           </md-button>
         </md-menu-item>
-        <md-menu-divider
+        <md-divider
             ng-hide="::($menuCtrl.calendar.isSubscription || $menuCtrl.calendar.isWebCalendar)">
           <!-- divider -->
-        </md-menu-divider>
+        </md-divider>
         <md-menu-item ng-hide="::($menuCtrl.calendar.isSubscription || $menuCtrl.calendar.isWebCalendar)">
           <md-button ng-click="$menuCtrl.share()">
             <var:string label:value="Sharing..."/>

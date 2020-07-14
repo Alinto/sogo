@@ -248,7 +248,7 @@
             <var:string label:value="Search"/>
           </md-button>
         </md-menu-item>
-        <md-menu-divider ng-show="::$menuCtrl.folder.$canFolderAs()"><!-- divider --></md-menu-divider>
+        <md-divider ng-show="::$menuCtrl.folder.$canFolderAs()"><!-- divider --></md-divider>
         <md-menu-item ng-show="::$menuCtrl.folder.$canFolderAs()">
           <md-button type="button" ng-click="$menuCtrl.setFolderAs('Drafts')">
             <var:string label:value="Set as Drafts"/>
@@ -269,7 +269,7 @@
             <var:string label:value="Set as Junk"/>
           </md-button>
         </md-menu-item>
-        <md-menu-divider ng-show="::($menuCtrl.folder.type != 'additional')"><!-- divider --></md-menu-divider>
+        <md-divider ng-show="::($menuCtrl.folder.type != 'additional')"><!-- divider --></md-divider>
         <md-menu-item ng-show="::($menuCtrl.folder.type != 'additional')">
           <md-button type="button" ng-click="$menuCtrl.share()">
             <var:string label:value="Sharing..."/>
