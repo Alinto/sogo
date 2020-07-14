@@ -26,6 +26,9 @@
     this.$futureFreebusyData = {};
     this.updateFreeBusyCoverage();
     this.updateFreeBusy();
+    if (this.$days.length == 0) {
+      this.getDays();
+    }
   }
 
   /**
@@ -111,11 +114,13 @@
       });
     }
     else {
-      this.component.organizer = {
-        uid: Attendees.$settings.activeUser('login'),
-        name: Attendees.$settings.activeUser('identification'),
-        email: Attendees.$settings.activeUser('email')
-      };
+      if (!this.component.organizer) {
+        this.component.organizer = {
+          uid: Attendees.$settings.activeUser('login'),
+          name: Attendees.$settings.activeUser('identification'),
+          email: Attendees.$settings.activeUser('email')
+        };
+      }
       promise = Attendees.$q.when();
     }
     // Fetch organizer's freebusy
