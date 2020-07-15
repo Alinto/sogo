@@ -66,7 +66,7 @@
               <div class="sg-md-body"><div ng-bind="::user.c_email"><!-- email --></div></div>
             </div>
 	    <md-button class="md-icon-button md-secondary" type="button"
-                       ng-click="acl.selectAllRights(user)"
+                       ng-click="acl.toggleAllRights(user)"
                        ng-hide="!acl.showRights(user) || user.$isSpecial()">
               <md-icon>select_all</md-icon>
             </md-button>
