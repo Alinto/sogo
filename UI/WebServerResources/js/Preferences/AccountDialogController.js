@@ -49,7 +49,7 @@
       onSuccessItem: function(item, response, status, headers) {
         this.clearQueue();
         $timeout(function() {
-          _.assign(vm.account, {security: {hasCertificate: true}});
+          _.assign(vm.account, {security: {hasCertificate: true}, $$certificate: response});
         });
         _loadCertificate();
       },

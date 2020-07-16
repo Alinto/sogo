@@ -105,7 +105,9 @@
     this.addMailAccount = function(ev, form) {
       var account, index;
 
+      index = this.preferences.defaults.AuxiliaryMailAccounts.length;
       account = new Account({
+        id: index,
         isNew: true,
         name: "",
         identities: [
@@ -121,7 +123,6 @@
           receiptAnyAction: "ignore"
         }
       });
-      index = this.preferences.defaults.AuxiliaryMailAccounts.length;
 
       $mdDialog.show({
         controller: 'AccountDialogController',
@@ -147,8 +148,10 @@
     };
 
     this.editMailAccount = function(event, index, form) {
-      var data = _.cloneDeep(this.preferences.defaults.AuxiliaryMailAccounts[index]);
-      var account = new Account(data);
+      var data, account;
+
+      data = _.assign({ id: index }, _.cloneDeep(this.preferences.defaults.AuxiliaryMailAccounts[index]));
+      account = new Account(data);
       $mdDialog.show({
         controller: 'AccountDialogController',
         controllerAs: '$AccountDialogController',
