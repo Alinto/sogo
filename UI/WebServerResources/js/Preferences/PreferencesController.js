@@ -387,14 +387,16 @@
       // We do some sanity checks
 
       // We check if we're allowed or not to forward based on the domain defaults
-      addresses = this.preferences.defaults.Forward.forwardAddress;
-      try {
-        for (i = 0; i < addresses.length; i++) {
-          validateForwardAddress(addresses[i]);
+      if (this.preferences.defaults.Forward && this.preferences.defaults.Forward.forwardAddress) {
+        addresses = this.preferences.defaults.Forward.forwardAddress;
+        try {
+          for (i = 0; i < addresses.length; i++) {
+            validateForwardAddress(addresses[i]);
+          }
+        } catch (err) {
+          Dialog.alert(l('Error'), err);
+          sendForm = false;
         }
-      } catch (err) {
-        Dialog.alert(l('Error'), err);
-        sendForm = false;
       }
 
       // IMAP labels must be unique
