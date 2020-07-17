@@ -210,19 +210,21 @@
     var vm = this, component, oldStartDate, oldEndDate, oldDueDate, dayStartTime, dayEndTime;
 
     this.$onInit = function () {
-      stateComponent.initAttendees();
       this.service = Calendar;
       this.component = stateComponent;
       this.categories = {};
       this.showRecurrenceEditor = this.component.$hasCustomRepeat;
       this.showAttendeesEditor = this.component.attendees && this.component.attendees.length;
-      //this.searchText = null;
-      this.attendeeConflictError = false;
-      this.attendeesEditor = {
-        days: this.component.$attendees.$days,
-        hours: getHours(),
-        containerElement: $element[0].querySelector('#freebusy')
-      };
+
+      if (this.component.type == 'appointment') {
+        this.component.initAttendees();
+        this.attendeeConflictError = false;
+        this.attendeesEditor = {
+          days: this.component.$attendees.$days,
+          hours: getHours(),
+          containerElement: $element[0].querySelector('#freebusy')
+        };
+      }
 
       if (this.component.start) {
         oldStartDate = new Date(this.component.start.getTime());
@@ -398,7 +400,11 @@
     };
 
     function findSlot(direction) {
+      vm.adjustStartTime();
+      vm.adjustEndTime();
       vm.component.$attendees.findSlot(direction).then(function () {
+        vm.startTime = new Date(vm.component.start.getTime());
+        vm.endTime = new Date(vm.component.end.getTime());
       }).catch(function (err) {
         vm.component.start = new Date(vm.component.start.getTime() + 1); // trigger update in sgFreeBusy
         $timeout(scrollToStart);
