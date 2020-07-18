@@ -249,7 +249,8 @@
         locals: {
           filter: filter,
           mailboxes: mailboxes,
-          labels: this.preferences.defaults.SOGoMailLabelsColors
+          labels: this.preferences.defaults.SOGoMailLabelsColors,
+          validateForwardAddress: validateForwardAddress
         }
       }).then(function() {
         vm.preferences.defaults.SOGoSieveFilters[index] = filter;
