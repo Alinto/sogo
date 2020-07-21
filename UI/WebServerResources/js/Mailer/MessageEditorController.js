@@ -384,7 +384,8 @@
 
       previousIdentity = _.find(this.identities, function (currentIdentity, index) {
         if (currentIdentity.signature) {
-          var currentSignature = new RegExp(reNl + reNl + '--' + space + reNl + currentIdentity.signature);
+          var currentSignature = new RegExp(reNl + reNl + '--' + space + reNl +
+                                            currentIdentity.signature.replace(/[-\[\]{}()*+?.,\\^$|#\s]/g, '\\$&'));
           if (vm.message.editable.text.search(currentSignature) >= 0) {
             vm.message.editable.text = vm.message.editable.text.replace(currentSignature, signature);
             return true;
