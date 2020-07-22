@@ -124,13 +124,6 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
   return contactInfos;
 }
 
-- (id <WOActionResults>) mailerContactsAction
-{
-  selectorComponentClass = @"UIxContactsMailerSelection";
-
-  return self;
-}
-
 - (NSString *) selectorComponentClass
 {
   return selectorComponentClass;
@@ -290,7 +283,7 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
   NSString *userLogin, *owner;
   NSArray *folders, *allACLs;
   NSDictionary *folderAttrs;
-  id currentFolder;
+  id <SOGoContactFolder> currentFolder;
 
   BOOL objectCreator, objectEditor, objectEraser, synchronize;
   int max, i;

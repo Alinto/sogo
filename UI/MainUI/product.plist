@@ -218,22 +218,6 @@
         };
       };
     };
-    //     SOGoGroupsFolder = {
-    //       methods = {
-    //         index = { 
-    //           protectedBy = "View";
-    //           pageName = "SOGoGroupsPage"; 
-    //         };
-    //       };
-    //     };
-    //     SOGoGroupFolder = {
-    //       methods = {
-    //         index = { 
-    //           protectedBy = "View";
-    //           pageName = "SOGoGroupPage"; 
-    //         };
-    //       };
-    //     };
     SOGoFreeBusyObject = {
       methods = {
         ajaxRead = { 

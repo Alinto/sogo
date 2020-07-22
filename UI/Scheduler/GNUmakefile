@@ -17,14 +17,11 @@ SchedulerUI_OBJC_FILES =		\
 	UIxCalendarProperties.m		\
 	UIxCalendarFolderLinksTemplate.m\
 					\
-	UIxCalFilterPanel.m		\
 	UIxCalDayTable.m		\
-	UIxCalDateSelector.m		\
 	UIxCalUserRightsEditor.m	\
 	UIxCalFolderActions.m		\
 					\
 	UIxCalView.m			\
-	UIxCalViewPrint.m 		\
 	UIxCalDayView.m			\
 	UIxCalMulticolumnDayView.m	\
 	UIxCalWeekView.m		\
@@ -39,23 +36,11 @@ SchedulerUI_OBJC_FILES =		\
 	UIxAppointmentActions.m		\
 	UIxAppointmentEditor.m		\
 	UIxTaskEditor.m			\
-	UIxDatePicker.m			\
-	UIxTimeDateControl.m		\
-	UIxCalMonthOverview.m		\
-	UIxCalMonthViewOld.m		\
 	UIxRecurrenceEditor.m		\
-	UIxReminderEditor.m		\
-	UIxOccurenceDialog.m
+	UIxReminderEditor.m
 
 SchedulerUI_RESOURCE_FILES += \
 	product.plist	
-
-SchedulerUI_RESOURCE_FILES += \
-	Toolbars/SOGoAppointmentFolders.toolbar \
-	Toolbars/SOGoAppointmentObject.toolbar \
-	Toolbars/SOGoTaskObject.toolbar \
-	Toolbars/SOGoComponentClose.toolbar \
-	Toolbars/SOGoEmpty.toolbar
 
 SchedulerUI_LOCALIZED_RESOURCE_FILES += \
 	Localizable.strings

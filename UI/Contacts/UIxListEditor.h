@@ -1,8 +1,6 @@
 /* UIxListEditor.h - this file is part of SOGo
  *
- * Copyright (C) 2008 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2008-2020 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,10 +21,10 @@
 #ifndef UIXLISTEDITOR_H
 #define UIXLISTEDITOR_H
 
-#import <SOGoUI/UIxComponent.h>
+#import <SOGoUI/SOGoDirectAction.h>
 #import <SoObjects/Contacts/SOGoContactGCSList.h>
 
-@interface UIxListEditor : UIxComponent
+@interface UIxListEditor : SOGoDirectAction
 {
   NGVList *list;
   SOGoContactGCSList *co;

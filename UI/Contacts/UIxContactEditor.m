@@ -26,10 +26,10 @@
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoPermissions.h>
 #import <NGObjWeb/SoSecurityManager.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSNull+misc.h>
-
 
 #import <SOGo/CardElement+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
@@ -141,30 +141,6 @@ static Class SOGoContactGCSEntryK = Nil;
 
 /* helper */
 
-- (NSString *) _completeURIForMethod: (NSString *) _method
-{
-  // TODO: this is a DUP of UIxAppointmentEditor
-  NSString *uri;
-  NSRange r;
-
-  uri = [[[self context] request] uri];
-
-  /* first: identify query parameters */
-  r = [uri rangeOfString: @"?" options:NSBackwardsSearch];
-  if (r.length > 0)
-    uri = [uri substringToIndex:r.location];
-
-  /* next: append trailing slash */
-  if (![uri hasSuffix: @"/"])
-    uri = [uri stringByAppendingString: @"/"];
-
-  /* next: append method */
-  uri = [uri stringByAppendingString:_method];
-
-  /* next: append query parameters */
-  return [self completeHrefForMethod:uri];
-}
-
 - (BOOL) isNew
 {
   return ([[self clientObject] isNew]);
@@ -211,85 +187,6 @@ static Class SOGoContactGCSEntryK = Nil;
 - (NSString *) addressBookDisplayName
 {
   return [addressBookItem displayName];
-}
-
-- (BOOL) supportCategories
-{
-  return [[self clientObject] isKindOfClass: SOGoContactGCSEntryK];
-}
-
-- (void) setJsonContactCategories: (NSString *) jsonCategories
-{
-  NSArray *newCategories;
-
-  newCategories = [jsonCategories objectFromJSONString];
-  if ([newCategories isKindOfClass: [NSArray class]])
-    [[self ldifRecord] setObject: newCategories
-                          forKey: @"vcardcategories"];
-  else
-    [[self ldifRecord] removeObjectForKey: @"vcardcategories"];
-}
-
-- (NSString *) jsonContactCategories
-{
-  NSArray *categories;
-
-  categories = [[self ldifRecord] objectForKey: @"vcardcategories"];
-
-  return [categories jsonRepresentation];
-}
-
-- (NSArray *) _languageContactsCategories
-{
-  NSArray *categoryLabels;
-
-  categoryLabels = [[self labelForKey: @"contacts_category_labels"]
-                       componentsSeparatedByString: @","];
-  if (!categoryLabels)
-    categoryLabels = [NSArray array];
-  
-  return [categoryLabels trimmedComponents];
-}
-
-- (NSArray *) _fetchAndCombineCategoriesList
-{
-  NSString *ownerLogin;
-  SOGoUserDefaults *ud;
-  NSArray *cats, *newCats, *contactCategories;
-
-  ownerLogin = [[self clientObject] ownerInContext: context];
-  ud = [[SOGoUser userWithLogin: ownerLogin] userDefaults];
-  cats = [ud contactsCategories];
-  if (!cats)
-    cats = [self _languageContactsCategories];
-
-  contactCategories = [[self ldifRecord] objectForKey: @"vcardcategories"];
-  if (contactCategories)
-    {
-      newCats = [cats mergedArrayWithArray: contactCategories];
-      if ([newCats count] != [cats count])
-        {
-          cats = [newCats sortedArrayUsingSelector:
-                            @selector (localizedCaseInsensitiveCompare:)];
-          [ud setContactsCategories: cats];
-          [ud synchronize];
-        }
-    }
-
-  return cats;
-}
-
-- (NSString *) contactCategoriesList
-{
-  NSArray *cats;
-  NSString *list;
-
-  cats = [self _fetchAndCombineCategoriesList];
-  list = [cats jsonRepresentation];
-  if (!list)
-    list = @"[]";
-
-  return list;
 }
 
 /* actions */
@@ -588,34 +485,6 @@ static Class SOGoContactGCSEntryK = Nil;
                          nil];
 
   return [self responseWithStatus: 200 andJSONRepresentation: data];
-}
-
-- (id) writeAction
-{
-  NSString *email, *cn, *url;
-  NSMutableString *address;
-
-  [self ldifRecord];
-  email = [ldifRecord objectForKey: @"mail"];
-  if ([email length] == 0)
-    email = [ldifRecord objectForKey: @"mozillasecondemail"];
-
-  if (email)
-    {
-      address = [NSMutableString string];
-      cn = [ldifRecord objectForKey: @"cn"];
-      if ([cn length] > 0)
-	[address appendFormat: @"%@ <%@>", cn, email];
-      else
-	[address appendString: email];
-      
-      url = [NSString stringWithFormat: @"%@/Mail/compose?mailto=%@",
-		      [self userFolderPath], address];
-    }
-  else
-    url = [NSString stringWithFormat: @"%@/Mail/compose", [self userFolderPath]];
-  
-  return [self redirectToLocation: url];
 }
 
 @end /* UIxContactEditor */

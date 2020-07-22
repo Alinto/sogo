@@ -1,6 +1,6 @@
 /* UIxListEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2015 Inverse inc.
+ * Copyright (C) 2008-2020 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +19,9 @@
  */
 
 
-#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 
 #import <NGCards/NGVCardReference.h>
@@ -40,15 +41,6 @@
 {
   [list release];
   [super dealloc];
-}
-
-- (id <WOActionResults>) defaultAction
-{
-  co = [self clientObject];
-  list = [co vList];
-  [list retain];
-
-  return self;
 }
 
 - (NSArray *) references
@@ -290,12 +282,6 @@
   [list setNickname: [attributes objectForKey: @"nickname"]];
   [list setFn: [attributes objectForKey: @"c_cn"]];
   [list setDescription: [attributes objectForKey: @"description"]];
-}
-
-- (BOOL) canCreateOrModify
-{
-  return ([co isKindOfClass: [SOGoContentObject class]]
-          && [super canCreateOrModify]);
 }
 
 - (id <WOActionResults>) saveAction

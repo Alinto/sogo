@@ -1,72 +1,9 @@
 { /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
   requires = ( MAIN, MainUI, CommonUI, Mailer, MailPartViewers );
 
-  publicResources = ("generic.js",
-                     "UIxAppointmentEditor.js",
-                     "UIxContactEditor.js",
-                     "UIxMailToSelection.js",
+  publicResources = ();
 
-                     "lori_32x32.png",
-
-                     "tbtv_account_17x17.gif",
-                     "tbtv_drafts_17x17.gif",
-                     "tbtv_inbox_17x17.png",
-                     "tbtv_junction2_17x17.gif",
-                     "tbtv_junction_17x17.gif",
-                     "tbtv_leaf_corner_17x17.png",
-                     "tbtv_line_17x17.gif",
-                     "tbtv_minus_17x17.gif",
-                     "tbtv_plus_17x17.gif",
-                     "tbtv_corner_17x17.gif",
-                     "tbtv_corner_minus_17x17.gif",
-                     "tbtv_corner_plus_17x17.gif",
-                     "tbtv_sent_17x17.gif",
-                     "tbtv_trash_17x17.gif",
-
-                     "tbtb_addressbook.png",
-                     "tbtb_compose.png",
-                     "tbtb_delete.png",
-                     "tbtb_deletedoc.png",
-                     "tbtb_filetofolder.png",
-                     "tbtb_forward.png",
-                     "tbtb_getmail.png",
-                     "tbtb_next.png",
-                     "tbtb_previous.png",
-                     "tbtb_print.png",
-                     "tbtb_reply.png",
-                     "tbtb_replyall.png",
-                     "tbtb_search.png",
-                     "tbtb_trash.png",
-
-                     "tbtb_compose_addressbook_30x30.png",
-                     "tbtb_compose_attach_30x30.png",
-                     "tbtb_compose_clip_30x30.png",
-                     "tbtb_compose_cut_30x30.png",
-                     "tbtb_compose_dup_30x30.png",
-                     "tbtb_compose_file_30x30.png",
-                     "tbtb_compose_lock_30x30.png",
-                     "tbtb_compose_quote_30x30.png",
-                     "tbtb_compose_send_30x30.png",
-                     "tbtb_compose_spell_30x30.png",
-
-                     "message-mail.png",
-                     "message-mail-read.png",
-
-                     "dot.png",
-                     "flag.png",
-                     "icon_unread.gif",
-
-                     "title_attachment_14x14.png",
-                     "title_config.png",
-                     "title_junk.png",
-                     "title_read_14x14.png",
-                     "title_thread.png",
-                     "title_sortdown_12x12.png",
-                     "title_sortup_12x12.png",
-                     );
-
-  factories = {
-  };
+  factories = {};
 
   categories = {
     SOGoMailFolder = {

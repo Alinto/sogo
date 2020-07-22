@@ -159,7 +159,7 @@
 
       searchFields = [data objectForKey: @"search"];
       valueText = [data objectForKey: @"value"];
-      if (![searchFields isKindOfClass: [NSArray class]] || ![searchFields count] > 0)
+      if (![searchFields isKindOfClass: [NSArray class]] || !([searchFields count] > 0))
         {
           searchFields = nil;
         }
@@ -459,72 +459,6 @@
                 andJSONRepresentation: headers];
 
   return response;
-}
-
-- (id <WOActionResults>) contactSearchAction
-{
-  id <WOActionResults> result;
-  id <SOGoContactFolder> folder;
-  BOOL excludeLists;
-  NSString *searchText, *mail, *domain;
-  NSDictionary *contact, *data;
-  NSArray *contacts, *descriptors, *sortedContacts;
-  NSMutableDictionary *uniqueContacts;
-  unsigned int i;
-  NSSortDescriptor *commonNameDescriptor;
-
-  excludeLists = [[[self requestData] objectForKey: @"excludeLists"] boolValue];
-  searchText = [[self requestData] objectForKey: @"search"];
-  if ([searchText length] > 0)
-    {
-      NS_DURING
-        folder = [self clientObject];
-      NS_HANDLER
-        if ([[localException name] isEqualToString: @"SOGoDBException"])
-          folder = nil;
-        else
-          [localException raise];
-      NS_ENDHANDLER
-        
-      domain = [[context activeUser] domain];
-      uniqueContacts = [NSMutableDictionary dictionary];
-      contacts = [folder lookupContactsWithFilter: searchText
-                                       onCriteria: nil
-                                           sortBy: @"c_cn"
-                                         ordering: NSOrderedAscending
-                                         inDomain: domain];
-      for (i = 0; i < [contacts count]; i++)
-        {
-          contact = [contacts objectAtIndex: i];
-          if (!excludeLists || ![[contact objectForKey: @"c_component"] isEqualToString: @"vlist"])
-            {
-              mail = [contact objectForKey: @"c_mail"];
-              if ([mail isNotNull] && [uniqueContacts objectForKey: mail] == nil)
-                [uniqueContacts setObject: contact forKey: mail];
-            }
-        }
-
-      if ([uniqueContacts count] > 0)
-        {
-          // Sort the contacts by display name
-          commonNameDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"c_cn"
-                                                              ascending:YES] autorelease];
-          descriptors = [NSArray arrayWithObjects: commonNameDescriptor, nil];
-          sortedContacts = [[uniqueContacts allValues] sortedArrayUsingDescriptors: descriptors];
-        }
-      else
-        sortedContacts = [NSArray array];
-
-      data = [NSDictionary dictionaryWithObjectsAndKeys: searchText, @"searchText",
-           sortedContacts, @"cards", nil];
-      result = [self responseWithStatus: 200
-			      andString: [data jsonRepresentation]];
-    }
-  else
-    result = [NSException exceptionWithHTTPStatus: 400
-                                           reason: @"missing 'search' parameter"];  
-
-  return result;
 }
 
 - (NSString *) cardDavURL

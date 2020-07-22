@@ -1,7 +1,0 @@
-( /* the toolbar groups -*-cperl-*- */
-  ( { link = "#";
-      label = "Help";
-      onclick = "help(this);";
-      image = "properties.png"; }
-  )
-)

@@ -10,11 +10,9 @@ ContactsUI_LANGUAGES = $(SOGO_LANGUAGES)
 
 ContactsUI_OBJC_FILES =			\
 	UIxContactsUserFolders.m	\
-	UIxContactsMailerSelection.m	\
 	UIxContactsUserRightsEditor.m	\
 	\
 	ContactsUIProduct.m		\
-	UIxContactsFilterPanel.m	\
 	UIxContactActions.m		\
 	UIxContactView.m		\
 	UIxContactEditor.m		\
@@ -28,9 +26,6 @@ ContactsUI_OBJC_FILES =			\
 
 ContactsUI_RESOURCE_FILES +=		\
 	product.plist			\
-
-ContactsUI_RESOURCE_FILES +=		\
-	Toolbars/SOGoContactFolder.toolbar
 
 ContactsUI_LOCALIZED_RESOURCE_FILES +=	\
 	Localizable.strings		\
