@@ -138,6 +138,7 @@
           vm.message.$setUID(response.uid);
           vm.message.$reload();
           item.inlineUrl = response.lastAttachmentAttrs[0].url;
+          item.file.name = response.lastAttachmentAttrs[0].filename;
           //console.debug(item); console.debug('success = ' + JSON.stringify(response, undefined, 2));
         },
         onCancelItem: function(item, response, status, headers) {

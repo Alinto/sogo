@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2018 Inverse inc.
+  Copyright (C) 2007-2020 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -838,7 +838,7 @@ static NSString    *userAgent      = nil;
 //
 - (void) _fetchAttachmentsFromMail: (SOGoMailObject *) sourceMail
 {
-  NSDictionary *currentInfo;
+  NSMutableDictionary *currentInfo;
   NSArray *attachments;
 
   unsigned int max, count;
@@ -878,12 +878,12 @@ static NSString    *userAgent      = nil;
 
       if (filename)
         {
-          NSDictionary *currentInfo;
+          NSMutableDictionary *currentInfo;
 
-          currentInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                            filename, @"filename",
-                                      mimeType, @"mimetype",
-                                      nil];
+          currentInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                               filename, @"filename",
+                                             mimeType, @"mimetype",
+                                             nil];
           [self saveAttachment: body
                   withMetadata: currentInfo];
         }
@@ -1041,8 +1041,7 @@ static NSString    *userAgent      = nil;
 {
   BOOL fromSentMailbox;
   NGImap4Envelope *sourceEnvelope;
-  NSDictionary *attachment;
-  NSMutableDictionary *info;
+  NSMutableDictionary *attachment, *info;
   NSString *signature, *nl, *space;
   SOGoUserDefaults *ud;
 
@@ -1089,10 +1088,10 @@ static NSString    *userAgent      = nil;
           space = (isHTML ? @"&nbsp;" : @" ");
           [self setText: [NSString stringWithFormat: @"%@%@--%@%@%@", nl, nl, space, nl, signature]];
         }
-      attachment = [NSDictionary dictionaryWithObjectsAndKeys:
-				   [sourceMail filenameForForward], @"filename",
-				 @"message/rfc822", @"mimetype",
-				 nil];
+      attachment = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                          [sourceMail filenameForForward], @"filename",
+                                        @"message/rfc822", @"mimetype",
+                                        nil];
       [self saveAttachment: [sourceMail content]
               withMetadata: attachment];
     }
@@ -1170,9 +1169,11 @@ static NSString    *userAgent      = nil;
  * file with its mime type.
  */
 - (NSException *) saveAttachment: (NSData *) _attach
-		    withMetadata: (NSDictionary *) metadata
+		    withMetadata: (NSMutableDictionary *) metadata
 {
-  NSString *p, *pmime, *name, *mimeType;
+  NSFileManager *fm;
+  NSString *p, *pmime, *name, *baseName, *extension, *mimeType;
+  int i;
 
   if (![_attach isNotNull])
     {
@@ -1187,7 +1188,21 @@ static NSString    *userAgent      = nil;
     }
 
   name = [[metadata objectForKey: @"filename"] asSafeFilename];
+  baseName = [name stringByDeletingPathExtension];
+  extension = [name pathExtension];
+  fm = [NSFileManager defaultManager];
   p = [self pathToAttachmentWithName: name];
+  i = 1;
+
+  while ([fm isReadableFileAtPath: p])
+    {
+      name = [NSString stringWithFormat: @"%@-%x", baseName, i];
+      if ([extension length])
+        name = [NSString stringWithFormat: @"%@.%@", name, extension];
+      p = [self pathToAttachmentWithName: name];
+      [metadata setObject: name forKey: @"filename"];
+      i++;
+    }
 
   if (![_attach writeToFile: p atomically: YES])
     {
@@ -2074,7 +2089,7 @@ static NSString    *userAgent      = nil;
           if ([[context activeUser] hasEmail: recipient])
             message = messageForSent = [self mimeMessageForRecipient: nil];
           else
-            message = [self mimeMessageForRecipient: recipient];;
+            message = [self mimeMessageForRecipient: recipient];
 
           if (!message)
             return  [NSException exceptionWithHTTPStatus: 500

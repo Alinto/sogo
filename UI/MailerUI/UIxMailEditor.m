@@ -525,10 +525,9 @@ static NSArray *infoKeys = nil;
   return newFilename;
 }
 
-- (NSDictionary *) _scanAttachmentFilenamesInRequest: (id) httpBody
+- (NSMutableDictionary *) _scanAttachmentFilenamesInRequest: (id) httpBody
 {
-  NSMutableDictionary *files;
-  NSDictionary *file;
+  NSMutableDictionary *files, *file;
   NSArray *parts;
   unsigned int count, max;
   NGMimeBodyPart *part;
@@ -547,11 +546,11 @@ static NSArray *infoKeys = nil;
         {
           mimeType = [(NGMimeType *)[part headerForKey: @"content-type"] stringValue];
           filename = [self _fixedFilename: [header filename]];
-          file = [NSDictionary dictionaryWithObjectsAndKeys:
-                                 filename, @"filename",
-                                 mimeType, @"mimetype",
-                                 [part body], @"body",
-                                 nil];
+          file = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                      filename, @"filename",
+                                      mimeType, @"mimetype",
+                                      [part body], @"body",
+                                      nil];
           [files setObject: file forKey: [NSString stringWithFormat: @"%@_%@", [header name], filename]];
         }
     }
@@ -564,7 +563,8 @@ static NSArray *infoKeys = nil;
   NSException *error;
   WORequest *request;
   NSEnumerator *allAttachments;
-  NSDictionary *attrs, *filenames;
+  NSMutableDictionary *attrs;
+  NSDictionary *filenames;
   id httpBody;
   SOGoDraftObject *co;
 

@@ -330,7 +330,7 @@
             <div class="msg-body">
               <div layout="row" layout-wrap="layout-wrap">
                 <div class="mailer_mailcontent" layout="row" layout-wrap="layout-wrap"
-                     ng-repeat="part in viewer.message.$content() track by $index"
+                     ng-repeat="part in viewer.message.$content()"
                      ng-class="::part.msgclass">
                   <div class="md-flex sg-mail-part"
                        tabindex="-1"
