@@ -238,6 +238,7 @@
 "Additional Parameters" = "Additional Parameters";
 
 /* password */
+"Current password" = "Current password";
 "New password" = "New password";
 "Confirmation" = "Confirmation";
 "Change" = "Change";

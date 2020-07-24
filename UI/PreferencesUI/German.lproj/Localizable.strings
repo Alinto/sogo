@@ -233,6 +233,7 @@
 "Additional Parameters" = "Zusätzliche Einstellungen";
 
 /* password */
+"Current password" = "Aktuelles Passwort";
 "New password" = "Neues Passwort";
 "Confirmation" = "Bestätigung";
 "Change" = "Ändern";

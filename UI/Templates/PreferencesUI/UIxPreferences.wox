@@ -263,15 +263,20 @@
           <md-content id="passwordView" class="md-padding">
             <div layout="row">
               <md-input-container class="md-block" flex="50">
+                <label><var:string label:value="Current password"/>
+                </label>
+                <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.oldPassword"/>
+              </md-input-container>
+              <md-input-container class="md-block" flex="50">
                 <label><var:string label:value="New password"/>
                 </label>
-	        <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPassword"/>
+                <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPassword"/>
               </md-input-container>
 
               <md-input-container class="md-block" flex="50">
                 <label><var:string label:value="Confirmation"/>
                 </label>
-	        <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPasswordConfirmation"/>
+                <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPasswordConfirmation"/>
               </md-input-container>
             </div>
             <div layout="row" layout-align="end center">
