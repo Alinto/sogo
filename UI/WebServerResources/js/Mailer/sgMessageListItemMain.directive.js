@@ -32,7 +32,7 @@
         '  </div>',
         '</div>',
         '<div class="sg-tile-icons">',
-        '  <md-icon class="ng-hide">star</md-icon>',
+        '  <md-icon class="ng-hide sg-icon-star">star</md-icon>',
         '  <md-icon class="ng-hide">reply</md-icon>',
         '  <md-icon class="ng-hide">forward</md-icon>',
         '  <md-icon class="ng-hide">attach_file</md-icon>',
