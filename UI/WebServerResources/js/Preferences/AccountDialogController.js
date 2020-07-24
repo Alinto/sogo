@@ -98,6 +98,8 @@
       var firstReadonlyIndex = _.findIndex(this.account.identities, { isReadOnly: 1 });
       var identity = {};
 
+      if (firstReadonlyIndex < 0)
+        firstReadonlyIndex = this.account.identities.length;
       if (this.customFromIsReadonly())
         identity.fullName = this.account.identities[0].fullName;
       this.account.identities.splice(Math.max(firstReadonlyIndex, 0), 0, identity);
