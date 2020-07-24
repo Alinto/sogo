@@ -1251,7 +1251,7 @@ static NSArray *reminderValues = nil;
 
   if (!knownKeys)
     {
-      knownKeys = [NSArray arrayWithObjects: @"name", @"serverName", @"port",
+      knownKeys = [NSArray arrayWithObjects: @"id", @"name", @"serverName", @"port",
                            @"userName", @"password", @"encryption", @"replyTo",
                            @"identities", @"mailboxes",
                            @"receipts", @"security", @"isNew",
