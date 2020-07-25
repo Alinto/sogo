@@ -31,6 +31,7 @@ $(TEST_TOOL)_OBJC_FILES += \
 	TestNSString+URLEscaping.m \
 	TestNSString+Utilities.m \
 	TestNGMailAddressParser.m \
+	TestNGInternetSocketAddress.m \
 	\
     # I don't know how to link against -l:SOGoBackend \
 	     undefined reference to `__objc_class_name_SOGoMailFolder'
@@ -42,7 +43,7 @@ $(TEST_TOOL)_CPPFLAGS += \
 
 ADDITIONAL_LIB_DIRS += \
 	-L../../SoObjects/SOGo/SOGo.framework/Versions/Current/sogo -L../../SOPE/NGCards/obj -L../../SOPE/GDLContentStore/obj -lSOGo -lNGMime -lNGCards -lGDLContentStore -lNGExtensions -lSBJson -lobjc \
-	-L/usr/local/lib  -lSaxObjC \
+	-L/usr/local/lib  -lSaxObjC -lNGStreams \
 	-Wl,-rpath,../../SoObjects/SOGo/SOGo.framework/Versions/Current/sogo -Wl,-rpath,../../SOPE/NGCards/obj -Wl,-rpath,../../SOPE/GDLContentStore/obj
 ADDITIONAL_LDFLAGS += -Wl,--no-as-needed
 
