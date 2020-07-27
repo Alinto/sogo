@@ -462,7 +462,13 @@
       return $q.reject('Invalid form');
     };
 
-    this.canChangePassword = function() {
+    this.canChangePassword = function(form) {
+      if (this.passwords.newPasswordConfirmation && this.passwords.newPasswordConfirmation.length &&
+          this.passwords.newPassword != this.passwords.newPasswordConfirmation) {
+        form.newPasswordConfirmation.$setValidity('newPasswordMismatch', false);
+      } else {
+        form.newPasswordConfirmation.$setValidity('newPasswordMismatch', true);
+      }
       if (this.passwords.newPassword && this.passwords.newPassword.length > 0 &&
           this.passwords.newPasswordConfirmation && this.passwords.newPasswordConfirmation.length &&
           this.passwords.newPassword == this.passwords.newPasswordConfirmation &&

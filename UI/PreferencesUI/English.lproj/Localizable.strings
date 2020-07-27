@@ -242,6 +242,7 @@
 "New password" = "New password";
 "Confirmation" = "Confirmation";
 "Change" = "Change";
+"Passwords don't match" = "Passwords don't match";
 
 /* Event+task classifications */
 "Default events classification" = "Default events classification";

@@ -272,15 +272,17 @@
                 </label>
                 <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPassword"/>
               </md-input-container>
-
               <md-input-container class="md-block" flex="50">
                 <label><var:string label:value="Confirmation"/>
                 </label>
-                <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPasswordConfirmation"/>
+                <input type="password" name="newPasswordConfirmation" sg-no-dirty-check="true" ng-model="app.passwords.newPasswordConfirmation"/>
+                <div ng-messages="preferencesForm.newPasswordConfirmation.$error">
+                  <div ng-message="newPasswordMismatch"><var:string label:value="Passwords don't match"/></div>
+                </div>
               </md-input-container>
             </div>
             <div layout="row" layout-align="end center">
-              <md-button ng-click="app.changePassword()" type="button" ng-disabled="!app.canChangePassword()">
+              <md-button ng-click="app.changePassword()" type="button" ng-disabled="!app.canChangePassword(preferencesForm)">
                 <var:string label:value="Change"/>
               </md-button>
             </div>
