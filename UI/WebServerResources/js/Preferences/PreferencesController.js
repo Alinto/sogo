@@ -13,7 +13,7 @@
 
     this.$onInit = function() {
       this.preferences = Preferences;
-      this.passwords = { newPassword: null, newPasswordConfirmation: null };
+      this.passwords = { newPassword: null, newPasswordConfirmation: null, oldPassword: null };
       this.timeZonesList = $window.timeZonesList;
       this.timeZonesSearchText = '';
       this.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
@@ -465,14 +465,15 @@
     this.canChangePassword = function() {
       if (this.passwords.newPassword && this.passwords.newPassword.length > 0 &&
           this.passwords.newPasswordConfirmation && this.passwords.newPasswordConfirmation.length &&
-          this.passwords.newPassword == this.passwords.newPasswordConfirmation)
+          this.passwords.newPassword == this.passwords.newPasswordConfirmation &&
+          this.passwords.oldPassword && this.passwords.oldPassword.length > 0)
         return true;
 
       return false;
     };
 
     this.changePassword = function() {
-      Authentication.changePassword(this.passwords.newPassword).then(function() {
+      Authentication.changePassword(this.passwords.newPassword, this.passwords.oldPassword).then(function() {
         var alert = $mdDialog.alert({
           title: l('Password'),
           content: l('The password was changed successfully.'),

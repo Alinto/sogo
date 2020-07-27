@@ -133,7 +133,7 @@
     }
 
   [loginCookie setPath: [NSString stringWithFormat: @"/%@/", appName]];
-  
+
   return loginCookie;
 }
 
@@ -188,14 +188,14 @@
   NSDictionary *params;
   NSString *username, *password, *language, *domain, *remoteHost, *verificationCode;
   NSArray *supportedLanguages, *creds;
-  
+
   SOGoPasswordPolicyError err;
   int expire, grace;
   BOOL rememberLogin, b;
-  
+
   err = PolicyNoError;
   expire = grace = -1;
-  
+
   auth = [[WOApplication application] authenticatorInContext: context];
   request = [context request];
   params = [[request contentAsString] objectFromJSONString];
@@ -209,10 +209,10 @@
   /* this will always be set to something more or less useful by
    * [WOHttpTransaction applyAdaptorHeadersWithHttpRequest] */
   remoteHost = [request headerForKey:@"x-webobjects-remote-host"];
-  
+
   if ((b = [auth checkLogin: username password: password domain: &domain
 		 perr: &err expire: &expire grace: &grace useCache: NO])
-      && (err == PolicyNoError)  
+      && (err == PolicyNoError)
       // no password policy
       && ((expire < 0 && grace < 0)     // no password policy or everything is alright
       || (expire < 0 && grace > 0)      // password expired, grace still permits login
@@ -221,7 +221,7 @@
       NSDictionary *json;
 
       [self logWithFormat: @"successful login from '%@' for user '%@' - expire = %d  grace = %d", remoteHost, username, expire, grace];
-      
+
       // We get the proper username for cookie creation. If we are using a multidomain
       // environment with SOGoEnableDomainBasedUID, we could have to append the domain
       // to the username. Also when SOGoEnableDomainBasedUID is enabled, we could be in
@@ -648,7 +648,7 @@
 
   request = [context request];
   message = [[request contentAsString] objectFromJSONString];
-  
+
   auth = [[WOApplication application]
 	   authenticatorInContext: context];
   value = [[context request]
@@ -662,6 +662,8 @@
                   password: &password];
 
   newPassword = [message objectForKey: @"newPassword"];
+  // overwrite the value from the session to compare the actual input
+  password = [message objectForKey: @"oldPassword"];
 
   um = [SOGoUserManager sharedUserManager];
 
@@ -673,7 +675,7 @@
                             perr: &error])
     {
       // We delete the previous session
-      [SOGoSession deleteValueForSessionKey: [creds objectAtIndex: 1]]; 
+      [SOGoSession deleteValueForSessionKey: [creds objectAtIndex: 1]];
 
       if ([domain isNotNull])
         {
@@ -682,7 +684,7 @@
               [username rangeOfString: @"@"].location == NSNotFound)
             username = [NSString stringWithFormat: @"%@@%@", username, domain];
         }
-      
+
       response = [self responseWith204];
       authCookie = [auth cookieWithUsername: username
                                 andPassword: newPassword
