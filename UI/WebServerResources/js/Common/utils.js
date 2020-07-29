@@ -475,7 +475,7 @@ Date.prototype.getDayString = function() {
     return newString;
 };
 
-// MMHH
+// HH00
 Date.prototype.getHourString = function() {
     var newString = this.getHours() + '00';
     if (newString.length == 3)

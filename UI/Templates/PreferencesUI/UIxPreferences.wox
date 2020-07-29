@@ -200,6 +200,17 @@
               </md-select>
             </md-input-container>
 
+            <div layout="row" layout-align="start start" ng-if="app.preferences.supportsNotifications()">
+              <md-checkbox flex="20"
+                           ng-model="app.preferences.defaults.SOGoDesktopNotifications"
+                           ng-true-value="1"
+                           ng-false-value="0"
+                           ng-change="app.onDesktopNotificationsChange()"
+                           label:aria-label="Enable Desktop Notifications">
+                <var:string label:value="Enable Desktop Notifications"/>
+              </md-checkbox>
+            </div>
+
             <var:if condition="externalAvatarsEnabled">
             <div layout="row" layout-align="start start">
               <md-checkbox flex="20"

@@ -151,6 +151,11 @@
       return Mailbox.$query.asc;
     };
 
+    this.refresh = function () {
+      Preferences.pollInbox();
+      this.selectedFolder.$filter();
+    };
+
     this.searchMode = function($event) {
       vm.mode.search = true;
       focus('search');

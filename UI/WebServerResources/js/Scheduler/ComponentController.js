@@ -6,8 +6,8 @@
   /**
    * @ngInject
    */
-  ComponentController.$inject = ['$rootScope', '$scope', '$q', '$mdDialog', 'Calendar', 'Component', 'AddressBook', 'Alarm', 'Account', 'stateComponent'];
-  function ComponentController($rootScope, $scope, $q, $mdDialog, Calendar, Component, AddressBook, Alarm, Account, stateComponent) {
+  ComponentController.$inject = ['$rootScope', '$scope', '$q', '$mdDialog', 'Preferences', 'Calendar', 'Component', 'AddressBook', 'Account', 'stateComponent'];
+  function ComponentController($rootScope, $scope, $q, $mdDialog, Preferences, Calendar, Component, AddressBook, Account, stateComponent) {
     var vm = this, component;
 
     this.$onInit = function () {
@@ -119,7 +119,7 @@
 
       c.$reply().then(function() {
         $rootScope.$emit('calendars:list');
-        Alarm.getAlarms();
+        Preferences.getAlarms();
         $mdDialog.hide();
       });
     };
@@ -205,8 +205,8 @@
   /**
    * @ngInject
    */
-  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$window', '$element', '$mdDialog', '$mdToast', 'sgFocus', 'User', 'CalendarSettings', 'Calendar', 'Component', 'Attendees', 'AddressBook', 'Card', 'Alarm', 'Preferences', 'stateComponent'];
-  function ComponentEditorController($rootScope, $scope, $log, $timeout, $window, $element, $mdDialog, $mdToast, focus, User, CalendarSettings, Calendar, Component, Attendees, AddressBook, Card, Alarm, Preferences, stateComponent) {
+  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$window', '$element', '$mdDialog', '$mdToast', 'sgFocus', 'User', 'CalendarSettings', 'Calendar', 'Component', 'Attendees', 'AddressBook', 'Card', 'Preferences', 'stateComponent'];
+  function ComponentEditorController($rootScope, $scope, $log, $timeout, $window, $element, $mdDialog, $mdToast, focus, User, CalendarSettings, Calendar, Component, Attendees, AddressBook, Card, Preferences, stateComponent) {
     var vm = this, component, oldStartDate, oldEndDate, oldDueDate, dayStartTime, dayEndTime;
 
     this.$onInit = function () {
@@ -470,7 +470,7 @@
         this.component.$save(options)
           .then(function(data) {
             $rootScope.$emit('calendars:list');
-            Alarm.getAlarms();
+            Preferences.getAlarms();
             $mdDialog.hide();
           }, function(response) {
             if (response.status == CalendarSettings.ConflictHTTPErrorCode &&

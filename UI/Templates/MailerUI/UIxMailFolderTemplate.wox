@@ -115,7 +115,7 @@
             </md-menu-item>
           </md-menu-content>
         </md-menu>
-        <md-button class="sg-icon-button" label:aria-label="Get Mail" ng-click="mailbox.selectedFolder.$filter()" >
+        <md-button class="sg-icon-button" label:aria-label="Get Mail" ng-click="mailbox.refresh()" >
           <md-icon>refresh</md-icon>
         </md-button>
       </div>

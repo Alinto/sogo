@@ -10,6 +10,12 @@
   function Preferences() {
     var _this = this, defaultsElement, settingsElement, data;
 
+    this.nextAlarm = null;
+    this.nextInboxPoll = null;
+    this.currentToast = Preferences.$q.when(true); // Show only one toast at a time (see https://github.com/angular/material/issues/2799)
+    this.lastUid = null;
+    this.notifications = {};
+
     this.defaults = {};
     this.settings = {Mail: {}};
 
@@ -197,13 +203,16 @@
    * @desc The factory we'll use to register with Angular
    * @returns the Preferences constructor
    */
-  Preferences.$factory = ['$document', '$q', '$timeout', '$log', '$mdDateLocale', 'sgSettings', 'Gravatar', 'Resource', 'User', function($document, $q, $timeout, $log, $mdDateLocaleProvider, Settings, Gravatar, Resource, User) {
+  Preferences.$factory = ['$window', '$document', '$q', '$timeout', '$log', '$state', '$mdDateLocale', '$mdToast', 'sgSettings', 'Gravatar', 'Resource', 'User', function($window, $document, $q, $timeout, $log, $state, $mdDateLocaleProvider, $mdToast, Settings, Gravatar, Resource, User) {
     angular.extend(Preferences, {
+      $window: $window,
       $document: $document,
       $q: $q,
       $timeout: $timeout,
       $log: $log,
+      $state: $state,
       $mdDateLocaleProvider: $mdDateLocaleProvider,
+      $toast: $mdToast,
       $gravatar: Gravatar,
       $$resource: new Resource(Settings.activeUser('folderURL'), Settings.activeUser()),
       $resourcesURL: Settings.resourcesURL(),
@@ -281,6 +290,346 @@
           }
         });
     }
+  };
+
+  /**
+   * @function supportsNotifications
+   * @memberof Preferences.prototype
+   * @desc Check if the browser supports the Notifications API
+   * @returns true if the browser is compatible
+   * @see {@link https://notifications.spec.whatwg.org/|Notifications API}
+   */
+  Preferences.prototype.supportsNotifications = function () {
+    if (typeof Notification === 'undefined') {
+      Preferences.$log.warn("Notifications are not available for your browser.");
+      return false;
+    }
+    return true;
+  };
+
+  /**
+   * @function authorizeNotifications
+   * @memberof Preferences.prototype
+   * @desc Request authorization to send notifications
+   */
+  Preferences.prototype.authorizeNotifications = function () {
+    if (this.supportsNotifications()) {
+      Notification.requestPermission(function (permission) {
+        return permission;
+      });
+    }
+  };
+
+  /**
+   * @function createNotification
+   * @memberof Preferences.prototype
+   * @desc Display a HTML5 notification
+   * @param {string} id - a unique identifier
+   * @param {string} title
+   * @param {object} config - parameters of the notification (body, icon, onClick)
+   */
+  Preferences.prototype.createNotification = function (id, title, config) {
+    var _this = this,
+        params = _.pick(config, ['body', 'icon']);
+    if (this.supportsNotifications ()) {
+      params.tag = id;
+      params.lang = '';
+      params.dir = 'auto';
+      this.notifications[id] = new Notification(title, params);
+      this.notifications[id].onclick = function () {
+        config.onClick();
+        _this.notifications[id].close();
+      };
+    }
+  };
+
+  /**
+   * @function viewInboxMessage
+   * @memberof Preferences.prototype
+   * @desc Go to the specified message of the main account's inbox
+   * @param {string} uid - the message UID
+   */
+  Preferences.prototype.viewInboxMessage = function(uid) {
+    if (Preferences.$state.get('mail.account')) {
+      // Currently in Mail module -- view message
+      Preferences.$state.go('mail.account.mailbox.message', { accountId: 0, mailboxId: 'INBOX', messageId: uid });
+    }
+    else {
+      // On a different module -- reload page
+      Preferences.$window.location = Preferences.$$resource.path('Mail', 'view#!/Mail/0/INBOX/' + uid);
+    }
+  };
+
+  /**
+   * @function pollInbox
+   * @memberof Preferences.prototype
+   * @desc Poll server for new messages in main account's inbox, display notifications or toasts
+   */
+  Preferences.prototype.pollInbox = function() {
+    var _this = this, params;
+
+    params = {
+      sortingAttributes: {
+        sort: 'arrival',
+        asc: 0,
+        noHeaders: 0,
+        dry: 1
+      },
+      filters: [
+        {
+          searchBy: 'flags',
+          searchInput: 'unseen'
+        }
+      ]
+    };
+
+    if (this.nextInboxPoll)
+      Preferences.$timeout.cancel(this.nextInboxPoll);
+
+    Preferences.$$resource.post('Mail', '0/folderINBOX/view', params).then(function(data) {
+      var uids = data.uids;
+      var uidHeaderIndex = data.headers[0].indexOf('uid');
+      var fromHeaderIndex = data.headers[0].indexOf('From');
+      var subjectHeaderIndex = data.headers[0].indexOf('Subject');
+      if (data.threaded) {
+        data.uids.splice(0, 1);
+        uids = _.map(data.uids, 0);
+      }
+      if (_this.lastUid) {
+        _.find(uids, function (uid, index) {
+          var headers, id, href, toast;
+          if (uid > _this.lastUid) {
+            // New unseen message
+            Preferences.$log.debug('Show notification for message ' + uid);
+            headers = _.find(data.headers, function(h) {
+              return h[uidHeaderIndex] == uid;
+            });
+            if (_this.defaults.SOGoDesktopNotifications) {
+              id = 'mail-inbox-' + uid;
+              href = Preferences.$state.href('mail.account.mailbox.message', { accountId: 0, mailboxId: 'INBOX', messageId: uid });
+              _this.createNotification(id, headers[subjectHeaderIndex], {
+                body: headers[fromHeaderIndex][0].name || headers[fromHeaderIndex][0].email,
+                icon: '/SOGo.woa/WebServerResources/img/email-256px.png',
+                onClick: function () {
+                  _this.viewInboxMessage(uid);
+                }
+              });
+            }
+            else {
+              toast = {
+                template: [
+                  '<md-toast role="alert">',
+                  '  <div class="md-toast-content">',
+                  '    <div layout="row" layout-align="start center" flex>',
+                  '      <md-icon class="md-primary md-hue-1">email</md-icon>',
+                  '      <div class="sg-padded--left">',
+                  headers[subjectHeaderIndex],
+                  '        <div class="sg-hint">',
+                  headers[fromHeaderIndex][0].name || headers[fromHeaderIndex][0].email,
+                  '        </div>',
+                  '      </div>',
+                  '      <div flex></div>',
+                  '      <md-button ng-click="close()">',
+                  l('View'),
+                  '      </md-button>',
+                  '    </div>',
+                  '  </div>',
+                  '</md-toast>'
+                ].join(''),
+                position: 'top right',
+                hideDelay: 5000,
+                controller: toastController
+              };
+              _this.currentToast = _this.currentToast.then(function () {
+                return Preferences.$toast.show(toast)
+                .then(function(response) {
+                  if (response === 'ok') {
+                    _this.viewInboxMessage(uid);
+                  }
+                });
+              });
+            }
+            return false; // Continue to next unseen message
+          }
+          else {
+            return true; // No more new messages
+          }
+        });
+        if (uids[0] > _this.lastUid) {
+          _this.lastUid = uids[0];
+        }
+      } else {
+        _this.lastUid = uids[0];
+      }
+    }).finally(function () {
+      var refreshViewCheck = _this.defaults.SOGoRefreshViewCheck;
+      if (refreshViewCheck && refreshViewCheck != 'manually')
+        _this.nextInboxPoll = Preferences.$timeout(angular.bind(_this, _this.pollInbox), refreshViewCheck.timeInterval()*1000);
+    });
+
+    /**
+     * @ngInject
+     */
+    toastController.$inject = ['scope', '$mdToast'];
+    function toastController (scope, $mdToast) {
+      scope.close = function() {
+        $mdToast.hide('ok');
+      };
+    }
+  };
+
+  /**
+   * @function getAlarms
+   * @memberof Preferences.prototype
+   * @desc Fetch the list of alarms from the server and schedule the last one
+   */
+  Preferences.prototype.getAlarms = function() {
+    var _this = this;
+    var now = new Date();
+    var browserTime = Math.floor(now.getTime()/1000);
+
+    Preferences.$$resource.fetch('Calendar', 'alarmslist?browserTime=' + browserTime).then(function(data) {
+      var alarms = data.alarms.sort(function reverseSortByAlarmTime(a, b) {
+        var x = parseInt(a[2]);
+        var y = parseInt(b[2]);
+        return (y - x);
+      });
+      if (alarms.length > 0) {
+        var next = alarms.pop();
+        var now = new Date();
+        var utc = Math.floor(now.getTime()/1000);
+        var url = next[0] + '/' + next[1];
+        var alarmTime = parseInt(next[2]);
+        var delay = alarmTime;
+        if (alarmTime > 0) delay -= utc;
+        var d = new Date(alarmTime*1000);
+        //console.log ("now = " + now.toUTCString());
+        //console.log ("next event " + url + " in " + delay + " seconds (on " + d.toUTCString() + ")");
+
+        var f = angular.bind(_this, _this.showAlarm, url);
+
+        if (_this.nextAlarm)
+          Preferences.$timeout.cancel(_this.nextAlarm);
+
+        _this.nextAlarm = Preferences.$timeout(f, delay*1000);
+      }
+    });
+  };
+
+  /**
+   * @function showAlarm
+   * @memberof Preferences.prototype
+   * @desc Show the latest alarm using a notification and a toast
+   * @param url The URL of the calendar component for snoozing
+   */
+  Preferences.prototype.showAlarm = function(url) {
+    var _this = this;
+
+    Preferences.$$resource.fetch('Calendar/' + url, '?resetAlarm=yes').then(function(data) {
+      var today = new Date().beginOfDay(),
+          day = data.startDate.split(/T/)[0].asDate(),
+          period = [],
+          id;
+      if (day.getTime() != today.getTime() || data.localizedStartDate != data.localizedEndDate) {
+        period.push(data.localizedStartDate);
+      }
+      if (!data.isAllDay) {
+        period.push(data.localizedStartTime);
+        period.push('-');
+      }
+      if (data.localizedStartDate != data.localizedEndDate) {
+        period.push(data.localizedEndDate);
+      }
+      if (!data.isAllDay) {
+        period.push(data.localizedEndTime);
+      }
+      if (_this.defaults.SOGoDesktopNotifications) {
+        id = 'calendar-' + data.id;
+        _this.createNotification(id, data.summary, {
+          body: period.join(' '),
+          icon: '/SOGo.woa/WebServerResources/img/event-256px.png',
+          onClick: function () {
+            if (Preferences.$state.get('calendars.view')) {
+              // Currently in Calendar module -- go to event's day
+              Preferences.$state.go('calendars.view', { view: 'day', day: day.getDayString()});
+            }
+            else {
+              // On a different module -- reload page
+              Preferences.$window.location = Preferences.$$resource.path('Calendar', 'view#!/calendar/day/' + day.getDayString());
+            }
+          }
+        });
+      }
+      _this.currentToast = _this.currentToast.then(function () {
+        return Preferences.$toast.show({
+          position: 'top right',
+          hideDelay: 0,
+          template: [
+            '<md-toast>',
+            '  <div class="md-toast-content">',
+            '    <div layout="column" layout="start end">',
+            '      <p class="sg-padded--top">{{ summary }}</p>',
+            '      <div layout="row" layout-align="start center">',
+            '        <md-input-container>',
+            '          <label style="color: white">{{ "Snooze for " | loc }}</label>',
+            '          <md-select ng-model="reminder">',
+            '           <md-option value="5">',
+            l('5 minutes'),
+            '           </md-option>',
+            '           <md-option value="10">',
+            l('10 minutes'),
+            '           </md-option>',
+            '           <md-option value="15">',
+            l('15 minutes'),
+            '           </md-option>',
+            '           <md-option value="30">',
+            l('30 minutes'),
+            '           </md-option>',
+            '           <md-option value="45">',
+            l('45 minutes'),
+            '           </md-option>',
+            '           <md-option value="60">',
+            l('1 hour'),
+            '           </md-option>',
+            '           <md-option value="1440">',
+            l('1 day'),
+            '           </md-option>',
+            '         </md-select>',
+            '        </md-input-container>',
+            '        <md-button ng-click="snooze()">',
+            l('Snooze'),
+            '        </md-button>',
+            '        <md-button ng-click="close()">',
+            l('Close'),
+            '        </md-button>',
+            '      </div>',
+            '    </div>',
+            '  </div>',
+            '</md-toast>'
+          ].join(''),
+          locals: {
+            url: url
+          },
+          controller: AlarmController
+        });
+      });
+
+        /**
+       * @ngInject
+       */
+      AlarmController.$inject = ['scope', 'url'];
+      function AlarmController(scope, url) {
+        scope.summary = data.summary;
+        scope.reminder = '10';
+        scope.close = function() {
+          Preferences.$toast.hide();
+        };
+        scope.snooze = function() {
+          Preferences.$$resource.fetch(url, 'view?snoozeAlarm=' + scope.reminder);
+          Preferences.$toast.hide();
+        };
+      }
+    });
   };
 
   /**

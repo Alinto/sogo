@@ -55,6 +55,11 @@
         });
     };
 
+    this.onDesktopNotificationsChange = function() {
+      if (this.preferences.defaults.SOGoDesktopNotifications)
+        this.preferences.authorizeNotifications();
+    };
+
     this.resetContactsCategories = function(form) {
       this.preferences.defaults.SOGoContactsCategories = $window.defaultContactsCategories;
       form.$setDirty();
@@ -466,7 +471,9 @@
       if (this.passwords.newPasswordConfirmation && this.passwords.newPasswordConfirmation.length &&
           this.passwords.newPassword != this.passwords.newPasswordConfirmation) {
         form.newPasswordConfirmation.$setValidity('newPasswordMismatch', false);
-      } else {
+        return false;
+      }
+      else {
         form.newPasswordConfirmation.$setValidity('newPasswordMismatch', true);
       }
       if (this.passwords.newPassword && this.passwords.newPassword.length > 0 &&
