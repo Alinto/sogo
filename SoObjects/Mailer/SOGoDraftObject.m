@@ -692,7 +692,13 @@ static NSString    *userAgent      = nil;
   if (_fromSentMailbox)
     [self _addRecipients: [_envelope from] toArray: addrs];
   else
-    [self _addRecipients: [_envelope to] toArray: addrs];
+    {
+      [self _addRecipients: [_envelope to] toArray: addrs];
+      if ([addrs count] == 0)
+        [self _addRecipients: [_envelope cc] toArray: addrs];
+      if ([addrs count] == 0)
+        [self _addRecipients: [_envelope bcc] toArray: addrs];
+    }
 
   if ([addrs count])
     {
@@ -706,6 +712,12 @@ static NSString    *userAgent      = nil;
         {
           [_info setObject: [self _emailFromIdentity: identity]  forKey: @"from"];
         }
+    }
+  else
+    {
+      identity = [[context activeUser] defaultIdentity];
+      if (identity)
+        [_info setObject: [self _emailFromIdentity: identity]  forKey: @"from"];
     }
 }
 
