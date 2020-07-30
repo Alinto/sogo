@@ -361,13 +361,14 @@
   NSDictionary *urlParams, *sortingAttributes;
   SOGoUser *activeUser;
   SOGoUserSettings *us;
-  BOOL asc;
+  BOOL asc, dry;
 
   request = [context request];
   urlParams = [[request contentAsString] objectFromJSONString];
   sortingAttributes = [urlParams objectForKey: @"sortingAttributes"];
   sort = [[sortingAttributes objectForKey: @"sort"] uppercaseString];
   asc = [[sortingAttributes objectForKey: @"asc"] boolValue];
+  dry = [[sortingAttributes objectForKey: @"dry"] boolValue];
 
   activeUser = [context activeUser];
   module = @"Mail";
@@ -378,13 +379,13 @@
     {
       if ([sort isEqualToString: [self defaultSortKey]] && !asc)
 	{
-	  if (moduleSettings)
+	  if (moduleSettings && !dry)
 	    {
 	      [moduleSettings removeObjectForKey: @"SortingState"];
 	      [us synchronize];
 	    }
 	}
-      else
+      else if (!dry)
 	{
 	  // Save the sorting state in the user settings
 	  if (!moduleSettings)
@@ -454,7 +455,8 @@
                   searchString = [NSString stringWithFormat: @"(%@ doesContain: '%@')", searchBy, searchInput];
 
                 searchQualifier = [EOQualifier qualifierWithQualifierFormat: searchString];
-                [searchArray addObject: searchQualifier];
+                if (searchQualifier)
+                  [searchArray addObject: searchQualifier];
               }
             else
               {
@@ -759,7 +761,7 @@
 
   folder = [self clientObject];
   
-  noHeaders = [[[requestContent objectForKey: @"sortingAttributes"] objectForKey:@"noHeaders"] boolValue];
+  noHeaders = [[[requestContent objectForKey: @"sortingAttributes"] objectForKey: @"noHeaders"] boolValue];
   data = [self getUIDsInFolder: folder
                    withHeaders: !noHeaders];
 
