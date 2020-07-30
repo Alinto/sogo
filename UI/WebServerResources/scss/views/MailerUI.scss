@@ -266,6 +266,10 @@ md-sidenav {
   }
 }
 
+.mailer_plaincontent {
+  white-space: pre-wrap;
+}
+
 .mailer_htmlcontent {
   // Constrain absolute-positioned child elements to this element
   position: relative;
