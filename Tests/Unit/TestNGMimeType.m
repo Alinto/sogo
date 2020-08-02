@@ -61,10 +61,6 @@
                              [NSNumber numberWithInt: NSISOLatin1StringEncoding],
                              [NSNumber numberWithInt: 0],
 
-                             @"nil",
-                             [NSNumber numberWithInt: [NSString defaultCStringEncoding]],
-                             [NSNumber numberWithInt: 0],
-
                              @"",
                              [NSNumber numberWithInt: [NSString defaultCStringEncoding]],
                              [NSNumber numberWithInt: 0],
