@@ -30,6 +30,7 @@ $(TEST_TOOL)_OBJC_FILES += \
 	TestNSString+Crypto.m \
 	TestNSString+URLEscaping.m \
 	TestNSString+Utilities.m \
+	TestNSURL+misc.m \
 	TestNGMailAddressParser.m \
 	TestNGInternetSocketAddress.m \
 	\
