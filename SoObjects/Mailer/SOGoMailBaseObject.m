@@ -93,7 +93,7 @@
 	    container];
       folder = nil;
     }
-  
+
   return folder;
 }
 
@@ -211,7 +211,7 @@
       // use the container's one.
       //
       login = [[[self context] activeUser] login];
-      
+
       if (!login)
 	login = [[[[self container] context] activeUser] login];
 
@@ -265,7 +265,7 @@
       [self warnWithFormat:@"container does not implement -imap4URL!"];
       url = nil;
     }
-  
+
   return url;
 }
 
@@ -292,10 +292,12 @@
     {
       account = [self mailAccountFolder];
       if ([[account encryption] isEqualToString: @"tls"])
-        urlString = [NSString stringWithFormat: @"%@?tls=YES",
-                              [self imap4URLString]];
+        {
+          urlString = [NSString stringWithFormat: @"%@?tls=YES&tlsVerifyMode=%@",
+                              [self imap4URLString], [account tlsVerifyMode]];
+        }
       else
-	urlString = [self imap4URLString];
+        urlString = [self imap4URLString];
       imap4URL = [[NSURL alloc] initWithString: urlString];
     }
 

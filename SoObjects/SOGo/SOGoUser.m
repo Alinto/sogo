@@ -23,6 +23,7 @@
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NSURL+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
@@ -136,7 +137,7 @@
 
   _defaults = nil;
   _settings = nil;
-  
+
   uid = nil;
   realUID = nil;
   domain = nil;
@@ -166,7 +167,7 @@
                 domain = nil;
             }
         }
-      
+
       newLogin = [newLogin stringByReplacingString: @"%40"
                                         withString: @"@"];
       if (b)
@@ -312,7 +313,7 @@
   return allEmails;
 }
 
-// 
+//
 // We always return the last object among our list of email addresses. This value
 // is always added in SOGoUserManager: -_fillContactMailRecords:
 //
@@ -396,7 +397,7 @@
   format = [ud timeFormat];
   if (format)
     [dateFormatter setTimeFormat: format];
-  
+
   return dateFormatter;
 }
 
@@ -475,7 +476,7 @@
 
 - (SOGoUserSettings *) userSettings
 {
-  if (!_settings)  
+  if (!_settings)
     {
       _settings = [SOGoUserSettings settingsForUser: login];
       [_settings retain];
@@ -643,8 +644,9 @@
 - (void) _appendSystemMailAccountWithDelegatedIdentities: (BOOL) appendDeletegatedIdentities
 {
   NSString *fullName, *imapLogin, *imapServer, *cImapServer,
-    *encryption, *scheme, *action, *query, *customEmail, *sieveServer;
+    *encryption, *scheme, *action, *queryTls, *customEmail, *sieveServer, *tlsVerifyMode;
   NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts, *security, *mailSettings;
+  NSDictionary *queryComponents;
   NSNumber *port;
   NSMutableArray *identities, *mails;
   NSArray *delegators, *delegates;
@@ -692,36 +694,43 @@
 
   // 3. port & encryption
   scheme = [cUrl scheme] ? [cUrl scheme] : [url scheme];
-  query = [cUrl query] ? [cUrl query] : [url query];
-  
+  queryComponents = [cUrl query] ? [cUrl queryComponents] : [url queryComponents];
+  queryTls = [queryComponents valueForKey: @"tls"];
+  tlsVerifyMode = [queryComponents valueForKey: @"tlsVerifyMode"];
+
+  if (!tlsVerifyMode)
+    tlsVerifyMode = @"default";
+
   if (scheme
       && [scheme caseInsensitiveCompare: @"imaps"] == NSOrderedSame)
     {
-      if (query && [query caseInsensitiveCompare: @"tls=YES"] == NSOrderedSame)
-	{
-	  defaultPort = 143;
-	  encryption = @"tls";
-	}
+      if (queryTls && [queryTls caseInsensitiveCompare: @"YES"] == NSOrderedSame)
+        {
+          defaultPort = 143;
+          encryption = @"tls";
+        }
       else
-	{
-	  encryption = @"ssl";	
-	  defaultPort = 993;
-	}
+        {
+          encryption = @"ssl";
+          defaultPort = 993;
+        }
     }
   else
     {
-      if (query && [query caseInsensitiveCompare: @"tls=YES"] == NSOrderedSame)
+      if (queryTls && [queryTls caseInsensitiveCompare: @"YES"] == NSOrderedSame)
         encryption = @"tls";
       else
         encryption = @"none";
-      
+
       defaultPort = 143;
     }
+
   port = [cUrl port] ? [cUrl port] : [url port];
   if ([port intValue] == 0) /* port is nil or intValue == 0 */
     port = [NSNumber numberWithInt: defaultPort];
   [mailAccount setObject: port forKey: @"port"];
   [mailAccount setObject: encryption forKey: @"encryption"];
+  [mailAccount setObject: tlsVerifyMode forKey: @"tlsVerifyMode"];
 
   // 4. Sieve server
   sieveServer = [self _fetchFieldForUser: @"c_sievehostname"];
@@ -730,7 +739,7 @@
     {
       [mailAccount setObject: sieveServer  forKey: @"sieveServerName"];
     }
-  
+
   // 5. Identities
   identities = [NSMutableArray new];
   [identities addObjectsFromArray: [_defaults mailIdentities]];
@@ -1048,11 +1057,11 @@
 - (SOGoContactFolder *) personalContactsFolderInContext: (WOContext *) context
 {
   SOGoContactFolders *folders;
-  
+
   folders = [[self homeFolderInContext: context] lookupName: @"Contacts"
                                                   inContext: context
                                                     acquire: NO];
-  
+
   return [folders lookupPersonalFolder: @"personal"
                         ignoringRights: YES];
 }
@@ -1113,7 +1122,7 @@
   id authValue;
 
   authValue = [self _fetchFieldForUser: @"canAuthenticate"];
-  
+
   return [authValue boolValue];
 }
 
@@ -1158,9 +1167,9 @@
 - (int) numberOfSimultaneousBookings
 {
   NSNumber *v;
-  
+
   v = [self _fetchFieldForUser: @"numberOfSimultaneousBookings"];
-  
+
   if (v)
     return [v intValue];
 
