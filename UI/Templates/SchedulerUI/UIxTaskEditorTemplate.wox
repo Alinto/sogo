@@ -52,13 +52,23 @@
           </md-input-container>
           <!-- categories -->
           <md-chips ng-model="editor.component.categories">
-            <md-autocomplete
+            <md-chip-template>
+              <span class="sg-chip-color">
+                <span ng-style="{ 'background-color': editor.component.constructor.$categories[$chip] }"><!-- color --></span>
+              </span>
+              <span>{{$chip}}</span>
+            </md-chip-template>
+           <md-autocomplete
                 md-selected-item="editor.categories.selected"
                 md-search-text="editor.categories.searchText"
                 md-items="category in editor.component.constructor.filterCategories(editor.categories.searchText) | orderBy"
                 md-min-length="0"
                 label:placeholder="Add a category">
-              <span md-highlight-text="editor.categories.searchText">{{category}}</span>
+              <div layout="row" layout-align="start center">
+                <div class="sg-color-chip"
+                     ng-style="{ 'background-color': editor.component.constructor.$categories[category] }"><!-- color --></div>
+                <div md-highlight-text="editor.categories.searchText" md-highlight-flags="^i">{{category}}</div>
+              </div>
             </md-autocomplete>
           </md-chips>
           <div layout="row" layout-align="space-between center" layout-wrap="layout-wrap">
