@@ -285,7 +285,7 @@
               // Show success toast when action succeeds
               $mdToast.show(
                 $mdToast.simple()
-                  .content(l('Successfully created card'))
+                  .textContent(l('Successfully created card'))
                   .position('top right')
                   .hideDelay(2000));
             });

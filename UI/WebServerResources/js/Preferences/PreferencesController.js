@@ -457,7 +457,7 @@
           if (!options || !options.quick) {
             $mdToast.show(
               $mdToast.simple()
-                .content(l('Preferences saved'))
+                .textContent(l('Preferences saved'))
                 .position('bottom right')
                 .hideDelay(2000));
             form.$setPristine();
@@ -489,7 +489,7 @@
       Authentication.changePassword(this.passwords.newPassword, this.passwords.oldPassword).then(function() {
         var alert = $mdDialog.alert({
           title: l('Password'),
-          content: l('The password was changed successfully.'),
+          textContent: l('The password was changed successfully.'),
           ok: l('OK')
         });
         $mdDialog.show( alert )

@@ -486,7 +486,7 @@
         vm.selectedFolder.$copyMessages(selectedMessages, '/' + dstFolder).then(function() {
           $mdToast.show(
             $mdToast.simple()
-              .content(l('%{0} message(s) copied', vm.selectedFolder.$selectedCount()))
+              .textContent(l('%{0} message(s) copied', vm.selectedFolder.$selectedCount()))
               .position('top right')
               .hideDelay(2000));
         });
@@ -500,7 +500,7 @@
         vm.selectedFolder.$moveMessages(selectedMessages, '/' + dstFolder).then(function(index) {
           $mdToast.show(
             $mdToast.simple()
-              .content(l('%{0} message(s) moved', count))
+              .textContent(l('%{0} message(s) moved', count))
               .position('top right')
               .hideDelay(2000));
           if (Mailbox.$virtualMode) {

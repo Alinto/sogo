@@ -150,7 +150,7 @@
         onErrorItem: function(item, response, status, headers) {
           $mdToast.show(
             $mdToast.simple()
-              .content(l('Error while uploading the file \"%{0}\":', item.file.name) +
+              .textContent(l('Error while uploading the file \"%{0}\":', item.file.name) +
                        ' ' + (response.message? l(response.message) : ''))
               .position('top right')
               .action(l('OK'))
@@ -224,7 +224,7 @@
         }
         $mdToast.show(
           $mdToast.simple()
-            .content(l('Your email has been saved'))
+            .textContent(l('Your email has been saved'))
             .position('top right')
             .hideDelay(3000));
       });
@@ -255,7 +255,7 @@
         }
         $mdToast.show(
           $mdToast.simple()
-            .content(l('Your email has been sent'))
+            .textContent(l('Your email has been sent'))
             .position('top right')
             .hideDelay(3000));
 

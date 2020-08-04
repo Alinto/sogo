@@ -16,7 +16,7 @@
 
      <md-menu>
        <md-button class="md-icon-button" aria-label="Sort"
-                  ng-click="$mdOpenMenu()">
+                  ng-click="$mdMenu.open()">
          <md-icon>sort</md-icon>
        </md-button>
        <md-menu-content>
