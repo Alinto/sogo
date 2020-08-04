@@ -21,6 +21,12 @@
 "browserNotCompatible" = "Wir haben festgestellt, dass Ihre Browserversion im Moment nicht von SOGo unterstützt wird. Wir empfehlen Firefox zu verwenden. Klicken Sie unten auf den Link, um die aktuelle Version dieses Browsers zu installieren.";
 "alternativeBrowsers" = "Sie können auch die folgenden Browser benutzen";
 "alternativeBrowserSafari" = "Sie können auch Safari benutzen.";
+
+/* 2FA */
+"Verification Code" = "Sicherheitscode";
+"Enter the 6-digit verification code from your Google Authenticator application." = "Geben Sie den 6-stelligen Sicherheitscode aus Ihrer Google Authenticator App ein.";
+"You provided an invalid Google Authenticator key." = "Sie haben einen ungültigen Google Authenticator Schlüssel eingegeben.";
+
 "Download" = "Herunterladen";
 "Language" = "Sprache";
 "choose" = "Auswählen ...";
