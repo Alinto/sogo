@@ -249,7 +249,7 @@
           this.folder.$compact().then(function() {
             $mdToast.show(
               $mdToast.simple()
-                .content(l('Folder compacted'))
+                .textContent(l('Folder compacted'))
                 .position('top right')
                 .hideDelay(3000));
           });
@@ -259,7 +259,7 @@
           this.folder.$emptyTrash().then(function() {
             $mdToast.show(
               $mdToast.simple()
-                .content(l('Trash emptied'))
+                .textContent(l('Trash emptied'))
                 .position('top right')
                 .hideDelay(3000));
           });
