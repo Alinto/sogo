@@ -348,7 +348,7 @@
   NSString *defaultEmail;
   unsigned int count, max;
 
-  defaultEmail = [NSString stringWithFormat: @"%@@%@", [self loginInDomain], [self domain]];
+  defaultEmail = [self systemEmail];
   defaultAccount = [[self mailAccounts] objectAtIndex: 0];
   defaultIdentity = nil;
 

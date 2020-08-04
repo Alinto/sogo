@@ -700,9 +700,9 @@ static NSString    *userAgent      = nil;
         [self _addRecipients: [_envelope bcc] toArray: addrs];
     }
 
+  identity = nil;
   if ([addrs count])
     {
-      identity = nil;
       for (i = 0; !identity && i < [addrs count]; i++)
         {
           email = [addrs objectAtIndex: i];
@@ -713,7 +713,7 @@ static NSString    *userAgent      = nil;
           [_info setObject: [self _emailFromIdentity: identity]  forKey: @"from"];
         }
     }
-  else
+  if (!identity)
     {
       identity = [[context activeUser] defaultIdentity];
       if (identity)
