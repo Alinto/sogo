@@ -285,6 +285,7 @@
 {
   SOGoMailAccount *account;
   NSString *urlString;
+  NSString *useTls = @"NO";
 
   /* this could probably be handled better from NSURL but it's buggy in
      GNUstep */
@@ -293,11 +294,10 @@
       account = [self mailAccountFolder];
       if ([[account encryption] isEqualToString: @"tls"])
         {
-          urlString = [NSString stringWithFormat: @"%@?tls=YES&tlsVerifyMode=%@",
-                              [self imap4URLString], [account tlsVerifyMode]];
+          useTls = @"YES";
         }
-      else
-        urlString = [self imap4URLString];
+      urlString = [NSString stringWithFormat: @"%@?tls=%@&tlsVerifyMode=%@",
+                              [self imap4URLString], useTls, [account tlsVerifyMode]];
       imap4URL = [[NSURL alloc] initWithString: urlString];
     }
 
