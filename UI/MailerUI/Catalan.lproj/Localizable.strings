@@ -104,7 +104,7 @@
 "To"            = "Per a";
 "Cc"            = "Cc";
 "Bcc"           = "C/o";
-"Reply-To"	    = "Respondre a";
+"Reply-To"	= "Respondre a";
 "Add address"   = "Afegir adreça";
 "Body"          = "Cos";
 "Open" = "Obrir";
@@ -121,6 +121,7 @@
 "Edit Draft..." = "Modificar esborrany...";
 "Load Images" = "Carregar imatges";
 "Return Receipt" = "Justificant de recepció";
+"Choose which identity to send this message from" = "Tria amb quina identitat vols enviar aquest missatge";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "El remitent d'aquest missatge demana ser notificat quan llegeixis el missatge. Vols notificar-li?";
 "Return Receipt (displayed) - %@"= " Justificant de recepció (mostrat) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Aquest és un justificant de recepció del missatge que has enviat a% @. \ N \ nNota: Aquest justificant de recepció només confirma que el missatge ha estat mostrat en l'ordinador del destinatari. No es garanteix que el destinatari haja llegit o entès el contingut del missatge.";

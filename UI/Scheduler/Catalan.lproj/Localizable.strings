@@ -225,7 +225,7 @@
 "view_selectedday" = "Dia seleccionat";
 "view_not_started" = "Tasques no iniciades";
 "view_overdue" = "Tasques vençudes";
-"view_incomplete" = "Incomplete tasks";
+"view_incomplete" = "Tasques incompletes";
 "View" = "Veure";
 "Title, category or location" = "Títol, categoria o ubicació";
 "Entire content" = "Tot el contingut";

@@ -21,6 +21,12 @@
 "browserNotCompatible" = "Aquesta versió del navegador no és compatible amb el sistema. Us recomanem l'ús de Firefox. Feu clic en l'enllaç següent per descarregar-vos la versió más recent d'aquest navegador.";
 "alternativeBrowsers" = "També podeu utilitza un d'aquests navegadors compatibles: ";
 "alternativeBrowserSafari" = "Safari.";
+
+/* 2FA */
+"Verification Code" = "Codi de verificació";
+"Enter the 6-digit verification code from your Google Authenticator application." = "Introdueix el codi de verificació de 6 dígits de l'aplicació Google Authenticator.";
+"You provided an invalid Google Authenticator key." = "Has proporcionat una clau de Google Authenticator invàlida.";
+
 "Download" = "Descàrrega";
 "Language" = "Llengua";
 "choose" = "Triar ...";
