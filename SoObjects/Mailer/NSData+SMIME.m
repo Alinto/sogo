@@ -416,7 +416,7 @@
 
   if (!PKCS12_parse(p12, [thePassword UTF8String], &pkey, &cert, &ca))
     {
-      NSLog(@"FATAL");
+      NSLog(@"FATAL: could not parse PKCS12 certificate with provided password");
       return nil;
     }
   
