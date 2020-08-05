@@ -1832,6 +1832,9 @@ Supported formats are: `smtp://domain:port`, `smtps://domain`,
 `tls=YES` will enforce using STARTTLS smtp connections. Thus,
 `smtp://localhost:587/?tls=YES` would use the default MUA port
 on localhost with STARTTLS enforced.
+To disable TLS verification for localhost domains, passing
+`tlsVerifyMode=allowInsecureLocalhost` will such connections:
+`smtp://localhost:587/?tls=YES&tlsVerifyMode=allowInsecureLocalhost`.
 
 |D |SOGoSMTPAuthenticationType
 |Activate SMTP authentication and specifies which type is in use.
@@ -1919,6 +1922,7 @@ URL with a fully qualified domain name, such as:
 [options="compact"]
 * `imaps://mail.acme.com:993`
 * `imap://mail.acme.com:143/?tls=YES`
+* `imap://127.0.0.1:143/?tls=YES&tlsVerifyMode=allowInsecureLocalhost`
 
 |D |SOGoSieveServer
 |Parameter used to set the DNS name or IP address of the Sieve
@@ -1933,6 +1937,7 @@ qualified domain name, such as:
 
 [options="compact"]
 * `sieve://mail.acme.com:4190/?tls=YES`
+* `sieve://127.0.0.14190/?tls=YES&tlsVerifyMode=allowInsecureLocalhost`
 
 Note that TLS is supported but SSL is not.
 

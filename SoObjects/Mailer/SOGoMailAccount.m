@@ -92,7 +92,7 @@ static NSString *inboxFolderName = @"INBOX";
   [otherUsersFolderName release];
   [sharedFoldersName release];
   [subscribedFolders release];
-  [super dealloc];  
+  [super dealloc];
 }
 
 - (BOOL) isInDraftsFolder
@@ -135,7 +135,7 @@ static NSString *inboxFolderName = @"INBOX";
   if (namespace)
     {
       [self _appendNamespace: namespace toFolders: folders];
-      ASSIGN(otherUsersFolderName, [folders lastObject]);     
+      ASSIGN(otherUsersFolderName, [folders lastObject]);
     }
 
   namespace = [namespaceDict objectForKey: @"shared"];
@@ -275,7 +275,7 @@ static NSString *inboxFolderName = @"INBOX";
   SOGoDomainDefaults *dd;
   id inboxQuota, infos;
   float quota;
-  
+
   inboxQuota = nil;
   if ([self supportsQuotas])
     {
@@ -744,6 +744,17 @@ static NSString *inboxFolderName = @"INBOX";
   return encryption;
 }
 
+- (NSString *) tlsVerifyMode
+{
+  NSString *verifyMode;
+
+  verifyMode = [[self _mailAccount] objectForKey: @"tlsVerifyMode"];
+  if (!verifyMode || ![verifyMode length])
+    verifyMode = @"default";
+
+  return verifyMode;
+}
+
 - (NSMutableString *) imap4URLString
 {
   NSMutableString *imap4URLString;
@@ -829,7 +840,7 @@ static NSString *inboxFolderName = @"INBOX";
   NSEnumerator *e;
   NSString *guid;
   id currentFolder;
-  
+
   BOOL hasAnnotatemore;
 
   ud = [[context activeUser] userDefaults];
@@ -854,7 +865,7 @@ static NSString *inboxFolderName = @"INBOX";
     result = [client annotation: @"*"  entryName: @"/comment" attributeName: @"value.priv"];
   else
     result = [client lstatus: @"*" flags: [NSArray arrayWithObjects: @"x-guid", nil]];
-  
+
   e = [folderList objectEnumerator];
 
   while ((currentFolder = [[e nextObject] substringFromIndex: 1]))
@@ -863,7 +874,7 @@ static NSString *inboxFolderName = @"INBOX";
         guid = [[[[result objectForKey: @"FolderList"] objectForKey: currentFolder] objectForKey: @"/comment"] objectForKey: @"value.priv"];
       else
         guid = [[[result objectForKey: @"status"] objectForKey: currentFolder] objectForKey: @"x-guid"];
-      
+
       if (!guid || ![guid isNotNull])
         {
           // Don't generate a GUID for "Other users" and "Shared" namespace folders - user foldername instead
@@ -881,7 +892,7 @@ static NSString *inboxFolderName = @"INBOX";
             guid = [NSString stringWithFormat: @"%@", currentFolder];
           else
             {
-              // If folder doesn't exists - ignore it. 
+              // If folder doesn't exists - ignore it.
               nresult = [client status: currentFolder
                                  flags: [NSArray arrayWithObject: @"UIDVALIDITY"]];
               if (![[nresult valueForKey: @"result"] boolValue])
@@ -897,10 +908,10 @@ static NSString *inboxFolderName = @"INBOX";
                guid = [NSString stringWithFormat: @"%@", currentFolder];
             }
         }
-      
+
       [folders setObject: [NSString stringWithFormat: @"folder%@", guid] forKey: [NSString stringWithFormat: @"folder%@", currentFolder]];
     }
-  
+
   return folders;
 }
 
@@ -964,7 +975,7 @@ static NSString *inboxFolderName = @"INBOX";
     }
   else
     obj = [super lookupName: _key inContext: _ctx acquire: NO];
-  
+
   /* return 404 to stop acquisition */
   if (!obj)
     obj = [NSException exceptionWithHTTPStatus: 404 /* Not Found */];
@@ -1224,7 +1235,7 @@ static NSString *inboxFolderName = @"INBOX";
           if (delegateUser)
             [delegateUser removeMailDelegator: owner];
         }
-      
+
       [self _setDelegates: delegates];
     }
 }

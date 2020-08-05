@@ -28,7 +28,7 @@
   SOGoMailAccount
     Parent object: SOGoMailAccounts
     Child objects: SOGoMailFolder
-  
+
   The SOGoMailAccount represents a single IMAP4 mail account (host, login,
   password, etc)
 */
@@ -91,6 +91,7 @@ typedef enum {
 - (NSDictionary *) identityForEmail: (NSString *) email;
 - (NSString *) signature;
 - (NSString *) encryption;
+- (NSString *) tlsVerifyMode;
 
 /* folder pathes */
 - (NSArray *) toManyRelationshipKeysWithNamespaces: (BOOL) withNSs;
