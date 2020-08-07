@@ -1203,6 +1203,8 @@ attributes must be fully indexed:
 * cn
 * mail
 * sn
+* attributes of `MailFieldNames` if defined
+* attributes of `SearchFieldNames` if defined
 
 Please refer to the documentation of the software you use in order to
 index those attributes.
@@ -1683,7 +1685,7 @@ https://doc.dovecot.org/configuration_manual/authentication/password_schemes/.
 
 Note that `cram-md5` is not actually using cram-md5 (due to the lack of
 challenge-response mechanism), its just saving the intermediate MD5
-context as Dovecot stores in its database. 
+context as Dovecot stores in its database.
 
 |prependPasswordScheme
 |The default behaviour is to store newly set passwords without the
@@ -1829,11 +1831,11 @@ are:
 _SOGoMailingMechanism_ is set to `smtp`.
 Supported formats are: `smtp://domain:port`, `smtps://domain`,
 `domain:port`, `smtp://domain:port/?tls=YES`. Using the option
-`tls=YES` will enforce using STARTTLS smtp connections. Thus,
+`tls=YES` will enforce using STARTTLS SMTP connections. Thus,
 `smtp://localhost:587/?tls=YES` would use the default MUA port
 on localhost with STARTTLS enforced.
-To disable TLS verification for localhost domains, passing
-`tlsVerifyMode=allowInsecureLocalhost` will such connections:
+To disable TLS verification for localhost domains, add
+`tlsVerifyMode=allowInsecureLocalhost` to such connections:
 `smtp://localhost:587/?tls=YES&tlsVerifyMode=allowInsecureLocalhost`.
 
 |D |SOGoSMTPAuthenticationType
@@ -3129,6 +3131,11 @@ current version of SOGo from the previous release.
 
 [cols="100a"]
 |=======================================================================
+h|5.0.0
+|Peer is now verified for TLS connections (SMTP/IMAP/Sieve). If you enabled
+TLS on the local machine (localhost and similar), you need to disable peer
+verification by adding `tlsVerifyMode=allowInsecureLocalhost` to the service URL.
+
 h|4.1.0
 |The default port for the SOGoSieveServer default is now 4190 (previously
 2000). You need to explicitly set the port if you use a different port.
