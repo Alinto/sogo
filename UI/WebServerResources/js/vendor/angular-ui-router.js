@@ -4,7 +4,7 @@
  *         This causes it to be incompatible with plugins that depend on @uirouter/core.
  *         We recommend switching to the ui-router-core.js and ui-router-angularjs.js bundles instead.
  *         For more information, see https://ui-router.github.io/blog/uirouter-for-angularjs-umd-bundles
- * @version v1.0.27
+ * @version v1.0.28
  * @link https://ui-router.github.io
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -8415,6 +8415,7 @@
         UIRouterPluginBase: UIRouterPluginBase
     });
 
+    /** @publicapi @module ng1 */ /** */
     /** @internalapi */
     function getNg1ViewConfigFactory() {
         var templateFactory = null;
@@ -8868,7 +8869,7 @@
      * @internalapi
      */
     var getStateHookBuilder = function (hookName) {
-        return function stateHookBuilder(stateObject, parentFn) {
+        return function stateHookBuilder(stateObject) {
             var hook = stateObject[hookName];
             var pathname = hookName === 'onExit' ? 'from' : 'to';
             function decoratedNg1Hook(trans, state) {
@@ -8915,6 +8916,7 @@
                 return x != null ? x.toString().replace(/(~~|~2F)/g, function (m) { return ({ '~~': '~', '~2F': '/' }[m]); }) : x;
             };
         };
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         Ng1LocationServices.prototype.dispose = function () { };
         Ng1LocationServices.prototype.onChange = function (callback) {
             var _this = this;
@@ -9149,23 +9151,14 @@
         return UrlRouterProvider;
     }());
 
-    /**
-     * # Angular 1 types
-     *
-     * UI-Router core provides various Typescript types which you can use for code completion and validating parameter values, etc.
-     * The customizations to the core types for Angular UI-Router are documented here.
-     *
-     * The optional [[$resolve]] service is also documented here.
-     *
-     * @preferred @publicapi @module ng1
-     */ /** */
+    /* eslint-disable @typescript-eslint/no-empty-function */
     ng.module('ui.router.angular1', []);
     var mod_init = ng.module('ui.router.init', ['ng']);
     var mod_util = ng.module('ui.router.util', ['ui.router.init']);
     var mod_rtr = ng.module('ui.router.router', ['ui.router.util']);
     var mod_state = ng.module('ui.router.state', ['ui.router.router', 'ui.router.util', 'ui.router.angular1']);
     var mod_main = ng.module('ui.router', ['ui.router.init', 'ui.router.state', 'ui.router.angular1']);
-    var mod_cmpt = ng.module('ui.router.compat', ['ui.router']); // tslint:disable-line
+    var mod_cmpt = ng.module('ui.router.compat', ['ui.router']);
     var router = null;
     $uiRouterProvider.$inject = ['$locationProvider'];
     /** This angular 1 provider instantiates a Router and exposes its services via the angular injector */
@@ -9209,7 +9202,7 @@
         services.$injector = $injector;
         services.$q = $q;
         // https://github.com/angular-ui/ui-router/issues/3678
-        if (!$injector.hasOwnProperty('strictDi')) {
+        if (!Object.prototype.hasOwnProperty.call($injector, 'strictDi')) {
             try {
                 $injector.invoke(function (checkStrictDi) { });
             }
@@ -9265,21 +9258,13 @@
         return tuples.reduce(applyPairs, {});
     };
 
-    /**
-     * # Angular 1 Directives
-     *
-     * These are the directives included in UI-Router for Angular 1.
-     * These directives are used in templates to create viewports and link/navigate to states.
-     *
-     * @preferred @publicapi @module directives
-     */ /** */
+    /* eslint-disable @typescript-eslint/no-empty-interface */
     /** @hidden */
     function parseStateRef(ref) {
-        var parsed;
         var paramsOnly = ref.match(/^\s*({[^}]*})\s*$/);
         if (paramsOnly)
             ref = '(' + paramsOnly[1] + ')';
-        parsed = ref.replace(/\n/g, ' ').match(/^\s*([^(]*?)\s*(\((.*)\))?\s*$/);
+        var parsed = ref.replace(/\n/g, ' ').match(/^\s*([^(]*?)\s*(\((.*)\))?\s*$/);
         if (!parsed || parsed.length !== 4)
             throw new Error("Invalid state ref '" + ref + "'");
         return { state: parsed[1] || null, paramExpr: parsed[3] || null };
@@ -9312,7 +9297,7 @@
     function clickHook(el, $state, $timeout, type, getDef) {
         return function (e) {
             var button = e.which || e.button, target = getDef();
-            if (!(button > 1 || e.ctrlKey || e.metaKey || e.shiftKey || el.attr('target'))) {
+            if (!(button > 1 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || el.attr('target'))) {
                 // HACK: This is to allow ng-clicks to be processed before the transition is initiated:
                 var transition_1 = $timeout(function () {
                     if (!el.attr('disabled')) {
@@ -9505,7 +9490,6 @@
                     var type = getTypeInfo(element);
                     var active = uiSrefActive[1] || uiSrefActive[0];
                     var unlinkInfoFn = null;
-                    var hookFn;
                     var rawDef = {};
                     var getDef = function () { return processedDef($state, element, rawDef); };
                     var ref = parseStateRef(attrs.uiSref);
@@ -9532,7 +9516,7 @@
                     scope.$on('$destroy', $uiRouter.transitionService.onSuccess({}, update));
                     if (!type.clickable)
                         return;
-                    hookFn = clickHook(element, $state, $timeout, type, getDef);
+                    var hookFn = clickHook(element, $state, $timeout, type, getDef);
                     bindEvents(element, scope, hookFn, rawDef.uiStateOpts);
                 },
             };
@@ -10056,6 +10040,7 @@
      * ```
      */
     var uiView;
+    // eslint-disable-next-line prefer-const
     uiView = [
         '$view',
         '$animate',
@@ -10063,7 +10048,7 @@
         '$interpolate',
         '$q',
         function $ViewDirective($view, $animate, $uiViewScroll, $interpolate, $q) {
-            function getRenderer(attrs, scope) {
+            function getRenderer() {
                 return {
                     enter: function (element, target, cb) {
                         if (ng.version.minor > 2) {
@@ -10099,7 +10084,7 @@
                 compile: function (tElement, tAttrs, $transclude) {
                     return function (scope, $element, attrs) {
                         var onloadExp = attrs['onload'] || '', autoScrollExp = attrs['autoscroll'], renderer = getRenderer(), inherited = $element.inheritedData('$uiView') || rootData, name = $interpolate(attrs['uiView'] || attrs['name'] || '')(scope) || '$default';
-                        var previousEl, currentEl, currentScope, viewConfig, unregister;
+                        var previousEl, currentEl, currentScope, viewConfig;
                         var activeUIView = {
                             $type: 'ng1',
                             id: directive.count++,
@@ -10128,7 +10113,7 @@
                         }
                         $element.data('$uiView', { $uiView: activeUIView });
                         updateView();
-                        unregister = $view.registerUIView(activeUIView);
+                        var unregister = $view.registerUIView(activeUIView);
                         scope.$on('$destroy', function () {
                             trace.traceUIViewEvent('Destroying/Unregistering', activeUIView);
                             unregister();
@@ -10214,9 +10199,9 @@
             return directive;
         },
     ];
-    $ViewDirectiveFill.$inject = ['$compile', '$controller', '$transitions', '$view', '$q', '$timeout'];
+    $ViewDirectiveFill.$inject = ['$compile', '$controller', '$transitions', '$view', '$q'];
     /** @hidden */
-    function $ViewDirectiveFill($compile, $controller, $transitions, $view, $q, $timeout) {
+    function $ViewDirectiveFill($compile, $controller, $transitions, $view, $q) {
         var getControllerAs = parse('viewDecl.controllerAs');
         var getResolveAs = parse('viewDecl.resolveAs');
         return {
