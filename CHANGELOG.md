@@ -1,6 +1,6 @@
 # Changelog
 
-## [5.0.0](https://github.com/inverse-inc/sogo/compare/SOGo-4.3.2...SOGo-5.0.0) (2020-08-07)
+## [5.0.0](https://github.com/inverse-inc/sogo/compare/SOGo-4.3.2...SOGo-5.0.0) (2020-08-10)
 
 ### Features
 
