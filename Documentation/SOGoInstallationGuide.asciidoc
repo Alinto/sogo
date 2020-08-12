@@ -165,10 +165,10 @@ Operating System Requirements
 
 The following operating systems are currently supported by SOGo:
 
-* Red Hat Enterprise Linux (RHEL) Server 6 and 7
-* Community ENTerprise Operating System (CentOS) 6 and 7
-* Debian GNU/Linux 6.0 (Squeeze), 7.0 (Wheezy), 8.0 (Jessie) and 9.0 (Stretch)
-* Ubuntu 12.04 (Precise), 14.04 (Trusty), 16.04 (Xenial) and 18.04 (Bionic)
+* Red Hat Enterprise Linux (RHEL) Server 6, 7 and 8
+* Community ENTerprise Operating System (CentOS) 6, 7 and 8
+* Debian GNU/Linux 6.0 (Squeeze), 7.0 (Wheezy), 8.0 (Jessie), 9.0 (Stretch) and 10.0 (Buster)
+* Ubuntu 12.04 (Precise), 14.04 (Trusty), 16.04 (Xenial), 18.04 (Bionic) and 20.04 (Focal)
 
 Make sure the required components are started automatically at boot time
 and that they are running before proceeding with the SOGo configuration.
@@ -208,7 +208,7 @@ content:
 ----
 [SOGo]
 name=Inverse SOGo Repository
-baseurl=https://<username>:<password>@packages.inverse.ca/SOGo/release/4/rhel/7/$basearch
+baseurl=https://<username>:<password>@packages.inverse.ca/SOGo/release/5/rhel/7/$basearch
 gpgcheck=1
 ----
 
