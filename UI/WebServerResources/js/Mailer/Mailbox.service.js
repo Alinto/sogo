@@ -104,9 +104,12 @@
     var collection = [],
         // Local recursive function
         createMailboxes = function(level, mailbox) {
+          mailbox.isSentFolder = mailbox.isSentFolder || mailbox.type == 'sent';
           for (var i = 0; i < mailbox.children.length; i++) {
             mailbox.children[i].level = level;
             mailbox.children[i] = new Mailbox(account, mailbox.children[i]);
+            if (mailbox.isSentFolder)
+              mailbox.children[i].isSentFolder = true;
             createMailboxes(level+1, mailbox.children[i]);
           }
         };

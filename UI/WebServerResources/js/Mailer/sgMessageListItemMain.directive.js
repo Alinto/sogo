@@ -140,7 +140,7 @@
           $ctrl.mailboxNameElement.innerHTML = $ctrl.message.$mailbox.$displayName;
 
         // Sender or recipient when in
-        if ($ctrl.MailboxService.selectedFolder.type == 'sent')
+        if ($ctrl.MailboxService.selectedFolder.isSentFolder)
           $ctrl.senderElement.innerHTML = $ctrl.message.$shortAddress('to').encodeEntities();
         else
           $ctrl.senderElement.innerHTML = $ctrl.message.$shortAddress('from').encodeEntities();
