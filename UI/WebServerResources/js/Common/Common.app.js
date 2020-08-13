@@ -376,7 +376,7 @@
             $window.recovered = true;
             $window.location.href = $window.ApplicationBaseURL + $state.href($state.current);
           }
-          else if (!rejection.data.quiet) {
+          else if (rejection.data && !rejection.data.quiet) {
             // Broadcast the response error
             $rootScope.$broadcast('http:Error', rejection);
           }
