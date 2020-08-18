@@ -305,7 +305,11 @@ md-sidenav {
 .sg-mail-editor-content {
   margin-bottom: 0;
   .cke_chrome {
-    border-bottom: 0;
+    border-color: transparent;
+  }
+  .cke_top {
+    position: sticky;
+    top: 0;
   }
 }
 
