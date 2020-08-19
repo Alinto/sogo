@@ -48,7 +48,7 @@
 @class NGImap4Envelope;
 @class NGImap4EnvelopeAddress;
 
-NSArray *SOGoMailCoreInfoKeys;
+extern NSArray *SOGoMailCoreInfoKeys;
 
 @interface SOGoMailObject : SOGoMailBaseObject
 {
