@@ -263,6 +263,11 @@
         }
     }
 
+  if (!identity)
+    {
+      identity = [[context activeUser] defaultIdentity];
+    }
+
   if (identity)
     {
       signature = [identity objectForKey: @"signature"];
