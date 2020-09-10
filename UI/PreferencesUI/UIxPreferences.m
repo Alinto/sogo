@@ -1504,7 +1504,7 @@ static NSArray *reminderValues = nil;
         [v setObject: [[user userDefaults] mailCertificate]  forKey: @"SOGoMailCertificate"];
 
       //
-      // We sanitize our auxilary mail accounts
+      // We sanitize our auxiliary mail accounts
       //
       accounts = [v objectForKey: @"AuxiliaryMailAccounts"];
       if (accounts && [accounts isKindOfClass: [NSArray class]])

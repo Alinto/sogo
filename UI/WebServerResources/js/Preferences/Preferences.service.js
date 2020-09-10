@@ -687,6 +687,16 @@
       });
     });
 
+    // See Account.prototype.$omit
+    _.forEach(preferences.defaults.AuxiliaryMailAccounts, function (account) {
+      var identities = [];
+      _.forEach(account.identities, function (identity) {
+        if (!identity.isReadOnly)
+          identities.push(_.pick(identity, ['email', 'fullName', 'replyTo', 'signature', 'isDefault']));
+      });
+      account.identities = identities;
+    });
+
     if (!preferences.defaults.SOGoMailComposeWindowEnabled)
       delete preferences.defaults.SOGoMailComposeWindow;
     delete preferences.defaults.SOGoMailComposeWindowEnabled;
