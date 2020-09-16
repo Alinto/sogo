@@ -307,7 +307,7 @@
         };
         delete = {
           protectedBy = "Delete Object";
-          pageName    = "UIxOccurenceDialog";
+          actionClass = "UIxOccurenceEditor";
           actionName  = "delete";
         };
         adjust = {
@@ -333,7 +333,7 @@
         };
         delete = {
           protectedBy = "Delete Object";
-          pageName    = "UIxOccurenceDialog";
+          actionClass = "UIxOccurenceEditor";
           actionName  = "delete";
         };
       };
