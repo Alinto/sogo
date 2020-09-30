@@ -251,10 +251,10 @@ static NSArray *infoKeys = nil;
   NSRange r;
   BOOL valid;
 
-  identities = [[[self clientObject] mailAccountFolder] identities];
-  if ([identities count])
+  if ([from length])
     {
-      if ([from length])
+      identities = [[[self clientObject] mailAccountFolder] identities];
+      if ([identities count])
         {
           allIdentities = [identities objectEnumerator];
           valid = NO;
@@ -352,7 +352,7 @@ static NSArray *infoKeys = nil;
   if ([newTo isKindOfClass: [NSNull class]])
     newTo = nil;
 
-  ASSIGN (to, newTo);
+  ASSIGN (to, [newTo uniqueObjects]);
 }
 
 - (NSArray *) to
@@ -365,7 +365,7 @@ static NSArray *infoKeys = nil;
   if ([newCc isKindOfClass: [NSNull class]])
     newCc = nil;
 
-  ASSIGN (cc, newCc);
+  ASSIGN (cc, [newCc uniqueObjects]);
 }
 
 - (NSArray *) cc
@@ -378,7 +378,7 @@ static NSArray *infoKeys = nil;
   if ([newBcc isKindOfClass: [NSNull class]])
     newBcc = nil;
 
-  ASSIGN (bcc, newBcc);
+  ASSIGN (bcc, [newBcc uniqueObjects]);
 }
 
 - (NSArray *) bcc
