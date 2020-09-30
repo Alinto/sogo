@@ -417,16 +417,18 @@
             }
             else {
               toast = {
+                locals: {
+                  title: headers[subjectHeaderIndex],
+                  body: headers[fromHeaderIndex][0].name || headers[fromHeaderIndex][0].email
+                },
                 template: [
                   '<md-toast role="alert">',
                   '  <div class="md-toast-content">',
                   '    <div layout="row" layout-align="start center" flex>',
                   '      <md-icon class="md-primary md-hue-1">email</md-icon>',
                   '      <div class="sg-padded--left">',
-                  headers[subjectHeaderIndex],
-                  '        <div class="sg-hint">',
-                  headers[fromHeaderIndex][0].name || headers[fromHeaderIndex][0].email,
-                  '        </div>',
+                  '        <span md-truncate ng-bind="title"></span>',
+                  '        <div class="sg-hint" md-truncate ng-bind="body"></div>',
                   '      </div>',
                   '      <div flex></div>',
                   '      <md-button ng-click="close()">',
@@ -470,8 +472,10 @@
     /**
      * @ngInject
      */
-    toastController.$inject = ['scope', '$mdToast'];
-    function toastController (scope, $mdToast) {
+    toastController.$inject = ['scope', '$mdToast', 'title', 'body'];
+    function toastController (scope, $mdToast, title, body) {
+      scope.title = title;
+      scope.body = body;
       scope.close = function() {
         $mdToast.hide('ok');
       };
