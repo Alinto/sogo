@@ -21,6 +21,12 @@
 "browserNotCompatible" = "A böngészője nem támogatja ennek az oldalnak a megjelnítését. Javasoljuk a Firefox használatát. Kattintson az alábbi hivatkozásra a legújabb verzió letöltéséhez.";
 "alternativeBrowsers" = "További megoldásként az alábbi, kompatibilis böngészőket használhatja";
 "alternativeBrowserSafari" = "A Safari böngésző is használható.";
+
+/* 2FA */
+"Verification Code" = "Megerősítő kód";
+"Enter the 6-digit verification code from your Google Authenticator application." = "Adja meg a Google Authenticator alkalmazás által megadott 6 jegyű megerősítő kódot.";
+"You provided an invalid Google Authenticator key." = "Érvénytelen Google Authenticator kódot adott meg.";
+
 "Download" = "Letöltés";
 "Language" = "Nyelv";
 "choose" = "Válasszon ...";

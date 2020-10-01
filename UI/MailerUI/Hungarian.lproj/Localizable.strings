@@ -104,7 +104,7 @@
 "To"            = "Címzett";
 "Cc"            = "Másolat";
 "Bcc"           = "Titkos másolat";
-"Reply-To"	    = "Válaszcím";
+"Reply-To"	= "Válaszcím";
 "Add address"   = "Cím hozzáadása";
 "Body"          = "Levéltörzs";
 "Open" = "Megnyitás";
@@ -121,6 +121,7 @@
 "Edit Draft..." = "Piszkozat szerkesztése...";
 "Load Images" = "Képek betöltése";
 "Return Receipt" = "Visszaigazolás";
+"Choose which identity to send this message from" = "Válassza ki melyik személyazonossággal kívánja elküldeni az üzenetet";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "A levél feladója kéri az üzenet elolvasásának visszaigazolását. Szeretné értesíteni a feladót?";
 "Return Receipt (displayed) - %@"= "Visszaigazolás (megjelenítés) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Ez egy %@ címre küldött levél visszaigazolása.\n\nMegjegyzés: A visszaigazolás csak azt igazolja, hogy a levél a címzett számítógépén meg lett jelenítve. Nincs garancia arra, hogy a címzett el is olvasta, illetve megértette a levél tartalmát.";
