@@ -104,7 +104,7 @@
 "To"            = "Komu";
 "Cc"            = "Kopie";
 "Bcc"           = "Skrytá Kopie";
-"Reply-To"	    = "Odpovědět komu";
+"Reply-To"	= "Odpovědět komu";
 "Add address"   = "Přidat adresu";
 "Body"          = "Tělo";
 "Open" = "Otevřít";
@@ -121,6 +121,7 @@
 "Edit Draft..." = "Upravit koncept...";
 "Load Images" = "Nahrát obrázky";
 "Return Receipt" = "Potvrzení o přečtení";
+"Choose which identity to send this message from" = "Vyberte identitu, ze které se má tato zpráva odeslat";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Odesílatel této zprávy si přeje být informován o tom, že jste si tuto zprávu přečetli. Chcete odesílateli poslat potvrzení?";
 "Return Receipt (displayed) - %@"= "Potvrzení o přečtení (zobrazeno) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Toto je potvrzení o přečtení ke zprávě, kterou jste poslali pro %@.\n\nPoznámka: Potvrzení o přijetí znamená pouze to, že se zpráva zobrazila na počítači adresáta. Není ale zaručeno, že adresát zprávu četl a porozuměl jejímu obsahu.";

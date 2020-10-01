@@ -21,6 +21,12 @@
 "browserNotCompatible" = "Tento systém nepodporuje současnou verzi Vašeho prohlížeče. Doporučujeme použít Firefox. Klikněte na níže uvedený odkaz pro stažení aktuální verze tohoto prohlížeče.";
 "alternativeBrowsers" = "Můžete však použít i následující kompatibilní prohlížeče";
 "alternativeBrowserSafari" = "Můžete však použít i Safari.";
+
+/* 2FA */
+"Verification Code" = "Ověřovací kód";
+"Enter the 6-digit verification code from your Google Authenticator application." = "Zadejte 6-ti místný číselný ověřovací kód z Vaší aplikace Google Authenticator.";
+"You provided an invalid Google Authenticator key." = "Zadali jste neplatný ověřovací kód z Google Authenticator.";
+
 "Download" = "Stáhnout";
 "Language" = "Jazyk";
 "choose" = "Vybrat ...";
