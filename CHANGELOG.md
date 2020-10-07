@@ -1,5 +1,31 @@
 # Changelog
 
+### [5.0.1](https://github.com/inverse-inc/sogo/compare/SOGo-5.0.0...SOGo-5.0.1) (2020-10-07)
+
+
+### Bug Fixes
+
+* **calendar:** restore UIxOccurenceDialog ([1bec216](https://github.com/inverse-inc/sogo/commit/1bec216ce6f85dd2e1bad1d4051b8b9331380964), [9af697a](https://github.com/inverse-inc/sogo/commit/9af697ae835bcf1551566de25097e9801895e8c4)), closes [#5141](https://sogo.nu/bugs/view.php?id=5141) [#5160](https://sogo.nu/bugs/view.php?id=5160)
+* **calendar(dav):** check if group member is empty ([9150bdd](https://github.com/inverse-inc/sogo/commit/9150bdd768bc1ba7ef118d66c922ea7b1dc0e57d))
+* **core:** decompose LDAP nested groups ([6aca61d](https://github.com/inverse-inc/sogo/commit/6aca61d8aef4f34e45b480ce3bae19318bc0e685))
+* **core:** fix GCC 10 compatibility ([8507204](https://github.com/inverse-inc/sogo/commit/8507204e0d320f9ff1069b36e6d9ca35de4232ab)), closes [#5029](https://sogo.nu/bugs/view.php?id=5029)
+* **core:** handle bogus CardDAV clients ([78c9277](https://github.com/inverse-inc/sogo/commit/78c9277b99368f3d85f0e0290529e07054ea1631))
+* **mail:** add missing elements to Czech reply template ([0fdeee8](https://github.com/inverse-inc/sogo/commit/0fdeee8490da5fc5ed91c695e540eee3b9b07057)), closes [#5179](https://sogo.nu/bugs/view.php?id=5179)
+* **mail:** add SMTP error to Exception returned by SOGOMailer ([728a006](https://github.com/inverse-inc/sogo/commit/728a006e6ed7dd77156d44374e849d97833d620e))
+* **mail:** fallback to the default identity when replying/forwarding ([64a8ce4](https://github.com/inverse-inc/sogo/commit/64a8ce404879e717dd2f5e8192f7be47f3ae7504))
+* **mail:** remove duplicate recipients in draft ([ec1a01e](https://github.com/inverse-inc/sogo/commit/ec1a01e316795a593ffaf0bd17ae6c151cccf6f4))
+* **mail(js):** handle subfolders of Sent mailbox ([af452eb](https://github.com/inverse-inc/sogo/commit/af452eb1a755e20709a77d20ac79cb24d99dce1b)), closes [#4980](https://sogo.nu/bugs/view.php?id=4980)
+* **mail(js):** keep CKEditor toolbar visible ([7163900](https://github.com/inverse-inc/sogo/commit/7163900d2496c4bb4b19f64eeee5d001920ce069))
+* **preferences(js):** sanitize content of toast ([712d0f4](https://github.com/inverse-inc/sogo/commit/712d0f4ef1ec2e16fdd0a72865fe885e212e508c)), closes [#5178](https://sogo.nu/bugs/view.php?id=5178)
+* **preferences(js):** sanitize mail identities when saving ([aa70679](https://github.com/inverse-inc/sogo/commit/aa706796c2920b78caa30c884125dcd92d6c2876))
+* **web(js):** avoid throwing an error when disconnected ([7b9e750](https://github.com/inverse-inc/sogo/commit/7b9e75080645678e9eafdfa896ef69010626676d))
+
+### Localization
+
+* **cs:** update Czech translation ([7af092f](https://github.com/inverse-inc/sogo/commit/7af092f849a1344a47ece569efd4e242e22265f2))
+* **de:** update German translation ([0fe73ec](https://github.com/inverse-inc/sogo/commit/0fe73ec8a7d578efa91b04c2c533c10d49f27a2a))
+* **hu:** update Hungarian translation ([a594bf8](https://github.com/inverse-inc/sogo/commit/a594bf84a32cf27e3efe6967d5c20129d97b6de0))
+
 ## [5.0.0](https://github.com/inverse-inc/sogo/compare/SOGo-4.3.2...SOGo-5.0.0) (2020-08-10)
 
 ### Features
