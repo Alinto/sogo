@@ -163,7 +163,7 @@ static NSString *alarmsFolderURLString = nil;
 
 - (void) _releaseChannel: (EOAdaptorChannel *) _channel
 {
-  [[self _channelManager] releaseChannel:_channel];
+  [[self _channelManager] releaseChannel:_channel  immediately: YES];
 }
 
 - (BOOL) canConnectStore
