@@ -298,7 +298,7 @@ static NSArray *tasksFields = nil;
    */
 
   //NSLog(@"***[UIxCalListingActions _fixDates:] %@", [theRecord objectForKey: @"c_title"]);
-  if (dayBasedView || [[theRecord objectForKey: @"c_isallday"] boolValue])
+  if (currentView && (dayBasedView || [[theRecord objectForKey: @"c_isallday"] boolValue]))
   {
     for (count = 0; count < 2; count++)
     {
