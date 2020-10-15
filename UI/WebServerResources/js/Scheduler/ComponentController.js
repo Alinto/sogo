@@ -205,8 +205,8 @@
   /**
    * @ngInject
    */
-  ComponentEditorController.$inject = ['$rootScope', '$scope', '$log', '$timeout', '$window', '$element', '$mdDialog', '$mdToast', 'sgFocus', 'User', 'CalendarSettings', 'Calendar', 'Component', 'Attendees', 'AddressBook', 'Card', 'Preferences', 'stateComponent'];
-  function ComponentEditorController($rootScope, $scope, $log, $timeout, $window, $element, $mdDialog, $mdToast, focus, User, CalendarSettings, Calendar, Component, Attendees, AddressBook, Card, Preferences, stateComponent) {
+  ComponentEditorController.$inject = ['$rootScope', '$scope', '$q', '$log', '$timeout', '$window', '$element', '$mdDialog', '$mdToast', 'sgFocus', 'User', 'CalendarSettings', 'Calendar', 'Component', 'Attendees', 'AddressBook', 'Card', 'Preferences', 'stateComponent'];
+  function ComponentEditorController($rootScope, $scope, $q, $log, $timeout, $window, $element, $mdDialog, $mdToast, focus, User, CalendarSettings, Calendar, Component, Attendees, AddressBook, Card, Preferences, stateComponent) {
     var vm = this, component, oldStartDate, oldEndDate, oldDueDate, dayStartTime, dayEndTime;
 
     this.$onInit = function () {
@@ -291,7 +291,8 @@
     this.addAttendee = function (card, partial) {
       var initOrganizer = (!this.component.attendees || this.component.attendees.length === 0),
           destinationCalendar = Calendar.$get(this.component.destinationCalendar),
-          options = initOrganizer? { organizerCalendar: destinationCalendar } : {};
+          options = initOrganizer? { organizerCalendar: destinationCalendar } : {},
+          promises = [];
       var emailRE = /([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)/i,
           i, address;
       if (partial) options.partial = partial;
@@ -316,7 +317,7 @@
 
       function addCard(newCard) {
         if (!vm.component.$attendees.hasAttendee(newCard))
-          vm.component.$attendees.add(newCard, options);
+          return vm.component.$attendees.add(newCard, options);
       }
 
       if (angular.isString(card)) {
@@ -332,23 +333,26 @@
                card.charCodeAt(i) == 44 ||   // ,
                card.charCodeAt(i) == 59) &&  // ;
               emailRE.test(address)) {
-            createCard(address).then(addCard);
+            promises.push(createCard(address).then(addCard));
             address = '';
           }
           else {
             address += card.charAt(i);
           }
         }
-        if (address && emailRE.test(address))
-          createCard(address).then(addCard);
+        if (address && emailRE.test(address)) {
+          promises.push(createCard(address).then(addCard));
+        }
       }
       else if (angular.isDefined(card)) {
         if (!this.component.$attendees.hasAttendee(card))
-          this.component.$attendees.add(card, options);
+          promises.push(this.component.$attendees.add(card, options));
         this.showAttendeesEditor |= initOrganizer;
       }
 
       $timeout(scrollToStart);
+
+      return $q.all(promises);
     };
 
     function scrollToStart() {
@@ -466,20 +470,22 @@
       this.adjustStartTime();
       this.adjustEndTime();
       this.changeAlarmRelation(form);
-      if (form.$valid) {
-        this.component.$save(options)
-          .then(function(data) {
-            $rootScope.$emit('calendars:list');
-            Preferences.getAlarms();
-            $mdDialog.hide();
-          }, function(response) {
-            if (response.status == CalendarSettings.ConflictHTTPErrorCode &&
-                _.isObject(response.data.message))
-              vm.attendeeConflictError = response.data.message;
-            else
-              vm.edit(form);
-          });
-      }
+      this.addAttendee(this.searchText).then(function () {
+        if (form.$valid) {
+          vm.component.$save(options)
+            .then(function(data) {
+              $rootScope.$emit('calendars:list');
+              Preferences.getAlarms();
+              $mdDialog.hide();
+            }, function(response) {
+              if (response.status == CalendarSettings.ConflictHTTPErrorCode &&
+                  _.isObject(response.data.message))
+                vm.attendeeConflictError = response.data.message;
+              else
+                vm.edit(form);
+            });
+        }
+      });
     };
 
     this.reset = function (form) {
