@@ -985,6 +985,7 @@
                   </var:if>
                   <textarea name="autoReplyText"
                             id="autoReplyText"
+                            ng-required="app.preferences.defaults.Vacation.enabled == 1"
                             ng-model="app.preferences.defaults.Vacation.autoReplyText"/>
                   <var:if condition="vacationFooter.length">
                     <p class="text-preview" md-colors="::{color: 'default-background-600'}"><var:string value="vacationFooter"/></p>
