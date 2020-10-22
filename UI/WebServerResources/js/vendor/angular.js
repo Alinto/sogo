@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.8.1
+ * @license AngularJS v1.8.2
  * (c) 2010-2020 Google LLC. http://angularjs.org
  * License: MIT
  */
@@ -99,7 +99,7 @@ function isValidObjectMaxDepth(maxDepth) {
 function minErr(module, ErrorConstructor) {
   ErrorConstructor = ErrorConstructor || Error;
 
-  var url = 'https://errors.angularjs.org/1.8.1/';
+  var url = 'https://errors.angularjs.org/1.8.2/';
   var regex = url.replace('.', '\\.') + '[\\s\\S]*';
   var errRegExp = new RegExp(regex, 'g');
 
@@ -2828,11 +2828,11 @@ function toDebugString(obj, maxDepth) {
 var version = {
   // These placeholder strings will be replaced by grunt's `build` task.
   // They need to be double- or single-quoted.
-  full: '1.8.1',
+  full: '1.8.2',
   major: 1,
   minor: 8,
-  dot: 1,
-  codeName: 'mutually-supporting'
+  dot: 2,
+  codeName: 'meteoric-mining'
 };
 
 
@@ -2983,7 +2983,7 @@ function publishExternalAPI(angular) {
       });
     }
   ])
-  .info({ angularVersion: '1.8.1' });
+  .info({ angularVersion: '1.8.2' });
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -9056,15 +9056,15 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
    * @deprecated
    * sinceVersion="1.8.1"
    *
-   * This function is deprecated. Use {@link $compileProvider#aHrefSanitizationTrustedUrlList
+   * This method is deprecated. Use {@link $compileProvider#aHrefSanitizationTrustedUrlList
    * aHrefSanitizationTrustedUrlList} instead.
    */
   Object.defineProperty(this, 'aHrefSanitizationWhitelist', {
     get: function() {
       return this.aHrefSanitizationTrustedUrlList;
     },
-    set: function(regexp) {
-      this.aHrefSanitizationTrustedUrlList = regexp;
+    set: function(value) {
+      this.aHrefSanitizationTrustedUrlList = value;
     }
   });
 
@@ -9107,15 +9107,15 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
    * @deprecated
    * sinceVersion="1.8.1"
    *
-   * This function is deprecated. Use {@link $compileProvider#imgSrcSanitizationTrustedUrlList
+   * This method is deprecated. Use {@link $compileProvider#imgSrcSanitizationTrustedUrlList
    * imgSrcSanitizationTrustedUrlList} instead.
    */
   Object.defineProperty(this, 'imgSrcSanitizationWhitelist', {
     get: function() {
       return this.imgSrcSanitizationTrustedUrlList;
     },
-    set: function(regexp) {
-      this.imgSrcSanitizationTrustedUrlList = regexp;
+    set: function(value) {
+      this.imgSrcSanitizationTrustedUrlList = value;
     }
   });
 
@@ -12417,7 +12417,7 @@ function $HttpProvider() {
    * @deprecated
    * sinceVersion="1.8.1"
    *
-   * This function is deprecated. Use {@link $httpProvider#xsrfTrustedOrigins xsrfTrustedOrigins}
+   * This property is deprecated. Use {@link $httpProvider#xsrfTrustedOrigins xsrfTrustedOrigins}
    * instead.
    */
   Object.defineProperty(this, 'xsrfWhitelistedOrigins', {
@@ -20250,7 +20250,26 @@ function $SceDelegateProvider() {
     }
     return trustedResourceUrlList;
   };
-  this.resourceUrlWhitelist = this.trustedResourceUrlList;
+
+  /**
+   * @ngdoc method
+   * @name $sceDelegateProvider#resourceUrlWhitelist
+   * @kind function
+   *
+   * @deprecated
+   * sinceVersion="1.8.1"
+   *
+   * This method is deprecated. Use {@link $sceDelegateProvider#trustedResourceUrlList
+   * trustedResourceUrlList} instead.
+   */
+  Object.defineProperty(this, 'resourceUrlWhitelist', {
+    get: function() {
+      return this.trustedResourceUrlList;
+    },
+    set: function(value) {
+      this.trustedResourceUrlList = value;
+    }
+  });
 
   /**
    * @ngdoc method
@@ -20277,7 +20296,6 @@ function $SceDelegateProvider() {
    * The **default value** when no trusted resource URL list has been explicitly set is the empty
    * array (i.e. there is no `bannedResourceUrlList`.)
    */
-
   this.bannedResourceUrlList = function(value) {
     if (arguments.length) {
       bannedResourceUrlList = adjustMatchers(value);
@@ -20293,7 +20311,7 @@ function $SceDelegateProvider() {
    * @deprecated
    * sinceVersion="1.8.1"
    *
-   * This function is deprecated. Use {@link $sceDelegateProvider#bannedResourceUrlList
+   * This method is deprecated. Use {@link $sceDelegateProvider#bannedResourceUrlList
    * bannedResourceUrlList} instead.
    */
   Object.defineProperty(this, 'resourceUrlBlacklist', {
