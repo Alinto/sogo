@@ -30,6 +30,10 @@
   }
 }
 
+.sg-icon-star {
+  color: $colorYellow700;
+}
+
 // Message view header
 // Could be made into a more generic component
 // ----------------------------------------------------------------------------
@@ -262,6 +266,10 @@ md-sidenav {
   }
 }
 
+.mailer_plaincontent {
+  white-space: pre-wrap;
+}
+
 .mailer_htmlcontent {
   // Constrain absolute-positioned child elements to this element
   position: relative;
@@ -297,7 +305,11 @@ md-sidenav {
 .sg-mail-editor-content {
   margin-bottom: 0;
   .cke_chrome {
-    border-bottom: 0;
+    border-color: transparent;
+  }
+  .cke_top {
+    position: sticky;
+    top: 0;
   }
 }
 

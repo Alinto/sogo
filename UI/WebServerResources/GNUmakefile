@@ -4,7 +4,7 @@ include ../common.make
 
 WEBSERVER_RESOURCE_DIRS = css fonts img js
 JS_FILES = js/Administration.* js/Common.* js/Contacts.* js/Mailer.* js/Main.* js/Preferences.* js/Scheduler.*
-JS_LIB_FILES = js/vendor/angular-animate.* js/vendor/angular-aria.* js/vendor/angular-cookies.* js/vendor/angular-messages.* js/vendor/angular-file-upload.* js/vendor/FileSaver.* js/vendor/ng-sortable.* js/vendor/angular-material.* js/vendor/angular-sanitize.* js/vendor/angular-ui-router.* js/vendor/angular.* js/vendor/lodash.*
+JS_LIB_FILES = js/vendor/angular-animate.* js/vendor/angular-aria.* js/vendor/angular-cookies.* js/vendor/angular-messages.* js/vendor/angular-file-upload.* js/vendor/FileSaver.* js/vendor/ng-sortable.* js/vendor/angular-material.* js/vendor/angular-sanitize.* js/vendor/angular-ui-router.* js/vendor/angular.* js/vendor/lodash.* js/vendor/qrcode.*
 CSS_FILES = css/styles.css css/styles.css.map css/no-animation.css  css/no-animation.css.map
 
 .DEFAULT_GOAL := all

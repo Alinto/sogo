@@ -200,6 +200,17 @@
               </md-select>
             </md-input-container>
 
+            <div layout="row" layout-align="start start" ng-if="app.preferences.supportsNotifications()">
+              <md-checkbox flex="20"
+                           ng-model="app.preferences.defaults.SOGoDesktopNotifications"
+                           ng-true-value="1"
+                           ng-false-value="0"
+                           ng-change="app.onDesktopNotificationsChange()"
+                           label:aria-label="Enable Desktop Notifications">
+                <var:string label:value="Enable Desktop Notifications"/>
+              </md-checkbox>
+            </div>
+
             <var:if condition="externalAvatarsEnabled">
             <div layout="row" layout-align="start start">
               <md-checkbox flex="20"
@@ -263,19 +274,26 @@
           <md-content id="passwordView" class="md-padding">
             <div layout="row">
               <md-input-container class="md-block" flex="50">
+                <label><var:string label:value="Current password"/>
+                </label>
+                <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.oldPassword"/>
+              </md-input-container>
+              <md-input-container class="md-block" flex="50">
                 <label><var:string label:value="New password"/>
                 </label>
-	        <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPassword"/>
+                <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPassword"/>
               </md-input-container>
-
               <md-input-container class="md-block" flex="50">
                 <label><var:string label:value="Confirmation"/>
                 </label>
-	        <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPasswordConfirmation"/>
+                <input type="password" name="newPasswordConfirmation" sg-no-dirty-check="true" ng-model="app.passwords.newPasswordConfirmation"/>
+                <div ng-messages="preferencesForm.newPasswordConfirmation.$error">
+                  <div ng-message="newPasswordMismatch"><var:string label:value="Passwords don't match"/></div>
+                </div>
               </md-input-container>
             </div>
             <div layout="row" layout-align="end center">
-              <md-button ng-click="app.changePassword()" type="button" ng-disabled="!app.canChangePassword()">
+              <md-button ng-click="app.changePassword()" type="button" ng-disabled="!app.canChangePassword(preferencesForm)">
                 <var:string label:value="Change"/>
               </md-button>
             </div>
@@ -967,6 +985,7 @@
                   </var:if>
                   <textarea name="autoReplyText"
                             id="autoReplyText"
+                            ng-required="app.preferences.defaults.Vacation.enabled == 1"
                             ng-model="app.preferences.defaults.Vacation.autoReplyText"/>
                   <var:if condition="vacationFooter.length">
                     <p class="text-preview" md-colors="::{color: 'default-background-600'}"><var:string value="vacationFooter"/></p>

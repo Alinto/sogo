@@ -1,6 +1,6 @@
 /* UIxMailAccountActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2017 Inverse inc.
+ * Copyright (C) 2007-2020 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -306,6 +306,7 @@
   if (password && pkcs12)
     {
       NSData *certificate;
+      NSDictionary *description;
 
       certificate = [pkcs12 convertPKCS12ToPEMUsingPassword: password];
 
@@ -314,7 +315,18 @@
 
       [[self clientObject] setCertificate: certificate];
 
-      response = [self responseWith204];
+      description = [certificate certificateDescription];
+      if (description)
+        {
+          response = [self responseWithStatus: 200  andJSONRepresentation: description];
+        }
+      else
+        {
+          description = [NSDictionary
+                          dictionaryWithObject: [self labelForKey: @"Error reading the certificate. Please install a new certificate."]
+                                        forKey: @"message"];
+          response = [self responseWithStatus: 500  andJSONRepresentation: description];
+        }
     }
 
   return response;

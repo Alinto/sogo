@@ -34,6 +34,9 @@
 #import "SOGoTool.h"
 
 @interface SOGoToolTruncateCalendar : SOGoTool
+{
+  BOOL recurrent;
+}
 @end
 
 @implementation SOGoToolTruncateCalendar
@@ -46,6 +49,33 @@
 + (NSString *) description
 {
   return @"remove old calendar entries from the specified user calendar";
+}
+
+- (BOOL) parseArguments
+{
+  BOOL rc;
+  int max;
+
+  rc = NO;
+  max = [arguments count];
+  if (max > 2)
+    {
+      recurrent = [[arguments objectAtIndex: 0] isEqualToString: @"-r"];
+
+      if (recurrent)
+        {
+          arguments = RETAIN([arguments subarrayWithRange: NSMakeRange(1, max-1)]);
+          max--;
+        }
+
+      if (max == 3)
+        rc = YES;
+    }
+
+  if (!rc)
+    [self usage];
+
+  return rc;
 }
 
 - (void) removeRecord: (NSString *) recordName
@@ -123,15 +153,25 @@
   records = [NSMutableArray array];
   fields = [NSArray arrayWithObjects: @"c_name", nil];
 
-  // We fetch non-repetitive events
-  qs = [NSString stringWithFormat: @"c_enddate <= %d AND c_iscycle == 0 AND c_component == 'vevent'", (int)[date timeIntervalSince1970]];
-  qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
-  [records addObjectsFromArray: [folder fetchFields: fields matchingQualifier: qualifier]];
+  if (recurrent)
+    {
+      // We fetch all events, including recurrent
+      qs = [NSString stringWithFormat: @"c_enddate <= %d AND c_component == 'vevent'", (int)[date timeIntervalSince1970]];
+      qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
+      [records addObjectsFromArray: [folder fetchFields: fields matchingQualifier: qualifier]];
+    }
+  else
+    {
+      // We fetch non-repetitive events
+      qs = [NSString stringWithFormat: @"c_enddate <= %d AND c_iscycle == 0 AND c_component == 'vevent'", (int)[date timeIntervalSince1970]];
+      qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
+      [records addObjectsFromArray: [folder fetchFields: fields matchingQualifier: qualifier]];
 
-  // We fetch repetitive events with a cycle end date
-  qs = [NSString stringWithFormat: @"c_cycleenddate <= %d AND c_iscycle == 1 AND c_component == 'vevent'", (int)[date timeIntervalSince1970]];
-  qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
-  [records addObjectsFromArray: [folder fetchFields: fields matchingQualifier: qualifier]];
+      // We fetch repetitive events with a cycle end date
+      qs = [NSString stringWithFormat: @"c_cycleenddate <= %d AND c_iscycle == 1 AND c_component == 'vevent'", (int)[date timeIntervalSince1970]];
+      qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
+      [records addObjectsFromArray: [folder fetchFields: fields matchingQualifier: qualifier]];
+    }
 
   if (records)
     {
@@ -213,27 +253,20 @@
 
 - (void) usage
 {
-  fprintf (stderr, "Usage: truncate-calendar USER FOLDER DATE\n\n"
-	   "         USER       the owner of the calendar folder\n"
-	   "         FOLDER     the id of the folder to clean up\n"
-	   "         DATE       UTC datetime - non-recurring events older than this date will be removed (ex: \"2016-06-27T17:38:56\")\n\n");
+  fprintf (stderr, "Usage: truncate-calendar [-r] USER FOLDER DATE\n\n"
+           "            -r         also delete recurrent events (including all occurences)\n"
+	   "            USER       the owner of the calendar folder\n"
+	   "            FOLDER     the id of the folder to clean up\n"
+	   "            DATE       UTC datetime - events older than this date will be removed\n\n"
+	   "Examples:   sogo-tool truncate-calendar bob personal 2016-06-27T17:38:56\n"
+           "            sogo-tool truncate-calendar -r bob personal `date +%%FT%%T` # deletes all events\n\n");
 }
 
 - (BOOL) run
 {
-  BOOL rc;
-
-  if ([arguments count] == 3)
-    rc = [self runWithFolder: [arguments objectAtIndex: 1]
-                     andUser: [arguments objectAtIndex: 0]
-			date: [arguments objectAtIndex: 2]];
-  else
-    {
-      [self usage];
-      rc = NO;
-    }
-
-  return rc;
+  return ([self parseArguments] && [self runWithFolder: [arguments objectAtIndex: 1]
+                                               andUser: [arguments objectAtIndex: 0]
+                                                  date: [arguments objectAtIndex: 2]]);
 }
 
 @end

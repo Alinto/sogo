@@ -1122,6 +1122,7 @@ static NSArray *childRecordFields = nil;
     {
       davSQLFieldsTable = [NSMutableDictionary new];
       [davSQLFieldsTable setObject: @"c_version" forKey: @"{DAV:}getetag"];
+      [davSQLFieldsTable setObject: @"c_version" forKey: @"{http://calendarserver.org/ns/}getetag"];
       [davSQLFieldsTable setObject: @"" forKey: @"{DAV:}getcontenttype"];
       [davSQLFieldsTable setObject: @"" forKey: @"{DAV:}resourcetype"];
     }

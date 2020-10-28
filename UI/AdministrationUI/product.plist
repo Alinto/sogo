@@ -3,8 +3,7 @@
 
   publicResources = ();
 
-  factories = {
-  };
+  factories = {};
 
   categories = {
     SOGoUserFolder = {

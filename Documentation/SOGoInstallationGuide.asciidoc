@@ -165,10 +165,10 @@ Operating System Requirements
 
 The following operating systems are currently supported by SOGo:
 
-* Red Hat Enterprise Linux (RHEL) Server 6 and 7
-* Community ENTerprise Operating System (CentOS) 6 and 7
-* Debian GNU/Linux 6.0 (Squeeze), 7.0 (Wheezy), 8.0 (Jessie) and 9.0 (Stretch)
-* Ubuntu 12.04 (Precise), 14.04 (Trusty), 16.04 (Xenial) and 18.04 (Bionic)
+* Red Hat Enterprise Linux (RHEL) Server 6, 7 and 8
+* Community ENTerprise Operating System (CentOS) 6, 7 and 8
+* Debian GNU/Linux 6.0 (Squeeze), 7.0 (Wheezy), 8.0 (Jessie), 9.0 (Stretch) and 10.0 (Buster)
+* Ubuntu 12.04 (Precise), 14.04 (Trusty), 16.04 (Xenial), 18.04 (Bionic) and 20.04 (Focal)
 
 Make sure the required components are started automatically at boot time
 and that they are running before proceeding with the SOGo configuration.
@@ -208,7 +208,7 @@ content:
 ----
 [SOGo]
 name=Inverse SOGo Repository
-baseurl=https://<username>:<password>@packages.inverse.ca/SOGo/release/4/rhel/7/$basearch
+baseurl=https://<username>:<password>@packages.inverse.ca/SOGo/release/5/rhel/7/$basearch
 gpgcheck=1
 ----
 
@@ -1203,6 +1203,8 @@ attributes must be fully indexed:
 * cn
 * mail
 * sn
+* attributes of `MailFieldNames` if defined
+* attributes of `SearchFieldNames` if defined
 
 Please refer to the documentation of the software you use in order to
 index those attributes.
@@ -1683,7 +1685,7 @@ https://doc.dovecot.org/configuration_manual/authentication/password_schemes/.
 
 Note that `cram-md5` is not actually using cram-md5 (due to the lack of
 challenge-response mechanism), its just saving the intermediate MD5
-context as Dovecot stores in its database. 
+context as Dovecot stores in its database.
 
 |prependPasswordScheme
 |The default behaviour is to store newly set passwords without the
@@ -1829,9 +1831,12 @@ are:
 _SOGoMailingMechanism_ is set to `smtp`.
 Supported formats are: `smtp://domain:port`, `smtps://domain`,
 `domain:port`, `smtp://domain:port/?tls=YES`. Using the option
-`tls=YES` will enforce using STARTTLS smtp connections. Thus,
+`tls=YES` will enforce using STARTTLS SMTP connections. Thus,
 `smtp://localhost:587/?tls=YES` would use the default MUA port
 on localhost with STARTTLS enforced.
+To disable TLS verification for localhost domains, add
+`tlsVerifyMode=allowInsecureLocalhost` to such connections:
+`smtp://localhost:587/?tls=YES&tlsVerifyMode=allowInsecureLocalhost`.
 
 |D |SOGoSMTPAuthenticationType
 |Activate SMTP authentication and specifies which type is in use.
@@ -1919,6 +1924,7 @@ URL with a fully qualified domain name, such as:
 [options="compact"]
 * `imaps://mail.acme.com:993`
 * `imap://mail.acme.com:143/?tls=YES`
+* `imap://127.0.0.1:143/?tls=YES&tlsVerifyMode=allowInsecureLocalhost`
 
 |D |SOGoSieveServer
 |Parameter used to set the DNS name or IP address of the Sieve
@@ -1933,6 +1939,7 @@ qualified domain name, such as:
 
 [options="compact"]
 * `sieve://mail.acme.com:4190/?tls=YES`
+* `sieve://127.0.0.14190/?tls=YES&tlsVerifyMode=allowInsecureLocalhost`
 
 Note that TLS is supported but SSL is not.
 
@@ -3124,6 +3131,11 @@ current version of SOGo from the previous release.
 
 [cols="100a"]
 |=======================================================================
+h|5.0.0
+|Peer is now verified for TLS connections (SMTP/IMAP/Sieve). If you enabled
+TLS on the local machine (localhost and similar), you need to disable peer
+verification by adding `tlsVerifyMode=allowInsecureLocalhost` to the service URL.
+
 h|4.1.0
 |The default port for the SOGoSieveServer default is now 4190 (previously
 2000). You need to explicitly set the port if you use a different port.

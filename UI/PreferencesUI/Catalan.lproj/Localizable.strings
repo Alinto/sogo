@@ -40,7 +40,7 @@
 "Auto reply subject" = "Assumpte de la resposta automàtica";
 "You can write ${subject} to insert the original subject" = "Podeu escriure ${subject} per afegir l'assumpte original";
 "Auto reply message" = "Respondre automàticament una sola vegada a cada remitent amb aquest text";
-"Email addresses (separated by commas)" = "Adreces de correu (separades per comes)";
+"Email addresses" = "Adreces de correu";
 "Add default email addresses" = "Afegir adreces de correu per defecte";
 "Days between responses" = "Dies entre respostes";
 "Do not send responses to mailing lists" = "No enviar respostes a llistes de correu";
@@ -62,6 +62,8 @@
 /* forward messages */
 "Forward incoming messages" = "Redirigir missatges entrants";
 "Keep a copy" = "Desar-ne una còpia";
+"Enter an email" = "Introdueix una adreça de correu";
+"Add another email" = "Afegeix una altra adreça de correu";
 "Please specify an address to which you want to forward your messages."
 = "Especifiqueu l'adreça a la qual voleu redirigir els missatges.";
 "You are not allowed to forward your messages to an external email address." = "No podeu re-enviar missatges a una adreça electrònica externa.";
@@ -212,6 +214,9 @@
 "Email" = "Correu electrònic";
 "Reply To Email" = "Respondre a aquesta adreça de correu";
 "Signature" = "Signatura";
+"Identities" = "Identitats";
+"Default Identity" = "Identitat per defecte";
+"New Identity" = "Nova identitat";
 "(Click to create)" = "(Clic per a crear-la)";
 "Please enter your signature below" = "Si us plau, poseu la signatura a sota";
 "Please specify a valid sender address." = "Per favor, especifique una adreça vàlida per al remitent.";
@@ -447,3 +452,13 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Limitat";
 "animation_NONE" = "Cap";
+
+/* 2FA */
+"Enable two-factor authentication using Google Authenticator" = "Activa l'autenticació en dos passos mitjançant Google Authenticator";
+"You must enter this key into your Google Authenticator application." = "Has d'introduir aquesta clau a l'aplicació Google Authenticator.";
+"If you do not and you log out you will not be able to login again." = "Si no ho fas i surts, no podràs tornar a iniciar la sessió.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Un script extern de Sieve està actiu";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "El Sieve és un llenguatge de programació que es pot utilitzar per filtrar correu electrònic. Si deixes que SOGo gestioni la configuració dels teus filtres, les vacances i el reenviament, el vostre script actiu es desactivarà.";
+"Let SOGo handle everything" = "Deixa que SOGo s'ocupi de tot";

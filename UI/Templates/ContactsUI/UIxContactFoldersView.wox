@@ -390,7 +390,7 @@
                     <var:string label:value="Export"/>
                   </md-button>
                 </md-menu-item>
-                <md-menu-item ng-show="(app.service.$addressbooks.length + app.service.$subscriptions.length) > 1">
+                <md-menu-item ng-show="(app.service.$addressbooks.length + app.service.$subscriptions.length) > 1 || addressbook.selectedFolder.isRemote">
                   <md-menu>
                     <md-button label:aria-label="Copy To" ng-click="$mdMenu.open($event)">
                       <var:string label:value="Copy To"/>

@@ -1251,7 +1251,7 @@ static NSArray *reminderValues = nil;
 
   if (!knownKeys)
     {
-      knownKeys = [NSArray arrayWithObjects: @"name", @"serverName", @"port",
+      knownKeys = [NSArray arrayWithObjects: @"id", @"name", @"serverName", @"port",
                            @"userName", @"password", @"encryption", @"replyTo",
                            @"identities", @"mailboxes",
                            @"receipts", @"security", @"isNew",
@@ -1504,7 +1504,7 @@ static NSArray *reminderValues = nil;
         [v setObject: [[user userDefaults] mailCertificate]  forKey: @"SOGoMailCertificate"];
 
       //
-      // We sanitize our auxilary mail accounts
+      // We sanitize our auxiliary mail accounts
       //
       accounts = [v objectForKey: @"AuxiliaryMailAccounts"];
       if (accounts && [accounts isKindOfClass: [NSArray class]])

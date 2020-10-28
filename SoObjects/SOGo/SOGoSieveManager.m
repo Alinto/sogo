@@ -964,6 +964,9 @@ static NSString *sieveScriptName = @"sogo";
       text = [values objectForKey: @"autoReplyText"];
       b = YES;
 
+      if (!text)
+        text = @"";
+
       if (!useCustomSubject)
         {
           // If user has not specified a custom subject, fallback to the domain's defaults

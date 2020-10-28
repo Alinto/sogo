@@ -40,7 +40,7 @@
 "Auto reply subject" = "Tytuł autoodpowiedzi";
 "You can write ${subject} to insert the original subject" = "Możesz wstawić tytuł oryginału, wpisując ${subject}";
 "Auto reply message" = "Treść autoodpowiedzi";
-"Email addresses (separated by commas)" = "Adresy e-mail (oddzielone przecinkami)";
+"Email addresses" = "Adres e-mail";
 "Add default email addresses" = "Dodaj domyślne adresy e-mail";
 "Days between responses" = "Dni pomiędzy odpowiedziami";
 "Do not send responses to mailing lists" = "Nie wysyłaj odpowiedzi do grup pocztowych";
@@ -62,6 +62,8 @@
 /* forward messages */
 "Forward incoming messages" = "Przekaż przychodzące wiadomości";
 "Keep a copy" = "Zatrzymaj kopię";
+"Enter an email" = "Wprowadź e-mail";
+"Add another email" = "Dodaj inny e-mail";
 "Please specify an address to which you want to forward your messages."
 = "Podaj adres, na który chcesz przekazywać wiadomości.";
 "You are not allowed to forward your messages to an external email address." = "Nie masz uprawnień do przesyłania dalej swoich wiadomości na zewnętrzny adres e-mail.";
@@ -212,6 +214,9 @@
 "Email" = "E-mail";
 "Reply To Email" = "Odpowiedź do";
 "Signature" = "Sygnatura";
+"Identities" = "Tożsamości";
+"Default Identity" = "Domyślna tożsamość";
+"New Identity" = "Nowa tożsamość";
 "(Click to create)" = "(Kliknij by stworzyć)";
 "Please enter your signature below" = "Wprowadź swoją sygnaturę";
 "Please specify a valid sender address." = "Wprowadź poprawny adres nadawcy.";
@@ -226,7 +231,7 @@
 "Upload" = "Wgraj";
 "When composing a message" = "Gdy wiadomość jest tworzona";
 "Digitally sign the message by default" = "Domyślnie podpisuj cyfrowo wiadomość";
-"Always try to encrypt the message" = "Zawsze próbuj odszyfrować wiadomość";
+"Always try to encrypt the message" = "Zawsze próbuj zaszyfrować wiadomość";
 "An error occurred while importing the certificate. Verify your password." = "Błąd w trakcie importu certyfikatu. Sprawdź hasło.";
 
 /* Additional Parameters */
@@ -447,3 +452,13 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Ograniczony";
 "animation_NONE" = "Bez animacji";
+
+/* 2FA */
+"Enable two-factor authentication using Google Authenticator" = "Włącz dwuskładnikowe uwierzytelnianie przez Google Authenticator";
+"You must enter this key into your Google Authenticator application." = "Musisz wpisać ten klucz w aplikacji Google Authenticator.";
+"If you do not and you log out you will not be able to login again." = "Jeśli tego nie zrobisz i wylogujesz się, nie będziesz w stanie ponownie się zalogować.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Obecnie aktywny jest zewnętrzny skrypt Sieve";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve to język programowania używany do filtrowania wiadomości. Jeżeli pozwolisz, by SOGo zarządzało filtrami, autoresponderem i przekierowaniem, twój aktualny skrypt będzie zablokowany.";
+"Let SOGo handle everything" = "Pozwól SOGo zająć się wszystkim";

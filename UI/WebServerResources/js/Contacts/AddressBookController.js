@@ -260,7 +260,7 @@
       if (cards.length != allCards.length)
         $mdToast.show(
           $mdToast.simple()
-            .content(l("Lists can't be moved or copied."))
+            .textContent(l("Lists can't be moved or copied."))
             .position('top right')
             .hideDelay(2000));
 
@@ -283,7 +283,7 @@
             $state.go('app.addressbook');
           $mdToast.show(
             $mdToast.simple()
-              .content(success)
+              .textContent(success)
               .position('top right')
               .hideDelay(2000));
         });

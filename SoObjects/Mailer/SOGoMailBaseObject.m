@@ -93,7 +93,7 @@
 	    container];
       folder = nil;
     }
-  
+
   return folder;
 }
 
@@ -211,7 +211,7 @@
       // use the container's one.
       //
       login = [[[self context] activeUser] login];
-      
+
       if (!login)
 	login = [[[[self container] context] activeUser] login];
 
@@ -265,7 +265,7 @@
       [self warnWithFormat:@"container does not implement -imap4URL!"];
       url = nil;
     }
-  
+
   return url;
 }
 
@@ -285,6 +285,7 @@
 {
   SOGoMailAccount *account;
   NSString *urlString;
+  NSString *useTls = @"NO";
 
   /* this could probably be handled better from NSURL but it's buggy in
      GNUstep */
@@ -292,10 +293,11 @@
     {
       account = [self mailAccountFolder];
       if ([[account encryption] isEqualToString: @"tls"])
-        urlString = [NSString stringWithFormat: @"%@?tls=YES",
-                              [self imap4URLString]];
-      else
-	urlString = [self imap4URLString];
+        {
+          useTls = @"YES";
+        }
+      urlString = [NSString stringWithFormat: @"%@?tls=%@&tlsVerifyMode=%@",
+                              [self imap4URLString], useTls, [account tlsVerifyMode]];
       imap4URL = [[NSURL alloc] initWithString: urlString];
     }
 

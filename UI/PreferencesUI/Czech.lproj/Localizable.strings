@@ -40,7 +40,7 @@
 "Auto reply subject" = "Předmět odpovědi v nepřítomnosti";
 "You can write ${subject} to insert the original subject" = "Napište ${subject} pro vložení originálního předmětu zprávy";
 "Auto reply message" = "Zpráva zasílaná v nepřítomnosti";
-"Email addresses (separated by commas)" = "Emailové adresy (oddělené čárkami)";
+"Email addresses" = "E-mailové adresy";
 "Add default email addresses" = "Přidat základní emailové adresy";
 "Days between responses" = "Počet dnů mezi odpověďmi";
 "Do not send responses to mailing lists" = "Neposílat odpovědi do konferencí";
@@ -62,6 +62,8 @@
 /* forward messages */
 "Forward incoming messages" = "Přeposílat příchozí zprávy";
 "Keep a copy" = "Ponechat kopii";
+"Enter an email" = "Zadejte e-mail";
+"Add another email" = "Přidejte další e-mail";
 "Please specify an address to which you want to forward your messages."
 = "Prosím zadejte adresu, na kterou chcete své zprávy přeposílat.";
 "You are not allowed to forward your messages to an external email address." = "Nemáte povoleno přeposílání Vašich zpráv na externí emailovou adresu.";
@@ -212,6 +214,9 @@
 "Email" = "E-mailová adresa";
 "Reply To Email" = "Adresa pro odpověď";
 "Signature" = "Podpis";
+"Identities" = "Identity";
+"Default Identity" = "Implicitní identita";
+"New Identity" = "Nová identita";
 "(Click to create)" = "(Klikni pro vytvoření)";
 "Please enter your signature below" = "Text podpisu";
 "Please specify a valid sender address." = "Prosím zadejte správnou adresu odesílatele.";
@@ -447,3 +452,13 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Omezená";
 "animation_NONE" = "Žádná";
+
+/* 2FA */
+"Enable two-factor authentication using Google Authenticator" = "Povolit 2-fázové ověřování pomocí Google Authenticator";
+"You must enter this key into your Google Authenticator application." = "Tento klíč musíte zadat do své aplikace Google Authenticator.";
+"If you do not and you log out you will not be able to login again." = "Pokud tak neučiníte a odhlásíte se, nebudete se moci znovu přihlásit.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Je aktivní externí Sieve skript.";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve je programovací jazyk, který může být použit k filtrování emailových zpráv. Pokud chcete aby SOGo spravovalo Vaše filtry, nastavení nepřítomnosti a přeposílání, Váš aktivní skript bude deaktivován.";
+"Let SOGo handle everything" = "Nechat SOGo spravovat vše";

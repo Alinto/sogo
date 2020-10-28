@@ -1,6 +1,6 @@
-/* UIxContactsFilterPanel.h - this file is part of SOGo
+/* UIxOccurenceEditor.h - this file is part of SOGo
  *
- * Copyright (C) 2006-2018 Inverse inc.
+ * Copyright (C) 2008-2020 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef UIXCONTACTSFILTERPANEL_H
-#define UIXCONTACTSFILTERPANEL_H
+#ifndef UIXOCCURENCEEDITOR_H
+#define UIXOCCURENCEEDITOR_H
 
-#import <SOGoUI/UIxComponent.h>
 
 @class NSString;
 
-@interface UIxCalFilterPanel : UIxComponent
-{
-  NSString *searchText;
-  NSString *searchCriteria;
-}
+#import <UI/SOGoUI/SOGoDirectAction.h>
+
+@interface UIxOccurenceEditor : SOGoDirectAction
 
 @end
 
-#endif /* UIXCONTACTSFILTERPANEL_H */
+#endif /* UIXOCCURENCEEDITOR_H */

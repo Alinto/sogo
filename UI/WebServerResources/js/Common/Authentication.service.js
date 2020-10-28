@@ -139,7 +139,7 @@
           return d.promise;
         }, // login: function(data) { ...
 
-        changePassword: function(newPassword) {
+        changePassword: function(newPassword, oldPassword) {
           var d = $q.defer(),
               xsrfCookie = $cookies.get('XSRF-TOKEN');
 
@@ -151,7 +151,7 @@
             headers: {
               'X-XSRF-TOKEN' : xsrfCookie
             },
-            data: { newPassword: newPassword }
+            data: { newPassword: newPassword, oldPassword: oldPassword }
           }).then(d.resolve, function(response) {
             var error,
                 data = response.data,

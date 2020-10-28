@@ -51,7 +51,7 @@
 
 @class WOResponse;
 
-NSArray *SOGoMailCoreInfoKeys;
+extern NSArray *SOGoMailCoreInfoKeys;
 
 @interface SOGoMailObject : SOGoMailBaseObject
 {

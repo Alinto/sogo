@@ -7,8 +7,8 @@
   /**
    * @ngInject
    */
-  navController.$inject =  ['$rootScope', '$scope', '$timeout', '$interval', '$http', '$window', '$mdSidenav', '$mdToast', '$mdMedia', '$log', 'sgConstant', 'sgSettings', 'Resource', 'Alarm'];
-  function navController($rootScope, $scope, $timeout, $interval, $http, $window, $mdSidenav, $mdToast, $mdMedia, $log, sgConstant, sgSettings, Resource, Alarm) {
+  navController.$inject =  ['$rootScope', '$scope', '$timeout', '$interval', '$http', '$window', '$mdSidenav', '$mdToast', '$mdMedia', '$log', 'sgConstant', 'sgSettings', 'Resource', 'Preferences'];
+  function navController($rootScope, $scope, $timeout, $interval, $http, $window, $mdSidenav, $mdToast, $mdMedia, $log, sgConstant, sgSettings, Resource, Preferences) {
     var resource = new Resource(sgSettings.baseURL(), sgSettings.activeUser());
 
     this.$onInit = function() {
@@ -52,7 +52,12 @@
 
       if (sgSettings.activeUser('path').calendar) {
         // Fetch Calendar alarms
-        Alarm.getAlarms();
+        Preferences.getAlarms();
+      }
+
+      if (sgSettings.activeUser('path').mail) {
+        // Poll inbox for new messages
+        Preferences.pollInbox();
       }
     };
 

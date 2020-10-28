@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2014 Inverse inc.
+  Copyright (C) 2007-2020 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -112,7 +112,7 @@
 - (NGMimeBodyPart *) bodyPartForAttachmentWithName: (NSString *) _name;
 - (NSString *) pathToAttachmentWithName: (NSString *) _name;
 - (NSException *) saveAttachment: (NSData *) _attach
-		    withMetadata: (NSDictionary *) metadata;
+		    withMetadata: (NSMutableDictionary *) metadata;
 - (NSException *) deleteAttachmentWithName: (NSString *) _name;
 
 /* NGMime representations */

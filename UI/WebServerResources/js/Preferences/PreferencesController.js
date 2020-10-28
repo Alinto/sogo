@@ -13,7 +13,7 @@
 
     this.$onInit = function() {
       this.preferences = Preferences;
-      this.passwords = { newPassword: null, newPasswordConfirmation: null };
+      this.passwords = { newPassword: null, newPasswordConfirmation: null, oldPassword: null };
       this.timeZonesList = $window.timeZonesList;
       this.timeZonesSearchText = '';
       this.sieveVariablesCapability = ($window.sieveCapabilities.indexOf('variables') >= 0);
@@ -53,6 +53,11 @@
             $window.location.reload(true);
           });
         });
+    };
+
+    this.onDesktopNotificationsChange = function() {
+      if (this.preferences.defaults.SOGoDesktopNotifications)
+        this.preferences.authorizeNotifications();
     };
 
     this.resetContactsCategories = function(form) {
@@ -105,7 +110,9 @@
     this.addMailAccount = function(ev, form) {
       var account, index;
 
+      index = this.preferences.defaults.AuxiliaryMailAccounts.length;
       account = new Account({
+        id: index,
         isNew: true,
         name: "",
         identities: [
@@ -121,7 +128,6 @@
           receiptAnyAction: "ignore"
         }
       });
-      index = this.preferences.defaults.AuxiliaryMailAccounts.length;
 
       $mdDialog.show({
         controller: 'AccountDialogController',
@@ -147,8 +153,10 @@
     };
 
     this.editMailAccount = function(event, index, form) {
-      var data = _.cloneDeep(this.preferences.defaults.AuxiliaryMailAccounts[index]);
-      var account = new Account(data);
+      var data, account;
+
+      data = _.assign({ id: index }, _.cloneDeep(this.preferences.defaults.AuxiliaryMailAccounts[index]));
+      account = new Account(data);
       $mdDialog.show({
         controller: 'AccountDialogController',
         controllerAs: '$AccountDialogController',
@@ -223,7 +231,8 @@
         locals: {
           filter: filter,
           mailboxes: mailboxes,
-          labels: this.preferences.defaults.SOGoMailLabelsColors
+          labels: this.preferences.defaults.SOGoMailLabelsColors,
+          validateForwardAddress: validateForwardAddress
         }
       }).then(function() {
         if (!vm.preferences.defaults.SOGoSieveFilters)
@@ -245,7 +254,8 @@
         locals: {
           filter: filter,
           mailboxes: mailboxes,
-          labels: this.preferences.defaults.SOGoMailLabelsColors
+          labels: this.preferences.defaults.SOGoMailLabelsColors,
+          validateForwardAddress: validateForwardAddress
         }
       }).then(function() {
         vm.preferences.defaults.SOGoSieveFilters[index] = filter;
@@ -341,23 +351,18 @@
       }
     };
 
-    this.save = function(form, options) {
-      var i, sendForm, addresses, defaultAddresses, domains, domain;
+    function validateForwardAddress(address) {
+      var defaultAddresses, domains, domain;
 
-      sendForm = true;
       domains = [];
 
-      // We do some sanity checks
       if ($window.forwardConstraints > 0 &&
-          angular.isDefined(this.preferences.defaults.Forward) &&
-          this.preferences.defaults.Forward.enabled &&
-          angular.isDefined(this.preferences.defaults.Forward.forwardAddress)) {
-
-        addresses = this.preferences.defaults.Forward.forwardAddress;
+          angular.isDefined(Preferences.defaults.Forward) &&
+          Preferences.defaults.Forward.enabled &&
+          angular.isDefined(Preferences.defaults.Forward.forwardAddress)) {
 
         // We first extract the list of 'known domains' to SOGo
         defaultAddresses = $window.defaultEmailAddresses;
-
         _.forEach(defaultAddresses, function(adr) {
           var domain = adr.split("@")[1];
           if (domain) {
@@ -366,22 +371,40 @@
         });
 
         // We check if we're allowed or not to forward based on the domain defaults
-        for (i = 0; i < addresses.length && sendForm; i++) {
-          domain = addresses[i].split("@")[1].toLowerCase();
-          if (domains.indexOf(domain) < 0 && $window.forwardConstraints == 1) {
-            Dialog.alert(l('Error'), l("You are not allowed to forward your messages to an external email address."));
-            sendForm = false;
+        domain = address.split("@")[1].toLowerCase();
+        if (domains.indexOf(domain) < 0 && $window.forwardConstraints == 1) {
+          throw new Error(l("You are not allowed to forward your messages to an external email address."));
+        }
+        else if (domains.indexOf(domain) >= 0 && $window.forwardConstraints == 2) {
+          throw new Error(l("You are not allowed to forward your messages to an internal email address."));
+        }
+        else if ($window.forwardConstraints == 2 &&
+                 $window.forwardConstraintsDomains.length > 0 &&
+                 $window.forwardConstraintsDomains.indexOf(domain) < 0) {
+          throw new Error(l("You are not allowed to forward your messages to this domain:") + " " + domain);
+        }
+      }
+
+      return true;
+    }
+
+    this.save = function(form, options) {
+      var i, sendForm, addresses;
+
+      sendForm = true;
+
+      // We do some sanity checks
+
+      // We check if we're allowed or not to forward based on the domain defaults
+      if (this.preferences.defaults.Forward && this.preferences.defaults.Forward.forwardAddress) {
+        addresses = this.preferences.defaults.Forward.forwardAddress;
+        try {
+          for (i = 0; i < addresses.length; i++) {
+            validateForwardAddress(addresses[i]);
           }
-          else if (domains.indexOf(domain) >= 0 && $window.forwardConstraints == 2) {
-            Dialog.alert(l('Error'), l("You are not allowed to forward your messages to an internal email address."));
-            sendForm = false;
-          }
-          else if ($window.forwardConstraints == 2 &&
-                   $window.forwardConstraintsDomains.length > 0 &&
-                   $window.forwardConstraintsDomains.indexOf(domain) < 0) {
-            Dialog.alert(l('Error'), l("You are not allowed to forward your messages to this domain:") + " " + domain);
-            sendForm = false;
-          }
+        } catch (err) {
+          Dialog.alert(l('Error'), err);
+          sendForm = false;
         }
       }
 
@@ -434,30 +457,39 @@
           if (!options || !options.quick) {
             $mdToast.show(
               $mdToast.simple()
-                .content(l('Preferences saved'))
+                .textContent(l('Preferences saved'))
                 .position('bottom right')
                 .hideDelay(2000));
             form.$setPristine();
           }
         });
 
-      return $q.reject();
+      return $q.reject('Invalid form');
     };
 
-    this.canChangePassword = function() {
+    this.canChangePassword = function(form) {
+      if (this.passwords.newPasswordConfirmation && this.passwords.newPasswordConfirmation.length &&
+          this.passwords.newPassword != this.passwords.newPasswordConfirmation) {
+        form.newPasswordConfirmation.$setValidity('newPasswordMismatch', false);
+        return false;
+      }
+      else {
+        form.newPasswordConfirmation.$setValidity('newPasswordMismatch', true);
+      }
       if (this.passwords.newPassword && this.passwords.newPassword.length > 0 &&
           this.passwords.newPasswordConfirmation && this.passwords.newPasswordConfirmation.length &&
-          this.passwords.newPassword == this.passwords.newPasswordConfirmation)
+          this.passwords.newPassword == this.passwords.newPasswordConfirmation &&
+          this.passwords.oldPassword && this.passwords.oldPassword.length > 0)
         return true;
 
       return false;
     };
 
     this.changePassword = function() {
-      Authentication.changePassword(this.passwords.newPassword).then(function() {
+      Authentication.changePassword(this.passwords.newPassword, this.passwords.oldPassword).then(function() {
         var alert = $mdDialog.alert({
           title: l('Password'),
-          content: l('The password was changed successfully.'),
+          textContent: l('The password was changed successfully.'),
           ok: l('OK')
         });
         $mdDialog.show( alert )

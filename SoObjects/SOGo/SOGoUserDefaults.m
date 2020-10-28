@@ -134,6 +134,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
       email = [self stringForKey: @"SOGoMailCustomEmail"];
       replyTo = [self stringForKey: @"SOGoMailReplyTo"];
       signature = [self stringForKey: @"SOGoMailSignature"];
+      rc = NO;
 
       if ([fullName length])
         [identity setObject: fullName forKey: @"fullName"];
@@ -148,6 +149,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
         {
           [identity setObject: [NSNumber numberWithBool: YES] forKey: @"isDefault"];
           [self setMailIdentities: [NSArray arrayWithObject: identity]];
+          rc = YES;
         }
 
       /**
@@ -162,7 +164,6 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
       if (signature)
         [self removeObjectForKey: @"SOGoMailSignature"];
       */
-      rc = YES;
     }
 
   return rc;

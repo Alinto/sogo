@@ -2031,9 +2031,9 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
   NSMutableArray *dns, *uids, *logins;
   NSString *dn, *login;
   SOGoUserManager *um;
-  NSDictionary *d;
+  NSDictionary *d, *contactInfos;
   SOGoUser *user;
-  NSArray *o;
+  NSArray *o, *users;
   NSAutoreleasePool *pool;
   int i, c;
   NGLdapEntry *entry;
@@ -2100,10 +2100,20 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
               user = [SOGoUser userWithLogin: login  roles: nil];
               if (user)
                 {
-                  [logins addObject: login];
-                  [members addObject: [NSDictionary dictionaryWithObjectsAndKeys: login, @"c_uid",
-                                                                                  [user cn], @"c_cn",
-                                                                                  [user allEmails], @"c_emails", nil]];
+                  contactInfos = [self lookupContactEntryWithUIDorEmail: login inDomain: nil];
+                  if ([contactInfos objectForKey: @"isGroup"])
+                    {
+#warning Potential endless recursion due to cyclic memberships                    
+                      users = [self membersForGroupWithUID: login];
+                      [members addObjectsFromArray: users];
+                    }
+                  else
+                    {
+                      [logins addObject: login];
+                      [members addObject: [NSDictionary dictionaryWithObjectsAndKeys: login, @"c_uid",
+                                                                                      [user cn], @"c_cn",
+                                                                                      [user allEmails], @"c_emails", nil]];
+                    }
                 }
               [pool release];
             }

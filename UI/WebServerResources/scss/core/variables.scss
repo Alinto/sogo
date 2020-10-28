@@ -112,9 +112,6 @@ $slicer-breakpoint-names: 'xs' 'sm' 'md' 'lg' 'xl';
 
 $media-pointer: (pointer fine);
 
-// Button
-$button-left-right-padding: rem(0.600);
-
 // Icon
 $icon-size: rem(2.400) !default;
 
@@ -206,15 +203,22 @@ $material-leave-duration: 0.3s;
 $material-leave-timing-function: cubic-bezier(0.4, 0.0, 1, 1);
 $material-leave: all $material-leave-duration $material-leave-timing-function;
 
+// Button
+$button-left-right-padding: rem(0.800);
+$icon-button-height: rem(4.000) !default;
+$icon-button-width: rem(4.000) !default;
+
 // Fab Buttons (shared between buttons.scss and fab*.scss)
-// -------------------------------------------
 $button-fab-width: rem(5.600) !default;
 $button-fab-height: rem(5.600) !default;
 $button-fab-padding: rem(1.60) !default;
 
 
 // Shared Checkbox variables
-$checkbox-width: 20px !default;
+$checkbox-width: 18px !default;
 $checkbox-height: $checkbox-width !default;
 $checkbox-border-radius: 2px !default;
 $checkbox-border-width: 2px !default;
+
+// Shared Horizontal Margin Variables
+$default-horizontal-margin: 16px !default;

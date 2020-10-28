@@ -16,7 +16,6 @@ $sg-subheader-padding-left-right: $baseline-grid;
   &--with-icon .md-subheader-inner,
   &--with-secondary-icon .md-subheader-inner {
     line-height: $sg-avatar-width + ($sg-subheader-padding-top-bottom)*2;
-    padding: ($subheader-padding - ($icon-button-height - $subheader-font-size)/2) $baseline-grid;
     padding: 0;
     padding-left: $subheader-padding;
   }

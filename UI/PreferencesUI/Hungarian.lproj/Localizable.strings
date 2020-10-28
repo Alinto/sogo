@@ -40,7 +40,7 @@
 "Auto reply subject" = "Válaszüzenet tárgya";
 "You can write ${subject} to insert the original subject" = "Használhatja a ${subject} változót az eredeti tárgy beillesztéséhez";
 "Auto reply message" = "Automatikus válasz minden feladónak csak egy alkalommal";
-"Email addresses (separated by commas)" = "Email címek (vesszővel elválasztva)";
+"Email addresses" = "Email címek";
 "Add default email addresses" = "Saját email címek hozzáadása";
 "Days between responses" = "Válaszok között eltelt napok száma";
 "Do not send responses to mailing lists" = "Levelező listákra válasz mellőzése";
@@ -62,6 +62,8 @@
 /* forward messages */
 "Forward incoming messages" = "Beérkező levelek továbbítása";
 "Keep a copy" = "Másolat megtartása";
+"Enter an email" = "Email címet adjon meg";
+"Add another email" = "Adjon meg másik email címet";
 "Please specify an address to which you want to forward your messages."
 = "Kérem adjon meg egy címet, amelyre a leveleit továbbítani kívánja.";
 "You are not allowed to forward your messages to an external email address." = "Ön számára nem endélyezett az üzenetek továbbítása külső email címre.";
@@ -212,6 +214,9 @@
 "Email" = "Email cím";
 "Reply To Email" = "Válaszlevél";
 "Signature" = "Aláírás";
+"Identities" = "Személyazonosságok";
+"Default Identity" = "Alapértelmezett személyazonosság";
+"New Identity" = "Új személyazonosság";
 "(Click to create)" = "(A létrehozáshoz kattintson ide)";
 "Please enter your signature below" = "Kérem itt adja meg az aláírását";
 "Please specify a valid sender address." = "Egy érvényes feladó címet adjon meg.";
@@ -447,3 +452,13 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Korlátozott";
 "animation_NONE" = "Nincs";
+
+/* 2FA */
+"Enable two-factor authentication using Google Authenticator" = "Két faktoros hitelesítés engedélyezése Google Authenticator használatával";
+"You must enter this key into your Google Authenticator application." = "Meg kell adnia ezt a kulcsot a Google Authenticator alkalmazásban.";
+"If you do not and you log out you will not be able to login again." = "Ha nem teszi meg és kijelentkezik, akkor nem lesz képes újra bejelentkezni.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Külső Sieve szkript aktív";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve egy programozási nyelv amely az email üzenetek szűrésére használható. Ha engedélyezi, hogy a SOGo kezelje szűrőit, távollét és továbbítási beállításait, akkor a jelenleg aktív szkript le lesz tiltva.";
+"Let SOGo handle everything" = "A SOGo kezeljen mindent";

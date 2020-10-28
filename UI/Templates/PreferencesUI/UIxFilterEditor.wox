@@ -189,6 +189,10 @@
         </div>
       </div>
     </md-dialog-content>
+    <md-dialog-content class="md-default-theme md-bg md-warn md-padding sg-dialog-message ng-hide"
+                       ng-show="filterEditor.invalid">
+      <div>{{filterEditor.invalid}}</div>
+    </md-dialog-content>
     <md-dialog-actions>
       <md-button type="button" ng-click="filterEditor.cancel()"><var:string label:value="Cancel"/></md-button>
       <md-button type="submit"

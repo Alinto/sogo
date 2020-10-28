@@ -162,7 +162,7 @@
       Calendar.$subscribe(calendarData.owner, calendarData.name).then(function(data) {
          $mdToast.show(
            $mdToast.simple()
-             .content(l('Successfully subscribed to calendar'))
+             .textContent(l('Successfully subscribed to calendar'))
              .position('top right')
              .hideDelay(3000));
       });

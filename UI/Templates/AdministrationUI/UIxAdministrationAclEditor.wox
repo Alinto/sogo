@@ -69,7 +69,7 @@
               </md-item-template>
             </md-autocomplete>
           </div>
-          <md-card ng-repeat="user in acl.users track by user.uid | orderBy:['userClass', 'displayName']"
+          <md-card ng-repeat="user in acl.users | orderBy:['userClass', 'cn']"
                    class="sg-collapsed"
                    ng-class="{ 'sg-expanded': user.uid == acl.selectedUid }">
             <a class="md-flex md-button" ng-click="acl.selectUser(user, $event)">
@@ -84,7 +84,7 @@
                   <div class="sg-md-body"><div>{{user.c_email}}</div></div>
                 </div>
 	        <md-button class="md-icon-button md-secondary" type="button"
-                           ng-click="acl.selectAllRights(user)"
+                           ng-click="acl.toggleAllRights(user)"
                            ng-hide="!acl.showRights(user) || user.$isSpecial()">
                   <md-icon>select_all</md-icon>
                 </md-button>

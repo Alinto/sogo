@@ -339,7 +339,7 @@
 
                 $mdToast.show(
                   $mdToast.simple()
-                    .content(msg)
+                    .textContent(msg)
                     .position('top right')
                     .hideDelay(3000));
               },

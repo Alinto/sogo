@@ -1612,8 +1612,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
       if (records)
         {
-          if (r)
-            records = [self _fixupRecords: records];
+          records = [self _fixupRecords: records];
           ma = [NSMutableArray arrayWithArray: records];
         }
       else

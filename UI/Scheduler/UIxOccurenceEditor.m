@@ -1,8 +1,6 @@
-/* UIxCalDateSelector.h - this file is part of SOGo
+/* UIxOccurenceEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2006 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2008-2020 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,28 +18,26 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef UIXCALDATESELECTOR_H
-#define UIXCALDATESELECTOR_H
 
-#include "UIxCalMonthOverview.h"
+#import <NGObjWeb/WOResponse.h>
 
-@interface UIxCalDateSelector : UIxCalMonthOverview
+#import <SoObjects/Appointments/SOGoCalendarComponent.h>
+
+#import "UIxOccurenceEditor.h"
+
+@implementation UIxOccurenceEditor
+
+- (WOResponse *) deleteAction
 {
-  NSCalendarDate *selectedDate;
-  NSString *style;
-  NSString *headerStyle;
-  NSString *weekStyle;
-  NSString *todayWeekStyle;
-  NSString *dayHeaderStyle;
-  NSString *dayBodyStyle;
-  NSString *todayBodyStyle;
-  NSString *inactiveDayBodyStyle;
-  NSString *selectedDayExtraStyle;
-  NSString *daySelectionHref;
-  NSString *weekSelectionHref;
-  NSString *monthSelectionHref;
+  SOGoCalendarComponent *component;
+  WOResponse *response;
+
+  component = [self clientObject];
+  response = (WOResponse *) [component prepareDelete];
+  if (!response)
+    response = [self responseWithStatus: 204];
+
+  return response;
 }
 
 @end
-
-#endif /* UIXCALDATESELECTOR_H */

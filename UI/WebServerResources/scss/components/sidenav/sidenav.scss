@@ -43,8 +43,7 @@ md-select-value [class*="sg-child-level"] {
 [class^=sg-child-level] {
   md-icon,
   md-checkbox {
-    margin-right: $bl * 2;
-    max-width: 24px;
-    min-height: 24px;
+    margin-right: $bl;
+    line-height: $checkbox-height;
   }
 }

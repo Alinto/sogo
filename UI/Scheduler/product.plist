@@ -1,31 +1,9 @@
 { /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
   requires = ( MAIN, MainUI, CommonUI, Appointments, Contacts, ContactsUI );
 
-  publicResources = (
-                     previous_week.gif,
-                     next_week.gif,
-                     icon_view_overview.gif,
-                     icon_view_overview_inactive.gif,
-                     icon_view_chart.gif,
-                     icon_view_chart_inactive.gif,
-                     icon_view_list.gif,
-                     icon_view_list_inactive.gif,
-                     icon_view_columns.gif,
-                     icon_view_columns_inactive.gif,
-                     icon_popupcalendar.gif,
-                     first.gif,
-                     previous.gif,
-                     next.gif,
-                     last.gif,
-                     skycalendar.html,
-                     skycalendar.js,
-                     green_corner.gif,
-                     invisible_space_2.gif,
-                     cycles.plist,
-                     );
+  publicResources = ();
 
-    factories = {
-    };
+  factories = {};
 
   categories = {
     SOGoAppointmentFolders = {
@@ -69,10 +47,6 @@
           protectedBy = "View";
           pageName    = "UIxCalMainView";
           actionName  = "saveFoldersOrder";
-        };
-        dateselector = {
-          protectedBy = "View";
-          pageName    = "UIxCalDateSelector"; 
         };
         calendarslist = {
           protectedBy = "View";
@@ -318,25 +292,6 @@
       };
     };
 
-    SOGoComponentOccurence = {
-      methods = {
-        confirmEditing = {
-          protectedBy = "ViewAllComponent";
-          pageName    = "UIxOccurenceDialog";
-        };
-        confirmAdjustment = { 
-          protectedBy = "ViewAllComponent";
-          pageName    = "UIxOccurenceDialog";
-          actionName  = "confirmAdjustment";
-        };
-        confirmDeletion = { 
-          protectedBy = "Delete Object";
-          pageName    = "UIxOccurenceDialog";
-          actionName  = "confirmDeletion";
-        };
-      };
-    };
-
     SOGoAppointmentOccurence = {
       slots = {
         toolbar = {
@@ -352,7 +307,7 @@
         };
         delete = {
           protectedBy = "Delete Object";
-          pageName    = "UIxOccurenceDialog";
+          actionClass = "UIxOccurenceEditor";
           actionName  = "delete";
         };
         adjust = {
@@ -378,7 +333,7 @@
         };
         delete = {
           protectedBy = "Delete Object";
-          pageName    = "UIxOccurenceDialog";
+          actionClass = "UIxOccurenceEditor";
           actionName  = "delete";
         };
       };

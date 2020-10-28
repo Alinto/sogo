@@ -21,6 +21,12 @@
 "browserNotCompatible" = "Używasz przeglądarki WWW, która nie jest obecnie obsługiwana przez tę stronę. Rekomendowaną przeglądarką jest Firefox. Kliknij poniższy odnośnik aby pobrać najnowszą wersję tej przeglądarki.";
 "alternativeBrowsers" = "Alternatywnie możesz także używać następujących przeglądarek";
 "alternativeBrowserSafari" = "Alternatywnie możesz używać również przeglądarki Safari.";
+
+/* 2FA */
+"Verification Code" = "Kod weryfikacyjny";
+"Enter the 6-digit verification code from your Google Authenticator application." = "Wpisz 6-cio cyfrowy kod z aplikacji Google Authenticator.";
+"You provided an invalid Google Authenticator key." = "Podałeś nieprawidłowy klucz Google Authenticator.";
+
 "Download" = "Pobierz";
 "Language" = "Język";
 "choose" = "Wybierz ...";

@@ -22,23 +22,19 @@ MailerUI_OBJC_FILES += \
 	UIxMailSourceView.m		\
 	UIxMailPopupView.m		\
 	UIxMailMoveToPopUp.m		\
-	UIxMailFilterPanel.m		\
-	UIxMailSearch.m		        \
 	\
 	UIxMailAccountActions.m		\
 	UIxMailFolderActions.m		\
 	UIxMailFolderSubscriptions.m	\
 	UIxMailActions.m		\
 	UIxMailEditor.m			\
-	UIxMailToSelection.m		\
 	UIxMailWindowCloser.m		\
 	\
 	UIxMailUserRightsEditor.m	\
 	UIxMailUserDelegationEditor.m
 
 MailerUI_RESOURCE_FILES += \
-	product.plist	\
-	Toolbars/*.toolbar
+	product.plist
 
 MailerUI_LOCALIZED_RESOURCE_FILES += \
 	Localizable.strings

@@ -104,7 +104,7 @@
 "To"            = "An";
 "Cc"            = "CC";
 "Bcc"           = "BCC";
-"Reply-To"	    = "Antwort an";
+"Reply-To"	= "Antwort an";
 "Add address"   = "Adresse hinzufügen";
 "Body"          = "Inhalt";
 "Open" = "Öffnen";
@@ -121,6 +121,7 @@
 "Edit Draft..." = "Entwurf bearbeiten...";
 "Load Images" = "Bilder laden";
 "Return Receipt" = "Empfangsbestätigung";
+"Choose which identity to send this message from" = "Wählen Sie von welcher Identität diese Nachricht gesendet wird";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Der Absender möchte benachrichtigt werden, sobald Sie diese Nachricht lesen. Möchten Sie den Absender benachrichtigen?";
 "Return Receipt (displayed) - %@"= "Empfangsbestätigung (angezeigt) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dies ist die Empfangsbestätigung für die Nachricht, die Sie an %@ gesendet haben.\n\nHinweis: Es wird lediglich bestätigt, dass die Nachricht auf dem Computer des Empfängers empfangen (angezeigt) wurde. Es wird nicht garantiert, dass der Empfänger die Nachricht gelesen und/oder verstanden hat.";

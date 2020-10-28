@@ -120,12 +120,12 @@
 
 /* SMIME Certificate field */
 "S/MIME Certificate" = "Certyfikat S/MIME";
-"Subject Name" = "Nazwa opisowa";
+"Subject Name" = "Nazwa podmiotu";
 "Issuer" = "Wystawca";
 "countryName" = "Kraj";
 "organizationName" = "Organizacja";
 "organizationalUnitName" = "Jednostka";
-"commonName" = "Nazwa zwyczajowa";
+"commonName" = "Nazwa pospolita";
 "emailAddress" = "Adres e-mail";
 
 /* Authentication username */

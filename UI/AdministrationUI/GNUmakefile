@@ -18,9 +18,6 @@ AdministrationUI_OBJC_FILES =		\
 AdministrationUI_RESOURCE_FILES += \
 	product.plist	
 
-AdministrationUI_RESOURCE_FILES += \
-	Toolbars/UIxAdministration.toolbar
-
 AdministrationUI_LOCALIZED_RESOURCE_FILES += \
 	Localizable.strings		\
 

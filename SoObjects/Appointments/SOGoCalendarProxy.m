@@ -158,16 +158,22 @@
 {
   int begin, end;
   NSRange beginRange;
+  NSString *subscriber;
 
+  subscriber = nil;
   end = length;
   if ([memberSet characterAtIndex: end - 1] == '/')
     end--;
   beginRange = [memberSet rangeOfString: @"/"
                                 options: NSBackwardsSearch
                                   range: NSMakeRange (0, end)];
-  begin = NSMaxRange (beginRange);
+  if (beginRange.location != NSNotFound)
+    {
+      begin = NSMaxRange (beginRange);
+      subscriber = [memberSet substringWithRange: NSMakeRange (begin, end - begin)];
+    }
 
-  return [memberSet substringWithRange: NSMakeRange (begin, end - begin)];
+  return subscriber;
 }
 
 - (NSArray *) _parseSubscribers: (NSString *) memberSet
@@ -185,9 +191,9 @@
     {
       subscriber = [self _parseSubscriber: mMemberSet
                                     until: endRange.location];
-      [subscribers addObjectUniquely: subscriber];
-      [mMemberSet
-        deleteCharactersInRange: NSMakeRange (0, endRange.location + 1)];
+      if (subscriber)
+        [subscribers addObjectUniquely: subscriber];
+      [mMemberSet deleteCharactersInRange: NSMakeRange (0, endRange.location + 1)];
       endRange = [mMemberSet rangeOfString: @"</"];
     }
 
@@ -203,8 +209,7 @@
   folders = [[self lookupUserFolder] lookupName: @"Calendar"
                                       inContext: context
                                         acquire: NO];
-  oldProxySubscribers
-    = [folders proxySubscribersWithWriteAccess: hasWriteAccess];
+  oldProxySubscribers = [folders proxySubscribersWithWriteAccess: hasWriteAccess];
   if (!oldProxySubscribers)
     oldProxySubscribers = [NSMutableArray array];
   newProxySubscribers = [self _parseSubscribers: memberSet];

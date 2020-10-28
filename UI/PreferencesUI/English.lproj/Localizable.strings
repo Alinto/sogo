@@ -238,9 +238,11 @@
 "Additional Parameters" = "Additional Parameters";
 
 /* password */
+"Current password" = "Current password";
 "New password" = "New password";
 "Confirmation" = "Confirmation";
 "Change" = "Change";
+"Passwords don't match" = "Passwords don't match";
 
 /* Event+task classifications */
 "Default events classification" = "Default events classification";
@@ -321,6 +323,7 @@
 "refreshview_every_20_minutes" = "Every 20 minutes";
 "refreshview_every_30_minutes" = "Every 30 minutes";
 "refreshview_once_per_hour" = "Once per hour";
+"Enable Desktop Notifications" = "Enable Desktop Notifications";
 
 /* Return receipts */
 "When I receive a request for a return receipt" = "When I receive a request for a return receipt";

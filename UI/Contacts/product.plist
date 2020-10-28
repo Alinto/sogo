@@ -18,20 +18,10 @@
           protectedBy = "View";
           pageName    = "UIxContactFoldersView";
         };
-        mailer-contacts = {
-          protectedBy = "View";
-          pageName    = "UIxContactFoldersView";
-          actionName  = "mailerContacts";
-        };
         allContactSearch = {
           protectedBy = "<public>";
           pageName    = "UIxContactFoldersView";
           actionName  = "allContactSearch";
-        };
-        updateAdditionalAddressBooks = {
-          protectedBy = "View";
-          pageName    = "UIxContactFoldersView";
-          actionName = "updateAdditionalAddressBooks";
         };
         acls = {
           protectedBy = "ReadAcls";
@@ -41,11 +31,6 @@
           protectedBy = "Change Permissions";
           pageName    = "UIxAclEditor";
           actionName  = "saveAcls";
-        };
-        checkRights = {
-          protectedBy = "View";
-          pageName    = "UIxContactFoldersView"; 
-          actionName  = "checkRights";
         };
         UIxContactEditorTemplate = {
           protectedBy = "View";
@@ -60,7 +45,7 @@
           pageName = "UIxContactFoldersView";
           actionName = "addressbooksList";
         };
-       saveDragHandleState = {
+        saveDragHandleState = {
           protectedBy = "View";
           pageName    = "UIxContactFoldersView";
           actionName  = "saveDragHandleState";
@@ -88,40 +73,10 @@
           actionClass = "UIxContactsListActions";
           actionName  = "getHeaders";
         };
-        // contacts = {
-        //   protectedBy = "View";
-        //   actionClass = "UIxContactsListActions";
-        //   actionName  = "contactsList";
-        // };
-        contactSearch = {
-          protectedBy = "<public>";
-          actionClass = "UIxContactsListActions";
-          actionName  = "contactSearch";
-        };
-        newcontact = {
-          protectedBy = "<public>";
-          pageName    = "UIxContactEditor";
-          actionName  = "new";
-        };
-        newlist = {
-          protectedBy = "Add Documents, Images, and Files";
-          pageName    = "UIxListEditor";
-          actionName  = "new";
-        };
-        mailer-contacts = {
-          protectedBy = "View";
-          pageName    = "UIxContactFoldersView";
-          actionName  = "mailerContacts";
-        };
         export = {
           protectedBy = "View";
           actionClass = "UIxContactFolderActions";
           actionName  = "export";
-        };
-        exportFolder = {
-          protectedBy = "View";
-          actionClass = "UIxContactFolderActions";
-          actionName = "export";
         };
         import = {
           protectedBy = "Add Documents, Images, and Files";
@@ -171,21 +126,6 @@
           actionClass = "UIxContactsListActions";
           actionName  = "contactsList";
         };
-        newcontact = {
-          protectedBy = "<public>";
-          pageName    = "UIxContactEditor";
-          actionName  = "new";
-        };
-        mailer-contacts = {
-          protectedBy = "<public>";
-          pageName    = "UIxContactFoldersView";
-          actionName = "mailerContacts";
-        };
-        canAccessContent = {
-          protectedBy = "<public>";
-          actionClass = "UIxFolderActions";
-          actionName = "canAccessContent";
-        };
         copy = {
           protectedBy = "Access Contents Information";
           actionClass = "UIxFolderActions";
@@ -201,28 +141,15 @@
           pageName    = "UIxContactView";
           actionName  = "data";
         };
-        edit = {
-          protectedBy = "Access Contents Information";
-          pageName    = "UIxContactEditor";
-        };
-        editAsContact = {
-          protectedBy = "Access Contents Information";
-          pageName    = "UIxContactEditor";
-        };
         save = {
           protectedBy = "Change Images And Files";
-          pageName    = "UIxContactEditor";
+          actionClass = "UIxContactEditor";
           actionName  = "save";
         };
         saveAsContact = {
           protectedBy = "Change Images And Files";
-          pageName    = "UIxContactEditor";
+          actionClass = "UIxContactEditor";
           actionName  = "save";
-        };
-        write = {
-          protectedBy = "View";
-          pageName    = "UIxContactEditor";
-          actionName  = "write";
         };
         setCategory = {
           protectedBy = "Change Images And Files";
@@ -264,22 +191,14 @@
           pageName    = "UIxListView";
           actionName  = "properties";
         };
-        edit = {
-          protectedBy = "Access Contents Information";
-          pageName    = "UIxListEditor";
-        };
-        editAsList = {
-          protectedBy = "Access Contents Information";
-          pageName    = "UIxListEditor";
-        };
         save = {
           protectedBy = "Change Images And Files";
-          pageName    = "UIxListEditor";
+          actionClass    = "UIxListEditor";
           actionName  = "save";
         };
         saveAsList = {
           protectedBy = "Change Images And Files";
-          pageName    = "UIxListEditor";
+          actionClass    = "UIxListEditor";
           actionName  = "save";
         };
         raw = {
@@ -297,14 +216,6 @@
           pageName    = "UIxContactView";
           actionName  = "data";
         };
-        edit = {
-          protectedBy = "Access Contents Information";
-          pageName    = "UIxContactEditor";
-        };
-        editAsContact = {
-          protectedBy = "Access Contents Information";
-          pageName    = "UIxContactEditor";
-        };
         members = {
           protectedBy = "Access Contents Information";
           pageName    = "UIxContactView";
@@ -312,18 +223,13 @@
         };
         save = {
           protectedBy = "Change Images And Files";
-          pageName    = "UIxContactEditor";
+          actionClass = "UIxContactEditor";
           actionName  = "save";
         };
         saveAsContact = {
           protectedBy = "Change Images And Files";
-          pageName    = "UIxContactEditor";
+          actionClass = "UIxContactEditor";
           actionName  = "save";
-        };
-        write = {
-          protectedBy = "<public>";
-          pageName    = "UIxContactEditor";
-          actionName  = "write";
         };
       };
     };

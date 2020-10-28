@@ -26,6 +26,9 @@
     this.$futureFreebusyData = {};
     this.updateFreeBusyCoverage();
     this.updateFreeBusy();
+    if (this.$days.length == 0) {
+      this.getDays();
+    }
   }
 
   /**
@@ -111,11 +114,13 @@
       });
     }
     else {
-      this.component.organizer = {
-        uid: Attendees.$settings.activeUser('login'),
-        name: Attendees.$settings.activeUser('identification'),
-        email: Attendees.$settings.activeUser('email')
-      };
+      if (!this.component.organizer) {
+        this.component.organizer = {
+          uid: Attendees.$settings.activeUser('login'),
+          name: Attendees.$settings.activeUser('identification'),
+          email: Attendees.$settings.activeUser('email')
+        };
+      }
       promise = Attendees.$q.when();
     }
     // Fetch organizer's freebusy
@@ -131,7 +136,7 @@
    * @param {Object} card - an Card object instance to be added to the attendees list
    */
   Attendees.prototype.add = function(card, options) {
-    var _this = this, attendee, list, url, params;
+    var _this = this, attendee, list, url, params, promise = Attendees.$q.when();
     if (card) {
       if (!this.component.attendees || (options && options.organizerCalendar)) {
         // No attendee yet; initialize the organizer
@@ -140,7 +145,7 @@
       if (card.$isList({expandable: true})) {
         // Decompose list members
         list = Attendees.$Card.$find(card.container, card.c_name);
-        list.$id().then(function(listId) {
+        promise = list.$id().then(function(listId) {
           _.forEach(list.refs, function(ref) {
             attendee = {
               name: ref.c_cn,
@@ -184,7 +189,7 @@
         })) {
           if (card.$isList() && Attendees.$Preferences.defaults.SOGoLDAPGroupExpansionEnabled) {
             // LDAP list -- preload members
-            card.$members().then(function(members) {
+            promise = card.$members().then(function(members) {
               attendee.members = members;
               attendee.isExpandableGroup = true;
             });
@@ -200,6 +205,8 @@
         }
       }
     }
+
+    return promise;
   };
 
   /**

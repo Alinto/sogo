@@ -262,6 +262,7 @@
                       untilDate = (NSCalendarDate *) [untilDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
                                                                           seconds:-offset];
                     }
+		  [currentRule setUntilDate: untilDate];
 		}
 	      [fixedRules addObject: currentRule];
 	    }

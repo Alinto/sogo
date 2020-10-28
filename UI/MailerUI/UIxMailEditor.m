@@ -251,10 +251,10 @@ static NSArray *infoKeys = nil;
   NSRange r;
   BOOL valid;
 
-  identities = [[[self clientObject] mailAccountFolder] identities];
-  if ([identities count])
+  if ([from length])
     {
-      if ([from length])
+      identities = [[[self clientObject] mailAccountFolder] identities];
+      if ([identities count])
         {
           allIdentities = [identities objectEnumerator];
           valid = NO;
@@ -352,7 +352,7 @@ static NSArray *infoKeys = nil;
   if ([newTo isKindOfClass: [NSNull class]])
     newTo = nil;
 
-  ASSIGN (to, newTo);
+  ASSIGN (to, [newTo uniqueObjects]);
 }
 
 - (NSArray *) to
@@ -365,7 +365,7 @@ static NSArray *infoKeys = nil;
   if ([newCc isKindOfClass: [NSNull class]])
     newCc = nil;
 
-  ASSIGN (cc, newCc);
+  ASSIGN (cc, [newCc uniqueObjects]);
 }
 
 - (NSArray *) cc
@@ -378,7 +378,7 @@ static NSArray *infoKeys = nil;
   if ([newBcc isKindOfClass: [NSNull class]])
     newBcc = nil;
 
-  ASSIGN (bcc, newBcc);
+  ASSIGN (bcc, [newBcc uniqueObjects]);
 }
 
 - (NSArray *) bcc
@@ -525,10 +525,9 @@ static NSArray *infoKeys = nil;
   return newFilename;
 }
 
-- (NSDictionary *) _scanAttachmentFilenamesInRequest: (id) httpBody
+- (NSMutableDictionary *) _scanAttachmentFilenamesInRequest: (id) httpBody
 {
-  NSMutableDictionary *files;
-  NSDictionary *file;
+  NSMutableDictionary *files, *file;
   NSArray *parts;
   unsigned int count, max;
   NGMimeBodyPart *part;
@@ -547,11 +546,11 @@ static NSArray *infoKeys = nil;
         {
           mimeType = [(NGMimeType *)[part headerForKey: @"content-type"] stringValue];
           filename = [self _fixedFilename: [header filename]];
-          file = [NSDictionary dictionaryWithObjectsAndKeys:
-                                 filename, @"filename",
-                                 mimeType, @"mimetype",
-                                 [part body], @"body",
-                                 nil];
+          file = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                      filename, @"filename",
+                                      mimeType, @"mimetype",
+                                      [part body], @"body",
+                                      nil];
           [files setObject: file forKey: [NSString stringWithFormat: @"%@_%@", [header name], filename]];
         }
     }
@@ -564,7 +563,8 @@ static NSArray *infoKeys = nil;
   NSException *error;
   WORequest *request;
   NSEnumerator *allAttachments;
-  NSDictionary *attrs, *filenames;
+  NSMutableDictionary *attrs;
+  NSDictionary *filenames;
   id httpBody;
   SOGoDraftObject *co;
 

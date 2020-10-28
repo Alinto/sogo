@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.24
+ * v1.1.26
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -14724,7 +14724,7 @@ angular.module('material.components.datepicker', [
   /**
    * Sets up the controller's reference to ngModelController.
    * @param {!ngModel.NgModelController} ngModelCtrl Instance of the ngModel controller.
-   * @param {Object} inputDirective Config for Angular's `input` directive.
+   * @param {Object} inputDirective Config for AngularJS's `input` directive.
    */
   CalendarCtrl.prototype.configureNgModel = function(ngModelCtrl, inputDirective) {
     var self = this;
@@ -14749,7 +14749,7 @@ angular.module('material.components.datepicker', [
       // In the case where a conversion is needed, the $viewValue here will be a string like
       // "2020-05-10" instead of a Date object.
       if (!self.dateUtil.isValidDate(value)) {
-        convertedDate = self.dateUtil.removeLocalTzAndReparseDate(new Date(this.$viewValue));
+        convertedDate = self.dateUtil.removeLocalTzAndReparseDate(new Date(value));
         if (self.dateUtil.isValidDate(convertedDate)) {
           value = convertedDate;
         }
@@ -14783,7 +14783,13 @@ angular.module('material.components.datepicker', [
     var value = this.dateUtil.createDateAtMidnight(date);
     this.focusDate(value);
     this.$scope.$emit('md-calendar-change', value);
-    this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone), 'default');
+    // Using the timezone when the offset is negative (GMT+X) causes the previous day to be
+    // selected here. This check avoids that.
+    if (timezone == null || value.getTimezoneOffset() < 0) {
+      this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd'), 'default');
+    } else {
+      this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone), 'default');
+    }
     this.ngModelCtrl.$render();
     return value;
   };
@@ -16681,8 +16687,8 @@ angular.module('material.components.datepicker', [
      }
 
     /**
-     * @param {Date} value
-     * @return {boolean|boolean}
+     * @param {Date} value date in local timezone
+     * @return {Date} date with local timezone offset removed
      */
     function removeLocalTzAndReparseDate(value) {
       var dateValue, formattedDate;
@@ -17693,7 +17699,13 @@ angular.module('material.components.datepicker', [
    */
   DatePickerCtrl.prototype.setModelValue = function(value) {
     var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
-    this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone), 'default');
+    // Using the timezone when the offset is negative (GMT+X) causes the previous day to be
+    // set as the model value here. This check avoids that.
+    if (timezone == null || value.getTimezoneOffset() < 0) {
+      this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd'), 'default');
+    } else {
+      this.ngModelCtrl.$setViewValue(this.ngDateFilter(value, 'yyyy-MM-dd', timezone), 'default');
+    }
   };
 
   /**
@@ -17704,12 +17716,18 @@ angular.module('material.components.datepicker', [
     var self = this;
     var timezone = this.$mdUtil.getModelOption(this.ngModelCtrl, 'timezone');
 
-    if (this.dateUtil.isValidDate(value)) {
+    if (this.dateUtil.isValidDate(value) && timezone != null && value.getTimezoneOffset() >= 0) {
       this.date = this.dateUtil.removeLocalTzAndReparseDate(value);
     } else {
       this.date = value;
     }
-    this.inputElement.value = this.locale.formatDate(value, timezone);
+    // Using the timezone when the offset is negative (GMT+X) causes the previous day to be
+    // used here. This check avoids that.
+    if (timezone == null || value.getTimezoneOffset() < 0) {
+      this.inputElement.value = this.locale.formatDate(value);
+    } else {
+      this.inputElement.value = this.locale.formatDate(value, timezone);
+    }
     this.mdInputContainer && this.mdInputContainer.setHasValue(!!value);
     this.resizeInputElement();
     // This is often called from the $formatters section of the $validators pipeline.
@@ -31438,19 +31456,33 @@ function SelectMenuDirective($parse, $mdUtil, $mdConstant, $mdTheming) {
     element.on('click', clickListener);
     element.on('keypress', keyListener);
 
-    function keyListener(e) {
-      if (e.keyCode === 13 || e.keyCode === 32) {
-        clickListener(e);
+    /**
+     * @param {KeyboardEvent} keyboardEvent
+     */
+    function keyListener(keyboardEvent) {
+      if (keyboardEvent.keyCode === 13 || keyboardEvent.keyCode === 32) {
+        clickListener(keyboardEvent);
       }
     }
 
-    function clickListener(ev) {
-      var option = $mdUtil.getClosest(ev.target, 'md-option');
+    /**
+     * @param {Event} mouseEvent
+     * @return {void}
+     */
+    function clickListener(mouseEvent) {
+      var option = $mdUtil.getClosest(mouseEvent.target, 'md-option');
       var optionCtrl = option && angular.element(option).data('$mdOptionController');
-      if (!option || !optionCtrl) return;
-      if (option.hasAttribute('disabled')) {
-        ev.stopImmediatePropagation();
-        return false;
+
+      if (!option || !optionCtrl) {
+        // Avoid closing the menu when the select header's input is clicked
+        if (mouseEvent.target && mouseEvent.target.parentNode &&
+          mouseEvent.target.parentNode.tagName === 'MD-SELECT-HEADER') {
+          mouseEvent.stopImmediatePropagation();
+        }
+        return;
+      } else if (option.hasAttribute('disabled')) {
+        mouseEvent.stopImmediatePropagation();
+        return;
       }
 
       var optionHashKey = selectMenuCtrl.hashGetter(optionCtrl.value);
@@ -39219,4 +39251,4 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.1.24"}};
+})(window, window.angular);;window.ngMaterial={version:{full: "1.1.26"}};

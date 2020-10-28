@@ -253,10 +253,9 @@
               || [login isEqualToString: @"anonymous"]
               || ![client plainAuthenticateUser: login
                                    withPassword: password])
-            result = [NSException
-                           exceptionWithHTTPStatus: 500
-                                            reason: @"cannot send message:"
-                       @" (smtp) authentication failure"];
+            result = [NSException exceptionWithHTTPStatus: 500
+                                                   reason: @"cannot send message:"
+                                  @" (smtp) authentication failure"];
         }
       else if (authenticationType)
         result = [NSException
@@ -292,9 +291,8 @@
                 result = [self _sendMailData: mailData withClient: client];
             }
           else
-            result = [NSException
-                       exceptionWithHTTPStatus: 500
-                                        reason: @"cannot send message: (smtp) originator not accepted"];
+            result = [NSException exceptionWithHTTPStatus: 500
+                                                   reason: @"cannot send message: (smtp) originator not accepted"];
         }
       [client quit];
       [client disconnect];
@@ -302,9 +300,17 @@
   NS_HANDLER
     {
       [self errorWithFormat: @"Could not connect to the SMTP server %@", smtpServer];
-      result = [NSException exceptionWithHTTPStatus: 500
-					     reason: @"cannot send message:"
-			    @" (smtp) error when connecting"];
+      if ([localException reason])
+        {
+          result = [NSException exceptionWithHTTPStatus: 500
+                                                 reason: [localException reason]];
+        }
+      else
+        {
+          result = [NSException exceptionWithHTTPStatus: 500
+                                                 reason: @"cannot send message:"
+                                @" (smtp) error when connecting"];
+        }
     }
   NS_ENDHANDLER;
 

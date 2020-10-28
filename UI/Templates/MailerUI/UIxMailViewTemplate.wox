@@ -31,7 +31,7 @@
           </md-button>
           <div class="md-flex"><!-- spacer --></div>
           <md-button class="sg-icon-button" label:aria-label="Flagged" ng-click="viewer.message.toggleFlag()">
-            <md-icon ng-class="{ 'md-accent md-hue-2': viewer.message.isflagged }">{{ viewer.message.isflagged ? 'star' : 'star_border' }}</md-icon>
+            <md-icon ng-class="{ 'sg-icon-star': viewer.message.isflagged }">{{ viewer.message.isflagged ? 'star' : 'star_border' }}</md-icon>
           </md-button>
           <md-button class="sg-icon-button"
                      ng-hide="::viewer.message.isDraft"
@@ -330,7 +330,7 @@
             <div class="msg-body">
               <div layout="row" layout-wrap="layout-wrap">
                 <div class="mailer_mailcontent" layout="row" layout-wrap="layout-wrap"
-                     ng-repeat="part in viewer.message.$content() track by $index"
+                     ng-repeat="part in viewer.message.$content()"
                      ng-class="::part.msgclass">
                   <div class="md-flex sg-mail-part"
                        tabindex="-1"

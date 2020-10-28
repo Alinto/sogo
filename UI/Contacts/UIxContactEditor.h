@@ -23,14 +23,14 @@
 #ifndef __UIxContactEditor_H__
 #define __UIxContactEditor_H__
 
-#include <SOGoUI/UIxComponent.h>
+#include <SOGoUI/SOGoDirectAction.h>
 
 @class NSString;
 @class NSMutableDictionary;
 
 @protocol SOGoContactFolder;
 
-@interface UIxContactEditor : UIxComponent
+@interface UIxContactEditor : SOGoDirectAction
 {
   id addressBookItem;
   NGVCard *card;

@@ -301,8 +301,9 @@
       Account.$$resource.post('', 'unseenCount', {mailboxes: unseenCountFolders}).then(function(data) {
         _.forEach(vm.accounts, function(account) {
           _.forEach(account.$$flattenMailboxes, function(mailbox) {
-            if (data[mailbox.id])
+            if (data[mailbox.id]) {
               mailbox.unseenCount = data[mailbox.id];
+            }
           });
         });
       });
@@ -340,7 +341,7 @@
           $state.go('mail.account.mailbox');
         $mdToast.show(
           $mdToast.simple()
-            .content(success)
+            .textContent(success)
             .position('top right')
             .hideDelay(2000));
       });
