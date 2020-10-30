@@ -18,19 +18,15 @@
     // Default plugins that have successfully passed through Angular's $sanitize service
     var defaultConfiguration = {
       toolbarGroups: [
-        { name: 'basicstyles', groups: [ 'basicstyles' ] },
-        { name: 'colors' },
-        { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align' ] },
-        { name: 'links' },
-        { name: 'insert' },
-        { name: 'editing', groups: [ 'spellchecker' ] },
-        { name: 'styles' },
-        { name: 'mode' }
+        { name: 'basicstyles', groups: [ 'basicstyles', 'colors', 'list', 'indent', 'blocks', 'align', 'links', 'insert', 'spellchecker', 'styles', 'mode' ] }
       ],
 
       // The default plugins included in the basic setup define some buttons that
       // are not needed in a basic editor. They are removed here.
       removeButtons: 'Strike,Subscript,Superscript,BGColor,Anchor,Format,Image',
+
+      // Allow the toolbar to be collapsed (useful for small screens)
+      toolbarCanCollapse: true,
 
       // Dialog windows are also simplified.
       removeDialogTabs: 'link:advanced',

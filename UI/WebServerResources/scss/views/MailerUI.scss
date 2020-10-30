@@ -303,13 +303,18 @@ md-sidenav {
 
 // Message body container of mail composer dialog
 .sg-mail-editor-content {
+  margin-top: 0;
   margin-bottom: 0;
   .cke_chrome {
     border-color: transparent;
   }
   .cke_top {
-    position: sticky;
     top: 0;
+    position: sticky;
+  }
+  // Fix margin of toolbar collapser button
+  a.cke_toolbox_collapser {
+    margin: 4px 2px;
   }
 }
 
