@@ -54,6 +54,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/SOGoPermissions.h>
 
 #import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalPerson.h>
 
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/SOGoAppointmentObject.h>
@@ -297,6 +298,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSMutableDictionary *folderMetadata, *dateCache, *syncCache, *uidCache, *allValues;
   NSString *clientId, *serverId, *easId;
   NSArray *additions, *roles;
+  SOGoUser *ownerUser;
   
   id anAddition, sogoObject, o;
   BOOL is_new;
@@ -456,6 +458,16 @@ FIXME
           else
             {
               [o takeActiveSyncValues: allValues  inContext: context];
+              // Handle situation were Alice creates an event in Bob's calendar.
+              // Bob should be the organizer, and Alice the SENT-BY.
+              ownerUser = [SOGoUser userWithLogin: [sogoObject ownerInContext: context]];
+              if (theFolderType == ActiveSyncEventFolder && ![o userIsOrganizer: ownerUser] && [[context activeUser] hasEmail: [[o organizer] rfc822Email]])
+                {
+                  [[o organizer] setCn: [ownerUser cn]];
+                  [[o organizer] setEmail: [[ownerUser allEmails] objectAtIndex: 0]];
+                  [[o organizer] setSentBy: [NSString stringWithFormat: @"\"MAILTO:%@\"", [[[context activeUser] allEmails] objectAtIndex: 0]]];
+		}
+
               [sogoObject setIsNew: is_new];
 
               if (theFolderType == ActiveSyncEventFolder)
@@ -570,6 +582,7 @@ FIXME
   NSArray *changes, *a, *roles;
   id aChange, o, sogoObject;
   NSMutableDictionary *folderMetadata, *syncCache, *uidCache;
+  SOGoUser *ownerUser;
 
   int i;
 
@@ -690,6 +703,16 @@ FIXME
 
                         if (theFolderType == ActiveSyncEventFolder)
 			  {
+                            // Handle situation were Alice creates an event in Bob's calendar.
+                            // Bob should be the organizer, and Alice the SENT-BY.
+                            ownerUser = [SOGoUser userWithLogin: [sogoObject ownerInContext: context]];
+                            if (theFolderType == ActiveSyncEventFolder && ![o userIsOrganizer: ownerUser] && [[context activeUser] hasEmail: [[o organizer] rfc822Email]])
+                              {
+                                [[o organizer] setCn: [ownerUser cn]];
+                                [[o organizer] setEmail: [[ownerUser allEmails] objectAtIndex: 0]];
+                                [[o organizer] setSentBy: [NSString stringWithFormat: @"\"MAILTO:%@\"", [[[context activeUser] allEmails] objectAtIndex: 0]]];
+                              }
+
 			    [sogoObject saveComponent: o force: YES];
 			    if ([sogoObject resourceHasAutoAccepted])
 			      [objectsToTouch addObject: sogoObject];
