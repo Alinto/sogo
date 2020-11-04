@@ -7,7 +7,7 @@
   <md-dialog flex="60" flex-sm="80" flex-xs="100">
     <form name="eventForm" class="md-inline-form" ng-submit="editor.save(eventForm)">
       <md-toolbar>
-        <div class="md-toolbar-tools">
+        <div class="md-toolbar-tools sg-no-transition">
           <md-icon class="material-icons sg-icon-toolbar-bg">event</md-icon>
           <!-- summary -->
           <md-icon ng-if="editor.component.classification == 'confidential'">visibility_off</md-icon>

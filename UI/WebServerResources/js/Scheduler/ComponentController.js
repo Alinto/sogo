@@ -128,10 +128,11 @@
       // Retrieve master event
       component = Calendar.$get(this.component.pid).$getComponent(this.component.id);
       component.$futureComponentData.then(function() {
-        // Propagate the participant status and alarm to the master event
+        // Propagate the participant status, classification and alarm to the master event
         component.reply = vm.component.reply;
         component.delegatedTo = vm.component.delegatedTo;
         component.$hasAlarm = vm.component.$hasAlarm;
+        component.classification = vm.component.classification;
         component.alarm = vm.component.alarm;
         // Send reply to the server
         vm.reply(component);

@@ -941,7 +941,8 @@
     data = {
       reply: this.reply,
       delegatedTo: this.delegatedTo,
-      alarm: this.$hasAlarm? this.alarm : {}
+      alarm: this.$hasAlarm? this.alarm : {},
+      classification: this.classification
     };
 
     return Component.$$resource.save(path, data, { action: 'rsvpAppointment' })

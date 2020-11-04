@@ -285,27 +285,35 @@
  * @apiParam {String} alarm.relation          Either START or END
  * @apiParam {Boolean} [alarm.attendees]      Alert attendees by email if 1 and action is email
  * @apiParam {Boolean} [alarm.organizer]      Alert organizer by email if 1 and action is email
+ * @apiParam {String} [classification]        Either public, confidential or private
  */
 - (id <WOActionResults>) rsvpAction
 {
+  static NSArray *validClassifications = nil;
   iCalPerson *delegatedAttendee;
   NSDictionary *params, *jsonResponse;
   WOResponse *response;
   WORequest *request;
   iCalAlarm *anAlarm;
+  iCalEvent *event;
   NSException *ex;
   NSString *status;
-  id alarm;
+  id alarm, classification;
   
   int replyList;
   
+  if (!validClassifications)
+    validClassifications = [[NSArray alloc] initWithObjects: @"PUBLIC", @"CONFIDENTIAL", @"PRIVATE", nil];
+
   request = [context request];
   params = [[request contentAsString] objectFromJSONString];
+  event = [self event];
 
   delegatedAttendee = nil;
   anAlarm = nil;
   status = nil;
 
+  // Set invitation reply
   replyList = [[params objectForKey: @"reply"] intValue];
 
   switch (replyList)
@@ -366,6 +374,25 @@
           }
       }
       break;
+    }
+
+  // Update classification
+  classification = [params objectForKey: @"classification"];
+  if (classification &&
+      [classification isKindOfClass: [NSString class]] &&
+      [validClassifications containsObject: [classification uppercaseString]] &&
+      ![[classification uppercaseString] isEqualToString: [event accessClass]])
+    {
+      [event setAccessClass: [classification uppercaseString]];
+      ex = [[self clientObject] saveComponent: event force: NO];
+      if (ex)
+        {
+          jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                         [ex reason], @"message",
+                                       nil];
+          return [self responseWithStatus: [ex httpStatus]
+                                andString: [jsonResponse jsonRepresentation]];
+        }
     }
 
   // Set an alarm for the user

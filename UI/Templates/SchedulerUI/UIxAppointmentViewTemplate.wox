@@ -8,10 +8,10 @@
     <md-toolbar>
       <div class="md-toolbar-tools">
         <md-icon class="material-icons sg-icon-toolbar-bg">event</md-icon>
-        <div class="sg-md-title md-flex">
+        <div class="sg-md-title md-flex sg-no-transition">
           <!-- classification -->
-          <md-icon ng-if="::editor.component.classification == 'confidential'">visibility_off</md-icon>
-          <md-icon ng-if="::editor.component.classification == 'private'">vpn_key</md-icon>
+          <md-icon ng-if="editor.component.classification == 'confidential'">visibility_off</md-icon>
+          <md-icon ng-if="editor.component.classification == 'private'">vpn_key</md-icon>
           <!-- priority -->
           <md-icon ng-if="::editor.highPriority()">priority_high</md-icon>
           <!-- summary -->
@@ -109,6 +109,22 @@
                  ng-class="::editor.component.getClassName('bg')"><!-- color --></div>
             <div ng-bind="::editor.component.calendar"><!-- calendar --></div>
           </div>
+        </md-list-item>
+        <!-- classification -->
+        <md-list-item>
+          <md-icon>visibility</md-icon>
+          <md-radio-group layout="row"
+                          ng-model="editor.component.classification">
+            <md-radio-button class="sg-padded--right" value="public">
+              <var:string label:value="label_Public"/>
+            </md-radio-button>
+            <md-radio-button class="sg-padded--right" value="confidential">
+              <var:string label:value="label_Confidential"/>
+            </md-radio-button>
+            <md-radio-button value="private">
+              <var:string label:value="label_Private"/>
+            </md-radio-button>
+          </md-radio-group>
         </md-list-item>
         <!-- start/end dates -->
         <md-list-item ng-class="{ 'md-2-line': editor.component.isAllDay, 'md-3-line': !editor.component.isAllDay }">
