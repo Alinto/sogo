@@ -145,7 +145,7 @@
               </md-autocomplete>
             </div>
 
-            <div layout="row" layout-wrap="layout-wrap">
+            <div layout="row" layout-xs="column">
               <md-input-container class="md-block" flex="30" flex-xs="100">
                 <label><var:string label:value="Short Date Format"/></label>
                 <md-select ng-model="app.preferences.defaults.SOGoShortDateFormat">
@@ -250,7 +250,7 @@
                            label:aria-label="Enable two-factor authentication using Google Authenticator">
                 <var:string label:value="Enable two-factor authentication using Google Authenticator"/>
               </md-checkbox>
-              <div layout="row" layout-align="start center" layout-wrap="layout-wrap"
+              <div layout="row" layout-align="start center" layout-xs="column"
                    layout-padding="layout-padding" layout-margin="layout-margin"
                    ng-show="app.preferences.defaults.SOGoGoogleAuthenticatorEnabled">
                 <div>
@@ -272,18 +272,18 @@
                 aria-controls="generalPasswordView-content"
                 label:label="Password">
           <md-content id="passwordView" class="md-padding">
-            <div layout="row">
-              <md-input-container class="md-block" flex="50">
+            <div layout="row" layout-xs="column">
+              <md-input-container class="md-block" flex="flex">
                 <label><var:string label:value="Current password"/>
                 </label>
                 <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.oldPassword"/>
               </md-input-container>
-              <md-input-container class="md-block" flex="50">
+              <md-input-container class="md-block" flex="flex">
                 <label><var:string label:value="New password"/>
                 </label>
                 <input type="password" sg-no-dirty-check="true" ng-model="app.passwords.newPassword"/>
               </md-input-container>
-              <md-input-container class="md-block" flex="50">
+              <md-input-container class="md-block" flex="flex">
                 <label><var:string label:value="Confirmation"/>
                 </label>
                 <input type="password" name="newPasswordConfirmation" sg-no-dirty-check="true" ng-model="app.passwords.newPasswordConfirmation"/>
@@ -694,8 +694,8 @@
               </md-select>
             </md-input-container>
 
-            <div layout="row" layout-wrap="layout-wrap">
-              <md-input-container class="md-block" flex="50" flex-xs="100">
+            <div layout="row" layout-xs="column">
+              <md-input-container class="md-block" flex="flex">
                 <label><var:string label:value="When replying to a message"/></label>
                 <md-select ng-model="app.preferences.defaults.SOGoMailReplyPlacement">
                   <var:foreach list="replyPlacementList" item="item">
@@ -706,7 +706,7 @@
                 </md-select>
               </md-input-container>
 
-              <md-input-container class="md-block" flex="50" flex-xs="100">
+              <md-input-container class="md-block" flex="flex">
                 <label><var:string label:value="And place my signature"/></label>
                 <md-select ng-model="app.preferences.defaults.SOGoMailSignaturePlacement">
                   <var:foreach list="signaturePlacementList" item="item">
@@ -718,7 +718,7 @@
               </md-input-container>
             </div>
 
-            <div layout="row" layout-wrap="layout-wrap">
+            <div layout="row">
               <md-input-container class="md-block" flex="50">
                 <label><var:string label:value="Compose messages in"/></label>
                 <md-select ng-model="app.preferences.defaults.SOGoMailComposeMessageType">
@@ -730,25 +730,26 @@
                 </md-select>
               </md-input-container>
 
-              <div layout="row" flex="50"
-                   ng-show="app.preferences.defaults.SOGoMailComposeMessageType == 'html'">
-                <md-checkbox
-                    ng-model="app.preferences.defaults.SOGoMailComposeFontSizeEnabled"
-                    label:aria-label="Default font size"><!-- default font size -->
-                </md-checkbox>
-                <md-input-container class="md-block md-flex">
-                  <label><var:string label:value="Default font size"/></label>
-                  <md-select label:aria-label="Default font size"
-                             ng-disabled="!app.preferences.defaults.SOGoMailComposeFontSizeEnabled"
-                             ng-required="app.preferences.defaults.SOGoMailComposeFontSizeEnabled"
-                             ng-model="app.preferences.defaults.SOGoMailComposeFontSize">
-                    <var:foreach list="fontSizesList" item="item">
-                      <md-option var:value="item">
-                        <var:string value="itemFontSizeText"/>
-                      </md-option>
-                    </var:foreach>
-                  </md-select>
-                </md-input-container>
+              <div class="md-auto-horizontal-margin" flex="50">
+                <div layout="row" ng-show="app.preferences.defaults.SOGoMailComposeMessageType == 'html'">
+                  <md-checkbox
+                      ng-model="app.preferences.defaults.SOGoMailComposeFontSizeEnabled"
+                      label:aria-label="Default font size"><!-- default font size -->
+                  </md-checkbox>
+                  <md-input-container class="md-block md-flex">
+                    <label><var:string label:value="Default font size"/></label>
+                    <md-select label:aria-label="Default font size"
+                               ng-disabled="!app.preferences.defaults.SOGoMailComposeFontSizeEnabled"
+                               ng-required="app.preferences.defaults.SOGoMailComposeFontSizeEnabled"
+                               ng-model="app.preferences.defaults.SOGoMailComposeFontSize">
+                      <var:foreach list="fontSizesList" item="item">
+                        <md-option var:value="item">
+                          <var:string value="itemFontSizeText"/>
+                        </md-option>
+                      </var:foreach>
+                    </md-select>
+                  </md-input-container>
+                </div>
               </div>
             </div>
 

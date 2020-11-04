@@ -24,7 +24,7 @@
       </md-toolbar>
       <md-dialog-content class="sg-has-form-sections">
         <div class="sg-form-section">
-          <div layout="row" layout-wrap="layout-wrap">
+          <div layout="row" layout-xs="column">
             <!-- location -->
             <md-input-container flex="50" flex-xs="100">
               <label><var:string label:value="Location"/></label>
