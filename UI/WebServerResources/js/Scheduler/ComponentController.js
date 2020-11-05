@@ -281,7 +281,7 @@
     this.changeCalendar = function () {
       var updateRequired = (this.component.attendees && this.component.attendees.length > 0);
       if (updateRequired)
-        this.component.initOrganizer(Calendar.$get(this.component.destinationCalendar));
+        this.component.$attendees.initOrganizer(Calendar.$get(this.component.destinationCalendar));
     };
 
     // Autocomplete cards for attendees
