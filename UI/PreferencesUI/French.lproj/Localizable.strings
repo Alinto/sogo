@@ -40,7 +40,7 @@
 "Auto reply subject" = "Modifier le sujet de la réponse automatique";
 "You can write ${subject} to insert the original subject" = "Inscrire ${subject} pour insérer le sujet original";
 "Auto reply message" = "Contenu de la réponse automatique";
-"Email addresses (separated by commas)" = "Adresses courriels (séparées par des virgules)";
+"Email addresses" = "Adresses de courriel";
 "Add default email addresses" = "Ajouter les adresses par défaut";
 "Days between responses" = "Nombre de jours entre les réponses d'absence";
 "Do not send responses to mailing lists" = "Ne pas envoyer les réponses aux listes de diffusion";
@@ -62,6 +62,8 @@
 /* forward messages */
 "Forward incoming messages" = "Transférer les messages entrant";
 "Keep a copy" = "Garder une copie";
+"Enter an email" = "Adresse de courriel";
+"Add another email" = "Ajouter un courriel";
 "Please specify an address to which you want to forward your messages."
 = "Veuillez définir une adresse à laquelle vous désirez transférer automatiquement vos nouveaux messages.";
 "You are not allowed to forward your messages to an external email address." = "Il est interdit de renvoyer vos messages vers une adresse externe.";
@@ -212,6 +214,9 @@
 "Email" = "Email";
 "Reply To Email" = "Adresse de retour";
 "Signature" = "Signature";
+"Identities" = "Identités";
+"Default Identity" = "Identité par défaut";
+"New Identity" = "Nouvelle identité";
 "(Click to create)" = "(Signature vide)";
 "Please enter your signature below" = "Introduisez votre signature ci-dessous";
 "Please specify a valid sender address." = "Veuillez définir une adresse d'expédition valide.";
@@ -447,3 +452,13 @@
 /* Limited Animation Mode */
 "animation_LIMITED" = "Restreint";
 "animation_NONE" = "Aucun";
+
+/* 2FA */
+"Enable two-factor authentication using Google Authenticator" = "Activer l'authentification à deux facteurs à l'aide de Google Authenticator";
+"You must enter this key into your Google Authenticator application." = "Vous devez saisir cette clé dans votre application Google Authenticator.";
+"If you do not and you log out you will not be able to login again." = "À défaut de le faire, vous ne pourrez pas vous reconnecter.";
+
+/* External Sieve scripts */
+"An external Sieve script is active" = "Un script Sieve externe est actif";
+"Sieve is a programming language that can be used for email filtering. If you let SOGo handle your filters, vacation and forward settings, your active script will be disabled." = "Sieve est un langage de programmation qui peut être utilisé pour le filtrage des messages. Si vous laissez SOGo gérer vos filtres, votre message d'absence et vos paramètres de transfert, votre script actuel sera désactivé.";
+"Let SOGo handle everything" = "Laissez SOGo s'occuper de tout";

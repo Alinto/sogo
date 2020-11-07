@@ -142,10 +142,10 @@
 "contacts" = "contacts";
 
 /* No contact matching search criteria */
-"No matching contact" = "Aucun contact retourné";
+"No matching contact" = "Aucun contact trouvé";
 
 /* Number of contacts matching search criteria; string is prefixed by number */
-"matching contacts" = "contacts retournés";
+"matching contacts" = "contacts trouvés";
 
 /* Number of selected contacts in list */
 "selected" = "sélectionné(s)";

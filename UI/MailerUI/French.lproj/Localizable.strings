@@ -104,7 +104,7 @@
 "To"            = "Destinataire";
 "Cc"            = "Copie à";
 "Bcc"           = "Copie cachée à";
-"Reply-To"	    = "Répondre à";
+"Reply-To"	= "Répondre à";
 "Add address"   = "Ajouter Adresse";
 "Body"          = "Contenu";
 "Open" = "Ouvrir";
@@ -121,6 +121,7 @@
 "Edit Draft..." = "Modifier le brouillon...";
 "Load Images" = "Télécharger les images";
 "Return Receipt" = "Accusé de réception";
+"Choose which identity to send this message from" = "Choisir l'identité avec laquelle le message sera envoyé";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "L'expéditeur demande d'être avisé car vous avez lu son message. Souhaitez-vous le notifier?";
 "Return Receipt (displayed) - %@"= "Accusé de réception (affiché) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Ceci est un accusé de réception pour le courrier électronique envoyé à %@.\n\nNote : Cet accusé de réception indique seulement que le message a été affiché sur l'ordinateur du destinataire. Il n'y a aucune garantie que le destinataire ait lu ou compris le contenu du message.";
@@ -268,6 +269,15 @@
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Aucun certificat n'est associé à ce compte.";
 
+/* Invalid message signature */
+"Digital signature is not valid" = "Signature digitale non-valide";
+
+/* Valid message signature */
+"Message is signed" = "Ce message est signé";
+
+/* Unknown error while validating message signature */
+"No error information available" = "Aucune information d'erreur disponible";
+
 "This Folder" = "Ce dossier-ci";
 
 /* Label popup menu */
@@ -397,7 +407,7 @@
 "Tried to send too many mails. Please wait." = "Vous avez envoyé trop de courriels. Veillez patienter.";
 "View Mail" = "Voir le courriel";
 "This message contains external images." = "Ce message contient des images externes.";
-"Expanded" = "Étendre";
+"Expanded" = "Ouvert";
 "Add a Criteria" = "Ajouter un critère";
 "More search options" = "Options de recherches avancées";
 "Your email has been saved" = "Votre courriel a été sauvegardé";
