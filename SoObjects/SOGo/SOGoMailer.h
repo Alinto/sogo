@@ -42,7 +42,7 @@
 + (SOGoMailer *) mailerWithDomainDefaults: (SOGoDomainDefaults *) dd;
 
 - (id) initWithDomainDefaults: (SOGoDomainDefaults *) dd;
-
+- (BOOL) requiresAuthentication;
 - (NSException *) sendMailData: (NSData *) data
 		  toRecipients: (NSArray *) recipients
 			sender: (NSString *) sender

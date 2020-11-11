@@ -168,6 +168,13 @@
   owner = [SOGoUser userWithLogin: ownerId];
   mailer = [SOGoMailer mailerWithDomainDefaults: [owner domainDefaults]];
 
+  if (!staticAuthenticator && [mailer requiresAuthentication])
+    {
+      fprintf (stderr, "Specify the file containing credentials to use for SMTP AUTH.\n"
+               "Use -h for help.\n");
+      return;
+    }
+
   localContext = [WOContext context];
   [localContext setActiveUser: owner];
   app = [[WOApplication alloc] initWithName: @"SOGo"];
@@ -177,7 +184,7 @@
   [rm release];
   [app _setCurrentContext:localContext];
 
-  userFolder = [[localContext activeUser] homeFolderInContext: localContext ];
+  userFolder = [[localContext activeUser] homeFolderInContext: localContext];
   folders = [userFolder privateCalendars: @"Calendar"
                                inContext: localContext];
 
@@ -221,26 +228,28 @@
 
 - (BOOL) run
 {
+  NSArray *arguments, *alarms;
   NSCalendarDate *startDate, *toDate;
-  SOGoEMailAlarmsManager *eaMgr;
-  NSMutableArray *metadata;
-  iCalEntityObject *entity;
-  SOGoCredentialsFile *cf;
-  NSString *credsFilename;
   NSDictionary *d;
-  NSArray *alarms;
+  NSMutableArray *metadata;
+  NSString *credsFilename;
+  SOGoCredentialsFile *cf;
+  SOGoEMailAlarmsManager *eaMgr;
+  iCalEntityObject *entity;
 
   int count, max;
 
   [[SOGoProductLoader productLoader] loadAllProducts: NO];
 
-  if ([[NSUserDefaults standardUserDefaults] stringForKey: @"h"])
+  arguments = [[NSProcessInfo processInfo] arguments];
+  credsFilename = [[NSUserDefaults standardUserDefaults] stringForKey: @"p"];
+
+  if ([arguments count] > 1 && ([[arguments objectAtIndex: 1] isEqualToString: @"-h"] || !credsFilename))
     {
       [self usage];
       return YES;
     }
 
-  credsFilename = [[NSUserDefaults standardUserDefaults] stringForKey: @"p"];
   if (credsFilename)
     {
       cf = [SOGoCredentialsFile credentialsFromFile: credsFilename];

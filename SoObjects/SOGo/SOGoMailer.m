@@ -181,6 +181,11 @@
   [super dealloc];
 }
 
+- (BOOL) requiresAuthentication
+{
+  return ![mailingMechanism isEqualToString: @"sendmail"] && authenticationType;
+}
+
 - (NSException *) _sendmailSendData: (NSData *) mailData
 		       toRecipients: (NSArray *) recipients
 			     sender: (NSString *) sender
