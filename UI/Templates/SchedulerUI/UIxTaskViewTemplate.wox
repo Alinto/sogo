@@ -56,7 +56,7 @@
         <!-- location -->
         <md-list-item ng-show="::editor.component.location">
           <md-icon>place</md-icon>
-          <p ng-bind="::editor.component.location"><!-- location --></p>
+          <p ng-bind-html="::editor.component.location | txt2html"><!-- location --></p>
         </md-list-item>
         <!-- calendar -->
         <md-list-item>
