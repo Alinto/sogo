@@ -201,7 +201,7 @@
             </md-input-container>
 
             <div layout="row" layout-align="start start" ng-if="app.preferences.supportsNotifications()">
-              <md-checkbox flex="20"
+              <md-checkbox
                            ng-model="app.preferences.defaults.SOGoDesktopNotifications"
                            ng-true-value="1"
                            ng-false-value="0"
@@ -644,7 +644,7 @@
                 <!-- SOGoMailComposeWindow -->
               </md-checkbox>
 
-              <md-input-container class="md-block hide-xs" flex="50">
+              <md-input-container class="md-block md-flex hide-xs">
                 <label><var:string label:value="Always open mail composer"/></label>
                 <md-select
                     ng-disabled="!app.preferences.defaults.SOGoMailComposeWindowEnabled"
@@ -1030,7 +1030,8 @@
                   </md-button>
                 </div>
 
-                <md-input-container class="md-block md-flex">
+                <div layout="row">
+                <md-input-container class="md-block" flex="50" flex-xs="100">
                   <label><var:string label:value="Days between responses"/></label>
                   <md-select label:aria-label="Days between responses"
                              ng-model="app.preferences.defaults.Vacation.daysBetweenResponse">
@@ -1041,6 +1042,7 @@
                     </var:foreach>
                   </md-select>
                 </md-input-container>
+                </div>
 
                 <div>
                   <md-checkbox
