@@ -269,6 +269,15 @@
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Kein Zertifikat mit dem Benutzer verbunden.";
 
+/* Invalid message signature */
+"Digital signature is not valid" = "Die kryptographische Signatur ist ungültig";
+
+/* Valid message signature */
+"Message is signed" = "Nachricht ist signiert";
+
+/* Unknown error while validating message signature */
+"No error information available" = "Keine Fehlerinformation verfügbar";
+
 "This Folder" = "Dieser Ordner";
 
 /* Label popup menu */
