@@ -269,6 +269,15 @@
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "K účtu není přiřazen certfikát.";
 
+/* Invalid message signature */
+"Digital signature is not valid" = "Elektronický podpis není validní";
+
+/* Valid message signature */
+"Message is signed" = "Zpráva je podepsána";
+
+/* Unknown error while validating message signature */
+"No error information available" = "Nejsou dostupné informace o chybě";
+
 "This Folder" = "Tato složka";
 
 /* Label popup menu */
