@@ -185,30 +185,12 @@
       'contrastDarkColors': ['50', '100', '200'],
       // 'contrastLightColors': ['300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700']
     });
-    // Background palette
-    $mdThemingProvider.definePalette('sogo-paper', {
-      '50': 'fcf7f8',
-      '100': 'f7f1dc',
-      '200': 'ede5ca',
-      '300': 'e6d8ba',
-      '400': 'e2d2a3',
-      '500': 'd6c48d',
-      '600': 'baa870',
-      '700': '857545',
-      '800': '524517',
-      '900': '433809',
-      '1000': '000000',
-      'A100': 'ffffff',
-      'A200': 'eeeeee',
-      'A400': 'bdbdbd',
-      'A700': '616161',
-      'contrastDefaultColor': 'dark',
-      'contrastLightColors': ['800', '900']
-    });
+    // Background palette -- extends the grey palette
     var greyMap = $mdThemingProvider.extendPalette('grey', {
       '1000': 'baa870' // used as the background color of the busy periods of the attendees editor
     });
     $mdThemingProvider.definePalette('sogo-grey', greyMap);
+
     // Default theme definition
     $mdThemingProvider.theme('default')
       .primaryPalette('sogo-blue', {
@@ -226,8 +208,19 @@
       })
       .backgroundPalette('sogo-grey');
 
+    // Register custom stylesheet for toolbar of center lists
+    $mdThemingProvider.registerStyles([
+      'md-toolbar.md-hue-1:not(.md-menu-toolbar).md-accent {',
+      '  background-color: \'{{accent-hue-1}}\';',
+      '  color: \'{{foreground-1}}\';',
+      '}',
+      'md-toolbar.md-hue-1:not(.md-menu-toolbar).md-accent md-icon {',
+      '  color: \'{{foreground-1}}\';',
+      '  fill: \'{{foreground-1}}\';',
+      '}',
+    ].join(''));
 
-    // Register custom stylesheet for md-autocomplete
+    // Register custom stylesheet for mdAutocomplete
     $mdThemingProvider.registerStyles([
       '.md-autocomplete-suggestions.md-3-line li p {',
       '  color: \'{{foreground-2}}\';',
