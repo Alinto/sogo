@@ -185,7 +185,7 @@ sg-timepicker {
 }
 
 .sg-timepicker-triangle-button.md-button.md-icon-button {
-  @extend .md-datepicker-triangle-button.md-button.md-icon-button;
+  @extend .md-datepicker-triangle-button, .md-button, .md-icon-button;
 }
 
 // Disabled state for all elements of the picker.

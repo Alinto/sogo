@@ -1,6 +1,10 @@
 /// button.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
 @import 'extends';
 
+md-button {
+  font-weight: 600;
+}
+
 md-sidenav md-list .md-button {
   font-weight: normal;
 }
@@ -150,7 +154,7 @@ $button-fab-height: 56px;
 a.md-button.sg-icon-button,
 .md-button.sg-icon-button,
 md-list md-list-item button.md-button.sg-icon-button {
-  @extend .md-button.md-icon-button;
+  @extend .md-button, .md-icon-button;
   //transition: $iconButton-transition;
   min-width: $iconButton-size;
   &:hover:not([disabled]),

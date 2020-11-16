@@ -21,7 +21,7 @@ module.exports = function(grunt) {
     'js/vendor/FileSaver.min.js': ['node_modules/file-saver/dist/FileSaver.js']
   };
 
-  const sass = require('node-sass');
+  const sass = require('sass');
   require('time-grunt')(grunt);
 
   // Tasks
