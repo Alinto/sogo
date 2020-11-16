@@ -38,7 +38,7 @@
                  layout="column"
                  ng-repeat="account in ::app.accounts track by account.id"
                  ng-class="{ 'md-flex': account.$expanded }">
-          <md-list>
+          <md-list class="md-dense">
             <md-list-item ng-click="app.toggleAccountState(account)">
               <div class="sg-no-wrap"
                    aria-label="{{ ::'Toggle visibility' | loc }}"
@@ -89,7 +89,7 @@
                  ng-class="{ 'md-warn': account.$quota.percent > 70 }">{{account.$quota.description}}</div>
           </div>
           <md-virtual-repeat-container class="md-flex">
-            <md-list>
+            <md-list class="md-dense">
               <md-list-item
                   class="sg-mailbox-list-item md-clickable md-default-theme md-background md-hue-1"
                   ng-class="{'md-bg sg-selected': folder.id == app.service.selectedFolder.id}"

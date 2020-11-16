@@ -1,10 +1,22 @@
 /// checkbox.scss -*- Mode: scss; indent-tabs-mode: nil; basic-offset: 2 -*-
+
+$checkbox-min-height: 40px !default;
+
 @import 'extends';
 
 // Checkbox for the sidenav folders list
 // -------------------------------------
 md-sidenav md-checkbox {
+  min-height: $checkbox-width;
+  .md-container {
+    top: 50%;
     margin: 0;
+  }
+}
+
+// Dense mode
+md-sidenav .md-dense :not(.md-dense-disabled) md-checkbox:not(.md-dense-disabled) {
+  min-height: $checkbox-width;
 }
 
 // Checkbox in an inline form beside a select element

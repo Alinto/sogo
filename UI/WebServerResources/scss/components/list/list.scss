@@ -59,9 +59,6 @@ md-list-item {
     text-overflow: ellipsis;
     text-transform: initial;
     white-space: nowrap;
-    @include from(md) {
-      line-height: $list-item-height;
-    }
   }
   .sg-inline-list-icon-label {
     text-transform: uppercase;
@@ -91,6 +88,7 @@ md-list-item {
     // Gain some space on the right side of the folder icon
     .md-list-item-inner > md-icon:first-child,
     .md-list-item-inner > md-checkbox:first-child {
+      margin-top: auto;
       margin-right: $bl * 2;
     }
 
