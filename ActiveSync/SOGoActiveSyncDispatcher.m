@@ -3093,7 +3093,7 @@ void handle_eas_terminate(int signum)
   andElement = [(id)[theDocumentElement getElementsByTagName: @"And"] lastObject];
   if (andElement)
     {
-      EOQualifier *subjectQualifier, *senderQualifier, *fetchQualifier, *notDeleted, *greaterThanQualifier, *orQualifier;
+      EOQualifier *subjectQualifier, *senderQualifier, *fetchQualifier, *notDeleted, *greaterThanQualifier, *searchQualifier;
       NSString *query;
       id o;
 
@@ -3115,12 +3115,16 @@ void handle_eas_terminate(int signum)
 	}
 
       notDeleted = [EOQualifier qualifierWithQualifierFormat: @"(not (flags = %@))", @"deleted"];
-      subjectQualifier = [EOQualifier qualifierWithQualifierFormat: [NSString stringWithFormat: @"(%@ doesContain: '%@')", @"subject", query]];
-      senderQualifier = [EOQualifier qualifierWithQualifierFormat: [NSString stringWithFormat: @"(%@ doesContain: '%@')", @"from", query]];
 
-      orQualifier = [[EOOrQualifier alloc] initWithQualifiers: subjectQualifier, senderQualifier, nil];
+      if ([[SOGoSystemDefaults sharedSystemDefaults] easSearchInBody]) {
+         searchQualifier = [EOQualifier qualifierWithQualifierFormat: [NSString stringWithFormat: @"(%@ doesContain: '%@')", @"text", query]];
+      } else {
+         subjectQualifier = [EOQualifier qualifierWithQualifierFormat: [NSString stringWithFormat: @"(%@ doesContain: '%@')", @"subject", query]];
+         senderQualifier = [EOQualifier qualifierWithQualifierFormat: [NSString stringWithFormat: @"(%@ doesContain: '%@')", @"from", query]];
+         searchQualifier = [[EOOrQualifier alloc] initWithQualifiers: subjectQualifier, senderQualifier, nil];
+      }
 
-      fetchQualifier = [[EOAndQualifier alloc] initWithQualifiers: notDeleted, orQualifier, greaterThanQualifier, nil];
+      fetchQualifier = [[EOAndQualifier alloc] initWithQualifiers: notDeleted, searchQualifier, greaterThanQualifier, nil];
 
       return [fetchQualifier autorelease];
     }

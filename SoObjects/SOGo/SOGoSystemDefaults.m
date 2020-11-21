@@ -730,6 +730,11 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return v;
 }
 
+- (BOOL) easSearchInBody
+{
+  return [self boolForKey: @"SOGoEASSearchInBody"];
+}
+
 //
 // See https://msdn.microsoft.com/en-us/library/gg672032(v=exchg.80).aspx
 //
