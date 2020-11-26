@@ -28,6 +28,7 @@
 #import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/NSURL+GCS.h>
 
+#import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -157,9 +158,9 @@
   NSString *sql, *profileURL, *user, *c_defaults;
   NSURL *tableURL;
   SOGoSystemDefaults *sd;
-  unsigned int endTime, startTime, now;
+  unsigned int now, endTime, startTime;
 
-  now = [[NSCalendarDate calendarDate] timeIntervalSince1970];
+  now = [[[NSCalendarDate calendarDate] beginOfDay] timeIntervalSince1970];
   sd = [SOGoSystemDefaults sharedSystemDefaults];
   profileURL = [sd profileURL];
   if (!profileURL)
@@ -212,7 +213,7 @@
                       if ([[vacationOptions objectForKey: @"endDateEnabled"] boolValue])
                         {
                           endTime = [[vacationOptions objectForKey: @"endDate"] intValue];
-                          if (endTime <= now)
+                          if (endTime < now)
                             {
                               if ([self updateAutoReplyForLogin: user
 					      withSieveUsername: theUsername
