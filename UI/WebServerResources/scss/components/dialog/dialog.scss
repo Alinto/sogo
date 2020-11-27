@@ -36,6 +36,19 @@ md-dialog {
   }
 }
 
+// Fix for mail compose window not extending entire screen vertically
+md-dialog {
+  md-dialog-content {
+    flex-grow: 1;
+  }
+  form {
+    height: 100%;
+  }
+}
+md-dialog.flex-100 {
+  flex-grow: 1;
+}
+
 @media (max-width: $layout-breakpoint-xs) {
   md-dialog {
     &[flex-xs="100"],
@@ -44,4 +57,3 @@ md-dialog {
     }
   }
 }
-
