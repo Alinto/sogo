@@ -206,7 +206,7 @@
             <md-input-container class="md-block md-flex">
               <label><var:string label:value="Repeat"/></label>
               <md-select ng-model="editor.component.repeat.frequency" ng-disabled="editor.component.occurrenceId">
-                <md-option ng-value="frequency[0]" ng-repeat="frequency in ::editor.frequencies()">{{ frequency[1] }}</md-option>
+                <md-option ng-value="frequency[0]" ng-repeat="frequency in ::editor.frequencies()" ng-bind-html="frequency[1]"><!-- frequency --></md-option>
               </md-select>
             </md-input-container>
             <md-button type="button" class="sg-icon-button"
