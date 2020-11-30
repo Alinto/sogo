@@ -219,16 +219,12 @@
   NSDictionary *moreStrings;
   NSString *language, *frameworkName;
   NSMutableDictionary* strings;
-  SOGoUserDefaults *ud;
   id table;
 
   // When no framework is specified, we load the strings from UI/Common
   frameworkName = [NSString stringWithFormat: @"%@.SOGo",
 			    (framework ? framework : [self frameworkName])];
-  ud = [[context activeUser] userDefaults];
-  if (!ud)
-    ud = [SOGoSystemDefaults sharedSystemDefaults];
-  language = [ud language];
+  language = [[context resourceLookupLanguages] objectAtIndex: 0];
 
   table
     = [[self resourceManager] stringTableWithName: @"Localizable"
