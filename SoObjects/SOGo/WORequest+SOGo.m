@@ -129,13 +129,16 @@
 
 //
 // Mac+OS+X/10.10.1 (14B25) CalendarAgent/315
+// macOS/11.0.1 (20B50) CalendarAgent/954
 //
 - (BOOL) isICal
 {
   return ([self isAppleDAVWithSubstring: @"Mac OS X/10."]
           || [self isAppleDAVWithSubstring: @"Mac_OS_X/"]
           || [self isAppleDAVWithSubstring: @"Mac+OS+X/"]
-          || [self isAppleDAVWithSubstring: @"CoreDAV/"]);
+          || [self isAppleDAVWithSubstring: @"macOS/"]
+          || [self isAppleDAVWithSubstring: @"CoreDAV/"]
+          || [[cc userAgent] rangeOfString: @"DAVx5"].location != NSNotFound);
 }
 
 //
@@ -144,6 +147,7 @@
 // Mac OS X/10.8 (12A269) Calendar/1639
 // Mac OS X/10.8 (12A269) CalendarAgent/47
 // Mac OS X/10.8.1 (12B19) CalendarAgent/47
+// macOS/11.0.1 (20B50) CalendarAgent/954
 //
 - (BOOL) isICal4
 {
@@ -172,6 +176,14 @@
 // Mac OS X/10.8.1 (12B19) AddressBook/1143
 // Mac OS X/10.8.2 (12C60) AddressBook/1167
 //
+// For 10.14, we see:
+//
+// Mac OS X/10.14.6 (18G6042) AddressBookCore/1
+//
+// For 11.0, we see:
+//
+// macOS/11.0.1 (20B50) AddressBookCore/2452
+//
 - (BOOL) isMacOSXAddressBookApp
 {
   WEClientCapabilities *cc;
@@ -194,7 +206,12 @@
           [[cc userAgent] rangeOfString: @"Mac OS X"].location != NSNotFound
           && [[cc userAgent] rangeOfString: @"AddressBook"].location != NSNotFound
         )
-      );
+        ||
+        (
+          [[cc userAgent] rangeOfString: @"macOS"].location != NSNotFound
+          && [[cc userAgent] rangeOfString: @"AddressBookCore"].location != NSNotFound
+         )
+       );
 
   return b;
 }
@@ -206,7 +223,7 @@
   cc = [self clientCapabilities];
 
   return ([[cc userAgent] rangeOfString: @"DataAccess/1.0"].location != NSNotFound ||
-          [[cc userAgent] rangeOfString: @"dataaccessd/1.0"].location != NSNotFound); // Seen on iOS 5.0.1 on iPad
+          [[cc userAgent] rangeOfString: @"dataaccessd/1.0"].location != NSNotFound); // Since iOS 5.0.1
 }
 
 - (BOOL) isAndroid
