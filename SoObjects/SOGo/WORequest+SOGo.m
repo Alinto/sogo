@@ -18,10 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 
-#import <NGObjWeb/SoObjectRequestHandler.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WEClientCapabilities.h>
 #import <NGObjWeb/WORequest+So.h>
@@ -133,6 +131,10 @@
 //
 - (BOOL) isICal
 {
+  WEClientCapabilities *cc;
+
+  cc = [self clientCapabilities];
+
   return ([self isAppleDAVWithSubstring: @"Mac OS X/10."]
           || [self isAppleDAVWithSubstring: @"Mac_OS_X/"]
           || [self isAppleDAVWithSubstring: @"Mac+OS+X/"]
