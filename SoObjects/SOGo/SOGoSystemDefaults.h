@@ -112,6 +112,7 @@
 - (int) maximumSyncWindowSize;
 - (int) maximumSyncResponseSize;
 - (int) maximumPictureSize;
+- (BOOL) easSearchInBody;
 
 @end
 
