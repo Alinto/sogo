@@ -310,7 +310,8 @@ static int cssEscapingCount;
 	  c == 0x9 ||
           c == 0xA ||
           c == 0xD ||
-          (c >= 0x20 && c <= 0xD7FF) ||
+          (c >= 0x20 && c < 0x334) || // Skip overstruck diacritics
+          (c > 0x338 && c < 0xD7FF) ||
           (c >= 0xE000 && c <= 0xFFFD) ||
           (c >= (wchar_t)0x10000 && c <= (wchar_t)0x10FFFF))
         {
@@ -436,7 +437,7 @@ static int cssEscapingCount;
   NSString *cleanedString;
 
   // Escape double quotes and remove control characters
-  cleanedString = [[self doubleQuotedString] safeString];
+  cleanedString = [[self safeString] doubleQuotedString];
   return cleanedString;
 }
 
