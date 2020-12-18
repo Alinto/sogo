@@ -62,6 +62,7 @@ SOGo and its associated components are available in various languages. The follo
 * [ro_RO] Romanian - Vasile Razvan Luca
 * [ru] Russian - Alex Kabakaev
 * [sr] Serbian - Bogdanović Bojan
+* [sr@latin)] Serbian (Latin) - Zlatko Štulić
 * [sk] Slovak - Martin Pastor
 * [sl_SI] Slovenian - Jens Riecken
 * [es_AR] Spanish (Argentina) - Federico Alberto Sayd

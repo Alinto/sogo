@@ -127,6 +127,9 @@
 @interface SOGoMailSerbianForward : SOGoMailForward
 @end
 
+@interface SOGoMailSerbianLatinForward : SOGoMailForward
+@end
+
 @interface SOGoMailSlovakForward : SOGoMailForward
 @end
 

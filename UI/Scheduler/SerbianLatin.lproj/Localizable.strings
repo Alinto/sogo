@@ -1,0 +1,646 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+"Create a new event" = "Kreiraj novi događaj";
+"Create a new task" = "Kreiraj novi zadatak";
+"Edit this event or task" = "Izmeni događaj ili zadatak";
+"Print the current calendar view" = "Odštampaj trenutni prikaz kalendara";
+"Delete this event or task" = "Obriši događaj ili zadatak";
+"Go to today" = "Idi na danas";
+"Switch to day view" = "Prebaci na prikaz dana";
+"Switch to week view" = "Prebaci na prikaz nedelje";
+"Switch to month view" = "Prebaci na prikaz meseca";
+"Switch to multi-columns day view" = "Prebaci na prikaz dana sa više kolona";
+"Reload all calendars" = "Ponovo učitaj sve kalendare";
+
+/* Tabs */
+"Date" = "Datum";
+"Calendars" = "Kalendari";
+"No events for selected criteria" = "Nema događaja za odabrani kriterijum";
+"No tasks for selected criteria" = "Nema zadataka za odabrani kriterijum";
+
+/* Day */
+"DayOfTheMonth" = "Dan u mesecu";
+"dayLabelFormat" = "%d/%m/%Y";
+"today" = "Danas";
+"Previous Day" = "Juče";
+"Next Day" = "Sledeći dan";
+
+/* Week */
+"Week" = "Nedelja";
+"this week" = "ove nedelje";
+"Week %d" = "Nedelja %d";
+"Previous Week" = "Prethodna nedelja";
+"Next Week" = "Sledeća nedelja";
+
+/* Month */
+"this month" = "ovog meseca";
+"Previous Month" = "Prethodni mesec";
+"Next Month" = "Sledeći mesec";
+
+/* Year */
+"this year" = "ova godina";
+
+/* Menu */
+"Calendar" = "Kalendar";
+"Contacts" = "Kontakti";
+"New Calendar..." = "Novi kalendar...";
+"Delete Calendar" = "Obriši kalendar...";
+"Unsubscribe Calendar" = "Odjavi se sa kalendara";
+"Sharing..." = "Deljenje...";
+"Export Calendar..." = "Izvezi kalendar...";
+"Import Events..." = "Uvezi događaje...";
+"Import Events" = "Uvezi događaje";
+"Select an iCalendar file (.ics)." = "Odaberi iCalendar datoteku (.ics).";
+"Upload" = "Otpremi";
+"Uploading" = "Otpremanje";
+"Publish Calendar..." = "Objavi kalendar...";
+"Reload Remote Calendars" = "Ponovo učitaj udaljene kalendare";
+"Properties" = "Svojstva";
+"Done" = "Urađeno";
+"An error occurred while importing calendar." = "Dogodila se greška prilikom uvoza kalendara.";
+"No event was imported." = "Nema uvezenih događaja.";
+"A total of %{0} events were imported in the calendar." = "Uvezeno je ukupno %{0} događaja u kalendar.";
+"Compose E-Mail to All Attendees" = "Sastavi e-pismo svim polaznicima";
+"Compose E-Mail to Undecided Attendees" = "Sastavi e-pismo svim neodlučnim polaznicima";
+
+/* Relative dates */
+"Yesterday" = "Juče";
+"Today" = "Danas";
+"Tomorrow" = "Sutra";
+"Last %@" = "Poslednjih %@";
+
+/* Folders */
+"Personal calendar" = "Lični kalendar";
+
+/* Misc */
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "Zabranjeno";
+
+/* acls */
+"Access rights to" = "Prava pristupa u";
+"For user" = "Za korisnika";
+"Any Authenticated User" = "Bilo koji autentifikovani korisnik";
+"Public Access" = "Javni pristup";
+"label_Public" = "Javno";
+"label_Private" = "Privatno";
+"label_Confidential" = "Poverljivo";
+"label_Viewer" = "Vidi sve";
+"label_DAndTViewer" = "Vidi Datum & Vreme";
+"label_Modifier" = "Izmeni";
+"label_Responder" = "Odgovori na";
+"label_None" = "Ništa";
+"View All" = "Vidi sve";
+"View the Date & Time" = "Vidi Datum & Vreme";
+"Modify" = "Izmeni";
+"Respond To" = "Odgovori na";
+"None" = "Ništa";
+"This person can create objects in my calendar."
+= "Ova osoba može kreirati objekte u mom kalendaru.";
+"This person can erase objects from my calendar."
+= "Ova osoba može brisati objekte iz mog kalendara.";
+
+/* Button Titles */
+"Subscribe to a Calendar..." = "Pretplati se na kalendar...";
+"Remove the selected Calendar" = "Ukloni izabrani kalendar";
+"New calendar" = "Novi kalendar";
+"Name of the Calendar" = "Ime kalendara";
+"new" = "Novi";
+"Print view" = "Pregled štampe";
+"edit" = "Izmeni";
+"delete" = "Obriši";
+"proposal" = "Predlog";
+"Save and Close" = "Sačuvaj i zatvori";
+"Close" = "Zatvori";
+"Invite Attendees" = "Pozovi polaznike";
+"Attach" = "Priloži";
+"Update" = "Ažuriraj";
+"Cancel" = "Otkaži";
+"Reset" = "Vrati na podrazumevano";
+"Save" = "Sačuvaj";
+"show_rejected_apts" = "Prikaži odbijene sastanke";
+"hide_rejected_apts" = "Sakrij odbijene sastanke";
+
+/* Schedule */
+"Schedule" = "Raspored";
+"No appointments found" = "Nema pronađenih sastanaka";
+"Meetings proposed by you" = "Sastanci koje ste vi predložili";
+"Meetings proposed to you" = "Sastanci koji su vama predloženi";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "Akcija";
+"accept" = "Prihvati";
+"decline" = "Odbij";
+"more attendees" = "Više polaznika";
+"Hide already accepted and rejected appointments" = "Sakrij već prihvaćene i odbijene sastanke";
+"Show already accepted and rejected appointments" = "Prikaži već prihvaćene i odbijene sastanke";
+
+/* Print view */
+"LIST" = "Lista";
+"Print Settings" = "Podešavanje štampanja";
+"Title" = "Naslov";
+"Layout" = "Raspored";
+"What to Print" = "Šta odštampati";
+"Options" = "Opcije";
+"Tasks with no due date" = "Zadaci bez roka";
+"Display working hours only" = "Prikaži samo radne dane";
+"Completed tasks" = "Završeni zadaci";
+"Display events and tasks colors" = "Prikaži boje događaja i zadataka";
+"Borders" = "Ivice";
+"Backgrounds" = "Pozadine";
+
+/* Appointments */
+"Appointment viewer" = "Pregledač sastanaka";
+"Appointment editor" = "Uređivač sastanaka";
+"Appointment proposal" = "Predlog za sastanak";
+"Appointment on" = "Sastanak u";
+"Start" = "Početak";
+"End" = "Završetak";
+"Due Date" = "Rok";
+"Name" = "Ime";
+"Email" = "Epošta";
+"Status" = "Status";
+"% complete" = "% završeno";
+"Location" = "Lokacija";
+"Add a category" = "Dodaj kategoriju";
+"Priority" = "Prioritet";
+"Privacy" = "Privatnost";
+"Cycle" = "Ciklus";
+"Cycle End" = "Kraj ciklusa";
+"Categories" = "Kategoije";
+"Classification" = "Klasifikacija";
+"Duration" = "Trajanje";
+"Attendees" = "Polaznici";
+"Resources" = "Resursi";
+"Organizer" = "Organizator";
+"Description" = "Opis";
+"Document" = "Dokument";
+"Category" = "Kategorija";
+"Repeat" = "Ponovi";
+"Reminder" = "Podestnik";
+"General" = "Opšte";
+"Reply" = "Odgovori";
+"Created by" = "Kreirao/la";
+"You are invited to participate" = "Pozvani se da učestvujete";
+"Target" = "Cilj";
+"attributes" = "osobine";
+"attendees" = "polaznici";
+"delegated from" = "delegirao";
+
+/* checkbox title */
+"is private" = "je privatan";
+
+/* classification */
+"Public" = "Javno";
+"Private" = "Privatno";
+
+/* text used in overviews and tooltips */
+"empty title" = "Bez naslova";
+"private appointment" = "Privatni sastanak";
+"Change..." = "Izmeni...";
+
+/* Appointments (participation state) */
+"partStat_NEEDS-ACTION" = "Potvrdiću kasnije";
+"partStat_ACCEPTED" = "Prisustvovaću";
+"partStat_DECLINED" = "Neću prisustvovati";
+"partStat_TENTATIVE" = "Možda ću prisustvovati";
+"partStat_DELEGATED" = "Delegiram";
+"partStat_OTHER" = "Ostalo";
+
+/* Appointments (error messages) */
+"Conflicts found!" = "Pronađen je konflikt!";
+"Invalid iCal data!" = "Nispravni iCal podaci!";
+"Could not create iCal data!" = "Ne mogu kreirati iCal podatke!";
+
+/* Searching */
+"view_all" = "Sve";
+"view_today" = "Danas";
+"view_next7" = "Narednih 7 dana";
+"view_next14" = "Narednih 14 dana";
+"view_next31" = "Narednih 31 dan";
+"view_thismonth" = "Ovog meseca";
+"view_thisyear" = "Ove godine";
+"view_future" = "Svi budući događaji";
+"view_selectedday" = "Izabrani dan";
+"view_not_started" = "Nema započetih zadataka";
+"view_overdue" = "Zadaci u kašnjenju";
+"view_incomplete" = "Nezavršeni zadaci";
+"View" = "Pregled";
+"Title, category or location" = "Naslov, kategorija ili lokacija";
+"Entire content" = "Kompletan sadržaj";
+"Search" = "Pretraga";
+"Search attendees" = "Pretraži polaznike";
+"Search resources" = "Pretraži resurse";
+"Search appointments" = "Pretraži sastanke";
+"All day Event" = "Celodnevni događaj";
+"check for conflicts" = "Proveri da li ima konflikata";
+"URL" = "Link";
+"newAttendee" = "Dodaj polaznika";
+
+/* calendar modes */
+"Overview" = "Pregled";
+"Chart" = "Grafikon";
+"List" = "Lista";
+"Columns" = "Kolone";
+
+/* Priorities */
+"prio_0" = "Nije navedeno";
+"prio_1" = "Visok";
+"prio_2" = "Visok";
+"prio_3" = "Visok";
+"prio_4" = "Visok";
+"prio_5" = "Normalan";
+"prio_6" = "Nizak";
+"prio_7" = "Nizak";
+"prio_8" = "Nizak";
+"prio_9" = "Nizak";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "Javni događaj";
+"CONFIDENTIAL_vevent" = "Poverljivi događaj";
+"PRIVATE_vevent" = "Privatni događaj";
+"PUBLIC_vtodo" = "Javni zadatak";
+"CONFIDENTIAL_vtodo" = "Poverljivi zadatak";
+"PRIVATE_vtodo" = "Privatni zadatak";
+
+/* status type */
+"status_" = "Nije navedeno";
+"status_NOT-SPECIFIED" = "Nije navedeno";
+"status_TENTATIVE" = "Na čekanju";
+"status_CONFIRMED" = "Potvrđeno";
+"status_CANCELLED" = "Otkazano";
+"status_NEEDS-ACTION" = "Potrebna akcija";
+"status_IN-PROCESS" = "U toku";
+"status_COMPLETED" = "Završeno";
+
+/* Priority level */
+"low" = "nizak";
+
+/* Priority level */
+"normal" = "normalan";
+
+/* Priority level */
+"high" = "visok";
+
+/* Cycles */
+"cycle_once" = "ciklus_jednom";
+"cycle_daily" = "ciklus_dnevno";
+"cycle_weekly" = "ciklus_nedeljno";
+"cycle_2weeks" = "ciklus_2nedelje";
+"cycle_4weeks" = "ciklus_4nedelje";
+"cycle_monthly" = "ciklus_mesečno";
+"cycle_weekday" = "ciklus_radnimdanima";
+"cycle_yearly" = "ciklus_godišnje";
+"cycle_end_never" = "ciklus_ne_završavaj";
+"cycle_end_until" = "ciklus_završi_do";
+"Recurrence pattern" = "Obrazac ponavljanja";
+"Range of recurrence" = "Opseg ponavljanja";
+"Daily" = "Dnevno";
+"Multi-Columns" = "Više kolona";
+"Weekly" = "Nedeljno";
+"Monthly" = "Mesečno";
+"Yearly" = "Godišnje";
+"Every" = "Svakog";
+"Days" = "Dani";
+"Week(s)" = "Nedelja(e)";
+"On" = "U";
+"Month(s)" = "Mesec(i)";
+
+/* [Event recurrence editor] Ex: _The_ first Sunday */
+"The" = "Prvog";
+"Recur on day(s)" = "Ponavlja se na dan(ima)";
+"Year(s)" = "Godina(e)";
+
+/* [Event recurrence editor] Ex: Every first Sunday _of_ April */
+"cycle_of" = "od";
+"No end date" = "Nema krajnjeg datuma";
+"Create" = "Kreiraj";
+"appointment(s)" = "sastanak(ci)";
+"Repeat until" = "Ponavljaj do";
+"End Repeat" = "Završi ponavljanje";
+"Never" = "Nikada";
+"After" = "Nakon";
+"On Date" = "Datuma";
+"times" = "vremena";
+"First" = "Prva";
+"Second" = "Druga";
+"Third" = "Treća";
+"Fourth" = "Četvrta";
+"Fift" = "Peta";
+"Last" = "Poslednja";
+
+/* Appointment categories */
+"category_none" = "Nema";
+"category_labels" = "Godišnjica,Rođendan,Posao,Pozivi,Klijenti,Konkurencija,Potrošač,Omiljeno,Prati,Pokloni,Praznici,Ideje,Sastanci,Pitanja,Ostalo,Lično,Projekti,Javni Praznik,Status,Dobavljači,Putovanje,Odmor";
+"repeat_NEVER" = "Ne ponavlja se";
+"repeat_DAILY" = "Dnevno";
+"repeat_WEEKLY" = "Nedeljno";
+"repeat_BI-WEEKLY" = "Na 2 nedelje";
+"repeat_EVERY WEEKDAY" = "Svakog radnog dana";
+"repeat_MONTHLY" = "Mesečno";
+"repeat_YEARLY" = "Godišnje";
+"repeat_CUSTOM" = "Prilagođeno...";
+"reminder_NONE" = "Nema podsetnika";
+"reminder_0" = "U vreme događaja";
+"reminder_5_MINUTES_BEFORE" = "5 minuta pre";
+"reminder_10_MINUTES_BEFORE" = "10 minuta pre";
+"reminder_15_MINUTES_BEFORE" = "15 minuta pre";
+"reminder_30_MINUTES_BEFORE" = "30 minuta pre";
+"reminder_45_MINUTES_BEFORE" = "45 minuta pre";
+"reminder_1_HOUR_BEFORE" = "1 sat pre";
+"reminder_2_HOURS_BEFORE" = "2 sata pre";
+"reminder_5_HOURS_BEFORE" = "5 sati pre";
+"reminder_15_HOURS_BEFORE" = "15 sati pre";
+"reminder_1_DAY_BEFORE" = "1 dan pre";
+"reminder_2_DAYS_BEFORE" = "2 dana pre";
+"reminder_1_WEEK_BEFORE" = "1 nedelja pre";
+"reminder_CUSTOM" = "Prilagođeno...";
+"reminder_MINUTES" = "minuti";
+"reminder_HOURS" = "sati";
+"reminder_DAYS" = "dani";
+"reminder_WEEKS" = "nedelje";
+"reminder_BEFORE" = "pre";
+"reminder_AFTER" = "posle";
+"reminder_START" = "događaj počinje";
+"reminder_END" = "događaj se završava";
+"Reminder Details" = "Detalji podsetnika";
+"Choose a Reminder Action" = "Odaberi akciju podsetnika";
+"Show an Alert" = "Prikaži upozorenje";
+"Send an E-mail" = "Pošalji e-poštu";
+"Email Organizer" = "Pošalji epoštu organizatoru";
+"Email Attendees" = "Pošalji epoštu polaznicima";
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* Arial label for reminder units */
+"Reminder units" = "Jedinice podsetnika";
+
+/* Aria label for reminder time position (after or before) */
+"Reminder position" = "Pozicija podsetnika";
+
+/* Aria label for reminder relation with event (start or end) */
+"Reminder relation" = "Povezanost podsetnika";
+
+/* transparency */
+"Show Time as Free" = "Prikaži vreme kao slobodno";
+
+/* email notifications */
+"Send Appointment Notifications" = "Pošalji obaveštenje o sastanku";
+"From" = "Od";
+"To" = "Za";
+
+/* validation errors */
+validate_notitle           = "Nema naslova, nastaviti?";
+validate_invalid_startdate = "Netačno polje datuma početka!";
+validate_invalid_enddate   = "Netačno polje datuma završetka!";
+validate_endbeforestart    = "Završetak koji ste uneli dešava se pre datuma početka.";
+validate_untilbeforeend    = "Ponavljanje se mora završiti nakon prvog ponavljanja.";
+
+"Events" = "Događaji";
+"Tasks" = "Zadaci";
+"Show completed tasks" = "Prikaži završene zadatke";
+
+/* tabs */
+"Task" = "Zadatak";
+"Event" = "Događaj";
+"Recurrence" = "Ponavljanje";
+
+/* toolbar */
+"New Event" = "Novi događaj";
+"New Task" = "Novi zadatak";
+"Edit" = "Izmeni";
+"Delete" = "Obriši";
+"Go to Today" = "Idi na danas";
+"Day View" = "Dnevni pregled";
+"Week View" = "Nedeljni pregled";
+"Month View" = "Mesečni pregled";
+"Reload" = "Učitaj ponovo";
+
+/* Number of selected components in events or tasks list */
+"selected" = "odabrano";
+"eventPartStatModificationError" = "Vaš stastus učesnika ne može biti izmenjen.";
+
+/* menu */
+"New Event..." = "Novi događaj...";
+"New Task..." = "Novi zadatak...";
+"Edit Selected Event..." = "Izmeni odabrani događaj...";
+"Delete Selected Event" = "Obriši odabrani događaj";
+"Select All" = "Odaberi sve";
+"Workweek days only" = "Samo radni dani";
+"Tasks in View" = "Zadaci u pregledu";
+"eventDeleteConfirmation" = "Sledeći događaj(i) biće obrisan:";
+"taskDeleteConfirmation" = "Sledeći zadatak(ci) biće obrisan:";
+"Would you like to continue?" = "Da li želite da nastavite?";
+"You cannot remove nor unsubscribe from your personal calendar."
+= "Ne možete ukloniti niti se odjaviti iz vašeg ličnog kalendara.";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "Da li ste sigurni da želite da obrišete kalendar \"%{0}\"?";
+"Are you sure you want to delete the selected components?"
+= "Da li ste sigurni da želite da obrišete odabrane komponente?";
+
+/* Participation role */
+"Role" = "Uloga";
+
+/* Participant role: participation is required */
+"Participant" = "Učesnik";
+
+/* Participant role: participation is required */
+"req-participant" = "Učesnik";
+
+/* Participant role: participation is optional */
+"Optional Participant" = "Mogući učesnik";
+
+/* Participant role: participation is optional */
+"opt-participant" = "Mogući učesnik";
+
+/* Participant role: participant is copied for information purposes only */
+"Non Participant" = "Nije učesnik";
+
+/* Participant role: participant is copied for information purposes only */
+"non-participant" = "Nije učesnik";
+
+/* Participant role: participant is chair of the calendar entity */
+"Chair" = "Predesedavajući";
+
+/* Participant role: participant is chair of the calendar entity */
+"chair" = "Predesedavajući";
+
+/* Participant status: needs action */
+"Needs action" = "Potrebna akcija";
+
+/* Participant status: event accepted */
+"Accepted" = "Prihvaćeno";
+
+/* Participant status: event declined */
+"Declined" = "Odbijeno";
+
+/* Participant status: tentatively accepted */
+"Tentative" = "Na čekanju";
+
+"Free" = "Slobodan";
+"Busy" = "Zauzet";
+"Maybe busy" = "Možda zauzet";
+"No free-busy information" = "Nema informacije slobodan-zauzet";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot" = "Predloži vremenski okvir";
+"Zoom" = "Uvećaj";
+"Previous slot" = "Prethodni okvir";
+"Next slot" = "Sledeći okvir";
+"Previous hour" = "Presthodni sat";
+"Next hour" = "Sledeći sat";
+"Work days only" = "Samo radni dani";
+"The whole day" = "Ceo dan";
+"Between" = "Između";
+"and" = "i";
+"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
+= "Konflikt vremena postoji sa jednim ili više učesnika.\nDa li želite da zadržite trenutna podešavanja u svakom slučaju?";
+
+/* events list */
+"Due" = "Rok";
+"(Private Event)" = "(Privatni događaj)";
+vevent_class0 = "(Javni događaj)";
+vevent_class1 = "(Privatni događaj)";
+vevent_class2 = "(Poverljivi događaj)";
+
+/* tasks list */
+"Descending Order" = "Opadajući red";
+vtodo_class0 = "(Javni zadatak)";
+vtodo_class1 = "(Privatni zadatak)";
+vtodo_class2 = "(Poverljivi zadatak)";
+"closeThisWindowMessage" = "Hvala vam! Sada možete zatvoriti prozor ili videti vaš";
+"Multicolumn Day View" = "Prikaz dana sa više kolona";
+"Please select an event or a task." = "Molimo odaberite događaj ili zadatak.";
+"editRepeatingItem" = "Stavka koju menjate se ponavlja. Da li želite da izmenite sva ponavljanja ili samo ovaj pojedinačni slučaj?";
+"button_thisOccurrenceOnly" = "Samo ovo ponavljanje";
+"button_allOccurrences" = "Sva ponavljanja";
+"Edit This Occurrence" = "Izmeni ovo ponavljanje";
+"Edit All Occurrences" = "Izmeni sva ponavljanja";
+"Update This Occurrence" = "Ažuriraj ovo ponavljanje";
+"Update All Occurrences" = "Ažuriraj sva ponavljanja";
+
+/* Properties dialog */
+"Color" = "Boja";
+"Include in free-busy" = "Uključi u slobodan-zauzet";
+"Synchronization" = "Sinhronizacija";
+"Synchronize" = "Sinhronizuj";
+"Tag" = "Oznaka";
+"Display" = "Prikaži";
+"Show alarms" = "Prikaži alarme";
+"Show tasks" = "Prikaži zadatke";
+"Notifications" = "Obaveštenja";
+"Receive a mail when I modify my calendar" = "Primi poštu kada menjam svoj kalendar";
+"Receive a mail when someone else modifies my calendar" = "Primi poštu kada neko drugi menja moj kalendar";
+"When I modify my calendar, send a mail to" = "Kada menjam svoj kalendar, pošalji poštu";
+"Email Address" = "Adresa epošte";
+"Export" = "Izvezi";
+
+
+/* Show only the calendar for which the menu is displayed */
+"Show Only This Calendar" = "Prikaži samo ovaj kalendar";
+
+
+/* Show all calendar (personal, subscriptions and web) */
+"Show All Calendars" = "Prikaži sve kalendare";
+
+"Links to this Calendar" = "Linkovi ka ovom kalendaru";
+"Authenticated User Access" = "Pristup autentifikovanim korisnicima";
+"CalDAV URL" = "CalDAV link";
+"WebDAV ICS URL" = "WebDAV ICS link";
+"WebDAV XML URL" = "WebDAV XML link";
+
+/* Error messages */
+"dayFieldInvalid" = "Molimo navedine numeričku vrednost u polje Dani veću ili jednaku 1.";
+"weekFieldInvalid" = "Molimo navedine numeričku vrednost u polje Nedelja(e) veću ili jednaku 1.";
+"monthFieldInvalid" = "Molimo navedine numeričku vrednost u polje Mesec(i) veću ili jednaku 1.";
+"monthDayFieldInvalid" = "Molimo navedine numeričku vrednost u polje dan u mesecu veću ili jednaku 1.";
+"yearFieldInvalid" = "Molimo navedine numeričku vrednost u polje Godina(e) veću ili jednaku 1.";
+"appointmentFieldInvalid" = "Molimo navedine numeričku vrednost u polje Sastanak(ci) veću ili jednaku 1.";
+"recurrenceUnsupported" = "Ovaj tip ponavljanja trenutno nije podržan.";
+"Please specify a calendar name." = "Molimo navedite ime kalendara.";
+"tagNotDefined" = "Morate navesti oznaku ako želite da sinhronizujete ovaj kalendar.";
+"tagAlreadyExists" = "Oznaka koju ste naveli je već povezana na drugi kalendar.";
+"tagHasChanged" = "Ako izmenite oznaku vašeg kalendara, morate ponovo učitati podatke na vašem mobilnom uređaju. Nastaviti?";
+"tagWasAdded" = "Ako želite da sinhronizujete ovaj kalendar, morate ponovo učitati podatke na vašem mobilnom uređaju.\nNastaviti?";
+"tagWasRemoved" = "Ako uklonite ovaj kalendar iz sinhronizacije, morate ponovo učitati podatke na vašem mobilnom uređaju.\nNastaviti?";
+"DestinationCalendarError" = "Izvorišni i odredišni kalendar su isti. Molimo pokušajte da kopirate u drugi kalendar.";
+"EventCopyError" = "Neuspešno kopiranje. Molimo da pokušate kopiranje u drugi kalendar.";
+"Please select at least one calendar" = "Molimo odaberite barem jedan kalendar";
+"Open Task..." = "Otvori zadatak...";
+"Mark Completed" = "Označi završenim";
+"Delete Task" = "Obriši zadatak";
+"Delete Event" = "Obriši događaj";
+"Copy event to my calendar" = "Kopiraj događaj u moj kalendar";
+"View Raw Source" = "Pogledaj izvnorni kod";
+"Move To" = "Premesti u";
+"Copy To" = "Kopiraj u";
+"Subscriptions" = "Pretplate";
+"Subscribe to a shared folder" = "Pretplati se na deljeni direktorijum";
+"Subscribe to a web calendar..." = "Pretplati se na veb kalendar...";
+"URL of the Calendar" = "Link ka kalendaru";
+"Web Calendar" = "Veb kalendar";
+"Web Calendars" = "Veb kalendari";
+"Reload on login" = "Učitaj ponovo pri prijavljivanju";
+"Invalid number." = "Pogrešan broj.";
+"Please identify yourself to %{0}" = "Molimo identifikujte sebe na %{0}";
+"quantity" = "količina";
+"Current view" = "Trenutni prikaz";
+"Selected events and tasks" = "Odaberi događaje i zadatke";
+"Custom date range" = "Prilagođeni period";
+"Select starting date" = "Odaberi datum početka";
+"Select ending date" = "Odaberi datum završetka";
+"Delegated to" = "Delegirano";
+"Keep sending me updates" = "Nastavi da mi šalješ ažuriranja";
+"OK" = "U redu";
+"Confidential" = "Poverljivo";
+"Enable" = "Omogući";
+"Filter" = "Filter";
+"Sort" = "Poređaj";
+"Back" = "Nazad";
+"Day" = "Dan";
+"Month" = "Mesec";
+"New Appointment" = "Novi sastanak";
+"filters" = "filteri";
+"Today" = "Danas";
+"More options" = "Više opcija";
+"Delete This Occurrence" = "Obriši ovo ponavljanje";
+"Delete All Occurrences" = "Obriši sva ponavljanja";
+"Add Recurrence Date" = "Dodajte datum ponavljanja";
+"Add From" = "Dodaj iz";
+"Add Due" = "Dodaj rok";
+"Import" = "Uvezi";
+"Rename" = "Preimenuj";
+"Import Calendar" = "Uvezi kalendar";
+"Select an ICS file." = "Odaberi ICS datoteku.";
+
+/* Notification when user subscribes to a calendar */
+"Successfully subscribed to calendar" = "Uspešno pretplaćen na kalendar";
+
+/* Aria label for color chip button to select and unselect an event or task */
+"Toggle item" = "Isključi stavku";
+
+/* Aria label for scope of search on events or tasks */
+"Search scope" = "Pretraži opseg";
+
+/* Hotkey to create an event */
+"hotkey_create_event" = "e";
+
+/* Hotkey to create a task */
+"hotkey_create_task" = "t";
+
+/* Hotkey to go to today */
+"hotkey_today" = "n";
+
+/* Hotkey to switch to day view */
+"hotkey_dayview" = "d";
+
+/* Hotkey to switch to week view */
+"hotkey_weekview" = "w";
+
+/* Hotkey to switch to month view */
+"hotkey_monthview" = "m";
+
+/* Hotkey to switch to multicolumn day view */
+"hotkey_multicolumndayview" = "c";

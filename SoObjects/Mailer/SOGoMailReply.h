@@ -126,6 +126,9 @@
 @interface SOGoMailSerbianReply : SOGoMailReply
 @end
 
+@interface SOGoMailSerbianLatinReply : SOGoMailReply
+@end
+
 @interface SOGoMailSlovakReply : SOGoMailReply
 @end
 

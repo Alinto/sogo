@@ -174,6 +174,9 @@
 @implementation SOGoMailSerbianReply
 @end
 
+@implementation SOGoMailSerbianLatinReply
+@end
+
 @implementation SOGoMailSlovakReply
 @end
 

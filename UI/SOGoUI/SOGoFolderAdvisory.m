@@ -345,6 +345,18 @@
 @implementation SOGoFolderRussianRemovalAdvisory
 @end
 
+@implementation SOGoFolderSerbianAdditionAdvisory
+@end
+
+@implementation SOGoFolderSerbianRemovalAdvisory
+@end
+
+@implementation SOGoFolderSerbianLatinAdditionAdvisory
+@end
+
+@implementation SOGoFolderSerbianLatinRemovalAdvisory
+@end
+
 @implementation SOGoFolderSpanishSpainAdditionAdvisory
 @end
 

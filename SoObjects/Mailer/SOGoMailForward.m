@@ -371,6 +371,9 @@
 @implementation SOGoMailSerbianForward
 @end
 
+@implementation SOGoMailSerbianLatinForward
+@end
+
 @implementation SOGoMailSlovakForward
 @end
 

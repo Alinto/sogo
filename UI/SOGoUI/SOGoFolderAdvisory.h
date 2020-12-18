@@ -173,6 +173,18 @@
 @interface SOGoFolderRussianRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
+@interface SOGoFolderSerbianAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderSerbianRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
+@interface SOGoFolderSerbianLatinAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderSerbianLatinRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
 @interface SOGoFolderSpanishSpainAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 
