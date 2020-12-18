@@ -138,13 +138,7 @@ _intValueFromHex (NSString *hexString)
       sortedFolderNames = [NSMutableArray arrayWithCapacity: max];
       for (count = max-1; count >= 0; count--)
         {
-          if ([[sortedFolders objectAtIndex: count] isKindOfClass: [NSString class]])
-            {
-              // Calendar no longer exists; remove it from user's "FoldersOrder" setting
-              dirty = YES;
-              [sortedFolders removeObjectAtIndex: count];
-            }
-          else
+          if ([[sortedFolders objectAtIndex: count] isKindOfClass: [SOGoAppointmentFolder class]])
             {
               folder = [sortedFolders objectAtIndex: count];
               folderName = [folder nameInContainer];
@@ -152,6 +146,13 @@ _intValueFromHex (NSString *hexString)
                 [sortedFolderNames addObject: folderName];
               else
                 [self errorWithFormat: @"Unexpected entry in FoldersOrder setting: %@", folder];
+            }
+          else
+            {
+              // Calendar no longer exists; remove it from user's "FoldersOrder" setting
+              [self errorWithFormat: @"Invalid folder in FoldersOrder setting: %@", [sortedFolders objectAtIndex: count]];
+              dirty = YES;
+              [sortedFolders removeObjectAtIndex: count];
             }
         }
 
