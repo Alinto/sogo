@@ -30,35 +30,35 @@
 "Anybody accessing this resource from the public area" = "Bilo ko može da pristupi ovom resursu sa javne zone";
 "Sorry, the user rights can not be configured for that object." = "Žao nam je, prava korisnika ne mogu biti podešena za ovaj objekat.";
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
-= "Svaki korisnik sa nalogom na ovom sistemu moći će da pristupi vašem poštanskom sandučetu \"%{0}\". Da li ste sigurni da verujete svima?";
+     = "Svaki korisnik sa nalogom na ovom sistemu moći će da pristupi vašem poštanskom sandučetu \"%{0}\". Da li ste sigurni da verujete svima?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
-= "Svaki korisnik sa nalogom na ovom sistemu moći će da pristupi vašem kalendaru \"%{0}\". Da li ste sigurni da verujete svima?";
+     = "Svaki korisnik sa nalogom na ovom sistemu moći će da pristupi vašem kalendaru \"%{0}\". Da li ste sigurni da verujete svima?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-= "Potencijalno bi svako na internetu mogao da pristupi vašem kalendaru \"%{0}\", čak i ako nemaju nalog na ovom sistemu. Da li je ova informacija pogodna za javni internet?";
+     = "Potencijalno bi svako na internetu mogao da pristupi vašem kalendaru \"%{0}\", čak i ako nemaju nalog na ovom sistemu. Da li je ova informacija pogodna za javni internet?";
 "Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
-= "Svaki korisnik sa nalogom na ovom sistemu moći će da pristupi vašem adresaru \"%{0}\". Da li ste sigurni da verujete svima?";
+     = "Svaki korisnik sa nalogom na ovom sistemu moći će da pristupi vašem adresaru \"%{0}\". Da li ste sigurni da verujete svima?";
 "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-= "Potencijalno bi svako na internetu mogao da pristupi vašem adresaru \"%{0}\", čak i ako nemaju nalog na ovom sistemu. Da li je ova informacija pogodna za javni internet?";
+     = "Potencijalno bi svako na internetu mogao da pristupi vašem adresaru \"%{0}\", čak i ako nemaju nalog na ovom sistemu. Da li je ova informacija pogodna za javni internet?";
 "Give Access" = "Dodeli pristup";
 "Keep Private" = "Zadrži privatnim";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
-= "Ne mogu da se pretplatim na taj direktorijum!";
+        = "Ne mogu da se pretplatim na taj direktorijum!";
 "You cannot subscribe to a folder that you own!"
-= "Ne možete se pretplatiti na direktoijum čiji ste vlasnik!";
+        = "Ne možete se pretplatiti na direktoijum čiji ste vlasnik!";
 "Unable to unsubscribe from that folder!"
-= "Ne mogu da se odjavim sa ovog direktorijuma!";
+        = "Ne mogu da se odjavim sa ovog direktorijuma!";
 "You cannot unsubscribe from a folder that you own!"
-= "Ne možete da se odjavite sa direktorijuma čiji ste vlasnik!";
+        = "Ne možete da se odjavite sa direktorijuma čiji ste vlasnik!";
 "Unable to rename that folder!" = "Ne mogu da preimenujem ovaj direktorijum!";
 "You have already subscribed to that folder!"
-= "Već ste pretplaćeni na ovaj direktorijum!";
+        = "Već ste pretplaćeni na ovaj direktorijum!";
 "The user rights cannot be edited for this object!"
-= "Prava korisnika ne mogu biti izmenjena za ovaj objekat!";
+        = "Prava korisnika ne mogu biti izmenjena za ovaj objekat!";
 "A folder by that name already exists." = "Direktorijum sa tim imenom već postoji.";
 "You cannot create a list in a shared address book."
-= "Ne možete kreirati listu u deljenom adresaru.";
+        = "Ne možete kreirati listu u deljenom adresaru.";
 "Warning" = "Upozorenje";
 "Can't contact server" = "Desila se greška prilikom kontaktiranja servera. Molimo pokušajte kasnije.";
 "You are not allowed to access this module or this system. Please contact your system administrator."

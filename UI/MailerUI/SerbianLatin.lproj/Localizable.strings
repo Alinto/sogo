@@ -104,7 +104,7 @@
 "To"            = "Za";
 "Cc"            = "Cc";
 "Bcc"           = "Bcc";
-"Reply-To"	    = "Odgovori";
+"Reply-To"	= "Odgovori";
 "Add address"   = "Dodaj adresu";
 "Body"          = "Telo";
 "Open" = "Otvori";
@@ -121,6 +121,7 @@
 "Edit Draft..." = "Izmeni nacrt...";
 "Load Images" = "Učitaj slike";
 "Return Receipt" = "Potvrda o prijemu";
+"Choose which identity to send this message from" = "Choose which identity to send this message from";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Pošiljalac ove poruke je pitao da bude obavešten kada pročitate ovu poruku. Da li želite da obavestite pošiljaoca?";
 "Return Receipt (displayed) - %@"= "Potvrda o prijemu (prikazana) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Ovo je Potvrda o prijemu za poštu koju ste poslali %@.\n\nBeleška: Ova potvrda o prijemu je samo potvrda da je poruka prikazana na računaru primaoca. Nema garancije da je primalac pročitao poruku ili razumeo sadržaj poruke.";
@@ -268,6 +269,15 @@
 /* Trying to access a non-existent certificate */
 "No certificate associated to account." = "Nema sertifikata povezanog sa nalogom.";
 
+/* Invalid message signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
+/* Valid message signature */
+"Message is signed" = "Message is signed";
+
+/* Unknown error while validating message signature */
+"Digital signature is not valid" = "Digital signature is not valid";
+
 "This Folder" = "Ovaj direktorijum";
 
 /* Label popup menu */
@@ -297,9 +307,9 @@
 /* Folder operations */
 "Name" = "Ime";
 "Enter the new name of your folder"
-="Unesite ime vašeg direktorijuma";
+ ="Unesite ime vašeg direktorijuma";
 "Do you really want to move this folder into the trash ?"
-= "Da li zaista želite da pomerite ovaj direktorijum u kantu?";
+ = "Da li zaista želite da pomerite ovaj direktorijum u kantu?";
 "Operation failed" = "Operacija nije uspela";
 "Quota" = "Kvota:";
 "quotasFormat" = "%{0}% iskorišćeno od %{1} MB";

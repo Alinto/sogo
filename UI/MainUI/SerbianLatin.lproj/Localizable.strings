@@ -16,10 +16,17 @@
 "Authentication Failed" = "Operacija nije uspela";
 "Wrong username or password." = "Pogrešno korisničko ime i lozinka.";
 "Retry" = "Pokušaj ponovo";
+"Login failed due to unhandled error case:" = "Login failed due to unhandled error case:";
 "cookiesNotEnabled" = "Ne možete se prijaviti jer su onemogućeni kolačići u vašep pregledaču. Molimo omogućite kolačiće u podašavanjima pregledača i pokušajte ponovo.";
 "browserNotCompatible" = "Otkrili smo da verzija vašeg pregledača nije podržana na ovom sajtu. Naša preporuka je da korsitite Firefox. Kliknite na link ispod da preuzmete poslednju verziju ovog pregledača.";
 "alternativeBrowsers" = "Alternativno, možete koristiti i sledeće kompatibilne pregledače";
 "alternativeBrowserSafari" = "Alternativno, možete koristiti i Safari.";
+
+/* 2FA */
+"Verification Code" = "Verification Code";
+"Enter the 6-digit verification code from your Google Authenticator application." = "Enter the 6-digit verification code from your Google Authenticator application.";
+"You provided an invalid Google Authenticator key." = "You provided an invalid Google Authenticator key.";
+
 "Download" = "Preuzimanje";
 "Language" = "Jezik";
 "choose" = "Izaberi ...";
@@ -53,7 +60,6 @@
 "Romanian" = "Română";
 "Russian" = "Русский";
 "Serbian" = "Српски";
-"SerbianLatin" = "Srpski (Latinica)";
 "Slovak" = "Slovensky";
 "Slovenian" = "Slovenščina";
 "SpanishSpain" = "Español (España)";
