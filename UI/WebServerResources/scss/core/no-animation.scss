@@ -252,23 +252,6 @@ md-select-menu md-content {
 
 .sg-reversible {
   transition: none !important;
-  position: relative;
-}
-
-.sg-reversible.sg-flip,
-.sg-reversible .sg-face,
-.sg-reversible .sg-back {
-  position: relative;
-  transform: none !important;
-}
-
-.sg-reversible .sg-back,
-.sg-reversible.sg-flip .sg-face {
-  display: none;
-}
-
-.sg-reversible.sg-flip .sg-back {
-  display: block;
 }
 
 //--------------------------------
