@@ -109,6 +109,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if ((o = [n flattenedValueAtIndex: 4 forKey: @""]))
     [s appendFormat: @"<Suffix xmlns=\"Contacts:\">%@</Suffix>", [o activeSyncRepresentationInContext: context]];
 
+  if ((o = [self fn]))
+    [s appendFormat: @"<FileAs xmlns=\"Contacts:\">%@</FileAs>", [o activeSyncRepresentationInContext: context]];
+
   if ((o = [self workCompany]))
     [s appendFormat: @"<CompanyName xmlns=\"Contacts:\">%@</CompanyName>", [o activeSyncRepresentationInContext: context]];
 
